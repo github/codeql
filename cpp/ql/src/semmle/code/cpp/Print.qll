@@ -73,12 +73,12 @@ private class DumpType extends Type
    * This operation is very expensive, and should not be used in production queries.
    */
   final string getTypeIdentityString() {
-    /*
-      The identity string of a type is just the concatenation of the four components below. To create the type
-      identity for a derived type, insert the declarator of the derived type between the `getDeclaratorPrefix()` and
-      `getDeclaratorSuffixBeforeQualifiers()`. To create the type identity for a `SpecifiedType`, insert the qualifiers
-      after `getDeclaratorSuffixBeforeQualifiers()`.
-    */
+    // The identity string of a type is just the concatenation of the four
+    // components below. To create the type identity for a derived type, insert
+    // the declarator of the derived type between the `getDeclaratorPrefix()`
+    // and `getDeclaratorSuffixBeforeQualifiers()`. To create the type identity
+    // for a `SpecifiedType`, insert the qualifiers after
+    // `getDeclaratorSuffixBeforeQualifiers()`.
     result = getTypeSpecifier() + getDeclaratorPrefix() + getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
   }
 

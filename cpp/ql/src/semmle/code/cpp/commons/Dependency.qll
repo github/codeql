@@ -105,11 +105,9 @@ cached predicate getDeclarationEntries(Declaration decl, DeclarationEntry de)
     decl.(Function).isConstructedFrom(de.getDeclaration()) or
     decl.(Class).isConstructedFrom(de.getDeclaration())
   ) and
-  /*
-   * ParameterDeclarationEntries are special, as (a) they can only be accessed
-   * from within the definition, and (b) non-definition PDEs may be commonly
-   * included. Thus, for PDEs, we point only to the definition.
-   */
+  // ParameterDeclarationEntries are special, as (a) they can only be accessed
+  // from within the definition, and (b) non-definition PDEs may be commonly
+  // included. Thus, for PDEs, we point only to the definition.
   (de instanceof ParameterDeclarationEntry implies de.isDefinition())
 }
 

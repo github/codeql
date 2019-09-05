@@ -40,8 +40,8 @@ class GuardCondition extends Expr {
      * true (for `&&`) or false (for `||`) branch.
      */
     cached predicate controls(BasicBlock controlled, boolean testIsTrue) {
-        /* This condition must determine the flow of control; that is, this
-         * node must be a top-level condition. */
+        // This condition must determine the flow of control; that is, this
+        // node must be a top-level condition.
         this.controlsBlock(controlled, testIsTrue)
         or
         exists (BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs
@@ -63,7 +63,7 @@ class GuardCondition extends Expr {
     }
 
     /** Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-        If `isLessThan = false` then this implies `left >= right + k`.  */
+      * If `isLessThan = false` then this implies `left >= right + k`.  */
     cached predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
         exists(boolean testIsTrue |
             compares_lt(this, left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
@@ -76,7 +76,7 @@ class GuardCondition extends Expr {
     }
 
     /** Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-        If `areEqual = false` then this implies `left != right + k`.  */
+      * If `areEqual = false` then this implies `left != right + k`.  */
     cached predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
         exists(boolean testIsTrue |
             compares_eq(this, left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
@@ -162,8 +162,8 @@ private predicate complex_eq(ComparisonOperation cmp, Expr left, Expr right, int
 }
 
 
-/* left - x == right + c => left == right + (c+x)
-   left == (right - x) + c => left == right + (c-x) */
+// left - x == right + c => left == right + (c+x)
+// left == (right - x) + c => left == right + (c-x)
 private predicate sub_eq(ComparisonOperation cmp, Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(SubExpr lhs, int c, int x | compares_eq(cmp, lhs, right, c, areEqual, testIsTrue) and
                                 left = lhs.getLeftOperand() and x = int_value(lhs.getRightOperand())
@@ -176,8 +176,8 @@ private predicate sub_eq(ComparisonOperation cmp, Expr left, Expr right, int k, 
     )
 }
 
-/* left + x == right + c => left == right + (c-x)
-   left == (right + x) + c => left == right + (c+x) */
+// left + x == right + c => left == right + (c-x)
+// left == (right + x) + c => left == right + (c+x)
 private predicate add_eq(ComparisonOperation cmp, Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(AddExpr lhs, int c, int x | compares_eq(cmp, lhs, right, c, areEqual, testIsTrue) and
                                 (left = lhs.getLeftOperand() and x = int_value(lhs.getRightOperand())
@@ -256,8 +256,8 @@ private predicate complex_lt(ComparisonOperation cmp, Expr left, Expr right, int
 }
 
 
-/* left - x < right + c => left < right + (c+x)
-   left < (right - x) + c => left < right + (c-x) */
+// left - x < right + c => left < right + (c+x)
+// left < (right - x) + c => left < right + (c-x)
 private predicate sub_lt(ComparisonOperation cmp, Expr left, Expr right, int k, boolean isLt, boolean testIsTrue) {
     exists(SubExpr lhs, int c, int x | compares_lt(cmp, lhs, right, c, isLt, testIsTrue) and
                                 left = lhs.getLeftOperand() and x = int_value(lhs.getRightOperand())
@@ -270,8 +270,8 @@ private predicate sub_lt(ComparisonOperation cmp, Expr left, Expr right, int k, 
     )
 }
 
-/* left + x < right + c => left < right + (c-x)
-   left < (right + x) + c => left < right + (c+x) */
+// left + x < right + c => left < right + (c-x)
+// left < (right + x) + c => left < right + (c+x)
 private predicate add_lt(ComparisonOperation cmp, Expr left, Expr right, int k, boolean isLt, boolean testIsTrue) {
     exists(AddExpr lhs, int c, int x | compares_lt(cmp, lhs, right, c, isLt, testIsTrue) and
                                 (left = lhs.getLeftOperand() and x = int_value(lhs.getRightOperand())

@@ -3,7 +3,8 @@ import semmle.code.cpp.controlflow.Dominance
 import semmle.code.cpp.controlflow.SSA // must be imported for proper caching of SSAHelper
 import semmle.code.cpp.rangeanalysis.RangeSSA // must be imported for proper caching of SSAHelper
 
-/* The dominance frontier of a block `x` is the set of all blocks `w` such that
+/**
+ * The dominance frontier of a block `x` is the set of all blocks `w` such that
  * `x` dominates a predecessor of `w` but does not strictly dominate `w`.
  *
  * This implementation is equivalent to:

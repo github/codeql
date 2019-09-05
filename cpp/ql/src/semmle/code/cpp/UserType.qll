@@ -85,9 +85,11 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
     exists(getEnclosingFunction())
   }
 
-  // Dummy implementations of inherited methods. This class must not be
-  // made abstract, because it is important that it captures the @usertype
-  // type exactly - but this is not apparent from its subclasses
+  /*
+   * Dummy implementations of inherited methods. This class must not be
+   * made abstract, because it is important that it captures the @usertype
+   * type exactly - but this is not apparent from its subclasses
+   */
 
   Declaration getADeclaration() { none() }
 

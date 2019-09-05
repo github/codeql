@@ -17,9 +17,12 @@ predicate oppositeOperators(string op1, string op2) {
   or oppositeOperators(op2, op1)
 }
 
-// whether op1 is implemented as the negation of op2
-/* this match is very syntactic: we simply check that op1 is defined as
-   !op2(_, _) */
+/**
+ * Holds if `op1` is implemented as the negation of `op2`.
+ *
+ * This match is very syntactic: we simply check that `op1` is defined as
+ * `!op2(_, _)`.
+ */
 predicate implementedAsNegationOf(Operator op1, Operator op2) {
   exists(Block b, ReturnStmt r, NotExpr n, Expr o |
     b = op1.getBlock() and

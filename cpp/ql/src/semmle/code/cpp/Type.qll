@@ -969,9 +969,9 @@ class SpecifiedType extends DerivedType {
     result = this.getBaseType().getPointerIndirectionLevel()
   }
 
-  /** all the specifiers of this type as a string in a fixed order (the order
-      only depends on the specifiers, not on the source program). This is intended
-      for debugging queries only and is an expensive operation. */
+  /** Gets all the specifiers of this type as a string in a fixed order (the order
+    * only depends on the specifiers, not on the source program). This is intended
+    * for debugging queries only and is an expensive operation. */
   string getSpecifierString() {
     internalSpecString(this, result, 1)
   }

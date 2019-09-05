@@ -247,16 +247,14 @@ predicate definitionBarrier(SemanticStackVariable v, ControlFlowNode barrier) {
   definition(v, barrier)
   or
   exists(VariableAccess va |
-    /* `va = barrier` does not work, as that could generate an
-     * incorrect use-use pair (a barrier must exist _between_
-     * uses):
-     * ```
-     * x = 0;
-     * int& y = x; // use1
-     * y = 1;
-     * use(x); // use2
-     * ```
-     */
+    // `va = barrier` does not work, as that could generate an
+    // incorrect use-use pair (a barrier must exist _between_
+    // uses):
+    //
+    //     x = 0;
+    //     int& y = x; // use1
+    //     y = 1;
+    //     use(x); // use2
     va.getASuccessor() = barrier and
     va.getTarget() = v and
     va.isAddressOfAccessNonConst() and

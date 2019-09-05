@@ -11,14 +11,17 @@
  */
 import cpp
 
-/*
-In the context of this rule, an interface is specified by a class which has the following properties:
-- it is intended to be an interface,
-- its public methods are pure virtual functions, and
-- it does not hold any data, unless those data items are small and function as part of the interface (e.g. a unique object identifier).
-
-An approximation of this definition is classes with pure virtual functions and less than 3 member variables.
-*/
+/**
+ * In the context of this rule, an interface is specified by a class which has
+ * the following properties:
+ * - it is intended to be an interface,
+ * - its public methods are pure virtual functions, and
+ * - it does not hold any data, unless those data items are small and function
+ *   as part of the interface (e.g. a unique object identifier).
+ *
+ * An approximation of this definition is classes with pure virtual functions
+ * and less than 3 member variables.
+ */
 class InterfaceClass extends Class {
   InterfaceClass() {
      exists(MemberFunction m | m.getDeclaringType() = this and not compgenerated(unresolveElement(m)))

@@ -356,7 +356,7 @@ predicate taintedWithArgsAndGlobalVars(Element src, Element dest, boolean destFr
   )
 }
 
-/*
+/**
  * A tainted expression is either directly user input, or is
  * computed from user input in a way that users can probably
  * control the exact output of the computation.
@@ -368,7 +368,7 @@ predicate tainted(Expr source, Element tainted) {
   taintedWithArgsAndGlobalVars(source, tainted, _, "")
 }
 
-/*
+/**
  * A tainted expression is either directly user input, or is
  * computed from user input in a way that users can probably
  * control the exact output of the computation.
@@ -383,7 +383,7 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
   taintedWithArgsAndGlobalVars(source, tainted, _, globalVar)
 }
 
-/*
+/**
  * A predictable expression is one where an external user can predict
  * the value. For example, a literal in the source code is considered
  * predictable.

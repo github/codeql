@@ -1,6 +1,6 @@
 import semmle.code.cpp.File
 
-/**
+/*
  * These two helper predicates are used to associate a unique integer with
  * each `@compilation`, for use in the `toString` method of `Compilation`.
  * These integers are not stable across trap imports, but stable across

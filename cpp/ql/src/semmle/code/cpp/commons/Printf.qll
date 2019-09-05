@@ -249,8 +249,11 @@ class FormatLiteral extends Literal {
     )
   }
 
-  // these predicates gets a regular expressions to match each individual
-  // parts of a conversion specifier.
+  /*
+   * Each of these predicates gets a regular expressions to match each individual
+   * parts of a conversion specifier.
+   */
+
   private string getParameterFieldRegexp() {
     // the parameter field is a posix extension, for example `%5$i` uses the fifth
     // parameter as an integer, regardless of the position of this substring in the

@@ -69,7 +69,3 @@ class RecoverableAssert extends MacroInvocation, Assertion {
     not result.(Literal).getUnspecifiedType().(ArrayType).getBaseType() instanceof CharType
   }
 }
-
-/*
- * More assertion definitions go here.
- */

@@ -68,7 +68,7 @@ cached class GuardCondition extends Expr {
   }
 
   /** Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-        If `isLessThan = false` then this implies `left >= right + k`.  */
+    *   If `isLessThan = false` then this implies `left >= right + k`.  */
   cached predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     none()
   }
@@ -79,7 +79,7 @@ cached class GuardCondition extends Expr {
   }
 
   /** Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-      If `areEqual = false` then this implies `left != right + k`.  */
+    * If `areEqual = false` then this implies `left != right + k`.  */
   cached predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     none()
   }
@@ -172,8 +172,8 @@ private class GuardConditionFromIR extends GuardCondition {
     this = ir.getUnconvertedResultExpression()
   }
     override predicate controls(BasicBlock controlled, boolean testIsTrue) {
-        /* This condition must determine the flow of control; that is, this
-         * node must be a top-level condition. */
+        // This condition must determine the flow of control; that is, this
+        // node must be a top-level condition.
         this.controlsBlock(controlled, testIsTrue)
     }
 
@@ -187,7 +187,7 @@ private class GuardConditionFromIR extends GuardCondition {
     }
 
     /** Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-        If `isLessThan = false` then this implies `left >= right + k`.  */
+      * If `isLessThan = false` then this implies `left >= right + k`.  */
     override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
       exists(Instruction li, Instruction ri, boolean testIsTrue |
         li.getUnconvertedResultExpression() = left and
@@ -207,7 +207,7 @@ private class GuardConditionFromIR extends GuardCondition {
     }
 
     /** Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-        If `areEqual = false` then this implies `left != right + k`.  */
+      * If `areEqual = false` then this implies `left != right + k`.  */
     override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
         exists(Instruction li, Instruction ri, boolean testIsTrue |
         li.getUnconvertedResultExpression() = left and
@@ -272,8 +272,8 @@ cached class IRGuardCondition extends Instruction {
      * true (for `&&`) or false (for `||`) branch.
      */
     cached predicate controls(IRBlock controlled, boolean testIsTrue) {
-        /* This condition must determine the flow of control; that is, this
-         * node must be a top-level condition. */
+        // This condition must determine the flow of control; that is, this
+        // node must be a top-level condition.
         this.controlsBlock(controlled, testIsTrue)
         or
         exists (IRGuardCondition ne
@@ -323,7 +323,7 @@ cached class IRGuardCondition extends Instruction {
     }
 
     /** Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-        If `isLessThan = false` then this implies `left >= right + k`.  */
+      * If `isLessThan = false` then this implies `left >= right + k`.  */
     cached predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
         exists(boolean testIsTrue |
             compares_lt(this, left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
@@ -344,7 +344,7 @@ cached class IRGuardCondition extends Instruction {
     }
 
     /** Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-        If `areEqual = false` then this implies `left != right + k`.  */
+      * If `areEqual = false` then this implies `left != right + k`.  */
     cached predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
         exists(boolean testIsTrue |
             compares_eq(this, left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
@@ -397,8 +397,8 @@ private predicate compares_eq(Instruction test, Operand left, Operand right, int
         areEqual = true and testIsTrue = eq or areEqual = false and testIsTrue = eq.booleanNot()
     )
     // I think this is handled by forwarding in controlsBlock.
-    /* or
-    logical_comparison_eq(test, left, right, k, areEqual, testIsTrue) */
+    //or
+    //logical_comparison_eq(test, left, right, k, areEqual, testIsTrue)
     or
     /* a == b + k => b == a - k */
     exists(int mk | k = -mk | compares_eq(test, right, left, mk, areEqual, testIsTrue))
@@ -472,8 +472,8 @@ private predicate complex_lt(CompareInstruction cmp, Operand left, Operand right
 }
 
 
-/* left - x < right + c => left < right + (c+x)
-   left < (right - x) + c => left < right + (c-x) */
+// left - x < right + c => left < right + (c+x)
+// left < (right - x) + c => left < right + (c-x)
 private predicate sub_lt(CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue) {
     exists(SubInstruction lhs, int c, int x | compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
                                 left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
@@ -486,8 +486,8 @@ private predicate sub_lt(CompareInstruction cmp, Operand left, Operand right, in
     )
 }
 
-/* left + x < right + c => left < right + (c-x)
-   left < (right + x) + c => left < right + (c+x) */
+// left + x < right + c => left < right + (c-x)
+// left < (right + x) + c => left < right + (c+x)
 private predicate add_lt(CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue) {
     exists(AddInstruction lhs, int c, int x | compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
                                 (left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
@@ -507,8 +507,8 @@ private predicate add_lt(CompareInstruction cmp, Operand left, Operand right, in
 }
 
 
-/* left - x == right + c => left == right + (c+x)
-   left == (right - x) + c => left == right + (c-x) */
+// left - x == right + c => left == right + (c+x)
+// left == (right - x) + c => left == right + (c-x)
 private predicate sub_eq(CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
     exists(SubInstruction lhs, int c, int x | compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
                                 left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
@@ -522,8 +522,8 @@ private predicate sub_eq(CompareInstruction cmp, Operand left, Operand right, in
 }
 
 
-/* left + x == right + c => left == right + (c-x)
-   left == (right + x) + c => left == right + (c+x) */
+// left + x == right + c => left == right + (c-x)
+// left == (right + x) + c => left == right + (c+x)
 private predicate add_eq(CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
     exists(AddInstruction lhs, int c, int x | compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
                                 (left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
