@@ -122,6 +122,10 @@ predicate isDelimiterUnwrapper(
     left = "{" and right = "}"
     or
     left = "(" and right = ")"
+    or
+    left = "\"" and right = "\""
+    or
+    left = "'" and right = "'"
   |
     removesFirstOccurence(leftUnwrap, left) and
     removesFirstOccurence(rightUnwrap, right) and
