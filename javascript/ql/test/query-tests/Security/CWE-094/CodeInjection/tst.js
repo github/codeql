@@ -21,3 +21,6 @@ WebAssembly.compileStreaming(document.location.hash);
 
 // NOT OK
 eval(atob(document.location.hash.substring(1)));
+
+// NOT OK
+$('<a>').attr("onclick", location.search.substring(1));
