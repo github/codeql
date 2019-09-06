@@ -12,7 +12,7 @@ struct Outer {
 };
 
 void absink(struct AB *ab) {
-  sink(ab->a); // flow x3 [NOT DETECTED]
+  sink(ab->a); // flow (three paths)
   sink(ab->b); // no flow
 }
 
@@ -30,7 +30,7 @@ int struct_init(void) {
 
   sink(outer.nestedAB.a); // flow
   sink(outer.nestedAB.b); // no flow
-  sink(outer.pointerAB->a); // flow [NOT DETECTED]
+  sink(outer.pointerAB->a); // flow
   sink(outer.pointerAB->b); // no flow
 
   absink(&outer.nestedAB);
