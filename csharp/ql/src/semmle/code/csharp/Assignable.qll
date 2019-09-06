@@ -154,7 +154,6 @@ class AssignableWrite extends AssignableAccess {
  */
 private class RefArg extends AssignableAccess {
   private Expr call;
-
   private int position;
 
   RefArg() {
@@ -379,8 +378,10 @@ module AssignableInternal {
       )
     }
   }
+
   import Cached
 }
+
 private import AssignableInternal
 
 /**
@@ -526,7 +527,6 @@ module AssignableDefinitions {
    */
   class TupleAssignmentDefinition extends AssignableDefinition, TTupleAssignmentDefinition {
     AssignExpr ae;
-
     Expr leaf;
 
     TupleAssignmentDefinition() { this = TTupleAssignmentDefinition(ae, leaf) }

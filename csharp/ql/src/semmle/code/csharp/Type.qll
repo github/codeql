@@ -949,7 +949,6 @@ class TupleType extends ValueType, @tuple_type {
  */
 class TypeMention extends @type_mention {
   Type type;
-
   @type_mention_parent parent;
 
   TypeMention() { type_mention(this, getTypeRef(type), parent) }

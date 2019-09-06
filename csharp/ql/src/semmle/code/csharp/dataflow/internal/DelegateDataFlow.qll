@@ -103,7 +103,6 @@ library class DelegateCallExpr extends DelegateFlowSink {
 /** A delegate expression that is passed as the argument to a library callable. */
 library class DelegateArgumentToLibraryCallable extends Expr {
   DelegateType dt;
-
   Call call;
 
   DelegateArgumentToLibraryCallable() {

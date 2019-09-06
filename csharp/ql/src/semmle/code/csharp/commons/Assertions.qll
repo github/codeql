@@ -208,7 +208,6 @@ class VSTestAssertNonNullMethod extends AssertNonNullMethod {
 /** A method that forwards to another assertion method. */
 class ForwarderAssertMethod extends AssertMethod {
   Assertion a;
-
   Parameter p;
 
   ForwarderAssertMethod() {

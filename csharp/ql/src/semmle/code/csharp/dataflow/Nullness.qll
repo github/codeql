@@ -345,11 +345,8 @@ abstract class PathNode extends TPathNode {
 
 private class SourcePathNode extends PathNode, TSourcePathNode {
   private Ssa::Definition def;
-
   private string msg;
-
   private Element reason;
-
   private boolean isNullArgument;
 
   SourcePathNode() { this = TSourcePathNode(def, msg, reason, isNullArgument) }
@@ -385,7 +382,6 @@ private class SourcePathNode extends PathNode, TSourcePathNode {
 
 private class InternalPathNode extends PathNode, TInternalPathNode {
   private Ssa::Definition def;
-
   private BasicBlock bb;
 
   InternalPathNode() { this = TInternalPathNode(def, bb) }
@@ -405,11 +401,8 @@ private class InternalPathNode extends PathNode, TInternalPathNode {
 
 private class SinkPathNode extends PathNode, TSinkPathNode {
   private Ssa::Definition def;
-
   private BasicBlock bb;
-
   private int i;
-
   private Dereference d;
 
   SinkPathNode() { this = TSinkPathNode(def, bb, i, d) }

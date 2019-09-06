@@ -194,6 +194,7 @@ module AbstractValues {
     override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
   }
 }
+
 private import AbstractValues
 
 /**
@@ -480,9 +481,7 @@ private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Nod
  */
 class GuardedExpr extends AccessOrCallExpr {
   private Guard g;
-
   private AccessOrCallExpr sub0;
-
   private AbstractValue v0;
 
   GuardedExpr() { isGuardedByExpr(this, g, sub0, v0) }
@@ -545,9 +544,7 @@ class GuardedExpr extends AccessOrCallExpr {
  */
 class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
   private Guard g;
-
   private AccessOrCallExpr sub0;
-
   private AbstractValue v0;
 
   GuardedControlFlowNode() { g.controlsNode(this, sub0, v0) }
@@ -597,9 +594,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
  */
 class GuardedDataFlowNode extends DataFlow::ExprNode {
   private Guard g;
-
   private AccessOrCallExpr sub0;
-
   private AbstractValue v0;
 
   GuardedDataFlowNode() {
@@ -1455,8 +1450,10 @@ module Internal {
           ).getARead()
       }
     }
+
     import CachedWithCFG
   }
+
   import PreCFG
 
   /**
@@ -1576,6 +1573,7 @@ module Internal {
       )
     }
   }
+
   import Cached
 
   /**
@@ -1612,4 +1610,5 @@ module Internal {
     )
   }
 }
+
 private import Internal

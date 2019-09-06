@@ -76,6 +76,7 @@ module Ssa {
         )
       }
     }
+
     import Cached
 
     /**
@@ -359,6 +360,7 @@ module Ssa {
       exists(int rnk | rnk = refRank(bb, i, v, Write(_)) | liveAtRank(bb, i, v, rnk, rk))
     }
   }
+
   private import SourceVariableImpl
 
   /**
@@ -490,6 +492,7 @@ module Ssa {
       override string toString() { result = getQualifier() + "." + getAssignable() }
     }
   }
+
   private import SourceVariables
 
   private module TrackedVariablesImpl {
@@ -536,6 +539,7 @@ module Ssa {
       )
     }
   }
+
   private import TrackedVariablesImpl
 
   /**
@@ -874,8 +878,10 @@ module Ssa {
         )
       }
     }
+
     import Cached
   }
+
   private import SsaDefReaches
 
   /**
@@ -1339,6 +1345,7 @@ module Ssa {
       )
     }
   }
+
   private import FieldOrPropsImpl
 
   /**
@@ -1538,6 +1545,7 @@ module Ssa {
       )
     }
   }
+
   private import CapturedVariableImpl
 
   /**
@@ -1797,6 +1805,7 @@ module Ssa {
       liveAfterWriteCapturedIn(bb, i, v, _, _, _)
     }
   }
+
   private import CapturedVariableLivenessImpl
 
   cached
@@ -1955,6 +1964,7 @@ module Ssa {
       )
     }
   }
+
   private import SsaImpl
 
   private string getSplitString(Definition def) {
@@ -2289,7 +2299,6 @@ module Ssa {
    */
   class ExplicitDefinition extends Definition, TSsaExplicitDef {
     TrackedVar tv;
-
     AssignableDefinition ad;
 
     ExplicitDefinition() { this = TSsaExplicitDef(tv, ad, _, _) }

@@ -91,6 +91,7 @@ private module Internal {
       result = dc.(DispatchCallImpl).getADynamicTarget()
     }
   }
+
   import Cached
 
   /**
@@ -384,6 +385,7 @@ private module Internal {
       )
     }
   }
+
   private import SimpleTypeDataFlow
 
   /**

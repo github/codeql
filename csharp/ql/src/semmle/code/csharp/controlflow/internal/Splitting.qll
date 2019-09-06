@@ -74,6 +74,7 @@ private module Cached {
     )
   }
 }
+
 private import Cached
 
 /**
@@ -902,7 +903,6 @@ module BooleanSplitting {
    */
   class BooleanSplitImpl extends SplitImpl, TBooleanSplit {
     private BooleanSplitSubKind kind;
-
     private boolean branch;
 
     BooleanSplitImpl() { this = TBooleanSplit(kind, branch) }
@@ -1393,6 +1393,7 @@ private module SuccSplits {
     case2(pred, predSplits, succ, succSplits, c)
   }
 }
+
 import SuccSplits
 
 /** Provides logic for calculating reachable control flow nodes. */
