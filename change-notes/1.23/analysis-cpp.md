@@ -28,6 +28,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   picture of the partial flow paths from a given source. The feature is
   disabled by default and can be enabled for individual configurations by
   overriding `int explorationLimit()`.
+* The data-flow library now allows flow through the address-of operator (`&`).
 * The `DataFlow::DefinitionByReferenceNode` class now considers `f(x)` to be a
   definition of `x` when `x` is a variable of pointer type. It no longer
   considers deep paths such as `f(&x.myField)` to be definitions of `x`. These

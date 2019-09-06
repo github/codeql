@@ -553,6 +553,10 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   or
   toExpr = any(StmtExpr stmtExpr | fromExpr = stmtExpr.getResultExpr())
   or
+  toExpr.(AddressOfExpr).getOperand() = fromExpr
+  or
+  toExpr.(BuiltInOperationBuiltInAddressOf).getOperand() = fromExpr
+  or
   // The following case is needed to track the qualifier object for flow
   // through fields. It gives flow from `T(x)` to `new T(x)`. That's not
   // strictly _data_ flow but _taint_ flow because the type of `fromExpr` is
