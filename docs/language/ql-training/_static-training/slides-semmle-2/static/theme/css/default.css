@@ -1506,7 +1506,6 @@ hgroup .pre {
 .setup article, .agenda article {
   margin-top: 3%;
   border-left: 1px  solid #5c31ff;
-  position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
