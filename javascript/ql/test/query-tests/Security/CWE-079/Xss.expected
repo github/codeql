@@ -60,6 +60,8 @@ nodes
 | tst3.js:5:26:5:31 | data.p |
 | tst3.js:7:32:7:35 | data |
 | tst3.js:7:32:7:37 | data.p |
+| tst3.js:9:38:9:41 | data |
+| tst3.js:9:38:9:43 | data.p |
 | tst.js:2:7:2:39 | target |
 | tst.js:2:16:2:32 | document.location |
 | tst.js:2:16:2:39 | documen ... .search |
@@ -229,6 +231,7 @@ edges
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:4:25:4:28 | data |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:5:26:5:29 | data |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:7:32:7:35 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:9:38:9:41 | data |
 | tst3.js:2:23:2:74 | decodeU ... str(1)) | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
 | tst3.js:2:42:2:56 | window.location | tst3.js:2:42:2:63 | window. ... .search |
 | tst3.js:2:42:2:63 | window. ... .search | tst3.js:2:42:2:73 | window. ... bstr(1) |
@@ -236,6 +239,7 @@ edges
 | tst3.js:4:25:4:28 | data | tst3.js:4:25:4:32 | data.src |
 | tst3.js:5:26:5:29 | data | tst3.js:5:26:5:31 | data.p |
 | tst3.js:7:32:7:35 | data | tst3.js:7:32:7:37 | data.p |
+| tst3.js:9:38:9:41 | data | tst3.js:9:38:9:43 | data.p |
 | tst.js:2:7:2:39 | target | tst.js:5:18:5:23 | target |
 | tst.js:2:7:2:39 | target | tst.js:12:28:12:33 | target |
 | tst.js:2:7:2:39 | target | tst.js:23:42:23:47 | target |
@@ -366,6 +370,7 @@ edges
 | tst3.js:4:25:4:32 | data.src | tst3.js:2:42:2:56 | window.location | tst3.js:4:25:4:32 | data.src | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:56 | window.location | user-provided value |
 | tst3.js:5:26:5:31 | data.p | tst3.js:2:42:2:56 | window.location | tst3.js:5:26:5:31 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:56 | window.location | user-provided value |
 | tst3.js:7:32:7:37 | data.p | tst3.js:2:42:2:56 | window.location | tst3.js:7:32:7:37 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:56 | window.location | user-provided value |
+| tst3.js:9:38:9:43 | data.p | tst3.js:2:42:2:56 | window.location | tst3.js:9:38:9:43 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:56 | window.location | user-provided value |
 | tst.js:5:18:5:23 | target | tst.js:2:16:2:32 | document.location | tst.js:5:18:5:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:32 | document.location | user-provided value |
 | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | tst.js:8:37:8:53 | document.location | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | Cross-site scripting vulnerability due to $@. | tst.js:8:37:8:53 | document.location | user-provided value |
 | tst.js:12:5:12:42 | '<div s ...  'px">' | tst.js:2:16:2:32 | document.location | tst.js:12:5:12:42 | '<div s ...  'px">' | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:32 | document.location | user-provided value |
