@@ -3,5 +3,3 @@
 | partialdefinitions.cpp:15:4:15:4 | partial def of y | partialdefinitions.cpp:15:4:15:4 | y | partialdefinitions.cpp:15:2:15:10 | ... = ... |
 | partialdefinitions.cpp:22:29:22:32 | partial def of this | file://:0:0:0:0 | this | partialdefinitions.cpp:22:29:22:40 | ... = ... |
 | partialdefinitions.cpp:27:3:27:7 | partial def of myInt | partialdefinitions.cpp:27:3:27:7 | myInt | partialdefinitions.cpp:27:3:27:7 | myInt |
-| partialdefinitions.cpp:28:7:28:11 | partial def of myInt | partialdefinitions.cpp:28:7:28:11 | myInt | partialdefinitions.cpp:28:7:28:11 | myInt |
-| partialdefinitions.cpp:30:10:30:14 | partial def of myInt | partialdefinitions.cpp:30:10:30:14 | myInt | partialdefinitions.cpp:30:10:30:14 | myInt |
