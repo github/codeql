@@ -59,7 +59,6 @@ abstract class IRVariable extends TIRVariable {
  */
 class IRUserVariable extends IRVariable, TIRUserVariable {
   Language::Variable var;
-
   Language::Type type;
 
   IRUserVariable() { this = TIRUserVariable(var, type, func) }
@@ -110,9 +109,7 @@ IRTempVariable getIRTempVariable(Language::AST ast, TempVariableTag tag) {
 
 class IRTempVariable extends IRVariable, IRAutomaticVariable, TIRTempVariable {
   Language::AST ast;
-
   TempVariableTag tag;
-
   Language::Type type;
 
   IRTempVariable() { this = TIRTempVariable(func, ast, tag, type) }

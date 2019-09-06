@@ -363,6 +363,7 @@ private module ImplCommon {
   newtype TReturnPosition =
     TReturnPosition0(DataFlowCallable c, ReturnKind kind) { returnPosition(_, c, kind) }
 }
+
 import ImplCommon
 
 pragma[noinline]
@@ -418,7 +419,6 @@ class CallContextReturn extends CallContext, TReturn {
 /** A callable tagged with a relevant return kind. */
 class ReturnPosition extends TReturnPosition0 {
   private DataFlowCallable c;
-
   private ReturnKind kind;
 
   ReturnPosition() { this = TReturnPosition0(c, kind) }
