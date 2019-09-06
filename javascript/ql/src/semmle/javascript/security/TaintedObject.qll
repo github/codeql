@@ -83,17 +83,14 @@ module TaintedObject {
   /**
    * Sanitizer guard that blocks deep object taint.
    */
-  abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode {
-  }
+  abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode { }
 
   /**
    * A test of form `typeof x === "something"`, preventing `x` from being an object in some cases.
    */
   private class TypeTestGuard extends SanitizerGuard, ValueNode {
     override EqualityTest astNode;
-
     TypeofExpr typeof;
-
     boolean polarity;
 
     TypeTestGuard() {

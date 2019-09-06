@@ -108,7 +108,6 @@ private class JQueryParseXmlCall extends XML::ParserInvocation {
  */
 private class JQueryDomElementDefinition extends DOM::ElementDefinition, @callexpr {
   string tagName;
-
   CallExpr call;
 
   JQueryDomElementDefinition() {
@@ -147,7 +146,6 @@ abstract private class JQueryAttributeDefinition extends DOM::AttributeDefinitio
  */
 private class JQueryAttributeDefinitionInElement extends JQueryAttributeDefinition {
   JQueryDomElementDefinition elt;
-
   DataFlow::PropWrite pwn;
 
   JQueryAttributeDefinitionInElement() {
@@ -205,7 +203,6 @@ private predicate bulkAttributeInit(
  */
 private class JQueryAttrCall extends JQueryAttributeDefinition, @callexpr {
   JQueryDomElementDefinition elt;
-
   DataFlow::PropWrite pwn;
 
   JQueryAttrCall() {

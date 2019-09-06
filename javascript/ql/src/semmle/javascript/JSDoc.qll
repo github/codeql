@@ -122,9 +122,7 @@ class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent {
   /** Gets the toplevel in which this tag appears. */
   TopLevel getTopLevel() { result = getParent().getComment().getTopLevel() }
 
-  override JSDoc getJSDocComment() {
-    result.getATag() = this
-  }
+  override JSDoc getJSDocComment() { result.getATag() = this }
 }
 
 /**
@@ -180,9 +178,7 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotatio
 
   override string toString() { jsdoc_type_exprs(this, _, _, _, result) }
 
-  override JSDoc getJSDocComment() {
-    result = getParent().getJSDocComment()
-  }
+  override JSDoc getJSDocComment() { result = getParent().getJSDocComment() }
 
   override Stmt getEnclosingStmt() {
     exists(Documentable astNode | astNode.getDocumentation() = getJSDocComment() |
@@ -195,9 +191,9 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotatio
   }
 
   override StmtContainer getContainer() { result = getEnclosingStmt().getContainer() }
-  
+
   override Function getEnclosingFunction() { result = getContainer() }
-  
+
   override TopLevel getTopLevel() { result = getEnclosingStmt().getTopLevel() }
 }
 
@@ -396,13 +392,9 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
    */
   JSDocTypeExpr getAnArgument() { result = getArgument(_) }
 
-  override predicate hasQualifiedName(string globalName) {
-    getHead().hasQualifiedName(globalName)
-  }
+  override predicate hasQualifiedName(string globalName) { getHead().hasQualifiedName(globalName) }
 
-  override DataFlow::ClassNode getClass() {
-    result = getHead().getClass()
-  }
+  override DataFlow::ClassNode getClass() { result = getHead().getClass() }
 }
 
 /**
@@ -423,9 +415,7 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
 
   override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
 
-  override DataFlow::ClassNode getClass() {
-    result = getTypeExpr().getClass()
-  }
+  override DataFlow::ClassNode getClass() { result = getTypeExpr().getClass() }
 }
 
 /**
@@ -446,9 +436,7 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
 
   override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
 
-  override DataFlow::ClassNode getClass() {
-    result = getTypeExpr().getClass()
-  }
+  override DataFlow::ClassNode getClass() { result = getTypeExpr().getClass() }
 }
 
 /**
@@ -548,11 +536,11 @@ class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTyp
   /** Gets the underlying type of this optional type. */
   JSDocTypeExpr getUnderlyingType() { result = getChild(0) }
 
-  override JSDocTypeExpr getAnUnderlyingType() { result = getUnderlyingType().getAnUnderlyingType() }
-
-  override DataFlow::ClassNode getClass() {
-    result = getUnderlyingType().getClass()
+  override JSDocTypeExpr getAnUnderlyingType() {
+    result = getUnderlyingType().getAnUnderlyingType()
   }
+
+  override DataFlow::ClassNode getClass() { result = getUnderlyingType().getClass() }
 }
 
 /**

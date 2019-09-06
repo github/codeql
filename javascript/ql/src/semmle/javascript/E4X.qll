@@ -14,8 +14,7 @@ module E4X {
    * *
    * ```
    */
-  class XMLAnyName extends Expr, @e4x_xml_anyname {
-  }
+  class XMLAnyName extends Expr, @e4x_xml_anyname { }
 
   /**
    * An E4X qualified identifier.

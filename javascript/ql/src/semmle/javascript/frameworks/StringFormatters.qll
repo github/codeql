@@ -26,7 +26,6 @@ abstract class PrintfStyleCall extends DataFlow::CallNode {
 
 private class LibraryFormatter extends PrintfStyleCall {
   int formatIndex;
-
   boolean returns;
 
   LibraryFormatter() {

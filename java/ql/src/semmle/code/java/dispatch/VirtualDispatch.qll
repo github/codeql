@@ -321,6 +321,7 @@ private module Dispatch {
     not sub.isAbstract()
   }
 }
+
 import Dispatch
 
 private Expr variableTrackStep(Expr use) {

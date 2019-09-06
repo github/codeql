@@ -252,7 +252,6 @@ abstract class CustomServiceDefinition extends DataFlow::Node {
 abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinition,
   DependencyInjection {
   string methodName;
-
   string name;
 
   RecipeDefinition() {
@@ -327,7 +326,6 @@ private predicate isCustomServiceDefinitionOnProvider(
  */
 class ControllerDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   ControllerDefinition() {
@@ -348,7 +346,6 @@ class ControllerDefinition extends CustomSpecialServiceDefinition {
  */
 class FilterDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   FilterDefinition() {
@@ -373,7 +370,6 @@ class FilterDefinition extends CustomSpecialServiceDefinition {
  */
 class DirectiveDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   DirectiveDefinition() {
@@ -413,7 +409,6 @@ private class CustomDirectiveControllerDependencyInjection extends DependencyInj
  */
 class ComponentDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode config;
 
   ComponentDefinition() {
@@ -441,7 +436,6 @@ class ComponentDefinition extends CustomSpecialServiceDefinition {
  */
 class AnimationDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   AnimationDefinition() {

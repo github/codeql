@@ -101,6 +101,7 @@ private module RangeAnalysisCache {
     guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _)
   }
 }
+
 private import RangeAnalysisCache
 import RangeAnalysisPublic
 

@@ -366,15 +366,12 @@ module LodashUnderscore {
    */
   private class ExceptionStep extends DataFlow::CallNode, DataFlow::AdditionalFlowStep {
     ExceptionStep() {
-      exists(string name |
-        this = member(name).getACall()
-      |
+      exists(string name | this = member(name).getACall() |
         // Members ending with By, With, or While indicate that they are a variant of
         // another function that takes a callback.
         name.matches("%By") or
         name.matches("%With") or
         name.matches("%While") or
-
         // Other members that don't fit the above pattern.
         name = "each" or
         name = "eachRight" or

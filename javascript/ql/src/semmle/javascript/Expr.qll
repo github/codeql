@@ -36,33 +36,19 @@ class ExprOrType extends @exprortype, Documentable {
     // if there is no JSDoc for the expression itself, check the enclosing property or statement
     not exists(getOwnDocumentation()) and
     (
-      exists(Property prop | prop = getParent() |
-        result = prop.getDocumentation()
-      )
+      exists(Property prop | prop = getParent() | result = prop.getDocumentation())
       or
-      exists(MethodDeclaration decl | decl = getParent() |
-        result = decl.getDocumentation()
-      )
+      exists(MethodDeclaration decl | decl = getParent() | result = decl.getDocumentation())
       or
-      exists(VariableDeclarator decl | decl = getParent() |
-        result = decl.getDocumentation()
-      )
+      exists(VariableDeclarator decl | decl = getParent() | result = decl.getDocumentation())
       or
-      exists(DeclStmt stmt | this = stmt.getDecl(0) |
-        result = stmt.getDocumentation()
-      )
+      exists(DeclStmt stmt | this = stmt.getDecl(0) | result = stmt.getDocumentation())
       or
-      exists(DotExpr dot | this = dot.getProperty() |
-        result = dot.getDocumentation()
-      )
+      exists(DotExpr dot | this = dot.getProperty() | result = dot.getDocumentation())
       or
-      exists(AssignExpr e | this = e.getRhs() |
-        result = e.getDocumentation()
-      )
+      exists(AssignExpr e | this = e.getRhs() | result = e.getDocumentation())
       or
-      exists(ParExpr p | this = p.getExpression() |
-        result = p.getDocumentation()
-      )
+      exists(ParExpr p | this = p.getExpression() | result = p.getDocumentation())
     )
   }
 
@@ -203,13 +189,13 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   /**
    * Holds if the syntactic context that the expression appears in relies on the expression
    * being non-null/non-undefined.
-   * 
+   *
    * A context relies on the subexpression being non-null/non-undefined if either...
-   * 
+   *
    *   * Using null or undefined would cause a runtime error
    *   * Using null or undefined would cause no error due to type conversion, but the
    *     behavior in the broader context is sufficiently non-obvious to warrant explicitly
-   *     converting to ensure that readers understand the intent  
+   *     converting to ensure that readers understand the intent
    */
   predicate inNullSensitiveContext() {
     exists(ExprOrStmt ctx |
@@ -668,7 +654,7 @@ class Property extends @property, Documentable {
 
 /**
  * A value property definition in an object literal.
-
+ *
  * Examples:
  *
  * ```
@@ -2377,7 +2363,6 @@ class LegacyLetExpr extends Expr, @legacy_letexpr {
 class ImmediatelyInvokedFunctionExpr extends Function {
   /** The invocation expression of this IIFE. */
   InvokeExpr invk;
-
   /**
    * The kind of invocation by which this IIFE is invoked: `"call"`
    * for a direct function call, `"call"` or `"apply"` for a reflective

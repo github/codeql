@@ -158,7 +158,7 @@ private module NodeTracking {
     returnExpr(f, nd, _) and
     summary = PathSummary::level()
     or
-    exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+    exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
       flowStep(nd, mid, oldSummary) and
       reachesReturn(f, mid, newSummary) and
       summary = oldSummary.append(newSummary)
@@ -210,12 +210,13 @@ private module NodeTracking {
    * Holds if property `prop` of `pred` may flow into `succ` along a path summarized by
    * `summary`.
    */
-  private predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop,
-                            PathSummary summary) {
+  private predicate loadStep(
+    DataFlow::Node pred, DataFlow::Node succ, string prop, PathSummary summary
+  ) {
     basicLoadStep(pred, succ, prop) and
     summary = PathSummary::level()
     or
-    exists (Function f, DataFlow::SourceNode parm |
+    exists(Function f, DataFlow::SourceNode parm |
       argumentPassing(succ, pred, f, parm) and
       reachesReturn(f, parm.getAPropertyRead(prop), summary)
     )
@@ -246,7 +247,7 @@ private module NodeTracking {
   private predicate flowThroughProperty(
     DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
   ) {
-    exists (string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
+    exists(string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
       reachableFromStoreBase(prop, pred, base, oldSummary) and
       loadStep(base, succ, prop, newSummary) and
       summary = oldSummary.append(newSummary)

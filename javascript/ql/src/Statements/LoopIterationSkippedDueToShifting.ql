@@ -61,7 +61,6 @@ class SpliceCall extends ArrayShiftingCall {
  */
 class ArrayIterationLoop extends ForStmt {
   DataFlow::SourceNode array;
-
   LocalVariable indexVariable;
 
   ArrayIterationLoop() {

@@ -28,6 +28,7 @@ private module Cached {
     forex(Throw ex | ex = m.getImplementation().getAnInstruction() | t = ex.getExpr().getType())
   }
 }
+
 import Cached
 
 pragma[noinline]

@@ -35,9 +35,7 @@ module Express {
   /**
    * Holds if `e` may refer to the given `router` object.
    */
-  private predicate isRouter(Expr e, RouterDefinition router) {
-    router.flowsTo(e)
-  }
+  private predicate isRouter(Expr e, RouterDefinition router) { router.flowsTo(e) }
 
   /**
    * Holds if `e` may refer to a router object.
@@ -161,7 +159,6 @@ module Express {
    */
   class RouteHandlerExpr extends Expr {
     RouteSetup setup;
-
     int index;
 
     RouteHandlerExpr() { this = setup.getRouteHandlerExpr(index) }
@@ -337,8 +334,7 @@ module Express {
   }
 
   /** An Express response source. */
-  abstract private class ResponseSource extends HTTP::Servers::ResponseSource {
-  }
+  abstract private class ResponseSource extends HTTP::Servers::ResponseSource { }
 
   /**
    * An Express response source, that is, the response parameter of a
@@ -363,16 +359,13 @@ module Express {
    * An Express response source, based on static type information.
    */
   private class TypedResponseSource extends ResponseSource {
-    TypedResponseSource() {
-      hasUnderlyingType("express", "Response")
-    }
+    TypedResponseSource() { hasUnderlyingType("express", "Response") }
 
     override RouteHandler getRouteHandler() { none() } // Not known.
   }
 
   /** An Express request source. */
-  abstract private class RequestSource extends HTTP::Servers::RequestSource {
-  }
+  abstract private class RequestSource extends HTTP::Servers::RequestSource { }
 
   /**
    * An Express request source, that is, the request parameter of a
@@ -393,9 +386,7 @@ module Express {
    * An Express request source, based on static type information.
    */
   private class TypedRequestSource extends RequestSource {
-    TypedRequestSource() {
-      hasUnderlyingType("express", "Request")
-    }
+    TypedRequestSource() { hasUnderlyingType("express", "Request") }
 
     override RouteHandler getRouteHandler() { none() } // Not known.
   }
@@ -419,7 +410,6 @@ module Express {
    */
   class RequestInputAccess extends HTTP::RequestInputAccess {
     RouteHandler rh;
-
     string kind;
 
     RequestInputAccess() {
@@ -593,7 +583,6 @@ module Express {
    */
   class SetMultipleHeaders extends ExplicitHeader, DataFlow::ValueNode {
     override MethodCallExpr astNode;
-
     RouteHandler rh;
 
     SetMultipleHeaders() {
@@ -704,9 +693,7 @@ module Express {
       t.start() and
       result = DataFlow::exprNode(this)
       or
-      exists(string name |
-        result = ref(t.continue()).getAMethodCall(name)
-      |
+      exists(string name | result = ref(t.continue()).getAMethodCall(name) |
         name = "route" or
         name = routeSetupMethodName()
       )
@@ -717,9 +704,7 @@ module Express {
     /**
      * Holds if `sink` may refer to this router.
      */
-    predicate flowsTo(Expr sink) {
-      ref(DataFlow::TypeTracker::end()).flowsToExpr(sink)
-    }
+    predicate flowsTo(Expr sink) { ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
 
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.

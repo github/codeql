@@ -338,6 +338,7 @@ private module Internal {
   predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
     idominance(exitBB/1, predBB/2)(_, dom, bb)
 }
+
 private import Internal
 
 /**

@@ -282,7 +282,6 @@ module ControlFlow {
      */
     class ElementNode extends Node, TElementNode {
       private Splits splits;
-
       private ControlFlowElement cfe;
 
       ElementNode() { this = TElementNode(cfe, splits) }
@@ -1891,6 +1890,7 @@ module ControlFlow {
         )
       }
     }
+
     import Successor
 
     cached
@@ -1954,6 +1954,7 @@ module ControlFlow {
       cached
       ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) { result = last(cfe, _) }
     }
+
     import Cached
 
     /** A control flow element that is split into multiple control flow nodes. */
@@ -1961,5 +1962,6 @@ module ControlFlow {
       SplitControlFlowElement() { strictcount(this.getAControlFlowNode()) > 1 }
     }
   }
+
   private import Internal
 }

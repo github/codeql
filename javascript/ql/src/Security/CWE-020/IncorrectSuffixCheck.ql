@@ -109,7 +109,6 @@ predicate isDerivedFromLength(DataFlow::Node length, DataFlow::Node operand) {
  */
 class UnsafeIndexOfComparison extends EqualityTest {
   IndexOfCall indexOf;
-
   DataFlow::Node testedValue;
 
   UnsafeIndexOfComparison() {

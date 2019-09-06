@@ -334,7 +334,8 @@ class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclarat
   }
 }
 
-/** A named export declaration.
+/**
+ * A named export declaration.
  *  *
  * Examples:
  *
@@ -343,7 +344,7 @@ class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclarat
  * export var x = 42;
  * export { x } from 'a';
  * ```
- * */
+ */
 class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
   ExprOrStmt getOperand() { result = getChild(-1) }

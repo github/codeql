@@ -144,7 +144,6 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyNa
  */
 class TypeTracker extends TTypeTracker {
   Boolean hasCall;
-
   string prop;
 
   TypeTracker() { this = MkTypeTracker(hasCall, prop) }
@@ -291,7 +290,6 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
  */
 class TypeBackTracker extends TTypeBackTracker {
   Boolean hasReturn;
-
   string prop;
 
   TypeBackTracker() { this = MkTypeBackTracker(hasReturn, prop) }

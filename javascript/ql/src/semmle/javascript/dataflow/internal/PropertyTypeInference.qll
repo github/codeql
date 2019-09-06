@@ -54,9 +54,7 @@ abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
  */
 private class AnalyzedPropertyAccess extends AnalyzedPropertyRead, DataFlow::ValueNode {
   override PropAccess astNode;
-
   DataFlow::AnalyzedNode baseNode;
-
   string propName;
 
   AnalyzedPropertyAccess() {

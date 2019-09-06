@@ -1,6 +1,7 @@
 /**
  * Models the `shelljs` library in terms of `FileSystemAccess` and `SystemCommandExecution`.
  */
+
 import javascript
 
 module ShellJS {
@@ -171,12 +172,8 @@ module ShellJS {
       )
     }
 
-    override DataFlow::Node getAPathArgument() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-    override DataFlow::Node getADataNode() {
-      result = getReceiver()
-    }
+    override DataFlow::Node getADataNode() { result = getReceiver() }
   }
 }

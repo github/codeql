@@ -65,7 +65,6 @@ private string getInterpolatedExpressionPattern() { result = "(?<=\\{\\{).*?(?=\
  */
 private class HtmlTextNodeAsNgSourceProvider extends NgSourceProvider, HTML::TextNode {
   string source;
-
   int offset;
 
   HtmlTextNodeAsNgSourceProvider() {
@@ -108,7 +107,6 @@ abstract private class HtmlAttributeAsNgSourceProvider extends NgSourceProvider,
  */
 private class HtmlAttributeAsInterpolatedNgSourceProvider extends HtmlAttributeAsNgSourceProvider {
   string source;
-
   int offset;
 
   HtmlAttributeAsInterpolatedNgSourceProvider() {
@@ -149,9 +147,7 @@ private class HtmlAttributeAsPlainNgSourceProvider extends HtmlAttributeAsNgSour
  */
 private class TemplateFieldNgSourceProvider extends NgSourceProvider {
   AngularJS::GeneralDirective directive;
-
   string source;
-
   int offset;
 
   TemplateFieldNgSourceProvider() {
@@ -365,6 +361,7 @@ private module Lexer {
     NgOpToken() { this = MkNgToken(_, _, any(NgOpTokenType t), _) }
   }
 }
+
 private import Lexer
 
 /**
@@ -814,6 +811,7 @@ private module Parser {
     TNgNumber(NgNumToken t) or
     TNgEmpty()
 }
+
 private import Parser
 
 /**

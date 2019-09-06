@@ -1,4 +1,3 @@
-
 import javascript
 
 query predicate test_RedirectInvocation(

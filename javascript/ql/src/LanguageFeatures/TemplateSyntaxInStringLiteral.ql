@@ -18,7 +18,6 @@ class CandidateTopLevel extends TopLevel {
 /** A string literal in a toplevel that contains at least one template literal. */
 class CandidateStringLiteral extends StringLiteral {
   CandidateTopLevel tl;
-
   string v;
 
   CandidateStringLiteral() {

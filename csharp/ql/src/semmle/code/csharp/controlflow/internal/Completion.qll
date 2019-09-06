@@ -659,7 +659,6 @@ class BreakNormalCompletion extends NormalCompletion, TBreakNormalCompletion {
  */
 class NestedCompletion extends Completion, TNestedCompletion {
   private NormalCompletion inner;
-
   private Completion outer;
 
   NestedCompletion() { this = TNestedCompletion(inner, outer) }

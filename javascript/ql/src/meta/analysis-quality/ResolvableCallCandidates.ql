@@ -7,6 +7,7 @@
  * @tags meta
  * @id js/meta/resolvable-call-candidates
  */
+
 import javascript
 import CallGraphQuality
 

@@ -19,7 +19,10 @@ class Config extends DataFlow::Configuration {
     lbl = "even"
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node pred,  DataFlow::Node succ, DataFlow::FlowLabel predLabel, DataFlow::FlowLabel succLabel) {
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predLabel,
+    DataFlow::FlowLabel succLabel
+  ) {
     exists(DataFlow::CallNode c | c = succ |
       c.getCalleeName() = "inc" and
       pred = c.getAnArgument() and

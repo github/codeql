@@ -551,9 +551,7 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
 
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 
-  override DataFlow::ClassNode getClass() {
-    result.getAstNode() = getType().(ClassType).getClass()
-  }
+  override DataFlow::ClassNode getClass() { result.getAstNode() = getType().(ClassType).getClass() }
 }
 
 /**
@@ -1525,7 +1523,6 @@ class TSGlobalDeclImport extends DataFlow::ModuleImportNode::Range {
  */
 class ReferenceImport extends LineComment {
   string attribute;
-
   string value;
 
   ReferenceImport() {
@@ -1554,16 +1551,14 @@ class ReferenceImport extends LineComment {
    *
    * Gets the file referenced by this import.
    */
-  deprecated
-  File getImportedFile() { none() }
+  deprecated File getImportedFile() { none() }
 
   /**
    * DEPRECATED. This is no longer supported.
    *
    * Gets the top-level of the referenced file.
    */
-  deprecated
-  TopLevel getImportedTopLevel() { none() }
+  deprecated TopLevel getImportedTopLevel() { none() }
 }
 
 /**

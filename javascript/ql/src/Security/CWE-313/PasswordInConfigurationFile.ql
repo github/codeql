@@ -64,4 +64,4 @@ where
     pwd = val.regexpCapture("(?is).*password\\s*=\\s*(?!;|\"?[$`]|%s|=)(\\S+).*", 1)
   ) and
   not exclude(valElement.getFile())
-select (FirstLineOf)valElement, "Hard-coded password '" + pwd + "' in configuration file."
+select valElement.(FirstLineOf), "Hard-coded password '" + pwd + "' in configuration file."

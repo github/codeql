@@ -132,7 +132,6 @@ DataFlow::CallNode moduleRef(AngularModule m) {
 class ModuleApiCall extends DataFlow::CallNode {
   /** The module on which the method is called. */
   AngularModule mod;
-
   /** The name of the called method. */
   string methodName;
 
@@ -146,7 +145,6 @@ class ModuleApiCall extends DataFlow::CallNode {
 
 class ModuleApiCallDependencyInjection extends DependencyInjection {
   ModuleApiCall call;
-
   string methodName;
 
   ModuleApiCallDependencyInjection() {

@@ -590,6 +590,7 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getMethod().hasName("writeObject")
   }
 }
+
 private import StringBuilderVarModule
 
 module StringBuilderVarModule {

@@ -35,7 +35,6 @@ module DifferentKindsComparisonBypass {
    */
   class DifferentKindsComparison extends Comparison {
     Source lSource;
-
     Source rSource;
 
     DifferentKindsComparison() {

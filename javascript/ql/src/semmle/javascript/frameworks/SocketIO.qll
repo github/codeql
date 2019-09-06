@@ -212,9 +212,7 @@ module SocketIO {
     string getEventName() { getArgument(0).mayHaveStringValue(result) }
 
     /** Gets the callback that handles data received from a client. */
-    private DataFlow::FunctionNode getListener() {
-      result = getCallback(1)
-    }
+    private DataFlow::FunctionNode getListener() { result = getCallback(1) }
 
     /** Gets the `i`th parameter through which data is received from a client. */
     DataFlow::SourceNode getReceivedItem(int i) {
@@ -256,7 +254,6 @@ module SocketIO {
    */
   class SendNode extends DataFlow::MethodCallNode {
     DataFlow::SourceNode base;
-
     int firstDataIndex;
 
     SendNode() {
@@ -370,7 +367,6 @@ module SocketIO {
   /** A socket.io namespace. */
   class NamespaceObject extends TNamespace {
     ServerObject srv;
-
     string path;
 
     NamespaceObject() { this = MkNamespace(srv, path) }
@@ -488,9 +484,7 @@ module SocketIOClient {
       t.start() and
       result = getArgument(1).getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 |
-        result = getListener(t2).backtrack(t2, t)
-      )
+      exists(DataFlow::TypeBackTracker t2 | result = getListener(t2).backtrack(t2, t))
     }
 
     /** Gets the callback that handles data received from the server. */
@@ -527,7 +521,6 @@ module SocketIOClient {
    */
   class SendNode extends DataFlow::MethodCallNode {
     SocketNode base;
-
     int firstDataIndex;
 
     SendNode() {
@@ -605,7 +598,6 @@ private module EventEmitter {
 /** A data flow step through socket.io sockets. */
 private class SocketIoStep extends DataFlow::AdditionalFlowStep {
   DataFlow::Node pred;
-
   DataFlow::Node succ;
 
   SocketIoStep() {

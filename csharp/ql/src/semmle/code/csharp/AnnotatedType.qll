@@ -175,7 +175,6 @@ private newtype TAnnotatedType =
 /** A type with additional information. */
 class AnnotatedType extends TAnnotatedType {
   Type type;
-
   Annotations::TypeAnnotations annotations;
 
   AnnotatedType() { this = TAnnotatedTypeNullability(type, annotations) }

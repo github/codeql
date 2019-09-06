@@ -1760,7 +1760,6 @@ private predicate hasInstantiation(RefType t) {
 /** An argument to a call. */
 class Argument extends Expr {
   Call call;
-
   int pos;
 
   Argument() { call.getArgument(pos) = this }

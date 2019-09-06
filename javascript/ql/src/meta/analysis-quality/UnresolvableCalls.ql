@@ -7,6 +7,7 @@
  * @tags meta
  * @id js/meta/unresolvable-calls
  */
+
 import javascript
 import CallGraphQuality
 
