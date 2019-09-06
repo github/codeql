@@ -3,7 +3,6 @@
  * which represents the element that generated the compiler generated element.
  */
 
-import csharp
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 

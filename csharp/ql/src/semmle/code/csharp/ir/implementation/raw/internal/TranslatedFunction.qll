@@ -165,7 +165,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       isLValue = false and
       (
         // Only generate the `Unwind` instruction if there is any exception
-        // handling present in the function.
+        // handling present in the function (compiler generated or not).
         exists(TryStmt try | try.getEnclosingCallable() = callable) or
         exists(ThrowStmt throw | throw.getEnclosingCallable() = callable)
       )

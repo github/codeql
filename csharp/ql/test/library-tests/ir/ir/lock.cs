@@ -4,10 +4,10 @@ class LockTest
 {
     static void A()    
     {
-        object _object = new object();
-        lock (_object)
+        object @object = new object();
+        lock (@object)
         {
-            Console.WriteLine(_object.ToString());
+            Console.WriteLine(@object.ToString());
         }
     }
 }

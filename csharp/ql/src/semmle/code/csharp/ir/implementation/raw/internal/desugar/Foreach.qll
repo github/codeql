@@ -58,6 +58,8 @@ module ForeachElements {
   TranslatedForeachTry getTry(ForeachStmt generatedBy) { result.getAST() = generatedBy }
 
   TranslatedForeachEnumerator getEnumDecl(ForeachStmt generatedBy) { result.getAST() = generatedBy }
+
+  int noGeneratedElements() { result = 12 }
 }
 
 private class TranslatedForeachTry extends TranslatedCompilerGeneratedTry,
@@ -206,17 +208,14 @@ private class TranslatedForeachGetEnumerator extends TranslatedCompilerGenerated
 
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    exists(Callable internal |
-      internal.getName() = "GetEnumerator" and
-      // TODO: For now ignore the possibility that the
-      //       foreach variable can have a generic type.
-      //       The type of the callable will need to be fabricated,
-      //       since we might not find the correct callable in the DB.
-      //       Probably will have change the way the immediate
-      //       operand of `FunctionAddress` is calculated.
-      internal.getReturnType().getName() = "IEnumerator" and
-      result = internal
-    )
+    result.getName() = "GetEnumerator" and
+    // TODO: For now ignore the possibility that the
+    //       foreach variable can have a generic type.
+    //       The type of the callable will need to be fabricated,
+    //       since we might not find the correct callable in the DB.
+    //       Probably will have change the way the immediate
+    //       operand of `FunctionAddress` is calculated.
+    result.getReturnType().getName() = "IEnumerator"
   }
 
   override TranslatedExpr getArgument(int id) { none() }

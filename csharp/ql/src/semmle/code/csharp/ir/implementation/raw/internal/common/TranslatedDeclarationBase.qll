@@ -113,7 +113,7 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
   abstract TranslatedElement getInitialization();
   
   /**
-   * Predicate that holds if a declaration is not explicitly initialized,
+   * Holds if a declaration is not explicitly initialized,
    * but will be implicitly initialized by an element.
    */
   abstract predicate isInitializedByElement();

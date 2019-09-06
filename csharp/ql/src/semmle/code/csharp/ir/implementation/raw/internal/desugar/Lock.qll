@@ -48,6 +48,8 @@ module LockElements {
   TranslatedLockWasTakenDecl getLockWasTakenDecl(LockStmt generatedBy) {
     result.getAST() = generatedBy
   }
+
+  int noGeneratedElements() { result = 13 }
 }
 
 /**

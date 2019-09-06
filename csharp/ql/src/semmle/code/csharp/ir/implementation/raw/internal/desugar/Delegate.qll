@@ -31,6 +31,12 @@ module DelegateElements {
   }
 
   TranslatedDelegateInvokeCall getInvoke(DelegateCall generatedBy) { result.getAST() = generatedBy }
+
+  int noGeneratedElements(Element generatedBy) {
+    generatedBy instanceof DelegateCreation and result = 1
+    or
+    generatedBy instanceof DelegateCall and result = 1
+  }
 }
 
 /**

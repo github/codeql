@@ -11,6 +11,9 @@ private import TranslatedStmt
 private import IRConstruction
 private import semmle.code.csharp.ir.Util
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import desugar.Foreach
+private import desugar.Delegate
+private import desugar.Lock
 
 /**
  * Gets the built-in `int` type.
@@ -23,14 +26,14 @@ ArrayType getArrayOfDim(int dim, Type type) {
 }
 
 private predicate canCreateCompilerGeneratedElement(Element generatedBy, int nth) {
-  (
-    generatedBy instanceof ForeachStmt or
-    generatedBy instanceof LockStmt or
-    generatedBy instanceof DelegateCreation or
-    generatedBy instanceof DelegateCall
-  ) and
-  // For now we allow a max of 15 compiler generated elements
-  nth in [0 .. 14]
+  generatedBy instanceof ForeachStmt and nth in [0 .. ForeachElements::noGeneratedElements()]
+  or
+  generatedBy instanceof LockStmt and nth in [0 .. LockElements::noGeneratedElements()]
+  or
+  generatedBy instanceof DelegateCreation and
+  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
+  or
+  generatedBy instanceof DelegateCall and nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
 }
 
 /**
