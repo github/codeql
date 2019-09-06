@@ -9,7 +9,8 @@ abstract class BuiltInOperation extends Expr {
 }
 
 /**
- * A C/C++ `__builtin_va_start` built-in predicate (used by some implementations of `va_start`).
+ * A C/C++ `__builtin_va_start` built-in function (used by some
+ * implementations of `va_start`).
  * ```
 __builtin_va_list ap;
 __builtin_va_start(ap, last_named_param);
@@ -22,7 +23,8 @@ class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
 }
 
 /**
- * A C/C++ `__builtin_va_end` built-in predicate (used by some implementations of `va_end`).
+ * A C/C++ `__builtin_va_end` built-in function (used by some implementations
+ * of `va_end`).
  * ```
  * __builtin_va_start(ap, last_named_param);
  * ap = __builtin_va_arg(ap, long);
@@ -36,7 +38,8 @@ class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
 }
 
 /**
- * A C/C++ `__builtin_va_arg` built-in predicate (used by some implementations of `va_arg`).
+ * A C/C++ `__builtin_va_arg` built-in function (used by some implementations
+ * of `va_arg`).
  * ```
  * ap = __builtin_va_arg(ap, long);
  * ```
@@ -48,7 +51,8 @@ class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
 }
 
 /**
- * A C/C++ `__builtin_va_copy` built-in predicate (used by some implementations of `va_copy`).
+ * A C/C++ `__builtin_va_copy` built-in function (used by some implementations
+ * of `va_copy`).
  * ```
  * va_list ap, aq;
  * __builtin_va_start(ap, last_named_param);
@@ -74,8 +78,11 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
 }
 
 /**
- * A C++ `__offsetof` built-in predicate (used by some implementations of `offsetof` in the presence of user-defined `operator&`).
- * It computes the offset (in bytes) of data member `m` from the beginning of its enclosing `struct`/`class`/`union` `st`.
+ * A C++ `__offsetof` built-in function (used by some implementations
+ * of `offsetof` in the presence of user-defined `operator &`).
+ *
+ * It computes the offset (in bytes) of data member `m` from the beginning
+ * of its enclosing `struct`/`class`/`union` `st`.
  * ```
  * #define offsetof(st, m) __offsetof(st, m)
  * ```
@@ -87,8 +94,11 @@ class BuiltInOperationOffsetOf extends BuiltInOperation, @offsetofexpr {
 }
 
 /**
- * A C/C++ `__INTADDR__` expression, used by EDG to implement `offsetof` in the presence of user-defined `operator&`.
-* It computes the offset (in bytes) of data member `m` from the beginning of its enclosing `struct`/`class`/`union` `st`.
+ * A C/C++ `__INTADDR__` expression, used by EDG to implement `offsetof`
+ * in the presence of user-defined `operator &`.
+ *
+ * It computes the offset (in bytes) of data member `m` from the beginning
+ * of its enclosing `struct`/`class`/`union` `st`.
  * ```
  * #define offsetof(st, m) __INTADDR__(st, m)
  * ```
@@ -100,7 +110,9 @@ class BuiltInIntAddr extends BuiltInOperation, @intaddrexpr {
 }
 
 /**
- * A C++ `__has_assign` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__has_assign` built-in function (used by some implementations of
+ * the `<type_traits>` header).
+ *
  * Returns `true` if the type has a copy assignment operator.
  * ```
  * bool v = __has_assign(MyType);
@@ -113,7 +125,9 @@ class BuiltInOperationHasAssign extends BuiltInOperation, @hasassignexpr {
 }
 
 /**
- * A C++ `__has_copy` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__has_copy` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
  * Returns `true` if the type has a copy constructor.
  * ```
  * std::integral_constant< bool, __has_copy(_Tp)> hc;
@@ -126,8 +140,11 @@ class BuiltInOperationHasCopy extends BuiltInOperation, @hascopyexpr {
 }
 
 /**
- * A C++ `__has_nothrow_assign` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if a copy assignment operator has an empty exception specification.
+ * A C++ `__has_nothrow_assign` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if a copy assignment operator has an empty exception
+ * specification.
  * ```
  * std::integral_constant< bool, __has_nothrow_assign(_Tp)> hnta;
  * ```
@@ -139,8 +156,11 @@ class BuiltInOperationHasNoThrowAssign extends BuiltInOperation, @hasnothrowassi
 }
 
 /**
- * A C++ `__has_nothrow_constructor` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the default constructor has an empty exception specification.
+ * A C++ `__has_nothrow_constructor` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the default constructor has an empty exception
+ * specification.
  * ```
  * bool v = __has_nothrow_constructor(MyType);
  * ```
@@ -152,7 +172,9 @@ class BuiltInOperationHasNoThrowConstructor extends BuiltInOperation, @hasnothro
 }
 
 /**
- * A C++ `__has_nothrow_copy` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__has_nothrow_copy` built-in function (used by some implementations
+ * of the `<type_traits>` header).
+ *
  * Returns `true` if the copy constructor has an empty exception specification.
  * ```
  * std::integral_constant< bool, __has_nothrow_copy(MyType) >;
@@ -165,8 +187,11 @@ class BuiltInOperationHasNoThrowCopy extends BuiltInOperation, @hasnothrowcopy {
 }
 
 /**
- * A C++ `__has_trivial_assign` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type has a trivial (compiler-generated) assignment operator.
+ * A C++ `__has_trivial_assign` built-in function (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if the type has a trivial (compiler-generated) assignment
+ * operator (`operator =`).
  * ```
  * bool v = __has_trivial_assign(MyType);
  * ```
@@ -178,7 +203,9 @@ class BuiltInOperationHasTrivialAssign extends BuiltInOperation, @hastrivialassi
 }
 
 /**
- * A C++ `__has_trivial_constructor` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__has_trivial_constructor` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
  * Returns `true` if the type has a trivial (compiler-generated) constructor.
  * ```
  * bool v = __has_trivial_constructor(MyType);
@@ -191,7 +218,9 @@ class BuiltInOperationHasTrivialConstructor extends BuiltInOperation, @hastrivia
 }
 
 /**
- * A C++ `__has_trivial_copy` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__has_trivial_copy` built-in function (used by some implementations
+ * of the `<type_traits>` header).
+ *
  * Returns true if the type has a trivial (compiler-generated) copy constructor.
  * ```
  * std::integral_constant< bool, __has_trivial_copy(MyType) > htc;
@@ -204,7 +233,9 @@ class BuiltInOperationHasTrivialCopy extends BuiltInOperation, @hastrivialcopy {
 }
 
 /**
- * A C++ `__has_trivial_destructor` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__has_trivial_destructor` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
  * Returns `true` if the type has a trivial (compiler-generated) destructor.
  * ```
  * bool v = __has_trivial_destructor(MyType);
@@ -217,7 +248,9 @@ class BuiltInOperationHasTrivialDestructor extends BuiltInOperation, @hastrivial
 }
 
 /**
- * A C++ `__has_user_destructor` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__has_user_destructor` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
  * Returns true if the type has a user-declared destructor.
  * ```
  * bool v = __has_user_destructor(MyType);
@@ -230,7 +263,9 @@ class BuiltInOperationHasUserDestructor extends BuiltInOperation, @hasuserdestr 
 }
 
 /**
- * A C++ `__has_virtual_destructor` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__has_virtual_destructor` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
  * Returns `true` if the type has a virtual destructor.
  * ```
  * template<typename _Tp>
@@ -246,7 +281,9 @@ class BuiltInOperationHasVirtualDestructor extends BuiltInOperation, @hasvirtual
 }
 
 /**
- * A C++ `__is_abstract` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__is_abstract` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
  * Returns `true` if the class has at least one pure virtual function.
  * ```
  * bool v = __is_abstract(MyType);
@@ -259,7 +296,9 @@ class BuiltInOperationIsAbstract extends BuiltInOperation, @isabstractexpr {
 }
 
 /**
- * A C++ `__is_base_of` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__is_base_of` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
  * Returns `true` if the first type is a base class of the second type, of if both types are the same.
  * ```
  * bool v = __is_base_of(MyType, OtherType);
@@ -272,7 +311,9 @@ class BuiltInOperationIsBaseOf extends BuiltInOperation, @isbaseofexpr {
 }
 
 /**
- * A C++ `__is_class` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__is_class` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
  * Returns `true` if the type is a `class` or a `struct`.
  * ```
  * bool v = __is_class(MyType);
@@ -285,7 +326,9 @@ class BuiltInOperationIsClass extends BuiltInOperation, @isclassexpr {
 }
 
 /**
- * A C++ `__is_convertible_to` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__is_convertible_to` built-in function (used by some implementations
+ * of the `<type_traits>` header).
+ *
  * Returns `true` if the first type can be converted to the second type.
  * ```
  * bool v = __is_convertible_to(MyType, OtherType);
@@ -298,7 +341,9 @@ class BuiltInOperationIsConvertibleTo extends BuiltInOperation, @isconvtoexpr {
 }
 
 /**
- * A C++ `__is_empty` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__is_empty` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
  * Returns `true` if the type has no instance data members.
  * ```
  * bool v = __is_empty(MyType);
@@ -311,7 +356,9 @@ class BuiltInOperationIsEmpty extends BuiltInOperation, @isemptyexpr {
 }
 
 /**
- * A C++ `__is_enum` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__is_enum` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
  * Returns true if the type is an `enum`.
  * ```
  * bool v = __is_enum(MyType);
@@ -324,9 +371,12 @@ class BuiltInOperationIsEnum extends BuiltInOperation, @isenumexpr {
 }
 
 /**
- * A C++ `__is_pod` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type is a `class`, `struct` or `union`,  WITHOUT (1) constructors,
- * (2) private or protected non-static members (3) base classes, or (4) virtual functions.
+ * A C++ `__is_pod` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if the type is a `class`, `struct` or `union`,  WITHOUT
+ * (1) constructors, (2) private or protected non-static members, (3) base
+*  classes, or (4) virtual functions.
  * ```
  * bool v = __is_pod(MyType);
  * ```
@@ -338,7 +388,9 @@ class BuiltInOperationIsPod extends BuiltInOperation, @ispodexpr {
 }
 
 /**
- * A C++ `__is_polymorphic` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__is_polymorphic` built-in function (used by some implementations
+ * of the `<type_traits>` header).
+ *
  * Returns `true` if the type has at least one virtual function.
  * ```
  * bool v = __is_polymorphic(MyType);
@@ -351,7 +403,9 @@ class BuiltInOperationIsPolymorphic extends BuiltInOperation, @ispolyexpr {
 }
 
 /**
- * A C++ `__is_union` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__is_union` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
  * Returns `true` if the type is a `union`.
  * ```
  * bool v = __is_union(MyType);
@@ -369,7 +423,9 @@ class BuiltInOperationIsUnion extends BuiltInOperation, @isunionexpr {
 deprecated class BuiltInOperationBuiltInTypes = BuiltInOperationBuiltInTypesCompatibleP;
 
 /**
- * A C++ `__builtin_types_compatible_p` built-in predicate (used by some implementations of the `type_traits` header).
+ * A C++ `__builtin_types_compatible_p` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
  * Returns `true` if the two types are the same (modulo qualifiers).
  * ```
  * template<typename _Tp1, typename _Tp2>
@@ -384,7 +440,9 @@ class BuiltInOperationBuiltInTypesCompatibleP extends BuiltInOperation, @typesco
 
 /**
  * A clang `__builtin_shufflevector` expression.
- * It outputs a permutation of elements from one or two input vectors. Please visit
+ *
+ * It outputs a permutation of elements from one or two input vectors.
+ * Please see
  * https://releases.llvm.org/3.7.0/tools/clang/docs/LanguageExtensions.html#langext-builtin-shufflevector
  * for more information.
  * ```
@@ -400,7 +458,9 @@ class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshu
 
 /**
  * A clang `__builtin_convertvector` expression.
- * Allows for conversion of vectors of equal element count and compatible element types. Please see
+ *
+ * Allows for conversion of vectors of equal element count and compatible
+ * element types. Please see
  * https://releases.llvm.org/3.7.0/tools/clang/docs/LanguageExtensions.html#builtin-convertvector
  * for more information.
  * ```
@@ -417,7 +477,9 @@ class BuiltInOperationBuiltInConvertVector extends BuiltInOperation, @builtincon
 }
 
 /**
- * A clang `__builtin_addressof` expression (can be used to implement C++'s std::addressof).
+ * A clang `__builtin_addressof` function (can be used to implement C++'s
+ * `std::addressof`).
+ *
  * This function disregards any overloads created for `operator &`.
  * ```
  * int a = 1;
@@ -439,9 +501,11 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
 }
 
 /**
- * The `__is_trivially_constructible` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type has a trivial (compiler-generated) default constructor,
- * copy constructor or move constructor.
+ * The `__is_trivially_constructible` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the type has a trivial (compiler-generated) default
+ * constructor, copy constructor or move constructor.
  * ```
  * template<typename T, typename... Args>
  *   struct is_trivially_constructible
@@ -457,9 +521,12 @@ class BuiltInOperationIsTriviallyConstructible extends BuiltInOperation,
 }
 
 /**
- * The `__is_destructible` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type's destructor is not `delete`d and is accessible in derived `class`es, and whose
- * base `class` and all non-static data members are also destructible.
+ * The `__is_destructible` built-in function (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if the type's destructor is not `delete`d and is accessible
+ * in derived `class`es, and whose base `class` and all non-static data members
+ * are also destructible.
  * ```
  * bool v = __is_destructible(MyType);
  * ```
@@ -471,9 +538,12 @@ class BuiltInOperationIsDestructible extends BuiltInOperation, @isdestructibleex
 }
 
 /**
- * The `__is_nothrow_destructible` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type is destructible and whose constructor, and those of
- * member data and any super`class`es all have an empty exception specification.
+ * The `__is_nothrow_destructible` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the type is destructible and whose constructor, and those
+ * of member data and any super`class`es all have an empty exception
+ * specification.
  * ```
  * bool v = __is_nothrow_destructible(MyType);
  * ```
@@ -485,9 +555,11 @@ class BuiltInOperationIsNothrowDestructible extends BuiltInOperation, @isnothrow
 }
 
 /**
- * The `__is_trivially_destructible` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type is destructible and whose constructor, and those of
- * member data and any super`class`es are all trivial (compiler-generated).
+ * The `__is_trivially_destructible` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the type is destructible and whose constructor, and those
+ * of member data and any super`class`es are all trivial (compiler-generated).
  * ```
  * bool v = __is_trivially_destructible(MyType);
  * ```
@@ -499,9 +571,12 @@ class BuiltInOperationIsTriviallyDestructible extends BuiltInOperation, @istrivi
 }
 
 /**
- * The `__is_trivially_assignable` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the assignment operator `C::operator =(const C& c)` is trivial (compiler-generated).  The
- * generated code will have resembled a `memcpy` operation.
+ * The `__is_trivially_assignable` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the assignment operator `C::operator =(const C& c)` is
+ * trivial (compiler-generated).  The  * generated code will have resembled a
+ * `memcpy` operation.
  * ```
  * template<typename T>
  *   struct is_trivially_assignable
@@ -516,9 +591,11 @@ class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istrivial
 }
 
 /**
- * The `__is_nothrow_assignable` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns true if there exists a `C::operator =(const C& c) nothrow` assignment operator (i.e, with an
- * empty excepion specification).
+ * The `__is_nothrow_assignable` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns true if there exists a `C::operator =(const C& c) nothrow`
+ * assignment operator (i.e, with an empty excepion specification).
  * ```
  * bool v = __is_nothrow_assignable(MyType);
  * ```
@@ -530,10 +607,15 @@ class BuiltInOperationIsNothrowAssignable extends BuiltInOperation, @isnothrowas
 }
 
 /**
- * The `__is_standard_layout` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type is a primitive type, or a`class`, `struct` or `union` WITHOUT (1) virtual functions or base classes,
- * (2) reference member variable or (3) multiple occurrences of base `class` objects, among other restrictions.
- * Please see https://en.cppreference.com/w/cpp/named_req/StandardLayoutType for more information.
+ * The `__is_standard_layout` built-in function (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if the type is a primitive type, or a`class`, `struct` or
+ * `union` WITHOUT (1) virtual functions or base classes, (2) reference member
+ * variable or (3) multiple occurrences of base `class` objects, among other
+ * restrictions.  Please see
+ * https://en.cppreference.com/w/cpp/named_req/StandardLayoutType
+ * for more information.
  * ```
  * bool v = __is_standard_layout(MyType);
  * ```
@@ -545,9 +627,12 @@ class BuiltInOperationIsStandardLayout extends BuiltInOperation, @isstandardlayo
 }
 
 /**
- * The `__is_trivially_copyable` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if instances of this type can be copied by trivial (compiler-generated) means.  The copying is done
- * in a mannter similar to the `memcpy` function.
+ * The `__is_trivially_copyable` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if instances of this type can be copied by trivial (compiler-
+ * generated) means.  The copying is done in a manner similar to the `memcpy`
+ * function.
  */
 class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istriviallycopyableexpr {
   override string toString() { result = "__is_trivially_copyable" }
@@ -556,11 +641,16 @@ class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istrivially
 }
 
 /**
- * The `__is_literal_type` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type is a scalar type, a reference type or an array of literal types, among
- * others. Please see https://en.cppreference.com/w/cpp/named_req/LiteralType for more information.
+ * The `__is_literal_type` built-in function (used by some implementations of
+ * the `<type_traits>` header).
+ *
+ * Returns `true` if the type is a scalar type, a reference type or an array of
+ * literal types, among others. Please see
+ * https://en.cppreference.com/w/cpp/named_req/LiteralType
+ * for more information.
  *
  * ```
+ * template <typename _Tp>
  * std::integral_constant< bool, __is_literal_type(_Tp)> ilt;
  * ```
  */
@@ -571,10 +661,13 @@ class BuiltInOperationIsLiteralType extends BuiltInOperation, @isliteraltypeexpr
 }
 
 /**
- * The `__has_trivial_move_constructor` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns true if the move (`&&`) constructor can be generated by the compiler, with semantics
- * of the `memcpy` operation.
+ * The `__has_trivial_move_constructor` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns true if the move (`&&`) constructor can be generated by the
+ * compiler, with semantics of the `memcpy` operation.
  * ```
+ * template <typename _Tp>
  * std::integral_constant< bool, __has_trivial_move_constructor(_Tp)> htmc;
  * ```
  */
@@ -586,9 +679,11 @@ class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation,
 }
 
 /**
- * The `__has_trivial_move_assign` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns if the move-assign operator `C::operator =(C &&c)` is trivial (i.e., can be generated by the
- * compiler).
+ * The `__has_trivial_move_assign` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns if the move-assign operator `C::operator =(C &&c)` is trivial
+ * (i.e., can be generated by the compiler).
  * ```
  * template<typename T>
  *   struct is_trivially_assignable
@@ -603,9 +698,11 @@ class BuiltInOperationHasTrivialMoveAssign extends BuiltInOperation, @hastrivial
 }
 
 /**
- * The `__has_nothrow_move_assign` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type has a `C::operator=(C&& c) nothrow`, that is, an assignment operator with
- * an empty exception specification.
+ * The `__has_nothrow_move_assign` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the type has a `C::operator=(C&& c) nothrow`, that is,
+ * an assignment operator with an empty exception specification.
  * ```
  * bool v = __has_nothrow_move_assign(MyType);
  * ```
@@ -617,8 +714,11 @@ class BuiltInOperationHasNothrowMoveAssign extends BuiltInOperation, @hasnothrow
 }
 
 /**
- * The `__is_constructible` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type can be constructed using specified arguments (or none).
+ * The `__is_constructible` built-in function (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if the type can be constructed using specified arguments
+ * (or none).
  * ```
  * template<typename T, typename... Args>
  *   struct is_trivially_constructible
@@ -633,9 +733,11 @@ class BuiltInOperationIsConstructible extends BuiltInOperation, @isconstructible
 }
 
 /**
- * The `__is_nothrow_constructible` built-in predicate (used by some implementations of the `type_traits` header).
- * Returns `true` if the type is constructable and all its constructors have an empty exception specification
- * (i.e., are declared with `nothrow`);
+ * The `__is_nothrow_constructible` built-in function (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the type is constructable and all its constructors have an
+ * empty exception specification (i.e., are declared with `nothrow`);
  * ```
  * bool v = __is_nothrow_constructible(MyType);
  * ```
@@ -647,10 +749,10 @@ class BuiltInOperationIsNothrowConstructible extends BuiltInOperation, @isnothro
 }
 
 /**
- * The `__has_finalizer` built-in predicate.
- * This is a Microsoft extension.
- * Returns `true` if the type defines a _finalizer_ `C::!C(void)`, to be called from either the
- * regular destructor or the garbage collector.
+ * The `__has_finalizer` built-in function.  This is a Microsoft extension.
+ *
+ * Returns `true` if the type defines a _finalizer_ `C::!C(void)`, to be called
+ * from either the regular destructor or the garbage collector.
  * ```
  * bool v = __has_finalizer(MyType);
  * ```
@@ -662,10 +764,11 @@ class BuiltInOperationHasFinalizer extends BuiltInOperation, @hasfinalizerexpr {
 }
 
 /**
- * The `__is_delegate` built-in predicate.
- * This is a Microsoft extension.
- * Returns `true` if the function has been declared as a `delegate`, used in message forwarding.
- * Please see https://docs.microsoft.com/en-us/cpp/extensions/delegate-cpp-component-extensions
+ * The `__is_delegate` built-in function.  This is a Microsoft extension.
+ *
+ * Returns `true` if the function has been declared as a `delegate`, used in
+ * message forwarding.  Please see
+ * https://docs.microsoft.com/en-us/cpp/extensions/delegate-cpp-component-extensions
  * for more information.
  */
 class BuiltInOperationIsDelegate extends BuiltInOperation, @isdelegateexpr {
@@ -675,8 +778,8 @@ class BuiltInOperationIsDelegate extends BuiltInOperation, @isdelegateexpr {
 }
 
 /**
- * The `__is_interface_class` built-in predicate.
- * This is a Microsoft extension.
+ * The `__is_interface_class` built-in function.  This is a Microsoft extension.
+ *
  * Returns `true` if the type has been declared as an `interface`.  Please see
  * https://docs.microsoft.com/en-us/cpp/extensions/interface-class-cpp-component-extensions
  * for more information.
@@ -688,8 +791,8 @@ class BuiltInOperationIsInterfaceClass extends BuiltInOperation, @isinterfacecla
 }
 
 /**
- * The `__is_ref_array` built-in predicate.
- * This is a Microsoft extension.
+ * The `__is_ref_array` built-in function.  This is a Microsoft extension.
+ *
  * Returns `true` if the object passed in is a _platform array_.  Please see
  * https://docs.microsoft.com/en-us/cpp/extensions/arrays-cpp-component-extensions
  * for more information.
@@ -705,8 +808,8 @@ class BuiltInOperationIsRefArray extends BuiltInOperation, @isrefarrayexpr {
 }
 
 /**
- * The `__is_ref_class` built-in predicate.
- * This is a Microsoft extension.
+ * The `__is_ref_class` built-in function.  This is a Microsoft extension.
+ *
  * Returns `true` if the type is a _reference class_.  Please see
  * https://docs.microsoft.com/en-us/cpp/extensions/classes-and-structs-cpp-component-extensions
  * for more information.
@@ -722,8 +825,8 @@ class BuiltInOperationIsRefClass extends BuiltInOperation, @isrefclassexpr {
 }
 
 /**
- * The `__is_sealed` built-in predicate.
- * This is a Microsoft extension.
+ * The `__is_sealed` built-in function.  This is a Microsoft extension.
+ *
  * Returns `true` if a given class or virtual function is marked as `sealed`,
  * meaning that it cannot be extended or overridden.  The `sealed` keyword
  * is similar to the C++11 `final` keyword.
@@ -740,8 +843,10 @@ class BuiltInOperationIsSealed extends BuiltInOperation, @issealedexpr {
 }
 
 /**
- * The `__is_simple_value_class` built-in predicate.  This is a Microsoft extension.
- * Returns `true` if passed a value type that contains no references to the garbage-collected heap.
+ * The `__is_simple_value_class` built-in function.  This is a Microsoft extension.
+ *
+ * Returns `true` if passed a value type that contains no references to the
+ * garbage-collected heap.
  * ```
  * ref class R {};             // __is_simple_value_class(R) == false
  * value struct V {};          // __is_simple_value_class(V) == true
@@ -757,7 +862,8 @@ class BuiltInOperationIsSimpleValueClass extends BuiltInOperation, @issimplevalu
 }
 
 /**
- * The `__is_value_class` built-in predicate.  This is a Microsoft extension.
+ * The `__is_value_class` built-in function.  This is a Microsoft extension.
+ *
  * Returns `true` if passed a value type.  Please see
  * https://docs.microsoft.com/en-us/cpp/extensions/classes-and-structs-cpp-component-extensions
  * For more information.
@@ -773,7 +879,9 @@ class BuiltInOperationIsValueClass extends BuiltInOperation, @isvalueclassexpr {
 }
 
 /**
- * The `__is_final` built-in predicate (used by some implementations of the `type_traits` header).
+ * The `__is_final` built-in function (used by some implementations of the
+ * `<type_traits>` header).
+ *
  * Returns `true` if the `class` has been marked with the `final` specifier.
  * ```
  * template<typename T>
@@ -790,6 +898,7 @@ class BuiltInOperationIsFinal extends BuiltInOperation, @isfinalexpr {
 
 /**
  * The `__builtin_choose_expr` expression.  This is a GNU/Clang extension.
+ *
  * The expression functions similarly to the ternary `?:` operator, except
  * that it is evaluated at compile-time.
  * ```
