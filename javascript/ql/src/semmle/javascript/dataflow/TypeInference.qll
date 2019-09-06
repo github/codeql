@@ -57,9 +57,7 @@ class AnalyzedNode extends DataFlow::Node {
    * instances is also performed.
    */
   cached
-  AbstractValue getAValue() {
-    result = getALocalValue()
-  }
+  AbstractValue getAValue() { result = getALocalValue() }
 
   /**
    * INTERNAL: Do not use.

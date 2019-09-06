@@ -1,5 +1,10 @@
-class Locatable extends @locatable { string toString() { none() } }
-class Location extends @location { string toString() { none() } }
+class Locatable extends @locatable {
+  string toString() { none() }
+}
+
+class Location extends @location {
+  string toString() { none() }
+}
 
 from Locatable locatable, Location location
 where

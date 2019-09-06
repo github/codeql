@@ -53,7 +53,6 @@ private module MongoDB {
   /** A call to a MongoDB query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
     override MethodCallExpr astNode;
-
     int queryArgIdx;
 
     QueryCall() {

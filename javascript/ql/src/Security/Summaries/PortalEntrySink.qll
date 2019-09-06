@@ -10,9 +10,7 @@ class PortalEntrySink extends DataFlow::AdditionalSink {
 
   PortalEntrySink() { this = p.getAnEntryNode(true) }
 
-  override predicate isSinkFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
-    any()
-  }
+  override predicate isSinkFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) { any() }
 
   /** Gets the portal of which this is an entry node. */
   Portal getPortal() { result = p }

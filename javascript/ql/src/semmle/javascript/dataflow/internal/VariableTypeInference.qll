@@ -43,9 +43,7 @@ private class AnalyzedSsaDefinitionNode extends AnalyzedNode, DataFlow::SsaDefin
 private class SsaDefinitionWithNonLocalFlow extends SsaExplicitDefinition {
   CallWithNonLocalAnalyzedReturnFlow source;
 
-  SsaDefinitionWithNonLocalFlow() {
-    source = getDef().getSource().flow()
-  }
+  SsaDefinitionWithNonLocalFlow() { source = getDef().getSource().flow() }
 
   CallWithNonLocalAnalyzedReturnFlow getSource() { result = source }
 }
@@ -56,9 +54,7 @@ private class SsaDefinitionWithNonLocalFlow extends SsaExplicitDefinition {
 private class AnalyzedSsaDefinitionNodeWithNonLocalAnalysis extends AnalyzedSsaDefinitionNode {
   override SsaDefinitionWithNonLocalFlow ssa;
 
-  override AbstractValue getAValue() {
-    result = ssa.getSource().getAValue()
-  }
+  override AbstractValue getAValue() { result = ssa.getSource().getAValue() }
 }
 
 /**
@@ -388,7 +384,6 @@ private predicate nodeBuiltins(Variable var, AbstractValue av) {
  */
 private class AnalyzedGlobalVarUse extends DataFlow::AnalyzedValueNode {
   GlobalVariable gv;
-
   AnalyzedGlobal agv;
 
   AnalyzedGlobalVarUse() {
@@ -532,7 +527,6 @@ private class AnalyzedGlobal extends TAnalyzedGlobal {
  */
 private class AnalyzedGlocal extends AnalyzedGlobal, TAnalyzedGlocal {
   GlobalVariable gv;
-
   TopLevel tl;
 
   AnalyzedGlocal() { this = TAnalyzedGlocal(gv, tl) }

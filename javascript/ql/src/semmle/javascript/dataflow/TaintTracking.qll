@@ -63,7 +63,9 @@ module TaintTracking {
      *
      * Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`.
      */
-    deprecated predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
+    deprecated predicate isSanitizer(
+      DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
+    ) {
       none()
     }
 
@@ -309,9 +311,7 @@ module TaintTracking {
       )
       or
       // `array.splice(i, del, e)`: if `e` is tainted, then so is `array`.
-      exists(string name |
-        name = "splice"
-      |
+      exists(string name | name = "splice" |
         pred = call.getArgument(2) and
         succ.(DataFlow::SourceNode).getAMethodCall(name) = call
       )
@@ -346,7 +346,6 @@ module TaintTracking {
    */
   private class DictionaryTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
     override VarAccess astNode;
-
     DataFlow::Node source;
 
     DictionaryTaintStep() {
@@ -643,9 +642,7 @@ module TaintTracking {
    */
   class ErrorConstructorTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
     ErrorConstructorTaintStep() {
-      exists(string name |
-        this = DataFlow::globalVarRef(name).getAnInvocation()
-      |
+      exists(string name | this = DataFlow::globalVarRef(name).getAnInvocation() |
         name = "Error" or
         name = "EvalError" or
         name = "RangeError" or
@@ -762,7 +759,6 @@ module TaintTracking {
   /** A check of the form `if(o[x] != undefined)`, which sanitizes `x` in its "then" branch. */
   class UndefinedCheckSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
-
     override EqualityTest astNode;
 
     UndefinedCheckSanitizer() {
@@ -806,7 +802,6 @@ module TaintTracking {
    */
   class PositiveIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
-
     override RelationalComparison astNode;
 
     PositiveIndexOfSanitizer() {
@@ -827,21 +822,18 @@ module TaintTracking {
   }
 
   /** Gets a variable that is defined exactly once. */
-  private Variable singleDef() {
-    strictcount(result.getADefinition()) = 1
-  }
+  private Variable singleDef() { strictcount(result.getADefinition()) = 1 }
 
   /** A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch. */
   class ConstantComparison extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
-
     override EqualityTest astNode;
 
     ConstantComparison() {
-      exists(Expr const |
-        astNode.hasOperands(x, const) |
+      exists(Expr const | astNode.hasOperands(x, const) |
         // either the other operand is a constant
-        const instanceof ConstantExpr or
+        const instanceof ConstantExpr
+        or
         // or it's an access to a variable that probably acts as a symbolic constant
         const = singleDef().getAnAccess()
       )
@@ -859,9 +851,7 @@ module TaintTracking {
    */
   private class SanitizingFunction extends Function {
     DataFlow::ParameterNode sanitizedParameter;
-
     SanitizerGuardNode sanitizer;
-
     boolean sanitizerOutcome;
 
     SanitizingFunction() {
@@ -927,7 +917,6 @@ module TaintTracking {
    */
   private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     VarAccess event;
-
     override EqualityTest astNode;
 
     PostMessageEventSanitizer() {

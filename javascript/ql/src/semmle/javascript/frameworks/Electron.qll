@@ -102,7 +102,6 @@ module Electron {
      */
     class Callback extends DataFlow::FunctionNode {
       DataFlow::Node channel;
-
       Process process;
 
       Callback() {
@@ -139,11 +138,8 @@ module Electron {
      */
     class DirectMessage extends Message {
       DataFlow::MethodCallNode mc;
-
       Process process;
-
       DataFlow::Node channel;
-
       boolean isSync;
 
       DirectMessage() {
@@ -178,7 +174,6 @@ module Electron {
      */
     class AsyncReplyMessage extends Message {
       Callback callback;
-
       DataFlow::Node channel;
 
       AsyncReplyMessage() {

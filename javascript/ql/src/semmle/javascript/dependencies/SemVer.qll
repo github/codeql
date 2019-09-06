@@ -11,7 +11,6 @@ import semmle.javascript.dependencies.Dependencies
  */
 class DependencySemVer extends string {
   Dependency dep;
-
   string normalized;
 
   DependencySemVer() {

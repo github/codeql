@@ -35,9 +35,7 @@ module DataFlow {
       (kind = "call" or kind = "apply")
     } or
     TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
-    TUnusedParameterNode(SimpleParameter p) {
-      not exists(SSA::definition(p))
-    } or
+    TUnusedParameterNode(SimpleParameter p) { not exists(SSA::definition(p)) } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
     } or
@@ -340,7 +338,6 @@ module DataFlow {
    */
   private class RestPatternNode extends Node, TRestPatternNode {
     DestructuringPattern pattern;
-
     Expr rest;
 
     RestPatternNode() { this = TRestPatternNode(pattern, rest) }
@@ -386,7 +383,6 @@ module DataFlow {
    */
   private class ElementPatternNode extends Node, TElementPatternNode {
     ArrayPattern pattern;
-
     Expr elt;
 
     ElementPatternNode() { this = TElementPatternNode(pattern, elt) }
@@ -414,7 +410,6 @@ module DataFlow {
    */
   private class ElementNode extends Node, TElementNode {
     ArrayExpr arr;
-
     Expr elt;
 
     ElementNode() { this = TElementNode(arr, elt) }
@@ -438,7 +433,6 @@ module DataFlow {
    */
   private class ReflectiveCallNode extends Node, TReflectiveCallNode {
     MethodCallExpr call;
-
     string kind;
 
     ReflectiveCallNode() { this = TReflectiveCallNode(call, kind) }
@@ -685,7 +679,7 @@ module DataFlow {
       exists(Parameter param, Node paramNode |
         param = prop.getParameter() and
         parameterNode(paramNode, param)
-        |
+      |
         result = paramNode
         or
         // special case: there is no SSA flow step for unused parameters
@@ -807,7 +801,6 @@ module DataFlow {
    */
   private class ImportSpecifierAsPropRead extends PropRead {
     ImportDeclaration imprt;
-
     ImportSpecifier spec;
 
     ImportSpecifierAsPropRead() {
@@ -883,9 +876,7 @@ module DataFlow {
       function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override BasicBlock getBasicBlock() {
-      result = function.(ExprOrStmt).getBasicBlock()
-    }
+    override BasicBlock getBasicBlock() { result = function.(ExprOrStmt).getBasicBlock() }
 
     /**
      * Gets the function corresponding to this exceptional return node.
@@ -909,9 +900,7 @@ module DataFlow {
       invoke.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override BasicBlock getBasicBlock() {
-      result = invoke.getBasicBlock()
-    }
+    override BasicBlock getBasicBlock() { result = invoke.getBasicBlock() }
 
     /**
      * Gets the invocation corresponding to this exceptional return node.
@@ -1053,7 +1042,6 @@ module DataFlow {
      */
     private class ReflectiveCallNodeDef extends CallNodeDef {
       ExplicitMethodCallNode originalCall;
-
       string kind;
 
       ReflectiveCallNodeDef() { this = TReflectiveCallNode(originalCall.asExpr(), kind) }
@@ -1115,9 +1103,7 @@ module DataFlow {
     override string toString() { result = "this" }
 
     override BasicBlock getBasicBlock() {
-      exists(StmtContainer container | this = TThisNode(container) |
-        result = container.getEntry()
-      )
+      exists(StmtContainer container | this = TThisNode(container) | result = container.getEntry())
     }
 
     override predicate hasLocationInfo(
@@ -1125,7 +1111,8 @@ module DataFlow {
     ) {
       // Use the function entry as the location
       exists(StmtContainer container | this = TThisNode(container) |
-        container.getEntry()
+        container
+            .getEntry()
             .getLocation()
             .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       )
@@ -1154,9 +1141,7 @@ module DataFlow {
   /**
    * INTERNAL: Use `parameterNode(Parameter)` instead.
    */
-  predicate parameterNode(DataFlow::Node nd, Parameter p) {
-    nd = lvalueNode(p)
-  }
+  predicate parameterNode(DataFlow::Node nd, Parameter p) { nd = lvalueNode(p) }
 
   /**
    * INTERNAL: Use `thisNode(StmtContainer container)` instead.
@@ -1476,6 +1461,7 @@ module DataFlow {
     exists(ComprehensionBlock cb | def = cb.getIterator()) and
     cause = "yield"
   }
+
   import Nodes
   import Sources
   import TypeInference

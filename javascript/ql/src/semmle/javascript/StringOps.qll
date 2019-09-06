@@ -75,7 +75,6 @@ module StringOps {
      */
     private class StartsWith_IndexOfEquals extends Range, DataFlow::ValueNode {
       override EqualityTest astNode;
-
       DataFlow::MethodCallNode indexOf;
 
       StartsWith_IndexOfEquals() {
@@ -118,8 +117,10 @@ module StringOps {
       StartsWith_Library() {
         getNumArgument() = 2 and
         exists(DataFlow::SourceNode callee | this = callee.getACall() |
-          callee = LodashUnderscore::member("startsWith") or
-          callee = DataFlow::moduleMember("ramda", "startsWith") or
+          callee = LodashUnderscore::member("startsWith")
+          or
+          callee = DataFlow::moduleMember("ramda", "startsWith")
+          or
           exists(string name |
             callee = Closure::moduleImport("goog.string." + name) and
             (name = "startsWith" or name = "caseInsensitiveStartsWith")
@@ -137,9 +138,7 @@ module StringOps {
      */
     private class StartsWith_FirstCharacter extends Range, DataFlow::ValueNode {
       override EqualityTest astNode;
-
       DataFlow::PropRead read;
-
       Expr constant;
 
       StartsWith_FirstCharacter() {
@@ -161,9 +160,7 @@ module StringOps {
      */
     private class StartsWith_Substring extends Range, DataFlow::ValueNode {
       override EqualityTest astNode;
-
       DataFlow::MethodCallNode call;
-
       DataFlow::Node substring;
 
       StartsWith_Substring() {
@@ -270,7 +267,6 @@ module StringOps {
      */
     private class Includes_IndexOfEquals extends Range, DataFlow::ValueNode {
       MethodCallExpr indexOf;
-
       override EqualityTest astNode;
 
       Includes_IndexOfEquals() {
@@ -294,9 +290,7 @@ module StringOps {
      */
     private class Includes_IndexOfRelational extends Range, DataFlow::ValueNode {
       MethodCallExpr indexOf;
-
       override RelationalComparison astNode;
-
       boolean polarity;
 
       Includes_IndexOfRelational() {
@@ -336,7 +330,6 @@ module StringOps {
      */
     private class Includes_IndexOfBitwise extends Range, DataFlow::ValueNode {
       MethodCallExpr indexOf;
-
       override BitNotExpr astNode;
 
       Includes_IndexOfBitwise() {
@@ -422,8 +415,10 @@ module StringOps {
       EndsWith_Library() {
         getNumArgument() = 2 and
         exists(DataFlow::SourceNode callee | this = callee.getACall() |
-          callee = LodashUnderscore::member("endsWith") or
-          callee = DataFlow::moduleMember("ramda", "endsWith") or
+          callee = LodashUnderscore::member("endsWith")
+          or
+          callee = DataFlow::moduleMember("ramda", "endsWith")
+          or
           exists(string name |
             callee = Closure::moduleImport("goog.string." + name) and
             (name = "endsWith" or name = "caseInsensitiveEndsWith")
@@ -488,49 +483,37 @@ module StringOps {
      * Gets the `n`th operand of this string concatenation.
      */
     pragma[inline]
-    ConcatenationOperand getOperand(int n) {
-      result = StringConcatenation::getOperand(this, n)
-    }
+    ConcatenationOperand getOperand(int n) { result = StringConcatenation::getOperand(this, n) }
 
     /**
      * Gets an operand of this string concatenation.
      */
     pragma[inline]
-    ConcatenationOperand getAnOperand() {
-      result = StringConcatenation::getAnOperand(this)
-    }
+    ConcatenationOperand getAnOperand() { result = StringConcatenation::getAnOperand(this) }
 
     /**
      * Gets the number of operands of this string concatenation.
      */
     pragma[inline]
-    int getNumOperand() {
-      result = StringConcatenation::getNumOperand(this)
-    }
+    int getNumOperand() { result = StringConcatenation::getNumOperand(this) }
 
     /**
      * Gets the first operand of this string concatenation.
      */
     pragma[inline]
-    ConcatenationOperand getFirstOperand() {
-      result = StringConcatenation::getFirstOperand(this)
-    }
+    ConcatenationOperand getFirstOperand() { result = StringConcatenation::getFirstOperand(this) }
 
     /**
      * Gets the last operand of this string concatenation
      */
     pragma[inline]
-    ConcatenationOperand getLastOperand() {
-      result = StringConcatenation::getLastOperand(this)
-    }
+    ConcatenationOperand getLastOperand() { result = StringConcatenation::getLastOperand(this) }
 
     /**
      * Holds if this only acts as a string coercion, such as `"" + x`.
      */
     pragma[inline]
-    predicate isCoercion() {
-      StringConcatenation::isCoercion(this)
-    }
+    predicate isCoercion() { StringConcatenation::isCoercion(this) }
 
     /**
      * Holds if this is the root of a concatenation tree, that is,
@@ -538,34 +521,26 @@ module StringOps {
      * another concatenation operator.
      */
     pragma[inline]
-    predicate isRoot() {
-      StringConcatenation::isRoot(this)
-    }
+    predicate isRoot() { StringConcatenation::isRoot(this) }
 
     /**
      * Holds if this is a leaf in the concatenation tree, that is, it is not
      * itself a concatenation.
      */
     pragma[inline]
-    predicate isLeaf() {
-      not exists(StringConcatenation::getAnOperand(this))
-    }
+    predicate isLeaf() { not exists(StringConcatenation::getAnOperand(this)) }
 
     /**
      * Gets the root of the concatenation tree in which this is an operator.
      */
     pragma[inline]
-    ConcatenationRoot getRoot() {
-      result = StringConcatenation::getRoot(this)
-    }
+    ConcatenationRoot getRoot() { result = StringConcatenation::getRoot(this) }
 
     /**
      * Gets the enclosing concatenation in which this is an operand, if any.
      */
     pragma[inline]
-    Concatenation getParentConcatenation() {
-      this = StringConcatenation::getAnOperand(result)
-    }
+    Concatenation getParentConcatenation() { this = StringConcatenation::getAnOperand(result) }
 
     /**
      * Gets the last leaf in this concatenation tree.
@@ -573,9 +548,7 @@ module StringOps {
      * For example, `z` is the last leaf in `x + y + z`.
      */
     pragma[inline]
-    ConcatenationLeaf getLastLeaf() {
-      result = StringConcatenation::getLastOperand*(this)
-    }
+    ConcatenationLeaf getLastLeaf() { result = StringConcatenation::getLastOperand*(this) }
 
     /**
      * Gets the first leaf in this concatenation tree.
@@ -583,9 +556,7 @@ module StringOps {
      * For example, `x` is the first leaf in `x + y + z`.
      */
     pragma[inline]
-    ConcatenationLeaf getFirstLeaf() {
-      result = StringConcatenation::getFirstOperand*(this)
-    }
+    ConcatenationLeaf getFirstLeaf() { result = StringConcatenation::getFirstOperand*(this) }
 
     /**
      * Gets the leaf that is occurs immediately before this leaf in the
@@ -594,9 +565,7 @@ module StringOps {
      * For example, `y` is the previous leaf from `z` in `x + y + z`.
      */
     pragma[inline]
-    ConcatenationLeaf getPreviousLeaf() {
-      adjacentLeaves(result, this)
-    }
+    ConcatenationLeaf getPreviousLeaf() { adjacentLeaves(result, this) }
 
     /**
      * Gets the leaf that is occurs immediately after this leaf in the
@@ -605,9 +574,7 @@ module StringOps {
      * For example, `y` is the next leaf from `x` in `x + y + z`.
      */
     pragma[inline]
-    ConcatenationLeaf getNextLeaf() {
-      adjacentLeaves(this, result)
-    }
+    ConcatenationLeaf getNextLeaf() { adjacentLeaves(this, result) }
   }
 
   /**
@@ -626,9 +593,7 @@ module StringOps {
    */
   class Concatenation extends ConcatenationNode {
     pragma[inline]
-    Concatenation() {
-      exists(StringConcatenation::getAnOperand(this))
-    }
+    Concatenation() { exists(StringConcatenation::getAnOperand(this)) }
   }
 
   /**
@@ -645,9 +610,7 @@ module StringOps {
    */
   class ConcatenationOperand extends ConcatenationNode {
     pragma[inline]
-    ConcatenationOperand() {
-      this = StringConcatenation::getAnOperand(_)
-    }
+    ConcatenationOperand() { this = StringConcatenation::getAnOperand(_) }
   }
 
   /**
@@ -664,17 +627,13 @@ module StringOps {
    */
   class ConcatenationRoot extends Concatenation {
     pragma[inline]
-    ConcatenationRoot() {
-      isRoot()
-    }
+    ConcatenationRoot() { isRoot() }
 
     /**
      * Gets a leaf in this concatenation tree that this node is the root of.
      */
     pragma[inline]
-    ConcatenationLeaf getALeaf() {
-      this = StringConcatenation::getRoot(result)
-    }
+    ConcatenationLeaf getALeaf() { this = StringConcatenation::getRoot(result) }
 
     /**
      * Returns the concatenation of all constant operands in this concatenation,
@@ -691,11 +650,10 @@ module StringOps {
       or
       not exists(getStringValue()) and
       result = strictconcat(StringLiteralLike leaf |
-        leaf = getALeaf().asExpr()
-      |
-        leaf.getStringValue()
-        order by leaf.getFirstToken().getIndex() asc
-      )
+          leaf = getALeaf().asExpr()
+        |
+          leaf.getStringValue() order by leaf.getFirstToken().getIndex()
+        )
     }
   }
 
@@ -720,9 +678,7 @@ module StringOps {
    */
   class ConcatenationLeaf extends ConcatenationOperand {
     pragma[inline]
-    ConcatenationLeaf() {
-      isLeaf()
-    }
+    ConcatenationLeaf() { isLeaf() }
   }
 
   /**
@@ -739,9 +695,7 @@ module StringOps {
    * A data flow node that is part of an HTML string concatenation.
    */
   class HtmlConcatenationNode extends ConcatenationNode {
-    HtmlConcatenationNode() {
-      getRoot() instanceof HtmlConcatenationRoot
-    }
+    HtmlConcatenationNode() { getRoot() instanceof HtmlConcatenationRoot }
   }
 
   /**
@@ -749,8 +703,6 @@ module StringOps {
    * and is not itself a concatenation operator.
    */
   class HtmlConcatenationLeaf extends ConcatenationLeaf {
-    HtmlConcatenationLeaf() {
-      getRoot() instanceof HtmlConcatenationRoot
-    }
+    HtmlConcatenationLeaf() { getRoot() instanceof HtmlConcatenationRoot }
   }
 }

@@ -135,9 +135,7 @@ class AdditionalStepSpec extends ExternalData {
 
 private class AdditionalFlowStepFromSpec extends DataFlow::Configuration {
   AdditionalStepSpec spec;
-
   DataFlow::Node entry;
-
   DataFlow::Node exit;
 
   AdditionalFlowStepFromSpec() {

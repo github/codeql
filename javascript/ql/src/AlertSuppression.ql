@@ -12,7 +12,6 @@ import javascript
  */
 class SuppressionComment extends Locatable {
   string text;
-
   string annotation;
 
   SuppressionComment() {

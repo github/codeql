@@ -75,11 +75,11 @@ private module ClosurePromise {
 
     ClosurePromiseTaintStep() {
       // static methods in goog.Promise
-      exists (DataFlow::CallNode call, string name |
+      exists(DataFlow::CallNode call, string name |
         call = Closure::moduleImport("goog.Promise." + name).getACall() and
         this = call and
         pred = call.getAnArgument()
-        |
+      |
         name = "all" or
         name = "allSettled" or
         name = "firstFulfilled" or
@@ -87,15 +87,13 @@ private module ClosurePromise {
       )
       or
       // promise created through goog.promise.withResolver()
-      exists (DataFlow::CallNode resolver |
+      exists(DataFlow::CallNode resolver |
         resolver = Closure::moduleImport("goog.Promise.withResolver").getACall() and
         this = resolver.getAPropertyRead("promise") and
         pred = resolver.getAMethodCall("resolve").getArgument(0)
       )
     }
 
-    override predicate step(DataFlow::Node src, DataFlow::Node dst) {
-      src = pred and dst = this
-    }
+    override predicate step(DataFlow::Node src, DataFlow::Node dst) { src = pred and dst = this }
   }
 }

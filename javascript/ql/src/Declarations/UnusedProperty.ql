@@ -34,15 +34,16 @@ predicate hasUnknownPropertyRead(LocalObject obj) {
  * Holds if `obj` flows to an expression that must have a specific type.
  */
 predicate flowsToTypeRestrictedExpression(LocalObject obj) {
-  exists (Expr restricted, TypeExpr type |
+  exists(Expr restricted, TypeExpr type |
     obj.flowsToExpr(restricted) and
-    not type.isAny() |
-    exists (TypeAssertion assertion |
+    not type.isAny()
+  |
+    exists(TypeAssertion assertion |
       type = assertion.getTypeAnnotation() and
       restricted = assertion.getExpression()
     )
     or
-    exists (BindingPattern v |
+    exists(BindingPattern v |
       type = v.getTypeAnnotation() and
       restricted = v.getAVariable().getAnAssignedExpr()
     )

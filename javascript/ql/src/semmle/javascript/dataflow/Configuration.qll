@@ -1016,9 +1016,7 @@ private DataFlow::Configuration id(DataFlow::Configuration cfg) { result >= cfg 
  */
 class PathNode extends TPathNode {
   DataFlow::Node nd;
-
   DataFlow::Configuration cfg;
-
   PathSummary summary;
 
   PathNode() { this = MkPathNode(nd, cfg, summary) }

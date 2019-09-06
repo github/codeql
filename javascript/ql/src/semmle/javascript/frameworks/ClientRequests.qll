@@ -106,13 +106,13 @@ module ClientRequest {
   }
 
   /**
-  * Gets the name of an HTTP request method, in all-lowercase.
-  */
+   * Gets the name of an HTTP request method, in all-lowercase.
+   */
   private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
 
   /**
-  * A model of a URL request made using the `request` library.
-  */
+   * A model of a URL request made using the `request` library.
+   */
   class RequestUrlRequest extends ClientRequest::Range, DataFlow::CallNode {
     boolean promise;
 
@@ -145,10 +145,9 @@ module ClientRequest {
 
     /** Gets the response type from the options passed in. */
     string getResponseType() {
-      if getOptionArgument(1, "json").mayHaveBooleanValue(true) then
-        result = "json"
-      else
-        result = "text"
+      if getOptionArgument(1, "json").mayHaveBooleanValue(true)
+      then result = "json"
+      else result = "text"
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean pr) {
@@ -161,28 +160,26 @@ module ClientRequest {
       promise = false and
       pr = false and
       (
-        result = getCallback([1..2]).getParameter(2)
+        result = getCallback([1 .. 2]).getParameter(2)
         or
-        result = getCallback([1..2]).getParameter(1).getAPropertyRead("body")
+        result = getCallback([1 .. 2]).getParameter(1).getAPropertyRead("body")
       )
       or
       responseType = "error" and
       promise = false and
       pr = false and
-      result = getCallback([1..2]).getParameter(0)
+      result = getCallback([1 .. 2]).getParameter(0)
     }
 
     override DataFlow::Node getADataNode() { result = getArgument(1) }
   }
 
   /** Gets the string `url` or `uri`. */
-  private string urlPropertyName() {
-    result = "url" or result = "uri"
-  }
+  private string urlPropertyName() { result = "url" or result = "uri" }
 
   /**
-  * A model of a URL request made using the `axios` library.
-  */
+   * A model of a URL request made using the `axios` library.
+   */
   class AxiosUrlRequest extends ClientRequest::Range {
     string method;
 
@@ -256,8 +253,8 @@ module ClientRequest {
   }
 
   /**
-  * A model of a URL request made using an implementation of the `fetch` API.
-  */
+   * A model of a URL request made using an implementation of the `fetch` API.
+   */
   class FetchUrlRequest extends ClientRequest::Range {
     DataFlow::Node url;
 
@@ -292,8 +289,8 @@ module ClientRequest {
   }
 
   /**
-  * A model of a URL request made using the `got` library.
-  */
+   * A model of a URL request made using the `got` library.
+   */
   class GotUrlRequest extends ClientRequest::Range {
     GotUrlRequest() {
       exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
@@ -333,28 +330,29 @@ module ClientRequest {
     }
 
     /** Holds if the result is a JSON object. */
-    predicate isJson() {
-      getOptionArgument(1, "json").mayHaveBooleanValue(true)
-    }
+    predicate isJson() { getOptionArgument(1, "json").mayHaveBooleanValue(true) }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       result = this and
-      if isStream() then (
+      if isStream()
+      then
         responseType = "stream" and
         promise = false
-      ) else if isJson() then (
-        responseType = "json" and
-        promise = true
-      ) else (
-        responseType = "text" and
-        promise = true
-      )
+      else
+        if isJson()
+        then (
+          responseType = "json" and
+          promise = true
+        ) else (
+          responseType = "text" and
+          promise = true
+        )
     }
   }
 
   /**
-  * A model of a URL request made using the `superagent` library.
-  */
+   * A model of a URL request made using the `superagent` library.
+   */
   class SuperAgentUrlRequest extends ClientRequest::Range {
     DataFlow::Node url;
 
@@ -460,7 +458,8 @@ module ClientRequest {
         )
         or
         exists(string method | result = getAnAlias().getAMethodCall(method) |
-          method = "getAllResponseHeaders" and responseType = "headers" or
+          method = "getAllResponseHeaders" and responseType = "headers"
+          or
           method = "getResponseHeader" and responseType = "header"
         )
       )
@@ -468,14 +467,14 @@ module ClientRequest {
   }
 
   /**
-  * A model of a URL request made using the `XhrIo` class from the closure library.
-  */
+   * A model of a URL request made using the `XhrIo` class from the closure library.
+   */
   class ClosureXhrIoRequest extends ClientRequest::Range {
     DataFlow::SourceNode base;
     boolean static;
 
     ClosureXhrIoRequest() {
-      exists (DataFlow::SourceNode xhrIo | xhrIo = Closure::moduleImport("goog.net.XhrIo") |
+      exists(DataFlow::SourceNode xhrIo | xhrIo = Closure::moduleImport("goog.net.XhrIo") |
         static = true and
         base = xhrIo and
         this = xhrIo.getAMethodCall("send")
@@ -490,9 +489,7 @@ module ClientRequest {
 
     override DataFlow::Node getHost() { none() }
 
-    override DataFlow::Node getADataNode() {
-      result = getArgument([2 .. 3])
-    }
+    override DataFlow::Node getADataNode() { result = getArgument([2 .. 3]) }
 
     /** Gets an event listener with `this` bound to this object. */
     DataFlow::FunctionNode getAnEventListener() {
@@ -550,5 +547,4 @@ module ClientRequest {
       )
     }
   }
-
 }

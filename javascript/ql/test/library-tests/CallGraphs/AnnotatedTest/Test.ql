@@ -21,9 +21,7 @@ class AnnotatedFunction extends Function {
 
   AnnotatedFunction() { name = getAnnotation(this, "name") }
 
-  string getCalleeName() {
-    result = name
-  }
+  string getCalleeName() { result = name }
 }
 
 /** A function annotated with `calls:NAME` */
@@ -32,13 +30,9 @@ class AnnotatedCall extends InvokeExpr {
 
   AnnotatedCall() { calls = getAnnotation(this, "calls") }
 
-  string getCallTargetName() {
-    result = calls
-  }
+  string getCallTargetName() { result = calls }
 
-  AnnotatedFunction getAnExpectedCallee() {
-    result.getCalleeName() = getCallTargetName()
-  }
+  AnnotatedFunction getAnExpectedCallee() { result.getCalleeName() = getCallTargetName() }
 }
 
 query predicate spuriousCallee(AnnotatedCall call, AnnotatedFunction target) {

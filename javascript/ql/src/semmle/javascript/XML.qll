@@ -215,14 +215,14 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
 
 /**
  * An attribute that occurs inside an XML element.
-  *
+ *
  * Examples:
  *
  * ```
  * package="com.example.exampleapp"
  * android:versionCode="1"
  * ```
-*/
+ */
 class XMLAttribute extends @xmlattribute, XMLLocatable {
   /** Gets the name of this attribute. */
   string getName() { xmlAttrs(this, _, result, _, _, _) }

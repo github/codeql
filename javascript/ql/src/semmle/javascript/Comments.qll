@@ -10,7 +10,7 @@ import javascript
  * <pre>
  * // a line comment
  * /* a block
-  *   comment *&#47
+ *   comment *&#47
  * &lt;!-- an HTML line comment
  * </pre>
  */

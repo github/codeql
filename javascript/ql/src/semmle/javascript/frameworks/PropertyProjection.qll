@@ -70,9 +70,7 @@ deprecated class CustomPropertyProjection = PropertyProjection::Range;
  */
 private class SimplePropertyProjection extends PropertyProjection::Range {
   int objectIndex;
-
   int selectorIndex;
-
   boolean singleton;
 
   SimplePropertyProjection() {

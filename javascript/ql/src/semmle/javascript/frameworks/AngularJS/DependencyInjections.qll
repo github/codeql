@@ -126,7 +126,6 @@ private DataFlow::PropWrite getAPropertyDependencyInjection(Function function) {
  */
 private class FunctionWithInjectProperty extends InjectableFunction {
   override Function astNode;
-
   DataFlow::ArrayCreationNode dependencies;
 
   FunctionWithInjectProperty() {
@@ -164,7 +163,6 @@ private class FunctionWithInjectProperty extends InjectableFunction {
  */
 private class FunctionWithExplicitDependencyAnnotation extends InjectableFunction {
   DataFlow::FunctionNode function;
-
   override ArrayExpr astNode;
 
   FunctionWithExplicitDependencyAnnotation() {

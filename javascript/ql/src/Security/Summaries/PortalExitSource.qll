@@ -10,9 +10,7 @@ class PortalExitSource extends DataFlow::AdditionalSource {
 
   PortalExitSource() { this = p.getAnExitNode(true) }
 
-  override predicate isSourceFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
-    any()
-  }
+  override predicate isSourceFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) { any() }
 
   /** Gets the portal of which this is an exit node. */
   Portal getPortal() { result = p }

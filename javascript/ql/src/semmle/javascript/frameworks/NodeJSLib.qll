@@ -136,7 +136,6 @@ module NodeJSLib {
    */
   private class RequestInputAccess extends HTTP::RequestInputAccess {
     RequestExpr request;
-
     string kind;
 
     RequestInputAccess() {
@@ -190,7 +189,6 @@ module NodeJSLib {
 
   class RouteSetup extends CallExpr, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-
     Expr handler;
 
     RouteSetup() {
@@ -527,7 +525,6 @@ module NodeJSLib {
    */
   private class FileStreamRead extends FileSystemReadAccess, DataFlow::CallNode {
     NodeJSFileSystemAccess stream;
-
     string method;
 
     FileStreamRead() {
@@ -773,7 +770,6 @@ module NodeJSLib {
    */
   class ClientRequestHandler extends DataFlow::FunctionNode {
     string handledEvent;
-
     NodeJSClientRequest clientRequest;
 
     ClientRequestHandler() {

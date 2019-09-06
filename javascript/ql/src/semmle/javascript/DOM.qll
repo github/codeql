@@ -288,7 +288,7 @@ module DOM {
     /**
      * A data flow node that should be considered a source of DOM values.
      */
-    abstract class Range extends DataFlow::Node {}
+    abstract class Range extends DataFlow::Node { }
 
     private class DefaultRange extends Range {
       DefaultRange() {
@@ -301,9 +301,7 @@ module DOM {
   }
 
   /** Gets a data flow node that refers directly to a value from the DOM. */
-  DataFlow::SourceNode domValueSource() {
-    result instanceof DomValueSource::Range
-  }
+  DataFlow::SourceNode domValueSource() { result instanceof DomValueSource::Range }
 
   /** Gets a data flow node that may refer to a value from the DOM. */
   private DataFlow::SourceNode domValueRef(DataFlow::TypeTracker t) {
@@ -322,7 +320,7 @@ module DOM {
      *
      * Can be subclassed to add additional such nodes.
      */
-    abstract class Range extends DataFlow::Node {}
+    abstract class Range extends DataFlow::Node { }
 
     private class DefaultRange extends Range {
       DefaultRange() {
@@ -342,9 +340,7 @@ module DOM {
   }
 
   /** Gets a data flow node that directly refers to a DOM `location` object. */
-  DataFlow::SourceNode locationSource() {
-    result instanceof LocationSource::Range
-  }
+  DataFlow::SourceNode locationSource() { result instanceof LocationSource::Range }
 
   /** Gets a reference to a DOM `location` object. */
   private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
@@ -363,7 +359,7 @@ module DOM {
      *
      * Can be subclassed to add additional such nodes.
      */
-    abstract class Range extends DataFlow::Node {}
+    abstract class Range extends DataFlow::Node { }
 
     private class DefaultRange extends Range {
       DefaultRange() { this = DataFlow::globalVarRef("document") }
@@ -373,9 +369,7 @@ module DOM {
   /**
    * Gets a direct reference to the `document` object.
    */
-  DataFlow::SourceNode documentSource() {
-    result instanceof DocumentSource::Range
-  }
+  DataFlow::SourceNode documentSource() { result instanceof DocumentSource::Range }
 
   /**
    * Gets a reference to the `document` object.

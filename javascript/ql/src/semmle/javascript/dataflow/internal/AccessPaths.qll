@@ -78,9 +78,7 @@ private newtype TAccessPath =
   /**
    * A property access on an access path.
    */
-  MkAccessStep(AccessPath base, PropertyName name) {
-    exists(namedPropAccess(base, name, _))
-  }
+  MkAccessStep(AccessPath base, PropertyName name) { exists(namedPropAccess(base, name, _)) }
 
 /**
  * A representation of a (nested) property access on an SSA variable or captured variable

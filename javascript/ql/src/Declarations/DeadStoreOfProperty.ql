@@ -160,7 +160,8 @@ where
   ) and
   // exclude results from non-value definitions from `Object.defineProperty`
   (
-    assign1 instanceof CallToObjectDefineProperty implies
+    assign1 instanceof CallToObjectDefineProperty
+    implies
     assign1.(CallToObjectDefineProperty).hasPropertyAttributeWrite("value", _)
   )
 select assign1.getWriteNode(),
