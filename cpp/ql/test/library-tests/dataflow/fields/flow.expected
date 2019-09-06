@@ -89,6 +89,39 @@ edges
 | C.cpp:27:8:27:11 | `this` parameter in func [s3] | C.cpp:31:10:31:11 | this [s3] |
 | C.cpp:29:10:29:11 | this [s1] | C.cpp:29:10:29:11 | s1 |
 | C.cpp:31:10:31:11 | this [s3] | C.cpp:31:10:31:11 | s3 |
+| D.cpp:21:30:21:31 | b2 [box, elem] | D.cpp:22:10:22:11 | b2 [box, elem] |
+| D.cpp:22:10:22:11 | b2 [box, elem] | D.cpp:22:14:22:20 | call to getBox1 [elem] |
+| D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:22:25:22:31 | call to getElem |
+| D.cpp:28:15:28:24 | new | D.cpp:30:5:30:20 | ... = ... |
+| D.cpp:30:5:30:5 | b [post update] [box, elem] | D.cpp:31:14:31:14 | b [box, elem] |
+| D.cpp:30:5:30:20 | ... = ... | D.cpp:30:8:30:10 | box [post update] [elem] |
+| D.cpp:30:8:30:10 | box [post update] [elem] | D.cpp:30:5:30:5 | b [post update] [box, elem] |
+| D.cpp:31:14:31:14 | b [box, elem] | D.cpp:21:30:21:31 | b2 [box, elem] |
+| D.cpp:35:15:35:24 | new | D.cpp:37:21:37:21 | e |
+| D.cpp:37:5:37:5 | b [post update] [box, elem] | D.cpp:38:14:38:14 | b [box, elem] |
+| D.cpp:37:8:37:10 | box [post update] [elem] | D.cpp:37:5:37:5 | b [post update] [box, elem] |
+| D.cpp:37:21:37:21 | e | D.cpp:37:8:37:10 | box [post update] [elem] |
+| D.cpp:38:14:38:14 | b [box, elem] | D.cpp:21:30:21:31 | b2 [box, elem] |
+| D.cpp:42:15:42:24 | new | D.cpp:44:5:44:26 | ... = ... |
+| D.cpp:44:5:44:5 | b [post update] [box, elem] | D.cpp:45:14:45:14 | b [box, elem] |
+| D.cpp:44:5:44:26 | ... = ... | D.cpp:44:8:44:14 | call to getBox1 [post update] [elem] |
+| D.cpp:44:8:44:14 | call to getBox1 [post update] [elem] | D.cpp:44:5:44:5 | b [post update] [box, elem] |
+| D.cpp:45:14:45:14 | b [box, elem] | D.cpp:21:30:21:31 | b2 [box, elem] |
+| D.cpp:49:15:49:24 | new | D.cpp:51:27:51:27 | e |
+| D.cpp:51:5:51:5 | b [post update] [box, elem] | D.cpp:52:14:52:14 | b [box, elem] |
+| D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] | D.cpp:51:5:51:5 | b [post update] [box, elem] |
+| D.cpp:51:27:51:27 | e | D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] |
+| D.cpp:52:14:52:14 | b [box, elem] | D.cpp:21:30:21:31 | b2 [box, elem] |
+| D.cpp:56:15:56:24 | new | D.cpp:58:5:58:27 | ... = ... |
+| D.cpp:58:5:58:12 | boxfield [post update] [box, elem] | D.cpp:58:5:58:12 | this [post update] [boxfield, box, ... (3)] |
+| D.cpp:58:5:58:12 | this [post update] [boxfield, box, ... (3)] | D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] |
+| D.cpp:58:5:58:27 | ... = ... | D.cpp:58:15:58:17 | box [post update] [elem] |
+| D.cpp:58:15:58:17 | box [post update] [elem] | D.cpp:58:5:58:12 | boxfield [post update] [box, elem] |
+| D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] | D.cpp:63:8:63:10 | `this` parameter in f5b [boxfield, box, ... (3)] |
+| D.cpp:63:8:63:10 | `this` parameter in f5b [boxfield, box, ... (3)] | D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] |
+| D.cpp:64:10:64:17 | boxfield [box, elem] | D.cpp:64:20:64:22 | box [elem] |
+| D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] | D.cpp:64:10:64:17 | boxfield [box, elem] |
+| D.cpp:64:20:64:22 | box [elem] | D.cpp:64:25:64:28 | elem |
 | aliasing.cpp:9:3:9:3 | s [post update] [m1] | aliasing.cpp:25:17:25:19 | ref arg & ... [m1] |
 | aliasing.cpp:9:3:9:22 | ... = ... | aliasing.cpp:9:3:9:3 | s [post update] [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | ... = ... |
@@ -191,6 +224,11 @@ edges
 | B.cpp:19:20:19:24 | elem2 | B.cpp:15:15:15:27 | new | B.cpp:19:20:19:24 | elem2 | elem2 flows from $@ | B.cpp:15:15:15:27 | new | new |
 | C.cpp:29:10:29:11 | s1 | C.cpp:22:12:22:21 | new | C.cpp:29:10:29:11 | s1 | s1 flows from $@ | C.cpp:22:12:22:21 | new | new |
 | C.cpp:31:10:31:11 | s3 | C.cpp:24:16:24:25 | new | C.cpp:31:10:31:11 | s3 | s3 flows from $@ | C.cpp:24:16:24:25 | new | new |
+| D.cpp:22:25:22:31 | call to getElem | D.cpp:28:15:28:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:28:15:28:24 | new | new |
+| D.cpp:22:25:22:31 | call to getElem | D.cpp:35:15:35:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:35:15:35:24 | new | new |
+| D.cpp:22:25:22:31 | call to getElem | D.cpp:42:15:42:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:42:15:42:24 | new | new |
+| D.cpp:22:25:22:31 | call to getElem | D.cpp:49:15:49:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:49:15:49:24 | new | new |
+| D.cpp:64:25:64:28 | elem | D.cpp:56:15:56:24 | new | D.cpp:64:25:64:28 | elem | elem flows from $@ | D.cpp:56:15:56:24 | new | new |
 | aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input | call to user_input |
 | aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input | call to user_input |
 | aliasing.cpp:62:14:62:15 | m1 | aliasing.cpp:60:11:60:20 | call to user_input | aliasing.cpp:62:14:62:15 | m1 | m1 flows from $@ | aliasing.cpp:60:11:60:20 | call to user_input | call to user_input |
