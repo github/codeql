@@ -705,11 +705,6 @@ usertype_uuid(
     unique string uuid: string ref
 );
 
-mangled_name(
-    unique int id: @declaration ref,
-    int mangled_name : @mangledname
-);
-
 is_pod_class(unique int id: @usertype ref);
 is_standard_layout_class(unique int id: @usertype ref);
 
