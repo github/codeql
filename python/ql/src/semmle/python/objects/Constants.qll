@@ -76,6 +76,8 @@ abstract class ConstantObjectInternal extends ObjectInternal {
     /** Gets an AST literal with the same value as this object */
     abstract ImmutableLiteral getLiteral();
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 pragma[nomagic]

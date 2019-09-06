@@ -71,6 +71,8 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         py_exports(this.getSourceModule(), name)
     }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 /** A class representing built-in modules */
@@ -447,6 +449,8 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
 
     /* Modules aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 

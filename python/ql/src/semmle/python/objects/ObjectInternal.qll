@@ -187,6 +187,8 @@ class ObjectInternal extends TObject {
         this.(ObjectInternal).attribute(name, _, _)
     }
 
+    abstract predicate isNotSubscriptedType();
+
 }
 
 
@@ -276,6 +278,8 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
 
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 
@@ -358,6 +362,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     override predicate useOriginAsLegacyObject() { none() }
 
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 
@@ -444,6 +450,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     override predicate contextSensitiveCallee() { none() }
 
     override ObjectInternal getIterNext() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 
@@ -629,6 +637,8 @@ class DecoratedFunction extends ObjectInternal, TDecoratedFunction {
     override predicate contextSensitiveCallee() { none() }
 
     override predicate useOriginAsLegacyObject() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 
