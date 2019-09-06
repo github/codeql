@@ -364,6 +364,7 @@ private module SsaImpl {
       defUseRank(v, b2, 1, i2)
     }
   }
+
   private import AdjacentUsesImpl
 
   /**
@@ -428,6 +429,7 @@ private module SsaImpl {
     }
   }
 }
+
 private import SsaImpl
 private import SsaDefReaches
 import SsaPublic
