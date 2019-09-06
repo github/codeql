@@ -530,7 +530,7 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
 
 /**
  * The C/C++ boolean type. See 4.2.  This is the C `_Bool` type
- * or the C++ `bool` type.  For example,
+ * or the C++ `bool` type.  For example:
  * ```
  * extern bool a, b;   // C++
  * _Bool c, d;         // C
@@ -545,7 +545,7 @@ class BoolType extends IntegralType {
 /**
  * The C/C++ character types. See 4.3.  This includes the `char`,
  * `signed char` and `unsigned char` types, all of which are
- * distinct from one another.  For example,
+ * distinct from one another.  For example:
  * ```
  * char a, b;
  * signed char c, d;
@@ -556,7 +556,7 @@ abstract class CharType extends IntegralType { }
 
 /**
  * The C/C++ `char` type (which is distinct from `signed char` and
- * `unsigned char`).  For example,
+ * `unsigned char`).  For example:
  * ```
  * char a, b;
  * ```
@@ -841,8 +841,10 @@ class Char32Type extends IntegralType {
 }
 
 /**
- * The (primitive) type of the C++11 `nullptr` constant. It is the
- * unspeakable type given by `decltype(nullptr)`.
+ * The (primitive) type of the C++11 `nullptr` constant.  It is a
+ * distinct type, denoted by `decltype(nullptr)`, that is not itself a pointer
+ * type or a pointer to member type.  The `<cstddef>` header usually defines
+ * the `std::nullptr_t` type as follows:
  * ```
  * typedef decltype(nullptr) nullptr_t;
  * ```
@@ -857,12 +859,11 @@ class NullPointerType extends BuiltInType {
  * A C/C++ derived type.
  *
  * These are pointer and reference types, array and GNU vector types, and `const` and `volatile` types.
- * In all cases, the type is formed from a single base type.  For example,
+ * In all cases, the type is formed from a single base type.  For example:
  * ```
  * int *pi;
  * int &ri = *pi;
  * const float fa[40];
- * decltype(pi) dpi;
  * ```
  */
 class DerivedType extends Type, @derivedtype {
@@ -908,7 +909,7 @@ class DerivedType extends Type, @derivedtype {
 }
 
 /**
- * An instance of the C++11 `decltype` operator.  For example,
+ * An instance of the C++11 `decltype` operator.  For example:
  * ```
  * int a;
  * decltype(a) b;
@@ -1165,8 +1166,8 @@ class ArrayType extends DerivedType {
  * In both Clang and GNU compilers, vector types can be introduced using the
  * `__attribute__((vector_size(byte_size)))` syntax. The Clang compiler also
  * allows vector types to be introduced using the `ext_vector_type`,
- * `neon_vector_type`, and `neon_polyvector_typ`e attributes (all of which take
- * an element type rather than a byte size).
+ * `neon_vector_type`, and `neon_polyvector_type` attributes (all of which take
+ * an element count rather than a byte size).
  * ```
  * typedef int v4si __attribute__ (( vector_size(4*sizeof(int)) ));
  * v4si v = { 1, 2, 3, 4 };
