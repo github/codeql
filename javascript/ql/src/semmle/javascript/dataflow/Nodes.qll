@@ -674,7 +674,12 @@ class ClassNode extends DataFlow::SourceNode {
    */
   DataFlow::SourceNode getAClassReference(DataFlow::TypeTracker t) {
     t.start() and
-    result.(AnalyzedNode).getAValue() = getAbstractClassValue()
+    result.(AnalyzedNode).getAValue() = getAbstractClassValue() and
+    (
+      not CallGraph::isIndefiniteGlobal(result)
+      or
+      result.getAstNode().getFile() = this.getAstNode().getFile()
+    )
     or
     exists(DataFlow::TypeTracker t2 | result = getAClassReference(t2).track(t2, t))
   }
