@@ -158,9 +158,7 @@ class SourceNode extends DataFlow::Node {
   /**
    * Gets a source node whose value is stored in a property of this node.
    */
-  DataFlow::SourceNode getAPropertySource() {
-    result.flowsTo(getAPropertyWrite().getRhs())
-  }
+  DataFlow::SourceNode getAPropertySource() { result.flowsTo(getAPropertyWrite().getRhs()) }
 
   /**
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
@@ -168,9 +166,7 @@ class SourceNode extends DataFlow::Node {
    * See `TypeTracker` for more details about how to use this.
    */
   pragma[inline]
-  DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) {
-    t = t2.step(this, result)
-  }
+  DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 
   /**
    * Gets a node that may flow into this one using one heap and/or interprocedural step.

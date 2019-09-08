@@ -227,6 +227,7 @@ private module Cached {
     )
   }
 }
+
 import Cached
 
 predicate viableCallable = viableImpl/1;
@@ -321,7 +322,6 @@ abstract class DataFlowCall extends TDataFlowCall {
 /** A non-delegate C# call relevant for data flow. */
 class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   private ControlFlow::Nodes::ElementNode cfn;
-
   private DispatchCall dc;
 
   NonDelegateDataFlowCall() { this = TNonDelegateCall(cfn, dc) }
@@ -352,7 +352,6 @@ abstract class DelegateDataFlowCall extends DataFlowCall {
 /** An explicit delegate call relevant for data flow. */
 class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateCall {
   private ControlFlow::Nodes::ElementNode cfn;
-
   private DelegateCall dc;
 
   ExplicitDelegateDataFlowCall() { this = TExplicitDelegateCall(cfn, dc) }
@@ -379,7 +378,6 @@ class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelega
  */
 class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelegateCall {
   private ControlFlow::Nodes::ElementNode cfn;
-
   private DelegateArgumentToLibraryCallable arg;
 
   ImplicitDelegateDataFlowCall() { this = TImplicitDelegateCall(cfn, arg) }

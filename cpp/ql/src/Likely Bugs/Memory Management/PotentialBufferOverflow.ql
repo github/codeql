@@ -10,8 +10,9 @@
  *       security
  *       external/cwe/cwe-676
  * @deprecated This query is deprecated, use
- *             Security/CWE/CWE-120/OverrunWrite.ql and
- *             Security/CWE/CWE-120/OverrunWriteFloat.ql instead.
+ *             Potentially overrunning write (`cpp/overrunning-write`) and
+ *             Potentially overrunning write with float to string conversion
+ *             (`cpp/overrunning-write-with-float) instead.
  */
 import cpp
 import semmle.code.cpp.commons.Buffer

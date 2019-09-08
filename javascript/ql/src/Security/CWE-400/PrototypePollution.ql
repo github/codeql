@@ -1,10 +1,10 @@
 /**
  * @name Prototype pollution
  * @description Recursively merging a user-controlled object into another object
- *              can allow an attacker to modify the built-in Object prototype. 
+ *              can allow an attacker to modify the built-in Object prototype.
  * @kind path-problem
- * @problem.severity warning
- * @precision medium
+ * @problem.severity error
+ * @precision high
  * @id js/prototype-pollution
  * @tags security
  *       external/cwe/cwe-250
@@ -17,12 +17,11 @@ import DataFlow::PathGraph
 import semmle.javascript.dependencies.Dependencies
 
 from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Dependency dependency,
-  string dependencyId
+  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string moduleName,
+  Locatable dependencyLoc
 where
   cfg.hasFlowPath(source, sink) and
-  dependency = sink.getNode().(Sink).getDependency() and
-  dependency.info(dependencyId, _)
+  sink.getNode().(Sink).dependencyInfo(moduleName, dependencyLoc)
 select sink.getNode(), source, sink,
   "Prototype pollution caused by merging a user-controlled value from $@ using a vulnerable version of $@.",
-  source, "here", dependency, dependencyId
+  source, "here", dependencyLoc, moduleName

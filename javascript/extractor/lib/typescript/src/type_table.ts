@@ -974,8 +974,10 @@ export class TypeTable {
             if (superType == null) continue;
             let baseTypeSymbol = superType.symbol;
             if (baseTypeSymbol == null) continue;
+            let baseId = this.getSymbolId(baseTypeSymbol);
+            // Note: take care not to perform a recursive call between the two `push` calls.
             this.baseTypes.symbols.push(symbolId);
-            this.baseTypes.baseTypeSymbols.push(this.getSymbolId(baseTypeSymbol));
+            this.baseTypes.baseTypeSymbols.push(baseId);
           }
         }
       }

@@ -19,7 +19,6 @@ import semmle.code.csharp.commons.ComparisonTest
 /** A comparison of an index variable with the length of an array. */
 class IndexGuard extends ComparisonTest {
   VariableAccess indexAccess;
-
   Variable array;
 
   IndexGuard() {

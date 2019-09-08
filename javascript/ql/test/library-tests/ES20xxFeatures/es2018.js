@@ -18,3 +18,8 @@ async function foo() {
 async function* readLines(path) {
   // ...
 }
+
+class C {
+  async *asyncMeth() {}
+  async *[Symbol.asyncIterator]() {}
+}

@@ -46,7 +46,6 @@ module TaintedPath {
      */
     class PosixPath extends DataFlow::FlowLabel {
       Normalization normalization;
-
       Relativeness relativeness;
 
       PosixPath() { this = normalization + "-" + relativeness + "-posix-path" }
@@ -112,7 +111,6 @@ module TaintedPath {
    */
   class NormalizingPathCall extends DataFlow::CallNode {
     DataFlow::Node input;
-
     DataFlow::Node output;
 
     NormalizingPathCall() {
@@ -137,7 +135,6 @@ module TaintedPath {
    */
   class ResolvingPathCall extends DataFlow::CallNode {
     DataFlow::Node input;
-
     DataFlow::Node output;
 
     ResolvingPathCall() {
@@ -170,7 +167,6 @@ module TaintedPath {
    */
   class NormalizingRelativePathCall extends DataFlow::CallNode {
     DataFlow::Node input;
-
     DataFlow::Node output;
 
     NormalizingRelativePathCall() {
@@ -195,7 +191,6 @@ module TaintedPath {
    */
   class PreservingPathCall extends DataFlow::CallNode {
     DataFlow::Node input;
-
     DataFlow::Node output;
 
     PreservingPathCall() {
@@ -301,9 +296,7 @@ module TaintedPath {
    */
   class IsAbsoluteSanitizer extends DataFlow::LabeledBarrierGuardNode {
     DataFlow::Node operand;
-
     boolean polarity;
-
     boolean negatable;
 
     IsAbsoluteSanitizer() {

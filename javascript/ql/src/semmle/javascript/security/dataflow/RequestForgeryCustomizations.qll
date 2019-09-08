@@ -41,7 +41,6 @@ module RequestForgery {
    */
   private class ClientRequestUrlAsSink extends Sink {
     ClientRequest request;
-
     string kind;
 
     ClientRequestUrlAsSink() {

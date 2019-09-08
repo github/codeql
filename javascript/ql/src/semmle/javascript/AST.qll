@@ -160,8 +160,8 @@ class TopLevel extends @toplevel, StmtContainer {
     )
     or
     // many variables, and they all have short names
-    count (VarDecl d | d.getTopLevel() = this) > 100 and
-    forall (VarDecl d | d.getTopLevel() = this | d.getName().length() <= 2)
+    count(VarDecl d | d.getTopLevel() = this) > 100 and
+    forall(VarDecl d | d.getTopLevel() = this | d.getName().length() <= 2)
   }
 
   /** Holds if this toplevel is an externs definitions file. */

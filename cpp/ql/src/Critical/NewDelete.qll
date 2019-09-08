@@ -47,7 +47,7 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
       or
       exists(Expr e |
         allocExprOrIndirect(e, kind) and
-        DataFlow::localFlow(DataFlow::exprNode(e), DataFlow::exprNode(rtn.getExpr()))
+        DataFlow::localExprFlow(e, rtn.getExpr())
       )
     )
   )

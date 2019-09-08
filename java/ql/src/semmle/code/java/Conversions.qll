@@ -82,7 +82,6 @@ class ReturnConversionSite extends ConversionSite {
  */
 class InvocationConversionContext extends ConversionSite {
   Call c;
-
   int index;
 
   InvocationConversionContext() { this = c.getArgument(index) }

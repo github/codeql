@@ -89,7 +89,8 @@ private module RangeAnalysisCache {
      */
     cached
     predicate bounded(Expr e, Bound b, int delta, boolean upper, Reason reason) {
-      bounded(e, b, delta, upper, _, _, reason)
+      bounded(e, b, delta, upper, _, _, reason) and
+      bestBound(e, b, delta, upper)
     }
   }
 
@@ -101,8 +102,20 @@ private module RangeAnalysisCache {
     guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _)
   }
 }
+
 private import RangeAnalysisCache
 import RangeAnalysisPublic
+
+/**
+ * Holds if `b + delta` is a valid bound for `e` and this is the best such delta.
+ * - `upper = true`  : `e <= b + delta`
+ * - `upper = false` : `e >= b + delta`
+ */
+private predicate bestBound(Expr e, Bound b, int delta, boolean upper) {
+  delta = min(int d | bounded(e, b, d, upper, _, _, _)) and upper = true
+  or
+  delta = max(int d | bounded(e, b, d, upper, _, _, _)) and upper = false
+}
 
 /**
  * Holds if `comp` corresponds to:

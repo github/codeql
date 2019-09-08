@@ -1,4 +1,3 @@
-
 /**
  * Provides classes for working with [Koa](https://koajs.com) applications.
  */
@@ -91,17 +90,13 @@ module Koa {
      */
     RouteHandler getRouteHandler() { result = rh }
 
-    predicate flowsTo(DataFlow::Node nd) {
-      ref(DataFlow::TypeTracker::end()).flowsTo(nd)
-    }
+    predicate flowsTo(DataFlow::Node nd) { ref(DataFlow::TypeTracker::end()).flowsTo(nd) }
 
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
       result = this
       or
-      exists(DataFlow::TypeTracker t2 |
-        result = ref(t2).track(t2, t)
-      )
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
   }
 
@@ -168,7 +163,6 @@ module Koa {
    */
   private class RequestInputAccess extends HTTP::RequestInputAccess {
     RouteHandler rh;
-
     string kind;
 
     RequestInputAccess() {

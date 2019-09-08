@@ -77,7 +77,8 @@ class InvokeNode extends DataFlow::SourceNode {
    * x.push(x, ...args, y, ...more);      // 'args' and 'more' are a spread arguments
    * Array.prototype.push.apply(x, args); // 'args' is a spread argument
    * ```
-  .*/
+   *  .
+   */
   DataFlow::Node getASpreadArgument() { result = impl.getASpreadArgument() }
 
   /** Gets the number of arguments of this invocation, if it can be determined. */
@@ -866,13 +867,12 @@ module ClassNode {
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
     override Function astNode;
-
     AbstractFunction function;
 
     FunctionStyleClass() {
       function.getFunction() = astNode and
       (
-        exists (DataFlow::PropRef read |
+        exists(DataFlow::PropRef read |
           read.getPropertyName() = "prototype" and
           read.getBase().analyze().getAValue() = function
         )

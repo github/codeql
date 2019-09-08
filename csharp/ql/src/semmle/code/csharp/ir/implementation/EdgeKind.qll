@@ -76,7 +76,6 @@ DefaultEdge defaultEdge() { result = TDefaultEdge() }
  */
 class CaseEdge extends EdgeKind, TCaseEdge {
   string minValue;
-
   string maxValue;
 
   CaseEdge() { this = TCaseEdge(minValue, maxValue) }

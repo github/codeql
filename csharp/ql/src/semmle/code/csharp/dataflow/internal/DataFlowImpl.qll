@@ -1655,11 +1655,8 @@ module PathGraph {
  */
 private class PathNodeMid extends PathNode, TPathNodeMid {
   Node node;
-
   CallContext cc;
-
   AccessPath ap;
-
   Configuration config;
 
   PathNodeMid() { this = TPathNodeMid(node, cc, ap, config) }
@@ -1722,7 +1719,6 @@ private class PathNodeSource extends PathNodeMid {
  */
 private class PathNodeSink extends PathNode, TPathNodeSink {
   Node node;
-
   Configuration config;
 
   PathNodeSink() { this = TPathNodeSink(node, config) }
@@ -2190,11 +2186,8 @@ private module FlowExploration {
 
   private class PartialPathNodePriv extends PartialPathNode {
     Node node;
-
     CallContext cc;
-
     PartialAccessPath ap;
-
     Configuration config;
 
     PartialPathNodePriv() { this = TPartialPathNodeMk(node, cc, ap, config) }
@@ -2459,6 +2452,7 @@ private module FlowExploration {
     )
   }
 }
+
 import FlowExploration
 
 private predicate partialFlow(

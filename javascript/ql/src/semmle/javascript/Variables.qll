@@ -447,7 +447,7 @@ class GlobalVarDecl extends VarDecl {
 
 /**
  * An array pattern.
-  *
+ *
  * Example:
  *
  * ```
@@ -456,7 +456,7 @@ class GlobalVarDecl extends VarDecl {
  *   var c;
  * }
  * ```
-*/
+ */
 class ArrayPattern extends DestructuringPattern, @arraypattern {
   /** Gets the `i`th element of this array pattern. */
   Expr getElement(int i) {
@@ -542,7 +542,7 @@ class ObjectPattern extends DestructuringPattern, @objectpattern {
 
 /**
  * A property pattern in an object pattern.
-  *
+ *
  * Examples:
  *
  * ```
@@ -551,7 +551,7 @@ class ObjectPattern extends DestructuringPattern, @objectpattern {
  *   var c;
  * }
  * ```
-*/
+ */
 class PropertyPattern extends @property, ASTNode {
   PropertyPattern() {
     // filter out ordinary properties
@@ -831,7 +831,7 @@ class DeclarationSpace extends string {
  * function id(x: String) : any {
  *   return x;
  * }
- * ``` 
+ * ```
  */
 class LexicalName extends @lexical_name {
   /** Gets the scope in which this name was declared. */

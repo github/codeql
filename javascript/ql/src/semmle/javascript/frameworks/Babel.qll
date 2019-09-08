@@ -53,7 +53,6 @@ module Babel {
    */
   class Plugin extends JSONValue {
     Config cfg;
-
     string pluginName;
 
     Plugin() { this = cfg.getPluginConfig(pluginName) }
@@ -141,13 +140,9 @@ module Babel {
    */
   private class BabelRootTransformedPathExpr extends PathExpr, Expr {
     RootImportConfig plugin;
-
     string rawPath;
-
     string prefix;
-
     string mappedPrefix;
-
     string suffix;
 
     BabelRootTransformedPathExpr() {

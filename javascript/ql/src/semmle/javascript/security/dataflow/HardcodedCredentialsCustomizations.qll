@@ -29,9 +29,7 @@ module HardcodedCredentials {
   class ConstantStringSource extends Source, DataFlow::ValueNode {
     override ConstantString astNode;
 
-    ConstantStringSource() {
-      not astNode.getStringValue() = ""
-    }
+    ConstantStringSource() { not astNode.getStringValue() = "" }
   }
 
   /**

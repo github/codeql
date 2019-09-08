@@ -17,7 +17,6 @@ import DataFlow::PathGraph
  */
 class DecodingCall extends CallNode {
   string kind;
-
   Node input;
 
   DecodingCall() {

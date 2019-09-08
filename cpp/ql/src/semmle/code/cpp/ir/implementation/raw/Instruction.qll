@@ -922,7 +922,6 @@ class ConvertInstruction extends UnaryInstruction {
  */
 class InheritanceConversionInstruction extends UnaryInstruction {
   Language::Class baseClass;
-
   Language::Class derivedClass;
 
   InheritanceConversionInstruction() {

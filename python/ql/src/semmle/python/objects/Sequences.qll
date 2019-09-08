@@ -131,6 +131,8 @@ class BuiltinTupleObjectInternal extends TBuiltinTuple, TupleObjectInternal {
 
     override predicate useOriginAsLegacyObject() { none() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 /** A tuple declared by a tuple expression in the Python source code */
@@ -164,6 +166,8 @@ class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
 
     override predicate useOriginAsLegacyObject() { none() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 /** A tuple created by a `*` parameter */
@@ -194,6 +198,8 @@ class VarargsTupleObjectInternal extends TVarargsTuple,  TupleObjectInternal {
     }
 
     override predicate useOriginAsLegacyObject() { any() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 
@@ -276,5 +282,7 @@ class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectIntern
     override predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
 
     override predicate useOriginAsLegacyObject() { any() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }

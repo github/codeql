@@ -32,7 +32,6 @@ predicate isResourceUrlWhitelist(
  */
 class ResourceUrlWhitelistEntry extends Expr {
   DataFlow::MethodCallNode setupCall;
-
   string pattern;
 
   ResourceUrlWhitelistEntry() {

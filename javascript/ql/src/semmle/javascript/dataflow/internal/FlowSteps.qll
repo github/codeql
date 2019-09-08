@@ -402,6 +402,7 @@ private module CachedSteps {
     DataFlow::thisNode(f).hasPropertyWrite(prop, rhs)
   }
 }
+
 import CachedSteps
 
 /**
@@ -431,11 +432,8 @@ newtype TPathSummary =
  */
 class PathSummary extends TPathSummary {
   Boolean hasReturn;
-
   Boolean hasCall;
-
   FlowLabel start;
-
   FlowLabel end;
 
   PathSummary() { this = MkPathSummary(hasReturn, hasCall, start, end) }
@@ -447,9 +445,7 @@ class PathSummary extends TPathSummary {
   boolean hasCall() { result = hasCall }
 
   /** Holds if the path represented by this summary contains no unmatched call or return steps. */
-  predicate isLevel() {
-    hasReturn = false and hasCall = false
-  }
+  predicate isLevel() { hasReturn = false and hasCall = false }
 
   /** Gets the flow label describing the value at the start of this flow path. */
   FlowLabel getStartLabel() { result = start }

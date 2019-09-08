@@ -205,6 +205,7 @@ private module TrackedVariablesImpl {
 
   class TrackedField extends TrackedVar, SsaSourceField { }
 }
+
 private import TrackedVariablesImpl
 
 cached
@@ -808,6 +809,7 @@ private module SsaImpl {
       defUseRank(v, b2, 1, i2)
     }
   }
+
   private import AdjacentUsesImpl
 
   /**
@@ -868,6 +870,7 @@ private module SsaImpl {
     }
   }
 }
+
 private import SsaImpl
 private import SsaDefReaches
 import SsaPublic

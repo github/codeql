@@ -55,6 +55,8 @@ abstract class InstanceObject extends ObjectInternal {
 
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 private predicate self_variable_reaching_init_exit(EssaVariable self) {
@@ -387,6 +389,8 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 private int lengthFromClass(ClassObjectInternal cls) {
@@ -498,6 +502,8 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     override predicate useOriginAsLegacyObject() { any() }
 
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 

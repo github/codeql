@@ -95,6 +95,7 @@ private module Internal {
     exists(BasicBlock predBB | succBB(predBB, bb) | reachableBB(predBB))
   }
 }
+
 private import Internal
 
 /** Holds if `dom` is an immediate dominator of `bb`. */

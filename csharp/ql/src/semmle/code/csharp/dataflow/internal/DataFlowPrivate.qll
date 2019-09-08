@@ -269,7 +269,6 @@ module LocalFlow {
 /** An argument of a C# call. */
 private class Argument extends Expr {
   private Expr call;
-
   private int arg;
 
   Argument() {
@@ -442,6 +441,7 @@ private module Cached {
     )
   }
 }
+
 import Cached
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -589,6 +589,7 @@ private module ParameterNodes {
       )
     }
   }
+
   private import ImplicitCapturedParameterNodeImpl
 
   /**
@@ -622,6 +623,7 @@ private module ParameterNodes {
     }
   }
 }
+
 import ParameterNodes
 
 /** A data flow node that represents a call argument. */
@@ -753,7 +755,6 @@ private module ArgumentNodes {
    */
   class ImplicitCapturedArgumentNode extends ArgumentNode, TImplicitCapturedArgumentNode {
     private LocalScopeVariable v;
-
     private ControlFlow::Nodes::ElementNode cfn;
 
     ImplicitCapturedArgumentNode() { this = TImplicitCapturedArgumentNode(cfn, v) }
@@ -824,6 +825,7 @@ private module ArgumentNodes {
     override string toString() { result = "malloc" }
   }
 }
+
 import ArgumentNodes
 
 /** A data flow node that represents a value returned by a callable. */
@@ -937,6 +939,7 @@ private module ReturnNodes {
     }
   }
 }
+
 import ReturnNodes
 
 /** A data flow node that represents the output of a call. */
@@ -1017,7 +1020,6 @@ private module OutNodes {
    */
   class ImplicitDelegateOutNode extends OutNode, TImplicitDelegateOutNode {
     private ControlFlow::Nodes::ElementNode cfn;
-
     private ControlFlow::Nodes::ElementNode call;
 
     ImplicitDelegateOutNode() { this = TImplicitDelegateOutNode(cfn, call) }
@@ -1045,6 +1047,7 @@ private module OutNodes {
     override string toString() { result = "[output] " + cfn }
   }
 }
+
 import OutNodes
 
 private class FlowThroughLibraryCallableOutRefConfiguration extends ControlFlowReachabilityConfiguration {
@@ -1146,9 +1149,7 @@ private predicate hasNonlocalValue(FieldLikeRead flr) {
 /** A write to a static field/property. */
 private class StaticFieldLikeJumpNode extends NonLocalJumpNode, ExprNode {
   FieldLike fl;
-
   FieldLikeRead flr;
-
   ExprNode succ;
 
   StaticFieldLikeJumpNode() {
@@ -1300,6 +1301,7 @@ private module PostUpdateNodes {
     override string toString() { result = "[post] " + cfn.toString() }
   }
 }
+
 private import PostUpdateNodes
 
 /** A node that performs a type cast. */

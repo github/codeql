@@ -7,6 +7,7 @@
  * @tags meta
  * @id js/meta/called-functions
  */
+
 import javascript
 import CallGraphQuality
 

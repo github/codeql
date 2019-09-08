@@ -69,6 +69,7 @@ module HeuristicNames {
     result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
   }
 }
+
 private import HeuristicNames
 
 /** An expression that might contain sensitive data. */

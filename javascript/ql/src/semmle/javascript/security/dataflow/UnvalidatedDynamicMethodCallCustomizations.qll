@@ -98,7 +98,6 @@ module UnvalidatedDynamicMethodCall {
    */
   class FunctionCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override EqualityTest astNode;
-
     TypeofExpr t;
 
     FunctionCheck() {

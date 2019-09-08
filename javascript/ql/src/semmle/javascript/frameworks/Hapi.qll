@@ -82,7 +82,6 @@ module Hapi {
    */
   private class RequestInputAccess extends HTTP::RequestInputAccess {
     RouteHandler rh;
-
     string kind;
 
     RequestInputAccess() {
@@ -176,7 +175,6 @@ module Hapi {
    */
   class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-
     Expr handler;
 
     RouteSetup() {
@@ -200,9 +198,7 @@ module Hapi {
       t.start() and
       result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 |
-        result = getARouteHandler(t2).backtrack(t2, t)
-      )
+      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
     Expr getRouteHandlerExpr() { result = handler }
@@ -236,8 +232,6 @@ module Hapi {
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    TrackedRouteHandlerCandidateWithSetup() {
-      this = any(RouteSetup s).getARouteHandler()
-    }
+    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
 }

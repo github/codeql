@@ -3,6 +3,7 @@
  * bypass of sensitive action guards, as well as extension points for
  * adding your own.
  */
+
 import javascript
 private import semmle.javascript.security.SensitiveActions
 

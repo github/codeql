@@ -196,9 +196,7 @@ class MemoryOperand extends Operand {
  */
 class NonPhiOperand extends Operand {
   Instruction useInstr;
-
   Instruction defInstr;
-
   OperandTag tag;
 
   NonPhiOperand() {
@@ -231,7 +229,6 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
 
 class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOperand {
   override MemoryOperandTag tag;
-
   Overlap overlap;
 
   NonPhiMemoryOperand() { this = TNonPhiMemoryOperand(useInstr, tag, defInstr, overlap) }
@@ -359,7 +356,6 @@ class ThisArgumentOperand extends ArgumentOperand {
  */
 class PositionalArgumentOperand extends ArgumentOperand {
   override PositionalArgumentOperandTag tag;
-
   int argIndex;
 
   PositionalArgumentOperand() { argIndex = tag.getArgIndex() }
@@ -413,11 +409,8 @@ class SideEffectOperand extends TypedOperand {
  */
 class PhiInputOperand extends MemoryOperand, TPhiOperand {
   PhiInstruction useInstr;
-
   Instruction defInstr;
-
   IRBlock predecessorBlock;
-
   Overlap overlap;
 
   PhiInputOperand() { this = TPhiOperand(useInstr, defInstr, predecessorBlock, overlap) }

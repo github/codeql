@@ -280,7 +280,6 @@ module Vue {
    */
   class ExtendedInstance extends Instance, MkExtendedInstance {
     VueExtend extend;
-
     DataFlow::NewNode sub;
 
     ExtendedInstance() { this = MkExtendedInstance(extend, sub) }

@@ -163,6 +163,8 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 
     override predicate useOriginAsLegacyObject() { none() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 
@@ -288,6 +290,8 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     override predicate useOriginAsLegacyObject() { none() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 /** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`.
@@ -382,6 +386,8 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 
     override predicate useOriginAsLegacyObject() { none() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 /** Class representing bound-methods.
@@ -472,5 +478,7 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     override predicate contextSensitiveCallee() {
         this.getFunction().contextSensitiveCallee()
     }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }

@@ -36,16 +36,16 @@ predicate isDeclaration(Expr e) {
  */
 predicate isGetterProperty(string name) {
   // there is a call of the form `Object.defineProperty(..., name, descriptor)` ...
-  exists(CallToObjectDefineProperty defProp |
-    name = defProp.getPropertyName() |
+  exists(CallToObjectDefineProperty defProp | name = defProp.getPropertyName() |
     // ... where `descriptor` defines a getter
-    defProp.hasPropertyAttributeWrite("get", _) or
+    defProp.hasPropertyAttributeWrite("get", _)
+    or
     // ... where `descriptor` may define a getter
-    exists (DataFlow::SourceNode descriptor |
-      descriptor.flowsTo(defProp.getPropertyDescriptor()) |
-      descriptor.isIncomplete(_) or
+    exists(DataFlow::SourceNode descriptor | descriptor.flowsTo(defProp.getPropertyDescriptor()) |
+      descriptor.isIncomplete(_)
+      or
       // minimal escape analysis for the descriptor
-      exists (DataFlow::InvokeNode invk |
+      exists(DataFlow::InvokeNode invk |
         not invk = defProp and
         descriptor.flowsTo(invk.getAnArgument())
       )

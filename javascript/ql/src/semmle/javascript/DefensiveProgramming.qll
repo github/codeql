@@ -84,7 +84,6 @@ module Internal {
    */
   private class CompositeUndefinedNullTestPart extends DefensiveExpressionTest {
     UndefinedNullTest test;
-
     boolean polarity;
 
     CompositeUndefinedNullTestPart() {
@@ -114,7 +113,6 @@ module Internal {
    */
   private class SanityCheckingUndefinedNullGuard extends DefensiveExpressionTest {
     UndefinedNullTest test;
-
     boolean polarity;
 
     SanityCheckingUndefinedNullGuard() {
@@ -152,7 +150,6 @@ module Internal {
    */
   private class NullUndefinedComparison extends UndefinedNullTest {
     Expr operand;
-
     InferredType op2type;
 
     NullUndefinedComparison() {
@@ -268,7 +265,6 @@ module Internal {
    */
   private class UndefinedNullTruthinessGuard extends DefensiveExpressionTest {
     VarRef guardVar;
-
     boolean polarity;
 
     UndefinedNullTruthinessGuard() {
@@ -296,7 +292,6 @@ module Internal {
    */
   private class UndefinedNullTypeGuard extends DefensiveExpressionTest {
     UndefinedNullTest test;
-
     boolean polarity;
 
     UndefinedNullTypeGuard() {
@@ -324,7 +319,6 @@ module Internal {
    */
   private class TypeofTest extends EqualityTest {
     Expr operand;
-
     TypeofTag tag;
 
     TypeofTest() {
@@ -362,7 +356,6 @@ module Internal {
    */
   private class FunctionTypeGuard extends DefensiveExpressionTest {
     TypeofTest test;
-
     boolean polarity;
 
     FunctionTypeGuard() {

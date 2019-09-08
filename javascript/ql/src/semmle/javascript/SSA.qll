@@ -384,6 +384,7 @@ private module Internal {
     rewindReads(bb, i, v) = 1 and result = getDefReachingEndOf(bb.getImmediateDominator(), v)
   }
 }
+
 private import Internal
 
 /**

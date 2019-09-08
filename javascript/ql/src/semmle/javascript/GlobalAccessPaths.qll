@@ -1,6 +1,7 @@
 /**
  * Provides predicates for associating qualified names with data flow nodes.
  */
+
 import javascript
 
 module GlobalAccessPath {
@@ -13,14 +14,10 @@ module GlobalAccessPath {
     }
 
     /** Gets the SSA definition of this variable. */
-    SsaExplicitDefinition getSsaDefinition() {
-      result.getSourceVariable() = this
-    }
+    SsaExplicitDefinition getSsaDefinition() { result.getSourceVariable() = this }
 
     /** Gets the data flow node representing the value of this variable, if one exists. */
-    DataFlow::Node getValue() {
-      result = getSsaDefinition().getRhsNode()
-    }
+    DataFlow::Node getValue() { result = getSsaDefinition().getRhsNode() }
   }
 
   /**
@@ -39,7 +36,7 @@ module GlobalAccessPath {
    * (function(ns) {
    *   ns.x;            // reference to 'NS.x'
    * })(NS = NS || {});
-   * ``` 
+   * ```
    */
   cached
   string fromReference(DataFlow::Node node) {
@@ -59,9 +56,7 @@ module GlobalAccessPath {
       result = fromReference(prop.getBase()) + "." + prop.getPropertyName()
     )
     or
-    exists(Closure::ClosureNamespaceAccess acc | node = acc |
-      result = acc.getClosureNamespace()
-    )
+    exists(Closure::ClosureNamespaceAccess acc | node = acc | result = acc.getClosureNamespace())
     or
     exists(PropertyProjection proj | node = proj |
       proj.isSingletonProjection() and
@@ -101,9 +96,7 @@ module GlobalAccessPath {
    * foo = foo || {};
    * ```
    */
-  private predicate isSelfAssignment(DataFlow::Node rhs) {
-    fromRhs(rhs) = fromReference(rhs)
-  }
+  private predicate isSelfAssignment(DataFlow::Node rhs) { fromRhs(rhs) = fromReference(rhs) }
 
   /**
    * Holds if there is an assignment to `accessPath` in `file`, not counting
@@ -139,7 +132,7 @@ module GlobalAccessPath {
    * foo = { bar: class {} };
    *
    * (function(f) {
-   *   f.bar = class {} 
+   *   f.bar = class {}
    *  })(foo = foo || {});
    * ```
    */

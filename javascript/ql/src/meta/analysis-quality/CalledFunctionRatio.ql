@@ -7,7 +7,8 @@
  * @tags meta
  * @id js/meta/called-function-ratio
  */
+
 import javascript
 import CallGraphQuality
 
-select projectRoot(), 100.0 * count(FunctionWithCallers f) / (float) count(RelevantFunction f)
+select projectRoot(), 100.0 * count(FunctionWithCallers f) / count(RelevantFunction f).(float)

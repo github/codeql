@@ -1,7 +1,9 @@
 import semmle.code.cpp.Type
 
+/** For upgraded databases without mangled name info. */
 pragma[noinline]
 private string getTopLevelClassName(@usertype c) {
+  not mangled_name(_, _) and
   isClass(c) and
   usertypes(c, result, _) and
   not namespacembrs(_, c) and // not in a namespace
@@ -9,24 +11,76 @@ private string getTopLevelClassName(@usertype c) {
   not class_instantiation(c, _) // not a template instantiation
 }
 
-/** Holds if `d` is a unique complete class named `name`. */
+/**
+ * For upgraded databases without mangled name info.
+ * Holds if `d` is a unique complete class named `name`.
+ */
 pragma[noinline]
 private predicate existsCompleteWithName(string name, @usertype d) {
+  not mangled_name(_, _) and
   is_complete(d) and
   name = getTopLevelClassName(d) and
   onlyOneCompleteClassExistsWithName(name)
 }
 
+/** For upgraded databases without mangled name info. */
 pragma[noinline]
 private predicate onlyOneCompleteClassExistsWithName(string name) {
+  not mangled_name(_, _) and
   strictcount(@usertype c | is_complete(c) and getTopLevelClassName(c) = name) = 1
+}
+
+/**
+ * For upgraded databases without mangled name info.
+ * Holds if `c` is an incomplete class named `name`.
+ */
+pragma[noinline]
+private predicate existsIncompleteWithName(string name, @usertype c) {
+  not mangled_name(_, _) and
+  not is_complete(c) and
+  name = getTopLevelClassName(c)
+}
+
+/**
+ * For upgraded databases without mangled name info.
+ * Holds if `c` is an incomplete class, and there exists a unique complete class `d`
+ * with the same name.
+ */
+private predicate oldHasCompleteTwin(@usertype c, @usertype d) {
+  not mangled_name(_, _) and
+  exists(string name |
+    existsIncompleteWithName(name, c) and
+    existsCompleteWithName(name, d)
+  )
+}
+
+pragma[noinline]
+private @mangledname getTopLevelClassMangledName(@usertype c) {
+  isClass(c) and
+  mangled_name(c, result) and
+  not namespacembrs(_, c) and // not in a namespace
+  not member(_, _, c) and // not in some structure
+  not class_instantiation(c, _) // not a template instantiation
+}
+
+/** Holds if `d` is a unique complete class named `name`. */
+pragma[noinline]
+private predicate existsCompleteWithMangledName(@mangledname name, @usertype d) {
+  is_complete(d) and
+  name = getTopLevelClassMangledName(d) and
+  onlyOneCompleteClassExistsWithMangledName(name)
+}
+
+pragma[noinline]
+private predicate onlyOneCompleteClassExistsWithMangledName(@mangledname name) {
+  strictcount(@usertype c | is_complete(c) and getTopLevelClassMangledName(c) = name) = 1
 }
 
 /** Holds if `c` is an incomplete class named `name`. */
 pragma[noinline]
-private predicate existsIncompleteWithName(string name, @usertype c) {
+private predicate existsIncompleteWithMangledName(@mangledname name, @usertype c) {
   not is_complete(c) and
-  name = getTopLevelClassName(c)
+  name = getTopLevelClassMangledName(c)
 }
 
 /**
@@ -34,9 +88,9 @@ private predicate existsIncompleteWithName(string name, @usertype c) {
  * with the same name.
  */
 private predicate hasCompleteTwin(@usertype c, @usertype d) {
-  exists(string name |
-    existsIncompleteWithName(name, c) and
-    existsCompleteWithName(name, d)
+  exists(@mangledname name |
+    existsIncompleteWithMangledName(name, c) and
+    existsCompleteWithMangledName(name, d)
   )
 }
 
@@ -49,7 +103,11 @@ cached private module Cached {
   cached @usertype resolveClass(@usertype c) {
     hasCompleteTwin(c, result)
     or
-    (not hasCompleteTwin(c, _) and result = c)
+    oldHasCompleteTwin(c, result)
+    or
+    (not hasCompleteTwin(c, _) and
+     not oldHasCompleteTwin(c, _) and
+     result = c)
   }
 
   /**

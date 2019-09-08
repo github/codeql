@@ -14,7 +14,6 @@ module SQL {
    */
   abstract class SqlSanitizer extends Expr {
     Expr input;
-
     Expr output;
 
     /** Gets the input expression being sanitized. */
