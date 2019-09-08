@@ -1,12 +1,17 @@
 import semmle.code.cpp.exprs.Expr
 
 /**
- * A C/C++ arithmetic operation.
+ * A C/C++ unary arithmetic operation.
+ *
+ * This is an abstract base QL class.
  */
 abstract class UnaryArithmeticOperation extends UnaryOperation { }
 
 /**
  * A C/C++ unary minus expression.
+ * ```
+ * b = - a;
+ * ```
  */
 class UnaryMinusExpr extends UnaryArithmeticOperation, @arithnegexpr {
   override string getOperator() { result = "-" }
@@ -18,6 +23,9 @@ class UnaryMinusExpr extends UnaryArithmeticOperation, @arithnegexpr {
 
 /**
  * A C/C++ unary plus expression.
+ * ```
+ * b = + a;
+ * ```
  */
 class UnaryPlusExpr extends UnaryArithmeticOperation, @unaryplusexpr {
   override string getOperator() { result = "+" }
@@ -28,16 +36,26 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, @unaryplusexpr {
 }
 
 /**
- * A C/C++ GNU conjugation expression.
+ * A C/C++ GNU conjugation expression.  It operates on `_Complex` or
+ * `__complex_`numbers, and is similar to the C99 `conj`, `conjf` and `conjl`
+ * functions.
+ * ```
+ * _Complex double a =  ( 1.0, 2.0 );
+ * b = ~ a;  // ( 1,0, - 2.0 )
+ * ```
  */
 class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
   override string getOperator() { result = "~" }
+
+  override string getCanonicalQLClass() { result = "ConjugationExpr" }
 }
 
 /**
  * A C/C++ `++` or `--` expression (either prefix or postfix).
  *
- * Note that this doesn't include calls to user-defined `operator++`
+ * This is the abstract base QL class for increment and decrement operations.
+ *
+ * Note that this doesn't include calls to _user-defined_ `operator++`
  * or `operator--`.
  */
 abstract class CrementOperation extends UnaryArithmeticOperation {
@@ -84,7 +102,10 @@ abstract class PostfixCrementOperation extends CrementOperation { }
 /**
  * A C/C++ prefix increment expression, as in `++x`.
  *
- * Note that this doesn't include calls to user-defined `operator++`.
+ * Note that this doesn't include calls to _user-defined_ `operator++`.
+ * ```
+ * b = ++a;
+ * ```
  */
 class PrefixIncrExpr extends IncrementOperation, PrefixCrementOperation, @preincrexpr {
   override string getOperator() { result = "++" }
@@ -97,7 +118,10 @@ class PrefixIncrExpr extends IncrementOperation, PrefixCrementOperation, @preinc
 /**
  * A C/C++ prefix decrement expression, as in `--x`.
  *
- * Note that this doesn't include calls to user-defined `operator--`.
+ * Note that this doesn't include calls to _user-defined_ `operator--`.
+ * ```
+ * b = --a;
+ * ```
  */
 class PrefixDecrExpr extends DecrementOperation, PrefixCrementOperation, @predecrexpr {
   override string getOperator() { result = "--" }
@@ -110,7 +134,10 @@ class PrefixDecrExpr extends DecrementOperation, PrefixCrementOperation, @predec
 /**
  * A C/C++ postfix increment expression, as in `x++`.
  *
- * Note that this doesn't include calls to user-defined `operator++`.
+ * Note that this doesn't include calls to _user-defined_ `operator++`.
+ * ```
+ * b = a++;
+ * ```
  */
 class PostfixIncrExpr extends IncrementOperation, PostfixCrementOperation, @postincrexpr {
   override string getOperator() { result = "++" }
@@ -125,7 +152,10 @@ class PostfixIncrExpr extends IncrementOperation, PostfixCrementOperation, @post
 /**
  * A C/C++ postfix decrement expression, as in `x--`.
  *
- * Note that this doesn't include calls to user-defined `operator--`.
+ * Note that this doesn't include calls to _user-defined_ `operator--`.
+ * ```
+ * b = a--;
+ * ```
  */
 class PostfixDecrExpr extends DecrementOperation, PostfixCrementOperation, @postdecrexpr {
   override string getOperator() { result = "--" }
@@ -138,26 +168,47 @@ class PostfixDecrExpr extends DecrementOperation, PostfixCrementOperation, @post
 }
 
 /**
- * A C/C++ GNU real part expression.
+ * A C/C++ GNU real part expression.  It operates on `_Complex` or
+ * `__complex__` numbers.
+ * ```
+ * #include <complex.h>
+ * _Complex double f = CMPLX( 2.0, 3.0 );
+ * double d = __real(f);  // 2.0
+ * ```
  */
 class RealPartExpr extends UnaryArithmeticOperation, @realpartexpr {
   override string getOperator() { result = "__real" }
+
+  override string getCanonicalQLClass() { result = "RealPartExpr" }
 }
 
 /**
- * A C/C++ GNU imaginary part expression.
+ * A C/C++ GNU imaginary part expression.  It operates on `_Complex` or
+ * `__complex__` numbers.
+ * ```
+ * #include <complex.h>
+ * _Complex double f = CMPLX( 2.0, 3.0 );
+ * double d = __imag(f);  // 3.0
+ * ```
  */
 class ImaginaryPartExpr extends UnaryArithmeticOperation, @imagpartexpr {
   override string getOperator() { result = "__imag" }
+
+  override string getCanonicalQLClass() { result = "ImaginaryPartExpr" }
 }
 
 /**
  * A C/C++ binary arithmetic operation.
+ *
+ * This is an abstract base QL class for all binary arithmetic operations.
  */
 abstract class BinaryArithmeticOperation extends BinaryOperation { }
 
 /**
  * A C/C++ add expression.
+ * ```
+ * c = a + b;
+ * ```
  */
 class AddExpr extends BinaryArithmeticOperation, @addexpr {
   override string getOperator() { result = "+" }
@@ -169,6 +220,9 @@ class AddExpr extends BinaryArithmeticOperation, @addexpr {
 
 /**
  * A C/C++ subtract expression.
+ * ```
+ * c = a - b;
+ * ```
  */
 class SubExpr extends BinaryArithmeticOperation, @subexpr {
   override string getOperator() { result = "-" }
@@ -180,6 +234,9 @@ class SubExpr extends BinaryArithmeticOperation, @subexpr {
 
 /**
  * A C/C++ multiply expression.
+ * ```
+ * c = a * b;
+ * ```
  */
 class MulExpr extends BinaryArithmeticOperation, @mulexpr {
   override string getOperator() { result = "*" }
@@ -191,6 +248,9 @@ class MulExpr extends BinaryArithmeticOperation, @mulexpr {
 
 /**
  * A C/C++ divide expression.
+ * ```
+ * c = a / b;
+ * ```
  */
 class DivExpr extends BinaryArithmeticOperation, @divexpr {
   override string getOperator() { result = "/" }
@@ -202,6 +262,9 @@ class DivExpr extends BinaryArithmeticOperation, @divexpr {
 
 /**
  * A C/C++ remainder expression.
+ * ```
+ * c = a % b;
+ * ```
  */
 class RemExpr extends BinaryArithmeticOperation, @remexpr {
   override string getOperator() { result = "%" }
@@ -218,6 +281,8 @@ class ImaginaryMulExpr extends BinaryArithmeticOperation, @jmulexpr {
   override string getOperator() { result = "*" }
 
   override int getPrecedence() { result = 13 }
+
+  override string getCanonicalQLClass() { result = "ImaginaryMulExpr" }
 }
 
 /**
@@ -227,6 +292,8 @@ class ImaginaryDivExpr extends BinaryArithmeticOperation, @jdivexpr {
   override string getOperator() { result = "/" }
 
   override int getPrecedence() { result = 13 }
+
+  override string getCanonicalQLClass() { result = "ImaginaryDivExpr" }
 }
 
 /**
@@ -236,6 +303,8 @@ class RealImaginaryAddExpr extends BinaryArithmeticOperation, @fjaddexpr {
   override string getOperator() { result = "+" }
 
   override int getPrecedence() { result = 12 }
+
+  override string getCanonicalQLClass() { result = "RealImaginaryAddExpr" }
 }
 
 /**
@@ -245,6 +314,8 @@ class ImaginaryRealAddExpr extends BinaryArithmeticOperation, @jfaddexpr {
   override string getOperator() { result = "+" }
 
   override int getPrecedence() { result = 12 }
+
+  override string getCanonicalQLClass() { result = "ImaginaryRealAddExpr" }
 }
 
 /**
@@ -254,6 +325,8 @@ class RealImaginarySubExpr extends BinaryArithmeticOperation, @fjsubexpr {
   override string getOperator() { result = "-" }
 
   override int getPrecedence() { result = 12 }
+
+  override string getCanonicalQLClass() { result = "RealImaginarySubExpr" }
 }
 
 /**
@@ -263,20 +336,32 @@ class ImaginaryRealSubExpr extends BinaryArithmeticOperation, @jfsubexpr {
   override string getOperator() { result = "-" }
 
   override int getPrecedence() { result = 12 }
+
+  override string getCanonicalQLClass() { result = "ImaginaryRealSubExpr" }
 }
 
 /**
  * A C/C++ GNU min expression.
+ * ```
+ * c = a <? b;
+ * ```
  */
 class MinExpr extends BinaryArithmeticOperation, @minexpr {
   override string getOperator() { result = "<?" }
+
+  override string getCanonicalQLClass() { result = "MinExpr" }
 }
 
 /**
  * A C/C++ GNU max expression.
+ * ```
+ * c = a >? b;
+ * ```
  */
 class MaxExpr extends BinaryArithmeticOperation, @maxexpr {
   override string getOperator() { result = ">?" }
+
+  override string getCanonicalQLClass() { result = "MaxExpr" }
 }
 
 /**
@@ -286,6 +371,10 @@ abstract class PointerArithmeticOperation extends BinaryArithmeticOperation { }
 
 /**
  * A C/C++ pointer add expression.
+ * ```
+ * foo *ptr = &f[0];
+ * ptr = ptr + 2;
+ * ```
  */
 class PointerAddExpr extends PointerArithmeticOperation, @paddexpr {
   override string getOperator() { result = "+" }
@@ -297,6 +386,10 @@ class PointerAddExpr extends PointerArithmeticOperation, @paddexpr {
 
 /**
  * A C/C++ pointer subtract expression.
+ * ```
+ * foo *ptr = &f[3];
+ * ptr = ptr - 2;
+ * ```
  */
 class PointerSubExpr extends PointerArithmeticOperation, @psubexpr {
   override string getOperator() { result = "-" }
@@ -308,6 +401,10 @@ class PointerSubExpr extends PointerArithmeticOperation, @psubexpr {
 
 /**
  * A C/C++ pointer difference expression.
+ * ```
+ * foo *start = &f[0], *end = &f[4];
+ * int size = end - size;
+ * ```
  */
 class PointerDiffExpr extends PointerArithmeticOperation, @pdiffexpr {
   override string getOperator() { result = "-" }
