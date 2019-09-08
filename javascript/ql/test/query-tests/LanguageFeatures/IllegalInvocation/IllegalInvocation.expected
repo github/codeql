@@ -6,3 +6,4 @@
 | tst.js:43:1:43:7 | new h() | Illegal invocation of $@ using 'new'. | tst.js:40:1:40:21 | async f ...  h() {} | an async function |
 | tst.js:45:1:45:8 | reflective call | Illegal invocation of $@ as a function. | tst.js:1:9:1:8 | () {} | a constructor |
 | tst.js:46:1:46:9 | reflective call | Illegal invocation of $@ as a function. | tst.js:1:9:1:8 | () {} | a constructor |
+| tst.js:50:5:50:8 | fn() | Illegal invocation of $@ as a function. | tst.js:1:9:1:8 | () {} | a constructor |

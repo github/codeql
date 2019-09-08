@@ -53,4 +53,12 @@ class E {
 E.call();        // OK
 E.apply();       // OK
 
+function invoke(fn) {
+  if (typeof fn === "function" && fn.hasOwnProperty("foo")) {
+    fn(); // OK
+  }
+}
+invoke(C);
+invoke(function() {});
+
 //semmle-extractor-options: --experimental
