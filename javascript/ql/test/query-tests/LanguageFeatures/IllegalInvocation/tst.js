@@ -12,7 +12,7 @@ let c = new C(); // OK
 C();             // NOT OK
 new (x=>x);      // NOT OK
 c.m();           // OK
-new c.m();       // NOT OK
+new c.m();       // NOT OK - but not flagged
 
 var o = {
   f: function() {},
@@ -21,7 +21,7 @@ var o = {
 o.f();           // OK
 new o.f();       // OK
 o.g();           // OK
-new o.g();       // NOT OK
+new o.g();       // NOT OK - but not flagged
 
 function f(b) {
   var g;
