@@ -151,7 +151,7 @@ module Express {
   /**
    * A call that sets up a Passport router that includes the request object.
    */
-  class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+  private class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
     DataFlow::ModuleImportNode importNode;
     DataFlow::FunctionNode callback;
   	
@@ -178,7 +178,7 @@ module Express {
   /**
    * The callback given to passport in PassportRouteSetup. 
    */
-  class PassportRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
+  private class PassportRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
     DataFlow::ValueNode {
     override Function astNode;
 
