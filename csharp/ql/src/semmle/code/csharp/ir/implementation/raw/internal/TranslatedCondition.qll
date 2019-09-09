@@ -4,24 +4,17 @@ private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
+private import common.TranslatedConditionBase
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
-
-abstract class ConditionContext extends TranslatedElement {
-  abstract Instruction getChildTrueSuccessor(TranslatedCondition child);
-
-  abstract Instruction getChildFalseSuccessor(TranslatedCondition child);
-}
 
 TranslatedCondition getTranslatedCondition(Expr expr) { result.getExpr() = expr }
 
-abstract class TranslatedCondition extends TranslatedElement {
+abstract class TranslatedCondition extends ConditionBase {
   Expr expr;
 
   final override string toString() { result = expr.toString() }
 
   final override Language::AST getAST() { result = expr }
-
-  final ConditionContext getConditionContext() { result = this.getParent() }
 
   final Expr getExpr() { result = expr }
 
@@ -56,12 +49,12 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
   override ParenthesizedExpr expr;
 
-  final override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  final override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getOperand() and
     result = this.getConditionContext().getChildTrueSuccessor(this)
   }
 
-  final override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  final override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getOperand() and
     result = this.getConditionContext().getChildFalseSuccessor(this)
   }
@@ -74,12 +67,12 @@ class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
 class TranslatedNotCondition extends TranslatedFlexibleCondition {
   override LogicalNotExpr expr;
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getOperand() and
     result = this.getConditionContext().getChildFalseSuccessor(this)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getOperand() and
     result = this.getConditionContext().getChildTrueSuccessor(this)
   }
@@ -131,7 +124,7 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
 class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
   TranslatedLogicalAndExpr() { expr instanceof LogicalAndExpr }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getLeftOperand() and
     result = this.getRightOperand().getFirstInstruction()
     or
@@ -139,7 +132,7 @@ class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
     result = this.getConditionContext().getChildTrueSuccessor(this)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getAnOperand() and
     result = this.getConditionContext().getChildFalseSuccessor(this)
   }
@@ -148,12 +141,12 @@ class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
 class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
   override LogicalOrExpr expr;
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = getAnOperand() and
     result = this.getConditionContext().getChildTrueSuccessor(this)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getLeftOperand() and
     result = getRightOperand().getFirstInstruction()
     or
@@ -162,43 +155,11 @@ class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
   }
 }
 
-class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCondition {
+class TranslatedValueCondition extends TranslatedCondition, ValueConditionBase,
+  TTranslatedValueCondition {
   TranslatedValueCondition() { this = TTranslatedValueCondition(expr) }
 
-  override TranslatedElement getChild(int id) { id = 0 and result = getValueExpr() }
+  override TranslatedExpr getValueExpr() { result = getTranslatedExpr(expr) }
 
-  override Instruction getFirstInstruction() { result = this.getValueExpr().getFirstInstruction() }
-
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
-    tag = ValueConditionConditionalBranchTag() and
-    opcode instanceof Opcode::ConditionalBranch and
-    resultType instanceof VoidType and
-    isLValue = false
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getValueExpr() and
-    result = this.getInstruction(ValueConditionConditionalBranchTag())
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = ValueConditionConditionalBranchTag() and
-    (
-      kind instanceof TrueEdge and
-      result = this.getConditionContext().getChildTrueSuccessor(this)
-      or
-      kind instanceof FalseEdge and
-      result = this.getConditionContext().getChildFalseSuccessor(this)
-    )
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = ValueConditionConditionalBranchTag() and
-    operandTag instanceof ConditionOperandTag and
-    result = this.getValueExpr().getResult()
-  }
-
-  private TranslatedExpr getValueExpr() { result = getTranslatedExpr(expr) }
+  override Instruction valueExprResult() { result = this.getValueExpr().getResult() }
 }

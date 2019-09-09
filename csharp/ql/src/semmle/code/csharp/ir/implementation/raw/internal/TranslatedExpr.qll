@@ -9,8 +9,11 @@ private import TranslatedDeclaration
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
-private import TranslatedFunction
-private import TranslatedStmt
+private import common.TranslatedConditionBase
+private import common.TranslatedCallBase
+private import common.TranslatedExprBase
+private import desugar.Delegate
+private import desugar.internal.TranslatedCompilerGeneratedCall
 import TranslatedCall
 private import semmle.code.csharp.ir.Util
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
@@ -35,13 +38,8 @@ TranslatedExpr getTranslatedExpr(Expr expr) {
  * as the `TranslatedAllocatorCall` and `TranslatedAllocationSize` within the
  * translation of a `NewExpr`.
  */
-abstract class TranslatedExpr extends TranslatedElement {
+abstract class TranslatedExpr extends TranslatedExprBase {
   Expr expr;
-
-  /**
-   * Gets the instruction that produces the result of the expression.
-   */
-  abstract Instruction getResult();
 
   /**
    * Holds if this `TranslatedExpr` produces the final result of the original
@@ -243,12 +241,12 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getInstruction(ConditionValueTrueTempAddressTag())
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getInstruction(ConditionValueFalseTempAddressTag())
   }
@@ -1452,13 +1450,13 @@ class TranslatedAssignOperation extends TranslatedAssignment {
 
 /**
  * Abstract class implemented by any `TranslatedElement` that has a child
- * expression that is a call to a constructor or destructor, in order to
- * provide a pointer to the object being constructed or destroyed.
+ * expression that is a call to a constructor, in order to
+ * provide a pointer to the object being constructed.
  */
-abstract class StructorCallContext extends TranslatedElement {
+abstract class ConstructorCallContext extends TranslatedElement {
   /**
    * Gets the instruction whose result value is the address of the object to be
-   * constructed or destroyed.
+   * constructed.
    */
   abstract Instruction getReceiver();
 }
@@ -1609,12 +1607,12 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr, ConditionCont
     )
   }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getThen().getFirstInstruction()
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getElse().getFirstInstruction()
   }
@@ -1882,5 +1880,41 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
 
   private TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(expr.getChild(0))
+  }
+}
+
+/**
+ * The translation of a `DelegateCall`. Since this type of call needs
+ * desugaring, we treat it as a special case. The AST node of the
+ * call expression will be the parent to a compiler generated call.
+ */
+class TranslatedDelegateCall extends TranslatedNonConstantExpr {
+  override DelegateCall expr;
+
+  final override Instruction getFirstInstruction() {
+    result = this.getInvokeCall().getFirstInstruction()
+  }
+
+  final override TranslatedElement getChild(int id) { id = 0 and result = this.getInvokeCall() }
+
+  override Instruction getResult() { result = this.getInvokeCall().getResult() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getInvokeCall() and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  private TranslatedCompilerGeneratedCall getInvokeCall() {
+    result = DelegateElements::getInvoke(expr)
   }
 }

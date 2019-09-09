@@ -1,11 +1,13 @@
 import csharp
 
-// TODO: ARE THOSE TAGS ENOUGH?
 newtype TTempVariableTag =
   ConditionValueTempVar() or
   ReturnValueTempVar() or
   ThrowTempVar() or
-  LambdaTempVar()
+  LambdaTempVar() or
+  ForeachEnumTempVar() or
+  LockedVarTemp() or
+  LockWasTakenTemp()
 
 string getTempVariableTagId(TTempVariableTag tag) {
   tag = ConditionValueTempVar() and result = "CondVal"
@@ -15,4 +17,10 @@ string getTempVariableTagId(TTempVariableTag tag) {
   tag = ThrowTempVar() and result = "Throw"
   or
   tag = LambdaTempVar() and result = "Lambda"
+  or
+  tag = ForeachEnumTempVar() and result = "ForeachEnum"
+  or
+  tag = LockedVarTemp() and result = "LockedVarTemp"
+  or
+  tag = LockWasTakenTemp() and result = "LockWasTakenTemp"
 }

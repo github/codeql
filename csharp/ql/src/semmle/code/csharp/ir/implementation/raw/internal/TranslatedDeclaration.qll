@@ -7,6 +7,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import common.TranslatedDeclarationBase
 
 /**
  * Gets the `TranslatedDeclaration` that represents the declaration
@@ -35,59 +36,21 @@ abstract class TranslatedLocalDeclaration extends TranslatedElement, TTranslated
  * Represents the IR translation of the declaration of a local variable,
  * including its initialization, if any.
  */
-class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, InitializationContext {
+class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
+  LocalVariableDeclarationBase, InitializationContext {
   LocalVariable var;
 
   TranslatedLocalVariableDeclaration() { var = expr.getVariable() }
 
-  override TranslatedElement getChild(int id) { id = 0 and result = this.getInitialization() }
-
-  override Instruction getFirstInstruction() {
+  override Instruction getTargetAddress() {
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
-    tag = InitializerVariableAddressTag() and
-    opcode instanceof Opcode::VariableAddress and
-    resultType = getVariableType(var) and
-    isLValue = true
-    or
-    this.hasUninitializedInstruction() and
-    tag = InitializerStoreTag() and
-    opcode instanceof Opcode::Uninitialized and
-    resultType = getVariableType(var) and
-    isLValue = false
-  }
+  override LocalVariable getDeclVar() { result = var }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    (
-      tag = InitializerVariableAddressTag() and
-      kind instanceof GotoEdge and
-      if this.hasUninitializedInstruction()
-      then result = this.getInstruction(InitializerStoreTag())
-      else
-        if this.isInitializedByExpr()
-        then
-          // initialization is done by the expression
-          result = this.getParent().getChildSuccessor(this)
-        else result = this.getInitialization().getFirstInstruction()
-    )
-    or
-    this.hasUninitializedInstruction() and
-    kind instanceof GotoEdge and
-    tag = InitializerStoreTag() and
-    (
-      result = this.getInitialization().getFirstInstruction()
-      or
-      not exists(this.getInitialization()) and result = this.getParent().getChildSuccessor(this)
-    )
-  }
+  override Type getVarType() { result = getVariableType(getDeclVar()) }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getInitialization() and result = this.getParent().getChildSuccessor(this)
-  }
+  override Type getTargetType() { result = getVariableType(var) }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     (
@@ -95,23 +58,10 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, Ini
       or
       this.hasUninitializedInstruction() and tag = InitializerStoreTag()
     ) and
-    result = getIRUserVariable(getFunction(), var)
+    result = getIRUserVariable(getFunction(), getDeclVar())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    this.hasUninitializedInstruction() and
-    tag = InitializerStoreTag() and
-    operandTag instanceof AddressOperandTag and
-    result = this.getInstruction(InitializerVariableAddressTag())
-  }
-
-  override Instruction getTargetAddress() {
-    result = this.getInstruction(InitializerVariableAddressTag())
-  }
-
-  override Type getTargetType() { result = getVariableType(var) }
-
-  private TranslatedInitialization getInitialization() {
+  override TranslatedInitialization getInitialization() {
     // First complex initializations
     if var.getInitializer() instanceof ArrayCreation
     then result = getTranslatedInitialization(var.getInitializer().(ArrayCreation).getInitializer())
@@ -123,17 +73,5 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, Ini
         result = getTranslatedInitialization(var.getInitializer())
   }
 
-  private predicate hasUninitializedInstruction() {
-    (
-      not exists(this.getInitialization()) or
-      this.getInitialization() instanceof TranslatedListInitialization
-    ) and
-    not this.isInitializedByExpr()
-  }
-
-  /**
-   * Predicate that holds if a declaration is not explicitly initialized,
-   * but will be initialized as part of an expression.
-   */
-  private predicate isInitializedByExpr() { expr.getParent() instanceof IsExpr }
+  override predicate isInitializedByElement() { expr.getParent() instanceof IsExpr }
 }
