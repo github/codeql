@@ -106,7 +106,7 @@ base types.
 
 A class can extend multiple types. See :ref:`multiple-inheritance` below.
 
-To be a valid, a class:
+To be valid, a class:
   - Must not extend itself.
   - Must not extend a :ref:`final` class. 
   - Must not extend types that are incompatible. (See :ref:`type-compatibility`.)
