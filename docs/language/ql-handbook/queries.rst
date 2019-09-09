@@ -83,7 +83,7 @@ For example::
       result = x * y
     }
 
-This predicates returns the following results: 
+This predicate returns the following results:
 
 +---+---+--------+
 | x | y | result |
@@ -96,8 +96,14 @@ This predicates returns the following results:
 +---+---+--------+
 
 A benefit of writing a query predicate instead of a select clause is that you can call the
-predicate in other parts of the code too. In contrast, the select clause is like an anonymous 
-predicate, so you can't call it later.
+predicate in other parts of the code too. For example, you can call ``getProduct`` inside
+the body of a :ref:`class <classes>`::
+
+    class MultipleOfThree extends int {
+      MultipleOfThree() { this = getProduct(_, _) }
+    }
+
+In contrast, the select clause is like an anonymous predicate, so you can't call it later.
 
 It can also be helpful to add a ``query`` annotation to a predicate while you debug code. That
 way you can explicitly see the set of tuples that the predicate evaluates to.
