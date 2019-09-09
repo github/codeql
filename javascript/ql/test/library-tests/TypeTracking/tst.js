@@ -92,5 +92,18 @@ function outer(conn) {
   function otherInner() {
     innerCapture();
   }
+  return class {
+    get() { return conn }
+  }
 }
 outer(getConnection());
+new (outer(getConnection())).get();
+new (outer(somethingElse())).get();
+
+function shared(x) {
+  return (function() {
+    return x;
+  })();
+}
+shared(getConnection());
+shared(somethingElse());

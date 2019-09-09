@@ -14,6 +14,11 @@ connection
 | type tracker with call steps | tst.js:11:5:11:19 | this.connection |
 | type tracker with call steps | tst.js:80:16:80:19 | conn |
 | type tracker with call steps | tst.js:84:22:84:22 | x |
+| type tracker with call steps | tst.js:88:3:88:16 | innerCapture() |
+| type tracker with call steps | tst.js:89:3:89:17 | innerCall(conn) |
+| type tracker with call steps | tst.js:93:5:93:18 | innerCapture() |
+| type tracker with call steps | tst.js:103:17:103:17 | x |
+| type tracker with call steps | tst.js:104:10:106:6 | (functi ... \\n  })() |
 | type tracker with call steps with property connection | tst.js:7:14:7:13 | this |
 | type tracker without call steps | client.js:1:10:1:27 | exportedConnection |
 | type tracker without call steps | tst.js:16:10:16:49 | api.cha ... ction() |
@@ -27,7 +32,10 @@ connection
 | type tracker without call steps | tst.js:63:38:63:77 | api.cha ... ction() |
 | type tracker without call steps | tst.js:67:14:67:47 | MyAppli ... nection |
 | type tracker without call steps | tst.js:78:35:78:49 | getConnection() |
-| type tracker without call steps | tst.js:96:7:96:21 | getConnection() |
+| type tracker without call steps | tst.js:99:7:99:21 | getConnection() |
+| type tracker without call steps | tst.js:100:12:100:26 | getConnection() |
+| type tracker without call steps | tst.js:108:1:108:23 | shared( ... tion()) |
+| type tracker without call steps | tst.js:108:8:108:22 | getConnection() |
 | type tracker without call steps | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
 | type tracker without call steps with property MyApplication.namespace.connection | file://:0:0:0:0 | global access path |
 | type tracker without call steps with property conflict | tst.js:63:3:63:25 | MyAppli ... mespace |
@@ -43,6 +51,7 @@ dataCallback
 | tst.js:40:32:40:45 | getDataCurry() |
 | tst.js:45:19:45:20 | cb |
 | tst.js:48:32:48:60 | identit ... llback) |
+| tst.js:51:1:51:37 | functio ... ata) {} |
 | tst.js:58:16:58:22 | x => {} |
 | tst.js:68:16:70:3 | data => ... a);\\n  } |
 dataValue
@@ -51,5 +60,6 @@ dataValue
 | tst.js:25:19:25:22 | data |
 | tst.js:33:17:33:20 | data |
 | tst.js:38:10:38:13 | data |
+| tst.js:51:30:51:33 | data |
 | tst.js:58:16:58:16 | x |
 | tst.js:68:16:68:19 | data |
