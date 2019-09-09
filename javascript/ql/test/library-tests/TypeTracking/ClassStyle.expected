@@ -35,6 +35,9 @@ test_Connection
 | tst.js:104:10:106:6 | (functi ... \\n  })() |
 | tst.js:108:1:108:23 | shared( ... tion()) |
 | tst.js:108:8:108:22 | getConnection() |
+| tst.js:112:10:112:14 | obj.x |
+| tst.js:114:1:114:28 | getX({  ... on() }) |
+| tst.js:114:11:114:25 | getConnection() |
 | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
 test_DataCallback
 | client.js:3:28:3:34 | x => {} |

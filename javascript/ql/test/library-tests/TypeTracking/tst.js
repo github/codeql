@@ -107,3 +107,9 @@ function shared(x) {
 }
 shared(getConnection());
 shared(somethingElse());
+
+function getX(obj) {
+  return obj.x;
+}
+getX({ x: getConnection() });
+getX({ x: somethingElse() });
