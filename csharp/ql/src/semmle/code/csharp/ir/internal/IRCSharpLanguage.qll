@@ -77,7 +77,7 @@ predicate hasPositionalArgIndex(int argIndex) {
   // correct number of parameters; it is an overestimation,
   // since we don't care about all the callables, so it
   // should be restricted more
-  exists(CSharp::Callable callable | callable.getNumberOfParameters() = argIndex)
+  argIndex in [0..any(CSharp::Callable c).getNumberOfParameters() - 1]
 }
 
 predicate hasAsmOperandIndex(int operandIndex) { none() }

@@ -206,16 +206,27 @@ private class TranslatedForeachGetEnumerator extends TranslatedCompilerGenerated
     result = getInstructionFunction(CallTargetTag()).getReturnType()
   }
 
+  private Callable getEnumeratorCallable() {
+    if exists(generatedBy.getIterableExpr().getType().(ValueOrRefType).getAMember("GetEnumerator"))
+    then
+      result = generatedBy.getIterableExpr().getType().(ValueOrRefType).getAMember("GetEnumerator")
+    else
+      exists(Interface inter |
+        inter = generatedBy
+              .getIterableExpr()
+              .getType()
+              .(ValueOrRefType)
+              // There could be some abstract base types until we reach `IEnumerable` (eg. `Array`)
+              .getABaseType*()
+              .getABaseInterface() and
+        inter.getName() = "IEnumerable" and
+        result = inter.getAMember("GetEnumerator")
+      )
+  }
+
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    result.getName() = "GetEnumerator" and
-    // TODO: For now ignore the possibility that the
-    //       foreach variable can have a generic type.
-    //       The type of the callable will need to be fabricated,
-    //       since we might not find the correct callable in the DB.
-    //       Probably will have change the way the immediate
-    //       operand of `FunctionAddress` is calculated.
-    result.getReturnType().getName() = "IEnumerator"
+    result = getEnumeratorCallable()
   }
 
   override TranslatedExpr getArgument(int id) { none() }
