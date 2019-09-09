@@ -8,6 +8,7 @@
  *
  * See `semmle.code.cpp.dataflow.DataFlow` for the full documentation.
  */
+
 import cpp
 
 module DataFlow4 {

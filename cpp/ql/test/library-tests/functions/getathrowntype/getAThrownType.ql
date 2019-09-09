@@ -1,13 +1,11 @@
 import cpp
 
 string describe(Function f) {
-	(
-		f.isNoThrow() and
-		result = "isNoThrow"
-	) or (
-		f.isNoExcept() and
-		result = "isNoExcept"
-	)
+  f.isNoThrow() and
+  result = "isNoThrow"
+  or
+  f.isNoExcept() and
+  result = "isNoExcept"
 }
 
 from Function f

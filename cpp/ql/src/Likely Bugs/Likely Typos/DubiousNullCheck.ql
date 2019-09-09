@@ -21,8 +21,10 @@ predicate zeroComparison(EqualityOperation e) {
 
 predicate inNullContext(AddressOfExpr e) {
   e.getFullyConverted().getUnderlyingType() instanceof BoolType
-  or exists(ControlStructure c | c.getControllingExpr() = e)
-  or exists(EqualityOperation cmp | zeroComparison(cmp) |
+  or
+  exists(ControlStructure c | c.getControllingExpr() = e)
+  or
+  exists(EqualityOperation cmp | zeroComparison(cmp) |
     e = cmp.getLeftOperand() or
     e = cmp.getRightOperand()
   )
@@ -34,11 +36,12 @@ FieldAccess chainedFields(FieldAccess fa) {
 }
 
 from AddressOfExpr addrof, FieldAccess fa, Variable v, int offset
-where fa = addrof.getOperand()
-  and inNullContext(addrof)
-  and not addrof.isInMacroExpansion()
-  and v.getAnAccess() = chainedFields(fa).getQualifier()
-  and not v instanceof MemberVariable
-  and offset = strictsum(chainedFields(fa).getTarget().getByteOffset())
-  and offset != 0
+where
+  fa = addrof.getOperand() and
+  inNullContext(addrof) and
+  not addrof.isInMacroExpansion() and
+  v.getAnAccess() = chainedFields(fa).getQualifier() and
+  not v instanceof MemberVariable and
+  offset = strictsum(chainedFields(fa).getTarget().getByteOffset()) and
+  offset != 0
 select addrof, "This will only be NULL if " + v.getName() + " == -" + offset + "."

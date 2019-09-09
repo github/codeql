@@ -13,8 +13,9 @@ private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
  * swapping the operands both ways round.
  */
 private predicate addExpr(AddExpr plus, Expr a, Expr b) {
-  (a = plus.getLeftOperand() and b = plus.getRightOperand()) or
-  (b = plus.getLeftOperand() and a = plus.getRightOperand())
+  a = plus.getLeftOperand() and b = plus.getRightOperand()
+  or
+  b = plus.getLeftOperand() and a = plus.getRightOperand()
 }
 
 /**
@@ -29,12 +30,12 @@ private predicate addExpr(AddExpr plus, Expr a, Expr b) {
  * false.
  */
 predicate badAdditionOverflowCheck(RelationalOperation cmp, AddExpr plus) {
-  exists (Variable v, VariableAccess a1, VariableAccess a2, Expr b
-  | addExpr(plus, a1, b) and
+  exists(Variable v, VariableAccess a1, VariableAccess a2, Expr b |
+    addExpr(plus, a1, b) and
     a1 = v.getAnAccess() and
     a2 = v.getAnAccess() and
-    not exists (a1.getQualifier()) and // Avoid structure fields
-    not exists (a2.getQualifier()) and // Avoid structure fields
+    not exists(a1.getQualifier()) and // Avoid structure fields
+    not exists(a2.getQualifier()) and // Avoid structure fields
     // Simple type-based check that the addition cannot overflow.
     exprMinVal(plus) <= exprMinVal(a1) + exprMinVal(b) and
     exprMaxVal(plus) > exprMaxVal(a1) and
@@ -43,5 +44,6 @@ predicate badAdditionOverflowCheck(RelationalOperation cmp, AddExpr plus) {
     exprMinVal(plus.getExplicitlyConverted()) <= exprMinVal(plus) and
     exprMaxVal(plus.getExplicitlyConverted()) >= exprMaxVal(plus) and
     cmp.getAnOperand() = plus and
-    cmp.getAnOperand() = a2)
+    cmp.getAnOperand() = a2
+  )
 }

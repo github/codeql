@@ -5,13 +5,9 @@ import FileWrite
  *  A function call that writes to standard output or standard error
  */
 class OutputWrite extends Expr {
-  OutputWrite() {
-    outputWrite(this, _)
-  }
+  OutputWrite() { outputWrite(this, _) }
 
-  Expr getASource() {
-    outputWrite(this, result)
-  }
+  Expr getASource() { outputWrite(this, result) }
 }
 
 /**
@@ -21,7 +17,6 @@ private predicate outputVariable(Variable v) {
   // standard output
   v.hasName("cout") or
   v.hasName("wcout") or
-
   // standard error
   v.hasName("cerr") or
   v.hasName("clog") or
@@ -45,7 +40,8 @@ private predicate outputFile(Expr e) {
     (
       name = e.(VariableAccess).getTarget().(GlobalVariable).toString() or
       name = e.findRootCause().(Macro).getName()
-    ) and (
+    ) and
+    (
       name = "stdout" or
       name = "stderr"
     )
@@ -56,30 +52,35 @@ private predicate outputFile(Expr e) {
  * is the function call a write to standard output or standard error from 'source'
  */
 private predicate outputWrite(Expr write, Expr source) {
-  exists(Function f, int arg | f = write.(Call).getTarget() and source = write.(Call).getArgument(arg) |
+  exists(Function f, int arg |
+    f = write.(Call).getTarget() and source = write.(Call).getArgument(arg)
+  |
+    // printf
+    arg >= f.(Printf).getFormatParameterIndex()
+    or
+    // syslog
+    arg >= f.(Syslog).getFormatParameterIndex()
+    or
+    // puts, putchar
     (
-      // printf
-      arg >= f.(Printf).getFormatParameterIndex()
-    ) or (
-      // syslog
-      arg >= f.(Syslog).getFormatParameterIndex()
-    ) or (
-      // puts, putchar
-      (
-        f.hasGlobalName("puts") or
-        f.hasGlobalName("putchar")
-      ) and arg = 0
-    ) or exists(Call wrappedCall, Expr wrappedSource |
+      f.hasGlobalName("puts") or
+      f.hasGlobalName("putchar")
+    ) and
+    arg = 0
+    or
+    exists(Call wrappedCall, Expr wrappedSource |
       // wrapped output call (recursive case)
       outputWrite(wrappedCall, wrappedSource) and
       wrappedCall.getEnclosingFunction() = f and
       parameterUsePair(f.getParameter(arg), wrappedSource)
     )
-  ) or (
-    // output to standard output / standard error using operator<<, put or write 
-    outputExpr(write) and
-    source = write.(ChainedOutputCall).getSource()
-  ) or exists(FileWrite fileWrite |
+  )
+  or
+  // output to standard output / standard error using operator<<, put or write
+  outputExpr(write) and
+  source = write.(ChainedOutputCall).getSource()
+  or
+  exists(FileWrite fileWrite |
     // output to stdout, stderr as a file (using FileWrite.qll logic)
     write = fileWrite and
     outputFile(fileWrite.getDest()) and

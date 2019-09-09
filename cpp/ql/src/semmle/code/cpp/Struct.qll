@@ -4,7 +4,7 @@ import semmle.code.cpp.Class
 /**
  * A C/C++ structure or union. For example, the types `MyStruct` and `MyUnion`
  * in:
- * ``` 
+ * ```
  * struct MyStruct {
  *   int x, y, z;
  * };
@@ -16,12 +16,11 @@ import semmle.code.cpp.Class
  * ```
  */
 class Struct extends Class {
-
-  Struct() { usertypes(underlyingElement(this),_,1) or usertypes(underlyingElement(this),_,3) }
+  Struct() { usertypes(underlyingElement(this), _, 1) or usertypes(underlyingElement(this), _, 3) }
 
   override string getCanonicalQLClass() { result = "Struct" }
-  
-  override string explain() { result =  "struct " + this.getName() }
+
+  override string explain() { result = "struct " + this.getName() }
 
   override predicate isDeeplyConstBelow() { any() } // No subparts
 }
@@ -30,7 +29,7 @@ class Struct extends Class {
  * A C/C++ struct that is directly enclosed by a function. For example, the type
  * `MyLocalStruct` in:
  * ```
- * void myFunction() { 
+ * void myFunction() {
  *   struct MyLocalStruct {
  *     int x, y, z;
  *   };
@@ -38,12 +37,11 @@ class Struct extends Class {
  * ```
  */
 class LocalStruct extends Struct {
-  LocalStruct() {
-    isLocal()
-  }
+  LocalStruct() { isLocal() }
 
-  override string getCanonicalQLClass() 
-    { not this instanceof LocalUnion and result = "LocalStruct" }
+  override string getCanonicalQLClass() {
+    not this instanceof LocalUnion and result = "LocalStruct"
+  }
 }
 
 /**
@@ -58,12 +56,11 @@ class LocalStruct extends Struct {
  * ```
  */
 class NestedStruct extends Struct {
-  NestedStruct() {
-    this.isMember()
-  }
+  NestedStruct() { this.isMember() }
 
-  override string getCanonicalQLClass() 
-    { not this instanceof NestedUnion and result = "NestedStruct" }
+  override string getCanonicalQLClass() {
+    not this instanceof NestedUnion and result = "NestedStruct"
+  }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -73,5 +70,4 @@ class NestedStruct extends Struct {
 
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
-
 }

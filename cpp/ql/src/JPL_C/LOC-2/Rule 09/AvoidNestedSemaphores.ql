@@ -12,20 +12,22 @@
 import Semaphores
 
 LockOperation maybeLocked(Function f) {
-  result.getEnclosingFunction() = f or
-  exists(Function g | f.calls(g) |
-    result = maybeLocked(g)
-  )
+  result.getEnclosingFunction() = f
+  or
+  exists(Function g | f.calls(g) | result = maybeLocked(g))
 }
 
 predicate intraproc(LockOperation inner, string msg, LockOperation outer) {
-  inner = outer.getAReachedNode() and outer.getLocked() != inner.getLocked() and
+  inner = outer.getAReachedNode() and
+  outer.getLocked() != inner.getLocked() and
   msg = "This lock operation is nested in a $@."
 }
 
 predicate interproc(FunctionCall inner, string msg, LockOperation outer) {
   inner = outer.getAReachedNode() and
-  exists(LockOperation lock | lock = maybeLocked(inner.getTarget()) and lock.getLocked() != outer.getLocked() |
+  exists(LockOperation lock |
+    lock = maybeLocked(inner.getTarget()) and lock.getLocked() != outer.getLocked()
+  |
     msg = "This call may perform a " + lock.say() + " while under the effect of a $@."
   )
 }

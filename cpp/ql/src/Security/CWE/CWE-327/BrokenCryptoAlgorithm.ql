@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-327
  */
+
 import cpp
 import semmle.code.cpp.security.Encryption
 
@@ -22,13 +23,12 @@ Function getAnInsecureFunction() {
 }
 
 class InsecureFunctionCall extends InsecureCryptoSpec, FunctionCall {
-  InsecureFunctionCall() {
-    this.getTarget() = getAnInsecureFunction()
-  }
+  InsecureFunctionCall() { this.getTarget() = getAnInsecureFunction() }
 
   override string description() { result = "function call" }
 
   override string toString() { result = FunctionCall.super.toString() }
+
   override Location getLocation() { result = FunctionCall.super.getLocation() }
 }
 
@@ -38,13 +38,12 @@ Macro getAnInsecureMacro() {
 }
 
 class InsecureMacroSpec extends InsecureCryptoSpec, MacroInvocation {
-  InsecureMacroSpec() {
-    this.getMacro() = getAnInsecureMacro()
-  }
+  InsecureMacroSpec() { this.getMacro() = getAnInsecureMacro() }
 
   override string description() { result = "macro invocation" }
 
   override string toString() { result = MacroInvocation.super.toString() }
+
   override Location getLocation() { result = MacroInvocation.super.getLocation() }
 }
 

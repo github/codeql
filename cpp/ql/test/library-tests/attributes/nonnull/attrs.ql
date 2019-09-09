@@ -1,9 +1,7 @@
 import cpp
 
 string attributeArg(Attribute a) {
-    if exists(a.getAnArgument())
-    then result = a.getAnArgument().toString()
-    else result = "<none>"
+  if exists(a.getAnArgument()) then result = a.getAnArgument().toString() else result = "<none>"
 }
 
 from Attribute a

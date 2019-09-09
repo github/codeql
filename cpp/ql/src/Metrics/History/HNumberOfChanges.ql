@@ -10,10 +10,10 @@
  * @tags external-data
  * @deprecated
  */
+
 import cpp
 import external.VCS
 
 from File f
 where exists(f.getMetrics().getNumberOfLinesOfCode())
-select f, count(Commit svn |
-                f = svn.getAnAffectedFile() and not artificialChange(svn))
+select f, count(Commit svn | f = svn.getAnAffectedFile() and not artificialChange(svn))

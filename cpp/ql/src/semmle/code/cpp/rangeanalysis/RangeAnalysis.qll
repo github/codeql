@@ -42,7 +42,7 @@
  * a constant bound), or they are relative to some program value. This value is
  * represented by the `ValueNumber` class, each instance of which represents a
  * set of `Instructions` that must have the same value.
- * 
+ *
  * Phi nodes need a little bit of extra handling. Consider `x0 = phi(x1, x2)`.
  * There are essentially two cases:
  * - If `x1 <= B + d1` and `x2 <= B + d2` then `x0 <= B + max(d1,d2)`.
@@ -65,10 +65,9 @@
  * We prevent this by weakening the bound to a small finite set of bounds when
  * a path follows a second back-edge (we postpone weakening till the second
  * back-edge as a precise bound might require traversing a loop once).
-*/
+ */
 
 import cpp
-
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
@@ -76,9 +75,10 @@ private import RangeUtils
 private import SignAnalysis
 import Bound
 
-cached private module RangeAnalysisCache {
-
-  cached module RangeAnalysisPublic {
+cached
+private module RangeAnalysisCache {
+  cached
+  module RangeAnalysisPublic {
     /**
      * Holds if `b + delta` is a valid bound for `i`.
      * - `upper = true`  : `i <= b + delta`
@@ -88,10 +88,11 @@ cached private module RangeAnalysisCache {
      * or `NoReason` if the bound was proven directly without the use of a bounding
      * condition.
      */
-    cached predicate boundedInstruction(Instruction i, Bound b, int delta, boolean upper, Reason reason) {
+    cached
+    predicate boundedInstruction(Instruction i, Bound b, int delta, boolean upper, Reason reason) {
       boundedInstruction(i, b, delta, upper, _, _, reason)
     }
-    
+
     /**
      * Holds if `b + delta` is a valid bound for `op`.
      * - `upper = true`  : `op <= b + delta`
@@ -101,7 +102,8 @@ cached private module RangeAnalysisCache {
      * or `NoReason` if the bound was proven directly without the use of a bounding
      * condition.
      */
-    cached predicate boundedOperand(Operand op, Bound b, int delta, boolean upper, Reason reason) {
+    cached
+    predicate boundedOperand(Operand op, Bound b, int delta, boolean upper, Reason reason) {
       boundedNonPhiOperand(op, b, delta, upper, _, _, reason)
       or
       boundedPhiOperand(op, b, delta, upper, _, _, reason)
@@ -111,13 +113,14 @@ cached private module RangeAnalysisCache {
   /**
    * Holds if `guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _)`.
    */
-  cached predicate possibleReason(IRGuardCondition guard) {
+  cached
+  predicate possibleReason(IRGuardCondition guard) {
     guard = boundFlowCond(_, _, _, _, _)
     or
     guard = eqFlowCond(_, _, _, _, _)
   }
-
 }
+
 private import RangeAnalysisCache
 import RangeAnalysisPublic
 
@@ -128,9 +131,9 @@ import RangeAnalysisPublic
  * - `isEq = true`  : `vn == bound + delta`
  * - `isEq = false` : `vn != bound + delta`
  */
-private IRGuardCondition eqFlowCond(ValueNumber vn, Operand bound, int delta,
-  boolean isEq, boolean testIsTrue)
-{
+private IRGuardCondition eqFlowCond(
+  ValueNumber vn, Operand bound, int delta, boolean isEq, boolean testIsTrue
+) {
   result.comparesEq(vn.getAUse(), bound, delta, isEq, testIsTrue)
 }
 
@@ -156,17 +159,15 @@ private predicate boundFlowStepSsa(
  * - `upper = true`  : `vn <= bound + delta`
  * - `upper = false` : `vn >= bound + delta`
  */
-private IRGuardCondition boundFlowCond(ValueNumber vn, NonPhiOperand bound, int delta, boolean upper,
-  boolean testIsTrue)
-{
+private IRGuardCondition boundFlowCond(
+  ValueNumber vn, NonPhiOperand bound, int delta, boolean upper, boolean testIsTrue
+) {
   exists(int d |
     result.comparesLt(vn.getAUse(), bound, d, upper, testIsTrue) and
     // `comparesLt` provides bounds of the form `x < y + k` or `x >= y + k`, but we need
     // `x <= y + k` so we strengthen here. `testIsTrue` has the same semantics in `comparesLt` as
     // it does here, so we don't need to account for it.
-    if upper = true
-      then delta = d-1
-      else delta = d
+    if upper = true then delta = d - 1 else delta = d
   )
   or
   result = eqFlowCond(vn, bound, delta, true, testIsTrue) and
@@ -185,11 +186,14 @@ private newtype TReason =
 abstract class Reason extends TReason {
   abstract string toString();
 }
+
 class NoReason extends Reason, TNoReason {
   override string toString() { result = "NoReason" }
 }
+
 class CondReason extends Reason, TCondReason {
   IRGuardCondition getCond() { this = TCondReason(result) }
+
   override string toString() { result = getCond().toString() }
 }
 
@@ -204,7 +208,8 @@ private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
     fromtyp.isUnsigned()
     or
     totyp.isSigned()
-  ) or
+  )
+  or
   fromtyp.getSize() <= totyp.getSize() and
   (
     fromtyp.isSigned() and
@@ -245,8 +250,10 @@ private class NarrowingCastInstruction extends ConvertInstruction {
     not this instanceof SafeCastInstruction and
     typeBound(getResultType(), _, _)
   }
+
   /** Gets the lower bound of the resulting type. */
   int getLowerBound() { typeBound(getResultType(), result, _) }
+
   /** Gets the upper bound of the resulting type. */
   int getUpperBound() { typeBound(getResultType(), _, result) }
 }
@@ -268,21 +275,21 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
     i.(AddInstruction).getAnOperand() = op and
     i.(AddInstruction).getAnOperand() = x and
     op != x
-    |
+  |
     not exists(getValue(getConstantValue(op.getUse()))) and
     not exists(getValue(getConstantValue(x.getUse()))) and
-    if(strictlyPositive(x))
-    then (
-      upper = false and delta = 1
-    ) else
+    if strictlyPositive(x)
+    then upper = false and delta = 1
+    else
       if positive(x)
-      then (
-        upper = false and delta = 0
-      ) else
+      then upper = false and delta = 0
+      else
         if strictlyNegative(x)
-        then (
-          upper = true and delta = -1
-        ) else if negative(x) then (upper = true and delta = 0) else none()
+        then upper = true and delta = -1
+        else
+          if negative(x)
+          then upper = true and delta = 0
+          else none()
   )
   or
   exists(Operand x |
@@ -295,17 +302,17 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
     // `x` with constant value is covered by valueFlowStep
     not exists(getValue(getConstantValue(x.getUse()))) and
     if strictlyPositive(x)
-    then (
-      upper = true and delta = -1
-    ) else
+    then upper = true and delta = -1
+    else
       if positive(x)
-      then (
-        upper = true and delta = 0
-      ) else
+      then upper = true and delta = 0
+      else
         if strictlyNegative(x)
-        then (
-          upper = false and delta = 1
-        ) else if negative(x) then (upper = false and delta = 0) else none()
+        then upper = false and delta = 1
+        else
+          if negative(x)
+          then upper = false and delta = 0
+          else none()
   )
   or
   i.(RemInstruction).getRightOperand() = op and positive(op) and delta = -1 and upper = true
@@ -314,7 +321,10 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
   or
   i.(BitAndInstruction).getAnOperand() = op and positive(op) and delta = 0 and upper = true
   or
-  i.(BitOrInstruction).getAnOperand() = op and positiveInstruction(i) and delta = 0 and upper = false
+  i.(BitOrInstruction).getAnOperand() = op and
+  positiveInstruction(i) and
+  delta = 0 and
+  upper = false
   // TODO: min, max, rand
 }
 
@@ -344,8 +354,9 @@ private predicate boundFlowStepDiv(Instruction i1, Operand op, int factor) {
  * Holds if `b` is a valid bound for `op`
  */
 pragma[noinline]
-private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boolean upper,
-  boolean fromBackEdge, int origdelta, Reason reason
+private predicate boundedNonPhiOperand(
+  NonPhiOperand op, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  Reason reason
 ) {
   exists(NonPhiOperand op2, int d1, int d2 |
     boundFlowStepSsa(op, op2, d1, upper, reason) and
@@ -361,7 +372,8 @@ private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boo
     unequalOperand(op, b, d, r1) and
     (
       upper = true and delta = d - 1
-      or upper = false and delta = d + 1
+      or
+      upper = false and delta = d + 1
     ) and
     (
       reason = r1
@@ -391,7 +403,6 @@ private predicate boundFlowStepPhi(
   )
 }
 
-
 private predicate boundedPhiOperand(
   PhiInputOperand op, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   Reason reason
@@ -411,7 +422,8 @@ private predicate boundedPhiOperand(
     unequalOperand(op, b, d, r1) and
     (
       upper = true and delta = d - 1
-      or upper = false and delta = d + 1
+      or
+      upper = false and delta = d + 1
     ) and
     (
       reason = r1
@@ -422,9 +434,7 @@ private predicate boundedPhiOperand(
 }
 
 /** Holds if `op2 != op1 + delta` at `pos`. */
-private predicate unequalFlowStep(
- Operand op2, Operand op1, int delta, Reason reason
-) {
+private predicate unequalFlowStep(Operand op2, Operand op1, int delta, Reason reason) {
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = eqFlowCond(valueNumberOfOperand(op2), op1, delta, false, testIsTrue) and
     guard.controls(op2.getUse().getBlock(), testIsTrue) and
@@ -533,7 +543,9 @@ private predicate boundedPhiCand(
  * `upper = false` this means that the cast will not underflow.
  */
 private predicate safeNarrowingCast(NarrowingCastInstruction cast, boolean upper) {
-  exists(int bound | boundedNonPhiOperand(cast.getAnOperand(), any(ZeroBound zb), bound, upper, _, _, _) |
+  exists(int bound |
+    boundedNonPhiOperand(cast.getAnOperand(), any(ZeroBound zb), bound, upper, _, _, _)
+  |
     upper = true and bound <= cast.getUpperBound()
     or
     upper = false and bound >= cast.getLowerBound()
@@ -542,18 +554,20 @@ private predicate safeNarrowingCast(NarrowingCastInstruction cast, boolean upper
 
 pragma[noinline]
 private predicate boundedCastExpr(
-  NarrowingCastInstruction cast, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
-  Reason reason
+  NarrowingCastInstruction cast, Bound b, int delta, boolean upper, boolean fromBackEdge,
+  int origdelta, Reason reason
 ) {
   boundedNonPhiOperand(cast.getAnOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
 }
+
 /**
  * Holds if `b + delta` is a valid bound for `i`.
  * - `upper = true`  : `i <= b + delta`
  * - `upper = false` : `i >= b + delta`
  */
 private predicate boundedInstruction(
-  Instruction i, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason
+  Instruction i, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  Reason reason
 ) {
   i instanceof PhiInstruction and
   forex(PhiInputOperand op | op = i.getAnOperand() |
@@ -577,7 +591,7 @@ private predicate boundedInstruction(
     boundFlowStepMul(i, mid, factor) and
     boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
     b instanceof ZeroBound and
-    delta = d*factor and
+    delta = d * factor and
     not exists(getValue(getConstantValue(i)))
   )
   or

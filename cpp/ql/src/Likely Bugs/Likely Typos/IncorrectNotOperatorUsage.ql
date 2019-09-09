@@ -17,19 +17,19 @@ import cpp
 /**
  * It's common in some projects to use "a double negation" to normalize the boolean
  * result to either 1 or 0.
- * This predciate is intended to filter explicit usage of a double negation as it typically 
- * indicates the explicit purpose to normalize the result for bit-wise or arithmetic purposes. 
+ * This predciate is intended to filter explicit usage of a double negation as it typically
+ * indicates the explicit purpose to normalize the result for bit-wise or arithmetic purposes.
  */
-predicate doubleNegationNormalization( NotExpr notexpr ){
-  notexpr.getAnOperand() instanceof NotExpr
-}
+predicate doubleNegationNormalization(NotExpr notexpr) { notexpr.getAnOperand() instanceof NotExpr }
 
 from BinaryBitwiseOperation binbitwop
-where exists( NotExpr notexpr | 
-  binbitwop.getAnOperand() = notexpr
-  and not doubleNegationNormalization(notexpr)
-  and ( binbitwop instanceof BitwiseAndExpr
-    or binbitwop instanceof BitwiseOrExpr )
-)
+where
+  exists(NotExpr notexpr |
+    binbitwop.getAnOperand() = notexpr and
+    not doubleNegationNormalization(notexpr) and
+    (
+      binbitwop instanceof BitwiseAndExpr or
+      binbitwop instanceof BitwiseOrExpr
+    )
+  )
 select binbitwop, "Usage of a logical not (!) expression as a bitwise operator."
-

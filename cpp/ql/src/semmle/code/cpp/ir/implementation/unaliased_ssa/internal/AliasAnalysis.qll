@@ -2,7 +2,6 @@ private import AliasAnalysisInternal
 private import cpp
 private import InputIR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
-
 private import semmle.code.cpp.models.interfaces.Alias
 
 private class IntValue = Ints::IntValue;
@@ -12,35 +11,28 @@ private class IntValue = Ints::IntValue;
  * bytes:bits.
  */
 bindingset[bits]
-string bitsToBytesAndBits(int bits) {
-  result = (bits / 8).toString() + ":" + (bits % 8).toString()
-}
+string bitsToBytesAndBits(int bits) { result = (bits / 8).toString() + ":" + (bits % 8).toString() }
 
 /**
  * Gets a printable string for a bit offset with possibly unknown value.
  */
 bindingset[bitOffset]
 string getBitOffsetString(IntValue bitOffset) {
-  if Ints::hasValue(bitOffset) then
-    if bitOffset >= 0 then
-      result = "+" + bitsToBytesAndBits(bitOffset)
-    else
-      result = "-" + bitsToBytesAndBits(Ints::neg(bitOffset))
-  else
-    result = "+?"
+  if Ints::hasValue(bitOffset)
+  then
+    if bitOffset >= 0
+    then result = "+" + bitsToBytesAndBits(bitOffset)
+    else result = "-" + bitsToBytesAndBits(Ints::neg(bitOffset))
+  else result = "+?"
 }
 
 /**
  * Gets the offset of field `field` in bits.
  */
 private IntValue getFieldBitOffset(Field field) {
-  if (field instanceof BitField) then (
-    result = Ints::add(Ints::mul(field.getByteOffset(), 8),
-      field.(BitField).getBitOffset())
-  )
-  else (
-    result = Ints::mul(field.getByteOffset(), 8)
-  )
+  if field instanceof BitField
+  then result = Ints::add(Ints::mul(field.getByteOffset(), 8), field.(BitField).getBitOffset())
+  else result = Ints::mul(field.getByteOffset(), 8)
 }
 
 /**
@@ -51,18 +43,22 @@ private IntValue getFieldBitOffset(Field field) {
 private predicate operandIsConsumedWithoutEscaping(Operand operand) {
   // The source/destination address of a Load/Store does not escape (but the
   // loaded/stored value could).
-  operand instanceof AddressOperand or
-  exists (Instruction instr |
+  operand instanceof AddressOperand
+  or
+  exists(Instruction instr |
     instr = operand.getUse() and
     (
       // Neither operand of a Compare escapes.
-      instr instanceof CompareInstruction or
+      instr instanceof CompareInstruction
+      or
       // Neither operand of a PointerDiff escapes.
-      instr instanceof PointerDiffInstruction or
+      instr instanceof PointerDiffInstruction
+      or
       // Converting an address to a `bool` does not escape the address.
       instr.(ConvertInstruction).getResultType() instanceof BoolType
     )
-  ) or
+  )
+  or
   // Some standard function arguments never escape
   isNeverEscapesArgument(operand)
 }
@@ -81,10 +77,9 @@ private predicate operandEscapesDomain(Operand operand) {
  * value of that constant. Otherwise, returns unknown.
  */
 IntValue getConstantValue(Instruction instr) {
-  if instr instanceof IntegerConstantInstruction then
-    result = instr.(IntegerConstantInstruction).getValue().toInt()
-  else
-    result = Ints::unknown()
+  if instr instanceof IntegerConstantInstruction
+  then result = instr.(IntegerConstantInstruction).getValue().toInt()
+  else result = Ints::unknown()
 }
 
 /**
@@ -94,12 +89,10 @@ IntValue getConstantValue(Instruction instr) {
  */
 IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
   exists(IntValue bitOffset |
+    bitOffset = Ints::mul(Ints::mul(getConstantValue(instr.getRight()), instr.getElementSize()), 8) and
     (
-      bitOffset = Ints::mul(Ints::mul(getConstantValue(instr.getRight()),
-        instr.getElementSize()), 8)
-    ) and
-    (
-      instr instanceof PointerAddInstruction and result = bitOffset or
+      instr instanceof PointerAddInstruction and result = bitOffset
+      or
       instr instanceof PointerSubInstruction and result = Ints::neg(bitOffset)
     )
   )
@@ -119,35 +112,40 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       exists(ConvertToBaseInstruction convert |
         convert = instr and
         bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
-      ) or
+      )
+      or
       // Converting to a derived class subtracts the offset of the base class.
       exists(ConvertToDerivedInstruction convert |
         convert = instr and
         bitOffset = Ints::neg(Ints::mul(convert.getDerivation().getByteOffset(), 8))
-      ) or
+      )
+      or
       // Converting to a virtual base class adds an unknown offset.
-      (
-        instr instanceof ConvertToVirtualBaseInstruction and
-        bitOffset = Ints::unknown()
-      ) or
+      instr instanceof ConvertToVirtualBaseInstruction and
+      bitOffset = Ints::unknown()
+      or
       // Conversion to another pointer type propagates the source address.
       exists(ConvertInstruction convert, Type resultType |
         convert = instr and
         resultType = convert.getResultType() and
         (
           resultType instanceof PointerType or
-          resultType instanceof Class  //REVIEW: Remove when all glvalues are pointers
+          resultType instanceof Class //REVIEW: Remove when all glvalues are pointers
         ) and
         bitOffset = 0
-      ) or
+      )
+      or
       // Adding an integer to or subtracting an integer from a pointer propagates
       // the address with an offset.
-      bitOffset = getPointerBitOffset(instr.(PointerOffsetInstruction)) or
+      bitOffset = getPointerBitOffset(instr.(PointerOffsetInstruction))
+      or
       // Computing a field address from a pointer propagates the address plus the
       // offset of the field.
-      bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField()) or
+      bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField())
+      or
       // A copy propagates the source value.
-      operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0 or
+      operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
+      or
       // Some functions are known to propagate an argument
       isAlwaysReturnedArgument(operand) and bitOffset = 0
     )
@@ -212,14 +210,14 @@ private predicate operandReturned(Operand operand, IntValue bitOffset) {
     resultReturned(init, bitOffset1) and
     resultReturned(ci, bitOffset2) and
     bitOffset = Ints::add(bitOffset1, bitOffset2)
-    
   )
   or
   // The address is returned
   operand.getUse() instanceof ReturnValueInstruction and
   bitOffset = 0
   or
-  isOnlyEscapesViaReturnArgument(operand) and resultReturned(operand.getUse(), _) and
+  isOnlyEscapesViaReturnArgument(operand) and
+  resultReturned(operand.getUse(), _) and
   bitOffset = Ints::unknown()
 }
 
@@ -228,7 +226,8 @@ private predicate isArgumentForParameter(CallInstruction ci, Operand operand, In
     ci = operand.getUse() and
     f = ci.getStaticCallTarget() and
     (
-      init.(InitializeParameterInstruction).getParameter() = f.getParameter(operand.(PositionalArgumentOperand).getIndex())
+      init.(InitializeParameterInstruction).getParameter() = f
+            .getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
       init instanceof InitializeThisInstruction and
       init.getEnclosingFunction() = f and
@@ -264,9 +263,7 @@ private predicate resultReturned(Instruction instr, IntValue bitOffset) {
   operandReturned(instr.getAUse(), bitOffset)
 }
 
-private predicate resultMayReachReturn(Instruction instr) {
-  operandMayReachReturn(instr.getAUse())
-}
+private predicate resultMayReachReturn(Instruction instr) { operandMayReachReturn(instr.getAUse()) }
 
 /**
  * Holds if any address held in the result of instruction `instr` escapes
@@ -295,7 +292,8 @@ private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
  * analysis.
  */
 predicate variableAddressEscapes(IRVariable var) {
-  automaticVariableAddressEscapes(var.(IRAutomaticVariable)) or
+  automaticVariableAddressEscapes(var.(IRAutomaticVariable))
+  or
   // All variables with static storage duration have their address escape.
   not var instanceof IRAutomaticVariable
 }
@@ -306,11 +304,10 @@ predicate variableAddressEscapes(IRVariable var) {
  * `var`, but at an unknown or non-constant offset, then `bitOffset` is unknown.
  */
 predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) {
-  (
-    // The address of a variable points to that variable, at offset 0.
-    instr.(VariableAddressInstruction).getVariable() = var and
-    bitOffset = 0
-  ) or
+  // The address of a variable points to that variable, at offset 0.
+  instr.(VariableAddressInstruction).getVariable() = var and
+  bitOffset = 0
+  or
   exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |
     operand = instr.getAnOperand() and
     // If an operand is propagated, then the result points to the same variable,

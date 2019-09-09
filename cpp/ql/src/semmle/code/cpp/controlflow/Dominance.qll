@@ -7,40 +7,40 @@
  * and only for nodes reachable from the entry point. Unreachable nodes are not
  * part the dominance relation.
  */
+
 import cpp
 
-
-/*
+/**
  * In rare cases, the same node is used in multiple control-flow scopes. This
  * confuses the dominance analysis, so this predicate is used to exclude them.
  */
-private predicate
-hasMultiScopeNode(Function f) {
-  exists (ControlFlowNode node |
-    node.getControlFlowScope() = f
-    and node.getControlFlowScope() != f)
+private predicate hasMultiScopeNode(Function f) {
+  exists(ControlFlowNode node |
+    node.getControlFlowScope() = f and
+    node.getControlFlowScope() != f
+  )
 }
 
 /** Holds if `entry` is the entry point of a function. */
 predicate functionEntry(ControlFlowNode entry) {
-  exists (Function function |
-    function.getEntryPoint() = entry
-    and not hasMultiScopeNode(function))
+  exists(Function function |
+    function.getEntryPoint() = entry and
+    not hasMultiScopeNode(function)
+  )
 }
 
 /** Holds if `exit` is the exit node of a function. */
 predicate functionExit(ControlFlowNode exit) {
-  exists (Function function |
-    function = exit
-    and not hasMultiScopeNode(function))
+  exists(Function function |
+    function = exit and
+    not hasMultiScopeNode(function)
+  )
 }
 
 /**
  * Holds if `dest` is an immediate successor of `src` in the control-flow graph.
  */
-private predicate nodeSucc(ControlFlowNode src, ControlFlowNode dest) {
-  src.getASuccessor() = dest
-}
+private predicate nodeSucc(ControlFlowNode src, ControlFlowNode dest) { src.getASuccessor() = dest }
 
 /**
  * Holds if `pred` is an immediate predecessor of `src` in the control-flow graph.
@@ -53,13 +53,15 @@ private predicate nodePred(ControlFlowNode src, ControlFlowNode pred) {
  * Holds if `dominator` is an immediate dominator of `node` in the control-flow
  * graph.
  */
-predicate iDominates(ControlFlowNode dominator, ControlFlowNode node) = idominance(functionEntry/1,nodeSucc/2)(_, dominator, node)
+predicate iDominates(ControlFlowNode dominator, ControlFlowNode node) =
+  idominance(functionEntry/1, nodeSucc/2)(_, dominator, node)
 
 /**
  * Holds if `postDominator` is an immediate post-dominator of `node` in the control-flow
  * graph.
  */
-predicate iPostDominates(ControlFlowNode postDominator, ControlFlowNode node) = idominance(functionExit/1,nodePred/2)(_, postDominator, node)
+predicate iPostDominates(ControlFlowNode postDominator, ControlFlowNode node) =
+  idominance(functionExit/1, nodePred/2)(_, postDominator, node)
 
 /**
  * Holds if `dominator` is a strict dominator of `node` in the control-flow
@@ -101,32 +103,31 @@ predicate postDominates(ControlFlowNode postDominator, ControlFlowNode node) {
  * Holds if `dominator` is an immediate dominator of `node` in the control-flow
  * graph of basic blocks.
  */
-predicate bbIDominates(BasicBlock dom, BasicBlock node) = idominance(functionEntry/1, bb_successor/2)(_, dom, node)
+predicate bbIDominates(BasicBlock dom, BasicBlock node) =
+  idominance(functionEntry/1, bb_successor/2)(_, dom, node)
 
 /**
  * Holds if `pred` is a predecessor of `succ` in the control-flow graph of
  * basic blocks.
  */
-private predicate bb_predecessor(BasicBlock succ, BasicBlock pred) {
-  bb_successor(pred, succ)
-}
+private predicate bb_predecessor(BasicBlock succ, BasicBlock pred) { bb_successor(pred, succ) }
 
 /** Holds if `exit` is an `ExitBasicBlock`. */
-private predicate bb_exit(ExitBasicBlock exit) {
-  any()
-}
+private predicate bb_exit(ExitBasicBlock exit) { any() }
 
 /**
  * Holds if `postDominator` is an immediate post-dominator of `node` in the control-flow
  * graph of basic blocks.
  */
-predicate bbIPostDominates(BasicBlock pDom, BasicBlock node) = idominance(bb_exit/1, bb_predecessor/2)(_, pDom, node)
+predicate bbIPostDominates(BasicBlock pDom, BasicBlock node) =
+  idominance(bb_exit/1, bb_predecessor/2)(_, pDom, node)
 
 /**
  * Holds if `dominator` is a strict dominator of `node` in the control-flow
  * graph of basic blocks. Being strict means that `dominator != node`.
  */
-pragma[nomagic] // magic prevents fastTC
+// magic prevents fastTC
+pragma[nomagic]
 predicate bbStrictlyDominates(BasicBlock dominator, BasicBlock node) {
   bbIDominates+(dominator, node)
 }
@@ -135,7 +136,8 @@ predicate bbStrictlyDominates(BasicBlock dominator, BasicBlock node) {
  * Holds if `postDominator` is a strict post-dominator of `node` in the control-flow
  * graph of basic blocks. Being strict means that `postDominator != node`.
  */
-pragma[nomagic] // magic prevents fastTC
+// magic prevents fastTC
+pragma[nomagic]
 predicate bbStrictlyPostDominates(BasicBlock postDominator, BasicBlock node) {
   bbIPostDominates+(postDominator, node)
 }

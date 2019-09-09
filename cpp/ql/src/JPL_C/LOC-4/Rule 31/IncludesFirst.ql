@@ -12,8 +12,16 @@
 import cpp
 
 int firstCodeLine(File f) {
-  result = min(Declaration d, Location l, int toMin | (l = d.getLocation() and
-    l.getFile() = f and not d.isInMacroExpansion()) and (toMin = l.getStartLine()) | toMin)
+  result = min(Declaration d, Location l, int toMin |
+      (
+        l = d.getLocation() and
+        l.getFile() = f and
+        not d.isInMacroExpansion()
+      ) and
+      toMin = l.getStartLine()
+    |
+      toMin
+    )
 }
 
 int badIncludeLine(File f, Include i) {
@@ -23,7 +31,9 @@ int badIncludeLine(File f, Include i) {
 }
 
 from File f, Include i, int line
-where line = badIncludeLine(f, i) and
+where
+  line = badIncludeLine(f, i) and
   line = min(badIncludeLine(f, _))
-select i, "'" + i.toString() + "' is preceded by code -- it should be moved above line " +
-  firstCodeLine(f) + " in " + f.getBaseName() + "."
+select i,
+  "'" + i.toString() + "' is preceded by code -- it should be moved above line " + firstCodeLine(f) +
+    " in " + f.getBaseName() + "."

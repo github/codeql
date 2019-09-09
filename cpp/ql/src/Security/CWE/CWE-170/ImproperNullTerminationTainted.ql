@@ -18,7 +18,8 @@ class TaintSource extends VariableAccess {
   TaintSource() {
     exists(SecurityOptions x, string cause |
       this.getTarget() instanceof SemanticStackVariable and
-      x.isUserInput(this, cause) |
+      x.isUserInput(this, cause)
+    |
       cause = "read" or
       cause = "fread" or
       cause = "recv" or
@@ -71,13 +72,14 @@ class TaintSource extends VariableAccess {
    * either reach the sink or be reached from the source. (Ideally,
    * we should instead look for such accesses only on the path from
    * this source to `sink` found via `tainted(source, sink)`.)
-   * */
+   */
   predicate reaches(VariableAccess sink) {
     isSink(sink) and
     not exists(VariableAccess va |
       va != this and
       va != sink and
-      mayAddNullTerminator(_, va) |
+      mayAddNullTerminator(_, va)
+    |
       sourceReaches(va)
       or
       reachesSink(va, sink)
@@ -87,7 +89,4 @@ class TaintSource extends VariableAccess {
 
 from TaintSource source, VariableAccess sink
 where source.reaches(sink)
-select
-  sink,
-  "$@ flows to here and may not be null terminated.",
-  source, "User-provided value"
+select sink, "$@ flows to here and may not be null terminated.", source, "User-provided value"

@@ -9,10 +9,12 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 from DeclStmt ds
-where ds.getADeclaration() instanceof Function
-      and not ds.isInMacroExpansion()
-      and not exists(MacroInvocation mi | mi.getLocation() = ds.getADeclarationEntry().getLocation())
+where
+  ds.getADeclaration() instanceof Function and
+  not ds.isInMacroExpansion() and
+  not exists(MacroInvocation mi | mi.getLocation() = ds.getADeclarationEntry().getLocation())
 select ds, "Functions should be declared at file scope, not inside blocks."

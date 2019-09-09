@@ -18,7 +18,10 @@ private import semmle.code.cpp.internal.ResolveClass
 class Enum extends UserType, IntegralOrEnumType {
   /** Gets an enumerator of this enumeration. */
   EnumConstant getAnEnumConstant() { result.getDeclaringEnum() = this }
-  EnumConstant getEnumConstant(int index) { enumconstants(unresolveElement(result),underlyingElement(this),index,_,_,_) }
+
+  EnumConstant getEnumConstant(int index) {
+    enumconstants(unresolveElement(result), underlyingElement(this), index, _, _, _)
+  }
 
   override string getCanonicalQLClass() { result = "Enum" }
 
@@ -27,12 +30,13 @@ class Enum extends UserType, IntegralOrEnumType {
    * be used for debugging purposes. For more information, see the comment
    * for `Type.explain`.
    */
-  override string explain() { result =  "enum " + this.getName() }
+  override string explain() { result = "enum " + this.getName() }
 
   override int getSize() {
     // Workaround for extractor bug CPP-348: No size information for enums.
     // If the extractor didn't provide a size, assume four bytes.
-    result = UserType.super.getSize() or
+    result = UserType.super.getSize()
+    or
     not exists(UserType.super.getSize()) and result = 4
   }
 
@@ -43,9 +47,7 @@ class Enum extends UserType, IntegralOrEnumType {
    * Holds if this enum has an enum-base [N4140 7.2].
    * For example: `enum E : int`.
    */
-  predicate hasExplicitUnderlyingType() {
-    derivations(_, underlyingElement(this), _, _, _)
-  }
+  predicate hasExplicitUnderlyingType() { derivations(_, underlyingElement(this), _, _, _) }
 
   /**
    * The type of the enum-base [N4140 7.2], if it is specified.
@@ -68,9 +70,7 @@ class Enum extends UserType, IntegralOrEnumType {
  * ```
  */
 class LocalEnum extends Enum {
-  LocalEnum() {
-    isLocal()
-  }
+  LocalEnum() { isLocal() }
 
   override string getCanonicalQLClass() { result = "LocalEnum" }
 }
@@ -88,13 +88,10 @@ class LocalEnum extends Enum {
  * ```
  */
 class NestedEnum extends Enum {
-
-  NestedEnum() {
-    this.isMember()
-  }
+  NestedEnum() { this.isMember() }
 
   override string getCanonicalQLClass() { result = "NestedEnum" }
-  
+
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
 
@@ -103,7 +100,6 @@ class NestedEnum extends Enum {
 
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
-
 }
 
 /**
@@ -117,9 +113,7 @@ class NestedEnum extends Enum {
  * ```
  */
 class ScopedEnum extends Enum {
-  ScopedEnum() {
-    usertypes(underlyingElement(this),_,13)
-  }
+  ScopedEnum() { usertypes(underlyingElement(this), _, 13) }
 
   override string getCanonicalQLClass() { result = "ScopedEnum" }
 }
@@ -140,18 +134,18 @@ class EnumConstant extends Declaration, @enumconstant {
   /**
    * Gets the enumeration of which this enumerator is a member.
    */
-  Enum getDeclaringEnum() { enumconstants(underlyingElement(this),unresolveElement(result),_,_,_,_) }
+  Enum getDeclaringEnum() {
+    enumconstants(underlyingElement(this), unresolveElement(result), _, _, _, _)
+  }
 
   override string getCanonicalQLClass() { result = "EnumConstant" }
-  
-  override Class getDeclaringType() {
-    result = this.getDeclaringEnum().getDeclaringType()
-  }
+
+  override Class getDeclaringType() { result = this.getDeclaringEnum().getDeclaringType() }
 
   /**
    * Gets the name of this enumerator.
    */
-  override string getName() { enumconstants(underlyingElement(this),_,_,_,result,_) }
+  override string getName() { enumconstants(underlyingElement(this), _, _, _, result, _) }
 
   /**
    * Gets the value that this enumerator is initialized to, as a
@@ -161,13 +155,15 @@ class EnumConstant extends Declaration, @enumconstant {
   string getValue() { result = this.getInitializer().getExpr().getValue() }
 
   /** Gets the type of this enumerator. */
-  Type getType() { enumconstants(underlyingElement(this),_,_,unresolveElement(result),_,_) }
+  Type getType() { enumconstants(underlyingElement(this), _, _, unresolveElement(result), _, _) }
 
   /** Gets the location of a declaration of this enumerator. */
   override Location getADeclarationLocation() { result = this.getDefinitionLocation() }
 
   /** Gets the location of the definition of this enumerator. */
-  override Location getDefinitionLocation() { enumconstants(underlyingElement(this),_,_,_,_,result) }
+  override Location getDefinitionLocation() {
+    enumconstants(underlyingElement(this), _, _, _, _, result)
+  }
 
   /** Gets the location of the definition of this enumerator. */
   override Location getLocation() { result = this.getDefinitionLocation() }
@@ -179,7 +175,9 @@ class EnumConstant extends Declaration, @enumconstant {
   EnumConstantAccess getAnAccess() { result.getTarget() = this }
 
   /** Gets a specifier of this enumerator. */
-  override Specifier getASpecifier() { varspecifiers(underlyingElement(this),unresolveElement(result)) }
+  override Specifier getASpecifier() {
+    varspecifiers(underlyingElement(this), unresolveElement(result))
+  }
 
   /**
    * An attribute of this enumerator.
@@ -187,7 +185,5 @@ class EnumConstant extends Declaration, @enumconstant {
    * Note that allowing attributes on enumerators is a language extension
    * which is only supported by Clang.
    */
-  Attribute getAnAttribute() {
-    varattributes(underlyingElement(this), unresolveElement(result))
-  }
+  Attribute getAnAttribute() { varattributes(underlyingElement(this), unresolveElement(result)) }
 }

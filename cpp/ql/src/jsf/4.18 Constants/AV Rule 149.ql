@@ -7,9 +7,11 @@
  * @tags maintainability
  *       external/jsf
  */
+
 import cpp
 
 from OctalLiteral l
-where l.fromSource() and
-      l.getValue() != "0"
+where
+  l.fromSource() and
+  l.getValue() != "0"
 select l, "AV Rule 149: Octal constants (other than zero) shall not be used."

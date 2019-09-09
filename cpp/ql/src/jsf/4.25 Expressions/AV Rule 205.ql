@@ -7,6 +7,7 @@
  * @tags efficiency
  *       external/jsf
  */
+
 import cpp
 
 // whether it is acceptable for s to be declared volatile
@@ -16,6 +17,8 @@ predicate acceptableVolatile(Variable v) {
 }
 
 from Variable v
-where v.getType().hasSpecifier("volatile") and
-      not acceptableVolatile(v)
-select v, "AV Rule 205: The volatile keyword shall not be used unless directly interfacing with hardware."
+where
+  v.getType().hasSpecifier("volatile") and
+  not acceptableVolatile(v)
+select v,
+  "AV Rule 205: The volatile keyword shall not be used unless directly interfacing with hardware."

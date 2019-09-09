@@ -9,6 +9,7 @@
  * @tags reliability
  *       readability
  */
+
 import cpp
 
 predicate macroUse(Locatable l) {
@@ -28,12 +29,12 @@ predicate macroUseLocation(File f, int start, int end) {
 pragma[noopt]
 predicate emptyIf(IfStmt s, Block b, File f, int start, int end) {
   s instanceof IfStmt and
-  not exists (s.getElse()) and
+  not exists(s.getElse()) and
   b = s.getThen() and
   b instanceof Block and
   not exists(b.getAChild()) and
   f = b.getFile() and
-  exists (Location l |
+  exists(Location l |
     l = b.getLocation() and
     start = l.getStartLine() and
     end = l.getEndLine()
@@ -53,6 +54,7 @@ predicate query(IfStmt s, Block b) {
 }
 
 from IfStmt s, Block b
-where query(s, b) and
-      not b.isInMacroExpansion()
+where
+  query(s, b) and
+  not b.isInMacroExpansion()
 select s, "If-statement with an empty then-branch and no else-branch."

@@ -7,9 +7,11 @@
  * @tags maintainability
  *       external/jsf
  */
+
 import cpp
 
 from Declaration d
-where d.fromSource() and
-      d.getName().matches("\\_%")
+where
+  d.fromSource() and
+  d.getName().matches("\\_%")
 select d, "Identifiers will not begin with the underscore character."

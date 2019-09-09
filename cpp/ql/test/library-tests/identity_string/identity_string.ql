@@ -8,7 +8,8 @@ abstract class CheckCall extends FunctionCall {
     exists(int lastArgIndex |
       lastArgIndex = getNumberOfArguments() - 1 and
       (
-        result = getArgument(lastArgIndex).getValue() or
+        result = getArgument(lastArgIndex).getValue()
+        or
         not exists(getArgument(lastArgIndex).getValue()) and result = "<missing>"
       )
     )
@@ -23,17 +24,14 @@ class CheckTypeCall extends CheckCall {
   }
 
   override string getActualString() {
-    result = getTypeIdentityString(getSpecifiedType()) or
+    result = getTypeIdentityString(getSpecifiedType())
+    or
     not exists(getTypeIdentityString(getSpecifiedType())) and result = "<missing>"
   }
 
-  override string explain() {
-    result = getSpecifiedType().explain()
-  }
+  override string explain() { result = getSpecifiedType().explain() }
 
-  final Type getSpecifiedType() {
-    result = getTarget().getTemplateArgument(0)
-  }
+  final Type getSpecifiedType() { result = getTarget().getTemplateArgument(0) }
 }
 
 class CheckFuncCall extends CheckCall {
@@ -42,17 +40,14 @@ class CheckFuncCall extends CheckCall {
   }
 
   override string getActualString() {
-    result = getIdentityString(getSpecifiedFunction()) or
+    result = getIdentityString(getSpecifiedFunction())
+    or
     not exists(getIdentityString(getSpecifiedFunction())) and result = "<missing>"
   }
 
-  override string explain() {
-    result = getSpecifiedFunction().toString()
-  }
+  override string explain() { result = getSpecifiedFunction().toString() }
 
-  final Function getSpecifiedFunction() {
-    result = getArgument(0).(FunctionAccess).getTarget()
-  }
+  final Function getSpecifiedFunction() { result = getArgument(0).(FunctionAccess).getTarget() }
 }
 
 class CheckVarCall extends CheckCall {
@@ -61,17 +56,14 @@ class CheckVarCall extends CheckCall {
   }
 
   override string getActualString() {
-    result = getIdentityString(getSpecifiedVariable()) or
+    result = getIdentityString(getSpecifiedVariable())
+    or
     not exists(getIdentityString(getSpecifiedVariable())) and result = "<missing>"
   }
 
-  override string explain() {
-    result = getSpecifiedVariable().toString()
-  }
+  override string explain() { result = getSpecifiedVariable().toString() }
 
-  final Variable getSpecifiedVariable() {
-    result = getArgument(0).(VariableAccess).getTarget()
-  }
+  final Variable getSpecifiedVariable() { result = getArgument(0).(VariableAccess).getTarget() }
 }
 
 bindingset[s]
@@ -80,7 +72,7 @@ private string normalizeLambdas(string s) {
 }
 
 from CheckCall call, string expected, string actual
-where 
+where
   expected = call.getExpectedString() and
   actual = normalizeLambdas(call.getActualString()) and
   expected != actual

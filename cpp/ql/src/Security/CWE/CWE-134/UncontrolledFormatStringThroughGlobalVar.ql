@@ -17,12 +17,14 @@ import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
 
-from PrintfLikeFunction printf, Expr arg, string printfFunction,
-     Expr userValue, string cause, string globalVar
-where printf.outermostWrapperFunctionCall(arg, printfFunction)
-  and not tainted(_, arg)
-  and taintedIncludingGlobalVars(userValue, arg, globalVar)
-  and isUserInput(userValue, cause)
+from
+  PrintfLikeFunction printf, Expr arg, string printfFunction, Expr userValue, string cause,
+  string globalVar
+where
+  printf.outermostWrapperFunctionCall(arg, printfFunction) and
+  not tainted(_, arg) and
+  taintedIncludingGlobalVars(userValue, arg, globalVar) and
+  isUserInput(userValue, cause)
 select arg,
-  "This value may flow through $@, originating from $@, and is a formatting argument to " + printfFunction + ".",
-  globalVarFromId(globalVar), globalVar, userValue, cause
+  "This value may flow through $@, originating from $@, and is a formatting argument to " +
+    printfFunction + ".", globalVarFromId(globalVar), globalVar, userValue, cause

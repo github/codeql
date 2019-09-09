@@ -20,11 +20,14 @@ import semmle.code.cpp.controlflow.LocalScopeVariableReachability
  */
 predicate allocatedType(Type t) {
   /* Arrays: "int foo[1]; foo[0] = 42;" is ok. */
-  t instanceof ArrayType or
+  t instanceof ArrayType
+  or
   /* Structs: "struct foo bar; bar.baz = 42" is ok. */
-  t instanceof Class or
+  t instanceof Class
+  or
   /* Typedefs to other allocated types are fine. */
-  allocatedType(t.(TypedefType).getUnderlyingType()) or
+  allocatedType(t.(TypedefType).getUnderlyingType())
+  or
   /* Type specifiers don't affect whether or not a type is allocated. */
   allocatedType(t.getUnspecifiedType())
 }
@@ -51,9 +54,7 @@ class UninitialisedLocalReachability extends LocalScopeVariableReachability {
     node = declWithNoInit(v)
   }
 
-  override predicate isSink(ControlFlowNode node, LocalScopeVariable v) {
-    useOfVarActual(v, node)
-  }
+  override predicate isSink(ControlFlowNode node, LocalScopeVariable v) { useOfVarActual(v, node) }
 
   override predicate isBarrier(ControlFlowNode node, LocalScopeVariable v) {
     // only report the _first_ possibly uninitialized use
@@ -63,24 +64,21 @@ class UninitialisedLocalReachability extends LocalScopeVariableReachability {
 }
 
 pragma[noinline]
-predicate containsInlineAssembly(Function f) {
-  exists(AsmStmt s | s.getEnclosingFunction() = f)
-}
+predicate containsInlineAssembly(Function f) { exists(AsmStmt s | s.getEnclosingFunction() = f) }
 
 /**
  * Auxiliary predicate: List common exceptions or false positives
  * for this check to exclude them.
  */
 VariableAccess commonException() {
-  /* If the uninitialized use we've found is in a macro expansion, it's
-   * typically something like va_start(), and we don't want to complain.
-   */
-  result.getParent().isInMacroExpansion() or
-  result.getParent() instanceof BuiltInOperation or
-  /*
-   * Finally, exclude functions that contain assembly blocks. It's
-   * anyone's guess what happens in those.
-   */
+  // If the uninitialized use we've found is in a macro expansion, it's
+  // typically something like va_start(), and we don't want to complain.
+  result.getParent().isInMacroExpansion()
+  or
+  result.getParent() instanceof BuiltInOperation
+  or
+  // Finally, exclude functions that contain assembly blocks. It's
+  // anyone's guess what happens in those.
   containsInlineAssembly(result.getEnclosingFunction())
 }
 

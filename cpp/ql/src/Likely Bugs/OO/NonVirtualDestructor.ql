@@ -15,8 +15,9 @@
 import cpp
 
 from Class base, Destructor d1, Class derived, Destructor d2
-where derived.getABaseClass+() = base and
-      d1.getDeclaringType() = base and
-      not d1.isVirtual() and
-      d2.getDeclaringType() = derived
+where
+  derived.getABaseClass+() = base and
+  d1.getDeclaringType() = base and
+  not d1.isVirtual() and
+  d2.getDeclaringType() = derived
 select d1, "This destructor should probably be virtual."

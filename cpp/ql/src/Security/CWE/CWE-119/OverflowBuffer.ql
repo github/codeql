@@ -12,42 +12,44 @@
  *       external/cwe/cwe-122
  *       external/cwe/cwe-126
  */
+
 import semmle.code.cpp.security.BufferWrite
 import semmle.code.cpp.security.BufferAccess
 
 bindingset[num, singular, plural]
 string plural(int num, string singular, string plural) {
-  if (num = 1) then (
-    result = num + singular
-  ) else (
-    result = num + plural
-  )
+  if num = 1 then result = num + singular else result = num + plural
 }
 
-from BufferAccess ba, string bufferDesc, int accessSize, int accessType,
-     Element bufferAlloc, int bufferSize, string message
-where accessSize = ba.getSize()
-  and bufferSize = getBufferSize(ba.getBuffer(bufferDesc, accessType),
-                                 bufferAlloc)
-  and (accessSize > bufferSize or (accessSize <= 0 and accessType = 3))
-  and if accessType = 1 then (
-        message = "This '" + ba.getName() + "' operation accesses "
-                + plural(accessSize, " byte", " bytes")
-                + " but the $@ is only "
-                + plural(bufferSize, " byte", " bytes") + "."
-      ) else if accessType = 2 then (
-        message = "This '" + ba.getName() + "' operation may access "
-                + plural(accessSize, " byte", " bytes")
-                + " but the $@ is only "
-                + plural(bufferSize, " byte", " bytes") + "."
-      ) else (
-        if accessSize > 0 then (
-          message = "This array indexing operation accesses byte offset "
-                  + (accessSize - 1) + " but the $@ is only "
-                  + plural(bufferSize, " byte", " bytes") + "."
-        ) else (
-          message = "This array indexing operation accesses a negative index "
-                  + ((accessSize/ba.getActualType().getSize()) - 1) + " on the $@."
-        )
-      )
+from
+  BufferAccess ba, string bufferDesc, int accessSize, int accessType, Element bufferAlloc,
+  int bufferSize, string message
+where
+  accessSize = ba.getSize() and
+  bufferSize = getBufferSize(ba.getBuffer(bufferDesc, accessType), bufferAlloc) and
+  (
+    accessSize > bufferSize
+    or
+    accessSize <= 0 and accessType = 3
+  ) and
+  if accessType = 1
+  then
+    message = "This '" + ba.getName() + "' operation accesses " +
+        plural(accessSize, " byte", " bytes") + " but the $@ is only " +
+        plural(bufferSize, " byte", " bytes") + "."
+  else
+    if accessType = 2
+    then
+      message = "This '" + ba.getName() + "' operation may access " +
+          plural(accessSize, " byte", " bytes") + " but the $@ is only " +
+          plural(bufferSize, " byte", " bytes") + "."
+    else (
+      if accessSize > 0
+      then
+        message = "This array indexing operation accesses byte offset " + (accessSize - 1) +
+            " but the $@ is only " + plural(bufferSize, " byte", " bytes") + "."
+      else
+        message = "This array indexing operation accesses a negative index " +
+            ((accessSize / ba.getActualType().getSize()) - 1) + " on the $@."
+    )
 select ba, message, bufferAlloc, bufferDesc

@@ -480,9 +480,7 @@ private Node getControlOrderChildDense(Node n, int i) {
   result = rank[i + 1](Node child, int childIdx |
       child = getControlOrderChildSparse(n, childIdx)
     |
-      child
-      order by
-        childIdx
+      child order by childIdx
     )
 }
 
@@ -990,7 +988,8 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
     exists(int maxCallIndex |
       maxCallIndex = max(int i | exists(getSynthesisedDestructorCallAfterNode(n, i))) and
       p1.nodeBeforeDestructors(n1, n) and
-      p2.nodeAt(n2, getSynthesisedDestructorCallAfterNode(n, maxCallIndex).getQualifier()))
+      p2.nodeAt(n2, getSynthesisedDestructorCallAfterNode(n, maxCallIndex).getQualifier())
+    )
     or
     // call(i+1) -> access(i)
     exists(int i |
@@ -1054,7 +1053,6 @@ private class LogicalAndLikeExpr extends ShortCircuitOperator, LogicalAndExpr { 
 /** An expression whose control flow is the same as `||`. */
 private class LogicalOrLikeExpr extends ShortCircuitOperator {
   Expr left;
-
   Expr right;
 
   LogicalOrLikeExpr() {
@@ -1079,9 +1077,7 @@ private class LogicalOrLikeExpr extends ShortCircuitOperator {
 /** An expression whose control flow is the same as `b ? x : y`. */
 private class ConditionalLikeExpr extends ShortCircuitOperator {
   Expr condition;
-
   Expr thenExpr;
-
   Expr elseExpr;
 
   ConditionalLikeExpr() {
@@ -1353,6 +1349,7 @@ private predicate conditionalSuccessor(Node n1, boolean truth, Node n2) {
     normalGroupMember(targetNode, targetPos, n2)
   )
 }
+
 import Cached
 
 cached

@@ -7,6 +7,7 @@
  * @tags reliability
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -21,7 +22,6 @@ class GeneralPointerType extends DerivedType {
 }
 
 class InvalidFloatCastExpr extends Expr {
-
   InvalidFloatCastExpr() {
     exists(Type src, Type dst |
       src = this.getUnspecifiedType() and
@@ -33,19 +33,28 @@ class InvalidFloatCastExpr extends Expr {
 }
 
 class FloatUnion extends Union {
-
   FloatUnion() {
-    exists (MemberVariable mv | this.getAMemberVariable() = mv and mv.getType().getUnderlyingType() instanceof FloatingPointType)
-    and exists (MemberVariable mv | this.getAMemberVariable() = mv and not mv.getType().getUnderlyingType() instanceof FloatingPointType)
+    exists(MemberVariable mv |
+      this.getAMemberVariable() = mv and
+      mv.getType().getUnderlyingType() instanceof FloatingPointType
+    ) and
+    exists(MemberVariable mv |
+      this.getAMemberVariable() = mv and
+      not mv.getType().getUnderlyingType() instanceof FloatingPointType
+    )
   }
 
-  MemberVariable getAFloatMember() { result = this.getAMemberVariable() and result.getType().getUnderlyingType() instanceof FloatingPointType }
-
+  MemberVariable getAFloatMember() {
+    result = this.getAMemberVariable() and
+    result.getType().getUnderlyingType() instanceof FloatingPointType
+  }
 }
 
 from Element e, string message
 where
-  (e instanceof InvalidFloatCastExpr and message = "Casting a float pointer to another pointer type exposes the bit representation of the float, leading to unportable code.")
+  e instanceof InvalidFloatCastExpr and
+  message = "Casting a float pointer to another pointer type exposes the bit representation of the float, leading to unportable code."
   or
-  (exists (FloatUnion fu | e = fu.getAFloatMember()) and message = "Defining a union with a float member exposes the bit representation of the float, leading to unportable code.")
+  exists(FloatUnion fu | e = fu.getAFloatMember()) and
+  message = "Defining a union with a float member exposes the bit representation of the float, leading to unportable code."
 select e, message

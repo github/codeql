@@ -9,10 +9,10 @@
  * @tags external-data
  * @deprecated
  */
+
 import cpp
 import external.VCS
 
 from File f
 where exists(f.getMetrics().getNumberOfLinesOfCode())
 select f, count(Author author | author.getAnEditedFile() = f)
-

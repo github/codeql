@@ -5,6 +5,7 @@
  * @kind problem
  * @problem.severity warning
  */
+
 import cpp
 
 from EqualityOperation eq, Expr trueExpr

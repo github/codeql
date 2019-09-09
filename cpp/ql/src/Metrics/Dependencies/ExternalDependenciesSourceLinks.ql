@@ -16,8 +16,7 @@ import ExternalDependencies
  * recover that information once we are in the dashboard database, using the
  * ExternalEntity.getASourceLink() method.
  */
+
 from File file, int num, string encodedDependency
-where
-  encodedDependencies(file, encodedDependency, num)
-select
-  encodedDependency, file
+where encodedDependencies(file, encodedDependency, num)
+select encodedDependency, file

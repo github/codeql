@@ -13,24 +13,25 @@
  *       external/cwe/cwe-120
  *       external/cwe/cwe-122
  */
+
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.models.implementations.Memcpy
 
-class MallocCall extends FunctionCall
-{
+class MallocCall extends FunctionCall {
   MallocCall() {
-  	this.getTarget().hasGlobalName("malloc") or
-  	this.getTarget().hasQualifiedName("std", "malloc")
+    this.getTarget().hasGlobalName("malloc") or
+    this.getTarget().hasQualifiedName("std", "malloc")
   }
 
   Expr getAllocatedSize() {
-    if this.getArgument(0) instanceof VariableAccess then
+    if this.getArgument(0) instanceof VariableAccess
+    then
       exists(LocalScopeVariable v, ControlFlowNode def |
         definitionUsePair(v, def, this.getArgument(0)) and
-        exprDefinition(v, def, result))
-    else
-      result = this.getArgument(0)
+        exprDefinition(v, def, result)
+      )
+    else result = this.getArgument(0)
   }
 }
 

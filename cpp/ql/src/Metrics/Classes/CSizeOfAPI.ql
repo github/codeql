@@ -8,10 +8,11 @@
  * @metricAggregate avg sum max
  * @tags modularity
  */
+
 import cpp
 
 from Class c, int n
-where c.fromSource()
-  and n = count(Function f | c.getAPublicCanonicalMember() = f)
-select c, n
-order by n desc 
+where
+  c.fromSource() and
+  n = count(Function f | c.getAPublicCanonicalMember() = f)
+select c, n order by n desc

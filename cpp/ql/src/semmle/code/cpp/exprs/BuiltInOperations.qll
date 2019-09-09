@@ -286,9 +286,10 @@ class BuiltInOperationBuiltInConvertVector extends BuiltInOperation, @builtincon
 class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation, @builtinaddressof {
   /** Gets the function or variable whose address is taken. */
   Declaration getAddressable() {
-       result = this.getOperand().(Access).getTarget()
-       // this handles the case where we are taking the address of a reference variable
-    or result = this.getOperand().(ReferenceDereferenceExpr).getChild(0).(Access).getTarget()
+    result = this.getOperand().(Access).getTarget()
+    or
+    // this handles the case where we are taking the address of a reference variable
+    result = this.getOperand().(ReferenceDereferenceExpr).getChild(0).(Access).getTarget()
   }
 
   override string getCanonicalQLClass() { result = "BuiltInOperationBuiltInAddressOf" }
@@ -299,7 +300,8 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
 /**
  * The `__is_trivially_constructible` type trait.
  */
-class BuiltInOperationIsTriviallyConstructible extends BuiltInOperation, @istriviallyconstructibleexpr {
+class BuiltInOperationIsTriviallyConstructible extends BuiltInOperation,
+  @istriviallyconstructibleexpr {
   override string toString() { result = "__is_trivially_constructible" }
 
   override string getCanonicalQLClass() { result = "BuiltInOperationIsTriviallyConstructible" }
@@ -380,7 +382,8 @@ class BuiltInOperationIsLiteralType extends BuiltInOperation, @isliteraltypeexpr
 /**
  * The `__has_trivial_move_constructor` type trait.
  */
-class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation, @hastrivialmoveconstructorexpr {
+class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation,
+  @hastrivialmoveconstructorexpr {
   override string toString() { result = "__has_trivial_move_constructor" }
 
   override string getCanonicalQLClass() { result = "BuiltInOperationHasTrivialMoveConstructor" }

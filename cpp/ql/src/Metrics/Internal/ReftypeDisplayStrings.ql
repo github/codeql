@@ -4,6 +4,7 @@
  * @id cpp/reference-type-display-strings
  * @metricType reftype
  */
+
 import cpp
 
 from Class c

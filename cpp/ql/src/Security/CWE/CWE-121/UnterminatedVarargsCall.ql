@@ -20,9 +20,7 @@ import cpp
  * trailing `".0"` then it is removed. This means that, for example,
  * the values of `-1` and `-1.0` would be considered the same.
  */
-string normalisedExprValue(Expr e) {
-  result = e.getValue().regexpReplaceAll("\\.0$", "")
-}
+string normalisedExprValue(Expr e) { result = e.getValue().regexpReplaceAll("\\.0$", "") }
 
 /**
  * A variadic function which is not a formatting function.
@@ -42,8 +40,7 @@ class VarargsFunction extends Function {
     result = normalisedExprValue(this.trailingArgumentIn(fc))
   }
 
-  private
-  int trailingArgValueCount(string value) {
+  private int trailingArgValueCount(string value) {
     result = strictcount(FunctionCall fc | trailingArgValue(fc) = value)
   }
 
@@ -54,19 +51,15 @@ class VarargsFunction extends Function {
     result = normalisedExprValue(fc.getArgument(index))
   }
 
-  private
-  int totalCount() {
+  private int totalCount() {
     result = strictcount(FunctionCall fc | fc = this.getACallToThisFunction())
   }
 
   string normalTerminator(int cnt) {
-    (
-      result = "0" or result = "-1"
-    ) and (
-      cnt = trailingArgValueCount(result)
-    ) and (
-      2 * cnt > totalCount()
-    ) and not exists(FunctionCall fc, int index |
+    (result = "0" or result = "-1") and
+    cnt = trailingArgValueCount(result) and
+    2 * cnt > totalCount() and
+    not exists(FunctionCall fc, int index |
       // terminator value is used in a non-terminating position
       nonTrailingVarArgValue(fc, index) = result
     )
@@ -80,9 +73,11 @@ class VarargsFunction extends Function {
 }
 
 from VarargsFunction f, FunctionCall fc, string terminator, int cnt
-where terminator = f.normalTerminator(cnt)
-  and fc = f.getACallToThisFunction()
-  and not normalisedExprValue(f.trailingArgumentIn(fc)) = terminator
-  and not f.isWhitelisted()
-select fc, "Calls to $@ should use the value " + terminator
-         + " as a terminator (" + cnt + " calls do).", f, f.getQualifiedName()
+where
+  terminator = f.normalTerminator(cnt) and
+  fc = f.getACallToThisFunction() and
+  not normalisedExprValue(f.trailingArgumentIn(fc)) = terminator and
+  not f.isWhitelisted()
+select fc,
+  "Calls to $@ should use the value " + terminator + " as a terminator (" + cnt + " calls do).", f,
+  f.getQualifiedName()

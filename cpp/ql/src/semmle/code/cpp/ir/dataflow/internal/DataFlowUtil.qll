@@ -155,9 +155,7 @@ UninitializedNode uninitializedNode(LocalVariable v) { result.getLocalVariable()
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
-}
+predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
 /**
  * INTERNAL: do not use.

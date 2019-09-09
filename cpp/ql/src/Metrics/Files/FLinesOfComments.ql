@@ -12,9 +12,9 @@
  * @tags maintainability
  *       documentation
  */
+
 import cpp
 
 from File f
 where f.fromSource()
-select f, f.getMetrics().getNumberOfLinesOfComments() as n
-order by n desc
+select f, f.getMetrics().getNumberOfLinesOfComments() as n order by n desc

@@ -12,123 +12,107 @@ private import TranslatedExpr
  * of a higher-level constructor (e.g. the allocator call in a `NewExpr`).
  */
 abstract class TranslatedCall extends TranslatedExpr {
-  override final TranslatedElement getChild(int id) {
+  final override TranslatedElement getChild(int id) {
     // We choose the child's id in the order of evaluation.
     // The qualifier is evaluated before the call target, because the value of
     // the call target may depend on the value of the qualifier for virtual
     // calls.
-    id = -2 and result = getQualifier() or
-    id = -1 and result = getCallTarget() or
+    id = -2 and result = getQualifier()
+    or
+    id = -1 and result = getCallTarget()
+    or
     result = getArgument(id)
   }
 
-  override final Instruction getFirstInstruction() {
-    if exists(getQualifier()) then
-      result = getQualifier().getFirstInstruction()
-    else
-      result = getFirstCallTargetInstruction()
+  final override Instruction getFirstInstruction() {
+    if exists(getQualifier())
+    then result = getQualifier().getFirstInstruction()
+    else result = getFirstCallTargetInstruction()
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
+  ) {
+    tag = CallTag() and
+    opcode instanceof Opcode::Call and
+    resultType = getCallResultType() and
+    isGLValue = false
+    or
+    hasSideEffect() and
+    tag = CallSideEffectTag() and
     (
-      tag = CallTag() and
-      opcode instanceof Opcode::Call and
-      resultType = getCallResultType() and
-      isGLValue = false
-    ) or
-    (
-      hasSideEffect() and
-      tag = CallSideEffectTag() and
-      (
-        if hasWriteSideEffect() then (
-          opcode instanceof Opcode::CallSideEffect and
-          resultType instanceof UnknownType
-        )
-        else (
-          opcode instanceof Opcode::CallReadSideEffect and
-          resultType instanceof VoidType
-        )
-      ) and
-      isGLValue = false
-    )
+      if hasWriteSideEffect()
+      then (
+        opcode instanceof Opcode::CallSideEffect and
+        resultType instanceof UnknownType
+      ) else (
+        opcode instanceof Opcode::CallReadSideEffect and
+        resultType instanceof VoidType
+      )
+    ) and
+    isGLValue = false
   }
-  
+
   override Instruction getChildSuccessor(TranslatedElement child) {
-    (
-      child = getQualifier() and
-      result = getFirstCallTargetInstruction()
-    ) or
-    (
-      child = getCallTarget() and
-      result = getFirstArgumentOrCallInstruction()
-    ) or
+    child = getQualifier() and
+    result = getFirstCallTargetInstruction()
+    or
+    child = getCallTarget() and
+    result = getFirstArgumentOrCallInstruction()
+    or
     exists(int argIndex |
       child = getArgument(argIndex) and
-      if exists(getArgument(argIndex + 1)) then
-        result = getArgument(argIndex + 1).getFirstInstruction()
-      else
-        result = getInstruction(CallTag())
+      if exists(getArgument(argIndex + 1))
+      then result = getArgument(argIndex + 1).getFirstInstruction()
+      else result = getInstruction(CallTag())
     )
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
       (
         tag = CallTag() and
-        if hasSideEffect() then
-          result = getInstruction(CallSideEffectTag())
-        else
-          result = getParent().getChildSuccessor(this)
-      ) or
-      (
-        hasSideEffect() and
-        tag = CallSideEffectTag() and
-        result = getParent().getChildSuccessor(this)
+        if hasSideEffect()
+        then result = getInstruction(CallSideEffectTag())
+        else result = getParent().getChildSuccessor(this)
       )
-    )
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
-    (
-      tag = CallTag() and
-      (
-        (
-          operandTag instanceof CallTargetOperandTag and
-          result = getCallTargetResult()
-        ) or
-        (
-          operandTag instanceof ThisArgumentOperandTag and
-          result = getQualifierResult()
-        ) or
-        exists(PositionalArgumentOperandTag argTag |
-          argTag = operandTag and
-          result = getArgument(argTag.getArgIndex()).getResult()
-        )
-      )
-    ) or
-    (
-      tag = CallSideEffectTag() and
+      or
       hasSideEffect() and
-      operandTag instanceof SideEffectOperandTag and
-      result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+      tag = CallSideEffectTag() and
+      result = getParent().getChildSuccessor(this)
     )
   }
 
-  override final Type getInstructionOperandType(InstructionTag tag,
-      TypedOperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CallTag() and
+    (
+      operandTag instanceof CallTargetOperandTag and
+      result = getCallTargetResult()
+      or
+      operandTag instanceof ThisArgumentOperandTag and
+      result = getQualifierResult()
+      or
+      exists(PositionalArgumentOperandTag argTag |
+        argTag = operandTag and
+        result = getArgument(argTag.getArgIndex()).getResult()
+      )
+    )
+    or
+    tag = CallSideEffectTag() and
+    hasSideEffect() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+  }
+
+  final override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     tag = CallSideEffectTag() and
     hasSideEffect() and
     operandTag instanceof SideEffectOperandTag and
     result instanceof UnknownType
   }
 
-  override final Instruction getResult() {
-    result = getInstruction(CallTag())
-  }
+  final override Instruction getResult() { result = getInstruction(CallTag()) }
 
   /**
    * Gets the result type of the call.
@@ -138,16 +122,12 @@ abstract class TranslatedCall extends TranslatedExpr {
   /**
    * Holds if the call has a `this` argument.
    */
-  predicate hasQualifier() {
-    exists(getQualifier())
-  }
+  predicate hasQualifier() { exists(getQualifier()) }
 
   /**
    * Gets the `TranslatedExpr` for the indirect target of the call, if any.
    */
-  TranslatedExpr getCallTarget() {
-    none()
-  }
+  TranslatedExpr getCallTarget() { none() }
 
   /**
    * Gets the first instruction of the sequence to evaluate the call target.
@@ -155,9 +135,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    * it can be overridden by a subclass for cases where there is a call target
    * that is not computed from an expression (e.g. a direct call).
    */
-  Instruction getFirstCallTargetInstruction() {
-    result = getCallTarget().getFirstInstruction()
-  }
+  Instruction getFirstCallTargetInstruction() { result = getCallTarget().getFirstInstruction() }
 
   /**
    * Gets the instruction whose result value is the target of the call. By
@@ -165,9 +143,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    * overridden by a subclass for cases where there is a call target that is not
    * computed from an expression (e.g. a direct call).
    */
-  Instruction getCallTargetResult() {
-    result = getCallTarget().getResult()
-  }
+  Instruction getCallTargetResult() { result = getCallTarget().getResult() }
 
   /**
    * Gets the `TranslatedExpr` for the qualifier of the call (i.e. the value
@@ -181,9 +157,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    * overridden by a subclass for cases where there is a `this` argument that is
    * not computed from a child expression (e.g. a constructor call).
    */
-  Instruction getQualifierResult() {
-    result = getQualifier().getResult()
-  }
+  Instruction getQualifierResult() { result = getQualifier().getResult() }
 
   /**
    * Gets the argument with the specified `index`. Does not include the `this`
@@ -196,10 +170,9 @@ abstract class TranslatedCall extends TranslatedExpr {
    * argument. Otherwise, returns the call instruction.
    */
   final Instruction getFirstArgumentOrCallInstruction() {
-    if hasArguments() then
-      result = getArgument(0).getFirstInstruction()
-    else
-      result = getInstruction(CallTag())
+    if hasArguments()
+    then result = getArgument(0).getFirstInstruction()
+    else result = getInstruction(CallTag())
   }
 
   /**
@@ -207,22 +180,16 @@ abstract class TranslatedCall extends TranslatedExpr {
    */
   abstract predicate hasArguments();
 
-  predicate hasReadSideEffect() {
-    any()
-  }
+  predicate hasReadSideEffect() { any() }
 
-  predicate hasWriteSideEffect() {
-    any()
-  }
+  predicate hasWriteSideEffect() { any() }
 
-  private predicate hasSideEffect() {
-    hasReadSideEffect() or hasWriteSideEffect()
-  }
+  private predicate hasSideEffect() { hasReadSideEffect() or hasWriteSideEffect() }
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
-      hasSideEffect() and
-      tag = CallSideEffectTag() and
-      result = getResult()
+    hasSideEffect() and
+    tag = CallSideEffectTag() and
+    result = getResult()
   }
 }
 
@@ -232,59 +199,50 @@ abstract class TranslatedCall extends TranslatedExpr {
  * (`TranslatedAllocatorCall`).
  */
 abstract class TranslatedDirectCall extends TranslatedCall {
-  override final Instruction getFirstCallTargetInstruction() {
+  final override Instruction getFirstCallTargetInstruction() {
     result = getInstruction(CallTargetTag())
   }
 
-  override final Instruction getCallTargetResult() {
-    result = getInstruction(CallTargetTag())
+  final override Instruction getCallTargetResult() { result = getInstruction(CallTargetTag()) }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
+  ) {
+    TranslatedCall.super.hasInstruction(opcode, tag, resultType, isGLValue)
+    or
+    tag = CallTargetTag() and
+    opcode instanceof Opcode::FunctionAddress and
+    // The database does not contain a `FunctionType` for a function unless
+    // its address was taken, so we'll just use glval<Unknown> instead of
+    // glval<FunctionType>.
+    resultType instanceof UnknownType and
+    isGLValue = true
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
-    TranslatedCall.super.hasInstruction(opcode, tag, resultType, isGLValue) or
-    (
-      tag = CallTargetTag() and
-      opcode instanceof Opcode::FunctionAddress and
-      // The database does not contain a `FunctionType` for a function unless
-      // its address was taken, so we'll just use glval<Unknown> instead of
-      // glval<FunctionType>.
-      resultType instanceof UnknownType and
-      isGLValue = true
-    )
-  }
-  
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
-    result = TranslatedCall.super.getInstructionSuccessor(tag, kind) or
-    (
-      tag = CallTargetTag() and
-      kind instanceof GotoEdge and
-      result = getFirstArgumentOrCallInstruction()
-    )
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    result = TranslatedCall.super.getInstructionSuccessor(tag, kind)
+    or
+    tag = CallTargetTag() and
+    kind instanceof GotoEdge and
+    result = getFirstArgumentOrCallInstruction()
   }
 }
 
 /**
  * The IR translation of a call to a function.
  */
-abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
-    TranslatedCall {
+abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedCall {
   override Call expr;
 
-  override final Type getCallResultType() {
-    result = getResultType()
-  }
+  final override Type getCallResultType() { result = getResultType() }
 
-  override final predicate hasArguments() {
-    exists(expr.getArgument(0))
-  }
+  final override predicate hasArguments() { exists(expr.getArgument(0)) }
 
-  override final TranslatedExpr getQualifier() {
+  final override TranslatedExpr getQualifier() {
     result = getTranslatedExpr(expr.getQualifier().getFullyConverted())
   }
 
-  override final TranslatedExpr getArgument(int index) {
+  final override TranslatedExpr getArgument(int index) {
     result = getTranslatedExpr(expr.getArgument(index).getFullyConverted())
   }
 }
@@ -294,7 +252,6 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
  */
 class TranslatedExprCall extends TranslatedCallExpr {
   override ExprCall expr;
-
 
   override TranslatedExpr getCallTarget() {
     result = getTranslatedExpr(expr.getExpr().getFullyConverted())
@@ -336,7 +293,5 @@ class TranslatedStructorCall extends TranslatedFunctionCall {
     )
   }
 
-  override predicate hasQualifier() {
-    any()
-  }
+  override predicate hasQualifier() { any() }
 }

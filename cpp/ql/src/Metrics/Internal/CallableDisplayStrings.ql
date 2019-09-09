@@ -4,6 +4,7 @@
  * @id cpp/callable-display-strings
  * @metricType callable
  */
+
 import cpp
 
 from Function f

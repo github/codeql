@@ -14,6 +14,7 @@
  * tracking, call `TaintTracking::localTaint` or
  * `TaintTracking::localTaintStep` with arguments of type `DataFlow::Node`.
  */
+
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.dataflow.DataFlow2
 
@@ -24,6 +25,5 @@ module TaintTracking {
   /**
    * DEPRECATED: Use TaintTracking2::Configuration instead.
    */
-  deprecated
-  class Configuration2 = TaintTracking2::Configuration;
+  deprecated class Configuration2 = TaintTracking2::Configuration;
 }

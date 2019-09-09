@@ -10,16 +10,14 @@ import semmle.code.cpp.Struct
  * };
  * ```
  */
-class Union extends Struct  {
-
-  Union() { usertypes(underlyingElement(this),_,3)  }
+class Union extends Struct {
+  Union() { usertypes(underlyingElement(this), _, 3) }
 
   override string getCanonicalQLClass() { result = "Union" }
 
-  override string explain() { result =  "union " + this.getName() }
+  override string explain() { result = "union " + this.getName() }
 
   override predicate isDeeplyConstBelow() { any() } // No subparts
-
 }
 
 /**
@@ -35,9 +33,7 @@ class Union extends Struct  {
  * ```
  */
 class LocalUnion extends Union {
-  LocalUnion() {
-    isLocal()
-  }
+  LocalUnion() { isLocal() }
 
   override string getCanonicalQLClass() { result = "LocalUnion" }
 }
@@ -55,9 +51,7 @@ class LocalUnion extends Union {
  * ```
  */
 class NestedUnion extends Union {
-  NestedUnion() {
-    this.isMember()
-  }
+  NestedUnion() { this.isMember() }
 
   override string getCanonicalQLClass() { result = "NestedUnion" }
 
@@ -69,5 +63,4 @@ class NestedUnion extends Union {
 
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
-
 }

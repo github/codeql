@@ -11,6 +11,7 @@
  *       non-attributable
  *       external/cwe/cwe-252
  */
+
 import cpp
 
 predicate exclude(Function f) {
@@ -39,7 +40,7 @@ predicate checkExpr(Expr e, string operation, Variable v) {
 
 predicate checkedFunctionCall(FunctionCall fc, string operation) {
   relevantFunctionCall(fc, _) and
-  exists (Variable v, Expr check | v.getAnAssignedValue() = fc |
+  exists(Variable v, Expr check | v.getAnAssignedValue() = fc |
     checkExpr(check, operation, v) and
     check != fc
   )
@@ -47,13 +48,11 @@ predicate checkedFunctionCall(FunctionCall fc, string operation) {
 
 predicate relevantFunctionCall(FunctionCall fc, Function f) {
   fc.getTarget() = f and
-  exists (Variable v | v.getAnAssignedValue() = fc) and
+  exists(Variable v | v.getAnAssignedValue() = fc) and
   not okToIgnore(fc)
 }
 
-predicate okToIgnore(FunctionCall fc) {
-  fc.isInMacroExpansion()
-}
+predicate okToIgnore(FunctionCall fc) { fc.isInMacroExpansion() }
 
 predicate functionStats(Function f, string operation, int used, int total, int percentage) {
   exists(PointerType pt | pt.getATypeNameUse() = f.getADeclarationEntry()) and
@@ -67,7 +66,9 @@ where
   relevantFunctionCall(unchecked, f) and
   not checkedFunctionCall(unchecked, operation) and
   functionStats(f, operation, _, _, percent) and
-  percent >= 70
-  and unchecked.getFile().getAbsolutePath().matches("%fbcode%")
-  and not unchecked.getFile().getAbsolutePath().matches("%\\_build%")
-select unchecked, "After " + percent.toString() + "% of calls to " + f.getName() + " there is a call to " + operation + " on the return value. The call may be missing in this case."
+  percent >= 70 and
+  unchecked.getFile().getAbsolutePath().matches("%fbcode%") and
+  not unchecked.getFile().getAbsolutePath().matches("%\\_build%")
+select unchecked,
+  "After " + percent.toString() + "% of calls to " + f.getName() + " there is a call to " +
+    operation + " on the return value. The call may be missing in this case."

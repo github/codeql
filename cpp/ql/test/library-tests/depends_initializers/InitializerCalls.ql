@@ -1,6 +1,7 @@
 /**
  * @name InitializerCalls
  */
+
 import cpp
 
 from Initializer i, FunctionCall fc

@@ -9,6 +9,7 @@
  * @tags maintainability
  *       complexity
  */
+
 import cpp
 
 predicate callToOperator(FunctionCall fc) {
@@ -17,11 +18,13 @@ predicate callToOperator(FunctionCall fc) {
 }
 
 from Function f, int n, int o
-where strictcount(f.getEntryPoint()) = 1
-  and o = count(FunctionCall c | 
-                c.getEnclosingFunction() = f and
-                not c.isInMacroExpansion() and 
-                not c.isCompilerGenerated() and 
-                not callToOperator(c))
-  and n = o / count(f.getBlock())
+where
+  strictcount(f.getEntryPoint()) = 1 and
+  o = count(FunctionCall c |
+      c.getEnclosingFunction() = f and
+      not c.isInMacroExpansion() and
+      not c.isCompilerGenerated() and
+      not callToOperator(c)
+    ) and
+  n = o / count(f.getBlock())
 select f, n

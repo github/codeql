@@ -6,47 +6,39 @@ import semmle.code.cpp.exprs.Expr
 class Literal extends Expr, @literal {
   /** Gets a textual representation of this literal. */
   override string toString() {
-    result = this.getValue() or
-    (
-      not exists(this.getValue()) and
-      result = "Unknown literal"
-    )
+    result = this.getValue()
+    or
+    not exists(this.getValue()) and
+    result = "Unknown literal"
   }
 
   override string getCanonicalQLClass() { result = "Literal" }
 
-  override predicate mayBeImpure() {
-    none()
-  }
-  override predicate mayBeGloballyImpure() {
-    none()
-  }
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
 }
 
 /**
  * A label literal, that is, a use of the '&&' operator to take the address of a
  * label for use in a computed goto statement.  This is a non-standard C/C++ extension.
- * 
+ *
  * For example:
  * ```
  * void *label_ptr = &&myLabel; // &&myLabel is a LabelLiteral
- * 
+ *
  * goto *label_ptr; // this is a ComputedGotoStmt
- * 
+ *
  * myLabel: // this is a LabelStmt
  * ```
  */
 class LabelLiteral extends Literal {
-  LabelLiteral() {
-    jumpinfo(underlyingElement(this),_,_)
-  }
+  LabelLiteral() { jumpinfo(underlyingElement(this), _, _) }
 
   override string getCanonicalQLClass() { result = "LabelLiteral" }
 
   /** Gets the corresponding label statement. */
-  LabelStmt getLabel() {
-    jumpinfo(underlyingElement(this),_,unresolveElement(result))
-  }
+  LabelStmt getLabel() { jumpinfo(underlyingElement(this), _, unresolveElement(result)) }
 }
 
 /** A character literal or a string literal. */
@@ -68,10 +60,9 @@ abstract class TextLiteral extends Literal {
   string getANonStandardEscapeSequence(int occurrence, int offset) {
     // Find all single character escape sequences (ignoring the start of octal escape sequences),
     // together with anything starting like a hex escape sequence but not followed by a hex digit.
-    result = getValueText().regexpFind("\\\\[^x0-7\\s]|\\\\x[^0-9a-fA-F]", occurrence, offset)
-
+    result = getValueText().regexpFind("\\\\[^x0-7\\s]|\\\\x[^0-9a-fA-F]", occurrence, offset) and
     // From these, exclude all standard escape sequences.
-    and not(result = getAStandardEscapeSequence(_,_))
+    not result = getAStandardEscapeSequence(_, _)
   }
 
   /** Gets a simple escape sequence that appears in the char or string literal (see [lex.ccon] in the C++ Standard). */
@@ -81,43 +72,35 @@ abstract class TextLiteral extends Literal {
 
   /** Gets a standard escape sequence that appears in the char or string literal (see [lex.ccon] in the C++ Standard). */
   string getAStandardEscapeSequence(int occurrence, int offset) {
-    result = getASimpleEscapeSequence(occurrence, offset)
-    or result = getAnOctalEscapeSequence(occurrence, offset)
-    or result = getAHexEscapeSequence(occurrence, offset)
+    result = getASimpleEscapeSequence(occurrence, offset) or
+    result = getAnOctalEscapeSequence(occurrence, offset) or
+    result = getAHexEscapeSequence(occurrence, offset)
   }
 
   /**
    * Gets the length of the string literal (including null) before escape sequences added by the extractor.
    */
-  int getOriginalLength()
-  {
-    result = getValue().length() + 1
-  }
+  int getOriginalLength() { result = getValue().length() + 1 }
 }
 
 /**
  * A character literal, for example `'a'` or `L'a'`.
  */
 class CharLiteral extends TextLiteral {
-  CharLiteral() {
-    this.getValueText().regexpMatch("(?s)\\s*L?'.*")
-  }
+  CharLiteral() { this.getValueText().regexpMatch("(?s)\\s*L?'.*") }
 
   override string getCanonicalQLClass() { result = "CharLiteral" }
 
   /**
    * Gets the character of this literal. For example `L'a'` has character `"a"`.
    */
-  string getCharacter() {
-    result = this.getValueText().regexpCapture("(?s)\\s*L?'(.*)'", 1)
-  }
+  string getCharacter() { result = this.getValueText().regexpCapture("(?s)\\s*L?'(.*)'", 1) }
 }
 
 /**
  * A string literal, for example `"abcdef"` or `L"123456"`.
  */
-class StringLiteral extends TextLiteral
-{
+class StringLiteral extends TextLiteral {
   StringLiteral() {
     this.getType() instanceof ArrayType
     // Note that `AggregateLiteral`s can also have an array type, but they derive from
@@ -125,16 +108,13 @@ class StringLiteral extends TextLiteral
   }
 
   override string getCanonicalQLClass() { result = "StringLiteral" }
-
 }
 
 /**
  * An octal literal.
  */
 class OctalLiteral extends Literal {
-  OctalLiteral() {
-    super.getValueText().regexpMatch("\\s*0[0-7]+[uUlL]*\\s*")
-  }
+  OctalLiteral() { super.getValueText().regexpMatch("\\s*0[0-7]+[uUlL]*\\s*") }
 
   override string getCanonicalQLClass() { result = "OctalLiteral" }
 }
@@ -143,19 +123,16 @@ class OctalLiteral extends Literal {
  * A hexadecimal literal.
  */
 class HexLiteral extends Literal {
-  HexLiteral() {
-    super.getValueText().regexpMatch("\\s*0[xX][0-9a-fA-F]+[uUlL]*\\s*")
-  }
+  HexLiteral() { super.getValueText().regexpMatch("\\s*0[xX][0-9a-fA-F]+[uUlL]*\\s*") }
 
   override string getCanonicalQLClass() { result = "HexLiteral" }
 }
 
 /**
  * A C/C++ aggregate literal.
-*/
+ */
 class AggregateLiteral extends Expr, @aggregateliteral {
   // if this is turned into a Literal we need to change mayBeImpure
-
   override string getCanonicalQLClass() { result = "AggregateLiteral" }
 
   /**
@@ -178,9 +155,7 @@ class AggregateLiteral extends Expr, @aggregateliteral {
 class ClassAggregateLiteral extends AggregateLiteral {
   Class classType;
 
-  ClassAggregateLiteral() {
-    classType = this.getUnspecifiedType()
-  }
+  ClassAggregateLiteral() { classType = this.getUnspecifiedType() }
 
   override string getCanonicalQLClass() { result = "ClassAggregateLiteral" }
 
@@ -190,8 +165,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
    */
   Expr getFieldExpr(Field field) {
     field = classType.getAField() and
-    aggregate_field_init(underlyingElement(this), unresolveElement(result),
-        unresolveElement(field))
+    aggregate_field_init(underlyingElement(this), unresolveElement(result), unresolveElement(field))
   }
 
   /**
@@ -205,16 +179,16 @@ class ClassAggregateLiteral extends AggregateLiteral {
     (
       // If the field has an explicit initializer expression, then the field is
       // initialized.
-      exists(getFieldExpr(field)) or
+      exists(getFieldExpr(field))
+      or
       // If the type is not a union, all fields without initializers are value
       // initialized.
-      not classType instanceof Union or
+      not classType instanceof Union
+      or
       // If the type is a union, and there are no explicit initializers, then
       // the first declared field is value initialized.
-      (
-        not exists(getAChild()) and
-        field.getInitializationOrder() = 0
-      )
+      not exists(getAChild()) and
+      field.getInitializationOrder() = 0
     )
   }
 
@@ -251,24 +225,19 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
    * Gets the number of elements initialized by this initializer list, either explicitly with an
    * expression, or by implicit value initialization.
    */
-  int getArraySize() {
-    none()
-  }
+  int getArraySize() { none() }
 
   /**
    * Gets the type of the elements in the initializer list.
    */
-  Type getElementType() {
-    none()
-  }
+  Type getElementType() { none() }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
    * element `elementIndex`, if present.
    */
   Expr getElementExpr(int elementIndex) {
-    aggregate_array_init(underlyingElement(this), unresolveElement(result),
-        elementIndex)
+    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex)
   }
 
   /**
@@ -303,19 +272,13 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
 class ArrayAggregateLiteral extends ArrayOrVectorAggregateLiteral {
   ArrayType arrayType;
 
-  ArrayAggregateLiteral() {
-    arrayType = this.getUnspecifiedType()
-  }
+  ArrayAggregateLiteral() { arrayType = this.getUnspecifiedType() }
 
   override string getCanonicalQLClass() { result = "ArrayAggregateLiteral" }
 
-  override int getArraySize() {
-    result = arrayType.getArraySize()
-  }
+  override int getArraySize() { result = arrayType.getArraySize() }
 
-  override Type getElementType() {
-    result = arrayType.getBaseType()
-  }
+  override Type getElementType() { result = arrayType.getBaseType() }
 }
 
 /**
@@ -324,17 +287,11 @@ class ArrayAggregateLiteral extends ArrayOrVectorAggregateLiteral {
 class VectorAggregateLiteral extends ArrayOrVectorAggregateLiteral {
   GNUVectorType vectorType;
 
-  VectorAggregateLiteral() {
-    vectorType = this.getUnspecifiedType()
-  }
+  VectorAggregateLiteral() { vectorType = this.getUnspecifiedType() }
 
   override string getCanonicalQLClass() { result = "VectorAggregateLiteral" }
 
-  override int getArraySize() {
-    result = vectorType.getNumElements()
-  }
+  override int getArraySize() { result = vectorType.getNumElements() }
 
-  override Type getElementType() {
-    result = vectorType.getBaseType()
-  }
+  override Type getElementType() { result = vectorType.getBaseType() }
 }

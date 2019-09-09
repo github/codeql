@@ -9,20 +9,22 @@ import semmle.code.cpp.exprs.BitwiseOperation
  */
 abstract class Assignment extends Operation {
   /** Gets the lvalue of this assignment. */
-  Expr getLValue() { this.hasChild(result,0) }
+  Expr getLValue() { this.hasChild(result, 0) }
 
   /** Gets the rvalue of this assignment. */
-  Expr getRValue() { this.hasChild(result,1) }
+  Expr getRValue() { this.hasChild(result, 1) }
 
   override int getPrecedence() { result = 2 }
 
   override predicate mayBeGloballyImpure() {
-    this.getRValue().mayBeGloballyImpure() or
+    this.getRValue().mayBeGloballyImpure()
+    or
     not exists(VariableAccess va, LocalScopeVariable v |
-               va = this.getLValue()
-               and v = va.getTarget()
-               and not va.getConversion+() instanceof ReferenceDereferenceExpr
-               and not v.isStatic())
+      va = this.getLValue() and
+      v = va.getTarget() and
+      not va.getConversion+() instanceof ReferenceDereferenceExpr and
+      not v.isStatic()
+    )
   }
 }
 
@@ -33,7 +35,7 @@ class AssignExpr extends Assignment, @assignexpr {
   override string getOperator() { result = "=" }
 
   override string getCanonicalQLClass() { result = "AssignExpr" }
-  
+
   /** Gets a textual representation of this assignment. */
   override string toString() { result = "... = ..." }
 }
@@ -49,15 +51,14 @@ abstract class AssignOperation extends Assignment {
  * A non-overloaded arithmetic assignment operation on a non-pointer lvalue:
  * `+=`, `-=`, `*=`, `/=` and `%=`.
  */
-abstract class AssignArithmeticOperation extends AssignOperation {
-}
+abstract class AssignArithmeticOperation extends AssignOperation { }
 
 /**
  * A non-overloaded `+=` assignment expression on a non-pointer lvalue.
  */
 class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
   override string getCanonicalQLClass() { result = "AssignAddExpr" }
-  
+
   override string getOperator() { result = "+=" }
 }
 
@@ -66,7 +67,7 @@ class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
  */
 class AssignSubExpr extends AssignArithmeticOperation, @assignsubexpr {
   override string getCanonicalQLClass() { result = "AssignSubExpr" }
-  
+
   override string getOperator() { result = "-=" }
 }
 
@@ -75,7 +76,7 @@ class AssignSubExpr extends AssignArithmeticOperation, @assignsubexpr {
  */
 class AssignMulExpr extends AssignArithmeticOperation, @assignmulexpr {
   override string getCanonicalQLClass() { result = "AssignMulExpr" }
-  
+
   override string getOperator() { result = "*=" }
 }
 
@@ -84,7 +85,7 @@ class AssignMulExpr extends AssignArithmeticOperation, @assignmulexpr {
  */
 class AssignDivExpr extends AssignArithmeticOperation, @assigndivexpr {
   override string getCanonicalQLClass() { result = "AssignDivExpr" }
-  
+
   override string getOperator() { result = "/=" }
 }
 
@@ -93,23 +94,22 @@ class AssignDivExpr extends AssignArithmeticOperation, @assigndivexpr {
  */
 class AssignRemExpr extends AssignArithmeticOperation, @assignremexpr {
   override string getCanonicalQLClass() { result = "AssignRemExpr" }
-  
+
   override string getOperator() { result = "%=" }
 }
 
 /**
- * A non-overloaded bitwise assignment operation.
-   `&=`, `|=`, `^=`, `<<=` and `>>=`
+ * A non-overloaded bitwise assignment operation:
+ * `&=`, `|=`, `^=`, `<<=`, and `>>=`.
  */
-abstract class AssignBitwiseOperation extends AssignOperation {
-}
+abstract class AssignBitwiseOperation extends AssignOperation { }
 
 /**
  * A non-overloaded `&=` assignment expression.
  */
 class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
   override string getCanonicalQLClass() { result = "AssignAndExpr" }
-  
+
   override string getOperator() { result = "&=" }
 }
 
@@ -118,7 +118,7 @@ class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
  */
 class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
   override string getCanonicalQLClass() { result = "AssignOrExpr" }
-  
+
   override string getOperator() { result = "|=" }
 }
 
@@ -127,7 +127,7 @@ class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
  */
 class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
   override string getCanonicalQLClass() { result = "AssignXorExpr" }
-  
+
   override string getOperator() { result = "^=" }
 }
 
@@ -136,7 +136,7 @@ class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
  */
 class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
   override string getCanonicalQLClass() { result = "AssignLShiftExpr" }
-  
+
   override string getOperator() { result = "<<=" }
 }
 
@@ -145,7 +145,7 @@ class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
  */
 class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
   override string getCanonicalQLClass() { result = "AssignRShiftExpr" }
-  
+
   override string getOperator() { result = ">>=" }
 }
 
@@ -154,7 +154,7 @@ class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
  */
 class AssignPointerAddExpr extends AssignOperation, @assignpaddexpr {
   override string getCanonicalQLClass() { result = "AssignPointerAddExpr" }
-  
+
   override string getOperator() { result = "+=" }
 }
 
@@ -163,7 +163,7 @@ class AssignPointerAddExpr extends AssignOperation, @assignpaddexpr {
  */
 class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
   override string getCanonicalQLClass() { result = "AssignPointerSubExpr" }
-  
+
   override string getOperator() { result = "-=" }
 }
 
@@ -180,8 +180,7 @@ class ConditionDeclExpr extends Expr, @condition_decl {
    *
    * Gets the access using the condition for this declaration.
    */
-  deprecated
-  Expr getExpr() { result = this.getChild(0) }
+  deprecated Expr getExpr() { result = this.getChild(0) }
 
   override string getCanonicalQLClass() { result = "ConditionDeclExpr" }
 
@@ -198,7 +197,7 @@ class ConditionDeclExpr extends Expr, @condition_decl {
   Expr getInitializingExpr() { result = this.getVariable().getInitializer().getExpr() }
 
   /** Gets the variable that is declared. */
-  Variable getVariable() { condition_decl_bind(underlyingElement(this),unresolveElement(result)) }
+  Variable getVariable() { condition_decl_bind(underlyingElement(this), unresolveElement(result)) }
 
   override string toString() { result = "(condition decl)" }
 }

@@ -14,7 +14,6 @@ private Node getInstanceArgument(Call call) {
 /** An argument to a call. */
 private class Argument extends Expr {
   Call call;
-
   int pos;
 
   Argument() { call.getArgument(pos) = this }

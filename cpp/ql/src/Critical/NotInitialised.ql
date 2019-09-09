@@ -8,9 +8,11 @@
  *       external/cwe/cwe-457
  */
 
-import cpp
+/*
+ * See also InitialisationNotRun.ql and GlobalUseBeforeInit.ql
+ */
 
-// See also InitialisationNotRun.ql and GlobalUseBeforeInit.ql
+import cpp
 
 /**
  * Holds if `s` defines variable `v` (conservative).

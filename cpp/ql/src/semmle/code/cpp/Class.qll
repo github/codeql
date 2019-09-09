@@ -15,7 +15,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * public:
  *   MyClass();
  * };
- * 
+ *
  * struct MyStruct {
  *   int x, y, z;
  * };
@@ -27,9 +27,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * ```
  */
 class Class extends UserType {
-  Class() {
-    isClass(underlyingElement(this))
-  }
+  Class() { isClass(underlyingElement(this)) }
 
   override string getCanonicalQLClass() { result = "Class" }
 
@@ -53,9 +51,7 @@ class Class extends UserType {
    * If you also want instantiations of the template, then use
    * `getAMemberFunction()` instead.
    */
-  MemberFunction getACanonicalMemberFunction() {
-    result = this.getACanonicalMember()
-  }
+  MemberFunction getACanonicalMemberFunction() { result = this.getACanonicalMember() }
 
   /**
    * Gets a member variable declared in this class, struct or union.
@@ -94,7 +90,9 @@ class Class extends UserType {
    * If you also want template instantiations of results, see
    * `getAMember(int)`.
    */
-  Declaration getCanonicalMember(int index) { member(underlyingElement(this),index,unresolveElement(result)) }
+  Declaration getCanonicalMember(int index) {
+    member(underlyingElement(this), index, unresolveElement(result))
+  }
 
   /**
    * Gets the (zero-based) `index`th canonical member declared in this
@@ -113,7 +111,9 @@ class Class extends UserType {
    * DEPRECATED: Use `getCanonicalMember(int)` or `getAMember(int)` instead.
    * Gets the `index`th member of this class.
    */
-  deprecated Declaration getMember(int index) { member(underlyingElement(this),index,unresolveElement(result)) }
+  deprecated Declaration getMember(int index) {
+    member(underlyingElement(this), index, unresolveElement(result))
+  }
 
   /**
    * DEPRECATED: As this includes a somewhat arbitrary number of
@@ -131,9 +131,7 @@ class Class extends UserType {
    * instantiation of that template. For just the template, use
    * `getAPrivateCanonicalMember()`.
    */
-  Declaration getAPrivateMember() {
-    result = this.getAMember() and result.hasSpecifier("private")
-  }
+  Declaration getAPrivateMember() { result = this.getAMember() and result.hasSpecifier("private") }
 
   /**
    * Gets a private canonical member declared in this class, struct or union.
@@ -169,9 +167,7 @@ class Class extends UserType {
    * instantiation of that template. For just the template, use
    * `getAPublicCanonicalMember()`.
    */
-  Declaration getAPublicMember() {
-    result = this.getAMember() and result.hasSpecifier("public")
-  }
+  Declaration getAPublicMember() { result = this.getAMember() and result.hasSpecifier("public") }
 
   /**
    * Gets a public canonical member declared in this class, struct or union.
@@ -183,9 +179,7 @@ class Class extends UserType {
   }
 
   /** Gets a static member declared in this class, struct or union. */
-  Declaration getAStaticMember() {
-    result = this.getAMember() and result.isStatic()
-  }
+  Declaration getAStaticMember() { result = this.getAMember() and result.isStatic() }
 
   /** Gets a field of this class, struct or union. */
   Field getAField() { result = this.getAMemberVariable() }
@@ -233,16 +227,13 @@ class Class extends UserType {
    * Like accessOfBaseMember but returns multiple results if there are multiple
    * paths to `base` through the inheritance graph.
    */
-  private AccessSpecifier accessOfBaseMemberMulti(Class base,
-                                                  AccessSpecifier fieldInBase)
-  {
-    (this = base and result = fieldInBase)
+  private AccessSpecifier accessOfBaseMemberMulti(Class base, AccessSpecifier fieldInBase) {
+    this = base and result = fieldInBase
     or
     exists(ClassDerivation cd | cd.getBaseClass() = base |
-      result = this.accessOfBaseMemberMulti(
-        cd.getDerivedClass(),
-        fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier))
-      )
+      result = this
+            .accessOfBaseMemberMulti(cd.getDerivedClass(),
+              fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
     )
   }
 
@@ -256,9 +247,7 @@ class Class extends UserType {
     // If there are multiple paths through the inheritance graph, we take the
     // most permissive one (C++14 11.6/1). This implementation relies on the
     // alphabetical order of "private", "protected", "public".
-    result.hasName(
-      max(this.accessOfBaseMemberMulti(base, fieldInBase).getName())
-    )
+    result.hasName(max(this.accessOfBaseMemberMulti(base, fieldInBase).getName()))
   }
 
   /**
@@ -268,27 +257,21 @@ class Class extends UserType {
    * includes the case of `base` = `this`.
    */
   AccessSpecifier accessOfBaseMember(Declaration member) {
-    result = this.accessOfBaseMember(
-      member.getDeclaringType(),
-      member.getASpecifier().(AccessSpecifier)
-    )
+    result = this
+          .accessOfBaseMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier))
   }
 
   /**
    * DEPRECATED: name changed to `hasImplicitCopyConstructor` to reflect that
    * `= default` members are no longer included.
    */
-  deprecated predicate hasGeneratedCopyConstructor() {
-    hasImplicitCopyConstructor()
-  }
+  deprecated predicate hasGeneratedCopyConstructor() { hasImplicitCopyConstructor() }
 
   /**
    * DEPRECATED: name changed to `hasImplicitCopyAssignmentOperator` to
    * reflect that `= default` members are no longer included.
    */
-  deprecated predicate hasGeneratedCopyAssignmentOperator() {
-    hasImplicitCopyConstructor()
-  }
+  deprecated predicate hasGeneratedCopyAssignmentOperator() { hasImplicitCopyConstructor() }
 
   /**
    * Holds if this class, struct or union has an implicitly-declared copy
@@ -330,17 +313,17 @@ class Class extends UserType {
     // - T has non-static data members that cannot be copied (have deleted,
     //   inaccessible, or ambiguous copy constructors);
     exists(Type t | t = this.getAFieldSubobjectType().getUnspecifiedType() |
-        // Note: Overload resolution is not implemented -- all copy
-        // constructors are considered equal.
-        this.cannotAccessCopyConstructorOnAny(t.(Class))
+      // Note: Overload resolution is not implemented -- all copy
+      // constructors are considered equal.
+      this.cannotAccessCopyConstructorOnAny(t.(Class))
     )
     or
     // - T has direct or virtual base class that cannot be copied (has deleted,
     //   inaccessible, or ambiguous copy constructors);
     exists(Class c | c = this.getADirectOrVirtualBase() |
-        // Note: Overload resolution is not implemented -- all copy
-        // constructors are considered equal.
-        this.cannotAccessCopyConstructorOnThis(c)
+      // Note: Overload resolution is not implemented -- all copy
+      // constructors are considered equal.
+      this.cannotAccessCopyConstructorOnThis(c)
     )
     or
     // - T has direct or virtual base class with a deleted or inaccessible
@@ -350,20 +333,18 @@ class Class extends UserType {
     )
     or
     // - T has a user-defined move constructor or move assignment operator;
-    exists(MoveConstructor mc | mc = this.getAMemberFunction() |
-        not mc.isCompilerGenerated())
+    exists(MoveConstructor mc | mc = this.getAMemberFunction() | not mc.isCompilerGenerated())
     or
     exists(MoveAssignmentOperator ma | ma = this.getAMemberFunction() |
-        not ma.isCompilerGenerated())
+      not ma.isCompilerGenerated()
+    )
     or
     // - T is a union and has a variant member with non-trivial copy
     //   constructor (since C++11)
     none() // Not implemented
     or
     // - T has a data member of rvalue reference type.
-    exists (Type t | t = this.getAFieldSubobjectType() |
-        t instanceof RValueReferenceType
-    )
+    exists(Type t | t = this.getAFieldSubobjectType() | t instanceof RValueReferenceType)
   }
 
   /**
@@ -374,49 +355,46 @@ class Class extends UserType {
    */
   predicate implicitCopyAssignmentOperatorDeleted() {
     // - T has a user-declared move constructor;
-    exists(MoveConstructor mc | mc = this.getAMemberFunction() |
-        not mc.isCompilerGenerated())
+    exists(MoveConstructor mc | mc = this.getAMemberFunction() | not mc.isCompilerGenerated())
     or
     // - T has a user-declared move assignment operator.
     exists(MoveAssignmentOperator ma | ma = this.getAMemberFunction() |
-        not ma.isCompilerGenerated())
+      not ma.isCompilerGenerated()
+    )
     or
-
     // - T has a non-static data member of non-class type (or array thereof)
     //   that is const;
     exists(Type t | t = this.getAFieldSubobjectType() |
-        // The rule for this case refers only to non-class types only, but our
-        // implementation extends it to cover class types too. Class types are
-        // supposed to be covered by the rule below on data members that
-        // cannot be copy-assigned. Copy-assigning a const class-typed member
-        // would call an overload of type
-        // `const C& operator=(const C&) const;`. Such an overload is unlikely
-        // to exist because it contradicts the intention of "const": it allows
-        // assigning to a const object. But since we have not implemented the
-        // ability to distinguish between overloads, we cannot distinguish that
-        // overload from the ordinary `C& operator=(const C&);`. Instead, we
-        // require class types to be non-const in this clause.
-        /* not t instanceof Class and */ t.isConst()
+      // The rule for this case refers only to non-class types only, but our
+      // implementation extends it to cover class types too. Class types are
+      // supposed to be covered by the rule below on data members that
+      // cannot be copy-assigned. Copy-assigning a const class-typed member
+      // would call an overload of type
+      // `const C& operator=(const C&) const;`. Such an overload is unlikely
+      // to exist because it contradicts the intention of "const": it allows
+      // assigning to a const object. But since we have not implemented the
+      // ability to distinguish between overloads, we cannot distinguish that
+      // overload from the ordinary `C& operator=(const C&);`. Instead, we
+      // require class types to be non-const in this clause.
+      /* not t instanceof Class and */ t.isConst()
     )
     or
     // - T has a non-static data member of a reference type;
-    exists (Type t | t = this.getAFieldSubobjectType() |
-        t instanceof ReferenceType
-    )
+    exists(Type t | t = this.getAFieldSubobjectType() | t instanceof ReferenceType)
     or
     // - T has a non-static data member or a direct or virtual base class that
     //   cannot be copy-assigned (overload resolution for the copy assignment
     //   fails, or selects a deleted or inaccessible function);
     exists(Type t | t = this.getAFieldSubobjectType().getUnspecifiedType() |
-        // Note: Overload resolution is not implemented -- all copy assignment
-        // operators are considered equal.
-        this.cannotAccessCopyAssignmentOperatorOnAny(t.(Class))
+      // Note: Overload resolution is not implemented -- all copy assignment
+      // operators are considered equal.
+      this.cannotAccessCopyAssignmentOperatorOnAny(t.(Class))
     )
     or
     exists(Class c | c = this.getADirectOrVirtualBase() |
-        // Note: Overload resolution is not implemented -- all copy assignment
-        // operators are considered equal.
-        this.cannotAccessCopyAssignmentOperatorOnThis(c)
+      // Note: Overload resolution is not implemented -- all copy assignment
+      // operators are considered equal.
+      this.cannotAccessCopyAssignmentOperatorOnThis(c)
     )
     // - T is a union-like class, and has a variant member whose corresponding
     //   assignment operator is non-trivial.
@@ -459,9 +437,7 @@ class Class extends UserType {
   Class getADerivedClass() { result.getABaseClass() = this }
 
   /** Holds if this class/struct derives directly from that. */
-  predicate derivesFrom(Class that) {
-    this.getABaseClass() = that
-  }
+  predicate derivesFrom(Class that) { this.getABaseClass() = that }
 
   override predicate refersToDirectly(Type t) {
     t = this.getATemplateArgument() or
@@ -480,9 +456,9 @@ class Class extends UserType {
   ClassDerivation getADerivation() {
     exists(ClassDerivation d | d.getDerivedClass() = this and d = result)
   }
+
   ClassDerivation getDerivation(int index) {
-    exists(ClassDerivation d
-    | d.getDerivedClass() = this and d.getIndex() = index and d = result)
+    exists(ClassDerivation d | d.getDerivedClass() = this and d.getIndex() = index and d = result)
   }
 
   /**
@@ -493,13 +469,13 @@ class Class extends UserType {
    * it hold for further base class subobjects of virtual base classes.
    */
   private int getANonVirtualBaseClassByteOffset(Class baseClass) {
-    baseClass = this and result = 0 or  // `baseClass` is the most-derived type
+    baseClass = this and result = 0 // `baseClass` is the most-derived type
+    or
     exists(ClassDerivation cd |
       // Add the offset of the direct base class and the offset of `baseClass`
       // within that direct base class.
       cd = getADerivation() and
-      result = cd.getBaseClass().getANonVirtualBaseClassByteOffset(baseClass) + 
-        cd.getByteOffset()
+      result = cd.getBaseClass().getANonVirtualBaseClassByteOffset(baseClass) + cd.getByteOffset()
     )
   }
 
@@ -513,14 +489,13 @@ class Class extends UserType {
    */
   int getABaseClassByteOffset(Class baseClass) {
     // Handle the non-virtual case.
-    result = getANonVirtualBaseClassByteOffset(baseClass) or
-    exists(Class virtualBaseClass, int virtualBaseOffset,
-      int offsetFromVirtualBase |
+    result = getANonVirtualBaseClassByteOffset(baseClass)
+    or
+    exists(Class virtualBaseClass, int virtualBaseOffset, int offsetFromVirtualBase |
       // Look for the base class as a non-virtual base of a direct or indirect
       // virtual base, adding the two offsets.
       getVirtualBaseClassByteOffset(virtualBaseClass) = virtualBaseOffset and
-      offsetFromVirtualBase = 
-        virtualBaseClass.getANonVirtualBaseClassByteOffset(baseClass) and
+      offsetFromVirtualBase = virtualBaseClass.getANonVirtualBaseClassByteOffset(baseClass) and
       result = virtualBaseOffset + offsetFromVirtualBase
     )
   }
@@ -535,11 +510,11 @@ class Class extends UserType {
    * ```
    */
   predicate hasVirtualBaseClass(Class base) {
-      exists(ClassDerivation cd |
-              this.getADerivation() = cd and
-              cd.getBaseClass() = base and
-              cd.hasSpecifier("virtual")
-      )
+    exists(ClassDerivation cd |
+      this.getADerivation() = cd and
+      cd.getBaseClass() = base and
+      cd.hasSpecifier("virtual")
+    )
   }
 
   /**
@@ -564,11 +539,11 @@ class Class extends UserType {
    * ```
    */
   predicate hasPrivateBaseClass(Class base) {
-      exists(ClassDerivation cd |
-              this.getADerivation() = cd and
-              cd.getBaseClass() = base and
-              cd.hasSpecifier("private")
-      )
+    exists(ClassDerivation cd |
+      this.getADerivation() = cd and
+      cd.getBaseClass() = base and
+      cd.hasSpecifier("private")
+    )
   }
 
   /**
@@ -581,11 +556,11 @@ class Class extends UserType {
    * ```
    */
   predicate hasPublicBaseClass(Class base) {
-      exists(ClassDerivation cd |
-              this.getADerivation() = cd and
-              cd.getBaseClass() = base and
-              cd.hasSpecifier("public")
-      )
+    exists(ClassDerivation cd |
+      this.getADerivation() = cd and
+      cd.getBaseClass() = base and
+      cd.hasSpecifier("public")
+    )
   }
 
   /**
@@ -598,11 +573,11 @@ class Class extends UserType {
    * ```
    */
   predicate hasProtectedBaseClass(Class base) {
-      exists(ClassDerivation cd |
-              this.getADerivation() = cd and
-              cd.getBaseClass() = base and
-              cd.hasSpecifier("protected")
-      )
+    exists(ClassDerivation cd |
+      this.getADerivation() = cd and
+      cd.getBaseClass() = base and
+      cd.hasSpecifier("protected")
+    )
   }
 
   /** Gets the metric class associated with this class, struct or union. */
@@ -619,7 +594,7 @@ class Class extends UserType {
    * Gets the alignment of this type in bytes (on the machine where facts were
    * extracted).
    */
-  override int getAlignment() { usertypesize(underlyingElement(this),_,result) }
+  override int getAlignment() { usertypesize(underlyingElement(this), _, result) }
 
   /**
    * Holds if this class, struct or union is constructed from another class as
@@ -636,7 +611,7 @@ class Class extends UserType {
    * `i`th template parameter.
    */
   override Type getTemplateArgument(int i) {
-    class_template_argument(underlyingElement(this),i,unresolveElement(result))
+    class_template_argument(underlyingElement(this), i, unresolveElement(result))
   }
 
   /**
@@ -652,14 +627,10 @@ class Class extends UserType {
   }
 
   /** Holds if this class, struct or union was declared 'final'. */
-  predicate isFinal() {
-    usertype_final(underlyingElement(this))
-  }
+  predicate isFinal() { usertype_final(underlyingElement(this)) }
 
   /** Gets a link target which references this class, struct or union. */
-  LinkTarget getALinkTarget() {
-    this = result.getAClass()
-  }
+  LinkTarget getALinkTarget() { this = result.getAClass() }
 
   /**
    * Gets the UUID that associated with this class, struct or union via the
@@ -669,9 +640,7 @@ class Class extends UserType {
    * value is normalized to the standard "registry format", without braces, and
    * using lowercase letters (e.g. "01234567-89ab-cdef-0123-456789abcdef").
    */
-  string getUuid() {
-    usertype_uuid(underlyingElement(this), result)
-  }
+  string getUuid() { usertype_uuid(underlyingElement(this), result) }
 
   private Type getAFieldSubobjectType() {
     result = stripArrayTypes(this.getAField().getUnderlyingType())
@@ -684,9 +653,7 @@ class Class extends UserType {
     // `result` is an indirect virtual base of `this`. The case where `result`
     // is a direct virtual base of `this` is included in the above clause, and
     // therefore we can use "+"-closure instead of "*"-closure here.
-    result.(VirtualBaseClass)
-          .getAVirtuallyDerivedClass()
-          .getADerivedClass+() = this
+    result.(VirtualBaseClass).getAVirtuallyDerivedClass().getADerivedClass+() = this
   }
 
   /**
@@ -700,12 +667,9 @@ class Class extends UserType {
     // The destructor in our db, if any, is accessible. If there is no
     // destructor in our db, it usually means that there is a default
     // public one.
-    exists(Destructor d | d = c.getAMemberFunction() |
-                          not this.canAccessMember(d, objectClass))
-
+    exists(Destructor d | d = c.getAMemberFunction() | not this.canAccessMember(d, objectClass))
     // The extractor doesn't seem to support the case of a deleted destructor,
     // so we ignore that. It is very much a corner case.
-
     // To implement this properly, there should be a predicate about whether
     // the implicit destructor is deleted, similar to
     // `implicitCopyConstructorDeleted`. See
@@ -734,14 +698,13 @@ class Class extends UserType {
     //   then this.cannotAccess(cc)
     //   else this.implicitCopyConstructorDeleted()
     exists(CopyConstructor cc | cc = c.getAMemberFunction() |
-           not this.canAccessMember(cc, objectClass))
-    or
-    (
-      not exists(CopyConstructor cc | cc = c.getAMemberFunction() and not cc.isDeleted()) and
-      c.implicitCopyConstructorDeleted() // mutual recursion here
-      // no access check in this case since the implicit member is always
-      // public.
+      not this.canAccessMember(cc, objectClass)
     )
+    or
+    not exists(CopyConstructor cc | cc = c.getAMemberFunction() and not cc.isDeleted()) and
+    c.implicitCopyConstructorDeleted() // mutual recursion here
+    // no access check in this case since the implicit member is always
+    // public.
   }
 
   private predicate cannotAccessCopyAssignmentOperatorOnThis(Class c) {
@@ -765,14 +728,13 @@ class Class extends UserType {
     //   then this.cannotAccess(ca)
     //   else this.implicitCopyAssignmentOperatorDeleted()
     exists(CopyAssignmentOperator ca | ca = c.getAMemberFunction() |
-           not this.canAccessMember(ca, objectClass))
-    or
-    (
-      not exists(CopyAssignmentOperator ca | ca = c.getAMemberFunction() and not ca.isDeleted()) and
-      c.implicitCopyAssignmentOperatorDeleted() // mutual recursion here
-      // no access check in this case since the implicit member is always
-      // public.
+      not this.canAccessMember(ca, objectClass)
     )
+    or
+    not exists(CopyAssignmentOperator ca | ca = c.getAMemberFunction() and not ca.isDeleted()) and
+    c.implicitCopyAssignmentOperatorDeleted() // mutual recursion here
+    // no access check in this case since the implicit member is always
+    // public.
   }
 }
 
@@ -799,10 +761,8 @@ class ClassDerivation extends Locatable, @derivation {
    * };
    * ```
    */
-  Class getBaseClass() {
-    result = getBaseType().getUnderlyingType()
-  }
-  
+  Class getBaseClass() { result = getBaseType().getUnderlyingType() }
+
   override string getCanonicalQLClass() { result = "ClassDerivation" }
 
   /**
@@ -818,9 +778,7 @@ class ClassDerivation extends Locatable, @derivation {
    * };
    * ```
    */
-  Type getBaseType() {
-    derivations(underlyingElement(this),_,_,unresolveElement(result),_)
-  }
+  Type getBaseType() { derivations(underlyingElement(this), _, _, unresolveElement(result), _) }
 
   /**
    * Gets the class/struct that is doing the deriving. For example, the derived
@@ -834,7 +792,7 @@ class ClassDerivation extends Locatable, @derivation {
    * ```
    */
   Class getDerivedClass() {
-    derivations(underlyingElement(this),unresolveElement(result),_,_,_)
+    derivations(underlyingElement(this), unresolveElement(result), _, _, _)
   }
 
   /**
@@ -847,29 +805,19 @@ class ClassDerivation extends Locatable, @derivation {
    * };
    * ```
    */
-  int getIndex() {
-    derivations(underlyingElement(this),_,result,_,_)
-  }
+  int getIndex() { derivations(underlyingElement(this), _, result, _, _) }
 
   /** Gets a specifier (for example `public`) applied to the derivation. */
-  Specifier getASpecifier() {
-    derspecifiers(underlyingElement(this),unresolveElement(result))
-  }
+  Specifier getASpecifier() { derspecifiers(underlyingElement(this), unresolveElement(result)) }
 
   /** Holds if the derivation has specifier `s`. */
-  predicate hasSpecifier(string s) {
-    this.getASpecifier().hasName(s)
-  }
+  predicate hasSpecifier(string s) { this.getASpecifier().hasName(s) }
 
   /** Holds if the derivation is for a virtual base class. */
-  predicate isVirtual() {
-    hasSpecifier("virtual")
-  }
+  predicate isVirtual() { hasSpecifier("virtual") }
 
   /** Gets the location of the derivation. */
-  override Location getLocation() {
-    derivations(underlyingElement(this),_,_,_,result)
-  }
+  override Location getLocation() { derivations(underlyingElement(this), _, _, _, result) }
 
   /**
    * Gets the byte offset of the base class subobject relative to the start of
@@ -879,13 +827,9 @@ class ClassDerivation extends Locatable, @derivation {
    * See `Class.getVirtualBaseClassByteOffset` for offsets of virtual base
    * classes.
    */
-  int getByteOffset() {
-    direct_base_offsets(underlyingElement(this), result)
-  }
+  int getByteOffset() { direct_base_offsets(underlyingElement(this), result) }
 
-  override string toString() {
-    result = "derivation"
-  }
+  override string toString() { result = "derivation" }
 }
 
 /**
@@ -898,16 +842,13 @@ class ClassDerivation extends Locatable, @derivation {
  * ```
  */
 class LocalClass extends Class {
-  LocalClass() {
-    isLocal()
+  LocalClass() { isLocal() }
+
+  override string getCanonicalQLClass() {
+    not this instanceof LocalStruct and result = "LocalClass"
   }
 
-  override string getCanonicalQLClass()
-    { not this instanceof LocalStruct and result = "LocalClass" }
-
-  override Function getEnclosingAccessHolder() {
-    result = this.getEnclosingFunction()
-  }
+  override Function getEnclosingAccessHolder() { result = this.getEnclosingFunction() }
 }
 
 /**
@@ -924,12 +865,11 @@ class LocalClass extends Class {
  * ```
  */
 class NestedClass extends Class {
-  NestedClass() {
-    this.isMember()
-  }
+  NestedClass() { this.isMember() }
 
-  override string getCanonicalQLClass() 
-    { not this instanceof NestedStruct and result = "NestedClass" }
+  override string getCanonicalQLClass() {
+    not this instanceof NestedStruct and result = "NestedClass"
+  }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -939,7 +879,6 @@ class NestedClass extends Class {
 
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
-
 }
 
 /**
@@ -947,9 +886,7 @@ class NestedClass extends Class {
  * pure virtual function.
  */
 class AbstractClass extends Class {
-  AbstractClass() {
-    exists(PureVirtualFunction f| this.getAMemberFunction() = f)
-  }
+  AbstractClass() { exists(PureVirtualFunction f | this.getAMemberFunction() = f) }
 
   override string getCanonicalQLClass() { result = "AbstractClass" }
 }
@@ -969,7 +906,8 @@ class AbstractClass extends Class {
  * `FullClassTemplateSpecialization`.
  */
 class TemplateClass extends Class {
-  TemplateClass() { usertypes(underlyingElement(this),_,6) }
+  TemplateClass() { usertypes(underlyingElement(this), _, 6) }
+
   Class getAnInstantiation() {
     result.isConstructedFrom(this) and
     exists(result.getATemplateArgument())
@@ -986,7 +924,7 @@ class TemplateClass extends Class {
  * class MyTemplateClass {
  *   ...
  * };
- * 
+ *
  * MyTemplateClass<int> instance;
  * ```
  * For the `MyTemplateClass` template itself, see `TemplateClass`.
@@ -994,9 +932,7 @@ class TemplateClass extends Class {
 class ClassTemplateInstantiation extends Class {
   TemplateClass tc;
 
-  ClassTemplateInstantiation() {
-    tc.getAnInstantiation() = this
-  }
+  ClassTemplateInstantiation() { tc.getAnInstantiation() = this }
 
   override string getCanonicalQLClass() { result = "ClassTemplateInstantiation" }
 
@@ -1010,13 +946,11 @@ class ClassTemplateInstantiation extends Class {
    * class MyTemplateClass {
    *   ...
    * };
-   * 
+   *
    * MyTemplateClass<int> instance;
    * ```
    */
-  TemplateClass getTemplate() {
-    result = tc
-  }
+  TemplateClass getTemplate() { result = tc }
 }
 
 /**
@@ -1032,15 +966,14 @@ abstract class ClassTemplateSpecialization extends Class {
   TemplateClass getPrimaryTemplate() {
     // Ignoring template arguments, the primary template has the same name
     // as each of its specializations.
-    result.getSimpleName() = getSimpleName()
-
+    result.getSimpleName() = getSimpleName() and
     // It is in the same namespace as its specializations.
-    and result.getNamespace() = getNamespace()
-
+    result.getNamespace() = getNamespace() and
     // It is distinguished by the fact that each of its template arguments
     // is a distinct template parameter.
-    and count(TemplateParameter tp | tp = result.getATemplateArgument()) =
-        count(int i | exists(result.getTemplateArgument(i)))
+    count(TemplateParameter tp | tp = result.getATemplateArgument()) = count(int i |
+        exists(result.getTemplateArgument(i))
+      )
   }
 
   override string getCanonicalQLClass() { result = "ClassTemplateSpecialization" }
@@ -1064,14 +997,12 @@ abstract class ClassTemplateSpecialization extends Class {
 class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
   FullClassTemplateSpecialization() {
     // This class has template arguments, but none of them involves a template parameter.
-    exists(getATemplateArgument())
-    and not exists(Type ta | ta = getATemplateArgument() and ta.involvesTemplateParameter())
-
+    exists(getATemplateArgument()) and
+    not exists(Type ta | ta = getATemplateArgument() and ta.involvesTemplateParameter()) and
     // This class does not have any instantiations.
-    and not exists(this.(TemplateClass).getAnInstantiation())
-
+    not exists(this.(TemplateClass).getAnInstantiation()) and
     // This class is not an instantiation of a class template.
-    and not this instanceof ClassTemplateInstantiation
+    not this instanceof ClassTemplateInstantiation
   }
 
   override string getCanonicalQLClass() { result = "FullClassTemplateSpecialization" }
@@ -1107,9 +1038,11 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
      * template <typename T> class Y {};        // class template
      * template <typename T> class Y<T*> {};    // partial class template specialization
      */
-    exists(Type ta | ta = getATemplateArgument() and ta.involvesTemplateParameter())
-    and count(TemplateParameter tp | tp = getATemplateArgument()) !=
-        count(int i | exists(getTemplateArgument(i)))
+
+    exists(Type ta | ta = getATemplateArgument() and ta.involvesTemplateParameter()) and
+    count(TemplateParameter tp | tp = getATemplateArgument()) != count(int i |
+        exists(getTemplateArgument(i))
+      )
   }
 
   override string getCanonicalQLClass() { result = "PartialClassTemplateSpecialization" }
@@ -1125,12 +1058,16 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
  *   virtual void myMethod2() = 0;
  * };
  * ```
- * 
+ *
  * DEPRECATED: This class is considered to be too specific for general usage.
  */
 deprecated class Interface extends Class {
   Interface() {
-    forex(Declaration m | m.getDeclaringType() = this.getABaseClass*() and not compgenerated(unresolveElement(m)) | m instanceof PureVirtualFunction)
+    forex(Declaration m |
+      m.getDeclaringType() = this.getABaseClass*() and not compgenerated(unresolveElement(m))
+    |
+      m instanceof PureVirtualFunction
+    )
   }
 
   override string getCanonicalQLClass() { result = "Interface" }
@@ -1146,9 +1083,7 @@ deprecated class Interface extends Class {
  * ```
  */
 class VirtualClassDerivation extends ClassDerivation {
-  VirtualClassDerivation() {
-    hasSpecifier("virtual")
-  }
+  VirtualClassDerivation() { hasSpecifier("virtual") }
 
   override string getCanonicalQLClass() { result = "VirtualClassDerivation" }
 }
@@ -1168,21 +1103,15 @@ class VirtualClassDerivation extends ClassDerivation {
  * ```
  */
 class VirtualBaseClass extends Class {
-  VirtualBaseClass() {
-    exists(VirtualClassDerivation cd | cd.getBaseClass() = this)
-  }
+  VirtualBaseClass() { exists(VirtualClassDerivation cd | cd.getBaseClass() = this) }
 
   override string getCanonicalQLClass() { result = "VirtualBaseClass" }
 
   /** A virtual class derivation of which this class/struct is the base. */
-  VirtualClassDerivation getAVirtualDerivation() {
-    result.getBaseClass() = this
-  }
+  VirtualClassDerivation getAVirtualDerivation() { result.getBaseClass() = this }
 
   /** A class/struct that is derived from this one using virtual inheritance. */
-  Class getAVirtuallyDerivedClass() {
-    result = getAVirtualDerivation().getDerivedClass()
-  }
+  Class getAVirtuallyDerivedClass() { result = getAVirtualDerivation().getDerivedClass() }
 }
 
 /**
@@ -1196,25 +1125,22 @@ class VirtualBaseClass extends Class {
  * ```
  */
 class ProxyClass extends UserType {
-  ProxyClass() {
-    usertypes(underlyingElement(this),_,9)
-  }
+  ProxyClass() { usertypes(underlyingElement(this), _, 9) }
 
   override string getCanonicalQLClass() { result = "ProxyClass" }
-  
+
   /** Gets the location of the proxy class. */
-  override Location getLocation() {
-    result = getTemplateParameter().getDefinitionLocation()
-  }
+  override Location getLocation() { result = getTemplateParameter().getDefinitionLocation() }
 
   /** Gets the template parameter for which this is the proxy class. */
   TemplateParameter getTemplateParameter() {
-    is_proxy_class_for(underlyingElement(this),unresolveElement(result))
+    is_proxy_class_for(underlyingElement(this), unresolveElement(result))
   }
 }
 
 // Unpacks "array of ... of array of t" into t.
 private Type stripArrayTypes(Type t) {
-  not t instanceof ArrayType and result = t or
+  not t instanceof ArrayType and result = t
+  or
   result = stripArrayTypes(t.(ArrayType).getBaseType())
 }

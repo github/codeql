@@ -14,13 +14,13 @@ private string nonSuspicious() {
   result = "%crypt%"
 }
 
-abstract class SensitiveExpr extends Expr {}
+abstract class SensitiveExpr extends Expr { }
 
 class SensitiveVarAccess extends SensitiveExpr {
   SensitiveVarAccess() {
     this instanceof VariableAccess and
     exists(string s | this.toString().toLowerCase() = s |
-      s.matches(suspicious())and
+      s.matches(suspicious()) and
       not s.matches(nonSuspicious())
     )
   }
@@ -30,8 +30,8 @@ class SensitiveCall extends SensitiveExpr {
   SensitiveCall() {
     this instanceof FunctionCall and
     exists(string s | this.toString().toLowerCase() = s |
-      s.matches(suspicious())and
+      s.matches(suspicious()) and
       not s.matches(nonSuspicious())
     )
-  } 
+  }
 }

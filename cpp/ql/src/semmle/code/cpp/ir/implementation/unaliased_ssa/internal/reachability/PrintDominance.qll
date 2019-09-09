@@ -9,13 +9,13 @@ private class DominancePropertyProvider extends IRPropertyProvider {
       blockImmediatelyDominates(dominator, block) and
       key = "ImmediateDominator" and
       result = "Block " + dominator.getDisplayIndex().toString()
-    ) or
-    (
-      key = "DominanceFrontier" and
-      result = strictconcat(IRBlock frontierBlock |
-        frontierBlock = getDominanceFrontier(block) |
+    )
+    or
+    key = "DominanceFrontier" and
+    result = strictconcat(IRBlock frontierBlock |
+        frontierBlock = getDominanceFrontier(block)
+      |
         frontierBlock.getDisplayIndex().toString(), ", " order by frontierBlock.getDisplayIndex()
       )
-    )
   }
 }

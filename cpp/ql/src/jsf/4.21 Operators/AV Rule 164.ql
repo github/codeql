@@ -8,6 +8,7 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -26,23 +27,26 @@ predicate constantValue(Expr e, int value) {
   e.getUnspecifiedType() instanceof IntegralType and
   (
     // Either the expr has a constant value
-    value = e.getValue().toInt() or
+    value = e.getValue().toInt()
+    or
     // The expr is a variable access and all values of the variable are constant
-    exists(VariableAccess va | va = e and
-        forall(Expr init | possibleValue(va.getTarget(), init) | constantValue(init,_)) and
-        exists(Expr init | possibleValue(va.getTarget(), init) | constantValue(init,value))
+    exists(VariableAccess va |
+      va = e and
+      forall(Expr init | possibleValue(va.getTarget(), init) | constantValue(init, _)) and
+      exists(Expr init | possibleValue(va.getTarget(), init) | constantValue(init, value))
     )
   )
 }
 
 predicate violation(BinaryBitwiseOperation op, int lhsBytes, int value) {
-    (op instanceof LShiftExpr or op instanceof RShiftExpr) and
-    constantValue(op.getRightOperand(), value) and
-    lhsBytes = op.getLeftOperand().getExplicitlyConverted().getType().getSize() and
-    (value < 0 or value >= lhsBytes * 8)
+  (op instanceof LShiftExpr or op instanceof RShiftExpr) and
+  constantValue(op.getRightOperand(), value) and
+  lhsBytes = op.getLeftOperand().getExplicitlyConverted().getType().getSize() and
+  (value < 0 or value >= lhsBytes * 8)
 }
-
 
 from BinaryBitwiseOperation op, int lhsBytes, int canonicalValue
 where canonicalValue = min(int v | violation(op, lhsBytes, v))
-select op, "AV Rule 164: The right-hand operand (here a value is " + canonicalValue.toString() + ") of this shift shall lie between 0 and " + (lhsBytes * 8 - 1).toString() + "."
+select op,
+  "AV Rule 164: The right-hand operand (here a value is " + canonicalValue.toString() +
+    ") of this shift shall lie between 0 and " + (lhsBytes * 8 - 1).toString() + "."

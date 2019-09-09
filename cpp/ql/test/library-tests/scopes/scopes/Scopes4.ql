@@ -2,6 +2,7 @@
  * @name Scopes4
  * @kind table
  */
+
 import cpp
 
 from Function f, string top

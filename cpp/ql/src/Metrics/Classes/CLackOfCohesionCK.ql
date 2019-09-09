@@ -9,9 +9,9 @@
  * @metricAggregate avg max
  * @tags modularity
  */
+
 import cpp
 
 from Class c
 where c.fromSource()
-select c, c.getMetrics().getLackOfCohesionCK() as n
-order by n desc
+select c, c.getMetrics().getLackOfCohesionCK() as n order by n desc

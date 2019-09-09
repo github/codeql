@@ -12,9 +12,7 @@ class Type extends Locatable, @type {
   /**
    * Gets the name of this type.
    */
-  string getName() {
-    none()
-  }
+  string getName() { none() }
 
   /**
    * Holds if this type is called `name`.
@@ -32,9 +30,7 @@ class Type extends Locatable, @type {
   // because there is a similarly-named predicate in Declaration, and UserType
   // inherits from both Type and Declaration and must override it to resolve
   // the ambiguity.
-  predicate hasSpecifier(string name) {
-    this.getASpecifier().hasName(name)
-  }
+  predicate hasSpecifier(string name) { this.getASpecifier().hasName(name) }
 
   /**
    * Gets a specifier of this type, recursively looking through `typedef` and
@@ -48,7 +44,7 @@ class Type extends Locatable, @type {
   // inherits from both Type and Declaration and must override it to resolve
   // the ambiguity.
   Specifier getASpecifier() {
-    typespecifiers(underlyingElement(this),unresolveElement(result))
+    typespecifiers(underlyingElement(this), unresolveElement(result))
     or
     result = this.internal_getAnAdditionalSpecifier()
   }
@@ -56,7 +52,7 @@ class Type extends Locatable, @type {
   /**
    * Gets an attribute of this type.
    */
-  Attribute getAnAttribute() { typeattributes(underlyingElement(this),unresolveElement(result)) }
+  Attribute getAnAttribute() { typeattributes(underlyingElement(this), unresolveElement(result)) }
 
   /**
    * Internal -- should be `protected` when QL supports such a flag. Subtypes
@@ -113,26 +109,24 @@ class Type extends Locatable, @type {
    * Gets the size of this type in bytes.
    */
   int getSize() {
-       builtintypes(underlyingElement(this), _, _, result, _, _)
-    or pointerishsize(underlyingElement(this), result, _)
-    or usertypesize(underlyingElement(this), result, _)
+    builtintypes(underlyingElement(this), _, _, result, _, _) or
+    pointerishsize(underlyingElement(this), result, _) or
+    usertypesize(underlyingElement(this), result, _)
   }
 
   /**
    * Gets the alignment of this type in bytes.
    */
   int getAlignment() {
-       builtintypes(underlyingElement(this), _, _, _, _, result)
-    or pointerishsize(underlyingElement(this), _, result)
-    or usertypesize(underlyingElement(this), _, result)
+    builtintypes(underlyingElement(this), _, _, _, _, result) or
+    pointerishsize(underlyingElement(this), _, result) or
+    usertypesize(underlyingElement(this), _, result)
   }
 
   /**
    * Gets the pointer indirection level of this type.
    */
-  int getPointerIndirectionLevel() {
-    result = 0
-  }
+  int getPointerIndirectionLevel() { result = 0 }
 
   /**
    * Gets a detailed string representation explaining the AST of this type
@@ -174,109 +168,104 @@ class Type extends Locatable, @type {
     // An explicit cast to a type referring to T uses T. We exclude casts within instantiations,
     // since they do not appear directly in the source.
     exists(Cast c |
-      not(c.isImplicit())
-      and c.getType().refersTo(this)
-      and result = c
-      and not c.getEnclosingFunction().isConstructedFrom(_)
+      not c.isImplicit() and
+      c.getType().refersTo(this) and
+      result = c and
+      not c.getEnclosingFunction().isConstructedFrom(_)
     )
-
+    or
     // A class derivation from a type referring to T uses T. We exclude class derivations within
     // instantiations, since they do not appear directly in the source.
-    or exists(ClassDerivation cd |
-      cd.getBaseType().refersTo(this)
-      and result = cd
-      and not cd.getDerivedClass() instanceof ClassTemplateInstantiation
+    exists(ClassDerivation cd |
+      cd.getBaseType().refersTo(this) and
+      result = cd and
+      not cd.getDerivedClass() instanceof ClassTemplateInstantiation
     )
-
+    or
     // A new, new array, or placement new expression with a type that refers to T uses T.
     // We exclude news within instantiations, since they do not appear directly in the source.
-    or exists(Expr e |
+    exists(Expr e |
       (
-        e instanceof NewArrayExpr
-        or e instanceof NewExpr
-      )
-      and e.getType().refersTo(this)
-      and result = e
-      and not e.getEnclosingFunction().isConstructedFrom(_)
+        e instanceof NewArrayExpr or
+        e instanceof NewExpr
+      ) and
+      e.getType().refersTo(this) and
+      result = e and
+      not e.getEnclosingFunction().isConstructedFrom(_)
     )
-
+    or
     // The declaration of a function that returns a type referring to T uses T. We exclude
     // declarations of function template instantiations, since their return types do not
     // appear directly in the source. We also exclude constructors and destructors, since
     // they are indexed with a dummy return type of void that does not appear in the source.
-    or exists(FunctionDeclarationEntry fde, Type t |
-      (
-        if exists(fde.getTypedefType()) then
-          t = fde.getTypedefType()
-        else
-          t = fde.getType()
-      )
-      and t.refersTo(this)
-      and result = fde
-      and not fde.getDeclaration().isConstructedFrom(_)
-      and not(fde.getDeclaration() instanceof Constructor)
-      and not(fde.getDeclaration() instanceof Destructor)
+    exists(FunctionDeclarationEntry fde, Type t |
+      (if exists(fde.getTypedefType()) then t = fde.getTypedefType() else t = fde.getType()) and
+      t.refersTo(this) and
+      result = fde and
+      not fde.getDeclaration().isConstructedFrom(_) and
+      not fde.getDeclaration() instanceof Constructor and
+      not fde.getDeclaration() instanceof Destructor
     )
-
+    or
     // A function call that provides an explicit template argument that refers to T uses T.
     // We exclude calls within instantiations, since they do not appear directly in the source.
-    or exists(FunctionCall c |
-      c.getAnExplicitTemplateArgument().refersTo(this)
-      and result = c
-      and not c.getEnclosingFunction().isConstructedFrom(_)
+    exists(FunctionCall c |
+      c.getAnExplicitTemplateArgument().refersTo(this) and
+      result = c and
+      not c.getEnclosingFunction().isConstructedFrom(_)
     )
-
+    or
     // Qualifying an expression with a type that refers to T uses T. We exclude qualifiers
     // within instantiations, since they do not appear directly in the source.
-    or exists(NameQualifier nq |
-      nq.getQualifyingElement().(Type).refersTo(this)
-      and result = nq
-      and not nq.getExpr().getEnclosingFunction().isConstructedFrom(_)
+    exists(NameQualifier nq |
+      nq.getQualifyingElement().(Type).refersTo(this) and
+      result = nq and
+      not nq.getExpr().getEnclosingFunction().isConstructedFrom(_)
     )
-
+    or
     // Calculating the size of a type that refers to T uses T. We exclude sizeofs within
     // instantiations, since they do not appear directly in the source.
-    or exists(SizeofTypeOperator soto |
-      soto.getTypeOperand().refersTo(this)
-      and result = soto
-      and not soto.getEnclosingFunction().isConstructedFrom(_)
+    exists(SizeofTypeOperator soto |
+      soto.getTypeOperand().refersTo(this) and
+      result = soto and
+      not soto.getEnclosingFunction().isConstructedFrom(_)
     )
-
+    or
     // A typedef of a type that refers to T uses T.
-    or exists(TypeDeclarationEntry tde |
-      tde.getDeclaration().(TypedefType).getBaseType().refersTo(this)
-      and result = tde
+    exists(TypeDeclarationEntry tde |
+      tde.getDeclaration().(TypedefType).getBaseType().refersTo(this) and
+      result = tde
     )
-
+    or
     // Using something declared within a type that refers to T uses T.
-    or exists(UsingDeclarationEntry ude |
-      ude.getDeclaration().getDeclaringType().refersTo(this)
-      and result = ude
+    exists(UsingDeclarationEntry ude |
+      ude.getDeclaration().getDeclaringType().refersTo(this) and
+      result = ude
     )
-
+    or
     // The declaration of a variable with a type that refers to T uses T. We exclude declarations within
     // instantiations, since those do not appear directly in the source.
-    or exists(VariableDeclarationEntry vde |
-      vde.getType().refersTo(this)
-      and result = vde
-      and not exists(LocalScopeVariable sv | sv = vde.getDeclaration() and sv.getFunction().isConstructedFrom(_))
-      and not exists(MemberVariable mv | mv = vde.getDeclaration() and mv.getDeclaringType() instanceof ClassTemplateInstantiation)
+    exists(VariableDeclarationEntry vde |
+      vde.getType().refersTo(this) and
+      result = vde and
+      not exists(LocalScopeVariable sv |
+        sv = vde.getDeclaration() and sv.getFunction().isConstructedFrom(_)
+      ) and
+      not exists(MemberVariable mv |
+        mv = vde.getDeclaration() and mv.getDeclaringType() instanceof ClassTemplateInstantiation
+      )
     )
   }
 
   /**
    * Holds if this type involves a reference.
    */
-  predicate involvesReference() {
-    none()
-  }
+  predicate involvesReference() { none() }
 
   /**
    * Holds if this type involves a template parameter.
    */
-  predicate involvesTemplateParameter() {
-    none()
-  }
+  predicate involvesTemplateParameter() { none() }
 
   /**
    * Gets this type with any typedefs resolved. For example, given
@@ -284,17 +273,13 @@ class Type extends Locatable, @type {
    * Note that this will only work if the resolved type actually appears
    * on its own elsewhere in the program.
    */
-  Type resolveTypedefs() {
-    result = this
-  }
+  Type resolveTypedefs() { result = this }
 
   /**
    * Gets the type stripped of pointers, references and cv-qualifiers, and resolving typedefs.
    * For example, given `typedef const C&amp; T`, `stripType` returns `C`.
    */
-  Type stripType() {
-    result = this
-  }
+  Type stripType() { result = this }
 
   override Location getLocation() {
     suppressUnusedThis(this) and
@@ -308,7 +293,7 @@ class Type extends Locatable, @type {
 class BuiltInType extends Type, @builtintype {
   override string toString() { result = this.getName() }
 
-  override string getName() { builtintypes(underlyingElement(this),result,_,_,_,_) }
+  override string getName() { builtintypes(underlyingElement(this), result, _, _, _, _) }
 
   override string explain() { result = this.getName() }
 
@@ -319,8 +304,7 @@ class BuiltInType extends Type, @builtintype {
  * An erroneous type.
  */
 class ErroneousType extends BuiltInType {
-
-  ErroneousType() { builtintypes(underlyingElement(this),_,1,_,_,_) }
+  ErroneousType() { builtintypes(underlyingElement(this), _, 1, _, _, _) }
 
   override string getCanonicalQLClass() { result = "ErroneousType" }
 }
@@ -329,33 +313,39 @@ class ErroneousType extends BuiltInType {
  * The unknown type.
  */
 class UnknownType extends BuiltInType {
-
-  UnknownType() { builtintypes(underlyingElement(this),_,2,_,_,_) }
+  UnknownType() { builtintypes(underlyingElement(this), _, 2, _, _, _) }
 
   override string getCanonicalQLClass() { result = "UnknownType" }
 }
 
 private predicate isArithmeticType(@builtintype type, int kind) {
   builtintypes(type, _, kind, _, _, _) and
-  (kind >= 4) and
-  (kind != 34)  // Exclude decltype(nullptr)
+  kind >= 4 and
+  kind != 34 // Exclude decltype(nullptr)
 }
 
 /**
  * The C/C++ arithmetic types. See 4.1.1.
  */
 class ArithmeticType extends BuiltInType {
-  ArithmeticType() {
-    isArithmeticType(underlyingElement(this), _)
-  }
+  ArithmeticType() { isArithmeticType(underlyingElement(this), _) }
 
   override string getCanonicalQLClass() { result = "ArithmeticType" }
 }
 
 private predicate isIntegralType(@builtintype type, int kind) {
   isArithmeticType(type, kind) and
-  (kind < 24 or kind = 33 or (35 <= kind and kind <= 37) or
-    kind = 43 or kind = 44)
+  (
+    kind < 24
+    or
+    kind = 33
+    or
+    35 <= kind and kind <= 37
+    or
+    kind = 43
+    or
+    kind = 44
+  )
 }
 
 /**
@@ -390,28 +380,49 @@ class IntegralOrEnumType extends Type {
  * signed: The explicitly signed form of the type.
  */
 private predicate integralTypeMapping(int original, int canonical, int unsigned, int signed) {
-     original = 4 and canonical = 4 and unsigned = -1 and signed = -1 // bool
-  or original = 5 and canonical = 5 and unsigned = 6 and signed = 7 // char
-  or original = 6 and canonical = 6 and unsigned = 6 and signed = 7 // unsigned char
-  or original = 7 and canonical = 7 and unsigned = 6 and signed = 7 // signed char
-  or original = 8 and canonical = 8 and unsigned = 9 and signed = 10 // short
-  or original = 9 and canonical = 9 and unsigned = 9 and signed = 10 // unsigned short
-  or original = 10 and canonical = 8 and unsigned = 9 and signed = 10 // signed short
-  or original = 11 and canonical = 11 and unsigned = 12 and signed = 13 // int
-  or original = 12 and canonical = 12 and unsigned = 12 and signed = 13 // unsigned int
-  or original = 13 and canonical = 11 and unsigned = 12 and signed = 13 // signed int
-  or original = 14 and canonical = 14 and unsigned = 15 and signed = 16 // long
-  or original = 15 and canonical = 15 and unsigned = 15 and signed = 16 // unsigned long
-  or original = 16 and canonical = 14 and unsigned = 15 and signed = 16 // signed long
-  or original = 17 and canonical = 17 and unsigned = 18 and signed = 19 // long long
-  or original = 18 and canonical = 18 and unsigned = 18 and signed = 19 // unsigned long long
-  or original = 19 and canonical = 17 and unsigned = 18 and signed = 19 // signed long long
-  or original = 33 and canonical = 33 and unsigned = -1 and signed = -1 // wchar_t
-  or original = 35 and canonical = 35 and unsigned = 36 and signed = 37 // __int128
-  or original = 36 and canonical = 36 and unsigned = 36 and signed = 37 // unsigned __int128
-  or original = 37 and canonical = 35 and unsigned = 36 and signed = 37 // signed __int128
-  or original = 43 and canonical = 43 and unsigned = -1 and signed = -1 // char16_t
-  or original = 44 and canonical = 44 and unsigned = -1 and signed = -1 // char32_t
+  original = 4 and canonical = 4 and unsigned = -1 and signed = -1 // bool
+  or
+  original = 5 and canonical = 5 and unsigned = 6 and signed = 7 // char
+  or
+  original = 6 and canonical = 6 and unsigned = 6 and signed = 7 // unsigned char
+  or
+  original = 7 and canonical = 7 and unsigned = 6 and signed = 7 // signed char
+  or
+  original = 8 and canonical = 8 and unsigned = 9 and signed = 10 // short
+  or
+  original = 9 and canonical = 9 and unsigned = 9 and signed = 10 // unsigned short
+  or
+  original = 10 and canonical = 8 and unsigned = 9 and signed = 10 // signed short
+  or
+  original = 11 and canonical = 11 and unsigned = 12 and signed = 13 // int
+  or
+  original = 12 and canonical = 12 and unsigned = 12 and signed = 13 // unsigned int
+  or
+  original = 13 and canonical = 11 and unsigned = 12 and signed = 13 // signed int
+  or
+  original = 14 and canonical = 14 and unsigned = 15 and signed = 16 // long
+  or
+  original = 15 and canonical = 15 and unsigned = 15 and signed = 16 // unsigned long
+  or
+  original = 16 and canonical = 14 and unsigned = 15 and signed = 16 // signed long
+  or
+  original = 17 and canonical = 17 and unsigned = 18 and signed = 19 // long long
+  or
+  original = 18 and canonical = 18 and unsigned = 18 and signed = 19 // unsigned long long
+  or
+  original = 19 and canonical = 17 and unsigned = 18 and signed = 19 // signed long long
+  or
+  original = 33 and canonical = 33 and unsigned = -1 and signed = -1 // wchar_t
+  or
+  original = 35 and canonical = 35 and unsigned = 36 and signed = 37 // __int128
+  or
+  original = 36 and canonical = 36 and unsigned = 36 and signed = 37 // unsigned __int128
+  or
+  original = 37 and canonical = 35 and unsigned = 36 and signed = 37 // signed __int128
+  or
+  original = 43 and canonical = 43 and unsigned = -1 and signed = -1 // char16_t
+  or
+  original = 44 and canonical = 44 and unsigned = -1 and signed = -1 // char32_t
 }
 
 /**
@@ -420,39 +431,42 @@ private predicate integralTypeMapping(int original, int canonical, int unsigned,
 class IntegralType extends ArithmeticType, IntegralOrEnumType {
   int kind;
 
-  IntegralType() {
-    isIntegralType(underlyingElement(this), kind)
-  }
+  IntegralType() { isIntegralType(underlyingElement(this), kind) }
 
   /** Holds if this integral type is signed. */
-  predicate isSigned() {
-    builtintypes(underlyingElement(this),_,_,_,-1,_)
-  }
+  predicate isSigned() { builtintypes(underlyingElement(this), _, _, _, -1, _) }
 
   /** Holds if this integral type is unsigned. */
-  predicate isUnsigned() {
-    builtintypes(underlyingElement(this),_,_,_,1,_)
-  }
+  predicate isUnsigned() { builtintypes(underlyingElement(this), _, _, _, 1, _) }
 
   /** Holds if this integral type is explicitly signed. */
   predicate isExplicitlySigned() {
-    builtintypes(underlyingElement(this),_,7,_,_,_) or builtintypes(underlyingElement(this),_,10,_,_,_) or builtintypes(underlyingElement(this),_,13,_,_,_) or
-    builtintypes(underlyingElement(this),_,16,_,_,_) or builtintypes(underlyingElement(this),_,19,_,_,_) or
-    builtintypes(underlyingElement(this),_,37,_,_,_)
+    builtintypes(underlyingElement(this), _, 7, _, _, _) or
+    builtintypes(underlyingElement(this), _, 10, _, _, _) or
+    builtintypes(underlyingElement(this), _, 13, _, _, _) or
+    builtintypes(underlyingElement(this), _, 16, _, _, _) or
+    builtintypes(underlyingElement(this), _, 19, _, _, _) or
+    builtintypes(underlyingElement(this), _, 37, _, _, _)
   }
 
   /** Holds if this integral type is explicitly unsigned. */
   predicate isExplicitlyUnsigned() {
-    builtintypes(underlyingElement(this),_,6,_,_,_) or builtintypes(underlyingElement(this),_,9,_,_,_) or builtintypes(underlyingElement(this),_,12,_,_,_) or
-    builtintypes(underlyingElement(this),_,15,_,_,_) or builtintypes(underlyingElement(this),_,18,_,_,_) or
-    builtintypes(underlyingElement(this),_,36,_,_,_)
+    builtintypes(underlyingElement(this), _, 6, _, _, _) or
+    builtintypes(underlyingElement(this), _, 9, _, _, _) or
+    builtintypes(underlyingElement(this), _, 12, _, _, _) or
+    builtintypes(underlyingElement(this), _, 15, _, _, _) or
+    builtintypes(underlyingElement(this), _, 18, _, _, _) or
+    builtintypes(underlyingElement(this), _, 36, _, _, _)
   }
 
   /** Holds if this integral type is implicitly signed. */
   predicate isImplicitlySigned() {
-    builtintypes(underlyingElement(this),_,5,_,-1,_) or builtintypes(underlyingElement(this),_,8,_,-1,_) or builtintypes(underlyingElement(this),_,11,_,-1,_) or
-    builtintypes(underlyingElement(this),_,14,_,-1,_) or builtintypes(underlyingElement(this),_,17,_,-1,_) or
-    builtintypes(underlyingElement(this),_,35,_,-1,_)
+    builtintypes(underlyingElement(this), _, 5, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 8, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 11, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 14, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 17, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 35, _, -1, _)
   }
 
   /**
@@ -486,8 +500,7 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
  * The C/C++ boolean type. See 4.2.
  */
 class BoolType extends IntegralType {
-
-  BoolType() { builtintypes(underlyingElement(this),_,4,_,_,_) }
+  BoolType() { builtintypes(underlyingElement(this), _, 4, _, _, _) }
 
   override string getCanonicalQLClass() { result = "BoolType" }
 }
@@ -501,9 +514,7 @@ abstract class CharType extends IntegralType { }
  * The C/C++ char type (which is different to signed char and unsigned char).
  */
 class PlainCharType extends CharType {
-  PlainCharType() {
-    builtintypes(underlyingElement(this),_,5,_,_,_)
-  }
+  PlainCharType() { builtintypes(underlyingElement(this), _, 5, _, _, _) }
 
   override string getCanonicalQLClass() { result = "PlainCharType" }
 }
@@ -512,9 +523,7 @@ class PlainCharType extends CharType {
  * The C/C++ unsigned char type (which is different to plain char, even when chars are unsigned by default).
  */
 class UnsignedCharType extends CharType {
-  UnsignedCharType() {
-    builtintypes(underlyingElement(this),_,6,_,_,_)
-  }
+  UnsignedCharType() { builtintypes(underlyingElement(this), _, 6, _, _, _) }
 
   override string getCanonicalQLClass() { result = "UnsignedCharType" }
 }
@@ -523,9 +532,7 @@ class UnsignedCharType extends CharType {
  * The C/C++ signed char type (which is different to plain char, even when chars are signed by default).
  */
 class SignedCharType extends CharType {
-  SignedCharType() {
-    builtintypes(underlyingElement(this),_,7,_,_,_)
-  }
+  SignedCharType() { builtintypes(underlyingElement(this), _, 7, _, _, _) }
 
   override string getCanonicalQLClass() { result = "SignedCharType" }
 }
@@ -534,9 +541,10 @@ class SignedCharType extends CharType {
  * The C/C++ short types. See 4.3.
  */
 class ShortType extends IntegralType {
-
   ShortType() {
-    builtintypes(underlyingElement(this),_,8,_,_,_) or builtintypes(underlyingElement(this),_,9,_,_,_) or builtintypes(underlyingElement(this),_,10,_,_,_)
+    builtintypes(underlyingElement(this), _, 8, _, _, _) or
+    builtintypes(underlyingElement(this), _, 9, _, _, _) or
+    builtintypes(underlyingElement(this), _, 10, _, _, _)
   }
 
   override string getCanonicalQLClass() { result = "ShortType" }
@@ -546,9 +554,10 @@ class ShortType extends IntegralType {
  * The C/C++ integer types. See 4.4.
  */
 class IntType extends IntegralType {
-
   IntType() {
-    builtintypes(underlyingElement(this),_,11,_,_,_) or builtintypes(underlyingElement(this),_,12,_,_,_) or builtintypes(underlyingElement(this),_,13,_,_,_)
+    builtintypes(underlyingElement(this), _, 11, _, _, _) or
+    builtintypes(underlyingElement(this), _, 12, _, _, _) or
+    builtintypes(underlyingElement(this), _, 13, _, _, _)
   }
 
   override string getCanonicalQLClass() { result = "IntType" }
@@ -558,9 +567,10 @@ class IntType extends IntegralType {
  * The C/C++ long types. See 4.4.
  */
 class LongType extends IntegralType {
-
   LongType() {
-    builtintypes(underlyingElement(this),_,14,_,_,_) or builtintypes(underlyingElement(this),_,15,_,_,_) or builtintypes(underlyingElement(this),_,16,_,_,_)
+    builtintypes(underlyingElement(this), _, 14, _, _, _) or
+    builtintypes(underlyingElement(this), _, 15, _, _, _) or
+    builtintypes(underlyingElement(this), _, 16, _, _, _)
   }
 
   override string getCanonicalQLClass() { result = "LongType" }
@@ -570,9 +580,10 @@ class LongType extends IntegralType {
  * The C/C++ long long types. See 4.4.
  */
 class LongLongType extends IntegralType {
-
   LongLongType() {
-    builtintypes(underlyingElement(this),_,17,_,_,_) or builtintypes(underlyingElement(this),_,18,_,_,_) or builtintypes(underlyingElement(this),_,19,_,_,_)
+    builtintypes(underlyingElement(this), _, 17, _, _, _) or
+    builtintypes(underlyingElement(this), _, 18, _, _, _) or
+    builtintypes(underlyingElement(this), _, 19, _, _, _)
   }
 
   override string getCanonicalQLClass() { result = "LongLongType" }
@@ -582,30 +593,34 @@ class LongLongType extends IntegralType {
  * The GNU C __int128 types.
  */
 class Int128Type extends IntegralType {
-
   Int128Type() {
-    builtintypes(underlyingElement(this),_,35,_,_,_) or builtintypes(underlyingElement(this),_,36,_,_,_) or builtintypes(underlyingElement(this),_,37,_,_,_)
+    builtintypes(underlyingElement(this), _, 35, _, _, _) or
+    builtintypes(underlyingElement(this), _, 36, _, _, _) or
+    builtintypes(underlyingElement(this), _, 37, _, _, _)
   }
-
 }
 
 /**
  * The C/C++ floating point types. See 4.5.
  */
 class FloatingPointType extends ArithmeticType {
-
   FloatingPointType() {
-    exists(int kind | builtintypes(underlyingElement(this),_,kind,_,_,_) and ((kind >= 24 and kind <= 32) or (kind = 38)))
+    exists(int kind |
+      builtintypes(underlyingElement(this), _, kind, _, _, _) and
+      (
+        kind >= 24 and kind <= 32
+        or
+        kind = 38
+      )
+    )
   }
-
 }
 
 /**
  * The C/C++ float type.
  */
 class FloatType extends FloatingPointType {
-
-  FloatType() { builtintypes(underlyingElement(this),_,24,_,_,_) }
+  FloatType() { builtintypes(underlyingElement(this), _, 24, _, _, _) }
 
   override string getCanonicalQLClass() { result = "FloatType" }
 }
@@ -614,8 +629,7 @@ class FloatType extends FloatingPointType {
  * The C/C++ double type.
  */
 class DoubleType extends FloatingPointType {
-
-  DoubleType() { builtintypes(underlyingElement(this),_,25,_,_,_) }
+  DoubleType() { builtintypes(underlyingElement(this), _, 25, _, _, _) }
 
   override string getCanonicalQLClass() { result = "DoubleType" }
 }
@@ -624,8 +638,7 @@ class DoubleType extends FloatingPointType {
  * The C/C++ long double type.
  */
 class LongDoubleType extends FloatingPointType {
-
-  LongDoubleType() { builtintypes(underlyingElement(this),_,26,_,_,_) }
+  LongDoubleType() { builtintypes(underlyingElement(this), _, 26, _, _, _) }
 
   override string getCanonicalQLClass() { result = "LongDoubleType" }
 }
@@ -634,58 +647,48 @@ class LongDoubleType extends FloatingPointType {
  * The GNU C __float128 type.
  */
 class Float128Type extends FloatingPointType {
-
-  Float128Type() { builtintypes(underlyingElement(this),_,38,_,_,_) }
-
+  Float128Type() { builtintypes(underlyingElement(this), _, 38, _, _, _) }
 }
 
 /**
  * The GNU C _Decimal32 type.
  */
 class Decimal32Type extends FloatingPointType {
-
-  Decimal32Type() { builtintypes(underlyingElement(this),_,40,_,_,_) }
-
+  Decimal32Type() { builtintypes(underlyingElement(this), _, 40, _, _, _) }
 }
 
 /**
  * The GNU C _Decimal64 type.
  */
 class Decimal64Type extends FloatingPointType {
-
-  Decimal64Type() { builtintypes(underlyingElement(this),_,41,_,_,_) }
-
+  Decimal64Type() { builtintypes(underlyingElement(this), _, 41, _, _, _) }
 }
 
 /**
  * The GNU C _Decimal128 type.
  */
 class Decimal128Type extends FloatingPointType {
-
-  Decimal128Type() { builtintypes(underlyingElement(this),_,42,_,_,_) }
-
+  Decimal128Type() { builtintypes(underlyingElement(this), _, 42, _, _, _) }
 }
 
 /**
  * The C/C++ void type. See 4.7.
  */
 class VoidType extends BuiltInType {
-
-  VoidType() { builtintypes(underlyingElement(this),_,3,_,_,_) }
+  VoidType() { builtintypes(underlyingElement(this), _, 3, _, _, _) }
 
   override string getCanonicalQLClass() { result = "VoidType" }
 }
 
 /**
  * The C/C++ wide character type.
- * 
+ *
  * Note that on some platforms `wchar_t` doesn't exist as a built-in
  * type but a typedef is provided.  Consider using the `Wchar_t` QL
  * class to include these types.
  */
 class WideCharType extends IntegralType {
-
-  WideCharType() { builtintypes(underlyingElement(this),_,33,_,_,_) }
+  WideCharType() { builtintypes(underlyingElement(this), _, 33, _, _, _) }
 
   override string getCanonicalQLClass() { result = "WideCharType" }
 }
@@ -694,8 +697,7 @@ class WideCharType extends IntegralType {
  * The C/C++ `char16_t` type.
  */
 class Char16Type extends IntegralType {
-
-  Char16Type() { builtintypes(underlyingElement(this),_,43,_,_,_) }
+  Char16Type() { builtintypes(underlyingElement(this), _, 43, _, _, _) }
 
   override string getCanonicalQLClass() { result = "Char16Type" }
 }
@@ -704,8 +706,7 @@ class Char16Type extends IntegralType {
  * The C/C++ `char32_t` type.
  */
 class Char32Type extends IntegralType {
-
-  Char32Type() { builtintypes(underlyingElement(this),_,44,_,_,_) }
+  Char32Type() { builtintypes(underlyingElement(this), _, 44, _, _, _) }
 
   override string getCanonicalQLClass() { result = "Char32Type" }
 }
@@ -720,7 +721,7 @@ class Char32Type extends IntegralType {
  * Instead, this is the unspeakable type given by `decltype(nullptr)`.
  */
 class NullPointerType extends BuiltInType {
-  NullPointerType() { builtintypes(underlyingElement(this),_,34,_,_,_) }
+  NullPointerType() { builtintypes(underlyingElement(this), _, 34, _, _, _) }
 
   override string getCanonicalQLClass() { result = "NullPointerType" }
 }
@@ -734,7 +735,7 @@ class NullPointerType extends BuiltInType {
 class DerivedType extends Type, @derivedtype {
   override string toString() { result = this.getName() }
 
-  override string getName() { derivedtypes(underlyingElement(this),result,_,_) }
+  override string getName() { derivedtypes(underlyingElement(this), result, _, _) }
 
   /**
    * Gets the base type of this derived type.
@@ -742,21 +743,15 @@ class DerivedType extends Type, @derivedtype {
    * This predicate strips off one level of decoration from a type. For example, it returns `char*` for the PointerType `char**`,
    * `const int` for the ReferenceType `const int&amp;`, and `long` for the SpecifiedType `volatile long`.
    */
-  Type getBaseType() { derivedtypes(underlyingElement(this),_,_,unresolveElement(result)) }
+  Type getBaseType() { derivedtypes(underlyingElement(this), _, _, unresolveElement(result)) }
 
   override predicate refersToDirectly(Type t) { t = this.getBaseType() }
 
-  override predicate involvesReference() {
-    getBaseType().involvesReference()
-  }
+  override predicate involvesReference() { getBaseType().involvesReference() }
 
-  override predicate involvesTemplateParameter() {
-    getBaseType().involvesTemplateParameter()
-  }
+  override predicate involvesTemplateParameter() { getBaseType().involvesTemplateParameter() }
 
-  override Type stripType() {
-    result = getBaseType().stripType()
-  }
+  override Type stripType() { result = getBaseType().stripType() }
 
   predicate isAutoReleasing() {
     this.hasSpecifier("__autoreleasing") or
@@ -783,20 +778,15 @@ class DerivedType extends Type, @derivedtype {
  * An instance of the C++11 decltype operator.
  */
 class Decltype extends Type, @decltype {
-
   /**
    * The expression whose type is being obtained by this decltype.
    */
-  Expr getExpr() {
-    decltypes(underlyingElement(this), unresolveElement(result), _, _)
-  }
+  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _) }
 
   /**
    * The type immediately yielded by this decltype.
    */
-  Type getBaseType() {
-    decltypes(underlyingElement(this), _, unresolveElement(result), _)
-  }
+  Type getBaseType() { decltypes(underlyingElement(this), _, unresolveElement(result), _) }
 
   override string getCanonicalQLClass() { result = "Decltype" }
 
@@ -810,69 +800,39 @@ class Decltype extends Type, @decltype {
    *   decltype((a->x)); // type is const double&amp;
    * Consult the C++11 standard for more details.
    */
-  predicate parenthesesWouldChangeMeaning() {
-    decltypes(underlyingElement(this), _, _, true)
-  }
+  predicate parenthesesWouldChangeMeaning() { decltypes(underlyingElement(this), _, _, true) }
 
-  override Type getUnderlyingType() {
-    result = getBaseType().getUnderlyingType()
-  }
+  override Type getUnderlyingType() { result = getBaseType().getUnderlyingType() }
 
-  override Type stripTopLevelSpecifiers() {
-    result = getBaseType().stripTopLevelSpecifiers()
-  }
+  override Type stripTopLevelSpecifiers() { result = getBaseType().stripTopLevelSpecifiers() }
 
-  override Type stripType() {
-    result = getBaseType().stripType()
-  }
+  override Type stripType() { result = getBaseType().stripType() }
 
-  override Type resolveTypedefs() {
-    result = getBaseType().resolveTypedefs()
-  }
+  override Type resolveTypedefs() { result = getBaseType().resolveTypedefs() }
 
-  override Location getLocation() {
-    result = getExpr().getLocation()
-  }
+  override Location getLocation() { result = getExpr().getLocation() }
 
-  override string toString() {
-    result = "decltype(...)"
-  }
+  override string toString() { result = "decltype(...)" }
 
-  override string getName() {
-    none()
-  }
+  override string getName() { none() }
 
-  override int getSize() {
-    result = getBaseType().getSize()
-  }
+  override int getSize() { result = getBaseType().getSize() }
 
-  override int getAlignment() {
-    result = getBaseType().getAlignment()
-  }
+  override int getAlignment() { result = getBaseType().getAlignment() }
 
-  override int getPointerIndirectionLevel() {
-    result = getBaseType().getPointerIndirectionLevel()
-  }
+  override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
 
   override string explain() {
     result = "decltype resulting in {" + this.getBaseType().explain() + "}"
   }
 
-  override predicate involvesReference() {
-    getBaseType().involvesReference()
-  }
+  override predicate involvesReference() { getBaseType().involvesReference() }
 
-  override predicate involvesTemplateParameter() {
-    getBaseType().involvesTemplateParameter()
-  }
+  override predicate involvesTemplateParameter() { getBaseType().involvesTemplateParameter() }
 
-  override predicate isDeeplyConst() {
-    this.getBaseType().isDeeplyConst()
-  }
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
 
-  override predicate isDeeplyConstBelow() {
-    this.getBaseType().isDeeplyConstBelow()
-  }
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
 
   override Specifier internal_getAnAdditionalSpecifier() {
     result = this.getBaseType().getASpecifier()
@@ -883,8 +843,7 @@ class Decltype extends Type, @decltype {
  * A C/C++ pointer type. See 4.9.1.
  */
 class PointerType extends DerivedType {
-
-  PointerType() { derivedtypes(underlyingElement(this),_,1,_) }
+  PointerType() { derivedtypes(underlyingElement(this), _, 1, _) }
 
   override string getCanonicalQLClass() { result = "PointerType" }
 
@@ -908,14 +867,13 @@ class PointerType extends DerivedType {
  * To distinguish between them, use the LValueReferenceType and RValueReferenceType classes.
  */
 class ReferenceType extends DerivedType {
-
-  ReferenceType() { derivedtypes(underlyingElement(this),_,2,_) or derivedtypes(underlyingElement(this),_,8,_) }
+  ReferenceType() {
+    derivedtypes(underlyingElement(this), _, 2, _) or derivedtypes(underlyingElement(this), _, 8, _)
+  }
 
   override string getCanonicalQLClass() { result = "ReferenceType" }
 
-  override int getPointerIndirectionLevel() {
-    result = getBaseType().getPointerIndirectionLevel()
-  }
+  override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
 
   override string explain() { result = "reference to {" + this.getBaseType().explain() + "}" }
 
@@ -923,9 +881,7 @@ class ReferenceType extends DerivedType {
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
 
-  override predicate involvesReference() {
-    any()
-  }
+  override predicate involvesReference() { any() }
 
   override Type resolveTypedefs() {
     result.(ReferenceType).getBaseType() = getBaseType().resolveTypedefs()
@@ -936,7 +892,7 @@ class ReferenceType extends DerivedType {
  * A C++11 lvalue reference type (e.g. int&amp;).
  */
 class LValueReferenceType extends ReferenceType {
-  LValueReferenceType() { derivedtypes(underlyingElement(this),_,2,_) }
+  LValueReferenceType() { derivedtypes(underlyingElement(this), _, 2, _) }
 
   override string getCanonicalQLClass() { result = "LValueReferenceType" }
 }
@@ -945,7 +901,7 @@ class LValueReferenceType extends ReferenceType {
  * A C++11 rvalue reference type (e.g. int&amp;&amp;).
  */
 class RValueReferenceType extends ReferenceType {
-  RValueReferenceType() { derivedtypes(underlyingElement(this),_,8,_) }
+  RValueReferenceType() { derivedtypes(underlyingElement(this), _, 8, _) }
 
   override string getCanonicalQLClass() { result = "RValueReferenceType" }
 
@@ -956,8 +912,7 @@ class RValueReferenceType extends ReferenceType {
  * A type with specifiers.
  */
 class SpecifiedType extends DerivedType {
-
-  SpecifiedType() { derivedtypes(underlyingElement(this),_,3,_) }
+  SpecifiedType() { derivedtypes(underlyingElement(this), _, 3, _) }
 
   override string getCanonicalQLClass() { result = "SpecifiedType" }
 
@@ -969,16 +924,20 @@ class SpecifiedType extends DerivedType {
     result = this.getBaseType().getPointerIndirectionLevel()
   }
 
-  /** all the specifiers of this type as a string in a fixed order (the order
-      only depends on the specifiers, not on the source program). This is intended
-      for debugging queries only and is an expensive operation. */
-  string getSpecifierString() {
-    internalSpecString(this, result, 1)
+  /**
+   * Gets all the specifiers of this type as a string in a fixed order (the order
+   * only depends on the specifiers, not on the source program). This is intended
+   * for debugging queries only and is an expensive operation.
+   */
+  string getSpecifierString() { internalSpecString(this, result, 1) }
+
+  override string explain() {
+    result = this.getSpecifierString() + "{" + this.getBaseType().explain() + "}"
   }
 
-  override string explain() { result = this.getSpecifierString() + "{" + this.getBaseType().explain() + "}" }
-
-  override predicate isDeeplyConst() { this.getASpecifier().getName() = "const" and this.getBaseType().isDeeplyConstBelow() }
+  override predicate isDeeplyConst() {
+    this.getASpecifier().getName() = "const" and this.getBaseType().isDeeplyConstBelow()
+  }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
 
@@ -987,37 +946,34 @@ class SpecifiedType extends DerivedType {
   }
 
   override Type resolveTypedefs() {
-    result.(SpecifiedType).getBaseType() = getBaseType().resolveTypedefs()
-    and result.getASpecifier() = getASpecifier()
+    result.(SpecifiedType).getBaseType() = getBaseType().resolveTypedefs() and
+    result.getASpecifier() = getASpecifier()
   }
 
-  override Type stripTopLevelSpecifiers() {
-    result = getBaseType().stripTopLevelSpecifiers()
-  }
+  override Type stripTopLevelSpecifiers() { result = getBaseType().stripTopLevelSpecifiers() }
 }
 
 /**
  * A C/C++ array type. See 4.9.1.
  */
 class ArrayType extends DerivedType {
-
-  ArrayType() { derivedtypes(underlyingElement(this),_,4,_) }
+  ArrayType() { derivedtypes(underlyingElement(this), _, 4, _) }
 
   override string getCanonicalQLClass() { result = "ArrayType" }
-  
-  predicate hasArraySize() { arraysizes(underlyingElement(this),_,_,_) }
+
+  predicate hasArraySize() { arraysizes(underlyingElement(this), _, _, _) }
 
   /**
    * Gets the number of elements in this array. Only has a result for arrays declared to be of a
    * constant size. See `getByteSize` for getting the number of bytes.
    */
-  int getArraySize() { arraysizes(underlyingElement(this),result,_,_) }
+  int getArraySize() { arraysizes(underlyingElement(this), result, _, _) }
 
   /**
    * Gets the byte size of this array. Only has a result for arrays declared to be of a constant
    * size. See `getArraySize` for getting the number of elements.
    */
-  int getByteSize() { arraysizes(underlyingElement(this),_,result,_) }
+  int getByteSize() { arraysizes(underlyingElement(this), _, result, _) }
 
   override int getAlignment() { arraysizes(underlyingElement(this), _, _, result) }
 
@@ -1026,15 +982,14 @@ class ArrayType extends DerivedType {
    * size. This predicate is a synonym for `getByteSize`. See `getArraySize` for getting the number
    * of elements.
    */
-  override int getSize() {
-    result = this.getByteSize()
-  }
+  override int getSize() { result = this.getByteSize() }
 
   override string explain() {
-    if exists(this.getArraySize()) then
-      result = "array of " + this.getArraySize().toString() + " {" + this.getBaseType().explain() + "}"
-    else
-      result = "array of {" + this.getBaseType().explain() + "}"
+    if exists(this.getArraySize())
+    then
+      result = "array of " + this.getArraySize().toString() + " {" + this.getBaseType().explain() +
+          "}"
+    else result = "array of {" + this.getBaseType().explain() + "}"
   }
 
   override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() } // No such thing as a const array type
@@ -1052,8 +1007,7 @@ class ArrayType extends DerivedType {
  * an element type rather than a byte size).
  */
 class GNUVectorType extends DerivedType {
-
-  GNUVectorType() { derivedtypes(underlyingElement(this),_,5,_) }
+  GNUVectorType() { derivedtypes(underlyingElement(this), _, 5, _) }
 
   /**
    * Get the number of elements in this vector type.
@@ -1064,7 +1018,7 @@ class GNUVectorType extends DerivedType {
    * the number of elements is the value in the attribute divided by the size
    * of a single element.
    */
-  int getNumElements() { arraysizes(underlyingElement(this),result,_,_) }
+  int getNumElements() { arraysizes(underlyingElement(this), result, _, _) }
 
   override string getCanonicalQLClass() { result = "GNUVectorType" }
 
@@ -1077,48 +1031,45 @@ class GNUVectorType extends DerivedType {
    * attribute, the byte size is the value in the attribute multiplied by the
    * byte size of a single element.
    */
-  override int getSize() { arraysizes(underlyingElement(this),_,result,_) }
+  override int getSize() { arraysizes(underlyingElement(this), _, result, _) }
 
   override int getAlignment() { arraysizes(underlyingElement(this), _, _, result) }
 
-  override string explain() { result = "GNU " + getNumElements() + " element vector of {" + this.getBaseType().explain() + "}" }
+  override string explain() {
+    result = "GNU " + getNumElements() + " element vector of {" + this.getBaseType().explain() + "}"
+  }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
-
 }
 
 /**
  * A C/C++ pointer to function. See 7.7.
  */
 class FunctionPointerType extends FunctionPointerIshType {
-  FunctionPointerType() {
-    derivedtypes(underlyingElement(this),_,6,_)
-  }
+  FunctionPointerType() { derivedtypes(underlyingElement(this), _, 6, _) }
 
   override string getCanonicalQLClass() { result = "FunctionPointerType" }
 
-  override int getPointerIndirectionLevel() {
-    result = 1
-  }
+  override int getPointerIndirectionLevel() { result = 1 }
 
-  override string explain() { result = "pointer to {" + this.getBaseType().(RoutineType).explain() + "}" }
+  override string explain() {
+    result = "pointer to {" + this.getBaseType().(RoutineType).explain() + "}"
+  }
 }
 
 /**
  * A C/C++ reference to function.
  */
 class FunctionReferenceType extends FunctionPointerIshType {
-  FunctionReferenceType() {
-    derivedtypes(underlyingElement(this),_,7,_)
-  }
+  FunctionReferenceType() { derivedtypes(underlyingElement(this), _, 7, _) }
 
   override string getCanonicalQLClass() { result = "FunctionReferenceType" }
-  
-  override int getPointerIndirectionLevel() {
-    result = getBaseType().getPointerIndirectionLevel()
-  }
 
-  override string explain() { result = "reference to {" + this.getBaseType().(RoutineType).explain() + "}" }
+  override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
+
+  override string explain() {
+    result = "reference to {" + this.getBaseType().(RoutineType).explain() + "}"
+  }
 }
 
 /**
@@ -1128,15 +1079,13 @@ class FunctionReferenceType extends FunctionPointerIshType {
  * supported by Clang, and by Apple's branch of GCC.
  */
 class BlockType extends FunctionPointerIshType {
-  BlockType() {
-    derivedtypes(underlyingElement(this),_,10,_)
-  }
+  BlockType() { derivedtypes(underlyingElement(this), _, 10, _) }
 
-  override int getPointerIndirectionLevel() {
-    result = 0
-  }
+  override int getPointerIndirectionLevel() { result = 0 }
 
-  override string explain() { result = "block of {" + this.getBaseType().(RoutineType).explain() + "}" }
+  override string explain() {
+    result = "block of {" + this.getBaseType().(RoutineType).explain() + "}"
+  }
 }
 
 /**
@@ -1144,34 +1093,41 @@ class BlockType extends FunctionPointerIshType {
  */
 class FunctionPointerIshType extends DerivedType {
   FunctionPointerIshType() {
-    derivedtypes(underlyingElement(this),_,6, _) or
-    derivedtypes(underlyingElement(this),_,7, _) or
-    derivedtypes(underlyingElement(this),_,10,_)
+    derivedtypes(underlyingElement(this), _, 6, _) or
+    derivedtypes(underlyingElement(this), _, 7, _) or
+    derivedtypes(underlyingElement(this), _, 10, _)
   }
 
   /** the return type of this function pointer type */
   Type getReturnType() {
-    exists(RoutineType t | derivedtypes(underlyingElement(this),_,_,unresolveElement(t)) and result = t.getReturnType())
+    exists(RoutineType t |
+      derivedtypes(underlyingElement(this), _, _, unresolveElement(t)) and
+      result = t.getReturnType()
+    )
   }
 
   /** the type of the ith argument of this function pointer type */
   Type getParameterType(int i) {
-    exists(RoutineType t | derivedtypes(underlyingElement(this),_,_,unresolveElement(t)) and result = t.getParameterType(i))
+    exists(RoutineType t |
+      derivedtypes(underlyingElement(this), _, _, unresolveElement(t)) and
+      result = t.getParameterType(i)
+    )
   }
 
   /** the type of an argument of this function pointer type */
   Type getAParameterType() {
-    exists(RoutineType t | derivedtypes(underlyingElement(this),_,_,unresolveElement(t)) and result = t.getAParameterType())
+    exists(RoutineType t |
+      derivedtypes(underlyingElement(this), _, _, unresolveElement(t)) and
+      result = t.getAParameterType()
+    )
   }
 
   /** the number of arguments of this function pointer type */
-  int getNumberOfParameters() {
-    result = count(int i | exists(this.getParameterType(i)))
-  }
+  int getNumberOfParameters() { result = count(int i | exists(this.getParameterType(i))) }
 
   override predicate involvesTemplateParameter() {
-    getReturnType().involvesTemplateParameter()
-    or getAParameterType().involvesTemplateParameter()
+    getReturnType().involvesTemplateParameter() or
+    getAParameterType().involvesTemplateParameter()
   }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
@@ -1185,15 +1141,15 @@ class PointerToMemberType extends Type, @ptrtomember {
   override string toString() { result = this.getName() }
 
   override string getCanonicalQLClass() { result = "PointerToMemberType" }
-  
+
   /** the name of this type */
   override string getName() { result = "..:: *" }
 
   /** the base type of this pointer to member type */
-  Type getBaseType() { ptrtomembers(underlyingElement(this),unresolveElement(result),_) }
+  Type getBaseType() { ptrtomembers(underlyingElement(this), unresolveElement(result), _) }
 
   /** the class referred by this pointer to member type */
-  Type getClass() { ptrtomembers(underlyingElement(this),_,unresolveElement(result)) }
+  Type getClass() { ptrtomembers(underlyingElement(this), _, unresolveElement(result)) }
 
   override predicate refersToDirectly(Type t) {
     t = this.getBaseType() or
@@ -1204,11 +1160,12 @@ class PointerToMemberType extends Type, @ptrtomember {
     result = 1 + this.getBaseType().getPointerIndirectionLevel()
   }
 
-  override string explain() { result = "pointer to member of " + this.getClass().toString() + " with type {" + this.getBaseType().explain() + "}" }
-
-  override predicate involvesTemplateParameter() {
-    getBaseType().involvesTemplateParameter()
+  override string explain() {
+    result = "pointer to member of " + this.getClass().toString() + " with type {" +
+        this.getBaseType().explain() + "}"
   }
+
+  override predicate involvesTemplateParameter() { getBaseType().involvesTemplateParameter() }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
 }
@@ -1224,15 +1181,17 @@ class RoutineType extends Type, @routinetype {
 
   override string getName() { result = "..()(..)" }
 
-  Type getParameterType(int n) { routinetypeargs(underlyingElement(this),n,unresolveElement(result)) }
+  Type getParameterType(int n) {
+    routinetypeargs(underlyingElement(this), n, unresolveElement(result))
+  }
 
-  Type getAParameterType() { routinetypeargs(underlyingElement(this),_,unresolveElement(result)) }
+  Type getAParameterType() { routinetypeargs(underlyingElement(this), _, unresolveElement(result)) }
 
   Type getReturnType() { routinetypes(underlyingElement(this), unresolveElement(result)) }
 
   override string explain() {
-      result = "function returning {" + this.getReturnType().explain() +
-          "} with arguments (" + this.explainParameters(0) + ")"
+    result = "function returning {" + this.getReturnType().explain() + "} with arguments (" +
+        this.explainParameters(0) + ")"
   }
 
   /**
@@ -1242,13 +1201,14 @@ class RoutineType extends Type, @routinetype {
    * The integer argument is the index of the first parameter to explain.
    */
   private string explainParameters(int i) {
-    (i = 0 and result = "" and not exists(this.getAParameterType()))
+    i = 0 and result = "" and not exists(this.getAParameterType())
     or
     (
       exists(this.getParameterType(i)) and
-      if i < max(int j | exists(this.getParameterType(j))) then
+      if i < max(int j | exists(this.getParameterType(j)))
+      then
         // Not the last one
-        result = this.getParameterType(i).explain() + "," + this.explainParameters(i+1)
+        result = this.getParameterType(i).explain() + "," + this.explainParameters(i + 1)
       else
         // Last parameter
         result = this.getParameterType(i).explain()
@@ -1265,42 +1225,37 @@ class RoutineType extends Type, @routinetype {
   override predicate isDeeplyConstBelow() { none() } // Current limitation: no such thing as a const routine type
 
   override predicate involvesTemplateParameter() {
-    getReturnType().involvesTemplateParameter()
-    or getAParameterType().involvesTemplateParameter()
+    getReturnType().involvesTemplateParameter() or
+    getAParameterType().involvesTemplateParameter()
   }
 }
 
 /**
  * A C++ typename template parameter.
  */
-class TemplateParameter extends UserType
-{
-  TemplateParameter() { usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8) }
+class TemplateParameter extends UserType {
+  TemplateParameter() {
+    usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8)
+  }
 
   override string getCanonicalQLClass() { result = "TemplateParameter" }
 
-  override predicate involvesTemplateParameter() {
-    any()
-  }
+  override predicate involvesTemplateParameter() { any() }
 }
 
 /** A C++ template template parameter, e.g. template &lt;template &lt;typename,typename> class T>. */
-class TemplateTemplateParameter extends TemplateParameter
-{
-  TemplateTemplateParameter() {
-    usertypes(underlyingElement(this), _, 8)
-  }
-  
+class TemplateTemplateParameter extends TemplateParameter {
+  TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
+
   override string getCanonicalQLClass() { result = "TemplateTemplateParameter" }
 }
 
 /**
  * A type representing the use of the C++11 auto keyword.
  */
-class AutoType extends TemplateParameter
-{
+class AutoType extends TemplateParameter {
   AutoType() { usertypes(underlyingElement(this), "auto", 7) }
-  
+
   override string getCanonicalQLClass() { result = "AutoType" }
 
   override Location getLocation() {
@@ -1312,32 +1267,37 @@ class AutoType extends TemplateParameter
 //
 // Internal implementation predicates
 //
-
-private predicate allSpecifiers(int i, string s) {
-  s = rank[i](string t | specifiers(_, t) | t)
-}
+private predicate allSpecifiers(int i, string s) { s = rank[i](string t | specifiers(_, t) | t) }
 
 private predicate internalSpecString(Type t, string res, int i) {
-     (if allSpecifiers(i, t.getASpecifier().getName())
-      then exists(string spec, string rest
-                | allSpecifiers(i, spec) and res = spec + " " + rest
-              and internalSpecString(t, rest, i+1))
-      else (allSpecifiers(i, _) and internalSpecString(t, res, i+1)))
-  or (i = count(Specifier s) + 1 and res = "")
+  (
+    if allSpecifiers(i, t.getASpecifier().getName())
+    then
+      exists(string spec, string rest |
+        allSpecifiers(i, spec) and
+        res = spec + " " + rest and
+        internalSpecString(t, rest, i + 1)
+      )
+    else (
+      allSpecifiers(i, _) and internalSpecString(t, res, i + 1)
+    )
+  )
+  or
+  i = count(Specifier s) + 1 and res = ""
 }
 
 private predicate suppressUnusedThis(Type t) { any() }
 
 /** A source code location referring to a type */
 class TypeMention extends Locatable, @type_mention {
-  override string toString() {result = "type mention"}
-  
+  override string toString() { result = "type mention" }
+
   override string getCanonicalQLClass() { result = "TypeMention" }
-  
+
   /**
    * Gets the type being referenced by this type mention.
    */
   Type getMentionedType() { type_mentions(underlyingElement(this), unresolveElement(result), _, _) }
-  
-  override Location getLocation() { type_mentions(underlyingElement(this), _, result, _)}
+
+  override Location getLocation() { type_mentions(underlyingElement(this), _, result, _) }
 }

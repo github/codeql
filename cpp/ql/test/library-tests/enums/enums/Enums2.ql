@@ -2,6 +2,7 @@
  * @name Enums2
  * @kind table
  */
+
 import cpp
 
 from EnumConstantAccess a, string name

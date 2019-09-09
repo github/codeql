@@ -9,11 +9,16 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
-// see MISRA Rule 5-14-1
+/*
+ * See MISRA Rule 5-14-1
+ */
 
 from BinaryLogicalOperation blo
-where blo.fromSource() and
-      not blo.getRightOperand().isPure()
-select blo, "AV Rule 157: The right hand operand of a && or || operator shall not contain side effects."
+where
+  blo.fromSource() and
+  not blo.getRightOperand().isPure()
+select blo,
+  "AV Rule 157: The right hand operand of a && or || operator shall not contain side effects."

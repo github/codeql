@@ -12,6 +12,7 @@
 import cpp
 
 from PreprocessorDirective i
-where (i instanceof PreprocessorIf or i instanceof PreprocessorIfdef or i instanceof PreprocessorIfndef)
-      and not i.getFile() instanceof HeaderFile
+where
+  (i instanceof PreprocessorIf or i instanceof PreprocessorIfdef or i instanceof PreprocessorIfndef) and
+  not i.getFile() instanceof HeaderFile
 select i, "Use of conditional compilation must be kept to a minimum."
