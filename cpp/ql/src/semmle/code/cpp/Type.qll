@@ -1171,8 +1171,6 @@ class ArrayType extends DerivedType {
  * ```
  * typedef int v4si __attribute__ (( vector_size(4*sizeof(int)) ));
  * v4si v = { 1, 2, 3, 4 };
- * typedef float float4 __attribute__((ext_vector_type(4)));
- * float4 vf = (float4){1.0f, 2.0f, 3.0f, 4.0f};
  * ```
  */
 class GNUVectorType extends DerivedType {
