@@ -19,6 +19,12 @@ private newtype TNode =
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
   TPreConstructorInitThis(ConstructorFieldInit cfi) or
   TPostConstructorInitThis(ConstructorFieldInit cfi) or
+  TThisArgumentPostUpdate(ThisExpr ta) {
+    exists(Call c, int i |
+      ta = c.getArgument(i) and
+      not c.getTarget().getParameter(i).getUnderlyingType().(PointerType).getBaseType().isConst()
+    )
+  } or
   TUninitializedNode(LocalVariable v) { not v.hasInitializer() }
 
 /**
@@ -280,6 +286,16 @@ private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNo
   PartialDefinition getPartialDefinition() { result = pd }
 
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+}
+
+private class ThisArgumentPostUpdateNode extends PostUpdateNode, TThisArgumentPostUpdate {
+  ThisExpr thisExpr;
+
+  ThisArgumentPostUpdateNode() { this = TThisArgumentPostUpdate(thisExpr) }
+
+  override Node getPreUpdateNode() { result.asExpr() = thisExpr }
+
+  override string toString() { result = "ref arg this" }
 }
 
 /**

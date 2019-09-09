@@ -60,7 +60,7 @@ void test_setIndirectly() {
 void test_setThroughNonMember() {
   S s;
   s.setThroughNonMember(user_input());
-  sink(s.getThroughNonMember()); // flow [NOT DETECTED]
+  sink(s.getThroughNonMember()); // flow
 }
 
 void test_nonMemberSetA() {
