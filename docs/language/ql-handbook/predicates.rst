@@ -262,6 +262,10 @@ multiple binding set annotations, for example::
       x + 1 = y
     }
 
+    from int x, int y
+    where y = 42 and plusOne(x, y)
+    select x, y
+
 Multiple binding sets specified this way are independent of each other. The above example means:
   - If ``x`` is bound, then ``x`` and ``y`` are bound.
   - If ``y`` is bound, then ``x`` and ``y`` are bound.
