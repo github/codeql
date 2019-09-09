@@ -6,6 +6,7 @@ foo.setAttribute("HREF", data.p);  // NOT OK
 foo.setAttribute("width", data.w); // OK
 foo.setAttribute("xlink:href", data.p) // NOT OK
 
+foo.setAttributeNS('xlink', 'href', data.p); // NOT OK
 foo.setAttributeNS('foobar', 'href', data.p); // NOT OK
 foo.setAttributeNS('baz', 'width', data.w); // OK
 
