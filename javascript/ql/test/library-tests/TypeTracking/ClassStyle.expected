@@ -10,6 +10,7 @@ test_ApiObject
 | tst_conflict.js:6:38:6:49 | api.chain1() |
 | tst_conflict.js:6:38:6:58 | api.cha ... hain2() |
 test_Connection
+| client.js:1:10:1:27 | exportedConnection |
 | tst.js:7:15:7:18 | conn |
 | tst.js:11:5:11:19 | this.connection |
 | tst.js:16:10:16:49 | api.cha ... ction() |
@@ -22,8 +23,10 @@ test_Connection
 | tst.js:62:40:62:79 | api.cha ... ction() |
 | tst.js:63:38:63:77 | api.cha ... ction() |
 | tst.js:67:14:67:47 | MyAppli ... nection |
+| tst.js:78:35:78:49 | getConnection() |
 | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
 test_DataCallback
+| client.js:3:28:3:34 | x => {} |
 | tst.js:10:11:10:12 | cb |
 | tst.js:21:1:23:1 | functio ... ata);\\n} |
 | tst.js:30:26:30:27 | cb |
@@ -35,6 +38,7 @@ test_DataCallback
 | tst.js:58:16:58:22 | x => {} |
 | tst.js:68:16:70:3 | data => ... a);\\n  } |
 test_DataValue
+| client.js:3:28:3:28 | x |
 | tst.js:21:18:21:21 | data |
 | tst.js:25:19:25:22 | data |
 | tst.js:33:17:33:20 | data |

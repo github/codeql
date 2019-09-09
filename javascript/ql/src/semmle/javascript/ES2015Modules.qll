@@ -65,7 +65,7 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
     // `import * as http from 'http'` or `import http from `http`'
     exists(ImportSpecifier is |
       is = getASpecifier() and
-      result = DataFlow::ssaDefinitionNode(SSA::definition(is))
+      result = DataFlow::valueNode(is)
     |
       is instanceof ImportNamespaceSpecifier and
       count(getASpecifier()) = 1

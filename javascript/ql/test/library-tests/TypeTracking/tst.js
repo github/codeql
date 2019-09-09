@@ -74,3 +74,5 @@ function useConnection() {
     useData(data);
   });
 }
+
+export const exportedConnection = getConnection();

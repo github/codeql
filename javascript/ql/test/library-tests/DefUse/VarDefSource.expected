@@ -3,6 +3,9 @@
 | classes.js:7:5:8:5 | class L ... {\\n    } | classes.js:7:5:8:5 | class L ... {\\n    } |
 | classes.js:10:5:10:31 | LocalFo ... ar = 42 | classes.js:10:30:10:31 | 42 |
 | es2015.js:4:10:4:19 | getSquares | es2015.js:4:1:6:1 | functio ... i*i];\\n} |
+| es2015modules.js:1:10:1:12 | foo | es2015modules.js:1:10:1:12 | foo |
+| es2015modules.js:1:15:1:24 | bar as baz | es2015modules.js:1:15:1:24 | bar as baz |
+| es2015modules.js:10:10:10:13 | quux | es2015modules.js:10:10:10:13 | quux |
 | es2015modules.js:15:17:15:17 | f | es2015modules.js:15:8:15:22 | function f() {} |
 | es2015modules.js:16:25:16:25 | g | es2015modules.js:16:16:16:30 | function g() {} |
 | fundecls.js:1:10:1:10 | s | fundecls.js:1:1:5:1 | functio ...  f();\\n} |
