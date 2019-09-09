@@ -1,222 +1,211 @@
 edges
-| A.cpp:41:15:41:21 | new [void] | A.cpp:43:10:43:12 | & ... |
-| A.cpp:47:12:47:18 | new [void] | A.cpp:48:20:48:20 | c [void] |
-| A.cpp:48:12:48:18 | call to make [c, ... (1)] | A.cpp:49:10:49:10 | b [c, ... (1)] |
-| A.cpp:48:20:48:20 | c [void] | A.cpp:48:12:48:18 | call to make [c, ... (1)] |
-| A.cpp:49:10:49:10 | b [c, ... (1)] | A.cpp:49:13:49:13 | c |
-| A.cpp:55:5:55:5 | b [post update] [c, ... (1)] | A.cpp:56:10:56:10 | b [c, ... (1)] |
-| A.cpp:55:12:55:19 | new [void] | A.cpp:55:5:55:5 | b [post update] [c, ... (1)] |
-| A.cpp:56:10:56:10 | b [c, ... (1)] | A.cpp:56:13:56:15 | call to get |
-| A.cpp:57:11:57:24 | call to B [c, ... (1)] | A.cpp:57:11:57:24 | new [c, ... (1)] |
-| A.cpp:57:11:57:24 | new [c, ... (1)] | A.cpp:57:28:57:30 | call to get |
-| A.cpp:57:17:57:23 | new [void] | A.cpp:57:11:57:24 | call to B [c, ... (1)] |
-| A.cpp:64:10:64:15 | call to setOnB [c, ... (1)] | A.cpp:66:10:66:11 | b2 [c, ... (1)] |
-| A.cpp:64:21:64:28 | new [void] | A.cpp:64:10:64:15 | call to setOnB [c, ... (1)] |
-| A.cpp:66:10:66:11 | b2 [c, ... (1)] | A.cpp:66:14:66:14 | c |
-| A.cpp:73:10:73:19 | call to setOnBWrap [c, ... (1)] | A.cpp:75:10:75:11 | b2 [c, ... (1)] |
-| A.cpp:73:25:73:32 | new [void] | A.cpp:73:10:73:19 | call to setOnBWrap [c, ... (1)] |
-| A.cpp:75:10:75:11 | b2 [c, ... (1)] | A.cpp:75:14:75:14 | c |
-| A.cpp:98:12:98:18 | new [void] | A.cpp:100:5:100:13 | ... = ... [void] |
-| A.cpp:100:5:100:6 | c1 [post update] [a, ... (1)] | A.cpp:101:8:101:9 | c1 [a, ... (1)] |
-| A.cpp:100:5:100:13 | ... = ... [void] | A.cpp:100:5:100:6 | c1 [post update] [a, ... (1)] |
-| A.cpp:101:8:101:9 | c1 [a, ... (1)] | A.cpp:103:14:103:14 | c [a, ... (1)] |
-| A.cpp:103:14:103:14 | c [a, ... (1)] | A.cpp:107:12:107:13 | c1 [a, ... (1)] |
-| A.cpp:103:14:103:14 | c [a, ... (1)] | A.cpp:120:12:120:13 | c1 [a, ... (1)] |
-| A.cpp:107:12:107:13 | c1 [a, ... (1)] | A.cpp:107:16:107:16 | a |
-| A.cpp:120:12:120:13 | c1 [a, ... (1)] | A.cpp:120:16:120:16 | a |
-| A.cpp:126:5:126:5 | b [post update] [c, ... (1)] | A.cpp:131:8:131:8 | ref arg b [c, ... (1)] |
-| A.cpp:126:12:126:18 | new [void] | A.cpp:126:5:126:5 | b [post update] [c, ... (1)] |
-| A.cpp:131:8:131:8 | ref arg b [c, ... (1)] | A.cpp:132:10:132:10 | b [c, ... (1)] |
-| A.cpp:132:10:132:10 | b [c, ... (1)] | A.cpp:132:13:132:13 | c |
-| A.cpp:142:7:142:7 | b [post update] [c, ... (1)] | A.cpp:143:7:143:31 | ... = ... [c, ... (1)] |
-| A.cpp:142:7:142:7 | b [post update] [c, ... (1)] | A.cpp:151:18:151:18 | ref arg b [c, ... (1)] |
-| A.cpp:142:7:142:20 | ... = ... [void] | A.cpp:142:7:142:7 | b [post update] [c, ... (1)] |
-| A.cpp:142:14:142:20 | new [void] | A.cpp:142:7:142:20 | ... = ... [void] |
-| A.cpp:143:7:143:10 | this [post update] [b, ... (1)] | A.cpp:151:12:151:24 | call to D [b, ... (1)] |
-| A.cpp:143:7:143:10 | this [post update] [b, ... (2)] | A.cpp:151:12:151:24 | call to D [b, ... (2)] |
-| A.cpp:143:7:143:31 | ... = ... [c, ... (1)] | A.cpp:143:7:143:10 | this [post update] [b, ... (2)] |
-| A.cpp:143:7:143:31 | ... = ... [void] | A.cpp:143:7:143:10 | this [post update] [b, ... (1)] |
-| A.cpp:143:25:143:31 | new [void] | A.cpp:143:7:143:31 | ... = ... [void] |
-| A.cpp:150:12:150:18 | new [void] | A.cpp:151:18:151:18 | b [void] |
-| A.cpp:151:12:151:24 | call to D [b, ... (1)] | A.cpp:152:10:152:10 | d [b, ... (1)] |
-| A.cpp:151:12:151:24 | call to D [b, ... (2)] | A.cpp:153:10:153:10 | d [b, ... (2)] |
-| A.cpp:151:18:151:18 | b [void] | A.cpp:151:12:151:24 | call to D [b, ... (1)] |
-| A.cpp:151:18:151:18 | ref arg b [c, ... (1)] | A.cpp:154:10:154:10 | b [c, ... (1)] |
-| A.cpp:152:10:152:10 | d [b, ... (1)] | A.cpp:152:13:152:13 | b |
-| A.cpp:153:10:153:10 | d [b, ... (2)] | A.cpp:153:13:153:13 | b [c, ... (1)] |
-| A.cpp:153:13:153:13 | b [c, ... (1)] | A.cpp:153:16:153:16 | c |
-| A.cpp:154:10:154:10 | b [c, ... (1)] | A.cpp:154:13:154:13 | c |
-| A.cpp:159:12:159:18 | new [void] | A.cpp:160:29:160:29 | b [void] |
-| A.cpp:160:18:160:60 | call to MyList [head, ... (1)] | A.cpp:161:38:161:39 | l1 [head, ... (1)] |
-| A.cpp:160:29:160:29 | b [void] | A.cpp:160:18:160:60 | call to MyList [head, ... (1)] |
-| A.cpp:161:18:161:40 | call to MyList [next, ... (2)] | A.cpp:162:38:162:39 | l2 [next, ... (2)] |
-| A.cpp:161:38:161:39 | l1 [head, ... (1)] | A.cpp:161:18:161:40 | call to MyList [next, ... (2)] |
-| A.cpp:162:18:162:40 | call to MyList [next, ... (3)] | A.cpp:165:10:165:11 | l3 [next, ... (3)] |
-| A.cpp:162:18:162:40 | call to MyList [next, ... (3)] | A.cpp:167:44:167:44 | l [next, ... (3)] |
-| A.cpp:162:38:162:39 | l2 [next, ... (2)] | A.cpp:162:18:162:40 | call to MyList [next, ... (3)] |
-| A.cpp:165:10:165:11 | l3 [next, ... (3)] | A.cpp:165:14:165:17 | next [next, ... (2)] |
-| A.cpp:165:14:165:17 | next [next, ... (2)] | A.cpp:165:20:165:23 | next [head, ... (1)] |
-| A.cpp:165:20:165:23 | next [head, ... (1)] | A.cpp:165:26:165:29 | head |
-| A.cpp:167:44:167:44 | l [next, ... (2)] | A.cpp:167:47:167:50 | next [head, ... (1)] |
-| A.cpp:167:44:167:44 | l [next, ... (3)] | A.cpp:167:47:167:50 | next [next, ... (2)] |
-| A.cpp:167:47:167:50 | next [head, ... (1)] | A.cpp:169:12:169:12 | l [head, ... (1)] |
-| A.cpp:167:47:167:50 | next [next, ... (2)] | A.cpp:167:44:167:44 | l [next, ... (2)] |
-| A.cpp:169:12:169:12 | l [head, ... (1)] | A.cpp:169:15:169:18 | head |
-| B.cpp:6:15:6:24 | new [void] | B.cpp:7:25:7:25 | e [void] |
-| B.cpp:7:16:7:35 | call to Box1 [elem1, ... (1)] | B.cpp:8:25:8:26 | b1 [elem1, ... (1)] |
-| B.cpp:7:25:7:25 | e [void] | B.cpp:7:16:7:35 | call to Box1 [elem1, ... (1)] |
-| B.cpp:8:16:8:27 | call to Box2 [box1, ... (2)] | B.cpp:9:10:9:11 | b2 [box1, ... (2)] |
-| B.cpp:8:16:8:27 | call to Box2 [box1, ... (2)] | B.cpp:10:10:10:11 | b2 [box1, ... (2)] |
-| B.cpp:8:25:8:26 | b1 [elem1, ... (1)] | B.cpp:8:16:8:27 | call to Box2 [box1, ... (2)] |
-| B.cpp:9:10:9:11 | b2 [box1, ... (2)] | B.cpp:9:14:9:17 | box1 [elem1, ... (1)] |
-| B.cpp:9:14:9:17 | box1 [elem1, ... (1)] | B.cpp:9:20:9:24 | elem1 |
-| B.cpp:10:10:10:11 | b2 [box1, ... (2)] | B.cpp:10:14:10:17 | box1 [elem2, ... (1)] |
-| B.cpp:10:14:10:17 | box1 [elem2, ... (1)] | B.cpp:10:20:10:24 | elem2 |
-| B.cpp:15:15:15:27 | new [void] | B.cpp:16:37:16:37 | e [void] |
-| B.cpp:16:16:16:38 | call to Box1 [elem2, ... (1)] | B.cpp:17:25:17:26 | b1 [elem2, ... (1)] |
-| B.cpp:16:37:16:37 | e [void] | B.cpp:16:16:16:38 | call to Box1 [elem2, ... (1)] |
-| B.cpp:17:16:17:27 | call to Box2 [box1, ... (2)] | B.cpp:18:10:18:11 | b2 [box1, ... (2)] |
-| B.cpp:17:16:17:27 | call to Box2 [box1, ... (2)] | B.cpp:19:10:19:11 | b2 [box1, ... (2)] |
-| B.cpp:17:25:17:26 | b1 [elem2, ... (1)] | B.cpp:17:16:17:27 | call to Box2 [box1, ... (2)] |
-| B.cpp:18:10:18:11 | b2 [box1, ... (2)] | B.cpp:18:14:18:17 | box1 [elem1, ... (1)] |
-| B.cpp:18:14:18:17 | box1 [elem1, ... (1)] | B.cpp:18:20:18:24 | elem1 |
-| B.cpp:19:10:19:11 | b2 [box1, ... (2)] | B.cpp:19:14:19:17 | box1 [elem2, ... (1)] |
-| B.cpp:19:14:19:17 | box1 [elem2, ... (1)] | B.cpp:19:20:19:24 | elem2 |
-| C.cpp:18:12:18:18 | call to C [s1, ... (1)] | C.cpp:19:5:19:5 | c [s1, ... (1)] |
-| C.cpp:18:12:18:18 | call to C [s3, ... (1)] | C.cpp:19:5:19:5 | c [s3, ... (1)] |
-| C.cpp:19:5:19:5 | c [s1, ... (1)] | C.cpp:27:8:27:11 | `this` parameter in func [s1, ... (1)] |
-| C.cpp:19:5:19:5 | c [s3, ... (1)] | C.cpp:27:8:27:11 | `this` parameter in func [s3, ... (1)] |
-| C.cpp:22:9:22:22 | constructor init of field s1 [post-this] [s1, ... (1)] | C.cpp:18:12:18:18 | call to C [s1, ... (1)] |
-| C.cpp:22:12:22:21 | new [void] | C.cpp:22:9:22:22 | constructor init of field s1 [post-this] [s1, ... (1)] |
-| C.cpp:24:5:24:8 | this [post update] [s3, ... (1)] | C.cpp:18:12:18:18 | call to C [s3, ... (1)] |
-| C.cpp:24:5:24:25 | ... = ... [void] | C.cpp:24:5:24:8 | this [post update] [s3, ... (1)] |
-| C.cpp:24:16:24:25 | new [void] | C.cpp:24:5:24:25 | ... = ... [void] |
-| C.cpp:27:8:27:11 | `this` parameter in func [s1, ... (1)] | C.cpp:29:10:29:11 | this [s1, ... (1)] |
-| C.cpp:27:8:27:11 | `this` parameter in func [s3, ... (1)] | C.cpp:31:10:31:11 | this [s3, ... (1)] |
-| C.cpp:29:10:29:11 | this [s1, ... (1)] | C.cpp:29:10:29:11 | s1 |
-| C.cpp:31:10:31:11 | this [s3, ... (1)] | C.cpp:31:10:31:11 | s3 |
-| aliasing.cpp:9:3:9:3 | s [post update] [m1, ... (1)] | aliasing.cpp:25:17:25:19 | ref arg & ... [m1, ... (1)] |
-| aliasing.cpp:9:3:9:22 | ... = ... [void] | aliasing.cpp:9:3:9:3 | s [post update] [m1, ... (1)] |
-| aliasing.cpp:9:11:9:20 | call to user_input [void] | aliasing.cpp:9:3:9:22 | ... = ... [void] |
-| aliasing.cpp:13:3:13:3 | s [post update] [m1, ... (1)] | aliasing.cpp:26:19:26:20 | ref arg s2 [m1, ... (1)] |
-| aliasing.cpp:13:3:13:21 | ... = ... [void] | aliasing.cpp:13:3:13:3 | s [post update] [m1, ... (1)] |
-| aliasing.cpp:13:10:13:19 | call to user_input [void] | aliasing.cpp:13:3:13:21 | ... = ... [void] |
-| aliasing.cpp:25:17:25:19 | ref arg & ... [m1, ... (1)] | aliasing.cpp:29:8:29:9 | s1 [m1, ... (1)] |
-| aliasing.cpp:26:19:26:20 | ref arg s2 [m1, ... (1)] | aliasing.cpp:30:8:30:9 | s2 [m1, ... (1)] |
-| aliasing.cpp:29:8:29:9 | s1 [m1, ... (1)] | aliasing.cpp:29:11:29:12 | m1 |
-| aliasing.cpp:30:8:30:9 | s2 [m1, ... (1)] | aliasing.cpp:30:11:30:12 | m1 |
-| aliasing.cpp:60:3:60:4 | s2 [post update] [m1, ... (1)] | aliasing.cpp:62:8:62:12 | copy2 [m1, ... (1)] |
-| aliasing.cpp:60:3:60:22 | ... = ... [void] | aliasing.cpp:60:3:60:4 | s2 [post update] [m1, ... (1)] |
-| aliasing.cpp:60:11:60:20 | call to user_input [void] | aliasing.cpp:60:3:60:22 | ... = ... [void] |
-| aliasing.cpp:62:8:62:12 | copy2 [m1, ... (1)] | aliasing.cpp:62:14:62:15 | m1 |
-| aliasing.cpp:92:3:92:3 | w [post update] [s, ... (2)] | aliasing.cpp:93:8:93:8 | w [s, ... (2)] |
-| aliasing.cpp:92:3:92:23 | ... = ... [void] | aliasing.cpp:92:5:92:5 | s [post update] [m1, ... (1)] |
-| aliasing.cpp:92:5:92:5 | s [post update] [m1, ... (1)] | aliasing.cpp:92:3:92:3 | w [post update] [s, ... (2)] |
-| aliasing.cpp:92:12:92:21 | call to user_input [void] | aliasing.cpp:92:3:92:23 | ... = ... [void] |
-| aliasing.cpp:93:8:93:8 | w [s, ... (2)] | aliasing.cpp:93:10:93:10 | s [m1, ... (1)] |
-| aliasing.cpp:93:10:93:10 | s [m1, ... (1)] | aliasing.cpp:93:12:93:13 | m1 |
-| complex.cpp:34:15:34:15 | b [f, ... (2)] | complex.cpp:44:8:44:8 | b [f, ... (2)] |
-| complex.cpp:34:15:34:15 | b [f, ... (2)] | complex.cpp:45:8:45:8 | b [f, ... (2)] |
-| complex.cpp:44:8:44:8 | b [f, ... (2)] | complex.cpp:44:10:44:10 | f [a_, ... (1)] |
-| complex.cpp:44:10:44:10 | f [a_, ... (1)] | complex.cpp:44:12:44:12 | call to a |
-| complex.cpp:45:8:45:8 | b [f, ... (2)] | complex.cpp:45:10:45:10 | f [b_, ... (1)] |
-| complex.cpp:45:10:45:10 | f [b_, ... (1)] | complex.cpp:45:12:45:12 | call to b |
-| complex.cpp:55:3:55:4 | b1 [post update] [f, ... (2)] | complex.cpp:61:7:61:8 | b1 [f, ... (2)] |
-| complex.cpp:55:6:55:6 | f [post update] [a_, ... (1)] | complex.cpp:55:3:55:4 | b1 [post update] [f, ... (2)] |
-| complex.cpp:55:13:55:22 | call to user_input [void] | complex.cpp:55:6:55:6 | f [post update] [a_, ... (1)] |
-| complex.cpp:56:3:56:4 | b2 [post update] [f, ... (2)] | complex.cpp:64:7:64:8 | b2 [f, ... (2)] |
-| complex.cpp:56:6:56:6 | f [post update] [b_, ... (1)] | complex.cpp:56:3:56:4 | b2 [post update] [f, ... (2)] |
-| complex.cpp:56:13:56:22 | call to user_input [void] | complex.cpp:56:6:56:6 | f [post update] [b_, ... (1)] |
-| complex.cpp:57:3:57:4 | b3 [post update] [f, ... (2)] | complex.cpp:67:7:67:8 | b3 [f, ... (2)] |
-| complex.cpp:57:6:57:6 | f [post update] [a_, ... (1)] | complex.cpp:57:3:57:4 | b3 [post update] [f, ... (2)] |
-| complex.cpp:57:13:57:22 | call to user_input [void] | complex.cpp:57:6:57:6 | f [post update] [a_, ... (1)] |
-| complex.cpp:58:3:58:4 | b3 [post update] [f, ... (2)] | complex.cpp:67:7:67:8 | b3 [f, ... (2)] |
-| complex.cpp:58:6:58:6 | f [post update] [b_, ... (1)] | complex.cpp:58:3:58:4 | b3 [post update] [f, ... (2)] |
-| complex.cpp:58:13:58:22 | call to user_input [void] | complex.cpp:58:6:58:6 | f [post update] [b_, ... (1)] |
-| complex.cpp:61:7:61:8 | b1 [f, ... (2)] | complex.cpp:34:15:34:15 | b [f, ... (2)] |
-| complex.cpp:64:7:64:8 | b2 [f, ... (2)] | complex.cpp:34:15:34:15 | b [f, ... (2)] |
-| complex.cpp:67:7:67:8 | b3 [f, ... (2)] | complex.cpp:34:15:34:15 | b [f, ... (2)] |
-| constructors.cpp:26:15:26:15 | f [a_, ... (1)] | constructors.cpp:28:10:28:10 | f [a_, ... (1)] |
-| constructors.cpp:26:15:26:15 | f [b_, ... (1)] | constructors.cpp:29:10:29:10 | f [b_, ... (1)] |
-| constructors.cpp:28:10:28:10 | f [a_, ... (1)] | constructors.cpp:28:12:28:12 | call to a |
-| constructors.cpp:29:10:29:10 | f [b_, ... (1)] | constructors.cpp:29:12:29:12 | call to b |
-| constructors.cpp:34:11:34:20 | call to user_input [void] | constructors.cpp:34:11:34:26 | call to Foo [a_, ... (1)] |
-| constructors.cpp:34:11:34:26 | call to Foo [a_, ... (1)] | constructors.cpp:40:9:40:9 | f [a_, ... (1)] |
-| constructors.cpp:35:11:35:26 | call to Foo [b_, ... (1)] | constructors.cpp:43:9:43:9 | g [b_, ... (1)] |
-| constructors.cpp:35:14:35:23 | call to user_input [void] | constructors.cpp:35:11:35:26 | call to Foo [b_, ... (1)] |
-| constructors.cpp:36:11:36:20 | call to user_input [void] | constructors.cpp:36:11:36:37 | call to Foo [a_, ... (1)] |
-| constructors.cpp:36:11:36:37 | call to Foo [a_, ... (1)] | constructors.cpp:46:9:46:9 | h [a_, ... (1)] |
-| constructors.cpp:36:11:36:37 | call to Foo [b_, ... (1)] | constructors.cpp:46:9:46:9 | h [b_, ... (1)] |
-| constructors.cpp:36:25:36:34 | call to user_input [void] | constructors.cpp:36:11:36:37 | call to Foo [b_, ... (1)] |
-| constructors.cpp:40:9:40:9 | f [a_, ... (1)] | constructors.cpp:26:15:26:15 | f [a_, ... (1)] |
-| constructors.cpp:43:9:43:9 | g [b_, ... (1)] | constructors.cpp:26:15:26:15 | f [b_, ... (1)] |
-| constructors.cpp:46:9:46:9 | h [a_, ... (1)] | constructors.cpp:26:15:26:15 | f [a_, ... (1)] |
-| constructors.cpp:46:9:46:9 | h [b_, ... (1)] | constructors.cpp:26:15:26:15 | f [b_, ... (1)] |
-| simple.cpp:26:15:26:15 | f [a_, ... (1)] | simple.cpp:28:10:28:10 | f [a_, ... (1)] |
-| simple.cpp:26:15:26:15 | f [b_, ... (1)] | simple.cpp:29:10:29:10 | f [b_, ... (1)] |
-| simple.cpp:28:10:28:10 | f [a_, ... (1)] | simple.cpp:28:12:28:12 | call to a |
-| simple.cpp:29:10:29:10 | f [b_, ... (1)] | simple.cpp:29:12:29:12 | call to b |
-| simple.cpp:39:5:39:5 | f [post update] [a_, ... (1)] | simple.cpp:45:9:45:9 | f [a_, ... (1)] |
-| simple.cpp:39:12:39:21 | call to user_input [void] | simple.cpp:39:5:39:5 | f [post update] [a_, ... (1)] |
-| simple.cpp:40:5:40:5 | g [post update] [b_, ... (1)] | simple.cpp:48:9:48:9 | g [b_, ... (1)] |
-| simple.cpp:40:12:40:21 | call to user_input [void] | simple.cpp:40:5:40:5 | g [post update] [b_, ... (1)] |
-| simple.cpp:41:5:41:5 | h [post update] [a_, ... (1)] | simple.cpp:51:9:51:9 | h [a_, ... (1)] |
-| simple.cpp:41:12:41:21 | call to user_input [void] | simple.cpp:41:5:41:5 | h [post update] [a_, ... (1)] |
-| simple.cpp:42:5:42:5 | h [post update] [b_, ... (1)] | simple.cpp:51:9:51:9 | h [b_, ... (1)] |
-| simple.cpp:42:12:42:21 | call to user_input [void] | simple.cpp:42:5:42:5 | h [post update] [b_, ... (1)] |
-| simple.cpp:45:9:45:9 | f [a_, ... (1)] | simple.cpp:26:15:26:15 | f [a_, ... (1)] |
-| simple.cpp:48:9:48:9 | g [b_, ... (1)] | simple.cpp:26:15:26:15 | f [b_, ... (1)] |
-| simple.cpp:51:9:51:9 | h [a_, ... (1)] | simple.cpp:26:15:26:15 | f [a_, ... (1)] |
-| simple.cpp:51:9:51:9 | h [b_, ... (1)] | simple.cpp:26:15:26:15 | f [b_, ... (1)] |
-| struct_init.c:20:17:20:36 | {...} [a, ... (1)] | struct_init.c:22:8:22:9 | ab [a, ... (1)] |
-| struct_init.c:20:20:20:29 | call to user_input [void] | struct_init.c:20:17:20:36 | {...} [a, ... (1)] |
-| struct_init.c:22:8:22:9 | ab [a, ... (1)] | struct_init.c:22:11:22:11 | a |
-| struct_init.c:26:23:29:3 | {...} [nestedAB, ... (2)] | struct_init.c:31:8:31:12 | outer [nestedAB, ... (2)] |
-| struct_init.c:27:5:27:23 | {...} [a, ... (1)] | struct_init.c:26:23:29:3 | {...} [nestedAB, ... (2)] |
-| struct_init.c:27:7:27:16 | call to user_input [void] | struct_init.c:27:5:27:23 | {...} [a, ... (1)] |
-| struct_init.c:31:8:31:12 | outer [nestedAB, ... (2)] | struct_init.c:31:14:31:21 | nestedAB [a, ... (1)] |
-| struct_init.c:31:14:31:21 | nestedAB [a, ... (1)] | struct_init.c:31:23:31:23 | a |
+| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... |
+| A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c |
+| A.cpp:48:12:48:18 | call to make [c] | A.cpp:49:10:49:10 | b [c] |
+| A.cpp:48:20:48:20 | c | A.cpp:48:12:48:18 | call to make [c] |
+| A.cpp:49:10:49:10 | b [c] | A.cpp:49:13:49:13 | c |
+| A.cpp:55:5:55:5 | b [post update] [c] | A.cpp:56:10:56:10 | b [c] |
+| A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | b [post update] [c] |
+| A.cpp:56:10:56:10 | b [c] | A.cpp:56:13:56:15 | call to get |
+| A.cpp:57:11:57:24 | call to B [c] | A.cpp:57:11:57:24 | new [c] |
+| A.cpp:57:11:57:24 | new [c] | A.cpp:57:28:57:30 | call to get |
+| A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | call to B [c] |
+| A.cpp:64:10:64:15 | call to setOnB [c] | A.cpp:66:10:66:11 | b2 [c] |
+| A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | call to setOnB [c] |
+| A.cpp:66:10:66:11 | b2 [c] | A.cpp:66:14:66:14 | c |
+| A.cpp:73:10:73:19 | call to setOnBWrap [c] | A.cpp:75:10:75:11 | b2 [c] |
+| A.cpp:73:25:73:32 | new | A.cpp:73:10:73:19 | call to setOnBWrap [c] |
+| A.cpp:75:10:75:11 | b2 [c] | A.cpp:75:14:75:14 | c |
+| A.cpp:98:12:98:18 | new | A.cpp:100:5:100:13 | ... = ... |
+| A.cpp:100:5:100:6 | c1 [post update] [a] | A.cpp:101:8:101:9 | c1 [a] |
+| A.cpp:100:5:100:13 | ... = ... | A.cpp:100:5:100:6 | c1 [post update] [a] |
+| A.cpp:101:8:101:9 | c1 [a] | A.cpp:103:14:103:14 | c [a] |
+| A.cpp:103:14:103:14 | c [a] | A.cpp:107:12:107:13 | c1 [a] |
+| A.cpp:103:14:103:14 | c [a] | A.cpp:120:12:120:13 | c1 [a] |
+| A.cpp:107:12:107:13 | c1 [a] | A.cpp:107:16:107:16 | a |
+| A.cpp:120:12:120:13 | c1 [a] | A.cpp:120:16:120:16 | a |
+| A.cpp:126:5:126:5 | b [post update] [c] | A.cpp:131:8:131:8 | ref arg b [c] |
+| A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | b [post update] [c] |
+| A.cpp:131:8:131:8 | ref arg b [c] | A.cpp:132:10:132:10 | b [c] |
+| A.cpp:132:10:132:10 | b [c] | A.cpp:132:13:132:13 | c |
+| A.cpp:142:7:142:7 | b [post update] [c] | A.cpp:143:7:143:31 | ... = ... [c] |
+| A.cpp:142:7:142:7 | b [post update] [c] | A.cpp:151:18:151:18 | ref arg b [c] |
+| A.cpp:142:7:142:20 | ... = ... | A.cpp:142:7:142:7 | b [post update] [c] |
+| A.cpp:142:14:142:20 | new | A.cpp:142:7:142:20 | ... = ... |
+| A.cpp:143:7:143:10 | this [post update] [b, c] | A.cpp:151:12:151:24 | call to D [b, c] |
+| A.cpp:143:7:143:10 | this [post update] [b] | A.cpp:151:12:151:24 | call to D [b] |
+| A.cpp:143:7:143:31 | ... = ... | A.cpp:143:7:143:10 | this [post update] [b] |
+| A.cpp:143:7:143:31 | ... = ... [c] | A.cpp:143:7:143:10 | this [post update] [b, c] |
+| A.cpp:143:25:143:31 | new | A.cpp:143:7:143:31 | ... = ... |
+| A.cpp:150:12:150:18 | new | A.cpp:151:18:151:18 | b |
+| A.cpp:151:12:151:24 | call to D [b, c] | A.cpp:153:10:153:10 | d [b, c] |
+| A.cpp:151:12:151:24 | call to D [b] | A.cpp:152:10:152:10 | d [b] |
+| A.cpp:151:18:151:18 | b | A.cpp:151:12:151:24 | call to D [b] |
+| A.cpp:151:18:151:18 | ref arg b [c] | A.cpp:154:10:154:10 | b [c] |
+| A.cpp:152:10:152:10 | d [b] | A.cpp:152:13:152:13 | b |
+| A.cpp:153:10:153:10 | d [b, c] | A.cpp:153:13:153:13 | b [c] |
+| A.cpp:153:13:153:13 | b [c] | A.cpp:153:16:153:16 | c |
+| A.cpp:154:10:154:10 | b [c] | A.cpp:154:13:154:13 | c |
+| A.cpp:159:12:159:18 | new | A.cpp:160:29:160:29 | b |
+| A.cpp:160:18:160:60 | call to MyList [head] | A.cpp:161:38:161:39 | l1 [head] |
+| A.cpp:160:29:160:29 | b | A.cpp:160:18:160:60 | call to MyList [head] |
+| A.cpp:161:18:161:40 | call to MyList [next, head] | A.cpp:162:38:162:39 | l2 [next, head] |
+| A.cpp:161:38:161:39 | l1 [head] | A.cpp:161:18:161:40 | call to MyList [next, head] |
+| A.cpp:162:18:162:40 | call to MyList [next, next, ... (3)] | A.cpp:165:10:165:11 | l3 [next, next, ... (3)] |
+| A.cpp:162:18:162:40 | call to MyList [next, next, ... (3)] | A.cpp:167:44:167:44 | l [next, next, ... (3)] |
+| A.cpp:162:38:162:39 | l2 [next, head] | A.cpp:162:18:162:40 | call to MyList [next, next, ... (3)] |
+| A.cpp:165:10:165:11 | l3 [next, next, ... (3)] | A.cpp:165:14:165:17 | next [next, head] |
+| A.cpp:165:14:165:17 | next [next, head] | A.cpp:165:20:165:23 | next [head] |
+| A.cpp:165:20:165:23 | next [head] | A.cpp:165:26:165:29 | head |
+| A.cpp:167:44:167:44 | l [next, head] | A.cpp:167:47:167:50 | next [head] |
+| A.cpp:167:44:167:44 | l [next, next, ... (3)] | A.cpp:167:47:167:50 | next [next, head] |
+| A.cpp:167:47:167:50 | next [head] | A.cpp:169:12:169:12 | l [head] |
+| A.cpp:167:47:167:50 | next [next, head] | A.cpp:167:44:167:44 | l [next, head] |
+| A.cpp:169:12:169:12 | l [head] | A.cpp:169:15:169:18 | head |
+| B.cpp:6:15:6:24 | new | B.cpp:7:25:7:25 | e |
+| B.cpp:7:16:7:35 | call to Box1 [elem1] | B.cpp:8:25:8:26 | b1 [elem1] |
+| B.cpp:7:25:7:25 | e | B.cpp:7:16:7:35 | call to Box1 [elem1] |
+| B.cpp:8:16:8:27 | call to Box2 [box1, elem1] | B.cpp:9:10:9:11 | b2 [box1, elem1] |
+| B.cpp:8:25:8:26 | b1 [elem1] | B.cpp:8:16:8:27 | call to Box2 [box1, elem1] |
+| B.cpp:9:10:9:11 | b2 [box1, elem1] | B.cpp:9:14:9:17 | box1 [elem1] |
+| B.cpp:9:14:9:17 | box1 [elem1] | B.cpp:9:20:9:24 | elem1 |
+| B.cpp:15:15:15:27 | new | B.cpp:16:37:16:37 | e |
+| B.cpp:16:16:16:38 | call to Box1 [elem2] | B.cpp:17:25:17:26 | b1 [elem2] |
+| B.cpp:16:37:16:37 | e | B.cpp:16:16:16:38 | call to Box1 [elem2] |
+| B.cpp:17:16:17:27 | call to Box2 [box1, elem2] | B.cpp:19:10:19:11 | b2 [box1, elem2] |
+| B.cpp:17:25:17:26 | b1 [elem2] | B.cpp:17:16:17:27 | call to Box2 [box1, elem2] |
+| B.cpp:19:10:19:11 | b2 [box1, elem2] | B.cpp:19:14:19:17 | box1 [elem2] |
+| B.cpp:19:14:19:17 | box1 [elem2] | B.cpp:19:20:19:24 | elem2 |
+| C.cpp:18:12:18:18 | call to C [s1] | C.cpp:19:5:19:5 | c [s1] |
+| C.cpp:18:12:18:18 | call to C [s3] | C.cpp:19:5:19:5 | c [s3] |
+| C.cpp:19:5:19:5 | c [s1] | C.cpp:27:8:27:11 | `this` parameter in func [s1] |
+| C.cpp:19:5:19:5 | c [s3] | C.cpp:27:8:27:11 | `this` parameter in func [s3] |
+| C.cpp:22:9:22:22 | constructor init of field s1 [post-this] [s1] | C.cpp:18:12:18:18 | call to C [s1] |
+| C.cpp:22:12:22:21 | new | C.cpp:22:9:22:22 | constructor init of field s1 [post-this] [s1] |
+| C.cpp:24:5:24:8 | this [post update] [s3] | C.cpp:18:12:18:18 | call to C [s3] |
+| C.cpp:24:5:24:25 | ... = ... | C.cpp:24:5:24:8 | this [post update] [s3] |
+| C.cpp:24:16:24:25 | new | C.cpp:24:5:24:25 | ... = ... |
+| C.cpp:27:8:27:11 | `this` parameter in func [s1] | C.cpp:29:10:29:11 | this [s1] |
+| C.cpp:27:8:27:11 | `this` parameter in func [s3] | C.cpp:31:10:31:11 | this [s3] |
+| C.cpp:29:10:29:11 | this [s1] | C.cpp:29:10:29:11 | s1 |
+| C.cpp:31:10:31:11 | this [s3] | C.cpp:31:10:31:11 | s3 |
+| aliasing.cpp:9:3:9:3 | s [post update] [m1] | aliasing.cpp:25:17:25:19 | ref arg & ... [m1] |
+| aliasing.cpp:9:3:9:22 | ... = ... | aliasing.cpp:9:3:9:3 | s [post update] [m1] |
+| aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | ... = ... |
+| aliasing.cpp:13:3:13:3 | s [post update] [m1] | aliasing.cpp:26:19:26:20 | ref arg s2 [m1] |
+| aliasing.cpp:13:3:13:21 | ... = ... | aliasing.cpp:13:3:13:3 | s [post update] [m1] |
+| aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:13:3:13:21 | ... = ... |
+| aliasing.cpp:25:17:25:19 | ref arg & ... [m1] | aliasing.cpp:29:8:29:9 | s1 [m1] |
+| aliasing.cpp:26:19:26:20 | ref arg s2 [m1] | aliasing.cpp:30:8:30:9 | s2 [m1] |
+| aliasing.cpp:29:8:29:9 | s1 [m1] | aliasing.cpp:29:11:29:12 | m1 |
+| aliasing.cpp:30:8:30:9 | s2 [m1] | aliasing.cpp:30:11:30:12 | m1 |
+| aliasing.cpp:60:3:60:4 | s2 [post update] [m1] | aliasing.cpp:62:8:62:12 | copy2 [m1] |
+| aliasing.cpp:60:3:60:22 | ... = ... | aliasing.cpp:60:3:60:4 | s2 [post update] [m1] |
+| aliasing.cpp:60:11:60:20 | call to user_input | aliasing.cpp:60:3:60:22 | ... = ... |
+| aliasing.cpp:62:8:62:12 | copy2 [m1] | aliasing.cpp:62:14:62:15 | m1 |
+| aliasing.cpp:92:3:92:3 | w [post update] [s, m1] | aliasing.cpp:93:8:93:8 | w [s, m1] |
+| aliasing.cpp:92:3:92:23 | ... = ... | aliasing.cpp:92:5:92:5 | s [post update] [m1] |
+| aliasing.cpp:92:5:92:5 | s [post update] [m1] | aliasing.cpp:92:3:92:3 | w [post update] [s, m1] |
+| aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:92:3:92:23 | ... = ... |
+| aliasing.cpp:93:8:93:8 | w [s, m1] | aliasing.cpp:93:10:93:10 | s [m1] |
+| aliasing.cpp:93:10:93:10 | s [m1] | aliasing.cpp:93:12:93:13 | m1 |
+| complex.cpp:34:15:34:15 | b [f, a_] | complex.cpp:44:8:44:8 | b [f, a_] |
+| complex.cpp:34:15:34:15 | b [f, b_] | complex.cpp:45:8:45:8 | b [f, b_] |
+| complex.cpp:44:8:44:8 | b [f, a_] | complex.cpp:44:10:44:10 | f [a_] |
+| complex.cpp:44:10:44:10 | f [a_] | complex.cpp:44:12:44:12 | call to a |
+| complex.cpp:45:8:45:8 | b [f, b_] | complex.cpp:45:10:45:10 | f [b_] |
+| complex.cpp:45:10:45:10 | f [b_] | complex.cpp:45:12:45:12 | call to b |
+| complex.cpp:55:3:55:4 | b1 [post update] [f, a_] | complex.cpp:61:7:61:8 | b1 [f, a_] |
+| complex.cpp:55:6:55:6 | f [post update] [a_] | complex.cpp:55:3:55:4 | b1 [post update] [f, a_] |
+| complex.cpp:55:13:55:22 | call to user_input | complex.cpp:55:6:55:6 | f [post update] [a_] |
+| complex.cpp:56:3:56:4 | b2 [post update] [f, b_] | complex.cpp:64:7:64:8 | b2 [f, b_] |
+| complex.cpp:56:6:56:6 | f [post update] [b_] | complex.cpp:56:3:56:4 | b2 [post update] [f, b_] |
+| complex.cpp:56:13:56:22 | call to user_input | complex.cpp:56:6:56:6 | f [post update] [b_] |
+| complex.cpp:57:3:57:4 | b3 [post update] [f, a_] | complex.cpp:67:7:67:8 | b3 [f, a_] |
+| complex.cpp:57:6:57:6 | f [post update] [a_] | complex.cpp:57:3:57:4 | b3 [post update] [f, a_] |
+| complex.cpp:57:13:57:22 | call to user_input | complex.cpp:57:6:57:6 | f [post update] [a_] |
+| complex.cpp:58:3:58:4 | b3 [post update] [f, b_] | complex.cpp:67:7:67:8 | b3 [f, b_] |
+| complex.cpp:58:6:58:6 | f [post update] [b_] | complex.cpp:58:3:58:4 | b3 [post update] [f, b_] |
+| complex.cpp:58:13:58:22 | call to user_input | complex.cpp:58:6:58:6 | f [post update] [b_] |
+| complex.cpp:61:7:61:8 | b1 [f, a_] | complex.cpp:34:15:34:15 | b [f, a_] |
+| complex.cpp:64:7:64:8 | b2 [f, b_] | complex.cpp:34:15:34:15 | b [f, b_] |
+| complex.cpp:67:7:67:8 | b3 [f, a_] | complex.cpp:34:15:34:15 | b [f, a_] |
+| complex.cpp:67:7:67:8 | b3 [f, b_] | complex.cpp:34:15:34:15 | b [f, b_] |
+| constructors.cpp:26:15:26:15 | f [a_] | constructors.cpp:28:10:28:10 | f [a_] |
+| constructors.cpp:26:15:26:15 | f [b_] | constructors.cpp:29:10:29:10 | f [b_] |
+| constructors.cpp:28:10:28:10 | f [a_] | constructors.cpp:28:12:28:12 | call to a |
+| constructors.cpp:29:10:29:10 | f [b_] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:11:34:26 | call to Foo [a_] |
+| constructors.cpp:34:11:34:26 | call to Foo [a_] | constructors.cpp:40:9:40:9 | f [a_] |
+| constructors.cpp:35:11:35:26 | call to Foo [b_] | constructors.cpp:43:9:43:9 | g [b_] |
+| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:35:11:35:26 | call to Foo [b_] |
+| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:36:11:36:37 | call to Foo [a_] |
+| constructors.cpp:36:11:36:37 | call to Foo [a_] | constructors.cpp:46:9:46:9 | h [a_] |
+| constructors.cpp:36:11:36:37 | call to Foo [b_] | constructors.cpp:46:9:46:9 | h [b_] |
+| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:36:11:36:37 | call to Foo [b_] |
+| constructors.cpp:40:9:40:9 | f [a_] | constructors.cpp:26:15:26:15 | f [a_] |
+| constructors.cpp:43:9:43:9 | g [b_] | constructors.cpp:26:15:26:15 | f [b_] |
+| constructors.cpp:46:9:46:9 | h [a_] | constructors.cpp:26:15:26:15 | f [a_] |
+| constructors.cpp:46:9:46:9 | h [b_] | constructors.cpp:26:15:26:15 | f [b_] |
+| simple.cpp:26:15:26:15 | f [a_] | simple.cpp:28:10:28:10 | f [a_] |
+| simple.cpp:26:15:26:15 | f [b_] | simple.cpp:29:10:29:10 | f [b_] |
+| simple.cpp:28:10:28:10 | f [a_] | simple.cpp:28:12:28:12 | call to a |
+| simple.cpp:29:10:29:10 | f [b_] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:39:5:39:5 | f [post update] [a_] | simple.cpp:45:9:45:9 | f [a_] |
+| simple.cpp:39:12:39:21 | call to user_input | simple.cpp:39:5:39:5 | f [post update] [a_] |
+| simple.cpp:40:5:40:5 | g [post update] [b_] | simple.cpp:48:9:48:9 | g [b_] |
+| simple.cpp:40:12:40:21 | call to user_input | simple.cpp:40:5:40:5 | g [post update] [b_] |
+| simple.cpp:41:5:41:5 | h [post update] [a_] | simple.cpp:51:9:51:9 | h [a_] |
+| simple.cpp:41:12:41:21 | call to user_input | simple.cpp:41:5:41:5 | h [post update] [a_] |
+| simple.cpp:42:5:42:5 | h [post update] [b_] | simple.cpp:51:9:51:9 | h [b_] |
+| simple.cpp:42:12:42:21 | call to user_input | simple.cpp:42:5:42:5 | h [post update] [b_] |
+| simple.cpp:45:9:45:9 | f [a_] | simple.cpp:26:15:26:15 | f [a_] |
+| simple.cpp:48:9:48:9 | g [b_] | simple.cpp:26:15:26:15 | f [b_] |
+| simple.cpp:51:9:51:9 | h [a_] | simple.cpp:26:15:26:15 | f [a_] |
+| simple.cpp:51:9:51:9 | h [b_] | simple.cpp:26:15:26:15 | f [b_] |
+| struct_init.c:20:17:20:36 | {...} [a] | struct_init.c:22:8:22:9 | ab [a] |
+| struct_init.c:20:20:20:29 | call to user_input | struct_init.c:20:17:20:36 | {...} [a] |
+| struct_init.c:22:8:22:9 | ab [a] | struct_init.c:22:11:22:11 | a |
+| struct_init.c:26:23:29:3 | {...} [nestedAB, a] | struct_init.c:31:8:31:12 | outer [nestedAB, a] |
+| struct_init.c:27:5:27:23 | {...} [a] | struct_init.c:26:23:29:3 | {...} [nestedAB, a] |
+| struct_init.c:27:7:27:16 | call to user_input | struct_init.c:27:5:27:23 | {...} [a] |
+| struct_init.c:31:8:31:12 | outer [nestedAB, a] | struct_init.c:31:14:31:21 | nestedAB [a] |
+| struct_init.c:31:14:31:21 | nestedAB [a] | struct_init.c:31:23:31:23 | a |
 #select
-| A.cpp:43:10:43:12 | & ... | A.cpp:41:15:41:21 | new [void] | A.cpp:43:10:43:12 | & ... | & ... flows from $@ | A.cpp:41:15:41:21 | new [void] | new [void] |
-| A.cpp:49:13:49:13 | c | A.cpp:47:12:47:18 | new [void] | A.cpp:49:13:49:13 | c | c flows from $@ | A.cpp:47:12:47:18 | new [void] | new [void] |
-| A.cpp:56:13:56:15 | call to get | A.cpp:55:12:55:19 | new [void] | A.cpp:56:13:56:15 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new [void] | new [void] |
-| A.cpp:57:28:57:30 | call to get | A.cpp:57:17:57:23 | new [void] | A.cpp:57:28:57:30 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new [void] | new [void] |
-| A.cpp:66:14:66:14 | c | A.cpp:64:21:64:28 | new [void] | A.cpp:66:14:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new [void] | new [void] |
-| A.cpp:75:14:75:14 | c | A.cpp:73:25:73:32 | new [void] | A.cpp:75:14:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new [void] | new [void] |
-| A.cpp:107:16:107:16 | a | A.cpp:98:12:98:18 | new [void] | A.cpp:107:16:107:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new [void] | new [void] |
-| A.cpp:120:16:120:16 | a | A.cpp:98:12:98:18 | new [void] | A.cpp:120:16:120:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new [void] | new [void] |
-| A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new [void] | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new [void] | new [void] |
-| A.cpp:152:13:152:13 | b | A.cpp:143:25:143:31 | new [void] | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:143:25:143:31 | new [void] | new [void] |
-| A.cpp:152:13:152:13 | b | A.cpp:150:12:150:18 | new [void] | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:150:12:150:18 | new [void] | new [void] |
-| A.cpp:153:16:153:16 | c | A.cpp:142:14:142:20 | new [void] | A.cpp:153:16:153:16 | c | c flows from $@ | A.cpp:142:14:142:20 | new [void] | new [void] |
-| A.cpp:154:13:154:13 | c | A.cpp:142:14:142:20 | new [void] | A.cpp:154:13:154:13 | c | c flows from $@ | A.cpp:142:14:142:20 | new [void] | new [void] |
-| A.cpp:165:26:165:29 | head | A.cpp:159:12:159:18 | new [void] | A.cpp:165:26:165:29 | head | head flows from $@ | A.cpp:159:12:159:18 | new [void] | new [void] |
-| A.cpp:169:15:169:18 | head | A.cpp:159:12:159:18 | new [void] | A.cpp:169:15:169:18 | head | head flows from $@ | A.cpp:159:12:159:18 | new [void] | new [void] |
-| B.cpp:9:20:9:24 | elem1 | B.cpp:6:15:6:24 | new [void] | B.cpp:9:20:9:24 | elem1 | elem1 flows from $@ | B.cpp:6:15:6:24 | new [void] | new [void] |
-| B.cpp:10:20:10:24 | elem2 | B.cpp:6:15:6:24 | new [void] | B.cpp:10:20:10:24 | elem2 | elem2 flows from $@ | B.cpp:6:15:6:24 | new [void] | new [void] |
-| B.cpp:18:20:18:24 | elem1 | B.cpp:15:15:15:27 | new [void] | B.cpp:18:20:18:24 | elem1 | elem1 flows from $@ | B.cpp:15:15:15:27 | new [void] | new [void] |
-| B.cpp:19:20:19:24 | elem2 | B.cpp:15:15:15:27 | new [void] | B.cpp:19:20:19:24 | elem2 | elem2 flows from $@ | B.cpp:15:15:15:27 | new [void] | new [void] |
-| C.cpp:29:10:29:11 | s1 | C.cpp:22:12:22:21 | new [void] | C.cpp:29:10:29:11 | s1 | s1 flows from $@ | C.cpp:22:12:22:21 | new [void] | new [void] |
-| C.cpp:31:10:31:11 | s3 | C.cpp:24:16:24:25 | new [void] | C.cpp:31:10:31:11 | s3 | s3 flows from $@ | C.cpp:24:16:24:25 | new [void] | new [void] |
-| aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input [void] | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input [void] | call to user_input [void] |
-| aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input [void] | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input [void] | call to user_input [void] |
-| aliasing.cpp:62:14:62:15 | m1 | aliasing.cpp:60:11:60:20 | call to user_input [void] | aliasing.cpp:62:14:62:15 | m1 | m1 flows from $@ | aliasing.cpp:60:11:60:20 | call to user_input [void] | call to user_input [void] |
-| aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input [void] | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input [void] | call to user_input [void] |
-| complex.cpp:44:12:44:12 | call to a | complex.cpp:55:13:55:22 | call to user_input [void] | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:55:13:55:22 | call to user_input [void] | call to user_input [void] |
-| complex.cpp:44:12:44:12 | call to a | complex.cpp:56:13:56:22 | call to user_input [void] | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:56:13:56:22 | call to user_input [void] | call to user_input [void] |
-| complex.cpp:44:12:44:12 | call to a | complex.cpp:57:13:57:22 | call to user_input [void] | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:57:13:57:22 | call to user_input [void] | call to user_input [void] |
-| complex.cpp:44:12:44:12 | call to a | complex.cpp:58:13:58:22 | call to user_input [void] | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:58:13:58:22 | call to user_input [void] | call to user_input [void] |
-| complex.cpp:45:12:45:12 | call to b | complex.cpp:55:13:55:22 | call to user_input [void] | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:55:13:55:22 | call to user_input [void] | call to user_input [void] |
-| complex.cpp:45:12:45:12 | call to b | complex.cpp:56:13:56:22 | call to user_input [void] | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:56:13:56:22 | call to user_input [void] | call to user_input [void] |
-| complex.cpp:45:12:45:12 | call to b | complex.cpp:57:13:57:22 | call to user_input [void] | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:57:13:57:22 | call to user_input [void] | call to user_input [void] |
-| complex.cpp:45:12:45:12 | call to b | complex.cpp:58:13:58:22 | call to user_input [void] | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:58:13:58:22 | call to user_input [void] | call to user_input [void] |
-| constructors.cpp:28:12:28:12 | call to a | constructors.cpp:34:11:34:20 | call to user_input [void] | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:34:11:34:20 | call to user_input [void] | call to user_input [void] |
-| constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input [void] | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input [void] | call to user_input [void] |
-| constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input [void] | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input [void] | call to user_input [void] |
-| constructors.cpp:29:12:29:12 | call to b | constructors.cpp:36:25:36:34 | call to user_input [void] | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:36:25:36:34 | call to user_input [void] | call to user_input [void] |
-| simple.cpp:28:12:28:12 | call to a | simple.cpp:39:12:39:21 | call to user_input [void] | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:39:12:39:21 | call to user_input [void] | call to user_input [void] |
-| simple.cpp:28:12:28:12 | call to a | simple.cpp:41:12:41:21 | call to user_input [void] | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:41:12:41:21 | call to user_input [void] | call to user_input [void] |
-| simple.cpp:29:12:29:12 | call to b | simple.cpp:40:12:40:21 | call to user_input [void] | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:40:12:40:21 | call to user_input [void] | call to user_input [void] |
-| simple.cpp:29:12:29:12 | call to b | simple.cpp:42:12:42:21 | call to user_input [void] | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:42:12:42:21 | call to user_input [void] | call to user_input [void] |
-| struct_init.c:22:11:22:11 | a | struct_init.c:20:20:20:29 | call to user_input [void] | struct_init.c:22:11:22:11 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input [void] | call to user_input [void] |
-| struct_init.c:31:23:31:23 | a | struct_init.c:27:7:27:16 | call to user_input [void] | struct_init.c:31:23:31:23 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input [void] | call to user_input [void] |
+| A.cpp:43:10:43:12 | & ... | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... | & ... flows from $@ | A.cpp:41:15:41:21 | new | new |
+| A.cpp:49:13:49:13 | c | A.cpp:47:12:47:18 | new | A.cpp:49:13:49:13 | c | c flows from $@ | A.cpp:47:12:47:18 | new | new |
+| A.cpp:56:13:56:15 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:13:56:15 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
+| A.cpp:57:28:57:30 | call to get | A.cpp:57:17:57:23 | new | A.cpp:57:28:57:30 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new | new |
+| A.cpp:66:14:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:14:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
+| A.cpp:75:14:75:14 | c | A.cpp:73:25:73:32 | new | A.cpp:75:14:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new | new |
+| A.cpp:107:16:107:16 | a | A.cpp:98:12:98:18 | new | A.cpp:107:16:107:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
+| A.cpp:120:16:120:16 | a | A.cpp:98:12:98:18 | new | A.cpp:120:16:120:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
+| A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new | new |
+| A.cpp:152:13:152:13 | b | A.cpp:143:25:143:31 | new | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:143:25:143:31 | new | new |
+| A.cpp:152:13:152:13 | b | A.cpp:150:12:150:18 | new | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:150:12:150:18 | new | new |
+| A.cpp:153:16:153:16 | c | A.cpp:142:14:142:20 | new | A.cpp:153:16:153:16 | c | c flows from $@ | A.cpp:142:14:142:20 | new | new |
+| A.cpp:154:13:154:13 | c | A.cpp:142:14:142:20 | new | A.cpp:154:13:154:13 | c | c flows from $@ | A.cpp:142:14:142:20 | new | new |
+| A.cpp:165:26:165:29 | head | A.cpp:159:12:159:18 | new | A.cpp:165:26:165:29 | head | head flows from $@ | A.cpp:159:12:159:18 | new | new |
+| A.cpp:169:15:169:18 | head | A.cpp:159:12:159:18 | new | A.cpp:169:15:169:18 | head | head flows from $@ | A.cpp:159:12:159:18 | new | new |
+| B.cpp:9:20:9:24 | elem1 | B.cpp:6:15:6:24 | new | B.cpp:9:20:9:24 | elem1 | elem1 flows from $@ | B.cpp:6:15:6:24 | new | new |
+| B.cpp:19:20:19:24 | elem2 | B.cpp:15:15:15:27 | new | B.cpp:19:20:19:24 | elem2 | elem2 flows from $@ | B.cpp:15:15:15:27 | new | new |
+| C.cpp:29:10:29:11 | s1 | C.cpp:22:12:22:21 | new | C.cpp:29:10:29:11 | s1 | s1 flows from $@ | C.cpp:22:12:22:21 | new | new |
+| C.cpp:31:10:31:11 | s3 | C.cpp:24:16:24:25 | new | C.cpp:31:10:31:11 | s3 | s3 flows from $@ | C.cpp:24:16:24:25 | new | new |
+| aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input | call to user_input |
+| aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input | call to user_input |
+| aliasing.cpp:62:14:62:15 | m1 | aliasing.cpp:60:11:60:20 | call to user_input | aliasing.cpp:62:14:62:15 | m1 | m1 flows from $@ | aliasing.cpp:60:11:60:20 | call to user_input | call to user_input |
+| aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input | call to user_input |
+| complex.cpp:44:12:44:12 | call to a | complex.cpp:55:13:55:22 | call to user_input | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:55:13:55:22 | call to user_input | call to user_input |
+| complex.cpp:44:12:44:12 | call to a | complex.cpp:57:13:57:22 | call to user_input | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:57:13:57:22 | call to user_input | call to user_input |
+| complex.cpp:45:12:45:12 | call to b | complex.cpp:56:13:56:22 | call to user_input | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:56:13:56:22 | call to user_input | call to user_input |
+| complex.cpp:45:12:45:12 | call to b | complex.cpp:58:13:58:22 | call to user_input | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:58:13:58:22 | call to user_input | call to user_input |
+| constructors.cpp:28:12:28:12 | call to a | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:34:11:34:20 | call to user_input | call to user_input |
+| constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input | call to user_input |
+| constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input | call to user_input |
+| constructors.cpp:29:12:29:12 | call to b | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:36:25:36:34 | call to user_input | call to user_input |
+| simple.cpp:28:12:28:12 | call to a | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:39:12:39:21 | call to user_input | call to user_input |
+| simple.cpp:28:12:28:12 | call to a | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:41:12:41:21 | call to user_input | call to user_input |
+| simple.cpp:29:12:29:12 | call to b | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:40:12:40:21 | call to user_input | call to user_input |
+| simple.cpp:29:12:29:12 | call to b | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:42:12:42:21 | call to user_input | call to user_input |
+| struct_init.c:22:11:22:11 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:22:11:22:11 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |
+| struct_init.c:31:23:31:23 | a | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:31:23:31:23 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input | call to user_input |

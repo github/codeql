@@ -6,7 +6,7 @@ public class B
         var b1 = new Box1(e, null);
         var b2 = new Box2(b1);
         Sink(b2.box1.elem1); // flow
-        Sink(b2.box1.elem2); // FP due to flow in M2 below
+        Sink(b2.box1.elem2); // no flow
     }
 
     public void M2()
@@ -14,7 +14,7 @@ public class B
         var e = new Elem();
         var b1 = new Box1(null, e);
         var b2 = new Box2(b1);
-        Sink(b2.box1.elem1); // FP due to flow in M1 above
+        Sink(b2.box1.elem1); // no flow
         Sink(b2.box1.elem2); // flow
     }
 

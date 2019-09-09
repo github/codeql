@@ -1217,7 +1217,8 @@ private predicate consCand(Content f, AccessPathFront apf, Configuration config)
 
 private newtype TAccessPath =
   TNil(DataFlowType t) or
-  TCons(Content f, int len) { len in [1 .. 5] }
+  TConsNil(Content f, DataFlowType t) { consCand(f, TFrontNil(t), _) } or
+  TConsCons(Content f1, Content f2, int len) { consCand(f1, TFrontHead(f2), _) and len in [2 .. 5] }
 
 /**
  * Conceptually a list of `Content`s followed by a `Type`, but only the first
@@ -1226,52 +1227,93 @@ private newtype TAccessPath =
  * dereference operations needed to get from the value in the node to the
  * tracked object. The final type indicates the type of the tracked object.
  */
-private class AccessPath extends TAccessPath {
+abstract private class AccessPath extends TAccessPath {
   abstract string toString();
 
-  Content getHead() { this = TCons(result, _) }
+  Content getHead() {
+    this = TConsNil(result, _)
+    or
+    this = TConsCons(result, _, _)
+  }
 
   int len() {
     this = TNil(_) and result = 0
     or
-    this = TCons(_, result)
+    this = TConsNil(_, _) and result = 1
+    or
+    this = TConsCons(_, _, result)
   }
 
   DataFlowType getType() {
     this = TNil(result)
     or
-    exists(Content head | this = TCons(head, _) | result = head.getContainerType())
+    result = this.getHead().getContainerType()
   }
 
   abstract AccessPathFront getFront();
+
+  /**
+   * Holds if this access path has `head` at the front and may be followed by `tail`.
+   */
+  abstract predicate pop(Content head, AccessPath tail);
 }
 
 private class AccessPathNil extends AccessPath, TNil {
-  override string toString() { exists(DataFlowType t | this = TNil(t) | result = ppReprType(t)) }
+  override string toString() {
+    exists(DataFlowType t | this = TNil(t) | result = concat(ppReprType(t)))
+  }
 
   override AccessPathFront getFront() {
     exists(DataFlowType t | this = TNil(t) | result = TFrontNil(t))
   }
+
+  override predicate pop(Content head, AccessPath tail) { none() }
 }
 
-private class AccessPathCons extends AccessPath, TCons {
+abstract private class AccessPathCons extends AccessPath { }
+
+private class AccessPathConsNil extends AccessPathCons, TConsNil {
   override string toString() {
-    exists(Content f, int len | this = TCons(f, len) |
-      result = f.toString() + ", ... (" + len.toString() + ")"
+    exists(Content f, DataFlowType t | this = TConsNil(f, t) |
+      // The `concat` becomes "" if `ppReprType` has no result.
+      result = f.toString() + concat(" : " + ppReprType(t))
     )
   }
 
   override AccessPathFront getFront() {
-    exists(Content f | this = TCons(f, _) | result = TFrontHead(f))
+    exists(Content f | this = TConsNil(f, _) | result = TFrontHead(f))
+  }
+
+  override predicate pop(Content head, AccessPath tail) {
+    exists(DataFlowType t | this = TConsNil(head, t) and tail = TNil(t))
+  }
+}
+
+private class AccessPathConsCons extends AccessPathCons, TConsCons {
+  override string toString() {
+    exists(Content f1, Content f2, int len | this = TConsCons(f1, f2, len) |
+      if len = 2
+      then result = f1.toString() + ", " + f2.toString()
+      else result = f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")"
+    )
+  }
+
+  override AccessPathFront getFront() {
+    exists(Content f | this = TConsCons(f, _, _) | result = TFrontHead(f))
+  }
+
+  override predicate pop(Content head, AccessPath tail) {
+    exists(int len, Content next | this = TConsCons(head, next, len) |
+      tail = TConsCons(next, _, len - 1)
+      or
+      len = 2 and
+      tail = TConsNil(next, _)
+    )
   }
 }
 
 /** Holds if `ap0` corresponds to the cons of `f` and `ap`. */
-private predicate pop(AccessPath ap0, Content f, AccessPath ap) {
-  ap0.getFront().headUsesContent(f) and
-  consCand(f, ap.getFront(), _) and
-  ap0.len() = 1 + ap.len()
-}
+private predicate pop(AccessPath ap0, Content f, AccessPath ap) { ap0.pop(f, ap) }
 
 /** Holds if `ap0` corresponds to the cons of `f` and `ap` and `apf` is the front of `ap`. */
 pragma[noinline]
@@ -2002,11 +2044,66 @@ private module FlowExploration {
     result = distSrcExt(TCallable(c, config)) - 1
   }
 
+  private newtype TPartialAccessPath =
+    TPartialNil(DataFlowType t) or
+    TPartialCons(Content f, int len) { len in [1 .. 5] }
+
+  /**
+   * Conceptually a list of `Content`s followed by a `Type`, but only the first
+   * element of the list and its length are tracked. If data flows from a source to
+   * a given node with a given `AccessPath`, this indicates the sequence of
+   * dereference operations needed to get from the value in the node to the
+   * tracked object. The final type indicates the type of the tracked object.
+   */
+  private class PartialAccessPath extends TPartialAccessPath {
+    abstract string toString();
+
+    Content getHead() { this = TPartialCons(result, _) }
+
+    int len() {
+      this = TPartialNil(_) and result = 0
+      or
+      this = TPartialCons(_, result)
+    }
+
+    DataFlowType getType() {
+      this = TPartialNil(result)
+      or
+      exists(Content head | this = TPartialCons(head, _) | result = head.getContainerType())
+    }
+
+    abstract AccessPathFront getFront();
+  }
+
+  private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
+    override string toString() {
+      exists(DataFlowType t | this = TPartialNil(t) | result = concat(" : " + ppReprType(t)))
+    }
+
+    override AccessPathFront getFront() {
+      exists(DataFlowType t | this = TPartialNil(t) | result = TFrontNil(t))
+    }
+  }
+
+  private class PartialAccessPathCons extends PartialAccessPath, TPartialCons {
+    override string toString() {
+      exists(Content f, int len | this = TPartialCons(f, len) |
+        if len = 1
+        then result = f.toString()
+        else result = f.toString() + ", ... (" + len.toString() + ")"
+      )
+    }
+
+    override AccessPathFront getFront() {
+      exists(Content f | this = TPartialCons(f, _) | result = TFrontHead(f))
+    }
+  }
+
   private newtype TPartialPathNode =
-    TPartialPathNodeMk(Node node, CallContext cc, AccessPath ap, Configuration config) {
+    TPartialPathNodeMk(Node node, CallContext cc, PartialAccessPath ap, Configuration config) {
       config.isSource(node) and
       cc instanceof CallContextAny and
-      ap = TNil(getErasedRepr(node.getType())) and
+      ap = TPartialNil(getErasedRepr(node.getType())) and
       not fullBarrier(node, config) and
       exists(config.explorationLimit())
       or
@@ -2016,7 +2113,7 @@ private module FlowExploration {
 
   pragma[nomagic]
   private predicate partialPathNodeMk0(
-    Node node, CallContext cc, AccessPath ap, Configuration config
+    Node node, CallContext cc, PartialAccessPath ap, Configuration config
   ) {
     exists(PartialPathNode mid |
       partialPathStep(mid, node, cc, ap, config) and
@@ -2090,7 +2187,7 @@ private module FlowExploration {
   private class PartialPathNodePriv extends PartialPathNode {
     Node node;
     CallContext cc;
-    AccessPath ap;
+    PartialAccessPath ap;
     Configuration config;
 
     PartialPathNodePriv() { this = TPartialPathNodeMk(node, cc, ap, config) }
@@ -2099,7 +2196,7 @@ private module FlowExploration {
 
     CallContext getCallContext() { result = cc }
 
-    AccessPath getAp() { result = ap }
+    PartialAccessPath getAp() { result = ap }
 
     override Configuration getConfiguration() { result = config }
 
@@ -2112,7 +2209,7 @@ private module FlowExploration {
   }
 
   private predicate partialPathStep(
-    PartialPathNodePriv mid, Node node, CallContext cc, AccessPath ap, Configuration config
+    PartialPathNodePriv mid, Node node, CallContext cc, PartialAccessPath ap, Configuration config
   ) {
     localFlowStep(mid.getNode(), node, config) and
     cc = mid.getCallContext() and
@@ -2121,8 +2218,8 @@ private module FlowExploration {
     or
     additionalLocalFlowStep(mid.getNode(), node, config) and
     cc = mid.getCallContext() and
-    mid.getAp() instanceof AccessPathNil and
-    ap = TNil(getErasedRepr(node.getType())) and
+    mid.getAp() instanceof PartialAccessPathNil and
+    ap = TPartialNil(getErasedRepr(node.getType())) and
     config = mid.getConfiguration()
     or
     jumpStep(mid.getNode(), node, config) and
@@ -2132,15 +2229,15 @@ private module FlowExploration {
     or
     additionalJumpStep(mid.getNode(), node, config) and
     cc instanceof CallContextAny and
-    mid.getAp() instanceof AccessPathNil and
-    ap = TNil(getErasedRepr(node.getType())) and
+    mid.getAp() instanceof PartialAccessPathNil and
+    ap = TPartialNil(getErasedRepr(node.getType())) and
     config = mid.getConfiguration()
     or
     partialPathStoreStep(mid, _, _, node, ap) and
     cc = mid.getCallContext() and
     config = mid.getConfiguration()
     or
-    exists(AccessPath ap0, Content f |
+    exists(PartialAccessPath ap0, Content f |
       partialPathReadStep(mid, ap0, f, node, cc, config) and
       apConsFwd(ap, f, ap0, config)
     )
@@ -2161,7 +2258,7 @@ private module FlowExploration {
 
   pragma[inline]
   private predicate partialPathStoreStep(
-    PartialPathNodePriv mid, AccessPath ap1, Content f, Node node, AccessPath ap2
+    PartialPathNodePriv mid, PartialAccessPath ap1, Content f, Node node, PartialAccessPath ap2
   ) {
     ap1 = mid.getAp() and
     store(mid.getNode(), f, node) and
@@ -2171,7 +2268,9 @@ private module FlowExploration {
   }
 
   pragma[nomagic]
-  private predicate apConsFwd(AccessPath ap1, Content f, AccessPath ap2, Configuration config) {
+  private predicate apConsFwd(
+    PartialAccessPath ap1, Content f, PartialAccessPath ap2, Configuration config
+  ) {
     exists(PartialPathNodePriv mid |
       partialPathStoreStep(mid, ap1, f, _, ap2) and
       config = mid.getConfiguration()
@@ -2180,7 +2279,7 @@ private module FlowExploration {
 
   pragma[nomagic]
   private predicate partialPathReadStep(
-    PartialPathNodePriv mid, AccessPath ap, Content f, Node node, CallContext cc,
+    PartialPathNodePriv mid, PartialAccessPath ap, Content f, Node node, CallContext cc,
     Configuration config
   ) {
     ap = mid.getAp() and
@@ -2191,7 +2290,7 @@ private module FlowExploration {
   }
 
   private predicate partialPathOutOfCallable0(
-    PartialPathNodePriv mid, ReturnPosition pos, CallContext innercc, AccessPath ap,
+    PartialPathNodePriv mid, ReturnPosition pos, CallContext innercc, PartialAccessPath ap,
     Configuration config
   ) {
     pos = getReturnPosition(mid.getNode()) and
@@ -2203,8 +2302,8 @@ private module FlowExploration {
 
   pragma[noinline]
   private predicate partialPathOutOfCallable1(
-    PartialPathNodePriv mid, DataFlowCall call, ReturnKind kind, CallContext cc, AccessPath ap,
-    Configuration config
+    PartialPathNodePriv mid, DataFlowCall call, ReturnKind kind, CallContext cc,
+    PartialAccessPath ap, Configuration config
   ) {
     exists(ReturnPosition pos, DataFlowCallable c, CallContext innercc |
       partialPathOutOfCallable0(mid, pos, innercc, ap, config) and
@@ -2217,7 +2316,7 @@ private module FlowExploration {
   }
 
   private predicate partialPathOutOfCallable(
-    PartialPathNodePriv mid, OutNode out, CallContext cc, AccessPath ap, Configuration config
+    PartialPathNodePriv mid, OutNode out, CallContext cc, PartialAccessPath ap, Configuration config
   ) {
     exists(ReturnKind kind, DataFlowCall call |
       partialPathOutOfCallable1(mid, call, kind, cc, ap, config)
@@ -2227,7 +2326,7 @@ private module FlowExploration {
   }
 
   private predicate partialPathOutOfArgument(
-    PartialPathNodePriv mid, PostUpdateNode node, CallContext cc, AccessPath ap,
+    PartialPathNodePriv mid, PostUpdateNode node, CallContext cc, PartialAccessPath ap,
     Configuration config
   ) {
     exists(
@@ -2253,7 +2352,7 @@ private module FlowExploration {
   pragma[noinline]
   private predicate partialPathIntoArg(
     PartialPathNodePriv mid, int i, CallContext cc, DataFlowCall call, boolean emptyAp,
-    AccessPath ap, Configuration config
+    PartialAccessPath ap, Configuration config
   ) {
     exists(ArgumentNode arg |
       arg = mid.getNode() and
@@ -2262,16 +2361,16 @@ private module FlowExploration {
       ap = mid.getAp() and
       config = mid.getConfiguration()
     |
-      ap instanceof AccessPathNil and emptyAp = true
+      ap instanceof PartialAccessPathNil and emptyAp = true
       or
-      ap instanceof AccessPathCons and emptyAp = false
+      ap instanceof PartialAccessPathCons and emptyAp = false
     )
   }
 
   pragma[nomagic]
   private predicate partialPathIntoCallable0(
     PartialPathNodePriv mid, DataFlowCallable callable, int i, CallContext outercc,
-    DataFlowCall call, boolean emptyAp, AccessPath ap, Configuration config
+    DataFlowCall call, boolean emptyAp, PartialAccessPath ap, Configuration config
   ) {
     partialPathIntoArg(mid, i, outercc, call, emptyAp, ap, config) and
     callable = resolveCall(call, outercc)
@@ -2279,7 +2378,7 @@ private module FlowExploration {
 
   private predicate partialPathIntoCallable(
     PartialPathNodePriv mid, ParameterNode p, CallContext outercc, CallContextCall innercc,
-    DataFlowCall call, AccessPath ap, Configuration config
+    DataFlowCall call, PartialAccessPath ap, Configuration config
   ) {
     exists(int i, DataFlowCallable callable, boolean emptyAp |
       partialPathIntoCallable0(mid, callable, i, outercc, call, emptyAp, ap, config) and
@@ -2293,7 +2392,8 @@ private module FlowExploration {
 
   pragma[nomagic]
   private predicate paramFlowsThroughInPartialPath(
-    ParameterNode p, ReturnKind kind, CallContextCall cc, AccessPathNil apnil, Configuration config
+    ParameterNode p, ReturnKind kind, CallContextCall cc, PartialAccessPathNil apnil,
+    Configuration config
   ) {
     exists(PartialPathNodePriv mid, ReturnNode ret |
       mid.getNode() = ret and
@@ -2313,9 +2413,9 @@ private module FlowExploration {
   pragma[noinline]
   private predicate partialPathThroughCallable0(
     DataFlowCall call, PartialPathNodePriv mid, ReturnKind kind, CallContext cc,
-    AccessPathNil apnil, Configuration config
+    PartialAccessPathNil apnil, Configuration config
   ) {
-    exists(ParameterNode p, CallContext innercc, AccessPathNil midapnil |
+    exists(ParameterNode p, CallContext innercc, PartialAccessPathNil midapnil |
       partialPathIntoCallable(mid, p, cc, innercc, call, midapnil, config) and
       paramFlowsThroughInPartialPath(p, kind, innercc, apnil, config) and
       not parameterValueFlowsThrough(p, kind, innercc)
@@ -2323,7 +2423,8 @@ private module FlowExploration {
   }
 
   private predicate partialPathThroughCallable(
-    PartialPathNodePriv mid, OutNode out, CallContext cc, AccessPathNil apnil, Configuration config
+    PartialPathNodePriv mid, OutNode out, CallContext cc, PartialAccessPathNil apnil,
+    Configuration config
   ) {
     exists(DataFlowCall call, ReturnKind kind |
       partialPathThroughCallable0(call, mid, kind, cc, apnil, config) and
@@ -2333,8 +2434,8 @@ private module FlowExploration {
 
   pragma[noinline]
   private predicate valuePartialPathThroughCallable0(
-    DataFlowCall call, PartialPathNodePriv mid, ReturnKind kind, CallContext cc, AccessPath ap,
-    Configuration config
+    DataFlowCall call, PartialPathNodePriv mid, ReturnKind kind, CallContext cc,
+    PartialAccessPath ap, Configuration config
   ) {
     exists(ParameterNode p, CallContext innercc |
       partialPathIntoCallable(mid, p, cc, innercc, call, ap, config) and
@@ -2343,7 +2444,7 @@ private module FlowExploration {
   }
 
   private predicate valuePartialPathThroughCallable(
-    PartialPathNodePriv mid, OutNode out, CallContext cc, AccessPath ap, Configuration config
+    PartialPathNodePriv mid, OutNode out, CallContext cc, PartialAccessPath ap, Configuration config
   ) {
     exists(DataFlowCall call, ReturnKind kind |
       valuePartialPathThroughCallable0(call, mid, kind, cc, ap, config) and

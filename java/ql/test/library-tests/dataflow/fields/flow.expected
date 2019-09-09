@@ -12,8 +12,6 @@
 | A.java:94:11:94:17 | new B(...) | A.java:100:10:100:26 | l3.next.next.head |
 | A.java:94:11:94:17 | new B(...) | A.java:103:12:103:17 | l.head |
 | B.java:4:14:4:23 | new Elem(...) | B.java:7:10:7:22 | b2.box1.elem1 |
-| B.java:4:14:4:23 | new Elem(...) | B.java:8:10:8:22 | b2.box1.elem2 |
-| B.java:12:14:12:23 | new Elem(...) | B.java:15:10:15:22 | b2.box1.elem1 |
 | B.java:12:14:12:23 | new Elem(...) | B.java:16:10:16:22 | b2.box1.elem2 |
 | C.java:3:21:3:30 | new Elem(...) | C.java:18:10:18:11 | s1 |
 | C.java:4:27:4:36 | new Elem(...) | C.java:19:10:19:11 | s2 |
