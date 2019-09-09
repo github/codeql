@@ -30,6 +30,9 @@ abstract class Assignment extends Operation {
 
 /**
  * A non-overloaded assignment operation with the operator `=`.
+ * ```
+ * a = b;
+ * ```
  */
 class AssignExpr extends Assignment, @assignexpr {
   override string getOperator() { result = "=" }
@@ -55,6 +58,9 @@ abstract class AssignArithmeticOperation extends AssignOperation { }
 
 /**
  * A non-overloaded `+=` assignment expression on a non-pointer lvalue.
+ * ```
+ * a += b;
+ * ```
  */
 class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
   override string getCanonicalQLClass() { result = "AssignAddExpr" }
@@ -64,6 +70,9 @@ class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
 
 /**
  * A non-overloaded `-=` assignment expression on a non-pointer lvalue.
+ * ```
+ * a -= b;
+ * ```
  */
 class AssignSubExpr extends AssignArithmeticOperation, @assignsubexpr {
   override string getCanonicalQLClass() { result = "AssignSubExpr" }
@@ -73,6 +82,9 @@ class AssignSubExpr extends AssignArithmeticOperation, @assignsubexpr {
 
 /**
  * A non-overloaded `*=` assignment expression.
+ * ```
+ * a *= b;
+ * ```
  */
 class AssignMulExpr extends AssignArithmeticOperation, @assignmulexpr {
   override string getCanonicalQLClass() { result = "AssignMulExpr" }
@@ -82,6 +94,9 @@ class AssignMulExpr extends AssignArithmeticOperation, @assignmulexpr {
 
 /**
  * A non-overloaded `/=` assignment expression.
+ * ```
+ * a /= b;
+ * ```
  */
 class AssignDivExpr extends AssignArithmeticOperation, @assigndivexpr {
   override string getCanonicalQLClass() { result = "AssignDivExpr" }
@@ -91,6 +106,9 @@ class AssignDivExpr extends AssignArithmeticOperation, @assigndivexpr {
 
 /**
  * A non-overloaded `%=` assignment expression.
+ * ```
+ * a %= b;
+ * ```
  */
 class AssignRemExpr extends AssignArithmeticOperation, @assignremexpr {
   override string getCanonicalQLClass() { result = "AssignRemExpr" }
@@ -105,7 +123,10 @@ class AssignRemExpr extends AssignArithmeticOperation, @assignremexpr {
 abstract class AssignBitwiseOperation extends AssignOperation { }
 
 /**
- * A non-overloaded `&=` assignment expression.
+ * A non-overloaded AND (`&=`) assignment expression.
+ * ```
+ * a &= b;
+ * ```
  */
 class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
   override string getCanonicalQLClass() { result = "AssignAndExpr" }
@@ -114,7 +135,10 @@ class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
 }
 
 /**
- * A non-overloaded `|=` assignment expression.
+ * A non-overloaded OR (`|=`) assignment expression.
+ * ```
+ * a |= b;
+ * ```
  */
 class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
   override string getCanonicalQLClass() { result = "AssignOrExpr" }
@@ -123,7 +147,10 @@ class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
 }
 
 /**
- * A non-overloaded `^=` assignment expression.
+ * A non-overloaded XOR (`^=`) assignment expression.
+ * ```
+ * a ^= b;
+ * ```
  */
 class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
   override string getCanonicalQLClass() { result = "AssignXorExpr" }
@@ -133,6 +160,9 @@ class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
 
 /**
  * A non-overloaded `<<=` assignment expression.
+ * ```
+ * a <<= b;
+ * ```
  */
 class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
   override string getCanonicalQLClass() { result = "AssignLShiftExpr" }
@@ -142,6 +172,9 @@ class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
 
 /**
  * A non-overloaded `>>=` assignment expression.
+ * ```
+ * a >>= b;
+ * ```
  */
 class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
   override string getCanonicalQLClass() { result = "AssignRShiftExpr" }
@@ -151,6 +184,9 @@ class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
 
 /**
  * A non-overloaded `+=` pointer assignment expression.
+ * ```
+ * ptr += index;
+ * ```
  */
 class AssignPointerAddExpr extends AssignOperation, @assignpaddexpr {
   override string getCanonicalQLClass() { result = "AssignPointerAddExpr" }
@@ -160,6 +196,9 @@ class AssignPointerAddExpr extends AssignOperation, @assignpaddexpr {
 
 /**
  * A non-overloaded `-=` pointer assignment expression.
+ * ```
+ * ptr -= index;
+ * ```
  */
 class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
   override string getCanonicalQLClass() { result = "AssignPointerSubExpr" }
