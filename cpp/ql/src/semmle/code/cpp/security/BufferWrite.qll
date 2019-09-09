@@ -10,7 +10,9 @@ import semmle.code.cpp.commons.Buffer
 import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.models.implementations.Strcat
 
-// --- BufferWrite framework ---
+/*
+ * --- BufferWrite framework ---
+ */
 
 /**
  * An operation that writes a variable amount of data to a buffer
@@ -27,7 +29,9 @@ import semmle.code.cpp.models.implementations.Strcat
  */
 abstract class BufferWrite extends Expr
 {
-  // --- derived classes override these ---
+  /*
+   * --- derived classes override these ---
+   */
 
   /**
    * Gets the (unspecified) type of the buffer this operation works
@@ -100,7 +104,9 @@ abstract class BufferWriteCall extends BufferWrite, FunctionCall
 {
 }
 
-// --- BufferWrite classes ---
+/*
+ * --- BufferWrite classes ---
+ */
 
 /**
  * A call to a variant of `strcpy`. 
@@ -267,7 +273,7 @@ class SprintfBW extends BufferWriteCall
   {
     exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
       /*
-       * C sprintf variants
+       * C sprintf variants:
        */
 
       // sprintf(dst, format, args...)
@@ -283,7 +289,7 @@ class SprintfBW extends BufferWriteCall
       name = "vwsprintf"
       or
       /*
-       * Microsoft sprintf variants
+       * Microsoft sprintf variants:
        */
 
       //  _sprintf_l(dst, format, locale, args...)
@@ -346,7 +352,7 @@ class SnprintfBW extends BufferWriteCall
   {
     exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
       /*
-       * C snprintf variants
+       * C snprintf variants:
        */
 
       // snprintf(dst, max_amount, format, args...)
@@ -362,7 +368,7 @@ class SnprintfBW extends BufferWriteCall
       name = "vswprintf"
       or
       /*
-       * Microsoft snprintf variants
+       * Microsoft snprintf variants:
        */
 
       // sprintf_s(dst, max_amount, format, locale, args...)

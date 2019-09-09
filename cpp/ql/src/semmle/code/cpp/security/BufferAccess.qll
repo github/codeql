@@ -16,13 +16,16 @@ int getPointedSize(Type t)
  */
 abstract class BufferAccess extends Expr {
   abstract string getName();
+  /**
+   * Gets the expression that denotes the buffer, along with a textual label
+   * for it and an access type.
+   *
+   * accessType:
+   * - 1 = buffer range [0, getSize) is accessed entirely.
+   * - 2 = buffer range [0, getSize) may be accessed partially or entirely.
+   * - 3 = buffer is accessed at offset getSize - 1.
+   */
   abstract Expr getBuffer(string bufferDesc, int accessType);
-    /*
-     * accessType:
-     *  1 = buffer range [0, getSize) is accessed entirely 
-     *  2 = buffer range [0, getSize) may be accessed partially or entirely
-     *  3 = buffer is accessed at offset getSize - 1
-     */
   abstract int getSize();
 }
 
