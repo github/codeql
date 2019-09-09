@@ -147,7 +147,11 @@ predicate from the :ref:`above <defining-class>` class::
 
     1.(OneTwoThree).getAString()
 
-This call returns the results ``"One, two or three: 1"``.
+This call returns the result ``"One, two or three: 1"``.
+
+The expression ``(OneTwoThree)`` is a :ref:`cast <casts>`. It ensures that ``1`` has type
+``OneTwoThree`` instead of just ``int``. Therefore, it has access to the member predicate
+``getAString()``.
 
 Member predicates are especially useful because you can chain them together. For example, you
 can use ``toUpperCase()``, a built-in function defined for ``string``::
