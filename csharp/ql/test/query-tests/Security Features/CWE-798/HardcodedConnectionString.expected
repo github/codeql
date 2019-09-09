@@ -1,10 +1,10 @@
 edges
-| HardcodedCredentials.cs:49:30:49:60 | array creation of type Byte[] | HardcodedCredentials.cs:52:13:52:23 | access to local variable rawCertData |
+| HardcodedCredentials.cs:49:30:49:60 | array creation of type Byte[] : Byte[] | HardcodedCredentials.cs:52:13:52:23 | access to local variable rawCertData |
 nodes
 | HardcodedCredentials.cs:17:25:17:36 | "myPa55word" | semmle.label | "myPa55word" |
 | HardcodedCredentials.cs:33:19:33:28 | "username" | semmle.label | "username" |
 | HardcodedCredentials.cs:47:39:47:53 | "myNewPa55word" | semmle.label | "myNewPa55word" |
-| HardcodedCredentials.cs:49:30:49:60 | array creation of type Byte[] | semmle.label | array creation of type Byte[] |
+| HardcodedCredentials.cs:49:30:49:60 | array creation of type Byte[] : Byte[] | semmle.label | array creation of type Byte[] : Byte[] |
 | HardcodedCredentials.cs:52:13:52:23 | access to local variable rawCertData | semmle.label | access to local variable rawCertData |
 | HardcodedCredentials.cs:53:13:53:24 | "myPa55word" | semmle.label | "myPa55word" |
 | HardcodedCredentials.cs:56:48:56:63 | "Password=12345" | semmle.label | "Password=12345" |

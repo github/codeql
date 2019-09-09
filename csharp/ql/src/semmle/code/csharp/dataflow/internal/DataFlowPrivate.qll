@@ -1299,21 +1299,13 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
 
 predicate readStep = readStepImpl/3;
 
-private predicate suppressUnusedType(DotNet::Type t) { any() }
-
 /**
  * Gets a representative type for `t` for the purpose of pruning possible flow.
- *
- * Type-based pruning is disabled for now, so this is a stub implementation.
  */
-bindingset[t]
-DotNet::Type getErasedRepr(DotNet::Type t) {
-  // stub implementation
-  suppressUnusedType(t) and result instanceof ObjectType
-}
+DotNet::Type getErasedRepr(DotNet::Type t) { result = t }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DotNet::Type t) { none() } // stub implementation
+string ppReprType(DotNet::Type t) { result = t.toString() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
