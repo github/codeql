@@ -28,3 +28,10 @@
 | Collections.cs:50:13:50:27 | ... == ... | Collections.cs:50:13:50:16 | access to parameter args | true | true |
 | Collections.cs:65:13:65:24 | ... == ... | Collections.cs:65:13:65:13 | access to local variable x | false | false |
 | Collections.cs:65:13:65:24 | ... == ... | Collections.cs:65:13:65:13 | access to local variable x | true | true |
+| Collections.cs:75:17:75:33 | call to method Any | Collections.cs:75:17:75:20 | access to parameter args | true | false |
+| Collections.cs:76:13:76:36 | ... == ... | Collections.cs:76:13:76:16 | access to parameter args | false | false |
+| Collections.cs:77:13:77:36 | ... == ... | Collections.cs:77:13:77:16 | access to parameter args | true | false |
+| Collections.cs:78:13:78:36 | ... != ... | Collections.cs:78:13:78:16 | access to parameter args | true | false |
+| Collections.cs:79:13:79:36 | ... != ... | Collections.cs:79:13:79:16 | access to parameter args | false | false |
+| Collections.cs:80:13:80:35 | ... > ... | Collections.cs:80:13:80:16 | access to parameter args | true | false |
+| Collections.cs:82:13:82:36 | ... >= ... | Collections.cs:82:13:82:16 | access to parameter args | true | false |

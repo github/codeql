@@ -99,10 +99,6 @@ class SystemCollectionsGenericListClass extends SystemCollectionsGenericUnboundG
     this.hasName("List<>") and
     this.getNumberOfTypeParameters() = 1
   }
-
-  Method getClearMethod() { result = this.getAMethod("Clear") }
-
-  Method getAddMethod() { result = this.getAMethod("Add") }
 }
 
 /** The `System.Collections.Generic.KeyValuePair<TKey, TValue>` structure. */
@@ -133,4 +129,10 @@ class SystemCollectionsGenericICollectionInterface extends SystemCollectionsGene
 
   /** Gets the `Count` property. */
   Property getCountProperty() { result = this.getProperty("Count") }
+
+  /** Gets the `Clear` method. */
+  Method getClearMethod() { result = this.getAMethod("Clear") }
+
+  /** Gets the `Add` method. */
+  Method getAddMethod() { result = this.getAMethod("Add") }
 }

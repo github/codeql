@@ -23,10 +23,10 @@ module SystemLinq {
   class SystemLinqEnumerableClass extends Class {
     SystemLinqEnumerableClass() { this.hasName("Enumerable") }
 
-    /** Gets the `Count()` method. */
-    csharp::ExtensionMethod getCountMethod() { result = this.getAMethod("Count") }
+    /** Gets a `Count()` method. */
+    csharp::ExtensionMethod getACountMethod() { result = this.getAMethod("Count") }
 
-    /** Gets the `Empty()` method. */
-    csharp::ExtensionMethod getAnyMethod() { result = this.getAMethod("Any") }
+    /** Gets an `Any()` method. */
+    csharp::ExtensionMethod getAnAnyMethod() { result = this.getAMethod("Any") }
   }
 }

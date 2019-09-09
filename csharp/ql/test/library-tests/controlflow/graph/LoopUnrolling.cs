@@ -64,7 +64,7 @@ class LoopUnrolling
         }
     }
 
-    void M7(List<string> args)
+    void M8(List<string> args)
     {
         if (!args.Any())
             return;

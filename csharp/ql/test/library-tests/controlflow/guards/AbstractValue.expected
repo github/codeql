@@ -14,6 +14,11 @@ abstractValue
 | 0 | Collections.cs:50:27:50:27 | 0 |
 | 0 | Collections.cs:57:24:57:24 | 0 |
 | 0 | Collections.cs:65:24:65:24 | 0 |
+| 0 | Collections.cs:76:36:76:36 | 0 |
+| 0 | Collections.cs:78:36:78:36 | 0 |
+| 0 | Collections.cs:80:35:80:35 | 0 |
+| 0 | Collections.cs:81:36:81:36 | 0 |
+| 0 | Collections.cs:87:17:87:31 | 0 |
 | 0 | Guards.cs:12:24:12:24 | 0 |
 | 0 | Guards.cs:78:26:78:26 | 0 |
 | 0 | Guards.cs:80:25:80:25 | 0 |
@@ -37,6 +42,10 @@ abstractValue
 | 1 | Collections.cs:35:29:35:29 | 1 |
 | 1 | Collections.cs:37:29:37:29 | 1 |
 | 1 | Collections.cs:40:29:40:29 | 1 |
+| 1 | Collections.cs:77:36:77:36 | 1 |
+| 1 | Collections.cs:79:36:79:36 | 1 |
+| 1 | Collections.cs:82:36:82:36 | 1 |
+| 1 | Collections.cs:89:13:89:32 | 1 |
 | 1 | Guards.cs:92:25:92:25 | 1 |
 | 1 | Guards.cs:243:17:243:17 | 1 |
 | 1 | Guards.cs:246:18:246:18 | 1 |
@@ -60,6 +69,9 @@ abstractValue
 | empty | Collections.cs:58:9:58:13 | ... = ... |
 | empty | Collections.cs:58:13:58:13 | access to local variable x |
 | empty | Collections.cs:65:13:65:13 | access to local variable x |
+| empty | Collections.cs:87:17:87:31 | array creation of type String[] |
+| empty | Collections.cs:87:30:87:31 | { ..., ... } |
+| empty | Collections.cs:88:22:88:23 | { ..., ... } |
 | false | Guards.cs:178:16:178:20 | false |
 | false | Guards.cs:181:52:181:56 | false |
 | false | Guards.cs:217:18:217:22 | false |
@@ -68,10 +80,16 @@ abstractValue
 | false | Guards.cs:305:18:305:22 | false |
 | non-empty | Collections.cs:55:9:55:41 | ... = ... |
 | non-empty | Collections.cs:55:13:55:41 | array creation of type String[] |
+| non-empty | Collections.cs:55:25:55:41 | { ..., ... } |
 | non-empty | Collections.cs:56:9:56:13 | ... = ... |
 | non-empty | Collections.cs:56:13:56:13 | access to local variable x |
 | non-empty | Collections.cs:63:17:63:45 | array creation of type String[] |
+| non-empty | Collections.cs:63:29:63:45 | { ..., ... } |
 | non-empty | Collections.cs:68:13:68:13 | access to local variable x |
+| non-empty | Collections.cs:89:9:89:32 | ... = ... |
+| non-empty | Collections.cs:89:13:89:32 | array creation of type String[] |
+| non-empty | Collections.cs:89:26:89:32 | { ..., ... } |
+| non-empty | Collections.cs:90:22:90:28 | { ..., ... } |
 | non-null | Assert.cs:9:31:9:32 | "" |
 | non-null | Assert.cs:16:31:16:32 | "" |
 | non-null | Assert.cs:23:31:23:32 | "" |
@@ -100,6 +118,14 @@ abstractValue
 | non-null | Collections.cs:63:41:63:43 | "c" |
 | non-null | Collections.cs:67:19:67:21 | "a" |
 | non-null | Collections.cs:68:19:68:21 | "b" |
+| non-null | Collections.cs:74:40:74:41 | "" |
+| non-null | Collections.cs:87:17:87:31 | array creation of type String[] |
+| non-null | Collections.cs:88:22:88:23 | array creation of type String[] |
+| non-null | Collections.cs:89:9:89:32 | ... = ... |
+| non-null | Collections.cs:89:13:89:32 | array creation of type String[] |
+| non-null | Collections.cs:89:28:89:30 | "a" |
+| non-null | Collections.cs:90:22:90:28 | array creation of type String[] |
+| non-null | Collections.cs:90:24:90:26 | "a" |
 | non-null | Guards.cs:18:31:18:46 | "<empty string>" |
 | non-null | Guards.cs:33:31:33:35 | ... + ... |
 | non-null | Guards.cs:36:32:36:36 | ... + ... |

@@ -68,5 +68,26 @@ public class Collections
             x.Add("b");
         }
     }
+
+    void M7(string[] args)
+    {
+        bool IsEmpty(string s) => s == "";
+        var b = args.Any(IsEmpty);
+        b = args.Count(IsEmpty) == 0;
+        b = args.Count(IsEmpty) == 1;
+        b = args.Count(IsEmpty) != 0;
+        b = args.Count(IsEmpty) != 1;
+        b = args.Count(IsEmpty) > 0;
+        b = args.Count(IsEmpty) >= 0;
+        b = args.Count(IsEmpty) >= 1;
+    }
+
+    void M8()
+    {
+        var x = new string[] {};
+        string[] y = {};
+        x = new string[] { "a" };
+        string[] z = { "a" };
+    }
 }
 

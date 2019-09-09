@@ -428,25 +428,25 @@ class DereferenceableExpr extends Expr {
 
 /**
  * An expression that evaluates to a collection. That is, an expression whose
- * (transitive, reflexive) base type is `IEnumerable`(`<T>`).
+ * (transitive, reflexive) base type is `IEnumerable`.
  */
 class CollectionExpr extends Expr {
   CollectionExpr() {
-    exists(Interface i |
-      i = this.getType().(ValueOrRefType).getABaseType*().getSourceDeclaration()
-    |
-      i instanceof SystemCollectionsIEnumerableInterface or
-      i instanceof SystemCollectionsGenericIEnumerableTInterface
-    )
+    this.getType().(ValueOrRefType).getABaseType*() instanceof SystemCollectionsIEnumerableInterface
   }
 
-  /** Gets an expression that computes the size of this collection. */
-  private Expr getASizeExpr() {
+  /**
+   * Gets an expression that computes the size of this collection. `lowerBound`
+   * indicates whether the expression only computes a lower bound.
+   */
+  private Expr getASizeExpr(boolean lowerBound) {
+    lowerBound = false and
     result = any(PropertyRead pr |
         this = pr.getQualifier() and
         pr.getTarget() = any(SystemArrayClass x).getLengthProperty()
       )
     or
+    lowerBound = false and
     result = any(PropertyRead pr |
         this = pr.getQualifier() and
         pr
@@ -459,59 +459,61 @@ class CollectionExpr extends Expr {
     or
     result = any(MethodCall mc |
         mc.getTarget().getSourceDeclaration() = any(SystemLinq::SystemLinqEnumerableClass x)
-              .getCountMethod() and
-        this = mc.getArgument(0)
+              .getACountMethod() and
+        this = mc.getArgument(0) and
+        if mc.getNumberOfArguments() = 1 then lowerBound = false else lowerBound = true
       )
   }
 
   private Expr getABooleanEmptinessCheck(BooleanValue v, boolean isEmpty) {
     exists(boolean branch | branch = v.getValue() |
-      exists(Expr sizeOf | sizeOf = this.getASizeExpr() |
-        result = any(ComparisonTest ct |
-            ct.getAnArgument() = sizeOf and
-            (
-              // x.Length == 0
-              ct.getComparisonKind().isEquality() and
-              ct.getAnArgument().getValue().toInt() = 0 and
-              branch = isEmpty
-              or
-              // x.Length == k, k > 0
-              ct.getComparisonKind().isEquality() and
-              ct.getAnArgument().getValue().toInt() > 0 and
-              branch = true and
-              isEmpty = false
-              or
-              // x.Length != 0
-              ct.getComparisonKind().isInequality() and
-              ct.getAnArgument().getValue().toInt() = 0 and
-              branch = isEmpty.booleanNot()
-              or
-              // x.Length != k, k != 0
-              ct.getComparisonKind().isInequality() and
-              ct.getAnArgument().getValue().toInt() != 0 and
-              branch = false and
-              isEmpty = false
-              or
-              // x.Length > k, k >= 0
-              ct.getComparisonKind().isLessThan() and
-              ct.getFirstArgument().getValue().toInt() >= 0 and
-              branch = true and
-              isEmpty = false
-              or
-              // x.Length >= k, k > 0
-              ct.getComparisonKind().isLessThanEquals() and
-              ct.getFirstArgument().getValue().toInt() > 0 and
-              branch = true and
-              isEmpty = false
-            )
-          ).getExpr()
-      )
+      result = any(ComparisonTest ct |
+          exists(boolean lowerBound |
+            ct.getAnArgument() = this.getASizeExpr(lowerBound) and
+            if isEmpty = true then lowerBound = false else any()
+          |
+            // x.Length == 0
+            ct.getComparisonKind().isEquality() and
+            ct.getAnArgument().getValue().toInt() = 0 and
+            branch = isEmpty
+            or
+            // x.Length == k, k > 0
+            ct.getComparisonKind().isEquality() and
+            ct.getAnArgument().getValue().toInt() > 0 and
+            branch = true and
+            isEmpty = false
+            or
+            // x.Length != 0
+            ct.getComparisonKind().isInequality() and
+            ct.getAnArgument().getValue().toInt() = 0 and
+            branch = isEmpty.booleanNot()
+            or
+            // x.Length != k, k != 0
+            ct.getComparisonKind().isInequality() and
+            ct.getAnArgument().getValue().toInt() != 0 and
+            branch = false and
+            isEmpty = false
+            or
+            // x.Length > k, k >= 0
+            ct.getComparisonKind().isLessThan() and
+            ct.getFirstArgument().getValue().toInt() >= 0 and
+            branch = true and
+            isEmpty = false
+            or
+            // x.Length >= k, k > 0
+            ct.getComparisonKind().isLessThanEquals() and
+            ct.getFirstArgument().getValue().toInt() > 0 and
+            branch = true and
+            isEmpty = false
+          )
+        ).getExpr()
       or
       result = any(MethodCall mc |
           mc.getTarget().getSourceDeclaration() = any(SystemLinq::SystemLinqEnumerableClass x)
-                .getAnyMethod() and
+                .getAnAnyMethod() and
           this = mc.getArgument(0) and
-          branch = isEmpty.booleanNot()
+          branch = isEmpty.booleanNot() and
+          if branch = false then mc.getNumberOfArguments() = 1 else any()
         )
     )
   }
@@ -526,8 +528,8 @@ class CollectionExpr extends Expr {
    * For example, if the expression `x.Length != 0` evaluates to `true` then the
    * expression `x` is guaranteed to be non-empty.
    */
-  Expr getAnEmptinessCheck(AbstractValue v, boolean isNull) {
-    result = this.getABooleanEmptinessCheck(v, isNull)
+  Expr getAnEmptinessCheck(AbstractValue v, boolean isEmpty) {
+    result = this.getABooleanEmptinessCheck(v, isEmpty)
   }
 }
 
@@ -1646,6 +1648,8 @@ module Internal {
       predicate emptyValue(Expr e) {
         e.(ArrayCreation).getALengthArgument().getValue().toInt() = 0
         or
+        e.(ArrayInitializer).hasNoElements()
+        or
         exists(Expr mid | emptyValue(mid) |
           mid = e.(AssignExpr).getRValue()
           or
@@ -1655,8 +1659,8 @@ module Internal {
         exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecesssor(def, e))
         or
         exists(MethodCall mc |
-          mc.getTarget().getSourceDeclaration() = any(SystemCollectionsGenericListClass c)
-                .getClearMethod() and
+          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() = any(SystemCollectionsGenericICollectionInterface c
+            ).getClearMethod() and
           adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
         )
       }
@@ -1666,6 +1670,8 @@ module Internal {
         forex(Expr length | length = e.(ArrayCreation).getALengthArgument() |
           length.getValue().toInt() != 0
         )
+        or
+        e.(ArrayInitializer).getNumberOfElements() > 0
         or
         exists(Expr mid | nonEmptyValue(mid) |
           mid = e.(AssignExpr).getRValue()
@@ -1678,8 +1684,8 @@ module Internal {
         )
         or
         exists(MethodCall mc |
-          mc.getTarget().getSourceDeclaration() = any(SystemCollectionsGenericListClass c)
-                .getAddMethod() and
+          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() = any(SystemCollectionsGenericICollectionInterface c
+            ).getAddMethod() and
           adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
         )
       }

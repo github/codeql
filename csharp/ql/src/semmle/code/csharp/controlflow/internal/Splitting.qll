@@ -1056,16 +1056,6 @@ module LoopUnrollingSplitting {
      * (the loop condition evaluating to `false`).
      */
     abstract predicate pruneLoopCondition(ControlFlowElement pred, ConditionalCompletion c);
-
-    /** Gets a descendant that belongs to the body of this loop. */
-    ControlFlowElement getABodyDescendant() {
-      result = this.getBody()
-      or
-      exists(ControlFlowElement mid |
-        mid = this.getABodyDescendant() and
-        result = getAChild(mid, mid.getEnclosingCallable())
-      )
-    }
   }
 
   private class UnrollableForeachStmt extends UnrollableLoopStmt, ForeachStmt {
@@ -1083,9 +1073,8 @@ module LoopUnrollingSplitting {
     }
 
     override predicate stopUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      pred = last(this.getBody(), c) and
-      succ = succ(pred, c) and
-      not succ = this.getABodyDescendant()
+      pred = this and
+      succ = succ(pred, c)
     }
 
     override predicate pruneLoopCondition(ControlFlowElement pred, ConditionalCompletion c) {
@@ -1159,26 +1148,25 @@ module LoopUnrollingSplitting {
      * Holds if this split applies to control flow element `pred`, where `pred`
      * is a valid predecessor.
      */
-    private predicate appliesToPredecessor(ControlFlowElement pred) {
+    private predicate appliesToPredecessor(ControlFlowElement pred, Completion c) {
       this.appliesTo(pred) and
-      (exists(succ(pred, _)) or exists(succExit(pred, _)))
+      (exists(succ(pred, c)) or exists(succExit(pred, c))) and
+      not loop.pruneLoopCondition(pred, c)
     }
 
     override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      this.appliesToPredecessor(pred) and
+      this.appliesToPredecessor(pred, c) and
       loop.stopUnroll(pred, succ, c)
     }
 
     override Callable hasExit(ControlFlowElement pred, Completion c) {
-      this.appliesToPredecessor(pred) and
-      result = succExit(pred, c) and
-      not loop.pruneLoopCondition(pred, c)
+      this.appliesToPredecessor(pred, c) and
+      result = succExit(pred, c)
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      this.appliesToPredecessor(pred) and
+      this.appliesToPredecessor(pred, c) and
       succ = succ(pred, c) and
-      not loop.pruneLoopCondition(pred, c) and
       not loop.stopUnroll(pred, succ, c)
     }
   }
