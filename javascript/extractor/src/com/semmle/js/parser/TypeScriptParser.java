@@ -1,5 +1,27 @@
 package com.semmle.js.parser;
 
+import ch.qos.logback.classic.Level;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.semmle.js.extractor.ExtractionMetrics;
+import com.semmle.js.parser.JSParser.Result;
+import com.semmle.ts.extractor.TypeTable;
+import com.semmle.util.data.StringUtil;
+import com.semmle.util.data.UnitParser;
+import com.semmle.util.exception.CatastrophicError;
+import com.semmle.util.exception.Exceptions;
+import com.semmle.util.exception.InterruptedError;
+import com.semmle.util.exception.ResourceError;
+import com.semmle.util.exception.UserError;
+import com.semmle.util.io.WholeIO;
+import com.semmle.util.logging.LogbackUtils;
+import com.semmle.util.process.AbstractProcessBuilder;
+import com.semmle.util.process.Builder;
+import com.semmle.util.process.Env;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -16,40 +38,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.semmle.js.parser.JSParser.Result;
-import com.semmle.ts.extractor.TypeTable;
-import com.semmle.util.data.StringUtil;
-import com.semmle.util.data.UnitParser;
-import com.semmle.util.exception.CatastrophicError;
-import com.semmle.util.exception.Exceptions;
-import com.semmle.util.exception.InterruptedError;
-import com.semmle.util.exception.ResourceError;
-import com.semmle.util.exception.UserError;
-import com.semmle.util.io.WholeIO;
-import com.semmle.util.logging.LogbackUtils;
-import com.semmle.util.process.AbstractProcessBuilder;
-import com.semmle.util.process.Builder;
-import com.semmle.util.process.Env;
-
-import ch.qos.logback.classic.Level;
-
 /**
  * The Java half of our wrapper for invoking the TypeScript parser.
  *
  * <p>The Node.js half of the wrapper is expected to live at {@code
  * $SEMMLE_DIST/tools/typescript-parser-wrapper/main.js}; non-standard locations can be configured
  * using the property {@value #PARSER_WRAPPER_PATH_ENV_VAR}.
- * 
- * <p>The script launches the Node.js wrapper in the Node.js runtime, looking for {@code node}
- * on the {@code PATH} by default. Non-standard locations can be configured using the property
- * {@value #TYPESCRIPT_NODE_RUNTIME_VAR}, and additional arguments can be configured using the
- * property {@value #TYPESCRIPT_NODE_RUNTIME_EXTRA_ARGS_VAR}.
+ *
+ * <p>The script launches the Node.js wrapper in the Node.js runtime, looking for {@code node} on
+ * the {@code PATH} by default. Non-standard locations can be configured using the property {@value
+ * #TYPESCRIPT_NODE_RUNTIME_VAR}, and additional arguments can be configured using the property
+ * {@value #TYPESCRIPT_NODE_RUNTIME_EXTRA_ARGS_VAR}.
  *
  * <p>The script is started upon parsing the first TypeScript file and then is kept running in the
  * background, passing it requests for parsing files and getting JSON-encoded ASTs as responses.
@@ -62,8 +61,8 @@ public class TypeScriptParser {
   public static final String PARSER_WRAPPER_PATH_ENV_VAR = "SEMMLE_TYPESCRIPT_PARSER_WRAPPER";
 
   /**
-   * An environment variable that can be set to indicate the location of the Node.js runtime,
-   * as an alternative to adding Node to the PATH.
+   * An environment variable that can be set to indicate the location of the Node.js runtime, as an
+   * alternative to adding Node to the PATH.
    */
   public static final String TYPESCRIPT_NODE_RUNTIME_VAR = "SEMMLE_TYPESCRIPT_NODE_RUNTIME";
 
@@ -71,7 +70,8 @@ public class TypeScriptParser {
    * An environment variable that can be set to provide additional arguments to the Node.js runtime
    * each time it is invoked. Arguments should be separated by spaces.
    */
-  public static final String TYPESCRIPT_NODE_RUNTIME_EXTRA_ARGS_VAR = "SEMMLE_TYPESCRIPT_NODE_RUNTIME_EXTRA_ARGS";
+  public static final String TYPESCRIPT_NODE_RUNTIME_EXTRA_ARGS_VAR =
+      "SEMMLE_TYPESCRIPT_NODE_RUNTIME_EXTRA_ARGS";
 
   /**
    * An environment variable that can be set to specify a timeout to use when verifying the
@@ -102,8 +102,8 @@ public class TypeScriptParser {
 
   /**
    * An environment variable with additional VM arguments to pass to the Node process.
-   * <p>
-   * Only <code>--inspect</code> or <code>--inspect-brk</code> may be used at the moment.
+   *
+   * <p>Only <code>--inspect</code> or <code>--inspect-brk</code> may be used at the moment.
    */
   public static final String TYPESCRIPT_NODE_FLAGS = "SEMMLE_TYPESCRIPT_NODE_FLAGS";
 
@@ -123,8 +123,8 @@ public class TypeScriptParser {
   private String nodeJsRuntime;
 
   /**
-   * Arguments to pass to the Node.js runtime each time it is invoked.
-   * Initialised by {@link #verifyNodeInstallation}.
+   * Arguments to pass to the Node.js runtime each time it is invoked. Initialised by {@link
+   * #verifyNodeInstallation}.
    */
   private List<String> nodeJsRuntimeExtraArgs = Collections.emptyList();
 
@@ -139,7 +139,8 @@ public class TypeScriptParser {
   /**
    * Verifies that Node.js and TypeScript are installed and throws an exception otherwise.
    *
-   * @param verbose if true, log the Node.js executable path, version strings, and any additional arguments.
+   * @param verbose if true, log the Node.js executable path, version strings, and any additional
+   *     arguments.
    */
   public void verifyInstallation(boolean verbose) {
     verifyNodeInstallation();
@@ -158,7 +159,7 @@ public class TypeScriptParser {
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ByteArrayOutputStream err = new ByteArrayOutputStream();
-    
+
     // Determine where to find the Node.js runtime.
     String explicitNodeJsRuntime = Env.systemEnv().get(TYPESCRIPT_NODE_RUNTIME_VAR);
     if (explicitNodeJsRuntime != null) {
@@ -175,7 +176,9 @@ public class TypeScriptParser {
       nodeJsRuntimeExtraArgs = Arrays.asList(extraArgs.split("\\s+"));
     }
 
-    Builder b = new Builder(getNodeJsRuntimeInvocation("--version"), out, err, getParserWrapper().getParentFile());
+    Builder b =
+        new Builder(
+            getNodeJsRuntimeInvocation("--version"), out, err, getParserWrapper().getParentFile());
     b.expectFailure(); // We want to do our own logging in case of an error.
 
     int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 10000);
@@ -203,15 +206,14 @@ public class TypeScriptParser {
   }
 
   /**
-   * Gets a command line to invoke the Node.js runtime.
-   * Any arguments in {@link TypeScriptParser#nodeJsRuntimeExtraArgs}
-   * are passed first, followed by those in {@code args}.
+   * Gets a command line to invoke the Node.js runtime. Any arguments in {@link
+   * TypeScriptParser#nodeJsRuntimeExtraArgs} are passed first, followed by those in {@code args}.
    */
-  private List<String> getNodeJsRuntimeInvocation(String ...args) {
+  private List<String> getNodeJsRuntimeInvocation(String... args) {
     List<String> result = new ArrayList<>();
     result.add(nodeJsRuntime);
     result.addAll(nodeJsRuntimeExtraArgs);
-    for(String arg : args) {
+    for (String arg : args) {
       result.add(arg);
     }
     return result;
@@ -361,17 +363,22 @@ public class TypeScriptParser {
    *
    * <p>If the file is not part of a project, only syntactic information will be extracted.
    */
-  public Result parse(File sourceFile, String source) {
+  public Result parse(File sourceFile, String source, ExtractionMetrics metrics) {
     JsonObject request = new JsonObject();
     request.add("command", new JsonPrimitive("parse"));
     request.add("filename", new JsonPrimitive(sourceFile.getAbsolutePath()));
+    metrics.startPhase(ExtractionMetrics.ExtractionPhase.TypeScriptParser_talkToParserWrapper);
     JsonObject response = talkToParserWrapper(request);
+    metrics.stopPhase(ExtractionMetrics.ExtractionPhase.TypeScriptParser_talkToParserWrapper);
     try {
       checkResponseType(response, "ast");
       JsonObject nodeFlags = response.get("nodeFlags").getAsJsonObject();
       JsonObject syntaxKinds = response.get("syntaxKinds").getAsJsonObject();
       JsonObject ast = response.get("ast").getAsJsonObject();
-      return new TypeScriptASTConverter(nodeFlags, syntaxKinds).convertAST(ast, source);
+      metrics.startPhase(ExtractionMetrics.ExtractionPhase.TypeScriptASTConverter_convertAST);
+      Result converted = new TypeScriptASTConverter(nodeFlags, syntaxKinds).convertAST(ast, source);
+      metrics.stopPhase(ExtractionMetrics.ExtractionPhase.TypeScriptASTConverter_convertAST);
+      return converted;
     } catch (IllegalStateException e) {
       throw new CatastrophicError(
           "TypeScript parser wrapper sent unexpected response: " + response, e);

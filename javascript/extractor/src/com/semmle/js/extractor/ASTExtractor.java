@@ -1,11 +1,5 @@
 package com.semmle.js.extractor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
 import com.semmle.js.ast.AFunctionExpression;
@@ -104,6 +98,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.ScopeManager.DeclKind;
@@ -149,6 +144,11 @@ import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 
 /** Extractor for AST-based information; invoked by the {@link JSExtractor}. */
 public class ASTExtractor {
@@ -191,6 +191,10 @@ public class ASTExtractor {
 
   public ScopeManager getScopeManager() {
     return scopeManager;
+  }
+
+  public ExtractionMetrics getMetrics() {
+    return lexicalExtractor.getMetrics();
   }
 
   /**
@@ -1946,9 +1950,11 @@ public class ASTExtractor {
   }
 
   public void extract(Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+    lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
     trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
     locationManager.emitNodeLocation(root, toplevelLabel);
 
     root.accept(new V(platform, sourceType), null);
+    lexicalExtractor.getMetrics().stopPhase(ExtractionPhase.ASTExtractor_extract);
   }
 }

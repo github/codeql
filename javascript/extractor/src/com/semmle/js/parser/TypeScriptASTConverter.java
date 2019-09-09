@@ -1,13 +1,5 @@
 package com.semmle.js.parser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -149,6 +141,13 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for converting a <a
@@ -2035,7 +2034,9 @@ public class TypeScriptASTConverter {
   private Node convertTaggedTemplateExpression(JsonObject node, SourceLocation loc)
       throws ParseError {
     return new TaggedTemplateExpression(
-        loc, convertChild(node, "tag"), convertChild(node, "template"),
+        loc,
+        convertChild(node, "tag"),
+        convertChild(node, "template"),
         convertChildrenAsTypes(node, "typeArguments"));
   }
 

@@ -3,6 +3,8 @@ package com.semmle.js.parser;
 import com.semmle.js.ast.Comment;
 import com.semmle.js.ast.Node;
 import com.semmle.js.ast.Token;
+import com.semmle.js.extractor.ExtractionMetrics;
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.ExtractorConfig;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import java.util.List;
@@ -65,7 +67,11 @@ public class JSParser {
     }
   }
 
-  public static Result parse(ExtractorConfig config, SourceType sourceType, String source) {
-    return JcornWrapper.parse(config, sourceType, source);
+  public static Result parse(
+      ExtractorConfig config, SourceType sourceType, String source, ExtractionMetrics metrics) {
+    metrics.startPhase(ExtractionPhase.JSParser_parse);
+    Result result = JcornWrapper.parse(config, sourceType, source);
+    metrics.stopPhase(ExtractionPhase.JSParser_parse);
+    return result;
   }
 }
