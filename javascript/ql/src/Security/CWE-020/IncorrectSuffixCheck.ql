@@ -35,7 +35,11 @@ class IndexOfCall extends DataFlow::MethodCallNode {
    */
   IndexOfCall getAnEquivalentIndexOfCall() {
     result.getReceiver().getALocalSource() = this.getReceiver().getALocalSource() and
-    result.getArgument(0).getALocalSource() = this.getArgument(0).getALocalSource() and
+    (
+      result.getArgument(0).getALocalSource() = this.getArgument(0).getALocalSource()
+      or
+      result.getArgument(0).getStringValue() = this.getArgument(0).getStringValue()
+    ) and
     result.getMethodName() = this.getMethodName()
   }
 
