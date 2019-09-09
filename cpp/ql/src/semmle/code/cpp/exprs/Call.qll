@@ -339,6 +339,12 @@ class OverloadedArrayExpr extends FunctionCall {
 
 /**
  * A C/C++ call which is performed through a function pointer.
+ *
+ * In the call below, `(*funcptr)` may be simplified to just `funcptr`.
+ * ```
+ * extern int (*funcptr)(int a, int b);
+ * int c = (*funcptr)(1, 2);
+ * ```
  */
 class ExprCall extends Call, @callexpr {
   /**
@@ -361,6 +367,11 @@ class ExprCall extends Call, @callexpr {
 
 /**
  * A C/C++ call which is performed through a variable of function pointer type.
+ * ```
+ * int call_via_ptr(int (*pfn)(int)) {
+ *   return pfn(5);
+ * }
+ * ```
  */
 class VariableCall extends ExprCall {
   VariableCall() { this.getExpr() instanceof VariableAccess }
@@ -375,6 +386,10 @@ class VariableCall extends ExprCall {
 
 /**
  * A call to a constructor.
+ * ```
+ * struct S { S(void); }
+ * S s;
+ * ```
  */
 class ConstructorCall extends FunctionCall {
   ConstructorCall() { super.getTarget() instanceof Constructor }
@@ -386,7 +401,10 @@ class ConstructorCall extends FunctionCall {
 }
 
 /**
- * A C++ `throw` expression.
+ * A C++ `throw` expression. 
+ * ```
+ * throw Exc(2);
+ * ```
  */
 class ThrowExpr extends Expr, @throw_expr {
   /**
@@ -404,6 +422,9 @@ class ThrowExpr extends Expr, @throw_expr {
 
 /**
  * A C++ `throw` expression with no argument (which causes the current exception to be re-thrown).
+ * ```
+ * throw;
+ * ```
  */
 class ReThrowExpr extends ThrowExpr {
   ReThrowExpr() { this.getType() instanceof VoidType }
@@ -415,6 +436,13 @@ class ReThrowExpr extends ThrowExpr {
 
 /**
  * A call to a destructor.
+ * ```
+ struct S { ~S(void); };
+ void foo() {
+  S s;
+  s.~S(); 
+ }
+ * ```
  */
 class DestructorCall extends FunctionCall {
   DestructorCall() { super.getTarget() instanceof Destructor }
@@ -431,6 +459,11 @@ class DestructorCall extends FunctionCall {
  * For example, given a plain old data type `pod_t`, the syntax `ptr->~pod_t()` is
  * a vacuous destructor call, as `~pod_t` isn't actually a function. This can also
  * occur in instantiated templates, as `ptr->~T()` becomes vacuous when `T` is `int`.
+ * ```
+ * typedef int pod_t;
+ * pod_t *s;
+ * s->~pod_t();
+ * ```
  */
 class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
   /**
