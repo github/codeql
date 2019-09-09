@@ -25,5 +25,5 @@ passport.use(new twitter.Strategy({
 	callbackURL : "baz",
 	passReqToCallback : true
 }, function(req, accessToken, refreshToken, profile, done) {
-	req.body; // Tainted value! passReqToCallback is set to true. Treated similarly to the req argument from Express. 
+	req.body; // `passReqToCallback` is `true`, so `req` is assumed to be an Express request object, causing this to be a `RequestInputAccss`
 }));
