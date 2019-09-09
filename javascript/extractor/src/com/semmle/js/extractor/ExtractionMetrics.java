@@ -46,7 +46,7 @@ public class ExtractionMetrics {
   /** The label for the file that is being extracted. */
   private Label fileLabel;
 
-  /** The number of characters in the file that is being extracted. */
+  /** The number of UTF16 code units in the file that is being extracted. */
   private int length;
 
   /** The previous time a CPU-time measure was performed. */

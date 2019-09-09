@@ -25,12 +25,12 @@ module ExtractionMetrics {
     float getWallclockTime() { result = strictsum(getTime(_, 1)) }
 
     /**
-     * Gets the CPU time in nanoseconds it took to process phase `phaseName` during the extraction this file.
+     * Gets the CPU time in nanoseconds it took to process phase `phaseName` during the extraction of this file.
      */
     float getCpuTime(PhaseName phaseName) { result = getTime(phaseName, 0) }
 
     /**
-     * Gets the wall-clock time in nanoseconds it took to process phase `phaseName` during the extraction this file.
+     * Gets the wall-clock time in nanoseconds it took to process phase `phaseName` during the extraction of this file.
      */
     float getWallclockTime(PhaseName phaseName) { result = getTime(phaseName, 1) }
 
@@ -45,7 +45,7 @@ module ExtractionMetrics {
     string getCacheFile() { extraction_data(this, result, _, _) }
 
     /**
-     * Gets the number of characters in this file.
+     * Gets the number of UTF16 code units in this file.
      */
     int getLength() { extraction_data(this, _, _, result) }
 
