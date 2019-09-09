@@ -8,6 +8,7 @@ private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.Unification
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
@@ -318,6 +319,12 @@ private predicate instanceFieldLikeInit(ObjectCreation oc, FieldLike f, Expr src
   )
 }
 
+private Type getCSharpType(DotNet::Type t) {
+  result = t
+  or
+  result.matchesHandle(t)
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -459,6 +466,19 @@ private module Cached {
       paramNode.getDefinition() = param and
       param.getARead() = guard and
       guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs)
+    )
+  }
+
+  /**
+   * Gets a representative type for `t` for the purpose of pruning possible flow.
+   */
+  cached
+  DataFlowType getErasedRepr(DotNet::Type t) {
+    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
+      t0 = getCSharpType(t)
+      or
+      not exists(getCSharpType(t)) and
+      t0 instanceof ObjectType
     )
   }
 }
@@ -1243,10 +1263,10 @@ class Content extends TContent {
   abstract Location getLocation();
 
   /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
+  abstract DataFlowType getContainerType();
 
   /** Gets the type of this content. */
-  abstract Type getType();
+  abstract DataFlowType getType();
 }
 
 private class FieldLikeContent extends Content, TFieldLikeContent {
@@ -1260,9 +1280,11 @@ private class FieldLikeContent extends Content, TFieldLikeContent {
 
   override Location getLocation() { result = f.getLocation() }
 
-  override Type getContainerType() { result = f.getDeclaringType() }
+  override DataFlowType getContainerType() {
+    result = Gvn::getGlobalValueNumber(f.getDeclaringType())
+  }
 
-  override Type getType() { result = f.getType() }
+  override DataFlowType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
 private class StoreStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -1299,21 +1321,8 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
 
 predicate readStep = readStepImpl/3;
 
-private predicate suppressUnusedType(DotNet::Type t) { any() }
-
-/**
- * Gets a representative type for `t` for the purpose of pruning possible flow.
- *
- * Type-based pruning is disabled for now, so this is a stub implementation.
- */
-bindingset[t]
-DataFlowType getErasedRepr(DotNet::Type t) {
-  // stub implementation
-  suppressUnusedType(t) and result instanceof ObjectType
-}
-
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DotNet::Type t) { none() } // stub implementation
+string ppReprType(DataFlowType t) { result = t.toString() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
@@ -1322,7 +1331,7 @@ string ppReprType(DotNet::Type t) { none() } // stub implementation
  * Type-based pruning is disabled for now, so this is a stub implementation.
  */
 bindingset[t1, t2]
-predicate compatibleTypes(DotNet::Type t1, DotNet::Type t2) {
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   any() // stub implementation
 }
 
@@ -1376,7 +1385,7 @@ class CastNode extends ExprNode {
 
 class DataFlowExpr = DotNet::Expr;
 
-class DataFlowType = DotNet::Type;
+class DataFlowType = Gvn::GvnType;
 
 class DataFlowLocation = Location;
 

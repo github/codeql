@@ -827,16 +827,13 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     getRank() = that.getRank()
   }
 
-  private string getRankString(int i) {
-    i in [0 .. getRank() - 1] and
-    if i = getRank() - 1 then result = "" else result = "," + getRankString(i + 1)
-  }
-
   /**
    * INTERNAL: Do not use.
    * Gets a string representing the array suffix, for example `[,,,]`.
    */
-  string getArraySuffix() { result = "[" + getRankString(0) + "]" }
+  string getArraySuffix() {
+    result = "[" + concat(int i | i in [0 .. this.getRank() - 2] | ",") + "]"
+  }
 
   private string getDimensionString(Type elementType) {
     exists(Type et, string res |
