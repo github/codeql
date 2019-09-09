@@ -1,11 +1,11 @@
 /**
  * @name Unsafe year argument for 'DateTime' constructor
- * @description Constructing a 'DateTime' struct by setting the year argument to an increment or decrement of the year of a different 'DateTime' struct
+ * @description Constructing a 'DateTime' struct by setting the year argument to an increment or decrement of the year of a different 'DateTime' struct.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
+ * @precision medium
  * @id cs/unsafe-year-construction
- * @tags security
- *       date-time
+ * @tags date-time
  *       reliability
  */
 
