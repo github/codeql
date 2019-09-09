@@ -171,8 +171,7 @@ class PostfixDecrExpr extends DecrementOperation, PostfixCrementOperation, @post
  * A C/C++ GNU real part expression.  It operates on `_Complex` or
  * `__complex__` numbers.
  * ```
- * #include <complex.h>
- * _Complex double f = CMPLX( 2.0, 3.0 );
+ * _Complex double f = { 2.0, 3.0 };
  * double d = __real(f);  // 2.0
  * ```
  */
@@ -186,8 +185,7 @@ class RealPartExpr extends UnaryArithmeticOperation, @realpartexpr {
  * A C/C++ GNU imaginary part expression.  It operates on `_Complex` or
  * `__complex__` numbers.
  * ```
- * #include <complex.h>
- * _Complex double f = CMPLX( 2.0, 3.0 );
+ * _Complex double f = { 2.0, 3.0 };
  * double d = __imag(f);  // 3.0
  * ```
  */
