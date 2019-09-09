@@ -76,3 +76,21 @@ function useConnection() {
 }
 
 export const exportedConnection = getConnection();
+
+function outer(conn) {
+  function innerCapture() {
+    return conn;
+  }
+  function innerCall(x) {
+    return x;
+  }
+
+  innerCapture();
+  innerCall(conn);
+  innerCall(somethingElse());
+
+  function otherInner() {
+    innerCapture();
+  }
+}
+outer(getConnection());

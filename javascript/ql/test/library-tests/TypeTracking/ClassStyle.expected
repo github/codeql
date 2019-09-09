@@ -24,6 +24,9 @@ test_Connection
 | tst.js:63:38:63:77 | api.cha ... ction() |
 | tst.js:67:14:67:47 | MyAppli ... nection |
 | tst.js:78:35:78:49 | getConnection() |
+| tst.js:80:16:80:19 | conn |
+| tst.js:84:22:84:22 | x |
+| tst.js:96:7:96:21 | getConnection() |
 | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
 test_DataCallback
 | client.js:3:28:3:34 | x => {} |
