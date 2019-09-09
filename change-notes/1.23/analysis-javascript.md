@@ -4,6 +4,8 @@
 
 * Support for the following frameworks and libraries has been improved:
   - [firebase](https://www.npmjs.com/package/firebase)
+  - [mongodb](https://www.npmjs.com/package/mongodb)
+  - [mongoose](https://www.npmjs.com/package/mongoose)
 
 * The call graph has been improved to resolve method calls in more cases. This may produce more security alerts.
 
