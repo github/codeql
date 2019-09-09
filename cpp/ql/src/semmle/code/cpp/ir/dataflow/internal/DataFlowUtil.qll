@@ -7,20 +7,35 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 
 /**
+ * A newtype wrapper to prevent accidental casts between `Node` and
+ * `Instruction`. This ensures we can add `Node`s that are not `Instruction`s
+ * in the future.
+ */
+private newtype TIRDataFlowNode = MkIRDataFlowNode(Instruction i)
+
+/**
  * A node in a data flow graph.
  *
  * A node can be either an expression, a parameter, or an uninitialized local
  * variable. Such nodes are created with `DataFlow::exprNode`,
  * `DataFlow::parameterNode`, and `DataFlow::uninitializedNode` respectively.
  */
-class Node extends Instruction {
+class Node extends TIRDataFlowNode {
+  Instruction instr;
+
+  Node() { this = MkIRDataFlowNode(instr) }
+
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
+  Function getEnclosingCallable() { result = this.getFunction() }
+
+  Function getFunction() { result = instr.getEnclosingFunction() }
 
   /** Gets the type of this node. */
-  Type getType() { result = this.getResultType() }
+  Type getType() { result = instr.getResultType() }
+
+  Instruction asInstruction() { this = MkIRDataFlowNode(result) }
 
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
@@ -29,7 +44,7 @@ class Node extends Instruction {
    * expression.
    */
   Expr asExpr() {
-    result.getConversion*() = this.getConvertedResultExpression() and
+    result.getConversion*() = instr.getConvertedResultExpression() and
     not result instanceof Conversion
   }
 
@@ -37,21 +52,24 @@ class Node extends Instruction {
    * Gets the expression corresponding to this node, if any. The returned
    * expression may be a `Conversion`.
    */
-  Expr asConvertedExpr() { result = this.getConvertedResultExpression() }
+  Expr asConvertedExpr() { result = instr.getConvertedResultExpression() }
 
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(InitializeParameterInstruction).getParameter() }
+  Parameter asParameter() { result = instr.(InitializeParameterInstruction).getParameter() }
 
   /**
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
-  LocalVariable asUninitialized() { result = this.(UninitializedInstruction).getLocalVariable() }
+  LocalVariable asUninitialized() { result = instr.(UninitializedInstruction).getLocalVariable() }
 
   /**
    * Gets an upper bound on the type of this node.
    */
   Type getTypeBound() { result = getType() }
+
+  /** Gets the location of this element. */
+  Location getLocation() { result = instr.getLocation() }
 
   /**
    * Holds if this element is at the specified location.
@@ -63,8 +81,10 @@ class Node extends Instruction {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  string toString() { result = instr.toString() }
 }
 
 /**
@@ -92,19 +112,27 @@ class ExprNode extends Node {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, InitializeParameterInstruction {
+class ParameterNode extends Node {
+  override InitializeParameterInstruction instr;
+
   /**
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
    */
-  predicate isParameterOf(Function f, int i) { f.getParameter(i) = getParameter() }
+  predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
+
+  Parameter getParameter() { result = instr.getParameter() }
 }
 
 /**
  * The value of an uninitialized local variable, viewed as a node in a data
  * flow graph.
  */
-class UninitializedNode extends Node, UninitializedInstruction { }
+class UninitializedNode extends Node {
+  override UninitializedInstruction instr;
+
+  LocalVariable getLocalVariable() { result = instr.getLocalVariable() }
+}
 
 /**
  * A node associated with an object after an operation that might have
@@ -164,10 +192,14 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  nodeTo.(CopyInstruction).getSourceValue() = nodeFrom or
-  nodeTo.(PhiInstruction).getAnOperand().getDef() = nodeFrom or
+  simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
+}
+
+private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
+  iTo.(CopyInstruction).getSourceValue() = iFrom or
+  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
   // Treat all conversions as flow, even conversions between different numeric types.
-  nodeTo.(ConvertInstruction).getUnary() = nodeFrom
+  iTo.(ConvertInstruction).getUnary() = iFrom
 }
 
 /**

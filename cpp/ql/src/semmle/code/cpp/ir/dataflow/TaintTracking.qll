@@ -133,6 +133,14 @@ module TaintTracking {
     // Taint can flow into using ordinary data flow.
     DataFlow::localFlowStep(nodeFrom, nodeTo)
     or
+    localInstructionTaintStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
+  }
+
+  /**
+   * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
+   * (intra-procedural) step.
+   */
+  private predicate localInstructionTaintStep(Instruction nodeFrom, Instruction nodeTo) {
     // Taint can flow through expressions that alter the value but preserve
     // more than one bit of it _or_ expressions that follow data through
     // pointer indirections.
