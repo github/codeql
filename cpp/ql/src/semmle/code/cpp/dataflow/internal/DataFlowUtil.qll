@@ -268,7 +268,7 @@ abstract class PostUpdateNode extends Node {
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
 }
 
-class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
+private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   PartialDefinition pd;
 
   PartialDefinitionNode() { this = TPartialDefinitionNode(pd) }
