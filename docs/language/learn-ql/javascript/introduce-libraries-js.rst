@@ -808,7 +808,7 @@ HTTP framework libraries
 
 The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks. 
 
-Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapijs.com/>`__ and `Restify <https://restify.com/>`__.
+Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapijs.com/>`__ and `Restify <http://restify.com/>`__.
 
 The most important classes include (all in module ``HTTP``):
 
