@@ -1,7 +1,10 @@
 private import java
 private import DataFlowUtil
+private import DataFlowImplCommon
 private import DataFlowDispatch
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.dataflow.DefUse
 private import semmle.code.java.dataflow.TypeFlow
 
 private newtype TReturnKind = TNormalReturnKind()
@@ -282,4 +285,45 @@ class DataFlowLocation = Location;
 class DataFlowCall extends Call {
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
+}
+
+/** An expression that always has the same boolean value. */
+private predicate constantBooleanExpr(Expr e, boolean val) {
+  e.(CompileTimeConstantExpr).getBooleanValue() = val
+  or
+  exists(SsaExplicitUpdate v, Expr src |
+    e = v.getAUse() and
+    src = v.getDefiningExpr().(VariableAssign).getSource() and
+    constantBooleanExpr(src, val)
+  )
+}
+
+/** An expression that always has the same boolean value. */
+class ConstantBooleanExprNode extends ArgumentNode, ExprNode {
+  ConstantBooleanExprNode() { constantBooleanExpr(this.getExpr(), _) }
+
+  /** Gets the boolean value of this expression. */
+  boolean getBooleanValue() { constantBooleanExpr(this.getExpr(), result) }
+}
+
+/**
+ * holds if the node `n` is unreachable when called from `call`
+ */
+cached
+predicate isUnreachableInCall(Node n, DataFlowCall call) {
+  exists(
+    ExplicitParameterNode paramNode, ConstantBooleanExprNode arg, BasicBlock bb,
+    SsaImplicitInit varInit, Guard guard
+  |
+    // get argument and parameter for this call
+    viableParamArg(call, paramNode, arg) and
+    // get the ssa variable definition for this parameter
+    varInit.isParameterDefinition(paramNode.getParameter()) and
+    // which is used in a guard
+    varInit.getAUse() = guard and
+    // which controls that bb is not active
+    guard.controls(bb, arg.getBooleanValue().booleanNot()) and
+    // and the node we pass in is in this bb
+    bb.getANode() = n.asExpr()
+  )
 }
