@@ -12,7 +12,6 @@
         This happens when an attacker creates a JSON object with an
         absurdly large number in the .length property that the server then 
         loops through.
-        <br />
         The problem can also happen when using utility methods from Lodash or 
         Underscore that operate on array-like values. 
         As a simple example of how a DOS can happen, this code will crash most
@@ -27,12 +26,10 @@
         Forcing the user controlled object to be an array or preventing the 
         <code>.length</code> property from being too large can limit the 
         impact of the attack. 
-        <br/>
         Alternatively the loop can exit early if the currently iterated element
         is seen to be <code>undefined</code>, as the attacker cannot create an
         array-like object with non-<code>undefined</code> values for an 
         unlimited amount of array elements. 
-        <br />
         Accessing a property of the currently iterated element will also
         prevent the attack, as a null-pointer exception will occur in the first
         iteration where the element is <code>undefined</code>.
