@@ -125,7 +125,7 @@ private module ImplCommon {
           outercc = TSomeCall(getAParameter(c), _)
           or
           exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) |
-            reducedViableImplInCallContext(_, c, other)
+            recordDataFlowCallSite(other, c)
           )
         )
       }
@@ -152,7 +152,7 @@ private module ImplCommon {
         exists(int i, DataFlowCallable callable |
           viableParamArg1(p, callable, i, arg, outercc, call)
         |
-          if reducedViableImplInCallContext(_, callable, call)
+          if recordDataFlowCallSite(call, callable)
           then innercc = TSpecificCall(call, i, true)
           else innercc = TSomeCall(p, true)
         )
@@ -164,7 +164,7 @@ private module ImplCommon {
         exists(DataFlowCall call, int i, DataFlowCallable callable |
           result = TSpecificCall(call, i, _) and
           p.isParameterOf(callable, i) and
-          reducedViableImplInCallContext(_, callable, call)
+          recordDataFlowCallSite(call, callable)
         )
       }
 
@@ -575,11 +575,21 @@ private module ImplCommon {
       exists(ArgumentNode arg | arg.argumentOf(call, -1))
     }
 
+    /**
+     * Record a call site in the dataflow graph if it either improves
+     * virtual dispatch or if we can remove unreachable edges by recoring this call site
+     */
+    cached
+    predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
+      reducedViableImplInCallContext(_, callable, call) or
+      exists(Node n | n.getEnclosingCallable() = callable | isUnreachableInCall(n, call))
+    }
+
     cached
     newtype TCallContext =
       TAnyCallContext() or
       TSpecificCall(DataFlowCall call, int i, boolean emptyAp) {
-        reducedViableImplInCallContext(_, _, call) and
+        recordDataFlowCallSite(call, _) and
         (emptyAp = true or emptyAp = false) and
         (
           exists(call.getArgument(i))
@@ -593,6 +603,11 @@ private module ImplCommon {
     cached
     newtype TReturnPosition =
       TReturnPosition0(DataFlowCallable c, ReturnKind kind) { returnPosition(_, c, kind) }
+
+    cached
+    newtype TLocalFlowCallContext =
+      TAnyLocalCall() or
+      TSpecificLocalCall(DataFlowCall call) { isUnreachableInCall(_, call) }
   }
 
   pragma[noinline]
@@ -609,7 +624,8 @@ private module ImplCommon {
    * - `TAnyCallContext()` : No restrictions on method flow.
    * - `TSpecificCall(DataFlowCall call, int i)` : Flow entered through the `i`th
    *    parameter at the given `call`. This call improves the set of viable
-   *    dispatch targets for at least one method call in the current callable.
+   *    dispatch targets for at least one method call in the current callable
+   *    or helps pruning unreachable nodes from the data flow graph.
    * - `TSomeCall(ParameterNode p)` : Flow entered through parameter `p`. The
    *    originating call does not improve the set of dispatch targets for any
    *    method call in the current callable and was therefore not recorded.
@@ -633,6 +649,8 @@ private module ImplCommon {
         result = "CcCall(" + call + ", " + i + ")"
       )
     }
+
+    DataFlowCall getCall() { this = TSpecificCall(result, _, _) }
   }
 
   class CallContextSomeCall extends CallContextCall, TSomeCall {
@@ -645,9 +663,53 @@ private module ImplCommon {
     }
   }
 
+  /**
+   * A call context which is used to restrict local data flow nodes
+   * to nodes which are actually reachable in a call context.
+   */
+  abstract class LocalCallContext extends TLocalFlowCallContext {
+    abstract string toString();
+
+    abstract predicate matchesCallContext(CallContext ctx);
+
+    abstract predicate validFor(Node n);
+  }
+
+  class LocalCallContextAny extends LocalCallContext, TAnyLocalCall {
+    override string toString() { result = "LocalCcAny" }
+
+    override predicate matchesCallContext(CallContext ctx) {
+      not ctx instanceof CallContextSpecificCall or
+      not exists(TSpecificLocalCall(ctx.(CallContextSpecificCall).getCall()))
+    }
+
+    override predicate validFor(Node n) { any() }
+  }
+
+  class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall {
+    LocalCallContextSpecificCall() { this = TSpecificLocalCall(call) }
+
+    DataFlowCall call;
+
+    DataFlowCall getCall() { result = call }
+
+    override string toString() { result = "LocalCcCall(" + call + ")" }
+
+    override predicate matchesCallContext(CallContext ctx) {
+      ctx.(CallContextSpecificCall).getCall() = call
+    }
+
+    override predicate validFor(Node n) {
+      exists(Node n2 |
+        isUnreachableInCall(n2, call) and n2.getEnclosingCallable() = n.getEnclosingCallable()
+      )
+    }
+  }
+
   /** A callable tagged with a relevant return kind. */
   class ReturnPosition extends TReturnPosition0 {
     private DataFlowCallable c;
+
     private ReturnKind kind;
 
     ReturnPosition() { this = TReturnPosition0(c, kind) }
