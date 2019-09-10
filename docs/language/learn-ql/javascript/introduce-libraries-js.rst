@@ -682,28 +682,28 @@ You can add custom type inference rules by defining new subclasses of ``DataFlow
 Call graph
 ~~~~~~~~~~
 
-The library ``semmle.javascript.dataflow.CallGraph`` implements a simple `call graph <http://en.wikipedia.org/wiki/Call_graph>`__ construction algorithm to statically approximate the possible call targets of function calls and ``new`` expressions. Due to the dynamically typed nature of JavaScript and its support for higher-order functions and reflective language features, building static call graphs is quite difficult. Simple call graph algorithms tend to be incomplete, that is, they often fail to resolve all possible call targets. More sophisticated algorithms can suffer from the opposite problem of imprecision, that is, they may infer many spurious call targets.
+The JavaScript library implements a simple `call graph <http://en.wikipedia.org/wiki/Call_graph>`__ construction algorithm to statically approximate the possible call targets of function calls and ``new`` expressions. Due to the dynamically typed nature of JavaScript and its support for higher-order functions and reflective language features, building static call graphs is quite difficult. Simple call graph algorithms tend to be incomplete, that is, they often fail to resolve all possible call targets. More sophisticated algorithms can suffer from the opposite problem of imprecision, that is, they may infer many spurious call targets.
 
-The library provides a QL class `CallSite <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/CallGraph.qll/type.CallGraph$CallSite.html>`__, which extends `InvokeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$InvokeExpr.html>`__ with a member predicate ``getACallee()`` that computes possible callees of the given call site, that is, functions that may at runtime be invoked by this expression.
+The call graph is represented by the member predicate ``getACallee()`` of class `DataFlow::InvokeNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Nodes.qll/type.Nodes$InvokeNode.html>`__, which computes possible callees of the given invocation, that is, functions that may at runtime be invoked by this expression.
 
-Furthermore, there are three member predicates that indicate the quality of the callee information for this call site:
+Furthermore, there are three member predicates that indicate the quality of the callee information for this invocation:
 
--  ``CallSite.isImprecise()``: holds for call sites where the call graph builder might infer spurious call targets.
--  ``CallSite.isIncomplete()``: holds for call sites where the call graph builder might fail to infer possible call targets.
--  ``CallSite.isUncertain()``: holds if either ``isImprecise()`` or ``isUncertain()`` holds.
+-  ``DataFlow::InvokeNode.isImprecise()``: holds for invocations where the call graph builder might infer spurious call targets.
+-  ``DataFlow::InvokeNode.isIncomplete()``: holds for invocations where the call graph builder might fail to infer possible call targets.
+-  ``DataFlow::InvokeNode.isUncertain()``: holds if either ``isImprecise()`` or ``isUncertain()`` holds.
 
-As an example of a call-graph-based query, here is a query to find call sites for which the call graph builder could not find any callees, despite the analysis being complete for this call site:
+As an example of a call-graph-based query, here is a query to find invocations for which the call graph builder could not find any callees, despite the analysis being complete for this invocation:
 
 .. code-block:: ql
 
    import javascript
 
-   from CallSite cs
-   where not cs.isIncomplete() and
-         not exists(cs.getACallee())
-   select cs, "Unable to find a callee for this call site."
+   from DataFlow::InvokeNode invk
+   where not invk.isIncomplete() and
+         not exists(invk.getACallee())
+   select invk, "Unable to find a callee for this invocation."
 
-➤ `See this in the query console <https://lgtm.com/query/1506065666123/>`__
+➤ `See this in the query console <https://lgtm.com/query/3260345690335671362/>`__
 
 Inter-procedural data flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
