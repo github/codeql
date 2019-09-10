@@ -1001,8 +1001,16 @@
 | E.cs:24:19:24:28 | ... == ... | true | E.cs:24:19:24:20 | access to local variable s1 | null |
 | E.cs:26:13:26:22 | ... != ... | false | E.cs:26:13:26:14 | access to local variable s2 | null |
 | E.cs:26:13:26:22 | ... != ... | true | E.cs:26:13:26:14 | access to local variable s2 | non-null |
+| E.cs:35:9:35:12 | access to local variable last | empty | E.cs:34:20:34:20 | access to local variable s | empty |
+| E.cs:35:9:35:12 | access to local variable last | non-empty | E.cs:34:20:34:20 | access to local variable s | non-empty |
+| E.cs:35:9:35:12 | access to local variable last | non-null | E.cs:34:20:34:20 | access to local variable s | non-null |
+| E.cs:35:9:35:12 | access to local variable last | null | E.cs:34:20:34:20 | access to local variable s | null |
 | E.cs:38:13:38:20 | call to method Any | false | E.cs:38:13:38:14 | access to parameter ss | empty |
 | E.cs:38:13:38:20 | call to method Any | true | E.cs:38:13:38:14 | access to parameter ss | non-empty |
+| E.cs:43:13:43:16 | access to local variable last | empty | E.cs:41:24:41:24 | access to local variable s | empty |
+| E.cs:43:13:43:16 | access to local variable last | non-empty | E.cs:41:24:41:24 | access to local variable s | non-empty |
+| E.cs:43:13:43:16 | access to local variable last | non-null | E.cs:41:24:41:24 | access to local variable s | non-null |
+| E.cs:43:13:43:16 | access to local variable last | null | E.cs:41:24:41:24 | access to local variable s | null |
 | E.cs:53:16:53:19 | access to local variable iter | non-null | E.cs:52:20:52:39 | call to method GetEnumerator | non-null |
 | E.cs:53:16:53:19 | access to local variable iter | null | E.cs:52:20:52:39 | call to method GetEnumerator | null |
 | E.cs:55:23:55:26 | access to local variable iter | non-null | E.cs:52:20:52:39 | call to method GetEnumerator | non-null |
