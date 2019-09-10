@@ -30,32 +30,30 @@ module TaintedLength {
   // Inspired by LoopIterationSkippedDueToShifting::ArrayIterationLoop
   // Added some Dataflow to the .length access.
   // Added support for while/dowhile loops.
-  class ArrayIterationLoop extends LoopStmt {
+  class ArrayIterationLoop extends Stmt {
     LocalVariable indexVariable;
+    LoopStmt loop;
 
     ArrayIterationLoop() {
+      this = loop and 
       exists(RelationalComparison compare, DataFlow::PropRead lengthRead |
-        compare = this.getTest() and
+        compare = loop.getTest() and
         compare.getLesserOperand() = indexVariable.getAnAccess() and
         lengthRead.accesses(_, "length") and
         lengthRead.flowsToExpr(compare.getGreaterOperand())
       ) and
       (
-        this.(ForStmt).getUpdate().(IncExpr).getOperand() = indexVariable.getAnAccess() or
-        this.getBody().getAChild*().(IncExpr).getOperand() = indexVariable.getAnAccess()
+        loop.(ForStmt).getUpdate().(IncExpr).getOperand() = indexVariable.getAnAccess() or
+        loop.getBody().getAChild*().(IncExpr).getOperand() = indexVariable.getAnAccess()
       )
     }
 
-    override Stmt getBody() {
-      result = this.(ForStmt).getBody() or
-      result = this.(WhileStmt).getBody() or
-      result = this.(DoWhileStmt).getBody()
+    Expr getTest() {
+      result = loop.getTest()
     }
-
-    override Expr getTest() {
-      result = this.(ForStmt).getTest() or
-      result = this.(WhileStmt).getTest() or
-      result = this.(DoWhileStmt).getTest()
+    
+    Stmt getBody() {
+      result = loop.getBody()   
     }
 
     /**
