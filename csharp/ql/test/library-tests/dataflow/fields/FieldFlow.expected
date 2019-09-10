@@ -19,10 +19,7 @@ edges
 | A.cs:57:16:57:16 | access to local variable a : A | A.cs:57:9:57:10 | [post] access to local variable c1 [a] : A |
 | A.cs:58:12:58:13 | access to local variable c1 [a] : A | A.cs:60:22:60:22 | c [a] : A |
 | A.cs:60:22:60:22 | c [a] : A | A.cs:64:19:64:23 | (...) ... [a] : A |
-| A.cs:60:22:60:22 | c [a] : A | A.cs:69:18:69:22 | (...) ... [a] : A |
 | A.cs:64:19:64:23 | (...) ... [a] : A | A.cs:64:18:64:26 | access to field a |
-| A.cs:69:18:69:22 | (...) ... [a] : A | A.cs:77:19:77:24 | (...) ... [a] : A |
-| A.cs:77:19:77:24 | (...) ... [a] : A | A.cs:77:18:77:27 | access to field a |
 | A.cs:83:9:83:9 | [post] access to parameter b [c] : C | A.cs:88:12:88:12 | [post] access to local variable b [c] : C |
 | A.cs:83:15:83:21 | object creation of type C : C | A.cs:83:9:83:9 | [post] access to parameter b [c] : C |
 | A.cs:88:12:88:12 | [post] access to local variable b [c] : C | A.cs:89:14:89:14 | access to local variable b [c] : C |
@@ -205,9 +202,6 @@ nodes
 | A.cs:60:22:60:22 | c [a] : A | semmle.label | c [a] : A |
 | A.cs:64:18:64:26 | access to field a | semmle.label | access to field a |
 | A.cs:64:19:64:23 | (...) ... [a] : A | semmle.label | (...) ... [a] : A |
-| A.cs:69:18:69:22 | (...) ... [a] : A | semmle.label | (...) ... [a] : A |
-| A.cs:77:18:77:27 | access to field a | semmle.label | access to field a |
-| A.cs:77:19:77:24 | (...) ... [a] : A | semmle.label | (...) ... [a] : A |
 | A.cs:83:9:83:9 | [post] access to parameter b [c] : C | semmle.label | [post] access to parameter b [c] : C |
 | A.cs:83:15:83:21 | object creation of type C : C | semmle.label | object creation of type C : C |
 | A.cs:88:12:88:12 | [post] access to local variable b [c] : C | semmle.label | [post] access to local variable b [c] : C |
@@ -384,7 +378,6 @@ nodes
 | A.cs:24:14:24:17 | access to field c | A.cs:22:25:22:32 | object creation of type C2 : C2 | A.cs:24:14:24:17 | access to field c | $@ | A.cs:22:25:22:32 | object creation of type C2 : C2 | object creation of type C2 : C2 |
 | A.cs:33:14:33:17 | access to field c | A.cs:31:29:31:36 | object creation of type C2 : C2 | A.cs:33:14:33:17 | access to field c | $@ | A.cs:31:29:31:36 | object creation of type C2 : C2 | object creation of type C2 : C2 |
 | A.cs:64:18:64:26 | access to field a | A.cs:55:17:55:23 | object creation of type A : A | A.cs:64:18:64:26 | access to field a | $@ | A.cs:55:17:55:23 | object creation of type A : A | object creation of type A : A |
-| A.cs:77:18:77:27 | access to field a | A.cs:55:17:55:23 | object creation of type A : A | A.cs:77:18:77:27 | access to field a | $@ | A.cs:55:17:55:23 | object creation of type A : A | object creation of type A : A |
 | A.cs:89:14:89:16 | access to field c | A.cs:83:15:83:21 | object creation of type C : C | A.cs:89:14:89:16 | access to field c | $@ | A.cs:83:15:83:21 | object creation of type C : C | object creation of type C : C |
 | A.cs:106:14:106:16 | access to field b | A.cs:98:30:98:36 | object creation of type B : B | A.cs:106:14:106:16 | access to field b | $@ | A.cs:98:30:98:36 | object creation of type B : B | object creation of type B : B |
 | A.cs:106:14:106:16 | access to field b | A.cs:104:17:104:23 | object creation of type B : B | A.cs:106:14:106:16 | access to field b | $@ | A.cs:104:17:104:23 | object creation of type B : B | object creation of type B : B |

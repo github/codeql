@@ -19,26 +19,26 @@ class Types
     static void M1()
     {
         new C().M(); // no flow
-        new C().CallM(); // no flow (FALSE POSITIVE)
+        new C().CallM(); // no flow
         M2(new C()); // flow
-        M3(new C()); // no flow (FALSE POSITIVE)
+        M3(new C()); // no flow
         M4(new C()); // flow
         M5(new C()); // flow
         M6(new C()); // flow
         M7(new C()); // flow
-        M8(new C()); // no flow (FALSE POSITIVE)
+        M8(new C()); // no flow
         M9(new C()); // flow
 
         new D().M(); // flow
         new D().CallM(); // flow
-        M2(new D()); // no flow (FALSE POSITIVE)
+        M2(new D()); // no flow
         M3(new D()); // flow
-        M4(new D()); // no flow (FALSE POSITIVE)
+        M4(new D()); // no flow
         M5(new D()); // flow
         M6(new D()); // flow
         M7(new D()); // flow
         M8(new D()); // flow
-        M9(new D()); // no flow (FALSE POSITIVE)
+        M9(new D()); // no flow
 
         object o = null; // flow
         Sink(o);

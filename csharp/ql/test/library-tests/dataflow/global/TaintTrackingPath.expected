@@ -139,9 +139,9 @@ edges
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String |
-| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : S | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 |
-| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : S | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
-| GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : S |
+| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<S> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 |
+| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<S> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<S> |
 | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T |
 | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:292:31:292:40 | sinkParam8 : IEnumerable<String> |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 |
@@ -169,7 +169,7 @@ edges
 | GlobalDataFlow.cs:153:21:153:25 | call to method Out : String | GlobalDataFlow.cs:154:15:154:19 | access to local variable sink6 |
 | GlobalDataFlow.cs:156:20:156:24 | SSA def(sink7) : String | GlobalDataFlow.cs:157:15:157:19 | access to local variable sink7 |
 | GlobalDataFlow.cs:159:20:159:24 | SSA def(sink8) : String | GlobalDataFlow.cs:160:15:160:19 | access to local variable sink8 |
-| GlobalDataFlow.cs:161:22:161:31 | call to method OutYield : String | GlobalDataFlow.cs:162:15:162:20 | access to local variable sink12 |
+| GlobalDataFlow.cs:161:22:161:31 | call to method OutYield : IEnumerable<String> | GlobalDataFlow.cs:162:15:162:20 | access to local variable sink12 |
 | GlobalDataFlow.cs:163:22:163:43 | call to method TaintedParam : String | GlobalDataFlow.cs:164:15:164:20 | access to local variable sink23 |
 | GlobalDataFlow.cs:179:35:179:48 | "taint source" : String | GlobalDataFlow.cs:180:21:180:26 | delegate call : String |
 | GlobalDataFlow.cs:180:21:180:26 | delegate call : String | GlobalDataFlow.cs:181:15:181:19 | access to local variable sink9 |
@@ -208,8 +208,8 @@ edges
 | GlobalDataFlow.cs:323:13:323:26 | "taint source" : String | GlobalDataFlow.cs:323:9:323:26 | SSA def(x) : String |
 | GlobalDataFlow.cs:328:9:328:26 | SSA def(x) : String | GlobalDataFlow.cs:159:20:159:24 | SSA def(sink8) : String |
 | GlobalDataFlow.cs:328:13:328:26 | "taint source" : String | GlobalDataFlow.cs:328:9:328:26 | SSA def(x) : String |
-| GlobalDataFlow.cs:334:22:334:35 | "taint source" : String | GlobalDataFlow.cs:161:22:161:31 | call to method OutYield : String |
-| GlobalDataFlow.cs:334:22:334:35 | "taint source" : String | GlobalDataFlow.cs:334:22:334:35 | "taint source" : String |
+| GlobalDataFlow.cs:334:22:334:35 | "taint source" : IEnumerable<String> | GlobalDataFlow.cs:161:22:161:31 | call to method OutYield : IEnumerable<String> |
+| GlobalDataFlow.cs:334:22:334:35 | "taint source" : String | GlobalDataFlow.cs:334:22:334:35 | "taint source" : IEnumerable<String> |
 | GlobalDataFlow.cs:359:41:359:41 | x : String | GlobalDataFlow.cs:361:11:361:11 | access to parameter x : String |
 | GlobalDataFlow.cs:359:41:359:41 | x : String | GlobalDataFlow.cs:361:11:361:11 | access to parameter x : String |
 | GlobalDataFlow.cs:361:11:361:11 | access to parameter x : String | GlobalDataFlow.cs:53:15:53:15 | x : String |
@@ -332,7 +332,7 @@ nodes
 | GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : String | semmle.label | access to local variable sink2 : String |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | semmle.label | SSA def(sink3) : String |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 | semmle.label | access to local variable sink3 |
-| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : S | semmle.label | call to method SelectEven : S |
+| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<S> | semmle.label | call to method SelectEven : IEnumerable<S> |
 | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> | semmle.label | (...) ... : IEnumerable<String> |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 | semmle.label | access to local variable sink13 |
 | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> | semmle.label | (...) ... : IEnumerable<String> |
@@ -366,7 +366,7 @@ nodes
 | GlobalDataFlow.cs:157:15:157:19 | access to local variable sink7 | semmle.label | access to local variable sink7 |
 | GlobalDataFlow.cs:159:20:159:24 | SSA def(sink8) : String | semmle.label | SSA def(sink8) : String |
 | GlobalDataFlow.cs:160:15:160:19 | access to local variable sink8 | semmle.label | access to local variable sink8 |
-| GlobalDataFlow.cs:161:22:161:31 | call to method OutYield : String | semmle.label | call to method OutYield : String |
+| GlobalDataFlow.cs:161:22:161:31 | call to method OutYield : IEnumerable<String> | semmle.label | call to method OutYield : IEnumerable<String> |
 | GlobalDataFlow.cs:162:15:162:20 | access to local variable sink12 | semmle.label | access to local variable sink12 |
 | GlobalDataFlow.cs:163:22:163:43 | call to method TaintedParam : String | semmle.label | call to method TaintedParam : String |
 | GlobalDataFlow.cs:164:15:164:20 | access to local variable sink23 | semmle.label | access to local variable sink23 |
@@ -417,7 +417,7 @@ nodes
 | GlobalDataFlow.cs:323:13:323:26 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlow.cs:328:9:328:26 | SSA def(x) : String | semmle.label | SSA def(x) : String |
 | GlobalDataFlow.cs:328:13:328:26 | "taint source" : String | semmle.label | "taint source" : String |
-| GlobalDataFlow.cs:334:22:334:35 | "taint source" : String | semmle.label | "taint source" : String |
+| GlobalDataFlow.cs:334:22:334:35 | "taint source" : IEnumerable<String> | semmle.label | "taint source" : IEnumerable<String> |
 | GlobalDataFlow.cs:334:22:334:35 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlow.cs:359:41:359:41 | x : String | semmle.label | x : String |
 | GlobalDataFlow.cs:359:41:359:41 | x : String | semmle.label | x : String |

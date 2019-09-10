@@ -35,3 +35,30 @@ query predicate unifiable(InterestingType t1, InterestingType t2) {
   Unification::unifiable(t1, t2) and
   not Unification::subsumes(t1, t2)
 }
+
+// Should be empty
+query predicate unificationImpliesCompatible(Type t1, Type t2) {
+  Unification::unifiable(t1, t2) and
+  not Unification::compatible(t1, t2)
+}
+
+// Should be empty
+query predicate validTypeParameterImpliesCompatible(Type t1, Type t2) {
+  (
+    t1.(Unification::ConstrainedTypeParameter).unifiable(t2)
+    or
+    t1 instanceof Unification::UnconstrainedTypeParameter
+    or
+    t2 instanceof Unification::UnconstrainedTypeParameter
+  ) and
+  not Unification::compatible(t1, t2)
+}
+
+query predicate compatible(InterestingType t1, InterestingType t2) {
+  Unification::compatible(t1, t2) and
+  not Unification::unifiable(t1, t2) and
+  not t1.(Unification::ConstrainedTypeParameter).unifiable(t2) and
+  not t2.(Unification::ConstrainedTypeParameter).unifiable(t1) and
+  not t1 instanceof Unification::UnconstrainedTypeParameter and
+  not t2 instanceof Unification::UnconstrainedTypeParameter
+}

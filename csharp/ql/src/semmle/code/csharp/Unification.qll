@@ -358,6 +358,23 @@ private module Gvn {
 
   private predicate id(LeafType t, int i) = equivalenceRelation(convIdentity/2)(t, i)
 
+  pragma[noinline]
+  private TypeParameter getATypeParameterSubType(GvnType t) {
+    not t = TTypeParameterGvnType() and
+    exists(Type t0 | t = getGlobalValueNumber(t0) | result = getAProperSubType(t0))
+  }
+
+  pragma[noinline]
+  private GvnType getANonTypeParameterSubType(GvnType t) {
+    not t = TTypeParameterGvnType() and
+    not result = TTypeParameterGvnType() and
+    exists(Type t1, Type t2 |
+      t1 = getAProperSubType(t2) and
+      result = getGlobalValueNumber(t1) and
+      t = getGlobalValueNumber(t2)
+    )
+  }
+
   cached
   private module Cached {
     cached
@@ -423,6 +440,28 @@ private module Gvn {
           or
           leaf1 = child2
         )
+      )
+    }
+
+    /**
+     * Holds if GVNs `t1` and `t2` may have a common sub type. Neither `t1` nor
+     * `t2` are allowed to be type parameters.
+     */
+    cached
+    predicate commonSubType(GvnType t1, GvnType t2) {
+      not t1 = TTypeParameterGvnType() and
+      t1 = t2
+      or
+      getATypeParameterSubType(t1) = getATypeParameterSubType(t2)
+      or
+      getANonTypeParameterSubType(t1) = getANonTypeParameterSubType(t2)
+    }
+
+    cached
+    predicate commonSubTypeUnifiableLeft(GvnType t1, GvnType t2) {
+      exists(GvnType t |
+        unifiable(t1, t) and
+        commonSubType(t, t2)
       )
     }
   }
@@ -625,5 +664,32 @@ module Unification {
   pragma[inline]
   predicate subsumes(Type t1, Type t2) {
     Gvn::subsumes(Gvn::getGlobalValueNumber(t1), Gvn::getGlobalValueNumber(t2))
+  }
+
+  /**
+   * Holds if types `t1` and `t2` are compatible. That is, it is possible
+   * for some common type `t` to be an instance of both `t1` and `t2`.
+   *
+   * Note: This predicate is inlined.
+   */
+  pragma[inline]
+  predicate compatible(Type t1, Type t2) {
+    Gvn::commonSubType(Gvn::getGlobalValueNumber(t1), Gvn::getGlobalValueNumber(t2))
+    or
+    Gvn::commonSubTypeUnifiableLeft(Gvn::getGlobalValueNumber(t1), Gvn::getGlobalValueNumber(t2))
+    or
+    Gvn::commonSubTypeUnifiableLeft(Gvn::getGlobalValueNumber(t2), Gvn::getGlobalValueNumber(t1))
+    or
+    defaultNullConversion(t1, t2)
+    or
+    defaultNullConversion(t2, t1)
+    or
+    t1 instanceof UnconstrainedTypeParameter
+    or
+    t2 instanceof UnconstrainedTypeParameter
+    or
+    t1.(ConstrainedTypeParameter).unifiable(t2)
+    or
+    t2.(ConstrainedTypeParameter).unifiable(t1)
   }
 }

@@ -7,6 +7,7 @@ private import DataFlowImplCommon::Public
 private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
+private import semmle.code.csharp.Unification
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
@@ -461,6 +462,14 @@ private module Cached {
       guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs)
     )
   }
+
+  /** Gets a type for `t` used in the type pruning analysis, if any. */
+  cached
+  Type getAnAnalyzableType(DotNet::Type t) {
+    result = t
+    or
+    result.matchesHandle(t)
+  }
 }
 
 import Cached
@@ -571,7 +580,11 @@ private module ParameterNodes {
       result = this.getUnderlyingNode().getEnclosingCallable()
     }
 
-    override Type getType() { result = this.getUnderlyingNode().getType() }
+    override Type getType() {
+      // Taint tracking steps are allowed to change the type of the tracked object,
+      // so `result = this.getUnderlyingNode().getType()` is too restrictive
+      result instanceof ObjectType
+    }
 
     override Location getLocation() { result = this.getUnderlyingNode().getLocation() }
 
@@ -914,7 +927,9 @@ private module ReturnNodes {
       result = this.getUnderlyingNode().getEnclosingCallable()
     }
 
-    override Type getType() { result = this.getUnderlyingNode().getType() }
+    override Type getType() {
+      result = this.getUnderlyingNode().getEnclosingCallable().getReturnType()
+    }
 
     override Location getLocation() { result = this.getUnderlyingNode().getLocation() }
 
@@ -1105,7 +1120,11 @@ private module OutNodes {
 
     override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = cfn.getElement().(Expr).getType() }
+    override Type getType() {
+      exists(ImplicitDelegateDataFlowCall c | c.getNode() = this |
+        result = c.getDelegateReturnType()
+      )
+    }
 
     override Location getLocation() { result = cfn.getLocation() }
 
@@ -1310,12 +1329,19 @@ string ppReprType(DotNet::Type t) { result = t.toString() }
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
- *
- * Type-based pruning is disabled for now, so this is a stub implementation.
  */
-bindingset[t1, t2]
+pragma[inline]
 predicate compatibleTypes(DotNet::Type t1, DotNet::Type t2) {
-  any() // stub implementation
+  not exists(getAnAnalyzableType(t1))
+  or
+  not exists(getAnAnalyzableType(t2))
+  or
+  exists(Type t1a, Type t2a |
+    t1a = getAnAnalyzableType(t1) and
+    t2a = getAnAnalyzableType(t2)
+  |
+    Unification::compatible(t1a, t2a)
+  )
 }
 
 /**
@@ -1362,8 +1388,15 @@ private module PostUpdateNodes {
 private import PostUpdateNodes
 
 /** A node that performs a type cast. */
-class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastExpr }
+class CastNode extends Node {
+  CastNode() {
+    this.asExpr() instanceof Cast
+    or
+    exists(Ssa::ExplicitDefinition def |
+      def = this.(SsaDefinitionNode).getDefinition() and
+      def.getADefinition() instanceof AssignableDefinitions::PatternDefinition
+    )
+  }
 }
 
 class DataFlowExpr = DotNet::Expr;
