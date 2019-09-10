@@ -916,7 +916,6 @@ class DerivedType extends Type, @derivedtype {
  * ```
  */
 class Decltype extends Type, @decltype {
-
   override string getCanonicalQLClass() { result = "Decltype" }
 
   /**
@@ -1238,10 +1237,6 @@ class FunctionReferenceType extends FunctionPointerIshType {
 
   override string getCanonicalQLClass() { result = "FunctionReferenceType" }
 
-  override int getPointerIndirectionLevel() {
-    result = getBaseType().getPointerIndirectionLevel()
-  }
-
   override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
 
   override string explain() {
@@ -1363,7 +1358,6 @@ class PointerToMemberType extends Type, @ptrtomember {
 /**
  * A C/C++ routine type. Conceptually, this is what results from stripping away the pointer from a function pointer type.
  * It has no corresponding syntax in C/C++.
- *
  */
 class RoutineType extends Type, @routinetype {
   /** a printable representation of this named element */
@@ -1441,7 +1435,8 @@ class TemplateParameter extends UserType {
   override predicate involvesTemplateParameter() { any() }
 }
 
-/** A C++ template template parameter.
+/**
+ * A C++ template template parameter.
  *
  * In the example below, `T` is a template template parameter (although its name
  * may be omitted):
@@ -1450,11 +1445,8 @@ class TemplateParameter extends UserType {
  * void f(const H<S> &value) { }
  * ```
  */
-class TemplateTemplateParameter extends TemplateParameter
-{
-  TemplateTemplateParameter() {
-    usertypes(underlyingElement(this), _, 8)
-  }
+class TemplateTemplateParameter extends TemplateParameter {
+  TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
 
   override string getCanonicalQLClass() { result = "TemplateTemplateParameter" }
 }
