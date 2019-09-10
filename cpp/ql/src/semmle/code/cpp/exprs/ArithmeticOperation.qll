@@ -41,7 +41,7 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, @unaryplusexpr {
  * functions.
  * ```
  * _Complex double a =  ( 1.0, 2.0 );
- * b = ~ a;  // ( 1,0, - 2.0 )
+ * _Complex double b = ~ a;  // ( 1,0, - 2.0 )
  * ```
  */
 class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
@@ -273,7 +273,13 @@ class RemExpr extends BinaryArithmeticOperation, @remexpr {
 }
 
 /**
- * A C/C++ multiply expression with an imaginary number.
+ * A C/C++ multiply expression with an imaginary number.  This is specific to
+ * C99 and later.
+ * ```
+ * double z;
+ * _Imaginary double x, y;
+ * z = x * y;
+ * ```
  */
 class ImaginaryMulExpr extends BinaryArithmeticOperation, @jmulexpr {
   override string getOperator() { result = "*" }
@@ -286,7 +292,13 @@ class ImaginaryMulExpr extends BinaryArithmeticOperation, @jmulexpr {
 }
 
 /**
- * A C/C++ divide expression with an imaginary number.
+ * A C/C++ divide expression with an imaginary number.  This is specific to
+ * C99 and later.
+ * ```
+ * double z;
+ * _Imaginary double y;
+ * z = z / y;
+ * ```
  */
 class ImaginaryDivExpr extends BinaryArithmeticOperation, @jdivexpr {
   override string getOperator() { result = "/" }
@@ -299,7 +311,14 @@ class ImaginaryDivExpr extends BinaryArithmeticOperation, @jdivexpr {
 }
 
 /**
- * A C/C++ add expression with a real term and an imaginary term.
+ * A C/C++ add expression with a real term and an imaginary term.  This is
+ * specific to C99 and later.
+ * ```
+ * double z;
+ * _Imaginary double x;
+ * _Complex double w;
+ * w = z + x;
+ * ```
  */
 class RealImaginaryAddExpr extends BinaryArithmeticOperation, @fjaddexpr {
   override string getOperator() { result = "+" }
@@ -312,7 +331,14 @@ class RealImaginaryAddExpr extends BinaryArithmeticOperation, @fjaddexpr {
 }
 
 /**
- * A C/C++ add expression with an imaginary term and a real term.
+ * A C/C++ add expression with an imaginary term and a real term.  This is
+ * specific to C99 and later.
+ * ```
+ * double z;
+ * _Imaginary double x;
+ * _Complex double w;
+ * w = x + z;
+ * ```
  */
 class ImaginaryRealAddExpr extends BinaryArithmeticOperation, @jfaddexpr {
   override string getOperator() { result = "+" }
@@ -325,7 +351,14 @@ class ImaginaryRealAddExpr extends BinaryArithmeticOperation, @jfaddexpr {
 }
 
 /**
- * A C/C++ subtract expression with a real term and an imaginary term.
+ * A C/C++ subtract expression with a real term and an imaginary term.  This is
+ * specific to C99 and later.
+ * ```
+ * double z;
+ * _Imaginary double x;
+ * _Complex double w;
+ * w = z - x;
+ * ```
  */
 class RealImaginarySubExpr extends BinaryArithmeticOperation, @fjsubexpr {
   override string getOperator() { result = "-" }
@@ -338,7 +371,14 @@ class RealImaginarySubExpr extends BinaryArithmeticOperation, @fjsubexpr {
 }
 
 /**
- * A C/C++ subtract expression with an imaginary term and a real term.
+ * A C/C++ subtract expression with an imaginary term and a real term.  This is
+ * specific to C99 and later.
+ * ```
+ * double z;
+ * _Imaginary double x;
+ * _Complex double w;
+ * w = x - z;
+ * ```
  */
 class ImaginaryRealSubExpr extends BinaryArithmeticOperation, @jfsubexpr {
   override string getOperator() { result = "-" }

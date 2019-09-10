@@ -311,6 +311,13 @@ class BuiltInType extends Type, @builtintype {
 
 /**
  * An erroneous type.  This type has no corresponding C/C++ syntax.
+ *
+ * ErroneousType is the type of ErrorExpr, which it turn refers to an illegal
+ * language construct.  In the example below, a temporary (`0`) cannot be bound
+ * to an lvalue reference (`int &`):
+ * ```
+ * int &intref = 0;
+ * ```
  */
 class ErroneousType extends BuiltInType {
   ErroneousType() { builtintypes(underlyingElement(this), _, 1, _, _, _) }
@@ -320,6 +327,16 @@ class ErroneousType extends BuiltInType {
 
 /**
  * The unknown type.  This type has no corresponding C/C++ syntax.
+ *
+ * Unknown types usually occur inside _uninstantiated_ template functions.
+ * In the example below, the type of the ternary `?:` expression cannot
+ * be determined:
+ * ```
+ * template <typename T>
+ * T min(T x, T y) {
+ *   return (x < y) ? x : y;
+ * }
+ * ```
  */
 class UnknownType extends BuiltInType {
   UnknownType() { builtintypes(underlyingElement(this), _, 2, _, _, _) }
