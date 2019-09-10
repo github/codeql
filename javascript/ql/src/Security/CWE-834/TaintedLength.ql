@@ -1,7 +1,7 @@
 /**
  * @name Tainted .length looping
  * @description If server-side code iterates over a user-controlled object with
- *              an arbitary .length value, then an attacker can trick the server
+ *              an arbitrary .length value, then an attacker can trick the server
  *              to loop infinitely. 
  * @kind path-problem
  * @problem.severity warning
