@@ -1,6 +1,6 @@
 ---
 name: LGTM.com - false positive
-about: Tell us about an alert that shouldn't be reported
+about: Tell us about an alert that seems to be incorrect
 title: LGTM.com - false positive
 labels: false-positive
 assignees: ''
