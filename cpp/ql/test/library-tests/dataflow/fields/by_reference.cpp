@@ -66,5 +66,5 @@ void test_setThroughNonMember() {
 void test_nonMemberSetA() {
   S s;
   nonMemberSetA(&s, user_input());
-  sink(nonMemberGetA(&s)); // flow [NOT DETECTED due to lack of flow through &]
+  sink(nonMemberGetA(&s)); // flow
 }
