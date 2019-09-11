@@ -189,7 +189,7 @@ private class AmdDependencyPath extends PathExprCandidate {
 private class ConstantAmdDependencyPathElement extends PathExprInModule, ConstantString {
   ConstantAmdDependencyPathElement() { this = any(AmdDependencyPath amd).getAPart() }
 
-  override string getValue() { result = this.(ConstantString).getStringValue() }
+  override string getValue() { result = this.getStringValue() }
 }
 
 /**

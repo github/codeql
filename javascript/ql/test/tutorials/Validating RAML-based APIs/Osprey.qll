@@ -50,7 +50,7 @@ class OspreyMethodDefinition extends MethodCallExpr {
   string getVerb() { result = getMethodName() }
 
   /** Get the resource path to which this method belongs. */
-  string getResourcePath() { result = getArgument(0).(ConstantString).getStringValue() }
+  string getResourcePath() { result = getArgument(0).getStringValue() }
 }
 
 /** A callback function bound to a REST method. */

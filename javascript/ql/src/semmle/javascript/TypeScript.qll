@@ -222,7 +222,7 @@ private class LiteralExternalModulePath extends PathExprInModule, ConstantString
     exists(ExternalModuleReference emr | this.getParentExpr*() = emr.getExpression())
   }
 
-  override string getValue() { result = this.(ConstantString).getStringValue() }
+  override string getValue() { result = this.getStringValue() }
 }
 
 /** A TypeScript "export-assign" declaration. */
