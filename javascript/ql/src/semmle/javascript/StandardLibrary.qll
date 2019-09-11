@@ -17,7 +17,7 @@ class CallToObjectDefineProperty extends DataFlow::MethodCallNode {
   DataFlow::Node getBaseObject() { result = getArgument(0) }
 
   /** Gets the name of the property being defined, if it can be determined. */
-  string getPropertyName() { result = getArgument(1).asExpr().getStringValue() }
+  string getPropertyName() { result = getArgument(1).getStringValue() }
 
   /** Gets the data flow node denoting the descriptor of the property being defined. */
   DataFlow::Node getPropertyDescriptor() { result = getArgument(2) }

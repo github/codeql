@@ -229,11 +229,11 @@ module TaintedPath {
    * Holds if `node` is a prefix of the string `../`.
    */
   private predicate isDotDotSlashPrefix(DataFlow::Node node) {
-    node.asExpr().getStringValue() + any(string s) = "../"
+    node.getStringValue() + any(string s) = "../"
     or
     // ".." + path.sep
     exists(StringOps::Concatenation conc | node = conc |
-      conc.getOperand(0).asExpr().getStringValue() = ".." and
+      conc.getOperand(0).getStringValue() = ".." and
       conc.getOperand(1).getALocalSource() = DataFlow::moduleMember("path", "sep") and
       conc.getNumOperand() = 2
     )
@@ -277,7 +277,7 @@ module TaintedPath {
       this = startsWith and
       not isDotDotSlashPrefix(startsWith.getSubstring()) and
       // do not confuse this with a simple isAbsolute() check
-      not startsWith.getSubstring().asExpr().getStringValue() = "/"
+      not startsWith.getSubstring().getStringValue() = "/"
     }
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
@@ -308,7 +308,7 @@ module TaintedPath {
       )
       or
       exists(StringOps::StartsWith startsWith, string substring | this = startsWith |
-        startsWith.getSubstring().asExpr().getStringValue() = "/" + substring and
+        startsWith.getSubstring().getStringValue() = "/" + substring and
         operand = startsWith.getBaseString() and
         polarity = startsWith.getPolarity() and
         if substring = "" then negatable = true else negatable = false

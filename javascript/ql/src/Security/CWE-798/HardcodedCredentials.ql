@@ -22,7 +22,7 @@ where
   // use source value in message if it's available
   if source.getNode().asExpr() instanceof ConstantString
   then
-    value = "The hard-coded value \"" + source.getNode().asExpr().getStringValue() +
+    value = "The hard-coded value \"" + source.getNode().getStringValue() +
         "\""
   else value = "This hard-coded value"
 select source.getNode(), source, sink, value + " is used as $@.", sink.getNode(),
