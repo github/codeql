@@ -14,8 +14,12 @@ private import semmle.code.cpp.internal.QualifiedName as Q
  * ```
  *   extern int myglobal;
  * ```
- * Each of these declarations is given its own distinct `DeclarationEntry`,
- * but they all share the same `Declaration`.
+ * and defined in one:
+ * ```
+ *   int myglobal;
+ * ```
+ * Each of these declarations (including the definition) is given its own
+ * distinct `DeclarationEntry`, but they all share the same `Declaration`.
  *
  * Some derived class of `Declaration` do not have a corresponding
  * `DeclarationEntry`, because they always have a unique source location.
