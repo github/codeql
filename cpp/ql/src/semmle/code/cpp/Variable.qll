@@ -7,6 +7,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * A C/C++ variable. For example, in the following code there are four
  * variables, `a`, `b`, `c` and `d`:
  * ```
+ * extern int a;
  * int a;
  *
  * void myFunction(int b) {
@@ -14,7 +15,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * }
  *
  * namespace N {
- *   int d;
+ *   extern int d;
+ *   int d = 1;
  * }
  * ```
  *
@@ -174,9 +176,9 @@ class Variable extends Declaration, @variable {
 }
 
 /**
- * A particular declaration or definition of a C/C++ variable. For example in
- * the following code there are five variable declaration entries - two for
- * `a`, and one each for `b`, `c` and `d`:
+ * A particular declaration or definition of a C/C++ variable. For example, in
+ * the following code there are six variable declaration entries - two each for
+ * `a` and `d`, and one each for `b` and `c`:
  * ```
  * extern int a;
  * int a;
@@ -186,7 +188,8 @@ class Variable extends Declaration, @variable {
  * }
  *
  * namespace N {
- *   int d;
+ *   extern int d;
+ *   int d = 1;
  * }
  * ```
  */
