@@ -390,10 +390,10 @@ class SideEffectOperand extends TypedOperand {
     useInstr instanceof BufferReadSideEffectInstruction and
     result instanceof BufferMemoryAccess
     or
-    useInstr instanceof IndirectWriteSideEffectInstruction and
+    useInstr instanceof IndirectMustWriteSideEffectInstruction and
     result instanceof IndirectMemoryAccess
     or
-    useInstr instanceof BufferWriteSideEffectInstruction and
+    useInstr instanceof BufferMustWriteSideEffectInstruction and
     result instanceof BufferMemoryAccess
     or
     useInstr instanceof IndirectMayWriteSideEffectInstruction and

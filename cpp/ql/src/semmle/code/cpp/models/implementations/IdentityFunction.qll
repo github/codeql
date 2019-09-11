@@ -16,9 +16,9 @@ class IdentityFunction extends DataFlowFunction, SideEffectFunction, AliasFuncti
     )
   }
 
-  override predicate neverReadsMemory() { any() }
+  override predicate hasOnlySpecificReadSideEffects() { any() }
 
-  override predicate neverWritesMemory() { any() }
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate parameterNeverEscapes(int index) { none() }
 
@@ -37,3 +37,4 @@ class IdentityFunction extends DataFlowFunction, SideEffectFunction, AliasFuncti
     input.isParameter(0) and output.isReturnValue()
   }
 }
+

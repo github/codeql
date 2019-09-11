@@ -8116,6 +8116,59 @@ ir.cpp:
 # 1158|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1158|               ValueCategory = prvalue(load)
 # 1159|     5: [ReturnStmt] return ...
+# 1161| [TopLevelFunction] void* memcpy(void*, void*, int)
+# 1161|   params: 
+# 1161|     0: [Parameter] dst
+# 1161|         Type = [VoidPointerType] void *
+# 1161|     1: [Parameter] src
+# 1161|         Type = [VoidPointerType] void *
+# 1161|     2: [Parameter] size
+# 1161|         Type = [IntType] int
+# 1163| [TopLevelFunction] int ModeledCallTarget(int)
+# 1163|   params: 
+# 1163|     0: [Parameter] x
+# 1163|         Type = [IntType] int
+# 1163|   body: [Block] { ... }
+# 1164|     0: [DeclStmt] declaration
+# 1164|       0: [VariableDeclarationEntry] definition of y
+# 1164|           Type = [IntType] int
+# 1165|     1: [ExprStmt] ExprStmt
+# 1165|       0: [FunctionCall] call to memcpy
+# 1165|           Type = [VoidPointerType] void *
+# 1165|           ValueCategory = prvalue
+# 1165|         0: [CStyleCast] (void *)...
+# 1165|             Conversion = [PointerConversion] pointer conversion
+# 1165|             Type = [VoidPointerType] void *
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [AddressOfExpr] & ...
+# 1165|               Type = [IntPointerType] int *
+# 1165|               ValueCategory = prvalue
+# 1165|             0: [VariableAccess] y
+# 1165|                 Type = [IntType] int
+# 1165|                 ValueCategory = lvalue
+# 1165|         1: [CStyleCast] (void *)...
+# 1165|             Conversion = [PointerConversion] pointer conversion
+# 1165|             Type = [VoidPointerType] void *
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [AddressOfExpr] & ...
+# 1165|               Type = [IntPointerType] int *
+# 1165|               ValueCategory = prvalue
+# 1165|             0: [VariableAccess] x
+# 1165|                 Type = [IntType] int
+# 1165|                 ValueCategory = lvalue
+# 1165|         2: [CStyleCast] (int)...
+# 1165|             Conversion = [IntegralConversion] integral conversion
+# 1165|             Type = [IntType] int
+# 1165|             Value = [CStyleCast] 4
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [SizeofTypeOperator] sizeof(int)
+# 1165|               Type = [LongType] unsigned long
+# 1165|               Value = [SizeofTypeOperator] 4
+# 1165|               ValueCategory = prvalue
+# 1166|     2: [ReturnStmt] return ...
+# 1166|       0: [VariableAccess] y
+# 1166|           Type = [IntType] int
+# 1166|           ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

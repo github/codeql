@@ -67,9 +67,9 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 
   override predicate parameterIsAlwaysReturned(int i) { none() }
 
-  override predicate neverReadsMemory() { none() }
+  override predicate hasOnlySpecificReadSideEffects() { none() }
 
-  override predicate neverWritesMemory() { any() }
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
 }
 
 class PureFunction extends TaintFunction, SideEffectFunction {
@@ -91,7 +91,8 @@ class PureFunction extends TaintFunction, SideEffectFunction {
     output.isReturnValue()
   }
 
-  override predicate neverReadsMemory() { any() }
+  override predicate hasOnlySpecificReadSideEffects() { any() }
 
-  override predicate neverWritesMemory() { any() }
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
 }
+

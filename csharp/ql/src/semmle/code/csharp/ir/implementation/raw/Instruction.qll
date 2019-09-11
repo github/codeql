@@ -20,32 +20,23 @@ module InstructionSanity {
     exists(Opcode opcode |
       opcode = instr.getOpcode() and
       (
-        opcode instanceof UnaryOpcode and tag instanceof UnaryOperandTag
-        or
-        opcode instanceof BinaryOpcode and
+        opcode instanceof UnaryOpcode and tag instanceof UnaryOperandTag or
         (
-          tag instanceof LeftOperandTag or
-          tag instanceof RightOperandTag
-        )
-        or
-        opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag
-        or
-        opcode instanceof BufferAccessOpcode and tag instanceof BufferSizeOperand
-        or
-        opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag
-        or
-        opcode instanceof OpcodeWithLoad and tag instanceof LoadOperandTag
-        or
-        opcode instanceof Opcode::Store and tag instanceof StoreValueOperandTag
-        or
-        opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperandTag
-        or
-        opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag
-        or
-        opcode instanceof Opcode::Chi and tag instanceof ChiTotalOperandTag
-        or
-        opcode instanceof Opcode::Chi and tag instanceof ChiPartialOperandTag
-        or
+          opcode instanceof BinaryOpcode and
+          (
+            tag instanceof LeftOperandTag or
+            tag instanceof RightOperandTag
+          )
+        ) or
+        opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag or
+        opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag or
+        opcode instanceof OpcodeWithLoad and tag instanceof LoadOperandTag or
+        opcode instanceof Opcode::Store and tag instanceof StoreValueOperandTag or
+        opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperandTag or
+        opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag or
+        opcode instanceof Opcode::Chi and tag instanceof ChiTotalOperandTag or
+        opcode instanceof Opcode::Chi and tag instanceof ChiPartialOperandTag or
+
         (
           opcode instanceof ReadSideEffectOpcode or
           opcode instanceof MayWriteSideEffectOpcode or
@@ -609,7 +600,9 @@ class VariableInstruction extends Instruction {
 
   VariableInstruction() { var = Construction::getInstructionVariable(this) }
 
-  final override string getImmediateString() { result = var.toString() }
+  override string getImmediateString() {
+    result = var.toString()
+  }
 
   final IRVariable getVariable() { result = var }
 }
@@ -655,9 +648,9 @@ class VariableAddressInstruction extends VariableInstruction {
 class InitializeParameterInstruction extends VariableInstruction {
   InitializeParameterInstruction() { getOpcode() instanceof Opcode::InitializeParameter }
 
-  final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof IndirectMemoryAccess
+  }
 }
 
 /**
@@ -1174,21 +1167,48 @@ class CallReadSideEffectInstruction extends SideEffectInstruction {
  * An instruction representing the read of an indirect parameter within a function call.
  */
 class IndirectReadSideEffectInstruction extends SideEffectInstruction {
-  IndirectReadSideEffectInstruction() { getOpcode() instanceof Opcode::IndirectReadSideEffect }
+  IndirectReadSideEffectInstruction() {
+    getOpcode() instanceof Opcode::IndirectReadSideEffect
+  }
+
+  Instruction getArgumentInstruction() {
+    result = getAnOperand().(AddressOperand).getDef()
+  }
 }
 
 /**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
 class BufferReadSideEffectInstruction extends SideEffectInstruction {
-  BufferReadSideEffectInstruction() { getOpcode() instanceof Opcode::BufferReadSideEffect }
+  BufferReadSideEffectInstruction() {
+    getOpcode() instanceof Opcode::BufferReadSideEffect
+  }
+
+  Instruction getArgumentInstruction() {
+    result = getAnOperand().(AddressOperand).getDef()
+  }
+}
+
+/**
+ * An instruction representing a side effect of a function call.
+ */
+class WriteSideEffectInstruction extends SideEffectInstruction {
+  WriteSideEffectInstruction() {
+    getOpcode() instanceof WriteSideEffectOpcode
+  }
+
+  Instruction getArgumentInstruction() {
+    result = getAnOperand().(AddressOperand).getDef()
+  }
 }
 
 /**
  * An instruction representing the write of an indirect parameter within a function call.
  */
-class IndirectWriteSideEffectInstruction extends SideEffectInstruction {
-  IndirectWriteSideEffectInstruction() { getOpcode() instanceof Opcode::IndirectWriteSideEffect }
+class IndirectMustWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  IndirectMustWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::IndirectMustWriteSideEffect
+  }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
 }
@@ -1197,8 +1217,10 @@ class IndirectWriteSideEffectInstruction extends SideEffectInstruction {
  * An instruction representing the write of an indirect buffer parameter within a function call. The
  * entire buffer is overwritten.
  */
-class BufferWriteSideEffectInstruction extends SideEffectInstruction {
-  BufferWriteSideEffectInstruction() { getOpcode() instanceof Opcode::BufferWriteSideEffect }
+class BufferMustWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  BufferMustWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::BufferMustWriteSideEffect
+  }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
 }
@@ -1208,7 +1230,7 @@ class BufferWriteSideEffectInstruction extends SideEffectInstruction {
  * Unlike `IndirectWriteSideEffectInstruction`, the location might not be completely overwritten.
  * written.
  */
-class IndirectMayWriteSideEffectInstruction extends SideEffectInstruction {
+class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
   IndirectMayWriteSideEffectInstruction() {
     getOpcode() instanceof Opcode::IndirectMayWriteSideEffect
   }
@@ -1222,8 +1244,10 @@ class IndirectMayWriteSideEffectInstruction extends SideEffectInstruction {
  * An instruction representing the write of an indirect buffer parameter within a function call.
  * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
  */
-class BufferMayWriteSideEffectInstruction extends SideEffectInstruction {
-  BufferMayWriteSideEffectInstruction() { getOpcode() instanceof Opcode::BufferMayWriteSideEffect }
+class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  BufferMayWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::BufferMayWriteSideEffect
+  }
 
   final override MemoryAccessKind getResultMemoryAccess() {
     result instanceof BufferMayMemoryAccess

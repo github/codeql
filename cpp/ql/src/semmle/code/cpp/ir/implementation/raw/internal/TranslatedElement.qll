@@ -9,6 +9,7 @@ private import TranslatedCondition
 private import TranslatedFunction
 private import TranslatedStmt
 private import IRConstruction
+private import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * Gets the built-in `int` type.
@@ -369,7 +370,44 @@ newtype TTranslatedElement =
   // An allocation size for a `new` or `new[]` expression
   TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // The declaration/initialization part of a `ConditionDeclExpr`
-  TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) }
+  TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
+  // The side effects of a `Call` {
+  TTranslatedSideEffects(Call expr) { exists(TTranslatedArgumentSideEffect(expr, _, _, _)) } or // A precise side effect of an argument to a `Call` {
+  TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
+    (
+      expr = call.getArgument(n).getFullyConverted()
+      or
+      expr = call.getQualifier().getFullyConverted() and
+      n = -1
+    ) and
+    (
+      call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(n, _) and
+      isWrite = false
+      or
+      call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(n, _, _) and
+      isWrite = true
+      or
+      not call.getTarget() instanceof SideEffectFunction and
+      exists(Type t | t = expr.getUnspecifiedType() |
+        t instanceof ArrayType or
+        t instanceof PointerType or
+        t instanceof ReferenceType
+      ) and
+      (
+        isWrite = true or
+        isWrite = false
+      )
+      or
+      not call.getTarget() instanceof SideEffectFunction and
+      n = -1 and
+      (
+        isWrite = true or
+        isWrite = false
+      )
+    ) and
+    not ignoreExpr(expr) and
+    not ignoreExpr(call)
+  }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`

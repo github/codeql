@@ -66,10 +66,10 @@ private newtype TOpcode =
   TCallSideEffect() or
   TCallReadSideEffect() or
   TIndirectReadSideEffect() or
-  TIndirectWriteSideEffect() or
+  TIndirectMustWriteSideEffect() or
   TIndirectMayWriteSideEffect() or
   TBufferReadSideEffect() or
-  TBufferWriteSideEffect() or
+  TBufferMustWriteSideEffect() or
   TBufferMayWriteSideEffect() or
   TChi() or
   TInlineAsm() or
@@ -136,10 +136,15 @@ abstract class ReadSideEffectOpcode extends SideEffectOpcode { }
 abstract class WriteSideEffectOpcode extends SideEffectOpcode { }
 
 /**
+ * An opcode that definitely writes to a set of memory locations as a side effect.
+ */
+abstract class MustWriteSideEffectOpcode extends WriteSideEffectOpcode { }
+
+/**
  * An opcode that may overwrite some, all, or none of an existing set of memory locations. Modeled
  * as a read of the original contents, plus a "may" write of the new contents.
  */
-abstract class MayWriteSideEffectOpcode extends SideEffectOpcode { }
+abstract class MayWriteSideEffectOpcode extends WriteSideEffectOpcode { }
 
 /**
  * An opcode that accesses a buffer via an `AddressOperand` and a `BufferSizeOperand`.
@@ -416,9 +421,9 @@ module Opcode {
     final override string toString() { result = "IndirectReadSideEffect" }
   }
 
-  class IndirectWriteSideEffect extends WriteSideEffectOpcode, MemoryAccessOpcode,
-    TIndirectWriteSideEffect {
-    final override string toString() { result = "IndirectWriteSideEffect" }
+  class IndirectMustWriteSideEffect extends MustWriteSideEffectOpcode, MemoryAccessOpcode,
+    TIndirectMustWriteSideEffect {
+    final override string toString() { result = "IndirectMustWriteSideEffect" }
   }
 
   class IndirectMayWriteSideEffect extends MayWriteSideEffectOpcode, MemoryAccessOpcode,
@@ -430,9 +435,9 @@ module Opcode {
     final override string toString() { result = "BufferReadSideEffect" }
   }
 
-  class BufferWriteSideEffect extends WriteSideEffectOpcode, BufferAccessOpcode,
-    TBufferWriteSideEffect {
-    final override string toString() { result = "BufferWriteSideEffect" }
+  class BufferMustWriteSideEffect extends MustWriteSideEffectOpcode, BufferAccessOpcode,
+    TBufferMustWriteSideEffect {
+    final override string toString() { result = "BufferMustWriteSideEffect" }
   }
 
   class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode,
@@ -456,3 +461,4 @@ module Opcode {
     final override string toString() { result = "NewObj" }
   }
 }
+
