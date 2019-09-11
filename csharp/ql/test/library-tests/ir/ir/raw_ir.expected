@@ -135,6 +135,77 @@ array.cs:
 #   10|     v0_85(Void)            = UnmodeledUse        : mu*
 #   10|     v0_86(Void)            = ExitFunction        : 
 
+assignop.cs:
+#    4| System.Void AssignOp.Main()
+#    4|   Block 0
+#    4|     v0_0(Void)          = EnterFunction       : 
+#    4|     mu0_1(null)         = AliasedDefinition   : 
+#    4|     mu0_2(null)         = UnmodeledDefinition : 
+#    5|     r0_3(glval<Int32>)  = VariableAddress[a]  : 
+#    5|     r0_4(Int32)         = Constant[1]         : 
+#    5|     mu0_5(Int32)        = Store               : &:r0_3, r0_4
+#    6|     r0_6(glval<Int32>)  = VariableAddress[c]  : 
+#    6|     r0_7(Int32)         = Constant[1]         : 
+#    6|     mu0_8(Int32)        = Store               : &:r0_6, r0_7
+#    8|     r0_9(glval<Int32>)  = VariableAddress[a]  : 
+#    8|     r0_10(Int32)        = Load                : &:r0_9, ~mu0_2
+#    8|     r0_11(glval<Int32>) = VariableAddress[c]  : 
+#    8|     r0_12(Int32)        = Load                : &:r0_11, ~mu0_2
+#    8|     r0_13(Int32)        = Add                 : r0_12, r0_10
+#    8|     mu0_14(Int32)       = Store               : &:r0_11, r0_13
+#    9|     r0_15(glval<Int32>) = VariableAddress[a]  : 
+#    9|     r0_16(Int32)        = Load                : &:r0_15, ~mu0_2
+#    9|     r0_17(glval<Int32>) = VariableAddress[c]  : 
+#    9|     r0_18(Int32)        = Load                : &:r0_17, ~mu0_2
+#    9|     r0_19(Int32)        = Sub                 : r0_18, r0_16
+#    9|     mu0_20(Int32)       = Store               : &:r0_17, r0_19
+#   10|     r0_21(glval<Int32>) = VariableAddress[a]  : 
+#   10|     r0_22(Int32)        = Load                : &:r0_21, ~mu0_2
+#   10|     r0_23(glval<Int32>) = VariableAddress[c]  : 
+#   10|     r0_24(Int32)        = Load                : &:r0_23, ~mu0_2
+#   10|     r0_25(Int32)        = Mul                 : r0_24, r0_22
+#   10|     mu0_26(Int32)       = Store               : &:r0_23, r0_25
+#   11|     r0_27(glval<Int32>) = VariableAddress[a]  : 
+#   11|     r0_28(Int32)        = Load                : &:r0_27, ~mu0_2
+#   11|     r0_29(glval<Int32>) = VariableAddress[c]  : 
+#   11|     r0_30(Int32)        = Load                : &:r0_29, ~mu0_2
+#   11|     r0_31(Int32)        = Div                 : r0_30, r0_28
+#   11|     mu0_32(Int32)       = Store               : &:r0_29, r0_31
+#   12|     r0_33(glval<Int32>) = VariableAddress[a]  : 
+#   12|     r0_34(Int32)        = Load                : &:r0_33, ~mu0_2
+#   12|     r0_35(glval<Int32>) = VariableAddress[c]  : 
+#   12|     r0_36(Int32)        = Load                : &:r0_35, ~mu0_2
+#   12|     r0_37(Int32)        = Rem                 : r0_36, r0_34
+#   12|     mu0_38(Int32)       = Store               : &:r0_35, r0_37
+#   13|     r0_39(Int32)        = Constant[2]         : 
+#   13|     r0_40(glval<Int32>) = VariableAddress[c]  : 
+#   13|     r0_41(Int32)        = Load                : &:r0_40, ~mu0_2
+#   13|     r0_42(Int32)        = ShiftLeft           : r0_41, r0_39
+#   13|     mu0_43(Int32)       = Store               : &:r0_40, r0_42
+#   14|     r0_44(Int32)        = Constant[2]         : 
+#   14|     r0_45(glval<Int32>) = VariableAddress[c]  : 
+#   14|     r0_46(Int32)        = Load                : &:r0_45, ~mu0_2
+#   14|     r0_47(Int32)        = ShiftRight          : r0_46, r0_44
+#   14|     mu0_48(Int32)       = Store               : &:r0_45, r0_47
+#   15|     r0_49(Int32)        = Constant[2]         : 
+#   15|     r0_50(glval<Int32>) = VariableAddress[c]  : 
+#   15|     r0_51(Int32)        = Load                : &:r0_50, ~mu0_2
+#   15|     r0_52(Int32)        = BitAnd              : r0_51, r0_49
+#   15|     mu0_53(Int32)       = Store               : &:r0_50, r0_52
+#   16|     r0_54(Int32)        = Constant[2]         : 
+#   16|     r0_55(glval<Int32>) = VariableAddress[c]  : 
+#   16|     r0_56(Int32)        = Load                : &:r0_55, ~mu0_2
+#   16|     r0_57(Int32)        = BitXor              : r0_56, r0_54
+#   16|     mu0_58(Int32)       = Store               : &:r0_55, r0_57
+#   17|     r0_59(Int32)        = Constant[2]         : 
+#   17|     r0_60(glval<Int32>) = VariableAddress[c]  : 
+#   17|     r0_61(Int32)        = Load                : &:r0_60, ~mu0_2
+#   17|     r0_62(Int32)        = BitOr               : r0_61, r0_59
+#   17|     mu0_63(Int32)       = Store               : &:r0_60, r0_62
+#    4|     v0_64(Void)         = ReturnVoid          : 
+#    4|     v0_65(Void)         = UnmodeledUse        : mu*
+#    4|     v0_66(Void)         = ExitFunction        : 
+
 casts.cs:
 #   11| System.Void Casts.Main()
 #   11|   Block 0

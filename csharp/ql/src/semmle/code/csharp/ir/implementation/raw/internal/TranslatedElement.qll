@@ -75,7 +75,14 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   expr instanceof LocalVariableDeclExpr and
   expr.getParent() instanceof ForeachStmt
   or
-  ignoreExprAndDescendants(getRealParent(expr)) // recursive case
+  (
+    // recursive case
+    ignoreExprAndDescendants(getRealParent(expr)) and 
+    // The two children of an `AssignOperation` should not be ignored, but since they are also
+    // descendants of an orphan node (the expanded form of the `AssignOperation` is also retrieved by 
+    // the extractor, which is rooted in an AST node without parents) they would be
+    not expr.getParent() instanceof AssignOperation
+  )
 }
 
 /**
@@ -250,15 +257,6 @@ newtype TTranslatedElement =
     not ignoreExpr(initList) and
     exists(initList.getElement(elementIndex))
   } or
-  // The value initialization of a range of array elements that were omitted
-  // from an initializer list.
-  TTranslatedElementValueInitialization(
-    ArrayInitializer initList, int elementIndex, int elementCount
-  ) {
-    not ignoreExpr(initList) and
-    isFirstValueInitializedElementInRange(initList, elementIndex) and
-    elementCount = getEndOfValueInitializedRange(initList, elementIndex) - elementIndex
-  } or
   // The initialization of a base class from within a constructor.
   TTranslatedConstructorInitializer(ConstructorInitializer init) { not ignoreExpr(init) } or
   // A statement
@@ -283,47 +281,6 @@ newtype TTranslatedElement =
   TTranslatedCompilerGeneratedElement(Element generatedBy, int index) {
     canCreateCompilerGeneratedElement(generatedBy, index)
   }
-
-/**
- * Gets the index of the first explicitly initialized element in `initList`
- * whose index is greater than `afterElementIndex`, where `afterElementIndex`
- * is a first value-initialized element in a value-initialized range in
- * `initList`. If there are no remaining explicitly initialized elements in
- * `initList`, the result is the total number of elements in the array being
- * initialized.
- */
-private int getEndOfValueInitializedRange(ArrayInitializer initList, int afterElementIndex) {
-  result = getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)
-  or
-  isFirstValueInitializedElementInRange(initList, afterElementIndex) and
-  not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
-  result = initList.getNumberOfElements()
-}
-
-/**
- * Gets the index of the first explicitly initialized element in `initList`
- * whose index is greater than `afterElementIndex`, where `afterElementIndex`
- * is a first value-initialized element in a value-initialized range in
- * `initList`.
- */
-private int getNextExplicitlyInitializedElementAfter(
-  ArrayInitializer initList, int afterElementIndex
-) {
-  isFirstValueInitializedElementInRange(initList, afterElementIndex) and
-  result = min(int i | exists(initList.getElement(i)) and i > afterElementIndex)
-}
-
-/**
- * Holds if element `elementIndex` is the first value-initialized element in a
- * range of one or more consecutive value-initialized elements in `initList`.
- */
-private predicate isFirstValueInitializedElementInRange(ArrayInitWithMod initList, int elementIndex) {
-  initList.isValueInitialized(elementIndex) and
-  (
-    elementIndex = 0 or
-    not initList.isValueInitialized(elementIndex - 1)
-  )
-}
 
 /**
  * Represents an AST node for which IR needs to be generated.
