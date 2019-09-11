@@ -17,9 +17,6 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  * different objects.
  */
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  // Taint can flow into using ordinary data flow.
-  DataFlow::localFlowStep(nodeFrom, nodeTo)
-  or
   localInstructionTaintStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
