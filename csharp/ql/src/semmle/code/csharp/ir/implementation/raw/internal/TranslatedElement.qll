@@ -174,6 +174,58 @@ private predicate usedAsCondition(Expr expr) {
   )
 }
 
+/**
+ * Holds if we should have a `Load` instruction for `expr` when generating the IR.
+ */
+predicate needsLoad(Expr expr) {
+  expr instanceof AssignableRead
+  or
+  // We need an extra load for the `PointerIndirectionExpr`
+  expr instanceof PointerIndirectionExpr and
+  // If the dereferencing happens on the lhs of an
+  // assignment we shouldn't have a load instruction
+  not exists(Assignment a | a.getLValue() = expr)
+}
+
+/**
+ * Holds if we should ignore the `Load` instruction for `expr` when generating IR.
+ */
+predicate ignoreLoad(Expr expr) {
+  // No load needed for an array access
+  expr.getParent() instanceof ArrayAccess
+  or
+  // No load is needed for the lvalue in an assignment such as:
+  // Eg. `Object obj = oldObj`;
+  expr.getParent().(Assignment).getLValue() = expr and
+  expr.getType() instanceof RefType
+  or
+  // Since the loads for a crement operation is handled by the translation
+  // of the operation, we ignore the load here
+  expr.getParent() instanceof MutatorOperation
+  or
+  // The `&` operator does not need a load, since the
+  // address is the final value of the expression
+  expr.getParent() instanceof AddressOfExpr
+  or
+  // If expr is a variable access used as the qualifier for a field access and
+  // its target variable is a value type variable,
+  // ignore the load since the address of a variable that is a value type is
+  // given by a single `VariableAddress` instruction.
+  expr.getParent().(FieldAccess).getQualifier() = expr and
+  expr.(VariableAccess).getType().isValueType() and
+  not (
+    expr.(VariableAccess).getTarget().(Parameter).isOutOrRef() or
+    expr.(VariableAccess).getTarget().(Parameter).isIn()
+  )
+  or
+  // If expr is passed as an `out,`ref` or `in` argument,
+  // no load should take place since we pass the address, not the 
+  // value of the variable
+  expr.(AssignableAccess).isOutOrRefArgument()
+  or
+  expr.(AssignableAccess).isInArgument()
+}
+
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
   TTranslatedValueExpr(Expr expr) {
@@ -189,17 +241,9 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
-    // TODO: Revisit and make sure Loads are only used when needed
     not ignoreExpr(expr) and
-    expr instanceof AssignableRead and
-    not expr.getParent() instanceof ArrayAccess and
-    not (
-      expr.getParent() instanceof Assignment and
-      expr.getType() instanceof RefType
-    ) and
-    // Ignore loads for reads in `++` and `--` since their
-    // translated elements handle them
-    not expr.getParent() instanceof MutatorOperation
+    not ignoreLoad(expr) and
+    needsLoad(expr)
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
