@@ -330,13 +330,7 @@ GlobalOrNamespaceVariable globalVarFromId(string id) {
  * A variable that has any kind of upper-bound check anywhere in the program
  */
 private predicate hasUpperBoundsCheck(Variable var) {
-  exists(BinaryOperation oper, VariableAccess access |
-    (
-      oper.getOperator() = "<" or
-      oper.getOperator() = "<=" or
-      oper.getOperator() = ">" or
-      oper.getOperator() = ">="
-    ) and
+  exists(RelationalOperation oper, VariableAccess access |
     oper.getLeftOperand() = access and
     access.getTarget() = var and
     // Comparing to 0 is not an upper bound check
