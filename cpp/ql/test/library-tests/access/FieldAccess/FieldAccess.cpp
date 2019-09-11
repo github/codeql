@@ -84,3 +84,15 @@ int test_val00(S s) {
 int test_val01(U u) {
   return u.x;
 }
+
+class MyClass {
+public:
+  void myMethod(MyClass a, MyClass &b, MyClass *c) {
+    a.x = b.y; // val, ref
+    c->x = y; // ptr, ptr
+    c->x = this->y; // ptr, ptr
+    (&b)->y = (*c).y; // ptr, val
+  }
+
+  int x, y;
+};
