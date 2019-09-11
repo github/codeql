@@ -13,6 +13,7 @@
 
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
 |---------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Unused index variable (`js/unused-index-variable`)                        | correctness                                                       | Highlights loops that iterate over an array, but do not use the index variable to access array elements, indicating a possible typo or logic error. |
 
 
 ## Changes to existing queries
