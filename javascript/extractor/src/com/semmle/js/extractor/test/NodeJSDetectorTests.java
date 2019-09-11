@@ -164,9 +164,8 @@ public class NodeJSDetectorTests {
 
   @Test
   public void amdefine() {
-    // not currently detected
     isNodeJS(
-        "if (typeof define !== 'function') define = require('amdefine')(module, require);", false);
+        "if (typeof define !== 'function') define = require('amdefine')(module, require);", true);
   }
 
   @Test
@@ -201,5 +200,15 @@ public class NodeJSDetectorTests {
             + "  fs = require('fs');"
             + "}",
         true);
+  }
+
+  @Test
+  public void requireAndCall() {
+    isNodeJS("var foo = require('foo')();", true);
+  }
+
+  @Test
+  public void requireAndCallMethod() {
+    isNodeJS("var foo = require('foo').bar();", true);
   }
 }
