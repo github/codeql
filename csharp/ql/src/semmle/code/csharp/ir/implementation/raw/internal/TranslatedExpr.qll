@@ -684,7 +684,9 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
   private int getRank() { result = count(expr.getIndex(_)) }
 }
 
-abstract class TranslatedTransparentExpr extends TranslatedNonConstantExpr {
+abstract class TranslatedPointerOps extends TranslatedNonConstantExpr {
+  override UnaryOperation expr;
+
   final override Instruction getFirstInstruction() {
     result = this.getOperand().getFirstInstruction()
   }
@@ -710,6 +712,24 @@ abstract class TranslatedTransparentExpr extends TranslatedNonConstantExpr {
   }
 
   abstract TranslatedExpr getOperand();
+}
+
+class TranslatedPointerIndirectionExpr extends TranslatedPointerOps {
+  TranslatedPointerIndirectionExpr() {
+    // *p is the same as p until the result is loaded.
+    expr instanceof PointerIndirectionExpr
+  }
+
+  override TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getOperand()) }
+}
+
+class TranslatedAddressExpr extends TranslatedPointerOps {
+  TranslatedAddressExpr() {
+    // &x is the same as x.
+    expr instanceof AddressOfExpr
+  }
+
+  override TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getOperand()) }
 }
 
 class TranslatedThisExpr extends TranslatedNonConstantExpr {
