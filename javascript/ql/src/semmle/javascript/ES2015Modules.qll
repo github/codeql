@@ -82,7 +82,7 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
 private class LiteralImportPath extends PathExprInModule, ConstantString {
   LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
 
-  override string getValue() { result = this.getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
 /**
@@ -596,7 +596,7 @@ abstract class ReExportDeclaration extends ExportDeclaration {
 private class LiteralReExportPath extends PathExprInModule, ConstantString {
   LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
 
-  override string getValue() { result = this.getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
 /**

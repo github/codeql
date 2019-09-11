@@ -2600,7 +2600,7 @@ private class LiteralDynamicImportPath extends PathExprInModule, ConstantString 
     exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
   }
 
-  override string getValue() { result = this.getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
 /**
