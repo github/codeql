@@ -36,19 +36,27 @@ module TaintedLength {
   class ArrayIterationLoop extends Stmt {
     LocalVariable indexVariable;
     LoopStmt loop;
+    DataFlow::PropRead lengthRead;
 
     ArrayIterationLoop() {
       this = loop and 
-      exists(RelationalComparison compare, DataFlow::PropRead lengthRead |
+      exists(RelationalComparison compare |
         compare = loop.getTest() and
         compare.getLesserOperand() = indexVariable.getAnAccess() and
-        lengthRead.accesses(_, "length") and
+        lengthRead.getPropertyName() = "length" and
         lengthRead.flowsToExpr(compare.getGreaterOperand())
       ) and
       (
         loop.(ForStmt).getUpdate().(IncExpr).getOperand() = indexVariable.getAnAccess() or
         loop.getBody().getAChild*().(IncExpr).getOperand() = indexVariable.getAnAccess()
       )
+    }
+    
+    /**
+     * Gets the length read in the loop test
+     */
+    DataFlow::PropRead getLengthRead() {
+      result = lengthRead   
     }
     
     /**
@@ -77,19 +85,17 @@ module TaintedLength {
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A loop that iterates over an array, such as `for (..; .. sink.length; ...) ...`
+   * An object that that is being iterated in a `for` loop, such as `for (..; .. sink.length; ...) ...`
    */
   private class LoopSink extends Sink {
     LoopSink() {
-      exists(ArrayIterationLoop loop, Expr lengthAccess, DataFlow::PropRead lengthRead |
-        loop.getTest().(RelationalComparison).getGreaterOperand() = lengthAccess and
-        lengthRead.flowsToExpr(lengthAccess) and
-        lengthRead.accesses(this, "length") and
+      exists(ArrayIterationLoop loop |
+        this = loop.getLengthRead().getBase() and
         
-        // In the DOS we are looking for arrayRead will evaluate to undefined.
-        // If an obvious nullpointer happens on this undefined, then the DOS cannot happen.
+        // In the DOS we are looking for arrayRead will evaluate to undefined, 
+        // this may cause an exception to be thrown, thus bailing out of the loop. 
+        // A DoS cannot happen if such an exception is thrown.  
         not exists(DataFlow::PropRead arrayRead, Expr throws |
-          // It doesn't only happen inside the for-loop, outside is also a sink (assuming it happens before).
           loop.getBody().getAChild*() = arrayRead.asExpr() and
           loop.getBody().getAChild*() = throws and
           arrayRead.getPropertyNameExpr() = loop.getIndexVariable().getAnAccess() and
@@ -178,7 +184,7 @@ module TaintedLength {
 
   /**
    * A method call to a lodash method that iterates over an array-like structure, 
-   * such as `_.filter(sink, ...)`
+   * such as `_.filter(sink, ...)`. 
    */
   private class LodashIterationSink extends Sink {
     DataFlow::CallNode call;
@@ -202,7 +208,7 @@ module TaintedLength {
               isCrashingWithNullValues(throws)
             )
             or
-            // similar to the loop sink - the existance of an early-exit usually means that no DOS can happen.
+            // similar to the loop sink - the existence of an early-exit usually means that no DOS can happen.
             exists(ThrowStmt throw |
               throw = func.asExpr().(Function).getBody().getAChild*() and
               throw.getTarget() = func.asExpr()
@@ -214,7 +220,7 @@ module TaintedLength {
   }
   
   /**
-   * A source of objects that can cause DOS is looped over. 
+   * A source of objects that can cause DOS if looped over. 
    */
   abstract class Source extends DataFlow::Node { }
   

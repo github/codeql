@@ -17,7 +17,7 @@ module TaintedLength {
    * A taint-tracking configuration for reasoning about looping on tainted objects with unbounded length.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "LabeledLoopTaintedObject" }
+    Configuration() { this = "TaintedLength" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
       source instanceof Source and label = TaintedObject::label()

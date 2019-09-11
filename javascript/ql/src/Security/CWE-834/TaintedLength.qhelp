@@ -7,11 +7,12 @@
     <p>
         Iterating the elements of an untrusted object using the 
         <code>.length</code> property can lead to a server looping 
-        indefinitely or crashing. This looping or crashing creates a 
-        denial-of-service or DOS.
-        This happens when the server expects an array but an attacker creates
-        a JSON object with an absurdly large number in the .length property
-        that the server then loops through.
+        indefinitely. This looping causes a denial-of-service or DoS by 
+        causing the server to hang or run out of memory. 
+        This happens when the server expects an array but an attacker sends 
+        a regular JSON object with an huge number in the 
+        <code>.length</code> property, such as `{length: 1e100}`, that the
+        server then loops through.
     </p>
 </overview>
 
@@ -35,7 +36,7 @@
         This is not secure since an attacker can control the value of 
         <code>obj.length</code>, and thereby cause the loop to loop 
         indefinitely. 
-        Here the potential DOS is fixed by enforcing that the user controlled 
+        Here the potential DoS is fixed by enforcing that the user controlled 
         object is an array. 
     </p>
 
