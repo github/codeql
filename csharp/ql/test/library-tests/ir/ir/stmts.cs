@@ -94,5 +94,16 @@ public class test_stmts
         }
         while (x < 10);
     }
-
+    
+    public static void checkedUnchecked()
+    {
+        int num = Int32.MaxValue;
+        unchecked
+        {
+            num = num + 1;
+        }
+        checked
+        {
+            num = num + 1;
+        }    }
 }

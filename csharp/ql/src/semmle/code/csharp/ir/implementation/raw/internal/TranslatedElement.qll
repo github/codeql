@@ -89,6 +89,10 @@ private predicate ignoreExprOnly(Expr expr) {
   or
   // Ignore the child expression of a goto case stmt
   expr.getParent() instanceof GotoCaseStmt
+  or
+  // Ignore the expression (that is not a declaration) 
+  // that appears in a using block
+  expr.getParent().(UsingBlockStmt).getExpr() = expr
 }
 
 /**
@@ -178,6 +182,7 @@ newtype TTranslatedElement =
   // expression.
   TTranslatedLoad(Expr expr) {
     // TODO: Revisit and make sure Loads are only used when needed
+    not ignoreExpr(expr) and
     expr instanceof AssignableRead and
     not expr.getParent() instanceof ArrayAccess and
     not (

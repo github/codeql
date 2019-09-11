@@ -1390,6 +1390,103 @@ stmts.cs:
 #-----|   False -> Block 1
 #-----|   True (back edge) -> Block 2
 
+#   87| System.Void test_stmts.checkedUnchecked()
+#   87|   Block 0
+#   87|     v0_0(Void)          = EnterFunction        : 
+#   87|     mu0_1(null)         = AliasedDefinition    : 
+#   87|     mu0_2(null)         = UnmodeledDefinition  : 
+#   89|     r0_3(glval<Int32>)  = VariableAddress[num] : 
+#   89|     r0_4(Int32)         = Constant[2147483647] : 
+#   89|     r0_5(Int32)         = Load                 : &:r0_4, ~mu0_2
+#   89|     mu0_6(Int32)        = Store                : &:r0_3, r0_5
+#   92|     r0_7(glval<Int32>)  = VariableAddress[num] : 
+#   92|     r0_8(Int32)         = Load                 : &:r0_7, ~mu0_2
+#   92|     r0_9(Int32)         = Constant[1]          : 
+#   92|     r0_10(Int32)        = Add                  : r0_8, r0_9
+#   92|     r0_11(glval<Int32>) = VariableAddress[num] : 
+#   92|     mu0_12(Int32)       = Store                : &:r0_11, r0_10
+#   96|     r0_13(glval<Int32>) = VariableAddress[num] : 
+#   96|     r0_14(Int32)        = Load                 : &:r0_13, ~mu0_2
+#   96|     r0_15(Int32)        = Constant[1]          : 
+#   96|     r0_16(Int32)        = Add                  : r0_14, r0_15
+#   96|     r0_17(glval<Int32>) = VariableAddress[num] : 
+#   96|     mu0_18(Int32)       = Store                : &:r0_17, r0_16
+#   87|     v0_19(Void)         = ReturnVoid           : 
+#   87|     v0_20(Void)         = UnmodeledUse         : mu*
+#   87|     v0_21(Void)         = ExitFunction         : 
+
+using.cs:
+#    7| System.Void UsingStmt.MyDisposable..ctor()
+#    7|   Block 0
+#    7|     v0_0(Void)                = EnterFunction       : 
+#    7|     mu0_1(null)               = AliasedDefinition   : 
+#    7|     mu0_2(null)               = UnmodeledDefinition : 
+#    7|     r0_3(glval<MyDisposable>) = InitializeThis      : 
+#    7|     v0_4(Void)                = NoOp                : 
+#    7|     v0_5(Void)                = ReturnVoid          : 
+#    7|     v0_6(Void)                = UnmodeledUse        : mu*
+#    7|     v0_7(Void)                = ExitFunction        : 
+
+#    8| System.Void UsingStmt.MyDisposable.DoSomething()
+#    8|   Block 0
+#    8|     v0_0(Void)                = EnterFunction       : 
+#    8|     mu0_1(null)               = AliasedDefinition   : 
+#    8|     mu0_2(null)               = UnmodeledDefinition : 
+#    8|     r0_3(glval<MyDisposable>) = InitializeThis      : 
+#    8|     v0_4(Void)                = NoOp                : 
+#    8|     v0_5(Void)                = ReturnVoid          : 
+#    8|     v0_6(Void)                = UnmodeledUse        : mu*
+#    8|     v0_7(Void)                = ExitFunction        : 
+
+#    9| System.Void UsingStmt.MyDisposable.Dispose()
+#    9|   Block 0
+#    9|     v0_0(Void)                = EnterFunction       : 
+#    9|     mu0_1(null)               = AliasedDefinition   : 
+#    9|     mu0_2(null)               = UnmodeledDefinition : 
+#    9|     r0_3(glval<MyDisposable>) = InitializeThis      : 
+#    9|     v0_4(Void)                = NoOp                : 
+#    9|     v0_5(Void)                = ReturnVoid          : 
+#    9|     v0_6(Void)                = UnmodeledUse        : mu*
+#    9|     v0_7(Void)                = ExitFunction        : 
+
+#   12| System.Void UsingStmt.Main()
+#   12|   Block 0
+#   12|     v0_0(Void)                 = EnterFunction                 : 
+#   12|     mu0_1(null)                = AliasedDefinition             : 
+#   12|     mu0_2(null)                = UnmodeledDefinition           : 
+#   14|     r0_3(glval<MyDisposable>)  = VariableAddress[o1]           : 
+#   14|     r0_4(MyDisposable)         = NewObj                        : 
+#   14|     r0_5(glval<null>)          = FunctionAddress[MyDisposable] : 
+#   14|     v0_6(Void)                 = Call                          : func:r0_5, this:r0_4
+#   14|     mu0_7(null)                = ^CallSideEffect               : ~mu0_2
+#   14|     mu0_8(MyDisposable)        = Store                         : &:r0_3, r0_4
+#   16|     r0_9(glval<MyDisposable>)  = VariableAddress[o1]           : 
+#   16|     r0_10(MyDisposable)        = Load                          : &:r0_9, ~mu0_2
+#   16|     r0_11(glval<null>)         = FunctionAddress[DoSomething]  : 
+#   16|     v0_12(Void)                = Call                          : func:r0_11, this:r0_10
+#   16|     mu0_13(null)               = ^CallSideEffect               : ~mu0_2
+#   19|     r0_14(glval<MyDisposable>) = VariableAddress[o2]           : 
+#   19|     r0_15(MyDisposable)        = NewObj                        : 
+#   19|     r0_16(glval<null>)         = FunctionAddress[MyDisposable] : 
+#   19|     v0_17(Void)                = Call                          : func:r0_16, this:r0_15
+#   19|     mu0_18(null)               = ^CallSideEffect               : ~mu0_2
+#   19|     mu0_19(MyDisposable)       = Store                         : &:r0_14, r0_15
+#   22|     r0_20(glval<MyDisposable>) = VariableAddress[o2]           : 
+#   22|     r0_21(MyDisposable)        = Load                          : &:r0_20, ~mu0_2
+#   22|     r0_22(glval<null>)         = FunctionAddress[DoSomething]  : 
+#   22|     v0_23(Void)                = Call                          : func:r0_22, this:r0_21
+#   22|     mu0_24(null)               = ^CallSideEffect               : ~mu0_2
+#   25|     r0_25(glval<MyDisposable>) = VariableAddress[o3]           : 
+#   25|     r0_26(MyDisposable)        = NewObj                        : 
+#   25|     r0_27(glval<null>)         = FunctionAddress[MyDisposable] : 
+#   25|     v0_28(Void)                = Call                          : func:r0_27, this:r0_26
+#   25|     mu0_29(null)               = ^CallSideEffect               : ~mu0_2
+#   25|     mu0_30(MyDisposable)       = Store                         : &:r0_25, r0_26
+#   25|     v0_31(Void)                = NoOp                          : 
+#   12|     v0_32(Void)                = ReturnVoid                    : 
+#   12|     v0_33(Void)                = UnmodeledUse                  : mu*
+#   12|     v0_34(Void)                = ExitFunction                  : 
+
 variables.cs:
 #    5| System.Void test_variables.f()
 #    5|   Block 0
