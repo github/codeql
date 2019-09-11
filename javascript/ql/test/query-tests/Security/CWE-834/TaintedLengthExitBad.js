@@ -17,7 +17,7 @@ rootRoute.post(function (req, res) {
 function breaks(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) {
+	for (var i = 0; i < val.length; i++) { // NOT OK!
 	  for (var k = 0; k < 2; k++) {
 		  if (k == 3) {
 		      // Does not prevent DOS, because this is inside an inner loop.
@@ -31,7 +31,7 @@ function breaks(val) {
 function throws(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) {
+	for (var i = 0; i < val.length; i++) { // NOT OK!
 	  if (val[i] == null) {
 		  try {
 			  throw 2; // Is catched, and therefore the DOS is not prevented.
@@ -43,11 +43,10 @@ function throws(val) {
     }
 }
 
-// the obvious null-pointer detection should not hit this one.
 function returns(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) {
+	for (var i = 0; i < val.length; i++) { // NOT OK!
 	  if (val[i] == null) {
 		  (function (i) {
 			  return i+2; // Does not prevent DOS.
@@ -57,7 +56,7 @@ function returns(val) {
     }
 }
 
-function lodashThrow(val) {
+function lodashThrow(val) { // NOT OK!
 	_.map(val, function (e) {
 		if (!e) {
 			try {

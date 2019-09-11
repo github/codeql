@@ -17,9 +17,7 @@ rootRoute.post(function(req, res) {
 function problem(val) {
     var ret = [];
 
-    // Potential DOS! .length property could have been set to an arbitrary
-    // value!
-    for (var i = 0; i < val.length; i++) {
+    for (var i = 0; i < val.length; i++) { // NOT OK!
         ret.push(val[i]);
     }
 }
@@ -27,9 +25,8 @@ function problem(val) {
 function whileLoop(val) {
     var ret = [];
     var i = 0;
-    // Potential DOS! .length property could have been set to an arbitrary
-    // value!
-    while (i < val.length) {
+    
+    while (i < val.length) { // NOT OK!
         ret.push(val[i]);
         i++;
     }
@@ -40,8 +37,7 @@ function useLengthIndirectly(val) {
 
     var len = val.length;
 
-    // Same as above, but the .length access happens outside the loop.
-    for (var i = 0; i < len; i++) {
+    for (var i = 0; i < len; i++) { // NOT OK!
         ret.push(val[i]);
     }
 }
@@ -52,8 +48,9 @@ function noNullPointer(val) {
 
     const c = 0;
 
-    for (var i = 0; i < val.length; i++) {
-        ret.push(val[c].foo); // constantly accessing element 0, therefore not
-                                // guaranteed null-pointer.
+    for (var i = 0; i < val.length; i++) { // NOT OK!
+        
+        // constantly accessing element 0, therefore not guaranteed null-pointer.
+        ret.push(val[c].foo); 
     }
 }

@@ -1,6 +1,6 @@
 /**
  * Provides default sources, sinks and sanitisers for reasoning about
- * DOS attacks using objects with unbounded length object. 
+ * DOS attacks using objects with unbounded length property. 
  * As well as extension points for adding your own.
  */
 
@@ -11,7 +11,9 @@ module TaintedLength {
   import semmle.javascript.security.TaintedObject
   import DataFlow::PathGraph
 
-  // Heavily inspired by Expr::inNullSensitiveContext
+  /**
+   * Holds if an exception will be thrown whenever `e` evaluates to `undefined` or `null`.
+   */
   predicate isCrashingWithNullValues(Expr e) {
     exists(ExprOrStmt ctx |
       e = ctx.(PropAccess).getBase()
@@ -27,9 +29,10 @@ module TaintedLength {
     )
   }
 
-  // Inspired by LoopIterationSkippedDueToShifting::ArrayIterationLoop
-  // Added some Dataflow to the .length access.
-  // Added support for while/dowhile loops.
+  /**
+   * A loop that iterates through some array using the `length` property. 
+   * The loop is either of the style `for(..; i < arr.length;...)` or `while(i < arr.length) {..;i++;..}`. 
+   */
   class ArrayIterationLoop extends Stmt {
     LocalVariable indexVariable;
     LoopStmt loop;
@@ -47,11 +50,17 @@ module TaintedLength {
         loop.getBody().getAChild*().(IncExpr).getOperand() = indexVariable.getAnAccess()
       )
     }
-
+    
+    /**
+     * Gets the loop test of this loop.
+     */
     Expr getTest() {
       result = loop.getTest()
     }
     
+    /**
+     * Gets the body of this loop.
+     */
     Stmt getBody() {
       result = loop.getBody()   
     }
@@ -62,15 +71,21 @@ module TaintedLength {
     LocalVariable getIndexVariable() { result = indexVariable }
   }
 
+  /**
+   * A data flow sink for untrusted user input that is being looped through.
+   */
   abstract class Sink extends DataFlow::Node { }
 
-  // for (..; .. sink.length; ...) ...
+  /**
+   * A loop that iterates over an array, such as `for (..; .. sink.length; ...) ...`
+   */
   private class LoopSink extends Sink {
     LoopSink() {
       exists(ArrayIterationLoop loop, Expr lengthAccess, DataFlow::PropRead lengthRead |
-        loop.getTest().getAChild*() = lengthAccess and
+        loop.getTest().(RelationalComparison).getGreaterOperand() = lengthAccess and
         lengthRead.flowsToExpr(lengthAccess) and
         lengthRead.accesses(this, "length") and
+        
         // In the DOS we are looking for arrayRead will evaluate to undefined.
         // If an obvious nullpointer happens on this undefined, then the DOS cannot happen.
         not exists(DataFlow::PropRead arrayRead, Expr throws |
@@ -81,7 +96,7 @@ module TaintedLength {
           arrayRead.flowsToExpr(throws) and
           isCrashingWithNullValues(throws)
         ) and
-        // The existance of some kind of early-exit usually indicates that the loop will stop early and no DOS happens.
+        // The existence of some kind of early-exit usually indicates that the loop will stop early and no DOS happens.
         not exists(BreakStmt br | br.getTarget() = loop) and
         not exists(ReturnStmt ret |
           loop.getBody().getAChild*() = ret and
@@ -95,6 +110,9 @@ module TaintedLength {
     }
   }
 
+  /**
+   * Holds if `name` is a method from lodash vulnerable to a DOS attack if called with a tained object. 
+   */
   predicate loopableLodashMethod(string name) {
     name = "chunk" or
     name = "compact" or
@@ -158,17 +176,20 @@ module TaintedLength {
     name = "sortBy"
   }
 
-  // _.each(sink);
+  /**
+   * A method call to a lodash method that iterates over an array-like structure, 
+   * such as `_.filter(sink, ...)`
+   */
   private class LodashIterationSink extends Sink {
     DataFlow::CallNode call;
 
     LodashIterationSink() {
       exists(string name |
         loopableLodashMethod(name) and
-        call = any(LodashUnderscore::member(name)).getACall() and
+        call = LodashUnderscore::member(name).getACall() and
         call.getArgument(0) = this and
         
-        // Here it is just assumed that the array elements is the first parameter in the callback function.
+        // Here it is just assumed that the array element is the first parameter in the callback function.
         not exists(DataFlow::FunctionNode func, DataFlow::ParameterNode e |
           func.flowsTo(call.getAnArgument()) and
           e = func.getParameter(0) and
@@ -192,6 +213,9 @@ module TaintedLength {
     }
   }
   
+  /**
+   * A source of objects that can cause DOS is looped over. 
+   */
   abstract class Source extends DataFlow::Node { }
   
   /**
@@ -201,7 +225,9 @@ module TaintedLength {
     TaintedObjectSource() { this instanceof TaintedObject::Source }
   }
   
-
+  /**
+   * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` method.
+   */
   class IsArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
     DataFlow::ValueNode {
     override CallExpr astNode;
@@ -215,13 +241,16 @@ module TaintedLength {
     }
   }
 
+  /**
+   * A sanitizer that blocks taint flow if the array is checked to be an array using an `X instanceof Array` check.
+   */
   class InstanceofArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
     DataFlow::ValueNode {
     override BinaryExpr astNode;
 
     InstanceofArraySanitizerGuard() {
       astNode.getOperator() = "instanceof" and
-      astNode.getRightOperand().(Identifier).getName() = "Array"
+      DataFlow::globalVarRef("Array").flowsToExpr(astNode.getRightOperand())
     }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
@@ -231,23 +260,25 @@ module TaintedLength {
     }
   }
 
-  // Does two things:
-  // 1) Detects any length-check that limits the size of the .length property.
-  // 2) Makes sure that only the first loop that is DOS-prone is selected by the query. (due to the .length test having outcome=false when exiting the loop).
+  /**
+   * A sanitizer that blocks taint flow if the length of an array is limited.
+   * 
+   * Also implicitly makes sure that only the first DOS-prone loop is selected by the query. (as the .length test has outcome=false when exiting the loop).
+   */
   class LengthCheckSanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
     DataFlow::ValueNode {
     override RelationalComparison astNode;
 
-    PropAccess propAccess;
+    DataFlow::PropRead propRead;
 
     LengthCheckSanitizerGuard() {
-      propAccess = astNode.getGreaterOperand().getAChild*() and
-      propAccess.getPropertyName() = "length"
+      propRead.flowsToExpr(astNode.getGreaterOperand()) and
+      propRead.getPropertyName() = "length"
     }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       false = outcome and
-      astNode.getAChild*() = e and
+      e = propRead.getBase().asExpr() and
       label = TaintedObject::label()
     }
   }

@@ -1,13 +1,13 @@
 /**
- * @name Tainted .length looping
+ * @name Tainted .length in loop condition
  * @description If server-side code iterates over a user-controlled object with
- *              an arbitrary .length value, then an attacker can trick the server
+ *              an arbitrary .length value an attacker can trick the server
  *              to loop infinitely. 
  * @kind path-problem
  * @problem.severity warning
  * @id js/tainted-length-looping
  * @tags security
- * @precision low
+ * @precision medium
  */
 
 import javascript

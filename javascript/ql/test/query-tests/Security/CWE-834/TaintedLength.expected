@@ -1,57 +1,57 @@
 nodes
-| TaintedLengthBad.js:8:10:8:17 | req.body |
-| TaintedLengthBad.js:10:12:10:19 | req.body |
-| TaintedLengthBad.js:12:22:12:29 | req.body |
-| TaintedLengthBad.js:14:16:14:23 | req.body |
+| TaintedLengthBad.js:8:13:8:20 | req.body |
+| TaintedLengthBad.js:10:15:10:22 | req.body |
+| TaintedLengthBad.js:12:25:12:32 | req.body |
+| TaintedLengthBad.js:14:19:14:26 | req.body |
 | TaintedLengthBad.js:17:18:17:20 | val |
-| TaintedLengthBad.js:21:22:21:24 | val |
-| TaintedLengthBad.js:26:20:26:22 | val |
-| TaintedLengthBad.js:30:13:30:15 | val |
-| TaintedLengthBad.js:37:30:37:32 | val |
-| TaintedLengthBad.js:40:12:40:14 | val |
-| TaintedLengthBad.js:49:24:49:26 | val |
-| TaintedLengthBad.js:54:22:54:24 | val |
+| TaintedLengthBad.js:22:25:22:27 | val |
+| TaintedLengthBad.js:27:20:27:22 | val |
+| TaintedLengthBad.js:32:16:32:18 | val |
+| TaintedLengthBad.js:38:30:38:32 | val |
+| TaintedLengthBad.js:41:15:41:17 | val |
+| TaintedLengthBad.js:50:24:50:26 | val |
+| TaintedLengthBad.js:55:25:55:27 | val |
 | TaintedLengthExitBad.js:8:9:8:16 | req.body |
 | TaintedLengthExitBad.js:10:9:10:16 | req.body |
 | TaintedLengthExitBad.js:12:10:12:17 | req.body |
 | TaintedLengthExitBad.js:14:14:14:21 | req.body |
 | TaintedLengthExitBad.js:17:17:17:19 | val |
 | TaintedLengthExitBad.js:20:22:20:24 | val |
-| TaintedLengthExitBad.js:30:17:30:19 | val |
-| TaintedLengthExitBad.js:33:22:33:24 | val |
-| TaintedLengthExitBad.js:46:18:46:20 | val |
-| TaintedLengthExitBad.js:49:22:49:24 | val |
-| TaintedLengthExitBad.js:59:22:59:24 | val |
-| TaintedLengthExitBad.js:60:8:60:10 | val |
-| TaintedLengthLodash.js:9:10:9:17 | req.body |
+| TaintedLengthExitBad.js:31:17:31:19 | val |
+| TaintedLengthExitBad.js:34:22:34:24 | val |
+| TaintedLengthExitBad.js:47:18:47:20 | val |
+| TaintedLengthExitBad.js:50:22:50:24 | val |
+| TaintedLengthExitBad.js:60:22:60:24 | val |
+| TaintedLengthExitBad.js:61:8:61:10 | val |
+| TaintedLengthLodash.js:9:13:9:20 | req.body |
 | TaintedLengthLodash.js:14:18:14:20 | val |
-| TaintedLengthLodash.js:15:10:15:12 | val |
+| TaintedLengthLodash.js:16:13:16:15 | val |
 edges
-| TaintedLengthBad.js:8:10:8:17 | req.body | TaintedLengthBad.js:17:18:17:20 | val |
-| TaintedLengthBad.js:10:12:10:19 | req.body | TaintedLengthBad.js:26:20:26:22 | val |
-| TaintedLengthBad.js:12:22:12:29 | req.body | TaintedLengthBad.js:37:30:37:32 | val |
-| TaintedLengthBad.js:14:16:14:23 | req.body | TaintedLengthBad.js:49:24:49:26 | val |
-| TaintedLengthBad.js:17:18:17:20 | val | TaintedLengthBad.js:21:22:21:24 | val |
-| TaintedLengthBad.js:26:20:26:22 | val | TaintedLengthBad.js:30:13:30:15 | val |
-| TaintedLengthBad.js:37:30:37:32 | val | TaintedLengthBad.js:40:12:40:14 | val |
-| TaintedLengthBad.js:49:24:49:26 | val | TaintedLengthBad.js:54:22:54:24 | val |
+| TaintedLengthBad.js:8:13:8:20 | req.body | TaintedLengthBad.js:17:18:17:20 | val |
+| TaintedLengthBad.js:10:15:10:22 | req.body | TaintedLengthBad.js:27:20:27:22 | val |
+| TaintedLengthBad.js:12:25:12:32 | req.body | TaintedLengthBad.js:38:30:38:32 | val |
+| TaintedLengthBad.js:14:19:14:26 | req.body | TaintedLengthBad.js:50:24:50:26 | val |
+| TaintedLengthBad.js:17:18:17:20 | val | TaintedLengthBad.js:22:25:22:27 | val |
+| TaintedLengthBad.js:27:20:27:22 | val | TaintedLengthBad.js:32:16:32:18 | val |
+| TaintedLengthBad.js:38:30:38:32 | val | TaintedLengthBad.js:41:15:41:17 | val |
+| TaintedLengthBad.js:50:24:50:26 | val | TaintedLengthBad.js:55:25:55:27 | val |
 | TaintedLengthExitBad.js:8:9:8:16 | req.body | TaintedLengthExitBad.js:17:17:17:19 | val |
-| TaintedLengthExitBad.js:10:9:10:16 | req.body | TaintedLengthExitBad.js:30:17:30:19 | val |
-| TaintedLengthExitBad.js:12:10:12:17 | req.body | TaintedLengthExitBad.js:46:18:46:20 | val |
-| TaintedLengthExitBad.js:14:14:14:21 | req.body | TaintedLengthExitBad.js:59:22:59:24 | val |
+| TaintedLengthExitBad.js:10:9:10:16 | req.body | TaintedLengthExitBad.js:31:17:31:19 | val |
+| TaintedLengthExitBad.js:12:10:12:17 | req.body | TaintedLengthExitBad.js:47:18:47:20 | val |
+| TaintedLengthExitBad.js:14:14:14:21 | req.body | TaintedLengthExitBad.js:60:22:60:24 | val |
 | TaintedLengthExitBad.js:17:17:17:19 | val | TaintedLengthExitBad.js:20:22:20:24 | val |
-| TaintedLengthExitBad.js:30:17:30:19 | val | TaintedLengthExitBad.js:33:22:33:24 | val |
-| TaintedLengthExitBad.js:46:18:46:20 | val | TaintedLengthExitBad.js:49:22:49:24 | val |
-| TaintedLengthExitBad.js:59:22:59:24 | val | TaintedLengthExitBad.js:60:8:60:10 | val |
-| TaintedLengthLodash.js:9:10:9:17 | req.body | TaintedLengthLodash.js:14:18:14:20 | val |
-| TaintedLengthLodash.js:14:18:14:20 | val | TaintedLengthLodash.js:15:10:15:12 | val |
+| TaintedLengthExitBad.js:31:17:31:19 | val | TaintedLengthExitBad.js:34:22:34:24 | val |
+| TaintedLengthExitBad.js:47:18:47:20 | val | TaintedLengthExitBad.js:50:22:50:24 | val |
+| TaintedLengthExitBad.js:60:22:60:24 | val | TaintedLengthExitBad.js:61:8:61:10 | val |
+| TaintedLengthLodash.js:9:13:9:20 | req.body | TaintedLengthLodash.js:14:18:14:20 | val |
+| TaintedLengthLodash.js:14:18:14:20 | val | TaintedLengthLodash.js:16:13:16:15 | val |
 #select
-| TaintedLengthBad.js:21:22:21:24 | val | TaintedLengthBad.js:8:10:8:17 | req.body | TaintedLengthBad.js:21:22:21:24 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthBad.js:8:10:8:17 | req.body | here |
-| TaintedLengthBad.js:30:13:30:15 | val | TaintedLengthBad.js:10:12:10:19 | req.body | TaintedLengthBad.js:30:13:30:15 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthBad.js:10:12:10:19 | req.body | here |
-| TaintedLengthBad.js:40:12:40:14 | val | TaintedLengthBad.js:12:22:12:29 | req.body | TaintedLengthBad.js:40:12:40:14 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthBad.js:12:22:12:29 | req.body | here |
-| TaintedLengthBad.js:54:22:54:24 | val | TaintedLengthBad.js:14:16:14:23 | req.body | TaintedLengthBad.js:54:22:54:24 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthBad.js:14:16:14:23 | req.body | here |
+| TaintedLengthBad.js:22:25:22:27 | val | TaintedLengthBad.js:8:13:8:20 | req.body | TaintedLengthBad.js:22:25:22:27 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthBad.js:8:13:8:20 | req.body | here |
+| TaintedLengthBad.js:32:16:32:18 | val | TaintedLengthBad.js:10:15:10:22 | req.body | TaintedLengthBad.js:32:16:32:18 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthBad.js:10:15:10:22 | req.body | here |
+| TaintedLengthBad.js:41:15:41:17 | val | TaintedLengthBad.js:12:25:12:32 | req.body | TaintedLengthBad.js:41:15:41:17 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthBad.js:12:25:12:32 | req.body | here |
+| TaintedLengthBad.js:55:25:55:27 | val | TaintedLengthBad.js:14:19:14:26 | req.body | TaintedLengthBad.js:55:25:55:27 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthBad.js:14:19:14:26 | req.body | here |
 | TaintedLengthExitBad.js:20:22:20:24 | val | TaintedLengthExitBad.js:8:9:8:16 | req.body | TaintedLengthExitBad.js:20:22:20:24 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthExitBad.js:8:9:8:16 | req.body | here |
-| TaintedLengthExitBad.js:33:22:33:24 | val | TaintedLengthExitBad.js:10:9:10:16 | req.body | TaintedLengthExitBad.js:33:22:33:24 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthExitBad.js:10:9:10:16 | req.body | here |
-| TaintedLengthExitBad.js:49:22:49:24 | val | TaintedLengthExitBad.js:12:10:12:17 | req.body | TaintedLengthExitBad.js:49:22:49:24 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthExitBad.js:12:10:12:17 | req.body | here |
-| TaintedLengthExitBad.js:60:8:60:10 | val | TaintedLengthExitBad.js:14:14:14:21 | req.body | TaintedLengthExitBad.js:60:8:60:10 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthExitBad.js:14:14:14:21 | req.body | here |
-| TaintedLengthLodash.js:15:10:15:12 | val | TaintedLengthLodash.js:9:10:9:17 | req.body | TaintedLengthLodash.js:15:10:15:12 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthLodash.js:9:10:9:17 | req.body | here |
+| TaintedLengthExitBad.js:34:22:34:24 | val | TaintedLengthExitBad.js:10:9:10:16 | req.body | TaintedLengthExitBad.js:34:22:34:24 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthExitBad.js:10:9:10:16 | req.body | here |
+| TaintedLengthExitBad.js:50:22:50:24 | val | TaintedLengthExitBad.js:12:10:12:17 | req.body | TaintedLengthExitBad.js:50:22:50:24 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthExitBad.js:12:10:12:17 | req.body | here |
+| TaintedLengthExitBad.js:61:8:61:10 | val | TaintedLengthExitBad.js:14:14:14:21 | req.body | TaintedLengthExitBad.js:61:8:61:10 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthExitBad.js:14:14:14:21 | req.body | here |
+| TaintedLengthLodash.js:16:13:16:15 | val | TaintedLengthLodash.js:9:13:9:20 | req.body | TaintedLengthLodash.js:16:13:16:15 | val | Iterating over user controlled object with an unbounded .length property $@. | TaintedLengthLodash.js:9:13:9:20 | req.body | here |
