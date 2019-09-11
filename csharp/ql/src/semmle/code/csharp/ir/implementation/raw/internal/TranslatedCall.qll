@@ -10,7 +10,7 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 /**
  * The IR translation of a call to a function. The function can be a normal function
- * (ie. `MethodCall`) or a constructor call (ie. `ObjectCreation`). Notice that the
+ * (eg. `MethodCall`) or a constructor call (eg. `ObjectCreation`). Notice that the
  * AST generated translated calls are tied to an expression (unlike compiler generated ones,
  * which can be attached to either a statement or an expression).
  */
