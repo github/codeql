@@ -89,6 +89,6 @@ typedef
 typedefs
 unary
 unconstructed
-unititialized
+uninitialized
 untrusted
 youtube

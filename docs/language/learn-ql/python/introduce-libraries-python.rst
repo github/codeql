@@ -20,8 +20,8 @@ The QL Python library incorporates a large number of classes, each class corresp
 
 -  **Syntactic** - classes that represent entities in the Python source code.
 -  **Control flow** - classes that represent entities from the control flow graphs.
--  **Data flow** - classes that assist in performing data flow analyses on Python source code.
--  **Type inference** - classes that represent the inferred types of entities in the Python source code.
+-  **Type inference** - classes that represent the inferred values and types of entities in the Python source code.
+-  **Taint tracking** -  classes that represent the source, sinks and kinds of taint used to implement taint-tracking queries.
 
 Syntactic classes
 ~~~~~~~~~~~~~~~~~
@@ -289,41 +289,52 @@ The classes in the control-flow part of the library are:
 -  `ControlFlowNode <https://help.semmle.com/qldoc/python/semmle/python/Flow.qll/type.Flow$ControlFlowNode.html>`__ – A control-flow node. There is a one-to-many relation between AST nodes and control-flow nodes.
 -  `BasicBlock <https://help.semmle.com/qldoc/python/semmle/python/Flow.qll/type.Flow$BasicBlock.html>`__ – A non branching list of control-flow nodes.
 
-Data flow
-~~~~~~~~~
-
-The ``SsaVariable`` class represents `static single assignment form <http://en.wikipedia.org/wiki/Static_single_assignment_form>`__ variables (SSA variables). There is a one-to-many relation between variables and SSA variables. The ``SsaVariable`` class provides an accurate and fast means of tracking data flow from definition to use; the ``SsaVariable`` class is an important element for building data flow analyses, including type inference.
 
 Type-inference classes
 ----------------------
 
-The QL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Object`` and ``ClassObject`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassObjects`` are iterable can be determined using the query:
+The QL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassValue``\ s are iterable can be determined using the query:
 
-**Find iterable ``ClassObjects``**
+**Find iterable "ClassValue"s**
 
 .. code-block:: ql
 
    import python
 
-   from ClassObject cls
+   from ClassValue cls
    where cls.hasAttribute("__iter__")
    select cls
 
-➤ `See this in the query console <https://lgtm.com/query/688180005/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for `builtin classes <http://docs.python.org/library/stdtypes.html>`__, which do not have any Python source code, show the non-source results.
+➤ `See this in the query console <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for `builtin classes <http://docs.python.org/library/stdtypes.html>`__, which do not have any Python source code, show the non-source results.
 
 Summary
 ~~~~~~~
 
--  `Object <https://help.semmle.com/qldoc/python/semmle/python/types/Object.qll/type.Object$Object.html>`__
+-  `Value <https://help.semmle.com/qldoc/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
 
-   -  ``ClassObject``
-   -  ``FunctionObject``
-   -  ``ModuleObject``
+   -  ``ClassValue``
+   -  ``CallableValue``
+   -  ``ModuleValue``
 
 These classes are explained in more detail in :doc:`Tutorial: Points-to analysis and type inference <pointsto-type-infer>`.
+
+Taint-tracking classes
+----------------------
+
+The QL library for Python also supplies classes to specify taint-tracking analyses. The ``Configuration`` class can be overrridden to specify a taint-tracking analysis, by specifying source, sinks, sanitizers and additional flow steps. For those analyses that require additional types of taint to be tracked the ``TaintKind`` class can be overridden.
+
+
+Summary
+~~~~~~~
+
+- `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/security/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
+- `Configuration <https://help.semmle.com/qldoc/python/semmle/python/security/TaintTracking.qll/type.TaintTracking$TaintTracking$Configuration.html>`__
+
+These classes are explained in more detail in :doc:`Tutorial: Taint tracking and data flow analysis in Python <taint-tracking>`.
+
 
 What next?
 ----------
 
--  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Functions <functions>`, :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>` and :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
+-  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Functions <functions>`, :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>` and :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.

@@ -21,8 +21,7 @@ The QL language documentation currently consists of the following Sphinx project
 - ``ql-handbook``–a user-friendly guide to the QL language
 - ``ql-spec``–formal descriptions of the QL language and QLDoc comments
 - ``support``–the languages and frameworks currently supported in QL analysis
-- ``training``–QL for variant analysis training material
-- ``ql-training-rst``–QL for variant analysis slide shows
+- ``ql-training``–source files for the QL training and variant analysis examples slide decks
 
 Each project contains:
 
@@ -37,8 +36,8 @@ This directory also contains any other files, such as templates and stylesheets,
 that are used by multiple projects.
 Images used in the QL documentation are located in the ``images`` directory.
 
-The ``ql-training-rst`` project contains the source files, themes, and static files 
-used to generate the QL training presentations. 
+The ``ql-training`` project contains the source files, themes, and static files 
+used to generate the QL training and variant analysis presentations. 
 It uses a different configuration from the other projects, and is built using an 
 extension specifically designed for HTML slide shows. 
 For more information, see  
@@ -48,8 +47,11 @@ For more information, see
 Building and previewing the QL language documentation
 *****************************************************
 
-To build and preview the QL documentation locally, you need to install Sphinx. 
+To build and preview the QL documentation and QL training presentations locally, you need to 
+install Sphinx 1.7.9. More recent versions of Sphinx do not work with hieroglyph, 
+the Sphinx extension that we use to generate HTML slides, as explained below. 
 For installation options, see https://github.com/sphinx-doc/sphinx.
+
 
 Using ``sphinx-build``
 ----------------------
@@ -69,11 +71,13 @@ For example, to generate the HTML output for a project in the
  
   Add the ``-W`` flag to turn *warnings* into *errors* during the build process. 
   You can use errors reported during the build to debug problems in your source 
-  code, such as broken internal links and malformed tables.
+  code, such as broken internal links and malformed tables. You can also check 
+  external links using Sphinx's `external link builder 
+  <http://www.sphinx-doc.org/en/master/usage/builders/index.html#sphinx.builders.linkcheck.CheckExternalLinksBuilder>`__.
 
   Add the ``-a`` flag to regenerate all output files. By default, only files that 
   have changed are rebuilt.
-
+  
 Using the reStructuredText Extension for Visual Studio Code
 -----------------------------------------------------------
 
@@ -95,8 +99,10 @@ After installing hieroglyph, you can build the QL training presentations by runn
   sphinx-build -b slides . <slides-output>
 
 generates html slide shows in the ``<slides-output>`` directory when run from
-the ``ql-training-rst`` source directory.
+the ``ql-training`` source directory.
 
+For more information about creating slides for QL training and variant analysis 
+examples, see the `template slide deck <https://github.com/Semmle/ql/blob/master/docs/language/ql-training/template.rst>`__.
 
 Viewing the current version of the QL language documentation
 ************************************************************

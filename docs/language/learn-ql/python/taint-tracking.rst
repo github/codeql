@@ -96,7 +96,7 @@ The sink is defined by using a custom ``TaintTracking::Sink`` class.
     class UnsafeSink extends TaintTracking::Sink {
 
         UnsafeSink() {
-            exists(FunctionObject unsafe |
+            exists(FunctionValue unsafe |
                 unsafe.getName() = "unsafe" and
                 unsafe.getACall().(CallNode).getAnArg() = this
             )
@@ -172,7 +172,7 @@ Thus, our example query becomes:
     class UnsafeSink extends TaintTracking::Sink {
 
         UnsafeSink() {
-            exists(FunctionObject unsafe |
+            exists(FunctionValue unsafe |
                 unsafe.getName() = "unsafe" and
                 unsafe.getACall().(CallNode).getAnArg() = this
             )
