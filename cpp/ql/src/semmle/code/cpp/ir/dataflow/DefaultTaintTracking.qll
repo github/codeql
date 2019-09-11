@@ -60,14 +60,13 @@ private predicate accessesVariable(CopyInstruction copy, Variable var) {
 /**
  * A variable that has any kind of upper-bound check anywhere in the program
  */
+// TODO: This coarse overapproximation, ported from the old taint tracking
+// library, could be replaced with an actual semantic check that a particular
+// variable _access_ is guarded by an upper-bound check. We probably don't want
+// to do this right away since it could expose a lot of FPs that were
+// previously suppressed by this predicate by coincidence.
 private predicate hasUpperBoundsCheck(Variable var) {
-  exists(BinaryOperation oper, VariableAccess access |
-    (
-      oper.getOperator() = "<" or
-      oper.getOperator() = "<=" or
-      oper.getOperator() = ">" or
-      oper.getOperator() = ">="
-    ) and
+  exists(RelationalOperation oper, VariableAccess access |
     oper.getLeftOperand() = access and
     access.getTarget() = var and
     // Comparing to 0 is not an upper bound check
@@ -101,19 +100,26 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // through `LoadInstruction`.
   //
   // TODO: Flow from argument to return of known functions: Port missing parts
-  // of `returnArgument` to the `interfaces.Taint` library.
+  // of `returnArgument` to the `interfaces.Taint` and `interfaces.DataFlow`
+  // libraries.
   //
   // TODO: Flow from input argument to output argument of known functions: Port
-  // missing parts of `copyValueBetweenArguments` to the `interfaces.Taint`
-  // library and implement call side-effect nodes. This will help with the test
-  // for `ExecTainted.ql`. The test for `TaintedPath.ql` is more tricky because
-  // the output arg is a pointer addition expression.
+  // missing parts of `copyValueBetweenArguments` to the `interfaces.Taint` and
+  // `interfaces.DataFlow` libraries and implement call side-effect nodes. This
+  // will help with the test for `ExecTainted.ql`. The test for
+  // `TaintedPath.ql` is more tricky because the output arg is a pointer
+  // addition expression.
 }
 
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
     cfg.hasFlow(DataFlow::exprNode(source), sink)
   |
+    // TODO: is it more appropriate to use asConvertedExpr here and avoid
+    // `getConversion*`? Or will that cause us to miss some cases where there's
+    // flow to a conversion (like a `ReferenceDereferenceExpr`) and we want to
+    // pretend there was flow to the converted `Expr` for the sake of
+    // compatibility.
     sink.asExpr().getConversion*() = tainted
     or
     // For compatibility, send flow from arguments to parameters, even for
