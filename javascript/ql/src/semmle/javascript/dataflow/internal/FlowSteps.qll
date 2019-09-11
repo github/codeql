@@ -141,7 +141,7 @@ private module CachedSteps {
     )
     or
     exists(DataFlow::Node callback, int i, Parameter p |
-      invk.(DataFlow::AdditionalPartialInvokeNode).isPartialArgument(callback, arg, i) and
+      invk.(DataFlow::PartialInvokeNode).isPartialArgument(callback, arg, i) and
       partiallyCalls(invk, callback, f) and
       f.getParameter(i) = p and
       not p.isRestParameter() and
