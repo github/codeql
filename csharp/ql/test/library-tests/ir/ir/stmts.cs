@@ -78,6 +78,11 @@ public class test_stmts
         {
             a++;
         }
+
+        for( ; ; )
+        {
+
+        }
     }    
     
     public static void doWhile() 

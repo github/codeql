@@ -651,9 +651,9 @@ class TranslatedForStmt extends TranslatedLoop {
   override ForStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    initializerIndices(id) and result = this.getDeclAndInit(id)
+    initializerIndex(id) and result = this.getDeclAndInit(id)
     or
-    updateIndices(id) and result = this.getUpdate(id - initializersNo())
+    result = this.getUpdate(updateIndex(id))
     or
     id = initializersNo() + updatesNo() and result = this.getCondition()
     or
@@ -674,10 +674,11 @@ class TranslatedForStmt extends TranslatedLoop {
 
   private int updatesNo() { result = count(stmt.getAnUpdate()) }
 
-  private predicate initializerIndices(int index) { index in [0 .. initializersNo() - 1] }
+  private predicate initializerIndex(int index) { index in [0 .. initializersNo() - 1] }
 
-  private predicate updateIndices(int index) {
-    index in [initializersNo() .. initializersNo() + updatesNo() - 1]
+  private int updateIndex(int index) {
+    result in [0 .. updatesNo() - 1] and
+    index = initializersNo() + result
   }
 
   override Instruction getFirstInstruction() {
@@ -688,13 +689,11 @@ class TranslatedForStmt extends TranslatedLoop {
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
-      this.hasInitialization() and
       child = this.getDeclAndInit(index) and
       index < initializersNo() - 1 and
       result = this.getDeclAndInit(index + 1).getFirstInstruction()
     )
     or
-    this.hasInitialization() and
     child = this.getDeclAndInit(initializersNo() - 1) and
     result = this.getFirstConditionInstruction()
     or
@@ -706,13 +705,10 @@ class TranslatedForStmt extends TranslatedLoop {
     )
     or
     exists(int index |
-      this.hasUpdate() and
       child = this.getUpdate(index) and
-      index < updatesNo() - 1 and
       result = this.getUpdate(index + 1).getFirstInstruction()
     )
     or
-    this.hasUpdate() and
     child = this.getUpdate(updatesNo() - 1) and
     result = this.getFirstConditionInstruction()
   }
