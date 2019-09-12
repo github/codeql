@@ -7,12 +7,16 @@ private import semmle.code.cpp.ir.internal.Overlap
 
 private class IntValue = Ints::IntValue;
 
-private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, Type type, IntValue bitOffset) {
+private predicate hasResultMemoryAccess(
+  Instruction instr, IRVariable var, Type type, IntValue bitOffset
+) {
   resultPointsTo(instr.getResultAddressOperand().getAnyDef(), var, bitOffset) and
   type = instr.getResultType()
 }
 
-private predicate hasOperandMemoryAccess(MemoryOperand operand, IRVariable var, Type type, IntValue bitOffset) {
+private predicate hasOperandMemoryAccess(
+  MemoryOperand operand, IRVariable var, Type type, IntValue bitOffset
+) {
   resultPointsTo(operand.getAddressOperand().getAnyDef(), var, bitOffset) and
   type = operand.getType()
 }
@@ -27,56 +31,40 @@ private predicate isVariableModeled(IRVariable var) {
   // There's no need to check for the right size. An `IRVariable` never has an `UnknownType`, so the test for
   // `type = var.getType()` is sufficient.
   forall(Instruction instr, Type type, IntValue bitOffset |
-    hasResultMemoryAccess(instr, var, type, bitOffset) |
+    hasResultMemoryAccess(instr, var, type, bitOffset)
+  |
     bitOffset = 0 and
     type = var.getType()
   ) and
   forall(MemoryOperand operand, Type type, IntValue bitOffset |
-    hasOperandMemoryAccess(operand, var, type, bitOffset) |
+    hasOperandMemoryAccess(operand, var, type, bitOffset)
+  |
     bitOffset = 0 and
     type = var.getType()
   )
 }
 
-private newtype TMemoryLocation =
-  MkMemoryLocation(IRVariable var) {
-    isVariableModeled(var)
-  }
+private newtype TMemoryLocation = MkMemoryLocation(IRVariable var) { isVariableModeled(var) }
 
-private MemoryLocation getMemoryLocation(IRVariable var) {
-  result.getIRVariable() = var
-}
+private MemoryLocation getMemoryLocation(IRVariable var) { result.getIRVariable() = var }
 
 class MemoryLocation extends TMemoryLocation {
   IRVariable var;
 
-  MemoryLocation() {
-    this = MkMemoryLocation(var)
-  }
+  MemoryLocation() { this = MkMemoryLocation(var) }
 
-  final string toString() {
-    result = var.toString()
-  }
+  final string toString() { result = var.toString() }
 
-  final IRVariable getIRVariable() {
-    result = var
-  }
+  final IRVariable getIRVariable() { result = var }
 
-  final VirtualVariable getVirtualVariable() {
-    result = this
-  }
+  final VirtualVariable getVirtualVariable() { result = this }
 
-  final Type getType() {
-    result = var.getType()
-  }
+  final Type getType() { result = var.getType() }
 
-  final string getUniqueId() {
-    result = var.getUniqueId()
-  }
+  final string getUniqueId() { result = var.getUniqueId() }
 }
 
-class VirtualVariable extends MemoryLocation {
-}
+class VirtualVariable extends MemoryLocation { }
 
 Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
   def = use and result instanceof MustExactlyOverlap

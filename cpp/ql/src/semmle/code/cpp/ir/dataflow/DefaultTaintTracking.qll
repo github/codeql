@@ -45,9 +45,7 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
 }
 
 private predicate accessesVariable(CopyInstruction copy, Variable var) {
-  exists(VariableAddressInstruction va |
-    va.getVariable().getAST() = var
-  |
+  exists(VariableAddressInstruction va | va.getVariable().getAST() = var |
     copy.(StoreInstruction).getDestinationAddress() = va
     or
     copy.(LoadInstruction).getSourceAddress() = va
