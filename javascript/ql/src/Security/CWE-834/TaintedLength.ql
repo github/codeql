@@ -5,7 +5,7 @@
  *              to loop infinitely. 
  * @kind path-problem
  * @problem.severity warning
- * @id js/tainted-length-looping
+ * @id js/loop-bound-injection
  * @tags security
  * @precision medium
  */
