@@ -4,48 +4,43 @@
 <qhelp>
 
 <overview>
-    <p>
-        Iterating the elements of an untrusted object using the 
-        <code>.length</code> property can lead to a server looping 
-        indefinitely. This looping causes a denial-of-service or DoS by 
-        causing the server to hang or run out of memory. 
-        This happens when the server expects an array but an attacker sends 
-        a regular JSON object with a huge number in the 
-        <code>.length</code> property, such as <code>{length: 1e100}</code>,
-        that the server then loops through.
-    </p>
+	<p>
+		Using the .length property of an untrusted object as a loop bound may
+		cause indefinite looping since a malicious attacker can set the
+		<code>.length</code> property to a very large number. For example, 
+		when a program that expects an array is passed a JSON object such as
+		<code>{length: 1e100}</code>, the loop will be run for 1e100 
+		iterations. This may cause the program to hang or run out of memory, 
+		which can be used to mount a denial-of-service (DoS) attack.
+	</p>
 </overview>
 
 <recommendation>
-    <p>
-        Either force the user controlled object to be an array or limit the
-        size of the <code>.length</code> property. 
-    </p> 
+	<p>
+		Either check that the object is indeed an array or limit the
+		size of the <code>.length</code> property.
+	</p>
 </recommendation>
 
 <example>
-    <p>
-        In the example below, a server iterates over a user controlled object
-        <code>obj</code> using the <code>obj.length</code> property in order 
-        to copy the elements from <code>obj</code> to an array. 
-    </p>
+	<p>
+		In the example below, an HTTP request handler iterates over a 
+		user-controlled object <code>obj</code> using the
+		<code>obj.length</code> property in order to copy the elements from
+		<code>obj</code> to an array.
+	</p>
 
-    <sample src="examples/TaintedLength.js"/>
+	<sample src="examples/TaintedLength.js" />
 
-    <p>
-        This is not secure since an attacker can control the value of 
-        <code>obj.length</code>, and thereby cause the loop to loop 
-        indefinitely. 
-        Here the potential DoS is fixed by enforcing that the user controlled 
-        object is an array. 
-    </p>
+	<p>
+		This is not secure since an attacker can control the value of
+		<code>obj.length</code>, and thereby cause the loop to iterate
+		indefinitely. Here the potential DoS is fixed by enforcing that
+		the user controlled object is an array.
+	</p>
 
-    <sample src="examples/TaintedLength_fixed.js"/>
+	<sample src="examples/TaintedLength_fixed.js" />
 </example>
 
-<references>
-    <li>CWE entry:
-        <a href="https://cwe.mitre.org/data/definitions/834.html">CWE-834</a>
-    </li>
-</references>
+<references></references>
 </qhelp>

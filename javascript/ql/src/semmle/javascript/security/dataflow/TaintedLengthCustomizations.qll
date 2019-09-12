@@ -1,7 +1,7 @@
 /**
  * Provides default sources, sinks and sanitisers for reasoning about
- * DOS attacks using objects with unbounded length property. 
- * As well as extension points for adding your own.
+ * DoS attacks using objects with unbounded length property,
+ * as well as extension points for adding your own.
  */
 
 import javascript
@@ -30,48 +30,45 @@ module TaintedLength {
   }
 
   /**
-   * A loop that iterates through some array using the `length` property. 
-   * The loop is either of the style `for(..; i < arr.length;...)` or `while(i < arr.length) {..;i++;..}`. 
+   * A loop that iterates through some array using the `length` property.
+   * The loop is either of the style `for(..; i < arr.length;...)` or `while(i < arr.length) {..;i++;..}`.
    */
   class ArrayIterationLoop extends Stmt {
     LocalVariable indexVariable;
+
     LoopStmt loop;
+
     DataFlow::PropRead lengthRead;
 
     ArrayIterationLoop() {
-      this = loop and 
+      this = loop and
       exists(RelationalComparison compare |
         compare = loop.getTest() and
         compare.getLesserOperand() = indexVariable.getAnAccess() and
         lengthRead.getPropertyName() = "length" and
         lengthRead.flowsToExpr(compare.getGreaterOperand())
       ) and
-      (
-        loop.(ForStmt).getUpdate().(IncExpr).getOperand() = indexVariable.getAnAccess() or
-        loop.getBody().getAChild*().(IncExpr).getOperand() = indexVariable.getAnAccess()
+      exists(IncExpr inc | inc.getOperand() = indexVariable.getAnAccess() |
+        inc = loop.(ForStmt).getUpdate()
+        or
+        inc.getEnclosingStmt().getParentStmt*() = loop.getBody()
       )
     }
-    
+
     /**
      * Gets the length read in the loop test
      */
-    DataFlow::PropRead getLengthRead() {
-      result = lengthRead   
-    }
-    
+    DataFlow::PropRead getLengthRead() { result = lengthRead }
+
     /**
      * Gets the loop test of this loop.
      */
-    Expr getTest() {
-      result = loop.getTest()
-    }
-    
+    Expr getTest() { result = loop.getTest() }
+
     /**
      * Gets the body of this loop.
      */
-    Stmt getBody() {
-      result = loop.getBody()   
-    }
+    Stmt getBody() { result = loop.getBody() }
 
     /**
      * Gets the variable holding the loop variable and current array index.
@@ -91,13 +88,10 @@ module TaintedLength {
     LoopSink() {
       exists(ArrayIterationLoop loop |
         this = loop.getLengthRead().getBase() and
-        
-        // In the DOS we are looking for arrayRead will evaluate to undefined, 
-        // this may cause an exception to be thrown, thus bailing out of the loop. 
-        // A DoS cannot happen if such an exception is thrown.  
+        // In the DoS we are looking for arrayRead will evaluate to undefined,
+        // this may cause an exception to be thrown, thus bailing out of the loop.
+        // A DoS cannot happen if such an exception is thrown.
         not exists(DataFlow::PropRead arrayRead, Expr throws |
-          loop.getBody().getAChild*() = arrayRead.asExpr() and
-          loop.getBody().getAChild*() = throws and
           arrayRead.getPropertyNameExpr() = loop.getIndexVariable().getAnAccess() and
           arrayRead.flowsToExpr(throws) and
           isCrashingWithNullValues(throws)
@@ -105,19 +99,19 @@ module TaintedLength {
         // The existence of some kind of early-exit usually indicates that the loop will stop early and no DOS happens.
         not exists(BreakStmt br | br.getTarget() = loop) and
         not exists(ReturnStmt ret |
-          loop.getBody().getAChild*() = ret and
+          ret.getParentStmt*() = loop.getBody() and
           ret.getContainer() = loop.getContainer()
         ) and
         not exists(ThrowStmt throw |
-          loop.getBody().getAChild*() = throw and
-          not loop.getBody().getAChild*() = throw.getTarget()
+          loop.getBody() = throw.getParentStmt*() and
+          not loop.getBody() = throw.getTarget().getParent*()
         )
       )
     }
   }
 
   /**
-   * Holds if `name` is a method from lodash vulnerable to a DOS attack if called with a tained object. 
+   * Holds if `name` is a method from lodash vulnerable to a DOS attack if called with a tained object.
    */
   predicate loopableLodashMethod(string name) {
     name = "chunk" or
@@ -183,8 +177,8 @@ module TaintedLength {
   }
 
   /**
-   * A method call to a lodash method that iterates over an array-like structure, 
-   * such as `_.filter(sink, ...)`. 
+   * A method call to a lodash method that iterates over an array-like structure,
+   * such as `_.filter(sink, ...)`.
    */
   private class LodashIterationSink extends Sink {
     DataFlow::CallNode call;
@@ -194,7 +188,6 @@ module TaintedLength {
         loopableLodashMethod(name) and
         call = LodashUnderscore::member(name).getACall() and
         call.getArgument(0) = this and
-        
         // Here it is just assumed that the array element is the first parameter in the callback function.
         not exists(DataFlow::FunctionNode func, DataFlow::ParameterNode e |
           func.flowsTo(call.getAnArgument()) and
@@ -203,14 +196,12 @@ module TaintedLength {
             // Looking for obvious null-pointers happening on the array elements in the iteration.
             // Similar to what is done in the loop iteration sink.
             exists(Expr throws |
-              throws = func.asExpr().(Function).getBody().getAChild*() and
               e.flowsToExpr(throws) and
               isCrashingWithNullValues(throws)
             )
             or
             // similar to the loop sink - the existence of an early-exit usually means that no DOS can happen.
             exists(ThrowStmt throw |
-              throw = func.asExpr().(Function).getBody().getAChild*() and
               throw.getTarget() = func.asExpr()
             )
           )
@@ -218,24 +209,23 @@ module TaintedLength {
       )
     }
   }
-  
+
   /**
-   * A source of objects that can cause DOS if looped over. 
+   * A source of objects that can cause DOS if looped over.
    */
   abstract class Source extends DataFlow::Node { }
-  
+
   /**
    * A source of remote user input objects.
    */
   class TaintedObjectSource extends Source {
     TaintedObjectSource() { this instanceof TaintedObject::Source }
   }
-  
+
   /**
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` method.
    */
-  class IsArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode {
+  class IsArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override CallExpr astNode;
 
     IsArraySanitizerGuard() { astNode.getCalleeName() = "isArray" }
@@ -268,8 +258,8 @@ module TaintedLength {
 
   /**
    * A sanitizer that blocks taint flow if the length of an array is limited.
-   * 
-   * Also implicitly makes sure that only the first DOS-prone loop is selected by the query. (as the .length test has outcome=false when exiting the loop).
+   *
+   * Also implicitly makes sure that only the first DoS-prone loop is selected by the query. (as the .length test has outcome=false when exiting the loop).
    */
   class LengthCheckSanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
     DataFlow::ValueNode {

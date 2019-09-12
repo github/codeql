@@ -1,6 +1,6 @@
 /**
- * Provides a taint tracking configuration for reasoning about DOS attacks
- * using a user controlled object with an unbounded .length property. 
+ * Provides a taint tracking configuration for reasoning about DoS attacks
+ * using a user controlled object with an unbounded .length property.
  *
  * Note, for performance reasons: only import this file if
  * `TaintedLength::Configuration` is needed, otherwise
