@@ -1,0 +1,4 @@
+| tst.ts:7:3:7:24 | constru ... string; | Declares a suspiciously named method "constructor". Did you mean "new"? |
+| tst.ts:16:3:16:21 | function(): number; | Declares a suspiciously named method "function". Did you mean to omit "function"? |
+| tst.ts:37:3:37:21 | function(): number; | Declares a suspiciously named method "function". Did you mean to omit "function"? |
+| tst.ts:48:3:48:13 | new(): Quz; | Declares a suspiciously named method "new". Did you mean "constructor"? |
