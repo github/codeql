@@ -603,6 +603,180 @@ isexpr.cs:
 #   18|     v6_0(Void) = NoOp : 
 #-----|   Goto -> Block 1
 
+jumps.cs:
+#    5| System.Void Jumps.Main()
+#    5|   Block 0
+#    5|     v0_0(Void)         = EnterFunction       : 
+#    5|     mu0_1(null)        = AliasedDefinition   : 
+#    5|     mu0_2(null)        = UnmodeledDefinition : 
+#    7|     r0_3(glval<Int32>) = VariableAddress[i]  : 
+#    7|     r0_4(Int32)        = Constant[1]         : 
+#    7|     mu0_5(Int32)       = Store               : &:r0_3, r0_4
+#-----|   Goto -> Block 1
+
+#    7|   Block 1
+#    7|     r1_0(glval<Int32>) = VariableAddress[i] : 
+#    7|     r1_1(Int32)        = Load               : &:r1_0, ~mu0_2
+#    7|     r1_2(Int32)        = Constant[10]       : 
+#    7|     r1_3(Boolean)      = CompareLE          : r1_1, r1_2
+#    7|     v1_4(Void)         = ConditionalBranch  : r1_3
+#-----|   False -> Block 7
+#-----|   True -> Block 2
+
+#    9|   Block 2
+#    9|     r2_0(glval<Int32>) = VariableAddress[i] : 
+#    9|     r2_1(Int32)        = Load               : &:r2_0, ~mu0_2
+#    9|     r2_2(Int32)        = Constant[3]        : 
+#    9|     r2_3(Boolean)      = CompareEQ          : r2_1, r2_2
+#    9|     v2_4(Void)         = ConditionalBranch  : r2_3
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+#   10|   Block 3
+#   10|     v3_0(Void) = NoOp : 
+#-----|   Goto -> Block 19
+
+#   11|   Block 4
+#   11|     r4_0(glval<Int32>) = VariableAddress[i] : 
+#   11|     r4_1(Int32)        = Load               : &:r4_0, ~mu0_2
+#   11|     r4_2(Int32)        = Constant[5]        : 
+#   11|     r4_3(Boolean)      = CompareEQ          : r4_1, r4_2
+#   11|     v4_4(Void)         = ConditionalBranch  : r4_3
+#-----|   False -> Block 6
+#-----|   True -> Block 5
+
+#   12|   Block 5
+#   12|     v5_0(Void) = NoOp : 
+#-----|   Goto -> Block 7
+
+#   13|   Block 6
+#   13|     r6_0(glval<null>) = FunctionAddress[WriteLine]         : 
+#   13|     r6_1(String)      = StringConstant["BreakAndContinue"] : 
+#   13|     v6_2(Void)        = Call                               : func:r6_0, 0:r6_1
+#   13|     mu6_3(null)       = ^CallSideEffect                    : ~mu0_2
+#-----|   Goto -> Block 19
+
+#   16|   Block 7
+#   16|     r7_0(glval<Int32>) = VariableAddress[i] : 
+#   16|     r7_1(Int32)        = Constant[0]        : 
+#   16|     mu7_2(Int32)       = Store              : &:r7_0, r7_1
+#-----|   Goto -> Block 8
+
+#   16|   Block 8
+#   16|     r8_0(glval<Int32>) = VariableAddress[i] : 
+#   16|     r8_1(Int32)        = Load               : &:r8_0, ~mu0_2
+#   16|     r8_2(Int32)        = Constant[10]       : 
+#   16|     r8_3(Boolean)      = CompareLT          : r8_1, r8_2
+#   16|     v8_4(Void)         = ConditionalBranch  : r8_3
+#-----|   False -> Block 10
+#-----|   True -> Block 9
+
+#   18|   Block 9
+#   18|     r9_0(glval<Int32>) = VariableAddress[i] : 
+#   18|     r9_1(Int32)        = Load               : &:r9_0, ~mu0_2
+#   18|     r9_2(Int32)        = Constant[1]        : 
+#   18|     r9_3(Int32)        = Add                : r9_1, r9_2
+#   18|     mu9_4(Int32)       = Store              : &:r9_0, r9_3
+#   19|     v9_5(Void)         = NoOp               : 
+#-----|   Goto (back edge) -> Block 8
+
+#   22|   Block 10
+#   22|     r10_0(glval<Int32>) = VariableAddress[a] : 
+#   22|     r10_1(Int32)        = Constant[0]        : 
+#   22|     mu10_2(Int32)       = Store              : &:r10_0, r10_1
+#-----|   Goto -> Block 11
+
+#   23|   Block 11
+#   23|     r11_0(Boolean) = Constant[true]    : 
+#   23|     v11_1(Void)    = ConditionalBranch : r11_0
+#-----|   False -> Block 16
+#-----|   True -> Block 12
+
+#   25|   Block 12
+#   25|     r12_0(glval<Int32>) = VariableAddress[a] : 
+#   25|     r12_1(Int32)        = Load               : &:r12_0, ~mu0_2
+#   25|     r12_2(Int32)        = Constant[1]        : 
+#   25|     r12_3(Int32)        = Add                : r12_1, r12_2
+#   25|     mu12_4(Int32)       = Store              : &:r12_0, r12_3
+#   26|     r12_5(glval<Int32>) = VariableAddress[a] : 
+#   26|     r12_6(Int32)        = Load               : &:r12_5, ~mu0_2
+#   26|     r12_7(Int32)        = Constant[5]        : 
+#   26|     r12_8(Boolean)      = CompareEQ          : r12_6, r12_7
+#   26|     v12_9(Void)         = ConditionalBranch  : r12_8
+#-----|   False -> Block 14
+#-----|   True -> Block 13
+
+#   27|   Block 13
+#   27|     v13_0(Void) = NoOp : 
+#-----|   Goto (back edge) -> Block 11
+
+#   28|   Block 14
+#   28|     r14_0(glval<Int32>) = VariableAddress[a] : 
+#   28|     r14_1(Int32)        = Load               : &:r14_0, ~mu0_2
+#   28|     r14_2(Int32)        = Constant[10]       : 
+#   28|     r14_3(Boolean)      = CompareEQ          : r14_1, r14_2
+#   28|     v14_4(Void)         = ConditionalBranch  : r14_3
+#-----|   False (back edge) -> Block 11
+#-----|   True -> Block 15
+
+#   29|   Block 15
+#   29|     v15_0(Void) = NoOp : 
+#-----|   Goto -> Block 16
+
+#   32|   Block 16
+#   32|     r16_0(glval<Int32>) = VariableAddress[i] : 
+#   32|     r16_1(Int32)        = Constant[1]        : 
+#   32|     mu16_2(Int32)       = Store              : &:r16_0, r16_1
+#-----|   Goto -> Block 18
+
+#   32|   Block 17
+#   32|     r17_0(glval<Int32>) = VariableAddress[i] : 
+#   32|     r17_1(Int32)        = Load               : &:r17_0, ~mu0_2
+#   32|     r17_2(Int32)        = Constant[1]        : 
+#   32|     r17_3(Int32)        = Add                : r17_1, r17_2
+#   32|     mu17_4(Int32)       = Store              : &:r17_0, r17_3
+#-----|   Goto (back edge) -> Block 18
+
+#   32|   Block 18
+#   32|     r18_0(glval<Int32>) = VariableAddress[i] : 
+#   32|     r18_1(Int32)        = Load               : &:r18_0, ~mu0_2
+#   32|     r18_2(Int32)        = Constant[10]       : 
+#   32|     r18_3(Boolean)      = CompareLE          : r18_1, r18_2
+#   32|     v18_4(Void)         = ConditionalBranch  : r18_3
+#-----|   False -> Block 22
+#-----|   True -> Block 20
+
+#    7|   Block 19
+#    7|     r19_0(glval<Int32>) = VariableAddress[i] : 
+#    7|     r19_1(Int32)        = Load               : &:r19_0, ~mu0_2
+#    7|     r19_2(Int32)        = Constant[1]        : 
+#    7|     r19_3(Int32)        = Add                : r19_1, r19_2
+#    7|     mu19_4(Int32)       = Store              : &:r19_0, r19_3
+#-----|   Goto (back edge) -> Block 1
+
+#   34|   Block 20
+#   34|     r20_0(glval<Int32>) = VariableAddress[i] : 
+#   34|     r20_1(Int32)        = Load               : &:r20_0, ~mu0_2
+#   34|     r20_2(Int32)        = Constant[5]        : 
+#   34|     r20_3(Boolean)      = CompareEQ          : r20_1, r20_2
+#   34|     v20_4(Void)         = ConditionalBranch  : r20_3
+#-----|   False -> Block 17
+#-----|   True -> Block 21
+
+#   35|   Block 21
+#   35|     v21_0(Void) = NoOp : 
+#-----|   Goto -> Block 22
+
+#   37|   Block 22
+#   37|     v22_0(Void)        = NoOp                       : 
+#   38|     r22_1(glval<null>) = FunctionAddress[WriteLine] : 
+#   38|     r22_2(String)      = StringConstant["Done"]     : 
+#   38|     v22_3(Void)        = Call                       : func:r22_1, 0:r22_2
+#   38|     mu22_4(null)       = ^CallSideEffect            : ~mu0_2
+#    5|     v22_5(Void)        = ReturnVoid                 : 
+#    5|     v22_6(Void)        = UnmodeledUse               : mu*
+#    5|     v22_7(Void)        = ExitFunction               : 
+
 lock.cs:
 #    5| System.Void LockTest.A()
 #    5|   Block 0
