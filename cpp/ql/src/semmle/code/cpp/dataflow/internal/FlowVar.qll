@@ -113,7 +113,12 @@ private module PartialDefinitions {
         )
       )
     } or
-    TExplicitCallQualifier(Expr qualifier, Call call) { qualifier = call.getQualifier() } or
+    TExplicitCallQualifier(Expr qualifier) {
+      exists(Call call |
+        qualifier = call.getQualifier() and
+        not call.getTarget().hasSpecifier("const")
+      )
+    } or
     TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(va, arg) }
 
   private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
@@ -128,7 +133,7 @@ private module PartialDefinitions {
     PartialDefinition() {
       this = TExplicitFieldStoreQualifier(definedExpr, node)
       or
-      this = TExplicitCallQualifier(definedExpr, _) and node = definedExpr
+      this = TExplicitCallQualifier(definedExpr) and node = definedExpr
       or
       this = TReferenceArgument(definedExpr, node)
     }

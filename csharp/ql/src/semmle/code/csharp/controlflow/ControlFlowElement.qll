@@ -32,19 +32,19 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * several `ControlFlow::Node`s, for example to represent the continuation
    * flow in a `try/catch/finally` construction.
    */
-  Node getAControlFlowNode() { result.getElement() = this }
+  Nodes::ElementNode getAControlFlowNode() { result.getElement() = this }
 
   /**
    * Gets a first control flow node executed within this element.
    */
-  Node getAControlFlowEntryNode() {
+  Nodes::ElementNode getAControlFlowEntryNode() {
     result = Internal::getAControlFlowEntryNode(this).getAControlFlowNode()
   }
 
   /**
    * Gets a potential last control flow node executed within this element.
    */
-  Node getAControlFlowExitNode() {
+  Nodes::ElementNode getAControlFlowExitNode() {
     result = Internal::getAControlFlowExitNode(this).getAControlFlowNode()
   }
 

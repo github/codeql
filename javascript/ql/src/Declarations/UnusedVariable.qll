@@ -3,6 +3,7 @@
  */
 
 import javascript
+import LanguageFeatures.UnusedIndexVariable
 
 /**
  * A local variable that is neither used nor exported, and is not a parameter
@@ -16,6 +17,8 @@ class UnusedLocal extends LocalVariable {
     not exists(ClassExpr ce | this = ce.getVariable()) and
     not exists(ExportDeclaration ed | ed.exportsAs(this, _)) and
     not exists(LocalVarTypeAccess type | type.getVariable() = this) and
+    // avoid double reporting
+    not unusedIndexVariable(_, this, _) and
     // common convention: variables with leading underscore are intentionally unused
     getName().charAt(0) != "_"
   }

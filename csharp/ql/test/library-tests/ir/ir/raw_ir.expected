@@ -1048,6 +1048,9 @@ stmts.cs:
 #   71|     r0_6(glval<Int32>) = VariableAddress[i]  : 
 #   71|     r0_7(Int32)        = Constant[0]         : 
 #   71|     mu0_8(Int32)       = Store               : &:r0_6, r0_7
+#   71|     r0_9(glval<Int32>) = VariableAddress[j]  : 
+#   71|     r0_10(Int32)       = Constant[10]        : 
+#   71|     mu0_11(Int32)      = Store               : &:r0_9, r0_10
 #-----|   Goto -> Block 2
 
 #   68|   Block 1
@@ -1058,53 +1061,90 @@ stmts.cs:
 #   71|   Block 2
 #   71|     r2_0(glval<Int32>) = VariableAddress[i] : 
 #   71|     r2_1(Int32)        = Load               : &:r2_0, ~mu0_2
-#   71|     r2_2(Int32)        = Constant[10]       : 
-#   71|     r2_3(Boolean)      = CompareLE          : r2_1, r2_2
-#   71|     v2_4(Void)         = ConditionalBranch  : r2_3
-#-----|   False -> Block 1
+#   71|     r2_2(glval<Int32>) = VariableAddress[j] : 
+#   71|     r2_3(Int32)        = Load               : &:r2_2, ~mu0_2
+#   71|     r2_4(Boolean)      = CompareLT          : r2_1, r2_3
+#   71|     v2_5(Void)         = ConditionalBranch  : r2_4
+#-----|   False -> Block 4
 #-----|   True -> Block 3
 
 #   73|   Block 3
-#   73|     r3_0(glval<Int32>) = VariableAddress[x] : 
-#   73|     r3_1(Int32)        = Load               : &:r3_0, ~mu0_2
-#   73|     r3_2(Int32)        = Constant[1]        : 
-#   73|     r3_3(Int32)        = Sub                : r3_1, r3_2
-#   73|     r3_4(glval<Int32>) = VariableAddress[x] : 
-#   73|     mu3_5(Int32)       = Store              : &:r3_4, r3_3
-#   71|     r3_6(glval<Int32>) = VariableAddress[i] : 
-#   71|     r3_7(Int32)        = Load               : &:r3_6, ~mu0_2
-#   71|     r3_8(Int32)        = Constant[1]        : 
-#   71|     r3_9(Int32)        = Add                : r3_7, r3_8
-#   71|     mu3_10(Int32)      = Store              : &:r3_6, r3_9
+#   73|     r3_0(glval<Int32>)  = VariableAddress[x] : 
+#   73|     r3_1(Int32)         = Load               : &:r3_0, ~mu0_2
+#   73|     r3_2(Int32)         = Constant[1]        : 
+#   73|     r3_3(Int32)         = Sub                : r3_1, r3_2
+#   73|     r3_4(glval<Int32>)  = VariableAddress[x] : 
+#   73|     mu3_5(Int32)        = Store              : &:r3_4, r3_3
+#   71|     r3_6(glval<Int32>)  = VariableAddress[i] : 
+#   71|     r3_7(Int32)         = Load               : &:r3_6, ~mu0_2
+#   71|     r3_8(Int32)         = Constant[1]        : 
+#   71|     r3_9(Int32)         = Add                : r3_7, r3_8
+#   71|     mu3_10(Int32)       = Store              : &:r3_6, r3_9
+#   71|     r3_11(glval<Int32>) = VariableAddress[j] : 
+#   71|     r3_12(Int32)        = Load               : &:r3_11, ~mu0_2
+#   71|     r3_13(Int32)        = Constant[1]        : 
+#   71|     r3_14(Int32)        = Sub                : r3_12, r3_13
+#   71|     mu3_15(Int32)       = Store              : &:r3_11, r3_14
 #-----|   Goto (back edge) -> Block 2
 
-#   77| System.Void test_stmts.doWhile()
-#   77|   Block 0
-#   77|     v0_0(Void)         = EnterFunction       : 
-#   77|     mu0_1(null)        = AliasedDefinition   : 
-#   77|     mu0_2(null)        = UnmodeledDefinition : 
-#   79|     r0_3(glval<Int32>) = VariableAddress[x]  : 
-#   79|     r0_4(Int32)        = Constant[0]         : 
-#   79|     mu0_5(Int32)       = Store               : &:r0_3, r0_4
+#   76|   Block 4
+#   76|     r4_0(glval<Int32>) = VariableAddress[a] : 
+#   76|     r4_1(Int32)        = Constant[0]        : 
+#   76|     mu4_2(Int32)       = Store              : &:r4_0, r4_1
+#   76|     r4_3(glval<Int32>) = VariableAddress[b] : 
+#   76|     r4_4(Int32)        = Constant[10]       : 
+#   76|     mu4_5(Int32)       = Store              : &:r4_3, r4_4
+#-----|   Goto -> Block 5
+
+#   77|   Block 5
+#   77|     r5_0(glval<Int32>) = VariableAddress[a] : 
+#   77|     r5_1(Int32)        = Load               : &:r5_0, ~mu0_2
+#   77|     r5_2(glval<Int32>) = VariableAddress[b] : 
+#   77|     r5_3(Int32)        = Load               : &:r5_2, ~mu0_2
+#   77|     r5_4(Boolean)      = CompareLT          : r5_1, r5_3
+#   77|     v5_5(Void)         = ConditionalBranch  : r5_4
+#-----|   False -> Block 7
+#-----|   True -> Block 6
+
+#   79|   Block 6
+#   79|     r6_0(glval<Int32>) = VariableAddress[a] : 
+#   79|     r6_1(Int32)        = Load               : &:r6_0, ~mu0_2
+#   79|     r6_2(Int32)        = Constant[1]        : 
+#   79|     r6_3(Int32)        = Add                : r6_1, r6_2
+#   79|     mu6_4(Int32)       = Store              : &:r6_0, r6_3
+#-----|   Goto (back edge) -> Block 5
+
+#   83|   Block 7
+#   83|     v7_0(Void) = NoOp : 
+#-----|   Goto (back edge) -> Block 7
+
+#   88| System.Void test_stmts.doWhile()
+#   88|   Block 0
+#   88|     v0_0(Void)         = EnterFunction       : 
+#   88|     mu0_1(null)        = AliasedDefinition   : 
+#   88|     mu0_2(null)        = UnmodeledDefinition : 
+#   90|     r0_3(glval<Int32>) = VariableAddress[x]  : 
+#   90|     r0_4(Int32)        = Constant[0]         : 
+#   90|     mu0_5(Int32)       = Store               : &:r0_3, r0_4
 #-----|   Goto -> Block 2
 
-#   77|   Block 1
-#   77|     v1_0(Void) = ReturnVoid   : 
-#   77|     v1_1(Void) = UnmodeledUse : mu*
-#   77|     v1_2(Void) = ExitFunction : 
+#   88|   Block 1
+#   88|     v1_0(Void) = ReturnVoid   : 
+#   88|     v1_1(Void) = UnmodeledUse : mu*
+#   88|     v1_2(Void) = ExitFunction : 
 
-#   82|   Block 2
-#   82|     r2_0(glval<Int32>) = VariableAddress[x] : 
-#   82|     r2_1(Int32)        = Load               : &:r2_0, ~mu0_2
-#   82|     r2_2(Int32)        = Constant[1]        : 
-#   82|     r2_3(Int32)        = Add                : r2_1, r2_2
-#   82|     r2_4(glval<Int32>) = VariableAddress[x] : 
-#   82|     mu2_5(Int32)       = Store              : &:r2_4, r2_3
-#   84|     r2_6(glval<Int32>) = VariableAddress[x] : 
-#   84|     r2_7(Int32)        = Load               : &:r2_6, ~mu0_2
-#   84|     r2_8(Int32)        = Constant[10]       : 
-#   84|     r2_9(Boolean)      = CompareLT          : r2_7, r2_8
-#   84|     v2_10(Void)        = ConditionalBranch  : r2_9
+#   93|   Block 2
+#   93|     r2_0(glval<Int32>) = VariableAddress[x] : 
+#   93|     r2_1(Int32)        = Load               : &:r2_0, ~mu0_2
+#   93|     r2_2(Int32)        = Constant[1]        : 
+#   93|     r2_3(Int32)        = Add                : r2_1, r2_2
+#   93|     r2_4(glval<Int32>) = VariableAddress[x] : 
+#   93|     mu2_5(Int32)       = Store              : &:r2_4, r2_3
+#   95|     r2_6(glval<Int32>) = VariableAddress[x] : 
+#   95|     r2_7(Int32)        = Load               : &:r2_6, ~mu0_2
+#   95|     r2_8(Int32)        = Constant[10]       : 
+#   95|     r2_9(Boolean)      = CompareLT          : r2_7, r2_8
+#   95|     v2_10(Void)        = ConditionalBranch  : r2_9
 #-----|   False -> Block 1
 #-----|   True (back edge) -> Block 2
 

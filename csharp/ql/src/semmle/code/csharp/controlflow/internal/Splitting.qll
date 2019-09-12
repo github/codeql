@@ -29,7 +29,8 @@ private module Cached {
     TInitializerSplitKind() or
     TFinallySplitKind() or
     TExceptionHandlerSplitKind() or
-    TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) }
+    TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) } or
+    TLoopUnrollingSplitKind(LoopUnrollingSplitting::UnrollableLoopStmt loop)
 
   cached
   newtype TSplit =
@@ -39,7 +40,8 @@ private module Cached {
     TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
       kind.startsSplit(_) and
       (branch = true or branch = false)
-    }
+    } or
+    TLoopUnrollingSplit(LoopUnrollingSplitting::UnrollableLoopStmt loop)
 
   cached
   newtype TSplits =
@@ -1019,6 +1021,153 @@ module BooleanSplitting {
           )
         )
       )
+    }
+  }
+}
+
+module LoopUnrollingSplitting {
+  private import semmle.code.csharp.controlflow.Guards as Guards
+  private import PreBasicBlocks
+  private import PreSsa
+
+  /** Holds if `ce` is guarded by a (non-)empty check, as specified by `v`. */
+  private predicate emptinessGuarded(
+    Guards::Guard g, Guards::CollectionExpr ce, Guards::AbstractValues::EmptyCollectionValue v
+  ) {
+    exists(PreBasicBlock bb | Guards::Internal::preControls(g, bb, v) |
+      PreSsa::adjacentReadPairSameVar(g, ce) and
+      bb.getAnElement() = ce
+    )
+  }
+
+  /**
+   * A loop where the body is guaranteed to be executed at least once, and
+   * can therefore be unrolled in the control flow graph.
+   */
+  abstract class UnrollableLoopStmt extends LoopStmt {
+    /** Holds if the step `pred --c--> succ` should start loop unrolling. */
+    abstract predicate startUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+
+    /** Holds if the step `pred --c--> succ` should stop loop unrolling. */
+    abstract predicate stopUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+
+    /**
+     * Holds if any step `pred --c--> _` should be pruned from the unrolled loop
+     * (the loop condition evaluating to `false`).
+     */
+    abstract predicate pruneLoopCondition(ControlFlowElement pred, ConditionalCompletion c);
+  }
+
+  private class UnrollableForeachStmt extends UnrollableLoopStmt, ForeachStmt {
+    UnrollableForeachStmt() {
+      exists(Guards::AbstractValues::EmptyCollectionValue v | v.isNonEmpty() |
+        emptinessGuarded(_, this.getIterableExpr(), v)
+        or
+        this.getIterableExpr() = v.getAnExpr()
+      )
+    }
+
+    override predicate startUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      pred = last(this.getIterableExpr(), c) and
+      succ = this
+    }
+
+    override predicate stopUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      pred = this and
+      succ = succ(pred, c)
+    }
+
+    override predicate pruneLoopCondition(ControlFlowElement pred, ConditionalCompletion c) {
+      pred = this and
+      c.(EmptinessCompletion).isEmpty()
+    }
+  }
+
+  /**
+   * A split for loops where the body is guaranteed to be executed at least once, and
+   * can therefore be unrolled in the control flow graph. For example, in
+   *
+   * ```
+   * void M(string[] args)
+   * {
+   *     if (args.Length == 0)
+   *         return;
+   *     foreach (var arg in args)
+   *         System.Console.WriteLine(args);
+   * }
+   * ```
+   *
+   * the `foreach` loop is guaranteed to be executed at least once, as a result of the
+   * `args.Length == 0` check.
+   */
+  class LoopUnrollingSplitImpl extends SplitImpl, TLoopUnrollingSplit {
+    UnrollableLoopStmt loop;
+
+    LoopUnrollingSplitImpl() { this = TLoopUnrollingSplit(loop) }
+
+    override string toString() {
+      result = "unroll (line " + loop.getLocation().getStartLine() + ")"
+    }
+  }
+
+  private int getListOrder(UnrollableLoopStmt loop) {
+    exists(Callable c, int r | c = loop.getEnclosingCallable() |
+      result = r + BooleanSplitting::getNextListOrder() - 1 and
+      loop = rank[r](UnrollableLoopStmt loop0 |
+          loop0.getEnclosingCallable() = c
+        |
+          loop0 order by loop0.getLocation().getStartLine(), loop0.getLocation().getStartColumn()
+        )
+    )
+  }
+
+  int getNextListOrder() {
+    result = max(int i | i = getListOrder(_) + 1 or i = BooleanSplitting::getNextListOrder())
+  }
+
+  private class LoopUnrollingSplitKind extends SplitKind, TLoopUnrollingSplitKind {
+    private UnrollableLoopStmt loop;
+
+    LoopUnrollingSplitKind() { this = TLoopUnrollingSplitKind(loop) }
+
+    override int getListOrder() { result = getListOrder(loop) }
+
+    override string toString() { result = "Unroll" }
+  }
+
+  private class LoopUnrollingSplitInternal extends SplitInternal, LoopUnrollingSplitImpl {
+    override LoopUnrollingSplitKind getKind() { result = TLoopUnrollingSplitKind(loop) }
+
+    override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      loop.startUnroll(pred, succ, c)
+    }
+
+    override predicate hasEntry(Callable pred, ControlFlowElement succ) { none() }
+
+    /**
+     * Holds if this split applies to control flow element `pred`, where `pred`
+     * is a valid predecessor.
+     */
+    private predicate appliesToPredecessor(ControlFlowElement pred, Completion c) {
+      this.appliesTo(pred) and
+      (exists(succ(pred, c)) or exists(succExit(pred, c))) and
+      not loop.pruneLoopCondition(pred, c)
+    }
+
+    override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesToPredecessor(pred, c) and
+      loop.stopUnroll(pred, succ, c)
+    }
+
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
+      this.appliesToPredecessor(pred, c) and
+      result = succExit(pred, c)
+    }
+
+    override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesToPredecessor(pred, c) and
+      succ = succ(pred, c) and
+      not loop.stopUnroll(pred, succ, c)
     }
   }
 }
