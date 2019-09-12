@@ -84,7 +84,11 @@ class Node extends TIRDataFlowNode {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  string toString() { result = instr.toString() }
+  string toString() {
+    // This predicate is overridden in subclasses. This default implementation
+    // does not use `Instruction.toString` because that's expensive to compute.
+    result = this.asInstruction().getOpcode().toString()
+  }
 }
 
 /**
@@ -106,6 +110,8 @@ class ExprNode extends Node {
    * expression may be a `Conversion`.
    */
   Expr getConvertedExpr() { result = this.asConvertedExpr() }
+
+  override string toString() { result = this.asConvertedExpr().toString() }
 }
 
 /**
@@ -122,6 +128,14 @@ class ParameterNode extends Node {
   predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
 
   Parameter getParameter() { result = instr.getParameter() }
+
+  override string toString() { result = instr.getParameter().toString() }
+}
+
+private class ThisParameterNode extends Node {
+  override InitializeThisInstruction instr;
+
+  override string toString() { result = "this" }
 }
 
 /**
@@ -132,6 +146,8 @@ class UninitializedNode extends Node {
   override UninitializedInstruction instr;
 
   LocalVariable getLocalVariable() { result = instr.getLocalVariable() }
+
+  override string toString() { result = this.getLocalVariable().toString() }
 }
 
 /**
