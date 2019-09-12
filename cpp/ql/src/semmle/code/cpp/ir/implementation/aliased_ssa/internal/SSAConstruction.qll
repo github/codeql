@@ -182,7 +182,7 @@ cached private module Cached {
     result = getOldInstruction(instruction).getUnconvertedResultExpression()
   }
 
-  /*
+  /**
    * This adds Chi nodes to the instruction successor relation; if an instruction has a Chi node,
    * that node is its successor in the new successor relation, and the Chi node's successors are
    * the new instructions generated from the successors of the old instruction
