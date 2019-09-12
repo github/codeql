@@ -14,7 +14,7 @@
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
 |---------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Unused index variable (`js/unused-index-variable`)                        | correctness                                                       | Highlights loops that iterate over an array, but do not use the index variable to access array elements, indicating a possible typo or logic error. |
-
+| Tainted .length in loop condition (`js/loop-bound-injection`)             | security                                                          | Highlights loops where a user-controlled object with an arbitrary .length value can trick the server to loop infinitely. |
 
 ## Changes to existing queries
 
