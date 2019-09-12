@@ -13,6 +13,12 @@ class Jumps
             Console.WriteLine("BreakAndContinue");
         }
 
+        for (int i = 0 ; i < 10 ; )
+        {
+            i++;
+            continue;
+        }
+
         int a = 0;
         while (true) 
         {

@@ -768,13 +768,19 @@ class TranslatedContinueStmt extends TranslatedSpecificJump {
   }
 
   private Instruction getEnclosingLoopTargetInstruction(Stmt crtStmt) {
-    if crtStmt instanceof LoopStmt
-    then
-      if crtStmt instanceof ForStmt
-      then
-        result = getTranslatedStmt(crtStmt).(TranslatedForStmt).getUpdate(0).getFirstInstruction()
-      else result = getTranslatedStmt(crtStmt).getFirstInstruction()
+    if crtStmt instanceof ForStmt
+    then result = getNextForInstruction(crtStmt)
+    else if crtStmt instanceof LoopStmt
+    then result = getTranslatedStmt(crtStmt).getFirstInstruction()
     else result = this.getEnclosingLoopTargetInstruction(crtStmt.getParent())
+  }
+
+  private Instruction getNextForInstruction(ForStmt for) {
+    if exists(for.getUpdate(0))
+    then result = getTranslatedStmt(for).(TranslatedForStmt).getUpdate(0).getFirstInstruction()
+    else if exists(for.getCondition())
+    then result = getTranslatedStmt(for).(TranslatedForStmt).getCondition().getFirstInstruction()
+    else result = getTranslatedStmt(for).(TranslatedForStmt).getBody().getFirstInstruction()
   }
 }
 
