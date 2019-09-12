@@ -56,7 +56,8 @@ public class test_stmts
         {
             x = 1;
         }
-        catch {
+        catch 
+        {
             throw;
         }
         finally
@@ -105,5 +106,6 @@ public class test_stmts
         checked
         {
             num = num + 1;
-        }    }
+        }    
+    }
 }
