@@ -10,9 +10,9 @@
         indefinitely. This looping causes a denial-of-service or DoS by 
         causing the server to hang or run out of memory. 
         This happens when the server expects an array but an attacker sends 
-        a regular JSON object with an huge number in the 
-        <code>.length</code> property, such as `{length: 1e100}`, that the
-        server then loops through.
+        a regular JSON object with a huge number in the 
+        <code>.length</code> property, such as <code>{length: 1e100}</code>,
+        that the server then loops through.
     </p>
 </overview>
 
