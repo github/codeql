@@ -36,5 +36,6 @@ The following changes in version 1.23 affect C# analysis in all applications.
   picture of the partial flow paths from a given source. The feature is
   disabled by default and can be enabled for individual configurations by
   overriding `int explorationLimit()`.
+* `foreach` statements where the body is guaranteed to be executed at least once, such as `foreach (var x in new string[]{ "a", "b", "c" }) { ... }`, are now recognized by all analyses based on the control flow graph (such as SSA, data flow and taint tracking).
 
 ## Changes to autobuilder

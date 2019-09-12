@@ -567,6 +567,7 @@ module AssignableDefinitions {
    * entry point of `p`'s callable to basic block `bb` without passing through
    * any assignments to `p`.
    */
+  pragma[nomagic]
   private predicate parameterReachesWithoutDef(Parameter p, ControlFlow::BasicBlock bb) {
     forall(AssignableDefinition def | basicBlockRefParamDef(bb, p, def) |
       isUncertainRefCall(def.getTargetAccess())
