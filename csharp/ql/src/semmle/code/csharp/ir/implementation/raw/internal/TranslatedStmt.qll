@@ -740,7 +740,7 @@ abstract class TranslatedSpecificJump extends TranslatedStmt {
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
   /**
-   * The instruction that gets the target of the jump.
+   * Gets the instruction that is the target of the jump.
    */
   abstract Instruction getTargetInstruction();
 }
