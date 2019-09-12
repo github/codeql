@@ -1,3 +1,6 @@
 edges
 | ExponentialRegex.cs:15:28:15:50 | access to property QueryString | ExponentialRegex.cs:18:40:18:48 | access to local variable userInput |
+nodes
+| ExponentialRegex.cs:15:28:15:50 | access to property QueryString | semmle.label | access to property QueryString |
+| ExponentialRegex.cs:18:40:18:48 | access to local variable userInput | semmle.label | access to local variable userInput |
 #select
