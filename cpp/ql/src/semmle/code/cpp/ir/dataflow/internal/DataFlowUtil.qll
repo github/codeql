@@ -157,6 +157,11 @@ abstract class PostUpdateNode extends Node {
 }
 
 /**
+ * Gets the node corresponding to `instr`.
+ */
+Node instructionNode(Instruction instr) { result.asInstruction() = instr }
+
+/**
  * Gets a `Node` corresponding to `e` or any of its conversions. There is no
  * result if `e` is a `Conversion`.
  */
