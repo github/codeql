@@ -22,10 +22,7 @@ private predicate predictable(Expr expr) {
 
 // TODO: remove when `predictable` has an `Instruction` parameter instead of `Expr`.
 private predicate predictableInstruction(Instruction instr) {
-  exists(DataFlow::Node node |
-    node.asInstruction() = instr and
-    predictable(node.asExpr())
-  )
+  predictable(DataFlow::instructionNode(instr).asExpr())
 }
 
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
