@@ -211,7 +211,7 @@ module TaintedLength {
   }
 
   /**
-   * A source of objects that can cause DOS if looped over.
+   * A source of objects that can cause DoS if iterated using the .length property.
    */
   abstract class Source extends DataFlow::Node { }
 
@@ -223,7 +223,7 @@ module TaintedLength {
   }
 
   /**
-   * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` method.
+   * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` function.
    */
   class IsArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override CallExpr astNode;
