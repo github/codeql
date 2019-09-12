@@ -336,6 +336,7 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
   /**
    * Gets the qualified name of this name by resolving its prefix, if any.
    */
+  cached
   private string resolvedName() {
     exists(string prefix, string suffix, JSDoc::Environment env |
       hasNamePartsAndEnv(prefix, suffix, env) and
