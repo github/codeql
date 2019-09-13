@@ -36,7 +36,7 @@ function throws(val) {
     }
 }
 
-// the obvious null-pointer detection should not hit this one.
+// The obvious null-pointer detection should not hit this one.
 function returns(val) {
 	var ret = [];
 	
