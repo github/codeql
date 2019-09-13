@@ -4,12 +4,14 @@ import semmle.code.cpp.exprs.BitwiseOperation
 
 /**
  * A non-overloaded binary assignment operation, including `=`, `+=`, `&=`,
- * etc. A C++ overloaded operation looks syntactically identical but is instead
+ * etc. A C++ overloaded `operator` looks syntactically identical but is instead
  * a `FunctionCall`.
+ *
+ * This is an abstract root QL class for all (non-overloaded) assignments.
  */
 abstract class Assignment extends Operation {
-  /** Gets the lvalue of this assignment. */
-  Expr getLValue() { this.hasChild(result, 0) }
+  /** Gets the *lvalue* of this assignment. */
+  Expr get*lvalue*() { this.hasChild(result, 0) }
 
   /** Gets the rvalue of this assignment. */
   Expr getRValue() { this.hasChild(result, 1) }
@@ -20,7 +22,7 @@ abstract class Assignment extends Operation {
     this.getRValue().mayBeGloballyImpure()
     or
     not exists(VariableAccess va, LocalScopeVariable v |
-      va = this.getLValue() and
+      va = this.get*lvalue*() and
       v = va.getTarget() and
       not va.getConversion+() instanceof ReferenceDereferenceExpr and
       not v.isStatic()
@@ -51,13 +53,13 @@ abstract class AssignOperation extends Assignment {
 }
 
 /**
- * A non-overloaded arithmetic assignment operation on a non-pointer lvalue:
+ * A non-overloaded arithmetic assignment operation on a non-pointer *lvalue*:
  * `+=`, `-=`, `*=`, `/=` and `%=`.
  */
 abstract class AssignArithmeticOperation extends AssignOperation { }
 
 /**
- * A non-overloaded `+=` assignment expression on a non-pointer lvalue.
+ * A non-overloaded `+=` assignment expression on a non-pointer *lvalue*.
  * ```
  * a += b;
  * ```
@@ -69,7 +71,7 @@ class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
 }
 
 /**
- * A non-overloaded `-=` assignment expression on a non-pointer lvalue.
+ * A non-overloaded `-=` assignment expression on a non-pointer *lvalue*.
  * ```
  * a -= b;
  * ```
@@ -207,11 +209,16 @@ class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
 }
 
 /**
- * A C++ variable declaration in an expression where a condition is expected.
- * For example, on the `ConditionDeclExpr` in `if (bool c = x < y)`,
- * `getVariableAccess()` is an access to `c` (with possible casts),
- * `getVariable()` is the variable `c` (which has an initializer `x < y`), and
- * `getInitializingExpr()` is `x < y`.
+ * A C++ variable declaration inside the conditional expression of a `while` or `if`
+ * compound statement.  Declaring a variable this way narrows its lifetime and scope
+ * to be strictly the compound statement itself.  For example:
+ * ```
+ * extern int x, y;
+ * if (bool c = x < y) { do_something_with(c); }
+ * // c is no longer in scope
+ * while (int d = x - y) { do_something_else_with(d); }
+ * // d is no longer is scope
+ * ``` 
  */
 class ConditionDeclExpr extends Expr, @condition_decl {
   /**

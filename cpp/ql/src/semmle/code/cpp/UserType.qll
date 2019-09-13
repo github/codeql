@@ -97,7 +97,6 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
  * ```
  * class C;
  * typedef int ti;
- * extern void foo(int);
  * ```
  */
 class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
