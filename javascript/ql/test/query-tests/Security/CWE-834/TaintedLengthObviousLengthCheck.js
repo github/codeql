@@ -11,7 +11,7 @@ rootRoute.post(function(req, res) {
 function problem(val) {
     var ret = [];
 
-    // Prevents DOS
+    // Prevents DoS
     if (val.length > 100) {
         return [];
     }

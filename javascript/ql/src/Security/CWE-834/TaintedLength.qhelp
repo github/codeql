@@ -5,7 +5,7 @@
 
 <overview>
 	<p>
-		Using the .length property of an untrusted object as a loop bound may
+		Using the <code>.length</code> property of an untrusted object as a loop bound may
 		cause indefinite looping since a malicious attacker can set the
 		<code>.length</code> property to a very large number. For example, 
 		when a program that expects an array is passed a JSON object such as

@@ -4,7 +4,7 @@ var app = express();
 app.post("/foo", (req, res) => {
     var obj = req.body;
     
-    if (!(obj instanceof Array)) { // prevents DOS
+    if (!(obj instanceof Array)) { // prevents DoS
         return [];
     }
 

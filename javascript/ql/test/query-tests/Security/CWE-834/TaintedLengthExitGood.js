@@ -19,7 +19,7 @@ function breaks(val) {
 	
 	for (var i = 0; i < val.length; i++) { // OK
 	  if (val[i] == null) {
-		  break; // prevents DOS.
+		  break; // prevents DoS.
 	  }
       ret.push(val[i]);
     }
@@ -30,7 +30,7 @@ function throws(val) {
 	
 	for (var i = 0; i < val.length; i++) { // OK
 	  if (val[i] == null) {
-		  throw 2; // prevents DOS.
+		  throw 2; // prevents DoS.
 	  }
       ret.push(val[i]);
     }
@@ -42,7 +42,7 @@ function returns(val) {
 	
 	for (var i = 0; i < val.length; i++) { // OK
 	  if (val[i] == null) {
-		  return 2; // prevents DOS.
+		  return 2; // prevents DoS.
 	  }
       ret.push(val[i]);
     }
@@ -51,7 +51,7 @@ function returns(val) {
 function lodashThrow(val) {
 	_.map(val, function (e) { // OK
 		if (!e) {
-			throw new Error(); // prevents DOS.
+			throw new Error(); // prevents DoS.
 		}
 	})
 }

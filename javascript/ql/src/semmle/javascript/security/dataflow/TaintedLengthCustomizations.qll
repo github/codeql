@@ -96,7 +96,7 @@ module TaintedLength {
           arrayRead.flowsToExpr(throws) and
           isCrashingWithNullValues(throws)
         ) and
-        // The existence of some kind of early-exit usually indicates that the loop will stop early and no DOS happens.
+        // The existence of some kind of early-exit usually indicates that the loop will stop early and no DoS happens.
         not exists(BreakStmt br | br.getTarget() = loop) and
         not exists(ReturnStmt ret |
           ret.getParentStmt*() = loop.getBody() and
@@ -111,7 +111,7 @@ module TaintedLength {
   }
 
   /**
-   * Holds if `name` is a method from lodash vulnerable to a DOS attack if called with a tained object.
+   * Holds if `name` is a method from lodash vulnerable to a DoS attack if called with a tainted object.
    */
   predicate loopableLodashMethod(string name) {
     name = "chunk" or
@@ -200,7 +200,7 @@ module TaintedLength {
               isCrashingWithNullValues(throws)
             )
             or
-            // similar to the loop sink - the existence of an early-exit usually means that no DOS can happen.
+            // similar to the loop sink - the existence of an early-exit usually means that no DoS can happen.
             exists(ThrowStmt throw |
               throw.getTarget() = func.asExpr()
             )

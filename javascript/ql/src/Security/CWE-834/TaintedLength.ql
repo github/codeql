@@ -1,7 +1,7 @@
 /**
  * @name Tainted .length in loop condition
  * @description Iterating over an object with a user-controlled .length
- *              property can cause indefinite looping
+ *              property can cause indefinite looping.
  * @kind path-problem
  * @problem.severity warning
  * @id js/loop-bound-injection
