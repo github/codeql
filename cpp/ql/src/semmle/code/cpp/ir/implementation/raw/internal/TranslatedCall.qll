@@ -94,10 +94,6 @@ abstract class TranslatedCall extends TranslatedExpr {
         then result = getSideEffects().getFirstInstruction()
         else result = getParent().getChildSuccessor(this)
       )
-      or
-      hasSideEffect() and
-      tag = CallSideEffectTag() and
-      result = getParent().getChildSuccessor(this)
     )
   }
 
