@@ -1,5 +1,5 @@
 /**
- * @name Tainted .length in loop condition
+ * @name Loop bound injection
  * @description Iterating over an object with a user-controlled .length
  *              property can cause indefinite looping.
  * @kind path-problem
@@ -11,7 +11,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.TaintedLength::TaintedLength
+import semmle.javascript.security.dataflow.LoopBoundInjection::LoopBoundInjection
 
 from Configuration dataflow, DataFlow::PathNode source, DataFlow::PathNode sink
 where dataflow.hasFlowPath(source, sink)

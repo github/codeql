@@ -3,21 +3,21 @@
  * using a user controlled object with an unbounded .length property.
  *
  * Note, for performance reasons: only import this file if
- * `TaintedLength::Configuration` is needed, otherwise
- * `TaintedLengthCustomizations` should be imported instead.
+ * `LoopBoundInjection::Configuration` is needed, otherwise
+ * `LoopBoundInjectionCustomizations` should be imported instead.
  */
 
 import javascript
 import semmle.javascript.security.TaintedObject
 
-module TaintedLength {
-  import TaintedLengthCustomizations::TaintedLength
+module LoopBoundInjection {
+  import LoopBoundInjectionCustomizations::LoopBoundInjection
 
   /**
    * A taint-tracking configuration for reasoning about looping on tainted objects with unbounded length.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "TaintedLength" }
+    Configuration() { this = "LoopBoundInjection" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
       source instanceof Source and label = TaintedObject::label()
