@@ -42,7 +42,7 @@ function useLengthIndirectly(val) {
     }
 }
 
-// the obvious null-pointer detection should not hit this one.
+// The obvious null-pointer detection should not hit this one.
 function noNullPointer(val) {
     var ret = [];
 
@@ -50,7 +50,7 @@ function noNullPointer(val) {
 
     for (var i = 0; i < val.length; i++) { // NOT OK!
         
-        // constantly accessing element 0, therefore not guaranteed null-pointer.
+        // Constantly accessing element 0, therefore not guaranteed null-pointer.
         ret.push(val[c].foo); 
     }
 }

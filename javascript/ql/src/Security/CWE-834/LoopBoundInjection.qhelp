@@ -36,7 +36,7 @@
 		This is not secure since an attacker can control the value of
 		<code>obj.length</code>, and thereby cause the loop to iterate
 		indefinitely. Here the potential DoS is fixed by enforcing that
-		the user controlled object is an array.
+		the user-controlled object is an array.
 	</p>
 
 	<sample src="examples/LoopBoundInjection_fixed.js" />

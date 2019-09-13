@@ -1,6 +1,6 @@
 /**
  * Provides a taint tracking configuration for reasoning about DoS attacks
- * using a user controlled object with an unbounded .length property.
+ * using a user-controlled object with an unbounded .length property.
  *
  * Note, for performance reasons: only import this file if
  * `LoopBoundInjection::Configuration` is needed, otherwise
@@ -14,7 +14,7 @@ module LoopBoundInjection {
   import LoopBoundInjectionCustomizations::LoopBoundInjection
 
   /**
-   * A taint-tracking configuration for reasoning about looping on tainted objects with unbounded length.
+   * A taint tracking configuration for reasoning about looping on tainted objects with unbounded length.
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "LoopBoundInjection" }

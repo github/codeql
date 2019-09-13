@@ -36,7 +36,7 @@ function throws(val) {
 		  try {
 			  throw 2; // Is caught, and therefore the DoS is not prevented.
 		  } catch(e) {
-			  // ignored
+			  // Ignored.
 		  }
 	  }
       ret.push(val[i]);
@@ -60,9 +60,9 @@ function lodashThrow(val) { // NOT OK!
 	_.map(val, function (e) {
 		if (!e) {
 			try {
-				throw new Error(); // Does not prevent DoS
+				throw new Error(); // Does not prevent DoS.
 			} catch(e) {
-				// ignored.
+				// Ignored.
 			}
 		}
 	})

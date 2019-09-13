@@ -20,7 +20,7 @@ function sanitized(val) {
     if (!Array.isArray(val)) {
         return [];
     }
-    // At this point we know that val must be an Array, and an attacked is
+    // At this point we know that val must be an Array, and an attacker is
     // therefore not able to send a cheap request that spends a lot of time
     // inside the loop.
     for (var i = 0; i < val.length; i++) { // OK
@@ -50,7 +50,7 @@ function sanitized3(val) {
     if (!isArray(val)) {
         return [];
     }
-    // At this point we know that val must be an Array, and an attacked is
+    // At this point we know that val must be an Array, and an attacker is
     // therefore not able to send a cheap request that spends a lot of time
     // inside the loop.
     for (var i = 0; i < val.length; i++) { // OK
@@ -64,7 +64,7 @@ function sanitized4(val) {
     if (!(val instanceof Array)) {
         return [];
     }
-    // At this point we know that val must be an Array, and an attacked is
+    // At this point we know that val must be an Array, and an attacker is
     // therefore not able to send a cheap request that spends a lot of time
     // inside the loop.
     for (var i = 0; i < val.length; i++) { // OK

@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks, and sanitizers for reasoning about
  * DoS attacks using objects with unbounded length property,
  * as well as extension points for adding your own.
  */
@@ -56,7 +56,7 @@ module LoopBoundInjection {
     }
 
     /**
-     * Gets the length read in the loop test
+     * Gets the length read in the loop test.
      */
     DataFlow::PropRead getLengthRead() { result = lengthRead }
 
@@ -200,7 +200,7 @@ module LoopBoundInjection {
               isCrashingWithNullValues(throws)
             )
             or
-            // similar to the loop sink - the existence of an early-exit usually means that no DoS can happen.
+            // Similar to the loop sink - the existence of an early-exit usually means that no DoS can happen.
             exists(ThrowStmt throw |
               throw.getTarget() = func.asExpr()
             )
@@ -259,7 +259,7 @@ module LoopBoundInjection {
   /**
    * A sanitizer that blocks taint flow if the length of an array is limited.
    *
-   * Also implicitly makes sure that only the first DoS-prone loop is selected by the query. (as the .length test has outcome=false when exiting the loop).
+   * Also implicitly makes sure that only the first DoS-prone loop is selected by the query (as the .length test has outcome=false when exiting the loop).
    */
   class LengthCheckSanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
     DataFlow::ValueNode {
