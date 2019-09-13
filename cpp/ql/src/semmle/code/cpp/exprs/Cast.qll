@@ -791,7 +791,7 @@ class AlignofExprOperator extends AlignofOperator {
 /**
  * A C++11 `alignof` expression whose operand is a type name.
  * ```
- * bool proper_alignment = (alingof(T) == alignof(T[0[);
+ * bool proper_alignment = (alingof(T) == alignof(T[0]);
  * ```
  */
 class AlignofTypeOperator extends AlignofOperator {
