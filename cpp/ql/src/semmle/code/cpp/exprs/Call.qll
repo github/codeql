@@ -4,6 +4,8 @@ private import semmle.code.cpp.dataflow.EscapesTree
 
 /**
  * A C/C++ call.
+ *
+ * This is the abstract root QL class for all types of calls.
  */
 abstract class Call extends Expr, NameQualifiableElement {
   /**
@@ -213,7 +215,7 @@ class FunctionCall extends Call, @funbindexpr {
    * Gets the function called by this call.
    *
    * In the case of virtual function calls, the result is the most-specific function in the override tree (as
-   * determined by the compiler) such that the target at runtime will be one of result.getAnOverridingFunction*().
+   * determined by the compiler) such that the target at runtime will be one of **result.getAnOverridingFunction\*()**.
    */
   override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
 
@@ -258,13 +260,19 @@ class FunctionCall extends Call, @funbindexpr {
 }
 
 /**
- * An instance of unary operator * applied to a user-defined type.
+ * An instance of a _user-defined_ unary `operator*` applied to its argument.
+ * ```
+ * T1 operator*(const T2 &);
+ * T1 a; T2 b;
+ * a = *b;
  */
 class OverloadedPointerDereferenceExpr extends FunctionCall {
   OverloadedPointerDereferenceExpr() {
     getTarget().hasName("operator*") and
     getTarget().getEffectiveNumberOfParameters() = 1
   }
+
+  override string getCanonicalQLClass() { result = "OverloadedPointerDereferenceExpr" }
 
   /**
    * Gets the expression this operator * applies to.
@@ -302,10 +310,17 @@ class OverloadedPointerDereferenceExpr extends FunctionCall {
 }
 
 /**
- * An instance of operator [] applied to a user-defined type.
+ * An instance of a _user-defined_ binary `operator[]` applied to its arguments.
+ * ```
+ * struct T2 { T1 operator[](const T3 &); };
+ * T1 a; T2 b; T3 c;
+ * a = b[c];
+ * ```
  */
 class OverloadedArrayExpr extends FunctionCall {
   OverloadedArrayExpr() { getTarget().hasName("operator[]") }
+
+  override string getCanonicalQLClass() { result = "OverloadedArrayExpr" }
 
   /**
    * Gets the expression being subscripted.
@@ -372,7 +387,7 @@ class VariableCall extends ExprCall {
 /**
  * A call to a constructor.
  * ```
- * struct S { S(void); }
+ * struct S { S(void) {} };
  * S s;
  * ```
  */
@@ -386,7 +401,7 @@ class ConstructorCall extends FunctionCall {
 }
 
 /**
- * A C++ `throw` expression. 
+ * A C++ `throw` expression.
  * ```
  * throw Exc(2);
  * ```
@@ -422,11 +437,8 @@ class ReThrowExpr extends ThrowExpr {
 /**
  * A call to a destructor.
  * ```
- struct S { ~S(void); };
- void foo() {
-  S s;
-  s.~S(); 
- }
+ * struct S { ~S(void) {} } *s;
+ * s->~S();
  * ```
  */
 class DestructorCall extends FunctionCall {
@@ -464,6 +476,9 @@ class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
 /**
  * An initialization of a base class or member variable performed as part
  * of a constructor's explicit initializer list or implicit actions.
+ *
+ * This is a QL root class for reprenting various types of constructor
+ * initializations.
  */
 class ConstructorInit extends Expr, @ctorinit {
   override string getCanonicalQLClass() { result = "ConstructorInit" }
@@ -480,6 +495,15 @@ class ConstructorBaseInit extends ConstructorInit, ConstructorCall {
 /**
  * A call to a constructor of a direct non-virtual base class as part of a
  * constructor's initializer list or compiler-generated actions.
+ * ```
+ * struct S {
+ *   int a;
+ *   S(int b): a(b) {}
+ * };
+ * struct T: S {
+ *   T(): S(33) {}  // S(33) is a constructor call
+ * };
+ * ```
  */
 class ConstructorDirectInit extends ConstructorBaseInit, @ctordirectinit {
   override string getCanonicalQLClass() { result = "ConstructorDirectInit" }
@@ -491,6 +515,15 @@ class ConstructorDirectInit extends ConstructorBaseInit, @ctordirectinit {
  *
  * If the virtual base class has already been initialized, then this
  * call won't be performed.
+ * ```
+ * struct S {
+ *   int a;
+ *   S(int b): a(b) {}
+ * };
+ * struct T: virtual S {
+ *   T(): S(33) {}  // S(33) is a call to a virtual base constructor
+ * };
+ * ```
  */
 class ConstructorVirtualInit extends ConstructorBaseInit, @ctorvirtualinit {
   override string getCanonicalQLClass() { result = "ConstructorVirtualInit" }
@@ -499,6 +532,13 @@ class ConstructorVirtualInit extends ConstructorBaseInit, @ctorvirtualinit {
 /**
  * A call to a constructor of the same class as part of a constructor's
  * initializer list, which delegates object construction (C++11 only).
+ * ```
+ * struct S {
+ *  int a;
+ *  S(int b): a(b) { }
+ *  S(): S(0) { } // delegation to another constructor
+ * };
+ * ```
  */
 class ConstructorDelegationInit extends ConstructorBaseInit, @ctordelegatinginit {
   override string getCanonicalQLClass() { result = "ConstructorDelegationInit" }
@@ -507,6 +547,14 @@ class ConstructorDelegationInit extends ConstructorBaseInit, @ctordelegatinginit
 /**
  * An initialization of a member variable performed as part of a
  * constructor's explicit initializer list or implicit actions.
+ * In the example below, member variable `b` is being initialized by
+ * constructor parameter `a`:
+ * ```
+ * struct S {
+ *   int b;
+ *   S(int a): b(a) {}
+ * } s(2);
+ * ```
  */
 class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
   /** Gets the field being initialized. */
@@ -548,6 +596,12 @@ class DestructorBaseDestruction extends DestructorCall, DestructorDestruction {
 /**
  * A call to a destructor of a direct non-virtual base class as part of a
  * destructor's compiler-generated actions.
+ * ```
+ * struct S {  ~S(void) {} };
+ * struct T: S {
+ *   ~T(void) {} // will call ~S()
+ * };
+ * ```
  */
 class DestructorDirectDestruction extends DestructorBaseDestruction, @dtordirectdestruct {
   override string getCanonicalQLClass() { result = "DestructorDirectDestruction" }
@@ -559,6 +613,12 @@ class DestructorDirectDestruction extends DestructorBaseDestruction, @dtordirect
  *
  * If the virtual base class wasn't initialized by the ConstructorVirtualInit
  * in the corresponding constructor, then this call won't be performed.
+ * ```
+ * struct S {  ~S(void) {} };
+ * struct T: virtual S {
+ *   ~T(void) {} // will call ~S()
+ * };
+ * ```
  */
 class DestructorVirtualDestruction extends DestructorBaseDestruction, @dtorvirtualdestruct {
   override string getCanonicalQLClass() { result = "DestructorVirtualDestruction" }
@@ -567,6 +627,13 @@ class DestructorVirtualDestruction extends DestructorBaseDestruction, @dtorvirtu
 /**
  * A destruction of a member variable performed as part of a
  * destructor's compiler-generated actions.
+ * ```
+ * struct S {  ~S(void) {} };
+ * struct T {
+ *   S s;
+ *   ~T(void) {}  // will call s.~S()
+ * };
+ * ```
  */
 class DestructorFieldDestruction extends DestructorDestruction, @dtorfielddestruct {
   /** Gets the field being destructed. */

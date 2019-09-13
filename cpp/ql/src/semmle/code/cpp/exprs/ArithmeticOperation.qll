@@ -37,7 +37,7 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, @unaryplusexpr {
 
 /**
  * A C/C++ GNU conjugation expression.  It operates on `_Complex` or
- * `__complex_`numbers, and is similar to the C99 `conj`, `conjf` and `conjl`
+ * `__complex__ `numbers, and is similar to the C99 `conj`, `conjf` and `conjl`
  * functions.
  * ```
  * _Complex double a =  ( 1.0, 2.0 );
@@ -55,7 +55,7 @@ class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
  *
  * This is the abstract base QL class for increment and decrement operations.
  *
- * Note that this doesn't include calls to _user-defined_ `operator++`
+ * Note that this does not include calls to _user-defined_ `operator++`
  * or `operator--`.
  */
 abstract class CrementOperation extends UnaryArithmeticOperation {
@@ -74,35 +74,35 @@ abstract class CrementOperation extends UnaryArithmeticOperation {
 /**
  * A C/C++ `++` expression (either prefix or postfix).
  *
- * Note that this doesn't include calls to user-defined `operator++`.
+ * Note that this does not include calls to _user-defined_ `operator++`.
  */
 abstract class IncrementOperation extends CrementOperation { }
 
 /**
  * A C/C++ `--` expression (either prefix or postfix).
  *
- * Note that this doesn't include calls to user-defined `operator--`.
+ * Note that this does not include calls to _user-defined_ `operator--`.
  */
 abstract class DecrementOperation extends CrementOperation { }
 
 /**
  * A C/C++ `++` or `--` prefix expression.
  *
- * Note that this doesn't include calls to user-defined operators.
+ * Note that this does not include calls to _user-defined_ operators.
  */
 abstract class PrefixCrementOperation extends CrementOperation { }
 
 /**
  * A C/C++ `++` or `--` postfix expression.
  *
- * Note that this doesn't include calls to user-defined operators.
+ * Note that this does not include calls to _user-defined_ operators.
  */
 abstract class PostfixCrementOperation extends CrementOperation { }
 
 /**
  * A C/C++ prefix increment expression, as in `++x`.
  *
- * Note that this doesn't include calls to _user-defined_ `operator++`.
+ * Note that this does not include calls to _user-defined_ `operator++`.
  * ```
  * b = ++a;
  * ```
@@ -118,7 +118,7 @@ class PrefixIncrExpr extends IncrementOperation, PrefixCrementOperation, @preinc
 /**
  * A C/C++ prefix decrement expression, as in `--x`.
  *
- * Note that this doesn't include calls to _user-defined_ `operator--`.
+ * Note that this does not include calls to _user-defined_ `operator--`.
  * ```
  * b = --a;
  * ```
@@ -134,7 +134,7 @@ class PrefixDecrExpr extends DecrementOperation, PrefixCrementOperation, @predec
 /**
  * A C/C++ postfix increment expression, as in `x++`.
  *
- * Note that this doesn't include calls to _user-defined_ `operator++`.
+ * Note that this does not include calls to _user-defined_ `operator++`.
  * ```
  * b = a++;
  * ```
@@ -152,7 +152,7 @@ class PostfixIncrExpr extends IncrementOperation, PostfixCrementOperation, @post
 /**
  * A C/C++ postfix decrement expression, as in `x--`.
  *
- * Note that this doesn't include calls to _user-defined_ `operator--`.
+ * Note that this does not include calls to _user-defined_ `operator--`.
  * ```
  * b = a--;
  * ```
