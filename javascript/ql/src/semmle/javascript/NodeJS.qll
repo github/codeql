@@ -269,7 +269,7 @@ private class RequirePath extends PathExprCandidate {
 private class ConstantRequirePathElement extends PathExprInModule, ConstantString {
   ConstantRequirePathElement() { this = any(RequirePath rp).getAPart() }
 
-  override string getValue() { result = this.getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
 /** A `__dirname` path expression. */
