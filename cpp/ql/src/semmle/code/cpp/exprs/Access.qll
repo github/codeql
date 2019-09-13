@@ -227,6 +227,29 @@ class ImplicitThisFieldAccess extends FieldAccess {
 }
 
 /**
+ * A C++ _pointer to non-static data member_ literal. For example, `&C::x` is
+ * an expression that refers to field `x` of class `C`. If the type of that
+ * field is `int`, then `&C::x` ought to have type `int C::*`. It is currently
+ * modeled in QL as having type `int`.
+ *
+ * See [dcl.mptr] in the C++17 standard or see
+ * https://en.cppreference.com/w/cpp/language/pointer#Pointers_to_data_members.
+ */
+class PointerToFieldLiteral extends ImplicitThisFieldAccess {
+  PointerToFieldLiteral() {
+    // The extractor currently emits a pointer-to-field literal as a field
+    // access without a qualifier. The only other unqualified field accesses it
+    // emits are for compiler-generated constructors and destructors. When we
+    // filter those out, there are only pointer-to-field literals left.
+    not this.isCompilerGenerated()
+  }
+
+  override predicate isConstant() { any() }
+
+  override string getCanonicalQLClass() { result = "PointerToFieldLiteral" }
+}
+
+/**
  * A C/C++ function access expression.
  */
 class FunctionAccess extends Access, @routineexpr {
