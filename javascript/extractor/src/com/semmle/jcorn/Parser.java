@@ -1460,7 +1460,7 @@ public class Parser {
     int startPos = this.start;
     Position startLoc = this.startLoc;
     Expression expr;
-    if (this.inAsync && this.isContextual("await")) {
+    if ((this.inAsync || options.esnext() && !this.inFunction) && this.isContextual("await")) {
       expr = this.parseAwait();
       sawUnary = true;
     } else if (this.type.isPrefix) {
