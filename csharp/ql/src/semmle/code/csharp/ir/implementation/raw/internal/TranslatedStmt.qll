@@ -660,8 +660,10 @@ class TranslatedForStmt extends TranslatedLoop {
     id = initializersNo() + updatesNo() + 1 and result = this.getBody()
   }
 
-  private TranslatedLocalDeclaration getDeclAndInit(int index) {
-    result = getTranslatedLocalDeclaration(stmt.getInitializer(index))
+  private TranslatedElement getDeclAndInit(int index) {
+    if stmt.getInitializer(index) instanceof LocalVariableDeclExpr
+    then result = getTranslatedLocalDeclaration(stmt.getInitializer(index))
+    else result = getTranslatedExpr(stmt.getInitializer(index))
   }
 
   private predicate hasInitialization() { exists(stmt.getAnInitializer()) }
