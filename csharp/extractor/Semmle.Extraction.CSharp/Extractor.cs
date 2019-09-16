@@ -109,7 +109,7 @@ namespace Semmle.Extraction.CSharp
                         return ExitCode.Failed;
                     }
 
-                    if (!analyser.Initialize(compilerArguments, commandLineArguments, compilerVersion.ArgsWithResponse, out var finalizeInit))
+                    if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse))
                     {
                         logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");
                         return ExitCode.Ok;
@@ -154,7 +154,7 @@ namespace Semmle.Extraction.CSharp
                         // already.
                         );
 
-                    finalizeInit(compilation);
+                    analyser.EndInitialize(compilerArguments, commandLineArguments, compilation);
                     analyser.AnalyseCompilation(cwd, args);
                     analyser.AnalyseReferences();
 

@@ -36,40 +36,40 @@ namespace Semmle.Extraction.CSharp
         CSharpCompilation compilation;
         Layout layout;
 
+        private bool init;
         /// <summary>
-        /// Initialize the analyser.
+        /// Start initialization of the analyser.
+        /// </summary>
+        /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
+        /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
+        public bool BeginInitialize(string[] roslynArgs)
+        {
+            return init = LogRoslynArgs(roslynArgs, Extraction.Extractor.Version);
+        }
+
+        /// <summary>
+        /// End initialization of the analyser.
         /// </summary>
         /// <param name="commandLineArguments">Arguments passed to csc.</param>
         /// <param name="options">Extractor options.</param>
-        /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
-        /// <param name="finalizeInit">A continuation for finalizing initialization based on a Roslyn compilation.</param>
+        /// <param name="compilation">The Roslyn compilation.</param>
         /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
-        public bool Initialize(
-            CSharpCommandLineArguments commandLineArguments,
-            Options options,
-            string[] roslynArgs,
-            out Action<CSharpCompilation> finalizeInit)
+        public void EndInitialize(
+           CSharpCommandLineArguments commandLineArguments,
+           Options options,
+           CSharpCompilation compilation)
         {
-            if (!LogRoslynArgs(roslynArgs, Extraction.Extractor.Version))
-            {
-                finalizeInit = null;
-                return false;
-            }
-
+            if (!init)
+                throw new InternalError("EndInitialize called without BeginInitialize returning true");
             layout = new Layout();
             this.options = options;
+            this.compilation = compilation;
+            extractor = new Extraction.Extractor(false, GetOutputName(compilation, commandLineArguments), Logger);
+            LogDiagnostics();
 
-            finalizeInit = comp =>
-            {
-                compilation = comp;
-                extractor = new Extraction.Extractor(false, GetOutputName(comp, commandLineArguments), Logger);
-                LogDiagnostics();
+            SetReferencePaths();
 
-                SetReferencePaths();
-
-                CompilationErrors += FilteredDiagnostics.Count();
-            };
-            return true;
+            CompilationErrors += FilteredDiagnostics.Count();
         }
 
         /// <summary>
@@ -444,7 +444,7 @@ namespace Semmle.Extraction.CSharp
         /// Logs information about the extractor, as well as the arguments to Roslyn.
         /// </summary>
         /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
-        /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
+        /// <returns>A Boolean indicating whether the same arguments have been logged previously.</returns>
         public bool LogRoslynArgs(string[] roslynArgs, string extractorVersion)
         {
             LogExtractorInfo(extractorVersion);
@@ -456,7 +456,7 @@ namespace Semmle.Extraction.CSharp
             bool argsWritten;
             using (var streamWriter = new StreamWriter(new FileStream(tempFile, FileMode.Append, FileAccess.Write)))
             {
-                streamWriter.WriteLine($"Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
+                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
                 argsWritten = roslynArgs.WriteCommandLine(streamWriter);
             }
 
