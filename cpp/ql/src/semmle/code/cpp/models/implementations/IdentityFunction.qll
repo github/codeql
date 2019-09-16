@@ -34,6 +34,6 @@ class IdentityFunction extends DataFlowFunction, SideEffectFunction, AliasFuncti
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // These functions simply return the argument value.
-    input.isInParameter(0) and output.isOutReturnValue()
+    input.isParameter(0) and output.isReturnValue()
   }
 }

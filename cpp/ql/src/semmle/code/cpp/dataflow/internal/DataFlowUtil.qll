@@ -574,8 +574,8 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
       exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
         call.getTarget() = f and
         f.hasDataFlow(inModel, outModel) and
-        outModel.isOutReturnValue() and
-        inModel.isInParameter(iIn) and
+        outModel.isReturnValue() and
+        inModel.isParameter(iIn) and
         fromExpr = call.getArgument(iIn)
       )
     )
@@ -585,12 +585,12 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
-    outModel.isOutParameterPointer(argOutIndex) and
+    outModel.isParameterDeref(argOutIndex) and
     exists(int argInIndex, FunctionInput inModel | f.hasDataFlow(inModel, outModel) |
-      inModel.isInParameterPointer(argInIndex) and
+      inModel.isParameterDeref(argInIndex) and
       call.passesByReference(argInIndex, exprIn)
       or
-      inModel.isInParameter(argInIndex) and
+      inModel.isParameter(argInIndex) and
       exprIn = call.getArgument(argInIndex)
     )
   )

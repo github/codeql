@@ -6,13 +6,13 @@ class Strftime extends TaintFunction, ArrayFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     (
-      input.isInParameter(1) or
-      input.isInParameterPointer(2) or
-      input.isInParameterPointer(3)
+      input.isParameter(1) or
+      input.isParameterDeref(2) or
+      input.isParameterDeref(3)
     ) and
     (
-      output.isOutParameterPointer(0) or
-      output.isOutReturnValue()
+      output.isParameterDeref(0) or
+      output.isReturnValue()
     )
   }
 
