@@ -447,3 +447,18 @@ blockquote.pull-quote > :last-child {
         height:100%;
         }
     }
+
+/* -- COLLAPSIBLE SECTIONS --------------------------------------------------------------------------------- */
+
+.toggle .name {
+    display: block;
+    clear: both;
+}
+
+.toggle .name:after {
+    content: " ▶";
+}
+
+.toggle .name.open:after {
+    content: " ▼";
+}
