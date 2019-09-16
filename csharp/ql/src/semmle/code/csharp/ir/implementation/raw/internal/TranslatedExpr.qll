@@ -532,9 +532,12 @@ class TranslatedCollectionInitializer extends TranslatedNonConstantExpr, Initial
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
       child = this.getChild(index) and
-      if exists(this.getChild(index + 1))
-      then result = this.getChild(index + 1).getFirstInstruction()
-      else result = this.getParent().getChildSuccessor(this)
+      (
+        result = this.getChild(index + 1).getFirstInstruction()
+        or
+        not exists(this.getChild(index + 1)) and
+        result = this.getParent().getChildSuccessor(this)
+      )
     )
   }
 
@@ -2028,14 +2031,11 @@ class TranslatedObjectCreation extends TranslatedCreation {
 
   override TranslatedExpr getInitializerExpr() { result = getTranslatedExpr(expr.getInitializer()) }
 
-  override TranslatedExpr getConstructorCall() {
+  override TranslatedConstructorCall getConstructorCall() {
     // Since calls are also expressions, we can't
     // use the predicate getTranslatedExpr (since that would
     // also return `this`).
-    exists(TranslatedConstructorCall cc |
-      cc.getAST() = this.getAST() and
-      result = cc
-    )
+    result.getAST() = this.getAST()
   }
 }
 

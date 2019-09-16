@@ -171,7 +171,8 @@ newtype TTranslatedElement =
   } or
   // A creation expression
   TTranslatedCreationExpr(Expr expr) {
-    not ignoreExpr(expr)
+    not ignoreExpr(expr) and
+    (expr instanceof ObjectCreation or expr instanceof DelegateCreation)
   } or
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
@@ -231,7 +232,7 @@ newtype TTranslatedElement =
       or
       expr instanceof ObjectInitializer
       or
-      expr = any(ThrowStmt throwStmt).getExpr()
+      expr = any(ThrowElement throwElement).getExpr()
       or
       expr = any(CollectionInitializer colInit).getAnElementInitializer()
       or
