@@ -62,7 +62,7 @@ RCE in Apache Struts
 
 - Disclosed as `CVE-2017-9805 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-9805>`__
 
-- Blog post: https://lgtm.com/blog/apache_struts_CVE-2017-9805
+- Blog post: https://blog.semmle.com/apache-struts-vulnerability-cve-2017-9805/
 
 Finding the RCE yourself
 ========================
