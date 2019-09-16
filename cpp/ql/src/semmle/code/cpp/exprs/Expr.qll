@@ -202,24 +202,24 @@ class Expr extends StmtParent, @expr {
    * Gets a string representation of the value category of the expression.
    * This is intended only for debugging. The possible values are:
    *
-   * - "*lvalue*"
-   * - "*xvalue*"
-   * - "*prvalue*"
-   * - "*prvalue*(load)"
+   * - "lvalue"
+   * - "xvalue"
+   * - "prvalue"
+   * - "prvalue(load)"
    *
-   * The "*prvalue*(load)" string is used when the expression is a **prvalue**, but
-   * **hasLValueToRvalueConversion()** holds.
+   * The "prvalue*(load)" string is used when the expression is a *prvalue*, but
+   * `hasLValueToRvalueConversion()` holds.
    */
   string getValueCategoryString() {
     isLValueCategory() and
-    result = "*lvalue*"
+    result = "lvalue"
     or
     isXValueCategory() and
-    result = "*xvalue*"
+    result = "xvalue"
     or
     (
       isPRValueCategory() and
-      if hasLValueToRValueConversion() then result = "*prvalue*(load)" else result = "*prvalue*"
+      if hasLValueToRValueConversion() then result = "prvalue(load)" else result = "prvalue"
     )
   }
 
@@ -254,18 +254,18 @@ class Expr extends StmtParent, @expr {
   }
 
   /**
-   * Holds if this expression has undergone an *lvalue*-to-**rvalue** conversion to
+   * Holds if this expression has undergone an *lvalue*-to-*rvalue* conversion to
    * extract its value.
    * for example:
    * ```
    *  y = x;
    * ```
-   * The **VariableAccess** for `x` is a **prvalue**, and **hasLValueToRValueConversion()**
+   * The `VariableAccess` for `x` is a *prvalue*, and `hasLValueToRValueConversion()`
    * holds because the value of `x` was loaded from the location of `x`.
-   * The **VariableAccess** for `y` is an *lvalue*, and **hasLValueToRValueConversion()**
+   * The `VariableAccess` for `y` is an *lvalue*, and `hasLValueToRValueConversion()`
    * does not hold because the value of `y` was not extracted.
    *
-   * See [conv.lval] for more about the *lvalue*-to-**rvalue** conversion
+   * See [conv.lval] for more about the *lvalue*-to-*rvalue* conversion
    */
   predicate hasLValueToRValueConversion() { expr_isload(underlyingElement(this)) }
 
@@ -544,7 +544,7 @@ class ParenthesisExpr extends Conversion, @parexpr {
 /**
  * A C/C++ expression that has not been resolved.
  * 
- * It is assigned **ErroneousType** as its type.
+ * It is assigned `ErroneousType` as its type.
  */
 class ErrorExpr extends Expr, @errorexpr {
   override string toString() { result = "<error expr>" }
@@ -637,7 +637,7 @@ class AddressOfExpr extends UnaryOperation, @address_of {
  * An implicit conversion from type `T` to type `T &`.
  *
  * This typically occurs when an expression of type `T` is used to initialize a variable or parameter of
- * type `T &`, and is to reference types what **AddressOfExpr** is to pointer types, though this class is
+ * type `T &`, and is to reference types what `AddressOfExpr` is to pointer types, though this class is
  * considered to be a conversion rather than an operation, and as such doesn't occur in the main AST.
  * ```
  * int &var_ref = var;
@@ -654,7 +654,7 @@ class ReferenceToExpr extends Conversion, @reference_to {
 /**
  * An instance of the built-in unary `operator *` applied to a type.
  *
- * For user-defined overloads of `operator *`, see **OverloadedPointerDereferenceExpr**.
+ * For user-defined overloads of `operator *`, see `OverloadedPointerDereferenceExpr`.
  * ```
  * int var = *varptr;
  * ```
@@ -688,7 +688,7 @@ class PointerDereferenceExpr extends UnaryOperation, @indirect {
  * An implicit conversion from type `T &` to type `T`.
  *
  * This typically occurs when an variable of type `T &` is used in a context which expects type `T`, and
- * is to reference types what **PointerDereferenceExpr** is to pointer types - though this class is
+ * is to reference types what `PointerDereferenceExpr` is to pointer types - though this class is
  * considered to be a conversion rather than an operation, and as such doesn't occur in the main AST.
  * ```
  * float &f_ref = get_ref();
@@ -1116,7 +1116,7 @@ class NoExceptExpr extends Expr, @noexceptexpr {
  * of the template will instead contain the sequence of expressions given by expanding the fold.
  * ```
  * template < typename... T >
- * auto sum ( T … t ) { return ( t + ... + 0 ); }
+ * auto sum ( T... t ) { return ( t + ... + 0 ); }
  * ```
  */
 class FoldExpr extends Expr, @foldexpr {

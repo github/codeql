@@ -11,7 +11,7 @@ import semmle.code.cpp.exprs.BitwiseOperation
  */
 abstract class Assignment extends Operation {
   /** Gets the *lvalue* of this assignment. */
-  Expr get*lvalue*() { this.hasChild(result, 0) }
+  Expr getLValue() { this.hasChild(result, 0) }
 
   /** Gets the rvalue of this assignment. */
   Expr getRValue() { this.hasChild(result, 1) }
@@ -22,7 +22,7 @@ abstract class Assignment extends Operation {
     this.getRValue().mayBeGloballyImpure()
     or
     not exists(VariableAccess va, LocalScopeVariable v |
-      va = this.get*lvalue*() and
+      va = this.getLValue() and
       v = va.getTarget() and
       not va.getConversion+() instanceof ReferenceDereferenceExpr and
       not v.isStatic()

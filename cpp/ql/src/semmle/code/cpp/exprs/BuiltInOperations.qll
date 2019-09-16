@@ -78,29 +78,36 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
 }
 
 /**
- * A C++ `__offsetof` built-in operation (used by some implementations
- * of `offsetof` in the presence of user-defined `operator &`).
- *
- * It computes the offset (in bytes) of data member `m` from the beginning
- * of its enclosing `struct`/`class`/`union` `st`.
+ * DEPRECATED: Use `BuiltInOperationBuiltInOffsetOf` instead.
+ */
+deprecated class BuiltInOperationOffsetOf = BuiltInOperationBuiltInOffsetOf;
+
+/**
+ * A C/C++ `__offsetof` built-in operation (used by some implementations
+ * of `offsetof`).  The operation retains its semantics even in the presence
+ * of an overloaded `operator &`).  This is a GNU/Clang extension.
  * ```
- * #define offsetof(st, m) __offsetof(st, m)
+ * struct S {
+ *   int a, b;
+ * };
+ * int d = __builtin_offsetof(struct S, b); // usually 4 
  * ```
  */
-class BuiltInOperationOffsetOf extends BuiltInOperation, @offsetofexpr {
-  override string toString() { result = "__offsetof" }
+class BuiltInOperationBuiltInOffsetOf extends BuiltInOperation, @offsetofexpr {
+  override string toString() { result = "__builtin_offsetof" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationOffsetOf" }
+  override string getCanonicalQLClass() { result = "BuiltInOperationBuiltInOffsetOf" }
 }
 
 /**
- * A C/C++ `__INTADDR__` expression, used by EDG to implement `offsetof`
- * in the presence of user-defined `operator &`.
- *
- * It computes the offset (in bytes) of data member `m` from the beginning
- * of its enclosing `struct`/`class`/`union` `st`.
+ * A C/C++ `__INTADDR__` built-in operation (used by some implementations
+ * of `offsetof`).  The operation retains its semantics even in the presence
+ * of an overloaded `operator &`).  This is an EDG extension.
  * ```
- * #define offsetof(st, m) __INTADDR__(st, m)
+ * struct S {
+ *   int a, b;
+ * };
+ * int d = __INTADDR__(struct S, b); // usually 4 
  * ```
  */
 class BuiltInIntAddr extends BuiltInOperation, @intaddrexpr {
@@ -541,7 +548,7 @@ class BuiltInOperationIsDestructible extends BuiltInOperation, @isdestructibleex
  * The `__is_nothrow_destructible` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns `true` if the type is destructible and whose constructor, and those
+ * Returns `true` if the type is destructible and whose destructor, and those
  * of member data and any super`class`es all have an empty exception
  * specification.
  * ```
@@ -558,7 +565,7 @@ class BuiltInOperationIsNothrowDestructible extends BuiltInOperation, @isnothrow
  * The `__is_trivially_destructible` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns `true` if the type is destructible and whose constructor, and those
+ * Returns `true` if the type is destructible and whose destructor, and those
  * of member data and any super`class`es are all trivial (compiler-generated).
  * ```
  * bool v = __is_trivially_destructible(MyType);
@@ -575,8 +582,7 @@ class BuiltInOperationIsTriviallyDestructible extends BuiltInOperation, @istrivi
  * implementations of the `<type_traits>` header).
  *
  * Returns `true` if the assignment operator `C::operator =(const C& c)` is
- * trivial (compiler-generated).  The  * generated code will have resembled a
- * `memcpy` operation.
+ * trivial (compiler-generated).
  * ```
  * template<typename T>
  *   struct is_trivially_assignable
@@ -595,7 +601,7 @@ class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istrivial
  * implementations of the `<type_traits>` header).
  *
  * Returns true if there exists a `C::operator =(const C& c) nothrow`
- * assignment operator (i.e, with an empty excepion specification).
+ * assignment operator (i.e, with an empty exception specification).
  * ```
  * bool v = __is_nothrow_assignable(MyType);
  * ```
