@@ -132,7 +132,7 @@ private predicate excludeNodeAndNodesBelow(Expr e) {
  * control flow in them.
  */
 private predicate excludeNodesStrictlyBelow(Node n) {
-  n instanceof BuiltInOperationOffsetOf
+  n instanceof BuiltInOperationBuiltInOffsetOf
   or
   n instanceof BuiltInIntAddr
   or
