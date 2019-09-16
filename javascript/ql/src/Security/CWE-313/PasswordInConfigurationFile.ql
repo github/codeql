@@ -13,6 +13,7 @@
 
 import javascript
 import semmle.javascript.RestrictedLocations
+import semmle.javascript.security.SensitiveActions
 
 /**
  * Holds if some JSON or YAML file contains a property with name `key`
@@ -56,7 +57,8 @@ where
     key.toLowerCase() = "password" and
     pwd = val and
     // exclude interpolations of environment variables
-    not val.regexpMatch("\\$.*|%.*%")
+    not val.regexpMatch("\\$.*|%.*%") and
+    not PasswordHeuristics::isDummyPassword(val)
     or
     key.toLowerCase() != "readme" and
     // look for `password=...`, but exclude `password=;`, `password="$(...)"`,
