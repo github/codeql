@@ -30,7 +30,7 @@ module InstructionSanity {
         or
         opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag
         or
-        opcode instanceof BufferAccessOpcode and tag instanceof BufferSizeOperand
+        opcode instanceof SizedBufferAccessOpcode and tag instanceof BufferSizeOperandTag
         or
         opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag
         or
@@ -1176,7 +1176,7 @@ class CallReadSideEffectInstruction extends SideEffectInstruction {
 class IndirectReadSideEffectInstruction extends SideEffectInstruction {
   IndirectReadSideEffectInstruction() { getOpcode() instanceof Opcode::IndirectReadSideEffect }
 
-  Instruction getArgumentInstruction() { result = getAnOperand().(AddressOperand).getDef() }
+  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
 }
 
 /**
@@ -1185,7 +1185,20 @@ class IndirectReadSideEffectInstruction extends SideEffectInstruction {
 class BufferReadSideEffectInstruction extends SideEffectInstruction {
   BufferReadSideEffectInstruction() { getOpcode() instanceof Opcode::BufferReadSideEffect }
 
-  Instruction getArgumentInstruction() { result = getAnOperand().(AddressOperand).getDef() }
+  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
+}
+
+/**
+ * An instruction representing the read of an indirect buffer parameter within a function call.
+ */
+class SizedBufferReadSideEffectInstruction extends SideEffectInstruction {
+  SizedBufferReadSideEffectInstruction() {
+    getOpcode() instanceof Opcode::SizedBufferReadSideEffect
+  }
+
+  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
+
+  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
 
 /**
@@ -1194,7 +1207,7 @@ class BufferReadSideEffectInstruction extends SideEffectInstruction {
 class WriteSideEffectInstruction extends SideEffectInstruction {
   WriteSideEffectInstruction() { getOpcode() instanceof WriteSideEffectOpcode }
 
-  Instruction getArgumentInstruction() { result = getAnOperand().(AddressOperand).getDef() }
+  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
 }
 
 /**
@@ -1218,6 +1231,20 @@ class BufferMustWriteSideEffectInstruction extends WriteSideEffectInstruction {
   }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
+}
+
+/**
+ * An instruction representing the write of an indirect buffer parameter within a function call. The
+ * entire buffer is overwritten.
+ */
+class SizedBufferMustWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  SizedBufferMustWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::SizedBufferMustWriteSideEffect
+  }
+
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
+
+  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
 
 /**
@@ -1245,6 +1272,22 @@ class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
   final override MemoryAccessKind getResultMemoryAccess() {
     result instanceof BufferMayMemoryAccess
   }
+}
+
+/**
+ * An instruction representing the write of an indirect buffer parameter within a function call.
+ * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
+ */
+class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  SizedBufferMayWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::SizedBufferMayWriteSideEffect
+  }
+
+  final override MemoryAccessKind getResultMemoryAccess() {
+    result instanceof BufferMayMemoryAccess
+  }
+
+  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
 
 /**

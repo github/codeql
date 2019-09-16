@@ -66,7 +66,7 @@ AddressOperandTag addressOperand() { result = TAddressOperand() }
  * The buffer size operand of an instruction that represents a read or write of
  * a buffer.
  */
-class BufferSizeOperand extends RegisterOperandTag, TBufferSizeOperand {
+class BufferSizeOperandTag extends RegisterOperandTag, TBufferSizeOperand {
   final override string toString() { result = "BufferSize" }
 
   final override int getSortOrder() { result = 1 }

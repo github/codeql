@@ -255,6 +255,16 @@ class AddressOperand extends RegisterOperand {
 }
 
 /**
+ * The buffer size operand of an instruction that represents a read or write of
+ * a buffer.
+ */
+class BufferSizeOperand extends RegisterOperand {
+  override BufferSizeOperandTag tag;
+
+  override string toString() { result = "BufferSize" }
+}
+
+/**
  * The source value operand of an instruction that loads a value from memory (e.g. `Load`,
  * `ReturnValue`, `ThrowValue`).
  */
