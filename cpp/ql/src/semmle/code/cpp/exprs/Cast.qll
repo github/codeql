@@ -22,17 +22,17 @@ abstract class Conversion extends Expr {
 /**
  * A C/C++ cast expression.
  *
- * To get the type which the expression is being cast to, use **Cast::getType()**.
+ * To get the type which the expression is being cast to, use `Cast::getType()`.
  *
- * There are two groups of subtypes of **Cast**. The first group differentiates
- * between the different cast syntax forms, e.g. **CStyleCast**, **StaticCast**,
+ * There are two groups of subtypes of `Cast`. The first group differentiates
+ * between the different cast syntax forms, e.g. `CStyleCast`, `StaticCast`,
  * etc. The second group differentiates between the semantic operation being
- * performed by the cast, e.g. **IntegralConversion**, **PointerBaseClassConversion**,
+ * performed by the cast, e.g. `IntegralConversion`, `PointerBaseClassConversion`,
  * etc.
  * The two groups are largely orthogonal to one another. For example, a
- * cast that is syntactically as **CStyleCast** may also be an **IntegralConversion**,
- * a **PointerBaseClassConversion**, or some other semantic conversion. Similarly,
- * a **PointerDerivedClassConversion** may also be a **CStyleCast** or a **StaticCast**.
+ * cast that is syntactically as `CStyleCast` may also be an `IntegralConversion`,
+ * a `PointerBaseClassConversion`, or some other semantic conversion. Similarly,
+ * a `PointerDerivedClassConversion` may also be a `CStyleCast` or a `StaticCast`.
  *
  * This is an abstract root QL class representing the different casts.  For
  * specific examples, consult the documentation for any of QL classes mentioned above.
@@ -47,7 +47,7 @@ abstract class Cast extends Conversion, @cast {
 
 /**
  * INTERNAL: Do not use.
- * Query predicates used to check invariants that should hold for all **Cast**
+ * Query predicates used to check invariants that should hold for all `Cast`
  * nodes. To run all sanity queries for the ASTs, including the ones below,
  * run "semmle/code/cpp/ASTSanity.ql".
  */
@@ -167,8 +167,8 @@ private predicate isPointerToMemberOrNullPointer(Type type) {
  * A conversion from one arithmetic or `enum` type to another.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class ArithmeticConversion extends Cast {
   ArithmeticConversion() {
@@ -184,8 +184,8 @@ class ArithmeticConversion extends Cast {
  * A conversion from one integral or enum type to another.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`,  `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class IntegralConversion extends ArithmeticConversion {
   IntegralConversion() {
@@ -204,8 +204,8 @@ class IntegralConversion extends ArithmeticConversion {
  * A conversion from one floating point type.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class FloatingPointConversion extends ArithmeticConversion {
   FloatingPointConversion() {
@@ -224,8 +224,8 @@ class FloatingPointConversion extends ArithmeticConversion {
  * A conversion from a floating point type to an integral or enum type.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class FloatingPointToIntegralConversion extends ArithmeticConversion {
   FloatingPointToIntegralConversion() {
@@ -244,8 +244,8 @@ class FloatingPointToIntegralConversion extends ArithmeticConversion {
  * A conversion from an integral or enum type to a floating point type.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class IntegralToFloatingPointConversion extends ArithmeticConversion {
   IntegralToFloatingPointConversion() {
@@ -264,13 +264,13 @@ class IntegralToFloatingPointConversion extends ArithmeticConversion {
  * A conversion from one pointer type to another.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`,  `ConstCast`
+ * or `ReinterpretCast` for more information.
  *
  * The conversion does
  * not modify the value of the pointer. For pointer conversions involving
- * casts between base and derived classes, please see see **BaseClassConversion** or
- * **DerivedClassConversion**.
+ * casts between base and derived classes, please see see `BaseClassConversion` or
+ * `DerivedClassConversion`.
  */
 class PointerConversion extends Cast {
   PointerConversion() {
@@ -290,13 +290,13 @@ class PointerConversion extends Cast {
  * A conversion from one pointer-to-member type to another.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  *
  * The conversion does not modify the value of the pointer-to-member.
  * For pointer-to-member conversions involving casts between base and
- * derived classes, please see **PointerToMemberBaseClassConversion**
- * or **PointerToMemberDerivedClassConversion**.
+ * derived classes, please see `PointerToMemberBaseClassConversion`
+ * or `PointerToMemberDerivedClassConversion`.
  */
 class PointerToMemberConversion extends Cast {
   PointerToMemberConversion() {
@@ -326,8 +326,8 @@ class PointerToMemberConversion extends Cast {
  * A conversion from a pointer type to an integral or enum type.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class PointerToIntegralConversion extends Cast {
   PointerToIntegralConversion() {
@@ -347,8 +347,8 @@ class PointerToIntegralConversion extends Cast {
  * A conversion from an integral or enum type to a pointer type.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class IntegralToPointerConversion extends Cast {
   IntegralToPointerConversion() {
@@ -369,8 +369,8 @@ class IntegralToPointerConversion extends Cast {
  * `false`, or `nullptr`. Returns `true` otherwise.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class BoolConversion extends Cast {
   BoolConversion() { conversionkinds(underlyingElement(this), 1) }
@@ -384,8 +384,8 @@ class BoolConversion extends Cast {
  * A conversion to `void`.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class VoidConversion extends Cast {
   VoidConversion() {
@@ -407,8 +407,8 @@ class VoidConversion extends Cast {
  * direct base classes.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class InheritanceConversion extends Cast {
   InheritanceConversion() {
@@ -463,8 +463,8 @@ private Class getConversionClass(Expr expr) {
  * *glvalue* of a direct or virtual base class.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class BaseClassConversion extends InheritanceConversion {
   BaseClassConversion() { conversionkinds(underlyingElement(this), 2) }
@@ -490,8 +490,8 @@ class BaseClassConversion extends InheritanceConversion {
  * to a direct derived class.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class DerivedClassConversion extends InheritanceConversion {
   DerivedClassConversion() { conversionkinds(underlyingElement(this), 3) }
@@ -512,8 +512,8 @@ class DerivedClassConversion extends InheritanceConversion {
  * of an immediate base class.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class PointerToMemberBaseClassConversion extends Cast {
   PointerToMemberBaseClassConversion() { conversionkinds(underlyingElement(this), 4) }
@@ -532,8 +532,8 @@ class PointerToMemberBaseClassConversion extends Cast {
  * of an immediate derived class.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class PointerToMemberDerivedClassConversion extends Cast {
   PointerToMemberDerivedClassConversion() { conversionkinds(underlyingElement(this), 5) }
@@ -553,8 +553,8 @@ class PointerToMemberDerivedClassConversion extends Cast {
  * derived classes, see `BaseClassConversion` and `DerivedClassConversion`.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class GlvalueConversion extends Cast {
   GlvalueConversion() { conversionkinds(underlyingElement(this), 6) }
@@ -581,8 +581,8 @@ class GlvalueConversion extends Cast {
  * to the reference.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class PrvalueAdjustmentConversion extends Cast {
   PrvalueAdjustmentConversion() { conversionkinds(underlyingElement(this), 7) }
@@ -812,8 +812,8 @@ class AlignofTypeOperator extends AlignofOperator {
  * A C/C++ array to pointer conversion.
  *
  * The conversion is either implicit or underlies a particular cast.
- * Please see **CStyleCast**, **StaticCast**,  **ConstCast**
- * or **ReinterpretCast** for more information.
+ * Please see `CStyleCast`, `StaticCast`,  `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class ArrayToPointerConversion extends Conversion, @array_to_pointer {
   /** Gets a textual representation of this conversion. */

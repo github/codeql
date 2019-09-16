@@ -312,7 +312,7 @@ class BuiltInType extends Type, @builtintype {
 /**
  * An erroneous type.  This type has no corresponding C/C++ syntax.
  *
- * ErroneousType is the type of ErrorExpr, which it turn refers to an illegal
+ * ErroneousType is the type of ErrorExpr, which in turn refers to an illegal
  * language construct.  In the example below, a temporary (`0`) cannot be bound
  * to an lvalue reference (`int &`):
  * ```
@@ -1333,7 +1333,6 @@ class FunctionPointerIshType extends DerivedType {
  * int C::* p = &C::m;          // pointer to data member m of class C
  * class C *;
  * int val = c.*p;              // access data member
- *
  * ```
  */
 class PointerToMemberType extends Type, @ptrtomember {
@@ -1432,11 +1431,11 @@ class RoutineType extends Type, @routinetype {
 }
 
 /**
- * A C++ typename template parameter.
+ * A C++ `typename` (or `class`) template parameter.
  *
  * In the example below, `T` is a template parameter:
  * ```
- * template <typename T>
+ * template <class T>
  * class C { };
  * ```
  */
@@ -1456,8 +1455,8 @@ class TemplateParameter extends UserType {
  * In the example below, `T` is a template template parameter (although its name
  * may be omitted):
  * ```
- * template <template <typename T> class H, class S>
- * void f(const H<S> &value) { }
+ * template <template <typename T> class Container, class Elem>
+ * void foo(const ContainerH<Elem> &value) { }
  * ```
  */
 class TemplateTemplateParameter extends TemplateParameter {
