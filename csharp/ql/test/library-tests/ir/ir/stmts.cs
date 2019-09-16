@@ -73,8 +73,8 @@ public class test_stmts
             x = x - 1; 
         }
         
-        int a = 0, b = 10;
-        for (; a < b; ) 
+        int a, b = 10;
+        for (a = 0; a < b; ) 
         {
             a++;
         }
