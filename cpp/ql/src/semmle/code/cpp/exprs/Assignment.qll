@@ -218,7 +218,7 @@ class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
  * // c is no longer in scope
  * while (int d = x - y) { do_something_else_with(d); }
  * // d is no longer is scope
- * ``` 
+ * ```
  */
 class ConditionDeclExpr extends Expr, @condition_decl {
   /**
