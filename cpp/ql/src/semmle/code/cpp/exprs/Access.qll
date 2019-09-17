@@ -274,11 +274,28 @@ private predicate exprHasReferenceConversion(Expr e) { referenceConversion(e.get
 
 /**
  * A field access of a field of `this` which has no qualifier because
- * the use of `this` is implicit. For example, `field` is equivalent to
- * `this->field` if `field` is a member of `this`.
+ * the use of `this` is implicit. For example, in the following code the
+ * implicit call to the destructor of `A` has no qualifier because the
+ * use of `this` is implicit:
+ * ```
+ * class A {
+ * public:
+ *   ~A() {
+ *     // ...
+ *   }
+ * };
  *
+ * class B {
+ * public:
+ *   A a;
+ *
+ *   ~B() {
+ *     // Implicit call to the destructor of `A`.
+ *   }
+ * };
+ * ```
  * Note: the C++ front-end often automatically desugars `field` to
- * `this->field`, so most implicit accesses of `this->field` are instances
+ * `this->field`, so most accesses of `this->field` are instances
  * of `PointerFieldAccess` (with `ThisExpr` as the qualifier), not
  * `ImplicitThisFieldAccess`.
  */
