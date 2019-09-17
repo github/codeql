@@ -2,12 +2,17 @@ edges
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:14:9:14:20 | [implicit argument] tainted |
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:25:9:25:20 | [implicit argument] tainted |
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:33:9:33:40 | [implicit argument] tainted |
+| Capture.cs:7:20:7:26 | tainted | Capture.cs:61:36:61:42 | access to parameter tainted |
 | Capture.cs:9:9:13:9 | SSA capture def(tainted) | Capture.cs:12:19:12:24 | access to local variable sink27 |
 | Capture.cs:14:9:14:20 | [implicit argument] tainted | Capture.cs:9:9:13:9 | SSA capture def(tainted) |
 | Capture.cs:18:13:22:13 | SSA capture def(tainted) | Capture.cs:21:23:21:28 | access to local variable sink28 |
 | Capture.cs:25:9:25:20 | [implicit argument] tainted | Capture.cs:18:13:22:13 | SSA capture def(tainted) |
 | Capture.cs:27:43:32:9 | SSA capture def(tainted) | Capture.cs:30:19:30:24 | access to local variable sink29 |
 | Capture.cs:33:9:33:40 | [implicit argument] tainted | Capture.cs:27:43:32:9 | SSA capture def(tainted) |
+| Capture.cs:50:50:50:55 | sink39 | Capture.cs:52:13:59:14 | [implicit argument] sink39 |
+| Capture.cs:52:13:59:14 | [implicit argument] sink39 | Capture.cs:55:27:58:17 | SSA capture def(sink39) |
+| Capture.cs:55:27:58:17 | SSA capture def(sink39) | Capture.cs:57:27:57:32 | access to parameter sink39 |
+| Capture.cs:61:36:61:42 | access to parameter tainted | Capture.cs:50:50:50:55 | sink39 |
 | Capture.cs:69:13:69:35 | SSA def(sink30) | Capture.cs:71:9:71:21 | SSA call def(sink30) |
 | Capture.cs:69:22:69:35 | "taint source" | Capture.cs:69:13:69:35 | SSA def(sink30) |
 | Capture.cs:71:9:71:21 | SSA call def(sink30) | Capture.cs:72:15:72:20 | access to local variable sink30 |
@@ -227,6 +232,7 @@ edges
 | GlobalDataFlow.cs:181:15:181:19 | access to local variable sink9 | GlobalDataFlow.cs:179:35:179:48 | "taint source" | GlobalDataFlow.cs:181:15:181:19 | access to local variable sink9 | access to local variable sink9 |
 | Splitting.cs:11:19:11:19 | access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:11:19:11:19 | access to local variable x | access to local variable x |
 | Splitting.cs:34:19:34:19 | access to local variable x | Splitting.cs:24:28:24:34 | tainted | Splitting.cs:34:19:34:19 | access to local variable x | access to local variable x |
+| Capture.cs:57:27:57:32 | access to parameter sink39 | Capture.cs:7:20:7:26 | tainted | Capture.cs:57:27:57:32 | access to parameter sink39 | access to parameter sink39 |
 | GlobalDataFlow.cs:237:15:237:24 | access to parameter sinkParam0 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:237:15:237:24 | access to parameter sinkParam0 | access to parameter sinkParam0 |
 | GlobalDataFlow.cs:242:15:242:24 | access to parameter sinkParam1 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:242:15:242:24 | access to parameter sinkParam1 | access to parameter sinkParam1 |
 | GlobalDataFlow.cs:44:50:44:59 | access to parameter sinkParam2 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:44:50:44:59 | access to parameter sinkParam2 | access to parameter sinkParam2 |

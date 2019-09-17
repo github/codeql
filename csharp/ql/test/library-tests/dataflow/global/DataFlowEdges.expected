@@ -7,6 +7,8 @@
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:25:9:25:20 | [implicit argument] tainted |
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:33:9:33:40 | [implicit argument] tainted |
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:33:9:33:40 | [implicit argument] tainted |
+| Capture.cs:7:20:7:26 | tainted | Capture.cs:61:36:61:42 | access to parameter tainted |
+| Capture.cs:7:20:7:26 | tainted | Capture.cs:61:36:61:42 | access to parameter tainted |
 | Capture.cs:9:9:13:9 | SSA capture def(tainted) | Capture.cs:9:9:13:9 | SSA capture def(tainted) |
 | Capture.cs:9:9:13:9 | SSA capture def(tainted) | Capture.cs:11:17:11:32 | SSA def(sink27) |
 | Capture.cs:9:9:13:9 | SSA capture def(tainted) | Capture.cs:11:17:11:32 | SSA def(sink27) |
@@ -175,6 +177,58 @@
 | Capture.cs:46:23:46:30 | access to local variable nonSink0 | Capture.cs:46:23:46:30 | access to local variable nonSink0 |
 | Capture.cs:49:9:49:27 | access to local function CaptureIn2NotCalled | Capture.cs:49:9:49:27 | access to local function CaptureIn2NotCalled |
 | Capture.cs:49:9:49:29 | call to local function CaptureIn2NotCalled | Capture.cs:49:9:49:29 | call to local function CaptureIn2NotCalled |
+| Capture.cs:50:33:50:40 | nonSink0 | Capture.cs:50:33:50:40 | nonSink0 |
+| Capture.cs:50:33:50:40 | nonSink0 | Capture.cs:50:33:50:40 | nonSink0 |
+| Capture.cs:50:33:50:40 | nonSink0 | Capture.cs:52:13:59:14 | [implicit argument] nonSink0 |
+| Capture.cs:50:33:50:40 | nonSink0 | Capture.cs:52:13:59:14 | [implicit argument] nonSink0 |
+| Capture.cs:50:33:50:40 | nonSink0 | Capture.cs:52:13:59:14 | [implicit argument] nonSink0 |
+| Capture.cs:50:33:50:40 | nonSink0 | Capture.cs:52:13:59:14 | [implicit argument] nonSink0 |
+| Capture.cs:50:50:50:55 | sink39 | Capture.cs:50:50:50:55 | sink39 |
+| Capture.cs:50:50:50:55 | sink39 | Capture.cs:50:50:50:55 | sink39 |
+| Capture.cs:50:50:50:55 | sink39 | Capture.cs:52:13:59:14 | [implicit argument] sink39 |
+| Capture.cs:50:50:50:55 | sink39 | Capture.cs:52:13:59:14 | [implicit argument] sink39 |
+| Capture.cs:50:50:50:55 | sink39 | Capture.cs:52:13:59:14 | [implicit argument] sink39 |
+| Capture.cs:50:50:50:55 | sink39 | Capture.cs:52:13:59:14 | [implicit argument] sink39 |
+| Capture.cs:52:13:59:14 | [implicit argument] nonSink0 | Capture.cs:52:13:59:14 | [implicit argument] nonSink0 |
+| Capture.cs:52:13:59:14 | [implicit argument] nonSink0 | Capture.cs:52:23:59:13 | SSA capture def(nonSink0) |
+| Capture.cs:52:13:59:14 | [implicit argument] nonSink0 | Capture.cs:52:23:59:13 | SSA capture def(nonSink0) |
+| Capture.cs:52:13:59:14 | [implicit argument] nonSink0 | Capture.cs:52:23:59:13 | SSA capture def(nonSink0) |
+| Capture.cs:52:13:59:14 | [implicit argument] nonSink0 | Capture.cs:52:23:59:13 | SSA capture def(nonSink0) |
+| Capture.cs:52:13:59:14 | [implicit argument] sink39 | Capture.cs:52:13:59:14 | [implicit argument] sink39 |
+| Capture.cs:52:13:59:14 | [implicit argument] sink39 | Capture.cs:55:27:58:17 | SSA capture def(sink39) |
+| Capture.cs:52:13:59:14 | [implicit argument] sink39 | Capture.cs:55:27:58:17 | SSA capture def(sink39) |
+| Capture.cs:52:13:59:14 | [implicit argument] sink39 | Capture.cs:55:27:58:17 | SSA capture def(sink39) |
+| Capture.cs:52:13:59:14 | [implicit argument] sink39 | Capture.cs:55:27:58:17 | SSA capture def(sink39) |
+| Capture.cs:52:13:59:14 | call to method RunAction | Capture.cs:52:13:59:14 | call to method RunAction |
+| Capture.cs:52:23:59:13 | (...) => ... | Capture.cs:52:23:59:13 | (...) => ... |
+| Capture.cs:52:23:59:13 | (...) => ... | Capture.cs:190:34:190:34 | a |
+| Capture.cs:52:23:59:13 | (...) => ... | Capture.cs:190:34:190:34 | a |
+| Capture.cs:52:23:59:13 | SSA capture def(nonSink0) | Capture.cs:52:23:59:13 | SSA capture def(nonSink0) |
+| Capture.cs:52:23:59:13 | SSA capture def(nonSink0) | Capture.cs:54:23:54:30 | access to parameter nonSink0 |
+| Capture.cs:52:23:59:13 | SSA capture def(nonSink0) | Capture.cs:54:23:54:30 | access to parameter nonSink0 |
+| Capture.cs:52:23:59:13 | SSA capture def(nonSink0) | Capture.cs:54:23:54:30 | access to parameter nonSink0 |
+| Capture.cs:52:23:59:13 | SSA capture def(nonSink0) | Capture.cs:54:23:54:30 | access to parameter nonSink0 |
+| Capture.cs:54:17:54:31 | call to method Check | Capture.cs:54:17:54:31 | call to method Check |
+| Capture.cs:54:23:54:30 | access to parameter nonSink0 | Capture.cs:54:23:54:30 | access to parameter nonSink0 |
+| Capture.cs:55:17:58:18 | call to method RunAction | Capture.cs:55:17:58:18 | call to method RunAction |
+| Capture.cs:55:27:58:17 | (...) => ... | Capture.cs:55:27:58:17 | (...) => ... |
+| Capture.cs:55:27:58:17 | (...) => ... | Capture.cs:190:34:190:34 | a |
+| Capture.cs:55:27:58:17 | (...) => ... | Capture.cs:190:34:190:34 | a |
+| Capture.cs:55:27:58:17 | SSA capture def(sink39) | Capture.cs:55:27:58:17 | SSA capture def(sink39) |
+| Capture.cs:55:27:58:17 | SSA capture def(sink39) | Capture.cs:57:27:57:32 | access to parameter sink39 |
+| Capture.cs:55:27:58:17 | SSA capture def(sink39) | Capture.cs:57:27:57:32 | access to parameter sink39 |
+| Capture.cs:55:27:58:17 | SSA capture def(sink39) | Capture.cs:57:27:57:32 | access to parameter sink39 |
+| Capture.cs:55:27:58:17 | SSA capture def(sink39) | Capture.cs:57:27:57:32 | access to parameter sink39 |
+| Capture.cs:57:21:57:33 | call to method Check | Capture.cs:57:21:57:33 | call to method Check |
+| Capture.cs:57:27:57:32 | access to parameter sink39 | Capture.cs:57:27:57:32 | access to parameter sink39 |
+| Capture.cs:61:9:61:19 | access to local function CaptureTest | Capture.cs:61:9:61:19 | access to local function CaptureTest |
+| Capture.cs:61:9:61:43 | call to local function CaptureTest | Capture.cs:61:9:61:43 | call to local function CaptureTest |
+| Capture.cs:61:21:61:33 | "not tainted" | Capture.cs:50:33:50:40 | nonSink0 |
+| Capture.cs:61:21:61:33 | "not tainted" | Capture.cs:50:33:50:40 | nonSink0 |
+| Capture.cs:61:21:61:33 | "not tainted" | Capture.cs:61:21:61:33 | "not tainted" |
+| Capture.cs:61:36:61:42 | access to parameter tainted | Capture.cs:50:50:50:55 | sink39 |
+| Capture.cs:61:36:61:42 | access to parameter tainted | Capture.cs:50:50:50:55 | sink39 |
+| Capture.cs:61:36:61:42 | access to parameter tainted | Capture.cs:61:36:61:42 | access to parameter tainted |
 | Capture.cs:64:10:64:12 | this | Capture.cs:64:10:64:12 | this |
 | Capture.cs:66:16:66:26 | SSA def(sink30) | Capture.cs:66:16:66:26 | SSA def(sink30) |
 | Capture.cs:66:16:66:26 | String sink30 = ... | Capture.cs:66:16:66:26 | String sink30 = ... |
@@ -585,6 +639,16 @@
 | Capture.cs:184:23:184:24 | "" | Capture.cs:184:23:184:24 | "" |
 | Capture.cs:185:9:185:23 | call to method Check | Capture.cs:185:9:185:23 | call to method Check |
 | Capture.cs:185:15:185:22 | access to local variable nonSink0 | Capture.cs:185:15:185:22 | access to local variable nonSink0 |
+| Capture.cs:190:34:190:34 | a | Capture.cs:190:34:190:34 | a |
+| Capture.cs:190:34:190:34 | a | Capture.cs:190:34:190:34 | a |
+| Capture.cs:190:34:190:34 | a | Capture.cs:192:9:192:9 | access to parameter a |
+| Capture.cs:190:34:190:34 | a | Capture.cs:192:9:192:9 | access to parameter a |
+| Capture.cs:190:34:190:34 | a | Capture.cs:192:9:192:9 | access to parameter a |
+| Capture.cs:190:34:190:34 | a | Capture.cs:192:9:192:9 | access to parameter a |
+| Capture.cs:190:34:190:34 | a | Capture.cs:192:9:192:9 | access to parameter a |
+| Capture.cs:190:34:190:34 | a | Capture.cs:192:9:192:9 | access to parameter a |
+| Capture.cs:192:9:192:9 | access to parameter a | Capture.cs:192:9:192:9 | access to parameter a |
+| Capture.cs:192:9:192:18 | delegate call | Capture.cs:192:9:192:18 | delegate call |
 | GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:14:17:14:17 | this |
 | GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:64:9:64:18 | this access |
 | GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:64:9:64:18 | this access |
