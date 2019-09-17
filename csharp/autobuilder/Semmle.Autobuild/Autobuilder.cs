@@ -156,15 +156,9 @@ namespace Semmle.Autobuild
                     if (options.AllSolutions)
                         return matchingFiles.Select(p => p.ProjectOrSolution);
 
-                    var firstIsClosest = matchingFiles.Length > 1 && matchingFiles[0].DistanceFromRoot < matchingFiles[1].DistanceFromRoot;
-                    if (matchingFiles.Length == 1 || firstIsClosest)
-                        return matchingFiles.Select(p => p.ProjectOrSolution).Take(1);
-
-                    var candidates = matchingFiles.
+                    return matchingFiles.
                         Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot).
                         Select(f => f.ProjectOrSolution);
-                    Log(Severity.Info, $"Found multiple '{extension}' files, giving up: {string.Join(", ", candidates)}.");
-                    return new IProjectOrSolution[0];
                 }
 
                 // First look for `.proj` files
