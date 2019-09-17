@@ -2,7 +2,7 @@ import semmle.code.cpp.exprs.Expr
 
 /**
  * A C/C++ builtin operation. This is the root QL class encompassing
- * built-in operationality.
+ * built-in functionality.
  */
 abstract class BuiltInOperation extends Expr {
   override string getCanonicalQLClass() { result = "BuiltInOperation" }
@@ -83,7 +83,7 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
 deprecated class BuiltInOperationOffsetOf = BuiltInOperationBuiltInOffsetOf;
 
 /**
- * A C/C++ `__offsetof` built-in operation (used by some implementations
+ * A C/C++ `__builtin_offsetof` built-in operation (used by some implementations
  * of `offsetof`).  The operation retains its semantics even in the presence
  * of an overloaded `operator &`).  This is a GNU/Clang extension.
  * ```
