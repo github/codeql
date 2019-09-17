@@ -35,7 +35,7 @@ class QLLexer(RegexLexer):
             # Keywords
             (r'\b(boolean|date|float|int|string)\b', Keyword.Type),
             (r'\b(abstract|cached|deprecated|external|final|library|override|private|query'
-             r'|(pragma|language|bindingset)\[\w*(,\s*\w*)*\])', 
+             r'|(pragma|language|bindingset)\[\w*(,\s*\w*)*\])\s', 
              Keyword.Reserved),
             (words((
                 'and', 'any', 'as', 'asc', 'avg', 'by', 'class','concat', 'count',

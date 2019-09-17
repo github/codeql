@@ -116,7 +116,7 @@ module Electron {
       Process getProcess() { result = process }
 
       /** Gets the name of the channel the callback is listening on. */
-      string getChannelName() { result = channel.asExpr().getStringValue() }
+      string getChannelName() { result = channel.getStringValue() }
 
       /** Gets the data flow node containing the message received by the callback. */
       DataFlow::Node getMessage() { result = getParameter(1) }
@@ -156,7 +156,7 @@ module Electron {
 
       override Process getProcess() { result = process }
 
-      override string getChannelName() { result = channel.asExpr().getStringValue() }
+      override string getChannelName() { result = channel.getStringValue() }
     }
 
     /**
@@ -186,7 +186,7 @@ module Electron {
 
       override Process getProcess() { result = callback.getProcess() }
 
-      override string getChannelName() { result = channel.asExpr().getStringValue() }
+      override string getChannelName() { result = channel.getStringValue() }
     }
 
     /**
@@ -221,7 +221,7 @@ module Electron {
 
       override Process getProcess() { result = Process::main() }
 
-      override string getChannelName() { result = channel.asExpr().getStringValue() }
+      override string getChannelName() { result = channel.getStringValue() }
     }
 
     /**

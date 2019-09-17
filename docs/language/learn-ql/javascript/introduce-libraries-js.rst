@@ -357,7 +357,7 @@ JavaScript provides several ways of defining functions: in ECMAScript 5, there a
 
 -  ``Function.getId()`` returns the `Identifier <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Identifier.html>`__ naming the function, which may not be defined for function expressions.
 -  ``Function.getParameter(i)`` and ``Function.getAParameter()`` access the ``i``\ th parameter or any parameter, respectively; parameters are modeled by the class `Parameter <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Parameter.html>`__, which is a subclass of `BindingPattern <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$BindingPattern.html>`__ (see below).
--  ``Function.getBody()`` returns the body of the function, which is usually a `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__, but may be an `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ for arrow function expressions and legacy `expression closures <https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Closures#Expression_closures>`__.
+-  ``Function.getBody()`` returns the body of the function, which is usually a `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__, but may be an `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ for arrow function expressions and legacy `expression closures <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Expression_closures>`__.
 
 As an example, here is a query that finds all expression closures:
 
@@ -472,7 +472,7 @@ As an example of a query involving properties, consider the following query that
 Modules
 ^^^^^^^
 
-The JavaScript library has support for working with ECMAScript 2015 modules, as well as legacy CommonJS modules (still commonly employed by Node.js code bases) and AMD-style modules. The QL classes `ES2015Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/ES2015Modules.qll/type.ES2015Modules$ES2015Module.html>`__, `NodeModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$NodeModule.html>`__ and `AMDModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/AMD.qll/type.AMD$AMDModule.html>`__ represent these three types of modules, and all three extend the common superclass `Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/Modules.qll/type.Modules$Module.html>`__.
+The JavaScript library has support for working with ECMAScript 2015 modules, as well as legacy CommonJS modules (still commonly employed by Node.js code bases) and AMD-style modules. The QL classes `ES2015Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/ES2015Modules.qll/type.ES2015Modules$ES2015Module.html>`__, `NodeModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$NodeModule.html>`__, and `AMDModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/AMD.qll/type.AMD$AmdModule.html>`__ represent these three types of modules, and all three extend the common superclass `Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/Modules.qll/type.Modules$Module.html>`__.
 
 The most important member predicates defined by `Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/Modules.qll/type.Modules$Module.html>`__ are:
 

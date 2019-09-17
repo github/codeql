@@ -651,43 +651,68 @@ class TranslatedForStmt extends TranslatedLoop {
   override ForStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = this.getDeclAndInit()
+    initializerIndex(id) and result = this.getDeclAndInit(id)
     or
-    id = 1 and result = this.getCondition()
+    result = this.getUpdate(updateIndex(id))
     or
-    id = 2 and result = this.getUpdate()
+    id = initializersNo() + updatesNo() and result = this.getCondition()
     or
-    id = 3 and result = this.getBody()
+    id = initializersNo() + updatesNo() + 1 and result = this.getBody()
   }
 
-  private TranslatedLocalDeclaration getDeclAndInit() {
-    result = getTranslatedLocalDeclaration(stmt.getAnInitializer())
+  private TranslatedElement getDeclAndInit(int index) {
+    if stmt.getInitializer(index) instanceof LocalVariableDeclExpr
+    then result = getTranslatedLocalDeclaration(stmt.getInitializer(index))
+    else result = getTranslatedExpr(stmt.getInitializer(index))
   }
 
   private predicate hasInitialization() { exists(stmt.getAnInitializer()) }
 
-  TranslatedExpr getUpdate() { result = getTranslatedExpr(stmt.getAnUpdate()) }
+  TranslatedExpr getUpdate(int index) { result = getTranslatedExpr(stmt.getUpdate(index)) }
 
   private predicate hasUpdate() { exists(stmt.getAnUpdate()) }
 
+  private int initializersNo() { result = count(stmt.getAnInitializer()) }
+
+  private int updatesNo() { result = count(stmt.getAnUpdate()) }
+
+  private predicate initializerIndex(int index) { index in [0 .. initializersNo() - 1] }
+
+  private int updateIndex(int index) {
+    result in [0 .. updatesNo() - 1] and
+    index = initializersNo() + result
+  }
+
   override Instruction getFirstInstruction() {
     if this.hasInitialization()
-    then result = this.getDeclAndInit().getFirstInstruction()
+    then result = this.getDeclAndInit(0).getFirstInstruction()
     else result = this.getFirstConditionInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getDeclAndInit() and
+    exists(int index |
+      child = this.getDeclAndInit(index) and
+      index < initializersNo() - 1 and
+      result = this.getDeclAndInit(index + 1).getFirstInstruction()
+    )
+    or
+    child = this.getDeclAndInit(initializersNo() - 1) and
     result = this.getFirstConditionInstruction()
     or
     (
       child = this.getBody() and
       if this.hasUpdate()
-      then result = this.getUpdate().getFirstInstruction()
+      then result = this.getUpdate(0).getFirstInstruction()
       else result = this.getFirstConditionInstruction()
     )
     or
-    child = this.getUpdate() and result = this.getFirstConditionInstruction()
+    exists(int index |
+      child = this.getUpdate(index) and
+      result = this.getUpdate(index + 1).getFirstInstruction()
+    )
+    or
+    child = this.getUpdate(updatesNo() - 1) and
+    result = this.getFirstConditionInstruction()
   }
 }
 
@@ -708,34 +733,63 @@ abstract class TranslatedSpecificJump extends TranslatedStmt {
     isLValue = false
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = getTargetInstruction()
+  }
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  /**
+   * Gets the instruction that is the target of the jump.
+   */
+  abstract Instruction getTargetInstruction();
 }
 
 class TranslatedBreakStmt extends TranslatedSpecificJump {
   override BreakStmt stmt;
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
-    result = this.getEnclosingLoopOrSwitchNextInstr(stmt)
+  override Instruction getTargetInstruction() {
+    result = getEnclosingLoopOrSwitchNextInstr(stmt)
   }
+}
 
-  private Instruction getEnclosingLoopOrSwitchNextInstr(Stmt crtStmt) {
-    if crtStmt instanceof LoopStmt or crtStmt instanceof SwitchStmt
-    then
-      result = getTranslatedStmt(crtStmt).getParent().getChildSuccessor(getTranslatedStmt(crtStmt))
-    else result = this.getEnclosingLoopOrSwitchNextInstr(crtStmt.getParent())
+private Instruction getEnclosingLoopOrSwitchNextInstr(Stmt crtStmt) {
+  if crtStmt instanceof LoopStmt or crtStmt instanceof SwitchStmt
+  then
+    result = getTranslatedStmt(crtStmt).getParent().getChildSuccessor(getTranslatedStmt(crtStmt))
+  else result = getEnclosingLoopOrSwitchNextInstr(crtStmt.getParent())
+}
+
+class TranslatedContinueStmt extends TranslatedSpecificJump {
+  override ContinueStmt stmt;
+
+  override Instruction getTargetInstruction() {
+    result = getEnclosingLoopTargetInstruction(stmt)
   }
+}
+
+private Instruction getEnclosingLoopTargetInstruction(Stmt crtStmt) {
+  if crtStmt instanceof ForStmt
+  then result = getNextForInstruction(crtStmt)
+  else if crtStmt instanceof LoopStmt
+  then result = getTranslatedStmt(crtStmt).getFirstInstruction()
+  else result = getEnclosingLoopTargetInstruction(crtStmt.getParent())
+}
+
+private Instruction getNextForInstruction(ForStmt for) {
+  if exists(for.getUpdate(0))
+  then result = getTranslatedStmt(for).(TranslatedForStmt).getUpdate(0).getFirstInstruction()
+  else if exists(for.getCondition())
+  then result = getTranslatedStmt(for).(TranslatedForStmt).getCondition().getFirstInstruction()
+  else result = getTranslatedStmt(for).(TranslatedForStmt).getBody().getFirstInstruction()
 }
 
 class TranslatedGotoLabelStmt extends TranslatedSpecificJump {
   override GotoLabelStmt stmt;
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
+  override Instruction getTargetInstruction() {
     result = getTranslatedStmt(stmt.getTarget()).getFirstInstruction()
   }
 }
@@ -743,44 +797,40 @@ class TranslatedGotoLabelStmt extends TranslatedSpecificJump {
 class TranslatedGotoCaseStmt extends TranslatedSpecificJump {
   override GotoCaseStmt stmt;
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
-    result = this.getCase(stmt, stmt.getExpr()).getFirstInstruction()
+  override Instruction getTargetInstruction() {
+    result = getCase(stmt, stmt.getExpr()).getFirstInstruction()
   }
+}
 
-  private TranslatedStmt getCase(Stmt crtStmt, Expr expr) {
-    if crtStmt instanceof SwitchStmt
-    then
-      exists(CaseStmt caseStmt |
-        caseStmt = crtStmt.(SwitchStmt).getACase() and
-        // We check for the constant value of the expression
-        // since we can't check for equality between `PatternExpr` and `Expr`
-        caseStmt.getPattern().getValue() = expr.getValue() and
-        result = getTranslatedStmt(caseStmt)
-      )
-    else result = this.getCase(crtStmt.getParent(), expr)
-  }
+private TranslatedStmt getCase(Stmt crtStmt, Expr expr) {
+  if crtStmt instanceof SwitchStmt
+  then
+    exists(CaseStmt caseStmt |
+      caseStmt = crtStmt.(SwitchStmt).getACase() and
+      // We check for the constant value of the expression
+      // since we can't check for equality between `PatternExpr` and `Expr`
+      caseStmt.getPattern().getValue() = expr.getValue() and
+      result = getTranslatedStmt(caseStmt)
+    )
+  else result = getCase(crtStmt.getParent(), expr)
 }
 
 class TranslatedGotoDefaultStmt extends TranslatedSpecificJump {
   override GotoDefaultStmt stmt;
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
+  override Instruction getTargetInstruction() {
     result = getDefaultCase(stmt).getFirstInstruction()
   }
+}
 
-  private TranslatedStmt getDefaultCase(Stmt crtStmt) {
-    if crtStmt instanceof SwitchStmt
-    then
-      exists(CaseStmt caseStmt |
-        caseStmt = crtStmt.(SwitchStmt).getDefaultCase() and
-        result = getTranslatedStmt(caseStmt)
-      )
-    else result = this.getDefaultCase(crtStmt.getParent())
-  }
+private TranslatedStmt getDefaultCase(Stmt crtStmt) {
+  if crtStmt instanceof SwitchStmt
+  then
+    exists(CaseStmt caseStmt |
+      caseStmt = crtStmt.(SwitchStmt).getDefaultCase() and
+      result = getTranslatedStmt(caseStmt)
+    )
+  else result = getDefaultCase(crtStmt.getParent())
 }
 
 class TranslatedSwitchStmt extends TranslatedStmt {

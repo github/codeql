@@ -1260,7 +1260,7 @@ abstract private class AccessPath extends TAccessPath {
 
 private class AccessPathNil extends AccessPath, TNil {
   override string toString() {
-    exists(DataFlowType t | this = TNil(t) | result = concat(ppReprType(t)))
+    exists(DataFlowType t | this = TNil(t) | result = concat(" : " + ppReprType(t)))
   }
 
   override AccessPathFront getFront() {
@@ -1647,6 +1647,11 @@ private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1
 module PathGraph {
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode a, PathNode b) { pathSucc(a, b) }
+
+  /** Holds if `n` is a node in the graph of data flow path explanations. */
+  query predicate nodes(PathNode n, string key, string val) {
+    reach(n) and key = "semmle.label" and val = n.toString()
+  }
 }
 
 /**

@@ -22,8 +22,14 @@ where
   // use source value in message if it's available
   if source.getNode().asExpr() instanceof ConstantString
   then
-    value = "The hard-coded value \"" + source.getNode().asExpr().(ConstantString).getStringValue() +
-        "\""
+    exists(string val | val = source.getNode().getStringValue() |
+      // exclude dummy passwords
+      not (
+        sink.getNode().(Sink).(DefaultCredentialsSink).getKind() = "password" and
+        PasswordHeuristics::isDummyPassword(val)
+      ) and
+      value = "The hard-coded value \"" + val + "\""
+    )
   else value = "This hard-coded value"
 select source.getNode(), source, sink, value + " is used as $@.", sink.getNode(),
   sink.getNode().(Sink).getKind()

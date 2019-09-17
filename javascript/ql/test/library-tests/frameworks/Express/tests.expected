@@ -197,6 +197,7 @@ test_isRequest
 | src/express.js:49:3:49:5 | req |
 | src/express.js:50:3:50:5 | req |
 | src/inheritedFromNode.js:7:2:7:4 | req |
+| src/passport.js:28:2:28:4 | req |
 | src/responseExprs.js:17:5:17:7 | req |
 test_RouteSetup_getRouter
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:1:13:1:32 | require('express')() |
@@ -279,6 +280,7 @@ test_RequestInputAccess
 | src/express.js:49:3:49:14 | req.hostname | header | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:50:3:50:32 | req.hea ... erName] | header | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:7:2:7:8 | req.url | url | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/passport.js:28:2:28:9 | req.body | body | src/passport.js:27:4:29:1 | functio ... ccss`\\n} |
 test_SetCookie
 | src/express.js:31:3:31:26 | res.coo ...  'bar') | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/responseExprs.js:23:5:23:16 | res.cookie() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
@@ -448,6 +450,7 @@ test_ExpressSession
 | src/express-session.js:7:1:9:2 | session ... -3"]\\n}) | secret | src/express-session.js:8:13:8:44 | ["secre ... key-3"] |
 test_RequestBodyAccess
 | src/express.js:23:3:23:10 | req.body |
+| src/passport.js:28:2:28:9 | req.body |
 test_RouteSetup_getServer
 | src/csurf-example.js:20:1:23:2 | app.get ... ) })\\n}) | src/csurf-example.js:7:11:7:19 | express() |
 | src/csurf-example.js:25:1:27:2 | app.pos ... re')\\n}) | src/csurf-example.js:7:11:7:19 | express() |
@@ -918,6 +921,7 @@ test_RouterDefinition_RouterDefinition
 | src/subrouter.js:8:16:8:31 | express.Router() |
 test_RouteHandler_getARequestBodyAccess
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:23:3:23:10 | req.body |
+| src/passport.js:27:4:29:1 | functio ... ccss`\\n} | src/passport.js:28:2:28:9 | req.body |
 test_RouterDefinition_getMiddlewareStack
 | src/auth.js:1:13:1:32 | require('express')() | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
@@ -1023,6 +1027,7 @@ test_RequestExpr
 | src/express.js:49:3:49:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:50:3:50:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:7:2:7:4 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/passport.js:28:2:28:4 | req | src/passport.js:27:4:29:1 | functio ... ccss`\\n} |
 | src/responseExprs.js:17:5:17:7 | req | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 test_RequestExprStandalone
 | typed_src/tst.ts:6:3:6:3 | x |
@@ -1055,4 +1060,5 @@ test_RouteHandler_getARequestExpr
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:49:3:49:5 | req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:50:3:50:5 | req |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:7:2:7:4 | req |
+| src/passport.js:27:4:29:1 | functio ... ccss`\\n} | src/passport.js:28:2:28:4 | req |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:17:5:17:7 | req |

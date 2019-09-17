@@ -166,7 +166,7 @@ unsafe class ArrayTypesTest
 
 class NameofNamespace
 {
-    string s = nameof(System);
+    string s = nameof(System) + nameof(System.Threading.Tasks);
 }
 
 class UsingDiscard

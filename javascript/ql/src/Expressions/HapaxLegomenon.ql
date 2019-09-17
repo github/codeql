@@ -23,7 +23,7 @@ int countOccurrences(string name) {
       id.(Identifier).getName() = name
       or
       // count string literals as well to capture meta-programming
-      id.(ConstantString).getStringValue() = name
+      id.getStringValue() = name
     )
 }
 

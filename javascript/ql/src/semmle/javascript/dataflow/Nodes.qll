@@ -476,7 +476,7 @@ module ModuleImportNode {
       exists(AmdModuleDefinition amd, CallExpr req |
         req = amd.getARequireCall() and
         this = DataFlow::valueNode(req) and
-        path = req.getArgument(0).(ConstantString).getStringValue()
+        path = req.getArgument(0).getStringValue()
       )
     }
 

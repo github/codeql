@@ -346,6 +346,18 @@ class ClassValue extends Value {
         this.(ClassObjectInternal).lookup("__call__", _, _)
     }
 
+    /** Holds if this class is an iterable. */
+    predicate isIterable() {
+        this.hasAttribute("__iter__")
+        or
+        this.hasAttribute("__getitem__")
+    }
+
+    /** Holds if this class is a descriptor. */
+    predicate isDescriptorType() {
+        this.hasAttribute("__get__")
+    }
+
     /** Gets the qualified name for this class.
      * Should return the same name as the `__qualname__` attribute on classes in Python 3.
      */

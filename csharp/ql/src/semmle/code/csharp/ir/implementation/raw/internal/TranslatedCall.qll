@@ -4,13 +4,14 @@ private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
+private import TranslatedInitialization
 private import semmle.code.csharp.ir.Util
 private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedCallBase
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 /**
  * The IR translation of a call to a function. The function can be a normal function
- * (ie. `MethodCall`) or a constructor call (ie. `ObjectCreation`). Notice that the
+ * (e.g. `MethodCall`) or a constructor call (e.g. `ObjectCreation`). Notice that the
  * AST generated translated calls are tied to an expression (unlike compiler generated ones,
  * which can be attached to either a statement or an expression).
  */
@@ -50,7 +51,13 @@ class TranslatedFunctionCall extends TranslatedNonConstantExpr, TranslatedCall {
     result = getTranslatedExpr(expr.(QualifiableExpr).getQualifier())
   }
 
-  override Instruction getQualifierResult() { result = this.getQualifier().getResult() }
+  override Instruction getQualifierResult() {
+    // since `ElementInitializer`s do not have a qualifier, the qualifier's result is retrieved
+    // from the enclosing initialization context
+    if expr.getParent() instanceof CollectionInitializer
+    then result = getTranslatedExpr(expr.getParent()).(InitializationContext).getTargetAddress()
+    else result = this.getQualifier().getResult()
+  }
 
   override Type getCallResultType() { result = expr.getTarget().getReturnType() }
 

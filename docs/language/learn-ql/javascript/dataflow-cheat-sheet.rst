@@ -31,7 +31,7 @@ Use the following template to create a taint tracking path query:
 This query reports flow paths which:
 
 - Begin at a node matched by `isSource <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Configuration.qll/predicate.Configuration$Configuration$isSource.1.html>`__.
-- Step through variables, function calls, properties, strings, arrays, promises, exceptions, and steps added by `isAdditionalTaintStep <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Configuration.qll/predicate.Configuration$Configuration$isAdditionalTaintStep.2.html>`__.
+- Step through variables, function calls, properties, strings, arrays, promises, exceptions, and steps added by `isAdditionalTaintStep <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TaintTracking.qll/predicate.TaintTracking$TaintTracking$Configuration$isAdditionalTaintStep.2.html>`__.
 - End at a node matched by `isSink <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Configuration.qll/predicate.Configuration$Configuration$isSink.1.html>`__.
 
 See also: `Global data flow <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#global-data-flow>`__ and :doc:`Constructing path queries <../writing-queries/path-queries>`.

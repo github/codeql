@@ -147,6 +147,48 @@ module Express {
       this.getRequestMethod() = that.getRequestMethod()
     }
   }
+  
+  /**
+   * A call that sets up a Passport router that includes the request object.
+   */
+  private class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+    DataFlow::ModuleImportNode importNode;
+    DataFlow::FunctionNode callback;
+  	
+    // looks for this pattern: passport.use(new Strategy({passReqToCallback: true}, callback))
+    PassportRouteSetup() {
+      importNode = DataFlow::moduleImport("passport") and
+      this = importNode.getAMemberCall("use").asExpr() and
+      exists(DataFlow::NewNode strategy | 
+      	strategy.flowsToExpr(this.getArgument(0)) and
+      	strategy.getNumArgument() = 2 and 
+      	// new Strategy({passReqToCallback: true}, ...)
+      	strategy.getOptionArgument(0, "passReqToCallback").mayHaveBooleanValue(true) and 
+      	callback.flowsTo(strategy.getArgument(1))
+      )
+    }
+    
+    override Expr getServer() { result = importNode.asExpr() }
+    
+    override DataFlow::SourceNode getARouteHandler() {
+      result = callback
+    }
+  }
+  
+  /**
+   * The callback given to passport in PassportRouteSetup. 
+   */
+  private class PassportRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
+    DataFlow::ValueNode {
+    override Function astNode;
+
+    PassportRouteHandler() { this = any(PassportRouteSetup setup).getARouteHandler() }
+
+    override SimpleParameter getRouteHandlerParameter(string kind) {
+      kind = "request" and 
+      result = astNode.getParameter(0)
+    }
+  }
 
   /**
    * An expression used as an Express route handler, such as `submitHandler` below:

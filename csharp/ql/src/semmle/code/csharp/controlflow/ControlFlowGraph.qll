@@ -317,6 +317,8 @@ module ControlFlow {
     class ExceptionHandlerSplit = ExceptionHandlerSplitting::ExceptionHandlerSplitImpl;
 
     class BooleanSplit = BooleanSplitting::BooleanSplitImpl;
+
+    class LoopUnrollingSplit = LoopUnrollingSplitting::LoopUnrollingSplitImpl;
   }
 
   class BasicBlock = BBs::BasicBlock;

@@ -56,7 +56,7 @@ module Closure {
     ClosureNamespaceRef::Range {
     DefaultNamespaceRef() { this = DataFlow::globalVarRef("goog").getAMethodCall() }
 
-    override string getClosureNamespace() { result = getArgument(0).asExpr().getStringValue() }
+    override string getClosureNamespace() { result = getArgument(0).getStringValue() }
   }
 
   /**
