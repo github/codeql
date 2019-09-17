@@ -1042,3 +1042,37 @@ class TranslatedUsingBlockStmt extends TranslatedStmt {
 
   private TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getBody()) }
 }
+
+// TODO: Should be modeled using the desugaring framework for a
+//       more exact translation.
+class TranslatedUsingDeclStmt extends TranslatedStmt {
+  override UsingDeclStmt stmt;
+  
+  override TranslatedElement getChild(int id) { result = getDecl(id) }
+
+  override Instruction getFirstInstruction() { result = this.getDecl(0).getFirstInstruction() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    exists(int id |
+      child = this.getDecl(id) and
+      id < this.noDecls() - 1 and
+      result = this.getDecl(id + 1).getFirstInstruction()
+    )
+    or
+    child = this.getDecl(this.noDecls() - 1) and result = this.getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  private TranslatedLocalDeclaration getDecl(int id) {
+    result = getTranslatedLocalDeclaration(stmt.getVariableDeclExpr(id))
+  }
+
+  private int noDecls() { result = count(stmt.getAVariableDeclExpr()) }
+}

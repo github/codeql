@@ -21,5 +21,10 @@ class UsingStmt
         {
             o2.DoSomething();
         }
+
+        using var o3 = new MyDisposable();
+        o3.DoSomething();
     }
 }
+
+// semmle-extractor-options: /langversion:preview

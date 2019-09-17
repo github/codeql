@@ -1327,15 +1327,15 @@ stmts.cs:
 #   72|     mu3_15(Int32)       = Store              : &:r3_11, r3_14
 #-----|   Goto (back edge) -> Block 2
 
-#   76|   Block 4
-#   76|     r4_0(glval<Int32>) = VariableAddress[a] : 
-#   76|     mu4_1(Int32)       = Uninitialized[a]   : &:r4_0
-#   76|     r4_2(glval<Int32>) = VariableAddress[b] : 
-#   76|     r4_3(Int32)        = Constant[10]       : 
-#   76|     mu4_4(Int32)       = Store              : &:r4_2, r4_3
-#   77|     r4_5(Int32)        = Constant[0]        : 
-#   77|     r4_6(glval<Int32>) = VariableAddress[a] : 
-#   77|     mu4_7(Int32)       = Store              : &:r4_6, r4_5
+#   77|   Block 4
+#   77|     r4_0(glval<Int32>) = VariableAddress[a] : 
+#   77|     mu4_1(Int32)       = Uninitialized[a]   : &:r4_0
+#   77|     r4_2(glval<Int32>) = VariableAddress[b] : 
+#   77|     r4_3(Int32)        = Constant[10]       : 
+#   77|     mu4_4(Int32)       = Store              : &:r4_2, r4_3
+#   78|     r4_5(Int32)        = Constant[0]        : 
+#   78|     r4_6(glval<Int32>) = VariableAddress[a] : 
+#   78|     mu4_7(Int32)       = Store              : &:r4_6, r4_5
 #-----|   Goto -> Block 5
 
 #   78|   Block 5
@@ -1476,9 +1476,20 @@ using.cs:
 #   22|     r0_22(glval<null>)         = FunctionAddress[DoSomething]  : 
 #   22|     v0_23(Void)                = Call                          : func:r0_22, this:r0_21
 #   22|     mu0_24(null)               = ^CallSideEffect               : ~mu0_2
-#   12|     v0_25(Void)                = ReturnVoid                    : 
-#   12|     v0_26(Void)                = UnmodeledUse                  : mu*
-#   12|     v0_27(Void)                = ExitFunction                  : 
+#   25|     r0_25(glval<MyDisposable>) = VariableAddress[o3]           : 
+#   25|     r0_26(MyDisposable)        = NewObj                        : 
+#   25|     r0_27(glval<null>)         = FunctionAddress[MyDisposable] : 
+#   25|     v0_28(Void)                = Call                          : func:r0_27, this:r0_26
+#   25|     mu0_29(null)               = ^CallSideEffect               : ~mu0_2
+#   25|     mu0_30(MyDisposable)       = Store                         : &:r0_25, r0_26
+#   26|     r0_31(glval<MyDisposable>) = VariableAddress[o3]           : 
+#   26|     r0_32(MyDisposable)        = Load                          : &:r0_31, ~mu0_2
+#   26|     r0_33(glval<null>)         = FunctionAddress[DoSomething]  : 
+#   26|     v0_34(Void)                = Call                          : func:r0_33, this:r0_32
+#   26|     mu0_35(null)               = ^CallSideEffect               : ~mu0_2
+#   12|     v0_36(Void)                = ReturnVoid                    : 
+#   12|     v0_37(Void)                = UnmodeledUse                  : mu*
+#   12|     v0_38(Void)                = ExitFunction                  : 
 
 variables.cs:
 #    5| System.Void test_variables.f()
