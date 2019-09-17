@@ -18,7 +18,7 @@ abstract class Access extends Expr, NameQualifiableElement {
 }
 
 /**
- * A C/C++ enum constant access expression. For example the access to
+ * A C/C++ `enum` constant access expression. For example the access to
  * `MYENUMCONST1` in `myFunction` in the following code:
  * ```
  * enum MyEnum {
@@ -38,10 +38,10 @@ class EnumConstantAccess extends Access, @varaccess {
     exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
   }
 
-  /** Gets the accessed enum constant. */
+  /** Gets the accessed `enum` constant. */
   override EnumConstant getTarget() { varbind(underlyingElement(this), unresolveElement(result)) }
 
-  /** Gets a textual representation of this enum constant access. */
+  /** Gets a textual representation of this `enum` constant access. */
   override string toString() { result = this.getTarget().getName() }
 }
 
