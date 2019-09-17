@@ -47,6 +47,18 @@ class Capture
             };
         };
         CaptureIn2NotCalled();
+/*        void CaptureTest(string nonSink0, string sink39)
+        {
+            RunAction(() =>       // Check each lambda captures the correct arguments
+            {
+                Check(nonSink0);
+                RunAction(() =>
+                {
+                    Check(sink39);
+                });
+            });
+        }
+        CaptureTest("not tainted", tainted);*/
     }
 
     void Out()
@@ -174,4 +186,9 @@ class Capture
     }
 
     static void Check<T>(T x) { }
+
+/*    static void RunAction(Action a)
+    {
+        a.Invoke();
+    }*/
 }
