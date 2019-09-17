@@ -5,7 +5,7 @@ private import semmle.code.cpp.internal.AddressConstantExpression
 
 /**
  * A C/C++ expression.
- * 
+ *
  * This is the root QL class for all expressions.
  */
 class Expr extends StmtParent, @expr {
@@ -516,7 +516,7 @@ abstract class BinaryOperation extends Operation {
  *   T member;
  *   S() { member = T({ arg1, arg2 }); }
  * };
- * ```  
+ * ```
  */
 class ParenthesizedBracedInitializerList extends Expr, @braced_init_list {
   override string toString() { result = "({...})" }
@@ -526,7 +526,7 @@ class ParenthesizedBracedInitializerList extends Expr, @braced_init_list {
 
 /**
  * A C/C++ parenthesis expression.
- * 
+ *
  * It is typically used to raise the syntactic precedence of the subexpression that
  * it contains.  For example:
  * ```
@@ -541,7 +541,7 @@ class ParenthesisExpr extends Conversion, @parexpr {
 
 /**
  * A C/C++ expression that has not been resolved.
- * 
+ *
  * It is assigned `ErroneousType` as its type.
  */
 class ErrorExpr extends Expr, @errorexpr {
@@ -552,7 +552,7 @@ class ErrorExpr extends Expr, @errorexpr {
 
 /**
  * A Microsoft C/C++ __assume expression.
- * 
+ *
  * Unlike `assert`, `__assume` is evaluated at compile-time and
  * is treated as a hint to the optimizer
  * ```

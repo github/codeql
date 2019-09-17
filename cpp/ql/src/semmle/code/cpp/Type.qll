@@ -1182,7 +1182,7 @@ class ArrayType extends DerivedType {
  * allows vector types to be introduced using the `ext_vector_type`,
  * `neon_vector_type`, and `neon_polyvector_type` attributes (all of which take
  * an element count rather than a byte size).
- * 
+ *
  * In the example below, both `v4si` and `float4` are GNU vector types:
  * ```
  * typedef int v4si __attribute__ (( vector_size(4*sizeof(int)) ));
