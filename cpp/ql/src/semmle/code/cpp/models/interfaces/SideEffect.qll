@@ -34,5 +34,7 @@ abstract class SideEffectFunction extends Function {
   }
 
   predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) { none() }
-}
 
+  // TODO: name?
+  ParameterIndex getParameterSizeIndex(ParameterIndex i) { none() }
+}

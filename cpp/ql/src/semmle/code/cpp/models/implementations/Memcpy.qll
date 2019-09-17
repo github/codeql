@@ -57,5 +57,12 @@ class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
     i = 1 and buffer = true
   }
-}
 
+  override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
+    result = 2 and
+    (
+      i = 0 or
+      i = 1
+    )
+  }
+}

@@ -72,6 +72,8 @@ class BufferSizeOperandTag extends RegisterOperandTag, TBufferSizeOperand {
   final override int getSortOrder() { result = 1 }
 }
 
+BufferSizeOperandTag bufferSizeOperand() { result = TBufferSizeOperand() }
+
 /**
  * The operand representing the read side effect of a `SideEffectInstruction`.
  */

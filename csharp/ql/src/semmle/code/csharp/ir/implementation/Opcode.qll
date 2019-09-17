@@ -71,6 +71,9 @@ private newtype TOpcode =
   TBufferReadSideEffect() or
   TBufferMustWriteSideEffect() or
   TBufferMayWriteSideEffect() or
+  TSizedBufferReadSideEffect() or
+  TSizedBufferMustWriteSideEffect() or
+  TSizedBufferMayWriteSideEffect() or
   TChi() or
   TInlineAsm() or
   TUnreached() or
@@ -147,9 +150,15 @@ abstract class MustWriteSideEffectOpcode extends WriteSideEffectOpcode { }
 abstract class MayWriteSideEffectOpcode extends WriteSideEffectOpcode { }
 
 /**
- * An opcode that accesses a buffer via an `AddressOperand` and a `BufferSizeOperand`.
+ * An opcode that accesses a buffer via an `AddressOperand`.
  */
 abstract class BufferAccessOpcode extends MemoryAccessOpcode { }
+
+/**
+ * An opcode that accesses a buffer via an `AddressOperand` with a `BufferSizeOperand` specifying
+ * the number of elements accessed.
+ */
+abstract class SizedBufferAccessOpcode extends BufferAccessOpcode { }
 
 module Opcode {
   class NoOp extends Opcode, TNoOp {
@@ -443,6 +452,21 @@ module Opcode {
   class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode,
     TBufferMayWriteSideEffect {
     final override string toString() { result = "BufferMayWriteSideEffect" }
+  }
+
+  class SizedBufferReadSideEffect extends ReadSideEffectOpcode, SizedBufferAccessOpcode,
+    TSizedBufferReadSideEffect {
+    final override string toString() { result = "SizedBufferReadSideEffect" }
+  }
+
+  class SizedBufferMustWriteSideEffect extends MustWriteSideEffectOpcode, SizedBufferAccessOpcode,
+    TSizedBufferMustWriteSideEffect {
+    final override string toString() { result = "SizedBufferMustWriteSideEffect" }
+  }
+
+  class SizedBufferMayWriteSideEffect extends MayWriteSideEffectOpcode, SizedBufferAccessOpcode,
+    TSizedBufferMayWriteSideEffect {
+    final override string toString() { result = "SizedBufferMayWriteSideEffect" }
   }
 
   class Chi extends Opcode, TChi {

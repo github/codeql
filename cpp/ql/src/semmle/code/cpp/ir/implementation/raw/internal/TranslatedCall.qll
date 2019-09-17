@@ -456,6 +456,12 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     operandTag instanceof SideEffectOperandTag and
     call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(index, _) and
     result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+    or
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof BufferSizeOperandTag and
+    result = getTranslatedExpr(call
+            .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index)).getFullyConverted())
+          .getResult()
   }
 
   override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
@@ -471,15 +477,26 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
 
   predicate hasSpecificWriteSideEffect(Opcode op) {
     exists(boolean buffer, boolean mustWrite |
-      call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(index, buffer, mustWrite) and
-      (
-        buffer = true and mustWrite = false and op instanceof Opcode::BufferMayWriteSideEffect
-        or
-        buffer = false and mustWrite = false and op instanceof Opcode::IndirectMayWriteSideEffect
-        or
-        buffer = true and mustWrite = true and op instanceof Opcode::BufferMustWriteSideEffect
-        or
-        buffer = false and mustWrite = true and op instanceof Opcode::IndirectMustWriteSideEffect
+      if exists(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
+      then
+        call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(index, true, mustWrite) and
+        buffer = true and
+        (
+          mustWrite = false and op instanceof Opcode::SizedBufferMayWriteSideEffect
+          or
+          mustWrite = true and op instanceof Opcode::SizedBufferMustWriteSideEffect
+        )
+      else (
+        call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(index, buffer, mustWrite) and
+        (
+          buffer = true and mustWrite = false and op instanceof Opcode::BufferMayWriteSideEffect
+          or
+          buffer = false and mustWrite = false and op instanceof Opcode::IndirectMayWriteSideEffect
+          or
+          buffer = true and mustWrite = true and op instanceof Opcode::BufferMustWriteSideEffect
+          or
+          buffer = false and mustWrite = true and op instanceof Opcode::IndirectMustWriteSideEffect
+        )
       )
     )
     or
@@ -495,7 +512,9 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
   predicate hasSpecificReadSideEffect(Opcode op) {
     exists(boolean buffer |
       call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(index, buffer) and
-      (
+      if exists(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
+      then buffer = true and op instanceof Opcode::SizedBufferReadSideEffect
+      else (
         buffer = true and op instanceof Opcode::BufferReadSideEffect
         or
         buffer = false and op instanceof Opcode::IndirectReadSideEffect
@@ -504,6 +523,11 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     or
     not call.getTarget() instanceof SideEffectFunction and
     op instanceof Opcode::IndirectReadSideEffect
+  }
+
+  final override int getInstructionIndex(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = index
   }
 
   /**

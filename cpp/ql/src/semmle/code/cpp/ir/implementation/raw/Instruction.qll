@@ -644,6 +644,17 @@ class ConstantValueInstruction extends Instruction {
   final string getValue() { result = value }
 }
 
+class IndexedInstruction extends Instruction {
+  int index;
+
+  IndexedInstruction() { index = Construction::getInstructionIndex(this) }
+  
+
+  final override string getImmediateString() { result = index.toString() }
+
+  final int getIndex() { result = index }
+}
+
 class EnterFunctionInstruction extends Instruction {
   EnterFunctionInstruction() { getOpcode() instanceof Opcode::EnterFunction }
 }

@@ -601,6 +601,12 @@ abstract class TranslatedElement extends TTranslatedElement {
   string getInstructionConstantValue(InstructionTag tag) { none() }
 
   /**
+   * If the instruction specified by `tag` is an `IndexedInstruction`, gets the
+   * index for that instruction.
+   */
+  int getInstructionIndex(InstructionTag tag) { none() }
+
+  /**
    * If the instruction specified by `tag` is a `PointerArithmeticInstruction`,
    * gets the size of the type pointed to by the pointer.
    */
