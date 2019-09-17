@@ -715,19 +715,13 @@ abstract class TranslatedPointerOps extends TranslatedNonConstantExpr {
 }
 
 class TranslatedPointerIndirectionExpr extends TranslatedPointerOps {
-  TranslatedPointerIndirectionExpr() {
-    // *p is the same as p until the result is loaded.
-    expr instanceof PointerIndirectionExpr
-  }
+  override PointerIndirectionExpr expr;
 
   override TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getOperand()) }
 }
 
 class TranslatedAddressExpr extends TranslatedPointerOps {
-  TranslatedAddressExpr() {
-    // &x is the same as x.
-    expr instanceof AddressOfExpr
-  }
+  override AddressOfExpr expr;
 
   override TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getOperand()) }
 }
@@ -834,7 +828,7 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
    * Some variable accesses need an extra load, eg. ref parameters,
    * out parameters
    */
-  final predicate needsExtraLoad() {
+  final private predicate needsExtraLoad() {
     (
       expr.getTarget().(Parameter).isOutOrRef() or
       expr.getTarget().(Parameter).isIn()
@@ -2068,9 +2062,9 @@ abstract class TranslatedCreation extends TranslatedCoreExpr, TTranslatedCreatio
   final override Instruction getFirstInstruction() { result = this.getInstruction(NewObjTag()) }
 
   override Instruction getResult() {
-    if not this.needsLoad()
-    then result = this.getInstruction(NewObjTag())
-    else result = this.getInstruction(LoadTag())
+    if this.needsLoad()
+    then result = this.getInstruction(LoadTag())
+    else result = this.getInstruction(NewObjTag())
   }
 
   override Instruction getReceiver() { result = getInstruction(NewObjTag()) }
@@ -2111,9 +2105,9 @@ abstract class TranslatedCreation extends TranslatedCoreExpr, TTranslatedCreatio
   }
 
   private Instruction getLoadOrChildSuccessor() {
-    if not this.needsLoad()
-    then result = this.getParent().getChildSuccessor(this)
-    else result = this.getInstruction(LoadTag())
+    if this.needsLoad()
+    then result = this.getInstruction(LoadTag())
+    else result = this.getParent().getChildSuccessor(this)
   }
 
   abstract TranslatedElement getConstructorCall();

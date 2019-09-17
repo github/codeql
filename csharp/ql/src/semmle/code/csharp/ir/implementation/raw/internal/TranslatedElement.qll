@@ -196,7 +196,7 @@ predicate ignoreLoad(Expr expr) {
   or
   // No load is needed for the lvalue in an assignment such as:
   // Eg. `Object obj = oldObj`;
-  expr.getParent().(Assignment).getLValue() = expr and
+  expr = any(Assignment a).getLValue() and
   expr.getType() instanceof RefType
   or
   // Since the loads for a crement operation is handled by the translation
@@ -211,11 +211,10 @@ predicate ignoreLoad(Expr expr) {
   // its target variable is a value type variable,
   // ignore the load since the address of a variable that is a value type is
   // given by a single `VariableAddress` instruction.
-  expr.getParent().(FieldAccess).getQualifier() = expr and
-  expr.(VariableAccess).getType().isValueType() and
-  not (
-    expr.(VariableAccess).getTarget().(Parameter).isOutOrRef() or
-    expr.(VariableAccess).getTarget().(Parameter).isIn()
+  expr = any(FieldAccess fa).getQualifier() and
+  expr = any(VariableAccess va |
+    va.getType().isValueType() and
+    not va.getTarget() = any(Parameter p | p.isOutOrRef() or p.isIn())
   )
   or
   // If expr is passed as an `out,`ref` or `in` argument,
