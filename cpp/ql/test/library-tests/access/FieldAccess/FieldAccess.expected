@@ -24,3 +24,5 @@
 | FieldAccess.cpp:93:18:93:18 | y | ptr |
 | FieldAccess.cpp:94:11:94:11 | y | ptr |
 | FieldAccess.cpp:94:20:94:20 | y | val |
+| FieldAccess.cpp:113:5:113:5 | x | ptr |
+| FieldAccess.cpp:116:3:116:3 | v | this |

@@ -96,3 +96,22 @@ public:
 
   int x, y;
 };
+
+class MyHasDestructor1 {
+public:
+  ~MyHasDestructor1() {
+    // ...
+  }
+};
+
+class MyHasDestructor2 {
+public:
+  int x;
+  MyHasDestructor1 v;
+
+  ~MyHasDestructor2() {
+    x++; // PointerFieldAccess, the `this->` is generated rather than implicit.
+
+    // ImplicitThisFieldAccess on call `v`s destructor.
+  }
+};
