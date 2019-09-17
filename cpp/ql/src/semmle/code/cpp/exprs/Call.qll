@@ -230,7 +230,7 @@ class FunctionCall extends Call, @funbindexpr {
    * Gets the function called by this call.
    *
    * In the case of virtual function calls, the result is the most-specific function in the override tree (as
-   * determined by the compiler) such that the target at runtime will be one of **result.getAnOverridingFunction\*()**.
+   * determined by the compiler) such that the target at runtime will be one of `result.getAnOverridingFunction*()`.
    */
   override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
 
