@@ -10,7 +10,6 @@ edges
 | XSS.cs:85:27:85:53 | access to property QueryString | XSS.cs:86:28:86:31 | access to local variable name |
 | XSS.cs:85:27:85:53 | access to property QueryString | XSS.cs:87:31:87:34 | access to local variable name |
 | XSS.cs:94:27:94:53 | access to property QueryString | XSS.cs:95:31:95:34 | access to local variable name |
-| XSS.cs:134:20:134:33 | access to property RawUrl | XSS.cs:134:20:134:33 | access to property RawUrl |
 | script.aspx:12:1:12:14 | <%= ... %> | script.aspx:12:1:12:14 | <%= ... %> |
 | script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> |
 | script.aspx:20:1:20:41 | <%= ... %> | script.aspx:20:1:20:41 | <%= ... %> |
