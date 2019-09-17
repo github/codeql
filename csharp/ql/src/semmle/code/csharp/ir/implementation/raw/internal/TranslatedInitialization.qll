@@ -123,13 +123,9 @@ class TranslatedArrayListInitialization extends TranslatedListInitialization {
  */
 class TranslatedDirectInitialization extends TranslatedInitialization {
   TranslatedDirectInitialization() {
-    // TODO: Make sure this is complete and correct
     not expr instanceof ArrayInitializer and
     not expr instanceof ObjectInitializer and
-    not expr instanceof DelegateCreation and
-    not expr instanceof CollectionInitializer and
-    not expr instanceof ObjectCreation and
-    not expr instanceof StringLiteral
+    not expr instanceof CollectionInitializer
   }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getInitializer() }
@@ -145,64 +141,6 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
     opcode instanceof Opcode::Store and
     resultType = this.getContext().getTargetType() and
     isLValue = false
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = InitializerStoreTag() and
-    result = this.getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getInitializer() and result = this.getInstruction(InitializerStoreTag())
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = InitializerStoreTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getContext().getTargetAddress()
-      or
-      operandTag instanceof StoreValueOperandTag and
-      result = this.getInitializer().getResult()
-    )
-  }
-
-  TranslatedExpr getInitializer() { result = getTranslatedExpr(expr) }
-}
-
-/**
- * Represents the IR translation of an initialization from a constructor.
- * The `NewObj` instruction denotes the fact that during initialization a new
- * object of type `expr.getType()` is allocated, which is then initialized by the
- * constructor.
- */
-class TranslatedObjectInitialization extends TranslatedInitialization, ConstructorCallContext {
-  override ObjectCreation expr;
-
-  override TranslatedElement getChild(int id) {
-    id = 0 and result = this.getConstructorCall()
-    or
-    id = 1 and result = this.getInitializerExpr()
-  }
-
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
-    // Instruction that allocated space for a new object,
-    // and returns its address
-    tag = NewObjTag() and
-    opcode instanceof Opcode::NewObj and
-    resultType = expr.getType() and
-    isLValue = false
-    or
-    // Store op used to assign the variable that
-    // is initialized the address of the newly allocated
-    // object
-    tag = InitializerStoreTag() and
-    opcode instanceof Opcode::Store and
-    resultType = expr.getType() and
-    isLValue = false
     or
     needsConversion() and
     tag = AssignmentConvertRightTag() and
@@ -214,39 +152,22 @@ class TranslatedObjectInitialization extends TranslatedInitialization, Construct
     isLValue = false
   }
 
-  final override Instruction getFirstInstruction() { result = this.getInstruction(NewObjTag()) }
-
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    kind instanceof GotoEdge and
-    (
-      tag = NewObjTag() and
-      result = this.getConstructorCall().getFirstInstruction()
-      or
-      tag = InitializerStoreTag() and
-      result = this.getParent().getChildSuccessor(this)
-      or
-      tag = AssignmentConvertRightTag() and
-      result = this.getInstruction(InitializerStoreTag())
-    )
+    tag = InitializerStoreTag() and
+    result = this.getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+    or
+    needsConversion() and
+    tag = AssignmentConvertRightTag() and
+    result = getInstruction(InitializerStoreTag()) and
+    kind instanceof GotoEdge
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    (
-      child = this.getConstructorCall() and
-      if exists(this.getInitializerExpr())
-      then result = this.getInitializerExpr().getFirstInstruction()
-      else
-        if this.needsConversion()
-        then result = this.getInstruction(AssignmentConvertRightTag())
-        else result = this.getInstruction(InitializerStoreTag())
-    )
-    or
-    (
-      child = this.getInitializerExpr() and
-      if this.needsConversion()
-      then result = this.getInstruction(AssignmentConvertRightTag())
-      else result = this.getInstruction(InitializerStoreTag())
-    )
+    child = this.getInitializer() and
+    if this.needsConversion()
+    then result = this.getInstruction(AssignmentConvertRightTag())
+    else result = this.getInstruction(InitializerStoreTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -256,33 +177,28 @@ class TranslatedObjectInitialization extends TranslatedInitialization, Construct
       result = this.getParent().(InitializationContext).getTargetAddress()
       or
       (
+        operandTag instanceof AddressOperandTag and
+        result = this.getContext().getTargetAddress()
+        or
         operandTag instanceof StoreValueOperandTag and
-        if needsConversion()
-        then result = this.getInstruction(AssignmentConvertRightTag())
-        else result = this.getInstruction(NewObjTag())
+        result = this.getInitializer().getResult()
       )
     )
+    or
+    tag = AssignmentConvertRightTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = this.getInitializer().getResult()
     or
     tag = AssignmentConvertRightTag() and
     operandTag instanceof UnaryOperandTag and
     result = this.getInstruction(NewObjTag())
   }
 
-  private TranslatedExpr getConstructorCall() { result = getTranslatedExpr(expr) }
-
-  private TranslatedExpr getInitializerExpr() { result = getTranslatedExpr(expr.getInitializer()) }
-
-  override Instruction getReceiver() {
-    // The newly allocated object will be the target of the constructor call
-    result = this.getInstruction(NewObjTag())
-  }
+  TranslatedExpr getInitializer() { result = getTranslatedExpr(expr) }
 
   private predicate needsConversion() { expr.getType() != this.getContext().getTargetType() }
 }
 
-//private string getZeroValue(Type type) {
-//  if type instanceof FloatingPointType then result = "0.0" else result = "0"
-//}
 /**
  * Represents the IR translation of the initialization of an array element from
  * an element of an initializer list.
@@ -424,7 +340,7 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
   TTranslatedConstructorInitializer {
   TranslatedConstructorInitializer() { this = TTranslatedConstructorInitializer(call) }
 
-  override string toString() { result = "constuructor init: " + call.toString() }
+  override string toString() { result = "constructor init: " + call.toString() }
 
   override Instruction getFirstInstruction() {
     if needsConversion()
@@ -471,59 +387,4 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
     baseClass = call.getTarget().getDeclaringType() and
     derivedClass = this.getFunction().getDeclaringType()
   }
-}
-
-/**
- * Represents the IR translation of a delegate creation.
- */
-class TranslatedDelegateCreation extends TranslatedInitialization, ConstructorCallContext {
-  override DelegateCreation expr;
-
-  override TranslatedElement getChild(int id) { id = 0 and result = getConstructorCall() }
-
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
-    tag = NewObjTag() and
-    opcode instanceof Opcode::NewObj and
-    resultType = expr.getType() and
-    isLValue = false
-    or
-    tag = InitializerStoreTag() and
-    opcode instanceof Opcode::Store and
-    resultType = expr.getType() and
-    isLValue = false
-  }
-
-  final override Instruction getFirstInstruction() { result = getInstruction(NewObjTag()) }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = NewObjTag() and
-    result = getConstructorCall().getFirstInstruction() and
-    kind instanceof GotoEdge
-    or
-    tag = InitializerStoreTag() and
-    result = getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getConstructorCall() and
-    result = getInstruction(InitializerStoreTag())
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = InitializerStoreTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = getParent().(InitializationContext).getTargetAddress()
-      or
-      operandTag instanceof StoreValueOperandTag and
-      result = getInstruction(NewObjTag())
-    )
-  }
-
-  private TranslatedElement getConstructorCall() { result = DelegateElements::getConstructor(expr) }
-
-  override Instruction getReceiver() { result = getInstruction(NewObjTag()) }
 }

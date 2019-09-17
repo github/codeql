@@ -169,6 +169,11 @@ newtype TTranslatedElement =
     not isNativeCondition(expr) and
     not isFlexibleCondition(expr)
   } or
+  // A creation expression
+  TTranslatedCreationExpr(Expr expr) {
+    not ignoreExpr(expr) and
+    (expr instanceof ObjectCreation or expr instanceof DelegateCreation)
+  } or
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
@@ -219,32 +224,21 @@ newtype TTranslatedElement =
       // we deal with all the types of initialization separately.
       // First only simple local variable initialization (ie. `int x = 0`)
       exists(LocalVariableDeclAndInitExpr lvInit |
-        lvInit.getInitializer() = expr and
-        not expr instanceof ArrayCreation and
-        not expr instanceof ObjectCreation and
-        not expr instanceof DelegateCreation
+        lvInit.getInitializer() = expr
       )
       or
       // Then treat more complex ones
-      expr instanceof ObjectCreation
-      or
-      expr instanceof DelegateCreation
-      or
       expr instanceof ArrayInitializer
       or
       expr instanceof ObjectInitializer
       or
-      expr = any(ThrowExpr throw).getExpr()
+      expr = any(ThrowElement throwElement).getExpr()
       or
       expr = any(CollectionInitializer colInit).getAnElementInitializer()
       or
       expr = any(ReturnStmt returnStmt).getExpr()
       or
       expr = any(ArrayInitializer arrInit).getAnElement()
-      or
-      expr = any(LambdaExpr lambda).getSourceDeclaration()
-      or
-      expr = any(AnonymousMethodExpr anonMethExpr).getSourceDeclaration()
     )
   } or
   // The initialization of an array element via a member of an initializer list.
