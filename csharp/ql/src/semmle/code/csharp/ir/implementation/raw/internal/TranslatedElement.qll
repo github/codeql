@@ -177,7 +177,7 @@ private predicate usedAsCondition(Expr expr) {
 /**
  * Holds if we should have a `Load` instruction for `expr` when generating the IR.
  */
-predicate needsLoad(Expr expr) {
+predicate mayNeedLoad(Expr expr) {
   expr instanceof AssignableRead
   or
   // We need an extra load for the `PointerIndirectionExpr`
@@ -187,12 +187,18 @@ predicate needsLoad(Expr expr) {
   not exists(Assignment a | a.getLValue() = expr)
 }
 
+predicate needsLoad(Expr expr) {
+  mayNeedLoad(expr) and
+  not ignoreLoad(expr)
+}
+
 /**
  * Holds if we should ignore the `Load` instruction for `expr` when generating IR.
  */
 predicate ignoreLoad(Expr expr) {
-  // No load needed for an array access
-  expr.getParent() instanceof ArrayAccess
+  // No load needed for the qualifier
+  // in an array access
+  expr = any(ArrayAccess aa).getQualifier()
   or
   // No load is needed for the lvalue in an assignment such as:
   // Eg. `Object obj = oldObj`;
@@ -241,7 +247,6 @@ newtype TTranslatedElement =
   // expression.
   TTranslatedLoad(Expr expr) {
     not ignoreExpr(expr) and
-    not ignoreLoad(expr) and
     needsLoad(expr)
   } or
   // An expression most naturally translated as control flow.

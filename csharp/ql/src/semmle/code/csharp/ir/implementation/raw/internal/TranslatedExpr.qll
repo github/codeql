@@ -94,10 +94,6 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
   final override predicate producesExprResult() {
     // If the expr needs a load, its translation does not produce the final value.
     not needsLoad(expr)
-    or
-    // If we're supposed to ignore the load on this expression, then this
-    // expression produces the final value.
-    ignoreLoad(expr)
   }
 
   /**
