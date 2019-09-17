@@ -17,12 +17,19 @@
 
 import semmle.code.cpp.dataflow.TaintTracking
 
+private predicate memsetFunction(string fn) {
+	fn = "memset" or
+	fn = "bzero" or
+	fn = "ZeroMemory" or
+	fn = "FillMemory" 
+}
+	
 from FunctionCall memset
 where
-  memset.getTarget().getName() = "memset" or memset.getTarget().getName() = "ZeroMemory" and
+  memsetFunction(memset.getTarget().getName()) and
   not exists(TaintTracking::Configuration cf, DataFlow::Node source, DataFlow::Node sink |
     cf.hasFlow(source, sink) and
     source.asExpr() = memset.getArgument(1)
   )
 select memset,
-  "This call to " + `memset.getTarget().getName() + " may be deleted by the compiler."
+  "This call to " + memset.getTarget().getName() + " may be deleted by the compiler."
