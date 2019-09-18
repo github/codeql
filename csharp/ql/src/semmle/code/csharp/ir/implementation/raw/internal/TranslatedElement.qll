@@ -26,15 +26,15 @@ ArrayType getArrayOfDim(int dim, Type type) {
 }
 
 private predicate canCreateCompilerGeneratedElement(Element generatedBy, int nth) {
-  generatedBy instanceof ForeachStmt and nth in [0 .. ForeachElements::noGeneratedElements()]
+  generatedBy instanceof ForeachStmt and nth in [0 .. ForeachElements::noGeneratedElements() - 1]
   or
-  generatedBy instanceof LockStmt and nth in [0 .. LockElements::noGeneratedElements()]
+  generatedBy instanceof LockStmt and nth in [0 .. LockElements::noGeneratedElements() - 1]
   or
   generatedBy instanceof DelegateCreation and
-  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
+  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy) - 1]
   or
   generatedBy instanceof DelegateCall and
-  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
+  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy) - 1]
 }
 
 /**

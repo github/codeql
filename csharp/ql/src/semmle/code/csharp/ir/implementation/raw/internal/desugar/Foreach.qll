@@ -59,7 +59,7 @@ module ForeachElements {
 
   TranslatedForeachEnumerator getEnumDecl(ForeachStmt generatedBy) { result.getAST() = generatedBy }
 
-  int noGeneratedElements() { result = 12 }
+  int noGeneratedElements() { result = 13 }
 }
 
 private class TranslatedForeachTry extends TranslatedCompilerGeneratedTry,

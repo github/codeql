@@ -49,7 +49,7 @@ module LockElements {
     result.getAST() = generatedBy
   }
 
-  int noGeneratedElements() { result = 13 }
+  int noGeneratedElements() { result = 14 }
 }
 
 /**
