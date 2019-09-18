@@ -1618,6 +1618,9 @@ abstract class PathNode extends TPathNode {
   /** Gets a successor of this node, if any. */
   abstract PathNode getASuccessor();
 
+  /** Holds if this node is a source. */
+  abstract predicate isSource();
+
   private string ppAp() {
     this instanceof PathNodeSink and result = ""
     or
@@ -1683,12 +1686,6 @@ private class PathNodeMid extends PathNode, TPathNodeMid {
     // an intermediate step to another intermediate node
     result = getSuccMid()
     or
-    // a final step to a sink via one or more local steps
-    localFlowStepPlus(node, result.getNode(), _, config) and
-    ap instanceof AccessPathNil and
-    result instanceof PathNodeSink and
-    result.getConfiguration() = unbind(this.getConfiguration())
-    or
     // a final step to a sink via zero steps means we merge the last two steps to prevent trivial-looking edges
     exists(PathNodeMid mid |
       mid = getSuccMid() and
@@ -1697,23 +1694,12 @@ private class PathNodeMid extends PathNode, TPathNodeMid {
       result instanceof PathNodeSink and
       result.getConfiguration() = unbind(mid.getConfiguration())
     )
-    or
-    // a direct step from a source to a sink if a node is both
-    this instanceof PathNodeSource and
-    result instanceof PathNodeSink and
-    this.getNode() = result.getNode() and
-    result.getConfiguration() = unbind(this.getConfiguration())
   }
-}
 
-/**
- * A flow graph node corresponding to a source.
- */
-private class PathNodeSource extends PathNodeMid {
-  PathNodeSource() {
-    getConfiguration().isSource(getNode()) and
-    getCallContext() instanceof CallContextAny and
-    getAp() instanceof AccessPathNil
+  override predicate isSource() {
+    config.isSource(node) and
+    cc instanceof CallContextAny and
+    ap instanceof AccessPathNil
   }
 }
 
@@ -1733,6 +1719,8 @@ private class PathNodeSink extends PathNode, TPathNodeSink {
   override Configuration getConfiguration() { result = config }
 
   override PathNode getASuccessor() { none() }
+
+  override predicate isSource() { config.isSource(node) }
 }
 
 /**
@@ -1967,12 +1955,12 @@ private predicate valuePathThroughCallable(PathNodeMid mid, OutNode out, CallCon
  * sinks.
  */
 private predicate flowsTo(
-  PathNodeSource flowsource, PathNodeSink flowsink, Node source, Node sink,
-  Configuration configuration
+  PathNode flowsource, PathNodeSink flowsink, Node source, Node sink, Configuration configuration
 ) {
+  flowsource.isSource() and
   flowsource.getConfiguration() = configuration and
   flowsource.getNode() = source and
-  pathSuccPlus(flowsource, flowsink) and
+  (flowsource = flowsink or pathSuccPlus(flowsource, flowsink)) and
   flowsink.getNode() = sink
 }
 

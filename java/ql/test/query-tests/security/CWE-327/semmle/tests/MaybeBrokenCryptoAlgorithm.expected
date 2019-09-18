@@ -1,7 +1,5 @@
 edges
-| Test.java:34:48:34:52 | "foo" [ : String] | Test.java:34:48:34:52 | "foo" |
 nodes
 | Test.java:34:48:34:52 | "foo" | semmle.label | "foo" |
-| Test.java:34:48:34:52 | "foo" [ : String] | semmle.label | "foo" [ : String] |
 #select
-| Test.java:34:21:34:53 | new SecretKeySpec(...) | Test.java:34:48:34:52 | "foo" [ : String] | Test.java:34:48:34:52 | "foo" | Cryptographic algorithm $@ may not be secure, consider using a different algorithm. | Test.java:34:48:34:52 | "foo" | "foo" |
+| Test.java:34:21:34:53 | new SecretKeySpec(...) | Test.java:34:48:34:52 | "foo" | Test.java:34:48:34:52 | "foo" | Cryptographic algorithm $@ may not be secure, consider using a different algorithm. | Test.java:34:48:34:52 | "foo" | "foo" |
