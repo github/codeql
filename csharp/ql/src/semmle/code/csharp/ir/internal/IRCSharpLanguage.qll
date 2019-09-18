@@ -29,6 +29,7 @@ class BuiltInOperation extends TBuiltInOperation {
 
 class ClassDerivation extends MkClassDerivation {
   Class baseClass;
+
   Class derivedClass;
 
   ClassDerivation() { this = MkClassDerivation(baseClass, derivedClass) }

@@ -853,7 +853,7 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
     else result = this.getInstruction(AddressTag())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { 
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     result = TranslatedVariableAccess.super.getInstructionOperand(tag, operandTag)
   }
 

@@ -75,14 +75,12 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   expr instanceof LocalVariableDeclExpr and
   expr.getParent() instanceof ForeachStmt
   or
-  (
-    // recursive case
-    ignoreExprAndDescendants(getRealParent(expr)) and 
-    // The two children of an `AssignOperation` should not be ignored, but since they are also
-    // descendants of an orphan node (the expanded form of the `AssignOperation` is also retrieved by 
-    // the extractor, which is rooted in an AST node without parents) they would be
-    not expr.getParent() instanceof AssignOperation
-  )
+  // recursive case
+  ignoreExprAndDescendants(getRealParent(expr)) and
+  // The two children of an `AssignOperation` should not be ignored, but since they are also
+  // descendants of an orphan node (the expanded form of the `AssignOperation` is also retrieved by
+  // the extractor, which is rooted in an AST node without parents) they would be
+  not expr.getParent() instanceof AssignOperation
 }
 
 /**
@@ -177,7 +175,7 @@ private predicate usedAsCondition(Expr expr) {
 /**
  * Holds if we should have a `Load` instruction for `expr` when generating the IR.
  */
-predicate mayNeedLoad(Expr expr) {
+private predicate mayNeedLoad(Expr expr) {
   expr instanceof AssignableRead
   or
   // We need an extra load for the `PointerIndirectionExpr`
@@ -195,7 +193,7 @@ predicate needsLoad(Expr expr) {
 /**
  * Holds if we should ignore the `Load` instruction for `expr` when generating IR.
  */
-predicate ignoreLoad(Expr expr) {
+private predicate ignoreLoad(Expr expr) {
   // No load needed for the qualifier
   // in an array access
   expr = any(ArrayAccess aa).getQualifier()
@@ -219,12 +217,12 @@ predicate ignoreLoad(Expr expr) {
   // given by a single `VariableAddress` instruction.
   expr = any(FieldAccess fa).getQualifier() and
   expr = any(VariableAccess va |
-    va.getType().isValueType() and
-    not va.getTarget() = any(Parameter p | p.isOutOrRef() or p.isIn())
-  )
+      va.getType().isValueType() and
+      not va.getTarget() = any(Parameter p | p.isOutOrRef() or p.isIn())
+    )
   or
   // If expr is passed as an `out,`ref` or `in` argument,
-  // no load should take place since we pass the address, not the 
+  // no load should take place since we pass the address, not the
   // value of the variable
   expr.(AssignableAccess).isOutOrRefArgument()
   or

@@ -961,7 +961,9 @@ class TranslatedFixedStmt extends TranslatedStmt {
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int id |
-      child = this.getDecl(id) and id < this.noDecls() - 1 and result = this.getDecl(id + 1).getFirstInstruction()
+      child = this.getDecl(id) and
+      id < this.noDecls() - 1 and
+      result = this.getDecl(id + 1).getFirstInstruction()
     )
     or
     child = this.getDecl(this.noDecls() - 1) and result = this.getBody().getFirstInstruction()

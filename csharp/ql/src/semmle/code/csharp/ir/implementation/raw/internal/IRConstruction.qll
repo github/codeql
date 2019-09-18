@@ -17,7 +17,6 @@ TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
 }
 
 InstructionTag getInstructionTag(Instruction instruction) { instruction = MkInstruction(_, result) }
-
 import Cached
 
 cached
@@ -317,7 +316,6 @@ private module Cached {
   cached
   Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instr) { none() }
 }
-
 import CachedForDebugging
 
 cached
