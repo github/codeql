@@ -1,3 +1,4 @@
+test_ExprSignature
 | tst.ts:2:4:2:4 | x | number |
 | tst.ts:6:4:6:4 | x | number |
 | tst.ts:7:4:7:4 | x | string |
@@ -29,3 +30,11 @@
 | tst.ts:41:10:41:17 | g.method | (x: string): string |
 | tst.ts:41:10:41:24 | g.method("foo") | string |
 | tst.ts:41:19:41:23 | "foo" | "foo" |
+test_TypeReferenceSig
+| Callable | function | 0 | (x: number): string |
+| Newable | constructor | 0 | new (x: number): any |
+| OverloadedCallable | function | 0 | (x: number): number |
+| OverloadedCallable | function | 1 | (x: string): string |
+| OverloadedCallable | function | 2 | (x: any): any |
+| OverloadedNewable | constructor | 0 | new (x: number): OverloadedNewable |
+| OverloadedNewable | constructor | 1 | new (x: any): any |
