@@ -32,5 +32,6 @@ int usePM(int PM::* pm) {
 void pmIsConst() {
   static const struct {
     int PM::* pm1;
-  } pms = { &PM::x1 };
+    void (PM::* pm2)();
+  } pms = { &PM::x1, &PM::f1 };
 }
