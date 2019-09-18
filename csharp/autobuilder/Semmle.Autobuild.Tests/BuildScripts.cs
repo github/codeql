@@ -745,6 +745,54 @@ namespace Semmle.Extraction.Tests
             TestAutobuilderScript(autobuilder, 0, 6);
         }
 
+	[Fact]
+        public void TestWindowCSharpMsBuildMultipleSolutions()
+        {
+            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\csharp\nuget\nuget.exe restore test1.csproj"] = 0;
+            Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild test1.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\csharp\nuget\nuget.exe restore test2.csproj"] = 0;
+            Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild test2.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.FileExists["csharp.log"] = true;
+            Actions.FileExists[@"test1.csproj"] = true;
+            Actions.FileExists[@"test2.csproj"] = true;
+	    Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
+            Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
+            Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"] = true;
+            Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"] = false;
+            Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
+
+            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
+            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.EnumerateFiles[@"C:\Project"] = "test1.csproj\ntest2.csproj\ntest1.cs\ntest2.cs";
+            Actions.EnumerateDirectories[@"C:\Project"] = "";
+
+            var csproj1 = new XmlDocument();
+            csproj1.LoadXml(@"<?xml version=""1.0"" encoding=""utf - 8""?>
+  <Project ToolsVersion=""15.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+    <ItemGroup>
+      <Compile Include=""test1.cs"" />
+    </ItemGroup>
+  </Project>");
+            Actions.LoadXml["test1.csproj"] = csproj1;
+
+            var csproj2 = new XmlDocument();
+            csproj2.LoadXml(@"<?xml version=""1.0"" encoding=""utf - 8""?>
+  <Project ToolsVersion=""15.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+    <ItemGroup>
+      <Compile Include=""test1.cs"" />
+    </ItemGroup>
+  </Project>");
+            Actions.LoadXml["test2.csproj"] = csproj2;
+
+            var autobuilder = CreateAutoBuilder("csharp", true, msBuildArguments: "/P:Fu=Bar", msBuildTarget: "Windows", msBuildPlatform: "x86", msBuildConfiguration: "Debug",
+                vsToolsVersion: "12");
+
+            TestAutobuilderScript(autobuilder, 0, 6);
+        }
+
+
         [Fact]
         public void TestWindowCSharpMsBuildFailed()
         {
