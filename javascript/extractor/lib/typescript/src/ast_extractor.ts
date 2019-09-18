@@ -22,6 +22,7 @@ export interface AugmentedNode extends ts.Node {
     $symbol?: number;
     $resolvedSignature?: number;
     $overloadIndex?: number;
+    $declaredSignature?: number;
 }
 
 export type AugmentedPos = number;
@@ -263,6 +264,17 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
                     namePart.$symbol = typeTable.getSymbolId(symbol);
                 }
             }
+            if (ts.isFunctionLike(node)) {
+                let signature = typeChecker.getSignatureFromDeclaration(node);
+                if (signature != null) {
+                    let kind = ts.isConstructSignatureDeclaration(node) || ts.isConstructorDeclaration(node)
+                            ? ts.SignatureKind.Construct : ts.SignatureKind.Call;
+                    let id = typeTable.getSignatureId(kind, signature);
+                    if (id != null) {
+                        (node as AugmentedNode).$declaredSignature = id;
+                    }
+                }
+            }
         }
     }
 }
@@ -302,8 +314,10 @@ function isTypedNode(node: ts.Node): boolean {
         case ts.SyntaxKind.BinaryExpression:
         case ts.SyntaxKind.CallExpression:
         case ts.SyntaxKind.ClassExpression:
+        case ts.SyntaxKind.ClassDeclaration:
         case ts.SyntaxKind.CommaListExpression:
         case ts.SyntaxKind.ConditionalExpression:
+        case ts.SyntaxKind.Constructor:
         case ts.SyntaxKind.DeleteExpression:
         case ts.SyntaxKind.ElementAccessExpression:
         case ts.SyntaxKind.ExpressionStatement:
@@ -311,9 +325,13 @@ function isTypedNode(node: ts.Node): boolean {
         case ts.SyntaxKind.FalseKeyword:
         case ts.SyntaxKind.FunctionDeclaration:
         case ts.SyntaxKind.FunctionExpression:
+        case ts.SyntaxKind.GetAccessor:
         case ts.SyntaxKind.Identifier:
+        case ts.SyntaxKind.IndexSignature:
         case ts.SyntaxKind.JsxExpression:
         case ts.SyntaxKind.LiteralType:
+        case ts.SyntaxKind.MethodDeclaration:
+        case ts.SyntaxKind.MethodSignature:
         case ts.SyntaxKind.NewExpression:
         case ts.SyntaxKind.NonNullExpression:
         case ts.SyntaxKind.NoSubstitutionTemplateLiteral:
@@ -327,6 +345,7 @@ function isTypedNode(node: ts.Node): boolean {
         case ts.SyntaxKind.PrefixUnaryExpression:
         case ts.SyntaxKind.PropertyAccessExpression:
         case ts.SyntaxKind.RegularExpressionLiteral:
+        case ts.SyntaxKind.SetAccessor:
         case ts.SyntaxKind.StringLiteral:
         case ts.SyntaxKind.TaggedTemplateExpression:
         case ts.SyntaxKind.TemplateExpression:

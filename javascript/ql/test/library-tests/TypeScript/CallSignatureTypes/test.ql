@@ -16,3 +16,7 @@ query predicate test_ExprSignature(Expr expr, string type) {
 query predicate test_TypeReferenceSig(TypeReference type, SignatureKind kind, int n, CallSignatureType sig) {
   sig = type.getSignature(kind, n)
 }
+
+query predicate test_FunctionCallSig(Function f, CallSignatureType sig) {
+  sig = f.getCallSignature()
+}
