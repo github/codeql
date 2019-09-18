@@ -97,8 +97,8 @@ private module Cached {
     TImplicitDelegateCall(ControlFlow::Nodes::ElementNode cfn, DelegateArgumentToLibraryCallable arg) {
       cfn.getElement() = arg
     } or
-    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn) {
-      transitiveCapturedCallTarget(cfn, _)
+    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn, Callable target) {
+      transitiveCapturedCallTarget(cfn, target)
     } or
     TCilCall(CIL::Call call) {
       // No need to include calls that are compiled from source
@@ -418,10 +418,11 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
  */
 class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCall {
   private ControlFlow::Nodes::ElementNode cfn;
+  private Callable target;
 
-  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn) }
+  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn, target) }
 
-  override Callable getARuntimeTarget() { transitiveCapturedCallTarget(cfn, result) }
+  override Callable getARuntimeTarget() { result = target }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 

@@ -2,29 +2,35 @@
 | Capture.cs:33:9:33:40 | call to method Select | yield return | Capture.cs:33:9:33:40 | call to method Select |
 | Capture.cs:33:9:33:50 | call to method ToArray | return | Capture.cs:33:9:33:50 | call to method ToArray |
 | Capture.cs:33:30:33:39 | [implicit call] access to local variable captureIn3 | return | Capture.cs:33:30:33:39 | [output] access to local variable captureIn3 |
-| Capture.cs:59:9:59:21 | call to local function CaptureOut1 | captured sink30 | Capture.cs:59:9:59:21 | SSA call def(sink30) |
-| Capture.cs:71:9:71:21 | [transitive] call to local function CaptureOut2 | captured sink31 | Capture.cs:71:9:71:21 | SSA call def(sink31) |
-| Capture.cs:71:9:71:21 | call to local function CaptureOut2 | captured sink31 | Capture.cs:71:9:71:21 | SSA call def(sink31) |
-| Capture.cs:80:9:80:41 | call to method Select | captured sink32 | Capture.cs:80:9:80:41 | SSA call def(sink32) |
-| Capture.cs:80:9:80:41 | call to method Select | return | Capture.cs:80:9:80:41 | call to method Select |
-| Capture.cs:80:9:80:41 | call to method Select | yield return | Capture.cs:80:9:80:41 | call to method Select |
-| Capture.cs:80:9:80:51 | call to method ToArray | return | Capture.cs:80:9:80:51 | call to method ToArray |
-| Capture.cs:80:30:80:40 | [implicit call] access to local variable captureOut3 | captured sink32 | Capture.cs:80:9:80:41 | SSA call def(sink32) |
-| Capture.cs:80:30:80:40 | [implicit call] access to local variable captureOut3 | return | Capture.cs:80:30:80:40 | [output] access to local variable captureOut3 |
-| Capture.cs:108:9:108:25 | call to local function CaptureThrough1 | captured sink33 | Capture.cs:108:9:108:25 | SSA call def(sink33) |
-| Capture.cs:120:9:120:25 | [transitive] call to local function CaptureThrough2 | captured sink34 | Capture.cs:120:9:120:25 | SSA call def(sink34) |
-| Capture.cs:120:9:120:25 | call to local function CaptureThrough2 | captured sink34 | Capture.cs:120:9:120:25 | SSA call def(sink34) |
-| Capture.cs:129:9:129:45 | call to method Select | captured sink35 | Capture.cs:129:9:129:45 | SSA call def(sink35) |
-| Capture.cs:129:9:129:45 | call to method Select | return | Capture.cs:129:9:129:45 | call to method Select |
-| Capture.cs:129:9:129:45 | call to method Select | yield return | Capture.cs:129:9:129:45 | call to method Select |
-| Capture.cs:129:9:129:55 | call to method ToArray | return | Capture.cs:129:9:129:55 | call to method ToArray |
-| Capture.cs:129:30:129:44 | [implicit call] access to local variable captureThrough3 | captured sink35 | Capture.cs:129:9:129:45 | SSA call def(sink35) |
-| Capture.cs:129:30:129:44 | [implicit call] access to local variable captureThrough3 | return | Capture.cs:129:30:129:44 | [output] access to local variable captureThrough3 |
-| Capture.cs:136:22:136:38 | call to local function CaptureThrough4 | return | Capture.cs:136:22:136:38 | call to local function CaptureThrough4 |
-| Capture.cs:144:9:144:32 | call to local function CaptureThrough5 | captured sink37 | Capture.cs:144:9:144:32 | SSA call def(sink37) |
-| Capture.cs:167:20:167:22 | call to local function M | return | Capture.cs:167:20:167:22 | call to local function M |
-| Capture.cs:170:22:170:32 | call to local function Id | return | Capture.cs:170:22:170:32 | call to local function Id |
-| Capture.cs:172:20:172:25 | call to local function Id | return | Capture.cs:172:20:172:25 | call to local function Id |
+| Capture.cs:71:9:71:21 | call to local function CaptureOut1 | captured sink30 | Capture.cs:71:9:71:21 | SSA call def(sink30) |
+| Capture.cs:83:9:83:21 | [transitive] call to local function CaptureOut2 | captured sink31 | Capture.cs:83:9:83:21 | SSA call def(sink31) |
+| Capture.cs:83:9:83:21 | call to local function CaptureOut2 | captured sink31 | Capture.cs:83:9:83:21 | SSA call def(sink31) |
+| Capture.cs:92:9:92:41 | call to method Select | captured sink32 | Capture.cs:92:9:92:41 | SSA call def(sink32) |
+| Capture.cs:92:9:92:41 | call to method Select | return | Capture.cs:92:9:92:41 | call to method Select |
+| Capture.cs:92:9:92:41 | call to method Select | yield return | Capture.cs:92:9:92:41 | call to method Select |
+| Capture.cs:92:9:92:51 | call to method ToArray | return | Capture.cs:92:9:92:51 | call to method ToArray |
+| Capture.cs:92:30:92:40 | [implicit call] access to local variable captureOut3 | captured sink32 | Capture.cs:92:9:92:41 | SSA call def(sink32) |
+| Capture.cs:92:30:92:40 | [implicit call] access to local variable captureOut3 | return | Capture.cs:92:30:92:40 | [output] access to local variable captureOut3 |
+| Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured nonSink0 | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
+| Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured nonSink0 | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
+| Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured sink40 | Capture.cs:121:9:121:35 | SSA call def(sink40) |
+| Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured sink40 | Capture.cs:121:9:121:35 | SSA call def(sink40) |
+| Capture.cs:121:9:121:35 | call to local function CaptureOutMultipleLambdas | captured nonSink0 | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
+| Capture.cs:121:9:121:35 | call to local function CaptureOutMultipleLambdas | captured sink40 | Capture.cs:121:9:121:35 | SSA call def(sink40) |
+| Capture.cs:132:9:132:25 | call to local function CaptureThrough1 | captured sink33 | Capture.cs:132:9:132:25 | SSA call def(sink33) |
+| Capture.cs:144:9:144:25 | [transitive] call to local function CaptureThrough2 | captured sink34 | Capture.cs:144:9:144:25 | SSA call def(sink34) |
+| Capture.cs:144:9:144:25 | call to local function CaptureThrough2 | captured sink34 | Capture.cs:144:9:144:25 | SSA call def(sink34) |
+| Capture.cs:153:9:153:45 | call to method Select | captured sink35 | Capture.cs:153:9:153:45 | SSA call def(sink35) |
+| Capture.cs:153:9:153:45 | call to method Select | return | Capture.cs:153:9:153:45 | call to method Select |
+| Capture.cs:153:9:153:45 | call to method Select | yield return | Capture.cs:153:9:153:45 | call to method Select |
+| Capture.cs:153:9:153:55 | call to method ToArray | return | Capture.cs:153:9:153:55 | call to method ToArray |
+| Capture.cs:153:30:153:44 | [implicit call] access to local variable captureThrough3 | captured sink35 | Capture.cs:153:9:153:45 | SSA call def(sink35) |
+| Capture.cs:153:30:153:44 | [implicit call] access to local variable captureThrough3 | return | Capture.cs:153:30:153:44 | [output] access to local variable captureThrough3 |
+| Capture.cs:160:22:160:38 | call to local function CaptureThrough4 | return | Capture.cs:160:22:160:38 | call to local function CaptureThrough4 |
+| Capture.cs:168:9:168:32 | call to local function CaptureThrough5 | captured sink37 | Capture.cs:168:9:168:32 | SSA call def(sink37) |
+| Capture.cs:191:20:191:22 | call to local function M | return | Capture.cs:191:20:191:22 | call to local function M |
+| Capture.cs:194:22:194:32 | call to local function Id | return | Capture.cs:194:22:194:32 | call to local function Id |
+| Capture.cs:196:20:196:25 | call to local function Id | return | Capture.cs:196:20:196:25 | call to local function Id |
 | GlobalDataFlow.cs:25:9:25:26 | access to property SinkProperty0 | return | GlobalDataFlow.cs:25:9:25:26 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:26:15:26:32 | access to property SinkProperty0 | return | GlobalDataFlow.cs:26:15:26:32 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:29:9:29:29 | access to property NonSinkProperty0 | return | GlobalDataFlow.cs:29:9:29:29 | access to property NonSinkProperty0 |
