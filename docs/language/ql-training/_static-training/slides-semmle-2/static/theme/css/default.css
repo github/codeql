@@ -1599,8 +1599,36 @@ p.first.admonition-title {
   font-size: 1em;
 }
 
-.admonition.note  ul {
-  width: inherit;
+.admonition.note  ul li {
+  width: 90%;
+}
+
+
+/* styles for information buttons on slides that have notes */
+
+#extra-notes {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 1%;
+  font-size: 1em;
+}
+
+#close-notes {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  font-size: 1.2em;
+}
+
+button {
+  border: none;
+  background: none;
+}
+
+button:hover {
+  text-decoration: underline;
 }
 
 /********* images ************/
