@@ -1,6 +1,3 @@
 | staticlocals__staticlocals_f2 | file://:0:0:0:0 | call to C | staticlocals.cpp:30:1:30:1 | return ... | Standard edge, only from QL |  |
 | staticlocals__staticlocals_f2 | file://:0:0:0:0 | initializer for c | file://:0:0:0:0 | call to C | Standard edge, only from QL |  |
 | staticlocals__staticlocals_f2 | staticlocals.cpp:29:5:29:17 | declaration | file://:0:0:0:0 | initializer for c | Standard edge, only from QL |  |
-| staticlocals__staticlocals_f3 | staticlocals.cpp:39:3:39:34 | declaration | staticlocals.cpp:39:18:39:33 | initializer for i | Standard edge, only from QL | uninstantiated |
-| staticlocals__staticlocals_f3 | staticlocals.cpp:39:18:39:33 | Unknown literal | staticlocals.cpp:40:1:40:1 | return ... | Standard edge, only from QL | uninstantiated |
-| staticlocals__staticlocals_f3 | staticlocals.cpp:39:18:39:33 | initializer for i | staticlocals.cpp:39:18:39:33 | Unknown literal | Standard edge, only from QL | uninstantiated |

@@ -131,6 +131,8 @@ class Expr extends StmtParent, @expr {
     valuebind(_, underlyingElement(this))
     or
     addressConstantExpression(this)
+    or
+    constantTemplateLiteral(this)
   }
 
   /**
@@ -1119,3 +1121,17 @@ private predicate isStandardPlacementNewAllocator(Function operatorNew) {
 
 // Pulled out for performance. See QL-796.
 private predicate hasNoConversions(Expr e) { not e.hasConversion() }
+
+/**
+ * Holds if `e` is a literal of unknown value in a template, or a cast thereof.
+ * We assume that such literals are constant.
+ */
+private predicate constantTemplateLiteral(Expr e) {
+  // Unknown literals in uninstantiated templates could be enum constant
+  // accesses or pointer-to-member literals.
+  e instanceof Literal and
+  e.isFromUninstantiatedTemplate(_) and
+  not exists(e.getValue())
+  or
+  constantTemplateLiteral(e.(Cast).getExpr())
+}
