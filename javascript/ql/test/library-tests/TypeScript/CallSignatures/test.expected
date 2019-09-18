@@ -1,0 +1,12 @@
+test_CallSignature
+| tst.ts:7:3:7:22 | (x: number): number; | interface I | tst.ts:7:3:7:22 | (x: number): number; | abstract |
+| tst.ts:8:3:8:21 | new (x: number): C; | interface I | tst.ts:8:3:8:21 | new (x: number): C; | abstract |
+| tst.ts:13:3:13:22 | (x: number): number; | anonymous interface | tst.ts:13:3:13:22 | (x: number): number; | abstract |
+| tst.ts:14:3:14:21 | new (x: number): C; | anonymous interface | tst.ts:14:3:14:21 | new (x: number): C; | abstract |
+test_IndexSignature
+| tst.ts:9:3:9:22 | [x: number]: string; | interface I | tst.ts:9:3:9:22 | [x: number]: string; | abstract |
+| tst.ts:15:3:15:22 | [x: number]: string; | anonymous interface | tst.ts:15:3:15:22 | [x: number]: string; | abstract |
+test_MethodDeclarations
+| tst.ts:1:18:1:17 | constructor() {} | Method constructor in class C |
+| tst.ts:2:3:2:31 | abstrac ... number; | Method abstract in class C |
+| tst.ts:3:3:3:30 | abstrac ... er): C; | Method new in class C |
