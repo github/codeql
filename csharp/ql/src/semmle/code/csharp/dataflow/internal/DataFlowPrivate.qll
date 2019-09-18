@@ -991,7 +991,7 @@ private module OutNodes {
         additionalCalls = false and
         call.(ImplicitDelegateDataFlowCall).isArgumentOf(csharpCall(_, cfn), _)
         or
-        additionalCalls = true and call = TTransitiveCapturedCall(cfn)
+        additionalCalls = true and call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable())
       )
     }
 
