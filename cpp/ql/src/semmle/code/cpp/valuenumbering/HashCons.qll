@@ -737,14 +737,15 @@ private predicate mk_FieldCons(
   exists(Expr e |
     e = cal.getFieldExpr(f).getFullyConverted() and
     f.getInitializationOrder() = i and
-    hc = hashCons(e) and
     (
       exists(HashCons head, Field f2, HC_Fields tail |
+        hc = hashCons(e) and
         hcf = HC_FieldCons(c, i - 1, f2, head, tail) and
         f2.getInitializationOrder() = i - 1 and
         mk_FieldCons(c, i - 1, f2, head, tail, cal)
       )
       or
+      hc = hashCons(e) and
       i = 0 and
       hcf = HC_EmptyFields(c)
     )
