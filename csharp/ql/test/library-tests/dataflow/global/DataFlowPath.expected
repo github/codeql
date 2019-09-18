@@ -22,6 +22,9 @@ edges
 | Capture.cs:89:13:89:35 | SSA def(sink32) | Capture.cs:92:9:92:41 | SSA call def(sink32) |
 | Capture.cs:89:22:89:35 | "taint source" | Capture.cs:89:13:89:35 | SSA def(sink32) |
 | Capture.cs:92:9:92:41 | SSA call def(sink32) | Capture.cs:93:15:93:20 | access to local variable sink32 |
+| Capture.cs:115:17:115:39 | SSA def(sink40) | Capture.cs:121:9:121:35 | SSA call def(sink40) |
+| Capture.cs:115:26:115:39 | "taint source" | Capture.cs:115:17:115:39 | SSA def(sink40) |
+| Capture.cs:121:9:121:35 | SSA call def(sink40) | Capture.cs:122:15:122:20 | access to local variable sink40 |
 | Capture.cs:125:25:125:31 | tainted | Capture.cs:132:9:132:25 | [implicit argument] tainted |
 | Capture.cs:125:25:125:31 | tainted | Capture.cs:144:9:144:25 | [implicit argument] tainted |
 | Capture.cs:125:25:125:31 | tainted | Capture.cs:153:9:153:45 | [implicit argument] tainted |
@@ -225,6 +228,7 @@ edges
 | Capture.cs:169:15:169:20 | access to local variable sink37 | Capture.cs:125:25:125:31 | tainted | Capture.cs:169:15:169:20 | access to local variable sink37 | access to local variable sink37 |
 | Capture.cs:195:15:195:20 | access to local variable sink38 | Capture.cs:125:25:125:31 | tainted | Capture.cs:195:15:195:20 | access to local variable sink38 | access to local variable sink38 |
 | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 | access to local variable sink4 |
+| Capture.cs:122:15:122:20 | access to local variable sink40 | Capture.cs:115:26:115:39 | "taint source" | Capture.cs:122:15:122:20 | access to local variable sink40 | access to local variable sink40 |
 | GlobalDataFlow.cs:144:15:144:19 | access to local variable sink5 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:144:15:144:19 | access to local variable sink5 | access to local variable sink5 |
 | GlobalDataFlow.cs:154:15:154:19 | access to local variable sink6 | GlobalDataFlow.cs:318:16:318:29 | "taint source" | GlobalDataFlow.cs:154:15:154:19 | access to local variable sink6 | access to local variable sink6 |
 | GlobalDataFlow.cs:157:15:157:19 | access to local variable sink7 | GlobalDataFlow.cs:323:13:323:26 | "taint source" | GlobalDataFlow.cs:157:15:157:19 | access to local variable sink7 | access to local variable sink7 |

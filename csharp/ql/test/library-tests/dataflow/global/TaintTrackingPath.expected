@@ -22,6 +22,9 @@ edges
 | Capture.cs:89:13:89:35 | SSA def(sink32) | Capture.cs:92:9:92:41 | SSA call def(sink32) |
 | Capture.cs:89:22:89:35 | "taint source" | Capture.cs:89:13:89:35 | SSA def(sink32) |
 | Capture.cs:92:9:92:41 | SSA call def(sink32) | Capture.cs:93:15:93:20 | access to local variable sink32 |
+| Capture.cs:115:17:115:39 | SSA def(sink40) | Capture.cs:121:9:121:35 | SSA call def(sink40) |
+| Capture.cs:115:26:115:39 | "taint source" | Capture.cs:115:17:115:39 | SSA def(sink40) |
+| Capture.cs:121:9:121:35 | SSA call def(sink40) | Capture.cs:122:15:122:20 | access to local variable sink40 |
 | Capture.cs:125:25:125:31 | tainted | Capture.cs:132:9:132:25 | [implicit argument] tainted |
 | Capture.cs:125:25:125:31 | tainted | Capture.cs:144:9:144:25 | [implicit argument] tainted |
 | Capture.cs:125:25:125:31 | tainted | Capture.cs:153:9:153:45 | [implicit argument] tainted |
@@ -252,6 +255,7 @@ edges
 | Capture.cs:72:15:72:20 | access to local variable sink30 | Capture.cs:69:22:69:35 | "taint source" | Capture.cs:72:15:72:20 | access to local variable sink30 | access to local variable sink30 |
 | Capture.cs:84:15:84:20 | access to local variable sink31 | Capture.cs:79:26:79:39 | "taint source" | Capture.cs:84:15:84:20 | access to local variable sink31 | access to local variable sink31 |
 | Capture.cs:93:15:93:20 | access to local variable sink32 | Capture.cs:89:22:89:35 | "taint source" | Capture.cs:93:15:93:20 | access to local variable sink32 | access to local variable sink32 |
+| Capture.cs:122:15:122:20 | access to local variable sink40 | Capture.cs:115:26:115:39 | "taint source" | Capture.cs:122:15:122:20 | access to local variable sink40 | access to local variable sink40 |
 | Capture.cs:133:15:133:20 | access to local variable sink33 | Capture.cs:125:25:125:31 | tainted | Capture.cs:133:15:133:20 | access to local variable sink33 | access to local variable sink33 |
 | Capture.cs:145:15:145:20 | access to local variable sink34 | Capture.cs:125:25:125:31 | tainted | Capture.cs:145:15:145:20 | access to local variable sink34 | access to local variable sink34 |
 | Capture.cs:154:15:154:20 | access to local variable sink35 | Capture.cs:125:25:125:31 | tainted | Capture.cs:154:15:154:20 | access to local variable sink35 | access to local variable sink35 |

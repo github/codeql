@@ -395,6 +395,45 @@
 | Capture.cs:109:9:109:30 | call to local function CaptureOut2NotCalled | Capture.cs:109:9:109:30 | call to local function CaptureOut2NotCalled |
 | Capture.cs:110:9:110:23 | call to method Check | Capture.cs:110:9:110:23 | call to method Check |
 | Capture.cs:110:15:110:22 | access to local variable nonSink0 | Capture.cs:110:15:110:22 | access to local variable nonSink0 |
+| Capture.cs:111:16:111:26 | SSA def(sink40) | Capture.cs:111:16:111:26 | SSA def(sink40) |
+| Capture.cs:111:16:111:26 | String sink40 = ... | Capture.cs:111:16:111:26 | String sink40 = ... |
+| Capture.cs:111:25:111:26 | "" | Capture.cs:111:16:111:26 | SSA def(sink40) |
+| Capture.cs:111:25:111:26 | "" | Capture.cs:111:16:111:26 | SSA def(sink40) |
+| Capture.cs:111:25:111:26 | "" | Capture.cs:111:25:111:26 | "" |
+| Capture.cs:114:13:116:14 | call to method RunAction | Capture.cs:114:13:116:14 | call to method RunAction |
+| Capture.cs:114:23:116:13 | (...) => ... | Capture.cs:114:23:116:13 | (...) => ... |
+| Capture.cs:114:23:116:13 | (...) => ... | Capture.cs:202:34:202:34 | a |
+| Capture.cs:114:23:116:13 | (...) => ... | Capture.cs:202:34:202:34 | a |
+| Capture.cs:115:17:115:39 | ... = ... | Capture.cs:115:17:115:39 | ... = ... |
+| Capture.cs:115:17:115:39 | SSA def(sink40) | Capture.cs:115:17:115:39 | SSA def(sink40) |
+| Capture.cs:115:17:115:39 | SSA def(sink40) | Capture.cs:121:9:121:35 | SSA call def(sink40) |
+| Capture.cs:115:17:115:39 | SSA def(sink40) | Capture.cs:121:9:121:35 | SSA call def(sink40) |
+| Capture.cs:115:26:115:39 | "taint source" | Capture.cs:115:17:115:39 | SSA def(sink40) |
+| Capture.cs:115:26:115:39 | "taint source" | Capture.cs:115:17:115:39 | SSA def(sink40) |
+| Capture.cs:115:26:115:39 | "taint source" | Capture.cs:115:26:115:39 | "taint source" |
+| Capture.cs:117:13:119:14 | call to method RunAction | Capture.cs:117:13:119:14 | call to method RunAction |
+| Capture.cs:117:23:119:13 | (...) => ... | Capture.cs:117:23:119:13 | (...) => ... |
+| Capture.cs:117:23:119:13 | (...) => ... | Capture.cs:202:34:202:34 | a |
+| Capture.cs:117:23:119:13 | (...) => ... | Capture.cs:202:34:202:34 | a |
+| Capture.cs:118:17:118:40 | ... = ... | Capture.cs:118:17:118:40 | ... = ... |
+| Capture.cs:118:17:118:40 | SSA def(nonSink0) | Capture.cs:118:17:118:40 | SSA def(nonSink0) |
+| Capture.cs:118:17:118:40 | SSA def(nonSink0) | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
+| Capture.cs:118:17:118:40 | SSA def(nonSink0) | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
+| Capture.cs:118:28:118:40 | "not tainted" | Capture.cs:118:17:118:40 | SSA def(nonSink0) |
+| Capture.cs:118:28:118:40 | "not tainted" | Capture.cs:118:17:118:40 | SSA def(nonSink0) |
+| Capture.cs:118:28:118:40 | "not tainted" | Capture.cs:118:28:118:40 | "not tainted" |
+| Capture.cs:121:9:121:33 | access to local function CaptureOutMultipleLambdas | Capture.cs:121:9:121:33 | access to local function CaptureOutMultipleLambdas |
+| Capture.cs:121:9:121:35 | SSA call def(nonSink0) | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
+| Capture.cs:121:9:121:35 | SSA call def(nonSink0) | Capture.cs:122:30:122:37 | access to local variable nonSink0 |
+| Capture.cs:121:9:121:35 | SSA call def(nonSink0) | Capture.cs:122:30:122:37 | access to local variable nonSink0 |
+| Capture.cs:121:9:121:35 | SSA call def(sink40) | Capture.cs:121:9:121:35 | SSA call def(sink40) |
+| Capture.cs:121:9:121:35 | SSA call def(sink40) | Capture.cs:122:15:122:20 | access to local variable sink40 |
+| Capture.cs:121:9:121:35 | SSA call def(sink40) | Capture.cs:122:15:122:20 | access to local variable sink40 |
+| Capture.cs:121:9:121:35 | call to local function CaptureOutMultipleLambdas | Capture.cs:121:9:121:35 | call to local function CaptureOutMultipleLambdas |
+| Capture.cs:122:9:122:21 | call to method Check | Capture.cs:122:9:122:21 | call to method Check |
+| Capture.cs:122:15:122:20 | access to local variable sink40 | Capture.cs:122:15:122:20 | access to local variable sink40 |
+| Capture.cs:122:24:122:38 | call to method Check | Capture.cs:122:24:122:38 | call to method Check |
+| Capture.cs:122:30:122:37 | access to local variable nonSink0 | Capture.cs:122:30:122:37 | access to local variable nonSink0 |
 | Capture.cs:125:10:125:16 | this | Capture.cs:125:10:125:16 | this |
 | Capture.cs:125:25:125:31 | tainted | Capture.cs:125:25:125:31 | tainted |
 | Capture.cs:125:25:125:31 | tainted | Capture.cs:125:25:125:31 | tainted |
@@ -745,6 +784,10 @@
 | Capture.cs:202:34:202:34 | a | Capture.cs:202:34:202:34 | a |
 | Capture.cs:202:34:202:34 | a | Capture.cs:202:34:202:34 | a |
 | Capture.cs:202:34:202:34 | a | Capture.cs:202:34:202:34 | a |
+| Capture.cs:202:34:202:34 | a | Capture.cs:204:9:204:9 | access to parameter a |
+| Capture.cs:202:34:202:34 | a | Capture.cs:204:9:204:9 | access to parameter a |
+| Capture.cs:202:34:202:34 | a | Capture.cs:204:9:204:9 | access to parameter a |
+| Capture.cs:202:34:202:34 | a | Capture.cs:204:9:204:9 | access to parameter a |
 | Capture.cs:202:34:202:34 | a | Capture.cs:204:9:204:9 | access to parameter a |
 | Capture.cs:202:34:202:34 | a | Capture.cs:204:9:204:9 | access to parameter a |
 | Capture.cs:202:34:202:34 | a | Capture.cs:204:9:204:9 | access to parameter a |
