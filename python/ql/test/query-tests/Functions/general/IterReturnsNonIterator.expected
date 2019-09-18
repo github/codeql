@@ -1,0 +1,1 @@
+| protocols.py:16:5:16:23 | Function __iter__ | The '__iter__' method of iterable class $@ does not return an iterator. | protocols.py:14:1:14:16 | class X | X |

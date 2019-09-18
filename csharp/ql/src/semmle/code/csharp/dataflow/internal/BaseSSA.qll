@@ -9,14 +9,13 @@ module BaseSsa {
   private import ControlFlow
   private import AssignableDefinitions
 
+  pragma[noinline]
+  Callable getAnAssigningCallable(LocalScopeVariable v) {
+    result = any(AssignableDefinition def | def.getTarget() = v).getEnclosingCallable()
+  }
+
   private class SimpleLocalScopeVariable extends LocalScopeVariable {
-    SimpleLocalScopeVariable() {
-      not exists(AssignableDefinition def1, AssignableDefinition def2 |
-        def1.getTarget() = this and
-        def2.getTarget() = this and
-        def1.getEnclosingCallable() != def2.getEnclosingCallable()
-      )
-    }
+    SimpleLocalScopeVariable() { not getAnAssigningCallable(this) != getAnAssigningCallable(this) }
   }
 
   /**
@@ -27,8 +26,7 @@ module BaseSsa {
     bb.getNode(i) = def.getAControlFlowNode() and
     v = def.getTarget() and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
-    not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second |
-      first = def |
+    not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = def |
       second.getAssignment() = first.getAssignment() and
       second.getEvaluationOrder() > first.getEvaluationOrder() and
       second.getTarget() = v
@@ -40,14 +38,15 @@ module BaseSsa {
    * variable `v` in an SSA representation.
    */
   private predicate needsPhiNode(BasicBlock bb, SimpleLocalScopeVariable v) {
-    exists(BasicBlock def |
-      def.inDominanceFrontier(bb) |
+    exists(BasicBlock def | def.inDominanceFrontier(bb) |
       defAt(def, _, _, v) or
       needsPhiNode(def, v)
     )
   }
 
-  private newtype SsaRefKind = SsaRead() or SsaDef()
+  private newtype SsaRefKind =
+    SsaRead() or
+    SsaDef()
 
   /**
    * Holds if the `i`th node of basic block `bb` is a reference to `v`,
@@ -80,11 +79,10 @@ module BaseSsa {
    * `bb` reaches the reference at rank `rnk`, without passing through another
    * definition of `v`, including phi nodes.
    */
-  private predicate defReachesRank(BasicBlock bb, AssignableDefinition def, SimpleLocalScopeVariable v, int rnk) {
-    exists(int i |
-      rnk = ssaRefRank(bb, i, v, SsaDef()) |
-      defAt(bb, i, def, v)
-    )
+  private predicate defReachesRank(
+    BasicBlock bb, AssignableDefinition def, SimpleLocalScopeVariable v, int rnk
+  ) {
+    exists(int i | rnk = ssaRefRank(bb, i, v, SsaDef()) | defAt(bb, i, def, v))
     or
     defReachesRank(bb, def, v, rnk - 1) and
     rnk = ssaRefRank(bb, _, v, SsaRead())
@@ -112,12 +110,12 @@ module BaseSsa {
    * Gets a read of the SSA definition for variable `v` at definition `def`. That is,
    * a read that is guaranteed to read the value assigned at definition `def`.
    */
-  cached AssignableRead getARead(AssignableDefinition def, SimpleLocalScopeVariable v) {
+  cached
+  AssignableRead getARead(AssignableDefinition def, SimpleLocalScopeVariable v) {
     exists(BasicBlock bb, int i, int rnk |
-      result.getTarget() = v and
       result.getAControlFlowNode() = bb.getNode(i) and
       rnk = ssaRefRank(bb, i, v, SsaRead())
-      |
+    |
       defReachesRank(bb, def, v, rnk)
       or
       reachesEndOf(def, v, bb.getAPredecessor()) and

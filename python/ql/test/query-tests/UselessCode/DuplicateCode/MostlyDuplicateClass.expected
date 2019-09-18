@@ -1,0 +1,2 @@
+| duplicate_test.py:84:1:84:13 | Class Popen3 | All 55 statements in Popen3 are identical in $@. | duplicate_test.py:166:1:166:18 | Class Popen3Again | Popen3Again |
+| duplicate_test.py:166:1:166:18 | Class Popen3Again | All 55 statements in Popen3Again are identical in $@. | duplicate_test.py:84:1:84:13 | Class Popen3 | Popen3 |

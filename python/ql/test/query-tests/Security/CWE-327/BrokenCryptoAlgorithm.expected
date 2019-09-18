@@ -1,0 +1,2 @@
+| test_cryptography.py:8:29:8:37 | Use of weak crypto algorithm | Sensitive data from $@ is used in a broken or weak cryptographic algorithm. | test_cryptography.py:5:17:5:30 | Taint source | Taint source |
+| test_pycrypto.py:7:27:7:35 | Use of weak crypto algorithm ARC4 | Sensitive data from $@ is used in a broken or weak cryptographic algorithm. | test_pycrypto.py:5:17:5:30 | Taint source | Taint source |

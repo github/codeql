@@ -21,19 +21,15 @@ class DataFlowNode extends @cil_dataflow_node {
    * `tt` is the tainting that occurs during this step.
    */
   predicate getALocalFlowSucc(DataFlowNode sink, TaintType tt) {
-    localExactStep(this, sink) and tt=TExactValue()
+    localExactStep(this, sink) and tt = TExactValue()
     or
-    localTaintStep(this, sink) and tt=TTaintedValue()
+    localTaintStep(this, sink) and tt = TTaintedValue()
   }
 
-  private predicate flowsToStep(DataFlowNode sink) {
-    this.getALocalFlowSucc(sink, TExactValue())
-  }
+  private predicate flowsToStep(DataFlowNode sink) { this.getALocalFlowSucc(sink, TExactValue()) }
 
   /** Holds if this node flows to `sink` in zero or more steps. */
-  predicate flowsTo(DataFlowNode sink) {
-    this.flowsToStep*(sink)
-  }
+  predicate flowsTo(DataFlowNode sink) { this.flowsToStep*(sink) }
 
   /** Gets the method that contains this dataflow node. */
   Method getMethod() { none() }
@@ -49,57 +45,68 @@ private newtype TTaintType =
 /** Describes how data is tainted. */
 class TaintType extends TTaintType {
   string toString() {
-    this=TExactValue() and result = "exact"
-    or this=TTaintedValue() and result = "tainted"
+    this = TExactValue() and result = "exact"
+    or
+    this = TTaintedValue() and result = "tainted"
   }
 }
 
 /** A taint type where the data is untainted. */
-class Untainted extends TaintType, TExactValue {
-}
+class Untainted extends TaintType, TExactValue { }
 
 /** A taint type where the data is tainted. */
-class Tainted extends TaintType, TTaintedValue {
-}
+class Tainted extends TaintType, TTaintedValue { }
 
 private predicate localExactStep(DataFlowNode src, DataFlowNode sink) {
   src = sink.(Opcodes::Dup).getAnOperand()
-  or DefUse::defUse(_, src, sink)
-  or src=sink.(ParameterReadAccess).getTarget()
-  or src=sink.(Conversion).getExpr()
-  or src=sink.(WriteAccess).getExpr()
-  or src=sink.(Method).getAnImplementation().getAnInstruction().(Return)
-  or src=sink.(Return).getExpr()
-  or src=sink.(ConditionalBranch).getAnOperand()
-  or src=sink.(Parameter).getAWrite()
-  or exists(VariableUpdate update | update.getVariable().(Parameter)=sink and src=update.getSource())
+  or
+  defUse(_, src, sink)
+  or
+  src = sink.(ParameterReadAccess).getTarget()
+  or
+  src = sink.(Conversion).getExpr()
+  or
+  src = sink.(WriteAccess).getExpr()
+  or
+  src = sink.(Method).getAnImplementation().getAnInstruction().(Return)
+  or
+  src = sink.(Return).getExpr()
+  or
+  src = sink.(ConditionalBranch).getAnOperand()
+  or
+  src = sink.(Parameter).getAWrite()
+  or
+  exists(VariableUpdate update |
+    update.getVariable().(Parameter) = sink and src = update.getSource()
+  )
 }
 
 private predicate localTaintStep(DataFlowNode src, DataFlowNode sink) {
-  src=sink.(BinaryArithmeticExpr).getAnOperand()
-  or src=sink.(Opcodes::Neg).getOperand()
-  or src=sink.(UnaryBitwiseOperation).getOperand()
+  src = sink.(BinaryArithmeticExpr).getAnOperand() or
+  src = sink.(Opcodes::Neg).getOperand() or
+  src = sink.(UnaryBitwiseOperation).getOperand()
 }
 
-private cached module DefUse {
+cached
+module DefUse {
   /**
    * A classification of variable references into reads and writes.
    */
-  private newtype RefKind = Read() or Write()
+  private newtype RefKind =
+    Read() or
+    Write()
 
   /**
    * Holds if the `i`th node of basic block `bb` is a reference to `v`,
    * either a read (when `k` is `Read()`) or a write (when `k` is `Write()`).
    */
   private predicate ref(BasicBlock bb, int i, StackVariable v, RefKind k) {
-    exists(ReadAccess ra |
-      bb.getNode(i) = ra |
+    exists(ReadAccess ra | bb.getNode(i) = ra |
       ra.getTarget() = v and
       k = Read()
     )
     or
-    exists(VariableUpdate vu |
-      bb.getNode(i) = vu |
+    exists(VariableUpdate vu | bb.getNode(i) = vu |
       vu.getVariable() = v and
       k = Write()
     )
@@ -156,10 +163,7 @@ private cached module DefUse {
   private predicate defReachesEndOfBlock(BasicBlock bb, VariableUpdate vu, StackVariable v) {
     liveAtExit(bb, v) and
     (
-      exists(int last |
-        last = max(refRank(bb, _, v, _)) |
-        defReachesRank(bb, vu, last, v)
-      )
+      exists(int last | last = max(refRank(bb, _, v, _)) | defReachesRank(bb, vu, last, v))
       or
       exists(BasicBlock pred |
         pred = bb.getAPredecessor() and
@@ -181,43 +185,48 @@ private cached module DefUse {
     )
   }
 
+  /** Holds if the variable update `vu` can be used at the read `use`. */
+  cached
+  predicate variableUpdateUse(StackVariable target, VariableUpdate vu, ReadAccess use) {
+    defReachesReadWithinBlock(target, vu, use)
+    or
+    exists(BasicBlock bb, int i |
+      exists(refRank(bb, i, target, Read())) and
+      use = bb.getNode(i) and
+      defReachesEndOfBlock(bb.getAPredecessor(), vu, target) and
+      not defReachesReadWithinBlock(target, _, use)
+    )
+  }
+
   /** Holds if the update `def` can be used at the read `use`. */
   cached
-  predicate defUse(StackVariable target, DataFlowNode def, ReadAccess use) {
-    exists(VariableUpdate vu |
-      def = vu.getSource() |
-      defReachesReadWithinBlock(target, vu, use)
-      or
-      exists(BasicBlock bb, int i |
-        exists(refRank(bb, i, target, Read())) and
-        use = bb.getNode(i) and
-        defReachesEndOfBlock(bb.getAPredecessor(), vu, target) and
-        not defReachesReadWithinBlock(target, _, use)
-      )
-    )
+  predicate defUse(StackVariable target, Expr def, ReadAccess use) {
+    exists(VariableUpdate vu | def = vu.getSource() | variableUpdateUse(target, vu, use))
   }
 }
 
-library abstract class VariableUpdate extends Instruction {
+private import DefUse
+
+abstract library class VariableUpdate extends Instruction {
   abstract Expr getSource();
+
   abstract Variable getVariable();
 }
 
 private class VariableWrite extends VariableUpdate, WriteAccess {
-  override Expr getSource() { result=getExpr() }
-  override Variable getVariable() { result=getTarget() }
+  override Expr getSource() { result = getExpr() }
+
+  override Variable getVariable() { result = getTarget() }
 }
 
 private class MethodOutOrRefTarget extends VariableUpdate, Call {
   int parameterIndex;
 
-  MethodOutOrRefTarget() {
-    this.getTarget().getRawParameter(parameterIndex).hasOutFlag()
-  }
+  MethodOutOrRefTarget() { this.getTarget().getRawParameter(parameterIndex).hasOutFlag() }
 
   override Variable getVariable() {
-    result=this.getRawArgument(parameterIndex).(ReadAccess).getTarget()
+    result = this.getRawArgument(parameterIndex).(ReadAccess).getTarget()
   }
 
-  override Expr getSource() { result=this }
+  override Expr getSource() { result = this }
 }

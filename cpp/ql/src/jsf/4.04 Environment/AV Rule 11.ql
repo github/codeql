@@ -4,7 +4,11 @@
  * @kind problem
  * @id cpp/jsf/av-rule-11
  * @problem.severity warning
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
+
 import cpp
 import external.ExternalArtifact
 

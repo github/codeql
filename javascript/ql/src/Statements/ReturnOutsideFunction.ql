@@ -14,7 +14,8 @@ import javascript
 import semmle.javascript.RestrictedLocations
 
 from ReturnStmt ret, TopLevel tl
-where tl = ret.getContainer() and
-      not tl instanceof EventHandlerCode and
-      not tl instanceof NodeModule
-select (FirstLineOf)ret, "Return statement outside function."
+where
+  tl = ret.getContainer() and
+  not tl instanceof EventHandlerCode and
+  not tl instanceof NodeModule
+select ret.(FirstLineOf), "Return statement outside function."

@@ -1,11 +1,10 @@
-
 import java
 
 /**
  * Holds if `e` is synchronized by a local synchronized statement `sync` on the variable `v`.
  */
 predicate locallySynchronizedOn(Expr e, SynchronizedStmt sync, Variable v) {
-  e.getEnclosingStmt().getParent+() = sync and
+  e.getEnclosingStmt().getEnclosingStmt+() = sync and
   sync.getExpr().(VarAccess).getVariable() = v
 }
 
@@ -14,7 +13,7 @@ predicate locallySynchronizedOn(Expr e, SynchronizedStmt sync, Variable v) {
  * modifier on the enclosing (non-static) method.
  */
 predicate locallySynchronizedOnThis(Expr e, RefType thisType) {
-  exists(SynchronizedStmt sync | e.getEnclosingStmt().getParent+() = sync |
+  exists(SynchronizedStmt sync | e.getEnclosingStmt().getEnclosingStmt+() = sync |
     sync.getExpr().getProperExpr().(ThisAccess).getType().(RefType).getSourceDeclaration() = thisType
   )
   or

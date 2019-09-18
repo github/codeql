@@ -4,25 +4,26 @@
  * Provides functionality for validating that the database and library are in a
  * consistent state.
  */
+
 import csharp
 
 private predicate missingLocation(Element e, string m) {
   (
-    e instanceof Declaration
-    or e instanceof Expr
-    or e instanceof Stmt
-  )
-  and not e instanceof ImplicitAccessorParameter
-  and not e instanceof NullType
-  and not e instanceof Parameter  // Bug in Roslyn - params occasionally lack locations
-  and not e.(Operator).getDeclaringType() instanceof IntType // Roslyn quirk
-  and not e instanceof Constructor
-  and not e instanceof ArrayType
-  and not e instanceof UnknownType
-  and not e instanceof ArglistType
-  and not exists(TupleType t | e=t or e=t.getAField())
-  and not exists(e.getLocation())
-  and m = "Element does not have a location"
+    e instanceof Declaration or
+    e instanceof Expr or
+    e instanceof Stmt
+  ) and
+  not e instanceof ImplicitAccessorParameter and
+  not e instanceof NullType and
+  not e instanceof Parameter and // Bug in Roslyn - params occasionally lack locations
+  not e.(Operator).getDeclaringType() instanceof IntType and // Roslyn quirk
+  not e instanceof Constructor and
+  not e instanceof ArrayType and
+  not e instanceof UnknownType and
+  not e instanceof ArglistType and
+  not exists(TupleType t | e = t or e = t.getAField()) and
+  not exists(e.getLocation()) and
+  m = "Element does not have a location"
 }
 
 private predicate inconsistentGeneric(ConstructedGeneric g, string m) {
@@ -40,21 +41,18 @@ module SsaChecks {
   import Ssa
 
   predicate nonUniqueSsaDef(AssignableRead read, string m) {
-    exists(ControlFlow::Node cfn |
-      strictcount(Definition def | def.getAReadAtNode(cfn) = read) > 1
-    )
-    and
+    exists(ControlFlow::Node cfn | strictcount(Definition def | def.getAReadAtNode(cfn) = read) > 1) and
     m = "Read is associated with multiple SSA definitions"
   }
 
   predicate notDominatedByDef(AssignableRead read, string m) {
     exists(Definition def, BasicBlock bb, ControlFlow::Node rnode, ControlFlow::Node dnode, int i |
-      def.getAReadAtNode(rnode) = read |
+      def.getAReadAtNode(rnode) = read
+    |
       def.definesAt(bb, i) and
       dnode = bb.getNode(max(int j | j = i or j = 0)) and
       not dnode.dominates(rnode)
-    )
-    and
+    ) and
     m = "Read is not dominated by SSA definition"
   }
 
@@ -63,14 +61,13 @@ module SsaChecks {
     // local variables should not have an SSA definition, as that would imply that
     // the declaration is live (can reach a use without passing through a definition)
     exists(ExplicitDefinition def |
-      d = def.getADefinition().(AssignableDefinitions::LocalVariableDefinition).getDeclaration() |
+      d = def.getADefinition().(AssignableDefinitions::LocalVariableDefinition).getDeclaration()
+    |
       not d = any(ForeachStmt fs).getVariableDeclExpr() and
       not d = any(SpecificCatchClause scc).getVariableDeclExpr() and
       not d.getVariable().getType() instanceof Struct and
-      not d = any(TypeCase ts).getVariableDeclExpr() and
-      not d = any(IsPatternExpr ipe).getVariableDeclExpr()
-    )
-    and
+      not d = any(BindingPatternExpr bpe).getVariableDeclExpr()
+    ) and
     m = "Local variable declaration has unexpected SSA definition"
   }
 
@@ -83,8 +80,7 @@ module SsaChecks {
 
 module CfgChecks {
   predicate multipleSuccessors(ControlFlowElement cfe, string m) {
-    exists(ControlFlow::Node cfn |
-      cfn = cfe.getAControlFlowNode() |
+    exists(ControlFlow::Node cfn | cfn = cfe.getAControlFlowNode() |
       strictcount(cfn.getASuccessorByType(any(ControlFlow::SuccessorTypes::NormalSuccessor e))) > 1 and
       m = "Multiple (non-conditional/exceptional) successors"
     )

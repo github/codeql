@@ -3,9 +3,7 @@ import java
 /**
  * Holds if any `web.xml` files are included in this snapshot.
  */
-predicate isWebXMLIncluded() {
-  exists(WebXMLFile webXML)
-}
+predicate isWebXMLIncluded() { exists(WebXMLFile webXML) }
 
 /**
  * A deployment descriptor file, typically called `web.xml`.
@@ -34,66 +32,50 @@ class WebXMLFile extends XMLFile {
  * An XML element in a `WebXMLFile`.
  */
 class WebXMLElement extends XMLElement {
-  WebXMLElement() {
-    this.getFile() instanceof WebXMLFile
-  }
+  WebXMLElement() { this.getFile() instanceof WebXMLFile }
 
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
    */
-  string getValue() {
-    result = allCharactersString().trim()
-  }
+  string getValue() { result = allCharactersString().trim() }
 }
 
 /**
  * A `<context-param>` element in a `web.xml` file.
  */
 class WebContextParameter extends WebXMLElement {
-  WebContextParameter() {
-    this.getName() = "context-param"
-  }
+  WebContextParameter() { this.getName() = "context-param" }
 
   /**
    * Gets the `<param-name>` element of this `<context-param>`.
    */
-  WebContextParamName getParamName() {
-    result = getAChild()
-  }
+  WebContextParamName getParamName() { result = getAChild() }
 
   /**
    * Gets the `<param-value>` element of this `<context-param>`.
    */
-  WebContextParamValue getParamValue() {
-    result = getAChild()
-  }
+  WebContextParamValue getParamValue() { result = getAChild() }
 }
 
 /**
  * A `<param-name>` element in a `web.xml` file.
  */
 class WebContextParamName extends WebXMLElement {
-  WebContextParamName() {
-    getName() = "param-name"
-  }
+  WebContextParamName() { getName() = "param-name" }
 }
 
 /**
  * A `<param-value>` element in a `web.xml` file.
  */
 class WebContextParamValue extends WebXMLElement {
-  WebContextParamValue() {
-    getName() = "param-value"
-  }
+  WebContextParamValue() { getName() = "param-value" }
 }
 
 /**
  * A `<filter>` element in a `web.xml` file.
  */
 class WebFilter extends WebXMLElement {
-  WebFilter() {
-    getName() = "filter"
-  }
+  WebFilter() { getName() = "filter" }
 }
 
 /**
@@ -105,18 +87,14 @@ class WebFilterClass extends WebXMLElement {
     getParent() instanceof WebFilter
   }
 
-  Class getClass() {
-    result.getQualifiedName() = getValue()
-  }
+  Class getClass() { result.getQualifiedName() = getValue() }
 }
 
 /**
  * A `<servlet>` element in a `web.xml` file.
  */
 class WebServlet extends WebXMLElement {
-  WebServlet() {
-    getName() = "servlet"
-  }
+  WebServlet() { getName() = "servlet" }
 }
 
 /**
@@ -128,18 +106,14 @@ class WebServletClass extends WebXMLElement {
     getParent() instanceof WebServlet
   }
 
-  Class getClass() {
-    result.getQualifiedName() = getValue()
-  }
+  Class getClass() { result.getQualifiedName() = getValue() }
 }
 
 /**
  * A `<listener>` element in a `web.xml` file.
  */
 class WebListener extends WebXMLElement {
-  WebListener() {
-    getName() = "listener"
-  }
+  WebListener() { getName() = "listener" }
 }
 
 /**
@@ -154,7 +128,5 @@ class WebListenerClass extends WebXMLElement {
   /**
    * Gets the `Class` instance associated with this element.
    */
-  Class getClass() {
-    result.getQualifiedName() = getValue()
-  }
+  Class getClass() { result.getQualifiedName() = getValue() }
 }

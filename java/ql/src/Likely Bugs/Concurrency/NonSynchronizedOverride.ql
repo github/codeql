@@ -24,8 +24,10 @@ predicate delegatingSuperCall(Expr e, Method target) {
     call.getQualifier() instanceof SuperAccess and
     call.getCallee() = target and
     forall(Expr arg | arg = call.getAnArgument() | arg instanceof VarAccess)
-  ) or
-  delegatingSuperCall(e.(CastExpr).getExpr(), target) or
+  )
+  or
+  delegatingSuperCall(e.(CastExpr).getExpr(), target)
+  or
   delegatingSuperCall(e.(ParExpr).getExpr(), target)
 }
 
@@ -39,7 +41,8 @@ predicate delegatingOverride(Method sub, Method sup) {
     stmt = sub.getBody().(SingletonBlock).getStmt() and
     (
       // ...that is either a delegating call to `sup` (with a possible cast)...
-      delegatingSuperCall(stmt.(ExprStmt).getExpr(), sup) or
+      delegatingSuperCall(stmt.(ExprStmt).getExpr(), sup)
+      or
       // ...or a `return` statement containing such a call.
       delegatingSuperCall(stmt.(ReturnStmt).getResult(), sup)
     )

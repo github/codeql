@@ -8,6 +8,7 @@
  * @tags efficiency
  *       maintainability
  */
+
 import java
 
 /** A local variable that is initialized using a key-set iterator. */
@@ -34,7 +35,8 @@ predicate isKeyNext(Expr e, KeySetIterator it) {
   exists(MethodAccess ma | ma = e |
     ma.getMethod().hasName("next") and
     ma.getQualifier().(VarAccess).getVariable() = it
-  ) or
+  )
+  or
   isKeyNext(e.(CastExpr).getExpr(), it)
 }
 
@@ -58,6 +60,8 @@ from MethodAccess ma, Method get
 where
   ma.getMethod() = get and
   get.hasName("get") and
-  ma.getAnArgument().(VarAccess).getVariable().(Key).getBase().getBase()
-    = ma.getQualifier().(VarAccess).getVariable()
+  ma.getAnArgument().(VarAccess).getVariable().(Key).getBase().getBase() = ma
+        .getQualifier()
+        .(VarAccess)
+        .getVariable()
 select ma, "Inefficient use of key set iterator instead of entry set iterator."

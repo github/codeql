@@ -10,3 +10,8 @@ let z = someGlobal;
 
 export let w;
 w = "w";
+
+export let notAlwaysZero = 0;
+function bump() {
+  ++notAlwaysZero;
+}

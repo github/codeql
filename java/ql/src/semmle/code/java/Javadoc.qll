@@ -11,64 +11,43 @@ class JavadocParent extends @javadocParent, Top {
   JavadocElement getAChild() { result.getParent() = this }
 
   /** Gets the child documentation element at the specified (zero-based) position. */
-  JavadocElement getChild(int index) {
-    result = this.getAChild() and result.getIndex() = index
-  }
+  JavadocElement getChild(int index) { result = this.getAChild() and result.getIndex() = index }
 
   /** Gets the number of documentation elements attached to this parent. */
-  int getNumChild() {
-    result = count(getAChild())
-  }
+  int getNumChild() { result = count(getAChild()) }
 
   /** Gets a documentation element with the specified Javadoc tag name. */
-  JavadocTag getATag(string name) {
-    result = this.getAChild() and result.getTagName() = name
-  }
+  JavadocTag getATag(string name) { result = this.getAChild() and result.getTagName() = name }
 
   /*abstract*/ override string toString() { result = "Javadoc" }
 }
 
 /** A Javadoc comment. */
 class Javadoc extends JavadocParent, @javadoc {
-
   /** Gets the number of lines in this Javadoc comment. */
-  int getNumberOfLines() {
-    result = this.getLocation().getNumberOfCommentLines()
-  }
+  int getNumberOfLines() { result = this.getLocation().getNumberOfCommentLines() }
 
   /** Gets the value of the `@version` tag, if any. */
-  string getVersion() {
-    result = this.getATag("@version").getChild(0).toString()
-  }
+  string getVersion() { result = this.getATag("@version").getChild(0).toString() }
 
   /** Gets the value of the `@author` tag, if any. */
-  string getAuthor() {
-    result = this.getATag("@author").getChild(0).toString()
-  }
+  string getAuthor() { result = this.getATag("@author").getChild(0).toString() }
 
-  override string toString() {
-    result = toStringPrefix() + getChild(0) + toStringPostfix()
-  }
+  override string toString() { result = toStringPrefix() + getChild(0) + toStringPostfix() }
 
   private string toStringPrefix() {
-    if isEolComment(this) then
-      result = "//"
+    if isEolComment(this)
+    then result = "//"
     else (
-      if isNormalComment(this) then
-        result = "/* "
-      else
-        result = "/** "
+      if isNormalComment(this) then result = "/* " else result = "/** "
     )
   }
 
   private string toStringPostfix() {
-    if isEolComment(this) then
-      result = ""
+    if isEolComment(this)
+    then result = ""
     else (
-      if strictcount(getAChild()) = 1 then
-        result = " */"
-      else
-        result = " ... */"
+      if strictcount(getAChild()) = 1 then result = " */" else result = " ... */"
     )
   }
 
@@ -79,25 +58,19 @@ class Javadoc extends JavadocParent, @javadoc {
 /** A documentable element that can have an attached Javadoc comment. */
 class Documentable extends Element, @member {
   /** Gets the Javadoc comment attached to this element. */
-  Javadoc getJavadoc() { hasJavadoc(this,result) and not isNormalComment(result) }
+  Javadoc getJavadoc() { hasJavadoc(this, result) and not isNormalComment(result) }
 
   /** Gets the name of the author(s) of this element, if any. */
-  string getAuthor() {
-    result = this.getJavadoc().getAuthor()
-  }
+  string getAuthor() { result = this.getJavadoc().getAuthor() }
 }
 
 /** A common super-class for Javadoc elements, which may be either tags or text. */
 abstract class JavadocElement extends @javadocElement, Top {
   /** Gets the parent of this Javadoc element. */
-  JavadocParent getParent() {
-    javadocTag(this,_,result,_) or javadocText(this,_,result,_)
-  }
+  JavadocParent getParent() { javadocTag(this, _, result, _) or javadocText(this, _, result, _) }
 
   /** Gets the index of this child element relative to its parent. */
-  int getIndex() {
-    javadocTag(this,_,_,result) or javadocText(this,_,_,result)
-  }
+  int getIndex() { javadocTag(this, _, _, result) or javadocText(this, _, _, result) }
 
   /** Gets a printable representation of this Javadoc element. */
   /*abstract*/ override string toString() { result = "Javadoc element" }
@@ -109,7 +82,7 @@ abstract class JavadocElement extends @javadocElement, Top {
 /** A Javadoc tag. */
 class JavadocTag extends JavadocElement, JavadocParent, @javadocTag {
   /** Gets the name of this Javadoc tag. */
-  string getTagName() { javadocTag(this,result,_,_) }
+  string getTagName() { javadocTag(this, result, _, _) }
 
   /** Gets a printable representation of this Javadoc tag. */
   override string toString() { result = this.getTagName() }
@@ -158,12 +131,11 @@ class AuthorTag extends JavadocTag {
 
 /** A piece of Javadoc text. */
 class JavadocText extends JavadocElement, @javadocText {
-
   /** Gets the Javadoc comment that contains this piece of text. */
   Javadoc getJavadoc() { result.getAChild+() = this }
 
   /** Gets the text itself. */
-  override string getText() { javadocText(this,result,_,_) }
+  override string getText() { javadocText(this, result, _, _) }
 
   /** Gets a printable representation of this Javadoc element. */
   override string toString() { result = this.getText() }

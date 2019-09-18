@@ -1,16 +1,17 @@
 /**
- * This library contains the majority of the 'js/unused-parameter' query implementation.
+ * Provides classes and predicates for the 'js/unused-parameter' query.
  *
  * In order to suppress alerts that are similar to the 'js/unused-parameter' alerts,
  * `isAnAccidentallyUnusedParameter` should be used since it holds iff that alert is active.
  */
+
 import javascript
 
 /**
  * Holds if `e` is an expression whose value is invoked as a function.
  */
 private predicate isCallee(Expr e) {
-  exists (InvokeExpr invk | e = invk.getCallee().stripParens())
+  exists(InvokeExpr invk | e = invk.getCallee().getUnderlyingValue())
 }
 
 /**
@@ -23,12 +24,9 @@ private predicate isCallee(Expr e) {
  */
 private predicate isFirstOrder(Function f) {
   // if `f` is itself an expression, it is invoked
-  (f instanceof FunctionDeclStmt or isCallee(f))
-  and
+  (f instanceof FunctionDeclStmt or isCallee(f)) and
   // all references to `f` are also invocations
-  forall (VarAccess use | use = f.getVariable().getAnAccess() |
-    isCallee(use)
-  )
+  forall(VarAccess use | use = f.getVariable().getAnAccess() | isCallee(use))
 }
 
 /**
@@ -42,11 +40,13 @@ predicate isUnused(Function f, Parameter p, Variable pv, int i) {
   // nor could it be accessed through arguments
   not f.usesArgumentsObject() and
   // nor is it mentioned in a type
-  not exists (LocalVarTypeAccess acc | acc.getVariable() = pv) and
+  not exists(LocalVarTypeAccess acc | acc.getVariable() = pv) and
   // functions without a body cannot use their parameters
   f.hasBody() and
   // field parameters are used to initialize a field
-  not p instanceof FieldParameter
+  not p instanceof FieldParameter and
+  // common convention: parameters with leading underscore are intentionally unused
+  pv.getName().charAt(0) != "_"
 }
 
 /**
@@ -57,16 +57,22 @@ predicate isUnused(Function f, Parameter p, Variable pv, int i) {
 predicate isAnAccidentallyUnusedParameter(Parameter p) {
   exists(Function f, Variable pv, int i |
     isUnused(f, p, pv, i) and
-    (// either f is first-order (so its parameter list is easy to adjust), or
-      isFirstOrder(f) or
+    (
+      // either f is first-order (so its parameter list is easy to adjust), or
+      isFirstOrder(f)
+      or
       // p is a destructuring parameter, or
-      not p instanceof SimpleParameter or
+      not p instanceof SimpleParameter
+      or
       // every later parameter is non-destructuring and also unused
-      forall (Parameter q, int j | q = f.getParameter(j) and j > i | isUnused(f, q.(SimpleParameter), _, _))) and
+      forall(Parameter q, int j | q = f.getParameter(j) and j > i |
+        isUnused(f, q.(SimpleParameter), _, _)
+      )
+    ) and
     // f is not an extern
     not f.inExternsFile() and
     // and p is not documented as being unused
-    not exists (JSDocParamTag parmdoc | parmdoc.getDocumentedParameter() = pv |
+    not exists(JSDocParamTag parmdoc | parmdoc.getDocumentedParameter() = pv |
       parmdoc.getDescription().toLowerCase().matches("%unused%")
     ) and
     // and f is not marked as abstract
@@ -74,7 +80,7 @@ predicate isAnAccidentallyUnusedParameter(Parameter p) {
     // this case is checked by a different query
     not f.(FunctionExpr).isSetter() and
     // `p` isn't used in combination with a rest property pattern to filter out unwanted properties
-    not exists (ObjectPattern op | exists(op.getRest()) |
+    not exists(ObjectPattern op | exists(op.getRest()) |
       op.getAPropertyPattern().getValuePattern() = pv.getADeclaration()
     )
   )

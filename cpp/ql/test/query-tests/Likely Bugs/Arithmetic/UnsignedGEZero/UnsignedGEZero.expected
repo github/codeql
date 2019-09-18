@@ -1,3 +1,4 @@
+| Templates.cpp:9:10:9:19 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.c:40:6:40:12 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.c:48:6:48:15 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.c:54:6:54:12 | ... >= ... | Pointless comparison of unsigned value to zero. |

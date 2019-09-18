@@ -17,14 +17,10 @@ abstract class Assertion extends Locatable {
  * may terminate the program.
  */
 class LibcAssert extends MacroInvocation, Assertion {
-
-  LibcAssert() {
-    this.getMacro().getHead() = "assert(expr)"
-  }
+  LibcAssert() { this.getMacro().getHead() = "assert(expr)" }
 
   override Expr getAsserted() {
-    exists(ConditionalExpr ce | this.getAGeneratedElement() = ce |
-      result = ce.getCondition())
+    exists(ConditionalExpr ce | this.getAGeneratedElement() = ce | result = ce.getCondition())
   }
 }
 
@@ -33,14 +29,10 @@ class LibcAssert extends MacroInvocation, Assertion {
  * to be "Assert(x, y)", but further alternatives could be added.
  */
 class MacroAssert extends MacroInvocation, Assertion {
-
-  MacroAssert() {
-    this.getMacro().getHead() = "Assert(x, y)"
-  }
+  MacroAssert() { this.getMacro().getHead() = "Assert(x, y)" }
 
   override Expr getAsserted() {
-    exists(IfStmt i | this.getAGeneratedElement() = i |
-      result = i.getCondition())
+    exists(IfStmt i | this.getAGeneratedElement() = i | result = i.getCondition())
   }
 }
 
@@ -51,12 +43,9 @@ class MacroAssert extends MacroInvocation, Assertion {
  * Coding Standard_.
  */
 class RecoverableAssert extends MacroInvocation, Assertion {
-  RecoverableAssert() {
-    this.getMacro().getHead().matches("c\\_assert(%")
-  }
+  RecoverableAssert() { this.getMacro().getHead().matches("c\\_assert(%") }
 
-  private
-  Expr getAnAssertedExpr() {
+  private Expr getAnAssertedExpr() {
     result = this.getAGeneratedElement() and
     not result.getLocation().getStartColumn() = this.getLocation().getStartColumn()
   }
@@ -66,8 +55,6 @@ class RecoverableAssert extends MacroInvocation, Assertion {
     not result.getParent() = this.getAnAssertedExpr() and
     // Remove spurious "string literals" that arise when the macro
     // uses #stringification
-    not result.(Literal).getType().getUnspecifiedType().(ArrayType).getBaseType() instanceof CharType
+    not result.(Literal).getUnspecifiedType().(ArrayType).getBaseType() instanceof CharType
   }
 }
-
-/* More assertion definitions go here. */

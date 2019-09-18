@@ -1,6 +1,6 @@
 /**
  * @name Unused or undefined state property
- * @description  Unused or undefined component state properties may be a symptom of a bug and should be examined carefully.
+ * @description Unused or undefined component state properties may be a symptom of a bug and should be examined carefully.
  * @kind problem
  * @problem.severity warning
  * @id js/react/unused-or-undefined-state-property
@@ -12,7 +12,6 @@
 
 import semmle.javascript.frameworks.React
 import semmle.javascript.RestrictedLocations
-
 
 /**
  * Gets the source of a future, present or past state object of `c`.
@@ -34,7 +33,7 @@ DataFlow::PropRef getAPotentialStateAccess(ReactComponent c) {
  * Holds if the state object of `c` escapes from the scope of this file's query.
  */
 predicate hasAStateEscape(ReactComponent c) {
-  exists (DataFlow::InvokeNode invk |
+  exists(DataFlow::InvokeNode invk |
     not invk = c.getAMethodCall("setState") and
     potentialStateSource(c).flowsTo(invk.getAnArgument())
   )
@@ -44,11 +43,12 @@ predicate hasAStateEscape(ReactComponent c) {
  * Holds if there exists a write for a state property of `c` that uses an unknown property name.
  */
 predicate hasUnknownStatePropertyWrite(ReactComponent c) {
-  exists (DataFlow::PropWrite pwn |
+  exists(DataFlow::PropWrite pwn |
     pwn = getAPotentialStateAccess(c) and
-    not exists (pwn.getPropertyName())
-  ) or
-  exists (DataFlow::SourceNode source |
+    not exists(pwn.getPropertyName())
+  )
+  or
+  exists(DataFlow::SourceNode source |
     source = c.getACandidateStateSource() and
     not source instanceof DataFlow::ObjectLiteralNode
   )
@@ -58,13 +58,12 @@ predicate hasUnknownStatePropertyWrite(ReactComponent c) {
  * Holds if there exists a read for a state property of `c` that uses an unknown property name.
  */
 predicate hasUnknownStatePropertyRead(ReactComponent c) {
-  exists (DataFlow::PropRead prn |
+  exists(DataFlow::PropRead prn |
     prn = getAPotentialStateAccess(c) and
-    not exists (prn.getPropertyName())
-  ) or
-  exists (SpreadElement spread |
-    potentialStateSource(c).flowsToExpr(spread.getOperand())
+    not exists(prn.getPropertyName())
   )
+  or
+  exists(SpreadElement spread | potentialStateSource(c).flowsToExpr(spread.getOperand()))
 }
 
 /**
@@ -79,8 +78,7 @@ predicate usesMixins(ES5Component c) {
  */
 DataFlow::PropWrite getAnUnusedStateProperty(ReactComponent c) {
   result = getAPotentialStateAccess(c) and
-  exists (string name |
-    name = result.getPropertyName() |
+  exists(string name | name = result.getPropertyName() |
     not exists(DataFlow::PropRead prn |
       prn = getAPotentialStateAccess(c) and
       prn.getPropertyName() = name
@@ -93,8 +91,7 @@ DataFlow::PropWrite getAnUnusedStateProperty(ReactComponent c) {
  */
 DataFlow::PropRead getAnUndefinedStateProperty(ReactComponent c) {
   result = getAPotentialStateAccess(c) and
-  exists (string name |
-    name = result.getPropertyName() |
+  exists(string name | name = result.getPropertyName() |
     not exists(DataFlow::PropWrite pwn |
       pwn = getAPotentialStateAccess(c) and
       pwn.getPropertyName() = name
@@ -103,15 +100,20 @@ DataFlow::PropRead getAnUndefinedStateProperty(ReactComponent c) {
 }
 
 from ReactComponent c, DataFlow::PropRef n, string action, string nonAction
-where (
-      action = "written" and nonAction = "read" and
-      n = getAnUnusedStateProperty(c) and
-      not hasUnknownStatePropertyRead(c)
-      or
-      action = "read" and nonAction = "written" and
-      n = getAnUndefinedStateProperty(c) and
-      not hasUnknownStatePropertyWrite(c)
-      ) and
-      not hasAStateEscape(c) and
-      not usesMixins(c)
-select (FirstLineOf)c, "Component state property '" + n.getPropertyName() + "' is $@, but it is never " + nonAction + ".", n, action
+where
+  (
+    action = "written" and
+    nonAction = "read" and
+    n = getAnUnusedStateProperty(c) and
+    not hasUnknownStatePropertyRead(c)
+    or
+    action = "read" and
+    nonAction = "written" and
+    n = getAnUndefinedStateProperty(c) and
+    not hasUnknownStatePropertyWrite(c)
+  ) and
+  not hasAStateEscape(c) and
+  not usesMixins(c)
+select c.(FirstLineOf),
+  "Component state property '" + n.getPropertyName() + "' is $@, but it is never " + nonAction + ".",
+  n, action

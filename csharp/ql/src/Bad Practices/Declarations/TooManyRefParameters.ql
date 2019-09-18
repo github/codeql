@@ -13,7 +13,9 @@
 import csharp
 
 from Method m, int n
-where m.isSourceDeclaration()
-  and n = count(Parameter p | p = m.getAParameter() and p.isRef())
-  and n > 2
-select m, "Method '" + m.getName() + "' has " + n + " 'ref' parameters and might be hard to understand."
+where
+  m.isSourceDeclaration() and
+  n = count(Parameter p | p = m.getAParameter() and p.isRef()) and
+  n > 2
+select m,
+  "Method '" + m.getName() + "' has " + n + " 'ref' parameters and might be hard to understand."

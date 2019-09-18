@@ -2,6 +2,7 @@
  * Provides a taint-tracking configuration for reasoning about uncontrolled data in path expression
  * vulnerabilities.
  */
+
 import csharp
 
 module TaintedPath {
@@ -30,31 +31,18 @@ module TaintedPath {
    * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "TaintedPath"
-    }
+    TaintTrackingConfiguration() { this = "TaintedPath" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input. */
   class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
+    RemoteSource() { this instanceof RemoteFlowSource }
   }
 
   /**
@@ -62,8 +50,7 @@ module TaintedPath {
    */
   class FileCreateSink extends Sink {
     FileCreateSink() {
-      exists(Method create |
-        create = any(SystemIOFileClass f).getAMethod() |
+      exists(Method create | create = any(SystemIOFileClass f).getAMethod() |
         this.getExpr() = create.getACall().getArgumentForName("path")
       )
     }
@@ -74,8 +61,7 @@ module TaintedPath {
    */
   class DirectorySink extends Sink {
     DirectorySink() {
-      exists(Method create |
-        create = any(SystemIODirectoryClass f).getAMethod() |
+      exists(Method create | create = any(SystemIODirectoryClass f).getAMethod() |
         this.getExpr() = create.getACall().getArgumentForName("path")
       )
     }
@@ -87,7 +73,8 @@ module TaintedPath {
   class FileStreamSink extends Sink {
     FileStreamSink() {
       exists(ObjectCreation oc |
-        oc.getTarget().getDeclaringType() = any(SystemIOFileStreamClass f) |
+        oc.getTarget().getDeclaringType() = any(SystemIOFileStreamClass f)
+      |
         this.getExpr() = oc.getArgumentForName("path")
       )
     }
@@ -99,38 +86,31 @@ module TaintedPath {
   class StreamWriterTaintedPathSink extends Sink {
     StreamWriterTaintedPathSink() {
       exists(ObjectCreation oc |
-        oc.getTarget().getDeclaringType() = any(SystemIOStreamWriterClass f) |
+        oc.getTarget().getDeclaringType() = any(SystemIOStreamWriterClass f)
+      |
         this.getExpr() = oc.getArgumentForName("path")
       )
     }
   }
 
   /**
-   * Holds if this expression is part of a check that is insufficient to prevent path tampering.
+   * A weak guard that is insufficient to prevent path tampering.
    */
-  private predicate inWeakCheck(Expr e) {
-    // None of these are sufficient to guarantee that a string is safe.
-    exists(MethodCall m, Method def | m.getTarget() = def |
-      (
-        m.getQualifier() = e and (
-          def.getName() = "StartsWith" or
-          def.getName() = "EndsWith"
-        )
-      ) or
-      (
-        m.getArgument(0) = e and
-        (
-          def.getName() = "IsNullOrEmpty" or
-          def.getName() = "IsNullOrWhitespace" or
-          def = any(SystemIOFileClass f).getAMethod("Exists") or
-          def = any(SystemIODirectoryClass f).getAMethod("Exists")
-        )
+  private class WeakGuard extends Guard {
+    WeakGuard() {
+      // None of these are sufficient to guarantee that a string is safe.
+      exists(MethodCall mc, Method m | this = mc and mc.getTarget() = m |
+        m.getName() = "StartsWith" or
+        m.getName() = "EndsWith" or
+        m.getName() = "IsNullOrEmpty" or
+        m.getName() = "IsNullOrWhitespace" or
+        m = any(SystemIOFileClass f).getAMethod("Exists") or
+        m = any(SystemIODirectoryClass f).getAMethod("Exists")
       )
-    ) or
-    // Checking against `null` has no bearing on path traversal.
-    exists(EqualityOperation b | b.getAnOperand() = e |
-      b.getAnOperand() instanceof NullLiteral
-    )
+      or
+      // Checking against `null` has no bearing on path traversal.
+      this.controlsNode(_, _, any(AbstractValues::NullValue nv))
+    }
   }
 
   /**
@@ -140,12 +120,10 @@ module TaintedPath {
    */
   class PathCheck extends Sanitizer {
     PathCheck() {
-      /*
-       * This expression is structurally replicated in a dominating guard which is not a "weak" check.
-       */
-      exists(Expr e |
-        this.getExpr().(GuardedExpr).isGuardedBy(_, e, _) and
-        not inWeakCheck(e)
+      // This expression is structurally replicated in a dominating guard which is not a "weak" check
+      exists(Guard g, AbstractValues::BooleanValue v |
+        g = this.(GuardedDataFlowNode).getAGuard(_, v) and
+        not g instanceof WeakGuard
       )
     }
   }
@@ -157,7 +135,8 @@ module TaintedPath {
     RequestMapPathSanitizer() {
       exists(Method m |
         m = any(SystemWebHttpRequestClass request).getAMethod() and
-        m.hasName("MapPath") |
+        m.hasName("MapPath")
+      |
         this.getExpr() = m.getACall()
       )
     }

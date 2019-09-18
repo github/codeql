@@ -2,7 +2,7 @@
  * @name User-controlled data used in permissions check
  * @description Using user-controlled data in a permissions check may result in inappropriate
  *              permissions being granted.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/tainted-permissions-check
@@ -10,13 +10,13 @@
  *       external/cwe/cwe-807
  *       external/cwe/cwe-290
  */
+
 import java
 import semmle.code.java.dataflow.FlowSources
+import DataFlow::PathGraph
 
 class TypeShiroSubject extends RefType {
-  TypeShiroSubject() {
-    this.getQualifiedName() = "org.apache.shiro.subject.Subject"
-  }
+  TypeShiroSubject() { this.getQualifiedName() = "org.apache.shiro.subject.Subject" }
 }
 
 class TypeShiroWCPermission extends RefType {
@@ -40,9 +40,7 @@ class PermissionsCheckMethodAccess extends MethodAccess, PermissionsConstruction
     )
   }
 
-  override Expr getInput() {
-    result = getArgument(0)
-  }
+  override Expr getInput() { result = getArgument(0) }
 }
 
 class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstruction {
@@ -50,17 +48,21 @@ class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstructio
     this.getConstructor().getDeclaringType() instanceof TypeShiroWCPermission
   }
 
-  override Expr getInput() {
-    result = getArgument(0)
-  }
+  override Expr getInput() { result = getArgument(0) }
 }
 
 class TaintedPermissionsCheckFlowConfig extends TaintTracking::Configuration {
   TaintedPermissionsCheckFlowConfig() { this = "TaintedPermissionsCheckFlowConfig" }
+
   override predicate isSource(DataFlow::Node source) { source instanceof UserInput }
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(PermissionsConstruction p).getInput() }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(PermissionsConstruction p).getInput()
+  }
 }
 
-from UserInput u, PermissionsConstruction p, TaintedPermissionsCheckFlowConfig conf
-where conf.hasFlow(u, DataFlow::exprNode(p.getInput()))
-select p, "Permissions check uses user-controlled $@.", u, "data"
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, PermissionsConstruction p,
+  TaintedPermissionsCheckFlowConfig conf
+where sink.getNode().asExpr() = p.getInput() and conf.hasFlowPath(source, sink)
+select p, source, sink, "Permissions check uses user-controlled $@.", source.getNode(), "data"

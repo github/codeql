@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Semmle C# Default Queries
-Bundle-SymbolicName: com.semmle.plugin.semmlecode.csharp.queries;singleton:=true
-Bundle-Version: 1.18.0.qualifier
-Bundle-Vendor: Semmle Ltd.
-Bundle-ActivationPolicy: lazy
-Require-Bundle: com.semmle.plugin.qdt.ui;bundle-version="[1.18.0.qualifier, 1.18.0.qualifier]"

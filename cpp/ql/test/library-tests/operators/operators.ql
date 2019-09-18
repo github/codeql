@@ -1,3 +1,4 @@
 import cpp
 
-from Call c select c
+from Call c
+select c

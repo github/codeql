@@ -13,6 +13,7 @@
 import javascript
 
 from LabeledStmt l, Case c
-where l = c.getAChildStmt+() and
-      l.getLocation().getStartColumn() = c.getLocation().getStartColumn()
+where
+  l = c.getAChildStmt+() and
+  l.getLocation().getStartColumn() = c.getLocation().getStartColumn()
 select l.getChildExpr(0), "Non-case labels in switch statements are confusing."

@@ -16,13 +16,21 @@ class Stmt extends StmtParent, ExprParent, @stmt {
    * Gets the immediately enclosing callable (method or constructor)
    * whose body contains this statement.
    */
-  Callable getEnclosingCallable() { stmts(this,_,_,_,result) }
+  Callable getEnclosingCallable() { stmts(this, _, _, _, result) }
 
   /** Gets the index of this statement as a child of its parent. */
-  int getIndex() { stmts(this,_,_,result,_) }
+  int getIndex() { stmts(this, _, _, result, _) }
 
   /** Gets the parent of this statement. */
-  StmtParent getParent() { stmts(this,_,result,_,_) }
+  StmtParent getParent() { stmts(this, _, result, _, _) }
+
+  /**
+   * Gets the statement containing this statement, if any.
+   */
+  Stmt getEnclosingStmt() {
+    result = this.getParent() or
+    result = this.getParent().(SwitchExpr).getEnclosingStmt()
+  }
 
   /** Holds if this statement is the child of the specified parent at the specified (zero-based) position. */
   predicate isNthChildOf(StmtParent parent, int index) {
@@ -49,11 +57,10 @@ class Stmt extends StmtParent, ExprParent, @stmt {
 }
 
 /** A statement parent is any element that can have a statement as its child. */
-class StmtParent extends @stmtparent, Top {
-}
+class StmtParent extends @stmtparent, Top { }
 
 /** A block of statements. */
-class Block extends Stmt,@block {
+class Block extends Stmt, @block {
   /** Gets a statement that is an immediate child of this block. */
   Stmt getAStmt() { result.getParent() = this }
 
@@ -64,7 +71,7 @@ class Block extends Stmt,@block {
   int getNumStmt() { result = count(this.getAStmt()) }
 
   /** Gets the last statement in this block. */
-  Stmt getLastStmt() { result = getStmt(getNumStmt()-1) }
+  Stmt getLastStmt() { result = getStmt(getNumStmt() - 1) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() { result = "{ ... }" }
@@ -95,11 +102,11 @@ abstract class ConditionalStmt extends Stmt {
    *
    * DEPRECATED: use `ConditionNode.getATrueSuccessor()` instead.
    */
-  deprecated abstract Stmt getTrueSuccessor();
+  abstract deprecated Stmt getTrueSuccessor();
 }
 
 /** An `if` statement. */
-class IfStmt extends ConditionalStmt,@ifstmt {
+class IfStmt extends ConditionalStmt, @ifstmt {
   /** Gets the boolean condition of this `if` statement. */
   override Expr getCondition() { result.isNthChildOf(this, 0) }
 
@@ -119,7 +126,7 @@ class IfStmt extends ConditionalStmt,@ifstmt {
   override string pp() {
     result = "if (...) " + this.getThen().pp() + " else " + this.getElse().pp()
     or
-    (not exists(this.getElse()) and result = "if (...) " + this.getThen().pp())
+    not exists(this.getElse()) and result = "if (...) " + this.getThen().pp()
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
@@ -127,16 +134,14 @@ class IfStmt extends ConditionalStmt,@ifstmt {
 }
 
 /** A `for` loop. */
-class ForStmt extends ConditionalStmt,@forstmt {
+class ForStmt extends ConditionalStmt, @forstmt {
   /**
    * Gets an initializer expression of the loop.
    *
    * This may be an assignment expression or a
    * local variable declaration expression.
    */
-  Expr getAnInit() {
-    exists(int index | result.isNthChildOf(this, index) | index <= -1)
-  }
+  Expr getAnInit() { exists(int index | result.isNthChildOf(this, index) | index <= -1) }
 
   /** Gets the initializer expression of the loop at the specified (zero-based) position. */
   Expr getInit(int index) {
@@ -148,9 +153,7 @@ class ForStmt extends ConditionalStmt,@forstmt {
   override Expr getCondition() { result.isNthChildOf(this, 1) }
 
   /** Gets an update expression of this `for` loop. */
-  Expr getAnUpdate() {
-    exists(int index | result.isNthChildOf(this, index) | index >= 3)
-  }
+  Expr getAnUpdate() { exists(int index | result.isNthChildOf(this, index) | index >= 3) }
 
   /** Gets the update expression of this loop at the specified (zero-based) position. */
   Expr getUpdate(int index) {
@@ -189,16 +192,14 @@ class ForStmt extends ConditionalStmt,@forstmt {
   }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "for (...;...;...) " + this.getStmt().pp()
-  }
+  override string pp() { result = "for (...;...;...) " + this.getStmt().pp() }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "ForStmt" }
 }
 
 /** An enhanced `for` loop. (Introduced in Java 5.) */
-class EnhancedForStmt extends Stmt,@enhancedforstmt {
+class EnhancedForStmt extends Stmt, @enhancedforstmt {
   /** Gets the local variable declaration expression of this enhanced `for` loop. */
   LocalVariableDeclExpr getVariable() { result.getParent() = this }
 
@@ -209,16 +210,14 @@ class EnhancedForStmt extends Stmt,@enhancedforstmt {
   Stmt getStmt() { result.getParent() = this }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "for (...) " + this.getStmt().pp()
-  }
+  override string pp() { result = "for (...) " + this.getStmt().pp() }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "EnhancedForStmt" }
 }
 
 /** A `while` loop. */
-class WhileStmt extends ConditionalStmt,@whilestmt {
+class WhileStmt extends ConditionalStmt, @whilestmt {
   /** Gets the boolean condition of this `while` loop. */
   override Expr getCondition() { result.getParent() = this }
 
@@ -232,16 +231,14 @@ class WhileStmt extends ConditionalStmt,@whilestmt {
   override Stmt getTrueSuccessor() { result = getStmt() }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "while (...) " + this.getStmt().pp()
-  }
+  override string pp() { result = "while (...) " + this.getStmt().pp() }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "WhileStmt" }
 }
 
 /** A `do` loop. */
-class DoStmt extends ConditionalStmt,@dostmt {
+class DoStmt extends ConditionalStmt, @dostmt {
   /** Gets the condition of this `do` loop. */
   override Expr getCondition() { result.getParent() = this }
 
@@ -255,9 +252,7 @@ class DoStmt extends ConditionalStmt,@dostmt {
   override Stmt getTrueSuccessor() { result = getStmt() }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "do " + this.getStmt().pp() + " while (...)"
-  }
+  override string pp() { result = "do " + this.getStmt().pp() + " while (...)" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "DoStmt" }
@@ -292,7 +287,7 @@ class LoopStmt extends Stmt {
 }
 
 /** A `try` statement. */
-class TryStmt extends Stmt,@trystmt {
+class TryStmt extends Stmt, @trystmt {
   /** Gets the block of the `try` statement. */
   Stmt getBlock() { result.isNthChildOf(this, -1) }
 
@@ -312,9 +307,7 @@ class TryStmt extends Stmt,@trystmt {
   Block getFinally() { result.isNthChildOf(this, -2) }
 
   /** Gets a resource variable declaration, if any. */
-  LocalVariableDeclStmt getAResourceDecl() {
-    result.getParent() = this and result.getIndex() <= -3
-  }
+  LocalVariableDeclStmt getAResourceDecl() { result.getParent() = this and result.getIndex() <= -3 }
 
   /** Gets the resource variable declaration at the specified position in this `try` statement. */
   LocalVariableDeclStmt getResourceDecl(int index) {
@@ -323,9 +316,7 @@ class TryStmt extends Stmt,@trystmt {
   }
 
   /** Gets a resource expression, if any. */
-  VarAccess getAResourceExpr() {
-    result.getParent() = this and result.getIndex() <= -3
-  }
+  VarAccess getAResourceExpr() { result.getParent() = this and result.getIndex() <= -3 }
 
   /** Gets the resource expression at the specified position in this `try` statement. */
   VarAccess getResourceExpr(int index) {
@@ -334,9 +325,7 @@ class TryStmt extends Stmt,@trystmt {
   }
 
   /** Gets a resource in this `try` statement, if any. */
-  ExprParent getAResource() {
-    result = getAResourceDecl() or result = getAResourceExpr()
-  }
+  ExprParent getAResource() { result = getAResourceDecl() or result = getAResourceExpr() }
 
   /** Gets the resource at the specified position in this `try` statement. */
   ExprParent getResource(int index) {
@@ -350,16 +339,14 @@ class TryStmt extends Stmt,@trystmt {
   }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "try " + this.getBlock().pp() + " catch (...)"
-  }
+  override string pp() { result = "try " + this.getBlock().pp() + " catch (...)" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "TryStmt" }
 }
 
 /** A `catch` clause in a `try` statement. */
-class CatchClause extends Stmt,@catchclause {
+class CatchClause extends Stmt, @catchclause {
   /** Gets the block of this `catch` clause. */
   Block getBlock() { result.getParent() = this }
 
@@ -370,9 +357,7 @@ class CatchClause extends Stmt,@catchclause {
   LocalVariableDeclExpr getVariable() { result.getParent() = this }
 
   /** Holds if this `catch` clause is a _multi_-`catch` clause. */
-  predicate isMultiCatch() {
-    this.getVariable().getTypeAccess() instanceof UnionTypeAccess
-  }
+  predicate isMultiCatch() { this.getVariable().getTypeAccess() instanceof UnionTypeAccess }
 
   /** Gets a type caught by this `catch` clause. */
   RefType getACaughtType() {
@@ -383,16 +368,14 @@ class CatchClause extends Stmt,@catchclause {
   }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "catch (...) " + this.getBlock().pp()
-  }
+  override string pp() { result = "catch (...) " + this.getBlock().pp() }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "CatchClause" }
 }
 
 /** A `switch` statement. */
-class SwitchStmt extends Stmt,@switchstmt {
+class SwitchStmt extends Stmt, @switchstmt {
   /** Gets an immediate child statement of this `switch` statement. */
   Stmt getAStmt() { result.getParent() = this }
 
@@ -418,34 +401,78 @@ class SwitchStmt extends Stmt,@switchstmt {
   Expr getExpr() { result.getParent() = this }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "switch (...)"
-  }
+  override string pp() { result = "switch (...)" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "SwitchStmt" }
 }
 
 /**
- * A case of a `switch` statement.
+ * A case of a `switch` statement or expression.
  *
  * This includes both normal `case`s and the `default` case.
  */
 class SwitchCase extends Stmt, @case {
+  /** Gets the switch statement to which this case belongs, if any. */
   SwitchStmt getSwitch() { result.getACase() = this }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the switch expression to which this case belongs, if any.
+   */
+  SwitchExpr getSwitchExpr() { result.getACase() = this }
+
+  /**
+   * Gets the expression of the surrounding switch that this case is compared
+   * against.
+   */
+  Expr getSelectorExpr() {
+    result = this.getSwitch().getExpr() or result = this.getSwitchExpr().getExpr()
+  }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Holds if this `case` is a switch labeled rule of the form `... -> ...`.
+   */
+  predicate isRule() {
+    exists(Expr e | e.getParent() = this | e.getIndex() = -1)
+    or
+    exists(Stmt s | s.getParent() = this | s.getIndex() = -1)
+  }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the expression on the right-hand side of the arrow, if any.
+   */
+  Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the statement on the right-hand side of the arrow, if any.
+   */
+  Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
 }
 
 /** A constant `case` of a switch statement. */
 class ConstCase extends SwitchCase {
-  ConstCase() { exists(Expr e | e.getParent() = this) }
+  ConstCase() { exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
 
-  /** Gets the expression of this `case`. */
-  Expr getValue() { result.getParent() = this }
+  /** Gets the `case` constant at index 0. */
+  Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the `case` constant at the specified index.
+   */
+  Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "case ...:"
-  }
+  override string pp() { result = "case ..." }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "ConstCase" }
@@ -453,19 +480,17 @@ class ConstCase extends SwitchCase {
 
 /** A `default` case of a `switch` statement */
 class DefaultCase extends SwitchCase {
-  DefaultCase() { not exists(Expr e | e.getParent() = this) }
+  DefaultCase() { not exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "default"
-  }
+  override string pp() { result = "default" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "DefaultCase" }
 }
 
 /** A `synchronized` statement. */
-class SynchronizedStmt extends Stmt,@synchronizedstmt {
+class SynchronizedStmt extends Stmt, @synchronizedstmt {
   /** Gets the expression on which this `synchronized` statement synchronizes. */
   Expr getExpr() { result.getParent() = this }
 
@@ -473,37 +498,31 @@ class SynchronizedStmt extends Stmt,@synchronizedstmt {
   Stmt getBlock() { result.getParent() = this }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "synchronized (...) " + this.getBlock().pp()
-  }
+  override string pp() { result = "synchronized (...) " + this.getBlock().pp() }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "SynchronizedStmt" }
 }
 
 /** A `return` statement. */
-class ReturnStmt extends Stmt,@returnstmt {
+class ReturnStmt extends Stmt, @returnstmt {
   /** Gets the expression returned by this `return` statement, if any. */
   Expr getResult() { result.getParent() = this }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "return ..."
-  }
+  override string pp() { result = "return ..." }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "ReturnStmt" }
 }
 
 /** A `throw` statement. */
-class ThrowStmt extends Stmt,@throwstmt {
+class ThrowStmt extends Stmt, @throwstmt {
   /** Gets the expression thrown by this `throw` statement. */
   Expr getExpr() { result.getParent() = this }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "throw ..."
-  }
+  override string pp() { result = "throw ..." }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "ThrowStmt" }
@@ -522,19 +541,20 @@ class ThrowStmt extends Stmt,@throwstmt {
   }
 
   private Stmt findEnclosing() {
-    result = getParent() or
+    result = getEnclosingStmt()
+    or
     exists(Stmt mid |
       mid = findEnclosing() and
-      not exists(this.catchClauseForThis((TryStmt)mid)) and
-      result = mid.getParent()
+      not exists(this.catchClauseForThis(mid.(TryStmt))) and
+      result = mid.getEnclosingStmt()
     )
   }
 
   private CatchClause catchClauseForThis(TryStmt try) {
     result = try.getACatchClause() and
     result.getEnclosingCallable() = this.getEnclosingCallable() and
-    ((RefType)getExpr().getType()).hasSupertype*((RefType)result.getVariable().getType()) and
-    not this.getParent+() = result
+    getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType().(RefType)) and
+    not this.getEnclosingStmt+() = result
   }
 }
 
@@ -550,50 +570,73 @@ class JumpStmt extends Stmt {
    * `continue` statement refers to, if any.
    */
   LabeledStmt getTargetLabel() {
-    this.getParent+() = result and
+    this.getEnclosingStmt+() = result and
     namestrings(result.getLabel(), _, this)
   }
 
-  private Stmt getLabelTarget() {
-    result = getTargetLabel().getStmt()
-  }
+  private Stmt getLabelTarget() { result = getTargetLabel().getStmt() }
 
   private Stmt getAPotentialTarget() {
-    this.getParent+() = result and
+    this.getEnclosingStmt+() = result and
     (
-      result instanceof LoopStmt or
+      result instanceof LoopStmt
+      or
       this instanceof BreakStmt and result instanceof SwitchStmt
     )
   }
 
-  private Stmt getEnclosingTarget() {
+  private SwitchExpr getSwitchExprTarget() {
+    this.(BreakStmt).hasValue() and result = this.getParent+()
+  }
+
+  private StmtParent getEnclosingTarget() {
+    result = getSwitchExprTarget()
+    or
+    not exists(getSwitchExprTarget()) and
     result = getAPotentialTarget() and
-    not exists(Stmt other | other = getAPotentialTarget() | other.getParent+() = result)
+    not exists(Stmt other | other = getAPotentialTarget() | other.getEnclosingStmt+() = result)
   }
 
   /**
-   * Gets the statement that this `break` or `continue` jumps to.
+   * Gets the statement or `switch` expression that this `break` or `continue` jumps to.
    */
-  Stmt getTarget() {
-    result = getLabelTarget() or
-    (not exists(getLabelTarget()) and result = getEnclosingTarget())
+  StmtParent getTarget() {
+    result = getLabelTarget()
+    or
+    not exists(getLabelTarget()) and result = getEnclosingTarget()
   }
 }
 
 /** A `break` statement. */
-class BreakStmt extends Stmt,@breakstmt {
+class BreakStmt extends Stmt, @breakstmt {
   /** Gets the label targeted by this `break` statement, if any. */
-  string getLabel() { namestrings(result,_,this) }
+  string getLabel() { namestrings(result, _, this) }
 
   /** Holds if this `break` statement has an explicit label. */
   predicate hasLabel() { exists(string s | s = this.getLabel()) }
 
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the value of this `break` statement, if any.
+   */
+  Expr getValue() { result.getParent() = this }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Holds if this `break` statement has a value.
+   */
+  predicate hasValue() { exists(Expr e | e.getParent() = this) }
+
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() {
-    if this.hasLabel() then
-      result = "break " + this.getLabel()
+    if this.hasLabel()
+    then result = "break " + this.getLabel()
     else
-      result = "break"
+      if this.hasValue()
+      then result = "break ..."
+      else result = "break"
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
@@ -601,19 +644,16 @@ class BreakStmt extends Stmt,@breakstmt {
 }
 
 /** A `continue` statement. */
-class ContinueStmt extends Stmt,@continuestmt {
+class ContinueStmt extends Stmt, @continuestmt {
   /** Gets the label targeted by this `continue` statement, if any. */
-  string getLabel() { namestrings(result,_,this) }
+  string getLabel() { namestrings(result, _, this) }
 
   /** Holds if this `continue` statement has an explicit label. */
   predicate hasLabel() { exists(string s | s = this.getLabel()) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() {
-    if this.hasLabel() then
-      result = "continue " + this.getLabel()
-    else
-      result = "continue"
+    if this.hasLabel() then result = "continue " + this.getLabel() else result = "continue"
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
@@ -621,11 +661,9 @@ class ContinueStmt extends Stmt,@continuestmt {
 }
 
 /** The empty statement. */
-class EmptyStmt extends Stmt,@emptystmt {
+class EmptyStmt extends Stmt, @emptystmt {
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = ";"
-  }
+  override string pp() { result = ";" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "EmptyStmt" }
@@ -636,14 +674,12 @@ class EmptyStmt extends Stmt,@emptystmt {
  *
  * Certain kinds of expressions may be used as statements by appending a semicolon.
  */
-class ExprStmt extends Stmt,@exprstmt {
+class ExprStmt extends Stmt, @exprstmt {
   /** Gets the expression of this expression statement. */
   Expr getExpr() { result.getParent() = this }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "...;"
-  }
+  override string pp() { result = "...;" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "ExprStmt" }
@@ -653,7 +689,7 @@ class ExprStmt extends Stmt,@exprstmt {
     getEnclosingCallable() instanceof InitializerMethod and
     exists(FieldDeclaration fd, Location fdl, Location sl |
       fdl = fd.getLocation() and sl = getLocation()
-      |
+    |
       fdl.getFile() = sl.getFile() and
       fdl.getStartLine() = sl.getStartLine() and
       fdl.getStartColumn() = sl.getStartColumn()
@@ -662,36 +698,31 @@ class ExprStmt extends Stmt,@exprstmt {
 }
 
 /** A labeled statement. */
-class LabeledStmt extends Stmt,@labeledstmt {
+class LabeledStmt extends Stmt, @labeledstmt {
   /** Gets the statement of this labeled statement. */
   Stmt getStmt() { result.getParent() = this }
 
   /** Gets the label of this labeled statement. */
-  string getLabel() { namestrings(result,_,this) }
+  string getLabel() { namestrings(result, _, this) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = this.getLabel() + ": " + this.getStmt().pp()
-  }
+  override string pp() { result = this.getLabel() + ": " + this.getStmt().pp() }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = this.getLabel() + ":" }
 }
 
 /** An `assert` statement. */
-class AssertStmt extends Stmt,@assertstmt {
+class AssertStmt extends Stmt, @assertstmt {
   /** Gets the boolean expression of this `assert` statement. */
-  Expr getExpr() { exprs(result,_,_,this,_) and result.getIndex() = 0 }
+  Expr getExpr() { exprs(result, _, _, this, _) and result.getIndex() = 0 }
 
   /** Gets the assertion message expression, if any. */
-  Expr getMessage() { exprs(result,_,_,this,_) and result.getIndex() = 1 }
+  Expr getMessage() { exprs(result, _, _, this, _) and result.getIndex() = 1 }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() {
-    if exists(this.getMessage()) then
-      result = "assert ... : ..."
-    else
-      result = "assert ..."
+    if exists(this.getMessage()) then result = "assert ... : ..." else result = "assert ..."
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
@@ -699,7 +730,7 @@ class AssertStmt extends Stmt,@assertstmt {
 }
 
 /** A statement that declares one or more local variables. */
-class LocalVariableDeclStmt extends Stmt,@localvariabledeclstmt {
+class LocalVariableDeclStmt extends Stmt, @localvariabledeclstmt {
   /** Gets a declared variable. */
   LocalVariableDeclExpr getAVariable() { result.getParent() = this }
 
@@ -710,28 +741,22 @@ class LocalVariableDeclStmt extends Stmt,@localvariabledeclstmt {
   }
 
   /** Gets an index of a variable declared in this local variable declaration statement. */
-  int getAVariableIndex() {
-    exists(getVariable(result))
-  }
+  int getAVariableIndex() { exists(getVariable(result)) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "local variable declaration"
-  }
+  override string pp() { result = "local variable declaration" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "LocalVariableDeclStmt" }
 }
 
 /** A statement that declares a local class. */
-class LocalClassDeclStmt extends Stmt,@localclassdeclstmt {
+class LocalClassDeclStmt extends Stmt, @localclassdeclstmt {
   /** Gets the local class declared by this statement. */
-  LocalClass getLocalClass() { isLocalClass(result,this) }
+  LocalClass getLocalClass() { isLocalClass(result, this) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "local class declaration: " + this.getLocalClass().toString()
-  }
+  override string pp() { result = "local class declaration: " + this.getLocalClass().toString() }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "LocalClassDeclStmt" }
@@ -758,7 +783,7 @@ class ThisConstructorInvocationStmt extends Stmt, ConstructorCall, @constructori
   }
 
   /** Gets the constructor invoked by this constructor invocation. */
-  override Constructor getConstructor() { callableBinding(this,result) }
+  override Constructor getConstructor() { callableBinding(this, result) }
 
   override Expr getQualifier() { none() }
 
@@ -769,9 +794,7 @@ class ThisConstructorInvocationStmt extends Stmt, ConstructorCall, @constructori
   override Stmt getEnclosingStmt() { result = this }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "this(...)"
-  }
+  override string pp() { result = "this(...)" }
 
   /** Gets a printable representation of this statement. */
   override string toString() { result = pp() }
@@ -801,7 +824,7 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
   }
 
   /** Gets the constructor invoked by this constructor invocation. */
-  override Constructor getConstructor() { callableBinding(this,result) }
+  override Constructor getConstructor() { callableBinding(this, result) }
 
   /** Gets the qualifier expression of this `super(...)` constructor invocation, if any. */
   override Expr getQualifier() { result.isNthChildOf(this, -1) }
@@ -813,9 +836,7 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
   override Stmt getEnclosingStmt() { result = this }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() {
-    result = "super(...)"
-  }
+  override string pp() { result = "super(...)" }
 
   /** Gets a printable representation of this statement. */
   override string toString() { result = pp() }

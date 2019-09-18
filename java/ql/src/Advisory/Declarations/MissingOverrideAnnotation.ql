@@ -8,16 +8,13 @@
  * @id java/missing-override-annotation
  * @tags maintainability
  */
+
 import java
 
 class OverridingMethod extends Method {
-  OverridingMethod() {
-    exists(Method m | this.overrides(m))
-  }
+  OverridingMethod() { exists(Method m | this.overrides(m)) }
 
-  predicate isOverrideAnnotated() {
-    this.getAnAnnotation() instanceof OverrideAnnotation
-  }
+  predicate isOverrideAnnotated() { this.getAnAnnotation() instanceof OverrideAnnotation }
 }
 
 from OverridingMethod m, Method overridden
@@ -26,5 +23,5 @@ where
   m.overrides(overridden) and
   not m.isOverrideAnnotated() and
   not exists(FunctionalExpr mref | mref.asMethod() = m)
-select m, "This method overrides $@; it is advisable to add an Override annotation.",
-  overridden, overridden.getDeclaringType() + "." + overridden.getName()
+select m, "This method overrides $@; it is advisable to add an Override annotation.", overridden,
+  overridden.getDeclaringType() + "." + overridden.getName()

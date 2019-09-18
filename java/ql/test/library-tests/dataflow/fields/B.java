@@ -5,14 +5,14 @@ public class B {
     Box1 b1 = new Box1(e, null);
     Box2 b2 = new Box2(b1);
     sink(b2.box1.elem1); // flow
-    sink(b2.box1.elem2); // FP due to flow in f2 below
+    sink(b2.box1.elem2); // no flow
   }
 
   public void f2() {
     Elem e = new Elem();
     Box1 b1 = new Box1(null, e);
     Box2 b2 = new Box2(b1);
-    sink(b2.box1.elem1); // FP due to flow in f1 above
+    sink(b2.box1.elem1); // no flow
     sink(b2.box1.elem2); // flow
   }
 

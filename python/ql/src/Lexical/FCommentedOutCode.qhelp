@@ -1,0 +1,8 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <include src="CommentedOutCodeMetricOverview.qhelp" />
+  <include src="CommentedOutCodeExample.qhelp" />
+  <include src="CommentedOutCodeReferences.qhelp" />
+</qhelp>

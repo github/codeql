@@ -3,8 +3,11 @@
  * @description Unneeded implicitly generated member functions shall be explicitly disallowed.
  * @kind problem
  * @id cpp/jsf/av-rule-68
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
+ *       external/jsf
  */
+
 import cpp
 
 /*
@@ -27,27 +30,24 @@ import cpp
  */
 
 predicate definesDefaultConstructor(Class c) {
-  exists(Constructor constr |
-    constr.getDeclaringType() = c and constr.isDefault())
-  or definesDefaultConstructor(c.getABaseClass())
+  exists(Constructor constr | constr.getDeclaringType() = c and constr.isDefault())
+  or
+  definesDefaultConstructor(c.getABaseClass())
 }
 
 predicate definesCopyConstructor(Class c) {
-  exists(CopyConstructor constr |
-    constr.getDeclaringType() = c)
-  or definesCopyConstructor(c.getABaseClass())
+  exists(CopyConstructor constr | constr.getDeclaringType() = c) or
+  definesCopyConstructor(c.getABaseClass())
 }
 
 predicate definesCopyAssignmentOperator(Class c) {
-  exists(CopyAssignmentOperator op |
-    op.getDeclaringType() = c)
-  or definesCopyAssignmentOperator(c.getABaseClass())
+  exists(CopyAssignmentOperator op | op.getDeclaringType() = c) or
+  definesCopyAssignmentOperator(c.getABaseClass())
 }
 
 predicate definesDestructor(Class c) {
-  exists(Destructor op |
-    op.getDeclaringType() = c)
-  or definesDestructor(c.getABaseClass())
+  exists(Destructor op | op.getDeclaringType() = c) or
+  definesDestructor(c.getABaseClass())
 }
 
 class ProperClass extends Class {
@@ -59,9 +59,23 @@ class ProperClass extends Class {
  * and (c) it will be generated (ie for default constructors, if there is any constructor at all then default
  * constructors will not be generated)
  */
+
 from ProperClass c, string msg
-where (not definesDefaultConstructor(c) and not c.hasConstructor() and msg="AV Rule 68: class " + c.getName() + " does not need a default constructor and should explicitly disallow it.") or
-      (not definesCopyConstructor(c) and msg="AV Rule 68: class " + c.getName() + " does not need a copy constructor and should explicitly disallow it.") or
-      (not definesCopyAssignmentOperator(c) and msg="AV Rule 68: class " + c.getName() + " does not need a copy assignment operator and should explicitly disallow it.") or
-      (not definesDestructor(c) and msg="AV Rule 68: class " + c.getName() + " does not need a destructor and should explicitly disallow it.")
+where
+  not definesDefaultConstructor(c) and
+  not c.hasConstructor() and
+  msg = "AV Rule 68: class " + c.getName() +
+      " does not need a default constructor and should explicitly disallow it."
+  or
+  not definesCopyConstructor(c) and
+  msg = "AV Rule 68: class " + c.getName() +
+      " does not need a copy constructor and should explicitly disallow it."
+  or
+  not definesCopyAssignmentOperator(c) and
+  msg = "AV Rule 68: class " + c.getName() +
+      " does not need a copy assignment operator and should explicitly disallow it."
+  or
+  not definesDestructor(c) and
+  msg = "AV Rule 68: class " + c.getName() +
+      " does not need a destructor and should explicitly disallow it."
 select c, msg

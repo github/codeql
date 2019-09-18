@@ -14,6 +14,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.XSS
 
 /**
@@ -27,9 +28,17 @@ class PrintStackTraceMethod extends Method {
 }
 
 class ServletWriterSourceToPrintStackTraceMethodFlowConfig extends TaintTracking::Configuration {
-  ServletWriterSourceToPrintStackTraceMethodFlowConfig() { this = "StackTraceExposure::ServletWriterSourceToPrintStackTraceMethodFlowConfig" }
+  ServletWriterSourceToPrintStackTraceMethodFlowConfig() {
+    this = "StackTraceExposure::ServletWriterSourceToPrintStackTraceMethodFlowConfig"
+  }
+
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ServletWriterSource }
-  override predicate isSink(DataFlow::Node sink) { exists(MethodAccess ma | sink.asExpr() = ma.getAnArgument() and ma.getMethod() instanceof PrintStackTraceMethod) }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      sink.asExpr() = ma.getAnArgument() and ma.getMethod() instanceof PrintStackTraceMethod
+    )
+  }
 }
 
 /**
@@ -37,7 +46,10 @@ class ServletWriterSourceToPrintStackTraceMethodFlowConfig extends TaintTracking
  * to external output.
  */
 predicate printsStackToWriter(MethodAccess call) {
-  exists(ServletWriterSourceToPrintStackTraceMethodFlowConfig writerSource, PrintStackTraceMethod printStackTrace |
+  exists(
+    ServletWriterSourceToPrintStackTraceMethodFlowConfig writerSource,
+    PrintStackTraceMethod printStackTrace
+  |
     call.getMethod() = printStackTrace and
     writerSource.hasFlowToExpr(call.getAnArgument())
   )
@@ -49,9 +61,11 @@ predicate printsStackToWriter(MethodAccess call) {
  */
 predicate printWriterOnStringWriter(Expr printWriter, Variable stringWriterVar) {
   printWriter.getType().(Class).hasQualifiedName("java.io", "PrintWriter") and
-  stringWriterVar.getType().(Class).hasQualifiedName("java.io", "StringWriter") and (
+  stringWriterVar.getType().(Class).hasQualifiedName("java.io", "StringWriter") and
+  (
     printWriter.(ClassInstanceExpr).getAnArgument() = stringWriterVar.getAnAccess() or
-    printWriterOnStringWriter(printWriter.(VarAccess).getVariable().getInitializer(), stringWriterVar)
+    printWriterOnStringWriter(printWriter.(VarAccess).getVariable().getInitializer(),
+      stringWriterVar)
   )
 }
 
@@ -67,9 +81,13 @@ predicate stackTraceExpr(Expr exception, MethodAccess stackTraceString) {
   )
 }
 
-class StackTraceStringToXssSinkFlowConfig extends TaintTracking::Configuration2 {
-  StackTraceStringToXssSinkFlowConfig() { this = "StackTraceExposure::StackTraceStringToXssSinkFlowConfig" }
+class StackTraceStringToXssSinkFlowConfig extends TaintTracking2::Configuration {
+  StackTraceStringToXssSinkFlowConfig() {
+    this = "StackTraceExposure::StackTraceStringToXssSinkFlowConfig"
+  }
+
   override predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
+
   override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 }
 
@@ -102,9 +120,13 @@ class GetMessageFlowSource extends MethodAccess {
   }
 }
 
-class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking::Configuration2 {
-  GetMessageFlowSourceToXssSinkFlowConfig() { this = "StackTraceExposure::GetMessageFlowSourceToXssSinkFlowConfig" }
+class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking2::Configuration {
+  GetMessageFlowSourceToXssSinkFlowConfig() {
+    this = "StackTraceExposure::GetMessageFlowSourceToXssSinkFlowConfig"
+  }
+
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
+
   override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 }
 
@@ -112,7 +134,8 @@ class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking::Configurati
  * A call to `getMessage()` that then flows to a servlet response.
  */
 predicate getMessageFlowsExternally(XssSink externalExpr, GetMessageFlowSource getMessage) {
-  any(GetMessageFlowSourceToXssSinkFlowConfig conf).hasFlow(DataFlow::exprNode(getMessage), externalExpr)
+  any(GetMessageFlowSourceToXssSinkFlowConfig conf)
+      .hasFlow(DataFlow::exprNode(getMessage), externalExpr)
 }
 
 from Expr externalExpr, Expr errorInformation
@@ -120,6 +143,4 @@ where
   printsStackExternally(externalExpr, errorInformation) or
   stringifiedStackFlowsExternally(DataFlow::exprNode(externalExpr), errorInformation) or
   getMessageFlowsExternally(DataFlow::exprNode(externalExpr), errorInformation)
-select
-  externalExpr, "$@ can be exposed to an external user.",
-  errorInformation, "Error information"
+select externalExpr, "$@ can be exposed to an external user.", errorInformation, "Error information"

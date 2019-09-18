@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A membership test, that is a binary expression with
+<code>in</code> or <code>not in</code> as the operator, expects that the
+expression to the right of the operator will be a container.</p>
+<p>As well as standard containers such as <code>list</code>, <code>tuple</code>,
+<code>dict</code> or <code>set</code>,
+a container can be an instance of any class that has the <code>__contains__</code>,
+<code>__iter__</code> or <code>__getitem__</code> method.
+
+</p></overview>
+<recommendation>
+<p>
+Ensure that the right hand side of the expression is a container, or add a guard
+clause for other cases.
+For example, if the right side may be a container or <code>None</code> then change
+<code>if x in seq:</code> to <code>if seq is not None and x in seq:</code>
+</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>NotAContainer</code> class has no <code>__contains__</code>,
+<code>__iter__</code> or <code>__getitem__</code> method.
+Consequently, when the line <code>if 2 in cont:</code> is executed a TypeError
+will be raised. Adding a <code>__getitem__</code> method to the
+<code>NotAContainer</code> class would solve the problem.
+</p>
+
+<sample src="ContainsNonContainer.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/reference/expressions.html#membership-test-details">Membership test details</a>.</li>
+  <li>Python: <a href="http://docs.python.org/reference/datamodel.html#object.__contains__">The __contains__ method</a>.</li>
+
+
+</references>
+</qhelp>

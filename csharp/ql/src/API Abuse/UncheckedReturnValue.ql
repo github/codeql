@@ -12,19 +12,18 @@
  *       statistical
  *       non-attributable
  */
+
 import csharp
 import semmle.code.csharp.frameworks.system.IO
 import semmle.code.csharp.Chaining
 
 /** Holds if `m` is a method whose return value should always be checked. */
 predicate important(Method m) {
-  exists(Method read |
-    read = any(SystemIOStreamClass c).getReadMethod() |
+  exists(Method read | read = any(SystemIOStreamClass c).getReadMethod() |
     m = read.getAnOverrider*()
   )
   or
-  exists(Method readByte |
-    readByte = any(SystemIOStreamClass c).getReadByteMethod() |
+  exists(Method readByte | readByte = any(SystemIOStreamClass c).getReadByteMethod() |
     m = readByte.getAnOverrider*()
   )
   // add more ...
@@ -49,14 +48,14 @@ predicate dubious(Method m, int percentage) {
   exists(int used, int total, Method target |
     target = m.getSourceDeclaration() and
     used = count(MethodCall mc |
-      mc.getTarget().getSourceDeclaration() = target and
-      not mc instanceof DiscardedMethodCall and
-      (methodHasGenericReturnType(m) implies m.getReturnType() = mc.getTarget().getReturnType())
-    ) and
+        mc.getTarget().getSourceDeclaration() = target and
+        not mc instanceof DiscardedMethodCall and
+        (methodHasGenericReturnType(m) implies m.getReturnType() = mc.getTarget().getReturnType())
+      ) and
     total = count(MethodCall mc |
-      mc.getTarget().getSourceDeclaration() = target and
-      (methodHasGenericReturnType(m) implies m.getReturnType() = mc.getTarget().getReturnType())
-    ) and
+        mc.getTarget().getSourceDeclaration() = target and
+        (methodHasGenericReturnType(m) implies m.getReturnType() = mc.getTarget().getReturnType())
+      ) and
     used != total and
     percentage = used * 100 / total and
     percentage >= 90 and
@@ -66,9 +65,9 @@ predicate dubious(Method m, int percentage) {
 
 int chainedUses(Method m) {
   result = count(MethodCall mc, MethodCall qual |
-    m = mc.getTarget() and
-    hasQualifierAndTarget(mc, qual, qual.getTarget())
-  )
+      m = mc.getTarget() and
+      hasQualifierAndTarget(mc, qual, qual.getTarget())
+    )
 }
 
 predicate hasQualifierAndTarget(MethodCall mc, Expr qualifier, Method m) {
@@ -78,10 +77,11 @@ predicate hasQualifierAndTarget(MethodCall mc, Expr qualifier, Method m) {
 
 /** Holds if `m` is a white-listed method where checking the return value is not required. */
 predicate whitelist(Method m) {
-  m.hasName("TryGetValue") or
-  m.hasName("TryParse") or
-  exists(Namespace n |
-    n = m.getDeclaringType().getNamespace().getParentNamespace*() |
+  m.hasName("TryGetValue")
+  or
+  m.hasName("TryParse")
+  or
+  exists(Namespace n | n = m.getDeclaringType().getNamespace().getParentNamespace*() |
     n.getName().regexpMatch("(Fluent)?NHibernate") or
     n.getName() = "Moq"
   )
@@ -91,6 +91,11 @@ predicate whitelist(Method m) {
 class DiscardedMethodCall extends MethodCall {
   DiscardedMethodCall() {
     this.getParent() instanceof ExprStmt
+    or
+    exists(Callable c |
+      this = c.getExpressionBody() and
+      not c.canReturn(this)
+    )
   }
 
   string query() {
@@ -99,11 +104,11 @@ class DiscardedMethodCall extends MethodCall {
       not whitelist(m) and
       // Do not alert on "void wrapper methods", i.e., methods that are inserted
       // to deliberately ignore the returned value
-      not getEnclosingCallable().getStatementBody().getNumberOfStmts() = 1 |
-      (important(m) and result = "should always be checked")
+      not getEnclosingCallable().getStatementBody().getNumberOfStmts() = 1
+    |
+      important(m) and result = "should always be checked"
       or
-      exists(int percentage |
-        dubious(m, percentage) |
+      exists(int percentage | dubious(m, percentage) |
         result = percentage.toString() + "% of calls to this method have their result used"
       )
     )

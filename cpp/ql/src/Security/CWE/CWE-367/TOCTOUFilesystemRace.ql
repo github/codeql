@@ -10,6 +10,7 @@
  * @tags security
  *       external/cwe/cwe-367
  */
+
 import cpp
 import semmle.code.cpp.controlflow.Guards
 
@@ -22,32 +23,26 @@ import semmle.code.cpp.controlflow.Guards
 FunctionCall filenameOperation(Expr path) {
   exists(string name | name = result.getTarget().getName() |
     (
-      (
-        name = "remove" or
-        name = "unlink" or
-        name = "rmdir" or
-        name = "rename" or
-        name = "chmod" or
-        name = "chown" or
-        name = "fopen" or
-        name = "open" or
-        name = "freopen" or
-        name = "_open" or
-        name = "_wopen" or
-        name = "_wfopen"
-      )
-      and
-      result.getArgument(0) = path
-    )
+      name = "remove" or
+      name = "unlink" or
+      name = "rmdir" or
+      name = "rename" or
+      name = "chmod" or
+      name = "chown" or
+      name = "fopen" or
+      name = "open" or
+      name = "freopen" or
+      name = "_open" or
+      name = "_wopen" or
+      name = "_wfopen"
+    ) and
+    result.getArgument(0) = path
     or
     (
-      (
-        name = "fopen_s" or
-        name = "wfopen_s"
-      )
-      and
-      result.getArgument(1) = path
-    )
+      name = "fopen_s" or
+      name = "wfopen_s"
+    ) and
+    result.getArgument(1) = path
   )
 }
 
@@ -61,8 +56,7 @@ FunctionCall accessCheck(Expr path) {
     name = "_waccess" or
     name = "_access_s" or
     name = "_waccess_s"
-  )
-  and
+  ) and
   path = result.getArgument(0)
 }
 
@@ -76,10 +70,8 @@ FunctionCall stat(Expr path, Expr buf) {
     name = "fstat" or
     name.matches("\\_stat%") or
     name.matches("\\_wstat%")
-  )
-  and
-  path = result.getArgument(0)
-  and
+  ) and
+  path = result.getArgument(0) and
   buf = result.getArgument(1)
 }
 
@@ -91,38 +83,42 @@ predicate referenceTo(Expr source, Expr use) {
   source = use
   or
   exists(SsaDefinition def, LocalScopeVariable v |
-         def.getAnUltimateDefiningValue(v) = source and def.getAUse(v) = use)
+    def.getAnUltimateDefiningValue(v) = source and def.getAUse(v) = use
+  )
 }
 
 from FunctionCall fc, Expr check, Expr checkUse, Expr opUse
-where // checkUse looks like a check on a filename
-      (
-        // either:
-        // an access check
-        check = accessCheck(checkUse)
-        or
-        // a stat
-        check = stat(checkUse, _)
-        or
-        // another filename operation (null pointers can indicate errors)
-        check = filenameOperation(checkUse)
-        or
-        // access to a member variable on the stat buf
-        // (morally, this should be a use-use pair, but it seems unlikely
-        // that this variable will get reused in practice)
-        exists(Variable buf |
-               exists(stat(checkUse, buf.getAnAccess())) |
-               check.(VariableAccess).getQualifier() = buf.getAnAccess())
-      )
-  and // checkUse and opUse refer to the same SSA variable
-      exists(SsaDefinition def, LocalScopeVariable v |
-             def.getAUse(v) = checkUse and def.getAUse(v) = opUse)
-  and // opUse looks like an operation on a filename
-      fc = filenameOperation(opUse)
-  and // the return value of check is used (possibly with one step of
-      // variable indirection) in a guard which controls fc
-      exists(GuardCondition guard |
-             referenceTo(check, guard.getAChild*()) |
-             guard.controls(fc.(ControlFlowNode).getBasicBlock(), _)
-      )
-select fc, "The $@ being operated upon was previously $@, but the underlying file may have been changed since then.", opUse, "filename", check, "checked"
+where
+  // checkUse looks like a check on a filename
+  (
+    // either:
+    // an access check
+    check = accessCheck(checkUse)
+    or
+    // a stat
+    check = stat(checkUse, _)
+    or
+    // another filename operation (null pointers can indicate errors)
+    check = filenameOperation(checkUse)
+    or
+    // access to a member variable on the stat buf
+    // (morally, this should be a use-use pair, but it seems unlikely
+    // that this variable will get reused in practice)
+    exists(Variable buf | exists(stat(checkUse, buf.getAnAccess())) |
+      check.(VariableAccess).getQualifier() = buf.getAnAccess()
+    )
+  ) and
+  // checkUse and opUse refer to the same SSA variable
+  exists(SsaDefinition def, LocalScopeVariable v |
+    def.getAUse(v) = checkUse and def.getAUse(v) = opUse
+  ) and
+  // opUse looks like an operation on a filename
+  fc = filenameOperation(opUse) and
+  // the return value of check is used (possibly with one step of
+  // variable indirection) in a guard which controls fc
+  exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
+    guard.controls(fc.(ControlFlowNode).getBasicBlock(), _)
+  )
+select fc,
+  "The $@ being operated upon was previously $@, but the underlying file may have been changed since then.",
+  opUse, "filename", check, "checked"

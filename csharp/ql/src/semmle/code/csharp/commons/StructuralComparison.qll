@@ -2,6 +2,7 @@
  * Provides functionality for performing structural comparison of
  * expressions and statements.
  */
+
 import csharp
 
 /** Gets the declaration referenced by the expression `e`, if any. */
@@ -14,17 +15,16 @@ private Declaration referenceAttribute(Expr e) {
 }
 
 /** Gets the AST node kind element `e`. */
-private int elementKind(Element e) {
+private int elementKind(ControlFlowElement e) {
   expressions(e, result, _)
   or
   exists(int k | statements(e, k) | result = -k)
 }
 
-private int getNumberOfActualChildren(Element e) {
-  if e.(MemberAccess).targetIsThisInstance() then
-    result = e.getNumberOfChildren() - 1
-  else
-    result = e.getNumberOfChildren()
+private int getNumberOfActualChildren(ControlFlowElement e) {
+  if e.(MemberAccess).targetIsThisInstance()
+  then result = e.getNumberOfChildren() - 1
+  else result = e.getNumberOfChildren()
 }
 
 /**
@@ -55,76 +55,77 @@ abstract class StructuralComparisonConfiguration extends string {
    * In fact, not including the symmetrically implied fact will save
    * half the computation time on the structural comparison.
    */
-  abstract predicate candidate(Element x, Element y);
+  abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
-  private predicate candidateInternal(Element x, Element y) {
-    (
-      candidate(x, y)
-      or
-      exists(Element xParent, Element yParent, int i |
-        candidateInternal(xParent, yParent) |
-        hasChild(xParent, i, x)
-        and
-        hasChild(yParent, i, y)
-      )
+  private predicate candidateInternal(ControlFlowElement x, ControlFlowElement y) {
+    candidate(x, y)
+    or
+    exists(ControlFlowElement xParent, ControlFlowElement yParent, int i |
+      candidateInternalChild(xParent, i, x, yParent)
+    |
+      y = yParent.getChild(i)
     )
   }
 
-  pragma [noinline]
-  private predicate hasChild(Element e, int i, Element child) {
-    child = e.getChild(i)
+  pragma[noinline]
+  private predicate candidateInternalChild(
+    ControlFlowElement x, int i, ControlFlowElement xChild, ControlFlowElement y
+  ) {
+    candidateInternal(x, y) and
+    xChild = x.getChild(i)
   }
 
-  private predicate sameByValue(Expr x, Expr y) {
-    sameByValueAux(x, y, y.getValue())
-  }
+  private predicate sameByValue(Expr x, Expr y) { sameByValueAux(x, y, y.getValue()) }
 
-  pragma [noinline]
+  pragma[noinline]
   private predicate sameByValueAux(Expr x, Expr y, string value) {
     candidateInternal(x, y) and
     value = x.getValue()
   }
 
-  private predicate sameByStructure(Element x, Element y) {
-    // At least one of `x` and `y` must not have a value, they must have
-    // the same kind, and the same number of children
-    sameByStructureCandidate(x, y, elementKind(y), getNumberOfActualChildren(y))
-    and
-    // If one of them has a reference attribute, they should both reference
-    // the same node
-    (exists(referenceAttribute(x)) implies
-      referenceAttribute(x) = referenceAttribute(y))
-    and
-    // x is a member access on `this` iff y is
-    (x.(MemberAccess).targetIsThisInstance() implies
-      y.(MemberAccess).targetIsThisInstance())
-    and
-    (y.(MemberAccess).targetIsThisInstance() implies
-      x.(MemberAccess).targetIsThisInstance())
-    and
-    // All of their corresponding children must be structurally equal
-    forall(int i, Element xc |
-      xc = x.getChild(i) and
-      // exclude `this` qualifier, which has been checked above
-      not (i = -1 and x.(MemberAccess).targetIsThisInstance()) |
-      sameInternal(xc, y.getChild(i))
-    )
+  private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk, int i) {
+    (candidateInternal(cfe, _) or candidateInternal(_, cfe)) and
+    i = rank[rnk](int j |
+        exists(ControlFlowElement child | child = cfe.getChild(j) |
+          not (j = -1 and cfe.(MemberAccess).targetIsThisInstance())
+        )
+      ) and
+    result = cfe.getChild(i)
   }
 
-  private predicate sameByStructureCandidate(Element x, Element y, int elementKind, int children) {
-    candidateInternal(x, y)
-    and
-    elementKind = elementKind(x)
-    and
-    children = getNumberOfActualChildren(x)
-    and
+  pragma[nomagic]
+  private predicate sameByStructure0(
+    ControlFlowElement x, ControlFlowElement y, int elementKind, int children
+  ) {
+    candidateInternal(x, y) and
+    elementKind = elementKind(x) and
+    children = getNumberOfActualChildren(x) and
     not (x.(Expr).hasValue() and y.(Expr).hasValue())
   }
 
-  private predicate sameInternal(Element x, Element y) {
+  pragma[nomagic]
+  private predicate sameByStructure(ControlFlowElement x, ControlFlowElement y, int i) {
+    i = 0 and
+    // At least one of `x` and `y` must not have a value, they must have
+    // the same kind, and the same number of children
+    sameByStructure0(x, y, elementKind(y), getNumberOfActualChildren(y)) and
+    // If one of them has a reference attribute, they should both reference
+    // the same node
+    (exists(referenceAttribute(x)) implies referenceAttribute(x) = referenceAttribute(y)) and
+    // x is a member access on `this` iff y is
+    (x.(MemberAccess).targetIsThisInstance() implies y.(MemberAccess).targetIsThisInstance()) and
+    (y.(MemberAccess).targetIsThisInstance() implies x.(MemberAccess).targetIsThisInstance())
+    or
+    exists(int j | sameByStructure(x, y, i - 1) |
+      sameInternal(getRankedChild(x, i, j), getRankedChild(y, i, j))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate sameInternal(ControlFlowElement x, ControlFlowElement y) {
     sameByValue(x, y)
     or
-    sameByStructure(x, y)
+    sameByStructure(x, y, getNumberOfActualChildren(x))
   }
 
   /**
@@ -132,9 +133,8 @@ abstract class StructuralComparisonConfiguration extends string {
    * flagged as candidates for structural equality, that is,
    * `candidate(x, y)` must hold.
    */
-  predicate same(Element x, Element y) {
-    candidate(x, y)
-    and
+  predicate same(ControlFlowElement x, ControlFlowElement y) {
+    candidate(x, y) and
     sameInternal(x, y)
   }
 }
@@ -150,7 +150,7 @@ abstract class StructuralComparisonConfiguration extends string {
  */
 module Internal {
   // Import all uses of the internal library to make sure caching works
-  private import semmle.code.csharp.controlflow.Guards
+  private import semmle.code.csharp.controlflow.Guards as G
 
   /**
    * A configuration for performing structural comparisons of program elements
@@ -180,76 +180,77 @@ module Internal {
      * In fact, not including the symmetrically implied fact will save
      * half the computation time on the structural comparison.
      */
-    abstract predicate candidate(Element x, Element y);
+    abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
-    private predicate candidateInternal(Element x, Element y) {
-      (
-        candidate(x, y)
-        or
-        exists(Element xParent, Element yParent, int i |
-          candidateInternal(xParent, yParent) |
-          hasChild(xParent, i, x)
-          and
-          hasChild(yParent, i, y)
-        )
+    private predicate candidateInternal(ControlFlowElement x, ControlFlowElement y) {
+      candidate(x, y)
+      or
+      exists(ControlFlowElement xParent, ControlFlowElement yParent, int i |
+        candidateInternalChild(xParent, i, x, yParent)
+      |
+        y = yParent.getChild(i)
       )
     }
 
-    pragma [noinline]
-    private predicate hasChild(Element e, int i, Element child) {
-      child = e.getChild(i)
+    pragma[noinline]
+    private predicate candidateInternalChild(
+      ControlFlowElement x, int i, ControlFlowElement xChild, ControlFlowElement y
+    ) {
+      candidateInternal(x, y) and
+      xChild = x.getChild(i)
     }
 
-    private predicate sameByValue(Expr x, Expr y) {
-      sameByValueAux(x, y, y.getValue())
-    }
+    private predicate sameByValue(Expr x, Expr y) { sameByValueAux(x, y, y.getValue()) }
 
-    pragma [noinline]
+    pragma[noinline]
     private predicate sameByValueAux(Expr x, Expr y, string value) {
       candidateInternal(x, y) and
       value = x.getValue()
     }
 
-    private predicate sameByStructure(Element x, Element y) {
-      // At least one of `x` and `y` must not have a value, they must have
-      // the same kind, and the same number of children
-      sameByStructureCandidate(x, y, elementKind(y), getNumberOfActualChildren(y))
-      and
-      // If one of them has a reference attribute, they should both reference
-      // the same node
-      (exists(referenceAttribute(x)) implies
-        referenceAttribute(x) = referenceAttribute(y))
-      and
-      // x is a member access on `this` iff y is
-      (x.(MemberAccess).targetIsThisInstance() implies
-        y.(MemberAccess).targetIsThisInstance())
-      and
-      (y.(MemberAccess).targetIsThisInstance() implies
-        x.(MemberAccess).targetIsThisInstance())
-      and
-      // All of their corresponding children must be structurally equal
-      forall(int i, Element xc |
-        xc = x.getChild(i) and
-        // exclude `this` qualifier, which has been checked above
-        not (i = -1 and x.(MemberAccess).targetIsThisInstance()) |
-        sameInternal(xc, y.getChild(i))
-      )
+    private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk, int i) {
+      (candidateInternal(cfe, _) or candidateInternal(_, cfe)) and
+      i = rank[rnk](int j |
+          exists(ControlFlowElement child | child = cfe.getChild(j) |
+            not (j = -1 and cfe.(MemberAccess).targetIsThisInstance())
+          )
+        ) and
+      result = cfe.getChild(i)
     }
 
-    private predicate sameByStructureCandidate(Element x, Element y, int elementKind, int children) {
-      candidateInternal(x, y)
-      and
-      elementKind = elementKind(x)
-      and
-      children = getNumberOfActualChildren(x)
-      and
+    pragma[nomagic]
+    private predicate sameByStructure0(
+      ControlFlowElement x, ControlFlowElement y, int elementKind, int children
+    ) {
+      candidateInternal(x, y) and
+      elementKind = elementKind(x) and
+      children = getNumberOfActualChildren(x) and
       not (x.(Expr).hasValue() and y.(Expr).hasValue())
     }
 
-    private predicate sameInternal(Element x, Element y) {
+    pragma[nomagic]
+    private predicate sameByStructure(ControlFlowElement x, ControlFlowElement y, int i) {
+      i = 0 and
+      // At least one of `x` and `y` must not have a value, they must have
+      // the same kind, and the same number of children
+      sameByStructure0(x, y, elementKind(y), getNumberOfActualChildren(y)) and
+      // If one of them has a reference attribute, they should both reference
+      // the same node
+      (exists(referenceAttribute(x)) implies referenceAttribute(x) = referenceAttribute(y)) and
+      // x is a member access on `this` iff y is
+      (x.(MemberAccess).targetIsThisInstance() implies y.(MemberAccess).targetIsThisInstance()) and
+      (y.(MemberAccess).targetIsThisInstance() implies x.(MemberAccess).targetIsThisInstance())
+      or
+      exists(int j | sameByStructure(x, y, i - 1) |
+        sameInternal(getRankedChild(x, i, j), getRankedChild(y, i, j))
+      )
+    }
+
+    pragma[nomagic]
+    private predicate sameInternal(ControlFlowElement x, ControlFlowElement y) {
       sameByValue(x, y)
       or
-      sameByStructure(x, y)
+      sameByStructure(x, y, getNumberOfActualChildren(x))
     }
 
     /**
@@ -257,9 +258,8 @@ module Internal {
      * flagged as candidates for structural equality, that is,
      * `candidate(x, y)` must hold.
      */
-    predicate same(Element x, Element y) {
-      candidate(x, y)
-      and
+    predicate same(ControlFlowElement x, ControlFlowElement y) {
+      candidate(x, y) and
       sameInternal(x, y)
     }
   }

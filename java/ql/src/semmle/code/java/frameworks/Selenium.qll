@@ -10,9 +10,7 @@ import semmle.code.java.Reflection
  * The Selenium `PageFactory` class used to create page objects
  */
 class SeleniumPageFactory extends Class {
-  SeleniumPageFactory() {
-    hasQualifiedName("org.openqa.selenium.support", "PageFactory")
-  }
+  SeleniumPageFactory() { hasQualifiedName("org.openqa.selenium.support", "PageFactory") }
 }
 
 /**
@@ -27,18 +25,12 @@ class SeleniumInitElementsAccess extends MethodAccess {
   /**
    * Gets the class that is initialized by this call..
    */
-  Class getInitClass() {
-    result = inferClassParameterType(getArgument(1))
-  }
+  Class getInitClass() { result = inferClassParameterType(getArgument(1)) }
 }
 
 /**
  * A class which is constructed by Selenium as a page object using `PageFactory.initElements(...)`.
  */
 class SeleniumPageObject extends Class {
-  SeleniumPageObject() {
-    exists(SeleniumInitElementsAccess init |
-      this = init.getInitClass()
-    )
-  }
+  SeleniumPageObject() { exists(SeleniumInitElementsAccess init | this = init.getInitClass()) }
 }

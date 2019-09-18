@@ -12,6 +12,11 @@
 
 import javascript
 
-from File f, float  n
-where n = avg(Function fun, int toAvg | fun.getTopLevel().getFile() = f and toAvg = fun.getCyclomaticComplexity() | toAvg)
+from File f, float n
+where
+  n = avg(Function fun, int toAvg |
+      fun.getTopLevel().getFile() = f and toAvg = fun.getCyclomaticComplexity()
+    |
+      toAvg
+    )
 select f, n

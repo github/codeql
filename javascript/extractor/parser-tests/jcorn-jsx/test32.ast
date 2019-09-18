@@ -1,0 +1,87 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "attributes": [
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "d",
+                "loc": {
+                  "start": {
+                    "offset": 6
+                  },
+                  "end": {
+                    "offset": 7
+                  }
+                }
+              },
+              "value": {
+                "type": "Literal",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 8,
+                    "offset": 8
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 15,
+                    "offset": 61
+                  }
+                },
+                "value": "M230 80\n\t\tA 45 45, 0, 1, 0, 275 125 \n    L 275 80 Z",
+                "raw": "\"M230 80\n\t\tA 45 45, 0, 1, 0, 275 125 \n    L 275 80 Z\""
+              },
+              "loc": {
+                "start": {
+                  "offset": 6
+                },
+                "end": {
+                  "offset": 61
+                }
+              }
+            }
+          ],
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "path",
+            "loc": {
+              "start": {
+                "offset": 1
+              },
+              "end": {
+                "offset": 5
+              }
+            }
+          },
+          "selfClosing": true,
+          "loc": {
+            "start": {
+              "offset": 0
+            },
+            "end": {
+              "offset": 63
+            }
+          }
+        },
+        "closingElement": null,
+        "children": [],
+        "loc": {
+          "start": {
+            "offset": 0
+          },
+          "end": {
+            "offset": 63
+          }
+        }
+      }
+    }
+  ]
+}

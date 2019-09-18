@@ -1,0 +1,131 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "a",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 1
+              },
+              "end": {
+                "line": 1,
+                "column": 2,
+                "offset": 2
+              }
+            }
+          },
+          "selfClosing": false,
+          "attributes": [],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0,
+              "offset": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 3,
+              "offset": 3
+            }
+          }
+        },
+        "closingElement": {
+          "type": "JSXClosingElement",
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "a",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7,
+                "offset": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 8,
+                "offset": 8
+              }
+            }
+          },
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 5,
+              "offset": 5
+            },
+            "end": {
+              "line": 1,
+              "column": 9,
+              "offset": 9
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "JSXExpressionContainer",
+            "expression": {
+              "type": "JSXEmptyExpression",
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 4,
+                  "offset": 4
+                },
+                "end": {
+                  "line": 1,
+                  "column": 4,
+                  "offset": 4
+                }
+              }
+            },
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 3,
+                "offset": 3
+              },
+              "end": {
+                "line": 1,
+                "column": 5,
+                "offset": 5
+              }
+            }
+          }
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 9,
+            "offset": 9
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9,
+          "offset": 9
+        }
+      }
+    }
+  ]
+}

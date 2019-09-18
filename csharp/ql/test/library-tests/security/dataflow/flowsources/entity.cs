@@ -32,14 +32,14 @@ public class BloggingContext : DbContext
         DbRawSqlQuery<Blog> blogs = Database.SqlQuery<Blog>("SELECT * FROM Blogs");
         foreach (var blog in blogs)
         {
-            // This will be a sink because it is an access of an entity property
+            // This will be a source because it is an access of an entity property
             Console.WriteLine(blog.Name);
         }
 
         DbRawSqlQuery<string> blogNames = Database.SqlQuery<string>("SELECT Name FROM Blogs");
         foreach (var blogName in blogNames)
         {
-            // This will be a sink because it is returned from an SqlQuery
+            // This will be a source because it is returned from an SqlQuery
             Console.WriteLine(blogName);
         }
     }

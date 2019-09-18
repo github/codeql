@@ -1,33 +1,23 @@
 import java
 
 class TypeIntent extends Class {
-  TypeIntent() {
-    hasQualifiedName("android.content", "Intent")
-  }
+  TypeIntent() { hasQualifiedName("android.content", "Intent") }
 }
 
 class TypeActivity extends Class {
-  TypeActivity() {
-    hasQualifiedName("android.app", "Activity")
-  }
+  TypeActivity() { hasQualifiedName("android.app", "Activity") }
 }
 
 class TypeContext extends RefType {
-  TypeContext() {
-    hasQualifiedName("android.content", "Context")
-  }
+  TypeContext() { hasQualifiedName("android.content", "Context") }
 }
 
 class TypeBroadcastReceiver extends Class {
-  TypeBroadcastReceiver() {
-    hasQualifiedName("android.content", "BroadcastReceiver")
-  }
+  TypeBroadcastReceiver() { hasQualifiedName("android.content", "BroadcastReceiver") }
 }
 
 class AndroidGetIntentMethod extends Method {
-  AndroidGetIntentMethod() {
-    hasName("getIntent") and getDeclaringType() instanceof TypeActivity
-  }
+  AndroidGetIntentMethod() { hasName("getIntent") and getDeclaringType() instanceof TypeActivity }
 }
 
 class AndroidReceiveIntentMethod extends Method {

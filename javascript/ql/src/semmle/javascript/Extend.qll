@@ -1,6 +1,7 @@
 /**
  * Provides classes for reasoning about `extend`-like functions.
  */
+
 import javascript
 
 /**
@@ -39,11 +40,12 @@ abstract class ExtendCall extends DataFlow::CallNode {
  */
 private class ExtendCallWithFlag extends ExtendCall {
   ExtendCallWithFlag() {
-    exists (string name | this = DataFlow::moduleImport(name).getACall() |
+    exists(string name | this = DataFlow::moduleImport(name).getACall() |
       name = "extend" or
       name = "extend2" or
       name = "just-extend" or
-      name = "node.extend")
+      name = "node.extend"
+    )
     or
     this = jquery().getAPropertyRead("extend").getACall()
   }
@@ -51,31 +53,22 @@ private class ExtendCallWithFlag extends ExtendCall {
   /**
    * Holds if the first argument appears to be a boolean flag.
    */
-  predicate hasFlag() {
-    getArgument(0).mayHaveBooleanValue(_)
-  }
+  predicate hasFlag() { getArgument(0).mayHaveBooleanValue(_) }
 
   /**
    * Gets the `n`th argument after the optional boolean flag.
    */
   DataFlow::Node getTranslatedArgument(int n) {
-    if hasFlag() then
-      result = getArgument(n + 1)
-    else
-      result = getArgument(n)
+    if hasFlag() then result = getArgument(n + 1) else result = getArgument(n)
   }
 
   override DataFlow::Node getASourceOperand() {
-    exists (int n | n >= 1 | result = getTranslatedArgument(n))
+    exists(int n | n >= 1 | result = getTranslatedArgument(n))
   }
 
-  override DataFlow::Node getDestinationOperand() {
-    result = getTranslatedArgument(0)
-  }
+  override DataFlow::Node getDestinationOperand() { result = getTranslatedArgument(0) }
 
-  override predicate isDeep() {
-    getArgument(0).mayHaveBooleanValue(true)
-  }
+  override predicate isDeep() { getArgument(0).mayHaveBooleanValue(true) }
 }
 
 /**
@@ -83,7 +76,7 @@ private class ExtendCallWithFlag extends ExtendCall {
  */
 private class ExtendCallDeep extends ExtendCall {
   ExtendCallDeep() {
-    exists (DataFlow::SourceNode callee | this = callee.getACall() |
+    exists(DataFlow::SourceNode callee | this = callee.getACall() |
       callee = DataFlow::moduleMember("deep", "extend") or
       callee = DataFlow::moduleImport("deep-assign") or
       callee = DataFlow::moduleImport("deep-extend") or
@@ -100,16 +93,14 @@ private class ExtendCallDeep extends ExtendCall {
       callee = DataFlow::moduleMember("smart-extend", "deep") or
       callee = LodashUnderscore::member("merge") or
       callee = LodashUnderscore::member("mergeWith") or
-      callee = LodashUnderscore::member("defaultsDeep"))
+      callee = LodashUnderscore::member("defaultsDeep") or
+      callee = AngularJS::angular().getAPropertyRead("merge")
+    )
   }
 
-  override DataFlow::Node getASourceOperand() {
-    exists (int n | n >= 1 | result = getArgument(n))
-  }
+  override DataFlow::Node getASourceOperand() { exists(int n | n >= 1 | result = getArgument(n)) }
 
-  override DataFlow::Node getDestinationOperand() {
-    result = getArgument(0)
-  }
+  override DataFlow::Node getDestinationOperand() { result = getArgument(0) }
 
   override predicate isDeep() { any() }
 }
@@ -119,7 +110,7 @@ private class ExtendCallDeep extends ExtendCall {
  */
 private class ExtendCallShallow extends ExtendCall {
   ExtendCallShallow() {
-    exists (DataFlow::SourceNode callee | this = callee.getACall() |
+    exists(DataFlow::SourceNode callee | this = callee.getACall() |
       callee = DataFlow::globalVarRef("Object").getAPropertyRead("assign") or
       callee = DataFlow::moduleImport("defaults") or
       callee = DataFlow::moduleImport("extend-shallow") or
@@ -132,16 +123,14 @@ private class ExtendCallShallow extends ExtendCall {
       callee = DataFlow::moduleImport("util-extend") or
       callee = DataFlow::moduleImport("utils-merge") or
       callee = DataFlow::moduleImport("xtend/mutable") or
-      callee = LodashUnderscore::member("extend"))
+      callee = LodashUnderscore::member("extend") or
+      callee = AngularJS::angular().getAPropertyRead("extend")
+    )
   }
 
-  override DataFlow::Node getASourceOperand() {
-    exists (int n | n >= 1 | result = getArgument(n))
-  }
+  override DataFlow::Node getASourceOperand() { exists(int n | n >= 1 | result = getArgument(n)) }
 
-  override DataFlow::Node getDestinationOperand() {
-    result = getArgument(0)
-  }
+  override DataFlow::Node getDestinationOperand() { result = getArgument(0) }
 
   override predicate isDeep() { none() }
 }
@@ -151,20 +140,16 @@ private class ExtendCallShallow extends ExtendCall {
  */
 private class FunctionalExtendCallShallow extends ExtendCall {
   FunctionalExtendCallShallow() {
-    exists (DataFlow::SourceNode callee | this = callee.getACall() |
+    exists(DataFlow::SourceNode callee | this = callee.getACall() |
       callee = DataFlow::moduleImport("xtend") or
       callee = DataFlow::moduleImport("xtend/immutable") or
       callee = DataFlow::moduleMember("ramda", "merge")
     )
   }
 
-  override DataFlow::Node getASourceOperand() {
-    result = getAnArgument()
-  }
+  override DataFlow::Node getASourceOperand() { result = getAnArgument() }
 
-  override DataFlow::Node getDestinationOperand() {
-    none()
-  }
+  override DataFlow::Node getDestinationOperand() { none() }
 
   override predicate isDeep() { none() }
 }
@@ -176,9 +161,7 @@ private class FunctionalExtendCallShallow extends ExtendCall {
 private class ExtendCallTaintStep extends TaintTracking::AdditionalTaintStep {
   ExtendCall extend;
 
-  ExtendCallTaintStep() {
-    this = extend
-  }
+  ExtendCallTaintStep() { this = extend }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = extend.getASourceOperand() and succ = extend.getDestinationOperand().getALocalSource()

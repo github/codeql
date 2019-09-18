@@ -80,3 +80,12 @@ function joinInClosure() {
   }
   return f();
 }
+
+function addExprPhi(b) {
+  let x = 'one';
+  if (b) {
+    x += 'two';
+  }
+  x += 'three';
+  return x;
+}

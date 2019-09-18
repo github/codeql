@@ -124,3 +124,25 @@ void f9(void) {
     b = myClass9 >= myClass9;
 }
 
+template <typename T>
+class MyClass10 {
+public:
+    int i;
+    template <typename U>
+    bool operator< (const MyClass10<U> &rhs){ return i < rhs.i; }
+    template <typename U>
+    bool operator>= (const MyClass10<U> &rhs){ return !(*this < rhs); }
+    // GOOD
+    template <typename U>
+    bool operator> (const MyClass10<U> &rhs){ return i < rhs.i; }
+    template <typename U>
+    bool operator<= (const MyClass10<U> &rhs){ return i >= rhs.i; }
+    // BAD: neither operator defined in terms of the other
+};
+void f10(void) {
+    bool b;
+    MyClass10<int> myClass10;
+    b = myClass10 < myClass10;
+    b = myClass10 > myClass10;
+}
+

@@ -8,19 +8,16 @@
  * @tags maintainability
  *       useless-code
  */
+
 import java
 
-int integralTypeWidth (IntegralType t) {
-  if (t.hasName("long") or t.hasName("Long"))
-  then result = 64
-  else result = 32
+int integralTypeWidth(IntegralType t) {
+  if t.hasName("long") or t.hasName("Long") then result = 64 else result = 32
 }
 
-int eval (Expr e) {
-  result = e.(CompileTimeConstantExpr).getIntValue()
-}
+int eval(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }
 
-predicate isConstantExp (Expr e) {
+predicate isConstantExp(Expr e) {
   // A literal is constant.
   e instanceof Literal
   or
@@ -58,9 +55,7 @@ predicate isConstantExp (Expr e) {
     )
   )
   or
-  exists(AndBitwiseExpr a | a = e |
-    eval(a.getAnOperand().getProperExpr()) = 0
-  )
+  exists(AndBitwiseExpr a | a = e | eval(a.getAnOperand().getProperExpr()) = 0)
   or
   exists(AndLogicalExpr a | a = e |
     a.getAnOperand().getProperExpr().(BooleanLiteral).getBooleanValue() = false

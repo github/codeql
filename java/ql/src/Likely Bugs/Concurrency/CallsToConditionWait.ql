@@ -11,6 +11,7 @@
  *       concurrency
  *       external/cwe/cwe-662
  */
+
 import java
 
 class WaitMethod extends Method {
@@ -22,9 +23,7 @@ class WaitMethod extends Method {
 }
 
 class ConditionInterface extends Interface {
-  ConditionInterface() {
-    this.hasQualifiedName("java.util.concurrent.locks", "Condition")
-  }
+  ConditionInterface() { this.hasQualifiedName("java.util.concurrent.locks", "Condition") }
 }
 
 from MethodAccess ma, ConditionInterface condition

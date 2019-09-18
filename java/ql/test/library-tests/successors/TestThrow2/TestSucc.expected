@@ -1,6 +1,8 @@
+| TestThrow2.java:3:7:3:16 | <obinit>(...) | TestThrow2.java:3:7:3:16 | TestThrow2 |
+| TestThrow2.java:3:7:3:16 | stmt | TestThrow2.java:3:7:3:16 | <obinit>(...) |
 | TestThrow2.java:3:7:3:16 | stmt | TestThrow2.java:3:7:3:16 | super(...) |
 | TestThrow2.java:3:7:3:16 | stmt | TestThrow2.java:5:2:11:2 | stmt |
-| TestThrow2.java:3:7:3:16 | super(...) | TestThrow2.java:3:7:3:16 | TestThrow2 |
+| TestThrow2.java:3:7:3:16 | super(...) | TestThrow2.java:3:7:3:16 | stmt |
 | TestThrow2.java:5:2:11:2 | stmt | TestThrow2.java:6:3:10:3 | stmt |
 | TestThrow2.java:6:3:10:3 | stmt | TestThrow2.java:6:7:8:3 | stmt |
 | TestThrow2.java:6:7:8:3 | stmt | TestThrow2.java:7:4:7:13 | stmt |

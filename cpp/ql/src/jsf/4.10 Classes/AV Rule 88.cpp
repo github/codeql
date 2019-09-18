@@ -6,13 +6,13 @@ class C : protected Superclass,
           public InterfaceA, public InterfaceB,
           private ImplementationA, private ImplementationB
 {
-	//implementation
+    //implementation
 };
 
 //wrong: multiple protected bases
 class D : protected Superclass1, protected Superclass2,
           public Interface, private Implementation
 {
-	//implementation
+    //implementation
 };
 

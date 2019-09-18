@@ -19,14 +19,23 @@ import javascript
  * is the recommended replacement.
  */
 predicate deprecated_feature(ASTNode nd, string type, string replacement) {
-  exists (FunctionExpr fe | fe = nd and fe.getBody() instanceof Expr |
+  exists(FunctionExpr fe | fe = nd and fe.getBody() instanceof Expr |
     type = "expression closures" and replacement = "arrow expressions"
-  ) or
-  nd instanceof LegacyLetExpr and type = "let expressions" and replacement = "let declarations" or
-  nd instanceof LegacyLetStmt and type = "let statements" and replacement = "let declarations" or
-  nd instanceof ForEachStmt and type = "for each statements" and replacement = "for of statements" or
-  nd.(ComprehensionExpr).isPostfix() and type = "postfix comprehensions" and replacement = "prefix comprehensions" or
-  nd.(ExprStmt).isDoubleColonMethod(_, _, _) and type = "double colon method declarations" and replacement = "standard method definitions"
+  )
+  or
+  nd instanceof LegacyLetExpr and type = "let expressions" and replacement = "let declarations"
+  or
+  nd instanceof LegacyLetStmt and type = "let statements" and replacement = "let declarations"
+  or
+  nd instanceof ForEachStmt and type = "for each statements" and replacement = "for of statements"
+  or
+  nd.(ComprehensionExpr).isPostfix() and
+  type = "postfix comprehensions" and
+  replacement = "prefix comprehensions"
+  or
+  nd.(ExprStmt).isDoubleColonMethod(_, _, _) and
+  type = "double colon method declarations" and
+  replacement = "standard method definitions"
 }
 
 from ASTNode depr, string type, string replacement

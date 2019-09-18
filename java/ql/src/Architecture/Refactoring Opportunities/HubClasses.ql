@@ -9,6 +9,7 @@
  * @tags maintainability
  *       modularity
  */
+
 import java
 
 from RefType t, int aff, int eff
@@ -16,6 +17,8 @@ where
   t.fromSource() and
   aff = t.getMetrics().getAfferentCoupling() and
   eff = t.getMetrics().getEfferentSourceCoupling() and
-  aff > 15 and eff > 15
+  aff > 15 and
+  eff > 15
 select t as Class,
-  "Hub class: this class depends on " + eff.toString() + " classes and is used by " + aff.toString() + " classes."
+  "Hub class: this class depends on " + eff.toString() + " classes and is used by " + aff.toString()
+    + " classes."

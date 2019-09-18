@@ -11,6 +11,7 @@
 import java
 
 from Method m
-where m.getReturnType() instanceof VoidType
-  and m.fromSource()
+where
+  m.getReturnType() instanceof VoidType and
+  m.fromSource()
 select m

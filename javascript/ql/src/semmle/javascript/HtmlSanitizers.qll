@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with HTML sanitizers.
  */
+
 import javascript
 
 /**
@@ -20,29 +21,48 @@ abstract class HtmlSanitizerCall extends DataFlow::CallNode {
  */
 private class DefaultHtmlSanitizerCall extends HtmlSanitizerCall {
   DefaultHtmlSanitizerCall() {
-    exists (DataFlow::SourceNode callee | this = callee.getACall() |
-      callee = DataFlow::moduleMember("ent", "encode") or
-      callee = DataFlow::moduleMember("entities", "encodeHTML") or
-      callee = DataFlow::moduleMember("entities", "encodeXML") or
-      callee = DataFlow::moduleMember("escape-goat", "escape") or
-      callee = DataFlow::moduleMember("he", "encode") or
-      callee = DataFlow::moduleMember("he", "escape") or
-      callee = DataFlow::moduleImport("sanitize-html") or
-      callee = DataFlow::moduleMember("sanitizer", "escape") or
-      callee = DataFlow::moduleMember("sanitizer", "sanitize") or
-      callee = DataFlow::moduleMember("validator", "escape") or
-      callee = DataFlow::moduleImport("xss") or
-      callee = DataFlow::moduleMember("xss-filters", _) or
-      callee = LodashUnderscore::member("escape") or
-      exists (string name | name = "encode" or name = "encodeNonUTF" |
-        callee = DataFlow::moduleMember("html-entities", _).getAnInstantiation().getAPropertyRead(name) or
-        callee = DataFlow::moduleMember("html-entities", _).getAPropertyRead(name))
+    exists(DataFlow::SourceNode callee | this = callee.getACall() |
+      callee = DataFlow::moduleMember("ent", "encode")
+      or
+      callee = DataFlow::moduleMember("entities", "encodeHTML")
+      or
+      callee = DataFlow::moduleMember("entities", "encodeXML")
+      or
+      callee = DataFlow::moduleMember("escape-goat", "escape")
+      or
+      callee = DataFlow::moduleMember("he", "encode")
+      or
+      callee = DataFlow::moduleMember("he", "escape")
+      or
+      callee = DataFlow::moduleImport("sanitize-html")
+      or
+      callee = DataFlow::moduleMember("sanitizer", "escape")
+      or
+      callee = DataFlow::moduleMember("sanitizer", "sanitize")
+      or
+      callee = DataFlow::moduleMember("validator", "escape")
+      or
+      callee = DataFlow::moduleImport("xss")
+      or
+      callee = DataFlow::moduleMember("xss-filters", _)
+      or
+      callee = LodashUnderscore::member("escape")
+      or
+      exists(string name | name = "encode" or name = "encodeNonUTF" |
+        callee = DataFlow::moduleMember("html-entities", _)
+              .getAnInstantiation()
+              .getAPropertyRead(name) or
+        callee = DataFlow::moduleMember("html-entities", _).getAPropertyRead(name)
+      )
+      or
+      callee = Closure::moduleImport("goog.string.htmlEscape")
     )
     or
     // Match home-made sanitizers by name.
-    exists (string calleeName | calleeName = getCalleeName() |
+    exists(string calleeName | calleeName = getCalleeName() |
       calleeName.regexpMatch("(?i).*html.*") and
-      calleeName.regexpMatch("(?i).*(?<!un)(saniti[sz]|escape|strip).*"))
+      calleeName.regexpMatch("(?i).*(?<!un)(saniti[sz]|escape|strip).*")
+    )
   }
 
   override DataFlow::Node getInput() { result = getArgument(0) }

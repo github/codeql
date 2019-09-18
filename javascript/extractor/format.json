@@ -1,0 +1,10 @@
+[
+  {
+    "pattern": [
+      "lib/**/*",
+      "parser-tests/**/*.js",
+      "tests/**/*.js"
+    ],
+    "allowMixedTabsAndSpaces": true
+  }
+]

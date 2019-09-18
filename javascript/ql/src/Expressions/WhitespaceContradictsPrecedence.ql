@@ -26,18 +26,23 @@ class AssocNestedExpr extends BinaryExpr {
   AssocNestedExpr() {
     exists(BinaryExpr parent, int idx | this = parent.getChildExpr(idx) |
       // +, *, &&, || and the bitwise operations are associative
-      ((this instanceof AddExpr or this instanceof MulExpr or
-        this instanceof BitwiseExpr or this instanceof LogicalBinaryExpr) and
-        parent.getOperator() = this.getOperator())
+      (
+        this instanceof AddExpr or
+        this instanceof MulExpr or
+        this instanceof BitwiseExpr or
+        this instanceof LogicalBinaryExpr
+      ) and
+      parent.getOperator() = this.getOperator()
       or
       // (x*y)/z = x*(y/z)
-      (this instanceof MulExpr and parent instanceof DivExpr and idx = 0)
+      this instanceof MulExpr and parent instanceof DivExpr and idx = 0
       or
       // (x/y)%z = x/(y%z)
-      (this instanceof DivExpr and parent instanceof ModExpr and idx = 0)
+      this instanceof DivExpr and parent instanceof ModExpr and idx = 0
       or
       // (x+y)-z = x+(y-z)
-      (this instanceof AddExpr and parent instanceof SubExpr and idx = 0))
+      this instanceof AddExpr and parent instanceof SubExpr and idx = 0
+    )
   }
 }
 
@@ -48,33 +53,12 @@ class AssocNestedExpr extends BinaryExpr {
 class HarmlessNestedExpr extends BinaryExpr {
   HarmlessNestedExpr() {
     exists(BinaryExpr parent | this = parent.getAChildExpr() |
-      (parent instanceof Comparison and (this instanceof ArithmeticExpr or this instanceof ShiftExpr))
+      parent instanceof Comparison and
+      (this instanceof ArithmeticExpr or this instanceof ShiftExpr)
       or
-      (parent instanceof LogicalExpr and this instanceof Comparison))
+      parent instanceof LogicalExpr and this instanceof Comparison
+    )
   }
-}
-
-/** Holds if the right operand of `expr` starts on line `line`, at column `col`. */
-predicate startOfBinaryRhs(BinaryExpr expr, int line, int col) {
-  exists(Location rloc | rloc = expr.getRightOperand().getLocation() |
-    rloc.getStartLine() = line and rloc.getStartColumn() = col
-  )
-}
-
-/** Holds if the left operand of `expr` ends on line `line`, at column `col`. */
-predicate endOfBinaryLhs(BinaryExpr expr, int line, int col) {
-  exists(Location lloc | lloc = expr.getLeftOperand().getLocation() |
-    lloc.getEndLine() = line and lloc.getEndColumn() = col
-  )
-}
-
-/** Gets the number of whitespace characters around the operator of `expr`. */
-int operatorWS(BinaryExpr expr) {
-  exists(int line, int lcol, int rcol |
-    endOfBinaryLhs(expr, line, lcol) and
-    startOfBinaryRhs(expr, line, rcol) and
-    result = rcol - lcol + 1 - expr.getOperator().length()
-  )
 }
 
 /**
@@ -88,10 +72,9 @@ predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   not inner instanceof HarmlessNestedExpr
 }
 
-from BinaryExpr inner, BinaryExpr outer, int wsouter, int wsinner
-where interestingNesting(inner, outer) and
-      wsinner = operatorWS(inner) and wsouter = operatorWS(outer) and
-      wsinner % 2 = 0 and wsouter % 2 = 0 and
-      wsinner > wsouter and
-      not outer.getTopLevel().isMinified()
+from BinaryExpr inner, BinaryExpr outer
+where
+  interestingNesting(inner, outer) and
+  inner.getWhitespaceAroundOperator() > outer.getWhitespaceAroundOperator() and
+  not outer.getTopLevel().isMinified()
 select outer, "Whitespace around nested operators contradicts precedence."

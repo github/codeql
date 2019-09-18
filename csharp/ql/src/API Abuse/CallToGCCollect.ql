@@ -8,12 +8,13 @@
  * @tags efficiency
  *       maintainability
  */
+
 import csharp
 
 from MethodCall c, Method gcCollect
 where
-  c.getTarget() = gcCollect
-  and gcCollect.hasName("Collect")
-  and gcCollect.hasNoParameters()
-  and gcCollect.getDeclaringType().hasQualifiedName("System.GC")
+  c.getTarget() = gcCollect and
+  gcCollect.hasName("Collect") and
+  gcCollect.hasNoParameters() and
+  gcCollect.getDeclaringType().hasQualifiedName("System.GC")
 select c, "Call to 'GC.Collect()'."

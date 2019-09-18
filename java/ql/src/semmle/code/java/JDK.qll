@@ -5,104 +5,75 @@
 import Member
 
 // --- Standard types ---
-
 /** The class `java.lang.Object`. */
 class TypeObject extends Class {
   pragma[noinline]
-  TypeObject() {
-    this.hasQualifiedName("java.lang", "Object")
-  }
+  TypeObject() { this.hasQualifiedName("java.lang", "Object") }
 }
 
 /** The interface `java.lang.Cloneable`. */
 class TypeCloneable extends Interface {
-  TypeCloneable() {
-    this.hasQualifiedName("java.lang", "Cloneable")
-  }
+  TypeCloneable() { this.hasQualifiedName("java.lang", "Cloneable") }
 }
 
 /** The class `java.lang.ProcessBuilder`. */
 class TypeProcessBuilder extends Class {
-  TypeProcessBuilder() {
-    hasQualifiedName("java.lang", "ProcessBuilder")
-  }
+  TypeProcessBuilder() { hasQualifiedName("java.lang", "ProcessBuilder") }
 }
 
 /** The class `java.lang.Runtime`. */
 class TypeRuntime extends Class {
-  TypeRuntime() {
-    hasQualifiedName("java.lang", "Runtime")
-  }
+  TypeRuntime() { hasQualifiedName("java.lang", "Runtime") }
 }
 
 /** The class `java.lang.String`. */
 class TypeString extends Class {
-  TypeString() {
-    this.hasQualifiedName("java.lang", "String")
-  }
+  TypeString() { this.hasQualifiedName("java.lang", "String") }
 }
 
 /** The `length()` method of the class `java.lang.String`. */
 class StringLengthMethod extends Method {
-  StringLengthMethod() {
-    this.hasName("length") and this.getDeclaringType() instanceof TypeString
-  }
+  StringLengthMethod() { this.hasName("length") and this.getDeclaringType() instanceof TypeString }
 }
 
 /** The class `java.lang.StringBuffer`. */
 class TypeStringBuffer extends Class {
-  TypeStringBuffer() {
-    this.hasQualifiedName("java.lang", "StringBuffer")
-  }
+  TypeStringBuffer() { this.hasQualifiedName("java.lang", "StringBuffer") }
 }
 
 /** The class `java.lang.StringBuilder`. */
 class TypeStringBuilder extends Class {
-  TypeStringBuilder() {
-    this.hasQualifiedName("java.lang", "StringBuilder")
-  }
+  TypeStringBuilder() { this.hasQualifiedName("java.lang", "StringBuilder") }
 }
 
 /** The class `java.lang.System`. */
 class TypeSystem extends Class {
-  TypeSystem() {
-    this.hasQualifiedName("java.lang", "System")
-  }
+  TypeSystem() { this.hasQualifiedName("java.lang", "System") }
 }
 
 /** The class `java.lang.Throwable`. */
 class TypeThrowable extends Class {
-  TypeThrowable() {
-    this.hasQualifiedName("java.lang", "Throwable")
-  }
+  TypeThrowable() { this.hasQualifiedName("java.lang", "Throwable") }
 }
 
 /** The class `java.lang.Exception`. */
 class TypeException extends Class {
-  TypeException() {
-    this.hasQualifiedName("java.lang", "Exception")
-  }
+  TypeException() { this.hasQualifiedName("java.lang", "Exception") }
 }
 
 /** The class `java.lang.Error`. */
 class TypeError extends Class {
-  TypeError() {
-    this.hasQualifiedName("java.lang", "Error")
-  }
+  TypeError() { this.hasQualifiedName("java.lang", "Error") }
 }
 
 /** The class `java.lang.RuntimeException`. */
 class TypeRuntimeException extends Class {
-  TypeRuntimeException() {
-    this.hasQualifiedName("java.lang", "RuntimeException")
-  }
+  TypeRuntimeException() { this.hasQualifiedName("java.lang", "RuntimeException") }
 }
 
 /** The class `java.lang.ClassCastException`. */
 class TypeClassCastException extends Class {
-  TypeClassCastException() {
-    this.hasQualifiedName("java.lang", "ClassCastException")
-  }
+  TypeClassCastException() { this.hasQualifiedName("java.lang", "ClassCastException") }
 }
 
 /**
@@ -111,9 +82,7 @@ class TypeClassCastException extends Class {
  * This includes the generic source declaration, any parameterized instances and the raw type.
  */
 class TypeClass extends Class {
-  TypeClass() {
-    this.getSourceDeclaration().hasQualifiedName("java.lang", "Class")
-  }
+  TypeClass() { this.getSourceDeclaration().hasQualifiedName("java.lang", "Class") }
 }
 
 /**
@@ -129,9 +98,7 @@ class TypeConstructor extends Class {
 
 /** The class `java.lang.Math`. */
 class TypeMath extends Class {
-  TypeMath() {
-    this.hasQualifiedName("java.lang", "Math")
-  }
+  TypeMath() { this.hasQualifiedName("java.lang", "Math") }
 }
 
 /** A numeric type, including both primitive and boxed types. */
@@ -140,7 +107,7 @@ class NumericType extends Type {
     exists(string name |
       name = this.(PrimitiveType).getName() or
       name = this.(BoxedType).getPrimitiveType().getName()
-      |
+    |
       name.regexpMatch("byte|short|int|long|double|float")
     )
   }
@@ -158,58 +125,42 @@ class ImmutableType extends Type {
 }
 
 // --- Java IO ---
-
 /** The interface `java.io.Serializable`. */
 class TypeSerializable extends Interface {
-  TypeSerializable() {
-    hasQualifiedName("java.io", "Serializable")
-  }
+  TypeSerializable() { hasQualifiedName("java.io", "Serializable") }
 }
 
 /** The interface `java.io.ObjectOutput`. */
 class TypeObjectOutput extends Interface {
-  TypeObjectOutput() {
-    hasQualifiedName("java.io", "ObjectOutput")
-  }
+  TypeObjectOutput() { hasQualifiedName("java.io", "ObjectOutput") }
 }
 
 /** The type `java.io.ObjectOutputStream`. */
 class TypeObjectOutputStream extends RefType {
-  TypeObjectOutputStream() {
-    hasQualifiedName("java.io", "ObjectOutputStream")
-  }
+  TypeObjectOutputStream() { hasQualifiedName("java.io", "ObjectOutputStream") }
 }
 
 /** The class `java.nio.file.Paths`. */
 class TypePaths extends Class {
-  TypePaths() {
-    this.hasQualifiedName("java.nio.file", "Paths")
-  }
+  TypePaths() { this.hasQualifiedName("java.nio.file", "Paths") }
 }
 
-/** The class `java.nio.file.Path`. */
-class TypePath extends Class {
-  TypePath() {
-    this.hasQualifiedName("java.nio.file", "Path")
-  }
+/** The type `java.nio.file.Path`. */
+class TypePath extends RefType {
+  TypePath() { this.hasQualifiedName("java.nio.file", "Path") }
 }
 
 /** The class `java.nio.file.FileSystem`. */
 class TypeFileSystem extends Class {
-  TypeFileSystem() {
-    this.hasQualifiedName("java.nio.file", "FileSystem")
-  }
+  TypeFileSystem() { this.hasQualifiedName("java.nio.file", "FileSystem") }
 }
 
 /** The class `java.io.File`. */
 class TypeFile extends Class {
-  TypeFile() {
-    this.hasQualifiedName("java.io", "File")
-  }
+  TypeFile() { this.hasQualifiedName("java.io", "File") }
 }
 
 // --- Standard methods ---
-
 /**
  * Any of the methods named `command` on class `java.lang.ProcessBuilder`.
  */
@@ -314,8 +265,23 @@ class MethodAbs extends Method {
   }
 }
 
-// --- Standard fields ---
+/** The method `Math.min`. */
+class MethodMathMin extends Method {
+  MethodMathMin() {
+    this.getDeclaringType() instanceof TypeMath and
+    this.getName() = "min"
+  }
+}
 
+/** The method `Math.min`. */
+class MethodMathMax extends Method {
+  MethodMathMax() {
+    this.getDeclaringType() instanceof TypeMath and
+    this.getName() = "max"
+  }
+}
+
+// --- Standard fields ---
 /** The field `System.in`. */
 class SystemIn extends Field {
   SystemIn() {
@@ -341,7 +307,6 @@ class SystemErr extends Field {
 }
 
 // --- User-defined methods with a particular meaning ---
-
 /** A method with the same signature as `java.lang.Object.equals`. */
 class EqualsMethod extends Method {
   EqualsMethod() {
@@ -351,9 +316,7 @@ class EqualsMethod extends Method {
   }
 
   /** Gets the single parameter of this method. */
-  Parameter getParameter() {
-    result = this.getAParameter()
-  }
+  Parameter getParameter() { result = this.getAParameter() }
 }
 
 /** A method with the same signature as `java.lang.Object.hashCode`. */
@@ -399,8 +362,7 @@ class PreMainMethod extends Method {
     this.getReturnType().hasName("void") and
     this.getNumberOfParameters() < 3 and
     this.getParameter(0).getType() instanceof TypeString and
-    (exists(this.getParameter(1)) implies
-      this.getParameter(1).getType().hasName("Instrumentation"))
+    (exists(this.getParameter(1)) implies this.getParameter(1).getType().hasName("Instrumentation"))
   }
 }
 
@@ -414,9 +376,7 @@ class ArrayLengthField extends Field {
 
 /** A (reflexive, transitive) subtype of `java.lang.Throwable`. */
 class ThrowableType extends RefType {
-  ThrowableType() {
-    exists(TypeThrowable throwable | hasSubtype*(throwable, this))
-  }
+  ThrowableType() { exists(TypeThrowable throwable | hasSubtype*(throwable, this)) }
 }
 
 /** An unchecked exception. That is, a (reflexive, transitive) subtype of `java.lang.Error` or `java.lang.RuntimeException`. */

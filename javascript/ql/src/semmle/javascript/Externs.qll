@@ -39,7 +39,31 @@
 
 import javascript
 
-/** A declaration in an externs file. */
+/**
+ * A declaration in an externs file.
+ *
+ * Examples:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @return {!Object}
+ *  *&#47;
+ * function Object() {}
+ *
+ * /**
+ *  * @param {!Object} obj
+ *  * @return {!Array<string>}
+ *  *&#47;
+ * Object.keys = function(obj) {};
+ *
+ * /**
+ *  * @param {*} p
+ *  * @return {boolean}
+ *  *&#47;
+ * Object.prototype.hasOwnProperty = function(p) {};
+ * </pre>
+ */
 abstract class ExternalDecl extends ASTNode {
   /** Gets the name of this declaration. */
   abstract string getName();
@@ -61,16 +85,40 @@ class ExternalTypedef extends ExternalDecl, VariableDeclarator {
     hasTypedefAnnotation(getDeclStmt())
   }
 
-  override string getName() {
-    result = getBindingPattern().(Identifier).getName()
-  }
+  override string getName() { result = getBindingPattern().(Identifier).getName() }
 
-  override string getQualifiedName() {
-    result = getName()
-  }
+  override string getQualifiedName() { result = getName() }
 }
 
-/** A variable or function declaration in an externs file. */
+/**
+ * A variable or function declaration in an externs file.
+ *
+ * Examples:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @return {!Object}
+ *  *&#47;
+ * function Object() {}
+ *
+ * /**
+ *  * @type {number}
+ *  *&#47;
+ * var NaN;
+ *
+ * /**
+ *  * @param {!Object} obj
+ *  * @return {!Array<string>}
+ *  *&#47;
+ * Object.keys = function(obj) {};
+ *
+ * /**
+ *  * @type {number}
+ *  *&#47;
+ * Number.NaN;
+ * </pre>
+ */
 abstract class ExternalVarDecl extends ExternalDecl {
   /**
    * Gets the initializer associated with this declaration, if any.
@@ -82,42 +130,70 @@ abstract class ExternalVarDecl extends ExternalDecl {
   /**
    * Gets a JSDoc tag associated with this declaration.
    */
-  JSDocTag getATag() {
-    result = this.(Documentable).getDocumentation().getATag()
-  }
+  JSDocTag getATag() { result = this.(Documentable).getDocumentation().getATag() }
 
   /**
    * Gets the `@type` tag associated with this declaration, if any.
    */
-  ExternalTypeTag getTypeTag() {
-    result = getATag()
-  }
+  ExternalTypeTag getTypeTag() { result = getATag() }
 }
 
-/** A global declaration of a function or variable in an externs file. */
+/**
+ * A global declaration of a function or variable in an externs file.
+ *
+ * Examples:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @return {!Object}
+ *  *&#47;
+ * function Object() {}
+ *
+ * /**
+ *  * @type {number}
+ *  *&#47;
+ * var NaN;
+ * </pre>
+ */
 abstract class ExternalGlobalDecl extends ExternalVarDecl {
-  override string getQualifiedName() {
-    result = getName()
-  }
+  override string getQualifiedName() { result = getName() }
 }
 
-/** A global function declaration in an externs file. */
+/**
+ * A global function declaration in an externs file.
+ *
+ * Examples:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @return {!Object}
+ *  *&#47;
+ * function Object() {}
+ * </pre>
+ */
 class ExternalGlobalFunctionDecl extends ExternalGlobalDecl, FunctionDeclStmt {
-  ExternalGlobalFunctionDecl() {
-    inExternsFile()
-  }
+  ExternalGlobalFunctionDecl() { inExternsFile() }
 
   /** Gets the name of this declaration. */
-  override string getName() {
-    result = FunctionDeclStmt.super.getName()
-  }
+  override string getName() { result = FunctionDeclStmt.super.getName() }
 
-  override ASTNode getInit() {
-    result = this
-  }
+  override ASTNode getInit() { result = this }
 }
 
-/** A global variable declaration in an externs file. */
+/**
+ * A global variable declaration in an externs file.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @type {number}
+ *  *&#47;
+ * var NaN;
+ * </pre>
+ */
 class ExternalGlobalVarDecl extends ExternalGlobalDecl, VariableDeclarator {
   ExternalGlobalVarDecl() {
     getBindingPattern() instanceof Identifier and
@@ -126,22 +202,35 @@ class ExternalGlobalVarDecl extends ExternalGlobalDecl, VariableDeclarator {
     not hasTypedefAnnotation(getDeclStmt())
   }
 
-  override string getName() {
-    result = getBindingPattern().(Identifier).getName()
-  }
+  override string getName() { result = getBindingPattern().(Identifier).getName() }
 
   /** Gets the initializer associated with this declaration, if any. */
-  override Expr getInit() {
-    result = VariableDeclarator.super.getInit()
-  }
+  override Expr getInit() { result = VariableDeclarator.super.getInit() }
 }
 
-/** A member variable declaration in an externs file. */
+/**
+ * A member variable declaration in an externs file.
+ *
+ * <pre>
+ * /**
+ *  * @param {!Object} obj
+ *  * @return {!Array<string>}
+ *  *&#47;
+ * Object.keys = function(obj) {};
+ *
+ * /**
+ *  * @type {number}
+ *  *&#47;
+ * Number.NaN;
+ * </pre>
+ */
 class ExternalMemberDecl extends ExternalVarDecl, ExprStmt {
   ExternalMemberDecl() {
     getParent() instanceof Externs and
-    (getExpr() instanceof PropAccess or
-     getExpr().(AssignExpr).getLhs() instanceof PropAccess)
+    (
+      getExpr() instanceof PropAccess or
+      getExpr().(AssignExpr).getLhs() instanceof PropAccess
+    )
   }
 
   /**
@@ -152,66 +241,73 @@ class ExternalMemberDecl extends ExternalVarDecl, ExprStmt {
     result = getExpr().(AssignExpr).getLhs()
   }
 
-  override Expr getInit() {
-    result = getExpr().(AssignExpr).getRhs()
-  }
+  override Expr getInit() { result = getExpr().(AssignExpr).getRhs() }
 
-  override string getQualifiedName() {
-    result = getBaseName() + "." + getName()
-  }
+  override string getQualifiedName() { result = getBaseName() + "." + getName() }
 
   /**
    * Holds if this member belongs to type `base` and has name `name`.
    */
-  predicate hasQualifiedName(string base, string name) {
-    base = getBaseName() and name = getName()
-  }
+  predicate hasQualifiedName(string base, string name) { base = getBaseName() and name = getName() }
 
-  override string getName() {
-    result = getProperty().getPropertyName()
-  }
+  override string getName() { result = getProperty().getPropertyName() }
 
   /**
    * Gets the name of the base type to which the member declared by this declaration belongs.
    */
-  string getBaseName() {
-    none()
-  }
+  string getBaseName() { none() }
 
   /**
    * Gets the base type to which the member declared by this declaration belongs.
    */
-  ExternalType getDeclaringType() {
-    result.getQualifiedName() = getBaseName()
-  }
+  ExternalType getDeclaringType() { result.getQualifiedName() = getBaseName() }
 }
 
 /**
  * A static member variable declaration in an externs file.
  *
- * This captures declarations of the form `A.f;`, and declarations
- * with initializers of the form `A.f = {};`.
+ * Examples:
+ *
+ * <pre>
+ * /**
+ *  * @param {!Object} obj
+ *  * @return {!Array<string>}
+ *  *&#47;
+ * Object.keys = function(obj) {};
+ *
+ * /**
+ *  * @type {number}
+ *  *&#47;
+ * Number.NaN;
+ * </pre>
  */
 class ExternalStaticMemberDecl extends ExternalMemberDecl {
-  ExternalStaticMemberDecl() {
-    getProperty().getBase() instanceof Identifier
-  }
+  ExternalStaticMemberDecl() { getProperty().getBase() instanceof Identifier }
 
-  override string getBaseName() {
-    result = getProperty().getBase().(Identifier).getName()
-  }
+  override string getBaseName() { result = getProperty().getBase().(Identifier).getName() }
 }
 
 /**
  * An instance member variable declaration in an externs file.
  *
- * This captures declarations of the form `A.prototype.f;`, and declarations
- * with initializers of the form `A.prototype.f = {};`.
+ * Examples:
+ *
+ * <pre>
+ * /**
+ *  * @param {*} p
+ *  * @return {boolean}
+ *  *&#47;
+ * Object.prototype.hasOwnProperty = function(p) {};
+ *
+ * /**
+ *  * @type {number}
+ *  *&#47;
+ * Array.prototype.length;
+ * </pre>
  */
 class ExternalInstanceMemberDecl extends ExternalMemberDecl {
   ExternalInstanceMemberDecl() {
-    exists (PropAccess outer, PropAccess inner |
-      outer = getProperty() and inner = outer.getBase() |
+    exists(PropAccess outer, PropAccess inner | outer = getProperty() and inner = outer.getBase() |
       inner.getBase() instanceof Identifier and
       inner.getPropertyName() = "prototype"
     )
@@ -224,28 +320,46 @@ class ExternalInstanceMemberDecl extends ExternalMemberDecl {
 
 /**
  * A function or object defined in an externs file.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @param {*} p
+ *  * @return {boolean}
+ *  *&#47;
+ * Object.prototype.hasOwnProperty =
+ *   function(p) {};  // external function entity
+ * </pre>
  */
 class ExternalEntity extends ASTNode {
-  ExternalEntity() {
-    exists (ExternalVarDecl d | d.getInit() = this)
-  }
+  ExternalEntity() { exists(ExternalVarDecl d | d.getInit() = this) }
 
   /** Gets the variable declaration to which this entity belongs. */
-  ExternalVarDecl getDecl() {
-    result.getInit() = this
-  }
+  ExternalVarDecl getDecl() { result.getInit() = this }
 }
 
 /**
  * A function defined in an externs file.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @param {*} p
+ *  * @return {boolean}
+ *  *&#47;
+ * Object.prototype.hasOwnProperty =
+ *   function(p) {};  // external function
+ * </pre>
  */
 class ExternalFunction extends ExternalEntity, Function {
   /**
    * Holds if the last parameter of this external function has a rest parameter type annotation.
    */
   predicate isVarArgs() {
-    exists (SimpleParameter lastParm, JSDocParamTag pt |
-      lastParm = this.getParameter(this.getNumParameter()-1) and
+    exists(SimpleParameter lastParm, JSDocParamTag pt |
+      lastParm = this.getParameter(this.getNumParameter() - 1) and
       pt = getDecl().getATag() and
       pt.getName() = lastParm.getName() and
       pt.getType() instanceof JSDocRestParameterTypeExpr
@@ -255,12 +369,30 @@ class ExternalFunction extends ExternalEntity, Function {
 
 /**
  * A `@constructor` tag.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @constructor  // constructor tag
+ *  *&#47;
+ * function Array() {}
+ * </pre>
  */
 class ConstructorTag extends JSDocTag {
   ConstructorTag() { getTitle() = "constructor" }
 }
 
-/** A JSDoc tag that refers to a named type. */
+/**
+ * A JSDoc tag that refers to a named type.
+ *
+ * Example:
+ *
+ * <pre>
+ * /** @type {number} *&#47;  // refers to named type `number`
+ * var NaN;
+ * </pre>
+ */
 abstract private class NamedTypeReferent extends JSDocTag {
   /** Gets the name of the type to which this tag refers. */
   string getTarget() {
@@ -280,9 +412,7 @@ abstract private class NamedTypeReferent extends JSDocTag {
    * type `Array`, which is also the source declaration of `!Array=`. Primitive types,
    * union types, and other complex kinds of types do not have a source declaration.
    */
-  ExternalType getTypeDeclaration() {
-    result = sourceDecl(getType())
-  }
+  ExternalType getTypeDeclaration() { result = sourceDecl(getType()) }
 }
 
 /**
@@ -298,6 +428,13 @@ private ExternalType sourceDecl(JSDocTypeExpr tp) {
 
 /**
  * An `@implements` tag.
+ *
+ * Example:
+ *
+ * <pre>
+ * /** @implements {EventTarget} *&#47;
+ * function Node() {}
+ * </pre>
  */
 class ImplementsTag extends NamedTypeReferent {
   ImplementsTag() { getTitle() = "implements" }
@@ -305,6 +442,13 @@ class ImplementsTag extends NamedTypeReferent {
 
 /**
  * An `@extends` tag.
+ *
+ * Example:
+ *
+ * <pre>
+ * /** @extends {Node} *&#47;
+ * function Document() {}
+ * </pre>
  */
 class ExtendsTag extends NamedTypeReferent {
   ExtendsTag() { getTitle() = "extends" }
@@ -312,6 +456,13 @@ class ExtendsTag extends NamedTypeReferent {
 
 /**
  * A `@type` tag.
+ *
+ * Example:
+ *
+ * <pre>
+ * /** @type {number} *&#47;
+ * var NaN;
+ * </pre>
  */
 class ExternalTypeTag extends NamedTypeReferent {
   ExternalTypeTag() { getTitle() = "type" }
@@ -319,6 +470,21 @@ class ExternalTypeTag extends NamedTypeReferent {
 
 /**
  * A constructor or interface function defined in an externs file.
+ *
+ * Examples:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @return {!Object}
+ *  *&#47;
+ * function Object() {}
+ *
+ * /**
+ *  * @interface
+ *  *&#47;
+ * function EventTarget() {}
+ * </pre>
  */
 abstract class ExternalType extends ExternalGlobalFunctionDecl {
   /** Gets a type which this type extends. */
@@ -332,57 +498,93 @@ abstract class ExternalType extends ExternalGlobalFunctionDecl {
   }
 
   /** Gets a supertype of this type. */
-  ExternalType getASupertype() {
-    result = getAnExtendedType() or result = getAnImplementedType()
-  }
+  ExternalType getASupertype() { result = getAnExtendedType() or result = getAnImplementedType() }
 
   /** Gets a declaration of a member of this type. */
-  ExternalMemberDecl getAMember() {
-    result.getDeclaringType() = this
-  }
+  ExternalMemberDecl getAMember() { result.getDeclaringType() = this }
 }
 
 /**
  * A constructor function defined in an externs file.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @return {!Object}
+ *  *&#47;
+ * function Object() {}
+ * </pre>
  */
 class ExternalConstructor extends ExternalType {
-  ExternalConstructor() {
-    getDocumentation().getATag() instanceof ConstructorTag
-  }
+  ExternalConstructor() { getDocumentation().getATag() instanceof ConstructorTag }
 }
 
 /**
  * An interface function defined in an externs file.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @interface
+ *  *&#47;
+ * function EventTarget() {}
+ * </pre>
  */
 class ExternalInterface extends ExternalType {
-  ExternalInterface() {
-    getDocumentation().getATag().getTitle() = "interface"
-  }
+  ExternalInterface() { getDocumentation().getATag().getTitle() = "interface" }
 }
 
 /**
  * Externs definition for the Function object.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @param {...*} args
+ *  *&#47;
+ * function Function(args) {}
+ * </pre>
  */
 class FunctionExternal extends ExternalConstructor {
-  FunctionExternal() {
-    getName() = "Function"
-  }
+  FunctionExternal() { getName() = "Function" }
 }
 
 /**
  * Externs definition for the Object object.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @return {!Object}
+ *  *&#47;
+ * function Object() {}
+ * </pre>
  */
 class ObjectExternal extends ExternalConstructor {
-  ObjectExternal() {
-    getName() = "Object"
-  }
+  ObjectExternal() { getName() = "Object" }
 }
 
 /**
  * Externs definition for the Array object.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * @constructor
+ *  * @param {...*} args
+ *  * @return {!Array}
+ *  *&#47;
+ * function Array(args) {}
+ * </pre>
  */
 class ArrayExternal extends ExternalConstructor {
-  ArrayExternal() {
-    getName() = "Array"
-  }
+  ArrayExternal() { getName() = "Array" }
 }

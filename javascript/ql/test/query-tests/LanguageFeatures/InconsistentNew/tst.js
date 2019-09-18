@@ -63,3 +63,6 @@ C(); // NOT OK, but flagged by IllegalInvocation
 	new A(42);
 	A.call({}, 23);
 })();
+
+new Point(42, 23); // NOT OK, but not flagged since line 6 above was already flagged
+Point(56, 72);     // NOT OK, but not flagged since line 7 above was already flagged

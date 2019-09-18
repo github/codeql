@@ -1,0 +1,4 @@
+| duplicate_test.py:9:1:9:16 | Function dis | All 26 statements in dis are identical in $@. | duplicate_test.py:47:1:47:17 | Function dis2 | dis2 |
+| duplicate_test.py:47:1:47:17 | Function dis2 | All 26 statements in dis2 are identical in $@. | duplicate_test.py:9:1:9:16 | Function dis | dis |
+| duplicate_test.py:287:1:287:17 | Function dis4 | All 24 statements in dis4 are identical in $@. | duplicate_test.py:9:1:9:16 | Function dis | dis |
+| duplicate_test.py:287:1:287:17 | Function dis4 | All 24 statements in dis4 are identical in $@. | duplicate_test.py:47:1:47:17 | Function dis2 | dis2 |

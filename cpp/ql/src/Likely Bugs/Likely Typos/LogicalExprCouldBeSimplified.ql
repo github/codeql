@@ -8,6 +8,7 @@
  * @problem.severity warning
  * @tags maintainability
  */
+
 import cpp
 
 /**
@@ -15,15 +16,15 @@ import cpp
  * or template argument).
  */
 predicate simple(Literal l) {
-    l instanceof OctalLiteral or
-    l instanceof HexLiteral or
-    l instanceof CharLiteral or
-    l.getValueText() = "true" or
-    l.getValueText() = "false" or
-    // Parsing doubles is too slow...
-    //exists(l.getValueText().toFloat())
-    // Instead, check whether the literal starts with a letter.
-    not l.getValueText().regexpMatch("[a-zA-Z_].*")
+  l instanceof OctalLiteral or
+  l instanceof HexLiteral or
+  l instanceof CharLiteral or
+  l.getValueText() = "true" or
+  l.getValueText() = "false" or
+  // Parsing doubles is too slow...
+  //exists(l.getValueText().toFloat())
+  // Instead, check whether the literal starts with a letter.
+  not l.getValueText().regexpMatch("[a-zA-Z_].*")
 }
 
 predicate booleanLiteral(Literal l) {
@@ -32,18 +33,23 @@ predicate booleanLiteral(Literal l) {
 }
 
 string boolLiteralInLogicalOp(Literal literal) {
-   booleanLiteral(literal) and literal.getParent() instanceof BinaryLogicalOperation and
-  result = "Literal value " + literal.getValueText() + " is used in a logical expression; simplify or use a constant."
+  booleanLiteral(literal) and
+  literal.getParent() instanceof BinaryLogicalOperation and
+  result = "Literal value " + literal.getValueText() +
+      " is used in a logical expression; simplify or use a constant."
 }
 
 string comparisonOnLiterals(ComparisonOperation op) {
-  simple(op.getLeftOperand()) and simple(op.getRightOperand()) and
+  simple(op.getLeftOperand()) and
+  simple(op.getRightOperand()) and
   not op.getAnOperand().isInMacroExpansion() and
-  if op.isConstant() then result = "This comparison involves two literals and is always " + op.getValue() + "."
+  if exists(op.getValue())
+  then result = "This comparison involves two literals and is always " + op.getValue() + "."
   else result = "This comparison involves two literals and should be simplified."
 }
 
 from Expr e, string msg
-where (msg = boolLiteralInLogicalOp(e) or msg = comparisonOnLiterals(e)) and
-    not e.isInMacroExpansion()
+where
+  (msg = boolLiteralInLogicalOp(e) or msg = comparisonOnLiterals(e)) and
+  not e.isInMacroExpansion()
 select e, msg

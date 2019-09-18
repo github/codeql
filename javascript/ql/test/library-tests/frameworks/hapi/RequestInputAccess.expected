@@ -1,6 +1,0 @@
-| src/hapi.js:21:3:21:20 | request.rawPayload | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
-| src/hapi.js:22:3:22:21 | request.payload.foo | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
-| src/hapi.js:23:3:23:19 | request.query.bar | parameter | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
-| src/hapi.js:24:3:24:18 | request.url.path | url | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
-| src/hapi.js:25:3:25:21 | request.headers.baz | header | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
-| src/hapi.js:26:3:26:21 | request.state.token | cookie | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |

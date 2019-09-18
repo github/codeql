@@ -2,9 +2,9 @@ var https = require('https');
 var url = require('url');
 
 var server = https.createServer(function(req, res) {
-  let a = url.parse(req.url, true).query.AccountName;
+  let pw = url.parse(req.url, true).query.current_password;
   res.writeHead(200, {
-    'Set-Cookie': 'AccountName=' + a,
+    'Set-Cookie': 'password=' + pw,
     'Content-Type': 'text/plain'
   });
 });

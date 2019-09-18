@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with [Connect](https://github.com/senchalabs/connect) applications.
  */
+
 import javascript
 import semmle.javascript.frameworks.HTTP
 private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared
@@ -24,7 +25,6 @@ module Connect {
    * additional subclasses of this class.
    */
   abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
-
     /**
      * Gets the parameter of kind `kind` of this route handler.
      *
@@ -35,16 +35,12 @@ module Connect {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    SimpleParameter getRequestParameter() {
-      result = getRouteHandlerParameter("request")
-    }
+    SimpleParameter getRequestParameter() { result = getRouteHandlerParameter("request") }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    SimpleParameter getResponseParameter() {
-      result = getRouteHandlerParameter("response")
-    }
+    SimpleParameter getResponseParameter() { result = getRouteHandlerParameter("response") }
   }
 
   /**
@@ -53,14 +49,11 @@ module Connect {
   class StandardRouteHandler extends RouteHandler {
     override Function astNode;
 
-    StandardRouteHandler() {
-      this = any(RouteSetup setup).getARouteHandler()
-    }
+    StandardRouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
       result = getRouteHandlerParameter(astNode, kind)
     }
-
   }
 
   /**
@@ -70,16 +63,12 @@ module Connect {
   private class ResponseSource extends HTTP::Servers::ResponseSource {
     RouteHandler rh;
 
-    ResponseSource() {
-      this = DataFlow::parameterNode(rh.getResponseParameter())
-    }
+    ResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
 
     /**
      * Gets the route handler that provides this response.
      */
-    override RouteHandler getRouteHandler() {
-      result = rh
-    }
+    override RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -89,16 +78,12 @@ module Connect {
   private class RequestSource extends HTTP::Servers::RequestSource {
     RouteHandler rh;
 
-    RequestSource() {
-      this = DataFlow::parameterNode(rh.getRequestParameter())
-    }
+    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
 
     /**
      * Gets the route handler that handles this request.
      */
-    override RouteHandler getRouteHandler() {
-      result = rh
-    }
+    override RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -125,47 +110,46 @@ module Connect {
       getMethodName() = "use" and
       (
         // app.use(fun)
-        server.flowsTo(getReceiver()) or
+        server.flowsTo(getReceiver())
+        or
         // app.use(...).use(fun)
         this.getReceiver().(RouteSetup).getServer() = server
       )
-
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result.(DataFlow::SourceNode).flowsTo(getARouteHandlerExpr().flow()) or
-      result.(DataFlow::TrackedNode).flowsTo(getARouteHandlerExpr().flow())
+      result = getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
-    override Expr getServer() {
-      result = server
+    private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
+      t.start() and
+      result = getARouteHandlerExpr().flow().getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
+
+    override Expr getServer() { result = server }
 
     /** Gets an argument that represents a route handler being registered. */
-    Expr getARouteHandlerExpr() {
-      result = getAnArgument()
-    }
-
+    Expr getARouteHandlerExpr() { result = getAnArgument() }
   }
 
   /** An expression that is passed as `basicAuthConnect(<user>, <password>)`. */
   class Credentials extends CredentialsExpr {
-
     string kind;
 
     Credentials() {
-      exists (CallExpr call |
+      exists(CallExpr call |
         call = DataFlow::moduleImport("basic-auth-connect").getAnInvocation().asExpr() and
-        call.getNumArgument() = 2 |
-        this = call.getArgument(0) and kind = "user name" or
+        call.getNumArgument() = 2
+      |
+        this = call.getArgument(0) and kind = "user name"
+        or
         this = call.getArgument(1) and kind = "password"
       )
     }
 
-    override string getCredentialsKind() {
-      result = kind
-    }
-
+    override string getCredentialsKind() { result = kind }
   }
 
   /**
@@ -176,7 +160,7 @@ module Connect {
     string kind;
 
     RequestInputAccess() {
-      exists (PropAccess cookies |
+      exists(PropAccess cookies |
         // `req.cookies.get(<name>)`
         kind = "cookie" and
         cookies.accesses(request, "cookies") and
@@ -184,44 +168,21 @@ module Connect {
       )
     }
 
-    override RouteHandler getRouteHandler() {
-      result = request.getRouteHandler()
-    }
+    override RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
-    override string getKind() {
-      result = kind
-    }
+    override string getKind() { result = kind }
   }
 
   /**
-   * Tracking for `RouteHandlerCandidate`.
+   * A function that flows to a route setup.
    */
-  private class TrackedRouteHandlerCandidate extends DataFlow::TrackedNode {
-
-    TrackedRouteHandlerCandidate() {
-      this instanceof RouteHandlerCandidate
-    }
-
-  }
-
-  /**
-   * A function that looks like a Connect route handler and flows to a route setup.
-   */
-  private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler, HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
-
-    override Function astNode;
-
-    TrackedRouteHandlerCandidateWithSetup() {
-      exists(TrackedRouteHandlerCandidate tracked |
-        tracked.flowsTo(any(RouteSetup s).getARouteHandlerExpr().flow()) and
-        this = tracked
-      )
-    }
+  private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
+    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
       result = getRouteHandlerParameter(astNode, kind)
     }
-
   }
 
   /**
@@ -231,7 +192,6 @@ module Connect {
    * it is unknown if `router` is a Connect router.
    */
   class RouteSetupCandidate extends HTTP::RouteSetupCandidate, DataFlow::MethodCallNode {
-
     DataFlow::ValueNode routeHandlerArg;
 
     RouteSetupCandidate() {
@@ -239,9 +199,6 @@ module Connect {
       routeHandlerArg = getAnArgument()
     }
 
-    override DataFlow::ValueNode getARouteHandlerArg() {
-      result = routeHandlerArg
-    }
+    override DataFlow::ValueNode getARouteHandlerArg() { result = routeHandlerArg }
   }
-
 }

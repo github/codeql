@@ -1,0 +1,7 @@
+| test.py:7:1:7:19 | ControlFlowNode for Attribute() | Overly permissive mask in chmod sets file to world writable. |
+| test.py:8:1:8:20 | ControlFlowNode for Attribute() | Overly permissive mask in chmod sets file to world writable. |
+| test.py:9:1:9:21 | ControlFlowNode for Attribute() | Overly permissive mask in chmod sets file to world writable. |
+| test.py:11:1:11:21 | ControlFlowNode for Attribute() | Overly permissive mask in chmod sets file to group readable. |
+| test.py:13:1:13:28 | ControlFlowNode for Attribute() | Overly permissive mask in chmod sets file to group writable. |
+| test.py:14:1:14:19 | ControlFlowNode for Attribute() | Overly permissive mask in chmod sets file to group writable. |
+| test.py:16:1:16:25 | ControlFlowNode for Attribute() | Overly permissive mask in open sets file to world readable. |

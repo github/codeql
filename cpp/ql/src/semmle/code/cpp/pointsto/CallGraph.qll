@@ -14,64 +14,64 @@ class TargetPointsToExpr extends PointsToExpr {
   }
 
   // resolve a virtual-call where this is the qualifier
-  VirtualFunction resolve()
-  {
-    pointstosets(this.resolveToSet(), unresolveElement(result))
-  }
+  VirtualFunction resolve() { pointstosets(this.resolveToSet(), unresolveElement(result)) }
 
-  int resolveToSet()
-  {
+  int resolveToSet() {
     exists(int cset, VirtualFunction static |
       this.interesting() and
       parentSetFor(cset, underlyingElement(this)) and
       static = this.staticTarget() and
       childrenByElement(cset, static, result)
-    )   
+    )
   }
 
-  VirtualFunction staticTarget()
-  {
+  VirtualFunction staticTarget() {
     exists(Function f, DeleteExpr d |
       f.calls(result, d) and
-      d.getExpr() = this)
+      d.getExpr() = this
+    )
     or
     exists(Function f, FunctionCall c |
       f.calls(result, c) and
-      c.getQualifier() = this)
+      c.getQualifier() = this
+    )
   }
 }
 
-predicate resolvedCall(Call call, Function called)
-{
+predicate resolvedCall(Call call, Function called) {
   call.(FunctionCall).getTarget() = called
   or
   call.(DestructorCall).getTarget() = called
   or
   exists(ExprCall ec, TargetPointsToExpr pte |
-    ec = call and ec.getExpr() = pte and pte.pointsTo() = called) 
+    ec = call and ec.getExpr() = pte and pte.pointsTo() = called
+  )
   or
   exists(TargetPointsToExpr pte |
     call.getQualifier() = pte and
-    pte.resolve() = called)
+    pte.resolve() = called
+  )
 }
 
 predicate ptrCalls(Function f, Function g) {
   exists(ExprCall ec |
     ec.getEnclosingFunction() = f and
-    ec.getExpr().(TargetPointsToExpr).pointsTo() = g)
+    ec.getExpr().(TargetPointsToExpr).pointsTo() = g
+  )
 }
 
 predicate virtualCalls(Function f, VirtualFunction g) {
   exists(DeleteExpr d, TargetPointsToExpr ptexpr, VirtualFunction static |
     f.calls(static, d) and
     d.getExpr() = ptexpr and
-    ptexpr.resolve() = g) or
+    ptexpr.resolve() = g
+  )
+  or
   exists(Call c, TargetPointsToExpr ptexpr, VirtualFunction static |
     f.calls(static, c) and
     c.getQualifier() = ptexpr and
-    ptexpr.resolve() = g)
+    ptexpr.resolve() = g
+  )
 }
 
-predicate allCalls(Function f, Function g) {
-     f.calls(g) or ptrCalls(f,g) or virtualCalls(f,g)
-}
+predicate allCalls(Function f, Function g) { f.calls(g) or ptrCalls(f, g) or virtualCalls(f, g) }

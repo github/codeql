@@ -1,0 +1,13 @@
+| class Base | meth | Function Base.meth | 3 |
+| class Derived1 | meth | Function Derived1.meth | 8 |
+| class Derived2 | meth | Function Derived2.meth | 13 |
+| class Derived3 | meth | Function Derived1.meth | 8 |
+| class Derived4 | meth | Function Derived4.meth | 21 |
+| class Derived5 | meth | Function Derived5.meth | 26 |
+| class Derived6 | meth | Function Derived6.meth | 31 |
+| class Missing1 | a | Function Missing1.a | 49 |
+| class Missing2 | b | Function Missing2.b | 53 |
+| class Missing2 | meth | Function Base.meth | 3 |
+| class Missing3 | c | Function Missing3.c | 57 |
+| class Wrong1 | meth | Function Wrong1.meth | 37 |
+| class Wrong2 | meth | Function Wrong2.meth | 42 |

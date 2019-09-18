@@ -10,10 +10,14 @@
  *       external/cwe/cwe-256
  *       external/cwe/cwe-313
  */
+
 import csharp
 
 from XMLAttribute a
-where a.getName().toLowerCase() = "password" and not a.getValue() = ""
-   or a.getName().toLowerCase() = "pwd" and not a.getValue() = ""
-   or a.getValue().regexpMatch("(?is).*(pwd|password)\\s*=(?!\\s*;).*")
+where
+  a.getName().toLowerCase() = "password" and not a.getValue() = ""
+  or
+  a.getName().toLowerCase() = "pwd" and not a.getValue() = ""
+  or
+  a.getValue().regexpMatch("(?is).*(pwd|password)\\s*=(?!\\s*;).*")
 select a, "Avoid plaintext passwords in configuration files."

@@ -1,0 +1,5 @@
+{
+    "exclude": ["**/foo.js"],
+    "exclude-path": [".jshintignore"],
+    "include": ["**/*.json"]
+}

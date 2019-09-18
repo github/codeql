@@ -10,9 +10,9 @@
  * @tags maintainability
  *       documentation
  */
+
 import java
 
 from File f, int n
 where n = f.getNumberOfCommentLines()
-select f, n
-order by n desc
+select f, n order by n desc

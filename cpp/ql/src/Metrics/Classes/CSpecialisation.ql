@@ -9,6 +9,7 @@
  * @metricAggregate avg  max
  * @tags modularity
  */
+
 import cpp
 
 from Class c

@@ -1,4 +1,4 @@
-| c.c | c.c |
-| files1.cpp | files1.cpp |
-| files1.h | files1.h |
-| files2.cpp | files2.cpp |
+| c.c | library-tests/files/c.c |
+| files1.cpp | library-tests/files/files1.cpp |
+| files1.h | library-tests/files/files1.h |
+| files2.cpp | library-tests/files/files2.cpp |

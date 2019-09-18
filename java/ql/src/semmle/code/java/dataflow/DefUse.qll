@@ -13,9 +13,7 @@ private import SSA
  *
  * This is the transitive closure of `adjacentUseUseSameVar`.
  */
-predicate useUsePairSameVar(RValue use1, RValue use2) {
-  adjacentUseUseSameVar+(use1, use2)
-}
+predicate useUsePairSameVar(RValue use1, RValue use2) { adjacentUseUseSameVar+(use1, use2) }
 
 /**
  * Holds if `use1` and `use2` form a use-use-pair of the same
@@ -25,9 +23,7 @@ predicate useUsePairSameVar(RValue use1, RValue use2) {
  *
  * This is the transitive closure of `adjacentUseUse`.
  */
-predicate useUsePair(RValue use1, RValue use2) {
-  adjacentUseUse+(use1, use2)
-}
+predicate useUsePair(RValue use1, RValue use2) { adjacentUseUse+(use1, use2) }
 
 /**
  * Holds if there exists a path from `def` to `use` without passing through another

@@ -84,4 +84,97 @@ async function awaitFlow(){
     }
     f3(true);
 });
+
+(function() {
+    if ((x, true));
+});
+
+(function (x, y) {
+    if (!x) {
+        while (x) { // NOT OK
+            f();
+        }
+        while (true) { // OK
+            break;
+        }
+        if (true && true) {} // NOT OK
+        if (y && x) {} // NOT OK
+        if (y && (x)) {} // NOT OK
+        do { } while (x); // NOT OK
+    }
+});
+
+(function(x,y) {
+    let obj = (x && {}) || y; // OK
+    if ((x && {}) || y) {} // NOT OK
+});
+
+(function(){
+    function constantFalse1() {
+        return false;
+    }
+    if (constantFalse1()) // OK
+        return;
+
+	function constantFalse2() {
+		return false;
+    }
+	let constantFalse = unknown? constantFalse1 : constantFalse2;
+    if (constantFalse2()) // OK
+        return;
+
+	function constantUndefined() {
+        return undefined;
+    }
+	if (constantUndefined()) // NOT OK
+        return;
+
+	function constantFalseOrUndefined1() {
+		return unknown? false: undefined;
+	}
+	if (constantFalseOrUndefined1()) // NOT OK
+        return;
+
+	let constantFalseOrUndefined2 = unknown? constantFalse1 : constantUndefined;
+	if (constantFalseOrUndefined2())  // NOT OK
+        return;
+
+});
+
+(function () {
+	function p() {
+		return {};
+	}
+	if (p()) { // NOT OK
+	}
+	var v = p();
+	if (v) { // NOT OK
+	}
+	if (v) { // NOT OK, but not detected due to SSA limitations
+	}
+});
+
+(function() {
+	function findOrThrow() {
+		var e = find();
+		if (e) return e;
+		throw new Error();
+	}
+	if(findOrThrow()){ // NOT OK
+	}
+	var v = findOrThrow();
+	if (v) { // NOT OK
+	}
+	if (v) { // NOT OK, but not detected due to SSA limitations
+	}
+});
+
+(function () {
+	function f(){ return { v: unkown };}
+	f();
+	var { v } = f();
+	if (v) { // OK
+	}
+});
+
 // semmle-extractor-options: --experimental

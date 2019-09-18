@@ -1,0 +1,8 @@
++ semmlecode-python-queries/analysis/Definitions.ql
+    @_namespace com.lgtm/python-queries
++ semmlecode-python-queries/analysis/AlertSuppression.ql
+    @_namespace com.lgtm/python-queries
++ semmlecode-python-queries/Filters/ClassifyFiles.ql
+    @_namespace com.lgtm/python-queries
+
+@import "python-alerts-lgtm"

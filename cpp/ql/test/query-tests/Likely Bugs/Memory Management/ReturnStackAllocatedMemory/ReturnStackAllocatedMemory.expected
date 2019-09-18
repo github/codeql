@@ -1,0 +1,8 @@
+| test.cpp:17:2:17:12 | return ... | May return stack-allocated memory from $@. | test.cpp:17:10:17:11 | mc | mc |
+| test.cpp:25:2:25:12 | return ... | May return stack-allocated memory from $@. | test.cpp:23:18:23:19 | mc | mc |
+| test.cpp:47:2:47:11 | return ... | May return stack-allocated memory from $@. | test.cpp:47:9:47:10 | mc | mc |
+| test.cpp:54:2:54:16 | return ... | May return stack-allocated memory from $@. | test.cpp:54:11:54:12 | mc | mc |
+| test.cpp:92:2:92:12 | return ... | May return stack-allocated memory from $@. | test.cpp:89:10:89:11 | mc | mc |
+| test.cpp:112:2:112:12 | return ... | May return stack-allocated memory from $@. | test.cpp:112:9:112:11 | arr | arr |
+| test.cpp:119:2:119:19 | return ... | May return stack-allocated memory from $@. | test.cpp:119:11:119:13 | arr | arr |
+| test.cpp:171:3:171:24 | return ... | May return stack-allocated memory from $@. | test.cpp:170:35:170:41 | myLocal | myLocal |

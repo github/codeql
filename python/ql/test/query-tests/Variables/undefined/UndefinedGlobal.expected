@@ -1,0 +1,8 @@
+| UndefinedGlobal.py:22:5:22:7 | ug2 | This use of global variable 'ug2' may be undefined. |
+| UndefinedGlobal.py:23:5:23:5 | e | This use of global variable 'e' may be undefined. |
+| UndefinedGlobal.py:27:5:27:12 | __path__ | This use of global variable '__path__' may be undefined. |
+| UndefinedGlobal.py:123:5:123:7 | ug3 | This use of global variable 'ug3' may be undefined. |
+| UninitializedLocal.py:5:13:5:15 | ug1 | This use of global variable 'ug1' may be undefined. |
+| UninitializedLocal.py:22:9:22:11 | ug1 | This use of global variable 'ug1' may be undefined. |
+| decorated_exports.py:10:2:10:19 | undotted_decorator | This use of global variable 'undotted_decorator' may be undefined. |
+| decorated_exports.py:14:2:14:13 | not_imported | This use of global variable 'not_imported' may be undefined. |

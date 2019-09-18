@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.IO`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 
@@ -10,77 +11,44 @@ class SystemIONamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.IO` namespace. */
-deprecated
-SystemIONamespace getSystemIONamespace() { any() }
-
 /** A class in the `System.IO` namespace. */
 class SystemIOClass extends Class {
-  SystemIOClass() {
-    this.getNamespace() instanceof SystemIONamespace
-  }
+  SystemIOClass() { this.getNamespace() instanceof SystemIONamespace }
 }
 
 /** The `System.IO.Directory` class. */
 class SystemIODirectoryClass extends SystemIOClass {
-  SystemIODirectoryClass() {
-    this.hasName("Directory")
-  }
+  SystemIODirectoryClass() { this.hasName("Directory") }
 }
 
 /** The `System.IO.File` class. */
 class SystemIOFileClass extends SystemIOClass {
-  SystemIOFileClass() {
-    this.hasName("File")
-  }
+  SystemIOFileClass() { this.hasName("File") }
 }
-
-/** DEPRECATED. Gets the `System.IO.File` class. */
-deprecated
-SystemIOFileClass getSystemIOFileClass() { any() }
-
 
 /** The `System.IO.FileStream` class. */
 class SystemIOFileStreamClass extends SystemIOClass {
-  SystemIOFileStreamClass() {
-    this.hasName("FileStream")
-  }
+  SystemIOFileStreamClass() { this.hasName("FileStream") }
 }
 
 /** The `System.IO.StreamWriter` class. */
 class SystemIOStreamWriterClass extends SystemIOClass {
-  SystemIOStreamWriterClass() {
-    this.hasName("StreamWriter")
-  }
+  SystemIOStreamWriterClass() { this.hasName("StreamWriter") }
 }
 
 /** The `System.IO.Path` class. */
 class SystemIOPathClass extends SystemIOClass {
-  SystemIOPathClass() {
-    this.hasName("Path")
-  }
+  SystemIOPathClass() { this.hasName("Path") }
 }
-
-/** DEPRECATED. Gets the `System.IO.Path` class. */
-deprecated
-SystemIOPathClass getSystemIOPathClass() { any() }
 
 /** The `System.IO.StringReader` class. */
 class SystemIOStringReaderClass extends SystemIOClass {
-  SystemIOStringReaderClass() {
-    this.hasName("StringReader")
-  }
+  SystemIOStringReaderClass() { this.hasName("StringReader") }
 }
-
-/** DEPRECATED. Gets the `System.IO.StringReader` class. */
-deprecated
-SystemIOStringReaderClass getSystemIOStringReaderClass() { any() }
 
 /** The `System.IO.Stream` class. */
 class SystemIOStreamClass extends SystemIOClass {
-  SystemIOStreamClass() {
-    this.hasName("Stream")
-  }
+  SystemIOStreamClass() { this.hasName("Stream") }
 
   /** Gets a method that performs a read. */
   Method getAReadMethod() {
@@ -96,42 +64,27 @@ class SystemIOStreamClass extends SystemIOClass {
 
   /** Gets the `Read(byte[], int, int)` method. */
   Method getReadMethod() {
-    result.getDeclaringType() = this
-    and
-    result.hasName("Read")
-    and
-    result.getNumberOfParameters() = 3
-    and
-    result.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType
-    and
-    result.getParameter(1).getType() instanceof IntType
-    and
-    result.getParameter(2).getType() instanceof IntType
-    and
+    result.getDeclaringType() = this and
+    result.hasName("Read") and
+    result.getNumberOfParameters() = 3 and
+    result.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
+    result.getParameter(1).getType() instanceof IntType and
+    result.getParameter(2).getType() instanceof IntType and
     result.getReturnType() instanceof IntType
   }
 
   /** Gets the `ReadByte()` method. */
   Method getReadByteMethod() {
-    result.getDeclaringType() = this
-    and
-    result.hasName("ReadByte")
-    and
-    result.getNumberOfParameters() = 0
-    and
+    result.getDeclaringType() = this and
+    result.hasName("ReadByte") and
+    result.getNumberOfParameters() = 0 and
     result.getReturnType() instanceof IntType
   }
 }
 
-/** DEPRECATED. Gets the `System.IO.Stream` class. */
-deprecated
-SystemIOStreamClass getSystemIOStreamClass() { any() }
-
 /** The `System.IO.MemoryStream` class. */
 class SystemIOMemoryStreamClass extends SystemIOClass {
-  SystemIOMemoryStreamClass() {
-    this.hasName("MemoryStream")
-  }
+  SystemIOMemoryStreamClass() { this.hasName("MemoryStream") }
 
   /** Gets the `ToArray` Method. */
   Method getToArrayMethod() {
@@ -139,7 +92,3 @@ class SystemIOMemoryStreamClass extends SystemIOClass {
     result.hasName("ToArray")
   }
 }
-
-/** DEPRECATED. Gets the `System.IO.MemoryStream` class. */
-deprecated
-SystemIOMemoryStreamClass getSystemIOMemoryStreamClass() { any() }

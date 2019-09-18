@@ -3,18 +3,19 @@
  *
  * All calls have the common base class `Call`.
  */
+
 import Expr
 import semmle.code.csharp.Callable
 import semmle.code.csharp.dataflow.CallContext as CallContext
-private import semmle.code.csharp.dataflow.DelegateDataFlow
+private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import dotnet
 
 /**
  * A call. Either a method call (`MethodCall`), a constructor initializer call
  * (`ConstructorInitializer`), a call to a user-defined operator (`OperatorCall`),
- * a delegate call (`DelegateCall`), an accessor call (`AccessorCall`), or a
- * constructor call (`ObjectCreation`).
+ * a delegate call (`DelegateCall`), an accessor call (`AccessorCall`), a
+ * constructor call (`ObjectCreation`), or a local function call (`LocalFunctionCall`).
  */
 class Call extends DotNet::Call, Expr, @call {
   /**
@@ -40,27 +41,17 @@ class Call extends DotNet::Call, Expr, @call {
    */
   override Callable getTarget() { none() }
 
-  override Expr getArgument(int i) {
-    result = this.getChild(i) and i >= 0
-  }
+  override Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
 
-  override Expr getRawArgument(int i) {
-    result = this.getArgument(i)
-  }
+  override Expr getRawArgument(int i) { result = this.getArgument(i) }
 
-  override Expr getAnArgument() {
-    result = getArgument(_)
-  }
+  override Expr getAnArgument() { result = getArgument(_) }
 
   /** Gets the number of arguments of this call. */
-  int getNumberOfArguments() {
-    result = count(this.getAnArgument())
-  }
+  int getNumberOfArguments() { result = count(this.getAnArgument()) }
 
   /** Holds if this call has no arguments. */
-  predicate hasNoArguments() {
-    not exists(this.getAnArgument())
-  }
+  predicate hasNoArguments() { not exists(this.getAnArgument()) }
 
   /**
    * Gets the argument for this call associated with the parameter `p`, if any.
@@ -85,9 +76,9 @@ class Call extends DotNet::Call, Expr, @call {
    * }
    * ```
    */
+  cached
   override Expr getArgumentForParameter(DotNet::Parameter p) {
-    getTarget().getAParameter() = p
-    and
+    getTarget().getAParameter() = p and
     (
       // Appears in the positional part of the call
       result = this.getImplicitArgument(p.getPosition()) and
@@ -111,20 +102,19 @@ class Call extends DotNet::Call, Expr, @call {
    * of the targeted callable.
    */
   private predicate hasMultipleParamsArguments() {
-    exists(Parameter p |
-      p = this.getTarget().getAParameter() |
+    exists(Parameter p | p = this.getTarget().getAParameter() |
       p.isParams() and
       exists(this.getArgument(any(int i | i > p.getPosition())))
     )
   }
 
-  pragma [noinline] // predicate folding to get proper join-order
+  pragma[noinline]
   private Expr getImplicitArgument(int pos) {
     result = getArgument(pos) and
     not exists(result.getExplicitArgumentName())
   }
 
-  pragma [noinline] // predicate folding to get proper join-order
+  pragma[nomagic]
   private Expr getExplicitArgument(string name) {
     result = getAnArgument() and
     result.getExplicitArgumentName() = name
@@ -248,25 +238,19 @@ class Call extends DotNet::Call, Expr, @call {
    * Gets an argument that corresponds to a parameter of a potential
    * run-time target of this call.
    */
-  Expr getARuntimeArgument() {
-    result = getRuntimeArgument(_)
-  }
+  Expr getARuntimeArgument() { result = getRuntimeArgument(_) }
 
   /**
    * Gets the number of arguments that correspond to a parameter of a potential
    * run-time target of this call.
    */
-  int getNumberOfRuntimeArguments() {
-    result = count(getARuntimeArgument())
-  }
+  int getNumberOfRuntimeArguments() { result = count(getARuntimeArgument()) }
 
   /**
    * Holds if this call has no arguments that correspond to a parameter of a
    * potential (run-time) target of this call.
    */
-  predicate hasNoRuntimeArguments() {
-    not exists(getARuntimeArgument())
-  }
+  predicate hasNoRuntimeArguments() { not exists(getARuntimeArgument()) }
 
   override string toString() { result = "call" }
 }
@@ -287,6 +271,7 @@ class Call extends DotNet::Call, Expr, @call {
  * }
  * ```
  */
+pragma[nomagic]
 private predicate isValidExplicitParamsType(Parameter p, Type t) {
   p.isParams() and
   t.isImplicitlyConvertibleTo(p.getType())
@@ -306,21 +291,18 @@ private predicate isValidExplicitParamsType(Parameter p, Type t) {
  * ```
  */
 class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invocation_expr {
-  override Method getTarget() {
-    expr_call(this, result)
-  }
+  override Method getTarget() { expr_call(this, result) }
 
-  override Method getQualifiedDeclaration() {
-    result = getTarget()
-  }
+  override Method getQualifiedDeclaration() { result = getTarget() }
 
-  override string toString() {
-    result = "call to method " + this.getTarget().getName()
-  }
+  override string toString() { result = "call to method " + this.getTarget().getName() }
 
   override Expr getRawArgument(int i) {
     if exists(getQualifier())
-    then (i=0 and result = getQualifier() or result = getArgument(i-1))
+    then
+      i = 0 and result = getQualifier()
+      or
+      result = getArgument(i - 1)
     else result = getArgument(i)
   }
 }
@@ -344,21 +326,13 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
  * 6), in order to be properly matched with the parameter `i` on line 2.
  */
 class ExtensionMethodCall extends MethodCall {
-  ExtensionMethodCall() {
-    this.getTarget() instanceof ExtensionMethod
-  }
+  ExtensionMethodCall() { this.getTarget() instanceof ExtensionMethod }
 
-  override TypeAccess getQualifier() {
-    result = this.getChildExpr(-1)
-  }
+  override TypeAccess getQualifier() { result = this.getChildExpr(-1) }
 
   override Expr getArgument(int i) {
-    exists(int j |
-      result = this.getChildExpr(j) |
-      if isOrdinaryStaticCall() then
-        (j = i and j >= 0)
-      else
-        (j = i - 1 and j >= -1)
+    exists(int j | result = this.getChildExpr(j) |
+      if isOrdinaryStaticCall() then (j = i and j >= 0) else (j = i - 1 and j >= -1)
     )
   }
 
@@ -400,13 +374,10 @@ class ExtensionMethodCall extends MethodCall {
  * ```
  */
 class VirtualMethodCall extends MethodCall {
-
   VirtualMethodCall() {
-    not getQualifier() instanceof BaseAccess
-    and
+    not getQualifier() instanceof BaseAccess and
     getTarget().isOverridableOrImplementable()
   }
-
 }
 
 /**
@@ -414,29 +385,65 @@ class VirtualMethodCall extends MethodCall {
  * `this(0)` (line 8) in
  *
  * ```
- * class A {
- *   public A() { }
+ * class A
+ * {
+ *     public A() { }
  * }
  *
- * class B : A {
- *   public B(int x) : base() { }
+ * class B : A
+ * {
+ *     public B(int x) : base() { }
  *
- *   public B() : this(0) { }
+ *     public B() : this(0) { }
  * }
  * ```
  */
 class ConstructorInitializer extends Call, @constructor_init_expr {
-  override Constructor getTarget() {
-    expr_call(this, result)
+  override Constructor getTarget() { expr_call(this, result) }
+
+  override Constructor getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
+
+  override string toString() { result = "call to constructor " + this.getTarget().getName() }
+
+  private ValueOrRefType getTargetType() {
+    result = this.getTarget().getDeclaringType().getSourceDeclaration()
   }
 
-  override Constructor getARuntimeTarget() {
-    result = Call.super.getARuntimeTarget()
+  private ValueOrRefType getConstructorType() {
+    result = this.getConstructor().getDeclaringType().getSourceDeclaration()
   }
 
-  override string toString() {
-    result = "call to constructor " + this.getTarget().getName()
-  }
+  /**
+   * Holds if this initialier is a `this` initializer, for example `this(0)`
+   * in
+   *
+   * ```
+   * class A
+   * {
+   *     A(int i) { }
+   *     A() : this(0) { }
+   * }
+   * ```
+   */
+  predicate isThis() { this.getTargetType() = this.getConstructorType() }
+
+  /**
+   * Holds if this initialier is a `base` initializer, for example `base(0)`
+   * in
+   *
+   * ```
+   * class A
+   * {
+   *     A(int i) { }
+   * }
+   *
+   * class B : A
+   * {
+   *     B() : base(0) { }
+   * }
+   * ```
+   */
+  predicate isBase() { this.getTargetType() != this.getConstructorType() }
 
   /**
    * Gets the constructor that this initializer call belongs to. For example,
@@ -444,13 +451,14 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
    * on line 6 in
    *
    * ```
-   * class A {
-   *   public A() { }
+   * class A
+   * {
+   *     public A() { }
    * }
    *
-   * class B : A {
-   *   public B()
-   *     : base() { }
+   * class B : A
+   * {
+   *     public B() : base() { }
    * }
    * ```
    */
@@ -459,7 +467,7 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
   override Expr getRawArgument(int i) {
     if this.getTarget().isStatic()
     then result = this.getArgument(i)
-    else result = this.getArgument(i-1)
+    else result = this.getArgument(i - 1)
   }
 }
 
@@ -480,17 +488,11 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
  * ```
  */
 class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
-  override Operator getTarget() {
-    expr_call(this, result)
-  }
+  override Operator getTarget() { expr_call(this, result) }
 
-  override Operator getARuntimeTarget() {
-    result = Call.super.getARuntimeTarget()
-  }
+  override Operator getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 
-  override string toString() {
-    result = "call to operator " + this.getTarget().getName()
-  }
+  override string toString() { result = "call to operator " + this.getTarget().getName() }
 }
 
 /**
@@ -510,13 +512,13 @@ class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
  * ```
  */
 class MutatorOperatorCall extends OperatorCall {
-  MutatorOperatorCall() { mutator_invocation_mode(this,_) }
+  MutatorOperatorCall() { mutator_invocation_mode(this, _) }
 
   /** Holds if the operator is in prefix position. */
-  predicate isPrefix() { mutator_invocation_mode(this,1) }
+  predicate isPrefix() { mutator_invocation_mode(this, 1) }
 
   /** Holds if the operator is in postfix position. */
-  predicate isPostfix() { mutator_invocation_mode(this,2) }
+  predicate isPostfix() { mutator_invocation_mode(this, 2) }
 }
 
 /**
@@ -546,8 +548,9 @@ class DelegateCall extends Call, @delegate_invocation_expr {
     )
     or
     exists(AddEventSource aes, CallContext::CallContext cc2 |
-      aes = this.getAnAddEventSource() and
-      result = aes.getARuntimeTarget(cc2) |
+      aes = this.getAnAddEventSource(_) and
+      result = aes.getARuntimeTarget(cc2)
+    |
       aes = this.getAnAddEventSourceSameEnclosingCallable() and
       cc = cc2
       or
@@ -557,27 +560,22 @@ class DelegateCall extends Call, @delegate_invocation_expr {
     )
   }
 
-  private AddEventSource getAnAddEventSource() {
-    this.getDelegateExpr().(EventAccess).getTarget() = result.getEvent()
+  private AddEventSource getAnAddEventSource(Callable enclosingCallable) {
+    this.getDelegateExpr().(EventAccess).getTarget() = result.getEvent() and
+    enclosingCallable = result.getExpr().getEnclosingCallable()
   }
 
   private AddEventSource getAnAddEventSourceSameEnclosingCallable() {
-    result = getAnAddEventSource() and
-    result.getExpr().getEnclosingCallable() = this.getEnclosingCallable()
+    result = getAnAddEventSource(this.getEnclosingCallable())
   }
 
   private AddEventSource getAnAddEventSourceDifferentEnclosingCallable() {
-    result = getAnAddEventSource() and
-    result.getExpr().getEnclosingCallable() != this.getEnclosingCallable()
+    exists(Callable c | result = getAnAddEventSource(c) | c != this.getEnclosingCallable())
   }
 
-  override Callable getARuntimeTarget() {
-    result = getARuntimeTarget(_)
-  }
+  override Callable getARuntimeTarget() { result = getARuntimeTarget(_) }
 
-  override Expr getRuntimeArgument(int i) {
-    result = getArgument(i)
-  }
+  override Expr getRuntimeArgument(int i) { result = getArgument(i) }
 
   /**
    * Gets the delegate expression of this delegate call. For example, the
@@ -593,13 +591,9 @@ class DelegateCall extends Call, @delegate_invocation_expr {
    * }
    * ```
    */
-  Expr getDelegateExpr() {
-    result = this.getChild(-1)
-  }
+  Expr getDelegateExpr() { result = this.getChild(-1) }
 
-  override string toString() {
-    result = "delegate call"
-  }
+  override string toString() { result = "delegate call" }
 }
 
 /**
@@ -612,9 +606,7 @@ class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
 
   override Expr getArgument(int i) { none() }
 
-  override Accessor getARuntimeTarget() {
-    result = Call.super.getARuntimeTarget()
-  }
+  override Accessor getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 }
 
 /**
@@ -633,8 +625,7 @@ class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
  */
 class PropertyCall extends AccessorCall, PropertyAccessExpr {
   override Accessor getTarget() {
-    exists(PropertyAccess pa, Property p |
-      pa = this and p = getProperty() |
+    exists(PropertyAccess pa, Property p | pa = this and p = getProperty() |
       pa instanceof AssignableRead and result = p.getGetter()
       or
       pa instanceof AssignableWrite and result = p.getSetter()
@@ -643,13 +634,10 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
 
   override Expr getArgument(int i) {
     i = 0 and
-    this instanceof AssignableWrite and
-    exists(Assignment a | a.getLValue() = this and result = a.getRValue())
+    result = AssignableInternal::getAccessorCallValueArgument(this)
   }
 
-  override string toString() {
-    result = PropertyAccessExpr.super.toString()
-  }
+  override string toString() { result = PropertyAccessExpr.super.toString() }
 }
 
 /**
@@ -670,8 +658,7 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
  */
 class IndexerCall extends AccessorCall, IndexerAccessExpr {
   override Accessor getTarget() {
-    exists(IndexerAccess ia, Indexer i |
-      ia = this and i = getIndexer() |
+    exists(IndexerAccess ia, Indexer i | ia = this and i = getIndexer() |
       ia instanceof AssignableRead and result = i.getGetter()
       or
       ia instanceof AssignableWrite and result = i.getSetter()
@@ -681,9 +668,8 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
   override Expr getArgument(int i) {
     result = this.(ElementAccess).getIndex(i)
     or
-    this instanceof AssignableWrite and
     i = count(this.(ElementAccess).getAnIndex()) and
-    exists(Assignment a | a.getLValue() = this and result = a.getRValue())
+    result = AssignableInternal::getAccessorCallValueArgument(this)
   }
 
   override string toString() { result = IndexerAccessExpr.super.toString() }
@@ -714,7 +700,8 @@ class EventCall extends AccessorCall, EventAccessExpr {
   override EventAccessor getTarget() {
     exists(Event e, AddOrRemoveEventExpr aoree |
       e = getEvent() and
-      aoree.getLValue() = this |
+      aoree.getLValue() = this
+    |
       aoree instanceof AddEventExpr and result = e.getAddEventAccessor()
       or
       aoree instanceof RemoveEventExpr and result = e.getRemoveEventAccessor()
@@ -729,9 +716,7 @@ class EventCall extends AccessorCall, EventAccessExpr {
     )
   }
 
-  override string toString() {
-    result = EventAccessExpr.super.toString()
-  }
+  override string toString() { result = EventAccessExpr.super.toString() }
 }
 
 /**
@@ -748,11 +733,7 @@ class EventCall extends AccessorCall, EventAccessExpr {
  * ```
  */
 class LocalFunctionCall extends Call, @local_function_invocation_expr {
-  override LocalFunction getTarget() {
-    expr_call(this, result)
-  }
+  override LocalFunction getTarget() { expr_call(this, result) }
 
-  override string toString() {
-    result = "call to local function " + getTarget().getName()
-  }
+  override string toString() { result = "call to local function " + getTarget().getName() }
 }

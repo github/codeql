@@ -30,3 +30,19 @@
 | Logic.java:29:16:29:19 | g(...) | false | Logic.java:30:30:31:5 | stmt |
 | Logic.java:29:16:29:19 | g(...) | true | Logic.java:29:23:29:26 | null |
 | Logic.java:30:9:30:27 | ...instanceof... | true | Logic.java:30:30:31:5 | stmt |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:36:5:36:28 | stmt |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:37:5:37:15 | stmt |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:37:17:39:5 | stmt |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:40:5:40:18 | stmt |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:36:5:36:28 | stmt |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:37:5:37:15 | stmt |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:37:17:39:5 | stmt |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:40:5:40:18 | stmt |
+| Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:37:5:37:15 | stmt |
+| Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:37:17:39:5 | stmt |
+| Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:40:5:40:18 | stmt |
+| Logic.java:36:16:36:21 | g(...) | false | Logic.java:37:5:37:15 | stmt |
+| Logic.java:36:16:36:21 | g(...) | false | Logic.java:37:17:39:5 | stmt |
+| Logic.java:36:16:36:21 | g(...) | false | Logic.java:40:5:40:18 | stmt |
+| Logic.java:37:9:37:14 | ... > ... | true | Logic.java:37:17:39:5 | stmt |
+| Logic.java:44:10:44:10 | b | false | Logic.java:44:33:44:35 | msg |

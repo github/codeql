@@ -1,6 +1,0 @@
-| a.js:1:1:3:3 | <toplevel> | a.js:1:1:3:2 | define( ... 2 };\\n}) |
-| dir/b.js:1:1:3:3 | <toplevel> | dir/b.js:1:1:3:2 | define( ... : 42\\n}) |
-| tst2.js:1:1:3:3 | <toplevel> | tst2.js:1:1:3:2 | define( ...  42;\\n}) |
-| tst3.js:1:1:3:3 | <toplevel> | tst3.js:1:1:3:2 | define( ...  42;\\n}) |
-| tst.js:1:1:6:3 | <toplevel> | tst.js:1:1:6:2 | define( ...   };\\n}) |
-| umd.js:1:1:14:4 | <toplevel> | umd.js:4:9:4:43 | define( ... actory) |

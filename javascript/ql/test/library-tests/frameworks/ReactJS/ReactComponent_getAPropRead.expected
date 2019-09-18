@@ -1,7 +1,0 @@
-| es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | name | es5.js:4:24:4:38 | this.props.name |
-| es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | name | es5.js:20:24:20:38 | this.props.name |
-| es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | name | es6.js:3:24:3:38 | this.props.name |
-| plainfn.js:1:1:3:1 | functio ... div>;\\n} | name | plainfn.js:2:22:2:31 | props.name |
-| preact.js:1:1:7:1 | class H ...     }\\n} | name | preact.js:3:9:3:18 | props.name |
-| probably-a-component.js:1:1:6:1 | class H ...     }\\n} | name | probably-a-component.js:3:9:3:23 | this.props.name |
-| statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | name | statePropertyWrites.js:38:24:38:38 | this.props.name |

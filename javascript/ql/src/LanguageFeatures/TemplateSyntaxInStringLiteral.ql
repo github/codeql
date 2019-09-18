@@ -7,14 +7,12 @@
  * @precision high
  * @tags correctness
  */
- 
+
 import javascript
 
 /** A toplevel that contains at least one template literal. */
 class CandidateTopLevel extends TopLevel {
-  CandidateTopLevel() {
-    exists (TemplateLiteral template | template.getTopLevel() = this)
-  }
+  CandidateTopLevel() { exists(TemplateLiteral template | template.getTopLevel() = this) }
 }
 
 /** A string literal in a toplevel that contains at least one template literal. */
@@ -46,8 +44,9 @@ class CandidateStringLiteral extends StringLiteral {
    * stepping over scope elements.
    */
   ASTNode getIntermediate() {
-    result = this or
-    exists (ASTNode mid | mid = getIntermediate() |
+    result = this
+    or
+    exists(ASTNode mid | mid = getIntermediate() |
       not mid instanceof ScopeElement and
       result = mid.getParent()
     )
@@ -62,7 +61,6 @@ class CandidateStringLiteral extends StringLiteral {
   }
 }
 
-
 /**
  * Holds if `obj` has a property for each template variable in `lit` and they occur as arguments
  * to the same call.
@@ -76,14 +74,12 @@ class CandidateStringLiteral extends StringLiteral {
  * ```
  */
 predicate providesTemplateVariablesFor(ObjectExpr obj, CandidateStringLiteral lit) {
-  exists (CallExpr call | call.getAnArgument() = obj and call.getAnArgument() = lit) and
-  forex (string name | lit.getAReferencedVariable() = name | hasProperty(obj, name))
+  exists(CallExpr call | call.getAnArgument() = obj and call.getAnArgument() = lit) and
+  forex(string name | lit.getAReferencedVariable() = name | hasProperty(obj, name))
 }
 
 /** Holds if `object` has a property with the given `name`. */
-predicate hasProperty(ObjectExpr object, string name) {
-  name = object.getAProperty().getName()
-}
+predicate hasProperty(ObjectExpr object, string name) { name = object.getAProperty().getName() }
 
 /**
  * Gets a declaration of variable `v` in `tl`, where `v` has the given `name` and
@@ -97,10 +93,11 @@ VarDecl getDeclIn(Variable v, Scope s, string name, CandidateTopLevel tl) {
 }
 
 from CandidateStringLiteral lit, Variable v, Scope s, string name, VarDecl decl
-where decl = getDeclIn(v, s, name, lit.getTopLevel())
-  and lit.getAReferencedVariable() = name
-  and lit.isInScope(s)
-  and not exists (ObjectExpr obj | providesTemplateVariablesFor(obj, lit))
-  and not lit.getStringValue() = "${" + name + "}"
-select lit, "This string is not a template literal, but appears to reference the variable $@.", 
-    decl, v.getName()
+where
+  decl = getDeclIn(v, s, name, lit.getTopLevel()) and
+  lit.getAReferencedVariable() = name and
+  lit.isInScope(s) and
+  not exists(ObjectExpr obj | providesTemplateVariablesFor(obj, lit)) and
+  not lit.getStringValue() = "${" + name + "}"
+select lit, "This string is not a template literal, but appears to reference the variable $@.",
+  decl, v.getName()

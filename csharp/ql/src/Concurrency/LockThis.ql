@@ -15,5 +15,5 @@
 import csharp
 
 from LockStmt s, ThisAccess a
-where a=s.getExpr()
+where a = s.getExpr()
 select a, "'this' used in lock statement."

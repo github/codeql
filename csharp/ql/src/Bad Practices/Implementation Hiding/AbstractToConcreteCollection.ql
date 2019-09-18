@@ -12,6 +12,7 @@
  *       modularity
  *       external/cwe/cwe-485
  */
+
 import csharp
 import semmle.code.csharp.frameworks.system.Collections
 import semmle.code.csharp.frameworks.system.collections.Generic
@@ -19,8 +20,7 @@ import semmle.code.csharp.frameworks.system.collections.Generic
 /** A collection interface. */
 class CollectionInterface extends Interface {
   CollectionInterface() {
-    exists(Interface i |
-      i = this.getABaseInterface*() |
+    exists(Interface i | i = this.getABaseInterface*() |
       i instanceof SystemCollectionsICollectionInterface or
       i.getSourceDeclaration() instanceof SystemCollectionsGenericICollectionInterface or
       i instanceof SystemCollectionsIEnumerableInterface or
@@ -30,8 +30,10 @@ class CollectionInterface extends Interface {
 }
 
 from CastExpr e, Class c, CollectionInterface i
-where e.getType() = c
-  and e.getExpr().getType() = i
-  and c.isImplicitlyConvertibleTo(i)
-select e, "Questionable cast from abstract '" + i.getName()
-            + "' to concrete implementation '" + c.getName() + "'."
+where
+  e.getType() = c and
+  e.getExpr().getType() = i and
+  c.isImplicitlyConvertibleTo(i)
+select e,
+  "Questionable cast from abstract '" + i.getName() + "' to concrete implementation '" + c.getName()
+    + "'."

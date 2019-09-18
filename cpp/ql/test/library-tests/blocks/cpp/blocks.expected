@@ -26,5 +26,7 @@
 | file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | unsigned int |
 | file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | pointer to {void} |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | Example && | rvalue reference to {struct Example} |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | __va_list_tag && | rvalue reference to {struct __va_list_tag} |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const Example & | reference to {const {struct Example}} |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const __va_list_tag & | reference to {const {struct __va_list_tag}} |
 | file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | pointer to {void} |

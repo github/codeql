@@ -11,6 +11,7 @@
  *       useless-code
  *       external/cwe/cwe-685
  */
+
 import java
 import semmle.code.java.StringFormat
 
@@ -18,8 +19,10 @@ int getNumberOfReferencedIndices(FormattingCall fmtcall) {
   exists(int maxref, int skippedrefs |
     maxref = max(FormatString fmt | fmtcall.getAFormatString() = fmt | fmt.getMaxFmtSpecIndex()) and
     skippedrefs = count(int i |
-      forex(FormatString fmt | fmtcall.getAFormatString() = fmt | i = fmt.getASkippedFmtSpecIndex())
-    ) and
+        forex(FormatString fmt | fmtcall.getAFormatString() = fmt |
+          i = fmt.getASkippedFmtSpecIndex()
+        )
+      ) and
     result = maxref - skippedrefs
   )
 }
@@ -30,4 +33,5 @@ where
   args = fmtcall.getVarargsCount() and
   refs < args and
   not (fmtcall.hasTrailingThrowableArgument() and refs = args - 1)
-select fmtcall, "This format call refers to " + refs + " argument(s) but supplies " + args + " argument(s)."
+select fmtcall,
+  "This format call refers to " + refs + " argument(s) but supplies " + args + " argument(s)."

@@ -94,4 +94,26 @@ void IncorrectTypeConversionTest() {
     {
         // ...
     }
+
+    if (HresultFunction() == S_FALSE) // Correct Usage
+    {
+        // ...
+    }
+
+    while (!HresultFunction()) {}; // BUG
+    while (FAILED(HresultFunction())) {}; // Correct Usage
+
+    switch(hr) // Correct Usage
+    {
+    case S_OK:
+    case S_FALSE:
+        {
+            // ...
+        } break;
+
+    default:
+        {
+            // ...
+        } break;
+    }
 }

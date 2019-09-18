@@ -6,7 +6,6 @@
 | Box in shared_non_expansive.ts | has properties |
 | Box in through_non_expansive.ts | has properties |
 | C in expansive_class.ts | has properties |
-| ConcatArray in global scope | has properties |
 | Expand in through_non_expansive.ts | has properties |
 | ExpandUsingObjectLiteral in expansive_object_literal.ts | has properties |
 | Expansive in leading_into_expansion.ts | has properties |
@@ -25,12 +24,8 @@
 | ExpansiveMethod in expansive_signature.ts | has properties |
 | ExpansiveParameter in expansive_signature.ts | has properties |
 | ExpansiveSignature in expansive_signature.ts | has properties |
+| ExpansiveSignatureTypeBound in expansive_signature.ts | has properties |
 | ExpansiveX in used_from_expansion.ts | has properties |
-| Function in global scope | has properties |
 | Intl.CollatorOptions in global scope | has properties |
 | Intl.NumberFormatOptions in global scope | has properties |
 | NonExpansive in shared_non_expansive.ts | has properties |
-| Object in global scope | has properties |
-| RegExp in global scope | has properties |
-| RegExpExecArray in global scope | has properties |
-| RegExpMatchArray in global scope | has properties |

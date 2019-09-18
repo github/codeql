@@ -14,23 +14,24 @@ import csharp
 import Helpers
 
 /*
-The purpose of this query is to find loops of the following form:
-
-bool allEven = true;
-foreach(int i in lst)
-{
-  if(i % 2 != 0)
-  {
-    allEven = false;
-    break;
-  }
-}
-
-This could be written more cleanly as:
-
-bool allEven = lst.All(i => i % 2 == 0);
-*/
+ * The purpose of this query is to find loops of the following form:
+ *
+ * bool allEven = true;
+ * foreach(int i in lst)
+ * {
+ *  if(i % 2 != 0)
+ *  {
+ *    allEven = false;
+ *    break;
+ *  }
+ * }
+ *
+ * This could be written more cleanly as:
+ *
+ * bool allEven = lst.All(i => i % 2 == 0);
+ */
 
 from ForeachStmt fes
 where missedAllOpportunity(fes)
-select fes, "This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'."
+select fes,
+  "This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'."

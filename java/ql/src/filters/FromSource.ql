@@ -4,6 +4,7 @@
  * @kind problem
  * @id java/source-filter
  */
+
 import java
 import external.DefectFilter
 

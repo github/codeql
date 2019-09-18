@@ -22,12 +22,14 @@ string describeProp(DataFlow::PropWrite pwn) {
 }
 
 from DataFlow::PropWrite pwn, DataFlow::AnalyzedNode base
-where base = pwn.getBase() and
-      forex (InferredType tp | tp = base.getAType() |
-        tp instanceof PrimitiveType and
-        // assignments on `null` and `undefined` are covered by
-        // the query 'Property access on null or undefined'
-        tp != TTNull() and tp != TTUndefined()
-      )
-select base, "Assignment to " + describeProp(pwn) +
-             " of a primitive value with type " + base.ppTypes() + "."
+where
+  base = pwn.getBase() and
+  forex(InferredType tp | tp = base.getAType() |
+    tp instanceof PrimitiveType and
+    // assignments on `null` and `undefined` are covered by
+    // the query 'Property access on null or undefined'
+    tp != TTNull() and
+    tp != TTUndefined()
+  )
+select base,
+  "Assignment to " + describeProp(pwn) + " of a primitive value with type " + base.ppTypes() + "."

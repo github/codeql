@@ -963,7 +963,46 @@ int designatedInit() {
   return a1[900];
 }
 
-#if 0
+void IfStmtWithDeclaration(int x, int y) {
+  if (bool b = x < y) {
+    x = 5;
+  }
+  else if (int z = x + y) {
+    y = 7;
+  }
+  else if (int* p = &x) {
+    *p = 2;
+  }
+}
+
+void WhileStmtWithDeclaration(int x, int y) {
+  while (bool b = x < y) {
+  }
+  while (int z = x + y) {
+  }
+  while (int* p = &x) {
+  }
+}
+
+int PointerDecay(int a[], int fn(float)) {
+  return a[0] + fn(1.0);
+}
+
+int ExprStmt(int b, int y, int z) {
+  int x = ({
+    int w;
+    if (b) {
+      w = y;
+    } else {
+      w = z;
+    }
+    w;
+  });
+
+  return ({x;});
+}
+
+// TODO: `delete` gets translated to NoOp
 void OperatorDelete() {
   delete static_cast<int*>(nullptr);  // No destructor
   delete static_cast<String*>(nullptr);  // Non-virtual destructor, with size.
@@ -972,6 +1011,7 @@ void OperatorDelete() {
   delete static_cast<PolymorphicBase*>(nullptr);  // Virtual destructor
 }
 
+// TODO: `delete[]` gets translated to NoOp
 void OperatorDeleteArray() {
   delete[] static_cast<int*>(nullptr);  // No destructor
   delete[] static_cast<String*>(nullptr);  // Non-virtual destructor, with size.
@@ -979,6 +1019,143 @@ void OperatorDeleteArray() {
   delete[] static_cast<Overaligned*>(nullptr);  // No destructor, with size and alignment.
   delete[] static_cast<PolymorphicBase*>(nullptr);  // Virtual destructor
 }
+
+struct EmptyStruct {};
+
+void EmptyStructInit() {
+  EmptyStruct s = {};
+}
+
+auto lam = []() {};
+
+void Lambda(int x, const String& s) {
+  auto lambda_empty = [](float f) { return 'A'; };
+  lambda_empty(0);
+  auto lambda_ref = [&](float f) { return s.c_str()[x]; };
+  lambda_ref(1);
+  auto lambda_val = [=](float f) { return s.c_str()[x]; };
+  lambda_val(2);
+  auto lambda_ref_explicit = [&s](float f) { return s.c_str()[0]; };
+  lambda_ref_explicit(3);
+  auto lambda_val_explicit = [s](float f) { return s.c_str()[0]; };
+  lambda_val_explicit(4);
+  auto lambda_mixed_explicit = [&s, x](float f) { return s.c_str()[x]; };
+  lambda_mixed_explicit(5);
+  int r = x - 1;
+  auto lambda_inits = [&s, x, i = x + 1, &j = r](float f) { return s.c_str()[x + i - j]; };
+  lambda_inits(6);
+}
+
+template<typename T>
+struct vector {
+    struct iterator {
+        T* p;
+        iterator& operator++();
+        T& operator*() const;
+
+        bool operator!=(iterator right) const;
+    };
+
+    iterator begin() const;
+    iterator end() const;
+};
+
+template<typename T>
+bool operator==(typename vector<T>::iterator left, typename vector<T>::iterator right);
+template<typename T>
+bool operator!=(typename vector<T>::iterator left, typename vector<T>::iterator right);
+
+void RangeBasedFor(const vector<int>& v) {
+    for (int e : v) {
+        if (e > 0) {
+            continue;
+        }
+    }
+
+    for (const int& e : v) {
+        if (e < 5) {
+            break;
+        }
+    }
+}
+
+#if 0  // Explicit capture of `this` requires possible extractor fixes.
+
+struct LambdaContainer {
+  int x;
+
+  void LambdaMember(const String& s) {
+    auto lambda_implicit_this = [=](float f) { return s.c_str()[x]; };
+    lambda_implicit_this(1);
+    auto lambda_explicit_this_byref = [this, &s](float f) { return s.c_str()[x]; };
+    lambda_explicit_this_byref(2);
+    auto lambda_explicit_this_bycopy = [*this, &s](float f) { return s.c_str()[x]; };
+    lambda_explicit_this_bycopy(3);
+  }
+};
+
 #endif
 
-// semmle-extractor-options: -std=c++17
+int AsmStmt(int x) {
+  __asm__("");
+  return x;
+}
+
+static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c, unsigned int& d)
+{
+  __asm__ __volatile__
+    (
+  "cpuid\n\t"
+    : "+a" (a), "+b" (b), "+c" (c), "+d" (d)
+    );
+}
+
+void ExternDeclarations()
+{
+    extern int g;
+    int x;
+    int y, f(float);
+    int z(float), w(float), h;
+    typedef double d;
+}
+
+#define EXTERNS_IN_MACRO \
+    extern int g; \
+    for (int i = 0; i < 10; ++i) { \
+        extern int g; \
+    }
+
+void ExternDeclarationsInMacro()
+{
+    EXTERNS_IN_MACRO;
+}
+
+void TryCatchNoCatchAny(bool b) {
+  try {
+    int x = 5;
+    if (b) {
+      throw "string literal";
+    }
+    else if (x < 2) {
+      x = b ? 7 : throw String("String object");
+    }
+    x = 7;
+  }
+  catch (const char* s) {
+    throw String(s);
+  }
+  catch (const String& e) {
+  }
+}
+
+#define vector(elcount, type)  __attribute__((vector_size((elcount)*sizeof(type)))) type
+
+void VectorTypes(int i) {
+  vector(4, int) vi4 = { 0, 1, 2, 3 };
+  int x = vi4[i];
+  vi4[i] = x;
+  vector(4, int) vi4_shuffle = __builtin_shufflevector(vi4, vi4, 3+0, 2, 1, 0);
+  vi4 = vi4 + vi4_shuffle;
+}
+
+// semmle-extractor-options: -std=c++17 --clang

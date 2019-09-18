@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Runtime`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 
@@ -9,7 +10,3 @@ class SystemRuntimeNamespace extends Namespace {
     this.hasName("Runtime")
   }
 }
-
-/** DEPRECATED. Gets the `System.Runtime` namespace. */
-deprecated
-SystemRuntimeNamespace getSystemRuntimeNamespace() { any() }

@@ -1,6 +1,0 @@
-| 3 | 1 | annotations/C.java:3:1:3:61 | Pair | 1 |
-| 3 | 14 | annotations/C.java:3:14:3:31 | Ann | 1 |
-| 3 | 42 | annotations/C.java:3:42:3:60 | Ann | 1 |
-| 4 | 1 | annotations/C.java:4:1:4:68 | Container | 1 |
-| 4 | 25 | annotations/C.java:4:25:4:46 | Ann | 1 |
-| 4 | 49 | annotations/C.java:4:49:4:65 | Ann | 1 |

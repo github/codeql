@@ -5,8 +5,9 @@
 
 
 <overview>
-<p>A value is assigned to a local variable, but the variable is never read subsequently. This means
-that the original assignment is suspect, because the state of the local variable that
+<p>A value is assigned to a local variable, but the local variable is only 
+read before the assignment, not after it.
+This means that the assignment is suspect, because the state of the local variable that
 it creates is never used.</p>
 
 </overview>
@@ -17,4 +18,6 @@ though: if the right-hand side has a side-effect (like performing a method call)
 it is important to keep this to preserve the overall behavior.</p>
 
 </recommendation>
+
+<include src="../../DeadCode/DeadCodeReferences.qhelp" />
 </qhelp>

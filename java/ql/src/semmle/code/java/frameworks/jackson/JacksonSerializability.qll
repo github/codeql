@@ -7,6 +7,7 @@ import java
 import semmle.code.java.Serializability
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.DataFlow5
 
 class JacksonJSONIgnoreAnnotation extends NonReflectiveAnnotation {
   JacksonJSONIgnoreAnnotation() {
@@ -16,8 +17,7 @@ class JacksonJSONIgnoreAnnotation extends NonReflectiveAnnotation {
   }
 }
 
-abstract class JacksonSerializableType extends Type {
-}
+abstract class JacksonSerializableType extends Type { }
 
 /**
  * A method used for serializing objects using Jackson. The final parameter is the object to be
@@ -36,7 +36,7 @@ library class JacksonWriteValueMethod extends Method {
 
 library class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
   ExplicitlyWrittenJacksonSerializableType() {
-    exists( MethodAccess ma |
+    exists(MethodAccess ma |
       // A call to a Jackson write method...
       ma.getMethod() instanceof JacksonWriteValueMethod and
       // ...where `this` is used in the final argument, indicating that this type will be serialized.
@@ -51,16 +51,15 @@ library class FieldReferencedJacksonSerializableType extends JacksonSerializable
   }
 }
 
-abstract class JacksonDeserializableType extends Type {
-}
+abstract class JacksonDeserializableType extends Type { }
 
-private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow::Configuration {
+private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::Configuration {
   TypeLiteralToJacksonDatabindFlowConfiguration() {
     this = "TypeLiteralToJacksonDatabindFlowConfiguration"
   }
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof TypeLiteral
-  }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
+
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma, Method m, int i |
       ma.getArgument(i) = sink.asExpr() and
@@ -73,9 +72,8 @@ private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow::Co
       )
     )
   }
-  TypeLiteral getSourceWithFlowToJacksonDatabind() {
-    hasFlow(DataFlow::exprNode(result), _)
-  }
+
+  TypeLiteral getSourceWithFlowToJacksonDatabind() { hasFlow(DataFlow::exprNode(result), _) }
 }
 
 library class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
@@ -93,7 +91,7 @@ library class FieldReferencedJacksonDeSerializableType extends JacksonDeserializ
 }
 
 class JacksonSerializableField extends SerializableField {
-  JacksonSerializableField(){
+  JacksonSerializableField() {
     exists(JacksonSerializableType superType |
       superType = getDeclaringType().getASupertype*() and
       not superType instanceof TypeObject and
@@ -104,7 +102,7 @@ class JacksonSerializableField extends SerializableField {
 }
 
 class JacksonDeserializableField extends DeserializableField {
-  JacksonDeserializableField(){
+  JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
       superType = getDeclaringType().getASupertype*() and
       not superType instanceof TypeObject and
@@ -125,7 +123,7 @@ class JacksonAddMixinCall extends MethodAccess {
     exists(Method m |
       m = this.getMethod() and
       m.getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
-      |
+    |
       m.hasName("addMixIn") or
       m.hasName("addMixInAnnotations")
     )
@@ -134,45 +132,34 @@ class JacksonAddMixinCall extends MethodAccess {
   /**
    * Gets a possible type for the target of the mixing, if any can be deduced.
    */
-  RefType getATarget() {
-    result = inferClassParameterType(getArgument(0))
-  }
+  RefType getATarget() { result = inferClassParameterType(getArgument(0)) }
 
   /**
    * Gets a possible type that will be mixed in, if any can be deduced.
    */
-  RefType getAMixedInType() {
-    result = inferClassParameterType(getArgument(1))
-  }
+  RefType getAMixedInType() { result = inferClassParameterType(getArgument(1)) }
 }
 
 /**
  * A Jackson annotation.
  */
 class JacksonAnnotation extends Annotation {
-  JacksonAnnotation() {
-    getType().getPackage().hasName("com.fasterxml.jackson.annotation")
-  }
+  JacksonAnnotation() { getType().getPackage().hasName("com.fasterxml.jackson.annotation") }
 }
 
 /**
  * A type used as a Jackson mixin type.
  */
 class JacksonMixinType extends ClassOrInterface {
-  JacksonMixinType() {
-    exists(JacksonAddMixinCall mixinCall |
-      this = mixinCall.getAMixedInType()
-    )
-  }
+  JacksonMixinType() { exists(JacksonAddMixinCall mixinCall | this = mixinCall.getAMixedInType()) }
 
   /**
    * Gets a type that this type is mixed into.
    */
   RefType getATargetType() {
-    exists(JacksonAddMixinCall mixinCall |
-      this = mixinCall.getAMixedInType()
-      |
-      result = mixinCall.getATarget())
+    exists(JacksonAddMixinCall mixinCall | this = mixinCall.getAMixedInType() |
+      result = mixinCall.getATarget()
+    )
   }
 
   /**
@@ -198,18 +185,14 @@ class JacksonMixinType extends ClassOrInterface {
 
 class JacksonMixedInCallable extends Callable {
   JacksonMixedInCallable() {
-    exists(JacksonMixinType mixinType |
-      this = mixinType.getAMixedInCallable()
-    )
+    exists(JacksonMixinType mixinType | this = mixinType.getAMixedInCallable())
   }
 
   /**
    * Gets a candidate target type that this callable can be mixed into.
    */
   RefType getATargetType() {
-    exists(JacksonMixinType mixinType |
-      this = mixinType.getAMixedInCallable()
-      |
+    exists(JacksonMixinType mixinType | this = mixinType.getAMixedInCallable() |
       result = mixinType.getATargetType()
     )
   }
@@ -218,16 +201,14 @@ class JacksonMixedInCallable extends Callable {
    * Gets a callable on a possible target that this is mixed into.
    */
   Callable getATargetCallable() {
-    exists(RefType targetType |
-      targetType = getATargetType()
-      |
+    exists(RefType targetType | targetType = getATargetType() |
       result = getATargetType().getACallable() and
-      if this instanceof Constructor then
-        /*
-         * The mixed in type will have a different name to the target type, so just compare the
-         * parameters.
-         */
-        result.getSignature().suffix(targetType.getName().length()) = getSignature().suffix(getDeclaringType().getName().length())
+      if this instanceof Constructor
+      then
+        // The mixed in type will have a different name to the target type, so just compare the
+        // parameters.
+        result.getSignature().suffix(targetType.getName().length()) = getSignature()
+              .suffix(getDeclaringType().getName().length())
       else
         // Signatures should match
         result.getSignature() = getSignature()

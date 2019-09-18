@@ -12,6 +12,7 @@
  *       language-features
  *       external/cwe/cwe-585
  */
+
 import java
 
 from SynchronizedStmt sync

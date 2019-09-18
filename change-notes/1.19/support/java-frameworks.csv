@@ -1,0 +1,10 @@
+Name, Category
+Hibernate, Database
+iBatis / MyBatis, Database
+Java Persistence API (JPA), Database
+JDBC, Database
+Kryo deserialization, Serialization
+SnakeYaml, Serialization
+Spring JDBC, Database
+Spring MVC, Web application framework
+XStream, Serialization

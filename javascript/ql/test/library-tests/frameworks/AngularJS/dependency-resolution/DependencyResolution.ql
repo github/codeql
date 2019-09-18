@@ -1,5 +1,4 @@
 import javascript
-
 private import AngularJS
 
 from InjectableFunction f, CustomServiceReference s, CustomServiceDefinition custom

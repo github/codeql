@@ -1,0 +1,129 @@
+{
+  "type": "Program",
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0,
+      "offset": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 31,
+      "offset": 31
+    }
+  },
+  "sourceType": "module",
+  "body": [
+    {
+      "type": "ExportNamedDeclaration",
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 31,
+          "offset": 31
+        }
+      },
+      "specifiers": [
+        {
+          "type": "ExportDefaultSpecifier",
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7,
+              "offset": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 10,
+              "offset": 10
+            }
+          },
+          "exported": {
+            "type": "Identifier",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7,
+                "offset": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 10,
+                "offset": 10
+              }
+            },
+            "name": "foo"
+          }
+        },
+        {
+          "type": "ExportSpecifier",
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 14,
+              "offset": 14
+            },
+            "end": {
+              "line": 1,
+              "column": 17,
+              "offset": 17
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 14,
+                "offset": 14
+              },
+              "end": {
+                "line": 1,
+                "column": 17,
+                "offset": 17
+              }
+            },
+            "name": "bar"
+          },
+          "exported": {
+            "type": "Identifier",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 14,
+                "offset": 14
+              },
+              "end": {
+                "line": 1,
+                "column": 17,
+                "offset": 17
+              }
+            },
+            "name": "bar"
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 25,
+            "offset": 25
+          },
+          "end": {
+            "line": 1,
+            "column": 30,
+            "offset": 30
+          }
+        },
+        "value": "bar"
+      }
+    }
+  ]
+}

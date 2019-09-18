@@ -13,7 +13,8 @@ import Expr
  */
 class Assignment extends Operation, @assign_expr {
   Assignment() {
-    this instanceof LocalVariableDeclExpr implies
+    this instanceof LocalVariableDeclExpr
+    implies
     // Same as `this.(LocalVariableDeclExpr).hasInitializer()` but avoids
     // negative recursion
     expr_parent(_, 0, this)
@@ -37,17 +38,11 @@ class Assignment extends Operation, @assign_expr {
 class LocalVariableDeclAndInitExpr extends LocalVariableDeclExpr, Assignment {
   override string getOperator() { result = "=" }
 
-  override LocalVariable getTargetVariable() {
-    result = getVariable()
-  }
+  override LocalVariable getTargetVariable() { result = getVariable() }
 
-  override LocalVariableAccess getLValue() {
-    result = Assignment.super.getLValue()
-  }
+  override LocalVariableAccess getLValue() { result = Assignment.super.getLValue() }
 
-  override string toString() {
-    result = LocalVariableDeclExpr.super.toString() + " = ..."
-  }
+  override string toString() { result = LocalVariableDeclExpr.super.toString() + " = ..." }
 }
 
 /**
@@ -76,9 +71,7 @@ class AssignOperation extends Assignment, @assign_op_expr {
    * If an expanded version exists, then it is used in the control
    * flow graph.
    */
-  AssignExpr getExpandedAssignment() {
-    expr_parent(result, 2, this)
-  }
+  AssignExpr getExpandedAssignment() { expr_parent(result, 2, this) }
 
   /**
    * Holds if this assignment operation has an expanded version.
@@ -89,9 +82,7 @@ class AssignOperation extends Assignment, @assign_op_expr {
    * If an expanded version exists, then it is used in the control
    * flow graph.
    */
-  predicate hasExpandedAssignment() {
-    exists(getExpandedAssignment())
-  }
+  predicate hasExpandedAssignment() { exists(getExpandedAssignment()) }
 
   override string toString() { result = "... " + this.getOperator() + " ..." }
 }
@@ -140,7 +131,6 @@ class AssignRemExpr extends AssignArithmeticOperation, @assign_rem_expr {
   override string getOperator() { result = "%=" }
 }
 
-
 /**
  * A bitwise assignment operation. Either a bitwise-and assignment
  * operation (`AssignAndExpr`), a bitwise-or assignment
@@ -149,8 +139,7 @@ class AssignRemExpr extends AssignArithmeticOperation, @assign_rem_expr {
  * operation (`AssignLShiftExpr`), or a right-shift assignment
  * operation (`AssignRShiftExpr`).
  */
-class AssignBitwiseOperation extends AssignOperation, @assign_bitwise_expr {
-}
+class AssignBitwiseOperation extends AssignOperation, @assign_bitwise_expr { }
 
 /**
  * A bitwise-and assignment operation, for example `x &= y`.
@@ -162,7 +151,7 @@ class AssignAndExpr extends AssignBitwiseOperation, @assign_and_expr {
 /**
  * A bitwise-or assignment operation, for example `x |= y`.
  */
-class AssignOrExpr extends AssignBitwiseOperation, @assign_or_expr   {
+class AssignOrExpr extends AssignBitwiseOperation, @assign_or_expr {
   override string getOperator() { result = "|=" }
 }
 
@@ -176,14 +165,14 @@ class AssignXorExpr extends AssignBitwiseOperation, @assign_xor_expr {
 /**
  * A left-shift assignment operation, for example `x <<= y`.
  */
-class AssignLShiftExpr extends AssignBitwiseOperation, @assign_lshift_expr  {
+class AssignLShiftExpr extends AssignBitwiseOperation, @assign_lshift_expr {
   override string getOperator() { result = "<<=" }
 }
 
 /**
  * A right-shift assignment operation, for example `x >>= y`.
  */
-class AssignRShiftExpr extends AssignBitwiseOperation, @assign_rshift_expr  {
+class AssignRShiftExpr extends AssignBitwiseOperation, @assign_rshift_expr {
   override string getOperator() { result = ">>=" }
 }
 
@@ -240,4 +229,11 @@ class AddEventExpr extends AddOrRemoveEventExpr, @add_event_expr {
  */
 class RemoveEventExpr extends AddOrRemoveEventExpr, @remove_event_expr {
   override string toString() { result = "... -= ..." }
+}
+
+/**
+ * A null-coalescing assignment operation, for example `x ??= y`.
+ */
+class AssignCoalesceExpr extends AssignOperation, @assign_coalesce_expr {
+  override string toString() { result = "... ??= ..." }
 }

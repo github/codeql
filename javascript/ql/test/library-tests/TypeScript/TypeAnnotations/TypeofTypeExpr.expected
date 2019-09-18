@@ -1,6 +1,0 @@
-| tst.ts:70:17:70:24 | typeof N | tst.ts:70:24:70:24 | N |
-| tst.ts:71:17:71:26 | typeof N.x | tst.ts:71:24:71:26 | N.x |
-| tst.ts:72:17:72:35 | typeof qualifiedVar | tst.ts:72:24:72:35 | qualifiedVar |
-| tst.ts:81:43:81:50 | typeof x | tst.ts:81:50:81:50 | x |
-| tst.ts:126:21:126:42 | typeof  ... value") | tst.ts:126:28:126:42 | import("value") |
-| tst.ts:127:30:127:53 | typeof  ... lue").x | tst.ts:127:53:127:53 | x |

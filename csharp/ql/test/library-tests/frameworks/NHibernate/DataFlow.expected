@@ -1,0 +1,2 @@
+| nhibernate.cs:50:14:50:19 | access to property Name | Data flow from $@. | nhibernate.cs:45:24:45:32 | "tainted" | "tainted" |
+| nhibernate.cs:55:14:55:23 | access to property Address | Data flow from $@. | nhibernate.cs:45:24:45:32 | "tainted" | "tainted" |

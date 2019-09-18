@@ -10,12 +10,11 @@
  *       readability
  *       external/cwe/cwe-568
  */
+
 import java
 
 from FinalizeMethod finalize
 where
   finalize.fromSource() and
-  not exists(Stmt s | s.getEnclosingCallable() = finalize |
-    not s instanceof Block
-  )
+  not exists(Stmt s | s.getEnclosingCallable() = finalize | not s instanceof Block)
 select finalize, "Empty finalize method."

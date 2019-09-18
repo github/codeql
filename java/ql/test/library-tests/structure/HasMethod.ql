@@ -1,6 +1,7 @@
 /**
  * @name HasMethod
  */
+
 import default
 
 from RefType inheritor, Method method, RefType declarer

@@ -10,6 +10,7 @@
  *       readability
  *       naming
  */
+
 import java
 
 predicate methodTypeAndLowerCaseName(Method m, RefType t, string name) {

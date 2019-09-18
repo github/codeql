@@ -20,13 +20,17 @@ import javascript
 class IncrementExpr extends Expr {
   IncrementExpr() {
     // x += e
-    this instanceof AssignAddExpr or
+    this instanceof AssignAddExpr
+    or
     // ++x or x++
-    this instanceof PreIncExpr or this instanceof PostIncExpr or
+    this instanceof PreIncExpr
+    or
+    this instanceof PostIncExpr
+    or
     // x = x + e
-    exists (AssignExpr assgn, Variable v | assgn = this |
+    exists(AssignExpr assgn, Variable v | assgn = this |
       assgn.getTarget() = v.getAnAccess() and
-      assgn.getRhs().(AddExpr).getAnOperand().stripParens() = v.getAnAccess()
+      assgn.getRhs().(AddExpr).getAnOperand().getUnderlyingReference() = v.getAnAccess()
     )
   }
 }
@@ -35,18 +39,17 @@ class IncrementExpr extends Expr {
  * Holds if `efl` is a loop whose body increments a variable and does nothing else.
  */
 predicate countingLoop(EnhancedForLoop efl) {
-  exists (ExprStmt inc | inc.getExpr().stripParens() instanceof IncrementExpr |
+  exists(ExprStmt inc | inc.getExpr().stripParens() instanceof IncrementExpr |
     inc = efl.getBody() or
     inc = efl.getBody().(BlockStmt).getAStmt()
   )
 }
 
 from EnhancedForLoop efl, PurelyLocalVariable iter
-where iter = efl.getAnIterationVariable() and
-      not exists (SsaExplicitDefinition ssa | ssa.defines(efl.getIteratorExpr(), iter)) and
-      exists (ReachableBasicBlock body | body.getANode() = efl.getBody() |
-        body.getASuccessor+() = body
-      ) and
-      not countingLoop(efl) and
-      not iter.getName().toLowerCase().regexpMatch("(_|dummy|unused).*")
+where
+  iter = efl.getAnIterationVariable() and
+  not exists(SsaExplicitDefinition ssa | ssa.defines(efl.getIteratorExpr(), iter)) and
+  exists(ReachableBasicBlock body | body.getANode() = efl.getBody() | body.getASuccessor+() = body) and
+  not countingLoop(efl) and
+  not iter.getName().toLowerCase().regexpMatch("(_|dummy|unused).*")
 select efl.getIterator(), "For loop variable " + iter.getName() + " is not used in the loop body."

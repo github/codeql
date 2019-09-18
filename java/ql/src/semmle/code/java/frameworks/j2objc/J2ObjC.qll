@@ -8,7 +8,7 @@ class OCNIComment extends Javadoc {
     // The comment must start with `-[` ...
     getChild(0).getText().matches("-[%") and
     // ... and it must end with `]-`.
-    getChild(getNumChild()-1).getText().matches("%]-")
+    getChild(getNumChild() - 1).getText().matches("%]-")
   }
 }
 
@@ -18,7 +18,9 @@ private predicate ocniComment(OCNIComment ocni, Method m) {
   m.isNative() and
   // ... and the comment has to be contained in `m`.
   ocni.getFile() = m.getFile() and
-  ocni.getLocation().getStartLine() in [m.getLocation().getStartLine()..m.getLocation().getEndLine()]
+  ocni.getLocation().getStartLine() in [m.getLocation().getStartLine() .. m
+          .getLocation()
+          .getEndLine()]
 }
 
 /**
@@ -26,14 +28,10 @@ private predicate ocniComment(OCNIComment ocni, Method m) {
  * implementing a native method.
  */
 class OCNIMethodComment extends OCNIComment {
-  OCNIMethodComment() {
-    ocniComment(this, _)
-  }
+  OCNIMethodComment() { ocniComment(this, _) }
 
   /** Gets the method implemented by this comment. */
-  Method getImplementedMethod() {
-    ocniComment(this, result)
-  }
+  Method getImplementedMethod() { ocniComment(this, result) }
 }
 
 /**

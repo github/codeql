@@ -127,3 +127,9 @@ function countOccurrencesDead(xs, p) {
 			++count;
 	return count;
 }
+
+(function(a) {
+	for([a] of o) {
+		a;
+	}
+});

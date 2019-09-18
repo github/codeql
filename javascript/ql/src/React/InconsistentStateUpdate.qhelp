@@ -36,9 +36,9 @@ Instead, the callback form of <code>setState</code> should be used:
 </p>
 
 <sample language="javascript">
-this.setState((prevState) => {
+this.setState(prevState => ({
   counter: prevState.counter + 1
-});
+}));
 </sample>
 </example>
 

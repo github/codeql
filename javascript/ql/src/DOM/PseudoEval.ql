@@ -18,7 +18,7 @@ import javascript
  */
 class EvilTwin extends DataFlow::CallNode {
   EvilTwin() {
-    exists (string fn | fn = "setTimeout" or fn = "setInterval" |
+    exists(string fn | fn = "setTimeout" or fn = "setInterval" |
       this = DataFlow::globalVarRef(fn).getACall() and
       getArgument(0).asExpr() instanceof ConstantString
     )
@@ -28,7 +28,7 @@ class EvilTwin extends DataFlow::CallNode {
 /** A call to `document.write` or `document.writeln`. */
 class DocumentWrite extends DataFlow::CallNode {
   DocumentWrite() {
-    exists (string writeln |
+    exists(string writeln |
       this = DataFlow::globalVarRef("document").getAMemberCall(writeln) and
       writeln.regexpMatch("write(ln)?")
     )
@@ -37,9 +37,7 @@ class DocumentWrite extends DataFlow::CallNode {
 
 /** A call to `window.execScript`. */
 class ExecScript extends DataFlow::CallNode {
-  ExecScript() {
-    this = DataFlow::globalVarRef("execScript").getACall()
-  }
+  ExecScript() { this = DataFlow::globalVarRef("execScript").getACall() }
 }
 
 /** A call to a DOM function that may evaluate a string as code. */

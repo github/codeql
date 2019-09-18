@@ -18,19 +18,14 @@ private import dotnet
  * type (`UnknownType`), or a type parameter (`TypeParameter`).
  */
 class Type extends DotNet::Type, Member, TypeContainer, @type {
-
-  override string getName() { types(this,_,result) }
+  override string getName() { types(this, _, result) }
 
   override Type getSourceDeclaration() { result = this }
 
   /** Holds if this type is implicitly convertible to `that` type. */
-  predicate isImplicitlyConvertibleTo(Type that) {
-    implicitConversion(this, that)
-  }
+  predicate isImplicitlyConvertibleTo(Type that) { implicitConversion(this, that) }
 
-  override Location getALocation() {
-    type_location(this, result)
-  }
+  override Location getALocation() { type_location(this, result) }
 
   override Type getChild(int n) { none() }
 
@@ -42,6 +37,12 @@ class Type extends DotNet::Type, Member, TypeContainer, @type {
     or
     not this instanceof UnboundGenericType and getAChild().containsTypeParameters()
   }
+
+  /** Holds if this type is a reference type, or a type parameter that is a reference type. */
+  predicate isRefType() { none() }
+
+  /** Holds if this type is a value type, or a type parameter that is a value type. */
+  predicate isValueType() { none() }
 }
 
 /**
@@ -50,7 +51,6 @@ class Type extends DotNet::Type, Member, TypeContainer, @type {
  * Either a value type (`ValueType`) or a reference type (`RefType`).
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
-
   /**
    * Holds if this type has the qualified name `qualifier`.`name`.
    *
@@ -59,37 +59,35 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    */
   override predicate hasQualifiedName(string qualifier, string name) {
     name = this.getName() and
-    if exists(this.getDeclaringType()) then
-      qualifier = this.getDeclaringType().getQualifiedName()
-    else
-      qualifier = this.getNamespace().getQualifiedName()
+    if exists(this.getDeclaringType())
+    then qualifier = this.getDeclaringType().getQualifiedName()
+    else qualifier = this.getNamespace().getQualifiedName()
   }
 
   /** Gets the namespace containing this type. */
   Namespace getNamespace() {
-    if exists(this.getDeclaringType()) then
-      result = this.getDeclaringType().getNamespace()
-    else
-      result.getATypeDeclaration() = this
+    if exists(this.getDeclaringType())
+    then result = this.getDeclaringType().getNamespace()
+    else result.getATypeDeclaration() = this
   }
 
-  override Namespace getDeclaringNamespace() {
-    this = result.getATypeDeclaration()
-  }
+  override Namespace getDeclaringNamespace() { this = result.getATypeDeclaration() }
 
   override ValueOrRefType getDeclaringType() { none() }
 
   override string getUndecoratedName() {
-    if
-      this.getName().indexOf("<")>0
+    if this.getName().indexOf("<") > 0
     then
-      exists(string name, int p | name = this.getName() and p = min(int p2 | p2 = name.indexOf("<") and p2>0) | result=name.substring(0, p))
-    else
-      result = this.getName()
+      exists(string name, int p |
+        name = this.getName() and p = min(int p2 | p2 = name.indexOf("<") and p2 > 0)
+      |
+        result = name.substring(0, p)
+      )
+    else result = this.getName()
   }
 
   /** Gets a nested child type, if any. */
-  NestedType getAChildType() { nested_types(result,this,_) }
+  NestedType getAChildType() { nested_types(result, this, _) }
 
   /**
    * Gets the source namespace declaration in which this type is declared, if any.
@@ -108,7 +106,9 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * }
    * ```
    */
-  NamespaceDeclaration getParentNamespaceDeclaration() { parent_namespace_declaration(this,result) }
+  NamespaceDeclaration getParentNamespaceDeclaration() {
+    parent_namespace_declaration(this, result)
+  }
 
   /** Gets the immediate base class of this class, if any. */
   Class getBaseClass() { extend(this, getTypeRef(result)) }
@@ -135,12 +135,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /**
-   * DEPRECATED: Use `hasMethod()` instead.
-   */
-  deprecated
-  predicate inheritsMethod(Method m) { this.hasMethod(m) }
-
-  /**
    * Holds if this type has method `m`, that is, either `m` is declared in this
    * type, or `m` is inherited by this type.
    *
@@ -163,14 +157,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * ```
    */
   predicate hasMethod(Method m) { this.hasMember(m) }
-
-  /**
-   * DEPRECATED: Use `hasCallable()` instead.
-   */
-  deprecated
-  predicate inheritsCallable(Callable c) {
-    this.hasCallable(c)
-  }
 
   /**
    * Holds if this type has callable `c`, that is, either `c` is declared in this
@@ -200,14 +186,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     hasMethod(c)
     or
     hasMember(c.(Accessor).getDeclaration())
-  }
-
-  /**
-   * DEPRECATED: Use `hasMember()` instead.
-   */
-  deprecated
-  predicate inheritsMember(Member m) {
-    this.hasMember(m)
   }
 
   /**
@@ -244,8 +222,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   private predicate hasNonOverriddenMember(Member m) {
-    isNonOverridden(m)
-    and
+    isNonOverridden(m) and
     (
       m = getAMember()
       or
@@ -263,7 +240,8 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     not memberOverrides(v)
   }
 
-  pragma [noinline] // Predicate folding for proper join-order
+  // Predicate folding for proper join-order
+  pragma[noinline]
   private predicate memberOverrides(Virtualizable v) {
     getAMember().(Virtualizable).getOverridee() = v
   }
@@ -302,25 +280,21 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   StaticConstructor getStaticConstructor() { result = getAMember() }
 
   /** Gets a nested type of this type, if any. */
-  NestedType getANestedType()  { result = getAMember() }
+  NestedType getANestedType() { result = getAMember() }
 
   /** Gets the number of types that directly depend on this type. */
-  int getAfferentCoupling() {
-    afferentCoupling(this, result)
-  }
+  int getAfferentCoupling() { afferentCoupling(this, result) }
 
   /** Gets the number of types that this type directly depends upon. */
-  int getEfferentCoupling() {
-    efferentCoupling(this, result)
-  }
+  int getEfferentCoupling() { efferentCoupling(this, result) }
 
   /** Gets the length of *some* path to the root of the hierarchy. */
   int getADepth() {
-      (this.hasQualifiedName("System", "Object") and result = 0)
+    this.hasQualifiedName("System", "Object") and result = 0
     or
-      (result = this.getABaseType().getADepth() + 1
-      //prevent recursion on cyclic inheritance (only for incorrect databases)
-      and not (this = this.getABaseType+()))
+    result = this.getABaseType().getADepth() + 1 and
+    //prevent recursion on cyclic inheritance (only for incorrect databases)
+    not this = this.getABaseType+()
   }
 
   /**
@@ -328,14 +302,10 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * `object` in the type hierarchy. Types that are very deeply nested
    * may be difficult to maintain.
    */
-  int getInheritanceDepth() {
-    result = max(this.getADepth())
-  }
+  int getInheritanceDepth() { result = max(this.getADepth()) }
 
   /** Gets the number of (direct or indirect) base types. */
-  int getNumberOfAncestors() {
-    result = count(this.getABaseType+())
-  }
+  int getNumberOfAncestors() { result = count(this.getABaseType+()) }
 
   /**
    * Gets the Henderson-Sellers lack of cohesion metric.
@@ -347,9 +317,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * Types with a high Henderson-Sellers metric have methods
    * which access many fields, and can be a maintainability problem.
    */
-  float getLackOfCohesionHS()  {
-    lackOfCohesionHS(this, result)
-  }
+  float getLackOfCohesionHS() { lackOfCohesionHS(this, result) }
 
   /**
    * Gets the Chidamber and Kemerer lack of cohesion metric.
@@ -362,9 +330,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * Types with a high Chidamber and Kemerer metric have multiple
    * responsibilities so could be refactored.
    */
-  float getLackOfCohesionCK()  {
-    lackOfCohesionCK(this, result)
-  }
+  float getLackOfCohesionCK() { lackOfCohesionCK(this, result) }
 
   /**
    * Gets the *response* of this type, which is defined as the total number
@@ -373,18 +339,17 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    */
   int getResponse() {
     result = sum(Callable c |
-      c.getDeclaringType() = this |
-      count(Call call |
-        call.getEnclosingCallable() = c and
-        not call instanceof MemberAccess // property, indexer, and event accesses are not counted
+        c.getDeclaringType() = this
+      |
+        count(Call call |
+            call.getEnclosingCallable() = c and
+            not call instanceof MemberAccess // property, indexer, and event accesses are not counted
+          )
       )
-    )
   }
 
   /** Gets the number of callables in this type. */
-  int getNumberOfCallables() {
-    result = count(Callable c | this.getAMember() = c)
-  }
+  int getNumberOfCallables() { result = count(Callable c | this.getAMember() = c) }
 
   override ValueOrRefType getSourceDeclaration() {
     result = this and
@@ -393,12 +358,10 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     // We must use `nested_types` here, rather than overriding `getSourceDeclaration`
     // in the class `NestedType` below. Otherwise, the overrides in `UnboundGenericType`
     // and its subclasses will not work
-    nested_types(this,_,result)
+    nested_types(this, _, result)
   }
 
   override string toString() { result = Type.super.toString() }
-
-  override Location getLocation() { result = Type.super.getLocation() }
 }
 
 /**
@@ -413,18 +376,16 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
  * ```
  */
 class NestedType extends ValueOrRefType {
+  NestedType() { nested_types(this, _, _) }
 
-  NestedType() { nested_types(this,_,_) }
-
-  override ValueOrRefType getDeclaringType() { nested_types(this,result,_) }
+  override ValueOrRefType getDeclaringType() { nested_types(this, result, _) }
 }
 
 /**
  * A non-nested type, that is declared directly in a namespace.
  */
 class NonNestedType extends ValueOrRefType {
-
-  NonNestedType() { exists(Namespace n | parent_namespace(this,n)) }
+  NonNestedType() { exists(Namespace n | parent_namespace(this, n)) }
 }
 
 /**
@@ -447,7 +408,9 @@ class VoidType extends DotNet::ValueOrRefType, Type, @void_type {
  * Either a simple type (`SimpleType`), an `enum` (`Enum`), a `struct` (`Struct`),
  * or a nullable type (`NullableType`).
  */
-class ValueType extends ValueOrRefType, @value_type { }
+class ValueType extends ValueOrRefType, @value_type {
+  override predicate isValueType() { any() }
+}
 
 /**
  * A simple type. Simple types in C# are predefined `struct` types.
@@ -459,6 +422,8 @@ class ValueType extends ValueOrRefType, @value_type { }
  * (`FloatingPointType`), or a decimal type (`DecimalType`).
  */
 class SimpleType extends ValueType, @simple_type {
+  /** Gets the size of this type, in bytes. */
+  int getSize() { none() }
 
   /** Gets the minimum integral value of this type, if any. */
   int minValue() { none() }
@@ -473,20 +438,22 @@ class SimpleType extends ValueType, @simple_type {
  * The Boolean type, `bool`.
  */
 class BoolType extends SimpleType, @bool_type {
-
   override string toStringWithTypes() { result = "bool" }
+
+  override int getSize() { result = 1 }
 }
 
 /**
  * The Unicode character type, `char`.
  */
 class CharType extends SimpleType, @char_type {
-
   override string toStringWithTypes() { result = "char" }
 
-  override int minValue() { result=0 }
+  override int getSize() { result = 2 }
 
-  override int maxValue() { result=65535 }
+  override int minValue() { result = 0 }
+
+  override int maxValue() { result = 65535 }
 }
 
 /**
@@ -495,8 +462,7 @@ class CharType extends SimpleType, @char_type {
  * Either a signed integral type (`SignedIntegralType`) or an unsigned integral type
  * (`UnsignedIntegralType`).
  */
-class IntegralType extends SimpleType, @integral_type {
-}
+class IntegralType extends SimpleType, @integral_type { }
 
 /**
  * An unsigned integral type.
@@ -505,8 +471,7 @@ class IntegralType extends SimpleType, @integral_type {
  * or a `ulong` (`ULongType`).
  */
 class UnsignedIntegralType extends IntegralType, @unsigned_integral_type {
-
-  override int minValue() { result=0 }
+  override int minValue() { result = 0 }
 }
 
 /**
@@ -515,51 +480,54 @@ class UnsignedIntegralType extends IntegralType, @unsigned_integral_type {
  * Either an `sbyte` (`SByteType`), a `short` (`ShortType`), an `int`
  * (`IntType`), or a `long` (`LongType`).
  */
-class SignedIntegralType extends IntegralType, @signed_integral_type {
-}
+class SignedIntegralType extends IntegralType, @signed_integral_type { }
 
 /**
  * The signed byte type, `sbyte`.
  */
 class SByteType extends SignedIntegralType, @sbyte_type {
-
   override string toStringWithTypes() { result = "sbyte" }
 
-  override int minValue() { result=-128 }
+  override int getSize() { result = 1 }
 
-  override int maxValue() { result=127 }
+  override int minValue() { result = -128 }
+
+  override int maxValue() { result = 127 }
 }
 
 /**
  * The `short` type.
  */
 class ShortType extends SignedIntegralType, @short_type {
-
   override string toStringWithTypes() { result = "short" }
 
-  override int minValue() { result=-32768 }
+  override int getSize() { result = 2 }
 
-  override int maxValue() { result=32767 }
+  override int minValue() { result = -32768 }
+
+  override int maxValue() { result = 32767 }
 }
 
 /**
  * The `int` type.
  */
 class IntType extends SignedIntegralType, @int_type {
-
   override string toStringWithTypes() { result = "int" }
 
-  override int minValue() { result=-2147483647-1 }
+  override int getSize() { result = 4 }
 
-  override int maxValue() { result=2147483647 }
+  override int minValue() { result = -2147483647 - 1 }
+
+  override int maxValue() { result = 2147483647 }
 }
 
 /**
  * The `long` type.
  */
 class LongType extends SignedIntegralType, @long_type {
-
   override string toStringWithTypes() { result = "long" }
+
+  override int getSize() { result = 8 }
 }
 
 /**
@@ -567,7 +535,10 @@ class LongType extends SignedIntegralType, @long_type {
  */
 class ByteType extends UnsignedIntegralType, @byte_type {
   override string toStringWithTypes() { result = "byte" }
-  override int maxValue() { result=255 }
+
+  override int getSize() { result = 1 }
+
+  override int maxValue() { result = 255 }
 }
 
 /**
@@ -575,23 +546,28 @@ class ByteType extends UnsignedIntegralType, @byte_type {
  */
 class UShortType extends UnsignedIntegralType, @ushort_type {
   override string toStringWithTypes() { result = "ushort" }
-  override int maxValue() { result=65535 }
+
+  override int getSize() { result = 2 }
+
+  override int maxValue() { result = 65535 }
 }
 
 /**
  * The unsigned int type, `uint`.
  */
 class UIntType extends UnsignedIntegralType, @uint_type {
-
   override string toStringWithTypes() { result = "uint" }
+
+  override int getSize() { result = 4 }
 }
 
 /**
  * The unsigned long type, `ulong`.
  */
 class ULongType extends UnsignedIntegralType, @ulong_type {
-
   override string toStringWithTypes() { result = "ulong" }
+
+  override int getSize() { result = 8 }
 }
 
 /**
@@ -599,31 +575,33 @@ class ULongType extends UnsignedIntegralType, @ulong_type {
  *
  * Either a `float` (`FloatType`) or a `double` (`DoubleType`).
  */
-class FloatingPointType extends SimpleType, @floating_point_type {
-}
+class FloatingPointType extends SimpleType, @floating_point_type { }
 
 /**
  * The `float` type.
  */
 class FloatType extends FloatingPointType, @float_type {
-
   override string toStringWithTypes() { result = "float" }
+
+  override int getSize() { result = 4 }
 }
 
 /**
  * The `double` type.
  */
 class DoubleType extends FloatingPointType, @double_type {
-
   override string toStringWithTypes() { result = "double" }
+
+  override int getSize() { result = 8 }
 }
 
 /**
  * The high-precision decimal type, `decimal`.
  */
 class DecimalType extends SimpleType, @decimal_type {
-
   override string toStringWithTypes() { result = "decimal" }
+
+  override int getSize() { result = 16 }
 }
 
 /**
@@ -637,7 +615,6 @@ class DecimalType extends SimpleType, @decimal_type {
  * ```
  */
 class Enum extends ValueType, @enum_type {
-
   /**
    * Gets the underlying integral type of this enum, not to be confused with
    * its base type which is always `System.Enum`.
@@ -695,16 +672,13 @@ class Struct extends ValueType, @struct_type {
  * `null` (`NullType`), `dynamic` (`DynamicType`), or an array (`ArrayType`).
  */
 class RefType extends ValueOrRefType, @ref_type {
-
   /** Gets the number of overridden methods (NORM) of this reference type. */
-  int getNumberOverridden() {
-    result = count(this.getAnOverrider())
-  }
+  int getNumberOverridden() { result = count(this.getAnOverrider()) }
 
   /** Gets a member that overrides a non-abstract member in a super type, if any. */
   private Virtualizable getAnOverrider() {
-     getAMember() = result and
-     exists(Virtualizable v | result.getOverridee() = v and not v.isAbstract())
+    getAMember() = result and
+    exists(Virtualizable v | result.getOverridee() = v and not v.isAbstract())
   }
 
   /**
@@ -716,18 +690,16 @@ class RefType extends ValueOrRefType, @ref_type {
    * This measures the inheritance complexity of this type.
    */
   float getSpecialisationIndex() {
-    this.getNumberOfCallables() != 0
-    and
-    result = (this.getNumberOverridden() * this.getInheritanceDepth())
-             /
-             ((float)this.getNumberOfCallables())
+    this.getNumberOfCallables() != 0 and
+    result = (this.getNumberOverridden() * this.getInheritanceDepth()) /
+        this.getNumberOfCallables().(float)
   }
+
+  override predicate isRefType() { any() }
 }
 
 // Helper predicate to avoid slow "negation_body"
-private predicate isNonOverridden(Member m) {
-  not m.(Virtualizable).isOverridden()
-}
+private predicate isNonOverridden(Member m) { not m.(Virtualizable).isOverridden() }
 
 /**
  * A `class`, for example
@@ -738,8 +710,7 @@ private predicate isNonOverridden(Member m) {
  * }
  * ```
  */
-class Class extends RefType, @class_type {
-}
+class Class extends RefType, @class_type { }
 
 /**
  * A class generated by the compiler from an anonymous object creation.
@@ -751,7 +722,6 @@ class Class extends RefType, @class_type {
  * ```
  */
 class AnonymousClass extends Class {
-
   AnonymousClass() { this.getName().matches("<%") }
 }
 
@@ -759,7 +729,6 @@ class AnonymousClass extends Class {
  * The `object` type, `System.Object`.
  */
 class ObjectType extends Class {
-
   ObjectType() { this.hasQualifiedName("System.Object") }
 
   override string toStringWithTypes() { result = "object" }
@@ -769,7 +738,6 @@ class ObjectType extends Class {
  * The `string` type, `System.String`.
  */
 class StringType extends Class {
-
   StringType() { this.hasQualifiedName("System.String") }
 
   override string toStringWithTypes() { result = "string" }
@@ -784,9 +752,7 @@ class StringType extends Class {
  * }
  * ```
  */
-class Interface extends RefType, @interface_type {
-
-}
+class Interface extends RefType, @interface_type { }
 
 /**
  * A `delegate` type, for example
@@ -797,65 +763,66 @@ class Interface extends RefType, @interface_type {
  */
 class DelegateType extends RefType, Parameterizable, @delegate_type {
   /** Gets the return type of this delegate. */
-  Type getReturnType() { delegate_return_type(this,getTypeRef(result)) }
+  Type getReturnType() { delegate_return_type(this, getTypeRef(result)) }
+
+  /** Gets the annotated return type of this delegate. */
+  AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
   /** Holds if this delegate returns a `ref`. */
-  predicate returnsRef() { ref_returns(this) }
+  deprecated predicate returnsRef() { this.getAnnotatedReturnType().isRef() }
 
   /** Holds if this delegate returns a `ref readonly`. */
-  predicate returnsRefReadonly() { ref_readonly_returns(this) }
+  deprecated predicate returnsRefReadonly() { this.getAnnotatedReturnType().isReadonlyRef() }
 }
 
 /**
  * The `null` type. The type of the `null` literal.
  */
-class NullType extends RefType, @null_type {
-}
+class NullType extends RefType, @null_type { }
 
 /**
  * A nullable type, for example `int?`.
  */
 class NullableType extends ValueType, DotNet::ConstructedGeneric, @nullable_type {
-
   /**
    * Gets the underlying value type of this nullable type.
    * For example `int` in `int?`.
    */
-  Type getUnderlyingType() { nullable_underlying_type(this,getTypeRef(result)) }
+  Type getUnderlyingType() { nullable_underlying_type(this, getTypeRef(result)) }
 
-  override string toStringWithTypes() {
-    result = getUnderlyingType().toStringWithTypes() + "?"
-  }
+  override string toStringWithTypes() { result = getUnderlyingType().toStringWithTypes() + "?" }
 
   override Type getChild(int n) { result = getUnderlyingType() and n = 0 }
 
   override Location getALocation() { result = getUnderlyingType().getALocation() }
 
-  override Type getTypeArgument(int p) { p=0 and result = getUnderlyingType() }
+  override Type getTypeArgument(int p) { p = 0 and result = getUnderlyingType() }
 }
 
 /**
  * An array type, for example `int[]`.
  */
 class ArrayType extends DotNet::ArrayType, RefType, @array_type {
-
   /**
    * Gets the dimension of this array type. For example `int[][]` is of
    * dimension 2, while `int[]` is of dimension 1.
    */
-  int getDimension() { array_element_type(this,result,_,_) }
+  int getDimension() { array_element_type(this, result, _, _) }
 
   /**
    * Gets the rank of this array type. For example `int[,]` is of
    * rank 2, while `int[]` is of rank 1.
    */
-  int getRank() { array_element_type(this,_,result,_) }
+  int getRank() { array_element_type(this, _, result, _) }
 
   /** Holds if this array is multi-dimensional. */
   predicate isMultiDimensional() { this.getRank() > 1 }
 
   /** Gets the element type of this array, for example `int` in `int[]`. */
-  override Type getElementType() { array_element_type(this,_,_,getTypeRef(result)) }
+  override Type getElementType() { array_element_type(this, _, _, getTypeRef(result)) }
+
+  /** Gets the annotated element type of this array, for example `int?` in `int?[]`. */
+  final AnnotatedType getAnnotatedElementType() { result.appliesTo(this) }
 
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
@@ -864,40 +831,43 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   }
 
   private string getRankString(int i) {
-    i in [0 .. getRank() - 1]
-    and
-    if i = getRank() - 1 then
-      result = ""
-    else (
-      result = "," + getRankString(i + 1)
-    )
+    i in [0 .. getRank() - 1] and
+    if i = getRank() - 1 then result = "" else result = "," + getRankString(i + 1)
   }
 
-  private string getDimensionString(Type elementType) {
-    exists(Type et, string res |
-      et = getElementType() and
+  private string getDimensionString(AnnotatedType elementType) {
+    exists(AnnotatedType et, string res |
+      et = getAnnotatedElementType() and
       res = "[" + getRankString(0) + "]" and
-      if et instanceof ArrayType then
-        result = res + et.(ArrayType).getDimensionString(elementType)
-      else
-        (result = res and elementType = et)
+      if et.getUnderlyingType() instanceof ArrayType and not et.isNullableRefType()
+      then result = res + et.getUnderlyingType().(ArrayType).getDimensionString(elementType)
+      else (
+        result = res and elementType = et
+      )
     )
   }
 
   override string toStringWithTypes() {
-    exists(Type elementType |
-      result = elementType.toStringWithTypes() + getDimensionString(elementType)
+    exists(AnnotatedType elementType |
+      result = elementType.toString() + this.getDimensionString(elementType)
     )
   }
 
   override Type getChild(int n) { result = getElementType() and n = 0 }
+
+  override Location getALocation() {
+    type_location(this, result)
+    or
+    not type_location(this, _) and
+    result = this.getElementType().getALocation()
+  }
 }
 
 /**
  * A pointer type, for example `char*`.
  */
 class PointerType extends DotNet::PointerType, Type, @pointer_type {
-  override Type getReferentType() { pointer_referent_type(this,getTypeRef(result)) }
+  override Type getReferentType() { pointer_referent_type(this, getTypeRef(result)) }
 
   override string toStringWithTypes() { result = DotNet::PointerType.super.toStringWithTypes() }
 
@@ -914,7 +884,6 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
  * The `dynamic` type.
  */
 class DynamicType extends RefType, @dynamic_type {
-
   override string toStringWithTypes() { result = "dynamic" }
 }
 
@@ -922,7 +891,6 @@ class DynamicType extends RefType, @dynamic_type {
  * The `__arglist` type, modeling varargs invocation in C++.
  */
 class ArglistType extends Type, @arglist_type {
-
   override string toStringWithTypes() { result = "__arglist" }
 }
 
@@ -930,55 +898,46 @@ class ArglistType extends Type, @arglist_type {
  * A type that could not be resolved. This could happen if an indirect reference
  * is not available at compilation time.
  */
-class UnknownType extends Type, @unknown_type {
-}
+class UnknownType extends Type, @unknown_type { }
 
 /**
  * A type representing a tuple. For example, `(int, bool, string)`.
  */
 class TupleType extends ValueType, @tuple_type {
-
   /** Gets the underlying type of this tuple, which is of type `System.ValueTuple`. */
-  ConstructedStruct getUnderlyingType() {
-    tuple_underlying_type(this, result)
-  }
+  ConstructedStruct getUnderlyingType() { tuple_underlying_type(this, result) }
 
   /**
    * Gets the `n`th element of this tuple, indexed from 0.
    * For example, the 0th (first) element of `(int, string)` is the field `Item1 int`.
    */
-  Field getElement(int n) {
-    tuple_element(this, n, result)
-  }
+  Field getElement(int n) { tuple_element(this, n, result) }
 
   /**
    * Gets the type of the `n`th element of this tuple, indexed from 0.
    * For example, the 0th (first) element type of `(int, string)` is `int`.
    */
-  Type getElementType(int n) {
-    result = getElement(n).getType()
-  }
+  Type getElementType(int n) { result = getElement(n).getType() }
 
   /** Gets an element of this tuple. */
-  Field getAnElement() {
-    result = getElement(_)
-  }
+  Field getAnElement() { result = getElement(_) }
 
-  override Location getALocation() {
-    type_location(this, result)
-  }
+  override Location getALocation() { type_location(this, result) }
 
   /**
    * Gets the arity of this tuple. For example, the arity of
    * `(int, int, double)` is 3.
    */
-  int getArity() {
-    result=count(getAnElement())
-  }
+  int getArity() { result = count(getAnElement()) }
 
-  language [monotonicAggregates]
+  language[monotonicAggregates]
   override string toStringWithTypes() {
-    result = "(" + concat(int i | exists(getElement(i)) | getElement(i).getType().toStringWithTypes(), ", " order by i) + ")"
+    result = "(" +
+        concat(int i |
+          exists(getElement(i))
+        |
+          getElement(i).getType().toStringWithTypes(), ", " order by i
+        ) + ")"
   }
 
   override string getLabel() { result = getUnderlyingType().getLabel() }

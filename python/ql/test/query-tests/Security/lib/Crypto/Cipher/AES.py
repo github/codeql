@@ -1,0 +1,3 @@
+
+def new(*args):
+    pass

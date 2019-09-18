@@ -12,7 +12,8 @@
 import Documentation
 
 from UnboundGeneric d, TypeparamXmlComment comment, string paramName
-where comment = getADeclarationXmlComment(d)
-and comment.getName(_) = paramName
-and not d.getATypeParameter().getName() = paramName
+where
+  comment = getADeclarationXmlComment(d) and
+  comment.getName(_) = paramName and
+  not d.getATypeParameter().getName() = paramName
 select d, "Documentation specifies an invalid type parameter name $@.", comment, paramName

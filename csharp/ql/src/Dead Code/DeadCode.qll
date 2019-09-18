@@ -7,7 +7,8 @@ MethodCall getAnAccessByReflection(Method m) {
     typeof.getTypeAccess().getType() = m.getDeclaringType() and
     result.getTarget().hasName("GetMethod") and
     result.getQualifier() = typeof and
-    result.getArgument(0).getValue() = m.getName())
+    result.getArgument(0).getValue() = m.getName()
+  )
 }
 
 Expr getAnAccessByDynamicCall(Method m) {
@@ -18,15 +19,18 @@ Expr getAnAccessByDynamicCall(Method m) {
       receiverType instanceof DynamicType
       or
       m.getDeclaringType().getABaseType*() = receiverType
-    )
-    and result=call)
-  or exists(MethodCall mc, Method target |
+    ) and
+    result = call
+  )
+  or
+  exists(MethodCall mc, Method target |
     target = mc.getTarget() and
     target.hasName("InvokeMember") and
     target.getDeclaringType().hasQualifiedName("System.Type") and
     mc.getArgument(0).(StringLiteral).getValue() = m.getName() and
     mc.getArgument(3).getType().(RefType).hasMethod(m) and
-    result=mc)
+    result = mc
+  )
 }
 
 Expr getAMethodAccess(Method m) {
@@ -37,14 +41,14 @@ Expr getAMethodAccess(Method m) {
 }
 
 predicate potentiallyAccessedByForEach(Method m) {
-  m.hasName("GetEnumerator")
-  and m.getDeclaringType().getABaseType+().hasQualifiedName("System.Collections.IEnumerable")
+  m.hasName("GetEnumerator") and
+  m.getDeclaringType().getABaseType+().hasQualifiedName("System.Collections.IEnumerable")
 }
 
-predicate isRecursivelyLiveExpression(Expr e)
-{
-  exists(Callable c | c=e.getEnclosingCallable() |
-    isRecursivelyLiveMethod(c) or not c instanceof Method )
+predicate isRecursivelyLiveExpression(Expr e) {
+  exists(Callable c | c = e.getEnclosingCallable() |
+    isRecursivelyLiveMethod(c) or not c instanceof Method
+  )
 }
 
 predicate isRecursivelyLiveMethod(Method m) {
@@ -69,28 +73,27 @@ predicate isRecursivelyLiveMethod(Method m) {
   )
 }
 
-predicate nunitValueSource(Method m)
-{
-  exists(ValueSourceAttribute attribute | attribute.getSourceMethod()=m)
+predicate nunitValueSource(Method m) {
+  exists(ValueSourceAttribute attribute | attribute.getSourceMethod() = m)
 }
 
-predicate nunitTestCaseSource(Declaration f)
-{
-  exists(TestCaseSourceAttribute attribute | attribute.getSourceDeclaration()=f)
+predicate nunitTestCaseSource(Declaration f) {
+  exists(TestCaseSourceAttribute attribute | attribute.getSourceDeclaration() = f)
 }
 
 predicate isDeadMethod(Method m) {
-    not isRecursivelyLiveMethod(m)
-    and m.isSourceDeclaration()
+  not isRecursivelyLiveMethod(m) and
+  m.isSourceDeclaration()
 }
 
 predicate isDeadField(Field f) {
-  f.isPrivate()
-  and not f.getDeclaringType() instanceof AnonymousClass
-  and f.getSourceDeclaration() = f
-  and not nunitTestCaseSource(f)
-  and forall(FieldAccess fc | fc.getTarget().getSourceDeclaration() = f |
+  f.isPrivate() and
+  not f.getDeclaringType() instanceof AnonymousClass and
+  f.getSourceDeclaration() = f and
+  not nunitTestCaseSource(f) and
+  forall(FieldAccess fc | fc.getTarget().getSourceDeclaration() = f |
     isDeadMethod(fc.getEnclosingCallable())
-    or (not fc instanceof FieldRead and not fc.isRefArgument())
+    or
+    not fc instanceof FieldRead and not fc.isRefArgument()
   )
 }

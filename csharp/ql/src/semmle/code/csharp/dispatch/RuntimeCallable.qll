@@ -3,6 +3,7 @@
  * those callables that may actually be called at run-time (that is, neither
  * abstract callables nor callables defined in an interface).
  */
+
 import csharp
 private import cil
 private import dotnet
@@ -25,16 +26,12 @@ class RuntimeMethod extends RuntimeCallable {
     this instanceof CIL::Method
   }
 
-  predicate isStatic() {
-    this.(Method).isStatic() or this.(CIL::Method).isStatic()
-  }
+  predicate isStatic() { this.(Method).isStatic() or this.(CIL::Method).isStatic() }
 }
 
 /** A run-time instance method. */
 class RuntimeInstanceMethod extends RuntimeMethod {
-  RuntimeInstanceMethod() {
-    not isStatic()
-  }
+  RuntimeInstanceMethod() { not isStatic() }
 }
 
 /** A run-time operator. */
@@ -45,7 +42,5 @@ class RuntimeAccessor extends Accessor, RuntimeCallable { }
 
 /** A run-time instance accessor. */
 class RuntimeInstanceAccessor extends RuntimeAccessor {
-  RuntimeInstanceAccessor() {
-    not isStatic()
-  }
+  RuntimeInstanceAccessor() { not isStatic() }
 }

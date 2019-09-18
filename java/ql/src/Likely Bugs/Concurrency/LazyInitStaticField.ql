@@ -12,26 +12,19 @@
  *       external/cwe/cwe-543
  *       external/cwe/cwe-609
  */
+
 import java
 
 /** A comparison (using `==`) with `null`. */
 class NullEQExpr extends EQExpr {
-  NullEQExpr() {
-    exists(NullLiteral l | l.getParent() = this)
-  }
+  NullEQExpr() { exists(NullLiteral l | l.getParent() = this) }
 }
 
 /** An assignment to a static field. */
 class StaticFieldInit extends AssignExpr {
-  StaticFieldInit() {
-    exists(Field f | f.isStatic() |
-      f.getAnAccess() = this.getDest()
-    )
-  }
+  StaticFieldInit() { exists(Field f | f.isStatic() | f.getAnAccess() = this.getDest()) }
 
-  Field getField() {
-    result.getAnAccess() = this.getDest()
-  }
+  Field getField() { result.getAnAccess() = this.getDest() }
 
   IfStmt getAnEnclosingNullCheck() {
     result.getThen().getAChild*() = this.getEnclosingStmt() and
@@ -58,9 +51,13 @@ class LockObjectField extends Field {
 class ValidSynchStmt extends Stmt {
   ValidSynchStmt() {
     // It's OK to lock the enclosing class.
-    this.(SynchronizedStmt).getExpr().(TypeLiteral).getTypeName().getType() = this.getEnclosingCallable().getDeclaringType() or
+    this.(SynchronizedStmt).getExpr().(TypeLiteral).getTypeName().getType() = this
+          .getEnclosingCallable()
+          .getDeclaringType()
+    or
     // It's OK to lock on a "lock object field".
-    this.(SynchronizedStmt).getExpr().(FieldRead).getField() instanceof LockObjectField or
+    this.(SynchronizedStmt).getExpr().(FieldRead).getField() instanceof LockObjectField
+    or
     // Locking via `ReentrantLock` lock object instead of synchronized statement.
     exists(TryStmt try, LockObjectField lockField |
       this = try.getBlock() and
@@ -97,17 +94,16 @@ where
   not method instanceof StaticInitializer and
   // There must be an unsynchronized read.
   exists(IfStmt unsyncNullCheck | unsyncNullCheck = init.getAnEnclosingNullCheck() |
-    not unsyncNullCheck.getParent+() instanceof ValidSynchStmt
+    not unsyncNullCheck.getEnclosingStmt+() instanceof ValidSynchStmt
   ) and
-  if (i.getParent+() instanceof ValidSynchStmt) then (
+  if i.getEnclosingStmt+() instanceof ValidSynchStmt
+  then (
     not init.getField().isVolatile() and
     message = "The field must be volatile."
   ) else (
-    if (i.getParent+() instanceof SynchronizedStmt) then (
-      message = "Bad synchronization."
-    ) else (
-      message = "Missing synchronization."
-    )
+    if i.getEnclosingStmt+() instanceof SynchronizedStmt
+    then message = "Bad synchronization."
+    else message = "Missing synchronization."
   )
-select init, "Incorrect lazy initialization of static field $@: " + message,
-  init.getField() as f, f.getName()
+select init, "Incorrect lazy initialization of static field $@: " + message, init.getField() as f,
+  f.getName()

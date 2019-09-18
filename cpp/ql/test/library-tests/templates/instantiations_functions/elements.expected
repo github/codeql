@@ -35,6 +35,7 @@
 | file://:0:0:0:0 | __uptr |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |
+| file://:0:0:0:0 | __va_list_tag && |
 | file://:0:0:0:0 | abstract |
 | file://:0:0:0:0 | action<ActionT> * |
 | file://:0:0:0:0 | action<ActionT> *const |
@@ -59,6 +60,8 @@
 | file://:0:0:0:0 | composite<int> && |
 | file://:0:0:0:0 | composite<int> * |
 | file://:0:0:0:0 | const |
+| file://:0:0:0:0 | const __va_list_tag |
+| file://:0:0:0:0 | const __va_list_tag & |
 | file://:0:0:0:0 | const action<actor1<composite<int>>> |
 | file://:0:0:0:0 | const action<actor1<composite<int>>> & |
 | file://:0:0:0:0 | const actor1<composite<int>> |
@@ -85,8 +88,8 @@
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declared_constexpr |
 | file://:0:0:0:0 | decltype(nullptr) |
-| file://:0:0:0:0 | definition of __va_list_tag |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |
 | file://:0:0:0:0 | definition of overflow_arg_area |
@@ -109,6 +112,8 @@
 | file://:0:0:0:0 | int |
 | file://:0:0:0:0 | int & |
 | file://:0:0:0:0 | int * |
+| file://:0:0:0:0 | is_constexpr |
+| file://:0:0:0:0 | is_thread_local |
 | file://:0:0:0:0 | long |
 | file://:0:0:0:0 | long double |
 | file://:0:0:0:0 | long long |
@@ -125,6 +130,8 @@
 | file://:0:0:0:0 | optional |
 | file://:0:0:0:0 | overflow_arg_area |
 | file://:0:0:0:0 | override |
+| file://:0:0:0:0 | p#0 |
+| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
@@ -198,18 +205,19 @@
 | header.h:4:5:4:10 | actor1 |
 | header.h:4:5:4:10 | actor1 |
 | header.h:4:5:4:10 | declaration of actor1 |
-| header.h:4:5:4:10 | declaration of actor1 |
 | header.h:6:24:6:24 | A |
 | header.h:6:24:6:24 | definition of A |
+| header.h:8:5:8:5 | definition of funx |
+| header.h:8:5:8:5 | funx |
 | header.h:8:5:8:8 | declaration of funx |
 | header.h:8:5:8:8 | definition of funx |
-| header.h:8:5:8:8 | funx |
 | header.h:8:5:8:8 | funx |
 | header.h:8:5:8:8 | funx |
 | header.h:8:13:8:14 | a_ |
 | header.h:8:13:8:14 | a_ |
 | header.h:8:13:8:14 | a_ |
 | header.h:8:13:8:14 | declaration of a_ |
+| header.h:8:13:8:14 | definition of a_ |
 | header.h:8:13:8:14 | definition of a_ |
 | header.h:8:17:11:5 | { ... } |
 | header.h:8:17:11:5 | { ... } |
@@ -251,9 +259,10 @@
 | test.cpp:7:8:7:16 | definition of composite<B> |
 | test.cpp:8:24:8:29 | TupleT |
 | test.cpp:8:24:8:29 | definition of TupleT |
+| test.cpp:9:10:9:10 | definition of eval |
+| test.cpp:9:10:9:10 | eval |
 | test.cpp:9:10:9:13 | declaration of eval |
 | test.cpp:9:10:9:13 | definition of eval |
-| test.cpp:9:10:9:13 | eval |
 | test.cpp:9:10:9:13 | eval |
 | test.cpp:9:10:9:13 | eval |
 | test.cpp:9:22:9:25 | args |
@@ -261,11 +270,13 @@
 | test.cpp:9:22:9:25 | args |
 | test.cpp:9:22:9:25 | declaration of args |
 | test.cpp:9:22:9:25 | definition of args |
+| test.cpp:9:22:9:25 | definition of args |
 | test.cpp:9:28:9:30 | { ... } |
 | test.cpp:9:28:9:30 | { ... } |
 | test.cpp:9:30:9:30 | return ... |
 | test.cpp:9:30:9:30 | return ... |
 | test.cpp:12:1:12:19 | #include "header.h" |
+| test.cpp:14:20:14:26 | ActionT |
 | test.cpp:14:20:14:26 | ActionT |
 | test.cpp:14:20:14:26 | definition of ActionT |
 | test.cpp:15:7:15:7 | Unknown literal |
@@ -289,8 +300,9 @@
 | test.cpp:15:7:15:12 | action<ActionT> |
 | test.cpp:15:7:15:12 | action<actor1<composite<int>>> |
 | test.cpp:15:7:15:12 | definition of action<ActionT> |
+| test.cpp:17:10:17:10 | definition of eparse |
+| test.cpp:17:10:17:10 | eparse |
 | test.cpp:17:10:17:15 | definition of eparse |
-| test.cpp:17:10:17:15 | eparse |
 | test.cpp:17:10:17:15 | eparse |
 | test.cpp:17:19:20:5 | { ... } |
 | test.cpp:17:19:20:5 | { ... } |
@@ -327,10 +339,13 @@
 | test.cpp:26:7:26:10 | definition of rule |
 | test.cpp:26:7:26:10 | rule |
 | test.cpp:28:28:28:34 | ParserT |
+| test.cpp:28:28:28:34 | ParserT |
 | test.cpp:28:28:28:34 | definition of ParserT |
+| test.cpp:29:9:29:9 | definition of rule |
+| test.cpp:29:9:29:9 | rule |
 | test.cpp:29:9:29:12 | definition of rule |
 | test.cpp:29:9:29:12 | rule |
-| test.cpp:29:9:29:12 | rule |
+| test.cpp:29:22:29:22 | definition of p |
 | test.cpp:29:22:29:22 | definition of p |
 | test.cpp:29:22:29:22 | p |
 | test.cpp:29:22:29:22 | p |
@@ -348,15 +363,15 @@
 | test.cpp:34:6:34:11 | define |
 | test.cpp:34:6:34:11 | definition of define |
 | test.cpp:34:15:37:1 | { ... } |
-| test.cpp:35:5:35:10 | mention of action<actor1<composite<int>>> |
+| test.cpp:35:5:35:10 | type mention |
 | test.cpp:35:5:35:37 | declaration |
-| test.cpp:35:12:35:17 | mention of actor1<composite<int>> |
-| test.cpp:35:19:35:27 | mention of composite<int> |
+| test.cpp:35:12:35:17 | type mention |
+| test.cpp:35:19:35:27 | type mention |
 | test.cpp:35:36:35:36 | call to action |
 | test.cpp:35:36:35:36 | definition of z |
 | test.cpp:35:36:35:36 | initializer for z |
 | test.cpp:35:36:35:36 | z |
-| test.cpp:36:5:36:8 | mention of rule |
+| test.cpp:36:5:36:8 | type mention |
 | test.cpp:36:5:36:27 | declaration |
 | test.cpp:36:10:36:22 | definition of pp_expression |
 | test.cpp:36:10:36:22 | pp_expression |

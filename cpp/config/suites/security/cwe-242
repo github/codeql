@@ -1,3 +1,0 @@
-# CWE-242: Use of Inherently Dangerous Function
-+ semmlecode-cpp-queries/Likely Bugs/Memory Management/PotentialBufferOverflow.ql: /CWE/CWE-242
-    @name Use of inherently dangerous function (CWE-242)

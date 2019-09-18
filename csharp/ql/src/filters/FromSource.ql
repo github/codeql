@@ -4,10 +4,10 @@
  * @kind problem
  * @id cs/source-filter
  */
+
 import csharp
 import external.DefectFilter
 
 from DefectResult res
 where res.getFile().fromSource()
-select res,
-       res.getMessage()
+select res, res.getMessage()

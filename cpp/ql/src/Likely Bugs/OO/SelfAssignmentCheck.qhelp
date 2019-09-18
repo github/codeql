@@ -12,17 +12,19 @@ This could lead to accessing an already freed memory location.</p>
 before getting a new value from the object on the right hand side.</p>
 
 </overview>
+
 <recommendation>
 <p>Copy assignment operator should check for self-assignment.</p>
-
 </recommendation>
-<example><sample src="SelfAssignmentCheck.cpp" />
 
-
-
+<example>
+<p>This example shows a copy assignment operator that fails to check for self assignment. 
+The corrected version of the same operator is also included. 
+</p>
+<sample src="SelfAssignmentCheck.cpp" />
 </example>
+
 <references>
-
-<li>[1] M. Cline, <a href="https://isocpp.org/wiki/faq/assignment-operators">Part of C++ FAQ: Assignment operators</a></li>
-
-</references></qhelp>
+<li>Standard C++ Foundation: <a href="https://isocpp.org/wiki/faq/assignment-operators">Assignment Operators</a></li>
+</references>
+</qhelp>

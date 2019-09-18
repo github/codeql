@@ -24,24 +24,24 @@ import DOMProperties
  * in which case `element <name>` is used instead.
  */
 string describe(Expr e) {
-  exists (VarAccess va | va = e | result = "variable " + va.getName())
+  exists(VarAccess va | va = e | result = "variable " + va.getName())
   or
-  exists (string name | name = e.(PropAccess).getPropertyName() |
-    if exists(name.toInt()) then
-      result = "element " + name
-    else
-      result = "property " + name
+  exists(string name | name = e.(PropAccess).getPropertyName() |
+    if exists(name.toInt()) then result = "element " + name else result = "property " + name
   )
 }
 
 from SelfAssignment e, string dsc
-where e.same(_) and
-      dsc = describe(e) and
-      // exclude properties for which there is an accessor somewhere
-      not exists(string propName | propName = e.(PropAccess).getPropertyName() |
-        propName = any(PropertyAccessor acc).getName() or
-        propName = any(AccessorMethodDeclaration amd).getName()
-      ) and
-      // exclude DOM properties
-      not isDOMProperty(e.(PropAccess).getPropertyName())
+where
+  e.same(_) and
+  dsc = describe(e) and
+  // exclude properties for which there is an accessor somewhere
+  not exists(string propName | propName = e.(PropAccess).getPropertyName() |
+    propName = any(PropertyAccessor acc).getName() or
+    propName = any(AccessorMethodDeclaration amd).getName()
+  ) and
+  // exclude DOM properties
+  not isDOMProperty(e.(PropAccess).getPropertyName()) and
+  // exclude self-assignments that have been inserted to satisfy the TypeScript JS-checker
+  not e.getAssignment().getParent().(ExprStmt).getDocumentation().getATag().getTitle() = "type"
 select e.getParent(), "This expression assigns " + dsc + " to itself."

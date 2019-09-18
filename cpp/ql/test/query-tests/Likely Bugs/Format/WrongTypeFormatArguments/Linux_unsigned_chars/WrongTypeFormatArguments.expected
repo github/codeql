@@ -10,15 +10,11 @@
 | printf1.h:44:18:44:20 | ull | This argument should be of type 'int' but is of type 'unsigned long long' |
 | printf1.h:45:18:45:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:46:18:46:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
-| printf1.h:47:19:47:21 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
-| printf1.h:68:19:68:21 | sst | This argument should be of type 'size_t' but is of type 'long' |
-| printf1.h:70:19:70:20 | ul | This argument should be of type 'ssize_t' but is of type 'unsigned long' |
-| printf1.h:71:19:71:20 | st | This argument should be of type 'ssize_t' but is of type 'unsigned long' |
-| printf1.h:72:19:72:20 | ST | This argument should be of type 'ssize_t' but is of type 'unsigned long' |
-| printf1.h:73:19:73:22 | c_st | This argument should be of type 'ssize_t' but is of type 'unsigned long' |
-| printf1.h:74:19:74:22 | C_ST | This argument should be of type 'ssize_t' but is of type 'unsigned long' |
-| printf1.h:75:19:75:28 | sizeof(<expr>) | This argument should be of type 'ssize_t' but is of type 'unsigned long' |
-| printf1.h:83:23:83:35 | ... - ... | This argument should be of type 'size_t' but is of type 'long' |
+| printf1.h:130:18:130:18 | 0 | This argument should be of type 'void *' but is of type 'int' |
+| printf1.h:154:18:154:19 | wc | This argument should be of type 'char *' but is of type 'wchar_t *' |
+| printf1.h:155:18:155:18 | c | This argument should be of type 'wchar_t *' but is of type 'char *' |
+| printf1.h:168:19:168:19 | i | This argument should be of type 'long long' but is of type 'int' |
+| printf1.h:169:19:169:20 | ui | This argument should be of type 'unsigned long long' but is of type 'unsigned int' |
 | real_world.h:61:21:61:22 | & ... | This argument should be of type 'int *' but is of type 'short *' |
 | real_world.h:62:22:62:23 | & ... | This argument should be of type 'short *' but is of type 'int *' |
 | real_world.h:63:22:63:24 | & ... | This argument should be of type 'short *' but is of type 'unsigned int *' |

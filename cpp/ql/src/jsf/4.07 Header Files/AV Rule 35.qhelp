@@ -68,6 +68,9 @@ some are after the final <code>#endif</code>. All three of these things must be 
 <li>
   <a href="http://www.cplusplus.com/forum/articles/10627/">Headers and Includes: Why and How</a>
 </li>
+<li>
+  <a href="https://gcc.gnu.org/onlinedocs/cppinternals/Guard-Macros.html">The Multiple-Include Optimization</a>
+</li>
 
 
 </references>

@@ -1,5 +1,5 @@
 import csharp
 
 from DelegateType t
-where t.returnsRef()
+where t.getAnnotatedReturnType().isRef()
 select t

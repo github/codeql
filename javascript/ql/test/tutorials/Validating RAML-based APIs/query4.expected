@@ -1,4 +1,4 @@
-WARNING: Unused method getMethod (query4.ql:35,14-23)
+WARNING: Unused method getMethod (query4.ql:36,14-23)
 WARNING: Unused method getResponse (query4.ql:50,13-24)
 | robonode/src/assets/raml/api.raml:9:5:14:2 | description: \| |
 | robonode/src/assets/raml/api.raml:25:9:29:6 | description: \| |

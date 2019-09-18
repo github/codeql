@@ -64,3 +64,13 @@
         var sink = val;
     });
 })();
+
+(function() {
+    var Promise = goog.require('goog.Promise');
+    var source = "tainted";
+    Promise.resolve(source).then(val => { var sink = val; });
+    new Promise((res,rej) => res(source)).then(val => { var sink = val });
+    let resolver = Promise.withResolver();
+    resolver.resolve(source);
+    resolver.promise.then(val => { var sink = val });
+})();

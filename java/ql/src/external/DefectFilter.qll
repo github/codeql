@@ -8,11 +8,12 @@ import java
  * column `startcolumn` of line `startline` to column `endcolumn` of line `endline`
  * in file `filepath`.
  *
- * For more information, see [LGTM locations](https://lgtm.com/help/ql/locations).
+ * For more information, see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
  */
-external predicate defectResults(int id, string queryPath,
-                                 string file, int startline, int startcol, int endline, int endcol,
-                                 string message);
+external predicate defectResults(
+  int id, string queryPath, string file, int startline, int startcol, int endline, int endcol,
+  string message
+);
 
 /**
  * A defect query result stored in a dashboard database.
@@ -25,7 +26,9 @@ class DefectResult extends int {
 
   /** Gets the file in which this query result was reported. */
   File getFile() {
-    exists(string path | defectResults(this, _, path, _, _, _, _, _) | result.getAbsolutePath() = path)
+    exists(string path | defectResults(this, _, path, _, _, _, _, _) |
+      result.getAbsolutePath() = path
+    )
   }
 
   /** Gets the line on which the location of this query result starts. */
@@ -45,7 +48,7 @@ class DefectResult extends int {
 
   /** Gets the URL corresponding to the location of this query result. */
   string getURL() {
-    result = "file://" + getFile().getAbsolutePath() + ":" +
-      getStartLine() + ":" + getStartColumn() + ":" + getEndLine() + ":" + getEndColumn()
+    result = "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn()
+        + ":" + getEndLine() + ":" + getEndColumn()
   }
 }

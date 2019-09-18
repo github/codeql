@@ -9,12 +9,16 @@ import javascript
  */
 private int kindOf(ASTNode nd) {
   // map expression kinds to even non-negative numbers
-  result = nd.(Expr).getKind() * 2 or
+  result = nd.(Expr).getKind() * 2
+  or
   // map statement kinds to odd non-negative numbers
-  result = nd.(Stmt).getKind() * 2 + 1 or
+  result = nd.(Stmt).getKind() * 2 + 1
+  or
   // other node types get negative kinds
-  nd instanceof TopLevel and result = -1 or
-  nd instanceof Property and result = -2 or
+  nd instanceof TopLevel and result = -1
+  or
+  nd instanceof Property and result = -2
+  or
   nd instanceof ClassDefinition and result = -3
 }
 
@@ -57,8 +61,8 @@ abstract class StructurallyCompared extends ASTNode {
   ASTNode candidateInternal() {
     // in order to correspond, nodes need to have the same kind and shape
     exists(int kind, int numChildren | kindAndArity(this, kind, numChildren) |
-      result = candidateKind(kind, numChildren) 
-      or 
+      result = candidateKind(kind, numChildren)
+      or
       result = uncleKind(kind, numChildren)
     )
   }
@@ -68,7 +72,7 @@ abstract class StructurallyCompared extends ASTNode {
    * where this node is the `i`th child of its parent.
    */
   private ASTNode getAStructuralUncle(int i) {
-    exists (StructurallyCompared parent | this = parent.getChild(i) |
+    exists(StructurallyCompared parent | this = parent.getChild(i) |
       result = parent.candidateInternal()
     )
   }
@@ -79,7 +83,8 @@ abstract class StructurallyCompared extends ASTNode {
 
   pragma[noinline]
   private ASTNode uncleKind(int kind, int numChildren) {
-    exists(int i | result = getAStructuralUncle(i).getChild(i)) and kindAndArity(result, kind, numChildren)
+    exists(int i | result = getAStructuralUncle(i).getChild(i)) and
+    kindAndArity(result, kind, numChildren)
   }
 
   /**
@@ -89,20 +94,24 @@ abstract class StructurallyCompared extends ASTNode {
    */
   private predicate sameInternal(ASTNode that) {
     that = this.candidateInternal() and
-
-    /* Check that `this` and `that` bind to the same variable, if any.
+    /*
+     * Check that `this` and `that` bind to the same variable, if any.
      * Note that it suffices to check the implication one way: since we restrict
      * `this` and `that` to be of the same kind and in the same syntactic
-     * position, either both bind to a variable or neither does. */
+     * position, either both bind to a variable or neither does.
+     */
+
     (bind(this, _) implies exists(Variable v | bind(this, v) and bind(that, v))) and
+    /*
+     * Check that `this` and `that` have the same constant value, if any.
+     * As above, it suffices to check one implication.
+     */
 
-    /* Check that `this` and `that` have the same constant value, if any.
-     * As above, it suffices to check one implication. */
     (exists(valueOf(this)) implies valueOf(this) = valueOf(that)) and
-
-    forall (StructurallyCompared child, int i |
-       child = getChild(i) and that = child.getAStructuralUncle(i) |
-       child.sameInternal(that.getChild(i))
+    forall(StructurallyCompared child, int i |
+      child = getChild(i) and that = child.getAStructuralUncle(i)
+    |
+      child.sameInternal(that.getChild(i))
     )
   }
 
@@ -121,9 +130,7 @@ abstract class StructurallyCompared extends ASTNode {
  * A child of a node that is subject to structural comparison.
  */
 private class InternalCandidate extends StructurallyCompared {
-  InternalCandidate() {
-    exists (getParent().(StructurallyCompared).candidateInternal())
-  }
+  InternalCandidate() { exists(getParent().(StructurallyCompared).candidateInternal()) }
 
   override ASTNode candidate() { none() }
 }
@@ -133,13 +140,9 @@ private class InternalCandidate extends StructurallyCompared {
  * structurally identical.
  */
 class OperandComparedToSelf extends StructurallyCompared {
-  OperandComparedToSelf() {
-    exists (Comparison comp | this = comp.getLeftOperand())
-  }
+  OperandComparedToSelf() { exists(Comparison comp | this = comp.getLeftOperand()) }
 
-  override Expr candidate() {
-    result = getParent().(Comparison).getRightOperand()
-  }
+  override Expr candidate() { result = getParent().(Comparison).getRightOperand() }
 }
 
 /**
@@ -147,13 +150,14 @@ class OperandComparedToSelf extends StructurallyCompared {
  * structurally identical.
  */
 class SelfAssignment extends StructurallyCompared {
-  SelfAssignment() {
-    exists (AssignExpr assgn | this = assgn.getLhs())
-  }
+  SelfAssignment() { exists(AssignExpr assgn | this = assgn.getLhs()) }
 
-  override Expr candidate() {
-    result = getParent().(AssignExpr).getRhs()
-  }
+  override Expr candidate() { result = getAssignment().getRhs() }
+
+  /**
+   * Gets the enclosing assignment.
+   */
+  AssignExpr getAssignment() { result.getLhs() = this }
 }
 
 /**
@@ -162,14 +166,14 @@ class SelfAssignment extends StructurallyCompared {
  */
 class DuplicatePropertyInitDetector extends StructurallyCompared {
   DuplicatePropertyInitDetector() {
-    exists (ObjectExpr oe, string p |
+    exists(ObjectExpr oe, string p |
       this = oe.getPropertyByName(p).getInit() and
       oe.getPropertyByName(p) != oe.getPropertyByName(p)
     )
   }
 
   override Expr candidate() {
-    exists (ObjectExpr oe, string p |
+    exists(ObjectExpr oe, string p |
       this = oe.getPropertyByName(p).getInit() and
       result = oe.getPropertyByName(p).getInit() and
       result != this

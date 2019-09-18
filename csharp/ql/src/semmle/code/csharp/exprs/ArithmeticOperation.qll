@@ -3,6 +3,7 @@
  *
  * All arithmetic operations have the common base class `ArithmeticOperation`.
  */
+
 import Expr
 
 /**
@@ -71,14 +72,14 @@ class PreDecrExpr extends DecrementOperation, @pre_decr_expr { }
  * A postfix increment operation, for example `x++`.
  */
 class PostIncrExpr extends IncrementOperation, @post_incr_expr {
-  override string toString() { result = "..." + this.getOperator()  }
+  override string toString() { result = "..." + this.getOperator() }
 }
 
 /**
  * A postfix decrement operation, for example `x--`.
  */
 class PostDecrExpr extends DecrementOperation, @post_decr_expr {
-  override string toString() { result = "..." + this.getOperator()  }
+  override string toString() { result = "..." + this.getOperator() }
 }
 
 /**
@@ -131,4 +132,3 @@ class DivExpr extends BinaryArithmeticOperation, @div_expr {
 class RemExpr extends BinaryArithmeticOperation, @rem_expr {
   override string getOperator() { result = "%" }
 }
-

@@ -12,6 +12,7 @@ import semmle.code.csharp.Generics
 import semmle.code.csharp.Location
 import semmle.code.csharp.Member
 import semmle.code.csharp.Namespace
+import semmle.code.csharp.AnnotatedType
 import semmle.code.csharp.Property
 import semmle.code.csharp.Stmt
 import semmle.code.csharp.Type
@@ -35,13 +36,10 @@ import semmle.code.csharp.dataflow.TaintTracking
 import semmle.code.csharp.dataflow.SSA
 
 /** DEPRECATED: Use `ControlFlow` instead. */
-deprecated
-module ControlFlowGraph {
+deprecated module ControlFlowGraph {
   import semmle.code.csharp.controlflow.ControlFlowGraph
   import ControlFlow
 }
 
 /** Whether the source was extracted without a build command. */
-predicate extractionIsStandalone() {
-  exists(SourceFile f | f.extractedStandalone())
-}
+predicate extractionIsStandalone() { exists(SourceFile f | f.extractedStandalone()) }

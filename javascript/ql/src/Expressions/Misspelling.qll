@@ -3,7 +3,6 @@
  */
 
 import javascript
-
 // import typo database (generated from Wikipedia, licensed under CC BY-SA 3.0)
 import TypoDatabase
 
@@ -12,9 +11,12 @@ import TypoDatabase
  * is not interesting enough to flag.
  */
 predicate whitelisted(string wrong, string right) {
-  wrong = "thru" and right = "through" or
-  wrong = "cant" and right = "cannot" or
-  wrong = "inbetween" and right = "between" or
+  wrong = "thru" and right = "through"
+  or
+  wrong = "cant" and right = "cannot"
+  or
+  wrong = "inbetween" and right = "between"
+  or
   wrong = "strat" and right = "start" // often used as abbreviation for "strategy"
 }
 
@@ -24,15 +26,18 @@ predicate whitelisted(string wrong, string right) {
  * of `wrong`, and similarly for `rightstart` and `rightend`.
  */
 cached
-predicate normalized_typos(string wrong, string right,
-    string wrongstart, string wrongend, string rightstart, string rightend) {
+predicate normalized_typos(
+  string wrong, string right, string wrongstart, string wrongend, string rightstart, string rightend
+) {
   typos(wrong, right) and
   not whitelisted(wrong, right) and
   // omit very short identifiers, which are often idiosyncratic abbreviations
   wrong.length() > 3 and
   // record first and last characters
-  wrongstart = wrong.charAt(0) and wrongend = wrong.charAt(wrong.length()-1) and
-  rightstart = right.charAt(0) and rightend = right.charAt(right.length()-1)
+  wrongstart = wrong.charAt(0) and
+  wrongend = wrong.charAt(wrong.length() - 1) and
+  rightstart = right.charAt(0) and
+  rightend = right.charAt(right.length() - 1)
 }
 
 /**
@@ -63,7 +68,7 @@ predicate idPart(Identifier id, string part, int offset) {
 /** An identifier that contains at least one misspelling. */
 private class WrongIdentifier extends Identifier {
   WrongIdentifier() {
-    exists (string wrongPart |
+    exists(string wrongPart |
       idPart(this, wrongPart, _) and
       normalized_typos(wrongPart, _, _, _, _, _)
     )
@@ -73,7 +78,7 @@ private class WrongIdentifier extends Identifier {
 /** A variable whose name contains at least one misspelling. */
 private class WrongVariable extends LocalVariable {
   WrongVariable() {
-    exists (string wrongPart |
+    exists(string wrongPart |
       idPart(this.getADeclaration(), wrongPart, _) and
       normalized_typos(wrongPart, _, _, _, _, _)
     )
@@ -82,12 +87,12 @@ private class WrongVariable extends LocalVariable {
 
 /** Gets the name of identifier `wrong`, with one misspelling corrected. */
 private string replaceATypoAndLowerCase(Identifier wrong) {
-  exists (string wrongPart, string rightName, string rightPart, int offset |
-    idPart(wrong, wrongPart, offset) |
+  exists(string wrongPart, string rightName, string rightPart, int offset |
+    idPart(wrong, wrongPart, offset)
+  |
     normalized_typos(wrongPart, rightPart, _, _, _, _) and
-    rightName = wrong.getName().substring(0, offset)
-              + rightPart
-              + wrong.getName().suffix(offset + wrongPart.length()) and
+    rightName = wrong.getName().substring(0, offset) + rightPart +
+        wrong.getName().suffix(offset + wrongPart.length()) and
     result = rightName.toLowerCase()
   )
 }
@@ -108,7 +113,7 @@ private Identifier idInScopeOfWrongVariable(WrongVariable wrong) {
  * of `lvd` or vice versa.
  */
 predicate misspelledVariableName(GlobalVarAccess gva, VarDecl lvd) {
-  exists (LocalVariable lv | lvd = lv.getADeclaration() |
+  exists(LocalVariable lv | lvd = lv.getADeclaration() |
     lv.getScope() = scopeAroundWrongIdentifier(gva) and
     lv.getName().toLowerCase() = replaceATypoAndLowerCase(gva)
     or

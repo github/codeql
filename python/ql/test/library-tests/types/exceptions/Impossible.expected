@@ -1,0 +1,47 @@
+| 22 | 21 | f2() | Function f5 | normal |
+| 36 | 34 | f7() | Function f8 | normal |
+| 36 | 37 | f7 | ExceptStmt | exceptional |
+| 42 | 44 | f7 | Pass | exceptional |
+| 42 | 44 | f7() | Pass | normal |
+| 49 | 50 | f7 | ExceptStmt | exceptional |
+| 49 | 53 | f7 | Pass | exceptional |
+| 49 | 53 | f7() | Pass | normal |
+| 50 | 53 | ExceptionB | Pass | exceptional |
+| 58 | 59 | f7 | ExceptStmt | exceptional |
+| 58 | 62 | f7 | Return | exceptional |
+| 58 | 62 | f7() | Return | normal |
+| 59 | 62 | ExceptionB | Return | exceptional |
+| 67 | 68 | f7 | ExceptStmt | exceptional |
+| 67 | 71 | f7 | ExceptionC | exceptional |
+| 67 | 71 | f7() | ExceptionC | normal |
+| 68 | 71 | ExceptionB | ExceptionC | exceptional |
+| 81 | 82 | x | ExceptStmt | exceptional |
+| 87 | 88 | x | ExceptStmt | exceptional |
+| 93 | 94 | x | ExceptStmt | exceptional |
+| 99 | 100 | Attribute | ExceptStmt | exceptional |
+| 99 | 100 | x | ExceptStmt | exceptional |
+| 105 | 107 | x | Pass | exceptional |
+| 114 | 112 | f19() | Function f20 | normal |
+| 114 | 115 | f19 | ExceptStmt | exceptional |
+| 120 | 118 | f19() | Function f21 | normal |
+| 120 | 121 | f19 | ExceptStmt | exceptional |
+| 120 | 121 | f19() | ExceptStmt | exceptional |
+| 126 | 128 | f19 | Pass | exceptional |
+| 126 | 128 | f19() | Pass | normal |
+| 132 | 134 | f7 | Try | exceptional |
+| 132 | 134 | f7() | Try | normal |
+| 135 | 138 | x | Pass | exceptional |
+| 136 | 138 | ExceptionC | Pass | exceptional |
+| 136 | 138 | ExceptionC() | Pass | exceptional |
+| 146 | 147 | f7() | Pass | normal |
+| 146 | 150 | f7 | Pass | exceptional |
+| 158 | 159 | f7() | Pass | normal |
+| 158 | 162 | f7 | Try | exceptional |
+| 164 | 169 | x | Pass | exceptional |
+| 166 | 169 | ExceptionC | Pass | exceptional |
+| 166 | 169 | ExceptionC() | Pass | exceptional |
+| 178 | 179 | f7() | Pass | normal |
+| 178 | 181 | f7 | ExceptStmt | exceptional |
+| 189 | 191 | A() | ExceptStmt | exceptional |
+| 196 | 197 | func | ExceptStmt | exceptional |
+| 200 | 201 | func | ExceptStmt | exceptional |

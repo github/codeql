@@ -1,0 +1,1 @@
+| imports_test.py:4:1:4:19 | Import | Module 'test_module2' is imported with both 'import' and 'import from' |

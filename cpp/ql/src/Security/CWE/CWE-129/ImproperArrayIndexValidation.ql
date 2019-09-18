@@ -9,17 +9,18 @@
  * @tags security
  *       external/cwe/cwe-129
  */
+
 import cpp
 import semmle.code.cpp.controlflow.Guards
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.security.TaintTracking
 
 predicate hasUpperBound(VariableAccess offsetExpr) {
-  exists(
-    BasicBlock controlled, LocalScopeVariable offsetVar, SsaDefinition def
-  | controlled.contains(offsetExpr) and
+  exists(BasicBlock controlled, LocalScopeVariable offsetVar, SsaDefinition def |
+    controlled.contains(offsetExpr) and
     linearBoundControls(controlled, def, offsetVar) and
-    offsetExpr = def.getAUse(offsetVar))
+    offsetExpr = def.getAUse(offsetVar)
+  )
 }
 
 pragma[noinline]
@@ -31,10 +32,10 @@ predicate linearBoundControls(BasicBlock controlled, SsaDefinition def, LocalSco
 }
 
 from Expr origin, ArrayExpr arrayExpr, VariableAccess offsetExpr
-where tainted(origin, offsetExpr)
-  and offsetExpr = arrayExpr.getArrayOffset()
-  and not hasUpperBound(offsetExpr)
-select
-  offsetExpr,
+where
+  tainted(origin, offsetExpr) and
+  offsetExpr = arrayExpr.getArrayOffset() and
+  not hasUpperBound(offsetExpr)
+select offsetExpr,
   "$@ flows to here and is used in an array indexing expression, potentially causing an invalid access.",
   origin, "User-provided value"

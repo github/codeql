@@ -1,7 +1,0 @@
-| amd1.js:1:25:1:26 | fs | fs |
-| amd2.js:2:12:2:24 | require('fs') | fs |
-| destructuringRequire.js:1:27:1:45 | require('electron') | electron |
-| instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName | myDefaultImportedModuleInstance |
-| instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName | myNamespaceImportedModuleInstance |
-| instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance |
-| moduleUses.js:1:11:1:24 | require('mod') | mod |

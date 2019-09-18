@@ -8,43 +8,34 @@ import semmle.javascript.GeneratedCode
 /**
  * An Emscripten marker comment.
  */
-abstract class EmscriptenMarkerComment extends GeneratedCodeMarkerComment {
-}
+abstract class EmscriptenMarkerComment extends GeneratedCodeMarkerComment { }
 
 /**
  * An `EMSCRIPTEN_START_ASM` marker comment.
  */
 class EmscriptenStartASMComment extends EmscriptenMarkerComment {
-  EmscriptenStartASMComment() {
-    getText().trim() = "EMSCRIPTEN_START_ASM"
-  }
+  EmscriptenStartASMComment() { getText().trim() = "EMSCRIPTEN_START_ASM" }
 }
 
 /**
  * An `EMSCRIPTEN_START_FUNCS` marker comment.
  */
 class EmscriptenStartFuncsComment extends EmscriptenMarkerComment {
-  EmscriptenStartFuncsComment() {
-    getText().trim() = "EMSCRIPTEN_START_FUNCS"
-  }
+  EmscriptenStartFuncsComment() { getText().trim() = "EMSCRIPTEN_START_FUNCS" }
 }
 
 /**
  * An `EMSCRIPTEN_END_ASM` marker comment.
  */
 class EmscriptenEndASMComment extends EmscriptenMarkerComment {
-  EmscriptenEndASMComment() {
-    getText().trim() = "EMSCRIPTEN_END_ASM"
-  }
+  EmscriptenEndASMComment() { getText().trim() = "EMSCRIPTEN_END_ASM" }
 }
 
 /**
  * An `EMSCRIPTEN_END_FUNCS` marker comment.
  */
 class EmscriptenEndFuncsComment extends EmscriptenMarkerComment {
-  EmscriptenEndFuncsComment() {
-    getText().trim() = "EMSCRIPTEN_END_FUNCS"
-  }
+  EmscriptenEndFuncsComment() { getText().trim() = "EMSCRIPTEN_END_FUNCS" }
 }
 
 /**
@@ -52,7 +43,5 @@ class EmscriptenEndFuncsComment extends EmscriptenMarkerComment {
  * by an Emscripten marker comment.
  */
 class EmscriptenGeneratedToplevel extends TopLevel {
-  EmscriptenGeneratedToplevel() {
-    exists (EmscriptenMarkerComment emc | this = emc.getTopLevel())
-  }
+  EmscriptenGeneratedToplevel() { exists(EmscriptenMarkerComment emc | this = emc.getTopLevel()) }
 }

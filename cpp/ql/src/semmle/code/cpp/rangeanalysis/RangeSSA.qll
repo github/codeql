@@ -26,35 +26,34 @@ import semmle.code.cpp.controlflow.SSAUtils
 private import RangeAnalysisUtils
 
 library class RangeSSA extends SSAHelper {
-    RangeSSA() { this = 1 }
-    
-    /**
-     * Add a phi node on the out-edge of a guard.
-     */
-    override predicate custom_phi_node(LocalScopeVariable v, BasicBlock b) { guard_defn(v.getAnAccess(),_,b,_) }
+  RangeSSA() { this = 1 }
+
+  /**
+   * Add a phi node on the out-edge of a guard.
+   */
+  override predicate custom_phi_node(LocalScopeVariable v, BasicBlock b) {
+    guard_defn(v.getAnAccess(), _, b, _)
+  }
 }
 
 private predicate guard_defn(
   VariableAccess v, ComparisonOperation guard, BasicBlock b, boolean branch
 ) {
-    guardCondition(guard, v, branch)
-    and
-    guardSuccessor(guard, branch, b)
+  guardCondition(guard, v, branch) and
+  guardSuccessor(guard, branch, b)
 }
 
-private predicate guardCondition(
-  ComparisonOperation guard, VariableAccess v, boolean branch
-) {
-  exists (Expr lhs
-  | linearAccess(lhs, v, _, _)
-  | relOpWithSwapAndNegate(guard, lhs, _, _, _, branch) or
-    eqOpWithSwapAndNegate(guard, lhs, _, _, branch))
+private predicate guardCondition(ComparisonOperation guard, VariableAccess v, boolean branch) {
+  exists(Expr lhs | linearAccess(lhs, v, _, _) |
+    relOpWithSwapAndNegate(guard, lhs, _, _, _, branch) or
+    eqOpWithSwapAndNegate(guard, lhs, _, _, branch)
+  )
 }
 
 private predicate guardSuccessor(ComparisonOperation guard, boolean branch, BasicBlock succ) {
-    (branch = true and succ = guard.getATrueSuccessor())
-    or
-    (branch = false and succ = guard.getAFalseSuccessor())
+  branch = true and succ = guard.getATrueSuccessor()
+  or
+  branch = false and succ = guard.getAFalseSuccessor()
 }
 
 /**
@@ -65,111 +64,98 @@ private predicate guardSuccessor(ComparisonOperation guard, boolean branch, Basi
  * nodes.
  */
 class RangeSsaDefinition extends ControlFlowNodeBase {
+  RangeSsaDefinition() { exists(RangeSSA x | x.ssa_defn(_, this, _, _)) }
 
-    RangeSsaDefinition() {
-        exists(RangeSSA x | x.ssa_defn(_, this, _, _))
-    }
+  /**
+   * Gets a variable corresponding to a SSA LocalScopeVariable defined by
+   * this definition.
+   */
+  LocalScopeVariable getAVariable() { exists(RangeSSA x | x.ssa_defn(result, this, _, _)) }
 
-    /**
-     * Gets a variable corresponding to a SSA LocalScopeVariable defined by
-     * this definition.
-     */
-    LocalScopeVariable getAVariable() {
-        exists(RangeSSA x | x.ssa_defn(result, this, _, _))
-    }
+  /**
+   * A string representation of the SSA variable represented by the pair
+   * (this, v).
+   */
+  string toString(LocalScopeVariable v) { exists(RangeSSA x | result = x.toString(this, v)) }
 
-    /**
-     * A string representation of the SSA variable represented by the pair
-     * (this, v).
-     */
-    string toString(LocalScopeVariable v) {
-        exists(RangeSSA x | result = x.toString(this, v))
-    }
+  /** Gets a use of the SSA variable represented by the pair (this, v) */
+  VariableAccess getAUse(LocalScopeVariable v) { exists(RangeSSA x | result = x.getAUse(this, v)) }
 
-    /** Gets a use of the SSA variable represented by the pair (this, v) */
-    VariableAccess getAUse(LocalScopeVariable v) {
-        exists(RangeSSA x | result = x.getAUse(this, v))
-    }
+  /** Gets the control flow node for this definition */
+  ControlFlowNode getDefinition() { result = this }
 
-    /** Gets the control flow node for this definition */
-    ControlFlowNode getDefinition() {
-        result = this
-    }
+  BasicBlock getBasicBlock() { result.contains(getDefinition()) }
 
-    BasicBlock getBasicBlock() {
-        result.contains(getDefinition())
-    }
+  /** Whether this definition is a phi node for variable v */
+  predicate isPhiNode(LocalScopeVariable v) {
+    exists(RangeSSA x | x.phi_node(v, this.(BasicBlock)))
+  }
 
-    /** Whether this definition is a phi node for variable v */
-    predicate isPhiNode(LocalScopeVariable v) {
-        exists(RangeSSA x | x.phi_node(v, (BasicBlock)this))
-    }
+  /**
+   * If this definition is a phi node corresponding to a guard,
+   * then return the variable and the guard.
+   */
+  predicate isGuardPhi(VariableAccess v, ComparisonOperation guard, boolean branch) {
+    guard_defn(v, guard, this, branch)
+  }
 
-    /**
-     * If this definition is a phi node corresponding to a guard,
-     * then return the variable and the guard.
-     */
-    predicate isGuardPhi(VariableAccess v, ComparisonOperation guard, boolean branch) {
-        guard_defn(v, guard, this, branch)
-    }
+  Location getLocation() { result = this.(ControlFlowNode).getLocation() }
 
-    Location getLocation() {
-        result = this.(ControlFlowNode).getLocation()
-    }
+  /** Whether this definition is from a parameter */
+  predicate definedByParameter(Parameter p) { this = p.getFunction().getEntryPoint() }
 
-    /** Whether this definition is from a parameter */
-    predicate definedByParameter(Parameter p) {
-        this = p.getFunction().getEntryPoint()
-    }
+  RangeSsaDefinition getAPhiInput(LocalScopeVariable v) {
+    this.isPhiNode(v) and
+    exists(BasicBlock pred |
+      pred = this.(BasicBlock).getAPredecessor() and
+      result.reachesEndOfBB(v, pred) and
+      // Suppose we have a CFG like this:
+      //
+      //    1:    x_0 = <expr>;
+      //    2:    if (<cond>) {
+      //    3:       if (x_0 > 1) {
+      //    4:          x_1 = phi(x_0);
+      //    5:       }
+      //    6:    }
+      //    7:    x_2 = phi(x_0, x_1);
+      //
+      // The phi nodes on lines 4 and 7 are both guard phi nodes,
+      // because they have an incoming edge from the condition on
+      // line 3. Definition x_0 on line 1 should be considered a
+      // phi-input on line 7, but not on line 4. This is because
+      // the only CFG path from line 1 to line 4 goes through the
+      // condition on line 3, but there is a path from line 1 to
+      // line 7 which does not go through the condition. The logic
+      // below excludes definitions which can only reach guard phi
+      // nodes by going through the corresponding guard.
+      not exists(VariableAccess access |
+        v = access.getTarget() and
+        pred.contains(access) and
+        this.isGuardPhi(access, _, _)
+      )
+    )
+  }
 
-    RangeSsaDefinition getAPhiInput(LocalScopeVariable v) {
-       this.isPhiNode(v)
-       and
-       exists (BasicBlock pred
-       | pred = this.(BasicBlock).getAPredecessor() and
-         result.reachesEndOfBB(v, pred) and
+  /** Gets the expression assigned to this SsaDefinition */
+  Expr getDefiningValue(LocalScopeVariable v) {
+    exists(ControlFlowNode def | def = this.getDefinition() |
+      def = v.getInitializer().getExpr() and def = result
+      or
+      exists(AssignExpr assign |
+        def = assign and
+        assign.getLValue() = v.getAnAccess() and
+        result = assign.getRValue()
+      )
+      or
+      exists(AssignOperation assign |
+        def = assign and
+        assign.getLValue() = v.getAnAccess() and
+        result = assign
+      )
+    )
+  }
 
-         // Suppose we have a CFG like this:
-         //
-         //    1:    x_0 = <expr>;
-         //    2:    if (<cond>) {
-         //    3:       if (x_0 > 1) {
-         //    4:          x_1 = phi(x_0);
-         //    5:       }
-         //    6:    }
-         //    7:    x_2 = phi(x_0, x_1);
-         //
-         // The phi nodes on lines 4 and 7 are both guard phi nodes,
-         // because they have an incoming edge from the condition on
-         // line 3. Definition x_0 on line 1 should be considered a
-         // phi-input on line 7, but not on line 4. This is because
-         // the only CFG path from line 1 to line 4 goes through the
-         // condition on line 3, but there is a path from line 1 to
-         // line 7 which does not go through the condition. The logic
-         // below excludes definitions which can only reach guard phi
-         // nodes by going through the corresponding guard.
-         not exists (VariableAccess access
-         | v = access.getTarget() and
-           pred.contains(access) and
-           this.isGuardPhi(access, _, _)))
-    }
-
-    /** Gets the expression assigned to this SsaDefinition */
-    Expr getDefiningValue(LocalScopeVariable v) {
-        exists(ControlFlowNode def | def = this.getDefinition() |
-               def = v.getInitializer().getExpr() and def = result
-               or
-               exists(AssignExpr assign | def = assign and
-                      assign.getLValue() = v.getAnAccess() and result = assign.getRValue()
-               )
-               or
-               exists(AssignOperation assign | def = assign and
-                      assign.getLValue() = v.getAnAccess() and result = assign
-               )
-         )
-    }
-
-    predicate reachesEndOfBB(LocalScopeVariable v, BasicBlock b) {
-        exists(RangeSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
-    }
+  predicate reachesEndOfBB(LocalScopeVariable v, BasicBlock b) {
+    exists(RangeSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
+  }
 }

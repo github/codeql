@@ -8,6 +8,7 @@
  * @id java/raw-return-type
  * @tags maintainability
  */
+
 import java
 
 from Method m

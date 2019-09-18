@@ -1,0 +1,61 @@
+| 4 | test.py:4:5:4:9 | ControlFlowNode for func1 | store |
+| 7 | test.py:7:5:7:5 | ControlFlowNode for x | aug load |
+| 7 | test.py:7:5:7:5 | ControlFlowNode for x | aug store |
+| 7 | test.py:7:10:7:10 | ControlFlowNode for f | load |
+| 7 | test.py:7:12:7:12 | ControlFlowNode for y | load |
+| 7 | test.py:7:16:7:20 | ControlFlowNode for Tuple | load |
+| 8 | test.py:8:5:8:5 | ControlFlowNode for o | load |
+| 8 | test.py:8:5:8:9 | ControlFlowNode for Attribute | load |
+| 8 | test.py:8:5:8:14 | ControlFlowNode for Attribute | aug load |
+| 8 | test.py:8:5:8:14 | ControlFlowNode for Attribute | aug store |
+| 8 | test.py:8:19:8:19 | ControlFlowNode for f | load |
+| 8 | test.py:8:21:8:21 | ControlFlowNode for y | load |
+| 8 | test.py:8:25:8:29 | ControlFlowNode for Tuple | load |
+| 9 | test.py:9:5:9:5 | ControlFlowNode for s | load |
+| 9 | test.py:9:5:9:17 | ControlFlowNode for Subscript | aug load |
+| 9 | test.py:9:5:9:17 | ControlFlowNode for Subscript | aug store |
+| 9 | test.py:9:7:9:7 | ControlFlowNode for z | load |
+| 9 | test.py:9:7:9:16 | ControlFlowNode for Tuple | load |
+| 9 | test.py:9:22:9:22 | ControlFlowNode for f | load |
+| 9 | test.py:9:24:9:24 | ControlFlowNode for y | load |
+| 9 | test.py:9:28:9:32 | ControlFlowNode for Tuple | load |
+| 10 | test.py:10:12:10:12 | ControlFlowNode for x | load |
+| 13 | test.py:13:5:13:9 | ControlFlowNode for func2 | store |
+| 14 | test.py:14:5:14:5 | ControlFlowNode for s | store |
+| 14 | test.py:14:9:14:12 | ControlFlowNode for None | load |
+| 15 | test.py:15:5:15:5 | ControlFlowNode for o | store |
+| 15 | test.py:15:9:15:12 | ControlFlowNode for None | load |
+| 16 | test.py:16:5:16:5 | ControlFlowNode for x | store |
+| 16 | test.py:16:9:16:12 | ControlFlowNode for None | load |
+| 17 | test.py:17:5:17:5 | ControlFlowNode for y | store |
+| 17 | test.py:17:9:17:12 | ControlFlowNode for None | load |
+| 18 | test.py:18:5:18:5 | ControlFlowNode for z | store |
+| 18 | test.py:18:9:18:12 | ControlFlowNode for None | load |
+| 21 | test.py:21:5:21:5 | ControlFlowNode for x | aug load |
+| 21 | test.py:21:5:21:5 | ControlFlowNode for x | aug store |
+| 21 | test.py:21:10:21:10 | ControlFlowNode for f | load |
+| 21 | test.py:21:12:21:12 | ControlFlowNode for y | load |
+| 21 | test.py:21:16:21:20 | ControlFlowNode for Tuple | load |
+| 22 | test.py:22:5:22:5 | ControlFlowNode for o | load |
+| 22 | test.py:22:5:22:9 | ControlFlowNode for Attribute | load |
+| 22 | test.py:22:5:22:14 | ControlFlowNode for Attribute | aug load |
+| 22 | test.py:22:5:22:14 | ControlFlowNode for Attribute | aug store |
+| 22 | test.py:22:19:22:19 | ControlFlowNode for f | load |
+| 22 | test.py:22:21:22:21 | ControlFlowNode for y | load |
+| 22 | test.py:22:25:22:29 | ControlFlowNode for Tuple | load |
+| 23 | test.py:23:5:23:5 | ControlFlowNode for s | load |
+| 23 | test.py:23:5:23:17 | ControlFlowNode for Subscript | aug load |
+| 23 | test.py:23:5:23:17 | ControlFlowNode for Subscript | aug store |
+| 23 | test.py:23:7:23:7 | ControlFlowNode for z | load |
+| 23 | test.py:23:7:23:16 | ControlFlowNode for Tuple | load |
+| 23 | test.py:23:22:23:22 | ControlFlowNode for f | load |
+| 23 | test.py:23:24:23:24 | ControlFlowNode for y | load |
+| 23 | test.py:23:28:23:32 | ControlFlowNode for Tuple | load |
+| 24 | test.py:24:12:24:12 | ControlFlowNode for x | load |
+| 27 | test.py:27:5:27:8 | ControlFlowNode for comp | store |
+| 28 | test.py:28:5:28:5 | ControlFlowNode for v | aug load |
+| 28 | test.py:28:5:28:5 | ControlFlowNode for v | aug store |
+| 28 | test.py:28:10:28:10 | ControlFlowNode for a | load |
+| 28 | test.py:28:15:28:18 | ControlFlowNode for cond | load |
+| 28 | test.py:28:25:28:25 | ControlFlowNode for b | load |
+| 29 | test.py:29:12:29:12 | ControlFlowNode for v | load |

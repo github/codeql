@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If an object is called, <code>obj()</code>, then that object must be a callable or
+a <code>TypeError</code> will be raised. A callable object is any object whose class defines
+the <code>__call__</code> special method.
+Callable objects include functions, methods, classes.</p>
+
+<p>The <code>callable(object)</code> builtin function determines if an object is callable or not.</p>
+
+<p>
+When the Python interpreter attempts to evaluate a call such as <code>func(arg)</code> it will
+invoke the <code>__call__</code> special method on <code>func</code>.
+Thus, <code>func(arg)</code> is roughly equivalent to <code>type(func).__call__(func, arg)</code>
+which means that the <em>class</em> must define the attribute  <code>__call__</code>,
+merely adding it to the instance is not sufficient.
+</p>
+
+</overview>
+<recommendation>
+<p>Since this problem usually indicates a logical error, it is not possible to give a general recipe for fixing it.</p>
+
+</recommendation>
+<example>
+<p><code>list</code>s are not callable. In this example, an attempt is made to call a <code>list</code>
+which will fail with a  <code>TypeError</code>.
+</p>
+<sample src="NonCallableCalled.py" />
+
+</example>
+<references>
+
+  <li>Python Standard Library: <a href="http://docs.python.org/2/library/functions.html#callable">callable</a>.</li>
+  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#object.__call__">object.__call__</a>.</li>
+
+</references>
+</qhelp>

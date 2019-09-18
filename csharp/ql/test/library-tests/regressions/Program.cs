@@ -119,3 +119,65 @@ class LiteralConversions
         new Point { x=1, y=2 };
     }
 }
+
+class DynamicType
+{
+    void F()
+    {
+        dynamic t = (dynamic)null;
+    }
+}
+
+class LocalVariableTags
+{
+    Func<int, int> F = x => { int y=x; return y; };
+
+    private static Func<object, string, object> _getter => (o, n) =>
+    {
+         object x = o;
+         return x;
+    };
+}
+
+partial class C1<T> where T: DynamicType
+{
+}
+
+partial class C1<T> where T: DynamicType
+{
+}
+
+namespace NoPia
+{
+    class EmbeddedTypesManager<
+        TEmbeddedTypesManager,
+        TEmbeddedType
+        >
+        where TEmbeddedTypesManager : EmbeddedTypesManager<TEmbeddedTypesManager, TEmbeddedType>
+        where TEmbeddedType : EmbeddedTypesManager<TEmbeddedTypesManager, TEmbeddedType>
+    {
+    }
+}
+
+unsafe class ArrayTypesTest
+{
+    int*[][] field;
+}
+
+class NameofNamespace
+{
+    string s = nameof(System) + nameof(System.Threading.Tasks);
+}
+
+class UsingDiscard
+{
+    void F()
+    {
+        foreach(var _ in new IDisposable[] { })
+            using(_)
+            {
+            }
+    }
+}
+
+// semmle-extractor-options: /r:System.Dynamic.Runtime.dll

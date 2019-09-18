@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    Sending local file system data to a remote URL without further
+    validation risks uncontrolled information exposure, and may be
+    an indication of malicious backdoor code that has been
+    implanted into an otherwise trusted code base.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    Examine the highlighted code closely to ensure that it is
+    behaving as intended.
+  </p>
+</recommendation>
+
+<example>
+  <p>
+    The following example is adapted from backdoor code that was identified in two
+    popular npm packages. It reads the contents of the <code>.npmrc</code> file
+    (which may contain secret npm tokens) and sends it to a remote server by
+    embedding it into an HTTP request header.
+  </p>
+  <sample src="examples/FileAccessToHttp.js"/>
+</example>
+
+<references>
+  <li>ESLint Blog: <a href="https://eslint.org/blog/2018/07/postmortem-for-malicious-package-publishes">Postmortem for Malicious Packages Published on July 12th, 2018</a>.</li>
+  <li>OWASP: <a href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">Sensitive Data Exposure</a>.</li>
+  <li>OWASP: <a href="https://www.owasp.org/index.php/Trojan_Horse">Trojan Horse</a>.</li>
+</references>
+</qhelp>

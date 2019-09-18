@@ -10,6 +10,7 @@
  *       correctness
  *       external/cwe/cwe-480
  */
+
 import cpp
 
 /**
@@ -21,12 +22,10 @@ float candidateExpr(Expr e) {
     e = blo.getAnOperand() and
     e.isConstant() and
     result = e.getValue().toFloat() and
-
     // exclusions
     not e.isFromTemplateInstantiation(_) and
     not e instanceof SizeofOperator and
     not inMacroExpansion(blo) and
-
     // exclude values 0 and 1
     result != 0.0 and
     result != 1.0
@@ -36,15 +35,21 @@ float candidateExpr(Expr e) {
 from Expr e, float v, int l, string msg
 where
   v = candidateExpr(e) and
-
   // before reporting an error, we check that the candidate is either a hex/octal
-  // literal, or its value is a power of two. 
+  // literal, or its value is a power of two.
   l = v.log2().floor() and
-  if v = 2.pow(l) then
-    msg = "Operand to short-circuiting operator looks like a flag ("+v+" = 2 ^ "+l+"), may be typo for bitwise operator."
-  else exists(string kind |
-    ((e instanceof HexLiteral and kind = "a hexadecimal literal") or
-     (e instanceof OctalLiteral and kind = "an octal literal")) and
-    msg = "Operand to short-circuiting operator is " + kind + ", and therefore likely a flag; a bitwise operator may be intended."
-  )
+  if v = 2.pow(l)
+  then
+    msg = "Operand to short-circuiting operator looks like a flag (" + v + " = 2 ^ " + l +
+        "), may be typo for bitwise operator."
+  else
+    exists(string kind |
+      (
+        e instanceof HexLiteral and kind = "a hexadecimal literal"
+        or
+        e instanceof OctalLiteral and kind = "an octal literal"
+      ) and
+      msg = "Operand to short-circuiting operator is " + kind +
+          ", and therefore likely a flag; a bitwise operator may be intended."
+    )
 select e, msg

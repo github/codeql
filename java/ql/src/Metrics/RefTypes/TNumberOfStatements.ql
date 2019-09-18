@@ -8,10 +8,11 @@
  * @id java/statements-per-type
  * @tags maintainability
  */
+
 import java
 
 from RefType t, int n
-where t.fromSource() and
-      n = count(Stmt s | s.getEnclosingCallable() = t.getACallable())
-select t, n
-order by n desc
+where
+  t.fromSource() and
+  n = count(Stmt s | s.getEnclosingCallable() = t.getACallable())
+select t, n order by n desc

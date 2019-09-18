@@ -31,12 +31,12 @@ import javascript
  */
 predicate isBrowserifyBundle(ObjectExpr oe) {
   // ensure that there is at least one property
-  forex (Property p | p = oe.getAProperty() |
+  forex(Property p | p = oe.getAProperty() |
     // and each property looks like a packed module
     isBrowserifyBundledModule(p)
   ) and
   // the whole object must be passed to the module loader function
-  exists (CallExpr ce | ce.getCallee().stripParens() instanceof Function |
+  exists(CallExpr ce | ce.getCallee().getUnderlyingValue() instanceof Function |
     // the module loader function always has three arguments
     ce.getNumArgument() = 3 and
     // the first of which is the bundle
@@ -60,7 +60,7 @@ private predicate isBrowserifyBundledModule(Property p) {
   // the key must be a module id
   isBrowserifyModuleId(p.(ValueProperty).getNameExpr()) and
   // the value must look like a bundled up module
-  exists (ArrayExpr ae | ae = p.getInit() |
+  exists(ArrayExpr ae | ae = p.getInit() |
     // first element must be a function (known as the module factory function)
     isBrowserifyModuleFactoryFunction(ae.getElement(0)) and
     // second element must be an object literal listing dependencies
@@ -80,7 +80,7 @@ private predicate isBrowserifyBundledModule(Property p) {
  * might well change in future, so we don't rely on it
  */
 private predicate isBrowserifyModuleFactoryFunction(FunctionExpr factory) {
-  forex (Parameter parm | parm = factory.getAParameter() |
+  forex(Parameter parm | parm = factory.getAParameter() |
     parm.getName().regexpMatch("require|module|exports|_dereq_")
   )
 }
@@ -90,7 +90,7 @@ private predicate isBrowserifyModuleFactoryFunction(FunctionExpr factory) {
  */
 private predicate isBrowserifyDependencyMap(ObjectExpr deps) {
   // there may be no dependencies, hence `forall` instead of `forex`
-  forall (Property dep | dep = deps.getAProperty() |
+  forall(Property dep | dep = deps.getAProperty() |
     // each key must be a string literal
     dep.(ValueProperty).getNameExpr() instanceof ConstantString and
     // and each value must be a module id
@@ -107,8 +107,8 @@ private predicate isBrowserifyDependencyMap(ObjectExpr deps) {
  * or `webpack_module_template_argument`.
  */
 private predicate isWebpackModule(FunctionExpr m) {
-  forex (Parameter parm | parm = m.getAParameter() |
-    exists (string name | name = parm.getName() |
+  forex(Parameter parm | parm = m.getAParameter() |
+    exists(string name | name = parm.getName() |
       name.regexpMatch("module|exports|.*webpack_require.*|.*webpack_module_template_argument.*")
     )
   )
@@ -140,25 +140,22 @@ private predicate isWebpackModule(FunctionExpr m) {
  */
 predicate isWebpackBundle(ArrayExpr ae) {
   // ensure that there is at least one bundled module
-  isWebpackModule(ae.getAnElement().stripParens())
-  and
+  isWebpackModule(ae.getAnElement().getUnderlyingValue()) and
   // furthermore, every element is either
-  forall (Expr elt | elt = ae.getAnElement().stripParens() |
+  forall(Expr elt | elt = ae.getAnElement().getUnderlyingValue() |
     // (1) a module
     isWebpackModule(elt)
     or
     // (2) a module template instantiation
-    exists (ArrayExpr inner | inner = elt |
-      forex (Expr innerElt | innerElt = inner.getAnElement() |
-        innerElt instanceof NumberLiteral
-      )
-    ) or
+    exists(ArrayExpr inner | inner = elt |
+      forex(Expr innerElt | innerElt = inner.getAnElement() | innerElt instanceof NumberLiteral)
+    )
+    or
     // (3) a module reference
     elt instanceof NumberLiteral
-  )
-  and
+  ) and
   // the whole array must be passed to a module loader function
-  exists (CallExpr ce | ce.getCallee().stripParens() instanceof Function |
+  exists(CallExpr ce | ce.getCallee().getUnderlyingValue() instanceof Function |
     // which is the bundle
     ce.getArgument(0) = ae
   )
@@ -180,11 +177,7 @@ predicate isMultiPartBundle(TopLevel tl) {
  * A comment that starts with '!'. Minifiers avoid removing such comments.
  */
 class ExclamationPointComment extends Comment {
-
-  ExclamationPointComment() {
-    getLine(0).matches("!%")
-  }
-
+  ExclamationPointComment() { getLine(0).matches("!%") }
 }
 
 /**
@@ -192,15 +185,14 @@ class ExclamationPointComment extends Comment {
  */
 Comment getExclamationPointCommentInRun(ExclamationPointComment head) {
   exists(File f |
-    exists (int n |
+    exists(int n |
       head.onLines(f, n, _) and
-      not exists (ExclamationPointComment d |
-        d.onLines(f, _, n - 1)
-      )
+      not exists(ExclamationPointComment d | d.onLines(f, _, n - 1))
     ) and
-    ( result = head
+    (
+      result = head
       or
-      exists (ExclamationPointComment prev, int n |
+      exists(ExclamationPointComment prev, int n |
         prev = getExclamationPointCommentInRun(head) and
         prev.onLines(f, _, n) and
         result.onLines(f, n + 1, _)
@@ -222,29 +214,32 @@ predicate isMultiLicenseBundle(TopLevel tl) {
     )
   ) > 1
   or
-  // case: ordinary block comments with "@license" lines
+  // case: ordinary block comments lines that start with a license
   count(BlockComment head |
     head.getTopLevel() = tl and
-    head.getLine(_).regexpMatch("(?i) *\\* @license .*")
+    head
+        .getLine(_)
+        .regexpMatch("(?i)[\\s*]*(@license\\b.*|The [a-z0-9-]+ License (\\([a-z0-9-]+\\))?\\s*)")
   ) > 1
 }
 
 /**
  * Holds if this is a bundle with a "bundle" directive.
  */
-predicate isDirectiveBundle(TopLevel tl) {
-  exists (BundleDirective d | d.getTopLevel() = tl)
-}
+predicate isDirectiveBundle(TopLevel tl) { exists(BundleDirective d | d.getTopLevel() = tl) }
 
 /**
  * Holds if toplevel `tl` contains code that looks like the output of a module bundler.
  */
 predicate isBundle(TopLevel tl) {
-  exists (Expr e | e.getTopLevel() = tl |
+  exists(Expr e | e.getTopLevel() = tl |
     isBrowserifyBundle(e) or
     isWebpackBundle(e)
-  ) or
-  isMultiPartBundle(tl) or
-  isMultiLicenseBundle(tl) or
+  )
+  or
+  isMultiPartBundle(tl)
+  or
+  isMultiLicenseBundle(tl)
+  or
   isDirectiveBundle(tl)
 }

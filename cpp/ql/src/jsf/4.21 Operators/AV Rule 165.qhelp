@@ -5,8 +5,12 @@
 
 
 <overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="cpp/jsfNote.qhelp" />
+
 <p>
-This rule finds unsigned values that are being negated. Behavior is undefined in such cases.
+This query finds unsigned values that are being negated. Behavior is undefined in such cases.
 Negating integer values produces the two's complement of that number, which cannot represent negative
 values of large unsigned values (values where the sign bit is used) and are most likely to be interpreted 
 as a smaller positive integer instead.

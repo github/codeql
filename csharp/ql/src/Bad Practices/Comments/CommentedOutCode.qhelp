@@ -2,23 +2,6 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
-<overview>
-<p>
-Commented-out code is distracting and confusing for developers who read the surrounding code,
-and its significance is often unclear. It should therefore be avoided.
-</p>
-
-</overview>
-<recommendation>
-
-<p>
-Remove the commented-out code, or reinstate it if necessary.
-</p>
-
-</recommendation>
-<references>
-
-<li>High Integrity C++ Coding Standard: <a href="http://www.codingstandard.com/rule/2-3-2-do-not-comment-out-code/">2.3.2 Do not comment out code</a>.</li>
-
-</references>
+  <include src="CommentedOutCodeQuery.qhelp" />
+  <include src="CommentedOutCodeReferences.qhelp" />
 </qhelp>

@@ -5,7 +5,9 @@
  * @id cpp/architecture/cyclic-namespaces
  * @graph.layout hierarchical
  * @tags maintainability
+ *       modularity
  */
+
 import cpp
 
 from MetricNamespace a, MetricNamespace b

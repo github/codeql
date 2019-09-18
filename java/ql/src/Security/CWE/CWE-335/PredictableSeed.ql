@@ -7,6 +7,7 @@
  * @id java/predictable-seed
  * @tags security
  */
+
 import java
 import semmle.code.java.security.Random
 
@@ -14,5 +15,4 @@ from GetRandomData da, RValue use, PredictableSeedExpr source
 where
   da.getQualifier() = use and
   unsafelySeeded(use, source)
-select da, "Usage of a SecureRandom number generator seeded with a $@.",
-  source, "predictable value"
+select da, "Usage of a SecureRandom number generator seeded with a $@.", source, "predictable value"

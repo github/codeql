@@ -1,6 +1,5 @@
 /**
- * Provides classes and predicates for working with C/C++/ObjC/ObjC++
- * code.
+ * Provides classes and predicates for working with C/C++ code.
  *
  * Where the documentation refers to the standards, it gives
  * references to the freely-available drafts.
@@ -17,7 +16,6 @@
 import semmle.code.cpp.File
 import semmle.code.cpp.Linkage
 import semmle.code.cpp.Location
-
 import semmle.code.cpp.Compilation
 import semmle.code.cpp.Element
 import semmle.code.cpp.Namespace
@@ -37,9 +35,7 @@ import semmle.code.cpp.Function
 import semmle.code.cpp.Parameter
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Initializer
-
 import semmle.code.cpp.FriendDecl
-
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.exprs.ArithmeticOperation
 import semmle.code.cpp.exprs.BitwiseOperation
@@ -52,15 +48,12 @@ import semmle.code.cpp.exprs.Call
 import semmle.code.cpp.exprs.Lambda
 import semmle.code.cpp.exprs.Literal
 import semmle.code.cpp.exprs.BuiltInOperations
-
 import semmle.code.cpp.stmts.Stmt
 import semmle.code.cpp.stmts.Block
-
 import semmle.code.cpp.metrics.MetricNamespace
 import semmle.code.cpp.metrics.MetricClass
 import semmle.code.cpp.metrics.MetricFile
 import semmle.code.cpp.metrics.MetricFunction
-
 import semmle.code.cpp.commons.CommonType
 import semmle.code.cpp.commons.Printf
 import semmle.code.cpp.commons.VoidContext
@@ -68,22 +61,13 @@ import semmle.code.cpp.commons.NULL
 import semmle.code.cpp.commons.PolymorphicClass
 import semmle.code.cpp.commons.Alloc
 import semmle.code.cpp.commons.StructLikeClass
-
 import semmle.code.cpp.controlflow.ControlFlowGraph
-
 import semmle.code.cpp.XML
-
 import semmle.code.cpp.Diagnostics
-
 import semmle.code.cpp.Comments
 import semmle.code.cpp.Preprocessor
-
 import semmle.code.cpp.Iteration
-
 import semmle.code.cpp.NameQualifiers
-
 import semmle.code.cpp.ObjectiveC
 import semmle.code.cpp.exprs.ObjectiveC
-
 import DefaultOptions
-

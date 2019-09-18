@@ -7,17 +7,17 @@ import javascript
 /** Holds if an initialization of xUnit.js is detected. */
 private predicate xUnitDetected() {
   // look for `Function.RegisterNamespace("xUnit.js");`
-  exists (MethodCallExpr mc |
+  exists(MethodCallExpr mc |
     mc.getParent() instanceof ExprStmt and
     mc = DataFlow::globalVarRef("Function").getAMemberCall("RegisterNamespace").asExpr() and
     mc.getNumArgument() = 1 and
-    mc.getArgument(0).(ConstantString).getStringValue() = "xUnit.js"
+    mc.getArgument(0).getStringValue() = "xUnit.js"
   )
 }
 
 /** Holds if `e` looks like an xUnit.js attribute, possibly with arguments. */
 private predicate possiblyAttribute(Expr e, string name) {
-  exists (Identifier id | id = e or id = e.(CallExpr).getCallee() |
+  exists(Identifier id | id = e or id = e.(CallExpr).getCallee() |
     name = id.getName() and
     name.regexpMatch("Async|Data|Fact|Fixture|Import|ImportJson|Skip|Trait")
   )
@@ -42,9 +42,9 @@ abstract private class BracketedListOfExpressions extends Expr {
 /**
  * An array expression viewed as a bracketed list of expressions.
  */
-private class ArrayExprIsABracketedListOfExpressions extends
-    ArrayExpr, BracketedListOfExpressions {
+private class ArrayExprIsABracketedListOfExpressions extends ArrayExpr, BracketedListOfExpressions {
   override predicate isImpure() { ArrayExpr.super.isImpure() }
+
   /** Gets the `i`th element of this array literal. */
   override Expr getElement(int i) { result = ArrayExpr.super.getElement(i) }
 }
@@ -59,7 +59,7 @@ private class ArrayExprIsABracketedListOfExpressions extends
  */
 private class IndexExprIndexIsBracketedListOfExpressions extends BracketedListOfExpressions {
   IndexExprIndexIsBracketedListOfExpressions() {
-    exists (IndexExpr idx, Expr base |
+    exists(IndexExpr idx, Expr base |
       base = idx.getBase() and
       this = idx.getIndex() and
       // restrict to case where previous expression is also bracketed
@@ -68,8 +68,9 @@ private class IndexExprIndexIsBracketedListOfExpressions extends BracketedListOf
   }
 
   override Expr getElement(int i) {
-    result = this.(SeqExpr).getChildExpr(i) or
-    not this instanceof SeqExpr and i  = 0 and result = this
+    result = this.(SeqExpr).getChildExpr(i)
+    or
+    not this instanceof SeqExpr and i = 0 and result = this
   }
 
   override Token getFirstToken() {
@@ -92,13 +93,12 @@ private class IndexExprIndexIsBracketedListOfExpressions extends BracketedListOf
  */
 private predicate annotationTarget(BracketedListOfExpressions ann, XUnitTarget trg) {
   // every element looks like an attribute
-  forex (Expr e | e = ann.getElement(_) | possiblyAttribute(e, _)) and
+  forex(Expr e | e = ann.getElement(_) | possiblyAttribute(e, _)) and
   // followed directly either by a target or by another annotation
-  exists (Token next | next = ann.getLastToken().getNextToken() |
+  exists(Token next | next = ann.getLastToken().getNextToken() |
     trg.getFirstToken() = next
     or
-    exists (BracketedListOfExpressions ann2 |
-      ann2.getFirstToken() = next |
+    exists(BracketedListOfExpressions ann2 | ann2.getFirstToken() = next |
       annotationTarget(ann2, trg)
     )
   )
@@ -115,37 +115,32 @@ class XUnitAnnotation extends Expr {
   }
 
   /** Gets the declaration or definition to which this annotation belongs. */
-  XUnitTarget getTarget() {
-    annotationTarget(this, result)
-  }
+  XUnitTarget getTarget() { annotationTarget(this, result) }
 
   /** Gets the `i`th attribute of this annotation. */
-  Expr getAttribute(int i) {
-    result = this.(BracketedListOfExpressions).getElement(i)
-  }
+  Expr getAttribute(int i) { result = this.(BracketedListOfExpressions).getElement(i) }
 
   /** Gets an attribute of this annotation. */
-  Expr getAnAttribute() {
-    result = getAttribute(_)
-  }
+  Expr getAnAttribute() { result = getAttribute(_) }
 
   /** Gets the number of attributes of this annotation. */
-  int getNumAttribute() {
-    result = strictcount(getAnAttribute())
-  }
+  int getNumAttribute() { result = strictcount(getAnAttribute()) }
 
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     // extend location to cover brackets
-    exists (Location l1, Location l2 |
+    exists(Location l1, Location l2 |
       l1 = getFirstToken().getLocation() and
-      l2 = getLastToken().getLocation() |
+      l2 = getLastToken().getLocation()
+    |
       filepath = l1.getFile().getAbsolutePath() and
       startline = l1.getStartLine() and
       startcolumn = l1.getStartColumn() and
@@ -167,38 +162,26 @@ class XUnitTarget extends Stmt {
   }
 
   /** Gets an annotation of which this is the target, if any. */
-  XUnitAnnotation getAnAnnotation() {
-    this = result.getTarget()
-  }
+  XUnitAnnotation getAnAnnotation() { this = result.getTarget() }
 }
 
 /**
  * An xUnit.js attribute appearing in an annotation.
  */
 class XUnitAttribute extends Expr {
-  XUnitAttribute() {
-    exists (XUnitAnnotation ann | this = ann.getAnAttribute())
-  }
+  XUnitAttribute() { exists(XUnitAnnotation ann | this = ann.getAnAttribute()) }
 
   /** Gets the name of this attribute. */
-  string getName() {
-    possiblyAttribute(this, result)
-  }
+  string getName() { possiblyAttribute(this, result) }
 
   /** Gets the `i`th parameter of this attribute. */
-  Expr getParameter(int i) {
-    result = this.(CallExpr).getArgument(i)
-  }
+  Expr getParameter(int i) { result = this.(CallExpr).getArgument(i) }
 
   /** Gets a parameter of this attribute. */
-  Expr getAParameter() {
-    result = getParameter(_)
-  }
+  Expr getAParameter() { result = getParameter(_) }
 
   /** Gets the number of parameters of this attribute. */
-  int getNumParameter() {
-    result = count(getAParameter())
-  }
+  int getNumParameter() { result = count(getAParameter()) }
 }
 
 /**
@@ -206,7 +189,7 @@ class XUnitAttribute extends Expr {
  */
 private class XUnitAnnotatedFunction extends Function {
   XUnitAnnotatedFunction() {
-    exists (XUnitTarget target | exists(target.getAnAnnotation()) |
+    exists(XUnitTarget target | exists(target.getAnAnnotation()) |
       this = target or
       this = target.(VarDeclStmt).getADecl().getInit() or
       this = target.(ExprStmt).getExpr().(AssignExpr).getRhs()
@@ -224,34 +207,26 @@ private class XUnitAnnotatedFunction extends Function {
  * An xUnit.js `Fixture` annotation.
  */
 class XUnitFixtureAnnotation extends XUnitAnnotation {
-  XUnitFixtureAnnotation() {
-    getAnAttribute().accessesGlobal("Fixture")
-  }
+  XUnitFixtureAnnotation() { getAnAttribute().accessesGlobal("Fixture") }
 }
 
 /**
  * An xUnit.js fixture.
  */
 class XUnitFixture extends XUnitAnnotatedFunction {
-  XUnitFixture() {
-    getAnAnnotation() instanceof XUnitFixtureAnnotation
-  }
+  XUnitFixture() { getAnAnnotation() instanceof XUnitFixtureAnnotation }
 }
 
 /**
  * An xUnit.js `Fact` annotation.
  */
 class XUnitFactAnnotation extends XUnitAnnotation {
-  XUnitFactAnnotation() {
-    getAnAttribute().accessesGlobal("Fact")
-  }
+  XUnitFactAnnotation() { getAnAttribute().accessesGlobal("Fact") }
 }
 
 /**
  * An xUnit.js fact.
  */
 class XUnitFact extends XUnitAnnotatedFunction {
-  XUnitFact() {
-    getAnAnnotation() instanceof XUnitFactAnnotation
-  }
+  XUnitFact() { getAnAnnotation() instanceof XUnitFactAnnotation }
 }

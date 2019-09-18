@@ -4,6 +4,10 @@
  * @kind problem
  * @id cpp/power-of-10/use-of-jmp
  * @problem.severity warning
+ * @tags correctness
+ *       portability
+ *       readability
+ *       external/powerof10
  */
 
 import cpp
@@ -11,8 +15,11 @@ import cpp
 class ForbiddenFunction extends Function {
   ForbiddenFunction() {
     exists(string name | name = this.getName() |
-        name = "setjmp" or name = "longjmp" or
-        name = "sigsetjmp" or name = "siglongjmp")
+      name = "setjmp" or
+      name = "longjmp" or
+      name = "sigsetjmp" or
+      name = "siglongjmp"
+    )
   }
 }
 

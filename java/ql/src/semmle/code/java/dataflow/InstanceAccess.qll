@@ -2,6 +2,7 @@
  * Provides classes and predicates for reasoning about explicit and implicit
  * instance accesses.
  */
+
 import java
 
 /**
@@ -35,10 +36,9 @@ private predicate implicitSetEnclosingInstanceToThis(ConstructorCall cc) {
  */
 private RefType getEnclosing(InnerClass ic, RefType t) {
   exists(RefType enclosing | enclosing = ic.getEnclosingType() |
-    if enclosing.getASourceSupertype*() = t then
-      result = enclosing
-    else
-      result = getEnclosing(enclosing, t)
+    if enclosing.getASourceSupertype*() = t
+    then result = enclosing
+    else result = getEnclosing(enclosing, t)
   )
 }
 
@@ -56,9 +56,14 @@ private predicate implicitEnclosingThisCopy(ConstructorCall cc, RefType t1, RefT
  * Holds if an enclosing instance of the form `t.this` is accessed by `e`.
  */
 private predicate enclosingInstanceAccess(ExprParent e, RefType t) {
-  e.(InstanceAccess).isEnclosingInstanceAccess(t) or
-  exists(MethodAccess ma | ma.isEnclosingMethodAccess(t) and ma = e and not exists(ma.getQualifier())) or
-  exists(FieldAccess fa | fa.isEnclosingFieldAccess(t) and fa = e and not exists(fa.getQualifier())) or
+  e.(InstanceAccess).isEnclosingInstanceAccess(t)
+  or
+  exists(MethodAccess ma |
+    ma.isEnclosingMethodAccess(t) and ma = e and not exists(ma.getQualifier())
+  )
+  or
+  exists(FieldAccess fa | fa.isEnclosingFieldAccess(t) and fa = e and not exists(fa.getQualifier()))
+  or
   implicitEnclosingThisCopy(e, t, _)
 }
 
@@ -70,7 +75,9 @@ private predicate enclosingInstanceAccess(ExprParent e, RefType t) {
 private predicate derivedInstanceAccess(ExprParent e, int i, RefType t1, RefType t2) {
   enclosingInstanceAccess(e, t2) and
   i = 0 and
-  exists(Callable c | c = e.(Expr).getEnclosingCallable() or c = e.(Stmt).getEnclosingCallable() | t1 = c.getDeclaringType())
+  exists(Callable c | c = e.(Expr).getEnclosingCallable() or c = e.(Stmt).getEnclosingCallable() |
+    t1 = c.getDeclaringType()
+  )
   or
   exists(InnerClass ic |
     derivedInstanceAccess(e, i - 1, ic, t2) and
@@ -82,17 +89,15 @@ private predicate derivedInstanceAccess(ExprParent e, int i, RefType t1, RefType
 cached
 private newtype TInstanceAccessExt =
   TExplicitInstanceAccess(InstanceAccess ia) or
-  TThisQualifier(FieldAccess fa) {
-    fa.isOwnFieldAccess() and not exists(fa.getQualifier())
-  } or
+  TThisQualifier(FieldAccess fa) { fa.isOwnFieldAccess() and not exists(fa.getQualifier()) } or
   TThisArgument(Call c) {
-    c instanceof ThisConstructorInvocationStmt or
-    c instanceof SuperConstructorInvocationStmt or
+    c instanceof ThisConstructorInvocationStmt
+    or
+    c instanceof SuperConstructorInvocationStmt
+    or
     c.(MethodAccess).isOwnMethodAccess() and not exists(c.getQualifier())
   } or
-  TThisEnclosingInstanceCapture(ConstructorCall cc) {
-    implicitSetEnclosingInstanceToThis(cc)
-  } or
+  TThisEnclosingInstanceCapture(ConstructorCall cc) { implicitSetEnclosingInstanceToThis(cc) } or
   TEnclosingInstanceAccess(ExprParent e, RefType t) {
     enclosingInstanceAccess(e, t) and not e instanceof InstanceAccess
   } or
@@ -125,23 +130,27 @@ class InstanceAccessExt extends TInstanceAccessExt {
   private string ppBase() {
     exists(EnclosingInstanceAccess enc | enc = this |
       result = enc.getQualifier().toString() + "(" + enc.getType() + ")enclosing"
-    ) or
+    )
+    or
     isOwnInstanceAccess() and result = "this"
   }
 
   private string ppKind() {
-    isExplicit(_) and result = " <" + getAssociatedExprOrStmt().toString() + ">" or
-    isImplicitFieldQualifier(_) and result = " <.field>" or
-    isImplicitMethodQualifier(_) and result = " <.method>" or
-    isImplicitThisConstructorArgument(_) and result = " <constr(this)>" or
-    isImplicitEnclosingInstanceCapture(_) and result = " <.new>" or
+    isExplicit(_) and result = " <" + getAssociatedExprOrStmt().toString() + ">"
+    or
+    isImplicitFieldQualifier(_) and result = " <.field>"
+    or
+    isImplicitMethodQualifier(_) and result = " <.method>"
+    or
+    isImplicitThisConstructorArgument(_) and result = " <constr(this)>"
+    or
+    isImplicitEnclosingInstanceCapture(_) and result = " <.new>"
+    or
     isImplicitEnclosingInstanceQualifier(_) and result = "."
   }
 
   /** Gets a textual representation of this element. */
-  string toString() {
-    result = ppBase() + ppKind()
-  }
+  string toString() { result = ppBase() + ppKind() }
 
   /** Gets the source location for this element. */
   Location getLocation() { result = getAssociatedExprOrStmt().getLocation() }
@@ -180,11 +189,9 @@ class InstanceAccessExt extends TInstanceAccessExt {
    * Holds if this is the implicit `this` argument of `cc`, which is either a
    * `ThisConstructorInvocationStmt` or a `SuperConstructorInvocationStmt`.
    */
-  predicate isImplicitThisConstructorArgument(ConstructorCall cc) {
-    this = TThisArgument(cc)
-  }
+  predicate isImplicitThisConstructorArgument(ConstructorCall cc) { this = TThisArgument(cc) }
 
-  /** Holds if this is the implicit qualifier of `cc`.*/
+  /** Holds if this is the implicit qualifier of `cc`. */
   predicate isImplicitEnclosingInstanceCapture(ConstructorCall cc) {
     this = TThisEnclosingInstanceCapture(cc) or
     this = TEnclosingInstanceAccess(cc, _)
@@ -199,31 +206,35 @@ class InstanceAccessExt extends TInstanceAccessExt {
   }
 
   /** Holds if this is an access to an object's own instance. */
-  predicate isOwnInstanceAccess() {
-    not isEnclosingInstanceAccess(_)
-  }
+  predicate isOwnInstanceAccess() { not isEnclosingInstanceAccess(_) }
 
   /** Holds if this is an access to an enclosing instance. */
   predicate isEnclosingInstanceAccess(RefType t) {
-    exists(InstanceAccess ia | this = TExplicitInstanceAccess(ia) and ia.isEnclosingInstanceAccess(t)) or
-    this = TEnclosingInstanceAccess(_, t) or
+    exists(InstanceAccess ia |
+      this = TExplicitInstanceAccess(ia) and ia.isEnclosingInstanceAccess(t)
+    )
+    or
+    this = TEnclosingInstanceAccess(_, t)
+    or
     exists(int i | this = TInstanceAccessQualifier(_, i, t, _) and i > 0)
   }
 
   /** Gets the type of this instance access. */
   RefType getType() {
-    isEnclosingInstanceAccess(result) or
+    isEnclosingInstanceAccess(result)
+    or
     isOwnInstanceAccess() and result = getEnclosingCallable().getDeclaringType()
   }
 
   /** Gets the control flow node associated with this instance access. */
   ControlFlowNode getCfgNode() {
     exists(ExprParent e | e = getAssociatedExprOrStmt() |
-      e instanceof Call and result = e or
-      e instanceof InstanceAccess and result = e or
+      e instanceof Call and result = e
+      or
+      e instanceof InstanceAccess and result = e
+      or
       exists(FieldAccess fa | fa = e |
-        if fa instanceof RValue then fa = result
-        else result.(AssignExpr).getDest() = fa
+        if fa instanceof RValue then fa = result else result.(AssignExpr).getDest() = fa
       )
     )
   }
@@ -244,13 +255,10 @@ class EnclosingInstanceAccess extends InstanceAccessExt {
 
   /** Gets the implicit qualifier of this in the desugared representation. */
   InstanceAccessExt getQualifier() {
-    exists(ExprParent e, int i |
-      result = TInstanceAccessQualifier(e, i, _, _)
-      |
-      this = TInstanceAccessQualifier(e, i + 1, _, _) or
-      exists(RefType t |
-        derivedInstanceAccess(e, i + 1, t, t)
-        |
+    exists(ExprParent e, int i | result = TInstanceAccessQualifier(e, i, _, _) |
+      this = TInstanceAccessQualifier(e, i + 1, _, _)
+      or
+      exists(RefType t | derivedInstanceAccess(e, i + 1, t, t) |
         this = TEnclosingInstanceAccess(e, t) or
         this = TExplicitInstanceAccess(e)
       )

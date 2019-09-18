@@ -1,0 +1,40 @@
+test_Encode
+| Base64.js:4:17:4:33 | Base64.btoa(data) |
+| Buffer.js:3:10:3:35 | encoded ... ase64') |
+| base64-js.js:4:17:4:40 | base64. ... y(data) |
+| base-64.js:4:17:4:35 | base64.encode(data) |
+| dom.js:2:17:2:26 | btoa(data) |
+| js-base64.js:4:17:4:35 | base64.encode(data) |
+| js-base64.js:9:17:9:38 | base64. ... I(data) |
+| js-base64b.js:4:17:4:35 | base64.encode(data) |
+| js-base64b.js:9:17:9:38 | base64. ... I(data) |
+test_Encode_input_output
+| Base64.js:4:17:4:33 | Base64.btoa(data) | Base64.js:4:29:4:32 | data | Base64.js:4:17:4:33 | Base64.btoa(data) |
+| Buffer.js:3:10:3:35 | encoded ... ase64') | Buffer.js:3:10:3:16 | encoded | Buffer.js:3:10:3:35 | encoded ... ase64') |
+| base64-js.js:4:17:4:40 | base64. ... y(data) | base64-js.js:4:36:4:39 | data | base64-js.js:4:17:4:40 | base64. ... y(data) |
+| base-64.js:4:17:4:35 | base64.encode(data) | base-64.js:4:31:4:34 | data | base-64.js:4:17:4:35 | base64.encode(data) |
+| dom.js:2:17:2:26 | btoa(data) | dom.js:2:22:2:25 | data | dom.js:2:17:2:26 | btoa(data) |
+| js-base64.js:4:17:4:35 | base64.encode(data) | js-base64.js:4:31:4:34 | data | js-base64.js:4:17:4:35 | base64.encode(data) |
+| js-base64.js:9:17:9:38 | base64. ... I(data) | js-base64.js:9:34:9:37 | data | js-base64.js:9:17:9:38 | base64. ... I(data) |
+| js-base64b.js:4:17:4:35 | base64.encode(data) | js-base64b.js:4:31:4:34 | data | js-base64b.js:4:17:4:35 | base64.encode(data) |
+| js-base64b.js:9:17:9:38 | base64. ... I(data) | js-base64b.js:9:34:9:37 | data | js-base64b.js:9:17:9:38 | base64. ... I(data) |
+test_Decode
+| Base64.js:5:10:5:29 | Base64.atob(encoded) |
+| Buffer.js:2:17:2:43 | Buffer. ... ase64') |
+| base64-js.js:5:10:5:38 | base64. ... ncoded) |
+| base-64.js:5:10:5:31 | base64. ... ncoded) |
+| dom.js:3:10:3:22 | atob(encoded) |
+| js-base64.js:5:10:5:31 | base64. ... ncoded) |
+| js-base64.js:10:10:10:31 | base64. ... ncoded) |
+| js-base64b.js:5:10:5:31 | base64. ... ncoded) |
+| js-base64b.js:10:10:10:31 | base64. ... ncoded) |
+test_Decode_input_output
+| Base64.js:5:10:5:29 | Base64.atob(encoded) | Base64.js:5:22:5:28 | encoded | Base64.js:5:10:5:29 | Base64.atob(encoded) |
+| Buffer.js:2:17:2:43 | Buffer. ... ase64') | Buffer.js:2:29:2:32 | data | Buffer.js:2:17:2:43 | Buffer. ... ase64') |
+| base64-js.js:5:10:5:38 | base64. ... ncoded) | base64-js.js:5:31:5:37 | encoded | base64-js.js:5:10:5:38 | base64. ... ncoded) |
+| base-64.js:5:10:5:31 | base64. ... ncoded) | base-64.js:5:24:5:30 | encoded | base-64.js:5:10:5:31 | base64. ... ncoded) |
+| dom.js:3:10:3:22 | atob(encoded) | dom.js:3:15:3:21 | encoded | dom.js:3:10:3:22 | atob(encoded) |
+| js-base64.js:5:10:5:31 | base64. ... ncoded) | js-base64.js:5:24:5:30 | encoded | js-base64.js:5:10:5:31 | base64. ... ncoded) |
+| js-base64.js:10:10:10:31 | base64. ... ncoded) | js-base64.js:10:24:10:30 | encoded | js-base64.js:10:10:10:31 | base64. ... ncoded) |
+| js-base64b.js:5:10:5:31 | base64. ... ncoded) | js-base64b.js:5:24:5:30 | encoded | js-base64b.js:5:10:5:31 | base64. ... ncoded) |
+| js-base64b.js:10:10:10:31 | base64. ... ncoded) | js-base64b.js:10:24:10:30 | encoded | js-base64b.js:10:10:10:31 | base64. ... ncoded) |

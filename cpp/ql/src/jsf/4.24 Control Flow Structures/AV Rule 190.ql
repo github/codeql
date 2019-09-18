@@ -3,8 +3,11 @@
  * @description The continue statement shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-190
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       external/jsf
  */
+
 import cpp
 
 from ContinueStmt s

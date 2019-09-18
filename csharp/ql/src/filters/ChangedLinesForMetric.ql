@@ -4,12 +4,12 @@
  * @id cs/changed-lines-metric-filter
  * @kind treemap
  */
+
 import csharp
 import external.ExternalArtifact
 import external.MetricFilter
 import ChangedLines
 
 from MetricResult res
-where
-  changedLine(res.getFile(),_)
+where changedLine(res.getFile(), _)
 select res, res.getValue()

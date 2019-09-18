@@ -12,17 +12,19 @@
  *       statistical
  *       non-attributable
  */
+
 import csharp
 import CodeDuplication
 
 predicate irrelevant(File f) {
-  f.getStem() = "AssemblyInfo"
-  or f.getStem().matches("%.Designer")
+  f.getStem() = "AssemblyInfo" or
+  f.getStem().matches("%.Designer")
 }
 
 from File f, File other, int percent
 where
-  similarFiles(f, other, percent)
-  and not irrelevant(f)
-  and not irrelevant(other)
-select f, percent + "% of the lines in " + f.getBaseName() + " are similar to lines in $@.", other, other.getBaseName()
+  similarFiles(f, other, percent) and
+  not irrelevant(f) and
+  not irrelevant(other)
+select f, percent + "% of the lines in " + f.getBaseName() + " are similar to lines in $@.", other,
+  other.getBaseName()

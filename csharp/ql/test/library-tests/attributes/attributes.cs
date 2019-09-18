@@ -47,4 +47,17 @@ class Foo : Attribute
 class Bar
 {
     int inc([Foo] int x) { return x + 1; }
+
+    [MyAttribute(false)]
+    void M1() { }
+
+    [MyAttribute(true, y = "", x = 0)]
+    void M2() { }
+}
+
+class MyAttribute : Attribute
+{
+    public int x;
+    public string y { get; set; }
+    public MyAttribute(bool b) { }
 }

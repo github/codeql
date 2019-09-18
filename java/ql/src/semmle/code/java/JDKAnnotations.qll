@@ -6,23 +6,17 @@ import java
 
 /** A `@Deprecated` annotation. */
 class DeprecatedAnnotation extends Annotation {
-  DeprecatedAnnotation() {
-    this.getType().hasQualifiedName("java.lang", "Deprecated")
-  }
+  DeprecatedAnnotation() { this.getType().hasQualifiedName("java.lang", "Deprecated") }
 }
 
 /** An `@Override` annotation. */
 class OverrideAnnotation extends Annotation {
-  OverrideAnnotation() {
-    this.getType().hasQualifiedName("java.lang", "Override")
-  }
+  OverrideAnnotation() { this.getType().hasQualifiedName("java.lang", "Override") }
 }
 
 /** A `@SuppressWarnings` annotation. */
 class SuppressWarningsAnnotation extends Annotation {
-  SuppressWarningsAnnotation() {
-    this.getType().hasQualifiedName("java.lang", "SuppressWarnings")
-  }
+  SuppressWarningsAnnotation() { this.getType().hasQualifiedName("java.lang", "SuppressWarnings") }
 
   /** Gets the name of a warning suppressed by this annotation. */
   string getASuppressedWarning() {
@@ -33,9 +27,7 @@ class SuppressWarningsAnnotation extends Annotation {
 
 /** A `@Target` annotation. */
 class TargetAnnotation extends Annotation {
-  TargetAnnotation() {
-    this.getType().hasQualifiedName("java.lang.annotation", "Target")
-  }
+  TargetAnnotation() { this.getType().hasQualifiedName("java.lang.annotation", "Target") }
 
   /**
    * Gets a target expression within this annotation.
@@ -61,16 +53,15 @@ class TargetAnnotation extends Annotation {
     exists(EnumConstant ec |
       ec = this.getATargetExpression().(VarAccess).getVariable() and
       ec.getDeclaringType().hasQualifiedName("java.lang.annotation", "ElementType")
-      |
-      result = ec.getName())
+    |
+      result = ec.getName()
+    )
   }
 }
 
 /** A `@Retention` annotation. */
 class RetentionAnnotation extends Annotation {
-  RetentionAnnotation() {
-    this.getType().hasQualifiedName("java.lang.annotation", "Retention")
-  }
+  RetentionAnnotation() { this.getType().hasQualifiedName("java.lang.annotation", "Retention") }
 
   /**
    * Gets the retention policy expression within this annotation.
@@ -78,9 +69,7 @@ class RetentionAnnotation extends Annotation {
    * For example, the field access `RetentionPolicy.RUNTIME` is the
    * retention policy expression in `@Retention(RetentionPolicy.RUNTIME)`.
    */
-  Expr getRetentionPolicyExpression() {
-    result = this.getValue("value")
-  }
+  Expr getRetentionPolicyExpression() { result = this.getValue("value") }
 
   /**
    * Gets the name of the retention policy of this annotation.
@@ -92,8 +81,9 @@ class RetentionAnnotation extends Annotation {
     exists(EnumConstant ec |
       ec = this.getRetentionPolicyExpression().(VarAccess).getVariable() and
       ec.getDeclaringType().hasQualifiedName("java.lang.annotation", "RetentionPolicy")
-      |
-      result = ec.getName())
+    |
+      result = ec.getName()
+    )
   }
 }
 
@@ -122,7 +112,7 @@ class ReflectiveAccessAnnotation extends Annotation {
  * Any annotation that is not a subclass of `NonReflectiveAnnotation` is assumed to
  * allow for reflective access.
  */
-abstract class NonReflectiveAnnotation extends Annotation {}
+abstract class NonReflectiveAnnotation extends Annotation { }
 
 library class StandardNonReflectiveAnnotation extends NonReflectiveAnnotation {
   StandardNonReflectiveAnnotation() {

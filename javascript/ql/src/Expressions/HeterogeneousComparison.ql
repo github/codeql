@@ -15,6 +15,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.DefensiveProgramming
 
 /**
  * Holds if `left` and `right` are the left and right operands, respectively, of `nd`, which is
@@ -24,8 +25,11 @@ private import semmle.javascript.dataflow.InferredTypes
  * with the switched-on expression being the right operand and all case labels the left operands.
  */
 predicate comparisonOperands(ASTNode nd, Expr left, Expr right) {
-  exists (Comparison cmp | cmp = nd | left = cmp.getLeftOperand() and right = cmp.getRightOperand()) or
-  exists (SwitchStmt switch | switch = nd | right = switch.getExpr() and left = switch.getACase().getExpr())
+  exists(Comparison cmp | cmp = nd | left = cmp.getLeftOperand() and right = cmp.getRightOperand())
+  or
+  exists(SwitchStmt switch | switch = nd |
+    right = switch.getExpr() and left = switch.getACase().getExpr()
+  )
 }
 
 /**
@@ -33,7 +37,7 @@ predicate comparisonOperands(ASTNode nd, Expr left, Expr right) {
  */
 predicate hasImplicitConversionMethod(DefiniteAbstractValue av) {
   // look for assignments to `toString` or `valueOf` on `av` or its prototypes
-  exists (AnalyzedPropertyWrite apw, string p | p = "toString" or p = "valueOf" |
+  exists(AnalyzedPropertyWrite apw, string p | p = "toString" or p = "valueOf" |
     apw.writes(av.getAPrototype*(), p, _)
   )
 }
@@ -43,10 +47,10 @@ predicate hasImplicitConversionMethod(DefiniteAbstractValue av) {
  */
 InferredType strictEqualityOperandType(ASTNode eq, DataFlow::AnalyzedNode operand) {
   // strict equality tests do no conversion at all
-  operand.asExpr() = eq.(StrictEqualityTest).getAChildExpr() and result = operand.getAType() or
-
+  operand.asExpr() = eq.(StrictEqualityTest).getAChildExpr() and result = operand.getAType()
+  or
   // switch behaves like a strict equality test
-  exists (SwitchStmt switch | switch = eq |
+  exists(SwitchStmt switch | switch = eq |
     (operand.asExpr() = switch.getExpr() or operand.asExpr() = switch.getACase().getExpr()) and
     result = operand.getAType()
   )
@@ -69,7 +73,7 @@ predicate implicitlyConvertedOperand(ASTNode parent, DataFlow::AnalyzedNode oper
 InferredType nonStrictOperandType(ASTNode parent, DataFlow::AnalyzedNode operand) {
   // non-strict equality tests perform conversions
   operand.asExpr() = parent.(NonStrictEqualityTest).getAChildExpr() and
-  exists (InferredType tp | tp = operand.getAValue().getType() |
+  exists(InferredType tp | tp = operand.getAValue().getType() |
     result = tp
     or
     // Booleans are converted to numbers
@@ -94,7 +98,7 @@ InferredType nonStrictOperandType(ASTNode parent, DataFlow::AnalyzedNode operand
   or
   // relational operators convert their operands to numbers or strings
   operand.asExpr() = parent.(RelationalComparison).getAChildExpr() and
-  exists (AbstractValue v | v = operand.getAValue() |
+  exists(AbstractValue v | v = operand.getAValue() |
     result = v.getType()
     or
     v.isCoercibleToNumber() and result = TTNumber()
@@ -120,11 +124,14 @@ InferredType convertedOperandType(ASTNode parent, DataFlow::AnalyzedNode operand
  * `leftTypes` and `rightTypes`, respectively, but there is no
  * common type they coerce to.
  */
-predicate isHeterogeneousComparison(ASTNode cmp, DataFlow::AnalyzedNode left, DataFlow::AnalyzedNode right,
-                                    string leftTypes, string rightTypes) {
+predicate isHeterogeneousComparison(
+  ASTNode cmp, DataFlow::AnalyzedNode left, DataFlow::AnalyzedNode right, string leftTypes,
+  string rightTypes
+) {
   comparisonOperands(cmp, left.asExpr(), right.asExpr()) and
   not convertedOperandType(cmp, left) = convertedOperandType(cmp, right) and
-  leftTypes = left.ppTypes() and rightTypes = right.ppTypes()
+  leftTypes = left.ppTypes() and
+  rightTypes = right.ppTypes()
 }
 
 /**
@@ -140,11 +147,8 @@ predicate isPseudoKeyword(string name) {
  * Gets a user friendly description of `e`, if such a description exists.
  */
 string getDescription(VarAccess e) {
-  exists (string name | name = e.getName() |
-    if isPseudoKeyword(name) then
-      result = "'" + name + "'"
-    else
-      result  = "variable '" + name + "'"
+  exists(string name | name = e.getName() |
+    if isPseudoKeyword(name) then result = "'" + name + "'" else result = "variable '" + name + "'"
   )
 }
 
@@ -153,10 +157,7 @@ string getDescription(VarAccess e) {
  */
 bindingset[default]
 string getDescription(Expr e, string default) {
-  if exists (getDescription(e)) then
-    result = getDescription(e)
-  else
-    result = default
+  if exists(getDescription(e)) then result = getDescription(e) else result = default
 }
 
 /**
@@ -164,10 +165,7 @@ string getDescription(Expr e, string default) {
  */
 bindingset[message1, message2, complexity1, complexity2]
 string getTypeDescription(string message1, string message2, int complexity1, int complexity2) {
-  if complexity1 > 4 and complexity2 <= 2 then
-    result = message2
-  else
-    result = message1
+  if complexity1 > 4 and complexity2 <= 2 then result = message2 else result = message1
 }
 
 /**
@@ -175,7 +173,7 @@ string getTypeDescription(string message1, string message2, int complexity1, int
  */
 predicate isInitialParameterUse(Expr e) {
   // unlike `SimpleParameter.getAnInitialUse` this will not include uses we have refinement information for
-  exists (SimpleParameter p, SsaExplicitDefinition ssa |
+  exists(SimpleParameter p, SsaExplicitDefinition ssa |
     ssa.getDef() = p and
     ssa.getVariable().getAUse() = e and
     not p.isRestParameter()
@@ -187,24 +185,25 @@ predicate isInitialParameterUse(Expr e) {
  *
  * We currently whitelist expressions that rely on inter-procedural parameter information.
  */
-predicate whitelist(Expr e) {
-  isInitialParameterUse(e)
-}
+predicate whitelist(Expr e) { isInitialParameterUse(e) }
 
-from ASTNode cmp,
-     DataFlow::AnalyzedNode left, DataFlow::AnalyzedNode right,
-     string leftTypes, string rightTypes,
-     string leftExprDescription, string rightExprDescription,
-     int leftTypeCount, int rightTypeCount ,
-     string leftTypeDescription, string rightTypeDescription
-where isHeterogeneousComparison(cmp, left, right, leftTypes, rightTypes) and
-      not whitelist(left.asExpr()) and
-      not whitelist(right.asExpr()) and
-      leftExprDescription = capitalize(getDescription(left.asExpr(), "this expression")) and
-      rightExprDescription = getDescription(right.asExpr(), "an expression") and
-      leftTypeCount = strictcount(left.getAType()) and
-      rightTypeCount = strictcount(right.getAType()) and
-      leftTypeDescription = getTypeDescription("is of type " + leftTypes, "cannot be of type " + rightTypes, leftTypeCount, rightTypeCount) and
-      rightTypeDescription = getTypeDescription("of type " + rightTypes, ", which cannot be of type " + leftTypes, rightTypeCount, leftTypeCount)
-select left, leftExprDescription + " " + leftTypeDescription + ", but it is compared to $@ " + rightTypeDescription + ".",
-       right, rightExprDescription
+from
+  ASTNode cmp, DataFlow::AnalyzedNode left, DataFlow::AnalyzedNode right, string leftTypes,
+  string rightTypes, string leftExprDescription, string rightExprDescription, int leftTypeCount,
+  int rightTypeCount, string leftTypeDescription, string rightTypeDescription
+where
+  isHeterogeneousComparison(cmp, left, right, leftTypes, rightTypes) and
+  not exists(cmp.(Expr).flow().(DefensiveExpressionTest).getTheTestResult()) and
+  not whitelist(left.asExpr()) and
+  not whitelist(right.asExpr()) and
+  leftExprDescription = capitalize(getDescription(left.asExpr(), "this expression")) and
+  rightExprDescription = getDescription(right.asExpr(), "an expression") and
+  leftTypeCount = strictcount(left.getAType()) and
+  rightTypeCount = strictcount(right.getAType()) and
+  leftTypeDescription = getTypeDescription("is of type " + leftTypes,
+      "cannot be of type " + rightTypes, leftTypeCount, rightTypeCount) and
+  rightTypeDescription = getTypeDescription("of type " + rightTypes,
+      ", which cannot be of type " + leftTypes, rightTypeCount, leftTypeCount)
+select left,
+  leftExprDescription + " " + leftTypeDescription + ", but it is compared to $@ " +
+    rightTypeDescription + ".", right, rightExprDescription

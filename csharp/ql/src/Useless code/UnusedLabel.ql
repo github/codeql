@@ -12,5 +12,5 @@
 import csharp
 
 from LabelStmt label
-where not exists(GotoLabelStmt goto | label=goto.getTarget())
+where not exists(GotoLabelStmt goto | label = goto.getTarget())
 select label, "This label is not used."

@@ -14,15 +14,20 @@
 import cpp
 import semmle.code.cpp.security.TaintTracking
 
-from Expr source, Expr tainted, BinaryArithmeticOperation oper,
-     SizeofOperator sizeof, string taintCause
-where tainted(source, tainted)
-  and oper.getAnOperand() = tainted
-  and oper.getOperator() = "*"
-  and oper.getAnOperand() = sizeof
-  and oper != tainted
-  and sizeof.getValue().toInt() > 1
-  and isUserInput(source, taintCause)
-select
-  oper, "This allocation size is derived from $@ and might overflow",
-  source, "user input (" + taintCause + ")"
+predicate taintedAllocSize(Expr e, Expr source, string taintCause) {
+  (
+    isAllocationExpr(e) or
+    any(MulExpr me | me.getAChild() instanceof SizeofOperator) = e
+  ) and
+  exists(Expr tainted |
+    tainted = e.getAChild() and
+    tainted.getUnspecifiedType() instanceof IntegralType and
+    isUserInput(source, taintCause) and
+    tainted(source, tainted)
+  )
+}
+
+from Expr e, Expr source, string taintCause
+where taintedAllocSize(e, source, taintCause)
+select e, "This allocation size is derived from $@ and might overflow", source,
+  "user input (" + taintCause + ")"

@@ -1,0 +1,34 @@
+| 0 | Module exprs_test | 2 | exprs_test.py:2:1:2:1 | ExprStmt |
+| 0 | Module exprs_test | 3 | exprs_test.py:3:1:3:5 | ExprStmt |
+| 0 | Module exprs_test | 4 | exprs_test.py:4:1:4:6 | ExprStmt |
+| 0 | Module exprs_test | 5 | exprs_test.py:5:1:5:9 | ExprStmt |
+| 0 | Module exprs_test | 6 | exprs_test.py:6:1:6:5 | AssignStmt |
+| 0 | Module exprs_test | 7 | exprs_test.py:7:1:7:1 | ExprStmt |
+| 0 | Module exprs_test | 8 | exprs_test.py:8:1:8:12 | ExprStmt |
+| 0 | Module exprs_test | 9 | exprs_test.py:9:1:9:11 | ExprStmt |
+| 0 | Module exprs_test | 11 | exprs_test.py:11:1:11:11 | ExprStmt |
+| 2 | ExprStmt | 2 | exprs_test.py:2:1:2:1 | IntegerLiteral |
+| 3 | ExprStmt | 3 | exprs_test.py:3:2:3:4 | Tuple |
+| 3 | Tuple | 3 | exprs_test.py:3:2:3:2 | IntegerLiteral |
+| 3 | Tuple | 3 | exprs_test.py:3:4:3:4 | IntegerLiteral |
+| 4 | ExprStmt | 4 | exprs_test.py:4:1:4:6 | List |
+| 4 | List | 4 | exprs_test.py:4:2:4:2 | IntegerLiteral |
+| 4 | List | 4 | exprs_test.py:4:5:4:5 | IntegerLiteral |
+| 5 | ExprStmt | 5 | exprs_test.py:5:1:5:9 | __debug__ |
+| 6 | AssignStmt | 6 | exprs_test.py:6:1:6:1 | x |
+| 6 | AssignStmt | 6 | exprs_test.py:6:5:6:5 | IntegerLiteral |
+| 7 | ExprStmt | 7 | exprs_test.py:7:1:7:1 | x |
+| 8 | Attribute | 8 | exprs_test.py:8:1:8:6 | List |
+| 8 | Attribute() | 8 | exprs_test.py:8:1:8:10 | Attribute |
+| 8 | ExprStmt | 8 | exprs_test.py:8:1:8:12 | Attribute() |
+| 8 | List | 8 | exprs_test.py:8:2:8:2 | IntegerLiteral |
+| 8 | List | 8 | exprs_test.py:8:5:8:5 | IntegerLiteral |
+| 9 | ExprStmt | 9 | exprs_test.py:9:1:9:11 | Subscript |
+| 9 | List | 9 | exprs_test.py:9:2:9:2 | IntegerLiteral |
+| 9 | List | 9 | exprs_test.py:9:5:9:6 | IntegerLiteral |
+| 9 | Subscript | 9 | exprs_test.py:9:1:9:7 | List |
+| 9 | Subscript | 9 | exprs_test.py:9:9:9:10 | IntegerLiteral |
+| 11 | DictUnpacking | 11 | exprs_test.py:11:8:11:10 | arg |
+| 11 | ExprStmt | 11 | exprs_test.py:11:1:11:11 | func() |
+| 11 | func() | 11 | exprs_test.py:11:1:11:4 | func |
+| 11 | func() | 11 | exprs_test.py:11:6:11:10 | DictUnpacking |

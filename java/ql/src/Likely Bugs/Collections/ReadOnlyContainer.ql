@@ -26,11 +26,15 @@ where
   // Every access to `v` is either...
   forall(VarAccess va | va = v.getAnAccess() |
     // ...an assignment storing a fresh container into `v`,
-    exists(AssignExpr assgn | va = assgn.getDest() | assgn.getSource() instanceof FreshContainer) or
-    /// ...a return (but only if `v` is a local variable)
-    (v instanceof LocalVariableDecl and exists(ReturnStmt ret | ret.getResult() = va)) or
+    exists(AssignExpr assgn | va = assgn.getDest() | assgn.getSource() instanceof FreshContainer)
+    or
+    // ...a return (but only if `v` is a local variable)
+    v instanceof LocalVariableDecl and exists(ReturnStmt ret | ret.getResult() = va)
+    or
     // ...or a call to a query method on `v`.
-    exists(MethodAccess ma | va = ma.getQualifier() | ma.getMethod() instanceof ContainerQueryMethod)
+    exists(MethodAccess ma | va = ma.getQualifier() |
+      ma.getMethod() instanceof ContainerQueryMethod
+    )
   ) and
   // There is at least one call to a query method.
   exists(MethodAccess ma | v.getAnAccess() = ma.getQualifier() |

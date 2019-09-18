@@ -1,0 +1,7 @@
+| uselesscode_test.py:4:5:4:8 | mult | This assignment to 'mult' is unnecessary as it is redefined $@ before this value is used. | uselesscode_test.py:15:5:15:8 | mult | here |
+| uselesscode_test.py:5:5:5:5 | x | This assignment to 'x' is unnecessary as it is redefined $@ before this value is used. | uselesscode_test.py:7:5:7:5 | x | here |
+| uselesscode_test.py:28:7:28:10 | Mult | This assignment to 'Mult' is unnecessary as it is redefined $@ before this value is used. | uselesscode_test.py:37:7:37:10 | Mult | here |
+| uselesscode_test.py:52:9:52:11 | bad | This assignment to 'bad' is unnecessary as it is redefined $@ before this value is used. | uselesscode_test.py:53:9:53:11 | bad | here |
+| uselesscode_test.py:67:9:67:11 | bad | This assignment to 'bad' is unnecessary as it is redefined $@ before this value is used. | uselesscode_test.py:71:9:71:11 | bad | here |
+| uselesscode_test.py:117:5:117:5 | x | This assignment to 'x' is unnecessary as it is redefined $@ before this value is used. | uselesscode_test.py:118:5:118:5 | x | here |
+| uselesscode_test.py:117:8:117:8 | y | This assignment to 'y' is unnecessary as it is redefined $@ before this value is used. | uselesscode_test.py:118:8:118:8 | y | here |

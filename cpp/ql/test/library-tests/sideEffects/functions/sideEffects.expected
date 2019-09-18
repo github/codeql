@@ -43,8 +43,12 @@
 | cpp.cpp:87:5:87:26 | functionAccessesStatic | int | false |
 | cpp.cpp:93:6:93:14 | increment | int & -> void | false |
 | cpp.cpp:97:6:97:16 | doIncrement | void | false |
-| file://:0:0:0:0 | operator= | __va_list_tag & | false |
-| file://:0:0:0:0 | operator= | __va_list_tag & | false |
+| error.cpp:3:6:3:24 | functionBeforeError | void | true |
+| error.cpp:7:6:7:23 | functionWithError1 | void | false |
+| error.cpp:12:6:12:23 | functionWithError2 | void | false |
+| error.cpp:17:6:17:23 | functionAfterError | void | true |
+| file://:0:0:0:0 | operator= | __va_list_tag && -> __va_list_tag & | false |
+| file://:0:0:0:0 | operator= | const __va_list_tag & -> __va_list_tag & | false |
 | sideEffects.c:4:5:4:6 | f1 | int | true |
 | sideEffects.c:12:5:12:6 | f2 | int | true |
 | sideEffects.c:20:5:20:6 | f3 | int | true |

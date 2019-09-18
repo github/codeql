@@ -1,6 +1,7 @@
 /**
  * @name IsInType
  */
+
 import default
 
 from Element e, RefType t

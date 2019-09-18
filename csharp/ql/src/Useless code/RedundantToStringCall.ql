@@ -9,11 +9,13 @@
  * @tags maintainability
  *       useless-code
  */
+
 import csharp
 import semmle.code.csharp.commons.Strings
 import semmle.code.csharp.frameworks.System
 
 from MethodCall mc
-where mc instanceof ImplicitToStringExpr
-  and mc.getTarget() instanceof ToStringMethod
+where
+  mc instanceof ImplicitToStringExpr and
+  mc.getTarget() instanceof ToStringMethod
 select mc, "Redundant call to 'ToString'."

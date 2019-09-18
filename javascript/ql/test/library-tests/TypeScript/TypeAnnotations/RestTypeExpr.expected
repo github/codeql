@@ -1,2 +1,0 @@
-| tst.ts:135:36:135:46 | ...string[] | tst.ts:135:39:135:46 | string[] | tst.ts:135:39:135:44 | string |
-| tst.ts:136:57:136:67 | ...number[] | tst.ts:136:60:136:67 | number[] | tst.ts:136:60:136:65 | number |

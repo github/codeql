@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> There is no need for a module to import itself. A module importing itself may lead to errors as
+the module may be in an incomplete state when imported by itself.
+</p>
+
+</overview>
+<recommendation>
+<p>Remove the import statement.
+Convert all expressions of the form <code>mod.name</code> where "mod" is the name
+of the current module to <code>name</code>.</p>
+
+</recommendation>
+<example>
+<p>In this example the module, <code>ModuleImportsItself</code> imports itself and has an expression
+referencing the module it is in as well.</p>
+<sample src="ModuleImportsItself.py" />
+
+<p>The import can be removed and the reference can be corrected.</p>
+<sample src="ModuleImportsItselfFix.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/2/tutorial/modules.html">Modules</a>.</li>
+
+</references>
+</qhelp>

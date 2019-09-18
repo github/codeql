@@ -1,0 +1,10 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> This is defined as an error in PyFlakes. </p>
+
+</overview>
+</qhelp>

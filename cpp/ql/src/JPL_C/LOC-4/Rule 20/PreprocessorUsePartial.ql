@@ -3,7 +3,10 @@
  * @description Macros must expand to complete syntactic units -- "#define MY_IF if(" is not legal.
  * @kind problem
  * @id cpp/jpl-c/preprocessor-use-partial
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp

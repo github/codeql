@@ -1,2 +1,0 @@
-| src/test.js:7:5:7:32 | res.set ... 1', '') | header1 |
-| src/test.js:25:5:25:32 | res.set ... 2', '') | header2 |

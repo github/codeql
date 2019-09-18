@@ -1,0 +1,5 @@
+| tests.c:28:3:28:9 | call to sprintf | This 'call to sprintf' with input from $@ may overflow the destination. | tests.c:28:22:28:25 | argv | argv |
+| tests.c:29:3:29:9 | call to sprintf | This 'call to sprintf' with input from $@ may overflow the destination. | tests.c:29:28:29:31 | argv | argv |
+| tests.c:31:15:31:23 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:31:15:31:23 | buffer100 | buffer100 |
+| tests.c:33:21:33:29 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:33:21:33:29 | buffer100 | buffer100 |
+| tests.c:34:25:34:33 | buffer100 | This 'sscanf string argument' with input from $@ may overflow the destination. | tests.c:34:10:34:13 | argv | argv |

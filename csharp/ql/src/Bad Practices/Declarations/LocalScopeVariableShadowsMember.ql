@@ -9,9 +9,10 @@
  * @tags maintainability
  *       readability
  */
+
 import csharp
 
-pragma [noinline]
+pragma[noinline]
 private string localVarInType(ValueOrRefType t, LocalScopeVariable v) {
   v.getCallable().getDeclaringType() = t and
   result = v.getName() and
@@ -28,16 +29,16 @@ private string memberInType(ValueOrRefType t, Member m) {
 }
 
 private predicate acceptableShadowing(LocalScopeVariable v, Member m) {
-  exists(ValueOrRefType t |
-    localVarInType(t, v) = memberInType(t, m) |
+  exists(ValueOrRefType t | localVarInType(t, v) = memberInType(t, m) |
     // If the callable declaring the local also accesses the shadowed member
     // using an explicit `this` qualifier, the shadowing is likely deliberate.
-    exists(MemberAccess ma |
-      ma.getTarget() = m |
+    exists(MemberAccess ma | ma.getTarget() = m |
       ma.getEnclosingCallable() = v.getCallable() and
       ma.targetIsLocalInstance() and
       not ma.getQualifier().isImplicit()
     )
+    or
+    t.getAConstructor().getAParameter() = v
   )
 }
 
@@ -47,7 +48,9 @@ private predicate shadowing(ValueOrRefType t, LocalScopeVariable v, Member m) {
 }
 
 from LocalScopeVariable v, Callable c, ValueOrRefType t, Member m
-where c = v.getCallable()
-  and shadowing(t, v, m)
-  and (c.(Modifiable).isStatic() implies m.isStatic())
-select v, "Local scope variable '" + v.getName() + "' shadows $@.", m, t.getName() + "." + m.getName()
+where
+  c = v.getCallable() and
+  shadowing(t, v, m) and
+  (c.(Modifiable).isStatic() implies m.isStatic())
+select v, "Local scope variable '" + v.getName() + "' shadows $@.", m,
+  t.getName() + "." + m.getName()

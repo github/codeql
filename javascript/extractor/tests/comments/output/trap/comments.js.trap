@@ -1,0 +1,84 @@
+#10000=@"/comments.js;sourcefile"
+files(#10000,"/comments.js","comments","js",0)
+#10001=@"/;folder"
+folders(#10001,"/","")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=@"script;{#10000},1,1"
+#20002=*
+comments(#20002,0,#20001," line comment","// line comment")
+#20003=@"loc,{#10000},1,1,1,15"
+locations_default(#20003,#10000,1,1,1,15)
+hasLocation(#20002,#20003)
+#20004=*
+comments(#20004,1,#20001," block comment ","/* block comment */")
+#20005=@"loc,{#10000},2,1,2,19"
+locations_default(#20005,#10000,2,1,2,19)
+hasLocation(#20004,#20005)
+#20006=*
+comments(#20006,2,#20001," doc comment ","/** doc comment */")
+#20007=@"loc,{#10000},3,1,3,18"
+locations_default(#20007,#10000,3,1,3,18)
+hasLocation(#20006,#20007)
+#20008=*
+comments(#20008,3,#20001," an HTML comment","<!-- an HTML comment")
+#20009=@"loc,{#10000},4,1,4,20"
+locations_default(#20009,#10000,4,1,4,20)
+hasLocation(#20008,#20009)
+#20010=*
+comments(#20010,4,#20001," another HTML comment","--> ano ... comment")
+#20011=@"loc,{#10000},5,1,5,24"
+locations_default(#20011,#10000,5,1,5,24)
+hasLocation(#20010,#20011)
+#20012=*
+lines(#20012,#20001,"// line comment","
+")
+hasLocation(#20012,#20003)
+#20013=*
+lines(#20013,#20001,"/* block comment */","
+")
+hasLocation(#20013,#20005)
+#20014=*
+lines(#20014,#20001,"/** doc comment */","
+")
+hasLocation(#20014,#20007)
+#20015=*
+lines(#20015,#20001,"<!-- an HTML comment","
+")
+hasLocation(#20015,#20009)
+#20016=*
+lines(#20016,#20001,"--> another HTML comment","")
+hasLocation(#20016,#20011)
+numlines(#20001,5,0,5)
+#20017=*
+tokeninfo(#20017,0,#20001,0,"")
+#20018=@"loc,{#10000},5,25,5,24"
+locations_default(#20018,#10000,5,25,5,24)
+hasLocation(#20017,#20018)
+next_token(#20002,#20017)
+next_token(#20004,#20017)
+next_token(#20006,#20017)
+next_token(#20008,#20017)
+next_token(#20010,#20017)
+#20019=*
+jsdoc(#20019,"doc comment",#20006)
+hasLocation(#20019,#20007)
+toplevels(#20001,0)
+#20020=@"loc,{#10000},1,1,5,24"
+locations_default(#20020,#10000,1,1,5,24)
+hasLocation(#20001,#20020)
+#20021=*
+entry_cfg_node(#20021,#20001)
+#20022=@"loc,{#10000},1,1,1,0"
+locations_default(#20022,#10000,1,1,1,0)
+hasLocation(#20021,#20022)
+#20023=*
+exit_cfg_node(#20023,#20001)
+hasLocation(#20023,#20018)
+successor(#20021,#20023)
+numlines(#10000,5,0,5)
+filetype(#10000,"javascript")

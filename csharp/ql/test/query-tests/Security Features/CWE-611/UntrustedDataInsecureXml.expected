@@ -1,1 +1,7 @@
-| Test.cs:13:50:13:84 | access to indexer | $@ flows to here and is loaded insecurely as XML (DTD processing is enabled with an insecure resolver). | Test.cs:13:50:13:72 | access to property QueryString | User-provided value |
+edges
+| Test.cs:13:50:13:72 | access to property QueryString | Test.cs:13:50:13:84 | access to indexer |
+nodes
+| Test.cs:13:50:13:72 | access to property QueryString | semmle.label | access to property QueryString |
+| Test.cs:13:50:13:84 | access to indexer | semmle.label | access to indexer |
+#select
+| Test.cs:13:50:13:84 | access to indexer | Test.cs:13:50:13:72 | access to property QueryString | Test.cs:13:50:13:84 | access to indexer | $@ flows to here and is loaded insecurely as XML (DTD processing is enabled with an insecure resolver). | Test.cs:13:50:13:72 | access to property QueryString | User-provided value |

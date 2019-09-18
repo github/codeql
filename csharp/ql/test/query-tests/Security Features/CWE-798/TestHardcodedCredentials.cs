@@ -2,19 +2,6 @@ using System;
 using System.Web.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.VisualStudio.TestTools.UnitTesting
-{
-    class TestClassAttribute : Attribute
-    {
-        public TestClassAttribute() { }
-    }
-
-    class TestMethodAttribute : Attribute
-    {
-        public TestMethodAttribute() { }
-    }
-}
-
 namespace Moq.Language
 {
     class TestReturn
@@ -69,3 +56,5 @@ public class HardCodedCredentialsTest
         Moq.Language.TestReturn.Returns(() => mockUser);
     }
 }
+
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

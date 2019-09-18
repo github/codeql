@@ -2,9 +2,9 @@ using System;
 
 class GuardedStringTest
 {
-    void Fn()
+    void Fn(bool b)
     {
-        string s = null;
+        string s = b ? null : "";
 
         if (!string.IsNullOrEmpty(s))
         {
@@ -17,23 +17,23 @@ class GuardedStringTest
         }
 
         if (s?.Length == 0)
-            Console.WriteLine(s.Length); // null guarded
+            Console.WriteLine(s.Length); // GOOD
 
         if (s?.Length > 0)
-            Console.WriteLine(s.Length); // null guarded
+            Console.WriteLine(s.Length); // GOOD
 
         if (s?.Length >= 0)
-            Console.WriteLine(s.Length); // null guarded
+            Console.WriteLine(s.Length); // GOOD
 
         if (s?.Length < 10)
-            Console.WriteLine(s.Length); // null guarded
+            Console.WriteLine(s.Length); // GOOD
 
         if (s?.Length <= 10)
-            Console.WriteLine(s.Length); // null guarded
+            Console.WriteLine(s.Length); // GOOD
 
         if (s?.Length != 0)
-            Console.WriteLine(s.Length); // not null guarded
+            Console.WriteLine(s.Length); // BAD (maybe)
         else
-            Console.WriteLine(s.Length); // null guarded
+            Console.WriteLine(s.Length); // GOOD
     }
 }

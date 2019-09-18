@@ -8,7 +8,7 @@ cat > "$BASEDIR/reformat.vim" <<"EOF"
 :wq
 EOF
 
-find "$BASEDIR" \( -name "*.ql" -or -name "*.qll" -or -name "*.csv" \) -exec vim -u /dev/null -s reformat.vim {} \;
+find "$BASEDIR" \( -name "*.ql" -or -name "*.qll" -or -name "*.csv" -or -name "*.config" \) -exec vim -u /dev/null -s reformat.vim {} \;
 
 cat > reformat.vim <<"EOF"
 :set ff=unix ts=4 et

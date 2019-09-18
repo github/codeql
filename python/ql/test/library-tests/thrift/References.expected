@@ -1,0 +1,4 @@
+| extended.thrift:14:4:14:7 | type User | extended.thrift:3:8:3:11 | struct User |
+| extended.thrift:14:4:14:7 | type User | extended.thrift:3:8:3:11 | struct User |
+| extended.thrift:51:21:51:24 | type User | extended.thrift:3:8:3:11 | struct User |
+| test.thrift:70:33:70:36 | type Work | test.thrift:38:8:38:11 | struct Work |

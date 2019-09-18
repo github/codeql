@@ -4,6 +4,7 @@
  * @kind problem
  * @id java/not-generated-file-filter
  */
+
 import java
 import external.DefectFilter
 

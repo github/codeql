@@ -16,8 +16,9 @@
 import javascript
 
 from RegExpDollar dollar, RegExpTerm t
-where t = dollar.getSuccessor+() and
-      not t.isNullable() and
-      // conservative handling of multi-line regular expressions
-      not dollar.getLiteral().isMultiline()
+where
+  t = dollar.getSuccessor+() and
+  not t.isNullable() and
+  // conservative handling of multi-line regular expressions
+  not dollar.getLiteral().isMultiline()
 select dollar, "This assertion can never match."

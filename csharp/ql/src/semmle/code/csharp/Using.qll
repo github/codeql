@@ -34,9 +34,7 @@ class UsingDirective extends Element, @using_directive {
     parent_namespace_declaration(this, result)
   }
 
-  override Location getALocation() {
-    using_directive_location(this, result)
-  }
+  override Location getALocation() { using_directive_location(this, result) }
 }
 
 /**
@@ -47,7 +45,7 @@ class UsingNamespaceDirective extends UsingDirective, @using_namespace_directive
    * Gets the target of this namespace `using` directive, for example `System`
    * in `using System`.
    */
-  Namespace getImportedNamespace() { using_namespace_directives(this,result) }
+  Namespace getImportedNamespace() { using_namespace_directives(this, result) }
 
   override string toString() { result = "using ...;" }
 }
@@ -60,9 +58,7 @@ class UsingStaticDirective extends UsingDirective, @using_static_directive {
    * Gets the target of this type `using` directive, for example
    * `System.Console` in `using static System.Console`.
    */
-  ValueOrRefType getTarget() {
-    using_static_directives(this, getTypeRef(result))
-  }
+  ValueOrRefType getTarget() { using_static_directives(this, getTypeRef(result)) }
 
   override string toString() { result = "using static ...;" }
 }

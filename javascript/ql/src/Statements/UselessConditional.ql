@@ -15,28 +15,17 @@
 import javascript
 import semmle.javascript.RestrictedLocations
 import semmle.javascript.dataflow.Refinements
+import semmle.javascript.DefensiveProgramming
 
 /**
- * Holds if `va` is a defensive truthiness check that may be worth keeping, even if it
- * is strictly speaking useless.
+ * Gets the unique definition of `v`.
  *
- * We currently recognize three patterns:
- *
- *   - the first `x` in `x || (x = e)`
- *   - the second `x` in `x = (x || e)`
- *   - the second `x` in `var x = x || e`
+ * If `v` has no definitions or more than one, or if its single definition
+ * is a destructuring assignment, this predicate is undefined.
  */
-predicate isDefensiveInit(VarAccess va) {
-  exists (LogOrExpr o, VarRef va2 |
-    va = o.getLeftOperand().stripParens() and va2.getVariable() = va.getVariable() |
-    exists (AssignExpr assgn | va2 = assgn.getTarget() |
-      assgn = o.getRightOperand().stripParens() or
-      o = assgn.getRhs().stripParens()
-    ) or
-    exists (VariableDeclarator vd | va2 = vd.getBindingPattern() |
-      o = vd.getInit().stripParens()
-    )
-  )
+VarDef getSingleDef(Variable v) {
+  strictcount(VarDef vd | vd.getAVariable() = v) = 1 and
+  result.getTarget() = v.getAReference()
 }
 
 /**
@@ -46,11 +35,9 @@ predicate isDefensiveInit(VarAccess va) {
  * We do not consider conditionals to be useless if they check a symbolic constant.
  */
 predicate isSymbolicConstant(Variable v) {
-  // defined exactly once
-  count (VarDef vd | vd.getAVariable() = v) = 1 and
-  // the definition is either a `const` declaration or it assigns a constant to it
-  exists (VarDef vd | vd.getAVariable() = v and count(vd.getAVariable()) = 1 |
-    vd.(VariableDeclarator).getDeclStmt() instanceof ConstDeclStmt or
+  exists(VarDef vd | vd = getSingleDef(v) |
+    vd.(VariableDeclarator).getDeclStmt() instanceof ConstDeclStmt
+    or
     isConstant(vd.getSource())
   )
 }
@@ -68,7 +55,7 @@ predicate isConstant(Expr e) {
  */
 predicate isInitialParameterUse(Expr e) {
   // unlike `SimpleParameter.getAnInitialUse` this will not include uses we have refinement information for
-  exists (SimpleParameter p, SsaExplicitDefinition ssa |
+  exists(SimpleParameter p, SsaExplicitDefinition ssa |
     ssa.getDef() = p and
     ssa.getVariable().getAUse() = e and
     not p.isRestParameter()
@@ -78,21 +65,43 @@ predicate isInitialParameterUse(Expr e) {
 }
 
 /**
- * Holds if `e` directly uses the returned value from a function call that returns a constant boolean value.
+ * Holds if `e` directly uses the returned value from functions that return constant boolean values.
  */
 predicate isConstantBooleanReturnValue(Expr e) {
   // unlike `SourceNode.flowsTo` this will not include uses we have refinement information for
-  exists (DataFlow::CallNode call |
-    exists (call.analyze().getTheBooleanValue()) |
-    e = call.asExpr() or
-    // also support return values that are assigned to variables
-    exists (SsaExplicitDefinition ssa |
-      ssa.getDef().getSource() = call.asExpr() and
-      ssa.getVariable().getAUse() = e
+  exists(string b | (b = "true" or b = "false") |
+    forex(DataFlow::CallNode call, Expr ret |
+      ret = call.getACallee().getAReturnedExpr() and
+      (
+        e = call.asExpr()
+        or
+        // also support return values that are assigned to variables
+        exists(SsaExplicitDefinition ssa |
+          ssa.getDef().getSource() = call.asExpr() and
+          ssa.getVariable().getAUse() = e
+        )
+      )
+    |
+      ret.(BooleanLiteral).getValue() = b
     )
   )
   or
   isConstantBooleanReturnValue(e.(LogNotExpr).getOperand())
+}
+
+private Expr maybeStripLogNot(Expr e) {
+  result = maybeStripLogNot(e.(LogNotExpr).getOperand()) or
+  result = e
+}
+
+/**
+ * Holds if `e` is a defensive expression with a fixed outcome.
+ */
+predicate isConstantDefensive(Expr e) {
+  exists(DefensiveExpressionTest defensive |
+    maybeStripLogNot(defensive.asExpr()) = e and
+    exists(defensive.getTheTestResult())
+  )
 }
 
 /**
@@ -109,39 +118,52 @@ predicate isConstantBooleanReturnValue(Expr e) {
 predicate whitelist(Expr e) {
   isConstant(e) or
   isConstant(e.(LogNotExpr).getOperand()) or
-  isDefensiveInit(e) or
+  isConstantDefensive(e) or // flagged by js/useless-defensive-code
   isInitialParameterUse(e) or
   isConstantBooleanReturnValue(e)
 }
 
 /**
  * Holds if `e` is part of a conditional node `cond` that evaluates
+ * `e` and checks its value for truthiness, and the return value of `e`
+ * is not used for anything other than this truthiness check.
+ */
+predicate isExplicitConditional(ASTNode cond, Expr e) {
+  e = cond.(IfStmt).getCondition()
+  or
+  e = cond.(LoopStmt).getTest()
+  or
+  e = cond.(ConditionalExpr).getCondition()
+  or
+  isExplicitConditional(_, cond) and
+  e = cond.(Expr).getUnderlyingValue().(LogicalBinaryExpr).getAnOperand()
+}
+
+/**
+ * Holds if `e` is part of a conditional node `cond` that evaluates
  * `e` and checks its value for truthiness.
+ *
+ * The return value of `e` may have other uses besides the truthiness check,
+ * but if the truthiness check always goes one way, it still indicates an error.
  */
 predicate isConditional(ASTNode cond, Expr e) {
-  e = cond.(IfStmt).getCondition() or
-  e = cond.(ConditionalExpr).getCondition() or
-  e = cond.(LogAndExpr).getLeftOperand() or
-  e = cond.(LogOrExpr).getLeftOperand()
+  isExplicitConditional(cond, e) or
+  e = cond.(LogicalBinaryExpr).getLeftOperand()
 }
 
 from ASTNode cond, DataFlow::AnalyzedNode op, boolean cv, ASTNode sel, string msg
-where isConditional(cond, op.asExpr()) and
-      cv = op.getTheBooleanValue()and
-      not whitelist(op.asExpr()) and
-
-      // if `cond` is of the form `<non-trivial truthy expr> && <something>`,
-      // we suggest replacing it with `<non-trivial truthy expr>, <something>`
-      if cond instanceof LogAndExpr and cv = true and not op.asExpr().isPure() then
-        (sel = cond and msg = "This logical 'and' expression can be replaced with a comma expression.")
-
-      // otherwise we just report that `op` always evaluates to `cv`
-      else (
-        sel = op.asExpr().stripParens() and
-        if sel instanceof VarAccess then
-          msg = "Variable '" + sel.(VarAccess).getVariable().getName() + "' always evaluates to " + cv + " here."
-        else
-          msg = "This expression always evaluates to " + cv + "."
-      )
-
+where
+  isConditional(cond, op.asExpr()) and
+  cv = op.getTheBooleanValue() and
+  not whitelist(op.asExpr()) and
+  // if `cond` is of the form `<non-trivial truthy expr> && <something>`,
+  // we suggest replacing it with `<non-trivial truthy expr>, <something>`
+  if cond.(LogAndExpr).getLeftOperand() = op.asExpr() and cv = true and not op.asExpr().isPure()
+  then (
+    sel = cond and msg = "This logical 'and' expression can be replaced with a comma expression."
+  ) else (
+    // otherwise we just report that `op` always evaluates to `cv`
+    sel = op.asExpr().stripParens() and
+    msg = "This " + describeExpression(sel) + " always evaluates to " + cv + "."
+  )
 select sel, msg

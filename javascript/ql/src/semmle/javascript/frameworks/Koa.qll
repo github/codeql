@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with [Koa](https://koajs.com) applications.
  */
+
 import javascript
 import semmle.javascript.frameworks.HTTP
 
@@ -23,15 +24,13 @@ module Koa {
 
     HeaderDefinition() {
       // ctx.set('Cache-Control', 'no-cache');
-      astNode.calls(rh.getAContextExpr(), "set")
+      astNode.calls(rh.getAResponseOrContextExpr(), "set")
       or
       // ctx.response.header('Cache-Control', 'no-cache')
       astNode.calls(rh.getAResponseExpr(), "header")
     }
 
-    override RouteHandler getRouteHandler(){
-      result = rh
-    }
+    override RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -48,9 +47,7 @@ module Koa {
     /**
      * Gets the parameter of the route handler that contains the context object.
      */
-    SimpleParameter getContextParameter() {
-      result = function.getParameter(0)
-    }
+    SimpleParameter getContextParameter() { result = function.getParameter(0) }
 
     /**
      * Gets an expression that contains the "context" object of
@@ -60,16 +57,26 @@ module Koa {
      * `this` or `ctx`, given as the first and only argument to the
      * route handler.
      */
-    Expr getAContextExpr() {
-      result.(ContextExpr).getRouteHandler() = this
-    }
+    Expr getAContextExpr() { result.(ContextExpr).getRouteHandler() = this }
+
+    /**
+     * Gets an expression that contains the context or response
+     * object of a route handler invocation.
+     */
+    Expr getAResponseOrContextExpr() { result = getAResponseExpr() or result = getAContextExpr() }
+
+    /**
+     * Gets an expression that contains the context or request
+     * object of a route handler invocation.
+     */
+    Expr getARequestOrContextExpr() { result = getARequestExpr() or result = getAContextExpr() }
   }
 
   /**
    * A Koa context source, that is, the context parameter of a
    * route handler, or a `this` access in a route handler.
    */
-  private class ContextSource extends DataFlow::TrackedNode {
+  private class ContextSource extends DataFlow::Node {
     RouteHandler rh;
 
     ContextSource() {
@@ -81,8 +88,15 @@ module Koa {
     /**
      * Gets the route handler that handles this request.
      */
-    RouteHandler getRouteHandler() {
-      result = rh
+    RouteHandler getRouteHandler() { result = rh }
+
+    predicate flowsTo(DataFlow::Node nd) { ref(DataFlow::TypeTracker::end()).flowsTo(nd) }
+
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      t.start() and
+      result = this
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
   }
 
@@ -93,16 +107,12 @@ module Koa {
   private class RequestSource extends HTTP::Servers::RequestSource {
     ContextExpr ctx;
 
-    RequestSource() {
-      asExpr().(PropAccess).accesses(ctx, "request")
-    }
+    RequestSource() { asExpr().(PropAccess).accesses(ctx, "request") }
 
     /**
      * Gets the route handler that provides this response.
      */
-    override RouteHandler getRouteHandler() {
-      result = ctx.getRouteHandler()
-    }
+    override RouteHandler getRouteHandler() { result = ctx.getRouteHandler() }
   }
 
   /**
@@ -112,16 +122,12 @@ module Koa {
   private class ResponseSource extends HTTP::Servers::ResponseSource {
     ContextExpr ctx;
 
-    ResponseSource() {
-      asExpr().(PropAccess).accesses(ctx, "response")
-    }
+    ResponseSource() { asExpr().(PropAccess).accesses(ctx, "response") }
 
     /**
      * Gets the route handler that provides this response.
      */
-    override RouteHandler getRouteHandler() {
-      result = ctx.getRouteHandler()
-    }
+    override RouteHandler getRouteHandler() { result = ctx.getRouteHandler() }
   }
 
   /**
@@ -135,9 +141,7 @@ module Koa {
     /**
      * Gets the route handler that provides this response.
      */
-    RouteHandler getRouteHandler() {
-      result = src.getRouteHandler()
-    }
+    RouteHandler getRouteHandler() { result = src.getRouteHandler() }
   }
 
   /**
@@ -162,56 +166,91 @@ module Koa {
     string kind;
 
     RequestInputAccess() {
-      exists (Expr request | request = rh.getARequestExpr() |
-        // `ctx.request.body`
-        kind = "body" and
-        this.asExpr().(PropAccess).accesses(request, "body")
-        or
-        exists (PropAccess query |
-          kind = "parameter" and
-          // `ctx.request.query.name`
-          query.accesses(request, "query")  and
-          this.asExpr().(PropAccess).accesses(query, _)
-        )
-        or
-        exists (string propName |
-          // `ctx.request.url`, `ctx.request.originalUrl`, or `ctx.request.href`
+      kind = "parameter" and
+      this = getAQueryParameterAccess(rh)
+      or
+      exists(Expr e | rh.getARequestOrContextExpr() = e |
+        // `ctx.request.url`, `ctx.request.originalUrl`, or `ctx.request.href`
+        exists(string propName |
           kind = "url" and
-          this.asExpr().(PropAccess).accesses(request, propName) |
-          propName = "url" or
-          propName = "originalUrl" or
+          this.asExpr().(PropAccess).accesses(e, propName)
+        |
+          propName = "url"
+          or
+          propName = "originalUrl"
+          or
           propName = "href"
         )
         or
-        exists (string propName, PropAccess headers |
+        // `ctx.request.body`
+        e instanceof RequestExpr and
+        kind = "body" and
+        this.asExpr().(PropAccess).accesses(e, "body")
+        or
+        // `ctx.cookies.get(<name>)`
+        exists(PropAccess cookies |
+          e instanceof ContextExpr and
+          kind = "cookie" and
+          cookies.accesses(e, "cookies") and
+          this = cookies.flow().(DataFlow::SourceNode).getAMethodCall("get")
+        )
+        or
+        exists(RequestHeaderAccess access | access = this |
+          rh = access.getRouteHandler() and
+          kind = "header"
+        )
+      )
+    }
+
+    override RouteHandler getRouteHandler() { result = rh }
+
+    override string getKind() { result = kind }
+
+    override predicate isUserControlledObject() { this = getAQueryParameterAccess(rh) }
+  }
+
+  private DataFlow::Node getAQueryParameterAccess(RouteHandler rh) {
+    // `ctx.query.name` or `ctx.request.query.name`
+    exists(PropAccess q |
+      q.accesses(rh.getARequestOrContextExpr(), "query") and
+      result = q.flow().(DataFlow::SourceNode).getAPropertyRead()
+    )
+  }
+
+  /**
+   * An access to an HTTP header on a Koa request.
+   */
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+    RouteHandler rh;
+
+    RequestHeaderAccess() {
+      exists(Expr e | e = rh.getARequestOrContextExpr() |
+        exists(string propName, PropAccess headers |
           // `ctx.request.header.<name>`, `ctx.request.headers.<name>`
-          kind = "header" and
-          headers.accesses(request, propName) and
-          this.asExpr().(PropAccess).accesses(headers, _) |
+          headers.accesses(e, propName) and
+          this = headers.flow().(DataFlow::SourceNode).getAPropertyRead()
+        |
           propName = "header" or
           propName = "headers"
         )
         or
         // `ctx.request.get(<name>)`
-        kind = "header" and
-        this.asExpr().(MethodCallExpr).calls(request, "get")
+        this.asExpr().(MethodCallExpr).calls(e, "get")
       )
+    }
+
+    override string getAHeaderName() {
+      result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
       or
-      exists (PropAccess cookies |
-        // `ctx.cookies.get(<name>)`
-        kind = "cookie" and
-        cookies.accesses(rh.getAContextExpr(), "cookies") and
-        this.asExpr().(MethodCallExpr).calls(cookies, "get")
+      exists(string name |
+        this.(DataFlow::CallNode).getArgument(0).mayHaveStringValue(name) and
+        result = name.toLowerCase()
       )
     }
 
-    override RouteHandler getRouteHandler() {
-      result = rh
-    }
+    override RouteHandler getRouteHandler() { result = rh }
 
-    override string getKind() {
-      result = kind
-    }
+    override string getKind() { result = "header" }
   }
 
   /**
@@ -226,13 +265,9 @@ module Koa {
       getMethodName() = "use"
     }
 
-    override DataFlow::SourceNode getARouteHandler() {
-      result.flowsToExpr(getArgument(0))
-    }
+    override DataFlow::SourceNode getARouteHandler() { result.flowsToExpr(getArgument(0)) }
 
-    override Expr getServer() {
-      result = server
-    }
+    override Expr getServer() { result = server }
   }
 
   /**
@@ -242,12 +277,26 @@ module Koa {
     RouteHandler rh;
 
     ResponseSendArgument() {
-      exists (DataFlow::PropWrite pwn |
-        pwn.writes(DataFlow::valueNode(rh.getAResponseExpr()), "body", DataFlow::valueNode(this))
+      exists(DataFlow::PropWrite pwn |
+        pwn
+            .writes(DataFlow::valueNode(rh.getAResponseOrContextExpr()), "body",
+              DataFlow::valueNode(this))
       )
     }
 
     override RouteHandler getRouteHandler() { result = rh }
   }
 
+  /**
+   * An invocation of the `redirect` method of an HTTP response object.
+   */
+  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+    RouteHandler rh;
+
+    RedirectInvocation() { this.(MethodCallExpr).calls(rh.getAResponseOrContextExpr(), "redirect") }
+
+    override Expr getUrlArgument() { result = getArgument(0) }
+
+    override RouteHandler getRouteHandler() { result = rh }
+  }
 }

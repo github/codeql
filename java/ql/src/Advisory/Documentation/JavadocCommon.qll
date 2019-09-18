@@ -1,25 +1,23 @@
 import java
 
 /** Holds if the given `Javadoc` contains a minimum of a few characters of text. */
-private
-predicate acceptableDocText(Javadoc j) {
+private predicate acceptableDocText(Javadoc j) {
   // Require minimum combined length of all non-tag elements.
   sum(JavadocElement e, int toSum |
     e = j.getAChild() and
     not e = j.getATag(_) and
     toSum = e.toString().length()
-    |
+  |
     toSum
   ) >= 5
 }
 
 /** Holds if the given `JavadocTag` contains a minimum of a few characters of text. */
-private
-predicate acceptableTag(JavadocTag t) {
+private predicate acceptableTag(JavadocTag t) {
   sum(JavadocElement e, int toSum |
     e = t.getAChild() and
     toSum = e.toString().length()
-    |
+  |
     toSum
   ) >= 5
 }
@@ -31,9 +29,7 @@ class DocuRefType extends RefType {
     this.isPublic()
   }
 
-  predicate hasAcceptableDocText() {
-    acceptableDocText(this.getDoc().getJavadoc())
-  }
+  predicate hasAcceptableDocText() { acceptableDocText(this.getDoc().getJavadoc()) }
 }
 
 /** A public (non-getter, non-setter) `Callable` that does not override another method. */
@@ -50,13 +46,12 @@ class DocuCallable extends Callable {
     not this.getLocation() = this.getDeclaringType().getLocation()
   }
 
-  predicate hasAcceptableDocText() {
-    acceptableDocText(this.getDoc().getJavadoc())
-  }
+  predicate hasAcceptableDocText() { acceptableDocText(this.getDoc().getJavadoc()) }
 
   string toMethodOrConstructorString() {
-    (this instanceof Method and result = "method") or
-    (this instanceof Constructor and result = "constructor")
+    this instanceof Method and result = "method"
+    or
+    this instanceof Constructor and result = "constructor"
   }
 }
 

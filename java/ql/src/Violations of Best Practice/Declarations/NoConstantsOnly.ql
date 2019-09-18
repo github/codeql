@@ -13,21 +13,18 @@
 import semmle.code.java.Member
 
 class ConstantField extends Field {
-  ConstantField() {
-    this.isStatic() and this.isFinal()
-  }
+  ConstantField() { this.isStatic() and this.isFinal() }
 }
 
 pragma[noinline]
-predicate typeWithConstantField(RefType t) {
-  exists(ConstantField f | f.getDeclaringType() = t)
-}
+predicate typeWithConstantField(RefType t) { exists(ConstantField f | f.getDeclaringType() = t) }
 
 class ConstantRefType extends RefType {
   ConstantRefType() {
     fromSource() and
     (
-      this instanceof Interface or
+      this instanceof Interface
+      or
       this instanceof Class and this.isAbstract()
     ) and
     typeWithConstantField(this) and
@@ -39,7 +36,8 @@ class ConstantRefType extends RefType {
   }
 
   string getKind() {
-    result = "interface" and this instanceof Interface or
+    result = "interface" and this instanceof Interface
+    or
     result = "class" and this instanceof Class
   }
 }
@@ -50,5 +48,4 @@ where
   sub.getASupertype() = t and
   not sub instanceof ConstantRefType and
   sub = sub.getSourceDeclaration()
-select sub, "Type " + sub.getName() + " implements constant " + t.getKind() + " $@.",
-       t, t.getName()
+select sub, "Type " + sub.getName() + " implements constant " + t.getKind() + " $@.", t, t.getName()

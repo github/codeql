@@ -57,3 +57,26 @@ static int foo(size_t *size)
   if (*size <= MAX_VAL) // BAD (pointless comparison) [NO LONGER REPORTED]
     *size = MAX_VAL;
 }
+
+// ODASA-7205
+int regression_test_01(unsigned long bb) {
+  if (bb + 1 == 0) { // GOOD [NO LONGER REPORTED]
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+int containsIfDef(int x) {
+  int result = 0;
+  if (x > 0) {
+    result = 1;
+  }
+#if _CONDITION
+  if (x < 0) {
+    result = -1;
+  }
+#endif
+
+  return result >= 0;
+}

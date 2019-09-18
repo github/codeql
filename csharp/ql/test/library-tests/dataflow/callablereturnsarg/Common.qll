@@ -1,21 +1,16 @@
 import csharp
-import semmle.code.csharp.dataflow.DefUse
-import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.controlflow.Guards
 
 class Configuration extends DataFlow::Configuration {
-  Configuration() {
-    this = "Configuration"
-  }
+  Configuration() { this = "Configuration" }
 
   override predicate isSource(DataFlow::Node source) { any() }
 
   override predicate isSink(DataFlow::Node sink) { any() }
 
   override predicate isBarrier(DataFlow::Node node) {
-    exists(EQExpr eq, Expr e |
-      node.asExpr().(GuardedExpr).isGuardedBy(eq, e, true) and
-      eq.getAnOperand() = e and
-      eq.getAnOperand() instanceof NullLiteral
+    exists(AbstractValues::NullValue nv | node.(GuardedDataFlowNode).mustHaveValue(nv) |
+      nv.isNull()
     )
   }
 }
@@ -29,7 +24,10 @@ predicate flowOutFromParameter(DataFlow::Configuration c, Parameter p) {
 }
 
 predicate flowOutFromParameterOutOrRef(DataFlow::Configuration c, Parameter p, int outRef) {
-  exists(DataFlow::ExprNode ne, Ssa::ExplicitDefinition def, DataFlow::ParameterNode np, Parameter outRefParameter |
+  exists(
+    DataFlow::ExprNode ne, Ssa::ExplicitDefinition def, DataFlow::ParameterNode np,
+    Parameter outRefParameter
+  |
     outRefParameter.isOutOrRef() and
     np.getParameter() = p and
     ne.getExpr() = def.getADefinition().getSource() and

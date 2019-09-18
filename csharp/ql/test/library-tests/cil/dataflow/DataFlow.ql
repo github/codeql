@@ -2,14 +2,12 @@ import csharp
 import semmle.code.csharp.dataflow.DataFlow::DataFlow
 
 class FlowConfig extends Configuration {
-  FlowConfig() { this="FlowConfig" }
+  FlowConfig() { this = "FlowConfig" }
 
-  override predicate isSource(Node source) {
-    source.asExpr() instanceof Literal
-  }
+  override predicate isSource(Node source) { source.asExpr() instanceof Literal }
 
   override predicate isSink(Node sink) {
-    exists(LocalVariable decl | sink.asExpr()=decl.getInitializer())
+    exists(LocalVariable decl | sink.asExpr() = decl.getInitializer())
   }
 }
 

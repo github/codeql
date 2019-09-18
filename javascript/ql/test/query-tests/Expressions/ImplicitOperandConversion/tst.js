@@ -87,4 +87,24 @@ function l() {
 
 1n + 1; // NOT OK, but not currently flagged
 
+(function(){
+    let sum = 0;
+    for ({value} of async(o)) {
+        sum += value;
+    }
+});
+
+(function(){
+    function f() {
+    }
+    f()|0;
+
+    unknown()|0;
+
+    function g() {
+    }
+    g()|0;
+    g();
+});
+
 // semmle-extractor-options: --experimental

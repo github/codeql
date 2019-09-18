@@ -1,3 +1,0 @@
-| todo_fixme.cpp:1:1:1:17 | // TODO: Thing 1. | TODO comment: Thing 1. |
-| todo_fixme.cpp:2:1:2:20 | /* TODO: Thing 2. */ | TODO comment: Thing 2. |
-| todo_fixme.cpp:3:1:5:3 | /**\n * TODO: Thing 3.\n */ | TODO comment: Thing 3. |

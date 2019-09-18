@@ -4,14 +4,17 @@
  * @kind problem
  * @id cpp/jpl-c/use-of-assertions-constant
  * @problem.severity warning
+ * @tags maintainability
+ *       reliability
+ *       external/jpl
  */
 
 import semmle.code.cpp.commons.Assertions
 
 from Assertion a, string value, string msg
-where value = a.getAsserted().getValue() and
-    if value.toInt() = 0 then
-        msg = "This assertion is always false."
-    else
-        msg = "This assertion is always true."
+where
+  value = a.getAsserted().getValue() and
+  if value.toInt() = 0
+  then msg = "This assertion is always false."
+  else msg = "This assertion is always true."
 select a.getAsserted(), msg

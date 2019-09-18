@@ -22,22 +22,25 @@ import javascript
 class OmittedArrayElement extends ArrayExpr {
   int idx;
 
-  OmittedArrayElement() {
-    idx = min(int i | elementIsOmitted(i))
-  }
+  OmittedArrayElement() { idx = min(int i | elementIsOmitted(i)) }
 
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    exists (Token pre, Location before, Location after |
-      idx = 0 and pre = getFirstToken() or
-      pre = getElement(idx-1).getLastToken().getNextToken() |
-      before = pre.getLocation() and after = pre.getNextToken().getLocation() and
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(Token pre, Location before, Location after |
+      idx = 0 and pre = getFirstToken()
+      or
+      pre = getElement(idx - 1).getLastToken().getNextToken()
+    |
+      before = pre.getLocation() and
+      after = pre.getNextToken().getLocation() and
       before.hasLocationInfo(filepath, startline, startcolumn, _, _) and
       after.hasLocationInfo(_, _, _, endline, endcolumn)
     )
@@ -45,5 +48,4 @@ class OmittedArrayElement extends ArrayExpr {
 }
 
 from OmittedArrayElement ae
-where not ae.getFile().getFileType().isTypeScript() // ignore quirks in TypeScript tokenizer
 select ae, "Avoid omitted array elements."

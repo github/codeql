@@ -51,3 +51,25 @@ try {
   new Error(computeSnarkyMessage(e)); // NOT OK
   new UnknownError(); // OK
 }
+
+function g() {
+	var o = {};
+
+	Object.defineProperty(o, "trivialGetter1", { get: function(){} });
+	o.trivialGetter1; // OK
+
+	Object.defineProperty(o, "trivialNonGetter1", "foo");
+	o.trivialNonGetter1; // NOT OK
+
+	var getterDef1 = { get: function(){} };
+	Object.defineProperty(o, "nonTrivialGetter1", getterDef1);
+	o.nonTrivialGetter1; // OK
+
+	var getterDef2 = { };
+	unknownPrepareGetter(getterDef2);
+	Object.defineProperty(o, "nonTrivialNonGetter1", getterDef2);
+	o.nonTrivialNonGetter1; // OK
+
+	Object.defineProperty(o, "nonTrivialGetter2", unknownGetterDef());
+	o.nonTrivialGetter2; // OK
+};

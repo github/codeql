@@ -12,7 +12,8 @@
 import Documentation
 
 from SourceMethodOrConstructor m, ParamXmlComment comment, string paramName
-where comment = getADeclarationXmlComment(m)
-and comment.getName(_)=paramName
-and not m.getAParameter().getName() = paramName
+where
+  comment = getADeclarationXmlComment(m) and
+  comment.getName(_) = paramName and
+  not m.getAParameter().getName() = paramName
 select m, "Documentation specifies an invalid parameter name $@.", comment, paramName

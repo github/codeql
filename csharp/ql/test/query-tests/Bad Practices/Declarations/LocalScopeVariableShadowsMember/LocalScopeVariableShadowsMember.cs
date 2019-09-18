@@ -56,4 +56,9 @@ class LocalScopeVariableShadowsMember
 
         public void M5(int f2) { } // GOOD
     }
+
+    class C4 : C
+    {
+        public C4(int f) { } // GOOD
+    }
 }

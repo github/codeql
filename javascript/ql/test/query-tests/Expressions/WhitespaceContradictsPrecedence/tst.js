@@ -44,3 +44,9 @@ function ok10(o, p) {
 
 // OK
 x==y ** 2;
+
+// NOT OK
+x  +  x >> 1
+
+// OK
+x +   x >> 1

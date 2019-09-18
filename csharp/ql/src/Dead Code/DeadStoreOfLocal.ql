@@ -20,8 +20,7 @@ import csharp
 Callable getACapturingCallableAncestor(LocalVariable v) {
   result = v.getACapturingCallable()
   or
-  exists(Callable mid |
-    mid = getACapturingCallableAncestor(v) |
+  exists(Callable mid | mid = getACapturingCallableAncestor(v) |
     result = mid.getEnclosingCallable() and
     not v.getEnclosingCallable() = result
   )
@@ -37,8 +36,7 @@ Expr getADelegateExpr(Callable c) {
  * Holds if `c` is a call where any delegate argument is evaluated immediately.
  */
 predicate nonEscapingCall(Call c) {
-  exists(string name |
-    c.getTarget().hasName(name) |
+  exists(string name | c.getTarget().hasName(name) |
     name = "ForEach" or
     name = "Count" or
     name = "Any" or
@@ -62,8 +60,7 @@ predicate nonEscapingCall(Call c) {
  * `v` may escape the local scope.
  */
 predicate mayEscape(LocalVariable v) {
-  exists(Callable c, Expr e, Expr succ |
-    c = getACapturingCallableAncestor(v) |
+  exists(Callable c, Expr e, Expr succ | c = getACapturingCallableAncestor(v) |
     e = getADelegateExpr(c) and
     DataFlow::localFlow(DataFlow::exprNode(e), DataFlow::exprNode(succ)) and
     not succ = any(DelegateCall dc).getDelegateExpr() and
@@ -80,25 +77,22 @@ class RelevantDefinition extends AssignableDefinition {
     this instanceof AssignableDefinitions::MutationDefinition
     or
     this instanceof AssignableDefinitions::TupleAssignmentDefinition
+    or
     // Discards in out assignments are only possible from C# 7 (2017), so we disable this case
     // for now
     //or
     //this.(AssignableDefinitions::OutRefDefinition).getTargetAccess().isOutArgument()
-    or
     this.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() = any(LocalVariableDeclExpr lvde |
-      lvde = any(SpecificCatchClause scc).getVariableDeclExpr() or
-      lvde = any(ForeachStmt fs).getVariableDeclExpr()
-    )
+        lvde = any(SpecificCatchClause scc).getVariableDeclExpr() or
+        lvde = any(ForeachStmt fs).getVariableDeclExpr()
+      )
     or
-    this instanceof AssignableDefinitions::IsPatternDefinition
-    or
-    this instanceof AssignableDefinitions::TypeCasePatternDefinition
+    this instanceof AssignableDefinitions::PatternDefinition
   }
 
   /** Holds if this assignment may be live. */
   private predicate isMaybeLive() {
-    exists(LocalVariable v |
-      v = this.getTarget() |
+    exists(LocalVariable v | v = this.getTarget() |
       // SSA definitions are only created for live variables
       this = any(Ssa::ExplicitDefinition ssaDef).getADefinition()
       or
@@ -117,10 +111,8 @@ class RelevantDefinition extends AssignableDefinition {
    */
   private predicate isDefaultLikeInitializer() {
     this.isInitializer() and
-    exists(Expr e |
-      e = this.getSource() |
-      exists(string val |
-        val = e.getValue() |
+    exists(Expr e | e = this.getSource() |
+      exists(string val | val = e.getValue() |
         val = "0" or
         val = "-1" or
         val = "" or
@@ -129,7 +121,10 @@ class RelevantDefinition extends AssignableDefinition {
       or
       e instanceof NullLiteral
       or
-      e = any(Field f | f.isStatic() and (f.isReadOnly() or f.isConst())).getAnAccess()
+      e = any(Field f |
+          f.isStatic() and
+          (f.isReadOnly() or f.isConst())
+        ).getAnAccess()
       or
       e instanceof DefaultValueExpr
       or
@@ -151,8 +146,7 @@ class RelevantDefinition extends AssignableDefinition {
       (
         not this.isDefaultLikeInitializer()
         or
-        not exists(AssignableDefinition other |
-          other.getTarget() = this.getTarget() |
+        not exists(AssignableDefinition other | other.getTarget() = this.getTarget() |
           other != this
         )
       )
@@ -161,6 +155,7 @@ class RelevantDefinition extends AssignableDefinition {
 }
 
 from RelevantDefinition def, LocalVariable v
-where v = def.getTarget()
-  and def.isDead()
+where
+  v = def.getTarget() and
+  def.isDead()
 select def, "This assignment to $@ is useless, since its value is never read.", v, v.getName()

@@ -13,22 +13,23 @@ module InsecureXML {
    */
   bindingset[version]
   private predicate isNetFrameworkBefore(Type t, string version) {
-    /*
-     * For assemblies compiled against framework versions before 4 the TargetFrameworkAttribute
-     * will not be present. In this case, we can revert back to the assembly version, which may not
-     * contain full minor version information.
-     */
+    // For assemblies compiled against framework versions before 4 the TargetFrameworkAttribute
+    // will not be present. In this case, we can revert back to the assembly version, which may not
+    // contain full minor version information.
     exists(string assemblyVersion |
-      assemblyVersion =  t.getALocation().(Assembly).getVersion().regexpCapture("([0-9]+\\.[0-9]+).*", 1) |
+      assemblyVersion = t
+            .getALocation()
+            .(Assembly)
+            .getVersion()
+            .regexpCapture("([0-9]+\\.[0-9]+).*", 1)
+    |
       assemblyVersion.toFloat() < version.toFloat() and
       // This method is only accurate when we're looking at versions before 4.0.
       assemblyVersion.toFloat() < 4.0
     )
     or
-    /*
-     * For 4.0 and above the TargetFrameworkAttribute should be present to provide detailed version
-     * information.
-     */
+    // For 4.0 and above the TargetFrameworkAttribute should be present to provide detailed version
+    // information.
     exists(TargetFrameworkAttribute tfa |
       tfa.hasElement(t) and
       tfa.isNetFramework() and
@@ -78,36 +79,39 @@ module InsecureXML {
    */
   private Expr getAValueForProp(ObjectCreation create, string prop) {
     // values set in object init
-    exists(MemberInitializer init | init = create.getInitializer().(ObjectInitializer).getAMemberInitializer() and
+    exists(MemberInitializer init |
+      init = create.getInitializer().(ObjectInitializer).getAMemberInitializer() and
       init.getLValue().(PropertyAccess).getTarget().hasName(prop) and
-      result = init.getRValue()) or
+      result = init.getRValue()
+    )
+    or
     // values set on var that create is assigned to
     exists(Assignment propAssign |
-      DataFlow::localFlow(DataFlow::exprNode(create), DataFlow::exprNode(propAssign.getLValue().(PropertyAccess).getQualifier())) and
+      DataFlow::localFlow(DataFlow::exprNode(create),
+        DataFlow::exprNode(propAssign.getLValue().(PropertyAccess).getQualifier())) and
       propAssign.getLValue().(PropertyAccess).getTarget().hasName(prop) and
-      result = propAssign.getRValue())
+      result = propAssign.getRValue()
+    )
   }
 
   module XmlSettings {
-
     /**
      * Holds if the given object creation constructs `XmlReaderSettings` with an insecure resolver.
      */
     predicate insecureResolverSettings(ObjectCreation creation, Expr evidence, string reason) {
-      creation.getObjectType().getQualifiedName() = "System.Xml.XmlReaderSettings"
-      and
+      creation.getObjectType().getQualifiedName() = "System.Xml.XmlReaderSettings" and
       (
         // one unsafe assignment to XmlResolver
-        exists(Expr xmlResolverVal |
-          xmlResolverVal = getAValueForProp(creation, "XmlResolver")|
+        exists(Expr xmlResolverVal | xmlResolverVal = getAValueForProp(creation, "XmlResolver") |
           not isSafeXmlResolver(xmlResolverVal) and evidence = xmlResolverVal
-        )
-        and reason = "insecure resolver set in settings"
+        ) and
+        reason = "insecure resolver set in settings"
         or
         // no assignments, and default is insecure before version 4.5
         isNetFrameworkBefore(creation.getObjectType(), "4.5") and
-        not exists(getAValueForProp(creation, "XmlResolver"))
-        and reason = "default settings resolver is insecure in versions before 4.5" and evidence = creation
+        not exists(getAValueForProp(creation, "XmlResolver")) and
+        reason = "default settings resolver is insecure in versions before 4.5" and
+        evidence = creation
       )
     }
 
@@ -115,97 +119,89 @@ module InsecureXML {
      * Holds if the given object creation constructs `XmlReaderSettings` with DTD processing enabled.
      */
     predicate dtdEnabledSettings(ObjectCreation creation, Expr evidence, string reason) {
-      creation.getObjectType().getQualifiedName() = "System.Xml.XmlReaderSettings"
-      and
+      creation.getObjectType().getQualifiedName() = "System.Xml.XmlReaderSettings" and
       (
-        (
-          exists(Expr dtdVal |
-            dtdVal = getAValueForProp(creation, "DtdProcessing")|
-            not isSafeDtdSetting(dtdVal) and evidence = dtdVal
-          )
-          and reason = "DTD processing enabled in settings"
-          // default is secure in versions >= 4
-        )
+        exists(Expr dtdVal | dtdVal = getAValueForProp(creation, "DtdProcessing") |
+          not isSafeDtdSetting(dtdVal) and evidence = dtdVal
+        ) and
+        reason = "DTD processing enabled in settings"
         or
+        // default is secure in versions >= 4
         isNetFrameworkBefore(creation.getObjectType(), "4.0") and
         (
           exists(Expr dtdVal |
             // different DTD setting before version 4
-            dtdVal = getAValueForProp(creation, "ProhibitDtd")|
+            dtdVal = getAValueForProp(creation, "ProhibitDtd")
+          |
             not isSafeDtdSetting(dtdVal) and evidence = dtdVal
-          )
-          and reason = "DTD procesing enabled in settings"
+          ) and
+          reason = "DTD procesing enabled in settings"
           or
-          not exists(getAValueForProp(creation, "ProhibitDtd"))
-          and reason = "DTD processing is enabled by default in versions before 4.0" and evidence = creation
+          not exists(getAValueForProp(creation, "ProhibitDtd")) and
+          reason = "DTD processing is enabled by default in versions before 4.0" and
+          evidence = creation
         )
       )
     }
   }
 
   module XmlReader {
+    private import semmle.code.csharp.dataflow.DataFlow2
 
     class InsecureXmlReaderCreate extends InsecureXmlProcessing, MethodCall {
-      InsecureXmlReaderCreate() {
-        this.getTarget().hasQualifiedName("System.Xml.XmlReader.Create")
-      }
+      InsecureXmlReaderCreate() { this.getTarget().hasQualifiedName("System.Xml.XmlReader.Create") }
 
       /**
        * Gets the `XmlReaderSettings` argument to to this call, if any.
        */
       Expr getSettings() {
-        result = this.getAnArgument() and result.getType().(RefType).getABaseType*().hasQualifiedName("System.Xml.XmlReaderSettings")
+        result = this.getAnArgument() and
+        result.getType().(RefType).getABaseType*().hasQualifiedName("System.Xml.XmlReaderSettings")
       }
 
       override predicate isUnsafe(string reason) {
         exists(string dtdReason, string resolverReason |
-          dtdEnabled(dtdReason, _)
-          and
-          insecureResolver(resolverReason, _)
-          and
+          dtdEnabled(dtdReason, _) and
+          insecureResolver(resolverReason, _) and
           reason = dtdReason + ", " + resolverReason
         )
       }
 
       private predicate dtdEnabled(string reason, Expr evidence) {
-        (
-          reason="DTD processing is enabled by default in versions < 4.0" and
-          evidence = this and
-          not exists(this.getSettings()) and
-          isNetFrameworkBefore(this.(MethodCall).getTarget().getDeclaringType(), "4.0")
-        )
+        reason = "DTD processing is enabled by default in versions < 4.0" and
+        evidence = this and
+        not exists(this.getSettings()) and
+        isNetFrameworkBefore(this.(MethodCall).getTarget().getDeclaringType(), "4.0")
         or
         // bad settings flow here
-        (
-          exists(SettingsDataFlowConfig flow, ObjectCreation settings |
-            flow.hasFlow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings()))
-            and
-            XmlSettings::dtdEnabledSettings(settings, evidence, reason)
-          )
+        exists(SettingsDataFlowConfig flow, ObjectCreation settings |
+          flow.hasFlow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
+          XmlSettings::dtdEnabledSettings(settings, evidence, reason)
         )
       }
 
       private predicate insecureResolver(string reason, Expr evidence) {
         // bad settings flow here
-        (
-          exists(SettingsDataFlowConfig flow, ObjectCreation settings |
-            flow.hasFlow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings()))
-            and
-            XmlSettings::insecureResolverSettings(settings, evidence, reason)
-          )
+        exists(SettingsDataFlowConfig flow, ObjectCreation settings |
+          flow.hasFlow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
+          XmlSettings::insecureResolverSettings(settings, evidence, reason)
         )
         // default is secure
       }
     }
 
-    private class SettingsDataFlowConfig extends DataFlow::Configuration {
-      SettingsDataFlowConfig() {
-        this = "SettingsDataFlowConfig"
-      }
+    private class SettingsDataFlowConfig extends DataFlow2::Configuration {
+      SettingsDataFlowConfig() { this = "SettingsDataFlowConfig" }
 
       override predicate isSource(DataFlow::Node source) {
         // flow from places where we construct an XmlReaderSettings
-        source.asExpr().(ObjectCreation).getType().(RefType).getABaseType*().hasQualifiedName("System.Xml.XmlReaderSettings")
+        source
+            .asExpr()
+            .(ObjectCreation)
+            .getType()
+            .(RefType)
+            .getABaseType*()
+            .hasQualifiedName("System.Xml.XmlReaderSettings")
       }
 
       override predicate isSink(DataFlow::Node sink) {
@@ -221,56 +217,52 @@ module InsecureXML {
       }
 
       override predicate isUnsafe(string reason) {
-        (
-          not exists(Expr xmlResolverVal |
-            isSafeXmlResolver(xmlResolverVal)
-            and xmlResolverVal = getAValueForProp(this, "XmlResolver")
-          )
-          and not exists(Expr dtdVal |
-            isSafeDtdSetting(dtdVal) and
-            dtdVal = getAValueForProp(this, "DtdProcessing")
-          )
-          // This was made safe by default in 4.5.2, despite what the documentation says
-          and isNetFrameworkBefore(this.getObjectType(), "4.5.2")
-          and reason = "DTD processing is enabled by default, and resolver is insecure by default"
-        )
+        not exists(Expr xmlResolverVal |
+          isSafeXmlResolver(xmlResolverVal) and
+          xmlResolverVal = getAValueForProp(this, "XmlResolver")
+        ) and
+        not exists(Expr dtdVal |
+          isSafeDtdSetting(dtdVal) and
+          dtdVal = getAValueForProp(this, "DtdProcessing")
+        ) and
+        // This was made safe by default in 4.5.2, despite what the documentation says
+        isNetFrameworkBefore(this.getObjectType(), "4.5.2") and
+        reason = "DTD processing is enabled by default, and resolver is insecure by default"
         or
-        (
-          exists(Expr xmlResolverVal |
-            not isSafeXmlResolver(xmlResolverVal)
-            and xmlResolverVal = getAValueForProp(this, "XmlResolver")
-          )
-          and exists(Expr dtdVal |
-            not isSafeDtdSetting(dtdVal) and
-            dtdVal = getAValueForProp(this, "DtdProcessing")
-          )
-          and reason = "DTD processing is enabled with an insecure resolver"
-        )
+        exists(Expr xmlResolverVal |
+          not isSafeXmlResolver(xmlResolverVal) and
+          xmlResolverVal = getAValueForProp(this, "XmlResolver")
+        ) and
+        exists(Expr dtdVal |
+          not isSafeDtdSetting(dtdVal) and
+          dtdVal = getAValueForProp(this, "DtdProcessing")
+        ) and
+        reason = "DTD processing is enabled with an insecure resolver"
       }
     }
   }
 
   module XmlDocument {
-
     /**
      * A call to `Load` or `LoadXml` on `XmlDocument`s that doesn't appear to have a safe `XmlResolver` set.
      */
     class InsecureXmlDocument extends InsecureXmlProcessing, MethodCall {
       InsecureXmlDocument() {
-        this.getTarget().hasQualifiedName("System.Xml.XmlDocument.Load")
-        or this.getTarget().hasQualifiedName("System.Xml.XmlDocument.LoadXml")
+        this.getTarget().hasQualifiedName("System.Xml.XmlDocument.Load") or
+        this.getTarget().hasQualifiedName("System.Xml.XmlDocument.LoadXml")
       }
 
-    override predicate isUnsafe(string reason) {
+      override predicate isUnsafe(string reason) {
         exists(ObjectCreation creation |
-          DataFlow::localFlow(DataFlow::exprNode(creation), DataFlow::exprNode(this.getQualifier())) |
+          DataFlow::localFlow(DataFlow::exprNode(creation), DataFlow::exprNode(this.getQualifier()))
+        |
           not exists(Expr xmlResolverVal |
-            isSafeXmlResolver(xmlResolverVal)
-            and xmlResolverVal = getAValueForProp(creation, "XmlResolver")
+            isSafeXmlResolver(xmlResolverVal) and
+            xmlResolverVal = getAValueForProp(creation, "XmlResolver")
           )
-        )
-        and isNetFrameworkBefore(this.getQualifier().getType(), "4.6")
-        and reason = "resolver is insecure by default in versions before 4.6"
+        ) and
+        isNetFrameworkBefore(this.getQualifier().getType(), "4.6") and
+        reason = "resolver is insecure by default in versions before 4.6"
       }
     }
   }

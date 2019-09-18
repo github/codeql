@@ -1,4 +1,2 @@
-| T | Array.T in global scope | Array in global scope |
-| T | ConcatArray.T in global scope | ConcatArray in global scope |
 | T | GenericMethods.T in global scope | GenericMethods in global scope |
 | T | Repeated.T in global scope | Repeated in global scope |

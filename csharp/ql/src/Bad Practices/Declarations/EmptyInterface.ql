@@ -13,7 +13,8 @@
 import csharp
 
 from Interface i
-where not exists(i.getAMember())
-  and i.isSourceDeclaration()
-  and count(Interface base | i.getABaseInterface() = base) <= 1
+where
+  not exists(i.getAMember()) and
+  i.isSourceDeclaration() and
+  count(Interface base | i.getABaseInterface() = base) <= 1
 select i, "Interface '" + i.getName() + "' does not declare any members."

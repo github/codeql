@@ -22,4 +22,7 @@ memory after the function has already returned will have undefined results. </p>
 
 
 </example>
+
+<references>
+</references>
 </qhelp>

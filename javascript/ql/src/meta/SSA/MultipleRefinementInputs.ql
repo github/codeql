@@ -10,7 +10,8 @@
 import javascript
 
 from SsaRefinementNode ref, int n, SsaDefinition input
-where n = count(ref.getAnInput()) and
-      n > 1 and
-      input = ref.getAnInput()
+where
+  n = count(ref.getAnInput()) and
+  n > 1 and
+  input = ref.getAnInput()
 select ref, "Refinement node has " + n + " inputs: $@.", input, input.toString()

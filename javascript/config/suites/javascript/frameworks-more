@@ -23,3 +23,4 @@
 + semmlecode-javascript-queries/React/UnusedOrUndefinedStateProperty.ql: /Frameworks/React
 + semmlecode-javascript-queries/Electron/DisablingWebSecurity.ql: /Frameworks/Electron
 + semmlecode-javascript-queries/Electron/AllowRunningInsecureContent.ql: /Frameworks/Electron
++ semmlecode-javascript-queries/Vue/ArrowMethodOnVueInstance.ql: /Frameworks/Vue

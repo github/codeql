@@ -7,12 +7,14 @@
  * @id java/multiple-statements-on-same-line
  * @tags maintainability
  */
+
 import java
 
 predicate lineDefinesEnum(File f, int line) {
   exists(Location l |
     exists(EnumType e | e.getLocation() = l) or
-    exists(EnumConstant e | e.getLocation() = l) |
+    exists(EnumConstant e | e.getLocation() = l)
+  |
     f = l.getFile() and line = l.getStartLine()
   )
 }

@@ -9,11 +9,14 @@
  * @tags testability
  *       complexity
  */
+
 import java
 
-from CompilationUnit f, float  n
-where n = avg(Callable c, int toAvg |
-        c.getCompilationUnit() = f and toAvg = c.getMetrics().getCyclomaticComplexity() |
-        toAvg
-      )
+from CompilationUnit f, float n
+where
+  n = avg(Callable c, int toAvg |
+      c.getCompilationUnit() = f and toAvg = c.getMetrics().getCyclomaticComplexity()
+    |
+      toAvg
+    )
 select f, n

@@ -2,7 +2,7 @@
  * @name Uncontrolled data in arithmetic expression
  * @description Arithmetic operations on uncontrolled data that is not validated can cause
  *              overflows.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision medium
  * @id java/uncontrolled-arithmetic
@@ -10,10 +10,12 @@
  *       external/cwe/cwe-190
  *       external/cwe/cwe-191
  */
+
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SecurityTests
 import ArithmeticCommon
+import DataFlow::PathGraph
 
 class TaintSource extends DataFlow::ExprNode {
   TaintSource() {
@@ -29,7 +31,8 @@ class TaintSource extends DataFlow::ExprNode {
       ) and
       def.getNumberOfParameters() = 0 and
       def.getDeclaringType().hasQualifiedName("java.util", "Random")
-    ) or
+    )
+    or
     // ... or this is the array parameter of `nextBytes`, which is filled with random bytes.
     exists(MethodAccess m, Method def |
       m.getAnArgument() = this.getExpr() and
@@ -41,29 +44,35 @@ class TaintSource extends DataFlow::ExprNode {
   }
 }
 
-predicate sink(ArithExpr exp, VarAccess tainted, string effect) {
-  exp.getAnOperand() = tainted and
-  (
-    not guardedAgainstUnderflow(exp, tainted) and effect = "underflow" or
-    not guardedAgainstOverflow(exp, tainted) and effect = "overflow"
-  ) and
-  // Exclude widening conversions of tainted values due to binary numeric promotion (JLS 5.6.2)
-  // unless there is an enclosing cast down to a narrower type.
-  narrowerThanOrEqualTo(exp, tainted.getType()) and
-  not overflowIrrelevant(exp) and
-  not exp.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
-}
+class ArithmeticUncontrolledOverflowConfig extends TaintTracking::Configuration {
+  ArithmeticUncontrolledOverflowConfig() { this = "ArithmeticUncontrolledOverflowConfig" }
 
-class ArithmeticUncontrolledFlowConfig extends TaintTracking::Configuration {
-  ArithmeticUncontrolledFlowConfig() { this = "ArithmeticUncontrolledFlowConfig" }
   override predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
-  override predicate isSink(DataFlow::Node sink) { sink(_, sink.asExpr(), _) }
-  override predicate isSanitizer(DataFlow::Node n) { n.getType() instanceof BooleanType }
+
+  override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
+
+  override predicate isSanitizer(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-from ArithExpr exp, VarAccess tainted, TaintSource origin, string effect, ArithmeticUncontrolledFlowConfig conf
+class ArithmeticUncontrolledUnderflowConfig extends TaintTracking::Configuration {
+  ArithmeticUncontrolledUnderflowConfig() { this = "ArithmeticUncontrolledUnderflowConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
+
+  override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
+
+  override predicate isSanitizer(DataFlow::Node n) { underflowBarrier(n) }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect
 where
-  conf.hasFlow(origin, DataFlow::exprNode(tainted)) and
-  sink(exp, tainted, effect)
-select exp, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
-  origin, "Uncontrolled value"
+  any(ArithmeticUncontrolledOverflowConfig c).hasFlowPath(source, sink) and
+  overflowSink(exp, sink.getNode().asExpr()) and
+  effect = "overflow"
+  or
+  any(ArithmeticUncontrolledUnderflowConfig c).hasFlowPath(source, sink) and
+  underflowSink(exp, sink.getNode().asExpr()) and
+  effect = "underflow"
+select exp, source, sink,
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+  source.getNode(), "Uncontrolled value"

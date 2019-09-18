@@ -9,9 +9,9 @@
  * @tags changeability
  *       modularity
  */
+
 import java
 
 from RefType t
 where t.fromSource()
-select t, t.getMetrics().getInheritanceDepth() as n
-order by n desc
+select t, t.getMetrics().getInheritanceDepth() as n order by n desc

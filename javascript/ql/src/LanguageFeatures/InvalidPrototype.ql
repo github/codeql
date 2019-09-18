@@ -32,8 +32,7 @@ predicate isProto(DataFlow::AnalyzedNode e) {
 }
 
 from DataFlow::AnalyzedNode proto
-where isProto(proto) and
-      forex (InferredType tp | tp = proto.getAType() |
-        tp instanceof PrimitiveType and tp != TTNull()
-      )
+where
+  isProto(proto) and
+  forex(InferredType tp | tp = proto.getAType() | tp instanceof PrimitiveType and tp != TTNull())
 select proto, "Values of type " + proto.ppTypes() + " cannot be used as prototypes."

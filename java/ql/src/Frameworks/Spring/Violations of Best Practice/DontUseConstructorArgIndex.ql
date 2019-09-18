@@ -9,6 +9,7 @@
  * @tags maintainability
  *       frameworks/spring
  */
+
 import java
 import semmle.code.java.frameworks.spring.Spring
 

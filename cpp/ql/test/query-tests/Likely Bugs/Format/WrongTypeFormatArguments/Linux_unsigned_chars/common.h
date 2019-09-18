@@ -12,6 +12,7 @@ typedef struct _IO_FILE FILE;
 extern int printf(const char *fmt, ...);
 extern int vprintf(const char *fmt, va_list ap);
 extern int vfprintf(FILE *stream, const char *format, va_list ap);
+extern int wprintf(const wchar_t *format, ...);
 
 #include "printf1.h"
 #include "real_world.h"

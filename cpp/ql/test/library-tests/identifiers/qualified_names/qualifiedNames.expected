@@ -1,0 +1,68 @@
+| file://:0:0:0:0 | __va_list_tag | __va_list_tag |  |  | __va_list_tag | __va_list_tag |
+| file://:0:0:0:0 | fp_offset | __va_list_tag::fp_offset |  | __va_list_tag | fp_offset | (not global) |
+| file://:0:0:0:0 | gp_offset | __va_list_tag::gp_offset |  | __va_list_tag | gp_offset | (not global) |
+| file://:0:0:0:0 | operator= | __va_list_tag::operator= |  | __va_list_tag | operator= | (not global) |
+| file://:0:0:0:0 | operator= | __va_list_tag::operator= |  | __va_list_tag | operator= | (not global) |
+| file://:0:0:0:0 | overflow_arg_area | __va_list_tag::overflow_arg_area |  | __va_list_tag | overflow_arg_area | (not global) |
+| file://:0:0:0:0 | reg_save_area | __va_list_tag::reg_save_area |  | __va_list_tag | reg_save_area | (not global) |
+| qualifiedNames.cpp:3:6:3:23 | overloadedFunction | overloadedFunction |  |  | overloadedFunction | overloadedFunction |
+| qualifiedNames.cpp:4:6:4:23 | overloadedFunction | overloadedFunction |  |  | overloadedFunction | overloadedFunction |
+| qualifiedNames.cpp:6:6:6:9 | Enum | Enum |  |  | Enum | Enum |
+| qualifiedNames.cpp:6:13:6:24 | enumConstant | Enum::enumConstant |  | Enum | enumConstant | (not global) |
+| qualifiedNames.cpp:7:12:7:20 | EnumClass | EnumClass |  |  | EnumClass | EnumClass |
+| qualifiedNames.cpp:7:24:7:40 | classEnumConstant | EnumClass::classEnumConstant |  | EnumClass | classEnumConstant | (not global) |
+| qualifiedNames.cpp:9:7:9:7 | C | C |  |  | C | C |
+| qualifiedNames.cpp:9:7:9:7 | operator= | C::operator= |  | C | operator= | (not global) |
+| qualifiedNames.cpp:9:7:9:7 | operator= | C::operator= |  | C | operator= | (not global) |
+| qualifiedNames.cpp:10:8:10:22 | privateFunction | C::privateFunction |  | C | privateFunction | (not global) |
+| qualifiedNames.cpp:12:8:12:21 | publicFunction | C::publicFunction |  | C | publicFunction | (not global) |
+| qualifiedNames.cpp:14:8:14:11 | Enum | C::Enum |  | C | Enum | (not global) |
+| qualifiedNames.cpp:14:15:14:26 | enumConstant | C::Enum::enumConstant |  | C::Enum | enumConstant | (not global) |
+| qualifiedNames.cpp:15:14:15:22 | EnumClass | C::EnumClass |  | C | EnumClass | (not global) |
+| qualifiedNames.cpp:15:26:15:42 | classEnumConstant | C::EnumClass::classEnumConstant |  | C::EnumClass | classEnumConstant | (not global) |
+| qualifiedNames.cpp:17:9:17:9 | Nested | C::Nested::Nested |  | C::Nested | Nested | (not global) |
+| qualifiedNames.cpp:17:9:17:9 | Nested | C::Nested::Nested |  | C::Nested | Nested | (not global) |
+| qualifiedNames.cpp:17:9:17:9 | operator= | C::Nested::operator= |  | C::Nested | operator= | (not global) |
+| qualifiedNames.cpp:17:9:17:9 | operator= | C::Nested::operator= |  | C::Nested | operator= | (not global) |
+| qualifiedNames.cpp:17:9:17:14 | Nested | C::Nested |  | C | Nested | (not global) |
+| qualifiedNames.cpp:18:18:18:31 | FriendOfNested | FriendOfNested |  |  | FriendOfNested | FriendOfNested |
+| qualifiedNames.cpp:19:5:19:10 | Nested | C::Nested::Nested |  | C::Nested | Nested | (not global) |
+| qualifiedNames.cpp:21:10:21:13 | Enum | C::Nested::Enum |  | C::Nested | Enum | (not global) |
+| qualifiedNames.cpp:21:17:21:28 | enumConstant | C::Nested::Enum::enumConstant |  | C::Nested::Enum | enumConstant | (not global) |
+| qualifiedNames.cpp:25:5:25:8 | main | main |  |  | main | main |
+| qualifiedNames.cpp:33:7:33:7 | f | ns::f | ns |  | f | (not global) |
+| qualifiedNames.cpp:34:9:34:9 | C | ns::C | ns |  | C | (not global) |
+| qualifiedNames.cpp:37:16:37:16 | operator= | typedefStructName::operator= |  | typedefStructName | operator= | (not global) |
+| qualifiedNames.cpp:37:16:37:16 | operator= | typedefStructName::operator= |  | typedefStructName | operator= | (not global) |
+| qualifiedNames.cpp:37:16:37:32 | typedefStructName | typedefStructName |  |  | typedefStructName | typedefStructName |
+| qualifiedNames.cpp:38:7:38:17 | structField | typedefStructName::structField |  | typedefStructName | structField | (not global) |
+| qualifiedNames.cpp:39:3:39:19 | typedefStructName | typedefStructName |  |  | typedefStructName | typedefStructName |
+| qualifiedNames.cpp:39:23:39:40 | ptypedefStructName | ptypedefStructName |  |  | ptypedefStructName | ptypedefStructName |
+| qualifiedNames.cpp:41:11:41:18 | typedefC | typedefC |  |  | typedefC | typedefC |
+| qualifiedNames.cpp:45:10:45:10 | operator= | templates::TemplateClass<unsigned long>::operator= | templates | TemplateClass | operator= | (not global) |
+| qualifiedNames.cpp:45:10:45:10 | operator= | templates::TemplateClass<unsigned long>::operator= | templates | TemplateClass | operator= | (not global) |
+| qualifiedNames.cpp:45:10:45:22 | TemplateClass<T> | templates::TemplateClass<T> | templates |  | TemplateClass | (not global) |
+| qualifiedNames.cpp:45:10:45:22 | TemplateClass<T> | templates::TemplateClass<T> | templates |  | TemplateClass | (not global) |
+| qualifiedNames.cpp:45:10:45:22 | TemplateClass<unsigned long> | templates::TemplateClass<unsigned long> | templates |  | TemplateClass | (not global) |
+| qualifiedNames.cpp:46:7:46:7 | x | templates::TemplateClass<T>::x | templates | TemplateClass | x | (not global) |
+| qualifiedNames.cpp:46:7:46:7 | x | templates::TemplateClass<unsigned long>::x | templates | TemplateClass | x | (not global) |
+| qualifiedNames.cpp:49:14:49:14 | getMember | templates::TemplateClass<unsigned long>::getMember | templates | TemplateClass | getMember | (not global) |
+| qualifiedNames.cpp:49:14:49:22 | getMember | templates::TemplateClass<T>::getMember | templates | TemplateClass | getMember | (not global) |
+| qualifiedNames.cpp:49:14:49:22 | getMember | templates::TemplateClass<unsigned long>::getMember | templates | TemplateClass | getMember | (not global) |
+| qualifiedNames.cpp:53:12:53:12 | getMember | templates::getMember | templates |  | getMember | (not global) |
+| qualifiedNames.cpp:53:12:53:20 | getMember | templates::getMember | templates |  | getMember | (not global) |
+| qualifiedNames.cpp:57:8:57:10 | use | templates::use | templates |  | use | (not global) |
+| qualifiedNames.cpp:65:10:65:32 | functionInTwoNamespaces | std::cpp17::functionInTwoNamespaces | std |  | functionInTwoNamespaces | (not global) |
+| qualifiedNames.cpp:65:10:65:32 | functionInTwoNamespaces | std::cpp17::functionInTwoNamespaces | std::cpp17 |  | functionInTwoNamespaces | (not global) |
+| qualifiedNames.cpp:66:11:66:11 | operator= | std::cpp17::classInTwoNameSpaces::operator= | std | classInTwoNameSpaces | operator= | (not global) |
+| qualifiedNames.cpp:66:11:66:11 | operator= | std::cpp17::classInTwoNameSpaces::operator= | std | classInTwoNameSpaces | operator= | (not global) |
+| qualifiedNames.cpp:66:11:66:11 | operator= | std::cpp17::classInTwoNameSpaces::operator= | std::cpp17 | classInTwoNameSpaces | operator= | (not global) |
+| qualifiedNames.cpp:66:11:66:11 | operator= | std::cpp17::classInTwoNameSpaces::operator= | std::cpp17 | classInTwoNameSpaces | operator= | (not global) |
+| qualifiedNames.cpp:66:11:66:30 | classInTwoNameSpaces | std::cpp17::classInTwoNameSpaces | std |  | classInTwoNameSpaces | (not global) |
+| qualifiedNames.cpp:66:11:66:30 | classInTwoNameSpaces | std::cpp17::classInTwoNameSpaces | std::cpp17 |  | classInTwoNameSpaces | (not global) |
+| qualifiedNames.cpp:70:14:70:37 | functionInFourNamespaces | std::cpp17::implementation::ns::functionInFourNamespaces | std::cpp17::implementation::ns |  | functionInFourNamespaces | (not global) |
+| qualifiedNames.cpp:70:14:70:37 | functionInFourNamespaces | std::cpp17::implementation::ns::functionInFourNamespaces | std::cpp17::ns |  | functionInFourNamespaces | (not global) |
+| qualifiedNames.cpp:70:14:70:37 | functionInFourNamespaces | std::cpp17::implementation::ns::functionInFourNamespaces | std::implementation::ns |  | functionInFourNamespaces | (not global) |
+| qualifiedNames.cpp:70:14:70:37 | functionInFourNamespaces | std::cpp17::implementation::ns::functionInFourNamespaces | std::ns |  | functionInFourNamespaces | (not global) |
+| qualifiedNames.cpp:78:7:78:15 | void_fptr | void_fptr |  |  | void_fptr | void_fptr |
+| qualifiedNames.cpp:79:11:79:14 | ptrs | ptrs |  |  | ptrs | ptrs |

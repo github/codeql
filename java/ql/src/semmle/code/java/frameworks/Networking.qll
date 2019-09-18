@@ -5,15 +5,11 @@
 import semmle.code.java.Type
 
 class TypeUrlConnection extends RefType {
-  TypeUrlConnection() {
-    hasQualifiedName("java.net", "URLConnection")
-  }
+  TypeUrlConnection() { hasQualifiedName("java.net", "URLConnection") }
 }
 
 class TypeSocket extends RefType {
-  TypeSocket() {
-    hasQualifiedName("java.net", "Socket")
-  }
+  TypeSocket() { hasQualifiedName("java.net", "Socket") }
 }
 
 class URLConnectionGetInputStreamMethod extends Method {

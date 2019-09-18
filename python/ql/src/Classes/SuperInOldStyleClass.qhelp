@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The ability to access inherited methods that have been overridden in a class using <code>super()</code> 
+is supported only by new-style classes. When you use the <code>super()</code> function in an old-style 
+class it fails.</p>
+
+</overview>
+<recommendation>
+<p>If you want to access inherited methods using the <code>super()</code> built-in, then ensure that 
+the class is a new-style class. You can convert an old-style class to a new-style class by inheriting 
+from <code>object</code>. Alternatively, you can call the <code>__init__</code> method of the superclass 
+directly from an old-style class using: <code>BaseClass.__init__(...)</code>.</p>
+
+</recommendation>
+<example>
+<p>In the following example, <code>PythonModule</code> is an old-style class as it inherits from another 
+old-style class. If the <code>_ModuleIteratorHelper</code> class cannot be converted into a new-style 
+class, then the call to <code>super()</code> must be replaced. The <code>PythonModule2</code> class 
+demonstrates the correct way to call a superclass from an old-style class.</p>
+
+<sample src="SuperInOldStyleClass.py" />
+
+
+</example>
+<references>
+
+<li>Python Glossary: <a href="http://docs.python.org/glossary.html#term-new-style-class">New-style class</a>.</li>
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#newstyle">New-style and classic 
+classes</a>.</li>
+<li>Python Standard Library: <a href="http://docs.python.org/library/functions.html#super">super</a>.</li>
+
+
+</references>
+</qhelp>

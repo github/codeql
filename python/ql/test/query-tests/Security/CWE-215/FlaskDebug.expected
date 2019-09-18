@@ -1,0 +1,4 @@
+| test.py:10:1:10:19 | ControlFlowNode for Attribute() | A Flask app appears to be run in debug mode. This may allow an attacker to run arbitrary code through the debugger. |
+| test.py:25:1:25:20 | ControlFlowNode for Attribute() | A Flask app appears to be run in debug mode. This may allow an attacker to run arbitrary code through the debugger. |
+| test.py:29:1:29:20 | ControlFlowNode for Attribute() | A Flask app appears to be run in debug mode. This may allow an attacker to run arbitrary code through the debugger. |
+| test.py:37:1:37:18 | ControlFlowNode for runapp() | A Flask app appears to be run in debug mode. This may allow an attacker to run arbitrary code through the debugger. |

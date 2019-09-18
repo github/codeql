@@ -9,11 +9,12 @@
  * @tags maintainability
  *       documentation
  */
+
 import java
 
 from RefType t, int n
-where t.fromSource()
-  and n = (100 * t.getMetrics().getNumberOfCommentLines()) /
-          (t.getMetrics().getNumberOfCommentLines() + t.getMetrics().getNumberOfLinesOfCode())
-select t, n
-order by n desc
+where
+  t.fromSource() and
+  n = (100 * t.getMetrics().getNumberOfCommentLines()) /
+      (t.getMetrics().getNumberOfCommentLines() + t.getMetrics().getNumberOfLinesOfCode())
+select t, n order by n desc

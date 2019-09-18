@@ -1,0 +1,1 @@
+| functions_test.py:73:5:73:23 | Function __init__ | __init__ method is a generator. |

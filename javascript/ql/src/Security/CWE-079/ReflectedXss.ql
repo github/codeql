@@ -2,7 +2,7 @@
  * @name Reflected cross-site scripting
  * @description Writing user input directly to an HTTP response allows for
  *              a cross-site scripting vulnerability.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/reflected-xss
@@ -13,8 +13,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.ReflectedXss::ReflectedXss
+import DataFlow::PathGraph
 
-from Configuration xss, DataFlow::Node source, DataFlow::Node sink
-where xss.hasFlow(source, sink)
-select sink, "Cross-site scripting vulnerability due to $@.",
-       source, "user-provided value"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
+  source.getNode(), "user-provided value"

@@ -7,17 +7,15 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg min max
+ * @tags external-data
+ * @deprecated
  */
+
 import cpp
 import external.VCS
 
-int committedFiles(Commit commit) {
-  result = count(commit.getAnAffectedFile())
-}
+int committedFiles(Commit commit) { result = count(commit.getAnAffectedFile()) }
 
 from File f
 where exists(f.getMetrics().getNumberOfLinesOfCode())
-select f, avg(Commit commit |
-              commit.getAnAffectedFile() = f |
-              committedFiles(commit) - 1)
-
+select f, avg(Commit commit | commit.getAnAffectedFile() = f | committedFiles(commit) - 1)

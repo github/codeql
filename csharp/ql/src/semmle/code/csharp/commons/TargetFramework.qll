@@ -25,9 +25,7 @@ class TargetFrameworkAttribute extends Attribute {
    * ```
    * is `".NETFramework,Version=v4.6.1"`.
    */
-  string getFrameworkName() {
-    result = this.getArgument(0).getValue()
-  }
+  string getFrameworkName() { result = this.getArgument(0).getValue() }
 
   private string frameworkCapture(int n) {
     result = this.getFrameworkName().regexpCapture("([^,]+),Version=v(.+)", n)
@@ -40,9 +38,7 @@ class TargetFrameworkAttribute extends Attribute {
    * ```
    * is `".NETFramework"`. Other framework types include `".NETStandard"` and `".NETCoreApp"`.
    */
-  string getFrameworkType() {
-    result = this.frameworkCapture(1)
-  }
+  string getFrameworkType() { result = this.frameworkCapture(1) }
 
   /**
    * Gets the framework version of this attribute. For example, the framework version of
@@ -52,29 +48,20 @@ class TargetFrameworkAttribute extends Attribute {
    * is `"4.6.1"`. Note that you can use the `Version` class to compare versions, for example
    * `target.getFrameworkVersion().isEarlierThan("4.6")`.
    */
-  Version getFrameworkVersion() {
-    result = this.frameworkCapture(2)
-  }
+  Version getFrameworkVersion() { result = this.frameworkCapture(2) }
 
   /** Holds if the framework type is .NET Desktop. */
-  predicate isNetFramework() {
-    this.getFrameworkType() = ".NETFramework"
-  }
+  predicate isNetFramework() { this.getFrameworkType() = ".NETFramework" }
 
   /** Holds if the framework type is .NET Standard. */
-  predicate isNetStandard() {
-    this.getFrameworkType() = ".NETStandard" }
+  predicate isNetStandard() { this.getFrameworkType() = ".NETStandard" }
 
   /** Holds if the framework type is .NET Core. */
-  predicate isNetCore() {
-    this.getFrameworkType() = ".NETCoreApp"
-  }
+  predicate isNetCore() { this.getFrameworkType() = ".NETCoreApp" }
 
   /**
    * Holds if element `e` specifies this target version, because it is
    * compiled in the assembly of this attribute.
    */
-  predicate hasElement(Element e) {
-    assembly = e.getALocation()
-  }
+  predicate hasElement(Element e) { assembly = e.getALocation() }
 }

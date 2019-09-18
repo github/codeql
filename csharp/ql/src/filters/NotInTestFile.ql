@@ -4,11 +4,11 @@
  * @kind problem
  * @id cs/test-file-filter
  */
+
 import csharp
 import semmle.code.csharp.frameworks.Test
 import external.DefectFilter
 
 from DefectResult res
-where not(res.getFile() instanceof TestFile)
-select res,
-       res.getMessage()
+where not res.getFile() instanceof TestFile
+select res, res.getMessage()

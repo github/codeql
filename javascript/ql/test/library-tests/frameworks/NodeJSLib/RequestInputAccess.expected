@@ -1,6 +1,0 @@
-| src/http.js:6:26:6:32 | req.url | url | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
-| src/http.js:8:3:8:20 | req.headers.cookie | cookie | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
-| src/http.js:9:3:9:17 | req.headers.foo | header | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
-| src/https.js:6:26:6:32 | req.url | url | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
-| src/https.js:8:3:8:20 | req.headers.cookie | cookie | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
-| src/https.js:9:3:9:17 | req.headers.foo | header | src/https.js:4:33:10:1 | functio ... .foo;\\n} |

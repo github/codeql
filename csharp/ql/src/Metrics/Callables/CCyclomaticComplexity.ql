@@ -10,9 +10,9 @@
  *       maintainability
  * @id cs/cyclomatic-complexity-per-function
  */
+
 import csharp
 
 from Callable c
 where c.isSourceDeclaration()
-select c, c.getCyclomaticComplexity() as n
-order by n desc
+select c, c.getCyclomaticComplexity() as n order by n desc

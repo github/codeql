@@ -12,5 +12,7 @@
         .run(['notDup8a', 'notDup8b', function(notDup8a, notDup8b){}]) // OK
         .run(['notDup9a', 'notDup9b', function(notDup9c, notDup9d){}]) // OK
         .run(['dup10a', 'dup10a', 'dup10a', function(dup10a, dup10a, dup10a){}]) // OK (flagged by js/duplicate-parameter-name)
+        .run(['dup11a', 'dup11a', function(dup11a, dup11b){ // NOT OK (alert formatting for multi-line function)
+        }])
     ;
 })();

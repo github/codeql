@@ -13,17 +13,17 @@
 import csharp
 import Helpers
 
-predicate oversized(LocalVariableDeclStmt s)
-{
+predicate oversized(LocalVariableDeclStmt s) {
   exists(Location loc |
-    loc = s.getLocation()
-    and loc.getEndColumn() - loc.getStartColumn() > 65
+    loc = s.getLocation() and
+    loc.getEndColumn() - loc.getStartColumn() > 65
   )
 }
 
 from ForeachStmt fes, LocalVariableDeclStmt s
 where
-  missedSelectOpportunity(fes, s)
-  and not(oversized(s))
-select fes, "This foreach loop immediately maps its iteration variable to another variable $@ - consider mapping the sequence explicitly using '.Select(...)'.",
+  missedSelectOpportunity(fes, s) and
+  not oversized(s)
+select fes,
+  "This foreach loop immediately maps its iteration variable to another variable $@ - consider mapping the sequence explicitly using '.Select(...)'.",
   s, "here"

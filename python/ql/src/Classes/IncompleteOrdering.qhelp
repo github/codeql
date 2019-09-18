@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p> A class that implements an ordering operator
+(<code>__lt__</code>, <code>__gt__</code>, <code>__le__</code> or <code>__ge__</code>) should implement
+all four in order that ordering between two objects is consistent and obeys the usual mathematical rules.
+If the ordering is inconsistent with default equality, then <code>__eq__</code> and  <code>__ne__</code>
+should also be implemented.
+</p>
+
+</overview>
+<recommendation>
+<p>Ensure that all four ordering comparisons are implemented as well as <code>__eq__</code> and <code>
+__ne__</code> if required.</p>
+
+<p>It is not necessary to manually implement all four comparisons,
+the <code>functools.total_ordering</code> class decorator can be used.</p>
+
+</recommendation>
+<example>
+<p>In this example only the <code>__lt__</code> operator has been implemented which could lead to
+inconsistent behavior. <code>__gt__</code>, <code>__le__</code>, <code>__ge__</code>, and in this case,
+<code>__eq__</code> and <code>__ne__</code> should be implemented.</p>
+<sample src="IncompleteOrdering.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#object.__lt__">Rich comparisons in Python</a>.</li>
+
+
+</references>
+</qhelp>

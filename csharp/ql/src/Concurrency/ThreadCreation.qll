@@ -1,6 +1,7 @@
 /**
  * A library for reasoning about thread creation events in C#.
  */
+
 import Concurrency
 
 /**
@@ -12,7 +13,11 @@ class ThreadStartingCallable extends Callable {
     this.(Method).getQualifiedName() = "System.Threading.Tasks.Task.Run" or
     this.(Constructor).getDeclaringType().getQualifiedName() = "System.Threading.Thread" or
     this.(Method).getQualifiedName() = "System.Threading.Thread.Start" or
-    this.(Constructor).getDeclaringType().getQualifiedName().matches("System.Threading.Tasks.Task<%>")
+    this
+        .(Constructor)
+        .getDeclaringType()
+        .getQualifiedName()
+        .matches("System.Threading.Tasks.Task<%>")
   }
 }
 
@@ -38,7 +43,8 @@ class LibraryTask extends ConcurrentEntryPoint {
   LibraryTask() {
     exists(Call c, Expr arg |
       c.getTarget() instanceof ThreadStartingCallable and
-      arg = c.getAnArgument() |
+      arg = c.getAnArgument()
+    |
       this = arg or
       this = arg.(DelegateCreation).getArgument().(CallableAccess).getTarget()
     )

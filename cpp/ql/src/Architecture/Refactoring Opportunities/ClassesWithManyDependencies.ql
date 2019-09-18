@@ -11,10 +11,12 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 
 from Class t, int n
-where t.fromSource() and
-      n = t.getMetrics().getEfferentSourceCoupling() and
-      n > 10
+where
+  t.fromSource() and
+  n = t.getMetrics().getEfferentSourceCoupling() and
+  n > 10
 select t as Class, "This class has too many dependencies (" + n.toString() + ")"

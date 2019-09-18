@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll ${testdir}/../../../resources/stubs/EntityFramework.cs ${testdir}/../../../resources/stubs/System.Data.cs
+// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll ${testdir}/../../../resources/stubs/EntityFramework.cs ${testdir}/../../../resources/stubs/System.Data.cs ${testdir}/../../../resources/stubs/System.Windows.cs
 
 using System;
 
@@ -79,6 +79,18 @@ namespace Test
                     context.Database.ExecuteSqlCommand(query2, categoryTextBox.Text);
                 }
             }
+
+            // BAD: Text from a local textbox
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var query1 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+                  + box1.Text + "' ORDER BY PRICE";
+                var adapter = new SqlDataAdapter(query1, connection);
+                var result = new DataSet();
+                adapter.Fill(result);
+            }
         }
+
+        System.Windows.Forms.TextBox box1;
     }
 }

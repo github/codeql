@@ -3,7 +3,9 @@
  * @description Code that is not used (commented out) shall be deleted.
  * @kind problem
  * @id cpp/jsf/av-rule-127
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       external/jsf
  */
 
 import cpp

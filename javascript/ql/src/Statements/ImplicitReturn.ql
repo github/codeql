@@ -33,15 +33,14 @@ class ValueReturn extends ReturnStmt {
 /** Gets the lexically first explicit return statement in function `f`. */
 ValueReturn getFirstExplicitReturn(Function f) {
   result = min(ValueReturn ret |
-    ret.getContainer() = f |
-    ret order by ret.getLocation().getStartLine(), ret.getLocation().getStartColumn()
-  )
+      ret.getContainer() = f
+    |
+      ret order by ret.getLocation().getStartLine(), ret.getLocation().getStartColumn()
+    )
 }
 
 /** Gets the number of return statements in function `f`, assuming there is at least one. */
-int numRet(Function f) {
-  result = strictcount(ReturnStmt ret | ret.getContainer() = f)
-}
+int numRet(Function f) { result = strictcount(ReturnStmt ret | ret.getContainer() = f) }
 
 /**
  * Holds if `f` is a dual-use constructor, that is, is a function that is meant to be invoked
@@ -55,8 +54,8 @@ int numRet(Function f) {
  */
 predicate isDualUseConstructor(Function f) {
   numRet(f) = 1 and
-  exists (ReturnStmt ret, DataFlow::NewNode new | ret.getContainer() = f |
-    new.asExpr() = ret.getExpr().stripParens() and
+  exists(ReturnStmt ret, DataFlow::NewNode new | ret.getContainer() = f |
+    new.asExpr() = ret.getExpr().getUnderlyingValue() and
     new.getACallee() = f
   )
 }
@@ -67,7 +66,7 @@ predicate isDualUseConstructor(Function f) {
  * and isn't contained in a `finally` block.
  */
 Stmt getAFallThroughStmt(Function f) {
-  exists (ReachableBasicBlock bb, ControlFlowNode nd |
+  exists(ReachableBasicBlock bb, ControlFlowNode nd |
     bb.getANode() = nd and
     nd.isAFinalNode() and
     f = bb.getContainer() and
@@ -78,10 +77,12 @@ Stmt getAFallThroughStmt(Function f) {
 }
 
 from Function f, Stmt fallthrough
-where fallthrough = getAFallThroughStmt(f) and
-      // no control path ends with an implicit return statement of the form `return;`
-      not exists(ReturnStmt ret | ret.getContainer() = f and not exists(ret.getExpr())) and
-      // f doesn't look like a dual-use constructor (which otherwise would trigger a violation)
-      not isDualUseConstructor(f)
-select (FirstLineOf)fallthrough, "$@ may implicitly return 'undefined' here, while $@ an explicit value is returned.",
-                    f, capitalize(f.describe()), getFirstExplicitReturn(f), "elsewhere"
+where
+  fallthrough = getAFallThroughStmt(f) and
+  // no control path ends with an implicit return statement of the form `return;`
+  not exists(ReturnStmt ret | ret.getContainer() = f and not exists(ret.getExpr())) and
+  // f doesn't look like a dual-use constructor (which otherwise would trigger a violation)
+  not isDualUseConstructor(f)
+select fallthrough.(FirstLineOf),
+  "$@ may implicitly return 'undefined' here, while $@ an explicit value is returned.", f,
+  capitalize(f.describe()), getFirstExplicitReturn(f), "elsewhere"

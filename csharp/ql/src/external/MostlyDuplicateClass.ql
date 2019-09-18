@@ -12,10 +12,12 @@
  *       statistical
  *       non-attributable
  */
+
 import csharp
 import CodeDuplication
 
 from Class c, string message, Class link
-where mostlyDuplicateClass(c, link, message)
-  and not fileLevelDuplication(c.getFile(), _)
+where
+  mostlyDuplicateClass(c, link, message) and
+  not fileLevelDuplication(c.getFile(), _)
 select c, message, link, link.getName()

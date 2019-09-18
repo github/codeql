@@ -1,9 +1,0 @@
-| tst.js:2:11:10:1 | {\\n    x ...     }\\n} | f | tst.js:7:5:9:5 | f() {\\n  ... ;\\n    } |
-| tst.js:2:11:10:1 | {\\n    x ...     }\\n} | func | tst.js:4:5:6:5 | func: f ... ;\\n    } |
-| tst.js:2:11:10:1 | {\\n    x ...     }\\n} | x | tst.js:3:5:3:8 | x: 4 |
-| tst.js:12:1:19:1 | class C ... ;\\n  }\\n} | func | tst.js:13:3:15:3 | static  ... x);\\n  } |
-| tst.js:21:1:21:1 | C | prop | tst.js:21:1:21:6 | C.prop |
-| tst.js:24:8:24:57 | <div on ... }</div> | onClick | tst.js:24:13:24:27 | onClick={click} |
-| tst.js:26:2:29:1 | {\\n  get ... v) {}\\n} | x | tst.js:27:3:27:26 | get x() ... null; } |
-| tst.js:26:2:29:1 | {\\n  get ... v) {}\\n} | y | tst.js:28:3:28:13 | set y(v) {} |
-| tst.js:31:2:36:1 | {\\n    n ... q]: 4\\n} | n | tst.js:32:5:32:8 | n: 1 |

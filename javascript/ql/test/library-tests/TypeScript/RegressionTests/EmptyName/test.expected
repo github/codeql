@@ -1,0 +1,10 @@
+| Array in global scope |
+| Intl in global scope |
+| Intl.CollatorOptions in global scope |
+| Intl.NumberFormatOptions in global scope |
+| MK in unknown scope |
+| Mapped in test.ts |
+| RegExp in global scope |
+| RegExpMatchArray in global scope |
+| fn in test.ts |
+| test.ts |

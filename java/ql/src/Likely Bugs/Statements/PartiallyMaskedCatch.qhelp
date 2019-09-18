@@ -45,7 +45,13 @@ than one of the <code>catch</code> clauses, only the first matching clause is ex
 </recommendation>
 <example>
 
-<p>In the following example, the second <code>catch</code> clause is unreachable, and can be removed.</p>
+<p>
+In the following example, the second <code>catch</code> clause is unreachable.
+The code is incomplete because a <code>FileOutputStream</code> is opened but
+no methods are called to write to the stream. Such methods typically throw
+<code>IOException</code>s, which would make the second <code>catch</code> clause
+reachable.
+</p>
 
 <sample src="PartiallyMaskedCatch.java" />
 

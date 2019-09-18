@@ -1,2 +1,0 @@
-| destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:2:1:2:19 | new BrowserWindow() |
-| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:9:1:9:7 | new K() |

@@ -15,13 +15,16 @@ import javascript
 
 /** Gets the number of identifiers and string literals that refer to `name`. */
 int countOccurrences(string name) {
-  (exists (PropAccess pacc | name = pacc.getPropertyName()) or
-   exists (VarAccess acc | name = acc.getName())) and
-   result = strictcount(Expr id |
-     id.(Identifier).getName() = name or
-     // count string literals as well to capture meta-programming
-     id.(ConstantString).getStringValue() = name
-   )
+  (
+    exists(PropAccess pacc | name = pacc.getPropertyName()) or
+    exists(VarAccess acc | name = acc.getName())
+  ) and
+  result = strictcount(Expr id |
+      id.(Identifier).getName() = name
+      or
+      // count string literals as well to capture meta-programming
+      id.getStringValue() = name
+    )
 }
 
 /**
@@ -33,7 +36,7 @@ abstract class Hapax extends @expr {
   abstract string getName();
 
   /** Gets a textual representation of this element. */
-  string toString() { result = ((Expr)this).toString() }
+  string toString() { result = this.(Expr).toString() }
 }
 
 /**
@@ -42,14 +45,10 @@ abstract class Hapax extends @expr {
  */
 class UndeclaredPropertyAccess extends Hapax, @dotexpr {
   UndeclaredPropertyAccess() {
-    exists (string name | name = this.(DotExpr).getPropertyName() |
-      countOccurrences(name) = 1
-      and
-      not exists (JSLintProperties jslpd |
-        jslpd.appliesTo(this) and jslpd.getAProperty() = name
-      )
-      and
-      not exists (ExternalMemberDecl emd | emd.getProperty() = this)
+    exists(string name | name = this.(DotExpr).getPropertyName() |
+      countOccurrences(name) = 1 and
+      not exists(JSLintProperties jslpd | jslpd.appliesTo(this) and jslpd.getAProperty() = name) and
+      not exists(ExternalMemberDecl emd | emd.getProperty() = this)
     )
   }
 
@@ -62,12 +61,10 @@ class UndeclaredPropertyAccess extends Hapax, @dotexpr {
  */
 class UndeclaredGlobal extends Hapax, @varaccess {
   UndeclaredGlobal() {
-    exists (GlobalVariable gv, string name | this = gv.getAnAccess() and name = gv.getName() |
+    exists(GlobalVariable gv, string name | this = gv.getAnAccess() and name = gv.getName() |
       countOccurrences(name) = 1 and
-      not exists (Linting::GlobalDeclaration glob |
-        glob.declaresGlobalForAccess(this)
-      ) and
-      not exists (gv.getADeclaration())
+      not exists(Linting::GlobalDeclaration glob | glob.declaresGlobalForAccess(this)) and
+      not exists(gv.getADeclaration())
     )
   }
 
@@ -79,7 +76,7 @@ class UndeclaredGlobal extends Hapax, @varaccess {
  * except for capitalization, ensuring that it occurs at least twice.
  */
 int candidateSpellingCount(Hapax hapax, string m) {
-  exists (string n | n = hapax.getName() |
+  exists(string n | n = hapax.getName() |
     m.toLowerCase() = n.toLowerCase() and
     m != n and
     result = countOccurrences(m) and
@@ -88,6 +85,7 @@ int candidateSpellingCount(Hapax hapax, string m) {
 }
 
 from Hapax hapax, string n, string m
-where n = hapax.getName() and
-      candidateSpellingCount(hapax, m) = max(candidateSpellingCount(hapax, _))
-select (Expr)hapax, "'" + n + "' is mentioned only once; it may be a typo for '" + m + "'."
+where
+  n = hapax.getName() and
+  candidateSpellingCount(hapax, m) = max(candidateSpellingCount(hapax, _))
+select hapax.(Expr), "'" + n + "' is mentioned only once; it may be a typo for '" + m + "'."

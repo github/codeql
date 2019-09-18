@@ -4,9 +4,14 @@
  * @kind problem
  * @id cpp/jsf/av-rule-27
  * @problem.severity warning
+ * @tags maintainability
+ *       portability
+ *       external/jsf
  */
+
 import cpp
 import semmle.code.cpp.headers.MultipleInclusion
 
 from BadIncludeGuard bad
-select bad.blame(), "AV Rule 27: techniques other than #ifndef/#define/#endif will not be used to prevent multiple inclusions of header files."
+select bad.blame(),
+  "AV Rule 27: techniques other than #ifndef/#define/#endif will not be used to prevent multiple inclusions of header files."

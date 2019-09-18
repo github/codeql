@@ -4,6 +4,7 @@
  * @kind problem
  * @id cs/test-method-exception-filter
  */
+
 import csharp
 import semmle.code.csharp.frameworks.Test
 import external.DefectFilter
@@ -16,7 +17,8 @@ predicate ignoredLine(File f, int line) {
 }
 
 from DefectResult res
-where not(res.getFile() instanceof TestFile) or
+where
+  not res.getFile() instanceof TestFile
+  or
   not ignoredLine(res.getFile(), res.getStartLine())
-select res,
-       res.getMessage()
+select res, res.getMessage()

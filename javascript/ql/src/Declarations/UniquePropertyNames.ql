@@ -32,7 +32,7 @@ predicate hasProperty(ObjectExpr o, Property p, string name, int kind, int i) {
  * both have the same name and kind, but are not structurally identical.
  */
 predicate overwrittenBy(Property p, Property q) {
-  exists (ObjectExpr o, string name, int i, int j, int kind |
+  exists(ObjectExpr o, string name, int i, int j, int kind |
     hasProperty(o, p, name, kind, i) and
     hasProperty(o, q, name, kind, j) and
     i < j
@@ -43,7 +43,8 @@ predicate overwrittenBy(Property p, Property q) {
 }
 
 from Property p, Property q
-where overwrittenBy(p, q) and
-      // ensure that `q` is the last property with the same name as `p`
-      not overwrittenBy(q, _)
+where
+  overwrittenBy(p, q) and
+  // ensure that `q` is the last property with the same name as `p`
+  not overwrittenBy(q, _)
 select p, "This property is overwritten by $@ in the same object literal.", q, "another property"

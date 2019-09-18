@@ -47,11 +47,12 @@ predicate assignmentToShadowingLocal(LocalVariableDecl d, Field f) {
   shadows(d, _, _, _) and
   exists(Expr assignedValue, Expr use |
     d.getAnAssignedValue() = assignedValue and getARelevantChild(assignedValue) = use
-    |
+  |
     exists(FieldAccess access, Field ff | access = assignedValue |
       ff = access.getField() and
       ff.getSourceDeclaration() = f
-    ) or
+    )
+    or
     exists(MethodAccess get, Method getter | get = assignedValue and getter = get.getMethod() |
       getterFor(getter, f)
     )
@@ -66,7 +67,8 @@ predicate assignmentFromShadowingLocal(LocalVariableDecl d, Field f) {
       arg = set.getAnArgument() and
       setter = set.getMethod() and
       setterFor(setter, f)
-    ) or
+    )
+    or
     exists(Field instance, Expr assignedValue |
       access = getARelevantChild(assignedValue) and
       assignedValue = instance.getAnAssignedValue() and
@@ -75,9 +77,10 @@ predicate assignmentFromShadowingLocal(LocalVariableDecl d, Field f) {
   )
 }
 
-private
-Expr getARelevantChild(Expr parent) {
-  exists(MethodAccess ma | parent = ma.getAnArgument() and result = parent) or
-  exists(Variable v | parent = v.getAnAccess() and result = parent) or
+private Expr getARelevantChild(Expr parent) {
+  exists(MethodAccess ma | parent = ma.getAnArgument() and result = parent)
+  or
+  exists(Variable v | parent = v.getAnAccess() and result = parent)
+  or
   exists(Expr mid | mid = getARelevantChild(parent) and result = mid.getAChildExpr())
 }

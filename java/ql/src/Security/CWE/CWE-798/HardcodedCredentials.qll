@@ -9,9 +9,7 @@ import SensitiveApi
 private class HardcodedByteArray extends ArrayCreationExpr {
   HardcodedByteArray() {
     getType().(Array).getElementType().(PrimitiveType).getName() = "byte" and
-    forex(Expr elem | elem = getInit().getAChildExpr() |
-      elem instanceof CompileTimeConstantExpr
-    )
+    forex(Expr elem | elem = getInit().getAChildExpr() | elem instanceof CompileTimeConstantExpr)
   }
 }
 
@@ -23,9 +21,7 @@ private class HardcodedByteArray extends ArrayCreationExpr {
 private class HardcodedCharArray extends ArrayCreationExpr {
   HardcodedCharArray() {
     getType().(Array).getElementType().(PrimitiveType).getName() = "char" and
-    forex(Expr elem | elem = getInit().getAChildExpr() |
-      elem instanceof CompileTimeConstantExpr
-    )
+    forex(Expr elem | elem = getInit().getAChildExpr() | elem instanceof CompileTimeConstantExpr)
   }
 }
 
@@ -45,9 +41,7 @@ class HardcodedExpr extends Expr {
  * An argument to a sensitive call, expected to contain credentials.
  */
 abstract class CredentialsSink extends Expr {
-  Call getSurroundingCall() {
-    this = result.getAnArgument()
-  }
+  Call getSurroundingCall() { this = result.getAnArgument() }
 }
 
 /**
@@ -82,9 +76,7 @@ class PasswordVariable extends Variable {
  * A variable whose name indicates that it may hold a user name.
  */
 class UsernameVariable extends Variable {
-  UsernameVariable() {
-    getName().regexpMatch("(?i)(user|username)")
-  }
+  UsernameVariable() { getName().regexpMatch("(?i)(user|username)") }
 }
 
 /**

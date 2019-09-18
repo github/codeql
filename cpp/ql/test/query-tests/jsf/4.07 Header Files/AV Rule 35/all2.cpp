@@ -32,3 +32,7 @@ enum Items {
 #define XMACRO2(id,desc) void use_##();
 	#include "items2.h"
 #undef XMACRO2
+
+#define XMACRO3(id,desc) static const char * id##_name = desc;
+	#include "items3.h"
+// No #undef of XMACRO3. That's handled in items3.h.

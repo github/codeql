@@ -11,10 +11,11 @@
  *       concurrency
  *       external/cwe/cwe-572
  */
+
 import java
 
-class RunMethod extends Method{
-  RunMethod(){
+class RunMethod extends Method {
+  RunMethod() {
     this.hasName("run") and
     this.hasNoParameters() and
     this.getDeclaringType().getASupertype*().hasQualifiedName("java.lang", "Thread")

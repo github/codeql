@@ -4,7 +4,10 @@
  * @kind problem
  * @id cpp/jsf/av-rule-40
  * @problem.severity error
+ * @tags correctness
+ *       external/jsf
  */
+
 import cpp
 
 /*
@@ -38,10 +41,14 @@ predicate definedInImplementationFile(Declaration d) {
 }
 
 from Declaration d, string message
-where relevant(d) and
-      ((hasTwoDefinitions(d) and message = " should not have several definitions.")
-      or definedInImplementationFile(d) and message = " should be defined in a header file.")
-      // Don't count member functions - the only way they can match this rule is by
-      // being in a class definition that already matches, so it would be redundant
-      and not d instanceof MemberFunction
+where
+  relevant(d) and
+  (
+    hasTwoDefinitions(d) and message = " should not have several definitions."
+    or
+    definedInImplementationFile(d) and message = " should be defined in a header file."
+  ) and
+  // Don't count member functions - the only way they can match this rule is by
+  // being in a class definition that already matches, so it would be redundant
+  not d instanceof MemberFunction
 select d.getDefinitionLocation(), "AV Rule 40: " + d.getName() + message

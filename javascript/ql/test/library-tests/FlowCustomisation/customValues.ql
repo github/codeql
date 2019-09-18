@@ -8,9 +8,13 @@ class Document extends CustomAbstractValueTag {
   Document() { this = "document" }
 
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result.getType() = TTString() }
+
   override string describe() { result = "document" }
 }
 
@@ -25,15 +29,21 @@ class DocumentAll extends CustomAbstractValueTag {
   DocumentAll() { this = "document.all" }
 
   override boolean getBooleanValue() { result = false }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result.getType() = TTString() }
+
   override string describe() { result = "document.all" }
 }
 
 class DocumentRef extends DataFlow::AnalyzedNode, DataFlow::ValueNode {
   override GlobalVarAccess astNode;
+
   DocumentRef() { astNode.getName() = "document" }
+
   override AbstractValue getALocalValue() {
     result = DataFlow::AnalyzedNode.super.getALocalValue() or
     result.(CustomAbstractValue).getTag() instanceof Document
@@ -42,7 +52,9 @@ class DocumentRef extends DataFlow::AnalyzedNode, DataFlow::ValueNode {
 
 class DocumentAllRef extends DataFlow::AnalyzedNode, DataFlow::ValueNode {
   override PropAccess astNode;
+
   DocumentAllRef() { astNode.getPropertyName() = "all" }
+
   override AbstractValue getAValue() {
     result = DataFlow::AnalyzedNode.super.getAValue()
     or

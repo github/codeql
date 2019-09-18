@@ -23,9 +23,7 @@ module DOM {
      * For example, the 0th (and only) attribute of `<a href="https://semmle.com">Semmle</a>`
      * is `href="https://semmle.com"`.
      */
-    AttributeDefinition getAttribute(int i) {
-      none()
-    }
+    AttributeDefinition getAttribute(int i) { none() }
 
     /**
      * Gets an attribute of this DOM element with name `name`.
@@ -41,9 +39,7 @@ module DOM {
     /**
      * Gets an attribute of this DOM element.
      */
-    AttributeDefinition getAnAttribute() {
-      result.getElement() = this
-    }
+    AttributeDefinition getAnAttribute() { result.getElement() = this }
 
     /**
      * Gets the parent element of this element.
@@ -54,10 +50,7 @@ module DOM {
      * Gets the root element (i.e. an element without a parent) in which this element is contained.
      */
     ElementDefinition getRoot() {
-      if not exists(getParent()) then
-        result = this
-      else
-        result = getParent().getRoot()
+      if not exists(getParent()) then result = this else result = getParent().getRoot()
     }
 
     /**
@@ -78,9 +71,7 @@ module DOM {
       result = this.(HTML::Element).getAttribute(i)
     }
 
-    override ElementDefinition getParent() {
-      result = this.(HTML::Element).getParent()
-    }
+    override ElementDefinition getParent() { result = this.(HTML::Element).getParent() }
   }
 
   /**
@@ -91,14 +82,9 @@ module DOM {
 
     override string getName() { result = this.(JSXElement).getName() }
 
-    override AttributeDefinition getAttribute(int i) {
-      result = this.(JSXElement).getAttribute(i)
-    }
+    override AttributeDefinition getAttribute(int i) { result = this.(JSXElement).getAttribute(i) }
 
-    override ElementDefinition getParent() {
-      result = this.(JSXElement).getJsxParent()
-    }
-
+    override ElementDefinition getParent() { result = this.(JSXElement).getJsxParent() }
   }
 
   /**
@@ -120,23 +106,17 @@ module DOM {
      * This is undefined for HTML elements, where the attribute value is not
      * computed but specified directly.
      */
-    DataFlow::Node getValueNode() {
-      none()
-    }
+    DataFlow::Node getValueNode() { none() }
 
     /**
      * Gets the value of this attribute, if it can be determined.
      */
-    string getStringValue() {
-      result = getValueNode().asExpr().getStringValue()
-    }
+    string getStringValue() { result = getValueNode().getStringValue() }
 
     /**
      * Gets the DOM element this attribute belongs to.
      */
-    ElementDefinition getElement() {
-      this = result.getAttributeByName(_)
-    }
+    ElementDefinition getElement() { this = result.getAttributeByName(_) }
 
     /**
      * Holds if the value of this attribute might be a template value
@@ -145,7 +125,6 @@ module DOM {
     predicate mayHaveTemplateValue() {
       getStringValue().regexpMatch(Templating::getDelimiterMatchingRegexp())
     }
-
   }
 
   /**
@@ -153,8 +132,11 @@ module DOM {
    */
   private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute {
     HtmlAttributeDefinition() { this instanceof HTML::Attribute }
+
     override string getName() { result = this.(HTML::Attribute).getName() }
+
     override string getStringValue() { result = this.(HTML::Attribute).getValue() }
+
     override ElementDefinition getElement() { result = this.(HTML::Attribute).getElement() }
   }
 
@@ -163,9 +145,13 @@ module DOM {
    */
   private class JsxAttributeDefinition extends AttributeDefinition, @jsx_attribute {
     JSXAttribute attr;
+
     JsxAttributeDefinition() { this = attr }
+
     override string getName() { result = attr.getName() }
+
     override DataFlow::Node getValueNode() { result = DataFlow::valueNode(attr.getValue()) }
+
     override ElementDefinition getElement() { result = attr.getElement() }
   }
 
@@ -174,9 +160,13 @@ module DOM {
    */
   class DocumentElementDefinition extends ElementDefinition {
     DocumentElementDefinition() { this.getName() = "html" }
+
     override string getName() { none() }
+
     override AttributeDefinition getAttribute(int i) { none() }
+
     override AttributeDefinition getAttributeByName(string name) { none() }
+
     override ElementDefinition getParent() { none() }
   }
 
@@ -184,16 +174,27 @@ module DOM {
    * Holds if the value of attribute `attr` is interpreted as a URL.
    */
   predicate isUrlValuedAttribute(AttributeDefinition attr) {
-    exists (string eltName, string attrName |
+    exists(string eltName, string attrName |
       eltName = attr.getElement().getName() and
-      attrName = attr.getName() |
-      (eltName = "script" or eltName = "iframe" or eltName = "embed" or
-       eltName = "video" or eltName = "audio" or eltName = "source" or
-       eltName = "track") and
+      attrName = attr.getName()
+    |
+      (
+        eltName = "script" or
+        eltName = "iframe" or
+        eltName = "embed" or
+        eltName = "video" or
+        eltName = "audio" or
+        eltName = "source" or
+        eltName = "track"
+      ) and
       attrName = "src"
       or
-      (eltName = "link" or eltName = "a" or eltName = "base" or
-       eltName = "area") and
+      (
+        eltName = "link" or
+        eltName = "a" or
+        eltName = "base" or
+        eltName = "area"
+      ) and
       attrName = "href"
       or
       eltName = "form" and
@@ -212,24 +213,16 @@ module DOM {
     ElementDefinition defn;
 
     /** Gets the definition of this element. */
-    ElementDefinition getDefinition() {
-      result = defn
-    }
+    ElementDefinition getDefinition() { result = defn }
 
     /** Gets the tag name of this DOM element. */
-    string getName() {
-      result = defn.getName()
-    }
+    string getName() { result = defn.getName() }
 
     /** Gets the `i`th attribute of this DOM element, if it can be determined. */
-    AttributeDefinition getAttribute(int i) {
-      result = defn.getAttribute(i)
-    }
+    AttributeDefinition getAttribute(int i) { result = defn.getAttribute(i) }
 
     /** Gets an attribute of this DOM element with the given `name`. */
-    AttributeDefinition getAttributeByName(string name) {
-      result = defn.getAttributeByName(name)
-    }
+    AttributeDefinition getAttributeByName(string name) { result = defn.getAttributeByName(name) }
   }
 
   /**
@@ -240,7 +233,7 @@ module DOM {
     DefaultElement() {
       defn = this
       or
-      exists (Element that |
+      exists(Element that |
         this.(Expr).flow().getALocalSource().asExpr() = that and
         defn = that.getDefinition()
       )
@@ -252,7 +245,7 @@ module DOM {
    */
   predicate isInvalidHtmlIdAttributeValue(DOM::AttributeDefinition attr, string reason) {
     attr.getName() = "id" and
-    exists (string v | v = attr.getStringValue() |
+    exists(string v | v = attr.getStringValue() |
       v = "" and
       reason = "must contain at least one character"
       or
@@ -261,4 +254,135 @@ module DOM {
     )
   }
 
+  /** Gets a call that queries the DOM for a collection of DOM nodes. */
+  private DataFlow::SourceNode domElementCollection() {
+    exists(string collectionName |
+      collectionName = "getElementsByClassName" or
+      collectionName = "getElementsByName" or
+      collectionName = "getElementsByTagName" or
+      collectionName = "getElementsByTagNameNS" or
+      collectionName = "querySelectorAll"
+    |
+      (
+        result = documentRef().getAMethodCall(collectionName) or
+        result = DataFlow::globalVarRef(collectionName).getACall()
+      )
+    )
+  }
+
+  /** Gets a call that creates a DOM node or queries the DOM for a DOM node. */
+  private DataFlow::SourceNode domElementCreationOrQuery() {
+    exists(string methodName |
+      methodName = "createElement" or
+      methodName = "createElementNS" or
+      methodName = "createRange" or
+      methodName = "getElementById" or
+      methodName = "querySelector"
+    |
+      result = documentRef().getAMethodCall(methodName) or
+      result = DataFlow::globalVarRef(methodName).getACall()
+    )
+  }
+
+  module DomValueSource {
+    /**
+     * A data flow node that should be considered a source of DOM values.
+     */
+    abstract class Range extends DataFlow::Node { }
+
+    private class DefaultRange extends Range {
+      DefaultRange() {
+        this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
+        this = domValueRef().getAPropertyRead() or
+        this = domElementCreationOrQuery() or
+        this = domElementCollection()
+      }
+    }
+  }
+
+  /** Gets a data flow node that refers directly to a value from the DOM. */
+  DataFlow::SourceNode domValueSource() { result instanceof DomValueSource::Range }
+
+  /** Gets a data flow node that may refer to a value from the DOM. */
+  private DataFlow::SourceNode domValueRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result = domValueSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node that may refer to a value from the DOM. */
+  DataFlow::SourceNode domValueRef() { result = domValueRef(DataFlow::TypeTracker::end()) }
+
+  module LocationSource {
+    /**
+     * A data flow node that should be considered a source of the DOM `location` object.
+     *
+     * Can be subclassed to add additional such nodes.
+     */
+    abstract class Range extends DataFlow::Node { }
+
+    private class DefaultRange extends Range {
+      DefaultRange() {
+        exists(string propName | this = documentRef().getAPropertyRead(propName) |
+          propName = "documentURI" or
+          propName = "documentURIObject" or
+          propName = "location" or
+          propName = "referrer" or
+          propName = "URL"
+        )
+        or
+        this = DOM::domValueRef().getAPropertyRead("baseUri")
+        or
+        this = DataFlow::globalVarRef("location")
+      }
+    }
+  }
+
+  /** Gets a data flow node that directly refers to a DOM `location` object. */
+  DataFlow::SourceNode locationSource() { result instanceof LocationSource::Range }
+
+  /** Gets a reference to a DOM `location` object. */
+  private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result = locationSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = locationRef(t2).track(t2, t))
+  }
+
+  /** Gets a reference to a DOM `location` object. */
+  DataFlow::SourceNode locationRef() { result = locationRef(DataFlow::TypeTracker::end()) }
+
+  module DocumentSource {
+    /**
+     * A data flow node that should be considered a source of the `document` object.
+     *
+     * Can be subclassed to add additional such nodes.
+     */
+    abstract class Range extends DataFlow::Node { }
+
+    private class DefaultRange extends Range {
+      DefaultRange() { this = DataFlow::globalVarRef("document") }
+    }
+  }
+
+  /**
+   * Gets a direct reference to the `document` object.
+   */
+  DataFlow::SourceNode documentSource() { result instanceof DocumentSource::Range }
+
+  /**
+   * Gets a reference to the `document` object.
+   */
+  private DataFlow::SourceNode documentRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof DocumentSource::Range
+    or
+    exists(DataFlow::TypeTracker t2 | result = documentRef(t2).track(t2, t))
+  }
+
+  /**
+   * Gets a reference to the 'document' object.
+   */
+  DataFlow::SourceNode documentRef() { result = documentRef(DataFlow::TypeTracker::end()) }
 }

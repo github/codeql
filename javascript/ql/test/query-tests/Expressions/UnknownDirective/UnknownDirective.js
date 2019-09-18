@@ -33,3 +33,15 @@ function good() {
     "deps foo"; // OK
     "deps bar"; // OK
 }
+
+function data() {
+    "[0, 0, 0];"; // NOT OK
+    "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];"; // NOT OK
+}
+
+function yui() {
+    "foo:nomunge"; // OK
+    "bar:nomunge, baz:nomunge,qux:nomunge"; // OK
+    ":nomunge"; // NOT OK
+    "foo(), bar, baz:nomunge"; // NOT OK
+}

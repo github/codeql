@@ -6,7 +6,8 @@ import semmle.code.csharp.frameworks.system.collections.Generic
 predicate implementsMethod(Method m, int i) {
   exists(Method other, Method imp |
     m.overridesOrImplementsOrEquals(imp) and
-    other = imp.getSourceDeclaration() |
+    other = imp.getSourceDeclaration()
+  |
     other = any(SystemObjectClass c).getEqualsMethod() and i = 1
     or
     other = any(SystemObjectClass c).getStaticEqualsMethod() and i = 2
@@ -29,10 +30,8 @@ predicate implementsMethod(Method m, int i) {
 
 from Element e, int i
 where
-  e.getFile().getStem()  = "System"
-  and
-  e.fromSource()
-  and
+  e.getFile().getStem() = "System" and
+  e.fromSource() and
   (
     implementsMethod(e, i)
     or

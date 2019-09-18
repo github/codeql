@@ -16,12 +16,11 @@ import Type
  * ```
  */
 class Event extends DeclarationWithAccessors, @event {
+  override string getName() { events(this, result, _, _, _) }
 
-  override string getName() { events(this,result,_,_,_) }
+  override ValueOrRefType getDeclaringType() { events(this, _, result, _, _) }
 
-  override ValueOrRefType getDeclaringType() { events(this,_,result,_,_) }
-
-  override DelegateType getType() { events(this,_,_,getTypeRef(result),_) }
+  override DelegateType getType() { events(this, _, _, getTypeRef(result), _) }
 
   /** Gets an `add` or `remove` accessor of this event, if any. */
   EventAccessor getAnEventAccessor() { result.getDeclaration() = this }
@@ -43,23 +42,15 @@ class Event extends DeclarationWithAccessors, @event {
     not this.getAnEventAccessor().hasBody()
   }
 
-  override Event getSourceDeclaration() { events(this,_,_,_,result) }
+  override Event getSourceDeclaration() { events(this, _, _, _, result) }
 
-  override Event getOverridee() {
-    result = DeclarationWithAccessors.super.getOverridee()
-  }
+  override Event getOverridee() { result = DeclarationWithAccessors.super.getOverridee() }
 
-  override Event getAnOverrider() {
-    result = DeclarationWithAccessors.super.getAnOverrider()
-  }
+  override Event getAnOverrider() { result = DeclarationWithAccessors.super.getAnOverrider() }
 
-  override Event getImplementee() {
-    result = DeclarationWithAccessors.super.getImplementee()
-  }
+  override Event getImplementee() { result = DeclarationWithAccessors.super.getImplementee() }
 
-  override Event getAnImplementor() {
-    result = DeclarationWithAccessors.super.getAnImplementor()
-  }
+  override Event getAnImplementor() { result = DeclarationWithAccessors.super.getAnImplementor() }
 
   override Event getAnUltimateImplementee() {
     result = DeclarationWithAccessors.super.getAnUltimateImplementee()
@@ -69,7 +60,7 @@ class Event extends DeclarationWithAccessors, @event {
     result = DeclarationWithAccessors.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { event_location(this,result) }
+  override Location getALocation() { event_location(this, result) }
 }
 
 /**
@@ -92,13 +83,13 @@ class EventAccessor extends Accessor, @event_accessor {
     result instanceof VoidType
   }
 
-  override string getAssemblyName() { event_accessors(this,_,result,_,_) }
+  override string getAssemblyName() { event_accessors(this, _, result, _, _) }
 
-  override EventAccessor getSourceDeclaration() { event_accessors(this,_,_,_,result) }
+  override EventAccessor getSourceDeclaration() { event_accessors(this, _, _, _, result) }
 
-  override Event getDeclaration() { event_accessors(this,_,_,result,_) }
+  override Event getDeclaration() { event_accessors(this, _, _, result, _) }
 
-  override Location getALocation() { event_accessor_location(this,result) }
+  override Location getALocation() { event_accessor_location(this, result) }
 }
 
 /**
@@ -132,5 +123,5 @@ class AddEventAccessor extends EventAccessor, @add_event_accessor {
  * ```
  */
 class RemoveEventAccessor extends EventAccessor, @remove_event_accessor {
-  override  string getName() { result = "remove" + "_" + getDeclaration().getName() }
+  override string getName() { result = "remove" + "_" + getDeclaration().getName() }
 }

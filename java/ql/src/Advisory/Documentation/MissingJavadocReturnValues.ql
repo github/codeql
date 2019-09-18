@@ -8,6 +8,7 @@
  * @id java/undocumented-return-value
  * @tags maintainability
  */
+
 import java
 import JavadocCommon
 

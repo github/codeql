@@ -58,6 +58,22 @@ class Test
         SqlConnection c1f = new SqlConnection();
         Throw2(c1f);
         c1f.Dispose();
+
+        // GOOD: using declaration
+        using SqlConnection c2 = new SqlConnection("");
+        c2.Open();
+
+        // GOOD: Always disposed
+        using SqlConnection c3 = new SqlConnection("");
+        Throw2(c3);
+        c3.Dispose();
+
+        // GOOD: Disposed automatically
+        using (SqlConnection c4 = new SqlConnection(""))
+        {
+            Throw2(c4);
+            c4.Dispose();
+        }
     }
 
     void Throw1(SqlConnection sc)
@@ -71,3 +87,5 @@ class Test
         return sc == null ? throw new Exception() : sc;
     }
 }
+
+// semmle-extractor-options: /langversion:8.0

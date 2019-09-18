@@ -11,7 +11,8 @@
 import javascript
 
 from VarUse u
-where u.getVariable() instanceof SsaSourceVariable and
-      exists (ReachableBasicBlock bb | u = bb.getANode()) and
-      not exists(u.getSsaVariable())
+where
+  u.getVariable() instanceof SsaSourceVariable and
+  exists(ReachableBasicBlock bb | u = bb.getANode()) and
+  not exists(u.getSsaVariable())
 select u, "Variable use has no corresponding SSA variable."

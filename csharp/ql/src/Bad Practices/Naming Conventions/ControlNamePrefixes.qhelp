@@ -8,7 +8,7 @@ This makes the controls easier to find in Intellisense and also makes the purpos
 
 </overview>
 <recommendation>
-<p>Give controls an appropriate prefix to indicate their type (e.g. txt for text boxes or rad for 
+<p>Give controls an appropriate prefix to indicate their type (for example, <code>txt</code> for text boxes or <code>rad</code> for 
 radio buttons).</p>
 
 </recommendation>

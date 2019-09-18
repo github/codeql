@@ -3,7 +3,10 @@
  * @description No more than one level of pointer nesting/dereferencing should be used.
  * @kind problem
  * @id cpp/power-of-10/pointer-nesting
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/powerof10
  */
 
 import cpp

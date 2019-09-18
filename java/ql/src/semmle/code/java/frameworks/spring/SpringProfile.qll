@@ -18,9 +18,7 @@ class SpringProfileExpr extends string {
   /**
    * Gets the profile described in this profile expression.
    */
-  string getProfile() {
-    result = this
-  }
+  string getProfile() { result = this }
 
   /**
    * This profile expression is active if it can ever be evaluated to true, according to our
@@ -39,24 +37,18 @@ class SpringProfileExpr extends string {
  * A Spring profile expression that begins with "!", indicating a negated expression.
  */
 class NotSpringProfileExpr extends SpringProfileExpr {
-  NotSpringProfileExpr() {
-    this.prefix(1) = "!"
-  }
+  NotSpringProfileExpr() { this.prefix(1) = "!" }
 
   /**
    * Gets the profile described in this profile expression.
    */
-  override string getProfile() {
-    result = this.substring(1, this.length())
-  }
+  override string getProfile() { result = this.substring(1, this.length()) }
 
   /**
    * This profile expression is active if it can ever be evaluated to true, according to our
    * knowledge of which profiles are sometimes/never/always enabled.
    */
-  override predicate isActive() {
-    not getProfile() instanceof AlwaysEnabledSpringProfile
-  }
+  override predicate isActive() { not getProfile() instanceof AlwaysEnabledSpringProfile }
 }
 
 /**
@@ -64,21 +56,16 @@ class NotSpringProfileExpr extends SpringProfileExpr {
  */
 class SpringProfile extends string {
   SpringProfile() {
-    exists(SpringProfileExpr springProfileExpr |
-      this = springProfileExpr.getProfile()
-    )
+    exists(SpringProfileExpr springProfileExpr | this = springProfileExpr.getProfile())
   }
 }
-
 
 /**
  * A Spring profile that is always enabled.
  */
 abstract class AlwaysEnabledSpringProfile extends string {
   bindingset[this]
-  AlwaysEnabledSpringProfile() {
-    this.length() < 100
-  }
+  AlwaysEnabledSpringProfile() { this.length() < 100 }
 }
 
 /**
@@ -96,13 +83,10 @@ class SometimesEnabledSpringProfile extends string {
   }
 }
 
-
 /**
  * A Spring profile that is never enabled.
  */
 abstract class NeverEnabledSpringProfile extends string {
   bindingset[this]
-  NeverEnabledSpringProfile() {
-    this.length() < 100
-  }
+  NeverEnabledSpringProfile() { this.length() < 100 }
 }

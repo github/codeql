@@ -14,65 +14,51 @@
 import csharp
 
 // Iterate the control flow until we reach a Stmt
-Stmt findSuccessorStmt(ControlFlow::Node n)
-{
-  result=n.getElement() or
-  not n.getElement() instanceof Stmt and result=findSuccessorStmt(n.getASuccessor())
+Stmt findSuccessorStmt(ControlFlow::Node n) {
+  result = n.getElement()
+  or
+  not n.getElement() instanceof Stmt and result = findSuccessorStmt(n.getASuccessor())
 }
 
 // Return a successor statement to s
-Stmt getASuccessorStmt(Stmt s)
-{
-  result=findSuccessorStmt(s.getAControlFlowNode().getASuccessor())
+Stmt getASuccessorStmt(Stmt s) {
+  result = findSuccessorStmt(s.getAControlFlowNode().getASuccessor())
 }
 
-class IfThenStmt extends IfStmt
-{
-  IfThenStmt()
-  {
-    not exists(Stmt s | getElse()=s)
-  }
+class IfThenStmt extends IfStmt {
+  IfThenStmt() { not exists(Stmt s | getElse() = s) }
 }
 
-class IfThenElseStmt extends IfStmt
-{
-  IfThenElseStmt()
-  {
-    exists(Stmt s | getElse()=s)
-  }
+class IfThenElseStmt extends IfStmt {
+  IfThenElseStmt() { exists(Stmt s | getElse() = s) }
 }
 
-Stmt getTrailingBody(Stmt s)
-{
-  result=s.(ForStmt).getBody() or
-  result=s.(ForeachStmt).getBody() or
-  result=s.(WhileStmt).getBody() or
-  result=s.(IfThenStmt).getThen() or
-  result=s.(IfThenElseStmt).getElse()
+Stmt getTrailingBody(Stmt s) {
+  result = s.(ForStmt).getBody() or
+  result = s.(ForeachStmt).getBody() or
+  result = s.(WhileStmt).getBody() or
+  result = s.(IfThenStmt).getThen() or
+  result = s.(IfThenElseStmt).getElse()
 }
 
 // Any control statement which has a trailing block
 // which could cause indentation confusion
-abstract class UnbracedControlStmt extends Stmt
-{
+abstract class UnbracedControlStmt extends Stmt {
   abstract Stmt getBody();
+
   abstract Stmt getSuccessorStmt();
 
   private Stmt getACandidate() {
-    getSuccessorStmt() = result
-    and getBlockStmt(this) = getBlockStmt(result)
+    getSuccessorStmt() = result and
+    getBlockStmt(this) = getBlockStmt(result)
   }
 
-  private Location getBodyLocation() {
-    result = getBody().getLocation()
-  }
+  private Location getBodyLocation() { result = getBody().getLocation() }
 
   pragma[noopt]
   Stmt getAConfusingTrailingStmt() {
-    result = getACandidate()
-    and
-    exists(Location l1, Location l2 |
-      l1 = getBodyLocation() and l2 = result.getLocation() |
+    result = getACandidate() and
+    exists(Location l1, Location l2 | l1 = getBodyLocation() and l2 = result.getLocation() |
       // This test is slightly unreliable
       // because tabs are counted as 1 column.
       // But it's accurate enough to be useful, and will
@@ -83,52 +69,39 @@ abstract class UnbracedControlStmt extends Stmt
   }
 }
 
-class UnbracedIfStmt extends UnbracedControlStmt
-{
-  UnbracedIfStmt()
-  {
+class UnbracedIfStmt extends UnbracedControlStmt {
+  UnbracedIfStmt() {
     this instanceof IfStmt and
     not getTrailingBody(this) instanceof BlockStmt and
     not getTrailingBody(this) instanceof IfStmt
   }
 
-  override Stmt getBody()
-  {
-    result=getTrailingBody(this)
-  }
+  override Stmt getBody() { result = getTrailingBody(this) }
 
-  override Stmt getSuccessorStmt()
-  {
+  override Stmt getSuccessorStmt() {
     result = getASuccessorStmt(getBody()) and
-    result!=this
+    result != this
   }
 }
 
-class UnbracedLoopStmt extends UnbracedControlStmt
-{
-  UnbracedLoopStmt()
-  {
+class UnbracedLoopStmt extends UnbracedControlStmt {
+  UnbracedLoopStmt() {
     this instanceof LoopStmt and
     not this instanceof DoStmt and
     not getTrailingBody(this) instanceof BlockStmt
   }
 
-  override Stmt getBody()
-  {
-    result=getTrailingBody(this)
-  }
+  override Stmt getBody() { result = getTrailingBody(this) }
 
-  override Stmt getSuccessorStmt()
-  {
+  override Stmt getSuccessorStmt() {
     result = getASuccessorStmt(this) and
     result != getBody()
   }
 }
 
-BlockStmt getBlockStmt(Element e)
-{
+BlockStmt getBlockStmt(Element e) {
   result = e.getParent() or
-  result = getBlockStmt(e.(IfStmt).getParent())  // Handle chained ifs
+  result = getBlockStmt(e.(IfStmt).getParent()) // Handle chained ifs
 }
 
 from UnbracedControlStmt s, Stmt n

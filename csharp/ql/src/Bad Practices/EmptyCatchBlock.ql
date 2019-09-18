@@ -11,9 +11,11 @@
  *       external/cwe/cwe-390
  *       external/cwe/cwe-391
  */
+
 import csharp
 
 from CatchClause cc
-where cc.getBlock().isEmpty()
-and not exists(CommentBlock cb | cb.getParent()=cc.getBlock())
+where
+  cc.getBlock().isEmpty() and
+  not exists(CommentBlock cb | cb.getParent() = cc.getBlock())
 select cc, "Poor error handling: empty catch block."

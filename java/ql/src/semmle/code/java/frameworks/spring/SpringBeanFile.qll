@@ -21,9 +21,7 @@ class SpringBeanFile extends XMLFile {
    * Use `SpringBean.isTopLevel()` to obtain only the `<bean>`
    * elements that are direct children of `<beans>`.
    */
-  SpringBean getABean() {
-    exists(SpringBean b | b.getFile() = this and result = b)
-  }
+  SpringBean getABean() { exists(SpringBean b | b.getFile() = this and result = b) }
 
   /** Gets the `<beans>` element of the file. */
   XMLElement getBeansElement() {
@@ -36,7 +34,12 @@ class SpringBeanFile extends XMLFile {
    * applicable to any profile.
    */
   string getAProfileExpr() {
-    result = getBeansElement().getAttribute("profile").getValue().splitAt(",").splitAt(" ").splitAt(";") and
+    result = getBeansElement()
+          .getAttribute("profile")
+          .getValue()
+          .splitAt(",")
+          .splitAt(" ")
+          .splitAt(";") and
     result.length() != 0
   }
 

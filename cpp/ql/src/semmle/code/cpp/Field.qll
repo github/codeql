@@ -3,19 +3,27 @@ import semmle.code.cpp.Enum
 import semmle.code.cpp.exprs.Access
 
 /**
- * A C structure member or C++ non-static member variable.
+ * A C structure member or C++ non-static member variable. For example the
+ * member variable `m` in the following code (but not `s`):
+ * ```
+ * class MyClass {
+ * public:
+ *   int m;
+ *   static int s;
+ * };
+ * ```
+ *
+ * This does not include static member variables in C++. To include static member
+ * variables, use `MemberVariable` instead of `Field`.
  */
 class Field extends MemberVariable {
-
-  Field() {
-    fieldoffsets(underlyingElement(this),_,_)
-  }
+  Field() { fieldoffsets(underlyingElement(this), _, _) }
 
   /**
    * Gets the offset of this field in bytes from the start of its declaring
    * type (on the machine where facts were extracted).
    */
-  int getByteOffset() { fieldoffsets(underlyingElement(this),result,_) }
+  int getByteOffset() { fieldoffsets(underlyingElement(this), result, _) }
 
   /**
    * Gets the byte offset within `mostDerivedClass` of each occurence of this
@@ -26,19 +34,19 @@ class Field extends MemberVariable {
    * complete most-derived object.
    */
   int getAByteOffsetIn(Class mostDerivedClass) {
-    result = mostDerivedClass.getABaseClassByteOffset(getDeclaringType()) +
-      getByteOffset()
+    result = mostDerivedClass.getABaseClassByteOffset(getDeclaringType()) + getByteOffset()
   }
 
   /**
    * Holds if the field can be initialized as part of an initializer list. For
    * example, in:
-   *
+   * ```
    * struct S {
    *   unsigned int a : 5;
    *   unsigned int : 5;
-   *   unsigned int b : 5; 
+   *   unsigned int b : 5;
    * };
+   * ```
    *
    * Fields `a` and `b` are initializable, but the unnamed bitfield is not.
    */
@@ -54,29 +62,34 @@ class Field extends MemberVariable {
    * which the field will be initialized, whether by an initializer list or in a
    * constructor.
    */
+  pragma[nomagic]
   final int getInitializationOrder() {
-    exists(Class cls, int memberIndex | 
+    exists(Class cls, int memberIndex |
       this = cls.getCanonicalMember(memberIndex) and
       memberIndex = rank[result + 1](int index |
-        cls.getCanonicalMember(index).(Field).isInitializable()
-      )
+          cls.getCanonicalMember(index).(Field).isInitializable()
+        )
     )
   }
 }
 
 /**
- * A C structure member or C++ member variable declared with an explicit size in bits.
- *
- * Syntactically, this looks like `int x : 3` in `struct S { int x : 3; };`.
+ * A C structure member or C++ member variable declared with an explicit size
+ * in bits. For example the member variable `x` in the following code:
+ * ```
+ * struct MyStruct {
+ *   int x : 3;
+ * };
+ * ```
  */
 class BitField extends Field {
-  BitField() { bitfield(underlyingElement(this),_,_) }
+  BitField() { bitfield(underlyingElement(this), _, _) }
 
   /**
    * Gets the size of this bitfield in bits (on the machine where facts
    * were extracted).
    */
-  int getNumBits() { bitfield(underlyingElement(this),result,_) }
+  int getNumBits() { bitfield(underlyingElement(this), result, _) }
 
   /**
    * Gets the value which appeared after the colon in the bitfield
@@ -88,17 +101,16 @@ class BitField extends Field {
    * `getNumBits` will give 32, whereas `getDeclaredNumBits` will give
    * 1234.
    */
-  int getDeclaredNumBits() { bitfield(underlyingElement(this),_,result) }
+  int getDeclaredNumBits() { bitfield(underlyingElement(this), _, result) }
 
   /**
    * Gets the offset of this bitfield in bits from the byte identified by
    * getByteOffset (on the machine where facts were extracted).
    */
-  int getBitOffset() { fieldoffsets(underlyingElement(this),_,result) }
+  int getBitOffset() { fieldoffsets(underlyingElement(this), _, result) }
 
-  predicate isAnonymous() {
-    hasName("(unnamed bitfield)")
-  }
+  /** Holds if this bitfield is anonymous. */
+  predicate isAnonymous() { hasName("(unnamed bitfield)") }
 
   override predicate isInitializable() {
     // Anonymous bitfields are not initializable.

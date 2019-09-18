@@ -5,7 +5,7 @@
  * and property accesses.
  */
 
-import javascript
+private import javascript
 private import AbstractValuesImpl
 private import semmle.javascript.dataflow.InferredTypes
 
@@ -16,34 +16,33 @@ private class AnalyzedLiteral extends DataFlow::AnalyzedValueNode {
   override Literal astNode;
 
   override AbstractValue getALocalValue() {
-    exists (string value | value = astNode.getValue() |
+    exists(string value | value = astNode.getValue() |
       // flow analysis for `null` literals
       astNode instanceof NullLiteral and result = TAbstractNull()
       or
       // flow analysis for Boolean literals
-      astNode instanceof BooleanLiteral and (
-        value = "true" and result = TAbstractBoolean(true) or
+      astNode instanceof BooleanLiteral and
+      (
+        value = "true" and result = TAbstractBoolean(true)
+        or
         value = "false" and result = TAbstractBoolean(false)
       )
       or
       // flow analysis for number literals
       (astNode instanceof NumberLiteral or astNode instanceof BigIntLiteral) and
-      exists (float fv | fv = value.toFloat() |
-        if fv = 0.0 or fv = -0.0 then
-          result = TAbstractZero()
-        else
-          result = TAbstractNonZero()
+      exists(float fv | fv = value.toFloat() |
+        if fv = 0.0 or fv = -0.0 then result = TAbstractZero() else result = TAbstractNonZero()
       )
       or
       // flow analysis for string literals
       astNode instanceof StringLiteral and
       (
-        if value = "" then
-          result = TAbstractEmpty()
-        else if exists(value.toFloat()) then
-          result = TAbstractNumString()
+        if value = ""
+        then result = TAbstractEmpty()
         else
-          result = TAbstractOtherString()
+          if exists(value.toFloat())
+          then result = TAbstractNumString()
+          else result = TAbstractOtherString()
       )
       or
       // flow analysis for regular expression literals
@@ -111,7 +110,7 @@ private class AnalyzedNamespaceDeclaration extends DataFlow::AnalyzedValueNode {
   }
 
   AbstractValue getPreviousValue() {
-    exists (AnalyzedSsaDefinition def |
+    exists(AnalyzedSsaDefinition def |
       def.getVariable().getAUse() = astNode.getId() and
       result = def.getAnRhsValue()
     )
@@ -148,7 +147,7 @@ private class AnalyzedJSXQualifiedName extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for empty JSX expressions.
  */
-private class AnalyzedJSXEmptyExpression extends DataFlow::AnalyzedValueNode{
+private class AnalyzedJSXEmptyExpression extends DataFlow::AnalyzedValueNode {
   override JSXEmptyExpr astNode;
 
   override AbstractValue getALocalValue() { result = TAbstractUndefined() }
@@ -158,20 +157,18 @@ private class AnalyzedJSXEmptyExpression extends DataFlow::AnalyzedValueNode{
  * Flow analysis for `super` in super constructor calls.
  */
 private class AnalyzedSuperCall extends DataFlow::AnalyzedValueNode {
-  AnalyzedSuperCall() {
-    astNode = any(SuperCall sc).getCallee().stripParens()
-  }
+  AnalyzedSuperCall() { astNode = any(SuperCall sc).getCallee().getUnderlyingValue() }
 
   override AbstractValue getALocalValue() {
-    exists (MethodDefinition md, DataFlow::AnalyzedNode sup, AbstractValue supVal |
+    exists(MethodDefinition md, DataFlow::AnalyzedNode sup, AbstractValue supVal |
       md.getBody() = asExpr().getEnclosingFunction() and
       sup = md.getDeclaringClass().getSuperClass().analyze() and
-      supVal = sup.getALocalValue() |
+      supVal = sup.getALocalValue()
+    |
       // `extends null` is treated specially in a way that we cannot model
-      if supVal instanceof AbstractNull then
-        result = TIndefiniteFunctionOrClass("heap")
-      else
-        result = supVal
+      if supVal instanceof AbstractNull
+      then result = TIndefiniteFunctionOrClass("heap")
+      else result = supVal
     )
   }
 }
@@ -201,9 +198,10 @@ private class AnalyzedNewExpr extends DataFlow::AnalyzedValueNode {
    * instance, which we cannot track.
    */
   private predicate isIndefinite() {
-    exists (DataFlow::AnalyzedNode callee, AbstractValue calleeVal |
+    exists(DataFlow::AnalyzedNode callee, AbstractValue calleeVal |
       callee = astNode.(NewExpr).getCallee().analyze() and
-      calleeVal = callee.getALocalValue() |
+      calleeVal = callee.getALocalValue()
+    |
       calleeVal.isIndefinite(_) or
       exists(calleeVal.(AbstractClass).getClass().getSuperClass()) or
       exists(calleeVal.(AbstractCallable).getFunction().getAReturnedExpr())
@@ -214,11 +212,11 @@ private class AnalyzedNewExpr extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for `new` expressions that create class/function instances.
  */
-private class NewInstance extends DataFlow::AnalyzedValueNode{
+private class NewInstance extends DataFlow::AnalyzedValueNode {
   override NewExpr astNode;
 
   override AbstractValue getALocalValue() {
-    exists (DataFlow::AnalyzedNode callee |
+    exists(DataFlow::AnalyzedNode callee |
       callee = astNode.(NewExpr).getCallee().analyze() and
       result = TAbstractInstance(callee.getALocalValue())
     )
@@ -231,9 +229,7 @@ private class NewInstance extends DataFlow::AnalyzedValueNode{
 private class AnalyzedBinaryExpr extends DataFlow::AnalyzedValueNode {
   override BinaryExpr astNode;
 
-  AnalyzedBinaryExpr() {
-    not astNode instanceof LogicalBinaryExpr
-  }
+  AnalyzedBinaryExpr() { not astNode instanceof LogicalBinaryExpr }
 
   override AbstractValue getALocalValue() {
     // most binary expressions are arithmetic expressions;
@@ -243,18 +239,21 @@ private class AnalyzedBinaryExpr extends DataFlow::AnalyzedValueNode {
 }
 
 /**
+ * Gets a primitive type to which the local value of `e` can be coerced.
+ */
+private PrimitiveType getALocalPrimitiveType(Expr e) {
+  result = e.analyze().getALocalValue().toPrimitive().getType()
+}
+
+/**
  * Holds if `e` may hold a string value.
  */
-private predicate maybeString(Expr e) {
-  e.analyze().getAPrimitiveType() = TTString()
-}
+private predicate maybeString(Expr e) { getALocalPrimitiveType(e) = TTString() }
 
 /**
  * Holds if `e` may hold a non-string value.
  */
-private predicate maybeNonString(Expr e) {
-  e.analyze().getAPrimitiveType() != TTString()
-}
+private predicate maybeNonString(Expr e) { getALocalPrimitiveType(e) != TTString() }
 
 /**
  * Holds if `e` is a `+` or `+=` expression that could be interpreted as a string append
@@ -271,7 +270,8 @@ private predicate isStringAppend(Expr e) {
  */
 private predicate isAddition(Expr e) {
   (e instanceof AddExpr or e instanceof AssignAddExpr) and
-  maybeNonString(e.getChildExpr(0)) and maybeNonString(e.getChildExpr(1))
+  maybeNonString(e.getChildExpr(0)) and
+  maybeNonString(e.getChildExpr(1))
 }
 
 /**
@@ -281,7 +281,8 @@ private class AnalyzedAddExpr extends AnalyzedBinaryExpr {
   override AddExpr astNode;
 
   override AbstractValue getALocalValue() {
-    isStringAppend(astNode) and result = abstractValueOfType(TTString()) or
+    isStringAppend(astNode) and result = abstractValueOfType(TTString())
+    or
     isAddition(astNode) and result = abstractValueOfType(TTNumber())
   }
 }
@@ -298,7 +299,7 @@ private class AnalyzedComparison extends AnalyzedBinaryExpr {
 /**
  * Flow analysis for `in` expressions.
  */
-private class AnalyzedInExpr extends AnalyzedBinaryExpr  {
+private class AnalyzedInExpr extends AnalyzedBinaryExpr {
   override InExpr astNode;
 
   override AbstractValue getALocalValue() { result = TAbstractBoolean(_) }
@@ -313,7 +314,6 @@ private class AnalyzedInstanceofExpr extends AnalyzedBinaryExpr {
   override AbstractValue getALocalValue() { result = TAbstractBoolean(_) }
 }
 
-
 /**
  * Flow analysis for unary expressions (except for spread, which is not
  * semantically a unary expression).
@@ -321,9 +321,7 @@ private class AnalyzedInstanceofExpr extends AnalyzedBinaryExpr {
 private class AnalyzedUnaryExpr extends DataFlow::AnalyzedValueNode {
   override UnaryExpr astNode;
 
-  AnalyzedUnaryExpr() {
-    not astNode instanceof SpreadElement
-  }
+  AnalyzedUnaryExpr() { not astNode instanceof SpreadElement }
 
   override AbstractValue getALocalValue() {
     // many unary expressions are arithmetic expressions;
@@ -357,9 +355,10 @@ private class AnalyzedLogNotExpr extends AnalyzedUnaryExpr {
   override LogNotExpr astNode;
 
   override AbstractValue getALocalValue() {
-    exists (AbstractValue op | op = astNode.getOperand().analyze().getALocalValue() |
-      exists (boolean bv | bv = op.getBooleanValue() |
-        bv = true and result = TAbstractBoolean(false) or
+    exists(AbstractValue op | op = astNode.getOperand().analyze().getALocalValue() |
+      exists(boolean bv | bv = op.getBooleanValue() |
+        bv = true and result = TAbstractBoolean(false)
+        or
         bv = false and result = TAbstractBoolean(true)
       )
     )
@@ -375,7 +374,6 @@ private class AnalyzedDeleteExpr extends AnalyzedUnaryExpr {
   override AbstractValue getALocalValue() { result = TAbstractBoolean(_) }
 }
 
-
 /**
  * Flow analysis for increment and decrement expressions.
  */
@@ -384,7 +382,6 @@ private class AnalyzedUpdateExpr extends DataFlow::AnalyzedValueNode {
 
   override AbstractValue getALocalValue() { result = abstractValueOfType(TTNumber()) }
 }
-
 
 /**
  * Flow analysis for compound assignments.
@@ -402,7 +399,20 @@ private class AnalyzedAssignAddExpr extends AnalyzedCompoundAssignExpr {
   override AssignAddExpr astNode;
 
   override AbstractValue getALocalValue() {
-    isStringAppend(astNode) and result = abstractValueOfType(TTString()) or
+    isStringAppend(astNode) and result = abstractValueOfType(TTString())
+    or
     isAddition(astNode) and result = abstractValueOfType(TTNumber())
+  }
+}
+
+/**
+ * Flow analysis for optional chaining expressions.
+ */
+private class AnalyzedOptionalChainExpr extends DataFlow::AnalyzedValueNode {
+  override OptionalChainRoot astNode;
+
+  override AbstractValue getALocalValue() {
+    result = super.getALocalValue() or
+    result = TAbstractUndefined()
   }
 }

@@ -1,0 +1,28 @@
+| 16 | test.py:16:5:16:22 | ControlFlowNode for Raise | Function f2 | test.py:3:1:3:28 | class ExceptionA |
+| 22 | test.py:22:5:22:8 | ControlFlowNode for f2() | Function f5 | test.py:3:1:3:28 | class ExceptionA |
+| 25 | test.py:25:5:25:22 | ControlFlowNode for Raise | Function f6 | test.py:6:1:6:28 | class ExceptionB |
+| 30 | test.py:30:9:30:26 | ControlFlowNode for Raise | Function f7 | test.py:3:1:3:28 | class ExceptionA |
+| 32 | test.py:32:9:32:26 | ControlFlowNode for Raise | Function f7 | test.py:6:1:6:28 | class ExceptionB |
+| 36 | test.py:36:9:36:12 | ControlFlowNode for f7() | Function f8 | test.py:3:1:3:28 | class ExceptionA |
+| 44 | test.py:44:9:44:12 | ControlFlowNode for Pass | Function f8a | test.py:3:1:3:28 | class ExceptionA |
+| 44 | test.py:44:9:44:12 | ControlFlowNode for Pass | Function f8a | test.py:6:1:6:28 | class ExceptionB |
+| 53 | test.py:53:9:53:12 | ControlFlowNode for Pass | Function f9 | test.py:3:1:3:28 | class ExceptionA |
+| 71 | test.py:71:9:71:26 | ControlFlowNode for Raise | Function f11 | test.py:9:1:9:28 | class ExceptionC |
+| 71 | test.py:71:9:71:26 | ControlFlowNode for Raise | Function f11 | test.py:9:1:9:28 | class ExceptionC |
+| 74 | test.py:74:5:74:14 | ControlFlowNode for Subscript | Function f12 | file://:Compiled Code:0:0:0:0 | builtin-class LookupError |
+| 107 | test.py:107:9:107:12 | ControlFlowNode for Pass | Function f18 | file://:Compiled Code:0:0:0:0 | builtin-class LookupError |
+| 110 | test.py:110:5:110:22 | ControlFlowNode for Raise | Function f19 | file://:Compiled Code:0:0:0:0 | builtin-class IndexError |
+| 120 | test.py:120:9:120:13 | ControlFlowNode for f19() | Function f21 | file://:Compiled Code:0:0:0:0 | builtin-class IndexError |
+| 128 | test.py:128:9:128:12 | ControlFlowNode for Pass | Function f22 | file://:Compiled Code:0:0:0:0 | builtin-class IndexError |
+| 138 | test.py:138:13:138:16 | ControlFlowNode for Pass | Function f23 | test.py:3:1:3:28 | class ExceptionA |
+| 138 | test.py:138:13:138:16 | ControlFlowNode for Pass | Function f23 | test.py:6:1:6:28 | class ExceptionB |
+| 138 | test.py:138:13:138:16 | ControlFlowNode for Pass | Function f23 | test.py:9:1:9:28 | class ExceptionC |
+| 138 | test.py:138:13:138:16 | ControlFlowNode for Pass | Function f23 | test.py:9:1:9:28 | class ExceptionC |
+| 152 | test.py:152:9:152:12 | ControlFlowNode for Pass | Function f24 | test.py:3:1:3:28 | class ExceptionA |
+| 152 | test.py:152:9:152:12 | ControlFlowNode for Pass | Function f24 | test.py:6:1:6:28 | class ExceptionB |
+| 171 | test.py:171:13:171:16 | ControlFlowNode for Pass | Function f25 | test.py:9:1:9:28 | class ExceptionC |
+| 171 | test.py:171:13:171:16 | ControlFlowNode for Pass | Function f25 | test.py:9:1:9:28 | class ExceptionC |
+| 172 | test.py:172:9:172:12 | ControlFlowNode for Pass | Function f25 | test.py:3:1:3:28 | class ExceptionA |
+| 172 | test.py:172:9:172:12 | ControlFlowNode for Pass | Function f25 | test.py:6:1:6:28 | class ExceptionB |
+| 178 | test.py:178:9:178:12 | ControlFlowNode for f7() | Function f26 | test.py:6:1:6:28 | class ExceptionB |
+| 183 | test.py:183:9:183:26 | ControlFlowNode for Raise | Function f26 | test.py:9:1:9:28 | class ExceptionC |

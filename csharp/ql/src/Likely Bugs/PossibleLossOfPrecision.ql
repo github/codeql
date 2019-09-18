@@ -8,7 +8,6 @@
  * @id cs/loss-of-precision
  * @tags reliability
  *       correctness
- *       security
  *       external/cwe/cwe-190
  *       external/cwe/cwe-192
  *       external/cwe/cwe-197
@@ -21,14 +20,16 @@ import csharp
 predicate convertedToFloatOrDecimal(Expr e, Type t) {
   exists(CastExpr cast |
     cast.getExpr() = e and
-    t = cast.getType() |
+    t = cast.getType()
+  |
     t instanceof FloatingPointType or
     t instanceof DecimalType
   )
   or
   exists(BinaryArithmeticOperation op |
     op.getAnOperand() = e and
-    convertedToFloatOrDecimal(op, t) |
+    convertedToFloatOrDecimal(op, t)
+  |
     op instanceof AddExpr or
     op instanceof SubExpr or
     op instanceof MulExpr
@@ -59,13 +60,9 @@ abstract class LossOfPrecision extends Expr {
 
 /** A division expression that may result in a loss of precision. */
 class DivLossOfPrecision extends LossOfPrecision, DivExpr {
-  DivLossOfPrecision() {
-    not exactDivision(this)
-  }
+  DivLossOfPrecision() { not exactDivision(this) }
 
-  override string getMessage() {
-    result = "Possible loss of precision: any fraction will be lost."
-  }
+  override string getMessage() { result = "Possible loss of precision: any fraction will be lost." }
 }
 
 /** Holds if `e` is a constant multiplication that does not overflow. */
@@ -82,12 +79,11 @@ predicate small(MulExpr e) {
 
 /** A multiplication expression that may result in a loss of precision. */
 class MulLossOfPrecision extends LossOfPrecision, MulExpr {
-  MulLossOfPrecision() {
-    not small(this)
-  }
+  MulLossOfPrecision() { not small(this) }
 
   override string getMessage() {
-    result = "Possible overflow: result of integer multiplication cast to " + convertedType.toStringWithTypes() + "."
+    result = "Possible overflow: result of integer multiplication cast to " +
+        convertedType.toStringWithTypes() + "."
   }
 }
 

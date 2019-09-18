@@ -3,47 +3,40 @@ private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * Get the `@element` that represents this `@element`.
- * Normally this will simply be `e`, but sometimes it is not.
- * For example, for an incomplete struct `e` the result may be a
- * complete struct with the same name.
- */
-private cached @element resolveElement(@element e) {
-  if isClass(e)
-  then result = resolveClass(e)
-  else result = e
-}
-
-/**
  * Get the `Element` that represents this `@element`.
  * Normally this will simply be a cast of `e`, but sometimes it is not.
  * For example, for an incomplete struct `e` the result may be a
  * complete struct with the same name.
  */
-Element mkElement(@element e) {
-  result = resolveElement(e)
-}
+pragma[inline]
+Element mkElement(@element e) { unresolveElement(result) = e }
 
 /**
- * Get an `@element` that resolves to the `Element`. This should
+ * INTERNAL: Do not use.
+ *
+ * Gets an `@element` that resolves to the `Element`. This should
  * normally only be called from member predicates, where `e` is not
  * `this` and you need the result for an argument to a database
  * extensional.
  * See `underlyingElement` for when `e` is `this`.
  */
+pragma[inline]
 @element unresolveElement(Element e) {
-  resolveElement(result) = e
+  not result instanceof @usertype and
+  result = e
+  or
+  e = resolveClass(result)
 }
 
 /**
- * Get the `@element` that this `Element` extends. This should normally
+ * INTERNAL: Do not use.
+ *
+ * Gets the `@element` that this `Element` extends. This should normally
  * only be called from member predicates, where `e` is `this` and you
  * need the result for an argument to a database extensional.
  * See `unresolveElement` for when `e` is not `this`.
  */
-@element underlyingElement(Element e) {
-  result = e
-}
+@element underlyingElement(Element e) { result = e }
 
 /**
  * A C/C++ element with no member predicates other than `toString`. Not for
@@ -53,12 +46,15 @@ Element mkElement(@element e) {
  * `getLocation`, or `hasLocationInfo`.
  */
 class ElementBase extends @element {
-  ElementBase() {
-    this = resolveElement(_)
-  }
-
   /** Gets a textual representation of this element. */
   string toString() { none() }
+
+  /**
+   * Canonical QL class corresponding to this element.
+   *
+   * ElementBase is the root class for this predicate.
+   */
+  string getCanonicalQLClass() { result = "???" }
 }
 
 /**
@@ -83,13 +79,10 @@ class Element extends ElementBase {
    *
    * DEPRECATED: always true.
    */
-  deprecated
-  predicate fromLibrary() { this.getFile().fromLibrary() }
+  deprecated predicate fromLibrary() { this.getFile().fromLibrary() }
 
   /** Gets the primary location of this element. */
-  Location getLocation() {
-    none()
-  }
+  Location getLocation() { none() }
 
   /**
    * Gets the source of this element: either itself or a macro that expanded
@@ -105,7 +98,8 @@ class Element extends ElementBase {
    * expand to a bug.
    */
   Element findRootCause() {
-    if (exists(MacroInvocation mi | this = mi.getAGeneratedElement())) then
+    if exists(MacroInvocation mi | this = mi.getAGeneratedElement())
+    then
       exists(MacroInvocation mi |
         this = mi.getAGeneratedElement() and
         not exists(MacroInvocation closer |
@@ -114,8 +108,7 @@ class Element extends ElementBase {
         ) and
         result = mi.getMacro()
       )
-    else
-      result = this
+    else result = this
   }
 
   /**
@@ -125,54 +118,40 @@ class Element extends ElementBase {
    */
   Element getParentScope() {
     // result instanceof class
-    exists (Declaration m
-    | m = this and
+    exists(Declaration m |
+      m = this and
       result = m.getDeclaringType() and
-      not this instanceof EnumConstant)
+      not this instanceof EnumConstant
+    )
     or
-    exists (TemplateClass tc
-    | this = tc.getATemplateArgument() and result = tc)
-
+    exists(TemplateClass tc | this = tc.getATemplateArgument() and result = tc)
+    or
     // result instanceof namespace
+    exists(Namespace n | result = n and n.getADeclaration() = this)
     or
-    exists (Namespace n
-    | result = n and n.getADeclaration() = this)
+    exists(FriendDecl d, Namespace n | this = d and n.getADeclaration() = d and result = n)
     or
-    exists (FriendDecl d, Namespace n
-    | this = d and n.getADeclaration() = d and result = n)
+    exists(Namespace n | this = n and result = n.getParentNamespace())
     or
-    exists (Namespace n
-    | this = n and result = n.getParentNamespace())
-
     // result instanceof stmt
+    exists(LocalVariable v |
+      this = v and
+      exists(DeclStmt ds | ds.getADeclaration() = v and result = ds.getParent())
+    )
     or
-    exists (LocalVariable v
-    | this = v and
-      exists (DeclStmt ds
-      | ds.getADeclaration() = v and result = ds.getParent()))
+    exists(Parameter p | this = p and result = p.getFunction())
     or
-    exists (Parameter p
-    | this = p and result = p.getFunction())
+    exists(GlobalVariable g, Namespace n | this = g and n.getADeclaration() = g and result = n)
     or
-    exists (GlobalVariable g, Namespace n
-    | this = g and n.getADeclaration() = g and result = n)
+    exists(EnumConstant e | this = e and result = e.getDeclaringEnum())
     or
-    exists (EnumConstant e
-    | this = e and result = e.getDeclaringEnum())
-
     // result instanceof block|function
+    exists(Block b | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
     or
-    exists (Block b
-    | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
+    exists(TemplateFunction tf | this = tf.getATemplateArgument() and result = tf)
     or
-    exists (TemplateFunction tf
-    | this = tf.getATemplateArgument() and result = tf)
-
     // result instanceof stmt
-    or
-    exists (ControlStructure s
-    | this = s and result = s.getParent())
-
+    exists(ControlStructure s | this = s and result = s.getParent())
     or
     using_container(unresolveElement(result), underlyingElement(this))
   }
@@ -182,18 +161,14 @@ class Element extends ElementBase {
    * are entirely generated by a macro are included - for elements that
    * partially come from a macro, see `isAffectedByMacro`.
    */
-  predicate isInMacroExpansion() {
-    inMacroExpansion(this)
-  }
+  predicate isInMacroExpansion() { inMacroExpansion(this) }
 
   /**
    * Holds if this element is affected in any way by a macro. All elements
    * that are totally or partially generated by a macro are included, so
    * this is a super-set of `isInMacroExpansion`.
    */
-  predicate isAffectedByMacro() {
-    affectedByMacro(this)
-  }
+  predicate isAffectedByMacro() { affectedByMacro(this) }
 
   private Element getEnclosingElementPref() {
     enclosingfunction(underlyingElement(this), unresolveElement(result)) or
@@ -206,21 +181,22 @@ class Element extends ElementBase {
     namequalifiers(underlyingElement(this), unresolveElement(result), _, _) or
     initialisers(underlyingElement(this), unresolveElement(result), _, _) or
     exprconv(unresolveElement(result), underlyingElement(this)) or
-    param_decl_bind(underlyingElement(this),_,unresolveElement(result))
+    param_decl_bind(underlyingElement(this), _, unresolveElement(result)) or
+    using_container(unresolveElement(result), underlyingElement(this))
   }
 
   /** Gets the closest `Element` enclosing this one. */
-  cached Element getEnclosingElement() {
-    result = getEnclosingElementPref() or
+  cached
+  Element getEnclosingElement() {
+    result = getEnclosingElementPref()
+    or
+    not exists(getEnclosingElementPref()) and
     (
-      not exists(getEnclosingElementPref()) and
-      (
-        this = result.(Class).getAMember()
-        or
-        result = exprEnclosingElement(this)
-        or
-        var_decls(underlyingElement(this), unresolveElement(result), _, _, _)
-      )
+      this = result.(Class).getAMember()
+      or
+      result = exprEnclosingElement(this)
+      or
+      var_decls(underlyingElement(this), unresolveElement(result), _, _, _)
     )
   }
 
@@ -229,8 +205,7 @@ class Element extends ElementBase {
    * the template itself).
    */
   predicate isFromTemplateInstantiation(Element instantiation) {
-    exists(Element e |
-      isFromTemplateInstantiationRec(e, instantiation) |
+    exists(Element e | isFromTemplateInstantiationRec(e, instantiation) |
       this = e or
       this.(DeclarationEntry).getDeclaration() = e
     )
@@ -246,8 +221,7 @@ class Element extends ElementBase {
    * a value of `template` for each containing template.
    */
   predicate isFromUninstantiatedTemplate(Element template) {
-    exists(Element e |
-      isFromUninstantiatedTemplateRec(e, template) |
+    exists(Element e | isFromUninstantiatedTemplateRec(e, template) |
       this = e or
       this.(DeclarationEntry).getDeclaration() = e
     )
@@ -285,7 +259,10 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
  */
 class StaticAssert extends Locatable, @static_assert {
   override string toString() { result = "static_assert(..., \"" + getMessage() + "\")" }
-  Expr getCondition()    { static_asserts(underlyingElement(this), unresolveElement(result), _, _) }
-  string getMessage()    { static_asserts(underlyingElement(this), _, result, _) }
+
+  Expr getCondition() { static_asserts(underlyingElement(this), unresolveElement(result), _, _) }
+
+  string getMessage() { static_asserts(underlyingElement(this), _, result, _) }
+
   override Location getLocation() { static_asserts(underlyingElement(this), _, _, result) }
 }

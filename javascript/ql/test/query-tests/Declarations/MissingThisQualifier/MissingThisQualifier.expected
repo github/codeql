@@ -1,4 +1,5 @@
 | abstract-missing.ts:3:5:3:24 | setAudioProperties() | This call refers to a global function, and not the local method $@. | abstract-missing.ts:6:3:6:32 | abstrac ... ties(); | setAudioProperties |
+| indirection.js:7:9:7:20 | m("default") | This call refers to a global function, and not the local method $@. | indirection.js:2:5:4:5 | m() {\\n  ... K\\n    } | m |
 | missing1.js:3:5:3:24 | setAudioProperties() | This call refers to a global function, and not the local method $@. | missing1.js:6:3:7:3 | setAudi ... (){\\n  } | setAudioProperties |
 | missing2.js:3:5:3:24 | setAudioProperties() | This call refers to a global function, and not the local method $@. | missing2.js:7:3:8:3 | static  ... (){\\n  } | setAudioProperties |
 | namespaces-uses.ts:3:5:3:20 | globalFunction() | This call refers to a global function, and not the local method $@. | namespaces-uses.ts:2:3:4:3 | globalF ...  OK\\n  } | globalFunction |

@@ -33,7 +33,7 @@ class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see https://lgtm.com/help/ql/locations#providing-urls.
+   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
    */
   string getURL() { none() }
 
@@ -46,8 +46,9 @@ class Container extends @container {
    * if the root folder is not a reflexive, transitive parent of this container.
    */
   string getRelativePath() {
-    exists (string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref) |
+    exists(string absPath, string pref |
+      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+    |
       absPath = pref and result = ""
       or
       absPath = pref.regexpReplaceAll("/$", "") + "/" + result and
@@ -99,9 +100,7 @@ class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() {
-    result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
-  }
+  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -120,24 +119,16 @@ class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() {
-    result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
-  }
+  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
 
   /** Gets the parent container of this file or folder, if any. */
-  Container getParentContainer() {
-    containerparent(result, this)
-  }
+  Container getParentContainer() { containerparent(result, this) }
 
   /** Gets a file or sub-folder in this container. */
-  Container getAChildContainer() {
-    this = result.getParentContainer()
-  }
+  Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() {
-    result = getAChildContainer()
-  }
+  File getAFile() { result = getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
@@ -146,9 +137,7 @@ class Container extends @container {
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() {
-    result = getAChildContainer()
-  }
+  Folder getAFolder() { result = getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
@@ -170,60 +159,40 @@ class Container extends @container {
   }
 
   /** Gets a sub-folder contained in this container. */
-  Folder getASubFolder() {
-    result = getAChildContainer()
-  }
+  Folder getASubFolder() { result = getAChildContainer() }
 
   /**
    * Gets a textual representation of the path of this container.
    *
    * This is the absolute path of the container.
    */
-  string toString() {
-    result = getAbsolutePath()
-  }
+  string toString() { result = getAbsolutePath() }
 }
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() {
-    folders(this, result, _)
-  }
+  override string getAbsolutePath() { folders(this, result, _) }
 
-  override string getURL() {
-    result = "folder://" + getAbsolutePath()
-  }
+  override string getURL() { result = "folder://" + getAbsolutePath() }
 }
 
 /** A file. */
 class File extends Container, @file {
-  override string getAbsolutePath() {
-    files(this, result, _, _, _)
-  }
+  override string getAbsolutePath() { files(this, result, _, _, _) }
 
   /** Gets the number of lines in this file. */
-  int getNumberOfLines() {
-    numlines(this, result, _, _)
-  }
+  int getNumberOfLines() { numlines(this, result, _, _) }
 
   /** Gets the number of lines containing code in this file. */
-  int getNumberOfLinesOfCode() {
-    numlines(this, _, result, _)
-  }
+  int getNumberOfLinesOfCode() { numlines(this, _, result, _) }
 
   /** Gets the number of lines containing comments in this file. */
-  int getNumberOfLinesOfComments() {
-    numlines(this, _, _, result)
-  }
+  int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
 
-  override string getURL() {
-    result = "file://" + this.getAbsolutePath() + ":0:0:0:0"
-  }
+  override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** Holds if this file contains source code. */
-  predicate fromSource() {
-    this.getNumberOfLinesOfCode() > 0
-  }
+  predicate fromSource() { this.getNumberOfLinesOfCode() > 0 }
 
   /** Holds if this file is a library. */
   predicate fromLibrary() {
@@ -236,20 +205,15 @@ class File extends Container, @file {
    * A source file can come from a PDB and from regular extraction
    * in the same snapshot.
    */
-  predicate isPdbSourceFile() {
-    file_extraction_mode(this, 2)
-  }
+  predicate isPdbSourceFile() { file_extraction_mode(this, 2) }
 }
 
 /**
  * A source file.
  */
 class SourceFile extends File {
-
   SourceFile() { this.fromSource() }
 
   /** Holds if the file was extracted without building the source code. */
-  predicate extractedStandalone() {
-    file_extraction_mode(this, 1)
-  }
+  predicate extractedStandalone() { file_extraction_mode(this, 1) }
 }

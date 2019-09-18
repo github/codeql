@@ -23,7 +23,7 @@ public:
 
 		++arg1; // pure, does nothing
 		++arg2; // pure, does nothing
-		++arg3; // not pure in all cases (when _It is int this has a side-effect) [FALSE POSITIVE]
+		++arg3; // not pure in all cases (when _It is int this has a side-effect)
 
 		return arg2;
 	}
@@ -63,4 +63,46 @@ void testFunc2()
 
 	MyAssignable v1, v2;
 	v2 = v1;
+}
+
+namespace std {
+  typedef unsigned long size_t;
+}
+
+void* operator new  (std::size_t size, void* ptr) noexcept;
+
+struct Base {
+  Base() { }
+
+  Base &operator=(const Base &rhs) {
+    return *this;
+  }
+
+  virtual ~Base() { }
+};
+
+struct Derived : Base {
+  Derived &operator=(const Derived &rhs) {
+    if (&rhs == this) {
+      return *this;
+    }
+
+    // In case base class has data, now or in the future, copy that first.
+    Base::operator=(rhs); // GOOD
+
+    this->m_x = rhs.m_x;
+    return *this;
+  }
+
+  int m_x;
+};
+
+void use_Base() {
+  Base base_buffer[1];
+  Base *base = new(&base_buffer[0]) Base();
+
+  // In case the destructor does something, now or in the future, call it. It
+  // won't get called automatically because the object was allocated with
+  // placement new.
+  base->~Base(); // GOOD (because the call has void type)
 }

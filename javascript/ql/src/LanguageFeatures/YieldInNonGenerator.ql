@@ -13,7 +13,8 @@
 import javascript
 
 from YieldExpr yield, Function f
-where f = yield.getEnclosingFunction() and
-      not f.isGenerator()
+where
+  f = yield.getEnclosingFunction() and
+  not isGenerator(f)
 select yield, "This yield expression is contained in $@ which is not marked as a generator.",
-       f.getFirstToken(), f.describe()
+  f.getFirstToken(), f.describe()

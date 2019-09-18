@@ -1,6 +1,7 @@
 /**
  * Provides the .Net `Element` class.
  */
+
 private import DotNet
 import semmle.code.csharp.Location
 
@@ -14,17 +15,17 @@ class Element extends @dotnet_element {
   /** Gets the location of this element. */
   Location getLocation() { none() }
 
- /**
-  * Gets a location of this element, which can include locations in
-  * both DLLs and source files.
-  */
+  /**
+   * Gets a location of this element, which can include locations in
+   * both DLLs and source files.
+   */
   Location getALocation() { none() }
 
   /** Gets the file containing this element. */
-  File getFile() { result = getLocation().getFile() }
+  final File getFile() { result = this.getLocation().getFile() }
 
   /** Holds if this element is from source code. */
-  predicate fromSource() { none() }
+  predicate fromSource() { this.getFile().fromSource() }
 
   /**
    * Gets the "language" of this program element, as defined by the extension of the filename.
@@ -57,12 +58,8 @@ class NamedElement extends Element, @dotnet_named_element {
    * ```
    */
   final string getQualifiedName() {
-    exists(string qualifier, string name |
-      this.hasQualifiedName(qualifier, name) |
-      if qualifier = "" then
-        result = name
-      else
-        result = qualifier + "." + name
+    exists(string qualifier, string name | this.hasQualifiedName(qualifier, name) |
+      if qualifier = "" then result = name else result = qualifier + "." + name
     )
   }
 
@@ -70,9 +67,7 @@ class NamedElement extends Element, @dotnet_named_element {
    * Holds if this element has qualified name `qualifiedName`, for example
    * `System.Console.WriteLine`.
    */
-  final predicate hasQualifiedName(string qualifiedName) {
-    qualifiedName = this.getQualifiedName()
-  }
+  final predicate hasQualifiedName(string qualifiedName) { qualifiedName = this.getQualifiedName() }
 
   /** Holds if this element has the qualified name `qualifier`.`name`. */
   predicate hasQualifiedName(string qualifier, string name) {
@@ -80,18 +75,25 @@ class NamedElement extends Element, @dotnet_named_element {
   }
 
   /** Gets a unique string label for this element. */
+  cached
   string getLabel() { none() }
+
+  /** Holds if `other` has the same metadata handle in the same assembly. */
+  predicate matchesHandle(NamedElement other) {
+    exists(Assembly asm, int handle |
+      metadata_handle(this, asm, handle) and
+      metadata_handle(other, asm, handle)
+    )
+  }
 
   /**
    * Holds if this element was compiled from source code that is also present in the
    * database. That is, this element corresponds to another element from source.
    */
   predicate compiledFromSource() {
-    not this.fromSource()
-    and
-    exists(NamedElement other |
-      other != this |
-      other.getLabel() = this.getLabel() and
+    not this.fromSource() and
+    exists(NamedElement other | other != this |
+      this.matchesHandle(other) and
       other.fromSource()
     )
   }

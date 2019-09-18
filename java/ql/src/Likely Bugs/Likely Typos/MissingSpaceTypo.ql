@@ -9,12 +9,11 @@
  * @id java/missing-space-in-concatenation
  * @tags readability
  */
+
 import java
 
 class SourceStringLiteral extends StringLiteral {
-  SourceStringLiteral() {
-    this.getCompilationUnit().fromSource()
-  }
+  SourceStringLiteral() { this.getCompilationUnit().fromSource() }
 }
 
 from SourceStringLiteral s, string word
@@ -24,6 +23,9 @@ where
   // completely to distinguish grammatical punctuation after which a space is
   // needed, and intra-identifier punctuation in, for example, a fully
   // qualified java class name.
-  s.getLiteral().regexpCapture(".* (([-A-Za-z/'\\.:,]*[a-zA-Z]|[0-9]+)[\\.:,;!?']*)\"[^\"]*\\+[^\"]*\"[a-zA-Z].*", 1) = word and
+  s
+      .getLiteral()
+      .regexpCapture(".* (([-A-Za-z/'\\.:,]*[a-zA-Z]|[0-9]+)[\\.:,;!?']*)\"[^\"]*\\+[^\"]*\"[a-zA-Z].*",
+        1) = word and
   not word.regexpMatch(".*[,\\.:].*[a-zA-Z].*[^a-zA-Z]")
 select s, "This string appears to be missing a space after '" + word + "'."

@@ -9,6 +9,7 @@
  * @tags maintainability
  *       modularity
  */
+
 import csharp
 
 predicate enclosingRefType(Variable v, RefType type) {
@@ -45,16 +46,19 @@ predicate dependencyCount(RefType source, RefType target, int res) {
   exists(int varCount, int funCount |
     variableDependencyCount(source, target, varCount) and
     functionDependencyCount(source, target, funCount) and
-  res = varCount + funCount
-  and res > 15)
+    res = varCount + funCount and
+    res > 15
+  )
 }
 
 from RefType a, RefType b, int ca, int cb
-where dependencyCount(a, b, ca) and
-      dependencyCount(b, a, cb) and
-      ca > 15 and
-      cb > 15 and
-      ca >= cb and
-      a != b
-select a, "Type " + a.getName() + " is too closely tied to $@ (" + ca.toString() +
-          " dependencies one way and " + cb.toString() + " the other).", b, b.getName()
+where
+  dependencyCount(a, b, ca) and
+  dependencyCount(b, a, cb) and
+  ca > 15 and
+  cb > 15 and
+  ca >= cb and
+  a != b
+select a,
+  "Type " + a.getName() + " is too closely tied to $@ (" + ca.toString() +
+    " dependencies one way and " + cb.toString() + " the other).", b, b.getName()

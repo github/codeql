@@ -3,8 +3,11 @@
  * @description Identifiers shall not simultaneously have both internal and external linkage in the same translation unit.
  * @kind problem
  * @id cpp/jsf/av-rule-138
- * @problem.severity error
+ * @problem.severity warning
+ * @tags maintainability
+ *       external/jsf
  */
+
 import cpp
 
 /*
@@ -20,23 +23,28 @@ import cpp
  * NOTE: only applies to C++; rules for C are different.
  */
 
-// FOR FUTURE REFERENCE ONLY - CURRENTLY USELESS BECAUSE OF POPULATOR LIMITATIONS
-// We need to have all the declarations of a variable to make this work; the extractor
-// does not currently provide that.
+/*
+ * FOR FUTURE REFERENCE ONLY - CURRENTLY USELESS BECAUSE OF POPULATOR LIMITATIONS
+ * We need to have all the declarations of a variable to make this work; the extractor
+ * does not currently provide that.
+ */
 
 predicate externalLinkage(Variable v) {
-     v.getADeclarationEntry().hasSpecifier("extern")
-  or v instanceof GlobalVariable and
-     not v.isConst() and
-     not v.isStatic()
+  v.getADeclarationEntry().hasSpecifier("extern")
+  or
+  v instanceof GlobalVariable and
+  not v.isConst() and
+  not v.isStatic()
 }
 
 predicate internalLinkage(GlobalVariable v) {
-     v.isStatic()
-  or v.isConst() and
-     not v.hasSpecifier("extern")
+  v.isStatic()
+  or
+  v.isConst() and
+  not v.hasSpecifier("extern")
 }
 
 from Variable v
 where externalLinkage(v) and internalLinkage(v)
-select v, "AV Rule 138: Identifiers shall not simultaneously have both internal and external linkage in the same translation unit."
+select v,
+  "AV Rule 138: Identifiers shall not simultaneously have both internal and external linkage in the same translation unit."

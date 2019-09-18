@@ -8,6 +8,7 @@
  * @tags testability
  *       readability
  */
+
 import csharp
 
 predicate nontrivialLogicalOperator(BinaryLogicalOperation e) {
@@ -17,13 +18,13 @@ predicate nontrivialLogicalOperator(BinaryLogicalOperation e) {
   )
 }
 
-predicate logicalParent(LogicalOperation op, LogicalOperation parent)
-{
-  parent = op.getParent()
-}
+predicate logicalParent(LogicalOperation op, LogicalOperation parent) { parent = op.getParent() }
 
 from Expr e, int operators
-where not (e.getParent() instanceof LogicalOperation)
-      and operators = count(BinaryLogicalOperation op | logicalParent*(op, e) and nontrivialLogicalOperator(op))
-      and operators > 3
+where
+  not e.getParent() instanceof LogicalOperation and
+  operators = count(BinaryLogicalOperation op |
+      logicalParent*(op, e) and nontrivialLogicalOperator(op)
+    ) and
+  operators > 3
 select e.getLocation(), "Complex condition: too many logical operations in this expression."

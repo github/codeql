@@ -1,7 +1,7 @@
 /**
  * @name IR Sanity Check
- * @description Performs sanity checks on the Intermediate Representation. This query should have no results. 
- * @kind problem
+ * @description Performs sanity checks on the Intermediate Representation. This query should have no results.
+ * @kind table
  * @id cpp/ir-sanity-check
  */
 

@@ -1,0 +1,1 @@
+| test.cpp:58:3:58:9 | call to sprintf | This write into buffer 'passwd' may contain unencrypted data from $@ | test.cpp:54:17:54:20 | argv | user input (argv) |

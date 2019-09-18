@@ -1,7 +1,6 @@
 /**
  * @name Potentially overflowing call to snprintf
  * @description Using the return value from snprintf without proper checks can cause overflow.
- *
  * @kind problem
  * @problem.severity warning
  * @precision high
@@ -20,44 +19,42 @@ import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
  * true if there is an arithmetic operation on the path that
  * might overflow.
  */
-predicate flowsToExpr(
-  Expr source, Expr sink, boolean pathMightOverflow) {
+predicate flowsToExpr(Expr source, Expr sink, boolean pathMightOverflow) {
   // Might the current expression overflow?
-  exists (boolean otherMightOverflow
-  | flowsToExprImpl(source, sink, otherMightOverflow)
-  | if convertedExprMightOverflow(sink)
-      then pathMightOverflow = true
-      else pathMightOverflow = otherMightOverflow)
+  exists(boolean otherMightOverflow | flowsToExprImpl(source, sink, otherMightOverflow) |
+    if convertedExprMightOverflow(sink)
+    then pathMightOverflow = true
+    else pathMightOverflow = otherMightOverflow
+  )
 }
 
 /**
  * Implementation of `flowsToExpr`. Does everything except
  * checking whether the current expression might overflow.
  */
-predicate flowsToExprImpl(
-  Expr source, Expr sink, boolean pathMightOverflow) {
-  (source = sink and pathMightOverflow = false and
-   source.(FunctionCall).getTarget().(Snprintf).returnsFullFormatLength())
+predicate flowsToExprImpl(Expr source, Expr sink, boolean pathMightOverflow) {
+  source = sink and
+  pathMightOverflow = false and
+  source.(FunctionCall).getTarget().(Snprintf).returnsFullFormatLength()
   or
-  exists (RangeSsaDefinition def, LocalScopeVariable v
-  | flowsToDef(source, def, v, pathMightOverflow) and
-    sink = def.getAUse(v))
+  exists(RangeSsaDefinition def, LocalScopeVariable v |
+    flowsToDef(source, def, v, pathMightOverflow) and
+    sink = def.getAUse(v)
+  )
   or
-  flowsToExpr(
-    source, sink.(UnaryArithmeticOperation).getOperand(), pathMightOverflow)
+  flowsToExpr(source, sink.(UnaryArithmeticOperation).getOperand(), pathMightOverflow)
   or
-  flowsToExpr(
-    source, sink.(BinaryArithmeticOperation).getAnOperand(), pathMightOverflow)
+  flowsToExpr(source, sink.(BinaryArithmeticOperation).getAnOperand(), pathMightOverflow)
   or
-  flowsToExpr(
-    source, sink.(Assignment).getRValue(), pathMightOverflow)
+  flowsToExpr(source, sink.(Assignment).getRValue(), pathMightOverflow)
   or
-  flowsToExpr(
-    source, sink.(AssignOperation).getLValue(), pathMightOverflow)
+  flowsToExpr(source, sink.(AssignOperation).getLValue(), pathMightOverflow)
   or
-  exists (FormattingFunctionCall call
-  | sink = call and
-    flowsToExpr(source, call.getArgument(call.getTarget().getSizeParameterIndex()), pathMightOverflow))
+  exists(FormattingFunctionCall call |
+    sink = call and
+    flowsToExpr(source, call.getArgument(call.getTarget().getSizeParameterIndex()),
+      pathMightOverflow)
+  )
 }
 
 /**
@@ -67,14 +64,14 @@ predicate flowsToExprImpl(
  * on the path that might overflow.
  */
 predicate flowsToDef(
-  Expr source, RangeSsaDefinition def, LocalScopeVariable v,
-  boolean pathMightOverflow) {
+  Expr source, RangeSsaDefinition def, LocalScopeVariable v, boolean pathMightOverflow
+) {
   // Might the current definition overflow?
-  exists (boolean otherMightOverflow
-  | flowsToDefImpl(source, def, v, otherMightOverflow)
-  | if defMightOverflow(def, v)
-      then pathMightOverflow = true
-      else pathMightOverflow = otherMightOverflow)
+  exists(boolean otherMightOverflow | flowsToDefImpl(source, def, v, otherMightOverflow) |
+    if defMightOverflow(def, v)
+    then pathMightOverflow = true
+    else pathMightOverflow = otherMightOverflow
+  )
 }
 
 /**
@@ -89,26 +86,29 @@ predicate flowsToDef(
  * the path. But it is a good way to reduce the number of false positives.
  */
 predicate flowsToDefImpl(
-  Expr source, RangeSsaDefinition def, LocalScopeVariable v,
-  boolean pathMightOverflow) {
+  Expr source, RangeSsaDefinition def, LocalScopeVariable v, boolean pathMightOverflow
+) {
   // Assignment or initialization: `e = v;`
-  exists (Expr e
-  | e = def.getDefiningValue(v) and
-    flowsToExpr(source, e, pathMightOverflow))
+  exists(Expr e |
+    e = def.getDefiningValue(v) and
+    flowsToExpr(source, e, pathMightOverflow)
+  )
   or
   // `x++`
-  exists (CrementOperation crem
-  | def = crem and
+  exists(CrementOperation crem |
+    def = crem and
     crem.getOperand() = v.getAnAccess() and
-    flowsToExpr(source, crem.getOperand(), pathMightOverflow))
+    flowsToExpr(source, crem.getOperand(), pathMightOverflow)
+  )
   or
   // Phi definition.
   flowsToDef(source, def.getAPhiInput(v), v, pathMightOverflow)
 }
 
 from FormattingFunctionCall call, Expr sink
-where flowsToExpr(call, sink, true)
-and sink = call.getArgument(call.getTarget().getSizeParameterIndex())
-select
-  call, "The $@ of this snprintf call is derived from its return value, which may exceed the size of the buffer and overflow.",
+where
+  flowsToExpr(call, sink, true) and
+  sink = call.getArgument(call.getTarget().getSizeParameterIndex())
+select call,
+  "The $@ of this snprintf call is derived from its return value, which may exceed the size of the buffer and overflow.",
   sink, "size argument"

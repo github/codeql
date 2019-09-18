@@ -34,7 +34,7 @@ namespace ErrorRecovery
   // Error: Duplicate class
   class C1
     {
-        void m1()
+        void m1(int p)
         {
         }
 

@@ -9,9 +9,9 @@
  * @tags maintainability
  *       documentation
  */
+
 import java
 
 from RefType t
 where t.fromSource()
-select t, t.getMetrics().getNumberOfCommentLines() as n
-order by n desc
+select t, t.getMetrics().getNumberOfCommentLines() as n order by n desc

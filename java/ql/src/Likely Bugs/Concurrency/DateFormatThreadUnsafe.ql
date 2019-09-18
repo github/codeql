@@ -10,6 +10,7 @@
  *       correctness
  *       concurrency
  */
+
 import java
 
 from Field f, Class dateFormat
@@ -20,5 +21,6 @@ where
   dateFormat.hasQualifiedName("java.text", "DateFormat") and
   f.getType().(RefType).hasSupertype*(dateFormat) and
   exists(MethodAccess m | m.getQualifier().(VarAccess).getVariable() = f)
-select f, "Found static field of type " + f.getType().getName() + " in "
-                                        + f.getDeclaringType().getName() + "."
+select f,
+  "Found static field of type " + f.getType().getName() + " in " + f.getDeclaringType().getName() +
+    "."

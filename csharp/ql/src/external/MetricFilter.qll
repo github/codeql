@@ -1,14 +1,20 @@
 import csharp
 
-external predicate metricResults(int id, string queryPath, string file, int startline, int startcol, int endline, int endcol, float value);
+external predicate metricResults(
+  int id, string queryPath, string file, int startline, int startcol, int endline, int endcol,
+  float value
+);
 
 class MetricResult extends int {
-
   MetricResult() { metricResults(this, _, _, _, _, _, _, _) }
 
   string getQueryPath() { metricResults(this, result, _, _, _, _, _, _) }
 
-  File getFile() { exists(string path | metricResults(this, _, path, _, _, _, _, _) and result.getAbsolutePath() = path) }
+  File getFile() {
+    exists(string path |
+      metricResults(this, _, path, _, _, _, _, _) and result.getAbsolutePath() = path
+    )
+  }
 
   int getStartLine() { metricResults(this, _, _, result, _, _, _, _) }
 
@@ -31,7 +37,7 @@ class MetricResult extends int {
   float getValue() { metricResults(this, _, _, _, _, _, _, result) }
 
   string getURL() {
-    result = "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn() + ":" + getEndLine() + ":" + getEndColumn()
+    result = "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn()
+        + ":" + getEndLine() + ":" + getEndColumn()
   }
-
 }

@@ -18,10 +18,9 @@ import java
  * Exceptions of type `rt` thrown from within statement `s` are caught by an inner try block
  * and are therefore not propagated to the outer try block `t`.
  */
-private
-predicate caughtInside(TryStmt t, Stmt s, RefType rt) {
-  exists(TryStmt innerTry | innerTry.getParent+() = t.getBlock() |
-    s.getParent+() = innerTry.getBlock() and
+private predicate caughtInside(TryStmt t, Stmt s, RefType rt) {
+  exists(TryStmt innerTry | innerTry.getEnclosingStmt+() = t.getBlock() |
+    s.getEnclosingStmt+() = innerTry.getBlock() and
     caughtType(innerTry, _).hasSubtype*(rt)
   )
 }
@@ -31,8 +30,7 @@ predicate caughtInside(TryStmt t, Stmt s, RefType rt) {
  * that is relevant to the catch clauses of `t` (i.e. not already
  * caught by an inner try-catch).
  */
-private
-RefType getAThrownExceptionType(TryStmt t) {
+private RefType getAThrownExceptionType(TryStmt t) {
   exists(Method m, Exception e |
     (
       m = t.getAResourceDecl().getAVariable().getType().(RefType).getAMethod() or
@@ -42,24 +40,28 @@ RefType getAThrownExceptionType(TryStmt t) {
     m.hasNoParameters() and
     m.getAnException() = e and
     result = e.getType()
-  ) or
+  )
+  or
   exists(Call call, Exception e |
-    t.getBlock() = call.getEnclosingStmt().getParent*() or
+    t.getBlock() = call.getEnclosingStmt().getEnclosingStmt*() or
     t.getAResourceDecl() = call.getEnclosingStmt()
-    |
-    call.getCallee().getAnException() = e and
+  |
+    (
+      call.getCallee().getAnException() = e or
+      call.(GenericCall).getATypeArgument(call.getCallee().getAnException().getType()) = e.getType()
+    ) and
     not caughtInside(t, call.getEnclosingStmt(), e.getType()) and
     result = e.getType()
-  ) or
+  )
+  or
   exists(ThrowStmt ts |
-    t.getBlock() = ts.getParent*() and
+    t.getBlock() = ts.getEnclosingStmt*() and
     not caughtInside(t, ts, ts.getExpr().getType()) and
     result = ts.getExpr().getType()
   )
 }
 
-private
-RefType caughtType(TryStmt try, int index) {
+private RefType caughtType(TryStmt try, int index) {
   exists(CatchClause cc | cc = try.getCatchClause(index) |
     if cc.isMultiCatch()
     then result = cc.getVariable().getTypeAccess().(UnionTypeAccess).getAnAlternative().getType()
@@ -67,8 +69,7 @@ RefType caughtType(TryStmt try, int index) {
   )
 }
 
-private
-predicate maybeUnchecked(RefType t) {
+private predicate maybeUnchecked(RefType t) {
   t.getASupertype*().hasQualifiedName("java.lang", "RuntimeException") or
   t.getASupertype*().hasQualifiedName("java.lang", "Error") or
   t.hasQualifiedName("java.lang", "Exception") or
@@ -92,7 +93,7 @@ where
     thrownType = getAThrownExceptionType(try) and
     // If there's any overlap in the types, this catch block may be relevant.
     overlappingExceptions(thrownType, masked)
-    |
+  |
     exists(RefType priorCaughtType, int priorIdx |
       priorIdx < second and
       priorCaughtType = caughtType(try, priorIdx) and
@@ -103,8 +104,6 @@ where
   if try.getCatchClause(second).isMultiCatch()
   then multiCatchMsg = " for type " + masked.getName()
   else multiCatchMsg = ""
-select
-  try.getCatchClause(second),
+select try.getCatchClause(second),
   "This catch-clause is unreachable" + multiCatchMsg + "; it is masked $@.",
-  try.getCatchClause(first),
-  "here for exceptions of type '" + masking.getName() + "'"
+  try.getCatchClause(first), "here for exceptions of type '" + masking.getName() + "'"

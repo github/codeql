@@ -21,9 +21,7 @@ private import semmle.javascript.dataflow.InferredTypes
 abstract class ImplicitConversion extends DataFlow::AnalyzedNode {
   Expr parent;
 
-  ImplicitConversion() {
-    this.asExpr() = parent.getAChildExpr()
-  }
+  ImplicitConversion() { this.asExpr() = parent.getAChildExpr() }
 
   /**
    * Gets a description of the type(s) to which the value `v`, which is
@@ -52,7 +50,7 @@ abstract class ImplicitConversionWithWhitelist extends ImplicitConversion {
 
   override string getAnImplicitConversionTarget(AbstractValue v) {
     v = getAValue() and
-    not (v.getType() = getAWhitelistedType()) and
+    not v.getType() = getAWhitelistedType() and
     result = getConversionTarget()
   }
 }
@@ -62,17 +60,11 @@ abstract class ImplicitConversionWithWhitelist extends ImplicitConversion {
  * so they should be strings or numbers.
  */
 class PropertyNameConversion extends ImplicitConversionWithWhitelist {
-  PropertyNameConversion() {
-    this.asExpr() = parent.(InExpr).getLeftOperand()
-  }
+  PropertyNameConversion() { this.asExpr() = parent.(InExpr).getLeftOperand() }
 
-  override InferredType getAWhitelistedType() {
-    result = TTString() or result = TTNumber()
-  }
+  override InferredType getAWhitelistedType() { result = TTString() or result = TTNumber() }
 
-  override string getConversionTarget() {
-    result = "string"
-  }
+  override string getConversionTarget() { result = "string" }
 }
 
 /**
@@ -80,17 +72,13 @@ class PropertyNameConversion extends ImplicitConversionWithWhitelist {
  * so they should be Booleans, strings or numbers.
  */
 class IndexExprConversion extends ImplicitConversionWithWhitelist {
-  IndexExprConversion() {
-    this.asExpr() = parent.(IndexExpr).getIndex()
-  }
+  IndexExprConversion() { this.asExpr() = parent.(IndexExpr).getIndex() }
 
   override InferredType getAWhitelistedType() {
     result = TTBoolean() or result = TTString() or result = TTNumber()
   }
 
-  override string getConversionTarget() {
-    result = "string"
-  }
+  override string getConversionTarget() { result = "string" }
 }
 
 /**
@@ -102,30 +90,20 @@ class ObjectConversion extends ImplicitConversionWithWhitelist {
     this.asExpr() = parent.(InstanceofExpr).getLeftOperand()
   }
 
-  override InferredType getAWhitelistedType() {
-    result instanceof NonPrimitiveType
-  }
+  override InferredType getAWhitelistedType() { result instanceof NonPrimitiveType }
 
-  override string getConversionTarget() {
-    result = "object"
-  }
+  override string getConversionTarget() { result = "object" }
 }
 
 /**
  * The right-hand operand of `instanceof` should be a function or class.
  */
 class ConstructorConversion extends ImplicitConversionWithWhitelist {
-  ConstructorConversion() {
-    this.asExpr() = parent.(InstanceofExpr).getRightOperand()
-  }
+  ConstructorConversion() { this.asExpr() = parent.(InstanceofExpr).getRightOperand() }
 
-  override InferredType getAWhitelistedType() {
-    result = TTFunction() or result = TTClass()
-  }
+  override InferredType getAWhitelistedType() { result = TTFunction() or result = TTClass() }
 
-  override string getConversionTarget() {
-    result = "function"
-  }
+  override string getConversionTarget() { result = "function" }
 }
 
 /**
@@ -133,17 +111,13 @@ class ConstructorConversion extends ImplicitConversionWithWhitelist {
  * and hence should be strings, numbers or Dates.
  */
 class RelationalOperandConversion extends ImplicitConversionWithWhitelist {
-  RelationalOperandConversion() {
-    parent instanceof RelationalComparison
-  }
+  RelationalOperandConversion() { parent instanceof RelationalComparison }
 
   override InferredType getAWhitelistedType() {
     result = TTString() or result = TTNumber() or result = TTDate()
   }
 
-  override string getConversionTarget() {
-    result = "number or string"
-  }
+  override string getConversionTarget() { result = "number or string" }
 }
 
 /**
@@ -152,9 +126,12 @@ class RelationalOperandConversion extends ImplicitConversionWithWhitelist {
  */
 class NumericConversion extends ImplicitConversion {
   NumericConversion() {
-    parent instanceof BitwiseExpr or
-    parent instanceof ArithmeticExpr and not parent instanceof AddExpr or
-    parent instanceof CompoundAssignExpr and not parent instanceof AssignAddExpr or
+    parent instanceof BitwiseExpr
+    or
+    parent instanceof ArithmeticExpr and not parent instanceof AddExpr
+    or
+    parent instanceof CompoundAssignExpr and not parent instanceof AssignAddExpr
+    or
     parent instanceof UpdateExpr
   }
 
@@ -183,13 +160,9 @@ abstract class NullOrUndefinedConversion extends ImplicitConversion {
  * should not be `null` or `undefined`.
  */
 class PlusConversion extends NullOrUndefinedConversion {
-  PlusConversion() {
-    parent instanceof AddExpr or parent instanceof AssignAddExpr
-  }
+  PlusConversion() { parent instanceof AddExpr or parent instanceof AssignAddExpr }
 
-  override string getConversionTarget() {
-    result = "number or string"
-  }
+  override string getConversionTarget() { result = "number or string" }
 }
 
 /**
@@ -197,17 +170,14 @@ class PlusConversion extends NullOrUndefinedConversion {
  * be `null` or `undefined`.
  */
 class TemplateElementConversion extends NullOrUndefinedConversion {
-  TemplateElementConversion() {
-    parent instanceof TemplateLiteral
-  }
+  TemplateElementConversion() { parent instanceof TemplateLiteral }
 
-  override string getConversionTarget() {
-    result = "string"
-  }
+  override string getConversionTarget() { result = "string" }
 }
 
 from ImplicitConversion e, string convType
-where convType = e.getAnImplicitConversionTarget(_) and
-      forall (AbstractValue v | v = e.getAValue() | exists(e.getAnImplicitConversionTarget(v)))
-select e, "This expression will be implicitly converted from " +
-          e.ppTypes() + " to " + convType + "."
+where
+  convType = e.getAnImplicitConversionTarget(_) and
+  forall(AbstractValue v | v = e.getAValue() | exists(e.getAnImplicitConversionTarget(v)))
+select e,
+  "This expression will be implicitly converted from " + e.ppTypes() + " to " + convType + "."

@@ -4,6 +4,7 @@
  * @id cpp/callable-source-links
  * @metricType callable
  */
+
 import cpp
 
 from Function f

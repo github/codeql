@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/function-pointer-conversions
  * @problem.severity warning
+ * @precision low
+ * @tags correctness
+ *       external/jpl
  */
 
 import cpp
@@ -17,7 +20,9 @@ predicate permissibleConversion(Type t) {
 }
 
 from Expr e, Type converted
-where e.getType() instanceof FunctionPointerType and
+where
+  e.getType() instanceof FunctionPointerType and
   e.getFullyConverted().getType() = converted and
   not permissibleConversion(converted)
-select e, "Function pointer converted to " + converted.getName() + ", which is not an integral type."
+select e,
+  "Function pointer converted to " + converted.getName() + ", which is not an integral type."

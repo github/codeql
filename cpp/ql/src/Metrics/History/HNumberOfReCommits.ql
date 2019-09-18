@@ -7,24 +7,30 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg min max
+ * @tags external-data
+ * @deprecated
  */
+
 import cpp
 import external.VCS
 
 predicate inRange(Commit first, Commit second) {
   first.getAnAffectedFile() = second.getAnAffectedFile() and
   first != second and
-  exists(int n | n = first.getDate().daysTo(second.getDate()) and
-    n >= 0 and n < 5)
+  exists(int n |
+    n = first.getDate().daysTo(second.getDate()) and
+    n >= 0 and
+    n < 5
+  )
 }
 
 int recommitsForFile(File f) {
   result = count(Commit recommit |
-                 f = recommit.getAnAffectedFile() and
-                 exists(Commit prev | inRange(prev, recommit)))
+      f = recommit.getAnAffectedFile() and
+      exists(Commit prev | inRange(prev, recommit))
+    )
 }
 
 from File f
 where exists(f.getMetrics().getNumberOfLinesOfCode())
 select f, recommitsForFile(f)
-

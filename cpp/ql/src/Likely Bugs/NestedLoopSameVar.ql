@@ -10,8 +10,10 @@
  * @tags maintainability
  *       correctness
  */
+
 import NestedLoopSameVar
 
 from ForStmt inner, Variable iteration, ForStmt outer
 where nestedForViolation(inner, iteration, outer)
-select inner.getCondition(), "Nested for statement uses loop variable $@ of enclosing $@.", iteration, iteration.getName(), outer, "for statement"
+select inner.getCondition(), "Nested for statement uses loop variable $@ of enclosing $@.",
+  iteration, iteration.getName(), outer, "for statement"

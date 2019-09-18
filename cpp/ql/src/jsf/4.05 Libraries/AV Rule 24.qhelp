@@ -5,8 +5,12 @@
 
 
 <overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="cpp/jsfNote.qhelp" />
+
 <p>
-This rule finds calls to the standard library functions <code>abort, exit, getenv</code> and <code>system</code>.
+This query highlights calls to the standard library functions <code>abort, exit, getenv</code> and <code>system</code>.
 The functions <code>abort</code> and <code>exit</code> should not be called as they immediately terminate the program
 and will bypass all the normal error and exception handling routines in the software. This is especially important in
 software which is run on systems without an interactive OS, as restarting the software may require a complete reboot

@@ -68,6 +68,14 @@ public class PartiallyMaskedCatchTest {
 		} catch (IOException e) {
 			// reachable: IOException is thrown by getClosableThing()
 		}
+
+		try (ClosableThing thing = new ClosableThing()) {
+			genericThrowingMethod(IOException.class);
+		} catch (ExceptionA e) {
+			// reachable: ExceptionA is thrown by implicit invocation of CloseableThing.close()
+		} catch (IOException e) {
+			// reachable: IOException is thrown by invocation of genericThrowingMethod(IOException.class)
+		}
 	}
 
 	public static ClosableThing getClosableThing() throws IOException {
@@ -94,4 +102,6 @@ public class PartiallyMaskedCatchTest {
 			throws ClassNotFoundException,
 			NoSuchMethodException, InstantiationException, IllegalAccessException,
 			InvocationTargetException {}
+
+	public static <E extends Exception> void genericThrowingMethod(Class<E> c) throws E {}
 }

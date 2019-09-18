@@ -1,0 +1,10 @@
+| builtin-class classmethod | non-overriding |
+| builtin-class classmethod_descriptor | non-overriding |
+| builtin-class function | non-overriding |
+| builtin-class getset_descriptor | overriding |
+| builtin-class member_descriptor | overriding |
+| builtin-class method_descriptor | non-overriding |
+| builtin-class property | overriding |
+| builtin-class staticmethod | non-overriding |
+| builtin-class super | non-overriding |
+| builtin-class wrapper_descriptor | non-overriding |

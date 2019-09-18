@@ -22,6 +22,7 @@ predicate accessToNestedFunction(VarAccess va, FunctionDeclStmt inner, Function 
 }
 
 from Function f, VarAccess va, FunctionDeclStmt g
-where accessToNestedFunction(va, g, f) and
-      va.getParentExpr*() = f.getAParameter().getDefault()
+where
+  accessToNestedFunction(va, g, f) and
+  va.getParentExpr*() = f.getAParameter().getDefault()
 select va, "This expression refers to $@ before it is defined.", g, g.getName()

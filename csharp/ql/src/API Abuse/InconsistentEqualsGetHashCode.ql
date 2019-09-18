@@ -10,22 +10,21 @@
  *       maintainability
  *       external/cwe/cwe-581
  */
+
 import csharp
 import semmle.code.csharp.frameworks.System
 
 from Class c, Method present, string missing
-where c.isSourceDeclaration() and
+where
+  c.isSourceDeclaration() and
   (
-    (
-      present = (EqualsMethod)c.getAMethod() and
-      not c.getAMethod() instanceof GetHashCodeMethod and
-      missing = "GetHashCode()"
-    ) or
-    (
-      present = (GetHashCodeMethod)c.getAMethod() and
-      not implementsEquals(c) and
-      missing = "Equals(object)"
-    )
+    present = c.getAMethod().(EqualsMethod) and
+    not c.getAMethod() instanceof GetHashCodeMethod and
+    missing = "GetHashCode()"
+    or
+    present = c.getAMethod().(GetHashCodeMethod) and
+    not implementsEquals(c) and
+    missing = "Equals(object)"
   )
-select c, "Class '" + c.getName() + "' overrides $@, but not " + missing + ".",
-  present, present.getName()
+select c, "Class '" + c.getName() + "' overrides $@, but not " + missing + ".", present,
+  present.getName()

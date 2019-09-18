@@ -15,9 +15,12 @@ class SsaConvertibleReadAccess extends RValue {
   SsaConvertibleReadAccess() {
     this.getEnclosingCallable().getBody().getBasicBlock().getABBSuccessor*() = this.getBasicBlock() and
     (
-      not exists(this.getQualifier()) or
-      this.getVariable() instanceof LocalScopeVariable or
-      this.getVariable().(Field).isStatic() or
+      not exists(this.getQualifier())
+      or
+      this.getVariable() instanceof LocalScopeVariable
+      or
+      this.getVariable().(Field).isStatic()
+      or
       exists(Expr q | q = this.getQualifier() |
         q instanceof ThisAccess or
         q instanceof SuperAccess or
@@ -41,7 +44,9 @@ predicate readAccessWithAmbiguousSsaVariable(SsaConvertibleReadAccess va) {
 
 from SsaConvertibleReadAccess va, string problem
 where
-  accessWithoutSourceVariable(va) and problem = "No source variable" or
-  readAccessWithoutSsaVariable(va) and problem = "No SSA variable" or
+  accessWithoutSourceVariable(va) and problem = "No source variable"
+  or
+  readAccessWithoutSsaVariable(va) and problem = "No SSA variable"
+  or
   readAccessWithAmbiguousSsaVariable(va) and problem = "Multiple SSA variables"
 select va, problem

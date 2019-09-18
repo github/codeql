@@ -8,6 +8,7 @@
  * @id java/raw-variable
  * @tags maintainability
  */
+
 import java
 
 from Variable v

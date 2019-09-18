@@ -22,15 +22,16 @@ private import semmle.code.csharp.metrics.Complexity
 class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @callable {
   override Type getReturnType() { none() }
 
-  /** Holds if this callable returns a `ref`. */
-  predicate returnsRef() { ref_returns(this) }
+  /** Gets the annotated return type of this callable. */
+  final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
-  /** Holds if this callable returns a `ref readonly`. */
-  predicate returnsRefReadonly() { ref_readonly_returns(this) }
+  /** DEPRECATED: Use `getAnnotatedReturnType().isRef()` instead. */
+  deprecated predicate returnsRef() { this.getAnnotatedReturnType().isRef() }
 
-  override Callable getSourceDeclaration() {
-    result = Parameterizable.super.getSourceDeclaration()
-  }
+  /** DEPRECATED: Use `getAnnotatedReturnType().isReadonlyRef()` instead. */
+  deprecated predicate returnsRefReadonly() { this.getAnnotatedReturnType().isReadonlyRef() }
+
+  override Callable getSourceDeclaration() { result = Parameterizable.super.getSourceDeclaration() }
 
   /**
    * Gets the body of this callable, if any.
@@ -88,9 +89,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   }
 
   /** Gets the statement body of this callable, if any. */
-  final BlockStmt getStatementBody() {
-    result = this.getAChildStmt()
-  }
+  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
 
   /**
    * Gets a statement body of this callable, if any.
@@ -120,17 +119,13 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * to the same assembly, then both `{ return 0; }` and `{ return 1; }` are
    * statement bodies of `N.C.M()`.
    */
-  final BlockStmt getAStatementBody() {
-    stmt_parent_top_level(result, _, this)
-  }
+  final BlockStmt getAStatementBody() { stmt_parent_top_level(result, _, this) }
 
   /** Holds if this callable has a statement body. */
   final predicate hasStatementBody() { exists(getStatementBody()) }
 
   /** Gets the expression body of this callable (if any), specified by `=>`. */
-  final Expr getExpressionBody() {
-    result = this.getChildExpr(0)
-  }
+  final Expr getExpressionBody() { result = this.getChildExpr(0) }
 
   /**
    * Gets an expression body of this callable (if any), specified by `=>`.
@@ -159,22 +154,16 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    *
    * to the same assembly, then both `0` and `1` are expression bodies of `N.C.M()`.
    */
-  final Expr getAnExpressionBody() {
-    expr_parent_top_level_adjusted(result, 0, this)
-  }
+  final Expr getAnExpressionBody() { expr_parent_top_level_adjusted(result, 0, this) }
 
   /** Holds if this callable has an expression body. */
   final predicate hasExpressionBody() { exists(getExpressionBody()) }
 
   /** Gets the entry point in the control graph for this callable. */
-  ControlFlow::Nodes::EntryNode getEntryPoint() {
-    result.getCallable() = this
-  }
+  ControlFlow::Nodes::EntryNode getEntryPoint() { result.getCallable() = this }
 
   /** Gets the exit point in the control graph for this callable. */
-  ControlFlow::Nodes::ExitNode getExitPoint() {
-    result.getCallable() = this
-  }
+  ControlFlow::Nodes::ExitNode getExitPoint() { result.getCallable() = this }
 
   /**
    * Gets the enclosing callable of this callable, if any.
@@ -214,40 +203,27 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   }
 
   override predicate canReturn(DotNet::Expr e) {
-    exists(ReturnStmt ret |
-      ret.getEnclosingCallable() = this |
-      e = ret.getExpr()
-    )
+    exists(ReturnStmt ret | ret.getEnclosingCallable() = this | e = ret.getExpr())
     or
-    e = getExpressionBody()
+    e = this.getExpressionBody() and
+    not this.getReturnType() instanceof VoidType
   }
 
   /** Holds if this callable can yield return the expression `e`. */
   predicate canYieldReturn(Expr e) {
-    exists(YieldReturnStmt yield |
-      yield.getEnclosingCallable() = this |
-      e = yield.getExpr()
-    )
+    exists(YieldReturnStmt yield | yield.getEnclosingCallable() = this | e = yield.getExpr())
   }
 
-  override string toStringWithTypes() {
-    result = getName() + "(" + parameterTypesToString() + ")"
-  }
+  override string toStringWithTypes() { result = getName() + "(" + parameterTypesToString() + ")" }
 
   /** Gets a `Call` that has this callable as a target. */
   Call getACall() { this = result.getTarget() }
 
-  override Parameter getParameter(int n) {
-    result = Parameterizable.super.getParameter(n)
-  }
+  override Parameter getParameter(int n) { result = Parameterizable.super.getParameter(n) }
 
-  override Parameter getAParameter() {
-    result = Parameterizable.super.getAParameter()
-  }
+  override Parameter getAParameter() { result = Parameterizable.super.getAParameter() }
 
-  override int getNumberOfParameters() {
-    result = Parameterizable.super.getNumberOfParameters()
-  }
+  override int getNumberOfParameters() { result = Parameterizable.super.getNumberOfParameters() }
 }
 
 /**
@@ -260,31 +236,22 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
  * ```
  */
 class Method extends Callable, Virtualizable, Attributable, @method {
-
   /** Gets the name of this method. */
-  override string getName() { methods(this,result,_,_,_) }
+  override string getName() { methods(this, result, _, _, _) }
 
-  override ValueOrRefType getDeclaringType() { methods(this,_,result,_,_) }
+  override ValueOrRefType getDeclaringType() { methods(this, _, result, _, _) }
 
-  override Type getReturnType() { methods(this,_,_,getTypeRef(result),_) }
+  override Type getReturnType() { methods(this, _, _, getTypeRef(result), _) }
 
-  override Method getSourceDeclaration() { methods(this,_,_,_,result) }
+  override Method getSourceDeclaration() { methods(this, _, _, _, result) }
 
-  override Method getOverridee() {
-    result = Virtualizable.super.getOverridee()
-  }
+  override Method getOverridee() { result = Virtualizable.super.getOverridee() }
 
-  override Method getAnOverrider() {
-    result = Virtualizable.super.getAnOverrider()
-  }
+  override Method getAnOverrider() { result = Virtualizable.super.getAnOverrider() }
 
-  override Method getImplementee() {
-    result = Virtualizable.super.getImplementee()
-  }
+  override Method getImplementee() { result = Virtualizable.super.getImplementee() }
 
-  override Method getAnImplementor() {
-    result = Virtualizable.super.getAnImplementor()
-  }
+  override Method getAnImplementor() { result = Virtualizable.super.getAnImplementor() }
 
   override Method getAnUltimateImplementee() {
     result = Virtualizable.super.getAnUltimateImplementee()
@@ -297,14 +264,11 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   override Location getALocation() { method_location(this, result) }
 
   /** Holds if this method is an extension method. */
-  predicate isExtensionMethod() {
-    getParameter(0).hasExtensionMethodModifier()
-  }
+  predicate isExtensionMethod() { getParameter(0).hasExtensionMethodModifier() }
 
   /** Gets the type of the `params` parameter of this method, if any. */
   Type getParamsType() {
-    exists(Parameter last |
-      last = getParameter(getNumberOfParameters() - 1) |
+    exists(Parameter last | last = getParameter(getNumberOfParameters() - 1) |
       last.isParams() and
       result = last.getType().(ArrayType).getElementType()
     )
@@ -314,9 +278,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   predicate hasParams() { exists(getParamsType()) }
 
   // Remove when `Callable.isOverridden()` is removed
-  override predicate isOverridden() {
-    Virtualizable.super.isOverridden()
-  }
+  override predicate isOverridden() { Virtualizable.super.isOverridden() }
 
   override predicate fromSource() {
     Callable.super.fromSource() and
@@ -325,12 +287,8 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override string toString() { result = Callable.super.toString() }
 
-  override Location getLocation() { result = Callable.super.getLocation() }
-
   override Parameter getRawParameter(int i) {
-    if this.isStatic()
-    then result = this.getParameter(i)
-    else result = this.getParameter(i-1)
+    if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
 }
 
@@ -344,13 +302,9 @@ class Method extends Callable, Virtualizable, Attributable, @method {
  * ```
  */
 class ExtensionMethod extends Method {
-  ExtensionMethod() {
-    this.isExtensionMethod()
-  }
+  ExtensionMethod() { this.isExtensionMethod() }
 
-  override predicate isStatic() {
-    any()
-  }
+  override predicate isStatic() { any() }
 
   /** Gets the type being extended by this method. */
   Type getExtendedType() { result = getParameter(0).getType() }
@@ -366,8 +320,7 @@ class ExtensionMethod extends Method {
  * ```
  */
 class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @constructor {
-
-  override string getName() { constructors(this,result,_,_) }
+  override string getName() { constructors(this, result, _, _) }
 
   override Type getReturnType() {
     exists(this) and // needed to avoid compiler warning
@@ -393,9 +346,9 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
   /** Holds if this constructor has an initializer. */
   predicate hasInitializer() { exists(getInitializer()) }
 
-  override ValueOrRefType getDeclaringType() { constructors(this,_,result,_) }
+  override ValueOrRefType getDeclaringType() { constructors(this, _, result, _) }
 
-  override Constructor getSourceDeclaration() { constructors(this,_,_,result) }
+  override Constructor getSourceDeclaration() { constructors(this, _, _, result) }
 
   override Location getALocation() { constructor_location(this, result) }
 
@@ -403,12 +356,8 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
 
   override string toString() { result = Callable.super.toString() }
 
-  override Location getLocation() { result = Callable.super.getLocation() }
-
   override Parameter getRawParameter(int i) {
-    if this.isStatic()
-    then result = this.getParameter(i)
-    else result = this.getParameter(i-1)
+    if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
 
   override string getUndecoratedName() { result = ".ctor" }
@@ -425,7 +374,6 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
  * ```
  */
 class StaticConstructor extends Constructor {
-
   StaticConstructor() { this.isStatic() }
 
   override string getUndecoratedName() { result = ".cctor" }
@@ -442,7 +390,6 @@ class StaticConstructor extends Constructor {
  * ```
  */
 class InstanceConstructor extends Constructor {
-
   InstanceConstructor() { not this.isStatic() }
 }
 
@@ -456,8 +403,7 @@ class InstanceConstructor extends Constructor {
  * ```
  */
 class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @destructor {
-
-  override string getName() { destructors(this,result,_,_) }
+  override string getName() { destructors(this, result, _, _) }
 
   override Type getReturnType() {
     exists(this) and // needed to avoid compiler warning
@@ -466,15 +412,13 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
 
   override string getUndecoratedName() { result = "Finalize" }
 
-  override ValueOrRefType getDeclaringType() { destructors(this,_,result,_) }
+  override ValueOrRefType getDeclaringType() { destructors(this, _, result, _) }
 
-  override Destructor getSourceDeclaration() { destructors(this,_,_,result) }
+  override Destructor getSourceDeclaration() { destructors(this, _, _, result) }
 
   override Location getALocation() { destructor_location(this, result) }
 
   override string toString() { result = Callable.super.toString() }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
 }
 
 /**
@@ -484,29 +428,25 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
  * (`BinaryOperator`), or a conversion operator (`ConversionOperator`).
  */
 class Operator extends Callable, Member, Attributable, @operator {
-
   /** Gets the assembly name of this operator. */
-  string getAssemblyName() { operators(this,result,_,_,_,_) }
+  string getAssemblyName() { operators(this, result, _, _, _, _) }
 
-  override string getName() { operators(this,_,result,_,_,_) }
+  override string getName() { operators(this, _, result, _, _, _) }
 
   string getFunctionName() { none() }
 
-  override ValueOrRefType getDeclaringType() { operators(this,_,_,result,_,_) }
+  override ValueOrRefType getDeclaringType() { operators(this, _, _, result, _, _) }
 
-  override Type getReturnType() { operators(this,_,_,_,getTypeRef(result),_) }
+  override Type getReturnType() { operators(this, _, _, _, getTypeRef(result), _) }
 
-  override Operator getSourceDeclaration() { operators(this,_,_,_,_,result) }
+  override Operator getSourceDeclaration() { operators(this, _, _, _, _, result) }
 
   override Location getALocation() { operator_location(this, result) }
 
   override string toString() { result = Callable.super.toString() }
 
-  override Location getLocation() { result = Callable.super.getLocation() }
-
   override Parameter getRawParameter(int i) { result = getParameter(i) }
 }
-
 
 /**
  * A user-defined unary operator - an operator taking one operand.
@@ -518,7 +458,6 @@ class Operator extends Callable, Member, Attributable, @operator {
  * (`DecrementOperator`).
  */
 class UnaryOperator extends Operator {
-
   UnaryOperator() {
     this.getNumberOfParameters() = 1 and
     not this instanceof ConversionOperator
@@ -535,7 +474,6 @@ class UnaryOperator extends Operator {
  * ```
  */
 class PlusOperator extends UnaryOperator {
-
   PlusOperator() { this.getName() = "+" }
 
   override string getFunctionName() { result = "op_UnaryPlus" }
@@ -551,7 +489,6 @@ class PlusOperator extends UnaryOperator {
  * ```
  */
 class MinusOperator extends UnaryOperator {
-
   MinusOperator() { this.getName() = "-" }
 
   override string getFunctionName() { result = "op_UnaryNegation" }
@@ -567,7 +504,6 @@ class MinusOperator extends UnaryOperator {
  * ```
  */
 class NotOperator extends UnaryOperator {
-
   NotOperator() { this.getName() = "!" }
 
   override string getFunctionName() { result = "op_LogicalNot" }
@@ -583,7 +519,6 @@ class NotOperator extends UnaryOperator {
  * ```
  */
 class ComplementOperator extends UnaryOperator {
-
   ComplementOperator() { this.getName() = "~" }
 
   override string getFunctionName() { result = "op_OnesComplement" }
@@ -599,7 +534,6 @@ class ComplementOperator extends UnaryOperator {
  * ```
  */
 class IncrementOperator extends UnaryOperator {
-
   IncrementOperator() { this.getName() = "++" }
 
   override string getFunctionName() { result = "op_Increment" }
@@ -615,7 +549,6 @@ class IncrementOperator extends UnaryOperator {
  * ```
  */
 class DecrementOperator extends UnaryOperator {
-
   DecrementOperator() { this.getName() = "--" }
 
   override string getFunctionName() { result = "op_Decrement" }
@@ -631,7 +564,6 @@ class DecrementOperator extends UnaryOperator {
  * ```
  */
 class FalseOperator extends UnaryOperator {
-
   FalseOperator() { this.getName() = "false" }
 
   override string getFunctionName() { result = "op_False" }
@@ -647,7 +579,6 @@ class FalseOperator extends UnaryOperator {
  * ```
  */
 class TrueOperator extends UnaryOperator {
-
   TrueOperator() { this.getName() = "true" }
 
   override string getFunctionName() { result = "op_True" }
@@ -667,7 +598,6 @@ class TrueOperator extends UnaryOperator {
  * (`LEOperator`), or a greater than or equals operator (`GEOperator`).
  */
 class BinaryOperator extends Operator {
-
   BinaryOperator() { this.getNumberOfParameters() = 2 }
 }
 
@@ -681,7 +611,6 @@ class BinaryOperator extends Operator {
  * ```
  */
 class AddOperator extends BinaryOperator {
-
   AddOperator() { this.getName() = "+" }
 
   override string getFunctionName() { result = "op_Addition" }
@@ -697,7 +626,6 @@ class AddOperator extends BinaryOperator {
  * ```
  */
 class SubOperator extends BinaryOperator {
-
   SubOperator() { this.getName() = "-" }
 
   override string getFunctionName() { result = "op_Subtraction" }
@@ -713,7 +641,6 @@ class SubOperator extends BinaryOperator {
  * ```
  */
 class MulOperator extends BinaryOperator {
-
   MulOperator() { this.getName() = "*" }
 
   override string getFunctionName() { result = "op_Multiply" }
@@ -729,7 +656,6 @@ class MulOperator extends BinaryOperator {
  * ```
  */
 class DivOperator extends BinaryOperator {
-
   DivOperator() { this.getName() = "/" }
 
   override string getFunctionName() { result = "op_Division" }
@@ -745,7 +671,6 @@ class DivOperator extends BinaryOperator {
  * ```
  */
 class RemOperator extends BinaryOperator {
-
   RemOperator() { this.getName() = "%" }
 
   override string getFunctionName() { result = "op_Modulus" }
@@ -761,7 +686,6 @@ class RemOperator extends BinaryOperator {
  * ```
  */
 class AndOperator extends BinaryOperator {
-
   AndOperator() { this.getName() = "&" }
 
   override string getFunctionName() { result = "op_BitwiseAnd" }
@@ -777,7 +701,6 @@ class AndOperator extends BinaryOperator {
  * ```
  */
 class OrOperator extends BinaryOperator {
-
   OrOperator() { this.getName() = "|" }
 
   override string getFunctionName() { result = "op_BitwiseOr" }
@@ -793,7 +716,6 @@ class OrOperator extends BinaryOperator {
  * ```
  */
 class XorOperator extends BinaryOperator {
-
   XorOperator() { this.getName() = "^" }
 
   override string getFunctionName() { result = "op_ExclusiveOr" }
@@ -809,7 +731,6 @@ class XorOperator extends BinaryOperator {
  * ```
  */
 class LShiftOperator extends BinaryOperator {
-
   LShiftOperator() { this.getName() = "<<" }
 
   override string getFunctionName() { result = "op_LeftShift" }
@@ -825,7 +746,6 @@ class LShiftOperator extends BinaryOperator {
  * ```
  */
 class RShiftOperator extends BinaryOperator {
-
   RShiftOperator() { this.getName() = ">>" }
 
   override string getFunctionName() { result = "op_RightShift" }
@@ -841,7 +761,6 @@ class RShiftOperator extends BinaryOperator {
  * ```
  */
 class EQOperator extends BinaryOperator {
-
   EQOperator() { this.getName() = "==" }
 
   override string getFunctionName() { result = "op_Equality" }
@@ -857,7 +776,6 @@ class EQOperator extends BinaryOperator {
  * ```
  */
 class NEOperator extends BinaryOperator {
-
   NEOperator() { this.getName() = "!=" }
 
   override string getFunctionName() { result = "op_Inequality" }
@@ -873,7 +791,6 @@ class NEOperator extends BinaryOperator {
  * ```
  */
 class LTOperator extends BinaryOperator {
-
   LTOperator() { this.getName() = "<" }
 
   override string getFunctionName() { result = "op_LessThan" }
@@ -889,7 +806,6 @@ class LTOperator extends BinaryOperator {
  * ```
  */
 class GTOperator extends BinaryOperator {
-
   GTOperator() { this.getName() = ">" }
 
   override string getFunctionName() { result = "op_GreaterThan" }
@@ -905,7 +821,6 @@ class GTOperator extends BinaryOperator {
  * ```
  */
 class LEOperator extends BinaryOperator {
-
   LEOperator() { this.getName() = "<=" }
 
   override string getFunctionName() { result = "op_LessThanOrEqual" }
@@ -921,7 +836,6 @@ class LEOperator extends BinaryOperator {
  * ```
  */
 class GEOperator extends BinaryOperator {
-
   GEOperator() { this.getName() = ">=" }
 
   override string getFunctionName() { result = "op_GreaterThanOrEqual" }
@@ -937,7 +851,6 @@ class GEOperator extends BinaryOperator {
  * ```
  */
 class ConversionOperator extends Operator {
-
   ConversionOperator() {
     this.getName() = "implicit conversion" or
     this.getName() = "explicit conversion"
@@ -960,10 +873,7 @@ class ConversionOperator extends Operator {
  * ```
  */
 class ImplicitConversionOperator extends ConversionOperator {
-
-  ImplicitConversionOperator() {
-    this.getName() = "implicit conversion"
-  }
+  ImplicitConversionOperator() { this.getName() = "implicit conversion" }
 
   override string getFunctionName() { result = "op_Implicit" }
 }
@@ -978,10 +888,7 @@ class ImplicitConversionOperator extends ConversionOperator {
  * ```
  */
 class ExplicitConversionOperator extends ConversionOperator {
-
-  ExplicitConversionOperator() {
-    this.getName() = "explicit conversion"
-  }
+  ExplicitConversionOperator() { this.getName() = "explicit conversion" }
 
   override string getFunctionName() { result = "op_Explicit" }
 }
@@ -1000,42 +907,26 @@ class ExplicitConversionOperator extends ConversionOperator {
  * }
  * ```
  */
-class LocalFunction extends Callable, @local_function {
-  override string getName() {
-    local_functions(this, result, _, _)
-  }
+class LocalFunction extends Callable, Modifiable, @local_function {
+  override string getName() { local_functions(this, result, _, _) }
 
-  override LocalFunction getSourceDeclaration() {
-    local_functions(this, _, _, result)
-  }
+  override LocalFunction getSourceDeclaration() { local_functions(this, _, _, result) }
 
-  override Type getReturnType() {
-    local_functions(this, _, result, _)
-  }
+  override Type getReturnType() { local_functions(this, _, result, _) }
 
-  override Element getParent() {
-    result = getStatement().getParent()
-  }
+  override Element getParent() { result = getStatement().getParent() }
 
   /** Gets the local function statement defining this function. */
-  LocalFunctionStmt getStatement() {
-    result.getLocalFunction() = getSourceDeclaration()
-  }
+  LocalFunctionStmt getStatement() { result.getLocalFunction() = getSourceDeclaration() }
 
-  override Callable getEnclosingCallable() {
-    result = this.getStatement().getEnclosingCallable()
-  }
+  override Callable getEnclosingCallable() { result = this.getStatement().getEnclosingCallable() }
 
   override predicate hasQualifiedName(string qualifier, string name) {
     qualifier = this.getEnclosingCallable().getQualifiedName() and
     name = this.getName()
   }
 
-  override Location getALocation() {
-    result = getStatement().getALocation()
-  }
+  override Location getALocation() { result = getStatement().getALocation() }
 
-  override Parameter getRawParameter(int i) {
-    result = getParameter(i)
-  }
+  override Parameter getRawParameter(int i) { result = getParameter(i) }
 }

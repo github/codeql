@@ -9,14 +9,14 @@
  * @tags reliability
  *       readability
  */
+
 import java
 
 RefType nestedSupertypePlus(RefType t) {
   t.getASourceSupertype() = result and
-  t instanceof NestedType or
-  exists(RefType mid | mid = nestedSupertypePlus(t) |
-    mid.getASourceSupertype() = result
-  )
+  t instanceof NestedType
+  or
+  exists(RefType mid | mid = nestedSupertypePlus(t) | mid.getASourceSupertype() = result)
 }
 
 /**
@@ -38,10 +38,8 @@ predicate callToInheritedMethod(RefType lexicalScope, MethodAccess ma, string si
  * classes "on-route" can be static.
  */
 Method methodInEnclosingType(NestedType nested, string signature) {
-  (result.isStatic() or not nested.isStatic())
-  and
-  result.getSignature() = signature
-  and
+  (result.isStatic() or not nested.isStatic()) and
+  result.getSignature() = signature and
   exists(RefType outer | outer = nested.getEnclosingType() |
     result = outer.getAMethod() or
     result = methodInEnclosingType(nested, signature)
@@ -54,6 +52,5 @@ where
   m = methodInEnclosingType(nt, signature) and
   // There is actually scope for confusion.
   not nt.getASourceSupertype+() = m.getDeclaringType()
-select ma, "A $@ is called instead of a $@.",
-  ma.getMethod(), "method declared in a superclass",
-  m, "method with the same signature in an enclosing class"
+select ma, "A $@ is called instead of a $@.", ma.getMethod(), "method declared in a superclass", m,
+  "method with the same signature in an enclosing class"

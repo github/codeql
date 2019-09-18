@@ -1,8 +1,0 @@
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:19:3:19:13 | ctx.request |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:20:3:20:13 | ctx.request |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:21:3:21:13 | ctx.request |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:22:3:22:13 | ctx.request |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:23:3:23:13 | ctx.request |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:24:3:24:13 | ctx.request |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:25:3:25:13 | ctx.request |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:26:3:26:13 | ctx.request |

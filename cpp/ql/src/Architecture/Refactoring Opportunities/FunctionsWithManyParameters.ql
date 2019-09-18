@@ -9,10 +9,13 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 
 from Function f
-where f.fromSource() and
-      f.getMetrics().getNumberOfParameters() > 15
-select f, "This function has too many parameters ("
-          + f.getMetrics().getNumberOfParameters().toString() + ")"
+where
+  f.fromSource() and
+  f.getMetrics().getNumberOfParameters() > 15
+select f,
+  "This function has too many parameters (" + f.getMetrics().getNumberOfParameters().toString() +
+    ")"

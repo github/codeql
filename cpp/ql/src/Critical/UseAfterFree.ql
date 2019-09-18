@@ -8,17 +8,16 @@
  *       security
  *       external/cwe/cwe-416
  */
+
 import cpp
 import semmle.code.cpp.controlflow.LocalScopeVariableReachability
 
 /** `e` is an expression that frees the memory pointed to by `v`. */
 predicate isFreeExpr(Expr e, LocalScopeVariable v) {
-  exists(VariableAccess va |
-    va.getTarget() = v |
-    exists(FunctionCall fc |
-      fc = e |
-      fc.getTarget().hasQualifiedName("free")
-      and va = fc.getArgument(0)
+  exists(VariableAccess va | va.getTarget() = v |
+    exists(FunctionCall fc | fc = e |
+      fc.getTarget().hasGlobalName("free") and
+      va = fc.getArgument(0)
     )
     or
     e.(DeleteExpr).getExpr() = va
@@ -41,25 +40,18 @@ predicate isDerefExpr(Expr e, LocalScopeVariable v) {
  * parameter.
  */
 predicate isDerefByCallExpr(Call c, int i, VariableAccess va, LocalScopeVariable v) {
-  v.getAnAccess() = va
-  and
-  va = c.getAnArgumentSubExpr(i)
-  and
-  not c.passesByReference(i, va)
-  and
+  v.getAnAccess() = va and
+  va = c.getAnArgumentSubExpr(i) and
+  not c.passesByReference(i, va) and
   (c.getTarget().hasEntryPoint() implies isDerefExpr(_, c.getTarget().getParameter(i)))
 }
 
 class UseAfterFreeReachability extends LocalScopeVariableReachability {
   UseAfterFreeReachability() { this = "UseAfterFree" }
 
-  override predicate isSource(ControlFlowNode node, LocalScopeVariable v) {
-    isFreeExpr(node, v)
-  }
+  override predicate isSource(ControlFlowNode node, LocalScopeVariable v) { isFreeExpr(node, v) }
 
-  override predicate isSink(ControlFlowNode node, LocalScopeVariable v) {
-    isDerefExpr(node, v)
-  }
+  override predicate isSink(ControlFlowNode node, LocalScopeVariable v) { isDerefExpr(node, v) }
 
   override predicate isBarrier(ControlFlowNode node, LocalScopeVariable v) {
     definitionBarrier(v, node) or
@@ -69,6 +61,5 @@ class UseAfterFreeReachability extends LocalScopeVariableReachability {
 
 from UseAfterFreeReachability r, LocalScopeVariable v, Expr free, Expr e
 where r.reaches(free, v, e)
-select e,
-  "Memory pointed to by '" + v.getName().toString() +
-  "' may have been previously freed $@", free, "here"
+select e, "Memory pointed to by '" + v.getName().toString() + "' may have been previously freed $@",
+  free, "here"

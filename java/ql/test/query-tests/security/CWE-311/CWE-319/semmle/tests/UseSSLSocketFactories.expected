@@ -1,2 +1,0 @@
-| Test.java:25:26:25:65 | exportObject(...) | Method could use custom factories via overloaded method : use an SSL factory. |
-| Test.java:39:5:39:81 | setSocketFactory(...) | Method has a non-SSL factory argument : use an SSL factory. |

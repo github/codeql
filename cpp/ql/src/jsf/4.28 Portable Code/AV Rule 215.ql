@@ -4,7 +4,11 @@
  * @kind problem
  * @id cpp/jsf/av-rule-215
  * @problem.severity warning
+ * @tags correctness
+ *       language-features
+ *       external/jsf
  */
+
 import cpp
 
 from PointerArithmeticOperation pao

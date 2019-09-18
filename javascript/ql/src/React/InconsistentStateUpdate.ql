@@ -27,18 +27,15 @@ DataFlow::PropRead getAnUnsafeAccess(ReactComponent c) {
  * access.
  */
 DataFlow::PropRead getAnOutermostUnsafeAccess(ReactComponent c) {
-  result = getAnUnsafeAccess(c)
-  and
-  not exists (DataFlow::PropRead outer | outer = getAnUnsafeAccess(c) |
-    result = outer.getBase()
-  )
+  result = getAnUnsafeAccess(c) and
+  not exists(DataFlow::PropRead outer | outer = getAnUnsafeAccess(c) | result = outer.getBase())
 }
 
 /**
  * Gets a property write through `setState` for state property `name` of `c`.
  */
 DataFlow::PropWrite getAStateUpdate(ReactComponent c, string name) {
-  exists (DataFlow::ObjectLiteralNode newState |
+  exists(DataFlow::ObjectLiteralNode newState |
     newState.flowsTo(c.getAMethodCall("setState").getArgument(0)) and
     result = newState.getAPropertyWrite(name)
   )
@@ -48,7 +45,7 @@ DataFlow::PropWrite getAStateUpdate(ReactComponent c, string name) {
  * Gets a property write through `setState` for a state property of `c` that is only written at this property write.
  */
 DataFlow::PropWrite getAUniqueStateUpdate(ReactComponent c) {
-  exists (string name |
+  exists(string name |
     count(getAStateUpdate(c, name)) = 1 and
     result = getAStateUpdate(c, name)
   )
@@ -58,7 +55,7 @@ DataFlow::PropWrite getAUniqueStateUpdate(ReactComponent c) {
  * Holds for "self dependent" component state updates. E.g. `this.setState({toggled: !this.state.toggled})`.
  */
 predicate isAStateUpdateFromSelf(ReactComponent c, DataFlow::PropWrite pwn, DataFlow::PropRead prn) {
-  exists (string name |
+  exists(string name |
     pwn = getAStateUpdate(c, name) and
     c.getADirectStateAccess().flowsTo(prn.getBase()) and
     prn.getPropertyName() = name and
@@ -68,13 +65,14 @@ predicate isAStateUpdateFromSelf(ReactComponent c, DataFlow::PropWrite pwn, Data
 }
 
 from ReactComponent c, MethodCallExpr setState, Expr getState
-where setState = c.getAMethodCall("setState").asExpr() and
-      getState = getAnOutermostUnsafeAccess(c).asExpr() and
-      getState.getParentExpr*() = setState.getArgument(0) and
-      getState.getEnclosingFunction() = setState.getEnclosingFunction() and
-      // ignore self-updates that only occur in one location: `setState({toggled: !this.state.toggled})`, they are most likely safe in practice
-      not exists (DataFlow::PropWrite pwn |
-        pwn = getAUniqueStateUpdate(c) and
-        isAStateUpdateFromSelf(c, pwn, DataFlow::valueNode(getState))
-      )
+where
+  setState = c.getAMethodCall("setState").asExpr() and
+  getState = getAnOutermostUnsafeAccess(c).asExpr() and
+  getState.getParentExpr*() = setState.getArgument(0) and
+  getState.getEnclosingFunction() = setState.getEnclosingFunction() and
+  // ignore self-updates that only occur in one location: `setState({toggled: !this.state.toggled})`, they are most likely safe in practice
+  not exists(DataFlow::PropWrite pwn |
+    pwn = getAUniqueStateUpdate(c) and
+    isAStateUpdateFromSelf(c, pwn, DataFlow::valueNode(getState))
+  )
 select setState, "Component state update uses $@.", getState, "potentially inconsistent value"

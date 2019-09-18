@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.CodeDom`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 
@@ -9,7 +10,3 @@ class SystemCodeDomNamespace extends Namespace {
     this.hasName("CodeDom")
   }
 }
-
-/** DEPRECATED. Gets the `System.CodeDom` namespace. */
-deprecated
-SystemCodeDomNamespace getSystemCodeDomNamespace() { any() }

@@ -3,13 +3,18 @@
  * @description In compound expressions with multiple sub-expressions the intended order of evaluation shall be made explicit with parentheses.
  * @kind problem
  * @id cpp/jpl-c/compound-expressions
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp
 
 from BinaryOperation parent, BinaryOperation child
-where parent.getAnOperand() = child and not child.isParenthesised() and
+where
+  parent.getAnOperand() = child and
+  not child.isParenthesised() and
   (parent instanceof BinaryBitwiseOperation or child instanceof BinaryBitwiseOperation) and
   // Some benign cases...
   not (parent instanceof BitwiseAndExpr and child instanceof BitwiseAndExpr) and

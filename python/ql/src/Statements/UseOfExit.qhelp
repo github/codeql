@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> The <code>exit</code> and <code>quit</code> "functions" are actually <code>site.Quitter</code> objects and 
+are loaded, at interpreter start up, from <code>site.py</code>.
+However, if the interpreter is started with the <code>-S</code> flag, or a custom <code>site.py</code> 
+is used then <code>exit</code> and <code>quit</code> may not be present.
+</p>
+
+</overview>
+<recommendation>
+<p> Replace uses of <code>exit()</code> and <code>quit()</code> with <code>sys.exit()</code> which is 
+built into the interpreter and is guaranteed to be present.</p>
+
+</recommendation>
+<example>
+<p>In this example, <code>exit()</code> is used and will fail if the interpreter is passed the <code>-S</code> option.</p>
+
+<sample src="ExitUsed.py" />
+
+<p>In this example, <code>sys.exit()</code> is used and will behave the same regardless of the interpreter options.</p>
+
+<sample src="SysExitUsed.py" />
+
+</example>
+<references>
+
+<li>Python Documentation: <a href="https://docs.python.org/using/cmdline.html#cmdoption-S">Command line and environment</a>.</li>
+<li>Python Documentation: <a href="https://docs.python.org/library/site.html#module-site">Site-specific configuration hook</a>.</li>
+
+</references>
+</qhelp>

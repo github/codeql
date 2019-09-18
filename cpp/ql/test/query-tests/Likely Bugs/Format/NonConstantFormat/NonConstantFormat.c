@@ -27,23 +27,23 @@ extern char *any_random_function(const char *);
 
 int main(int argc, char **argv) {
 	if(argc > 1)
-		printf(argv[1]);                   // not ok
+		printf(argv[1]);                   // BAD
 	else
-		printf("No argument supplied.\n"); // ok
+		printf("No argument supplied.\n"); // GOOD
 
-	printf(_("No argument supplied.\n")); // ok
+	printf(_("No argument supplied.\n")); // GOOD
 
-	printf(dgettext(NULL, "No argument supplied.\n")); // ok
+	printf(dgettext(NULL, "No argument supplied.\n")); // GOOD
 
-	printf(ngettext("One argument\n", "%d arguments\n", argc-1), argc-1); // ok
+	printf(ngettext("One argument\n", "%d arguments\n", argc-1), argc-1); // GOOD
 
-	printf(gettext("%d arguments\n"), argc-1); // ok
-	printf(any_random_function("%d arguments\n"), argc-1); // not ok
+	printf(gettext("%d arguments\n"), argc-1); // GOOD
+	printf(any_random_function("%d arguments\n"), argc-1); // BAD
 
-	// Our query can't look inside the argument to a macro, so it fails to
-	// flag this call.
+	// Even though `_` is mapped to `some_random_function` above,
+	// the following call should not  be flagged.
 	printf(_(any_random_function("%d arguments\n")),
-			argc-1); // not ok [NOT REPORTED]
+			argc-1); // GOOD
 
 	return 0;
 }

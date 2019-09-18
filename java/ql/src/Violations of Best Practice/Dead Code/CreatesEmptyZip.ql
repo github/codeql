@@ -9,6 +9,7 @@
  * @tags reliability
  *       readability
  */
+
 import java
 import semmle.code.java.dataflow.SSA
 
@@ -40,8 +41,9 @@ class ZipOutputStream extends Class {
   }
 }
 
-from ZipOutputStream jos, MethodAccess putNextEntry, MethodAccess closeEntry,
-  RValue putNextQualifier, RValue closeQualifier
+from
+  ZipOutputStream jos, MethodAccess putNextEntry, MethodAccess closeEntry, RValue putNextQualifier,
+  RValue closeQualifier
 where
   putNextEntry.getMethod() = jos.putNextEntry() and
   closeEntry.getMethod() = jos.closeEntry() and

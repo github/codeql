@@ -2,13 +2,16 @@
  * Provides a taint-tracking configuration for reasoning about cross-site scripting
  * (XSS) vulnerabilities.
  */
+
 import csharp
 
 module XSS {
   import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.frameworks.microsoft.AspNetCore
   import semmle.code.csharp.frameworks.system.Net
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.system.web.Mvc
+  import semmle.code.csharp.frameworks.system.web.WebPages
   import semmle.code.csharp.frameworks.system.web.UI
   import semmle.code.csharp.frameworks.system.web.ui.WebControls
   import semmle.code.csharp.frameworks.system.windows.Forms
@@ -23,15 +26,18 @@ module XSS {
    */
   predicate xssFlow(XssNode source, XssNode sink, string message) {
     // standard taint-tracking
-    exists(TaintTrackingConfiguration c, DataFlow::Node sourceNode, DataFlow::Node sinkNode |
+    exists(
+      TaintTrackingConfiguration c, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
+    |
       sourceNode = source.asDataFlowNode() and
       sinkNode = sink.asDataFlowNode() and
-      c.hasFlow(sourceNode, sinkNode) and
-      message = "is written to HTML or JavaScript" + any(string explanation |
-        if exists(sinkNode.(Sink).explanation())
-        then explanation = ": " + sinkNode.(Sink).explanation() + "."
-        else explanation = "."
-      )
+      c.hasFlowPath(sourceNode, sinkNode) and
+      message = "is written to HTML or JavaScript" +
+          any(string explanation |
+            if exists(sinkNode.getNode().(Sink).explanation())
+            then explanation = ": " + sinkNode.getNode().(Sink).explanation() + "."
+            else explanation = "."
+          )
     )
     or
     // flow entirely within ASP inline code
@@ -40,8 +46,20 @@ module XSS {
     message = "is a remote source accessed inline in an ASPX page."
   }
 
+  module PathGraph {
+    query predicate edges(XssNode pred, XssNode succ) {
+      exists(DataFlow::PathNode a, DataFlow::PathNode b | DataFlow::PathGraph::edges(a, b) |
+        pred.asDataFlowNode() = a and
+        succ.asDataFlowNode() = b
+      )
+      or
+      xssFlow(pred, succ, _) and
+      pred instanceof XssAspNode
+    }
+  }
+
   private newtype TXssNode =
-    TXssDataFlowNode(DataFlow::Node node) or
+    TXssDataFlowNode(DataFlow::PathNode node) or
     TXssAspNode(AspInlineMember m)
 
   /**
@@ -52,11 +70,12 @@ module XSS {
   class XssNode extends TXssNode {
     /** Gets a textual representation of this node. */
     string toString() { none() }
+
     /** Gets the location of this node. */
     Location getLocation() { none() }
 
     /** Gets the data flow node corresponding to this node, if any. */
-    DataFlow::Node asDataFlowNode() { result = this.(XssDataFlowNode).getDataFlowNode() }
+    DataFlow::PathNode asDataFlowNode() { result = this.(XssDataFlowNode).getDataFlowNode() }
 
     /** Gets the ASP inline code element corresponding to this node, if any. */
     AspInlineMember asAspInlineMember() { result = this.(XssAspNode).getAspInlineMember() }
@@ -64,15 +83,16 @@ module XSS {
 
   /** A data flow node, viewed as an XSS flow node. */
   class XssDataFlowNode extends TXssDataFlowNode, XssNode {
-    DataFlow::Node node;
+    DataFlow::PathNode node;
 
     XssDataFlowNode() { this = TXssDataFlowNode(node) }
 
     /** Gets the data flow node corresponding to this node. */
-    DataFlow::Node getDataFlowNode() { result = node }
+    DataFlow::PathNode getDataFlowNode() { result = node }
 
     override string toString() { result = node.toString() }
-    override Location getLocation() { result = node.getLocation() }
+
+    override Location getLocation() { result = node.getNode().getLocation() }
   }
 
   /** An ASP inline code element, viewed as an XSS flow node. */
@@ -85,6 +105,7 @@ module XSS {
     AspInlineMember getAspInlineMember() { result = member }
 
     override string toString() { result = member.toString() }
+
     override Location getLocation() { result = member.getLocation() }
   }
 
@@ -109,28 +130,18 @@ module XSS {
    * A taint-tracking configuration for cross-site scripting (XSS) vulnerabilities.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "XSSDataFlowConfiguration"
-    }
+    TaintTrackingConfiguration() { this = "XSSDataFlowConfiguration" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input. */
   class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
+    RemoteSource() { this instanceof RemoteFlowSource }
   }
 
   private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
@@ -139,9 +150,7 @@ module XSS {
 
   /** A call to an HTML encoder. */
   private class HtmlEncodeSanitizer extends Sanitizer {
-    HtmlEncodeSanitizer() {
-      this.getExpr() instanceof HtmlSanitizedExpr
-    }
+    HtmlEncodeSanitizer() { this.getExpr() instanceof HtmlSanitizedExpr }
   }
 
   /**
@@ -153,9 +162,7 @@ module XSS {
    * should be safe from XSS.
    */
   private class UrlEncodeSanitizer extends Sanitizer {
-    UrlEncodeSanitizer() {
-      this.getExpr() instanceof UrlSanitizedExpr
-    }
+    UrlEncodeSanitizer() { this.getExpr() instanceof UrlSanitizedExpr }
   }
 
   /** A sink where the value of the expression may be rendered as HTML. */
@@ -171,7 +178,8 @@ module XSS {
         m = responseClass.getAWriteMethod() or
         m = responseClass.getAWriteFileMethod() or
         m = responseClass.getATransmitFileMethod() or
-        m = responseClass.getABinaryWriteMethod() |
+        m = responseClass.getABinaryWriteMethod()
+      |
         // Calls to these methods, or overrides of them
         this.getExpr() = m.getAnOverrider*().getParameter(0).getAnAssignedArgument()
       )
@@ -185,27 +193,22 @@ module XSS {
   private class HtmlTextWriterSink extends Sink, HtmlSink {
     HtmlTextWriterSink() {
       exists(SystemWebUIHtmlTextWriterClass writeClass, Method m, Call c, int paramPos |
+        paramPos = 0 and
         (
-          paramPos = 0 and
-          (
-            m = writeClass.getAWriteMethod() or
-            m = writeClass.getAWriteLineMethod() or
-            m = writeClass.getAWriteLineNoTabsMethod() or
-            m = writeClass.getAWriteBeginTagMethod() or
-            m = writeClass.getAWriteAttributeMethod()
-          )
-        ) or
-        (
-          /*
-           * The second parameter to the `WriteAttribute` method is the attribute value, which we
-           * should only consider as tainted if the call does not ask for the attribute value to be
-           * encoded using the final parameter.
-           */
-          m = writeClass.getAWriteAttributeMethod() and
-          paramPos = 1 and
-          not c.getArgumentForParameter(m.getParameter(2)).(BoolLiteral).getBoolValue() = true
+          m = writeClass.getAWriteMethod() or
+          m = writeClass.getAWriteLineMethod() or
+          m = writeClass.getAWriteLineNoTabsMethod() or
+          m = writeClass.getAWriteBeginTagMethod() or
+          m = writeClass.getAWriteAttributeMethod()
         )
-        |
+        or
+        // The second parameter to the `WriteAttribute` method is the attribute value, which we
+        // should only consider as tainted if the call does not ask for the attribute value to be
+        // encoded using the final parameter.
+        m = writeClass.getAWriteAttributeMethod() and
+        paramPos = 1 and
+        not c.getArgumentForParameter(m.getParameter(2)).(BoolLiteral).getBoolValue() = true
+      |
         c = m.getACall() and
         this.getExpr() = c.getArgumentForParameter(m.getParameter(paramPos))
       )
@@ -220,7 +223,8 @@ module XSS {
     AttributeCollectionSink() {
       exists(SystemWebUIAttributeCollectionClass ac, Parameter p |
         p = ac.getAddMethod().getParameter(1) or
-        p = ac.getItemProperty().getSetter().getParameter(0) |
+        p = ac.getItemProperty().getSetter().getParameter(0)
+      |
         this.getExpr() = p.getAnAssignedArgument()
       )
     }
@@ -231,7 +235,10 @@ module XSS {
    */
   private class SetAttributeSink extends Sink, HtmlSink {
     SetAttributeSink() {
-      this.getExpr() = any(SystemWindowsFormsHtmlElement c).getSetAttributeMethod().getACall().getArgument(1)
+      this.getExpr() = any(SystemWindowsFormsHtmlElement c)
+            .getSetAttributeMethod()
+            .getACall()
+            .getArgument(1)
     }
   }
 
@@ -245,12 +252,15 @@ module XSS {
         p = page.getIDProperty() or
         p = page.getMetaDescriptionProperty() or
         p = page.getMetaKeywordsProperty() or
-        p = page.getTitleProperty() |
+        p = page.getTitleProperty()
+      |
         this.getExpr() = p.getSetter().getParameter(0).getAnAssignedArgument()
-      ) or
+      )
+      or
       exists(Method m, SystemWebUIPageClass page |
         m = page.getRegisterStartupScriptMethod() or
-        m = page.getRegisterClientScriptBlockMethod() |
+        m = page.getRegisterClientScriptBlockMethod()
+      |
         this.getExpr() = m.getAParameter().getAnAssignedArgument()
       )
     }
@@ -265,9 +275,11 @@ module XSS {
       exists(Method m, SystemWebUIClientScriptManagerClass clientScriptManager, int paramNumber |
         this.getExpr() = m.getParameter(paramNumber).getAnAssignedArgument() and
         (
-          (paramNumber = 2 and m.getNumberOfParameters() in [3..4]) or
-          (paramNumber = 3 and m.getNumberOfParameters() = 5)
-        ) |
+          paramNumber = 2 and m.getNumberOfParameters() in [3 .. 4]
+          or
+          paramNumber = 3 and m.getNumberOfParameters() = 5
+        )
+      |
         m = clientScriptManager.getRegisterClientScriptBlockMethod() or
         m = clientScriptManager.getRegisterStartupScriptMethod()
       )
@@ -284,7 +296,8 @@ module XSS {
         declaringType = p.getDeclaringType() and
         any(SystemWebUINamespace n).getAChildNamespace*() = declaringType.getNamespace() and
         this.getExpr() = p.getSetter().getParameter(0).getAnAssignedArgument() and
-        p.hasName(name) |
+        p.hasName(name)
+      |
         name = "Caption" and
         (declaringType.hasName("Calendar") or declaringType.hasName("Table"))
         or
@@ -307,7 +320,8 @@ module XSS {
       exists(Property p, string name |
         any(SystemWebUINamespace n).getAChildNamespace*() = p.getDeclaringType().getNamespace() and
         this.getExpr() = p.getSetter().getParameter(0).getAnAssignedArgument() and
-        p.hasName(name) |
+        p.hasName(name)
+      |
         name = "GroupingTest" or
         name = "GroupName" or
         name = "Style" or
@@ -325,7 +339,7 @@ module XSS {
       exists(Method m |
         m.getDeclaringType() instanceof IntegralType or
         m.getDeclaringType() instanceof FloatingPointType
-        |
+      |
         m.hasName("Parse") and
         this.getExpr().(Call).getTarget() = m
       )
@@ -360,7 +374,7 @@ module XSS {
     exists(ValueOrRefType t |
       result.getName() = getMemberAccessNameByIndex(code, i) and
       t.hasMember(result)
-      |
+    |
       // Base case: a member on the code-behind class
       i = 0 and
       t = code.getLocation().getFile().(CodeBehindFile).getInheritedType()
@@ -379,12 +393,10 @@ module XSS {
    * `f1.f2...fn[...]()`. The `i`th member is `fi` in all cases.
    */
   private string getMemberAccessNameByIndex(AspInlineCode code, int i) {
-    /*
-     * Strip:
-     * - leading and trailing whitespace, which apparently you're allowed to have
-     * - trailing parens, so we can recognize nullary method calls
-     * - trailing square brackets with some contents, to recognize indexing into arrays
-     */
+    // Strip:
+    // - leading and trailing whitespace, which apparently you're allowed to have
+    // - trailing parens, so we can recognize nullary method calls
+    // - trailing square brackets with some contents, to recognize indexing into arrays
     result = code.getBody().splitAt(".", i).regexpCapture("\\s*(.*?)(\\[.*\\])?(\\(\\))?\\s*", 1)
   }
 
@@ -396,16 +408,12 @@ module XSS {
   class AspInlineMember extends AspInlineCode {
     Member member;
 
-    AspInlineMember() {
-      member = aspxInlineAccess(this)
-    }
+    AspInlineMember() { member = aspxInlineAccess(this) }
 
     /** Gets the member that this inline code references. */
     Member getMember() { result = member }
 
-    Type getType() {
-      result = getMemberType(getMember())
-    }
+    Type getType() { result = getMemberType(getMember()) }
   }
 
   /** Gets a value that is written to the member accessed by the given `AspInlineMember`. */
@@ -430,7 +438,7 @@ module XSS {
   private string makeUrl(Location l) {
     exists(string path, int sl, int sc, int el, int ec |
       l.hasLocationInfo(path, sl, sc, el, ec) and
-      result = "file://"+path+":"+sl+":"+sc+":"+el+":"+ec
+      result = "file://" + path + ":" + sl + ":" + sc + ":" + el + ":" + ec
     )
   }
 
@@ -447,12 +455,11 @@ module XSS {
     /** The ASP inline code element that references a member of the backing class. */
     AspInlineMember inline;
 
-    AspxCodeSink() {
-      this.getExpr() = aspWrittenValue(inline)
-    }
+    AspxCodeSink() { this.getExpr() = aspWrittenValue(inline) }
 
     override string explanation() {
-      result = "member is [[\"accessed inline\"|\"" +makeUrl(inline.getLocation())+ "\"]] in an ASPX page"
+      result = "member is [[\"accessed inline\"|\"" + makeUrl(inline.getLocation()) +
+          "\"]] in an ASPX page"
     }
   }
 
@@ -460,7 +467,9 @@ module XSS {
   private class HttpListenerResponseSink extends Sink {
     HttpListenerResponseSink() {
       exists(PropertyAccess responseOutputStream |
-        responseOutputStream.getProperty() = any(SystemNetHttpListenerResponseClass h).getOutputStreamProperty() |
+        responseOutputStream.getProperty() = any(SystemNetHttpListenerResponseClass h)
+              .getOutputStreamProperty()
+      |
         DataFlow::localFlow(DataFlow::exprNode(responseOutputStream), this)
       )
     }
@@ -476,7 +485,8 @@ module XSS {
         m = responseClass.getAWriteMethod() or
         m = responseClass.getAWriteFileMethod() or
         m = responseClass.getATransmitFileMethod() or
-        m = responseClass.getABinaryWriteMethod() |
+        m = responseClass.getABinaryWriteMethod()
+      |
         // Calls to these methods, or overrides of them
         this.getExpr() = m.getAnOverrider*().getParameter(0).getAnAssignedArgument()
       )
@@ -487,7 +497,9 @@ module XSS {
   private class ToHtmlString extends Sink, HtmlSink {
     ToHtmlString() {
       exists(Method toHtmlString |
-        toHtmlString = any(SystemWebIHtmlString i).getToHtmlStringMethod().getAnUltimateImplementor() and
+        toHtmlString = any(SystemWebIHtmlString i)
+              .getToHtmlStringMethod()
+              .getAnUltimateImplementor() and
         toHtmlString.canReturn(this.getExpr())
       )
     }
@@ -500,7 +512,8 @@ module XSS {
     HtmlString() {
       exists(Class c |
         c = any(SystemWebMvcMvcHtmlString m) or
-        c = any(SystemWebHtmlString m) |
+        c = any(SystemWebHtmlString m)
+      |
         this.getExpr() = c.getAConstructor().getACall().getAnArgument()
       )
     }
@@ -511,7 +524,79 @@ module XSS {
    */
   private class StringContent extends Sink {
     StringContent() {
-      this.getExpr() = any(ObjectCreation oc | oc.getTarget().getDeclaringType().hasQualifiedName("System.Net.Http", "StringContent")).getArgumentForName("content")
+      this.getExpr() = any(ObjectCreation oc |
+          oc.getTarget().getDeclaringType().hasQualifiedName("System.Net.Http", "StringContent")
+        ).getArgumentForName("content")
+    }
+  }
+
+  /**
+   * An expression that is used as an argument to `Page.WriteLiteral`, typically in
+   * a `.cshtml` file.
+   */
+  class WebPageWriteLiteralSink extends Sink, HtmlSink {
+    WebPageWriteLiteralSink() {
+      this.getExpr() = any(WebPageClass h).getWriteLiteralMethod().getACall().getAnArgument()
+    }
+
+    override string explanation() { result = "System.Web.WebPages.WebPage.WriteLiteral() method" }
+  }
+
+  /**
+   * An expression that is used as an argument to `Page.WriteLiteralTo`, typically in
+   * a `.cshtml` file.
+   */
+  class WebPageWriteLiteralToSink extends Sink, HtmlSink {
+    WebPageWriteLiteralToSink() {
+      this.getExpr() = any(WebPageClass h).getWriteLiteralToMethod().getACall().getAnArgument()
+    }
+
+    override string explanation() { result = "System.Web.WebPages.WebPage.WriteLiteralTo() method" }
+  }
+
+  abstract class AspNetCoreSink extends Sink, HtmlSink { }
+
+  /**
+   * An expression that is used as an argument to `HtmlHelper.Raw`, typically in
+   * a `.cshtml` file.
+   */
+  class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreSink {
+    MicrosoftAspNetCoreMvcHtmlHelperRawSink() {
+      this.getExpr() = any(MicrosoftAspNetCoreMvcHtmlHelperClass h)
+            .getRawMethod()
+            .getACall()
+            .getAnArgument()
+    }
+
+    override string explanation() {
+      result = "Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method"
+    }
+  }
+
+  /**
+   * An expression that is used as an argument to `Page.WriteLiteral` in ASP.NET 6.0 razor page, typically in
+   * a `.cshtml` file.
+   */
+  class MicrosoftAspNetRazorPageWriteLiteralSink extends AspNetCoreSink {
+    MicrosoftAspNetRazorPageWriteLiteralSink() {
+      this.getExpr() = any(MicrosoftAspNetCoreMvcRazorPageBase h)
+            .getWriteLiteralMethod()
+            .getACall()
+            .getAnArgument()
+    }
+
+    override string explanation() {
+      result = "Microsoft.AspNetCore.Mvc.Razor.RazorPageBase.WriteLiteral() method"
+    }
+  }
+
+  /** `HtmlString` that may be rendered as is need to have sanitized value. */
+  class MicrosoftAspNetHtmlStringSink extends AspNetCoreSink {
+    MicrosoftAspNetHtmlStringSink() {
+      exists(ObjectCreation c, MicrosoftAspNetCoreHttpHtmlString s |
+        c.getTarget() = s.getAConstructor() and
+        this.asExpr() = c.getAnArgument()
+      )
     }
   }
 }

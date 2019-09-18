@@ -11,26 +11,70 @@
  *       correctness
  *       logic
  */
+
 import java
 import semmle.code.java.Collections
 
 predicate containerModification(string package, string type, int p, string signature, int i) {
-  package = "java.util" and type = "Collection" and p = 0 and signature = "remove(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Deque" and p = 0 and signature = "removeFirstOccurrence(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Deque" and p = 0 and signature = "removeLastOccurrence(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Dictionary" and p = 0 and signature = "remove(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Map" and p = 0 and signature = "remove(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Map" and p = 0 and signature = "remove(java.lang.Object,java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Map" and p = 1 and signature = "remove(java.lang.Object,java.lang.Object)" and i = 1 or
-  package = "java.util" and type = "Vector" and p = 0 and signature = "removeElement(java.lang.Object)" and i = 0
+  package = "java.util" and
+  type = "Collection" and
+  p = 0 and
+  signature = "remove(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Deque" and
+  p = 0 and
+  signature = "removeFirstOccurrence(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Deque" and
+  p = 0 and
+  signature = "removeLastOccurrence(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Dictionary" and
+  p = 0 and
+  signature = "remove(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Map" and
+  p = 0 and
+  signature = "remove(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Map" and
+  p = 0 and
+  signature = "remove(java.lang.Object,java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Map" and
+  p = 1 and
+  signature = "remove(java.lang.Object,java.lang.Object)" and
+  i = 1
+  or
+  package = "java.util" and
+  type = "Vector" and
+  p = 0 and
+  signature = "removeElement(java.lang.Object)" and
+  i = 0
 }
 
 class MismatchedContainerModification extends MethodAccess {
   MismatchedContainerModification() {
     exists(string package, string type, int i |
       containerModification(package, type, _, getCallee().getSignature(), i)
-      |
-      getCallee().getDeclaringType().getASupertype*().getSourceDeclaration().hasQualifiedName(package, type) and
+    |
+      getCallee()
+          .getDeclaringType()
+          .getASupertype*()
+          .getSourceDeclaration()
+          .hasQualifiedName(package, type) and
       getCallee().getParameter(i).getType() instanceof TypeObject
     )
   }
@@ -42,7 +86,7 @@ class MismatchedContainerModification extends MethodAccess {
   RefType getReceiverElementType(int i) {
     exists(RefType t, GenericType g, string package, string type, int p |
       containerModification(package, type, p, getCallee().getSignature(), i)
-      |
+    |
       t = getCallee().getDeclaringType() and
       t.getASupertype*().getSourceDeclaration() = g and
       g.hasQualifiedName(package, type) and
@@ -66,5 +110,6 @@ where
   elementtype = ma.getReceiverElementType(idx).getSourceDeclaration() and
   argtype = ma.getArgumentType(idx) and
   not haveIntersection(elementtype, argtype)
-select ma.getArgument(idx), "Actual argument type '" + argtype.getName() + "'"
-           + " is incompatible with expected argument type '" + elementtype.getName() + "'."
+select ma.getArgument(idx),
+  "Actual argument type '" + argtype.getName() + "'" +
+    " is incompatible with expected argument type '" + elementtype.getName() + "'."

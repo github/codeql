@@ -8,6 +8,7 @@
  * @id java/override-of-clone-method
  * @tags reliability
  */
+
 import java
 
 class ObjectCloneMethod extends Method {

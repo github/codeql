@@ -11,31 +11,100 @@
  *       correctness
  *       logic
  */
+
 import java
 import semmle.code.java.Collections
 
 predicate containerAccess(string package, string type, int p, string signature, int i) {
-  package = "java.util" and type = "Collection" and p = 0 and signature = "contains(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Dictionary" and p = 0 and signature = "get(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Hashtable" and p = 1 and signature = "contains(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "List" and p = 0 and signature = "indexOf(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "List" and p = 0 and signature = "lastIndexOf(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Map" and p = 0 and signature = "get(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Map" and p = 0 and signature = "getOrDefault(java.lang.Object,java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Map" and p = 0 and signature = "containsKey(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Map" and p = 1 and signature = "containsValue(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Stack" and p = 0 and signature = "search(java.lang.Object)" and i = 0 or
-  package = "java.util" and type = "Vector" and p = 0 and signature = "indexOf(java.lang.Object,int)" and i = 0 or
-  package = "java.util" and type = "Vector" and p = 0 and signature = "lastIndexOf(java.lang.Object,int)" and i = 0 or
-  package = "java.util.concurrent" and type = "ConcurrentHashMap" and p = 1 and signature = "contains(java.lang.Object)" and i = 0
+  package = "java.util" and
+  type = "Collection" and
+  p = 0 and
+  signature = "contains(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Dictionary" and
+  p = 0 and
+  signature = "get(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Hashtable" and
+  p = 1 and
+  signature = "contains(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "List" and
+  p = 0 and
+  signature = "indexOf(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "List" and
+  p = 0 and
+  signature = "lastIndexOf(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Map" and
+  p = 0 and
+  signature = "get(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Map" and
+  p = 0 and
+  signature = "getOrDefault(java.lang.Object,java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Map" and
+  p = 0 and
+  signature = "containsKey(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Map" and
+  p = 1 and
+  signature = "containsValue(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Stack" and
+  p = 0 and
+  signature = "search(java.lang.Object)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Vector" and
+  p = 0 and
+  signature = "indexOf(java.lang.Object,int)" and
+  i = 0
+  or
+  package = "java.util" and
+  type = "Vector" and
+  p = 0 and
+  signature = "lastIndexOf(java.lang.Object,int)" and
+  i = 0
+  or
+  package = "java.util.concurrent" and
+  type = "ConcurrentHashMap" and
+  p = 1 and
+  signature = "contains(java.lang.Object)" and
+  i = 0
 }
 
 class MismatchedContainerAccess extends MethodAccess {
   MismatchedContainerAccess() {
     exists(string package, string type, int i |
       containerAccess(package, type, _, getCallee().getSignature(), i)
-      |
-      getCallee().getDeclaringType().getASupertype*().getSourceDeclaration().hasQualifiedName(package, type) and
+    |
+      getCallee()
+          .getDeclaringType()
+          .getASupertype*()
+          .getSourceDeclaration()
+          .hasQualifiedName(package, type) and
       getCallee().getParameter(i).getType() instanceof TypeObject
     )
   }
@@ -47,7 +116,7 @@ class MismatchedContainerAccess extends MethodAccess {
   RefType getReceiverElementType(int i) {
     exists(RefType t, GenericType g, string package, string type, int p |
       containerAccess(package, type, p, getCallee().getSignature(), i)
-      |
+    |
       t = getCallee().getDeclaringType() and
       t.getASupertype*().getSourceDeclaration() = g and
       g.hasQualifiedName(package, type) and
@@ -71,5 +140,6 @@ where
   typearg = ma.getReceiverElementType(idx).getSourceDeclaration() and
   argtype = ma.getArgumentType(idx) and
   not haveIntersection(typearg, argtype)
-select ma.getArgument(idx), "Actual argument type '" + argtype.getName() + "'"
-           + " is incompatible with expected argument type '" + typearg.getName() + "'."
+select ma.getArgument(idx),
+  "Actual argument type '" + argtype.getName() + "'" +
+    " is incompatible with expected argument type '" + typearg.getName() + "'."

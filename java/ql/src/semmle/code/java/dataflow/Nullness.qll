@@ -56,31 +56,72 @@ Expr nullExpr() {
 private predicate unboxed(Expr e) {
   e.getType() instanceof BoxedType and
   (
-    exists(ArrayAccess aa | aa.getIndexExpr() = e) or
-    exists(ArrayCreationExpr ace | ace.getADimension() = e) or
-    exists(LocalVariableDeclExpr decl | decl.getVariable().getType() instanceof PrimitiveType and decl.getInit() = e) or
-    exists(AssignExpr assign | assign.getDest().getType() instanceof PrimitiveType and assign.getSource() = e) or
-    exists(AssignOp assign | assign.getSource() = e and assign.getType() instanceof PrimitiveType) or
-    exists(EqualityTest eq | eq.getAnOperand() = e and eq.getAnOperand().getType() instanceof PrimitiveType) or
-    exists(BinaryExpr bin | bin.getAnOperand() = e and not bin instanceof EqualityTest and bin.getType() instanceof PrimitiveType) or
-    exists(UnaryExpr un | un.getExpr() = e) or
-    exists(ConditionalExpr cond | cond.getType() instanceof PrimitiveType | cond.getTrueExpr() = e or cond.getFalseExpr() = e) or
-    exists(ConditionNode cond | cond.getCondition() = e) or
-    exists(Parameter p | p.getType() instanceof PrimitiveType and p.getAnArgument() = e) or
-    exists(ReturnStmt ret | ret.getEnclosingCallable().getReturnType() instanceof PrimitiveType and ret.getResult() = e)
+    exists(ArrayAccess aa | aa.getIndexExpr() = e)
+    or
+    exists(ArrayCreationExpr ace | ace.getADimension() = e)
+    or
+    exists(LocalVariableDeclExpr decl |
+      decl.getVariable().getType() instanceof PrimitiveType and decl.getInit() = e
+    )
+    or
+    exists(AssignExpr assign |
+      assign.getDest().getType() instanceof PrimitiveType and assign.getSource() = e
+    )
+    or
+    exists(AssignOp assign | assign.getSource() = e and assign.getType() instanceof PrimitiveType)
+    or
+    exists(EqualityTest eq |
+      eq.getAnOperand() = e and eq.getAnOperand().getType() instanceof PrimitiveType
+    )
+    or
+    exists(BinaryExpr bin |
+      bin.getAnOperand() = e and
+      not bin instanceof EqualityTest and
+      bin.getType() instanceof PrimitiveType
+    )
+    or
+    exists(UnaryExpr un | un.getExpr() = e)
+    or
+    exists(ConditionalExpr cond | cond.getType() instanceof PrimitiveType |
+      cond.getTrueExpr() = e or cond.getFalseExpr() = e
+    )
+    or
+    exists(ConditionNode cond | cond.getCondition() = e)
+    or
+    exists(Parameter p | p.getType() instanceof PrimitiveType and p.getAnArgument() = e)
+    or
+    exists(ReturnStmt ret |
+      ret.getEnclosingCallable().getReturnType() instanceof PrimitiveType and ret.getResult() = e
+    )
   )
 }
 
 /** An expression that is being dereferenced. These are the points where `NullPointerException`s can occur. */
 predicate dereference(Expr e) {
-  exists(EnhancedForStmt for | for.getExpr() = e) or
-  exists(SynchronizedStmt synch | synch.getExpr() = e) or
-  exists(SwitchStmt switch | switch.getExpr() = e) or
-  exists(FieldAccess fa, Field f | fa.getQualifier() = e and fa.getField() = f and not f.isStatic()) or
-  exists(MethodAccess ma, Method m | ma.getQualifier() = e and ma.getMethod() = m and not m.isStatic()) or
-  exists(ClassInstanceExpr cie | cie.getQualifier() = e) or
-  exists(ArrayAccess aa | aa.getArray() = e) or
-  exists(CastExpr cast | cast.getExpr() = e and e.getType() instanceof BoxedType and cast.getType() instanceof PrimitiveType) or
+  exists(EnhancedForStmt for | for.getExpr() = e)
+  or
+  exists(SynchronizedStmt synch | synch.getExpr() = e)
+  or
+  exists(SwitchStmt switch | switch.getExpr() = e)
+  or
+  exists(SwitchExpr switch | switch.getExpr() = e)
+  or
+  exists(FieldAccess fa, Field f | fa.getQualifier() = e and fa.getField() = f and not f.isStatic())
+  or
+  exists(MethodAccess ma, Method m |
+    ma.getQualifier() = e and ma.getMethod() = m and not m.isStatic()
+  )
+  or
+  exists(ClassInstanceExpr cie | cie.getQualifier() = e)
+  or
+  exists(ArrayAccess aa | aa.getArray() = e)
+  or
+  exists(CastExpr cast |
+    cast.getExpr() = e and
+    e.getType() instanceof BoxedType and
+    cast.getType() instanceof PrimitiveType
+  )
+  or
   unboxed(e)
 }
 
@@ -145,18 +186,15 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
     not v instanceof SsaPhiNode and
     not clearlyNotNull(v) and
     // Comparisons in finally blocks are excluded since missing exception edges in the CFG could otherwise yield FPs.
-    not exists(TryStmt try |
-      try.getFinally() = e.getEnclosingStmt().getParent*()
-    ) and
+    not exists(TryStmt try | try.getFinally() = e.getEnclosingStmt().getEnclosingStmt*()) and
     (
       exists(ConditionalExpr c | c.getCondition().getAChildExpr*() = e) or
-      not exists(MethodAccess ma |
-        ma.getAnArgument().getAChildExpr*() = e
-      )
+      not exists(MethodAccess ma | ma.getAnArgument().getAChildExpr*() = e)
     ) and
     // Don't use a guard as reason if there is a null assignment.
     not v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nullExpr()
-  ) or
+  )
+  or
   // A parameter might be null if there is a null argument somewhere.
   exists(Parameter p, Expr arg |
     v.(SsaImplicitInit).isParameterDefinition(p) and
@@ -165,7 +203,8 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
     msg = "because of $@ null argument" and
     arg = nullExpr() and
     not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
-  ) or
+  )
+  or
   // If the source of a variable is null then the variable may be null.
   exists(VariableAssign def |
     v.(SsaExplicitUpdate).getDefiningExpr() = def and
@@ -178,14 +217,16 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
 /** Gets an array or collection that contains at least one element. */
 private Expr nonEmptyExpr() {
   // An array creation with a known positive size is trivially non-empty.
-  result.(ArrayCreationExpr).getFirstDimensionSize() > 0 or
+  result.(ArrayCreationExpr).getFirstDimensionSize() > 0
+  or
   exists(SsaVariable v |
     // A use of an array variable is non-empty if...
     result = v.getAUse() and
     v.getSourceVariable().getType() instanceof Array
-    |
+  |
     // ...its definition is non-empty...
-    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nonEmptyExpr() or
+    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nonEmptyExpr()
+    or
     // ...or it is guarded by a condition proving its length to be non-zero.
     exists(ConditionBlock cond, boolean branch, FieldAccess length |
       cond.controls(result.getBasicBlock(), branch) and
@@ -193,7 +234,8 @@ private Expr nonEmptyExpr() {
       length.getField().hasName("length") and
       length.getQualifier() = v.getAUse()
     )
-  ) or
+  )
+  or
   exists(SsaVariable v |
     // A use of a Collection variable is non-empty if...
     result = v.getAUse() and
@@ -206,13 +248,16 @@ private Expr nonEmptyExpr() {
         m = ma.getMethod() and
         ma.getQualifier() = v.getSourceVariable().getAnAccess() and
         cond.controls(ma.getBasicBlock(), branch)
-        |
+      |
         m instanceof CollectionQueryMethod
       ) and
       cond.getCondition() = c
-      |
+    |
       // ...and the condition proves that it is non-empty, either by using the `isEmpty` method...
-      c.(MethodAccess).getMethod().hasName("isEmpty") and branch = false and c.(MethodAccess).getQualifier() = v.getAUse() or
+      c.(MethodAccess).getMethod().hasName("isEmpty") and
+      branch = false and
+      c.(MethodAccess).getQualifier() = v.getAUse()
+      or
       // ...or a check on its `size`.
       exists(MethodAccess size |
         c = integerGuard(size, branch, 0, false) and
@@ -248,9 +293,11 @@ private predicate leavingFinally(BasicBlock bb1, BasicBlock bb2, boolean normale
   exists(TryStmt try, Block finally |
     try.getFinally() = finally and
     bb1.getABBSuccessor() = bb2 and
-    bb1.getEnclosingStmt().getParent*() = finally and
-    not bb2.getEnclosingStmt().getParent*() = finally and
-    if bb1.getLastNode().getANormalSuccessor() = bb2.getFirstNode() then normaledge = true else normaledge = false
+    bb1.getEnclosingStmt().getEnclosingStmt*() = finally and
+    not bb2.getEnclosingStmt().getEnclosingStmt*() = finally and
+    if bb1.getLastNode().getANormalSuccessor() = bb2.getFirstNode()
+    then normaledge = true
+    else normaledge = false
   )
 }
 
@@ -269,13 +316,18 @@ private predicate ssaSourceVarMaybeNull(SsaSourceVariable v) {
  * no knowledge is assumed of any potentially waiting completions. `midstoredcompletion` is the flag before
  * the step and `storedcompletion` is the flag after the step.
  */
-private predicate nullVarStep(SsaVariable midssa, BasicBlock mid, boolean midstoredcompletion, SsaVariable ssa, BasicBlock bb, boolean storedcompletion) {
+private predicate nullVarStep(
+  SsaVariable midssa, BasicBlock mid, boolean midstoredcompletion, SsaVariable ssa, BasicBlock bb,
+  boolean storedcompletion
+) {
   exists(SsaSourceVariable v |
     ssaSourceVarMaybeNull(v) and
     midssa.getSourceVariable() = v
-    |
-    ssa.(SsaPhiNode).getAPhiInput() = midssa and ssa.getBasicBlock() = bb or
-    ssa = midssa and not exists(SsaPhiNode phi | phi.getSourceVariable() = v and phi.getBasicBlock() = bb)
+  |
+    ssa.(SsaPhiNode).getAPhiInput() = midssa and ssa.getBasicBlock() = bb
+    or
+    ssa = midssa and
+    not exists(SsaPhiNode phi | phi.getSourceVariable() = v and phi.getBasicBlock() = bb)
   ) and
   (midstoredcompletion = true or midstoredcompletion = false) and
   midssa.isLiveAtEndOfBlock(mid) and
@@ -283,24 +335,31 @@ private predicate nullVarStep(SsaVariable midssa, BasicBlock mid, boolean midsto
   not assertFail(mid, _) and
   bb = mid.getABBSuccessor() and
   not impossibleEdge(mid, bb) and
-  not exists(boolean branch |
-    nullGuard(midssa, branch, false).hasBranchEdge(mid, bb, branch)
-  ) and
+  not exists(boolean branch | nullGuard(midssa, branch, false).hasBranchEdge(mid, bb, branch)) and
   not (leavingFinally(mid, bb, true) and midstoredcompletion = true) and
-  if bb.getFirstNode() = any(TryStmt try | | try.getFinally()) then
-    (if bb.getFirstNode() = mid.getLastNode().getANormalSuccessor() then storedcompletion = false else storedcompletion = true)
-  else if leavingFinally(mid, bb, _) then
-    storedcompletion = false
+  if bb.getFirstNode() = any(TryStmt try | | try.getFinally())
+  then
+    if bb.getFirstNode() = mid.getLastNode().getANormalSuccessor()
+    then storedcompletion = false
+    else storedcompletion = true
   else
-    storedcompletion = midstoredcompletion
+    if leavingFinally(mid, bb, _)
+    then storedcompletion = false
+    else storedcompletion = midstoredcompletion
 }
 
 /**
  * The transitive closure of `nullVarStep` originating from `varMaybeNull`. That is, those `BasicBlock`s
  * for which the SSA variable is suspected of being `null`.
  */
-private predicate varMaybeNullInBlock(SsaVariable ssa, SsaSourceVariable v, BasicBlock bb, boolean storedcompletion) {
-  varMaybeNull(ssa, _, _) and bb = ssa.getBasicBlock() and storedcompletion = false and v = ssa.getSourceVariable() or
+private predicate varMaybeNullInBlock(
+  SsaVariable ssa, SsaSourceVariable v, BasicBlock bb, boolean storedcompletion
+) {
+  varMaybeNull(ssa, _, _) and
+  bb = ssa.getBasicBlock() and
+  storedcompletion = false and
+  v = ssa.getSourceVariable()
+  or
   exists(BasicBlock mid, SsaVariable midssa, boolean midstoredcompletion |
     varMaybeNullInBlock(midssa, v, mid, midstoredcompletion) and
     nullVarStep(midssa, mid, midstoredcompletion, ssa, bb, storedcompletion)
@@ -318,9 +377,14 @@ private predicate nullDerefCandidateVariable(SsaSourceVariable v) {
   )
 }
 
-private predicate varMaybeNullInBlock_origin(SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion) {
+private predicate varMaybeNullInBlock_origin(
+  SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion
+) {
   nullDerefCandidateVariable(ssa.getSourceVariable()) and
-  varMaybeNull(ssa, _, _) and bb = ssa.getBasicBlock() and storedcompletion = false and origin = ssa
+  varMaybeNull(ssa, _, _) and
+  bb = ssa.getBasicBlock() and
+  storedcompletion = false and
+  origin = ssa
   or
   exists(BasicBlock mid, SsaVariable midssa, boolean midstoredcompletion |
     varMaybeNullInBlock_origin(origin, midssa, mid, midstoredcompletion) and
@@ -370,9 +434,14 @@ private predicate varConditionallyNull(SsaExplicitUpdate v, ConditionBlock cond,
   exists(ConditionalExpr condexpr |
     v.getDefiningExpr().(VariableAssign).getSource().getProperExpr() = condexpr and
     condexpr.getCondition().getProperExpr() = cond.getCondition()
-    |
-    condexpr.getTrueExpr() = nullExpr() and branch = true and not condexpr.getFalseExpr() = nullExpr() or
-    condexpr.getFalseExpr() = nullExpr() and branch = false and not condexpr.getTrueExpr() = nullExpr()
+  |
+    condexpr.getTrueExpr() = nullExpr() and
+    branch = true and
+    not condexpr.getFalseExpr() = nullExpr()
+    or
+    condexpr.getFalseExpr() = nullExpr() and
+    branch = false and
+    not condexpr.getTrueExpr() = nullExpr()
   )
   or
   v.getDefiningExpr().(VariableAssign).getSource() = nullExpr() and
@@ -386,12 +455,17 @@ private predicate varConditionallyNull(SsaExplicitUpdate v, ConditionBlock cond,
  */
 private predicate interestingCond(SsaSourceVariable npecand, ConditionBlock cond) {
   nullDerefCandidateVariable(npecand) and
-  (varMaybeNullInBlock(_, npecand, cond, _) or varConditionallyNull(npecand.getAnSsaVariable(), cond, _)) and
+  (
+    varMaybeNullInBlock(_, npecand, cond, _) or
+    varConditionallyNull(npecand.getAnSsaVariable(), cond, _)
+  ) and
   not cond.getCondition().getAChildExpr*() = npecand.getAnAccess()
 }
 
 /** A pair of correlated conditions for a given NPE candidate. */
-private predicate correlatedConditions(SsaSourceVariable npecand, ConditionBlock cond1, ConditionBlock cond2, boolean inverted) {
+private predicate correlatedConditions(
+  SsaSourceVariable npecand, ConditionBlock cond1, ConditionBlock cond2, boolean inverted
+) {
   interestingCond(npecand, cond1) and
   interestingCond(npecand, cond2) and
   cond1 != cond2 and
@@ -400,14 +474,16 @@ private predicate correlatedConditions(SsaSourceVariable npecand, ConditionBlock
       cond1.getCondition() = v.getAUse() and
       cond2.getCondition() = v.getAUse() and
       inverted = false
-    ) or
+    )
+    or
     exists(SsaVariable v, boolean branch1, boolean branch2 |
       cond1.getCondition() = nullGuard(v, branch1, true) and
       cond1.getCondition() = nullGuard(v, branch1.booleanNot(), false) and
       cond2.getCondition() = nullGuard(v, branch2, true) and
       cond2.getCondition() = nullGuard(v, branch2.booleanNot(), false) and
       inverted = branch1.booleanXor(branch2)
-    ) or
+    )
+    or
     exists(SsaVariable v, RValue rv1, RValue rv2, int k, boolean branch1, boolean branch2 |
       rv1 = v.getAUse() and
       rv2 = v.getAUse() and
@@ -416,12 +492,14 @@ private predicate correlatedConditions(SsaSourceVariable npecand, ConditionBlock
       cond2.getCondition() = integerGuard(rv2, branch2, k, true) and
       cond2.getCondition() = integerGuard(rv2, branch2.booleanNot(), k, false) and
       inverted = branch1.booleanXor(branch2)
-    ) or
+    )
+    or
     exists(SsaVariable v, int k, boolean branch1, boolean branch2 |
       cond1.getCondition() = intBoundGuard(v.getAUse(), branch1, k) and
       cond2.getCondition() = intBoundGuard(v.getAUse(), branch2, k) and
       inverted = branch1.booleanXor(branch2)
-    ) or
+    )
+    or
     exists(SsaVariable v, EnumConstant c, boolean pol1, boolean pol2 |
       cond1.getCondition() = enumConstEquality(v.getAUse(), pol1, c) and
       cond2.getCondition() = enumConstEquality(v.getAUse(), pol2, c) and
@@ -435,27 +513,38 @@ private predicate correlatedConditions(SsaSourceVariable npecand, ConditionBlock
  * this time restricted based on pairs of correlated conditions consistent with `cond1`
  * evaluating to `branch`.
  */
-private predicate varMaybeNullInBlock_corrCond(SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion, ConditionBlock cond1, boolean branch) {
+private predicate varMaybeNullInBlock_corrCond(
+  SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion,
+  ConditionBlock cond1, boolean branch
+) {
   exists(SsaSourceVariable npecand | npecand = ssa.getSourceVariable() |
     nullDerefCandidateVariable(npecand) and correlatedConditions(npecand, cond1, _, _)
   ) and
   (
-    varConditionallyNull(ssa, cond1, branch) or
-    not varConditionallyNull(ssa, cond1, _) and (branch = true or branch = false)
+    varConditionallyNull(ssa, cond1, branch)
+    or
+    not varConditionallyNull(ssa, cond1, _) and
+    (branch = true or branch = false)
   ) and
-  varMaybeNull(ssa, _, _) and bb = ssa.getBasicBlock() and storedcompletion = false and origin = ssa
+  varMaybeNull(ssa, _, _) and
+  bb = ssa.getBasicBlock() and
+  storedcompletion = false and
+  origin = ssa
   or
   exists(BasicBlock mid, SsaVariable midssa, boolean midstoredcompletion |
     varMaybeNullInBlock_corrCond(origin, midssa, mid, midstoredcompletion, cond1, branch) and
     (
-      cond1 = mid and cond1.getTestSuccessor(branch) = bb or
+      cond1 = mid and cond1.getTestSuccessor(branch) = bb
+      or
       exists(ConditionBlock cond2, boolean inverted, boolean branch2 |
         cond2 = mid and
         correlatedConditions(_, cond1, cond2, inverted) and
         cond2.getTestSuccessor(branch2) = bb and
         branch = branch2.booleanXor(inverted)
-      ) or
-      cond1 != mid and not exists(ConditionBlock cond2 | cond2 = mid and correlatedConditions(_, cond1, cond2, _))
+      )
+      or
+      cond1 != mid and
+      not exists(ConditionBlock cond2 | cond2 = mid and correlatedConditions(_, cond1, cond2, _))
     ) and
     nullVarStep(midssa, mid, midstoredcompletion, ssa, bb, storedcompletion)
   )
@@ -479,56 +568,78 @@ newtype TrackVarKind =
   TrackVarKindInt()
 
 /** A variable that might be relevant as a tracking variable for the NPE candidate. */
-private predicate trackingVar(SsaSourceVariable npecand, SsaExplicitUpdate trackssa, SsaSourceVariable trackvar, TrackVarKind kind, Expr init) {
+private predicate trackingVar(
+  SsaSourceVariable npecand, SsaExplicitUpdate trackssa, SsaSourceVariable trackvar,
+  TrackVarKind kind, Expr init
+) {
   exists(ConditionBlock cond |
     interestingCond(npecand, cond) and
     varMaybeNullInBlock(_, npecand, cond, _) and
     cond.getCondition().getAChildExpr*() = trackvar.getAnAccess() and
     trackssa.getSourceVariable() = trackvar and
     trackssa.getDefiningExpr().(VariableAssign).getSource() = init
-    |
-    init instanceof NullLiteral and kind = TrackVarKindNull() or
-    init = clearlyNotNullExpr() and kind = TrackVarKindNull() or
-    init instanceof BooleanLiteral and kind = TrackVarKindBool() or
-    init.(VarAccess).getVariable() instanceof EnumConstant and kind = TrackVarKindEnum() or
+  |
+    init instanceof NullLiteral and kind = TrackVarKindNull()
+    or
+    init = clearlyNotNullExpr() and kind = TrackVarKindNull()
+    or
+    init instanceof BooleanLiteral and kind = TrackVarKindBool()
+    or
+    init.(VarAccess).getVariable() instanceof EnumConstant and kind = TrackVarKindEnum()
+    or
     exists(init.(ConstantIntegerExpr).getIntValue()) and kind = TrackVarKindInt()
   )
 }
 
 /** Gets an expression that tests the value of a given tracking variable. */
-private Expr trackingVarGuard(SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, boolean branch, boolean isA) {
+private Expr trackingVarGuard(
+  SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, boolean branch, boolean isA
+) {
   exists(Expr init | trackingVar(_, trackssa, trackvar, kind, init) |
-    result = basicOrCustomNullGuard(trackvar.getAnAccess(), branch, isA) and kind = TrackVarKindNull() or
-    result = trackvar.getAnAccess() and kind = TrackVarKindBool() and (branch = true or branch = false) and isA = branch or
+    result = basicOrCustomNullGuard(trackvar.getAnAccess(), branch, isA) and
+    kind = TrackVarKindNull()
+    or
+    result = trackvar.getAnAccess() and
+    kind = TrackVarKindBool() and
+    (branch = true or branch = false) and
+    isA = branch
+    or
     exists(boolean polarity, EnumConstant c, EnumConstant initc |
       initc.getAnAccess() = init and
       kind = TrackVarKindEnum() and
       result = enumConstEquality(trackvar.getAnAccess(), polarity, c) and
       (
-        initc = c and branch = polarity.booleanNot() and isA = false or
-        initc = c and branch = polarity and isA = true or
+        initc = c and branch = polarity.booleanNot() and isA = false
+        or
+        initc = c and branch = polarity and isA = true
+        or
         initc != c and branch = polarity and isA = false
       )
-    ) or
+    )
+    or
     exists(int k |
       init.(ConstantIntegerExpr).getIntValue() = k and
       kind = TrackVarKindInt()
-      |
-      result = integerGuard(trackvar.getAnAccess(), branch, k, isA) or
+    |
+      result = integerGuard(trackvar.getAnAccess(), branch, k, isA)
+      or
       exists(int k2 |
         result = integerGuard(trackvar.getAnAccess(), branch.booleanNot(), k2, true) and
         isA = false and
         k2 != k
-      ) or
+      )
+      or
       exists(int bound, boolean branch_with_lower_bound |
         result = intBoundGuard(trackvar.getAnAccess(), branch_with_lower_bound, bound) and
         isA = false
-        |
-        branch = branch_with_lower_bound and k < bound or
+      |
+        branch = branch_with_lower_bound and k < bound
+        or
         branch = branch_with_lower_bound.booleanNot() and bound <= k
       )
     )
-  ) or
+  )
+  or
   exists(EqualityTest eqtest, boolean branch0, boolean polarity, BooleanLiteral boollit |
     eqtest = result and
     eqtest.hasOperands(trackingVarGuard(trackssa, trackvar, kind, branch0, isA), boollit) and
@@ -538,19 +649,36 @@ private Expr trackingVarGuard(SsaVariable trackssa, SsaSourceVariable trackvar, 
 }
 
 /** An update to a tracking variable that is contained fully in either A or B. */
-private predicate isReset(SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, SsaExplicitUpdate update, boolean isA) {
+private predicate isReset(
+  SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, SsaExplicitUpdate update,
+  boolean isA
+) {
   exists(Expr init, Expr e |
     trackingVar(_, trackssa, trackvar, kind, init) and
     update.getSourceVariable() = trackvar and
     e = update.getDefiningExpr().(VariableAssign).getSource()
-    |
-    e instanceof NullLiteral and kind = TrackVarKindNull() and isA = true or
-    e = clearlyNotNullExpr() and kind = TrackVarKindNull() and isA = false or
-    e.(BooleanLiteral).getBooleanValue() = isA and kind = TrackVarKindBool() or
-    e.(VarAccess).getVariable().(EnumConstant) = init.(VarAccess).getVariable() and kind = TrackVarKindEnum() and isA = true or
-    e.(VarAccess).getVariable().(EnumConstant) != init.(VarAccess).getVariable() and kind = TrackVarKindEnum() and isA = false or
-    e.(ConstantIntegerExpr).getIntValue() = init.(ConstantIntegerExpr).getIntValue() and kind = TrackVarKindInt() and isA = true or
-    e.(ConstantIntegerExpr).getIntValue() != init.(ConstantIntegerExpr).getIntValue() and kind = TrackVarKindInt() and isA = false
+  |
+    e instanceof NullLiteral and kind = TrackVarKindNull() and isA = true
+    or
+    e = clearlyNotNullExpr() and kind = TrackVarKindNull() and isA = false
+    or
+    e.(BooleanLiteral).getBooleanValue() = isA and kind = TrackVarKindBool()
+    or
+    e.(VarAccess).getVariable().(EnumConstant) = init.(VarAccess).getVariable() and
+    kind = TrackVarKindEnum() and
+    isA = true
+    or
+    e.(VarAccess).getVariable().(EnumConstant) != init.(VarAccess).getVariable() and
+    kind = TrackVarKindEnum() and
+    isA = false
+    or
+    e.(ConstantIntegerExpr).getIntValue() = init.(ConstantIntegerExpr).getIntValue() and
+    kind = TrackVarKindInt() and
+    isA = true
+    or
+    e.(ConstantIntegerExpr).getIntValue() != init.(ConstantIntegerExpr).getIntValue() and
+    kind = TrackVarKindInt() and
+    isA = false
   )
 }
 
@@ -560,10 +688,17 @@ newtype TrackedValue =
   TrackedValueB() or
   TrackedValueUnknown()
 
-private TrackedValue trackValAorB(boolean isA) { isA = true and result = TrackedValueA() or isA = false and result = TrackedValueB() }
+private TrackedValue trackValAorB(boolean isA) {
+  isA = true and result = TrackedValueA()
+  or
+  isA = false and result = TrackedValueB()
+}
 
 /** A control flow edge passing through a condition that implies a specific value for a tracking variable. */
-private predicate stepImplies(BasicBlock bb1, BasicBlock bb2, SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, boolean isA) {
+private predicate stepImplies(
+  BasicBlock bb1, BasicBlock bb2, SsaVariable trackssa, SsaSourceVariable trackvar,
+  TrackVarKind kind, boolean isA
+) {
   exists(ConditionBlock cond, boolean branch |
     cond = bb1 and
     cond.getTestSuccessor(branch) = bb2 and
@@ -575,7 +710,10 @@ private predicate stepImplies(BasicBlock bb1, BasicBlock bb2, SsaVariable tracks
  * This is again the transitive closure of `nullVarStep` similarly to `varMaybeNullInBlock`, but
  * this time restricted based on a tracking variable.
  */
-private predicate varMaybeNullInBlock_trackVar(SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion, SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, TrackedValue trackvalue) {
+private predicate varMaybeNullInBlock_trackVar(
+  SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion,
+  SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, TrackedValue trackvalue
+) {
   exists(SsaSourceVariable npecand | npecand = ssa.getSourceVariable() |
     nullDerefCandidateVariable(npecand) and trackingVar(npecand, trackssa, trackvar, kind, _)
   ) and
@@ -583,8 +721,10 @@ private predicate varMaybeNullInBlock_trackVar(SsaVariable origin, SsaVariable s
     exists(SsaVariable init, boolean isA |
       init.getSourceVariable() = trackvar and
       init.isLiveAtEndOfBlock(bb) and
-      isReset(trackssa, trackvar, kind, init, isA) and trackvalue = trackValAorB(isA)
-    ) or
+      isReset(trackssa, trackvar, kind, init, isA) and
+      trackvalue = trackValAorB(isA)
+    )
+    or
     trackvalue = TrackedValueUnknown() and
     not exists(SsaVariable init |
       init.getSourceVariable() = trackvar and
@@ -592,13 +732,18 @@ private predicate varMaybeNullInBlock_trackVar(SsaVariable origin, SsaVariable s
       isReset(trackssa, trackvar, kind, init, _)
     )
   ) and
-  varMaybeNull(ssa, _, _) and bb = ssa.getBasicBlock() and storedcompletion = false and origin = ssa
+  varMaybeNull(ssa, _, _) and
+  bb = ssa.getBasicBlock() and
+  storedcompletion = false and
+  origin = ssa
   or
   exists(BasicBlock mid, SsaVariable midssa, boolean midstoredcompletion, TrackedValue trackvalue0 |
-    varMaybeNullInBlock_trackVar(origin, midssa, mid, midstoredcompletion, trackssa, trackvar, kind, trackvalue0) and
+    varMaybeNullInBlock_trackVar(origin, midssa, mid, midstoredcompletion, trackssa, trackvar, kind,
+      trackvalue0) and
     nullVarStep(midssa, mid, midstoredcompletion, ssa, bb, storedcompletion) and
     (
-      trackvalue0 = TrackedValueUnknown() or
+      trackvalue0 = TrackedValueUnknown()
+      or
       // A step that implies a value that contradicts the current value is not allowed.
       exists(boolean isA | trackvalue0 = trackValAorB(isA) |
         not stepImplies(mid, bb, trackssa, trackvar, kind, isA.booleanNot())
@@ -611,7 +756,10 @@ private predicate varMaybeNullInBlock_trackVar(SsaVariable origin, SsaVariable s
         update.getBasicBlock() = bb
       ) and
       (
-        exists(boolean isA | stepImplies(mid, bb, trackssa, trackvar, kind, isA) | trackvalue = trackValAorB(isA)) or
+        exists(boolean isA | stepImplies(mid, bb, trackssa, trackvar, kind, isA) |
+          trackvalue = trackValAorB(isA)
+        )
+        or
         not stepImplies(mid, bb, trackssa, trackvar, kind, _) and trackvalue = trackvalue0
       )
       or
@@ -619,8 +767,11 @@ private predicate varMaybeNullInBlock_trackVar(SsaVariable origin, SsaVariable s
       exists(SsaUpdate update |
         update.getSourceVariable() = trackvar and
         update.getBasicBlock() = bb
-        |
-        exists(boolean isA | isReset(trackssa, trackvar, kind, update, isA) | trackvalue = trackValAorB(isA)) or
+      |
+        exists(boolean isA | isReset(trackssa, trackvar, kind, update, isA) |
+          trackvalue = trackValAorB(isA)
+        )
+        or
         not isReset(trackssa, trackvar, kind, update, _) and trackvalue = TrackedValueUnknown()
       )
     )
@@ -636,14 +787,12 @@ predicate nullDeref(SsaSourceVariable v, VarAccess va, string msg, Expr reason) 
     varMaybeNull(origin, msg, reason) and
     ssa.getSourceVariable() = v and
     firstVarDereferenceInBlock(bb, ssa, va) and
-    forall(ConditionBlock cond |
-      correlatedConditions(v, cond, _, _)
-      |
+    forall(ConditionBlock cond | correlatedConditions(v, cond, _, _) |
       varMaybeNullInBlock_corrCond(origin, ssa, bb, _, cond, _)
     ) and
     forall(SsaVariable guardssa, SsaSourceVariable guardvar, TrackVarKind kind |
       trackingVar(v, guardssa, guardvar, kind, _)
-      |
+    |
       varMaybeNullInBlock_trackVar(origin, ssa, bb, _, guardssa, guardvar, kind, _)
     )
   )
@@ -656,18 +805,17 @@ predicate alwaysNullDeref(SsaSourceVariable v, VarAccess va) {
   exists(BasicBlock bb, SsaVariable ssa |
     forall(SsaVariable def | def = ssa.getAnUltimateDefinition() |
       def.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = alwaysNullExpr()
-    ) or
+    )
+    or
     exists(boolean branch |
       nullGuard(ssa, branch, true).directlyControls(bb, branch) and
       not clearlyNotNull(ssa)
     )
-    |
+  |
     // Exclude fields as they might not have an accurate ssa representation.
     not v.getVariable() instanceof Field and
     firstVarDereferenceInBlock(bb, ssa, va) and
     ssa.getSourceVariable() = v and
-    not exists(boolean branch |
-      nullGuard(ssa, branch, false).directlyControls(bb, branch)
-    )
+    not exists(boolean branch | nullGuard(ssa, branch, false).directlyControls(bb, branch))
   )
 }

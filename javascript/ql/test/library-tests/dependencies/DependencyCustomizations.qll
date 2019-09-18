@@ -6,7 +6,7 @@ class FooTools extends FrameworkLibrary {
 
 class FooToolsInstance extends FrameworkLibraryInstance {
   FooToolsInstance() {
-    exists (Comment c | c.getTopLevel() = this | c.getText().matches("%FooTools%"))
+    exists(Comment c | c.getTopLevel() = this | c.getText().matches("%FooTools%"))
   }
 
   override predicate info(FrameworkLibrary fl, string v) {

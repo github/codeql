@@ -9,6 +9,7 @@
  * @tags maintainability
  *       external/cwe/cwe-546
  */
+
 import csharp
 
 from CommentLine c

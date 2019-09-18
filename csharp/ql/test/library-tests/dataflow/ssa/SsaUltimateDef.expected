@@ -95,7 +95,7 @@
 | Capture.cs:229:13:229:13 | i | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:236:9:236:12 | SSA call def(i) |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:7:25:7:25 | SSA param(b) |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | SSA def(i) |
-| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | SSA def(i) |
+| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:25:29:25:29 | SSA def(c) |
 | Consistency.cs:26:13:26:19 | c.Field | Consistency.cs:25:29:25:29 | SSA qualifier def(c.Field) | Consistency.cs:25:29:25:29 | SSA qualifier def(c.Field) |
 | Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) | Consistency.cs:32:9:32:29 | SSA def(c) |
@@ -406,6 +406,18 @@
 | Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:108:10:108:10 | SSA entry def(this.Props.Props.xs) | Properties.cs:108:10:108:10 | SSA entry def(this.Props.Props.xs) |
 | Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:113:9:113:22 | SSA qualifier def(this.Props.Props.xs) | Properties.cs:108:10:108:10 | SSA entry def(this.Props.Props.xs) |
 | Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:113:9:113:22 | SSA qualifier def(this.Props.Props.xs) | Properties.cs:113:9:113:22 | SSA qualifier def(this.Props.Props.xs) |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | SSA param(b) | Splitting.cs:3:18:3:18 | SSA param(b) |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:7:13:7:19 | [b (line 3): true] SSA def(x) | Splitting.cs:7:13:7:19 | [b (line 3): true] SSA def(x) |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | [b (line 3): false] SSA def(x) | Splitting.cs:10:13:10:19 | [b (line 3): false] SSA def(x) |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | SSA param(b) | Splitting.cs:22:18:22:18 | SSA param(b) |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | [b (line 22): false] SSA def(x) | Splitting.cs:29:13:29:19 | [b (line 22): false] SSA def(x) |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): false] SSA def(x) | Splitting.cs:32:9:32:15 | [b (line 22): false] SSA def(x) |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): true] SSA def(x) | Splitting.cs:32:9:32:15 | [b (line 22): true] SSA def(x) |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | SSA param(b) | Splitting.cs:42:18:42:18 | SSA param(b) |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:46:13:46:19 | [b (line 42): true] SSA def(x) | Splitting.cs:46:13:46:19 | [b (line 42): true] SSA def(x) |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:49:13:49:19 | [b (line 42): false] SSA def(x) | Splitting.cs:49:13:49:19 | [b (line 42): false] SSA def(x) |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:21 | SSA phi(x) | Splitting.cs:46:13:46:19 | [b (line 42): true] SSA def(x) |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:21 | SSA phi(x) | Splitting.cs:49:13:49:19 | [b (line 42): false] SSA def(x) |
 | Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | SSA param(param1) | Test.cs:5:15:5:20 | SSA param(param1) |
 | Test.cs:5:15:5:20 | param1 | Test.cs:25:16:25:16 | SSA phi(param1) | Test.cs:5:15:5:20 | SSA param(param1) |
 | Test.cs:5:15:5:20 | param1 | Test.cs:25:16:25:16 | SSA phi(param1) | Test.cs:27:17:27:24 | SSA def(param1) |
@@ -455,7 +467,8 @@
 | Test.cs:46:29:46:32 | out | Test.cs:56:9:56:19 | SSA phi(out) | Test.cs:54:13:54:20 | SSA def(out) |
 | Test.cs:56:13:56:17 | this.field | Test.cs:46:10:46:10 | SSA entry def(this.field) | Test.cs:46:10:46:10 | SSA entry def(this.field) |
 | Test.cs:56:13:56:17 | this.field | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:57:9:57:17 | SSA def(this.field) |
-| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | SSA def(e) | Test.cs:68:45:68:45 | SSA def(e) |
+| Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | SSA param(x) | Test.cs:62:16:62:16 | SSA param(x) |
+| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:10:9:10:54 | SSA def(x) |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:14:9:14:32 | SSA def(x) | Tuples.cs:14:9:14:32 | SSA def(x) |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:23:9:23:37 | SSA def(x) | Tuples.cs:23:9:23:37 | SSA def(x) |

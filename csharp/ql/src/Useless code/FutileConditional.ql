@@ -8,20 +8,22 @@
  * @tags reliability
  *       readability
  */
+
 import csharp
 
 predicate emptyStmt(Stmt s) {
   s instanceof EmptyStmt
   or
   s = any(BlockStmt bs |
-    bs.getNumberOfStmts() = 0
-    or
-    bs.getNumberOfStmts() = 1 and
-    emptyStmt(bs.getStmt(0))
-  )
+      bs.getNumberOfStmts() = 0
+      or
+      bs.getNumberOfStmts() = 1 and
+      emptyStmt(bs.getStmt(0))
+    )
 }
 
 from IfStmt ifstmt
-where emptyStmt(ifstmt.getThen())
-  and (not exists(ifstmt.getElse()) or emptyStmt(ifstmt.getElse()))
+where
+  emptyStmt(ifstmt.getThen()) and
+  (not exists(ifstmt.getElse()) or emptyStmt(ifstmt.getElse()))
 select ifstmt, "If-statement with an empty then-branch and no else-branch."

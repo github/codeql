@@ -11,8 +11,12 @@ predicate callableFlow(string callable, string flow, boolean preservesValue) {
 }
 
 from string entity, string flow, boolean preservesValue
-where callableFlow(entity, flow, preservesValue)
-  /* Remove certain results to make the test output consistent
-   * between different versions of .NET Core. */
-  and not entity = "System.IO.FileStream.CopyToAsync(Stream, int, CancellationToken)"
+where
+  callableFlow(entity, flow, preservesValue) and
+  /*
+   * Remove certain results to make the test output consistent
+   * between different versions of .NET Core.
+   */
+
+  not entity = "System.IO.FileStream.CopyToAsync(Stream, int, CancellationToken)"
 select entity, flow, preservesValue

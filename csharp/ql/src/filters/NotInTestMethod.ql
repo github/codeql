@@ -4,12 +4,14 @@
  * @kind problem
  * @id cs/test-method-filter
  */
+
 import csharp
 import semmle.code.csharp.frameworks.Test
 import external.DefectFilter
 
 from DefectResult res
-where not(res.getFile() instanceof TestFile) or
-  not(res.getStartLine() = res.getFile().(TestFile).lineInTestMethod())
-select res,
-       res.getMessage()
+where
+  not res.getFile() instanceof TestFile
+  or
+  not res.getStartLine() = res.getFile().(TestFile).lineInTestMethod()
+select res, res.getMessage()

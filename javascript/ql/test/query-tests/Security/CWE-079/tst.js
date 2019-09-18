@@ -251,3 +251,44 @@ function react(){
 
     (<C3 propTainted={tainted}/>);
 }
+
+function windowName() {
+    $(window.name); // NOT OK
+    $(name); // NOT OK
+}
+function windowNameAssigned() {
+    for (name of ['a', 'b']) {
+        $(window.name); // NOT OK
+        $(name); // OK
+    }
+}
+
+function jqueryLocation() {
+    $(location); // OK
+    $(window.location); // OK
+    $(document.location); // OK
+    var loc1 = location;
+    var loc2 = window.location;
+    var loc3 = document.location;
+    $(loc1); // OK
+    $(loc2); // OK
+    $(loc3); // OK
+
+    $("body").append(location); // NOT OK
+}
+
+
+function testCreateContextualFragment() {
+    var tainted = window.name;
+    var range = document.createRange();
+    range.selectNode(document.getElementsByTagName("div").item(0));
+    var documentFragment = range.createContextualFragment(tainted); // NOT OK
+    document.body.appendChild(documentFragment);
+}
+
+function flowThroughPropertyNames() {
+    var obj = {};
+    obj[Math.random()] = window.name;
+    for (var p in obj)
+      $(p); // OK
+}

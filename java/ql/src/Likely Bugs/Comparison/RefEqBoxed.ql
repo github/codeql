@@ -10,6 +10,7 @@
  *       correctness
  *       external/cwe/cwe-595
  */
+
 import java
 
 from EqualityTest c

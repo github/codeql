@@ -9,6 +9,7 @@
  * @tags testability
  *       complexity
  */
+
 import java
 
 pragma[noopt]
@@ -19,10 +20,10 @@ int complexCallableLines(MetricCallable c, RefType owner) {
 }
 
 from MetricRefType t, int ccLoc, int loc
-where t.fromSource() and
-      not (t instanceof GeneratedClass) and
-      ccLoc = sum(Callable c, int cLoc | cLoc = complexCallableLines(c, t) | cLoc) and
-      loc = t.getNumberOfLinesOfCode() and
-      loc != 0
-select t, ((float)ccLoc*100)/loc as n
-order by n desc
+where
+  t.fromSource() and
+  not t instanceof GeneratedClass and
+  ccLoc = sum(Callable c, int cLoc | cLoc = complexCallableLines(c, t) | cLoc) and
+  loc = t.getNumberOfLinesOfCode() and
+  loc != 0
+select t, (ccLoc.(float) * 100) / loc as n order by n desc

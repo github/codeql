@@ -4,6 +4,7 @@
  * @kind treemap
  * @id java/not-generated-file-metric-filter
  */
+
 import java
 import external.MetricFilter
 

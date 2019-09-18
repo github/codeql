@@ -18,9 +18,7 @@ private import Attribute
 /**
  * A location of a program element.
  */
-class Location extends @location
-{
-
+class Location extends @location {
   /** Gets the file of the location. */
   File getFile() { none() }
 
@@ -29,32 +27,33 @@ class Location extends @location
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) { none() }
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    none()
+  }
 
   /** Gets a textual representation of this location. */
   string toString() { none() }
 
   /** Gets the start line of this location. */
-  int getStartLine() {
-     locations_default(this,_,result,_,_,_)
-  }
+  final int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
 
   /** Gets the end line of this location. */
-  int getEndLine() {
-     locations_default(this,_,_,_,result,_)
-  }
+  final int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
 
   /** Gets the start column of this location. */
-  int getStartColumn() {
-     locations_default(this,_,_,result,_,_)
-  }
+  final int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
 
   /** Gets the end column of this location. */
-  int getEndColumn() {
-     locations_default(this,_,_,_,_,result)
-  }
+  final int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+}
+
+/** An empty location. */
+class EmptyLocation extends Location {
+  EmptyLocation() { this.hasLocationInfo("", 0, 0, 0, 0) }
 }
 
 /**
@@ -62,41 +61,40 @@ class Location extends @location
  * within the file.
  */
 class SourceLocation extends Location, @location_default {
+  override File getFile() { locations_default(this, result, _, _, _, _) }
 
-  override File getFile() {
-     locations_default(this,result,_,_,_,_)
-  }
-
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    exists(File f |
-      locations_default(this, f, startline, startcolumn, endline, endcolumn) |
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(File f | locations_default(this, f, startline, startcolumn, endline, endcolumn) |
       filepath = f.getAbsolutePath()
     )
   }
 
   override string toString() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-      this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) |
+      this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    |
       result = filepath + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
 }
 
 bindingset[version]
-private int versionField(string version, int field)
-{
+private int versionField(string version, int field) {
   exists(string format |
     format = "(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)" or
     format = "(\\d+)\\.(\\d+)\\.(\\d+)" or
-    format = "(\\d+)\\.(\\d+)" |
-    result = version.regexpCapture(format, field).toInt())
-  and result >= 0
-  and result <= 255
+    format = "(\\d+)\\.(\\d+)"
+  |
+    result = version.regexpCapture(format, field).toInt()
+  ) and
+  result >= 0 and
+  result <= 255
 }
 
 /** An assembly version, for example `4.0.0.0` or `4.5`. */
-class Version extends string
-{
+class Version extends string {
   bindingset[this]
   Version() { exists(versionField(this, 1)) }
 
@@ -105,13 +103,9 @@ class Version extends string
    * If the field is unspecified in the version string, then the result is `0`.
    */
   bindingset[this]
-  int getField(int field)
-  {
-    field in [1..4]
-    and
-    if exists(versionField(this, field))
-    then result = versionField(this, field)
-    else result = 0
+  int getField(int field) {
+    field in [1 .. 4] and
+    if exists(versionField(this, field)) then result = versionField(this, field) else result = 0
   }
 
   /** Gets the major version, for example `1` in `1.2.3.4`. */
@@ -141,10 +135,9 @@ class Version extends string
    * For example, `4.0.0.0` is earlier than `4.5`.
    */
   bindingset[this, other]
-  predicate isEarlierThan(Version other)
-  {
+  predicate isEarlierThan(Version other) {
     exists(int i | this.getField(i) < other.getField(i) |
-      forall(int j | j in [1..i-1] | this.getField(j) = other.getField(j))
+      forall(int j | j in [1 .. i - 1] | this.getField(j) = other.getField(j))
     )
   }
 
@@ -158,9 +151,10 @@ class Version extends string
   int compareTo(Version other) {
     if this.isEarlierThan(other)
     then result = -1
-    else if other.isEarlierThan(this)
-    then result = 1
-    else result = 0
+    else
+      if other.isEarlierThan(this)
+      then result = 1
+      else result = 0
   }
 }
 
@@ -168,21 +162,22 @@ class Version extends string
  * A .NET assembly location.
  */
 class Assembly extends Location, Attributable, @assembly {
-
   /** Gets the full name of this assembly, including its version and public token. */
-  string getFullName() { assemblies(this,_,result,_,_) }
+  string getFullName() { assemblies(this, _, result, _, _) }
 
   /** Gets the name of this assembly. */
-  string getName() { assemblies(this,_,_,result,_) }
+  string getName() { assemblies(this, _, _, result, _) }
 
   /** Gets the version of this assembly. */
-  Version getVersion() { assemblies(this,_,_,_,result) }
+  Version getVersion() { assemblies(this, _, _, _, result) }
 
-  override File getFile() { assemblies(this,result,_,_,_) }
+  override File getFile() { assemblies(this, result, _, _, _) }
 
   override string toString() { result = this.getFullName() }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     exists(File f |
       assemblies(this, f, _, _, _) and
       filepath = f.getAbsolutePath() and

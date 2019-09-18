@@ -1,0 +1,12 @@
+| 3 | class DerivedFromBuiltin | append |
+| 3 | class DerivedFromBuiltin | clear |
+| 3 | class DerivedFromBuiltin | copy |
+| 3 | class DerivedFromBuiltin | count |
+| 3 | class DerivedFromBuiltin | extend |
+| 3 | class DerivedFromBuiltin | index |
+| 3 | class DerivedFromBuiltin | insert |
+| 3 | class DerivedFromBuiltin | meth5 |
+| 3 | class DerivedFromBuiltin | pop |
+| 3 | class DerivedFromBuiltin | remove |
+| 3 | class DerivedFromBuiltin | reverse |
+| 3 | class DerivedFromBuiltin | sort |

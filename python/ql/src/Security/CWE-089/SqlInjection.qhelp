@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If a database query (such as a SQL or NoSQL query) is built from
+user-provided data without sufficient sanitization, a user
+may be able to run malicious database queries.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Most database connector libraries offer a way of safely
+embedding untrusted data into a query by means of query parameters
+or prepared statements.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following snippet, from an example django app, 
+a name is stored in the database using two different queries.
+</p>
+
+<p>
+In the first case, the query string is built by
+directly using string formatting from a user-supplied request attribute.
+The parameter may include quote characters, so this
+code is vulnerable to a SQL injection attack.
+</p>
+
+<p>
+In the second case, the user-supplied request attribute is passed
+to the database using query parameters.
+</p>
+
+<sample src="examples/sql_injection.py" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet">SQL Injection Prevention Cheat Sheet</a>.</li>
+</references>
+</qhelp>

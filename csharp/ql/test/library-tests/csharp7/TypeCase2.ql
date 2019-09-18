@@ -1,8 +1,7 @@
 import csharp
 
-from TypeCase c, boolean isVar
+from Case c, boolean isVar, VariablePatternExpr vpe
 where
-  if c.getVariableDeclExpr().isImplicitlyTyped()
-  then isVar=true
-  else isVar=false
-select c, c.getVariableDeclExpr(), c.getTypeAccess(), c.getCheckedType().toString(), isVar
+  vpe = c.getPattern() and
+  if vpe.isImplicitlyTyped() then isVar = true else isVar = false
+select c, vpe, vpe.getType().toString(), isVar

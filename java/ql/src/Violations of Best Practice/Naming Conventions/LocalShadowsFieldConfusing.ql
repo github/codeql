@@ -9,6 +9,7 @@
  * @tags maintainability
  *       readability
  */
+
 import java
 import Shadowing
 
@@ -17,16 +18,15 @@ where
   shadows(d, c, f, callable) and
   not assignmentToShadowingLocal(d, f) and
   not assignmentFromShadowingLocal(d, f) and
-  (if callable instanceof Constructor
-   then callableType = ""
-   else callableType = "method ") and
+  (if callable instanceof Constructor then callableType = "" else callableType = "method ") and
   (
     confusingAccess(d, f) and
     message = "Confusing name: " + callableType +
-              "$@ also refers to field $@ (without qualifying it with 'this')."
+        "$@ also refers to field $@ (without qualifying it with 'this')."
     or
-    thisAccess(d, f) and not confusingAccess(d, f) and
-    message = "Potentially confusing name: " + callableType +
-              "$@ also refers to field $@ (as this." + f.getName() + ")."
+    thisAccess(d, f) and
+    not confusingAccess(d, f) and
+    message = "Potentially confusing name: " + callableType + "$@ also refers to field $@ (as this."
+        + f.getName() + ")."
   )
 select d, message, callable, callable.getName(), f, f.getName()

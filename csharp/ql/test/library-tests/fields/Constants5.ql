@@ -1,6 +1,7 @@
 /**
  * @name Count of accesses to constant
  */
+
 import csharp
 
 from MemberConstant c

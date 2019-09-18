@@ -44,6 +44,12 @@ var server = http.createServer(function(req, res) {
     cp.execFile("/bin/bash", args); // NOT OK
 
     run("sh", args);
+
+    let args = [];
+    args[0] = `-` + "c";
+    args[1] = cmd;
+    cp.execFile(`/bin` + "/bash", args); // NOT OK
+
 });
 
 function run(cmd, args) {

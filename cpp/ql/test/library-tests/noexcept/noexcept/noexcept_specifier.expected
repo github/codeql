@@ -15,7 +15,15 @@
 | box.h:2:8:2:8 | definition of Box | no except | --- |
 | box.h:2:8:2:8 | definition of Box | no except | --- |
 | box.h:2:8:2:8 | definition of Box | no except | --- |
+| box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
 | box.h:3:3:3:5 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:9:15:9:15 | definition of box | -------- | --- |
+| box.h:9:15:9:15 | definition of box | -------- | --- |
+| box.h:9:15:9:15 | definition of box | -------- | --- |
+| box.h:9:15:9:15 | definition of box | -------- | --- |
 | box.h:9:15:9:17 | definition of box | -------- | --- |
 | noexcept.cpp:2:7:2:7 | declaration of operator= | -------- | --- |
 | noexcept.cpp:2:7:2:7 | declaration of operator= | -------- | --- |

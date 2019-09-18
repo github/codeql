@@ -4,7 +4,11 @@
  * @kind problem
  * @id cpp/jsf/av-rule-33
  * @problem.severity error
+ * @tags maintainability
+ *       portability
+ *       external/jsf
  */
+
 import cpp
 
 from Include i

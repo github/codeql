@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> Using <code>exec</code> may introduce a security vulnerability into your program unless
+you ensure that the data passed to the statement is neutralized.
+</p>
+
+</overview>
+<recommendation>
+<p>Review all uses of the <code>exec</code> statement (Python 2) or function (Python 3).
+Where possible, replace the <code>exec</code> statement or function with normal python code.
+Alternatively, ensure that all data passed to the statement is neutralized.</p>
+
+</recommendation>
+<example>
+<p>In the example, the <code>exec</code> statement is used and may result in executing code from an attacker.</p>
+
+<sample src="ExecUsed.py" />
+
+</example>
+<references>
+
+<li>Python 2.7 Language Reference: <a href="https://docs.python.org/2.7/reference/simple_stmts.html#the-exec-statement">The exec statement</a>.</li>
+<li>Python 3 Standard Library: <a href="https://docs.python.org/3/library/functions.html#exec">exec</a>.</li>
+
+</references>
+</qhelp>

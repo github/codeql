@@ -12,6 +12,7 @@
  *       statistical
  *       non-attributable
  */
+
 import java
 import CodeDuplication
 
@@ -19,5 +20,5 @@ from AnonymousClass c, AnonymousClass other
 where
   duplicateAnonymousClass(c, other) and
   not fileLevelDuplication(c.getCompilationUnit(), other.getCompilationUnit())
-select c, "Anonymous class is identical to $@.",
-  other, "another anonymous class in " + other.getFile().getStem()
+select c, "Anonymous class is identical to $@.", other,
+  "another anonymous class in " + other.getFile().getStem()

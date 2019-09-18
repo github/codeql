@@ -16,8 +16,13 @@ import semmle.code.java.deadcode.DeadCode
 from DeadField f, Element origin, string reason
 where
   not f.isInDeadScope() and
-  if exists(FieldRead read | read = f.getAnAccess()) then (
-    if exists(DeadRoot root | root = getADeadRoot(f.getAnAccess().(FieldRead).getEnclosingCallable())) then (
+  if exists(FieldRead read | read = f.getAnAccess())
+  then (
+    if
+      exists(DeadRoot root |
+        root = getADeadRoot(f.getAnAccess().(FieldRead).getEnclosingCallable())
+      )
+    then (
       origin = getADeadRoot(f.getAnAccess().(FieldRead).getEnclosingCallable()) and
       reason = " is only read from dead code originating at $@."
     ) else (

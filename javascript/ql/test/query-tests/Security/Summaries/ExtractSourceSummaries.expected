@@ -1,0 +1,2 @@
+| (parameter 0 (parameter 0 (member listen (root https://www.npmjs.com/package/infer-sources)))) | taint | CodeInjection |
+| (return (member taintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | CodeInjection |

@@ -1,0 +1,66 @@
+| b_condition.py:41 | v2_2 | x | AttributeAssignment 'x'(v2_1) | int 1 | import |
+| b_condition.py:43 | v2_3 | x | Pi(v2_2) [true] | int 1 | import |
+| b_condition.py:47 | v2_4 | x | Pi(v2_2) [false] | int 1 | import |
+| b_condition.py:47 | v2_5 | x | phi(v2_3, v2_4) | int 1 | import |
+| f_finally.py:3 | self_3 | _close | phi(self_1, self_2) | None | runtime |
+| f_finally.py:3 | self_3 | _closed | phi(self_1, self_2) | bool True | runtime |
+| f_finally.py:4 | self_1 | _closed | AttributeAssignment '_closed'(self_0) | bool True | runtime |
+| f_finally.py:10 | self_2 | _close | AttributeAssignment '_close'(self_1) | None | runtime |
+| f_finally.py:10 | self_2 | _closed | AttributeAssignment '_close'(self_1) | bool True | runtime |
+| g_class_init.py:6 | self_1 | y | SelfCallsiteRefinement(self_0) | int 2 | runtime |
+| g_class_init.py:6 | self_1 | z | SelfCallsiteRefinement(self_0) | int 3 | runtime |
+| g_class_init.py:7 | self_2 | x | AttributeAssignment 'x'(self_1) | int 1 | runtime |
+| g_class_init.py:7 | self_2 | y | AttributeAssignment 'x'(self_1) | int 2 | runtime |
+| g_class_init.py:7 | self_2 | z | AttributeAssignment 'x'(self_1) | int 3 | runtime |
+| g_class_init.py:10 | self_1 | y | AttributeAssignment 'y'(self_0) | int 2 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:11 | self_2 | y | SelfCallsiteRefinement(self_1) | int 2 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:11 | self_2 | z | SelfCallsiteRefinement(self_1) | int 3 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:13 | self_0 | y | ParameterDefinition | int 2 | code/g_class_init.py:11 from code/g_class_init.py:6 from runtime |
+| g_class_init.py:14 | self_1 | y | AttributeAssignment 'z'(self_0) | int 2 | code/g_class_init.py:11 from code/g_class_init.py:6 from runtime |
+| g_class_init.py:14 | self_1 | z | AttributeAssignment 'z'(self_0) | int 3 | code/g_class_init.py:11 from code/g_class_init.py:6 from runtime |
+| g_class_init.py:46 | self_3 | version | phi(self_1, self_2) | 'v2' | runtime |
+| g_class_init.py:46 | self_3 | version | phi(self_1, self_2) | 'v3' | runtime |
+| g_class_init.py:48 | self_1 | version | AttributeAssignment 'version'(self_0) | 'v2' | runtime |
+| g_class_init.py:50 | self_2 | version | AttributeAssignment 'version'(self_0) | 'v3' | runtime |
+| k_getsetattr.py:6 | self_0 | a | ParameterDefinition | float 7.0 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:6 | self_0 | c | ParameterDefinition | int 2 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:7 | self_1 | a | ArgumentRefinement(self_0) | int 0 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:7 | self_1 | a | ArgumentRefinement(self_0) | int 0 | runtime |
+| k_getsetattr.py:7 | self_1 | c | ArgumentRefinement(self_0) | int 2 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:8 | self_2 | a | ArgumentRefinement(self_1) | int 0 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:8 | self_2 | a | ArgumentRefinement(self_1) | int 0 | runtime |
+| k_getsetattr.py:8 | self_2 | b | ArgumentRefinement(self_1) | int 1 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:8 | self_2 | b | ArgumentRefinement(self_1) | int 1 | runtime |
+| k_getsetattr.py:8 | self_2 | c | ArgumentRefinement(self_1) | int 2 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:9 | self_3 | a | ArgumentRefinement(self_2) | int 0 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:9 | self_3 | a | ArgumentRefinement(self_2) | int 0 | runtime |
+| k_getsetattr.py:9 | self_3 | b | ArgumentRefinement(self_2) | int 1 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:9 | self_3 | b | ArgumentRefinement(self_2) | int 1 | runtime |
+| k_getsetattr.py:9 | self_3 | c | ArgumentRefinement(self_2) | int 2 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:10 | self_4 | a | ArgumentRefinement(self_3) | int 0 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:10 | self_4 | a | ArgumentRefinement(self_3) | int 0 | runtime |
+| k_getsetattr.py:10 | self_4 | b | ArgumentRefinement(self_3) | int 1 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:10 | self_4 | b | ArgumentRefinement(self_3) | int 1 | runtime |
+| k_getsetattr.py:10 | self_4 | c | ArgumentRefinement(self_3) | int 2 | code/k_getsetattr.py:15 from runtime |
+| k_getsetattr.py:13 | self_1 | a | ArgumentRefinement(self_0) | float 7.0 | runtime |
+| k_getsetattr.py:14 | self_2 | a | ArgumentRefinement(self_1) | float 7.0 | runtime |
+| k_getsetattr.py:14 | self_2 | c | ArgumentRefinement(self_1) | int 2 | runtime |
+| k_getsetattr.py:15 | self_3 | a | SelfCallsiteRefinement(self_2) | int 0 | runtime |
+| k_getsetattr.py:15 | self_3 | b | SelfCallsiteRefinement(self_2) | int 1 | runtime |
+| k_getsetattr.py:15 | self_3 | c | SelfCallsiteRefinement(self_2) | int 2 | runtime |
+| k_getsetattr.py:16 | self_4 | a | ArgumentRefinement(self_3) | int 0 | runtime |
+| k_getsetattr.py:16 | self_4 | b | ArgumentRefinement(self_3) | int 1 | runtime |
+| k_getsetattr.py:16 | self_4 | c | ArgumentRefinement(self_3) | int 2 | runtime |
+| k_getsetattr.py:17 | self_5 | a | ArgumentRefinement(self_4) | int 0 | runtime |
+| k_getsetattr.py:17 | self_5 | b | ArgumentRefinement(self_4) | int 1 | runtime |
+| k_getsetattr.py:17 | self_5 | c | ArgumentRefinement(self_4) | int 2 | runtime |
+| k_getsetattr.py:18 | self_6 | a | ArgumentRefinement(self_5) | int 0 | runtime |
+| k_getsetattr.py:18 | self_6 | b | ArgumentRefinement(self_5) | int 1 | runtime |
+| k_getsetattr.py:18 | self_6 | c | ArgumentRefinement(self_5) | int 2 | runtime |
+| k_getsetattr.py:25 | c1_1 | a | AttributeAssignment 'a'(c1_0) | int 10 | runtime |
+| k_getsetattr.py:27 | c2_1 | a | AttributeAssignment 'a'(c2_0) | int 20 | runtime |
+| k_getsetattr.py:28 | c2_2 | a | phi(c2_0, c2_1) | int 20 | runtime |
+| k_getsetattr.py:31 | c3_1 | a | AttributeAssignment 'a'(c3_0) | int 30 | runtime |
+| m_attributes.py:6 | self_1 | a | AttributeAssignment 'a'(self_0) | Unknown value | runtime |
+| m_attributes.py:6 | self_1 | a | AttributeAssignment 'a'(self_0) | int 17 | runtime |
+| m_attributes.py:6 | self_1 | a | AttributeAssignment 'a'(self_0) | int 100 | code/m_attributes.py:13 from import |

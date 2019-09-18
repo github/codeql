@@ -11,6 +11,7 @@
  *       external/cwe/cwe-827
  *       external/cwe/cwe-776
  */
+
 import csharp
 import semmle.code.csharp.security.xml.InsecureXML::InsecureXML
 

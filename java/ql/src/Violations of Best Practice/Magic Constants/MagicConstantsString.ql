@@ -10,6 +10,7 @@
  *       statistical
  *       non-attributable
  */
+
 import java
 import MagicConstants
 
@@ -51,19 +52,23 @@ predicate isSystemProperty(string e) {
 
 predicate trivialContext(Literal e) {
   // String concatenation.
-  e.getParent() instanceof AddExpr or
-  e.getParent() instanceof AssignAddExpr or
+  e.getParent() instanceof AddExpr
+  or
+  e.getParent() instanceof AssignAddExpr
+  or
   exists(MethodAccess ma |
     ma.getMethod().getName() = "append" and
     (e = ma.getAnArgument() or e = ma.getQualifier())
-  ) or
+  )
+  or
   // Standard property in a call to `System.getProperty()`.
   exists(MethodAccess ma |
     ma.getMethod().getName() = "getProperty" and
     e = ma.getAnArgument() and
     ma.getMethod().getDeclaringType() instanceof TypeSystem and
     isSystemProperty(e.getValue())
-  ) or
+  )
+  or
   // Message in an exception.
   exists(ClassInstanceExpr constr |
     constr.getType().(RefType).getASupertype+().hasName("Exception") and

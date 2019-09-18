@@ -1,8 +1,8 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll
-
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll {testdir}/../../../../resources/stubs/System.Windows.cs
 using System.Text;
 using System.Web;
 using System.Web.Security;
+using System.Windows.Forms;
 
 public class ClearTextStorageHandler : IHttpHandler
 {
@@ -59,4 +59,20 @@ public class ClearTextStorageHandler : IHttpHandler
 class ILogger
 {
     public void Warn(string message) { }
+}
+
+class MyForm : Form
+{
+    TextBox password, box1, box2, box3;
+    ILogger logger;
+
+    public void OnButtonClicked()
+    {
+        box1.PasswordChar = '*';
+        box2.UseSystemPasswordChar = true;
+        logger.Warn(password.Text);  // BAD
+        logger.Warn(box1.Text);  // BAD
+        logger.Warn(box2.Text);  // BAD
+        logger.Warn(box3.Text);  // GOOD
+    }
 }

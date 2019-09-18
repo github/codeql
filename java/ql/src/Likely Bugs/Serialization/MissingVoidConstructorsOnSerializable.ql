@@ -11,6 +11,7 @@
  *       maintainability
  *       language-features
  */
+
 import java
 
 from Class serial, Class nonserial, TypeSerializable serializable
@@ -21,10 +22,9 @@ where
   not exists(Constructor c |
     c = nonserial.getSourceDeclaration().getAConstructor() and
     c.hasNoParameters() and
-    not(c.isPrivate())
+    not c.isPrivate()
   ) and
   serial.fromSource()
 select serial,
   "This class is serializable, but its non-serializable " +
-  "super-class $@ does not declare a no-argument constructor.",
-  nonserial, nonserial.getName()
+    "super-class $@ does not declare a no-argument constructor.", nonserial, nonserial.getName()

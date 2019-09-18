@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with JSON parsers.
  */
+
 import javascript
 
 /**
@@ -23,20 +24,18 @@ abstract class JsonParserCall extends DataFlow::CallNode {
  */
 private class PlainJsonParserCall extends JsonParserCall {
   PlainJsonParserCall() {
-    exists (DataFlow::SourceNode callee | this = callee.getACall() |
+    exists(DataFlow::SourceNode callee | this = callee.getACall() |
       callee = DataFlow::globalVarRef("JSON").getAPropertyRead("parse") or
       callee = DataFlow::moduleImport("parse-json") or
       callee = DataFlow::moduleImport("json-parse-better-errors") or
-      callee = DataFlow::moduleImport("json-safe-parse"))
+      callee = DataFlow::moduleImport("json-safe-parse") or
+      callee = AngularJS::angular().getAPropertyRead("fromJson")
+    )
   }
 
-  override DataFlow::Node getInput() {
-    result = getArgument(0)
-  }
+  override DataFlow::Node getInput() { result = getArgument(0) }
 
-  override DataFlow::SourceNode getOutput() {
-    result = this
-  }
+  override DataFlow::SourceNode getOutput() { result = this }
 }
 
 /**
@@ -46,20 +45,20 @@ private class JsonParserCallWithWrapper extends JsonParserCall {
   string outputPropName;
 
   JsonParserCallWithWrapper() {
-    exists (DataFlow::SourceNode callee | this = callee.getACall() |
-      callee = DataFlow::moduleImport("safe-json-parse/tuple") and outputPropName = "1" or
-      callee = DataFlow::moduleImport("safe-json-parse/result") and outputPropName = "v" or
-      callee = DataFlow::moduleImport("fast-json-parse") and outputPropName = "value" or
-      callee = DataFlow::moduleImport("json-parse-safe") and outputPropName = "value")
+    exists(DataFlow::SourceNode callee | this = callee.getACall() |
+      callee = DataFlow::moduleImport("safe-json-parse/tuple") and outputPropName = "1"
+      or
+      callee = DataFlow::moduleImport("safe-json-parse/result") and outputPropName = "v"
+      or
+      callee = DataFlow::moduleImport("fast-json-parse") and outputPropName = "value"
+      or
+      callee = DataFlow::moduleImport("json-parse-safe") and outputPropName = "value"
+    )
   }
 
-  override DataFlow::Node getInput() {
-    result = getArgument(0)
-  }
+  override DataFlow::Node getInput() { result = getArgument(0) }
 
-  override DataFlow::SourceNode getOutput() {
-    result = this.getAPropertyRead(outputPropName)
-  }
+  override DataFlow::SourceNode getOutput() { result = this.getAPropertyRead(outputPropName) }
 }
 
 /**
@@ -70,11 +69,7 @@ private class JsonParserCallWithCallback extends JsonParserCall {
     this = DataFlow::moduleImport("safe-json-parse/callback").getACall()
   }
 
-  override DataFlow::Node getInput() {
-    result = getArgument(0)
-  }
+  override DataFlow::Node getInput() { result = getArgument(0) }
 
-  override DataFlow::SourceNode getOutput() {
-    result = getCallback(1).getParameter(1)
-  }
+  override DataFlow::SourceNode getOutput() { result = getCallback(1).getParameter(1) }
 }

@@ -15,8 +15,9 @@ import javascript
 import Definitions
 
 from VarRef d
-where d.getVariable().(LocalVariable).getName() = "arguments" and
-      (d instanceof LValue or d instanceof VarDecl) and
-      not d.isAmbient() and
-      not d.inExternsFile()
+where
+  d.getVariable().(LocalVariable).getName() = "arguments" and
+  (d instanceof LValue or d instanceof VarDecl) and
+  not d.isAmbient() and
+  not d.inExternsFile()
 select d, "Redefinition of arguments."

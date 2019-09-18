@@ -68,14 +68,16 @@ private import SSA
 private import RangeUtils
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import SignAnalysis
-private import ParityAnalysis
+private import ModulusAnalysis
 private import semmle.code.java.Reflection
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
+import Bound
 
-cached private module RangeAnalysisCache {
-
-  cached module RangeAnalysisPublic {
+cached
+private module RangeAnalysisCache {
+  cached
+  module RangeAnalysisPublic {
     /**
      * Holds if `b + delta` is a valid bound for `e`.
      * - `upper = true`  : `e <= b + delta`
@@ -85,35 +87,34 @@ cached private module RangeAnalysisCache {
      * or `NoReason` if the bound was proven directly without the use of a bounding
      * condition.
      */
-    cached predicate bounded(Expr e, Bound b, int delta, boolean upper, Reason reason) {
-      bounded(e, b, delta, upper, _, _, reason)
+    cached
+    predicate bounded(Expr e, Bound b, int delta, boolean upper, Reason reason) {
+      bounded(e, b, delta, upper, _, _, reason) and
+      bestBound(e, b, delta, upper)
     }
   }
 
   /**
    * Holds if `guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _)`.
    */
-  cached predicate possibleReason(Guard guard) { guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _) }
-
+  cached
+  predicate possibleReason(Guard guard) {
+    guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _)
+  }
 }
+
 private import RangeAnalysisCache
 import RangeAnalysisPublic
 
 /**
- * Gets a condition that tests whether `v` equals `e + delta`.
- *
- * If the condition evaluates to `testIsTrue`:
- * - `isEq = true`  : `v == e + delta`
- * - `isEq = false` : `v != e + delta`
+ * Holds if `b + delta` is a valid bound for `e` and this is the best such delta.
+ * - `upper = true`  : `e <= b + delta`
+ * - `upper = false` : `e >= b + delta`
  */
-private Guard eqFlowCond(SsaVariable v, Expr e, int delta, boolean isEq, boolean testIsTrue) {
-  exists(boolean eqpolarity |
-    result.isEquality(ssaRead(v, delta), e, eqpolarity) and
-    (testIsTrue = true or testIsTrue = false) and
-    eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
-  )
+private predicate bestBound(Expr e, Bound b, int delta, boolean upper) {
+  delta = min(int d | bounded(e, b, d, upper, _, _, _)) and upper = true
   or
-  exists(boolean testIsTrue0 | implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0))
+  delta = max(int d | bounded(e, b, d, upper, _, _, _)) and upper = false
 }
 
 /**
@@ -121,31 +122,84 @@ private Guard eqFlowCond(SsaVariable v, Expr e, int delta, boolean isEq, boolean
  * - `upper = true`  : `v <= e + delta` or `v < e + delta`
  * - `upper = false` : `v >= e + delta` or `v > e + delta`
  */
-private predicate boundCondition(ComparisonExpr comp, SsaVariable v, Expr e, int delta, boolean upper) {
+private predicate boundCondition(
+  ComparisonExpr comp, SsaVariable v, Expr e, int delta, boolean upper
+) {
   comp.getLesserOperand() = ssaRead(v, delta) and e = comp.getGreaterOperand() and upper = true
   or
   comp.getGreaterOperand() = ssaRead(v, delta) and e = comp.getLesserOperand() and upper = false
   or
   exists(SubExpr sub, ConstantIntegerExpr c, int d |
     // (v - d) - e < c
-    comp.getLesserOperand().getProperExpr() = sub and comp.getGreaterOperand() = c and
-    sub.getLeftOperand() = ssaRead(v, d) and sub.getRightOperand() = e and
-    upper = true and delta = d + c.getIntValue()
+    comp.getLesserOperand().getProperExpr() = sub and
+    comp.getGreaterOperand() = c and
+    sub.getLeftOperand() = ssaRead(v, d) and
+    sub.getRightOperand() = e and
+    upper = true and
+    delta = d + c.getIntValue()
     or
     // (v - d) - e > c
-    comp.getGreaterOperand().getProperExpr() = sub and comp.getLesserOperand() = c and
-    sub.getLeftOperand() = ssaRead(v, d) and sub.getRightOperand() = e and
-    upper = false and delta = d + c.getIntValue()
+    comp.getGreaterOperand().getProperExpr() = sub and
+    comp.getLesserOperand() = c and
+    sub.getLeftOperand() = ssaRead(v, d) and
+    sub.getRightOperand() = e and
+    upper = false and
+    delta = d + c.getIntValue()
     or
     // e - (v - d) < c
-    comp.getLesserOperand().getProperExpr() = sub and comp.getGreaterOperand() = c and
-    sub.getLeftOperand() = e and sub.getRightOperand() = ssaRead(v, d) and
-    upper = false and delta = d - c.getIntValue()
+    comp.getLesserOperand().getProperExpr() = sub and
+    comp.getGreaterOperand() = c and
+    sub.getLeftOperand() = e and
+    sub.getRightOperand() = ssaRead(v, d) and
+    upper = false and
+    delta = d - c.getIntValue()
     or
     // e - (v - d) > c
-    comp.getGreaterOperand().getProperExpr() = sub and comp.getLesserOperand() = c and
-    sub.getLeftOperand() = e and sub.getRightOperand() = ssaRead(v, d) and
-    upper = true and delta = d - c.getIntValue()
+    comp.getGreaterOperand().getProperExpr() = sub and
+    comp.getLesserOperand() = c and
+    sub.getLeftOperand() = e and
+    sub.getRightOperand() = ssaRead(v, d) and
+    upper = true and
+    delta = d - c.getIntValue()
+  )
+}
+
+/**
+ * Holds if `comp` is a comparison between `x` and `y` for which `y - x` has a
+ * fixed value modulo some `mod > 1`, such that the comparison can be
+ * strengthened by `strengthen` when evaluating to `testIsTrue`.
+ */
+private predicate modulusComparison(ComparisonExpr comp, boolean testIsTrue, int strengthen) {
+  exists(
+    Bound b, int v1, int v2, int mod1, int mod2, int mod, boolean resultIsStrict, int d, int k
+  |
+    // If `x <= y` and `x =(mod) b + v1` and `y =(mod) b + v2` then
+    // `0 <= y - x =(mod) v2 - v1`. By choosing `k =(mod) v2 - v1` with
+    // `0 <= k < mod` we get `k <= y - x`. If the resulting comparison is
+    // strict then the strengthening amount is instead `k - 1` modulo `mod`:
+    // `x < y` means `0 <= y - x - 1 =(mod) k - 1` so `k - 1 <= y - x - 1` and
+    // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
+    exprModulus(comp.getLesserOperand(), b, v1, mod1) and
+    exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
+    mod = mod1.gcd(mod2) and
+    mod != 1 and
+    (testIsTrue = true or testIsTrue = false) and
+    (
+      if comp.isStrict()
+      then resultIsStrict = testIsTrue
+      else resultIsStrict = testIsTrue.booleanNot()
+    ) and
+    (
+      resultIsStrict = true and d = 1
+      or
+      resultIsStrict = false and d = 0
+    ) and
+    (
+      testIsTrue = true and k = v2 - v1
+      or
+      testIsTrue = false and k = v1 - v2
+    ) and
+    strengthen = (((k - d) % mod) + mod) % mod
   )
 }
 
@@ -157,27 +211,47 @@ private predicate boundCondition(ComparisonExpr comp, SsaVariable v, Expr e, int
  * - `upper = false` : `v >= e + delta`
  */
 private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boolean testIsTrue) {
-  exists(ComparisonExpr comp, int d1, int d2, int d3, int strengthen, boolean compIsUpper, boolean resultIsStrict |
+  exists(
+    ComparisonExpr comp, int d1, int d2, int d3, int strengthen, boolean compIsUpper,
+    boolean resultIsStrict
+  |
     comp = result and
     boundCondition(comp, v, e, d1, compIsUpper) and
     (testIsTrue = true or testIsTrue = false) and
     upper = compIsUpper.booleanXor(testIsTrue.booleanNot()) and
-    (if comp.isStrict() then resultIsStrict = testIsTrue else resultIsStrict = testIsTrue.booleanNot()) and
-    (if v.getSourceVariable().getType() instanceof IntegralType then
-      (upper = true and strengthen = -1 or
-      upper = false and strengthen = 1)
-    else
-      strengthen = 0) and
-    // A non-strict inequality `x <= y` can be strengthened to `x <= y - 1` if
-    // `x` and `y` have opposite parities, and a strict inequality `x < y` can
-    // be similarly strengthened if `x` and `y` have equal parities.
-    (if parityComparison(comp, resultIsStrict) then d2 = strengthen else d2 = 0) and
+    (
+      if comp.isStrict()
+      then resultIsStrict = testIsTrue
+      else resultIsStrict = testIsTrue.booleanNot()
+    ) and
+    (
+      if v.getSourceVariable().getType() instanceof IntegralType
+      then
+        upper = true and strengthen = -1
+        or
+        upper = false and strengthen = 1
+      else strengthen = 0
+    ) and
+    (
+      exists(int k | modulusComparison(comp, testIsTrue, k) and d2 = strengthen * k)
+      or
+      not modulusComparison(comp, testIsTrue, _) and d2 = 0
+    ) and
     // A strict inequality `x < y` can be strengthened to `x <= y - 1`.
-    (resultIsStrict = true and d3 = strengthen or resultIsStrict = false and d3 = 0) and
+    (
+      resultIsStrict = true and d3 = strengthen
+      or
+      resultIsStrict = false and d3 = 0
+    ) and
     delta = d1 + d2 + d3
-  ) or
-  exists(boolean testIsTrue0 | implies_v2(result, testIsTrue, boundFlowCond(v, e, delta, upper, testIsTrue0), testIsTrue0)) or
-  result = eqFlowCond(v, e, delta, true, testIsTrue) and (upper = true or upper = false)
+  )
+  or
+  exists(boolean testIsTrue0 |
+    implies_v2(result, testIsTrue, boundFlowCond(v, e, delta, upper, testIsTrue0), testIsTrue0)
+  )
+  or
+  result = eqFlowCond(v, e, delta, true, testIsTrue) and
+  (upper = true or upper = false)
 }
 
 private newtype TReason =
@@ -192,11 +266,14 @@ private newtype TReason =
 abstract class Reason extends TReason {
   abstract string toString();
 }
+
 class NoReason extends Reason, TNoReason {
   override string toString() { result = "NoReason" }
 }
+
 class CondReason extends Reason, TCondReason {
   Guard getCond() { this = TCondReason(result) }
+
   override string toString() { result = getCond().toString() }
 }
 
@@ -205,15 +282,14 @@ class CondReason extends Reason, TCondReason {
  * - `upper = true`  : `v <= e + delta`
  * - `upper = false` : `v >= e + delta`
  */
-private predicate boundFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e, int delta, boolean upper, Reason reason) {
-  exists(SsaExplicitUpdate upd | v = upd and pos.hasReadOfVar(v) and reason = TNoReason() |
-    upd.getDefiningExpr().(VariableAssign).getSource() = e and delta = 0 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PostIncExpr).getExpr() = e and delta = 1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PreIncExpr).getExpr() = e and delta = 1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PostDecExpr).getExpr() = e and delta = -1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PreDecExpr).getExpr() = e and delta = -1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(AssignOp) = e and delta = 0 and (upper = true or upper = false)
-  ) or
+private predicate boundFlowStepSsa(
+  SsaVariable v, SsaReadPosition pos, Expr e, int delta, boolean upper, Reason reason
+) {
+  ssaUpdateStep(v, e, delta) and
+  pos.hasReadOfVar(v) and
+  (upper = true or upper = false) and
+  reason = TNoReason()
+  or
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
@@ -223,7 +299,9 @@ private predicate boundFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e, i
 }
 
 /** Holds if `v != e + delta` at `pos`. */
-private predicate unequalFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e, int delta, Reason reason) {
+private predicate unequalFlowStepSsa(
+  SsaVariable v, SsaReadPosition pos, Expr e, int delta, Reason reason
+) {
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = eqFlowCond(v, e, delta, false, testIsTrue) and
@@ -238,16 +316,25 @@ private predicate unequalFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e,
  */
 private predicate safeCast(Type fromtyp, Type totyp) {
   exists(PrimitiveType pfrom, PrimitiveType pto | pfrom = fromtyp and pto = totyp |
-    pfrom = pto or
-    pfrom.hasName("char") and pto.getName().regexpMatch("int|long|float|double") or
-    pfrom.hasName("byte") and pto.getName().regexpMatch("short|int|long|float|double") or
-    pfrom.hasName("short") and pto.getName().regexpMatch("int|long|float|double") or
-    pfrom.hasName("int") and pto.getName().regexpMatch("long|float|double") or
-    pfrom.hasName("long") and pto.getName().regexpMatch("float|double") or
-    pfrom.hasName("float") and pto.hasName("double") or
+    pfrom = pto
+    or
+    pfrom.hasName("char") and pto.getName().regexpMatch("int|long|float|double")
+    or
+    pfrom.hasName("byte") and pto.getName().regexpMatch("short|int|long|float|double")
+    or
+    pfrom.hasName("short") and pto.getName().regexpMatch("int|long|float|double")
+    or
+    pfrom.hasName("int") and pto.getName().regexpMatch("long|float|double")
+    or
+    pfrom.hasName("long") and pto.getName().regexpMatch("float|double")
+    or
+    pfrom.hasName("float") and pto.hasName("double")
+    or
     pfrom.hasName("double") and pto.hasName("float")
-  ) or
-  safeCast(fromtyp.(BoxedType).getPrimitiveType(), totyp) or
+  )
+  or
+  safeCast(fromtyp.(BoxedType).getPrimitiveType(), totyp)
+  or
   safeCast(fromtyp, totyp.(BoxedType).getPrimitiveType())
 }
 
@@ -255,18 +342,19 @@ private predicate safeCast(Type fromtyp, Type totyp) {
  * A cast that can be ignored for the purpose of range analysis.
  */
 private class SafeCastExpr extends CastExpr {
-  SafeCastExpr() {
-    safeCast(getExpr().getType(), getType())
-  }
+  SafeCastExpr() { safeCast(getExpr().getType(), getType()) }
 }
 
 /**
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
  */
 private predicate typeBound(Type typ, int lowerbound, int upperbound) {
-  typ.(PrimitiveType).hasName("byte") and lowerbound = -128 and upperbound = 127 or
-  typ.(PrimitiveType).hasName("short") and lowerbound = -32768 and upperbound = 32767 or
-  typ.(PrimitiveType).hasName("char") and lowerbound = 0 and upperbound = 65535 or
+  typ.(PrimitiveType).hasName("byte") and lowerbound = -128 and upperbound = 127
+  or
+  typ.(PrimitiveType).hasName("short") and lowerbound = -32768 and upperbound = 32767
+  or
+  typ.(PrimitiveType).hasName("char") and lowerbound = 0 and upperbound = 65535
+  or
   typeBound(typ.(BoxedType).getPrimitiveType(), lowerbound, upperbound)
 }
 
@@ -278,8 +366,10 @@ private class NarrowingCastExpr extends CastExpr {
     not this instanceof SafeCastExpr and
     typeBound(getType(), _, _)
   }
+
   /** Gets the lower bound of the resulting type. */
   int getLowerBound() { typeBound(getType(), result, _) }
+
   /** Gets the upper bound of the resulting type. */
   int getUpperBound() { typeBound(getType(), _, result) }
 }
@@ -290,78 +380,84 @@ private class NarrowingCastExpr extends CastExpr {
  * - `upper = false` : `e2 >= e1 + delta`
  */
 private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
-  e2.(ParExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(AssignExpr).getSource() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PlusExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PostIncExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PostDecExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PreIncExpr).getExpr() = e1 and delta = 1 and (upper = true or upper = false) or
-  e2.(PreDecExpr).getExpr() = e1 and delta = -1 and (upper = true or upper = false) or
-  e2.(SafeCastExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  exists(SsaExplicitUpdate v, FieldRead arrlen |
-    e2 = arrlen and
-    arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = v.getAUse() and
-    v.getDefiningExpr().(VariableAssign).getSource().(ArrayCreationExpr).getDimension(0) = e1 and
-    delta = 0 and
-    (upper = true or upper = false)
-  ) or
+  valueFlowStep(e2, e1, delta) and
+  (upper = true or upper = false)
+  or
+  e2.(SafeCastExpr).getExpr() = e1 and
+  delta = 0 and
+  (upper = true or upper = false)
+  or
   exists(Expr x |
-    e2.(AddExpr).hasOperands(e1, x) or
+    e2.(AddExpr).hasOperands(e1, x)
+    or
     exists(AssignAddExpr add | add = e2 |
-      add.getDest() = e1 and add.getRhs() = x or
+      add.getDest() = e1 and add.getRhs() = x
+      or
       add.getDest() = x and add.getRhs() = e1
     )
-    |
-    x.(ConstantIntegerExpr).getIntValue() = delta and (upper = true or upper = false)
-    or
+  |
+    // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
     not e1 instanceof ConstantIntegerExpr and
-    if strictlyPositive(x) then
-      (upper = false and delta = 1)
-    else if positive(x) then
-      (upper = false and delta = 0)
-    else if strictlyNegative(x) then
-      (upper = true and delta = -1)
-    else if negative(x) then
-      (upper = true and delta = 0)
+    if strictlyPositive(x)
+    then upper = false and delta = 1
     else
-      none()
-  ) or
+      if positive(x)
+      then upper = false and delta = 0
+      else
+        if strictlyNegative(x)
+        then upper = true and delta = -1
+        else
+          if negative(x)
+          then upper = true and delta = 0
+          else none()
+  )
+  or
   exists(Expr x |
     exists(SubExpr sub |
       e2 = sub and
       sub.getLeftOperand() = e1 and
       sub.getRightOperand() = x
-    ) or
+    )
+    or
     exists(AssignSubExpr sub |
       e2 = sub and
       sub.getDest() = e1 and
       sub.getRhs() = x
     )
-    |
-    x.(ConstantIntegerExpr).getIntValue() = -delta and (upper = true or upper = false)
-    or
+  |
+    // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
-    if strictlyPositive(x) then
-      (upper = true and delta = -1)
-    else if positive(x) then
-      (upper = true and delta = 0)
-    else if strictlyNegative(x) then
-      (upper = false and delta = 1)
-    else if negative(x) then
-      (upper = false and delta = 0)
+    if strictlyPositive(x)
+    then upper = true and delta = -1
     else
-      none()
-  ) or
-  e2.(RemExpr).getRightOperand() = e1 and positive(e1) and delta = -1 and upper = true or
-  e2.(RemExpr).getLeftOperand() = e1 and positive(e1) and delta = 0 and upper = true or
-  e2.(AssignRemExpr).getRhs() = e1 and positive(e1) and delta = -1 and upper = true or
-  e2.(AssignRemExpr).getDest() = e1 and positive(e1) and delta = 0 and upper = true or
-  e2.(AndBitwiseExpr).getAnOperand() = e1 and positive(e1) and delta = 0 and upper = true or
-  e2.(AssignAndExpr).getSource() = e1 and positive(e1) and delta = 0 and upper = true or
-  e2.(OrBitwiseExpr).getAnOperand() = e1 and positive(e2) and delta = 0 and upper = false or
-  e2.(AssignOrExpr).getSource() = e1 and positive(e2) and delta = 0 and upper = false or
+      if positive(x)
+      then upper = true and delta = 0
+      else
+        if strictlyNegative(x)
+        then upper = false and delta = 1
+        else
+          if negative(x)
+          then upper = false and delta = 0
+          else none()
+  )
+  or
+  e2.(RemExpr).getRightOperand() = e1 and positive(e1) and delta = -1 and upper = true
+  or
+  e2.(RemExpr).getLeftOperand() = e1 and positive(e1) and delta = 0 and upper = true
+  or
+  e2.(AssignRemExpr).getRhs() = e1 and positive(e1) and delta = -1 and upper = true
+  or
+  e2.(AssignRemExpr).getDest() = e1 and positive(e1) and delta = 0 and upper = true
+  or
+  e2.(AndBitwiseExpr).getAnOperand() = e1 and positive(e1) and delta = 0 and upper = true
+  or
+  e2.(AssignAndExpr).getSource() = e1 and positive(e1) and delta = 0 and upper = true
+  or
+  e2.(OrBitwiseExpr).getAnOperand() = e1 and positive(e2) and delta = 0 and upper = false
+  or
+  e2.(AssignOrExpr).getSource() = e1 and positive(e2) and delta = 0 and upper = false
+  or
   exists(MethodAccess ma, Method m |
     e2 = ma and
     ma.getMethod() = m and
@@ -370,11 +466,16 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
     e1 = ma.getAnArgument() and
     delta = -1 and
     upper = true
-  ) or
+  )
+  or
   exists(MethodAccess ma, Method m |
     e2 = ma and
     ma.getMethod() = m and
-    (m.hasName("max") and upper = false or m.hasName("min") and upper = true) and
+    (
+      m.hasName("max") and upper = false
+      or
+      m.hasName("min") and upper = true
+    ) and
     m.getDeclaringType().hasQualifiedName("java.lang", "Math") and
     e1 = ma.getAnArgument() and
     delta = 0
@@ -384,11 +485,19 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
 /** Holds if `e2 = e1 * factor` and `factor > 0`. */
 private predicate boundFlowStepMul(Expr e2, Expr e1, int factor) {
   exists(ConstantIntegerExpr c, int k | k = c.getIntValue() and k > 0 |
-    e2.(MulExpr).hasOperands(e1, c) and factor = k or
-    exists(AssignMulExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = k) or
-    exists(AssignMulExpr e | e = e2 and e.getDest() = c and e.getRhs() = e1 and factor = k) or
-    exists(LShiftExpr e | e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)) or
-    exists(AssignLShiftExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k))
+    e2.(MulExpr).hasOperands(e1, c) and factor = k
+    or
+    exists(AssignMulExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = k)
+    or
+    exists(AssignMulExpr e | e = e2 and e.getDest() = c and e.getRhs() = e1 and factor = k)
+    or
+    exists(LShiftExpr e |
+      e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
+    )
+    or
+    exists(AssignLShiftExpr e |
+      e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
+    )
   )
 }
 
@@ -400,68 +509,28 @@ private predicate boundFlowStepMul(Expr e2, Expr e1, int factor) {
  */
 private predicate boundFlowStepDiv(Expr e2, Expr e1, int factor) {
   exists(ConstantIntegerExpr c, int k | k = c.getIntValue() and k > 0 |
-    exists(DivExpr e | e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = k) or
-    exists(AssignDivExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = k) or
-    exists(RShiftExpr e | e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)) or
-    exists(AssignRShiftExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)) or
-    exists(URShiftExpr e | e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)) or
-    exists(AssignURShiftExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k))
+    exists(DivExpr e |
+      e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = k
+    )
+    or
+    exists(AssignDivExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = k)
+    or
+    exists(RShiftExpr e |
+      e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
+    )
+    or
+    exists(AssignRShiftExpr e |
+      e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
+    )
+    or
+    exists(URShiftExpr e |
+      e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
+    )
+    or
+    exists(AssignURShiftExpr e |
+      e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
+    )
   )
-}
-
-private newtype TBound =
-  TBoundZero() or
-  TBoundSsa(SsaVariable v) { v.getSourceVariable().getType() instanceof IntegralType } or
-  TBoundExpr(Expr e) { e.(FieldRead).getField() instanceof ArrayLengthField and not exists(SsaVariable v | e = v.getAUse()) }
-
-/**
- * A bound that may be inferred for an expression plus/minus an integer delta.
- */
-abstract class Bound extends TBound {
-  abstract string toString();
-  /** Gets an expression that equals this bound plus `delta`. */
-  abstract Expr getExpr(int delta);
-  /** Gets an expression that equals this bound. */
-  Expr getExpr() {
-    result = getExpr(0)
-  }
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
-  }
-}
-
-/**
- * The bound that corresponds to the integer 0. This is used to represent all
- * integer bounds as bounds are always accompanied by an added integer delta.
- */
-class ZeroBound extends Bound, TBoundZero {
-  override string toString() { result = "0" }
-  override Expr getExpr(int delta) { result.(ConstantIntegerExpr).getIntValue() = delta }
-}
-
-/**
- * A bound corresponding to the value of an SSA variable.
- */
-class SsaBound extends Bound, TBoundSsa {
-  /** Gets the SSA variable that equals this bound. */
-  SsaVariable getSsa() { this = TBoundSsa(result) }
-  override string toString() { result = getSsa().toString() }
-  override Expr getExpr(int delta) { result = getSsa().getAUse() and delta = 0 }
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getSsa().getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
-
-/**
- * A bound that corresponds to the value of a specific expression that might be
- * interesting, but isn't otherwise represented by the value of an SSA variable.
- */
-class ExprBound extends Bound, TBoundExpr {
-  override string toString() { result = getExpr().toString() }
-  override Expr getExpr(int delta) { this = TBoundExpr(result) and delta = 0 }
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getExpr().hasLocationInfo(path, sl, sc, el, ec)
-  }
 }
 
 /**
@@ -469,7 +538,10 @@ class ExprBound extends Bound, TBoundExpr {
  * - `upper = true`  : `v <= b + delta`
  * - `upper = false` : `v >= b + delta`
  */
-private predicate boundedSsa(SsaVariable v, SsaReadPosition pos, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason) {
+private predicate boundedSsa(
+  SsaVariable v, SsaReadPosition pos, Bound b, int delta, boolean upper, boolean fromBackEdge,
+  int origdelta, Reason reason
+) {
   exists(Expr mid, int d1, int d2, Reason r1, Reason r2 |
     boundFlowStepSsa(v, pos, mid, d1, upper, r1) and
     bounded(mid, b, d2, upper, fromBackEdge, origdelta, r2) and
@@ -477,14 +549,23 @@ private predicate boundedSsa(SsaVariable v, SsaReadPosition pos, Bound b, int de
     // upper = false: v >= mid + d1 >= b + d1 + d2 = b + delta
     delta = d1 + d2 and
     (if r1 instanceof NoReason then reason = r2 else reason = r1)
-  ) or
+  )
+  or
   exists(int d, Reason r1, Reason r2 |
     boundedSsa(v, pos, b, d, upper, fromBackEdge, origdelta, r2) or
     boundedPhi(v, b, d, upper, fromBackEdge, origdelta, r2)
-    |
+  |
     unequalSsa(v, pos, b, d, r1) and
-    (upper = true and delta = d - 1 or upper = false and delta = d + 1) and
-    (reason = r1 or reason = r2 and not r2 instanceof NoReason)
+    (
+      upper = true and delta = d - 1
+      or
+      upper = false and delta = d + 1
+    ) and
+    (
+      reason = r1
+      or
+      reason = r2 and not r2 instanceof NoReason
+    )
   )
 }
 
@@ -500,20 +581,13 @@ private predicate unequalSsa(SsaVariable v, SsaReadPosition pos, Bound b, int de
   )
 }
 
-/**
- * Holds if `inp` is an input to `phi` along a back edge.
- */
-private predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
-  edge.phiInput(phi, inp) and
-  // Conservatively assume that every edge is a back edge if we don't have dominance information.
-  (phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or not hasDominanceInformation(edge.getOrigBlock()))
-}
-
 /** Weakens a delta to lie in the range `[-1..1]`. */
 bindingset[delta, upper]
 private int weakenDelta(boolean upper, int delta) {
-  delta in [-1..1] and result = delta or
-  upper = true and result = -1 and delta < -1 or
+  delta in [-1 .. 1] and result = delta
+  or
+  upper = true and result = -1 and delta < -1
+  or
   upper = false and result = 1 and delta > 1
 }
 
@@ -523,27 +597,43 @@ private int weakenDelta(boolean upper, int delta) {
  * - `upper = true`  : `inp <= b + delta`
  * - `upper = false` : `inp >= b + delta`
  */
-private predicate boundedPhiInp(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason) {
+private predicate boundedPhiInp(
+  SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, Bound b, int delta,
+  boolean upper, boolean fromBackEdge, int origdelta, Reason reason
+) {
   edge.phiInput(phi, inp) and
   exists(int d, boolean fromBackEdge0 |
-    boundedSsa(inp, edge, b, d, upper, fromBackEdge0, origdelta, reason) or
-    boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason) or
-    b.(SsaBound).getSsa() = inp and d = 0 and (upper = true or upper = false) and fromBackEdge0 = false and origdelta = 0 and reason = TNoReason()
-    |
-    if backEdge(phi, inp, edge) then
+    boundedSsa(inp, edge, b, d, upper, fromBackEdge0, origdelta, reason)
+    or
+    boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
+    or
+    b.(SsaBound).getSsa() = inp and
+    d = 0 and
+    (upper = true or upper = false) and
+    fromBackEdge0 = false and
+    origdelta = 0 and
+    reason = TNoReason()
+  |
+    if backEdge(phi, inp, edge)
+    then
       fromBackEdge = true and
       (
-        fromBackEdge0 = true and delta = weakenDelta(upper, d - origdelta) + origdelta or
+        fromBackEdge0 = true and delta = weakenDelta(upper, d - origdelta) + origdelta
+        or
         fromBackEdge0 = false and delta = d
       )
-    else
-      (delta = d and fromBackEdge = fromBackEdge0)
+    else (
+      delta = d and fromBackEdge = fromBackEdge0
+    )
   )
 }
 
 /** Holds if `boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)`. */
 pragma[noinline]
-private predicate boundedPhiInp1(SsaPhiNode phi, Bound b, boolean upper, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int delta) {
+private predicate boundedPhiInp1(
+  SsaPhiNode phi, Bound b, boolean upper, SsaVariable inp, SsaReadPositionPhiInputEdge edge,
+  int delta
+) {
   boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)
 }
 
@@ -553,11 +643,17 @@ private predicate boundedPhiInp1(SsaPhiNode phi, Bound b, boolean upper, SsaVari
  * - `upper = true`  : `inp <= phi`
  * - `upper = false` : `inp >= phi`
  */
-private predicate selfBoundedPhiInp(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, boolean upper) {
+private predicate selfBoundedPhiInp(
+  SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, boolean upper
+) {
   exists(int d, SsaBound phibound |
     phibound.getSsa() = phi and
     boundedPhiInp(phi, inp, edge, phibound, d, upper, _, _, _) and
-    (upper = true and d <= 0 or upper = false and d >= 0)
+    (
+      upper = true and d <= 0
+      or
+      upper = false and d >= 0
+    )
   )
 }
 
@@ -568,19 +664,29 @@ private predicate selfBoundedPhiInp(SsaPhiNode phi, SsaVariable inp, SsaReadPosi
  * - `upper = false` : `inp >= b + delta`
  */
 pragma[noinline]
-private predicate boundedPhiCand(SsaPhiNode phi, boolean upper, Bound b, int delta, boolean fromBackEdge, int origdelta, Reason reason) {
-  exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge | boundedPhiInp(phi, inp, edge, b, delta, upper, fromBackEdge, origdelta, reason))
+private predicate boundedPhiCand(
+  SsaPhiNode phi, boolean upper, Bound b, int delta, boolean fromBackEdge, int origdelta,
+  Reason reason
+) {
+  exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge |
+    boundedPhiInp(phi, inp, edge, b, delta, upper, fromBackEdge, origdelta, reason)
+  )
 }
 
 /**
  * Holds if the candidate bound `b + delta` for `phi` is valid for the phi input
  * `inp` along `edge`.
  */
-private predicate boundedPhiCandValidForEdge(SsaPhiNode phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
+private predicate boundedPhiCandValidForEdge(
+  SsaPhiNode phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  Reason reason, SsaVariable inp, SsaReadPositionPhiInputEdge edge
+) {
   boundedPhiCand(phi, upper, b, delta, fromBackEdge, origdelta, reason) and
   (
-    exists(int d | boundedPhiInp1(phi, b, upper, inp, edge, d) | upper = true and d <= delta) or
-    exists(int d | boundedPhiInp1(phi, b, upper, inp, edge, d) | upper = false and d >= delta) or
+    exists(int d | boundedPhiInp1(phi, b, upper, inp, edge, d) | upper = true and d <= delta)
+    or
+    exists(int d | boundedPhiInp1(phi, b, upper, inp, edge, d) | upper = false and d >= delta)
+    or
     selfBoundedPhiInp(phi, inp, edge, upper)
   )
 }
@@ -590,7 +696,10 @@ private predicate boundedPhiCandValidForEdge(SsaPhiNode phi, Bound b, int delta,
  * - `upper = true`  : `phi <= b + delta`
  * - `upper = false` : `phi >= b + delta`
  */
-private predicate boundedPhi(SsaPhiNode phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason) {
+private predicate boundedPhi(
+  SsaPhiNode phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  Reason reason
+) {
   forex(SsaVariable inp, SsaReadPositionPhiInputEdge edge | edge.phiInput(phi, inp) |
     boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
   )
@@ -612,14 +721,16 @@ private predicate lowerBoundZero(Expr e) {
  * (for `upper = false`) bound of `b`.
  */
 private predicate baseBound(Expr e, int b, boolean upper) {
-  lowerBoundZero(e) and b = 0 and upper = false or
+  lowerBoundZero(e) and b = 0 and upper = false
+  or
   exists(Method read |
     e.(MethodAccess).getMethod().overrides*(read) and
     read.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
     read.hasName("read") and
     read.getNumberOfParameters() = 0
-    |
-    upper = true and b = 255 or
+  |
+    upper = true and b = 255
+    or
     upper = false and b = -1
   )
 }
@@ -631,16 +742,18 @@ private predicate baseBound(Expr e, int b, boolean upper) {
  * `upper = false` this means that the cast will not underflow.
  */
 private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
-  exists(int bound |
-    bounded(cast.getExpr(), TBoundZero(), bound, upper, _, _, _)
-    |
-    upper = true and bound <= cast.getUpperBound() or
+  exists(int bound | bounded(cast.getExpr(), any(ZeroBound zb), bound, upper, _, _, _) |
+    upper = true and bound <= cast.getUpperBound()
+    or
     upper = false and bound >= cast.getLowerBound()
   )
 }
 
 pragma[noinline]
-private predicate boundedCastExpr(NarrowingCastExpr cast, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason) {
+private predicate boundedCastExpr(
+  NarrowingCastExpr cast, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  Reason reason
+) {
   bounded(cast.getExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
 }
 
@@ -649,14 +762,27 @@ private predicate boundedCastExpr(NarrowingCastExpr cast, Bound b, int delta, bo
  * - `upper = true`  : `e <= b + delta`
  * - `upper = false` : `e >= b + delta`
  */
-private predicate bounded(Expr e, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason) {
-  e = b.getExpr(delta) and (upper = true or upper = false) and fromBackEdge = false and origdelta = delta and reason = TNoReason() or
-  baseBound(e, delta, upper) and b instanceof ZeroBound and fromBackEdge = false and origdelta = delta and reason = TNoReason() or
+private predicate bounded(
+  Expr e, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason
+) {
+  e = b.getExpr(delta) and
+  (upper = true or upper = false) and
+  fromBackEdge = false and
+  origdelta = delta and
+  reason = TNoReason()
+  or
+  baseBound(e, delta, upper) and
+  b instanceof ZeroBound and
+  fromBackEdge = false and
+  origdelta = delta and
+  reason = TNoReason()
+  or
   exists(SsaVariable v, SsaReadPositionBlock bb |
     boundedSsa(v, bb, b, delta, upper, fromBackEdge, origdelta, reason) and
     e = v.getAUse() and
     bb.getBlock() = e.getBasicBlock()
-  ) or
+  )
+  or
   exists(Expr mid, int d1, int d2 |
     boundFlowStep(e, mid, d1, upper) and
     // Constants have easy, base-case bounds, so let's not infer any recursive bounds.
@@ -665,18 +791,21 @@ private predicate bounded(Expr e, Bound b, int delta, boolean upper, boolean fro
     // upper = true:  e <= mid + d1 <= b + d1 + d2 = b + delta
     // upper = false: e >= mid + d1 >= b + d1 + d2 = b + delta
     delta = d1 + d2
-  ) or
+  )
+  or
   exists(SsaPhiNode phi |
     boundedPhi(phi, b, delta, upper, fromBackEdge, origdelta, reason) and
     e = phi.getAUse()
-  ) or
+  )
+  or
   exists(Expr mid, int factor, int d |
     boundFlowStepMul(e, mid, factor) and
     not e instanceof ConstantIntegerExpr and
     bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
     b instanceof ZeroBound and
     delta = d * factor
-  ) or
+  )
+  or
   exists(Expr mid, int factor, int d |
     boundFlowStepDiv(e, mid, factor) and
     not e instanceof ConstantIntegerExpr and
@@ -684,25 +813,38 @@ private predicate bounded(Expr e, Bound b, int delta, boolean upper, boolean fro
     b instanceof ZeroBound and
     d >= 0 and
     delta = d / factor
-  ) or
+  )
+  or
   exists(NarrowingCastExpr cast |
     cast = e and
     safeNarrowingCast(cast, upper.booleanNot()) and
     boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
-  ) or
-  exists(ConditionalExpr cond, int d1, int d2, boolean fbe1, boolean fbe2, int od1, int od2, Reason r1, Reason r2 |
+  )
+  or
+  exists(
+    ConditionalExpr cond, int d1, int d2, boolean fbe1, boolean fbe2, int od1, int od2, Reason r1,
+    Reason r2
+  |
     cond = e and
     boundedConditionalExpr(cond, b, upper, true, d1, fbe1, od1, r1) and
     boundedConditionalExpr(cond, b, upper, false, d2, fbe2, od2, r2) and
-    (delta = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1 or
-    delta = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2)
-    |
-    upper = true and delta = d1.maximum(d2) or
+    (
+      delta = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
+      or
+      delta = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
+    )
+  |
+    upper = true and delta = d1.maximum(d2)
+    or
     upper = false and delta = d1.minimum(d2)
   )
 }
 
-private predicate boundedConditionalExpr(ConditionalExpr cond, Bound b, boolean upper, boolean branch, int delta, boolean fromBackEdge, int origdelta, Reason reason) {
-  branch = true and bounded(cond.getTrueExpr(), b, delta, upper, fromBackEdge, origdelta, reason) or
+private predicate boundedConditionalExpr(
+  ConditionalExpr cond, Bound b, boolean upper, boolean branch, int delta, boolean fromBackEdge,
+  int origdelta, Reason reason
+) {
+  branch = true and bounded(cond.getTrueExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
+  or
   branch = false and bounded(cond.getFalseExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
 }

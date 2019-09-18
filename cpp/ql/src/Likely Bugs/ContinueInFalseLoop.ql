@@ -6,28 +6,43 @@
  * @kind problem
  * @id cpp/continue-in-false-loop
  * @problem.severity warning
+ * @precision high
+ * @tags correctness
  */
 
 import cpp
 
-Loop getAFalseLoop() {
-  result.getControllingExpr().getValue() = "0"
-  and not result.getControllingExpr().isAffectedByMacro()
+/**
+ * Gets a `do` ... `while` loop with a constant false condition.
+ */
+DoStmt getAFalseLoop() {
+  result.getControllingExpr().getValue() = "0" and
+  not result.getControllingExpr().isAffectedByMacro()
 }
 
-Loop enclosingLoop(Stmt s) {
+/**
+ * Gets a `do` ... `while` loop surrounding a statement.  This is blocked by a
+ * `switch` statement, since a `continue` inside a `switch` inside a loop may be
+ * jusitifed (`continue` breaks out of the loop whereas `break` only escapes the
+ * `switch`).
+ */
+DoStmt enclosingLoop(Stmt s) {
   exists(Stmt parent |
     parent = s.getParent() and
-    if parent instanceof Loop then
+    (
+      parent instanceof Loop and
       result = parent
-    else
-      result = enclosingLoop(parent))
+      or
+      not parent instanceof Loop and
+      not parent instanceof SwitchStmt and
+      result = enclosingLoop(parent)
+    )
+  )
 }
 
-from Loop loop, ContinueStmt continue
-where loop = getAFalseLoop()
-  and loop = enclosingLoop(continue)
-select continue,
-  "This 'continue' never re-runs the loop - the $@ is always false.",
-  loop.getControllingExpr(),
-  "loop condition"
+from DoStmt loop, ContinueStmt continue
+where
+  loop = getAFalseLoop() and
+  loop = enclosingLoop(continue)
+select continue, "This 'continue' never re-runs the loop - the $@ is always false.",
+  loop.getControllingExpr(), "loop condition"

@@ -9,6 +9,7 @@
  *       maintainability
  *       modularity
  */
+
 import cpp
 import semmle.code.cpp.headers.MultipleInclusion
 
@@ -20,9 +21,15 @@ import semmle.code.cpp.headers.MultipleInclusion
  * However one case must be a correctIncludeGuard to prove that this macro really is intended
  * to be an include guard.
  */
+
 from HeaderFile hf, PreprocessorDirective ifndef, string macroName, int num
-where hasIncludeGuard(hf, ifndef, _, macroName)
-and exists(HeaderFile other | hasIncludeGuard(other, _, _, macroName) and hf.getShortName() != other.getShortName())
-and num = strictcount(HeaderFile other | hasIncludeGuard(other, _, _, macroName))
-and correctIncludeGuard(_, _, _, _, macroName)
-select ifndef, "The macro name '" + macroName + "' of this include guard is used in " + num + " different header files."
+where
+  hasIncludeGuard(hf, ifndef, _, macroName) and
+  exists(HeaderFile other |
+    hasIncludeGuard(other, _, _, macroName) and hf.getShortName() != other.getShortName()
+  ) and
+  num = strictcount(HeaderFile other | hasIncludeGuard(other, _, _, macroName)) and
+  correctIncludeGuard(_, _, _, _, macroName)
+select ifndef,
+  "The macro name '" + macroName + "' of this include guard is used in " + num +
+    " different header files."

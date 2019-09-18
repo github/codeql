@@ -230,3 +230,156 @@ function RelationalIndexOfCheckSanitizer () {
     }
 
 }
+
+function adhocWhitelisting() {
+    var v = SOURCE();
+    if (isWhitelisted(v))
+        SINK(v);
+    else
+        SINK(v);
+    if (config.allowValue(v))
+        SINK(v);
+    else
+        SINK(v);
+
+}
+
+function IndirectSanitizer () {
+    var v = SOURCE();
+    SINK(v);
+
+    function f(x) {
+        return whitelist.contains(x);
+    }
+    if (f(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    function g(y) {
+        var sanitized = whitelist.contains(y);
+        return sanitized;
+    }
+    if (g(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    function h(z) {
+        var sanitized = whitelist.contains(z);
+        return somethingElse();
+    }
+    if (h(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    function f2(x2) {
+        return x2 != null && whitelist.contains(x2);
+    }
+    if (f2(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    function f3(x3) {
+        return x3 == null || whitelist.contains(x3);
+    }
+    if (f3(v)) {
+        SINK(v); // SANITIZATION OF THIS IS NOT YET SUPPORTED
+    } else {
+        SINK(v);
+    }
+
+    function f4(x4) {
+        return !whitelist.contains(x4);
+    }
+    if (f4(v)) {
+        SINK(v);
+    } else {
+        SINK(v); // SANITIZATION OF THIS IS NOT YET SUPPORTED
+    }
+
+    function f5(x5) {
+        return !!whitelist.contains(x5);
+    }
+    if (f5(v)) {
+        SINK(v); // SANITIZATION OF THIS IS NOT YET SUPPORTED
+    } else {
+        SINK(v);
+    }
+
+    function f6(x6) {
+        var sanitized = !whitelist.contains(x6);
+        return !sanitized;
+    }
+    if (f6(v)) {
+        SINK(v);
+    } else {
+        SINK(v); // SANITIZATION OF THIS IS NOT YET SUPPORTED
+    }
+
+    function f7(x7) {
+        var sanitized = x7 != null && whitelist.contains(x7);
+        return sanitized;
+    }
+    if (f7(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    function f8(x8) {
+        var sanitized = whitelist.contains(x8);
+        return x8 != null && sanitized;
+    }
+    if (f8(v)) {
+        SINK(v); // SANITIZATION OF THIS IS NOT YET SUPPORTED
+    } else {
+        SINK(v);
+    }
+
+    function f9(x9) {
+        return unknown() && whitelist.contains(x9) && unknown();
+    }
+    if (f9(v)) {
+        SINK(v); // SANITIZATION OF THIS IS NOT YET SUPPORTED
+    } else {
+        SINK(v);
+    }
+
+    function f10(x10) {
+        return x10 !== null || x10 !== undefined;
+    }
+    if (f10(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+}
+
+function constantComparisonSanitizer2() {
+    var o = SOURCE();
+    SINK(o.p); // flagged
+
+    if (o.p == "white-listed") {
+        SINK(o.p); // not flagged
+    } else {
+        SINK(o.p); // flagged
+    }
+
+    for (var p in o) {
+      if (o[p] == "white-listed") {
+        SINK(o[p]); // not flagged
+        p = somethingElse();
+        SINK(o[p]); // flagged
+      } else {
+        SINK(o[p]); // flagged
+      }
+    }
+}

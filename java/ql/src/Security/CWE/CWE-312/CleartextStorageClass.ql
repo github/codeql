@@ -9,6 +9,7 @@
  *       external/cwe/cwe-499
  *       external/cwe/cwe-312
  */
+
 import java
 import SensitiveStorage
 
@@ -20,7 +21,5 @@ where
   // Exclude results in test code.
   not testMethod(store.getEnclosingCallable()) and
   not testMethod(data.getEnclosingCallable())
-select store, "Storable class $@ containing $@ is stored here. Data was added $@.",
-  s, s.toString(),
-  data, "sensitive data",
-  input, "here"
+select store, "Storable class $@ containing $@ is stored here. Data was added $@.", s, s.toString(),
+  data, "sensitive data", input, "here"

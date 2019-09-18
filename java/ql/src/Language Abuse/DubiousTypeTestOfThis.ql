@@ -19,6 +19,6 @@ where
   t = ioe.getExpr().getType() and
   ct = ioe.getTypeName().getType() and
   ct.getASupertype*() = t
-select ioe, "Testing whether 'this' is an instance of $@ in $@ introduces a dependency cycle between the two types.",
-  ct, ct.getName(),
-  t, t.getName()
+select ioe,
+  "Testing whether 'this' is an instance of $@ in $@ introduces a dependency cycle between the two types.",
+  ct, ct.getName(), t, t.getName()

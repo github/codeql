@@ -16,10 +16,19 @@ import csharp
 import Concurrency
 
 from LockedBlock l, WaitStmt w, string lockedItem
-where l.getALockedStmt()=w and
+where
+  l.getALockedStmt() = w and
   (
-    exists( Variable v | v=l.getLockVariable() and not v=w.getWaitVariable() and lockedItem=v.getName() ) or
-    exists( Type t | t=l.getLockTypeObject() and not t=w.getWaitTypeObject() and lockedItem = "typeof("+t.getName()+")" ) or
-    ( l.isLockThis() and not w.isWaitThis() and lockedItem="this" )
+    exists(Variable v |
+      v = l.getLockVariable() and not v = w.getWaitVariable() and lockedItem = v.getName()
+    )
+    or
+    exists(Type t |
+      t = l.getLockTypeObject() and
+      not t = w.getWaitTypeObject() and
+      lockedItem = "typeof(" + t.getName() + ")"
+    )
+    or
+    l.isLockThis() and not w.isWaitThis() and lockedItem = "this"
   )
 select w, "'" + lockedItem + "' is locked during this wait."

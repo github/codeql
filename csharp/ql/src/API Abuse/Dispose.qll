@@ -4,27 +4,19 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.web.UI
 
 class DisposableType extends RefType {
-  DisposableType() {
-    this.getABaseType+() instanceof SystemIDisposableInterface
-  }
+  DisposableType() { this.getABaseType+() instanceof SystemIDisposableInterface }
 }
 
 class DisposableField extends Field {
-  DisposableField() {
-    this.getType() instanceof DisposableType
-  }
+  DisposableField() { this.getType() instanceof DisposableType }
 }
 
 class WebControl extends RefType {
-  WebControl() {
-    this.getBaseClass*() instanceof SystemWebUIControlClass
-  }
+  WebControl() { this.getBaseClass*() instanceof SystemWebUIControlClass }
 }
 
 class WebPage extends RefType {
-  WebPage() {
-    this.getBaseClass*() instanceof SystemWebUIPageClass
-  }
+  WebPage() { this.getBaseClass*() instanceof SystemWebUIPageClass }
 }
 
 /**
@@ -37,14 +29,12 @@ class WebPage extends RefType {
  * `UnloadRecursive()`.
  */
 predicate isAutoDisposedWebControl(Field f) {
-  f.getType() instanceof WebControl
-  and
+  f.getType() instanceof WebControl and
   f.getDeclaringType() = any(RefType t |
-    t instanceof WebControl or
-    t instanceof WebPage
-  )
+      t instanceof WebControl or
+      t instanceof WebPage
+    )
 }
-
 
 /**
  * An object creation that creates an `IDisposable` instance into the local scope.
@@ -56,13 +46,13 @@ class LocalScopeDisposableCreation extends Call {
       // Type extends IDisposable
       t instanceof DisposableType and
       // Within function, not field or instance initializer
-      exists(this.getEnclosingCallable()) |
+      exists(this.getEnclosingCallable())
+    |
       // Either an ordinary object creation
       this instanceof ObjectCreation
       or
       // Or a creation using a factory method
-      exists(Method create |
-        this.getTarget() = create |
+      exists(Method create | this.getTarget() = create |
         create.hasName("Create") and
         create.isStatic() and
         create.getDeclaringType().getSourceDeclaration() = t.getSourceDeclaration()
@@ -74,20 +64,17 @@ class LocalScopeDisposableCreation extends Call {
    * Gets an expression that, if it is disposed of, will imply that the object
    * created by this creation is disposed of as well.
    */
-  Expr getADisposeTarget() {
-    result = getADisposeTarget0().asExpr()
-  }
+  Expr getADisposeTarget() { result = getADisposeTarget0().asExpr() }
 
   private DataFlow::Node getADisposeTarget0() {
     result = exprNode(this)
     or
-    exists(DataFlow::Node mid |
-      mid = this.getADisposeTarget0() |
+    exists(DataFlow::Node mid | mid = this.getADisposeTarget0() |
       localFlowStep(mid, result)
       or
       result.asExpr() = any(LocalScopeDisposableCreation other |
-        other.getAnArgument() = mid.asExpr()
-      )
+          other.getAnArgument() = mid.asExpr()
+        )
     )
   }
 }

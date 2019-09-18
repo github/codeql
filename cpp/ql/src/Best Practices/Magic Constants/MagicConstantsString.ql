@@ -9,13 +9,12 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 import MagicConstants
 
 pragma[noopt]
-predicate selection(Element e, string msg) {
-  magicConstant(e, msg) and stringLiteral(e)
-}
+predicate selection(Element e, string msg) { magicConstant(e, msg) and stringLiteral(e) }
 
 from Literal e, string msg
 where selection(e, msg)

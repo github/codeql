@@ -22,5 +22,5 @@ where
   nullDeref(var, access, msg, reason) and
   // Exclude definite nulls here, as these are covered by `NullAlways.ql`.
   not alwaysNullDeref(var, access)
-select access, "Variable $@ may be null here " + msg + ".",
-  var.getVariable(), var.getVariable().getName(), reason, "this"
+select access, "Variable $@ may be null here " + msg + ".", var.getVariable(),
+  var.getVariable().getName(), reason, "this"

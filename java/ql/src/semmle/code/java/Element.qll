@@ -9,7 +9,7 @@ import Javadoc
 /** A program element that has a name. */
 class Element extends @element, Top {
   /** Holds if this element has the specified `name`. */
-  predicate hasName(string name) { hasName(this,name) }
+  predicate hasName(string name) { hasName(this, name) }
 
   /** Gets the name of this element. */
   string getName() { this.hasName(result) }
@@ -34,9 +34,7 @@ class Element extends @element, Top {
    * Elements pertaining to source files may include generated elements
    * not visible in source code, such as implicit default constructors.
    */
-  predicate fromSource() {
-    getCompilationUnit().getExtension() = "java"
-  }
+  predicate fromSource() { getCompilationUnit().getExtension() = "java" }
 
   /** Gets the compilation unit that this element belongs to. */
   CompilationUnit getCompilationUnit() { result = getFile() }
@@ -49,13 +47,23 @@ class Element extends @element, Top {
  * Holds if element `parent` is immediately above element `e` in the syntax tree.
  */
 private predicate hasChildElement(Element parent, Element e) {
-  cupackage(e,parent) or
-  enclInReftype(e,parent) or
-  (not(enclInReftype(e,_)) and e.(Class).getCompilationUnit() = parent) or
-  (not(enclInReftype(e,_)) and e.(Interface).getCompilationUnit() = parent) or
-  methods(e,_,_,_,parent,_) or
-  constrs(e,_,_,_,parent,_) or
-  params(e,_,_,parent,_) or
-  fields(e,_,_,parent,_) or
-  typeVars(e,_,_,_,parent)
+  cupackage(e, parent)
+  or
+  enclInReftype(e, parent)
+  or
+  not enclInReftype(e, _) and
+  e.(Class).getCompilationUnit() = parent
+  or
+  not enclInReftype(e, _) and
+  e.(Interface).getCompilationUnit() = parent
+  or
+  methods(e, _, _, _, parent, _)
+  or
+  constrs(e, _, _, _, parent, _)
+  or
+  params(e, _, _, parent, _)
+  or
+  fields(e, _, _, parent, _)
+  or
+  typeVars(e, _, _, _, parent)
 }

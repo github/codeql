@@ -9,9 +9,9 @@
  *       complexity
  * @id cs/response-per-type
  */
+
 import csharp
 
 from RefType t
 where t.isSourceDeclaration()
-select t, t.getResponse() as n
-order by n desc
+select t, t.getResponse() as n order by n desc

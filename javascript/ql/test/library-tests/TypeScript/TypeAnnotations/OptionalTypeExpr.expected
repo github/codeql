@@ -1,2 +1,0 @@
-| tst.ts:133:48:133:54 | number? | tst.ts:133:48:133:53 | number |
-| tst.ts:136:48:136:54 | string? | tst.ts:136:48:136:53 | string |

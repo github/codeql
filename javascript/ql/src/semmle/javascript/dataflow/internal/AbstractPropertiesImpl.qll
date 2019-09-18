@@ -25,42 +25,52 @@ newtype TAbstractProperty =
     prop = "__proto__"
   }
 
-
 /**
  * Holds if the result is known to be an initial value of property `propertyName` of one
  * of the concrete objects represented by `baseVal`.
  */
 AbstractValue getAnInitialPropertyValue(DefiniteAbstractValue baseVal, string propertyName) {
   // initially, `module.exports === exports`
-  exists (Module m |
+  exists(Module m |
     baseVal = TAbstractModuleObject(m) and
     propertyName = "exports" and
     result = TAbstractExportsObject(m)
   )
   or
   // class members
-  exists (ClassDefinition c, DataFlow::AnalyzedNode init, MemberDefinition m |
-    m = c.getMember(propertyName) and
-    not m instanceof AccessorMethodDefinition and
-    init = m.getInit().analyze() and
-    result = init.getALocalValue() |
-    if m.isStatic() then
-      baseVal = TAbstractClass(c)
-    else
-      baseVal = AbstractInstance::of(c)
-  )
+  result = getAnInitialMemberValue(getMember(baseVal, propertyName))
   or
   // object properties
-  exists (ValueProperty p |
+  exists(ValueProperty p |
     baseVal.(AbstractObjectLiteral).getObjectExpr() = p.getObjectExpr() and
     propertyName = p.getName() and
     result = p.getInit().analyze().getALocalValue()
   )
   or
-  // `f.prototype` for functions `f` that are instantiated
+  // `f.prototype` for functions `f`
   propertyName = "prototype" and
-  baseVal = any(NewExpr ne).getCallee().analyze().getALocalValue() and
   result = TAbstractInstance(baseVal)
+}
+
+/**
+ * Gets a class member definition that we abstractly represent as a property of `baseVal`
+ * with the given `name`.
+ */
+private MemberDefinition getMember(DefiniteAbstractValue baseVal, string name) {
+  exists(ClassDefinition c | result = c.getMember(name) |
+    if result.isStatic() then baseVal = TAbstractClass(c) else baseVal = AbstractInstance::of(c)
+  )
+}
+
+/**
+ * Gets an abstract representation of the initial value of member definition `m`.
+ *
+ * For (non-accessor) methods, this is the abstract function corresponding to the
+ * method. For fields, it is an abstract representation of their initial value(s).
+ */
+private AbstractValue getAnInitialMemberValue(MemberDefinition m) {
+  not m instanceof AccessorMethodDefinition and
+  result = m.getInit().analyze().getALocalValue()
 }
 
 /**
@@ -77,5 +87,6 @@ predicate shouldAlwaysTrackProperties(AbstractValue baseVal) {
 predicate shouldTrackProperties(AbstractValue baseVal) {
   shouldAlwaysTrackProperties(baseVal) or
   baseVal instanceof AbstractObjectLiteral or
-  baseVal instanceof AbstractInstance
+  baseVal instanceof AbstractInstance or
+  baseVal.(CustomAbstractValueFromDefinition).shouldTrackProperties()
 }

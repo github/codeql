@@ -54,7 +54,7 @@
 | c1_gnu.c:7:8:7:12 | Lemon | 1 members | 1 locations | 0 | lemon_x |
 | c2_gnu.c:2:8:2:11 | Kiwi | 1 members | 1 locations | 0 | kiwi_x |
 | c2_gnu.c:7:8:7:12 | Lemon | 1 members | 1 locations | 0 | lemon_x |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 1 locations | 0 | gp_offset |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 1 locations | 1 | fp_offset |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 1 locations | 2 | overflow_arg_area |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 1 locations | 3 | reg_save_area |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 0 | gp_offset |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 1 | fp_offset |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 2 | overflow_arg_area |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 3 | reg_save_area |

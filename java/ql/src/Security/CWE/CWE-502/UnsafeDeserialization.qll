@@ -18,9 +18,12 @@ class XMLDecoderReadObjectMethod extends Method {
 
 class SafeXStream extends DataFlow2::Configuration {
   SafeXStream() { this = "UnsafeDeserialization::SafeXStream" }
+
   override predicate isSource(DataFlow::Node src) {
-    any(XStreamEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() = src.asExpr()
+    any(XStreamEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() = src
+          .asExpr()
   }
+
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       sink.asExpr() = ma.getQualifier() and
@@ -31,9 +34,12 @@ class SafeXStream extends DataFlow2::Configuration {
 
 class SafeKryo extends DataFlow2::Configuration {
   SafeKryo() { this = "UnsafeDeserialization::SafeKryo" }
+
   override predicate isSource(DataFlow::Node src) {
-    any(KryoEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() = src.asExpr()
+    any(KryoEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() = src
+          .asExpr()
   }
+
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       sink.asExpr() = ma.getQualifier() and
@@ -64,8 +70,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
 }
 
 class UnsafeDeserializationSink extends DataFlow::ExprNode {
-  UnsafeDeserializationSink() {
-    unsafeDeserialization(_, this.getExpr())
-  }
+  UnsafeDeserializationSink() { unsafeDeserialization(_, this.getExpr()) }
+
   MethodAccess getMethodAccess() { unsafeDeserialization(result, this.getExpr()) }
 }

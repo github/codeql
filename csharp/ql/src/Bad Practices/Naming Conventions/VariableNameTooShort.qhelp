@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Source code with lots of short variable names is likely to be hard to read.</p>
+<p>Source code with lots of short variable names is likely to be difficult to read.</p>
 
 </overview>
 <recommendation>

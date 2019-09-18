@@ -1,4 +1,3 @@
-
 import csharp
 import semmle.code.csharp.dataflow.TaintTracking
 

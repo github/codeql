@@ -15,20 +15,9 @@ functions, and the total number of source code resp. comment lines.</p>
 depends on third-party libraries: low self-containedness means that many dependencies
 are to library classes (as opposed to source classes within the same application).</p>
 
-</overview>
-<section title="How to Address the Query Results">
-
 <p>The results of this query are purely informative and more useful for getting an overall impression of the application than for
-identifying particular defects.</p>
+identifying particular problems with the code.</p>
 
+</overview>
 
-
-
-
-</section>
-<references>
-
-
-
-</references>
 </qhelp>

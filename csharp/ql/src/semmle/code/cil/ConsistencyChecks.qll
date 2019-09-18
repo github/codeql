@@ -6,14 +6,10 @@ private import CIL
 private import csharp as CS
 
 private newtype ConsistencyCheck =
-  MissingEntityCheck()
-  or
-  TypeCheck(Type t)
-  or
-  CfgCheck(ControlFlowNode n)
-  or
-  DeclarationCheck(Declaration d)
-  or
+  MissingEntityCheck() or
+  TypeCheck(Type t) or
+  CfgCheck(ControlFlowNode n) or
+  DeclarationCheck(Declaration d) or
   MissingCSharpCheck(CS::Declaration d)
 
 /**
@@ -21,56 +17,58 @@ private newtype ConsistencyCheck =
  */
 abstract class ConsistencyViolation extends ConsistencyCheck {
   abstract string toString();
+
   abstract string getMessage();
 }
 
 /**
  * A check that is deliberately disabled.
  */
-abstract class DisabledCheck extends ConsistencyCheck {
+abstract class DisabledCheck extends ConsistencyViolation {
   DisabledCheck() { none() }
-  abstract string toString();
 }
 
 /**
  * A consistency violation on a control flow node.
  */
-class CfgViolation extends ConsistencyViolation, CfgCheck {
-  ControlFlowNode getNode() { this = CfgCheck(result) }
-  override string toString() { result = getNode().toString() }
-  override abstract string getMessage();
+abstract class CfgViolation extends ConsistencyViolation, CfgCheck {
+  ControlFlowNode node;
+
+  CfgViolation() { this = CfgCheck(node) }
+
+  override string toString() { result = node.toString() }
 }
 
 /**
  * A consistency violation in a specific instruction.
  */
-class InstructionViolation extends CfgViolation, CfgCheck {
-  InstructionViolation() { exists(Instruction i | this=CfgCheck(i)) }
+abstract class InstructionViolation extends CfgViolation, CfgCheck {
+  Instruction instruction;
 
-  /** Gets the instruction containing the violation. */
-  Instruction getInstruction() { this = CfgCheck(result) }
+  InstructionViolation() { this = CfgCheck(instruction) }
 
   private string getInstructionsUpTo() {
     result = concat(Instruction i |
-      i.getIndex() <= this.getInstruction().getIndex() and
-      i.getImplementation() = this.getInstruction().getImplementation() |
-      i.toString() + " [push: " + i.getPushCount() + ", pop: " + i.getPopCount() + "]", "; " order by i.getIndex()
-    )
+        i.getIndex() <= instruction.getIndex() and
+        i.getImplementation() = instruction.getImplementation()
+      |
+        i.toString() + " [push: " + i.getPushCount() + ", pop: " + i.getPopCount() + "]", "; "
+        order by
+          i.getIndex()
+      )
   }
 
   override string toString() {
-    result = getInstruction().getImplementation().getMethod().toStringWithTypes() + ": " + getInstruction().toString() + ", " + getInstructionsUpTo()
+    result = instruction.getImplementation().getMethod().toStringWithTypes() + ": " +
+        instruction.toString() + ", " + getInstructionsUpTo()
   }
-  override abstract string getMessage();
 }
 
 /**
  * A literal that does not have exactly one `getValue()`.
  */
 class MissingValue extends InstructionViolation {
-  MissingValue() {
-    exists(Literal l | l = this.getInstruction() | count(l.getValue()) != 1)
-  }
+  MissingValue() { exists(Literal l | l = instruction | count(l.getValue()) != 1) }
 
   override string getMessage() { result = "Literal has invalid getValue()" }
 }
@@ -79,23 +77,25 @@ class MissingValue extends InstructionViolation {
  * A call that does not have exactly one `getTarget()`.
  */
 class MissingCallTarget extends InstructionViolation {
-  MissingCallTarget() {
-    exists(Call c | c = this.getInstruction() | count(c.getTarget())!=1)
-  }
+  MissingCallTarget() { exists(Call c | c = instruction | count(c.getTarget()) != 1) }
 
   override string getMessage() { result = "Call has invalid target" }
 }
-
 
 /**
  * An instruction that has not been assigned a specific QL class.
  */
 class MissingOpCode extends InstructionViolation {
-  MissingOpCode() { not exists(this.getInstruction().getOpcodeName()) }
-  override string getMessage() { result = "Opcode " + this.getInstruction().getOpcode() + " is missing a QL class" }
-  override string toString() { result = "Unknown instruction in " + getInstruction().getImplementation().getMethod().toString() }
-}
+  MissingOpCode() { not exists(instruction.getOpcodeName()) }
 
+  override string getMessage() {
+    result = "Opcode " + instruction.getOpcode() + " is missing a QL class"
+  }
+
+  override string toString() {
+    result = "Unknown instruction in " + instruction.getImplementation().getMethod().toString()
+  }
+}
 
 /**
  * An instruction that is missing an operand. It means that there is no instruction which pushes
@@ -107,15 +107,19 @@ class MissingOpCode extends InstructionViolation {
  */
 class MissingOperand extends InstructionViolation {
   MissingOperand() {
-    exists(Instruction i, int op | i=getInstruction() and op in [0..i.getPopCount()-1] |
-      not exists(i.getOperand(op)) and not i instanceof DeadInstruction)
+    exists(int op | op in [0 .. instruction.getPopCount() - 1] |
+      not exists(instruction.getOperand(op)) and not instruction instanceof DeadInstruction
+    )
   }
 
   int getMissingOperand() {
-    result in [0..getInstruction().getPopCount()-1] and not exists(getInstruction().getOperand(result))
+    result in [0 .. instruction.getPopCount() - 1] and
+    not exists(instruction.getOperand(result))
   }
 
-  override string getMessage() { result = "This instruction is missing operand " + getMissingOperand() }
+  override string getMessage() {
+    result = "This instruction is missing operand " + getMissingOperand()
+  }
 }
 
 /**
@@ -123,11 +127,8 @@ class MissingOperand extends InstructionViolation {
  * These should not exist, however it turns out that the Mono compiler sometimes
  * emits them.
  */
-class DeadInstruction extends Instruction
-{
-  DeadInstruction() {
-    not exists(EntryPoint e | e.getASuccessor+() = this)
-  }
+class DeadInstruction extends Instruction {
+  DeadInstruction() { not exists(EntryPoint e | e.getASuccessor+() = this) }
 }
 
 /**
@@ -137,12 +138,9 @@ class DeadInstruction extends Instruction
  * Disabled, because Mono compiler sometimes emits dead instructions.
  */
 class DeadInstructionViolation extends InstructionViolation, DisabledCheck {
-  DeadInstructionViolation() {
-    getInstruction() instanceof DeadInstruction
-  }
+  DeadInstructionViolation() { instruction instanceof DeadInstruction }
 
-  override string getMessage() { result="This instruction is not reachable" }
-  override string toString() { result = InstructionViolation.super.toString() }
+  override string getMessage() { result = "This instruction is not reachable" }
 }
 
 class YesNoBranch extends ConditionalBranch {
@@ -156,11 +154,11 @@ class InvalidBranchSuccessors extends InstructionViolation {
   InvalidBranchSuccessors() {
     // Mono compiler sometimes generates branches to the next instruction, which is just wrong.
     // However it is valid CIL.
-    exists(YesNoBranch i | i = getInstruction() | not count(i.getASuccessor()) in [1..2])
+    exists(YesNoBranch i | i = instruction | not count(i.getASuccessor()) in [1 .. 2])
   }
 
   override string getMessage() {
-    result = "Conditional branch has " + count(this.getInstruction().getASuccessor()) + " successors"
+    result = "Conditional branch has " + count(instruction.getASuccessor()) + " successors"
   }
 }
 
@@ -169,9 +167,8 @@ class InvalidBranchSuccessors extends InstructionViolation {
  */
 class OnlyYesNoBranchHasTrueFalseSuccessors extends InstructionViolation {
   OnlyYesNoBranchHasTrueFalseSuccessors() {
-    exists(Instruction i | i = getInstruction() |
-      (exists(i.getTrueSuccessor()) or exists(i.getFalseSuccessor())) and not i instanceof YesNoBranch
-    )
+    (exists(instruction.getTrueSuccessor()) or exists(instruction.getFalseSuccessor())) and
+    not instruction instanceof YesNoBranch
   }
 
   override string getMessage() { result = "This instruction has getTrue/FalseSuccessor()" }
@@ -182,19 +179,19 @@ class OnlyYesNoBranchHasTrueFalseSuccessors extends InstructionViolation {
  */
 class UnconditionalBranchSuccessors extends InstructionViolation {
   UnconditionalBranchSuccessors() {
-    exists(UnconditionalBranch i | i = getInstruction() | count(i.getASuccessor()) != 1)
+    exists(UnconditionalBranch i | i = instruction | count(i.getASuccessor()) != 1)
   }
 
-  override string getMessage() { result = "Unconditional branch has " + count(getInstruction().getASuccessor()) + " successors" }
+  override string getMessage() {
+    result = "Unconditional branch has " + count(instruction.getASuccessor()) + " successors"
+  }
 }
 
 /**
  * A branch instruction that does not have a true successor.
  */
 class NoTrueSuccessor extends InstructionViolation {
-  NoTrueSuccessor() {
-    exists(YesNoBranch i | i = getInstruction() | not exists(i.getTrueSuccessor()))
-  }
+  NoTrueSuccessor() { exists(YesNoBranch i | i = instruction | not exists(i.getTrueSuccessor())) }
 
   override string getMessage() { result = "Missing a true successor" }
 }
@@ -203,9 +200,8 @@ class NoTrueSuccessor extends InstructionViolation {
  * A branch instruction that does not have a false successor.
  */
 class NoFalseSuccessor extends InstructionViolation {
-  NoFalseSuccessor() {
-    exists(YesNoBranch i | i = getInstruction() | not exists(i.getFalseSuccessor()))
-  }
+  NoFalseSuccessor() { exists(YesNoBranch i | i = instruction | not exists(i.getFalseSuccessor())) }
+
   override string getMessage() { result = "Missing a false successor" }
 }
 
@@ -214,7 +210,8 @@ class NoFalseSuccessor extends InstructionViolation {
  */
 class TrueSuccessorIsSuccessor extends InstructionViolation {
   TrueSuccessorIsSuccessor() {
-    exists(Instruction i | i = getInstruction() | exists(i.getTrueSuccessor()) and not i.getTrueSuccessor() = i.getASuccessor())
+    exists(instruction.getTrueSuccessor()) and
+    not instruction.getTrueSuccessor() = instruction.getASuccessor()
   }
 
   override string getMessage() { result = "True successor isn't a successor" }
@@ -225,7 +222,8 @@ class TrueSuccessorIsSuccessor extends InstructionViolation {
  */
 class FalseSuccessorIsSuccessor extends InstructionViolation {
   FalseSuccessorIsSuccessor() {
-    exists(Instruction i | i = getInstruction() | exists(i.getTrueSuccessor()) and not i.getTrueSuccessor() = i.getASuccessor())
+    exists(instruction.getFalseSuccessor()) and
+    not instruction.getFalseSuccessor() = instruction.getASuccessor()
   }
 
   override string getMessage() { result = "True successor isn't a successor" }
@@ -235,9 +233,7 @@ class FalseSuccessorIsSuccessor extends InstructionViolation {
  * An access that does not have exactly one target.
  */
 class AccessMissingTarget extends InstructionViolation {
-  AccessMissingTarget() {
-    exists(Access i | i = getInstruction() | count(i.getTarget()) != 1)
-  }
+  AccessMissingTarget() { exists(Access i | i = instruction | count(i.getTarget()) != 1) }
 
   override string getMessage() { result = "Access has invalid getTarget()" }
 }
@@ -246,11 +242,9 @@ class AccessMissingTarget extends InstructionViolation {
  * A catch handler that doesn't have a caught exception type.
  */
 class CatchHandlerMissingType extends CfgViolation {
-  CatchHandlerMissingType() {
-    exists(CatchHandler h | h = getNode() | not exists(h.getCaughtType()))
-  }
+  CatchHandlerMissingType() { exists(CatchHandler h | h = node | not exists(h.getCaughtType())) }
 
-  override string getMessage () { result = "Catch handler missing caught type" }
+  override string getMessage() { result = "Catch handler missing caught type" }
 }
 
 /**
@@ -258,16 +252,15 @@ class CatchHandlerMissingType extends CfgViolation {
  */
 class MissingStackSize extends CfgViolation {
   MissingStackSize() {
-    exists(ControlFlowNode node | node=getNode() |
-      not exists(node.getStackSizeAfter())
-      or not exists(node.getStackSizeBefore())
-    )
-    and not getNode() instanceof DeadInstruction
+    (
+      not exists(node.getStackSizeAfter()) or
+      not exists(node.getStackSizeBefore())
+    ) and
+    not node instanceof DeadInstruction
   }
 
   override string getMessage() { result = "Inconsistent stack size" }
 }
-
 
 /**
  * A CFG node that does not have exactly one stack size.
@@ -275,54 +268,59 @@ class MissingStackSize extends CfgViolation {
  */
 class InvalidStackSize extends CfgViolation, DisabledCheck {
   InvalidStackSize() {
-    exists(ControlFlowNode node | node=getNode() |
-      count(node.getStackSizeAfter()) != 1
-      or count(node.getStackSizeBefore()) != 1
-    )
-    and not getNode() instanceof DeadInstruction
+    (
+      count(node.getStackSizeAfter()) != 1 or
+      count(node.getStackSizeBefore()) != 1
+    ) and
+    not node instanceof DeadInstruction
   }
 
-  override string getMessage() { result = "Inconsistent stack sizes " + count(getNode().getStackSizeBefore()) + " before and " + count(getNode().getStackSizeAfter()) + " after" }
-
-  override string toString() { result = CfgViolation.super.toString() }
+  override string getMessage() {
+    result = "Inconsistent stack sizes " + count(node.getStackSizeBefore()) + " before and " +
+        count(node.getStackSizeAfter()) + " after"
+  }
 }
 
 /**
  * A CFG node that does not have exactly 1 `getPopCount()`.
  */
 class InconsistentPopCount extends CfgViolation {
-  InconsistentPopCount() {
-    exists(ControlFlowNode node | node = getNode() | count(node.getPopCount()) !=1 )
-  }
+  InconsistentPopCount() { count(node.getPopCount()) != 1 }
 
-  override string getMessage() { result = "Cfg node has " + count(getNode().getPopCount()) + " pop counts" }
+  override string getMessage() {
+    result = "Cfg node has " + count(node.getPopCount()) + " pop counts"
+  }
 }
 
 /**
  * A CFG node that does not have exactly one `getPushCount()`.
  */
 class InconsistentPushCount extends CfgViolation {
-  InconsistentPushCount() {
-    exists(ControlFlowNode node | node = getNode() | count(node.getPushCount()) != 1)
-  }
+  InconsistentPushCount() { count(node.getPushCount()) != 1 }
 
-  override string getMessage() { result = "Cfg node has " + count(getNode().getPushCount()) + " push counts" }
+  override string getMessage() {
+    result = "Cfg node has " + count(node.getPushCount()) + " push counts"
+  }
 }
 
 /**
  * A return instruction that does not have a stack size of 0 after it.
  */
-class InvalidReturn extends CfgViolation {
-  InvalidReturn() { getNode() instanceof Return and getNode().getStackSizeAfter()!=0 }
+class InvalidReturn extends InstructionViolation {
+  InvalidReturn() { instruction instanceof Return and instruction.getStackSizeAfter() != 0 }
+
   override string getMessage() { result = "Return has invalid stack size" }
 }
 
 /**
  * A throw instruction that does not have a stack size of 0 after it.
  */
-class InvalidThrow extends CfgViolation {
-  InvalidThrow() { getNode() instanceof Throw and getNode().getStackSizeAfter()!=0 }
-  override string getMessage() { result = "Throw has invalid stack size" }
+class InvalidThrow extends InstructionViolation {
+  InvalidThrow() { instruction instanceof Throw and instruction.getStackSizeAfter() != 0 }
+
+  override string getMessage() {
+    result = "Throw has invalid stack size: " + instruction.getStackSizeAfter()
+  }
 }
 
 /**
@@ -330,9 +328,10 @@ class InvalidThrow extends CfgViolation {
  */
 class StaticFieldTarget extends InstructionViolation {
   StaticFieldTarget() {
-    exists(FieldAccess i | i=getInstruction() |
-      (i instanceof Opcodes::Stfld or i instanceof Opcodes::Stfld) and i.getTarget().isStatic()
-     )
+    exists(FieldAccess i | i = instruction |
+      (i instanceof Opcodes::Stfld or i instanceof Opcodes::Stfld) and
+      i.getTarget().isStatic()
+    )
   }
 
   override string getMessage() { result = "Inconsistent static field" }
@@ -343,7 +342,7 @@ class StaticFieldTarget extends InstructionViolation {
  */
 class BranchWithoutTarget extends InstructionViolation {
   BranchWithoutTarget() {
-    getInstruction() = any(Branch b | not exists(b.getTarget()) and not b instanceof Opcodes::Switch)
+    instruction = any(Branch b | not exists(b.getTarget()) and not b instanceof Opcodes::Switch)
   }
 
   override string getMessage() { result = "Branch without target" }
@@ -353,12 +352,12 @@ class BranchWithoutTarget extends InstructionViolation {
  * A consistency violation in a type.
  */
 class TypeViolation extends ConsistencyViolation, TypeCheck {
-
   /** Gets the type containing the violation. */
-  Type getType() { this=TypeCheck(result) }
+  Type getType() { this = TypeCheck(result) }
 
   override string toString() { result = getType().toString() }
-  override abstract string getMessage();
+
+  abstract override string getMessage();
 }
 
 /**
@@ -373,18 +372,34 @@ class TypeIsBothConstructedAndUnbound extends TypeViolation {
 }
 
 /**
+ * The location of a constructed generic type should be the same
+ * as the location of its unbound generic type.
+ */
+class InconsistentTypeLocation extends TypeViolation {
+  InconsistentTypeLocation() {
+    this.getType().getLocation() != this.getType().getSourceDeclaration().getLocation()
+  }
+
+  override string getMessage() { result = "Inconsistent constructed type location" }
+}
+
+/**
  * A constructed type that does not match its unbound generic type.
  */
 class TypeParameterMismatch extends TypeViolation {
   TypeParameterMismatch() {
-    getType().(ConstructedGeneric).getNumberOfTypeArguments() != getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters()
+    getType().(ConstructedGeneric).getNumberOfTypeArguments() != getType()
+          .getUnboundType()
+          .(UnboundGeneric)
+          .getNumberOfTypeParameters()
   }
 
   override string getMessage() {
     result = "Constructed type (" + getType().toStringWithTypes() + ") has " +
-      getType().(ConstructedGeneric).getNumberOfTypeArguments() + " type arguments and unbound type (" +
-      getType().getUnboundType().toStringWithTypes() + ") has " +
-      getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters() + " type parameters"
+        getType().(ConstructedGeneric).getNumberOfTypeArguments() +
+        " type arguments and unbound type (" + getType().getUnboundType().toStringWithTypes() +
+        ") has " + getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters() +
+        " type parameters"
   }
 }
 
@@ -392,23 +407,40 @@ class TypeParameterMismatch extends TypeViolation {
  * A consistency violation in a method.
  */
 class MethodViolation extends ConsistencyViolation, DeclarationCheck {
-
   /** Gets the method containing the violation. */
   Method getMethod() { this = DeclarationCheck(result) }
 
   override string toString() { result = getMethod().toString() }
+
   override string getMessage() { none() }
+}
+
+/**
+ * The location of a constructed method should be equal to the
+ * location of its unbound generic.
+ */
+class InconsistentMethodLocation extends MethodViolation {
+  InconsistentMethodLocation() {
+    this.getMethod().getLocation() != this.getMethod().getSourceDeclaration().getLocation()
+  }
+
+  override string getMessage() { result = "Inconsistent constructed method location" }
 }
 
 /**
  * A constructed method that does not match its unbound method.
  */
 class ConstructedMethodTypeParams extends MethodViolation {
-
-  ConstructedMethodTypeParams() { getMethod().(ConstructedGeneric).getNumberOfTypeArguments() != getMethod().getSourceDeclaration().(UnboundGeneric).getNumberOfTypeParameters() }
+  ConstructedMethodTypeParams() {
+    getMethod().(ConstructedGeneric).getNumberOfTypeArguments() != getMethod()
+          .getSourceDeclaration()
+          .(UnboundGeneric)
+          .getNumberOfTypeParameters()
+  }
 
   override string getMessage() {
-    result = "The constructed method " + getMethod().toStringWithTypes() + " does not match unbound method " + getMethod().getSourceDeclaration().toStringWithTypes()
+    result = "The constructed method " + getMethod().toStringWithTypes() +
+        " does not match unbound method " + getMethod().getSourceDeclaration().toStringWithTypes()
   }
 }
 
@@ -423,7 +455,11 @@ abstract class MissingEntityViolation extends ConsistencyViolation, MissingEntit
  * The type `object` is missing from the database.
  */
 class MissingObjectViolation extends MissingEntityViolation {
-  MissingObjectViolation() { not exists(ObjectType o) }
+  MissingObjectViolation() {
+    exists(this) and
+    not exists(ObjectType o)
+  }
+
   override string getMessage() { result = "Object missing" }
 }
 
@@ -431,21 +467,24 @@ class MissingObjectViolation extends MissingEntityViolation {
  * An override that is invalid because the overridden method is not in a base class.
  */
 class InvalidOverride extends MethodViolation {
+  private Method base;
+
   InvalidOverride() {
-    exists(Method base | base = getMethod().getOverriddenMethod() |
-      not getMethod().getDeclaringType().getABaseType+() = getMethod().getOverriddenMethod().getDeclaringType())
+    base = getMethod().getOverriddenMethod() and
+    not getMethod().getDeclaringType().getABaseType+() = base.getDeclaringType() and
+    base.getDeclaringType().isSourceDeclaration() // Bases classes of constructed types aren't extracted properly.
   }
 
-  override string getMessage() { result = "Overridden method is not in a base type" }
+  override string getMessage() {
+    result = "Overridden method from " + base.getDeclaringType() + " is not in a base type"
+  }
 }
 
 /**
  * A pointer type that does not have a pointee type.
  */
 class InvalidPointerType extends TypeViolation {
-  InvalidPointerType() {
-    exists(PointerType p | p = getType() | count(p.getReferentType()) != 1)
-  }
+  InvalidPointerType() { exists(PointerType p | p = getType() | count(p.getReferentType()) != 1) }
 
   override string getMessage() { result = "Invalid Pointertype.getPointeeType()" }
 }
@@ -454,9 +493,8 @@ class InvalidPointerType extends TypeViolation {
  * An array with an invalid `getElementType`.
  */
 class ArrayTypeMissingElement extends TypeViolation {
-  ArrayTypeMissingElement() {
-    exists(ArrayType t | t = getType() | count(t.getElementType())!=1)
-  }
+  ArrayTypeMissingElement() { exists(ArrayType t | t = getType() | count(t.getElementType()) != 1) }
+
   override string getMessage() { result = "Invalid ArrayType.getElementType()" }
 }
 
@@ -464,17 +502,53 @@ class ArrayTypeMissingElement extends TypeViolation {
  * An array with an invalid `getRank`.
  */
 class ArrayTypeInvalidRank extends TypeViolation {
-  ArrayTypeInvalidRank() {
-    exists(ArrayType t | t = getType() | not t.getRank() > 0)
-  }
+  ArrayTypeInvalidRank() { exists(ArrayType t | t = getType() | not t.getRank() > 0) }
+
   override string getMessage() { result = "Invalid ArrayType.getRank()" }
+}
+
+/**
+ * A type should have at most one kind, except for missing referenced types
+ * where the interface/class is unknown.
+ */
+class KindViolation extends TypeViolation {
+  KindViolation() {
+    count(typeKind(this.getType())) != 1 and
+    exists(this.getType().getLocation())
+  }
+
+  override string getMessage() {
+    result = "Invalid kinds on type: " + concat(typeKind(this.getType()), " ")
+  }
+}
+
+/**
+ * The type of a kind must be consistent between a constructed generic and its
+ * unbound generic.
+ */
+class InconsistentKind extends TypeViolation {
+  InconsistentKind() { typeKind(this.getType()) != typeKind(this.getType().getSourceDeclaration()) }
+
+  override string getMessage() { result = "Inconsistent type kind of source declaration" }
+}
+
+private string typeKind(Type t) {
+  t instanceof Interface and result = "interface"
+  or
+  t instanceof Class and result = "class"
+  or
+  t instanceof TypeParameter and result = "type parameter"
+  or
+  t instanceof ArrayType and result = "array"
+  or
+  t instanceof PointerType and result = "pointer"
 }
 
 /**
  * A violation in a `Member`.
  */
 abstract class DeclarationViolation extends ConsistencyViolation, DeclarationCheck {
-  override abstract string getMessage();
+  abstract override string getMessage();
 
   /** Gets the member containing the potential violation. */
   Declaration getDeclaration() { this = DeclarationCheck(result) }
@@ -487,7 +561,7 @@ abstract class DeclarationViolation extends ConsistencyViolation, DeclarationChe
  */
 class PropertyWithNoAccessors extends DeclarationViolation {
   PropertyWithNoAccessors() {
-    exists(Property p | p=getDeclaration() | not exists(p.getAnAccessor()))
+    exists(Property p | p = getDeclaration() | not exists(p.getAnAccessor()))
   }
 
   override string getMessage() { result = "Property has no accessors" }
@@ -498,17 +572,16 @@ class PropertyWithNoAccessors extends DeclarationViolation {
  */
 class ExprPushCount extends InstructionViolation {
   ExprPushCount() {
-    this.getInstruction() instanceof Expr and
-    not this.getInstruction() instanceof Opcodes::Dup and
-    if
-      this.getInstruction() instanceof Call
-    then
-      not this.getInstruction().getPushCount() in [0..1]
-    else
-      this.getInstruction().(Expr).getPushCount() != 1
+    instruction instanceof Expr and
+    not instruction instanceof Opcodes::Dup and
+    if instruction instanceof Call
+    then not instruction.getPushCount() in [0 .. 1]
+    else instruction.(Expr).getPushCount() != 1
   }
 
-  override string getMessage() { result = "Instruction has unexpected push count " + this.getInstruction().getPushCount() }
+  override string getMessage() {
+    result = "Instruction has unexpected push count " + instruction.getPushCount()
+  }
 }
 
 /**
@@ -518,12 +591,13 @@ class ExprPushCount extends InstructionViolation {
 class ExprMissingType extends InstructionViolation {
   ExprMissingType() {
     // Don't have types for the following op codes:
-    not getInstruction() instanceof Opcodes::Ldftn
-    and not getInstruction() instanceof Opcodes::Localloc
-    and not getInstruction() instanceof Opcodes::Ldvirtftn
-    and not getInstruction() instanceof Opcodes::Arglist
-    and not getInstruction() instanceof Opcodes::Refanytype
-    and this.getInstruction().getPushCount() = 1 and count(this.getInstruction().getType()) != 1
+    not instruction instanceof Opcodes::Ldftn and
+    not instruction instanceof Opcodes::Localloc and
+    not instruction instanceof Opcodes::Ldvirtftn and
+    not instruction instanceof Opcodes::Arglist and
+    not instruction instanceof Opcodes::Refanytype and
+    instruction.getPushCount() = 1 and
+    count(instruction.getType()) != 1
   }
 
   override string getMessage() { result = "Expression is missing getType()" }
@@ -533,8 +607,14 @@ class ExprMissingType extends InstructionViolation {
  * An instruction that has a push count of 0, yet is still used as an operand
  */
 class InvalidExpressionViolation extends InstructionViolation {
-  InvalidExpressionViolation() { getInstruction().getPushCount()=0 and exists(Instruction expr | getInstruction() = expr.getAnOperand()) }
-  override string getMessage() { result = "This instruction is used as an operand but pushes no values" }
+  InvalidExpressionViolation() {
+    instruction.getPushCount() = 0 and
+    exists(Instruction expr | instruction = expr.getAnOperand())
+  }
+
+  override string getMessage() {
+    result = "This instruction is used as an operand but pushes no values"
+  }
 }
 
 /**
@@ -543,42 +623,42 @@ class InvalidExpressionViolation extends InstructionViolation {
  */
 class TypeMultiplyDefined extends TypeViolation, DisabledCheck {
   TypeMultiplyDefined() {
-    this.getType().getParent().getName()="System"
-    and
-    not this.getType() instanceof ConstructedGeneric
-    and
-    not this.getType() instanceof ArrayType
-    and
-    this.getType().isPublic()
-    and
-    count(Type t | not t instanceof ConstructedGeneric and t.toStringWithTypes() = this.getType().toStringWithTypes()) != 1
+    this.getType().getParent().getName() = "System" and
+    not this.getType() instanceof ConstructedGeneric and
+    not this.getType() instanceof ArrayType and
+    this.getType().isPublic() and
+    count(Type t |
+      not t instanceof ConstructedGeneric and
+      t.toStringWithTypes() = this.getType().toStringWithTypes()
+    ) != 1
   }
 
   override string getMessage() {
-    result="This type (" + getType().toStringWithTypes() + ") has " +
-    count(Type t | not t instanceof ConstructedGeneric and t.toStringWithTypes() = this.getType().toStringWithTypes()) +
-    " entities"
+    result = "This type (" + getType().toStringWithTypes() + ") has " +
+        count(Type t |
+          not t instanceof ConstructedGeneric and
+          t.toStringWithTypes() = this.getType().toStringWithTypes()
+        ) + " entities"
   }
-
-  override string toString() { result = TypeViolation.super.toString() }
 }
 
 /**
  * A C# declaration which is expected to have a corresponding CIL declaration, but for some reason does not.
  */
 class MissingCilDeclaration extends ConsistencyViolation, MissingCSharpCheck {
-
-  MissingCilDeclaration()
-  {
+  MissingCilDeclaration() {
     exists(CS::Declaration decl | this = MissingCSharpCheck(decl) |
-      expectedCilDeclaration(decl)
-      and not exists(Declaration d | decl = d.getCSharpDeclaration())
-      )
+      expectedCilDeclaration(decl) and
+      not exists(Declaration d | decl = d.getCSharpDeclaration())
+    )
   }
 
-  CS::Declaration getDeclaration() { this=MissingCSharpCheck(result) }
+  CS::Declaration getDeclaration() { this = MissingCSharpCheck(result) }
 
-  override string getMessage() { result = "Cannot locate CIL for " + getDeclaration().toStringWithTypes() + " of class " + getDeclaration().getAQlClass() }
+  override string getMessage() {
+    result = "Cannot locate CIL for " + getDeclaration().toStringWithTypes() + " of class " +
+        getDeclaration().getAQlClass()
+  }
 
   override string toString() { result = getDeclaration().toStringWithTypes() }
 }
@@ -586,20 +666,20 @@ class MissingCilDeclaration extends ConsistencyViolation, MissingCSharpCheck {
 /**
  * Holds if the C# declaration is expected to have a CIl declaration.
  */
-private predicate expectedCilDeclaration(CS::Declaration decl)
-{
-  decl=decl.getSourceDeclaration()
-  and not decl instanceof CS::ArrayType
-  and decl.getALocation() instanceof CS::Assembly
-  and not decl.(CS::Modifiable).isInternal()
-  and not decl.(CS::Constructor).getNumberOfParameters() = 0 // These are sometimes implicit
-  and not decl.(CS::Method).getReturnType() instanceof CS::UnknownType
-  and not exists(CS::Parameter p | p = decl.(CS::Parameterizable).getAParameter() | not expectedCilDeclaration(p))
-  and not decl instanceof CS::AnonymousClass
-  and (decl instanceof CS::Parameter implies expectedCilDeclaration(decl.(CS::Parameter).getType()))
-  and (decl instanceof CS::Parameter implies expectedCilDeclaration(decl.getParent()))
-  and (decl instanceof CS::Member implies expectedCilDeclaration(decl.getParent()))
-  and
+private predicate expectedCilDeclaration(CS::Declaration decl) {
+  decl = decl.getSourceDeclaration() and
+  not decl instanceof CS::ArrayType and
+  decl.getALocation() instanceof CS::Assembly and
+  not decl.(CS::Modifiable).isInternal() and
+  not decl.(CS::Constructor).getNumberOfParameters() = 0 and // These are sometimes implicit
+  not decl.(CS::Method).getReturnType() instanceof CS::UnknownType and
+  not exists(CS::Parameter p | p = decl.(CS::Parameterizable).getAParameter() |
+    not expectedCilDeclaration(p)
+  ) and
+  not decl instanceof CS::AnonymousClass and
+  (decl instanceof CS::Parameter implies expectedCilDeclaration(decl.(CS::Parameter).getType())) and
+  (decl instanceof CS::Parameter implies expectedCilDeclaration(decl.getParent())) and
+  (decl instanceof CS::Member implies expectedCilDeclaration(decl.getParent())) and
   (
     decl instanceof CS::Field
     or
@@ -625,10 +705,10 @@ private predicate expectedCilDeclaration(CS::Declaration decl)
 class MemberWithInvalidName extends DeclarationViolation {
   MemberWithInvalidName() {
     exists(string name | name = getDeclaration().(Member).getName() |
-      exists(name.indexOf("."))
-      and not name = ".ctor"
-      and not name = ".cctor"
-      )
+      exists(name.indexOf(".")) and
+      not name = ".ctor" and
+      not name = ".cctor"
+    )
   }
 
   override string getMessage() { result = "Invalid name " + getDeclaration().(Member).getName() }
@@ -638,31 +718,34 @@ class ConstructedSourceDeclarationMethod extends MethodViolation {
   Method method;
 
   ConstructedSourceDeclarationMethod() {
-    method = getMethod()
-    and method = method.getSourceDeclaration()
-    and (method instanceof ConstructedGeneric or method.getDeclaringType() instanceof ConstructedGeneric)
+    method = getMethod() and
+    method = method.getSourceDeclaration() and
+    (
+      method instanceof ConstructedGeneric or
+      method.getDeclaringType() instanceof ConstructedGeneric
+    )
   }
 
-  override string getMessage() { result= "Source declaration " + method.toStringWithTypes() + " is constructed" }
+  override string getMessage() {
+    result = "Source declaration " + method.toStringWithTypes() + " is constructed"
+  }
 }
 
 /** A declaration with multiple labels. */
 class DeclarationWithMultipleLabels extends DeclarationViolation {
   DeclarationWithMultipleLabels() {
-    exists(Declaration d |
-      this = DeclarationCheck(d) |
-      strictcount(d.getLabel()) > 1
-    )
+    exists(Declaration d | this = DeclarationCheck(d) | strictcount(d.getLabel()) > 1)
   }
 
-  override string getMessage() { result = "Multiple labels " + concat(getDeclaration().getLabel(), ", ") }
+  override string getMessage() {
+    result = "Multiple labels " + concat(getDeclaration().getLabel(), ", ")
+  }
 }
 
 /** A declaration without a label. */
 class DeclarationWithoutLabel extends DeclarationViolation {
   DeclarationWithoutLabel() {
-    exists(Declaration d |
-      this = DeclarationCheck(d) |
+    exists(Declaration d | this = DeclarationCheck(d) |
       d.isSourceDeclaration() and
       not d instanceof TypeParameter and
       not exists(d.getLabel()) and

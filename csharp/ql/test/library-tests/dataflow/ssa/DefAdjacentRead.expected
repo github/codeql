@@ -135,6 +135,13 @@
 | Properties.cs:74:23:74:23 | a | Properties.cs:74:23:74:54 | Action a = ... | Properties.cs:77:9:77:9 | access to local variable a |
 | Properties.cs:75:23:75:23 | b | Properties.cs:75:23:75:35 | Action b = ... | Properties.cs:80:9:80:9 | access to local variable b |
 | Properties.cs:106:37:106:37 | p | Properties.cs:106:37:106:37 | p | Properties.cs:106:42:106:42 | access to parameter p |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | ... = ... | Splitting.cs:11:13:11:13 | access to local variable x |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | b | Splitting.cs:25:13:25:13 | access to parameter b |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | ... = ... | Splitting.cs:30:13:30:13 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | ... = ... | Splitting.cs:33:9:33:9 | access to local variable x |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | b | Splitting.cs:45:13:45:13 | access to parameter b |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:49:13:49:19 | ... = ... | Splitting.cs:50:13:50:13 | access to local variable x |
 | Test.cs:3:9:3:13 | field | Test.cs:57:9:57:17 | ... = ... | Test.cs:58:13:58:17 | access to field field |
 | Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | param1 | Test.cs:11:13:11:18 | access to parameter param1 |
 | Test.cs:5:67:5:72 | param2 | Test.cs:5:67:5:72 | param2 | Test.cs:39:27:39:32 | access to parameter param2 |
@@ -143,6 +150,7 @@
 | Test.cs:9:13:9:13 | y | Test.cs:19:13:19:17 | ... = ... | Test.cs:20:13:20:13 | access to local variable y |
 | Test.cs:39:22:39:22 | w | Test.cs:39:22:39:22 | Int32 w | Test.cs:41:23:41:23 | access to local variable w |
 | Test.cs:46:16:46:18 | in | Test.cs:46:16:46:18 | in | Test.cs:48:13:48:15 | access to parameter in |
+| Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | x | Test.cs:66:28:66:28 | access to parameter x |
 | Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | DivideByZeroException e | Test.cs:70:17:70:17 | access to local variable e |
 | Tuples.cs:5:9:5:13 | Field | Tuples.cs:20:9:20:34 | ... = ... | Tuples.cs:22:13:22:17 | access to field Field |
 | Tuples.cs:5:9:5:13 | Field | Tuples.cs:26:9:26:33 | ... = ... | Tuples.cs:27:13:27:17 | access to field Field |

@@ -9,6 +9,7 @@
  * @tags reliability
  *       maintainability
  */
+
 import java
 import semmle.code.java.StringFormat
 
@@ -58,5 +59,6 @@ where
   bad(sourceType) and
   not sourceType.isAbstract() and
   sourceType.fromSource()
-select e, "Default toString(): " + e.getType().getName() +
-  " inherits toString() from Object, and so is not suitable for printing."
+select e,
+  "Default toString(): " + e.getType().getName() +
+    " inherits toString() from Object, and so is not suitable for printing."

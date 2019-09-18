@@ -16,8 +16,9 @@
 import javascript
 
 from RegExpCaret caret, RegExpTerm t
-where t = caret.getPredecessor+() and
-      not t.isNullable() and
-      // conservative handling of multi-line regular expressions
-      not caret.getLiteral().isMultiline()
+where
+  t = caret.getPredecessor+() and
+  not t.isNullable() and
+  // conservative handling of multi-line regular expressions
+  not caret.getLiteral().isMultiline()
 select caret, "This assertion can never match."

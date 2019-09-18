@@ -109,3 +109,31 @@ void TestFailedInit(int n) {
   new(1.0f) FailedInitOveraligned();
   new(1.0f) FailedInitOveraligned[10];
 }
+
+// --- non-allocating placement new ---
+
+namespace std {
+  typedef unsigned long size_t;
+  struct nothrow_t {};
+  extern const nothrow_t nothrow;
+}
+
+void* operator new  (std::size_t size, void* ptr) noexcept;
+void* operator new[](std::size_t size, void* ptr) noexcept;
+void* operator new(std::size_t size, const std::nothrow_t&) noexcept;
+void* operator new[](std::size_t size, const std::nothrow_t&) noexcept;
+
+int overloadedNew() {
+  char buf[sizeof(int)];
+
+  new(&buf[0]) int(5);
+  int five = *(int*)buf;
+
+  new(buf) int[1];
+  *(int*)buf = 4;
+
+  new(std::nothrow) int(3); // memory leak
+  new(std::nothrow) int[2]; // memory leak
+
+  return five;
+}

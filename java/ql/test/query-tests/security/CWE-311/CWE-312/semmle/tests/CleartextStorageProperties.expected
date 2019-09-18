@@ -1,2 +1,0 @@
-| Test.java:51:5:51:18 | store(...) | 'Properties' class $@ containing $@ is stored here. Data was added $@. | Test.java:45:20:45:35 | new Properties(...) | new Properties(...) | Test.java:46:46:46:70 | getPassword(...) | sensitive data | Test.java:49:38:49:41 | data | here |
-| Test.java:61:5:61:18 | store(...) | 'Properties' class $@ containing $@ is stored here. Data was added $@. | Test.java:55:20:55:35 | new Properties(...) | new Properties(...) | Test.java:56:46:56:70 | getPassword(...) | sensitive data | Test.java:133:26:133:26 | s | here |

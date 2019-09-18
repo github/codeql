@@ -1,2 +1,0 @@
-| fields.js:2:3:2:4 | x; | fields.js:2:3:2:3 | x |
-| fields.js:3:3:3:8 | y = 42 | fields.js:3:3:3:3 | y |

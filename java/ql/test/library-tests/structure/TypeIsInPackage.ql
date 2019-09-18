@@ -1,6 +1,7 @@
 /**
  * @name TypeIsInPackage
  */
+
 import default
 
 from RefType tp

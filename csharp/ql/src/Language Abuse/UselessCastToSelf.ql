@@ -13,9 +13,10 @@
 import csharp
 
 from ExplicitCast cast, Expr e, Type type
-where e = cast.getExpr()
-  and type = cast.getTargetType()
-  and type = e.getType()
-  and not type instanceof NullType
-  and not e.(ImplicitDelegateCreation).getArgument() instanceof AnonymousFunctionExpr
+where
+  e = cast.getExpr() and
+  type = cast.getTargetType() and
+  type = e.getType() and
+  not type instanceof NullType and
+  not e.(ImplicitDelegateCreation).getArgument() instanceof AnonymousFunctionExpr
 select cast, "This cast is redundant because the expression already has type " + type + "."

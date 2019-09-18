@@ -1,6 +1,7 @@
 /**
  * Provides a taint-tracking configuration for reasoning about cleartext storage of sensitive information.
  */
+
 import csharp
 
 module CleartextStorage {
@@ -28,31 +29,18 @@ module CleartextStorage {
    * A taint-tracking configuration for cleartext storage of sensitive information.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "ClearTextStorage"
-    }
+    TaintTrackingConfiguration() { this = "ClearTextStorage" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of sensitive data. */
   class SensitiveExprSource extends Source {
-    SensitiveExprSource() {
-      this.getExpr() instanceof SensitiveExpr
-    }
+    SensitiveExprSource() { this.getExpr() instanceof SensitiveExpr }
   }
 
   /** A call to any method whose name suggests that it encodes or encrypts the parameter. */
@@ -60,7 +48,8 @@ module CleartextStorage {
     ProtectSanitizer() {
       exists(Method m, string s |
         this.getExpr().(MethodCall).getTarget() = m and
-        m.getName().regexpMatch("(?i).*" + s + ".*") |
+        m.getName().regexpMatch("(?i).*" + s + ".*")
+      |
         s = "protect" or s = "encode" or s = "encrypt"
       )
     }
@@ -70,8 +59,6 @@ module CleartextStorage {
    * An external location sink.
    */
   class ExternalSink extends Sink {
-    ExternalSink() {
-      this instanceof ExternalLocationSink
-    }
+    ExternalSink() { this instanceof ExternalLocationSink }
   }
 }

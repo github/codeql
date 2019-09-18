@@ -8,10 +8,11 @@
  * @tags maintainability
  * @id cs/events-per-type
  */
+
 import csharp
 
 from ValueOrRefType t, int n
-where t.isSourceDeclaration()
-  and n = count(Event e | e.getDeclaringType() = t)
-select t, n
-order by n desc
+where
+  t.isSourceDeclaration() and
+  n = count(Event e | e.getDeclaringType() = t)
+select t, n order by n desc

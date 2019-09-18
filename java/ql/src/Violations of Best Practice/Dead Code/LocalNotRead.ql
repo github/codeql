@@ -6,6 +6,7 @@
  * @precision low
  * @id java/assigned-local-unread
  */
+
 import java
 import DeadLocals
 
@@ -14,4 +15,3 @@ where
   assigned(v) and // Only assignments, not initialization
   not read(v)
 select v, "Local variable " + v.getName() + " is only assigned to, never read."
-

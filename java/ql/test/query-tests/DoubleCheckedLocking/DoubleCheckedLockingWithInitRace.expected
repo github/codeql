@@ -1,0 +1,2 @@
+| A.java:70:11:70:22 | ...=... | Potential race condition. This assignment to $@ is visible to other threads before the subsequent statements are executed. | A.java:65:22:65:23 | b3 | b3 |
+| A.java:83:11:83:22 | ...=... | Potential race condition. This assignment to $@ is visible to other threads before the subsequent statements are executed. | A.java:78:22:78:23 | b4 | b4 |

@@ -3,8 +3,13 @@
  * @description The setjmp macro and the longjmp function shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-20
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
+ *       portability
+ *       readability
+ *       external/jsf
  */
+
 import cpp
 
 class Setjmp extends Macro {
@@ -23,6 +28,7 @@ class Longjmp extends Function {
 }
 
 from Setjmp setjmp, Longjmp longjmp, Locatable use
-where use = setjmp.getAnInvocation()
-   or use = longjmp.getACallToThisFunction()
+where
+  use = setjmp.getAnInvocation() or
+  use = longjmp.getACallToThisFunction()
 select use, "AV Rule 20: The setjmp macro and the longjmp function shall not be used."

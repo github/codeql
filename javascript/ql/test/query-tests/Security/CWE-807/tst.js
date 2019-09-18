@@ -99,3 +99,34 @@ app.get('/user/:id', function(req, res) {
         console.log(commit.author().toString());
     }
 });
+
+app.get('/user/:id', function(req, res) {
+    if (!req.body || !username || !password || riskAssessnment == null) { // OK: early return below
+        res.status(400).send({ error: '...', id: '...' });
+        return
+    }
+    customerLogin.customerLogin(username, password, riskAssessment, clientIpAddress);
+
+    while (!verified) {
+        if (req.query.vulnerable) { // NOT OK
+            break;
+        }
+        verify();
+    }
+
+    while (!verified) {
+        if (req.query.vulnerable) { // NOT OK
+            break;
+        } else {
+            verify();
+        }
+    }
+
+    while (!verified) {
+        if (req.query.vulnerable) { // OK: early return
+            return;
+        }
+        verify();
+    }
+
+});

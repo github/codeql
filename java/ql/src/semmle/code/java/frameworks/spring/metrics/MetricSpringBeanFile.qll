@@ -15,7 +15,5 @@ class MetricSpringBeanFile extends SpringBeanFile {
     result = count(MetricSpringBeanFile other | other.getASpringBeanFileDependency() = this)
   }
 
-  int getEfferentCoupling() {
-    result = count(this.getASpringBeanFileDependency())
-  }
+  int getEfferentCoupling() { result = count(this.getASpringBeanFileDependency()) }
 }

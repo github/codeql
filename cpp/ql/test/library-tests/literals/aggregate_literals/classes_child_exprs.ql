@@ -4,7 +4,6 @@ import cpp
 // order as in the source code and still match the field being initialized
 // (which, in the case of designated initializers, will not necessarily match
 // the order in which the fields were declared).
-
 from ClassAggregateLiteral cal, int i, Field f
 where cal.getFieldExpr(f) = cal.getChild(i)
-select cal, cal.getType().getUnspecifiedType(), i, cal.getChild(i), f
+select cal, cal.getUnspecifiedType(), i, cal.getChild(i), f

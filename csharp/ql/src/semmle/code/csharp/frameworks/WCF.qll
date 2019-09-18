@@ -1,4 +1,5 @@
 /** Provides definitions related to Windows Communication Foundation (WCF). */
+
 import csharp
 
 /** A `ServiceContract` attribute. */
@@ -31,9 +32,7 @@ class DataMemberAttribute extends Attribute {
 
 /** A data contract class. */
 class DataContractClass extends Class {
-  DataContractClass() {
-    this.getAnAttribute() instanceof DataContractAttribute
-  }
+  DataContractClass() { this.getAnAttribute() instanceof DataContractAttribute }
 
   /** A data member of the data contract. */
   Declaration getADataMember() {

@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>A <code>for-loop</code> iteration expression goes backwards with respect of the initialization statement and condition expression.</p>
+  <p>This warning indicates that a <code>for-loop</code> might not function as intended.</p>
+</overview>
+
+<recommendation>
+<p>To fix this issue, check that the loop condition is correct and change the iteration expression to match.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the initialization statement (<code>i = 0</code>) and the condition expression (<code>i &lt; 100</code>) indicate that the intended iteration expression should have been incrementing, but instead a postfix decrement operator is used (<code>i--</code>).</p>
+<sample src="inconsistentLoopDirection.c" />
+
+<p>To fix this issue, change the iteration expression to match the direction of the initialization statement and the condition expression: <code>i++</code>.</p>
+</example>
+
+<references>
+  <li><a href="https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2012/58teb7hd(v=vs.110)">warning C6293: Ill-defined for-loop: counts down from minimum</a>
+  </li>
+</references>
+
+</qhelp>

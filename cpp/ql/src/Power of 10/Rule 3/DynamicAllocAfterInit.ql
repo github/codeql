@@ -3,7 +3,9 @@
  * @description Dynamic memory allocation (using malloc() or calloc()) should be confined to the initialization routines of a program.
  * @kind problem
  * @id cpp/power-of-10/dynamic-alloc-after-init
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags resources
+ *       external/powerof10
  */
 
 import cpp
@@ -20,12 +22,12 @@ class Initialization extends Function {
 
 class Allocation extends FunctionCall {
   Allocation() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "malloc" or name = "calloc")
+    exists(string name | name = this.getTarget().getName() | name = "malloc" or name = "calloc")
   }
 }
 
 from Function f, Allocation a
-where not f instanceof Initialization and
-   a.getEnclosingFunction() = f
+where
+  not f instanceof Initialization and
+  a.getEnclosingFunction() = f
 select a, "Dynamic memory allocation is only allowed during initialization."

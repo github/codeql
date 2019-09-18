@@ -2,7 +2,7 @@
  * @name Code injection
  * @description Interpreting unsanitized user input as code allows a malicious user arbitrary
  *              code execution.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/code-injection
@@ -14,7 +14,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CodeInjection::CodeInjection
+import DataFlow::PathGraph
 
-from Configuration codeInjection, DataFlow::Node source, DataFlow::Node sink
-where codeInjection.hasFlow(source, sink)
-select sink, "$@ flows to here and is interpreted as code.", source, "User-provided value"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "$@ flows to here and is interpreted as code.",
+  source.getNode(), "User-provided value"

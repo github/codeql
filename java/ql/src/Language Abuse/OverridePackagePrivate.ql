@@ -20,5 +20,4 @@ where
   not superMethod.isProtected() and
   not superMethod.isPrivate()
 select method, "This method does not override $@ because it is private to another package.",
-  superMethod,
-  superMethod.getDeclaringType().getName() + "." + superMethod.getName()
+  superMethod, superMethod.getDeclaringType().getName() + "." + superMethod.getName()

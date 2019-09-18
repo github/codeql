@@ -5,7 +5,7 @@ using System.Web;
 
 public class StackTraceHandler : IHttpHandler
 {
-
+    bool b;
     public void ProcessRequest(HttpContext ctx)
     {
         try
@@ -54,7 +54,8 @@ public class StackTraceHandler : IHttpHandler
     // Method that may throw an exception
     public void doSomeWork()
     {
-        throw new Exception();
+        if (b)
+            throw new Exception();
     }
 
     public void log(string s, Exception e)

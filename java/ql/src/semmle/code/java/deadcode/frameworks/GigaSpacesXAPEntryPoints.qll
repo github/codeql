@@ -13,18 +13,14 @@ import semmle.code.java.frameworks.gigaspaces.GigaSpaces
  * is considered live if the listener is at some point constructed.
  */
 class GigaSpacesEventCallableEntryPoint extends CallableEntryPointOnConstructedClass {
-  GigaSpacesEventCallableEntryPoint() {
-    isGigaSpacesEventMethod(this)
-  }
+  GigaSpacesEventCallableEntryPoint() { isGigaSpacesEventMethod(this) }
 }
 
 /**
  * An event listener class that is reflectively constructed by GigaSpaces to handle event processing.
  */
 class GigaSpacesEventDrivenReflectivelyConstructed extends ReflectivelyConstructedClass {
-  GigaSpacesEventDrivenReflectivelyConstructed() {
-    isGigaSpacesEventDrivenClass(this)
-  }
+  GigaSpacesEventDrivenReflectivelyConstructed() { isGigaSpacesEventDrivenClass(this) }
 }
 
 /**

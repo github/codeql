@@ -207,7 +207,7 @@ enum my_enum {
 };
 
 int myFunction6(enum my_enum e) {
-	if (e < 0) {
+	if (e < 0) { // GOOD (suppressed because it's platform-dependent)
 		return 1;
 	}
 	return 0;
@@ -240,4 +240,127 @@ void macroExpansionTest() {
 
   MAYBE_DO(x = 1); // GOOD (the problem is in the macro)
   MAYBE_DO(if (global_setting >= 0) {x = 2;}); // BAD (the problem is in the invocation)
+}
+
+int overeager_wraparound(unsigned int u32bound, unsigned long long u64bound) {
+  unsigned int u32idx;
+  unsigned long long u64idx;
+
+  for (u32idx = 1; u32idx < u32bound; u32idx++) {
+    if (u32idx == 0) // BAD [NOT DETECTED]
+      return 0;
+  }
+
+  for (u64idx = 1; u64idx < u64bound; u64idx++) {
+    if (u64idx == 0) // BAD [NOT DETECTED]
+      return 0;
+  }
+
+  return 1;
+}
+
+int negative_zero(double dbl) {
+  if (dbl >= 0) {
+    return dbl >= -dbl; // GOOD [FALSE POSITIVE]
+  }
+  return 0;
+}
+
+typedef unsigned char u8;
+
+int widening_cast1(u8 c) {
+  if (c == 0) {
+    if ((int)c > 0) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int widening_cast2(u8 c) {
+  if (c <= 10)
+    return -1;
+  else if ((c >= 11) /* BAD */ && (c <= 47))
+    return 0;
+  else
+    return 1;
+}
+
+int unsigned_implicit_conversion(unsigned int ui1) {
+  // These two comparisons are supported by the range analysis because the
+  // implicit signedness conversion is on the constants (0 and 5), not on the
+  // variables (ui1).
+  if (ui1 == 0) {
+    if (ui1 >= 5) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int signedness_cast1(u8 c) {
+  if ((signed char)c == 0) {
+    if (c >= 5) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int signedness_cast2(signed char c) {
+  if ((u8)c == 0) {
+    if (c >= 5) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int nan1(double x) {
+  if (x < 0.0) {
+    return 100;
+  }
+  else if (x >= 0.0) { // GOOD [x could be NaN]
+    return 200;
+  }
+  else {
+    return 300;
+  }
+}
+
+int nan2(double x) {
+  if (x == x) {
+    // If x compares with anything at all, it's not NaN
+    if (x < 0.0) {
+      return 100;
+    }
+    else if (x >= 0.0) { // BAD [Always true]
+      return 200;
+    }
+    else {
+      return 300;
+    }
+  }
+}
+
+struct info_t {
+  int id;
+  unsigned long long value;
+};
+
+int command(void* p, unsigned int s);
+
+int callCommand(void)
+{
+  struct info_t info;
+  unsigned int tmp = 0;
+
+  info.id = 1;
+  info.value = (unsigned long long)& tmp;
+  if (command(&info, sizeof(info))) {
+    return 0;
+  }
+  if (tmp == 1)  // tmp could have been modified by the call.
+    return 1;
+  return 0;
 }

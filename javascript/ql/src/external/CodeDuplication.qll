@@ -3,16 +3,13 @@
 import semmle.javascript.Files
 
 /** Gets the relative path of `file`, with backslashes replaced by forward slashes. */
-private
-string relativePath(File file) {
-  result = file.getRelativePath().replaceAll("\\", "/")
-}
+private string relativePath(File file) { result = file.getRelativePath().replaceAll("\\", "/") }
 
 /**
  * Holds if the `index`-th token of block `copy` is in file `file`, spanning
  * column `sc` of line `sl` to column `ec` of line `el`.
  *
- * For more information, see [LGTM locations](https://lgtm.com/help/ql/locations).
+ * For more information, see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
  */
 pragma[noinline]
 private predicate tokenLocation(File file, int sl, int sc, int ec, int el, Copy copy, int index) {
@@ -23,9 +20,7 @@ private predicate tokenLocation(File file, int sl, int sc, int ec, int el, Copy 
 /** A token block used for detection of duplicate and similar code. */
 class Copy extends @duplication_or_similarity {
   /** Gets the index of the last token in this block. */
-  private int lastToken() {
-    result = max(int i | tokens(this, i, _, _, _, _) | i)
-  }
+  private int lastToken() { result = max(int i | tokens(this, i, _, _, _, _) | i) }
 
   /** Gets the index of the token in this block starting at the location `loc`, if any. */
   int tokenStartingAt(Location loc) {
@@ -38,39 +33,26 @@ class Copy extends @duplication_or_similarity {
   }
 
   /** Gets the line on which the first token in this block starts. */
-  int sourceStartLine() {
-    tokens(this, 0, result, _, _, _)
-  }
+  int sourceStartLine() { tokens(this, 0, result, _, _, _) }
 
   /** Gets the column on which the first token in this block starts. */
-  int sourceStartColumn() {
-    tokens(this, 0, _, result, _, _)
-  }
+  int sourceStartColumn() { tokens(this, 0, _, result, _, _) }
 
   /** Gets the line on which the last token in this block ends. */
-  int sourceEndLine() {
-    tokens(this, this.lastToken(), _, _, result, _)
-  }
+  int sourceEndLine() { tokens(this, this.lastToken(), _, _, result, _) }
 
   /** Gets the column on which the last token in this block ends. */
-  int sourceEndColumn() {
-    tokens(this, this.lastToken(), _, _, _, result)
-  }
+  int sourceEndColumn() { tokens(this, this.lastToken(), _, _, _, result) }
 
   /** Gets the number of lines containing at least (part of) one token in this block. */
-  int sourceLines() {
-    result = this.sourceEndLine() + 1 - this.sourceStartLine()
-  }
+  int sourceLines() { result = this.sourceEndLine() + 1 - this.sourceStartLine() }
 
   /** Gets an opaque identifier for the equivalence class of this block. */
-  int getEquivalenceClass() {
-    duplicateCode(this, _, result) or similarCode(this, _, result)
-  }
+  int getEquivalenceClass() { duplicateCode(this, _, result) or similarCode(this, _, result) }
 
   /** Gets the source file in which this block appears. */
   File sourceFile() {
-    exists(string name |
-      duplicateCode(this, name, _) or similarCode(this, name, _) |
+    exists(string name | duplicateCode(this, name, _) or similarCode(this, name, _) |
       name.replaceAll("\\", "/") = relativePath(result)
     )
   }
@@ -80,15 +62,16 @@ class Copy extends @duplication_or_similarity {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                             int endline, int endcolumn) {
-      sourceFile().getAbsolutePath() = filepath and
-      startline = sourceStartLine() and
-      startcolumn = sourceStartColumn() and
-      endline = sourceEndLine() and
-      endcolumn = sourceEndColumn()
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    sourceFile().getAbsolutePath() = filepath and
+    startline = sourceStartLine() and
+    startcolumn = sourceStartColumn() and
+    endline = sourceEndLine() and
+    endcolumn = sourceEndColumn()
   }
 
   /** Gets a textual representation of this element. */
@@ -99,7 +82,7 @@ class Copy extends @duplication_or_similarity {
    * covered by this block, but they are not the same block.
    */
   Copy extendingBlock() {
-    exists (File file, int sl, int sc, int ec, int el |
+    exists(File file, int sl, int sc, int ec, int el |
       tokenLocation(file, sl, sc, ec, el, this, _) and
       tokenLocation(file, sl, sc, ec, el, result, 0)
     ) and
@@ -113,16 +96,19 @@ class Copy extends @duplication_or_similarity {
  * have the same equivalence class, with `start` being the equivalence class of `start1` and
  * `start2`, and `end` the equivalence class of `end1` and `end2`.
  */
-predicate similar_extension(SimilarBlock start1, SimilarBlock start2,
-                            SimilarBlock end1, SimilarBlock end2, int start, int end) {
-    start1.getEquivalenceClass() = start and
-    start2.getEquivalenceClass() = start and
-    end1.getEquivalenceClass() = end and
-    end2.getEquivalenceClass() = end and
-    start1 != start2 and
-    (end1 = start1 and end2 = start2 or
-     similar_extension(start1.extendingBlock(), start2.extendingBlock(), end1, end2, _, end)
-    )
+predicate similar_extension(
+  SimilarBlock start1, SimilarBlock start2, SimilarBlock end1, SimilarBlock end2, int start, int end
+) {
+  start1.getEquivalenceClass() = start and
+  start2.getEquivalenceClass() = start and
+  end1.getEquivalenceClass() = end and
+  end2.getEquivalenceClass() = end and
+  start1 != start2 and
+  (
+    end1 = start1 and end2 = start2
+    or
+    similar_extension(start1.extendingBlock(), start2.extendingBlock(), end1, end2, _, end)
+  )
 }
 
 /**
@@ -131,23 +117,25 @@ predicate similar_extension(SimilarBlock start1, SimilarBlock start2,
  * have the same equivalence class, with `start` being the equivalence class of `start1` and
  * `start2`, and `end` the equivalence class of `end1` and `end2`.
  */
-predicate duplicate_extension(DuplicateBlock start1, DuplicateBlock start2,
-                              DuplicateBlock end1, DuplicateBlock end2, int start, int end) {
-    start1.getEquivalenceClass() = start and
-    start2.getEquivalenceClass() = start and
-    end1.getEquivalenceClass() = end and
-    end2.getEquivalenceClass() = end and
-    start1 != start2 and
-    (end1 = start1 and end2 = start2 or
-     duplicate_extension(start1.extendingBlock(), start2.extendingBlock(), end1, end2, _, end)
-    )
+predicate duplicate_extension(
+  DuplicateBlock start1, DuplicateBlock start2, DuplicateBlock end1, DuplicateBlock end2, int start,
+  int end
+) {
+  start1.getEquivalenceClass() = start and
+  start2.getEquivalenceClass() = start and
+  end1.getEquivalenceClass() = end and
+  end2.getEquivalenceClass() = end and
+  start1 != start2 and
+  (
+    end1 = start1 and end2 = start2
+    or
+    duplicate_extension(start1.extendingBlock(), start2.extendingBlock(), end1, end2, _, end)
+  )
 }
 
 /** A block of duplicated code. */
 class DuplicateBlock extends Copy, @duplication {
-  override string toString() {
-    result = "Duplicate code: " + sourceLines() + " duplicated lines."
-  }
+  override string toString() { result = "Duplicate code: " + sourceLines() + " duplicated lines." }
 }
 
 /** A block of similar code. */
@@ -168,7 +156,7 @@ private predicate stmtInContainer(Stmt s, StmtContainer sc) {
  * respectively, where `sc1` and `sc2` are not the same.
  */
 predicate duplicateStatement(StmtContainer sc1, StmtContainer sc2, Stmt stmt1, Stmt stmt2) {
-   exists(int equivstart, int equivend, int first, int last |
+  exists(int equivstart, int equivend, int first, int last |
     stmtInContainer(stmt1, sc1) and
     stmtInContainer(stmt2, sc2) and
     duplicateCoversStatement(equivstart, equivend, first, last, stmt1) and
@@ -185,8 +173,9 @@ predicate duplicateStatement(StmtContainer sc1, StmtContainer sc2, Stmt stmt1, S
  * and `equivstart` and `equivend` are the equivalence classes of the first and the last
  * block, respectively.
  */
-private
-predicate duplicateCoversStatement(int equivstart, int equivend, int first, int last, Stmt stmt) {
+private predicate duplicateCoversStatement(
+  int equivstart, int equivend, int first, int last, Stmt stmt
+) {
   exists(DuplicateBlock b1, DuplicateBlock b2, Location loc |
     stmt.getLocation() = loc and
     first = b1.tokenStartingAt(loc) and
@@ -201,8 +190,7 @@ predicate duplicateCoversStatement(int equivstart, int equivend, int first, int 
  * Holds if `sc1` is a function or toplevel with `total` lines, and `sc2` is a function or
  * toplevel that has `duplicate` lines in common with `sc1`.
  */
-private
-predicate duplicateStatements(StmtContainer sc1, StmtContainer sc2, int duplicate, int total) {
+private predicate duplicateStatements(StmtContainer sc1, StmtContainer sc2, int duplicate, int total) {
   duplicate = strictcount(Stmt stmt | duplicateStatement(sc1, sc2, stmt, _)) and
   total = strictcount(Stmt stmt | stmtInContainer(stmt, sc1))
 }
@@ -212,11 +200,10 @@ predicate duplicateStatements(StmtContainer sc1, StmtContainer sc2, int duplicat
  * of lines they have in common, which is greater than 90%.
  */
 predicate duplicateContainers(StmtContainer sc, StmtContainer other, float percent) {
-  exists(int total, int duplicate |
-    duplicateStatements(sc, other, duplicate, total) |
-    percent = 100.0*duplicate/total and
+  exists(int total, int duplicate | duplicateStatements(sc, other, duplicate, total) |
+    percent = 100.0 * duplicate / total and
     percent > 90.0
-   )
+  )
 }
 
 /**
@@ -224,7 +211,7 @@ predicate duplicateContainers(StmtContainer sc, StmtContainer other, float perce
  * respectively, where `sc1` and `sc2` are not the same.
  */
 private predicate similarStatement(StmtContainer sc1, StmtContainer sc2, Stmt stmt1, Stmt stmt2) {
-   exists(int start, int end, int first, int last |
+  exists(int start, int end, int first, int last |
     stmtInContainer(stmt1, sc1) and
     stmtInContainer(stmt2, sc2) and
     similarCoversStatement(start, end, first, last, stmt1) and
@@ -241,8 +228,9 @@ private predicate similarStatement(StmtContainer sc1, StmtContainer sc2, Stmt st
  * and `equivstart` and `equivend` are the equivalence classes of the first and the last
  * block, respectively.
  */
-private predicate similarCoversStatement(int equivstart, int equivend, int first, int last,
-                                         Stmt stmt) {
+private predicate similarCoversStatement(
+  int equivstart, int equivend, int first, int last, Stmt stmt
+) {
   exists(SimilarBlock b1, SimilarBlock b2, Location loc |
     stmt.getLocation() = loc and
     first = b1.tokenStartingAt(loc) and
@@ -267,41 +255,37 @@ private predicate similarStatements(StmtContainer sc1, StmtContainer sc2, int si
  * of similar lines between the two, which is greater than 90%.
  */
 predicate similarContainers(StmtContainer sc, StmtContainer other, float percent) {
-  exists(int total, int similar |
-    similarStatements(sc, other, similar, total) |
-    percent = 100.0*similar/total and
+  exists(int total, int similar | similarStatements(sc, other, similar, total) |
+    percent = 100.0 * similar / total and
     percent > 90.0
   )
 }
 
 predicate similarLines(File f, int line) {
-  exists(SimilarBlock b | 
-    b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()]
-  )
+  exists(SimilarBlock b | b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()])
 }
 
-private
-predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f)
-{
+private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
   lines = strictsum(SimilarBlock b, int toSum |
-    (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and (toSum = b.sourceLines()) | toSum)
+      (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
+      toSum = b.sourceLines()
+    |
+      toSum
+    )
 }
 
-private pragma[noopt] 
-predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
+pragma[noopt]
+private predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
     exists(int coveredApprox |
-      coveredApprox = strictsum(int num | 
-        exists(int equivClass |
-          similarLinesPerEquivalenceClass(equivClass, num, f) and
-          similarLinesPerEquivalenceClass(equivClass, num, otherFile) and
-          f != otherFile
-        )
-      ) and
-      exists(int n, int product |
-        product = coveredApprox * 100 and n = product / numLines |
-        n > 75
-      )
+      coveredApprox = strictsum(int num |
+          exists(int equivClass |
+            similarLinesPerEquivalenceClass(equivClass, num, f) and
+            similarLinesPerEquivalenceClass(equivClass, num, otherFile) and
+            f != otherFile
+          )
+        ) and
+      exists(int n, int product | product = coveredApprox * 100 and n = product / numLines | n > 75)
     ) and
     exists(int notCovered |
       notCovered = count(int j | j in [1 .. numLines] and not similarLines(f, j)) and
@@ -311,30 +295,32 @@ predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
 }
 
 predicate duplicateLines(File f, int line) {
-  exists(DuplicateBlock b | 
+  exists(DuplicateBlock b |
     b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()]
   )
 }
 
-private
-predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f)
-{
+private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
   lines = strictsum(DuplicateBlock b, int toSum |
-    (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and (toSum = b.sourceLines()) | toSum)
+      (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
+      toSum = b.sourceLines()
+    |
+      toSum
+    )
 }
 
-private pragma[noopt] 
-predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
+pragma[noopt]
+private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
     exists(int coveredApprox |
-      coveredApprox = strictsum(int num | 
-       exists(int equivClass |
-          duplicateLinesPerEquivalenceClass(equivClass, num, f) and
-          duplicateLinesPerEquivalenceClass(equivClass, num, otherFile) and
-          f != otherFile
-        )
-      ) and
-      exists (int n, int product | product = coveredApprox * 100 and n = product / numLines | n > 75)
+      coveredApprox = strictsum(int num |
+          exists(int equivClass |
+            duplicateLinesPerEquivalenceClass(equivClass, num, f) and
+            duplicateLinesPerEquivalenceClass(equivClass, num, otherFile) and
+            f != otherFile
+          )
+        ) and
+      exists(int n, int product | product = coveredApprox * 100 and n = product / numLines | n > 75)
     ) and
     exists(int notCovered |
       notCovered = count(int j | j in [1 .. numLines] and not duplicateLines(f, j)) and

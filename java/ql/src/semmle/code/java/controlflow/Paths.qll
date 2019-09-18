@@ -25,9 +25,7 @@ abstract class ActionConfiguration extends string {
   }
 
   /** Holds if every path through `call` goes through at least one action node. */
-  final predicate callAlwaysPerformsAction(Call call) {
-    callAlwaysPerformsAction(call, this)
-  }
+  final predicate callAlwaysPerformsAction(Call call) { callAlwaysPerformsAction(call, this) }
 }
 
 /** Gets a `BasicBlock` that contains an action. */
@@ -40,7 +38,9 @@ private BasicBlock actionBlock(ActionConfiguration conf) {
 
 /** Holds if every path through `call` goes through at least one action node. */
 private predicate callAlwaysPerformsAction(Call call, ActionConfiguration conf) {
-  forex(Callable callable | callable = viableCallable(call) | callableAlwaysPerformsAction(callable, conf))
+  forex(Callable callable | callable = viableCallable(call) |
+    callableAlwaysPerformsAction(callable, conf)
+  )
 }
 
 /** Holds if an action dominates the exit of the callable. */
@@ -60,18 +60,20 @@ private BasicBlock nonDominatingActionBlock(ActionConfiguration conf) {
   )
 }
 
-private class JoinBlock extends BasicBlock { JoinBlock() { 2 <= strictcount(this.getABBPredecessor()) } }
+private class JoinBlock extends BasicBlock {
+  JoinBlock() { 2 <= strictcount(this.getABBPredecessor()) }
+}
 
 /**
  * Holds if `bb` is a block that is collectively dominated by a set of one or
  * more actions that individually does not dominate the exit.
  */
 private predicate postActionBlock(BasicBlock bb, ActionConfiguration conf) {
-  bb = nonDominatingActionBlock(conf) or
-  if bb instanceof JoinBlock then
-    forall(BasicBlock pred | pred = bb.getABBPredecessor() | postActionBlock(pred, conf))
-  else
-    postActionBlock(bb.getABBPredecessor(), conf)
+  bb = nonDominatingActionBlock(conf)
+  or
+  if bb instanceof JoinBlock
+  then forall(BasicBlock pred | pred = bb.getABBPredecessor() | postActionBlock(pred, conf))
+  else postActionBlock(bb.getABBPredecessor(), conf)
 }
 
 /** Holds if every path through `callable` goes through at least one action node. */

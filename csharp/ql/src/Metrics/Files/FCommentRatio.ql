@@ -9,11 +9,13 @@
  *       documentation
  * @id cs/comment-ratio-per-file
  */
+
 import csharp
 
 from SourceFile f, int total, float ratio
-where total = f.getNumberOfLinesOfCode() + f.getNumberOfLinesOfComments()
-  and if total = 0 then ratio = 0.0
-      else ratio = 100.0 * ((float)f.getNumberOfLinesOfComments()) / ((float)total)
-select f, ratio
-order by ratio desc
+where
+  total = f.getNumberOfLinesOfCode() + f.getNumberOfLinesOfComments() and
+  if total = 0
+  then ratio = 0.0
+  else ratio = 100.0 * f.getNumberOfLinesOfComments().(float) / total.(float)
+select f, ratio order by ratio desc

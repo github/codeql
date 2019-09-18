@@ -4,6 +4,10 @@
 <qhelp>
 
 <overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="cpp/jsfNote.qhelp" />
+
 <p>Use of goto statements makes code more difficult to understand and maintain. Consequently, the use 
 of goto statements is deprecated except as a mechanism for breaking out of multiple nested loops. 
 This rule identifies any goto statements that are called directly or from a single nested loop as violations.</p>

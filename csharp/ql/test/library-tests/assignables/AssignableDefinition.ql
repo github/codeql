@@ -6,7 +6,8 @@ newtype TTargetAccessOption =
 
 class TargetAccessOption extends TTargetAccessOption {
   string toString() {
-    result = som().toString() or
+    result = som().toString()
+    or
     exists(non()) and result = "<none>"
   }
 
@@ -15,19 +16,12 @@ class TargetAccessOption extends TTargetAccessOption {
     result = non().getLocation()
   }
 
-  private AssignableAccess som() {
-    this = TTargetAccessSome(result)
-  }
+  private AssignableAccess som() { this = TTargetAccessSome(result) }
 
-  private AssignableDefinition non() {
-    this = TTargetAccessNone(result)
-  }
+  private AssignableDefinition non() { this = TTargetAccessNone(result) }
 
   predicate fromAssignableDefinition(AssignableDefinition def) {
-    if exists(def.getTargetAccess()) then
-      this.som() = def.getTargetAccess()
-    else
-      this.non() = def
+    if exists(def.getTargetAccess()) then this.som() = def.getTargetAccess() else this.non() = def
   }
 }
 
@@ -37,7 +31,8 @@ newtype TSourceOption =
 
 class SourceOption extends TSourceOption {
   string toString() {
-    result = som().toString() or
+    result = som().toString()
+    or
     exists(non()) and result = "<none>"
   }
 
@@ -46,24 +41,18 @@ class SourceOption extends TSourceOption {
     result = non().getLocation()
   }
 
-  private Expr som() {
-    this = TSourceSome(result)
-  }
+  private Expr som() { this = TSourceSome(result) }
 
-  private AssignableDefinition non() {
-    this = TSourceNone(result)
-  }
+  private AssignableDefinition non() { this = TSourceNone(result) }
 
   predicate fromAssignableDefinition(AssignableDefinition def) {
-    if exists(def.getSource()) then
-      this.som() = def.getSource()
-    else
-      this.non() = def
+    if exists(def.getSource()) then this.som() = def.getSource() else this.non() = def
   }
 }
 
 from AssignableDefinition def, TargetAccessOption access, SourceOption source, string certain
-where (if def.isCertain() then certain = "certain" else certain = "uncertain")
-  and access.fromAssignableDefinition(def)
-  and source.fromAssignableDefinition(def)
+where
+  (if def.isCertain() then certain = "certain" else certain = "uncertain") and
+  access.fromAssignableDefinition(def) and
+  source.fromAssignableDefinition(def)
 select def.getTarget(), def, access, source, certain

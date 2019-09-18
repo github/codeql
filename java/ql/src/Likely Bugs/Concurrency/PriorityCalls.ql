@@ -10,19 +10,18 @@
  *       correctness
  *       concurrency
  */
+
 import java
 
 class PriorityMethod extends Method {
   PriorityMethod() {
     (this.getName() = "setPriority" or this.getName() = "getPriority") and
-    this.getDeclaringType().hasQualifiedName("java.lang","Thread")
+    this.getDeclaringType().hasQualifiedName("java.lang", "Thread")
   }
 }
 
 class PriorityMethodAccess extends MethodAccess {
-  PriorityMethodAccess() {
-    this.getMethod() instanceof PriorityMethod
-  }
+  PriorityMethodAccess() { this.getMethod() instanceof PriorityMethod }
 }
 
 from PriorityMethodAccess ma

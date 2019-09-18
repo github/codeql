@@ -108,3 +108,10 @@ int inheritanceConversions(Derived* pd) {
 
   return y;
 }
+
+void test06() {
+  "a";
+  "b";
+  "a";
+  "c";
+}

@@ -12,22 +12,17 @@
  *       language-features
  *       external/cwe/cwe-662
  */
+
 import java
 
-private
-Field synchField(SynchronizedStmt s) {
-  result = s.getExpr().(VarAccess).getVariable()
-}
+private Field synchField(SynchronizedStmt s) { result = s.getExpr().(VarAccess).getVariable() }
 
-private
-Field assignmentToField(Assignment a) {
-  result = a.getDest().(VarAccess).getVariable()
-}
+private Field assignmentToField(Assignment a) { result = a.getDest().(VarAccess).getVariable() }
 
 from SynchronizedStmt s, Field f, Assignment a
 where
   synchField(s) = f and
   assignmentToField(a) = f and
-  a.getEnclosingStmt().getParent*() = s
-select a, "Synchronization on field $@ in futile attempt to guard that field.",
-  f, f.getDeclaringType().getName() + "." + f.getName()
+  a.getEnclosingStmt().getEnclosingStmt*() = s
+select a, "Synchronization on field $@ in futile attempt to guard that field.", f,
+  f.getDeclaringType().getName() + "." + f.getName()

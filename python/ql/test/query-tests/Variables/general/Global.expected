@@ -1,0 +1,1 @@
+| variables_test.py:64:5:64:14 | Global | Updating global variables except at module initialization is discouraged |

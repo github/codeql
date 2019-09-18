@@ -8,22 +8,19 @@
  * @tags security
  *       external/cwe/cwe-798
  */
+
 import java
 import HardcodedCredentials
 
 class EqualsAccess extends MethodAccess {
-  EqualsAccess() {
-    getMethod() instanceof EqualsMethod
-  }
+  EqualsAccess() { getMethod() instanceof EqualsMethod }
 }
 
 from EqualsAccess sink, HardcodedExpr source, PasswordVariable p
 where
-    source = sink.getQualifier() and
-    p.getAnAccess() = sink.getArgument(0)
+  source = sink.getQualifier() and
+  p.getAnAccess() = sink.getArgument(0)
   or
-    source = sink.getArgument(0) and
-    p.getAnAccess() = sink.getQualifier()
-select source, "Hard-coded value is $@ with password variable $@.",
-  sink, "compared",
-  p, p.getName()
+  source = sink.getArgument(0) and
+  p.getAnAccess() = sink.getQualifier()
+select source, "Hard-coded value is $@ with password variable $@.", sink, "compared", p, p.getName()

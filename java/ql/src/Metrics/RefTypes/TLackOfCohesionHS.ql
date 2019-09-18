@@ -8,9 +8,9 @@
  * @id java/lack-of-cohesion-hs
  * @tags modularity
  */
+
 import java
 
 from RefType t
 where t.fromSource()
-select t, t.getMetrics().getLackOfCohesionHS() as n
-order by n desc
+select t, t.getMetrics().getLackOfCohesionHS() as n order by n desc

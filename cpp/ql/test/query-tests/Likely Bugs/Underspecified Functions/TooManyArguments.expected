@@ -1,0 +1,2 @@
+| test.c:41:3:41:29 | call to declared_empty_defined_with | This call has more arguments than required by $@. | test.c:77:6:77:32 | declared_empty_defined_with | declared_empty_defined_with |
+| test.c:72:3:72:28 | call to declared_and_defined_empty | This call has more arguments than required by $@. | test.c:114:6:114:31 | declared_and_defined_empty | declared_and_defined_empty |

@@ -10,11 +10,9 @@ module XML {
    */
   newtype EntityKind =
     /** Internal general entity. */
-    InternalEntity()
-    or
+    InternalEntity() or
     /** External general entity, either parsed or unparsed. */
-    ExternalEntity(boolean parsed) { parsed = true or parsed = false }
-    or
+    ExternalEntity(boolean parsed) { parsed = true or parsed = false } or
     /** Parameter entity, either internal or external. */
     ParameterEntity(boolean external) { external = true or external = false }
 
@@ -34,22 +32,20 @@ module XML {
    */
   class LibXmlJsParserInvocation extends ParserInvocation {
     LibXmlJsParserInvocation() {
-      exists (string m |
+      exists(string m |
         this = js::DataFlow::moduleMember("libxmljs", m).getACall().asExpr() and
         m.matches("parseXml%")
       )
     }
 
-    override js::Expr getSourceArgument() {
-      result = getArgument(0)
-    }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
       // internal entities are always resolved
       kind = InternalEntity()
       or
       // other entities are only resolved if the configuration option `noent` is set to `true`
-      exists (js::Expr noent |
+      exists(js::Expr noent |
         hasOptionArgument(1, "noent", noent) and
         noent.mayHaveBooleanValue(true)
       )
@@ -60,7 +56,7 @@ module XML {
    * Gets a call to method `methodName` on an instance of class `className` from module `modName`.
    */
   private js::MethodCallExpr moduleMethodCall(string modName, string className, string methodName) {
-    exists (js::DataFlow::ModuleImportNode mod |
+    exists(js::DataFlow::ModuleImportNode mod |
       mod.getPath() = modName and
       result = mod.getAConstructorInvocation(className).getAMethodCall(methodName).asExpr()
     )
@@ -74,9 +70,7 @@ module XML {
       this = moduleMethodCall("libxmljs", "SaxParser", "parseString")
     }
 
-    override js::Expr getSourceArgument() {
-      result = getArgument(0)
-    }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
       // entities are resolved by default
@@ -92,9 +86,7 @@ module XML {
       this = moduleMethodCall("libxmljs", "SaxPushParser", "push")
     }
 
-    override js::Expr getSourceArgument() {
-      result = getArgument(0)
-    }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
       // entities are resolved by default
@@ -107,14 +99,12 @@ module XML {
    */
   class ExpatParserInvocation extends ParserInvocation {
     ExpatParserInvocation() {
-      exists (string m | m = "parse" or m = "write" |
+      exists(string m | m = "parse" or m = "write" |
         this = moduleMethodCall("node-expat", "Parser", m)
       )
     }
 
-    override js::Expr getSourceArgument() {
-      result = getArgument(0)
-    }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
       // only internal entities are resolved by default
@@ -127,7 +117,7 @@ module XML {
    */
   private class DOMParserXmlParserInvocation extends XML::ParserInvocation {
     DOMParserXmlParserInvocation() {
-      exists (js::DataFlow::GlobalVarRefNode domparser |
+      exists(js::DataFlow::GlobalVarRefNode domparser |
         domparser.getName() = "DOMParser" and
         this = domparser.getAnInstantiation().getAMethodCall("parseFromString").asExpr() and
         // type contains the string `xml`, that is, it's not `text/html`
@@ -135,13 +125,9 @@ module XML {
       )
     }
 
-    override js::Expr getSourceArgument() {
-      result = getArgument(0)
-    }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
-    override predicate resolvesEntities(XML::EntityKind kind) {
-      kind = InternalEntity()
-    }
+    override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
   }
 
   /**
@@ -149,7 +135,7 @@ module XML {
    */
   private class IELegacyXmlParserInvocation extends XML::ParserInvocation {
     IELegacyXmlParserInvocation() {
-      exists (js::DataFlow::NewNode activeXObject, string activeXType |
+      exists(js::DataFlow::NewNode activeXObject, string activeXType |
         activeXObject = js::DataFlow::globalVarRef("ActiveXObject").getAnInstantiation() and
         activeXObject.getArgument(0).asExpr().mayHaveStringValue(activeXType) and
         activeXType.regexpMatch("Microsoft\\.XMLDOM|Msxml.*\\.DOMDocument.*") and
@@ -157,13 +143,9 @@ module XML {
       )
     }
 
-    override js::Expr getSourceArgument() {
-      result = getArgument(0)
-    }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
-    override predicate resolvesEntities(XML::EntityKind kind) {
-      any()
-    }
+    override predicate resolvesEntities(XML::EntityKind kind) { any() }
   }
 
   /**
@@ -174,12 +156,8 @@ module XML {
       this.getCallee().(js::PropAccess).getQualifiedName() = "goog.dom.xml.loadXml"
     }
 
-    override js::Expr getSourceArgument() {
-      result = getArgument(0)
-    }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
-    override predicate resolvesEntities(XML::EntityKind kind) {
-      kind = InternalEntity()
-    }
+    override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
   }
 }

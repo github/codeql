@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Web.Mvc`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Web
 
@@ -12,49 +13,35 @@ class SystemWebMvcNamespace extends Namespace {
 
 /** A class in the `System.Web.Mvc` namespace. */
 class SystemWebMvcClass extends Class {
-  SystemWebMvcClass() {
-    this.getNamespace() instanceof SystemWebMvcNamespace
-  }
+  SystemWebMvcClass() { this.getNamespace() instanceof SystemWebMvcNamespace }
 }
 
 /** An interface in the `System.Web.Mvc` namespace. */
 class SystemWebMvcInterface extends Interface {
-  SystemWebMvcInterface() {
-    this.getNamespace() instanceof SystemWebMvcNamespace
-  }
+  SystemWebMvcInterface() { this.getNamespace() instanceof SystemWebMvcNamespace }
 }
 
 /** The `System.Web.Mvc.HtmlHelper` class. */
 class SystemWebMvcHtmlHelperClass extends SystemWebMvcClass {
-  SystemWebMvcHtmlHelperClass() {
-    this.hasName("HtmlHelper")
-  }
+  SystemWebMvcHtmlHelperClass() { this.hasName("HtmlHelper") }
 
   /** Gets the `Raw` method. */
-  Method getRawMethod() {
-    result = this.getAMethod("Raw")
-  }
+  Method getRawMethod() { result = this.getAMethod("Raw") }
 }
 
 /** An attribute whose type is in the `System.Web.Mvc` namespace. */
 class SystemWebMvcAttribute extends Attribute {
-  SystemWebMvcAttribute() {
-    getType().getNamespace() instanceof SystemWebMvcNamespace
-  }
+  SystemWebMvcAttribute() { getType().getNamespace() instanceof SystemWebMvcNamespace }
 }
 
 /** An attribute whose type is `System.Web.Mvc.HttpPost`. */
 class HttpPostAttribute extends SystemWebMvcAttribute {
-  HttpPostAttribute() {
-    this.getType().hasName("HttpPostAttribute")
-  }
+  HttpPostAttribute() { this.getType().hasName("HttpPostAttribute") }
 }
 
 /** An attribute whose type is `System.Web.Mvc.NonAction`. */
 class NonActionAttribute extends SystemWebMvcAttribute {
-  NonActionAttribute() {
-    this.getType().hasName("NonActionAttribute")
-  }
+  NonActionAttribute() { this.getType().hasName("NonActionAttribute") }
 }
 
 /**
@@ -68,21 +55,15 @@ class ValidateAntiForgeryTokenAttribute extends Attribute {
 
 /** The `System.Web.Mvc.UrlHelper` class. */
 class SystemWebMvcUrlHelperClass extends SystemWebMvcClass {
-  SystemWebMvcUrlHelperClass() {
-    this.hasName("UrlHelper")
-  }
+  SystemWebMvcUrlHelperClass() { this.hasName("UrlHelper") }
 
   /** Gets the `IsLocalUrl` method. */
-  Method getIsLocalUrl() {
-    result = this.getAMethod("IsLocalUrl")
-  }
+  Method getIsLocalUrl() { result = this.getAMethod("IsLocalUrl") }
 }
 
 /** The `System.Web.Mvc.Controller` class. */
 class SystemWebMvcControllerClass extends SystemWebMvcClass {
-  SystemWebMvcControllerClass() {
-    this.hasName("Controller")
-  }
+  SystemWebMvcControllerClass() { this.hasName("Controller") }
 
   /** Gets a `Redirect..` method. */
   Method getARedirectMethod() {
@@ -93,9 +74,7 @@ class SystemWebMvcControllerClass extends SystemWebMvcClass {
 
 /** A subtype of `System.Web.Mvc.Controller`. */
 class Controller extends Class {
-  Controller() {
-    this.getABaseType*() instanceof SystemWebMvcControllerClass
-  }
+  Controller() { this.getABaseType*() instanceof SystemWebMvcControllerClass }
 
   /**
    * Gets an "action" method, which may be called by the MVC framework in response to a user
@@ -126,26 +105,18 @@ class AuthorizationFilter extends Class {
   }
 
   /** Gets the `OnAuthorization` method provided by this filter. */
-  Method getOnAuthorizationMethod() {
-    result = this.getAMethod("OnAuthorization")
-  }
+  Method getOnAuthorizationMethod() { result = this.getAMethod("OnAuthorization") }
 }
 
 /** The `System.Web.Mvc.GlobalFilterCollection` class. */
 class GlobalFilterCollection extends SystemWebMvcClass {
-  GlobalFilterCollection() {
-    this.hasName("GlobalFilterCollection")
-  }
+  GlobalFilterCollection() { this.hasName("GlobalFilterCollection") }
 
   /** Gets the `Add` method. */
-  Method getAddMethod() {
-    result = this.getAMethod("Add")
-  }
+  Method getAddMethod() { result = this.getAMethod("Add") }
 }
 
 /** The `System.Web.Mvc.MvcHtmlString` class. */
 class SystemWebMvcMvcHtmlString extends SystemWebMvcClass {
-  SystemWebMvcMvcHtmlString() {
-    this.hasName("MvcHtmlString")
-  }
+  SystemWebMvcMvcHtmlString() { this.hasName("MvcHtmlString") }
 }

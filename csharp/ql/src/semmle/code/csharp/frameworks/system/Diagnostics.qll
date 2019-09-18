@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Diagnostics`. */
+
 import semmle.code.csharp.Type
 private import semmle.code.csharp.frameworks.System
 
@@ -10,15 +11,9 @@ class SystemDiagnosticsNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Diagnostics` namespace. */
-deprecated
-SystemDiagnosticsNamespace getSystemDiagnosticsNamespace() { any() }
-
 /** A class in the `System.Diagnostics` namespace. */
 class SystemDiagnosticsClass extends Class {
-  SystemDiagnosticsClass() {
-    this.getNamespace() instanceof SystemDiagnosticsNamespace
-  }
+  SystemDiagnosticsClass() { this.getNamespace() instanceof SystemDiagnosticsNamespace }
 }
 
 /** The `System.Diagnostics.Debug` class. */
@@ -30,25 +25,16 @@ class SystemDiagnosticsDebugClass extends SystemDiagnosticsClass {
 
   /** Gets and `Assert(bool, ...)` method. */
   Method getAssertMethod() {
-    result.getDeclaringType() = this
-    and
-    result.hasName("Assert")
-    and
-    result.getParameter(0).getType() instanceof BoolType
-    and
+    result.getDeclaringType() = this and
+    result.hasName("Assert") and
+    result.getParameter(0).getType() instanceof BoolType and
     result.getReturnType() instanceof VoidType
   }
 }
 
-/** DEPRECATED. Gets the `System.Diagnostics.Debug` class. */
-deprecated
-SystemDiagnosticsDebugClass getSystemDiagnosticsDebugClass() { any() }
-
 /** The `System.Diagnostics.ProcessStartInfo` class. */
 class SystemDiagnosticsProcessStartInfoClass extends SystemDiagnosticsClass {
-  SystemDiagnosticsProcessStartInfoClass() {
-    this.hasName("ProcessStartInfo")
-  }
+  SystemDiagnosticsProcessStartInfoClass() { this.hasName("ProcessStartInfo") }
 
   /** Gets the `Arguments` property. */
   Property getArgumentsProperty() { result = this.getProperty("Arguments") }
@@ -62,9 +48,7 @@ class SystemDiagnosticsProcessStartInfoClass extends SystemDiagnosticsClass {
 
 /** The `System.Diagnostics.Process` class. */
 class SystemDiagnosticsProcessClass extends SystemDiagnosticsClass {
-  SystemDiagnosticsProcessClass() {
-    this.hasName("Process")
-  }
+  SystemDiagnosticsProcessClass() { this.hasName("Process") }
 
   /** Get a `Start( ...)` method. */
   Method getAStartMethod() {
@@ -73,7 +57,3 @@ class SystemDiagnosticsProcessClass extends SystemDiagnosticsClass {
     result.getReturnType() instanceof SystemDiagnosticsProcessClass
   }
 }
-
-/** DEPRECATED. Gets the `System.Diagnostics.Process` class. */
-deprecated
-SystemDiagnosticsProcessClass getSystemDiagnosticsProcessClass() { any() }

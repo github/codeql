@@ -1,2 +1,0 @@
-| tst.ts:110:14:110:24 | 5 as number | tst.ts:110:14:110:14 | 5 | tst.ts:110:19:110:24 | number |
-| tst.ts:111:18:111:31 | <string> 'foo' | tst.ts:111:27:111:31 | 'foo' | tst.ts:111:19:111:24 | string |

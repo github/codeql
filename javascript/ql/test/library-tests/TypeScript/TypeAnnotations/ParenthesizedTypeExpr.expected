@@ -1,8 +1,0 @@
-| tst.ts:44:24:44:31 | (string) | tst.ts:44:25:44:30 | string | tst.ts:44:25:44:30 | string |
-| tst.ts:45:25:45:34 | ((string)) | tst.ts:45:26:45:33 | (string) | tst.ts:45:27:45:32 | string |
-| tst.ts:45:26:45:33 | (string) | tst.ts:45:27:45:32 | string | tst.ts:45:27:45:32 | string |
-| tst.ts:46:25:46:36 | (((string))) | tst.ts:46:26:46:35 | ((string)) | tst.ts:46:28:46:33 | string |
-| tst.ts:46:26:46:35 | ((string)) | tst.ts:46:27:46:34 | (string) | tst.ts:46:28:46:33 | string |
-| tst.ts:46:27:46:34 | (string) | tst.ts:46:28:46:33 | string | tst.ts:46:28:46:33 | string |
-| tst.ts:47:18:47:34 | (string \| number) | tst.ts:47:19:47:33 | string \| number | tst.ts:47:19:47:33 | string \| number |
-| tst.ts:47:38:47:55 | (boolean \| string) | tst.ts:47:39:47:54 | boolean \| string | tst.ts:47:39:47:54 | boolean \| string |

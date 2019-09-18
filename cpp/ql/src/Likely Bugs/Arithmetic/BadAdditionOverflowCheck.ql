@@ -11,8 +11,8 @@
  * @tags reliability
  *       correctness
  *       security
- *       external/cwe/190
- *       external/cwe/192
+ *       external/cwe/cwe-190
+ *       external/cwe/cwe-192
  */
 
 import cpp

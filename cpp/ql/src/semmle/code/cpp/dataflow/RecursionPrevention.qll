@@ -1,4 +1,9 @@
 /**
+ * DEPRECATED: Recursion through `DataFlow::Configuration` is impossible in
+ * Semmle Core 1.17 and above. There is no need for this module because it's
+ * impossible to accidentally depend on recursion through
+ * `DataFlow::Configuration` in current releases.
+ *
  * When this module is imported, recursive use of `DataFlow::Configuration` is
  * disallowed. Importing this module will guarantee the absence of such
  * recursion, which is unsupported and will be unconditionally disallowed in a
@@ -7,6 +12,7 @@
  * Recursive use of `DataFlow{2..4}::Configuration` is always disallowed, so no
  * import is needed for those.
  */
+
 import cpp
 private import semmle.code.cpp.dataflow.DataFlow
 
@@ -17,8 +23,7 @@ private import semmle.code.cpp.dataflow.DataFlow
  * it should be replaced by using more than one copy of the data flow library.
  * Four copies are available: `DataFlow` through `DataFlow4`.
  */
-private abstract
-class ConfigurationRecursionPrevention extends DataFlow::Configuration {
+abstract private class ConfigurationRecursionPrevention extends DataFlow::Configuration {
   bindingset[this]
   ConfigurationRecursionPrevention() { any() }
 

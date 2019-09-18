@@ -2,7 +2,7 @@
  * @name XPath injection
  * @description Building an XPath expression from user-controlled sources is vulnerable to insertion of
  *              malicious code by the user.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/xpath-injection
@@ -12,7 +12,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XpathInjection::XpathInjection
+import DataFlow::PathGraph
 
-from Configuration c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
-select sink, "$@ flows here and is used in an XPath expression.", source, "User-provided value"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "$@ flows here and is used in an XPath expression.",
+  source.getNode(), "User-provided value"

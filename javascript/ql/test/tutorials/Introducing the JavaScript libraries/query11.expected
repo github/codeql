@@ -1,4 +1,0 @@
-| tst.js:21:12:21:12 | x | Dead store of local variable. |
-| tst.js:31:12:31:12 | x | Dead store of local variable. |
-| tst.js:31:15:31:15 | y | Dead store of local variable. |
-| tst.js:31:18:31:18 | x | Dead store of local variable. |

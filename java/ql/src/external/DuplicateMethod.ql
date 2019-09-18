@@ -13,11 +13,13 @@
  *       statistical
  *       non-attributable
  */
+
 import java
 import CodeDuplication
 
 predicate relevant(Method m) {
-  m.getNumberOfLinesOfCode() > 5 and not m.getName().matches("get%") or
+  m.getNumberOfLinesOfCode() > 5 and not m.getName().matches("get%")
+  or
   m.getNumberOfLinesOfCode() > 10
 }
 
@@ -27,5 +29,5 @@ where
   relevant(m) and
   not fileLevelDuplication(m.getCompilationUnit(), other.getCompilationUnit()) and
   not classLevelDuplication(m.getDeclaringType(), other.getDeclaringType())
-select m, "Method " + m.getName() + " is duplicated in $@.",
-  other, other.getDeclaringType().getQualifiedName()
+select m, "Method " + m.getName() + " is duplicated in $@.", other,
+  other.getDeclaringType().getQualifiedName()

@@ -18,22 +18,21 @@ string neededByJavadoc(JavadocElement c) {
   result = c.(SeeTag).getReference()
 }
 
-Annotation nestedAnnotation(Annotation a) {
-  result.getAnnotatedElement().(Expr).getParent+() = a
-}
+Annotation nestedAnnotation(Annotation a) { result.getAnnotatedElement().(Expr).getParent+() = a }
 
 RefType neededByAnnotation(Annotation a) {
-  exists(TypeAccess t | t.getParent+() = a |
-    result = t.getType().(RefType).getSourceDeclaration()
-  ) or
+  exists(TypeAccess t | t.getParent+() = a | result = t.getType().(RefType).getSourceDeclaration())
+  or
   exists(ArrayTypeAccess at | at.getParent+() = a |
     result = at.getType().(Array).getElementType().(RefType).getSourceDeclaration()
-  ) or
-  exists(VarAccess va | va.getParent+() = a |
-    result = va.getVariable().(Field).getDeclaringType()
-  ) or
-  result = a.getType() or
-  result = a.getType().(NestedType).getEnclosingType+() or
+  )
+  or
+  exists(VarAccess va | va.getParent+() = a | result = va.getVariable().(Field).getDeclaringType())
+  or
+  result = a.getType()
+  or
+  result = a.getType().(NestedType).getEnclosingType+()
+  or
   result = neededByAnnotation(nestedAnnotation(a))
 }
 
@@ -41,22 +40,22 @@ RefType neededType(CompilationUnit cu) {
   // Annotations
   exists(Annotation a | a.getAnnotatedElement().getCompilationUnit() = cu |
     result = neededByAnnotation(a)
-  ) or
+  )
+  or
   // type accesses
   exists(TypeAccess t | t.getCompilationUnit() = cu |
     result = t.getType().(RefType).getSourceDeclaration()
-  ) or
+  )
+  or
   exists(ArrayTypeAccess at | at.getCompilationUnit() = cu |
     result = at.getType().(Array).getElementType().(RefType).getSourceDeclaration()
-  ) or
-  // throws clauses
-  exists(Callable c | c.getCompilationUnit() = cu |
-    result = c.getAnException().getType()
-  ) or
-  // Javadoc
-  exists(JavadocElement j | cu.getFile() = j.getFile() |
-    result.getName() = neededByJavadoc(j)
   )
+  or
+  // throws clauses
+  exists(Callable c | c.getCompilationUnit() = cu | result = c.getAnException().getType())
+  or
+  // Javadoc
+  exists(JavadocElement j | cu.getFile() = j.getFile() | result.getName() = neededByJavadoc(j))
 }
 
 RefType importedType(Import i) {
@@ -65,9 +64,7 @@ RefType importedType(Import i) {
   result = i.(ImportType).getImportedType()
 }
 
-predicate neededImport(Import i) {
-  importedType(i) = neededType(i.getCompilationUnit())
-}
+predicate neededImport(Import i) { importedType(i) = neededType(i.getCompilationUnit()) }
 
 from Import i
 where

@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> The default value of a parameter is computed once when the function is
+created, not for every invocation. The "pre-computed" value is then used for every 
+subsequent call to the function. Consequently, if you modify the default
+value for a parameter this "modified" default value is used for the parameter 
+in future calls to the function. This means that the function may not behave as 
+expected in future calls and also makes the function more difficult to understand.
+</p>
+
+</overview>
+<recommendation>
+<p>If a parameter has a default value, do not modify the default value. When 
+you use a mutable object as a default value, you should use a placeholder value 
+instead of modifying the default value. This is a particular problem when you 
+work with lists and dictionaries but there are standard methods of avoiding 
+modifying the default parameter (see References).</p>
+
+</recommendation>
+<example>
+<p>In the following example, the <code>default</code> parameter is set with a default 
+value of an empty list. Other commands in the function then append values to the 
+list. The next time the function is called, the list will contain values, which 
+may not have been intended.</p>
+<sample src="ModificationOfParameterWithDefault.py" />
+
+<p>The recommended workaround is use a placeholder value. That is, define the 
+function with a default of <code>default=None</code>, check if the parameter is 
+<code>None</code> and then set the parameter to a list.</p>
+
+</example>
+<references>
+
+  <li>Effbot: <a href="http://effbot.org/zone/default-values.htm">Default Parameter Values in Python</a>.</li>
+  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#function-definitions">Function definitions</a>.</li>
+
+
+</references>
+</qhelp>

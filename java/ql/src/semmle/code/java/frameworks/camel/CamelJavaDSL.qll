@@ -13,6 +13,7 @@
  *
  * This creates a route to the `TargetBean` class for messages sent to "direct.start".
  */
+
 import java
 import semmle.code.java.Reflection
 import semmle.code.java.frameworks.spring.Spring
@@ -22,7 +23,10 @@ import semmle.code.java.frameworks.spring.Spring
  */
 library class ProcessorDefinitionElement extends MethodAccess {
   ProcessorDefinitionElement() {
-    getMethod().getDeclaringType().getSourceDeclaration().hasQualifiedName("org.apache.camel.model","ProcessorDefinition")
+    getMethod()
+        .getDeclaringType()
+        .getSourceDeclaration()
+        .hasQualifiedName("org.apache.camel.model", "ProcessorDefinition")
   }
 }
 
@@ -32,16 +36,12 @@ library class ProcessorDefinitionElement extends MethodAccess {
  * This declares a "target" for this route, described by the URI given as the first argument.
  */
 class CamelJavaDSLToDecl extends ProcessorDefinitionElement {
-  CamelJavaDSLToDecl() {
-    getMethod().hasName("to")
-  }
+  CamelJavaDSLToDecl() { getMethod().hasName("to") }
 
   /**
    * Gets the URI specified by this `to` declaration.
    */
-  string getURI() {
-    result = getArgument(0).(CompileTimeConstantExpr).getStringValue()
-  }
+  string getURI() { result = getArgument(0).(CompileTimeConstantExpr).getStringValue() }
 }
 
 /**
@@ -51,19 +51,16 @@ class CamelJavaDSLToDecl extends ProcessorDefinitionElement {
  * or the bean object itself.
  */
 class CamelJavaDSLBeanDecl extends ProcessorDefinitionElement {
-  CamelJavaDSLBeanDecl() {
-    getMethod().hasName("bean")
-  }
+  CamelJavaDSLBeanDecl() { getMethod().hasName("bean") }
 
   /**
    * Gets a bean class that may be registered as a target by this `bean()` declaration.
    */
   RefType getABeanClass() {
-    if getArgument(0).getType() instanceof TypeClass then
-      /*
-       * In this case, we've been given a Class<?>, which implies a Spring Bean of this type
-       * should be loaded. Infer the type of type parameter.
-       */
+    if getArgument(0).getType() instanceof TypeClass
+    then
+      // In this case, we've been given a Class<?>, which implies a Spring Bean of this type
+      // should be loaded. Infer the type of type parameter.
       result = inferClassParameterType(getArgument(0))
     else
       // In this case, the object itself is used as the target for the Apache Camel messages.
@@ -79,22 +76,21 @@ class CamelJavaDSLBeanDecl extends ProcessorDefinitionElement {
  * assumption that it either represetns a qualified name, or a Srping bean identifier.
  */
 class CamelJavaDSLBeanRefDecl extends ProcessorDefinitionElement {
-  CamelJavaDSLBeanRefDecl() {
-    getMethod().hasName("beanRef")
-  }
+  CamelJavaDSLBeanRefDecl() { getMethod().hasName("beanRef") }
 
   /**
    * Gets the string describing the bean referred to.
    */
-  string getBeanRefString() {
-    result = getArgument(0).(CompileTimeConstantExpr).getStringValue()
-  }
+  string getBeanRefString() { result = getArgument(0).(CompileTimeConstantExpr).getStringValue() }
 
   /**
    * Gets a class that may be referred to by this bean reference.
    */
   RefType getABeanClass() {
-    exists(SpringBean bean | bean.getBeanIdentifier() = getBeanRefString() | result = bean.getClass()) or
+    exists(SpringBean bean | bean.getBeanIdentifier() = getBeanRefString() |
+      result = bean.getClass()
+    )
+    or
     result.getQualifiedName() = getBeanRefString()
   }
 }
@@ -106,7 +102,10 @@ class CamelJavaDSLBeanRefDecl extends ProcessorDefinitionElement {
  */
 class CamelJavaDSLMethodDecl extends MethodAccess {
   CamelJavaDSLMethodDecl() {
-    getMethod().getDeclaringType().getSourceDeclaration().hasQualifiedName("org.apache.camel.builder","ExpressionClause") and
+    getMethod()
+        .getDeclaringType()
+        .getSourceDeclaration()
+        .hasQualifiedName("org.apache.camel.builder", "ExpressionClause") and
     getMethod().hasName("method")
   }
 
@@ -114,14 +113,16 @@ class CamelJavaDSLMethodDecl extends MethodAccess {
    * Gets a possible bean that this "method" expression represents.
    */
   RefType getABean() {
-    if getArgument(0).getType() instanceof TypeString then
+    if getArgument(0).getType() instanceof TypeString
+    then
       exists(SpringBean bean |
         bean.getBeanIdentifier() = getArgument(0).(CompileTimeConstantExpr).getStringValue()
-        |
-        result = bean.getClass())
-    else if getArgument(0).getType() instanceof TypeClass then
-      result = inferClassParameterType(getArgument(0))
+      |
+        result = bean.getClass()
+      )
     else
-      result = getArgument(0).getType()
+      if getArgument(0).getType() instanceof TypeClass
+      then result = inferClassParameterType(getArgument(0))
+      else result = getArgument(0).getType()
   }
 }

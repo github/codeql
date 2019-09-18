@@ -98,6 +98,14 @@
 | Properties.cs:104:16:104:20 | Props | Properties.cs:114:20:114:35 | access to field Props | Properties.cs:115:21:115:36 | access to field Props |
 | Properties.cs:104:16:104:20 | Props | Properties.cs:115:21:115:30 | access to field Props | Properties.cs:116:17:116:26 | access to field Props |
 | Properties.cs:104:16:104:20 | Props | Properties.cs:115:21:115:36 | access to field Props | Properties.cs:116:17:116:32 | access to field Props |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b | Splitting.cs:15:13:15:13 | access to parameter b |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:13:9:13:9 | access to local variable x | Splitting.cs:14:9:14:9 | access to local variable x |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:14:9:14:9 | access to local variable x | Splitting.cs:17:13:17:13 | access to local variable x |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:25:13:25:13 | access to parameter b | Splitting.cs:35:13:35:13 | access to parameter b |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:33:9:33:9 | access to local variable x | Splitting.cs:34:9:34:9 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:34:9:34:9 | access to local variable x | Splitting.cs:37:13:37:13 | access to local variable x |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:45:13:45:13 | access to parameter b | Splitting.cs:52:13:52:13 | access to parameter b |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:9 | access to local variable x | Splitting.cs:55:9:55:9 | access to local variable x |
 | Test.cs:8:13:8:13 | x | Test.cs:25:16:25:16 | access to local variable x | Test.cs:25:16:25:16 | access to local variable x |
 | Test.cs:9:13:9:13 | y | Test.cs:25:20:25:20 | access to local variable y | Test.cs:31:13:31:13 | access to local variable y |
 | Test.cs:9:13:9:13 | y | Test.cs:25:20:25:20 | access to local variable y | Test.cs:43:20:43:20 | access to local variable y |

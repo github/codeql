@@ -19,10 +19,12 @@ from Expr guard, Expr e, Expr reason, string msg
 where
   guard = basicNullGuard(e, _, true) and
   e = clearlyNotNullExpr(reason) and
-  (if reason instanceof Guard then
-    msg = "This check is useless, $@ cannot be null here, since it is guarded by $@."
-  else if reason != e then
-    msg = "This check is useless, $@ cannot be null here, since $@ always is non-null."
-  else
-    msg = "This check is useless, since $@ always is non-null.")
+  (
+    if reason instanceof Guard
+    then msg = "This check is useless, $@ cannot be null here, since it is guarded by $@."
+    else
+      if reason != e
+      then msg = "This check is useless, $@ cannot be null here, since $@ always is non-null."
+      else msg = "This check is useless, since $@ always is non-null."
+  )
 select guard, msg, e, e.toString(), reason, reason.toString()

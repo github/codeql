@@ -1,0 +1,14 @@
+| InsecureProtocol.py:6:1:6:47 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version PROTOCOL_SSLv2 specified in call to deprecated method ssl.wrap_socket. |
+| InsecureProtocol.py:7:1:7:47 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version PROTOCOL_SSLv3 specified in call to deprecated method ssl.wrap_socket. |
+| InsecureProtocol.py:8:1:8:47 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version PROTOCOL_TLSv1 specified in call to deprecated method ssl.wrap_socket. |
+| InsecureProtocol.py:10:1:10:39 | ControlFlowNode for SSLContext() | Insecure SSL/TLS protocol version PROTOCOL_SSLv2 specified in call to ssl.SSLContext. |
+| InsecureProtocol.py:11:1:11:39 | ControlFlowNode for SSLContext() | Insecure SSL/TLS protocol version PROTOCOL_SSLv3 specified in call to ssl.SSLContext. |
+| InsecureProtocol.py:12:1:12:39 | ControlFlowNode for SSLContext() | Insecure SSL/TLS protocol version PROTOCOL_TLSv1 specified in call to ssl.SSLContext. |
+| InsecureProtocol.py:14:1:14:29 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv2_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:15:1:15:30 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv23_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:16:1:16:29 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv3_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:17:1:17:29 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version TLSv1_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:32:1:32:19 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv2_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:48:1:48:43 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version PROTOCOL_SSLv2 specified in call to deprecated method ssl.wrap_socket. |
+| InsecureProtocol.py:49:1:49:35 | ControlFlowNode for SSLContext() | Insecure SSL/TLS protocol version PROTOCOL_SSLv2 specified in call to ssl.SSLContext. |
+| InsecureProtocol.py:52:1:52:33 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv23_METHOD specified in call to ssl.SSLContext. |

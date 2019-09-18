@@ -1,0 +1,37 @@
+| Collections.cs:12:17:12:32 | ... == ... | Collections.cs:12:17:12:20 | access to parameter args | false | false |
+| Collections.cs:12:17:12:32 | ... == ... | Collections.cs:12:17:12:20 | access to parameter args | true | true |
+| Collections.cs:13:13:13:28 | ... == ... | Collections.cs:13:13:13:16 | access to parameter args | true | false |
+| Collections.cs:14:13:14:28 | ... != ... | Collections.cs:14:13:14:16 | access to parameter args | false | true |
+| Collections.cs:14:13:14:28 | ... != ... | Collections.cs:14:13:14:16 | access to parameter args | true | false |
+| Collections.cs:15:13:15:28 | ... != ... | Collections.cs:15:13:15:16 | access to parameter args | false | false |
+| Collections.cs:16:13:16:27 | ... > ... | Collections.cs:16:13:16:16 | access to parameter args | true | false |
+| Collections.cs:18:13:18:28 | ... >= ... | Collections.cs:18:13:18:16 | access to parameter args | true | false |
+| Collections.cs:23:17:23:31 | ... == ... | Collections.cs:23:17:23:20 | access to parameter args | false | false |
+| Collections.cs:23:17:23:31 | ... == ... | Collections.cs:23:17:23:20 | access to parameter args | true | true |
+| Collections.cs:24:13:24:27 | ... == ... | Collections.cs:24:13:24:16 | access to parameter args | true | false |
+| Collections.cs:25:13:25:27 | ... != ... | Collections.cs:25:13:25:16 | access to parameter args | false | true |
+| Collections.cs:25:13:25:27 | ... != ... | Collections.cs:25:13:25:16 | access to parameter args | true | false |
+| Collections.cs:26:13:26:27 | ... != ... | Collections.cs:26:13:26:16 | access to parameter args | false | false |
+| Collections.cs:27:13:27:26 | ... > ... | Collections.cs:27:13:27:16 | access to parameter args | true | false |
+| Collections.cs:29:13:29:27 | ... >= ... | Collections.cs:29:13:29:16 | access to parameter args | true | false |
+| Collections.cs:34:17:34:33 | ... == ... | Collections.cs:34:17:34:20 | access to parameter args | false | false |
+| Collections.cs:34:17:34:33 | ... == ... | Collections.cs:34:17:34:20 | access to parameter args | true | true |
+| Collections.cs:35:13:35:29 | ... == ... | Collections.cs:35:13:35:16 | access to parameter args | true | false |
+| Collections.cs:36:13:36:29 | ... != ... | Collections.cs:36:13:36:16 | access to parameter args | false | true |
+| Collections.cs:36:13:36:29 | ... != ... | Collections.cs:36:13:36:16 | access to parameter args | true | false |
+| Collections.cs:37:13:37:29 | ... != ... | Collections.cs:37:13:37:16 | access to parameter args | false | false |
+| Collections.cs:38:13:38:28 | ... > ... | Collections.cs:38:13:38:16 | access to parameter args | true | false |
+| Collections.cs:40:13:40:29 | ... >= ... | Collections.cs:40:13:40:16 | access to parameter args | true | false |
+| Collections.cs:45:17:45:26 | call to method Any | Collections.cs:45:17:45:20 | access to parameter args | false | true |
+| Collections.cs:45:17:45:26 | call to method Any | Collections.cs:45:17:45:20 | access to parameter args | true | false |
+| Collections.cs:50:13:50:27 | ... == ... | Collections.cs:50:13:50:16 | access to parameter args | false | false |
+| Collections.cs:50:13:50:27 | ... == ... | Collections.cs:50:13:50:16 | access to parameter args | true | true |
+| Collections.cs:65:13:65:24 | ... == ... | Collections.cs:65:13:65:13 | access to local variable x | false | false |
+| Collections.cs:65:13:65:24 | ... == ... | Collections.cs:65:13:65:13 | access to local variable x | true | true |
+| Collections.cs:75:17:75:33 | call to method Any | Collections.cs:75:17:75:20 | access to parameter args | true | false |
+| Collections.cs:76:13:76:36 | ... == ... | Collections.cs:76:13:76:16 | access to parameter args | false | false |
+| Collections.cs:77:13:77:36 | ... == ... | Collections.cs:77:13:77:16 | access to parameter args | true | false |
+| Collections.cs:78:13:78:36 | ... != ... | Collections.cs:78:13:78:16 | access to parameter args | true | false |
+| Collections.cs:79:13:79:36 | ... != ... | Collections.cs:79:13:79:16 | access to parameter args | false | false |
+| Collections.cs:80:13:80:35 | ... > ... | Collections.cs:80:13:80:16 | access to parameter args | true | false |
+| Collections.cs:82:13:82:36 | ... >= ... | Collections.cs:82:13:82:16 | access to parameter args | true | false |

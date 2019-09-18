@@ -14,9 +14,7 @@
 import java
 
 predicate complicatedBranch(Stmt branch) {
-  exists(ConditionalExpr ce |
-    ce.getParent*() = branch
-  ) or
+  exists(ConditionalExpr ce | ce.getParent*() = branch) or
   count(MethodAccess a | a.getParent*() = branch) > 1
 }
 
@@ -31,9 +29,11 @@ predicate toCompare(Expr left, Expr right) {
   exists(IfStmt is, AssignExpr at, AssignExpr ae |
     at.getParent() = is.getThen() and
     ae.getParent() = is.getElse()
-    |
-    left = at.getDest() and right = ae.getDest() or
-    left = at.getDest().(VarAccess).getQualifier() and right = ae.getDest().(VarAccess).getQualifier()
+  |
+    left = at.getDest() and right = ae.getDest()
+    or
+    left = at.getDest().(VarAccess).getQualifier() and
+    right = ae.getDest().(VarAccess).getQualifier()
   )
 }
 
@@ -45,7 +45,8 @@ predicate sameVariable(VarAccess left, VarAccess right) {
       left.getQualifier() = q1 and
       sameVariable(q1, q2) and
       right.getQualifier() = q2
-    ) or
+    )
+    or
     left.isLocal() and right.isLocal()
   )
 }
@@ -71,4 +72,5 @@ where
     complicatedBranch(is.getThen()) or
     complicatedBranch(is.getElse())
   )
-select is, "Both branches of this 'if' statement " + what + " - consider using '?' to express intent better."
+select is,
+  "Both branches of this 'if' statement " + what + " - consider using '?' to express intent better."

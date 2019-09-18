@@ -1,4 +1,5 @@
 /** Provides classes related to the namespace `System.Security`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 
@@ -12,7 +13,5 @@ class SystemSecurityNamespace extends Namespace {
 
 /** A class in the `System.Security` namespace. */
 class SystemSecurityClass extends Class {
-  SystemSecurityClass() {
-    this.getNamespace() instanceof SystemSecurityNamespace
-  }
+  SystemSecurityClass() { this.getNamespace() instanceof SystemSecurityNamespace }
 }

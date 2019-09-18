@@ -1,0 +1,11 @@
+| Class Base | meth |
+| Class Derived1 | meth |
+| Class Derived2 | meth |
+| Class Derived4 | meth |
+| Class Derived5 | meth |
+| Class Derived6 | meth |
+| Class Missing1 | a |
+| Class Missing2 | b |
+| Class Missing3 | c |
+| Class Wrong1 | meth |
+| Class Wrong2 | meth |

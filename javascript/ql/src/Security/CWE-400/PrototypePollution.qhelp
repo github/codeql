@@ -1,0 +1,80 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    Most JavaScript objects inherit the properties of the built-in <code>Object.prototype</code> object.
+    Prototype pollution is a type of vulnerability in which an attacker is able to modify <code>Object.prototype</code>.
+    Since most objects inherit from the compromised <code>Object.prototype</code>, the attacker can use this
+    to tamper with the application logic, and often escalate to remote code execution or cross-site scripting.
+  </p>
+
+  <p>
+    One way to cause prototype pollution is through use of an unsafe <em>merge</em> or <em>extend</em> function
+    to recursively copy properties from an untrusted source object.
+    Such a call can modify any object reachable from the destination object, and
+    the built-in <code>Object.prototype</code> is usually reachable through the special properties
+    <code>__proto__</code> and <code>constructor.prototype</code>.
+    An attacker can abuse this by sending an object with these property names and thereby modify <code>Object.prototype</code>.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    Update your library dependencies in order to use a safe version of the <em>merge</em> or <em>extend</em> function.
+    If your library has no fixed version, switch to another library.
+  </p>
+</recommendation>
+
+<example>
+  <p>
+    In the example below, the untrusted value <code>req.query.prefs</code> is parsed as JSON
+    and then copied into a new object:
+  </p>
+
+  <sample src="examples/PrototypePollution1.js"/>
+
+  <p>
+    Prior to lodash 4.17.11 this would be vulnerable to prototype pollution. An attacker could send the following GET request:
+  </p>
+
+  <pre>GET /news?prefs={"constructor":{"prototype":{"xxx":true}}}</pre>
+
+  <p>
+    This causes the <code>xxx</code> property to be injected on <code>Object.prototype</code>.
+    Fix this by updating the lodash version:
+  </p>
+
+  <sample src="examples/PrototypePollution_fixed.json"/>
+
+  <p>
+    Note that some web frameworks, such as Express, parse query parameters using extended URL-encoding
+    by default.
+    When this is the case, the application may be vulnerable even if not using <code>JSON.parse</code>.
+    The example below would also be susceptible to prototype pollution:
+  </p>
+
+  <sample src="examples/PrototypePollution2.js"/>
+
+  <p>
+    In the above example, an attacker can cause prototype pollution by sending the following GET request:
+  </p>
+
+  <pre>GET /news?prefs[constructor][prototype][xxx]=true</pre>
+</example>
+
+<references>
+  <li>Prototype pollution attacks:
+    <a href="https://hackerone.com/reports/380873">lodash</a>,
+    <a href="https://hackerone.com/reports/454365">jQuery</a>,
+    <a href="https://hackerone.com/reports/381185">extend</a>,
+    <a href="https://hackerone.com/reports/430291">just-extend</a>,
+    <a href="https://hackerone.com/reports/381194">merge.recursive</a>.
+  </li>
+  <li>Express:
+    <a href="https://expressjs.com/en/api.html#express.urlencoded">urlencoded()</a>
+  </li>
+</references>
+</qhelp>

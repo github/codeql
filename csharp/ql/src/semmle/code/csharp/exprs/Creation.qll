@@ -1,8 +1,10 @@
 /**
  * Provides expression classes for creating various types of object.
  */
+
 import Expr
 import semmle.code.csharp.Callable
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /**
  * Either an object initializer (`ObjectInitializer`) or a collection
@@ -43,9 +45,7 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
    * }
    * ```
    */
-  MemberInitializer getAMemberInitializer() {
-    result = getMemberInitializer(_)
-  }
+  MemberInitializer getAMemberInitializer() { result = getMemberInitializer(_) }
 
   /**
    * Gets the `i`th member initializer of this object initializer. For example,
@@ -69,14 +69,10 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
   }
 
   /** Gets the number of member initializers of this object initializer. */
-  int getNumberOfMemberInitializers() {
-    result = count(this.getAMemberInitializer())
-  }
+  int getNumberOfMemberInitializers() { result = count(this.getAMemberInitializer()) }
 
   /** Holds if this object initializer has no member initializers. */
-  predicate hasNoMemberInitializers() {
-    not exists(this.getAMemberInitializer())
-  }
+  predicate hasNoMemberInitializers() { not exists(this.getAMemberInitializer()) }
 }
 
 /**
@@ -94,14 +90,10 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
  * ```
  */
 class MemberInitializer extends AssignExpr {
-  MemberInitializer() {
-    this.getParent() instanceof ObjectInitializer
-  }
+  MemberInitializer() { this.getParent() instanceof ObjectInitializer }
 
   /** Gets the initialized member. */
-  Member getInitializedMember() {
-    result.getAnAccess() = this.getLValue()
-  }
+  Member getInitializedMember() { result.getAnAccess() = this.getLValue() }
 }
 
 /**
@@ -126,9 +118,7 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
    * };
    * ```
    */
-  ElementInitializer getAnElementInitializer() {
-    result = getElementInitializer(_)
-  }
+  ElementInitializer getAnElementInitializer() { result = getElementInitializer(_) }
 
   /**
    * Gets the `i`th element initializer of this collection initializer, for
@@ -148,14 +138,10 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
   }
 
   /** Gets the number of element initializers of this collection initializer. */
-  int getNumberOfElementInitializers() {
-    result = count(this.getAnElementInitializer())
-  }
+  int getNumberOfElementInitializers() { result = count(this.getAnElementInitializer()) }
 
   /** Holds if this collection initializer has no element initializers. */
-  predicate hasNoElementInitializers() {
-    not exists(this.getAnElementInitializer())
-  }
+  predicate hasNoElementInitializers() { not exists(this.getAnElementInitializer()) }
 }
 
 /**
@@ -190,9 +176,7 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
 
   override Constructor getTarget() { expr_call(this, result) }
 
-  override Constructor getARuntimeTarget() {
-    result = Call.super.getARuntimeTarget()
-  }
+  override Constructor getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 
   /**
    * Holds if this constructor call includes an object initializer or an
@@ -213,14 +197,12 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
    */
   ObjectOrCollectionInitializer getInitializer() { result = this.getChild(-1) }
 
-  override string toString() {
-    result = "object creation of type " + this.getType().getName()
-  }
+  override string toString() { result = "object creation of type " + this.getType().getName() }
 
   override Expr getRawArgument(int i) {
     if this.getTarget().isStatic()
     then result = this.getArgument(i)
-    else result = this.getArgument(i-1)
+    else result = this.getArgument(i - 1)
   }
 }
 
@@ -236,13 +218,9 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
  * ```
  */
 class AnonymousObjectCreation extends ObjectCreation {
-  AnonymousObjectCreation() {
-    this.getObjectType() instanceof AnonymousClass
-  }
+  AnonymousObjectCreation() { this.getObjectType() instanceof AnonymousClass }
 
-  override ObjectInitializer getInitializer() {
-    result = this.getChild(-1)
-  }
+  override ObjectInitializer getInitializer() { result = this.getChild(-1) }
 }
 
 /**
@@ -252,9 +230,7 @@ class AnonymousObjectCreation extends ObjectCreation {
  */
 class DelegateCreation extends Expr, @delegate_creation_expr {
   /** Gets the delegate type of this delegate creation. */
-  DelegateType getDelegateType() {
-    result = this.getType()
-  }
+  DelegateType getDelegateType() { result = this.getType() }
 
   /**
    * Gets the argument of this delegate creation. Either a callable access
@@ -263,9 +239,7 @@ class DelegateCreation extends Expr, @delegate_creation_expr {
    */
   Expr getArgument() { result = this.getAChild() }
 
-  override string toString() {
-    result = "delegate creation of type " + this.getType().getName()
-  }
+  override string toString() { result = "delegate creation of type " + this.getType().getName() }
 }
 
 /**
@@ -322,9 +296,7 @@ class ArrayInitializer extends Expr, @array_init_expr {
    * };
    * ```
    */
-  Expr getAnElement() {
-    result = getElement(_)
-  }
+  Expr getAnElement() { result = getElement(_) }
 
   /**
    * Gets the `i`th element of this array initializer, for example the second
@@ -344,9 +316,7 @@ class ArrayInitializer extends Expr, @array_init_expr {
   }
 
   /** Gets the number of elements in this array initializer. */
-  int getNumberOfElements() {
-    result = count(this.getAnElement())
-  }
+  int getNumberOfElements() { result = count(this.getAnElement()) }
 
   /** Holds if this array initializer has no elements. */
   predicate hasNoElements() { not exists(this.getAnElement()) }
@@ -369,9 +339,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
    * new int[5, 10]
    * ```
    */
-  Expr getALengthArgument() {
-    result = getLengthArgument(_)
-  }
+  Expr getALengthArgument() { result = getLengthArgument(_) }
 
   /**
    * Gets the `i`th dimension's length argument of this array creation, for
@@ -387,9 +355,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
   }
 
   /** Gets the number of length arguments of this array creation. */
-  int getNumberOfLengthArguments() {
-    result = count(this.getALengthArgument())
-  }
+  int getNumberOfLengthArguments() { result = count(this.getALengthArgument()) }
 
   /** Holds if the created array is implicitly sized by the initializer. */
   predicate isImplicitlySized() { not explicitly_sized_array_creation(this) }
@@ -403,9 +369,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
   /** Holds if the type of the created array is inferred from its initializer. */
   predicate isImplicitlyTyped() { implicitly_typed_array_creation(this) }
 
-  override string toString() {
-    result = "array creation of type " + this.getType().getName()
-  }
+  override string toString() { result = "array creation of type " + this.getType().getName() }
 }
 
 /**
@@ -416,7 +380,11 @@ class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
   override string getName() { result = "<anonymous>" }
 
   override Type getReturnType() {
-    result = getType().(DelegateType).getReturnType()
+    result = this
+          .getType()
+          .(SystemLinqExpressions::DelegateExtType)
+          .getDelegateType()
+          .getReturnType()
   }
 
   override AnonymousFunctionExpr getSourceDeclaration() { result = this }

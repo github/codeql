@@ -1,0 +1,30 @@
+| argvLocal.c:95:9:95:15 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:95:9:95:12 | argv | argv |
+| argvLocal.c:96:15:96:21 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:96:15:96:18 | argv | argv |
+| argvLocal.c:101:9:101:10 | i1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:100:7:100:10 | argv | argv |
+| argvLocal.c:102:15:102:16 | i1 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:100:7:100:10 | argv | argv |
+| argvLocal.c:106:9:106:13 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:105:14:105:17 | argv | argv |
+| argvLocal.c:107:15:107:19 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:105:14:105:17 | argv | argv |
+| argvLocal.c:110:9:110:11 | * ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:105:14:105:17 | argv | argv |
+| argvLocal.c:111:15:111:17 | * ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:105:14:105:17 | argv | argv |
+| argvLocal.c:116:9:116:10 | i3 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:115:13:115:16 | argv | argv |
+| argvLocal.c:117:15:117:16 | i3 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:115:13:115:16 | argv | argv |
+| argvLocal.c:121:9:121:10 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:115:13:115:16 | argv | argv |
+| argvLocal.c:122:15:122:16 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:115:13:115:16 | argv | argv |
+| argvLocal.c:127:9:127:10 | i5 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:126:10:126:13 | argv | argv |
+| argvLocal.c:128:15:128:16 | i5 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:126:10:126:13 | argv | argv |
+| argvLocal.c:131:9:131:14 | ... + ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:126:10:126:13 | argv | argv |
+| argvLocal.c:132:15:132:20 | ... + ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:126:10:126:13 | argv | argv |
+| argvLocal.c:135:9:135:12 | ... ++ | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:115:13:115:16 | argv | argv |
+| argvLocal.c:136:15:136:18 | -- ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:115:13:115:16 | argv | argv |
+| argvLocal.c:139:9:139:26 | ... ? ... : ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:126:10:126:13 | argv | argv |
+| argvLocal.c:140:15:140:32 | ... ? ... : ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:126:10:126:13 | argv | argv |
+| argvLocal.c:144:9:144:10 | i7 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:100:7:100:10 | argv | argv |
+| argvLocal.c:145:15:145:16 | i7 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:100:7:100:10 | argv | argv |
+| argvLocal.c:150:9:150:10 | i8 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:149:15:149:18 | argv | argv |
+| argvLocal.c:151:15:151:16 | i8 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:149:15:149:18 | argv | argv |
+| argvLocal.c:156:9:156:10 | i9 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:155:23:155:26 | argv | argv |
+| argvLocal.c:157:15:157:16 | i9 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:155:23:155:26 | argv | argv |
+| argvLocal.c:162:9:162:11 | i91 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:161:42:161:45 | argv | argv |
+| argvLocal.c:163:15:163:17 | i91 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:161:42:161:45 | argv | argv |
+| argvLocal.c:167:18:167:20 | i10 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | argvLocal.c:166:18:166:21 | argv | argv |
+| argvLocal.c:168:24:168:26 | i10 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format) | argvLocal.c:166:18:166:21 | argv | argv |

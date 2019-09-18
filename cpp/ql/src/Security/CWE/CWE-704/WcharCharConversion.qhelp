@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>This rule indicates a potentially incorrect cast from an byte string (<code>char *</code>) to a wide-character string (<code>wchar_t *</code>).</p>
+  <p>This cast might yield strings that are not correctly terminated; including potential buffer overruns when using such strings with some dangerous APIs.</p>
+</overview>
+
+<recommendation>
+  <p>Do not explicitly cast byte strings to wide-character strings.</p>
+  <p>For string literals, prepend the literal string with the letter "L" to indicate that the string is a wide-character string (<code>wchar_t *</code>).</p>
+  <p>For converting a byte literal to a wide-character string literal, you would need to use the appropriate conversion function for the platform you are using. Please see the references section for options according to your platform.</p>
+</recommendation>
+
+<example>
+<p>In the following example, an byte string literal (<code>"a"</code>) is cast to a wide-character string.</p>
+<sample src="WcharCharConversion.cpp" />
+
+<p>To fix this issue, prepend the literal with the letter "L" (<code>L"a"</code>) to define it as a wide-character string.</p>
+</example>
+
+<references>
+  <li>
+    General resources:
+    <a href="https://en.cppreference.com/w/cpp/string/multibyte/mbstowcs">std::mbstowcs</a>
+  </li>
+  <li>
+    Microsoft specific resources:
+    <a href="https://docs.microsoft.com/en-us/windows/desktop/Intl/security-considerations--international-features">Security Considerations: International Features</a>
+  </li>
+</references>
+
+</qhelp>

@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>__iter__</code> method of an iterator should return self.
+This is important so that iterators can be used as sequences in any context
+that expect a sequence. To do so requires that  <code>__iter__</code> is
+idempotent on iterators.</p>
+
+<p>
+Note that sequences and mapping should return a new iterator, it is just the returned
+iterator that must obey this constraint.
+</p>
+
+</overview>
+<recommendation>
+<p>Make the <code>__iter__</code> return self unless the class should not be an iterator, 
+in which case rename the <code>next</code> (Python 2) or <code>__next__</code> (Python 3) 
+to something else.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>Counter</code> class's <code>__iter__</code> method does not 
+return self (or even an iterator). This will cause the program to fail when anyone attempts 
+to use the iterator in a <code>for</code> loop or <code>in</code> statement.</p>
+<sample src="IterReturnsNonSelf.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/datamodel.html#object.__iter__">object.__iter__</a>.</li>
+  <li>Python Standard Library: <a href="http://docs.python.org/2/library/stdtypes.html#typeiter">Iterators</a>.</li>
+
+
+</references>
+</qhelp>

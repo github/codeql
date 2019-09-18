@@ -1,0 +1,5 @@
+| test.py:98:5:98:17 | Subscript | Modification of the locals() dictionary will have no effect on the local variables. |
+| test.py:100:5:100:28 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |
+| test.py:101:5:101:14 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |
+| test.py:102:9:102:14 | Subscript | Modification of the locals() dictionary will have no effect on the local variables. |
+| test.py:103:5:103:13 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |

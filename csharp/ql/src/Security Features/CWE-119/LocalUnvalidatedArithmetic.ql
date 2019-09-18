@@ -13,6 +13,7 @@
  *       external/cwe/cwe-122
  *       external/cwe/cwe-788
  */
+
 import csharp
 import semmle.code.csharp.controlflow.Guards
 
@@ -24,8 +25,10 @@ where
   DataFlow::localFlow(DataFlow::exprNode(taintSrc), DataFlow::exprNode(add.getAnOperand())) and
   // virtual method call result has not been validated
   not exists(Expr check, ComparisonOperation cmp |
-    DataFlow::localFlow(DataFlow::exprNode(taintSrc), DataFlow::exprNode(check)) |
+    DataFlow::localFlow(DataFlow::exprNode(taintSrc), DataFlow::exprNode(check))
+  |
     cmp.getAnOperand() = check and
     add.getAnOperand().(GuardedExpr).isGuardedBy(cmp, check, _)
   )
-select add, "Unvalidated pointer arithmetic from virtual method $@.", taintSrc, taintSrc.getTarget().getName()
+select add, "Unvalidated pointer arithmetic from virtual method $@.", taintSrc,
+  taintSrc.getTarget().getName()

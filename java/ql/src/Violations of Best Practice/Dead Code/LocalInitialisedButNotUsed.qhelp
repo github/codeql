@@ -6,7 +6,7 @@
 
 <overview>
 <p>A local variable is initialized, but the variable is never read or written to subsequently. This suggests
-that the local variable is either useless and should be removed, or that the value was intended to be used
+that the local variable is either unnecessary and should be removed, or that the value was intended to be used
 somewhere.
 </p>
 
@@ -18,4 +18,7 @@ though: if the right-hand side has a side-effect (like performing a method call)
 it is important to keep this to preserve the overall behavior.</p>
 
 </recommendation>
+
+<include src="../../DeadCode/DeadCodeReferences.qhelp" />
+
 </qhelp>

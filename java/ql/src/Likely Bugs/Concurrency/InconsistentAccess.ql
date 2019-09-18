@@ -15,6 +15,7 @@
  *       statistical
  *       non-attributable
  */
+
 import java
 
 predicate withinInitializer(Expr e) {
@@ -23,13 +24,15 @@ predicate withinInitializer(Expr e) {
 }
 
 predicate locallySynchronized(MethodAccess ma) {
-  ma.getEnclosingStmt().getParent+() instanceof SynchronizedStmt
+  ma.getEnclosingStmt().getEnclosingStmt+() instanceof SynchronizedStmt
 }
 
 predicate hasUnsynchronizedCall(Method m) {
-  (m.isPublic() and not m.isSynchronized())
+  m.isPublic() and not m.isSynchronized()
   or
-  exists(MethodAccess ma, Method caller | ma.getMethod() = m and caller = ma.getEnclosingCallable() |
+  exists(MethodAccess ma, Method caller |
+    ma.getMethod() = m and caller = ma.getEnclosingCallable()
+  |
     hasUnsynchronizedCall(caller) and
     not caller.isSynchronized() and
     not locallySynchronized(ma)
@@ -38,7 +41,7 @@ predicate hasUnsynchronizedCall(Method m) {
 
 predicate withinLocalSynchronization(Expr e) {
   e.getEnclosingCallable().isSynchronized() or
-  e.getEnclosingStmt().getParent+() instanceof SynchronizedStmt
+  e.getEnclosingStmt().getEnclosingStmt+() instanceof SynchronizedStmt
 }
 
 class MyField extends Field {
@@ -50,15 +53,15 @@ class MyField extends Field {
   }
 
   int getNumSynchedAccesses() {
-    result = count(Expr synched | synched = this.getAnAccess() and withinLocalSynchronization(synched))
+    result = count(Expr synched |
+        synched = this.getAnAccess() and withinLocalSynchronization(synched)
+      )
   }
 
-  int getNumAccesses() {
-    result = count(this.getAnAccess())
-  }
+  int getNumAccesses() { result = count(this.getAnAccess()) }
 
   float getPercentSynchedAccesses() {
-    result = (float)this.getNumSynchedAccesses() / this.getNumAccesses()
+    result = this.getNumSynchedAccesses().(float) / this.getNumAccesses()
   }
 }
 
@@ -71,5 +74,7 @@ where
   f.getNumSynchedAccesses() > 0 and
   percent = (f.getPercentSynchedAccesses() * 100).floor() and
   percent > 80
-select e, "Unsynchronized access to $@, but " + percent.toString() + "% of accesses to this field are synchronized.",
-  f, f.getDeclaringType().getName() + "." + f.getName()
+select e,
+  "Unsynchronized access to $@, but " + percent.toString() +
+    "% of accesses to this field are synchronized.", f,
+  f.getDeclaringType().getName() + "." + f.getName()

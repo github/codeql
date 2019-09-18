@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with [Restify](https://restify.com/) servers.
  */
+
 import javascript
 import semmle.javascript.frameworks.HTTP
 
@@ -8,7 +9,7 @@ module Restify {
   /**
    * An expression that creates a new Restify server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr, DataFlow::TrackedExpr {
+  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr {
     ServerDefinition() {
       // `server = restify.createServer()`
       this = DataFlow::moduleMember("restify", "createServer").getACall().asExpr()
@@ -19,7 +20,6 @@ module Restify {
    * A Restify route handler.
    */
   class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
-
     Function function;
 
     RouteHandler() {
@@ -30,16 +30,12 @@ module Restify {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    SimpleParameter getRequestParameter() {
-      result = function.getParameter(0)
-    }
+    SimpleParameter getRequestParameter() { result = function.getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    SimpleParameter getResponseParameter() {
-      result = function.getParameter(1)
-    }
+    SimpleParameter getResponseParameter() { result = function.getParameter(1) }
   }
 
   /**
@@ -49,16 +45,12 @@ module Restify {
   private class ResponseSource extends HTTP::Servers::ResponseSource {
     RouteHandler rh;
 
-    ResponseSource() {
-      this = DataFlow::parameterNode(rh.getResponseParameter())
-    }
+    ResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
 
     /**
      * Gets the route handler that provides this response.
      */
-    override RouteHandler getRouteHandler() {
-      result = rh
-    }
+    override RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -68,16 +60,12 @@ module Restify {
   private class RequestSource extends HTTP::Servers::RequestSource {
     RouteHandler rh;
 
-    RequestSource() {
-      this = DataFlow::parameterNode(rh.getRequestParameter())
-    }
+    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
 
     /**
      * Gets the route handler that handles this request.
      */
-    override RouteHandler getRouteHandler() {
-      result = rh
-    }
+    override RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -102,25 +90,27 @@ module Restify {
     string kind;
 
     RequestInputAccess() {
-      exists (MethodCallExpr query |
+      exists(MethodCallExpr query |
         // `request.getQuery().<name>`
         kind = "parameter" and
         query.calls(request, "getQuery") and
         this.asExpr().(PropAccess).accesses(query, _)
       )
       or
-      exists (string methodName |
+      exists(string methodName |
         // `request.href()` or `request.getPath()`
         kind = "url" and
-        this.asExpr().(MethodCallExpr).calls(request, methodName) |
+        this.asExpr().(MethodCallExpr).calls(request, methodName)
+      |
         methodName = "href" or
         methodName = "getPath"
       )
       or
-      exists (string methodName |
+      exists(string methodName |
         // `request.getContentType()`, `request.userAgent()`, `request.trailer(...)`, `request.header(...)`
         kind = "header" and
-        this.asExpr().(MethodCallExpr).calls(request, methodName) |
+        this.asExpr().(MethodCallExpr).calls(request, methodName)
+      |
         methodName = "getContentType" or
         methodName = "userAgent" or
         methodName = "trailer" or
@@ -132,30 +122,22 @@ module Restify {
       this.asExpr().(PropAccess).accesses(request, "cookies")
     }
 
-    override RouteHandler getRouteHandler() {
-      result = request.getRouteHandler()
-    }
+    override RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
-    override string getKind() {
-      result = kind
-    }
+    override string getKind() { result = kind }
   }
 
   /**
    * An HTTP header defined in a Restify server.
    */
   private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
-
     HeaderDefinition() {
       // response.header('Cache-Control', 'no-cache')
       astNode.getReceiver() instanceof ResponseExpr and
       astNode.getMethodName() = "header"
     }
 
-    override RouteHandler getRouteHandler(){
-      astNode.getReceiver() = result.getAResponseExpr()
-    }
-
+    override RouteHandler getRouteHandler() { astNode.getReceiver() = result.getAResponseExpr() }
   }
 
   /**
@@ -171,12 +153,8 @@ module Restify {
       getMethodName() = any(HTTP::RequestMethodName m).toLowerCase()
     }
 
-    override DataFlow::SourceNode getARouteHandler() {
-      result.flowsToExpr(getArgument(1))
-    }
+    override DataFlow::SourceNode getARouteHandler() { result.flowsToExpr(getArgument(1)) }
 
-    override Expr getServer() {
-      result = server
-    }
+    override Expr getServer() { result = server }
   }
 }

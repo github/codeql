@@ -9,17 +9,10 @@
 
 <p>The query counts number of namespaces depending on a namespace and 
 displays those that have more than 20 namespaces depending on them.</p>
-
 </overview>
-<section title="How to Address the Query Results">
-<p />
 
-
-
-
-
-</section>
 <references>
-
+<li>C++ reference: <a href="https://en.cppreference.com/w/cpp/language/namespace">Namespaces</a>
+ </li>
 </references>
 </qhelp>

@@ -1,5 +1,4 @@
 /* Definitions used by `SqlUnescaped.ql`. */
-
 import semmle.code.java.security.ControlledString
 import semmle.code.java.dataflow.TaintTracking
 
@@ -17,7 +16,8 @@ predicate builtFromUncontrolledConcat(Expr expr, Expr uncontrolled) {
   or
   // Recursive cases
   exists(Expr other | builtFromUncontrolledConcat(other, uncontrolled) |
-    expr.(AddExpr).getAnOperand() = other or
+    expr.(AddExpr).getAnOperand() = other
+    or
     exists(Variable var | var.getAnAssignedValue() = other and var.getAnAccess() = expr)
   )
 }

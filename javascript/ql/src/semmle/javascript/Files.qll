@@ -34,7 +34,7 @@ abstract class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see https://lgtm.com/help/ql/locations#providing-urls.
+   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
    */
   abstract string getURL();
 
@@ -47,8 +47,9 @@ abstract class Container extends @container {
    * if the root folder is not a reflexive, transitive parent of this container.
    */
   string getRelativePath() {
-    exists (string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref) |
+    exists(string absPath, string pref |
+      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+    |
       absPath = pref and result = ""
       or
       absPath = pref.regexpReplaceAll("/$", "") + "/" + result and
@@ -73,9 +74,7 @@ abstract class Container extends @container {
    * <tr><td>"//FileServer/"</td><td>""</td></tr>
    * </table>
    */
-  string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
-  }
+  string getBaseName() { result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 1) }
 
   /**
    * Gets the extension of this container, that is, the suffix of its base name
@@ -101,7 +100,7 @@ abstract class Container extends @container {
    * </table>
    */
   string getExtension() {
-    result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
+    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 4)
   }
 
   /**
@@ -121,24 +120,16 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() {
-    result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
-  }
+  string getStem() { result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 2) }
 
   /** Gets the parent container of this file or folder, if any. */
-  Container getParentContainer() {
-    containerparent(result, this)
-  }
+  Container getParentContainer() { containerparent(result, this) }
 
   /** Gets a file or sub-folder in this container. */
-  Container getAChildContainer() {
-    this = result.getParentContainer()
-  }
+  Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() {
-    result = getAChildContainer()
-  }
+  File getAFile() { result = getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
@@ -147,9 +138,7 @@ abstract class Container extends @container {
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() {
-    result = getAChildContainer()
-  }
+  Folder getAFolder() { result = getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
@@ -162,16 +151,12 @@ abstract class Container extends @container {
    *
    * This is the absolute path of the container.
    */
-  string toString() {
-    result = getAbsolutePath()
-  }
+  string toString() { result = getAbsolutePath() }
 }
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() {
-    folders(this, result, _)
-  }
+  override string getAbsolutePath() { folders(this, result, _) }
 
   /** Gets the file or subfolder in this folder that has the given `name`, if any. */
   Container getChildContainer(string name) {
@@ -198,58 +183,42 @@ class Folder extends Container, @folder {
    * HTML files will not be found by this method.
    */
   File getJavaScriptFile(string stem) {
-    result = min(int p, string ext | p = getFileExtensionPriority(ext) | getFile(stem, ext) order by p)
+    result = min(int p, string ext |
+        p = getFileExtensionPriority(ext)
+      |
+        getFile(stem, ext) order by p
+      )
   }
 
   /** Gets a subfolder contained in this folder. */
-  Folder getASubFolder() {
-    result = getAChildContainer()
-  }
+  Folder getASubFolder() { result = getAChildContainer() }
 
   /** Gets the URL of this folder. */
-  override string getURL() {
-    result = "folder://" + getAbsolutePath()
-  }
+  override string getURL() { result = "folder://" + getAbsolutePath() }
 }
 
 /** A file. */
 class File extends Container, @file, Locatable {
-  override Location getLocation() {
-    hasLocation(this, result)
-  }
+  override Location getLocation() { hasLocation(this, result) }
 
-  override string getAbsolutePath() {
-    files(this, result, _, _, _)
-  }
+  override string getAbsolutePath() { files(this, result, _, _, _) }
 
   /** Gets the number of lines in this file. */
-  int getNumberOfLines() {
-    numlines(this, result, _, _)
-  }
+  int getNumberOfLines() { numlines(this, result, _, _) }
 
   /** Gets the number of lines containing code in this file. */
-  int getNumberOfLinesOfCode() {
-    numlines(this, _, result, _)
-  }
+  int getNumberOfLinesOfCode() { numlines(this, _, result, _) }
 
   /** Gets the number of lines containing comments in this file. */
-  int getNumberOfLinesOfComments() {
-    numlines(this, _, _, result)
-  }
+  int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
 
   /** Gets a toplevel piece of JavaScript code in this file. */
-  TopLevel getATopLevel() {
-    result.getFile() = this
-  }
+  TopLevel getATopLevel() { result.getFile() = this }
 
-  override string toString() {
-    result = Container.super.toString()
-  }
+  override string toString() { result = Container.super.toString() }
 
   /** Gets the URL of this file. */
-  override string getURL() {
-    result = "file://" + this.getAbsolutePath() + ":0:0:0:0"
-  }
+  override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /**
    * Holds if line number `lineno` of this file is indented to depth `d`
@@ -263,16 +232,12 @@ class File extends Container, @file, Locatable {
    * or for lines starting with a string of different whitespace characters
    * (for instance, a mix of tabs and spaces).
    */
-  predicate hasIndentation(int lineno, string c, int d) {
-    indentation(this, lineno, c, d)
-  }
+  predicate hasIndentation(int lineno, string c, int d) { indentation(this, lineno, c, d) }
 
   /**
    * Gets the type of this file.
    */
-  FileType getFileType() {
-    filetype(this, result)
-  }
+  FileType getFileType() { filetype(this, result) }
 }
 
 /**
@@ -290,35 +255,25 @@ class FileType extends string {
   /**
    * Holds if this is the JavaScript file type.
    */
-  predicate isJavaScript() {
-    this = "javascript"
-  }
+  predicate isJavaScript() { this = "javascript" }
 
   /**
    * Holds if this is the HTML file type.
    */
-  predicate isHtml() {
-    this = "html"
-  }
+  predicate isHtml() { this = "html" }
 
   /**
    * Holds if this is the TypeScript file type.
    */
-  predicate isTypeScript() {
-    this = "typescript"
-  }
+  predicate isTypeScript() { this = "typescript" }
 
   /**
    * Holds if this is the JSON file type.
    */
-  predicate isJson() {
-    this = "json"
-  }
+  predicate isJson() { this = "json" }
 
   /**
    * Holds if this is the YAML file type.
    */
-  predicate isYaml() {
-    this = "yaml"
-  }
+  predicate isYaml() { this = "yaml" }
 }

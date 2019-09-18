@@ -19,7 +19,9 @@ private predicate emptyDecl(SsaExplicitUpdate ssa) {
  */
 predicate deadLocal(SsaExplicitUpdate ssa) {
   ssa.getSourceVariable().getVariable() instanceof LocalScopeVariable and
-  not exists(ssa.getAUse()) and not exists(SsaPhiNode phi | phi.getAPhiInput() = ssa) and not exists(SsaImplicitInit init | init.captures(ssa)) and
+  not exists(ssa.getAUse()) and
+  not exists(SsaPhiNode phi | phi.getAPhiInput() = ssa) and
+  not exists(SsaImplicitInit init | init.captures(ssa)) and
   not emptyDecl(ssa) and
   not readImplicitly(ssa, _)
 }
@@ -44,8 +46,9 @@ predicate overwritten(SsaExplicitUpdate ssa) {
     exists(BasicBlock bb1, BasicBlock bb2, int i, int j |
       bb1.getNode(i) = ssa.getCFGNode() and
       bb2.getNode(j) = overwrite.getCFGNode()
-      |
-      bb1.getABBSuccessor+() = bb2 or
+    |
+      bb1.getABBSuccessor+() = bb2
+      or
       bb1 = bb2 and i < j
     )
   )
@@ -55,7 +58,8 @@ predicate overwritten(SsaExplicitUpdate ssa) {
  * A local variable with a read access.
  */
 predicate read(LocalScopeVariable v) {
-  exists(VarAccess va | va = v.getAnAccess() | va.isRValue()) or
+  exists(VarAccess va | va = v.getAnAccess() | va.isRValue())
+  or
   readImplicitly(_, v)
 }
 
@@ -77,16 +81,19 @@ predicate assigned(LocalScopeVariable v) {
 predicate exprHasNoEffect(Expr e) {
   inInitializer(e) and
   not exists(Expr bad | bad = e.getAChildExpr*() |
-    bad instanceof Assignment or
-    bad instanceof UnaryAssignExpr or
+    bad instanceof Assignment
+    or
+    bad instanceof UnaryAssignExpr
+    or
     exists(ClassInstanceExpr cie, Constructor c |
       bad = cie and c = cie.getConstructor().getSourceDeclaration()
-      |
+    |
       constructorHasEffect(c)
-    ) or
+    )
+    or
     exists(MethodAccess ma, Method m |
       bad = ma and m = ma.getMethod().getAPossibleImplementation()
-      |
+    |
       methodHasEffect(m) or not m.fromSource()
     )
   )
@@ -97,15 +104,17 @@ private predicate inInitializer(Expr e) {
 }
 
 // The next two predicates are somewhat conservative.
-
 private predicate constructorHasEffect(Constructor c) {
   // Only assign fields of the class - do not call methods,
   // create new objects or assign any other variables.
-  exists(MethodAccess ma | ma.getEnclosingCallable() = c) or
-  exists(ClassInstanceExpr cie | cie.getEnclosingCallable() = c) or
+  exists(MethodAccess ma | ma.getEnclosingCallable() = c)
+  or
+  exists(ClassInstanceExpr cie | cie.getEnclosingCallable() = c)
+  or
   exists(Assignment a | a.getEnclosingCallable() = c |
     not exists(VarAccess va | va = a.getDest() |
-      va.getVariable() instanceof LocalVariableDecl or
+      va.getVariable() instanceof LocalVariableDecl
+      or
       exists(Field f | f = va.getVariable() |
         va.getQualifier() instanceof ThisAccess or
         not exists(va.getQualifier())

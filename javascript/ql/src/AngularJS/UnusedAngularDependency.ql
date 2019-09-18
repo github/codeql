@@ -11,6 +11,7 @@
 
 import javascript
 import Declarations.UnusedParameter
+import semmle.javascript.RestrictedLocations
 
 predicate isUnusedParameter(Function f, string msg, Parameter parameter) {
   exists(Variable pv |
@@ -21,19 +22,25 @@ predicate isUnusedParameter(Function f, string msg, Parameter parameter) {
 }
 
 predicate isMissingParameter(AngularJS::InjectableFunction f, string msg, ASTNode location) {
-    exists(int paramCount, int injectionCount |
+  exists(int paramCount, int injectionCount |
     DataFlow::valueNode(location) = f and
     paramCount = f.asFunction().getNumParameter() and
     injectionCount = count(f.getADependencyDeclaration(_)) and
     paramCount < injectionCount and
     exists(string parametersString, string dependenciesAreString |
       (if paramCount = 1 then parametersString = "parameter" else parametersString = "parameters") and
-      (if injectionCount = 1 then dependenciesAreString = "dependency is" else dependenciesAreString = "dependencies are") and
-      msg = "This function has " + paramCount + " " + parametersString + ", but " + injectionCount + " " + dependenciesAreString + " injected into it."
+      (
+        if injectionCount = 1
+        then dependenciesAreString = "dependency is"
+        else dependenciesAreString = "dependencies are"
+      ) and
+      msg = "This function has " + paramCount + " " + parametersString + ", but " + injectionCount +
+          " " + dependenciesAreString + " injected into it."
     )
   )
 }
 
 from AngularJS::InjectableFunction f, string message, ASTNode location
-where isUnusedParameter(f.asFunction(), message, location) or isMissingParameter(f, message, location)
-select location, message
+where
+  isUnusedParameter(f.asFunction(), message, location) or isMissingParameter(f, message, location)
+select location.(FirstLineOf), message

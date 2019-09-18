@@ -1,7 +1,0 @@
-| tst.ts:41:16:41:36 | string\| ... boolean | 0 | 3 | tst.ts:41:16:41:21 | string |
-| tst.ts:41:16:41:36 | string\| ... boolean | 1 | 3 | tst.ts:41:23:41:28 | number |
-| tst.ts:41:16:41:36 | string\| ... boolean | 2 | 3 | tst.ts:41:30:41:36 | boolean |
-| tst.ts:47:19:47:33 | string \| number | 0 | 2 | tst.ts:47:19:47:24 | string |
-| tst.ts:47:19:47:33 | string \| number | 1 | 2 | tst.ts:47:28:47:33 | number |
-| tst.ts:47:39:47:54 | boolean \| string | 0 | 2 | tst.ts:47:39:47:45 | boolean |
-| tst.ts:47:39:47:54 | boolean \| string | 1 | 2 | tst.ts:47:49:47:54 | string |

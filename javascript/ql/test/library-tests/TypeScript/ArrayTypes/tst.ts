@@ -1,5 +1,5 @@
 let plain: number[];
-let radonly: ReadonlyArray<number>;
+let readonly: ReadonlyArray<number>;
 let tuple: [number, string];
 
 interface NumberIndexable {
@@ -14,3 +14,6 @@ interface StringIndexable {
 
 let numberIndexable: NumberIndexable;
 let stringIndexable: StringIndexable;
+
+let readonlySyntax: readonly number[];
+let readonlySyntax2: readonly number[][];

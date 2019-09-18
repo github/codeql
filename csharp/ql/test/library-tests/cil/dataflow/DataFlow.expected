@@ -1,7 +1,17 @@
-| dataflow.cs:16:18:16:26 | "tainted" | dataflow.cs:16:18:16:37 | call to method ToString |
-| dataflow.cs:17:27:17:28 | 12 | dataflow.cs:17:18:17:29 | call to method Abs |
-| dataflow.cs:18:27:18:27 | 2 | dataflow.cs:18:18:18:31 | call to method Max |
-| dataflow.cs:18:30:18:30 | 3 | dataflow.cs:18:18:18:31 | call to method Max |
-| dataflow.cs:20:45:20:53 | "tainted" | dataflow.cs:20:18:20:54 | call to method GetFullPath |
-| dataflow.cs:27:44:27:46 | 1 | dataflow.cs:27:18:27:52 | call to method IEEERemainder |
-| dataflow.cs:27:49:27:51 | 2 | dataflow.cs:27:18:27:52 | call to method IEEERemainder |
+| dataflow.cs:18:18:18:26 | "tainted" | dataflow.cs:18:18:18:37 | call to method ToString |
+| dataflow.cs:20:27:20:27 | 2 | dataflow.cs:20:18:20:31 | call to method Max |
+| dataflow.cs:20:30:20:30 | 3 | dataflow.cs:20:18:20:31 | call to method Max |
+| dataflow.cs:21:29:21:31 | 0.5 | dataflow.cs:21:18:21:32 | call to method Round |
+| dataflow.cs:22:45:22:53 | "tainted" | dataflow.cs:22:18:22:54 | call to method GetFullPath |
+| dataflow.cs:29:44:29:46 | 1 | dataflow.cs:29:18:29:52 | call to method IEEERemainder |
+| dataflow.cs:29:49:29:51 | 2 | dataflow.cs:29:18:29:52 | call to method IEEERemainder |
+| dataflow.cs:40:34:40:37 | "d1" | dataflow.cs:40:18:40:38 | call to method Taint1 |
+| dataflow.cs:41:34:41:37 | "d2" | dataflow.cs:41:18:41:38 | call to method Taint2 |
+| dataflow.cs:42:34:42:37 | "d3" | dataflow.cs:42:18:42:38 | call to method Taint3 |
+| dataflow.cs:46:28:46:32 | "t1a" | dataflow.cs:46:18:46:40 | call to method Taint1 |
+| dataflow.cs:46:35:46:39 | "t1b" | dataflow.cs:46:18:46:40 | call to method Taint1 |
+| dataflow.cs:49:35:49:38 | "t6" | dataflow.cs:49:18:49:45 | call to method TaintIndirect |
+| dataflow.cs:49:41:49:44 | "t6" | dataflow.cs:49:18:49:45 | call to method TaintIndirect |
+| dataflow.cs:102:30:102:33 | null | dataflow.cs:89:24:89:51 | ... ? ... : ... |
+| dataflow.cs:102:30:102:33 | null | dataflow.cs:108:20:108:33 | call to method IndirectNull |
+| dataflow.cs:109:23:109:26 | null | dataflow.cs:89:24:89:51 | ... ? ... : ... |

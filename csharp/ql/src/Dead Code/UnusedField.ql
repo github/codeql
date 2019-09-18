@@ -9,13 +9,14 @@
  *       useless-code
  *       external/cwe/cwe-561
  */
+
 import csharp
 import DeadCode
 
 from Field f
 where
-  not extractionIsStandalone()
-  and f.fromSource()
-  and isDeadField(f)
-  and not f.getDeclaringType().isPartial()
+  not extractionIsStandalone() and
+  f.fromSource() and
+  isDeadField(f) and
+  not f.getDeclaringType().isPartial()
 select f, "Unused field (or field used from dead method only)"

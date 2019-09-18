@@ -7,9 +7,9 @@
  * @metricType file
  * @metricAggregate avg sum max
  */
+
 import java
 
 from File f, int n
 where n = f.getTotalNumberOfLines()
-select f, n
-order by n desc
+select f, n order by n desc

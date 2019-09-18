@@ -10,6 +10,7 @@
  *       readability
  *       external/cwe/cwe-481
  */
+
 import semmle.code.java.Expr
 import semmle.code.java.Statement
 

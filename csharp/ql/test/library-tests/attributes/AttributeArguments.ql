@@ -1,4 +1,13 @@
 import csharp
 
-from Attribute attribute, int index
-select attribute, index, attribute.getArgument(index)
+query predicate arguments(Attribute attribute, int index, Expr e) {
+  e = attribute.getArgument(index)
+}
+
+query predicate constructorArguments(Attribute attribute, int index, Expr e) {
+  e = attribute.getConstructorArgument(index)
+}
+
+query predicate namedArguments(Attribute attribute, string name, Expr e) {
+  e = attribute.getNamedArgument(name)
+}

@@ -9,6 +9,7 @@
  * @tags reliability
  *       maintainability
  */
+
 import java
 
 class NewStringBufferOrBuilder extends ClassInstanceExpr {
@@ -19,12 +20,10 @@ class NewStringBufferOrBuilder extends ClassInstanceExpr {
     )
   }
 
-  string getName() {
-    result = this.getConstructedType().getName()
-  }
+  string getName() { result = this.getConstructedType().getName() }
 }
 
 from NewStringBufferOrBuilder nsb
 where nsb.getArgument(0).getType().hasName("char")
-select nsb, "A character value passed to 'new " + nsb.getName() +
-  "' is interpreted as the buffer capacity."
+select nsb,
+  "A character value passed to 'new " + nsb.getName() + "' is interpreted as the buffer capacity."

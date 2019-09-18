@@ -43,7 +43,7 @@ void someFunction()
 	WCHAR filename[MAX_LONGPATH];
 	int linenum;
 
-	msg_out("Source file: %S @ %d\n", filename, linenum); // GOOD
+	msg_out("Source file: %S @ %d\n", filename, linenum); // GOOD [FALSE POSITIVE]
 }
 
 // --------------------------------------------------------------

@@ -1,0 +1,38 @@
+alwaysNull
+| dataflow.cs:70:21:70:35 | default(...) |
+| dataflow.cs:74:21:74:34 | call to method NullFunction |
+| dataflow.cs:74:21:74:52 | ... ?? ... |
+| dataflow.cs:74:39:74:52 | call to method IndirectNull |
+| dataflow.cs:78:21:78:45 | call to method ReturnsNull |
+| dataflow.cs:79:21:79:46 | call to method ReturnsNull2 |
+| dataflow.cs:80:21:80:44 | access to property NullProperty |
+| dataflow.cs:89:31:89:44 | call to method NullFunction |
+alwaysNotNull
+| dataflow.cs:71:24:71:35 | default(...) |
+| dataflow.cs:72:27:72:30 | this access |
+| dataflow.cs:72:27:72:40 | call to method GetType |
+| dataflow.cs:73:30:73:33 | true |
+| dataflow.cs:73:30:73:44 | call to method ToString |
+| dataflow.cs:74:21:74:34 | this access |
+| dataflow.cs:74:39:74:52 | this access |
+| dataflow.cs:77:27:77:52 | object creation of type NullMethods |
+| dataflow.cs:78:21:78:31 | access to local variable nullMethods |
+| dataflow.cs:79:21:79:31 | access to local variable nullMethods |
+| dataflow.cs:80:21:80:31 | access to local variable nullMethods |
+| dataflow.cs:83:23:83:51 | object creation of type NonNullMethods |
+| dataflow.cs:84:24:84:30 | access to local variable nonNull |
+| dataflow.cs:84:24:84:47 | call to method ReturnsNonNull |
+| dataflow.cs:85:24:85:30 | access to local variable nonNull |
+| dataflow.cs:85:24:85:55 | call to method ReturnsNonNullIndirect |
+| dataflow.cs:86:24:86:30 | access to local variable nonNull |
+| dataflow.cs:89:24:89:27 | this access |
+| dataflow.cs:89:31:89:44 | this access |
+| dataflow.cs:89:48:89:51 | this access |
+| dataflow.cs:90:24:90:34 | access to local variable nullMethods |
+| dataflow.cs:91:24:91:34 | access to local variable nullMethods |
+| dataflow.cs:92:26:92:32 | access to local variable nonNull |
+| dataflow.cs:95:25:95:31 | access to local variable nonNull |
+| dataflow.cs:96:26:96:32 | access to local variable nonNull |
+| dataflow.cs:97:32:97:73 | object creation of type MaybeNullMethods |
+| dataflow.cs:98:21:98:36 | access to local variable maybeNullMethods |
+| dataflow.cs:99:22:99:37 | access to local variable maybeNullMethods |

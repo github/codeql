@@ -4,60 +4,69 @@ import cpp
  * Describes whether a relation is 'strict' (that is, a `<` or `>`
  * relation) or 'non-strict' (a `<=` or `>=` relation).
  */
-newtype RelationStrictness = Strict() or Nonstrict()
+newtype RelationStrictness =
+  Strict() or
+  Nonstrict()
 
 /**
  * Describes whether a relation is 'greater' (that is, a `>` or `>=`
  * relation) or 'lesser' (a `<` or `<=` relation).
  */
-newtype RelationDirection = Greater() or Lesser()
+newtype RelationDirection =
+  Greater() or
+  Lesser()
 
-private
-RelationStrictness negateStrictness(RelationStrictness strict) {
-  (strict = Strict()    and result = Nonstrict()) or
-  (strict = Nonstrict() and result = Strict())
+private RelationStrictness negateStrictness(RelationStrictness strict) {
+  strict = Strict() and result = Nonstrict()
+  or
+  strict = Nonstrict() and result = Strict()
 }
 
-private
-RelationDirection negateDirection(RelationDirection dir) {
-  (dir = Greater() and result = Lesser()) or
-  (dir = Lesser()  and result = Greater())
+private RelationDirection negateDirection(RelationDirection dir) {
+  dir = Greater() and result = Lesser()
+  or
+  dir = Lesser() and result = Greater()
 }
 
 boolean directionIsGreater(RelationDirection dir) {
-  (dir = Greater() and result = true) or
-  (dir = Lesser()  and result = false)
+  dir = Greater() and result = true
+  or
+  dir = Lesser() and result = false
 }
 
 boolean directionIsLesser(RelationDirection dir) {
-  (dir = Greater() and result = false) or
-  (dir = Lesser()  and result = true)
+  dir = Greater() and result = false
+  or
+  dir = Lesser() and result = true
 }
 
 /**
  * Holds if `rel` is a relational operation (`<`, `>`, `<=` or `>=`)
- * with left operand `lhs` and right operand `rhs`, described by
+ * with fully-converted children `lhs` and `rhs`, described by
  * `dir` and `strict`.
  *
  * For example, if `rel` is `x < 5` then
  * `relOp(rel, x, 5, Lesser(), Strict())` holds.
  */
-private
-predicate relOp(
-  RelationalOperation rel, Expr lhs, Expr rhs,
-  RelationDirection dir, RelationStrictness strict
+private predicate relOp(
+  RelationalOperation rel, Expr lhs, Expr rhs, RelationDirection dir, RelationStrictness strict
 ) {
-  lhs = rel.getLeftOperand() and
-  rhs = rel.getRightOperand() and
-  ((rel instanceof LTExpr and dir = Lesser()  and strict = Strict()) or
-   (rel instanceof LEExpr and dir = Lesser()  and strict = Nonstrict()) or
-   (rel instanceof GTExpr and dir = Greater() and strict = Strict()) or
-   (rel instanceof GEExpr and dir = Greater() and strict = Nonstrict()))
+  lhs = rel.getLeftOperand().getFullyConverted() and
+  rhs = rel.getRightOperand().getFullyConverted() and
+  (
+    rel instanceof LTExpr and dir = Lesser() and strict = Strict()
+    or
+    rel instanceof LEExpr and dir = Lesser() and strict = Nonstrict()
+    or
+    rel instanceof GTExpr and dir = Greater() and strict = Strict()
+    or
+    rel instanceof GEExpr and dir = Greater() and strict = Nonstrict()
+  )
 }
 
 /**
  * Holds if `rel` is a relational operation (`<`, `>`, `<=` or `>=`)
- * with children `a` and `b`, described by `dir` and `strict`.
+ * with fully-converted children `a` and `b`, described by `dir` and `strict`.
  *
  * This allows for the relation to be either as written, or with its
  * arguments reversed; for example, if `rel` is `x < 5` then both
@@ -65,16 +74,15 @@ predicate relOp(
  * `relOpWithSwap(rel, 5, x, Greater(), Strict())` hold.
  */
 predicate relOpWithSwap(
-  RelationalOperation rel, Expr a, Expr b,
-  RelationDirection dir, RelationStrictness strict
+  RelationalOperation rel, Expr a, Expr b, RelationDirection dir, RelationStrictness strict
 ) {
-  relOp(rel, a, b, dir,                  strict) or
+  relOp(rel, a, b, dir, strict) or
   relOp(rel, b, a, negateDirection(dir), strict)
 }
 
 /**
  * Holds if `rel` is a comparison operation (`<`, `>`, `<=` or `>=`)
- * with children `a` and `b`, described by `dir` and `strict`, with
+ * with fully-converted children `a` and `b`, described by `dir` and `strict`, with
  * result `branch`.
  *
  * This allows for the relation to be either as written, or with its
@@ -85,34 +93,36 @@ predicate relOpWithSwap(
  * `relOpWithSwapAndNegate(rel, 5, x, Lesser(), Nonstrict(), false)` hold.
  */
 predicate relOpWithSwapAndNegate(
-  RelationalOperation rel, Expr a, Expr b,
-  RelationDirection dir, RelationStrictness strict, boolean branch
+  RelationalOperation rel, Expr a, Expr b, RelationDirection dir, RelationStrictness strict,
+  boolean branch
 ) {
-  (relOpWithSwap(rel, a, b, dir, strict) and branch = true)
+  relOpWithSwap(rel, a, b, dir, strict) and branch = true
   or
-  (relOpWithSwap(rel, a, b, negateDirection(dir), negateStrictness(strict)) and
-   branch = false)
+  relOpWithSwap(rel, a, b, negateDirection(dir), negateStrictness(strict)) and
+  branch = false
 }
 
 /**
- * Holds if `cmp` is an equality operation (`==` or `!=`) with left
- * operand `lhs`, right operand `rhs`, and `isEQ` is true if `cmp` is an
+ * Holds if `cmp` is an equality operation (`==` or `!=`) with  fully-converted
+ * children `lhs` and `rhs`, and `isEQ` is true if `cmp` is an
  * `==` operation and false if it is an `!=` operation.
  *
  * For example, if `rel` is `x == 5` then
  * `eqOpWithSwap(cmp, x, 5, true)` holds.
  */
-private
-predicate eqOp(EqualityOperation cmp, Expr lhs, Expr rhs, boolean isEQ) {
-  lhs = cmp.getLeftOperand() and
-  rhs = cmp.getRightOperand() and
-  ((cmp instanceof EQExpr and isEQ = true) or
-   (cmp instanceof NEExpr and isEQ = false))
+private predicate eqOp(EqualityOperation cmp, Expr lhs, Expr rhs, boolean isEQ) {
+  lhs = cmp.getLeftOperand().getFullyConverted() and
+  rhs = cmp.getRightOperand().getFullyConverted() and
+  (
+    cmp instanceof EQExpr and isEQ = true
+    or
+    cmp instanceof NEExpr and isEQ = false
+  )
 }
 
 /**
- * Holds if `cmp` is an equality operation (`==` or `!=`) with operands
- * `a` and `b`, and `isEQ` is true if `cmp` is an `==` operation and
+ * Holds if `cmp` is an equality operation (`==` or `!=`) with fully-converted
+ * operands `a` and `b`, and `isEQ` is true if `cmp` is an `==` operation and
  * false if it is an `!=` operation.
  *
  * This allows for the equality to be either as written, or with its
@@ -120,15 +130,14 @@ predicate eqOp(EqualityOperation cmp, Expr lhs, Expr rhs, boolean isEQ) {
  * `eqOpWithSwap(cmp, x, 5, true)` and
  * `eqOpWithSwap(cmp, 5, x, true)` hold.
  */
-private
-predicate eqOpWithSwap(EqualityOperation cmp, Expr a, Expr b, boolean isEQ) {
+private predicate eqOpWithSwap(EqualityOperation cmp, Expr a, Expr b, boolean isEQ) {
   eqOp(cmp, a, b, isEQ) or
   eqOp(cmp, b, a, isEQ)
 }
 
 /**
- * Holds if `cmp` is an equality operation (`==` or `!=`) with operands
- * `a` and `b`, `isEQ` is true if `cmp` is an `==` operation and
+ * Holds if `cmp` is an equality operation (`==` or `!=`) with fully-converted
+ * children `a` and `b`, `isEQ` is true if `cmp` is an `==` operation and
  * false if it is an `!=` operation, and the result is `branch`.
  *
  * This allows for the comparison to be either as written, or with its
@@ -138,11 +147,10 @@ predicate eqOpWithSwap(EqualityOperation cmp, Expr a, Expr b, boolean isEQ) {
  * `eqOpWithSwapAndNegate(cmp, x, 5, false, false)` and
  * `eqOpWithSwapAndNegate(cmp, 5, x, false, false)` hold.
  */
-predicate eqOpWithSwapAndNegate(
-  EqualityOperation cmp, Expr a, Expr b, boolean isEQ, boolean branch
-) {
-  (eqOpWithSwap(cmp, a, b, branch) and isEQ = true) or
-  (eqOpWithSwap(cmp, a, b, branch.booleanNot()) and isEQ = false)
+predicate eqOpWithSwapAndNegate(EqualityOperation cmp, Expr a, Expr b, boolean isEQ, boolean branch) {
+  eqOpWithSwap(cmp, a, b, branch) and isEQ = true
+  or
+  eqOpWithSwap(cmp, a, b, branch.booleanNot()) and isEQ = false
 }
 
 /**
@@ -161,75 +169,99 @@ predicate linearAccess(Expr expr, VariableAccess v, float p, float q) {
  * This takes into account the associativity, commutativity and
  * distributivity of arithmetic operations.
  */
-private
-predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
+private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
   // Base case
-  (expr = v and p = 1.0 and q = 0.0)
+  expr = v and p = 1.0 and q = 0.0
   or
   // a+(p*v+b) == p*v + (a+b)
-  exists (AddExpr addExpr, float a, float b
-  | addExpr.getLeftOperand().isConstant() and
+  exists(AddExpr addExpr, float a, float b |
+    addExpr.getLeftOperand().isConstant() and
     a = addExpr.getLeftOperand().getFullyConverted().getValue().toFloat() and
     linearAccess(addExpr.getRightOperand(), v, p, b) and
     expr = addExpr and
-    q = a+b)
+    q = a + b
+  )
   or
   // (p*v+a)+b == p*v + (a+b)
-  exists (AddExpr addExpr, float a, float b
-  | addExpr.getRightOperand().isConstant() and
+  exists(AddExpr addExpr, float a, float b |
+    addExpr.getRightOperand().isConstant() and
     b = addExpr.getRightOperand().getFullyConverted().getValue().toFloat() and
     linearAccess(addExpr.getLeftOperand(), v, p, a) and
     expr = addExpr and
-    q = a+b)
+    q = a + b
+  )
   or
   // a-(m*v+b) == -m*v + (a-b)
-  exists (SubExpr subExpr, float a, float b, float m
-  | subExpr.getLeftOperand().isConstant() and
+  exists(SubExpr subExpr, float a, float b, float m |
+    subExpr.getLeftOperand().isConstant() and
     a = subExpr.getLeftOperand().getFullyConverted().getValue().toFloat() and
     linearAccess(subExpr.getRightOperand(), v, m, b) and
     expr = subExpr and
     p = -m and
-    q = a-b)
+    q = a - b
+  )
   or
   // (p*v+a)-b == p*v + (a-b)
-  exists (SubExpr subExpr, float a, float b
-  | subExpr.getRightOperand().isConstant() and
+  exists(SubExpr subExpr, float a, float b |
+    subExpr.getRightOperand().isConstant() and
     b = subExpr.getRightOperand().getFullyConverted().getValue().toFloat() and
     linearAccess(subExpr.getLeftOperand(), v, p, a) and
     expr = subExpr and
-    q = a-b)
+    q = a - b
+  )
   or
   // +(p*v+q) == p*v + q
-  exists (UnaryPlusExpr unaryPlusExpr
-  | linearAccess(unaryPlusExpr.getOperand(), v, p, q) and
-    expr = unaryPlusExpr)
+  exists(UnaryPlusExpr unaryPlusExpr |
+    linearAccess(unaryPlusExpr.getOperand().getFullyConverted(), v, p, q) and
+    expr = unaryPlusExpr
+  )
+  or
+  // (larger_type)(p*v+q) == p*v + q
+  exists(Cast cast, ArithmeticType sourceType, ArithmeticType targetType |
+    linearAccess(cast.getExpr(), v, p, q) and
+    sourceType = cast.getExpr().getUnspecifiedType() and
+    targetType = cast.getUnspecifiedType() and
+    // This allows conversion between signed and unsigned, which is technically
+    // lossy but common enough that we'll just have to assume the user knows
+    // what they're doing.
+    targetType.getSize() >= sourceType.getSize() and
+    expr = cast
+  )
+  or
+  // (p*v+q) == p*v + q
+  exists(ParenthesisExpr paren |
+    linearAccess(paren.getExpr(), v, p, q) and
+    expr = paren
+  )
   or
   // -(a*v+b) == -a*v + (-b)
-  exists (UnaryMinusExpr unaryMinusExpr, float a, float b
-  | linearAccess(unaryMinusExpr.getOperand(), v, a, b) and
+  exists(UnaryMinusExpr unaryMinusExpr, float a, float b |
+    linearAccess(unaryMinusExpr.getOperand().getFullyConverted(), v, a, b) and
     expr = unaryMinusExpr and
     p = -a and
-    q = -b)
+    q = -b
+  )
   or
   // m*(a*v+b) == (m*a)*v + (m*b)
-  exists (MulExpr mulExpr, float a, float b, float m
-  | mulExpr.getLeftOperand().isConstant() and
+  exists(MulExpr mulExpr, float a, float b, float m |
+    mulExpr.getLeftOperand().isConstant() and
     m = mulExpr.getLeftOperand().getFullyConverted().getValue().toFloat() and
     linearAccess(mulExpr.getRightOperand(), v, a, b) and
     expr = mulExpr and
-    p = m*a and
-    q = m*b)
+    p = m * a and
+    q = m * b
+  )
   or
   // (a*v+b)*m == (m*a)*v + (m*b)
-  exists (MulExpr mulExpr, float a, float b, float m
-  | mulExpr.getRightOperand().isConstant() and
+  exists(MulExpr mulExpr, float a, float b, float m |
+    mulExpr.getRightOperand().isConstant() and
     m = mulExpr.getRightOperand().getFullyConverted().getValue().toFloat() and
     linearAccess(mulExpr.getLeftOperand(), v, a, b) and
     expr = mulExpr and
-    p = m*a and
-    q = m*b)
+    p = m * a and
+    q = m * b
+  )
 }
-
 
 /**
  * Holds if `guard` is a comparison operation (`<`, `<=`, `>`, `>=`,
@@ -257,58 +289,63 @@ predicate cmpWithLinearBound(
   RelationDirection direction, // Is this a lower or an upper bound?
   boolean branch // Which control-flow branch is this bound valid on?
 ) {
-  exists (Expr lhs, float p, RelationDirection dir
-  | linearAccess(lhs, v, p, _) and
+  exists(Expr lhs, float p, RelationDirection dir |
+    linearAccess(lhs, v, p, _) and
     relOpWithSwapAndNegate(guard, lhs, _, dir, _, branch) and
-    ((p > 0 and direction = dir) or
-     (p < 0 and direction = negateDirection(dir))))
-
+    (
+      p > 0 and direction = dir
+      or
+      p < 0 and direction = negateDirection(dir)
+    )
+  )
   or
-  exists (Expr lhs
-  | linearAccess(lhs, v, _, _) and
-    eqOpWithSwap(guard, lhs, _, branch))
+  exists(Expr lhs |
+    linearAccess(lhs, v, _, _) and
+    eqOpWithSwap(guard, lhs, _, branch)
+  )
 }
 
 /**
- * Holds if `lb` and `ub` are the lower and upper bounds of type `t`
- * respectively.
+ * Holds if `lb` and `ub` are the lower and upper bounds of the unspecified
+ * type `t`.
  *
  * For example, if `t` is a signed 32-bit type then holds if `lb` is
  * `-2^31` and `ub` is `2^31 - 1`.
  */
-private
-predicate typeBounds(Type t, float lb, float ub) {
-  exists (IntegralType integralType, float limit
-  | integralType = t and limit = 2.pow(8 * integralType.getSize())
-  | if integralType instanceof BoolType
-      then (lb = 0 and ub = 1)
-      else if integralType.isSigned()
-             then (lb = -(limit/2) and ub = (limit/2)-1)
-             else (lb = 0 and ub = limit-1))
+private predicate typeBounds(ArithmeticType t, float lb, float ub) {
+  exists(IntegralType integralType, float limit |
+    integralType = t and limit = 2.pow(8 * integralType.getSize())
+  |
+    if integralType instanceof BoolType
+    then lb = 0 and ub = 1
+    else
+      if integralType.isSigned()
+      then (
+        lb = -(limit / 2) and ub = (limit / 2) - 1
+      ) else (
+        lb = 0 and ub = limit - 1
+      )
+  )
   or
   // This covers all floating point types. The range is (-Inf, +Inf).
-  (t instanceof FloatingPointType and lb = -(1.0/0.0) and ub = 1.0/0.0)
+  t instanceof FloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
 }
 
 /**
- * Gets the lower bound for type `t`.
+ * Gets the lower bound for the unspecified type `t`.
  *
  * For example, if `t` is a signed 32-bit type then the result is
  * `-2^31`.
  */
-float typeLowerBound(Type t) {
-  typeBounds(t, result, _)
-}
+float typeLowerBound(ArithmeticType t) { typeBounds(t, result, _) }
 
 /**
- * Gets the upper bound for type `t`.
+ * Gets the upper bound for the unspecified type `t`.
  *
  * For example, if `t` is a signed 32-bit type then the result is
  * `2^31 - 1`.
  */
-float typeUpperBound(Type t) {
-  typeBounds(t, _, result)
-}
+float typeUpperBound(ArithmeticType t) { typeBounds(t, _, result) }
 
 /**
  * Gets the minimum value that this expression could represent, based on
@@ -321,9 +358,7 @@ float typeUpperBound(Type t) {
  * `exprMinVal(expr)` you will normally want to call
  * `exprMinVal(expr.getFullyConverted())`.
  */
-float exprMinVal(Expr expr) {
-  result = typeLowerBound(expr.getType().getUnspecifiedType())
-}
+float exprMinVal(Expr expr) { result = typeLowerBound(expr.getUnspecifiedType()) }
 
 /**
  * Gets the maximum value that this expression could represent, based on
@@ -336,9 +371,7 @@ float exprMinVal(Expr expr) {
  * `exprMaxVal(expr)` you will normally want to call
  * `exprMaxVal(expr.getFullyConverted())`.
  */
-float exprMaxVal(Expr expr) {
-  result = typeUpperBound(expr.getType().getUnspecifiedType())
-}
+float exprMaxVal(Expr expr) { result = typeUpperBound(expr.getUnspecifiedType()) }
 
 /**
  * Gets the minimum value that this variable could represent, based on
@@ -347,9 +380,7 @@ float exprMaxVal(Expr expr) {
  * For example, if `v` has a signed 32-bit type then the result is
  * `-2^31`.
  */
-float varMinVal(Variable v) {
-  result = typeLowerBound(v.getType().getUnspecifiedType())
-}
+float varMinVal(Variable v) { result = typeLowerBound(v.getUnspecifiedType()) }
 
 /**
  * Gets the maximum value that this variable could represent, based on
@@ -358,6 +389,4 @@ float varMinVal(Variable v) {
  * For example, if `v` has a signed 32-bit type then the result is
  * `2^31 - 1`.
  */
-float varMaxVal(Variable v) {
-  result = typeUpperBound(v.getType().getUnspecifiedType())
-}
+float varMaxVal(Variable v) { result = typeUpperBound(v.getUnspecifiedType()) }

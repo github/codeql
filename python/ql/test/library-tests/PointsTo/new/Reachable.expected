@@ -1,0 +1,80 @@
+| m_attributes.py:0 | Entry node for Module code.m_attributes | import |
+| m_attributes.py:0 | Exit node for Module code.m_attributes | import |
+| m_attributes.py:3 | ControlFlowNode for C | import |
+| m_attributes.py:3 | ControlFlowNode for ClassExpr | import |
+| m_attributes.py:3 | ControlFlowNode for object | import |
+| m_attributes.py:3 | Entry node for Class C | import |
+| m_attributes.py:3 | Exit node for Class C | import |
+| m_attributes.py:5 | ControlFlowNode for FunctionExpr | import |
+| m_attributes.py:5 | ControlFlowNode for IntegerLiteral | import |
+| m_attributes.py:5 | ControlFlowNode for __init__ | import |
+| m_attributes.py:5 | ControlFlowNode for a | code/m_attributes.py:12 from import |
+| m_attributes.py:5 | ControlFlowNode for a | code/m_attributes.py:12 from import |
+| m_attributes.py:5 | ControlFlowNode for a | code/m_attributes.py:13 from import |
+| m_attributes.py:5 | ControlFlowNode for a | code/m_attributes.py:13 from import |
+| m_attributes.py:5 | ControlFlowNode for a | runtime |
+| m_attributes.py:5 | ControlFlowNode for self | code/m_attributes.py:12 from import |
+| m_attributes.py:5 | ControlFlowNode for self | code/m_attributes.py:12 from import |
+| m_attributes.py:5 | ControlFlowNode for self | code/m_attributes.py:13 from import |
+| m_attributes.py:5 | ControlFlowNode for self | code/m_attributes.py:13 from import |
+| m_attributes.py:5 | ControlFlowNode for self | runtime |
+| m_attributes.py:5 | Entry node for Function __init__ | code/m_attributes.py:12 from import |
+| m_attributes.py:5 | Entry node for Function __init__ | code/m_attributes.py:12 from import |
+| m_attributes.py:5 | Entry node for Function __init__ | code/m_attributes.py:13 from import |
+| m_attributes.py:5 | Entry node for Function __init__ | code/m_attributes.py:13 from import |
+| m_attributes.py:5 | Entry node for Function __init__ | runtime |
+| m_attributes.py:5 | Exit node for Function __init__ | code/m_attributes.py:12 from import |
+| m_attributes.py:5 | Exit node for Function __init__ | code/m_attributes.py:12 from import |
+| m_attributes.py:5 | Exit node for Function __init__ | code/m_attributes.py:13 from import |
+| m_attributes.py:5 | Exit node for Function __init__ | code/m_attributes.py:13 from import |
+| m_attributes.py:5 | Exit node for Function __init__ | runtime |
+| m_attributes.py:6 | ControlFlowNode for Attribute | code/m_attributes.py:12 from import |
+| m_attributes.py:6 | ControlFlowNode for Attribute | code/m_attributes.py:12 from import |
+| m_attributes.py:6 | ControlFlowNode for Attribute | code/m_attributes.py:13 from import |
+| m_attributes.py:6 | ControlFlowNode for Attribute | code/m_attributes.py:13 from import |
+| m_attributes.py:6 | ControlFlowNode for Attribute | runtime |
+| m_attributes.py:6 | ControlFlowNode for a | code/m_attributes.py:12 from import |
+| m_attributes.py:6 | ControlFlowNode for a | code/m_attributes.py:12 from import |
+| m_attributes.py:6 | ControlFlowNode for a | code/m_attributes.py:13 from import |
+| m_attributes.py:6 | ControlFlowNode for a | code/m_attributes.py:13 from import |
+| m_attributes.py:6 | ControlFlowNode for a | runtime |
+| m_attributes.py:6 | ControlFlowNode for self | code/m_attributes.py:12 from import |
+| m_attributes.py:6 | ControlFlowNode for self | code/m_attributes.py:12 from import |
+| m_attributes.py:6 | ControlFlowNode for self | code/m_attributes.py:13 from import |
+| m_attributes.py:6 | ControlFlowNode for self | code/m_attributes.py:13 from import |
+| m_attributes.py:6 | ControlFlowNode for self | runtime |
+| m_attributes.py:8 | ControlFlowNode for FunctionExpr | import |
+| m_attributes.py:8 | ControlFlowNode for foo | import |
+| m_attributes.py:8 | ControlFlowNode for other | code/m_attributes.py:12 from import |
+| m_attributes.py:8 | ControlFlowNode for other | code/m_attributes.py:13 from import |
+| m_attributes.py:8 | ControlFlowNode for other | runtime |
+| m_attributes.py:8 | ControlFlowNode for self | code/m_attributes.py:12 from import |
+| m_attributes.py:8 | ControlFlowNode for self | code/m_attributes.py:13 from import |
+| m_attributes.py:8 | ControlFlowNode for self | runtime |
+| m_attributes.py:8 | Entry node for Function foo | code/m_attributes.py:12 from import |
+| m_attributes.py:8 | Entry node for Function foo | code/m_attributes.py:13 from import |
+| m_attributes.py:8 | Entry node for Function foo | runtime |
+| m_attributes.py:8 | Exit node for Function foo | code/m_attributes.py:12 from import |
+| m_attributes.py:8 | Exit node for Function foo | code/m_attributes.py:13 from import |
+| m_attributes.py:8 | Exit node for Function foo | runtime |
+| m_attributes.py:9 | ControlFlowNode for Attribute | code/m_attributes.py:12 from import |
+| m_attributes.py:9 | ControlFlowNode for Attribute | code/m_attributes.py:13 from import |
+| m_attributes.py:9 | ControlFlowNode for Attribute | runtime |
+| m_attributes.py:9 | ControlFlowNode for self | code/m_attributes.py:12 from import |
+| m_attributes.py:9 | ControlFlowNode for self | code/m_attributes.py:13 from import |
+| m_attributes.py:9 | ControlFlowNode for self | runtime |
+| m_attributes.py:10 | ControlFlowNode for Attribute | code/m_attributes.py:12 from import |
+| m_attributes.py:10 | ControlFlowNode for Attribute | code/m_attributes.py:13 from import |
+| m_attributes.py:10 | ControlFlowNode for Attribute | runtime |
+| m_attributes.py:10 | ControlFlowNode for other | code/m_attributes.py:12 from import |
+| m_attributes.py:10 | ControlFlowNode for other | code/m_attributes.py:13 from import |
+| m_attributes.py:10 | ControlFlowNode for other | runtime |
+| m_attributes.py:12 | ControlFlowNode for Attribute | import |
+| m_attributes.py:12 | ControlFlowNode for Attribute() | import |
+| m_attributes.py:12 | ControlFlowNode for C | import |
+| m_attributes.py:12 | ControlFlowNode for C() | import |
+| m_attributes.py:13 | ControlFlowNode for Attribute | import |
+| m_attributes.py:13 | ControlFlowNode for Attribute() | import |
+| m_attributes.py:13 | ControlFlowNode for C | import |
+| m_attributes.py:13 | ControlFlowNode for C() | import |
+| m_attributes.py:13 | ControlFlowNode for IntegerLiteral | import |

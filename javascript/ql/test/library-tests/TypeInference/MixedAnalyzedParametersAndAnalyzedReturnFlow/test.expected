@@ -1,0 +1,16 @@
+| tst.js:6:7:6:10 | true | 0 | file://:0:0:0:0 | true |
+| tst.js:6:13:6:19 | UNKNOWN | 1 | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:6:22:6:31 | getKnown() | 2 | file://:0:0:0:0 | true |
+| tst.js:6:34:6:45 | getUnknown() | 3 | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:6:48:6:55 | getKnown | 4 | tst.js:2:5:2:40 | function getKnown |
+| tst.js:6:58:6:67 | getUnknown | 5 | tst.js:4:5:4:45 | function getUnknown |
+| tst.js:9:14:9:23 | getKnown() | 0 | file://:0:0:0:0 | true |
+| tst.js:9:26:9:37 | getUnknown() | 1 | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:10:14:10:30 | getKnown_indirect | 0 | tst.js:2:5:2:40 | function getKnown |
+| tst.js:10:33:10:51 | getUnknown_indirect | 1 | tst.js:4:5:4:45 | function getUnknown |
+| tst.js:11:14:11:18 | known | 0 | file://:0:0:0:0 | true |
+| tst.js:11:21:11:27 | unknown | 1 | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:11:30:11:37 | gotKnown | 2 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:11:40:11:49 | gotUnknown | 3 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:11:52:11:70 | getKnown_indirect() | 4 | file://:0:0:0:0 | true |
+| tst.js:11:73:11:93 | getUnkn ... irect() | 5 | file://:0:0:0:0 | indefinite value (global) |

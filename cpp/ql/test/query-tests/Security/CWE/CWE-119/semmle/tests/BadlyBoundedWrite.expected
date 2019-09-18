@@ -1,0 +1,2 @@
+| var_size_struct.cpp:73:3:73:9 | call to strncpy | This 'call to strncpy' operation is limited to 1025 bytes but the destination is only 1024 bytes. |
+| var_size_struct.cpp:103:3:103:9 | call to strncpy | This 'call to strncpy' operation is limited to 129 bytes but the destination is only 128 bytes. |

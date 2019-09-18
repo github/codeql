@@ -44,4 +44,34 @@ class ArgumentsTest
     {
         f4(new object[] { null }, null);
     }
+
+    int Prop { get; set; }
+
+    int this[int a, int b] { get => a + b; set { } }
+
+    void f5()
+    {
+        Prop = 0;
+        Prop = this[1, 2];
+        (Prop, this[3, 4]) = (5, 6);
+        Prop++;
+        Prop += 7;
+        this[8, 9]++;
+        this[10, 11] += 12;
+        var tuple = (13, 14);
+        (Prop, this[15, 16]) = tuple;
+    }
+
+    [MyAttribute(false)]
+    void f6() { }
+
+    [MyAttribute(true, y = "", x = 0)]
+    void f7() { }
+}
+
+class MyAttribute : Attribute
+{
+    public int x;
+    public string y { get; set; }
+    public MyAttribute(bool b) { }
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The ability to override the class dictionary using a <code>__slots__</code> declaration
+is supported only by new-style classes. When you add a <code>__slots__</code> declaration to an 
+old-style class it just creates a class attribute called '__slots__'.</p>
+
+</overview>
+<recommendation>
+
+<p>If you want to override the dictionary for a class, then ensure that the class is a new-style class. 
+You can convert an old-style class to a new-style class by inheriting from <code>object</code>.</p>
+
+</recommendation>
+<example>
+<p>In the following example the <code>KeyedRef</code> class is an old-style class (no inheritance). The 
+<code>__slots__</code> declaration in this class creates a class attribute called '__slots__', the class 
+dictionary is unaffected. The <code>KeyedRef2</code> class is a new-style class so the 
+<code>__slots__</code> declaration causes special compact attributes to be created for each name in 
+the slots list and saves space by not creating attribute dictionaries.</p>
+
+<sample src="SlotsInOldStyleClass.py" />
+
+</example>
+<references>
+
+<li>Python Glossary: <a href="http://docs.python.org/glossary.html#term-new-style-class">New-style class</a>.</li>
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#newstyle">New-style and classic 
+classes</a>,
+ <a href="http://docs.python.org/reference/datamodel.html#__slots__">__slots__</a>.</li>
+
+
+</references>
+</qhelp>

@@ -10,12 +10,14 @@
  *       duplicate-code
  *       non-attributable
  */
+
 import cpp
 import CodeDuplication
 
 from Class c, Class other, string message
-where mostlyDuplicateClass(c, other, message)
-  and not c.isConstructedFrom(_)
-  and not other.isConstructedFrom(_)
-  and not fileLevelDuplication(c.getFile(), _)
+where
+  mostlyDuplicateClass(c, other, message) and
+  not c.isConstructedFrom(_) and
+  not other.isConstructedFrom(_) and
+  not fileLevelDuplication(c.getFile(), _)
 select c, message, other, other.getQualifiedName()

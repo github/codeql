@@ -1,0 +1,17 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Duplicated code increases overall code size, making the code base
+harder to maintain and harder to understand. It also becomes harder to fix bugs,
+since a programmer applying a fix to one copy has to always remember to update
+other copies accordingly. Finally, code duplication is generally an indication of
+a poorly designed or hastily written code base, which typically suffers from other
+problems as well.
+</p>
+
+
+</overview>
+</qhelp>

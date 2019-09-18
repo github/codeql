@@ -4,47 +4,35 @@ import javascript
 
 /**
  * An ECMAScript 2015 module.
+ *
+ * Example:
+ *
+ * ```
+ * import console from 'console';
+ *
+ * console.log("Hello, world!");
+ * ```
  */
 class ES2015Module extends Module {
-  ES2015Module() {
-    isModule(this) and
-    not isNodejs(this)
-  }
+  ES2015Module() { isES2015Module(this) }
 
-  override ModuleScope getScope() {
-    result.getScopeElement() = this
-  }
+  override ModuleScope getScope() { result.getScopeElement() = this }
 
   /** Gets the full path of the file containing this module. */
-  override string getPath() {
-    result = getFile().getAbsolutePath()
-  }
+  override string getPath() { result = getFile().getAbsolutePath() }
 
   /** Gets the short name of this module without file extension. */
-  override string getName() {
-    result = getFile().getStem()
-  }
+  override string getName() { result = getFile().getStem() }
 
   /** Gets an export declaration in this module. */
-  ExportDeclaration getAnExport() {
-    result.getContainer() = this
-  }
-
-  override Module getAnImportedModule() {
-    result = getAnImport().getImportedModule()
-  }
+  ExportDeclaration getAnExport() { result.getTopLevel() = this }
 
   override predicate exports(string name, ASTNode export) {
-    exists (ExportDeclaration ed |
-      ed = getAnExport() and ed = export |
-      ed.exportsAs(_, name)
-    )
+    exists(ExportDeclaration ed | ed = getAnExport() and ed = export | ed.exportsAs(_, name))
   }
 
   /** Holds if this module exports variable `v` under the name `name`. */
-  predicate exportsAs(LexicalName v, string name) {
-    getAnExport().exportsAs(v, name)
-  }
+  predicate exportsAs(LexicalName v, string name) { getAnExport().exportsAs(v, name) }
 
   override predicate isStrict() {
     // modules are implicitly strict
@@ -52,58 +40,72 @@ class ES2015Module extends Module {
   }
 }
 
-/** An import declaration. */
+/**
+ * An import declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * import console, { log, error as fatal } from 'console';
+ * import * as console from 'console';
+ * ```
+ */
 class ImportDeclaration extends Stmt, Import, @importdeclaration {
-  override ES2015Module getEnclosingModule() {
-    result = getContainer()
-  }
+  override ES2015Module getEnclosingModule() { result = getTopLevel() }
 
-  override PathExprInModule getImportedPath() {
-    result = getChildExpr(-1)
-  }
+  override PathExprInModule getImportedPath() { result = getChildExpr(-1) }
 
   /** Gets the `i`th import specifier of this import declaration. */
-  ImportSpecifier getSpecifier(int i) {
-    result = getChildExpr(i)
-  }
+  ImportSpecifier getSpecifier(int i) { result = getChildExpr(i) }
 
   /** Gets an import specifier of this import declaration. */
-  ImportSpecifier getASpecifier() {
-    result = getSpecifier(_)
+  ImportSpecifier getASpecifier() { result = getSpecifier(_) }
+
+  override DataFlow::Node getImportedModuleNode() {
+    // `import * as http from 'http'` or `import http from `http`'
+    exists(ImportSpecifier is |
+      is = getASpecifier() and
+      result = DataFlow::valueNode(is)
+    |
+      is instanceof ImportNamespaceSpecifier and
+      count(getASpecifier()) = 1
+      or
+      is.getImportedName() = "default"
+    )
+    or
+    // `import { createServer } from 'http'`
+    result = DataFlow::destructuredModuleImportNode(this)
   }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
 private class LiteralImportPath extends PathExprInModule, ConstantString {
-  LiteralImportPath() {
-    exists (ImportDeclaration req | this = req.getChildExpr(-1))
-  }
+  LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
 
-  override string getValue() { result = this.(ConstantString).getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
 /**
  * An import specifier in an import declaration.
  *
- * There are four kinds of import specifiers:
+ * Examples:
  *
- *   - default import specifiers, which import the default export of a module
- *     and make it available under a local name, as in `import` <u>`f`</u> `from 'a'`;
- *   - namespace import specifiers, which import all exports of a module and
- *     make them available through a local namespace object, as in
- *     `import` <u>`* as ns`</u> `from 'a'`;
- *   - named import specifiers, which import a named export of a module and
- *     make it available in the importing module under the same name, as in
- *     `import {` <u>`x`</u> `} from 'a'`;
- *   - renaming import specifiers, which import a named export of a module and
- *     make it available in the importing module under a different name, as in
- *     `import {` <u>`x as y`</u> `} from 'a'`.
- * */
+ * ```
+ * import
+ *   console,            // default import specifier
+ *   {
+ *     log,              // named import specifier
+ *     error as fatal    // renaming import specifier
+ *   } from 'console';
+ *
+ * import
+ *   * as console        // namespace import specifier
+ *   from 'console';
+ * ```
+ */
 class ImportSpecifier extends Expr, @importspecifier {
   /** Gets the imported symbol; undefined for default and namespace import specifiers. */
-  Identifier getImported() {
-    result = getChildExpr(0)
-  }
+  Identifier getImported() { result = getChildExpr(0) }
 
   /**
    * Gets the name of the imported symbol.
@@ -120,55 +122,90 @@ class ImportSpecifier extends Expr, @importspecifier {
    * The names of the imported symbols for the first three of them are, respectively,
    * `x`, `y` and `default`, while the last one does not import an individual symbol.
    */
-  string getImportedName() {
-    result = getImported().getName()
-  }
+  string getImportedName() { result = getImported().getName() }
 
   /** Gets the local variable into which this specifier imports. */
-  VarDecl getLocal() {
-    result = getChildExpr(1)
-  }
+  VarDecl getLocal() { result = getChildExpr(1) }
 }
 
-/** A named import specifier. */
-class NamedImportSpecifier extends ImportSpecifier, @namedimportspecifier {
-}
+/**
+ * A named import specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * import
+ *   {
+ *     log,              // named import specifier
+ *     error as fatal    // renaming import specifier
+ *   } from 'console';
+ * ```
+ */
+class NamedImportSpecifier extends ImportSpecifier, @namedimportspecifier { }
 
-/** A default import specifier. */
+/**
+ * A default import specifier.
+ *
+ * Example:
+ *
+ * ```
+ * import
+ *   console             // default import specifier
+ *   from 'console';
+ * ```
+ */
 class ImportDefaultSpecifier extends ImportSpecifier, @importdefaultspecifier {
-  override string getImportedName() {
-    result = "default"
-  }
+  override string getImportedName() { result = "default" }
 }
 
-/** A namespace import specifier. */
-class ImportNamespaceSpecifier extends ImportSpecifier, @importnamespacespecifier {
-}
+/**
+ * A namespace import specifier.
+ *
+ * Example:
+ *
+ * ```
+ * import
+ *   * as console        // namespace import specifier
+ *   from 'console';
+ * ```
+ */
+class ImportNamespaceSpecifier extends ImportSpecifier, @importnamespacespecifier { }
 
-/** A bulk import that imports an entire module as a namespace. */
+/**
+ * A bulk import that imports an entire module as a namespace.
+ *
+ * Example:
+ *
+ * ```
+ * import * as console from 'console';
+ * ```
+ */
 class BulkImportDeclaration extends ImportDeclaration {
-  BulkImportDeclaration() {
-    getASpecifier() instanceof ImportNamespaceSpecifier
-  }
+  BulkImportDeclaration() { getASpecifier() instanceof ImportNamespaceSpecifier }
 
   /** Gets the local namespace variable under which the module is imported. */
-  VarDecl getLocal() {
-    result = getASpecifier().getLocal()
-  }
+  VarDecl getLocal() { result = getASpecifier().getLocal() }
 }
 
-/** A selective import that imports zero or more declarations. */
+/**
+ * A selective import that imports zero or more declarations.
+ *
+ * Example:
+ *
+ * ```
+ * import console, { log } from 'console';
+ * ```
+ */
 class SelectiveImportDeclaration extends ImportDeclaration {
-  SelectiveImportDeclaration() {
-    not this instanceof BulkImportDeclaration
-  }
+  SelectiveImportDeclaration() { not this instanceof BulkImportDeclaration }
 
   /** Holds if `local` is the local variable into which `imported` is imported. */
   predicate importsAs(string imported, LexicalDecl local) {
-    exists (ImportSpecifier spec | spec = getASpecifier() |
+    exists(ImportSpecifier spec | spec = getASpecifier() |
       imported = spec.getImported().getName() and
       local = spec.getLocal()
-    ) or
+    )
+    or
     imported = "default" and local = getASpecifier().(ImportDefaultSpecifier).getLocal()
   }
 }
@@ -176,22 +213,23 @@ class SelectiveImportDeclaration extends ImportDeclaration {
 /**
  * An export declaration.
  *
- * There are three kinds of export declarations:
+ * Examples:
  *
- *   - a bulk re-export declaration of the form `export * from 'a'`, which re-exports
- *     all exports of another module;
- *   - a default export declaration of the form `export default var x = 42`, which exports
- *     a local value or declaration as the default export;
- *   - a named export declaration such as `export { x, y as z }`, which exports local
- *     values or declarations under specific names; a named export declaration
- *     may also export symbols itself imported from another module, as in
- *     `export { x } from 'a'`.
+ * ```
+ * export * from 'a';               // bulk re-export declaration
+ *
+ * export default function f() {};  // default export declaration
+ * export default 42;               // default export declaration
+ *
+ * export { x, y as z };            // named export declaration
+ * export var x = 42;               // named export declaration
+ * export { x } from 'a';           // named re-export declaration
+ * export x from 'a';               // default re-export declaration
+ * ```
  */
 abstract class ExportDeclaration extends Stmt, @exportdeclaration {
   /** Gets the module to which this export declaration belongs. */
-  ES2015Module getEnclosingModule() {
-    this = result.getAnExport()
-  }
+  ES2015Module getEnclosingModule() { this = result.getAnExport() }
 
   /** Holds if this export declaration exports variable `v` under the name `name`. */
   abstract predicate exportsAs(LexicalName v, string name);
@@ -223,12 +261,16 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
 /**
  * A bulk re-export declaration of the form `export * from 'a'`, which re-exports
  * all exports of another module.
+ *
+ * Examples:
+ *
+ * ```
+ * export * from 'a';          // bulk re-export declaration
+ * ```
  */
 class BulkReExportDeclaration extends ReExportDeclaration, @exportalldeclaration {
   /** Gets the name of the module from which this declaration re-exports. */
-  override ConstantString getImportedPath() {
-    result = getChildExpr(0)
-  }
+  override ConstantString getImportedPath() { result = getChildExpr(0) }
 
   override predicate exportsAs(LexicalName v, string name) {
     getImportedModule().exportsAs(v, name) and
@@ -241,34 +283,39 @@ class BulkReExportDeclaration extends ReExportDeclaration, @exportalldeclaration
 }
 
 /**
-  * Holds if the given bulk export should not re-export `name` because there is an explicit export
-  * of that name in the same module.
-  *
-  * At compile time, shadowing works across declaration spaces.
-  * For instance, directly exporting an interface `X` will block a variable `X` from being re-exported:
-  * ```
-  * export interface X {}
-  * export * from 'lib' // will not re-export X
-  * ```
-  * At runtime, the interface `X` will have been removed, so `X` is actually re-exported anyway,
-  * but we ignore this subtlety.
-  */
+ * Holds if the given bulk export should not re-export `name` because there is an explicit export
+ * of that name in the same module.
+ *
+ * At compile time, shadowing works across declaration spaces.
+ * For instance, directly exporting an interface `X` will block a variable `X` from being re-exported:
+ * ```
+ * export interface X {}
+ * export * from 'lib' // will not re-export X
+ * ```
+ * At runtime, the interface `X` will have been removed, so `X` is actually re-exported anyway,
+ * but we ignore this subtlety.
+ */
 private predicate isShadowedFromBulkExport(BulkReExportDeclaration reExport, string name) {
-  exists (ExportNamedDeclaration other | other.getContainer() = reExport.getEnclosingModule() |
+  exists(ExportNamedDeclaration other | other.getTopLevel() = reExport.getEnclosingModule() |
     other.getAnExportedDecl().getName() = name
     or
-    other.getASpecifier().getExportedName() = name)
+    other.getASpecifier().getExportedName() = name
+  )
 }
 
 /**
- * A default export declaration such as `export default function f{}`
- * or `export default { x: 42 }`.
+ * A default export declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * export default function f() {};
+ * export default 42;
+ * ```
  */
 class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
-  ExprOrStmt getOperand() {
-    result = getChild(0)
-  }
+  ExprOrStmt getOperand() { result = getChild(0) }
 
   override predicate exportsAs(LexicalName v, string name) {
     name = "default" and v = getADecl().getVariable()
@@ -276,7 +323,7 @@ class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclarat
 
   /** Gets the declaration, if any, exported by this default export. */
   VarDecl getADecl() {
-    exists (ExprOrStmt op | op = getOperand() |
+    exists(ExprOrStmt op | op = getOperand() |
       result = op.(FunctionDeclStmt).getId() or
       result = op.(ClassDeclStmt).getIdentifier()
     )
@@ -287,12 +334,20 @@ class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclarat
   }
 }
 
-/** A named export declaration such as `export { x, y }` or `export var x = 42`. */
+/**
+ * A named export declaration.
+ *  *
+ * Examples:
+ *
+ * ```
+ * export { x, y as z };
+ * export var x = 42;
+ * export { x } from 'a';
+ * ```
+ */
 class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
-  ExprOrStmt getOperand() {
-    result = getChild(-1)
-  }
+  ExprOrStmt getOperand() { result = getChild(-1) }
 
   /**
    * Gets an identifier, if any, exported as part of a declaration by this named export.
@@ -301,7 +356,7 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
    * That is, it includes the `v` in `export var v` but not in `export {v}`.
    */
   Identifier getAnExportedDecl() {
-    exists (ExprOrStmt op | op = getOperand() |
+    exists(ExprOrStmt op | op = getOperand() |
       result = op.(DeclStmt).getADecl().getBindingPattern().getABindingVarRef() or
       result = op.(FunctionDeclStmt).getId() or
       result = op.(ClassDeclStmt).getIdentifier() or
@@ -314,16 +369,14 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
   }
 
   /** Gets the variable declaration, if any, exported by this named export. */
-  VarDecl getADecl() {
-    result = getAnExportedDecl()
-  }
+  VarDecl getADecl() { result = getAnExportedDecl() }
 
   override predicate exportsAs(LexicalName v, string name) {
-    exists (LexicalDecl vd | vd = getAnExportedDecl() |
+    exists(LexicalDecl vd | vd = getAnExportedDecl() |
       name = vd.getName() and v = vd.getALexicalName()
     )
     or
-    exists (ExportSpecifier spec | spec = getASpecifier() and name = spec.getExportedName() |
+    exists(ExportSpecifier spec | spec = getASpecifier() and name = spec.getExportedName() |
       v = spec.getLocal().(LexicalAccess).getALexicalName()
       or
       this.(ReExportDeclaration).getImportedModule().exportsAs(v, spec.getLocalName())
@@ -331,33 +384,28 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
   }
 
   override DataFlow::Node getSourceNode(string name) {
-    exists (VarDef d | d.getTarget() = getADecl() |
+    exists(VarDef d | d.getTarget() = getADecl() |
       name = d.getTarget().(VarDecl).getName() and
       result = DataFlow::valueNode(d.getSource())
-    ) or
-    exists (ExportSpecifier spec | spec = getASpecifier() and name = spec.getExportedName() |
+    )
+    or
+    exists(ExportSpecifier spec | spec = getASpecifier() and name = spec.getExportedName() |
       not exists(getImportedPath()) and result = DataFlow::valueNode(spec.getLocal())
       or
-      exists (ReExportDeclaration red | red = this |
+      exists(ReExportDeclaration red | red = this |
         result = red.getImportedModule().getAnExport().getSourceNode(spec.getLocalName())
       )
     )
   }
 
   /** Gets the module from which the exports are taken if this is a re-export. */
-  ConstantString getImportedPath() {
-    result = getChildExpr(-2)
-  }
+  ConstantString getImportedPath() { result = getChildExpr(-2) }
 
   /** Gets the `i`th export specifier of this declaration. */
-  ExportSpecifier getSpecifier(int i) {
-    result = getChildExpr(i)
-  }
+  ExportSpecifier getSpecifier(int i) { result = getChildExpr(i) }
 
   /** Gets an export specifier of this declaration. */
-  ExportSpecifier getASpecifier() {
-    result = getSpecifier(_)
-  }
+  ExportSpecifier getASpecifier() { result = getSpecifier(_) }
 
   override predicate isAmbient() {
     // An export such as `export declare function f()` should be seen as ambient.
@@ -365,22 +413,39 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
   }
 }
 
-/** An export specifier in a named export declaration. */
+/**
+ * An export specifier in an export declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * export
+ *   *              // namespace export specifier
+ *   from 'a';
+ *
+ * export
+ *   default        // default export specifier
+ *   var x = 42;
+ *
+ * export {
+ *   x,             // named export specifier
+ *   y as z         // named export specifier
+ * };
+ *
+ * export
+ *   x              // default re-export specifier
+ *   from 'a';
+ * ```
+ */
 class ExportSpecifier extends Expr, @exportspecifier {
   /** Gets the declaration to which this specifier belongs. */
-  ExportDeclaration getExportDeclaration() {
-    result = getParent()
-  }
+  ExportDeclaration getExportDeclaration() { result = getParent() }
 
   /** Gets the local symbol that is being exported. */
-  Identifier getLocal() {
-    result = getChildExpr(0)
-  }
+  Identifier getLocal() { result = getChildExpr(0) }
 
   /** Gets the name under which the symbol is exported. */
-  Identifier getExported() {
-    result = getChildExpr(1)
-  }
+  Identifier getExported() { result = getChildExpr(1) }
 
   /**
    * Gets the local name of the exported symbol, that is, the name
@@ -429,29 +494,50 @@ class ExportSpecifier extends Expr, @exportspecifier {
 }
 
 /**
- * A named export specifier, for example `v` in `export { v }`.
+ * A named export specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * export {
+ *   x,       // named export specifier
+ *   y as z   // named export specifier
+ * };
+ * ```
  */
-class NamedExportSpecifier extends ExportSpecifier, @namedexportspecifier {
-}
+class NamedExportSpecifier extends ExportSpecifier, @namedexportspecifier { }
 
 /**
- * A default export specifier, for example `default` in `export default 42`,
- * or `v` in `export v from "mod"`.
+ * A default export specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * export
+ *   default    // default export specifier
+ *   42;
+ * export
+ *   x          // default re-export specifier
+ *   from 'a';
+ * ```
  */
 class ExportDefaultSpecifier extends ExportSpecifier, @exportdefaultspecifier {
-  override string getExportedName() {
-    result = "default"
-  }
+  override string getExportedName() { result = "default" }
 }
 
 /**
- * A default export specifier in a re-export declaration, for example `v` in
- * `export v from "mod"`.
+ * A default export specifier in a re-export declaration.
+ *
+ * Example:
+ *
+ * ```
+ * export
+ *   x          // default re-export specifier
+ *   from 'a';
+ * ```
  */
 class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
-  ReExportDefaultSpecifier() {
-    getExportDeclaration() instanceof ReExportDeclaration
-  }
+  ReExportDefaultSpecifier() { getExportDeclaration() instanceof ReExportDeclaration }
 
   override string getLocalName() { result = "default" }
 
@@ -459,12 +545,29 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
 }
 
 /**
- * A namespace export specifier, for example `*` in `export * from "mod"`.
+ * A namespace export specifier.
+ *
+ * Example:
+ *
+ * ```
+ * export
+ *   *          // namespace export specifier
+ *   from 'a';
+ * ```
  */
-class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifier {
-}
+class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifier { }
 
-/** An export declaration that re-exports declarations from another module. */
+/**
+ * An export declaration that re-exports declarations from another module.
+ *
+ * Examples:
+ *
+ * ```
+ * export * from 'a';               // bulk re-export declaration
+ * export { x } from 'a';           // named re-export declaration
+ * export x from 'a';               // default re-export declaration
+ * ```
+ */
 abstract class ReExportDeclaration extends ExportDeclaration {
   /** Gets the path of the module from which this declaration re-exports. */
   abstract ConstantString getImportedPath();
@@ -480,36 +583,54 @@ abstract class ReExportDeclaration extends ExportDeclaration {
    * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
    */
   private Module resolveFromTypeRoot() {
-    result.getFile() = min(TypeRootFolder typeRoot ||
-      typeRoot.getModuleFile(getImportedPath().getStringValue())
-      order by typeRoot.getSearchPriority(getFile().getParentContainer()))
+    result.getFile() = min(TypeRootFolder typeRoot |
+        |
+        typeRoot.getModuleFile(getImportedPath().getStringValue())
+        order by
+          typeRoot.getSearchPriority(getFile().getParentContainer())
+      )
   }
 }
 
 /** A literal path expression appearing in a re-export declaration. */
 private class LiteralReExportPath extends PathExprInModule, ConstantString {
-  LiteralReExportPath() {
-    exists (ReExportDeclaration bred | this = bred.getImportedPath())
-  }
+  LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
 
-  override string getValue() { result = this.(ConstantString).getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
-/** A named export declaration that re-exports symbols imported from another module. */
+/**
+ * A named export declaration that re-exports symbols imported from another module.
+ *
+ * Example:
+ *
+ * ```
+ * export { x } from 'a';
+ * ```
+ */
 class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDeclaration {
-  SelectiveReExportDeclaration() {
-    exists(ExportNamedDeclaration.super.getImportedPath())
-  }
+  SelectiveReExportDeclaration() { exists(ExportNamedDeclaration.super.getImportedPath()) }
 
   /** Gets the path of the module from which this declaration re-exports. */
-  override ConstantString getImportedPath() { result = ExportNamedDeclaration.super.getImportedPath() }
+  override ConstantString getImportedPath() {
+    result = ExportNamedDeclaration.super.getImportedPath()
+  }
 }
 
-/** An export declaration that exports zero or more declarations from the module it appears in. */
+/**
+ * An export declaration that exports zero or more declarations from the module it appears in.
+ *
+ * Examples:
+ *
+ * ```
+ * export default function f() {};
+ * export default 42;
+ * export { x, y as z };
+ * export var x = 42;
+ * ```
+ */
 class OriginalExportDeclaration extends ExportDeclaration {
-  OriginalExportDeclaration() {
-    not this instanceof ReExportDeclaration
-  }
+  OriginalExportDeclaration() { not this instanceof ReExportDeclaration }
 
   override predicate exportsAs(LexicalName v, string name) {
     this.(ExportDefaultDeclaration).exportsAs(v, name) or

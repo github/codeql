@@ -3,14 +3,14 @@ import semmle.code.cpp.dataflow.DataFlow
 
 /** Common data flow configuration to be used by tests. */
 class TestAllocationConfig extends DataFlow::Configuration {
-  TestAllocationConfig() {
-    this = "TestAllocationConfig"
-  }
+  TestAllocationConfig() { this = "TestAllocationConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr().(FunctionCall).getTarget().getName() = "source"
     or
     source.asParameter().getName().matches("source%")
+    or
+    source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
     or
     // Track uninitialized variables
     exists(source.asUninitialized())

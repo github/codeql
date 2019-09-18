@@ -10,24 +10,27 @@
  *       external/cwe/cwe-190
  *       external/cwe/cwe-191
  */
-import cpp
 
+import cpp
 import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
 
-predicate taintedVarAccess(Expr origin, VariableAccess va) {
+from Expr origin, Operation op, Expr e, string effect
+where
   isUserInput(origin, _) and
-  tainted(origin, va)
-}
-
-from Expr origin, Operation op, VariableAccess va, string effect
-where taintedVarAccess(origin, va)
-  and op.getAnOperand() = va
-  and
+  tainted(origin, e) and
+  op.getAnOperand() = e and
   (
-    (missingGuardAgainstUnderflow(op, va) and effect = "underflow") or
-    (missingGuardAgainstOverflow(op, va) and effect = "overflow")
+    missingGuardAgainstUnderflow(op, e) and effect = "underflow"
+    or
+    missingGuardAgainstOverflow(op, e) and effect = "overflow"
+    or
+    not e instanceof VariableAccess and effect = "overflow"
+  ) and
+  (
+    op instanceof UnaryArithmeticOperation or
+    op instanceof BinaryArithmeticOperation
   )
-select va, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+select e, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
   origin, "User-provided value"

@@ -1,6 +1,7 @@
 /**
  * Provides classes and predicates for identifying unreachable blocks under a "closed-world" assumption.
  */
+
 import java
 import semmle.code.java.controlflow.Guards
 
@@ -14,23 +15,18 @@ class ConstantField extends Field {
     getType() instanceof ImmutableType and
     // Assigned once
     count(getAnAssignedValue()) = 1 and
-    /*
-     * And that assignment is either in the appropriate initializer, or, for instance fields on
-     * classes with one constructor, in the constructor.
-     */
-    forall(FieldWrite fa |
-      fa = getAnAccess()
-      |
-      if isStatic() then
-        fa.getEnclosingCallable() instanceof StaticInitializer
+    // And that assignment is either in the appropriate initializer, or, for instance fields on
+    // classes with one constructor, in the constructor.
+    forall(FieldWrite fa | fa = getAnAccess() |
+      if isStatic()
+      then fa.getEnclosingCallable() instanceof StaticInitializer
       else (
         // Defined in the instance initializer.
-        fa.getEnclosingCallable() instanceof InstanceInitializer or
+        fa.getEnclosingCallable() instanceof InstanceInitializer
+        or
         // It can be defined in the constructor if there is only one constructor.
-        (
-          fa.getEnclosingCallable() instanceof Constructor and
-          count(getDeclaringType().getAConstructor()) = 1
-        )
+        fa.getEnclosingCallable() instanceof Constructor and
+        count(getDeclaringType().getAConstructor()) = 1
       )
     )
   }
@@ -40,9 +36,7 @@ class ConstantField extends Field {
    *
    * Note: although this value is constant, we may not be able to statically determine the value.
    */
-  ConstantExpr getConstantValue() {
-    result = getAnAssignedValue()
-  }
+  ConstantExpr getConstantValue() { result = getAnAssignedValue() }
 }
 
 /**
@@ -53,7 +47,9 @@ class ConstantMethod extends Method {
     // Just one return statement
     count(ReturnStmt rs | rs.getEnclosingCallable() = this) = 1 and
     // Which returns a constant expr
-    exists(ReturnStmt rs | rs.getEnclosingCallable() = this | rs.getResult() instanceof ConstantExpr) and
+    exists(ReturnStmt rs | rs.getEnclosingCallable() = this |
+      rs.getResult() instanceof ConstantExpr
+    ) and
     // And this method is not overridden
     not exists(Method m | m.overrides(this))
   }
@@ -62,10 +58,9 @@ class ConstantMethod extends Method {
    * Gets the expression representing the constant value returned.
    */
   ConstantExpr getConstantValue() {
-    exists(ReturnStmt returnStmt |
-      returnStmt.getEnclosingCallable() = this
-      |
-      result = returnStmt.getResult())
+    exists(ReturnStmt returnStmt | returnStmt.getEnclosingCallable() = this |
+      result = returnStmt.getResult()
+    )
   }
 }
 
@@ -73,8 +68,7 @@ class ConstantMethod extends Method {
  * A field that appears constant, but should not be considered constant when determining
  * `ConstantExpr`, and, consequently, in the unreachable blocks analysis.
  */
-abstract class ExcludedConstantField extends ConstantField {
-}
+abstract class ExcludedConstantField extends ConstantField { }
 
 /**
  * An expression that evaluates to a constant at runtime.
@@ -84,22 +78,22 @@ abstract class ExcludedConstantField extends ConstantField {
  */
 class ConstantExpr extends Expr {
   ConstantExpr() {
-    /*
-     * Ignore reads of excluded fields.
-     */
+    // Ignore reads of excluded fields.
     not this.(FieldRead).getField() instanceof ExcludedConstantField and
     (
       // A JLS compile time constant expr
-      this instanceof CompileTimeConstantExpr or
+      this instanceof CompileTimeConstantExpr
+      or
       // A call to a constant method
-      this.(Call).getCallee() instanceof ConstantMethod or
+      this.(Call).getCallee() instanceof ConstantMethod
+      or
       // A read of a constant field
-      exists(this.(FieldRead).getField().(ConstantField).getConstantValue()) or
+      exists(this.(FieldRead).getField().(ConstantField).getConstantValue())
+      or
       // A binary expression where both sides are constant
-      (
-        this.(BinaryExpr).getLeftOperand() instanceof ConstantExpr and
-        this.(BinaryExpr).getRightOperand() instanceof ConstantExpr
-      ) or
+      this.(BinaryExpr).getLeftOperand() instanceof ConstantExpr and
+      this.(BinaryExpr).getRightOperand() instanceof ConstantExpr
+      or
       this.(ParExpr).getExpr() instanceof ConstantExpr
     )
   }
@@ -108,22 +102,49 @@ class ConstantExpr extends Expr {
    * Gets the inferred boolean value for this constant boolean expression.
    */
   boolean getBooleanValue() {
-    result = this.(CompileTimeConstantExpr).getBooleanValue() or
-    result = this.(Call).getCallee().(ConstantMethod).getConstantValue().getBooleanValue() or
-    result = this.(FieldRead).getField().(ConstantField).getConstantValue().getBooleanValue() or
-    result = this.(ParExpr).getExpr().(ConstantExpr).getBooleanValue() or
+    result = this.(CompileTimeConstantExpr).getBooleanValue()
+    or
+    result = this.(Call).getCallee().(ConstantMethod).getConstantValue().getBooleanValue()
+    or
+    result = this.(FieldRead).getField().(ConstantField).getConstantValue().getBooleanValue()
+    or
+    result = this.(ParExpr).getExpr().(ConstantExpr).getBooleanValue()
+    or
     // Handle binary expressions that have integer operands and a boolean result.
     exists(BinaryExpr b, int left, int right |
       b = this and
       left = b.getLeftOperand().(ConstantExpr).getIntValue() and
       right = b.getRightOperand().(ConstantExpr).getIntValue()
-      |
-      (b instanceof LTExpr and if left < right then result = true else result = false) or
-      (b instanceof LEExpr and if left <= right then result = true else result = false) or
-      (b instanceof GTExpr and if left > right then result = true else result = false) or
-      (b instanceof GEExpr and if left >= right then result = true else result = false) or
-      (b instanceof EQExpr and if left = right then result = true else result = false) or
-      (b instanceof NEExpr and if left != right then result = true else result = false)
+    |
+      (
+        b instanceof LTExpr and
+        if left < right then result = true else result = false
+      )
+      or
+      (
+        b instanceof LEExpr and
+        if left <= right then result = true else result = false
+      )
+      or
+      (
+        b instanceof GTExpr and
+        if left > right then result = true else result = false
+      )
+      or
+      (
+        b instanceof GEExpr and
+        if left >= right then result = true else result = false
+      )
+      or
+      (
+        b instanceof EQExpr and
+        if left = right then result = true else result = false
+      )
+      or
+      (
+        b instanceof NEExpr and
+        if left != right then result = true else result = false
+      )
     )
   }
 
@@ -141,9 +162,7 @@ class ConstantExpr extends Expr {
  * A switch statement that always selects the same case.
  */
 class ConstSwitchStmt extends SwitchStmt {
-  ConstSwitchStmt() {
-    this.getExpr() instanceof ConstantExpr
-  }
+  ConstSwitchStmt() { this.getExpr() instanceof ConstantExpr }
 
   /** Gets the `ConstCase` that matches, if any. */
   ConstCase getMatchingConstCase() {
@@ -156,10 +175,9 @@ class ConstSwitchStmt extends SwitchStmt {
   SwitchCase getMatchingCase() {
     // Must be a value we can deduce
     exists(getExpr().(ConstantExpr).getIntValue()) and
-    if (exists(getMatchingConstCase())) then
-      result = getMatchingConstCase()
-    else
-      result = getDefaultCase()
+    if exists(getMatchingConstCase())
+    then result = getMatchingConstCase()
+    else result = getDefaultCase()
   }
 
   /**
@@ -182,38 +200,29 @@ class ConstSwitchStmt extends SwitchStmt {
  */
 class UnreachableBasicBlock extends BasicBlock {
   UnreachableBasicBlock() {
-    /*
-     * Condition blocks with a constant condition that causes a true/false successor to be
-     * unreachable. Note: conditions including a single boolean literal e.g. if (false) are not
-     * modeled as a ConditionBlock - this case is covered by the blocks-without-a-predecessor
-     * check below.
-     */
+    // Condition blocks with a constant condition that causes a true/false successor to be
+    // unreachable. Note: conditions including a single boolean literal e.g. if (false) are not
+    // modeled as a ConditionBlock - this case is covered by the blocks-without-a-predecessor
+    // check below.
     exists(ConditionBlock conditionBlock, boolean constant |
       constant = conditionBlock.getCondition().(ConstantExpr).getBooleanValue()
-      |
+    |
       conditionBlock.controls(this, constant.booleanNot())
-    ) or
-    /*
-     * This block is not reachable in the CFG, and is not a callable, a body of a callable, an
-     * expression in an annotation, an expression in an assert statement, or a catch clause.
-     */
-    (
-      forall(BasicBlock bb | bb = getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
-      not exists(Callable c |
-        c.getBody() = this) and
-      not this instanceof Callable and
-      not exists(Annotation a |
-        a.getAChildExpr*() = this
-      ) and
-      not exists(AssertStmt a |
-        a = this.(Expr).getEnclosingStmt()
-      ) and
-      not this instanceof CatchClause
-    ) or
+    )
+    or
+    // This block is not reachable in the CFG, and is not a callable, a body of a callable, an
+    // expression in an annotation, an expression in an assert statement, or a catch clause.
+    forall(BasicBlock bb | bb = getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
+    not exists(Callable c | c.getBody() = this) and
+    not this instanceof Callable and
+    not exists(Annotation a | a.getAChildExpr*() = this) and
+    not exists(AssertStmt a | a = this.(Expr).getEnclosingStmt()) and
+    not this instanceof CatchClause
+    or
     // Switch statements with a constant comparison expression may have unreachable cases.
     exists(ConstSwitchStmt constSwitchStmt, BasicBlock failingCaseBlock |
       failingCaseBlock = constSwitchStmt.getAFailingCase().getBasicBlock()
-      |
+    |
       // Not accessible from the successful case
       not constSwitchStmt.getMatchingCase().getBasicBlock().getABBSuccessor*() = failingCaseBlock and
       // Blocks dominated by the failing case block are unreachable
@@ -226,16 +235,12 @@ class UnreachableBasicBlock extends BasicBlock {
  * An unreachable expression is an expression contained in an `UnreachableBasicBlock`.
  */
 class UnreachableExpr extends Expr {
-  UnreachableExpr() {
-    getBasicBlock() instanceof UnreachableBasicBlock
-  }
+  UnreachableExpr() { getBasicBlock() instanceof UnreachableBasicBlock }
 }
 
 /**
  * An unreachable statement is a statement contained in an `UnreachableBasicBlock`.
  */
 class UnreachableStmt extends Stmt {
-  UnreachableStmt() {
-    getBasicBlock() instanceof UnreachableBasicBlock
-  }
+  UnreachableStmt() { getBasicBlock() instanceof UnreachableBasicBlock }
 }

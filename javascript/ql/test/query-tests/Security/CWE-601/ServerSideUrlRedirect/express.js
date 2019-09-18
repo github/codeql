@@ -35,10 +35,6 @@ app.get('/some/path', function(req, res) {
   res.redirect(target);
 });
 
-function isLocalURL(target) {
-  return new RegExp("^/(?![/\\])|^~/").exec(target);
-}
-
 app.get('/foo', function(req, res) {
   // BAD: may be a global redirection
   res.redirect((req.param('action') && req.param('action') != "") ? req.param('action') : "/google_contacts")
@@ -120,4 +116,25 @@ app.get('/array/join', function(req, res) {
 
   // BAD: request input becomes before query string
   res.redirect([req.query.page, '?section=', req.query.section].join(''));
+});
+
+function sendUserToUrl(res, nextUrl) {
+  // BAD: value comes from query parameter
+  res.redrect(nextUrl);
+}
+
+app.get('/call', function(req, res) {
+  sendUserToUrl(res, req.query.nextUrl);
+});
+
+app.get('/redirect/:user', function(req, res) {
+  res.redirect('/users/' + req.params.user); // GOOD
+  res.redirect('users/' + req.params.user); // GOOD
+
+  res.redirect('/' + req.params.user); // BAD - could go to //evil.com
+  res.redirect('//' + req.params.user); // BAD - could go to //evil.com
+  res.redirect('u' + req.params.user); // BAD - could go to u.evil.com
+
+  res.redirect('/' + ('/u' + req.params.user)); // BAD - could go to //u.evil.com, but not flagged
+  res.redirect('/u' + req.params.user); // GOOD
 });

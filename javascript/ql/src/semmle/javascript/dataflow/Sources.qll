@@ -6,18 +6,19 @@
  * local tracking within a function.
  */
 
-import javascript
+private import javascript
+private import semmle.javascript.dataflow.TypeTracking
 
 /**
- * A source node for local data flow, that is, a node for which local
- * data flow cannot provide any information about its inputs.
+ * A source node for local data flow, that is, a node from which local data flow is tracked.
  *
- * By default, functions, object and array expressions and JSX nodes
- * are considered sources, as well as expressions that have non-local
- * flow (such as calls and property accesses). Additional sources
- * can be modelled by extending this class with additional subclasses.
+ * Examples include function parameters, imports and property accesses; see
+ * `DataFlow::SourceNode::DefaultRange` for details. You can introduce new kinds of
+ * source nodes by defining new subclasses of `DataFlow::SourceNode::Range`.
  */
-abstract class SourceNode extends DataFlow::Node {
+class SourceNode extends DataFlow::Node {
+  SourceNode() { this instanceof SourceNode::Range }
+
   /**
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
@@ -32,9 +33,7 @@ abstract class SourceNode extends DataFlow::Node {
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
    */
-  predicate flowsToExpr(Expr sink) {
-    flowsTo(DataFlow::valueNode(sink))
-  }
+  predicate flowsToExpr(Expr sink) { flowsTo(DataFlow::valueNode(sink)) }
 
   /**
    * Gets a reference (read or write) of property `propName` on this node.
@@ -47,27 +46,13 @@ abstract class SourceNode extends DataFlow::Node {
   /**
    * Gets a read of property `propName` on this node.
    */
-  DataFlow::PropRead getAPropertyRead(string propName) {
-    result = getAPropertyReference(propName)
-  }
+  DataFlow::PropRead getAPropertyRead(string propName) { result = getAPropertyReference(propName) }
 
   /**
    * Gets a write of property `propName` on this node.
    */
   DataFlow::PropWrite getAPropertyWrite(string propName) {
     result = getAPropertyReference(propName)
-  }
-
-  /**
-   * DEPRECATED: Use `getAPropertyReference` instead.
-   *
-   * Gets an access to property `propName` on this node, either through
-   * a dot expression (as in `x.propName`) or through an index expression
-   * (as in `x["propName"]`).
-   */
-  deprecated DataFlow::PropRead getAPropertyAccess(string propName) {
-    result = getAPropertyReference(propName) and
-    result.asExpr() instanceof PropAccess
   }
 
   /**
@@ -81,23 +66,17 @@ abstract class SourceNode extends DataFlow::Node {
   /**
    * Gets a reference (read or write) of any property on this node.
    */
-  DataFlow::PropRef getAPropertyReference() {
-    flowsTo(result.getBase())
-  }
+  DataFlow::PropRef getAPropertyReference() { flowsTo(result.getBase()) }
 
   /**
    * Gets a read of any property on this node.
    */
-  DataFlow::PropRead getAPropertyRead() {
-    result = getAPropertyReference()
-  }
+  DataFlow::PropRead getAPropertyRead() { result = getAPropertyReference() }
 
   /**
    * Gets a write of any property on this node.
    */
-  DataFlow::PropWrite getAPropertyWrite() {
-    result = getAPropertyReference()
-  }
+  DataFlow::PropWrite getAPropertyWrite() { result = getAPropertyReference() }
 
   /**
    * Gets an invocation of the method or constructor named `memberName` on this node.
@@ -113,9 +92,7 @@ abstract class SourceNode extends DataFlow::Node {
    * (as in `o.m(...)`), and calls where the callee undergoes some additional
    * data flow (as in `tmp = o.m; tmp(...)`).
    */
-  DataFlow::CallNode getAMemberCall(string memberName) {
-    result = getAMemberInvocation(memberName)
-  }
+  DataFlow::CallNode getAMemberCall(string memberName) { result = getAMemberInvocation(memberName) }
 
   /**
    * Gets a method call that invokes method `methodName` on this node.
@@ -124,11 +101,29 @@ abstract class SourceNode extends DataFlow::Node {
    * that is, `o.m(...)` or `o[p](...)`.
    */
   DataFlow::CallNode getAMethodCall(string methodName) {
-    exists (PropAccess pacc |
-      pacc = result.getCalleeNode().asExpr().stripParens() and
+    exists(PropAccess pacc |
+      pacc = result.getCalleeNode().asExpr().getUnderlyingReference() and
       flowsToExpr(pacc.getBase()) and
       pacc.getPropertyName() = methodName
     )
+  }
+
+  /**
+   * Gets a method call that invokes a method on this node.
+   *
+   * This includes only calls that have the syntactic shape of a method call,
+   * that is, `o.m(...)` or `o[p](...)`.
+   */
+  DataFlow::CallNode getAMethodCall() { result = getAMethodCall(_) }
+
+  /**
+   * Gets a chained method call that invokes `methodName` last.
+   *
+   * The chain steps include only calls that have the syntactic shape of a method call,
+   * that is, `o.m(...)` or `o[p](...)`.
+   */
+  DataFlow::CallNode getAChainedMethodCall(string methodName) {
+    result = getAMethodCall*().getAMethodCall(methodName)
   }
 
   /**
@@ -141,62 +136,121 @@ abstract class SourceNode extends DataFlow::Node {
   /**
    * Gets an invocation (with our without `new`) of this node.
    */
-  DataFlow::InvokeNode getAnInvocation() {
-    flowsTo(result.getCalleeNode())
-  }
+  DataFlow::InvokeNode getAnInvocation() { flowsTo(result.getCalleeNode()) }
 
   /**
    * Gets a function call to this node.
    */
-  DataFlow::CallNode getACall() {
-    result = getAnInvocation()
-  }
+  DataFlow::CallNode getACall() { result = getAnInvocation() }
 
   /**
    * Gets a `new` call to this node.
    */
-  DataFlow::NewNode getAnInstantiation() {
-    result = getAnInvocation()
+  DataFlow::NewNode getAnInstantiation() { result = getAnInvocation() }
+
+  /**
+   * Gets a source node whose value is stored in property `prop` of this node.
+   */
+  DataFlow::SourceNode getAPropertySource(string prop) {
+    result.flowsTo(getAPropertyWrite(prop).getRhs())
+  }
+
+  /**
+   * Gets a source node whose value is stored in a property of this node.
+   */
+  DataFlow::SourceNode getAPropertySource() { result.flowsTo(getAPropertyWrite().getRhs()) }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
+    t2 = t.step(result, this)
   }
 }
 
-/**
- * A data flow node that is considered a source node by default.
- *
- * Currently, the following nodes are source nodes:
- *   - import specifiers
- *   - non-destructuring function parameters
- *   - property accesses
- *   - function invocations
- *   - `this` expressions
- *   - global variable accesses
- *   - function definitions
- *   - class definitions
- *   - object expressions
- *   - array expressions
- *   - JSX literals.
- */
-class DefaultSourceNode extends SourceNode {
-  DefaultSourceNode() {
-    exists (ASTNode astNode | this = DataFlow::valueNode(astNode) |
-      astNode instanceof PropAccess or
-      astNode instanceof Function or
-      astNode instanceof ClassDefinition or
-      astNode instanceof ObjectExpr or
-      astNode instanceof ArrayExpr or
-      astNode instanceof JSXNode or
-      astNode instanceof ThisExpr or
-      astNode instanceof GlobalVarAccess or
-      astNode instanceof ExternalModuleReference
-    )
-    or
-    exists (SsaExplicitDefinition ssa, VarDef def |
-      this = DataFlow::ssaDefinitionNode(ssa) and def = ssa.getDef() |
-      def instanceof ImportSpecifier
-    )
-    or
-    DataFlow::parameterNode(this, _)
-    or
-    this instanceof DataFlow::Impl::InvokeNodeDef
+module SourceNode {
+  /**
+   * A data flow node that should be considered a source node.
+   *
+   * Subclass this class to introduce new kinds of source nodes. If you want to refine
+   * the definition of existing source nodes, subclass `DataFlow::SourceNode` instead.
+   */
+  cached
+  abstract class Range extends DataFlow::Node { }
+
+  /**
+   * A data flow node that is considered a source node by default.
+   *
+   * This includes all nodes that evaluate to a new object and all nodes whose
+   * value is computed using non-local data flow (that is, flow between functions,
+   * between modules, or through the heap):
+   *
+   *   - import specifiers
+   *   - function parameters
+   *   - function receivers
+   *   - property accesses
+   *   - function invocations
+   *   - global variable accesses
+   *   - function definitions
+   *   - class definitions
+   *   - object expressions
+   *   - array expressions
+   *   - JSX literals
+   *   - regular expression literals
+   *   - `yield` expressions
+   *   - `await` expressions
+   *   - dynamic `import` expressions
+   *   - function-bind expressions
+   *   - `function.sent` expressions
+   *   - comprehension expressions.
+   *
+   * This class is for internal use only and should not normally be used directly.
+   */
+  class DefaultRange extends Range {
+    DefaultRange() {
+      exists(ASTNode astNode | this = DataFlow::valueNode(astNode) |
+        astNode instanceof PropAccess or
+        astNode instanceof Function or
+        astNode instanceof ClassDefinition or
+        astNode instanceof ObjectExpr or
+        astNode instanceof ArrayExpr or
+        astNode instanceof JSXNode or
+        astNode instanceof GlobalVarAccess or
+        astNode instanceof ExternalModuleReference or
+        astNode instanceof RegExpLiteral or
+        astNode instanceof YieldExpr or
+        astNode instanceof ComprehensionExpr or
+        astNode instanceof AwaitExpr or
+        astNode instanceof FunctionSentExpr or
+        astNode instanceof FunctionBindExpr or
+        astNode instanceof DynamicImportExpr or
+        astNode instanceof ImportSpecifier
+      )
+      or
+      DataFlow::parameterNode(this, _)
+      or
+      this instanceof DataFlow::Impl::InvokeNodeDef
+      or
+      DataFlow::thisNode(this, _)
+      or
+      this = DataFlow::destructuredModuleImportNode(_)
+      or
+      this = DataFlow::globalAccessPathRootPseudoNode()
+    }
   }
+}
+
+deprecated class DefaultSourceNode extends SourceNode {
+  DefaultSourceNode() { this instanceof SourceNode::DefaultRange }
 }

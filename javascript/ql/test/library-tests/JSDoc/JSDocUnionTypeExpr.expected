@@ -1,7 +1,0 @@
-| (string\|number) | number |
-| (string\|number) | string |
-| (string\|number\|null) | null |
-| (string\|number\|null) | number |
-| (string\|number\|null) | string |
-| (string\|undefined) | string |
-| (string\|undefined) | undefined |

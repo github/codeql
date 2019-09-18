@@ -15,18 +15,22 @@ import java
  * including the body (if any), as opposed to the location of its name only.
  */
 class RangeCallable extends Callable {
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int elSuper, int ecSuper | super.hasLocationInfo(path, sl, sc, elSuper, ecSuper) |
-      this.getBody().hasLocationInfo(path, _, _, el, ec) or
-        (not exists(this.getBody()) and
-          (lastParameter().hasLocationInfo(path, _, _, el, ec) or
-            (not exists(this.getAParameter()) and el = elSuper and ec = ecSuper)))
+      this.getBody().hasLocationInfo(path, _, _, el, ec)
+      or
+      not exists(this.getBody()) and
+      (
+        lastParameter().hasLocationInfo(path, _, _, el, ec)
+        or
+        not exists(this.getAParameter()) and el = elSuper and ec = ecSuper
+      )
     )
   }
 
   private Parameter lastParameter() {
     result = getAParameter() and
-    not (getAParameter().getPosition() > result.getPosition())
+    not getAParameter().getPosition() > result.getPosition()
   }
 }
 
@@ -35,10 +39,11 @@ class RangeCallable extends Callable {
  * including the range of its members (if any), as opposed to the location of its name only.
  */
 class RangeRefType extends RefType {
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int elSuper, int ecSuper | super.hasLocationInfo(path, sl, sc, elSuper, ecSuper) |
-      lastMember().hasLocationInfo(path, _, _, el, ec) or
-      (not exists(this.getAMember()) and el = elSuper and ec = ecSuper)
+      lastMember().hasLocationInfo(path, _, _, el, ec)
+      or
+      not exists(this.getAMember()) and el = elSuper and ec = ecSuper
     )
   }
 

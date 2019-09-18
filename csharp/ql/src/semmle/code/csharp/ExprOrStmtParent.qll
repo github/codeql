@@ -3,6 +3,7 @@
  *
  * Provides logic for calculating the child relation on expressions and statements.
  */
+
 import csharp
 
 /**
@@ -14,9 +15,8 @@ import csharp
 predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstmt_parent parent) {
   expr_parent_top_level(child, i, parent)
   or
-  parent = any(Getter g |
-    expr_parent_top_level(child, i, g.getDeclaration())
-  )
+  parent = any(Getter g | expr_parent_top_level(child, i, g.getDeclaration())) and
+  i = 0
 }
 
 /**
@@ -51,21 +51,26 @@ predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstm
  * ```
  */
 private predicate expr_parent_adjusted(Expr child, int i, ControlFlowElement parent) {
-  exists(AssignExpr ae |
-    ae = parent.(AssignOperation).getExpandedAssignment() |
-    i = 0 and
-    exists(Expr right |
-      // right = `x + y`
-      expr_parent(right, 0, ae) |
-      expr_parent(child, 1, right)
-    )
-    or
-    i = 1 and
-    expr_parent(child, 1, ae)
-  )
-  or
-  not parent.(AssignOperation).hasExpandedAssignment() and
-  expr_parent(child, i, parent)
+  if parent instanceof AssignOperation
+  then
+    parent = any(AssignOperation ao |
+        exists(AssignExpr ae | ae = ao.getExpandedAssignment() |
+          i = 0 and
+          exists(Expr right |
+            // right = `x + y`
+            expr_parent(right, 0, ae)
+          |
+            expr_parent(child, 1, right)
+          )
+          or
+          i = 1 and
+          expr_parent(child, 1, ae)
+        )
+        or
+        not ao.hasExpandedAssignment() and
+        expr_parent(child, i, parent)
+      )
+  else expr_parent(child, i, parent)
 }
 
 /**
@@ -86,9 +91,7 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
   }
 
   /** Gets a child expression of this element, if any. */
-  final Expr getAChildExpr() {
-    result = this.getChildExpr(_)
-  }
+  final Expr getAChildExpr() { result = this.getChildExpr(_) }
 
   /** Gets the `i`th child statement of this element (zero-based). */
   final Stmt getChildStmt(int i) {
@@ -97,9 +100,7 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
   }
 
   /** Gets a child statement of this element, if any. */
-  final Stmt getAChildStmt() {
-    result = this.getChildStmt(_)
-  }
+  final Stmt getAChildStmt() { result = this.getChildStmt(_) }
 }
 
 /**
@@ -108,19 +109,13 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
  * An element that can have a child top-level expression.
  */
 class TopLevelExprParent extends Element, @top_level_expr_parent {
-  final override Expr getChild(int i) {
-    result = this.getChildExpr(i)
-  }
+  final override Expr getChild(int i) { result = this.getChildExpr(i) }
 
   /** Gets the `i`th child expression of this element (zero-based). */
-  final Expr getChildExpr(int i) {
-    result = getTopLevelChild(this, i)
-  }
+  final Expr getChildExpr(int i) { result = getTopLevelChild(this, i) }
 
   /** Gets a child expression of this element, if any. */
-  final Expr getAChildExpr() {
-    result = this.getChildExpr(_)
-  }
+  final Expr getAChildExpr() { result = this.getChildExpr(_) }
 }
 
 /**
@@ -159,8 +154,7 @@ class MultiImplementationsParent extends ExprOrStmtParent {
   MultiImplementationsParent() {
     exists(int i |
       strictcount(File f |
-        exists(ControlFlowElement implementation, Location l |
-          f = l.getFile() |
+        exists(ControlFlowElement implementation, Location l | f = l.getFile() |
           stmt_parent_top_level(implementation, i, this) and
           stmt_location(implementation, l)
           or
@@ -179,8 +173,7 @@ class MultiImplementationsParent extends ExprOrStmtParent {
    * element.
    */
   private File getAnImplementation(int i, ControlFlowElement cfe) {
-    exists(Location l |
-      result = l.getFile() |
+    exists(Location l | result = l.getFile() |
       stmt_parent_top_level(cfe, i, this) and
       stmt_location(cfe, l)
       or
@@ -231,8 +224,9 @@ class MultiImplementationsParent extends ExprOrStmtParent {
   File getBestFile() {
     exists(ValueOrRefType t |
       result = max(this.getAnImplementationFileInTopLevelType(_, t) as file
-        order by getImplementationSize(t, file), file.toString()
-      )
+          order by
+            getImplementationSize(t, file), file.toString()
+        )
     )
   }
 
@@ -242,31 +236,10 @@ class MultiImplementationsParent extends ExprOrStmtParent {
    * be the actual run-time implementation.
    */
   ControlFlowElement getBestChild(int i) {
-    exists(File f, ValueOrRefType t |
-      f = getBestFile() |
+    exists(File f, ValueOrRefType t | f = getBestFile() |
       f = this.getAnImplementationInTopLevelType(i, result, t)
     )
   }
-}
-
-/**
- * INTERNAL: Do not use.
- *
- * Holds if accessor `a` has an auto-implementation in file `f`.
- */
-predicate hasAccessorAutoImplementation(Accessor a, File f) {
-  exists(SourceLocation sl |
-    sl = a.getALocation() |
-    f = sl.getFile() and
-    not exists(ControlFlowElement cfe, Location l |
-      sl.getFile() = l.getFile() |
-      stmt_parent_top_level(cfe, _, a) and
-      stmt_location(cfe, l)
-      or
-      expr_parent_top_level_adjusted(cfe, 0, a) and
-      expr_location(cfe, l)
-    )
-  )
 }
 
 /** Gets the top-level type containing declaration `d`. */
@@ -293,15 +266,9 @@ private ValueOrRefType getDeclaringType(Declaration d) {
   or
   fields(d, _, _, result, _, _)
   or
-  exists(DeclarationWithAccessors decl |
-    d = decl.getAnAccessor() |
-    result = getDeclaringType(decl)
-  )
+  exists(DeclarationWithAccessors decl | d = decl.getAnAccessor() | result = getDeclaringType(decl))
   or
-  exists(Parameterizable p |
-    params(d, _, _, _, _, p, _) |
-    result = getDeclaringType(p)
-  )
+  exists(Parameterizable p | params(d, _, _, _, _, p, _) | result = getDeclaringType(p))
 }
 
 private ControlFlowElement getAChild(ControlFlowElement cfe) {
@@ -311,42 +278,61 @@ private ControlFlowElement getAChild(ControlFlowElement cfe) {
 
 private int getImplementationSize0(ValueOrRefType t, File f) {
   result = strictcount(ControlFlowElement cfe |
-    exists(MultiImplementationsParent p, ControlFlowElement child |
-      cfe = getAChild*(child) and
-      not cfe = getAChild*(any(ThrowElement te)) |
-      f = p.getAnImplementationInTopLevelType(_, child, t)
-      or
-      // Merge stats for partial implementations belonging to the same folder
-      t.isPartial() and
-      f = p.getAnImplementationInTopLevelType(_, _, t) and
-      exists(File fOther, MultiImplementationsParent pOther |
-        f.getParentContainer() = fOther.getParentContainer() |
-        fOther = pOther.getAnImplementationInTopLevelType(_, child, t)
+      exists(MultiImplementationsParent p, ControlFlowElement child |
+        cfe = getAChild*(child) and
+        not cfe = getAChild*(any(ThrowElement te))
+      |
+        f = p.getAnImplementationInTopLevelType(_, child, t)
+        or
+        // Merge stats for partial implementations belonging to the same folder
+        t.isPartial() and
+        f = p.getAnImplementationInTopLevelType(_, _, t) and
+        exists(File fOther, MultiImplementationsParent pOther |
+          f.getParentContainer() = fOther.getParentContainer()
+        |
+          fOther = pOther.getAnImplementationInTopLevelType(_, child, t)
+        )
       )
     )
-  )
 }
 
 private int getImplementationSize1(ValueOrRefType t, File f) {
   result = strictsum(MultiImplementationsParent p, int c |
-    // Count each auto-implemented accessor as size 4 (getter) or 5 (setter)
-    f = p.getAnAutoImplementationFileInTopLevelType(t) and
-    if p instanceof Getter then c = 4 else c = 5 |
-    c
-  )
+      // Count each auto-implemented accessor as size 4 (getter) or 5 (setter)
+      f = p.getAnAutoImplementationFileInTopLevelType(t) and
+      if p instanceof Getter then c = 4 else c = 5
+    |
+      c
+    )
 }
 
 private int getImplementationSize(ValueOrRefType t, File f) {
-  if exists(getImplementationSize0(t, f)) then
-    if exists(getImplementationSize1(t, f)) then
-      result = getImplementationSize0(t, f) + getImplementationSize1(t, f)
-    else
-      result = getImplementationSize0(t, f)
-  else
-    result = getImplementationSize1(t, f)
+  if exists(getImplementationSize0(t, f))
+  then
+    if exists(getImplementationSize1(t, f))
+    then result = getImplementationSize0(t, f) + getImplementationSize1(t, f)
+    else result = getImplementationSize0(t, f)
+  else result = getImplementationSize1(t, f)
 }
 
-private cached module Cached {
+/**
+ * Holds if declaration `d` should have a location in file `f`, because it is part of a
+ * type with multiple implementations, where the most likely run-time implementation is
+ * in `f`.
+ */
+private predicate mustHaveLocationInFile(Declaration d, File f) {
+  exists(MultiImplementationsParent p, ValueOrRefType t |
+    t = getTopLevelDeclaringType(p) and
+    f = p.getBestFile()
+  |
+    t = getTopLevelDeclaringType(d) or d = t or d = p
+  )
+}
+
+private predicate hasNoSourceLocation(Element e) { not e.getALocation() instanceof SourceLocation }
+
+cached
+private module Cached {
   cached
   ControlFlowElement getTopLevelChild(ExprOrStmtParent p, int i) {
     result = p.(MultiImplementationsParent).getBestChild(i)
@@ -355,22 +341,36 @@ private cached module Cached {
     (stmt_parent_top_level(result, i, p) or expr_parent_top_level_adjusted(result, i, p))
   }
 
+  cached
+  Location bestLocation(Element e) {
+    result = e.getALocation().(SourceLocation) and
+    (mustHaveLocationInFile(e, _) implies mustHaveLocationInFile(e, result.getFile()))
+    or
+    hasNoSourceLocation(e) and
+    result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
+    or
+    not exists(e.getALocation()) and
+    result instanceof EmptyLocation
+  }
+
   /**
    * INTERNAL: Do not use.
    *
-   * Holds if declaration `d` should have a location in file `f`, because it is part of a
-   * type with multiple implementations, where the most likely run-time implementation is
-   * in `f`.
+   * Holds if accessor `a` has an auto-implementation in file `f`.
    */
   cached
-  predicate mustHaveLocationInFileCached(Declaration d, File f) {
-    exists(MultiImplementationsParent p, ValueOrRefType t |
-      t = getTopLevelDeclaringType(p) and
-      f = p.getBestFile() |
-      t = getTopLevelDeclaringType(d) or d = t or d = p
+  predicate hasAccessorAutoImplementation(Accessor a, File f) {
+    exists(SourceLocation sl | sl = a.getALocation() |
+      f = sl.getFile() and
+      not exists(ControlFlowElement cfe, Location l | sl.getFile() = l.getFile() |
+        stmt_parent_top_level(cfe, _, a) and
+        stmt_location(cfe, l)
+        or
+        expr_parent_top_level_adjusted(cfe, 0, a) and
+        expr_location(cfe, l)
+      )
     )
   }
 }
-private import Cached
 
-predicate mustHaveLocationInFile = mustHaveLocationInFileCached/2;
+import Cached

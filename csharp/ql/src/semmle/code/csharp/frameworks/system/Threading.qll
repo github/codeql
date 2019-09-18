@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Threading`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 
@@ -9,7 +10,3 @@ class SystemThreadingNamespace extends Namespace {
     this.hasName("Threading")
   }
 }
-
-/** DEPRECATED. Gets the `System.Threading` namespace. */
-deprecated
-SystemThreadingNamespace getSystemThreadingNamespace() { any() }

@@ -3,7 +3,10 @@
  * @description Braces which enclose a block will have nothing else on the line except comments (if necessary).
  * @kind problem
  * @id cpp/jsf/av-rule-61
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 
 import cpp

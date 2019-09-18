@@ -1,0 +1,1 @@
+| test.c:24:2:24:8 | call to strncat | Potentially unsafe call to strncat. |

@@ -7,20 +7,18 @@ import Member
 import Stmt
 private import semmle.code.csharp.ExprOrStmtParent
 private import dotnet
+private import cil
 
 /**
  * A declaration that may have accessors. Either an event (`Event`), a property
  * (`Property`), or an indexer (`Indexer`).
  */
-class DeclarationWithAccessors extends AssignableMember, Virtualizable, Attributable, @declaration_with_accessors {
+class DeclarationWithAccessors extends AssignableMember, Virtualizable, Attributable,
+  @declaration_with_accessors {
   /** Gets an accessor of this declaration. */
-  Accessor getAnAccessor() {
-    result.getDeclaration() = this
-  }
+  Accessor getAnAccessor() { result.getDeclaration() = this }
 
-  override DeclarationWithAccessors getOverridee() {
-    result = Virtualizable.super.getOverridee()
-  }
+  override DeclarationWithAccessors getOverridee() { result = Virtualizable.super.getOverridee() }
 
   override DeclarationWithAccessors getAnOverrider() {
     result = Virtualizable.super.getAnOverrider()
@@ -45,15 +43,14 @@ class DeclarationWithAccessors extends AssignableMember, Virtualizable, Attribut
   override Type getType() { none() }
 
   override string toString() { result = AssignableMember.super.toString() }
-
-  override Location getLocation() { result = AssignableMember.super.getLocation() }
 }
 
 /**
  * A declaration that may have a `get` accessor and a `set` accessor. Either a
  * property (`Property`) or an indexer (`Indexer`).
  */
-class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelExprParent, @assignable_with_accessors {
+class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelExprParent,
+  @assignable_with_accessors {
   /** Gets the `get` accessor of this declaration, if any. */
   Getter getGetter() { result = getAnAccessor() }
 
@@ -103,9 +100,7 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
   }
 
   /** Gets the expression body of this declaration, if any. */
-  Expr getExpressionBody() {
-    result = this.getChildExpr(0)
-  }
+  Expr getExpressionBody() { result = this.getChildExpr(0) }
 }
 
 /**
@@ -118,17 +113,11 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
  * ```
  */
 class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @property {
-  override string getName() {
-    properties(this, result, _, _, _)
-  }
+  override string getName() { properties(this, result, _, _, _) }
 
-  override ValueOrRefType getDeclaringType() {
-    properties(this, _, result, _, _)
-  }
+  override ValueOrRefType getDeclaringType() { properties(this, _, result, _, _) }
 
-  override Type getType() {
-    properties(this, _, _, getTypeRef(result), _)
-  }
+  override Type getType() { properties(this, _, _, getTypeRef(result), _) }
 
   /**
    * Holds if this property is automatically implemented. For example, `P1`
@@ -157,13 +146,9 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
     not this.getAnAccessor().hasBody()
   }
 
-  override Property getSourceDeclaration() {
-    properties(this, _, _, _, result)
-  }
+  override Property getSourceDeclaration() { properties(this, _, _, _, result) }
 
-  override Property getOverridee() {
-    result = DeclarationWithGetSetAccessors.super.getOverridee()
-  }
+  override Property getOverridee() { result = DeclarationWithGetSetAccessors.super.getOverridee() }
 
   override Property getAnOverrider() {
     result = DeclarationWithGetSetAccessors.super.getAnOverrider()
@@ -185,28 +170,23 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
     result = DeclarationWithGetSetAccessors.super.getAnUltimateImplementor()
   }
 
-  override PropertyAccess getAnAccess() {
-    result.getTarget() = this
-  }
+  override PropertyAccess getAnAccess() { result.getTarget() = this }
 
-  override Location getALocation() {
-    property_location(this, result)
-  }
+  override Location getALocation() { property_location(this, result) }
 
   override Expr getAnAssignedValue() {
     result = DeclarationWithGetSetAccessors.super.getAnAssignedValue()
     or
-    /*
-     * For library types, we don't know about assignments in constructors. We instead assume that
-     * arguments passed to parameters of constructors with suitable names.
-     */
+    // For library types, we don't know about assignments in constructors. We instead assume that
+    // arguments passed to parameters of constructors with suitable names.
     getDeclaringType().fromLibrary() and
     exists(Parameter param, Constructor c, string propertyName |
       propertyName = getName() and
       c = getDeclaringType().getAConstructor() and
       param = c.getAParameter() and
       // Find a constructor parameter with the same name, but with a lower case initial letter.
-      param.hasName(propertyName.charAt(0).toLowerCase() + propertyName.suffix(1)) |
+      param.hasName(propertyName.charAt(0).toLowerCase() + propertyName.suffix(1))
+    |
       result = param.getAnAssignedArgument()
     )
   }
@@ -221,7 +201,19 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * }
    * ```
    */
-  Expr getInitializer() { result = this.getChildExpr(1) }
+  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(0) }
+
+  /**
+   * Holds if this property has an initial value. For example, the initial
+   * value of `P` on line 2 is `20` in
+   *
+   * ```
+   * class C {
+   *   public int P { get; set; } = 20;
+   * }
+   * ```
+   */
+  predicate hasInitializer() { exists(this.getInitializer()) }
 
   /**
    * Gets the expression body of this property, if any. For example, the expression
@@ -238,6 +230,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
   }
 
   override Getter getGetter() { result = DeclarationWithGetSetAccessors.super.getGetter() }
+
   override Setter getSetter() { result = DeclarationWithGetSetAccessors.super.getSetter() }
 }
 
@@ -253,26 +246,16 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
  * ```
  */
 class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer {
-  override string getName() {
-    indexers(this, result, _, _, _)
-  }
+  override string getName() { indexers(this, result, _, _, _) }
 
   /** Gets the dimension of this indexer, that is, its number of parameters. */
-  int getDimension() {
-    result = getNumberOfParameters()
-  }
+  int getDimension() { result = getNumberOfParameters() }
 
-  override ValueOrRefType getDeclaringType() {
-    indexers(this, _, result, _, _)
-  }
+  override ValueOrRefType getDeclaringType() { indexers(this, _, result, _, _) }
 
-  override Type getType() {
-    indexers(this, _, _, getTypeRef(result), _)
-  }
+  override Type getType() { indexers(this, _, _, getTypeRef(result), _) }
 
-  override IndexerAccess getAnAccess() {
-    result.getTarget() = this
-  }
+  override IndexerAccess getAnAccess() { result.getTarget() = this }
 
   /**
    * Gets the expression body of this indexer, if any. For example, the
@@ -288,13 +271,9 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
     result = DeclarationWithGetSetAccessors.super.getExpressionBody()
   }
 
-  override Indexer getSourceDeclaration() {
-    indexers(this, _, _, _, result)
-  }
+  override Indexer getSourceDeclaration() { indexers(this, _, _, _, result) }
 
-  override Indexer getOverridee() {
-    result = DeclarationWithGetSetAccessors.super.getOverridee()
-  }
+  override Indexer getOverridee() { result = DeclarationWithGetSetAccessors.super.getOverridee() }
 
   override Indexer getAnOverrider() {
     result = DeclarationWithGetSetAccessors.super.getAnOverrider()
@@ -316,13 +295,9 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
     result = DeclarationWithGetSetAccessors.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() {
-    indexer_location(this, result)
-  }
+  override Location getALocation() { indexer_location(this, result) }
 
-  override string toStringWithTypes() {
-    result = getName() + "[" + parameterTypesToString() + "]"
-  }
+  override string toStringWithTypes() { result = getName() + "[" + parameterTypesToString() + "]" }
 }
 
 /**
@@ -330,14 +305,10 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
  * accessor (`EventAccessor`).
  */
 class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
-  override ValueOrRefType getDeclaringType() {
-    result = this.getDeclaration().getDeclaringType()
-  }
+  override ValueOrRefType getDeclaringType() { result = this.getDeclaration().getDeclaringType() }
 
   /** Gets the assembly name of this accessor. */
-  string getAssemblyName() {
-    accessors(this, _, result, _, _)
-  }
+  string getAssemblyName() { accessors(this, _, result, _, _) }
 
   /**
    * Gets the declaration that this accessor belongs to. For example, both
@@ -352,9 +323,7 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
    * }
    * ```
    */
-  DeclarationWithAccessors getDeclaration() {
-    accessors(this, _ , _, result, _)
-  }
+  DeclarationWithAccessors getDeclaration() { accessors(this, _, _, result, _) }
 
   /**
    * Gets an explicit access modifier of this accessor, if any. For example,
@@ -370,9 +339,7 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
    * }
    * ```
    */
-  AccessModifier getAnAccessModifier() {
-    result = Modifiable.super.getAModifier()
-  }
+  AccessModifier getAnAccessModifier() { result = Modifiable.super.getAModifier() }
 
   /**
    * Gets a modifier of this accessor, if any.
@@ -398,19 +365,11 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
     not (result instanceof AccessModifier and exists(getAnAccessModifier()))
   }
 
-  override Accessor getSourceDeclaration() {
-    accessors(this, _, _, _, result)
-  }
+  override Accessor getSourceDeclaration() { accessors(this, _, _, _, result) }
 
-  override Location getALocation() {
-    accessor_location(this, result)
-  }
+  override Location getALocation() { accessor_location(this, result) }
 
-  override string toString() {
-    result = getName()
-  }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
+  override string toString() { result = getName() }
 }
 
 /**
@@ -427,13 +386,9 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
  * ```
  */
 class Getter extends Accessor, @getter {
-  override string getName() {
-    result = "get" + "_" + getDeclaration().getName()
-  }
+  override string getName() { result = "get" + "_" + getDeclaration().getName() }
 
-  override Type getReturnType() {
-    result = getDeclaration().getType()
-  }
+  override Type getReturnType() { result = getDeclaration().getType() }
 
   /**
    * Gets the field used in the trival implementation of this getter, if any.
@@ -476,9 +431,7 @@ class Getter extends Accessor, @getter {
  * ```
  */
 class Setter extends Accessor, @setter {
-  override string getName() {
-    result = "set" + "_" + getDeclaration().getName()
-  }
+  override string getName() { result = "set" + "_" + getDeclaration().getName() }
 
   override Type getReturnType() {
     exists(this) and // needed to avoid compiler warning
@@ -516,8 +469,7 @@ class Setter extends Accessor, @setter {
 /**
  * Gets an access to the special `value` parameter available in setters.
  */
-private
-ParameterAccess accessToValue() {
+private ParameterAccess accessToValue() {
   result.getTarget().hasName("value") and
   result.getEnclosingCallable() instanceof Setter
 }
@@ -547,12 +499,13 @@ ParameterAccess accessToValue() {
  * }
  * ```
  */
-class TrivialProperty extends Property
-{
+class TrivialProperty extends Property {
   TrivialProperty() {
     isAutoImplemented()
     or
     getGetter().trivialGetterField() = getSetter().trivialSetterField()
+    or
+    exists(CIL::TrivialProperty prop | this.matchesHandle(prop))
   }
 }
 
@@ -560,8 +513,15 @@ class TrivialProperty extends Property
  * A `Property` which holds a type with an indexer.
  */
 class IndexerProperty extends Property {
-  IndexerProperty() {
-    exists(getType().(RefType).getABaseType*().getAnIndexer())
+  Indexer i;
+
+  IndexerProperty() { this.getType().(RefType).hasMember(i) }
+
+  pragma[nomagic]
+  private IndexerCall getAnIndexerCall0() {
+    exists(Expr qualifier | qualifier = result.getQualifier() |
+      DataFlow::localFlow(DataFlow::exprNode(this.getAnAccess()), DataFlow::exprNode(qualifier))
+    )
   }
 
   /**
@@ -571,11 +531,27 @@ class IndexerProperty extends Property {
    * This tracks instances returned by the property using local data flow.
    */
   IndexerCall getAnIndexerCall() {
-    result = getType().(RefType).getAnIndexer().getAnAccessor().getACall() and
-    // The qualifier of this indexer call should be a value returned from an access of this property
-    exists(Expr qualifier |
-      qualifier = result.(IndexerAccess).getQualifier() |
-      DataFlow::localFlow(DataFlow::exprNode(this.getAnAccess()), DataFlow::exprNode(qualifier))
-    )
+    result = this.getAnIndexerCall0() and
+    // Omitting the constraint below would potentially include
+    // too many indexer calls, for example the call to the indexer
+    // setter at `dict[0]` in
+    //
+    // ```
+    // class A
+    // {
+    //     Dictionary<int, string> dict;
+    //     public IReadonlyDictionary<int, string> Dict { get => dict; }
+    // }
+    //
+    // class B
+    // {
+    //     void M(A a)
+    //     {
+    //         var dict = (Dictionary<int, string>) a.Dict;
+    //         dict[0] = "";
+    //     }
+    // }
+    // ```
+    result.getIndexer() = i
   }
 }

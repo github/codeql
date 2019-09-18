@@ -7,6 +7,7 @@
  * @id java/override-of-finalize-method
  * @tags reliability
  */
+
 import java
 
 class ObjectFinalizeMethod extends Method {

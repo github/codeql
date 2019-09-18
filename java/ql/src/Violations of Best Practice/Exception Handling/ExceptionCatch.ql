@@ -9,10 +9,10 @@
  * @tags reliability
  *       external/cwe/cwe-396
  */
+
 import java
 
-private
-predicate relevantTypeNames(string typeName, string message) {
+private predicate relevantTypeNames(string typeName, string message) {
   // `Throwable` is the more severe case due to `Error`s such as `OutOfMemoryError`.
   typeName = "Throwable" and message = "Error"
   or
@@ -20,20 +20,21 @@ predicate relevantTypeNames(string typeName, string message) {
   typeName = "Exception" and message = "RuntimeException"
 }
 
-private
-Type getAThrownExceptionType(TryStmt t) {
+private Type getAThrownExceptionType(TryStmt t) {
   exists(MethodAccess ma, Exception e |
-    t.getBlock() = ma.getEnclosingStmt().getParent*() and
+    t.getBlock() = ma.getEnclosingStmt().getEnclosingStmt*() and
     ma.getMethod().getAnException() = e and
     result = e.getType()
-  ) or
+  )
+  or
   exists(ClassInstanceExpr cie, Exception e |
-    t.getBlock() = cie.getEnclosingStmt().getParent*() and
+    t.getBlock() = cie.getEnclosingStmt().getEnclosingStmt*() and
     cie.getConstructor().getAnException() = e and
     result = e.getType()
-  ) or
+  )
+  or
   exists(ThrowStmt ts |
-    t.getBlock() = ts.getParent*() and
+    t.getBlock() = ts.getEnclosingStmt*() and
     result = ts.getExpr().getType()
   )
 }
@@ -53,7 +54,6 @@ where
   not exists(Type et | et = getAThrownExceptionType(t) |
     et.(RefType).getASubtype*().hasQualifiedName("java.lang", typeName)
   )
-select
-  cc,
-  "Do not catch '" + cc.getVariable().getType() + "'"
-  + "; " + message + "s should normally be propagated."
+select cc,
+  "Do not catch '" + cc.getVariable().getType() + "'" + "; " + message +
+    "s should normally be propagated."

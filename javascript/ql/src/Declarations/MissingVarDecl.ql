@@ -3,7 +3,7 @@
  * @description If a variable is not declared as a local variable, it becomes a global variable
  *              by default, which may be unintentional and could lead to unexpected behavior.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id js/missing-variable-declaration
  * @tags reliability
  *       maintainability
@@ -17,12 +17,10 @@ import javascript
  * but not declared in the same toplevel as `f`.
  */
 GlobalVariable undeclaredGlobalIn(Function f) {
-  exists (GlobalVarAccess gva | gva = result.getAnAccess() |
+  exists(GlobalVarAccess gva | gva = result.getAnAccess() |
     gva.getEnclosingFunction() = f and
     not result.declaredIn(f.getTopLevel()) and
-    not exists (Linting::GlobalDeclaration gd |
-      gd.declaresGlobalForAccess(gva)
-    )
+    not exists(Linting::GlobalDeclaration gd | gd.declaresGlobalForAccess(gva))
   )
 }
 
@@ -33,9 +31,7 @@ GlobalVariable undeclaredGlobalIn(Function f) {
  */
 GlobalVariable accidentalGlobalIn(Function f) {
   result = undeclaredGlobalIn(f) and
-  exists (BasicBlock startBB | startBB = f.getStartBB() |
-    not startBB.isLiveAtEntry(result)
-  )
+  exists(BasicBlock startBB | startBB = f.getStartBB() | not startBB.isLiveAtEntry(result))
 }
 
 /**
@@ -62,9 +58,12 @@ GlobalVarAccess getAccessIn(GlobalVariable v, Function f) {
  */
 GlobalVarAccess getFirstAccessIn(GlobalVariable v, Function f) {
   result = min(getAccessIn(v, f) as gva
-               order by gva.getLocation().getStartLine(), gva.getLocation().getStartColumn())
+      order by
+        gva.getLocation().getStartLine(), gva.getLocation().getStartColumn()
+    )
 }
 
 from Function f, GlobalVariable gv
 where gv = candidateVariable(f)
-select getFirstAccessIn(gv, f), "Variable " + gv.getName() + " is used like a local variable, but is missing a declaration."
+select getFirstAccessIn(gv, f),
+  "Variable " + gv.getName() + " is used like a local variable, but is missing a declaration."

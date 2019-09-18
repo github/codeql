@@ -1,10 +1,12 @@
 /**
  * Provides a taint-tracking configuration for reasoning about untrusted user input used in resource descriptors.
  */
+
 import csharp
 
 module ResourceInjection {
   import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.dataflow.flowsources.Local
   import semmle.code.csharp.frameworks.system.Data
   import semmle.code.csharp.security.Sanitizers
 
@@ -27,37 +29,31 @@ module ResourceInjection {
    * A taint-tracking configuration for untrusted user input used in resource descriptors.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "ResourceInjection"
-    }
+    TaintTrackingConfiguration() { this = "ResourceInjection" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input. */
   class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
+
+  /** A source of local user input. */
+  class LocalSource extends Source {
+    LocalSource() { this instanceof LocalFlowSource }
   }
 
   /** An argument to the `ConnectionString` property on a data connection class. */
   class SqlConnectionStringSink extends Sink {
     SqlConnectionStringSink() {
-      this.getExpr() = any(SystemDataConnectionClass dataConn).getConnectionStringProperty().getAnAssignedValue()
+      this.getExpr() = any(SystemDataConnectionClass dataConn)
+            .getConnectionStringProperty()
+            .getAnAssignedValue()
     }
   }
 

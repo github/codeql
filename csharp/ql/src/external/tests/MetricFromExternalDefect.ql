@@ -8,18 +8,14 @@
  */
 
 import csharp
-
 import external.ExternalArtifact
 
 class DuplicateCode extends ExternalDefect {
   DuplicateCode() { getQueryPath() = "duplicate-code/duplicateCode.ql" }
 }
 
-predicate numDuplicateEntries(File f, int i) {
-  i = count(DuplicateCode d | d.getFile() = f)
-}
+predicate numDuplicateEntries(File f, int i) { i = count(DuplicateCode d | d.getFile() = f) }
 
 from File f, int i
 where numDuplicateEntries(f, i)
 select f, i
-

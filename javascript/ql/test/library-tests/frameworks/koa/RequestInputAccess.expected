@@ -1,9 +1,0 @@
-| src/koa.js:19:3:19:18 | ctx.request.body | body | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:20:3:20:23 | ctx.req ... ery.foo | parameter | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:21:3:21:17 | ctx.request.url | url | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:22:3:22:25 | ctx.req ... inalUrl | url | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:23:3:23:18 | ctx.request.href | url | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:24:3:24:24 | ctx.req ... der.bar | header | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:25:3:25:25 | ctx.req ... ers.bar | header | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:26:3:26:24 | ctx.req ... ('bar') | header | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:27:3:27:24 | ctx.coo ... ('baz') | cookie | src/koa.js:10:10:28:1 | functio ... az');\\n} |

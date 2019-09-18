@@ -1,52 +1,22 @@
-| (ConcatArray<T> \| ConcatArray<ConcatArray<T>>)[] | ConcatArray<T> \| ConcatArray<ConcatArray<T>> |
-| (ConcatArray<number> \| ConcatArray<ConcatArray<... | ConcatArray<number> \| ConcatArray<ConcatArray<n... |
-| (ConcatArray<string \| number> \| ConcatArray<Con... | ConcatArray<string \| number> \| ConcatArray<Conc... |
-| (S \| ConcatArray<S>)[] | S \| ConcatArray<S> |
-| (T \| ConcatArray<T> \| ConcatArray<T \| ConcatArr... | T \| ConcatArray<T> \| ConcatArray<T \| ConcatArra... |
 | (T \| ConcatArray<T>)[] | T \| ConcatArray<T> |
-| (T \| ConcatArray<T>)[] | T \| ConcatArray<T> |
-| (U \| ConcatArray<U>)[] | U \| ConcatArray<U> |
-| (number \| ConcatArray<number> \| ConcatArray<num... | number \| ConcatArray<number> \| ConcatArray<numb... |
 | (number \| ConcatArray<number>)[] | number \| ConcatArray<number> |
-| (string \| ConcatArray<string>)[] | string \| ConcatArray<string> |
+| (number[] \| ConcatArray<number[]>)[] | number[] \| ConcatArray<number[]> |
 | (string \| number \| ConcatArray<string \| number>)[] | string \| number \| ConcatArray<string \| number> |
-| (string \| number \| ConcatArray<string \| number>... | string \| number \| ConcatArray<string \| number> ... |
 | (string \| number)[] | string \| number |
-| (string \| number)[] \| ConcatArray<string \| numb... | string \| number \| ConcatArray<string \| number> |
-| ConcatArray<ConcatArray<T>>[] | ConcatArray<ConcatArray<T>> |
-| ConcatArray<ConcatArray<number>>[] | ConcatArray<ConcatArray<number>> |
-| ConcatArray<ConcatArray<string \| number>>[] | ConcatArray<ConcatArray<string \| number>> |
-| ConcatArray<S>[] | ConcatArray<S> |
-| ConcatArray<T \| ConcatArray<T>>[] | ConcatArray<T \| ConcatArray<T>> |
-| ConcatArray<T> | T |
-| ConcatArray<T> | T |
-| ConcatArray<T> \| ConcatArray<ConcatArray<T>> | T \| ConcatArray<T> |
 | ConcatArray<T>[] | ConcatArray<T> |
-| ConcatArray<T>[] | ConcatArray<T> |
-| ConcatArray<U>[] | ConcatArray<U> |
-| ConcatArray<number \| ConcatArray<number>>[] | ConcatArray<number \| ConcatArray<number>> |
-| ConcatArray<number> | number |
-| ConcatArray<number> \| ConcatArray<ConcatArray<n... | number \| ConcatArray<number> |
 | ConcatArray<number>[] | ConcatArray<number> |
-| ConcatArray<string \| number \| ConcatArray<strin... | ConcatArray<string \| number \| ConcatArray<strin... |
-| ConcatArray<string \| number> | string \| number |
-| ConcatArray<string \| number> \| ConcatArray<Conc... | string \| number \| ConcatArray<string \| number> |
+| ConcatArray<number[]>[] | ConcatArray<number[]> |
 | ConcatArray<string \| number>[] | ConcatArray<string \| number> |
-| ConcatArray<string>[] | ConcatArray<string> |
 | NumberIndexable | object |
-| ReadonlyArray<T> | T |
-| ReadonlyArray<number> | number |
 | S[] | S |
 | T[] | T |
-| T[] | T |
-| T[] | T |
-| T[] \| ConcatArray<T>[] | T \| ConcatArray<T> |
 | U[] | U |
 | [number, string] | string \| number |
 | any[] | any |
 | number[] | number |
-| number[] \| ConcatArray<number>[] | number \| ConcatArray<number> |
+| number[][] | number[] |
+| readonly T[] | T |
+| readonly number[] | number |
+| readonly number[][] | number[] |
 | string | string |
-| string \| ConcatArray<string> | string |
-| string \| string[] | string |
 | string[] | string |

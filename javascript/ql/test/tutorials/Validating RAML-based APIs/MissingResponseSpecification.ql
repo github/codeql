@@ -10,7 +10,7 @@ import Osprey
 import RAML
 
 RAMLMethod getSpecification(OspreyMethod om) {
-  exists (RAMLResource rr, File f, string rPath |
+  exists(RAMLResource rr, File f, string rPath |
     rr.getLocation().getFile() = f and
     f = om.getDefinition().getAPI().getSpecFile() and
     rPath = om.getResourcePath() and
@@ -20,6 +20,7 @@ RAMLMethod getSpecification(OspreyMethod om) {
 }
 
 from MethodResponseSetStatus mrss, RAMLMethod rm
-where rm = getSpecification(mrss.getMethod()) and
-      not exists(rm.getResponse(mrss.getStatusCode()))
+where
+  rm = getSpecification(mrss.getMethod()) and
+  not exists(rm.getResponse(mrss.getStatusCode()))
 select mrss, "Response " + mrss.getStatusCode() + " is not specified by $@.", rm, rm.toString()

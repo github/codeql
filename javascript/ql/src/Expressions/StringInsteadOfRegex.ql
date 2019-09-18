@@ -7,6 +7,7 @@
  * @tags correctness
  * @precision high
  */
+
 import javascript
 
 /**
@@ -26,11 +27,14 @@ private string getALikelyRegExpPattern() {
  * Holds if `mce` is a call to String.prototype.replace or String.prototype.split
  */
 predicate isStringSplitOrReplace(MethodCallExpr mce) {
-  exists (string name, int arity |
+  exists(string name, int arity |
     mce.getMethodName() = name and
-    mce.getNumArgument() = arity |
-    (name = "replace" and arity = 2) or
-    (name = "split" and (arity = 1 or arity = 2))
+    mce.getNumArgument() = arity
+  |
+    name = "replace" and arity = 2
+    or
+    name = "split" and
+    (arity = 1 or arity = 2)
   )
 }
 
@@ -42,9 +46,12 @@ predicate mayReferToString(DataFlow::Node nd, StringLiteral s) {
 }
 
 from MethodCallExpr mce, StringLiteral arg, string raw, string s
-where isStringSplitOrReplace(mce) and
-      mayReferToString(mce.getArgument(0).flow(), arg) and
-      raw = arg.getRawValue() and
-      s = raw.substring(1, raw.length() - 1) and
-      s.regexpMatch(getALikelyRegExpPattern())
-select mce, "String argument '$@' looks like a regular expression, but it will be interpreted as a string.", arg, s
+where
+  isStringSplitOrReplace(mce) and
+  mayReferToString(mce.getArgument(0).flow(), arg) and
+  raw = arg.getRawValue() and
+  s = raw.substring(1, raw.length() - 1) and
+  s.regexpMatch(getALikelyRegExpPattern())
+select mce,
+  "String argument '$@' looks like a regular expression, but it will be interpreted as a string.",
+  arg, s

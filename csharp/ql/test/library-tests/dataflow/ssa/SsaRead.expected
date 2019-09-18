@@ -65,7 +65,7 @@
 | Capture.cs:229:13:229:13 | i | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:237:34:237:34 | access to local variable i |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:11:17:11:17 | access to parameter b |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
-| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
+| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:26:13:26:13 | access to local variable c |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:27:13:27:13 | access to local variable c |
 | Consistency.cs:26:13:26:19 | c.Field | Consistency.cs:25:29:25:29 | SSA qualifier def(c.Field) | Consistency.cs:26:13:26:19 | access to field Field |
@@ -334,6 +334,27 @@
 | Properties.cs:114:20:114:35 | this.Props.Props | Properties.cs:113:9:113:22 | SSA call def(this.Props.Props) | Properties.cs:116:17:116:32 | access to field Props |
 | Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:113:9:113:22 | SSA qualifier def(this.Props.Props.xs) | Properties.cs:115:21:115:39 | access to property xs |
 | Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:113:9:113:22 | SSA qualifier def(this.Props.Props.xs) | Properties.cs:116:17:116:35 | access to property xs |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | SSA param(b) | Splitting.cs:6:13:6:13 | access to parameter b |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | SSA param(b) | Splitting.cs:15:13:15:13 | access to parameter b |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:7:13:7:19 | [b (line 3): true] SSA def(x) | Splitting.cs:13:9:13:9 | access to local variable x |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:7:13:7:19 | [b (line 3): true] SSA def(x) | Splitting.cs:14:9:14:9 | access to local variable x |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:7:13:7:19 | [b (line 3): true] SSA def(x) | Splitting.cs:17:13:17:13 | access to local variable x |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | [b (line 3): false] SSA def(x) | Splitting.cs:11:13:11:13 | access to local variable x |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | [b (line 3): false] SSA def(x) | Splitting.cs:13:9:13:9 | access to local variable x |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | [b (line 3): false] SSA def(x) | Splitting.cs:14:9:14:9 | access to local variable x |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | SSA param(b) | Splitting.cs:25:13:25:13 | access to parameter b |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | SSA param(b) | Splitting.cs:35:13:35:13 | access to parameter b |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | [b (line 22): false] SSA def(x) | Splitting.cs:30:13:30:13 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): false] SSA def(x) | Splitting.cs:33:9:33:9 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): false] SSA def(x) | Splitting.cs:34:9:34:9 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): true] SSA def(x) | Splitting.cs:33:9:33:9 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): true] SSA def(x) | Splitting.cs:34:9:34:9 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): true] SSA def(x) | Splitting.cs:37:13:37:13 | access to local variable x |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | SSA param(b) | Splitting.cs:45:13:45:13 | access to parameter b |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | SSA param(b) | Splitting.cs:52:13:52:13 | access to parameter b |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:49:13:49:19 | [b (line 42): false] SSA def(x) | Splitting.cs:50:13:50:13 | access to local variable x |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:21 | SSA phi(x) | Splitting.cs:54:9:54:9 | access to local variable x |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:21 | SSA phi(x) | Splitting.cs:55:9:55:9 | access to local variable x |
 | Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | SSA param(param1) | Test.cs:11:13:11:18 | access to parameter param1 |
 | Test.cs:5:15:5:20 | param1 | Test.cs:25:16:25:16 | SSA phi(param1) | Test.cs:27:17:27:22 | access to parameter param1 |
 | Test.cs:5:15:5:20 | param1 | Test.cs:39:9:42:9 | SSA phi(param1) | Test.cs:41:13:41:18 | access to parameter param1 |
@@ -356,7 +377,8 @@
 | Test.cs:46:16:46:18 | in | Test.cs:46:16:46:18 | SSA param(in) | Test.cs:48:13:48:15 | access to parameter in |
 | Test.cs:56:13:56:17 | this.field | Test.cs:46:10:46:10 | SSA entry def(this.field) | Test.cs:56:13:56:17 | access to field field |
 | Test.cs:56:13:56:17 | this.field | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:58:13:58:17 | access to field field |
-| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | SSA def(e) | Test.cs:70:17:70:17 | access to local variable e |
+| Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | SSA param(x) | Test.cs:66:28:66:28 | access to parameter x |
+| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:70:17:70:17 | access to local variable e |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:11:13:11:13 | access to local variable x |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:14:9:14:32 | SSA def(x) | Tuples.cs:15:13:15:13 | access to local variable x |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:23:9:23:37 | SSA def(x) | Tuples.cs:24:13:24:13 | access to local variable x |

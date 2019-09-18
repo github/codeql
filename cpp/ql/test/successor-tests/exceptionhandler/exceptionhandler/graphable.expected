@@ -1,67 +1,66 @@
-| C::operator= | false | 129 | 129 | operator= |
-| C::operator= | false | 133 | 133 | operator= |
-| D::operator= | false | 140 | 140 | operator= |
-| D::operator= | false | 144 | 144 | operator= |
-| __va_list_tag::operator= | false | 61 | 61 | operator= |
-| __va_list_tag::operator= | false | 65 | 65 | operator= |
-| f | false | 163 | 163 | f |
-| f | false | 180 | 180 | call to g |
-| f | false | 182 | 182 | ExprStmt |
-| f | false | 186 | 186 | 2 |
-| f | false | 187 | 187 | throw ... |
-| f | false | 189 | 189 | ExprStmt |
-| f | false | 191 | 191 | label ...: |
-| f | false | 193 | 193 | { ... } |
-| f | false | 197 | 197 | 4 |
-| f | false | 198 | 198 | ExprStmt |
-| f | false | 200 | 200 | { ... } |
-| f | false | 202 | 202 | <handler> |
-| f | false | 203 | 203 | try { ... } |
-| f | false | 205 | 205 | { ... } |
-| f | false | 209 | 209 | 5 |
-| f | false | 210 | 210 | ExprStmt |
-| f | false | 212 | 212 | { ... } |
-| f | false | 216 | 216 | 6 |
-| f | false | 217 | 217 | ExprStmt |
-| f | false | 219 | 219 | { ... } |
-| f | false | 221 | 221 | <handler> |
-| f | false | 222 | 222 | <handler> |
-| f | false | 223 | 223 | try { ... } |
-| f | false | 225 | 225 | return ... |
-| f | false | 227 | 227 | { ... } |
-| f | true | 180 | 189 |  |
-| f | true | 182 | 180 |  |
-| f | true | 186 | 187 |  |
-| f | true | 187 | 202 |  |
-| f | true | 189 | 186 |  |
-| f | true | 191 | 225 |  |
-| f | true | 193 | 182 |  |
-| f | true | 197 | 225 |  |
-| f | true | 198 | 197 |  |
-| f | true | 200 | 198 |  |
-| f | true | 202 | 200 |  |
-| f | true | 202 | 221 |  |
-| f | true | 203 | 193 |  |
-| f | true | 205 | 203 |  |
-| f | true | 209 | 225 |  |
-| f | true | 210 | 209 |  |
-| f | true | 212 | 210 |  |
-| f | true | 216 | 225 |  |
-| f | true | 217 | 216 |  |
-| f | true | 219 | 217 |  |
-| f | true | 221 | 212 |  |
-| f | true | 221 | 222 |  |
-| f | true | 222 | 163 |  |
-| f | true | 222 | 219 |  |
-| f | true | 223 | 205 |  |
-| f | true | 225 | 163 |  |
-| f | true | 227 | 223 |  |
-| g | false | 150 | 150 | g |
-| g | false | 155 | 155 | 1 |
-| g | false | 156 | 156 | throw ... |
-| g | false | 158 | 158 | ExprStmt |
-| g | false | 160 | 160 | { ... } |
-| g | true | 155 | 156 |  |
-| g | true | 156 | 150 |  |
-| g | true | 158 | 155 |  |
-| g | true | 160 | 158 |  |
+| C::operator= | false | 250 | 250 | operator= |
+| C::operator= | false | 261 | 261 | operator= |
+| D::operator= | false | 232 | 232 | operator= |
+| D::operator= | false | 243 | 243 | operator= |
+| __va_list_tag::operator= | false | 92 | 92 | operator= |
+| __va_list_tag::operator= | false | 99 | 99 | operator= |
+| f | false | 149 | 149 | f |
+| f | false | 157 | 157 | call to g |
+| f | false | 159 | 159 | ExprStmt |
+| f | false | 163 | 163 | 2 |
+| f | false | 164 | 164 | throw ... |
+| f | false | 166 | 166 | ExprStmt |
+| f | false | 168 | 168 | label ...: |
+| f | false | 170 | 170 | { ... } |
+| f | false | 178 | 178 | 4 |
+| f | false | 179 | 179 | ExprStmt |
+| f | false | 181 | 181 | { ... } |
+| f | false | 183 | 183 | <handler> |
+| f | false | 184 | 184 | try { ... } |
+| f | false | 186 | 186 | { ... } |
+| f | false | 193 | 193 | 5 |
+| f | false | 194 | 194 | ExprStmt |
+| f | false | 196 | 196 | { ... } |
+| f | false | 203 | 203 | 6 |
+| f | false | 204 | 204 | ExprStmt |
+| f | false | 206 | 206 | { ... } |
+| f | false | 208 | 208 | <handler> |
+| f | false | 209 | 209 | <handler> |
+| f | false | 210 | 210 | try { ... } |
+| f | false | 212 | 212 | return ... |
+| f | false | 214 | 214 | { ... } |
+| f | true | 159 | 157 |  |
+| f | true | 163 | 164 |  |
+| f | true | 164 | 183 |  |
+| f | true | 166 | 163 |  |
+| f | true | 168 | 212 |  |
+| f | true | 170 | 159 |  |
+| f | true | 178 | 212 |  |
+| f | true | 179 | 178 |  |
+| f | true | 181 | 179 |  |
+| f | true | 183 | 181 |  |
+| f | true | 183 | 208 |  |
+| f | true | 184 | 170 |  |
+| f | true | 186 | 184 |  |
+| f | true | 193 | 212 |  |
+| f | true | 194 | 193 |  |
+| f | true | 196 | 194 |  |
+| f | true | 203 | 212 |  |
+| f | true | 204 | 203 |  |
+| f | true | 206 | 204 |  |
+| f | true | 208 | 196 |  |
+| f | true | 208 | 209 |  |
+| f | true | 209 | 149 |  |
+| f | true | 209 | 206 |  |
+| f | true | 210 | 186 |  |
+| f | true | 212 | 149 |  |
+| f | true | 214 | 210 |  |
+| g | false | 154 | 154 | g |
+| g | false | 222 | 222 | 1 |
+| g | false | 223 | 223 | throw ... |
+| g | false | 225 | 225 | ExprStmt |
+| g | false | 227 | 227 | { ... } |
+| g | true | 222 | 223 |  |
+| g | true | 223 | 154 |  |
+| g | true | 225 | 222 |  |
+| g | true | 227 | 225 |  |

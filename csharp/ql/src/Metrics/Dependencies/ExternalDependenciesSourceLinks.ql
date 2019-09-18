@@ -8,7 +8,5 @@
 import semmle.code.csharp.metrics.ExternalDependencies
 
 from File file, int num, string encodedDependency
-where
-  externalDependencies(file, encodedDependency, num)
-select
-  encodedDependency, file
+where externalDependencies(file, encodedDependency, num)
+select encodedDependency, file

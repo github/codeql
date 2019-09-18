@@ -2,26 +2,35 @@
  * @name HTTP response splitting
  * @description Writing user input directly to an HTTP header
  *              makes code vulnerable to attack by header splitting.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/http-response-splitting
  * @tags security
  *       external/cwe/cwe-113
  */
+
 import java
 import ResponseSplitting
+import DataFlow::PathGraph
 
 class ResponseSplittingConfig extends TaintTracking::Configuration {
   ResponseSplittingConfig() { this = "ResponseSplittingConfig" }
+
   override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteUserInput and
+    source instanceof RemoteFlowSource and
     not source instanceof WhitelistedSource
   }
+
   override predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or
+    node.getType() instanceof BoxedType
+  }
 }
 
-from HeaderSplittingSink sink, RemoteUserInput source, ResponseSplittingConfig conf
-where conf.hasFlow(source, sink)
-select sink, "Response-splitting vulnerability due to this $@.",
-  source, "user-provided value"
+from DataFlow::PathNode source, DataFlow::PathNode sink, ResponseSplittingConfig conf
+where conf.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Response-splitting vulnerability due to this $@.",
+  source.getNode(), "user-provided value"

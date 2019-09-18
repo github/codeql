@@ -1,0 +1,27 @@
+#10000=@"/neg2.json;sourcefile"
+files(#10000,"/neg2.json","neg2","json",0)
+#10001=@"/;folder"
+folders(#10001,"/","")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=*
+json(#20000,4,#10000,0,"[1, -2]")
+#20001=@"loc,{#10000},1,1,1,7"
+locations_default(#20001,#10000,1,1,1,7)
+json_locations(#20000,#20001)
+#20002=*
+json(#20002,2,#20000,0,"1")
+#20003=@"loc,{#10000},1,2,1,2"
+locations_default(#20003,#10000,1,2,1,2)
+json_locations(#20002,#20003)
+json_literals("1","1",#20002)
+#20004=*
+json(#20004,2,#20000,1,"-2")
+#20005=@"loc,{#10000},1,5,1,6"
+locations_default(#20005,#10000,1,5,1,6)
+json_locations(#20004,#20005)
+json_literals("-2","-2",#20004)
+numlines(#10000,1,0,0)
+filetype(#10000,"json")

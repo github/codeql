@@ -7,12 +7,16 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
+ * @tags maintainability
  */
+
 import cpp
 
 from File f
 where f.fromSource()
-select f, count(Function fn |
-                fn.getFile() = f
-                and not fn instanceof MemberFunction
-                and not fn.isStatic())
+select f,
+  count(Function fn |
+    fn.getFile() = f and
+    not fn instanceof MemberFunction and
+    not fn.isStatic()
+  )

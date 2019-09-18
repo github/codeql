@@ -1,0 +1,7 @@
+| EntityFramework.cs:52:18:52:24 | access to property Name | EntityFramework.cs:47:34:47:42 | "tainted" |
+| EntityFramework.cs:53:18:53:34 | access to property Name | EntityFramework.cs:47:34:47:42 | "tainted" |
+| EntityFrameworkCore.cs:50:18:50:28 | access to local variable taintSource | EntityFrameworkCore.cs:47:31:47:39 | "tainted" |
+| EntityFrameworkCore.cs:51:18:51:46 | (...) ... | EntityFrameworkCore.cs:47:31:47:39 | "tainted" |
+| EntityFrameworkCore.cs:52:18:52:42 | (...) ... | EntityFrameworkCore.cs:47:31:47:39 | "tainted" |
+| EntityFrameworkCore.cs:60:18:60:24 | access to property Name | EntityFrameworkCore.cs:47:31:47:39 | "tainted" |
+| EntityFrameworkCore.cs:61:18:61:34 | access to property Name | EntityFrameworkCore.cs:47:31:47:39 | "tainted" |

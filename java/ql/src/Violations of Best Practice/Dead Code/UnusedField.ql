@@ -9,6 +9,7 @@
  *       useless-code
  *       external/cwe/cwe-561
  */
+
 import java
 import semmle.code.java.Reflection
 import semmle.code.java.frameworks.Lombok

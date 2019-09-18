@@ -17,10 +17,7 @@ import semmle.code.csharp.frameworks.system.Collections
 import semmle.code.csharp.frameworks.system.collections.Generic
 
 predicate lambdaCaptures(AnonymousFunctionExpr lambda, Variable v) {
-  exists(VariableAccess va |
-    va.getEnclosingCallable() = lambda |
-    va.getTarget() = v
-  )
+  exists(VariableAccess va | va.getEnclosingCallable() = lambda | va.getTarget() = v)
 }
 
 predicate lambdaCapturesLoopVariable(AnonymousFunctionExpr lambda, ForeachStmt loop, Variable v) {
@@ -33,41 +30,34 @@ predicate inForeachStmtBody(ForeachStmt loop, Element e) {
   e = loop.getBody()
   or
   exists(Element mid |
-    inForeachStmtBody(loop, mid)
-    and
+    inForeachStmtBody(loop, mid) and
     e = mid.getAChild()
   )
 }
 
 class LambdaDataFlowConfiguration extends DataFlow::Configuration {
-  LambdaDataFlowConfiguration() {
-    this = "LambdaDataFlowConfiguration"
-  }
+  LambdaDataFlowConfiguration() { this = "LambdaDataFlowConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
     lambdaCapturesLoopVariable(source.asExpr(), _, _)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(getAssignmentTarget(sink.asExpr()))
-  }
+  override predicate isSink(DataFlow::Node sink) { exists(getAssignmentTarget(sink.asExpr())) }
 
-  predicate capturesLoopVarAndIsStoredIn(AnonymousFunctionExpr lambda, Variable loopVar, Element storage) {
-    exists(DataFlow::Node sink |
-      this.hasFlow(DataFlow::exprNode(lambda), sink) |
+  predicate capturesLoopVarAndIsStoredIn(
+    AnonymousFunctionExpr lambda, Variable loopVar, Element storage
+  ) {
+    exists(DataFlow::Node sink | this.hasFlow(DataFlow::exprNode(lambda), sink) |
       storage = getAssignmentTarget(sink.asExpr())
-    )
-    and
-    exists(ForeachStmt loop |
-      lambdaCapturesLoopVariable(lambda, loop, loopVar) |
+    ) and
+    exists(ForeachStmt loop | lambdaCapturesLoopVariable(lambda, loop, loopVar) |
       not declaredInsideLoop(loop, storage)
     )
   }
 }
 
 Element getAssignmentTarget(Expr e) {
-  exists(Assignment a |
-    a.getRValue() = e |
+  exists(Assignment a | a.getRValue() = e |
     result = a.getLValue().(PropertyAccess).getTarget() or
     result = a.getLValue().(FieldAccess).getTarget() or
     result = a.getLValue().(LocalVariableAccess).getTarget() or
@@ -84,19 +74,15 @@ Element getAssignmentTarget(Expr e) {
 
 Element getCollectionAssignmentTarget(Expr e) {
   // Store into collection via method
-  exists(MethodCall mc, Method m, IEnumerableFlow ief, CallableFlowSourceArg source, CallableFlowSinkQualifier sink, int i |
-    mc.getQualifier() = result.(Variable).getAnAccess()
-    and
-    ief = mc.getQualifier().getType().getSourceDeclaration()
-    and
-    m = mc.getTarget().getSourceDeclaration()
-    and
-    ief.callableFlow(source, sink, m, _)
-    and
-    source.getCallable() = m
-    and
-    source.getArgumentIndex() = i
-    and
+  exists(
+    MethodCall mc, Method m, IEnumerableFlow ief, CallableFlowSourceArg source,
+    CallableFlowSinkQualifier sink, int i
+  |
+    mc.getQualifier() = result.(Variable).getAnAccess() and
+    ief = mc.getQualifier().getType().getSourceDeclaration() and
+    m = mc.getTarget().getSourceDeclaration() and
+    ief.callableFlow(source, sink, m, _) and
+    source.getArgumentIndex() = i and
     e = mc.getArgument(i)
   )
   or
@@ -104,26 +90,29 @@ Element getCollectionAssignmentTarget(Expr e) {
   e = result.(ArrayCreation).getInitializer().getAnElement()
   or
   // Collection initializer
-  e = result.(ObjectCreation).getInitializer().(CollectionInitializer).getElementInitializer(_).getAnArgument()
+  e = result
+        .(ObjectCreation)
+        .getInitializer()
+        .(CollectionInitializer)
+        .getElementInitializer(_)
+        .getAnArgument()
   or
   // Store values using indexer
   exists(IndexerAccess ia, AssignExpr ae |
-    ia.getQualifier() = result.(Variable).getAnAccess()
-    and
-    ia = ae.getLValue()
-    and
+    ia.getQualifier() = result.(Variable).getAnAccess() and
+    ia = ae.getLValue() and
     e = ae.getRValue()
   )
 }
 
 // Variable v is declared inside the loop body
 predicate declaredInsideLoop(ForeachStmt loop, LocalVariable v) {
-  exists(LocalVariableDeclStmt decl |
-    decl.getVariableDeclExpr(_).getVariable() = v |
+  exists(LocalVariableDeclStmt decl | decl.getVariableDeclExpr(_).getVariable() = v |
     inForeachStmtBody(loop, decl)
   )
 }
 
 from LambdaDataFlowConfiguration c, AnonymousFunctionExpr lambda, Variable loopVar, Element storage
 where c.capturesLoopVarAndIsStoredIn(lambda, loopVar, storage)
-select lambda, "Function which may be stored in $@ captures variable $@", storage, storage.toString(), loopVar, loopVar.getName()
+select lambda, "Function which may be stored in $@ captures variable $@", storage,
+  storage.toString(), loopVar, loopVar.getName()

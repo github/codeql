@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+All exception classes in Python derive from <code>BaseException</code>. <code>BaseException</code> has three important subclasses,
+<code>Exception</code> from which all errors and normal exceptions derive, <code>KeyboardInterrupt</code> which is raised when the
+user interrupts the program from the keyboard and <code>SystemExit</code> which is raised by the <code>sys.exit()</code> function to
+terminate the program.
+</p>
+
+<p>
+Since <code>KeyboardInterrupt</code> and <code>SystemExit</code> are special they should not be grouped together with other
+<code>Exception</code> classes.
+</p>
+
+<p>
+Catching <code>BaseException</code>, rather than its subclasses may prevent proper handling of
+<code>KeyboardInterrupt</code> or <code>SystemExit</code>. It is easy to catch <code>BaseException</code>
+accidentally as it is caught implicitly by an empty <code>except:</code> statement.
+</p>
+    
+</overview>
+<recommendation>
+
+<p>
+Handle <code>Exception</code>, <code>KeyboardInterrupt</code> and <code>SystemExit</code> separately. Do not use the plain <code>except:</code> form.
+</p>
+
+</recommendation>
+<example>
+<p>
+In these examples, a function <code>application.main()</code> is called that might raise <code>SystemExit</code>.
+In the first two functions, <code>BaseException</code> is caught, but this will discard <code>KeyboardInterrupt</code>.
+In the third function, <code>call_main_program_fixed</code> only <code>SystemExit</code> is caught,
+leaving <code>KeyboardInterrupt</code> to propagate.
+</p>
+
+
+<p>In these examples <code>KeyboardInterrupt</code> is accidentally ignored.</p>
+<sample src="CatchingBaseException.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/compound_stmts.html#try">The try statement</a>, 
+<a href="http://docs.python.org/2.7/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
+<li>M. Lutz, Learning Python, Section 35.3: Exception Design Tips and Gotchas, O'Reilly Media, 2013.</li>
+<li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/errors.html">Errors and Exceptions</a>.</li>
+
+
+</references>
+</qhelp>

@@ -22,10 +22,10 @@ class Import extends Element, @import {
  * For example, `import java.util.Set;`.
  */
 class ImportType extends Import {
-  ImportType() { imports(this,_,_,1) }
+  ImportType() { imports(this, _, _, 1) }
 
   /** Gets the imported type. */
-  RefType getImportedType() { imports(this,result,_,_) }
+  RefType getImportedType() { imports(this, result, _, _) }
 
   override string toString() { result = "import " + this.getImportedType().toString() }
 }
@@ -39,17 +39,15 @@ class ImportType extends Import {
  * `java.util.Map`.
  */
 class ImportOnDemandFromType extends Import {
-  ImportOnDemandFromType() { imports(this,_,_,2) }
+  ImportOnDemandFromType() { imports(this, _, _, 2) }
 
   /** Gets the type from which accessible nested types are imported. */
-  RefType getTypeHoldingImport() { imports(this,result,_,_) }
+  RefType getTypeHoldingImport() { imports(this, result, _, _) }
 
   /** Gets an imported type. */
   NestedType getAnImport() { result.getEnclosingType() = this.getTypeHoldingImport() }
 
-  override string toString() {
-    result = "import " + this.getTypeHoldingImport().toString() + ".*"
-  }
+  override string toString() { result = "import " + this.getTypeHoldingImport().toString() + ".*" }
 }
 
 /**
@@ -59,10 +57,10 @@ class ImportOnDemandFromType extends Import {
  * For example, `import java.util.*;`.
  */
 class ImportOnDemandFromPackage extends Import {
-  ImportOnDemandFromPackage() { imports(this,_,_,3) }
+  ImportOnDemandFromPackage() { imports(this, _, _, 3) }
 
   /** Gets the package from which accessible types are imported. */
-  Package getPackageHoldingImport() { imports(this,result,_,_) }
+  Package getPackageHoldingImport() { imports(this, result, _, _) }
 
   /** Gets an imported type. */
   RefType getAnImport() { result.getPackage() = this.getPackageHoldingImport() }
@@ -80,10 +78,10 @@ class ImportOnDemandFromPackage extends Import {
  * For example, `import static java.lang.System.*;`.
  */
 class ImportStaticOnDemand extends Import {
-  ImportStaticOnDemand() { imports(this,_,_,4) }
+  ImportStaticOnDemand() { imports(this, _, _, 4) }
 
   /** Gets the type from which accessible static members are imported. */
-  RefType getTypeHoldingImport() { imports(this,result,_,_) }
+  RefType getTypeHoldingImport() { imports(this, result, _, _) }
 
   /** Gets an imported type. */
   NestedType getATypeImport() { result.getEnclosingType() = this.getTypeHoldingImport() }
@@ -109,18 +107,19 @@ class ImportStaticOnDemand extends Import {
  * class `java.util.Collections`.
  */
 class ImportStaticTypeMember extends Import {
-  ImportStaticTypeMember() { imports(this,_,_,5) }
+  ImportStaticTypeMember() { imports(this, _, _, 5) }
 
   /** Gets the type from which static members with a given name are imported. */
-  RefType getTypeHoldingImport() { imports(this,result,_,_) }
+  RefType getTypeHoldingImport() { imports(this, result, _, _) }
 
   /** Gets the name of the imported member(s). */
-  override string getName() { imports(this,_,result,_) }
+  override string getName() { imports(this, _, result, _) }
 
   /** Gets an imported member. */
   Member getAMemberImport() {
     this.getTypeHoldingImport().getAMember() = result and
-    result.getName() = this.getName() and result.isStatic()
+    result.getName() = this.getName() and
+    result.isStatic()
   }
 
   /** Gets an imported type. */
@@ -134,7 +133,6 @@ class ImportStaticTypeMember extends Import {
 
   /** Gets a printable representation of this import declaration. */
   override string toString() {
-    result = "import static " + this.getTypeHoldingImport().toString()
-             + "." + this.getName()
+    result = "import static " + this.getTypeHoldingImport().toString() + "." + this.getName()
   }
 }

@@ -34,3 +34,7 @@ var g = f3;
 define(function (require, exports, module) {
 	module.x = 23;
 });
+
+// OK: starts with underscore
+function f(_p) {
+}

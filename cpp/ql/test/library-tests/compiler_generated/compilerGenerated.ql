@@ -1,9 +1,12 @@
 import cpp
 
 from Element e, string type
-where ((Function)e).isCompilerGenerated() and type = "Function"
-   or ((Expr)    e).isCompilerGenerated() and type = "Expr"
-   or ((Variable)e).isCompilerGenerated() and type = "Variable"
-   or ((Stmt)    e).isCompilerGenerated() and type = "Stmt"
+where
+  e.(Function).isCompilerGenerated() and type = "Function"
+  or
+  e.(Expr).isCompilerGenerated() and type = "Expr"
+  or
+  e.(Variable).isCompilerGenerated() and type = "Variable"
+  or
+  e.(Stmt).isCompilerGenerated() and type = "Stmt"
 select e, type
-

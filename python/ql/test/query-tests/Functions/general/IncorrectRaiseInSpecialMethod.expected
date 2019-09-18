@@ -1,0 +1,2 @@
+| protocols.py:66:5:66:33 | Function __getitem__ | Function always raises $@; raise LookupError instead | file://:Compiled Code:0:0:0:0 | builtin-class ZeroDivisionError | builtin-class ZeroDivisionError |
+| protocols.py:69:5:69:26 | Function __getattr__ | Function always raises $@; raise AttributeError instead | file://:Compiled Code:0:0:0:0 | builtin-class ZeroDivisionError | builtin-class ZeroDivisionError |

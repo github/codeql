@@ -1,7 +1,5 @@
 import java
 
-@class clasz() {
-    any()
-}
+@class clasz() { any() }
 
 select clasz()

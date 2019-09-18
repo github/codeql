@@ -11,16 +11,28 @@ private import semmle.code.csharp.ExprOrStmtParent
  * a destructor (`Destructor`), a callable accessor (`CallableAccessor`), a value or reference type
  * (`ValueOrRefType`), or a declaration with accessors (`DeclarationWithAccessors`).
  */
-class Attributable extends @attributable
-{
+class Attributable extends @attributable {
   /** Gets an attribute attached to this element, if any. */
   final Attribute getAnAttribute() { result.getTarget() = this }
 
   /** Gets a textual representation of this element. */
   string toString() { none() }
 
-  /** Gets the location of this element, if any. */
-  Location getLocation() { none() }
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this
+        .(Element)
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /**
@@ -36,26 +48,48 @@ class Attributable extends @attributable
  * ```
  */
 class Attribute extends TopLevelExprParent, @attribute {
-
   /** Gets the type of this attribute. */
   Class getType() { attributes(this, getTypeRef(result), _) }
 
   /** Gets the element that this attribute is attached to. */
   Attributable getTarget() { attributes(this, _, result) }
 
-  /** Gets the `i`th argument of this attribute. */
+  /**
+   * Gets the `i`th argument of this attribute. This includes both constructor
+   * arguments and named arguments.
+   */
   Expr getArgument(int i) { result = this.getChildExpr(i) }
+
+  /**
+   * Gets the `i`th constructor argument of this attribute. For example, only
+   * `true` is a constructor argument in
+   *
+   * ```
+   * MyAttribute[true, Foo = 0]
+   * ```
+   */
+  Expr getConstructorArgument(int i) {
+    result = this.getArgument(i) and not exists(result.getExplicitArgumentName())
+  }
+
+  /**
+   * Gets the named argument `name` of this attribute. For example, only
+   * `0` is a named argument in
+   *
+   * ```
+   * MyAttribute[true, Foo = 0]
+   * ```
+   */
+  Expr getNamedArgument(string name) {
+    result = this.getArgument(_) and
+    result.getExplicitArgumentName() = name
+  }
 
   override Location getALocation() { attribute_location(this, result) }
 
   override string toString() {
-    exists(string type, string name |
-      type = getType().toString() |
-      if type.matches("%Attribute") then
-        name = type.prefix(type.length() - 9)
-      else
-        name = type
-      and
+    exists(string type, string name | type = getType().toString() |
+      (if type.matches("%Attribute") then name = type.prefix(type.length() - 9) else name = type) and
       result = "[" + name + "(...)]"
     )
   }

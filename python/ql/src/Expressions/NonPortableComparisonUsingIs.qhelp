@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When you compare two values using the <code>is</code> or <code>is not</code> operator, it is the
+object identities of the two values that is tested rather than their equality.
+If the class of either of the values in the comparison redefines equality then the
+<code>is</code> operator may return <code>False</code> even though the objects compare as equal.
+</p>
+<p>
+CPython interns a number of commonly used values, such as small integers, which means that using
+<code>is</code> instead of <code>==</code> will work correctly. However, this might not be portable
+to other implementations such as PyPy, IronPython, Jython or MicroPython.
+</p>
+
+</overview>
+<recommendation>
+
+<p>When you want to compare the value of two literals, use the comparison operator <code>==</code> or
+<code>!=</code> in place of <code>is</code> or <code>is not</code>.</p>
+
+<p>If the uniqueness property or performance are important then use an object that does not redefine equality.</p>
+
+</recommendation>
+<example>
+
+<p>The function <code>equals_to_twelve()</code> relies on CPython interning small integers.</p>
+<p>
+To function correctly for all implementations, change the expression <code>x is CONSTANT</code> to <code>x == CONSTANT</code>.
+</p>
+
+<sample src="NonPortableComparisonUsingIs.py" />
+
+
+</example>
+<references>
+
+     <li>Python Standard Library: <a href="http://docs.python.org/2/library/stdtypes.html#comparisons">Comparisons</a>.</li>
+     <li>Stack Overflow: <a href="http://stackoverflow.com/questions/306313/python-is-operator-behaves-unexpectedly-with-integers">Python "is" operator behaves unexpectedly with integers</a>.</li>
+
+</references>
+</qhelp>

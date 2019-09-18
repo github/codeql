@@ -15,9 +15,7 @@ class Package extends Element, Annotatable, @package {
   TopLevelType getATopLevelType() { result.getPackage() = this }
 
   /** Holds if at least one reference type in this package originates from source code. */
-  override predicate fromSource() {
-    exists(RefType t | t.fromSource() and t.getPackage() = this)
-  }
+  override predicate fromSource() { exists(RefType t | t.fromSource() and t.getPackage() = this) }
 
   /** Cast this package to a class that provides access to metrics information. */
   MetricPackage getMetrics() { result = this }

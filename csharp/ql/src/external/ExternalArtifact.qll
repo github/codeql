@@ -1,36 +1,46 @@
 import csharp
 
-class ExternalDefect extends @externalDefect, Element {
+class ExternalElement extends @external_element {
+  /** Gets a textual representation of this element. */
+  string toString() { none() }
 
-  string getQueryPath() { exists(string path | externalDefects(this, path, _, _, _) and
-                                 result = path.replaceAll("\\", "/")) }
+  /** Gets the location of this element. */
+  Location getLocation() { none() }
+
+  /** Gets the file containing this element. */
+  File getFile() { result = getLocation().getFile() }
+}
+
+class ExternalDefect extends ExternalElement, @externalDefect {
+  string getQueryPath() {
+    exists(string path |
+      externalDefects(this, path, _, _, _) and
+      result = path.replaceAll("\\", "/")
+    )
+  }
 
   string getMessage() { externalDefects(this, _, _, result, _) }
 
   float getSeverity() { externalDefects(this, _, _, _, result) }
 
-  override Location getLocation() { externalDefects(this,_,result,_,_) }
+  override Location getLocation() { externalDefects(this, _, result, _, _) }
 
   override string toString() {
     result = getQueryPath() + ": " + getLocation() + " - " + getMessage()
   }
 }
 
-class ExternalMetric extends @externalMetric, Element {
-
+class ExternalMetric extends ExternalElement, @externalMetric {
   string getQueryPath() { externalMetrics(this, result, _, _) }
 
   float getValue() { externalMetrics(this, _, _, result) }
 
-  override Location getLocation() { externalMetrics(this,_,result,_) }
+  override Location getLocation() { externalMetrics(this, _, result, _) }
 
-  override string toString() {
-    result = getQueryPath() + ": " + getLocation() + " - " + getValue()
-  }
+  override string toString() { result = getQueryPath() + ": " + getLocation() + " - " + getValue() }
 }
 
-class ExternalData extends @externalDataElement {
-
+class ExternalData extends ExternalElement, @externalDataElement {
   string getDataPath() { externalData(this, result, _, _) }
 
   string getQueryPath() { result = getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
@@ -45,16 +55,13 @@ class ExternalData extends @externalDataElement {
 
   date getFieldAsDate(int index) { result = getField(index).toDate() }
 
-  string toString() {
-    result = getQueryPath() + ": " + buildTupleString(0)
-  }
+  override string toString() { result = getQueryPath() + ": " + buildTupleString(0) }
 
   private string buildTupleString(int start) {
-    (start = getNumFields() - 1 and result = getField(start))
+    start = getNumFields() - 1 and result = getField(start)
     or
-    (start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start+1))
+    start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start + 1)
   }
-
 }
 
 /**
@@ -70,4 +77,3 @@ class DefectExternalData extends ExternalData {
 
   string getMessage() { result = getField(1) }
 }
-

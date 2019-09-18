@@ -1,0 +1,11 @@
+| module1.py:3:1:3:14 | Import | Import of module $@ begins an import cycle. | module3.py:0:0:0:0 | Module module3 | module3 |
+| module1.py:9:1:9:14 | Import | Import of module $@ begins an import cycle. | module4.py:0:0:0:0 | Module module4 | module4 |
+| module1.py:11:5:11:18 | Import | Import of module $@ begins an import cycle. | module5.py:0:0:0:0 | Module module5 | module5 |
+| module1.py:14:1:14:14 | Import | Import of module $@ begins an import cycle. | module6.py:0:0:0:0 | Module module6 | module6 |
+| module1.py:17:1:17:14 | Import | Import of module $@ begins an import cycle. | module8.py:0:0:0:0 | Module module8 | module8 |
+| module4.py:1:1:1:14 | Import | Import of module $@ begins an import cycle. | module1.py:0:0:0:0 | Module module1 | module1 |
+| module5.py:1:1:1:14 | Import | Import of module $@ begins an import cycle. | module1.py:0:0:0:0 | Module module1 | module1 |
+| module6.py:2:5:2:18 | Import | Import of module $@ begins an import cycle. | module7.py:0:0:0:0 | Module module7 | module7 |
+| module7.py:1:1:1:22 | Import | Import of module $@ begins an import cycle. | module1.py:0:0:0:0 | Module module1 | module1 |
+| module8.py:1:1:1:14 | Import | Import of module $@ begins an import cycle. | module1.py:0:0:0:0 | Module module1 | module1 |
+| module9.py:4:1:4:11 | Import | Import of module $@ begins an import cycle. | main.py:0:0:0:0 | Module main | main |

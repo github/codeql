@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> There is a call to the overriding method, and potentially the overridden method,
+with arguments that are not legal for the overridden method.
+This will cause an error if the overridden method is called and is a
+violation of the Liskov substitution principle.
+</p>
+</overview>
+<recommendation>
+
+<p>Ensure that the overridden method accepts all the parameters that are legal for
+overriding method(s).</p>
+
+</recommendation>
+<example>
+<p>In this example there is a mismatch between the legal parameters for the base 
+class method <code>(self, source, filename)</code> and the extension method 
+<code>(self, source)</code>. Since there is a call that uses the signature of the extension method 
+then it can be inferred that the base signature is erroneous and should be updated to
+match that of the extension method.
+</p>
+
+<sample src="SignatureOverridingMethod.py" />
+
+<p>The base method should be updated to either remove the <code>filename</code> parameters, or add a default value for it.</p>
+
+</example>
+<references>
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>, <a href="http://en.wikipedia.org/wiki/Method_overriding#Python">Method overriding</a>.</li>
+
+
+</references>
+</qhelp>

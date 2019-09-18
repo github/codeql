@@ -1,8 +1,0 @@
-| mongodb.js:18:16:18:20 | query | This query depends on $@. | mongodb.js:13:19:13:26 | req.body | a user-provided value |
-| mongodb.js:39:16:39:20 | query | This query depends on $@. | mongodb.js:34:19:34:33 | req.query.title | a user-provided value |
-| mongoose.js:24:19:24:23 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongooseJsonParse.js:23:19:23:23 | query | This query depends on $@. | mongooseJsonParse.js:20:30:20:43 | req.query.data | a user-provided value |
-| tst2.js:9:27:9:84 | "select ... d + "'" | This query depends on $@. | tst2.js:9:66:9:78 | req.params.id | a user-provided value |
-| tst3.js:10:14:10:19 | query1 | This query depends on $@. | tst3.js:9:16:9:34 | req.params.category | a user-provided value |
-| tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query depends on $@. | tst4.js:8:46:8:60 | $routeParams.id | a user-provided value |
-| tst.js:10:10:10:64 | 'SELECT ... d + '"' | This query depends on $@. | tst.js:10:46:10:58 | req.params.id | a user-provided value |

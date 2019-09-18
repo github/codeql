@@ -9,11 +9,12 @@ import java
  * `List<T>`, instantiating the type parameter to `Object`.
  */
 predicate instantiates(RefType t, GenericType g, int i, RefType arg) {
-  t = g.getAParameterizedType() and exists(g.getTypeParameter(i)) and
-  (
-    arg = t.(ParameterizedType).getTypeArgument(i) or
-    t instanceof RawType and arg instanceof TypeObject
-  )
+  t = g.getAParameterizedType() and
+  arg = t.(ParameterizedType).getTypeArgument(i)
+  or
+  t = g.getRawType() and
+  exists(g.getTypeParameter(i)) and
+  arg instanceof TypeObject
 }
 
 /**
@@ -30,42 +31,18 @@ predicate instantiates(RefType t, GenericType g, int i, RefType arg) {
  *   with the `0`-th type parameter being `Integer` and the `1`-th type parameter being `V`.
  */
 predicate indirectlyInstantiates(RefType t, GenericType g, int i, RefType arg) {
-  exists(RefType tsrc | tsrc = t.getSourceDeclaration() |
-    // base case: `t` directly instantiates `g`
-    tsrc = g and instantiates(t, g, i, arg)
-    or
-    // inductive step
-    exists(RefType sup, RefType suparg |
-      // follow `extends`/`implements`
-      (extendsReftype(tsrc, sup) or implInterface(tsrc, sup)) and
-      // check whether the subtype instantiates `g`
-      indirectlyInstantiates(sup, g, i, suparg)
-      |
-      // if `t` is itself an instantiation of `tsrc` and `sup` instantiates
-      // `g` to one of the type parameters of `tsrc`, we return the corresponding
-      // instantiation in `t`
-      exists(int j | suparg = tsrc.(GenericType).getTypeParameter(j) |
-        instantiates(t, tsrc, j, arg)
-      )
-      or
-      // otherwise, we directly return `suparg`
-      not (
-        t = tsrc.(GenericType).getAParameterizedType() and
-        suparg = tsrc.(GenericType).getATypeParameter()
-      ) and
-      arg = suparg
-    )
+  instantiates(t, g, i, arg)
+  or
+  exists(RefType sup |
+    t.extendsOrImplements(sup) and
+    indirectlyInstantiates(sup, g, i, arg)
   )
 }
 
 /** A reference type that extends a parameterization of `java.util.Collection`. */
 class CollectionType extends RefType {
   CollectionType() {
-    exists(ParameterizedInterface coll |
-      coll.getSourceDeclaration().hasQualifiedName("java.util", "Collection")
-      |
-      this.hasSupertype*(coll)
-    )
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Collection")
   }
 
   /** Gets the type of elements stored in this collection. */
@@ -78,9 +55,7 @@ class CollectionType extends RefType {
 
 /** A method declared in a collection type. */
 class CollectionMethod extends Method {
-  CollectionMethod() {
-    this.getDeclaringType() instanceof CollectionType
-  }
+  CollectionMethod() { this.getDeclaringType() instanceof CollectionType }
 
   /** Gets the type of elements of the collection to which this method belongs. */
   RefType getReceiverElementType() {
@@ -90,34 +65,24 @@ class CollectionMethod extends Method {
 
 /** The `size` method on `java.util.Collection`. */
 class CollectionSizeMethod extends CollectionMethod {
-  CollectionSizeMethod() {
-    this.hasName("size") and this.hasNoParameters()
-  }
+  CollectionSizeMethod() { this.hasName("size") and this.hasNoParameters() }
 }
 
 /** A method that mutates the collection it belongs to. */
 class CollectionMutator extends CollectionMethod {
-  CollectionMutator() {
-    this.getName().regexpMatch("add.*|remove.*|push|pop|clear")
-  }
+  CollectionMutator() { this.getName().regexpMatch("add.*|remove.*|push|pop|clear") }
 }
 
 /** A method call that mutates a collection. */
 class CollectionMutation extends MethodAccess {
-  CollectionMutation() {
-    this.getMethod() instanceof CollectionMutator
-  }
+  CollectionMutation() { this.getMethod() instanceof CollectionMutator }
 
-  predicate resultIsChecked() {
-    not this.getParent() instanceof ExprStmt
-  }
+  predicate resultIsChecked() { not this.getParent() instanceof ExprStmt }
 }
 
 /** A method that queries the contents of a collection without mutating it. */
 class CollectionQueryMethod extends CollectionMethod {
-  CollectionQueryMethod() {
-    this.getName().regexpMatch("contains|containsAll|get|size|peek")
-  }
+  CollectionQueryMethod() { this.getName().regexpMatch("contains|containsAll|get|size|peek") }
 }
 
 /** A `new` expression that allocates a fresh, empty collection. */

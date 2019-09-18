@@ -8,9 +8,7 @@ import CompilationUnit
  * A module.
  */
 class Module extends @module {
-  Module() {
-    modules(this, _)
-  }
+  Module() { modules(this, _) }
 
   /**
    * Gets the name of this module.
@@ -50,9 +48,7 @@ abstract class Directive extends @directive {
  * A `requires` directive in a module declaration.
  */
 class RequiresDirective extends Directive, @requires {
-  RequiresDirective() {
-    requires(this,_)
-  }
+  RequiresDirective() { requires(this, _) }
 
   /**
    * Holds if this `requires` directive is `transitive`,
@@ -75,12 +71,11 @@ class RequiresDirective extends Directive, @requires {
    */
   Module getTargetModule() { requires(this, result) }
 
-  override
-  string toString() {
+  override string toString() {
     exists(string transitive, string static |
       (if isTransitive() then transitive = "transitive " else transitive = "") and
       (if isStatic() then static = "static " else static = "")
-      |
+    |
       result = "requires " + transitive + static + getTargetModule() + ";"
     )
   }
@@ -90,9 +85,7 @@ class RequiresDirective extends Directive, @requires {
  * An `exports` directive in a module declaration.
  */
 class ExportsDirective extends Directive, @exports {
-  ExportsDirective() {
-    exports(this,_)
-  }
+  ExportsDirective() { exports(this, _) }
 
   /**
    * Gets the package exported by this `exports` directive.
@@ -116,11 +109,12 @@ class ExportsDirective extends Directive, @exports {
    */
   Module getATargetModule() { exportsTo(this, result) }
 
-  override
-  string toString() {
+  override string toString() {
     exists(string toClause |
-      if isQualified() then toClause = (" to " + concat(getATargetModule().getName(), ", ")) else toClause = ""
-      |
+      if isQualified()
+      then toClause = (" to " + concat(getATargetModule().getName(), ", "))
+      else toClause = ""
+    |
       result = "exports " + getExportedPackage() + toClause + ";"
     )
   }
@@ -130,9 +124,7 @@ class ExportsDirective extends Directive, @exports {
  * An `opens` directive in a module declaration.
  */
 class OpensDirective extends Directive, @opens {
-  OpensDirective() {
-    opens(this,_)
-  }
+  OpensDirective() { opens(this, _) }
 
   /**
    * Gets the package opened by this `opens` directive.
@@ -156,11 +148,12 @@ class OpensDirective extends Directive, @opens {
    */
   Module getATargetModule() { opensTo(this, result) }
 
-  override
-  string toString() {
+  override string toString() {
     exists(string toClause |
-      if isQualified() then toClause = (" to " + concat(getATargetModule().getName(), ", ")) else toClause = ""
-      |
+      if isQualified()
+      then toClause = (" to " + concat(getATargetModule().getName(), ", "))
+      else toClause = ""
+    |
       result = "opens " + getOpenedPackage() + toClause + ";"
     )
   }
@@ -170,28 +163,21 @@ class OpensDirective extends Directive, @opens {
  * A `uses` directive in a module declaration.
  */
 class UsesDirective extends Directive, @uses {
-  UsesDirective() {
-    uses(this,_)
-  }
+  UsesDirective() { uses(this, _) }
 
   /**
    * Gets the qualified name of the service interface specified in this `uses` directive.
    */
   string getServiceInterfaceName() { uses(this, result) }
 
-  override
-  string toString() {
-    result = "uses " + getServiceInterfaceName() + ";"
-  }
+  override string toString() { result = "uses " + getServiceInterfaceName() + ";" }
 }
 
 /**
  * A `provides` directive in a module declaration.
  */
 class ProvidesDirective extends Directive, @provides {
-  ProvidesDirective() {
-    provides(this,_)
-  }
+  ProvidesDirective() { provides(this, _) }
 
   /**
    * Gets the qualified name of the service interface specified in this `provides` directive.
@@ -203,9 +189,8 @@ class ProvidesDirective extends Directive, @provides {
    */
   string getServiceImplementationName() { providesWith(this, result) }
 
-  override
-  string toString() {
-    result = "provides " + getServiceInterfaceName() + " with " + concat(getServiceImplementationName(), ", ") + ";"
+  override string toString() {
+    result = "provides " + getServiceInterfaceName() + " with " +
+        concat(getServiceImplementationName(), ", ") + ";"
   }
 }
-

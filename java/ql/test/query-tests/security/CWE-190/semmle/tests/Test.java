@@ -37,7 +37,7 @@ class Test {
 		{
 			long timeInSeconds = 10000000L;
 
-			// BAD: same problem, but with longs
+			// same problem, but with longs; not reported as the conversion to double is not sufficient indication of a large number
 			double timeInNanos = timeInSeconds * 10000000L;
 		}
 
@@ -149,8 +149,8 @@ class Test {
 
 		{
 			int i = Integer.MAX_VALUE;
-			// FALSE POSITIVE: the query only looks for things that appear to be
-			// guards, it can't find them if they're hidden inside methods
+			// GOOD: The query can detect custom guards.
+
 			if (properlyBounded(i)) {
 				long j = i + 1;
 			}

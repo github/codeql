@@ -1,2 +1,0 @@
-| src/express.js:31:3:31:26 | res.coo ...  'bar') | src/express.js:22:30:32:1 | functio ... ar');\\n} |
-| src/responseExprs.js:23:5:23:16 | res.cookie() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |

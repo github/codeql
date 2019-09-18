@@ -1,4 +1,0 @@
-| src/hapi.js:6:1:6:21 | functio ... er1(){} | src/hapi.js:4:15:4:31 | new Hapi.Server() |
-| src/hapi.js:13:14:15:5 | functio ... n\\n    } | src/hapi.js:4:15:4:31 | new Hapi.Server() |
-| src/hapi.js:17:30:18:1 | functio ... ndler\\n} | src/hapi.js:4:15:4:31 | new Hapi.Server() |
-| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:4:15:4:31 | new Hapi.Server() |

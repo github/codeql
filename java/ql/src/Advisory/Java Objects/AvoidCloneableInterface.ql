@@ -8,6 +8,7 @@
  * @id java/use-of-cloneable-interface
  * @tags reliability
  */
+
 import java
 
 from RefType t

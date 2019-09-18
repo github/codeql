@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import ControlFlow::SuccessorTypes
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -10,13 +11,19 @@ import csharp
  */
 class BasicBlock extends TBasicBlockStart {
   /** Gets an immediate successor of this basic block, if any. */
-  BasicBlock getASuccessor() {
-    result.getFirstNode() = getLastNode().getASuccessor()
+  BasicBlock getASuccessor() { result.getFirstNode() = getLastNode().getASuccessor() }
+
+  /** Gets an immediate successor of this basic block of a given type, if any. */
+  BasicBlock getASuccessorByType(ControlFlow::SuccessorType t) {
+    result.getFirstNode() = this.getLastNode().getASuccessorByType(t)
   }
 
   /** Gets an immediate predecessor of this basic block, if any. */
-  BasicBlock getAPredecessor() {
-    result.getASuccessor() = this
+  BasicBlock getAPredecessor() { result.getASuccessor() = this }
+
+  /** Gets an immediate predecessor of this basic block of a given type, if any. */
+  BasicBlock getAPredecessorByType(ControlFlow::SuccessorType t) {
+    result.getASuccessorByType(t) = this
   }
 
   /**
@@ -35,9 +42,7 @@ class BasicBlock extends TBasicBlockStart {
    * The basic block on line 2 is an immediate `true` successor of the
    * basic block on line 1.
    */
-  BasicBlock getATrueSuccessor() {
-    result.getFirstNode() = getLastNode().getATrueSuccessor()
-  }
+  BasicBlock getATrueSuccessor() { result.getFirstNode() = getLastNode().getATrueSuccessor() }
 
   /**
    * Gets an immediate `false` successor, if any.
@@ -55,76 +60,48 @@ class BasicBlock extends TBasicBlockStart {
    * The basic block on line 2 is an immediate `false` successor of the
    * basic block on line 1.
    */
-  BasicBlock getAFalseSuccessor() {
-    result.getFirstNode() = getLastNode().getAFalseSuccessor()
-  }
-
-  /**
-   * Gets an immediate `null` successor, if any.
-   *
-   * An immediate `null` successor is a successor that is reached when
-   * the expression that ends this basic block evaluates to `null`.
-   *
-   * Example:
-   *
-   * ```
-   * x?.M();
-   * return;
-   * ```
-   *
-   * The node on line 2 is an immediate `null` successor of the node
-   * `x` on line 1.
-   */
-  BasicBlock getANullSuccessor() {
-    result.getFirstNode() = getLastNode().getANullSuccessor()
-  }
-
-  /**
-   * Gets an immediate non-`null` successor, if any.
-   *
-   * An immediate non-`null` successor is a successor that is reached when
-   * the expression that ends this basic block evaluates to a non-`null` value.
-   *
-   * Example:
-   *
-   * ```
-   * x?.M();
-   * ```
-   *
-   * The node `x?.M()`, representing the call to `M`, is a non-`null` successor
-   * of the node `x`.
-   */
-  BasicBlock getANonNullSuccessor() {
-    result.getFirstNode() = getLastNode().getANonNullSuccessor()
-  }
+  BasicBlock getAFalseSuccessor() { result.getFirstNode() = getLastNode().getAFalseSuccessor() }
 
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
   ControlFlow::Node getNode(int pos) { bbIndex(getFirstNode(), result, pos) }
 
   /** Gets a control flow node in this basic block. */
-  ControlFlow::Node getANode() {
-    result = getNode(_)
-  }
+  ControlFlow::Node getANode() { result = getNode(_) }
 
   /** Gets the first control flow node in this basic block. */
-  ControlFlow::Node getFirstNode() {
-    this = TBasicBlockStart(result)
-  }
+  ControlFlow::Node getFirstNode() { this = TBasicBlockStart(result) }
 
   /** Gets the last control flow node in this basic block. */
-  ControlFlow::Node getLastNode() {
-    result = getNode(length() - 1)
-  }
+  ControlFlow::Node getLastNode() { result = getNode(length() - 1) }
 
   /** Gets the callable that this basic block belongs to. */
-  Callable getCallable() {
-    result = this.getAPredecessor().getCallable()
-  }
+  final Callable getCallable() { result = this.getFirstNode().getEnclosingCallable() }
 
   /** Gets the length of this basic block. */
-  int length() {
-    result = strictcount(getANode())
-  }
+  int length() { result = strictcount(getANode()) }
+
+  /**
+   * Holds if this basic block immediately dominates basic block `bb`.
+   *
+   * That is, all paths reaching basic block `bb` from some entry point
+   * basic block must go through this basic block (which is an immediate
+   * predecessor of `bb`).
+   *
+   * Example:
+   *
+   * ```
+   * int M(string s) {
+   *   if (s == null)
+   *     throw new ArgumentNullException(nameof(s));
+   *   return s.Length;
+   * }
+   * ```
+   *
+   * The basic block starting on line 2 strictly dominates the
+   * basic block on line 4 (all paths from the entry point of `M`
+   * to `return s.Length;` must go through the null check).
+   */
+  predicate immediatelyDominates(BasicBlock bb) { bbIDominates(this, bb) }
 
   /**
    * Holds if this basic block strictly dominates basic block `bb`.
@@ -147,9 +124,7 @@ class BasicBlock extends TBasicBlockStart {
    * basic block on line 4 (all paths from the entry point of `M`
    * to `return s.Length;` must go through the null check).
    */
-  predicate strictlyDominates(BasicBlock bb) {
-    bbIDominates+(this, bb)
-  }
+  predicate strictlyDominates(BasicBlock bb) { bbIDominates+(this, bb) }
 
   /**
    * Holds if this basic block dominates basic block `bb`.
@@ -209,10 +184,7 @@ class BasicBlock extends TBasicBlockStart {
   /**
    * Holds if this basic block dominates a predecessor of `df`.
    */
-  private
-  predicate dominatesPredecessor(BasicBlock df) {
-    dominates(df.getAPredecessor())
-  }
+  private predicate dominatesPredecessor(BasicBlock df) { dominates(df.getAPredecessor()) }
 
   /**
    * Gets the basic block that immediately dominates this basic block, if any.
@@ -236,9 +208,7 @@ class BasicBlock extends TBasicBlockStart {
    * to `return s.Length;` must go through the null check, and the null check
    * is an immediate predecessor of `return s.Length;`).
    */
-  BasicBlock getImmediateDominator() {
-    bbIDominates(result, this)
-  }
+  BasicBlock getImmediateDominator() { bbIDominates(result, this) }
 
   /**
    * Holds if this basic block strictly post-dominates basic block `bb`.
@@ -264,9 +234,7 @@ class BasicBlock extends TBasicBlockStart {
    * line 3 (all paths to the exit point of `M` from `return s.Length;`
    * must go through the `WriteLine` call).
    */
-  predicate strictlyPostDominates(BasicBlock bb) {
-    bbIPostDominates+(this, bb)
-  }
+  predicate strictlyPostDominates(BasicBlock bb) { bbIPostDominates+(this, bb) }
 
   /**
    * Holds if this basic block post-dominates basic block `bb`.
@@ -305,28 +273,23 @@ class BasicBlock extends TBasicBlockStart {
    * even if this basic block is syntactically inside a `while` loop if the
    * necessary back edges are unreachable.
    */
-  predicate inLoop() {
-    this.getASuccessor+() = this
-  }
+  predicate inLoop() { this.getASuccessor+() = this }
 
   /** Gets a textual representation of this basic block. */
-  string toString() {
-    result = getFirstNode().toString()
-  }
+  string toString() { result = getFirstNode().toString() }
 
   /** Gets the location of this basic block. */
-  Location getLocation() {
-    result = getFirstNode().getLocation()
-  }
+  Location getLocation() { result = getFirstNode().getLocation() }
 }
 
 /**
  * Internal implementation details.
  */
-private cached module Internal {
+cached
+private module Internal {
   /** Internal representation of basic blocks. */
-  cached newtype TBasicBlock =
-    TBasicBlockStart(ControlFlow::Node cfn) { startsBB(cfn) }
+  cached
+  newtype TBasicBlock = TBasicBlockStart(ControlFlow::Node cfn) { startsBB(cfn) }
 
   /** Holds if `cfn` starts a new basic block. */
   private predicate startsBB(ControlFlow::Node cfn) {
@@ -334,7 +297,7 @@ private cached module Internal {
     or
     cfn.isJoin()
     or
-    exists(ControlFlow::Node pred | pred = cfn.getAPredecessor() | strictcount(pred.getASuccessor()) > 1)
+    cfn.getAPredecessor().isBranch()
   }
 
   /**
@@ -360,9 +323,7 @@ private cached module Internal {
    * Holds if the first node of basic block `succ` is a control flow
    * successor of the last node of basic block `pred`.
    */
-  private predicate succBB(BasicBlock pred, BasicBlock succ) {
-    succ = pred.getASuccessor()
-  }
+  private predicate succBB(BasicBlock pred, BasicBlock succ) { succ = pred.getASuccessor() }
 
   /** Holds if `dom` is an immediate dominator of `bb`. */
   cached
@@ -370,15 +331,14 @@ private cached module Internal {
     idominance(entryBB/1, succBB/2)(_, dom, bb)
 
   /** Holds if `pred` is a basic block predecessor of `succ`. */
-  private predicate predBB(BasicBlock succ, BasicBlock pred) {
-    succBB(pred, succ)
-  }
+  private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
   /** Holds if `dom` is an immediate post-dominator of `bb`. */
   cached
   predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
     idominance(exitBB/1, predBB/2)(_, dom, bb)
 }
+
 private import Internal
 
 /**
@@ -387,10 +347,6 @@ private import Internal
  */
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
-
-  override Callable getCallable() {
-    result.getEntryPoint() = this.getFirstNode()
-  }
 }
 
 /** Holds if `bb` is an entry basic block. */
@@ -407,30 +363,78 @@ class ExitBasicBlock extends BasicBlock {
 }
 
 /** Holds if `bb` is an exit basic block. */
-private predicate exitBB(BasicBlock bb) {
-  bb.getLastNode() instanceof ControlFlow::Nodes::ExitNode
+private predicate exitBB(BasicBlock bb) { bb.getLastNode() instanceof ControlFlow::Nodes::ExitNode }
+
+private module JoinBlockPredecessors {
+  private import ControlFlow::Nodes
+
+  private class CallableOrCFE extends Element {
+    CallableOrCFE() { this instanceof Callable or this instanceof ControlFlowElement }
+  }
+
+  private predicate id(CallableOrCFE x, CallableOrCFE y) { x = y }
+
+  private predicate idOf(CallableOrCFE x, int y) = equivalenceRelation(id/2)(x, y)
+
+  int getId(JoinBlockPredecessor jbp) {
+    idOf(jbp.getFirstNode().(ElementNode).getElement(), result)
+    or
+    idOf(jbp.(EntryBasicBlock).getCallable(), result)
+  }
+
+  string getSplitString(JoinBlockPredecessor jbp) {
+    result = jbp.getFirstNode().(ElementNode).getSplitsString()
+    or
+    not exists(jbp.getFirstNode().(ElementNode).getSplitsString()) and
+    result = ""
+  }
 }
 
-/**
- * A basic block with more than one predecessor.
- */
+/** A basic block with more than one predecessor. */
 class JoinBlock extends BasicBlock {
   JoinBlock() { getFirstNode().isJoin() }
+
+  /**
+   * Gets the `i`th predecessor of this join block, with respect to some
+   * arbitrary order.
+   */
+  cached
+  JoinBlockPredecessor getJoinBlockPredecessor(int i) {
+    result = rank[i + 1](JoinBlockPredecessor jbp |
+        jbp = this.getAPredecessor()
+      |
+        jbp order by JoinBlockPredecessors::getId(jbp), JoinBlockPredecessors::getSplitString(jbp)
+      )
+  }
+}
+
+/** A basic block that is an immediate predecessor of a join block. */
+class JoinBlockPredecessor extends BasicBlock {
+  JoinBlockPredecessor() { this.getASuccessor() instanceof JoinBlock }
 }
 
 /** A basic block that terminates in a condition, splitting the subsequent control flow. */
 class ConditionBlock extends BasicBlock {
-  ConditionBlock() {
-    this.getLastNode().isCondition()
+  ConditionBlock() { this.getLastNode().isCondition() }
+
+  /**
+   * Holds if basic block `succ` is immediately controlled by this basic
+   * block with conditional value `s`. That is, `succ` is an immediate
+   * successor of this block, and `succ` can only be reached from
+   * the callable entry point by going via the `s` edge out of this basic block.
+   */
+  pragma[nomagic]
+  predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
+    succ = this.getASuccessorByType(s) and
+    forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this | succ.dominates(pred))
   }
 
   /**
    * Holds if basic block `controlled` is controlled by this basic block with
-   * Boolean value `testIsTrue`. That is, `controlled` can only be reached from
-   * the callable entry point by going via the true edge (`testIsTrue = true`)
-   * or false edge (`testIsTrue = false`) out of this basic block.
+   * conditional value `s`. That is, `controlled` can only be reached from
+   * the callable entry point by going via the `s` edge out of this basic block.
    */
-  predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
     /*
      * For this block to control the block `controlled` with `testIsTrue` the following must be true:
      * Execution must have passed through the test i.e. `this` must strictly dominate `controlled`.
@@ -464,111 +468,7 @@ class ConditionBlock extends BasicBlock {
      * that `this` strictly dominates `controlled` so that isn't necessary to check
      * directly.
      */
-    exists(BasicBlock succ |
-      isCandidateSuccessor(succ, testIsTrue) |
-      succ.dominates(controlled)
-    )
-  }
 
-  /**
-   * Holds if basic block `controlled` is controlled by this basic block with
-   * nullness check `isNull`. That is, `controlled` can only be reached from
-   * the callable entry point by going via the `null` edge (`isNull = true`)
-   * or non-`null` edge (`isNull = false`) out of this basic block.
-   */
-  predicate controlsNullness(BasicBlock controlled, boolean isNull) {
-    exists(BasicBlock succ |
-      isCandidateSuccessorNullness(succ, isNull) |
-      succ.dominates(controlled)
-    )
+    exists(BasicBlock succ | this.immediatelyControls(succ, s) | succ.dominates(controlled))
   }
-
-  /**
-   * Holds if basic block `controlled` is controlled by this basic block with
-   * Boolean value `testIsTrue`. That is, `controlled` can only be reached from
-   * the callable entry point by going via the true edge (`testIsTrue = true`)
-   * or false edge (`testIsTrue = false`) out of this basic block.
-   *
-   * Moreover, `cond` is a sub expression of the expression ending this basic
-   * block that must have evaluated to `condIsTrue`. For example, in
-   *
-   * ```
-   * if (x & !y)
-   *   f(x, y);
-   * ```
-   *
-   * `f(x, y)` is controlled by `x & !y` evaluating to `true`, but also by sub
-   * conditions `x` and `y` evaluating to `true` and `false`, respectively.
-   */
-  // Note that this is only needed when using non-short-circuit logic. When using
-  // short-circuit logic, the control flow graph will have appropriate true/false
-  // edges for the sub conditions:
-  //
-  // Short-circuit logic CFG -- `if (x && y) A B`:
-  //   x && y --> x --true--> y --true--> A
-  //              |           |
-  //              |         false
-  //              |           |
-  //              |           V
-  //              \--false--> B
-  //
-  // Non-short-circuit logic CFG -- `if (x & y) A B`:
-  //   x --> y --> x & y --true--> A
-  //                 \--false--> B
-  //
-  // In the former case, `x` and `y` control `A`, in the latter case
-  // only `x & y` controls `A` if we do not take sub conditions into account.
-  predicate controlsSubCond(BasicBlock controlled, boolean testIsTrue, Expr cond, boolean condIsTrue) {
-    impliesSub(getLastNode().getElement(), cond, testIsTrue, condIsTrue) and
-    controls(controlled, testIsTrue)
-  }
-
-  private predicate isCandidateSuccessor(BasicBlock succ, boolean testIsTrue) {
-    (
-      testIsTrue = true and succ = this.getATrueSuccessor()
-      or
-      testIsTrue = false and succ = this.getAFalseSuccessor()
-    )
-    and
-    forall(BasicBlock pred |
-      pred = succ.getAPredecessor() and pred != this |
-      succ.dominates(pred)
-    )
-  }
-
-  private predicate isCandidateSuccessorNullness(BasicBlock succ, boolean isNull) {
-    (
-      isNull = true and succ = this.getANullSuccessor()
-      or
-      isNull = false and succ = this.getANonNullSuccessor()
-    )
-    and
-    forall(BasicBlock pred |
-      pred = succ.getAPredecessor() and pred != this |
-      succ.dominates(pred)
-    )
-  }
-}
-
-/**
- * Holds if `e2` is a sub expression of (Boolean) expression `e1`, and
- * if `e1` has value `b1` then `e2` must have value `b2`.
- */
-private predicate impliesSub(Expr e1, Expr e2, boolean b1, boolean b2) {
-  if e1 instanceof LogicalNotExpr then (
-    impliesSub(e1.(LogicalNotExpr).getOperand(), e2, b1.booleanNot(), b2)
-  )
-  else if e1 instanceof BitwiseAndExpr or e1 instanceof LogicalAndExpr then (
-    impliesSub(e1.(BinaryOperation).getAnOperand(), e2, b1, b2) and
-    b1 = true
-  )
-  else if e1 instanceof BitwiseOrExpr or e1 instanceof LogicalOrExpr then (
-    impliesSub(e1.(BinaryOperation).getAnOperand(), e2, b1, b2) and
-    b1 = false
-  ) else (
-    e1.getType() instanceof BoolType and
-    e1 = e2 and
-    b1 = b2 and
-    (b1 = true or b1 = false)
-  )
 }

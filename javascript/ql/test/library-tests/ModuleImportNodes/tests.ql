@@ -1,0 +1,10 @@
+import ModuleImportNode
+import ModuleImportNode_getAConstructorInvocation
+import moduleImport
+import moduleMember
+import ModuleImportNode_getPath
+import ModuleImportNode_getAMethodCall
+import ModuleImportNode_getAMemberInvocation
+import moduleImportProp
+import ModuleImportNode_getAMemberCall
+import ModuleImportNode_getAPropertyRead

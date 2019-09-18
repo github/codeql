@@ -8,6 +8,7 @@
  * @tags testability
  *       readability
  */
+
 import java
 
 predicate nontrivialLogicalOperator(BinaryExpr e) {

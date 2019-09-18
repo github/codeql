@@ -3,7 +3,10 @@
  * @description Pointer indirection may not be hidden by typedefs -- "typedef int* IntPtr;" is not allowed.
  * @kind problem
  * @id cpp/jpl-c/hidden-pointer-indirection-typedef
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp

@@ -25,3 +25,24 @@ void f1(void)
 	memcpy(buffer2, buffer1, 3); // GOOD
 	memcpy(buffer2, buffer1, 4); // BAD
 }
+
+void f2(char *src)
+{
+	char buffer[100];
+	char *ptr;
+	int amount;
+
+	amount = 100;
+	memcpy(buffer, src, amount); // GOOD
+	amount = amount + 1;
+	memcpy(buffer, src, amount); // BAD [NOT DETECTED]
+	amount = 101;
+	memcpy(buffer, src, amount); // BAD
+
+	ptr = buffer;
+	memcpy(ptr, src, 101); // BAD [NOT DETECTED]
+	ptr = &(buffer[0]);
+	memcpy(ptr, src, 101); // BAD [NOT DETECTED]
+	ptr = &(buffer[1]);
+	memcpy(ptr, src, 100); // BAD [NOT DETECTED]
+}

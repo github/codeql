@@ -1,31 +1,33 @@
 import cpp
 
 /**
- * A macro.
+ * A macro. For example, the macro `MYMACRO` in the following code:
+ * ```
+ * #define MYMACRO 1
+ * ```
  */
 class Macro extends PreprocessorDirective, @ppd_define {
-
   /**
    * Gets the head of this macro. For example, `MAX(x,y)` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  override string getHead() { preproctext(underlyingElement(this),result,_) }
+  override string getHead() { preproctext(underlyingElement(this), result, _) }
+
+  override string getCanonicalQLClass() { result = "Macro" }
 
   /**
    * Gets the body of this macro. For example, `(((x)>(y))?(x):(y))` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  string getBody() { preproctext(underlyingElement(this),_,result) }
+  string getBody() { preproctext(underlyingElement(this), _, result) }
 
   /** Gets an invocation of this macro. */
   MacroInvocation getAnInvocation() { result.getMacro() = this }
 
   override string toString() {
-    if (this.getBody() = "") then (
-      result = "#define " + this.getHead()
-    ) else (
-      result = "#define " + this.getHead() + " " + this.getBody()
-    )
+    if this.getBody() = ""
+    then result = "#define " + this.getHead()
+    else result = "#define " + this.getHead() + " " + this.getBody()
   }
 
   /**
@@ -36,30 +38,32 @@ class Macro extends PreprocessorDirective, @ppd_define {
    *
    * DEPRECATED: This predicate has a misleading name.
    */
-  deprecated predicate isFunctionLike() {
-    this.getBody().regexpMatch("[^(]*\\).*")
-  }
+  deprecated predicate isFunctionLike() { this.getBody().regexpMatch("[^(]*\\).*") }
 
   /**
    * Gets the name of the macro.  For example, `MAX` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  string getName() {
-    result = getHead().splitAt("(", 0)
-  }
+  string getName() { result = getHead().splitAt("(", 0) }
 
   /** Holds if the macro has name `name`. */
-  predicate hasName(string name) {
-    getName() = name
-  }
+  predicate hasName(string name) { getName() = name }
 }
 
 /**
- * A macro access (macro expansion or other macro access).
+ * A macro access.  For example:
+ * ```
+ * #ifdef MACRO1     // this line contains a MacroAccess
+ *   int x = MACRO2; // this line contains a MacroAccess
+ * #endif
+ * ```
+ *
+ * See also `MacroInvocation`, which represents only macro accesses
+ * that are expanded (such as in the second line of the example above).
  */
 class MacroAccess extends Locatable, @macroinvocation {
-  /** Gets the macro being invoked. */
-  Macro getMacro() { macroinvocations(underlyingElement(this),unresolveElement(result),_,_) }
+  /** Gets the macro that is being accessed. */
+  Macro getMacro() { macroinvocations(underlyingElement(this), unresolveElement(result), _, _) }
 
   /**
    * Gets the location of the outermost macro access that triggered this macro
@@ -68,18 +72,16 @@ class MacroAccess extends Locatable, @macroinvocation {
    * location of the invocation of `C` in `P(C)` will be the whole source range
    * starting with `P` and ending with `)`.
    */
-  override Location getLocation() {
-    result = this.getOutermostMacroAccess().getActualLocation()
-  }
+  override Location getLocation() { result = this.getOutermostMacroAccess().getActualLocation() }
+
+  override string getCanonicalQLClass() { result = "MacroAccess" }
 
   /**
-   * Gets the location of this macro invocation. For a nested invocation, where
+   * Gets the location of this macro access. For a nested access, where
    * `exists(this.getParentInvocation())`, this yields a location either inside
    * a `#define` directive or inside an argument to another macro.
    */
-  Location getActualLocation() {
-    macroinvocations(underlyingElement(this),_,result,_)
-  }
+  Location getActualLocation() { macroinvocations(underlyingElement(this), _, result, _) }
 
   /**
    * Gets the parent macro invocation, if any. For example:
@@ -111,40 +113,49 @@ class MacroAccess extends Locatable, @macroinvocation {
    * There is only a single invocation even though `c` occurs twice; this is an
    * optimization for efficiency.
    */
-  MacroInvocation getParentInvocation() { macroparent(underlyingElement(this),unresolveElement(result)) }
+  MacroInvocation getParentInvocation() {
+    macroparent(underlyingElement(this), unresolveElement(result))
+  }
 
   /**
    * Gets the outermost `MacroAccess` along the chain of `getParentInvocation`.
    * If `this` has no parent, the result will be `this` itself.
    */
   MacroAccess getOutermostMacroAccess() {
-    if (not exists(this.getParentInvocation())) then
-      result = this
-    else
-      result = this.getParentInvocation().getOutermostMacroAccess()
+    if not exists(this.getParentInvocation())
+    then result = this
+    else result = this.getParentInvocation().getOutermostMacroAccess()
   }
 
   override string toString() { result = this.getMacro().getHead() }
 
-  /** Gets the name of the invoked macro. */
-  string getMacroName() {
-    result = getMacro().getName()
-  }
+  /** Gets the name of the accessed macro. */
+  string getMacroName() { result = getMacro().getName() }
 }
 
 /**
- * A macro invocation (macro expansion).
+ * A macro invocation (macro access that is expanded).  For example:
+ * ```
+ * #ifdef MACRO1
+ *   int x = MACRO2; // this line contains a MacroInvocation
+ * #endif
+ * ```
+ *
+ * See also `MacroAccess`, which also represents macro accesses where the macro
+ * is checked but not expanded (such as in the first line of the example above).
  */
 class MacroInvocation extends MacroAccess {
-  MacroInvocation() {
-    macroinvocations(underlyingElement(this),_,_,1)
-  }
+  MacroInvocation() { macroinvocations(underlyingElement(this), _, _, 1) }
+
+  override string getCanonicalQLClass() { result = "MacroInvocation" }
 
   /**
    * Gets an element that occurs in this macro invocation or a nested macro
    * invocation.
    */
-  Locatable getAnExpandedElement() { inmacroexpansion(unresolveElement(result),underlyingElement(this)) }
+  Locatable getAnExpandedElement() {
+    inmacroexpansion(unresolveElement(result), underlyingElement(this))
+  }
 
   /**
    * Gets an element that is (partially) affected by a macro
@@ -153,7 +164,8 @@ class MacroInvocation extends MacroAccess {
    * well.
    */
   Locatable getAnAffectedElement() {
-    inmacroexpansion(unresolveElement(result),underlyingElement(this)) or macrolocationbind(underlyingElement(this), result.getLocation())
+    inmacroexpansion(unresolveElement(result), underlyingElement(this)) or
+    macrolocationbind(underlyingElement(this), result.getLocation())
   }
 
   /**
@@ -172,24 +184,27 @@ class MacroInvocation extends MacroAccess {
   }
 
   /**
-   * Gets the top-level expression associated with this macro invocation,
+   * Gets a top-level expression associated with this macro invocation,
    * if any. Note that this predicate will fail if the top-level expanded
-   * element is a statement rather than an expression.
+   * element is not an expression (for example if it is a statement).
+   *
+   * This macro is intended to be used with macros that expand to a complete
+   * expression. In other cases, it may have multiple results or no results.
    */
   Expr getExpr() {
     result = getAnExpandedElement() and
-    not (result.getParent() = getAnExpandedElement()) and
+    not result.getParent() = getAnExpandedElement() and
     not result instanceof Conversion
   }
 
   /**
    * Gets the top-level statement associated with this macro invocation, if
    * any. Note that this predicate will fail if the top-level expanded
-   * element is an expression rather than a statement.
+   * element is not a statement (for example if it is an expression).
    */
   Stmt getStmt() {
     result = getAnExpandedElement() and
-    not (result.getParent() = getAnExpandedElement())
+    not result.getParent() = getAnExpandedElement()
   }
 
   /**
@@ -238,87 +253,81 @@ class MacroInvocation extends MacroAccess {
    * See the documentation of `getUnexpandedArgument` for examples of the
    * differences between expanded and unexpanded arguments.
    */
-  string getExpandedArgument(int i) {
-    macro_argument_expanded(underlyingElement(this), i, result)
-  }
+  string getExpandedArgument(int i) { macro_argument_expanded(underlyingElement(this), i, result) }
 }
 
 /**
  * A top-level expression generated by a macro invocation.
+ *
+ * DEPRECATED: Use `MacroInvocation.getExpr()` directly to get an
+ * expression generated at the top-level of a macro invocation.  Use
+ * `MacroInvocation.getAnAffectedElement()` to get any element generated
+ * by a macro invocation.
  */
-class MacroInvocationExpr extends Expr {
-  MacroInvocationExpr() {
-    exists(MacroInvocation i | this = i.getExpr())
-  }
+deprecated class MacroInvocationExpr extends Expr {
+  MacroInvocationExpr() { exists(MacroInvocation i | this = i.getExpr()) }
 
   /**
    * Gets the macro invocation of which this is the top-level expression.
    */
-  MacroInvocation getInvocation() {
-    result.getExpr() = this
-  }
+  MacroInvocation getInvocation() { result.getExpr() = this }
 
   /** Gets the name of the invoked macro. */
-  string getMacroName() {
-    result = getInvocation().getMacroName()
-  }
+  string getMacroName() { result = getInvocation().getMacroName() }
 }
 
 /**
  * A top-level statement generated by a macro invocation.
+ *
+ * DEPRECATED: Use `MacroInvocation.getStmt()` directly to get a
+ * statement generated at the top-level of a macro invocation.  Use
+ * `MacroInvocation.getAnAffectedElement()` to get any element generated
+ * by a macro invocation.
  */
-class MacroInvocationStmt extends Stmt {
-  MacroInvocationStmt() {
-    exists(MacroInvocation i | this = i.getStmt())
-  }
+deprecated class MacroInvocationStmt extends Stmt {
+  MacroInvocationStmt() { exists(MacroInvocation i | this = i.getStmt()) }
 
   /**
    * Gets the macro invocation of which this is the top-level statement.
    */
-  MacroInvocation getInvocation() {
-    result.getStmt() = this
-  }
+  MacroInvocation getInvocation() { result.getStmt() = this }
 
   /** Gets the name of the invoked macro. */
-  string getMacroName() {
-    result = getInvocation().getMacroName()
-  }
+  string getMacroName() { result = getInvocation().getMacroName() }
 }
 
 /** Holds if `l` is the location of a macro. */
-predicate macroLocation(Location l) {
-  macrolocationbind(_, l)
-}
+predicate macroLocation(Location l) { macrolocationbind(_, l) }
 
 /** Holds if `element` is in the expansion of a macro. */
 predicate inMacroExpansion(Locatable element) {
-  inmacroexpansion(unresolveElement(element),_) or
-  (macroLocation(element.getLocation()) and
-   not topLevelMacroAccess(element))
+  inmacroexpansion(unresolveElement(element), _)
+  or
+  macroLocation(element.getLocation()) and
+  not topLevelMacroAccess(element)
 }
 
 /**
  * Holds if `ma` is a `MacroAccess` that is not nested inside another
  * macro invocation.
  */
-private predicate topLevelMacroAccess(MacroAccess ma) {
-  not exists(ma.getParentInvocation())
-}
+private predicate topLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
 
 /**
  * Holds if `element` is in the expansion of a macro from
  * a system header.
  */
 predicate inSystemMacroExpansion(Locatable element) {
-  exists (MacroInvocation m
-  | element = m.getAnExpandedElement() and
-    not exists (m.getMacro().getLocation().getFile().getRelativePath()))
+  exists(MacroInvocation m |
+    element = m.getAnExpandedElement() and
+    not exists(m.getMacro().getLocation().getFile().getRelativePath())
+  )
 }
 
 /** Holds if `element` is affected by a macro. */
 predicate affectedByMacro(Locatable element) {
   inMacroExpansion(element) or
-  affectedbymacroexpansion(unresolveElement(element),_)
+  affectedbymacroexpansion(unresolveElement(element), _)
 }
 
 /** Holds if there is a macro invocation on line `line` of file `f`. */

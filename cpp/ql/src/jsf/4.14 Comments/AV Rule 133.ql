@@ -3,14 +3,22 @@
  * @description Every source file will be documented with an introductory comment that provides information on the file name, its contents, and any program-required information (eg. legal statements, copyright information, etc)
  * @kind problem
  * @id cpp/jsf/av-rule-133
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       documentation
+ *       external/jsf
  */
+
 import cpp
 
 class FirstComment extends Comment {
-
   FirstComment() {
-    not exists(Locatable l | l != this and shouldNotBeBefore(l) and l.getFile() = this.getFile() and l.getLocation().getEndLine() <= this.getLocation().getStartLine())
+    not exists(Locatable l |
+      l != this and
+      shouldNotBeBefore(l) and
+      l.getFile() = this.getFile() and
+      l.getLocation().getEndLine() <= this.getLocation().getStartLine()
+    )
   }
 
   /*
@@ -19,17 +27,16 @@ class FirstComment extends Comment {
    * Simple checks only - if there is a comment at the beginning of the file, that
    * is pretty much enough
    */
-   predicate isValid() {
-     // At least 3 lines long: make sure it's a proper comment
-     this.getLocation().getEndLine() >= this.getLocation().getStartLine() + 2
-     and
-     exists (string contents | contents = this.getContents() |
-       // Make sure the name of the file is included
-       contents.matches("%" + this.getFile().getShortName() + "%")
-       // Other checks could go here; for instance containing a standard copyright notice
-     )
-   }
 
+  predicate isValid() {
+    // At least 3 lines long: make sure it's a proper comment
+    this.getLocation().getEndLine() >= this.getLocation().getStartLine() + 2 and
+    exists(string contents | contents = this.getContents() |
+      // Make sure the name of the file is included
+      contents.matches("%" + this.getFile().getShortName() + "%")
+      // Other checks could go here; for instance containing a standard copyright notice
+    )
+  }
 }
 
 /** Elements that should not appear before the 'first' comment */
@@ -40,19 +47,17 @@ predicate shouldNotBeBefore(Locatable l) {
 }
 
 from File f, Element blame, string message
-where f.fromSource() and
-    (
-      (
-       not exists(FirstComment comment | comment.getFile() = f)
-       and blame = f
-       and message = ""
-      )
-
-      or
-
-      (
-       exists(FirstComment comment | comment.getFile() = f and not comment.isValid() and blame = comment )
-       and message = "The introductory comment does not match the required style rules."
-      )
-    )
-select blame, "AV Rule 133: every source file will be documented with an introductory comment. " + message
+where
+  f.fromSource() and
+  (
+    not exists(FirstComment comment | comment.getFile() = f) and
+    blame = f and
+    message = ""
+    or
+    exists(FirstComment comment |
+      comment.getFile() = f and not comment.isValid() and blame = comment
+    ) and
+    message = "The introductory comment does not match the required style rules."
+  )
+select blame,
+  "AV Rule 133: every source file will be documented with an introductory comment. " + message

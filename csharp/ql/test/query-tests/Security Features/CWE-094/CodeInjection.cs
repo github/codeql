@@ -1,4 +1,4 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/Microsoft.CSharp.cs /r:System.ComponentModel.Primitives.dll
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/Microsoft.CSharp.cs /r:System.ComponentModel.Primitives.dll ${testdir}/../../../resources/stubs/System.Windows.cs
 
 using Microsoft.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
@@ -48,5 +48,13 @@ public class CommandInjectionHandler : IHttpHandler
         {
             return true;
         }
+    }
+
+    System.Windows.Forms.RichTextBox box1;
+
+    void OnButtonClicked()
+    {
+        // BAD: Use the Roslyn APIs to dynamically evaluate C#
+        CSharpScript.EvaluateAsync(box1.Text);
     }
 }

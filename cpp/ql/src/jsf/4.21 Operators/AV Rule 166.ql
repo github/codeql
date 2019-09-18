@@ -7,9 +7,12 @@
  * @id cpp/sizeof-side-effect
  * @tags reliability
  *       correctness
+ *       external/jsf
  */
+
 import cpp
 import jsf.lib.section_4_21_Operators.AV_Rule_166
 
 from SizeofImpureExprOperator sz
-select sz, "A sizeof operator should not be used on expressions that contain side effects as the effect is confusing."
+select sz,
+  "A sizeof operator should not be used on expressions that contain side effects as the effect is confusing."

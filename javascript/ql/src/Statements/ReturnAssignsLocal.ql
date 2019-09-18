@@ -15,8 +15,11 @@ import javascript
 import semmle.javascript.RestrictedLocations
 
 from ReturnStmt r, AssignExpr assgn, Variable v
-where assgn = r.getExpr().stripParens() and
-      v = ((Function)r.getContainer()).getScope().getAVariable() and
-      not v.isCaptured() and
-      assgn.getLhs() = v.getAnAccess()
-select (FirstLineOf)r, "The assignment to " + v.getName() + " is useless, since it is a local variable and will go out of scope."
+where
+  assgn = r.getExpr().stripParens() and
+  v = r.getContainer().(Function).getScope().getAVariable() and
+  not v.isCaptured() and
+  assgn.getLhs() = v.getAnAccess()
+select r.(FirstLineOf),
+  "The assignment to " + v.getName() +
+    " is useless, since it is a local variable and will go out of scope."

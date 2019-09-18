@@ -13,8 +13,9 @@
 import csharp
 
 from CastExpr ce, RefType target, RefType source
-where ce.getExpr() instanceof ArrayCreation and
-      target = ce.getType().(ArrayType).getElementType() and
-      source = ce.getExpr().getType().(ArrayType).getElementType() and
-      target.getABaseType+() = source
+where
+  ce.getExpr() instanceof ArrayCreation and
+  target = ce.getType().(ArrayType).getElementType() and
+  source = ce.getExpr().getType().(ArrayType).getElementType() and
+  target.getABaseType+() = source
 select ce, "Impossible downcast on array."

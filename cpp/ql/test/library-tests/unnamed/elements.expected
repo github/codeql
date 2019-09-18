@@ -35,8 +35,8 @@
 | file://:0:0:0:0 | char16_t | Other |
 | file://:0:0:0:0 | char32_t | Other |
 | file://:0:0:0:0 | const | Other |
+| file://:0:0:0:0 | declared_constexpr | Other |
 | file://:0:0:0:0 | decltype(nullptr) | Other |
-| file://:0:0:0:0 | definition of __va_list_tag | Other |
 | file://:0:0:0:0 | definition of fp_offset | Other |
 | file://:0:0:0:0 | definition of gp_offset | Other |
 | file://:0:0:0:0 | definition of overflow_arg_area | Other |
@@ -57,6 +57,8 @@
 | file://:0:0:0:0 | int | Other |
 | file://:0:0:0:0 | int * | Other |
 | file://:0:0:0:0 | int[0] | Other |
+| file://:0:0:0:0 | is_constexpr | Other |
+| file://:0:0:0:0 | is_thread_local | Other |
 | file://:0:0:0:0 | long | Other |
 | file://:0:0:0:0 | long double | Other |
 | file://:0:0:0:0 | long long | Other |

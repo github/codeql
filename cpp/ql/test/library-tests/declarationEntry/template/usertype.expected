@@ -11,5 +11,5 @@
 | src4.cpp:4:7:4:20 | template_class<<unnamed>> | 1 |
 | src5.cpp:5:16:5:19 | elem | 1 |
 | src5.cpp:6:8:6:17 | my_istream<elem> | 1 |
-| src5.cpp:10:8:10:17 | my_istream<char> | 1 |
+| src5.cpp:10:8:10:23 | my_istream<char> | 1 |
 | src5.fwd.hpp:6:17:6:20 | elem | 1 |

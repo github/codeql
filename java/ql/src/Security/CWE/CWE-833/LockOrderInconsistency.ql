@@ -8,6 +8,7 @@
  * @tags security
  *       external/cwe/cwe-833
  */
+
 import java
 
 /** A variable of type `ReentrantLock`. */
@@ -28,18 +29,26 @@ class LockVariable extends Variable {
 /** A synchronized method or statement, or an expression statement containing an access to a synchronized method. */
 class Synched extends Top {
   Synched() {
-    this instanceof SynchronizedStmt or
+    this instanceof SynchronizedStmt
+    or
     exists(Method m | m.isSynchronized() and not m.isStatic() |
-      m = this or
-      exists(MethodAccess ma, VarAccess qual | ma = this and qual = ma.getQualifier() | ma.getMethod() = m)
+      m = this
+      or
+      exists(MethodAccess ma, VarAccess qual | ma = this and qual = ma.getQualifier() |
+        ma.getMethod() = m
+      )
     )
   }
 
   /** A synchronizing statement nested within this element. */
   Synched getInnerSynch() {
-    result = this.(Method).getBody().getAChild*() or
-    result = this.(SynchronizedStmt).getAChild+() or
-    exists(MethodAccess ma | ma = result | ma.getEnclosingStmt().getParent*() = this)
+    result = this.(Method).getBody().getAChild*()
+    or
+    result = this.(SynchronizedStmt).getAChild+()
+    or
+    exists(MethodAccess ma | ma = result |
+      ma.getEnclosingStmt().getEnclosingStmt*() = this or ma.getEnclosingCallable() = this
+    )
   }
 
   /** The variable on which synchronization is performed, provided this element is a `SynchronizedStmt`. */
@@ -66,11 +75,13 @@ class Synched extends Top {
  */
 predicate badReentrantLockOrder(MethodAccess first, MethodAccess second, MethodAccess otherFirst) {
   exists(LockVariable v1, LockVariable v2, MethodAccess otherSecond |
-    first = v1.getLockAction() and otherSecond = v1.getLockAction() and
-    second = v2.getLockAction() and otherFirst = v2.getLockAction() and
+    first = v1.getLockAction() and
+    otherSecond = v1.getLockAction() and
+    second = v2.getLockAction() and
+    otherFirst = v2.getLockAction() and
     first.(ControlFlowNode).getASuccessor+() = second and
     otherFirst.(ControlFlowNode).getASuccessor+() = otherSecond
-    |
+  |
     v1 != v2
   )
 }
@@ -86,7 +97,9 @@ predicate badSynchronizedStmtLockOrder(Expr outerExpr, Expr innerExpr, Expr othe
     inner.(SynchronizedStmt).getExpr() = innerExpr and
     otherOuter.(SynchronizedStmt).getExpr() = otherOuterExpr and
     inner = outer.getInnerSynch() and
-    exists(Variable v1, Variable v2 | v1 = outer.getLockVar() and v2 = inner.getLockVar() and v1 != v2 |
+    exists(Variable v1, Variable v2 |
+      v1 = outer.getLockVar() and v2 = inner.getLockVar() and v1 != v2
+    |
       exists(Synched otherInner | otherInner = otherOuter.getInnerSynch() |
         v2 = otherOuter.getLockVar() and
         v1 = otherInner.getLockVar()
@@ -141,7 +154,9 @@ predicate inDifferentRunnables(MethodAccess ma1, MethodAccess ma2) {
  * in statement `inner` that is qualified by one of the parameters of `outer`, and there is
  * another access to `outer` that may cause locking to be performed in a different order.
  */
-predicate badMethodAccessLockOrder(MethodAccess outerAccess, MethodAccess innerAccess, MethodAccess other) {
+predicate badMethodAccessLockOrder(
+  MethodAccess outerAccess, MethodAccess innerAccess, MethodAccess other
+) {
   exists(Synched outer, Synched inner |
     inner.(MethodAccess) = innerAccess and
     inner = outer.getInnerSynch() and
@@ -168,6 +183,6 @@ where
   badReentrantLockOrder(first, second, other) or
   badSynchronizedStmtLockOrder(first, second, other) or
   badMethodAccessLockOrder(first, second, other)
-select first, "Synchronization here and $@ may be performed in reverse order starting $@ and result in deadlock.",
-  second, "here",
-  other, "here"
+select first,
+  "Synchronization here and $@ may be performed in reverse order starting $@ and result in deadlock.",
+  second, "here", other, "here"

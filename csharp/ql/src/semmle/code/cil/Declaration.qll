@@ -10,9 +10,8 @@ private import semmle.code.csharp.Member as CS
  * A declaration. Either a member (`Member`) or a variable (`Variable`).
  */
 class Declaration extends DotNet::Declaration, Element, @cil_declaration {
-
   /** Gets an attribute (for example `[Obsolete]`) of this declaration, if any. */
-  Attribute getAnAttribute() { result.getDeclaration()=this }
+  Attribute getAnAttribute() { result.getDeclaration() = this }
 
   /**
    * Gets the C# declaration corresponding to this CIL declaration, if any.
@@ -23,21 +22,19 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
     result = toCSharpTypeParameter(this)
   }
 
-  override Declaration getSourceDeclaration() { result=this }
+  override Declaration getSourceDeclaration() { result = this }
 
   /** Holds if this declaration is a source declaration. */
-  final predicate isSourceDeclaration() { this=getSourceDeclaration() }
+  final predicate isSourceDeclaration() { this = getSourceDeclaration() }
 }
 
-private CS::Declaration toCSharpNonTypeParameter(Declaration d) {
-  result.getLabel() = d.getLabel()
-}
+private CS::Declaration toCSharpNonTypeParameter(Declaration d) { result.matchesHandle(d) }
 
 private CS::TypeParameter toCSharpTypeParameter(TypeParameter tp) {
   toCSharpTypeParameterJoin(tp, result.getIndex(), result.getGeneric())
 }
 
-pragma [noinline, nomagic]
+pragma[nomagic]
 private predicate toCSharpTypeParameterJoin(TypeParameter tp, int i, CS::UnboundGeneric ug) {
   exists(TypeContainer tc |
     tp.getIndex() = i and
@@ -87,17 +84,20 @@ class Property extends DotNet::Property, Member, @cil_property {
   override ValueOrRefType getDeclaringType() { cil_property(this, result, _, _) }
 
   /** Gets the getter of this property, if any. */
-  override Getter getGetter() { this=result.getProperty() }
+  override Getter getGetter() { this = result.getProperty() }
 
   /** Gets the setter of this property, if any. */
-  override Setter getSetter() { this=result.getProperty() }
+  override Setter getSetter() { this = result.getProperty() }
 
   /** Gets an accessor of this property. */
-  Accessor getAnAccessor() { result=getGetter() or result=getSetter() }
+  Accessor getAnAccessor() { result = getGetter() or result = getSetter() }
 
-  override string toString() { result="property " + getName() }
+  override string toString() { result = "property " + getName() }
 
-  override string toStringWithTypes() { result=getType().toStringWithTypes() + " " + getDeclaringType().toStringWithTypes() + "." + getName() }
+  override string toStringWithTypes() {
+    result = getType().toStringWithTypes() + " " + getDeclaringType().toStringWithTypes() + "." +
+        getName()
+  }
 }
 
 /** A property that is trivial (wraps a field). */
@@ -107,16 +107,16 @@ class TrivialProperty extends Property {
   }
 
   /** Gets the underlying field of this property. */
-  Field getField() { result=getGetter().(TrivialGetter).getField() }
+  Field getField() { result = getGetter().(TrivialGetter).getField() }
 }
 
 /** An event. */
-class Event extends DotNet::Event, Member, @cil_event
-{
+class Event extends DotNet::Event, Member, @cil_event {
   override string getName() { cil_event(this, _, result, _) }
 
   /** Gets the type of this event. */
   Type getType() { cil_event(this, _, _, result) }
+
   override ValueOrRefType getDeclaringType() { cil_event(this, result, _, _) }
 
   /** Gets the add event accessor. */
@@ -128,7 +128,9 @@ class Event extends DotNet::Event, Member, @cil_event
   /** Gets the raiser. */
   Method getRaiser() { cil_raiser(this, result) }
 
-  override string toString() { result="event " + getName() }
+  override string toString() { result = "event " + getName() }
 
-  override string toStringWithTypes() { result=getDeclaringType().toStringWithTypes() + "." + getName() }
+  override string toStringWithTypes() {
+    result = getDeclaringType().toStringWithTypes() + "." + getName()
+  }
 }

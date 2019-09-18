@@ -4,9 +4,7 @@
  *
  * NOTE: The API of this library is not stable yet and may change in
  *       the future.
- *
  */
-
 module AngularJS {
   import AngularJS.AngularJSCore
   import AngularJS.ServiceDefinitions

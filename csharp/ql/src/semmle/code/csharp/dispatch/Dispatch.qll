@@ -39,35 +39,31 @@ class DispatchCall extends Internal::TDispatchCall {
 
 /** Internal implementation details. */
 private module Internal {
-  private cached module Cached {
+  private import semmle.code.csharp.Implements
+
+  cached
+  private module Cached {
     /** Internal representation of calls. */
     cached
     newtype TDispatchCall =
       TDispatchMethodCall(MethodCall mc) {
         not isReflectionCall(mc, _, _, _, _) and
         not mc.isLateBound()
-      }
-      or
-      TDispatchAccessorCall(AccessorCall ac)
-      or
+      } or
+      TDispatchAccessorCall(AccessorCall ac) or
       TDispatchReflectionCall(MethodCall mc, string name, Expr object, Expr qualifier, int args) {
         isReflectionCall(mc, name, object, qualifier, args)
-      }
-      or
-      TDispatchDynamicMethodCall(DynamicMethodCall dmc)
-      or
-      TDispatchDynamicOperatorCall(DynamicOperatorCall doc)
-      or
-      TDispatchDynamicMemberAccess(DynamicMemberAccess dma)
-      or
-      TDispatchDynamicElementAccess(DynamicElementAccess dea)
-      or
-      TDispatchDynamicEventAccess(AssignArithmeticOperation aao, DynamicMemberAccess dma, string name) {
+      } or
+      TDispatchDynamicMethodCall(DynamicMethodCall dmc) or
+      TDispatchDynamicOperatorCall(DynamicOperatorCall doc) or
+      TDispatchDynamicMemberAccess(DynamicMemberAccess dma) or
+      TDispatchDynamicElementAccess(DynamicElementAccess dea) or
+      TDispatchDynamicEventAccess(
+        AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
+      ) {
         isPotentialEventCall(aao, dma, name)
-      }
-      or
-      TDispatchDynamicObjectCreation(DynamicObjectCreation doc)
-      or
+      } or
+      TDispatchDynamicObjectCreation(DynamicObjectCreation doc) or
       TDispatchStaticCall(Call c) {
         c = any(ObjectCreation oc | not oc.isLateBound())
         or
@@ -79,30 +75,24 @@ private module Internal {
       }
 
     cached
-    Expr getCall(DispatchCall dc) {
-      result = dc.(DispatchCallImpl).getCall()
-    }
+    Expr getCall(DispatchCall dc) { result = dc.(DispatchCallImpl).getCall() }
 
     cached
-    Expr getArgument(DispatchCall dc, int i) {
-      result = dc.(DispatchCallImpl).getArgument(i)
-    }
+    Expr getArgument(DispatchCall dc, int i) { result = dc.(DispatchCallImpl).getArgument(i) }
 
     cached
-    Expr getQualifier(DispatchCall dc) {
-      result = dc.(DispatchCallImpl).getQualifier()
-    }
+    Expr getQualifier(DispatchCall dc) { result = dc.(DispatchCallImpl).getQualifier() }
+
+    cached
+    Callable getAStaticTarget(DispatchCall dc) { result = dc.(DispatchCallImpl).getAStaticTarget() }
 
     cached
     RuntimeCallable getADynamicTarget(DispatchCall dc) {
       result = dc.(DispatchCallImpl).getADynamicTarget()
     }
   }
-  import Cached
 
-  Callable getAStaticTarget(DispatchCall dc) {
-    result = dc.(DispatchCallImpl).getAStaticTarget()
-  }
+  import Cached
 
   /**
    * Holds if `mc` is a reflection call to a method named `name`, where
@@ -110,7 +100,9 @@ private module Internal {
    * static method is invoked) and `qualifier` is the qualifier of the
    * reflection call.
    */
-  private predicate isReflectionCall(MethodCall mc, string name, Expr object, Expr qualifier, int args) {
+  private predicate isReflectionCall(
+    MethodCall mc, string name, Expr object, Expr qualifier, int args
+  ) {
     exists(SystemTypeClass stc |
       mc.getTarget() = stc.getInvokeMemberMethod() and
       mc.getArgument(0).getValue() = name and
@@ -155,11 +147,14 @@ private module Internal {
    * potential event access and `name` is the name of the relevant event
    * accessor.
    */
-  private predicate isPotentialEventCall(AssignArithmeticOperation aao, DynamicMemberAccess dma, string name) {
+  private predicate isPotentialEventCall(
+    AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
+  ) {
     exists(DynamicOperatorCall doc, AssignExpr ae |
       ae = aao.getExpandedAssignment() and
       dma = ae.getLValue() and
-      doc = ae.getRValue() |
+      doc = ae.getRValue()
+    |
       aao instanceof AssignAddExpr and
       name = "add_" + dma.getLateBoundTargetName()
       or
@@ -169,7 +164,7 @@ private module Internal {
   }
 
   /** A call. */
-  private abstract class DispatchCallImpl extends TDispatchCall {
+  abstract private class DispatchCallImpl extends TDispatchCall {
     /** Gets a textual representation of this call. */
     string toString() { none() }
 
@@ -180,9 +175,7 @@ private module Internal {
     abstract Expr getArgument(int i);
 
     /** Gets the number of arguments of this call. */
-    int getNumberOfArguments() {
-      result = count(int i | exists(getArgument(i)))
-    }
+    int getNumberOfArguments() { result = count(int i | exists(getArgument(i))) }
 
     /** Gets the qualifier of this call, if any. */
     abstract Expr getQualifier();
@@ -199,8 +192,7 @@ private module Internal {
      * the qualifier is guaranteed not to be a subtype of `qualifierType`.
      */
     predicate hasQualifierType(Type qualifierType, boolean isExactType) {
-      exists(Type trackedType |
-        trackedType = getAPossibleType(this.getQualifier(), isExactType) |
+      exists(Type trackedType | trackedType = getAPossibleType(this.getQualifier(), isExactType) |
         qualifierType = trackedType and
         not qualifierType instanceof TypeParameter
         or
@@ -212,19 +204,16 @@ private module Internal {
      * Gets a non-exact (see `hasQualifierType()`) qualifier type of this call
      * that does not contain type parameters.
      */
-    TypeWithoutTypeParameters getANonExactQualifierTypeWithoutTypeParameters() {
-      exists(Type qualifierType |
-        hasQualifierType(qualifierType, false) |
+    private TypeWithoutTypeParameters getANonExactQualifierTypeWithoutTypeParameters() {
+      exists(Type qualifierType | hasQualifierType(qualifierType, false) |
         // Qualifier type contains no type parameters: use it
         result = qualifierType
         or
         // Qualifier type is a constructed type where all type arguments are type
         // parameters: use the unbound generic type
         exists(ConstructedType ct |
-          ct = qualifierType
-          and
-          forex(Type arg | arg = ct.getATypeArgument() | arg instanceof TypeParameter)
-          and
+          ct = qualifierType and
+          forex(Type arg | arg = ct.getATypeArgument() | arg instanceof TypeParameter) and
           result = ct.getUnboundGeneric()
         )
         or
@@ -233,13 +222,59 @@ private module Internal {
         result = qualifierType.(QualifierTypeWithTypeParameters).getAPotentialInstance()
       )
     }
+
+    /**
+     * Gets a non-exact (see `hasQualifierType()`) qualifier type of this call.
+     */
+    ValueOrRefType getANonExactQualifierType() {
+      exists(TypeWithoutTypeParameters t |
+        t = this.getANonExactQualifierTypeWithoutTypeParameters()
+      |
+        result.(ConstructedType).getUnboundGeneric() = t
+        or
+        not t instanceof UnboundGenericType and
+        result = t
+      )
+    }
   }
 
-  private class FieldOrProperty extends Assignable {
-    FieldOrProperty() {
-      this instanceof Field or
-      this instanceof Property
+  private class DynamicFieldOrProperty extends Assignable {
+    DynamicFieldOrProperty() {
+      (
+        this instanceof Field or
+        this instanceof Property
+      ) and
+      this.getName() = any(DynamicMemberAccess dma).getLateBoundTargetName()
     }
+
+    predicate isMemberOf(string name, ValueOrRefType t) {
+      name = this.getName() and t.hasMember(this)
+    }
+  }
+
+  private class TypeWithDynamicFieldOrProperty extends ValueOrRefType {
+    DynamicFieldOrProperty fp;
+
+    TypeWithDynamicFieldOrProperty() { fp.isMemberOf(_, this) }
+
+    predicate isImplicitlyConvertibleTo(string name, Type t) {
+      name = fp.getName() and
+      this.isImplicitlyConvertibleTo(t)
+    }
+  }
+
+  pragma[noinline]
+  private predicate isPossibleDynamicMemberAccessQualifierType(
+    DynamicMemberAccess dma, string name, TypeWithDynamicFieldOrProperty t
+  ) {
+    exists(Type qt, boolean isExact |
+      qt = getAPossibleType(dma.getQualifier(), isExact) and
+      name = dma.getLateBoundTargetName()
+    |
+      isExact = true and t = qt
+      or
+      isExact = false and t.isImplicitlyConvertibleTo(name, qt)
+    )
   }
 
   /**
@@ -248,9 +283,10 @@ private module Internal {
    * corresponding to the type of a relevant field or property are included.
    */
   private Type getAPossibleType(Expr e, boolean isExact) {
-    exists(ValueOrRefType qualifierType, FieldOrProperty fp, boolean qualifierTypeIsExact |
-      qualifierType = getAPossibleTypeDynamicMemberAccessQualifier(e, qualifierTypeIsExact, fp) |
-      (if qualifierTypeIsExact = true then qualifierType.hasMember(fp) else fp.getDeclaringType().isImplicitlyConvertibleTo(qualifierType)) and
+    exists(DynamicFieldOrProperty fp, string name, TypeWithDynamicFieldOrProperty t |
+      isPossibleDynamicMemberAccessQualifierType(e, name, t) and
+      fp.isMemberOf(name, t)
+    |
       result = fp.getType() and
       isExact = false
     )
@@ -259,23 +295,11 @@ private module Internal {
     result = getASourceType(e, isExact)
   }
 
-  private Type getAPossibleTypeDynamicMemberAccessQualifier(DynamicMemberAccess dma, boolean isExact, FieldOrProperty fp) {
-    result = getAPossibleType(dma.getQualifier(), isExact) and
-    fp.getName() = dma.getLateBoundTargetName()
-  }
-
   /**
    * Provides the predicate `getASourceType()` for finding all relevant source
    * types for a given expression.
    */
   private module SimpleTypeDataFlow {
-    // A temporary workaround to get the right join-order in `Sink::getASource()`
-    private newtype ExprWrapper = TExprWrapper(Expr e)
-
-    private Expr unwrap(ExprWrapper ew) { ew = TExprWrapper(result) }
-
-    private ExprWrapper wrap(Expr e) { result = TExprWrapper(e) }
-
     /**
      * Holds if type `t` may be imprecise, that is, an expression of type `t` may
      * in fact have a more precise type.
@@ -285,8 +309,7 @@ private module Internal {
       or
       t.getAChild*() instanceof DynamicType
       or
-      exists(Type other |
-        other != t |
+      exists(Type other | other != t |
         not other instanceof DynamicType and
         other.isImplicitlyConvertibleTo(t)
       )
@@ -306,10 +329,11 @@ private module Internal {
       or
       exists(Assignable a |
         a instanceof Field or
-        a instanceof Property |
+        a instanceof Property
+      |
         succ.(AssignableRead) = a.getAnAccess() and
         pred = a.getAnAssignedValue() and
-        a = any(Modifiable m | m.isEffectivelyInternal() or m.isEffectivelyPrivate())
+        a = any(Modifiable m | not m.isEffectivelyPublic())
       )
     }
 
@@ -321,34 +345,27 @@ private module Internal {
       typeMayBeImprecise(succ.getType())
     }
 
-    private predicate step(ExprWrapper succ, ExprWrapper pred) {
-      stepExpr(unwrap(succ), unwrap(pred))
-    }
-
-    private predicate isSink(ExprWrapper ew) {
-      exists(Expr e |
-        e = unwrap(ew) |
-        e = any(DynamicMemberAccess dma | isSink(wrap(dma))).getQualifier() or
-        e = any(AccessorCall ac).getAnArgument() or
-        e = any(DispatchReflectionOrDynamicCall c).getArgument(_) or
-        e = any(MethodCall mc | mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod()).getQualifier() or
-        e = any(DispatchCallImpl c).getQualifier()
-      )
-    }
-
-    private predicate stepTC(ExprWrapper succ, ExprWrapper pred) =
-      boundedFastTC(step/2, isSink/1)(succ, pred)
+    private predicate stepTC(Expr succ, Expr pred) = fastTC(stepExpr/2)(succ, pred)
 
     private class Source extends Expr {
       Source() { not stepExpr(this, _) }
     }
 
     private class Sink extends Expr {
-      Sink() { isSink(wrap(this)) }
-
-      Source getASource() {
-        stepTC(wrap(this), wrap(result))
+      Sink() {
+        this = any(DynamicMemberAccess dma | dma instanceof Sink).getQualifier()
+        or
+        this = any(AccessorCall ac).getAnArgument()
+        or
+        this = any(DispatchReflectionOrDynamicCall c).getArgument(_)
+        or
+        this = any(MethodCall mc | mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod())
+              .getQualifier()
+        or
+        this = any(DispatchCallImpl c).getQualifier()
       }
+
+      Source getASource() { stepTC(this, result) }
     }
 
     /** Holds if the expression `e` has an exact type. */
@@ -357,19 +374,18 @@ private module Internal {
       e instanceof BaseAccess
     }
 
-    /**
-     * Gets a source type for expression `e`, using simple data flow. The
-     * expression must be a member of the predicate `isSink()` above.
-     */
+    /** Gets a source type for expression `e`, using simple data flow. */
     Type getASourceType(Sink e, boolean isExact) {
       exists(Source s |
         s = e.getASource() or
-        s = e |
+        s = e
+      |
         result = s.getType() and
         if hasExactType(s) then isExact = true else isExact = false
       )
     }
   }
+
   private import SimpleTypeDataFlow
 
   /**
@@ -379,25 +395,18 @@ private module Internal {
    * into account.
    */
   private class DispatchMethodCall extends DispatchCallImpl, TDispatchMethodCall {
-    override MethodCall getCall() {
-      this = TDispatchMethodCall(result)
-    }
+    override MethodCall getCall() { this = TDispatchMethodCall(result) }
 
     override Expr getArgument(int i) {
-      exists(Call call, Parameter p |
-        call = this.getCall() |
+      exists(Call call, Parameter p | call = this.getCall() |
         p = call.getTarget().getParameter(i) and
         result = call.getArgumentForParameter(p)
       )
     }
 
-    override Expr getQualifier() {
-      result = getCall().getQualifier()
-    }
+    override Expr getQualifier() { result = getCall().getQualifier() }
 
-    override Method getAStaticTarget() {
-      result = getCall().getTarget()
-    }
+    override Method getAStaticTarget() { result = getCall().getTarget() }
 
     override RuntimeMethod getADynamicTarget() {
       result = getViableInherited()
@@ -488,9 +497,9 @@ private module Internal {
      * qualifier types are `B.M` and `C.M`, `C.M`, and none, respectively.
      */
     private RuntimeInstanceMethod getAViableOverrider() {
-      exists(TypeWithoutTypeParameters t, NonConstructedOverridableMethod m |
-        t = getANonExactQualifierTypeWithoutTypeParameters() and
-        getAStaticTarget() = m.getAConstructingMethodOrSelf() and
+      exists(ValueOrRefType t, NonConstructedOverridableMethod m |
+        t = this.getANonExactQualifierType() and
+        this.getAStaticTarget() = m.getAConstructingMethodOrSelf() and
         result = m.getAnOverrider(t)
       )
     }
@@ -506,29 +515,19 @@ private module Internal {
    * into account.
    */
   private class DispatchAccessorCall extends DispatchCallImpl, TDispatchAccessorCall {
-    override AccessorCall getCall() {
-      this = TDispatchAccessorCall(result)
-    }
+    override AccessorCall getCall() { this = TDispatchAccessorCall(result) }
 
-    override Expr getArgument(int i) {
-      result = getCall().getArgument(i)
-    }
+    override Expr getArgument(int i) { result = getCall().getArgument(i) }
 
-    override Expr getQualifier() {
-      result = getCall().(MemberAccess).getQualifier()
-    }
+    override Expr getQualifier() { result = getCall().(MemberAccess).getQualifier() }
 
-    override Accessor getAStaticTarget() {
-      result = getCall().getTarget()
-    }
+    override Accessor getAStaticTarget() { result = getCall().getTarget() }
 
     override RuntimeAccessor getADynamicTarget() {
-      result = getADynamicTargetCandidate()
-      and
+      result = getADynamicTargetCandidate() and
       // Calls to accessors may have `dynamic` expression arguments,
       // so we need to check that the types match
-      forall(Type argumentType, int i |
-        hasDynamicArg(i, argumentType) |
+      forall(Type argumentType, int i | hasDynamicArg(i, argumentType) |
         argumentType.isImplicitlyConvertibleTo(result.getParameter(i).getType())
       )
     }
@@ -593,7 +592,7 @@ private module Internal {
       )
     }
 
-    pragma [noinline]
+    pragma[noinline]
     private predicate hasQualifierTypeSourceDecl(SourceDeclarationType t) {
       exists(Type qualifierType |
         this.hasQualifierType(qualifierType, _) and
@@ -638,15 +637,14 @@ private module Internal {
      * respectively.
      */
     private RuntimeAccessor getAViableOverrider() {
-      exists(TypeWithoutTypeParameters t |
-        t = getANonExactQualifierTypeWithoutTypeParameters() and
-        result = getAStaticTarget().(OverridableAccessor).getAnOverrider(t)
+      exists(ValueOrRefType t | t = this.getANonExactQualifierType() |
+        result = this.getAStaticTarget().(OverridableAccessor).getAnOverrider(t)
       )
     }
   }
 
   /** An internal helper class for comparing two types modulo type parameters. */
-  private abstract class StructurallyComparedModuloTypeParameters extends Type {
+  abstract private class StructurallyComparedModuloTypeParameters extends Type {
     /** Gets a candidate for comparison against this type. */
     abstract Type getACandidate();
 
@@ -674,9 +672,7 @@ private module Internal {
      * by different types at different positions. For example,
      * `C<int, string>` is considered a potential instantiation of `C<T, T>`.
      */
-    TypeWithoutTypeParameters getAPotentialInstance() {
-      equalsModuloTypeParameters(result)
-    }
+    TypeWithoutTypeParameters getAPotentialInstance() { equalsModuloTypeParameters(result) }
   }
 
   private Type candidateInternal(Type t) {
@@ -691,8 +687,7 @@ private module Internal {
 
   /** Holds if types `x` and `y` are equal modulo type parameters. */
   private predicate sameModuloTypeParameters(Type x, Type y) {
-    y = candidateInternal(x)
-    and
+    y = candidateInternal(x) and
     (
       x = y
       or
@@ -700,50 +695,28 @@ private module Internal {
       or
       y instanceof TypeParameter
       or
-      (
-        // They must have the same kind.
-        (
-          x instanceof PointerType and y instanceof PointerType
-          or
-          x instanceof NullableType and y instanceof NullableType
-          or
-          x.(ArrayType).hasSameShapeAs((ArrayType)y)
-          or
-          x.(ConstructedType).getUnboundGeneric() = y.(ConstructedType).getUnboundGeneric()
-        )
-        and
-        // All of their corresponding children must be structurally equal
-        sameChildrenModuloTypeParameters(x, y, x.getNumberOfChildren() - 1)
-      )
+      // All of the children must be structurally equal
+      sameChildrenModuloTypeParameters(x, y, x.getNumberOfChildren() - 1)
     )
+  }
+
+  pragma[noinline]
+  private Type candidateInternalKind(Type t, Gvn::CompoundTypeKind k) {
+    result = candidateInternal(t) and
+    k = Gvn::getTypeKind(t)
   }
 
   /**
    * Holds if the `i+1` first children of types `x` and `y` are equal
    * modulo type parameters.
    */
+  pragma[nomagic]
   private predicate sameChildrenModuloTypeParameters(Type x, Type y, int i) {
-    exists(Type xChild, Type yChild |
-      i = 0 and
-      candidateChildren(x, i, xChild, yChild) and
-      yChild = y.getChild(i) and
-      sameModuloTypeParameters(xChild, yChild)
-    )
+    i = -1 and
+    y = candidateInternalKind(x, Gvn::getTypeKind(y))
     or
-    exists(Type xChild, Type yChild |
-      sameChildrenModuloTypeParameters(x, y, i - 1) |
-      candidateChildren(x, i, xChild, yChild) and
-      yChild = y.getChild(i) and
-      sameModuloTypeParameters(xChild, yChild)
-    )
-  }
-
-  private predicate candidateChildren(Type x, int i, Type xChild, Type yChild) {
-    exists(Type y |
-      y = candidateInternal(x) |
-      xChild = x.getChild(i) and
-      yChild = y.getChild(i)
-    )
+    sameChildrenModuloTypeParameters(x, y, i - 1) and
+    sameModuloTypeParameters(x.getChild(i), y.getChild(i))
   }
 
   /**
@@ -752,22 +725,19 @@ private module Internal {
    */
   private class QualifierTypeWithTypeParameters extends StructurallyComparedModuloTypeParameters {
     QualifierTypeWithTypeParameters() {
-      containsTypeParameters()
-      and
-      any(DispatchCallImpl dc).hasQualifierType(this, false)
-      and
+      containsTypeParameters() and
+      any(DispatchCallImpl dc).hasQualifierType(this, false) and
       exists(Type arg | arg = getAChild() | not arg instanceof TypeParameter)
     }
 
     override ConstructedType getACandidate() {
-      not result.containsTypeParameters()
-      and
+      not result.containsTypeParameters() and
       this.(ConstructedType).getUnboundGeneric() = result.getUnboundGeneric()
     }
   }
 
   /** A reflection-based call or a call using dynamic types. */
-  private abstract class DispatchReflectionOrDynamicCall extends DispatchCallImpl {
+  abstract private class DispatchReflectionOrDynamicCall extends DispatchCallImpl {
     /** Gets the name of the callable being called in this call. */
     abstract string getName();
 
@@ -809,8 +779,7 @@ private module Internal {
       this.hasQualifierType(result, true)
       or
       // Non-exact qualifier type
-      exists(Type qualifierType |
-        this.hasNonExactQualifierType(qualifierType) |
+      exists(Type qualifierType | this.hasNonExactQualifierType(qualifierType) |
         result = getANonExactQualifierSubType(qualifierType)
       )
     }
@@ -824,29 +793,23 @@ private module Internal {
      * `dynamic`).
      */
     private predicate hasUnknownQualifierType() {
-      exists(Type qualifierType |
-        this.hasNonExactQualifierType(qualifierType) |
+      exists(Type qualifierType | this.hasNonExactQualifierType(qualifierType) |
         isUnknownType(qualifierType)
       )
     }
 
-    /*
-     * The set of static targets is all callables with matching
-     * names and number of parameters. This set is further reduced in
-     * `getADynamicTarget()` by taking type information into account.
-     */
+    // The set of static targets is all callables with matching
+    // names and number of parameters. This set is further reduced in
+    // `getADynamicTarget()` by taking type information into account.
     override Callable getAStaticTarget() {
-      result = getACallableWithMatchingName()
-      and
+      result = getACallableWithMatchingName() and
       exists(int minArgs |
         minArgs = count(Parameter p |
-          p = result.getAParameter() and
-          not p.hasDefaultValue() and
-          not p.isParams()
-        )
-        and
-        getNumberOfArguments() >= minArgs
-        and
+            p = result.getAParameter() and
+            not p.hasDefaultValue() and
+            not p.isParams()
+          ) and
+        getNumberOfArguments() >= minArgs and
         (result.(Method).hasParams() or getNumberOfArguments() <= result.getNumberOfParameters())
       )
     }
@@ -858,45 +821,33 @@ private module Internal {
       result.getName() = getName()
     }
 
-    /*
-     * A callable is viable if the following conditions are all satisfied:
-     *
-     * 1. It is a viable candidate (see `getADynamicTargetCandidate()`).
-     * 2. The argument types are compatible with the parameter types. Here,
-     *    type compatibility means that an argument type must be implicitly
-     *    convertible to a type that equals the corresponding parameter type
-     *    modulo type parameters. For example, an argument type `int` is
-     *    compatible with a parameter type `IEquatable<T>`, because `int` is
-     *    implicitly convertible to `IEquatable<int>`, which equals
-     *    `IEquatable<T>` modulo type parameters. Note that potential type
-     *    parameter constraints are not taken into account, nor is the
-     *    possibility of matching a given type parameter with multiple,
-     *    conflicting types (for example, `Tuple<int, string>` is considered
-     *    compatible with `Tuple<T, T>`).
-     */
+    // A callable is viable if the following conditions are all satisfied:
+    //
+    // 1. It is a viable candidate (see `getADynamicTargetCandidate()`).
+    // 2. The argument types are compatible with the parameter types. Here,
+    //    type compatibility means that an argument type must be implicitly
+    //    convertible to a type that equals the corresponding parameter type
+    //    modulo type parameters. For example, an argument type `int` is
+    //    compatible with a parameter type `IEquatable<T>`, because `int` is
+    //    implicitly convertible to `IEquatable<int>`, which equals
+    //    `IEquatable<T>` modulo type parameters. Note that potential type
+    //    parameter constraints are not taken into account, nor is the
+    //    possibility of matching a given type parameter with multiple,
+    //    conflicting types (for example, `Tuple<int, string>` is considered
+    //    compatible with `Tuple<T, T>`).
     override RuntimeCallable getADynamicTarget() {
-      // Condition 1
-      result = getADynamicTargetCandidate()
-      and
-      // Condition 2
-      forall(int i |
-        i in [0 .. getNumberOfArguments() - 1] |
-        result = getADynamicTargetCandidateWithCompatibleArg(i)
-      )
+      result = this.getADynamicTarget(this.getNumberOfArguments() - 1)
     }
 
-    private RuntimeCallable getADynamicTargetCandidateWithCompatibleArg(int i) {
-      result = getADynamicTargetCandidateWithCompatibleArg1(i) or
-      result = getADynamicTargetCandidateWithCompatibleArg2(i)
-    }
-
-    pragma [noinline]
-    private RuntimeCallable getADynamicTargetCandidateWithCompatibleArg1(int i) {
+    private RuntimeCallable getADynamicTarget(int i) {
+      i = -1 and
       result = this.getADynamicTargetCandidate()
-      and
+      or
+      result = this.getADynamicTarget(i - 1) and
       exists(Type parameterType, Type argumentType |
         parameterType = this.getAParameterType(result, i) and
-        argumentType = getAPossibleType(this.getArgument(i), _) |
+        argumentType = getAPossibleType(this.getArgument(i), _)
+      |
         argumentType.isImplicitlyConvertibleTo(parameterType)
         or
         argumentType instanceof NullType and
@@ -905,13 +856,17 @@ private module Internal {
         or
         reflectionOrDynamicArgEqualsParamModuloTypeParameters(argumentType, parameterType)
       )
+      or
+      result = this.getADynamicTarget(i - 1) and
+      exists(Type parameterType, Type t | parameterType = this.getAParameterType(result, i) |
+        this.argumentConvConstExpr(i, t) and
+        t.isImplicitlyConvertibleTo(parameterType)
+      )
     }
 
     private Type getAParameterType(RuntimeCallable c, int i) {
-      exists(this.getArgument(i))
-      and
-      c = this.getADynamicTargetCandidate()
-      and
+      exists(this.getArgument(i)) and
+      c = this.getADynamicTargetCandidate() and
       (
         result = c.getParameter(i).getType()
         or
@@ -920,18 +875,7 @@ private module Internal {
       )
     }
 
-    pragma [noinline]
-    private RuntimeCallable getADynamicTargetCandidateWithCompatibleArg2(int i) {
-      result = this.getADynamicTargetCandidate()
-      and
-      exists(Type parameterType, Type t |
-        parameterType = this.getAParameterType(result, i) |
-        this.argumentConvConstExpr(i, t) and
-        t.isImplicitlyConvertibleTo(parameterType)
-      )
-    }
-
-    pragma [noinline]
+    pragma[noinline]
     private predicate argumentConvConstExpr(int i, Type t) {
       convConstantExpr(this.getArgument(i), t)
     }
@@ -948,8 +892,7 @@ private module Internal {
      *   type of one of the arguments.
      */
     RuntimeCallable getADynamicTargetCandidate() {
-      result = getAStaticTarget()
-      and
+      result = getAStaticTarget() and
       (
         result = getADynamicTargetCandidateInstanceMethod(this.getAQualifierType())
         or
@@ -965,14 +908,14 @@ private module Internal {
       )
     }
 
-    pragma [noinline]
+    pragma[noinline]
     private RuntimeOperator getADynamicTargetCandidateOperator() {
       result = getAStaticTarget() and
       result.getDeclaringType() = result.getAParameter().getType()
     }
   }
 
-  pragma [noinline]
+  pragma[noinline]
   private RuntimeInstanceMethod getADynamicTargetCandidateInstanceMethod(RefType qualifierType) {
     exists(DispatchReflectionOrDynamicCall c |
       result = c.getAStaticTarget() and
@@ -980,7 +923,7 @@ private module Internal {
     )
   }
 
-  pragma [noinline]
+  pragma[noinline]
   private RuntimeInstanceAccessor getADynamicTargetCandidateInstanceAccessor(RefType qualifierType) {
     exists(DispatchReflectionOrDynamicCall c |
       result = c.getAStaticTarget() and
@@ -993,7 +936,7 @@ private module Internal {
     t instanceof ObjectType
   }
 
-  pragma [noinline]
+  pragma[noinline]
   private RefType getANonExactQualifierSubType(Type qualifierType) {
     isRelevantReflectionOrDynamicQualifierType(result) and
     result.isImplicitlyConvertibleTo(qualifierType) and
@@ -1001,29 +944,32 @@ private module Internal {
     not result instanceof NullType // null types are implicitly convertible to all types, but not actual subtypes
   }
 
-  pragma [noinline]
+  pragma[noinline]
   private predicate isRelevantReflectionOrDynamicQualifierType(RefType rt) {
     rt.hasCallable(any(DispatchReflectionOrDynamicCall c).getAStaticTarget())
   }
 
-  private predicate reflectionOrDynamicArgEqualsParamModuloTypeParameters(Type argumentType, Type parameterType) {
-    exists(Type t |
-      reflectionOrDynamicArgumentTypeIsImplicitlyConvertibleTo(argumentType,t) |
-      t.(ReflectionOrDynamicCallArgumentWithTypeParameters).equalsModuloTypeParameters(parameterType)
+  private predicate reflectionOrDynamicArgEqualsParamModuloTypeParameters(
+    Type argumentType, Type parameterType
+  ) {
+    exists(Type t | reflectionOrDynamicArgumentTypeIsImplicitlyConvertibleTo(argumentType, t) |
+      t
+          .(ReflectionOrDynamicCallArgumentWithTypeParameters)
+          .equalsModuloTypeParameters(parameterType)
     )
   }
 
-  pragma [noinline]
-  private predicate reflectionOrDynamicArgumentTypeIsImplicitlyConvertibleTo(Type argumentType, Type t) {
+  pragma[noinline]
+  private predicate reflectionOrDynamicArgumentTypeIsImplicitlyConvertibleTo(
+    Type argumentType, Type t
+  ) {
     isReflectionOrDynamicArgumentType(argumentType) and
     argumentType.isImplicitlyConvertibleTo(t)
   }
 
-  pragma [noinline]
+  pragma[noinline]
   private predicate isReflectionOrDynamicArgumentType(Type t) {
-    exists(DispatchReflectionOrDynamicCall c |
-      t = getAPossibleType(c.getArgument(_), _)
-    )
+    exists(DispatchReflectionOrDynamicCall c | t = getAPossibleType(c.getArgument(_), _))
   }
 
   /**
@@ -1034,17 +980,19 @@ private module Internal {
    */
   private predicate isReflectionOrDynamicCallArgumentWithTypeParameters(Type argType, Type paramType) {
     exists(DispatchReflectionOrDynamicCall call, Parameter p, int i, int j |
-      p = call.getAStaticTarget().getParameter(i)
-      and
-      if p.isParams() then (
-        j >= i and
-        paramType = p.getType().(ArrayType).getElementType()
-      ) else (
-        i = j and
-        paramType = p.getType()
-      )
-      and
-      argType = getAPossibleType(call.getArgument(j), _) |
+      p = call.getADynamicTargetCandidate().getParameter(i) and
+      (
+        if p.isParams()
+        then (
+          j >= i and
+          paramType = p.getType().(ArrayType).getElementType()
+        ) else (
+          i = j and
+          paramType = p.getType()
+        )
+      ) and
+      argType = getAPossibleType(call.getArgument(j), _)
+    |
       argType.containsTypeParameters()
       or
       paramType.containsTypeParameters()
@@ -1067,14 +1015,11 @@ private module Internal {
   }
 
   /** A call using reflection. */
-  private class DispatchReflectionCall extends DispatchReflectionOrDynamicCall, TDispatchReflectionCall {
-    override MethodCall getCall() {
-      this = TDispatchReflectionCall(result, _, _, _, _)
-    }
+  private class DispatchReflectionCall extends DispatchReflectionOrDynamicCall,
+    TDispatchReflectionCall {
+    override MethodCall getCall() { this = TDispatchReflectionCall(result, _, _, _, _) }
 
-    override string getName() {
-      this = TDispatchReflectionCall(_, result, _, _, _)
-    }
+    override string getName() { this = TDispatchReflectionCall(_, result, _, _, _) }
 
     override Expr getQualifier() {
       this = TDispatchReflectionCall(_, _, result, _, _) and
@@ -1084,10 +1029,8 @@ private module Internal {
     /** Gets the type containing the static callable being called, if any. */
     private ValueOrRefType getStaticType() {
       exists(Expr object, Expr qualifier |
-        this = TDispatchReflectionCall(_, _, object, qualifier, _)
-        and
-        object instanceof NullLiteral
-        and
+        this = TDispatchReflectionCall(_, _, object, qualifier, _) and
+        object instanceof NullLiteral and
         (
           result = getAMethodCallArgSource(qualifier).(TypeofExpr).getTypeAccess().getType()
           or
@@ -1112,48 +1055,38 @@ private module Internal {
     // Does not take named arguments into account
     override Expr getArgument(int i) {
       exists(int args, ArrayCreation ac |
-        this = TDispatchReflectionCall(_, _, _, _, args)
-        and
-        ac = getAMethodCallArgSource(getCall().getArgument(args))
-        and
+        this = TDispatchReflectionCall(_, _, _, _, args) and
+        ac = getAMethodCallArgSource(getCall().getArgument(args)) and
         result = ac.getInitializer().getElement(i)
       )
     }
   }
 
   /** A method call using dynamic types. */
-  private class DispatchDynamicMethodCall extends DispatchReflectionOrDynamicCall, TDispatchDynamicMethodCall {
-    override DynamicMethodCall getCall() {
-      this = TDispatchDynamicMethodCall(result)
-    }
+  private class DispatchDynamicMethodCall extends DispatchReflectionOrDynamicCall,
+    TDispatchDynamicMethodCall {
+    override DynamicMethodCall getCall() { this = TDispatchDynamicMethodCall(result) }
 
-    override string getName() {
-      result = getCall().getLateBoundTargetName()
-    }
+    override string getName() { result = getCall().getLateBoundTargetName() }
 
-    override Expr getQualifier() {
-      result = getCall().getQualifier()
-    }
+    override Expr getQualifier() { result = getCall().getQualifier() }
 
     override RuntimeMethod getADynamicTargetCandidate() {
-      if exists(getCall().getTarget()) then
+      if exists(getCall().getTarget())
+      then
         // static method call
         result = getCall().getTarget()
-      else
-        result = DispatchReflectionOrDynamicCall.super.getADynamicTargetCandidate()
+      else result = DispatchReflectionOrDynamicCall.super.getADynamicTargetCandidate()
     }
 
     // Does not take named arguments into account
-    override Expr getArgument(int i) {
-      result = getCall().getArgument(i)
-    }
+    override Expr getArgument(int i) { result = getCall().getArgument(i) }
   }
 
   /** An operator call using dynamic types. */
-  private class DispatchDynamicOperatorCall extends DispatchReflectionOrDynamicCall, TDispatchDynamicOperatorCall {
-    override DynamicOperatorCall getCall() {
-      this = TDispatchDynamicOperatorCall(result)
-    }
+  private class DispatchDynamicOperatorCall extends DispatchReflectionOrDynamicCall,
+    TDispatchDynamicOperatorCall {
+    override DynamicOperatorCall getCall() { this = TDispatchDynamicOperatorCall(result) }
 
     override string getName() {
       exists(Operator o |
@@ -1162,142 +1095,107 @@ private module Internal {
       )
     }
 
-    override Expr getQualifier() {
-      none()
-    }
+    override Expr getQualifier() { none() }
 
-    override Expr getArgument(int i) {
-      result = getCall().getArgument(i)
-    }
+    override Expr getArgument(int i) { result = getCall().getArgument(i) }
   }
 
   /** A (potential) call to a property accessor using dynamic types. */
-  private class DispatchDynamicMemberAccess extends DispatchReflectionOrDynamicCall, TDispatchDynamicMemberAccess {
-    override DynamicMemberAccess getCall() {
-      this = TDispatchDynamicMemberAccess(result)
-    }
+  private class DispatchDynamicMemberAccess extends DispatchReflectionOrDynamicCall,
+    TDispatchDynamicMemberAccess {
+    override DynamicMemberAccess getCall() { this = TDispatchDynamicMemberAccess(result) }
 
     override string getName() {
-      exists(DynamicMemberAccess dma |
-        dma = getCall() |
+      exists(DynamicMemberAccess dma | dma = this.getCall() |
         result = "get_" + dma.(DynamicMemberRead).getLateBoundTargetName()
         or
         result = "set_" + dma.(DynamicMemberWrite).getLateBoundTargetName()
       )
     }
 
-    override Expr getQualifier() {
-      result = getCall().getQualifier()
-    }
+    override Expr getQualifier() { result = this.getCall().getQualifier() }
 
     override Expr getArgument(int i) {
-      // Only calls to setters have an argument
-      exists(DynamicMemberWrite dmw |
-        dmw = getCall() and
+      exists(DynamicMemberAccess dma | dma = this.getCall() |
+        // Only calls to setters have an argument
         i = 0 and
-        exists(Assignment a | a.getLValue() = dmw and result = a.getRValue())
+        exists(AssignableDefinition def | def.getTargetAccess() = dma | result = def.getSource())
       )
     }
   }
 
   /** A (potential) call to an indexer accessor using dynamic types. */
-  private class DispatchDynamicElementAccess extends DispatchReflectionOrDynamicCall, TDispatchDynamicElementAccess {
-    override DynamicElementAccess getCall() {
-      this = TDispatchDynamicElementAccess(result)
-    }
+  private class DispatchDynamicElementAccess extends DispatchReflectionOrDynamicCall,
+    TDispatchDynamicElementAccess {
+    override DynamicElementAccess getCall() { this = TDispatchDynamicElementAccess(result) }
 
     override string getName() {
-      exists(DynamicElementAccess dea |
-        dea = getCall() |
+      exists(DynamicElementAccess dea | dea = this.getCall() |
         dea instanceof DynamicElementRead and result = "get_Item"
         or
         dea instanceof DynamicElementWrite and result = "set_Item"
       )
     }
 
-    override Expr getQualifier() {
-      result = getCall().getQualifier()
-    }
+    override Expr getQualifier() { result = this.getCall().getQualifier() }
 
     override Expr getArgument(int i) {
-      exists(DynamicElementAccess dea |
-        dea = getCall() |
+      exists(DynamicElementAccess dea | dea = this.getCall() |
         result = dea.getIndex(i)
         or
         // Calls to setters have an extra argument
         i = count(dea.getAnIndex()) and
-        dea instanceof DynamicElementWrite and
-        exists(Assignment a | a.getLValue() = dea and result = a.getRValue())
+        exists(AssignableDefinition def | def.getTargetAccess() = dea | result = def.getSource())
       )
     }
   }
 
   /** A (potential) call to an event accessor using dynamic types. */
-  private class DispatchDynamicEventAccess extends DispatchReflectionOrDynamicCall, TDispatchDynamicEventAccess {
+  private class DispatchDynamicEventAccess extends DispatchReflectionOrDynamicCall,
+    TDispatchDynamicEventAccess {
     override AssignArithmeticOperation getCall() {
       this = TDispatchDynamicEventAccess(result, _, _)
     }
 
-    override string getName() {
-      this = TDispatchDynamicEventAccess(_, _, result)
-    }
+    override string getName() { this = TDispatchDynamicEventAccess(_, _, result) }
 
     override Expr getQualifier() {
-      result = any(DynamicMemberAccess dma | this = TDispatchDynamicEventAccess(_, dma, _)).getQualifier()
+      result = any(DynamicMemberAccess dma | this = TDispatchDynamicEventAccess(_, dma, _))
+            .getQualifier()
     }
 
-    override Expr getArgument(int i) {
-      i = 0 and result = getCall().getRValue()
-    }
+    override Expr getArgument(int i) { i = 0 and result = getCall().getRValue() }
   }
 
   /** A call to a constructor using dynamic types. */
-  private class DispatchDynamicObjectCreation extends DispatchReflectionOrDynamicCall, TDispatchDynamicObjectCreation {
-    override DynamicObjectCreation getCall() {
-      this = TDispatchDynamicObjectCreation(result)
-    }
+  private class DispatchDynamicObjectCreation extends DispatchReflectionOrDynamicCall,
+    TDispatchDynamicObjectCreation {
+    override DynamicObjectCreation getCall() { this = TDispatchDynamicObjectCreation(result) }
 
-    override string getName() {
-      none()
-    }
+    override string getName() { none() }
 
-    override Expr getQualifier() {
-      none()
-    }
+    override Expr getQualifier() { none() }
 
-    override Expr getArgument(int i) {
-      result = getCall().getArgument(i)
-    }
+    override Expr getArgument(int i) { result = getCall().getArgument(i) }
 
-    override RuntimeCallable getADynamicTargetCandidate() {
-      result = getCall().getTarget()
-    }
+    override RuntimeCallable getADynamicTargetCandidate() { result = getCall().getTarget() }
   }
 
   /** A call where the target can be resolved statically. */
   private class DispatchStaticCall extends DispatchCallImpl, TDispatchStaticCall {
-    override Call getCall() {
-      this = TDispatchStaticCall(result)
-    }
+    override Call getCall() { this = TDispatchStaticCall(result) }
 
-    override Expr getQualifier() {
-      none()
-    }
+    override Expr getQualifier() { none() }
 
     override Expr getArgument(int i) {
-      exists(Call call, Parameter p |
-        call = this.getCall() |
+      exists(Call call, Parameter p | call = this.getCall() |
         p = call.getTarget().getParameter(i) and
         result = call.getArgumentForParameter(p)
       )
     }
 
-    override Callable getAStaticTarget() {
-      result = getCall().getTarget()
-    }
+    override Callable getAStaticTarget() { result = getCall().getTarget() }
 
-    override RuntimeCallable getADynamicTarget() {
-      result = getCall().getTarget()
-    }
+    override RuntimeCallable getADynamicTarget() { result = getCall().getTarget() }
   }
 }

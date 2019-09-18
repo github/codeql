@@ -1,9 +1,9 @@
 import cpp
 
 string varInit(Variable v) {
-    if exists(v.getInitializer().getExpr().getValue())
-    then result = v.getInitializer().getExpr().getValue().toString()
-    else result = "<no initialiser value>"
+  if exists(v.getInitializer().getExpr())
+  then result = v.getInitializer().getExpr().toString()
+  else result = "<no initialiser expr>"
 }
 
 from Variable v

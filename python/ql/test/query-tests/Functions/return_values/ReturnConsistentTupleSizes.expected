@@ -1,0 +1,2 @@
+| functions_test.py:306:1:306:39 | Function returning_different_tuple_sizes | returning_different_tuple_sizes returns $@ and $@. | functions_test.py:308:16:308:18 | Tuple | tuple of size 2 | functions_test.py:310:16:310:20 | Tuple | tuple of size 3 |
+| functions_test.py:324:1:324:50 | Function indirectly_returning_different_tuple_sizes | indirectly_returning_different_tuple_sizes returns $@ and $@. | functions_test.py:319:12:319:14 | Tuple | tuple of size 2 | functions_test.py:322:12:322:16 | Tuple | tuple of size 3 |

@@ -1,0 +1,12 @@
+| var_size_struct.cpp:13:8:13:17 | VarString1 | var_size_struct.cpp:15:8:15:10 | str |
+| var_size_struct.cpp:18:8:18:17 | VarString2 | var_size_struct.cpp:20:8:20:10 | str |
+| var_size_struct.cpp:24:8:24:17 | VarString3 | var_size_struct.cpp:26:8:26:10 | str |
+| var_size_struct.cpp:36:8:36:17 | VarString5 | var_size_struct.cpp:39:8:39:11 | str2 |
+| var_size_struct.cpp:61:8:61:17 | varStruct1 | var_size_struct.cpp:63:8:63:11 | data |
+| var_size_struct.cpp:76:8:76:17 | varStruct2 | var_size_struct.cpp:78:7:78:14 | elements |
+| var_size_struct.cpp:119:8:119:17 | varStruct3 | var_size_struct.cpp:121:17:121:19 | arr |
+| var_size_struct.cpp:127:8:127:17 | varStruct5 | var_size_struct.cpp:129:17:129:19 | arr |
+| var_size_struct.cpp:131:8:131:17 | varStruct6 | var_size_struct.cpp:133:17:133:19 | arr |
+| var_size_struct.cpp:135:8:135:17 | varStruct7 | var_size_struct.cpp:137:17:137:19 | arr |
+| var_size_struct.cpp:139:8:139:17 | varStruct8 | var_size_struct.cpp:141:9:141:11 | arr |
+| var_size_struct.cpp:143:8:143:17 | varStruct9 | var_size_struct.cpp:145:17:145:19 | arr |

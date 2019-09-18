@@ -1,8 +1,16 @@
 import csharp
+import Common
 
-from ControlFlow::Node dom, ControlFlow::Node node, string s
-where
-  dom.strictlyDominates(node) and dom.getASuccessor() = node and s = "pre"
-  or
-  dom.strictlyPostDominates(node) and dom.getAPredecessor() = node and s = "post"
-select s, dom, node
+query predicate dominance(SourceControlFlowNode dom, SourceControlFlowNode node) {
+  dom.strictlyDominates(node) and dom.getASuccessor() = node
+}
+
+query predicate postDominance(SourceControlFlowNode dom, SourceControlFlowNode node) {
+  dom.strictlyPostDominates(node) and dom.getAPredecessor() = node
+}
+
+query predicate blockDominance(SourceBasicBlock dom, SourceBasicBlock bb) { dom.dominates(bb) }
+
+query predicate postBlockDominance(SourceBasicBlock dom, SourceBasicBlock bb) {
+  dom.postDominates(bb)
+}

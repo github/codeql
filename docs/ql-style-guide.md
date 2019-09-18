@@ -2,7 +2,8 @@
 
 ## Introduction
 
-This document describes how to format the QL code you contribute to this repository. It covers aspects such as layout, white-space, naming and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
+This document describes how to format the QL code you contribute to this repository. It covers aspects such as layout, white-space, naming, and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
+Note, if you use QL for Eclipse, you can auto-format your query in the (QL editor)[https://help.semmle.com/ql-for-eclipse/Content/WebHelp/ql-editor.html].
 
 Words in *italic* are defined in the [Glossary](#glossary).
 
@@ -51,9 +52,10 @@ select c, "This call to '$@' is deprecated because " + reason + ".",
 1. There *should not* be additional blank lines within a predicate.
 1. There *may* be a new line:
    - Immediately after the `from`, `where` or `select` keywords in a query.
-   - Immediately after `if`, `then`, or `else` keywords. The `then` and `else` parts *should* be consistent.
+   - Immediately after `if`, `then`, or `else` keywords.
 1. *Avoid* other line breaks in declarations, other than to break long lines.
 1. When operands of *binary operators* span two lines, the operator *should* be placed at the end of the first line.
+1. If the parameter list needs to be broken across multiple lines then there *must* be a line break after the opening `(`, the parameter declarations indented one level, and the `) {` *must* be on its own line at the outer indentation.
 
 ### Examples
 
@@ -65,17 +67,19 @@ private int getNumberOfParameters() {
 ```
 
 ```ql
-predicate methodStats(string qualifiedName, string name,
-  int numberOfParameters, int numberOfStatements, int numberOfExpressions,
-  int linesOfCode, int nestingDepth, int numberOfBranches) {
+predicate methodStats(
+  string qualifiedName, string name, int numberOfParameters,
+  int numberOfStatements, int numberOfExpressions, int linesOfCode,
+  int nestingDepth, int numberOfBranches
+) {
   ...
 }
 ```
-	
+
 ```ql
 from Method main
 where main.getName() = "Main"
-select main, "This is the program entry point." 
+select main, "This is the program entry point."
 ```
 
 ```ql
@@ -84,19 +88,12 @@ where
   main.getName() = "Main" and
   main.getNumberOfParameters() = 0
 select main, "Main method has no parameters."
-```	
+```
 
 ```ql
   if x.isPublic()
   then result = "public"
   else result = "private"
-```	
-
-```ql
-  if x.isPublic() then
-    result = "public"
-  else
-    result = "private"
 ```
 
 ```ql
@@ -107,6 +104,16 @@ select main, "Main method has no parameters."
   else
     result = "private"
 ```
+
+```ql
+  if x.isPublic()
+  then result = "public"
+  else
+    if x.isPrivate()
+    then result = "private"
+    else result = "protected"
+```
+
 
 ## Braces
 1. Braces follow [Stroustrup](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Stroustrup) style. The opening `{` *must* be placed at the end of the preceding line.
@@ -239,7 +246,7 @@ Documentation for specific items:
 
 ```ql
 /** Provides logic for determining constant expressions. */
-```	
+```
 
 ```ql
 /**
@@ -247,12 +254,12 @@ Documentation for specific items:
  * `isExactType` indicates whether the type is exact, that is, whether
  * the qualifier is guaranteed not to be a subtype of `qualifierType`.
  */
-```	
+```
 ```ql
 /**
  * A delegate declaration, for example
  * ```
- * delegate void Logger(string text); 
+ * delegate void Logger(string text);
  * ```
  */
 class Delegate extends ...
@@ -285,22 +292,27 @@ deprecated Expr getInitializer()
 1. *Prefer* one *conjunct* per line.
 1. Write the `and` at the end of the line. This also applies in `where` clauses.
 1. *Prefer* to write the `or` keyword on its own line.
-1. The `or` keyword *may* be written at the end of a line, or within a line, provided that it has no unparenthesised `and` operands.
+1. The `or` keyword *may* be written at the end of a line, or within a line, provided that it has no `and` operands.
 1. Single-line formulas *may* be used in order to save space or add clarity, particularly in the *body* of a *quantifier/aggregation*.
 1. *Always* use brackets to clarify the precedence of:
    - `implies`
    - `if`-`then`-`else`
+1. *Avoid* using brackets to clarify the precedence of:
+   - `not`
+   - `and`
+   - `or`
 1. Parenthesised formulas *can* be written:
    - Within a single line. There *should not* be an additional space following the opening parenthesis or preceding the closing parenthesis.
    - Spanning multiple lines. The opening parenthesis *should* be placed at the end of the preceding line, the body should be indented one level, and the closing bracket should be placed on a new line at the outer indentation.
 1. *Quantifiers/aggregations* *can* be written:
    - Within a single line. In this case, there is no space to the inside of the parentheses, or after the quantifier keyword.
-   - Across multiple lines. In this case, type declarations are on the same line as the quantifier, the `|` *may* be at the end of the line, or *may* be on its own line, and the body of the quantifier *must* be indented one level. The closing `)` is written on a new line, at the outer indentation.
+   - Across multiple lines. In this case, type declarations are on the same line as the quantifier with the first `|` at the same line as the quantifier, the second `|` *must* be at the end of the same line as the quantifier or on its own line at the outer indentation, and the body of the quantifier *must* be indented one level. The closing `)` is written on a new line, at the outer indentation. If the type declarations need to be broken across multiple lines then there must *must* be a line break after the opening `(`, the type declarations indented one level, and the first `|` on its own line at the outer indentation.
 1. `if`-`then`-`else` *can* be written:
    - On a single line
    - With the *body* after the `if`/`then`/`else` keyword
    - With the *body* indented on the next line
    - *Always* parenthesise the `else` part if it is a compound formula.
+1. If an `if`-`then`-`else` is broken across multiple lines then the `then` and `else` keywords *should* be at the start of lines aligned with the `if`.
 1. The `and` and `else` keywords *may* be placed on the same line as the closing parenthesis.
 1. The `and` and `else` keywords *may* be "cuddled": `) else (`
 1. *Always* qualify *calls* to predicates of the same class with `this`.
@@ -318,7 +330,7 @@ deprecated Expr getInitializer()
   reflectionOrDynamicArg(argumentType, parameterType)
 ```
 
-```ql	
+```ql
   this.getName() = "Finalize" and not exists(this.getAParameter())
 ```
 
@@ -335,7 +347,8 @@ deprecated Expr getInitializer()
 ```
 
 ```ql
-  if e1 instanceof BitwiseOrExpr or e1 instanceof LogicalOrExpr then (
+  if e1 instanceof BitwiseOrExpr or e1 instanceof LogicalOrExpr
+  then (
     impliesSub(e1.(BinaryOperation).getAnOperand(), e2, b1, b2) and
     b1 = false
   ) else (
@@ -348,36 +361,37 @@ deprecated Expr getInitializer()
 
 ```ql
   (x instanceof Exception implies x.isPublic()) and y instanceof Exception
-```	
+```
 
 ```ql
   x instanceof Exception implies (x.isPublic() and y instanceof Exception)
-```	
+```
 
 ```ql
   exists(Type arg | arg = this.getAChild() | arg instanceof TypeParameter)
-```	
+```
 
 ```ql
   exists(Type qualifierType |
-    this.hasNonExactQualifierType(qualifierType) |
+    this.hasNonExactQualifierType(qualifierType)
+  |
     result = getANonExactQualifierSubType(qualifierType)
   )
-```	
+```
 
 ```ql
   methods = count(Method m | t = m.getDeclaringType() and not ilc(m))
-```	
+```
 
 ```ql
   if n = 0 then result = 1 else result = n * f(n - 1)
-```	
+```
 
 ```ql
   if n = 0
   then result = 1
   else result = n * f(n - 1)
-```	
+```
 
 ```ql
   if
@@ -386,10 +400,11 @@ deprecated Expr getInitializer()
     result = 1
   else
     result = n * f(n - 1)
-```	
+```
 
 ```ql
-  if exists(this.getContainingType()) then (
+  if exists(this.getContainingType())
+  then (
     result = "A nested class" and
     parentName = this.getContainingType().getFullyQualifiedName()
   ) else (

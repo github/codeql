@@ -1,4 +1,7 @@
 import javascript
 
-from CallWithAnalyzedReturnFlow call
-select call, call.getACallee(), call.getACallee().getAReturnValue()
+from DataFlow::AnalyzedValueNode call
+where
+  call instanceof CallWithAnalyzedReturnFlow or
+  call instanceof CallWithNonLocalAnalyzedReturnFlow
+select call, call.getAValue()

@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.Threading.Thread.dll /r:System.Diagnostics.Debug.dll
+// semmle-extractor-options: /r:System.Threading.Thread.dll /r:System.Diagnostics.Debug.dll /langversion:preview
 
 using System;
 using System.Collections;
@@ -50,6 +50,8 @@ class ConstantNullness
         j = (int?)i ?? 1; // BAD
         s = ""?.CommaJoinWith(s); // BAD
         s = s ?? ""; // GOOD
+        s = (i==0 ? s : null) ?? s; // GOOD
+        var k = (i==0 ? s : null)?.Length; // GOOD
     }
 }
 
@@ -86,6 +88,23 @@ class ConstantMatching
             case IList _ : // GOOD
               break;
         }
+    }
+
+    string M4(object o)
+    {
+        return o switch
+        {
+            _ => o.ToString() // BAD
+        };
+    }
+
+    string M5(object o)
+    {
+        return o switch
+        {
+            "" => " ",
+            _ => o.ToString() // GOOD
+        };
     }
 }
 

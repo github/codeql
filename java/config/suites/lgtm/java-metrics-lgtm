@@ -1,0 +1,16 @@
++ odasa-java-metrics/Files/FLinesOfCode.ql: /Metrics/Size
+    @_namespace com.lgtm/java-queries
++ odasa-java-metrics/Files/FLinesOfComment.ql: /Metrics/Documentation
+    @_namespace com.lgtm/java-queries
++ odasa-java-metrics/Files/FLinesOfCommentedCode.ql: /Metrics/Documentation
+    @_namespace com.lgtm/java-queries
++ odasa-java-metrics/Files/FLinesOfDuplicatedCode.ql: /Metrics/Coupling
+    @_namespace com.lgtm/java-queries
++ odasa-java-metrics/Files/FNumberOfTests.ql: /Metrics/Size
+    @_namespace com.lgtm/java-queries
+
++ semmlecode-queries/Metrics/Dependencies/ExternalDependencies.ql
+    @_namespace com.lgtm/java-queries
++ semmlecode-queries/Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+    @_namespace com.lgtm/java-queries
+

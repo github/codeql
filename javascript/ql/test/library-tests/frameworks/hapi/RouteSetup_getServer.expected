@@ -1,4 +1,0 @@
-| src/hapi.js:7:1:9:2 | server2 ... ler1\\n}) | src/hapi.js:4:15:4:31 | new Hapi.Server() |
-| src/hapi.js:12:1:15:7 | server2 ...     }}) | src/hapi.js:4:15:4:31 | new Hapi.Server() |
-| src/hapi.js:17:1:18:2 | server2 ... dler\\n}) | src/hapi.js:4:15:4:31 | new Hapi.Server() |
-| src/hapi.js:29:1:29:20 | server2.route(route) | src/hapi.js:4:15:4:31 | new Hapi.Server() |

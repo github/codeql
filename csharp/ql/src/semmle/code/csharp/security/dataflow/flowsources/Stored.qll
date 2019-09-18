@@ -1,21 +1,16 @@
 /**
  * Provides classes representing sources of stored data.
  */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.data.Common
 private import semmle.code.csharp.frameworks.system.data.Entity
+private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Sql
 
 /** A data flow source of stored user input. */
-abstract class StoredFlowSource extends DataFlow::Node {
-}
-
-/** An access of an Entity Framework `Entity` property that may hold stored data. */
-class EntityPropertyStoredFlowSource extends StoredFlowSource {
-  EntityPropertyStoredFlowSource() {
-    this.asExpr().(PropertyAccess).getTarget() = any(SystemDataEntity::Entity e).getAProperty()
-  }
-}
+abstract class StoredFlowSource extends DataFlow::Node { }
 
 /**
  * An expression that has a type of `DbRawSqlQuery`, representing the result of an Entity Framework
@@ -37,20 +32,26 @@ class DbDataReaderStoredFlowSource extends StoredFlowSource {
   }
 }
 
-/**
- * An expression that accesses a method of `DbDataReader` or a sub-class.
- */
+/** An expression that accesses a method of `DbDataReader` or a sub-class. */
 class DbDataReaderMethodStoredFlowSource extends StoredFlowSource {
   DbDataReaderMethodStoredFlowSource() {
-    this.asExpr().(MethodCall).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader).getASubType*()
+    this.asExpr().(MethodCall).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader
+      ).getASubType*()
   }
 }
 
-/**
- * An expression that accesses a property of `DbDataReader` or a sub-class.
- */
+/** An expression that accesses a property of `DbDataReader` or a sub-class. */
 class DbDataReaderPropertyStoredFlowSource extends StoredFlowSource {
   DbDataReaderPropertyStoredFlowSource() {
-    this.asExpr().(PropertyAccess).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader).getASubType*()
+    this.asExpr().(PropertyAccess).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader
+      ).getASubType*()
+  }
+}
+
+/** A read of a mapped property. */
+class ORMMappedProperty extends StoredFlowSource {
+  ORMMappedProperty() {
+    this instanceof EntityFramework::StoredFlowSource or
+    this instanceof NHibernate::StoredFlowSource
   }
 }

@@ -4,6 +4,8 @@
 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= | __va_list_tag::operator= | false |
 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= | __va_list_tag::operator= | false |
 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | overflow_arg_area | __va_list_tag::overflow_arg_area | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | p#0 | <none> | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | p#0 | <none> | false |
 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | reg_save_area | __va_list_tag::reg_save_area | false |
 | file://:0:0:0:0 | (global namespace) | namespaces.cpp:40:5:40:13 | globalInt | globalInt | true |
 | file://:0:0:0:0 | (global namespace) | namespaces.cpp:42:6:42:18 | globalIntUser | globalIntUser | true |

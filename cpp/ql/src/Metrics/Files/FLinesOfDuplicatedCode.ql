@@ -8,16 +8,19 @@
  * @metricType file
  * @metricAggregate avg sum max
  * @precision high
+ * @id cpp/duplicated-lines-in-files
  * @tags testability
  *       modularity
- * @id cpp/duplicated-lines-in-files
  */
+
 import external.CodeDuplication
 
 from File f, int n
-where n = count(int line |
-                exists(DuplicateBlock d | d.sourceFile() = f |
-                       line in [d.sourceStartLine()..d.sourceEndLine()])
-                and not whitelistedLineForDuplication(f, line))
-select f, n
-order by n desc
+where
+  n = count(int line |
+      exists(DuplicateBlock d | d.sourceFile() = f |
+        line in [d.sourceStartLine() .. d.sourceEndLine()]
+      ) and
+      not whitelistedLineForDuplication(f, line)
+    )
+select f, n order by n desc

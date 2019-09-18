@@ -1,17 +1,16 @@
 /**
-* @name Inappropriate encoding
-* @description Using an inappropriate encoding may give unintended results and may
-*              pose a security risk.
-* @kind problem
-* @problem.severity error
-* @precision low
-* @id cs/inappropriate-encoding
-* @tags security
-*       external/cwe/cwe-838
-*/
+ * @name Inappropriate encoding
+ * @description Using an inappropriate encoding may give unintended results and may
+ *              pose a security risk.
+ * @kind path-problem
+ * @problem.severity error
+ * @precision low
+ * @id cs/inappropriate-encoding
+ * @tags security
+ *       external/cwe/cwe-838
+ */
 
 import csharp
-import DataFlow
 import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.frameworks.system.Net
 import semmle.code.csharp.frameworks.system.Web
@@ -20,12 +19,15 @@ import semmle.code.csharp.security.dataflow.SqlInjection
 import semmle.code.csharp.security.dataflow.XSS
 import semmle.code.csharp.security.dataflow.UrlRedirect
 import semmle.code.csharp.security.Sanitizers
+import semmle.code.csharp.dataflow.DataFlow2::DataFlow2
+import semmle.code.csharp.dataflow.DataFlow2::DataFlow2::PathGraph
+import semmle.code.csharp.dataflow.TaintTracking2
 
 /**
  * A configuration for specifying expressions that must be
  * encoded, along with a set of potential valid encoded values.
  */
-abstract class RequiresEncodingConfiguration extends TaintTracking::Configuration {
+abstract class RequiresEncodingConfiguration extends TaintTracking2::Configuration {
   bindingset[this]
   RequiresEncodingConfiguration() { any() }
 
@@ -43,28 +45,25 @@ abstract class RequiresEncodingConfiguration extends TaintTracking::Configuratio
    * `sink`, where `sink` is an expression of kind `kind` that is required
    * to be encoded.
    */
-  predicate hasWrongEncoding(Expr encodedValue, Expr sink, string kind) {
-    hasFlow(exprNode(encodedValue), exprNode(sink)) and
+  predicate hasWrongEncoding(PathNode encodedValue, PathNode sink, string kind) {
+    hasFlowPath(encodedValue, sink) and
     kind = this.getKind()
   }
 
   override predicate isSource(Node source) {
     // all encoded values that do not match this configuration are
     // considered sources
-    exists(Expr e |
-      e = source.asExpr() |
+    exists(Expr e | e = source.asExpr() |
       e instanceof EncodedValue and
       not this.isPossibleEncodedValue(e)
     )
   }
 
-  override predicate isSink(Node sink) {
-    this.requiresEncoding(sink)
-  }
+  override predicate isSink(Node sink) { this.requiresEncoding(sink) }
 
-  override predicate isSanitizer(Node sanitizer) {
-    this.isPossibleEncodedValue(sanitizer.asExpr())
-  }
+  override predicate isSanitizer(Node sanitizer) { this.isPossibleEncodedValue(sanitizer.asExpr()) }
+
+  override int fieldFlowBranchLimit() { result = 0 }
 }
 
 /** An encoded value, for example a call to `HttpServerUtility.HtmlEncode`. */
@@ -88,71 +87,50 @@ class EncodedValue extends Expr {
 module EncodingConfigurations {
   /** An encoding configuration for SQL expressions. */
   class SqlExpr extends RequiresEncodingConfiguration {
-    SqlExpr() {
-      this = "SqlExpr"
-    }
+    SqlExpr() { this = "SqlExpr" }
 
-    override string getKind() {
-      result = "SQL expression"
-    }
+    override string getKind() { result = "SQL expression" }
 
-    override predicate requiresEncoding(Node n) {
-      n instanceof SqlInjection::Sink
-    }
+    override predicate requiresEncoding(Node n) { n instanceof SqlInjection::Sink }
 
     // no override for `isPossibleEncodedValue` as SQL parameters should
     // be used instead of explicit encoding
-
     override predicate isSource(Node source) {
-      super.isSource(source) or
+      super.isSource(source)
+      or
       // consider quote-replacing calls as additional sources for
       // SQL expressions (e.g., `s.Replace("\"", "\"\"")`)
       source.asExpr() = any(MethodCall mc |
-        mc.getTarget() = any(SystemStringClass c).getReplaceMethod() and
-        mc.getArgument(0).getValue().regexpMatch("\"|'|`")
-      )
+          mc.getTarget() = any(SystemStringClass c).getReplaceMethod() and
+          mc.getArgument(0).getValue().regexpMatch("\"|'|`")
+        )
     }
   }
 
   /** An encoding configuration for HTML expressions. */
   class HtmlExpr extends RequiresEncodingConfiguration {
-    HtmlExpr() {
-      this = "HtmlExpr"
-    }
+    HtmlExpr() { this = "HtmlExpr" }
 
-    override string getKind() {
-      result = "HTML expression"
-    }
+    override string getKind() { result = "HTML expression" }
 
-    override predicate requiresEncoding(Node n) {
-      n instanceof XSS::HtmlSink
-    }
+    override predicate requiresEncoding(Node n) { n instanceof XSS::HtmlSink }
 
-    override predicate isPossibleEncodedValue(Expr e) {
-      e instanceof HtmlSanitizedExpr
-    }
+    override predicate isPossibleEncodedValue(Expr e) { e instanceof HtmlSanitizedExpr }
   }
 
   /** An encoding configuration for URL expressions. */
   class UrlExpr extends RequiresEncodingConfiguration {
-    UrlExpr() {
-      this = "UrlExpr"
-    }
+    UrlExpr() { this = "UrlExpr" }
 
-    override string getKind() {
-      result = "URL expression"
-    }
+    override string getKind() { result = "URL expression" }
 
-    override predicate requiresEncoding(Node n) {
-      n instanceof UrlRedirect::Sink
-    }
+    override predicate requiresEncoding(Node n) { n instanceof UrlRedirect::Sink }
 
-    override predicate isPossibleEncodedValue(Expr e) {
-      e instanceof UrlSanitizedExpr
-    }
+    override predicate isPossibleEncodedValue(Expr e) { e instanceof UrlSanitizedExpr }
   }
 }
 
-from RequiresEncodingConfiguration c, Expr encodedValue, Expr sink, string kind
+from RequiresEncodingConfiguration c, PathNode encodedValue, PathNode sink, string kind
 where c.hasWrongEncoding(encodedValue, sink, kind)
-select sink, "This " + kind + " may include data from a $@.", encodedValue, "possibly inappropriately encoded value"
+select sink.getNode(), encodedValue, sink, "This " + kind + " may include data from a $@.",
+  encodedValue.getNode(), "possibly inappropriately encoded value"

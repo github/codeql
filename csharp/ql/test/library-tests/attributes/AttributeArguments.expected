@@ -1,3 +1,4 @@
+arguments
 | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | 0 | attributes.cs:10:26:10:45 | "C# attributes test" |
 | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | 0 | attributes.cs:11:32:11:56 | "A test of C# attributes" |
 | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | 0 | attributes.cs:12:34:12:35 | "" |
@@ -12,3 +13,27 @@
 | attributes.cs:38:12:38:30 | [AssemblyFileVersion(...)] | 0 | attributes.cs:38:32:38:40 | "1.0.0.0" |
 | attributes.cs:40:2:40:22 | [AttributeUsage(...)] | 0 | attributes.cs:40:24:40:50 | access to constant All |
 | attributes.cs:43:6:43:16 | [Conditional(...)] | 0 | attributes.cs:43:18:43:25 | "DEBUG2" |
+| attributes.cs:51:6:51:16 | [My(...)] | 0 | attributes.cs:51:18:51:22 | false |
+| attributes.cs:54:6:54:16 | [My(...)] | 0 | attributes.cs:54:18:54:21 | true |
+| attributes.cs:54:6:54:16 | [My(...)] | 1 | attributes.cs:54:28:54:29 | "" |
+| attributes.cs:54:6:54:16 | [My(...)] | 2 | attributes.cs:54:36:54:36 | 0 |
+constructorArguments
+| attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | 0 | attributes.cs:10:26:10:45 | "C# attributes test" |
+| attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | 0 | attributes.cs:11:32:11:56 | "A test of C# attributes" |
+| attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | 0 | attributes.cs:12:34:12:35 | "" |
+| attributes.cs:13:12:13:26 | [AssemblyCompany(...)] | 0 | attributes.cs:13:28:13:39 | "Semmle Plc" |
+| attributes.cs:14:12:14:26 | [AssemblyProduct(...)] | 0 | attributes.cs:14:28:14:34 | "Odasa" |
+| attributes.cs:15:12:15:28 | [AssemblyCopyright(...)] | 0 | attributes.cs:15:30:15:54 | "Copyright \ufffd Semmle 2018" |
+| attributes.cs:16:12:16:28 | [AssemblyTrademark(...)] | 0 | attributes.cs:16:30:16:31 | "" |
+| attributes.cs:17:12:17:26 | [AssemblyCulture(...)] | 0 | attributes.cs:17:28:17:29 | "" |
+| attributes.cs:22:12:22:21 | [ComVisible(...)] | 0 | attributes.cs:22:23:22:27 | false |
+| attributes.cs:25:12:25:15 | [Guid(...)] | 0 | attributes.cs:25:17:25:54 | "2f70fdd6-14aa-4850-b053-d547adb1f476" |
+| attributes.cs:37:12:37:26 | [AssemblyVersion(...)] | 0 | attributes.cs:37:28:37:36 | "1.0.0.0" |
+| attributes.cs:38:12:38:30 | [AssemblyFileVersion(...)] | 0 | attributes.cs:38:32:38:40 | "1.0.0.0" |
+| attributes.cs:40:2:40:22 | [AttributeUsage(...)] | 0 | attributes.cs:40:24:40:50 | access to constant All |
+| attributes.cs:43:6:43:16 | [Conditional(...)] | 0 | attributes.cs:43:18:43:25 | "DEBUG2" |
+| attributes.cs:51:6:51:16 | [My(...)] | 0 | attributes.cs:51:18:51:22 | false |
+| attributes.cs:54:6:54:16 | [My(...)] | 0 | attributes.cs:54:18:54:21 | true |
+namedArguments
+| attributes.cs:54:6:54:16 | [My(...)] | x | attributes.cs:54:36:54:36 | 0 |
+| attributes.cs:54:6:54:16 | [My(...)] | y | attributes.cs:54:28:54:29 | "" |

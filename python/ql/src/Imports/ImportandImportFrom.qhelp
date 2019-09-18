@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> Importing a module twice using the <code>import xxx</code> and
+<code>from xxx import yyy</code> is confusing.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Remove the <code>from xxx import yyy</code> statement.
+Add <code>yyy = xxx.yyy</code> if required.</p>
+
+</recommendation>
+<example>
+<sample src="ImportandImportFrom.py" />
+
+
+</example>
+<references>
+  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
+</references>
+</qhelp>

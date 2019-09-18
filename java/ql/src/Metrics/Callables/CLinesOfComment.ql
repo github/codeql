@@ -9,9 +9,9 @@
  * @tags maintainability
  *       documentation
  */
+
 import java
 
 from Callable c
 where c.fromSource()
-select c, c.getMetrics().getNumberOfCommentLines() as n
-order by n desc
+select c, c.getMetrics().getNumberOfCommentLines() as n order by n desc

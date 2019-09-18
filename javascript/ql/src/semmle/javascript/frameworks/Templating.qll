@@ -9,16 +9,26 @@ module Templating {
    * Gets a string that is a known template delimiter.
    */
   string getADelimiter() {
-    result = "<%" or result = "%>" or
-    result = "{{" or result = "}}" or
-    result = "{%" or result = "%}" or
-    result = "<@" or result = "@>" or
-    result = "<#" or result = "#>" or
-    result = "{#" or result = "#}" or
-    result = "{$" or result = "$}" or
-    result = "[%" or result = "%]" or
-    result = "[[" or result = "]]" or
-    result = "<?" or result = "?>"
+    result = "<%" or
+    result = "%>" or
+    result = "{{" or
+    result = "}}" or
+    result = "{%" or
+    result = "%}" or
+    result = "<@" or
+    result = "@>" or
+    result = "<#" or
+    result = "#>" or
+    result = "{#" or
+    result = "#}" or
+    result = "{$" or
+    result = "$}" or
+    result = "[%" or
+    result = "%]" or
+    result = "[[" or
+    result = "]]" or
+    result = "<?" or
+    result = "?>"
   }
 
   /**
@@ -27,6 +37,6 @@ module Templating {
    * storing it in its first (and only) capture group.
    */
   string getDelimiterMatchingRegexp() {
-    result = ".*(" + concat("\\Q" + getADelimiter() + "\\E", "|") +  ").*"
+    result = "(?s).*(" + concat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
   }
 }

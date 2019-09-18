@@ -5,8 +5,7 @@
 private import CIL
 
 /** A node in the control flow graph. */
-class ControlFlowNode extends @cil_controlflow_node
-{
+class ControlFlowNode extends @cil_controlflow_node {
   /** Gets a textual representation of this control flow node. */
   string toString() { none() }
 
@@ -15,22 +14,23 @@ class ControlFlowNode extends @cil_controlflow_node
    * This value is either 0 or 1, except for the instruction `dup`
    * which pushes 2 values onto the stack.
    */
-  int getPushCount() { result=0 }
+  int getPushCount() { result = 0 }
 
   /** Gets the number of items this node pops from the stack. */
-  int getPopCount() { result=0 }
+  int getPopCount() { result = 0 }
 
   /** Gets a successor of this node, if any. */
-  final Instruction getASuccessor() { result=getASuccessorType(_) }
+  final Instruction getASuccessor() { result = getASuccessorType(_) }
 
   /** Gets a true successor of this node, if any. */
-  final Instruction getTrueSuccessor() { result=getASuccessorType(any(TrueFlow f)) }
+  final Instruction getTrueSuccessor() { result = getASuccessorType(any(TrueFlow f)) }
 
   /** Gets a false successor of this node, if any. */
-  final Instruction getFalseSuccessor() { result=getASuccessorType(any(FalseFlow f)) }
+  final Instruction getFalseSuccessor() { result = getASuccessorType(any(FalseFlow f)) }
 
   /** Gets a successor to this node, of type `type`, if any. */
-  cached Instruction getASuccessorType(FlowType t) { none() }
+  cached
+  Instruction getASuccessorType(FlowType t) { none() }
 
   /** Gets a predecessor of this node, if any. */
   ControlFlowNode getAPredecessor() { result.getASuccessor() = this }
@@ -47,20 +47,17 @@ class ControlFlowNode extends @cil_controlflow_node
     i < result.getPushCount()
     or
     // Transitive predecessor pushes the operand
-    exists(ControlFlowNode mid, int pushes |
-      this.getOperandRec(mid, i, pushes) |
+    exists(ControlFlowNode mid, int pushes | this.getOperandRec(mid, i, pushes) |
       pushes - mid.getStackDelta() < result.getPushCount() and
       result = mid.getAPredecessor()
     )
   }
 
   /** Gets an operand of this instruction, if any. */
-  ControlFlowNode getAnOperand() { result=getOperand(_) }
+  ControlFlowNode getAnOperand() { result = getOperand(_) }
 
   /** Gets an expression that consumes the output of this instruction on the stack. */
-  Instruction getParentExpr() {
-    this=result.getAnOperand()
-  }
+  Instruction getParentExpr() { this = result.getAnOperand() }
 
   /**
    * Holds if `pred` is a transitive predecessor of this instruction, this
@@ -70,15 +67,13 @@ class ControlFlowNode extends @cil_controlflow_node
    */
   private predicate getOperandRec(ControlFlowNode pred, int i, int pushes) {
     // Invariant: no node is a push for operand `i`
-    pushes >= pred.getPushCount()
-    and
+    pushes >= pred.getPushCount() and
     (
       i in [0 .. this.getPopCount() - 1] and
       pred = this.getAPredecessor() and
       pushes = i
       or
-      exists(ControlFlowNode mid, int pushes0 |
-        this.getOperandRec(mid, i, pushes0) |
+      exists(ControlFlowNode mid, int pushes0 | this.getOperandRec(mid, i, pushes0) |
         pushes = pushes0 - mid.getStackDelta() and
         // This is a guard to prevent ill formed programs
         // and other logic errors going into an infinite loop.
@@ -88,21 +83,16 @@ class ControlFlowNode extends @cil_controlflow_node
     )
   }
 
-  private int getStackDelta() { result = getPushCount()-getPopCount() }
+  private int getStackDelta() { result = getPushCount() - getPopCount() }
 
   /** Gets the stack size before this instruction. */
-  int getStackSizeBefore()
-  {
-    result = getAPredecessor().getStackSizeAfter()
-  }
+  int getStackSizeBefore() { result = getAPredecessor().getStackSizeAfter() }
 
   /** Gets the stack size after this instruction. */
-  final int getStackSizeAfter()
-  {
+  final int getStackSizeAfter() {
     // This is a guard to prevent ill formed programs
     // and other logic errors going into an infinite loop.
-    result in [0..getImplementation().getStackSize()]
-    and
+    result in [0 .. getImplementation().getStackSize()] and
     result = getStackSizeBefore() + getStackDelta()
   }
 
@@ -110,10 +100,14 @@ class ControlFlowNode extends @cil_controlflow_node
   MethodImplementation getImplementation() { none() }
 
   /** Gets the type of the item pushed onto the stack, if any. */
-  cached Type getType() { none() }
+  cached
+  Type getType() { none() }
 
   /** Holds if this control flow node has more than one predecessor. */
-  predicate isJoin() { count(getAPredecessor())>1 }
+  predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
+
+  /** Holds if this control flow node has more than one successor. */
+  predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 }
 
 /**
@@ -122,10 +116,13 @@ class ControlFlowNode extends @cil_controlflow_node
  * Handlers are control flow nodes because they push the handled exception onto the stack.
  */
 class EntryPoint extends ControlFlowNode, @cil_entry_point {
-  override int getStackSizeBefore() { result=0 }
+  override int getStackSizeBefore() { result = 0 }
 }
 
-private newtype TFlowType = TNormalFlow() or TTrueFlow() or TFalseFlow()
+private newtype TFlowType =
+  TNormalFlow() or
+  TTrueFlow() or
+  TFalseFlow()
 
 /** A type of control flow. Either normal flow (`NormalFlow`), true flow (`TrueFlow`) or false flow (`FalseFlow`). */
 abstract class FlowType extends TFlowType {
@@ -134,15 +131,15 @@ abstract class FlowType extends TFlowType {
 
 /** Normal control flow. */
 class NormalFlow extends FlowType, TNormalFlow {
-  override string toString() { result="" }
+  override string toString() { result = "" }
 }
 
 /** True control flow. */
 class TrueFlow extends FlowType, TTrueFlow {
-  override string toString() { result="true" }
+  override string toString() { result = "true" }
 }
 
 /** False control flow. */
-class FalseFlow extends FlowType, TTrueFlow {
-  override string toString() { result="false" }
+class FalseFlow extends FlowType, TFalseFlow {
+  override string toString() { result = "false" }
 }

@@ -10,9 +10,11 @@
  *       duplicate-code
  *       non-attributable
  */
+
 import cpp
 import CodeDuplication
 
 from File f, File other, int percent
 where similarFiles(f, other, percent)
-select f, percent + "% of the lines in " + f.getBaseName() + " are similar to lines in $@.", other, other.getBaseName()
+select f, percent + "% of the lines in " + f.getBaseName() + " are similar to lines in $@.", other,
+  other.getBaseName()

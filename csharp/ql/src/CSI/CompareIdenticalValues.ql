@@ -16,8 +16,7 @@ import semmle.code.csharp.commons.ComparisonTest
 import semmle.code.csharp.commons.Constants
 
 predicate isBoxingTestCase(StaticEqualsCallComparisonTest ct) {
-  ct.isReferenceEquals()
-  and
+  ct.isReferenceEquals() and
   exists(TypeParameter tp |
     tp = ct.getFirstArgument().stripCasts().getType() and
     not tp.isValueType() and
@@ -25,8 +24,7 @@ predicate isBoxingTestCase(StaticEqualsCallComparisonTest ct) {
   )
 }
 
-predicate isMutatingOperation(Expr e)
-{
+predicate isMutatingOperation(Expr e) {
   e.(MethodCall).getTarget().hasName("Pop")
   or
   e.(MethodCall).getTarget().hasName("Push")
@@ -35,16 +33,19 @@ predicate isMutatingOperation(Expr e)
 }
 
 from ComparisonTest ct, Expr e, string msg
-where comparesIdenticalValues(ct)
-  and e = ct.getExpr()
-  and not isBoxingTestCase(ct)
-  and (
-    exists(string m | comparesIdenticalValuesNan(ct, m) | msg = "Comparison is equivalent to using " + m)
+where
+  comparesIdenticalValues(ct) and
+  e = ct.getExpr() and
+  not isBoxingTestCase(ct) and
+  (
+    exists(string m | comparesIdenticalValuesNan(ct, m) |
+      msg = "Comparison is equivalent to using " + m
+    )
     or
     not comparesIdenticalValuesNan(ct, _) and msg = "Comparison of identical values."
-  )
-  and not isMutatingOperation(ct.getAnArgument().getAChild*())
-  and not isConstantCondition(e, _) // Avoid overlap with cs/constant-condition
-  and not isConstantComparison(e, _) // Avoid overlap with cs/constant-comparison
-  and not isExprInAssertion(e)
+  ) and
+  not isMutatingOperation(ct.getAnArgument().getAChild*()) and
+  not isConstantCondition(e, _) and // Avoid overlap with cs/constant-condition
+  not isConstantComparison(e, _) and // Avoid overlap with cs/constant-comparison
+  not isExprInAssertion(e)
 select ct, msg

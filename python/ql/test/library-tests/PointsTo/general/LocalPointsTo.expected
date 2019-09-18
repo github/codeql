@@ -1,0 +1,363 @@
+| 17 | ControlFlowNode for Attribute | list object |
+| 17 | ControlFlowNode for Compare | bool False |
+| 17 | ControlFlowNode for Compare | bool True |
+| 17 | ControlFlowNode for IntegerLiteral | int 2 |
+| 17 | ControlFlowNode for len | Builtin-function len |
+| 17 | ControlFlowNode for len() | len() |
+| 17 | ControlFlowNode for sys | Module sys |
+| 18 | ControlFlowNode for C | class C |
+| 18 | ControlFlowNode for v1 | class C |
+| 20 | ControlFlowNode for D | class D |
+| 20 | ControlFlowNode for v1 | class D |
+| 21 | ControlFlowNode for v1 | class C |
+| 21 | ControlFlowNode for v1 | class D |
+| 21 | ControlFlowNode for v1() | v1() |
+| 21 | ControlFlowNode for v2 | v1() |
+| 23 | ControlFlowNode for FunctionExpr | Function f |
+| 23 | ControlFlowNode for f | Function f |
+| 24 | ControlFlowNode for Attribute | list object |
+| 24 | ControlFlowNode for Compare | bool False |
+| 24 | ControlFlowNode for Compare | bool True |
+| 24 | ControlFlowNode for IntegerLiteral | int 3 |
+| 24 | ControlFlowNode for len | Builtin-function len |
+| 24 | ControlFlowNode for len() | len() |
+| 24 | ControlFlowNode for sys | Module sys |
+| 25 | ControlFlowNode for C | class C |
+| 25 | ControlFlowNode for C() | C() |
+| 25 | ControlFlowNode for v3 | C() |
+| 27 | ControlFlowNode for D | class D |
+| 27 | ControlFlowNode for D() | D() |
+| 27 | ControlFlowNode for v3 | D() |
+| 28 | ControlFlowNode for v3 | C() |
+| 28 | ControlFlowNode for v3 | D() |
+| 30 | ControlFlowNode for FunctionExpr | Function g |
+| 30 | ControlFlowNode for g | Function g |
+| 31 | ControlFlowNode for arg | C() |
+| 31 | ControlFlowNode for arg | D() |
+| 33 | ControlFlowNode for f | Function f |
+| 33 | ControlFlowNode for f() | C() |
+| 33 | ControlFlowNode for f() | D() |
+| 33 | ControlFlowNode for g | Function g |
+| 33 | ControlFlowNode for g() | C() |
+| 33 | ControlFlowNode for g() | D() |
+| 33 | ControlFlowNode for v4 | C() |
+| 33 | ControlFlowNode for v4 | D() |
+| 35 | ControlFlowNode for ClassExpr | class X |
+| 35 | ControlFlowNode for X | class X |
+| 35 | ControlFlowNode for object | builtin-class object |
+| 36 | ControlFlowNode for classmethod | builtin-class classmethod |
+| 36 | ControlFlowNode for classmethod() | classmethod() |
+| 37 | ControlFlowNode for FunctionExpr | Function method1 |
+| 37 | ControlFlowNode for method1 | classmethod() |
+| 40 | ControlFlowNode for deco() | deco() |
+| 41 | ControlFlowNode for FunctionExpr | Function method2 |
+| 41 | ControlFlowNode for method2 | deco() |
+| 44 | ControlFlowNode for FunctionExpr | Function deco |
+| 44 | ControlFlowNode for deco | Function deco |
+| 47 | ControlFlowNode for v1 | class C |
+| 47 | ControlFlowNode for v1 | class D |
+| 48 | ControlFlowNode for v2 | v1() |
+| 50 | ControlFlowNode for v4 | C() |
+| 50 | ControlFlowNode for v4 | D() |
+| 51 | ControlFlowNode for list | builtin-class list |
+| 53 | ControlFlowNode for FunctionExpr | Function h |
+| 53 | ControlFlowNode for h | Function h |
+| 54 | ControlFlowNode for Attribute | list object |
+| 54 | ControlFlowNode for Compare | bool False |
+| 54 | ControlFlowNode for Compare | bool True |
+| 54 | ControlFlowNode for IntegerLiteral | int 4 |
+| 54 | ControlFlowNode for len | Builtin-function len |
+| 54 | ControlFlowNode for len() | len() |
+| 54 | ControlFlowNode for sys | Module sys |
+| 55 | ControlFlowNode for C | class C |
+| 55 | ControlFlowNode for C() | C() |
+| 55 | ControlFlowNode for v5 | C() |
+| 57 | ControlFlowNode for D | class D |
+| 57 | ControlFlowNode for D() | D() |
+| 57 | ControlFlowNode for v5 | D() |
+| 58 | ControlFlowNode for Tuple | Tuple |
+| 58 | ControlFlowNode for list | builtin-class list |
+| 58 | ControlFlowNode for list() | list() |
+| 58 | ControlFlowNode for v5 | C() |
+| 58 | ControlFlowNode for v5 | D() |
+| 60 | ControlFlowNode for FunctionExpr | Function j |
+| 60 | ControlFlowNode for j | Function j |
+| 61 | ControlFlowNode for Tuple | Tuple |
+| 61 | ControlFlowNode for dict | int 7 |
+| 61 | ControlFlowNode for tuple | builtin-class tuple |
+| 62 | ControlFlowNode for dict | builtin-class dict |
+| 63 | ControlFlowNode for IntegerLiteral | int 7 |
+| 63 | ControlFlowNode for dict | int 7 |
+| 64 | ControlFlowNode for dict | int 7 |
+| 65 | ControlFlowNode for tuple | builtin-class tuple |
+| 66 | ControlFlowNode for tuple | builtin-class tuple |
+| 69 | ControlFlowNode for Attribute | Attribute |
+| 69 | ControlFlowNode for X | class X |
+| 70 | ControlFlowNode for Attribute | deco() |
+| 70 | ControlFlowNode for X | class X |
+| 72 | ControlFlowNode for ImportExpr | Module abc |
+| 72 | ControlFlowNode for ImportMember | Function abstractmethod |
+| 72 | ControlFlowNode for abstractmethod | Function abstractmethod |
+| 73 | ControlFlowNode for abstractmethod | Function abstractmethod |
+| 75 | ControlFlowNode for C | class C |
+| 75 | ControlFlowNode for C() | C() |
+| 75 | ControlFlowNode for type | builtin-class type |
+| 75 | ControlFlowNode for type() | class C |
+| 76 | ControlFlowNode for sys | Module sys |
+| 76 | ControlFlowNode for type | builtin-class type |
+| 76 | ControlFlowNode for type() | builtin-class module |
+| 78 | ControlFlowNode for type | builtin-class type |
+| 79 | ControlFlowNode for Dict | Dict |
+| 79 | ControlFlowNode for Tuple | Tuple |
+| 79 | ControlFlowNode for object | builtin-class object |
+| 79 | ControlFlowNode for type | builtin-class type |
+| 79 | ControlFlowNode for type() | type() |
+| 81 | ControlFlowNode for FunctionExpr | Function k |
+| 81 | ControlFlowNode for k | Function k |
+| 82 | ControlFlowNode for C | class C |
+| 82 | ControlFlowNode for C() | C() |
+| 82 | ControlFlowNode for type | builtin-class type |
+| 82 | ControlFlowNode for type() | class C |
+| 83 | ControlFlowNode for sys | Module sys |
+| 83 | ControlFlowNode for type | builtin-class type |
+| 83 | ControlFlowNode for type() | builtin-class module |
+| 84 | ControlFlowNode for type | builtin-class type |
+| 85 | ControlFlowNode for Dict | Dict |
+| 85 | ControlFlowNode for Tuple | Tuple |
+| 85 | ControlFlowNode for object | builtin-class object |
+| 85 | ControlFlowNode for type | builtin-class type |
+| 85 | ControlFlowNode for type() | type() |
+| 88 | ControlFlowNode for FunctionExpr | Function outer |
+| 88 | ControlFlowNode for outer | Function outer |
+| 89 | ControlFlowNode for IntegerLiteral | int 1 |
+| 89 | ControlFlowNode for y | int 1 |
+| 90 | ControlFlowNode for FunctionExpr | Function inner |
+| 90 | ControlFlowNode for inner | Function inner |
+| 92 | ControlFlowNode for IntegerLiteral | int 2 |
+| 92 | ControlFlowNode for z | int 2 |
+| 93 | ControlFlowNode for inner | Function inner |
+| 95 | ControlFlowNode for FunctionExpr | Function never_none |
+| 95 | ControlFlowNode for never_none | Function never_none |
+| 97 | ControlFlowNode for FloatLiteral | float 1.0 |
+| 97 | ControlFlowNode for y | float 1.0 |
+| 99 | ControlFlowNode for None | NoneType None |
+| 99 | ControlFlowNode for y | NoneType None |
+| 100 | ControlFlowNode for Compare | bool False |
+| 100 | ControlFlowNode for Compare | bool True |
+| 100 | ControlFlowNode for None | NoneType None |
+| 100 | ControlFlowNode for y | NoneType None |
+| 100 | ControlFlowNode for y | float 1.0 |
+| 101 | ControlFlowNode for FloatLiteral | float 0.0 |
+| 101 | ControlFlowNode for y | float 0.0 |
+| 102 | ControlFlowNode for y | float 0.0 |
+| 102 | ControlFlowNode for y | float 1.0 |
+| 104 | ControlFlowNode for FunctionExpr | Function outer_use_vars |
+| 104 | ControlFlowNode for outer_use_vars | Function outer_use_vars |
+| 105 | ControlFlowNode for IntegerLiteral | int 1 |
+| 105 | ControlFlowNode for y | int 1 |
+| 106 | ControlFlowNode for FunctionExpr | Function inner |
+| 106 | ControlFlowNode for inner | Function inner |
+| 108 | ControlFlowNode for IntegerLiteral | int 2 |
+| 108 | ControlFlowNode for z | int 2 |
+| 109 | ControlFlowNode for BinaryExpr | BinaryExpr |
+| 109 | ControlFlowNode for y | int 1 |
+| 109 | ControlFlowNode for z | int 2 |
+| 110 | ControlFlowNode for inner | Function inner |
+| 112 | ControlFlowNode for FunctionExpr | Function literals_in_func |
+| 112 | ControlFlowNode for literals_in_func | Function literals_in_func |
+| 113 | ControlFlowNode for True | bool True |
+| 114 | ControlFlowNode for None | NoneType None |
+| 115 | ControlFlowNode for IntegerLiteral | int 1346 |
+| 116 | ControlFlowNode for FloatLiteral | float 0.7 |
+| 117 | ControlFlowNode for ClassExpr | class X |
+| 117 | ControlFlowNode for X | class X |
+| 117 | ControlFlowNode for object | builtin-class object |
+| 118 | ControlFlowNode for FunctionExpr | Function f |
+| 118 | ControlFlowNode for f | Function f |
+| 119 | ControlFlowNode for Tuple | Tuple |
+| 120 | ControlFlowNode for List | List |
+| 122 | ControlFlowNode for Lambda | Function lambda |
+| 122 | ControlFlowNode for following | Function following |
+| 122 | ControlFlowNode for following() | NoneType None |
+| 122 | ControlFlowNode for y | Function lambda |
+| 124 | ControlFlowNode for FunctionExpr | Function following |
+| 124 | ControlFlowNode for following | Function following |
+| 127 | ControlFlowNode for Dict | Dict |
+| 127 | ControlFlowNode for FunctionExpr | Function params_and_defaults |
+| 127 | ControlFlowNode for IntegerLiteral | int 1 |
+| 127 | ControlFlowNode for params_and_defaults | Function params_and_defaults |
+| 129 | ControlFlowNode for b | Dict |
+| 130 | ControlFlowNode for c | int 1 |
+| 132 | ControlFlowNode for FunctionExpr | Function inner_cls |
+| 132 | ControlFlowNode for inner_cls | Function inner_cls |
+| 133 | ControlFlowNode for A | class A |
+| 133 | ControlFlowNode for BaseException | builtin-class BaseException |
+| 133 | ControlFlowNode for ClassExpr | class A |
+| 135 | ControlFlowNode for A | class A |
+| 135 | ControlFlowNode for A() | A() |
+| 135 | ControlFlowNode for a | A() |
+| 136 | ControlFlowNode for a | A() |
+| 138 | ControlFlowNode for ImportExpr | Module xyz |
+| 139 | ControlFlowNode for ImportExpr | Module xyz |
+| 139 | ControlFlowNode for xyz | Module xyz |
+| 140 | ControlFlowNode for Attribute | float 1.0 |
+| 140 | ControlFlowNode for xyz | Module xyz |
+| 141 | ControlFlowNode for z | float 3.0 |
+| 145 | ControlFlowNode for Base | class Base |
+| 145 | ControlFlowNode for ClassExpr | class Base |
+| 145 | ControlFlowNode for object | builtin-class object |
+| 147 | ControlFlowNode for FunctionExpr | Function __init__ |
+| 147 | ControlFlowNode for __init__ | Function __init__ |
+| 148 | ControlFlowNode for Compare | bool False |
+| 148 | ControlFlowNode for Compare | bool True |
+| 148 | ControlFlowNode for IntegerLiteral | int 1 |
+| 149 | ControlFlowNode for Attribute | class Derived1 |
+| 149 | ControlFlowNode for Derived1 | class Derived1 |
+| 149 | ControlFlowNode for self | self |
+| 150 | ControlFlowNode for Compare | bool False |
+| 150 | ControlFlowNode for Compare | bool True |
+| 150 | ControlFlowNode for IntegerLiteral | int 2 |
+| 151 | ControlFlowNode for Attribute | class Derived2 |
+| 151 | ControlFlowNode for Derived2 | class Derived2 |
+| 151 | ControlFlowNode for self | self |
+| 153 | ControlFlowNode for Attribute | class Derived3 |
+| 153 | ControlFlowNode for Derived3 | class Derived3 |
+| 153 | ControlFlowNode for self | self |
+| 155 | ControlFlowNode for Base | class Base |
+| 155 | ControlFlowNode for ClassExpr | class Derived1 |
+| 155 | ControlFlowNode for Derived1 | class Derived1 |
+| 158 | ControlFlowNode for Base | class Base |
+| 158 | ControlFlowNode for ClassExpr | class Derived2 |
+| 158 | ControlFlowNode for Derived2 | class Derived2 |
+| 161 | ControlFlowNode for Base | class Base |
+| 161 | ControlFlowNode for ClassExpr | class Derived3 |
+| 161 | ControlFlowNode for Derived3 | class Derived3 |
+| 164 | ControlFlowNode for Base | class Base |
+| 164 | ControlFlowNode for Base() | Base() |
+| 164 | ControlFlowNode for thing | Base() |
+| 167 | ControlFlowNode for FunctionExpr | Function multiple_assignment |
+| 167 | ControlFlowNode for multiple_assignment | Function multiple_assignment |
+| 168 | ControlFlowNode for Tuple | Tuple |
+| 168 | ControlFlowNode for _list | builtin-class list |
+| 168 | ControlFlowNode for _tuple | builtin-class tuple |
+| 168 | ControlFlowNode for list | builtin-class list |
+| 168 | ControlFlowNode for tuple | builtin-class tuple |
+| 169 | ControlFlowNode for _tuple | builtin-class tuple |
+| 170 | ControlFlowNode for _list | builtin-class list |
+| 173 | ControlFlowNode for Base2 | class Base2 |
+| 173 | ControlFlowNode for ClassExpr | class Base2 |
+| 173 | ControlFlowNode for object | builtin-class object |
+| 175 | ControlFlowNode for FunctionExpr | Function __init__ |
+| 175 | ControlFlowNode for __init__ | Function __init__ |
+| 178 | ControlFlowNode for IntegerLiteral | int 1 |
+| 178 | ControlFlowNode for x | int 1 |
+| 180 | ControlFlowNode for Base2 | class Base2 |
+| 180 | ControlFlowNode for ClassExpr | class Derived4 |
+| 180 | ControlFlowNode for Derived4 | class Derived4 |
+| 182 | ControlFlowNode for FunctionExpr | Function __init__ |
+| 182 | ControlFlowNode for __init__ | Function __init__ |
+| 183 | ControlFlowNode for Attribute | int 1 |
+| 183 | ControlFlowNode for Derived4 | class Derived4 |
+| 183 | ControlFlowNode for self | self |
+| 183 | ControlFlowNode for super | builtin-class super |
+| 183 | ControlFlowNode for super() | super() |
+| 184 | ControlFlowNode for Attribute | super().__init__ |
+| 184 | ControlFlowNode for Attribute() | NoneType None |
+| 184 | ControlFlowNode for Derived4 | class Derived4 |
+| 184 | ControlFlowNode for self | self |
+| 184 | ControlFlowNode for super | builtin-class super |
+| 184 | ControlFlowNode for super() | super() |
+| 187 | ControlFlowNode for FunctionExpr | Function vararg_kwarg |
+| 187 | ControlFlowNode for d | d |
+| 187 | ControlFlowNode for t | t |
+| 187 | ControlFlowNode for vararg_kwarg | Function vararg_kwarg |
+| 188 | ControlFlowNode for t | t |
+| 189 | ControlFlowNode for d | d |
+| 193 | ControlFlowNode for ClassExpr | class E |
+| 193 | ControlFlowNode for E | class E |
+| 193 | ControlFlowNode for object | builtin-class object |
+| 195 | ControlFlowNode for FunctionExpr | Function _internal |
+| 195 | ControlFlowNode for _internal | Function _internal |
+| 197 | ControlFlowNode for FunctionExpr | Function wrapper |
+| 197 | ControlFlowNode for wrapper | Function wrapper |
+| 199 | ControlFlowNode for wrapper | Function wrapper |
+| 201 | ControlFlowNode for _internal | Function _internal |
+| 201 | ControlFlowNode for _internal() | Function wrapper |
+| 202 | ControlFlowNode for FunctionExpr | Function method |
+| 202 | ControlFlowNode for args | args |
+| 202 | ControlFlowNode for method | Function wrapper |
+| 206 | ControlFlowNode for FunctionExpr | Function calls_next |
+| 206 | ControlFlowNode for calls_next | Function calls_next |
+| 207 | ControlFlowNode for iter | Builtin-function iter |
+| 208 | ControlFlowNode for next | Builtin-function next |
+| 213 | ControlFlowNode for ImportExpr | Module sys |
+| 213 | ControlFlowNode for ImportMember | Builtin-function exit |
+| 213 | ControlFlowNode for exit | Builtin-function exit |
+| 217 | ControlFlowNode for None | NoneType None |
+| 217 | ControlFlowNode for g1 | NoneType None |
+| 219 | ControlFlowNode for FunctionExpr | Function assign_global |
+| 219 | ControlFlowNode for assign_global | Function assign_global |
+| 221 | ControlFlowNode for IntegerLiteral | int 101 |
+| 221 | ControlFlowNode for g1 | int 101 |
+| 222 | ControlFlowNode for g1 | int 101 |
+| 226 | ControlFlowNode for None | NoneType None |
+| 226 | ControlFlowNode for g2 | NoneType None |
+| 228 | ControlFlowNode for FunctionExpr | Function init |
+| 228 | ControlFlowNode for init | Function init |
+| 230 | ControlFlowNode for IntegerLiteral | int 102 |
+| 230 | ControlFlowNode for g2 | int 102 |
+| 232 | ControlFlowNode for init | Function init |
+| 232 | ControlFlowNode for init() | NoneType None |
+| 233 | ControlFlowNode for g2 | int 102 |
+| 236 | ControlFlowNode for None | NoneType None |
+| 236 | ControlFlowNode for g3 | NoneType None |
+| 238 | ControlFlowNode for ClassExpr | class Ugly |
+| 238 | ControlFlowNode for Ugly | class Ugly |
+| 238 | ControlFlowNode for object | builtin-class object |
+| 240 | ControlFlowNode for FunctionExpr | Function __init__ |
+| 240 | ControlFlowNode for __init__ | Function __init__ |
+| 242 | ControlFlowNode for IntegerLiteral | int 103 |
+| 242 | ControlFlowNode for g3 | int 103 |
+| 244 | ControlFlowNode for FunctionExpr | Function meth |
+| 244 | ControlFlowNode for meth | Function meth |
+| 245 | ControlFlowNode for g3 | int 103 |
+| 248 | ControlFlowNode for ClassExpr | class F |
+| 248 | ControlFlowNode for F | class F |
+| 248 | ControlFlowNode for object | builtin-class object |
+| 250 | ControlFlowNode for g3 | NoneType None |
+| 251 | ControlFlowNode for g3 | NoneType None |
+| 254 | ControlFlowNode for ClassExpr | class G |
+| 254 | ControlFlowNode for G | class G |
+| 254 | ControlFlowNode for object | builtin-class object |
+| 256 | ControlFlowNode for IntegerLiteral | int 0 |
+| 256 | ControlFlowNode for attr | int 0 |
+| 258 | ControlFlowNode for FunctionExpr | Function __init__ |
+| 258 | ControlFlowNode for __init__ | Function __init__ |
+| 259 | ControlFlowNode for Attribute | int 1 |
+| 259 | ControlFlowNode for IntegerLiteral | int 1 |
+| 259 | ControlFlowNode for self | self |
+| 261 | ControlFlowNode for FunctionExpr | Function meth |
+| 261 | ControlFlowNode for meth | Function meth |
+| 262 | ControlFlowNode for Attribute | int 2 |
+| 262 | ControlFlowNode for IntegerLiteral | int 2 |
+| 262 | ControlFlowNode for self | self |
+| 263 | ControlFlowNode for Attribute | int 3 |
+| 263 | ControlFlowNode for IntegerLiteral | int 3 |
+| 263 | ControlFlowNode for self | self |
+| 264 | ControlFlowNode for Attribute | int 3 |
+| 264 | ControlFlowNode for self | self |
+| 267 | ControlFlowNode for Derived4 | class Derived4 |
+| 267 | ControlFlowNode for Derived4() | Derived4() |
+| 270 | ControlFlowNode for ClassExpr | class DiGraph |
+| 270 | ControlFlowNode for DiGraph | class DiGraph |
+| 270 | ControlFlowNode for object | builtin-class object |
+| 272 | ControlFlowNode for FunctionExpr | Function __init__ |
+| 272 | ControlFlowNode for __init__ | Function __init__ |
+| 273 | ControlFlowNode for Attribute | Dict |
+| 273 | ControlFlowNode for Dict | Dict |
+| 273 | ControlFlowNode for self | self |
+| 275 | ControlFlowNode for FunctionExpr | Function add_node |
+| 275 | ControlFlowNode for add_node | Function add_node |
+| 276 | ControlFlowNode for IntegerLiteral | int 0 |
+| 276 | ControlFlowNode for Subscript | int 0 |
+| 276 | ControlFlowNode for self | self |

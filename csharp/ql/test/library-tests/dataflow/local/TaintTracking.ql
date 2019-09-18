@@ -1,10 +1,14 @@
 import csharp
 import Common
 
-from MyFlowSource source, Access sink, string s
+predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+  TaintTracking::localTaintStep(pred, succ) and
+  not succ instanceof NullGuardedDataFlowNode
+}
+
+from MyFlowSource source, DataFlow::Node sink, Access target
 where
-  TaintTracking::localTaintStep+(source, DataFlow::exprNode(sink)) and
-  exists(MethodCall mc | mc.getTarget().getName() = "Check" and mc.getAnArgument() = sink) and
-  s = sink.toString()
-select s
-order by s asc
+  step+(source, sink) and
+  sink = DataFlow::exprNode(target) and
+  exists(MethodCall mc | mc.getTarget().getName() = "Check" and mc.getAnArgument() = target)
+select sink

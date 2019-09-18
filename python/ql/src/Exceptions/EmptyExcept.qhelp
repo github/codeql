@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Ignoring exceptions that should be dealt with in some way is almost always a bad idea.
+The loss of information can lead to hard to debug errors and incomplete log files.
+It is even possible that ignoring an exception can cause a security vulnerability.
+An empty <code>except</code> block may be an indication that the programmer intended to
+handle the exception but never wrote the code to do so.</p>
+
+</overview>
+<recommendation>
+<p>Ensure all exceptions are handled correctly.</p>
+
+</recommendation>
+<example>
+<p>In this example the program keeps running with the same privileges if it fails to drop to lower 
+privileges.</p>
+<sample src="EmptyExcept.py" />
+
+</example>
+<references>
+
+
+</references>
+</qhelp>

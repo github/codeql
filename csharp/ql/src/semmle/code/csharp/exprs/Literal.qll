@@ -15,7 +15,6 @@ private import dotnet
  */
 class Literal extends DotNet::Literal, Expr, @literal_expr {
   override string toString() { result = this.getValue() }
-  override string getValue() { result = Expr.super.getValue() }
 }
 
 /**
@@ -88,8 +87,7 @@ class DecimalLiteral extends RealLiteral, @decimal_literal_expr { }
  * A `string` literal, for example `"Hello, World!"`.
  */
 class StringLiteral extends DotNet::StringLiteral, Literal, @string_literal_expr {
-  override string toString() {
-    result = "\"" + getValue().replaceAll("\"",  "\\\"") + "\"" }
+  override string toString() { result = "\"" + getValue().replaceAll("\"", "\\\"") + "\"" }
 }
 
 /**

@@ -1,12 +1,11 @@
 /** Provides definitions related to the namespace `System.Web.Helpers`. */
+
 import csharp
 import semmle.code.csharp.frameworks.system.Web
 
 /** The `System.Web.Helpers` namespace. */
 class SystemWebHelpersNamespace extends Namespace {
-  SystemWebHelpersNamespace() {
-    this.hasName("Helpers")
-  }
+  SystemWebHelpersNamespace() { this.hasName("Helpers") }
 }
 
 /** The `System.Web.Helpers.AntiForgery` class. */
@@ -17,7 +16,5 @@ class AntiForgeryClass extends Class {
   }
 
   /** Gets the `Validate` method. */
-  Method getValidateMethod() {
-    result = this.getAMethod("Validate")
-  }
+  Method getValidateMethod() { result = this.getAMethod("Validate") }
 }

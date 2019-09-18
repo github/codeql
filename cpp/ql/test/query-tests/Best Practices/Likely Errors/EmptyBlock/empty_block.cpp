@@ -1,3 +1,5 @@
+// semmle-extractor-options: -std=c++17
+
 // GOOD:
 void f() {
 }
@@ -48,4 +50,35 @@ int f(int x) {
 
   // GOOD (no block)
   for (;;) ;
+
+  // GOOD (has comment): [FALSE POSITIVE]
+  if (x) {} // comment
+
+  // GOOD (has comment): [FALSE POSITIVE]
+  if (x) {}  // comment
+
+  // GOOD
+  if (x) {
+    if constexpr(1) {
+      f();
+    }
+  }
+
+  // GOOD
+  if (x) {
+    if constexpr(0) {
+      f();
+    }
+  }
+
+  // GOOD
+  if (x) {
+    if constexpr(1) {
+      f();
+    } else {
+      f();
+    }
+  }
+
+  return 1;
 }

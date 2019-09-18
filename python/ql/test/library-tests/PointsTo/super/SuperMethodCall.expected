@@ -1,0 +1,9 @@
+| 4 | ControlFlowNode for Attribute() | object.__init__ |
+| 12 | ControlFlowNode for Attribute() | Base2.__init__ |
+| 22 | ControlFlowNode for Attribute() | Base1.meth |
+| 27 | ControlFlowNode for Attribute() | Derived1.meth |
+| 32 | ControlFlowNode for Attribute() | Derived1.meth |
+| 38 | ControlFlowNode for Attribute() | Derived2.meth |
+| 52 | ControlFlowNode for Attribute() | DA.__init__ |
+| 59 | ControlFlowNode for Attribute() | DA.__init__ |
+| 66 | ControlFlowNode for Attribute() | DA.__init__ |

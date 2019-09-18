@@ -14,13 +14,13 @@ class Variable extends DotNet::Variable, Declaration, DataFlowNode, @cil_variabl
   override string toStringWithTypes() { none() }
 
   /** Gets an access to this variable, if any. */
-  VariableAccess getAnAccess() { result.getTarget()=this }
+  VariableAccess getAnAccess() { result.getTarget() = this }
 
   /** Gets a read access to this variable, if any. */
-  ReadAccess getARead() { result=getAnAccess() }
+  ReadAccess getARead() { result = getAnAccess() }
 
   /** Gets a write access to this variable, if any. */
-  WriteAccess getAWrite() { result=getAnAccess() }
+  WriteAccess getAWrite() { result = getAnAccess() }
 
   override string toString() { result = Declaration.super.toString() }
 
@@ -29,6 +29,7 @@ class Variable extends DotNet::Variable, Declaration, DataFlowNode, @cil_variabl
 
 /** A stack variable. Either a local variable (`LocalVariable`) or a parameter (`Parameter`). */
 class StackVariable extends Variable, @cil_stack_variable {
+  override predicate hasQualifiedName(string qualifier, string name) { none() }
 }
 
 /**
@@ -37,33 +38,35 @@ class StackVariable extends Variable, @cil_stack_variable {
  * Each method in CIL has a number of typed local variables, in addition to the evaluation stack.
  */
 class LocalVariable extends StackVariable, @cil_local_variable {
-  override string toString() { result="Local variable " + getIndex() + " of method " + getImplementation().getMethod() }
+  override string toString() {
+    result = "Local variable " + getIndex() + " of method " + getImplementation().getMethod()
+  }
 
   /** Gets the method implementation defining this local variable. */
-  MethodImplementation getImplementation() { this=result.getALocalVariable() }
+  MethodImplementation getImplementation() { this = result.getALocalVariable() }
 
   /** Gets the index number of this local variable. This is not usually significant. */
   int getIndex() { this = getImplementation().getLocalVariable(result) }
 
   override Type getType() { cil_local_variable(this, _, _, result) }
 
-  override Location getLocation() { result=getImplementation().getLocation() }
+  override Location getLocation() { result = getImplementation().getLocation() }
 
-  override Method getMethod() { result=getImplementation().getMethod() }
+  override Method getMethod() { result = getImplementation().getMethod() }
 }
 
 /** A method parameter. */
 class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
-
   /** Gets the method declaring this parameter. */
-  override Method getMethod() { this=result.getARawParameter() }
+  override Method getMethod() { this = result.getARawParameter() }
 
-  override Method getCallable() { result=getMethod() }
+  override Method getCallable() { result = getMethod() }
 
   /** Gets the index of this parameter. */
   int getIndex() { cil_parameter(this, _, result, _) }
 
-  override string toString() { result="Parameter " + getIndex() + " of " + getMethod() }
+  override string toString() { result = "Parameter " + getIndex() + " of " + getMethod() }
+
   override Type getType() { cil_parameter(this, _, _, result) }
 
   /**
@@ -86,9 +89,16 @@ class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
 
   override string toStringWithTypes() { result = getPrefix() + getType().toStringWithTypes() }
 
-  private string getPrefix() { if isOut() then result="out " else if isRef() then result="ref " else result="" }
+  private string getPrefix() {
+    if isOut()
+    then result = "out "
+    else
+      if isRef()
+      then result = "ref "
+      else result = ""
+  }
 
-  override Location getLocation() { result=getMethod().getLocation() }
+  override Location getLocation() { result = getMethod().getLocation() }
 
   override ParameterAccess getAnAccess() { result.getTarget() = this }
 
@@ -105,17 +115,24 @@ class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
 /** A parameter corresponding to `this`. */
 class ThisParameter extends Parameter {
   ThisParameter() {
-    not this.getMethod().isStatic()
-    and this.getIndex()=0
+    not this.getMethod().isStatic() and
+    this.getIndex() = 0
   }
 }
 
 /** A field. */
 class Field extends DotNet::Field, Variable, Member, @cil_field {
-  override string toString() { result=getName() }
-  override string toStringWithTypes() { result=getDeclaringType().toStringWithTypes() + "." + getName() }
-  override string getName() { cil_field(this,_,result,_) }
+  override string toString() { result = getName() }
+
+  override string toStringWithTypes() {
+    result = getDeclaringType().toStringWithTypes() + "." + getName()
+  }
+
+  override string getName() { cil_field(this, _, result, _) }
+
   override Type getType() { cil_field(this, _, _, result) }
+
   override ValueOrRefType getDeclaringType() { cil_field(this, result, _, _) }
-  override Location getLocation() { result=getDeclaringType().getLocation() }
+
+  override Location getLocation() { result = getDeclaringType().getLocation() }
 }

@@ -1,27 +1,17 @@
 /**
- * Provides a taint tracking configuration for reasoning about command-injection
- * vulnerabilities (CWE-078).
+ * Provides a taint tracking configuration for reasoning about
+ * command-injection vulnerabilities (CWE-078).
+ *
+ * Note, for performance reasons: only import this file if
+ * `CommandInjection::Configuration` is needed, otherwise
+ * `CommandInjectionCustomizations` should be imported instead.
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module CommandInjection {
-  /**
-   * A data flow source for command-injection vulnerabilities.
-   */
-  abstract class Source extends DataFlow::Node { }
-
-  /**
-   * A data flow sink for command-injection vulnerabilities.
-   */
-  abstract class Sink extends DataFlow::Node {
-  }
-
-  /**
-   * A sanitizer for command-injection vulnerabilities.
-   */
-  abstract class Sanitizer extends DataFlow::Node { }
+  import CommandInjectionCustomizations::CommandInjection
+  import IndirectCommandArgument
 
   /**
    * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
@@ -29,41 +19,21 @@ module CommandInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "CommandInjection" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     /**
      * Holds if `sink` is a data flow sink for command-injection vulnerabilities, and
      * the alert should be placed at the node `highlight`.
      */
-    predicate isSink(DataFlow::Node sink, DataFlow::Node highlight) {
+    predicate isSinkWithHighlight(DataFlow::Node sink, DataFlow::Node highlight) {
       sink instanceof Sink and highlight = sink
       or
-      indirectCommandInjection(sink, highlight)
+      isIndirectCommandArgument(sink, highlight)
     }
 
-    override predicate isSink(DataFlow::Node sink) {
-      isSink(sink, _)
-    }
+    override predicate isSink(DataFlow::Node sink) { isSinkWithHighlight(sink, _) }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
-  }
-
-  /** A source of remote user input, considered as a flow source for command injection. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
-
-  /**
-   * A command argument to a function that initiates an operating system command.
-  */
-  class SystemCommandExecutionSink extends Sink, DataFlow::ValueNode {
-    SystemCommandExecutionSink() {
-      this = any(SystemCommandExecution sys).getACommandArgument()
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /**
@@ -75,15 +45,13 @@ module CommandInjection {
     ArgumentListTracking() { this = "ArgumentListTracking" }
 
     override predicate isSource(DataFlow::Node nd) {
-      nd instanceof DataFlow::ArrayLiteralNode
+      nd instanceof DataFlow::ArrayCreationNode
       or
-      exists (StringLiteral shell | shellCmd(shell, _) |
-        nd = DataFlow::valueNode(shell)
-      )
+      exists(ConstantString shell | shellCmd(shell, _) | nd = DataFlow::valueNode(shell))
     }
 
     override predicate isSink(DataFlow::Node nd) {
-      exists (SystemCommandExecution sys |
+      exists(SystemCommandExecution sys |
         nd = sys.getACommandArgument() or
         nd = sys.getArgumentList()
       )
@@ -96,54 +64,15 @@ module CommandInjection {
    * That is, either `shell` is a Unix shell (`sh` or similar) and
    * `arg` is `"-c"`, or `shell` is `cmd.exe` and `arg` is `"/c"`.
    */
-  private predicate shellCmd(StringLiteral shell, string arg) {
-    exists (string s | s = shell.getValue() |
-      (s = "sh" or s = "bash" or s = "/bin/sh" or s = "/bin/bash")
-      and
+  private predicate shellCmd(ConstantString shell, string arg) {
+    exists(string s | s = shell.getStringValue() |
+      (s = "sh" or s = "bash" or s = "/bin/sh" or s = "/bin/bash") and
       arg = "-c"
     )
     or
-    exists (string s | s = shell.getValue().toLowerCase() |
-      (s = "cmd" or s = "cmd.exe")
-      and
+    exists(string s | s = shell.getStringValue().toLowerCase() |
+      (s = "cmd" or s = "cmd.exe") and
       (arg = "/c" or arg = "/C")
     )
   }
-
-  /**
-   * An indirect command execution through `sh -c` or `cmd.exe /c`.
-   *
-   * For example, we may have a call to `childProcess.spawn` like this:
-   *
-   * ```
-   * let sh = "sh";
-   * let args = ["-c", cmd];
-   * childProcess.spawn(sh, args, cb);
-   * ```
-   *
-   * Here, the indirect sink is `cmd`. For reporting purposes, however,
-   * we want to report the `spawn` call as the sink, so we bind it to `sys`.
-   */
-  private predicate indirectCommandInjection(DataFlow::Node sink, SystemCommandExecution sys) {
-    exists (ArgumentListTracking cfg, DataFlow::ArrayLiteralNode args,
-            StringLiteral shell, string dashC |
-      shellCmd(shell, dashC) and
-      cfg.hasFlow(DataFlow::valueNode(shell), sys.getACommandArgument()) and
-      cfg.hasFlow(args, sys.getArgumentList()) and
-      args.getAPropertyWrite().getRhs().mayHaveStringValue(dashC) and
-      sink = args.getAPropertyWrite().getRhs()
-    )
-  }
 }
-
-/** DEPRECATED: Use `CommandInjection::Source` instead. */
-deprecated class CommandInjectionSource = CommandInjection::Source;
-
-/** DEPRECATED: Use `CommandInjection::Sink` instead. */
-deprecated class CommandInjectionSink = CommandInjection::Sink;
-
-/** DEPRECATED: Use `CommandInjection::Sanitizer` instead. */
-deprecated class CommandInjectionSanitizer = CommandInjection::Sanitizer;
-
-/** DEPRECATED: Use `CommandInjection::Configuration` instead. */
-deprecated class CommandInjectionTrackingConfig = CommandInjection::Configuration;

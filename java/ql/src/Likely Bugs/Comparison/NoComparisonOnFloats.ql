@@ -8,6 +8,7 @@
  * @tags reliability
  *       correctness
  */
+
 import semmle.code.java.Type
 import semmle.code.java.Expr
 
@@ -30,18 +31,18 @@ predicate trivialLiteral(Literal e) {
 
 predicate definedConstant(Expr e) {
   exists(Field f |
-    f.isStatic() and (
+    f.isStatic() and
+    (
       f.getDeclaringType().hasName("Float") or
       f.getDeclaringType().hasName("Double")
-    ) |
+    )
+  |
     e = f.getAnAccess()
   )
 }
 
 // The contract of `compareTo` would not really allow anything other than `<` or `>` on floats.
-predicate comparisonMethod(Method m) {
-  m.getName() = "compareTo"
-}
+predicate comparisonMethod(Method m) { m.getName() = "compareTo" }
 
 // Check for equalities of the form `a.x == b.x` or `a.x == x`, where `x` is assigned to `a.x`,
 // which are less interesting but occur often.
@@ -49,7 +50,8 @@ predicate similarVarComparison(EqualityTest e) {
   exists(Field f |
     e.getLeftOperand() = f.getAnAccess() and
     e.getRightOperand() = f.getAnAccess()
-  ) or
+  )
+  or
   exists(Field f, Variable v |
     e.getAnOperand() = f.getAnAccess() and
     e.getAnOperand() = v.getAnAccess() and

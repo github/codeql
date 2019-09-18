@@ -3,7 +3,10 @@
  * @description Macros must expand to complete syntactic units -- "#define MY_IF if(" is not legal.
  * @kind problem
  * @id cpp/power-of-10/partial-macro
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/powerof10
  */
 
 import cpp

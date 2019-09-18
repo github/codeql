@@ -16,22 +16,20 @@ import javascript
 predicate hasUntrackedExports(NodeModule m) {
   // look for assignments of the form `module.exports[p] = ...`, where we cannot
   // determine the name of the exported property being assigned
-  exists (DataFlow::PropWrite pwn |
+  exists(DataFlow::PropWrite pwn |
     pwn.getBase().analyze().getAValue() = m.getAModuleExportsValue() and
     not exists(pwn.getPropertyName())
   )
   or
   // look for assignments of the form `module.exports = exp` where `exp` is indefinite
-  exists (AbstractModuleObject am, AnalyzedPropertyWrite apw, DataFlow::AnalyzedNode exp |
+  exists(AbstractModuleObject am, AnalyzedPropertyWrite apw, DataFlow::AnalyzedNode exp |
     am.getModule() = m and
     apw.writes(am, "exports", exp) and
     exp.getAValue().isIndefinite(_)
   )
   or
   // look for function calls of the form `f(module.exports)`
-  exists (InvokeExpr invk |
-    invk.getAnArgument().analyze().getAValue() = m.getAModuleExportsValue()
-  )
+  exists(InvokeExpr invk | invk.getAnArgument().analyze().getAValue() = m.getAModuleExportsValue())
 }
 
 /**
@@ -39,7 +37,7 @@ predicate hasUntrackedExports(NodeModule m) {
  * a `require` import of module `m`.
  */
 predicate propDefinedOnRequire(NodeModule m, string prop) {
-  exists (DataFlow::ModuleImportNode imp |
+  exists(DataFlow::ModuleImportNode imp |
     imp.asExpr().(Require).getImportedModule() = m and
     exists(imp.getAPropertyWrite(prop))
   )
@@ -50,19 +48,21 @@ predicate propDefinedOnRequire(NodeModule m, string prop) {
  * a `require` import of module `m`.
  */
 predicate propAccessOn(PropAccess pacc, NodeModule m) {
-  exists (DataFlow::ModuleImportNode imp |
+  exists(DataFlow::ModuleImportNode imp |
     imp.asExpr().(Require).getImportedModule() = m and
     imp.flowsToExpr(pacc.getBase())
   )
 }
 
 from NodeModule m, PropAccess pacc, string prop
-where propAccessOn(pacc, m) and count(NodeModule mm | propAccessOn(pacc, mm)) = 1 and
-      prop = pacc.getPropertyName() and
-      // m doesn't export 'prop'
-      not prop = m.getAnExportedSymbol() and
-      // 'prop' isn't otherwise defined on m
-      not propDefinedOnRequire(m, prop) and
-      // m doesn't use complicated exports
-      not hasUntrackedExports(m)
+where
+  propAccessOn(pacc, m) and
+  count(NodeModule mm | propAccessOn(pacc, mm)) = 1 and
+  prop = pacc.getPropertyName() and
+  // m doesn't export 'prop'
+  not prop = m.getAnExportedSymbol() and
+  // 'prop' isn't otherwise defined on m
+  not propDefinedOnRequire(m, prop) and
+  // m doesn't use complicated exports
+  not hasUntrackedExports(m)
 select pacc, "Module $@ does not export symbol " + prop + ".", m, m.getName()

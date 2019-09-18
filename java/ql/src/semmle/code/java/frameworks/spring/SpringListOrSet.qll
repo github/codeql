@@ -12,12 +12,8 @@ class SpringListOrSet extends SpringMergable {
   }
 
   /** Gets the value of the `value-type` attribute. */
-  string getValueTypeName() {
-    result = this.getAttributeValue("value-type")
-  }
+  string getValueTypeName() { result = this.getAttributeValue("value-type") }
 
   /** Gets the Java `RefType` (class or interface) that corresponds to the `value-type` attribute. */
-  RefType getValueType() {
-    result.getQualifiedName() = this.getValueTypeName()
-  }
+  RefType getValueType() { result.getQualifiedName() = this.getValueTypeName() }
 }

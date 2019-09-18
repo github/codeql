@@ -13,7 +13,8 @@ import semmle.code.csharp.commons.Assertions
 import semmle.code.csharp.commons.Constants
 
 from ComparisonOperation cmp, boolean value
-where isConstantComparison(cmp, value)
-  and not isConstantCondition(cmp, _) // Avoid overlap with cs/constant-condition
-  and not isExprInAssertion(cmp)
+where
+  isConstantComparison(cmp, value) and
+  not isConstantCondition(cmp, _) and // Avoid overlap with cs/constant-condition
+  not isExprInAssertion(cmp)
 select cmp, "This comparison is always " + value + "."

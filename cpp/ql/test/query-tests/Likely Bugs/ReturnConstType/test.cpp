@@ -47,3 +47,6 @@ MYCHAR getAMYCHAR(); // FALSE POSITIVE
 
 #define ID(T) T id_ (T x) {return x;}
 ID(const char); // FALSE POSITIVE
+
+const float pi = 3.14159626f;
+const float &getPiRef() { return pi; } // GOOD

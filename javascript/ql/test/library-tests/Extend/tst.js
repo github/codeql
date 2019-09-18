@@ -55,6 +55,8 @@ checkDeep(require("smart-extend").deep(base(), arg()));
 checkDeep(require("lodash").merge(base(), arg()));
 checkDeep(require("lodash").mergeWith(base(), arg()));
 checkDeep(require("lodash").defaultsDeep(base(), arg()));
+checkDeep(require("lodash.mergewith")(base(), arg()));
+checkDeep(require("lodash.defaultsdeep")(base(), arg()));
 
 // Always shallow
 

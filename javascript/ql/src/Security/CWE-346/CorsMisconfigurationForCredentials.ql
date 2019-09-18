@@ -1,7 +1,7 @@
 /**
  * @name CORS misconfiguration for credentials transfer
  * @description Misconfiguration of CORS HTTP headers allows for leaks of secret credentials.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/cors-misconfiguration-for-credentials
@@ -10,12 +10,12 @@
  *       external/cwe/cwe-639
  */
 
-
 import javascript
 import semmle.javascript.security.dataflow.CorsMisconfigurationForCredentials::CorsMisconfigurationForCredentials
+import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, Sink sink
-where cfg.hasFlow(source, sink)
-select sink, "$@ leak vulnerability due to $@.",
-       sink.getCredentialsHeader(), "Credential",
-       source, "a misconfigured CORS header value"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "$@ leak vulnerability due to $@.",
+  sink.getNode().(Sink).getCredentialsHeader(), "Credential", source.getNode(),
+  "a misconfigured CORS header value"

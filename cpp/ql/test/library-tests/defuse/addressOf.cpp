@@ -47,7 +47,7 @@ int lambdas(int captured) {
   auto f1 = [&] { captured++; }; // capture has location "file://:0:0:0:0"
   f1();
   auto f2 = [&captured] { captured++; };
-  f1();
+  f2();
   return captured;
 }
 

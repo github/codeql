@@ -1,0 +1,169 @@
+{
+  "type": "Program",
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0,
+      "offset": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 17,
+      "offset": 17
+    }
+  },
+  "sourceType": "script",
+  "body": [
+    {
+      "type": "VariableDeclaration",
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 17,
+          "offset": 17
+        }
+      },
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 4,
+              "offset": 4
+            },
+            "end": {
+              "line": 1,
+              "column": 17,
+              "offset": 17
+            }
+          },
+          "id": {
+            "type": "ObjectPattern",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 4,
+                "offset": 4
+              },
+              "end": {
+                "line": 1,
+                "column": 13,
+                "offset": 13
+              }
+            },
+            "properties": [
+              {
+                "type": "Property",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 5,
+                    "offset": 5
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 6,
+                    "offset": 6
+                  }
+                },
+                "method": false,
+                "shorthand": true,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 5,
+                      "offset": 5
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 6,
+                      "offset": 6
+                    }
+                  },
+                  "name": "x"
+                },
+                "value": {
+                  "type": "Identifier",
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 5,
+                      "offset": 5
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 6,
+                      "offset": 6
+                    }
+                  },
+                  "name": "x"
+                }
+              },
+              {
+                "type": "Property",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 8,
+                    "offset": 8
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 12,
+                    "offset": 12
+                  }
+                },
+                "key": null,
+                "value": {
+                  "type": "RestElement",
+                  "argument": {
+                    "type": "Identifier",
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 11,
+                        "offset": 11
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 12,
+                        "offset": 12
+                      }
+                    },
+                    "name": "y"
+                  }
+                }
+              }
+            ]
+          },
+          "init": {
+            "type": "Identifier",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 16,
+                "offset": 16
+              },
+              "end": {
+                "line": 1,
+                "column": 17,
+                "offset": 17
+              }
+            },
+            "name": "z"
+          }
+        }
+      ],
+      "kind": "let"
+    }
+  ]
+}

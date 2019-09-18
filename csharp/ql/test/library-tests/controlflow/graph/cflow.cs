@@ -243,6 +243,15 @@ public class ControlFlow
             if (Field.Length > 0)
                 Console.WriteLine(1);
         }
+
+        try
+        {
+            var temp = 0 / System.Math.E;
+        }
+        catch
+        {
+            ; // dead
+        }
     }
 
     void For()

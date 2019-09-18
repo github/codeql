@@ -10,6 +10,7 @@
  * @tags reliability
  *       maintainability
  */
+
 import java
 
 from MethodAccess ma, Method runfinalizers, Class c

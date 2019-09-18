@@ -1,9 +1,9 @@
 /**
  * @name Dereferenced variable is always null
- * @description Finds uses of a variable that may cause a NullPointerException
+ * @description Dereferencing a variable whose value is 'null' causes a 'NullReferenceException'.
  * @kind problem
  * @problem.severity error
- * @precision medium
+ * @precision very-high
  * @id cs/dereferenced-value-is-always-null
  * @tags reliability
  *       correctness
@@ -14,6 +14,6 @@
 import csharp
 import semmle.code.csharp.dataflow.Nullness
 
-from VariableAccess access, LocalVariable var
-where access = unguardedNullDereference(var)
-select access, "Variable $@ is always null here.", var, var.getName()
+from Dereference d, Ssa::SourceVariable v
+where d.isFirstAlwaysNull(v)
+select d, "Variable $@ is always null here.", v, v.toString()

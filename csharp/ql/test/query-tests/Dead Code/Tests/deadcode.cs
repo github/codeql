@@ -86,19 +86,6 @@ public struct S
     class C { } // not dead
 }
 
-namespace Microsoft.VisualStudio.TestTools.UnitTesting
-{
-    class TestClassAttribute : Attribute
-    {
-        public TestClassAttribute() { }
-    }
-
-    class TestInitializeAttribute : Attribute
-    {
-        public TestInitializeAttribute() { }
-    }
-}
-
 [Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]
 public class VisualStudioTests
 {
@@ -106,4 +93,4 @@ public class VisualStudioTests
     public void Setup() { } // not dead
 }
 
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /r:System.Linq.Expressions.dll
+// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /r:System.Linq.Expressions.dll ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

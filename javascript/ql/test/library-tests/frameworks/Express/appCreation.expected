@@ -1,8 +1,0 @@
-| src/auth.js:1:13:1:32 | require('express')() |
-| src/csurf-example.js:7:11:7:19 | express() |
-| src/express2.js:5:11:5:13 | e() |
-| src/express3.js:2:11:2:19 | express() |
-| src/express4.js:2:11:2:19 | express() |
-| src/express.js:2:11:2:19 | express() |
-| src/responseExprs.js:2:11:2:19 | express() |
-| src/subrouter.js:2:11:2:19 | express() |

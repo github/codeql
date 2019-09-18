@@ -29,6 +29,7 @@ class Assignables
         Out(out Field);
         RefCertain(variable, ref Field, true);
         RefUncertain(variable, ref Field);
+        RefUncertain2(variable, ref Field);
         NonRef(variable, ref Field);
         RefCertainOneOf(ref Field, ref Field); // incorrectly marked as uncertain
     }
@@ -50,6 +51,14 @@ class Assignables
     {
         if (x > y)
             y = x;
+    }
+
+    void RefUncertain2(int x, ref int y)
+    {
+        if (x > y)
+            y = x;
+        else
+            RefUncertain(x, ref y);
     }
 
     void RefCertainOneOf(ref int x, ref int y)
@@ -116,4 +125,18 @@ class Assignables
         var s = nameof(i); // not a read of `i`
         s = nameof(this.Field); // not a read of `this.Field`
     }
+
+    delegate void Delegate(ref int i, out string s);
+    void DelegateRef(Delegate d)
+    {
+        var x = 0;
+        d(ref x, out string s);
+    }
+
+    void UsingDeclarations()
+    {
+        using var x = new System.IO.MemoryStream();
+    }
 }
+
+// semmle-extractor-options: /langversion:8.0

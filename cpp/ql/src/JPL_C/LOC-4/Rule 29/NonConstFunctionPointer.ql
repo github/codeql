@@ -3,7 +3,11 @@
  * @description Non-constant pointers to functions should not be used.
  * @kind problem
  * @id cpp/jpl-c/non-const-function-pointer
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp

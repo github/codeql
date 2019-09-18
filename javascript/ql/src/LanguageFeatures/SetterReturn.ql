@@ -13,7 +13,8 @@
 import javascript
 
 from FunctionExpr f, ReturnStmt ret
-where ret.getContainer() = f and
-      f.isSetter() and
-      exists (ret.getExpr())
+where
+  ret.getContainer() = f and
+  f.isSetter() and
+  exists(ret.getExpr())
 select ret, "Useless return statement in setter function."

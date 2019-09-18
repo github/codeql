@@ -1,9 +1,0 @@
-| b.js:1:8:1:8 | f | b.js:1:8:1:8 | f |
-| d.js:1:10:1:21 | default as g | d.js:1:21:1:21 | g |
-| d.js:1:24:1:29 | x as y | d.js:1:29:1:29 | y |
-| f.ts:1:8:1:8 | g | f.ts:1:8:1:8 | g |
-| g.ts:1:9:1:11 | foo | g.ts:1:9:1:11 | foo |
-| import-in-mjs.mjs:1:8:1:24 | exported_from_mjs | import-in-mjs.mjs:1:8:1:24 | exported_from_mjs |
-| m/c.js:1:8:1:13 | * as b | m/c.js:1:13:1:13 | b |
-| tst.html:5:10:5:10 | f | tst.html:5:10:5:10 | f |
-| unresolved.js:1:8:1:8 | f | unresolved.js:1:8:1:8 | f |

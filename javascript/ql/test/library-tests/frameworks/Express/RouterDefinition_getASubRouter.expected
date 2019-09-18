@@ -1,3 +1,0 @@
-| src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:30:16:30:35 | new express.Router() |
-| src/express2.js:5:11:5:13 | e() | src/express2.js:2:14:2:23 | e.Router() |
-| src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:8:16:8:31 | express.Router() |

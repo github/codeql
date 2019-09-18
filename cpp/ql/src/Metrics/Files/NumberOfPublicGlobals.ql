@@ -10,10 +10,11 @@
  * @tags maintainability
  *       modularity
  */
+
 import cpp
 
 predicate macroLocation(File f, int startLine, int endLine) {
-  exists(MacroInvocation mi, Location l | 
+  exists(MacroInvocation mi, Location l |
     l = mi.getLocation() and
     l.getFile() = f and
     l.getStartLine() = startLine and
@@ -22,18 +23,17 @@ predicate macroLocation(File f, int startLine, int endLine) {
 }
 
 pragma[nomagic]
-Location getVariableLocation(Variable v) {
-  result = v.getLocation()
-}
+Location getVariableLocation(Variable v) { result = v.getLocation() }
 
 predicate globalLocation(GlobalVariable gv, File f, int startLine, int endLine) {
-  exists(Location l | 
-         l = getVariableLocation(gv) and
-         l.hasLocationInfo(f.getAbsolutePath(), startLine, _, endLine, _))
+  exists(Location l |
+    l = getVariableLocation(gv) and
+    l.hasLocationInfo(f.getAbsolutePath(), startLine, _, endLine, _)
+  )
 }
 
 predicate inMacro(GlobalVariable gv) {
-  exists(File f, int macroStart, int macroEnd, int varStart, int varEnd | 
+  exists(File f, int macroStart, int macroEnd, int varStart, int varEnd |
     macroLocation(f, macroStart, macroEnd) and
     globalLocation(gv, f, varStart, varEnd) and
     varStart >= macroStart and
@@ -43,7 +43,9 @@ predicate inMacro(GlobalVariable gv) {
 
 from File f
 where f.fromSource()
-select f, count(GlobalVariable gv |
-                gv.getFile() = f
-                and not gv.isStatic()
-                and not inMacro(gv))
+select f,
+  count(GlobalVariable gv |
+    gv.getFile() = f and
+    not gv.isStatic() and
+    not inMacro(gv)
+  )

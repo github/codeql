@@ -1,7 +1,6 @@
 import csharp
 
-Version getAVersion()
-{
+Version getAVersion() {
   result = "1.2" or
   result = "1.2.0" or
   result = "1.2.0.0" or
@@ -15,6 +14,7 @@ Version getAVersion()
 }
 
 from Version v1, Version v2
-where v1 = getAVersion()
-  and v2 = getAVersion()
+where
+  v1 = getAVersion() and
+  v2 = getAVersion()
 select v1, v2, v1.compareTo(v2)

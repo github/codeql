@@ -21,15 +21,16 @@ import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
  * `<=`, `>=`).
  */
 predicate pointlessSelfComparison(ComparisonOperation cmp) {
-  exists (Variable v, VariableAccess lhs, VariableAccess rhs
-  | lhs = cmp.getLeftOperand() and
+  exists(Variable v, VariableAccess lhs, VariableAccess rhs |
+    lhs = cmp.getLeftOperand() and
     rhs = cmp.getRightOperand() and
     lhs = v.getAnAccess() and
     rhs = v.getAnAccess() and
-    not exists (lhs.getQualifier()) and // Avoid structure fields
-    not exists (rhs.getQualifier()) and // Avoid structure fields
+    not exists(lhs.getQualifier()) and // Avoid structure fields
+    not exists(rhs.getQualifier()) and // Avoid structure fields
     not convertedExprMightOverflow(lhs) and
-    not convertedExprMightOverflow(rhs))
+    not convertedExprMightOverflow(rhs)
+  )
 }
 
 /**
@@ -44,10 +45,10 @@ predicate pointlessSelfComparison(ComparisonOperation cmp) {
  */
 predicate nanTest(EqualityOperation cmp) {
   pointlessSelfComparison(cmp) and
-  exists (Type t
-  | t = cmp.getLeftOperand().getType().getUnspecifiedType()
-  | t instanceof FloatingPointType or
-    t instanceof TemplateParameter)
+  exists(Type t | t = cmp.getLeftOperand().getUnspecifiedType() |
+    t instanceof FloatingPointType or
+    t instanceof TemplateParameter
+  )
 }
 
 /**

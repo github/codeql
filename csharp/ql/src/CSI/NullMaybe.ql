@@ -1,9 +1,10 @@
 /**
  * @name Dereferenced variable may be null
- * @description Finds uses of a variable that may cause a NullPointerException
- * @kind problem
+ * @description Dereferencing a variable whose value may be 'null' may cause a
+ *              'NullReferenceException'.
+ * @kind path-problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id cs/dereferenced-value-may-be-null
  * @tags reliability
  *       correctness
@@ -13,9 +14,9 @@
 
 import csharp
 import semmle.code.csharp.dataflow.Nullness
+import PathGraph
 
-from VariableAccess access, LocalVariable var
-where access = unguardedMaybeNullDereference(var)
-// do not flag definite nulls here; these are already flagged by NullAlways.ql
-and not access = unguardedNullDereference(var)
-select access, "Variable $@ may be null here.", var, var.getName()
+from
+  Dereference d, PathNode source, PathNode sink, Ssa::SourceVariable v, string msg, Element reason
+where d.isFirstMaybeNull(v.getAnSsaDefinition(), source, sink, msg, reason)
+select d, source, sink, "Variable $@ may be null here " + msg + ".", v, v.toString(), reason, "this"

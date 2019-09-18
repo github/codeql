@@ -1,1 +1,0 @@
-| tst.js:1:2:1:24 | { x: 23 ... x: 56 } | Property x is defined both $@ and $@. | tst.js:1:4:1:8 | x: 23 | here | tst.js:1:18:1:22 | x: 56 | here |

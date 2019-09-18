@@ -24,7 +24,8 @@ predicate instanceOfCheck(InstanceOfExpr ioe, VarAccess va, RefType t) {
 /** Expression `e` assumes that `va` could be of type `t`. */
 predicate requiresInstanceOf(Expr e, VarAccess va, RefType t) {
   // `e` is a cast of the form `(t)va`
-  e.(CastExpr).getExpr() = va and t = e.getType().(RefType).getSourceDeclaration() or
+  e.(CastExpr).getExpr() = va and t = e.getType().(RefType).getSourceDeclaration()
+  or
   // `e` is `va instanceof t`
   instanceOfCheck(e, va, t)
 }
@@ -44,7 +45,6 @@ predicate contradictoryTypeCheck(Expr e, Variable v, RefType t, RefType sup, Exp
 }
 
 from Expr e, Variable v, RefType t, RefType sup, Expr cond
-where
-  contradictoryTypeCheck(e, v, t, sup, cond)
-select e, "Variable $@ cannot be of type $@ here, since $@ ensures that it is not of type $@.",
-          v, v.getName(), t, t.getName(), cond, "this expression", sup, sup.getName()
+where contradictoryTypeCheck(e, v, t, sup, cond)
+select e, "Variable $@ cannot be of type $@ here, since $@ ensures that it is not of type $@.", v,
+  v.getName(), t, t.getName(), cond, "this expression", sup, sup.getName()

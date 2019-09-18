@@ -13,20 +13,17 @@ import semmle.code.csharp.frameworks.System
 
 from Class c, Method compareTo, Method compareToImpl
 where
-  c.fromSource()
-  and
+  c.fromSource() and
   (
     compareTo = any(SystemIComparableInterface i).getCompareToMethod()
     or
     compareTo = any(SystemIComparableTInterface i).getAConstructedGeneric().getAMethod() and
     compareTo.getSourceDeclaration() = any(SystemIComparableTInterface i).getCompareToMethod()
-  )
-  and
-    compareToImpl = c.getAMethod()
-  and
-    compareToImpl = compareTo.getAnUltimateImplementor()
-  and
-    not compareToImpl.isAbstract()
-  and
-    not c.getAMethod() = any(SystemObjectClass o).getEqualsMethod().getAnOverrider+()
-select c, "Class " + c.getName() + " implements CompareTo but does not override Equals; the two could be inconsistent."
+  ) and
+  compareToImpl = c.getAMethod() and
+  compareToImpl = compareTo.getAnUltimateImplementor() and
+  not compareToImpl.isAbstract() and
+  not c.getAMethod() = any(SystemObjectClass o).getEqualsMethod().getAnOverrider+()
+select c,
+  "Class " + c.getName() +
+    " implements CompareTo but does not override Equals; the two could be inconsistent."

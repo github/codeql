@@ -73,3 +73,39 @@ public:
 
 	int *a, *b, *c;
 };
+
+class MyClass7
+{
+public:
+	MyClass7()
+	{
+	}
+
+	bool open()
+	{
+		// ...
+	}
+
+	void close()
+	{
+		// ...
+	}
+};
+
+class myClass7Test
+{
+public:
+	myClass7Test()
+	{
+		success = mc7.open(); // GOOD
+	}
+
+	~myClass7Test()
+	{
+		mc7.close();
+	}
+
+private:
+	MyClass7 mc7;
+	bool success;
+};

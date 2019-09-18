@@ -15,40 +15,34 @@ import csharp
 import semmle.code.csharp.frameworks.System
 
 Expr getObjectOperand(EqualityOperation eq) {
-  result = eq.getAnOperand()
-  and
+  result = eq.getAnOperand() and
   (
-    result.getType() instanceof ObjectType
-    or result.getType() instanceof Interface
+    result.getType() instanceof ObjectType or
+    result.getType() instanceof Interface
   )
 }
 
 class ReferenceEqualityTestOnObject extends EqualityOperation {
   ReferenceEqualityTestOnObject() {
     // One or both of the operands has type object or interface.
-    exists(getObjectOperand(this))
-
+    exists(getObjectOperand(this)) and
     // Neither operand is 'null'.
-    and not getAnOperand() instanceof NullLiteral
-
-    and not exists(Type t |
-        t = getAnOperand().stripImplicitCasts().getType() |
-        t instanceof NullType
-        or t instanceof ValueType)
-
+    not getAnOperand() instanceof NullLiteral and
+    not exists(Type t | t = getAnOperand().stripImplicitCasts().getType() |
+      t instanceof NullType or
+      t instanceof ValueType
+    ) and
     // Neither operand is a constant - a reference comparison may well be intended for those.
-    and not getAnOperand().(FieldAccess).getTarget().isReadOnly()
-    and not getAnOperand().hasValue()
-
+    not getAnOperand().(FieldAccess).getTarget().isReadOnly() and
+    not getAnOperand().hasValue() and
     // Not a short-cut test in a custom `Equals` method
-    and not exists(EqualsMethod m |
+    not exists(EqualsMethod m |
       getEnclosingCallable() = m and
       getAnOperand() instanceof ThisAccess and
       getAnOperand() = m.getParameter(0).getAnAccess()
-    )
-
+    ) and
     // Reference comparisons in Moq methods are used to define mocks
-    and not exists(MethodCall mc, Namespace n |
+    not exists(MethodCall mc, Namespace n |
       mc.getTarget().getDeclaringType().getNamespace().getParentNamespace*() = n and
       n.hasName("Moq") and
       not exists(n.getParentNamespace()) and
@@ -57,8 +51,7 @@ class ReferenceEqualityTestOnObject extends EqualityOperation {
   }
 
   Expr getObjectOperand() {
-    result = getObjectOperand(this)
-    and
+    result = getObjectOperand(this) and
     // Avoid duplicate results: only include left operand if both operands
     // have object type
     (result = getRightOperand() implies not getLeftOperand() = getObjectOperand(this))
@@ -66,6 +59,9 @@ class ReferenceEqualityTestOnObject extends EqualityOperation {
 }
 
 from ReferenceEqualityTestOnObject scw, Expr operand, Type t
-where operand = scw.getObjectOperand()
-  and t = operand.getType()
-select scw, "Reference equality for System.Object comparisons ($@ argument has type " + t.getName() + ").", operand, "this"
+where
+  operand = scw.getObjectOperand() and
+  t = operand.getType()
+select scw,
+  "Reference equality for System.Object comparisons ($@ argument has type " + t.getName() + ").",
+  operand, "this"

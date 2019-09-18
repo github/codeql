@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-352
  */
+
 import csharp
 import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.system.web.Helpers
@@ -25,30 +26,31 @@ class AntiForgeryAuthorizationFilter extends AuthorizationFilter {
  * Holds if the project has a global anti forgery filter.
  */
 predicate hasGlobalAntiForgeryFilter() {
-  /*
-   * A global filter added
-   */
+  // A global filter added
   exists(MethodCall addGlobalFilter |
     // addGlobalFilter adds a filter to the global filter collection
     addGlobalFilter.getTarget() = any(GlobalFilterCollection gfc).getAddMethod() and
     // The filter is an antiforgery filter
     addGlobalFilter.getArgumentForName("filter").getType() instanceof AntiForgeryAuthorizationFilter and
     // The filter is added by the Application_Start() method
-    any(WebApplication wa).getApplication_StartMethod().calls*(addGlobalFilter.getEnclosingCallable())
+    any(WebApplication wa)
+        .getApplication_StartMethod()
+        .calls*(addGlobalFilter.getEnclosingCallable())
   )
 }
 
 from Controller c, Method postMethod
-where postMethod = c.getAPostActionMethod()
+where
+  postMethod = c.getAPostActionMethod() and
   // The method is not protected by a validate anti forgery token attribute
-  and not postMethod.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute
-  and not c.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute
-  /*
-   * Verify that validate anti forgery token attributes are used somewhere within this project, to
-   * avoid reporting false positives on projects that use an alternative approach to mitigate CSRF
-   * issues.
-   */
-  and exists(ValidateAntiForgeryTokenAttribute a, Element e | e = a.getTarget())
+  not postMethod.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute and
+  not c.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute and
+  // Verify that validate anti forgery token attributes are used somewhere within this project, to
+  // avoid reporting false positives on projects that use an alternative approach to mitigate CSRF
+  // issues.
+  exists(ValidateAntiForgeryTokenAttribute a, Element e | e = a.getTarget()) and
   // Also ignore cases where a global anti forgery filter is in use.
-  and not hasGlobalAntiForgeryFilter()
-select postMethod, "Method '" + postMethod.getName() + "' handles a POST request without performing CSRF token validation."
+  not hasGlobalAntiForgeryFilter()
+select postMethod,
+  "Method '" + postMethod.getName() +
+    "' handles a POST request without performing CSRF token validation."

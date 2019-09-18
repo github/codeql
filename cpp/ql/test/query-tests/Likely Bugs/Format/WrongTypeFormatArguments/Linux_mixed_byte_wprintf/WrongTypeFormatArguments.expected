@@ -1,0 +1,16 @@
+| tests.cpp:18:15:18:22 | Hello | This argument should be of type 'char *' but is of type 'char16_t *' |
+| tests.cpp:19:15:19:22 | Hello | This argument should be of type 'char *' but is of type 'wchar_t *' |
+| tests.cpp:21:15:21:21 | Hello | This argument should be of type 'char16_t *' but is of type 'char *' |
+| tests.cpp:21:15:21:21 | Hello | This argument should be of type 'wchar_t *' but is of type 'char *' |
+| tests.cpp:26:17:26:24 | Hello | This argument should be of type 'char *' but is of type 'char16_t *' |
+| tests.cpp:27:17:27:24 | Hello | This argument should be of type 'char *' but is of type 'wchar_t *' |
+| tests.cpp:29:17:29:23 | Hello | This argument should be of type 'wchar_t *' but is of type 'char *' |
+| tests.cpp:30:17:30:24 | Hello | This argument should be of type 'wchar_t *' but is of type 'char16_t *' |
+| tests.cpp:34:36:34:43 | Hello | This argument should be of type 'char *' but is of type 'char16_t *' |
+| tests.cpp:35:36:35:43 | Hello | This argument should be of type 'char *' but is of type 'wchar_t *' |
+| tests.cpp:37:36:37:42 | Hello | This argument should be of type 'char16_t *' but is of type 'char *' |
+| tests.cpp:39:36:39:43 | Hello | This argument should be of type 'char16_t *' but is of type 'wchar_t *' |
+| tests.cpp:42:37:42:44 | Hello | This argument should be of type 'char *' but is of type 'char16_t *' |
+| tests.cpp:43:37:43:44 | Hello | This argument should be of type 'char *' but is of type 'wchar_t *' |
+| tests.cpp:45:37:45:43 | Hello | This argument should be of type 'char16_t *' but is of type 'char *' |
+| tests.cpp:47:37:47:44 | Hello | This argument should be of type 'char16_t *' but is of type 'wchar_t *' |

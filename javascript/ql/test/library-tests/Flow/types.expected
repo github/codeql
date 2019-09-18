@@ -2,6 +2,11 @@
 | a.js:1:12:1:12 | x | a.js:1:16:1:16 | 0 | number |
 | a.js:1:19:1:19 | y | a.js:1:23:1:23 | 0 | number |
 | a.js:9:5:9:5 | z | a.js:9:9:9:18 | someGlobal | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| a.js:14:12:14:24 | notAlwaysZero | a.js:14:28:14:28 | 0 | number |
+| amd3.js:2:7:2:8 | _a | amd3.js:2:12:2:12 | a | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd4.js:2:7:2:8 | _u | amd4.js:2:12:2:12 | u | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd5.js:2:7:2:8 | _u | amd5.js:2:12:2:32 | req('sr ... /util') | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | amd.js:3:7:3:7 | e | amd.js:3:11:3:13 | exp | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | arguments.js:2:7:2:7 | y | arguments.js:2:11:2:11 | x | number |
@@ -32,10 +37,13 @@
 | b.js:48:5:48:7 | z13 | b.js:48:11:48:11 | w | string |
 | b.js:51:5:51:7 | z14 | b.js:51:11:51:24 | foo_reexported | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | b.js:54:5:54:7 | z15 | b.js:54:11:54:19 | something | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:57:5:57:7 | z16 | b.js:57:11:57:23 | notAlwaysZero | number |
 | backend.js:1:7:1:13 | Backend | backend.js:1:17:1:18 | {} | object |
 | classAccessors.js:10:9:10:11 | myX | classAccessors.js:10:15:10:20 | this.x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | classAccessors.js:11:9:11:11 | myY | classAccessors.js:11:15:11:20 | this.y | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | classAccessors.js:12:9:12:11 | myZ | classAccessors.js:12:15:12:20 | this.z | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| destructuring.js:2:7:2:24 | { x, y = (z = x) } | destructuring.js:2:28:2:28 | o | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| destructuring.js:3:7:3:8 | z1 | destructuring.js:3:12:3:12 | z | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | es2015.js:1:5:1:7 | Sup | es2015.js:1:11:6:1 | class { ... ;\\n  }\\n} | class |
 | es2015.js:4:9:4:12 | ctor | es2015.js:4:16:4:25 | new.target | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | es2015.js:19:7:19:11 | _args | es2015.js:19:15:19:18 | args | object |
@@ -98,6 +106,9 @@
 | mixed.js:8:5:8:7 | exp | mixed.js:8:11:8:17 | exports | object |
 | mixed.js:9:5:9:6 | fn | mixed.js:9:10:9:19 | __filename | string |
 | mixed.js:10:5:10:6 | dn | mixed.js:10:10:10:18 | __dirname | string |
+| nestedImport.js:2:5:2:6 | x1 | nestedImport.js:2:10:2:12 | foo | function |
+| nestedImport.js:6:7:6:8 | x2 | nestedImport.js:6:12:6:14 | foo | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| nestedImport.js:11:7:11:8 | x3 | nestedImport.js:11:12:11:14 | foo | function |
 | nodeJsClient.js:1:5:1:6 | nj | nodeJsClient.js:1:10:1:31 | require ... JsLib') | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | nodeJsClient.js:2:5:2:6 | es | nodeJsClient.js:2:10:2:27 | require('./esLib') | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | nodeJsClient.js:4:5:4:6 | x1 | nodeJsClient.js:4:10:4:15 | nj.foo | boolean, class, date, function, null, number, object, regular expression,string or undefined |

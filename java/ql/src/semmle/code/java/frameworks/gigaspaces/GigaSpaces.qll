@@ -8,9 +8,7 @@ import java
  * Holds if `eventDrivenClass` is an event listener Class which receives events from GigaSpaces.
  */
 predicate isGigaSpacesEventDrivenClass(Class eventDrivenClass) {
-  exists(AnnotationType aType |
-    aType = eventDrivenClass.getAnAnnotation().getType()
-    |
+  exists(AnnotationType aType | aType = eventDrivenClass.getAnAnnotation().getType() |
     aType.hasQualifiedName("org.openspaces.events", "EventDriven") or
     aType.hasQualifiedName("org.openspaces.events.notify", "Notify") or
     aType.hasQualifiedName("org.openspaces.events.polling", "Polling")
@@ -22,9 +20,7 @@ predicate isGigaSpacesEventDrivenClass(Class eventDrivenClass) {
  * when GigaSpaces is processing events.
  */
 predicate isGigaSpacesEventMethod(Method eventMethod) {
-  exists(AnnotationType aType |
-    aType = eventMethod.getAnAnnotation().getType()
-    |
+  exists(AnnotationType aType | aType = eventMethod.getAnAnnotation().getType() |
     aType.hasQualifiedName("org.openspaces.events.adapter", "SpaceDataEvent") or
     aType.hasQualifiedName("org.openspaces.events", "EventTemplate") or
     aType.hasQualifiedName("org.openspaces.events", "DynamicEventTemplate") or
@@ -53,7 +49,7 @@ class GigaSpacesSpaceIdSetterMethod extends Method {
     exists(GigaSpacesSpaceIdGetterMethod getterMethod |
       getterMethod.getDeclaringType() = getDeclaringType() and
       getName().prefix(3) = "set"
-      |
+    |
       getterMethod.getName().suffix(3) = getName().suffix(3)
     )
   }

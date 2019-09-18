@@ -19,7 +19,7 @@ import semmle.code.csharp.commons.StructuralComparison as SC
 class NestedForConditions extends SC::StructuralComparisonConfiguration {
   NestedForConditions() { this = "Compare nested for conditions" }
 
-  override predicate candidate(Element e1, Element e2) {
+  override predicate candidate(ControlFlowElement e1, ControlFlowElement e2) {
     exists(NestedForLoopSameVariable nested |
       e1 = nested.getInnerForStmt().getCondition() and
       e2 = nested.getOuterForStmt().getCondition()
@@ -81,16 +81,19 @@ class NestedForLoopSameVariable extends ForStmt {
       location.hasLocationInfo(_, startLine, _, _, _) and
       lineStr = startLine.toString() and
       result = "Nested for statement uses loop variable " + name +
-              " of enclosing for statement (on line " + lineStr + ")."
+          " of enclosing for statement (on line " + lineStr + ")."
     )
   }
 
   /** Finds elements inside the outer loop that are no longer guarded by the loop invariant. */
-  private ControlFlow::Node getAnUnguardedNode()
-  {
+  private ControlFlow::Node getAnUnguardedNode() {
     result.getElement().getParent+() = getOuterForStmt().getBody() and
     (
-      result = this.getCondition().(ControlFlowElement).getAControlFlowExitNode().getAFalseSuccessor()
+      result = this
+            .getCondition()
+            .(ControlFlowElement)
+            .getAControlFlowExitNode()
+            .getAFalseSuccessor()
       or
       exists(ControlFlow::Node mid | mid = getAnUnguardedNode() |
         mid.getASuccessor() = result and

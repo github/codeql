@@ -2,16 +2,17 @@ import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C++ friend declaration [N4140 11.3].
- * For example:
+ * A C++ friend declaration [N4140 11.3]. For example the two friend
+ * declarations in class `A` of the following code:
+ * ```
+ * class A {
+ *   friend void f(int);
+ *   friend class X;
+ * };
  *
- *   class A {
- *     friend void f(int);
- *     friend class X;
- *   };
- *
- *   void f(int x) { ... }
- *   class X { ... };
+ * void f(int x) { ... }
+ * class X { ... };
+ * ```
  */
 class FriendDecl extends Declaration, @frienddecl {
   /**
@@ -21,6 +22,8 @@ class FriendDecl extends Declaration, @frienddecl {
    * use `getFriend`.
    */
   override Location getADeclarationLocation() { result = this.getLocation() }
+
+  override string getCanonicalQLClass() { result = "FriendDecl" }
 
   /**
    * Implements the abstract method `Declaration.getDefinitionLocation`. A
@@ -33,12 +36,10 @@ class FriendDecl extends Declaration, @frienddecl {
   override Location getDefinitionLocation() { result = this.getLocation() }
 
   /** Gets the location of this friend declaration. */
-  override Location getLocation() { frienddecls(underlyingElement(this),_,_,result) }
+  override Location getLocation() { frienddecls(underlyingElement(this), _, _, result) }
 
   /** Gets a descriptive string for this friend declaration. */
-  override string getName() {
-    result = this.getDeclaringClass().getName() + "'s friend"
-  }
+  override string getName() { result = this.getDeclaringClass().getName() + "'s friend" }
 
   /**
    * Friend declarations do not have specifiers. It makes no difference
@@ -51,13 +52,13 @@ class FriendDecl extends Declaration, @frienddecl {
    * Gets the target of this friend declaration.
    * For example: `X` in `class A { friend class X }`.
    */
-  AccessHolder getFriend() { frienddecls(underlyingElement(this),_,unresolveElement(result),_) }
+  AccessHolder getFriend() { frienddecls(underlyingElement(this), _, unresolveElement(result), _) }
 
   /**
    * Gets the declaring class (also known as the befriending class).
    * For example: `A` in `class A { friend class X }`.
    */
-  Class getDeclaringClass() { frienddecls(underlyingElement(this),unresolveElement(result),_,_) }
+  Class getDeclaringClass() { frienddecls(underlyingElement(this), unresolveElement(result), _, _) }
 
   /* Holds if this declaration is a top-level declaration. */
   override predicate isTopLevel() { none() }

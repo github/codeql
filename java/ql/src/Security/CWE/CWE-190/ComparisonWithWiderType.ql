@@ -11,22 +11,19 @@
  *       external/cwe/cwe-190
  *       external/cwe/cwe-197
  */
+
 import java
 import semmle.code.java.arithmetic.Overflow
 
-int leftWidth(ComparisonExpr e) {
-  result = e.getLeftOperand().getType().(NumType).getWidthRank()
-}
+int leftWidth(ComparisonExpr e) { result = e.getLeftOperand().getType().(NumType).getWidthRank() }
 
-int rightWidth(ComparisonExpr e) {
-  result = e.getRightOperand().getType().(NumType).getWidthRank()
-}
+int rightWidth(ComparisonExpr e) { result = e.getRightOperand().getType().(NumType).getWidthRank() }
 
 abstract class WideningComparison extends BinaryExpr {
-  WideningComparison() {
-    this instanceof ComparisonExpr
-  }
+  WideningComparison() { this instanceof ComparisonExpr }
+
   abstract Expr getNarrower();
+
   abstract Expr getWider();
 }
 
@@ -36,13 +33,9 @@ class LTWideningComparison extends WideningComparison {
     leftWidth(this) < rightWidth(this)
   }
 
-  override Expr getNarrower() {
-    result = getLeftOperand()
-  }
+  override Expr getNarrower() { result = getLeftOperand() }
 
-  override Expr getWider() {
-    result = getRightOperand()
-  }
+  override Expr getWider() { result = getRightOperand() }
 }
 
 class GTWideningComparison extends WideningComparison {
@@ -51,20 +44,16 @@ class GTWideningComparison extends WideningComparison {
     leftWidth(this) > rightWidth(this)
   }
 
-  override Expr getNarrower() {
-    result = getRightOperand()
-  }
+  override Expr getNarrower() { result = getRightOperand() }
 
-  override Expr getWider() {
-    result = getLeftOperand()
-  }
+  override Expr getWider() { result = getLeftOperand() }
 }
 
 from WideningComparison c, LoopStmt l
 where
   not c.getAnOperand().isCompileTimeConstant() and
   l.getCondition().getAChildExpr*() = c
-select c, "Comparison between $@ of type " + c.getNarrower().getType().getName() +
-  " and $@ of wider type " + c.getWider().getType().getName() + ".",
-  c.getNarrower(), "expression",
-  c.getWider(), "expression"
+select c,
+  "Comparison between $@ of type " + c.getNarrower().getType().getName() + " and $@ of wider type " +
+    c.getWider().getType().getName() + ".", c.getNarrower(), "expression", c.getWider(),
+  "expression"

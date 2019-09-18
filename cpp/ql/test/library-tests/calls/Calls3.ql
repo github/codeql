@@ -2,6 +2,7 @@
  * @name Calls3
  * @kind table
  */
+
 import cpp
 
 from FunctionCall c, CppFile f

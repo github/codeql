@@ -14,7 +14,7 @@ import semmle.code.java.security.SensitiveActions
 import semmle.code.java.controlflow.Dominance
 import semmle.code.java.controlflow.Guards
 
-abstract class ConnectionMethod extends Method {}
+abstract class ConnectionMethod extends Method { }
 
 /*
  * Amongst the Java networking utilities, the `ServerSocket*` classes allow listening on a port.
@@ -32,8 +32,7 @@ abstract class ConnectionMethod extends Method {}
  */
 class ServerSocketAcceptMethod extends ConnectionMethod {
   ServerSocketAcceptMethod() {
-    this.getName() = "accept"
-    and
+    this.getName() = "accept" and
     this.getDeclaringType().hasQualifiedName("java.net", "ServerSocket")
   }
 }
@@ -44,18 +43,15 @@ class ServerSocketAcceptMethod extends ConnectionMethod {
  */
 class ServerSocketChannelAcceptMethod extends ConnectionMethod {
   ServerSocketChannelAcceptMethod() {
-    this.getName() = "accept"
-    and
+    this.getName() = "accept" and
     this.getDeclaringType().hasQualifiedName("java.nio.channels", "ServerSocketChannel")
   }
 }
 
 predicate controlledByAuth(Expr controlled, Expr condition) {
   exists(ConditionBlock b |
-    condition = b.getCondition()
-    and
-    b.controls(controlled.getBasicBlock(), _)
-    and
+    condition = b.getCondition() and
+    b.controls(controlled.getBasicBlock(), _) and
     condition.(MethodAccess).getMethod() instanceof AuthMethod
   )
 }
@@ -73,10 +69,10 @@ predicate controlledByAuth(Expr controlled, Expr condition) {
  *   authenticated. If we checked every connection, we would have
  *   no idea which ones were meant to be secure.
  */
+
 from MethodAccess connection, Expr condition
 where
-  connection.getMethod() instanceof ConnectionMethod
-  and
+  connection.getMethod() instanceof ConnectionMethod and
   controlledByAuth(connection, condition)
 select connection,
   "This connection occurs after the authentication in $@, rather than authentication over the new connection.",

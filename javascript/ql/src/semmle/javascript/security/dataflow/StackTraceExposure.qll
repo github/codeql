@@ -1,61 +1,38 @@
 /**
- * Provides a taint-tracking configuration for reasoning about stack trace
- * exposure problems.
+ * Provides a taint-tracking configuration for reasoning about stack
+ * trace exposure problems.
+ *
+ * Note, for performance reasons: only import this file if
+ * `StackTraceExposure::Configuration` is needed, otherwise
+ * `StackTraceExposureCustomizations` should be imported instead.
  */
 
 import javascript
 
 module StackTraceExposure {
-  /**
-   * A data flow source for stack trace exposure vulnerabilities.
-   */
-  abstract class Source extends DataFlow::Node { }
+  import StackTraceExposureCustomizations::StackTraceExposure
 
   /**
-   * A data flow sink for stack trace exposure vulnerabilities.
+   * A taint-tracking configuration for reasoning about stack trace
+   * exposure problems.
    */
-  abstract class Sink extends DataFlow::Node { }
-
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "StackTraceExposure" }
 
-    override predicate isSource(DataFlow::Node src) {
-      src instanceof Source
+    override predicate isSource(DataFlow::Node src) { src instanceof Source }
+
+    override predicate isSanitizer(DataFlow::Node nd) {
+      super.isSanitizer(nd)
+      or
+      // read of a property other than `stack`
+      nd.(DataFlow::PropRead).getPropertyName() != "stack"
+      or
+      // `toString` does not include the stack trace
+      nd.(DataFlow::MethodCallNode).getMethodName() = "toString"
+      or
+      nd = StringConcatenation::getAnOperand(_)
     }
 
-    override predicate isSink(DataFlow::Node snk) {
-      snk instanceof Sink
-    }
-  }
-
-  /**
-   * A read of the `stack` property of an exception, viewed as a data flow
-   * sink for stack trace exposure vulnerabilities.
-   */
-  class DefaultSource extends Source, DataFlow::ValueNode {
-    DefaultSource() {
-      // any read of the `stack` property of an exception is a source
-      exists (Parameter exc |
-        exc = any(TryStmt try).getACatchClause().getAParameter() and
-        this = DataFlow::parameterNode(exc).getAPropertyRead("stack")
-      )
-    }
-  }
-  
-  /**
-   * An expression that can become part of an HTTP response body, viewed
-   * as a data flow sink for stack trace exposure vulnerabilities.
-   */
-  class DefaultSink extends Sink, DataFlow::ValueNode {
-    override HTTP::ResponseBody astNode;
+    override predicate isSink(DataFlow::Node snk) { snk instanceof Sink }
   }
 }
-
-/** DEPRECATED: Use `StackTraceExposure::Source` instead. */
-deprecated class StackTraceExposureSource = StackTraceExposure::Source;
-
-/** DEPRECATED: Use `StackTraceExposure::Sink` instead. */
-deprecated class StackTraceExposureSink = StackTraceExposure::Sink;
-
-/** DEPRECATED: Use `StackTraceExposure::Configuration` instead. */
-deprecated class StackTraceExposureTrackingConfig = StackTraceExposure::Configuration;

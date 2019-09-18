@@ -11,17 +11,15 @@
  * @kind problem
  * @id java/nosemmle-suppression-comment-filter
  */
+
 import java
 import external.DefectFilter
 
 class SuppressionComment extends Javadoc {
-  SuppressionComment() {
-    this.getAChild*().getText().matches("%NOSEMMLE%")
-  }
+  SuppressionComment() { this.getAChild*().getText().matches("%NOSEMMLE%") }
 
   private string getASuppressionDirective() {
-    result = this.getAChild*().getText()
-        .regexpFind("\\bNOSEMMLE\\b(\\([^)]+?\\)|/[^/]+?/|)", _, 0)
+    result = this.getAChild*().getText().regexpFind("\\bNOSEMMLE\\b(\\([^)]+?\\)|/[^/]+?/|)", _, 0)
   }
 
   private string getAnActualSubstringArg() {
@@ -33,16 +31,18 @@ class SuppressionComment extends Javadoc {
   }
 
   private string getASuppressionRegex() {
-    result = getAnActualRegexArg() or
+    result = getAnActualRegexArg()
+    or
     exists(string substring | substring = getAnActualSubstringArg() |
       result = "\\Q" + substring.replaceAll("\\E", "\\E\\\\E\\Q") + "\\E"
-    ) or
-    (result = ".*" and getASuppressionDirective() = "NOSEMMLE")
+    )
+    or
+    result = ".*" and getASuppressionDirective() = "NOSEMMLE"
   }
 
   predicate suppresses(DefectResult res) {
     this.getFile() = res.getFile() and
-    res.getEndLine() - this.getLocation().getEndLine() in [0..2] and
+    res.getEndLine() - this.getLocation().getEndLine() in [0 .. 2] and
     res.getMessage().regexpMatch(this.getASuppressionRegex())
   }
 }

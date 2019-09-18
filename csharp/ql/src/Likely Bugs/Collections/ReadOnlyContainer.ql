@@ -16,22 +16,20 @@ import semmle.code.csharp.commons.Collections
 
 from Variable v
 where
-  v.fromSource()
-  and v.getType() instanceof CollectionType
-
+  v.fromSource() and
+  v.getType() instanceof CollectionType and
   // Publics might get assigned elsewhere
-  and (v instanceof LocalVariable or v.(Field).isPrivate())
-
+  (v instanceof LocalVariable or v.(Field).isPrivate()) and
   // All initializers (if any) are empty collections.
-  and forall( AssignableDefinition d | v = d.getTarget() | d.getSource() instanceof EmptyCollectionCreation )
-
+  forall(AssignableDefinition d | v = d.getTarget() |
+    d.getSource() instanceof EmptyCollectionCreation
+  ) and
   // All accesses do not add data.
-  and forex( Access a | v.getAnAccess()=a | a instanceof NoAddAccess or a instanceof EmptyInitializationAccess)
-
+  forex(Access a | v.getAnAccess() = a |
+    a instanceof NoAddAccess or a instanceof EmptyInitializationAccess
+  ) and
   // Attributes indicate some kind of reflection
-  and (not exists( Attribute a | v=a.getTarget() ))
-
+  not exists(Attribute a | v = a.getTarget()) and
   // There is at least one non-assignment access
-  and v.getAnAccess() instanceof NoAddAccess
+  v.getAnAccess() instanceof NoAddAccess
 select v, "The contents of this container are never initialized."
-

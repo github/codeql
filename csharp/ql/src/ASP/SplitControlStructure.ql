@@ -12,6 +12,5 @@
 import semmle.code.asp.AspNet
 
 from AspCode code
-where
-  exists(code.getBody().regexpFind("(Then|\\{)\\s*$",_,_))
+where exists(code.getBody().regexpFind("(Then|\\{)\\s*$", _, _))
 select code, "Split control structure."

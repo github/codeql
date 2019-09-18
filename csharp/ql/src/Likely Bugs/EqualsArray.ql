@@ -8,27 +8,26 @@
  * @tags reliability
  *       correctness
  */
+
 import csharp
 import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.frameworks.system.Collections
 
 // Does method m have an override in t or one of its derived classes?
 pragma[nomagic]
-predicate methodOverriddenBelow(Method m, Class t)
-{
+predicate methodOverriddenBelow(Method m, Class t) {
   m.getAnOverrider*().getDeclaringType() = t.getASubType*()
 }
 
-predicate isIEnumerable(ValueOrRefType t)
-{
-  t instanceof ArrayType  // Extractor doesn't extract interfaces of ArrayType yet.
-  or t.getABaseInterface*() instanceof SystemCollectionsIEnumerableInterface
+predicate isIEnumerable(ValueOrRefType t) {
+  t instanceof ArrayType or // Extractor doesn't extract interfaces of ArrayType yet.
+  t.getABaseInterface*() instanceof SystemCollectionsIEnumerableInterface
 }
 
 from MethodCall m
 where
-  m.getTarget() instanceof EqualsMethod
-  and isIEnumerable(m.getQualifier().getType())
-  and isIEnumerable(m.getArgument(0).getType())
-  and not methodOverriddenBelow(m.getTarget(), m.getQualifier().getType())
+  m.getTarget() instanceof EqualsMethod and
+  isIEnumerable(m.getQualifier().getType()) and
+  isIEnumerable(m.getArgument(0).getType()) and
+  not methodOverriddenBelow(m.getTarget(), m.getQualifier().getType())
 select m, "Using Equals(object) on a collection only checks reference equality."

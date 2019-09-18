@@ -8,16 +8,12 @@ private import CIL
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
  * without branches or joins.
  */
-class BasicBlock extends Internal::TBasicBlockStart {
+class BasicBlock extends Cached::TBasicBlockStart {
   /** Gets an immediate successor of this basic block, if any. */
-  BasicBlock getASuccessor() {
-    result.getFirstNode() = getLastNode().getASuccessor()
-  }
+  BasicBlock getASuccessor() { result.getFirstNode() = getLastNode().getASuccessor() }
 
   /** Gets an immediate predecessor of this basic block, if any. */
-  BasicBlock getAPredecessor() {
-    result.getASuccessor() = this
-  }
+  BasicBlock getAPredecessor() { result.getASuccessor() = this }
 
   /**
    * Gets an immediate `true` successor, if any.
@@ -35,9 +31,7 @@ class BasicBlock extends Internal::TBasicBlockStart {
    * The basic block on line 2 is an immediate `true` successor of the
    * basic block on line 1.
    */
-  BasicBlock getATrueSuccessor() {
-    result.getFirstNode() = getLastNode().getTrueSuccessor()
-  }
+  BasicBlock getATrueSuccessor() { result.getFirstNode() = getLastNode().getTrueSuccessor() }
 
   /**
    * Gets an immediate `false` successor, if any.
@@ -55,32 +49,22 @@ class BasicBlock extends Internal::TBasicBlockStart {
    * The basic block on line 2 is an immediate `false` successor of the
    * basic block on line 1.
    */
-  BasicBlock getAFalseSuccessor() {
-    result.getFirstNode() = getLastNode().getFalseSuccessor()
-  }
+  BasicBlock getAFalseSuccessor() { result.getFirstNode() = getLastNode().getFalseSuccessor() }
 
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-  ControlFlowNode getNode(int pos) { Internal::bbIndex(getFirstNode(), result, pos) }
+  ControlFlowNode getNode(int pos) { Cached::bbIndex(getFirstNode(), result, pos) }
 
   /** Gets a control flow node in this basic block. */
-  ControlFlowNode getANode() {
-    result = getNode(_)
-  }
+  ControlFlowNode getANode() { result = getNode(_) }
 
   /** Gets the first control flow node in this basic block. */
-  ControlFlowNode getFirstNode() {
-    this = Internal::TBasicBlockStart(result)
-  }
+  ControlFlowNode getFirstNode() { this = Cached::TBasicBlockStart(result) }
 
   /** Gets the last control flow node in this basic block. */
-  ControlFlowNode getLastNode() {
-    result = getNode(length() - 1)
-  }
+  ControlFlowNode getLastNode() { result = getNode(length() - 1) }
 
   /** Gets the length of this basic block. */
-  int length() {
-    result = strictcount(getANode())
-  }
+  int length() { result = strictcount(getANode()) }
 
   /**
    * Holds if this basic block strictly dominates basic block `bb`.
@@ -103,9 +87,7 @@ class BasicBlock extends Internal::TBasicBlockStart {
    * basic block on line 4 (all paths from the entry point of `M`
    * to `return s.Length;` must go through the null check).
    */
-  predicate strictlyDominates(BasicBlock bb) {
-    bbIDominates+(this, bb)
-  }
+  predicate strictlyDominates(BasicBlock bb) { bbIDominates+(this, bb) }
 
   /**
    * Holds if this basic block dominates basic block `bb`.
@@ -165,10 +147,7 @@ class BasicBlock extends Internal::TBasicBlockStart {
   /**
    * Holds if this basic block dominates a predecessor of `df`.
    */
-  private
-  predicate dominatesPredecessor(BasicBlock df) {
-    dominates(df.getAPredecessor())
-  }
+  private predicate dominatesPredecessor(BasicBlock df) { dominates(df.getAPredecessor()) }
 
   /**
    * Gets the basic block that immediately dominates this basic block, if any.
@@ -192,9 +171,7 @@ class BasicBlock extends Internal::TBasicBlockStart {
    * to `return s.Length;` must go through the null check, and the null check
    * is an immediate predecessor of `return s.Length;`).
    */
-  BasicBlock getImmediateDominator() {
-    bbIDominates(result, this)
-  }
+  BasicBlock getImmediateDominator() { bbIDominates(result, this) }
 
   /**
    * Holds if this basic block strictly post-dominates basic block `bb`.
@@ -220,9 +197,7 @@ class BasicBlock extends Internal::TBasicBlockStart {
    * line 3 (all paths to the exit point of `M` from `return s.Length;`
    * must go through the `WriteLine` call).
    */
-  predicate strictlyPostDominates(BasicBlock bb) {
-    bbIPostDominates+(this, bb)
-  }
+  predicate strictlyPostDominates(BasicBlock bb) { bbIPostDominates+(this, bb) }
 
   /**
    * Holds if this basic block post-dominates basic block `bb`.
@@ -261,23 +236,20 @@ class BasicBlock extends Internal::TBasicBlockStart {
    * even if this basic block is syntactically inside a `while` loop if the
    * necessary back edges are unreachable.
    */
-  predicate inLoop() {
-    this.getASuccessor+() = this
-  }
+  predicate inLoop() { this.getASuccessor+() = this }
 
   /** Gets a textual representation of this basic block. */
-  string toString() {
-    result = getFirstNode().toString()
-  }
+  string toString() { result = getFirstNode().toString() }
 }
 
 /**
  * Internal implementation details.
  */
-private cached module Internal {
+cached
+private module Cached {
   /** Internal representation of basic blocks. */
-  cached newtype TBasicBlock =
-    TBasicBlockStart(ControlFlowNode cfn) { startsBB(cfn) }
+  cached
+  newtype TBasicBlock = TBasicBlockStart(ControlFlowNode cfn) { startsBB(cfn) }
 
   /** Holds if `cfn` starts a new basic block. */
   private predicate startsBB(ControlFlowNode cfn) {
@@ -285,7 +257,7 @@ private cached module Internal {
     or
     cfn.isJoin()
     or
-    exists(ControlFlowNode pred | pred = cfn.getAPredecessor() | strictcount(pred.getASuccessor()) > 1)
+    cfn.getAPredecessor().isBranch()
   }
 
   /**
@@ -312,18 +284,13 @@ private cached module Internal {
  * Holds if the first node of basic block `succ` is a control flow
  * successor of the last node of basic block `pred`.
  */
-private predicate succBB(BasicBlock pred, BasicBlock succ) {
-  succ = pred.getASuccessor()
-}
+private predicate succBB(BasicBlock pred, BasicBlock succ) { succ = pred.getASuccessor() }
 
 /** Holds if `dom` is an immediate dominator of `bb`. */
-predicate bbIDominates(BasicBlock dom, BasicBlock bb) =
-  idominance(entryBB/1, succBB/2)(_, dom, bb)
+predicate bbIDominates(BasicBlock dom, BasicBlock bb) = idominance(entryBB/1, succBB/2)(_, dom, bb)
 
 /** Holds if `pred` is a basic block predecessor of `succ`. */
-private predicate predBB(BasicBlock succ, BasicBlock pred) {
-  succBB(pred, succ)
-}
+private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
 /** Holds if `dom` is an immediate post-dominator of `bb`. */
 predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
@@ -338,9 +305,7 @@ class EntryBasicBlock extends BasicBlock {
 }
 
 /** Holds if `bb` is an entry basic block. */
-private predicate entryBB(BasicBlock bb) {
-  bb.getFirstNode() instanceof EntryPoint
-}
+private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryPoint }
 
 /**
  * An exit basic block, that is, a basic block whose last node is
@@ -351,9 +316,7 @@ class ExitBasicBlock extends BasicBlock {
 }
 
 /** Holds if `bb` is an exit basic block. */
-private predicate exitBB(BasicBlock bb) {
-  not exists(bb.getLastNode().getASuccessor())
-}
+private predicate exitBB(BasicBlock bb) { not exists(bb.getLastNode().getASuccessor()) }
 
 /**
  * A basic block with more than one predecessor.
@@ -412,9 +375,9 @@ class ConditionBlock extends BasicBlock {
      * that `this` strictly dominates `controlled` so that isn't necessary to check
      * directly.
      */
+
     exists(BasicBlock succ |
-      isCandidateSuccessor(succ, testIsTrue)
-      and
+      isCandidateSuccessor(succ, testIsTrue) and
       succ.dominates(controlled)
     )
   }
@@ -424,11 +387,7 @@ class ConditionBlock extends BasicBlock {
       testIsTrue = true and succ = getATrueSuccessor()
       or
       testIsTrue = false and succ = getAFalseSuccessor()
-    )
-    and
-    forall(BasicBlock pred |
-      pred = succ.getAPredecessor() and pred != this |
-      succ.dominates(pred)
-    )
+    ) and
+    forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this | succ.dominates(pred))
   }
 }

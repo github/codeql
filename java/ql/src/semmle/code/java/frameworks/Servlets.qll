@@ -8,8 +8,7 @@ import semmle.code.java.Type
  * The interface `javax.servlet.ServletRequest` or
  * `javax.servlet.http.HttpServletRequest`.
  */
-library
-class ServletRequest extends RefType {
+library class ServletRequest extends RefType {
   ServletRequest() {
     hasQualifiedName("javax.servlet", "ServletRequest") or
     this instanceof HttpServletRequest
@@ -19,19 +18,15 @@ class ServletRequest extends RefType {
 /**
  * The interface `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequest extends RefType {
-  HttpServletRequest() {
-    hasQualifiedName("javax.servlet.http", "HttpServletRequest")
-  }
+library class HttpServletRequest extends RefType {
+  HttpServletRequest() { hasQualifiedName("javax.servlet.http", "HttpServletRequest") }
 }
 
 /**
  * The method `getParameter(String)` or `getParameterValues(String)`
  * declared in `javax.servlet.ServletRequest`.
  */
-library
-class ServletRequestGetParameterMethod extends Method {
+library class ServletRequestGetParameterMethod extends Method {
   ServletRequestGetParameterMethod() {
     getDeclaringType() instanceof ServletRequest and
     (
@@ -46,8 +41,7 @@ class ServletRequestGetParameterMethod extends Method {
 /**
  * The method `getParameterNames()` declared in `javax.servlet.ServletRequest`.
  */
-library
-class ServletRequestGetParameterNamesMethod extends Method {
+library class ServletRequestGetParameterNamesMethod extends Method {
   ServletRequestGetParameterNamesMethod() {
     getDeclaringType() instanceof ServletRequest and
     hasName("getParameterNames") and
@@ -58,8 +52,7 @@ class ServletRequestGetParameterNamesMethod extends Method {
 /**
  * The method `getParameterMap()` declared in `javax.servlet.ServletRequest`.
  */
-library
-class ServletRequestGetParameterMapMethod extends Method {
+library class ServletRequestGetParameterMapMethod extends Method {
   ServletRequestGetParameterMapMethod() {
     getDeclaringType() instanceof ServletRequest and
     hasName("getParameterMap") and
@@ -70,8 +63,7 @@ class ServletRequestGetParameterMapMethod extends Method {
 /**
  * The method `getQueryString()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequestGetQueryStringMethod extends Method {
+library class HttpServletRequestGetQueryStringMethod extends Method {
   HttpServletRequestGetQueryStringMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getQueryString") and
@@ -82,8 +74,7 @@ class HttpServletRequestGetQueryStringMethod extends Method {
 /**
  * The method `getPathInfo()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequestGetPathMethod extends Method {
+library class HttpServletRequestGetPathMethod extends Method {
   HttpServletRequestGetPathMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getPathInfo") and
@@ -94,8 +85,7 @@ class HttpServletRequestGetPathMethod extends Method {
 /**
  * The method `getHeader(String)` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequestGetHeaderMethod extends Method {
+library class HttpServletRequestGetHeaderMethod extends Method {
   HttpServletRequestGetHeaderMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getHeader") and
@@ -107,8 +97,7 @@ class HttpServletRequestGetHeaderMethod extends Method {
 /**
  * The method `getHeaders(String)` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequestGetHeadersMethod extends Method {
+library class HttpServletRequestGetHeadersMethod extends Method {
   HttpServletRequestGetHeadersMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getHeaders") and
@@ -120,8 +109,7 @@ class HttpServletRequestGetHeadersMethod extends Method {
 /**
  * The method `getHeaderNames()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequestGetHeaderNamesMethod extends Method {
+library class HttpServletRequestGetHeaderNamesMethod extends Method {
   HttpServletRequestGetHeaderNamesMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getHeaderNames") and
@@ -132,8 +120,7 @@ class HttpServletRequestGetHeaderNamesMethod extends Method {
 /**
  * The method `getRequestURL()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequestGetRequestURLMethod extends Method {
+library class HttpServletRequestGetRequestURLMethod extends Method {
   HttpServletRequestGetRequestURLMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getRequestURL") and
@@ -144,8 +131,7 @@ class HttpServletRequestGetRequestURLMethod extends Method {
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequestGetRequestURIMethod extends Method {
+library class HttpServletRequestGetRequestURIMethod extends Method {
   HttpServletRequestGetRequestURIMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getRequestURI") and
@@ -156,8 +142,7 @@ class HttpServletRequestGetRequestURIMethod extends Method {
 /**
  * The method `getRemoteUser()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library
-class HttpServletRequestGetRemoteUserMethod extends Method {
+library class HttpServletRequestGetRemoteUserMethod extends Method {
   HttpServletRequestGetRemoteUserMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getRemoteUser") and
@@ -168,8 +153,7 @@ class HttpServletRequestGetRemoteUserMethod extends Method {
 /**
  * The method `getInputStream()` or `getReader()` declared in `javax.servlet.ServletRequest`.
  */
-library
-class ServletRequestGetBodyMethod extends Method {
+library class ServletRequestGetBodyMethod extends Method {
   ServletRequestGetBodyMethod() {
     getDeclaringType() instanceof ServletRequest and
     (hasName("getInputStream") or hasName("getReader"))
@@ -191,9 +175,7 @@ class ServletResponse extends RefType {
  * The interface `javax.servlet.http.HttpServletResponse`.
  */
 class HttpServletResponse extends RefType {
-  HttpServletResponse() {
-    hasQualifiedName("javax.servlet.http", "HttpServletResponse")
-  }
+  HttpServletResponse() { hasQualifiedName("javax.servlet.http", "HttpServletResponse") }
 }
 
 /**
@@ -244,18 +226,14 @@ class ServletResponseGetOutputStreamMethod extends Method {
 }
 
 /** The class `javax.servlet.http.Cookie`. */
-library
-class TypeCookie extends Class {
-  TypeCookie() {
-    hasQualifiedName("javax.servlet.http", "Cookie")
-  }
+library class TypeCookie extends Class {
+  TypeCookie() { hasQualifiedName("javax.servlet.http", "Cookie") }
 }
 
 /**
  * The method `getValue(String)` declared in `javax.servlet.http.Cookie`.
  */
-library
-class CookieGetValueMethod extends Method {
+library class CookieGetValueMethod extends Method {
   CookieGetValueMethod() {
     getDeclaringType() instanceof TypeCookie and
     hasName("getValue") and
@@ -266,8 +244,7 @@ class CookieGetValueMethod extends Method {
 /**
  * The method `getName()` declared in `javax.servlet.http.Cookie`.
  */
-library
-class CookieGetNameMethod extends Method {
+library class CookieGetNameMethod extends Method {
   CookieGetNameMethod() {
     getDeclaringType() instanceof TypeCookie and
     hasName("getName") and
@@ -279,8 +256,7 @@ class CookieGetNameMethod extends Method {
 /**
  * The method `getComment()` declared in `javax.servlet.http.Cookie`.
  */
-library
-class CookieGetCommentMethod extends Method {
+library class CookieGetCommentMethod extends Method {
   CookieGetCommentMethod() {
     getDeclaringType() instanceof TypeCookie and
     hasName("getComment") and
@@ -323,9 +299,7 @@ class ResponseSetHeaderMethod extends Method {
  * A class that has `javax.servlet.Servlet` as an ancestor.
  */
 class ServletClass extends Class {
-  ServletClass() {
-    getAnAncestor().hasQualifiedName("javax.servlet", "Servlet")
-  }
+  ServletClass() { getAnAncestor().hasQualifiedName("javax.servlet", "Servlet") }
 }
 
 /**
@@ -343,10 +317,8 @@ class ServletWebXMLListenerType extends RefType {
     hasQualifiedName("javax.servlet.http", "HttpSessionAttributeListener") or
     hasQualifiedName("javax.servlet.http", "HttpSessionIdListener") or
     hasQualifiedName("javax.servlet.http", "HttpSessionListener")
-    /*
-     * Listeners that are not configured in `web.xml`:
-     *  - `HttpSessionActivationListener`
-     *  - `HttpSessionBindingListener`
-     */
+    // Listeners that are not configured in `web.xml`:
+    //  - `HttpSessionActivationListener`
+    //  - `HttpSessionBindingListener`
   }
 }

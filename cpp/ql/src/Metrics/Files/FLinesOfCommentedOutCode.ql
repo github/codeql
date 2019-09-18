@@ -9,12 +9,9 @@
  * @id cpp/lines-of-commented-out-code-in-files
  * @tags documentation
  */
- 
+
 import Documentation.CommentedOutCode
 
 from File f, int n
-where n = sum(CommentedOutCode comment |
-              comment.getFile() = f |
-              comment.numCodeLines())
-select f, n
-order by n desc
+where n = sum(CommentedOutCode comment | comment.getFile() = f | comment.numCodeLines())
+select f, n order by n desc

@@ -3,20 +3,14 @@ import semmle.code.xml.XML
 /**
  * Holds if any `*.gwt.xml` files are included in this snapshot.
  */
-predicate isGwtXmlIncluded() {
-  exists(GwtXmlFile webXML)
-}
+predicate isGwtXmlIncluded() { exists(GwtXmlFile webXML) }
 
 /** A GWT module XML file with a `.gwt.xml` suffix. */
 class GwtXmlFile extends XMLFile {
-  GwtXmlFile() {
-    this.getBaseName().matches("%.gwt.xml")
-  }
+  GwtXmlFile() { this.getBaseName().matches("%.gwt.xml") }
 
   /** Gets the top-level module element of a GWT module XML file. */
-  GwtModuleElement getModuleElement() {
-    result = this.getAChild()
-  }
+  GwtModuleElement getModuleElement() { result = this.getAChild() }
 
   /** Gets the name of an inherited GWT module, for example `com.google.gwt.user.User`. */
   string getAnInheritedModuleName() {
@@ -27,15 +21,13 @@ class GwtXmlFile extends XMLFile {
   GwtXmlFile getAnInheritedXmlFile() {
     exists(GwtXmlFile f, string name |
       name = getAnInheritedModuleName() and
-      f.getAbsolutePath().matches("%/" + name.replaceAll(".","/") + ".gwt.xml") and
+      f.getAbsolutePath().matches("%/" + name.replaceAll(".", "/") + ".gwt.xml") and
       result = f
     )
   }
 
   /** Gets the relative path of the folder containing this GWT module XML file. */
-  string getRelativeRootFolderPath() {
-    result = getParentContainer().getRelativePath()
-  }
+  string getRelativeRootFolderPath() { result = getParentContainer().getRelativePath() }
 
   /** Gets a GWT-translatable source sub-folder explicitly defined in a `<source>` element. */
   string getAnExplicitSourceSubPath() {
@@ -47,7 +39,8 @@ class GwtXmlFile extends XMLFile {
    * Either the default `client` folder or as specified by `<source>` tags.
    */
   string getASourceSubPath() {
-    (result = "client" and not exists(getAnExplicitSourceSubPath())) or
+    result = "client" and not exists(getAnExplicitSourceSubPath())
+    or
     result = getAnExplicitSourceSubPath()
   }
 
@@ -69,19 +62,13 @@ class GwtModuleElement extends XMLElement {
   }
 
   /** Gets an element of the form `<inherits>`, which specifies a GWT module to inherit. */
-  GwtInheritsElement getAnInheritsElement() {
-    result = this.getAChild()
-  }
+  GwtInheritsElement getAnInheritsElement() { result = this.getAChild() }
 
   /** Gets an element of the form `<entry-point>`, which specifies a GWT entry-point class name. */
-  GwtEntryPointElement getAnEntryPointElement() {
-    result = this.getAChild()
-  }
+  GwtEntryPointElement getAnEntryPointElement() { result = this.getAChild() }
 
   /** Gets an element of the form `<source>`, which specifies a GWT-translatable source path. */
-  GwtSourceElement getASourceElement() {
-    result = this.getAChild()
-  }
+  GwtSourceElement getASourceElement() { result = this.getAChild() }
 }
 
 /** An `<inherits>` element within a GWT module XML file. */
@@ -92,9 +79,7 @@ class GwtInheritsElement extends XMLElement {
   }
 
   /** Gets the name of an inherited GWT module, for example `com.google.gwt.user.User`. */
-  string getAnInheritedName() {
-    result = getAttribute("name").getValue()
-  }
+  string getAnInheritedName() { result = getAttribute("name").getValue() }
 }
 
 /** An `<entry-point>` element within a GWT module XML file. */
@@ -105,9 +90,7 @@ class GwtEntryPointElement extends XMLElement {
   }
 
   /** Gets the name of a class that serves as a GWT entry-point. */
-  string getClassName() {
-    result = getAttribute("class").getValue().trim()
-  }
+  string getClassName() { result = getAttribute("class").getValue().trim() }
 }
 
 /** A `<source>` element within a GWT module XML file. */
@@ -135,7 +118,5 @@ class GwtServletElement extends XMLElement {
   }
 
   /** Gets the name of a class that is used as a servlet. */
-  string getClassName() {
-    result = getAttribute("class").getValue().trim()
-  }
+  string getClassName() { result = getAttribute("class").getValue().trim() }
 }

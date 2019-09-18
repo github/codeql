@@ -8,7 +8,9 @@
 | DeleteThis.cpp:56:3:56:24 | ... = ... | Resource ptr10 is acquired by class MyClass3 but not released anywhere in this class. |
 | DeleteThis.cpp:58:3:58:24 | ... = ... | Resource ptr12 is acquired by class MyClass3 but not released anywhere in this class. |
 | DeleteThis.cpp:60:3:60:24 | ... = ... | Resource ptr14 is acquired by class MyClass3 but not released anywhere in this class. |
+| DeleteThis.cpp:127:3:127:20 | ... = ... | Resource d is acquired by class MyClass9 but not released anywhere in this class. |
 | ExternalOwners.cpp:49:3:49:20 | ... = ... | Resource a is acquired by class MyScreen but not released anywhere in this class. |
+| Lambda.cpp:24:3:24:21 | ... = ... | Resource r4 is acquired by class testLambda but not released anywhere in this class. |
 | ListDelete.cpp:21:3:21:21 | ... = ... | Resource first is acquired by class MyThingColection but not released anywhere in this class. |
 | NoDestructor.cpp:23:3:23:20 | ... = ... | Resource n is acquired by class MyClass5 but not released anywhere in this class. |
 | PlacementNew.cpp:36:3:36:36 | ... = ... | Resource p1 is acquired by class MyTestForPlacementNew but not released anywhere in this class. |
@@ -17,3 +19,5 @@
 | Variants.cpp:65:3:65:17 | ... = ... | Resource a is acquired by class MyClass6 but not released anywhere in this class. |
 | Variants.cpp:66:3:66:36 | ... = ... | Resource b is acquired by class MyClass6 but not released anywhere in this class. |
 | Variants.cpp:67:3:67:41 | ... = ... | Resource c is acquired by class MyClass6 but not released anywhere in this class. |
+| Wrapped.cpp:46:3:46:22 | ... = ... | Resource ptr2 is acquired by class Wrapped2 but not released anywhere in this class. |
+| Wrapped.cpp:59:3:59:22 | ... = ... | Resource ptr4 is acquired by class Wrapped2 but not released anywhere in this class. |

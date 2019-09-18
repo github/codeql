@@ -5,6 +5,7 @@
  *              located in files for which we have source code.
  * @kind problem
  * @id cpp/from-source-filter
+ * @tags filter
  */
 
 import cpp
@@ -12,5 +13,4 @@ import external.DefectFilter
 
 from DefectResult res
 where res.getFile().fromSource()
-select res,
-       res.getMessage()
+select res, res.getMessage()

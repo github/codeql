@@ -26,34 +26,46 @@ Expr enumConstEquality(Expr e, boolean polarity, EnumConstant c) {
 
 /** Gets an expression that is provably not `null`. */
 Expr clearlyNotNullExpr(Expr reason) {
-  result instanceof ClassInstanceExpr and reason = result or
-  result instanceof ArrayCreationExpr and reason = result or
-  result instanceof TypeLiteral and reason = result or
-  result instanceof ThisAccess and reason = result or
-  result instanceof StringLiteral and reason = result or
-  result instanceof AddExpr and result.getType() instanceof TypeString and reason = result or
+  result instanceof ClassInstanceExpr and reason = result
+  or
+  result instanceof ArrayCreationExpr and reason = result
+  or
+  result instanceof TypeLiteral and reason = result
+  or
+  result instanceof ThisAccess and reason = result
+  or
+  result instanceof StringLiteral and reason = result
+  or
+  result instanceof AddExpr and result.getType() instanceof TypeString and reason = result
+  or
   exists(Field f |
     result = f.getAnAccess() and
     (f.hasName("TRUE") or f.hasName("FALSE")) and
     f.getDeclaringType().hasQualifiedName("java.lang", "Boolean") and
     reason = result
-  ) or
-  result.(ParExpr).getExpr() = clearlyNotNullExpr(reason) or
-  result.(CastExpr).getExpr() = clearlyNotNullExpr(reason) or
-  result.(AssignExpr).getSource() = clearlyNotNullExpr(reason) or
+  )
+  or
+  result.(ParExpr).getExpr() = clearlyNotNullExpr(reason)
+  or
+  result.(CastExpr).getExpr() = clearlyNotNullExpr(reason)
+  or
+  result.(AssignExpr).getSource() = clearlyNotNullExpr(reason)
+  or
   exists(ConditionalExpr c, Expr r1, Expr r2 |
     c = result and
     c.getTrueExpr() = clearlyNotNullExpr(r1) and
     c.getFalseExpr() = clearlyNotNullExpr(r2) and
     (reason = r1 or reason = r2)
-  ) or
+  )
+  or
   exists(SsaVariable v, boolean branch, RValue rval, Guard guard |
     guard = directNullGuard(v, branch, false) and
     guard.controls(rval.getBasicBlock(), branch) and
     reason = guard and
     rval = v.getAUse() and
     result = rval
-  ) or
+  )
+  or
   exists(SsaVariable v | clearlyNotNull(v, reason) and result = v.getAUse())
 }
 
@@ -62,12 +74,14 @@ predicate clearlyNotNull(SsaVariable v, Expr reason) {
   exists(Expr src |
     src = v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() and
     src = clearlyNotNullExpr(reason)
-  ) or
+  )
+  or
   exists(CatchClause cc, LocalVariableDeclExpr decl |
     decl = cc.getVariable() and
     decl = v.(SsaExplicitUpdate).getDefiningExpr() and
     reason = decl
-  ) or
+  )
+  or
   exists(SsaVariable captured |
     v.(SsaImplicitInit).captures(captured) and
     clearlyNotNull(captured, reason)
@@ -75,13 +89,45 @@ predicate clearlyNotNull(SsaVariable v, Expr reason) {
 }
 
 /** Gets an expression that is provably not `null`. */
-Expr clearlyNotNullExpr() {
-  result = clearlyNotNullExpr(_)
-}
+Expr clearlyNotNullExpr() { result = clearlyNotNullExpr(_) }
 
 /** Holds if `v` is an SSA variable that is provably not `null`. */
-predicate clearlyNotNull(SsaVariable v) {
-  clearlyNotNull(v, _)
+predicate clearlyNotNull(SsaVariable v) { clearlyNotNull(v, _) }
+
+/**
+ * Holds if the evaluation of a call to `m` resulting in the value `branch`
+ * implies that the argument to the call is guaranteed to be null if `isnull`
+ * is true, and non-null if `isnull` is false.
+ */
+predicate nullCheckMethod(Method m, boolean branch, boolean isnull) {
+  exists(boolean polarity |
+    m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
+    (
+      m.hasName("isNull") and polarity = true
+      or
+      m.hasName("nonNull") and polarity = false
+    ) and
+    (
+      branch = true and isnull = polarity
+      or
+      branch = false and isnull = polarity.booleanNot()
+    )
+  )
+  or
+  m instanceof EqualsMethod and branch = true and isnull = false
+  or
+  m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "StringUtils") and
+  m.hasName("isBlank") and
+  branch = false and
+  isnull = false
+  or
+  (
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.collections4", "CollectionUtils") or
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.collections", "CollectionUtils")
+  ) and
+  m.hasName("isNotEmpty") and
+  branch = true and
+  isnull = false
 }
 
 /**
@@ -95,30 +141,28 @@ Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
     eqtest = result and
     eqtest.hasOperands(e, any(NullLiteral n)) and
     polarity = eqtest.polarity() and
-    (branch = true and isnull = polarity or branch = false and isnull = polarity.booleanNot())
-  ) or
-  result.(InstanceOfExpr).getExpr() = e and branch = true and isnull = false or
-  exists(MethodAccess call, Method m, boolean polarity |
-    call = result and
-    call.getAnArgument() = e and
-    call.getMethod() = m and
-    m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-    (m.hasName("isNull") and polarity = true or m.hasName("nonNull") and polarity = false) and
-    (branch = true and isnull = polarity or branch = false and isnull = polarity.booleanNot())
-  ) or
+    (
+      branch = true and isnull = polarity
+      or
+      branch = false and isnull = polarity.booleanNot()
+    )
+  )
+  or
+  result.(InstanceOfExpr).getExpr() = e and branch = true and isnull = false
+  or
   exists(MethodAccess call |
     call = result and
     call.getAnArgument() = e and
-    call.getMethod() instanceof EqualsMethod and
-    branch = true and
-    isnull = false
-  ) or
+    nullCheckMethod(call.getMethod(), branch, isnull)
+  )
+  or
   exists(EqualityTest eqtest |
     eqtest = result and
     eqtest.hasOperands(e, clearlyNotNullExpr()) and
     isnull = false and
     branch = eqtest.polarity()
-  ) or
+  )
+  or
   result = enumConstEquality(e, branch, _) and isnull = false
 }
 
@@ -129,7 +173,8 @@ Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
  * is true, and non-null if `isnull` is false.
  */
 Expr basicOrCustomNullGuard(Expr e, boolean branch, boolean isnull) {
-  result = basicNullGuard(e, branch, isnull) or
+  result = basicNullGuard(e, branch, isnull)
+  or
   exists(MethodAccess call, Method m, int ix |
     call = result and
     call.getArgument(ix) = e and
@@ -163,7 +208,9 @@ Guard nullGuard(SsaVariable v, boolean branch, boolean isnull) {
  * A return statement that on a return value of `retval` allows the conclusion that the
  * parameter `p` either is null or non-null as specified by `isnull`.
  */
-private predicate validReturnInCustomNullGuard(ReturnStmt ret, Parameter p, boolean retval, boolean isnull) {
+private predicate validReturnInCustomNullGuard(
+  ReturnStmt ret, Parameter p, boolean retval, boolean isnull
+) {
   exists(Method m |
     ret.getEnclosingCallable() = m and
     p.getCallable() = m and
@@ -173,9 +220,7 @@ private predicate validReturnInCustomNullGuard(ReturnStmt ret, Parameter p, bool
     nullGuardedReturn(ret, ssa, isnull) and
     (retval = true or retval = false)
     or
-    exists(Expr res | res = ret.getResult() |
-      res = nullGuard(ssa, retval, isnull)
-    )
+    exists(Expr res | res = ret.getResult() | res = nullGuard(ssa, retval, isnull))
   )
 }
 
@@ -200,8 +245,10 @@ private Method customNullGuard(int index, boolean retval, boolean isnull) {
     p.getPosition() = index and
     forex(ReturnStmt ret |
       ret.getEnclosingCallable() = result and
-      exists(Expr res | res = ret.getResult() | not res.(BooleanLiteral).getBooleanValue() = retval.booleanNot())
-      |
+      exists(Expr res | res = ret.getResult() |
+        not res.(BooleanLiteral).getBooleanValue() = retval.booleanNot()
+      )
+    |
       validReturnInCustomNullGuard(ret, p, retval, isnull)
     )
   )

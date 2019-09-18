@@ -6,9 +6,9 @@
 import cpp
 
 from WhileStmt ws
-where not
-(
-	ws.getCondition().getAChild*() = ws.getASuccessor()
-	and count(ws.getASuccessor()) = 1
-)
+where
+  not (
+    ws.getCondition().getAChild*() = ws.getASuccessor() and
+    count(ws.getASuccessor()) = 1
+  )
 select ws

@@ -3,7 +3,7 @@
  * @description Extracting files from a malicious zip archive without validating that the
  *              destination file path is within the destination directory can cause files outside
  *              the destination directory to be overwritten.
- * @kind problem
+ * @kind path-problem
  * @id cs/zipslip
  * @problem.severity error
  * @precision high
@@ -13,7 +13,10 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.ZipSlip::ZipSlip
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
-from TaintTrackingConfiguration zipTaintTracking, DataFlow::Node source, DataFlow::Node sink
-where zipTaintTracking.hasFlow(source, sink)
-select sink, "Unsanitized zip archive $@, which may contain '..', is used in a file system operation.", source, "item path"
+from TaintTrackingConfiguration zipTaintTracking, DataFlow::PathNode source, DataFlow::PathNode sink
+where zipTaintTracking.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "Unsanitized zip archive $@, which may contain '..', is used in a file system operation.",
+  source.getNode(), "item path"

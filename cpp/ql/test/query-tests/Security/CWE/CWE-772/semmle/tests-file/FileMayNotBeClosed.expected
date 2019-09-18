@@ -1,0 +1,14 @@
+| test.cpp:59:2:59:30 | ... = ... | The file opened here may not be closed at $@. | test.cpp:64:1:64:1 | return ... | this exit point |
+| test.cpp:69:12:69:16 | call to fopen | The file opened here may not be closed at $@. | test.cpp:73:3:73:9 | return ... | this exit point |
+| test.cpp:85:2:85:30 | ... = ... | The file opened here may not be closed at $@. | test.cpp:89:1:89:1 | return ... | this exit point |
+| test.cpp:115:2:115:17 | ... = ... | The file opened here may not be closed at $@. | test.cpp:121:3:121:9 | return ... | this exit point |
+| test.cpp:115:2:115:17 | ... = ... | The file opened here may not be closed at $@. | test.cpp:124:1:124:1 | return ... | this exit point |
+| test.cpp:118:2:118:17 | ... = ... | The file opened here may not be closed at $@. | test.cpp:121:3:121:9 | return ... | this exit point |
+| test.cpp:221:12:221:16 | call to fopen | The file opened here may not be closed at $@. | test.cpp:225:1:225:1 | return ... | this exit point |
+| test.cpp:240:12:240:16 | call to fopen | The file opened here may not be closed at $@. | test.cpp:249:1:249:1 | return ... | this exit point |
+| test.cpp:253:12:253:16 | call to fopen | The file opened here may not be closed at $@. | test.cpp:260:1:260:1 | return ... | this exit point |
+| test.cpp:276:12:276:16 | call to fopen | The file opened here may not be closed at $@. | test.cpp:281:3:281:9 | return ... | this exit point |
+| test.cpp:299:12:299:16 | call to fopen | The file opened here may not be closed at $@. | test.cpp:305:1:305:1 | return ... | this exit point |
+| test.cpp:310:12:310:16 | call to fopen | The file opened here may not be closed at $@. | test.cpp:323:1:323:1 | return ... | this exit point |
+| test.cpp:356:12:356:16 | call to fopen | The file opened here may not be closed at $@. | test.cpp:369:1:369:1 | return ... | this exit point |
+| test.cpp:384:15:384:19 | call to fopen | The file opened here may not be closed at $@. | test.cpp:394:1:394:1 | return ... | this exit point |

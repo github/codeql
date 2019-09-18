@@ -1,5 +1,0 @@
-| annotations/B.java:3:1:3:27 | SuppressWarnings | "unused" |
-| annotations/SuppressWarningsExample.java:6:2:6:35 | SuppressWarnings | "deprecation" |
-| annotations/SuppressWarningsExample.java:11:2:11:33 | SuppressWarnings | "deprecation" |
-| annotations/SuppressWarningsExample.java:16:2:16:47 | SuppressWarnings | "deprecation" |
-| annotations/SuppressWarningsExample.java:16:2:16:47 | SuppressWarnings | "rawtypes" |

@@ -11,27 +11,24 @@
  *       modularity
  *       external/cwe/cwe-485
  */
+
 import java
 import semmle.code.java.Collections
 
 predicate guardedByInstanceOf(VarAccess e, RefType t) {
   exists(IfStmt s, InstanceOfExpr instanceCheck, Type checkType |
-    s.getCondition() = instanceCheck
-    and
-    instanceCheck.getTypeName().getType() = checkType
-    and
+    s.getCondition() = instanceCheck and
+    instanceCheck.getTypeName().getType() = checkType and
     // The same variable appears as the subject of the `instanceof`.
-    instanceCheck.getExpr() = e.getVariable().getAnAccess()
-    and
+    instanceCheck.getExpr() = e.getVariable().getAnAccess() and
     // The checked type is either the type itself, or a raw version. For example, it is usually
     // fine to check for `x instanceof ArrayList` and then cast to `ArrayList<Foo>`, because
     // the generic parameter is usually known.
-    (checkType = t or checkType = t.getSourceDeclaration().(GenericType).getRawType())
-    and
+    (checkType = t or checkType = t.getSourceDeclaration().(GenericType).getRawType()) and
     // The expression appears in one of the branches.
     // (We do not verify here whether the guard is correctly implemented.)
     exists(Stmt branch | branch = s.getThen() or branch = s.getElse() |
-      branch = e.getEnclosingStmt().getParent+()
+      branch = e.getEnclosingStmt().getEnclosingStmt+()
     )
   )
 }
@@ -53,8 +50,10 @@ where
   not e.getEnclosingCallable().suppressesWarningsAbout("unchecked") and
   // Report the qualified names if the names are the same.
   if coll.getName() = c.getName()
-    then (abstractName = coll.getQualifiedName() and concreteName = c.getQualifiedName())
-    else (abstractName = coll.getName() and concreteName = c.getName())
-select e, "$@ is cast to the concrete type $@, losing abstraction.",
-  coll.getSourceDeclaration(), abstractName,
-  c.getSourceDeclaration(), concreteName
+  then (
+    abstractName = coll.getQualifiedName() and concreteName = c.getQualifiedName()
+  ) else (
+    abstractName = coll.getName() and concreteName = c.getName()
+  )
+select e, "$@ is cast to the concrete type $@, losing abstraction.", coll.getSourceDeclaration(),
+  abstractName, c.getSourceDeclaration(), concreteName

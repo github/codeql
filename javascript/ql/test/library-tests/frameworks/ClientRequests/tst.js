@@ -48,3 +48,118 @@ import {ClientRequest, net} from 'electron';
 
     unknown({ url:url });
 });
+
+(function() {
+    axios({data: data});
+
+    axios.get(x, {data: not_data});
+
+    axios.post(x, data1, {data: data2});
+
+    axios({headers: headerData, params: paramsData});
+
+    window.fetch(url, {headers: headerData, body: bodyData});
+
+    got(url, {headers: headerData, body: bodyData, quer: queryData});
+
+    superagent.get(url).query(data);
+    superagent.get(url).set('x', headerData)
+    superagent.post(url).send(bodyData);
+    superagent.get(url).set('x', headerData).query(queryData);
+    superagent.get(url).unknown(nonData).query(queryData);
+
+});
+
+(function() {
+    $.ajax(url, {data: data});
+    $.ajax({url: url, tdata: data});
+
+    $.getJSON(url, {data: data});
+    $.getJSON({url: url, tdata: data});
+
+    var xhr = new XMLHttpRequest();
+    xhr.open(_, url);
+    xhr.send(data);
+});
+
+(function() {
+
+    http.get(relativeUrl, {host: host});
+
+    axios({host: host});
+
+    got(relativeUrl, {host: host});
+
+    net.request({ hostname: host });
+
+});
+
+(function() {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open(_, url);
+    xhr.send(data);
+    xhr.onreadystatechange = function() {
+        this.response;
+    };
+
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open(_, url);
+    xhr2.send(data);
+    xhr2.addEventListener("readystatechange", function() {
+        this.responseText;
+        this.responseXML;
+        this.statusText;
+    });
+})
+
+(function() {
+    request(url, function (error, response, body) {
+        error;
+        response.body;
+        body;
+    });
+
+    request(url, {json: true}, function (error, response, body) {
+        error;
+        response.body;
+        body;
+    });
+
+    requestPromise(url, {json: true});
+});
+
+(function() {
+    axios.get(url).then(response => response.data);
+    axios({ url: url, responseType: 'json'}).then(response => response.data);
+    axios(unknown).then(response => response.data);
+    axios({ responseType: unknown }).then(response => response.data);
+})
+
+
+(function() {
+    fetch(url).then(r => r.json()).then(json => json);
+})
+
+(function() {
+    got(url).then(response => response.body);
+    got(url, { json: true }).then(response => response.body);
+    got.stream(url).pipe(process.stdout);
+})
+
+(function() {
+    superagent.get(url).end((err, res) => {
+        err;
+        res;
+    });
+});
+
+(function() {
+    let XhrIo = goog.require('goog.net.XhrIo');
+    let xhr = new XhrIo();
+    xhr.send(url);
+    xhr.addEventListener('readystatechange', function() {
+        xhr.getResponseJson();
+        xhr.getResponseHeaders();
+    });
+})

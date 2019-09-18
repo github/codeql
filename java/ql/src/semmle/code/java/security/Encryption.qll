@@ -10,34 +10,23 @@ class SSLClass extends RefType {
 }
 
 class X509TrustManager extends RefType {
-  X509TrustManager() {
-    this.hasQualifiedName("javax.net.ssl", "X509TrustManager")
-  }
+  X509TrustManager() { this.hasQualifiedName("javax.net.ssl", "X509TrustManager") }
 }
 
-
 class HttpsURLConnection extends RefType {
-  HttpsURLConnection() {
-    hasQualifiedName("javax.net.ssl", "HttpsURLConnection")
-  }
+  HttpsURLConnection() { hasQualifiedName("javax.net.ssl", "HttpsURLConnection") }
 }
 
 class SSLSocketFactory extends RefType {
-  SSLSocketFactory() {
-    this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory")
-  }
+  SSLSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
 }
 
 class SSLContext extends RefType {
-  SSLContext() {
-    hasQualifiedName("javax.net.ssl", "SSLContext")
-  }
+  SSLContext() { hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
 
 class HostnameVerifier extends RefType {
-  HostnameVerifier() {
-    hasQualifiedName("javax.net.ssl", "HostnameVerifier")
-  }
+  HostnameVerifier() { hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
 }
 
 class HostnameVerifierVerify extends Method {
@@ -86,13 +75,13 @@ private string algorithmRegex(string algorithmString) {
   // Algorithms usually appear in names surrounded by characters that are not
   // alphabetical characters in the same case. This handles the upper and lower
   // case cases.
-  result = "((^|.*[^A-Z])(" + algorithmString + ")([^A-Z].*|$))"
-  // or...
-  + "|" +
-  // For lowercase, we want to be careful to avoid being confused by camelCase
-  // hence we require two preceding uppercase letters to be sure of a case switch,
-  // or a preceding non-alphabetic character
-  "((^|.*[A-Z]{2}|.*[^a-zA-Z])(" + algorithmString.toLowerCase() + ")([^a-z].*|$))"
+  result = "((^|.*[^A-Z])(" + algorithmString + ")([^A-Z].*|$))" +
+      // or...
+      "|" +
+      // For lowercase, we want to be careful to avoid being confused by camelCase
+      // hence we require two preceding uppercase letters to be sure of a case switch,
+      // or a preceding non-alphabetic character
+      "((^|.*[A-Z]{2}|.*[^a-zA-Z])(" + algorithmString.toLowerCase() + ")([^a-z].*|$))"
 }
 
 /** Gets a blacklist of algorithms that are known to be insecure. */
@@ -119,7 +108,7 @@ private string rankedAlgorithmBlacklist(int i) {
 private string algorithmBlacklistString(int i) {
   i = 1 and result = rankedAlgorithmBlacklist(i)
   or
-  result = rankedAlgorithmBlacklist(i) + "|" + algorithmBlacklistString(i-1)
+  result = rankedAlgorithmBlacklist(i) + "|" + algorithmBlacklistString(i - 1)
 }
 
 /** Gets a regex for matching strings that look like they contain a blacklisted algorithm. */
@@ -131,6 +120,7 @@ string algorithmBlacklistRegex() {
 private string algorithmWhitelist() {
   result = "RSA" or
   result = "SHA256" or
+  result = "SHA512" or
   result = "CCM" or
   result = "GCM" or
   result = "AES" or
@@ -138,14 +128,12 @@ private string algorithmWhitelist() {
   result = "ECIES"
 }
 
-private string rankedAlgorithmWhitelist(int i) {
-  result = rank[i](algorithmWhitelist())
-}
+private string rankedAlgorithmWhitelist(int i) { result = rank[i](algorithmWhitelist()) }
 
 private string algorithmWhitelistString(int i) {
   i = 1 and result = rankedAlgorithmWhitelist(i)
   or
-  result = rankedAlgorithmWhitelist(i) + "|" + algorithmWhitelistString(i-1)
+  result = rankedAlgorithmWhitelist(i) + "|" + algorithmWhitelistString(i - 1)
 }
 
 /** Gets a regex for matching strings that look like they contain a whitelisted algorithm. */
@@ -160,10 +148,11 @@ string algorithmWhitelistRegex() {
  */
 abstract class CryptoAlgoSpec extends Top {
   CryptoAlgoSpec() { this instanceof Call }
+
   abstract Expr getAlgoSpec();
 }
 
-abstract class JavaxCryptoAlgoSpec extends CryptoAlgoSpec {}
+abstract class JavaxCryptoAlgoSpec extends CryptoAlgoSpec { }
 
 class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
   JavaxCryptoCipher() {
@@ -173,9 +162,7 @@ class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() {
-    result = this.(MethodAccess).getArgument(0)
-  }
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
 class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
@@ -187,9 +174,7 @@ class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
 
   override Expr getAlgoSpec() {
     exists(ConstructorCall c | c = this |
-      if c.getNumArgument() = 2
-      then result = c.getArgument(1)
-      else result = c.getArgument(3)
+      if c.getNumArgument() = 2 then result = c.getArgument(1) else result = c.getArgument(3)
     )
   }
 }
@@ -202,9 +187,7 @@ class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() {
-    result = this.(MethodAccess).getArgument(0)
-  }
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
 class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
@@ -215,9 +198,7 @@ class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() {
-    result = this.(MethodAccess).getArgument(0)
-  }
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
 class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
@@ -228,12 +209,10 @@ class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() {
-    result = this.(MethodAccess).getArgument(0)
-  }
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
-abstract class JavaSecurityAlgoSpec extends CryptoAlgoSpec {}
+abstract class JavaSecurityAlgoSpec extends CryptoAlgoSpec { }
 
 class JavaSecurityMessageDigest extends JavaSecurityAlgoSpec {
   JavaSecurityMessageDigest() {
@@ -242,9 +221,7 @@ class JavaSecurityMessageDigest extends JavaSecurityAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() {
-    result = this.(ConstructorCall).getArgument(0)
-  }
+  override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
 }
 
 class JavaSecuritySignature extends JavaSecurityAlgoSpec {
@@ -254,7 +231,5 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() {
-    result = this.(ConstructorCall).getArgument(0)
-  }
+  override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
 }

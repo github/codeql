@@ -1,4 +1,4 @@
-| FormatUnusedArgument.cs:11:9:11:28 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:11:23:11:24 | "" | format string | FormatUnusedArgument.cs:11:27:11:27 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:11:9:11:29 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:11:23:11:25 | "X" | format string | FormatUnusedArgument.cs:11:28:11:28 | (...) ... | this supplied value |
 | FormatUnusedArgument.cs:14:9:14:34 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:14:23:14:27 | "{0}" | format string | FormatUnusedArgument.cs:14:33:14:33 | (...) ... | this supplied value |
 | FormatUnusedArgument.cs:17:9:17:38 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:17:23:17:31 | "{0} {0}" | format string | FormatUnusedArgument.cs:17:37:17:37 | (...) ... | this supplied value |
 | FormatUnusedArgument.cs:20:9:20:38 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:20:23:20:31 | "{1} {1}" | format string | FormatUnusedArgument.cs:20:34:20:34 | (...) ... | this supplied value |

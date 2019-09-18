@@ -8,8 +8,7 @@ class Variable extends Declaration, @dotnet_variable {
 }
 
 /** A .Net field. */
-class Field extends Variable, Member, @dotnet_field {
-}
+class Field extends Variable, Member, @dotnet_field { }
 
 /** A parameter to a .Net callable or property. */
 class Parameter extends Variable, @dotnet_parameter {

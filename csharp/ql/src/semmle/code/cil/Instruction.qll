@@ -3,16 +3,13 @@
 private import CIL
 
 /** An instruction. */
-class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instruction
-{
-  override string toString() { result=getIndex() + ": " + getOpcodeName() + getExtraStr() }
+class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instruction {
+  override string toString() { result = getIndex() + ": " + getOpcodeName() + getExtraStr() }
 
   /** Gets the method containing this instruction. */
-  override MethodImplementation getImplementation() {
-    cil_instruction(this, _, _, result)
-  }
+  override MethodImplementation getImplementation() { cil_instruction(this, _, _, result) }
 
-  override Method getMethod() { result=getImplementation().getMethod() }
+  override Method getMethod() { result = getImplementation().getMethod() }
 
   /**
    * Gets the index of this instruction.
@@ -21,7 +18,7 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
   int getIndex() { cil_instruction(this, _, result, _) }
 
   /** Gets the opcode of this instruction. */
-  final int getOpcode() { cil_instruction(this,result,_,_) }
+  final int getOpcode() { cil_instruction(this, result, _, _) }
 
   /** Gets the opcode name of this instruction, for example `ldnull`. */
   string getOpcodeName() { none() }
@@ -30,9 +27,7 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
   string getExtra() { none() }
 
   private string getExtraStr() {
-    if exists(getExtra())
-    then result = " " + getExtra()
-    else result = ""
+    if exists(getExtra()) then result = " " + getExtra() else result = ""
   }
 
   /** Gets the declaration accessed by this instruction, if any. */
@@ -40,11 +35,9 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
 
   /** Gets a successor instruction to this instruction. */
   override Instruction getASuccessorType(FlowType t) {
-    t instanceof NormalFlow
-    and
-    canFlowNext()
-    and
-    result = this.getImplementation().getInstruction(getIndex()+1)
+    t instanceof NormalFlow and
+    canFlowNext() and
+    result = this.getImplementation().getInstruction(getIndex() + 1)
   }
 
   /** Holds if this instruction passes control flow into the next instruction. */
@@ -54,22 +47,20 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
    * Gets the `i`th handler that applies to this instruction.
    * Indexed from 0.
    */
-  Handler getHandler(int i)
-  {
-    result.isInScope(this)
-    and
-    result.getIndex() = rank[i+1](int hi | exists(Handler h | h.isInScope(this) and hi=h.getIndex()))
+  Handler getHandler(int i) {
+    result.isInScope(this) and
+    result.getIndex() = rank[i + 1](int hi |
+        exists(Handler h | h.isInScope(this) and hi = h.getIndex())
+      )
   }
 
-  override Type getType() { result=ControlFlowNode.super.getType() }
+  override Type getType() { result = ControlFlowNode.super.getType() }
 
   override Location getALocation() {
-    cil_instruction_location(this, result)  // The source code, if available
+    cil_instruction_location(this, result) // The source code, if available
     or
-    result = getImplementation().getLocation()  // The containing assembly
+    result = getImplementation().getLocation() // The containing assembly
   }
 
-  override Location getLocation() {
-    result = Element.super.getLocation()
-  }
+  override Location getLocation() { result = Element.super.getLocation() }
 }

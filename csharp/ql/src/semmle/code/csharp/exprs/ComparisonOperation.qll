@@ -60,7 +60,9 @@ class RelationalOperation extends ComparisonOperation, @rel_op_expr {
  */
 class GTExpr extends RelationalOperation, @gt_expr {
   override string getOperator() { result = ">" }
+
   override Expr getGreaterOperand() { result = getLeftOperand() }
+
   override Expr getLesserOperand() { result = getRightOperand() }
 }
 
@@ -69,7 +71,9 @@ class GTExpr extends RelationalOperation, @gt_expr {
  */
 class LTExpr extends RelationalOperation, @lt_expr {
   override string getOperator() { result = "<" }
+
   override Expr getGreaterOperand() { result = getRightOperand() }
+
   override Expr getLesserOperand() { result = getLeftOperand() }
 }
 
@@ -78,7 +82,9 @@ class LTExpr extends RelationalOperation, @lt_expr {
  */
 class GEExpr extends RelationalOperation, @ge_expr {
   override string getOperator() { result = ">=" }
+
   override Expr getGreaterOperand() { result = getLeftOperand() }
+
   override Expr getLesserOperand() { result = getRightOperand() }
 }
 
@@ -87,6 +93,8 @@ class GEExpr extends RelationalOperation, @ge_expr {
  */
 class LEExpr extends RelationalOperation, @le_expr {
   override string getOperator() { result = "<=" }
+
   override Expr getGreaterOperand() { result = getRightOperand() }
+
   override Expr getLesserOperand() { result = getLeftOperand() }
 }

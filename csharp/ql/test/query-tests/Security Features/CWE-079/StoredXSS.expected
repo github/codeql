@@ -1,1 +1,0 @@
-| StoredXSS.cs:24:44:24:86 | ... + ... | $@ flows to here and is written to HTML or javascript. | StoredXSS.cs:24:60:24:86 | call to method GetString | Stored user-provided value |

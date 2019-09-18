@@ -2,39 +2,42 @@
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:18:17:18:24 | access to property Property |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:6:34:6:34 | 1 |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:20:20:20:33 | access to indexer |
-| Assignables.cs:6:9:6:16 | Property | Assignables.cs:87:32:87:32 | 2 |
+| Assignables.cs:6:9:6:16 | Property | Assignables.cs:96:32:96:32 | 2 |
 | Assignables.cs:9:9:9:12 | Item | Assignables.cs:26:26:26:33 | access to local variable variable |
-| Assignables.cs:9:9:9:12 | Item | Assignables.cs:87:35:87:35 | 3 |
+| Assignables.cs:9:9:9:12 | Item | Assignables.cs:96:35:96:35 | 3 |
 | Assignables.cs:11:16:11:24 | parameter | Assignables.cs:16:21:16:25 | access to field Field |
 | Assignables.cs:13:13:13:20 | variable | Assignables.cs:13:24:13:24 | 0 |
 | Assignables.cs:13:13:13:20 | variable | Assignables.cs:14:20:14:28 | access to parameter parameter |
 | Assignables.cs:22:22:22:29 | callback | Assignables.cs:22:33:22:50 | (...) => ... |
-| Assignables.cs:36:22:36:22 | o | Assignables.cs:38:13:38:13 | 0 |
-| Assignables.cs:41:35:41:35 | y | Assignables.cs:44:17:44:17 | access to parameter x |
-| Assignables.cs:49:38:49:38 | y | Assignables.cs:52:17:52:17 | access to parameter x |
-| Assignables.cs:55:34:55:34 | x | Assignables.cs:58:17:58:17 | 1 |
-| Assignables.cs:55:45:55:45 | y | Assignables.cs:60:17:60:17 | 1 |
-| Assignables.cs:73:21:73:24 | temp | Assignables.cs:73:28:73:33 | ... + ... |
-| Assignables.cs:83:14:83:14 | x | Assignables.cs:83:40:83:40 | 0 |
-| Assignables.cs:83:14:83:14 | x | Assignables.cs:84:24:84:24 | 1 |
-| Assignables.cs:83:14:83:14 | x | Assignables.cs:88:24:88:24 | 4 |
-| Assignables.cs:83:14:83:14 | x | Assignables.cs:88:35:88:35 | 5 |
-| Assignables.cs:83:14:83:14 | x | Assignables.cs:89:31:89:31 | 6 |
-| Assignables.cs:83:14:83:14 | x | Assignables.cs:89:34:89:34 | 7 |
-| Assignables.cs:83:23:83:23 | b | Assignables.cs:83:44:83:48 | false |
-| Assignables.cs:83:23:83:23 | b | Assignables.cs:84:28:84:31 | true |
-| Assignables.cs:83:23:83:23 | b | Assignables.cs:88:28:88:32 | false |
-| Assignables.cs:83:23:83:23 | b | Assignables.cs:89:24:89:27 | true |
-| Assignables.cs:83:33:83:33 | s | Assignables.cs:83:51:83:52 | "" |
-| Assignables.cs:83:33:83:33 | s | Assignables.cs:84:34:84:36 | "a" |
-| Assignables.cs:86:40:86:44 | tuple | Assignables.cs:86:48:86:57 | call to method GetTuple |
-| Assignables.cs:99:13:99:13 | i | Assignables.cs:99:17:99:17 | 0 |
-| Assignables.cs:100:14:100:14 | p | Assignables.cs:100:18:100:19 | &... |
-| Assignables.cs:104:25:104:25 | i | Assignables.cs:104:48:104:48 | 1 |
-| Assignables.cs:104:39:104:39 | s | Assignables.cs:104:55:104:56 | "" |
-| Assignables.cs:109:16:109:16 | s | Assignables.cs:109:20:109:21 | "" |
-| Assignables.cs:116:13:116:13 | s | Assignables.cs:116:17:116:25 | nameof(...) |
-| Assignables.cs:116:13:116:13 | s | Assignables.cs:117:13:117:30 | nameof(...) |
+| Assignables.cs:37:22:37:22 | o | Assignables.cs:39:13:39:13 | 0 |
+| Assignables.cs:42:35:42:35 | y | Assignables.cs:45:17:45:17 | access to parameter x |
+| Assignables.cs:50:38:50:38 | y | Assignables.cs:53:17:53:17 | access to parameter x |
+| Assignables.cs:56:39:56:39 | y | Assignables.cs:59:17:59:17 | access to parameter x |
+| Assignables.cs:64:34:64:34 | x | Assignables.cs:67:17:67:17 | 1 |
+| Assignables.cs:64:45:64:45 | y | Assignables.cs:69:17:69:17 | 1 |
+| Assignables.cs:82:21:82:24 | temp | Assignables.cs:82:28:82:33 | ... + ... |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:92:40:92:40 | 0 |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:93:24:93:24 | 1 |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:97:24:97:24 | 4 |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:97:35:97:35 | 5 |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:98:31:98:31 | 6 |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:98:34:98:34 | 7 |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:92:44:92:48 | false |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:93:28:93:31 | true |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:97:28:97:32 | false |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:98:24:98:27 | true |
+| Assignables.cs:92:33:92:33 | s | Assignables.cs:92:51:92:52 | "" |
+| Assignables.cs:92:33:92:33 | s | Assignables.cs:93:34:93:36 | "a" |
+| Assignables.cs:95:40:95:44 | tuple | Assignables.cs:95:48:95:57 | call to method GetTuple |
+| Assignables.cs:108:13:108:13 | i | Assignables.cs:108:17:108:17 | 0 |
+| Assignables.cs:109:14:109:14 | p | Assignables.cs:109:18:109:19 | &... |
+| Assignables.cs:113:25:113:25 | i | Assignables.cs:113:48:113:48 | 1 |
+| Assignables.cs:113:39:113:39 | s | Assignables.cs:113:55:113:56 | "" |
+| Assignables.cs:118:16:118:16 | s | Assignables.cs:118:20:118:21 | "" |
+| Assignables.cs:125:13:125:13 | s | Assignables.cs:125:17:125:25 | nameof(...) |
+| Assignables.cs:125:13:125:13 | s | Assignables.cs:126:13:126:30 | nameof(...) |
+| Assignables.cs:132:13:132:13 | x | Assignables.cs:132:17:132:17 | 0 |
+| Assignables.cs:138:19:138:19 | x | Assignables.cs:138:23:138:50 | object creation of type MemoryStream |
 | Discards.cs:5:30:5:30 | x | Discards.cs:7:13:7:17 | false |
 | Finally.cs:7:13:7:13 | i | Finally.cs:7:17:7:17 | 0 |
 | Finally.cs:7:13:7:13 | i | Finally.cs:15:17:15:17 | 1 |

@@ -11,6 +11,7 @@
  *       readability
  *       external/cwe/cwe-691
  */
+
 import java
 
 /** An expression containing a method access, array access, or qualified field access. */

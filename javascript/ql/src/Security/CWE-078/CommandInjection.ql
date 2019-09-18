@@ -2,7 +2,7 @@
  * @name Uncontrolled command line
  * @description Using externally controlled strings in a command line may allow a malicious
  *              user to change the meaning of the command.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/command-line-injection
@@ -14,8 +14,13 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CommandInjection::CommandInjection
+import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink, DataFlow::Node highlight
-where cfg.hasFlow(source, sink) and
-      if cfg.isSink(sink, _) then cfg.isSink(sink, highlight) else highlight = sink
-select highlight, "This command depends on $@.", source, "a user-provided value"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight, Source sourceNode
+where
+  cfg.hasFlowPath(source, sink) and
+  if cfg.isSinkWithHighlight(sink.getNode(), _)
+  then cfg.isSinkWithHighlight(sink.getNode(), highlight)
+  else highlight = sink.getNode() and
+  sourceNode = source.getNode()
+select highlight, source, sink, "This command depends on $@.", sourceNode, sourceNode.getSourceType()

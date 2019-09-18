@@ -34,11 +34,7 @@ class SpringBeanInitDestroyMethod extends CallableEntryPoint {
  * A factory method called to construct an instance of a bean.
  */
 class SpringFactoryMethod extends CallableEntryPoint {
-  SpringFactoryMethod() {
-    exists(SpringBean bean |
-      this = bean.getFactoryMethod()
-    )
-  }
+  SpringFactoryMethod() { exists(SpringBean bean | this = bean.getFactoryMethod()) }
 }
 
 /**
@@ -55,9 +51,7 @@ class SpringBeanAnnotatedMethod extends CallableEntryPoint {
  * A live entry point within a Spring controller.
  */
 class SpringControllerEntryPoint extends CallableEntryPoint {
-  SpringControllerEntryPoint() {
-    this instanceof SpringControllerMethod
-  }
+  SpringControllerEntryPoint() { this instanceof SpringControllerMethod }
 }
 
 /**
@@ -116,7 +110,9 @@ class SpringCLI extends CallableEntryPoint {
       hasAnnotation("org.springframework.shell.core.annotation", "CliCommand") or
       hasAnnotation("org.springframework.shell.core.annotation", "CliAvailabilityIndicator")
     ) and
-    getDeclaringType().getAnAncestor().hasQualifiedName("org.springframework.shell.core", "CommandMarker")
+    getDeclaringType()
+        .getAnAncestor()
+        .hasQualifiedName("org.springframework.shell.core", "CommandMarker")
   }
 }
 

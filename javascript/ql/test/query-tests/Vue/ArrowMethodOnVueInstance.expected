@@ -1,0 +1,5 @@
+| tst.js:4:11:4:20 | () => this | The $@ of this $@ it will not be bound to the Vue instance. | tst.js:4:17:4:20 | this | `this` variable | tst.js:4:11:4:20 | () => this | arrow function |
+| tst.js:6:6:6:15 | () => this | The $@ of this $@ it will not be bound to the Vue instance. | tst.js:6:12:6:15 | this | `this` variable | tst.js:6:6:6:15 | () => this | arrow function |
+| tst.js:7:13:7:22 | () => this | The $@ of this $@ it will not be bound to the Vue instance. | tst.js:7:19:7:22 | this | `this` variable | tst.js:7:13:7:22 | () => this | arrow function |
+| tst.js:8:13:8:22 | () => this | The $@ of this $@ it will not be bound to the Vue instance. | tst.js:8:19:8:22 | this | `this` variable | tst.js:8:13:8:22 | () => this | arrow function |
+| tst.js:11:10:11:19 | () => this | The $@ of this $@ it will not be bound to the Vue instance. | tst.js:11:16:11:19 | this | `this` variable | tst.js:11:10:11:19 | () => this | arrow function |

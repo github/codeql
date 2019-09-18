@@ -8,9 +8,9 @@
  * @id java/functions-per-type
  * @tags maintainability
  */
+
 import java
 
 from RefType t
 where t.fromSource()
-select t, t.getMetrics().getNumberOfCallables() as n
-order by n desc
+select t, t.getMetrics().getNumberOfCallables() as n order by n desc

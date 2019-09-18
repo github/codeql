@@ -39,36 +39,33 @@ class CanonicalName extends @symbol {
    */
   string getExternalModuleName() {
     symbol_module(this, result)
+    or
+    exists(PackageJSON pkg |
+      getModule() = pkg.getMainModule() and
+      result = pkg.getPackageName()
+    )
   }
 
   /**
    * Gets the name of the global variable represented by this canonical name, if any.
    */
-  string getGlobalName() {
-    symbol_global(this, result)
-  }
+  string getGlobalName() { symbol_global(this, result) }
 
   /**
    * Gets the module represented by this canonical name, if such a module exists
    * and was extracted.
    */
-  Module getModule() {
-    ast_node_symbol(result, this)
-  }
+  Module getModule() { ast_node_symbol(result, this) }
 
   /**
    * Holds if this canonical name has a child, i.e. an extension of its qualified name.
    */
-  predicate hasChild() {
-    exists (getAChild())
-  }
+  predicate hasChild() { exists(getAChild()) }
 
   /**
    * True if this has no parent.
    */
-  predicate isRoot() {
-    not exists(getParent())
-  }
+  predicate isRoot() { not exists(getParent()) }
 
   /**
    * Holds if this is the export namespace of a module.
@@ -81,9 +78,7 @@ class CanonicalName extends @symbol {
   /**
    * Holds if this is the export namespace of the given module.
    */
-  predicate isModuleRoot(StmtContainer mod) {
-    ast_node_symbol(mod, this)
-  }
+  predicate isModuleRoot(StmtContainer mod) { ast_node_symbol(mod, this) }
 
   /**
    * Holds if this canonical name is exported by its parent.
@@ -91,17 +86,16 @@ class CanonicalName extends @symbol {
    * Some entities, such as type parameters, have canonical names that are not
    * available through qualified name access.
    */
-  predicate isExportedMember() {
-    this instanceof @member_symbol
-  }
+  predicate isExportedMember() { this instanceof @member_symbol }
 
   /** Holds if this has the given qualified name, rooted in the global scope. */
   predicate hasQualifiedName(string globalName) {
     globalName = getGlobalName()
     or
-    exists (string prefix |
+    exists(string prefix |
       getParent().hasQualifiedName(prefix) and
-      globalName = prefix + "." + getName())
+      globalName = prefix + "." + getName()
+    )
   }
 
   /** Holds if this has the given qualified name, rooted in the given external module. */
@@ -109,23 +103,27 @@ class CanonicalName extends @symbol {
     moduleName = getParent().getExternalModuleName() and
     exportedName = getName()
     or
-    exists (string prefix |
+    exists(string prefix |
       getParent().hasQualifiedName(moduleName, prefix) and
-      exportedName = prefix + "." + getName())
+      exportedName = prefix + "." + getName()
+    )
   }
 
   /**
    * Gets the qualified name without the root.
    */
   string getRelativeName() {
-    if getParent().isModuleRoot() then
-      result = getName()
-    else if exists(getGlobalName()) then
-      result = min(getGlobalName())
-    else if exists(getParent()) then
-      result = getParent().getRelativeName() + "." + getName()
+    if getParent().isModuleRoot()
+    then result = getName()
     else
-      (not isModuleRoot() and result = getName())
+      if exists(getGlobalName())
+      then result = min(getGlobalName())
+      else
+        if exists(getParent())
+        then result = getParent().getRelativeName() + "." + getName()
+        else (
+          not isModuleRoot() and result = getName()
+        )
   }
 
   /**
@@ -135,20 +133,20 @@ class CanonicalName extends @symbol {
    * this is the container where the type is declared.
    */
   Scope getRootScope() {
-    exists (CanonicalName root | root = getRootName() |
-      if exists(root.getModule()) then
-        result = root.getModule().getScope()
-      else if exists(root.getGlobalName()) then
-        result instanceof GlobalScope
+    exists(CanonicalName root | root = getRootName() |
+      if exists(root.getModule())
+      then result = root.getModule().getScope()
       else
-        result = getADefinitionNode().getContainer().getScope())
+        if exists(root.getGlobalName())
+        then result instanceof GlobalScope
+        else result = getADefinitionNode().getContainer().getScope()
+    )
   }
 
   private CanonicalName getRootName() {
-    if exists(getGlobalName()) or isModuleRoot() or not exists(getParent()) then
-      result = this
-    else
-      result = getParent().getRootName()
+    if exists(getGlobalName()) or isModuleRoot() or not exists(getParent())
+    then result = this
+    else result = getParent().getRootName()
   }
 
   private ExprOrStmt getADefinitionNode() {
@@ -160,21 +158,28 @@ class CanonicalName extends @symbol {
    * Gets a string describing the root scope of this canonical name.
    */
   string describeRoot() {
-    exists (CanonicalName root | root = getRootName() |
-      if exists(root.getExternalModuleName()) then
-        result = "module '" + min(root.getExternalModuleName()) + "'"
-      else if exists(root.getModule().getFile().getRelativePath()) then
-        result = root.getModule().getFile().getRelativePath()
-      else if exists(root.getGlobalName()) then
-        result = "global scope"
-      else if exists(root.getADefinitionNode()) then
-        exists (StmtContainer container | container = root.getADefinitionNode().getContainer() |
-          result = container.(TopLevel).getFile().getRelativePath()
-          or
-          not container instanceof TopLevel and
-          result = container.getLocation().toString())
+    exists(CanonicalName root | root = getRootName() |
+      if exists(root.getExternalModuleName())
+      then result = "module '" + min(root.getExternalModuleName()) + "'"
       else
-        result = "unknown scope")
+        if exists(root.getModule().getFile().getRelativePath())
+        then result = root.getModule().getFile().getRelativePath()
+        else
+          if exists(root.getGlobalName())
+          then result = "global scope"
+          else
+            if exists(root.getADefinitionNode())
+            then
+              exists(StmtContainer container |
+                container = root.getADefinitionNode().getContainer()
+              |
+                result = container.(TopLevel).getFile().getRelativePath()
+                or
+                not container instanceof TopLevel and
+                result = container.getLocation().toString()
+              )
+            else result = "unknown scope"
+    )
   }
 
   /**
@@ -193,10 +198,9 @@ class CanonicalName extends @symbol {
    * ```
    */
   string toString() {
-    if isModuleRoot() then
-      result = describeRoot()
-    else
-      result = getRelativeName() + " in " + describeRoot()
+    if isModuleRoot()
+    then result = describeRoot()
+    else result = getRelativeName() + " in " + describeRoot()
   }
 }
 
@@ -205,46 +209,31 @@ class CanonicalName extends @symbol {
  */
 class TypeName extends CanonicalName {
   TypeName() {
-    exists (TypeReference ref | type_symbol(ref, this)) or
-    exists (TypeDefinition def | ast_node_symbol(def, this))
+    exists(TypeReference ref | type_symbol(ref, this)) or
+    exists(TypeDefinition def | ast_node_symbol(def, this)) or
+    base_type_names(_, this) or
+    base_type_names(this, _)
   }
 
   /**
    * Gets a definition of the type with this canonical name, if any.
    */
-  TypeDefinition getADefinition() {
-    ast_node_symbol(result, this)
-  }
+  TypeDefinition getADefinition() { ast_node_symbol(result, this) }
 
   /**
    * Gets a type annotation that refers to this type name.
    */
-  TypeAccess getAnAccess() {
-    result.getTypeName() = this
-  }
+  TypeAccess getAnAccess() { result.getTypeName() = this }
 
   /**
    * Gets a type that refers to this canonical name.
    */
-  TypeReference getATypeReference() {
-    result.getTypeName() = this
-  }
-
-  /**
-   * DEPRECATED. Use `getRelativeName()` or `hasQualifiedName()` instead.
-   *
-   * Gets the qualified name without the root.
-   */
-  deprecated string getQualifiedName() {
-    result = getRelativeName()
-  }
+  TypeReference getATypeReference() { result.getTypeName() = this }
 
   /**
    * Gets a type named in the `extends` or `implements` clause of this type.
    */
-  TypeName getABaseTypeName() {
-    base_type_names(this, result)
-  }
+  TypeName getABaseTypeName() { base_type_names(this, result) }
 
   /**
    * Gets the "self type" that refers to this canonical name.
@@ -255,9 +244,7 @@ class TypeName extends CanonicalName {
    * For example, the "self type" of `Array` is `Array<T>`, where `T` refers to the
    * type parameter declared on the `Array` type.
    */
-  TypeReference getType() {
-    self_types(this, result)
-  }
+  TypeReference getType() { self_types(this, result) }
 }
 
 /**
@@ -266,32 +253,19 @@ class TypeName extends CanonicalName {
 class Namespace extends CanonicalName {
   Namespace() {
     getAChild().isExportedMember() or
-    exists (NamespaceDefinition def | ast_node_symbol(def, this)) or
-    exists (NamespaceAccess ref | ast_node_symbol(ref, this))
+    exists(NamespaceDefinition def | ast_node_symbol(def, this)) or
+    exists(NamespaceAccess ref | ast_node_symbol(ref, this))
   }
 
   /**
    * Gets a definition of the type with this canonical name, if any.
    */
-  NamespaceDefinition getADefinition() {
-    ast_node_symbol(result, this)
-  }
+  NamespaceDefinition getADefinition() { ast_node_symbol(result, this) }
 
   /**
    * Gets a part of a type annotation that refers to this namespace.
    */
-  NamespaceAccess getAnAccess() {
-    result.getNamespace() = this
-  }
-
-  /**
-   * DEPRECATED. Use `getRelativeName()` or `hasQualifiedName()` instead.
-   *
-   * Gets the qualified name without the root.
-   */
-  deprecated string getQualifiedName() {
-    result = getRelativeName()
-  }
+  NamespaceAccess getAnAccess() { result.getNamespace() = this }
 
   /** Gets a namespace nested in this one. */
   Namespace getNamespaceMember(string name) {
@@ -318,9 +292,7 @@ class Namespace extends CanonicalName {
    *
    * Namespaces defined by enum declarations have no exporting containers.
    */
-  StmtContainer getAnExportingContainer() {
-    ast_node_symbol(result, this)
-  }
+  StmtContainer getAnExportingContainer() { ast_node_symbol(result, this) }
 }
 
 /**
@@ -328,21 +300,17 @@ class Namespace extends CanonicalName {
  */
 class CanonicalFunctionName extends CanonicalName {
   CanonicalFunctionName() {
-    exists (Function fun | ast_node_symbol(fun, this)) or
-    exists (InvokeExpr invoke | ast_node_symbol(invoke, this))
+    exists(Function fun | ast_node_symbol(fun, this)) or
+    exists(InvokeExpr invoke | ast_node_symbol(invoke, this))
   }
 
   /**
    * Gets a function with this canonical name.
    */
-  Function getADefinition() {
-    ast_node_symbol(result, this)
-  }
+  Function getADefinition() { ast_node_symbol(result, this) }
 
   /**
    * Gets the implementation of this function, if it exists.
    */
-  Function getImplementation() {
-    result = getADefinition() and result.hasBody()
-  }
+  Function getImplementation() { result = getADefinition() and result.hasBody() }
 }

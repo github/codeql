@@ -1,0 +1,6 @@
+| csharp73.cs:9:20:9:49 | array creation of type Char* | 0 | csharp73.cs:9:20:9:49 | 2 |
+| csharp73.cs:10:20:10:45 | array creation of type Char* | 0 | csharp73.cs:10:36:10:36 | 1 |
+| csharp73.cs:11:20:11:37 | array creation of type Char[] | 0 | csharp73.cs:11:20:11:37 | 1 |
+| csharp73.cs:12:20:12:38 | array creation of type Char* | 0 | csharp73.cs:12:36:12:37 | 10 |
+| csharp73.cs:13:20:13:31 | array creation of type Char[] | 0 | csharp73.cs:13:29:13:30 | 10 |
+| csharp73.cs:21:23:21:33 | array creation of type Int32[] | 0 | csharp73.cs:21:31:21:32 | 10 |

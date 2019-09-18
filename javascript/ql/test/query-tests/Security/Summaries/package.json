@@ -1,0 +1,10 @@
+{
+  "name": "infer-sources",
+  "version": "0.0.1",
+  "dependencies": {
+    "mysql": "2.15.0",
+    "xpath": "0.0.27",
+    "libxmljs": "0.19.1"
+  },
+  "main": "index.js"
+}

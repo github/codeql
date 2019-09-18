@@ -9,16 +9,14 @@
  * @tags reliability
  *       correctness
  */
+
 import java
 
 class CharType extends PrimitiveType {
-  CharType() {
-    this.hasName("char")
-  }
+  CharType() { this.hasName("char") }
 }
 
-private
-Type getABranchType(ConditionalExpr ce) {
+private Type getABranchType(ConditionalExpr ce) {
   result = ce.getTrueExpr().getType() or
   result = ce.getFalseExpr().getType()
 }
@@ -30,6 +28,5 @@ where
     t instanceof PrimitiveType and
     not t instanceof CharType
   )
-select ce, "Mismatch between types of branches: $@ and $@.",
-  ce.getTrueExpr(), ce.getTrueExpr().getType().getName(),
-  ce.getFalseExpr(), ce.getFalseExpr().getType().getName()
+select ce, "Mismatch between types of branches: $@ and $@.", ce.getTrueExpr(),
+  ce.getTrueExpr().getType().getName(), ce.getFalseExpr(), ce.getFalseExpr().getType().getName()

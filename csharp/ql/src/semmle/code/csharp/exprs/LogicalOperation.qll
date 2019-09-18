@@ -3,6 +3,7 @@
  *
  * All logical operations have the common base class `LogicalOperation`.
  */
+
 import Expr
 
 /**
@@ -31,7 +32,7 @@ class LogicalNotExpr extends UnaryLogicalOperation, @log_not_expr {
  * a logical 'or' (`LogicalAndExpr`), or a null-coalescing operation
  * (`NullCoalescingExpr`).
  */
-class BinaryLogicalOperation extends LogicalOperation, BinaryOperation, @bin_log_op_expr{
+class BinaryLogicalOperation extends LogicalOperation, BinaryOperation, @bin_log_op_expr {
   override string getOperator() { none() }
 }
 
@@ -66,7 +67,7 @@ class NullCoalescingExpr extends BinaryLogicalOperation, @null_coalescing_expr {
  * A ternary logical operation, that is, a ternary conditional expression
  * (`ConditionalExpr`).
  */
-class TernaryLogicalOperation extends LogicalOperation, TernaryOperation, @ternary_log_op_expr{ }
+class TernaryLogicalOperation extends LogicalOperation, TernaryOperation, @ternary_log_op_expr { }
 
 /**
  * A conditional expression, for example `s != null ? s.Length : -1`
@@ -83,12 +84,12 @@ class ConditionalExpr extends TernaryLogicalOperation, @conditional_expr {
   Expr getCondition() { result = this.getChild(0) }
 
   /** Gets the "then" expression of this conditional expression. */
-  Expr getThen() {result = this.getChild(1) }
+  Expr getThen() { result = this.getChild(1) }
 
   /** Gets the "else" expression of this conditional expression. */
   Expr getElse() { result = this.getChild(2) }
 
   override string getOperator() { result = "?" }
 
-  override string toString() { result = "... ? ... : ..."  }
+  override string toString() { result = "... ? ... : ..." }
 }

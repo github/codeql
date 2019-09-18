@@ -9,7 +9,7 @@
  */
 
 import javascript
-import UnusedParameter // local library
+import UnusedParameter
 
 from Parameter p
 where isAnAccidentallyUnusedParameter(p)

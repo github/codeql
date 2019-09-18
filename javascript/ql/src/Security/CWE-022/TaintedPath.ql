@@ -2,7 +2,7 @@
  * @name Uncontrolled data used in path expression
  * @description Accessing paths influenced by users can allow an attacker to access
  *              unexpected resources.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/path-injection
@@ -15,9 +15,10 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 import semmle.javascript.security.dataflow.TaintedPath::TaintedPath
+import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, "This path depends on $@.", source, "a user-provided value"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "This path depends on $@.", source.getNode(),
+  "a user-provided value"

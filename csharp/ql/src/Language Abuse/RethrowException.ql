@@ -13,19 +13,18 @@
 
 import csharp
 
-CatchClause containingCatchClause(Stmt s)
-{
+CatchClause containingCatchClause(Stmt s) {
   result.getBlock() = s
   or
   exists(Stmt mid |
-    result = containingCatchClause(mid)
-    and
-    mid.getAChildStmt() = s
-    and
-    not mid instanceof CatchClause)
+    result = containingCatchClause(mid) and
+    mid.getAChildStmt() = s and
+    not mid instanceof CatchClause
+  )
 }
 
 from SpecificCatchClause cc, ThrowStmt throw
-where throw.getExpr() = cc.getVariable().getAnAccess()
-and containingCatchClause(throw) = cc
+where
+  throw.getExpr() = cc.getVariable().getAnAccess() and
+  containingCatchClause(throw) = cc
 select throw, "Rethrowing exception variable."

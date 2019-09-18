@@ -3,7 +3,10 @@
  * @description Function length should be limited to what can be printed on a single sheet of paper (60 lines). Number of parameters is limited to 6 or fewer.
  * @kind problem
  * @id cpp/jpl-c/function-size-limits
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp
@@ -23,6 +26,7 @@ string paramWarning(Function f) {
 }
 
 from Function f, string msg
-where msg = lengthWarning(f) or
-      msg = paramWarning(f)
+where
+  msg = lengthWarning(f) or
+  msg = paramWarning(f)
 select f, msg

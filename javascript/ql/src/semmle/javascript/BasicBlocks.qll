@@ -9,8 +9,10 @@ import javascript
  * Holds if `nd` starts a new basic block.
  */
 private predicate startsBB(ControlFlowNode nd) {
-  (not exists(nd.getAPredecessor()) and exists(nd.getASuccessor())) or
-  nd.isJoin() or
+  not exists(nd.getAPredecessor()) and exists(nd.getASuccessor())
+  or
+  nd.isJoin()
+  or
   nd.getAPredecessor().isBranch()
 }
 
@@ -18,29 +20,22 @@ private predicate startsBB(ControlFlowNode nd) {
  * Holds if the first node of basic block `succ` is a control flow
  * successor of the last node of basic block `bb`.
  */
-private predicate succBB(BasicBlock bb, BasicBlock succ) {
-  succ = bb.getLastNode().getASuccessor()
-}
+private predicate succBB(BasicBlock bb, BasicBlock succ) { succ = bb.getLastNode().getASuccessor() }
 
 /**
  * Holds if the first node of basic block `bb` is a control flow
  * successor of the last node of basic block `pre`.
  */
-private predicate predBB(BasicBlock bb, BasicBlock pre) {
-  succBB(pre, bb)
-}
+private predicate predBB(BasicBlock bb, BasicBlock pre) { succBB(pre, bb) }
 
 /** Holds if `bb` is an entry basic block. */
-private predicate entryBB(BasicBlock bb) {
-  bb.getFirstNode() instanceof ControlFlowEntryNode
-}
+private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof ControlFlowEntryNode }
 
 /** Holds if `bb` is an exit basic block. */
-private predicate exitBB(BasicBlock bb) {
-  bb.getLastNode() instanceof ControlFlowExitNode
-}
+private predicate exitBB(BasicBlock bb) { bb.getLastNode() instanceof ControlFlowExitNode }
 
-private cached module Internal {
+cached
+private module Internal {
   /**
    * Holds if `succ` is a control flow successor of `nd` within the same basic block.
    */
@@ -55,34 +50,62 @@ private cached module Internal {
    * In other words, `i` is the shortest distance from a node `bb`
    * that starts a basic block to `nd` along the `intraBBSucc` relation.
    */
-  cached predicate bbIndex(BasicBlock bb, ControlFlowNode nd, int i) =
+  cached
+  predicate bbIndex(BasicBlock bb, ControlFlowNode nd, int i) =
     shortestDistances(startsBB/1, intraBBSucc/2)(bb, nd, i)
 
-  cached int bbLength(BasicBlock bb) {
-    result = strictcount(ControlFlowNode nd | bbIndex(bb, nd, _))
-  }
+  cached
+  int bbLength(BasicBlock bb) { result = strictcount(ControlFlowNode nd | bbIndex(bb, nd, _)) }
 
-  cached predicate useAt(BasicBlock bb, int i, Variable v, VarUse u) {
+  cached
+  predicate useAt(BasicBlock bb, int i, Variable v, VarUse u) {
     v = u.getVariable() and bbIndex(bb, u, i)
   }
 
-  cached predicate defAt(BasicBlock bb, int i, Variable v, VarDef d) {
-    v = d.getAVariable() and bbIndex(bb, d, i)
+  cached
+  predicate defAt(BasicBlock bb, int i, Variable v, VarDef d) {
+    exists(VarRef lhs |
+      lhs = d.getTarget().(BindingPattern).getABindingVarRef() and
+      v = lhs.getVariable()
+    |
+      lhs = d.getTarget() and
+      bbIndex(bb, d, i)
+      or
+      exists(PropertyPattern pp |
+        lhs = pp.getValuePattern() and
+        bbIndex(bb, pp, i)
+      )
+      or
+      exists(ObjectPattern op |
+        lhs = op.getRest() and
+        bbIndex(bb, lhs, i)
+      )
+      or
+      exists(ArrayPattern ap |
+        lhs = ap.getAnElement() and
+        bbIndex(bb, lhs, i)
+      )
+    )
   }
 
-  cached predicate reachableBB(BasicBlock bb) {
-    entryBB(bb) or
-    exists (BasicBlock predBB | succBB(predBB, bb) | reachableBB(predBB))
+  cached
+  predicate reachableBB(BasicBlock bb) {
+    entryBB(bb)
+    or
+    exists(BasicBlock predBB | succBB(predBB, bb) | reachableBB(predBB))
   }
 }
+
 private import Internal
 
 /** Holds if `dom` is an immediate dominator of `bb`. */
-private cached predicate bbIDominates(BasicBlock dom, BasicBlock bb) =
+cached
+private predicate bbIDominates(BasicBlock dom, BasicBlock bb) =
   idominance(entryBB/1, succBB/2)(_, dom, bb)
 
 /** Holds if `dom` is an immediate post-dominator of `bb`. */
-private cached predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
+cached
+private predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
   idominance(exitBB/1, predBB/2)(_, dom, bb)
 
 /**
@@ -92,46 +115,34 @@ private cached predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
  * At the database level, a basic block is represented by its first control flow node.
  */
 class BasicBlock extends @cfg_node, Locatable {
-  BasicBlock() {
-    startsBB(this)
-  }
+  BasicBlock() { startsBB(this) }
 
   /** Gets a basic block succeeding this one. */
-  BasicBlock getASuccessor() {
-    succBB(this, result)
-  }
+  BasicBlock getASuccessor() { succBB(this, result) }
 
   /** Gets a basic block preceding this one. */
-  BasicBlock getAPredecessor() {
-    result.getASuccessor() = this
-  }
+  BasicBlock getAPredecessor() { result.getASuccessor() = this }
 
   /** Gets a node in this block. */
   ControlFlowNode getANode() { result = getNode(_) }
 
   /** Gets the node at the given position in this block. */
-  ControlFlowNode getNode(int pos) {
-    bbIndex(this, result, pos)
-  }
+  ControlFlowNode getNode(int pos) { bbIndex(this, result, pos) }
 
   /** Gets the first node in this block. */
   ControlFlowNode getFirstNode() { result = this }
 
   /** Gets the last node in this block. */
-  ControlFlowNode getLastNode() { result = getNode(length()-1) }
+  ControlFlowNode getLastNode() { result = getNode(length() - 1) }
 
   /** Gets the length of this block. */
   int length() { result = bbLength(this) }
 
   /** Holds if this basic block uses variable `v` in its `i`th node `u`. */
-  predicate useAt(int i, Variable v, VarUse u) {
-    useAt(this, i, v, u)
-  }
+  predicate useAt(int i, Variable v, VarUse u) { useAt(this, i, v, u) }
 
   /** Holds if this basic block defines variable `v` in its `i`th node `u`. */
-  predicate defAt(int i, Variable v, VarDef d) {
-    defAt(this, i, v, d)
-  }
+  predicate defAt(int i, Variable v, VarDef d) { defAt(this, i, v, d) }
 
   /**
    * Holds if `v` is live at entry to this basic block and `u` is a use of `v`
@@ -145,10 +156,13 @@ class BasicBlock extends @cfg_node, Locatable {
   predicate isLiveAtEntry(Variable v, VarUse u) {
     // restrict `u` to be reachable from this basic block
     u = getASuccessor*().getANode() and
-    (// shortcut: if `v` is never defined, then it must be live
-     isDefinedInSameContainer(v) implies
-     // otherwise, do full liveness computation
-     isLiveAtEntryImpl(v, u))
+    (
+      // shortcut: if `v` is never defined, then it must be live
+      isDefinedInSameContainer(v)
+      implies
+      // otherwise, do full liveness computation
+      isLiveAtEntryImpl(v, u)
+    )
   }
 
   /**
@@ -169,7 +183,7 @@ class BasicBlock extends @cfg_node, Locatable {
    * this basic block belongs.
    */
   private predicate isDefinedInSameContainer(Variable v) {
-    exists (VarDef def | def.getAVariable() = v and def.getContainer() = getContainer())
+    exists(VarDef def | def.getAVariable() = v and def.getContainer() = getContainer())
   }
 
   /**
@@ -179,8 +193,9 @@ class BasicBlock extends @cfg_node, Locatable {
    * be more efficient on large databases.
    */
   predicate isLiveAtEntry(Variable v) {
-    isLocallyLiveAtEntry(v, _) or
-    (not this.defAt(_, v, _) and getASuccessor().isLiveAtEntry(v))
+    isLocallyLiveAtEntry(v, _)
+    or
+    not this.defAt(_, v, _) and getASuccessor().isLiveAtEntry(v)
   }
 
   /**
@@ -188,16 +203,18 @@ class BasicBlock extends @cfg_node, Locatable {
    * `u` is a use of `v` witnessing the liveness.
    */
   predicate localIsLiveAtEntry(LocalVariable v, VarUse u) {
-    isLocallyLiveAtEntry(v, u) or
-    (not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v, u))
+    isLocallyLiveAtEntry(v, u)
+    or
+    not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v, u)
   }
 
   /**
    * Holds if local variable `v` is live at entry to this basic block.
    */
   predicate localIsLiveAtEntry(LocalVariable v) {
-    isLocallyLiveAtEntry(v, _) or
-    (not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v))
+    isLocallyLiveAtEntry(v, _)
+    or
+    not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v)
   }
 
   /**
@@ -205,8 +222,9 @@ class BasicBlock extends @cfg_node, Locatable {
    * this basic block without going through a redefinition of `v`.
    */
   predicate localMayBeOverwritten(LocalVariable v, VarDef d) {
-    isLocallyOverwritten(v, d) or
-    (not defAt(_, v, _) and getASuccessor().localMayBeOverwritten(v, d))
+    isLocallyOverwritten(v, d)
+    or
+    not defAt(_, v, _) and getASuccessor().localMayBeOverwritten(v, d)
   }
 
   /**
@@ -217,7 +235,10 @@ class BasicBlock extends @cfg_node, Locatable {
    */
   private int nextDefOrUseAfter(PurelyLocalVariable v, int i, VarDef d) {
     defAt(i, v, d) and
-    result = min(int j | (defAt(j, v, _) or useAt(j, v, _) or j = length()) and j > i)
+    result = min(int j |
+        (defAt(j, v, _) or useAt(j, v, _) or j = length()) and
+        j > i
+      )
   }
 
   /**
@@ -226,8 +247,9 @@ class BasicBlock extends @cfg_node, Locatable {
    * definition and before a re-definition.
    */
   predicate localLiveDefAt(PurelyLocalVariable v, int i, VarDef d) {
-    exists (int j | j = nextDefOrUseAfter(v, i, d) |
-      useAt(j, v, _) or
+    exists(int j | j = nextDefOrUseAfter(v, i, d) |
+      useAt(j, v, _)
+      or
       j = length() and getASuccessor().localIsLiveAtEntry(v)
     )
   }
@@ -237,9 +259,7 @@ class BasicBlock extends @cfg_node, Locatable {
    * no definitions of `v` before it.
    */
   private predicate isLocallyLiveAtEntry(Variable v, VarUse u) {
-    exists (int n | useAt(n, v, u) |
-      not exists (int m | m < n | defAt(m, v, _))
-    )
+    exists(int n | useAt(n, v, u) | not exists(int m | m < n | defAt(m, v, _)))
   }
 
   /**
@@ -247,24 +267,18 @@ class BasicBlock extends @cfg_node, Locatable {
    * no other definitions of `v` before it.
    */
   private predicate isLocallyOverwritten(Variable v, VarDef d) {
-    exists (int n | defAt(n, v, d) |
-      not exists (int m | m < n | defAt(m, v, _))
-    )
+    exists(int n | defAt(n, v, d) | not exists(int m | m < n | defAt(m, v, _)))
   }
 
   /**
    * Gets the function or script to which this basic block belongs.
    */
-  StmtContainer getContainer() {
-    result = getFirstNode().getContainer()
-  }
+  StmtContainer getContainer() { result = getFirstNode().getContainer() }
 
   /**
    * Gets the basic block that immediately dominates this basic block.
    */
-  ReachableBasicBlock getImmediateDominator() {
-    bbIDominates(result, this)
-  }
+  ReachableBasicBlock getImmediateDominator() { bbIDominates(result, this) }
 }
 
 /**
@@ -287,17 +301,13 @@ class EntryBasicBlock extends BasicBlock {
  * A basic block that is reachable from an entry basic block.
  */
 class ReachableBasicBlock extends BasicBlock {
-  ReachableBasicBlock() {
-    reachableBB(this)
-  }
+  ReachableBasicBlock() { reachableBB(this) }
 
   /**
    * Holds if this basic block strictly dominates `bb`.
    */
   cached
-  predicate strictlyDominates(ReachableBasicBlock bb) {
-    bbIDominates+(this, bb)
-  }
+  predicate strictlyDominates(ReachableBasicBlock bb) { bbIDominates+(this, bb) }
 
   /**
    * Holds if this basic block dominates `bb`.
@@ -313,9 +323,7 @@ class ReachableBasicBlock extends BasicBlock {
    * Holds if this basic block strictly post-dominates `bb`.
    */
   cached
-  predicate strictlyPostDominates(ReachableBasicBlock bb) {
-    bbIPostDominates+(this, bb)
-  }
+  predicate strictlyPostDominates(ReachableBasicBlock bb) { bbIPostDominates+(this, bb) }
 
   /**
    * Holds if this basic block post-dominates `bb`.
@@ -326,7 +334,6 @@ class ReachableBasicBlock extends BasicBlock {
     bb = this or
     strictlyPostDominates(bb)
   }
-
 }
 
 /**
@@ -346,7 +353,7 @@ class ReachableJoinBlock extends ReachableBasicBlock {
   predicate inDominanceFrontierOf(ReachableBasicBlock b) {
     b = getAPredecessor() and not b = getImmediateDominator()
     or
-    exists (ReachableBasicBlock prev | inDominanceFrontierOf(prev) |
+    exists(ReachableBasicBlock prev | inDominanceFrontierOf(prev) |
       b = prev.getImmediateDominator() and
       not b = getImmediateDominator()
     )

@@ -20,46 +20,52 @@ import java
 class LocationOverridingMethodAccess extends MethodAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(MemberRefExpr e | e.getReferencedCallable() = getMethod() |
-      exists(int elRef, int ecRef |
-        e.hasLocationInfo(path, _, _, elRef, ecRef)
-        |
+      exists(int elRef, int ecRef | e.hasLocationInfo(path, _, _, elRef, ecRef) |
         sl = elRef and
         sc = ecRef - getMethod().getName().length() + 1 and
         el = elRef and
         ec = ecRef
       )
-    ) or
+    )
+    or
     not exists(MemberRefExpr e | e.getReferencedCallable() = getMethod()) and
     exists(int slSuper, int scSuper, int elSuper, int ecSuper |
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
-      |
+    |
       (
-        if (exists(getTypeArgument(_)))
-        then exists(Location locTypeArg | locTypeArg = getTypeArgument(count(getTypeArgument(_))-1).getLocation() |
-          sl = locTypeArg.getEndLine() and
-          sc = locTypeArg.getEndColumn()+2)
+        if exists(getTypeArgument(_))
+        then
+          exists(Location locTypeArg |
+            locTypeArg = getTypeArgument(count(getTypeArgument(_)) - 1).getLocation()
+          |
+            sl = locTypeArg.getEndLine() and
+            sc = locTypeArg.getEndColumn() + 2
+          )
         else (
           if exists(getQualifier())
-          // Note: this needs to be the original (full) location of the qualifier, not the modified one.
-          then exists(Location locQual | locQual = getQualifier().getLocation() |
-            sl = locQual.getEndLine() and
-            sc = locQual.getEndColumn()+2)
+          then
+            // Note: this needs to be the original (full) location of the qualifier, not the modified one.
+            exists(Location locQual | locQual = getQualifier().getLocation() |
+              sl = locQual.getEndLine() and
+              sc = locQual.getEndColumn() + 2
+            )
           else (
             sl = slSuper and
             sc = scSuper
           )
         )
-      )
-      and
+      ) and
       (
-        if (getNumArgument()>0)
-        // Note: this needs to be the original (full) location of the first argument, not the modified one.
-        then exists(Location locArg | locArg = getArgument(0).getLocation() |
-          el = locArg.getStartLine() and
-          ec = locArg.getStartColumn()-2
-        ) else (
+        if getNumArgument() > 0
+        then
+          // Note: this needs to be the original (full) location of the first argument, not the modified one.
+          exists(Location locArg | locArg = getArgument(0).getLocation() |
+            el = locArg.getStartLine() and
+            ec = locArg.getStartColumn() - 2
+          )
+        else (
           el = elSuper and
-          ec = ecSuper-2
+          ec = ecSuper - 2
         )
       )
     )
@@ -74,26 +80,29 @@ class LocationOverridingTypeAccess extends TypeAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int slSuper, int scSuper, int elSuper, int ecSuper |
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
-      |
+    |
       (
         if exists(getQualifier())
-        // Note: this needs to be the original (full) location of the qualifier, not the modified one.
-        then exists(Location locQual | locQual = getQualifier().getLocation() |
-          sl = locQual.getEndLine() and
-          sc = locQual.getEndColumn()+2)
+        then
+          // Note: this needs to be the original (full) location of the qualifier, not the modified one.
+          exists(Location locQual | locQual = getQualifier().getLocation() |
+            sl = locQual.getEndLine() and
+            sc = locQual.getEndColumn() + 2
+          )
         else (
           sl = slSuper and
           sc = scSuper
         )
-      )
-      and
+      ) and
       (
-        if (exists(getTypeArgument(_)))
-        // Note: this needs to be the original (full) location of the first type argument, not the modified one.
-        then exists(Location locArg | locArg = getTypeArgument(0).getLocation() |
-          el = locArg.getStartLine() and
-          ec = locArg.getStartColumn()-2
-        ) else (
+        if exists(getTypeArgument(_))
+        then
+          // Note: this needs to be the original (full) location of the first type argument, not the modified one.
+          exists(Location locArg | locArg = getTypeArgument(0).getLocation() |
+            el = locArg.getStartLine() and
+            ec = locArg.getStartColumn() - 2
+          )
+        else (
           el = elSuper and
           ec = ecSuper
         )
@@ -110,7 +119,7 @@ class LocationOverridingFieldAccess extends FieldAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     super.hasLocationInfo(path, _, _, el, ec) and
     sl = el and
-    sc = ec-(getField().getName().length())+1
+    sc = ec - getField().getName().length() + 1
   }
 }
 
@@ -122,11 +131,11 @@ class LocationOverridingImportType extends ImportType {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int slSuper, int scSuper, int elSuper, int ecSuper |
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
-      |
+    |
       el = elSuper and
-      ec = ecSuper-1 and
+      ec = ecSuper - 1 and
       sl = el and
-      sc = ecSuper-(getImportedType().getName().length())
+      sc = ecSuper - getImportedType().getName().length()
     )
   }
 }
@@ -139,17 +148,19 @@ class LocationOverridingImportStaticTypeMember extends ImportStaticTypeMember {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int slSuper, int scSuper, int elSuper, int ecSuper |
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
-      |
+    |
       el = elSuper and
-      ec = ecSuper-1 and
+      ec = ecSuper - 1 and
       sl = el and
-      sc = ecSuper-(getName().length())
+      sc = ecSuper - getName().length()
     )
   }
 }
 
 Element definition(Element e, string kind) {
-  e.(MethodAccess).getMethod().getSourceDeclaration() = result and kind = "M"
+  e.(MethodAccess).getMethod().getSourceDeclaration() = result and
+  kind = "M" and
+  not result instanceof InitializerMethod
   or
   e.(TypeAccess).getType().(RefType).getSourceDeclaration() = result and kind = "T"
   or
@@ -157,7 +168,8 @@ Element definition(Element e, string kind) {
     result = v.(Field).getSourceDeclaration() or
     result = v.(Parameter).getSourceDeclaration() or
     result = v.(LocalVariableDecl)
-  ) and kind = "V"
+  ) and
+  kind = "V"
   or
   e.(ImportType).getImportedType() = result and kind = "I"
   or
@@ -172,7 +184,9 @@ predicate dummyVarAccess(VarAccess va) {
 }
 
 predicate dummyTypeAccess(TypeAccess ta) {
-  exists(FunctionalExpr e | e.getAnonymousClass().getClassInstanceExpr().getTypeName() = ta.getParent*())
+  exists(FunctionalExpr e |
+    e.getAnonymousClass().getClassInstanceExpr().getTypeName() = ta.getParent*()
+  )
 }
 
 from Element e, Element def, string kind

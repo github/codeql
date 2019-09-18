@@ -19,3 +19,8 @@ z = 72;
 
 // OK
 const s = "hi";
+
+(function (){
+    const c = null;
+    for ([ c ] of o);
+});

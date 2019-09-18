@@ -9,8 +9,9 @@
  *       documentation
  * @id cs/comment-ratio-per-type
  */
+
 import csharp
 
 from Callable f, int loc
 where f.isSourceDeclaration() and loc = f.getNumberOfLines() and loc > 0
-select f, 100.0 * ((float)f.getNumberOfLinesOfComments() / (float)loc)
+select f, 100.0 * (f.getNumberOfLinesOfComments().(float) / loc.(float))

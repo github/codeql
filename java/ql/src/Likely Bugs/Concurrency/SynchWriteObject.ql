@@ -12,6 +12,7 @@
  *       language-features
  *       external/cwe/cwe-662
  */
+
 import java
 
 from Method m
@@ -19,7 +20,7 @@ where
   m.getDeclaringType().getASupertype*() instanceof TypeSerializable and
   m.hasName("writeObject") and
   m.getNumberOfParameters() = 1 and
-  m.getAParamType().(Class).hasQualifiedName("java.io","ObjectOutputStream") and
+  m.getAParamType().(Class).hasQualifiedName("java.io", "ObjectOutputStream") and
   m.isSynchronized() and
   not exists(Method s |
     m.getDeclaringType().inherits(s) and

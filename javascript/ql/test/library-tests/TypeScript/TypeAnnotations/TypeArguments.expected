@@ -1,8 +1,0 @@
-| tst.ts:102:13:102:29 | f1<string>("foo") | 0 | 1 | tst.ts:102:16:102:21 | string |
-| tst.ts:103:13:103:40 | f2<stri ... oo", 5) | 0 | 2 | tst.ts:103:16:103:21 | string |
-| tst.ts:103:13:103:40 | f2<stri ... oo", 5) | 1 | 2 | tst.ts:103:24:103:29 | number |
-| tst.ts:104:13:104:25 | f3<number>(5) | 0 | 1 | tst.ts:104:16:104:21 | number |
-| tst.ts:106:12:106:27 | new C1<string>() | 0 | 1 | tst.ts:106:19:106:24 | string |
-| tst.ts:107:12:107:35 | new C2< ... mber>() | 0 | 2 | tst.ts:107:19:107:24 | string |
-| tst.ts:107:12:107:35 | new C2< ... mber>() | 1 | 2 | tst.ts:107:27:107:32 | number |
-| tst.ts:108:12:108:27 | new C3<number>() | 0 | 1 | tst.ts:108:19:108:24 | number |

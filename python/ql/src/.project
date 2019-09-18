@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+    <name>semmlecode-python-queries</name>
+    <comment></comment>
+    <projects>
+    </projects>
+    <buildSpec>
+        <buildCommand>
+            <name>org.python.pydev.PyDevBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+    </buildSpec>
+    <natures>
+        <nature>org.python.pydev.pythonNature</nature>
+        <nature>com.semmle.plugin.qdt.core.qlnature</nature>
+    </natures>
+</projectDescription>

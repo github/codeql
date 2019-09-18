@@ -10,11 +10,11 @@
  *       readability
  *       naming
  */
+
 import java
 
 from Method m
 where
   m.hasName(m.getDeclaringType().getName()) and
   m.fromSource()
-select m, "This method has the same name as its declaring class."
-          + " Should it be a constructor?"
+select m, "This method has the same name as its declaring class." + " Should it be a constructor?"

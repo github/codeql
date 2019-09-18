@@ -1,0 +1,71 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>User-defined classes interact with the Python virtual machine via special methods (also called "magic methods").
+For example, for a class to support addition it must implement the <code>__add__</code> and <code>__radd__</code> special methods.
+When the expression <code>a + b</code> is evaluated the Python virtual machine will call <code>type(a).__add__(a, b)</code> and if that
+is not implemented it will call <code>type(b).__radd__(b, a)</code>.</p>
+<p>
+Since the virtual machine calls these special methods for common expressions, users of the class will expect these operations to raise standard exceptions.
+For example, users would expect that the expression <code>a.b</code> might raise an <code>AttributeError</code>
+if the object <code>a</code> does not have an attribute <code>b</code>.
+If a <code>KeyError</code> were raised instead,
+then this would be unexpected and may break code that expected an <code>AttributeError</code>, but not a <code>KeyError</code>.
+</p>
+
+<p>
+Therefore, if a method is unable to perform the expected operation then its response should conform to the standard protocol, described below.
+</p>
+
+<ul>
+    <li>Attribute access, <code>a.b</code>: Raise <code>AttributeError</code></li>
+    <li>Arithmetic operations, <code>a + b</code>: Do not raise an exception, return <code>NotImplemented</code> instead.</li>
+    <li>Indexing, <code>a[b]</code>: Raise <code>KeyError</code>.</li>
+    <li>Hashing, <code>hash(a)</code>: Use <code>__hash__ = None</code> to indicate that an object is unhashable.</li>
+    <li>Equality methods, <code>a != b</code>: Never raise an exception, always return <code>True</code> or <code>False</code>.</li>
+    <li>Ordering comparison methods, <code>a &lt; b</code>: Raise a <code>TypeError</code> if the objects cannot be ordered.</li>
+    <li>Most others: Ideally, do not implement the method at all, otherwise raise <code>TypeError</code> to indicate that the operation is unsupported.</li>
+</ul>
+
+</overview>
+<recommendation>
+<p>If the method is meant to be abstract, then declare it so using the <code>@abstractmethod</code> decorator.
+Otherwise, either remove the method or ensure that the method raises an exception of the correct type.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+This example shows two unhashable classes. The first class is unhashable in a non-standard way which may cause maintenance problems.
+The second, corrected, class uses the standard idiom for unhashable classes.
+</p>
+<sample src="IncorrectRaiseInSpecialMethod.py" />
+<p>
+In this example, the first class is implicitly abstract; the <code>__add__</code> method is unimplemented,
+presumably with the expectation that it will be implemented by sub-classes.
+The second class makes this explicit with an <code>@abstractmethod</code> decoration on the unimplemented  <code>__add__</code> method.
+</p>
+<sample src="IncorrectRaiseInSpecialMethod2.py" />
+<p>
+In this last example, the first class implements a collection backed by the file store.
+However, should an <code>IOError</code> be raised in the <code>__getitem__</code> it will propagate to the caller.
+The second class handles any <code>IOError</code> by reraising a <code>KeyError</code> which is the standard exception for
+the <code>__getitem__</code> method.
+</p>
+
+<sample src="IncorrectRaiseInSpecialMethod3.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/dev/reference/datamodel.html#special-method-names">Special Method Names</a>.</li>
+<li>Python Library Reference: <a href="https://docs.python.org/2/library/exceptions.html">Exceptions</a>.</li>
+
+
+
+</references>
+</qhelp>

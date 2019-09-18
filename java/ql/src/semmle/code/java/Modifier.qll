@@ -7,7 +7,7 @@ import Element
 /** A modifier such as `private`, `static` or `abstract`. */
 class Modifier extends Element, @modifier {
   /** Gets the element to which this modifier applies. */
-  Element getElement() { hasModifier(result,this) }
+  Element getElement() { hasModifier(result, this) }
 }
 
 /** An element of the Java syntax tree that may have a modifier. */
@@ -21,12 +21,10 @@ abstract class Modifiable extends Element {
    * abstract, so `isAbstract()` will hold for them even if `hasModifier("abstract")`
    * does not.
    */
-  predicate hasModifier(string m) {
-    modifiers(getAModifier(), m)
-  }
+  predicate hasModifier(string m) { modifiers(getAModifier(), m) }
 
   /** Holds if this element has no modifier. */
-  predicate hasNoModifier() { not hasModifier(this,_) }
+  predicate hasNoModifier() { not hasModifier(this, _) }
 
   /** Gets a modifier of this element. */
   Modifier getAModifier() { this = result.getElement() }

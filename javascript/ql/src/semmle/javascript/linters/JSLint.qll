@@ -9,6 +9,13 @@ private string getDirectiveName(SlashStarComment c) {
   result = c.getText().regexpCapture("(?s)\\s*(\\w+)\\b.*", 1)
 }
 
+/** Gets a function at the specified location. */
+private Function getFunctionAt(
+  string filepath, int startline, int startcolumn, int endline, int endcolumn
+) {
+  result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+}
+
 /** A JSLint directive. */
 abstract class JSLintDirective extends SlashStarComment {
   /**
@@ -16,8 +23,9 @@ abstract class JSLintDirective extends SlashStarComment {
    * and with end-of-line characters replaced by spaces.
    */
   string getContent() {
-    result = getText().regexpReplaceAll("[\\n\\r\\u2028\\u2029]", " ")
-                      .regexpCapture("\\s*\\w+ (.*)", 1)
+    result = getText()
+          .regexpReplaceAll("[\\n\\r\\u2028\\u2029]", " ")
+          .regexpCapture("\\s*\\w+ (.*)", 1)
   }
 
   /**
@@ -26,23 +34,28 @@ abstract class JSLintDirective extends SlashStarComment {
    * Like JSHint (but unlike JSLint), this predicate allows whitespace before the
    * directive name.
    */
-  string getName() {
-    result = getDirectiveName(this)
-  }
+  string getName() { result = getDirectiveName(this) }
 
   /**
    * Gets the function surrounding this directive, if any.
    */
   private Function getASurroundingFunction() {
-    exists (string path, int fsl, int fsc, int fel, int fec,
-                         int dsl, int dsc, int del, int dec |
-      result.getLocation().hasLocationInfo(path, fsl, fsc, fel, fec) and
-      this.getLocation().hasLocationInfo(path, dsl, dsc, del, dec) |
+    exists(string path, int fsl, int fsc, int fel, int fec, int dsl, int dsc, int del, int dec |
+      result = getFunctionAt(path, fsl, fsc, fel, fec) and
+      this.getLocation().hasLocationInfo(path, dsl, dsc, del, dec)
+    |
       // the function starts before this directive
-      (fsl < dsl or (fsl = dsl and fsc <= dsc))
-      and
+      (
+        fsl < dsl
+        or
+        fsl = dsl and fsc <= dsc
+      ) and
       // and it ends after this directive
-      (del < fel or (del = fel and dec <= fec))
+      (
+        del < fel
+        or
+        del = fel and dec <= fec
+      )
     )
   }
 
@@ -64,13 +77,15 @@ abstract class JSLintDirective extends SlashStarComment {
    * is the empty string.
    */
   predicate definesFlag(string name, string value) {
-    exists (string defn | defn = getContent().splitAt(",").trim() |
-      if defn.matches("%:%") then
-        (name = defn.splitAt(":", 0).trim() and
-         value = defn.splitAt(":", 1).trim())
-      else
-        (name = defn and
-         value = "")
+    exists(string defn | defn = getContent().splitAt(",").trim() |
+      if defn.matches("%:%")
+      then (
+        name = defn.splitAt(":", 0).trim() and
+        value = defn.splitAt(":", 1).trim()
+      ) else (
+        name = defn and
+        value = ""
+      )
     )
   }
 
@@ -79,8 +94,7 @@ abstract class JSLintDirective extends SlashStarComment {
    * `s` is nested in the directive's scope.
    */
   predicate appliesTo(ExprOrStmt s) {
-    exists (StmtContainer sc |
-      sc = s.(Stmt).getContainer() or sc = s.(Expr).getContainer() |
+    exists(StmtContainer sc | sc = s.(Stmt).getContainer() or sc = s.(Expr).getContainer() |
       getScope() = sc.getEnclosingContainer*()
     )
   }
@@ -93,22 +107,24 @@ abstract class JSLintDirective extends SlashStarComment {
  * declares a group of related global variables.
  */
 abstract class JSLintGlobal extends Linting::GlobalDeclaration, JSLintDirective {
-  override predicate appliesTo(ExprOrStmt s) {
-    JSLintDirective.super.appliesTo(s)
+  override predicate appliesTo(ExprOrStmt s) { JSLintDirective.super.appliesTo(s) }
+
+  override predicate declaresGlobalForAccess(GlobalVarAccess gva) {
+    declaresGlobal(gva.getName(), _) and
+    getScope() = gva.getContainer().getEnclosingContainer*()
   }
 }
 
 /** A JSLint `global` directive. */
 class JSLintExplicitGlobal extends JSLintGlobal {
-  JSLintExplicitGlobal() {
-    getDirectiveName(this) = "global"
-  }
+  JSLintExplicitGlobal() { getDirectiveName(this) = "global" }
 
   override predicate declaresGlobal(string name, boolean writable) {
-    exists (string value | definesFlag(name, value) |
+    exists(string value | definesFlag(name, value) |
       writable = true and value = "true"
       or
-      writable = false and (value = "false" or value = "")
+      writable = false and
+      (value = "false" or value = "")
     )
   }
 }
@@ -116,7 +132,7 @@ class JSLintExplicitGlobal extends JSLintGlobal {
 /** A JSLint `properties` directive. */
 class JSLintProperties extends JSLintDirective {
   JSLintProperties() {
-    exists (string name | name = getDirectiveName(this) |
+    exists(string name | name = getDirectiveName(this) |
       name = "property" or name = "properties" or name = "members"
     )
   }
@@ -124,16 +140,12 @@ class JSLintProperties extends JSLintDirective {
   /**
    * Gets a property declared by this directive.
    */
-  string getAProperty() {
-    result = getContent().splitAt(",").trim()
-  }
+  string getAProperty() { result = getContent().splitAt(",").trim() }
 }
 
 /** A JSLint options directive. */
 class JSLintOptions extends JSLintDirective {
-  JSLintOptions() {
-    getDirectiveName(this) = "jslint"
-  }
+  JSLintOptions() { getDirectiveName(this) = "jslint" }
 }
 
 /**
@@ -141,30 +153,91 @@ class JSLintOptions extends JSLintDirective {
  */
 private string jsLintImplicitGlobal(string category) {
   // cf. http://www.jslint.com/help.html#global
-  (category = "browser" and
-   (result = "clearInterval" or result = "clearTimeout" or result = "document" or
-    result = "event" or result = "frames" or result = "history" or result = "Image" or
-    result = "location" or result = "name" or result = "navigator" or result = "Option" or
-    result = "parent" or result = "screen" or result = "setInterval" or result = "setTimeout" or
-    result = "window" or result = "XMLHttpRequest")) or
-  (category = "devel" and
-   (result = "alert" or result = "confirm" or result = "console" or
-    result = "Debug" or result = "opera" or result = "prompt" or result = "WSH")) or
-  (category = "node" and
-   (result = "Buffer" or result = "clearInterval" or result = "clearTimeout" or
-    result = "console" or result = "exports" or result = "result" or result = "module" or
-    result = "process" or result = "querystring" or result = "require" or result = "setInterval" or
-    result = "setTimeout" or result = "__filename" or result = "__dirname")) or
-  (category = "couch" and
-   (result = "emit" or result = "getRow" or result = "isArray" or result = "log" or
-    result = "provides" or result = "registerType" or result = "require" or result = "send" or
-    result = "start" or result = "sum" or result = "toJSON")) or
-  (category = "rhino" and
-   (result = "defineClass" or result = "deserialize" or result = "gc" or result = "help" or
-    result = "load" or result = "loadClass" or result = "print" or result = "quit" or
-    result = "readFile" or result = "readUrl" or result = "runCommand" or result = "seal" or
-    result = "serialize" or result = "spawn" or result = "sync" or result = "toint32" or
-    result = "version"))
+  category = "browser" and
+  (
+    result = "clearInterval" or
+    result = "clearTimeout" or
+    result = "document" or
+    result = "event" or
+    result = "frames" or
+    result = "history" or
+    result = "Image" or
+    result = "location" or
+    result = "name" or
+    result = "navigator" or
+    result = "Option" or
+    result = "parent" or
+    result = "screen" or
+    result = "setInterval" or
+    result = "setTimeout" or
+    result = "window" or
+    result = "XMLHttpRequest"
+  )
+  or
+  category = "devel" and
+  (
+    result = "alert" or
+    result = "confirm" or
+    result = "console" or
+    result = "Debug" or
+    result = "opera" or
+    result = "prompt" or
+    result = "WSH"
+  )
+  or
+  category = "node" and
+  (
+    result = "Buffer" or
+    result = "clearInterval" or
+    result = "clearTimeout" or
+    result = "console" or
+    result = "exports" or
+    result = "result" or
+    result = "module" or
+    result = "process" or
+    result = "querystring" or
+    result = "require" or
+    result = "setInterval" or
+    result = "setTimeout" or
+    result = "__filename" or
+    result = "__dirname"
+  )
+  or
+  category = "couch" and
+  (
+    result = "emit" or
+    result = "getRow" or
+    result = "isArray" or
+    result = "log" or
+    result = "provides" or
+    result = "registerType" or
+    result = "require" or
+    result = "send" or
+    result = "start" or
+    result = "sum" or
+    result = "toJSON"
+  )
+  or
+  category = "rhino" and
+  (
+    result = "defineClass" or
+    result = "deserialize" or
+    result = "gc" or
+    result = "help" or
+    result = "load" or
+    result = "loadClass" or
+    result = "print" or
+    result = "quit" or
+    result = "readFile" or
+    result = "readUrl" or
+    result = "runCommand" or
+    result = "seal" or
+    result = "serialize" or
+    result = "spawn" or
+    result = "sync" or
+    result = "toint32" or
+    result = "version"
+  )
 }
 
 /**
@@ -172,7 +245,7 @@ private string jsLintImplicitGlobal(string category) {
  */
 private class JSLintImplicitGlobal extends JSLintOptions, JSLintGlobal {
   JSLintImplicitGlobal() {
-    exists (string category |
+    exists(string category |
       definesFlag(category, "true") and
       exists(jsLintImplicitGlobal(category))
     )
@@ -180,7 +253,7 @@ private class JSLintImplicitGlobal extends JSLintOptions, JSLintGlobal {
 
   override predicate declaresGlobal(string name, boolean writable) {
     writable = false and
-    exists (string category |
+    exists(string category |
       definesFlag(category, "true") and
       name = jsLintImplicitGlobal(category)
     )

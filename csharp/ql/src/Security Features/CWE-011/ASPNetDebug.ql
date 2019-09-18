@@ -16,7 +16,7 @@ import csharp
 import semmle.code.asp.WebConfig
 
 from SystemWebXMLElement web, XMLAttribute debugAttribute
-where debugAttribute = web.getAChild("compilation").getAttribute("debug")
-  and not debugAttribute.getValue().toLowerCase() = "false"
+where
+  debugAttribute = web.getAChild("compilation").getAttribute("debug") and
+  not debugAttribute.getValue().toLowerCase() = "false"
 select debugAttribute, "The 'debug' flag is set for an ASP.NET configuration file."
-

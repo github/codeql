@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Calculating the length of the hypotenuse using the standard formula <code>c = sqrt(a**2 + b**2)</code> may lead to overflow if the two other sides are both very large.
+Even though <code>c</code> will not be much bigger than <code>max(a, b)</code>, either <code>a**2</code> or <code>b**2</code> (or both) will.
+Thus, the calculation could overflow, even though the result is well within representable range.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Rather than <code>sqrt(a**2 + b**2)</code>, use the built-in function <code>hypot(a,b)</code> from the <code>math</code> library.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code shows two different ways of computing the hypotenuse.
+The first is a direct rewrite of the Pythagorean theorem, the second uses the built-in function.
+</p>
+
+<sample src="Pythagorean.py" />
+</example>
+
+<references>
+<li>Python Language Reference: <a href="https://docs.python.org/library/math.html#math.hypot">The hypot function</a></li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Hypot">Hypot</a>.</li>
+</references>
+</qhelp>

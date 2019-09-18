@@ -1,9 +1,0 @@
-| b.js:1:1:1:20 | import f from './a'; | b.js:1:15:1:19 | './a' | 1 |
-| d.js:1:1:1:43 | import  ...  './a'; | d.js:1:38:1:42 | './a' | 2 |
-| d.js:2:1:2:13 | import './b'; | d.js:2:8:2:12 | './b' | 0 |
-| f.ts:1:1:1:19 | import g from './e' | f.ts:1:15:1:19 | './e' | 1 |
-| g.ts:1:1:1:23 | import  ... m './f' | g.ts:1:19:1:23 | './f' | 1 |
-| import-in-mjs.mjs:1:1:1:46 | import  ... n-mjs'; | import-in-mjs.mjs:1:31:1:45 | 'export-in-mjs' | 1 |
-| m/c.js:1:1:1:26 | import  ... '../b'; | m/c.js:1:20:1:25 | '../b' | 1 |
-| tst.html:5:3:5:20 | import f from 'a'; | tst.html:5:17:5:19 | 'a' | 1 |
-| unresolved.js:1:1:1:18 | import f from 'a'; | unresolved.js:1:15:1:17 | 'a' | 1 |

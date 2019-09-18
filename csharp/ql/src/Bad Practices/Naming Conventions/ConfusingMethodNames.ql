@@ -9,6 +9,7 @@
  *       readability
  *       naming
  */
+
 import csharp
 
 predicate typeWithConfusingName(ValueOrRefType type) {
@@ -16,11 +17,12 @@ predicate typeWithConfusingName(ValueOrRefType type) {
 }
 
 from Method m, Method n, ValueOrRefType type
-where typeWithConfusingName(type)
-  and type.fromSource()
-  and m = type.getAMethod()
-  and n = type.getAMethod()
-  and m != n
-  and m.getName().toLowerCase() = n.getName().toLowerCase()
-  and m.getName() < n.getName()
+where
+  typeWithConfusingName(type) and
+  type.fromSource() and
+  m = type.getAMethod() and
+  n = type.getAMethod() and
+  m != n and
+  m.getName().toLowerCase() = n.getName().toLowerCase() and
+  m.getName() < n.getName()
 select m, "Confusing method name, compare with $@.", n, n.getName()

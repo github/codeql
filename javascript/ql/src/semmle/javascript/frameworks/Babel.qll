@@ -11,7 +11,7 @@ module Babel {
    */
   class Config extends JSONObject {
     Config() {
-      isTopLevel() and getFile().getBaseName().matches(".babelrc%")
+      isTopLevel() and getJsonFile().getBaseName().matches(".babelrc%")
       or
       this = any(PackageJSON pkg).getPropValue("babel")
     }
@@ -20,14 +20,57 @@ module Babel {
      * Gets the configuration for the plugin with the given name.
      */
     JSONValue getPluginConfig(string pluginName) {
-      exists (JSONArray plugins |
+      exists(JSONArray plugins |
         plugins = getPropValue("plugins") and
-        result = plugins.getElementValue(_) |
+        result = plugins.getElementValue(_)
+      |
         result.(JSONString).getValue() = pluginName
         or
         result.(JSONArray).getElementStringValue(0) = pluginName
       )
     }
+
+    /**
+     * Gets a file affected by this Babel configuration.
+     */
+    Container getAContainerInScope() {
+      result = getJsonFile().getParentContainer()
+      or
+      result = getAContainerInScope().getAChildContainer() and
+      // File-relative .babelrc search stops at any package.json or .babelrc file.
+      not result.getAChildContainer() = any(PackageJSON pkg).getJsonFile() and
+      not result.getAChildContainer() = any(Config pkg).getJsonFile()
+    }
+
+    /**
+     * Holds if this configuration applies to `tl`.
+     */
+    predicate appliesTo(TopLevel tl) { tl.getFile() = getAContainerInScope() }
+  }
+
+  /**
+   * Configuration object for a Babel plugin.
+   */
+  class Plugin extends JSONValue {
+    Config cfg;
+    string pluginName;
+
+    Plugin() { this = cfg.getPluginConfig(pluginName) }
+
+    /** Gets the name of the plugin being installed. */
+    string getPluginName() { result = pluginName }
+
+    /** Gets the enclosing Babel configuration object. */
+    Config getConfig() { result = cfg }
+
+    /** Gets the options value passed to the plugin, if any. */
+    JSONValue getOptions() { result = this.(JSONArray).getElementValue(1) }
+
+    /** Gets a named option from the option object, if present. */
+    JSONValue getOption(string name) { result = getOptions().(JSONObject).getPropValue(name) }
+
+    /** Holds if this plugin applies to `tl`. */
+    predicate appliesTo(TopLevel tl) { cfg.appliesTo(tl) }
   }
 
   /**
@@ -38,12 +81,8 @@ module Babel {
    * each path is of the form `{ "rootPathPrefix": "...", "rootPathSuffix": "..." }` and explicitly
    * specifies a mapping from a path prefix to a root.
    */
-  class RootImportConfig extends JSONArray {
-    Config cfg;
-
-    RootImportConfig() {
-      this = cfg.getPluginConfig("babel-plugin-root-import")
-    }
+  class RootImportConfig extends Plugin {
+    RootImportConfig() { pluginName = "babel-plugin-root-import" }
 
     /**
      * Gets the root specified for the given prefix.
@@ -62,15 +101,16 @@ module Babel {
      */
     private JSONObject getARootPathSpec() {
       // ["babel-plugin-root-import", <spec>]
-      result = getElementValue(1) and
+      result = getOptions() and
       exists(result.getPropValue("rootPathSuffix"))
       or
-      exists (JSONArray pathSpecs |
+      exists(JSONArray pathSpecs |
         // ["babel-plugin-root-import", [ <spec>... ] ]
-        pathSpecs = getElementValue(1)
+        pathSpecs = getOptions()
         or
         // ["babel-plugin-root-import", { "paths": [ <spec> ... ] }]
-        pathSpecs = getElementValue(1).(JSONObject).getPropValue("paths") |
+        pathSpecs = getOption("paths")
+      |
         result = pathSpecs.getElementValue(_)
       )
     }
@@ -79,36 +119,27 @@ module Babel {
      * Gets the (explicitly specified) root for the given prefix.
      */
     private string getExplicitRoot(string prefix) {
-      exists (JSONObject rootPathSpec |
+      exists(JSONObject rootPathSpec |
         rootPathSpec = getARootPathSpec() and
-        result = rootPathSpec.getPropStringValue("rootPathSuffix") |
-        if exists(rootPathSpec.getPropStringValue("rootPathPrefix")) then
-          prefix = rootPathSpec.getPropStringValue("rootPathPrefix")
-        else
-          prefix = "~"
+        result = rootPathSpec.getPropStringValue("rootPathSuffix")
+      |
+        if exists(rootPathSpec.getPropStringValue("rootPathPrefix"))
+        then prefix = rootPathSpec.getPropStringValue("rootPathPrefix")
+        else prefix = "~"
       )
     }
 
     /**
      * Gets the folder in which this configuration is located.
      */
-    Folder getFolder() {
-      result = getFile().getParentContainer()
-    }
-
-    /**
-     * Holds if this configuration applies to `tl`.
-     */
-    predicate appliesTo(TopLevel tl) {
-      tl.getFile().getParentContainer+() = getFolder()
-    }
+    Folder getFolder() { result = getJsonFile().getParentContainer() }
   }
 
   /**
    * An import path expression that may be transformed by `babel-plugin-root-import`.
    */
   private class BabelRootTransformedPathExpr extends PathExpr, Expr {
-    RootImportConfig cfg;
+    RootImportConfig plugin;
     string rawPath;
     string prefix;
     string mappedPrefix;
@@ -116,25 +147,21 @@ module Babel {
 
     BabelRootTransformedPathExpr() {
       this instanceof PathExpr and
-      cfg.appliesTo(getTopLevel()) and
+      plugin.appliesTo(getTopLevel()) and
       rawPath = getStringValue() and
       prefix = rawPath.regexpCapture("(.)/(.*)", 1) and
       suffix = rawPath.regexpCapture("(.)/(.*)", 2) and
-      mappedPrefix = cfg.getRoot(prefix)
+      mappedPrefix = plugin.getRoot(prefix)
     }
 
     /** Gets the configuration that applies to this path. */
-    RootImportConfig getConfig() {
-      result = cfg
-    }
+    RootImportConfig getPlugin() { result = plugin }
 
-    override string getValue() {
-      result = mappedPrefix + "/" + suffix
-    }
+    override string getValue() { result = mappedPrefix + "/" + suffix }
 
     override Folder getSearchRoot(int priority) {
       priority = 0 and
-      result = cfg.getFolder()
+      result = plugin.getFolder()
     }
   }
 
@@ -144,12 +171,21 @@ module Babel {
   private class BabelRootTransformedPath extends PathString {
     BabelRootTransformedPathExpr pathExpr;
 
-    BabelRootTransformedPath() {
-      this = pathExpr.getValue()
-    }
+    BabelRootTransformedPath() { this = pathExpr.getValue() }
 
-    override Folder getARootFolder() {
-      result = pathExpr.getConfig().getFolder()
-    }
+    override Folder getARootFolder() { result = pathExpr.getPlugin().getFolder() }
+  }
+
+  /**
+   * A configuration object for the `transform-react-jsx` plugin.
+   *
+   * The plugin option `{"pragma": xxx}` specifies a variable name used to instantiate
+   * JSX elements.
+   */
+  class TransformReactJsxConfig extends Plugin {
+    TransformReactJsxConfig() { pluginName = "transform-react-jsx" }
+
+    /** Gets the name of the variable used to create JSX elements. */
+    string getJsxFactoryVariableName() { result = getOption("pragma").(JSONString).getValue() }
   }
 }

@@ -1,0 +1,5 @@
+| jinja2_escaping.py:9:14:9:39 | ControlFlowNode for Environment() | Using jinja2 templates with autoescape=False can potentially allow XSS attacks. |
+| jinja2_escaping.py:41:5:41:29 | ControlFlowNode for Environment() | Using jinja2 templates with autoescape=False can potentially allow XSS attacks. |
+| jinja2_escaping.py:43:1:43:3 | ControlFlowNode for E() | Using jinja2 templates with autoescape=False can potentially allow XSS attacks. |
+| jinja2_escaping.py:44:1:44:15 | ControlFlowNode for E() | Using jinja2 templates with autoescape=False can potentially allow XSS attacks. |
+| jinja2_escaping.py:53:15:53:43 | ControlFlowNode for Template() | Using jinja2 templates with autoescape=False can potentially allow XSS attacks. |

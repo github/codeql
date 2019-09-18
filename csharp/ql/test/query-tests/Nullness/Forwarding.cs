@@ -8,36 +8,36 @@ class ForwardingTests
 
         if (!s.IsNullOrEmpty())
         {
-            Console.WriteLine(s.Length);
+            Console.WriteLine(s.Length); // GOOD
         }
 
         if (s.IsNotNullOrEmpty())
         {
-            Console.WriteLine(s.Length);
+            Console.WriteLine(s.Length); // GOOD
         }
 
         if (!s.IsNull())
         {
-            Console.WriteLine(s.Length);
+            Console.WriteLine(s.Length); // GOOD
         }
 
         if (s.IsNotNull())
         {
-            Console.WriteLine(s.Length);
+            Console.WriteLine(s.Length); // GOOD
         }
 
         if (IsNotNull(s))
         {
-            Console.WriteLine(s.Length);
+            Console.WriteLine(s.Length); // GOOD
         }
 
         if (IsNotNullWrong(s))
         {
-            Console.WriteLine(s.Length); // maybe null
+            Console.WriteLine(s.Length); // BAD (always)
         }
 
         AssertIsNotNull(s);
-        Console.WriteLine(s.Length); // FP; not currently handled
+        Console.WriteLine(s.Length); // GOOD (false positive)
     }
 
     bool IsNotNull(object o)

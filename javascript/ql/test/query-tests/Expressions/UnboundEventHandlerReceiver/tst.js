@@ -1,6 +1,6 @@
 import React from 'react';
 import autoBind from 'auto-bind';
-
+import reactAutobind from 'react-autobind';
 class Component0 extends React.Component {
 
     render() {
@@ -118,6 +118,59 @@ class Component1 extends React.Component {
         this.setState({ });
     }
 
+}
+
+@autobind
+class Component2 extends React.Component {
+
+    render() {
+        return <div>
+            <div onClick={this.bound_throughClassDecorator_autobind}/> // OK
+            </div>;
+    }
+
+    bound_throughClassDecorator_autobind() {
+        this.setState({ });
+    }
+
+}
+
+class Component3 extends React.Component {
+
+    render() {
+        return <div>
+            <div onClick={this.bound_throughIterator}/> // OK
+            </div>
+    }
+
+    constructor(props) {
+        super(props);
+	    Object.getOwnPropertyNames( Component3.prototype )
+		    .filter( prop => typeof this[ prop ] === 'function' )
+		    .forEach( prop => ( this[ prop ] = this[ prop ].bind( this ) ) );
+    }
+
+    bound_throughIterator() {
+        this.setState({ });
+    }
+}
+
+class Component4 extends React.Component {
+
+    render() {
+        return <div>
+            <div onClick={this.bound_throughReactAutobind}/> // OK
+            </div>
+    }
+
+    constructor(props) {
+        super(props);
+        reactAutobind(this);
+    }
+
+    bound_throughReactAutobind() {
+        this.setState({ });
+    }
 }
 
 // semmle-extractor-options: --experimental

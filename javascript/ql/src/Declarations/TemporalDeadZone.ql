@@ -22,11 +22,12 @@ int letDeclAt(BlockStmt blk, Variable v, LetStmt let) {
 }
 
 from VarAccess va, LetStmt let, BlockStmt blk, int i, int j, Variable v
-where v = va.getVariable() and
-      j = letDeclAt(blk, v, let) and
-      blk.getStmt(i) = va.getEnclosingStmt().getParentStmt*() and
-      i < j and
-      // don't flag uses in different functions
-      blk.getContainer() = va.getContainer() and
-      not letDeclAt(blk, v, _) < i
-select va, "This expression refers to $@ inside its temporal dead zone.",  let, va.getName()
+where
+  v = va.getVariable() and
+  j = letDeclAt(blk, v, let) and
+  blk.getStmt(i) = va.getEnclosingStmt().getParentStmt*() and
+  i < j and
+  // don't flag uses in different functions
+  blk.getContainer() = va.getContainer() and
+  not letDeclAt(blk, v, _) < i
+select va, "This expression refers to $@ inside its temporal dead zone.", let, va.getName()

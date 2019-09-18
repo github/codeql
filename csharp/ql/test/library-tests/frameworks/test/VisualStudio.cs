@@ -1,19 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.VisualStudio.TestTools.UnitTesting
-{
-    class TestClassAttribute : Attribute
-    {
-        public TestClassAttribute() { }
-    }
-
-    class TestMethodAttribute : Attribute
-    {
-        public TestMethodAttribute() { }
-    }
-}
-
 namespace VisualStudioTests
 {
     class TestMethodAttribute : Attribute { } // fake
@@ -37,3 +24,5 @@ namespace VisualStudioTests
         }
     }
 }
+
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

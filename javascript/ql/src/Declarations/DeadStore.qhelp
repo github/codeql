@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A value is assigned to a variable or property, but either that location is never read
+later on, or its value is always overwritten before being read. This means
+that the original assignment has no effect, and could indicate a logic error or
+incomplete code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that you check the control and data flow in the method carefully.
+If a value is really not needed, consider omitting the assignment. Be careful,
+though: if the right-hand side has a side-effect (like performing a method call),
+it is important to keep this to preserve the overall behavior.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the return value of the call to <code>send</code> on line 2
+is assigned to the local variable <code>result</code>, but then never used.
+</p>
+
+<sample src="examples/DeadStoreOfLocal.js" />
+
+<p>
+Assuming that <code>send</code> returns a status code indicating whether the operation
+succeeded or not, the value of <code>result</code> should be checked, perhaps like this:
+</p>
+
+<sample src="examples/DeadStoreOfLocalGood.js" />
+
+</example>
+<references>
+
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
+
+
+
+</references>
+</qhelp>

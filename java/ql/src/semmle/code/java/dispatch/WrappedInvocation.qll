@@ -29,9 +29,7 @@ class FunctionalInterface extends Interface {
   }
 
   /** Gets the single method of this interface. */
-  Method getRunMethod() {
-    getAPotentialRunMethod(this).getSourceDeclaration() = result
-  }
+  Method getRunMethod() { getAPotentialRunMethod(this).getSourceDeclaration() = result }
 }
 
 /**
@@ -41,7 +39,8 @@ class FunctionalInterface extends Interface {
 private predicate runner(Method m, int n, Method runmethod) {
   m.getParameterType(n).(RefType).getSourceDeclaration().(FunctionalInterface).getRunMethod() = runmethod and
   (
-    m.isNative() or
+    m.isNative()
+    or
     exists(Parameter p, MethodAccess ma, int j |
       p = m.getParameter(n) and
       ma.getEnclosingCallable() = m and
@@ -63,7 +62,8 @@ private Expr getRunnerArgument(MethodAccess ma, Method runmethod) {
     result = ma.getArgument(param)
   )
   or
-  getRunnerArgument(ma, runmethod).(CastExpr).getExpr() = result or
+  getRunnerArgument(ma, runmethod).(CastExpr).getExpr() = result
+  or
   getRunnerArgument(ma, runmethod).(VarAccess).getVariable().getAnAssignedValue() = result
 }
 

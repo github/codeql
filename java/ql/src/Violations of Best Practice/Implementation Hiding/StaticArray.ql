@@ -9,6 +9,7 @@
  *       modularity
  *       external/cwe/cwe-582
  */
+
 import java
 
 predicate nonEmptyArrayLiteralOrNull(Expr e) {
@@ -20,7 +21,7 @@ predicate nonEmptyArrayLiteralOrNull(Expr e) {
     // Array creation with dimensions (but without initializers).
     // Empty if the first dimension is 0.
     exists(Expr dim | dim = arr.getDimension(0) |
-      not (dim.(CompileTimeConstantExpr).getIntValue() = 0)
+      not dim.(CompileTimeConstantExpr).getIntValue() = 0
     )
   )
   or
@@ -39,7 +40,5 @@ where
   f.isFinal() and
   f.getType() instanceof Array and
   f.fromSource() and
-  forall(AssignExpr a | a.getDest() = f.getAnAccess() |
-    nonEmptyArrayLiteralOrNull(a.getSource())
-  )
+  forall(AssignExpr a | a.getDest() = f.getAnAccess() | nonEmptyArrayLiteralOrNull(a.getSource()))
 select f, "The array constant " + f.getName() + " is vulnerable to mutation."

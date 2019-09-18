@@ -10,6 +10,7 @@
  *       maintainability
  *       frameworks/junit
  */
+
 import java
 
 // `suite()` methods in `TestCase`s also count as test methods.

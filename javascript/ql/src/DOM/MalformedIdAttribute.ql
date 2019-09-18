@@ -14,7 +14,8 @@
 import javascript
 
 from DOM::AttributeDefinition id, string reason
-where DOM::isInvalidHtmlIdAttributeValue(id, reason) and
-      // exclude attribute values that look like they might be templated
-      not id.mayHaveTemplateValue()
+where
+  DOM::isInvalidHtmlIdAttributeValue(id, reason) and
+  // exclude attribute values that look like they might be templated
+  not id.mayHaveTemplateValue()
 select id, "The value of the id attribute " + reason + "."

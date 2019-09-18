@@ -2,6 +2,7 @@
  * @name Test for unbound generic struct type
  * @kind table
  */
+
 import csharp
 
 from UnboundGenericStruct c

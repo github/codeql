@@ -7,6 +7,7 @@
  * @id java/misnamed-variable
  * @tags maintainability
  */
+
 import java
 import NamingConventionsCommon
 

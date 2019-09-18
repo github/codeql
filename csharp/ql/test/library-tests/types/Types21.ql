@@ -2,6 +2,7 @@
  * @name Test for unbound generic class type
  * @kind table
  */
+
 import csharp
 
 from UnboundGenericClass c

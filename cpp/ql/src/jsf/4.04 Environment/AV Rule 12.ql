@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jsf/av-rule-12
  * @problem.severity warning
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 
 import cpp

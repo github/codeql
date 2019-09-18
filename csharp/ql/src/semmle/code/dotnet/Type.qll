@@ -20,13 +20,8 @@ class Type extends Declaration, @dotnet_type {
  * A value or reference type.
  */
 class ValueOrRefType extends Type, @dotnet_valueorreftype {
-
   /** Gets the namespace declaring this type, if any. */
   Namespace getDeclaringNamespace() { none() }
-
-  override string getLabel() {
-    result = getPrefixWithTypes() + getUndecoratedName() + getGenericsLabel(this)
-  }
 
   private string getPrefixWithTypes() {
     result = getDeclaringType().getLabel() + "."
@@ -34,6 +29,22 @@ class ValueOrRefType extends Type, @dotnet_valueorreftype {
     if getDeclaringNamespace().isGlobalNamespace()
     then result = ""
     else result = getDeclaringNamespace().getQualifiedName() + "."
+  }
+
+  pragma[noinline]
+  private string getLabelNonGeneric() {
+    not this instanceof Generic and
+    result = this.getPrefixWithTypes() + this.getUndecoratedName()
+  }
+
+  pragma[noinline]
+  private string getLabelGeneric() {
+    result = this.getPrefixWithTypes() + this.getUndecoratedName() + getGenericsLabel(this)
+  }
+
+  override string getLabel() {
+    result = this.getLabelNonGeneric() or
+    result = this.getLabelGeneric()
   }
 
   /** Gets a base type of this type, if any. */
@@ -44,20 +55,15 @@ class ValueOrRefType extends Type, @dotnet_valueorreftype {
  * A type parameter, for example `T` in `System.Nullable<T>`.
  */
 class TypeParameter extends Type, @dotnet_type_parameter {
-
   /** Gets the generic type or method declaring this type parameter. */
   UnboundGeneric getDeclaringGeneric() { this = result.getATypeParameter() }
 
   /** Gets the index of this type parameter. For example the index of `U` in `Func<T,U>` is 1. */
   int getIndex() { none() }
 
-  final override string getLabel() {
-    result = "!" + getIndex()
-  }
+  final override string getLabel() { result = "!" + getIndex() }
 
-  override string getUndecoratedName() {
-    result = "!" + getIndex()
-  }
+  override string getUndecoratedName() { result = "!" + getIndex() }
 }
 
 /** A pointer type. */

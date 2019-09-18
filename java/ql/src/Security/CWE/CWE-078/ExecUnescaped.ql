@@ -21,8 +21,10 @@ import ExecCommon
  * has in it.
  */
 predicate saneString(Expr expr) {
-  expr instanceof StringLiteral or
-  expr instanceof NullLiteral or
+  expr instanceof StringLiteral
+  or
+  expr instanceof NullLiteral
+  or
   exists(Variable var | var.getAnAccess() = expr and exists(var.getAnAssignedValue()) |
     forall(Expr other | var.getAnAssignedValue() = other | saneString(other))
   )
@@ -31,18 +33,19 @@ predicate saneString(Expr expr) {
 predicate builtFromUncontrolledConcat(Expr expr) {
   exists(AddExpr concatExpr | concatExpr = expr |
     builtFromUncontrolledConcat(concatExpr.getAnOperand())
-  ) or
+  )
+  or
   exists(AddExpr concatExpr | concatExpr = expr |
     exists(Expr arg | arg = concatExpr.getAnOperand() | not saneString(arg))
-  ) or
+  )
+  or
   exists(Expr other | builtFromUncontrolledConcat(other) |
     exists(Variable var | var.getAnAssignedValue() = other and var.getAnAccess() = expr)
   )
 }
 
-
 from StringArgumentToExec argument
 where
   builtFromUncontrolledConcat(argument) and
-  not execTainted(_, argument)
+  not execTainted(_, _, argument)
 select argument, "Command line is built with string concatenation."

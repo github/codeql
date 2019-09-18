@@ -14,5 +14,4 @@ import javascript
 
 from Function func, int complexity
 where complexity = func.getCyclomaticComplexity()
-select func, complexity
-order by complexity desc
+select func, complexity order by complexity desc

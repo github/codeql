@@ -17,18 +17,18 @@ import semmle.code.java.controlflow.UnreachableBlocks
 class ExcludeDebuggingProfilingLogging extends ExcludedConstantField {
   ExcludeDebuggingProfilingLogging() {
     exists(string validFieldName |
-        validFieldName = "debug" or
-        validFieldName = "profiling" or
-        validFieldName = "profile" or
-        validFieldName = "time" or
-        validFieldName = "verbose" or
-        validFieldName = "report" or
-        validFieldName = "dbg" or
-        validFieldName = "timing" or
-        validFieldName = "assert" or
-        validFieldName = "log"
-        |
-        getName().regexpMatch(".*(?i)" + validFieldName + ".*")
+      validFieldName = "debug" or
+      validFieldName = "profiling" or
+      validFieldName = "profile" or
+      validFieldName = "time" or
+      validFieldName = "verbose" or
+      validFieldName = "report" or
+      validFieldName = "dbg" or
+      validFieldName = "timing" or
+      validFieldName = "assert" or
+      validFieldName = "log"
+    |
+      getName().regexpMatch(".*(?i)" + validFieldName + ".*")
     ) and
     // Boolean type
     (

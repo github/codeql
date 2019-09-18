@@ -21,36 +21,28 @@ abstract class SizeOfContainer extends Expr {
 
 /** A read access to the `length` field of an array. */
 class ArrayLengthRead extends FieldRead, SizeOfContainer {
-  ArrayLengthRead() {
-    this.getField() instanceof ArrayLengthField
-  }
+  ArrayLengthRead() { this.getField() instanceof ArrayLengthField }
 
   override string getContainerKind() { result = "an array" }
 }
 
 /** An access to `String.length()`. */
 class StringLengthRead extends MethodAccess, SizeOfContainer {
-  StringLengthRead() {
-    this.getMethod() instanceof StringLengthMethod
-  }
+  StringLengthRead() { this.getMethod() instanceof StringLengthMethod }
 
   override string getContainerKind() { result = "a string" }
 }
 
 /** An access to `Collection.size()`. */
 class CollectionSizeCall extends MethodAccess, SizeOfContainer {
-  CollectionSizeCall() {
-    this.getMethod() instanceof CollectionSizeMethod
-  }
+  CollectionSizeCall() { this.getMethod() instanceof CollectionSizeMethod }
 
   override string getContainerKind() { result = "a collection" }
 }
 
 /** An access to `Map.size()`. */
 class MapSizeCall extends MethodAccess, SizeOfContainer {
-  MapSizeCall() {
-    this.getMethod() instanceof MapSizeMethod
-  }
+  MapSizeCall() { this.getMethod() instanceof MapSizeMethod }
 
   override string getContainerKind() { result = "a map" }
 }
@@ -62,23 +54,34 @@ class IntegralZeroLiteral extends Literal {
   }
 }
 
-private predicate comparisonOfContainerSizeToZero(BinaryExpr e, string containerKind, string trueOrFalse) {
+private predicate comparisonOfContainerSizeToZero(
+  BinaryExpr e, string containerKind, string trueOrFalse
+) {
   exists(Expr l, Expr r | l = e.getLeftOperand() and r = e.getRightOperand() |
-    (e instanceof LTExpr and l.(SizeOfContainer).getContainerKind() = containerKind and
-    r instanceof IntegralZeroLiteral and trueOrFalse = "false")
+    e instanceof LTExpr and
+    l.(SizeOfContainer).getContainerKind() = containerKind and
+    r instanceof IntegralZeroLiteral and
+    trueOrFalse = "false"
     or
-    (e instanceof GTExpr and l instanceof IntegralZeroLiteral and
-    r.(SizeOfContainer).getContainerKind() = containerKind and trueOrFalse = "false")
+    e instanceof GTExpr and
+    l instanceof IntegralZeroLiteral and
+    r.(SizeOfContainer).getContainerKind() = containerKind and
+    trueOrFalse = "false"
     or
-    (e instanceof GEExpr and l.(SizeOfContainer).getContainerKind() = containerKind and
-    r instanceof IntegralZeroLiteral and trueOrFalse = "true")
+    e instanceof GEExpr and
+    l.(SizeOfContainer).getContainerKind() = containerKind and
+    r instanceof IntegralZeroLiteral and
+    trueOrFalse = "true"
     or
-    (e instanceof LEExpr and l instanceof IntegralZeroLiteral and
-    r.(SizeOfContainer).getContainerKind() = containerKind and trueOrFalse = "true")
+    e instanceof LEExpr and
+    l instanceof IntegralZeroLiteral and
+    r.(SizeOfContainer).getContainerKind() = containerKind and
+    trueOrFalse = "true"
   )
 }
 
 from BinaryExpr e, string containerKind, string trueOrFalse
 where comparisonOfContainerSizeToZero(e, containerKind, trueOrFalse)
-select e, "This expression is always " + trueOrFalse + ", since " +
-  containerKind + " can never have negative size."
+select e,
+  "This expression is always " + trueOrFalse + ", since " + containerKind +
+    " can never have negative size."

@@ -37,21 +37,24 @@ private predicate disposedCilVariable(CIL::Variable variable) {
 private predicate disposedCSharpVariable(Variable variable) {
   // A C# parameter is disposed if its corresponding CIL parameter is disposed
   exists(CIL::Method m, CIL::Parameter p, int i |
-    disposedCilVariable(p) and p = m.getRawParameter(i) |
-    variable = any(Callable c2 | c2.getLabel() = m.getLabel()).getRawParameter(i)
+    disposedCilVariable(p) and p = m.getRawParameter(i)
+  |
+    variable = any(Callable c2 | c2.matchesHandle(m)).getRawParameter(i)
   )
   or
   // Call to a method that disposes it
   exists(Call call, int arg, VariableRead read |
     read.getTarget() = variable and
-    read = call.getArgument(arg) |
+    read = call.getArgument(arg)
+  |
     disposedCSharpVariable(call.getTarget().getParameter(arg))
   )
   or
   // Call to `Dispose`
   exists(MethodCall call, VariableRead read |
     read.getTarget() = variable and
-    read = call.getQualifier() |
+    read = call.getQualifier()
+  |
     isDisposeMethod(call.getTarget())
   )
   or
@@ -60,8 +63,8 @@ private predicate disposedCSharpVariable(Variable variable) {
   or
   // A variable is disposed if it's assigned to another variable that is disposed
   exists(AssignableDefinition assign |
-    assign.getSource() = variable.getAnAccess()
-    and disposedCSharpVariable(assign.getTarget())
+    assign.getSource() = variable.getAnAccess() and
+    disposedCSharpVariable(assign.getTarget())
   )
 }
 

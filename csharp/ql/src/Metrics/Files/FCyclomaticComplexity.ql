@@ -9,8 +9,9 @@
  *       complexity
  * @id cs/average-cyclomatic-complexity-per-file
  */
+
 import csharp
 
-from File f, float  n
+from File f, float n
 where n = avg(Callable c | c.getFile() = f | c.getCyclomaticComplexity())
 select f, n

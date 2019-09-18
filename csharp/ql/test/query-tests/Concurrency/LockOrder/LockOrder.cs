@@ -1,18 +1,66 @@
 using System;
 
-class Foo
+class LocalTest
 {
+    // BAD: b is flagged.
     Object a, b, c;
 
-    void f()
+    void F()
     {
-        lock (a) lock (b) { }
-        lock (b) lock (a) { }
-        lock (b) lock (a) { }
-        lock (a) lock (b) { }
-        lock (b) lock (c) { }
-        lock (c) lock (b) { }
-        lock (a) lock (a) { }
-        lock (a) lock (a) { }
+        lock (a) lock (b) lock(c) { }
+    }
+
+    void G()
+    {
+        lock (a) lock (c) lock(b) { }
+    }
+
+    void H()
+    {
+        lock (a) lock(c) { }
     }
 }
+
+class GlobalTest
+{
+    // BAD: b is flagged.
+    static Object a, b, c;
+
+    void F()
+    {
+        lock (a) G();
+    }
+
+    void G()
+    {
+       lock (b) H();
+       lock (c) I();
+    }
+
+    void H()
+    {
+        lock (c) { }
+    }
+
+    void I()
+    {
+        lock (b) { }
+    }
+}
+
+class LambdaTest
+{
+    // BAD: a is flagged.
+    static Object a, b;
+
+    void F()
+    {
+        Action lock_a = () => { lock(a) { } };
+        Action lock_b = () => { lock(b) { } };
+
+        lock(a) lock_b();
+        lock(b) lock_a();
+    }
+}
+
+// semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.Threading.dll /r:System.Threading.Thread.dll

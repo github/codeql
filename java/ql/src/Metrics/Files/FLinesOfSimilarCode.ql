@@ -9,14 +9,15 @@
  * @id java/similar-lines-per-file
  * @tags testability
  */
+
 import external.CodeDuplication
 
 from File f, int n
-where n = count(int line |
-    exists(SimilarBlock d | d.sourceFile() = f |
-      line in [d.sourceStartLine()..d.sourceEndLine()] and
-      not whitelistedLineForDuplication(f, line)
+where
+  n = count(int line |
+      exists(SimilarBlock d | d.sourceFile() = f |
+        line in [d.sourceStartLine() .. d.sourceEndLine()] and
+        not whitelistedLineForDuplication(f, line)
+      )
     )
-  )
-select f, n
-order by n desc
+select f, n order by n desc

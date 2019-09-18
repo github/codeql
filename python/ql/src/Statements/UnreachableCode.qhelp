@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Unreachable code makes the code more difficult to understand and may slow down loading of modules.</p>
+
+</overview>
+<recommendation>
+<p>Deleting the unreachable code will make the code clearer and preserve the meaning of the code.
+However, it is possible that the original intention was that the code should execute and that it is
+unreachable signifies some other error.</p>
+
+</recommendation>
+<example>
+<p>In this example the assignment to <code>remainder</code> is never reached because there is a <code>
+return</code> statement on the previous line.</p>
+
+<sample src="UnreachableCode.py" />
+
+</example>
+<references>
+
+    <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Unreachable_code">Unreachable Code</a>.</li>
+
+</references>
+</qhelp>

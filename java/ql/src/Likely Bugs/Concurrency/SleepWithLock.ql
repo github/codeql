@@ -11,6 +11,7 @@
  *       concurrency
  *       external/cwe/cwe-833
  */
+
 import java
 
 from MethodAccess ma, Method sleep
@@ -19,7 +20,7 @@ where
   sleep.hasName("sleep") and
   sleep.getDeclaringType().hasQualifiedName("java.lang", "Thread") and
   (
-    ma.getEnclosingStmt().getParent*() instanceof SynchronizedStmt or
+    ma.getEnclosingStmt().getEnclosingStmt*() instanceof SynchronizedStmt or
     ma.getEnclosingCallable().isSynchronized()
   )
 select ma, "sleep() with lock held."

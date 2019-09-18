@@ -7,6 +7,7 @@
  * @id java/useless-tostring-call
  * @tags maintainability
  */
+
 import java
 
 from MethodAccess ma, Method tostring

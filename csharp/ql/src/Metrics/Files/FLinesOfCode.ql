@@ -10,8 +10,8 @@
  * @tags maintainability
  *       complexity
  */
+
 import csharp
 
 from File f
-select f, f.getNumberOfLinesOfCode() as n
-order by n desc
+select f, f.getNumberOfLinesOfCode() as n order by n desc

@@ -1,0 +1,93 @@
+| 3 | None |
+| 6 | None |
+| 9 | None |
+| 16 | None |
+| 16 | class ExceptionA |
+| 22 | class ExceptionA |
+| 25 | None |
+| 25 | class ExceptionB |
+| 30 | None |
+| 30 | class ExceptionA |
+| 32 | None |
+| 32 | class ExceptionB |
+| 36 | None |
+| 36 | class ExceptionA |
+| 36 | class ExceptionB |
+| 42 | None |
+| 42 | class ExceptionA |
+| 42 | class ExceptionB |
+| 44 | class ExceptionA |
+| 44 | class ExceptionB |
+| 49 | None |
+| 49 | class ExceptionA |
+| 49 | class ExceptionB |
+| 50 | None |
+| 53 | class ExceptionA |
+| 58 | None |
+| 58 | class ExceptionA |
+| 58 | class ExceptionB |
+| 59 | None |
+| 67 | None |
+| 67 | class ExceptionA |
+| 67 | class ExceptionB |
+| 68 | None |
+| 71 | None |
+| 71 | class ExceptionC |
+| 74 | builtin-class LookupError |
+| 81 | None |
+| 81 | builtin-class KeyError |
+| 87 | None |
+| 87 | builtin-class IndexError |
+| 93 | None |
+| 93 | builtin-class AttributeError |
+| 99 | None |
+| 105 | None |
+| 105 | builtin-class LookupError |
+| 107 | builtin-class LookupError |
+| 110 | None |
+| 110 | builtin-class IndexError |
+| 114 | None |
+| 114 | builtin-class IndexError |
+| 120 | None |
+| 120 | builtin-class IndexError |
+| 126 | None |
+| 126 | builtin-class IndexError |
+| 128 | builtin-class IndexError |
+| 132 | None |
+| 132 | class ExceptionA |
+| 132 | class ExceptionB |
+| 135 | None |
+| 136 | None |
+| 136 | class ExceptionC |
+| 138 | class ExceptionA |
+| 138 | class ExceptionB |
+| 138 | class ExceptionC |
+| 146 | None |
+| 146 | class ExceptionA |
+| 146 | class ExceptionB |
+| 152 | class ExceptionA |
+| 152 | class ExceptionB |
+| 158 | None |
+| 158 | class ExceptionA |
+| 158 | class ExceptionB |
+| 164 | None |
+| 166 | None |
+| 166 | class ExceptionC |
+| 171 | class ExceptionC |
+| 172 | class ExceptionA |
+| 172 | class ExceptionB |
+| 178 | None |
+| 178 | class ExceptionA |
+| 178 | class ExceptionB |
+| 183 | None |
+| 183 | class ExceptionC |
+| 186 | None |
+| 189 | None |
+| 190 | class A |
+| 196 | None |
+| 196 | Unknown |
+| 200 | None |
+| 200 | Unknown |
+| 206 | None |
+| 206 | Unknown |
+| 209 | Unknown |

@@ -34,57 +34,48 @@ predicate depends(RefType t, RefType dep) {
     usesType(t.(NestedType).getEnclosingType(), dep)
     or
     // the type of any field declared in `t`,
-    exists(Field f | f.getDeclaringType() = t |
-      usesType(f.getType(), dep)
-    ) or
+    exists(Field f | f.getDeclaringType() = t | usesType(f.getType(), dep))
+    or
     // the return type of any method declared in `t`,
-    exists(Method m | m.getDeclaringType() = t |
-      usesType(m.getReturnType(), dep)
-    ) or
+    exists(Method m | m.getDeclaringType() = t | usesType(m.getReturnType(), dep))
+    or
     // the type of any parameter of a callable in `t`,
-    exists(Callable c | c.getDeclaringType() = t |
-      usesType(c.getAParamType(), dep)
-    ) or
+    exists(Callable c | c.getDeclaringType() = t | usesType(c.getAParamType(), dep))
+    or
     // the type of any exception in the `throws` clause of a callable declared in `t`,
-    exists(Exception e | e.getCallable().getDeclaringType() = t |
-      usesType(e.getType(), dep)
-    ) or
+    exists(Exception e | e.getCallable().getDeclaringType() = t | usesType(e.getType(), dep))
+    or
     // the declaring type of a callable accessed in `t`,
-    exists(Callable c |
-      c.getAReference().getEnclosingCallable().getDeclaringType() = t
-      |
+    exists(Callable c | c.getAReference().getEnclosingCallable().getDeclaringType() = t |
       usesType(c.getSourceDeclaration().getDeclaringType(), dep)
-    ) or
+    )
+    or
     // the declaring type of a field accessed in `t`,
-    exists(Field f |
-      f.getAnAccess().getEnclosingCallable().getDeclaringType() = t
-      |
+    exists(Field f | f.getAnAccess().getEnclosingCallable().getDeclaringType() = t |
       usesType(f.getSourceDeclaration().getDeclaringType(), dep)
-    ) or
+    )
+    or
     // the type of a local variable declared in `t`,
-    exists(LocalVariableDeclExpr decl |
-      decl.getEnclosingCallable().getDeclaringType() = t
-      |
+    exists(LocalVariableDeclExpr decl | decl.getEnclosingCallable().getDeclaringType() = t |
       usesType(decl.getType(), dep)
-    ) or
+    )
+    or
     // the type of a type literal accessed in `t`,
-    exists(TypeLiteral l |
-      l.getEnclosingCallable().getDeclaringType() = t
-      |
+    exists(TypeLiteral l | l.getEnclosingCallable().getDeclaringType() = t |
       usesType(l.getTypeName().getType(), dep)
-    ) or
+    )
+    or
     // the type of an annotation (or one of its element values) that annotates `t` or one of its members,
     exists(Annotation a |
       a.getAnnotatedElement() = t or
       a.getAnnotatedElement().(Member).getDeclaringType() = t
-      |
+    |
       usesType(a.getType(), dep) or
       usesType(a.getAValue().getType(), dep)
-    ) or
+    )
+    or
     // the type accessed in an `instanceof` expression in `t`.
-    exists(InstanceOfExpr ioe |
-      t = ioe.getEnclosingCallable().getDeclaringType()
-      |
+    exists(InstanceOfExpr ioe | t = ioe.getEnclosingCallable().getDeclaringType() |
       usesType(ioe.getTypeName().getType(), dep)
     )
   )
@@ -108,8 +99,7 @@ predicate usesType(Type t, RefType dep) {
  * the element type of an array type, or
  * a bound of a type variable or wildcard.
  */
-private
-RefType inside(Type t) {
+private RefType inside(Type t) {
   result = t.(TypeVariable).getATypeBound().getType() or
   result = t.(Wildcard).getATypeBound().getType() or
   result = t.(ParameterizedType).getATypeArgument() or

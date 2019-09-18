@@ -1,0 +1,4 @@
+| Test.java:13:18:13:24 | tainted | Test.java:15:10:15:11 | x2 |
+| Test.java:13:18:13:24 | tainted | Test.java:18:10:18:11 | x3 |
+| Test.java:13:18:13:24 | tainted | Test.java:22:12:22:13 | x4 |
+| Test.java:13:18:13:24 | tainted | Test.java:27:10:27:11 | x5 |

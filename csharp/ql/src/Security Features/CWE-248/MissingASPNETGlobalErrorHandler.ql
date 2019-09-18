@@ -24,8 +24,10 @@ class Application_Error extends Method {
 }
 
 from CustomErrorsXMLElement customError
-      // `<customErrors>` must be set to "off" to be dangerous
-where customError.getAttributeValue("mode").toLowerCase() = "off"
-      // There must not be an error handler in global.asax
-  and not exists(Application_Error ae)
-select customError, "'customErrors' mode set to off in Web.config, and no 'Application_Error' handler specified in the global.asax file."
+where
+  // `<customErrors>` must be set to "off" to be dangerous
+  customError.getAttributeValue("mode").toLowerCase() = "off" and
+  // There must not be an error handler in global.asax
+  not exists(Application_Error ae)
+select customError,
+  "'customErrors' mode set to off in Web.config, and no 'Application_Error' handler specified in the global.asax file."

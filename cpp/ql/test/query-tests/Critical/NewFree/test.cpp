@@ -295,3 +295,132 @@ static void map_shutdown()
 	delete map; // BAD: new[] -> delete
 	map = 0;
 }
+
+// ---
+
+class Test10
+{
+public:
+	Test10() : data(new char[10])
+	{
+	}
+
+	~Test10()
+	{
+		delete data; // BAD: new[] -> delete
+	}
+
+	char *data;
+};
+
+class Test11
+{
+public:
+	Test11()
+	{
+		data = new char[10];
+	}
+
+	void resize(int size)
+	{
+		if (size > 0)
+		{
+			delete [] data; // GOOD
+			data = new char[size];
+		}
+	}
+
+	~Test11()
+	{
+		delete data; // BAD: new[] -> delete
+	}
+
+	char *data;
+};
+
+// ---
+
+int *z;
+
+void test12(bool cond)
+{
+	int *x, *y;
+
+	x = new int();
+	delete x; // GOOD
+	x = (int *)malloc(sizeof(int));
+	free(x); // GOOD
+
+	if (cond)
+	{
+		y = new int();
+		z = new int();
+	} else {
+		y = (int *)malloc(sizeof(int));
+		z = (int *)malloc(sizeof(int));
+	}
+
+	// ...
+
+	if (cond)
+	{
+		delete y; // GOOD
+		delete z; // GOOD
+	} else {
+		free(y); // GOOD
+		free(z); // GOOD
+	}
+}
+
+// ---
+
+class MyBuffer13
+{
+public:
+	MyBuffer13(int size)
+	{
+		buffer = (char *)malloc(size * sizeof(char));
+	}
+
+	~MyBuffer13()
+	{
+		free(buffer); // GOOD
+	}
+
+	char *getBuffer() // note: this should not be considered an allocation function
+	{
+		return buffer;
+	}
+
+private:
+	char *buffer;
+};
+
+class MyPointer13
+{
+public:
+	MyPointer13(char *_pointer) : pointer(_pointer)
+	{
+	}
+
+	MyPointer13(MyBuffer13 &buffer) : pointer(buffer.getBuffer())
+	{
+	}
+
+	char *getPointer() // note: this should not be considered an allocation function
+	{
+		return pointer;
+	}
+
+private:
+	char *pointer;
+};
+
+void test13()
+{
+	MyBuffer13 myBuffer(100);
+	MyPointer13 myPointer2(myBuffer);
+	MyPointer13 myPointer3(new char[100]);
+
+	delete myPointer3.getPointer(); // GOOD
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using a constant value as a test in a conditional statement renders the statement pointless as only
+one branch will be run regardless of any other factors.</p>
+
+</overview>
+<recommendation>
+<p>If the conditional statement is required for debugging or similar then use a variable instead.
+Otherwise, remove the conditional statement and any associated dead code.</p>
+
+</recommendation>
+<example>
+<p>In the first example the <code>if</code> statement will always be executed and therefore can be removed. The
+contents of the statement should be kept though.</p>
+
+<p>In the second example the statement <code>l = 100</code> is never executed because <code>1 > 100</code> is always false.
+However, it is likely that the intention was <code>l > 100</code> (the number '1' being misread as the letter 'l')
+and that the test should be corrected, rather than deleted.
+
+</p><sample src="ConstantInConditional.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/reference/compound_stmts.html#the-if-statement">The If Statement</a>.</li>
+  <li>Python: <a href="http://docs.python.org/reference/compound_stmts.html#the-while-statement">The While Statement</a>.</li>
+  <li>Python: <a href="http://docs.python.org/reference/expressions.html#literals">Literals (constant values)</a>.</li>
+
+
+</references>
+</qhelp>

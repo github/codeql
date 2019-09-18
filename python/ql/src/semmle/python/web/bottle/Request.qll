@@ -1,0 +1,115 @@
+import python
+
+
+import semmle.python.security.TaintTracking
+import semmle.python.security.strings.Untrusted
+import semmle.python.web.Http
+import semmle.python.web.bottle.General
+
+private Object theBottleRequestObject() {
+    result = theBottleModule().attr("request")
+}
+
+class BottleRequestKind extends TaintKind {
+
+    BottleRequestKind() {
+        this = "bottle.request"
+    }
+
+    override TaintKind getTaintOfAttribute(string name) {
+        result instanceof BottleFormsDict and
+        (name = "cookies" or name = "query" or name = "form")
+        or
+        result instanceof UntrustedStringKind and
+        (name = "query_string" or name = "url_args")
+        or
+        result.(DictKind).getValue() instanceof FileUpload and
+        name = "files"
+    }
+
+}
+
+private class RequestSource extends TaintSource {
+
+    RequestSource() {
+        this.(ControlFlowNode).refersTo(theBottleRequestObject())
+    }
+
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof BottleRequestKind
+    }
+
+}
+
+
+class BottleFormsDict extends TaintKind {
+
+    BottleFormsDict() {
+        this = "bottle.FormsDict"
+    }
+
+    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        /* Cannot use `getTaintOfAttribute(name)` as it wouldn't bind `name` */
+        exists(string name |
+            fromnode = tonode.(AttrNode).getObject(name) and 
+            result instanceof UntrustedStringKind
+            |
+            name != "get" and name != "getunicode" and name != "getall"
+        )
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        (name = "get" or name = "getunicode") and
+        result instanceof UntrustedStringKind
+        or
+        name = "getall" and result.(SequenceKind).getItem() instanceof UntrustedStringKind
+    }
+}
+
+class FileUpload extends TaintKind {
+
+    FileUpload() {
+        this = "bottle.FileUpload"
+    }
+
+    override TaintKind getTaintOfAttribute(string name) {
+        name = "filename" and result instanceof UntrustedStringKind
+        or
+        name = "raw_filename" and result instanceof UntrustedStringKind
+        or
+        name = "file" and result instanceof UntrustedFile
+    }
+
+}
+
+class UntrustedFile extends TaintKind {
+
+    UntrustedFile() { this = "Untrusted file" }
+
+}
+
+//
+//   TO DO.. File uploads -- Should check about file uploads for other frameworks as well.
+//  Move UntrustedFile to shared location
+//
+
+
+/** Parameter to a bottle request handler function */
+class BottleRequestParameter extends TaintSource {
+
+    BottleRequestParameter() {
+        exists(BottleRoute route |
+            route.getNamedArgument() = this.(ControlFlowNode).getNode()
+        )
+    }
+
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof UntrustedStringKind
+    }
+
+    override string toString() {
+        result = "bottle handler function argument"
+    }
+
+}
+

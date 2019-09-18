@@ -14,22 +14,18 @@ import csharp
 import semmle.code.csharp.commons.StructuralComparison
 
 class StructuralComparisonConfig extends StructuralComparisonConfiguration {
-  StructuralComparisonConfig() {
-    this = "SelfAssignment"
-  }
+  StructuralComparisonConfig() { this = "SelfAssignment" }
 
-  override predicate candidate(Element x, Element y) {
+  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
     exists(AssignExpr ae |
       // Member initializers are never self-assignments, in particular
       // not initializers such as `new C { F = F };`
-      not ae instanceof MemberInitializer |
-      ae.getLValue() = x
-      and
+      not ae instanceof MemberInitializer
+    |
+      ae.getLValue() = x and
       ae.getRValue() = y
-    )
-    and
-    forall(Expr e |
-      e = x.(Expr).getAChildExpr*() |
+    ) and
+    forall(Expr e | e = x.(Expr).getAChildExpr*() |
       // Non-trivial property accesses may have side-effects,
       // so these are not considered
       e instanceof PropertyAccess implies e instanceof TrivialPropertyAccess
@@ -38,10 +34,8 @@ class StructuralComparisonConfig extends StructuralComparisonConfiguration {
 
   AssignExpr getSelfAssignExpr() {
     exists(Expr x, Expr y |
-      same(x, y)
-      and
-      result.getLValue() = x
-      and
+      same(x, y) and
+      result.getLValue() = x and
       result.getRValue() = y
     )
   }

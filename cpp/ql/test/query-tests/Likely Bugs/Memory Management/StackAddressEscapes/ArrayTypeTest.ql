@@ -5,10 +5,7 @@ import cpp
 // StackAddressEscapes.ql, so the purpose of this test is to make
 // sure that the types behave in the way that we expect.
 from ArrayExpr arrayExpr
-select
-  arrayExpr,
-  arrayExpr.getArrayBase().getType().getUnspecifiedType().toString() +
-  ", " +
-  arrayExpr.getArrayBase().getFullyConverted().getType().getUnspecifiedType().toString() +
-  ", " +
-  arrayExpr.getType().getUnspecifiedType().toString()
+select arrayExpr,
+  arrayExpr.getArrayBase().getUnspecifiedType().toString() + ", " +
+    arrayExpr.getArrayBase().getFullyConverted().getUnspecifiedType().toString() + ", " +
+    arrayExpr.getUnspecifiedType().toString()

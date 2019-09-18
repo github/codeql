@@ -12,16 +12,19 @@
 import csharp
 import semmle.code.csharp.frameworks.System
 
-from EqualsMethod m, IsTypeExpr e, Class isType
+from EqualsMethod m, IsExpr e, Class isType
 where
-  m.fromSource()
-  and e.getEnclosingCallable() = m
-  and e.getExpr().(VariableAccess).getTarget() = m.getParameter(0)
-  and isType = e.getCheckedType()
-  and not(isType.isSealed())
-  and not exists(MethodCall c |
-    c.getEnclosingCallable() = m
-    and c.getTarget().getName() = "GetType"
-    and c.getQualifier().(VariableAccess).getTarget() = m.getParameter(0)
+  m.fromSource() and
+  e.getEnclosingCallable() = m and
+  e.getExpr().(VariableAccess).getTarget() = m.getParameter(0) and
+  isType = e.getPattern().(TypePatternExpr).getCheckedType() and
+  not isType.isSealed() and
+  not exists(MethodCall c |
+    c.getEnclosingCallable() = m and
+    c.getTarget().getName() = "GetType" and
+    c.getQualifier().(VariableAccess).getTarget() = m.getParameter(0)
   )
-select e, m.getDeclaringType().getName() + ".Equals(object) should not use \"is\" on its parameter, as it will not work properly for subclasses of " + isType.getName() + "."
+select e,
+  m.getDeclaringType().getName() +
+    ".Equals(object) should not use \"is\" on its parameter, as it will not work properly for subclasses of "
+    + isType.getName() + "."

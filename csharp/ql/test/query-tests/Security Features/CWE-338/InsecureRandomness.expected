@@ -1,3 +1,23 @@
-| InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString | Cryptographically insecure random number is generated at $@ and used here in a security context. | InsecureRandomness.cs:28:29:28:43 | call to method Next | call to method Next |
-| InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection | Cryptographically insecure random number is generated at $@ and used here in a security context. | InsecureRandomness.cs:60:31:60:39 | call to method Next | call to method Next |
-| InsecureRandomness.cs:14:20:14:54 | call to method InsecureRandomStringFromIndexer | Cryptographically insecure random number is generated at $@ and used here in a security context. | InsecureRandomness.cs:72:31:72:39 | call to method Next | call to method Next |
+edges
+| InsecureRandomness.cs:28:23:28:43 | (...) ... | InsecureRandomness.cs:31:16:31:32 | call to method ToString |
+| InsecureRandomness.cs:28:29:28:43 | call to method Next | InsecureRandomness.cs:28:23:28:43 | (...) ... |
+| InsecureRandomness.cs:31:16:31:32 | call to method ToString | InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString |
+| InsecureRandomness.cs:60:31:60:39 | call to method Next | InsecureRandomness.cs:62:16:62:32 | call to method ToString |
+| InsecureRandomness.cs:62:16:62:32 | call to method ToString | InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection |
+| InsecureRandomness.cs:72:31:72:39 | call to method Next | InsecureRandomness.cs:74:16:74:21 | access to local variable result |
+| InsecureRandomness.cs:74:16:74:21 | access to local variable result | InsecureRandomness.cs:14:20:14:54 | call to method InsecureRandomStringFromIndexer |
+nodes
+| InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString | semmle.label | call to method InsecureRandomString |
+| InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection | semmle.label | call to method InsecureRandomStringFromSelection |
+| InsecureRandomness.cs:14:20:14:54 | call to method InsecureRandomStringFromIndexer | semmle.label | call to method InsecureRandomStringFromIndexer |
+| InsecureRandomness.cs:28:23:28:43 | (...) ... | semmle.label | (...) ... |
+| InsecureRandomness.cs:28:29:28:43 | call to method Next | semmle.label | call to method Next |
+| InsecureRandomness.cs:31:16:31:32 | call to method ToString | semmle.label | call to method ToString |
+| InsecureRandomness.cs:60:31:60:39 | call to method Next | semmle.label | call to method Next |
+| InsecureRandomness.cs:62:16:62:32 | call to method ToString | semmle.label | call to method ToString |
+| InsecureRandomness.cs:72:31:72:39 | call to method Next | semmle.label | call to method Next |
+| InsecureRandomness.cs:74:16:74:21 | access to local variable result | semmle.label | access to local variable result |
+#select
+| InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString | InsecureRandomness.cs:28:29:28:43 | call to method Next | InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString | Cryptographically insecure random number is generated at $@ and used here in a security context. | InsecureRandomness.cs:28:29:28:43 | call to method Next | call to method Next |
+| InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection | InsecureRandomness.cs:60:31:60:39 | call to method Next | InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection | Cryptographically insecure random number is generated at $@ and used here in a security context. | InsecureRandomness.cs:60:31:60:39 | call to method Next | call to method Next |
+| InsecureRandomness.cs:14:20:14:54 | call to method InsecureRandomStringFromIndexer | InsecureRandomness.cs:72:31:72:39 | call to method Next | InsecureRandomness.cs:14:20:14:54 | call to method InsecureRandomStringFromIndexer | Cryptographically insecure random number is generated at $@ and used here in a security context. | InsecureRandomness.cs:72:31:72:39 | call to method Next | call to method Next |

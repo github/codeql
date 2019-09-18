@@ -1,3 +1,3 @@
-| AmbiguousIdAttribute.html:4:1:4:29 | <li>...</> | This element has the same id as $@. | AmbiguousIdAttribute.html:5:1:5:30 | <li>...</> | another element |
-| AmbiguousIdAttribute_fragment.html:2:3:3:2 | <li>...</> | This element has the same id as $@. | AmbiguousIdAttribute_fragment.html:3:3:3:32 | <li>...</> | another element |
-| tst.js:22:17:22:40 | <div id ... ></div> | This element has the same id as $@. | tst.js:22:41:22:64 | <div id ... ></div> | another element |
+| AmbiguousIdAttribute.html:4:5:4:14 | id=first | This element has the same id as $@. | AmbiguousIdAttribute.html:5:5:5:14 | id=first | another element |
+| AmbiguousIdAttribute_fragment.html:2:7:2:16 | id=first | This element has the same id as $@. | AmbiguousIdAttribute_fragment.html:3:7:3:16 | id=first | another element |
+| tst.js:22:22:22:33 | id="theDiff" | This element has the same id as $@. | tst.js:22:46:22:57 | id="theDiff" | another element |

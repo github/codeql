@@ -8,11 +8,13 @@
  * @tags security
  *       external/cwe/cwe-327
  */
+
 import csharp
 
 from FieldAccess a, Field ecb, Enum e
-where a.getTarget() = ecb
-  and ecb.hasName("ECB")
-  and ecb.getDeclaringType() = e
-  and e.hasQualifiedName("System.Security.Cryptography", "CipherMode")
+where
+  a.getTarget() = ecb and
+  ecb.hasName("ECB") and
+  ecb.getDeclaringType() = e and
+  e.hasQualifiedName("System.Security.Cryptography", "CipherMode")
 select a, "The ECB (Electronic Code Book) encryption mode is vulnerable to replay attacks."

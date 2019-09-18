@@ -10,29 +10,24 @@
  *
  * NOTE: The API of this library is not stable yet and may change in
  *       the future.
- *
  */
 
 import javascript
-
 private import AngularJS
 
 /**
  * A reference to a service.
  */
 private newtype TServiceReference =
-MkBuiltinServiceReference(string name) { exists (getBuiltinKind(name)) } or
-MkCustomServiceReference(CustomServiceDefinition service)
+  MkBuiltinServiceReference(string name) { exists(getBuiltinKind(name)) } or
+  MkCustomServiceReference(CustomServiceDefinition service)
 
 /**
  * A reference to a service.
  */
 abstract class ServiceReference extends TServiceReference {
-
   /** Gets a textual representation of this element. */
-  string toString() {
-    result = getName()
-  }
+  string toString() { result = getName() }
 
   /**
    * Gets the name of this reference.
@@ -49,9 +44,7 @@ abstract class ServiceReference extends TServiceReference {
   /**
    * Gets a call that invokes the referenced service.
    */
-  CallExpr getACall() {
-    result.getCallee() = getAnAccess()
-  }
+  CallExpr getACall() { result.getCallee() = getAnAccess() }
 
   /**
    * Gets a method call that invokes method `methodName` on the referenced service.
@@ -73,20 +66,15 @@ abstract class ServiceReference extends TServiceReference {
    * Holds if the service is available for dependency injection.
    */
   abstract predicate isInjectable();
-
 }
 
 /**
  * A reference to a builtin service.
  */
 class BuiltinServiceReference extends ServiceReference, MkBuiltinServiceReference {
-  override string getName() {
-    this = MkBuiltinServiceReference(result)
-  }
+  override string getName() { this = MkBuiltinServiceReference(result) }
 
-  override predicate isInjectable() {
-    any()
-  }
+  override predicate isInjectable() { any() }
 }
 
 /**
@@ -96,32 +84,23 @@ class BuiltinServiceReference extends ServiceReference, MkBuiltinServiceReferenc
  * This predicate can avoid the non-monotonic recursion that `getAnAccess` can cause.
  */
 DataFlow::ParameterNode builtinServiceRef(string serviceName) {
- exists(InjectableFunction f, BuiltinServiceReference service |
-   service.getName() = serviceName and
-   result = DataFlow::parameterNode(f.getDependencyParameter(serviceName))
- )
-
+  exists(InjectableFunction f, BuiltinServiceReference service |
+    service.getName() = serviceName and
+    result = DataFlow::parameterNode(f.getDependencyParameter(serviceName))
+  )
 }
 
 /**
  * A reference to a custom service.
  */
 class CustomServiceReference extends ServiceReference, MkCustomServiceReference {
-
   CustomServiceDefinition def;
 
-  CustomServiceReference() {
-    this = MkCustomServiceReference(def)
-  }
+  CustomServiceReference() { this = MkCustomServiceReference(def) }
 
-  override string getName() {
-    result = def.getName()
-  }
+  override string getName() { result = def.getName() }
 
-  override predicate isInjectable() {
-    def instanceof RecipeDefinition
-  }
-
+  override predicate isInjectable() { def instanceof RecipeDefinition }
 }
 
 /**
@@ -135,115 +114,117 @@ class CustomServiceReference extends ServiceReference, MkCustomServiceReference 
  */
 private string getBuiltinKind(string name) {
   // according to https://docs.angularjs.org/api
-  result = "controller-only" and  name = "$scope"
-  or (
-    result = "service" and (
-      // ng
-      name = "$anchorScroll" or
-      name = "$animate" or
-      name = "$animateCss" or
-      name = "$cacheFactory" or
-      name = "$controller" or
-      name = "$document" or
-      name = "$exceptionHandler" or
-      name = "$filter" or
-      name = "$http" or
-      name = "$httpBackend" or
-      name = "$httpParamSerializer" or
-      name = "$httpParamSerializerJQLike" or
-      name = "$interpolate" or
-      name = "$interval" or
-      name = "$jsonpCallbacks" or
-      name = "$locale" or
-      name = "$location" or
-      name = "$log" or
-      name = "$parse" or
-      name = "$q" or
-      name = "$rootElement" or
-      name = "$rootScope" or
-      name = "$sce" or
-      name = "$sceDelegate" or
-      name = "$templateCache" or
-      name = "$templateRequest" or
-      name = "$timeout" or
-      name = "$window" or
-      name = "$xhrFactory" or
-      // auto
-      name = "$injector" or
-      name = "$provide" or
-      // ngAnimate
-      name = "$animate" or
-      name = "$animateCss" or
-      // ngAria
-      name = "$aria" or
-      // ngComponentRouter
-      name = "$rootRouter" or
-      name = "$routerRootComponent" or
-      // ngCookies
-      name = "$cookieStore" or
-      name = "$cookies" or
-      //ngMock
-      name = "$animate" or
-      name = "$componentController" or
-      name = "$controller" or
-      name = "$exceptionHandler" or
-      name = "$httpBackend" or
-      name = "$interval" or
-      name = "$log" or
-      name = "$timeout" or
-      //ngMockE2E
-      name = "$httpBackend" or
-      // ngResource
-      name = "$resource" or
-      // ngRoute
-      name = "$route" or
-      name = "$routeParams" or
-      // ngSanitize
-      name = "$sanitize" or
-      // ngTouch
-      name = "$swipe"
-    )
-  ) or (
-    result = "provider" and (
-      // ng
-      name = "$anchorScrollProvider" or
-      name = "$animateProvider" or
-      name = "$compileProvider" or
-      name = "$controllerProvider" or
-      name = "$filterProvider" or
-      name = "$httpProvider" or
-      name = "$interpolateProvider" or
-      name = "$locationProvider" or
-      name = "$logProvider" or
-      name = "$parseProvider" or
-      name = "$provider" or
-      name = "$qProvider" or
-      name = "$rootScopeProvider" or
-      name = "$sceDelegateProvider" or
-      name = "$sceProvider" or
-      name = "$templateRequestProvider" or
-      // ngAria
-      name = "$ariaProvider" or
-      // ngCookies
-      name = "$cookiesProvider" or
-      // ngmock
-      name = "$exceptionHandlerProvider" or
-      // ngResource
-      name = "$resourceProvider" or
-      // ngRoute
-      name = "$routeProvider" or
-      // ngSanitize
-      name = "$sanitizeProvider"
-    )
-  ) or (
-    result = "type" and (
-      // ng
-      name = "$cacheFactory" or
-      name = "$compile" or
-      name = "$rootScope" or
-      // ngMock
-      name = "$rootScope"
-    )
+  result = "controller-only" and name = "$scope"
+  or
+  result = "service" and
+  (
+    // ng
+    name = "$anchorScroll" or
+    name = "$animate" or
+    name = "$animateCss" or
+    name = "$cacheFactory" or
+    name = "$controller" or
+    name = "$document" or
+    name = "$exceptionHandler" or
+    name = "$filter" or
+    name = "$http" or
+    name = "$httpBackend" or
+    name = "$httpParamSerializer" or
+    name = "$httpParamSerializerJQLike" or
+    name = "$interpolate" or
+    name = "$interval" or
+    name = "$jsonpCallbacks" or
+    name = "$locale" or
+    name = "$location" or
+    name = "$log" or
+    name = "$parse" or
+    name = "$q" or
+    name = "$rootElement" or
+    name = "$rootScope" or
+    name = "$sce" or
+    name = "$sceDelegate" or
+    name = "$templateCache" or
+    name = "$templateRequest" or
+    name = "$timeout" or
+    name = "$window" or
+    name = "$xhrFactory" or
+    // auto
+    name = "$injector" or
+    name = "$provide" or
+    // ngAnimate
+    name = "$animate" or
+    name = "$animateCss" or
+    // ngAria
+    name = "$aria" or
+    // ngComponentRouter
+    name = "$rootRouter" or
+    name = "$routerRootComponent" or
+    // ngCookies
+    name = "$cookieStore" or
+    name = "$cookies" or
+    //ngMock
+    name = "$animate" or
+    name = "$componentController" or
+    name = "$controller" or
+    name = "$exceptionHandler" or
+    name = "$httpBackend" or
+    name = "$interval" or
+    name = "$log" or
+    name = "$timeout" or
+    //ngMockE2E
+    name = "$httpBackend" or
+    // ngResource
+    name = "$resource" or
+    // ngRoute
+    name = "$route" or
+    name = "$routeParams" or
+    // ngSanitize
+    name = "$sanitize" or
+    // ngTouch
+    name = "$swipe"
+  )
+  or
+  result = "provider" and
+  (
+    // ng
+    name = "$anchorScrollProvider" or
+    name = "$animateProvider" or
+    name = "$compileProvider" or
+    name = "$controllerProvider" or
+    name = "$filterProvider" or
+    name = "$httpProvider" or
+    name = "$interpolateProvider" or
+    name = "$locationProvider" or
+    name = "$logProvider" or
+    name = "$parseProvider" or
+    name = "$provider" or
+    name = "$qProvider" or
+    name = "$rootScopeProvider" or
+    name = "$sceDelegateProvider" or
+    name = "$sceProvider" or
+    name = "$templateRequestProvider" or
+    // ngAria
+    name = "$ariaProvider" or
+    // ngCookies
+    name = "$cookiesProvider" or
+    // ngmock
+    name = "$exceptionHandlerProvider" or
+    // ngResource
+    name = "$resourceProvider" or
+    // ngRoute
+    name = "$routeProvider" or
+    // ngSanitize
+    name = "$sanitizeProvider"
+  )
+  or
+  result = "type" and
+  (
+    // ng
+    name = "$cacheFactory" or
+    name = "$compile" or
+    name = "$rootScope" or
+    // ngMock
+    name = "$rootScope"
   )
 }
 
@@ -252,7 +233,6 @@ private string getBuiltinKind(string name) {
  * `module.controller` or a similar method.
  */
 abstract class CustomServiceDefinition extends DataFlow::Node {
-
   /** Gets a factory function used to create the defined service. */
   abstract DataFlow::SourceNode getAFactoryFunction();
 
@@ -263,43 +243,35 @@ abstract class CustomServiceDefinition extends DataFlow::Node {
   abstract string getName();
 
   /** Gets the reference to the defined service. */
-  ServiceReference getServiceReference() {
-    result = MkCustomServiceReference(this)
-  }
-
+  ServiceReference getServiceReference() { result = MkCustomServiceReference(this) }
 }
 
 /**
  * A definition of a custom AngularJS dependency injection service using a "recipe".
  */
-abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinition, DependencyInjection {
-
+abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinition,
+  DependencyInjection {
   string methodName;
-
   string name;
 
   RecipeDefinition() {
     (
-     this = moduleRef(_).getAMethodCall(methodName) or
-     this = builtinServiceRef("$provide").getAMethodCall(methodName)
+      this = moduleRef(_).getAMethodCall(methodName) or
+      this = builtinServiceRef("$provide").getAMethodCall(methodName)
     ) and
     getArgument(0).asExpr().mayHaveStringValue(name)
   }
 
   override string getName() { result = name }
 
-  override DataFlow::SourceNode getAFactoryFunction() {
-    result.flowsTo(getArgument(1))
-  }
+  override DataFlow::SourceNode getAFactoryFunction() { result.flowsTo(getArgument(1)) }
 
   override DataFlow::Node getAnInjectableFunction() {
     methodName != "value" and
     methodName != "constant" and
     result = getAFactoryFunction()
   }
-
 }
-
 
 /**
  * A custom special AngularJS service, defined through
@@ -310,18 +282,18 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
  * This includes, filters (used in AngularJS expressions) and controllers
  * (used through `ng-controller` directives).
  */
-private abstract class CustomSpecialServiceDefinition extends CustomServiceDefinition, DependencyInjection {
-
-  override DataFlow::Node getAnInjectableFunction() {
-    result = getAFactoryFunction()
-  }
-
+abstract private class CustomSpecialServiceDefinition extends CustomServiceDefinition,
+  DependencyInjection {
+  override DataFlow::Node getAnInjectableFunction() { result = getAFactoryFunction() }
 }
 
 /**
  * Holds if `mce` defines a service of type `moduleMethodName` with name `serviceName` using the `factoryFunction` as the factory function.
  */
-private predicate isCustomServiceDefinitionOnModule(DataFlow::CallNode mce, string moduleMethodName, string serviceName, DataFlow::SourceNode factoryFunction) {
+private predicate isCustomServiceDefinitionOnModule(
+  DataFlow::CallNode mce, string moduleMethodName, string serviceName,
+  DataFlow::SourceNode factoryFunction
+) {
   mce = moduleRef(_).getAMethodCall(moduleMethodName) and
   (
     moduleMethodName = "controller" or
@@ -334,53 +306,46 @@ private predicate isCustomServiceDefinitionOnModule(DataFlow::CallNode mce, stri
   factoryFunction.flowsTo(mce.getArgument(1))
 }
 
-private predicate isCustomServiceDefinitionOnProvider(DataFlow::CallNode mce, string providerName, string providerMethodName, string serviceName, DataFlow::SourceNode factoryFunction) {
+private predicate isCustomServiceDefinitionOnProvider(
+  DataFlow::CallNode mce, string providerName, string providerMethodName, string serviceName,
+  DataFlow::SourceNode factoryFunction
+) {
   mce = builtinServiceRef(providerName).getAMethodCall(providerMethodName) and
-  ((
+  (
     mce.getNumArgument() = 1 and
     factoryFunction.flowsTo(mce.getOptionArgument(0, serviceName))
-  ) or (
+    or
     mce.getNumArgument() = 2 and
     mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
     factoryFunction.flowsTo(mce.getArgument(1))
-  ))
+  )
 }
 
 /**
  * A controller defined with `module.controller` or `$controllerProvider.register`.
  */
 class ControllerDefinition extends CustomSpecialServiceDefinition {
-
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   ControllerDefinition() {
     isCustomServiceDefinitionOnModule(this, "controller", name, factoryFunction) or
-    isCustomServiceDefinitionOnProvider(this, "$controllerProvider", "register", name, factoryFunction)
+    isCustomServiceDefinitionOnProvider(this, "$controllerProvider", "register", name,
+      factoryFunction)
   }
 
-  override string getName() {
-    result = name
-  }
+  override string getName() { result = name }
 
-  override DataFlow::SourceNode getAService() {
-    result = factoryFunction
-  }
+  override DataFlow::SourceNode getAService() { result = factoryFunction }
 
-  override DataFlow::SourceNode getAFactoryFunction() {
-    result = factoryFunction
-  }
-
+  override DataFlow::SourceNode getAFactoryFunction() { result = factoryFunction }
 }
 
 /**
  * A filter defined with `module.filter` or `$filterProvider.register`.
  */
 class FilterDefinition extends CustomSpecialServiceDefinition {
-
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   FilterDefinition() {
@@ -388,30 +353,23 @@ class FilterDefinition extends CustomSpecialServiceDefinition {
     isCustomServiceDefinitionOnProvider(this, "$filterProvider", "register", name, factoryFunction)
   }
 
-  override string getName() {
-    result = name
-  }
+  override string getName() { result = name }
 
   override DataFlow::SourceNode getAService() {
-    exists (InjectableFunction f |
+    exists(InjectableFunction f |
       f = factoryFunction and
       result.flowsToExpr(f.asFunction().getAReturnedExpr())
     )
   }
 
-  override DataFlow::SourceNode getAFactoryFunction() {
-    result = factoryFunction
-  }
-
+  override DataFlow::SourceNode getAFactoryFunction() { result = factoryFunction }
 }
 
 /**
  * A directive defined with `module.directive` or `$compileProvider.directive`.
  */
 class DirectiveDefinition extends CustomSpecialServiceDefinition {
-
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   DirectiveDefinition() {
@@ -419,47 +377,38 @@ class DirectiveDefinition extends CustomSpecialServiceDefinition {
     isCustomServiceDefinitionOnProvider(this, "$compileProvider", "directive", name, factoryFunction)
   }
 
-  override string getName() {
-    result = name
-  }
+  override string getName() { result = name }
 
   override DataFlow::SourceNode getAService() {
-    exists (CustomDirective d |
+    exists(CustomDirective d |
       d.getDefinition() = this and
       result = d.getAnInstantiation()
     )
   }
 
-  override DataFlow::SourceNode getAFactoryFunction() {
-    result = factoryFunction
-  }
-
+  override DataFlow::SourceNode getAFactoryFunction() { result = factoryFunction }
 }
 
 private class CustomDirectiveControllerDependencyInjection extends DependencyInjection {
-
   CustomDirectiveControllerDependencyInjection() {
     this instanceof DirectiveDefinition or
     this instanceof ComponentDefinition
   }
 
   override DataFlow::Node getAnInjectableFunction() {
-    exists (CustomDirective d |
+    exists(CustomDirective d |
       d.getDefinition() = this and
       // Note that `.getController` cannot be used here, since that involves a cast to InjectableFunction, and that cast only succeeds because of this method
       result = d.getMember("controller")
     )
   }
-
 }
 
 /**
  * A component defined with `module.component` or `$compileProvider.component`.
  */
 class ComponentDefinition extends CustomSpecialServiceDefinition {
-
   string name;
-
   DataFlow::SourceNode config;
 
   ComponentDefinition() {
@@ -467,35 +416,26 @@ class ComponentDefinition extends CustomSpecialServiceDefinition {
     isCustomServiceDefinitionOnProvider(this, "$compileProvider", "component", name, config)
   }
 
-  override string getName() {
-    result = name
-  }
+  override string getName() { result = name }
 
   override DataFlow::SourceNode getAService() {
-    exists (CustomDirective d |
+    exists(CustomDirective d |
       d.getDefinition() = this and
       result = d.getAnInstantiation()
     )
   }
 
-  override DataFlow::SourceNode getAFactoryFunction() {
-    none()
-  }
+  override DataFlow::SourceNode getAFactoryFunction() { none() }
 
   /** Gets the configuration object for the defined component. */
-  DataFlow::SourceNode getConfig() {
-    result = config
-  }
-
+  DataFlow::SourceNode getConfig() { result = config }
 }
 
 /**
  * An animation defined with `module.animation` or `$animationProvider.register`.
  */
 class AnimationDefinition extends CustomSpecialServiceDefinition {
-
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   AnimationDefinition() {
@@ -503,21 +443,16 @@ class AnimationDefinition extends CustomSpecialServiceDefinition {
     isCustomServiceDefinitionOnProvider(this, "$animateProvider", "register", name, factoryFunction)
   }
 
-  override string getName() {
-    result = name
-  }
+  override string getName() { result = name }
 
   override DataFlow::SourceNode getAService() {
-    exists (InjectableFunction f |
+    exists(InjectableFunction f |
       f = factoryFunction and
       result.flowsToExpr(f.asFunction().getAReturnedExpr())
     )
   }
 
-  override DataFlow::SourceNode getAFactoryFunction() {
-    result = factoryFunction
-  }
-
+  override DataFlow::SourceNode getAFactoryFunction() { result = factoryFunction }
 }
 
 /**
@@ -534,55 +469,41 @@ BuiltinServiceReference getBuiltinServiceOfKind(string kind) {
  * A request for one or more AngularJS services.
  */
 abstract class ServiceRequest extends Expr {
-
   /**
    * Gets the parameter of this request into which `service` is injected.
    */
   abstract SimpleParameter getDependencyParameter(ServiceReference service);
-
 }
 
 /**
  * The request for a scope service in the form of the link-function of a directive.
  */
 private class LinkFunctionWithScopeInjection extends ServiceRequest {
-
-  LinkFunctionWithScopeInjection() {
-    this instanceof LinkFunction
-  }
+  LinkFunctionWithScopeInjection() { this instanceof LinkFunction }
 
   override SimpleParameter getDependencyParameter(ServiceReference service) {
     service instanceof ScopeServiceReference and
     result = this.(LinkFunction).getScopeParameter()
   }
-
 }
-
 
 /**
  * A request for a service, in the form of a dependency-injected function.
  */
 class InjectableFunctionServiceRequest extends ServiceRequest {
-
   InjectableFunction injectedFunction;
 
-  InjectableFunctionServiceRequest() {
-    DataFlow::valueNode(this) = injectedFunction
-  }
+  InjectableFunctionServiceRequest() { DataFlow::valueNode(this) = injectedFunction }
 
   /**
    * Gets the function of this request.
    */
-  InjectableFunction getAnInjectedFunction() {
-    result = injectedFunction
-  }
+  InjectableFunction getAnInjectedFunction() { result = injectedFunction }
 
   /**
    * Gets a name of a requested service.
    */
-  string getAServiceName() {
-    exists(getAnInjectedFunction().getADependencyDeclaration(result))
-  }
+  string getAServiceName() { exists(getAnInjectedFunction().getADependencyDeclaration(result)) }
 
   /**
    * Gets a service with the specified name, relative to this request.
@@ -596,7 +517,6 @@ class InjectableFunctionServiceRequest extends ServiceRequest {
   override SimpleParameter getDependencyParameter(ServiceReference service) {
     service = injectedFunction.getAResolvedDependency(result)
   }
-
 }
 
 private DataFlow::SourceNode getFactoryFunctionResult(RecipeDefinition def) {
@@ -612,16 +532,16 @@ private DataFlow::SourceNode getFactoryFunctionResult(RecipeDefinition def) {
  * `module.factory("name", f)`.
  */
 class FactoryRecipeDefinition extends RecipeDefinition {
-  FactoryRecipeDefinition() {
-    methodName = "factory"
-  }
+  FactoryRecipeDefinition() { methodName = "factory" }
 
   override DataFlow::SourceNode getAService() {
+    /*
+     * The Factory recipe constructs a new service using a function
+     *    with zero or more arguments (these are dependencies on other
+     *      services). The return value of this function is the service
+     *    instance created by this recipe.
+     */
 
-    /* The Factory recipe constructs a new service using a function
-    with zero or more arguments (these are dependencies on other
-      services). The return value of this function is the service
-    instance created by this recipe.  */
     result = getFactoryFunctionResult(this)
   }
 }
@@ -631,37 +551,36 @@ class FactoryRecipeDefinition extends RecipeDefinition {
  * `module.decorator("name", f)`.
  */
 class DecoratorRecipeDefinition extends RecipeDefinition {
-  DecoratorRecipeDefinition() {
-    methodName = "decorator"
-  }
+  DecoratorRecipeDefinition() { methodName = "decorator" }
 
   override DataFlow::SourceNode getAService() {
+    /*
+     * The return value of the function provided to the decorator
+     *    will take place of the service, directive, or filter being
+     *    decorated.
+     */
 
-    /* The return value of the function provided to the decorator
-    will take place of the service, directive, or filter being
-    decorated.*/
     result = getFactoryFunctionResult(this)
   }
 }
-
 
 /**
  * An AngularJS service recipe definition, that is, a method call of the form
  * `module.service("name", f)`.
  */
 class ServiceRecipeDefinition extends RecipeDefinition {
-  ServiceRecipeDefinition() {
-    methodName = "service"
-  }
+  ServiceRecipeDefinition() { methodName = "service" }
 
   override DataFlow::SourceNode getAService() {
+    /*
+     * The service recipe produces a service just like the Value or
+     *    Factory recipes, but it does so by invoking a constructor with
+     *    the new operator. The constructor can take zero or more
+     *    arguments, which represent dependencies needed by the instance
+     *    of this type.
+     */
 
-    /* The service recipe produces a service just like the Value or
-    Factory recipes, but it does so by invoking a constructor with
-    the new operator. The constructor can take zero or more
-    arguments, which represent dependencies needed by the instance
-    of this type. */
-    exists (InjectableFunction f |
+    exists(InjectableFunction f |
       f = getAFactoryFunction() and
       result = DataFlow::valueNode(f.asFunction())
     )
@@ -673,13 +592,9 @@ class ServiceRecipeDefinition extends RecipeDefinition {
  * `module.value("name", value)`.
  */
 class ValueRecipeDefinition extends RecipeDefinition {
-  ValueRecipeDefinition() {
-    methodName = "value"
-  }
+  ValueRecipeDefinition() { methodName = "value" }
 
-  override DataFlow::SourceNode getAService() {
-    result = getAFactoryFunction()
-  }
+  override DataFlow::SourceNode getAService() { result = getAFactoryFunction() }
 }
 
 /**
@@ -687,13 +602,9 @@ class ValueRecipeDefinition extends RecipeDefinition {
  * `module.constant("name", "constant value")`.
  */
 class ConstantRecipeDefinition extends RecipeDefinition {
-  ConstantRecipeDefinition() {
-    methodName = "constant"
-  }
+  ConstantRecipeDefinition() { methodName = "constant" }
 
-  override DataFlow::SourceNode getAService() {
-    result = getAFactoryFunction()
-  }
+  override DataFlow::SourceNode getAService() { result = getAFactoryFunction() }
 }
 
 /**
@@ -701,84 +612,65 @@ class ConstantRecipeDefinition extends RecipeDefinition {
  * `module.provider("name", fun)`.
  */
 class ProviderRecipeDefinition extends RecipeDefinition {
-  ProviderRecipeDefinition() {
-    methodName = "provider"
-  }
+  ProviderRecipeDefinition() { methodName = "provider" }
 
-  override string getName(){
-    result = name or result = name + "Provider"
-  }
+  override string getName() { result = name or result = name + "Provider" }
 
   override DataFlow::SourceNode getAService() {
+    /*
+     * The Provider recipe is syntactically defined as a custom type
+     *    that implements a $get method. This method is a factory function
+     *    just like the one we use in the Factory recipe. In fact, if you
+     *    define a Factory recipe, an empty Provider type with the $get
+     *    method set to your factory function is automatically created
+     *    under the hood.
+     */
 
-    /* The Provider recipe is syntactically defined as a custom type
-    that implements a $get method. This method is a factory function
-    just like the one we use in the Factory recipe. In fact, if you
-    define a Factory recipe, an empty Provider type with the $get
-    method set to your factory function is automatically created
-    under the hood.  */
-
-    exists(DataFlow::ThisNode thiz, DataFlow::Node rhs, InjectableFunction f |
+    exists(DataFlow::ThisNode thiz, InjectableFunction f |
       f = getAFactoryFunction() and
       thiz.getBinder().getFunction() = f.asFunction() and
-      thiz.hasPropertyWrite("$get", rhs) and
-      result.flowsTo(rhs)
+      result = thiz.getAPropertySource("$get")
     )
   }
-
 }
 
 private class ProviderRecipeServiceInjection extends DependencyInjection {
-
-  ProviderRecipeServiceInjection() {
-    this instanceof ProviderRecipeDefinition
-  }
+  ProviderRecipeServiceInjection() { this instanceof ProviderRecipeDefinition }
 
   override DataFlow::Node getAnInjectableFunction() {
     result = this.(ProviderRecipeDefinition).getAService()
   }
-
 }
 
 /**
  * An AngularJS config method definition, that is, a method call of the form
  * `module.config(fun)`.
  */
-class ConfigMethodDefinition extends ModuleApiCall  {
-  ConfigMethodDefinition() {
-    methodName = "config"
-  }
+class ConfigMethodDefinition extends ModuleApiCall {
+  ConfigMethodDefinition() { methodName = "config" }
 
   /**
    * Gets a provided configuration method.
    */
-  InjectableFunction getConfigMethod() {
-    result.(DataFlow::SourceNode).flowsTo(getArgument(0))
-  }
+  InjectableFunction getConfigMethod() { result.(DataFlow::SourceNode).flowsTo(getArgument(0)) }
 }
 
 /**
  * An AngularJS run method definition, that is, a method call of the form
  * `module.run(fun)`.
  */
-class RunMethodDefinition extends ModuleApiCall  {
-  RunMethodDefinition() {
-    methodName = "run"
-  }
+class RunMethodDefinition extends ModuleApiCall {
+  RunMethodDefinition() { methodName = "run" }
 
   /**
    * Gets a provided run method.
    */
-  InjectableFunction getRunMethod() {
-    result.(DataFlow::SourceNode).flowsTo(getArgument(0))
-  }
+  InjectableFunction getRunMethod() { result.(DataFlow::SourceNode).flowsTo(getArgument(0)) }
 }
 
 /**
  * The `$scope` or `$rootScope` service.
  */
 class ScopeServiceReference extends BuiltinServiceReference {
-  ScopeServiceReference() {
-    getName() = "$scope" or getName() = "$rootScope"
-  }
+  ScopeServiceReference() { getName() = "$scope" or getName() = "$rootScope" }
 }

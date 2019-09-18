@@ -32,5 +32,4 @@ where
     t2.getAMethod().getName().toLowerCase().matches("%visit%") or
     t1.getPackage() = t2.getPackage()
   )
-select t1, "This type and type $@ are mutually dependent.",
-  t2, t2.getName()
+select t1, "This type and type $@ are mutually dependent.", t2, t2.getName()

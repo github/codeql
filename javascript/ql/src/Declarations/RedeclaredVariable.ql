@@ -13,17 +13,15 @@ import javascript
 private import Declarations
 
 from Variable v, TopLevel tl, VarDecl decl, VarDecl redecl
-where decl = firstRefInTopLevel(v, Decl(), tl) and
-      redecl = refInTopLevel(v, Decl(), tl) and
-      redecl != decl and
-      not tl.isExterns() and
-
-      // Ignore redeclared ambient declarations, such as overloaded functions.
-      not decl.isAmbient() and
-      not redecl.isAmbient() and
-
-      // Redeclaring a namespace extends the previous definition.
-      not decl = any(NamespaceDeclaration ns).getId() and
-      not redecl = any(NamespaceDeclaration ns).getId()
-
+where
+  decl = firstRefInTopLevel(v, Decl(), tl) and
+  redecl = refInTopLevel(v, Decl(), tl) and
+  redecl != decl and
+  not tl.isExterns() and
+  // Ignore redeclared ambient declarations, such as overloaded functions.
+  not decl.isAmbient() and
+  not redecl.isAmbient() and
+  // Redeclaring a namespace extends the previous definition.
+  not decl = any(NamespaceDeclaration ns).getId() and
+  not redecl = any(NamespaceDeclaration ns).getId()
 select redecl, "This variable has already been declared $@.", decl, "here"

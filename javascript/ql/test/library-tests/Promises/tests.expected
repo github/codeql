@@ -1,0 +1,38 @@
+test_ResolvedPromiseDefinition
+| promises.js:53:19:53:41 | Promise ... source) | promises.js:53:35:53:40 | source |
+| promises.js:62:19:62:41 | Promise ... source) | promises.js:62:35:62:40 | source |
+| promises.js:71:5:71:27 | Promise ... source) | promises.js:71:21:71:26 | source |
+test_PromiseDefinition_getARejectHandler
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:20:6:22:3 | (v) =>  ...  v;\\n  } |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:23:18:25:3 | (v) =>  ...  v;\\n  } |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
+test_PromiseDefinition_getExecutor
+| promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:29:5:3 | functio ... e);\\n  } |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:30:17:3 | (res, r ... e);\\n  } |
+| promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:31:35:5 | functio ... ;\\n    } |
+| promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:29:45:5 | functio ... ;\\n    } |
+test_PromiseDefinition_getAFinallyHandler
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
+test_PromiseDefinition
+| promises.js:3:17:5:4 | new Pro ... );\\n  }) |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) |
+| promises.js:33:19:35:6 | new Pro ... \\n    }) |
+| promises.js:43:19:45:6 | Q.Promi ... \\n    }) |
+test_PromiseDefinition_getAResolveHandler
+| promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:6:16:8:3 | functio ... al;\\n  } |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:18:17:20:3 | (v) =>  ...  v;\\n  } |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
+| promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:36:18:38:5 | functio ... ;\\n    } |
+| promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:46:18:48:5 | functio ... ;\\n    } |
+test_PromiseDefinition_getRejectParameter
+| promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:48:3:53 | reject |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:36:10:38 | rej |
+| promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:50:33:55 | reject |
+| promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:48:43:53 | reject |
+test_PromiseDefinition_getResolveParameter
+| promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:39:3:45 | resolve |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:31:10:33 | res |
+| promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:41:33:47 | resolve |
+| promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:39:43:45 | resolve |
+test_PromiseDefinition_getACatchHandler
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:23:18:25:3 | (v) =>  ...  v;\\n  } |

@@ -1,8 +1,11 @@
 import java
 
 private Stmt getASwitchChild(SwitchStmt s) {
-  result = s.getAChild() or
-  exists(Stmt mid | mid = getASwitchChild(s) and not mid instanceof SwitchStmt and result = mid.getAChild())
+  result = s.getAChild()
+  or
+  exists(Stmt mid |
+    mid = getASwitchChild(s) and not mid instanceof SwitchStmt and result = mid.getAChild()
+  )
 }
 
 private predicate blockInSwitch(SwitchStmt s, BasicBlock b) {
@@ -16,7 +19,8 @@ private predicate switchCaseControlFlow(SwitchStmt switch, BasicBlock b1, BasicB
 }
 
 predicate switchCaseControlFlowPlus(SwitchStmt switch, BasicBlock b1, BasicBlock b2) {
-  switchCaseControlFlow(switch, b1, b2) or
+  switchCaseControlFlow(switch, b1, b2)
+  or
   exists(BasicBlock mid |
     switchCaseControlFlowPlus(switch, mid, b2) and
     switchCaseControlFlow(switch, b1, mid) and
@@ -35,22 +39,22 @@ predicate mayDropThroughWithoutComment(SwitchStmt switch, Stmt switchCase) {
   )
 }
 
-private
-predicate fallThroughCommented(Stmt case) {
+private predicate fallThroughCommented(Stmt case) {
   exists(Location loc |
     loc = case.getLocation() and
     loc.getStartLine() = fallThroughCommentedLine(loc.getFile())
   )
 }
 
-private
-int fallThroughCommentedLine(File f) {
+private int fallThroughCommentedLine(File f) {
   exists(Location loc, JavadocText text |
     loc.getFile() = f and
     text.getLocation() = loc and
     text.getText().toLowerCase().regexpMatch(".*falls?[ -]?(through|thru).*") and
     result = loc.getStartLine() + 1
-  ) or exists(int mid |
+  )
+  or
+  exists(int mid |
     mid = fallThroughCommentedLine(f) and
     not stmtLine(f) = mid and
     mid < max(stmtLine(f)) and
@@ -58,8 +62,7 @@ int fallThroughCommentedLine(File f) {
   )
 }
 
-private
-int stmtLine(File f) {
+private int stmtLine(File f) {
   exists(Stmt s, Location loc |
     s.getLocation() = loc and
     loc.getFile() = f and

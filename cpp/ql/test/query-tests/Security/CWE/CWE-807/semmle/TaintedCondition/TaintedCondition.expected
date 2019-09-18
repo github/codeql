@@ -1,0 +1,1 @@
+| test.cpp:24:10:24:35 | ! ... | Reliance on untrusted input $@ to raise privilege at $@ | test.cpp:20:29:20:34 | call to getenv | call to getenv | test.cpp:25:9:25:27 | ... = ... | ... = ... |

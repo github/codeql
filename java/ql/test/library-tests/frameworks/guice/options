@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/guice-servlet-4.2.2/:${testdir}/../../../stubs/guice-4.2.2/

@@ -4,6 +4,7 @@
  * @metricType reftype
  * @id java/reference-type-source-links
  */
+
 import java
 
 from RefType t

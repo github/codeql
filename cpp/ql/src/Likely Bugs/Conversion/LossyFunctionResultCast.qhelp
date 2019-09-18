@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This rule finds function calls whose result type is a floating point type, which are implicitly cast to an integral type. Such code may not behave as intended when the floating point return value has a fractional part, or takes an extreme value outside the range that can be represented by the integer type.</p>
+
+</overview>
+<recommendation>
+<p>Consider changing the surrounding expression to match the floating point type. If rounding is intended, explicitly round using a standard function such as <code>trunc</code>, <code>floor</code> or <code>round</code>.</p>
+
+</recommendation>
+<example><sample src="LossyFunctionResultCast.cpp" />
+<p>In this example, the result of the call to <code>getWidth()</code> is implicitly cast to <code>int</code>, resulting in an unintended loss of accuracy. To fix this, the type of variable <code>width</code> could be changed from <code>int</code> to <code>double</code>.</p>
+
+</example>
+<references>
+
+<li>
+  Microsoft Visual C++ Documentation: <a href="https://docs.microsoft.com/en-us/cpp/cpp/type-conversions-and-type-safety-modern-cpp?view=vs-2017">Type Conversions and Type Safety (Modern C++)</a>.
+</li>
+<li>
+  Cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/typecasting/">Type conversions</a>.
+</li>
+
+</references>
+</qhelp>

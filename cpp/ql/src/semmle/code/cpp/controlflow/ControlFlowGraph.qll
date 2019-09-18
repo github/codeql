@@ -66,82 +66,14 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    * taken when this expression is false.
    */
   ControlFlowNode getAFalseSuccessor() {
-    falsecond_base(this,result) and
+    falsecond_base(this, result) and
     result = getASuccessor()
   }
 
-  BasicBlock getBasicBlock() {
-    result.getANode() = this
-  }
+  BasicBlock getBasicBlock() { result.getANode() = this }
 }
 
-import Cached
-private cached module Cached {
-  /**
-   * Holds if the control-flow node `n` is reachable, meaning that either
-   * it is an entry point, or there exists a path in the control-flow
-   * graph of its function that connects an entry point to it.
-   * Compile-time constant conditions are taken into account, so that
-   * the call to `f` is not reachable in `if (0) f();` even if the
-   * `if` statement as a whole is reachable.
-   */
-  cached
-  predicate reachable(ControlFlowNode n)
-  {
-    exists(Function f | f.getEntryPoint() = n)
-    or
-    // Okay to use successors_extended directly here
-    (not successors_extended(_,n) and not successors_extended(n,_))
-    or
-    reachable(n.getAPredecessor())
-    or
-    n instanceof CatchBlock
-  }
-
-  /** Holds if `condition` always evaluates to a nonzero value. */
-  cached
-  predicate conditionAlwaysTrue(Expr condition) {
-    conditionAlways(condition, true)
-  }
-
-  /** Holds if `condition` always evaluates to zero. */
-  cached
-  predicate conditionAlwaysFalse(Expr condition) {
-    conditionAlways(condition, false)
-    or
-    // If a loop condition evaluates to false upon entry, it will always
-    // be false
-    loopConditionAlwaysUponEntry(_, condition, false)
-  }
-
-  /**
-   * The condition `condition` for the loop `loop` is provably `true` upon entry.
-   * That is, at least one iteration of the loop is guaranteed.
-   */
-  cached
-  predicate loopConditionAlwaysTrueUponEntry(ControlFlowNode loop, Expr condition) {
-    loopConditionAlwaysUponEntry(loop, condition, true)
-  }
-}
-
-private predicate conditionAlways(Expr condition, boolean b) {
-  exists(ConditionEvaluator x, int val |
-    val = x.getValue(condition) |
-    val != 0 and b = true
-    or
-    val = 0 and b = false
-  )
-}
-
-private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condition, boolean b) {
-  exists(LoopEntryConditionEvaluator x, int val |
-    x.isLoopEntry(condition, loop) and
-    val = x.getValue(condition) |
-    val != 0 and b = true
-    or
-    val = 0 and b = false
-  )
-}
+import ControlFlowGraphPublic
 
 /**
  * An element that is convertible to `ControlFlowNode`. This class is similar
@@ -151,8 +83,7 @@ private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condit
  * This class can be used as base class for classes that want to inherit the
  * extent of `ControlFlowNode` without inheriting its public member predicates.
  */
-class ControlFlowNodeBase extends ElementBase, @cfgnode {
-}
+class ControlFlowNodeBase extends ElementBase, @cfgnode { }
 
 predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
   truecond(unresolveElement(n1), unresolveElement(n2))
@@ -188,8 +119,7 @@ abstract class AdditionalControlFlowEdge extends ControlFlowNodeBase {
  * the extractor-generated control-flow graph or in a subclass of
  * `AdditionalControlFlowEdge`. Use this relation instead of `successors`.
  */
-predicate successors_extended(
-    ControlFlowNodeBase source, ControlFlowNodeBase target) {
+predicate successors_extended(ControlFlowNodeBase source, ControlFlowNodeBase target) {
   successors(unresolveElement(source), unresolveElement(target))
   or
   source.(AdditionalControlFlowEdge).getAnEdgeTarget() = target

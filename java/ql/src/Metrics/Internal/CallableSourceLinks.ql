@@ -4,6 +4,7 @@
  * @metricType callable
  * @id java/callable-source-links
  */
+
 import java
 
 from Callable c

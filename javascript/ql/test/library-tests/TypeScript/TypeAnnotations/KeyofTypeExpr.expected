@@ -1,2 +1,0 @@
-| tst.ts:49:16:49:30 | keyof Interface | tst.ts:49:22:49:30 | Interface |
-| tst.ts:113:26:113:35 | keyof Node | tst.ts:113:32:113:35 | Node |

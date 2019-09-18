@@ -19,11 +19,14 @@ class TypeContainer extends DotNet::NamedElement, @cil_type_container {
 
 /** A namespace. */
 class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
-  override string toString() { result=getQualifiedName() }
+  override string toString() { result = getQualifiedName() }
+
   override Namespace getParent() { result = this.getParentNamespace() }
+
   override Namespace getParentNamespace() { parent_namespace(this, result) }
-  override string getName() { namespaces(this,result) }
-  string getUrl() { result="" }
+
+  override string getName() { namespaces(this, result) }
+
   override Location getLocation() { none() }
 }
 
@@ -32,14 +35,16 @@ class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
  */
 class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   override TypeContainer getParent() { cil_type(this, _, _, result, _) }
+
   override string getName() { cil_type(this, result, _, _, _) }
+
   override string toString() { result = getQualifiedName() }
 
   /** Gets the containing type of this type, if any. */
   override Type getDeclaringType() { result = getParent() }
 
   /** Gets a member of this type, if any. */
-  Member getAMember() { result.getDeclaringType()=this }
+  Member getAMember() { result.getDeclaringType() = this }
 
   /**
    * Gets the unbound generic type of this type, or `this` if the type
@@ -52,11 +57,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
     qualifier = this.getParent().getQualifiedName()
   }
 
-  override Location getLocation() {
-    cil_type_location(this, result)
-    or
-    result = getUnboundType().getLocation()
-  }
+  override Location getALocation() { cil_type_location(this.getSourceDeclaration(), result) }
 
   /** Holds if this type is a class. */
   predicate isClass() { cil_class(this) }
@@ -70,8 +71,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
    * faster to compute.
    */
   predicate isSystemType(string name) {
-    exists(Namespace system |
-      this.getParent() = system |
+    exists(Namespace system | this.getParent() = system |
       system.getName() = "System" and
       system.getParentNamespace() instanceof DotNet::GlobalNamespace and
       name = this.getName()
@@ -88,10 +88,9 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   predicate isPrivate() { cil_private(this) }
 
   /** Gets the machine type used to store this type. */
-  Type getUnderlyingType() { result=this }
+  Type getUnderlyingType() { result = this }
 
   // Class hierarchy
-
   /** Gets the immediate base class of this class, if any. */
   Type getBaseClass() { cil_base_class(this, result) }
 
@@ -102,14 +101,16 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   Type getABaseType() { result = getBaseClass() or result = getABaseInterface() }
 
   /** Gets an immediate subtype of this type, if any. */
-  Type getASubtype() { result.getABaseType()=this }
+  Type getASubtype() { result.getABaseType() = this }
 
   /** Gets the namespace directly containing this type, if any. */
-  Namespace getNamespace() { result=getParent() }
+  Namespace getNamespace() { result = getParent() }
 
   /**
    * Gets an index for implicit conversions. A type can be converted to another numeric type
    * of a higher index.
    */
-  int getConversionIndex() { result=0 }
+  int getConversionIndex() { result = 0 }
+
+  override Type getSourceDeclaration() { cil_type(this, _, _, _, result) }
 }

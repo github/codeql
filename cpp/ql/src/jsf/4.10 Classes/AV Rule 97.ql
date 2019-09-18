@@ -8,17 +8,23 @@
  * @tags reliability
  *       readability
  *       language-features
+ *       external/jsf
  */
+
 import cpp
 
 predicate containsArray(Type t) {
   t instanceof ArrayType
-  or containsArray(t.(PointerType).getBaseType())
-  or containsArray(t.(SpecifiedType).getBaseType())
-  or (containsArray(t.getUnderlyingType()) and not exists(TypedefType allowed | allowed = t |
+  or
+  containsArray(t.(PointerType).getBaseType())
+  or
+  containsArray(t.(SpecifiedType).getBaseType())
+  or
+  containsArray(t.getUnderlyingType()) and
+  not exists(TypedefType allowed | allowed = t |
     allowed.hasGlobalName("jmp_buf") or
     allowed.hasGlobalName("va_list")
-  ))
+  )
 }
 
 predicate functionAPIViolation(MemberFunction f) {
@@ -27,6 +33,7 @@ predicate functionAPIViolation(MemberFunction f) {
 }
 
 from MemberFunction m
-where functionAPIViolation(m)
-  and not m.getDeclaringType() instanceof Struct
+where
+  functionAPIViolation(m) and
+  not m.getDeclaringType() instanceof Struct
 select m, "Raw arrays should not be used in interfaces. A container class should be used instead."

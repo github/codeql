@@ -2,7 +2,7 @@
  * @name XML external entity expansion
  * @description Parsing user input as an XML document with external
  *              entity expansion is vulnerable to XXE attacks.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/xxe
@@ -13,8 +13,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.Xxe::Xxe
+import DataFlow::PathGraph
 
-from Configuration c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
-select sink, "A $@ is parsed as XML without guarding against external entity expansion.",
-       source, "user-provided value"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "A $@ is parsed as XML without guarding against external entity expansion.", source.getNode(),
+  "user-provided value"

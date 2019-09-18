@@ -19,7 +19,8 @@ import javascript
 predicate calls(DataFlow::InvokeNode cs, Function callee, string how) {
   callee = cs.getACallee() and
   (
-    cs instanceof DataFlow::CallNode and not cs.asExpr() instanceof SuperCall and
+    cs instanceof DataFlow::CallNode and
+    not cs.asExpr() instanceof SuperCall and
     how = "as a function"
     or
     cs instanceof DataFlow::NewNode and
@@ -48,17 +49,16 @@ predicate illegalInvocation(DataFlow::InvokeNode cs, Function callee, string cal
  */
 predicate isCallToFunction(DataFlow::InvokeNode ce) {
   ce instanceof DataFlow::CallNode and
-  exists (Function f | f = ce.getACallee() |
-    not f instanceof Constructor
-  )
+  exists(Function f | f = ce.getACallee() | not f instanceof Constructor)
 }
 
 from DataFlow::InvokeNode cs, Function callee, string calleeDesc, string how
-where illegalInvocation(cs, callee, calleeDesc, how) and
-      // filter out some easy cases
-      not isCallToFunction(cs) and
-      // conservatively only flag call sites where _all_ callees are illegal
-      forex (Function otherCallee | otherCallee = cs.getACallee() |
-        illegalInvocation(cs, otherCallee, _, _)
-      )
+where
+  illegalInvocation(cs, callee, calleeDesc, how) and
+  // filter out some easy cases
+  not isCallToFunction(cs) and
+  // conservatively only flag call sites where _all_ callees are illegal
+  forex(Function otherCallee | otherCallee = cs.getACallee() |
+    illegalInvocation(cs, otherCallee, _, _)
+  )
 select cs, "Illegal invocation of $@ " + how + ".", callee, calleeDesc

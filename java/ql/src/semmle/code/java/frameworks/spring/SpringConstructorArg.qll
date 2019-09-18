@@ -6,29 +6,19 @@ import semmle.code.java.frameworks.spring.SpringValue
 
 /** A `<constructor-arg>` element in a Spring XML file. */
 class SpringConstructorArg extends SpringXMLElement {
-  SpringConstructorArg() {
-    this.getName() = "constructor-arg"
-  }
+  SpringConstructorArg() { this.getName() = "constructor-arg" }
 
   /** Holds if this `constructor-arg` element has an `index` attribute. */
-  predicate hasArgIndex() {
-    this.hasAttribute("index")
-  }
+  predicate hasArgIndex() { this.hasAttribute("index") }
 
   /** Gets the value of the `index` attribute. */
-  string getArgIndex() {
-    result = this.getAttributeValue("index")
-  }
+  string getArgIndex() { result = this.getAttributeValue("index") }
 
   /** Holds if the `constructor-arg` has a `ref` attribute. */
-  predicate hasArgRefString() {
-    this.hasAttribute("ref")
-  }
+  predicate hasArgRefString() { this.hasAttribute("ref") }
 
   /** Gets the value of the `ref` attribute. */
-  string getArgRefString() {
-    result = this.getAttributeValue("ref")
-  }
+  string getArgRefString() { result = this.getAttributeValue("ref") }
 
   /**
    * Gets the bean pointed to by the `ref` attribute or a child `<ref>` or `<idref>` element.
@@ -40,24 +30,16 @@ class SpringConstructorArg extends SpringXMLElement {
   }
 
   /** Holds if the `constructor-arg` has a `type` attribute. */
-  predicate hasArgTypeName() {
-    this.hasAttribute("type")
-  }
+  predicate hasArgTypeName() { this.hasAttribute("type") }
 
   /** Gets the value of the `type` attribute. */
-  string getArgTypeName() {
-    result = this.getAttributeValue("type")
-  }
+  string getArgTypeName() { result = this.getAttributeValue("type") }
 
   /** Gets the Java `RefType` (class or interface) that the `type` attribute refers to. */
-  RefType getArgType() {
-    result.getQualifiedName() = this.getArgTypeName()
-  }
+  RefType getArgType() { result.getQualifiedName() = this.getArgTypeName() }
 
   /** Holds if the `constructor-arg` has a `value` attribute. */
-  predicate hasArgValueString() {
-    this.hasAttribute("value")
-  }
+  predicate hasArgValueString() { this.hasAttribute("value") }
 
   /**
    * Gets the value of the `value` attribute.
@@ -65,9 +47,7 @@ class SpringConstructorArg extends SpringXMLElement {
    * Note that this does not take into consideration any
    * nested `<value>` elements. (See also `getArgValue()`.)
    */
-  string getArgValueString() {
-    result = this.getAttributeValue("value")
-  }
+  string getArgValueString() { result = this.getAttributeValue("value") }
 
   /**
    * Gets the value of the `value` attribute, or the content of a child `<value>`

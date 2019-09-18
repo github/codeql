@@ -11,27 +11,30 @@
  *       readability
  *       external/cwe/cwe-563
  */
+
 import java
 import DeadLocals
 
-predicate minusOne(MinusExpr e) {
-  e.getExpr().(Literal).getValue() = "1"
-}
+predicate minusOne(MinusExpr e) { e.getExpr().(Literal).getValue() = "1" }
 
 predicate flowStep(Expr decl, Expr init) {
-  decl = init or
+  decl = init
+  or
   exists(Field f | f.isFinal() and decl.(FieldAccess).getField() = f |
     init = f.getAnAssignedValue()
-  ) or
+  )
+  or
   decl.(CastExpr).getExpr() = init
 }
 
 predicate excludedInit(Type t, Expr decl) {
   exists(Expr init | flowStep(decl, init) |
     // The `null` literal for reference types.
-    t instanceof RefType and init instanceof NullLiteral or
+    t instanceof RefType and init instanceof NullLiteral
+    or
     // The default value for primitive types.
-    init = t.(PrimitiveType).getADefaultValue() or
+    init = t.(PrimitiveType).getADefaultValue()
+    or
     // The expression `-1` for integral types.
     t instanceof IntegralType and minusOne(init)
   )
@@ -48,4 +51,5 @@ where
     excludedInit(decl.getVariable().getType(), decl.getInit())
   )
 select def,
-  "This assignment to " + v.getName() + " is useless: the value is always overwritten before it is read."
+  "This assignment to " + v.getName() +
+    " is useless: the value is always overwritten before it is read."

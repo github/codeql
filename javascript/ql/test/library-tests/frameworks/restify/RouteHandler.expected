@@ -1,3 +1,0 @@
-| src/test.js:6:1:6:21 | functio ... er1(){} | src/test.js:4:15:4:36 | restify ... erver() |
-| src/test.js:9:19:11:1 | functio ... ition\\n} | src/test.js:4:15:4:36 | restify ... erver() |
-| src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:4:15:4:36 | restify ... erver() |

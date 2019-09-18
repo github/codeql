@@ -3,6 +3,7 @@
  *
  * OWIN defines a standard interface between .NET web servers and web applications.
  */
+
 import csharp
 import semmle.code.csharp.frameworks.Microsoft
 
@@ -13,10 +14,6 @@ class MicrosoftOwinNamespace extends Namespace {
     this.hasName("Owin")
   }
 }
-
-/** DEPRECATED. Gets the `Microsoft.Owin` namespace. */
-deprecated
-MicrosoftOwinNamespace getMicrosoftOwinNamespace() { any() }
 
 /** The `Microsoft.Owin.IOwinRequest` class. */
 class MicrosoftOwinIOwinRequestClass extends Class {

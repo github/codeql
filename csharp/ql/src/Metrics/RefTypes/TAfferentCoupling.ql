@@ -9,9 +9,9 @@
  *       modularity
  * @id cs/incoming-type-dependencies
  */
+
 import csharp
 
 from ValueOrRefType t
 where t.isSourceDeclaration()
-select t, t.getAfferentCoupling() as n
-order by n desc
+select t, t.getAfferentCoupling() as n order by n desc

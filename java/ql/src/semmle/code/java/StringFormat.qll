@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for reasoning about string formatting.
+ */
+
 import java
 import dataflow.DefUse
 
@@ -5,7 +9,7 @@ import dataflow.DefUse
  * A library method that formats a number of its arguments according to a
  * format string.
  */
-private abstract class FormatMethod extends Method {
+abstract private class FormatMethod extends Method {
   /** Gets the index of the format string argument. */
   abstract int getFormatStringIndex();
 }
@@ -21,7 +25,8 @@ class StringFormatMethod extends FormatMethod {
       this.hasName("printf") or
       this.hasName("readLine") or
       this.hasName("readPassword")
-    ) and (
+    ) and
+    (
       this.getDeclaringType().hasQualifiedName("java.lang", "String") or
       this.getDeclaringType().hasQualifiedName("java.io", "PrintStream") or
       this.getDeclaringType().hasQualifiedName("java.io", "PrintWriter") or
@@ -31,11 +36,18 @@ class StringFormatMethod extends FormatMethod {
   }
 
   override int getFormatStringIndex() {
-    result = 0 and this.getSignature() = "format(java.lang.String,java.lang.Object[])" or
-    result = 0 and this.getSignature() = "printf(java.lang.String,java.lang.Object[])" or
-    result = 1 and this.getSignature() = "format(java.util.Locale,java.lang.String,java.lang.Object[])" or
-    result = 1 and this.getSignature() = "printf(java.util.Locale,java.lang.String,java.lang.Object[])" or
-    result = 0 and this.getSignature() = "readLine(java.lang.String,java.lang.Object[])" or
+    result = 0 and this.getSignature() = "format(java.lang.String,java.lang.Object[])"
+    or
+    result = 0 and this.getSignature() = "printf(java.lang.String,java.lang.Object[])"
+    or
+    result = 1 and
+    this.getSignature() = "format(java.util.Locale,java.lang.String,java.lang.Object[])"
+    or
+    result = 1 and
+    this.getSignature() = "printf(java.util.Locale,java.lang.String,java.lang.Object[])"
+    or
+    result = 0 and this.getSignature() = "readLine(java.lang.String,java.lang.Object[])"
+    or
     result = 0 and this.getSignature() = "readPassword(java.lang.String,java.lang.Object[])"
   }
 }
@@ -62,14 +74,20 @@ class LoggerFormatMethod extends FormatMethod {
   }
 }
 
-private newtype TFmtSyntax = TFmtPrintf() or TFmtLogger()
+private newtype TFmtSyntax =
+  TFmtPrintf() or
+  TFmtLogger()
 
 /** A syntax for format strings. */
 class FmtSyntax extends TFmtSyntax {
   string toString() {
-    result = "printf (%) syntax" and this = TFmtPrintf() or
+    result = "printf (%) syntax" and this = TFmtPrintf()
+    or
     result = "logger ({}) syntax" and this = TFmtLogger()
   }
+
+  /** Holds if this syntax is logger ({}) syntax. */
+  predicate isLogger() { this = TFmtLogger() }
 }
 
 /**
@@ -81,17 +99,19 @@ private predicate formatWrapper(Callable c, int fmtix, FmtSyntax syntax) {
   exists(Parameter fmt, Parameter args, Call fmtcall, int i |
     fmt = c.getParameter(fmtix) and
     fmt.getType() instanceof TypeString and
-    args = c.getParameter(fmtix+1) and
+    args = c.getParameter(fmtix + 1) and
     args.getType().(Array).getElementType() instanceof TypeObject and
-    c.getNumberOfParameters() = fmtix+2 and
+    c.getNumberOfParameters() = fmtix + 2 and
     fmtcall.getEnclosingCallable() = c and
     (
-      formatWrapper(fmtcall.getCallee(), i, syntax) or
-      fmtcall.getCallee().(StringFormatMethod).getFormatStringIndex() = i and syntax = TFmtPrintf() or
+      formatWrapper(fmtcall.getCallee(), i, syntax)
+      or
+      fmtcall.getCallee().(StringFormatMethod).getFormatStringIndex() = i and syntax = TFmtPrintf()
+      or
       fmtcall.getCallee().(LoggerFormatMethod).getFormatStringIndex() = i and syntax = TFmtLogger()
     ) and
     fmtcall.getArgument(i) = fmt.getAnAccess() and
-    fmtcall.getArgument(i+1) = args.getAnAccess()
+    fmtcall.getArgument(i + 1) = args.getAnAccess()
   )
 }
 
@@ -111,19 +131,18 @@ class FormattingCall extends Call {
   }
 
   FmtSyntax getSyntax() {
-    this.getCallee() instanceof StringFormatMethod and result = TFmtPrintf() or
-    this.getCallee() instanceof LoggerFormatMethod and result = TFmtLogger() or
+    this.getCallee() instanceof StringFormatMethod and result = TFmtPrintf()
+    or
+    this.getCallee() instanceof LoggerFormatMethod and result = TFmtLogger()
+    or
     formatWrapper(this.getCallee(), _, result)
   }
 
   private Expr getLastArg() {
-    exists(Expr last |
-      last = this.getArgument(this.getNumArgument() - 1)
-      |
-      if this.hasExplicitVarargsArray() then
-        result = last.(ArrayCreationExpr).getInit().getInit(getVarargsCount() - 1)
-      else
-        result = last
+    exists(Expr last | last = this.getArgument(this.getNumArgument() - 1) |
+      if this.hasExplicitVarargsArray()
+      then result = last.(ArrayCreationExpr).getInit().getInit(getVarargsCount() - 1)
+      else result = last
     )
   }
 
@@ -133,9 +152,7 @@ class FormattingCall extends Call {
   }
 
   /** Gets the argument to this call in the position of the format string */
-  Expr getFormatArgument() {
-    result = this.getArgument(this.getFormatStringIndex())
-  }
+  Expr getFormatArgument() { result = this.getArgument(this.getFormatStringIndex()) }
 
   /** Gets an argument to be formatted. */
   Expr getAnArgumentToBeFormatted() {
@@ -154,19 +171,22 @@ class FormattingCall extends Call {
 
   /** Gets the length of the varargs array if it can determined. */
   int getVarargsCount() {
-    if this.hasExplicitVarargsArray() then
+    if this.hasExplicitVarargsArray()
+    then
       exists(Expr arg | arg = this.getArgument(1 + this.getFormatStringIndex()) |
         result = arg.(ArrayCreationExpr).getFirstDimensionSize() or
-        result = arg.(VarAccess).getVariable().getAnAssignedValue().(ArrayCreationExpr).getFirstDimensionSize()
+        result = arg
+              .(VarAccess)
+              .getVariable()
+              .getAnAssignedValue()
+              .(ArrayCreationExpr)
+              .getFirstDimensionSize()
       )
-    else
-      result = this.getNumArgument() - this.getFormatStringIndex() - 1
+    else result = this.getNumArgument() - this.getFormatStringIndex() - 1
   }
 
   /** Gets a `FormatString` that is used by this call. */
-  FormatString getAFormatString() {
-    result.getAFormattingUse() = this
-  }
+  FormatString getAFormatString() { result.getAFormattingUse() = this }
 }
 
 /** Holds if `m` calls `toString()` on its `i`th argument. */
@@ -174,11 +194,14 @@ private predicate printMethod(Method m, int i) {
   exists(RefType t |
     t = m.getDeclaringType() and
     m.getParameterType(i) instanceof TypeObject
-    |
+  |
     (t.hasQualifiedName("java.io", "PrintWriter") or t.hasQualifiedName("java.io", "PrintStream")) and
     (m.hasName("print") or m.hasName("println"))
     or
-    (t.hasQualifiedName("java.lang", "StringBuilder") or t.hasQualifiedName("java.lang", "StringBuffer")) and
+    (
+      t.hasQualifiedName("java.lang", "StringBuilder") or
+      t.hasQualifiedName("java.lang", "StringBuffer")
+    ) and
     (m.hasName("append") or m.hasName("insert"))
     or
     t instanceof TypeString and m.hasName("valueOf")
@@ -192,8 +215,10 @@ private predicate printMethod(Method m, int i) {
 predicate implicitToStringCall(Expr e) {
   not e.getType() instanceof TypeString and
   (
-    exists(FormattingCall fmtcall | fmtcall.getAnArgumentToBeFormatted() = e) or
-    exists(AddExpr add | add.getType() instanceof TypeString and add.getAnOperand() = e) or
+    exists(FormattingCall fmtcall | fmtcall.getAnArgumentToBeFormatted() = e)
+    or
+    exists(AddExpr add | add.getType() instanceof TypeString and add.getAnOperand() = e)
+    or
     exists(MethodAccess ma, Method m, int i |
       ma.getMethod() = m and
       ma.getArgument(i) = e and
@@ -206,16 +231,15 @@ predicate implicitToStringCall(Expr e) {
  * A call to a `format` or `printf` method.
  */
 class StringFormat extends MethodAccess, FormattingCall {
-  StringFormat() {
-    this.getCallee() instanceof StringFormatMethod
-  }
+  StringFormat() { this.getCallee() instanceof StringFormatMethod }
 }
 
 /**
  * Holds if `fmt` is used as part of a format string.
  */
 private predicate formatStringFragment(Expr fmt) {
-  any(FormattingCall call).getFormatArgument() = fmt or
+  any(FormattingCall call).getFormatArgument() = fmt
+  or
   exists(Expr e | formatStringFragment(e) |
     e.(VarAccess).getVariable().getAnAssignedValue() = fmt or
     e.(AddExpr).getLeftOperand() = fmt or
@@ -235,33 +259,43 @@ private predicate formatStringFragment(Expr fmt) {
 private predicate formatStringValue(Expr e, string fmtvalue) {
   formatStringFragment(e) and
   (
-    e.(StringLiteral).getRepresentedString() = fmtvalue or
-    e.getType() instanceof IntegralType and fmtvalue = "1" or // dummy value
-    e.getType() instanceof BooleanType and fmtvalue = "x" or // dummy value
-    e.getType() instanceof EnumType and fmtvalue = "x" or // dummy value
-    formatStringValue(e.(ParExpr).getExpr(), fmtvalue) or
+    e.(StringLiteral).getRepresentedString() = fmtvalue
+    or
+    e.getType() instanceof IntegralType and fmtvalue = "1" // dummy value
+    or
+    e.getType() instanceof BooleanType and fmtvalue = "x" // dummy value
+    or
+    e.getType() instanceof EnumType and fmtvalue = "x" // dummy value
+    or
+    formatStringValue(e.(ParExpr).getExpr(), fmtvalue)
+    or
     exists(Variable v |
       e = v.getAnAccess() and
       v.isFinal() and
       v.getType() instanceof TypeString and
       formatStringValue(v.getInitializer(), fmtvalue)
-    ) or
+    )
+    or
     exists(LocalVariableDecl v |
       e = v.getAnAccess() and
       not exists(AssignAddExpr aa | aa.getDest() = v.getAnAccess()) and
       1 = count(v.getAnAssignedValue()) and
       v.getType() instanceof TypeString and
       formatStringValue(v.getAnAssignedValue(), fmtvalue)
-    ) or
+    )
+    or
     exists(AddExpr add, string left, string right |
       add = e and
       add.getType() instanceof TypeString and
       formatStringValue(add.getLeftOperand(), left) and
       formatStringValue(add.getRightOperand(), right) and
       fmtvalue = left + right
-    ) or
-    formatStringValue(e.(ConditionalExpr).getTrueExpr(), fmtvalue) or
-    formatStringValue(e.(ConditionalExpr).getFalseExpr(), fmtvalue) or
+    )
+    or
+    formatStringValue(e.(ConditionalExpr).getTrueExpr(), fmtvalue)
+    or
+    formatStringValue(e.(ConditionalExpr).getFalseExpr(), fmtvalue)
+    or
     exists(Method getprop, MethodAccess ma, string prop |
       e = ma and
       ma.getMethod() = getprop and
@@ -271,12 +305,13 @@ private predicate formatStringValue(Expr e, string fmtvalue) {
       ma.getAnArgument().(StringLiteral).getRepresentedString() = prop and
       (prop = "line.separator" or prop = "file.separator" or prop = "path.separator") and
       fmtvalue = "x" // dummy value
-    ) or
+    )
+    or
     exists(Field f |
       e = f.getAnAccess() and
       f.getDeclaringType().hasQualifiedName("java.io", "File") and
       fmtvalue = "x" // dummy value
-      |
+    |
       f.hasName("pathSeparator") or
       f.hasName("pathSeparatorChar") or
       f.hasName("separator") or
@@ -289,17 +324,17 @@ private predicate formatStringValue(Expr e, string fmtvalue) {
  * A string that is used as the format string in a `FormattingCall`.
  */
 class FormatString extends string {
-  FormatString() {
-    formatStringValue(_, this)
-  }
+  FormatString() { formatStringValue(_, this) }
 
   /** Gets a `FormattingCall` that uses this as its format string. */
   FormattingCall getAFormattingUse() {
     exists(Expr fmt | formatStringValue(fmt, this) |
-      result.getFormatArgument() = fmt or
+      result.getFormatArgument() = fmt
+      or
       exists(VariableAssign va |
         defUsePair(va, result.getFormatArgument()) and va.getSource() = fmt
-      ) or
+      )
+      or
       result.getFormatArgument().(FieldAccess).getField().getAnAssignedValue() = fmt
     )
   }
@@ -318,9 +353,7 @@ class FormatString extends string {
 }
 
 private class PrintfFormatString extends FormatString {
-  PrintfFormatString() {
-    this.getAFormattingUse().getSyntax() = TFmtPrintf()
-  }
+  PrintfFormatString() { this.getAFormattingUse().getSyntax() = TFmtPrintf() }
 
   /**
    * Gets a boolean value that indicates whether the `%` character at index `i`
@@ -328,10 +361,9 @@ private class PrintfFormatString extends FormatString {
    */
   private boolean isEscapedPct(int i) {
     this.charAt(i) = "%" and
-    if this.charAt(i-1) = "%" then
-      result = this.isEscapedPct(i-1).booleanNot()
-    else
-      result = false
+    if this.charAt(i - 1) = "%"
+    then result = this.isEscapedPct(i - 1).booleanNot()
+    else result = false
   }
 
   /** Holds if the format specifier at index `i` is a reference to an argument. */
@@ -339,7 +371,7 @@ private class PrintfFormatString extends FormatString {
     false = this.isEscapedPct(i) and
     this.charAt(i) = "%" and
     exists(string c |
-      c = this.charAt(i+1) and
+      c = this.charAt(i + 1) and
       c != "%" and
       c != "n"
     )
@@ -351,7 +383,7 @@ private class PrintfFormatString extends FormatString {
    */
   private predicate fmtSpecRefersToPrevious(int i) {
     this.fmtSpecIsRef(i) and
-    "<" = this.charAt(i+1)
+    "<" = this.charAt(i + 1)
   }
 
   /**
@@ -360,11 +392,10 @@ private class PrintfFormatString extends FormatString {
    */
   private int fmtSpecRefersToSpecificIndex(int i) {
     this.fmtSpecIsRef(i) and
-    exists(string num |
-      result = num.toInt()
-      |
-      num = this.charAt(i+1) and "$" = this.charAt(i+2) or
-      num = this.charAt(i+1) + this.charAt(i+2) and "$" = this.charAt(i+3)
+    exists(string num | result = num.toInt() |
+      num = this.charAt(i + 1) and "$" = this.charAt(i + 2)
+      or
+      num = this.charAt(i + 1) + this.charAt(i + 2) and "$" = this.charAt(i + 3)
     )
   }
 
@@ -380,22 +411,20 @@ private class PrintfFormatString extends FormatString {
 
   override int getMaxFmtSpecIndex() {
     result = max(int ix |
-      ix = fmtSpecRefersToSpecificIndex(_) or
-      ix = count(int i | fmtSpecRefersToSequentialIndex(i))
-    )
+        ix = fmtSpecRefersToSpecificIndex(_) or
+        ix = count(int i | fmtSpecRefersToSequentialIndex(i))
+      )
   }
 
   override int getASkippedFmtSpecIndex() {
-    result in [1..getMaxFmtSpecIndex()] and
+    result in [1 .. getMaxFmtSpecIndex()] and
     result > count(int i | fmtSpecRefersToSequentialIndex(i)) and
     not result = fmtSpecRefersToSpecificIndex(_)
   }
 }
 
 private class LoggerFormatString extends FormatString {
-  LoggerFormatString() {
-    this.getAFormattingUse().getSyntax() = TFmtLogger()
-  }
+  LoggerFormatString() { this.getAFormattingUse().getSyntax() = TFmtLogger() }
 
   /**
    * Gets a boolean value that indicates whether the `\` character at index `i`
@@ -403,20 +432,17 @@ private class LoggerFormatString extends FormatString {
    */
   private boolean isUnescapedBackslash(int i) {
     this.charAt(i) = "\\" and
-    if this.charAt(i-1) = "\\" then
-      result = this.isUnescapedBackslash(i-1).booleanNot()
-    else
-      result = true
+    if this.charAt(i - 1) = "\\"
+    then result = this.isUnescapedBackslash(i - 1).booleanNot()
+    else result = true
   }
 
   /** Holds if an unescaped placeholder `{}` occurs at index `i`. */
   private predicate fmtPlaceholder(int i) {
     this.charAt(i) = "{" and
-    this.charAt(i+1) = "}" and
-    not true = isUnescapedBackslash(i-1)
+    this.charAt(i + 1) = "}" and
+    not true = isUnescapedBackslash(i - 1)
   }
 
-  override int getMaxFmtSpecIndex() {
-    result = count(int i | fmtPlaceholder(i))
-  }
+  override int getMaxFmtSpecIndex() { result = count(int i | fmtPlaceholder(i)) }
 }

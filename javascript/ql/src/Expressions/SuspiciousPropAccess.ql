@@ -23,14 +23,18 @@ private import semmle.javascript.dataflow.InferredTypes
  * if it is part of a const enum access, so we conservatively silence the alert in that case.
  */
 predicate namespaceOrConstEnumAccess(VarAccess e) {
-  exists (NamespaceDeclaration decl | e.getVariable().getADeclaration() = decl.getId())
+  exists(NamespaceDeclaration decl | e.getVariable().getADeclaration() = decl.getId())
   or
-  exists (EnumDeclaration decl | e.getVariable().getADeclaration() = decl.getIdentifier() | decl.isConst())
+  exists(EnumDeclaration decl | e.getVariable().getADeclaration() = decl.getIdentifier() |
+    decl.isConst()
+  )
 }
 
 from PropAccess pacc, DataFlow::AnalyzedNode base
-where base.asExpr() = pacc.getBase() and
-      forex (InferredType tp | tp = base.getAType() | tp = TTNull() or tp = TTUndefined()) and
-      not namespaceOrConstEnumAccess(pacc.getBase()) and
-      not pacc.isAmbient()
+where
+  base.asExpr() = pacc.getBase() and
+  forex(InferredType tp | tp = base.getAType() | tp = TTNull() or tp = TTUndefined()) and
+  not namespaceOrConstEnumAccess(pacc.getBase()) and
+  not pacc.isAmbient() and
+  not pacc instanceof OptionalUse
 select pacc, "The base expression of this property access is always " + base.ppTypes() + "."

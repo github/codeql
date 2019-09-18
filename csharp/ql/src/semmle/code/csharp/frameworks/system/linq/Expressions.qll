@@ -1,11 +1,11 @@
 /**
  * Provides classes related to the namespace `System.Linq.Expressions`.
  */
+
 private import csharp as csharp
 private import semmle.code.csharp.frameworks.system.Linq
 
 module SystemLinqExpressions {
-
   /** The `System.Linq.Expressions` namespace. */
   class Namespace extends csharp::Namespace {
     Namespace() {
@@ -16,16 +16,12 @@ module SystemLinqExpressions {
 
   /** A class in the `System.Linq.Expressions` namespace. */
   class Class extends csharp::Class {
-    Class() {
-      this.getNamespace() instanceof Namespace
-    }
+    Class() { this.getNamespace() instanceof Namespace }
   }
 
   /** The `Expression<TDelegate>` class. */
   class ExpressionDelegate extends Class, csharp::UnboundGenericClass {
-    ExpressionDelegate() {
-      this.hasName("Expression<>")
-    }
+    ExpressionDelegate() { this.hasName("Expression<>") }
   }
 
   /**
@@ -40,14 +36,12 @@ module SystemLinqExpressions {
       this = dt
       or
       this = any(csharp::ConstructedClass cc |
-        cc.getUnboundGeneric() instanceof ExpressionDelegate and
-        dt = cc.getTypeArgument(0)
-      )
+          cc.getUnboundGeneric() instanceof ExpressionDelegate and
+          dt = cc.getTypeArgument(0)
+        )
     }
 
     /** Gets the underlying `delegate` type. */
-    csharp::DelegateType getDelegateType() {
-      result = dt
-    }
+    csharp::DelegateType getDelegateType() { result = dt }
   }
 }

@@ -1,6 +1,64 @@
-| tst.js:16:5:16:20 | request(tainted) | The $@ of this request depends on $@. | tst.js:16:13:16:19 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:18:5:18:24 | request.get(tainted) | The $@ of this request depends on $@. | tst.js:18:17:18:23 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:22:5:22:20 | request(options) | The $@ of this request depends on $@. | tst.js:21:19:21:25 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:24:5:24:32 | request ... ainted) | The $@ of this request depends on $@. | tst.js:24:13:24:31 | "http://" + tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:26:5:26:43 | request ... ainted) | The $@ of this request depends on $@. | tst.js:26:13:26:42 | "http:/ ... tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:28:5:28:44 | request ... ainted) | The $@ of this request depends on $@. | tst.js:28:13:28:43 | "http:/ ... tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+nodes
+| tst.js:14:9:14:52 | tainted |
+| tst.js:14:19:14:42 | url.par ... , true) |
+| tst.js:14:19:14:48 | url.par ... ).query |
+| tst.js:14:19:14:52 | url.par ... ery.url |
+| tst.js:14:29:14:35 | req.url |
+| tst.js:18:13:18:19 | tainted |
+| tst.js:20:17:20:23 | tainted |
+| tst.js:23:19:23:25 | tainted |
+| tst.js:26:13:26:31 | "http://" + tainted |
+| tst.js:26:25:26:31 | tainted |
+| tst.js:28:13:28:42 | "http:/ ... tainted |
+| tst.js:28:36:28:42 | tainted |
+| tst.js:30:13:30:43 | "http:/ ... tainted |
+| tst.js:30:37:30:43 | tainted |
+| tst.js:34:34:34:40 | tainted |
+| tst.js:36:16:36:31 | new Uri(tainted) |
+| tst.js:36:24:36:30 | tainted |
+| tst.js:37:22:37:37 | new Uri(tainted) |
+| tst.js:37:30:37:36 | tainted |
+| tst.js:41:13:41:51 | `http:/ ... inted}` |
+| tst.js:41:43:41:49 | tainted |
+| tst.js:43:13:43:54 | `http:/ ... inted}` |
+| tst.js:43:46:43:52 | tainted |
+| tst.js:45:13:45:56 | 'http:/ ... tainted |
+| tst.js:45:50:45:56 | tainted |
+edges
+| tst.js:14:9:14:52 | tainted | tst.js:18:13:18:19 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:20:17:20:23 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:23:19:23:25 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:26:25:26:31 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:28:36:28:42 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:30:37:30:43 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:34:34:34:40 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:36:24:36:30 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:37:30:37:36 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:41:43:41:49 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:43:46:43:52 | tainted |
+| tst.js:14:9:14:52 | tainted | tst.js:45:50:45:56 | tainted |
+| tst.js:14:19:14:42 | url.par ... , true) | tst.js:14:19:14:48 | url.par ... ).query |
+| tst.js:14:19:14:48 | url.par ... ).query | tst.js:14:19:14:52 | url.par ... ery.url |
+| tst.js:14:19:14:52 | url.par ... ery.url | tst.js:14:9:14:52 | tainted |
+| tst.js:14:29:14:35 | req.url | tst.js:14:19:14:42 | url.par ... , true) |
+| tst.js:26:25:26:31 | tainted | tst.js:26:13:26:31 | "http://" + tainted |
+| tst.js:28:36:28:42 | tainted | tst.js:28:13:28:42 | "http:/ ... tainted |
+| tst.js:30:37:30:43 | tainted | tst.js:30:13:30:43 | "http:/ ... tainted |
+| tst.js:36:24:36:30 | tainted | tst.js:36:16:36:31 | new Uri(tainted) |
+| tst.js:37:30:37:36 | tainted | tst.js:37:22:37:37 | new Uri(tainted) |
+| tst.js:41:43:41:49 | tainted | tst.js:41:13:41:51 | `http:/ ... inted}` |
+| tst.js:43:46:43:52 | tainted | tst.js:43:13:43:54 | `http:/ ... inted}` |
+| tst.js:45:50:45:56 | tainted | tst.js:45:13:45:56 | 'http:/ ... tainted |
+#select
+| tst.js:18:5:18:20 | request(tainted) | tst.js:14:29:14:35 | req.url | tst.js:18:13:18:19 | tainted | The $@ of this request depends on $@. | tst.js:18:13:18:19 | tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:20:5:20:24 | request.get(tainted) | tst.js:14:29:14:35 | req.url | tst.js:20:17:20:23 | tainted | The $@ of this request depends on $@. | tst.js:20:17:20:23 | tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:24:5:24:20 | request(options) | tst.js:14:29:14:35 | req.url | tst.js:23:19:23:25 | tainted | The $@ of this request depends on $@. | tst.js:23:19:23:25 | tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:26:5:26:32 | request ... ainted) | tst.js:14:29:14:35 | req.url | tst.js:26:13:26:31 | "http://" + tainted | The $@ of this request depends on $@. | tst.js:26:13:26:31 | "http://" + tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:28:5:28:43 | request ... ainted) | tst.js:14:29:14:35 | req.url | tst.js:28:13:28:42 | "http:/ ... tainted | The $@ of this request depends on $@. | tst.js:28:13:28:42 | "http:/ ... tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:30:5:30:44 | request ... ainted) | tst.js:14:29:14:35 | req.url | tst.js:30:13:30:43 | "http:/ ... tainted | The $@ of this request depends on $@. | tst.js:30:13:30:43 | "http:/ ... tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:34:5:34:42 | http.ge ... inted}) | tst.js:14:29:14:35 | req.url | tst.js:34:34:34:40 | tainted | The $@ of this request depends on $@. | tst.js:34:34:34:40 | tainted | host | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:36:5:36:32 | XhrIo.s ... inted)) | tst.js:14:29:14:35 | req.url | tst.js:36:16:36:31 | new Uri(tainted) | The $@ of this request depends on $@. | tst.js:36:16:36:31 | new Uri(tainted) | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:37:5:37:38 | new Xhr ... inted)) | tst.js:14:29:14:35 | req.url | tst.js:37:22:37:37 | new Uri(tainted) | The $@ of this request depends on $@. | tst.js:37:22:37:37 | new Uri(tainted) | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:41:5:41:52 | request ... nted}`) | tst.js:14:29:14:35 | req.url | tst.js:41:13:41:51 | `http:/ ... inted}` | The $@ of this request depends on $@. | tst.js:41:13:41:51 | `http:/ ... inted}` | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:43:5:43:55 | request ... nted}`) | tst.js:14:29:14:35 | req.url | tst.js:43:13:43:54 | `http:/ ... inted}` | The $@ of this request depends on $@. | tst.js:43:13:43:54 | `http:/ ... inted}` | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
+| tst.js:45:5:45:57 | request ... ainted) | tst.js:14:29:14:35 | req.url | tst.js:45:13:45:56 | 'http:/ ... tainted | The $@ of this request depends on $@. | tst.js:45:13:45:56 | 'http:/ ... tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |

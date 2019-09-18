@@ -9,6 +9,7 @@
  * @tags efficiency
  *       maintainability
  */
+
 import java
 
 from ClassInstanceExpr e

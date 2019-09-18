@@ -24,7 +24,7 @@ public class ResponseSplitting extends HttpServlet {
 		}
 
 		// BAD: setting a header with an unvalidated parameter
-		// can lead to hTTP splitting
+		// can lead to HTTP splitting
 		response.addHeader("Content-type", request.getParameter("contentType"));
 		response.setHeader("Content-type", request.getParameter("contentType"));
 
@@ -41,5 +41,11 @@ public class ResponseSplitting extends HttpServlet {
 
 	private static String removeSpecial(String str) {
 		return str.replaceAll("[^a-zA-Z ]", "");
+	}
+
+	public void addCookieName(HttpServletResponse response, Cookie cookie) {
+		// GOOD: cookie.getName() cannot lead to HTTP splitting
+		Cookie cookie2 = new Cookie("name", cookie.getName());
+		response.addCookie(cookie2);
 	}
 }

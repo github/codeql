@@ -26,10 +26,11 @@ predicate accessWithConversions(Expr e, Variable v) {
   or
   accessWithConversions(e.(ParExpr).getExpression(), v)
   or
-  exists (UnaryExpr ue | ue instanceof NegExpr or ue instanceof PlusExpr |
+  exists(UnaryExpr ue | ue instanceof NegExpr or ue instanceof PlusExpr |
     ue = e and accessWithConversions(ue.getOperand(), v)
-  ) or
-  exists (CallExpr ce | ce = e |
+  )
+  or
+  exists(CallExpr ce | ce = e |
     ce = DataFlow::globalVarRef("Number").getACall().asExpr() and
     ce.getNumArgument() = 1 and
     accessWithConversions(ce.getArgument(0), v)
@@ -57,26 +58,28 @@ predicate isNaNComment(Comment c, string filePath, int startLine) {
  *     one line away in either direction) that contains the word `NaN`.
  */
 predicate isNaNCheck(EqualityTest eq) {
-  exists (Variable v |
+  exists(Variable v |
     accessWithConversions(eq.getLeftOperand(), v) and
-    accessWithConversions(eq.getRightOperand(), v) |
-
+    accessWithConversions(eq.getRightOperand(), v)
+  |
     // `v` is a parameter of the enclosing function, which is called `isNaN`
-    exists (Function isNaN |
+    exists(Function isNaN |
       isNaN = eq.getEnclosingFunction() and
       isNaN.getName().toLowerCase() = "isnan" and
       v = isNaN.getAParameter().getAVariable()
-    ) or
-
+    )
+    or
     // there is a comment containing the word "NaN" next to the comparison
-    exists (string f, int l |
+    exists(string f, int l |
       eq.getLocation().hasLocationInfo(f, l, _, _, _) and
-      isNaNComment(_, f, [l-1..l+1])
+      isNaNComment(_, f, [l - 1 .. l + 1])
     )
   )
 }
 
 from Comparison selfComparison, OperandComparedToSelf e
-where e = selfComparison.getAnOperand() and e.same(_) and
-      not isNaNCheck(selfComparison)
+where
+  e = selfComparison.getAnOperand() and
+  e.same(_) and
+  not isNaNCheck(selfComparison)
 select selfComparison, "This expression compares $@ to itself.", e, e.toString()

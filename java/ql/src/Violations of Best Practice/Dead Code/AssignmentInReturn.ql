@@ -8,6 +8,7 @@
  * @tags maintainability
  *       readability
  */
+
 import java
 
 from AssignExpr e, LocalVariableDecl v

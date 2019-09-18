@@ -1,0 +1,8 @@
+| test.cpp:98:14:98:19 | call to malloc | This memory is never freed |
+| test.cpp:154:15:154:20 | call to malloc | This memory is never freed |
+| test.cpp:199:12:199:18 | new | This memory is never freed |
+| test.cpp:200:12:200:23 | new[] | This memory is never freed |
+| test.cpp:201:12:201:23 | new[] | This memory is never freed |
+| test.cpp:249:9:249:15 | call to realloc | This memory is never freed |
+| test.cpp:355:24:355:52 | new | This memory is never freed |
+| test.cpp:397:18:397:30 | new | This memory is never freed |

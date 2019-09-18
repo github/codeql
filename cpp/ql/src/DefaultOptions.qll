@@ -13,14 +13,11 @@ private import Options as CustomOptions
 
 /**
  * Default predicates that specify information about the behavior of
- * the program being analyzed. 
+ * the program being analyzed.
  */
-class Options extends string
-{
-  Options() {
-    this = "Options"
-  }
-  
+class Options extends string {
+  Options() { this = "Options" }
+
   /**
    * Holds if we wish to override the "may return NULL" inference for this
    * call. If this holds, then rather than trying to infer whether this
@@ -32,7 +29,7 @@ class Options extends string
    */
   predicate overrideReturnsNull(Call call) {
     // Used in CVS:
-    call.(FunctionCall).getTarget().hasQualifiedName("Xstrdup")
+    call.(FunctionCall).getTarget().hasGlobalName("Xstrdup")
     or
     CustomOptions::overrideReturnsNull(call) // old Options.qll
   }
@@ -46,7 +43,7 @@ class Options extends string
    */
   predicate returnsNull(Call call) {
     // Used in CVS:
-    call.(FunctionCall).getTarget().hasQualifiedName("Xstrdup") and
+    call.(FunctionCall).getTarget().hasGlobalName("Xstrdup") and
     nullValue(call.getArgument(0))
     or
     CustomOptions::returnsNull(call) // old Options.qll
@@ -56,20 +53,21 @@ class Options extends string
    * Holds if a call to this function will never return.
    *
    * By default, this holds for `exit`, `_exit`, `abort`, `__assert_fail`,
-   * `longjmp`, `error`, `__builtin_unreachable` and any function with a
+   * `longjmp`, `__builtin_unreachable` and any function with a
    * `noreturn` attribute.
    */
   predicate exits(Function f) {
-    f.getAnAttribute().hasName("noreturn") or
-    exists(string name | f.getQualifiedName() = name |
+    f.getAnAttribute().hasName("noreturn")
+    or
+    exists(string name | f.hasGlobalName(name) |
       name = "exit" or
       name = "_exit" or
       name = "abort" or
       name = "__assert_fail" or
       name = "longjmp" or
-      name = "error" or
       name = "__builtin_unreachable"
-    ) or
+    )
+    or
     CustomOptions::exits(f) // old Options.qll
   }
 
@@ -93,7 +91,7 @@ class Options extends string
    * By default holds only for `fgets`.
    */
   predicate alwaysCheckReturnValue(Function f) {
-    f.hasQualifiedName("fgets") or
+    f.hasGlobalName("fgets") or
     CustomOptions::alwaysCheckReturnValue(f) // old Options.qll
   }
 
@@ -109,14 +107,11 @@ class Options extends string
     fc.isInMacroExpansion()
     or
     // common way of sleeping using select:
-    (fc.getTarget().hasQualifiedName("select") and
-     fc.getArgument(0).getValue() = "0")
+    fc.getTarget().hasGlobalName("select") and
+    fc.getArgument(0).getValue() = "0"
     or
     CustomOptions::okToIgnoreReturnValue(fc) // old Options.qll
   }
 }
 
-Options getOptions()
-{
-  any()
-}
+Options getOptions() { any() }

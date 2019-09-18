@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of classes in each file.</p>
+
+<p>There are advantages and disadvantages associated with defining multiple classes in the same file. 
+However, if you define unrelated classes in one file then the resulting module API is difficult for 
+other developers to understand and use.</p>
+
+<p>The disadvantages of putting multiple classes in the same file include:</p>
+<ul><li>unless the classes are closely related, it can be difficult to understand and maintain the code, 
+even with good support from development tools</li>
+<li>it increases the risk that multiple developers will work on the same file at once, and increases the 
+incidence of merge conflicts</li>
+<li>it may be a symptom of badly designed modules, where many different features are handled by a 
+single file.</li>
+</ul>
+
+<p>Sometimes there are advantages of putting multiple classes in the same file, for example:</p>
+<ul><li>it reduces the proliferation of files containing very few lines of code</li>
+<li>it can be used to group logically-related classes together.</li></ul>
+
+</overview>
+<recommendation>
+<p>Each module should have a single, well-defined role. Consequently, only logically-related classes 
+should be grouped together in the same file. If your code defines unrelated classes in the same file 
+then you should refactor the code and create new files, each containing logically related classes.</p>
+
+</recommendation>
+<references>
+
+<li>Python: <a href="http://docs.python.org/2/reference/compound_stmts.html#class-definitions">Class 
+Definitions</a>.</li>
+<li>M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_refactoring">Code refactoring</a>.</li>
+
+
+</references>
+</qhelp>

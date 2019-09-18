@@ -1,3 +1,4 @@
+| closure.js:5:1:5:29 | checkEs ... ipt>')) | OK |
 | tst.js:17:1:17:47 | checkEs ... ipt>')) | OK |
 | tst.js:18:1:18:56 | checkEs ... ipt>')) | OK |
 | tst.js:19:1:19:55 | checkEs ... ipt>')) | OK |

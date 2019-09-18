@@ -56,7 +56,7 @@
 | Capture.cs:229:13:229:13 | i | Capture.cs:235:21:235:25 | SSA def(i) | Capture.cs:235:21:235:25 | ... = ... |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:7:25:7:25 | b |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
-| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
+| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:25:29:25:29 | Consistency c |
 | Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) | Consistency.cs:32:9:32:29 | ... = ... |
 | Consistency.cs:38:13:38:13 | i | Consistency.cs:39:28:39:32 | SSA def(i) | Consistency.cs:39:28:39:32 | ... = ... |
@@ -186,6 +186,16 @@
 | Properties.cs:78:9:78:15 | this.xs | Properties.cs:81:9:81:22 | SSA def(this.xs) | Properties.cs:81:9:81:22 | ... = ... |
 | Properties.cs:78:9:78:15 | this.xs | Properties.cs:83:9:83:22 | SSA def(this.xs) | Properties.cs:83:9:83:22 | ... = ... |
 | Properties.cs:106:37:106:37 | p | Properties.cs:106:37:106:37 | SSA param(p) | Properties.cs:106:37:106:37 | p |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | SSA param(b) | Splitting.cs:3:18:3:18 | b |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:7:13:7:19 | [b (line 3): true] SSA def(x) | Splitting.cs:7:13:7:19 | ... = ... |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | [b (line 3): false] SSA def(x) | Splitting.cs:10:13:10:19 | ... = ... |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | SSA param(b) | Splitting.cs:22:18:22:18 | b |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | [b (line 22): false] SSA def(x) | Splitting.cs:29:13:29:19 | ... = ... |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): false] SSA def(x) | Splitting.cs:32:9:32:15 | ... = ... |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): true] SSA def(x) | Splitting.cs:32:9:32:15 | ... = ... |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | SSA param(b) | Splitting.cs:42:18:42:18 | b |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:46:13:46:19 | [b (line 42): true] SSA def(x) | Splitting.cs:46:13:46:19 | ... = ... |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:49:13:49:19 | [b (line 42): false] SSA def(x) | Splitting.cs:49:13:49:19 | ... = ... |
 | Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | SSA param(param1) | Test.cs:5:15:5:20 | param1 |
 | Test.cs:5:15:5:20 | param1 | Test.cs:27:17:27:24 | SSA def(param1) | Test.cs:27:17:27:24 | ...++ |
 | Test.cs:5:15:5:20 | param1 | Test.cs:41:13:41:23 | SSA def(param1) | Test.cs:41:13:41:23 | ... = ... |
@@ -209,7 +219,8 @@
 | Test.cs:46:29:46:32 | out | Test.cs:50:13:50:20 | SSA def(out) | Test.cs:50:13:50:20 | ... = ... |
 | Test.cs:46:29:46:32 | out | Test.cs:54:13:54:20 | SSA def(out) | Test.cs:54:13:54:20 | ... = ... |
 | Test.cs:56:13:56:17 | this.field | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:57:9:57:17 | ... = ... |
-| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
+| Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | SSA param(x) | Test.cs:62:16:62:16 | x |
+| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:10:9:10:54 | ... = ... |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:14:9:14:32 | SSA def(x) | Tuples.cs:14:9:14:32 | ... = ... |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:23:9:23:37 | SSA def(x) | Tuples.cs:23:9:23:37 | ... = ... |

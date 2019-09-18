@@ -1,4 +1,5 @@
-| CSharp7.cs:234:13:234:23 | ... is ... | CSharp7.cs:234:18:234:20 | access to type Int32 | Int32 | CSharp7.cs:234:18:234:23 | Int32 i1 | false |
-| CSharp7.cs:238:18:238:31 | ... is ... | CSharp7.cs:238:23:238:28 | access to type String | String | CSharp7.cs:238:23:238:31 | String s1 | false |
-| CSharp7.cs:245:18:245:28 | ... is ... | CSharp7.cs:245:23:245:25 | access to type Object | Object | CSharp7.cs:245:23:245:28 | Object v1 | true |
-| CSharp7.cs:255:27:255:40 | ... is ... | CSharp7.cs:255:32:255:37 | access to type String | String | CSharp7.cs:255:32:255:40 | String s4 | false |
+| CSharp7.cs:234:13:234:23 | ... is ... | Int32 | CSharp7.cs:234:18:234:23 | Int32 i1 | false |
+| CSharp7.cs:238:18:238:31 | ... is ... | String | CSharp7.cs:238:23:238:31 | String s1 | false |
+| CSharp7.cs:245:18:245:28 | ... is ... | Object | CSharp7.cs:245:23:245:28 | Object v1 | true |
+| CSharp7.cs:255:27:255:40 | ... is ... | String | CSharp7.cs:255:32:255:40 | String s4 | false |
+| CSharp7.cs:298:30:298:39 | ... is ... | Int32 | CSharp7.cs:298:35:298:39 | Int32 y | false |

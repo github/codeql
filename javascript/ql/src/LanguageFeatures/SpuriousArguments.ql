@@ -30,7 +30,7 @@ predicate isFixedArity(Function fn) {
  * This is only defined if all potential callees have a fixed arity.
  */
 int maxArity(DataFlow::InvokeNode invk) {
-  forall (Function callee | callee = invk.getACallee() | isFixedArity(callee)) and
+  forall(Function callee | callee = invk.getACallee() | isFixedArity(callee)) and
   result = max(invk.getACallee().getNumParameter())
 }
 
@@ -52,9 +52,7 @@ class SpuriousArguments extends Expr {
   /**
    * Gets the call site at which the spurious arguments are passed.
    */
-  DataFlow::InvokeNode getCall() {
-    result = invk
-  }
+  DataFlow::InvokeNode getCall() { result = invk }
 
   /**
    * Gets the number of spurious arguments, that is, the number of
@@ -70,27 +68,36 @@ class SpuriousArguments extends Expr {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-    exists (DataFlow::Node lastArg |
-      lastArg = max(DataFlow::Node arg, int i | arg = invk.getArgument(i) | arg order by i) |
+    exists(DataFlow::Node lastArg |
+      lastArg = max(DataFlow::Node arg, int i | arg = invk.getArgument(i) | arg order by i)
+    |
       lastArg.hasLocationInfo(_, _, _, endline, endcolumn)
     )
   }
 }
 
 from SpuriousArguments args, Function f, string arguments
-where f = args.getCall().getACallee() and
-      if args.getCount() = 1 then arguments = "argument" else arguments = "arguments" and
-      (
-        // exclude empty functions, they are probably commented out debug utilities ...
-        exists(f.getABodyStmt()) or
-        // ... but include: constructors, arrows and externals/ambients
-        f instanceof Constructor or // unlikely to be a debug utility
-        f instanceof ArrowFunctionExpr or // cannot be empty
-        f instanceof ExternalFunction or // always empty
-        f.isAmbient() // always empty
-      )
+where
+  f = args.getCall().getACallee() and
+  (if args.getCount() = 1 then arguments = "argument" else arguments = "arguments") and
+  (
+    // exclude empty functions, they are probably commented out debug utilities ...
+    exists(f.getABodyStmt()) or
+    // ... but include: constructors, arrows and externals/ambients
+    f instanceof Constructor or // unlikely to be a debug utility
+    f instanceof ArrowFunctionExpr or // cannot be empty
+    f instanceof ExternalFunction or // always empty
+    f.isAmbient() // always empty
+  ) and
+  not (
+    // exclude no-param functions that trivially throw exceptions, they are probably placeholders
+    f.getNumParameter() = 0 and
+    f.getBodyStmt(0) instanceof ThrowStmt
+  )
 select args, "Superfluous " + arguments + " passed to $@.", f, f.describe()

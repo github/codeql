@@ -9,6 +9,7 @@
  * @tags maintainability
  *       frameworks/spring
  */
+
 import java
 import semmle.code.java.frameworks.spring.Spring
 
@@ -35,5 +36,4 @@ where
 select bean1,
   "Bean $@ has " + similarProps.toString() +
     " properties similar to $@. Consider introducing a common parent bean for these two beans.",
-  bean1, bean1.getBeanIdentifier(),
-  bean2, bean2.getBeanIdentifier()
+  bean1, bean1.getBeanIdentifier(), bean2, bean2.getBeanIdentifier()

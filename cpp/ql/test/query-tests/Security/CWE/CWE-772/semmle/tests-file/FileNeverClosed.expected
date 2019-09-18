@@ -1,0 +1,4 @@
+| test.cpp:51:6:51:10 | call to fopen | The file is never closed |
+| test.cpp:133:7:133:11 | call to fopen | The file is never closed |
+| test.cpp:184:6:184:10 | call to fopen | The file is never closed |
+| test.cpp:463:2:463:6 | call to fopen | The file is never closed |

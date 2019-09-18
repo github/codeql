@@ -5,36 +5,23 @@ import semmle.code.cpp.File
  * A location of a C/C++ artifact.
  */
 class Location extends @location {
-
   /** Gets the container corresponding to this location. */
-  Container getContainer() {
-    this.fullLocationInfo(result, _, _, _, _)
-  }
+  Container getContainer() { this.fullLocationInfo(result, _, _, _, _) }
 
   /** Gets the file corresponding to this location, if any. */
-  File getFile() {
-    result = this.getContainer()
-  }
+  File getFile() { result = this.getContainer() }
 
   /** Gets the start line of this location. */
-  int getStartLine() {
-    this.fullLocationInfo(_, result, _, _, _)
-  }
+  int getStartLine() { this.fullLocationInfo(_, result, _, _, _) }
 
   /** Gets the start column of this location. */
-  int getStartColumn() {
-    this.fullLocationInfo(_, _, result, _, _)
-  }
+  int getStartColumn() { this.fullLocationInfo(_, _, result, _, _) }
 
   /** Gets the end line of this location. */
-  int getEndLine() {
-    this.fullLocationInfo(_, _, _, result, _)
-  }
+  int getEndLine() { this.fullLocationInfo(_, _, _, result, _) }
 
   /** Gets the end column of this location. */
-  int getEndColumn() {
-    this.fullLocationInfo(_, _, _, _, result)
-  }
+  int getEndColumn() { this.fullLocationInfo(_, _, _, _, result) }
 
   /**
    * Gets a textual representation of this element.
@@ -42,9 +29,10 @@ class Location extends @location {
    * The format is "file://filePath:startLine:startColumn:endLine:endColumn".
    */
   string toString() {
-    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn
-    | this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    | toUrl(filepath, startline, startcolumn, endline, endcolumn, result)
+    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    |
+      toUrl(filepath, startline, startcolumn, endline, endcolumn, result)
     )
   }
 
@@ -57,10 +45,11 @@ class Location extends @location {
    * entity, rather than merely its path.
    */
   predicate fullLocationInfo(
-    Container container, int startline, int startcolumn, int endline, int endcolumn) {
-    locations_default(this, unresolveElement(container), startline,  startcolumn, endline, endcolumn) or
-    locations_expr(this, unresolveElement(container), startline,  startcolumn, endline, endcolumn) or
-    locations_stmt(this, unresolveElement(container), startline,  startcolumn, endline, endcolumn)
+    Container container, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    locations_default(this, unresolveElement(container), startline, startcolumn, endline, endcolumn) or
+    locations_expr(this, unresolveElement(container), startline, startcolumn, endline, endcolumn) or
+    locations_stmt(this, unresolveElement(container), startline, startcolumn, endline, endcolumn)
   }
 
   /**
@@ -68,13 +57,14 @@ class Location extends @location {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
   predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    exists(Container f
-    | this.fullLocationInfo(f,startline,startcolumn,endline,endcolumn)
-    | filepath = f.getAbsolutePath())
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(Container f | this.fullLocationInfo(f, startline, startcolumn, endline, endcolumn) |
+      filepath = f.getAbsolutePath()
+    )
   }
 
   /** Holds if `this` comes on a line strictly before `l`. */
@@ -114,28 +104,24 @@ class Location extends @location {
  * A location of an element. Not used for expressions or statements, which
  * instead use LocationExpr and LocationStmt respectively.
  */
-library class LocationDefault extends Location, @location_default {}
+library class LocationDefault extends Location, @location_default { }
 
 /** A location of a statement. */
-library class LocationStmt extends Location, @location_stmt {}
+library class LocationStmt extends Location, @location_stmt { }
 
 /** A location of an expression. */
-library class LocationExpr extends Location, @location_expr {}
+library class LocationExpr extends Location, @location_expr { }
 
 /**
  * Gets the length of the longest line in file `f`.
  */
 pragma[nomagic]
-private int maxCols(File f) {
-  result = max(Location l | l.getFile() = f | l.getEndColumn())
-}
+private int maxCols(File f) { result = max(Location l | l.getFile() = f | l.getEndColumn()) }
 
 /**
  * A C/C++ element that has a location in a file
  */
-class Locatable extends Element {
-
-}
+class Locatable extends Element { }
 
 /**
  * A dummy location which is used when something doesn't have a location in
@@ -144,9 +130,7 @@ class Locatable extends Element {
  * expressions, one for statements and one for other program elements.
  */
 class UnknownLocation extends Location {
-  UnknownLocation() {
-    getFile().getAbsolutePath() = ""
-  }
+  UnknownLocation() { getFile().getAbsolutePath() = "" }
 }
 
 /**
@@ -154,9 +138,7 @@ class UnknownLocation extends Location {
  * the source code but needs to have a `Location` associated with it.
  */
 class UnknownDefaultLocation extends UnknownLocation {
-  UnknownDefaultLocation() {
-    locations_default(this, _, 0, 0, 0, 0)
-  }
+  UnknownDefaultLocation() { locations_default(this, _, 0, 0, 0, 0) }
 }
 
 /**
@@ -165,9 +147,7 @@ class UnknownDefaultLocation extends UnknownLocation {
  * with it.
  */
 class UnknownExprLocation extends UnknownLocation {
-  UnknownExprLocation() {
-    locations_expr(this, _, 0, 0, 0, 0)
-  }
+  UnknownExprLocation() { locations_expr(this, _, 0, 0, 0, 0) }
 }
 
 /**
@@ -175,8 +155,5 @@ class UnknownExprLocation extends UnknownLocation {
  * in the source code but needs to have a `Location` associated with it.
  */
 class UnknownStmtLocation extends UnknownLocation {
-  UnknownStmtLocation() {
-    locations_stmt(this, _, 0, 0, 0, 0)
-  }
+  UnknownStmtLocation() { locations_stmt(this, _, 0, 0, 0, 0) }
 }
-

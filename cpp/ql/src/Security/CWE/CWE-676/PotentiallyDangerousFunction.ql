@@ -1,24 +1,31 @@
 /**
  * @name Use of potentially dangerous function
- * @description Certain standard library functions are dangerous to call.
+ * @description Use of a standard library function that is not thread-safe.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id cpp/potentially-dangerous-function
  * @tags reliability
  *       security
  *       external/cwe/cwe-676
  */
+
 import cpp
 
-
-predicate dangerousFunction(Function function) {
-  exists (string name | name = function.getQualifiedName() |
-    name = "gmtime")
+predicate potentiallyDangerousFunction(Function f, string message) {
+  exists(string name | f.hasGlobalName(name) |
+    (
+      name = "gmtime" or
+      name = "localtime" or
+      name = "ctime" or
+      name = "asctime"
+    ) and
+    message = "Call to " + name + " is potentially dangerous"
+  )
 }
 
-
-from FunctionCall call, Function target
-where call.getTarget() = target
-  and dangerousFunction(target)
-select call, "Call to " + target.getQualifiedName() + " is potentially dangerous"
+from FunctionCall call, Function target, string message
+where
+  call.getTarget() = target and
+  potentiallyDangerousFunction(target, message)
+select call, message

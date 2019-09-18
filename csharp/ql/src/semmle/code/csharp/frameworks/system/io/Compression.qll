@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.IO.Compression`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.IO
 
@@ -10,15 +11,9 @@ class SystemIOCompressionNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.IO` namespace. */
-deprecated
-SystemIOCompressionNamespace getSystemIOCompressionNamespace() { any() }
-
 /** A class in the `System.IO.Compression` namespace. */
 class SystemIOCompressionClass extends Class {
-  SystemIOCompressionClass() {
-    this.getNamespace() instanceof SystemIOCompressionNamespace
-  }
+  SystemIOCompressionClass() { this.getNamespace() instanceof SystemIOCompressionNamespace }
 }
 
 /** The `System.IO.Compression.DeflateStream` class. */

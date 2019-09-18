@@ -19,27 +19,26 @@ import javascript
  * as part of the top-level means cyclic imports can't be known to be resolved at this stage.
  */
 predicate isImmediatelyExecutedContainer(StmtContainer container) {
-  container instanceof TopLevel or
-
+  container instanceof TopLevel
+  or
   // Namespaces are immediately executed (they cannot be declared inside a function).
-  container instanceof NamespaceDeclaration or
-
+  container instanceof NamespaceDeclaration
+  or
   // IIFEs at the top-level are immediately executed
-  exists (ImmediatelyInvokedFunctionExpr function | container = function |
+  exists(ImmediatelyInvokedFunctionExpr function | container = function |
     not function.isAsync() and
     not function.isGenerator() and
-    isImmediatelyExecutedContainer(container.getEnclosingContainer()))
+    isImmediatelyExecutedContainer(container.getEnclosingContainer())
+  )
 }
 
 /**
  * Holds if the given import is only used to import type names, hence has no runtime effect.
  */
 predicate isAmbientImport(ImportDeclaration decl) {
-  decl.getFile().getFileType().isTypeScript()
-  and
-  exists (decl.getASpecifier())
-  and
-  not exists (decl.getASpecifier().getLocal().getVariable().getAnAccess())
+  decl.getFile().getFileType().isTypeScript() and
+  exists(decl.getASpecifier()) and
+  not exists(decl.getASpecifier().getLocal().getVariable().getAnAccess())
 }
 
 /**
@@ -52,7 +51,7 @@ Import getARuntimeImport(Module source, Module destination) {
 }
 
 predicate isImportedAtRuntime(Module source, Module destination) {
-  exists (getARuntimeImport(source, destination))
+  exists(getARuntimeImport(source, destination))
 }
 
 /**
@@ -65,7 +64,7 @@ predicate isImportedAtRuntime(Module source, Module destination) {
 class CandidateVarAccess extends VarAccess {
   CandidateVarAccess() {
     isImmediatelyExecutedContainer(getContainer()) and
-    not exists (ExportSpecifier spec | spec.getLocal() = this)
+    not exists(ExportSpecifier spec | spec.getLocal() = this)
   }
 }
 
@@ -75,7 +74,10 @@ class CandidateVarAccess extends VarAccess {
  * We use this to avoid duplicate alerts about the same underlying cyclic import.
  */
 VarAccess getFirstCandidateAccess(ImportDeclaration decl) {
-  result = min(decl.getASpecifier().getLocal().getVariable().getAnAccess().(CandidateVarAccess) as p order by p.getFirstToken().getIndex())
+  result = min(decl.getASpecifier().getLocal().getVariable().getAnAccess().(CandidateVarAccess) as p
+      order by
+        p.getFirstToken().getIndex()
+    )
 }
 
 /**
@@ -89,10 +91,9 @@ predicate cycleAlert(Module mod, ImportDeclaration import_, Module importedModul
   access = getFirstCandidateAccess(import_) and
   importedModule = import_.getImportedModule() and
   importedModule != mod and // don't report self-imports
-
   // Suppress warning if this is the unique importer of that module.
   // That's a sufficient and somewhat maintainable safety guarantee.
-  exists (Module otherEntry | isImportedAtRuntime(otherEntry, importedModule) and otherEntry != mod)
+  exists(Module otherEntry | isImportedAtRuntime(otherEntry, importedModule) and otherEntry != mod)
 }
 
 /** Holds if the length of the shortest sequence of runtime imports from `source` to `destination` is `steps`. */
@@ -104,9 +105,7 @@ predicate anyModule(Module m) { any() }
 /**
  * Gets the name of the module containing the given import.
  */
-string repr(Import import_) {
-  result = import_.getEnclosingModule().getName()
-}
+string repr(Import import_) { result = import_.getEnclosingModule().getName() }
 
 /**
  * Builds a string visualizing the shortest import path from `source` to `destination`, excluding
@@ -125,25 +124,30 @@ string repr(Import import_) {
  */
 string pathToModule(Module source, Module destination, int steps) {
   // Restrict paths to those that are relevant for building a path from the imported module of an alert back to the importer.
-  exists (Module m | cycleAlert(destination, _, m, _) and numberOfStepsToModule(m, source, _)) and
+  exists(Module m | cycleAlert(destination, _, m, _) and numberOfStepsToModule(m, source, _)) and
   numberOfStepsToModule(source, destination, steps) and
   (
     steps = 1 and
     result = repr(getARuntimeImport(source, destination))
     or
     steps > 1 and
-    exists (Module next |
+    exists(Module next |
       // Only extend the path to one of the potential successors, as we only need one example.
       next = min(Module mod |
-        isImportedAtRuntime(source, mod) and
-        numberOfStepsToModule(mod, destination, steps - 1) |
-        mod order by mod.getName()) and
-      result = repr(getARuntimeImport(source, next)) + " => " + pathToModule(next, destination, steps - 1))
+          isImportedAtRuntime(source, mod) and
+          numberOfStepsToModule(mod, destination, steps - 1)
+        |
+          mod order by mod.getName()
+        ) and
+      result = repr(getARuntimeImport(source, next)) + " => " +
+          pathToModule(next, destination, steps - 1)
+    )
   )
 }
 
 from Module mod, ImportDeclaration import_, Module importedModule, VarAccess access
 where cycleAlert(mod, import_, importedModule, access)
-select access, access.getName() + " is uninitialized if $@ is loaded first in the cyclic import:"
-  + " " + repr(import_) + " => " + min(pathToModule(importedModule, mod, _)) + " => " + repr(import_) + ".",
-  import_.getImportedPath(), importedModule.getName()
+select access,
+  access.getName() + " is uninitialized if $@ is loaded first in the cyclic import:" + " " +
+    repr(import_) + " => " + min(pathToModule(importedModule, mod, _)) + " => " + repr(import_) +
+    ".", import_.getImportedPath(), importedModule.getName()

@@ -229,7 +229,9 @@
 | TestLoopBranch.java:105:7:105:11 | ... + ... | TestLoopBranch.java:105:3:105:11 | ...=... |
 | TestLoopBranch.java:105:11:105:11 | y | TestLoopBranch.java:105:7:105:11 | ... + ... |
 | TestLoopBranch.java:106:3:106:9 | stmt | TestLoopBranch.java:7:14:7:14 | f |
-| TestLoopBranch.java:109:9:109:22 | super(...) | TestLoopBranch.java:111:3:111:10 | stmt |
+| TestLoopBranch.java:109:9:109:22 | <obinit>(...) | TestLoopBranch.java:111:3:111:10 | stmt |
+| TestLoopBranch.java:109:9:109:22 | stmt | TestLoopBranch.java:109:9:109:22 | <obinit>(...) |
+| TestLoopBranch.java:109:9:109:22 | super(...) | TestLoopBranch.java:109:9:109:22 | stmt |
 | TestLoopBranch.java:110:2:113:2 | stmt | TestLoopBranch.java:109:9:109:22 | super(...) |
 | TestLoopBranch.java:111:3:111:9 | ...=... | TestLoopBranch.java:112:3:112:10 | stmt |
 | TestLoopBranch.java:111:3:111:10 | stmt | TestLoopBranch.java:111:8:111:9 | 33 |
@@ -237,7 +239,9 @@
 | TestLoopBranch.java:112:3:112:9 | ...=... | TestLoopBranch.java:109:9:109:22 | TestLoopBranch |
 | TestLoopBranch.java:112:3:112:10 | stmt | TestLoopBranch.java:112:8:112:9 | 44 |
 | TestLoopBranch.java:112:8:112:9 | 44 | TestLoopBranch.java:112:3:112:9 | ...=... |
-| TestLoopBranch.java:115:9:115:22 | super(...) | TestLoopBranch.java:117:3:117:9 | stmt |
+| TestLoopBranch.java:115:9:115:22 | <obinit>(...) | TestLoopBranch.java:117:3:117:9 | stmt |
+| TestLoopBranch.java:115:9:115:22 | stmt | TestLoopBranch.java:115:9:115:22 | <obinit>(...) |
+| TestLoopBranch.java:115:9:115:22 | super(...) | TestLoopBranch.java:115:9:115:22 | stmt |
 | TestLoopBranch.java:116:2:119:2 | stmt | TestLoopBranch.java:115:9:115:22 | super(...) |
 | TestLoopBranch.java:117:3:117:8 | ...=... | TestLoopBranch.java:118:3:118:9 | stmt |
 | TestLoopBranch.java:117:3:117:9 | stmt | TestLoopBranch.java:117:8:117:8 | i |

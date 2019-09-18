@@ -8,7 +8,7 @@ class NumericNarrowingCastExpr extends CastExpr {
   NumericNarrowingCastExpr() {
     exists(NumericType sourceType, NumericType targetType |
       sourceType = getExpr().getType() and targetType = getType()
-      |
+    |
       not targetType.(NumType).widerThanOrEqualTo(sourceType.(NumType))
     )
   }
@@ -38,8 +38,9 @@ predicate boundedRead(RValue read) {
     read = v.getAUse() and
     cb.controls(read.getBasicBlock(), testIsTrue) and
     cb.getCondition() = comp
-    |
-    comp.getLesserOperand() = v.getAUse() and testIsTrue = true or
+  |
+    comp.getLesserOperand() = v.getAUse() and testIsTrue = true
+    or
     comp.getGreaterOperand() = v.getAUse() and testIsTrue = false
   )
 }

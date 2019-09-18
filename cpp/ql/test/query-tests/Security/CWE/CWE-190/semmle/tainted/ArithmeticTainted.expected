@@ -1,0 +1,10 @@
+| test3.c:15:10:15:10 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test3.c:11:15:11:18 | argv | User-provided value |
+| test3.c:15:14:15:14 | y | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test3.c:11:15:11:18 | argv | User-provided value |
+| test3.c:15:18:15:18 | z | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test3.c:11:15:11:18 | argv | User-provided value |
+| test5.cpp:17:6:17:18 | call to getTaintedInt | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test5.cpp:9:7:9:9 | buf | User-provided value |
+| test5.cpp:19:6:19:6 | y | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test5.cpp:9:7:9:9 | buf | User-provided value |
+| test5.cpp:19:6:19:6 | y | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test5.cpp:9:7:9:9 | buf | User-provided value |
+| test.c:14:15:14:28 | maxConnections | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:11:29:11:32 | argv | User-provided value |
+| test.c:14:15:14:28 | maxConnections | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:11:29:11:32 | argv | User-provided value |
+| test.c:44:7:44:10 | len2 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:41:17:41:20 | argv | User-provided value |
+| test.c:54:7:54:10 | len3 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:51:17:51:20 | argv | User-provided value |

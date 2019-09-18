@@ -1,3 +1,292 @@
+| AccessorCalls.cs:5:30:5:30 | access to parameter i | AccessorCalls.cs:5:30:5:30 | access to parameter i |
+| AccessorCalls.cs:5:37:5:39 | {...} | AccessorCalls.cs:5:37:5:39 | {...} |
+| AccessorCalls.cs:7:36:7:38 | {...} | AccessorCalls.cs:7:36:7:38 | {...} |
+| AccessorCalls.cs:7:47:7:49 | {...} | AccessorCalls.cs:7:47:7:49 | {...} |
+| AccessorCalls.cs:11:5:17:5 | {...} | AccessorCalls.cs:11:5:17:5 | {...} |
+| AccessorCalls.cs:12:9:12:12 | this access | AccessorCalls.cs:12:9:12:12 | this access |
+| AccessorCalls.cs:12:9:12:18 | access to field Field | AccessorCalls.cs:12:9:12:12 | this access |
+| AccessorCalls.cs:12:9:12:31 | ... = ... | AccessorCalls.cs:12:9:12:12 | this access |
+| AccessorCalls.cs:12:9:12:32 | ...; | AccessorCalls.cs:12:9:12:32 | ...; |
+| AccessorCalls.cs:12:22:12:25 | this access | AccessorCalls.cs:12:22:12:25 | this access |
+| AccessorCalls.cs:12:22:12:31 | access to field Field | AccessorCalls.cs:12:22:12:25 | this access |
+| AccessorCalls.cs:13:9:13:12 | this access | AccessorCalls.cs:13:9:13:12 | this access |
+| AccessorCalls.cs:13:9:13:17 | access to property Prop | AccessorCalls.cs:13:9:13:12 | this access |
+| AccessorCalls.cs:13:9:13:29 | ... = ... | AccessorCalls.cs:13:9:13:12 | this access |
+| AccessorCalls.cs:13:9:13:30 | ...; | AccessorCalls.cs:13:9:13:30 | ...; |
+| AccessorCalls.cs:13:21:13:24 | this access | AccessorCalls.cs:13:21:13:24 | this access |
+| AccessorCalls.cs:13:21:13:29 | access to property Prop | AccessorCalls.cs:13:21:13:24 | this access |
+| AccessorCalls.cs:14:9:14:12 | this access | AccessorCalls.cs:14:9:14:12 | this access |
+| AccessorCalls.cs:14:9:14:15 | access to indexer | AccessorCalls.cs:14:9:14:12 | this access |
+| AccessorCalls.cs:14:9:14:25 | ... = ... | AccessorCalls.cs:14:9:14:12 | this access |
+| AccessorCalls.cs:14:9:14:26 | ...; | AccessorCalls.cs:14:9:14:26 | ...; |
+| AccessorCalls.cs:14:14:14:14 | 0 | AccessorCalls.cs:14:14:14:14 | 0 |
+| AccessorCalls.cs:14:19:14:22 | this access | AccessorCalls.cs:14:19:14:22 | this access |
+| AccessorCalls.cs:14:19:14:25 | access to indexer | AccessorCalls.cs:14:19:14:22 | this access |
+| AccessorCalls.cs:14:24:14:24 | 1 | AccessorCalls.cs:14:24:14:24 | 1 |
+| AccessorCalls.cs:15:9:15:12 | this access | AccessorCalls.cs:15:9:15:12 | this access |
+| AccessorCalls.cs:15:9:15:18 | access to event Event | AccessorCalls.cs:15:9:15:12 | this access |
+| AccessorCalls.cs:15:9:15:23 | ... += ... | AccessorCalls.cs:15:9:15:12 | this access |
+| AccessorCalls.cs:15:9:15:24 | ...; | AccessorCalls.cs:15:9:15:24 | ...; |
+| AccessorCalls.cs:15:23:15:23 | access to parameter e | AccessorCalls.cs:15:23:15:23 | access to parameter e |
+| AccessorCalls.cs:16:9:16:12 | this access | AccessorCalls.cs:16:9:16:12 | this access |
+| AccessorCalls.cs:16:9:16:18 | access to event Event | AccessorCalls.cs:16:9:16:12 | this access |
+| AccessorCalls.cs:16:9:16:23 | ... -= ... | AccessorCalls.cs:16:9:16:12 | this access |
+| AccessorCalls.cs:16:9:16:24 | ...; | AccessorCalls.cs:16:9:16:24 | ...; |
+| AccessorCalls.cs:16:23:16:23 | access to parameter e | AccessorCalls.cs:16:23:16:23 | access to parameter e |
+| AccessorCalls.cs:20:5:26:5 | {...} | AccessorCalls.cs:20:5:26:5 | {...} |
+| AccessorCalls.cs:21:9:21:12 | this access | AccessorCalls.cs:21:9:21:12 | this access |
+| AccessorCalls.cs:21:9:21:14 | access to field x | AccessorCalls.cs:21:9:21:12 | this access |
+| AccessorCalls.cs:21:9:21:20 | access to field Field | AccessorCalls.cs:21:9:21:12 | this access |
+| AccessorCalls.cs:21:9:21:35 | ... = ... | AccessorCalls.cs:21:9:21:12 | this access |
+| AccessorCalls.cs:21:9:21:36 | ...; | AccessorCalls.cs:21:9:21:36 | ...; |
+| AccessorCalls.cs:21:24:21:27 | this access | AccessorCalls.cs:21:24:21:27 | this access |
+| AccessorCalls.cs:21:24:21:29 | access to field x | AccessorCalls.cs:21:24:21:27 | this access |
+| AccessorCalls.cs:21:24:21:35 | access to field Field | AccessorCalls.cs:21:24:21:27 | this access |
+| AccessorCalls.cs:22:9:22:12 | this access | AccessorCalls.cs:22:9:22:12 | this access |
+| AccessorCalls.cs:22:9:22:14 | access to field x | AccessorCalls.cs:22:9:22:12 | this access |
+| AccessorCalls.cs:22:9:22:19 | access to property Prop | AccessorCalls.cs:22:9:22:12 | this access |
+| AccessorCalls.cs:22:9:22:33 | ... = ... | AccessorCalls.cs:22:9:22:12 | this access |
+| AccessorCalls.cs:22:9:22:34 | ...; | AccessorCalls.cs:22:9:22:34 | ...; |
+| AccessorCalls.cs:22:23:22:26 | this access | AccessorCalls.cs:22:23:22:26 | this access |
+| AccessorCalls.cs:22:23:22:28 | access to field x | AccessorCalls.cs:22:23:22:26 | this access |
+| AccessorCalls.cs:22:23:22:33 | access to property Prop | AccessorCalls.cs:22:23:22:26 | this access |
+| AccessorCalls.cs:23:9:23:12 | this access | AccessorCalls.cs:23:9:23:12 | this access |
+| AccessorCalls.cs:23:9:23:14 | access to field x | AccessorCalls.cs:23:9:23:12 | this access |
+| AccessorCalls.cs:23:9:23:17 | access to indexer | AccessorCalls.cs:23:9:23:12 | this access |
+| AccessorCalls.cs:23:9:23:29 | ... = ... | AccessorCalls.cs:23:9:23:12 | this access |
+| AccessorCalls.cs:23:9:23:30 | ...; | AccessorCalls.cs:23:9:23:30 | ...; |
+| AccessorCalls.cs:23:16:23:16 | 0 | AccessorCalls.cs:23:16:23:16 | 0 |
+| AccessorCalls.cs:23:21:23:24 | this access | AccessorCalls.cs:23:21:23:24 | this access |
+| AccessorCalls.cs:23:21:23:26 | access to field x | AccessorCalls.cs:23:21:23:24 | this access |
+| AccessorCalls.cs:23:21:23:29 | access to indexer | AccessorCalls.cs:23:21:23:24 | this access |
+| AccessorCalls.cs:23:28:23:28 | 1 | AccessorCalls.cs:23:28:23:28 | 1 |
+| AccessorCalls.cs:24:9:24:12 | this access | AccessorCalls.cs:24:9:24:12 | this access |
+| AccessorCalls.cs:24:9:24:14 | access to field x | AccessorCalls.cs:24:9:24:12 | this access |
+| AccessorCalls.cs:24:9:24:20 | access to event Event | AccessorCalls.cs:24:9:24:12 | this access |
+| AccessorCalls.cs:24:9:24:25 | ... += ... | AccessorCalls.cs:24:9:24:12 | this access |
+| AccessorCalls.cs:24:9:24:26 | ...; | AccessorCalls.cs:24:9:24:26 | ...; |
+| AccessorCalls.cs:24:25:24:25 | access to parameter e | AccessorCalls.cs:24:25:24:25 | access to parameter e |
+| AccessorCalls.cs:25:9:25:12 | this access | AccessorCalls.cs:25:9:25:12 | this access |
+| AccessorCalls.cs:25:9:25:14 | access to field x | AccessorCalls.cs:25:9:25:12 | this access |
+| AccessorCalls.cs:25:9:25:20 | access to event Event | AccessorCalls.cs:25:9:25:12 | this access |
+| AccessorCalls.cs:25:9:25:25 | ... -= ... | AccessorCalls.cs:25:9:25:12 | this access |
+| AccessorCalls.cs:25:9:25:26 | ...; | AccessorCalls.cs:25:9:25:26 | ...; |
+| AccessorCalls.cs:25:25:25:25 | access to parameter e | AccessorCalls.cs:25:25:25:25 | access to parameter e |
+| AccessorCalls.cs:29:5:33:5 | {...} | AccessorCalls.cs:29:5:33:5 | {...} |
+| AccessorCalls.cs:30:9:30:12 | this access | AccessorCalls.cs:30:9:30:12 | this access |
+| AccessorCalls.cs:30:9:30:18 | access to field Field | AccessorCalls.cs:30:9:30:12 | this access |
+| AccessorCalls.cs:30:9:30:20 | ...++ | AccessorCalls.cs:30:9:30:12 | this access |
+| AccessorCalls.cs:30:9:30:21 | ...; | AccessorCalls.cs:30:9:30:21 | ...; |
+| AccessorCalls.cs:31:9:31:12 | this access | AccessorCalls.cs:31:9:31:12 | this access |
+| AccessorCalls.cs:31:9:31:17 | access to property Prop | AccessorCalls.cs:31:9:31:12 | this access |
+| AccessorCalls.cs:31:9:31:19 | ...++ | AccessorCalls.cs:31:9:31:12 | this access |
+| AccessorCalls.cs:31:9:31:20 | ...; | AccessorCalls.cs:31:9:31:20 | ...; |
+| AccessorCalls.cs:32:9:32:12 | this access | AccessorCalls.cs:32:9:32:12 | this access |
+| AccessorCalls.cs:32:9:32:15 | access to indexer | AccessorCalls.cs:32:9:32:12 | this access |
+| AccessorCalls.cs:32:9:32:17 | ...++ | AccessorCalls.cs:32:9:32:12 | this access |
+| AccessorCalls.cs:32:9:32:18 | ...; | AccessorCalls.cs:32:9:32:18 | ...; |
+| AccessorCalls.cs:32:14:32:14 | 0 | AccessorCalls.cs:32:14:32:14 | 0 |
+| AccessorCalls.cs:36:5:40:5 | {...} | AccessorCalls.cs:36:5:40:5 | {...} |
+| AccessorCalls.cs:37:9:37:12 | this access | AccessorCalls.cs:37:9:37:12 | this access |
+| AccessorCalls.cs:37:9:37:14 | access to field x | AccessorCalls.cs:37:9:37:12 | this access |
+| AccessorCalls.cs:37:9:37:20 | access to field Field | AccessorCalls.cs:37:9:37:12 | this access |
+| AccessorCalls.cs:37:9:37:22 | ...++ | AccessorCalls.cs:37:9:37:12 | this access |
+| AccessorCalls.cs:37:9:37:23 | ...; | AccessorCalls.cs:37:9:37:23 | ...; |
+| AccessorCalls.cs:38:9:38:12 | this access | AccessorCalls.cs:38:9:38:12 | this access |
+| AccessorCalls.cs:38:9:38:14 | access to field x | AccessorCalls.cs:38:9:38:12 | this access |
+| AccessorCalls.cs:38:9:38:19 | access to property Prop | AccessorCalls.cs:38:9:38:12 | this access |
+| AccessorCalls.cs:38:9:38:21 | ...++ | AccessorCalls.cs:38:9:38:12 | this access |
+| AccessorCalls.cs:38:9:38:22 | ...; | AccessorCalls.cs:38:9:38:22 | ...; |
+| AccessorCalls.cs:39:9:39:12 | this access | AccessorCalls.cs:39:9:39:12 | this access |
+| AccessorCalls.cs:39:9:39:14 | access to field x | AccessorCalls.cs:39:9:39:12 | this access |
+| AccessorCalls.cs:39:9:39:17 | access to indexer | AccessorCalls.cs:39:9:39:12 | this access |
+| AccessorCalls.cs:39:9:39:19 | ...++ | AccessorCalls.cs:39:9:39:12 | this access |
+| AccessorCalls.cs:39:9:39:20 | ...; | AccessorCalls.cs:39:9:39:20 | ...; |
+| AccessorCalls.cs:39:16:39:16 | 0 | AccessorCalls.cs:39:16:39:16 | 0 |
+| AccessorCalls.cs:43:5:47:5 | {...} | AccessorCalls.cs:43:5:47:5 | {...} |
+| AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:12 | this access |
+| AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:12 | this access |
+| AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:12 | this access |
+| AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:12 | this access |
+| AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:9:44:12 | this access |
+| AccessorCalls.cs:44:9:44:32 | ... += ... | AccessorCalls.cs:44:9:44:12 | this access |
+| AccessorCalls.cs:44:9:44:32 | ... = ... | AccessorCalls.cs:44:9:44:12 | this access |
+| AccessorCalls.cs:44:9:44:33 | ...; | AccessorCalls.cs:44:9:44:33 | ...; |
+| AccessorCalls.cs:44:23:44:26 | this access | AccessorCalls.cs:44:23:44:26 | this access |
+| AccessorCalls.cs:44:23:44:32 | access to field Field | AccessorCalls.cs:44:23:44:26 | this access |
+| AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:12 | this access |
+| AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:12 | this access |
+| AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:12 | this access |
+| AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:12 | this access |
+| AccessorCalls.cs:45:9:45:30 | ... + ... | AccessorCalls.cs:45:9:45:12 | this access |
+| AccessorCalls.cs:45:9:45:30 | ... += ... | AccessorCalls.cs:45:9:45:12 | this access |
+| AccessorCalls.cs:45:9:45:30 | ... = ... | AccessorCalls.cs:45:9:45:12 | this access |
+| AccessorCalls.cs:45:9:45:31 | ...; | AccessorCalls.cs:45:9:45:31 | ...; |
+| AccessorCalls.cs:45:22:45:25 | this access | AccessorCalls.cs:45:22:45:25 | this access |
+| AccessorCalls.cs:45:22:45:30 | access to property Prop | AccessorCalls.cs:45:22:45:25 | this access |
+| AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:9:46:12 | this access |
+| AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:9:46:12 | this access |
+| AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:9:46:12 | this access |
+| AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:9:46:12 | this access |
+| AccessorCalls.cs:46:9:46:26 | ... + ... | AccessorCalls.cs:46:9:46:12 | this access |
+| AccessorCalls.cs:46:9:46:26 | ... += ... | AccessorCalls.cs:46:9:46:12 | this access |
+| AccessorCalls.cs:46:9:46:26 | ... = ... | AccessorCalls.cs:46:9:46:12 | this access |
+| AccessorCalls.cs:46:9:46:27 | ...; | AccessorCalls.cs:46:9:46:27 | ...; |
+| AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:14:46:14 | 0 |
+| AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:14:46:14 | 0 |
+| AccessorCalls.cs:46:20:46:23 | this access | AccessorCalls.cs:46:20:46:23 | this access |
+| AccessorCalls.cs:46:20:46:26 | access to indexer | AccessorCalls.cs:46:20:46:23 | this access |
+| AccessorCalls.cs:46:25:46:25 | 0 | AccessorCalls.cs:46:25:46:25 | 0 |
+| AccessorCalls.cs:50:5:54:5 | {...} | AccessorCalls.cs:50:5:54:5 | {...} |
+| AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:36 | ... += ... | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:36 | ... = ... | AccessorCalls.cs:51:9:51:12 | this access |
+| AccessorCalls.cs:51:9:51:37 | ...; | AccessorCalls.cs:51:9:51:37 | ...; |
+| AccessorCalls.cs:51:25:51:28 | this access | AccessorCalls.cs:51:25:51:28 | this access |
+| AccessorCalls.cs:51:25:51:30 | access to field x | AccessorCalls.cs:51:25:51:28 | this access |
+| AccessorCalls.cs:51:25:51:36 | access to field Field | AccessorCalls.cs:51:25:51:28 | this access |
+| AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:34 | ... + ... | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:34 | ... += ... | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:34 | ... = ... | AccessorCalls.cs:52:9:52:12 | this access |
+| AccessorCalls.cs:52:9:52:35 | ...; | AccessorCalls.cs:52:9:52:35 | ...; |
+| AccessorCalls.cs:52:24:52:27 | this access | AccessorCalls.cs:52:24:52:27 | this access |
+| AccessorCalls.cs:52:24:52:29 | access to field x | AccessorCalls.cs:52:24:52:27 | this access |
+| AccessorCalls.cs:52:24:52:34 | access to property Prop | AccessorCalls.cs:52:24:52:27 | this access |
+| AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:30 | ... + ... | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:30 | ... += ... | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:30 | ... = ... | AccessorCalls.cs:53:9:53:12 | this access |
+| AccessorCalls.cs:53:9:53:31 | ...; | AccessorCalls.cs:53:9:53:31 | ...; |
+| AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:16:53:16 | 0 |
+| AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:16:53:16 | 0 |
+| AccessorCalls.cs:53:22:53:25 | this access | AccessorCalls.cs:53:22:53:25 | this access |
+| AccessorCalls.cs:53:22:53:27 | access to field x | AccessorCalls.cs:53:22:53:25 | this access |
+| AccessorCalls.cs:53:22:53:30 | access to indexer | AccessorCalls.cs:53:22:53:25 | this access |
+| AccessorCalls.cs:53:29:53:29 | 0 | AccessorCalls.cs:53:29:53:29 | 0 |
+| AccessorCalls.cs:57:5:59:5 | {...} | AccessorCalls.cs:57:5:59:5 | {...} |
+| AccessorCalls.cs:58:9:58:45 | (..., ...) | AccessorCalls.cs:58:10:58:13 | this access |
+| AccessorCalls.cs:58:9:58:85 | ... = ... | AccessorCalls.cs:58:10:58:13 | this access |
+| AccessorCalls.cs:58:9:58:86 | ...; | AccessorCalls.cs:58:9:58:86 | ...; |
+| AccessorCalls.cs:58:10:58:13 | this access | AccessorCalls.cs:58:10:58:13 | this access |
+| AccessorCalls.cs:58:10:58:19 | access to field Field | AccessorCalls.cs:58:10:58:13 | this access |
+| AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:22:58:25 | this access |
+| AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:22:58:25 | this access |
+| AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:37:58:40 | this access |
+| AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:37:58:40 | this access |
+| AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:37:58:40 | this access |
+| AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:42:58:42 | 0 |
+| AccessorCalls.cs:58:49:58:85 | (..., ...) | AccessorCalls.cs:58:50:58:53 | this access |
+| AccessorCalls.cs:58:50:58:53 | this access | AccessorCalls.cs:58:50:58:53 | this access |
+| AccessorCalls.cs:58:50:58:59 | access to field Field | AccessorCalls.cs:58:50:58:53 | this access |
+| AccessorCalls.cs:58:62:58:65 | this access | AccessorCalls.cs:58:62:58:65 | this access |
+| AccessorCalls.cs:58:62:58:70 | access to property Prop | AccessorCalls.cs:58:62:58:65 | this access |
+| AccessorCalls.cs:58:73:58:84 | (..., ...) | AccessorCalls.cs:58:74:58:74 | 0 |
+| AccessorCalls.cs:58:74:58:74 | 0 | AccessorCalls.cs:58:74:58:74 | 0 |
+| AccessorCalls.cs:58:77:58:80 | this access | AccessorCalls.cs:58:77:58:80 | this access |
+| AccessorCalls.cs:58:77:58:83 | access to indexer | AccessorCalls.cs:58:77:58:80 | this access |
+| AccessorCalls.cs:58:82:58:82 | 1 | AccessorCalls.cs:58:82:58:82 | 1 |
+| AccessorCalls.cs:62:5:64:5 | {...} | AccessorCalls.cs:62:5:64:5 | {...} |
+| AccessorCalls.cs:63:9:63:51 | (..., ...) | AccessorCalls.cs:63:10:63:13 | this access |
+| AccessorCalls.cs:63:9:63:97 | ... = ... | AccessorCalls.cs:63:10:63:13 | this access |
+| AccessorCalls.cs:63:9:63:98 | ...; | AccessorCalls.cs:63:9:63:98 | ...; |
+| AccessorCalls.cs:63:10:63:13 | this access | AccessorCalls.cs:63:10:63:13 | this access |
+| AccessorCalls.cs:63:10:63:15 | access to field x | AccessorCalls.cs:63:10:63:13 | this access |
+| AccessorCalls.cs:63:10:63:21 | access to field Field | AccessorCalls.cs:63:10:63:13 | this access |
+| AccessorCalls.cs:63:24:63:27 | this access | AccessorCalls.cs:63:24:63:27 | this access |
+| AccessorCalls.cs:63:24:63:29 | access to field x | AccessorCalls.cs:63:24:63:27 | this access |
+| AccessorCalls.cs:63:24:63:34 | access to property Prop | AccessorCalls.cs:63:24:63:27 | this access |
+| AccessorCalls.cs:63:37:63:50 | (..., ...) | AccessorCalls.cs:63:41:63:44 | this access |
+| AccessorCalls.cs:63:41:63:44 | this access | AccessorCalls.cs:63:41:63:44 | this access |
+| AccessorCalls.cs:63:41:63:46 | access to field x | AccessorCalls.cs:63:41:63:44 | this access |
+| AccessorCalls.cs:63:41:63:49 | access to indexer | AccessorCalls.cs:63:41:63:44 | this access |
+| AccessorCalls.cs:63:48:63:48 | 0 | AccessorCalls.cs:63:48:63:48 | 0 |
+| AccessorCalls.cs:63:55:63:97 | (..., ...) | AccessorCalls.cs:63:56:63:59 | this access |
+| AccessorCalls.cs:63:56:63:59 | this access | AccessorCalls.cs:63:56:63:59 | this access |
+| AccessorCalls.cs:63:56:63:61 | access to field x | AccessorCalls.cs:63:56:63:59 | this access |
+| AccessorCalls.cs:63:56:63:67 | access to field Field | AccessorCalls.cs:63:56:63:59 | this access |
+| AccessorCalls.cs:63:70:63:73 | this access | AccessorCalls.cs:63:70:63:73 | this access |
+| AccessorCalls.cs:63:70:63:75 | access to field x | AccessorCalls.cs:63:70:63:73 | this access |
+| AccessorCalls.cs:63:70:63:80 | access to property Prop | AccessorCalls.cs:63:70:63:73 | this access |
+| AccessorCalls.cs:63:83:63:96 | (..., ...) | AccessorCalls.cs:63:84:63:84 | 0 |
+| AccessorCalls.cs:63:84:63:84 | 0 | AccessorCalls.cs:63:84:63:84 | 0 |
+| AccessorCalls.cs:63:87:63:90 | this access | AccessorCalls.cs:63:87:63:90 | this access |
+| AccessorCalls.cs:63:87:63:92 | access to field x | AccessorCalls.cs:63:87:63:90 | this access |
+| AccessorCalls.cs:63:87:63:95 | access to indexer | AccessorCalls.cs:63:87:63:90 | this access |
+| AccessorCalls.cs:63:94:63:94 | 1 | AccessorCalls.cs:63:94:63:94 | 1 |
+| AccessorCalls.cs:67:5:74:5 | {...} | AccessorCalls.cs:67:5:74:5 | {...} |
+| AccessorCalls.cs:68:9:68:22 | ... ...; | AccessorCalls.cs:68:9:68:22 | ... ...; |
+| AccessorCalls.cs:68:17:68:21 | dynamic d = ... | AccessorCalls.cs:68:21:68:21 | access to parameter o |
+| AccessorCalls.cs:68:21:68:21 | access to parameter o | AccessorCalls.cs:68:21:68:21 | access to parameter o |
+| AccessorCalls.cs:69:9:69:9 | access to local variable d | AccessorCalls.cs:69:9:69:9 | access to local variable d |
+| AccessorCalls.cs:69:9:69:20 | dynamic access to member MaybeProp1 | AccessorCalls.cs:69:9:69:9 | access to local variable d |
+| AccessorCalls.cs:69:9:69:35 | ... = ... | AccessorCalls.cs:69:9:69:9 | access to local variable d |
+| AccessorCalls.cs:69:9:69:36 | ...; | AccessorCalls.cs:69:9:69:36 | ...; |
+| AccessorCalls.cs:69:24:69:24 | access to local variable d | AccessorCalls.cs:69:24:69:24 | access to local variable d |
+| AccessorCalls.cs:69:24:69:35 | dynamic access to member MaybeProp2 | AccessorCalls.cs:69:24:69:24 | access to local variable d |
+| AccessorCalls.cs:70:9:70:9 | access to local variable d | AccessorCalls.cs:70:9:70:9 | access to local variable d |
+| AccessorCalls.cs:70:9:70:19 | dynamic access to member MaybeProp | AccessorCalls.cs:70:9:70:9 | access to local variable d |
+| AccessorCalls.cs:70:9:70:21 | dynamic call to operator ++ | AccessorCalls.cs:70:9:70:9 | access to local variable d |
+| AccessorCalls.cs:70:9:70:22 | ...; | AccessorCalls.cs:70:9:70:22 | ...; |
+| AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:9 | access to local variable d |
+| AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:9 | access to local variable d |
+| AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:9:71:9 | access to local variable d |
+| AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:9:71:9 | access to local variable d |
+| AccessorCalls.cs:71:9:71:25 | ... += ... | AccessorCalls.cs:71:9:71:9 | access to local variable d |
+| AccessorCalls.cs:71:9:71:25 | ... = ... | AccessorCalls.cs:71:9:71:9 | access to local variable d |
+| AccessorCalls.cs:71:9:71:25 | dynamic call to operator + | AccessorCalls.cs:71:9:71:9 | access to local variable d |
+| AccessorCalls.cs:71:9:71:26 | ...; | AccessorCalls.cs:71:9:71:26 | ...; |
+| AccessorCalls.cs:71:25:71:25 | access to parameter e | AccessorCalls.cs:71:25:71:25 | access to parameter e |
+| AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:9:72:9 | access to local variable d |
+| AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:9:72:9 | access to local variable d |
+| AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:9:72:9 | access to local variable d |
+| AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:9:72:9 | access to local variable d |
+| AccessorCalls.cs:72:9:72:20 | ... += ... | AccessorCalls.cs:72:9:72:9 | access to local variable d |
+| AccessorCalls.cs:72:9:72:20 | ... = ... | AccessorCalls.cs:72:9:72:9 | access to local variable d |
+| AccessorCalls.cs:72:9:72:20 | dynamic call to operator + | AccessorCalls.cs:72:9:72:9 | access to local variable d |
+| AccessorCalls.cs:72:9:72:21 | ...; | AccessorCalls.cs:72:9:72:21 | ...; |
+| AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:11:72:11 | 0 |
+| AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:11:72:11 | 0 |
+| AccessorCalls.cs:72:17:72:17 | access to local variable d | AccessorCalls.cs:72:17:72:17 | access to local variable d |
+| AccessorCalls.cs:72:17:72:20 | dynamic access to element | AccessorCalls.cs:72:17:72:17 | access to local variable d |
+| AccessorCalls.cs:72:19:72:19 | 1 | AccessorCalls.cs:72:19:72:19 | 1 |
+| AccessorCalls.cs:73:9:73:44 | (..., ...) | AccessorCalls.cs:73:10:73:10 | access to local variable d |
+| AccessorCalls.cs:73:9:73:83 | ... = ... | AccessorCalls.cs:73:10:73:10 | access to local variable d |
+| AccessorCalls.cs:73:9:73:84 | ...; | AccessorCalls.cs:73:9:73:84 | ...; |
+| AccessorCalls.cs:73:10:73:10 | access to local variable d | AccessorCalls.cs:73:10:73:10 | access to local variable d |
+| AccessorCalls.cs:73:10:73:21 | dynamic access to member MaybeProp1 | AccessorCalls.cs:73:10:73:10 | access to local variable d |
+| AccessorCalls.cs:73:24:73:27 | this access | AccessorCalls.cs:73:24:73:27 | this access |
+| AccessorCalls.cs:73:24:73:32 | access to property Prop | AccessorCalls.cs:73:24:73:27 | this access |
+| AccessorCalls.cs:73:35:73:43 | (..., ...) | AccessorCalls.cs:73:39:73:39 | access to local variable d |
+| AccessorCalls.cs:73:39:73:39 | access to local variable d | AccessorCalls.cs:73:39:73:39 | access to local variable d |
+| AccessorCalls.cs:73:39:73:42 | dynamic access to element | AccessorCalls.cs:73:39:73:39 | access to local variable d |
+| AccessorCalls.cs:73:41:73:41 | 0 | AccessorCalls.cs:73:41:73:41 | 0 |
+| AccessorCalls.cs:73:48:73:83 | (..., ...) | AccessorCalls.cs:73:49:73:49 | access to local variable d |
+| AccessorCalls.cs:73:49:73:49 | access to local variable d | AccessorCalls.cs:73:49:73:49 | access to local variable d |
+| AccessorCalls.cs:73:49:73:60 | dynamic access to member MaybeProp1 | AccessorCalls.cs:73:49:73:49 | access to local variable d |
+| AccessorCalls.cs:73:63:73:66 | this access | AccessorCalls.cs:73:63:73:66 | this access |
+| AccessorCalls.cs:73:63:73:71 | access to property Prop | AccessorCalls.cs:73:63:73:66 | this access |
+| AccessorCalls.cs:73:74:73:82 | (..., ...) | AccessorCalls.cs:73:75:73:75 | 0 |
+| AccessorCalls.cs:73:75:73:75 | 0 | AccessorCalls.cs:73:75:73:75 | 0 |
+| AccessorCalls.cs:73:78:73:78 | access to local variable d | AccessorCalls.cs:73:78:73:78 | access to local variable d |
+| AccessorCalls.cs:73:78:73:81 | dynamic access to element | AccessorCalls.cs:73:78:73:78 | access to local variable d |
+| AccessorCalls.cs:73:80:73:80 | 1 | AccessorCalls.cs:73:80:73:80 | 1 |
 | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] | ArrayCreation.cs:3:27:3:27 | 0 |
 | ArrayCreation.cs:3:27:3:27 | 0 | ArrayCreation.cs:3:27:3:27 | 0 |
 | ArrayCreation.cs:5:20:5:32 | array creation of type Int32[,] | ArrayCreation.cs:5:28:5:28 | 0 |
@@ -20,10 +309,8 @@
 | ArrayCreation.cs:9:48:9:48 | 3 | ArrayCreation.cs:9:48:9:48 | 3 |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:4:5:15:5 | {...} |
 | Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:9:5:18 | ... ...; |
-| Assignments.cs:5:13:5:13 | access to local variable x | Assignments.cs:5:13:5:13 | access to local variable x |
-| Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:5:13:5:13 | access to local variable x |
+| Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:5:17:5:17 | 0 |
 | Assignments.cs:5:17:5:17 | 0 | Assignments.cs:5:17:5:17 | 0 |
-| Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:9:6:9 | access to local variable x |
 | Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:9:6:9 | access to local variable x |
 | Assignments.cs:6:9:6:14 | ... + ... | Assignments.cs:6:9:6:9 | access to local variable x |
 | Assignments.cs:6:9:6:14 | ... += ... | Assignments.cs:6:9:6:9 | access to local variable x |
@@ -31,11 +318,9 @@
 | Assignments.cs:6:9:6:15 | ...; | Assignments.cs:6:9:6:15 | ...; |
 | Assignments.cs:6:14:6:14 | 1 | Assignments.cs:6:14:6:14 | 1 |
 | Assignments.cs:8:9:8:22 | ... ...; | Assignments.cs:8:9:8:22 | ... ...; |
-| Assignments.cs:8:17:8:17 | access to local variable d | Assignments.cs:8:17:8:17 | access to local variable d |
-| Assignments.cs:8:17:8:21 | dynamic d = ... | Assignments.cs:8:17:8:17 | access to local variable d |
+| Assignments.cs:8:17:8:21 | dynamic d = ... | Assignments.cs:8:21:8:21 | 0 |
 | Assignments.cs:8:21:8:21 | 0 | Assignments.cs:8:21:8:21 | 0 |
 | Assignments.cs:8:21:8:21 | (...) ... | Assignments.cs:8:21:8:21 | 0 |
-| Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:9:9:9 | access to local variable d |
 | Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:9:9:9 | access to local variable d |
 | Assignments.cs:9:9:9:14 | ... -= ... | Assignments.cs:9:9:9:9 | access to local variable d |
 | Assignments.cs:9:9:9:14 | ... = ... | Assignments.cs:9:9:9:9 | access to local variable d |
@@ -43,10 +328,8 @@
 | Assignments.cs:9:9:9:15 | ...; | Assignments.cs:9:9:9:15 | ...; |
 | Assignments.cs:9:14:9:14 | 2 | Assignments.cs:9:14:9:14 | 2 |
 | Assignments.cs:11:9:11:34 | ... ...; | Assignments.cs:11:9:11:34 | ... ...; |
-| Assignments.cs:11:13:11:13 | access to local variable a | Assignments.cs:11:13:11:13 | access to local variable a |
-| Assignments.cs:11:13:11:33 | Assignments a = ... | Assignments.cs:11:13:11:13 | access to local variable a |
+| Assignments.cs:11:13:11:33 | Assignments a = ... | Assignments.cs:11:17:11:33 | object creation of type Assignments |
 | Assignments.cs:11:17:11:33 | object creation of type Assignments | Assignments.cs:11:17:11:33 | object creation of type Assignments |
-| Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:9:12:9 | access to local variable a |
 | Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:9:12:9 | access to local variable a |
 | Assignments.cs:12:9:12:17 | ... += ... | Assignments.cs:12:9:12:9 | access to local variable a |
 | Assignments.cs:12:9:12:17 | ... = ... | Assignments.cs:12:9:12:9 | access to local variable a |
@@ -173,6 +456,27 @@
 | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | CatchInFinally.cs:25:35:25:36 | "" |
 | CatchInFinally.cs:25:17:25:38 | ...; | CatchInFinally.cs:25:17:25:38 | ...; |
 | CatchInFinally.cs:25:35:25:36 | "" | CatchInFinally.cs:25:35:25:36 | "" |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:35:5:51:5 | {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:36:9:50:9 | try {...} ... |
+| CatchInFinally.cs:37:9:39:9 | {...} | CatchInFinally.cs:37:9:39:9 | {...} |
+| CatchInFinally.cs:38:13:38:43 | if (...) ... | CatchInFinally.cs:38:13:38:43 | if (...) ... |
+| CatchInFinally.cs:38:17:38:18 | access to parameter b1 | CatchInFinally.cs:38:17:38:18 | access to parameter b1 |
+| CatchInFinally.cs:38:21:38:43 | throw ...; | CatchInFinally.cs:38:27:38:42 | object creation of type ExceptionA |
+| CatchInFinally.cs:38:27:38:42 | object creation of type ExceptionA | CatchInFinally.cs:38:27:38:42 | object creation of type ExceptionA |
+| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:41:9:50:9 | {...} |
+| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:42:13:49:13 | try {...} ... |
+| CatchInFinally.cs:43:13:45:13 | {...} | CatchInFinally.cs:43:13:45:13 | {...} |
+| CatchInFinally.cs:44:17:44:47 | if (...) ... | CatchInFinally.cs:44:17:44:47 | if (...) ... |
+| CatchInFinally.cs:44:21:44:22 | access to parameter b2 | CatchInFinally.cs:44:21:44:22 | access to parameter b2 |
+| CatchInFinally.cs:44:25:44:47 | throw ...; | CatchInFinally.cs:44:31:44:46 | object creation of type ExceptionB |
+| CatchInFinally.cs:44:31:44:46 | object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | object creation of type ExceptionB |
+| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} |
+| CatchInFinally.cs:46:38:46:39 | access to parameter b2 | CatchInFinally.cs:46:38:46:39 | access to parameter b2 |
+| CatchInFinally.cs:47:13:49:13 | {...} | CatchInFinally.cs:47:13:49:13 | {...} |
+| CatchInFinally.cs:48:17:48:47 | if (...) ... | CatchInFinally.cs:48:17:48:47 | if (...) ... |
+| CatchInFinally.cs:48:21:48:22 | access to parameter b1 | CatchInFinally.cs:48:21:48:22 | access to parameter b1 |
+| CatchInFinally.cs:48:25:48:47 | throw ...; | CatchInFinally.cs:48:31:48:46 | object creation of type ExceptionC |
+| CatchInFinally.cs:48:31:48:46 | object creation of type ExceptionC | CatchInFinally.cs:48:31:48:46 | object creation of type ExceptionC |
 | CompileTimeOperators.cs:6:5:8:5 | {...} | CompileTimeOperators.cs:6:5:8:5 | {...} |
 | CompileTimeOperators.cs:7:9:7:28 | return ...; | CompileTimeOperators.cs:7:16:7:27 | default(...) |
 | CompileTimeOperators.cs:7:16:7:27 | default(...) | CompileTimeOperators.cs:7:16:7:27 | default(...) |
@@ -233,19 +537,16 @@
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 |
 | ConditionalAccess.cs:22:5:26:5 | {...} | ConditionalAccess.cs:22:5:26:5 | {...} |
 | ConditionalAccess.cs:23:9:23:39 | ... ...; | ConditionalAccess.cs:23:9:23:39 | ... ...; |
-| ConditionalAccess.cs:23:13:23:13 | access to local variable j | ConditionalAccess.cs:23:13:23:13 | access to local variable j |
-| ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:23:13:23:13 | access to local variable j |
+| ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:23:26:23:29 | null |
 | ConditionalAccess.cs:23:18:23:29 | (...) ... | ConditionalAccess.cs:23:26:23:29 | null |
 | ConditionalAccess.cs:23:26:23:29 | null | ConditionalAccess.cs:23:26:23:29 | null |
 | ConditionalAccess.cs:23:32:23:38 | access to property Length | ConditionalAccess.cs:23:26:23:29 | null |
 | ConditionalAccess.cs:24:9:24:38 | ... ...; | ConditionalAccess.cs:24:9:24:38 | ... ...; |
-| ConditionalAccess.cs:24:13:24:13 | access to local variable s | ConditionalAccess.cs:24:13:24:13 | access to local variable s |
-| ConditionalAccess.cs:24:13:24:37 | String s = ... | ConditionalAccess.cs:24:13:24:13 | access to local variable s |
+| ConditionalAccess.cs:24:13:24:37 | String s = ... | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
 | ConditionalAccess.cs:24:18:24:24 | (...) ... | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
 | ConditionalAccess.cs:24:24:24:24 | access to parameter i | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
 | ConditionalAccess.cs:24:27:24:37 | call to method ToString | ConditionalAccess.cs:24:24:24:24 | access to parameter i |
-| ConditionalAccess.cs:25:9:25:9 | access to local variable s | ConditionalAccess.cs:25:9:25:9 | access to local variable s |
-| ConditionalAccess.cs:25:9:25:32 | ... = ... | ConditionalAccess.cs:25:9:25:9 | access to local variable s |
+| ConditionalAccess.cs:25:9:25:32 | ... = ... | ConditionalAccess.cs:25:13:25:14 | "" |
 | ConditionalAccess.cs:25:9:25:33 | ...; | ConditionalAccess.cs:25:9:25:33 | ...; |
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:13:25:14 | "" |
 | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:13:25:14 | "" |
@@ -255,86 +556,390 @@
 | ConditionalAccess.cs:31:70:31:83 | ... + ... | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
 | ConditionalAccess.cs:31:75:31:78 | ", " | ConditionalAccess.cs:31:75:31:78 | ", " |
 | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 |
-| ExitMethods.cs:7:5:10:5 | {...} | ExitMethods.cs:7:5:10:5 | {...} |
-| ExitMethods.cs:8:9:8:24 | call to method ErrorMaybe | ExitMethods.cs:8:20:8:23 | true |
-| ExitMethods.cs:8:9:8:25 | ...; | ExitMethods.cs:8:9:8:25 | ...; |
-| ExitMethods.cs:8:20:8:23 | true | ExitMethods.cs:8:20:8:23 | true |
-| ExitMethods.cs:9:9:9:15 | return ...; | ExitMethods.cs:9:9:9:15 | return ...; |
-| ExitMethods.cs:13:5:16:5 | {...} | ExitMethods.cs:13:5:16:5 | {...} |
-| ExitMethods.cs:14:9:14:25 | call to method ErrorMaybe | ExitMethods.cs:14:20:14:24 | false |
-| ExitMethods.cs:14:9:14:26 | ...; | ExitMethods.cs:14:9:14:26 | ...; |
-| ExitMethods.cs:14:20:14:24 | false | ExitMethods.cs:14:20:14:24 | false |
-| ExitMethods.cs:15:9:15:15 | return ...; | ExitMethods.cs:15:9:15:15 | return ...; |
-| ExitMethods.cs:19:5:22:5 | {...} | ExitMethods.cs:19:5:22:5 | {...} |
-| ExitMethods.cs:20:9:20:25 | call to method ErrorAlways | ExitMethods.cs:20:21:20:24 | true |
-| ExitMethods.cs:20:9:20:26 | ...; | ExitMethods.cs:20:9:20:26 | ...; |
-| ExitMethods.cs:20:21:20:24 | true | ExitMethods.cs:20:21:20:24 | true |
-| ExitMethods.cs:21:9:21:15 | return ...; | ExitMethods.cs:21:9:21:15 | return ...; |
-| ExitMethods.cs:25:5:28:5 | {...} | ExitMethods.cs:25:5:28:5 | {...} |
-| ExitMethods.cs:26:9:26:14 | call to method Exit | ExitMethods.cs:26:9:26:14 | this access |
-| ExitMethods.cs:26:9:26:14 | this access | ExitMethods.cs:26:9:26:14 | this access |
-| ExitMethods.cs:26:9:26:15 | ...; | ExitMethods.cs:26:9:26:15 | ...; |
-| ExitMethods.cs:27:9:27:15 | return ...; | ExitMethods.cs:27:9:27:15 | return ...; |
-| ExitMethods.cs:31:5:34:5 | {...} | ExitMethods.cs:31:5:34:5 | {...} |
-| ExitMethods.cs:32:9:32:25 | call to method ApplicationExit | ExitMethods.cs:32:9:32:25 | this access |
-| ExitMethods.cs:32:9:32:25 | this access | ExitMethods.cs:32:9:32:25 | this access |
-| ExitMethods.cs:32:9:32:26 | ...; | ExitMethods.cs:32:9:32:26 | ...; |
-| ExitMethods.cs:33:9:33:15 | return ...; | ExitMethods.cs:33:9:33:15 | return ...; |
-| ExitMethods.cs:37:5:50:5 | {...} | ExitMethods.cs:37:5:50:5 | {...} |
-| ExitMethods.cs:38:9:49:9 | try {...} ... | ExitMethods.cs:38:9:49:9 | try {...} ... |
-| ExitMethods.cs:39:9:41:9 | {...} | ExitMethods.cs:39:9:41:9 | {...} |
-| ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:40:25:40:29 | false |
-| ExitMethods.cs:40:13:40:31 | ...; | ExitMethods.cs:40:13:40:31 | ...; |
-| ExitMethods.cs:40:25:40:29 | false | ExitMethods.cs:40:25:40:29 | false |
-| ExitMethods.cs:42:9:45:9 | catch (...) {...} | ExitMethods.cs:42:9:45:9 | catch (...) {...} |
-| ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:43:9:45:9 | {...} |
-| ExitMethods.cs:44:13:44:19 | return ...; | ExitMethods.cs:44:13:44:19 | return ...; |
-| ExitMethods.cs:46:9:49:9 | catch (...) {...} | ExitMethods.cs:46:9:49:9 | catch (...) {...} |
-| ExitMethods.cs:47:9:49:9 | {...} | ExitMethods.cs:47:9:49:9 | {...} |
-| ExitMethods.cs:48:13:48:19 | return ...; | ExitMethods.cs:48:13:48:19 | return ...; |
-| ExitMethods.cs:53:5:56:5 | {...} | ExitMethods.cs:53:5:56:5 | {...} |
-| ExitMethods.cs:54:9:55:34 | if (...) ... | ExitMethods.cs:54:9:55:34 | if (...) ... |
-| ExitMethods.cs:54:13:54:13 | access to parameter b | ExitMethods.cs:54:13:54:13 | access to parameter b |
-| ExitMethods.cs:55:13:55:34 | throw ...; | ExitMethods.cs:55:19:55:33 | object creation of type Exception |
-| ExitMethods.cs:55:19:55:33 | object creation of type Exception | ExitMethods.cs:55:19:55:33 | object creation of type Exception |
-| ExitMethods.cs:59:5:64:5 | {...} | ExitMethods.cs:59:5:64:5 | {...} |
-| ExitMethods.cs:60:9:63:45 | if (...) ... | ExitMethods.cs:60:9:63:45 | if (...) ... |
-| ExitMethods.cs:60:13:60:13 | access to parameter b | ExitMethods.cs:60:13:60:13 | access to parameter b |
-| ExitMethods.cs:61:13:61:34 | throw ...; | ExitMethods.cs:61:19:61:33 | object creation of type Exception |
-| ExitMethods.cs:61:19:61:33 | object creation of type Exception | ExitMethods.cs:61:19:61:33 | object creation of type Exception |
-| ExitMethods.cs:63:13:63:45 | throw ...; | ExitMethods.cs:63:41:63:43 | "b" |
-| ExitMethods.cs:63:19:63:44 | object creation of type ArgumentException | ExitMethods.cs:63:41:63:43 | "b" |
-| ExitMethods.cs:63:41:63:43 | "b" | ExitMethods.cs:63:41:63:43 | "b" |
-| ExitMethods.cs:67:5:69:5 | {...} | ExitMethods.cs:67:5:69:5 | {...} |
-| ExitMethods.cs:68:9:68:27 | call to method Exit | ExitMethods.cs:68:26:68:26 | 0 |
-| ExitMethods.cs:68:9:68:28 | ...; | ExitMethods.cs:68:9:68:28 | ...; |
-| ExitMethods.cs:68:26:68:26 | 0 | ExitMethods.cs:68:26:68:26 | 0 |
-| ExitMethods.cs:72:5:74:5 | {...} | ExitMethods.cs:72:5:74:5 | {...} |
-| ExitMethods.cs:73:9:73:47 | call to method Exit | ExitMethods.cs:73:9:73:47 | call to method Exit |
-| ExitMethods.cs:73:9:73:48 | ...; | ExitMethods.cs:73:9:73:48 | ...; |
-| ExitMethods.cs:77:5:79:5 | {...} | ExitMethods.cs:77:5:79:5 | {...} |
-| ExitMethods.cs:78:9:78:77 | return ...; | ExitMethods.cs:78:16:78:76 | ... ? ... : ... |
-| ExitMethods.cs:78:16:78:20 | access to parameter input | ExitMethods.cs:78:16:78:20 | access to parameter input |
-| ExitMethods.cs:78:16:78:25 | ... != ... | ExitMethods.cs:78:16:78:20 | access to parameter input |
-| ExitMethods.cs:78:16:78:76 | ... ? ... : ... | ExitMethods.cs:78:16:78:76 | ... ? ... : ... |
-| ExitMethods.cs:78:25:78:25 | 0 | ExitMethods.cs:78:25:78:25 | 0 |
-| ExitMethods.cs:78:25:78:25 | (...) ... | ExitMethods.cs:78:25:78:25 | 0 |
-| ExitMethods.cs:78:29:78:29 | 1 | ExitMethods.cs:78:29:78:29 | 1 |
-| ExitMethods.cs:78:29:78:29 | (...) ... | ExitMethods.cs:78:29:78:29 | 1 |
-| ExitMethods.cs:78:29:78:37 | ... / ... | ExitMethods.cs:78:29:78:29 | 1 |
-| ExitMethods.cs:78:33:78:37 | access to parameter input | ExitMethods.cs:78:33:78:37 | access to parameter input |
-| ExitMethods.cs:78:41:78:76 | throw ... | ExitMethods.cs:78:69:78:75 | "input" |
-| ExitMethods.cs:78:47:78:76 | object creation of type ArgumentException | ExitMethods.cs:78:69:78:75 | "input" |
-| ExitMethods.cs:78:69:78:75 | "input" | ExitMethods.cs:78:69:78:75 | "input" |
-| ExitMethods.cs:82:5:84:5 | {...} | ExitMethods.cs:82:5:84:5 | {...} |
-| ExitMethods.cs:83:9:83:39 | return ...; | ExitMethods.cs:83:16:83:38 | ... ? ... : ... |
-| ExitMethods.cs:83:16:83:16 | access to parameter s | ExitMethods.cs:83:16:83:16 | access to parameter s |
-| ExitMethods.cs:83:16:83:30 | call to method Contains | ExitMethods.cs:83:16:83:16 | access to parameter s |
-| ExitMethods.cs:83:16:83:38 | ... ? ... : ... | ExitMethods.cs:83:16:83:38 | ... ? ... : ... |
-| ExitMethods.cs:83:27:83:29 | - | ExitMethods.cs:83:27:83:29 | - |
-| ExitMethods.cs:83:34:83:34 | 0 | ExitMethods.cs:83:34:83:34 | 0 |
-| ExitMethods.cs:83:38:83:38 | 1 | ExitMethods.cs:83:38:83:38 | 1 |
-| ExitMethods.cs:91:35:91:37 | {...} | ExitMethods.cs:91:35:91:37 | {...} |
+| Conditions.cs:4:5:9:5 | {...} | Conditions.cs:4:5:9:5 | {...} |
+| Conditions.cs:5:9:6:16 | if (...) ... | Conditions.cs:5:9:6:16 | if (...) ... |
+| Conditions.cs:5:13:5:15 | access to parameter inc | Conditions.cs:5:13:5:15 | access to parameter inc |
+| Conditions.cs:6:13:6:13 | access to parameter x | Conditions.cs:6:13:6:13 | access to parameter x |
+| Conditions.cs:6:13:6:15 | ...++ | Conditions.cs:6:13:6:13 | access to parameter x |
+| Conditions.cs:6:13:6:16 | ...; | Conditions.cs:6:13:6:16 | ...; |
+| Conditions.cs:7:9:8:16 | if (...) ... | Conditions.cs:7:9:8:16 | if (...) ... |
+| Conditions.cs:7:13:7:16 | !... | Conditions.cs:7:13:7:16 | !... |
+| Conditions.cs:7:14:7:16 | access to parameter inc | Conditions.cs:7:14:7:16 | access to parameter inc |
+| Conditions.cs:8:13:8:13 | access to parameter x | Conditions.cs:8:13:8:13 | access to parameter x |
+| Conditions.cs:8:13:8:15 | ...-- | Conditions.cs:8:13:8:13 | access to parameter x |
+| Conditions.cs:8:13:8:16 | ...; | Conditions.cs:8:13:8:16 | ...; |
+| Conditions.cs:12:5:20:5 | {...} | Conditions.cs:12:5:20:5 | {...} |
+| Conditions.cs:13:9:13:18 | ... ...; | Conditions.cs:13:9:13:18 | ... ...; |
+| Conditions.cs:13:13:13:17 | Int32 x = ... | Conditions.cs:13:17:13:17 | 0 |
+| Conditions.cs:13:17:13:17 | 0 | Conditions.cs:13:17:13:17 | 0 |
+| Conditions.cs:14:9:15:16 | if (...) ... | Conditions.cs:14:9:15:16 | if (...) ... |
+| Conditions.cs:14:13:14:13 | access to parameter b | Conditions.cs:14:13:14:13 | access to parameter b |
+| Conditions.cs:15:13:15:13 | access to local variable x | Conditions.cs:15:13:15:13 | access to local variable x |
+| Conditions.cs:15:13:15:15 | ...++ | Conditions.cs:15:13:15:13 | access to local variable x |
+| Conditions.cs:15:13:15:16 | ...; | Conditions.cs:15:13:15:16 | ...; |
+| Conditions.cs:16:9:18:20 | if (...) ... | Conditions.cs:16:9:18:20 | if (...) ... |
+| Conditions.cs:16:13:16:13 | access to local variable x | Conditions.cs:16:13:16:13 | access to local variable x |
+| Conditions.cs:16:13:16:17 | ... > ... | Conditions.cs:16:13:16:13 | access to local variable x |
+| Conditions.cs:16:17:16:17 | 0 | Conditions.cs:16:17:16:17 | 0 |
+| Conditions.cs:17:13:18:20 | if (...) ... | Conditions.cs:17:13:18:20 | if (...) ... |
+| Conditions.cs:17:17:17:18 | !... | Conditions.cs:17:17:17:18 | !... |
+| Conditions.cs:17:18:17:18 | access to parameter b | Conditions.cs:17:18:17:18 | access to parameter b |
+| Conditions.cs:18:17:18:17 | access to local variable x | Conditions.cs:18:17:18:17 | access to local variable x |
+| Conditions.cs:18:17:18:19 | ...-- | Conditions.cs:18:17:18:17 | access to local variable x |
+| Conditions.cs:18:17:18:20 | ...; | Conditions.cs:18:17:18:20 | ...; |
+| Conditions.cs:19:9:19:17 | return ...; | Conditions.cs:19:16:19:16 | access to local variable x |
+| Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:19:16:19:16 | access to local variable x |
+| Conditions.cs:23:5:31:5 | {...} | Conditions.cs:23:5:31:5 | {...} |
+| Conditions.cs:24:9:24:18 | ... ...; | Conditions.cs:24:9:24:18 | ... ...; |
+| Conditions.cs:24:13:24:17 | Int32 x = ... | Conditions.cs:24:17:24:17 | 0 |
+| Conditions.cs:24:17:24:17 | 0 | Conditions.cs:24:17:24:17 | 0 |
+| Conditions.cs:25:9:27:20 | if (...) ... | Conditions.cs:25:9:27:20 | if (...) ... |
+| Conditions.cs:25:13:25:14 | access to parameter b1 | Conditions.cs:25:13:25:14 | access to parameter b1 |
+| Conditions.cs:26:13:27:20 | if (...) ... | Conditions.cs:26:13:27:20 | if (...) ... |
+| Conditions.cs:26:17:26:18 | access to parameter b2 | Conditions.cs:26:17:26:18 | access to parameter b2 |
+| Conditions.cs:27:17:27:17 | access to local variable x | Conditions.cs:27:17:27:17 | access to local variable x |
+| Conditions.cs:27:17:27:19 | ...++ | Conditions.cs:27:17:27:17 | access to local variable x |
+| Conditions.cs:27:17:27:20 | ...; | Conditions.cs:27:17:27:20 | ...; |
+| Conditions.cs:28:9:29:16 | if (...) ... | Conditions.cs:28:9:29:16 | if (...) ... |
+| Conditions.cs:28:13:28:14 | access to parameter b2 | Conditions.cs:28:13:28:14 | access to parameter b2 |
+| Conditions.cs:29:13:29:13 | access to local variable x | Conditions.cs:29:13:29:13 | access to local variable x |
+| Conditions.cs:29:13:29:15 | ...++ | Conditions.cs:29:13:29:13 | access to local variable x |
+| Conditions.cs:29:13:29:16 | ...; | Conditions.cs:29:13:29:16 | ...; |
+| Conditions.cs:30:9:30:17 | return ...; | Conditions.cs:30:16:30:16 | access to local variable x |
+| Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:30:16:30:16 | access to local variable x |
+| Conditions.cs:34:5:44:5 | {...} | Conditions.cs:34:5:44:5 | {...} |
+| Conditions.cs:35:9:35:18 | ... ...; | Conditions.cs:35:9:35:18 | ... ...; |
+| Conditions.cs:35:13:35:17 | Int32 x = ... | Conditions.cs:35:17:35:17 | 0 |
+| Conditions.cs:35:17:35:17 | 0 | Conditions.cs:35:17:35:17 | 0 |
+| Conditions.cs:36:9:36:23 | ... ...; | Conditions.cs:36:9:36:23 | ... ...; |
+| Conditions.cs:36:13:36:22 | Boolean b2 = ... | Conditions.cs:36:18:36:22 | false |
+| Conditions.cs:36:18:36:22 | false | Conditions.cs:36:18:36:22 | false |
+| Conditions.cs:37:9:38:20 | if (...) ... | Conditions.cs:37:9:38:20 | if (...) ... |
+| Conditions.cs:37:13:37:14 | access to parameter b1 | Conditions.cs:37:13:37:14 | access to parameter b1 |
+| Conditions.cs:38:13:38:19 | ... = ... | Conditions.cs:38:18:38:19 | access to parameter b1 |
+| Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:13:38:20 | ...; |
+| Conditions.cs:38:18:38:19 | access to parameter b1 | Conditions.cs:38:18:38:19 | access to parameter b1 |
+| Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:39:9:40:16 | if (...) ... |
+| Conditions.cs:39:13:39:14 | access to local variable b2 | Conditions.cs:39:13:39:14 | access to local variable b2 |
+| Conditions.cs:40:13:40:13 | access to local variable x | Conditions.cs:40:13:40:13 | access to local variable x |
+| Conditions.cs:40:13:40:15 | ...++ | Conditions.cs:40:13:40:13 | access to local variable x |
+| Conditions.cs:40:13:40:16 | ...; | Conditions.cs:40:13:40:16 | ...; |
+| Conditions.cs:41:9:42:16 | if (...) ... | Conditions.cs:41:9:42:16 | if (...) ... |
+| Conditions.cs:41:13:41:14 | access to local variable b2 | Conditions.cs:41:13:41:14 | access to local variable b2 |
+| Conditions.cs:42:13:42:13 | access to local variable x | Conditions.cs:42:13:42:13 | access to local variable x |
+| Conditions.cs:42:13:42:15 | ...++ | Conditions.cs:42:13:42:13 | access to local variable x |
+| Conditions.cs:42:13:42:16 | ...; | Conditions.cs:42:13:42:16 | ...; |
+| Conditions.cs:43:9:43:17 | return ...; | Conditions.cs:43:16:43:16 | access to local variable x |
+| Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:43:16:43:16 | access to local variable x |
+| Conditions.cs:47:5:55:5 | {...} | Conditions.cs:47:5:55:5 | {...} |
+| Conditions.cs:48:9:48:18 | ... ...; | Conditions.cs:48:9:48:18 | ... ...; |
+| Conditions.cs:48:13:48:17 | Int32 y = ... | Conditions.cs:48:17:48:17 | 0 |
+| Conditions.cs:48:17:48:17 | 0 | Conditions.cs:48:17:48:17 | 0 |
+| Conditions.cs:49:9:53:9 | while (...) ... | Conditions.cs:49:9:53:9 | while (...) ... |
+| Conditions.cs:49:16:49:16 | access to parameter x | Conditions.cs:49:16:49:16 | access to parameter x |
+| Conditions.cs:49:16:49:18 | ...-- | Conditions.cs:49:16:49:16 | access to parameter x |
+| Conditions.cs:49:16:49:22 | ... > ... | Conditions.cs:49:16:49:16 | access to parameter x |
+| Conditions.cs:49:22:49:22 | 0 | Conditions.cs:49:22:49:22 | 0 |
+| Conditions.cs:50:9:53:9 | {...} | Conditions.cs:50:9:53:9 | {...} |
+| Conditions.cs:51:13:52:20 | if (...) ... | Conditions.cs:51:13:52:20 | if (...) ... |
+| Conditions.cs:51:17:51:17 | access to parameter b | Conditions.cs:51:17:51:17 | access to parameter b |
+| Conditions.cs:52:17:52:17 | access to local variable y | Conditions.cs:52:17:52:17 | access to local variable y |
+| Conditions.cs:52:17:52:19 | ...++ | Conditions.cs:52:17:52:17 | access to local variable y |
+| Conditions.cs:52:17:52:20 | ...; | Conditions.cs:52:17:52:20 | ...; |
+| Conditions.cs:54:9:54:17 | return ...; | Conditions.cs:54:16:54:16 | access to local variable y |
+| Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:54:16:54:16 | access to local variable y |
+| Conditions.cs:58:5:68:5 | {...} | Conditions.cs:58:5:68:5 | {...} |
+| Conditions.cs:59:9:59:18 | ... ...; | Conditions.cs:59:9:59:18 | ... ...; |
+| Conditions.cs:59:13:59:17 | Int32 y = ... | Conditions.cs:59:17:59:17 | 0 |
+| Conditions.cs:59:17:59:17 | 0 | Conditions.cs:59:17:59:17 | 0 |
+| Conditions.cs:60:9:64:9 | while (...) ... | Conditions.cs:60:9:64:9 | while (...) ... |
+| Conditions.cs:60:16:60:16 | access to parameter x | Conditions.cs:60:16:60:16 | access to parameter x |
+| Conditions.cs:60:16:60:18 | ...-- | Conditions.cs:60:16:60:16 | access to parameter x |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:60:16:60:16 | access to parameter x |
+| Conditions.cs:60:22:60:22 | 0 | Conditions.cs:60:22:60:22 | 0 |
+| Conditions.cs:61:9:64:9 | {...} | Conditions.cs:61:9:64:9 | {...} |
+| Conditions.cs:62:13:63:20 | if (...) ... | Conditions.cs:62:13:63:20 | if (...) ... |
+| Conditions.cs:62:17:62:17 | access to parameter b | Conditions.cs:62:17:62:17 | access to parameter b |
+| Conditions.cs:63:17:63:17 | access to local variable y | Conditions.cs:63:17:63:17 | access to local variable y |
+| Conditions.cs:63:17:63:19 | ...++ | Conditions.cs:63:17:63:17 | access to local variable y |
+| Conditions.cs:63:17:63:20 | ...; | Conditions.cs:63:17:63:20 | ...; |
+| Conditions.cs:65:9:66:16 | if (...) ... | Conditions.cs:65:9:66:16 | if (...) ... |
+| Conditions.cs:65:13:65:13 | access to parameter b | Conditions.cs:65:13:65:13 | access to parameter b |
+| Conditions.cs:66:13:66:13 | access to local variable y | Conditions.cs:66:13:66:13 | access to local variable y |
+| Conditions.cs:66:13:66:15 | ...++ | Conditions.cs:66:13:66:13 | access to local variable y |
+| Conditions.cs:66:13:66:16 | ...; | Conditions.cs:66:13:66:16 | ...; |
+| Conditions.cs:67:9:67:17 | return ...; | Conditions.cs:67:16:67:16 | access to local variable y |
+| Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:67:16:67:16 | access to local variable y |
+| Conditions.cs:71:5:84:5 | {...} | Conditions.cs:71:5:84:5 | {...} |
+| Conditions.cs:72:9:72:30 | ... ...; | Conditions.cs:72:9:72:30 | ... ...; |
+| Conditions.cs:72:13:72:29 | Boolean b = ... | Conditions.cs:72:17:72:18 | access to parameter ss |
+| Conditions.cs:72:17:72:18 | access to parameter ss | Conditions.cs:72:17:72:18 | access to parameter ss |
+| Conditions.cs:72:17:72:25 | access to property Length | Conditions.cs:72:17:72:18 | access to parameter ss |
+| Conditions.cs:72:17:72:29 | ... > ... | Conditions.cs:72:17:72:18 | access to parameter ss |
+| Conditions.cs:72:29:72:29 | 0 | Conditions.cs:72:29:72:29 | 0 |
+| Conditions.cs:73:9:73:18 | ... ...; | Conditions.cs:73:9:73:18 | ... ...; |
+| Conditions.cs:73:13:73:17 | Int32 x = ... | Conditions.cs:73:17:73:17 | 0 |
+| Conditions.cs:73:17:73:17 | 0 | Conditions.cs:73:17:73:17 | 0 |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:27:74:28 | access to parameter ss |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:74:22:74:22 | String _ |
+| Conditions.cs:74:27:74:28 | access to parameter ss | Conditions.cs:74:27:74:28 | access to parameter ss |
+| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:76:13:77:20 | if (...) ... | Conditions.cs:76:13:77:20 | if (...) ... |
+| Conditions.cs:76:17:76:17 | access to local variable b | Conditions.cs:76:17:76:17 | access to local variable b |
+| Conditions.cs:77:17:77:17 | access to local variable x | Conditions.cs:77:17:77:17 | access to local variable x |
+| Conditions.cs:77:17:77:19 | ...++ | Conditions.cs:77:17:77:17 | access to local variable x |
+| Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:20 | ...; |
+| Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
+| Conditions.cs:78:17:78:17 | access to local variable x | Conditions.cs:78:17:78:17 | access to local variable x |
+| Conditions.cs:78:17:78:21 | ... > ... | Conditions.cs:78:17:78:17 | access to local variable x |
+| Conditions.cs:78:21:78:21 | 0 | Conditions.cs:78:21:78:21 | 0 |
+| Conditions.cs:79:17:79:25 | ... = ... | Conditions.cs:79:21:79:25 | false |
+| Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:26 | ...; |
+| Conditions.cs:79:21:79:25 | false | Conditions.cs:79:21:79:25 | false |
+| Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:9:82:16 | if (...) ... |
+| Conditions.cs:81:12:81:12 | access to local variable b | Conditions.cs:81:12:81:12 | access to local variable b |
+| Conditions.cs:82:13:82:13 | access to local variable x | Conditions.cs:82:13:82:13 | access to local variable x |
+| Conditions.cs:82:13:82:15 | ...++ | Conditions.cs:82:13:82:13 | access to local variable x |
+| Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:16 | ...; |
+| Conditions.cs:83:9:83:17 | return ...; | Conditions.cs:83:16:83:16 | access to local variable x |
+| Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:83:16:83:16 | access to local variable x |
+| Conditions.cs:87:5:100:5 | {...} | Conditions.cs:87:5:100:5 | {...} |
+| Conditions.cs:88:9:88:30 | ... ...; | Conditions.cs:88:9:88:30 | ... ...; |
+| Conditions.cs:88:13:88:29 | Boolean b = ... | Conditions.cs:88:17:88:18 | access to parameter ss |
+| Conditions.cs:88:17:88:18 | access to parameter ss | Conditions.cs:88:17:88:18 | access to parameter ss |
+| Conditions.cs:88:17:88:25 | access to property Length | Conditions.cs:88:17:88:18 | access to parameter ss |
+| Conditions.cs:88:17:88:29 | ... > ... | Conditions.cs:88:17:88:18 | access to parameter ss |
+| Conditions.cs:88:29:88:29 | 0 | Conditions.cs:88:29:88:29 | 0 |
+| Conditions.cs:89:9:89:18 | ... ...; | Conditions.cs:89:9:89:18 | ... ...; |
+| Conditions.cs:89:13:89:17 | Int32 x = ... | Conditions.cs:89:17:89:17 | 0 |
+| Conditions.cs:89:17:89:17 | 0 | Conditions.cs:89:17:89:17 | 0 |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:27:90:28 | access to parameter ss |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:90:22:90:22 | String _ |
+| Conditions.cs:90:27:90:28 | access to parameter ss | Conditions.cs:90:27:90:28 | access to parameter ss |
+| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:92:13:93:20 | if (...) ... | Conditions.cs:92:13:93:20 | if (...) ... |
+| Conditions.cs:92:17:92:17 | access to local variable b | Conditions.cs:92:17:92:17 | access to local variable b |
+| Conditions.cs:93:17:93:17 | access to local variable x | Conditions.cs:93:17:93:17 | access to local variable x |
+| Conditions.cs:93:17:93:19 | ...++ | Conditions.cs:93:17:93:17 | access to local variable x |
+| Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:20 | ...; |
+| Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
+| Conditions.cs:94:17:94:17 | access to local variable x | Conditions.cs:94:17:94:17 | access to local variable x |
+| Conditions.cs:94:17:94:21 | ... > ... | Conditions.cs:94:17:94:17 | access to local variable x |
+| Conditions.cs:94:21:94:21 | 0 | Conditions.cs:94:21:94:21 | 0 |
+| Conditions.cs:95:17:95:25 | ... = ... | Conditions.cs:95:21:95:25 | false |
+| Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:26 | ...; |
+| Conditions.cs:95:21:95:25 | false | Conditions.cs:95:21:95:25 | false |
+| Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
+| Conditions.cs:96:17:96:17 | access to local variable b | Conditions.cs:96:17:96:17 | access to local variable b |
+| Conditions.cs:97:17:97:17 | access to local variable x | Conditions.cs:97:17:97:17 | access to local variable x |
+| Conditions.cs:97:17:97:19 | ...++ | Conditions.cs:97:17:97:17 | access to local variable x |
+| Conditions.cs:97:17:97:20 | ...; | Conditions.cs:97:17:97:20 | ...; |
+| Conditions.cs:99:9:99:17 | return ...; | Conditions.cs:99:16:99:16 | access to local variable x |
+| Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:99:16:99:16 | access to local variable x |
+| Conditions.cs:103:5:111:5 | {...} | Conditions.cs:103:5:111:5 | {...} |
+| Conditions.cs:104:9:104:29 | ... ...; | Conditions.cs:104:9:104:29 | ... ...; |
+| Conditions.cs:104:13:104:28 | String x = ... | Conditions.cs:104:17:104:17 | access to parameter b |
+| Conditions.cs:104:17:104:17 | access to parameter b | Conditions.cs:104:17:104:17 | access to parameter b |
+| Conditions.cs:104:17:104:28 | call to method ToString | Conditions.cs:104:17:104:17 | access to parameter b |
+| Conditions.cs:105:9:106:20 | if (...) ... | Conditions.cs:105:9:106:20 | if (...) ... |
+| Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:105:13:105:13 | access to parameter b |
+| Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:19 | ... + ... | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:19 | ... += ... | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:19 | ... = ... | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:20 | ...; | Conditions.cs:106:13:106:20 | ...; |
+| Conditions.cs:106:18:106:19 | "" | Conditions.cs:106:18:106:19 | "" |
+| Conditions.cs:107:9:109:24 | if (...) ... | Conditions.cs:107:9:109:24 | if (...) ... |
+| Conditions.cs:107:13:107:13 | access to local variable x | Conditions.cs:107:13:107:13 | access to local variable x |
+| Conditions.cs:107:13:107:20 | access to property Length | Conditions.cs:107:13:107:13 | access to local variable x |
+| Conditions.cs:107:13:107:24 | ... > ... | Conditions.cs:107:13:107:13 | access to local variable x |
+| Conditions.cs:107:24:107:24 | 0 | Conditions.cs:107:24:107:24 | 0 |
+| Conditions.cs:108:13:109:24 | if (...) ... | Conditions.cs:108:13:109:24 | if (...) ... |
+| Conditions.cs:108:17:108:18 | !... | Conditions.cs:108:17:108:18 | !... |
+| Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:108:18:108:18 | access to parameter b |
+| Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:23 | ... + ... | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:23 | ... += ... | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:23 | ... = ... | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:24 | ...; | Conditions.cs:109:17:109:24 | ...; |
+| Conditions.cs:109:22:109:23 | "" | Conditions.cs:109:22:109:23 | "" |
+| Conditions.cs:110:9:110:17 | return ...; | Conditions.cs:110:16:110:16 | access to local variable x |
+| Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:16:110:16 | access to local variable x |
+| Conditions.cs:114:5:124:5 | {...} | Conditions.cs:114:5:124:5 | {...} |
+| Conditions.cs:115:9:115:24 | ... ...; | Conditions.cs:115:9:115:24 | ... ...; |
+| Conditions.cs:115:16:115:23 | String s = ... | Conditions.cs:115:20:115:23 | null |
+| Conditions.cs:115:20:115:23 | null | Conditions.cs:115:20:115:23 | null |
+| Conditions.cs:116:9:123:9 | for (...;...;...) ... | Conditions.cs:116:9:123:9 | for (...;...;...) ... |
+| Conditions.cs:116:17:116:21 | Int32 i = ... | Conditions.cs:116:21:116:21 | 0 |
+| Conditions.cs:116:21:116:21 | 0 | Conditions.cs:116:21:116:21 | 0 |
+| Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:24:116:24 | access to local variable i |
+| Conditions.cs:116:24:116:38 | ... < ... | Conditions.cs:116:24:116:24 | access to local variable i |
+| Conditions.cs:116:28:116:31 | access to parameter args | Conditions.cs:116:28:116:31 | access to parameter args |
+| Conditions.cs:116:28:116:38 | access to property Length | Conditions.cs:116:28:116:31 | access to parameter args |
+| Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:116:41:116:41 | access to local variable i |
+| Conditions.cs:116:41:116:43 | ...++ | Conditions.cs:116:41:116:41 | access to local variable i |
+| Conditions.cs:117:9:123:9 | {...} | Conditions.cs:117:9:123:9 | {...} |
+| Conditions.cs:118:13:118:44 | ... ...; | Conditions.cs:118:13:118:44 | ... ...; |
+| Conditions.cs:118:17:118:43 | Boolean last = ... | Conditions.cs:118:24:118:24 | access to local variable i |
+| Conditions.cs:118:24:118:24 | access to local variable i | Conditions.cs:118:24:118:24 | access to local variable i |
+| Conditions.cs:118:24:118:43 | ... == ... | Conditions.cs:118:24:118:24 | access to local variable i |
+| Conditions.cs:118:29:118:32 | access to parameter args | Conditions.cs:118:29:118:32 | access to parameter args |
+| Conditions.cs:118:29:118:39 | access to property Length | Conditions.cs:118:29:118:32 | access to parameter args |
+| Conditions.cs:118:29:118:43 | ... - ... | Conditions.cs:118:29:118:32 | access to parameter args |
+| Conditions.cs:118:43:118:43 | 1 | Conditions.cs:118:43:118:43 | 1 |
+| Conditions.cs:119:13:120:23 | if (...) ... | Conditions.cs:119:13:120:23 | if (...) ... |
+| Conditions.cs:119:17:119:21 | !... | Conditions.cs:119:17:119:21 | !... |
+| Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:119:18:119:21 | access to local variable last |
+| Conditions.cs:120:17:120:22 | ... = ... | Conditions.cs:120:21:120:22 | "" |
+| Conditions.cs:120:17:120:23 | ...; | Conditions.cs:120:17:120:23 | ...; |
+| Conditions.cs:120:21:120:22 | "" | Conditions.cs:120:21:120:22 | "" |
+| Conditions.cs:121:13:122:25 | if (...) ... | Conditions.cs:121:13:122:25 | if (...) ... |
+| Conditions.cs:121:17:121:20 | access to local variable last | Conditions.cs:121:17:121:20 | access to local variable last |
+| Conditions.cs:122:17:122:24 | ... = ... | Conditions.cs:122:21:122:24 | null |
+| Conditions.cs:122:17:122:25 | ...; | Conditions.cs:122:17:122:25 | ...; |
+| Conditions.cs:122:21:122:24 | null | Conditions.cs:122:21:122:24 | null |
+| Conditions.cs:130:5:141:5 | {...} | Conditions.cs:130:5:141:5 | {...} |
+| Conditions.cs:131:9:140:9 | while (...) ... | Conditions.cs:131:9:140:9 | while (...) ... |
+| Conditions.cs:131:16:131:19 | true | Conditions.cs:131:16:131:19 | true |
+| Conditions.cs:132:9:140:9 | {...} | Conditions.cs:132:9:140:9 | {...} |
+| Conditions.cs:133:13:139:13 | if (...) ... | Conditions.cs:133:13:139:13 | if (...) ... |
+| Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:133:17:133:22 | this access |
+| Conditions.cs:133:17:133:22 | this access | Conditions.cs:133:17:133:22 | this access |
+| Conditions.cs:134:13:139:13 | {...} | Conditions.cs:134:13:139:13 | {...} |
+| Conditions.cs:135:17:138:17 | if (...) ... | Conditions.cs:135:17:138:17 | if (...) ... |
+| Conditions.cs:135:21:135:26 | access to field Field2 | Conditions.cs:135:21:135:26 | this access |
+| Conditions.cs:135:21:135:26 | this access | Conditions.cs:135:21:135:26 | this access |
+| Conditions.cs:136:17:138:17 | {...} | Conditions.cs:136:17:138:17 | {...} |
+| Conditions.cs:137:21:137:26 | access to field Field1 | Conditions.cs:137:21:137:26 | this access |
+| Conditions.cs:137:21:137:26 | this access | Conditions.cs:137:21:137:26 | this access |
+| Conditions.cs:137:21:137:37 | call to method ToString | Conditions.cs:137:21:137:26 | this access |
+| Conditions.cs:137:21:137:38 | ...; | Conditions.cs:137:21:137:38 | ...; |
+| ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:8:5:11:5 | {...} |
+| ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:9:20:9:23 | true |
+| ExitMethods.cs:9:9:9:25 | ...; | ExitMethods.cs:9:9:9:25 | ...; |
+| ExitMethods.cs:9:20:9:23 | true | ExitMethods.cs:9:20:9:23 | true |
+| ExitMethods.cs:10:9:10:15 | return ...; | ExitMethods.cs:10:9:10:15 | return ...; |
+| ExitMethods.cs:14:5:17:5 | {...} | ExitMethods.cs:14:5:17:5 | {...} |
+| ExitMethods.cs:15:9:15:25 | call to method ErrorMaybe | ExitMethods.cs:15:20:15:24 | false |
+| ExitMethods.cs:15:9:15:26 | ...; | ExitMethods.cs:15:9:15:26 | ...; |
+| ExitMethods.cs:15:20:15:24 | false | ExitMethods.cs:15:20:15:24 | false |
+| ExitMethods.cs:16:9:16:15 | return ...; | ExitMethods.cs:16:9:16:15 | return ...; |
+| ExitMethods.cs:20:5:23:5 | {...} | ExitMethods.cs:20:5:23:5 | {...} |
+| ExitMethods.cs:21:9:21:25 | call to method ErrorAlways | ExitMethods.cs:21:21:21:24 | true |
+| ExitMethods.cs:21:9:21:26 | ...; | ExitMethods.cs:21:9:21:26 | ...; |
+| ExitMethods.cs:21:21:21:24 | true | ExitMethods.cs:21:21:21:24 | true |
+| ExitMethods.cs:22:9:22:15 | return ...; | ExitMethods.cs:22:9:22:15 | return ...; |
+| ExitMethods.cs:26:5:29:5 | {...} | ExitMethods.cs:26:5:29:5 | {...} |
+| ExitMethods.cs:27:9:27:14 | call to method Exit | ExitMethods.cs:27:9:27:14 | this access |
+| ExitMethods.cs:27:9:27:14 | this access | ExitMethods.cs:27:9:27:14 | this access |
+| ExitMethods.cs:27:9:27:15 | ...; | ExitMethods.cs:27:9:27:15 | ...; |
+| ExitMethods.cs:28:9:28:15 | return ...; | ExitMethods.cs:28:9:28:15 | return ...; |
+| ExitMethods.cs:32:5:35:5 | {...} | ExitMethods.cs:32:5:35:5 | {...} |
+| ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | ExitMethods.cs:33:9:33:25 | this access |
+| ExitMethods.cs:33:9:33:25 | this access | ExitMethods.cs:33:9:33:25 | this access |
+| ExitMethods.cs:33:9:33:26 | ...; | ExitMethods.cs:33:9:33:26 | ...; |
+| ExitMethods.cs:34:9:34:15 | return ...; | ExitMethods.cs:34:9:34:15 | return ...; |
+| ExitMethods.cs:38:5:51:5 | {...} | ExitMethods.cs:38:5:51:5 | {...} |
+| ExitMethods.cs:39:9:50:9 | try {...} ... | ExitMethods.cs:39:9:50:9 | try {...} ... |
+| ExitMethods.cs:40:9:42:9 | {...} | ExitMethods.cs:40:9:42:9 | {...} |
+| ExitMethods.cs:41:13:41:30 | call to method ErrorAlways | ExitMethods.cs:41:25:41:29 | false |
+| ExitMethods.cs:41:13:41:31 | ...; | ExitMethods.cs:41:13:41:31 | ...; |
+| ExitMethods.cs:41:25:41:29 | false | ExitMethods.cs:41:25:41:29 | false |
+| ExitMethods.cs:43:9:46:9 | catch (...) {...} | ExitMethods.cs:43:9:46:9 | catch (...) {...} |
+| ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:44:9:46:9 | {...} |
+| ExitMethods.cs:45:13:45:19 | return ...; | ExitMethods.cs:45:13:45:19 | return ...; |
+| ExitMethods.cs:47:9:50:9 | catch (...) {...} | ExitMethods.cs:47:9:50:9 | catch (...) {...} |
+| ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:48:9:50:9 | {...} |
+| ExitMethods.cs:49:13:49:19 | return ...; | ExitMethods.cs:49:13:49:19 | return ...; |
+| ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:54:5:57:5 | {...} |
+| ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 |
+| ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:55:9:55:23 | ...; |
+| ExitMethods.cs:56:9:56:15 | return ...; | ExitMethods.cs:56:9:56:15 | return ...; |
+| ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:60:5:63:5 | {...} |
+| ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 |
+| ExitMethods.cs:61:9:61:23 | ...; | ExitMethods.cs:61:9:61:23 | ...; |
+| ExitMethods.cs:62:9:62:15 | return ...; | ExitMethods.cs:62:9:62:15 | return ...; |
+| ExitMethods.cs:66:5:69:5 | {...} | ExitMethods.cs:66:5:69:5 | {...} |
+| ExitMethods.cs:67:9:68:34 | if (...) ... | ExitMethods.cs:67:9:68:34 | if (...) ... |
+| ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:67:13:67:13 | access to parameter b |
+| ExitMethods.cs:68:13:68:34 | throw ...; | ExitMethods.cs:68:19:68:33 | object creation of type Exception |
+| ExitMethods.cs:68:19:68:33 | object creation of type Exception | ExitMethods.cs:68:19:68:33 | object creation of type Exception |
+| ExitMethods.cs:72:5:77:5 | {...} | ExitMethods.cs:72:5:77:5 | {...} |
+| ExitMethods.cs:73:9:76:45 | if (...) ... | ExitMethods.cs:73:9:76:45 | if (...) ... |
+| ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:73:13:73:13 | access to parameter b |
+| ExitMethods.cs:74:13:74:34 | throw ...; | ExitMethods.cs:74:19:74:33 | object creation of type Exception |
+| ExitMethods.cs:74:19:74:33 | object creation of type Exception | ExitMethods.cs:74:19:74:33 | object creation of type Exception |
+| ExitMethods.cs:76:13:76:45 | throw ...; | ExitMethods.cs:76:41:76:43 | "b" |
+| ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException | ExitMethods.cs:76:41:76:43 | "b" |
+| ExitMethods.cs:76:41:76:43 | "b" | ExitMethods.cs:76:41:76:43 | "b" |
+| ExitMethods.cs:80:5:82:5 | {...} | ExitMethods.cs:80:5:82:5 | {...} |
+| ExitMethods.cs:81:9:81:30 | throw ...; | ExitMethods.cs:81:15:81:29 | object creation of type Exception |
+| ExitMethods.cs:81:15:81:29 | object creation of type Exception | ExitMethods.cs:81:15:81:29 | object creation of type Exception |
+| ExitMethods.cs:84:35:84:55 | throw ... | ExitMethods.cs:84:41:84:55 | object creation of type Exception |
+| ExitMethods.cs:84:41:84:55 | object creation of type Exception | ExitMethods.cs:84:41:84:55 | object creation of type Exception |
+| ExitMethods.cs:87:5:89:5 | {...} | ExitMethods.cs:87:5:89:5 | {...} |
+| ExitMethods.cs:88:9:88:27 | call to method Exit | ExitMethods.cs:88:26:88:26 | 0 |
+| ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:88:9:88:28 | ...; |
+| ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:88:26:88:26 | 0 |
+| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:92:5:102:5 | {...} |
+| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:93:9:101:9 | try {...} ... |
+| ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:94:9:96:9 | {...} |
+| ExitMethods.cs:95:13:95:18 | call to method Exit | ExitMethods.cs:95:13:95:18 | this access |
+| ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:95:13:95:18 | this access |
+| ExitMethods.cs:95:13:95:19 | ...; | ExitMethods.cs:95:13:95:19 | ...; |
+| ExitMethods.cs:98:9:101:9 | {...} | ExitMethods.cs:98:9:101:9 | {...} |
+| ExitMethods.cs:100:13:100:40 | call to method WriteLine | ExitMethods.cs:100:38:100:39 | "" |
+| ExitMethods.cs:100:13:100:41 | ...; | ExitMethods.cs:100:13:100:41 | ...; |
+| ExitMethods.cs:100:38:100:39 | "" | ExitMethods.cs:100:38:100:39 | "" |
+| ExitMethods.cs:105:5:107:5 | {...} | ExitMethods.cs:105:5:107:5 | {...} |
+| ExitMethods.cs:106:9:106:47 | call to method Exit | ExitMethods.cs:106:9:106:47 | call to method Exit |
+| ExitMethods.cs:106:9:106:48 | ...; | ExitMethods.cs:106:9:106:48 | ...; |
+| ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:110:5:112:5 | {...} |
+| ExitMethods.cs:111:9:111:77 | return ...; | ExitMethods.cs:111:16:111:76 | ... ? ... : ... |
+| ExitMethods.cs:111:16:111:20 | access to parameter input | ExitMethods.cs:111:16:111:20 | access to parameter input |
+| ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:16:111:20 | access to parameter input |
+| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:16:111:76 | ... ? ... : ... |
+| ExitMethods.cs:111:25:111:25 | 0 | ExitMethods.cs:111:25:111:25 | 0 |
+| ExitMethods.cs:111:25:111:25 | (...) ... | ExitMethods.cs:111:25:111:25 | 0 |
+| ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:111:29:111:29 | 1 |
+| ExitMethods.cs:111:29:111:29 | (...) ... | ExitMethods.cs:111:29:111:29 | 1 |
+| ExitMethods.cs:111:29:111:37 | ... / ... | ExitMethods.cs:111:29:111:29 | 1 |
+| ExitMethods.cs:111:33:111:37 | access to parameter input | ExitMethods.cs:111:33:111:37 | access to parameter input |
+| ExitMethods.cs:111:41:111:76 | throw ... | ExitMethods.cs:111:69:111:75 | "input" |
+| ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | ExitMethods.cs:111:69:111:75 | "input" |
+| ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:111:69:111:75 | "input" |
+| ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:115:5:117:5 | {...} |
+| ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:116:16:116:38 | ... ? ... : ... |
+| ExitMethods.cs:116:16:116:16 | access to parameter s | ExitMethods.cs:116:16:116:16 | access to parameter s |
+| ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:16:116:16 | access to parameter s |
+| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:16:116:38 | ... ? ... : ... |
+| ExitMethods.cs:116:27:116:29 | - | ExitMethods.cs:116:27:116:29 | - |
+| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:116:34:116:34 | 0 |
+| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:38:116:38 | 1 |
+| ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:120:5:123:5 | {...} |
+| ExitMethods.cs:121:9:121:28 | call to method IsTrue | ExitMethods.cs:121:23:121:27 | false |
+| ExitMethods.cs:121:9:121:29 | ...; | ExitMethods.cs:121:9:121:29 | ...; |
+| ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:23:121:27 | false |
+| ExitMethods.cs:122:9:122:18 | ... ...; | ExitMethods.cs:122:9:122:18 | ... ...; |
+| ExitMethods.cs:122:13:122:17 | Int32 x = ... | ExitMethods.cs:122:17:122:17 | 0 |
+| ExitMethods.cs:122:17:122:17 | 0 | ExitMethods.cs:122:17:122:17 | 0 |
+| ExitMethods.cs:126:5:129:5 | {...} | ExitMethods.cs:126:5:129:5 | {...} |
+| ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | ExitMethods.cs:127:9:127:26 | this access |
+| ExitMethods.cs:127:9:127:26 | this access | ExitMethods.cs:127:9:127:26 | this access |
+| ExitMethods.cs:127:9:127:27 | ...; | ExitMethods.cs:127:9:127:27 | ...; |
+| ExitMethods.cs:128:9:128:18 | ... ...; | ExitMethods.cs:128:9:128:18 | ... ...; |
+| ExitMethods.cs:128:13:128:17 | Int32 x = ... | ExitMethods.cs:128:17:128:17 | 0 |
+| ExitMethods.cs:128:17:128:17 | 0 | ExitMethods.cs:128:17:128:17 | 0 |
+| ExitMethods.cs:131:33:131:49 | call to method IsFalse | ExitMethods.cs:131:48:131:48 | access to parameter b |
+| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:48:131:48 | access to parameter b |
+| ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:134:5:137:5 | {...} |
+| ExitMethods.cs:135:9:135:25 | call to method AssertFalse | ExitMethods.cs:135:9:135:25 | this access |
+| ExitMethods.cs:135:9:135:25 | this access | ExitMethods.cs:135:9:135:25 | this access |
+| ExitMethods.cs:135:9:135:26 | ...; | ExitMethods.cs:135:9:135:26 | ...; |
+| ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:21:135:24 | true |
+| ExitMethods.cs:136:9:136:18 | ... ...; | ExitMethods.cs:136:9:136:18 | ... ...; |
+| ExitMethods.cs:136:13:136:17 | Int32 x = ... | ExitMethods.cs:136:17:136:17 | 0 |
+| ExitMethods.cs:136:17:136:17 | 0 | ExitMethods.cs:136:17:136:17 | 0 |
 | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:6:5:8:5 | {...} |
 | Extensions.cs:7:9:7:30 | return ...; | Extensions.cs:7:28:7:28 | access to parameter s |
 | Extensions.cs:7:16:7:29 | call to method Parse | Extensions.cs:7:28:7:28 | access to parameter s |
@@ -370,6 +975,7 @@
 | Foreach.cs:9:13:9:13 | ; | Foreach.cs:9:13:9:13 | ; |
 | Foreach.cs:13:5:16:5 | {...} | Foreach.cs:13:5:16:5 | {...} |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:27:14:30 | access to parameter args |
+| Foreach.cs:14:22:14:22 | String _ | Foreach.cs:14:22:14:22 | String _ |
 | Foreach.cs:14:27:14:30 | access to parameter args | Foreach.cs:14:27:14:30 | access to parameter args |
 | Foreach.cs:15:13:15:13 | ; | Foreach.cs:15:13:15:13 | ; |
 | Foreach.cs:19:5:22:5 | {...} | Foreach.cs:19:5:22:5 | {...} |
@@ -380,29 +986,228 @@
 | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:27:20:27 | access to parameter e |
 | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:21:11:21:11 | ; |
-| Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:28:6:30 | {...} |
-| Initializers.cs:9:5:12:5 | {...} | Initializers.cs:9:5:12:5 | {...} |
-| Initializers.cs:10:9:10:54 | ... ...; | Initializers.cs:10:9:10:54 | ... ...; |
-| Initializers.cs:10:13:10:13 | access to local variable i | Initializers.cs:10:13:10:13 | access to local variable i |
-| Initializers.cs:10:13:10:53 | Initializers i = ... | Initializers.cs:10:13:10:13 | access to local variable i |
-| Initializers.cs:10:17:10:53 | object creation of type Initializers | Initializers.cs:10:34:10:35 | "" |
-| Initializers.cs:10:34:10:35 | "" | Initializers.cs:10:34:10:35 | "" |
-| Initializers.cs:10:38:10:53 | { ..., ... } | Initializers.cs:10:40:10:40 | access to field F |
-| Initializers.cs:10:40:10:40 | access to field F | Initializers.cs:10:40:10:40 | access to field F |
-| Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:40:10:40 | access to field F |
-| Initializers.cs:10:44:10:44 | 0 | Initializers.cs:10:44:10:44 | 0 |
-| Initializers.cs:10:47:10:47 | access to field G | Initializers.cs:10:47:10:47 | access to field G |
-| Initializers.cs:10:47:10:51 | ... = ... | Initializers.cs:10:47:10:47 | access to field G |
-| Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:51:10:51 | 1 |
-| Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:11:9:11:64 | ... ...; |
-| Initializers.cs:11:13:11:14 | access to local variable iz | Initializers.cs:11:13:11:14 | access to local variable iz |
-| Initializers.cs:11:13:11:63 | Initializers[] iz = ... | Initializers.cs:11:13:11:14 | access to local variable iz |
-| Initializers.cs:11:18:11:63 | 2 | Initializers.cs:11:18:11:63 | 2 |
-| Initializers.cs:11:18:11:63 | array creation of type Initializers[] | Initializers.cs:11:18:11:63 | array creation of type Initializers[] |
-| Initializers.cs:11:37:11:63 | { ..., ... } | Initializers.cs:11:39:11:39 | access to local variable i |
-| Initializers.cs:11:39:11:39 | access to local variable i | Initializers.cs:11:39:11:39 | access to local variable i |
-| Initializers.cs:11:42:11:61 | object creation of type Initializers | Initializers.cs:11:59:11:60 | "" |
-| Initializers.cs:11:59:11:60 | "" | Initializers.cs:11:59:11:60 | "" |
+| Foreach.cs:25:5:28:5 | {...} | Foreach.cs:25:5:28:5 | {...} |
+| Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:36:26:39 | access to parameter args |
+| Foreach.cs:26:18:26:31 | (..., ...) | Foreach.cs:26:23:26:23 | String x |
+| Foreach.cs:26:23:26:23 | String x | Foreach.cs:26:23:26:23 | String x |
+| Foreach.cs:26:30:26:30 | Int32 y | Foreach.cs:26:30:26:30 | Int32 y |
+| Foreach.cs:26:36:26:39 | access to parameter args | Foreach.cs:26:36:26:39 | access to parameter args |
+| Foreach.cs:27:11:27:11 | ; | Foreach.cs:27:11:27:11 | ; |
+| Foreach.cs:31:5:34:5 | {...} | Foreach.cs:31:5:34:5 | {...} |
+| Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:32:32:32:35 | access to parameter args |
+| Foreach.cs:32:18:32:27 | (..., ...) | Foreach.cs:32:23:32:23 | String x |
+| Foreach.cs:32:23:32:23 | String x | Foreach.cs:32:23:32:23 | String x |
+| Foreach.cs:32:26:32:26 | Int32 y | Foreach.cs:32:26:32:26 | Int32 y |
+| Foreach.cs:32:32:32:35 | access to parameter args | Foreach.cs:32:32:32:35 | access to parameter args |
+| Foreach.cs:33:11:33:11 | ; | Foreach.cs:33:11:33:11 | ; |
+| Foreach.cs:37:5:40:5 | {...} | Foreach.cs:37:5:40:5 | {...} |
+| Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:39:38:42 | access to parameter args |
+| Foreach.cs:38:18:38:34 | (..., ...) | Foreach.cs:38:26:38:26 | String x |
+| Foreach.cs:38:26:38:26 | String x | Foreach.cs:38:26:38:26 | String x |
+| Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:33:38:33 | Int32 y |
+| Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:39:38:42 | access to parameter args |
+| Foreach.cs:39:11:39:11 | ; | Foreach.cs:39:11:39:11 | ; |
+| Initializers.cs:3:9:3:9 | access to field F | Initializers.cs:3:9:3:9 | this access |
+| Initializers.cs:3:9:3:9 | this access | Initializers.cs:3:9:3:9 | this access |
+| Initializers.cs:3:9:3:17 | ... = ... | Initializers.cs:3:9:3:9 | this access |
+| Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:3:13:3:13 | access to field H |
+| Initializers.cs:3:13:3:17 | ... + ... | Initializers.cs:3:13:3:13 | access to field H |
+| Initializers.cs:3:17:3:17 | 1 | Initializers.cs:3:17:3:17 | 1 |
+| Initializers.cs:4:9:4:9 | access to property G | Initializers.cs:4:9:4:9 | this access |
+| Initializers.cs:4:9:4:9 | this access | Initializers.cs:4:9:4:9 | this access |
+| Initializers.cs:4:25:4:31 | ... = ... | Initializers.cs:4:9:4:9 | this access |
+| Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:27:4:27 | access to field H |
+| Initializers.cs:4:27:4:31 | ... + ... | Initializers.cs:4:27:4:27 | access to field H |
+| Initializers.cs:4:31:4:31 | 2 | Initializers.cs:4:31:4:31 | 2 |
+| Initializers.cs:6:20:6:22 | {...} | Initializers.cs:6:20:6:22 | {...} |
+| Initializers.cs:8:28:8:30 | {...} | Initializers.cs:8:28:8:30 | {...} |
+| Initializers.cs:11:5:14:5 | {...} | Initializers.cs:11:5:14:5 | {...} |
+| Initializers.cs:12:9:12:54 | ... ...; | Initializers.cs:12:9:12:54 | ... ...; |
+| Initializers.cs:12:13:12:53 | Initializers i = ... | Initializers.cs:12:34:12:35 | "" |
+| Initializers.cs:12:17:12:53 | object creation of type Initializers | Initializers.cs:12:34:12:35 | "" |
+| Initializers.cs:12:34:12:35 | "" | Initializers.cs:12:34:12:35 | "" |
+| Initializers.cs:12:38:12:53 | { ..., ... } | Initializers.cs:12:44:12:44 | 0 |
+| Initializers.cs:12:40:12:44 | ... = ... | Initializers.cs:12:44:12:44 | 0 |
+| Initializers.cs:12:44:12:44 | 0 | Initializers.cs:12:44:12:44 | 0 |
+| Initializers.cs:12:47:12:51 | ... = ... | Initializers.cs:12:51:12:51 | 1 |
+| Initializers.cs:12:51:12:51 | 1 | Initializers.cs:12:51:12:51 | 1 |
+| Initializers.cs:13:9:13:64 | ... ...; | Initializers.cs:13:9:13:64 | ... ...; |
+| Initializers.cs:13:13:13:63 | Initializers[] iz = ... | Initializers.cs:13:18:13:63 | array creation of type Initializers[] |
+| Initializers.cs:13:18:13:63 | 2 | Initializers.cs:13:18:13:63 | 2 |
+| Initializers.cs:13:18:13:63 | array creation of type Initializers[] | Initializers.cs:13:18:13:63 | array creation of type Initializers[] |
+| Initializers.cs:13:37:13:63 | { ..., ... } | Initializers.cs:13:39:13:39 | access to local variable i |
+| Initializers.cs:13:39:13:39 | access to local variable i | Initializers.cs:13:39:13:39 | access to local variable i |
+| Initializers.cs:13:42:13:61 | object creation of type Initializers | Initializers.cs:13:59:13:60 | "" |
+| Initializers.cs:13:59:13:60 | "" | Initializers.cs:13:59:13:60 | "" |
+| Initializers.cs:16:16:16:20 | ... = ... | Initializers.cs:16:20:16:20 | 1 |
+| Initializers.cs:16:20:16:20 | 1 | Initializers.cs:16:20:16:20 | 1 |
+| Initializers.cs:20:23:20:23 | access to field F | Initializers.cs:20:23:20:23 | this access |
+| Initializers.cs:20:23:20:23 | this access | Initializers.cs:20:23:20:23 | this access |
+| Initializers.cs:20:23:20:27 | ... = ... | Initializers.cs:20:23:20:23 | this access |
+| Initializers.cs:20:27:20:27 | 0 | Initializers.cs:20:27:20:27 | 0 |
+| Initializers.cs:21:23:21:23 | access to field G | Initializers.cs:21:23:21:23 | this access |
+| Initializers.cs:21:23:21:23 | this access | Initializers.cs:21:23:21:23 | this access |
+| Initializers.cs:21:23:21:27 | ... = ... | Initializers.cs:21:23:21:23 | this access |
+| Initializers.cs:21:27:21:27 | 1 | Initializers.cs:21:27:21:27 | 1 |
+| Initializers.cs:26:13:26:13 | access to field H | Initializers.cs:26:13:26:13 | this access |
+| Initializers.cs:26:13:26:13 | this access | Initializers.cs:26:13:26:13 | this access |
+| Initializers.cs:26:13:26:17 | ... = ... | Initializers.cs:26:13:26:13 | this access |
+| Initializers.cs:26:17:26:17 | 2 | Initializers.cs:26:17:26:17 | 2 |
+| Initializers.cs:29:17:29:20 | call to constructor NoConstructor | Initializers.cs:29:17:29:20 | call to constructor NoConstructor |
+| Initializers.cs:29:24:29:33 | {...} | Initializers.cs:29:24:29:33 | {...} |
+| Initializers.cs:29:26:29:26 | access to field I | Initializers.cs:29:26:29:26 | this access |
+| Initializers.cs:29:26:29:26 | this access | Initializers.cs:29:26:29:26 | this access |
+| Initializers.cs:29:26:29:30 | ... = ... | Initializers.cs:29:26:29:26 | this access |
+| Initializers.cs:29:26:29:31 | ...; | Initializers.cs:29:26:29:31 | ...; |
+| Initializers.cs:29:30:29:30 | 3 | Initializers.cs:29:30:29:30 | 3 |
+| Initializers.cs:31:22:31:25 | call to constructor Sub | Initializers.cs:31:22:31:25 | call to constructor Sub |
+| Initializers.cs:31:29:31:38 | {...} | Initializers.cs:31:29:31:38 | {...} |
+| Initializers.cs:31:31:31:31 | access to field I | Initializers.cs:31:31:31:31 | this access |
+| Initializers.cs:31:31:31:31 | this access | Initializers.cs:31:31:31:31 | this access |
+| Initializers.cs:31:31:31:35 | ... = ... | Initializers.cs:31:31:31:31 | this access |
+| Initializers.cs:31:31:31:36 | ...; | Initializers.cs:31:31:31:36 | ...; |
+| Initializers.cs:31:35:31:35 | access to parameter i | Initializers.cs:31:35:31:35 | access to parameter i |
+| Initializers.cs:33:27:33:40 | {...} | Initializers.cs:33:27:33:40 | {...} |
+| Initializers.cs:33:29:33:29 | access to field I | Initializers.cs:33:29:33:29 | this access |
+| Initializers.cs:33:29:33:29 | this access | Initializers.cs:33:29:33:29 | this access |
+| Initializers.cs:33:29:33:37 | ... = ... | Initializers.cs:33:29:33:29 | this access |
+| Initializers.cs:33:29:33:38 | ...; | Initializers.cs:33:29:33:38 | ...; |
+| Initializers.cs:33:33:33:33 | access to parameter i | Initializers.cs:33:33:33:33 | access to parameter i |
+| Initializers.cs:33:33:33:37 | ... + ... | Initializers.cs:33:33:33:33 | access to parameter i |
+| Initializers.cs:33:37:33:37 | access to parameter j | Initializers.cs:33:37:33:37 | access to parameter j |
+| LoopUnrolling.cs:8:5:13:5 | {...} | LoopUnrolling.cs:8:5:13:5 | {...} |
+| LoopUnrolling.cs:9:9:10:19 | if (...) ... | LoopUnrolling.cs:9:9:10:19 | if (...) ... |
+| LoopUnrolling.cs:9:13:9:16 | access to parameter args | LoopUnrolling.cs:9:13:9:16 | access to parameter args |
+| LoopUnrolling.cs:9:13:9:23 | access to property Length | LoopUnrolling.cs:9:13:9:16 | access to parameter args |
+| LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:9:13:9:16 | access to parameter args |
+| LoopUnrolling.cs:9:28:9:28 | 0 | LoopUnrolling.cs:9:28:9:28 | 0 |
+| LoopUnrolling.cs:10:13:10:19 | return ...; | LoopUnrolling.cs:10:13:10:19 | return ...; |
+| LoopUnrolling.cs:11:9:12:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:11:28:11:31 | access to parameter args |
+| LoopUnrolling.cs:11:21:11:23 | String arg | LoopUnrolling.cs:11:21:11:23 | String arg |
+| LoopUnrolling.cs:11:28:11:31 | access to parameter args | LoopUnrolling.cs:11:28:11:31 | access to parameter args |
+| LoopUnrolling.cs:12:13:12:34 | call to method WriteLine | LoopUnrolling.cs:12:31:12:33 | access to local variable arg |
+| LoopUnrolling.cs:12:13:12:35 | ...; | LoopUnrolling.cs:12:13:12:35 | ...; |
+| LoopUnrolling.cs:12:31:12:33 | access to local variable arg | LoopUnrolling.cs:12:31:12:33 | access to local variable arg |
+| LoopUnrolling.cs:16:5:20:5 | {...} | LoopUnrolling.cs:16:5:20:5 | {...} |
+| LoopUnrolling.cs:17:9:17:47 | ... ...; | LoopUnrolling.cs:17:9:17:47 | ... ...; |
+| LoopUnrolling.cs:17:13:17:46 | String[] xs = ... | LoopUnrolling.cs:17:18:17:46 | array creation of type String[] |
+| LoopUnrolling.cs:17:18:17:46 | 3 | LoopUnrolling.cs:17:18:17:46 | 3 |
+| LoopUnrolling.cs:17:18:17:46 | array creation of type String[] | LoopUnrolling.cs:17:18:17:46 | array creation of type String[] |
+| LoopUnrolling.cs:17:30:17:46 | { ..., ... } | LoopUnrolling.cs:17:32:17:34 | "a" |
+| LoopUnrolling.cs:17:32:17:34 | "a" | LoopUnrolling.cs:17:32:17:34 | "a" |
+| LoopUnrolling.cs:17:37:17:39 | "b" | LoopUnrolling.cs:17:37:17:39 | "b" |
+| LoopUnrolling.cs:17:42:17:44 | "c" | LoopUnrolling.cs:17:42:17:44 | "c" |
+| LoopUnrolling.cs:18:9:19:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:18:26:18:27 | access to local variable xs |
+| LoopUnrolling.cs:18:21:18:21 | String x | LoopUnrolling.cs:18:21:18:21 | String x |
+| LoopUnrolling.cs:18:26:18:27 | access to local variable xs | LoopUnrolling.cs:18:26:18:27 | access to local variable xs |
+| LoopUnrolling.cs:19:13:19:32 | call to method WriteLine | LoopUnrolling.cs:19:31:19:31 | access to local variable x |
+| LoopUnrolling.cs:19:13:19:33 | ...; | LoopUnrolling.cs:19:13:19:33 | ...; |
+| LoopUnrolling.cs:19:31:19:31 | access to local variable x | LoopUnrolling.cs:19:31:19:31 | access to local variable x |
+| LoopUnrolling.cs:23:5:27:5 | {...} | LoopUnrolling.cs:23:5:27:5 | {...} |
+| LoopUnrolling.cs:24:9:26:40 | foreach (... ... in ...) ... | LoopUnrolling.cs:24:29:24:32 | access to parameter args |
+| LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:24:22:24:24 | Char arg |
+| LoopUnrolling.cs:24:29:24:32 | access to parameter args | LoopUnrolling.cs:24:29:24:32 | access to parameter args |
+| LoopUnrolling.cs:25:13:26:40 | foreach (... ... in ...) ... | LoopUnrolling.cs:25:34:25:37 | access to parameter args |
+| LoopUnrolling.cs:25:26:25:29 | Char arg0 | LoopUnrolling.cs:25:26:25:29 | Char arg0 |
+| LoopUnrolling.cs:25:34:25:37 | access to parameter args | LoopUnrolling.cs:25:34:25:37 | access to parameter args |
+| LoopUnrolling.cs:26:17:26:39 | call to method WriteLine | LoopUnrolling.cs:26:35:26:38 | access to local variable arg0 |
+| LoopUnrolling.cs:26:17:26:40 | ...; | LoopUnrolling.cs:26:17:26:40 | ...; |
+| LoopUnrolling.cs:26:35:26:38 | access to local variable arg0 | LoopUnrolling.cs:26:35:26:38 | access to local variable arg0 |
+| LoopUnrolling.cs:30:5:34:5 | {...} | LoopUnrolling.cs:30:5:34:5 | {...} |
+| LoopUnrolling.cs:31:9:31:31 | ... ...; | LoopUnrolling.cs:31:9:31:31 | ... ...; |
+| LoopUnrolling.cs:31:13:31:30 | String[] xs = ... | LoopUnrolling.cs:31:29:31:29 | 0 |
+| LoopUnrolling.cs:31:18:31:30 | array creation of type String[] | LoopUnrolling.cs:31:29:31:29 | 0 |
+| LoopUnrolling.cs:31:29:31:29 | 0 | LoopUnrolling.cs:31:29:31:29 | 0 |
+| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:32:26:32:27 | access to local variable xs |
+| LoopUnrolling.cs:32:21:32:21 | String x | LoopUnrolling.cs:32:21:32:21 | String x |
+| LoopUnrolling.cs:32:26:32:27 | access to local variable xs | LoopUnrolling.cs:32:26:32:27 | access to local variable xs |
+| LoopUnrolling.cs:33:13:33:32 | call to method WriteLine | LoopUnrolling.cs:33:31:33:31 | access to local variable x |
+| LoopUnrolling.cs:33:13:33:33 | ...; | LoopUnrolling.cs:33:13:33:33 | ...; |
+| LoopUnrolling.cs:33:31:33:31 | access to local variable x | LoopUnrolling.cs:33:31:33:31 | access to local variable x |
+| LoopUnrolling.cs:37:5:43:5 | {...} | LoopUnrolling.cs:37:5:43:5 | {...} |
+| LoopUnrolling.cs:38:9:38:47 | ... ...; | LoopUnrolling.cs:38:9:38:47 | ... ...; |
+| LoopUnrolling.cs:38:13:38:46 | String[] xs = ... | LoopUnrolling.cs:38:18:38:46 | array creation of type String[] |
+| LoopUnrolling.cs:38:18:38:46 | 3 | LoopUnrolling.cs:38:18:38:46 | 3 |
+| LoopUnrolling.cs:38:18:38:46 | array creation of type String[] | LoopUnrolling.cs:38:18:38:46 | array creation of type String[] |
+| LoopUnrolling.cs:38:30:38:46 | { ..., ... } | LoopUnrolling.cs:38:32:38:34 | "a" |
+| LoopUnrolling.cs:38:32:38:34 | "a" | LoopUnrolling.cs:38:32:38:34 | "a" |
+| LoopUnrolling.cs:38:37:38:39 | "b" | LoopUnrolling.cs:38:37:38:39 | "b" |
+| LoopUnrolling.cs:38:42:38:44 | "c" | LoopUnrolling.cs:38:42:38:44 | "c" |
+| LoopUnrolling.cs:39:9:39:47 | ... ...; | LoopUnrolling.cs:39:9:39:47 | ... ...; |
+| LoopUnrolling.cs:39:13:39:46 | String[] ys = ... | LoopUnrolling.cs:39:18:39:46 | array creation of type String[] |
+| LoopUnrolling.cs:39:18:39:46 | 3 | LoopUnrolling.cs:39:18:39:46 | 3 |
+| LoopUnrolling.cs:39:18:39:46 | array creation of type String[] | LoopUnrolling.cs:39:18:39:46 | array creation of type String[] |
+| LoopUnrolling.cs:39:30:39:46 | { ..., ... } | LoopUnrolling.cs:39:32:39:34 | "0" |
+| LoopUnrolling.cs:39:32:39:34 | "0" | LoopUnrolling.cs:39:32:39:34 | "0" |
+| LoopUnrolling.cs:39:37:39:39 | "1" | LoopUnrolling.cs:39:37:39:39 | "1" |
+| LoopUnrolling.cs:39:42:39:44 | "2" | LoopUnrolling.cs:39:42:39:44 | "2" |
+| LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:40:26:40:27 | access to local variable xs |
+| LoopUnrolling.cs:40:21:40:21 | String x | LoopUnrolling.cs:40:21:40:21 | String x |
+| LoopUnrolling.cs:40:26:40:27 | access to local variable xs | LoopUnrolling.cs:40:26:40:27 | access to local variable xs |
+| LoopUnrolling.cs:41:13:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:41:30:41:31 | access to local variable ys |
+| LoopUnrolling.cs:41:25:41:25 | String y | LoopUnrolling.cs:41:25:41:25 | String y |
+| LoopUnrolling.cs:41:30:41:31 | access to local variable ys | LoopUnrolling.cs:41:30:41:31 | access to local variable ys |
+| LoopUnrolling.cs:42:17:42:40 | call to method WriteLine | LoopUnrolling.cs:42:35:42:35 | access to local variable x |
+| LoopUnrolling.cs:42:17:42:41 | ...; | LoopUnrolling.cs:42:17:42:41 | ...; |
+| LoopUnrolling.cs:42:35:42:35 | access to local variable x | LoopUnrolling.cs:42:35:42:35 | access to local variable x |
+| LoopUnrolling.cs:42:35:42:39 | ... + ... | LoopUnrolling.cs:42:35:42:35 | access to local variable x |
+| LoopUnrolling.cs:42:39:42:39 | access to local variable y | LoopUnrolling.cs:42:39:42:39 | access to local variable y |
+| LoopUnrolling.cs:46:5:53:5 | {...} | LoopUnrolling.cs:46:5:53:5 | {...} |
+| LoopUnrolling.cs:47:9:47:47 | ... ...; | LoopUnrolling.cs:47:9:47:47 | ... ...; |
+| LoopUnrolling.cs:47:13:47:46 | String[] xs = ... | LoopUnrolling.cs:47:18:47:46 | array creation of type String[] |
+| LoopUnrolling.cs:47:18:47:46 | 3 | LoopUnrolling.cs:47:18:47:46 | 3 |
+| LoopUnrolling.cs:47:18:47:46 | array creation of type String[] | LoopUnrolling.cs:47:18:47:46 | array creation of type String[] |
+| LoopUnrolling.cs:47:30:47:46 | { ..., ... } | LoopUnrolling.cs:47:32:47:34 | "a" |
+| LoopUnrolling.cs:47:32:47:34 | "a" | LoopUnrolling.cs:47:32:47:34 | "a" |
+| LoopUnrolling.cs:47:37:47:39 | "b" | LoopUnrolling.cs:47:37:47:39 | "b" |
+| LoopUnrolling.cs:47:42:47:44 | "c" | LoopUnrolling.cs:47:42:47:44 | "c" |
+| LoopUnrolling.cs:48:9:52:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:48:26:48:27 | access to local variable xs |
+| LoopUnrolling.cs:48:21:48:21 | String x | LoopUnrolling.cs:48:21:48:21 | String x |
+| LoopUnrolling.cs:48:26:48:27 | access to local variable xs | LoopUnrolling.cs:48:26:48:27 | access to local variable xs |
+| LoopUnrolling.cs:49:9:52:9 | {...} | LoopUnrolling.cs:49:9:52:9 | {...} |
+| LoopUnrolling.cs:50:13:50:17 | Label: | LoopUnrolling.cs:50:13:50:17 | Label: |
+| LoopUnrolling.cs:50:20:50:39 | call to method WriteLine | LoopUnrolling.cs:50:38:50:38 | access to local variable x |
+| LoopUnrolling.cs:50:20:50:40 | ...; | LoopUnrolling.cs:50:20:50:40 | ...; |
+| LoopUnrolling.cs:50:38:50:38 | access to local variable x | LoopUnrolling.cs:50:38:50:38 | access to local variable x |
+| LoopUnrolling.cs:51:13:51:23 | goto ...; | LoopUnrolling.cs:51:13:51:23 | goto ...; |
+| LoopUnrolling.cs:56:5:65:5 | {...} | LoopUnrolling.cs:56:5:65:5 | {...} |
+| LoopUnrolling.cs:57:9:57:47 | ... ...; | LoopUnrolling.cs:57:9:57:47 | ... ...; |
+| LoopUnrolling.cs:57:13:57:46 | String[] xs = ... | LoopUnrolling.cs:57:18:57:46 | array creation of type String[] |
+| LoopUnrolling.cs:57:18:57:46 | 3 | LoopUnrolling.cs:57:18:57:46 | 3 |
+| LoopUnrolling.cs:57:18:57:46 | array creation of type String[] | LoopUnrolling.cs:57:18:57:46 | array creation of type String[] |
+| LoopUnrolling.cs:57:30:57:46 | { ..., ... } | LoopUnrolling.cs:57:32:57:34 | "a" |
+| LoopUnrolling.cs:57:32:57:34 | "a" | LoopUnrolling.cs:57:32:57:34 | "a" |
+| LoopUnrolling.cs:57:37:57:39 | "b" | LoopUnrolling.cs:57:37:57:39 | "b" |
+| LoopUnrolling.cs:57:42:57:44 | "c" | LoopUnrolling.cs:57:42:57:44 | "c" |
+| LoopUnrolling.cs:58:9:64:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:58:26:58:27 | access to local variable xs |
+| LoopUnrolling.cs:58:21:58:21 | String x | LoopUnrolling.cs:58:21:58:21 | String x |
+| LoopUnrolling.cs:58:26:58:27 | access to local variable xs | LoopUnrolling.cs:58:26:58:27 | access to local variable xs |
+| LoopUnrolling.cs:59:9:64:9 | {...} | LoopUnrolling.cs:59:9:64:9 | {...} |
+| LoopUnrolling.cs:60:13:61:37 | if (...) ... | LoopUnrolling.cs:60:13:61:37 | if (...) ... |
+| LoopUnrolling.cs:60:17:60:17 | access to parameter b | LoopUnrolling.cs:60:17:60:17 | access to parameter b |
+| LoopUnrolling.cs:61:17:61:36 | call to method WriteLine | LoopUnrolling.cs:61:35:61:35 | access to local variable x |
+| LoopUnrolling.cs:61:17:61:37 | ...; | LoopUnrolling.cs:61:17:61:37 | ...; |
+| LoopUnrolling.cs:61:35:61:35 | access to local variable x | LoopUnrolling.cs:61:35:61:35 | access to local variable x |
+| LoopUnrolling.cs:62:13:63:37 | if (...) ... | LoopUnrolling.cs:62:13:63:37 | if (...) ... |
+| LoopUnrolling.cs:62:17:62:17 | access to parameter b | LoopUnrolling.cs:62:17:62:17 | access to parameter b |
+| LoopUnrolling.cs:63:17:63:36 | call to method WriteLine | LoopUnrolling.cs:63:35:63:35 | access to local variable x |
+| LoopUnrolling.cs:63:17:63:37 | ...; | LoopUnrolling.cs:63:17:63:37 | ...; |
+| LoopUnrolling.cs:63:35:63:35 | access to local variable x | LoopUnrolling.cs:63:35:63:35 | access to local variable x |
+| LoopUnrolling.cs:68:5:74:5 | {...} | LoopUnrolling.cs:68:5:74:5 | {...} |
+| LoopUnrolling.cs:69:9:70:19 | if (...) ... | LoopUnrolling.cs:69:9:70:19 | if (...) ... |
+| LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:69:13:69:23 | !... |
+| LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:69:14:69:17 | access to parameter args |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:14:69:17 | access to parameter args |
+| LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:70:13:70:19 | return ...; |
+| LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:71:9:71:12 | access to parameter args |
+| LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:71:9:71:12 | access to parameter args |
+| LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:71:9:71:21 | ...; |
+| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:72:28:72:31 | access to parameter args |
+| LoopUnrolling.cs:72:21:72:23 | String arg | LoopUnrolling.cs:72:21:72:23 | String arg |
+| LoopUnrolling.cs:72:28:72:31 | access to parameter args | LoopUnrolling.cs:72:28:72:31 | access to parameter args |
+| LoopUnrolling.cs:73:13:73:34 | call to method WriteLine | LoopUnrolling.cs:73:31:73:33 | access to local variable arg |
+| LoopUnrolling.cs:73:13:73:35 | ...; | LoopUnrolling.cs:73:13:73:35 | ...; |
+| LoopUnrolling.cs:73:31:73:33 | access to local variable arg | LoopUnrolling.cs:73:31:73:33 | access to local variable arg |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:23 | access to parameter i |
 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:28:3:28 | 0 |
@@ -435,20 +1240,17 @@
 | NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:68:11:68 | 1 |
 | NullCoalescing.cs:14:5:18:5 | {...} | NullCoalescing.cs:14:5:18:5 | {...} |
 | NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:15:9:15:32 | ... ...; |
-| NullCoalescing.cs:15:13:15:13 | access to local variable j | NullCoalescing.cs:15:13:15:13 | access to local variable j |
-| NullCoalescing.cs:15:13:15:31 | Int32 j = ... | NullCoalescing.cs:15:13:15:13 | access to local variable j |
+| NullCoalescing.cs:15:13:15:31 | Int32 j = ... | NullCoalescing.cs:15:17:15:31 | ... ?? ... |
 | NullCoalescing.cs:15:17:15:26 | (...) ... | NullCoalescing.cs:15:23:15:26 | null |
 | NullCoalescing.cs:15:17:15:31 | ... ?? ... | NullCoalescing.cs:15:17:15:31 | ... ?? ... |
 | NullCoalescing.cs:15:23:15:26 | null | NullCoalescing.cs:15:23:15:26 | null |
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:15:31:15:31 | 0 |
 | NullCoalescing.cs:16:9:16:26 | ... ...; | NullCoalescing.cs:16:9:16:26 | ... ...; |
-| NullCoalescing.cs:16:13:16:13 | access to local variable s | NullCoalescing.cs:16:13:16:13 | access to local variable s |
-| NullCoalescing.cs:16:13:16:25 | String s = ... | NullCoalescing.cs:16:13:16:13 | access to local variable s |
+| NullCoalescing.cs:16:13:16:25 | String s = ... | NullCoalescing.cs:16:17:16:25 | ... ?? ... |
 | NullCoalescing.cs:16:17:16:18 | "" | NullCoalescing.cs:16:17:16:18 | "" |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:17:16:25 | ... ?? ... |
 | NullCoalescing.cs:16:23:16:25 | "a" | NullCoalescing.cs:16:23:16:25 | "a" |
-| NullCoalescing.cs:17:9:17:9 | access to local variable j | NullCoalescing.cs:17:9:17:9 | access to local variable j |
-| NullCoalescing.cs:17:9:17:24 | ... = ... | NullCoalescing.cs:17:9:17:9 | access to local variable j |
+| NullCoalescing.cs:17:9:17:24 | ... = ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... |
 | NullCoalescing.cs:17:9:17:25 | ...; | NullCoalescing.cs:17:9:17:25 | ...; |
 | NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:19:17:19 | access to parameter i |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... |
@@ -456,8 +1258,7 @@
 | NullCoalescing.cs:17:24:17:24 | 1 | NullCoalescing.cs:17:24:17:24 | 1 |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:6:5:43:5 | {...} |
 | Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:7:9:7:24 | ... ...; |
-| Patterns.cs:7:16:7:16 | access to local variable o | Patterns.cs:7:16:7:16 | access to local variable o |
-| Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:16 | access to local variable o |
+| Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:20:7:23 | null |
 | Patterns.cs:7:20:7:23 | null | Patterns.cs:7:20:7:23 | null |
 | Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:8:9:18:9 | if (...) ... |
 | Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:8:13:8:13 | access to local variable o |
@@ -489,7 +1290,7 @@
 | Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:22:13:22:23 | case ...: |
 | Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:22:18:22:22 | "xyz" |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:13:24:36 | case Int32 i2: |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:13:24:36 | case ...: |
 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:31 | access to local variable i2 |
@@ -500,7 +1301,7 @@
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:25:37:25:45 | "positive " |
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:47:25:48 | access to local variable i2 |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:26:17:26:22 | break; |
-| Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:13:27:24 | case Int32 i3: |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | case ...: |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:28:37:28:40 | "int " |
 | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:17:28:47 | ...; |
@@ -508,7 +1309,7 @@
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:28:37:28:40 | "int " |
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:42:28:43 | access to local variable i3 |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:29:17:29:22 | break; |
-| Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:13:30:27 | case String s2: |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:13:30:27 | case ...: |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:31:37:31:43 | "string " |
 | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:31:17:31:50 | ...; |
@@ -516,7 +1317,7 @@
 | Patterns.cs:31:37:31:43 | "string " | Patterns.cs:31:37:31:43 | "string " |
 | Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:31:45:31:46 | access to local variable s2 |
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:32:17:32:22 | break; |
-| Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:13:33:24 | case Object v2: |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
 | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:35:13:35:20 | default: |
@@ -530,71 +1331,56 @@
 | Qualifiers.cs:8:41:8:44 | null | Qualifiers.cs:8:41:8:44 | null |
 | Qualifiers.cs:11:5:31:5 | {...} | Qualifiers.cs:11:5:31:5 | {...} |
 | Qualifiers.cs:12:9:12:22 | ... ...; | Qualifiers.cs:12:9:12:22 | ... ...; |
-| Qualifiers.cs:12:13:12:13 | access to local variable q | Qualifiers.cs:12:13:12:13 | access to local variable q |
-| Qualifiers.cs:12:13:12:21 | Qualifiers q = ... | Qualifiers.cs:12:13:12:13 | access to local variable q |
+| Qualifiers.cs:12:13:12:21 | Qualifiers q = ... | Qualifiers.cs:12:17:12:21 | this access |
 | Qualifiers.cs:12:17:12:21 | access to field Field | Qualifiers.cs:12:17:12:21 | this access |
 | Qualifiers.cs:12:17:12:21 | this access | Qualifiers.cs:12:17:12:21 | this access |
-| Qualifiers.cs:13:9:13:9 | access to local variable q | Qualifiers.cs:13:9:13:9 | access to local variable q |
-| Qualifiers.cs:13:9:13:20 | ... = ... | Qualifiers.cs:13:9:13:9 | access to local variable q |
+| Qualifiers.cs:13:9:13:20 | ... = ... | Qualifiers.cs:13:13:13:20 | this access |
 | Qualifiers.cs:13:9:13:21 | ...; | Qualifiers.cs:13:9:13:21 | ...; |
 | Qualifiers.cs:13:13:13:20 | access to property Property | Qualifiers.cs:13:13:13:20 | this access |
 | Qualifiers.cs:13:13:13:20 | this access | Qualifiers.cs:13:13:13:20 | this access |
-| Qualifiers.cs:14:9:14:9 | access to local variable q | Qualifiers.cs:14:9:14:9 | access to local variable q |
-| Qualifiers.cs:14:9:14:20 | ... = ... | Qualifiers.cs:14:9:14:9 | access to local variable q |
+| Qualifiers.cs:14:9:14:20 | ... = ... | Qualifiers.cs:14:13:14:20 | this access |
 | Qualifiers.cs:14:9:14:21 | ...; | Qualifiers.cs:14:9:14:21 | ...; |
 | Qualifiers.cs:14:13:14:20 | call to method Method | Qualifiers.cs:14:13:14:20 | this access |
 | Qualifiers.cs:14:13:14:20 | this access | Qualifiers.cs:14:13:14:20 | this access |
-| Qualifiers.cs:16:9:16:9 | access to local variable q | Qualifiers.cs:16:9:16:9 | access to local variable q |
-| Qualifiers.cs:16:9:16:22 | ... = ... | Qualifiers.cs:16:9:16:9 | access to local variable q |
+| Qualifiers.cs:16:9:16:22 | ... = ... | Qualifiers.cs:16:13:16:16 | this access |
 | Qualifiers.cs:16:9:16:23 | ...; | Qualifiers.cs:16:9:16:23 | ...; |
 | Qualifiers.cs:16:13:16:16 | this access | Qualifiers.cs:16:13:16:16 | this access |
 | Qualifiers.cs:16:13:16:22 | access to field Field | Qualifiers.cs:16:13:16:16 | this access |
-| Qualifiers.cs:17:9:17:9 | access to local variable q | Qualifiers.cs:17:9:17:9 | access to local variable q |
-| Qualifiers.cs:17:9:17:25 | ... = ... | Qualifiers.cs:17:9:17:9 | access to local variable q |
+| Qualifiers.cs:17:9:17:25 | ... = ... | Qualifiers.cs:17:13:17:16 | this access |
 | Qualifiers.cs:17:9:17:26 | ...; | Qualifiers.cs:17:9:17:26 | ...; |
 | Qualifiers.cs:17:13:17:16 | this access | Qualifiers.cs:17:13:17:16 | this access |
 | Qualifiers.cs:17:13:17:25 | access to property Property | Qualifiers.cs:17:13:17:16 | this access |
-| Qualifiers.cs:18:9:18:9 | access to local variable q | Qualifiers.cs:18:9:18:9 | access to local variable q |
-| Qualifiers.cs:18:9:18:25 | ... = ... | Qualifiers.cs:18:9:18:9 | access to local variable q |
+| Qualifiers.cs:18:9:18:25 | ... = ... | Qualifiers.cs:18:13:18:16 | this access |
 | Qualifiers.cs:18:9:18:26 | ...; | Qualifiers.cs:18:9:18:26 | ...; |
 | Qualifiers.cs:18:13:18:16 | this access | Qualifiers.cs:18:13:18:16 | this access |
 | Qualifiers.cs:18:13:18:25 | call to method Method | Qualifiers.cs:18:13:18:16 | this access |
-| Qualifiers.cs:20:9:20:9 | access to local variable q | Qualifiers.cs:20:9:20:9 | access to local variable q |
-| Qualifiers.cs:20:9:20:23 | ... = ... | Qualifiers.cs:20:9:20:9 | access to local variable q |
+| Qualifiers.cs:20:9:20:23 | ... = ... | Qualifiers.cs:20:13:20:23 | access to field StaticField |
 | Qualifiers.cs:20:9:20:24 | ...; | Qualifiers.cs:20:9:20:24 | ...; |
 | Qualifiers.cs:20:13:20:23 | access to field StaticField | Qualifiers.cs:20:13:20:23 | access to field StaticField |
-| Qualifiers.cs:21:9:21:9 | access to local variable q | Qualifiers.cs:21:9:21:9 | access to local variable q |
-| Qualifiers.cs:21:9:21:26 | ... = ... | Qualifiers.cs:21:9:21:9 | access to local variable q |
+| Qualifiers.cs:21:9:21:26 | ... = ... | Qualifiers.cs:21:13:21:26 | access to property StaticProperty |
 | Qualifiers.cs:21:9:21:27 | ...; | Qualifiers.cs:21:9:21:27 | ...; |
 | Qualifiers.cs:21:13:21:26 | access to property StaticProperty | Qualifiers.cs:21:13:21:26 | access to property StaticProperty |
-| Qualifiers.cs:22:9:22:9 | access to local variable q | Qualifiers.cs:22:9:22:9 | access to local variable q |
-| Qualifiers.cs:22:9:22:26 | ... = ... | Qualifiers.cs:22:9:22:9 | access to local variable q |
+| Qualifiers.cs:22:9:22:26 | ... = ... | Qualifiers.cs:22:13:22:26 | call to method StaticMethod |
 | Qualifiers.cs:22:9:22:27 | ...; | Qualifiers.cs:22:9:22:27 | ...; |
 | Qualifiers.cs:22:13:22:26 | call to method StaticMethod | Qualifiers.cs:22:13:22:26 | call to method StaticMethod |
-| Qualifiers.cs:24:9:24:9 | access to local variable q | Qualifiers.cs:24:9:24:9 | access to local variable q |
-| Qualifiers.cs:24:9:24:34 | ... = ... | Qualifiers.cs:24:9:24:9 | access to local variable q |
+| Qualifiers.cs:24:9:24:34 | ... = ... | Qualifiers.cs:24:13:24:34 | access to field StaticField |
 | Qualifiers.cs:24:9:24:35 | ...; | Qualifiers.cs:24:9:24:35 | ...; |
 | Qualifiers.cs:24:13:24:34 | access to field StaticField | Qualifiers.cs:24:13:24:34 | access to field StaticField |
-| Qualifiers.cs:25:9:25:9 | access to local variable q | Qualifiers.cs:25:9:25:9 | access to local variable q |
-| Qualifiers.cs:25:9:25:37 | ... = ... | Qualifiers.cs:25:9:25:9 | access to local variable q |
+| Qualifiers.cs:25:9:25:37 | ... = ... | Qualifiers.cs:25:13:25:37 | access to property StaticProperty |
 | Qualifiers.cs:25:9:25:38 | ...; | Qualifiers.cs:25:9:25:38 | ...; |
 | Qualifiers.cs:25:13:25:37 | access to property StaticProperty | Qualifiers.cs:25:13:25:37 | access to property StaticProperty |
-| Qualifiers.cs:26:9:26:9 | access to local variable q | Qualifiers.cs:26:9:26:9 | access to local variable q |
-| Qualifiers.cs:26:9:26:37 | ... = ... | Qualifiers.cs:26:9:26:9 | access to local variable q |
+| Qualifiers.cs:26:9:26:37 | ... = ... | Qualifiers.cs:26:13:26:37 | call to method StaticMethod |
 | Qualifiers.cs:26:9:26:38 | ...; | Qualifiers.cs:26:9:26:38 | ...; |
 | Qualifiers.cs:26:13:26:37 | call to method StaticMethod | Qualifiers.cs:26:13:26:37 | call to method StaticMethod |
-| Qualifiers.cs:28:9:28:9 | access to local variable q | Qualifiers.cs:28:9:28:9 | access to local variable q |
-| Qualifiers.cs:28:9:28:40 | ... = ... | Qualifiers.cs:28:9:28:9 | access to local variable q |
+| Qualifiers.cs:28:9:28:40 | ... = ... | Qualifiers.cs:28:13:28:34 | access to field StaticField |
 | Qualifiers.cs:28:9:28:41 | ...; | Qualifiers.cs:28:9:28:41 | ...; |
 | Qualifiers.cs:28:13:28:34 | access to field StaticField | Qualifiers.cs:28:13:28:34 | access to field StaticField |
 | Qualifiers.cs:28:13:28:40 | access to field Field | Qualifiers.cs:28:13:28:34 | access to field StaticField |
-| Qualifiers.cs:29:9:29:9 | access to local variable q | Qualifiers.cs:29:9:29:9 | access to local variable q |
-| Qualifiers.cs:29:9:29:46 | ... = ... | Qualifiers.cs:29:9:29:9 | access to local variable q |
+| Qualifiers.cs:29:9:29:46 | ... = ... | Qualifiers.cs:29:13:29:37 | access to property StaticProperty |
 | Qualifiers.cs:29:9:29:47 | ...; | Qualifiers.cs:29:9:29:47 | ...; |
 | Qualifiers.cs:29:13:29:37 | access to property StaticProperty | Qualifiers.cs:29:13:29:37 | access to property StaticProperty |
 | Qualifiers.cs:29:13:29:46 | access to property Property | Qualifiers.cs:29:13:29:37 | access to property StaticProperty |
-| Qualifiers.cs:30:9:30:9 | access to local variable q | Qualifiers.cs:30:9:30:9 | access to local variable q |
-| Qualifiers.cs:30:9:30:46 | ... = ... | Qualifiers.cs:30:9:30:9 | access to local variable q |
+| Qualifiers.cs:30:9:30:46 | ... = ... | Qualifiers.cs:30:13:30:37 | call to method StaticMethod |
 | Qualifiers.cs:30:9:30:47 | ...; | Qualifiers.cs:30:9:30:47 | ...; |
 | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | Qualifiers.cs:30:13:30:37 | call to method StaticMethod |
 | Qualifiers.cs:30:13:30:46 | call to method Method | Qualifiers.cs:30:13:30:37 | call to method StaticMethod |
@@ -614,7 +1400,7 @@
 | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:13:18:22 | case ...: |
 | Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | null |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:13:20:23 | case Int32 i: |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | case ...: |
 | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:17:22:27 | if (...) ... |
 | Switch.cs:21:21:21:21 | access to parameter o | Switch.cs:21:21:21:21 | access to parameter o |
@@ -623,7 +1409,7 @@
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; |
 | Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:23:27:23:27 | 0 |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:27:23:27 | 0 |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:13:24:56 | case String s: |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:13:24:56 | case ...: |
 | Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:32 | access to local variable s |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:24:32:24:32 | access to local variable s |
@@ -637,7 +1423,7 @@
 | Switch.cs:25:17:25:37 | ...; | Switch.cs:25:17:25:37 | ...; |
 | Switch.cs:25:35:25:35 | access to local variable s | Switch.cs:25:35:25:35 | access to local variable s |
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:26:17:26:23 | return ...; |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:13:27:39 | case Double d: |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | case ...: |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw |
 | Switch.cs:28:17:28:21 | Label: | Switch.cs:28:17:28:21 | Label: |
@@ -652,9 +1438,11 @@
 | Switch.cs:45:5:53:5 | {...} | Switch.cs:45:5:53:5 | {...} |
 | Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:46:9:52:9 | switch (...) {...} |
 | Switch.cs:46:17:46:17 | access to parameter o | Switch.cs:46:17:46:17 | access to parameter o |
-| Switch.cs:48:13:48:23 | case Int32: | Switch.cs:48:13:48:23 | case Int32: |
+| Switch.cs:48:13:48:23 | case ...: | Switch.cs:48:13:48:23 | case ...: |
+| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:48:18:48:20 | access to type Int32 |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:13:50:39 | case Boolean: |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:13:50:39 | case ...: |
+| Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:50:18:50:21 | access to type Boolean |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:30 | access to parameter o |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:30 | access to parameter o |
 | Switch.cs:50:35:50:38 | null | Switch.cs:50:35:50:38 | null |
@@ -674,7 +1462,8 @@
 | Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:68:9:74:9 | switch (...) {...} |
 | Switch.cs:68:17:68:25 | (...) ... | Switch.cs:68:25:68:25 | access to parameter s |
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:25:68:25 | access to parameter s |
-| Switch.cs:70:13:70:24 | case Int32: | Switch.cs:70:13:70:24 | case Int32: |
+| Switch.cs:70:13:70:24 | case ...: | Switch.cs:70:13:70:24 | case ...: |
+| Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:70:18:70:20 | access to type Int32 |
 | Switch.cs:71:15:71:20 | break; | Switch.cs:71:15:71:20 | break; |
 | Switch.cs:72:13:72:21 | case ...: | Switch.cs:72:13:72:21 | case ...: |
 | Switch.cs:72:18:72:19 | "" | Switch.cs:72:18:72:19 | "" |
@@ -700,7 +1489,8 @@
 | Switch.cs:92:5:99:5 | {...} | Switch.cs:92:5:99:5 | {...} |
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:93:9:97:9 | switch (...) {...} |
 | Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:93:17:93:17 | access to parameter o |
-| Switch.cs:95:13:95:24 | case Int32: | Switch.cs:95:13:95:24 | case Int32: |
+| Switch.cs:95:13:95:24 | case ...: | Switch.cs:95:13:95:24 | case ...: |
+| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:95:18:95:20 | access to type Int32 |
 | Switch.cs:96:15:96:26 | return ...; | Switch.cs:96:22:96:25 | true |
 | Switch.cs:96:22:96:25 | true | Switch.cs:96:22:96:25 | true |
 | Switch.cs:98:9:98:21 | return ...; | Switch.cs:98:16:98:20 | false |
@@ -743,14 +1533,34 @@
 | Switch.cs:120:9:120:18 | return ...; | Switch.cs:120:17:120:17 | 1 |
 | Switch.cs:120:16:120:17 | -... | Switch.cs:120:17:120:17 | 1 |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:17:120:17 | 1 |
+| Switch.cs:124:5:127:5 | {...} | Switch.cs:124:5:127:5 | {...} |
+| Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:9:126:19 | if (...) ... |
+| Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:125:13:125:13 | access to parameter o |
+| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:48 | ... switch { ... } |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | Boolean b |
+| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:34 | ... => ... |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b |
+| Switch.cs:125:37:125:37 | _ | Switch.cs:125:37:125:37 | _ |
+| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:46 | ... => ... |
+| Switch.cs:125:42:125:46 | false | Switch.cs:125:42:125:46 | false |
+| Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; |
+| Switch.cs:130:5:132:5 | {...} | Switch.cs:130:5:132:5 | {...} |
+| Switch.cs:131:9:131:67 | return ...; | Switch.cs:131:17:131:53 | ... switch { ... } |
+| Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:17:131:17 | access to parameter o |
+| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:53 | ... switch { ... } |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | String s |
+| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:40 | ... => ... |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s |
+| Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:43 | _ |
+| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... |
+| Switch.cs:131:48:131:51 | null | Switch.cs:131:48:131:51 | null |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:17:131:53 | ... switch { ... } |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:4:5:9:5 | {...} |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:9:5:26 | ... ...; |
-| TypeAccesses.cs:5:13:5:13 | access to local variable s | TypeAccesses.cs:5:13:5:13 | access to local variable s |
-| TypeAccesses.cs:5:13:5:25 | String s = ... | TypeAccesses.cs:5:13:5:13 | access to local variable s |
+| TypeAccesses.cs:5:13:5:25 | String s = ... | TypeAccesses.cs:5:25:5:25 | access to parameter o |
 | TypeAccesses.cs:5:17:5:25 | (...) ... | TypeAccesses.cs:5:25:5:25 | access to parameter o |
 | TypeAccesses.cs:5:25:5:25 | access to parameter o | TypeAccesses.cs:5:25:5:25 | access to parameter o |
-| TypeAccesses.cs:6:9:6:9 | access to local variable s | TypeAccesses.cs:6:9:6:9 | access to local variable s |
-| TypeAccesses.cs:6:9:6:23 | ... = ... | TypeAccesses.cs:6:9:6:9 | access to local variable s |
+| TypeAccesses.cs:6:9:6:23 | ... = ... | TypeAccesses.cs:6:13:6:13 | access to parameter o |
 | TypeAccesses.cs:6:9:6:24 | ...; | TypeAccesses.cs:6:9:6:24 | ...; |
 | TypeAccesses.cs:6:13:6:13 | access to parameter o | TypeAccesses.cs:6:13:6:13 | access to parameter o |
 | TypeAccesses.cs:6:13:6:23 | ... as ... | TypeAccesses.cs:6:13:6:13 | access to parameter o |
@@ -760,18 +1570,15 @@
 | TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:18:7:22 | Int32 j |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:9:8:28 | ... ...; |
-| TypeAccesses.cs:8:13:8:13 | access to local variable t | TypeAccesses.cs:8:13:8:13 | access to local variable t |
-| TypeAccesses.cs:8:13:8:27 | Type t = ... | TypeAccesses.cs:8:13:8:13 | access to local variable t |
+| TypeAccesses.cs:8:13:8:27 | Type t = ... | TypeAccesses.cs:8:17:8:27 | typeof(...) |
 | TypeAccesses.cs:8:17:8:27 | typeof(...) | TypeAccesses.cs:8:17:8:27 | typeof(...) |
 | VarDecls.cs:6:5:11:5 | {...} | VarDecls.cs:6:5:11:5 | {...} |
 | VarDecls.cs:7:9:10:9 | fixed(...) { ... } | VarDecls.cs:7:9:10:9 | fixed(...) { ... } |
-| VarDecls.cs:7:22:7:23 | access to local variable c1 | VarDecls.cs:7:22:7:23 | access to local variable c1 |
-| VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:22:7:23 | access to local variable c1 |
+| VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:27:7:33 | access to parameter strings |
 | VarDecls.cs:7:27:7:33 | access to parameter strings | VarDecls.cs:7:27:7:33 | access to parameter strings |
 | VarDecls.cs:7:27:7:36 | access to array element | VarDecls.cs:7:27:7:33 | access to parameter strings |
 | VarDecls.cs:7:35:7:35 | 0 | VarDecls.cs:7:35:7:35 | 0 |
-| VarDecls.cs:7:39:7:40 | access to local variable c2 | VarDecls.cs:7:39:7:40 | access to local variable c2 |
-| VarDecls.cs:7:39:7:53 | Char* c2 = ... | VarDecls.cs:7:39:7:40 | access to local variable c2 |
+| VarDecls.cs:7:39:7:53 | Char* c2 = ... | VarDecls.cs:7:44:7:50 | access to parameter strings |
 | VarDecls.cs:7:44:7:50 | access to parameter strings | VarDecls.cs:7:44:7:50 | access to parameter strings |
 | VarDecls.cs:7:44:7:53 | access to array element | VarDecls.cs:7:44:7:50 | access to parameter strings |
 | VarDecls.cs:7:52:7:52 | 1 | VarDecls.cs:7:52:7:52 | 1 |
@@ -781,11 +1588,9 @@
 | VarDecls.cs:9:27:9:28 | access to local variable c1 | VarDecls.cs:9:27:9:28 | access to local variable c1 |
 | VarDecls.cs:14:5:17:5 | {...} | VarDecls.cs:14:5:17:5 | {...} |
 | VarDecls.cs:15:9:15:30 | ... ...; | VarDecls.cs:15:9:15:30 | ... ...; |
-| VarDecls.cs:15:16:15:17 | access to local variable s1 | VarDecls.cs:15:16:15:17 | access to local variable s1 |
-| VarDecls.cs:15:16:15:21 | String s1 = ... | VarDecls.cs:15:16:15:17 | access to local variable s1 |
+| VarDecls.cs:15:16:15:21 | String s1 = ... | VarDecls.cs:15:21:15:21 | access to parameter s |
 | VarDecls.cs:15:21:15:21 | access to parameter s | VarDecls.cs:15:21:15:21 | access to parameter s |
-| VarDecls.cs:15:24:15:25 | access to local variable s2 | VarDecls.cs:15:24:15:25 | access to local variable s2 |
-| VarDecls.cs:15:24:15:29 | String s2 = ... | VarDecls.cs:15:24:15:25 | access to local variable s2 |
+| VarDecls.cs:15:24:15:29 | String s2 = ... | VarDecls.cs:15:29:15:29 | access to parameter s |
 | VarDecls.cs:15:29:15:29 | access to parameter s | VarDecls.cs:15:29:15:29 | access to parameter s |
 | VarDecls.cs:16:9:16:23 | return ...; | VarDecls.cs:16:16:16:17 | access to local variable s1 |
 | VarDecls.cs:16:16:16:17 | access to local variable s1 | VarDecls.cs:16:16:16:17 | access to local variable s1 |
@@ -796,11 +1601,9 @@
 | VarDecls.cs:21:16:21:22 | object creation of type C | VarDecls.cs:21:16:21:22 | object creation of type C |
 | VarDecls.cs:22:13:22:13 | ; | VarDecls.cs:22:13:22:13 | ; |
 | VarDecls.cs:24:9:25:29 | using (...) {...} | VarDecls.cs:24:9:25:29 | using (...) {...} |
-| VarDecls.cs:24:18:24:18 | access to local variable x | VarDecls.cs:24:18:24:18 | access to local variable x |
-| VarDecls.cs:24:18:24:28 | C x = ... | VarDecls.cs:24:18:24:18 | access to local variable x |
+| VarDecls.cs:24:18:24:28 | C x = ... | VarDecls.cs:24:22:24:28 | object creation of type C |
 | VarDecls.cs:24:22:24:28 | object creation of type C | VarDecls.cs:24:22:24:28 | object creation of type C |
-| VarDecls.cs:24:31:24:31 | access to local variable y | VarDecls.cs:24:31:24:31 | access to local variable y |
-| VarDecls.cs:24:31:24:41 | C y = ... | VarDecls.cs:24:31:24:31 | access to local variable y |
+| VarDecls.cs:24:31:24:41 | C y = ... | VarDecls.cs:24:35:24:41 | object creation of type C |
 | VarDecls.cs:24:35:24:41 | object creation of type C | VarDecls.cs:24:35:24:41 | object creation of type C |
 | VarDecls.cs:25:13:25:29 | return ...; | VarDecls.cs:25:20:25:28 | ... ? ... : ... |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:20:25:20 | access to parameter b |
@@ -810,12 +1613,10 @@
 | VarDecls.cs:28:51:28:53 | {...} | VarDecls.cs:28:51:28:53 | {...} |
 | cflow.cs:6:5:35:5 | {...} | cflow.cs:6:5:35:5 | {...} |
 | cflow.cs:7:9:7:28 | ... ...; | cflow.cs:7:9:7:28 | ... ...; |
-| cflow.cs:7:13:7:13 | access to local variable a | cflow.cs:7:13:7:13 | access to local variable a |
-| cflow.cs:7:13:7:27 | Int32 a = ... | cflow.cs:7:13:7:13 | access to local variable a |
+| cflow.cs:7:13:7:27 | Int32 a = ... | cflow.cs:7:17:7:20 | access to parameter args |
 | cflow.cs:7:17:7:20 | access to parameter args | cflow.cs:7:17:7:20 | access to parameter args |
 | cflow.cs:7:17:7:27 | access to property Length | cflow.cs:7:17:7:20 | access to parameter args |
-| cflow.cs:9:9:9:9 | access to local variable a | cflow.cs:9:9:9:9 | access to local variable a |
-| cflow.cs:9:9:9:39 | ... = ... | cflow.cs:9:9:9:9 | access to local variable a |
+| cflow.cs:9:9:9:39 | ... = ... | cflow.cs:9:13:9:29 | object creation of type ControlFlow |
 | cflow.cs:9:9:9:40 | ...; | cflow.cs:9:9:9:40 | ...; |
 | cflow.cs:9:13:9:29 | object creation of type ControlFlow | cflow.cs:9:13:9:29 | object creation of type ControlFlow |
 | cflow.cs:9:13:9:39 | call to method Switch | cflow.cs:9:13:9:29 | object creation of type ControlFlow |
@@ -849,8 +1650,7 @@
 | cflow.cs:22:18:22:23 | ... < ... | cflow.cs:22:18:22:18 | access to local variable a |
 | cflow.cs:22:22:22:23 | 10 | cflow.cs:22:22:22:23 | 10 |
 | cflow.cs:24:9:34:9 | for (...;...;...) ... | cflow.cs:24:9:34:9 | for (...;...;...) ... |
-| cflow.cs:24:18:24:18 | access to local variable i | cflow.cs:24:18:24:18 | access to local variable i |
-| cflow.cs:24:18:24:22 | Int32 i = ... | cflow.cs:24:18:24:18 | access to local variable i |
+| cflow.cs:24:18:24:22 | Int32 i = ... | cflow.cs:24:22:24:22 | 1 |
 | cflow.cs:24:22:24:22 | 1 | cflow.cs:24:22:24:22 | 1 |
 | cflow.cs:24:25:24:25 | access to local variable i | cflow.cs:24:25:24:25 | access to local variable i |
 | cflow.cs:24:25:24:31 | ... <= ... | cflow.cs:24:25:24:25 | access to local variable i |
@@ -1037,11 +1837,9 @@
 | cflow.cs:116:27:116:27 | access to parameter s | cflow.cs:116:27:116:27 | access to parameter s |
 | cflow.cs:120:5:124:5 | {...} | cflow.cs:120:5:124:5 | {...} |
 | cflow.cs:121:9:121:18 | ... ...; | cflow.cs:121:9:121:18 | ... ...; |
-| cflow.cs:121:13:121:13 | access to local variable x | cflow.cs:121:13:121:13 | access to local variable x |
-| cflow.cs:121:13:121:17 | String x = ... | cflow.cs:121:13:121:13 | access to local variable x |
+| cflow.cs:121:13:121:17 | String x = ... | cflow.cs:121:17:121:17 | access to parameter s |
 | cflow.cs:121:17:121:17 | access to parameter s | cflow.cs:121:17:121:17 | access to parameter s |
-| cflow.cs:122:9:122:9 | access to local variable x | cflow.cs:122:9:122:9 | access to local variable x |
-| cflow.cs:122:9:122:19 | ... = ... | cflow.cs:122:9:122:9 | access to local variable x |
+| cflow.cs:122:9:122:19 | ... = ... | cflow.cs:122:13:122:13 | access to local variable x |
 | cflow.cs:122:9:122:20 | ...; | cflow.cs:122:9:122:20 | ...; |
 | cflow.cs:122:13:122:13 | access to local variable x | cflow.cs:122:13:122:13 | access to local variable x |
 | cflow.cs:122:13:122:19 | ... + ... | cflow.cs:122:13:122:13 | access to local variable x |
@@ -1094,7 +1892,7 @@
 | cflow.cs:144:46:144:51 | ... + ... | cflow.cs:144:46:144:46 | access to parameter i |
 | cflow.cs:144:50:144:51 | "" | cflow.cs:144:50:144:51 | "" |
 | cflow.cs:144:60:144:62 | {...} | cflow.cs:144:60:144:62 | {...} |
-| cflow.cs:147:5:246:5 | {...} | cflow.cs:147:5:246:5 | {...} |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:147:5:255:5 | {...} |
 | cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:148:9:155:9 | try {...} ... |
 | cflow.cs:149:9:151:9 | {...} | cflow.cs:149:9:151:9 | {...} |
 | cflow.cs:150:13:150:37 | call to method WriteLine | cflow.cs:150:31:150:36 | "Try1" |
@@ -1159,8 +1957,7 @@
 | cflow.cs:203:13:203:41 | ...; | cflow.cs:203:13:203:41 | ...; |
 | cflow.cs:203:31:203:39 | "Finally" | cflow.cs:203:31:203:39 | "Finally" |
 | cflow.cs:206:9:206:19 | ... ...; | cflow.cs:206:9:206:19 | ... ...; |
-| cflow.cs:206:13:206:13 | access to local variable i | cflow.cs:206:13:206:13 | access to local variable i |
-| cflow.cs:206:13:206:18 | Int32 i = ... | cflow.cs:206:13:206:13 | access to local variable i |
+| cflow.cs:206:13:206:18 | Int32 i = ... | cflow.cs:206:17:206:18 | 10 |
 | cflow.cs:206:17:206:18 | 10 | cflow.cs:206:17:206:18 | 10 |
 | cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:207:9:230:9 | while (...) ... |
 | cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:207:16:207:16 | access to local variable i |
@@ -1235,345 +2032,348 @@
 | cflow.cs:244:17:244:36 | call to method WriteLine | cflow.cs:244:35:244:35 | 1 |
 | cflow.cs:244:17:244:37 | ...; | cflow.cs:244:17:244:37 | ...; |
 | cflow.cs:244:35:244:35 | 1 | cflow.cs:244:35:244:35 | 1 |
-| cflow.cs:249:5:279:5 | {...} | cflow.cs:249:5:279:5 | {...} |
-| cflow.cs:250:9:250:18 | ... ...; | cflow.cs:250:9:250:18 | ... ...; |
-| cflow.cs:250:13:250:13 | access to local variable x | cflow.cs:250:13:250:13 | access to local variable x |
-| cflow.cs:250:13:250:17 | Int32 x = ... | cflow.cs:250:13:250:13 | access to local variable x |
-| cflow.cs:250:17:250:17 | 0 | cflow.cs:250:17:250:17 | 0 |
-| cflow.cs:251:9:252:33 | for (...;...;...) ... | cflow.cs:251:9:252:33 | for (...;...;...) ... |
-| cflow.cs:251:16:251:16 | access to local variable x | cflow.cs:251:16:251:16 | access to local variable x |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:251:16:251:16 | access to local variable x |
-| cflow.cs:251:20:251:21 | 10 | cflow.cs:251:20:251:21 | 10 |
-| cflow.cs:251:24:251:26 | ++... | cflow.cs:251:26:251:26 | access to local variable x |
-| cflow.cs:251:26:251:26 | access to local variable x | cflow.cs:251:26:251:26 | access to local variable x |
-| cflow.cs:252:13:252:32 | call to method WriteLine | cflow.cs:252:31:252:31 | access to local variable x |
-| cflow.cs:252:13:252:33 | ...; | cflow.cs:252:13:252:33 | ...; |
-| cflow.cs:252:31:252:31 | access to local variable x | cflow.cs:252:31:252:31 | access to local variable x |
-| cflow.cs:254:9:259:9 | for (...;...;...) ... | cflow.cs:254:9:259:9 | for (...;...;...) ... |
-| cflow.cs:254:18:254:18 | access to local variable x | cflow.cs:254:18:254:18 | access to local variable x |
-| cflow.cs:254:18:254:20 | ...++ | cflow.cs:254:18:254:18 | access to local variable x |
-| cflow.cs:255:9:259:9 | {...} | cflow.cs:255:9:259:9 | {...} |
-| cflow.cs:256:13:256:32 | call to method WriteLine | cflow.cs:256:31:256:31 | access to local variable x |
-| cflow.cs:256:13:256:33 | ...; | cflow.cs:256:13:256:33 | ...; |
-| cflow.cs:256:31:256:31 | access to local variable x | cflow.cs:256:31:256:31 | access to local variable x |
-| cflow.cs:257:13:258:22 | if (...) ... | cflow.cs:257:13:258:22 | if (...) ... |
-| cflow.cs:257:17:257:17 | access to local variable x | cflow.cs:257:17:257:17 | access to local variable x |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:257:17:257:17 | access to local variable x |
-| cflow.cs:257:21:257:22 | 20 | cflow.cs:257:21:257:22 | 20 |
-| cflow.cs:258:17:258:22 | break; | cflow.cs:258:17:258:22 | break; |
-| cflow.cs:261:9:267:9 | for (...;...;...) ... | cflow.cs:261:9:267:9 | for (...;...;...) ... |
-| cflow.cs:262:9:267:9 | {...} | cflow.cs:262:9:267:9 | {...} |
-| cflow.cs:263:13:263:32 | call to method WriteLine | cflow.cs:263:31:263:31 | access to local variable x |
-| cflow.cs:263:13:263:33 | ...; | cflow.cs:263:13:263:33 | ...; |
-| cflow.cs:263:31:263:31 | access to local variable x | cflow.cs:263:31:263:31 | access to local variable x |
-| cflow.cs:264:13:264:13 | access to local variable x | cflow.cs:264:13:264:13 | access to local variable x |
-| cflow.cs:264:13:264:15 | ...++ | cflow.cs:264:13:264:13 | access to local variable x |
-| cflow.cs:264:13:264:16 | ...; | cflow.cs:264:13:264:16 | ...; |
-| cflow.cs:265:13:266:22 | if (...) ... | cflow.cs:265:13:266:22 | if (...) ... |
-| cflow.cs:265:17:265:17 | access to local variable x | cflow.cs:265:17:265:17 | access to local variable x |
-| cflow.cs:265:17:265:22 | ... > ... | cflow.cs:265:17:265:17 | access to local variable x |
-| cflow.cs:265:21:265:22 | 30 | cflow.cs:265:21:265:22 | 30 |
-| cflow.cs:266:17:266:22 | break; | cflow.cs:266:17:266:22 | break; |
-| cflow.cs:269:9:273:9 | for (...;...;...) ... | cflow.cs:269:9:273:9 | for (...;...;...) ... |
-| cflow.cs:269:16:269:16 | access to local variable x | cflow.cs:269:16:269:16 | access to local variable x |
-| cflow.cs:269:16:269:21 | ... < ... | cflow.cs:269:16:269:16 | access to local variable x |
-| cflow.cs:269:20:269:21 | 40 | cflow.cs:269:20:269:21 | 40 |
-| cflow.cs:270:9:273:9 | {...} | cflow.cs:270:9:273:9 | {...} |
-| cflow.cs:271:13:271:32 | call to method WriteLine | cflow.cs:271:31:271:31 | access to local variable x |
-| cflow.cs:271:13:271:33 | ...; | cflow.cs:271:13:271:33 | ...; |
-| cflow.cs:271:31:271:31 | access to local variable x | cflow.cs:271:31:271:31 | access to local variable x |
-| cflow.cs:272:13:272:13 | access to local variable x | cflow.cs:272:13:272:13 | access to local variable x |
-| cflow.cs:272:13:272:15 | ...++ | cflow.cs:272:13:272:13 | access to local variable x |
-| cflow.cs:272:13:272:16 | ...; | cflow.cs:272:13:272:16 | ...; |
-| cflow.cs:275:9:278:9 | for (...;...;...) ... | cflow.cs:275:9:278:9 | for (...;...;...) ... |
-| cflow.cs:275:18:275:18 | access to local variable i | cflow.cs:275:18:275:18 | access to local variable i |
-| cflow.cs:275:18:275:22 | Int32 i = ... | cflow.cs:275:18:275:18 | access to local variable i |
-| cflow.cs:275:22:275:22 | 0 | cflow.cs:275:22:275:22 | 0 |
-| cflow.cs:275:25:275:25 | access to local variable j | cflow.cs:275:25:275:25 | access to local variable j |
-| cflow.cs:275:25:275:29 | Int32 j = ... | cflow.cs:275:25:275:25 | access to local variable j |
-| cflow.cs:275:29:275:29 | 0 | cflow.cs:275:29:275:29 | 0 |
-| cflow.cs:275:32:275:32 | access to local variable i | cflow.cs:275:32:275:32 | access to local variable i |
-| cflow.cs:275:32:275:36 | ... + ... | cflow.cs:275:32:275:32 | access to local variable i |
-| cflow.cs:275:32:275:41 | ... < ... | cflow.cs:275:32:275:32 | access to local variable i |
-| cflow.cs:275:36:275:36 | access to local variable j | cflow.cs:275:36:275:36 | access to local variable j |
-| cflow.cs:275:40:275:41 | 10 | cflow.cs:275:40:275:41 | 10 |
-| cflow.cs:275:44:275:44 | access to local variable i | cflow.cs:275:44:275:44 | access to local variable i |
-| cflow.cs:275:44:275:46 | ...++ | cflow.cs:275:44:275:44 | access to local variable i |
-| cflow.cs:275:49:275:49 | access to local variable j | cflow.cs:275:49:275:49 | access to local variable j |
-| cflow.cs:275:49:275:51 | ...++ | cflow.cs:275:49:275:49 | access to local variable j |
-| cflow.cs:276:9:278:9 | {...} | cflow.cs:276:9:278:9 | {...} |
-| cflow.cs:277:13:277:36 | call to method WriteLine | cflow.cs:277:31:277:31 | access to local variable i |
-| cflow.cs:277:13:277:37 | ...; | cflow.cs:277:13:277:37 | ...; |
-| cflow.cs:277:31:277:31 | access to local variable i | cflow.cs:277:31:277:31 | access to local variable i |
-| cflow.cs:277:31:277:35 | ... + ... | cflow.cs:277:31:277:31 | access to local variable i |
-| cflow.cs:277:35:277:35 | access to local variable j | cflow.cs:277:35:277:35 | access to local variable j |
-| cflow.cs:282:5:285:5 | {...} | cflow.cs:282:5:285:5 | {...} |
-| cflow.cs:283:9:283:38 | ... ...; | cflow.cs:283:9:283:38 | ... ...; |
-| cflow.cs:283:24:283:24 | access to local variable y | cflow.cs:283:24:283:24 | access to local variable y |
-| cflow.cs:283:24:283:37 | Func<Int32,Int32> y = ... | cflow.cs:283:24:283:24 | access to local variable y |
-| cflow.cs:283:28:283:37 | (...) => ... | cflow.cs:283:28:283:37 | (...) => ... |
-| cflow.cs:283:33:283:33 | access to parameter x | cflow.cs:283:33:283:33 | access to parameter x |
-| cflow.cs:283:33:283:37 | ... + ... | cflow.cs:283:33:283:33 | access to parameter x |
-| cflow.cs:283:37:283:37 | 1 | cflow.cs:283:37:283:37 | 1 |
-| cflow.cs:284:9:284:62 | ... ...; | cflow.cs:284:9:284:62 | ... ...; |
-| cflow.cs:284:24:284:24 | access to local variable z | cflow.cs:284:24:284:24 | access to local variable z |
-| cflow.cs:284:24:284:61 | Func<Int32,Int32> z = ... | cflow.cs:284:24:284:24 | access to local variable z |
-| cflow.cs:284:28:284:61 | delegate(...) { ... } | cflow.cs:284:28:284:61 | delegate(...) { ... } |
-| cflow.cs:284:45:284:61 | {...} | cflow.cs:284:45:284:61 | {...} |
-| cflow.cs:284:47:284:59 | return ...; | cflow.cs:284:54:284:54 | access to parameter x |
-| cflow.cs:284:54:284:54 | access to parameter x | cflow.cs:284:54:284:54 | access to parameter x |
-| cflow.cs:284:54:284:58 | ... + ... | cflow.cs:284:54:284:54 | access to parameter x |
-| cflow.cs:284:58:284:58 | 1 | cflow.cs:284:58:284:58 | 1 |
-| cflow.cs:288:5:293:5 | {...} | cflow.cs:288:5:293:5 | {...} |
-| cflow.cs:289:9:292:52 | if (...) ... | cflow.cs:289:9:292:52 | if (...) ... |
-| cflow.cs:289:13:289:13 | 1 | cflow.cs:289:13:289:13 | 1 |
-| cflow.cs:289:13:289:18 | ... == ... | cflow.cs:289:13:289:13 | 1 |
-| cflow.cs:289:13:289:28 | ... \|\| ... | cflow.cs:289:13:289:28 | ... \|\| ... |
-| cflow.cs:289:13:289:50 | ... \|\| ... | cflow.cs:289:13:289:50 | ... \|\| ... |
-| cflow.cs:289:18:289:18 | 2 | cflow.cs:289:18:289:18 | 2 |
-| cflow.cs:289:23:289:23 | 2 | cflow.cs:289:23:289:23 | 2 |
-| cflow.cs:289:23:289:28 | ... == ... | cflow.cs:289:23:289:23 | 2 |
-| cflow.cs:289:28:289:28 | 3 | cflow.cs:289:28:289:28 | 3 |
-| cflow.cs:289:34:289:34 | 1 | cflow.cs:289:34:289:34 | 1 |
-| cflow.cs:289:34:289:39 | ... == ... | cflow.cs:289:34:289:34 | 1 |
-| cflow.cs:289:34:289:49 | ... && ... | cflow.cs:289:34:289:49 | ... && ... |
-| cflow.cs:289:39:289:39 | 3 | cflow.cs:289:39:289:39 | 3 |
-| cflow.cs:289:44:289:44 | 3 | cflow.cs:289:44:289:44 | 3 |
-| cflow.cs:289:44:289:49 | ... == ... | cflow.cs:289:44:289:44 | 3 |
-| cflow.cs:289:49:289:49 | 1 | cflow.cs:289:49:289:49 | 1 |
-| cflow.cs:290:13:290:54 | call to method WriteLine | cflow.cs:290:31:290:53 | "This shouldn't happen" |
-| cflow.cs:290:13:290:55 | ...; | cflow.cs:290:13:290:55 | ...; |
-| cflow.cs:290:31:290:53 | "This shouldn't happen" | cflow.cs:290:31:290:53 | "This shouldn't happen" |
-| cflow.cs:292:13:292:51 | call to method WriteLine | cflow.cs:292:31:292:50 | "This should happen" |
-| cflow.cs:292:13:292:52 | ...; | cflow.cs:292:13:292:52 | ...; |
-| cflow.cs:292:31:292:50 | "This should happen" | cflow.cs:292:31:292:50 | "This should happen" |
-| cflow.cs:296:5:308:5 | {...} | cflow.cs:296:5:308:5 | {...} |
-| cflow.cs:297:9:297:57 | ... ...; | cflow.cs:297:9:297:57 | ... ...; |
-| cflow.cs:297:13:297:13 | access to local variable b | cflow.cs:297:13:297:13 | access to local variable b |
-| cflow.cs:297:13:297:56 | Boolean b = ... | cflow.cs:297:13:297:13 | access to local variable b |
-| cflow.cs:297:17:297:21 | access to field Field | cflow.cs:297:17:297:21 | this access |
-| cflow.cs:297:17:297:21 | this access | cflow.cs:297:17:297:21 | this access |
-| cflow.cs:297:17:297:28 | access to property Length | cflow.cs:297:17:297:21 | this access |
-| cflow.cs:297:17:297:32 | ... > ... | cflow.cs:297:17:297:21 | this access |
-| cflow.cs:297:17:297:56 | ... && ... | cflow.cs:297:17:297:56 | ... && ... |
-| cflow.cs:297:32:297:32 | 0 | cflow.cs:297:32:297:32 | 0 |
-| cflow.cs:297:37:297:56 | !... | cflow.cs:297:37:297:56 | !... |
-| cflow.cs:297:39:297:43 | access to field Field | cflow.cs:297:39:297:43 | this access |
-| cflow.cs:297:39:297:43 | this access | cflow.cs:297:39:297:43 | this access |
-| cflow.cs:297:39:297:50 | access to property Length | cflow.cs:297:39:297:43 | this access |
-| cflow.cs:297:39:297:55 | ... == ... | cflow.cs:297:39:297:43 | this access |
-| cflow.cs:297:55:297:55 | 1 | cflow.cs:297:55:297:55 | 1 |
-| cflow.cs:299:9:300:49 | if (...) ... | cflow.cs:299:9:300:49 | if (...) ... |
-| cflow.cs:299:13:299:47 | !... | cflow.cs:299:13:299:47 | !... |
-| cflow.cs:299:15:299:19 | access to field Field | cflow.cs:299:15:299:19 | this access |
-| cflow.cs:299:15:299:19 | this access | cflow.cs:299:15:299:19 | this access |
-| cflow.cs:299:15:299:26 | access to property Length | cflow.cs:299:15:299:19 | this access |
-| cflow.cs:299:15:299:31 | ... == ... | cflow.cs:299:15:299:19 | this access |
-| cflow.cs:299:15:299:46 | ... ? ... : ... | cflow.cs:299:15:299:46 | ... ? ... : ... |
-| cflow.cs:299:31:299:31 | 0 | cflow.cs:299:31:299:31 | 0 |
-| cflow.cs:299:35:299:39 | false | cflow.cs:299:35:299:39 | false |
-| cflow.cs:299:43:299:46 | true | cflow.cs:299:43:299:46 | true |
-| cflow.cs:300:13:300:13 | access to local variable b | cflow.cs:300:13:300:13 | access to local variable b |
-| cflow.cs:300:13:300:48 | ... = ... | cflow.cs:300:13:300:13 | access to local variable b |
-| cflow.cs:300:13:300:49 | ...; | cflow.cs:300:13:300:49 | ...; |
-| cflow.cs:300:17:300:21 | access to field Field | cflow.cs:300:17:300:21 | this access |
-| cflow.cs:300:17:300:21 | this access | cflow.cs:300:17:300:21 | this access |
-| cflow.cs:300:17:300:28 | access to property Length | cflow.cs:300:17:300:21 | this access |
-| cflow.cs:300:17:300:33 | ... == ... | cflow.cs:300:17:300:21 | this access |
-| cflow.cs:300:17:300:48 | ... ? ... : ... | cflow.cs:300:17:300:48 | ... ? ... : ... |
-| cflow.cs:300:33:300:33 | 0 | cflow.cs:300:33:300:33 | 0 |
-| cflow.cs:300:37:300:41 | false | cflow.cs:300:37:300:41 | false |
-| cflow.cs:300:45:300:48 | true | cflow.cs:300:45:300:48 | true |
-| cflow.cs:302:9:307:9 | if (...) ... | cflow.cs:302:9:307:9 | if (...) ... |
-| cflow.cs:302:13:302:32 | !... | cflow.cs:302:13:302:32 | !... |
-| cflow.cs:302:13:302:62 | ... \|\| ... | cflow.cs:302:13:302:62 | ... \|\| ... |
-| cflow.cs:302:15:302:19 | access to field Field | cflow.cs:302:15:302:19 | this access |
-| cflow.cs:302:15:302:19 | this access | cflow.cs:302:15:302:19 | this access |
-| cflow.cs:302:15:302:26 | access to property Length | cflow.cs:302:15:302:19 | this access |
-| cflow.cs:302:15:302:31 | ... == ... | cflow.cs:302:15:302:19 | this access |
-| cflow.cs:302:31:302:31 | 0 | cflow.cs:302:31:302:31 | 0 |
-| cflow.cs:302:37:302:62 | !... | cflow.cs:302:37:302:62 | !... |
-| cflow.cs:302:38:302:62 | !... | cflow.cs:302:38:302:62 | !... |
-| cflow.cs:302:40:302:44 | access to field Field | cflow.cs:302:40:302:44 | this access |
-| cflow.cs:302:40:302:44 | this access | cflow.cs:302:40:302:44 | this access |
-| cflow.cs:302:40:302:51 | access to property Length | cflow.cs:302:40:302:44 | this access |
-| cflow.cs:302:40:302:56 | ... == ... | cflow.cs:302:40:302:44 | this access |
-| cflow.cs:302:40:302:61 | ... && ... | cflow.cs:302:40:302:61 | ... && ... |
-| cflow.cs:302:56:302:56 | 1 | cflow.cs:302:56:302:56 | 1 |
-| cflow.cs:302:61:302:61 | access to local variable b | cflow.cs:302:61:302:61 | access to local variable b |
-| cflow.cs:303:9:307:9 | {...} | cflow.cs:303:9:307:9 | {...} |
-| cflow.cs:304:13:306:13 | {...} | cflow.cs:304:13:306:13 | {...} |
-| cflow.cs:305:17:305:38 | throw ...; | cflow.cs:305:23:305:37 | object creation of type Exception |
-| cflow.cs:305:23:305:37 | object creation of type Exception | cflow.cs:305:23:305:37 | object creation of type Exception |
-| cflow.cs:311:5:324:5 | {...} | cflow.cs:311:5:324:5 | {...} |
-| cflow.cs:312:9:323:36 | do ... while (...); | cflow.cs:312:9:323:36 | do ... while (...); |
-| cflow.cs:313:9:323:9 | {...} | cflow.cs:313:9:323:9 | {...} |
-| cflow.cs:314:13:314:17 | access to field Field | cflow.cs:314:13:314:17 | this access |
-| cflow.cs:314:13:314:17 | access to field Field | cflow.cs:314:13:314:17 | this access |
-| cflow.cs:314:13:314:17 | this access | cflow.cs:314:13:314:17 | this access |
-| cflow.cs:314:13:314:17 | this access | cflow.cs:314:13:314:17 | this access |
-| cflow.cs:314:13:314:24 | ... + ... | cflow.cs:314:13:314:17 | this access |
-| cflow.cs:314:13:314:24 | ... += ... | cflow.cs:314:13:314:17 | this access |
-| cflow.cs:314:13:314:24 | ... = ... | cflow.cs:314:13:314:17 | this access |
-| cflow.cs:314:13:314:25 | ...; | cflow.cs:314:13:314:25 | ...; |
-| cflow.cs:314:22:314:24 | "a" | cflow.cs:314:22:314:24 | "a" |
-| cflow.cs:315:13:318:13 | if (...) ... | cflow.cs:315:13:318:13 | if (...) ... |
-| cflow.cs:315:17:315:21 | access to field Field | cflow.cs:315:17:315:21 | this access |
-| cflow.cs:315:17:315:21 | this access | cflow.cs:315:17:315:21 | this access |
-| cflow.cs:315:17:315:28 | access to property Length | cflow.cs:315:17:315:21 | this access |
-| cflow.cs:315:17:315:32 | ... > ... | cflow.cs:315:17:315:21 | this access |
-| cflow.cs:315:32:315:32 | 0 | cflow.cs:315:32:315:32 | 0 |
-| cflow.cs:316:13:318:13 | {...} | cflow.cs:316:13:318:13 | {...} |
-| cflow.cs:317:17:317:25 | continue; | cflow.cs:317:17:317:25 | continue; |
-| cflow.cs:319:13:322:13 | if (...) ... | cflow.cs:319:13:322:13 | if (...) ... |
-| cflow.cs:319:17:319:21 | access to field Field | cflow.cs:319:17:319:21 | this access |
-| cflow.cs:319:17:319:21 | this access | cflow.cs:319:17:319:21 | this access |
-| cflow.cs:319:17:319:28 | access to property Length | cflow.cs:319:17:319:21 | this access |
-| cflow.cs:319:17:319:32 | ... < ... | cflow.cs:319:17:319:21 | this access |
-| cflow.cs:319:32:319:32 | 0 | cflow.cs:319:32:319:32 | 0 |
-| cflow.cs:320:13:322:13 | {...} | cflow.cs:320:13:322:13 | {...} |
-| cflow.cs:321:17:321:22 | break; | cflow.cs:321:17:321:22 | break; |
-| cflow.cs:323:18:323:22 | access to field Field | cflow.cs:323:18:323:22 | this access |
-| cflow.cs:323:18:323:22 | this access | cflow.cs:323:18:323:22 | this access |
-| cflow.cs:323:18:323:29 | access to property Length | cflow.cs:323:18:323:22 | this access |
-| cflow.cs:323:18:323:34 | ... < ... | cflow.cs:323:18:323:22 | this access |
-| cflow.cs:323:33:323:34 | 10 | cflow.cs:323:33:323:34 | 10 |
-| cflow.cs:327:5:340:5 | {...} | cflow.cs:327:5:340:5 | {...} |
-| cflow.cs:328:9:339:9 | foreach (... ... in ...) ... | cflow.cs:328:57:328:59 | "a" |
-| cflow.cs:328:22:328:22 | String x | cflow.cs:328:22:328:22 | String x |
-| cflow.cs:328:27:328:64 | call to method Repeat | cflow.cs:328:57:328:59 | "a" |
-| cflow.cs:328:57:328:59 | "a" | cflow.cs:328:57:328:59 | "a" |
-| cflow.cs:328:62:328:63 | 10 | cflow.cs:328:62:328:63 | 10 |
-| cflow.cs:329:9:339:9 | {...} | cflow.cs:329:9:339:9 | {...} |
-| cflow.cs:330:13:330:17 | access to field Field | cflow.cs:330:13:330:17 | this access |
-| cflow.cs:330:13:330:17 | access to field Field | cflow.cs:330:13:330:17 | this access |
-| cflow.cs:330:13:330:17 | this access | cflow.cs:330:13:330:17 | this access |
-| cflow.cs:330:13:330:17 | this access | cflow.cs:330:13:330:17 | this access |
-| cflow.cs:330:13:330:22 | ... + ... | cflow.cs:330:13:330:17 | this access |
-| cflow.cs:330:13:330:22 | ... += ... | cflow.cs:330:13:330:17 | this access |
-| cflow.cs:330:13:330:22 | ... = ... | cflow.cs:330:13:330:17 | this access |
-| cflow.cs:330:13:330:23 | ...; | cflow.cs:330:13:330:23 | ...; |
-| cflow.cs:330:22:330:22 | access to local variable x | cflow.cs:330:22:330:22 | access to local variable x |
-| cflow.cs:331:13:334:13 | if (...) ... | cflow.cs:331:13:334:13 | if (...) ... |
-| cflow.cs:331:17:331:21 | access to field Field | cflow.cs:331:17:331:21 | this access |
-| cflow.cs:331:17:331:21 | this access | cflow.cs:331:17:331:21 | this access |
-| cflow.cs:331:17:331:28 | access to property Length | cflow.cs:331:17:331:21 | this access |
-| cflow.cs:331:17:331:32 | ... > ... | cflow.cs:331:17:331:21 | this access |
-| cflow.cs:331:32:331:32 | 0 | cflow.cs:331:32:331:32 | 0 |
-| cflow.cs:332:13:334:13 | {...} | cflow.cs:332:13:334:13 | {...} |
-| cflow.cs:333:17:333:25 | continue; | cflow.cs:333:17:333:25 | continue; |
-| cflow.cs:335:13:338:13 | if (...) ... | cflow.cs:335:13:338:13 | if (...) ... |
-| cflow.cs:335:17:335:21 | access to field Field | cflow.cs:335:17:335:21 | this access |
-| cflow.cs:335:17:335:21 | this access | cflow.cs:335:17:335:21 | this access |
-| cflow.cs:335:17:335:28 | access to property Length | cflow.cs:335:17:335:21 | this access |
-| cflow.cs:335:17:335:32 | ... < ... | cflow.cs:335:17:335:21 | this access |
-| cflow.cs:335:32:335:32 | 0 | cflow.cs:335:32:335:32 | 0 |
-| cflow.cs:336:13:338:13 | {...} | cflow.cs:336:13:338:13 | {...} |
-| cflow.cs:337:17:337:22 | break; | cflow.cs:337:17:337:22 | break; |
-| cflow.cs:343:5:361:5 | {...} | cflow.cs:343:5:361:5 | {...} |
-| cflow.cs:344:9:344:13 | Label: | cflow.cs:344:9:344:13 | Label: |
-| cflow.cs:344:16:344:45 | if (...) ... | cflow.cs:344:16:344:45 | if (...) ... |
-| cflow.cs:344:20:344:40 | !... | cflow.cs:344:20:344:40 | !... |
-| cflow.cs:344:21:344:40 | !... | cflow.cs:344:21:344:40 | !... |
-| cflow.cs:344:23:344:27 | access to field Field | cflow.cs:344:23:344:27 | this access |
-| cflow.cs:344:23:344:27 | this access | cflow.cs:344:23:344:27 | this access |
-| cflow.cs:344:23:344:34 | access to property Length | cflow.cs:344:23:344:27 | this access |
-| cflow.cs:344:23:344:39 | ... == ... | cflow.cs:344:23:344:27 | this access |
-| cflow.cs:344:39:344:39 | 0 | cflow.cs:344:39:344:39 | 0 |
-| cflow.cs:344:43:344:45 | {...} | cflow.cs:344:43:344:45 | {...} |
-| cflow.cs:346:9:346:41 | if (...) ... | cflow.cs:346:9:346:41 | if (...) ... |
-| cflow.cs:346:13:346:17 | access to field Field | cflow.cs:346:13:346:17 | this access |
-| cflow.cs:346:13:346:17 | this access | cflow.cs:346:13:346:17 | this access |
-| cflow.cs:346:13:346:24 | access to property Length | cflow.cs:346:13:346:17 | this access |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:346:13:346:17 | this access |
-| cflow.cs:346:28:346:28 | 0 | cflow.cs:346:28:346:28 | 0 |
-| cflow.cs:346:31:346:41 | goto ...; | cflow.cs:346:31:346:41 | goto ...; |
-| cflow.cs:348:9:360:9 | switch (...) {...} | cflow.cs:348:9:360:9 | switch (...) {...} |
-| cflow.cs:348:17:348:21 | access to field Field | cflow.cs:348:17:348:21 | this access |
-| cflow.cs:348:17:348:21 | this access | cflow.cs:348:17:348:21 | this access |
-| cflow.cs:348:17:348:28 | access to property Length | cflow.cs:348:17:348:21 | this access |
-| cflow.cs:348:17:348:32 | ... + ... | cflow.cs:348:17:348:21 | this access |
-| cflow.cs:348:32:348:32 | 3 | cflow.cs:348:32:348:32 | 3 |
-| cflow.cs:350:13:350:19 | case ...: | cflow.cs:350:13:350:19 | case ...: |
-| cflow.cs:350:18:350:18 | 0 | cflow.cs:350:18:350:18 | 0 |
-| cflow.cs:351:17:351:29 | goto default; | cflow.cs:351:17:351:29 | goto default; |
-| cflow.cs:352:13:352:19 | case ...: | cflow.cs:352:13:352:19 | case ...: |
-| cflow.cs:352:18:352:18 | 1 | cflow.cs:352:18:352:18 | 1 |
-| cflow.cs:353:17:353:36 | call to method WriteLine | cflow.cs:353:35:353:35 | 1 |
-| cflow.cs:353:17:353:37 | ...; | cflow.cs:353:17:353:37 | ...; |
-| cflow.cs:353:35:353:35 | 1 | cflow.cs:353:35:353:35 | 1 |
-| cflow.cs:354:17:354:22 | break; | cflow.cs:354:17:354:22 | break; |
-| cflow.cs:355:13:355:19 | case ...: | cflow.cs:355:13:355:19 | case ...: |
-| cflow.cs:355:18:355:18 | 2 | cflow.cs:355:18:355:18 | 2 |
-| cflow.cs:356:17:356:27 | goto ...; | cflow.cs:356:17:356:27 | goto ...; |
-| cflow.cs:357:13:357:20 | default: | cflow.cs:357:13:357:20 | default: |
-| cflow.cs:358:17:358:36 | call to method WriteLine | cflow.cs:358:35:358:35 | 0 |
-| cflow.cs:358:17:358:37 | ...; | cflow.cs:358:17:358:37 | ...; |
-| cflow.cs:358:35:358:35 | 0 | cflow.cs:358:35:358:35 | 0 |
-| cflow.cs:359:17:359:22 | break; | cflow.cs:359:17:359:22 | break; |
-| cflow.cs:364:5:379:5 | {...} | cflow.cs:364:5:379:5 | {...} |
-| cflow.cs:365:9:365:23 | yield return ...; | cflow.cs:365:22:365:22 | 0 |
-| cflow.cs:365:22:365:22 | 0 | cflow.cs:365:22:365:22 | 0 |
-| cflow.cs:366:9:369:9 | for (...;...;...) ... | cflow.cs:366:9:369:9 | for (...;...;...) ... |
-| cflow.cs:366:18:366:18 | access to local variable i | cflow.cs:366:18:366:18 | access to local variable i |
-| cflow.cs:366:18:366:22 | Int32 i = ... | cflow.cs:366:18:366:18 | access to local variable i |
-| cflow.cs:366:22:366:22 | 1 | cflow.cs:366:22:366:22 | 1 |
-| cflow.cs:366:25:366:25 | access to local variable i | cflow.cs:366:25:366:25 | access to local variable i |
-| cflow.cs:366:25:366:30 | ... < ... | cflow.cs:366:25:366:25 | access to local variable i |
-| cflow.cs:366:29:366:30 | 10 | cflow.cs:366:29:366:30 | 10 |
-| cflow.cs:366:33:366:33 | access to local variable i | cflow.cs:366:33:366:33 | access to local variable i |
-| cflow.cs:366:33:366:35 | ...++ | cflow.cs:366:33:366:33 | access to local variable i |
-| cflow.cs:367:9:369:9 | {...} | cflow.cs:367:9:369:9 | {...} |
-| cflow.cs:368:13:368:27 | yield return ...; | cflow.cs:368:26:368:26 | access to local variable i |
-| cflow.cs:368:26:368:26 | access to local variable i | cflow.cs:368:26:368:26 | access to local variable i |
-| cflow.cs:370:9:378:9 | try {...} ... | cflow.cs:370:9:378:9 | try {...} ... |
-| cflow.cs:371:9:374:9 | {...} | cflow.cs:371:9:374:9 | {...} |
-| cflow.cs:372:13:372:24 | yield break; | cflow.cs:372:13:372:24 | yield break; |
-| cflow.cs:373:13:373:42 | call to method WriteLine | cflow.cs:373:31:373:41 | "dead code" |
-| cflow.cs:373:13:373:43 | ...; | cflow.cs:373:13:373:43 | ...; |
-| cflow.cs:373:31:373:41 | "dead code" | cflow.cs:373:31:373:41 | "dead code" |
+| cflow.cs:247:9:254:9 | try {...} ... | cflow.cs:247:9:254:9 | try {...} ... |
+| cflow.cs:248:9:250:9 | {...} | cflow.cs:248:9:250:9 | {...} |
+| cflow.cs:249:13:249:41 | ... ...; | cflow.cs:249:13:249:41 | ... ...; |
+| cflow.cs:249:17:249:40 | Double temp = ... | cflow.cs:249:24:249:24 | 0 |
+| cflow.cs:249:24:249:24 | 0 | cflow.cs:249:24:249:24 | 0 |
+| cflow.cs:249:24:249:24 | (...) ... | cflow.cs:249:24:249:24 | 0 |
+| cflow.cs:249:24:249:40 | ... / ... | cflow.cs:249:24:249:24 | 0 |
+| cflow.cs:249:28:249:40 | access to constant E | cflow.cs:249:28:249:40 | access to constant E |
+| cflow.cs:251:9:254:9 | catch {...} | cflow.cs:251:9:254:9 | catch {...} |
+| cflow.cs:252:9:254:9 | {...} | cflow.cs:252:9:254:9 | {...} |
+| cflow.cs:253:13:253:13 | ; | cflow.cs:253:13:253:13 | ; |
+| cflow.cs:258:5:288:5 | {...} | cflow.cs:258:5:288:5 | {...} |
+| cflow.cs:259:9:259:18 | ... ...; | cflow.cs:259:9:259:18 | ... ...; |
+| cflow.cs:259:13:259:17 | Int32 x = ... | cflow.cs:259:17:259:17 | 0 |
+| cflow.cs:259:17:259:17 | 0 | cflow.cs:259:17:259:17 | 0 |
+| cflow.cs:260:9:261:33 | for (...;...;...) ... | cflow.cs:260:9:261:33 | for (...;...;...) ... |
+| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:260:16:260:16 | access to local variable x |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:260:16:260:16 | access to local variable x |
+| cflow.cs:260:20:260:21 | 10 | cflow.cs:260:20:260:21 | 10 |
+| cflow.cs:260:24:260:26 | ++... | cflow.cs:260:26:260:26 | access to local variable x |
+| cflow.cs:260:26:260:26 | access to local variable x | cflow.cs:260:26:260:26 | access to local variable x |
+| cflow.cs:261:13:261:32 | call to method WriteLine | cflow.cs:261:31:261:31 | access to local variable x |
+| cflow.cs:261:13:261:33 | ...; | cflow.cs:261:13:261:33 | ...; |
+| cflow.cs:261:31:261:31 | access to local variable x | cflow.cs:261:31:261:31 | access to local variable x |
+| cflow.cs:263:9:268:9 | for (...;...;...) ... | cflow.cs:263:9:268:9 | for (...;...;...) ... |
+| cflow.cs:263:18:263:18 | access to local variable x | cflow.cs:263:18:263:18 | access to local variable x |
+| cflow.cs:263:18:263:20 | ...++ | cflow.cs:263:18:263:18 | access to local variable x |
+| cflow.cs:264:9:268:9 | {...} | cflow.cs:264:9:268:9 | {...} |
+| cflow.cs:265:13:265:32 | call to method WriteLine | cflow.cs:265:31:265:31 | access to local variable x |
+| cflow.cs:265:13:265:33 | ...; | cflow.cs:265:13:265:33 | ...; |
+| cflow.cs:265:31:265:31 | access to local variable x | cflow.cs:265:31:265:31 | access to local variable x |
+| cflow.cs:266:13:267:22 | if (...) ... | cflow.cs:266:13:267:22 | if (...) ... |
+| cflow.cs:266:17:266:17 | access to local variable x | cflow.cs:266:17:266:17 | access to local variable x |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:266:17:266:17 | access to local variable x |
+| cflow.cs:266:21:266:22 | 20 | cflow.cs:266:21:266:22 | 20 |
+| cflow.cs:267:17:267:22 | break; | cflow.cs:267:17:267:22 | break; |
+| cflow.cs:270:9:276:9 | for (...;...;...) ... | cflow.cs:270:9:276:9 | for (...;...;...) ... |
+| cflow.cs:271:9:276:9 | {...} | cflow.cs:271:9:276:9 | {...} |
+| cflow.cs:272:13:272:32 | call to method WriteLine | cflow.cs:272:31:272:31 | access to local variable x |
+| cflow.cs:272:13:272:33 | ...; | cflow.cs:272:13:272:33 | ...; |
+| cflow.cs:272:31:272:31 | access to local variable x | cflow.cs:272:31:272:31 | access to local variable x |
+| cflow.cs:273:13:273:13 | access to local variable x | cflow.cs:273:13:273:13 | access to local variable x |
+| cflow.cs:273:13:273:15 | ...++ | cflow.cs:273:13:273:13 | access to local variable x |
+| cflow.cs:273:13:273:16 | ...; | cflow.cs:273:13:273:16 | ...; |
+| cflow.cs:274:13:275:22 | if (...) ... | cflow.cs:274:13:275:22 | if (...) ... |
+| cflow.cs:274:17:274:17 | access to local variable x | cflow.cs:274:17:274:17 | access to local variable x |
+| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:274:17:274:17 | access to local variable x |
+| cflow.cs:274:21:274:22 | 30 | cflow.cs:274:21:274:22 | 30 |
+| cflow.cs:275:17:275:22 | break; | cflow.cs:275:17:275:22 | break; |
+| cflow.cs:278:9:282:9 | for (...;...;...) ... | cflow.cs:278:9:282:9 | for (...;...;...) ... |
+| cflow.cs:278:16:278:16 | access to local variable x | cflow.cs:278:16:278:16 | access to local variable x |
+| cflow.cs:278:16:278:21 | ... < ... | cflow.cs:278:16:278:16 | access to local variable x |
+| cflow.cs:278:20:278:21 | 40 | cflow.cs:278:20:278:21 | 40 |
+| cflow.cs:279:9:282:9 | {...} | cflow.cs:279:9:282:9 | {...} |
+| cflow.cs:280:13:280:32 | call to method WriteLine | cflow.cs:280:31:280:31 | access to local variable x |
+| cflow.cs:280:13:280:33 | ...; | cflow.cs:280:13:280:33 | ...; |
+| cflow.cs:280:31:280:31 | access to local variable x | cflow.cs:280:31:280:31 | access to local variable x |
+| cflow.cs:281:13:281:13 | access to local variable x | cflow.cs:281:13:281:13 | access to local variable x |
+| cflow.cs:281:13:281:15 | ...++ | cflow.cs:281:13:281:13 | access to local variable x |
+| cflow.cs:281:13:281:16 | ...; | cflow.cs:281:13:281:16 | ...; |
+| cflow.cs:284:9:287:9 | for (...;...;...) ... | cflow.cs:284:9:287:9 | for (...;...;...) ... |
+| cflow.cs:284:18:284:22 | Int32 i = ... | cflow.cs:284:22:284:22 | 0 |
+| cflow.cs:284:22:284:22 | 0 | cflow.cs:284:22:284:22 | 0 |
+| cflow.cs:284:25:284:29 | Int32 j = ... | cflow.cs:284:29:284:29 | 0 |
+| cflow.cs:284:29:284:29 | 0 | cflow.cs:284:29:284:29 | 0 |
+| cflow.cs:284:32:284:32 | access to local variable i | cflow.cs:284:32:284:32 | access to local variable i |
+| cflow.cs:284:32:284:36 | ... + ... | cflow.cs:284:32:284:32 | access to local variable i |
+| cflow.cs:284:32:284:41 | ... < ... | cflow.cs:284:32:284:32 | access to local variable i |
+| cflow.cs:284:36:284:36 | access to local variable j | cflow.cs:284:36:284:36 | access to local variable j |
+| cflow.cs:284:40:284:41 | 10 | cflow.cs:284:40:284:41 | 10 |
+| cflow.cs:284:44:284:44 | access to local variable i | cflow.cs:284:44:284:44 | access to local variable i |
+| cflow.cs:284:44:284:46 | ...++ | cflow.cs:284:44:284:44 | access to local variable i |
+| cflow.cs:284:49:284:49 | access to local variable j | cflow.cs:284:49:284:49 | access to local variable j |
+| cflow.cs:284:49:284:51 | ...++ | cflow.cs:284:49:284:49 | access to local variable j |
+| cflow.cs:285:9:287:9 | {...} | cflow.cs:285:9:287:9 | {...} |
+| cflow.cs:286:13:286:36 | call to method WriteLine | cflow.cs:286:31:286:31 | access to local variable i |
+| cflow.cs:286:13:286:37 | ...; | cflow.cs:286:13:286:37 | ...; |
+| cflow.cs:286:31:286:31 | access to local variable i | cflow.cs:286:31:286:31 | access to local variable i |
+| cflow.cs:286:31:286:35 | ... + ... | cflow.cs:286:31:286:31 | access to local variable i |
+| cflow.cs:286:35:286:35 | access to local variable j | cflow.cs:286:35:286:35 | access to local variable j |
+| cflow.cs:291:5:294:5 | {...} | cflow.cs:291:5:294:5 | {...} |
+| cflow.cs:292:9:292:38 | ... ...; | cflow.cs:292:9:292:38 | ... ...; |
+| cflow.cs:292:24:292:37 | Func<Int32,Int32> y = ... | cflow.cs:292:28:292:37 | (...) => ... |
+| cflow.cs:292:28:292:37 | (...) => ... | cflow.cs:292:28:292:37 | (...) => ... |
+| cflow.cs:292:33:292:33 | access to parameter x | cflow.cs:292:33:292:33 | access to parameter x |
+| cflow.cs:292:33:292:37 | ... + ... | cflow.cs:292:33:292:33 | access to parameter x |
+| cflow.cs:292:37:292:37 | 1 | cflow.cs:292:37:292:37 | 1 |
+| cflow.cs:293:9:293:62 | ... ...; | cflow.cs:293:9:293:62 | ... ...; |
+| cflow.cs:293:24:293:61 | Func<Int32,Int32> z = ... | cflow.cs:293:28:293:61 | delegate(...) { ... } |
+| cflow.cs:293:28:293:61 | delegate(...) { ... } | cflow.cs:293:28:293:61 | delegate(...) { ... } |
+| cflow.cs:293:45:293:61 | {...} | cflow.cs:293:45:293:61 | {...} |
+| cflow.cs:293:47:293:59 | return ...; | cflow.cs:293:54:293:54 | access to parameter x |
+| cflow.cs:293:54:293:54 | access to parameter x | cflow.cs:293:54:293:54 | access to parameter x |
+| cflow.cs:293:54:293:58 | ... + ... | cflow.cs:293:54:293:54 | access to parameter x |
+| cflow.cs:293:58:293:58 | 1 | cflow.cs:293:58:293:58 | 1 |
+| cflow.cs:297:5:302:5 | {...} | cflow.cs:297:5:302:5 | {...} |
+| cflow.cs:298:9:301:52 | if (...) ... | cflow.cs:298:9:301:52 | if (...) ... |
+| cflow.cs:298:13:298:13 | 1 | cflow.cs:298:13:298:13 | 1 |
+| cflow.cs:298:13:298:18 | ... == ... | cflow.cs:298:13:298:13 | 1 |
+| cflow.cs:298:13:298:28 | ... \|\| ... | cflow.cs:298:13:298:28 | ... \|\| ... |
+| cflow.cs:298:13:298:50 | ... \|\| ... | cflow.cs:298:13:298:50 | ... \|\| ... |
+| cflow.cs:298:18:298:18 | 2 | cflow.cs:298:18:298:18 | 2 |
+| cflow.cs:298:23:298:23 | 2 | cflow.cs:298:23:298:23 | 2 |
+| cflow.cs:298:23:298:28 | ... == ... | cflow.cs:298:23:298:23 | 2 |
+| cflow.cs:298:28:298:28 | 3 | cflow.cs:298:28:298:28 | 3 |
+| cflow.cs:298:34:298:34 | 1 | cflow.cs:298:34:298:34 | 1 |
+| cflow.cs:298:34:298:39 | ... == ... | cflow.cs:298:34:298:34 | 1 |
+| cflow.cs:298:34:298:49 | ... && ... | cflow.cs:298:34:298:49 | ... && ... |
+| cflow.cs:298:39:298:39 | 3 | cflow.cs:298:39:298:39 | 3 |
+| cflow.cs:298:44:298:44 | 3 | cflow.cs:298:44:298:44 | 3 |
+| cflow.cs:298:44:298:49 | ... == ... | cflow.cs:298:44:298:44 | 3 |
+| cflow.cs:298:49:298:49 | 1 | cflow.cs:298:49:298:49 | 1 |
+| cflow.cs:299:13:299:54 | call to method WriteLine | cflow.cs:299:31:299:53 | "This shouldn't happen" |
+| cflow.cs:299:13:299:55 | ...; | cflow.cs:299:13:299:55 | ...; |
+| cflow.cs:299:31:299:53 | "This shouldn't happen" | cflow.cs:299:31:299:53 | "This shouldn't happen" |
+| cflow.cs:301:13:301:51 | call to method WriteLine | cflow.cs:301:31:301:50 | "This should happen" |
+| cflow.cs:301:13:301:52 | ...; | cflow.cs:301:13:301:52 | ...; |
+| cflow.cs:301:31:301:50 | "This should happen" | cflow.cs:301:31:301:50 | "This should happen" |
+| cflow.cs:305:5:317:5 | {...} | cflow.cs:305:5:317:5 | {...} |
+| cflow.cs:306:9:306:57 | ... ...; | cflow.cs:306:9:306:57 | ... ...; |
+| cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:306:17:306:56 | ... && ... |
+| cflow.cs:306:17:306:21 | access to field Field | cflow.cs:306:17:306:21 | this access |
+| cflow.cs:306:17:306:21 | this access | cflow.cs:306:17:306:21 | this access |
+| cflow.cs:306:17:306:28 | access to property Length | cflow.cs:306:17:306:21 | this access |
+| cflow.cs:306:17:306:32 | ... > ... | cflow.cs:306:17:306:21 | this access |
+| cflow.cs:306:17:306:56 | ... && ... | cflow.cs:306:17:306:56 | ... && ... |
+| cflow.cs:306:32:306:32 | 0 | cflow.cs:306:32:306:32 | 0 |
+| cflow.cs:306:37:306:56 | !... | cflow.cs:306:37:306:56 | !... |
+| cflow.cs:306:39:306:43 | access to field Field | cflow.cs:306:39:306:43 | this access |
+| cflow.cs:306:39:306:43 | this access | cflow.cs:306:39:306:43 | this access |
+| cflow.cs:306:39:306:50 | access to property Length | cflow.cs:306:39:306:43 | this access |
+| cflow.cs:306:39:306:55 | ... == ... | cflow.cs:306:39:306:43 | this access |
+| cflow.cs:306:55:306:55 | 1 | cflow.cs:306:55:306:55 | 1 |
+| cflow.cs:308:9:309:49 | if (...) ... | cflow.cs:308:9:309:49 | if (...) ... |
+| cflow.cs:308:13:308:47 | !... | cflow.cs:308:13:308:47 | !... |
+| cflow.cs:308:15:308:19 | access to field Field | cflow.cs:308:15:308:19 | this access |
+| cflow.cs:308:15:308:19 | this access | cflow.cs:308:15:308:19 | this access |
+| cflow.cs:308:15:308:26 | access to property Length | cflow.cs:308:15:308:19 | this access |
+| cflow.cs:308:15:308:31 | ... == ... | cflow.cs:308:15:308:19 | this access |
+| cflow.cs:308:15:308:46 | ... ? ... : ... | cflow.cs:308:15:308:46 | ... ? ... : ... |
+| cflow.cs:308:31:308:31 | 0 | cflow.cs:308:31:308:31 | 0 |
+| cflow.cs:308:35:308:39 | false | cflow.cs:308:35:308:39 | false |
+| cflow.cs:308:43:308:46 | true | cflow.cs:308:43:308:46 | true |
+| cflow.cs:309:13:309:48 | ... = ... | cflow.cs:309:17:309:48 | ... ? ... : ... |
+| cflow.cs:309:13:309:49 | ...; | cflow.cs:309:13:309:49 | ...; |
+| cflow.cs:309:17:309:21 | access to field Field | cflow.cs:309:17:309:21 | this access |
+| cflow.cs:309:17:309:21 | this access | cflow.cs:309:17:309:21 | this access |
+| cflow.cs:309:17:309:28 | access to property Length | cflow.cs:309:17:309:21 | this access |
+| cflow.cs:309:17:309:33 | ... == ... | cflow.cs:309:17:309:21 | this access |
+| cflow.cs:309:17:309:48 | ... ? ... : ... | cflow.cs:309:17:309:48 | ... ? ... : ... |
+| cflow.cs:309:33:309:33 | 0 | cflow.cs:309:33:309:33 | 0 |
+| cflow.cs:309:37:309:41 | false | cflow.cs:309:37:309:41 | false |
+| cflow.cs:309:45:309:48 | true | cflow.cs:309:45:309:48 | true |
+| cflow.cs:311:9:316:9 | if (...) ... | cflow.cs:311:9:316:9 | if (...) ... |
+| cflow.cs:311:13:311:32 | !... | cflow.cs:311:13:311:32 | !... |
+| cflow.cs:311:13:311:62 | ... \|\| ... | cflow.cs:311:13:311:62 | ... \|\| ... |
+| cflow.cs:311:15:311:19 | access to field Field | cflow.cs:311:15:311:19 | this access |
+| cflow.cs:311:15:311:19 | this access | cflow.cs:311:15:311:19 | this access |
+| cflow.cs:311:15:311:26 | access to property Length | cflow.cs:311:15:311:19 | this access |
+| cflow.cs:311:15:311:31 | ... == ... | cflow.cs:311:15:311:19 | this access |
+| cflow.cs:311:31:311:31 | 0 | cflow.cs:311:31:311:31 | 0 |
+| cflow.cs:311:37:311:62 | !... | cflow.cs:311:37:311:62 | !... |
+| cflow.cs:311:38:311:62 | !... | cflow.cs:311:38:311:62 | !... |
+| cflow.cs:311:40:311:44 | access to field Field | cflow.cs:311:40:311:44 | this access |
+| cflow.cs:311:40:311:44 | this access | cflow.cs:311:40:311:44 | this access |
+| cflow.cs:311:40:311:51 | access to property Length | cflow.cs:311:40:311:44 | this access |
+| cflow.cs:311:40:311:56 | ... == ... | cflow.cs:311:40:311:44 | this access |
+| cflow.cs:311:40:311:61 | ... && ... | cflow.cs:311:40:311:61 | ... && ... |
+| cflow.cs:311:56:311:56 | 1 | cflow.cs:311:56:311:56 | 1 |
+| cflow.cs:311:61:311:61 | access to local variable b | cflow.cs:311:61:311:61 | access to local variable b |
+| cflow.cs:312:9:316:9 | {...} | cflow.cs:312:9:316:9 | {...} |
+| cflow.cs:313:13:315:13 | {...} | cflow.cs:313:13:315:13 | {...} |
+| cflow.cs:314:17:314:38 | throw ...; | cflow.cs:314:23:314:37 | object creation of type Exception |
+| cflow.cs:314:23:314:37 | object creation of type Exception | cflow.cs:314:23:314:37 | object creation of type Exception |
+| cflow.cs:320:5:333:5 | {...} | cflow.cs:320:5:333:5 | {...} |
+| cflow.cs:321:9:332:36 | do ... while (...); | cflow.cs:321:9:332:36 | do ... while (...); |
+| cflow.cs:322:9:332:9 | {...} | cflow.cs:322:9:332:9 | {...} |
+| cflow.cs:323:13:323:17 | access to field Field | cflow.cs:323:13:323:17 | this access |
+| cflow.cs:323:13:323:17 | access to field Field | cflow.cs:323:13:323:17 | this access |
+| cflow.cs:323:13:323:17 | this access | cflow.cs:323:13:323:17 | this access |
+| cflow.cs:323:13:323:17 | this access | cflow.cs:323:13:323:17 | this access |
+| cflow.cs:323:13:323:24 | ... + ... | cflow.cs:323:13:323:17 | this access |
+| cflow.cs:323:13:323:24 | ... += ... | cflow.cs:323:13:323:17 | this access |
+| cflow.cs:323:13:323:24 | ... = ... | cflow.cs:323:13:323:17 | this access |
+| cflow.cs:323:13:323:25 | ...; | cflow.cs:323:13:323:25 | ...; |
+| cflow.cs:323:22:323:24 | "a" | cflow.cs:323:22:323:24 | "a" |
+| cflow.cs:324:13:327:13 | if (...) ... | cflow.cs:324:13:327:13 | if (...) ... |
+| cflow.cs:324:17:324:21 | access to field Field | cflow.cs:324:17:324:21 | this access |
+| cflow.cs:324:17:324:21 | this access | cflow.cs:324:17:324:21 | this access |
+| cflow.cs:324:17:324:28 | access to property Length | cflow.cs:324:17:324:21 | this access |
+| cflow.cs:324:17:324:32 | ... > ... | cflow.cs:324:17:324:21 | this access |
+| cflow.cs:324:32:324:32 | 0 | cflow.cs:324:32:324:32 | 0 |
+| cflow.cs:325:13:327:13 | {...} | cflow.cs:325:13:327:13 | {...} |
+| cflow.cs:326:17:326:25 | continue; | cflow.cs:326:17:326:25 | continue; |
+| cflow.cs:328:13:331:13 | if (...) ... | cflow.cs:328:13:331:13 | if (...) ... |
+| cflow.cs:328:17:328:21 | access to field Field | cflow.cs:328:17:328:21 | this access |
+| cflow.cs:328:17:328:21 | this access | cflow.cs:328:17:328:21 | this access |
+| cflow.cs:328:17:328:28 | access to property Length | cflow.cs:328:17:328:21 | this access |
+| cflow.cs:328:17:328:32 | ... < ... | cflow.cs:328:17:328:21 | this access |
+| cflow.cs:328:32:328:32 | 0 | cflow.cs:328:32:328:32 | 0 |
+| cflow.cs:329:13:331:13 | {...} | cflow.cs:329:13:331:13 | {...} |
+| cflow.cs:330:17:330:22 | break; | cflow.cs:330:17:330:22 | break; |
+| cflow.cs:332:18:332:22 | access to field Field | cflow.cs:332:18:332:22 | this access |
+| cflow.cs:332:18:332:22 | this access | cflow.cs:332:18:332:22 | this access |
+| cflow.cs:332:18:332:29 | access to property Length | cflow.cs:332:18:332:22 | this access |
+| cflow.cs:332:18:332:34 | ... < ... | cflow.cs:332:18:332:22 | this access |
+| cflow.cs:332:33:332:34 | 10 | cflow.cs:332:33:332:34 | 10 |
+| cflow.cs:336:5:349:5 | {...} | cflow.cs:336:5:349:5 | {...} |
+| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:337:57:337:59 | "a" |
+| cflow.cs:337:22:337:22 | String x | cflow.cs:337:22:337:22 | String x |
+| cflow.cs:337:27:337:64 | call to method Repeat | cflow.cs:337:57:337:59 | "a" |
+| cflow.cs:337:57:337:59 | "a" | cflow.cs:337:57:337:59 | "a" |
+| cflow.cs:337:62:337:63 | 10 | cflow.cs:337:62:337:63 | 10 |
+| cflow.cs:338:9:348:9 | {...} | cflow.cs:338:9:348:9 | {...} |
+| cflow.cs:339:13:339:17 | access to field Field | cflow.cs:339:13:339:17 | this access |
+| cflow.cs:339:13:339:17 | access to field Field | cflow.cs:339:13:339:17 | this access |
+| cflow.cs:339:13:339:17 | this access | cflow.cs:339:13:339:17 | this access |
+| cflow.cs:339:13:339:17 | this access | cflow.cs:339:13:339:17 | this access |
+| cflow.cs:339:13:339:22 | ... + ... | cflow.cs:339:13:339:17 | this access |
+| cflow.cs:339:13:339:22 | ... += ... | cflow.cs:339:13:339:17 | this access |
+| cflow.cs:339:13:339:22 | ... = ... | cflow.cs:339:13:339:17 | this access |
+| cflow.cs:339:13:339:23 | ...; | cflow.cs:339:13:339:23 | ...; |
+| cflow.cs:339:22:339:22 | access to local variable x | cflow.cs:339:22:339:22 | access to local variable x |
+| cflow.cs:340:13:343:13 | if (...) ... | cflow.cs:340:13:343:13 | if (...) ... |
+| cflow.cs:340:17:340:21 | access to field Field | cflow.cs:340:17:340:21 | this access |
+| cflow.cs:340:17:340:21 | this access | cflow.cs:340:17:340:21 | this access |
+| cflow.cs:340:17:340:28 | access to property Length | cflow.cs:340:17:340:21 | this access |
+| cflow.cs:340:17:340:32 | ... > ... | cflow.cs:340:17:340:21 | this access |
+| cflow.cs:340:32:340:32 | 0 | cflow.cs:340:32:340:32 | 0 |
+| cflow.cs:341:13:343:13 | {...} | cflow.cs:341:13:343:13 | {...} |
+| cflow.cs:342:17:342:25 | continue; | cflow.cs:342:17:342:25 | continue; |
+| cflow.cs:344:13:347:13 | if (...) ... | cflow.cs:344:13:347:13 | if (...) ... |
+| cflow.cs:344:17:344:21 | access to field Field | cflow.cs:344:17:344:21 | this access |
+| cflow.cs:344:17:344:21 | this access | cflow.cs:344:17:344:21 | this access |
+| cflow.cs:344:17:344:28 | access to property Length | cflow.cs:344:17:344:21 | this access |
+| cflow.cs:344:17:344:32 | ... < ... | cflow.cs:344:17:344:21 | this access |
+| cflow.cs:344:32:344:32 | 0 | cflow.cs:344:32:344:32 | 0 |
+| cflow.cs:345:13:347:13 | {...} | cflow.cs:345:13:347:13 | {...} |
+| cflow.cs:346:17:346:22 | break; | cflow.cs:346:17:346:22 | break; |
+| cflow.cs:352:5:370:5 | {...} | cflow.cs:352:5:370:5 | {...} |
+| cflow.cs:353:9:353:13 | Label: | cflow.cs:353:9:353:13 | Label: |
+| cflow.cs:353:16:353:45 | if (...) ... | cflow.cs:353:16:353:45 | if (...) ... |
+| cflow.cs:353:20:353:40 | !... | cflow.cs:353:20:353:40 | !... |
+| cflow.cs:353:21:353:40 | !... | cflow.cs:353:21:353:40 | !... |
+| cflow.cs:353:23:353:27 | access to field Field | cflow.cs:353:23:353:27 | this access |
+| cflow.cs:353:23:353:27 | this access | cflow.cs:353:23:353:27 | this access |
+| cflow.cs:353:23:353:34 | access to property Length | cflow.cs:353:23:353:27 | this access |
+| cflow.cs:353:23:353:39 | ... == ... | cflow.cs:353:23:353:27 | this access |
+| cflow.cs:353:39:353:39 | 0 | cflow.cs:353:39:353:39 | 0 |
+| cflow.cs:353:43:353:45 | {...} | cflow.cs:353:43:353:45 | {...} |
+| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:355:9:355:41 | if (...) ... |
+| cflow.cs:355:13:355:17 | access to field Field | cflow.cs:355:13:355:17 | this access |
+| cflow.cs:355:13:355:17 | this access | cflow.cs:355:13:355:17 | this access |
+| cflow.cs:355:13:355:24 | access to property Length | cflow.cs:355:13:355:17 | this access |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:355:13:355:17 | this access |
+| cflow.cs:355:28:355:28 | 0 | cflow.cs:355:28:355:28 | 0 |
+| cflow.cs:355:31:355:41 | goto ...; | cflow.cs:355:31:355:41 | goto ...; |
+| cflow.cs:357:9:369:9 | switch (...) {...} | cflow.cs:357:9:369:9 | switch (...) {...} |
+| cflow.cs:357:17:357:21 | access to field Field | cflow.cs:357:17:357:21 | this access |
+| cflow.cs:357:17:357:21 | this access | cflow.cs:357:17:357:21 | this access |
+| cflow.cs:357:17:357:28 | access to property Length | cflow.cs:357:17:357:21 | this access |
+| cflow.cs:357:17:357:32 | ... + ... | cflow.cs:357:17:357:21 | this access |
+| cflow.cs:357:32:357:32 | 3 | cflow.cs:357:32:357:32 | 3 |
+| cflow.cs:359:13:359:19 | case ...: | cflow.cs:359:13:359:19 | case ...: |
+| cflow.cs:359:18:359:18 | 0 | cflow.cs:359:18:359:18 | 0 |
+| cflow.cs:360:17:360:29 | goto default; | cflow.cs:360:17:360:29 | goto default; |
+| cflow.cs:361:13:361:19 | case ...: | cflow.cs:361:13:361:19 | case ...: |
+| cflow.cs:361:18:361:18 | 1 | cflow.cs:361:18:361:18 | 1 |
+| cflow.cs:362:17:362:36 | call to method WriteLine | cflow.cs:362:35:362:35 | 1 |
+| cflow.cs:362:17:362:37 | ...; | cflow.cs:362:17:362:37 | ...; |
+| cflow.cs:362:35:362:35 | 1 | cflow.cs:362:35:362:35 | 1 |
+| cflow.cs:363:17:363:22 | break; | cflow.cs:363:17:363:22 | break; |
+| cflow.cs:364:13:364:19 | case ...: | cflow.cs:364:13:364:19 | case ...: |
+| cflow.cs:364:18:364:18 | 2 | cflow.cs:364:18:364:18 | 2 |
+| cflow.cs:365:17:365:27 | goto ...; | cflow.cs:365:17:365:27 | goto ...; |
+| cflow.cs:366:13:366:20 | default: | cflow.cs:366:13:366:20 | default: |
+| cflow.cs:367:17:367:36 | call to method WriteLine | cflow.cs:367:35:367:35 | 0 |
+| cflow.cs:367:17:367:37 | ...; | cflow.cs:367:17:367:37 | ...; |
+| cflow.cs:367:35:367:35 | 0 | cflow.cs:367:35:367:35 | 0 |
+| cflow.cs:368:17:368:22 | break; | cflow.cs:368:17:368:22 | break; |
+| cflow.cs:373:5:388:5 | {...} | cflow.cs:373:5:388:5 | {...} |
+| cflow.cs:374:9:374:23 | yield return ...; | cflow.cs:374:22:374:22 | 0 |
+| cflow.cs:374:22:374:22 | 0 | cflow.cs:374:22:374:22 | 0 |
+| cflow.cs:375:9:378:9 | for (...;...;...) ... | cflow.cs:375:9:378:9 | for (...;...;...) ... |
+| cflow.cs:375:18:375:22 | Int32 i = ... | cflow.cs:375:22:375:22 | 1 |
+| cflow.cs:375:22:375:22 | 1 | cflow.cs:375:22:375:22 | 1 |
+| cflow.cs:375:25:375:25 | access to local variable i | cflow.cs:375:25:375:25 | access to local variable i |
+| cflow.cs:375:25:375:30 | ... < ... | cflow.cs:375:25:375:25 | access to local variable i |
+| cflow.cs:375:29:375:30 | 10 | cflow.cs:375:29:375:30 | 10 |
+| cflow.cs:375:33:375:33 | access to local variable i | cflow.cs:375:33:375:33 | access to local variable i |
+| cflow.cs:375:33:375:35 | ...++ | cflow.cs:375:33:375:33 | access to local variable i |
 | cflow.cs:376:9:378:9 | {...} | cflow.cs:376:9:378:9 | {...} |
-| cflow.cs:377:13:377:41 | call to method WriteLine | cflow.cs:377:31:377:40 | "not dead" |
-| cflow.cs:377:13:377:42 | ...; | cflow.cs:377:13:377:42 | ...; |
-| cflow.cs:377:31:377:40 | "not dead" | cflow.cs:377:31:377:40 | "not dead" |
-| cflow.cs:384:24:384:27 | call to constructor ControlFlow | cflow.cs:384:24:384:27 | call to constructor ControlFlow |
-| cflow.cs:384:31:384:33 | {...} | cflow.cs:384:31:384:33 | {...} |
-| cflow.cs:386:32:386:35 | call to constructor ControlFlowSub | cflow.cs:386:32:386:35 | call to constructor ControlFlowSub |
-| cflow.cs:386:39:386:41 | {...} | cflow.cs:386:39:386:41 | {...} |
-| cflow.cs:388:29:388:32 | call to constructor ControlFlowSub | cflow.cs:388:34:388:34 | access to parameter i |
-| cflow.cs:388:34:388:34 | access to parameter i | cflow.cs:388:34:388:34 | access to parameter i |
-| cflow.cs:388:34:388:45 | call to method ToString | cflow.cs:388:34:388:34 | access to parameter i |
-| cflow.cs:388:48:388:50 | {...} | cflow.cs:388:48:388:50 | {...} |
-| cflow.cs:394:5:405:5 | {...} | cflow.cs:394:5:405:5 | {...} |
-| cflow.cs:395:9:403:9 | try {...} ... | cflow.cs:395:9:403:9 | try {...} ... |
-| cflow.cs:396:9:398:9 | {...} | cflow.cs:396:9:398:9 | {...} |
-| cflow.cs:397:13:397:36 | call to method WriteLine | cflow.cs:397:31:397:35 | "Try" |
-| cflow.cs:397:13:397:37 | ...; | cflow.cs:397:13:397:37 | ...; |
-| cflow.cs:397:31:397:35 | "Try" | cflow.cs:397:31:397:35 | "Try" |
-| cflow.cs:400:9:403:9 | {...} | cflow.cs:400:9:403:9 | {...} |
-| cflow.cs:401:13:401:44 | throw ...; | cflow.cs:401:41:401:42 | "" |
-| cflow.cs:401:19:401:43 | object creation of type ArgumentException | cflow.cs:401:41:401:42 | "" |
-| cflow.cs:401:41:401:42 | "" | cflow.cs:401:41:401:42 | "" |
-| cflow.cs:402:13:402:37 | call to method WriteLine | cflow.cs:402:31:402:36 | "Dead" |
-| cflow.cs:402:13:402:38 | ...; | cflow.cs:402:13:402:38 | ...; |
-| cflow.cs:402:31:402:36 | "Dead" | cflow.cs:402:31:402:36 | "Dead" |
-| cflow.cs:404:9:404:33 | call to method WriteLine | cflow.cs:404:27:404:32 | "Dead" |
-| cflow.cs:404:9:404:34 | ...; | cflow.cs:404:9:404:34 | ...; |
-| cflow.cs:404:27:404:32 | "Dead" | cflow.cs:404:27:404:32 | "Dead" |
-| cflow.cs:410:38:410:38 | access to parameter f | cflow.cs:410:38:410:38 | access to parameter f |
-| cflow.cs:410:38:410:41 | delegate call | cflow.cs:410:38:410:38 | access to parameter f |
-| cflow.cs:410:40:410:40 | 0 | cflow.cs:410:40:410:40 | 0 |
-| cflow.cs:415:52:415:54 | {...} | cflow.cs:415:52:415:54 | {...} |
-| cflow.cs:418:5:420:5 | {...} | cflow.cs:418:5:420:5 | {...} |
-| cflow.cs:419:9:419:72 | object creation of type NegationInConstructor | cflow.cs:419:38:419:38 | 0 |
-| cflow.cs:419:9:419:73 | ...; | cflow.cs:419:9:419:73 | ...; |
-| cflow.cs:419:38:419:38 | 0 | cflow.cs:419:38:419:38 | 0 |
-| cflow.cs:419:44:419:51 | !... | cflow.cs:419:44:419:51 | !... |
-| cflow.cs:419:44:419:64 | ... && ... | cflow.cs:419:44:419:64 | ... && ... |
-| cflow.cs:419:46:419:46 | access to parameter i | cflow.cs:419:46:419:46 | access to parameter i |
-| cflow.cs:419:46:419:50 | ... > ... | cflow.cs:419:46:419:46 | access to parameter i |
-| cflow.cs:419:50:419:50 | 0 | cflow.cs:419:50:419:50 | 0 |
-| cflow.cs:419:56:419:56 | access to parameter s | cflow.cs:419:56:419:56 | access to parameter s |
-| cflow.cs:419:56:419:64 | ... != ... | cflow.cs:419:56:419:56 | access to parameter s |
-| cflow.cs:419:61:419:64 | null | cflow.cs:419:61:419:64 | null |
-| cflow.cs:419:70:419:71 | "" | cflow.cs:419:70:419:71 | "" |
+| cflow.cs:377:13:377:27 | yield return ...; | cflow.cs:377:26:377:26 | access to local variable i |
+| cflow.cs:377:26:377:26 | access to local variable i | cflow.cs:377:26:377:26 | access to local variable i |
+| cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:379:9:387:9 | try {...} ... |
+| cflow.cs:380:9:383:9 | {...} | cflow.cs:380:9:383:9 | {...} |
+| cflow.cs:381:13:381:24 | yield break; | cflow.cs:381:13:381:24 | yield break; |
+| cflow.cs:382:13:382:42 | call to method WriteLine | cflow.cs:382:31:382:41 | "dead code" |
+| cflow.cs:382:13:382:43 | ...; | cflow.cs:382:13:382:43 | ...; |
+| cflow.cs:382:31:382:41 | "dead code" | cflow.cs:382:31:382:41 | "dead code" |
+| cflow.cs:385:9:387:9 | {...} | cflow.cs:385:9:387:9 | {...} |
+| cflow.cs:386:13:386:41 | call to method WriteLine | cflow.cs:386:31:386:40 | "not dead" |
+| cflow.cs:386:13:386:42 | ...; | cflow.cs:386:13:386:42 | ...; |
+| cflow.cs:386:31:386:40 | "not dead" | cflow.cs:386:31:386:40 | "not dead" |
+| cflow.cs:393:24:393:27 | call to constructor ControlFlow | cflow.cs:393:24:393:27 | call to constructor ControlFlow |
+| cflow.cs:393:31:393:33 | {...} | cflow.cs:393:31:393:33 | {...} |
+| cflow.cs:395:32:395:35 | call to constructor ControlFlowSub | cflow.cs:395:32:395:35 | call to constructor ControlFlowSub |
+| cflow.cs:395:39:395:41 | {...} | cflow.cs:395:39:395:41 | {...} |
+| cflow.cs:397:29:397:32 | call to constructor ControlFlowSub | cflow.cs:397:34:397:34 | access to parameter i |
+| cflow.cs:397:34:397:34 | access to parameter i | cflow.cs:397:34:397:34 | access to parameter i |
+| cflow.cs:397:34:397:45 | call to method ToString | cflow.cs:397:34:397:34 | access to parameter i |
+| cflow.cs:397:48:397:50 | {...} | cflow.cs:397:48:397:50 | {...} |
+| cflow.cs:403:5:414:5 | {...} | cflow.cs:403:5:414:5 | {...} |
+| cflow.cs:404:9:412:9 | try {...} ... | cflow.cs:404:9:412:9 | try {...} ... |
+| cflow.cs:405:9:407:9 | {...} | cflow.cs:405:9:407:9 | {...} |
+| cflow.cs:406:13:406:36 | call to method WriteLine | cflow.cs:406:31:406:35 | "Try" |
+| cflow.cs:406:13:406:37 | ...; | cflow.cs:406:13:406:37 | ...; |
+| cflow.cs:406:31:406:35 | "Try" | cflow.cs:406:31:406:35 | "Try" |
+| cflow.cs:409:9:412:9 | {...} | cflow.cs:409:9:412:9 | {...} |
+| cflow.cs:410:13:410:44 | throw ...; | cflow.cs:410:41:410:42 | "" |
+| cflow.cs:410:19:410:43 | object creation of type ArgumentException | cflow.cs:410:41:410:42 | "" |
+| cflow.cs:410:41:410:42 | "" | cflow.cs:410:41:410:42 | "" |
+| cflow.cs:411:13:411:37 | call to method WriteLine | cflow.cs:411:31:411:36 | "Dead" |
+| cflow.cs:411:13:411:38 | ...; | cflow.cs:411:13:411:38 | ...; |
+| cflow.cs:411:31:411:36 | "Dead" | cflow.cs:411:31:411:36 | "Dead" |
+| cflow.cs:413:9:413:33 | call to method WriteLine | cflow.cs:413:27:413:32 | "Dead" |
+| cflow.cs:413:9:413:34 | ...; | cflow.cs:413:9:413:34 | ...; |
+| cflow.cs:413:27:413:32 | "Dead" | cflow.cs:413:27:413:32 | "Dead" |
+| cflow.cs:419:38:419:38 | access to parameter f | cflow.cs:419:38:419:38 | access to parameter f |
+| cflow.cs:419:38:419:41 | delegate call | cflow.cs:419:38:419:38 | access to parameter f |
+| cflow.cs:419:40:419:40 | 0 | cflow.cs:419:40:419:40 | 0 |
+| cflow.cs:424:52:424:54 | {...} | cflow.cs:424:52:424:54 | {...} |
+| cflow.cs:427:5:429:5 | {...} | cflow.cs:427:5:429:5 | {...} |
+| cflow.cs:428:9:428:72 | object creation of type NegationInConstructor | cflow.cs:428:38:428:38 | 0 |
+| cflow.cs:428:9:428:73 | ...; | cflow.cs:428:9:428:73 | ...; |
+| cflow.cs:428:38:428:38 | 0 | cflow.cs:428:38:428:38 | 0 |
+| cflow.cs:428:44:428:51 | !... | cflow.cs:428:44:428:51 | !... |
+| cflow.cs:428:44:428:64 | ... && ... | cflow.cs:428:44:428:64 | ... && ... |
+| cflow.cs:428:46:428:46 | access to parameter i | cflow.cs:428:46:428:46 | access to parameter i |
+| cflow.cs:428:46:428:50 | ... > ... | cflow.cs:428:46:428:46 | access to parameter i |
+| cflow.cs:428:50:428:50 | 0 | cflow.cs:428:50:428:50 | 0 |
+| cflow.cs:428:56:428:56 | access to parameter s | cflow.cs:428:56:428:56 | access to parameter s |
+| cflow.cs:428:56:428:64 | ... != ... | cflow.cs:428:56:428:56 | access to parameter s |
+| cflow.cs:428:61:428:64 | null | cflow.cs:428:61:428:64 | null |
+| cflow.cs:428:70:428:71 | "" | cflow.cs:428:70:428:71 | "" |

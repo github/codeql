@@ -4,11 +4,7 @@ import Collections
 /** A reference type that extends a parameterization of `java.util.Map`. */
 class MapType extends RefType {
   MapType() {
-    exists(ParameterizedInterface coll |
-      coll.getSourceDeclaration().hasQualifiedName("java.util", "Map")
-      |
-      this.hasSupertype*(coll)
-    )
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map")
   }
 
   /** Gets the type of keys stored in this map. */
@@ -28,44 +24,30 @@ class MapType extends RefType {
 
 /** A method declared in a map type. */
 class MapMethod extends Method {
-  MapMethod() {
-    this.getDeclaringType() instanceof MapType
-  }
+  MapMethod() { this.getDeclaringType() instanceof MapType }
 
   /** Gets the type of keys of the map to which this method belongs. */
-  RefType getReceiverKeyType() {
-    result = this.getDeclaringType().(MapType).getKeyType()
-  }
+  RefType getReceiverKeyType() { result = this.getDeclaringType().(MapType).getKeyType() }
 
   /** Gets the type of values of the map to which this method belongs. */
-  RefType getReceiverValueType() {
-    result = this.getDeclaringType().(MapType).getValueType()
-  }
+  RefType getReceiverValueType() { result = this.getDeclaringType().(MapType).getValueType() }
 }
 
 /** A method that mutates the map it belongs to. */
 class MapMutator extends MapMethod {
-  MapMutator() {
-    this.getName().regexpMatch("(put.*|remove|clear)")
-  }
+  MapMutator() { this.getName().regexpMatch("(put.*|remove|clear)") }
 }
 
 /** The `size` method of `java.util.Map`. */
 class MapSizeMethod extends MapMethod {
-  MapSizeMethod() {
-    this.hasName("size") and this.hasNoParameters()
-  }
+  MapSizeMethod() { this.hasName("size") and this.hasNoParameters() }
 }
 
 /** A method call that mutates a map. */
 class MapMutation extends MethodAccess {
-  MapMutation() {
-    this.getMethod() instanceof MapMutator
-  }
+  MapMutation() { this.getMethod() instanceof MapMutator }
 
-  predicate resultIsChecked() {
-    not this.getParent() instanceof ExprStmt
-  }
+  predicate resultIsChecked() { not this.getParent() instanceof ExprStmt }
 }
 
 /** A method that queries the contents of the map it belongs to without mutating it. */
@@ -88,15 +70,9 @@ class FreshMap extends ClassInstanceExpr {
  * A call to `Map.put(key, value)`.
  */
 class MapPutCall extends MethodAccess {
-  MapPutCall() {
-    getCallee().(MapMethod).hasName("put")
-  }
+  MapPutCall() { getCallee().(MapMethod).hasName("put") }
 
-  Expr getKey() {
-    result = getArgument(0)
-  }
+  Expr getKey() { result = getArgument(0) }
 
-  Expr getValue() {
-    result = getArgument(1)
-  }
+  Expr getValue() { result = getArgument(1) }
 }

@@ -13,5 +13,4 @@ import javascript
 
 from File f, int n
 where n = count(Stmt s | s.getTopLevel().getFile() = f)
-select f, n
-order by n desc
+select f, n order by n desc

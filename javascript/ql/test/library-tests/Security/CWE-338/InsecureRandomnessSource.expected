@@ -6,3 +6,5 @@
 | tst.js:15:1:15:12 | randomSeed() |
 | tst.js:18:1:18:14 | uniqueRandom() |
 | tst.js:22:1:22:12 | chance.XYZ() |
+| tst.js:25:1:25:29 | crypto. ... es(100) |
+| tst.js:26:1:26:33 | new cry ... es(100) |

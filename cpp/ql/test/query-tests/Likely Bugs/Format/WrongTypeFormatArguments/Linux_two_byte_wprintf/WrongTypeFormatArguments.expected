@@ -1,0 +1,3 @@
+| printf.cpp:33:31:33:37 | test | This argument should be of type 'char *' but is of type 'char16_t *' |
+| printf.cpp:45:29:45:35 | test | This argument should be of type 'char *' but is of type 'char16_t *' |
+| printf.cpp:52:29:52:35 | test | This argument should be of type 'char16_t *' but is of type 'wchar_t *' |

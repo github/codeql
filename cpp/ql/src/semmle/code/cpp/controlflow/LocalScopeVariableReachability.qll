@@ -58,23 +58,23 @@ abstract class LocalScopeVariableReachability extends string {
    * accounts for loops where the condition is provably true upon entry.
    */
   predicate reaches(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink) {
-    /* Implementation detail: the predicates in this class are a generalization of
+    /*
+     * Implementation detail: the predicates in this class are a generalization of
      * those in DefinitionsAndUses.qll, and should be kept in sync.
      *
      * Unfortunately, caching of abstract predicates does not work well, so the
      * predicates in DefinitionsAndUses.qll cannot use this library.
      */
+
     exists(BasicBlock bb, int i |
       isSource(source, v) and
       bb.getNode(i) = source and
-      not bb.isUnreachable() |
+      not bb.isUnreachable()
+    |
       exists(int j |
-        j > i
-        and
-        sink = bb.getNode(j)
-        and
-        isSink(sink, v)
-        and
+        j > i and
+        sink = bb.getNode(j) and
+        isSink(sink, v) and
         not exists(int k | isBarrier(bb.getNode(k), v) | k in [i + 1 .. j - 1])
       )
       or
@@ -83,9 +83,14 @@ abstract class LocalScopeVariableReachability extends string {
     )
   }
 
-  private predicate bbSuccessorEntryReaches(BasicBlock bb, SemanticStackVariable v, ControlFlowNode node, boolean skipsFirstLoopAlwaysTrueUponEntry) {
+  private predicate bbSuccessorEntryReaches(
+    BasicBlock bb, SemanticStackVariable v, ControlFlowNode node,
+    boolean skipsFirstLoopAlwaysTrueUponEntry
+  ) {
     exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
-      bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry, succSkipsFirstLoopAlwaysTrueUponEntry) |
+      bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
+        succSkipsFirstLoopAlwaysTrueUponEntry)
+    |
       bbEntryReachesLocally(succ, v, node) and
       succSkipsFirstLoopAlwaysTrueUponEntry = false
       or
@@ -94,11 +99,21 @@ abstract class LocalScopeVariableReachability extends string {
     )
   }
 
-  private predicate bbEntryReachesLocally(BasicBlock bb, SemanticStackVariable v, ControlFlowNode node) {
+  private predicate bbEntryReachesLocally(
+    BasicBlock bb, SemanticStackVariable v, ControlFlowNode node
+  ) {
     exists(int n |
-      node = bb.getNode(n) and isSink(node, v) |
-      not exists(int m | m < n | isBarrier(bb.getNode(m), v))
+      node = bb.getNode(n) and
+      isSink(node, v)
+    |
+      not exists(this.firstBarrierIndexIn(bb, v))
+      or
+      n <= this.firstBarrierIndexIn(bb, v)
     )
+  }
+
+  private int firstBarrierIndexIn(BasicBlock bb, SemanticStackVariable v) {
+    result = min(int m | isBarrier(bb.getNode(m), v))
   }
 }
 
@@ -123,20 +138,28 @@ private predicate bbLoopEntryConditionAlwaysTrueAt(BasicBlock bb, int i, Control
 }
 
 /**
- * Basic block `pred` ends with a condition belonging to a loop, and that
- * condition is provably true upon entry. Basic block `succ` is a successor
- * of `pred`, and `skipsLoop` indicates whether `succ` is the false-successor
- * of `pred`.
+ * Basic block `pred` contains all or part of the condition belonging to a loop,
+ * and there is an edge from `pred` to `succ` that concludes the condition.
+ * If the edge corrseponds with the loop condition being found to be `true`, then
+ * `skipsLoop` is `false`.  Otherwise the edge corresponds with the loop condition
+ * being found to be `false` and `skipsLoop` is `true`.  Non-concluding edges
+ * within a complex loop condition are not matched by this predicate.
  */
-private predicate bbLoopConditionAlwaysTrueUponEntrySuccessor(BasicBlock pred, BasicBlock succ, boolean skipsLoop) {
-  succ = pred.getASuccessor() and
-  exists(ControlFlowNode last |
-    last = pred.getEnd() and
-    loopConditionAlwaysTrueUponEntry(_, last) and
-    if succ = pred.getAFalseSuccessor() then
+private predicate bbLoopConditionAlwaysTrueUponEntrySuccessor(
+  BasicBlock pred, BasicBlock succ, boolean skipsLoop
+) {
+  exists(Expr cond |
+    loopConditionAlwaysTrueUponEntry(_, cond) and
+    cond.getAChild*() = pred.getEnd() and
+    succ = pred.getASuccessor() and
+    not cond.getAChild*() = succ.getStart() and
+    (
+      succ = pred.getAFalseSuccessor() and
       skipsLoop = true
-    else
+      or
+      succ = pred.getATrueSuccessor() and
       skipsLoop = false
+    )
   )
 }
 
@@ -154,7 +177,10 @@ private predicate bbLoopConditionAlwaysTrueUponEntrySuccessor(BasicBlock pred, B
  * is provably true upon entry, then `succ` is not allowed to skip
  * that loop (`succSkipsFirstLoopAlwaysTrueUponEntry = false`).
  */
-predicate bbSuccessorEntryReachesLoopInvariant(BasicBlock pred, BasicBlock succ, boolean predSkipsFirstLoopAlwaysTrueUponEntry, boolean succSkipsFirstLoopAlwaysTrueUponEntry) {
+predicate bbSuccessorEntryReachesLoopInvariant(
+  BasicBlock pred, BasicBlock succ, boolean predSkipsFirstLoopAlwaysTrueUponEntry,
+  boolean succSkipsFirstLoopAlwaysTrueUponEntry
+) {
   succ = pred.getASuccessor() and
   (succSkipsFirstLoopAlwaysTrueUponEntry = true or succSkipsFirstLoopAlwaysTrueUponEntry = false) and
   (
@@ -164,16 +190,18 @@ predicate bbSuccessorEntryReachesLoopInvariant(BasicBlock pred, BasicBlock succ,
     // regardless of the value of `succSkipsFirstLoopAlwaysTrueUponEntry`.
     bbLoopConditionAlwaysTrueUponEntrySuccessor(pred, succ, predSkipsFirstLoopAlwaysTrueUponEntry)
     or
+    // The edge from `pred` to `succ` is _not_ from a loop condition provably
+    // true upon entry, so the values of `predSkipsFirstLoopAlwaysTrueUponEntry`
+    // and `succSkipsFirstLoopAlwaysTrueUponEntry` must be the same.
+    not bbLoopConditionAlwaysTrueUponEntrySuccessor(pred, succ, _) and
+    succSkipsFirstLoopAlwaysTrueUponEntry = predSkipsFirstLoopAlwaysTrueUponEntry and
+    // Moreover, if `pred` contains the entry point of a loop where the
+    // condition is provably true upon entry, then `succ` is not allowed
+    // to skip that loop, and hence `succSkipsFirstLoopAlwaysTrueUponEntry = false`.
     (
-      // The edge from `pred` to `succ` is _not_ from a loop condition provably
-      // true upon entry, so the values of `predSkipsFirstLoopAlwaysTrueUponEntry`
-      // and `succSkipsFirstLoopAlwaysTrueUponEntry` must be the same.
-      not bbLoopConditionAlwaysTrueUponEntrySuccessor(pred, _, _) and
-      succSkipsFirstLoopAlwaysTrueUponEntry = predSkipsFirstLoopAlwaysTrueUponEntry and
-      // Moreover, if `pred` contains the entry point of a loop where the
-      // condition is provably true upon entry, then `succ` is not allowed
-      // to skip that loop, and hence `succSkipsFirstLoopAlwaysTrueUponEntry = false`.
-      (bbLoopEntryConditionAlwaysTrueAt(pred, _, _) implies succSkipsFirstLoopAlwaysTrueUponEntry = false)
+      bbLoopEntryConditionAlwaysTrueAt(pred, _, _)
+      implies
+      succSkipsFirstLoopAlwaysTrueUponEntry = false
     )
   )
 }
@@ -239,9 +267,11 @@ abstract class LocalScopeVariableReachabilityWithReassignment extends LocalScope
   }
 
   /**
-   * As `reaches`, but also specifies the last variable it was reassigned to (`v0`). 
+   * As `reaches`, but also specifies the last variable it was reassigned to (`v0`).
    */
-  predicate reachesTo(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink, SemanticStackVariable v0) {
+  predicate reachesTo(
+    ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink, SemanticStackVariable v0
+  ) {
     exists(ControlFlowNode def |
       actualSourceReaches(source, v, def, v0) and
       LocalScopeVariableReachability.super.reaches(def, v0, sink) and
@@ -249,16 +279,21 @@ abstract class LocalScopeVariableReachabilityWithReassignment extends LocalScope
     )
   }
 
-  private predicate actualSourceReaches(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode def, SemanticStackVariable v0) {
+  private predicate actualSourceReaches(
+    ControlFlowNode source, SemanticStackVariable v, ControlFlowNode def, SemanticStackVariable v0
+  ) {
     isSourceActual(source, v) and def = source and v0 = v
     or
     exists(ControlFlowNode source1, SemanticStackVariable v1 |
-      actualSourceReaches(source, v, source1, v1) |
+      actualSourceReaches(source, v, source1, v1)
+    |
       reassignment(source1, v1, def, v0)
     )
   }
 
-  private predicate reassignment(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode def, SemanticStackVariable v0) {
+  private predicate reassignment(
+    ControlFlowNode source, SemanticStackVariable v, ControlFlowNode def, SemanticStackVariable v0
+  ) {
     LocalScopeVariableReachability.super.reaches(source, v, def) and
     exprDefinition(v0, def, v.getAnAccess())
   }
@@ -295,22 +330,24 @@ abstract class LocalScopeVariableReachabilityExt extends string {
   abstract predicate isSink(ControlFlowNode node, LocalScopeVariable v);
 
   /** `node` is a barrier for the reachability analysis using variable `v` and starting from `source`. */
-  abstract predicate isBarrier(ControlFlowNode source, ControlFlowNode node, ControlFlowNode next, LocalScopeVariable v);
+  abstract predicate isBarrier(
+    ControlFlowNode source, ControlFlowNode node, ControlFlowNode next, LocalScopeVariable v
+  );
 
   /** See `LocalScopeVariableReachability.reaches`. */
   predicate reaches(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink) {
     exists(BasicBlock bb, int i |
       isSource(source, v) and
       bb.getNode(i) = source and
-      not bb.isUnreachable() |
+      not bb.isUnreachable()
+    |
       exists(int j |
-        j > i
-        and
-        sink = bb.getNode(j)
-        and
-        isSink(sink, v)
-        and
-        not exists(int k | isBarrier(source, bb.getNode(k), bb.getNode(k + 1), v) | k in [i .. j - 1])
+        j > i and
+        sink = bb.getNode(j) and
+        isSink(sink, v) and
+        not exists(int k | isBarrier(source, bb.getNode(k), bb.getNode(k + 1), v) |
+          k in [i .. j - 1]
+        )
       )
       or
       not exists(int k | isBarrier(source, bb.getNode(k), bb.getNode(k + 1), v) | k >= i) and
@@ -318,10 +355,15 @@ abstract class LocalScopeVariableReachabilityExt extends string {
     )
   }
 
-  private predicate bbSuccessorEntryReaches(ControlFlowNode source, BasicBlock bb, SemanticStackVariable v, ControlFlowNode node, boolean skipsFirstLoopAlwaysTrueUponEntry) {
+  private predicate bbSuccessorEntryReaches(
+    ControlFlowNode source, BasicBlock bb, SemanticStackVariable v, ControlFlowNode node,
+    boolean skipsFirstLoopAlwaysTrueUponEntry
+  ) {
     exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
-      bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry, succSkipsFirstLoopAlwaysTrueUponEntry) and
-      not isBarrier(source, bb.getEnd(), succ.getStart(), v) |
+      bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
+        succSkipsFirstLoopAlwaysTrueUponEntry) and
+      not isBarrier(source, bb.getEnd(), succ.getStart(), v)
+    |
       bbEntryReachesLocally(source, succ, v, node) and
       succSkipsFirstLoopAlwaysTrueUponEntry = false
       or
@@ -330,10 +372,11 @@ abstract class LocalScopeVariableReachabilityExt extends string {
     )
   }
 
-  private predicate bbEntryReachesLocally(ControlFlowNode source, BasicBlock bb, SemanticStackVariable v, ControlFlowNode node) {
+  private predicate bbEntryReachesLocally(
+    ControlFlowNode source, BasicBlock bb, SemanticStackVariable v, ControlFlowNode node
+  ) {
     isSource(source, v) and
-    exists(int n |
-      node = bb.getNode(n) and isSink(node, v) |
+    exists(int n | node = bb.getNode(n) and isSink(node, v) |
       not exists(int m | m < n | isBarrier(source, bb.getNode(m), bb.getNode(m + 1), v))
     )
   }

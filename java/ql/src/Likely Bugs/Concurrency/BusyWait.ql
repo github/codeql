@@ -13,6 +13,7 @@
  *       correctness
  *       concurrency
  */
+
 import java
 
 class ReachFromStmt extends Stmt {
@@ -25,14 +26,12 @@ class ReachFromStmt extends Stmt {
 class SleepMethod extends Method {
   SleepMethod() {
     this.getName() = "sleep" and
-    this.getDeclaringType().hasQualifiedName("java.lang","Thread")
+    this.getDeclaringType().hasQualifiedName("java.lang", "Thread")
   }
 }
 
 class SleepMethodAccess extends MethodAccess {
-  SleepMethodAccess() {
-    this.getMethod() instanceof SleepMethod
-  }
+  SleepMethodAccess() { this.getMethod() instanceof SleepMethod }
 }
 
 class WaitMethod extends Method {
@@ -43,9 +42,7 @@ class WaitMethod extends Method {
 }
 
 class ConcurrentMethod extends Method {
-  ConcurrentMethod() {
-    this.getDeclaringType().getQualifiedName().matches("java.util.concurrent%")
-  }
+  ConcurrentMethod() { this.getDeclaringType().getQualifiedName().matches("java.util.concurrent%") }
 }
 
 class CommunicationMethod extends Method {
@@ -67,15 +64,13 @@ predicate callsCommunicationMethod(Method source) {
 }
 
 class DangerStmt extends Stmt {
-  DangerStmt() {
-    exists(SleepMethodAccess sleep | sleep.getEnclosingStmt() = this)
-  }
+  DangerStmt() { exists(SleepMethodAccess sleep | sleep.getEnclosingStmt() = this) }
 }
 
 from WhileStmt s, DangerStmt d
 where
-  d.getParent+() = s and
+  d.getEnclosingStmt+() = s and
   not exists(MethodAccess call | callsCommunicationMethod(call.getMethod()) |
-    call.getEnclosingStmt().getParent*() = s
+    call.getEnclosingStmt().getEnclosingStmt*() = s
   )
 select d, "Prefer wait/notify or java.util.concurrent to communicate between threads."

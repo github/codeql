@@ -10,6 +10,7 @@
  * @tags maintainability
  *       readability
  */
+
 import java
 
 class VisibleInstanceField extends Field {
@@ -19,17 +20,14 @@ class VisibleInstanceField extends Field {
   }
 }
 
-from RefType type, RefType supertype,
-  VisibleInstanceField masked, VisibleInstanceField masking
+from RefType type, RefType supertype, VisibleInstanceField masked, VisibleInstanceField masking
 where
   type.getASourceSupertype+() = supertype and
   masking.getDeclaringType() = type and
   masked.getDeclaringType() = supertype and
   masked.getName() = masking.getName() and
   // Exclude intentional masking.
-  not exists(VarAccess va | va.getVariable() = masked |
-    va.getQualifier() instanceof SuperAccess
-  ) and
+  not exists(VarAccess va | va.getVariable() = masked | va.getQualifier() instanceof SuperAccess) and
   type.fromSource()
-select masking, "This field shadows another field called $@ in a superclass.",
-  masked, masked.getName()
+select masking, "This field shadows another field called $@ in a superclass.", masked,
+  masked.getName()

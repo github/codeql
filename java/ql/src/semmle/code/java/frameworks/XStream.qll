@@ -8,9 +8,7 @@ import java
  * The type `com.thoughtworks.xstream.XStream`.
  */
 class XStream extends RefType {
-  XStream() {
-    this.hasQualifiedName("com.thoughtworks.xstream", "XStream")
-  }
+  XStream() { this.hasQualifiedName("com.thoughtworks.xstream", "XStream") }
 }
 
 /**
@@ -38,7 +36,9 @@ class XStreamEnableWhiteListing extends MethodAccess {
       exists(Field f |
         this.getAnArgument() = f.getAnAccess() and
         f.hasName("NONE") and
-        f.getDeclaringType().hasQualifiedName("com.thoughtworks.xstream.security", "NoTypePermission")
+        f
+            .getDeclaringType()
+            .hasQualifiedName("com.thoughtworks.xstream.security", "NoTypePermission")
       )
     )
   }

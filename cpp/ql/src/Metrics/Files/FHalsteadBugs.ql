@@ -7,7 +7,9 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
+ * @tags maintainability
  */
+
 import cpp
 
 from MetricFile mc

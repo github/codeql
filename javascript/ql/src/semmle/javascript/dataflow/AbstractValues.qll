@@ -38,7 +38,7 @@
  * the source of imprecision that caused them to arise.
  */
 
-import javascript
+private import javascript
 private import semmle.javascript.dataflow.internal.AbstractValuesImpl
 private import InferredTypes
 
@@ -78,9 +78,7 @@ class AbstractValue extends TAbstractValue {
    * Holds if this abstract value is an indefinite value arising from the
    * incompleteness `cause`.
    */
-  predicate isIndefinite(DataFlow::Incompleteness cause) {
-    none()
-  }
+  predicate isIndefinite(DataFlow::Incompleteness cause) { none() }
 
   /**
    * Gets an abstract value that represents a prototype object of this value.
@@ -100,7 +98,7 @@ class AbstractValue extends TAbstractValue {
    * this predicate cannot be relied on to compute all possible prototype objects.
    */
   DefiniteAbstractValue getAPrototype() {
-    exists (AbstractProtoProperty proto |
+    exists(AbstractProtoProperty proto |
       proto.getBase() = this and
       result = proto.getAValue()
     )
@@ -111,10 +109,9 @@ class AbstractValue extends TAbstractValue {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `f`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string f, int startline, int startcolumn,
-                                      int endline, int endcolumn) {
+  predicate hasLocationInfo(string f, int startline, int startcolumn, int endline, int endcolumn) {
     f = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
   }
 
@@ -126,18 +123,15 @@ class AbstractValue extends TAbstractValue {
  * A definite abstract value, that is, an abstract value that is not
  * affected by analysis incompleteness.
  */
-abstract class DefiniteAbstractValue extends AbstractValue {
-}
+abstract class DefiniteAbstractValue extends AbstractValue { }
 
 /**
  * A definite abstract value that represents only primitive concrete values.
  */
 abstract class PrimitiveAbstractValue extends DefiniteAbstractValue {
-  override PrimitiveAbstractValue toPrimitive() {
-    result = this
-  }
+  override PrimitiveAbstractValue toPrimitive() { result = this }
 
-  override abstract PrimitiveType getType();
+  abstract override PrimitiveType getType();
 }
 
 /**
@@ -145,8 +139,11 @@ abstract class PrimitiveAbstractValue extends DefiniteAbstractValue {
  */
 class AbstractNull extends PrimitiveAbstractValue, TAbstractNull {
   override boolean getBooleanValue() { result = false }
+
   override PrimitiveType getType() { result = TTNull() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override string toString() { result = "null" }
 }
 
@@ -155,8 +152,11 @@ class AbstractNull extends PrimitiveAbstractValue, TAbstractNull {
  */
 class AbstractUndefined extends PrimitiveAbstractValue, TAbstractUndefined {
   override boolean getBooleanValue() { result = false }
+
   override PrimitiveType getType() { result = TTUndefined() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override string toString() { result = "undefined" }
 }
 
@@ -165,8 +165,11 @@ class AbstractUndefined extends PrimitiveAbstractValue, TAbstractUndefined {
  */
 class AbstractBoolean extends PrimitiveAbstractValue, TAbstractBoolean {
   override boolean getBooleanValue() { this = TAbstractBoolean(result) }
+
   override PrimitiveType getType() { result = TTBoolean() }
+
   override predicate isCoercibleToNumber() { any() }
+
   override string toString() { result = getBooleanValue().toString() }
 }
 
@@ -175,8 +178,11 @@ class AbstractBoolean extends PrimitiveAbstractValue, TAbstractBoolean {
  */
 class AbstractZero extends PrimitiveAbstractValue, TAbstractZero {
   override boolean getBooleanValue() { result = false }
+
   override PrimitiveType getType() { result = TTNumber() }
+
   override predicate isCoercibleToNumber() { any() }
+
   override string toString() { result = "0" }
 }
 
@@ -185,8 +191,11 @@ class AbstractZero extends PrimitiveAbstractValue, TAbstractZero {
  */
 class AbstractNonZero extends PrimitiveAbstractValue, TAbstractNonZero {
   override boolean getBooleanValue() { result = true }
+
   override PrimitiveType getType() { result = TTNumber() }
+
   override predicate isCoercibleToNumber() { any() }
+
   override string toString() { result = "non-zero value" }
 }
 
@@ -195,8 +204,11 @@ class AbstractNonZero extends PrimitiveAbstractValue, TAbstractNonZero {
  */
 class AbstractEmpty extends PrimitiveAbstractValue, TAbstractEmpty {
   override boolean getBooleanValue() { result = false }
+
   override PrimitiveType getType() { result = TTString() }
+
   override predicate isCoercibleToNumber() { any() }
+
   override string toString() { result = "\"\"" }
 }
 
@@ -206,8 +218,11 @@ class AbstractEmpty extends PrimitiveAbstractValue, TAbstractEmpty {
  */
 class AbstractNumString extends PrimitiveAbstractValue, TAbstractNumString {
   override boolean getBooleanValue() { result = true }
+
   override PrimitiveType getType() { result = TTString() }
+
   override predicate isCoercibleToNumber() { any() }
+
   override string toString() { result = "numeric string" }
 }
 
@@ -216,8 +231,11 @@ class AbstractNumString extends PrimitiveAbstractValue, TAbstractNumString {
  */
 class AbstractOtherString extends PrimitiveAbstractValue, TAbstractOtherString {
   override boolean getBooleanValue() { result = true }
+
   override PrimitiveType getType() { result = TTString() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override string toString() { result = "non-empty, non-numeric string" }
 }
 
@@ -226,9 +244,13 @@ class AbstractOtherString extends PrimitiveAbstractValue, TAbstractOtherString {
  */
 class AbstractRegExp extends DefiniteAbstractValue, TAbstractRegExp {
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTRegExp() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result = TAbstractOtherString() }
+
   override string toString() { result = "regular expression" }
 }
 
@@ -238,8 +260,18 @@ class AbstractRegExp extends DefiniteAbstractValue, TAbstractRegExp {
 abstract class AbstractCallable extends DefiniteAbstractValue {
   /**
    * Gets the function represented by this abstract value.
+   *
+   * For abstract class values, this is the constructor method of the class.
    */
   abstract Function getFunction();
+
+  /**
+   * Gets the definition of the function or class represented by this abstract value.
+   *
+   * For abstract class values, this is the definition of the class itself (and not
+   * its constructor).
+   */
+  abstract AST::ValueNode getDefinition();
 }
 
 /**
@@ -247,13 +279,23 @@ abstract class AbstractCallable extends DefiniteAbstractValue {
  */
 class AbstractFunction extends AbstractCallable, TAbstractFunction {
   override Function getFunction() { this = TAbstractFunction(result) }
+
+  override AST::ValueNode getDefinition() { result = getFunction() }
+
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTFunction() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result = TAbstractOtherString() }
-  override predicate hasLocationInfo(string path, int startline, int startcolumn, int endline, int endcolumn) {
+
+  override predicate hasLocationInfo(
+    string path, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getFunction().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
+
   override string toString() { result = getFunction().describe() }
 }
 
@@ -264,30 +306,41 @@ class AbstractClass extends AbstractCallable, TAbstractClass {
   /**
    * Gets the class represented by this abstract value.
    */
-  ClassDefinition getClass() {
-    this = TAbstractClass(result)
-  }
+  ClassDefinition getClass() { this = TAbstractClass(result) }
 
   override Function getFunction() { result = getClass().getConstructor().getBody() }
+
+  override AST::ValueNode getDefinition() { result = getClass() }
+
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTClass() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result = TAbstractOtherString() }
-  override predicate hasLocationInfo(string path, int startline, int startcolumn, int endline, int endcolumn) {
+
+  override predicate hasLocationInfo(
+    string path, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getClass().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
+
   override string toString() { result = getClass().describe() }
 }
-
 
 /**
  * An abstract value representing a `Date` object.
  */
 class AbstractDate extends DefiniteAbstractValue, TAbstractDate {
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTDate() }
+
   override predicate isCoercibleToNumber() { any() }
+
   override PrimitiveAbstractValue toPrimitive() { result.getType() = TTNumber() }
+
   override string toString() { result = "date" }
 }
 
@@ -296,17 +349,22 @@ class AbstractDate extends DefiniteAbstractValue, TAbstractDate {
  */
 class AbstractArguments extends DefiniteAbstractValue, TAbstractArguments {
   /** Gets the function whose `arguments` object this is an abstraction of. */
-  Function getFunction() {
-    this = TAbstractArguments(result)
-  }
+  Function getFunction() { this = TAbstractArguments(result) }
 
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result = TAbstractOtherString() }
-  override predicate hasLocationInfo(string path, int startline, int startcolumn, int endline, int endcolumn) {
+
+  override predicate hasLocationInfo(
+    string path, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getFunction().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
+
   override string toString() { result = "arguments object of " + getFunction().describe() }
 }
 
@@ -315,9 +373,13 @@ class AbstractArguments extends DefiniteAbstractValue, TAbstractArguments {
  */
 class AbstractGlobalObject extends DefiniteAbstractValue, TAbstractGlobalObject {
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result = TAbstractOtherString() }
+
   override string toString() { result = "global" }
 }
 
@@ -327,13 +389,21 @@ class AbstractGlobalObject extends DefiniteAbstractValue, TAbstractGlobalObject 
 class AbstractModuleObject extends DefiniteAbstractValue, TAbstractModuleObject {
   /** Gets the module whose `module` object this abstract value represents. */
   Module getModule() { this = TAbstractModuleObject(result) }
+
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result = TAbstractOtherString() }
-  override predicate hasLocationInfo(string path, int startline, int startcolumn, int endline, int endcolumn) {
+
+  override predicate hasLocationInfo(
+    string path, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getModule().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
+
   override string toString() { result = "module object of module " + getModule().getName() }
 }
 
@@ -343,13 +413,21 @@ class AbstractModuleObject extends DefiniteAbstractValue, TAbstractModuleObject 
 class AbstractExportsObject extends DefiniteAbstractValue, TAbstractExportsObject {
   /** Gets the module whose `exports` object this abstract value represents. */
   Module getModule() { this = TAbstractExportsObject(result) }
+
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result = TAbstractOtherString() }
-  override predicate hasLocationInfo(string path, int startline, int startcolumn, int endline, int endcolumn) {
+
+  override predicate hasLocationInfo(
+    string path, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getModule().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
+
   override string toString() { result = "exports object of module " + getModule().getName() }
 }
 
@@ -360,13 +438,21 @@ class AbstractExportsObject extends DefiniteAbstractValue, TAbstractExportsObjec
 class AbstractObjectLiteral extends DefiniteAbstractValue, TAbstractObjectLiteral {
   /** Gets the object expression this abstract value represents. */
   ObjectExpr getObjectExpr() { this = TAbstractObjectLiteral(result) }
+
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result.getType() = TTString() }
-  override predicate hasLocationInfo(string path, int startline, int startcolumn, int endline, int endcolumn) {
+
+  override predicate hasLocationInfo(
+    string path, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getObjectExpr().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
+
   override string toString() { result = "object literal" }
 }
 
@@ -378,13 +464,21 @@ class AbstractObjectLiteral extends DefiniteAbstractValue, TAbstractObjectLitera
 class AbstractInstance extends DefiniteAbstractValue, TAbstractInstance {
   /** Gets the constructor of this instance. */
   AbstractCallable getConstructor() { this = TAbstractInstance(result) }
+
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result.getType() = TTString() }
-  override predicate hasLocationInfo(string path, int startline, int startcolumn, int endline, int endcolumn) {
+
+  override predicate hasLocationInfo(
+    string path, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getConstructor().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
+
   override string toString() { result = "instance of " + getConstructor() }
 }
 
@@ -405,9 +499,13 @@ module AbstractInstance {
  */
 class AbstractOtherObject extends DefiniteAbstractValue, TAbstractOtherObject {
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTObject() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result.getType() = TTString() }
+
   override string toString() { result = "object" }
 }
 
@@ -416,14 +514,19 @@ class AbstractOtherObject extends DefiniteAbstractValue, TAbstractOtherObject {
  */
 class IndefiniteFunctionOrClass extends AbstractValue, TIndefiniteFunctionOrClass {
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() { result = TTFunction() or result = TTClass() }
+
   override predicate isCoercibleToNumber() { none() }
+
   override PrimitiveAbstractValue toPrimitive() { result = TAbstractOtherString() }
+
   override predicate isIndefinite(DataFlow::Incompleteness cause) {
     this = TIndefiniteFunctionOrClass(cause)
   }
+
   override string toString() {
-    exists (DataFlow::Incompleteness cause | isIndefinite(cause) |
+    exists(DataFlow::Incompleteness cause | isIndefinite(cause) |
       result = "indefinite function or class (" + cause + ")"
     )
   }
@@ -434,18 +537,23 @@ class IndefiniteFunctionOrClass extends AbstractValue, TIndefiniteFunctionOrClas
  */
 class IndefiniteObject extends AbstractValue, TIndefiniteObject {
   override boolean getBooleanValue() { result = true }
+
   override InferredType getType() {
     result = TTDate() or result = TTRegExp() or result = TTObject()
   }
+
   override predicate isCoercibleToNumber() { any() }
+
   override PrimitiveAbstractValue toPrimitive() {
     result.getType() = TTString() or result.getType() = TTNumber()
   }
+
   override predicate isIndefinite(DataFlow::Incompleteness cause) {
     this = TIndefiniteObject(cause)
   }
+
   override string toString() {
-    exists (DataFlow::Incompleteness cause | isIndefinite(cause) |
+    exists(DataFlow::Incompleteness cause | isIndefinite(cause) |
       result = "indefinite object (" + cause + ")"
     )
   }
@@ -456,14 +564,19 @@ class IndefiniteObject extends AbstractValue, TIndefiniteObject {
  */
 class IndefiniteAbstractValue extends AbstractValue, TIndefiniteAbstractValue {
   override boolean getBooleanValue() { result = true or result = false }
+
   override InferredType getType() { any() }
+
   override predicate isCoercibleToNumber() { any() }
+
   override PrimitiveAbstractValue toPrimitive() { any() }
+
   override predicate isIndefinite(DataFlow::Incompleteness cause) {
     this = TIndefiniteAbstractValue(cause)
   }
+
   override string toString() {
-    exists (DataFlow::Incompleteness cause | isIndefinite(cause) |
+    exists(DataFlow::Incompleteness cause | isIndefinite(cause) |
       result = "indefinite value (" + cause + ")"
     )
   }
@@ -476,7 +589,7 @@ class IndefiniteAbstractValue extends AbstractValue, TIndefiniteAbstractValue {
    * set of concrete values represented by this abstract value.
    */
   AbstractValue split() {
-    exists (string cause | isIndefinite(cause) |
+    exists(string cause | isIndefinite(cause) |
       result = TIndefiniteFunctionOrClass(cause) or
       result = TIndefiniteObject(cause) or
       result = abstractValueOfType(any(PrimitiveType pt))
@@ -488,7 +601,8 @@ class IndefiniteAbstractValue extends AbstractValue, TIndefiniteAbstractValue {
  * A string tag corresponding to a custom abstract value.
  */
 abstract class CustomAbstractValueTag extends string {
-  bindingset[this] CustomAbstractValueTag() { any() }
+  bindingset[this]
+  CustomAbstractValueTag() { any() }
 
   /**
    * Gets the type of some concrete value represented by this
@@ -521,9 +635,7 @@ abstract class CustomAbstractValueTag extends string {
    * Holds if this abstract value is an indefinite value arising from the
    * incompleteness `cause`.
    */
-  predicate isIndefinite(DataFlow::Incompleteness cause) {
-    none()
-  }
+  predicate isIndefinite(DataFlow::Incompleteness cause) { none() }
 
   /** Gets a textual representation of this abstract value. */
   abstract string describe();
@@ -541,11 +653,14 @@ class CustomAbstractValue extends AbstractValue, TCustomAbstractValue {
   CustomAbstractValueTag getTag() { result = tag }
 
   override boolean getBooleanValue() { result = tag.getBooleanValue() }
+
   override InferredType getType() { result = tag.getType() }
+
   override predicate isCoercibleToNumber() { tag.isCoercibleToNumber() }
+
   override PrimitiveAbstractValue toPrimitive() { result = tag.toPrimitive() }
-  override predicate isIndefinite(DataFlow::Incompleteness cause) {
-    tag.isIndefinite(cause)
-  }
+
+  override predicate isIndefinite(DataFlow::Incompleteness cause) { tag.isIndefinite(cause) }
+
   override string toString() { result = tag.describe() }
 }

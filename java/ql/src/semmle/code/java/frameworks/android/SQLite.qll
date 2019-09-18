@@ -1,9 +1,7 @@
 import java
 
 class TypeSQLiteDatabase extends Class {
-  TypeSQLiteDatabase() {
-    hasQualifiedName("android.database.sqlite", "SQLiteDatabase")
-  }
+  TypeSQLiteDatabase() { hasQualifiedName("android.database.sqlite", "SQLiteDatabase") }
 }
 
 abstract class SQLiteRunner extends Method {
@@ -27,11 +25,8 @@ class QueryMethod extends SQLiteRunner {
 
   override int sqlIndex() {
     this.getName() = "query" and
-    (
-      if this.getParameter(0).getType() instanceof TypeString
-      then result = 2
-      else result = 3
-    ) or
+    (if this.getParameter(0).getType() instanceof TypeString then result = 2 else result = 3)
+    or
     this.getName() = "queryWithFactory" and result = 4
   }
 }
@@ -43,7 +38,8 @@ class RawQueryMethod extends SQLiteRunner {
   }
 
   override int sqlIndex() {
-    this.getName() = "rawQuery" and result = 0 or
+    this.getName() = "rawQuery" and result = 0
+    or
     this.getName() = "rawQueryWithFactory" and result = 1
   }
 }

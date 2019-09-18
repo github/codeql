@@ -16,108 +16,102 @@ import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.frameworks.system.runtime.InteropServices
 
 // Any field transitively contained in t.
-Field getANestedField(ValueOrRefType t)
-{
+Field getANestedField(ValueOrRefType t) {
   result.getDeclaringType() = t
   or
   exists(Field mid |
-    mid=getANestedField(t)
-    and
-    mid.getType() = result.getDeclaringType())
+    mid = getANestedField(t) and
+    mid.getType() = result.getDeclaringType()
+  )
 }
 
 // Any ValueOrRefType referenced by a Type, including TypeParameters.
-ValueOrRefType getAReferencedType(Type t)
-{
+ValueOrRefType getAReferencedType(Type t) {
   result = t
   or
   result = t.(TypeParameter).getASuppliedType()
 }
 
-predicate isTypeExternallyInitialized(ValueOrRefType t)
-{
+predicate isTypeExternallyInitialized(ValueOrRefType t) {
   // The type got created via a call to PtrToStructure().
   exists(MethodCall mc |
-    mc.getTarget() = any(SystemRuntimeInteropServicesMarshalClass c).getPtrToStructureTypeMethod()
-    and
+    mc.getTarget() = any(SystemRuntimeInteropServicesMarshalClass c).getPtrToStructureTypeMethod() and
     t = getAReferencedType(mc.getArgument(1).(TypeofExpr).getTypeAccess().getTarget())
-    )
-
+  )
+  or
   // The type got created via a call to PtrToStructure().
-  or exists(MethodCall mc |
-    mc.getTarget() = any(SystemRuntimeInteropServicesMarshalClass c).getPtrToStructureObjectMethod()
-    and
+  exists(MethodCall mc |
+    mc.getTarget() = any(SystemRuntimeInteropServicesMarshalClass c).getPtrToStructureObjectMethod() and
     t = getAReferencedType(mc.getArgument(1).getType())
-    )
-
+  )
+  or
   // An extern method exists which could initialize the type.
-  or exists(Method m, Parameter p |
+  exists(Method m, Parameter p |
     isExternMethod(m) and
-    p=m.getAParameter() and
+    p = m.getAParameter() and
     t = p.getType()
-    |
-    p.isOut() or p.isRef())
-
+  |
+    p.isOut() or p.isRef()
+  )
+  or
   // The data structure has been cast to a pointer - all bets are off.
-  or exists(CastExpr c |
-    t = getAReferencedType(c.getTargetType().(PointerType).getReferentType()))
+  exists(CastExpr c | t = getAReferencedType(c.getTargetType().(PointerType).getReferentType()))
 }
 
 // The type is potentially marshaled using an extern or interop.
-predicate isFieldExternallyInitialized(Field f)
-{
+predicate isFieldExternallyInitialized(Field f) {
   exists(ValueOrRefType t |
-    f = getANestedField(t)
-    and
-    isTypeExternallyInitialized(t))
+    f = getANestedField(t) and
+    isTypeExternallyInitialized(t)
+  )
 }
 
-predicate isExternMethod(Method externMethod)
-{
+predicate isExternMethod(Method externMethod) {
   externMethod.isExtern()
   or
-  externMethod.getAnAttribute().getType() instanceof SystemRuntimeInteropServicesDllImportAttributeClass
+  externMethod.getAnAttribute().getType() instanceof
+    SystemRuntimeInteropServicesDllImportAttributeClass
   or
-  externMethod.getDeclaringType().getAnAttribute().getType() instanceof SystemRuntimeInteropServicesComImportAttributeClass
+  externMethod.getDeclaringType().getAnAttribute().getType() instanceof
+    SystemRuntimeInteropServicesComImportAttributeClass
 }
 
 from Field f, FieldRead fa
 where
-  f.fromSource()
-  and not extractionIsStandalone()
-  and not f.isReadOnly()
-  and not f.isConst()
-  and not f.getDeclaringType() instanceof Enum
-  and not f.getType() instanceof Struct
-  and not exists(Assignment ae, Field g |
-    ae.getLValue().(FieldAccess).getTarget() = g
-    and g.getSourceDeclaration() = f
-    and not (ae.getRValue() instanceof NullLiteral)
-  )
-  and not exists(MethodCall mc, int i, Field g |
-    exists(Parameter p | mc.getTarget().getParameter(i) = p |
-      p.isOut() or p.isRef()
-    )
-    and mc.getArgument(i) = g.getAnAccess()
-    and g.getSourceDeclaration() = f
-  )
-  and not isFieldExternallyInitialized(f)
-  and not exists(f.getAnAttribute())
-  and not exists(Expr init, Field g |
+  f.fromSource() and
+  not extractionIsStandalone() and
+  not f.isReadOnly() and
+  not f.isConst() and
+  not f.getDeclaringType() instanceof Enum and
+  not f.getType() instanceof Struct and
+  not exists(Assignment ae, Field g |
+    ae.getLValue().(FieldAccess).getTarget() = g and
+    g.getSourceDeclaration() = f and
+    not ae.getRValue() instanceof NullLiteral
+  ) and
+  not exists(MethodCall mc, int i, Field g |
+    exists(Parameter p | mc.getTarget().getParameter(i) = p | p.isOut() or p.isRef()) and
+    mc.getArgument(i) = g.getAnAccess() and
     g.getSourceDeclaration() = f
-    and g.getInitializer() = init
-    and not init instanceof NullLiteral
-  )
-  and not exists(AssignOperation ua, Field g |
-    ua.getLValue().(FieldAccess).getTarget() = g
-    and g.getSourceDeclaration() = f
-  )
-  and not exists(MutatorOperation op |
+  ) and
+  not isFieldExternallyInitialized(f) and
+  not exists(f.getAnAttribute()) and
+  not exists(Expr init, Field g |
+    g.getSourceDeclaration() = f and
+    g.getInitializer() = init and
+    not init instanceof NullLiteral
+  ) and
+  not exists(AssignOperation ua, Field g |
+    ua.getLValue().(FieldAccess).getTarget() = g and
+    g.getSourceDeclaration() = f
+  ) and
+  not exists(MutatorOperation op |
     op.getAnOperand().(FieldAccess).getTarget().getSourceDeclaration() = f
+  ) and
+  exists(Field g |
+    fa.getTarget() = g and
+    g.getSourceDeclaration() = f
   )
-  and exists(Field g |
-    fa.getTarget() = g
-    and g.getSourceDeclaration() = f
-  )
-select f, "The field '" + f.getName() + "' is never explicitly assigned a value, yet it is read $@.",
-  fa, "here"
+select f,
+  "The field '" + f.getName() + "' is never explicitly assigned a value, yet it is read $@.", fa,
+  "here"

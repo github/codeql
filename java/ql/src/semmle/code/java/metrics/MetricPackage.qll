@@ -23,35 +23,36 @@ class MetricPackage extends Package, MetricElement {
   override int getNumberOfLinesOfCode() {
     // Refer to `numlines(...)` directly to avoid invalid recursive aggregate.
     result = sum(CompilationUnit cu, int lines |
-                 cu.getPackage() = this and numlines(cu, _, lines, _)
-                 |
-                 lines)
+        cu.getPackage() = this and numlines(cu, _, lines, _)
+      |
+        lines
+      )
   }
 
   /** Gets the number of lines of comments in this package. */
   override int getNumberOfCommentLines() {
     result = sum(CompilationUnit cu, int lines |
-                 cu.getPackage() = this and numlines(cu, _, _, lines)
-                 |
-                 lines)
+        cu.getPackage() = this and numlines(cu, _, _, lines)
+      |
+        lines
+      )
   }
 
   /** Gets the total number of lines in this package, including code, comments and whitespace-only lines. */
   override int getTotalNumberOfLines() {
     result = sum(CompilationUnit cu, int lines |
-                 cu.getPackage() = this and numlines(cu, lines, _, _)
-                 |
-                 lines)
+        cu.getPackage() = this and numlines(cu, lines, _, _)
+      |
+        lines
+      )
   }
 
   /** Gets the total number of reference types in this package. */
-  int getNumberOfTypes() {
-    result = count(RefType t | t.getPackage() = this)
-  }
+  int getNumberOfTypes() { result = count(RefType t | t.getPackage() = this) }
 
   /** Gets the total number of callables declared in a type in this package. */
   int getNumberOfCallables() {
-    result = count(Callable m | m.getDeclaringType().getPackage()=this)
+    result = count(Callable m | m.getDeclaringType().getPackage() = this)
   }
 
   /**
@@ -59,13 +60,16 @@ class MetricPackage extends Package, MetricElement {
    * This is an indication of the size of the API provided by this package.
    */
   int getNumberOfPublicCallables() {
-    result = sum(MetricRefType t, int toSum | (t.getPackage() = this) and (toSum = t.getNumberOfPublicCallables()) | toSum)
+    result = sum(MetricRefType t, int toSum |
+        t.getPackage() = this and
+        toSum = t.getNumberOfPublicCallables()
+      |
+        toSum
+      )
   }
 
   /** Gets the total number of fields declared in a type in this package. */
-  int getNumberOfFields() {
-    result = count(Field f | f.getDeclaringType().getPackage() = this)
-  }
+  int getNumberOfFields() { result = count(Field f | f.getDeclaringType().getPackage() = this) }
 
   /**
    * Afferent Coupling (incoming dependencies).
@@ -82,8 +86,10 @@ class MetricPackage extends Package, MetricElement {
    * package metrics, such as the instability metric.
    */
   int getAfferentCoupling() {
-    result = count(RefType t | t.getPackage() != this and
-                exists(RefType s | s.getPackage() = this and depends(t,s)))
+    result = count(RefType t |
+        t.getPackage() != this and
+        exists(RefType s | s.getPackage() = this and depends(t, s))
+      )
   }
 
   /**
@@ -99,15 +105,19 @@ class MetricPackage extends Package, MetricElement {
    * package metrics, such as the instability metric.
    */
   int getEfferentCoupling() {
-    result = count(RefType t | t.getPackage() = this and
-                exists(RefType s | s.getPackage() != this and depends(t,s)))
+    result = count(RefType t |
+        t.getPackage() = this and
+        exists(RefType s | s.getPackage() != this and depends(t, s))
+      )
   }
 
   /** Efferent Coupling (outgoing dependencies) to the specified package. */
   int getEfferentCoupling(Package p) {
     p != this and
-    result = count(RefType t | t.getPackage() = this and
-                exists(RefType s | s.getPackage() = p and depends(t,s)))
+    result = count(RefType t |
+        t.getPackage() = this and
+        exists(RefType s | s.getPackage() = p and depends(t, s))
+      )
   }
 
   /**
@@ -128,7 +138,7 @@ class MetricPackage extends Package, MetricElement {
       ecoupling = this.getEfferentCoupling() and
       sumcoupling = ecoupling + this.getAfferentCoupling() and
       sumcoupling > 0 and
-      result = ecoupling / ((float)sumcoupling)
+      result = ecoupling / sumcoupling.(float)
     )
   }
 
@@ -154,10 +164,10 @@ class MetricPackage extends Package, MetricElement {
     exists(int i, int j |
       i = count(RefType t | t.getPackage() = this) and
       j = count(RefType t | t.getPackage() = this and t.isAbstract()) and
-      result = j / ((float)i) and i > 0
+      result = j / i.(float) and
+      i > 0
     )
   }
-
 
   /**
    * Distance from Main Sequence.
@@ -184,7 +194,7 @@ class MetricPackage extends Package, MetricElement {
    */
   float countDependencies(RefType t) {
     t.getPackage() = this and
-    result = count(RefType s | s.getPackage() = this and depends(t,s))
+    result = count(RefType s | s.getPackage() = this and depends(t, s))
   }
 
   /**
@@ -209,7 +219,13 @@ class MetricPackage extends Package, MetricElement {
    * for metrics that are directly computed from code.
    */
   float relationalCohesion() {
-    result = 1+ avg(RefType t, float toAvg | (t.getPackage() = this) and (toAvg = this.countDependencies(t)) | toAvg)
+    result = 1 +
+        avg(RefType t, float toAvg |
+          t.getPackage() = this and
+          toAvg = this.countDependencies(t)
+        |
+          toAvg
+        )
   }
 
   /**
@@ -241,16 +257,19 @@ class MetricPackage extends Package, MetricElement {
   }
 
   /** Cyclic package dependencies: the size of the cycle to which this package belongs. */
-  int getCycleSize() {
-    result = count(this.getACycleMember())
-  }
+  int getCycleSize() { result = count(this.getACycleMember()) }
 
   /**
    * Cyclic package dependencies: whether this package is considered to be a
    * representative member of the cycle to which it belongs.
    */
   predicate isRepresentative() {
-    this.getName() = min(MetricPackage p, string toMin | (p = this.getACycleMember()) and (toMin = p.getName()) | toMin)
+    this.getName() = min(MetricPackage p, string toMin |
+        p = this.getACycleMember() and
+        toMin = p.getName()
+      |
+        toMin
+      )
   }
 
   /**
@@ -259,6 +278,11 @@ class MetricPackage extends Package, MetricElement {
    * The fan-in of a package is the average efferent coupling over all callables in that package.
    */
   float getAverageFanIn() {
-    result = avg(RefType t, MetricCallable c, int toAvg | (c=t.getACallable() and t.getPackage()=this) and (toAvg = c.getAfferentCoupling()) | toAvg)
+    result = avg(RefType t, MetricCallable c, int toAvg |
+        (c = t.getACallable() and t.getPackage() = this) and
+        toAvg = c.getAfferentCoupling()
+      |
+        toAvg
+      )
   }
 }

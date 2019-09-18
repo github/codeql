@@ -1,4 +1,5 @@
 /** Provides classes for collections. */
+
 import csharp
 
 private string modifyMethodName() {
@@ -82,11 +83,13 @@ private string genericCollectionTypeName() {
 /** A collection type. */
 class CollectionType extends RefType {
   CollectionType() {
-    exists(RefType base |
-      base = this.getABaseType*() |
+    exists(RefType base | base = this.getABaseType*() |
       base.hasQualifiedName(collectionNamespaceName(), collectionTypeName())
       or
-      base.(ConstructedType).getUnboundGeneric().hasQualifiedName(genericCollectionNamespaceName(), genericCollectionTypeName())
+      base
+          .(ConstructedType)
+          .getUnboundGeneric()
+          .hasQualifiedName(genericCollectionNamespaceName(), genericCollectionTypeName())
     )
     or
     this instanceof ArrayType
@@ -138,10 +141,7 @@ private string noAddMethodName() {
 /** Holds if `a` is an access that does not modify a collection. */
 private predicate readonlyAccess(Access a) {
   // A read-only method call
-  exists(MethodCall mc |
-    mc.getQualifier() = a |
-    mc.getTarget().hasName(readonlyMethodName())
-  )
+  exists(MethodCall mc | mc.getQualifier() = a | mc.getTarget().hasName(readonlyMethodName()))
   or
   // Any property access
   a = any(PropertyAccess pa).getQualifier()
@@ -155,19 +155,14 @@ class NoAddAccess extends Access {
   NoAddAccess() {
     readonlyAccess(this)
     or
-    exists(MethodCall mc |
-      mc.getQualifier() = this |
-      mc.getTarget().hasName(noAddMethodName())
-    )
+    exists(MethodCall mc | mc.getQualifier() = this | mc.getTarget().hasName(noAddMethodName()))
   }
 }
-
 
 /** An access that initializes an empty collection. */
 class EmptyInitializationAccess extends Access {
   EmptyInitializationAccess() {
-    exists(AssignableDefinition def |
-      def.getTargetAccess() = this |
+    exists(AssignableDefinition def | def.getTargetAccess() = this |
       def.getSource() instanceof EmptyCollectionCreation
     )
   }

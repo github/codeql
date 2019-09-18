@@ -1,7 +1,0 @@
-| arrowfns.js:3:12:3:41 | () => { ... "); ; } | 0 | arrowfns.js:3:20:3:37 | alert("Wake up!"); |
-| arrowfns.js:3:12:3:41 | () => { ... "); ; } | 1 | arrowfns.js:3:39:3:39 | ; |
-| generators.js:1:1:4:1 | functio ...  i++;\\n} | 0 | generators.js:2:3:3:14 | for (va ... ld i++; |
-| tst.js:10:1:10:31 | functio ... ents; } | 0 | tst.js:10:16:10:29 | var arguments; |
-| tst.js:11:1:11:35 | functio ... ts; } } | 0 | tst.js:11:16:11:33 | { var arguments; } |
-| tst.js:12:1:12:44 | functio ... s) {} } | 0 | tst.js:12:16:12:42 | try { } ... nts) {} |
-| tst.js:14:1:14:37 | functio ... s[0]; } | 0 | tst.js:14:16:14:35 | return arguments[0]; |

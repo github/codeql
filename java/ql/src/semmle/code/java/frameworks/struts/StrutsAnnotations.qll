@@ -13,15 +13,12 @@ class StrutsAnnotation extends Annotation {
  * A struts annotation that signifies the annotated method should be treated as an action.
  */
 class StrutsActionAnnotation extends StrutsAnnotation {
-  StrutsActionAnnotation() {
-    this.getType().hasName("Action")
-  }
+  StrutsActionAnnotation() { this.getType().hasName("Action") }
 
   Callable getActionCallable() {
-    result = getAnnotatedElement() or
-    exists(StrutsActionsAnnotation actions |
-      this = actions.getAnAction()
-      |
+    result = getAnnotatedElement()
+    or
+    exists(StrutsActionsAnnotation actions | this = actions.getAnAction() |
       result = actions.getAnnotatedElement()
     )
   }
@@ -31,14 +28,10 @@ class StrutsActionAnnotation extends StrutsAnnotation {
  * A struts annotation that represents a group of actions for the annotated method.
  */
 class StrutsActionsAnnotation extends StrutsAnnotation {
-  StrutsActionsAnnotation() {
-    this.getType().hasName("Actions")
-  }
+  StrutsActionsAnnotation() { this.getType().hasName("Actions") }
 
   /**
    * Gets an Action annotation contained in this Actions annotation.
    */
-  StrutsActionAnnotation getAnAction() {
-    result = this.getAValue("value")
-  }
+  StrutsActionAnnotation getAnAction() { result = this.getAValue("value") }
 }

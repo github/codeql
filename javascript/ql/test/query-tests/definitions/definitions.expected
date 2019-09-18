@@ -5,11 +5,9 @@
 | client.ts:7:19:7:19 | C | tslib.ts:1:8:3:1 | class C {\\n  m() {}\\n} | T |
 | client.ts:8:10:8:10 | C | client.ts:3:1:5:1 | class C {\\n  m() {}\\n} | T |
 | client.ts:9:16:9:16 | C | client.ts:3:1:5:1 | class C {\\n  m() {}\\n} | T |
-| client.ts:10:14:10:14 | N | tslib.ts:5:8:9:1 | namespa ... }\\n  }\\n} | T |
 | client.ts:10:16:10:16 | C | tslib.ts:6:10:8:3 | class C ...  {}\\n  } | T |
 | client.ts:13:25:13:25 | C | client.ts:3:1:5:1 | class C {\\n  m() {}\\n} | T |
 | client.ts:13:35:13:35 | C | tslib.ts:1:8:3:1 | class C {\\n  m() {}\\n} | T |
-| client.ts:13:45:13:45 | N | tslib.ts:5:8:9:1 | namespa ... }\\n  }\\n} | T |
 | client.ts:13:47:13:47 | C | tslib.ts:6:10:8:3 | class C ...  {}\\n  } | T |
 | client.ts:14:3:14:3 | x | client.ts:13:22:13:22 | x | V |
 | client.ts:14:5:14:5 | m | client.ts:4:3:4:8 | m() {} | M |

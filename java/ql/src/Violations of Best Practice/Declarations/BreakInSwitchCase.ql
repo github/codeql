@@ -10,6 +10,7 @@
  *       readability
  *       external/cwe/cwe-484
  */
+
 import java
 import Common
 
@@ -20,4 +21,5 @@ where
   not c.(ControlFlowNode).getASuccessor() instanceof DefaultCase and
   not s.(Annotatable).suppressesWarningsAbout("fallthrough") and
   mayDropThroughWithoutComment(s, c)
-select c, "Switch case may fall through to the next case. Use a break or return to terminate this case."
+select c,
+  "Switch case may fall through to the next case. Use a break or return to terminate this case."

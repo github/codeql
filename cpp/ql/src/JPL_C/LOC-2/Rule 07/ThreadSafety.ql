@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/thread-safety
  * @problem.severity warning
+ * @tags correctness
+ *       concurrency
+ *       external/jpl
  */
 
 import cpp
@@ -11,8 +14,10 @@ import cpp
 class ForbiddenCall extends FunctionCall {
   ForbiddenCall() {
     exists(string name | name = this.getTarget().getName() |
-      name = "task_delay" or name = "taskDelay" or
-      name = "sleep" or name = "nanosleep" or
+      name = "task_delay" or
+      name = "taskDelay" or
+      name = "sleep" or
+      name = "nanosleep" or
       name = "clock_nanosleep"
     )
   }

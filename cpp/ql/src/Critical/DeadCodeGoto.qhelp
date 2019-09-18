@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Code immediately following a <code>goto</code> or <code>break</code> statement will not be executed,
+unless there is a label or switch case. When the code is necessary, this leads to logical errors or
+resource leaks. If the code is unnecessary, it may confuse readers.
+</p>
+</overview>
+<recommendation>
+<p>
+If the unreachable code is necessary, move the <code>goto</code> or <code>break</code> statement to
+after the code. Otherwise, delete the unreachable code.
+</p>
+
+</recommendation>
+<example><sample src="DeadCodeGoto.cpp" />
+</example>
+<references>
+<li>
+  The CERT C Secure Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/MSC12-C.+Detect+and+remove+code+that+has+no+effect+or+is+never+executed">MSC12-C. Detect and remove code that has no effect or is never executed</a>.
+</li>
+</references>
+</qhelp>

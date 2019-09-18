@@ -33,7 +33,7 @@ class Container extends @container, Top {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see https://lgtm.com/help/ql/locations#providing-urls.
+   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
    */
   abstract string getURL();
 
@@ -48,7 +48,7 @@ class Container extends @container, Top {
   string getRelativePath() {
     exists(string absPath, string pref |
       absPath = getAbsolutePath() and sourceLocationPrefix(pref)
-      |
+    |
       absPath = pref and result = ""
       or
       absPath = pref.regexpReplaceAll("/$", "") + "/" + result and
@@ -100,9 +100,7 @@ class Container extends @container, Top {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() {
-    result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
-  }
+  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -121,24 +119,16 @@ class Container extends @container, Top {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() {
-    result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
-  }
+  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
 
   /** Gets the parent container of this file or folder, if any. */
-  Container getParentContainer() {
-    containerparent(result, this)
-  }
+  Container getParentContainer() { containerparent(result, this) }
 
   /** Gets a file or sub-folder in this container. */
-  Container getAChildContainer() {
-    this = result.getParentContainer()
-  }
+  Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() {
-    result = getAChildContainer()
-  }
+  File getAFile() { result = getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
@@ -147,9 +137,7 @@ class Container extends @container, Top {
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() {
-    result = getAChildContainer()
-  }
+  Folder getAFolder() { result = getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
@@ -162,19 +150,14 @@ class Container extends @container, Top {
    *
    * This is the absolute path of the container.
    */
-  override string toString() {
-    result = getAbsolutePath()
-  }
+  override string toString() { result = getAbsolutePath() }
 
   /**
    * DEPRECATED: use `getAbsolutePath()`, `getBaseName()` or `getStem()` instead.
    *
    * Gets the name of this container.
    */
-  deprecated
-  string getName() {
-    result = getAbsolutePath()
-  }
+  deprecated string getName() { result = getAbsolutePath() }
 
   /**
    * DEPRECATED: use `getBaseName()` or `getStem()` instead.
@@ -184,10 +167,9 @@ class Container extends @container, Top {
    * For folders, the short name includes the extension (if any), so the short name
    * of the folder with absolute path `/home/user/.m2` is `.m2`.
    */
-  deprecated
-  string getShortName() {
-    folders(this,_,result) or
-    files(this,_,result,_,_)
+  deprecated string getShortName() {
+    folders(this, _, result) or
+    files(this, _, result, _, _)
   }
 
   /**
@@ -195,22 +177,15 @@ class Container extends @container, Top {
    *
    * Gets the full name of this container, including its path and extension (if any).
    */
-  deprecated
-  string getFullName() {
-    result = getAbsolutePath()
-  }
+  deprecated string getFullName() { result = getAbsolutePath() }
 }
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() {
-    folders(this, result, _)
-  }
+  override string getAbsolutePath() { folders(this, result, _) }
 
   /** Gets the URL of this folder. */
-  override string getURL() {
-    result = "folder://" + getAbsolutePath()
-  }
+  override string getURL() { result = "folder://" + getAbsolutePath() }
 }
 
 /**
@@ -219,55 +194,42 @@ class Folder extends Container, @folder {
  * Note that `File` extends `Container` as it may be a `jar` file.
  */
 class File extends Container, @file {
-  override string getAbsolutePath() {
-    files(this, result, _, _, _)
-  }
+  override string getAbsolutePath() { files(this, result, _, _, _) }
 
   /** Gets the URL of this file. */
-  override string getURL() {
-    result = "file://" + this.getAbsolutePath() + ":0:0:0:0"
-  }
+  override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /**
    * DEPRECATED: use `getAbsolutePath()`, `getBaseName()` or `getStem()` instead.
    *
    * Holds if this file has the specified `name`.
    */
-  deprecated
-  predicate hasName(string name) { name = this.getAbsolutePath() }
+  deprecated predicate hasName(string name) { name = this.getAbsolutePath() }
 }
 
 /**
  * A Java archive file with a ".jar" extension.
  */
 class JarFile extends File {
-  JarFile() {
-    getExtension() = "jar"
-  }
+  JarFile() { getExtension() = "jar" }
 
   /**
    * Gets the main attribute with the specified `key`
    * from this JAR file's manifest.
    */
-  string getManifestMainAttribute(string key) {
-    jarManifestMain(this, key, result)
-  }
+  string getManifestMainAttribute(string key) { jarManifestMain(this, key, result) }
 
   /**
    * Gets the "Specification-Version" main attribute
    * from this JAR file's manifest.
    */
-  string getSpecificationVersion() {
-    result = getManifestMainAttribute("Specification-Version")
-  }
+  string getSpecificationVersion() { result = getManifestMainAttribute("Specification-Version") }
 
   /**
    * Gets the "Implementation-Version" main attribute
    * from this JAR file's manifest.
    */
-  string getImplementationVersion() {
-    result = getManifestMainAttribute("Implementation-Version")
-  }
+  string getImplementationVersion() { result = getManifestMainAttribute("Implementation-Version") }
 
   /**
    * Gets the per-entry attribute for the specified `entry` and `key`

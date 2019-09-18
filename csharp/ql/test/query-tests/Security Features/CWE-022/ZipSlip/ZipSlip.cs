@@ -31,7 +31,15 @@ namespace ZipSlip
                     string destFilePath = Path.Combine(destDirectory, fullPath);
                     entry.ExtractToFile(destFilePath, true);
 
-                    // GOOD: some check on destination.
+                    // BAD: destFilePath isn't fully resolved, so may still contain ..
+                    if (destFilePath.StartsWith(destDirectory))
+                        entry.ExtractToFile(destFilePath, true);
+
+                    // BAD
+                    destFilePath = Path.GetFullPath(Path.Combine(destDirectory, fullPath));
+                    entry.ExtractToFile(destFilePath, true);
+
+                    // GOOD: a check for StartsWith against a fully resolved path
                     if (destFilePath.StartsWith(destDirectory))
                         entry.ExtractToFile(destFilePath, true);
                 }
@@ -51,7 +59,7 @@ namespace ZipSlip
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
                         // figure out where we are putting the file
-                        string destFilePath = Path.Combine(InstallDir, entry.FullName);
+                        String destFilePath = Path.Combine(InstallDir, entry.FullName);
 
                         Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
 
@@ -86,6 +94,15 @@ namespace ZipSlip
                                 Console.WriteLine(@"Writing ""{0}""", destFilePath);
                                 archiveFileStream.CopyTo(fs);
                             }
+
+                            // GOOD: Use substring to pick out single component
+                            string fileName = destFilePath.Substring(destFilePath.LastIndexOf("\\"));
+                            var fileInfo2 = new FileInfo(fileName);
+                            using (FileStream fs = fileInfo2.Open(FileMode.Create))
+                            {
+                                Console.WriteLine(@"Writing ""{0}""", destFilePath);
+                                archiveFileStream.CopyTo(fs);
+                            }
                         }
                     }
                 }
@@ -115,7 +132,7 @@ namespace ZipSlip
                     // GOOD: the path is checked in this extension method
                     archive.ExtractToDirectory(targetPath);
 
-		    UnzipToStream(file, targetPath);
+                    UnzipToStream(file, targetPath);
                 }
             }
         }

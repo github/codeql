@@ -3,7 +3,7 @@
  * @description User input should not be used in regular expressions without first being escaped,
  *              otherwise a malicious user may be able to inject an expression that could require
  *              exponential time on certain inputs.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/regex-injection
@@ -14,7 +14,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RegExpInjection::RegExpInjection
+import DataFlow::PathGraph
 
-from Configuration c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
-select sink, "This regular expression is constructed from a $@.", source, "user-provided value"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "This regular expression is constructed from a $@.",
+  source.getNode(), "user-provided value"

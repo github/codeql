@@ -1,5 +1,0 @@
-| p/JdkInternalAccess.java:1:1:1:18 | import sun.misc.* | Access to unsupported JDK-internal API 'sun.misc'. (Removed. See http://openjdk.java.net/jeps/260) |
-| p/JdkInternalAccess.java:2:1:2:31 | import DirectBuffer | Access to unsupported JDK-internal API 'sun.nio.ch.DirectBuffer'. |
-| p/JdkInternalAccess.java:5:2:5:7 | Unsafe | Access to unsupported JDK-internal API 'sun.misc.Unsafe'. (See http://openjdk.java.net/jeps/260) |
-| p/JdkInternalAccess.java:6:2:6:14 | BASE64Encoder | Access to unsupported JDK-internal API 'sun.misc.BASE64Encoder'. (Use java.util.Base64 @since 1.8) |
-| p/JdkInternalAccess.java:7:2:7:13 | DirectBuffer | Access to unsupported JDK-internal API 'sun.nio.ch.DirectBuffer'. |

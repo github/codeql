@@ -22,16 +22,13 @@ class ArrayOrObjectExpr extends Expr {
 
   /** Holds if this array or object expression has a trailing comma. */
   predicate hasTrailingComma() {
-    ((ArrayExpr)this).hasTrailingComma() or
-    ((ObjectExpr)this).hasTrailingComma()
+    this.(ArrayExpr).hasTrailingComma() or
+    this.(ObjectExpr).hasTrailingComma()
   }
 
   /** Gets a short description of this expression. */
   string getShortName() {
-    if this instanceof ArrayExpr then
-      result = "array expression"
-    else
-      result = "object expression"
+    if this instanceof ArrayExpr then result = "array expression" else result = "object expression"
   }
 }
 

@@ -34,9 +34,9 @@ abstract class Container extends Locatable, @container {
    * DEPRECATED: Use `getLocation` instead.
    * Gets a URL representing the location of this container.
    *
-   * For more information see https://lgtm.com/help/ql/locations#providing-urls.
+   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
    */
-  deprecated abstract string getURL();
+  abstract deprecated string getURL();
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
@@ -47,8 +47,9 @@ abstract class Container extends Locatable, @container {
    * if the root folder is not a reflexive, transitive parent of this container.
    */
   string getRelativePath() {
-    exists (string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref) |
+    exists(string absPath, string pref |
+      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+    |
       absPath = pref and result = ""
       or
       absPath = pref.regexpReplaceAll("/$", "") + "/" + result and
@@ -100,9 +101,7 @@ abstract class Container extends Locatable, @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() {
-    result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
-  }
+  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -121,9 +120,7 @@ abstract class Container extends Locatable, @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() {
-    result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
-  }
+  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() {
@@ -131,14 +128,10 @@ abstract class Container extends Locatable, @container {
   }
 
   /** Gets a file or sub-folder in this container. */
-  Container getAChildContainer() {
-    this = result.getParentContainer()
-  }
+  Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() {
-    result = getAChildContainer()
-  }
+  File getAFile() { result = getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
@@ -147,9 +140,7 @@ abstract class Container extends Locatable, @container {
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() {
-    result = getAChildContainer()
-  }
+  Folder getAFolder() { result = getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
@@ -162,9 +153,7 @@ abstract class Container extends Locatable, @container {
    *
    * This is the absolute path of the container.
    */
-  override string toString() {
-    result = getAbsolutePath()
-  }
+  override string toString() { result = getAbsolutePath() }
 }
 
 /**
@@ -178,64 +167,62 @@ abstract class Container extends Locatable, @container {
  * To get the full path, use `getAbsolutePath`.
  */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() {
-    folders(underlyingElement(this), result, _)
-  }
+  override string getAbsolutePath() { folders(underlyingElement(this), result, _) }
 
   override Location getLocation() {
     result.getContainer() = this and
     result.hasLocationInfo(_, 0, 0, 0, 0)
   }
 
+  override string getCanonicalQLClass() { result = "Folder" }
+
   /**
    * DEPRECATED: Use `getLocation` instead.
    * Gets the URL of this folder.
    */
-  deprecated override string getURL() {
-    result = "file://" + this.getAbsolutePath() + ":0:0:0:0"
-  }
+  deprecated override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /**
    * DEPRECATED: use `getAbsolutePath` instead.
    * Gets the name of this folder.
    */
-  deprecated
-  string getName() { folders(underlyingElement(this),result,_) }
+  deprecated string getName() { folders(underlyingElement(this), result, _) }
 
   /**
    * DEPRECATED: use `getAbsolutePath` instead.
    * Holds if this element is named `name`.
    */
-  deprecated
-  predicate hasName(string name) { name = this.getName() }
+  deprecated predicate hasName(string name) { name = this.getName() }
 
   /**
    * DEPRECATED: use `getAbsolutePath` instead.
    * Gets the full name of this folder.
    */
-  deprecated
-  string getFullName() { result = this.getName() }
+  deprecated string getFullName() { result = this.getName() }
 
   /**
    * DEPRECATED: use `getBaseName` instead.
    * Gets the last part of the folder name.
    */
-  deprecated
-  string getShortName() {
-    exists (string longnameRaw, string longname
-    | folders(underlyingElement(this),_,longnameRaw) and
+  deprecated string getShortName() {
+    exists(string longnameRaw, string longname |
+      folders(underlyingElement(this), _, longnameRaw) and
       longname = longnameRaw.replaceAll("\\", "/")
-    | exists (int index
-      | result = longname.splitAt("/", index) and
-        not exists (longname.splitAt("/", index+1))))
+    |
+      exists(int index |
+        result = longname.splitAt("/", index) and
+        not exists(longname.splitAt("/", index + 1))
+      )
+    )
   }
 
   /**
    * DEPRECATED: use `getParentContainer` instead.
    * Gets the parent folder.
    */
-  deprecated
-  Folder getParent() { containerparent(unresolveElement(result),underlyingElement(this)) }
+  deprecated Folder getParent() {
+    containerparent(unresolveElement(result), underlyingElement(this))
+  }
 }
 
 /**
@@ -251,13 +238,11 @@ class Folder extends Container, @folder {
  * `getStem` and `getExtension`. To get the full path, use `getAbsolutePath`.
  */
 class File extends Container, @file {
-  override string getAbsolutePath() {
-    files(underlyingElement(this), result, _, _, _)
-  }
+  override string getAbsolutePath() { files(underlyingElement(this), result, _, _, _) }
 
-  override string toString() {
-    result = Container.super.toString()
-  }
+  override string toString() { result = Container.super.toString() }
+
+  override string getCanonicalQLClass() { result = "File" }
 
   override Location getLocation() {
     result.getContainer() = this and
@@ -268,56 +253,59 @@ class File extends Container, @file {
    * DEPRECATED: Use `getLocation` instead.
    * Gets the URL of this file.
    */
-  deprecated override string getURL() {
-    result = "file://" + this.getAbsolutePath() + ":0:0:0:0"
-  }
+  deprecated override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** Holds if this file was compiled as C (at any point). */
-  predicate compiledAsC() {
-    fileannotations(underlyingElement(this),1,"compiled as c","1")
-  }
+  predicate compiledAsC() { fileannotations(underlyingElement(this), 1, "compiled as c", "1") }
 
   /** Holds if this file was compiled as C++ (at any point). */
-  predicate compiledAsCpp() {
-    fileannotations(underlyingElement(this),1,"compiled as c++","1")
-  }
+  predicate compiledAsCpp() { fileannotations(underlyingElement(this), 1, "compiled as c++", "1") }
 
   /**
    * DEPRECATED: Objective-C is no longer supported.
    * Holds if this file was compiled as Objective C (at any point).
    */
-  deprecated predicate compiledAsObjC() {
-    none()
-  }
+  deprecated predicate compiledAsObjC() { none() }
 
   /**
    * DEPRECATED: Objective-C is no longer supported.
    * Holds if this file was compiled as Objective C++ (at any point).
    */
-  deprecated predicate compiledAsObjCpp() {
-    none()
-  }
+  deprecated predicate compiledAsObjCpp() { none() }
 
-  /** Holds if this file was compiled by a Microsoft compiler (at any point). */
+  /**
+   * Holds if this file was compiled by a Microsoft compiler (at any point).
+   *
+   * Note: currently unreliable - on some projects only some of the files that
+   * are compiled by a Microsoft compiler are detected by this predicate.
+   */
   predicate compiledAsMicrosoft() {
     exists(Compilation c |
       c.getAFileCompiled() = this and
-      c.getAnArgument() = "--microsoft"
+      (
+        c.getAnArgument() = "--microsoft" or
+        c.getAnArgument().toLowerCase().replaceAll("\\", "/").matches("%/cl.exe")
+      )
+    )
+    or
+    exists(File parent |
+      parent.compiledAsMicrosoft() and
+      parent.getAnIncludedFile() = this
     )
   }
 
   /** Gets a top-level element declared in this file. */
-  Declaration getATopLevelDeclaration() {
-    result.getAFile() = this and result.isTopLevel()
-  }
+  Declaration getATopLevelDeclaration() { result.getAFile() = this and result.isTopLevel() }
 
   /** Gets a declaration in this file. */
   Declaration getADeclaration() { result.getAFile() = this }
 
   /** Holds if this file uses the given macro. */
   predicate usesMacro(Macro m) {
-    exists(MacroInvocation mi | mi.getFile() = this and
-                                mi.getMacro() = m)
+    exists(MacroInvocation mi |
+      mi.getFile() = this and
+      mi.getMacro() = m
+    )
   }
 
   /**
@@ -332,23 +320,23 @@ class File extends Container, @file {
    * DEPRECATED: use `getParentContainer` instead.
    * Gets the folder which contains this file.
    */
-  deprecated
-  Folder getParent() { containerparent(unresolveElement(result),underlyingElement(this)) }
+  deprecated Folder getParent() {
+    containerparent(unresolveElement(result), underlyingElement(this))
+  }
 
   /**
    * Holds if this file may be from source. This predicate holds for all files
    * except the dummy file, whose name is the empty string, which contains
    * declarations that are built into the compiler.
    */
-  override predicate fromSource() { numlines(underlyingElement(this),_,_,_) }
+  override predicate fromSource() { numlines(underlyingElement(this), _, _, _) }
 
   /**
    * Holds if this file may be from a library.
    *
    * DEPRECATED: For historical reasons this is true for any file.
    */
-  deprecated override
-  predicate fromLibrary() { any() }
+  deprecated override predicate fromLibrary() { any() }
 
   /** Gets the metric file. */
   MetricFile getMetrics() { result = this }
@@ -358,8 +346,7 @@ class File extends Container, @file {
    * Gets the full name of this file, for example:
    * "/usr/home/me/myprogram.c".
    */
-  deprecated
-  string getName() { files(underlyingElement(this),result,_,_,_) }
+  deprecated string getName() { files(underlyingElement(this), result, _, _, _) }
 
   /**
    * DEPRECATED: Use `getAbsolutePath` instead.
@@ -367,16 +354,14 @@ class File extends Container, @file {
    *
    * Example usage: `f.hasName("/usr/home/me/myprogram.c")`.
    */
-  deprecated
-  predicate hasName(string name) { name = this.getName() }
+  deprecated predicate hasName(string name) { name = this.getName() }
 
   /**
    * DEPRECATED: Use `getAbsolutePath` instead.
    * Gets the full name of this file, for example
    * "/usr/home/me/myprogram.c".
    */
-  deprecated
-  string getFullName() { result = this.getName() }
+  deprecated string getFullName() { result = this.getName() }
 
   /**
    * Gets the remainder of the base name after the first dot character. Note
@@ -390,9 +375,7 @@ class File extends Container, @file {
    * for example, for "file.tar.gz", this predicate will have the result
    * "tar.gz", while `getExtension` will have the result "gz".
    */
-  string getExtensions() {
-    files(underlyingElement(this),_,_,result,_)
-  }
+  string getExtensions() { files(underlyingElement(this), _, _, result, _) }
 
   /**
    * DEPRECATED: Use `getBaseName` instead.
@@ -400,15 +383,14 @@ class File extends Container, @file {
    * if the full name is "/path/to/filename.a.bcd" then the filename is
    * "filename.a.bcd".
    */
-  deprecated
-  string getFileName() {
-      // [a/b.c/d/]fileName
-      //         ^ beginAfter
-      exists(string fullName, int beginAfter |
-          fullName = this.getName() and
-          beginAfter = max(int i | i = -1 or fullName.charAt(i) = "/" | i) and
-          result = fullName.suffix(beginAfter + 1)
-      )
+  deprecated string getFileName() {
+    // [a/b.c/d/]fileName
+    //         ^ beginAfter
+    exists(string fullName, int beginAfter |
+      fullName = this.getName() and
+      beginAfter = max(int i | i = -1 or fullName.charAt(i) = "/" | i) and
+      result = fullName.suffix(beginAfter + 1)
+    )
   }
 
   /**
@@ -424,9 +406,8 @@ class File extends Container, @file {
    * for example, for "file.tar.gz", this predicate will have the result
    * "file", while `getStem` will have the result "file.tar".
    */
-  string getShortName() { files(underlyingElement(this),_,result,_,_) }
+  string getShortName() { files(underlyingElement(this), _, result, _, _) }
 }
-
 
 /**
  * A C/C++ header file, as determined (mainly) by file extension.
@@ -435,18 +416,41 @@ class File extends Container, @file {
  * pre-processor directive like `#include`), use `Include.getIncludedFile`.
  */
 class HeaderFile extends File {
-
   HeaderFile() {
     exists(string ext | ext = this.getExtension().toLowerCase() |
-      ext = "h" or ext = "r"
-      /*    ---   */ or ext = "hpp" or ext = "hxx" or ext = "h++" or ext = "hh" or ext = "hp"
-      or ext = "tcc" or ext = "tpp" or ext = "txx" or ext = "t++" /*    ---         ---    */
+      ext = "h" or
+      ext = "r" or
+      /*    ---   */ ext = "hpp" or
+      ext = "hxx" or
+      ext = "h++" or
+      ext = "hh" or
+      ext = "hp" or
+      ext = "tcc" or
+      ext = "tpp" or
+      ext = "txx" or
+      ext = "t++"
+      /*    ---         ---    */
     )
     or
     not exists(this.getExtension()) and
     exists(Include i | i.getIncludedFile() = this)
   }
 
+  override string getCanonicalQLClass() { result = "HeaderFile" }
+
+  /**
+   * Holds if this header file does not contain any declaration entries or top level
+   * declarations.  For example it might be:
+   *  - a file containing only preprocessor directives and/or comments
+   *  - an empty file
+   *  - a file that contains non-top level code or data that's included in an
+   *    unusual way
+   */
+  predicate noTopLevelCode() {
+    not exists(DeclarationEntry de | de.getFile() = this) and
+    not exists(Declaration d | d.getFile() = this and d.isTopLevel()) and
+    not exists(UsingEntry ue | ue.getFile() = this)
+  }
 }
 
 /**
@@ -456,13 +460,9 @@ class HeaderFile extends File {
  * `File.compiledAsC`.
  */
 class CFile extends File {
+  CFile() { exists(string ext | ext = this.getExtension().toLowerCase() | ext = "c" or ext = "i") }
 
-  CFile() {
-    exists(string ext | ext = this.getExtension().toLowerCase() |
-      ext = "c" or ext = "i"
-    )
-  }
-
+  override string getCanonicalQLClass() { result = "CFile" }
 }
 
 /**
@@ -472,16 +472,25 @@ class CFile extends File {
  * `File.compiledAsCpp`.
  */
 class CppFile extends File {
-
   CppFile() {
     exists(string ext | ext = this.getExtension().toLowerCase() |
-      /*     ---     */ ext = "cpp" or ext = "cxx" or ext = "c++" or ext = "cc" or ext = "cp"
-      or ext = "icc" or ext = "ipp" or ext = "ixx" or ext = "i++" or ext = "ii" /*  ---    */
+      /*     ---     */ ext = "cpp" or
+      ext = "cxx" or
+      ext = "c++" or
+      ext = "cc" or
+      ext = "cp" or
+      ext = "icc" or
+      ext = "ipp" or
+      ext = "ixx" or
+      ext = "i++" or
+      ext = "ii"
+      /*  ---    */
       // Note: .C files are indistinguishable from .c files on some
       // file systems, so we just treat them as CFile's.
     )
   }
 
+  override string getCanonicalQLClass() { result = "CppFile" }
 }
 
 /**

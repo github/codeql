@@ -14,7 +14,9 @@ greater than 31, the left operand is actually only shifted by that value modulo 
 
 <p>
 Use standard library functions such as <code>Math.pow</code> to perform the required
-shifting.
+shifting. Alternatively, you can use the
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a>
+type if it is available on your platform.
 </p>
 
 </recommendation>

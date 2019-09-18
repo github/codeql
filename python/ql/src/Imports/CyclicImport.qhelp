@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A cyclic import is an <code>import</code> which imports another module
+and that module imports (possibly indirectly) the module which contains the
+<code>import</code> statement.</p>
+
+<p>Cyclic imports indicate that two modules are circularly dependent. This means
+that the modules cannot be tested independently, and it makes it harder to
+understand the architecture of the system.
+</p>
+
+</overview>
+<recommendation>
+
+<p>The cycle may be broken by removing any one import. If only one function or
+method requires the import, then consider moving that to the other module and
+deleting the import. If the two modules are more intimately connected, then move
+the inter-dependent parts into a third module and have both the original modules
+import that.
+</p>
+
+
+</recommendation>
+<references>
+
+
+<li>Python Language  Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
+<li>Python: <a href="http://docs.python.org/2/tutorial/modules.html">Modules</a>.</li>
+<li> Effbot: <a href="http://effbot.org/zone/import-confusion.htm">Import Confusion</a>.</li>
+
+
+</references>
+</qhelp>

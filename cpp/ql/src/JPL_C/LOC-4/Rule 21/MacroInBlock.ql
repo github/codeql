@@ -3,14 +3,19 @@
  * @description Macros shall not be #define'd within a function or a block.
  * @kind problem
  * @id cpp/jpl-c/macro-in-block
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp
 
 int lineInBlock(File f) {
-  exists(Block block, Location blockLocation | block.getFile() = f and blockLocation = block.getLocation()|
-    result in [blockLocation.getStartLine()..blockLocation.getEndLine()]
+  exists(Block block, Location blockLocation |
+    block.getFile() = f and blockLocation = block.getLocation()
+  |
+    result in [blockLocation.getStartLine() .. blockLocation.getEndLine()]
   )
 }
 

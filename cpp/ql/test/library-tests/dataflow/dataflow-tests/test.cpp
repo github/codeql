@@ -1,5 +1,5 @@
 int source();
-void sink(...);
+void sink(int); void sink(const int *); void sink(int **);
 
 void intraprocedural_with_local_flow() {
   int t2;
@@ -109,54 +109,6 @@ void local_references(int &source1, int clean1) {
     t = source();
     sink(ref); // tainted (FALSE NEGATIVE)
   }
-}
-
-struct twoIntFields {
-  int m1, m2;
-  int getFirst() { return m1; }
-};
-
-void following_pointers(
-    int sourceArray1[],
-    int cleanArray1[],
-    twoIntFields sourceStruct1,
-    twoIntFields *sourceStruct1_ptr,
-    int (*sourceFunctionPointer)())
-{
-  sink(sourceArray1); // flow
-
-  sink(sourceArray1[0]); // no flow
-  sink(*sourceArray1); // no flow
-  sink(&sourceArray1); // no flow (since sourceArray1 is really a pointer)
-
-  sink(sourceStruct1.m1); // no flow
-  sink(sourceStruct1_ptr->m1); // no flow
-  sink(sourceStruct1_ptr->getFirst()); // no flow
-
-  sourceStruct1_ptr->m1 = source();
-  sink(sourceStruct1_ptr->m1); // flow
-  sink(sourceStruct1_ptr->getFirst()); // no flow (due to limitations of the analysis)
-  sink(sourceStruct1_ptr->m2); // no flow
-  sink(sourceStruct1.m1); // flow (due to lack of no-alias tracking)
-
-  twoIntFields s = { source(), source() };
-  // TODO: fix this by distinguishing between an AggregateLiteral that
-  // initializes an array and one that initializes a struct.
-  sink(s.m2); // no flow (due to limitations of the analysis)
-
-  twoIntFields sArray[1] = { { source(), source() } };
-  // TODO: fix this like above
-  sink(sArray[0].m2); // no flow (due to limitations of the analysis)
-
-  twoIntFields sSwapped = { .m2 = source(), .m1 = 0 };
-  // TODO: fix this like above
-  sink(sSwapped.m2); // no flow (due to limitations of the analysis)
-
-  sink(sourceFunctionPointer()); // no flow
-
-  int stackArray[2] = { source(), source() };
-  stackArray[0] = source();
-  sink(stackArray); // no flow
 }
 
 int alwaysAssignSource(int *out) {
@@ -410,11 +362,11 @@ class FlowThroughFields {
   int f() {
     sink(field); // tainted or clean? Not sure.
     taintField();
-    sink(field); // tainted (FALSE NEGATIVE)
+    sink(field); // tainted [NOT DETECTED with IR]
   }
 
   int calledAfterTaint() {
-    sink(field); // tainted (FALSE NEGATIVE)
+    sink(field); // tainted [NOT DETECTED with IR]
   }
 
   int taintAndCall() {
@@ -423,3 +375,88 @@ class FlowThroughFields {
     sink(field); // tainted
   }
 };
+
+typedef unsigned long size_t;
+void *memcpy(void *dest, const void *src, size_t count);
+
+void flowThroughMemcpy_ssa_with_local_flow(int source1) {
+  int tmp = 0;
+  memcpy(&tmp, &source1, sizeof tmp);
+  sink(tmp); // tainted
+}
+
+void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
+  int tmp = 0;
+  int *capture = &tmp;
+  memcpy(&tmp, &source1, sizeof tmp);
+  sink(tmp); // tainted
+  if (b) {
+    sink(tmp); // tainted
+  }
+}
+
+void cleanedByMemcpy_ssa(int clean1) { // currently modeled with BlockVar, not SSA
+  int tmp;
+  memcpy(&tmp, &clean1, sizeof tmp);
+  sink(tmp); // clean [FALSE POSITIVE]
+}
+
+void cleanedByMemcpy_blockvar(int clean1) {
+  int tmp;
+  int *capture = &tmp;
+  memcpy(&tmp, &clean1, sizeof tmp);
+  sink(tmp); // clean [FALSE POSITIVE]
+}
+
+void intRefSource(int &ref_source);
+void intPointerSource(int *ref_source);
+void intArraySource(int ref_source[], size_t len);
+
+void intRefSourceCaller() {
+  int local;
+  intRefSource(local);
+  sink(local); // tainted
+}
+
+void intPointerSourceCaller() {
+  int local;
+  intPointerSource(&local);
+  sink(local); // tainted
+}
+
+void intPointerSourceCaller2() {
+  int local[1];
+  intPointerSource(local);
+  sink(local); // tainted
+  sink(*local); // clean
+}
+
+void intArraySourceCaller() {
+  int local;
+  intArraySource(&local, 1);
+  sink(local); // tainted
+}
+
+void intArraySourceCaller2() {
+  int local[2];
+  intArraySource(local, 2);
+  sink(local); // tainted
+  sink(*local); // clean
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void throughStmtExpr(int source1, int clean1) {
+  sink( ({ source1; }) ); // tainted
+  sink( ({ clean1; }) ); // clean
+
+  int local = ({
+    int tmp;
+    if (clean1)
+      tmp = source1;
+    else
+      tmp = clean1;
+    tmp;
+  });
+  sink(local); // tainted
+}

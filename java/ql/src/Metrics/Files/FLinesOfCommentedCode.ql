@@ -10,10 +10,9 @@
  * @tags maintainability
  *       documentation
  */
- 
+
 import Violations_of_Best_Practice.Comments.CommentedCode
 
 from File f, int n
 where n = sum(CommentedOutCode comment | comment.getFile() = f | comment.getCodeLines())
-select f, n
-order by n desc
+select f, n order by n desc

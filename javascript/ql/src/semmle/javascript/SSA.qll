@@ -80,10 +80,10 @@ private import semmle.javascript.dataflow.Refinements
 /**
  * A variable that can be SSA converted, that is, a local variable.
  */
-class SsaSourceVariable extends LocalVariable {
-}
+class SsaSourceVariable extends LocalVariable { }
 
-private cached module Internal {
+cached
+private module Internal {
   /**
    * A data type representing SSA definitions.
    *
@@ -105,65 +105,75 @@ private cached module Internal {
    * unreachable code has no SSA definitions associated with it, and neither
    * have dead assignments (that is, assignments whose value is never read).
    */
-  cached newtype TSsaDefinition =
-       TExplicitDef(ReachableBasicBlock bb, int i, VarDef d, SsaSourceVariable v) {
-         bb.defAt(i, v, d) and
-         (
-           liveAfterDef(bb, i, v) or
-           v.isCaptured()
-         )
-       }
-    or TImplicitInit(EntryBasicBlock bb, SsaSourceVariable v) {
-         bb.getContainer() = v.getDeclaringContainer().getFunctionBoundary() and
-         (liveAtEntry(bb, v) or v.isCaptured())
-       }
-    or TCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-         mayCapture(bb, i, v) and liveAfterDef(bb, i, v)
-       }
-    or TPhi(ReachableJoinBlock bb, SsaSourceVariable v) {
-         liveAtEntry(bb, v) and
-         exists (ReachableBasicBlock defbb, SsaDefinition def |
-          def.definesAt(defbb, _, v) and
-          bb.inDominanceFrontierOf(defbb)
-         )
-       }
-    or TRefinement(ReachableBasicBlock bb, int i, GuardControlFlowNode guard, SsaSourceVariable v) {
-         bb.getNode(i) = guard and
-         guard.getTest().(Refinement).getRefinedVar() = v and
-         liveAtEntry(bb, v)
-       }
+  cached
+  newtype TSsaDefinition =
+    TExplicitDef(ReachableBasicBlock bb, int i, VarDef d, SsaSourceVariable v) {
+      bb.defAt(i, v, d) and
+      (
+        liveAfterDef(bb, i, v) or
+        v.isCaptured()
+      )
+    } or
+    TImplicitInit(EntryBasicBlock bb, SsaSourceVariable v) {
+      bb.getContainer() = v.getDeclaringContainer().getFunctionBoundary() and
+      (liveAtEntry(bb, v) or v.isCaptured())
+    } or
+    TCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
+      mayCapture(bb, i, v) and liveAfterDef(bb, i, v)
+    } or
+    TPhi(ReachableJoinBlock bb, SsaSourceVariable v) {
+      liveAtEntry(bb, v) and
+      inDefDominanceFrontier(bb, v)
+    } or
+    TRefinement(ReachableBasicBlock bb, int i, GuardControlFlowNode guard, SsaSourceVariable v) {
+      bb.getNode(i) = guard and
+      guard.getTest().(Refinement).getRefinedVar() = v and
+      liveAtEntry(bb, v)
+    }
+
+  /**
+   * Holds if `bb` is in the dominance frontier of a block containing a definition of `v`.
+   */
+  pragma[noinline]
+  private predicate inDefDominanceFrontier(ReachableJoinBlock bb, SsaSourceVariable v) {
+    exists(ReachableBasicBlock defbb, SsaDefinition def |
+      def.definesAt(defbb, _, v) and
+      bb.inDominanceFrontierOf(defbb)
+    )
+  }
 
   /**
    * Holds if `v` is a captured variable which is declared in `declContainer` and read in
    * `useContainer`.
    */
-  private predicate readsCapturedVar(StmtContainer useContainer,
-                                     SsaSourceVariable v, StmtContainer declContainer) {
+  private predicate readsCapturedVar(
+    StmtContainer useContainer, SsaSourceVariable v, StmtContainer declContainer
+  ) {
     declContainer = v.getDeclaringContainer() and
-    useContainer = any(VarUse u | u.getVariable() = v).getContainer() and v.isCaptured()
+    useContainer = any(VarUse u | u.getVariable() = v).getContainer() and
+    v.isCaptured()
   }
 
   /**
    * Holds if the `i`th node of `bb` in container `sc` is entry node `nd`.
    */
-  private predicate entryNode(StmtContainer sc, ReachableBasicBlock bb, int i,
-                              ControlFlowEntryNode nd) {
+  private predicate entryNode(
+    StmtContainer sc, ReachableBasicBlock bb, int i, ControlFlowEntryNode nd
+  ) {
     sc = bb.getContainer() and bb.getNode(i) = nd
   }
 
   /**
    * Holds if the `i`th node of `bb` in container `sc` is yield expression `nd`.
    */
-  private predicate yieldNode(StmtContainer sc, ReachableBasicBlock bb, int i,
-                              YieldExpr nd) {
+  private predicate yieldNode(StmtContainer sc, ReachableBasicBlock bb, int i, YieldExpr nd) {
     sc = bb.getContainer() and bb.getNode(i) = nd
   }
 
   /**
    * Holds if the `i`th node of `bb` in container `sc` is invocation expression `nd`.
    */
-  private predicate invokeNode(StmtContainer sc, ReachableBasicBlock bb, int i,
-                               InvokeExpr nd) {
+  private predicate invokeNode(StmtContainer sc, ReachableBasicBlock bb, int i, InvokeExpr nd) {
     sc = bb.getContainer() and bb.getNode(i) = nd
   }
 
@@ -173,7 +183,7 @@ private cached module Internal {
    * introduced depends on whether `v` is live at this point in the program.
    */
   private predicate mayCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    exists (ControlFlowNode nd, StmtContainer capturingContainer, StmtContainer declContainer |
+    exists(ControlFlowNode nd, StmtContainer capturingContainer, StmtContainer declContainer |
       // capture initial value of variable declared in enclosing scope
       readsCapturedVar(capturingContainer, v, declContainer) and
       capturingContainer != declContainer and
@@ -195,7 +205,10 @@ private cached module Internal {
   /**
    * A classification of variable references into reads and writes.
    */
-  cached newtype RefKind = Read() or Write()
+  cached
+  newtype RefKind =
+    Read() or
+    Write()
 
   /**
    * Holds if the `i`th node of basic block `bb` is a reference to `v`, either a read
@@ -204,7 +217,8 @@ private cached module Internal {
   private predicate ref(ReachableBasicBlock bb, int i, SsaSourceVariable v, RefKind tp) {
     bb.useAt(i, v, _) and tp = Read()
     or
-    (mayCapture(bb, i, v) or bb.defAt(i, v, _)) and tp = Write()
+    (mayCapture(bb, i, v) or bb.defAt(i, v, _)) and
+    tp = Write()
   }
 
   /**
@@ -217,6 +231,13 @@ private cached module Internal {
   }
 
   /**
+   * Gets the maximum rank among all references to `v` in basic block `bb`.
+   */
+  private int maxRefRank(ReachableBasicBlock bb, SsaSourceVariable v) {
+    result = max(refRank(bb, _, v, _))
+  }
+
+  /**
    * Holds if variable `v` is live after the `i`th node of basic block `bb`, where
    * `i` is the index of a node that may assign or capture `v`.
    *
@@ -224,14 +245,14 @@ private cached module Internal {
    * are considered as writes of captured variables.
    */
   private predicate liveAfterDef(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    exists (int r | r = refRank(bb, i, v, Write()) |
+    exists(int r | r = refRank(bb, i, v, Write()) |
       // the next reference to `v` inside `bb` is a read
-      r+1 = refRank(bb, _, v, Read())
+      r + 1 = refRank(bb, _, v, Read())
       or
       // this is the last reference to `v` inside `bb`, but `v` is live at entry
       // to a successor basic block of `bb`
-      r = max(refRank(bb, _, v, _)) and
-      liveAtEntry(bb.getASuccessor(), v)
+      r = maxRefRank(bb, v) and
+      liveAtSuccEntry(bb, v)
     )
   }
 
@@ -248,6 +269,13 @@ private cached module Internal {
     // there is no reference to `v` inside `bb`, but `v` is live at entry
     // to a successor basic block of `bb`
     not exists(refRank(bb, _, v, _)) and
+    liveAtSuccEntry(bb, v)
+  }
+
+  /**
+   * Holds if `v` is live at the beginning of any successor of basic block `bb`.
+   */
+  private predicate liveAtSuccEntry(ReachableBasicBlock bb, SsaSourceVariable v) {
     liveAtEntry(bb.getASuccessor(), v)
   }
 
@@ -291,8 +319,8 @@ private cached module Internal {
    * read and the read at index `i` are reads (and not writes).
    */
   private int rewindReads(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    exists (int r | r = ssaRefRank(bb, i, v, Read()) |
-      exists (int j, RefKind k | r-1 = ssaRefRank(bb, j, v, k) |
+    exists(int r | r = ssaRefRank(bb, i, v, Read()) |
+      exists(int j, RefKind k | r - 1 = ssaRefRank(bb, j, v, k) |
         k = Read() and result = rewindReads(bb, j, v)
         or
         k = Write() and result = r
@@ -306,42 +334,57 @@ private cached module Internal {
    * Gets the SSA definition of `v` in `bb` that reaches the read of `v` at node `i`, if any.
    */
   private SsaDefinition getLocalDefinition(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    exists (int r | r = rewindReads(bb, i, v) |
-      exists (int j | result.definesAt(bb, j, v) and ssaRefRank(bb, j, v, _) = r-1)
+    exists(int r | r = rewindReads(bb, i, v) |
+      exists(int j | result.definesAt(bb, j, v) and ssaRefRank(bb, j, v, _) = r - 1)
     )
+  }
+
+  /**
+   * Gets an SSA definition of `v` that reaches the end of the immediate dominator of `bb`.
+   */
+  pragma[noinline]
+  private SsaDefinition getDefReachingEndOfImmediateDominator(
+    ReachableBasicBlock bb, SsaSourceVariable v
+  ) {
+    result = getDefReachingEndOf(bb.getImmediateDominator(), v)
   }
 
   /**
    * Gets an SSA definition of `v` that reaches the end of basic block `bb`.
    */
-  cached SsaDefinition getDefReachingEndOf(ReachableBasicBlock bb, SsaSourceVariable v) {
-    bb.getASuccessor().localIsLiveAtEntry(v) and
-    (
-      exists (int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
-        result = getLocalDefinition(bb, lastRef, v)
-        or
-        result.definesAt(bb, lastRef, v)
-      )
+  cached
+  SsaDefinition getDefReachingEndOf(ReachableBasicBlock bb, SsaSourceVariable v) {
+    exists(int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
+      result = getLocalDefinition(bb, lastRef, v)
       or
-      /* In SSA form, the (unique) reaching definition of a use is the closest
-       * definition that dominates the use. If two definitions dominate a node
-       * then one must dominate the other, so we can find the reaching definition
-       * by following the idominance relation backwards. */
-      result = getDefReachingEndOf(bb.getImmediateDominator(), v) and
-      not exists (SsaDefinition ssa | ssa.definesAt(bb, _, v))
+      result.definesAt(bb, lastRef, v) and
+      liveAtSuccEntry(bb, v)
     )
+    or
+    /*
+     * In SSA form, the (unique) reaching definition of a use is the closest
+     * definition that dominates the use. If two definitions dominate a node
+     * then one must dominate the other, so we can find the reaching definition
+     * by following the idominance relation backwards.
+     */
+
+    result = getDefReachingEndOfImmediateDominator(bb, v) and
+    not exists(SsaDefinition ssa | ssa.definesAt(bb, _, v)) and
+    liveAtSuccEntry(bb, v)
   }
 
   /**
    * Gets the unique SSA definition of `v` whose value reaches the `i`th node of `bb`,
    * which is a use of `v`.
    */
-  cached SsaDefinition getDefinition(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
+  cached
+  SsaDefinition getDefinition(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
     result = getLocalDefinition(bb, i, v)
     or
     rewindReads(bb, i, v) = 1 and result = getDefReachingEndOf(bb.getImmediateDominator(), v)
   }
 }
+
 private import Internal
 
 /**
@@ -349,42 +392,34 @@ private import Internal
  */
 class SsaVariable extends TSsaDefinition {
   /** Gets the source variable corresponding to this SSA variable. */
-  SsaSourceVariable getSourceVariable() {
-    result = this.(SsaDefinition).getSourceVariable()
-  }
+  SsaSourceVariable getSourceVariable() { result = this.(SsaDefinition).getSourceVariable() }
 
   /** Gets the (unique) definition of this SSA variable. */
-  SsaDefinition getDefinition() {
-    result = this
-  }
+  SsaDefinition getDefinition() { result = this }
 
   /** Gets a use in basic block `bb` that refers to this SSA variable. */
   VarUse getAUseIn(ReachableBasicBlock bb) {
-    exists (int i, SsaSourceVariable v |
-      v = getSourceVariable() |
+    exists(int i, SsaSourceVariable v | v = getSourceVariable() |
       bb.useAt(i, v, result) and this = getDefinition(bb, i, v)
     )
   }
 
   /** Gets a use that refers to this SSA variable. */
-  VarUse getAUse() {
-    result = getAUseIn(_)
-  }
+  VarUse getAUse() { result = getAUseIn(_) }
 
   /** Gets a textual representation of this element. */
-  string toString() {
-    result = getDefinition().prettyPrintRef()
-  }
+  string toString() { result = getDefinition().prettyPrintRef() }
 
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                            int endline, int endcolumn) {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getDefinition().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
@@ -394,9 +429,7 @@ class SsaVariable extends TSsaDefinition {
  */
 class SsaDefinition extends TSsaDefinition {
   /** Gets the SSA variable defined by this definition. */
-  SsaVariable getVariable() {
-    result = this
-  }
+  SsaVariable getVariable() { result = this }
 
   /** Gets the source variable defined by this definition. */
   abstract SsaSourceVariable getSourceVariable();
@@ -409,7 +442,7 @@ class SsaDefinition extends TSsaDefinition {
    */
   abstract ReachableBasicBlock getBasicBlock();
 
-/**
+  /**
    * INTERNAL: Use `getBasicBlock()` and `getSourceVariable()` instead.
    *
    * Holds if this is a definition of source variable `v` at index `idx` in basic block `bb`.
@@ -447,15 +480,14 @@ class SsaDefinition extends TSsaDefinition {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  abstract predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                     int endline, int endcolumn);
+  abstract predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  );
 
   /** Gets the function or toplevel to which this definition belongs. */
-  StmtContainer getContainer() {
-    result = getBasicBlock().getContainer()
-  }
+  StmtContainer getContainer() { result = getBasicBlock().getContainer() }
 }
 
 /**
@@ -467,39 +499,36 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   }
 
   /** This SSA definition corresponds to the definition of `v` at `def`. */
-  predicate defines(VarDef d, SsaSourceVariable v) {
-    this = TExplicitDef(_, _, d, v)
-  }
+  predicate defines(VarDef d, SsaSourceVariable v) { this = TExplicitDef(_, _, d, v) }
 
   /** The variable definition wrapped by this SSA definition. */
-  VarDef getDef() {
-    this = TExplicitDef(_, _, result, _)
-  }
+  VarDef getDef() { this = TExplicitDef(_, _, result, _) }
 
   /** Gets the basic block to which this definition belongs. */
-  override ReachableBasicBlock getBasicBlock() {
-    definesAt(result, _, _)
-  }
+  override ReachableBasicBlock getBasicBlock() { definesAt(result, _, _) }
 
-  override SsaSourceVariable getSourceVariable() {
-    this = TExplicitDef(_, _, _, result)
-  }
+  override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, _, result) }
 
-  override VarDef getAContributingVarDef() {
-    result = getDef()
-  }
+  override VarDef getAContributingVarDef() { result = getDef() }
 
   override string prettyPrintRef() {
-    exists (int l, int c | hasLocationInfo(_, l, c, _, _) |
-      result = "def@" + l + ":" + c
-    )
+    exists(int l, int c | hasLocationInfo(_, l, c, _, _) | result = "def@" + l + ":" + c)
   }
 
   override string prettyPrintDef() { result = getDef().toString() }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                     int endline, int endcolumn) {
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getDef().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  /**
+   * Gets the data flow node representing the incoming value assigned at this definition,
+   * if any.
+   */
+  DataFlow::Node getRhsNode() {
+    result = DataFlow::ssaDefinitionNode(this).getImmediatePredecessor()
   }
 }
 
@@ -515,14 +544,14 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   abstract string getKind();
 
   override string prettyPrintRef() {
-    exists (int l, int c | hasLocationInfo(_, l, c, _, _) |
-      result = getKind() + "@" + l + ":" + c
-    )
+    exists(int l, int c | hasLocationInfo(_, l, c, _, _) | result = getKind() + "@" + l + ":" + c)
   }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                     int endline, int endcolumn) {
-    endline = startline and endcolumn = startcolumn and
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    endline = startline and
+    endcolumn = startcolumn and
     getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
 }
@@ -544,9 +573,7 @@ class SsaImplicitInit extends SsaImplicitDefinition, TImplicitInit {
 
   override VarDef getAContributingVarDef() { none() }
 
-  override string prettyPrintDef() {
-    result = "implicit initialization of " + getSourceVariable()
-  }
+  override string prettyPrintDef() { result = "implicit initialization of " + getSourceVariable() }
 }
 
 /**
@@ -565,21 +592,20 @@ class SsaVariableCapture extends SsaImplicitDefinition, TCapture {
 
   override SsaSourceVariable getSourceVariable() { definesAt(_, _, result) }
 
-  override VarDef getAContributingVarDef() {
-    result.getAVariable() = getSourceVariable()
-  }
+  override VarDef getAContributingVarDef() { result.getAVariable() = getSourceVariable() }
 
   override string getKind() { result = "capture" }
 
-  override string prettyPrintDef() {
-    result = "capture variable " + getSourceVariable()
-  }
+  override string prettyPrintDef() { result = "capture variable " + getSourceVariable() }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                     int endline, int endcolumn) {
-    exists (ReachableBasicBlock bb, int i | definesAt(bb, i, _) |
-      bb.getNode(i).getLocation().hasLocationInfo(filepath, startline, startcolumn,
-                                                            endline, endcolumn)
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(ReachableBasicBlock bb, int i | definesAt(bb, i, _) |
+      bb
+          .getNode(i)
+          .getLocation()
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     )
   }
 }
@@ -604,9 +630,7 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
    * Gets a textual representation of the inputs of this pseudo-definition
    * in lexicographical order.
    */
-  string ppInputs() {
-    result = concat(getAnInput().getDefinition().prettyPrintRef(), ", ")
-  }
+  string ppInputs() { result = concat(getAnInput().getDefinition().prettyPrintRef(), ", ") }
 }
 
 /**
@@ -629,13 +653,13 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
 
   override string getKind() { result = "phi" }
 
-  override string prettyPrintDef() {
-    result = getSourceVariable() + " = phi(" + ppInputs() + ")"
-  }
+  override string prettyPrintDef() { result = getSourceVariable() + " = phi(" + ppInputs() + ")" }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                     int endline, int endcolumn) {
-    endline = startline and endcolumn = startcolumn and
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    endline = startline and
+    endcolumn = startcolumn and
     getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
 }
@@ -657,11 +681,10 @@ class SsaRefinementNode extends SsaPseudoDefinition, TRefinement {
   Refinement getRefinement() { result = getGuard().getTest() }
 
   override SsaVariable getAnInput() {
-    exists (SsaSourceVariable v, BasicBlock bb | v = getSourceVariable() and bb = getBasicBlock() |
-      if exists(SsaPhiNode phi | phi.definesAt(bb, _, v)) then
-        result.(SsaPhiNode).definesAt(bb, _, v)
-      else
-        result = getDefReachingEndOf(bb.getAPredecessor(), v)
+    exists(SsaSourceVariable v, BasicBlock bb | v = getSourceVariable() and bb = getBasicBlock() |
+      if exists(SsaPhiNode phi | phi.definesAt(bb, _, v))
+      then result.(SsaPhiNode).definesAt(bb, _, v)
+      else result = getDefReachingEndOf(bb.getAPredecessor(), v)
     )
   }
 
@@ -679,8 +702,17 @@ class SsaRefinementNode extends SsaPseudoDefinition, TRefinement {
     result = getSourceVariable() + " = refine[" + getGuard() + "](" + ppInputs() + ")"
   }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                     int endline, int endcolumn) {
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     getGuard().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+}
+
+module SSA {
+  /** Gets the SSA definition corresponding to `d`. */
+  SsaExplicitDefinition definition(VarDef d) { result.getDef() = d }
+
+  /** Gets the SSA variable corresponding to `d`. */
+  SsaVariable variable(VarDef d) { result.getDefinition() = definition(d) }
 }

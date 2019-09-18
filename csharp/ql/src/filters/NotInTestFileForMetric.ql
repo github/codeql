@@ -4,11 +4,11 @@
  * @kind treemap
  * @id cs/test-file-metric-filter
  */
+
 import csharp
 import semmle.code.csharp.frameworks.Test
 import external.MetricFilter
 
 from MetricResult res
-where not(res.getFile() instanceof TestFile)
-select res,
-       res.getValue()
+where not res.getFile() instanceof TestFile
+select res, res.getValue()

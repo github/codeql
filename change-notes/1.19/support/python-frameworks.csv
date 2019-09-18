@@ -1,0 +1,7 @@
+Name, Category
+Django, Web application framework
+Flask, Microframework
+Pyramid, Web application framework
+Tornado, Web application framework and asynchronous networking library
+Twisted, Networking engine
+WebOb, WSGI request library

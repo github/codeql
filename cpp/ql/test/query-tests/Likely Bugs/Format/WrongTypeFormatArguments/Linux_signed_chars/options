@@ -1,1 +1,1 @@
-semmle-extractor-options: --edg --signed_chars
+semmle-extractor-options: --clang --edg --signed_chars

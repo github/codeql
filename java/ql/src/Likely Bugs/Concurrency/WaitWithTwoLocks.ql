@@ -10,12 +10,13 @@
  *       concurrency
  *       external/cwe/cwe-833
  */
+
 import java
 
-/** A `synchronized` method or statement. */
-class Synched extends StmtParent {
+/** A `synchronized` method body or statement. */
+class Synched extends Stmt {
   Synched() {
-    this.(Method).isSynchronized() or
+    this.getParent().(Method).isSynchronized() or
     this instanceof SynchronizedStmt
   }
 }
@@ -24,6 +25,6 @@ from MethodAccess ma, SynchronizedStmt synch
 where
   ma.getMethod().hasName("wait") and
   ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Object") and
-  ma.getEnclosingStmt().getParent*() = synch and
-  synch.getParent+() instanceof Synched
+  ma.getEnclosingStmt().getEnclosingStmt*() = synch and
+  synch.getEnclosingStmt+() instanceof Synched
 select ma, "wait() with two locks held."

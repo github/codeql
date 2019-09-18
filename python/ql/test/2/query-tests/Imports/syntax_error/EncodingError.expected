@@ -1,0 +1,1 @@
+| bad_encoding.py:11:19:11:19 | Encoding Error | 'utf8' codec can't decode byte 0x82 in position 82: invalid start byte |

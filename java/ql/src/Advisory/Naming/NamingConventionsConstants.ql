@@ -7,6 +7,7 @@
  * @id java/misnamed-constant
  * @tags maintainability
  */
+
 import java
 import NamingConventionsCommon
 

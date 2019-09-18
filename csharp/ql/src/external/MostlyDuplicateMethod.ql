@@ -11,9 +11,9 @@
  *       statistical
  *       non-attributable
  */
+
 import csharp
 import CodeDuplication
-
 
 from Method m, int covered, int total, Method other, int percent
 where
@@ -25,5 +25,5 @@ where
   not duplicateMethod(m, other) and
   not classLevelDuplication(m.getDeclaringType(), other.getDeclaringType()) and
   not fileLevelDuplication(m.getFile(), other.getFile())
-select m, percent + "% of the statements in " + m.getName() + " are duplicated in $@.",
-  other, other.getDeclaringType().getName() + "." + other.getName()
+select m, percent + "% of the statements in " + m.getName() + " are duplicated in $@.", other,
+  other.getDeclaringType().getName() + "." + other.getName()

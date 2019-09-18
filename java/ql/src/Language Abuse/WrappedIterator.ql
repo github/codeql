@@ -9,6 +9,7 @@
  * @tags correctness
  *       reliability
  */
+
 import java
 import IterableClass
 
@@ -18,18 +19,23 @@ predicate iteratorWrapper(Iterable it, Field f, boolean wrap) {
   // declares a final or effectively final field ...
   f.getDeclaringType().getSourceDeclaration() = it and
   (
-    f.isFinal() or
-    (
-      strictcount(f.getAnAssignedValue()) = 1 and
-      f.getAnAssignedValue().getEnclosingCallable() instanceof InitializerMethod
-    )
+    f.isFinal()
+    or
+    strictcount(f.getAnAssignedValue()) = 1 and
+    f.getAnAssignedValue().getEnclosingCallable() instanceof InitializerMethod
   ) and
   // ... whose type is a sub-type of `java.util.Iterator` and ...
-  f.getType().(RefType).getASupertype*().getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
+  f
+      .getType()
+      .(RefType)
+      .getASupertype*()
+      .getSourceDeclaration()
+      .hasQualifiedName("java.util", "Iterator") and
   // ... whose value is returned by the `iterator()` method of this class ...
   exists(Expr iterator | iterator = it.simpleIterator() |
     // ... either directly ...
-    iterator = f.getAnAccess() and wrap = false or
+    iterator = f.getAnAccess() and wrap = false
+    or
     // ... or wrapped in another Iterator.
     exists(ClassInstanceExpr cie | cie = iterator and wrap = true |
       cie.getAnArgument() = f.getAnAccess() or
@@ -41,9 +47,11 @@ predicate iteratorWrapper(Iterable it, Field f, boolean wrap) {
 from Iterable i, Field f, boolean wrap, string appearto, string iteratorbasedon
 where
   iteratorWrapper(i, f, wrap) and
-  ( wrap = true and appearto = "appear to " and iteratorbasedon = "an iterator based on " or
+  (
+    wrap = true and appearto = "appear to " and iteratorbasedon = "an iterator based on "
+    or
     wrap = false and appearto = "" and iteratorbasedon = ""
   )
-select i, "This class implements Iterable, but does not " + appearto + "support multiple iterations," +
-  " since its iterator method always returns " + iteratorbasedon + "the same $@.",
-  f, "iterator"
+select i,
+  "This class implements Iterable, but does not " + appearto + "support multiple iterations," +
+    " since its iterator method always returns " + iteratorbasedon + "the same $@.", f, "iterator"

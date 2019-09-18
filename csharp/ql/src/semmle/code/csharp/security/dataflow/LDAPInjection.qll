@@ -2,6 +2,7 @@
  * Provides a taint-tracking configuration for reasoning about unvalidated user input that is used to
  * construct LDAP queries.
  */
+
 import csharp
 
 module LDAPInjection {
@@ -29,31 +30,18 @@ module LDAPInjection {
    * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "LDAPInjection"
-    }
+    TaintTrackingConfiguration() { this = "LDAPInjection" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input. */
   class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
+    RemoteSource() { this instanceof RemoteFlowSource }
   }
 
   /**
@@ -65,12 +53,15 @@ module LDAPInjection {
   class DirectoryEntryPathSink extends Sink {
     DirectoryEntryPathSink() {
       exists(ObjectCreation create |
-        create.getTarget() = any(SystemDirectoryServicesDirectoryEntryClass d).getAConstructor() |
+        create.getTarget() = any(SystemDirectoryServicesDirectoryEntryClass d).getAConstructor()
+      |
         this.getExpr() = create.getArgumentForName("path")
-      ) or
+      )
+      or
       exists(Property path |
         path = any(SystemDirectoryServicesDirectoryEntryClass d).getAProperty() and
-        path.hasName("Path") |
+        path.hasName("Path")
+      |
         this.getExpr() = path.getSetter().getACall().getArgument(0)
       )
     }
@@ -85,12 +76,15 @@ module LDAPInjection {
   class DirectorySearcherFilterSink extends Sink {
     DirectorySearcherFilterSink() {
       exists(ObjectCreation create |
-        create.getTarget() = any(SystemDirectoryServicesDirectorySearcherClass d).getAConstructor() |
+        create.getTarget() = any(SystemDirectoryServicesDirectorySearcherClass d).getAConstructor()
+      |
         this.getExpr() = create.getArgumentForName("filter")
-      ) or
-     exists(Property filter |
+      )
+      or
+      exists(Property filter |
         filter = any(SystemDirectoryServicesDirectorySearcherClass d).getAProperty() and
-        filter.hasName("Filter")|
+        filter.hasName("Filter")
+      |
         this.getExpr() = filter.getSetter().getACall().getArgument(0)
       )
     }
@@ -105,13 +99,16 @@ module LDAPInjection {
   class SearchRequestFilterSink extends Sink {
     SearchRequestFilterSink() {
       exists(ObjectCreation create |
-        create.getTarget() = any(SystemDirectoryServicesProtocolsSearchRequest d).getAConstructor() |
+        create.getTarget() = any(SystemDirectoryServicesProtocolsSearchRequest d).getAConstructor()
+      |
         this.getExpr() = create.getArgumentForName("ldapFilter") or
         this.getExpr() = create.getArgumentForName("filter")
-      ) or
+      )
+      or
       exists(Property filter |
         filter = any(SystemDirectoryServicesProtocolsSearchRequest d).getAProperty() and
-        filter.hasName("Filter")|
+        filter.hasName("Filter")
+      |
         this.getExpr() = filter.getSetter().getACall().getArgument(0)
       )
     }

@@ -1,0 +1,11 @@
+| EntityFramework.cs:36:13:36:36 | ... = ... |
+| EntityFramework.cs:39:13:39:52 | object creation of type SqlCommand |
+| EntityFramework.cs:41:13:41:47 | call to method ExecuteSqlCommand |
+| EntityFramework.cs:42:19:42:58 | call to method ExecuteSqlCommandAsync |
+| EntityFrameworkCore.cs:34:13:34:47 | call to method ExecuteSqlCommand |
+| EntityFrameworkCore.cs:35:19:35:58 | call to method ExecuteSqlCommandAsync |
+| EntityFrameworkCore.cs:38:13:38:29 | call to method Build |
+| EntityFrameworkCore.cs:41:13:41:32 | object creation of type RawSqlString |
+| EntityFrameworkCore.cs:42:32:42:33 | call to operator implicit conversion |
+| EntityFrameworkCore.cs:51:18:51:46 | object creation of type RawSqlString |
+| EntityFrameworkCore.cs:52:18:52:42 | call to operator implicit conversion |

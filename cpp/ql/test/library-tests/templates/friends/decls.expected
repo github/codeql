@@ -1,12 +1,12 @@
 | file://:0:0:0:0 | C<char>'s friend |
 | file://:0:0:0:0 | C<int>'s friend |
 | file://:0:0:0:0 | auto |
-| file://:0:0:0:0 | f |
 | file://:0:0:0:0 | fp_offset |
 | file://:0:0:0:0 | gp_offset |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
@@ -28,6 +28,8 @@
 | friends.cpp:7:9:7:9 | operator= |
 | friends.cpp:7:9:7:9 | operator= |
 | friends.cpp:7:9:7:9 | operator= |
+| friends.cpp:9:17:9:17 | f |
 | friends.cpp:9:17:9:19 | C<TTT>'s friend |
+| friends.cpp:9:21:9:26 | p#0 |
 | friends.cpp:12:17:12:17 | f |
 | friends.cpp:13:17:13:17 | f |

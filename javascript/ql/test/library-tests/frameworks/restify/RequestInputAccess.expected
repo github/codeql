@@ -1,7 +1,0 @@
-| src/test.js:14:5:14:26 | request ... y().foo | parameter | src/test.js:12:19:22:1 | functio ... okie;\\n} |
-| src/test.js:15:5:15:18 | request.href() | url | src/test.js:12:19:22:1 | functio ... okie;\\n} |
-| src/test.js:16:5:16:21 | request.getPath() | url | src/test.js:12:19:22:1 | functio ... okie;\\n} |
-| src/test.js:17:5:17:28 | request ... tType() | header | src/test.js:12:19:22:1 | functio ... okie;\\n} |
-| src/test.js:18:5:18:23 | request.userAgent() | header | src/test.js:12:19:22:1 | functio ... okie;\\n} |
-| src/test.js:19:5:19:26 | request ... ('bar') | header | src/test.js:12:19:22:1 | functio ... okie;\\n} |
-| src/test.js:20:5:20:25 | request ... ('baz') | header | src/test.js:12:19:22:1 | functio ... okie;\\n} |

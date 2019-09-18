@@ -1,8 +1,5 @@
 import csharp
-import semmle.code.csharp.controlflow.BasicBlocks
+import Common
 
-from BasicBlock bb
-select
-  bb.getFirstNode(),
-  bb.getLastNode(),
-  bb.length()
+from SourceBasicBlock bb
+select bb.getFirstNode(), bb.getLastNode(), bb.length()

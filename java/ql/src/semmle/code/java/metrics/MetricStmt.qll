@@ -6,7 +6,6 @@ import semmle.code.java.Statement
 
 /** This class provides access to metrics information for statements. */
 class MetricStmt extends Stmt {
-
   /** Gets a nesting depth of this statement. */
   int getANestingDepth() {
     not exists(Stmt s | s.getParent() = this) and result = 0
@@ -15,9 +14,7 @@ class MetricStmt extends Stmt {
   }
 
   /** Gets the maximum nesting depth of this statement. */
-  int getNestingDepth() {
-    result = max(this.getANestingDepth())
-  }
+  int getNestingDepth() { result = max(this.getANestingDepth()) }
 
   /** Gets the nested depth of this statement. */
   int getNestedDepth() {

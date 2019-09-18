@@ -25,11 +25,15 @@ import PointlessSelfComparison
  *     `parent = 2 * child`
  */
 private predicate linearChild(Expr parent, Expr child, float multiplier) {
-  (child = parent.(AddExpr).getAChild() and multiplier = 1.0) or
-  (child = parent.(SubExpr).getLeftOperand() and multiplier = 1.0) or
-  (child = parent.(SubExpr).getRightOperand() and multiplier = -1.0) or
-  (child = parent.(UnaryPlusExpr).getOperand() and multiplier = 1.0) or
-  (child = parent.(UnaryMinusExpr).getOperand() and multiplier = -1.0)
+  child = parent.(AddExpr).getAChild() and multiplier = 1.0
+  or
+  child = parent.(SubExpr).getLeftOperand() and multiplier = 1.0
+  or
+  child = parent.(SubExpr).getRightOperand() and multiplier = -1.0
+  or
+  child = parent.(UnaryPlusExpr).getOperand() and multiplier = 1.0
+  or
+  child = parent.(UnaryMinusExpr).getOperand() and multiplier = -1.0
 }
 
 /**
@@ -41,18 +45,19 @@ private predicate linearChild(Expr parent, Expr child, float multiplier) {
  * In this example, `x` has multiplier 4, `y` has multiplier -1, and `z`
  * has multiplier -3 (multipliers from the right hand child are negated).
  */
-private predicate cmpLinearSubExpr(
-  ComparisonOperation cmp, Expr child, float multiplier) {
-  not convertedExprMightOverflow(child)
-  and
-  ((child = cmp.getLeftOperand() and multiplier = 1.0)
-   or
-   (child = cmp.getRightOperand() and multiplier = -1.0)
-   or
-   exists (Expr parent, float m1, float m2
-   | cmpLinearSubExpr(cmp, parent, m1) and
-     linearChild(parent, child, m2) and
-     multiplier = m1 * m2))
+private predicate cmpLinearSubExpr(ComparisonOperation cmp, Expr child, float multiplier) {
+  not convertedExprMightOverflow(child) and
+  (
+    child = cmp.getLeftOperand() and multiplier = 1.0
+    or
+    child = cmp.getRightOperand() and multiplier = -1.0
+    or
+    exists(Expr parent, float m1, float m2 |
+      cmpLinearSubExpr(cmp, parent, m1) and
+      linearChild(parent, child, m2) and
+      multiplier = m1 * m2
+    )
+  )
 }
 
 /**
@@ -60,9 +65,10 @@ private predicate cmpLinearSubExpr(
  * `child` is an access of variable `v`.
  */
 private predicate cmpLinearSubVariable(
-  ComparisonOperation cmp, Variable v, VariableAccess child, float multiplier) {
+  ComparisonOperation cmp, Variable v, VariableAccess child, float multiplier
+) {
   v = child.getTarget() and
-  not exists (child.getQualifier()) and
+  not exists(child.getQualifier()) and
   cmpLinearSubExpr(cmp, child, multiplier)
 }
 
@@ -75,23 +81,19 @@ private predicate cmpLinearSubVariable(
  *     `v + x - v < y`
  *     `v + x + v < y + 2*v`
  */
-private predicate cancelingSubExprs(
-  ComparisonOperation cmp, VariableAccess a1, VariableAccess a2) {
-  exists (Variable v
-  | exists (float m | m < 0 and cmpLinearSubVariable(cmp, v, a1, m)) and
-    exists (float m | m > 0 and cmpLinearSubVariable(cmp, v, a2, m)))
+private predicate cancelingSubExprs(ComparisonOperation cmp, VariableAccess a1, VariableAccess a2) {
+  exists(Variable v |
+    exists(float m | m < 0 and cmpLinearSubVariable(cmp, v, a1, m)) and
+    exists(float m | m > 0 and cmpLinearSubVariable(cmp, v, a2, m))
+  )
 }
 
 from ComparisonOperation cmp, VariableAccess a1, VariableAccess a2
 where
-  cancelingSubExprs(cmp, a1, a2)
-
+  cancelingSubExprs(cmp, a1, a2) and
   // Most practical examples found by this query are instances of
   // BadAdditionOverflowCheck or PointlessSelfComparison.
-  and not badAdditionOverflowCheck(cmp, _)
-  and not pointlessSelfComparison(cmp)
-select
-  cmp,
-  "Comparison can be simplified by canceling $@ with $@.",
-  a1, a1.getTarget().getName(),
+  not badAdditionOverflowCheck(cmp, _) and
+  not pointlessSelfComparison(cmp)
+select cmp, "Comparison can be simplified by canceling $@ with $@.", a1, a1.getTarget().getName(),
   a2, a2.getTarget().getName()

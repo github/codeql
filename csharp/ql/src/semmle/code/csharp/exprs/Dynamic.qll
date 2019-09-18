@@ -15,9 +15,7 @@ private import semmle.code.csharp.dispatch.Dispatch
  * (`DynamicAccessorCall`), or a dynamic element access (`DynamicElementAccess`).
  */
 class DynamicExpr extends LateBindableExpr {
-  DynamicExpr() {
-    isLateBound()
-  }
+  DynamicExpr() { isLateBound() }
 }
 
 /**
@@ -67,9 +65,7 @@ class DynamicObjectCreation extends DynamicExpr, ObjectCreation {
  * may not be known at compile-time (as in the example above).
  */
 class DynamicMethodCall extends DynamicExpr, MethodCall {
-  override string toString() {
-    result = "dynamic call to method " + getLateBoundTargetName()
-  }
+  override string toString() { result = "dynamic call to method " + getLateBoundTargetName() }
 }
 
 /**
@@ -97,9 +93,7 @@ class DynamicMethodCall extends DynamicExpr, MethodCall {
  * target operator may not be known at compile-time (as in the example above).
  */
 class DynamicOperatorCall extends DynamicExpr, OperatorCall {
-  override string toString() {
-    result = "dynamic call to operator " + getLateBoundTargetName()
-  }
+  override string toString() { result = "dynamic call to operator " + getLateBoundTargetName() }
 }
 
 /**
@@ -187,10 +181,9 @@ class DynamicAccess extends DynamicExpr {
  * of the member being accessed may not be known (it can be either a field, a
  * property, or an event).
  */
-class DynamicMemberAccess extends DynamicAccess, MemberAccess, AssignableAccess, @dynamic_member_access_expr {
-  override string toString() {
-    result = "dynamic access to member " + getLateBoundTargetName()
-  }
+class DynamicMemberAccess extends DynamicAccess, MemberAccess, AssignableAccess,
+  @dynamic_member_access_expr {
+  override string toString() { result = "dynamic access to member " + getLateBoundTargetName() }
 
   // The target is unknown when the qualifier is a `dynamic` expression
   override DynamicMember getTarget() { none() }
@@ -303,10 +296,7 @@ class DynamicAccessorCall extends DynamicAccess {
   Accessor target;
 
   DynamicAccessorCall() {
-    exists(DispatchCall dc |
-      dc.getCall() = this |
-      target = dc.getADynamicTarget()
-    )
+    exists(DispatchCall dc | dc.getCall() = this | target = dc.getADynamicTarget())
   }
 
   /** Gets an actual run-time target of this dynamic accessor call. */

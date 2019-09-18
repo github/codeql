@@ -9,19 +9,16 @@ import javascript
 /**
  * A heuristic additional flow step in a security query.
  */
-abstract class HeuristicAdditionalTaintStep extends DataFlow::ValueNode {}
+abstract class HeuristicAdditionalTaintStep extends DataFlow::ValueNode { }
 
 /**
  * A call to `tainted.replace(x, y)` that preserves taint.
  */
-private class HeuristicStringManipulationTaintStep extends HeuristicAdditionalTaintStep, TaintTracking::AdditionalTaintStep, DataFlow::MethodCallNode {
-
-  HeuristicStringManipulationTaintStep() {
-    getMethodName() = "replace"
-  }
+private class HeuristicStringManipulationTaintStep extends HeuristicAdditionalTaintStep,
+  TaintTracking::AdditionalTaintStep, DataFlow::MethodCallNode {
+  HeuristicStringManipulationTaintStep() { getMethodName() = "replace" }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = getReceiver() and succ = this
   }
-
 }

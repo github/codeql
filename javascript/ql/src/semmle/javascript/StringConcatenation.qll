@@ -1,6 +1,7 @@
 /**
  * Provides predicates for analyzing string concatenations and their operands.
  */
+
 import javascript
 
 module StringConcatenation {
@@ -8,27 +9,30 @@ module StringConcatenation {
   private DataFlow::Node getAssignAddResult(AssignAddExpr expr) {
     result = expr.flow()
     or
-    exists (SsaExplicitDefinition def | def.getDef() = expr |
-      result = DataFlow::valueNode(def.getVariable().getAUse()))
+    result = DataFlow::lvalueNode(expr.getTarget())
   }
 
   /** Gets the `n`th operand to the string concatenation defining `node`. */
+  pragma[nomagic]
   DataFlow::Node getOperand(DataFlow::Node node, int n) {
-    exists (AddExpr add | node = add.flow() |
+    exists(AddExpr add | node = add.flow() |
       n = 0 and result = add.getLeftOperand().flow()
       or
-      n = 1 and result = add.getRightOperand().flow())
+      n = 1 and result = add.getRightOperand().flow()
+    )
     or
-    exists (TemplateLiteral template | node = template.flow() |
+    exists(TemplateLiteral template | node = template.flow() |
       result = template.getElement(n).flow() and
-      not exists (TaggedTemplateExpr tag | template = tag.getTemplate()))
+      not exists(TaggedTemplateExpr tag | template = tag.getTemplate())
+    )
     or
-    exists (AssignAddExpr assign | node = getAssignAddResult(assign) |
+    exists(AssignAddExpr assign | node = getAssignAddResult(assign) |
       n = 0 and result = assign.getLhs().flow()
       or
-      n = 1 and result = assign.getRhs().flow())
+      n = 1 and result = assign.getRhs().flow()
+    )
     or
-    exists (DataFlow::ArrayCreationNode array, DataFlow::MethodCallNode call |
+    exists(DataFlow::ArrayCreationNode array, DataFlow::MethodCallNode call |
       call = array.getAMethodCall("join") and
       call.getArgument(0).mayHaveStringValue("") and
       (
@@ -40,29 +44,29 @@ module StringConcatenation {
         node = call and
         result = array and
         n = 0
-      ))
+      )
+    )
+    or
+    exists(DataFlow::CallNode call | node = call |
+      call = Closure::moduleImport("goog.string.buildString").getACall() and
+      result = call.getArgument(n)
+    )
   }
 
   /** Gets an operand to the string concatenation defining `node`. */
-  DataFlow::Node getAnOperand(DataFlow::Node node) {
-    result = getOperand(node, _)
-  }
+  DataFlow::Node getAnOperand(DataFlow::Node node) { result = getOperand(node, _) }
 
   /** Gets the number of operands to the given concatenation. */
-  int getNumOperand(DataFlow::Node node) {
-    result = strictcount(getAnOperand(node))
-  }
+  int getNumOperand(DataFlow::Node node) { result = strictcount(getAnOperand(node)) }
 
   /** Gets the first operand to the string concatenation defining `node`. */
-  DataFlow::Node getFirstOperand(DataFlow::Node node) {
-    result = getOperand(node, 0)
-  }
+  DataFlow::Node getFirstOperand(DataFlow::Node node) { result = getOperand(node, 0) }
 
   /** Gets the last operand to the string concatenation defining `node`. */
   DataFlow::Node getLastOperand(DataFlow::Node node) {
     result = getOperand(node, getNumOperand(node) - 1)
   }
-  
+
   /**
    * Holds if `src` flows to `dst` through the `n`th operand of the given concatenation operator.
    */
@@ -74,7 +78,36 @@ module StringConcatenation {
   /**
    * Holds if there is a taint step from `src` to `dst` through string concatenation.
    */
-  predicate taintStep(DataFlow::Node src, DataFlow::Node dst) {
-    taintStep(src, dst, _, _)
+  predicate taintStep(DataFlow::Node src, DataFlow::Node dst) { taintStep(src, dst, _, _) }
+
+  /**
+   * Holds if `node` is the root of a concatenation tree, that is,
+   * it is a concatenation operator that is not itself the immediate operand to
+   * another concatenation operator.
+   */
+  predicate isRoot(DataFlow::Node node) {
+    exists(getAnOperand(node)) and
+    not node = getAnOperand(_)
+  }
+
+  /**
+   * Gets the root of the concatenation tree in which `node` is an operand or operator.
+   */
+  DataFlow::Node getRoot(DataFlow::Node node) {
+    isRoot(node) and
+    result = node
+    or
+    exists(DataFlow::Node operator |
+      node = getAnOperand(operator) and
+      result = getRoot(operator)
+    )
+  }
+
+  /**
+   * Holds if `node` is a string concatenation that only acts as a string coercion.
+   */
+  predicate isCoercion(DataFlow::Node node) {
+    getNumOperand(node) = 2 and
+    getOperand(node, _).getStringValue() = ""
   }
 }

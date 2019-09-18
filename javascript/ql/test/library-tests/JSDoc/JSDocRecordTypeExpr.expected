@@ -1,2 +1,0 @@
-| {myNum: number, myObject} | myNum | number |
-| {myNum: number, myObject} | myObject | (none) |

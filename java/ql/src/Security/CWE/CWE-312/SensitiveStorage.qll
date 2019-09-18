@@ -9,8 +9,7 @@ import semmle.code.java.security.SensitiveActions
 /** Test code filter. */
 predicate testMethod(Method m) {
   (
-    m instanceof TestMethod
-    or
+    m instanceof TestMethod or
     m.getDeclaringType() instanceof TestClass
   ) and
   // Do report results in the Juliet tests.
@@ -19,14 +18,19 @@ predicate testMethod(Method m) {
 
 private class SensitiveSourceFlowConfig extends TaintTracking::Configuration {
   SensitiveSourceFlowConfig() { this = "SensitiveStorage::SensitiveSourceFlowConfig" }
+
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
+
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = cookieInput(_) or
+    sink.asExpr() = cookieInput(_)
+    or
     exists(MethodAccess m |
       m.getMethod() instanceof PropertiesSetPropertyMethod and sink.asExpr() = m.getArgument(1)
-    ) or
+    )
+    or
     sink.asExpr() = getInstanceInput(_, _)
   }
+
   override predicate isSanitizer(DataFlow::Node n) {
     n.getType() instanceof NumericType or n.getType() instanceof BooleanType
   }
@@ -74,13 +78,13 @@ private predicate cookieStore(DataFlow::Node cookie, Expr store) {
 
 private class CookieToStoreFlowConfig extends DataFlow2::Configuration {
   CookieToStoreFlowConfig() { this = "SensitiveStorage::CookieToStoreFlowConfig" }
+
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof Cookie }
+
   override predicate isSink(DataFlow::Node sink) { cookieStore(sink, _) }
 }
 
-private Expr cookieInput(Cookie c) {
-  result = c.getArgument(1)
-}
+private Expr cookieInput(Cookie c) { result = c.getArgument(1) }
 
 /** The instantiation of a cookie, which can act as storage. */
 class Cookie extends Storable {
@@ -89,9 +93,7 @@ class Cookie extends Storable {
   }
 
   /** Gets an input, for example `input` in `new Cookie("...", input);`. */
-  override Expr getAnInput() {
-    result = cookieInput(this)
-  }
+  override Expr getAnInput() { result = cookieInput(this) }
 
   /** Gets a store, for example `response.addCookie(cookie);`. */
   override Expr getAStore() {
@@ -120,7 +122,9 @@ private predicate propertiesStore(DataFlow::Node prop, Expr store) {
 
 private class PropertiesFlowConfig extends DataFlow3::Configuration {
   PropertiesFlowConfig() { this = "SensitiveStorage::PropertiesFlowConfig" }
+
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof Properties }
+
   override predicate isSink(DataFlow::Node sink) {
     propertiesInput(sink, _) or
     propertiesStore(sink, _)
@@ -129,9 +133,7 @@ private class PropertiesFlowConfig extends DataFlow3::Configuration {
 
 /** The instantiation of a `Properties` object, which can be stored to disk. */
 class Properties extends Storable {
-  Properties() {
-    this.getConstructor().getDeclaringType() instanceof TypeProperty
-  }
+  Properties() { this.getConstructor().getDeclaringType() instanceof TypeProperty }
 
   /** Gets an input, for example `input` in `props.setProperty("password", input);`. */
   override Expr getAnInput() {
@@ -167,7 +169,7 @@ private Expr getInstanceInput(DataFlow::Node instance, RefType t) {
     a.getDest() = fa and
     a.getSource() = result and
     fa.getField().getDeclaringType() = t
-    |
+  |
     t.getASourceSupertype*() instanceof TypeSerializable or
     t instanceof JAXBElement
   )
@@ -175,12 +177,15 @@ private Expr getInstanceInput(DataFlow::Node instance, RefType t) {
 
 private class ClassStoreFlowConfig extends DataFlow4::Configuration {
   ClassStoreFlowConfig() { this = "SensitiveStorage::ClassStoreFlowConfig" }
+
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ClassStore }
+
   override predicate isSink(DataFlow::Node sink) {
     exists(getInstanceInput(sink, _)) or
     serializableStore(sink, _) or
     marshallableStore(sink, _)
   }
+
   override int fieldFlowBranchLimit() { result = 1 }
 }
 
@@ -212,7 +217,9 @@ class Serializable extends ClassStore {
     // `Properties` are `Serializable`, but handled elsewhere.
     not this instanceof Properties and
     // restrict attention to tainted instances
-    exists(SensitiveSource data | data.flowsToCached(getInstanceInput(_, this.getConstructor().getDeclaringType())))
+    exists(SensitiveSource data |
+      data.flowsToCached(getInstanceInput(_, this.getConstructor().getDeclaringType()))
+    )
   }
 
   /** Gets a store, for example `outputStream.writeObject(instance)`. */
@@ -226,9 +233,7 @@ class Serializable extends ClassStore {
 
 /** The instantiation of a marshallable class, which can be stored to disk as XML. */
 class Marshallable extends ClassStore {
-  Marshallable() {
-    this.getConstructor().getDeclaringType() instanceof JAXBElement
-  }
+  Marshallable() { this.getConstructor().getDeclaringType() instanceof JAXBElement }
 
   /** Gets a store, for example `marshaller.marshal(instance)`. */
   override Expr getAStore() {

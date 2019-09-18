@@ -5,11 +5,12 @@
 <overview>
 <p>This rule finds calls to functions that are dangerous to
 use. Currently, it checks for calls
-to <code>gmtime</code>. See <strong>Related rules</strong>
-below for rules that identify other dangerous functions.</p>
+to <code>gmtime</code>, <code>localtime</code>,
+<code>ctime</code> and <code>asctime</code>.</p>
 
-<p>The <code>gmtime</code> function fills data into a <code>tm</code>
-struct in shared memory and then returns a pointer to that struct. If
+<p>The time related functions such as <code>gmtime</code>
+fill data into a <code>tm</code> struct or <code>char</code> array in
+shared memory and then returns a pointer to that memory. If
 the function is called from multiple places in the same program, and
 especially if it is called from multiple threads in the same program,
 then the calls will overwrite each other's data.</p>
@@ -17,10 +18,15 @@ then the calls will overwrite each other's data.</p>
 </overview>
 <recommendation>
 
-<p>It is safer to use <code>gmtime_r</code>.
+<p>Replace calls to <code>gmtime</code> with <code>gmtime_r</code>.
 With <code>gmtime_r</code>, the application code manages allocation of
 the <code>tm</code> struct. That way, separate calls to the function
 can use their own storage.</p>
+
+<p>Similarly replace calls to <code>localtime</code> with
+<code>localtime_r</code>, calls to <code>ctime</code> with
+<code>ctime_r</code> and calls to <code>asctime</code> with
+<code>asctime_r</code>.</p>
 
 </recommendation>
 <example>
@@ -36,19 +42,7 @@ struct on every call, it is immune to other calls to <code>gmtime</code>
 or <code>gmtime_r</code>.</p>
 
 </example>
-<section title="Related rules">
-<p>Other dangerous functions identified by CWE-676 ("Use of
-Potentially Dangerous Function") include <code>strcpy</code>
-and <code>strcat</code>. Use of these functions is highlighted by
-rules for the following CWEs:</p>
-<ul>
-<li>CWE-120 Classic Buffer Overflow
-</li><li>CWE-131 Incorrect Calculation of Buffer Size
-</li></ul>
-
-</section>
 <references>
-
-
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/CON33-C.+Avoid+race+conditions+when+using+library+functions">CON33-C. Avoid race conditions when using library functions</a>.</li>
 </references>
 </qhelp>

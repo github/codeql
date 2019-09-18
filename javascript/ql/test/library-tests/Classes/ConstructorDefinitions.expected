@@ -1,7 +1,0 @@
-| fields.js:1:9:1:8 | constructor() {} |
-| points.js:2:3:5:3 | constru ...  y;\\n  } |
-| points.js:21:3:24:3 | constru ...  c;\\n  } |
-| staticConstructor.js:1:15:1:14 | constructor() {} |
-| tst.js:2:3:2:50 | "constr ... r. */ } |
-| tst.js:7:3:7:38 | constru ... get); } |
-| tst.js:11:9:11:8 | constructor() {} |

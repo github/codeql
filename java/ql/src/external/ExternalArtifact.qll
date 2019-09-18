@@ -1,7 +1,6 @@
 import java
 
 class ExternalData extends @externalDataElement {
-
   string getDataPath() { externalData(this, result, _, _) }
 
   string getQueryPath() { result = getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
@@ -16,16 +15,13 @@ class ExternalData extends @externalDataElement {
 
   date getFieldAsDate(int index) { result = getField(index).toDate() }
 
-  string toString() {
-    result = getQueryPath() + ": " + buildTupleString(0)
-  }
+  string toString() { result = getQueryPath() + ": " + buildTupleString(0) }
 
   private string buildTupleString(int start) {
-    (start = getNumFields() - 1 and result = getField(start))
+    start = getNumFields() - 1 and result = getField(start)
     or
-    (start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start+1))
+    start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start + 1)
   }
-
 }
 
 /**
@@ -41,4 +37,3 @@ class DefectExternalData extends ExternalData {
 
   string getMessage() { result = getField(1) }
 }
-

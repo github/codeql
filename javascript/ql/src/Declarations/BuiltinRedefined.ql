@@ -21,26 +21,30 @@ import Definitions
 predicate acceptableRedefinition(Identifier id) {
   // function(x, y, undefined) { ... }(23, 42)
   id.getName() = "undefined" and
-  exists (ImmediatelyInvokedFunctionExpr iife |
+  exists(ImmediatelyInvokedFunctionExpr iife |
     id = iife.getParameter(iife.getInvocation().getNumArgument())
-  ) or
+  )
+  or
   // Date = global.Date
-  exists (AssignExpr assgn |
+  exists(AssignExpr assgn |
     id = assgn.getTarget() and
-    id.getName() = assgn.getRhs().stripParens().(PropAccess).getPropertyName()
-  ) or
+    id.getName() = assgn.getRhs().getUnderlyingValue().(PropAccess).getPropertyName()
+  )
+  or
   // var Date = global.Date
-  exists (VariableDeclarator decl |
+  exists(VariableDeclarator decl |
     id = decl.getBindingPattern() and
-    id.getName() = decl.getInit().stripParens().(PropAccess).getPropertyName()
+    id.getName() = decl.getInit().getUnderlyingValue().(PropAccess).getPropertyName()
   )
 }
 
 from DefiningIdentifier id, string name
-where not id.inExternsFile() and
-      name = id.getName() and
-      name.regexpMatch("Object|Function|Array|String|Boolean|Number|Math|Date|RegExp|Error|" +
-                       "NaN|Infinity|undefined|eval|parseInt|parseFloat|isNaN|isFinite|" +
-                       "decodeURI|decodeURIComponent|encodeURI|encodeURIComponent") and
-      not acceptableRedefinition(id)
+where
+  not id.inExternsFile() and
+  name = id.getName() and
+  name
+      .regexpMatch("Object|Function|Array|String|Boolean|Number|Math|Date|RegExp|Error|" +
+          "NaN|Infinity|undefined|eval|parseInt|parseFloat|isNaN|isFinite|" +
+          "decodeURI|decodeURIComponent|encodeURI|encodeURIComponent") and
+  not acceptableRedefinition(id)
 select id, "Redefinition of " + name + "."

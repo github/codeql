@@ -9,6 +9,7 @@
  * @tags correctness
  *       external/cwe/cwe-685
  */
+
 import java
 import semmle.code.java.StringFormat
 
@@ -18,4 +19,5 @@ where
   refs = fmt.getMaxFmtSpecIndex() and
   args = fmtcall.getVarargsCount() and
   refs > args
-select fmtcall, "This format call refers to " + refs + " argument(s) but only supplies " + args + " argument(s)."
+select fmtcall,
+  "This format call refers to " + refs + " argument(s) but only supplies " + args + " argument(s)."

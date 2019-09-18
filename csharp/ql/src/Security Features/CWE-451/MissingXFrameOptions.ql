@@ -19,20 +19,24 @@ import semmle.code.csharp.frameworks.system.Web
  * Holds if there exists a `Web.config` file in the snapshot that adds an `X-Frame-Options` header.
  */
 predicate hasWebConfigXFrameOptions() {
-  /*
-   * Looking for an entry in a Web.config file that looks like this:
-   * ```
-   * <system.webServer>
-   *   <httpProtocol>
-   *    <customHeaders>
-   *      <add name="X-Frame-Options" value="SAMEORIGIN" />
-   *    </customHeaders>
-   *   </httpProtocol>
-   * </system.webServer>
-   * ```
-   */
+  // Looking for an entry in a Web.config file that looks like this:
+  // ```
+  // <system.webServer>
+  //   <httpProtocol>
+  //    <customHeaders>
+  //      <add name="X-Frame-Options" value="SAMEORIGIN" />
+  //    </customHeaders>
+  //   </httpProtocol>
+  // </system.webServer>
+  // ```
   exists(XMLElement element |
-    element = any(WebConfigXML webConfig).getARootElement().getAChild("system.webServer").getAChild("httpProtocol").getAChild("customHeaders").getAChild("add") |
+    element = any(WebConfigXML webConfig)
+          .getARootElement()
+          .getAChild("system.webServer")
+          .getAChild("httpProtocol")
+          .getAChild("customHeaders")
+          .getAChild("add")
+  |
     element.getAttributeValue("name") = "X-Frame-Options"
   )
 }
@@ -44,12 +48,14 @@ predicate hasWebConfigXFrameOptions() {
 predicate hasCodeXFrameOptions() {
   exists(MethodCall call |
     call.getTarget() = any(SystemWebHttpResponseClass r).getAppendHeaderMethod() or
-    call.getTarget() = any(SystemWebHttpResponseClass r).getAddHeaderMethod() |
+    call.getTarget() = any(SystemWebHttpResponseClass r).getAddHeaderMethod()
+  |
     call.getArgumentForName("name").getValue() = "X-Frame-Options"
   )
 }
 
 from WebConfigXML webConfig
-where not hasWebConfigXFrameOptions()
-  and not hasCodeXFrameOptions()
+where
+  not hasWebConfigXFrameOptions() and
+  not hasCodeXFrameOptions()
 select webConfig, "Configuration file is missing the X-Frame-Options setting."

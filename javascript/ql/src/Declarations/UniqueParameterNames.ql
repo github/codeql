@@ -30,11 +30,12 @@ predicate isDummy(SimpleParameter p) {
 }
 
 from Function f, Parameter p, Parameter q, int i, int j, string name
-where parmBinds(f, i, p, name) and
-      parmBinds(f, j, q, name) and
-      i < j and
-      j = max(int k | parmBinds(f, k, _, name) | k) and
-      not isDummy(p) and
-      // duplicate parameters in strict mode functions are flagged by the 'Syntax error' rule
-      not f.isStrict()
+where
+  parmBinds(f, i, p, name) and
+  parmBinds(f, j, q, name) and
+  i < j and
+  j = max(int k | parmBinds(f, k, _, name) | k) and
+  not isDummy(p) and
+  // duplicate parameters in strict mode functions are flagged by the 'Syntax error' rule
+  not f.isStrict()
 select p, "This parameter has the same name as $@ of the same function.", q, "another parameter"

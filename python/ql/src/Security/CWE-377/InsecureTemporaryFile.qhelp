@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Functions that create temporary file names (such as <code>tempfile.mktemp</code>
+and <code>os.tempnam</code>) are fundamentally insecure, as they do not
+ensure exclusive access to a file with the temporary name they return.
+The file name returned by these functions is guaranteed to be unique on
+creation but the file must be opened in a separate operation. There is no
+guarantee that the creation and open operations will happen atomically. This
+provides an opportunity for an attacker to interfere with the file before it is
+opened.
+</p>
+<p>
+Note that <code>mktemp</code> has been deprecated since Python 2.3.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Replace the use of <code>mktemp</code> with some of the more secure functions
+in the <code>tempfile</code> module, such as <code>TemporaryFile</code>. If the
+file is intended to be accessed from other processes, consider using the
+<code>NamedTemporaryFile</code> function.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following piece of code opens a temporary file and writes a set of results
+to it. Because the file name is created using <code>mktemp</code>, another
+process may access this file before it is opened using <code>open</code>.
+</p>
+<sample src="InsecureTemporaryFile.py" />
+
+<p>
+By changing the code to use <code>NamedTemporaryFile</code> instead, the file is
+opened immediately.
+</p>
+<sample src="SecureTemporaryFile.py" />
+
+</example>
+
+<references>
+
+<li>
+Python Standard Library: <a href="https://docs.python.org/3/library/tempfile.html#tempfile.mktemp">tempfile.mktemp</a>.
+</li>
+</references>
+
+</qhelp>

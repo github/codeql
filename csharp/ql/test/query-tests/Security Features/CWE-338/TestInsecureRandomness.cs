@@ -2,19 +2,6 @@ using System;
 using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.VisualStudio.TestTools.UnitTesting
-{
-    class TestClassAttribute : Attribute
-    {
-        public TestClassAttribute() { }
-    }
-
-    class TestMethodAttribute : Attribute
-    {
-        public TestMethodAttribute() { }
-    }
-}
-
 [TestClass]
 public class InsecureRandomnessTest
 {
@@ -26,3 +13,5 @@ public class InsecureRandomnessTest
         Random r = new Random();
     }
 }
+
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

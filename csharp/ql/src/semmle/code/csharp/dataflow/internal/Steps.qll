@@ -18,8 +18,7 @@ module Steps {
   private AssignableRead getARead(AssignableDefinition def) {
     result = BaseSsa::getARead(def, _)
     or
-    exists(LocalScopeVariable v |
-      def.getTarget() = v |
+    exists(LocalScopeVariable v | def.getTarget() = v |
       result = v.getAnAccess() and
       strictcount(AssignableDefinition def0 | def0.getTarget() = v) = 1
     )
@@ -27,7 +26,8 @@ module Steps {
     exists(Field f |
       def.getTarget() = f and
       result = f.getAnAccess() and
-      strictcount(AssignableDefinition def0 | def0.getTarget() = f) = 1 |
+      strictcount(AssignableDefinition def0 | def0.getTarget() = f) = 1
+    |
       f.isReadOnly() or
       f.isConst() or
       isEffectivelyInternalOrPrivate(f)
@@ -47,35 +47,29 @@ module Steps {
    * Holds if modifiable `m` is effectively private or internal (either directly
    * or because one of `m`'s enclosing types is).
    */
-  private predicate isEffectivelyInternalOrPrivate(Modifiable m) {
-    m.isEffectivelyInternal() or
-    m.isEffectivelyPrivate()
-  }
+  private predicate isEffectivelyInternalOrPrivate(Modifiable m) { not m.isEffectivelyPublic() }
 
   private predicate flowIn(Parameter p, Expr pred, AssignableRead succ) {
-    exists(AssignableDefinitions::ImplicitParameterDefinition def, Call c |
-      succ = getARead(def) |
+    exists(AssignableDefinitions::ImplicitParameterDefinition def, Call c | succ = getARead(def) |
       pred = getArgumentForOverridderParameter(c, p) and
       p.getSourceDeclaration() = def.getParameter()
     )
   }
 
   private Expr getArgumentForOverridderParameter(Call call, Parameter p) {
-    exists(Parameter base, Callable callable |
-      result = call.getArgumentForParameter(base) |
+    exists(Parameter base, Callable callable | result = call.getArgumentForParameter(base) |
       base = callable.getAParameter() and
       isOverriderParameter(callable, p, base.getPosition())
     )
   }
 
-  pragma [noinline]
+  pragma[noinline]
   private predicate isOverriderParameter(Callable c, Parameter p, int i) {
     (
       p = c.getAParameter() or
       p = c.(Method).getAnOverrider+().getAParameter() or
       p = c.(Method).getAnUltimateImplementor().getAParameter()
-    )
-    and
+    ) and
     i = p.getPosition()
   }
 
@@ -130,13 +124,9 @@ module Steps {
    * ```
    */
   predicate stepOpen(Expr pred, Expr succ) {
-    exists(AssignableDefinition def |
-      succ = getARead(def) |
-      pred = def.getSource()
-    )
+    exists(AssignableDefinition def | succ = getARead(def) | pred = def.getSource())
     or
-    exists(Parameter p |
-      flowIn(p, pred, succ) |
+    exists(Parameter p | flowIn(p, pred, succ) |
       isEffectivelyInternalOrPrivateCallable(p.getCallable())
     )
     or

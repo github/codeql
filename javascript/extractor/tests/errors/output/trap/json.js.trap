@@ -1,0 +1,24 @@
+#10000=@"/json.js;sourcefile"
+files(#10000,"/json.js","json","js",0)
+#10001=@"/;folder"
+folders(#10001,"/","")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=*
+json(#20001,5,#10000,0,"{\n  ""a"": 42\n}")
+#20002=@"loc,{#10000},1,1,3,1"
+locations_default(#20002,#10000,1,1,3,1)
+json_locations(#20001,#20002)
+#20003=*
+json(#20003,2,#20001,0,"42")
+#20004=@"loc,{#10000},2,8,2,9"
+locations_default(#20004,#10000,2,8,2,9)
+json_locations(#20003,#20004)
+json_literals("42","42",#20003)
+json_properties(#20001,"a",#20003)
+numlines(#10000,3,0,0)
+filetype(#10000,"javascript")

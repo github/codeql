@@ -1,12 +1,13 @@
 /**
  * @name Unused local variable
- * @description A local variable is entirely unused: it is not initialized, written to or read. The variable serves no purpose and obscures the code. It should be removed.
+ * @description A local variable that is not initialized, assigned, or read may indicate incomplete code.
  * @kind problem
  * @problem.severity recommendation
  * @precision low
  * @id java/unused-local-variable
  * @tags external/cwe/cwe-563
  */
+
 import java
 import DeadLocals
 
@@ -28,4 +29,6 @@ where
   // Rules about catch clauses belong in an exception handling query
   not exceptionVariable(ve) and
   not enhancedForVariable(ve)
-select v, "Unused local variable " + v.getName() + ". The variable is never read or written to and should be removed."
+select v,
+  "Unused local variable " + v.getName() +
+    ". The variable is never read or written to and should be removed."

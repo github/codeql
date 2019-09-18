@@ -13,10 +13,10 @@
 import csharp
 
 from ExplicitCast c, ValueOrRefType src, ValueOrRefType dest
-where c.getExpr() instanceof ThisAccess
-  and src = c.getExpr().getType()
-  and dest = c.getTargetType()
-  and src = dest.getABaseType+()
+where
+  c.getExpr() instanceof ThisAccess and
+  src = c.getExpr().getType() and
+  dest = c.getTargetType() and
+  src = dest.getABaseType+()
 select c, "Downcasting 'this' from $@ to $@ introduces a dependency cycle between the two types.",
-  src, src.getName(),
-  dest, dest.getName()
+  src, src.getName(), dest, dest.getName()

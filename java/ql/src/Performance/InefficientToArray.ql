@@ -7,9 +7,11 @@
  * @id java/inefficient-to-array
  * @deprecated
  */
+
 import java
 
-/* This method uses the toArray() method of a collection derived class, and passes in a
+/*
+ * This method uses the toArray() method of a collection derived class, and passes in a
  * zero-length prototype array argument.
  *
  * It is more efficient to  use myCollection.toArray(new Foo[myCollection.size()]).
@@ -38,9 +40,7 @@ predicate emptyArrayLiteral(Expr e) {
 }
 
 class EmptyArrayLiteral extends Expr {
-  EmptyArrayLiteral() {
-    emptyArrayLiteral(this)
-  }
+  EmptyArrayLiteral() { emptyArrayLiteral(this) }
 }
 
 from EmptyArrayLiteral l, MethodAccess ma, Method m, GenericInterface coll

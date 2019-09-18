@@ -23,7 +23,7 @@ abstract class Dependency extends Locatable {
   /**
    * A use of this dependency, which is of the given `kind`.
    *
-   * Currently, the only supported kind is `"import"`.
+   * Currently, the only supported kinds are `"import"` and `"use"`.
    */
   abstract Locatable getAUse(string kind);
 }
@@ -51,8 +51,9 @@ abstract class NPMDependency extends Dependency {
   }
 
   override Locatable getAUse(string kind) {
-    exists (Import i | i = getAnImport() |
-      kind = "import" and result = i or
+    exists(Import i | i = getAnImport() |
+      kind = "import" and result = i
+      or
       kind = "use" and result = getATargetVariable(i).getAnAccess()
     )
   }
@@ -63,7 +64,7 @@ abstract class NPMDependency extends Dependency {
  */
 private Variable getATargetVariable(Import i) {
   // `var v = require('m')` or `var w = require('n').p`
-  exists (DataFlow::SourceNode pacc |
+  exists(DataFlow::SourceNode pacc |
     pacc = propAccessOn*(i).flow() and
     pacc.flowsToExpr(result.getAnAssignedExpr())
   )
@@ -75,9 +76,7 @@ private Variable getATargetVariable(Import i) {
 /**
  * Gets a property access of which `e` is the base.
  */
-private Expr propAccessOn(Expr e) {
-  result.(PropAccess).getBase() = e
-}
+private Expr propAccessOn(Expr e) { result.(PropAccess).getBase() = e }
 
 /**
  * A bundled NPM module, that is, a module in a package whose source is
@@ -86,29 +85,21 @@ private Expr propAccessOn(Expr e) {
  */
 class BundledNPMDependency extends NPMDependency {
   BundledNPMDependency() {
-    exists (NPMPackage pkg | this = pkg.getAModule() |
+    exists(NPMPackage pkg | this = pkg.getAModule() |
       // exclude packages marked "private": they have no globally unique ID
       not pkg.getPackageJSON().isPrivate()
     )
   }
 
   /** Gets the package to which this module belongs. */
-  private NPMPackage getPackage() {
-    this = result.getAModule()
-  }
+  private NPMPackage getPackage() { this = result.getAModule() }
 
   /** Gets the `package.json` of the package to which this module belongs. */
-  private PackageJSON getPackageJSON() {
-    result = getPackage().getPackageJSON()
-  }
+  private PackageJSON getPackageJSON() { result = getPackage().getPackageJSON() }
 
-  override string getNPMPackageName() {
-    result = getPackageJSON().getPackageName()
-  }
+  override string getNPMPackageName() { result = getPackageJSON().getPackageName() }
 
-  override string getVersion() {
-    result = getPackageJSON().getVersion()
-  }
+  override string getVersion() { result = getPackageJSON().getVersion() }
 
   override Import getAnImport() {
     this = result.getImportedModule() and
@@ -122,8 +113,8 @@ class BundledNPMDependency extends NPMDependency {
  */
 class ExternalNPMDependency extends NPMDependency {
   ExternalNPMDependency() {
-    exists (PackageJSON pkgjson |
-      (JSONString)this = pkgjson.getADependenciesObject(_).getPropValue(_)
+    exists(PackageJSON pkgjson |
+      this.(JSONString) = pkgjson.getADependenciesObject(_).getPropValue(_)
     )
   }
 
@@ -133,25 +124,25 @@ class ExternalNPMDependency extends NPMDependency {
   }
 
   override string getNPMPackageName() {
-    exists (PackageDependencies pkgdeps |
-      this = pkgdeps.getPropValue(result)
-    )
+    exists(PackageDependencies pkgdeps | this = pkgdeps.getPropValue(result))
   }
 
   override string getVersion() {
-    exists (string versionRange | versionRange = this.(JSONString).getValue() |
+    exists(string versionRange | versionRange = this.(JSONString).getValue() |
       // extract a concrete version from the version range; currently,
       // we handle exact versions as well as `<=`, `>=`, `~` and `^` ranges
-      result = versionRange.regexpCapture("(?:[><]=|[=~^])?v?(\\d+(\\.\\d+){1,2})", 1) or
+      result = versionRange.regexpCapture("(?:[><]=|[=~^])?v?(\\d+(\\.\\d+){1,2})", 1)
+      or
       // if no version is specified, report version `unknown`
-      result = "unknown" and (versionRange = "" or versionRange = "*")
+      result = "unknown" and
+      (versionRange = "" or versionRange = "*")
     )
   }
 
   override Import getAnImport() {
-    exists (int depth | depth = importsDependency(result, getDeclaringPackage(), this) |
+    exists(int depth | depth = importsDependency(result, getDeclaringPackage(), this) |
       // restrict to those results for which this is the closest matching dependency
-      depth = min (importsDependency(result, _, _))
+      depth = min(importsDependency(result, _, _))
     )
   }
 }
@@ -161,7 +152,7 @@ class ExternalNPMDependency extends NPMDependency {
  * where the result value is the nesting depth of the file containing `i` within `pkg`.
  */
 private int importsDependency(Import i, NPMPackage pkg, NPMDependency dep) {
-  exists (string name |
+  exists(string name |
     dep = pkg.getPackageJSON().getADependenciesObject(_).getPropValue(name) and
     not exists(i.getImportedModule()) and
     i.getImportedPath().getComponent(0) = name and
@@ -174,7 +165,8 @@ private int importsDependency(Import i, NPMPackage pkg, NPMDependency dep) {
  * Gets the nesting depth of `descendant` within `ancestor`.
  */
 private int distance(Folder ancestor, Container descendant) {
-  ancestor = descendant and result = 0 or
+  ancestor = descendant and result = 0
+  or
   result = 1 + distance(ancestor, descendant.getParentContainer())
 }
 
@@ -187,8 +179,7 @@ private int distance(Folder ancestor, Container descendant) {
 private predicate propAccessOnGlobal(Expr e, string n) {
   e.accessesGlobal(n)
   or
-  exists (PropAccess pacc, string q |
-    pacc = e and propAccessOnGlobal(pacc.getBase(), q) |
+  exists(PropAccess pacc, string q | pacc = e and propAccessOnGlobal(pacc.getBase(), q) |
     n = q + "." + pacc.getPropertyName()
   )
 }
@@ -203,7 +194,7 @@ abstract class ScriptDependency extends Dependency {
   abstract Expr getAnApiUse();
 
   override Locatable getAUse(string kind) {
-    kind = "import" and (HTML::HtmlFile)result = this.getFile()
+    kind = "import" and result.(HTML::HtmlFile) = this.getFile()
     or
     kind = "use" and result = getAnApiUse()
   }
@@ -215,19 +206,17 @@ abstract class ScriptDependency extends Dependency {
 class InlineScriptDependency extends ScriptDependency, @toplevel {
   FrameworkLibraryInstance fli;
 
-  InlineScriptDependency() {
-    this = fli
-  }
+  InlineScriptDependency() { this = fli }
 
   override predicate info(string id, string v) {
-    exists (FrameworkLibrary fl |
+    exists(FrameworkLibrary fl |
       fli.info(fl, v) and
       id = fl.getId()
     )
   }
 
   override Expr getAnApiUse() {
-    exists (FrameworkLibrary fl |
+    exists(FrameworkLibrary fl |
       fli.info(fl, _) and
       propAccessOnGlobal(result, fl.getAnEntryPoint()) and
       result.getFile() = this.getFile() and
@@ -243,19 +232,17 @@ class InlineScriptDependency extends ScriptDependency, @toplevel {
 class ExternalScriptDependency extends ScriptDependency, @xmlattribute {
   FrameworkLibraryReference flr;
 
-  ExternalScriptDependency() {
-    this = flr
-  }
+  ExternalScriptDependency() { this = flr }
 
   override predicate info(string id, string v) {
-    exists (FrameworkLibrary fl |
+    exists(FrameworkLibrary fl |
       flr.info(fl, v) and
       id = fl.getId()
     )
   }
 
   override Expr getAnApiUse() {
-    exists (FrameworkLibrary fl |
+    exists(FrameworkLibrary fl |
       flr.info(fl, _) and
       propAccessOnGlobal(result, fl.getAnEntryPoint()) and
       result.getFile() = this.getFile()
@@ -267,14 +254,13 @@ class ExternalScriptDependency extends ScriptDependency, @xmlattribute {
  * A dependency on GWT indicated by a GWT header script.
  */
 private class GWTDependency extends ScriptDependency {
-  GWTDependency() {
-    this instanceof GWTHeader
-  }
+  GWTDependency() { this instanceof GWTHeader }
 
   override predicate info(string id, string v) {
     id = "gwt" and
-    exists (GWTHeader h | h = this |
-      v = h.getGWTVersion() or
+    exists(GWTHeader h | h = this |
+      v = h.getGWTVersion()
+      or
       not exists(h.getGWTVersion()) and v = "unknown"
     )
   }
@@ -288,8 +274,9 @@ private class GWTDependency extends ScriptDependency {
  */
 private class GoogleClosureDep extends Dependency, @callexpr {
   GoogleClosureDep() {
-    exists (MethodCallExpr mce |
-      mce = this and mce.getReceiver().(GlobalVarAccess).getName() = "goog" |
+    exists(MethodCallExpr mce |
+      mce = this and mce.getReceiver().(GlobalVarAccess).getName() = "goog"
+    |
       mce.getMethodName() = "require" or
       mce.getMethodName() = "provide"
     )
@@ -310,9 +297,7 @@ private class GoogleClosureDep extends Dependency, @callexpr {
  * A dependency indicated by marker comment left by a code generator.
  */
 private class GeneratorComment extends Dependency, @comment {
-  GeneratorComment() {
-    generatedBy(this, _)
-  }
+  GeneratorComment() { generatedBy(this, _) }
 
   override predicate info(string id, string v) {
     generatedBy(this, id) and
@@ -329,11 +314,14 @@ private class GeneratorComment extends Dependency, @comment {
  * Holds if `c` is a marker comment left by the given `generator`.
  */
 private predicate generatedBy(Comment c, string generator) {
-  c instanceof EmscriptenMarkerComment and generator = "emscripten" or
-  exists (string gn | gn = c.(CodeGeneratorMarkerComment).getGeneratorName() |
+  c instanceof EmscriptenMarkerComment and generator = "emscripten"
+  or
+  exists(string gn | gn = c.(CodeGeneratorMarkerComment).getGeneratorName() |
     // map generator names to their npm package names
-    gn = "CoffeeScript" and generator = "coffee-script" or
-    gn = "PEG.js" and generator = "pegjs" or
+    gn = "CoffeeScript" and generator = "coffee-script"
+    or
+    gn = "PEG.js" and generator = "pegjs"
+    or
     gn != "CoffeeScript" and gn != "PEG.js" and generator = gn
   )
 }
@@ -349,9 +337,9 @@ private class BundledTopLevel extends Dependency, @expr {
 
   override predicate info(string id, string v) {
     (
-     isBrowserifyBundle(this) and id = "browserify"
-     or
-     isWebpackBundle(this) and id = "webpack"
+      isBrowserifyBundle(this) and id = "browserify"
+      or
+      isWebpackBundle(this) and id = "webpack"
     ) and
     v = "unknown"
   }

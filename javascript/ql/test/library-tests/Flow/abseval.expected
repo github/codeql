@@ -6,6 +6,18 @@
 | a.js:9:5:9:5 | z | a.js:9:9:9:18 | someGlobal | file://:0:0:0:0 | indefinite value (global) |
 | a.js:9:5:9:5 | z | a.js:9:9:9:18 | someGlobal | file://:0:0:0:0 | non-zero value |
 | a.js:9:5:9:5 | z | a.js:9:9:9:18 | someGlobal | file://:0:0:0:0 | true |
+| a.js:14:12:14:24 | notAlwaysZero | a.js:14:28:14:28 | 0 | file://:0:0:0:0 | 0 |
+| amd3.js:2:7:2:8 | _a | amd3.js:2:12:2:12 | a | a.js:1:1:18:0 | exports object of module a |
+| amd3.js:2:7:2:8 | _a | amd3.js:2:12:2:12 | a | file://:0:0:0:0 | indefinite value (call) |
+| amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | c.js:1:1:7:0 | exports object of module c |
+| amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | c.js:1:18:1:19 | object literal |
+| amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | file://:0:0:0:0 | indefinite value (call) |
+| amd4.js:2:7:2:8 | _u | amd4.js:2:12:2:12 | u | file://:0:0:0:0 | indefinite value (call) |
+| amd4.js:2:7:2:8 | _u | amd4.js:2:12:2:12 | u | file://:0:0:0:0 | non-empty, non-numeric string |
+| amd4.js:2:7:2:8 | _u | amd4.js:2:12:2:12 | u | reexport/lib/src/utils/util.js:1:1:3:0 | exports object of module util |
+| amd5.js:2:7:2:8 | _u | amd5.js:2:12:2:32 | req('sr ... /util') | file://:0:0:0:0 | indefinite value (call) |
+| amd5.js:2:7:2:8 | _u | amd5.js:2:12:2:32 | req('sr ... /util') | file://:0:0:0:0 | non-empty, non-numeric string |
+| amd5.js:2:7:2:8 | _u | amd5.js:2:12:2:32 | req('sr ... /util') | reexport/lib/src/utils/util.js:1:1:3:0 | exports object of module util |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | amd.js:1:1:7:0 | module object of module amd |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | file://:0:0:0:0 | indefinite value (call) |
 | amd.js:3:7:3:7 | e | amd.js:3:11:3:13 | exp | amd.js:1:1:7:0 | exports object of module amd |
@@ -54,9 +66,12 @@
 | b.js:42:5:42:7 | z11 | b.js:42:11:42:18 | toString | file://:0:0:0:0 | indefinite value (import) |
 | b.js:45:5:45:7 | z12 | b.js:45:11:45:12 | f2 | ts2.ts:1:1:6:0 | exports object of module ts2 |
 | b.js:45:5:45:7 | z12 | b.js:45:11:45:12 | f2 | ts2.ts:1:10:1:22 | anonymous function |
+| b.js:45:5:45:7 | z12 | b.js:45:11:45:12 | f2 | ts2.ts:4:12:4:13 | object literal |
 | b.js:48:5:48:7 | z13 | b.js:48:11:48:11 | w | file://:0:0:0:0 | non-empty, non-numeric string |
 | b.js:51:5:51:7 | z14 | b.js:51:11:51:24 | foo_reexported | file://:0:0:0:0 | indefinite value (import) |
 | b.js:54:5:54:7 | z15 | b.js:54:11:54:19 | something | file://:0:0:0:0 | indefinite value (import) |
+| b.js:57:5:57:7 | z16 | b.js:57:11:57:23 | notAlwaysZero | file://:0:0:0:0 | 0 |
+| b.js:57:5:57:7 | z16 | b.js:57:11:57:23 | notAlwaysZero | file://:0:0:0:0 | non-zero value |
 | backend.js:1:7:1:13 | Backend | backend.js:1:17:1:18 | {} | backend.js:1:17:1:18 | object literal |
 | classAccessors.js:10:9:10:11 | myX | classAccessors.js:10:15:10:20 | this.x | file://:0:0:0:0 | indefinite value (call) |
 | classAccessors.js:10:9:10:11 | myX | classAccessors.js:10:15:10:20 | this.x | file://:0:0:0:0 | indefinite value (heap) |
@@ -64,6 +79,8 @@
 | classAccessors.js:11:9:11:11 | myY | classAccessors.js:11:15:11:20 | this.y | file://:0:0:0:0 | indefinite value (heap) |
 | classAccessors.js:12:9:12:11 | myZ | classAccessors.js:12:15:12:20 | this.z | file://:0:0:0:0 | indefinite value (call) |
 | classAccessors.js:12:9:12:11 | myZ | classAccessors.js:12:15:12:20 | this.z | file://:0:0:0:0 | indefinite value (heap) |
+| destructuring.js:2:7:2:24 | { x, y = (z = x) } | destructuring.js:2:28:2:28 | o | file://:0:0:0:0 | indefinite value (call) |
+| destructuring.js:3:7:3:8 | z1 | destructuring.js:3:12:3:12 | z | file://:0:0:0:0 | indefinite value (heap) |
 | es2015.js:1:5:1:7 | Sup | es2015.js:1:11:6:1 | class { ... ;\\n  }\\n} | es2015.js:1:11:6:1 | class Sup |
 | es2015.js:4:9:4:12 | ctor | es2015.js:4:16:4:25 | new.target | file://:0:0:0:0 | indefinite value (call) |
 | es2015.js:19:7:19:11 | _args | es2015.js:19:15:19:18 | args | file://:0:0:0:0 | object |
@@ -171,6 +188,10 @@
 | mixed.js:9:5:9:6 | fn | mixed.js:9:10:9:19 | __filename | file://:0:0:0:0 | numeric string |
 | mixed.js:10:5:10:6 | dn | mixed.js:10:10:10:18 | __dirname | file://:0:0:0:0 | non-empty, non-numeric string |
 | mixed.js:10:5:10:6 | dn | mixed.js:10:10:10:18 | __dirname | file://:0:0:0:0 | numeric string |
+| nestedImport.js:2:5:2:6 | x1 | nestedImport.js:2:10:2:12 | foo | esLib.js:3:8:3:24 | function foo |
+| nestedImport.js:6:7:6:8 | x2 | nestedImport.js:6:12:6:14 | foo | file://:0:0:0:0 | indefinite value (import) |
+| nestedImport.js:6:7:6:8 | x2 | nestedImport.js:6:12:6:14 | foo | nodeJsLib.js:3:15:3:37 | function nodeJsFoo |
+| nestedImport.js:11:7:11:8 | x3 | nestedImport.js:11:12:11:14 | foo | esLib.js:3:8:3:24 | function foo |
 | nodeJsClient.js:1:5:1:6 | nj | nodeJsClient.js:1:10:1:31 | require ... JsLib') | file://:0:0:0:0 | indefinite value (call) |
 | nodeJsClient.js:1:5:1:6 | nj | nodeJsClient.js:1:10:1:31 | require ... JsLib') | nodeJsLib.js:1:1:4:0 | exports object of module nodeJsLib |
 | nodeJsClient.js:1:5:1:6 | nj | nodeJsClient.js:1:10:1:31 | require ... JsLib') | nodeJsLib.js:1:18:1:43 | function nodeJsModule |

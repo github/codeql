@@ -1,6 +1,5 @@
 import csharp
 import semmle.code.csharp.controlflow.Guards
 
-from GuardedExpr ge, Expr e, Access a, boolean b
-where ge.isGuardedBy(e, a, b)
-select ge, e, a, b
+from GuardedExpr ge, Expr sub, AbstractValue v
+select ge, ge.getAGuard(sub, v), sub, v

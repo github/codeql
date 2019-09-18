@@ -1,29 +1,31 @@
 import javascript
 
 class ResolveCall extends CallExpr {
-	ResolveCall() {
-		this.getCallee().(VarRef).getVariable().getName() = "resolve"
-	}
-	Variable getVariable() {
-		result = this.getArgument(0).(VarUse).getVariable()
-	}
-	string getExpectation() {
-		result = this.getArgument(1).(ConstantString).getStringValue()
-	}
-	string getDeclaredValue() {
-		result = getVariable().getAnAssignedExpr().(ConstantString).getStringValue()
-		or
-		exists (NamespaceDeclaration decl | decl.getId() = getVariable().getADeclaration() |
-				result = getNamespaceName(decl))
-	}
+  ResolveCall() { this.getCallee().(VarRef).getVariable().getName() = "resolve" }
+
+  Variable getVariable() { result = this.getArgument(0).(VarUse).getVariable() }
+
+  string getExpectation() { result = this.getArgument(1).getStringValue() }
+
+  string getDeclaredValue() {
+    result = getVariable().getAnAssignedExpr().getStringValue()
+    or
+    exists(NamespaceDeclaration decl | decl.getId() = getVariable().getADeclaration() |
+      result = getNamespaceName(decl)
+    )
+  }
 }
 
 string getNamespaceName(NamespaceDeclaration decl) {
-	result = decl.getStmt(0).(ExprStmt).getExpr().(ConstantString).getStringValue()
-	or
-	not decl.getStmt(0).(ExprStmt).getExpr() instanceof ConstantString and result = "Namespace " + decl.getId() + " on line " + decl.getFirstToken().getLocation().getStartLine()
+  result = decl.getStmt(0).(ExprStmt).getExpr().getStringValue()
+  or
+  not decl.getStmt(0).(ExprStmt).getExpr() instanceof ConstantString and
+  result = "Namespace " + decl.getId() + " on line " +
+      decl.getFirstToken().getLocation().getStartLine()
 }
 
 from ResolveCall resolve
 where resolve.getExpectation() != resolve.getDeclaredValue()
-select resolve, resolve.getVariable().getName() +  " resolves to '" + resolve.getDeclaredValue() + "' but should resolve to '" + resolve.getExpectation() + "'"
+select resolve,
+  resolve.getVariable().getName() + " resolves to '" + resolve.getDeclaredValue() +
+    "' but should resolve to '" + resolve.getExpectation() + "'"

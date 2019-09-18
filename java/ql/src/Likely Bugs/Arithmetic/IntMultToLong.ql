@@ -18,15 +18,26 @@
 
 import java
 import semmle.code.java.dataflow.RangeUtils
+import semmle.code.java.dataflow.RangeAnalysis
 import semmle.code.java.Conversions
 
-/** An multiplication that does not overflow. */
+/** Gets an upper bound on the absolute value of `e`. */
+float exprBound(Expr e) {
+  result = e.(ConstantIntegerExpr).getIntValue().(float).abs()
+  or
+  exists(float lower, float upper |
+    bounded(e, any(ZeroBound zb), lower, false, _) and
+    bounded(e, any(ZeroBound zb), upper, true, _) and
+    result = upper.abs().maximum(lower.abs())
+  )
+}
+
+/** A multiplication that does not overflow. */
 predicate small(MulExpr e) {
   exists(NumType t, float lhs, float rhs, float res | t = e.getType() |
-    lhs = e.getLeftOperand().getProperExpr().(ConstantIntegerExpr).getIntValue() and
-    rhs = e.getRightOperand().getProperExpr().(ConstantIntegerExpr).getIntValue() and
+    lhs = exprBound(e.getLeftOperand().getProperExpr()) and
+    rhs = exprBound(e.getRightOperand().getProperExpr()) and
     lhs * rhs = res and
-    t.getOrdPrimitiveType().getMinValue() <= res and
     res <= t.getOrdPrimitiveType().getMaxValue()
   )
 }
@@ -47,6 +58,8 @@ where
   e.getType() = sourceType and
   c.getConversionTarget() = destType and
   destType.widerThan(sourceType) and
+  // restrict attention to integral types
+  destType instanceof IntegralType and
   // not a trivial conversion
   not c.isTrivial() and
   // not an explicit conversion, which is probably intended by a user

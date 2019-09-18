@@ -9,77 +9,143 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 
-string kindstr(Class c)
-{
+/**
+ * Gets a string describing the kind of a `Class`.
+ */
+string kindstr(Class c) {
   exists(int kind | usertypes(unresolveElement(c), _, kind) |
-    (kind = 1 and result = "Struct") or
-    (kind = 2 and result = "Class") or
-    (kind = 6 and result = "Template class")
+    kind = 1 and result = "Struct"
+    or
+    kind = 2 and result = "Class"
+    or
+    kind = 6 and result = "Template class"
   )
 }
 
-predicate vdeInfo(VariableDeclarationEntry vde, Class c, File f, int line)
-{
+/**
+ * Holds if the arguments correspond to information about a `VariableDeclarationEntry`.
+ */
+predicate vdeInfo(VariableDeclarationEntry vde, Class c, File f, int line) {
   c = vde.getVariable().getDeclaringType() and
   f = vde.getLocation().getFile() and
   line = vde.getLocation().getStartLine()
 }
 
-predicate previousVde(VariableDeclarationEntry previous, VariableDeclarationEntry vde)
-{
-  exists(Class c, File f, int line | vdeInfo(vde, c, f, line) |
-    vdeInfo(previous, c, f, line - 3) or
-    vdeInfo(previous, c, f, line - 2) or
-    vdeInfo(previous, c, f, line - 1) or
-    (vdeInfo(previous, c, f, line) and exists(int prevCol, int vdeCol |
-      prevCol = previous.getLocation().getStartColumn() and vdeCol = vde.getLocation().getStartColumn() |
-      prevCol < vdeCol or (prevCol = vdeCol and previous.getName() < vde.getName())
-    ))
-  )
+newtype TVariableDeclarationInfo =
+  TVariableDeclarationLine(Class c, File f, int line) { vdeInfo(_, c, f, line) }
+
+/**
+ * A line that contains one or more `VariableDeclarationEntry`s (in the same class).
+ */
+class VariableDeclarationLine extends TVariableDeclarationInfo {
+  Class c;
+  File f;
+  int line;
+
+  VariableDeclarationLine() {
+    vdeInfo(_, c, f, line) and
+    this = TVariableDeclarationLine(c, f, line)
+  }
+
+  /**
+   * Gets the class associated with this `VariableDeclarationLine`.
+   */
+  Class getClass() { result = c }
+
+  /**
+   * Gets the line of this `VariableDeclarationLine`.
+   */
+  int getLine() { result = line }
+
+  /**
+   * Gets a `VariableDeclarationEntry` on this line.
+   */
+  VariableDeclarationEntry getAVDE() { vdeInfo(result, c, f, line) }
+
+  /**
+   * Gets the start column of the first `VariableDeclarationEntry` on this line.
+   */
+  int getStartColumn() { result = min(getAVDE().getLocation().getStartColumn()) }
+
+  /**
+   * Gets the end column of the last `VariableDeclarationEntry` on this line.
+   */
+  int getEndColumn() { result = max(getAVDE().getLocation().getEndColumn()) }
+
+  /**
+   * Gets the rank of this `VariableDeclarationLine` in its file and class
+   * (that is, the first is 0, the second is 1 and so on).
+   */
+  private int getRank() {
+    line = rank[result](VariableDeclarationLine vdl, int l |
+        vdl = TVariableDeclarationLine(c, f, l)
+      |
+        l
+      )
+  }
+
+  /**
+   * Gets the `VariableDeclarationLine` following this one, if any.
+   */
+  VariableDeclarationLine getNext() {
+    result = TVariableDeclarationLine(c, f, _) and
+    result.getRank() = getRank() + 1
+  }
+
+  /**
+   * Gets the `VariableDeclarationLine` following this one, if it is nearby.
+   */
+  VariableDeclarationLine getProximateNext() {
+    result = getNext() and
+    result.getLine() <= this.getLine() + 3
+  }
+
+  string toString() { result = "VariableDeclarationLine" }
 }
 
-predicate masterVde(VariableDeclarationEntry master, VariableDeclarationEntry vde)
-{
-  (not previousVde(_, vde) and master = vde) or
-  exists(VariableDeclarationEntry previous | previousVde(previous, vde) and masterVde(master, previous))
-}
+/**
+ * A group of `VariableDeclarationEntry`s in the same class that are approximately
+ * contiguous.
+ */
+class VariableDeclarationGroup extends VariableDeclarationLine {
+  VariableDeclarationLine end;
 
-class VariableDeclarationGroup extends ElementBase {
   VariableDeclarationGroup() {
-    this instanceof VariableDeclarationEntry and
-    not previousVde(_, this)
-  }
-  Class getClass() {
-    vdeInfo(this, result, _, _)
+    // there is no `VariableDeclarationLine` within three lines previously
+    not any(VariableDeclarationLine prev).getProximateNext() = this and
+    // `end` is the last transitively proximate line
+    end = getProximateNext*() and
+    not exists(end.getProximateNext())
   }
 
-  // pragma[noopt] since otherwise the two locationInfo relations get join-ordered
-  // after each other
-  pragma[noopt]
   predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-    exists(VariableDeclarationEntry last, Location lstart, Location lend |
-      masterVde(this, last) and
-      this instanceof VariableDeclarationGroup and
-      not previousVde(last, _) and
-      exists(VariableDeclarationEntry vde | vde=this and vde instanceof VariableDeclarationEntry and vde.getLocation() = lstart) and
-      last.getLocation() = lend and
-      lstart.hasLocationInfo(path, startline, startcol, _, _) and
-      lend.hasLocationInfo(path, _, _, endline, endcol)
-    )
+    path = f.getAbsolutePath() and
+    startline = getLine() and
+    startcol = getStartColumn() and
+    endline = end.getLine() and
+    endcol = end.getEndColumn()
   }
 
-  string describeGroup() {
-    if previousVde(this, _) then
-      result = "group of "
-             + strictcount(string name
-                         | exists(VariableDeclarationEntry vde
-                                | masterVde(this, vde) and
-                                  name = vde.getName()))
-             + " fields here"
-    else
-      result = "declaration of " + this.(VariableDeclarationEntry).getVariable().getName()
+  /**
+   * Gets the number of uniquely named `VariableDeclarationEntry`s in this group.
+   */
+  int getCount() {
+    result = count(VariableDeclarationLine l |
+        l = getProximateNext*()
+      |
+        l.getAVDE().getVariable().getName()
+      )
+  }
+
+  override string toString() {
+    getCount() = 1 and
+    result = "declaration of " + getAVDE().getVariable().getName()
+    or
+    getCount() > 1 and
+    result = "group of " + getCount() + " fields here"
   }
 }
 
@@ -89,26 +155,32 @@ class ExtClass extends Class {
   }
 
   predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-    if hasOneVariableGroup() then
-      exists(VariableDeclarationGroup vdg | vdg.getClass() = this | vdg.hasLocationInfo(path, startline, startcol, endline, endcol))
-    else
-      getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
+    if hasOneVariableGroup()
+    then
+      exists(VariableDeclarationGroup vdg | vdg.getClass() = this |
+        vdg.hasLocationInfo(path, startline, startcol, endline, endcol)
+      )
+    else getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
   }
 }
 
 from ExtClass c, int n, VariableDeclarationGroup vdg, string suffix
-where n = strictcount(string fieldName
-                    | exists(Field f
-                           | f.getDeclaringType() = c and
-                             fieldName = f.getName() and
-                             // IBOutlet's are a way of building GUIs
-                             // automatically out of ObjC properties.
-                             // We don't want to count those for the
-                             // purposes of this query.
-                             not (f.getType().getAnAttribute().hasName("iboutlet")))) and
-      n > 15 and
-      not c.isConstructedFrom(_) and
-      c = vdg.getClass() and
-      if c.hasOneVariableGroup() then suffix = "" else suffix = " - see $@"
-select c, kindstr(c) + " " + c.getName() + " has " + n + " fields, which is too many" + suffix + ".",
-       vdg, vdg.describeGroup()
+where
+  n = strictcount(string fieldName |
+      exists(Field f |
+        f.getDeclaringType() = c and
+        fieldName = f.getName() and
+        // IBOutlet's are a way of building GUIs
+        // automatically out of ObjC properties.
+        // We don't want to count those for the
+        // purposes of this query.
+        not f.getType().getAnAttribute().hasName("iboutlet")
+      )
+    ) and
+  n > 15 and
+  not c.isConstructedFrom(_) and
+  c = vdg.getClass() and
+  if c.hasOneVariableGroup() then suffix = "" else suffix = " - see $@"
+select c,
+  kindstr(c) + " " + c.getName() + " has " + n +
+    " fields; we suggest refactoring to 15 fields or fewer" + suffix + ".", vdg, vdg.toString()

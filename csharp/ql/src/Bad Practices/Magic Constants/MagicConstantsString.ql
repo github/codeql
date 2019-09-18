@@ -11,9 +11,7 @@
 
 import MagicConstants
 
-predicate selection(Element e, string msg) {
-  magicConstant(e, msg)
-}
+predicate selection(Element e, string msg) { magicConstant(e, msg) }
 
 from StringLiteral e, string msg
 where selection(e, msg)

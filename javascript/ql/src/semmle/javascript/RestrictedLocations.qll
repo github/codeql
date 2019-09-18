@@ -14,18 +14,20 @@ class FirstLineOf extends Locatable {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                             int endline, int endcolumn) {
-    exists (int xl, int xc |
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(int xl, int xc |
       getLocation().hasLocationInfo(filepath, startline, startcolumn, xl, xc) and
       startline = endline and
-      if xl = startline then
-        endcolumn = xc
+      if xl = startline
+      then endcolumn = xc
       else
-        endcolumn = max(int c | any(Location l).hasLocationInfo(filepath, startline, _,
-                                                                          startline, c))
+        endcolumn = max(int c |
+            any(Location l).hasLocationInfo(filepath, startline, _, startline, c)
+          )
     )
   }
 }
@@ -42,14 +44,15 @@ class LastLineOf extends Locatable {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                             int endline, int endcolumn) {
-    exists (int xl, int xc |
-      getLocation().hasLocationInfo(filepath, xl, xc, endline, endcolumn)
-      and startline = endline
-      and if xl = endline then startcolumn = xc else startcolumn = 1
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(int xl, int xc |
+      getLocation().hasLocationInfo(filepath, xl, xc, endline, endcolumn) and
+      startline = endline and
+      if xl = endline then startcolumn = xc else startcolumn = 1
     )
   }
 }

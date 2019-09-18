@@ -171,3 +171,10 @@ void more_tests_2()
 	memset(iapa, 0, sizeof(iapa)); // GOOD
 	memset(iapa, 0, sizeof(intArrayPointer *)); // BAD
 }
+
+void more_tests_3()
+{
+	myStruct ms;
+	decltype(&ms) msPtr = &ms;
+	memset(msPtr, 0, sizeof(myStruct)); // GOOD
+}

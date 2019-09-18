@@ -1,4 +1,5 @@
 private import java
+private import DataFlowPrivate
 import semmle.code.java.dispatch.VirtualDispatch
 
 cached
@@ -44,7 +45,8 @@ private module DispatchImpl {
       exists(RefType srctype | srctype = src.getType() |
         exists(TypeVariable v | v = srctype |
           t = v.getUpperBoundType+() and not t instanceof TypeVariable
-        ) or
+        )
+        or
         t = srctype and not srctype instanceof TypeVariable
       ) and
       if src instanceof ClassInstanceExpr then exact = true else exact = false
@@ -62,7 +64,7 @@ private module DispatchImpl {
       c = viableCallable(ctx) and
       contextArgHasType(ctx, i, t, exact) and
       ma.getMethod() = def
-      |
+    |
       exact = true and result = exactMethodImpl(def, t.getSourceDeclaration())
       or
       exact = false and
@@ -84,12 +86,14 @@ private module DispatchImpl {
   }
 
   private predicate unificationTargets(Type t1, Type t2) {
-    exists(GenericType g | unificationTargetLeft(t1, g) and unificationTargetRight(t2, g)) or
+    exists(GenericType g | unificationTargetLeft(t1, g) and unificationTargetRight(t2, g))
+    or
     exists(Array a1, Array a2 |
       unificationTargets(a1, a2) and
       t1 = a1.getComponentType() and
       t2 = a2.getComponentType()
-    ) or
+    )
+    or
     exists(ParameterizedType pt1, ParameterizedType pt2, int pos |
       unificationTargets(pt1, pt2) and
       not pt1.getSourceDeclaration() != pt2.getSourceDeclaration() and
@@ -99,7 +103,9 @@ private module DispatchImpl {
   }
 
   pragma[noinline]
-  private predicate typeArgsOfUnificationTargets(ParameterizedType t1, ParameterizedType t2, int pos, RefType arg1, RefType arg2) {
+  private predicate typeArgsOfUnificationTargets(
+    ParameterizedType t1, ParameterizedType t2, int pos, RefType arg1, RefType arg2
+  ) {
     unificationTargets(t1, t2) and
     arg1 = t1.getTypeArgument(pos) and
     arg2 = t2.getTypeArgument(pos)
@@ -111,14 +117,21 @@ private module DispatchImpl {
       exists(RefType arg1, RefType arg2 |
         typeArgsOfUnificationTargets(t1, t2, _, arg1, arg2) and
         failsUnification(arg1, arg2)
-      ) or
-      failsUnification(t1.(Array).getComponentType(), t2.(Array).getComponentType()) or
+      )
+      or
+      failsUnification(t1.(Array).getComponentType(), t2.(Array).getComponentType())
+      or
       not (
-        t1 instanceof Array and t2 instanceof Array or
-        t1.(PrimitiveType) = t2.(PrimitiveType) or
-        t1.(Class).getSourceDeclaration() = t2.(Class).getSourceDeclaration() or
-        t1.(Interface).getSourceDeclaration() = t2.(Interface).getSourceDeclaration() or
-        t1 instanceof BoundedType and t2 instanceof RefType or
+        t1 instanceof Array and t2 instanceof Array
+        or
+        t1.(PrimitiveType) = t2.(PrimitiveType)
+        or
+        t1.(Class).getSourceDeclaration() = t2.(Class).getSourceDeclaration()
+        or
+        t1.(Interface).getSourceDeclaration() = t2.(Interface).getSourceDeclaration()
+        or
+        t1 instanceof BoundedType and t2 instanceof RefType
+        or
         t1 instanceof RefType and t2 instanceof BoundedType
       )
     )
@@ -175,4 +188,5 @@ private module DispatchImpl {
     reducedViableImplInReturn(result, ma)
   }
 }
+
 import DispatchImpl

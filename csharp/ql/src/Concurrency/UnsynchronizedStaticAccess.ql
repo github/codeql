@@ -10,6 +10,7 @@
  *       external/cwe/cwe-362
  *       external/cwe/cwe-567
  */
+
 import csharp
 import DataMembers
 import ThreadCreation
@@ -24,7 +25,8 @@ predicate correctlySynchronized(CollectionMember c, Expr access) {
 }
 
 ControlFlow::Node unlockedReachable(Callable a) {
-  result = a.getEntryPoint() or
+  result = a.getEntryPoint()
+  or
   exists(ControlFlow::Node mid | mid = unlockedReachable(a) |
     not mid.getElement() instanceof LockingCall and
     result = mid.getASuccessor()
@@ -40,22 +42,22 @@ predicate unlockedCalls(Callable a, Callable b) {
 }
 
 predicate writtenStaticDictionary(CollectionMember c) {
-  c.getType().(ValueOrRefType).getABaseType*().hasName("IDictionary")
-  and c.isStatic()
-  and exists(Expr write | write = c.getAWrite() |
+  c.getType().(ValueOrRefType).getABaseType*().hasName("IDictionary") and
+  c.isStatic() and
+  exists(Expr write | write = c.getAWrite() |
     not write.getEnclosingCallable() instanceof StaticConstructor
   )
 }
 
-predicate nonStaticCallable(Callable c) {
-  not c.(Modifiable).isStatic()
-}
+predicate nonStaticCallable(Callable c) { not c.(Modifiable).isStatic() }
 
-from CollectionMember c, Expr a, ConcurrentEntryPoint e,Callable enclosing
-where a = c.getAReadOrWrite()
-  and enclosing = a.getEnclosingCallable()
-  and nonStaticCallable(enclosing)
-  and not correctlySynchronized(c, a)
-  and unlockedCalls*(e, enclosing)
-  and writtenStaticDictionary(c)
-select a, "Unsynchronized access to $@ in non-static context from $@.", c, c.getName(), e, e.getName()
+from CollectionMember c, Expr a, ConcurrentEntryPoint e, Callable enclosing
+where
+  a = c.getAReadOrWrite() and
+  enclosing = a.getEnclosingCallable() and
+  nonStaticCallable(enclosing) and
+  not correctlySynchronized(c, a) and
+  unlockedCalls*(e, enclosing) and
+  writtenStaticDictionary(c)
+select a, "Unsynchronized access to $@ in non-static context from $@.", c, c.getName(), e,
+  e.getName()

@@ -1,3 +1,4 @@
+| Box in shared_non_expansive.ts | has no properties |
 | Box in through_non_expansive.ts | has no properties |
 | C in expansive_class.ts | has no properties |
 | Expand in through_non_expansive.ts | has no properties |
@@ -18,4 +19,5 @@
 | ExpansiveMethod in expansive_signature.ts | has no properties |
 | ExpansiveParameter in expansive_signature.ts | has no properties |
 | ExpansiveSignature in expansive_signature.ts | has no properties |
+| ExpansiveSignatureTypeBound in expansive_signature.ts | has no properties |
 | ExpansiveX in used_from_expansion.ts | has no properties |

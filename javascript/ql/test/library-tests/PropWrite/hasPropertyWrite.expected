@@ -1,7 +1,0 @@
-| tst.js:2:11:10:1 | {\\n    x ...     }\\n} | f | tst.js:7:6:9:5 | () {\\n   ... ;\\n    } |
-| tst.js:2:11:10:1 | {\\n    x ...     }\\n} | func | tst.js:4:11:6:5 | functio ... ;\\n    } |
-| tst.js:2:11:10:1 | {\\n    x ...     }\\n} | x | tst.js:3:8:3:8 | 4 |
-| tst.js:12:1:19:1 | class C ... ;\\n  }\\n} | func | tst.js:13:14:15:3 | (x) {\\n  ... x);\\n  } |
-| tst.js:21:1:21:1 | C | prop | tst.js:21:10:21:11 | 56 |
-| tst.js:24:8:24:57 | <div on ... }</div> | onClick | tst.js:24:22:24:26 | click |
-| tst.js:31:2:36:1 | {\\n    n ... q]: 4\\n} | n | tst.js:32:8:32:8 | 1 |

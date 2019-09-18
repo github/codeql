@@ -1,6 +1,6 @@
 /**
  * @name Failure to use secure cookies
- * @description Insecured cookies may be sent in cleartext, which makes them vulnerable to
+ * @description Insecure cookies may be sent in cleartext, which makes them vulnerable to
  *              interception.
  * @kind problem
  * @problem.severity error
@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-614
  */
+
 import java
 import semmle.code.java.frameworks.Servlets
 

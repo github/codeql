@@ -8,9 +8,11 @@
  * @id java/undocumented-function
  * @tags maintainability
  */
+
 import java
 import JavadocCommon
 
 from DocuCallable c
 where not c.hasAcceptableDocText()
-select c, "This " + c.toMethodOrConstructorString() + " does not have a non-trivial Javadoc comment."
+select c,
+  "This " + c.toMethodOrConstructorString() + " does not have a non-trivial Javadoc comment."

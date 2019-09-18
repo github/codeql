@@ -1,0 +1,15 @@
+| 16 | print('Hello World') | " |
+| 26 | hello | " |
+| 27 | hello | " |
+| 28 | file | " |
+| 45 | h4tpvhsa | b' |
+| 46 | Hi | " |
+| 55 | Hi | " |
+| 60 | Hi | u" |
+| 66 | \nSingle quotes string | ''' |
+| 69 | \nDouble-quotes\nstring | """ |
+| 73 | \nBytes\n | r''' |
+| 77 | \nRaw\nUnicode\n | U""" |
+| 101 |   | " |
+| 101 | Hello | " |
+| 101 | world | " |

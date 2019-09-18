@@ -1,0 +1,10 @@
+| class MyDict | new |
+| class MyList | new |
+| class O1 | old |
+| class O2 | old |
+| class O3 | old |
+| class O4 | old |
+| class W | new |
+| class X | new |
+| class Y | new |
+| class Z | new |

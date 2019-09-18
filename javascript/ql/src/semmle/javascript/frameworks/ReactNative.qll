@@ -6,7 +6,7 @@ import javascript
 
 module ReactNative {
   /** A `WebView` JSX element. */
-  class WebViewElement extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
+  class WebViewElement extends DataFlow::ValueNode, DataFlow::SourceNode {
     override JSXElement astNode;
 
     WebViewElement() {

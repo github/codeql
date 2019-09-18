@@ -8,42 +8,40 @@ import javascript
 private import semmle.javascript.frameworks.ConnectExpressShared
 
 /**
- * Adds `NodeJSLib::RouteHandlerCandidate` to the extent of `NodeJSLib::RouteHandler`.
+ * Add `NodeJSLib::RouteHandlerCandidate` to the extent of `NodeJSLib::RouteHandler`.
  */
-private class PromotedNodeJSLibCandidate extends NodeJSLib::RouteHandler, HTTP::Servers::StandardRouteHandler {
-
-    PromotedNodeJSLibCandidate() {
-      this instanceof NodeJSLib::RouteHandlerCandidate
-    }
-
+private class PromotedNodeJSLibCandidate extends NodeJSLib::RouteHandler,
+  HTTP::Servers::StandardRouteHandler {
+  PromotedNodeJSLibCandidate() { this instanceof NodeJSLib::RouteHandlerCandidate }
 }
 
 /**
- * Adds `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Express::RouteHandler`.
+ * Add `Hapi::RouteHandlerCandidate` to the extent of `Hapi::RouteHandler`.
  */
-private class PromotedExpressCandidate extends Express::RouteHandler, HTTP::Servers::StandardRouteHandler {
-
-    PromotedExpressCandidate() {
-      this instanceof ConnectExpressShared::RouteHandlerCandidate
-    }
-
-    override SimpleParameter getRouteHandlerParameter(string kind) {
-      result = ConnectExpressShared::getRouteHandlerParameter(getAstNode(), kind)
-    }
-
+private class PromotedHapiCandidate extends Hapi::RouteHandler, HTTP::Servers::StandardRouteHandler {
+  PromotedHapiCandidate() { this instanceof Hapi::RouteHandlerCandidate }
 }
 
 /**
- * Adds `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Connect::RouteHandler`.
+ * Add `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Express::RouteHandler`.
  */
-private class PromotedConnectCandidate extends Connect::RouteHandler, HTTP::Servers::StandardRouteHandler {
+private class PromotedExpressCandidate extends Express::RouteHandler,
+  HTTP::Servers::StandardRouteHandler {
+  PromotedExpressCandidate() { this instanceof ConnectExpressShared::RouteHandlerCandidate }
 
-    PromotedConnectCandidate() {
-      this instanceof ConnectExpressShared::RouteHandlerCandidate
-    }
+  override SimpleParameter getRouteHandlerParameter(string kind) {
+    result = ConnectExpressShared::getRouteHandlerParameter(getAstNode(), kind)
+  }
+}
 
-    override SimpleParameter getRouteHandlerParameter(string kind) {
-      result = ConnectExpressShared::getRouteHandlerParameter(getAstNode(), kind)
-    }
+/**
+ * Add `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Connect::RouteHandler`.
+ */
+private class PromotedConnectCandidate extends Connect::RouteHandler,
+  HTTP::Servers::StandardRouteHandler {
+  PromotedConnectCandidate() { this instanceof ConnectExpressShared::RouteHandlerCandidate }
 
+  override SimpleParameter getRouteHandlerParameter(string kind) {
+    result = ConnectExpressShared::getRouteHandlerParameter(getAstNode(), kind)
+  }
 }

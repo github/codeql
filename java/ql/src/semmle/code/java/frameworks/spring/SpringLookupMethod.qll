@@ -4,24 +4,16 @@ import semmle.code.java.frameworks.spring.SpringBean
 
 /** A `<lookup-method>` element in a Spring XML file. */
 class SpringLookupMethod extends SpringXMLElement {
-  SpringLookupMethod() {
-    this.getName() = "lookup-method"
-  }
+  SpringLookupMethod() { this.getName() = "lookup-method" }
 
   /** Gets the value of the `bean` attribute. */
-  string getBeanName() {
-    result = this.getAttributeValue("bean")
-  }
+  string getBeanName() { result = this.getAttributeValue("bean") }
 
   /** Gets the bean referred to by the `bean` attribute. */
-  SpringBean getBean() {
-    result.getBeanIdentifier() = this.getBeanName()
-  }
+  SpringBean getBean() { result.getBeanIdentifier() = this.getBeanName() }
 
   /** Gets the value of the `name` attribute. */
-  string getMethodName() {
-    result = this.getAttributeValue("name")
-  }
+  string getMethodName() { result = this.getAttributeValue("name") }
 
   /**
    * Gets the Java method referred to by the lookup-method element.

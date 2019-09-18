@@ -49,7 +49,7 @@ versions of Eclipse, the output may be:</p>
 
 <sample src="InexactVarArg.java" />
 
-<p>To fix the code, <code>length(words)</code> should be replaced by either of the following:</p>
+<p>To avoid this compiler-dependent behavior, <code>length(words)</code> should be replaced by either of the following:</p>
 
 <ul>
 <li><code>length((Object) words)</code></li>

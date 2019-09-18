@@ -8,54 +8,36 @@ private import NodeModuleResolutionImpl
 /** A `package.json` configuration object. */
 class PackageJSON extends JSONObject {
   PackageJSON() {
-    getFile().getBaseName() = "package.json" and
+    getJsonFile().getBaseName() = "package.json" and
     isTopLevel()
   }
 
   /** Gets the name of this package. */
-  string getPackageName() {
-    result = getPropStringValue("name")
-  }
+  string getPackageName() { result = getPropStringValue("name") }
 
   /** Gets the version of this package. */
-  string getVersion() {
-    result = getPropStringValue("version")
-  }
+  string getVersion() { result = getPropStringValue("version") }
 
   /** Gets the description of this package. */
-  string getDescription() {
-    result = getPropStringValue("description")
-  }
+  string getDescription() { result = getPropStringValue("description") }
 
   /** Gets the array of keywords for this package. */
-  JSONArray getKeywords() {
-    result = getPropValue("keywords")
-  }
+  JSONArray getKeywords() { result = getPropValue("keywords") }
 
   /** Gets a keyword for this package. */
-  string getAKeyword() {
-    result = getKeywords().getElementStringValue(_)
-  }
+  string getAKeyword() { result = getKeywords().getElementStringValue(_) }
 
   /** Gets the homepage URL of this package. */
-  string getHomepage() {
-    result = getPropStringValue("homepage")
-  }
+  string getHomepage() { result = getPropStringValue("homepage") }
 
   /** Gets the bug tracker information of this package. */
-  BugTrackerInfo getBugs() {
-    result = getPropValue("bugs")
-  }
+  BugTrackerInfo getBugs() { result = getPropValue("bugs") }
 
   /** Gets the license information of this package. */
-  string getLicense() {
-    result = getPropStringValue("license")
-  }
+  string getLicense() { result = getPropStringValue("license") }
 
   /** Gets the author information of this package. */
-  ContributorInfo getAuthor() {
-    result = getPropValue("author")
-  }
+  ContributorInfo getAuthor() { result = getPropValue("author") }
 
   /** Gets information for a contributor to this package. */
   ContributorInfo getAContributor() {
@@ -63,66 +45,47 @@ class PackageJSON extends JSONObject {
   }
 
   /** Gets the array of files for this package. */
-  JSONArray getFiles() {
-    result = getPropValue("files")
-  }
+  JSONArray getFiles() { result = getPropValue("files") }
 
   /** Gets a file for this package. */
-  string getAFile() {
-    result = getFiles().getElementStringValue(_)
-  }
+  string getAFile() { result = getFiles().getElementStringValue(_) }
 
   /** Gets the main module of this package. */
-  string getMain() {
-    result = getPropStringValue("main")
-  }
+  string getMain() { result = getPropStringValue("main") }
 
   /** Gets the path of a command defined for this package. */
   string getBin(string cmd) {
-    (cmd = getPackageName() and result = getPropStringValue("bin")) or
-    result = ((JSONObject)getPropValue("bin")).getPropStringValue(cmd)
+    cmd = getPackageName() and result = getPropStringValue("bin")
+    or
+    result = getPropValue("bin").(JSONObject).getPropStringValue(cmd)
   }
 
   /** Gets a manual page for this package. */
   string getAManFile() {
     result = getPropStringValue("man") or
-    result = ((JSONArray)getPropValue("man")).getElementStringValue(_)
+    result = getPropValue("man").(JSONArray).getElementStringValue(_)
   }
 
   /** Gets information about the directories of this package. */
-  JSONObject getDirectories() {
-    result = getPropValue("directories")
-  }
+  JSONObject getDirectories() { result = getPropValue("directories") }
 
   /** Gets repository information for this package. */
-  RepositoryInfo getRepository() {
-    result = getPropValue("repository")
-  }
+  RepositoryInfo getRepository() { result = getPropValue("repository") }
 
   /** Gets information about the scripts of this package. */
-  JSONObject getScripts() {
-    result = getPropValue("scripts")
-  }
+  JSONObject getScripts() { result = getPropValue("scripts") }
 
   /** Gets configuration information for this package. */
-  JSONObject getConfig() {
-    result = getPropValue("config")
-  }
+  JSONObject getConfig() { result = getPropValue("config") }
 
   /** Gets the dependencies of this package. */
-  PackageDependencies getDependencies() {
-    result = getPropValue("dependencies")
-  }
+  PackageDependencies getDependencies() { result = getPropValue("dependencies") }
 
   /** Gets the development dependencies of this package. */
-  PackageDependencies getDevDependencies() {
-    result = getPropValue("devDependencies")
-  }
+  PackageDependencies getDevDependencies() { result = getPropValue("devDependencies") }
 
   /** Gets the peer dependencies of this package. */
-  PackageDependencies getPeerDependencies() {
-    result = getPropValue("peerDependencies")
-  }
+  PackageDependencies getPeerDependencies() { result = getPropValue("peerDependencies") }
 
   /** Gets the bundled dependencies of this package. */
   PackageDependencies getBundledDependencies() {
@@ -131,9 +94,7 @@ class PackageJSON extends JSONObject {
   }
 
   /** Gets the optional dependencies of this package. */
-  PackageDependencies getOptionalDependencies() {
-    result = getPropValue("optionalDependencies")
-  }
+  PackageDependencies getOptionalDependencies() { result = getPropValue("optionalDependencies") }
 
   /**
    * Gets a JSON object describing a group of dependencies of
@@ -143,9 +104,12 @@ class PackageJSON extends JSONObject {
    * `optionalDependencies`.
    */
   PackageDependencies getADependenciesObject(string depkind) {
-    result = getDependencies() and depkind = "" or
-    result = getDevDependencies() and depkind = "dev" or
-    result = getBundledDependencies() and depkind = "bundled" or
+    result = getDependencies() and depkind = ""
+    or
+    result = getDevDependencies() and depkind = "dev"
+    or
+    result = getBundledDependencies() and depkind = "bundled"
+    or
     result = getOptionalDependencies() and depkind = "opt"
   }
 
@@ -162,19 +126,13 @@ class PackageJSON extends JSONObject {
   }
 
   /** Gets the engine dependencies of this package. */
-  PackageDependencies getEngines() {
-    result = getPropValue("engines")
-  }
+  PackageDependencies getEngines() { result = getPropValue("engines") }
 
   /** Holds if this package has strict engine requirements. */
-  predicate isEngineStrict() {
-    ((JSONBoolean)getPropValue("engineStrict")).getValue() = "true"
-  }
+  predicate isEngineStrict() { getPropValue("engineStrict").(JSONBoolean).getValue() = "true" }
 
   /** Gets information about operating systems supported by this package. */
-  JSONArray getOSs() {
-    result = getPropValue("os")
-  }
+  JSONArray getOSs() { result = getPropValue("os") }
 
   /** Gets an operating system supported by this package. */
   string getWhitelistedOS() {
@@ -184,15 +142,13 @@ class PackageJSON extends JSONObject {
 
   /** Gets an operating system not supported by this package. */
   string getBlacklistedOS() {
-    exists (string str | str = getOSs().getElementStringValue(_) |
+    exists(string str | str = getOSs().getElementStringValue(_) |
       result = str.regexpCapture("!(.*)", 1)
     )
   }
 
   /** Gets information about platforms supported by this package. */
-  JSONArray getCPUs() {
-    result = getPropValue("cpu")
-  }
+  JSONArray getCPUs() { result = getPropValue("cpu") }
 
   /** Gets a platform supported by this package. */
   string getWhitelistedCPU() {
@@ -202,25 +158,19 @@ class PackageJSON extends JSONObject {
 
   /** Gets a platform not supported by this package. */
   string getBlacklistedCPU() {
-    exists (string str | str = getCPUs().getElementStringValue(_) |
+    exists(string str | str = getCPUs().getElementStringValue(_) |
       result = str.regexpCapture("!(.*)", 1)
     )
   }
 
   /** Holds if this package prefers to be installed globally. */
-  predicate isPreferGlobal() {
-    getPropValue("preferGlobal").(JSONBoolean).getValue() = "true"
-  }
+  predicate isPreferGlobal() { getPropValue("preferGlobal").(JSONBoolean).getValue() = "true" }
 
   /** Holds if this is a private package. */
-  predicate isPrivate() {
-    getPropValue("private").(JSONBoolean).getValue() = "true"
-  }
+  predicate isPrivate() { getPropValue("private").(JSONBoolean).getValue() = "true" }
 
   /** Gets publishing configuration information about this package. */
-  JSONValue getPublishConfig() {
-    result = getPropValue("publishConfig")
-  }
+  JSONValue getPublishConfig() { result = getPropValue("publishConfig") }
 
   /**
    * Gets the main module of this package.
@@ -235,20 +185,18 @@ class PackageJSON extends JSONObject {
  */
 class BugTrackerInfo extends JSONValue {
   BugTrackerInfo() {
-    exists (PackageJSON pkg | pkg.getPropValue("bugs") = this) and
+    exists(PackageJSON pkg | pkg.getPropValue("bugs") = this) and
     (this instanceof JSONObject or this instanceof JSONString)
   }
 
   /** Gets the bug tracker URL. */
   string getURL() {
-    result = ((JSONObject)this).getPropStringValue("url") or
-    result = ((JSONString)this).getValue()
+    result = this.(JSONObject).getPropStringValue("url") or
+    result = this.(JSONString).getValue()
   }
 
   /** Gets the bug reporting email address. */
-  string getEmail() {
-    result = ((JSONObject)this).getPropStringValue("email")
-  }
+  string getEmail() { result = this.(JSONObject).getPropStringValue("email") }
 }
 
 /**
@@ -256,7 +204,7 @@ class BugTrackerInfo extends JSONValue {
  */
 class ContributorInfo extends JSONValue {
   ContributorInfo() {
-    exists (PackageJSON pkg |
+    exists(PackageJSON pkg |
       this = pkg.getPropValue("author") or
       this = pkg.getPropValue("contributors").(JSONArray).getElementValue(_)
     ) and
@@ -269,24 +217,24 @@ class ContributorInfo extends JSONValue {
    * homepage URL.
    */
   private string parseInfo(int group) {
-    result = ((JSONString)this).getValue().regexpCapture("(.*?)(?: <(.*?)>)?(?: \\((.*)?\\))", group)
+    result = this.(JSONString).getValue().regexpCapture("(.*?)(?: <(.*?)>)?(?: \\((.*)?\\))", group)
   }
 
   /** Gets the contributor's name. */
   string getName() {
-    result = ((JSONObject)this).getPropStringValue("name") or
+    result = this.(JSONObject).getPropStringValue("name") or
     result = parseInfo(1)
   }
 
   /** Gets the contributor's email address. */
   string getEmail() {
-    result = ((JSONObject)this).getPropStringValue("email") or
+    result = this.(JSONObject).getPropStringValue("email") or
     result = parseInfo(2)
   }
 
   /** Gets the contributor's homepage URL. */
   string getURL() {
-    result = ((JSONObject)this).getPropStringValue("url") or
+    result = this.(JSONObject).getPropStringValue("url") or
     result = parseInfo(3)
   }
 }
@@ -295,19 +243,13 @@ class ContributorInfo extends JSONValue {
  * A representation of repository information for an NPM package.
  */
 class RepositoryInfo extends JSONObject {
-  RepositoryInfo() {
-    exists (PackageJSON pkg | this = pkg.getPropValue("repository"))
-  }
+  RepositoryInfo() { exists(PackageJSON pkg | this = pkg.getPropValue("repository")) }
 
   /** Gets the repository type. */
-  string getType() {
-    result = getPropStringValue("type")
-  }
+  string getType() { result = getPropStringValue("type") }
 
   /** Gets the repository URL. */
-  string getURL() {
-    result = getPropStringValue("url")
-  }
+  string getURL() { result = getPropStringValue("url") }
 }
 
 /**
@@ -315,16 +257,14 @@ class RepositoryInfo extends JSONObject {
  */
 class PackageDependencies extends JSONObject {
   PackageDependencies() {
-    exists (PackageJSON pkg, string name |
+    exists(PackageJSON pkg, string name |
       name.regexpMatch("(.+D|d)ependencies|engines") and
       this = pkg.getPropValue(name)
     )
   }
 
   /** Holds if this package depends on version 'version' of package 'pkg'. */
-  predicate getADependency(string pkg, string version) {
-    version = getPropStringValue(pkg)
-  }
+  predicate getADependency(string pkg, string version) { version = getPropStringValue(pkg) }
 }
 
 /**
@@ -334,29 +274,19 @@ class NPMPackage extends @folder {
   /** The `package.json` file of this package. */
   PackageJSON pkg;
 
-  NPMPackage() {
-    pkg.getFile().getParentContainer() = this
-  }
+  NPMPackage() { pkg.getJsonFile().getParentContainer() = this }
 
   /** Gets a textual representation of this package. */
-  string toString() {
-    result = this.(Folder).toString()
-  }
+  string toString() { result = this.(Folder).toString() }
 
   /** Gets the full file system path of this package. */
-  string getPath() {
-    result = this.(Folder).getAbsolutePath()
-  }
+  string getPath() { result = this.(Folder).getAbsolutePath() }
 
   /** Gets the `package.json` object of this package. */
-  PackageJSON getPackageJSON() {
-    result = pkg
-  }
+  PackageJSON getPackageJSON() { result = pkg }
 
   /** Gets the name of this package. */
-  string getPackageName() {
-    result = getPackageJSON().getPackageName()
-  }
+  string getPackageName() { result = getPackageJSON().getPackageName() }
 
   /** Gets the `node_modules` folder of this package. */
   Folder getNodeModulesFolder() {
@@ -371,9 +301,7 @@ class NPMPackage extends @folder {
    * and files inside the `node_modules` folder of a package are not
    * considered to belong to that package.
    */
-  File getAFile() {
-    this = packageInternalParent*(result.getParentContainer())
-  }
+  File getAFile() { this = packageInternalParent*(result.getParentContainer()) }
 
   /**
    * Gets a Node.js module belonging to this package.
@@ -382,16 +310,17 @@ class NPMPackage extends @folder {
    * and modules inside the `node_modules` folder of a package are not
    * considered to belong to that package.
    */
-  Module getAModule() {
-    result.getFile() = getAFile()
-  }
+  Module getAModule() { result.getFile() = getAFile() }
 
   /**
    * Gets the main module of this package.
    */
-  Module getMainModule() {
-    result = pkg.getMainModule()
-  }
+  Module getMainModule() { result = pkg.getMainModule() }
+
+  /**
+   * Holds if this package declares a dependency on version `v` of package `p`.
+   */
+  predicate declaresDependency(string p, string v) { pkg.declaresDependency(p, v) }
 }
 
 /**

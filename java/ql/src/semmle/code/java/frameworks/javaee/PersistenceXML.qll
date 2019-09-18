@@ -4,22 +4,21 @@ import java
  * A JavaEE persistence configuration XML file (persistence.xml).
  */
 class PersistenceXMLFile extends XMLFile {
-  PersistenceXMLFile() {
-    this.getStem() = "persistence"
-  }
+  PersistenceXMLFile() { this.getStem() = "persistence" }
 
-  PersistenceXmlRoot getRoot() {
-    result = this.getAChild()
-  }
+  PersistenceXmlRoot getRoot() { result = this.getAChild() }
 
   // convenience methods
-
   SharedCacheModeElement getASharedCacheModeElement() {
     result = this.getRoot().getAPersistenceUnitElement().getASharedCacheModeElement()
   }
 
   PersistencePropertyElement getAPropertyElement() {
-    result = this.getRoot().getAPersistenceUnitElement().getAPropertiesElement().getAPropertyElement()
+    result = this
+          .getRoot()
+          .getAPersistenceUnitElement()
+          .getAPropertiesElement()
+          .getAPropertyElement()
   }
 }
 
@@ -29,9 +28,7 @@ class PersistenceXmlRoot extends XMLElement {
     this.getName() = "persistence"
   }
 
-  PersistenceUnitElement getAPersistenceUnitElement() {
-    result = this.getAChild()
-  }
+  PersistenceUnitElement getAPersistenceUnitElement() { result = this.getAChild() }
 }
 
 class PersistenceUnitElement extends XMLElement {
@@ -40,13 +37,9 @@ class PersistenceUnitElement extends XMLElement {
     this.getName() = "persistence-unit"
   }
 
-  SharedCacheModeElement getASharedCacheModeElement() {
-    result = this.getAChild()
-  }
+  SharedCacheModeElement getASharedCacheModeElement() { result = this.getAChild() }
 
-  PersistencePropertiesElement getAPropertiesElement() {
-    result = this.getAChild()
-  }
+  PersistencePropertiesElement getAPropertiesElement() { result = this.getAChild() }
 }
 
 class SharedCacheModeElement extends XMLElement {
@@ -55,13 +48,9 @@ class SharedCacheModeElement extends XMLElement {
     this.getName() = "shared-cache-mode"
   }
 
-  string getValue() {
-    result = this.getACharactersSet().getCharacters()
-  }
+  string getValue() { result = this.getACharactersSet().getCharacters() }
 
-  predicate isDisabled() {
-    this.getValue() = "NONE"
-  }
+  predicate isDisabled() { this.getValue() = "NONE" }
 }
 
 class PersistencePropertiesElement extends XMLElement {
@@ -70,9 +59,7 @@ class PersistencePropertiesElement extends XMLElement {
     this.getName() = "properties"
   }
 
-  PersistencePropertyElement getAPropertyElement() {
-    result = this.getAChild()
-  }
+  PersistencePropertyElement getAPropertyElement() { result = this.getAChild() }
 }
 
 class PersistencePropertyElement extends XMLElement {

@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>else</code> clause of a loop (either a <code>for</code> or a <code>while</code> statement) executes immediately after the loop terminates normally.
+If there is a <code>break</code> statement in the loop body, then the <code>else</code> clause is skipped.
+If there is no <code>break</code> statement, then the <code>else</code> clause will always be executed after the loop, unless it exits with a <code>return</code> or <code>raise</code>.
+Therefore, if there is no <code>break</code> statement in the loop body then the <code>else</code> clause can be replaced with unindented code.</p>
+
+<p>Generally the use of <code>else</code> clauses should be avoided where possible, as they are likely to be misunderstood.</p>
+
+</overview>
+<recommendation>
+<p>Replace the <code>else</code> clause with unindented code.</p>
+
+
+</recommendation>
+<example>
+<p>In this example, the <code>pointless_else</code> function contains a redundant <code>else</code> clause.
+The <code>else</code> clause can be simplified, as shown in the <code>no_else</code> function, which has the same semantics, but has no <code>else</code> clause.
+The third example function, <code>with_break</code>, shows a version where the <code>else</code> clause is necessary, as the <code>break</code> statement skips the <code>else</code> clause.
+</p><sample src="UnnecessaryElseClause.py" />
+
+</example>
+<references>
+
+     <li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#the-while-statement">The while statement</a>.</li>
+     <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops">Break and continue statements, and else clauses on loops</a>.</li>
+
+</references>
+</qhelp>

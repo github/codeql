@@ -1,0 +1,10 @@
+| assert.py:34:9:34:26 | Assert | Assert of literal constant True. |
+| assert.py:36:9:36:19 | Assert | Assert of literal constant True. |
+| assert.py:40:9:40:27 | Assert | Assert of literal constant False. |
+| assert.py:44:9:44:23 | Assert | Assert of literal constant 0. |
+| assert.py:48:9:48:23 | Assert | Assert of literal constant 1. |
+| assert.py:52:9:52:24 | Assert | Assert of literal constant "". |
+| assert.py:56:9:56:25 | Assert | Assert of literal constant "X". |
+| assert.py:58:9:58:18 | Assert | Assert of literal constant "X". |
+| assert.py:94:9:94:29 | Assert | Assert of literal constant False. |
+| assert.py:102:9:102:29 | Assert | Assert of literal constant False. |

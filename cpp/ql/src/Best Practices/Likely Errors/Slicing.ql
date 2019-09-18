@@ -9,16 +9,17 @@
  *       correctness
  *       types
  */
+
 import cpp
 
-//see http://www.cs.ualberta.ca/~hoover/Courses/201/201-New-Notes/lectures/section/slice.htm
-//Does not find anything in rivers (unfortunately)
 from AssignExpr e, Class lhsType, Class rhsType
-where e.getLValue().getType() = lhsType
-  and e.getRValue().getType() = rhsType
-  and rhsType.getABaseClass+() = lhsType
-  and exists(Declaration m | rhsType.getAMember() = m and
-                        not m.(VirtualFunction).isPure()) //add additional checks for concrete members in in-between supertypes
-select e, "This assignment expression slices from type $@ to $@",
-  rhsType, rhsType.getName(),
+where
+  e.getLValue().getType() = lhsType and
+  e.getRValue().getType() = rhsType and
+  rhsType.getABaseClass+() = lhsType and
+  exists(Declaration m |
+    rhsType.getAMember() = m and
+    not m.(VirtualFunction).isPure()
+  ) // add additional checks for concrete members in in-between supertypes
+select e, "This assignment expression slices from type $@ to $@", rhsType, rhsType.getName(),
   lhsType, lhsType.getName()

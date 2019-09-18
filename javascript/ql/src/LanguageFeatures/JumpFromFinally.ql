@@ -25,14 +25,15 @@ class Jump extends Stmt {
 
   /** Gets the target to which this jump refers. */
   Stmt getTarget() {
-    result = ((BreakOrContinueStmt)this).getTarget() or
-    result = ((Function)((ReturnStmt)this).getContainer()).getBody()
+    result = this.(BreakOrContinueStmt).getTarget() or
+    result = this.(ReturnStmt).getContainer().(Function).getBody()
   }
 }
 
 from TryStmt try, BlockStmt finally, Jump jump
-where finally = try.getFinally() and
-      jump.getContainer() = try.getContainer() and
-      jump.getParentStmt+() = finally and
-      finally.getParentStmt+() = jump.getTarget()
+where
+  finally = try.getFinally() and
+  jump.getContainer() = try.getContainer() and
+  jump.getParentStmt+() = finally and
+  finally.getParentStmt+() = jump.getTarget()
 select jump, "This statement jumps out of the finally block, potentially hiding an exception."

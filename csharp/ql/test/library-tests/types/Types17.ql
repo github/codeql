@@ -2,6 +2,7 @@
  * @name Test for enum type
  * @kind table
  */
+
 import csharp
 
 from Enum e

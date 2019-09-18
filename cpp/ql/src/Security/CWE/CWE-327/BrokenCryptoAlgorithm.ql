@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-327
  */
+
 import cpp
 import semmle.code.cpp.security.Encryption
 
@@ -16,25 +17,33 @@ abstract class InsecureCryptoSpec extends Locatable {
   abstract string description();
 }
 
+Function getAnInsecureFunction() {
+  result.getName().regexpMatch(algorithmBlacklistRegex()) and
+  exists(result.getACallToThisFunction())
+}
+
 class InsecureFunctionCall extends InsecureCryptoSpec, FunctionCall {
-  InsecureFunctionCall() {
-    this.getTarget().getName().regexpMatch(algorithmBlacklistRegex())
-  }
+  InsecureFunctionCall() { this.getTarget() = getAnInsecureFunction() }
 
   override string description() { result = "function call" }
 
   override string toString() { result = FunctionCall.super.toString() }
+
   override Location getLocation() { result = FunctionCall.super.getLocation() }
 }
 
+Macro getAnInsecureMacro() {
+  result.getName().regexpMatch(algorithmBlacklistRegex()) and
+  exists(result.getAnInvocation())
+}
+
 class InsecureMacroSpec extends InsecureCryptoSpec, MacroInvocation {
-  InsecureMacroSpec() {
-    this.getMacro().getName().regexpMatch(algorithmBlacklistRegex())
-  }
+  InsecureMacroSpec() { this.getMacro() = getAnInsecureMacro() }
 
   override string description() { result = "macro invocation" }
 
   override string toString() { result = MacroInvocation.super.toString() }
+
   override Location getLocation() { result = MacroInvocation.super.getLocation() }
 }
 

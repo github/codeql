@@ -7,6 +7,7 @@
  * type has a subtype or if an inferred upper bound passed through at least one
  * explicit or implicit cast that lost type information.
  */
+
 import java
 private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
@@ -28,16 +29,22 @@ private class TypeFlowNode extends TTypeFlowNode {
     result = asExpr().toString() or
     result = asMethod().toString()
   }
+
   Location getLocation() {
     result = asField().getLocation() or
     result = asSsa().getLocation() or
     result = asExpr().getLocation() or
     result = asMethod().getLocation()
   }
+
   Field asField() { this = TField(result) }
+
   BaseSsaVariable asSsa() { this = TSsa(result) }
+
   Expr asExpr() { this = TExpr(result) }
+
   Method asMethod() { this = TMethod(result) }
+
   RefType getType() {
     result = asField().getType() or
     result = asSsa().getSourceVariable().getType() or
@@ -65,17 +72,31 @@ private predicate privateParamArg(Parameter p, Argument arg) {
  * necessarily functionally determined by `n2`.
  */
 private predicate joinStep0(TypeFlowNode n1, TypeFlowNode n2) {
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr() or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr() or
-  n2.asField().getAnAssignedValue() = n1.asExpr() or
-  n2.asSsa().(BaseSsaPhiNode).getAPhiInput() = n1.asSsa() or
-  exists(ReturnStmt ret | n2.asMethod() = ret.getEnclosingCallable() and ret.getResult() = n1.asExpr()) or
+  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()
+  or
+  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr()
+  or
+  exists(Field f, Expr e |
+    f = n2.asField() and
+    f.getAnAssignedValue() = e and
+    e = n1.asExpr() and
+    not e.(FieldAccess).getField() = f
+  )
+  or
+  n2.asSsa().(BaseSsaPhiNode).getAnUltimateLocalDefinition() = n1.asSsa()
+  or
+  exists(ReturnStmt ret |
+    n2.asMethod() = ret.getEnclosingCallable() and ret.getResult() = n1.asExpr()
+  )
+  or
   viableImpl_v1(n2.asExpr()) = n1.asMethod()
   or
   exists(Argument arg, Parameter p |
     privateParamArg(p, arg) and
     n1.asExpr() = arg and
-    n2.asSsa().(BaseSsaImplicitInit).isParameterDefinition(p)
+    n2.asSsa().(BaseSsaImplicitInit).isParameterDefinition(p) and
+    // skip trivial recursion
+    not arg = n2.asSsa().getAUse()
   )
 }
 
@@ -84,12 +105,20 @@ private predicate joinStep0(TypeFlowNode n1, TypeFlowNode n2) {
  * functionally determined by `n2`.
  */
 private predicate step(TypeFlowNode n1, TypeFlowNode n2) {
-  n2.asExpr() = n1.asField().getAnAccess() or
-  n2.asExpr() = n1.asSsa().getAUse() or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr() or
-  n2.asExpr().(CastExpr).getExpr() = n1.asExpr() and not n2.asExpr().getType() instanceof PrimitiveType or
-  n2.asExpr().(AssignExpr).getSource() = n1.asExpr() and not n2.asExpr().getType() instanceof PrimitiveType or
-  n2.asSsa().(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr() or
+  n2.asExpr() = n1.asField().getAnAccess()
+  or
+  n2.asExpr() = n1.asSsa().getAUse()
+  or
+  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
+  or
+  n2.asExpr().(CastExpr).getExpr() = n1.asExpr() and
+  not n2.asExpr().getType() instanceof PrimitiveType
+  or
+  n2.asExpr().(AssignExpr).getSource() = n1.asExpr() and
+  not n2.asExpr().getType() instanceof PrimitiveType
+  or
+  n2.asSsa().(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
+  or
   n2.asSsa().(BaseSsaImplicitInit).captures(n1.asSsa())
 }
 
@@ -97,9 +126,20 @@ private predicate step(TypeFlowNode n1, TypeFlowNode n2) {
  * Holds if `null` is the only value that flows to `n`.
  */
 private predicate isNull(TypeFlowNode n) {
-  n.asExpr() instanceof NullLiteral or
-  exists(TypeFlowNode mid | isNull(mid) and step(mid, n)) or
-  forex(TypeFlowNode mid | joinStep0(mid, n) | isNull(mid))
+  n.asExpr() instanceof NullLiteral
+  or
+  exists(LocalVariableDeclExpr decl |
+    n.asSsa().(BaseSsaUpdate).getDefiningExpr() = decl and
+    not decl.hasImplicitInit() and
+    not exists(decl.getInit())
+  )
+  or
+  exists(TypeFlowNode mid | isNull(mid) and step(mid, n))
+  or
+  forex(TypeFlowNode mid | joinStep0(mid, n) | isNull(mid)) and
+  // Fields that are never assigned a non-null value are probably set by
+  // reflection and are thus not always null.
+  not exists(n.asField())
 }
 
 /**
@@ -111,7 +151,11 @@ private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
 }
 
 private predicate joinStepRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  n1 = rank[r](TypeFlowNode n | joinStep(n, n2) | n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn())
+  n1 = rank[r](TypeFlowNode n |
+      joinStep(n, n2)
+    |
+      n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()
+    )
 }
 
 private predicate joinStepRank2(int r2, int r1, TypeFlowNode n) {
@@ -127,14 +171,24 @@ private predicate joinStepRank(int r, TypeFlowNode n1, TypeFlowNode n2) {
 
 private int lastRank(TypeFlowNode n) { result = max(int r | joinStepRank(r, _, n)) }
 
+private predicate exactTypeBase(TypeFlowNode n, RefType t) {
+  exists(ClassInstanceExpr e |
+    n.asExpr() = e and
+    e.getType() = t and
+    not e instanceof FunctionalExpr and
+    exists(RefType sub | sub.getASourceSupertype() = t.getSourceDeclaration())
+  )
+}
+
 private predicate exactTypeRank(int r, TypeFlowNode n, RefType t) {
   forall(TypeFlowNode mid | joinStepRank(r, mid, n) | exactType(mid, t)) and
   joinStepRank(r, _, n)
 }
 
 private predicate exactTypeJoin(int r, TypeFlowNode n, RefType t) {
-  exactTypeRank(1, n, t) and r = 1 or
-  exactTypeJoin(r-1, n, t) and exactTypeRank(r, n, t)
+  exactTypeRank(1, n, t) and r = 1
+  or
+  exactTypeJoin(r - 1, n, t) and exactTypeRank(r, n, t)
 }
 
 /**
@@ -142,51 +196,70 @@ private predicate exactTypeJoin(int r, TypeFlowNode n, RefType t) {
  * non-trivial lower bound, that is, `t` has a subtype.
  */
 private predicate exactType(TypeFlowNode n, RefType t) {
-  exists(ClassInstanceExpr e |
-    n.asExpr() = e and
-    e.getType() = t and
-    not e instanceof FunctionalExpr and
-    exists(RefType sub | sub.getASourceSupertype() = t.getSourceDeclaration())
-  ) or
-  exists(TypeFlowNode mid | exactType(mid, t) and step(mid, n)) or
+  exactTypeBase(n, t)
+  or
+  exists(TypeFlowNode mid | exactType(mid, t) and step(mid, n))
+  or
   // The following is an optimized version of
   // `forex(TypeFlowNode mid | joinStep(mid, n) | exactType(mid, t))`
   exactTypeJoin(lastRank(n), n, t)
 }
 
 /**
- * Holds if `e` occurs in a position where type information might be discarded;
- * `t` is the potentially boxed type of `e`, `t1` is the erasure of `t`, and
+ * Holds if `n` occurs in a position where type information might be discarded;
+ * `t` is the potentially boxed type of `n`, `t1` is the erasure of `t`, and
  * `t2` is the erased type of the implicit or explicit cast.
  */
 pragma[noinline]
-private predicate upcastCand(Expr e, RefType t, RefType t1, RefType t2) {
-  t = boxIfNeeded(e.getType()) and
+private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) {
+  t = boxIfNeeded(n.getType()) and
   t.getErasure() = t1 and
   (
-    exists(Variable v | v.getAnAssignedValue() = e and t2 = v.getType().getErasure()) or
-    exists(CastExpr c | c.getExpr() = e and t2 = c.getType().getErasure()) or
-    exists(ReturnStmt ret | ret.getResult() = e and t2 = ret.getEnclosingCallable().getReturnType().getErasure()) or
-    exists(Parameter p | privateParamArg(p, e) and t2 = p.getType().getErasure()) or
-    exists(ConditionalExpr cond | cond.getTrueExpr() = e or cond.getFalseExpr() = e | t2 = cond.getType().getErasure())
+    exists(Variable v | v.getAnAssignedValue() = n.asExpr() and t2 = v.getType().getErasure())
+    or
+    exists(CastExpr c | c.getExpr() = n.asExpr() and t2 = c.getType().getErasure())
+    or
+    exists(ReturnStmt ret |
+      ret.getResult() = n.asExpr() and t2 = ret.getEnclosingCallable().getReturnType().getErasure()
+    )
+    or
+    exists(MethodAccess ma | viableImpl_v1(ma) = n.asMethod() and t2 = ma.getType())
+    or
+    exists(Parameter p | privateParamArg(p, n.asExpr()) and t2 = p.getType().getErasure())
+    or
+    exists(ConditionalExpr cond |
+      cond.getTrueExpr() = n.asExpr() or cond.getFalseExpr() = n.asExpr()
+    |
+      t2 = cond.getType().getErasure()
+    )
   )
 }
 
-/** Holds if `e` occurs in a position where type information is discarded. */
-private predicate upcast(Expr e, RefType t) {
+/** Holds if `n` occurs in a position where type information is discarded. */
+private predicate upcast(TypeFlowNode n, RefType t) {
   exists(RefType t1, RefType t2 |
-    upcastCand(e, t, t1, t2) and
+    upcastCand(n, t, t1, t2) and
     t1.getASourceSupertype+() = t2
   )
 }
 
 /** Gets the element type of an array or subtype of `Iterable`. */
 private Type elementType(RefType t) {
-  result = t.(Array).getComponentType() or
+  result = t.(Array).getComponentType()
+  or
   exists(ParameterizedType it |
     it.getSourceDeclaration().hasQualifiedName("java.lang", "Iterable") and
     result = it.getATypeArgument() and
     t.extendsOrImplements*(it)
+  )
+}
+
+private predicate upcastEnhancedForStmtAux(BaseSsaUpdate v, RefType t, RefType t1, RefType t2) {
+  exists(EnhancedForStmt for |
+    for.getVariable() = v.getDefiningExpr() and
+    v.getSourceVariable().getType().getErasure() = t2 and
+    t = boxIfNeeded(elementType(for.getExpr().getType())) and
+    t.getErasure() = t1
   )
 }
 
@@ -196,13 +269,19 @@ private Type elementType(RefType t) {
  * than the type of `v`.
  */
 private predicate upcastEnhancedForStmt(BaseSsaUpdate v, RefType t) {
-  exists(EnhancedForStmt for, RefType t1, RefType t2 |
-    for.getVariable() = v.getDefiningExpr() and
-    v.getSourceVariable().getType().getErasure() = t2 and
-    t = boxIfNeeded(elementType(for.getExpr().getType())) and
-    t.getErasure() = t1 and
+  exists(RefType t1, RefType t2 |
+    upcastEnhancedForStmtAux(v, t, t1, t2) and
     t1.getASourceSupertype+() = t2
   )
+}
+
+private predicate downcastSuccessorAux(
+  CastExpr cast, BaseSsaVariable v, RefType t, RefType t1, RefType t2
+) {
+  cast.getExpr() = v.getAUse() and
+  t = cast.getType() and
+  t1 = t.getErasure() and
+  t2 = v.getSourceVariable().getType().getErasure()
 }
 
 /**
@@ -210,10 +289,7 @@ private predicate upcastEnhancedForStmt(BaseSsaUpdate v, RefType t) {
  */
 private predicate downcastSuccessor(VarAccess va, RefType t) {
   exists(CastExpr cast, BaseSsaVariable v, RefType t1, RefType t2 |
-    cast.getExpr() = v.getAUse() and
-    t = cast.getType() and
-    t1 = t.getErasure() and
-    t2 = v.getSourceVariable().getType().getErasure() and
+    downcastSuccessorAux(cast, v, t, t1, t2) and
     t1.getASourceSupertype+() = t2 and
     va = v.getAUse() and
     dominates(cast, va) and
@@ -234,6 +310,24 @@ private predicate instanceOfGuarded(VarAccess va, RefType t) {
 }
 
 /**
+ * Holds if `n` has type `t` and this information is discarded, such that `t`
+ * might be a better type bound for nodes where `n` flows to.
+ */
+private predicate typeFlowBase(TypeFlowNode n, RefType t) {
+  exists(RefType srctype |
+    upcast(n, srctype) or
+    upcastEnhancedForStmt(n.asSsa(), srctype) or
+    downcastSuccessor(n.asExpr(), srctype) or
+    instanceOfGuarded(n.asExpr(), srctype) or
+    n.asExpr().(FunctionalExpr).getConstructedType() = srctype
+  |
+    t = srctype.(BoundedType).getAnUltimateUpperBoundType()
+    or
+    t = srctype and not srctype instanceof BoundedType
+  )
+}
+
+/**
  * Holds if `t` is a bound that holds on one of the incoming edges to `n` and
  * thus is a candidate bound for `n`.
  */
@@ -250,12 +344,10 @@ private predicate typeFlowJoin(int r, TypeFlowNode n, RefType t) {
   (
     r = 1 and typeFlowJoinCand(n, t)
     or
-    typeFlowJoin(r-1, n, t) and joinStepRank(r, _, n)
+    typeFlowJoin(r - 1, n, t) and joinStepRank(r, _, n)
   ) and
   forall(TypeFlowNode mid | joinStepRank(r, mid, n) |
-    exists(RefType midtyp |
-      exactType(mid, midtyp) or typeFlow(mid, midtyp)
-      |
+    exists(RefType midtyp | exactType(mid, midtyp) or typeFlow(mid, midtyp) |
       midtyp.getASupertype*() = t
     )
   )
@@ -266,11 +358,10 @@ private predicate typeFlowJoin(int r, TypeFlowNode n, RefType t) {
  * likely to be better than the static type of `n`.
  */
 private predicate typeFlow(TypeFlowNode n, RefType t) {
-  upcast(n.asExpr(), t) or
-  upcastEnhancedForStmt(n.asSsa(), t) or
-  downcastSuccessor(n.asExpr(), t) or
-  instanceOfGuarded(n.asExpr(), t) or
-  exists(TypeFlowNode mid | typeFlow(mid, t) and step(mid, n)) or
+  typeFlowBase(n, t)
+  or
+  exists(TypeFlowNode mid | typeFlow(mid, t) and step(mid, n))
+  or
   typeFlowJoin(lastRank(n), n, t)
 }
 
@@ -279,9 +370,7 @@ private predicate typeFlow(TypeFlowNode n, RefType t) {
  */
 pragma[noinline]
 private predicate irrelevantBound(TypeFlowNode n, RefType t) {
-  exists(RefType bound |
-    typeFlow(n, bound) or n.getType() = bound
-    |
+  exists(RefType bound | typeFlow(n, bound) or n.getType() = bound |
     t = bound.getErasure().(RefType).getASourceSupertype+()
   )
 }
@@ -295,7 +384,8 @@ private predicate bestTypeFlow(TypeFlowNode n, RefType t) {
   not irrelevantBound(n, t.getErasure())
 }
 
-cached private module TypeFlowBounds {
+cached
+private module TypeFlowBounds {
   /**
    * Holds if the runtime type of `f` is bounded by `t` and if this bound is
    * likely to be better than the static type of `f`. The flag `exact` indicates
@@ -303,16 +393,13 @@ cached private module TypeFlowBounds {
    */
   cached
   predicate fieldTypeFlow(Field f, RefType t, boolean exact) {
-    exists(TypeFlowNode n, RefType srctype |
+    exists(TypeFlowNode n |
       n.asField() = f and
       (
-        exactType(n, srctype) and exact = true
+        exactType(n, t) and exact = true
         or
-        not exactType(n, _) and bestTypeFlow(n, srctype) and exact = false
+        not exactType(n, _) and bestTypeFlow(n, t) and exact = false
       )
-      |
-      t = srctype.(BoundedType).getAnUltimateUpperBoundType() or
-      t = srctype and not srctype instanceof BoundedType
     )
   }
 
@@ -323,17 +410,15 @@ cached private module TypeFlowBounds {
    */
   cached
   predicate exprTypeFlow(Expr e, RefType t, boolean exact) {
-    exists(TypeFlowNode n, RefType srctype |
+    exists(TypeFlowNode n |
       n.asExpr() = e and
       (
-        exactType(n, srctype) and exact = true
+        exactType(n, t) and exact = true
         or
-        not exactType(n, _) and bestTypeFlow(n, srctype) and exact = false
+        not exactType(n, _) and bestTypeFlow(n, t) and exact = false
       )
-      |
-      t = srctype.(BoundedType).getAnUltimateUpperBoundType() or
-      t = srctype and not srctype instanceof BoundedType
     )
   }
 }
+
 import TypeFlowBounds

@@ -1,0 +1,2 @@
+| str_fmt_test.py:11:11:11:34 | BinaryExpr | Wrong number of $@ for string format. Format $@ takes 2, but 3 are provided. | str_fmt_test.py:11:23:11:33 | Tuple | arguments | str_fmt_test.py:11:11:11:18 | Str | %s %s |
+| str_fmt_test.py:14:11:14:23 | BinaryExpr | Wrong number of $@ for string format. Format $@ takes 1, but 2 are provided. | str_fmt_test.py:13:13:13:21 | Tuple | arguments | str_fmt_test.py:12:14:12:19 | Str | %hd |

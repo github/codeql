@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-class DefaultToString
+public class DefaultToString
 {
     void M()
     {
@@ -26,6 +26,15 @@ class DefaultToString
 
         C c = new D();
         Console.WriteLine(c); // GOOD
+
+        var sb = new StringBuilder();
+        sb.Append(new char[] { 'a', 'b', 'c' }, 0, 3); // GOOD
+
+        IPrivate f = null;
+        Console.WriteLine(f);  // BAD
+
+        IPublic g = null;
+        Console.WriteLine(g);  // GOOD
     }
 
     class A
@@ -44,6 +53,14 @@ class DefaultToString
     class D : C
     {
         override public string ToString() { return "D"; }
+    }
+
+    public interface IPublic
+    {
+    }
+
+    private interface IPrivate
+    {
     }
 }
 

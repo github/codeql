@@ -1,8 +1,21 @@
+| AccessorCalls.cs:5:23:5:25 | enter get_Item | AccessorCalls.cs:5:23:5:25 | exit get_Item | 3 |
+| AccessorCalls.cs:5:33:5:35 | enter set_Item | AccessorCalls.cs:5:33:5:35 | exit set_Item | 3 |
+| AccessorCalls.cs:7:32:7:34 | enter add_Event | AccessorCalls.cs:7:32:7:34 | exit add_Event | 3 |
+| AccessorCalls.cs:7:40:7:45 | enter remove_Event | AccessorCalls.cs:7:40:7:45 | exit remove_Event | 3 |
+| AccessorCalls.cs:10:10:10:11 | enter M1 | AccessorCalls.cs:10:10:10:11 | exit M1 | 32 |
+| AccessorCalls.cs:19:10:19:11 | enter M2 | AccessorCalls.cs:19:10:19:11 | exit M2 | 40 |
+| AccessorCalls.cs:28:10:28:11 | enter M3 | AccessorCalls.cs:28:10:28:11 | exit M3 | 16 |
+| AccessorCalls.cs:35:10:35:11 | enter M4 | AccessorCalls.cs:35:10:35:11 | exit M4 | 19 |
+| AccessorCalls.cs:42:10:42:11 | enter M5 | AccessorCalls.cs:42:10:42:11 | exit M5 | 32 |
+| AccessorCalls.cs:49:10:49:11 | enter M6 | AccessorCalls.cs:49:10:49:11 | exit M6 | 41 |
+| AccessorCalls.cs:56:10:56:11 | enter M7 | AccessorCalls.cs:56:10:56:11 | exit M7 | 23 |
+| AccessorCalls.cs:61:10:61:11 | enter M8 | AccessorCalls.cs:61:10:61:11 | exit M8 | 29 |
+| AccessorCalls.cs:66:10:66:11 | enter M9 | AccessorCalls.cs:66:10:66:11 | exit M9 | 57 |
 | ArrayCreation.cs:3:11:3:12 | enter M1 | ArrayCreation.cs:3:11:3:12 | exit M1 | 4 |
 | ArrayCreation.cs:5:12:5:13 | enter M2 | ArrayCreation.cs:5:12:5:13 | exit M2 | 5 |
 | ArrayCreation.cs:7:11:7:12 | enter M3 | ArrayCreation.cs:7:11:7:12 | exit M3 | 6 |
 | ArrayCreation.cs:9:12:9:13 | enter M4 | ArrayCreation.cs:9:12:9:13 | exit M4 | 10 |
-| Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | exit M | 39 |
+| Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | exit M | 33 |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | exit (...) => ... | 3 |
 | Assignments.cs:17:40:17:40 | enter + | Assignments.cs:17:40:17:40 | exit + | 5 |
 | BreakInTry.cs:3:10:3:11 | enter M1 | BreakInTry.cs:7:33:7:36 | access to parameter args | 5 |
@@ -56,18 +69,39 @@
 | CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | 2 |
 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:17:27:17:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | 2 |
 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | CatchInFinally.cs:17:27:17:44 | [finally: exception(Exception)] object creation of type Exception | 2 |
-| CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... | 6 |
-| CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... | 6 |
 | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | 6 |
-| CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... | 6 |
-| CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... | 6 |
 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: Exception] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | 6 |
 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:21:17:21:42 | [finally: exception(ArgumentNullException)] call to method WriteLine | 6 |
 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:21:17:21:42 | [finally: exception(Exception)] call to method WriteLine | 6 |
 | CatchInFinally.cs:20:13:22:13 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | 6 |
 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | CatchInFinally.cs:25:17:25:37 | [finally: exception(ArgumentNullException)] call to method WriteLine | 5 |
 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | CatchInFinally.cs:25:17:25:37 | [finally: exception(Exception)] call to method WriteLine | 5 |
 | CatchInFinally.cs:23:13:26:13 | catch {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | 5 |
+| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:38:17:38:18 | access to parameter b1 | 6 |
+| CatchInFinally.cs:34:24:34:25 | exit M2 | CatchInFinally.cs:34:24:34:25 | exit M2 | 1 |
+| CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | CatchInFinally.cs:44:21:44:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b2 | 6 |
+| CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | 1 |
+| CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | CatchInFinally.cs:44:21:44:22 | [b1 (line 34): false] access to parameter b2 | 5 |
+| CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:44:21:44:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b2 | 5 |
+| CatchInFinally.cs:44:25:44:47 | [b1 (line 34): false, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:38:46:39 | [exception: ExceptionB, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | 3 |
+| CatchInFinally.cs:44:25:44:47 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | 3 |
+| CatchInFinally.cs:44:25:44:47 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | 3 |
+| CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | 1 |
+| CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | 1 |
+| CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | 1 |
+| CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | 1 |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | 1 |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | 1 |
+| CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | 1 |
+| CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | 1 |
+| CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | 1 |
+| CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | CatchInFinally.cs:48:21:48:22 | [b1 (line 34): false] access to parameter b1 | 3 |
+| CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:48:25:48:47 | [finally: exception(Exception)] throw ...; | 5 |
+| CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | CatchInFinally.cs:48:25:48:47 | [finally: exception(ExceptionA)] throw ...; | 5 |
 | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:5:9:5:15 | exit Default | 5 |
 | CompileTimeOperators.cs:10:9:10:14 | enter Sizeof | CompileTimeOperators.cs:10:9:10:14 | exit Sizeof | 5 |
 | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | exit Typeof | 5 |
@@ -97,37 +131,122 @@
 | ConditionalAccess.cs:19:12:19:13 | enter M6 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | 2 |
 | ConditionalAccess.cs:19:12:19:13 | exit M6 | ConditionalAccess.cs:19:12:19:13 | exit M6 | 1 |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | 2 |
-| ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | exit M7 | 20 |
+| ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | exit M7 | 17 |
 | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:26:31:38 | exit CommaJoinWith | 7 |
-| ExitMethods.cs:6:10:6:11 | enter M1 | ExitMethods.cs:6:10:6:11 | exit M1 | 7 |
-| ExitMethods.cs:12:10:12:11 | enter M2 | ExitMethods.cs:12:10:12:11 | exit M2 | 7 |
-| ExitMethods.cs:18:10:18:11 | enter M3 | ExitMethods.cs:18:10:18:11 | exit M3 | 6 |
-| ExitMethods.cs:24:10:24:11 | enter M4 | ExitMethods.cs:24:10:24:11 | exit M4 | 6 |
-| ExitMethods.cs:30:10:30:11 | enter M5 | ExitMethods.cs:30:10:30:11 | exit M5 | 6 |
-| ExitMethods.cs:36:10:36:11 | enter M6 | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | 7 |
-| ExitMethods.cs:36:10:36:11 | exit M6 | ExitMethods.cs:36:10:36:11 | exit M6 | 1 |
-| ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} | 1 |
-| ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | 1 |
-| ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:44:13:44:19 | return ...; | 2 |
-| ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:48:13:48:19 | return ...; | 3 |
-| ExitMethods.cs:52:17:52:26 | enter ErrorMaybe | ExitMethods.cs:54:13:54:13 | access to parameter b | 4 |
-| ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | 1 |
-| ExitMethods.cs:55:19:55:33 | object creation of type Exception | ExitMethods.cs:55:13:55:34 | throw ...; | 2 |
-| ExitMethods.cs:58:17:58:27 | enter ErrorAlways | ExitMethods.cs:60:13:60:13 | access to parameter b | 4 |
-| ExitMethods.cs:58:17:58:27 | exit ErrorAlways | ExitMethods.cs:58:17:58:27 | exit ErrorAlways | 1 |
-| ExitMethods.cs:61:19:61:33 | object creation of type Exception | ExitMethods.cs:61:13:61:34 | throw ...; | 2 |
-| ExitMethods.cs:63:41:63:43 | "b" | ExitMethods.cs:63:13:63:45 | throw ...; | 3 |
-| ExitMethods.cs:66:10:66:13 | enter Exit | ExitMethods.cs:66:10:66:13 | exit Exit | 6 |
-| ExitMethods.cs:71:10:71:24 | enter ApplicationExit | ExitMethods.cs:71:10:71:24 | exit ApplicationExit | 5 |
-| ExitMethods.cs:76:13:76:21 | enter ThrowExpr | ExitMethods.cs:78:16:78:25 | ... != ... | 7 |
-| ExitMethods.cs:76:13:76:21 | exit ThrowExpr | ExitMethods.cs:76:13:76:21 | exit ThrowExpr | 1 |
-| ExitMethods.cs:78:29:78:29 | 1 | ExitMethods.cs:78:9:78:77 | return ...; | 5 |
-| ExitMethods.cs:78:69:78:75 | "input" | ExitMethods.cs:78:41:78:76 | throw ... | 3 |
-| ExitMethods.cs:81:16:81:34 | enter ExtensionMethodCall | ExitMethods.cs:83:16:83:30 | call to method Contains | 6 |
-| ExitMethods.cs:83:9:83:39 | return ...; | ExitMethods.cs:81:16:81:34 | exit ExtensionMethodCall | 2 |
-| ExitMethods.cs:83:34:83:34 | 0 | ExitMethods.cs:83:34:83:34 | 0 | 1 |
-| ExitMethods.cs:83:38:83:38 | 1 | ExitMethods.cs:83:38:83:38 | 1 | 1 |
-| ExitMethods.cs:91:28:91:31 | enter Exit | ExitMethods.cs:91:28:91:31 | exit Exit | 3 |
+| Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:5:13:5:15 | access to parameter inc | 4 |
+| Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr | 1 |
+| Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc | 6 |
+| Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | Conditions.cs:8:13:8:15 | ...-- | 6 |
+| Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:14:13:14:13 | access to parameter b | 7 |
+| Conditions.cs:15:13:15:16 | [b (line 11): true] ...; | Conditions.cs:16:13:16:17 | [b (line 11): true] ... > ... | 7 |
+| Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:16:13:16:17 | [b (line 11): false] ... > ... | 4 |
+| Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:18:17:18:19 | ...-- | 6 |
+| Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | Conditions.cs:17:18:17:18 | [b (line 11): true] access to parameter b | 3 |
+| Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:11:9:11:10 | exit M1 | 3 |
+| Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:25:13:25:14 | access to parameter b1 | 7 |
+| Conditions.cs:26:13:27:20 | if (...) ... | Conditions.cs:26:17:26:18 | access to parameter b2 | 2 |
+| Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; | Conditions.cs:28:13:28:14 | [b2 (line 22): true] access to parameter b2 | 5 |
+| Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... | Conditions.cs:28:13:28:14 | [b2 (line 22): false] access to parameter b2 | 2 |
+| Conditions.cs:28:9:29:16 | if (...) ... | Conditions.cs:28:13:28:14 | access to parameter b2 | 2 |
+| Conditions.cs:29:13:29:16 | ...; | Conditions.cs:29:13:29:15 | ...++ | 3 |
+| Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:22:9:22:10 | exit M2 | 3 |
+| Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:37:13:37:14 | access to parameter b1 | 10 |
+| Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:13:38:19 | ... = ... | 3 |
+| Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:39:13:39:14 | access to local variable b2 | 2 |
+| Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; | Conditions.cs:42:13:42:15 | ...++ | 8 |
+| Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... | Conditions.cs:41:13:41:14 | [b2 (line 39): false] access to local variable b2 | 2 |
+| Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:33:9:33:10 | exit M3 | 3 |
+| Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:49:16:49:22 | ... > ... | 10 |
+| Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x | Conditions.cs:49:16:49:22 | [b (line 46): false] ... > ... | 4 |
+| Conditions.cs:50:9:53:9 | [b (line 46): false] {...} | Conditions.cs:51:17:51:17 | [b (line 46): false] access to parameter b | 3 |
+| Conditions.cs:50:9:53:9 | [b (line 46): true] {...} | Conditions.cs:51:17:51:17 | [b (line 46): true] access to parameter b | 3 |
+| Conditions.cs:50:9:53:9 | {...} | Conditions.cs:51:17:51:17 | access to parameter b | 3 |
+| Conditions.cs:52:17:52:20 | [b (line 46): true] ...; | Conditions.cs:49:16:49:22 | [b (line 46): true] ... > ... | 7 |
+| Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:46:9:46:10 | exit M4 | 3 |
+| Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:60:16:60:22 | ... > ... | 10 |
+| Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | Conditions.cs:60:16:60:22 | [b (line 57): false] ... > ... | 4 |
+| Conditions.cs:61:9:64:9 | [b (line 57): false] {...} | Conditions.cs:62:17:62:17 | [b (line 57): false] access to parameter b | 3 |
+| Conditions.cs:61:9:64:9 | [b (line 57): true] {...} | Conditions.cs:62:17:62:17 | [b (line 57): true] access to parameter b | 3 |
+| Conditions.cs:61:9:64:9 | {...} | Conditions.cs:62:17:62:17 | access to parameter b | 3 |
+| Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:60:16:60:22 | [b (line 57): true] ... > ... | 7 |
+| Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | Conditions.cs:65:13:65:13 | [b (line 57): false] access to parameter b | 2 |
+| Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | Conditions.cs:65:13:65:13 | [b (line 57): true] access to parameter b | 2 |
+| Conditions.cs:65:9:66:16 | if (...) ... | Conditions.cs:65:13:65:13 | access to parameter b | 2 |
+| Conditions.cs:66:13:66:16 | ...; | Conditions.cs:66:13:66:15 | ...++ | 3 |
+| Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:57:9:57:10 | exit M5 | 3 |
+| Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:74:27:74:28 | access to parameter ss | 12 |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | 1 |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:76:17:76:17 | access to local variable b | 4 |
+| Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:19 | ...++ | 3 |
+| Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:17:78:21 | ... > ... | 4 |
+| Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:25 | ... = ... | 3 |
+| Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:12:81:12 | access to local variable b | 2 |
+| Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:15 | ...++ | 3 |
+| Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:70:9:70:10 | exit M6 | 3 |
+| Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:90:27:90:28 | access to parameter ss | 12 |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | 1 |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:92:17:92:17 | access to local variable b | 4 |
+| Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:19 | ...++ | 3 |
+| Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:17:94:21 | ... > ... | 4 |
+| Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:25 | ... = ... | 3 |
+| Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:96:17:96:17 | access to local variable b | 2 |
+| Conditions.cs:97:17:97:20 | ...; | Conditions.cs:97:17:97:19 | ...++ | 3 |
+| Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:86:9:86:10 | exit M7 | 3 |
+| Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:105:13:105:13 | access to parameter b | 8 |
+| Conditions.cs:106:13:106:20 | [b (line 102): true] ...; | Conditions.cs:107:13:107:24 | [b (line 102): true] ... > ... | 10 |
+| Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:107:13:107:24 | [b (line 102): false] ... > ... | 5 |
+| Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:109:17:109:23 | ... = ... | 8 |
+| Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | Conditions.cs:108:18:108:18 | [b (line 102): true] access to parameter b | 3 |
+| Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:102:12:102:13 | exit M8 | 3 |
+| Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:116:17:116:21 | Int32 i = ... | 8 |
+| Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:113:10:113:11 | exit M9 | 1 |
+| Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:24:116:38 | ... < ... | 4 |
+| Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:116:41:116:43 | ...++ | 2 |
+| Conditions.cs:117:9:123:9 | {...} | Conditions.cs:119:18:119:21 | access to local variable last | 12 |
+| Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:121:17:121:20 | [last (line 118): false] access to local variable last | 5 |
+| Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:122:17:122:24 | ... = ... | 5 |
+| Conditions.cs:129:10:129:12 | enter M10 | Conditions.cs:133:17:133:22 | access to field Field1 | 8 |
+| Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 | 5 |
+| Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field2 | 9 |
+| Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | 4 |
+| Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field2 | 14 |
+| ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | exit M1 | 7 |
+| ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | exit M2 | 7 |
+| ExitMethods.cs:19:10:19:11 | enter M3 | ExitMethods.cs:19:10:19:11 | exit M3 | 6 |
+| ExitMethods.cs:25:10:25:11 | enter M4 | ExitMethods.cs:25:10:25:11 | exit M4 | 6 |
+| ExitMethods.cs:31:10:31:11 | enter M5 | ExitMethods.cs:31:10:31:11 | exit M5 | 6 |
+| ExitMethods.cs:37:10:37:11 | enter M6 | ExitMethods.cs:41:13:41:30 | call to method ErrorAlways | 7 |
+| ExitMethods.cs:37:10:37:11 | exit M6 | ExitMethods.cs:37:10:37:11 | exit M6 | 1 |
+| ExitMethods.cs:43:9:46:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:43:9:46:9 | [exception: ArgumentException] catch (...) {...} | 1 |
+| ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | 1 |
+| ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:45:13:45:19 | return ...; | 2 |
+| ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:49:13:49:19 | return ...; | 3 |
+| ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:53:10:53:11 | exit M7 | 5 |
+| ExitMethods.cs:59:10:59:11 | enter M8 | ExitMethods.cs:59:10:59:11 | exit M8 | 5 |
+| ExitMethods.cs:65:17:65:26 | enter ErrorMaybe | ExitMethods.cs:67:13:67:13 | access to parameter b | 4 |
+| ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | 1 |
+| ExitMethods.cs:68:19:68:33 | object creation of type Exception | ExitMethods.cs:68:13:68:34 | throw ...; | 2 |
+| ExitMethods.cs:71:17:71:27 | enter ErrorAlways | ExitMethods.cs:73:13:73:13 | access to parameter b | 4 |
+| ExitMethods.cs:71:17:71:27 | exit ErrorAlways | ExitMethods.cs:71:17:71:27 | exit ErrorAlways | 1 |
+| ExitMethods.cs:74:19:74:33 | object creation of type Exception | ExitMethods.cs:74:13:74:34 | throw ...; | 2 |
+| ExitMethods.cs:76:41:76:43 | "b" | ExitMethods.cs:76:13:76:45 | throw ...; | 3 |
+| ExitMethods.cs:79:17:79:28 | enter ErrorAlways2 | ExitMethods.cs:79:17:79:28 | exit ErrorAlways2 | 5 |
+| ExitMethods.cs:84:17:84:28 | enter ErrorAlways3 | ExitMethods.cs:84:17:84:28 | exit ErrorAlways3 | 4 |
+| ExitMethods.cs:86:10:86:13 | enter Exit | ExitMethods.cs:86:10:86:13 | exit Exit | 6 |
+| ExitMethods.cs:91:10:91:18 | enter ExitInTry | ExitMethods.cs:91:10:91:18 | exit ExitInTry | 8 |
+| ExitMethods.cs:104:10:104:24 | enter ApplicationExit | ExitMethods.cs:104:10:104:24 | exit ApplicationExit | 5 |
+| ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:111:16:111:25 | ... != ... | 7 |
+| ExitMethods.cs:109:13:109:21 | exit ThrowExpr | ExitMethods.cs:109:13:109:21 | exit ThrowExpr | 1 |
+| ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:111:9:111:77 | return ...; | 5 |
+| ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:111:41:111:76 | throw ... | 3 |
+| ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:116:16:116:30 | call to method Contains | 6 |
+| ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall | 2 |
+| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:116:34:116:34 | 0 | 1 |
+| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:38:116:38 | 1 | 1 |
+| ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:119:17:119:32 | exit FailingAssertion | 6 |
+| ExitMethods.cs:125:17:125:33 | enter FailingAssertion2 | ExitMethods.cs:125:17:125:33 | exit FailingAssertion2 | 6 |
+| ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:10:131:20 | exit AssertFalse | 4 |
+| ExitMethods.cs:133:17:133:33 | enter FailingAssertion3 | ExitMethods.cs:133:17:133:33 | exit FailingAssertion3 | 7 |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | exit ToInt32 | 6 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | exit ToBool | 7 |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | exit CallToInt32 | 4 |
@@ -139,15 +258,69 @@
 | Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:14:27:14:30 | access to parameter args | 3 |
 | Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:12:10:12:11 | exit M2 | 1 |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | 1 |
-| Foreach.cs:15:13:15:13 | ; | Foreach.cs:15:13:15:13 | ; | 1 |
+| Foreach.cs:14:22:14:22 | String _ | Foreach.cs:15:13:15:13 | ; | 2 |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:27:20:27 | access to parameter e | 4 |
 | Foreach.cs:18:10:18:11 | exit M3 | Foreach.cs:18:10:18:11 | exit M3 | 1 |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:21:11:21:11 | ; | 2 |
 | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray | 1 |
 | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty | 1 |
-| Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | exit Initializers | 3 |
-| Initializers.cs:8:10:8:10 | enter M | Initializers.cs:8:10:8:10 | exit M | 23 |
+| Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:26:36:26:39 | access to parameter args | 3 |
+| Foreach.cs:24:10:24:11 | exit M4 | Foreach.cs:24:10:24:11 | exit M4 | 1 |
+| Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | 1 |
+| Foreach.cs:26:23:26:23 | String x | Foreach.cs:27:11:27:11 | ; | 4 |
+| Foreach.cs:30:10:30:11 | enter M5 | Foreach.cs:32:32:32:35 | access to parameter args | 3 |
+| Foreach.cs:30:10:30:11 | exit M5 | Foreach.cs:30:10:30:11 | exit M5 | 1 |
+| Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | 1 |
+| Foreach.cs:32:23:32:23 | String x | Foreach.cs:33:11:33:11 | ; | 4 |
+| Foreach.cs:36:10:36:11 | enter M6 | Foreach.cs:38:39:38:42 | access to parameter args | 3 |
+| Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:36:10:36:11 | exit M6 | 1 |
+| Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | 1 |
+| Foreach.cs:38:26:38:26 | String x | Foreach.cs:39:11:39:11 | ; | 4 |
+| Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | exit Initializers | 14 |
+| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 14 |
+| Initializers.cs:10:10:10:10 | enter M | Initializers.cs:10:10:10:10 | exit M | 20 |
+| Initializers.cs:16:20:16:20 | 1 | Initializers.cs:16:16:16:20 | ... = ... | 2 |
+| Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:18:11:18:23 | exit NoConstructor | 8 |
+| Initializers.cs:29:9:29:11 | enter Sub | Initializers.cs:29:9:29:11 | exit Sub | 11 |
+| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 8 |
+| Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 18 |
+| LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:9:13:9:28 | ... == ... | 7 |
+| LoopUnrolling.cs:7:10:7:11 | exit M1 | LoopUnrolling.cs:7:10:7:11 | exit M1 | 1 |
+| LoopUnrolling.cs:10:13:10:19 | return ...; | LoopUnrolling.cs:10:13:10:19 | return ...; | 1 |
+| LoopUnrolling.cs:11:21:11:23 | String arg | LoopUnrolling.cs:11:9:12:35 | foreach (... ... in ...) ... | 5 |
+| LoopUnrolling.cs:11:28:11:31 | access to parameter args | LoopUnrolling.cs:11:9:12:35 | [unroll (line 11)] foreach (... ... in ...) ... | 2 |
+| LoopUnrolling.cs:15:10:15:11 | enter M2 | LoopUnrolling.cs:18:9:19:33 | [unroll (line 18)] foreach (... ... in ...) ... | 11 |
+| LoopUnrolling.cs:15:10:15:11 | exit M2 | LoopUnrolling.cs:15:10:15:11 | exit M2 | 1 |
+| LoopUnrolling.cs:18:21:18:21 | String x | LoopUnrolling.cs:18:9:19:33 | foreach (... ... in ...) ... | 5 |
+| LoopUnrolling.cs:22:10:22:11 | enter M3 | LoopUnrolling.cs:24:29:24:32 | access to parameter args | 3 |
+| LoopUnrolling.cs:22:10:22:11 | exit M3 | LoopUnrolling.cs:22:10:22:11 | exit M3 | 1 |
+| LoopUnrolling.cs:24:9:26:40 | foreach (... ... in ...) ... | LoopUnrolling.cs:24:9:26:40 | foreach (... ... in ...) ... | 1 |
+| LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:25:13:26:40 | [unroll (line 25)] foreach (... ... in ...) ... | 3 |
+| LoopUnrolling.cs:25:26:25:29 | Char arg0 | LoopUnrolling.cs:25:13:26:40 | foreach (... ... in ...) ... | 5 |
+| LoopUnrolling.cs:29:10:29:11 | enter M4 | LoopUnrolling.cs:32:26:32:27 | access to local variable xs | 7 |
+| LoopUnrolling.cs:29:10:29:11 | exit M4 | LoopUnrolling.cs:29:10:29:11 | exit M4 | 1 |
+| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | 1 |
+| LoopUnrolling.cs:32:21:32:21 | String x | LoopUnrolling.cs:33:13:33:32 | call to method WriteLine | 4 |
+| LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:40:9:42:41 | [unroll (line 40)] foreach (... ... in ...) ... | 18 |
+| LoopUnrolling.cs:36:10:36:11 | exit M5 | LoopUnrolling.cs:36:10:36:11 | exit M5 | 1 |
+| LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | 1 |
+| LoopUnrolling.cs:40:21:40:21 | String x | LoopUnrolling.cs:41:13:42:41 | [unroll (line 41)] foreach (... ... in ...) ... | 3 |
+| LoopUnrolling.cs:41:25:41:25 | String y | LoopUnrolling.cs:41:13:42:41 | foreach (... ... in ...) ... | 7 |
+| LoopUnrolling.cs:45:10:45:11 | enter M6 | LoopUnrolling.cs:49:9:52:9 | {...} | 13 |
+| LoopUnrolling.cs:50:13:50:17 | Label: | LoopUnrolling.cs:51:13:51:23 | goto ...; | 5 |
+| LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:60:17:60:17 | access to parameter b | 15 |
+| LoopUnrolling.cs:55:10:55:11 | exit M7 | LoopUnrolling.cs:55:10:55:11 | exit M7 | 1 |
+| LoopUnrolling.cs:58:21:58:21 | [b (line 55): false] String x | LoopUnrolling.cs:60:17:60:17 | [b (line 55): false] access to parameter b | 4 |
+| LoopUnrolling.cs:58:21:58:21 | [b (line 55): true] String x | LoopUnrolling.cs:60:17:60:17 | [b (line 55): true] access to parameter b | 4 |
+| LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | LoopUnrolling.cs:58:9:64:9 | [b (line 55): true] foreach (... ... in ...) ... | 9 |
+| LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | LoopUnrolling.cs:58:9:64:9 | [b (line 55): false] foreach (... ... in ...) ... | 3 |
+| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:69:14:69:23 | call to method Any | 6 |
+| LoopUnrolling.cs:67:10:67:11 | exit M8 | LoopUnrolling.cs:67:10:67:11 | exit M8 | 1 |
+| LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:70:13:70:19 | return ...; | 1 |
+| LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:72:28:72:31 | access to parameter args | 4 |
+| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | 1 |
+| LoopUnrolling.cs:72:21:72:23 | String arg | LoopUnrolling.cs:73:13:73:34 | call to method WriteLine | 4 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i | 3 |
 | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | exit M1 | 1 |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:28:3:28 | 0 | 1 |
@@ -171,8 +344,8 @@
 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | 1 |
 | NullCoalescing.cs:11:64:11:64 | 0 | NullCoalescing.cs:11:64:11:64 | 0 | 1 |
 | NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:68:11:68 | 1 | 1 |
-| NullCoalescing.cs:13:10:13:11 | enter M6 | NullCoalescing.cs:13:10:13:11 | exit M6 | 21 |
-| Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:8:13:8:23 | ... is ... | 10 |
+| NullCoalescing.cs:13:10:13:11 | enter M6 | NullCoalescing.cs:13:10:13:11 | exit M6 | 18 |
+| Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:8:13:8:23 | ... is ... | 9 |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:10:13:10:42 | call to method WriteLine | 6 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:18:12:31 | ... is ... | 4 |
 | Patterns.cs:13:9:15:9 | {...} | Patterns.cs:14:13:14:45 | call to method WriteLine | 6 |
@@ -180,20 +353,20 @@
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:17:9:18:9 | {...} | 1 |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:22:18:22:22 | "xyz" | 4 |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; | 1 |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:18:24:20 | access to type Int32 | 2 |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:30:24:35 | ... > ... | 4 |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Int32 i2 | 2 |
+| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:35 | ... > ... | 3 |
 | Patterns.cs:25:17:25:52 | ...; | Patterns.cs:26:17:26:22 | break; | 6 |
-| Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:18:27:20 | access to type Int32 | 2 |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:29:17:29:22 | break; | 7 |
-| Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:18:30:23 | access to type String | 2 |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:32:17:32:22 | break; | 7 |
-| Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:18:33:20 | access to type Object | 2 |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:34:17:34:22 | break; | 2 |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 | 2 |
+| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:29:17:29:22 | break; | 6 |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 | 2 |
+| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:32:17:32:22 | break; | 6 |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 | 2 |
+| Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; | 1 |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:37:17:37:22 | break; | 5 |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | exit Test | 3 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | exit Method | 3 |
 | Qualifiers.cs:8:23:8:34 | enter StaticMethod | Qualifiers.cs:8:23:8:34 | exit StaticMethod | 3 |
-| Qualifiers.cs:10:10:10:10 | enter M | Qualifiers.cs:10:10:10:10 | exit M | 72 |
+| Qualifiers.cs:10:10:10:10 | enter M | Qualifiers.cs:10:10:10:10 | exit M | 57 |
 | Switch.cs:5:10:5:11 | enter M1 | Switch.cs:5:10:5:11 | exit M1 | 5 |
 | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:14:18:14:20 | "a" | 6 |
 | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:10:10:10:11 | exit M2 | 1 |
@@ -202,22 +375,22 @@
 | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:17:17:17:38 | throw ...; | 2 |
 | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:18:18:21 | null | 2 |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; | 1 |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:18:20:20 | access to type Int32 | 2 |
-| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:21:21:21:29 | ... == ... | 5 |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Int32 i | 2 |
+| Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:21:21:29 | ... == ... | 4 |
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; | 1 |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:17:23:28 | goto case ...; | 2 |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:18:24:23 | access to type String | 2 |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:32:24:43 | ... > ... | 6 |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s | 2 |
+| Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:43 | ... > ... | 5 |
 | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:24:48:24:55 | ... != ... | 3 |
 | Switch.cs:25:17:25:37 | ...; | Switch.cs:26:17:26:23 | return ...; | 4 |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:18:27:23 | access to type Double | 2 |
-| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:32:27:38 | call to method Throw | 2 |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Double d | 2 |
+| Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw | 1 |
 | Switch.cs:30:13:30:20 | default: | Switch.cs:29:17:29:23 | return ...; | 4 |
 | Switch.cs:35:10:35:11 | enter M3 | Switch.cs:35:10:35:11 | exit M3 | 5 |
 | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:48:18:48:20 | access to type Int32 | 6 |
 | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:44:10:44:11 | exit M4 | 1 |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; | 1 |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:18:50:21 | access to type Boolean | 2 |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:18:50:21 | access to type Boolean | 2 |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:38 | ... != ... | 3 |
 | Switch.cs:51:17:51:22 | break; | Switch.cs:51:17:51:22 | break; | 1 |
 | Switch.cs:55:10:55:11 | enter M5 | Switch.cs:55:10:55:11 | exit M5 | 12 |
@@ -253,17 +426,27 @@
 | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:25:118:31 | ... == ... | 3 |
 | Switch.cs:118:42:118:42 | 2 | Switch.cs:118:35:118:43 | return ...; | 2 |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:9:120:18 | return ...; | 3 |
-| TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | ... is ... | 16 |
+| Switch.cs:123:10:123:12 | enter M11 | Switch.cs:125:24:125:29 | Boolean b | 7 |
+| Switch.cs:123:10:123:12 | exit M11 | Switch.cs:123:10:123:12 | exit M11 | 1 |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b | 1 |
+| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:42:125:46 | false | 3 |
+| Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; | 1 |
+| Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:28:131:35 | String s | 6 |
+| Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | exit M12 | 2 |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s | 1 |
+| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:48:131:51 | null | 3 |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString | 1 |
+| TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | ... is ... | 14 |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | 1 |
-| TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 5 |
-| VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:5:18:5:19 | exit M1 | 18 |
-| VarDecls.cs:13:12:13:13 | enter M2 | VarDecls.cs:13:12:13:13 | exit M2 | 14 |
-| VarDecls.cs:19:7:19:8 | enter M3 | VarDecls.cs:25:20:25:20 | access to parameter b | 14 |
+| TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 4 |
+| VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:5:18:5:19 | exit M1 | 16 |
+| VarDecls.cs:13:12:13:13 | enter M2 | VarDecls.cs:13:12:13:13 | exit M2 | 12 |
+| VarDecls.cs:19:7:19:8 | enter M3 | VarDecls.cs:25:20:25:20 | access to parameter b | 12 |
 | VarDecls.cs:25:13:25:29 | return ...; | VarDecls.cs:19:7:19:8 | exit M3 | 2 |
 | VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:25:24:25:24 | access to local variable x | 1 |
 | VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:25:28:25:28 | access to local variable y | 1 |
 | VarDecls.cs:28:41:28:47 | enter Dispose | VarDecls.cs:28:41:28:47 | exit Dispose | 3 |
-| cflow.cs:5:17:5:20 | enter Main | cflow.cs:11:13:11:17 | ... > ... | 17 |
+| cflow.cs:5:17:5:20 | enter Main | cflow.cs:11:13:11:17 | ... > ... | 15 |
 | cflow.cs:5:17:5:20 | exit Main | cflow.cs:5:17:5:20 | exit Main | 1 |
 | cflow.cs:12:13:12:49 | ...; | cflow.cs:12:13:12:48 | call to method WriteLine | 3 |
 | cflow.cs:14:9:17:9 | while (...) ... | cflow.cs:14:9:17:9 | while (...) ... | 1 |
@@ -271,7 +454,7 @@
 | cflow.cs:15:9:17:9 | {...} | cflow.cs:16:13:16:40 | call to method WriteLine | 7 |
 | cflow.cs:19:9:22:25 | do ... while (...); | cflow.cs:19:9:22:25 | do ... while (...); | 1 |
 | cflow.cs:20:9:22:9 | {...} | cflow.cs:22:18:22:23 | ... < ... | 9 |
-| cflow.cs:24:9:34:9 | for (...;...;...) ... | cflow.cs:24:18:24:22 | Int32 i = ... | 4 |
+| cflow.cs:24:9:34:9 | for (...;...;...) ... | cflow.cs:24:18:24:22 | Int32 i = ... | 3 |
 | cflow.cs:24:25:24:25 | access to local variable i | cflow.cs:24:25:24:31 | ... <= ... | 3 |
 | cflow.cs:24:34:24:34 | access to local variable i | cflow.cs:24:34:24:36 | ...++ | 2 |
 | cflow.cs:25:9:34:9 | {...} | cflow.cs:26:17:26:26 | ... == ... | 8 |
@@ -282,8 +465,9 @@
 | cflow.cs:30:18:33:37 | if (...) ... | cflow.cs:30:22:30:31 | ... == ... | 6 |
 | cflow.cs:31:17:31:42 | ...; | cflow.cs:31:17:31:41 | call to method WriteLine | 3 |
 | cflow.cs:33:17:33:37 | ...; | cflow.cs:33:17:33:36 | call to method WriteLine | 3 |
-| cflow.cs:37:17:37:22 | enter Switch | cflow.cs:41:18:41:18 | 1 | 6 |
+| cflow.cs:37:17:37:22 | enter Switch | cflow.cs:39:17:39:17 | access to parameter a | 4 |
 | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:37:17:37:22 | exit Switch | 1 |
+| cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:18:41:18 | 1 | 2 |
 | cflow.cs:42:17:42:39 | ...; | cflow.cs:43:17:43:28 | goto case ...; | 5 |
 | cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:18:44:18 | 2 | 2 |
 | cflow.cs:45:17:45:39 | ...; | cflow.cs:46:17:46:28 | goto case ...; | 5 |
@@ -320,13 +504,13 @@
 | cflow.cs:109:9:115:9 | {...} | cflow.cs:110:13:113:13 | while (...) ... | 2 |
 | cflow.cs:110:20:110:23 | true | cflow.cs:112:17:112:36 | call to method WriteLine | 5 |
 | cflow.cs:116:9:116:29 | ...; | cflow.cs:106:18:106:19 | exit M4 | 4 |
-| cflow.cs:119:20:119:21 | enter M5 | cflow.cs:119:20:119:21 | exit M5 | 15 |
+| cflow.cs:119:20:119:21 | enter M5 | cflow.cs:119:20:119:21 | exit M5 | 13 |
 | cflow.cs:127:19:127:21 | enter get_Prop | cflow.cs:127:32:127:44 | ... == ... | 7 |
 | cflow.cs:127:25:127:58 | return ...; | cflow.cs:127:19:127:21 | exit get_Prop | 2 |
 | cflow.cs:127:48:127:49 | "" | cflow.cs:127:48:127:49 | "" | 1 |
 | cflow.cs:127:53:127:57 | this access | cflow.cs:127:53:127:57 | access to field Field | 2 |
-| cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:62:127:64 | exit set_Prop | 8 |
-| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | exit ControlFlow | 8 |
+| cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:62:127:64 | exit set_Prop | 7 |
+| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | exit ControlFlow | 7 |
 | cflow.cs:134:5:134:15 | enter ControlFlow | cflow.cs:134:5:134:15 | exit ControlFlow | 8 |
 | cflow.cs:136:12:136:22 | enter ControlFlow | cflow.cs:136:12:136:22 | exit ControlFlow | 7 |
 | cflow.cs:138:40:138:40 | enter + | cflow.cs:138:40:138:40 | exit + | 8 |
@@ -353,7 +537,7 @@
 | cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | 7 |
 | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex | cflow.cs:203:13:203:40 | [finally: exception(IOException)] call to method WriteLine | 8 |
 | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | 6 |
-| cflow.cs:199:9:200:9 | {...} | cflow.cs:207:9:230:9 | while (...) ... | 10 |
+| cflow.cs:199:9:200:9 | {...} | cflow.cs:207:9:230:9 | while (...) ... | 9 |
 | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} | cflow.cs:203:13:203:40 | [finally: exception(Exception)] call to method WriteLine | 4 |
 | cflow.cs:202:9:204:9 | [finally: exception(OutOfMemoryException)] {...} | cflow.cs:203:13:203:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | 4 |
 | cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:207:16:207:20 | ... > ... | 3 |
@@ -404,80 +588,81 @@
 | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; | cflow.cs:244:17:244:36 | [finally: exception(NullReferenceException)] call to method WriteLine | 3 |
 | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | cflow.cs:244:17:244:36 | [finally: exception(OutOfMemoryException)] call to method WriteLine | 3 |
 | cflow.cs:244:17:244:37 | [finally: return] ...; | cflow.cs:244:17:244:36 | [finally: return] call to method WriteLine | 3 |
-| cflow.cs:248:10:248:12 | enter For | cflow.cs:251:9:252:33 | for (...;...;...) ... | 7 |
-| cflow.cs:248:10:248:12 | exit For | cflow.cs:248:10:248:12 | exit For | 1 |
-| cflow.cs:251:16:251:16 | access to local variable x | cflow.cs:251:16:251:21 | ... < ... | 3 |
-| cflow.cs:252:13:252:33 | ...; | cflow.cs:251:24:251:26 | ++... | 5 |
-| cflow.cs:254:9:259:9 | for (...;...;...) ... | cflow.cs:254:9:259:9 | for (...;...;...) ... | 1 |
-| cflow.cs:254:18:254:18 | access to local variable x | cflow.cs:254:18:254:20 | ...++ | 2 |
-| cflow.cs:255:9:259:9 | {...} | cflow.cs:257:17:257:22 | ... > ... | 8 |
-| cflow.cs:258:17:258:22 | break; | cflow.cs:261:9:267:9 | for (...;...;...) ... | 2 |
-| cflow.cs:262:9:267:9 | {...} | cflow.cs:265:17:265:22 | ... > ... | 11 |
-| cflow.cs:266:17:266:22 | break; | cflow.cs:269:9:273:9 | for (...;...;...) ... | 2 |
-| cflow.cs:269:16:269:16 | access to local variable x | cflow.cs:269:16:269:21 | ... < ... | 3 |
-| cflow.cs:270:9:273:9 | {...} | cflow.cs:272:13:272:15 | ...++ | 7 |
-| cflow.cs:275:9:278:9 | for (...;...;...) ... | cflow.cs:275:25:275:29 | Int32 j = ... | 7 |
-| cflow.cs:275:32:275:32 | access to local variable i | cflow.cs:275:32:275:41 | ... < ... | 5 |
-| cflow.cs:276:9:278:9 | {...} | cflow.cs:275:49:275:51 | ...++ | 10 |
-| cflow.cs:281:10:281:16 | enter Lambdas | cflow.cs:281:10:281:16 | exit Lambdas | 11 |
-| cflow.cs:283:28:283:37 | enter (...) => ... | cflow.cs:283:28:283:37 | exit (...) => ... | 5 |
-| cflow.cs:284:28:284:61 | enter delegate(...) { ... } | cflow.cs:284:28:284:61 | exit delegate(...) { ... } | 7 |
-| cflow.cs:287:10:287:18 | enter LogicalOr | cflow.cs:287:10:287:18 | exit LogicalOr | 19 |
-| cflow.cs:295:10:295:17 | enter Booleans | cflow.cs:297:17:297:32 | ... > ... | 10 |
-| cflow.cs:295:10:295:17 | exit Booleans | cflow.cs:295:10:295:17 | exit Booleans | 1 |
-| cflow.cs:297:13:297:56 | Boolean b = ... | cflow.cs:299:15:299:31 | ... == ... | 9 |
-| cflow.cs:297:37:297:56 | !... | cflow.cs:297:39:297:55 | ... == ... | 6 |
-| cflow.cs:299:35:299:39 | false | cflow.cs:300:17:300:33 | ... == ... | 9 |
-| cflow.cs:299:43:299:46 | true | cflow.cs:299:43:299:46 | true | 1 |
-| cflow.cs:300:13:300:48 | ... = ... | cflow.cs:300:13:300:48 | ... = ... | 1 |
-| cflow.cs:300:37:300:41 | false | cflow.cs:300:37:300:41 | false | 1 |
-| cflow.cs:300:45:300:48 | true | cflow.cs:300:45:300:48 | true | 1 |
-| cflow.cs:302:9:307:9 | if (...) ... | cflow.cs:302:15:302:31 | ... == ... | 8 |
-| cflow.cs:302:37:302:62 | !... | cflow.cs:302:40:302:56 | ... == ... | 8 |
-| cflow.cs:302:61:302:61 | access to local variable b | cflow.cs:302:61:302:61 | access to local variable b | 1 |
-| cflow.cs:303:9:307:9 | {...} | cflow.cs:305:17:305:38 | throw ...; | 4 |
-| cflow.cs:310:10:310:11 | enter Do | cflow.cs:312:9:323:36 | do ... while (...); | 3 |
-| cflow.cs:310:10:310:11 | exit Do | cflow.cs:310:10:310:11 | exit Do | 1 |
-| cflow.cs:313:9:323:9 | {...} | cflow.cs:315:17:315:32 | ... > ... | 15 |
-| cflow.cs:316:13:318:13 | {...} | cflow.cs:317:17:317:25 | continue; | 2 |
-| cflow.cs:319:13:322:13 | if (...) ... | cflow.cs:319:17:319:32 | ... < ... | 6 |
-| cflow.cs:320:13:322:13 | {...} | cflow.cs:321:17:321:22 | break; | 2 |
-| cflow.cs:323:18:323:22 | this access | cflow.cs:323:18:323:34 | ... < ... | 5 |
-| cflow.cs:326:10:326:16 | enter Foreach | cflow.cs:328:27:328:64 | call to method Repeat | 5 |
-| cflow.cs:326:10:326:16 | exit Foreach | cflow.cs:326:10:326:16 | exit Foreach | 1 |
-| cflow.cs:328:9:339:9 | foreach (... ... in ...) ... | cflow.cs:328:9:339:9 | foreach (... ... in ...) ... | 1 |
-| cflow.cs:328:22:328:22 | String x | cflow.cs:331:17:331:32 | ... > ... | 16 |
-| cflow.cs:332:13:334:13 | {...} | cflow.cs:333:17:333:25 | continue; | 2 |
-| cflow.cs:335:13:338:13 | if (...) ... | cflow.cs:335:17:335:32 | ... < ... | 6 |
-| cflow.cs:336:13:338:13 | {...} | cflow.cs:337:17:337:22 | break; | 2 |
-| cflow.cs:342:10:342:13 | enter Goto | cflow.cs:343:5:361:5 | {...} | 2 |
-| cflow.cs:342:10:342:13 | exit Goto | cflow.cs:342:10:342:13 | exit Goto | 1 |
-| cflow.cs:344:9:344:13 | Label: | cflow.cs:344:23:344:39 | ... == ... | 9 |
-| cflow.cs:344:43:344:45 | {...} | cflow.cs:344:43:344:45 | {...} | 1 |
-| cflow.cs:346:9:346:41 | if (...) ... | cflow.cs:346:13:346:28 | ... > ... | 6 |
-| cflow.cs:346:31:346:41 | goto ...; | cflow.cs:346:31:346:41 | goto ...; | 1 |
-| cflow.cs:348:9:360:9 | switch (...) {...} | cflow.cs:350:18:350:18 | 0 | 8 |
-| cflow.cs:351:17:351:29 | goto default; | cflow.cs:351:17:351:29 | goto default; | 1 |
-| cflow.cs:352:13:352:19 | case ...: | cflow.cs:352:18:352:18 | 1 | 2 |
-| cflow.cs:353:17:353:37 | ...; | cflow.cs:354:17:354:22 | break; | 4 |
-| cflow.cs:355:13:355:19 | case ...: | cflow.cs:355:18:355:18 | 2 | 2 |
-| cflow.cs:356:17:356:27 | goto ...; | cflow.cs:356:17:356:27 | goto ...; | 1 |
-| cflow.cs:357:13:357:20 | default: | cflow.cs:359:17:359:22 | break; | 5 |
-| cflow.cs:363:49:363:53 | enter Yield | cflow.cs:366:18:366:22 | Int32 i = ... | 8 |
-| cflow.cs:366:25:366:25 | access to local variable i | cflow.cs:366:25:366:30 | ... < ... | 3 |
-| cflow.cs:367:9:369:9 | {...} | cflow.cs:366:33:366:35 | ...++ | 5 |
-| cflow.cs:370:9:378:9 | try {...} ... | cflow.cs:363:49:363:53 | exit Yield | 8 |
-| cflow.cs:384:5:384:18 | enter ControlFlowSub | cflow.cs:384:5:384:18 | exit ControlFlowSub | 4 |
-| cflow.cs:386:5:386:18 | enter ControlFlowSub | cflow.cs:386:5:386:18 | exit ControlFlowSub | 4 |
-| cflow.cs:388:5:388:18 | enter ControlFlowSub | cflow.cs:388:5:388:18 | exit ControlFlowSub | 6 |
-| cflow.cs:393:10:393:10 | enter M | cflow.cs:397:31:397:35 | "Try" | 6 |
-| cflow.cs:393:10:393:10 | exit M | cflow.cs:393:10:393:10 | exit M | 1 |
-| cflow.cs:397:13:397:36 | call to method WriteLine | cflow.cs:397:13:397:36 | call to method WriteLine | 1 |
-| cflow.cs:400:9:403:9 | [finally: exception(Exception)] {...} | cflow.cs:401:13:401:44 | [finally: exception(Exception)] throw ...; | 4 |
-| cflow.cs:400:9:403:9 | [finally: exception(OutOfMemoryException)] {...} | cflow.cs:401:13:401:44 | [finally: exception(OutOfMemoryException)] throw ...; | 4 |
-| cflow.cs:400:9:403:9 | {...} | cflow.cs:401:13:401:44 | throw ...; | 4 |
-| cflow.cs:410:12:410:12 | enter M | cflow.cs:410:12:410:12 | exit M | 5 |
-| cflow.cs:415:5:415:25 | enter NegationInConstructor | cflow.cs:415:5:415:25 | exit NegationInConstructor | 3 |
-| cflow.cs:417:10:417:10 | enter M | cflow.cs:419:46:419:50 | ... > ... | 9 |
-| cflow.cs:419:56:419:56 | access to parameter s | cflow.cs:419:56:419:64 | ... != ... | 3 |
-| cflow.cs:419:70:419:71 | "" | cflow.cs:417:10:417:10 | exit M | 3 |
+| cflow.cs:247:9:254:9 | try {...} ... | cflow.cs:249:17:249:40 | Double temp = ... | 8 |
+| cflow.cs:257:10:257:12 | enter For | cflow.cs:260:9:261:33 | for (...;...;...) ... | 6 |
+| cflow.cs:257:10:257:12 | exit For | cflow.cs:257:10:257:12 | exit For | 1 |
+| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:260:16:260:21 | ... < ... | 3 |
+| cflow.cs:261:13:261:33 | ...; | cflow.cs:260:24:260:26 | ++... | 5 |
+| cflow.cs:263:9:268:9 | for (...;...;...) ... | cflow.cs:263:9:268:9 | for (...;...;...) ... | 1 |
+| cflow.cs:263:18:263:18 | access to local variable x | cflow.cs:263:18:263:20 | ...++ | 2 |
+| cflow.cs:264:9:268:9 | {...} | cflow.cs:266:17:266:22 | ... > ... | 8 |
+| cflow.cs:267:17:267:22 | break; | cflow.cs:270:9:276:9 | for (...;...;...) ... | 2 |
+| cflow.cs:271:9:276:9 | {...} | cflow.cs:274:17:274:22 | ... > ... | 11 |
+| cflow.cs:275:17:275:22 | break; | cflow.cs:278:9:282:9 | for (...;...;...) ... | 2 |
+| cflow.cs:278:16:278:16 | access to local variable x | cflow.cs:278:16:278:21 | ... < ... | 3 |
+| cflow.cs:279:9:282:9 | {...} | cflow.cs:281:13:281:15 | ...++ | 7 |
+| cflow.cs:284:9:287:9 | for (...;...;...) ... | cflow.cs:284:25:284:29 | Int32 j = ... | 5 |
+| cflow.cs:284:32:284:32 | access to local variable i | cflow.cs:284:32:284:41 | ... < ... | 5 |
+| cflow.cs:285:9:287:9 | {...} | cflow.cs:284:49:284:51 | ...++ | 10 |
+| cflow.cs:290:10:290:16 | enter Lambdas | cflow.cs:290:10:290:16 | exit Lambdas | 9 |
+| cflow.cs:292:28:292:37 | enter (...) => ... | cflow.cs:292:28:292:37 | exit (...) => ... | 5 |
+| cflow.cs:293:28:293:61 | enter delegate(...) { ... } | cflow.cs:293:28:293:61 | exit delegate(...) { ... } | 7 |
+| cflow.cs:296:10:296:18 | enter LogicalOr | cflow.cs:296:10:296:18 | exit LogicalOr | 19 |
+| cflow.cs:304:10:304:17 | enter Booleans | cflow.cs:306:17:306:32 | ... > ... | 9 |
+| cflow.cs:304:10:304:17 | exit Booleans | cflow.cs:304:10:304:17 | exit Booleans | 1 |
+| cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:308:15:308:31 | ... == ... | 9 |
+| cflow.cs:306:37:306:56 | !... | cflow.cs:306:39:306:55 | ... == ... | 6 |
+| cflow.cs:308:35:308:39 | false | cflow.cs:309:17:309:33 | ... == ... | 8 |
+| cflow.cs:308:43:308:46 | true | cflow.cs:308:43:308:46 | true | 1 |
+| cflow.cs:309:13:309:48 | ... = ... | cflow.cs:309:13:309:48 | ... = ... | 1 |
+| cflow.cs:309:37:309:41 | false | cflow.cs:309:37:309:41 | false | 1 |
+| cflow.cs:309:45:309:48 | true | cflow.cs:309:45:309:48 | true | 1 |
+| cflow.cs:311:9:316:9 | if (...) ... | cflow.cs:311:15:311:31 | ... == ... | 8 |
+| cflow.cs:311:37:311:62 | !... | cflow.cs:311:40:311:56 | ... == ... | 8 |
+| cflow.cs:311:61:311:61 | access to local variable b | cflow.cs:311:61:311:61 | access to local variable b | 1 |
+| cflow.cs:312:9:316:9 | {...} | cflow.cs:314:17:314:38 | throw ...; | 4 |
+| cflow.cs:319:10:319:11 | enter Do | cflow.cs:321:9:332:36 | do ... while (...); | 3 |
+| cflow.cs:319:10:319:11 | exit Do | cflow.cs:319:10:319:11 | exit Do | 1 |
+| cflow.cs:322:9:332:9 | {...} | cflow.cs:324:17:324:32 | ... > ... | 14 |
+| cflow.cs:325:13:327:13 | {...} | cflow.cs:326:17:326:25 | continue; | 2 |
+| cflow.cs:328:13:331:13 | if (...) ... | cflow.cs:328:17:328:32 | ... < ... | 6 |
+| cflow.cs:329:13:331:13 | {...} | cflow.cs:330:17:330:22 | break; | 2 |
+| cflow.cs:332:18:332:22 | this access | cflow.cs:332:18:332:34 | ... < ... | 5 |
+| cflow.cs:335:10:335:16 | enter Foreach | cflow.cs:337:27:337:64 | call to method Repeat | 5 |
+| cflow.cs:335:10:335:16 | exit Foreach | cflow.cs:335:10:335:16 | exit Foreach | 1 |
+| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | 1 |
+| cflow.cs:337:22:337:22 | String x | cflow.cs:340:17:340:32 | ... > ... | 15 |
+| cflow.cs:341:13:343:13 | {...} | cflow.cs:342:17:342:25 | continue; | 2 |
+| cflow.cs:344:13:347:13 | if (...) ... | cflow.cs:344:17:344:32 | ... < ... | 6 |
+| cflow.cs:345:13:347:13 | {...} | cflow.cs:346:17:346:22 | break; | 2 |
+| cflow.cs:351:10:351:13 | enter Goto | cflow.cs:352:5:370:5 | {...} | 2 |
+| cflow.cs:351:10:351:13 | exit Goto | cflow.cs:351:10:351:13 | exit Goto | 1 |
+| cflow.cs:353:9:353:13 | Label: | cflow.cs:353:23:353:39 | ... == ... | 9 |
+| cflow.cs:353:43:353:45 | {...} | cflow.cs:353:43:353:45 | {...} | 1 |
+| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:355:13:355:28 | ... > ... | 6 |
+| cflow.cs:355:31:355:41 | goto ...; | cflow.cs:355:31:355:41 | goto ...; | 1 |
+| cflow.cs:357:9:369:9 | switch (...) {...} | cflow.cs:359:18:359:18 | 0 | 8 |
+| cflow.cs:360:17:360:29 | goto default; | cflow.cs:360:17:360:29 | goto default; | 1 |
+| cflow.cs:361:13:361:19 | case ...: | cflow.cs:361:18:361:18 | 1 | 2 |
+| cflow.cs:362:17:362:37 | ...; | cflow.cs:363:17:363:22 | break; | 4 |
+| cflow.cs:364:13:364:19 | case ...: | cflow.cs:364:18:364:18 | 2 | 2 |
+| cflow.cs:365:17:365:27 | goto ...; | cflow.cs:365:17:365:27 | goto ...; | 1 |
+| cflow.cs:366:13:366:20 | default: | cflow.cs:368:17:368:22 | break; | 5 |
+| cflow.cs:372:49:372:53 | enter Yield | cflow.cs:375:18:375:22 | Int32 i = ... | 7 |
+| cflow.cs:375:25:375:25 | access to local variable i | cflow.cs:375:25:375:30 | ... < ... | 3 |
+| cflow.cs:376:9:378:9 | {...} | cflow.cs:375:33:375:35 | ...++ | 5 |
+| cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:372:49:372:53 | exit Yield | 8 |
+| cflow.cs:393:5:393:18 | enter ControlFlowSub | cflow.cs:393:5:393:18 | exit ControlFlowSub | 4 |
+| cflow.cs:395:5:395:18 | enter ControlFlowSub | cflow.cs:395:5:395:18 | exit ControlFlowSub | 4 |
+| cflow.cs:397:5:397:18 | enter ControlFlowSub | cflow.cs:397:5:397:18 | exit ControlFlowSub | 6 |
+| cflow.cs:402:10:402:10 | enter M | cflow.cs:406:31:406:35 | "Try" | 6 |
+| cflow.cs:402:10:402:10 | exit M | cflow.cs:402:10:402:10 | exit M | 1 |
+| cflow.cs:406:13:406:36 | call to method WriteLine | cflow.cs:406:13:406:36 | call to method WriteLine | 1 |
+| cflow.cs:409:9:412:9 | [finally: exception(Exception)] {...} | cflow.cs:410:13:410:44 | [finally: exception(Exception)] throw ...; | 4 |
+| cflow.cs:409:9:412:9 | [finally: exception(OutOfMemoryException)] {...} | cflow.cs:410:13:410:44 | [finally: exception(OutOfMemoryException)] throw ...; | 4 |
+| cflow.cs:409:9:412:9 | {...} | cflow.cs:410:13:410:44 | throw ...; | 4 |
+| cflow.cs:419:12:419:12 | enter M | cflow.cs:419:12:419:12 | exit M | 5 |
+| cflow.cs:424:5:424:25 | enter NegationInConstructor | cflow.cs:424:5:424:25 | exit NegationInConstructor | 3 |
+| cflow.cs:426:10:426:10 | enter M | cflow.cs:428:46:428:50 | ... > ... | 9 |
+| cflow.cs:428:56:428:56 | access to parameter s | cflow.cs:428:56:428:64 | ... != ... | 3 |
+| cflow.cs:428:70:428:71 | "" | cflow.cs:426:10:426:10 | exit M | 3 |

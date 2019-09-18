@@ -1,5 +1,0 @@
-| src/http.js:14:13:14:17 | "foo" | src/http.js:12:19:16:1 | functio ... ar");\\n} |
-| src/http.js:15:11:15:15 | "bar" | src/http.js:12:19:16:1 | functio ... ar");\\n} |
-| src/http.js:64:11:64:16 | "bar2" | src/http.js:62:19:65:1 | functio ... r2");\\n} |
-| src/https.js:14:13:14:17 | "foo" | src/https.js:12:20:16:1 | functio ... ar");\\n} |
-| src/https.js:15:11:15:15 | "bar" | src/https.js:12:20:16:1 | functio ... ar");\\n} |

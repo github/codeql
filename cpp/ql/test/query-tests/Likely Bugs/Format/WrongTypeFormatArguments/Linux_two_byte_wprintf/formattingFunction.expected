@@ -1,0 +1,2 @@
+| printf.cpp:15:5:15:12 | swprintf | char | char16_t | char16_t |
+| printf.cpp:26:5:26:11 | sprintf | char | char16_t | char16_t |

@@ -1,4 +1,0 @@
-| src/hapi.js:7:1:9:2 | server2 ... ler1\\n}) | src/hapi.js:6:1:6:21 | functio ... er1(){} |
-| src/hapi.js:12:1:15:7 | server2 ...     }}) | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
-| src/hapi.js:17:1:18:2 | server2 ... dler\\n}) | src/hapi.js:17:30:18:1 | functio ... ndler\\n} |
-| src/hapi.js:29:1:29:20 | server2.route(route) | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |

@@ -4,8 +4,11 @@
  *              occur after initialization.
  * @kind problem
  * @id cpp/jsf/av-rule-206
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags resources
+ *       external/jsf
  */
+
 import cpp
 
 predicate occursAfterInitialization(Expr e) {

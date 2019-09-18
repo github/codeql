@@ -7,6 +7,7 @@
  * @id java/misnamed-type
  * @tags maintainability
  */
+
 import java
 
 from RefType t

@@ -11,6 +11,12 @@ class InModifiers
     void F(in S s)
     {
     }
+
+    void CallF()
+    {
+      var s = new S();
+      F(in s);
+    }
 }
 
 class RefReadonlyReturns

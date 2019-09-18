@@ -1,0 +1,131 @@
+{
+  "type": "Program",
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0,
+      "offset": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0,
+      "offset": 44
+    }
+  },
+  "sourceType": "script",
+  "body": [
+    {
+      "type": "FunctionDeclaration",
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 1,
+          "offset": 43
+        }
+      },
+      "id": {
+        "type": "Identifier",
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 10,
+            "offset": 10
+          },
+          "end": {
+            "line": 1,
+            "column": 13,
+            "offset": 13
+          }
+        },
+        "name": "foo"
+      },
+      "generator": true,
+      "expression": false,
+      "params": [],
+      "body": {
+        "type": "BlockStatement",
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 16,
+            "offset": 16
+          },
+          "end": {
+            "line": 3,
+            "column": 1,
+            "offset": 43
+          }
+        },
+        "body": [
+          {
+            "type": "ReturnStatement",
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 2,
+                "offset": 20
+              },
+              "end": {
+                "line": 2,
+                "column": 23,
+                "offset": 41
+              }
+            },
+            "argument": {
+              "type": "MetaProperty",
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 9,
+                  "offset": 27
+                },
+                "end": {
+                  "line": 2,
+                  "column": 22,
+                  "offset": 40
+                }
+              },
+              "meta": {
+                "type": "Identifier",
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 9,
+                    "offset": 27
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 17,
+                    "offset": 35
+                  }
+                },
+                "name": "function"
+              },
+              "property": {
+                "type": "Identifier",
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 18,
+                    "offset": 36
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 22,
+                    "offset": 40
+                  }
+                },
+                "name": "sent"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

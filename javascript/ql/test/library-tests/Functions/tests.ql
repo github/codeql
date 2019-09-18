@@ -1,0 +1,16 @@
+import getVariable
+import getScope
+import getParameter
+import ReturnedExpression
+import getDefaultArguments
+import Function
+import getBody
+import getId
+import hasRestParameter
+import getArgumentsVariable
+import getBodyStmt
+import isGenerator
+import usesArgumentsObject
+import getEnclosingStmt
+import isRestParameter
+import ReturnStmt

@@ -25,16 +25,15 @@ abstract class PrintfStyleCall extends DataFlow::CallNode {
 }
 
 private class LibraryFormatter extends PrintfStyleCall {
-
   int formatIndex;
-
   boolean returns;
 
   LibraryFormatter() {
     // built-in Node.js functions
-    exists (string mod, string meth |
+    exists(string mod, string meth |
       returns = false and
-      mod = "console" and (
+      mod = "console" and
+      (
         (
           meth = "debug" or
           meth = "error" or
@@ -49,12 +48,14 @@ private class LibraryFormatter extends PrintfStyleCall {
       )
       or
       returns = true and
-      mod = "util" and (
-        (meth = "format" or meth = "log") and formatIndex = 0
+      mod = "util" and
+      (
+        (meth = "format" or meth = "log") and
+        formatIndex = 0
         or
         meth = "formatWithOptions" and formatIndex = 1
       )
-      |
+    |
       // `console` and `util` are available both as modules...
       this = DataFlow::moduleMember(mod, meth).getACall()
       or
@@ -62,13 +63,14 @@ private class LibraryFormatter extends PrintfStyleCall {
       this = DataFlow::globalVarRef(mod).getAMemberCall(meth)
     )
     or
-    returns = true and (
+    returns = true and
+    (
       // https://www.npmjs.com/package/printf
       this = DataFlow::moduleImport("printf").getACall() and
-      formatIndex in [0..1]
+      formatIndex in [0 .. 1]
       or
       // https://www.npmjs.com/package/printj
-      exists (string fn | fn = "sprintf" or fn = "vsprintf" |
+      exists(string fn | fn = "sprintf" or fn = "vsprintf" |
         this = DataFlow::moduleMember("printj", fn).getACall() and
         formatIndex = 0
       )
@@ -85,24 +87,19 @@ private class LibraryFormatter extends PrintfStyleCall {
       formatIndex = 0
       or
       // https://www.npmjs.com/package/sprintf-js
-      exists (string meth | meth = "sprintf" or meth = "vsprintf" |
+      exists(string meth | meth = "sprintf" or meth = "vsprintf" |
         this = DataFlow::moduleMember("sprintf-js", meth).getACall() and
         formatIndex = 0
       )
     )
   }
 
-  override DataFlow::Node getFormatString() {
-    result = getArgument(formatIndex)
-  }
+  override DataFlow::Node getFormatString() { result = getArgument(formatIndex) }
 
   override DataFlow::Node getFormatArgument(int i) {
     i >= 0 and
     result = getArgument(formatIndex + 1 + i)
   }
 
-  override predicate returnsFormatted() {
-    returns = true
-  }
-
+  override predicate returnsFormatted() { returns = true }
 }

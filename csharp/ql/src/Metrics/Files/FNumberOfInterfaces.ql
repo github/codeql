@@ -8,9 +8,9 @@
  * @tags maintainability
  * @id cs/interfaces-per-file
  */
+
 import csharp
 
 from SourceFile f, int n
 where n = count(Interface i | i.getFile() = f and i.isSourceDeclaration())
-select f, n
-order by n desc
+select f, n order by n desc

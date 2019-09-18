@@ -4,6 +4,7 @@
  *
  * See the Java Language Specification, Section 5, for details.
  */
+
 import java
 import semmle.code.java.arithmetic.Overflow
 
@@ -21,23 +22,17 @@ abstract class ConversionSite extends Expr {
   /**
    * Gets the type that is converted from.
    */
-  Type getConversionSource() {
-    result = this.getType()
-  }
+  Type getConversionSource() { result = this.getType() }
 
   /**
    * Whether this conversion site actually induces a conversion.
    */
-  predicate isTrivial() {
-    getConversionTarget() = getConversionSource()
-  }
+  predicate isTrivial() { getConversionTarget() = getConversionSource() }
 
   /**
    * Whether this conversion is implicit.
    */
-  predicate isImplicit() {
-    any()
-  }
+  predicate isImplicit() { any() }
 
   abstract string kind();
 }
@@ -50,18 +45,16 @@ abstract class ConversionSite extends Expr {
  */
 class AssignmentConversionContext extends ConversionSite {
   Variable v;
+
   AssignmentConversionContext() {
-    this = v.getAnAssignedValue() or
+    this = v.getAnAssignedValue()
+    or
     exists(Assignment a | a.getDest().getProperExpr() = v.getAnAccess() and this = a.getSource())
   }
 
-  override Type getConversionTarget() {
-    result = v.getType()
-  }
+  override Type getConversionTarget() { result = v.getType() }
 
-  override string kind() {
-    result = "assignment context"
-  }
+  override string kind() { result = "assignment context" }
 }
 
 /**
@@ -73,16 +66,12 @@ class AssignmentConversionContext extends ConversionSite {
  */
 class ReturnConversionSite extends ConversionSite {
   ReturnStmt r;
-  ReturnConversionSite() {
-    this = r.getResult()
-  }
 
-  override Type getConversionTarget() {
-    result = r.getEnclosingCallable().getReturnType()
-  }
-  override string kind() {
-    result = "return context"
-  }
+  ReturnConversionSite() { this = r.getResult() }
+
+  override Type getConversionTarget() { result = r.getEnclosingCallable().getReturnType() }
+
+  override string kind() { result = "return context" }
 }
 
 /**
@@ -94,17 +83,12 @@ class ReturnConversionSite extends ConversionSite {
 class InvocationConversionContext extends ConversionSite {
   Call c;
   int index;
-  InvocationConversionContext() {
-    this = c.getArgument(index)
-  }
 
-  override Type getConversionTarget() {
-    result = c.getCallee().getParameter(index).getType()
-  }
+  InvocationConversionContext() { this = c.getArgument(index) }
 
-  override string kind() {
-    result = "invocation context"
-  }
+  override Type getConversionTarget() { result = c.getCallee().getParameter(index).getType() }
+
+  override string kind() { result = "invocation context" }
 }
 
 /**
@@ -115,38 +99,28 @@ class InvocationConversionContext extends ConversionSite {
  */
 class StringConversionContext extends ConversionSite {
   AddExpr a;
+
   StringConversionContext() {
     a.getAnOperand() = this and
     not this.getType() instanceof TypeString and
     a.getAnOperand().getType() instanceof TypeString
   }
 
-  override Type getConversionTarget() {
-    result instanceof TypeString
-  }
+  override Type getConversionTarget() { result instanceof TypeString }
 
-  override string kind() {
-    result = "string context"
-  }
+  override string kind() { result = "string context" }
 }
 
 class CastConversionContext extends ConversionSite {
   CastExpr c;
-  CastConversionContext() {
-    this = c.getExpr()
-  }
 
-  override Type getConversionTarget() {
-    result = c.getType()
-  }
+  CastConversionContext() { this = c.getExpr() }
 
-  override predicate isImplicit() {
-    none()
-  }
+  override Type getConversionTarget() { result = c.getType() }
 
-  override string kind() {
-    result = "cast context"
-  }
+  override predicate isImplicit() { none() }
+
+  override string kind() { result = "cast context" }
 }
 
 /**
@@ -157,16 +131,10 @@ class CastConversionContext extends ConversionSite {
  */
 class NumericConversionContext extends ConversionSite {
   ArithExpr e;
-  NumericConversionContext() {
-    this = e.getAnOperand()
-  }
 
-  override Type getConversionTarget() {
-    result = e.getType()
-  }
+  NumericConversionContext() { this = e.getAnOperand() }
 
-  override string kind() {
-    result = "numeric context"
-  }
+  override Type getConversionTarget() { result = e.getType() }
 
+  override string kind() { result = "numeric context" }
 }

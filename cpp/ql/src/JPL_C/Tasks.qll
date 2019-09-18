@@ -22,7 +22,8 @@ class Task extends Function {
  */
 class PublicFunction extends Function {
   PublicFunction() {
-    not this.isStatic() and (
+    not this.isStatic() and
+    (
       strictcount(Task t | t.calls+(this)) > 1 or
       not exists(Task t | t.getFile() = this.getFile())
     )

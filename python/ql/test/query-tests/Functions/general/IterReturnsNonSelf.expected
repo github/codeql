@@ -1,0 +1,1 @@
+| protocols.py:22:1:22:29 | class AlmostIterator | Class AlmostIterator is an iterator but its $@ method does not return 'self'. | protocols.py:30:5:30:23 | Function __iter__ | __iter__ |

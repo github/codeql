@@ -1,2 +1,0 @@
-| tst.ts:36:27:36:32 | param1 | tst.ts:36:44:36:44 | 1 | tst.ts:36:35:36:40 | number |
-| tst.ts:36:47:36:52 | param2 | tst.ts:36:64:36:66 | '2' | tst.ts:36:55:36:60 | string |

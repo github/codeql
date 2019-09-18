@@ -18,25 +18,28 @@ import javascript
  * Such expressions make contradictory assumptions about the types of `base` and `index`.
  */
 predicate contradictoryAccess(RelationalComparison compare, IndexExpr lookup) {
-  exists (SsaVariable base, SsaVariable index |
+  exists(SsaVariable base, SsaVariable index |
     base != index and
     compare.hasOperands(base.getAUse(), index.getAUse()) and
     lookup.getBase() = base.getAUse() and
-    lookup.getIndex() = index.getAUse())
+    lookup.getIndex() = index.getAUse()
+  )
   or
   // We allow `base` to be a global, since globals rarely undergo radical type changes
   // that depend on local control flow.
   // We could do the same for `index`, but it rarely matters for the pattern we are looking for.
   sameIndex(compare, lookup) and
-  exists (GlobalVariable base |
+  exists(GlobalVariable base |
     compare.getAnOperand() = base.getAnAccess() and
-    lookup.getBase() = base.getAnAccess())
+    lookup.getBase() = base.getAnAccess()
+  )
 }
 
 predicate sameIndex(RelationalComparison compare, IndexExpr lookup) {
-  exists (SsaVariable index |
+  exists(SsaVariable index |
     compare.getAnOperand() = index.getAUse() and
-    lookup.getIndex() = index.getAUse())
+    lookup.getIndex() = index.getAUse()
+  )
 }
 
 predicate relevantBasicBlocks(ReachableBasicBlock b1, ReachableBasicBlock b2) {
@@ -49,6 +52,7 @@ predicate sameBranch(ReachableBasicBlock b1, ReachableBasicBlock b2) {
 }
 
 from RelationalComparison compare, IndexExpr lookup
-where contradictoryAccess(compare, lookup)
-  and sameBranch(compare.getBasicBlock(), lookup.getBasicBlock())
+where
+  contradictoryAccess(compare, lookup) and
+  sameBranch(compare.getBasicBlock(), lookup.getBasicBlock())
 select compare, "Missing .length in comparison, or erroneous $@.", lookup, "index expression"

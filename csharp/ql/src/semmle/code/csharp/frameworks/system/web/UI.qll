@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Web.UI`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Web
 
@@ -10,33 +11,19 @@ class SystemWebUINamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Web.UI` namespace. */
-deprecated
-SystemWebUINamespace getSystemWebUINamespace() { any() }
-
 /** A class in the `System.Web.UI` namespace. */
 class SystemWebUIClass extends Class {
-  SystemWebUIClass() {
-    this.getNamespace() instanceof SystemWebUINamespace
-  }
+  SystemWebUIClass() { this.getNamespace() instanceof SystemWebUINamespace }
 }
 
 /** The `System.Web.UI.Control` class. */
 class SystemWebUIControlClass extends SystemWebUIClass {
-  SystemWebUIControlClass() {
-    this.hasName("Control")
-  }
+  SystemWebUIControlClass() { this.hasName("Control") }
 }
-
-/** DEPRECATED. Gets the `System.UI.Control` class. */
-deprecated
-SystemWebUIControlClass getSystemWebUIControlClass() { any() }
 
 /** The `System.Web.UI.Page` class. */
 class SystemWebUIPageClass extends SystemWebUIClass {
-  SystemWebUIPageClass() {
-    this.hasName("Page")
-  }
+  SystemWebUIPageClass() { this.hasName("Page") }
 
   /** Get the `ID` property. */
   Property getIDProperty() {
@@ -62,7 +49,7 @@ class SystemWebUIPageClass extends SystemWebUIClass {
     result.hasName("Title")
   }
 
-    /** Get the `RegisterStartupScript` method. */
+  /** Get the `RegisterStartupScript` method. */
   Method getRegisterStartupScriptMethod() {
     result.getDeclaringType() = this and
     result.hasName("RegisterStartupScript")
@@ -75,15 +62,9 @@ class SystemWebUIPageClass extends SystemWebUIClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.UI.Page` class. */
-deprecated
-SystemWebUIPageClass getSystemWebUIPageClass() { any() }
-
 /** The `System.Web.UI.HtmlTextWriter` class. */
 class SystemWebUIHtmlTextWriterClass extends SystemWebUIClass {
-  SystemWebUIHtmlTextWriterClass() {
-    this.hasName("HtmlTextWriter")
-  }
+  SystemWebUIHtmlTextWriterClass() { this.hasName("HtmlTextWriter") }
 
   /** Get a `Write` method. */
   Method getAWriteMethod() {
@@ -116,15 +97,9 @@ class SystemWebUIHtmlTextWriterClass extends SystemWebUIClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.UI.HtmlTextWriter` class. */
-deprecated
-SystemWebUIHtmlTextWriterClass getSystemWebUIHtmlTextWriterClass() { any() }
-
 /** The `System.Web.UI.AttributeCollection` class. */
 class SystemWebUIAttributeCollectionClass extends SystemWebUIClass {
-  SystemWebUIAttributeCollectionClass() {
-    this.hasName("AttributeCollection")
-  }
+  SystemWebUIAttributeCollectionClass() { this.hasName("AttributeCollection") }
 
   /** Get the `Add` method. */
   Method getAddMethod() {
@@ -139,17 +114,11 @@ class SystemWebUIAttributeCollectionClass extends SystemWebUIClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.UI.AttributeCollection` class. */
-deprecated
-SystemWebUIAttributeCollectionClass getSystemWebUIAttributeCollectionClass() { any() }
-
 /** The `System.Web.UI.ClientScriptManager` class. */
 class SystemWebUIClientScriptManagerClass extends SystemWebUIClass {
-  SystemWebUIClientScriptManagerClass() {
-    this.hasName("ClientScriptManager")
-  }
+  SystemWebUIClientScriptManagerClass() { this.hasName("ClientScriptManager") }
 
-    /** Get the `RegisterStartupScript` method. */
+  /** Get the `RegisterStartupScript` method. */
   Method getRegisterStartupScriptMethod() {
     result.getDeclaringType() = this and
     result.hasName("RegisterStartupScript")
@@ -161,7 +130,3 @@ class SystemWebUIClientScriptManagerClass extends SystemWebUIClass {
     result.hasName("RegisterClientScriptBlock")
   }
 }
-
-/** DEPRECATED. Gets the `System.UI.ClientScriptManager` class. */
-deprecated
-SystemWebUIClientScriptManagerClass getSystemWebUIClientScriptManagerClass() { any() }

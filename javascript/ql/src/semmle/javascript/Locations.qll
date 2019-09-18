@@ -6,45 +6,34 @@ import javascript
  * A location as given by a file, a start line, a start column,
  * an end line, and an end column.
  *
- * For more information about locations see [LGTM locations](https://lgtm.com/help/ql/locations).
+ * For more information about locations see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
  */
 class Location extends @location {
   /** Gets the file for this location. */
-  File getFile() {
-    locations_default(this, result, _, _, _, _)
-  }
+  File getFile() { locations_default(this, result, _, _, _, _) }
 
   /** Gets the start line of this location. */
-  int getStartLine() {
-    locations_default(this, _, result, _, _, _)
-  }
+  int getStartLine() { locations_default(this, _, result, _, _, _) }
 
   /** Gets the start column of this location. */
-  int getStartColumn() {
-    locations_default(this, _, _, result, _, _)
-  }
+  int getStartColumn() { locations_default(this, _, _, result, _, _) }
 
   /** Gets the end line of this location. */
-  int getEndLine() {
-    locations_default(this, _, _, _, result, _)
-  }
+  int getEndLine() { locations_default(this, _, _, _, result, _) }
 
   /** Gets the end column of this location. */
-  int getEndColumn() {
-    locations_default(this, _, _, _, _, result)
-  }
+  int getEndColumn() { locations_default(this, _, _, _, _, result) }
 
   /** Gets the number of lines covered by this location. */
-  int getNumLines() {
-    result = getEndLine() - getStartLine() + 1
-  }
+  int getNumLines() { result = getEndLine() - getStartLine() + 1 }
 
   /** Holds if this location starts before location `that`. */
   pragma[inline]
   predicate startsBefore(Location that) {
-    exists (File f, int sl1, int sc1, int sl2, int sc2 |
+    exists(File f, int sl1, int sc1, int sl2, int sc2 |
       locations_default(this, f, sl1, sc1, _, _) and
-      locations_default(that, f, sl2, sc2, _, _) |
+      locations_default(that, f, sl2, sc2, _, _)
+    |
       sl1 < sl2
       or
       sl1 = sl2 and sc1 < sc2
@@ -54,9 +43,10 @@ class Location extends @location {
   /** Holds if this location ends after location `that`. */
   pragma[inline]
   predicate endsAfter(Location that) {
-    exists (File f, int el1, int ec1, int el2, int ec2 |
+    exists(File f, int el1, int ec1, int el2, int ec2 |
       locations_default(this, f, _, _, el1, ec1) and
-      locations_default(that, f, _, _, el2, ec2) |
+      locations_default(that, f, _, _, el2, ec2)
+    |
       el1 > el2
       or
       el1 = el2 and ec1 > ec2
@@ -67,29 +57,24 @@ class Location extends @location {
    * Holds if this location contains location `that`, meaning that it starts
    * before and ends after it.
    */
-  predicate contains(Location that) {
-    this.startsBefore(that) and this.endsAfter(that)
-  }
+  predicate contains(Location that) { this.startsBefore(that) and this.endsAfter(that) }
 
   /** Holds if this location is empty. */
-  predicate isEmpty() {
-    exists (int l, int c | locations_default(this, _, l, c, l, c-1))
-  }
+  predicate isEmpty() { exists(int l, int c | locations_default(this, _, l, c, l, c - 1)) }
 
   /** Gets a textual representation of this element. */
-  string toString() {
-    result = this.getFile().getBaseName() + ":" + this.getStartLine().toString()
-  }
+  string toString() { result = this.getFile().getBaseName() + ":" + this.getStartLine().toString() }
 
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                             int endline, int endcolumn) {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     exists(File f |
       locations_default(this, f, startline, startcolumn, endline, endcolumn) and
       filepath = f.getAbsolutePath()
@@ -100,9 +85,7 @@ class Location extends @location {
 /** A program element with a location. */
 class Locatable extends @locatable {
   /** Gets the file this program element comes from. */
-  File getFile() {
-    result = getLocation().getFile()
-  }
+  File getFile() { result = getLocation().getFile() }
 
   /** Gets this element's location. */
   Location getLocation() {
@@ -117,7 +100,7 @@ class Locatable extends @locatable {
    * have been extracted with the `--extract-program-text` flag.
    */
   Line getStartLine() {
-    exists (Location l1, Location l2 |
+    exists(Location l1, Location l2 |
       l1 = this.getLocation() and
       l2 = result.getLocation() and
       l1.getFile() = l2.getFile() and
@@ -132,7 +115,7 @@ class Locatable extends @locatable {
    * have been extracted with the `--extract-program-text` flag.
    */
   Line getEndLine() {
-    exists (Location l1, Location l2 |
+    exists(Location l1, Location l2 |
       l1 = this.getLocation() and
       l2 = result.getLocation() and
       l1.getFile() = l2.getFile() and
@@ -141,9 +124,7 @@ class Locatable extends @locatable {
   }
 
   /** Gets the number of lines covered by this element. */
-  int getNumLines() {
-    result = getLocation().getNumLines()
-  }
+  int getNumLines() { result = getLocation().getNumLines() }
 
   /** Gets a textual representation of this element. */
   string toString() {

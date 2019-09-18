@@ -1,5 +1,6 @@
 import csharp
+import Common
 import ControlFlow::Internal
 
-from ControlFlowElement cfe
+from SourceControlFlowElement cfe
 select cfe, first(cfe)

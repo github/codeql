@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Python, unlike statically typed languages such as Java, allows complete freedom when calling methods during object destruction.
+However, standard object-oriented principles apply to Python classes using deep inheritance hierarchies.
+Therefore the developer has responsibility for ensuring that objects are properly cleaned up when
+there are multiple <code>__del__</code> methods that need to be called.
+</p>
+<p>
+If the  <code>__del__</code> method of a superclass is not called during object destruction it is likely that
+that resources may be leaked.
+</p>
+
+<p>A call to the <code>__del__</code> method of a superclass during object destruction may be omitted:
+</p>
+<ul>
+        <li>When a subclass calls the <code>__del__</code> method of the wrong class.</li>
+        <li>When a call to the <code>__del__</code> method of one its base classes is omitted.</li>
+</ul>
+
+
+</overview>
+<recommendation>
+<p>Either be careful to explicitly call the <code>__del__</code> of the correct base class, or
+use <code>super()</code> throughout the inheritance hierarchy.</p>
+
+<p>Alternatively refactor one or more of the classes to use composition rather than inheritance.</p>
+
+
+</recommendation>
+<example>
+<p>In this example, explicit calls to <code>__del__</code> are used, but <code>SportsCar</code> erroneously calls
+<code>Vehicle.__del__</code>. This is fixed in <code>FixedSportsCar</code> by calling <code>Car.__del__</code>.
+</p>
+
+<sample src="MissingCallToDel.py" />
+
+</example>
+<references>
+
+        <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
+        <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#super">super</a>.</li>
+        <li>Artima Developer: <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=236275">Things to Know About Python Super</a>.</li>
+        <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+
+</references>
+</qhelp>

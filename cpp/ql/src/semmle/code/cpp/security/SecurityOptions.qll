@@ -11,37 +11,35 @@ import semmle.code.cpp.security.Security
 
 class CustomSecurityOptions extends SecurityOptions {
   override predicate sqlArgument(string function, int arg) {
-    SecurityOptions.super.sqlArgument(function, arg) or
+    SecurityOptions.super.sqlArgument(function, arg)
+    or
     // --- custom functions that access SQL code via one of their arguments:
     // 'arg' is the 0-based index of the argument that contains an SQL string
     // for example: (function = "MySpecialSqlFunction" and arg = 0)
     none() // rules to match custom functions replace this line
   }
 
-  override predicate userInputArgument(FunctionCall functionCall, int arg)
-  {
-    SecurityOptions.super.userInputArgument(functionCall, arg) or
+  override predicate userInputArgument(FunctionCall functionCall, int arg) {
+    SecurityOptions.super.userInputArgument(functionCall, arg)
+    or
     exists(string fname |
       functionCall.getTarget().hasGlobalName(fname) and
-      exists(functionCall.getArgument(arg)) and (
-        // --- custom functions that return user input via one of their arguments:
-        // 'arg' is the 0-based index of the argument that is used to return user input
-        // for example: (fname = "readXmlInto" and arg = 1)
-        none() // rules to match custom functions replace this line
-      )
+      exists(functionCall.getArgument(arg)) and
+      // --- custom functions that return user input via one of their arguments:
+      // 'arg' is the 0-based index of the argument that is used to return user input
+      // for example: (fname = "readXmlInto" and arg = 1)
+      none() // rules to match custom functions replace this line
     )
   }
 
-  override predicate userInputReturned(FunctionCall functionCall)
-  {
-    SecurityOptions.super.userInputReturned(functionCall) or 
+  override predicate userInputReturned(FunctionCall functionCall) {
+    SecurityOptions.super.userInputReturned(functionCall)
+    or
     exists(string fname |
       functionCall.getTarget().hasGlobalName(fname) and
-      (
-        // --- custom functions that return user input via their return value:
-        // for example: fname = "xmlReadAttribute"
-        none() // rules to match custom functions replace this line
-      )
+      // --- custom functions that return user input via their return value:
+      // for example: fname = "xmlReadAttribute"
+      none() // rules to match custom functions replace this line
     )
   }
 }

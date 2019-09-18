@@ -1,0 +1,2 @@
+| nhibernate.cs:16:9:16:26 | object creation of type SqlString |
+| nhibernate.cs:17:9:17:27 | call to method Delete |

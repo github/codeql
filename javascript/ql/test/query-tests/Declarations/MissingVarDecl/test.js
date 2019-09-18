@@ -67,3 +67,9 @@ function r() {
 	for (var p in z)
 		;
 }
+
+(function() {
+	for ([ unresolvable ] of o) {
+		unresolvable;
+	}
+});

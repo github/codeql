@@ -1,0 +1,20 @@
+{
+    "name": "typescript-parser-wrapper",
+    "private": true,
+    "dependencies": {
+        "typescript": "3.5.1"
+    },
+    "scripts": {
+        "build": "tsc --project tsconfig.json && rollup -c",
+        "check": "tsc --noEmit --project . && tslint --project .",
+        "lint": "tslint --project .",
+        "lint-fix": "tslint --project . --fix"
+    },
+    "devDependencies": {
+        "@types/node": "^9.3.0",
+        "rollup": "^0.66.6",
+        "rollup-plugin-commonjs": "^9.2.0",
+        "rollup-plugin-node-resolve": "^3.4.0",
+        "tslint": "^5.9.1"
+    }
+}

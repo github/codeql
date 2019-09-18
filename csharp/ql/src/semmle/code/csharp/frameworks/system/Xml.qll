@@ -1,6 +1,8 @@
 /** Provides definitions related to the namespace `System.Xml`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.DataFlow2
 
 /** The `System.Xml` namespace. */
 class SystemXmlNamespace extends Namespace {
@@ -18,15 +20,9 @@ class SystemXmlSchemaNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Xml` namespace. */
-deprecated
-SystemXmlNamespace getSystemXmlNamespace() { any() }
-
 /** A class in the `System.Xml` namespace. */
 class SystemXmlClass extends Class {
-  SystemXmlClass() {
-    this.getNamespace() instanceof SystemXmlNamespace
-  }
+  SystemXmlClass() { this.getNamespace() instanceof SystemXmlNamespace }
 }
 
 /** The `System.Xml.XmlDocument` class. */
@@ -67,16 +63,11 @@ class SystemXmlXmlReaderSettingsClass extends Class {
   }
 
   /** Gets the `ValidationType` property. */
-  Property getValidationTypeProperty() {
-    result = this.getProperty("ValidationType")
-  }
+  Property getValidationTypeProperty() { result = this.getProperty("ValidationType") }
 
   /** Gets the `ValidationFlags` property. */
-  Property getValidationFlagsProperty() {
-    result = this.getProperty("ValidationFlags")
-  }
+  Property getValidationFlagsProperty() { result = this.getProperty("ValidationFlags") }
 }
-
 
 /** The `System.Xml.XmlNode` class. */
 class SystemXmlXmlNodeClass extends Class {
@@ -127,70 +118,69 @@ class SystemXmlXmlNamedNodeMapClass extends Class {
 /** An enum constant in `System.Xml.ValidationType`. */
 class SystemXmlValidationType extends EnumConstant {
   SystemXmlValidationType() {
-    this.getDeclaringEnum() = any(Enum e | e = any(SystemXmlNamespace n).getAnEnum() and e.hasName("ValidationType"))
+    this.getDeclaringEnum() = any(Enum e |
+        e = any(SystemXmlNamespace n).getAnEnum() and e.hasName("ValidationType")
+      )
   }
 }
 
 /** An enum constant in `System.Xml.Schema.XmlSchemaValidationFlags`. */
 class SystemXmlSchemaXmlSchemaValidationFlags extends EnumConstant {
   SystemXmlSchemaXmlSchemaValidationFlags() {
-    this.getDeclaringEnum() = any(Enum e | e = any(SystemXmlSchemaNamespace s).getAnEnum() and e.hasName("XmlSchemaValidationFlags"))
+    this.getDeclaringEnum() = any(Enum e |
+        e = any(SystemXmlSchemaNamespace s).getAnEnum() and e.hasName("XmlSchemaValidationFlags")
+      )
   }
 }
 
+private Expr getBitwiseOrOperand(Expr e) { result = e.(BitwiseOrExpr).getAnOperand() }
+
 /** A creation of an instance of `System.Xml.XmlReaderSettings`. */
 class XmlReaderSettingsCreation extends ObjectCreation {
-  XmlReaderSettingsCreation() {
-    this.getType() instanceof SystemXmlXmlReaderSettingsClass
-  }
+  XmlReaderSettingsCreation() { this.getType() instanceof SystemXmlXmlReaderSettingsClass }
 
   /** Gets a value set on the `ValidationType` property, if any. */
   SystemXmlValidationType getValidationType() {
-    result.getAnAccess() = this.getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationTypeProperty())
+    result.getAnAccess() = this
+          .getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationTypeProperty())
   }
 
   /** Gets a flag set on the `ValidationFlags` property, if any. */
   SystemXmlSchemaXmlSchemaValidationFlags getAValidationFlag() {
-    result.getAnAccess() = this.getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationFlagsProperty())
+    result.getAnAccess() = this
+          .getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationFlagsProperty())
   }
 
   /** Gets a value set for the given property in this local context. */
   private Expr getPropertyValue(Property p) {
     p = this.getType().(RefType).getAProperty() and
-    exists(PropertyCall set |
+    exists(PropertyCall set, Expr arg |
       set.getTarget() = p.getSetter() and
       DataFlow::localFlow(DataFlow::exprNode(this), DataFlow::exprNode(set.getQualifier())) and
-      result = set.getAnArgument()
+      arg = set.getAnArgument() and
+      result = getBitwiseOrOperand*(arg)
     )
   }
 }
 
-private class SettingsDataFlowConfig extends DataFlow::Configuration {
-  SettingsDataFlowConfig() {
-    this = "SettingsDataFlowConfig"
-  }
+private class SettingsDataFlowConfig extends DataFlow2::Configuration {
+  SettingsDataFlowConfig() { this = "SettingsDataFlowConfig" }
 
-  override
-  predicate isSource(DataFlow::Node source) {
+  override predicate isSource(DataFlow::Node source) {
     source.asExpr() instanceof XmlReaderSettingsCreation
   }
 
-  override
-  predicate isSink(DataFlow::Node sink) {
+  override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() instanceof XmlReaderSettingsInstance
   }
 }
 
 /** A call to `XmlReader.Create`. */
 class XmlReaderCreateCall extends MethodCall {
-  XmlReaderCreateCall() {
-    this.getTarget() = any(SystemXmlXmlReaderClass r).getCreateMethod()
-  }
+  XmlReaderCreateCall() { this.getTarget() = any(SystemXmlXmlReaderClass r).getCreateMethod() }
 
   /** Gets the settings used for this create call, if any. */
-  XmlReaderSettingsInstance getSettings() {
-    result = this.getAnArgument()
-  }
+  XmlReaderSettingsInstance getSettings() { result = this.getAnArgument() }
 }
 
 /** An instance of `XmlReaderSettings` passed to an `XmlReader.Create` call. */

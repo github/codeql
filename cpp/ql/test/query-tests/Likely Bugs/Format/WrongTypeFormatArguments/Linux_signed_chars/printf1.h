@@ -44,7 +44,7 @@ void f(char *s, int i, unsigned char *us, const char *cs, signed char *ss, char 
     printf("%d", ull);               // not ok (unsigned long long -> int)
     printf("%u", ull);               // not ok (unsigned long long -> unsigned int)
     printf("%x", ull);               // not ok (unsigned long long -> unsigned int)
-    printf("%Lx", ull);              // not ok (unsigned long long -> unsigned int)
+    printf("%Lx", ull);              // ok
     printf("%llx", ull);             // ok
 }
 
@@ -65,14 +65,14 @@ void g()
     printf("%zu", c_st); // ok
     printf("%zu", C_ST); // ok
     printf("%zu", sizeof(ul)); // ok
-    printf("%zu", sst); // not ok [NOT DETECTED ON MICROSOFT]
+    printf("%zu", sst); // not ok [NOT DETECTED]
 
-    printf("%zd", ul); // not ok
-    printf("%zd", st); // not ok
-    printf("%zd", ST); // not ok
-    printf("%zd", c_st); // not ok
-    printf("%zd", C_ST); // not ok
-    printf("%zd", sizeof(ul)); // not ok
+    printf("%zd", ul); // not ok [NOT DETECTED]
+    printf("%zd", st); // not ok [NOT DETECTED]
+    printf("%zd", ST); // not ok [NOT DETECTED]
+    printf("%zd", c_st); // not ok [NOT DETECTED]
+    printf("%zd", C_ST); // not ok [NOT DETECTED]
+    printf("%zd", sizeof(ul)); // not ok [NOT DETECTED]
     printf("%zd", sst); // ok
     {
         char *ptr_a, *ptr_b;
@@ -80,8 +80,8 @@ void g()
 
         printf("%tu", ptr_a - ptr_b); // ok
         printf("%td", ptr_a - ptr_b); // ok
-        printf("%zu", ptr_a - ptr_b); // ok (dubious) [DETECTED ON LINUX ONLY]
-        printf("%zd", ptr_a - ptr_b); // ok (dubious) [DETECTED ON MICROSOFT ONLY]
+        printf("%zu", ptr_a - ptr_b); // ok (dubious)
+        printf("%zd", ptr_a - ptr_b); // ok (dubious)
     }
 }
 
@@ -91,4 +91,63 @@ void h(int i, struct some_type *j, int k)
 	// recognize.  We should not report a problem if we're unable to understand what's
 	// going on.
 	printf("%i %R %i", i, j, k); // GOOD (as far as we can tell)
+}
+
+typedef long ptrdiff_t;
+
+void fun1(unsigned char* a, unsigned char* b) {
+  ptrdiff_t pdt;
+
+  printf("%td\n", pdt); // GOOD
+  printf("%td\n", a-b); // GOOD
+}
+
+void extensions()
+{
+	{
+		long double ld;
+		double d;
+
+		printf("%Lg", ld); // GOOD
+		printf("%llg", ld); // GOOD (nonstandard equivalent to %Lg)
+		printf("%Lg", d); // BAD (should be %g)
+		printf("%llg", d); // BAD (should be %g)
+	}
+
+	{
+		long long int lli;
+		long int li;
+
+		printf("%lld", lli); // GOOD
+		printf("%Ld", lli); // GOOD (nonstandard equivalent to %lld)
+		printf("%Ld", li); // BAD (should be %ld) [NOT DETECTED]
+		printf("%lld", li); // BAD (should be %ld) [NOT DETECTED]
+	}
+
+	{
+		unsigned long long int ulli;
+		unsigned long int uli;
+
+		printf("%llu", ulli); // GOOD
+		printf("%Lu", ulli); // GOOD (nonstandard equivalent to %llu)
+		printf("%Lu", uli); // BAD (should be %lu) [NOT DETECTED]
+		printf("%llu", uli); // BAD (should be %lu) [NOT DETECTED]
+	}
+}
+
+void fun4()
+{
+  int i;
+  unsigned int ui;
+  long l;
+  unsigned long ul;
+  long long ll;
+  unsigned long long ull;
+
+  printf("%qi\n", i); // BAD
+  printf("%qu\n", ui); // BAD
+  printf("%qi\n", l); // GOOD
+  printf("%qu\n", ul); // GOOD
+  printf("%qi\n", ll); // GOOD
+  printf("%qu\n", ull); // GOOD
 }

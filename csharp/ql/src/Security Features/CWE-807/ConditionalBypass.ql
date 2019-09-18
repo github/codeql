@@ -2,7 +2,7 @@
  * @name User-controlled bypass of sensitive method
  * @description User-controlled bypassing of sensitive methods may allow attackers to avoid
  *              passing through authentication systems.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cs/user-controlled-bypass
@@ -11,10 +11,13 @@
  *       external/cwe/cwe-247
  *       external/cwe/cwe-350
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.ConditionalBypass::UserControlledBypassOfSensitiveMethod
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
-from Configuration config, Source source, Sink sink
-where config.hasFlow(source, sink)
-select sink.getSensitiveMethodCall(), "Sensitive method may not be executed depending on $@, which flows from $@.",
-  sink, "this condition", source, "user input"
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink.getNode().(Sink).getSensitiveMethodCall(), source, sink,
+  "Sensitive method may not be executed depending on $@, which flows from $@.", sink.getNode(),
+  "this condition", source.getNode(), "user input"

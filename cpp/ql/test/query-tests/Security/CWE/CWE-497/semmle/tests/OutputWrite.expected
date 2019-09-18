@@ -1,0 +1,5 @@
+| tests2.cpp:27:12:27:12 | call to operator<< | tests2.cpp:27:15:27:20 | call to getenv |
+| tests2.cpp:28:12:28:12 | call to operator<< | tests2.cpp:28:15:28:23 | PATH =  |
+| tests2.cpp:28:25:28:25 | call to operator<< | tests2.cpp:28:28:28:33 | call to getenv |
+| tests2.cpp:28:43:28:43 | call to operator<< | tests2.cpp:28:46:28:48 | . |
+| tests2.cpp:29:12:29:12 | call to operator<< | tests2.cpp:29:15:29:28 | PATHPATHPATH |

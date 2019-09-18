@@ -10,6 +10,7 @@
  *       correctness
  *       logic
  */
+
 import java
 
 /**
@@ -21,13 +22,12 @@ predicate unbracedTrailingBody(Stmt ctrlStructure, Stmt trailingBody) {
   not trailingBody instanceof Block and
   (
     exists(IfStmt c | c = ctrlStructure |
-      trailingBody = c.getElse() and not trailingBody instanceof IfStmt or
+      trailingBody = c.getElse() and not trailingBody instanceof IfStmt
+      or
       trailingBody = c.getThen() and not exists(c.getElse())
     )
     or
-    exists(LoopStmt c | c = ctrlStructure |
-      not c instanceof DoStmt and trailingBody = c.getBody()
-    )
+    exists(LoopStmt c | c = ctrlStructure | not c instanceof DoStmt and trailingBody = c.getBody())
   )
 }
 
@@ -43,12 +43,12 @@ predicate unbracedTrailingBody(Stmt ctrlStructure, Stmt trailingBody) {
 Stmt nextInBlock(Stmt s) {
   exists(Block b, int i |
     b.getStmt(i) = s and
-    b.getStmt(i+1) = result
+    b.getStmt(i + 1) = result
   )
   or
   exists(SwitchStmt b, int i |
     b.getStmt(i) = s and
-    b.getStmt(i+1) = result
+    b.getStmt(i + 1) = result
   )
 }
 
@@ -60,15 +60,15 @@ Stmt nonBlockParent(Stmt s) {
 }
 
 /** An else-if construction. */
-predicate ifElseIf(IfStmt s, IfStmt elseif) {
-  s.getElse() = elseif
-}
+predicate ifElseIf(IfStmt s, IfStmt elseif) { s.getElse() = elseif }
 
 /**
  * The statement `body` is an unbraced trailing body of a control structure and
  * `succ` is the next statement in the surrounding `Block` (or `SwitchStmt`).
  */
-predicate shouldOutdent(Stmt ctrl, Stmt body, Stmt succ, int bodycol, int succcol, int bodyline, int succline) {
+predicate shouldOutdent(
+  Stmt ctrl, Stmt body, Stmt succ, int bodycol, int succcol, int bodyline, int succline
+) {
   unbracedTrailingBody(ctrl, body) and
   succ = nextInBlock(nonBlockParent*(body)) and
   bodycol = body.getLocation().getStartColumn() and
@@ -101,7 +101,8 @@ predicate suspectIndentation(Stmt ctrl, Stmt body, Stmt succ) {
     // Disregard cases when `ctrl`, `body`, and `succ` are all equally indented.
     (ctrlcol < bodycol or bodycol < succcol) and
     (
-      ctrlcol = ctrl.getLocation().getStartColumn() or
+      ctrlcol = ctrl.getLocation().getStartColumn()
+      or
       exists(IfStmt s | ifElseIf+(s, ctrl) and ctrlcol = s.getLocation().getStartColumn())
     )
   )
@@ -123,6 +124,6 @@ where
   not t instanceof EmptyStmt and
   // `LocalClassDeclStmt`s yield false positives since their `Location` doesn't include the `class` keyword.
   not t instanceof LocalClassDeclStmt
-select
-  s, "Indentation suggests that $@ belongs to $@, but this is not the case; consider adding braces or adjusting indentation.",
+select s,
+  "Indentation suggests that $@ belongs to $@, but this is not the case; consider adding braces or adjusting indentation.",
   t, "the next statement", c, "the control structure"

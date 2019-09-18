@@ -14,5 +14,4 @@ import javascript
 
 from File f, int n
 where n = strictsum(TopLevel tl | tl = f.getATopLevel() | tl.getNumberOfLines())
-select f, 100.0 * ((float)f.getNumberOfLinesOfComments() / (float)n) as ratio
-order by ratio desc
+select f, 100.0 * (f.getNumberOfLinesOfComments().(float) / n.(float)) as ratio order by ratio desc

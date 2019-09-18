@@ -1,2 +1,0 @@
-| src/test.js:6:9:9:1 | functio ... oo');\\n} | header1 | src/test.js:7:5:7:32 | res.set ... 1', '') |
-| src/test.js:24:9:26:1 | functio ...  '');\\n} | header2 | src/test.js:25:5:25:32 | res.set ... 2', '') |

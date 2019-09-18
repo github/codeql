@@ -1,4 +1,0 @@
-| conditionals.js:10:5:10:10 | break; | (none) | conditionals.js:7:1:12:1 | switch  ... ault:\\n} |
-| loops.js:6:13:6:27 | continue outer; | outer | loops.js:3:1:11:1 | outer:  ... inue;\\n} |
-| loops.js:8:13:8:24 | break outer; | outer | loops.js:3:1:11:1 | outer:  ... inue;\\n} |
-| loops.js:10:13:10:21 | continue; | (none) | loops.js:4:5:10:21 | for(;;) ... ntinue; |

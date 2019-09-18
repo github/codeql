@@ -13,6 +13,7 @@
  *       statistical
  *       non-attributable
  */
+
 import java
 import Chaining
 
@@ -37,7 +38,10 @@ predicate checkExpr(MethodAccess callToCheck, MethodAccess otherCall, string ope
   v.getAnAssignedValue() = callToCheck and
   otherCall != callToCheck and
   otherCall.getMethod().getName() = operation and
-  (otherCall.getAnArgument() = getChainedAccess(v) or otherCall.getQualifier() = getChainedAccess(v))
+  (
+    otherCall.getAnArgument() = getChainedAccess(v) or
+    otherCall.getQualifier() = getChainedAccess(v)
+  )
 }
 
 /**
@@ -56,11 +60,11 @@ predicate implicitCheckExpr(MethodAccess callToCheck, string operation, Variable
  * Get all accesses to a variable, either directly or by a chain of method calls.
  */
 Expr getChainedAccess(Variable v) {
-  result = v.getAnAccess() or
-  exists(MethodAccess chainedAccess |
-    chainedAccess.getQualifier() = getChainedAccess(v)
-    |
-    designedForChaining(chainedAccess.getMethod()) and result = chainedAccess)
+  result = v.getAnAccess()
+  or
+  exists(MethodAccess chainedAccess | chainedAccess.getQualifier() = getChainedAccess(v) |
+    designedForChaining(chainedAccess.getMethod()) and result = chainedAccess
+  )
 }
 
 /**
@@ -83,9 +87,7 @@ predicate relevantFunctionCall(MethodAccess ma, Method m) {
   not okToIgnore(ma)
 }
 
-predicate okToIgnore(MethodAccess ma) {
-  not ma.getCompilationUnit().fromSource()
-}
+predicate okToIgnore(MethodAccess ma) { not ma.getCompilationUnit().fromSource() }
 
 predicate functionStats(Method m, string operation, int used, int total, int percentage) {
   m.getReturnType() instanceof RefType and
@@ -104,6 +106,6 @@ where
   percent >= 90 and
   not m.getName() = operation and
   not unchecked.getEnclosingStmt().(ExprStmt).isFieldDecl()
-select unchecked, "After " + percent.toString() + "% of calls to " + m.getName()
-                  + " there is a call to " + operation
-                  + " on the return value. The call may be missing in this case."
+select unchecked,
+  "After " + percent.toString() + "% of calls to " + m.getName() + " there is a call to " +
+    operation + " on the return value. The call may be missing in this case."

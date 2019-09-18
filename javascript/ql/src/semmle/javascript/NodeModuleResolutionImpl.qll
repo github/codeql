@@ -14,34 +14,39 @@ import javascript
  * This is to ensure we find the original source file in case the compiled output is also present.
  */
 int getFileExtensionPriority(string ext) {
-  ext = "tsx" and result = 0 or
-  ext = "ts" and result = 1 or
-  ext = "jsx" and result = 2 or
-  ext = "es6" and result = 3 or
-  ext = "es" and result = 4 or
-  ext = "mjs" and result = 5 or
-  ext = "js" and result = 6 or
-  ext = "json" and result = 7 or
+  ext = "tsx" and result = 0
+  or
+  ext = "ts" and result = 1
+  or
+  ext = "jsx" and result = 2
+  or
+  ext = "es6" and result = 3
+  or
+  ext = "es" and result = 4
+  or
+  ext = "mjs" and result = 5
+  or
+  ext = "js" and result = 6
+  or
+  ext = "json" and result = 7
+  or
   ext = "node" and result = 8
 }
 
-int prioritiesPerCandidate() {
-  result = 3 * (numberOfExtensions() + 1)
-}
+int prioritiesPerCandidate() { result = 3 * (numberOfExtensions() + 1) }
 
-int numberOfExtensions() {
-  result = count(getFileExtensionPriority(_))
-}
+int numberOfExtensions() { result = count(getFileExtensionPriority(_)) }
 
 /**
  * Gets the resolution target with the given `priority` of `req`
  * when resolved from the root with priority `rootPriority`.
  */
 File loadAsFile(Require req, int rootPriority, int priority) {
-  exists (PathExpr path | path = req.getImportedPath() |
-    result = path.resolve(rootPriority) and priority = 0 or
-    exists (Folder encl | encl = path.resolveUpTo(path.getNumComponent()-1, rootPriority) |
-      result = tryExtensions(encl, path.getBaseName(), priority-1)
+  exists(PathExpr path | path = req.getImportedPath() |
+    result = path.resolve(rootPriority) and priority = 0
+    or
+    exists(Folder encl | encl = path.resolveUpTo(path.getNumComponent() - 1, rootPriority) |
+      result = tryExtensions(encl, path.getBaseName(), priority - 1)
     )
   )
 }
@@ -52,9 +57,9 @@ File loadAsFile(Require req, int rootPriority, int priority) {
  * priority `rootPriority`.
  */
 File loadAsDirectory(Require req, int rootPriority, int priority) {
-  exists (Folder dir | dir = req.getImportedPath().resolve(rootPriority) |
+  exists(Folder dir | dir = req.getImportedPath().resolve(rootPriority) |
     result = resolveMainModule(dir.(NPMPackage).getPackageJSON(), priority) or
-    result = tryExtensions(dir, "index", priority-(numberOfExtensions()+1))
+    result = tryExtensions(dir, "index", priority - (numberOfExtensions() + 1))
   )
 }
 
@@ -68,21 +73,23 @@ File loadAsDirectory(Require req, int rootPriority, int priority) {
  */
 bindingset[basename]
 File tryExtensions(Folder dir, string basename, int priority) {
-  exists (string ext | result = dir.getFile(basename, ext) | priority = getFileExtensionPriority(ext))
+  exists(string ext | result = dir.getFile(basename, ext) |
+    priority = getFileExtensionPriority(ext)
+  )
 }
 
 /**
  * Gets the main module described by `pkg` with the given `priority`.
  */
 File resolveMainModule(PackageJSON pkg, int priority) {
-  if exists(MainModulePath::of(pkg)) then
-    exists (Container c | c = MainModulePath::of(pkg).resolve() |
+  if exists(MainModulePath::of(pkg))
+  then
+    exists(Container c | c = MainModulePath::of(pkg).resolve() |
       result = c and priority = 0
       or
       result = tryExtensions(c, "index", priority)
     )
-  else
-    result = tryExtensions(pkg.getFile().getParentContainer(), "index", priority)
+  else result = tryExtensions(pkg.getFile().getParentContainer(), "index", priority)
 }
 
 /**
@@ -92,18 +99,12 @@ File resolveMainModule(PackageJSON pkg, int priority) {
 class MainModulePath extends PathExpr, @json_string {
   PackageJSON pkg;
 
-  MainModulePath() {
-    this = pkg.getPropValue("main")
-  }
+  MainModulePath() { this = pkg.getPropValue("main") }
 
   /** Gets the `package.json` file in which this path occurs. */
-  PackageJSON getPackageJSON() {
-    result = pkg
-  }
+  PackageJSON getPackageJSON() { result = pkg }
 
-  override string getValue() {
-    result = this.(JSONString).getValue()
-  }
+  override string getValue() { result = this.(JSONString).getValue() }
 
   override Folder getSearchRoot(int priority) {
     priority = 0 and
@@ -112,8 +113,5 @@ class MainModulePath extends PathExpr, @json_string {
 }
 
 module MainModulePath {
-  MainModulePath of(PackageJSON pkg) {
-    result.getPackageJSON() = pkg
-  }
+  MainModulePath of(PackageJSON pkg) { result.getPackageJSON() = pkg }
 }
-

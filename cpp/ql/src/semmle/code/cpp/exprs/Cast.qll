@@ -14,12 +14,9 @@ abstract class Conversion extends Expr {
   /** Holds if this conversion is an implicit conversion. */
   predicate isImplicit() { this.isCompilerGenerated() }
 
-  override predicate mayBeImpure() {
-    this.getExpr().mayBeImpure()
-  }
-  override predicate mayBeGloballyImpure() {
-    this.getExpr().mayBeGloballyImpure()
-  }
+  override predicate mayBeImpure() { this.getExpr().mayBeImpure() }
+
+  override predicate mayBeGloballyImpure() { this.getExpr().mayBeGloballyImpure() }
 }
 
 /**
@@ -42,9 +39,7 @@ abstract class Cast extends Conversion, @cast {
    * Gets a string describing the semantic conversion operation being performed by
    * this cast.
    */
-  string getSemanticConversionString() {
-    result = "unknown conversion"
-  }
+  string getSemanticConversionString() { result = "unknown conversion" }
 }
 
 /**
@@ -58,19 +53,19 @@ module CastSanity {
     // Every cast should have exactly one semantic conversion kind
     count(cast.getSemanticConversionString()) > 1 and
     kind = cast.getSemanticConversionString() and
-    fromType = cast.getExpr().getType().getUnspecifiedType()
+    fromType = cast.getExpr().getUnspecifiedType()
   }
 
   query predicate missingSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have exactly one semantic conversion kind
     not exists(cast.getSemanticConversionString()) and
-    fromType = cast.getExpr().getType().getUnspecifiedType()
+    fromType = cast.getExpr().getUnspecifiedType()
   }
 
   query predicate unknownSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have a known semantic conversion kind
     cast.getSemanticConversionString() = "unknown conversion" and
-    fromType = cast.getExpr().getType().getUnspecifiedType()
+    fromType = cast.getExpr().getUnspecifiedType()
   }
 }
 
@@ -79,6 +74,8 @@ module CastSanity {
  */
 class CStyleCast extends Cast, @c_style_cast {
   override string toString() { result = "(" + this.getType().getName() + ")..." }
+
+  override string getCanonicalQLClass() { result = "CStyleCast" }
 
   override int getPrecedence() { result = 15 }
 }
@@ -89,6 +86,8 @@ class CStyleCast extends Cast, @c_style_cast {
 class StaticCast extends Cast, @static_cast {
   override string toString() { result = "static_cast<" + this.getType().getName() + ">..." }
 
+  override string getCanonicalQLClass() { result = "StaticCast" }
+
   override int getPrecedence() { result = 16 }
 }
 
@@ -98,6 +97,8 @@ class StaticCast extends Cast, @static_cast {
 class ConstCast extends Cast, @const_cast {
   override string toString() { result = "const_cast<" + this.getType().getName() + ">..." }
 
+  override string getCanonicalQLClass() { result = "ConstCast" }
+
   override int getPrecedence() { result = 16 }
 }
 
@@ -106,6 +107,8 @@ class ConstCast extends Cast, @const_cast {
  */
 class ReinterpretCast extends Cast, @reinterpret_cast {
   override string toString() { result = "reinterpret_cast<" + this.getType().getName() + ">..." }
+
+  override string getCanonicalQLClass() { result = "ReinterpretCast" }
 
   override int getPrecedence() { result = 16 }
 }
@@ -137,13 +140,11 @@ private predicate isPointerToMemberOrNullPointer(Type type) {
 class ArithmeticConversion extends Cast {
   ArithmeticConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isArithmeticOrEnum(getType().getUnspecifiedType()) and
-    isArithmeticOrEnum(getExpr().getType().getUnspecifiedType())
+    isArithmeticOrEnum(getUnspecifiedType()) and
+    isArithmeticOrEnum(getExpr().getUnspecifiedType())
   }
 
-  override string getSemanticConversionString() {
-    result = "arithmetic conversion"
-  }
+  override string getSemanticConversionString() { result = "arithmetic conversion" }
 }
 
 /**
@@ -151,13 +152,15 @@ class ArithmeticConversion extends Cast {
  */
 class IntegralConversion extends ArithmeticConversion {
   IntegralConversion() {
-    isIntegralOrEnum(getType().getUnspecifiedType()) and
-    isIntegralOrEnum(getExpr().getType().getUnspecifiedType())
+    isIntegralOrEnum(getUnspecifiedType()) and
+    isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
-  override string getSemanticConversionString() {
-    result = "integral conversion"
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "IntegralConversion"
   }
+
+  override string getSemanticConversionString() { result = "integral conversion" }
 }
 
 /**
@@ -165,13 +168,15 @@ class IntegralConversion extends ArithmeticConversion {
  */
 class FloatingPointConversion extends ArithmeticConversion {
   FloatingPointConversion() {
-    getType().getUnspecifiedType() instanceof FloatingPointType and
-    getExpr().getType().getUnspecifiedType() instanceof FloatingPointType
+    getUnspecifiedType() instanceof FloatingPointType and
+    getExpr().getUnspecifiedType() instanceof FloatingPointType
   }
 
-  override string getSemanticConversionString() {
-    result = "floating point conversion"
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "FloatingPointConversion"
   }
+
+  override string getSemanticConversionString() { result = "floating point conversion" }
 }
 
 /**
@@ -179,13 +184,15 @@ class FloatingPointConversion extends ArithmeticConversion {
  */
 class FloatingPointToIntegralConversion extends ArithmeticConversion {
   FloatingPointToIntegralConversion() {
-    isIntegralOrEnum(getType().getUnspecifiedType()) and
-    getExpr().getType().getUnspecifiedType() instanceof FloatingPointType
+    isIntegralOrEnum(getUnspecifiedType()) and
+    getExpr().getUnspecifiedType() instanceof FloatingPointType
   }
 
-  override string getSemanticConversionString() {
-    result = "floating point to integral conversion"
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "FloatingPointToIntegralConversion"
   }
+
+  override string getSemanticConversionString() { result = "floating point to integral conversion" }
 }
 
 /**
@@ -193,13 +200,15 @@ class FloatingPointToIntegralConversion extends ArithmeticConversion {
  */
 class IntegralToFloatingPointConversion extends ArithmeticConversion {
   IntegralToFloatingPointConversion() {
-    getType().getUnspecifiedType() instanceof FloatingPointType and
-    isIntegralOrEnum(getExpr().getType().getUnspecifiedType())
+    getUnspecifiedType() instanceof FloatingPointType and
+    isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
-  override string getSemanticConversionString() {
-    result = "integral to floating point conversion"
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "IntegralToFloatingPointConversion"
   }
+
+  override string getSemanticConversionString() { result = "integral to floating point conversion" }
 }
 
 /**
@@ -211,27 +220,29 @@ class IntegralToFloatingPointConversion extends ArithmeticConversion {
 class PointerConversion extends Cast {
   PointerConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isPointerOrNullPointer(getType().getUnspecifiedType()) and
-    isPointerOrNullPointer(getExpr().getType().getUnspecifiedType())
+    isPointerOrNullPointer(getUnspecifiedType()) and
+    isPointerOrNullPointer(getExpr().getUnspecifiedType())
   }
 
-  override string getSemanticConversionString() {
-    result = "pointer conversion"
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "PointerConversion"
   }
+
+  override string getSemanticConversionString() { result = "pointer conversion" }
 }
 
 /**
  * A conversion from one pointer-to-member type to another. The conversion
  * does not modify the value of the pointer-to-member. For pointer-to-member
- * conversions involving casts between base and derived classes, see 
+ * conversions involving casts between base and derived classes, see
  * `PointerToMemberBaseClassConversion` and `PointerToMemberDerivedClassConversion`.
  */
 class PointerToMemberConversion extends Cast {
   PointerToMemberConversion() {
     conversionkinds(underlyingElement(this), 0) and
     exists(Type fromType, Type toType |
-      fromType = getExpr().getType().getUnspecifiedType() and
-      toType = getType().getUnspecifiedType() and
+      fromType = getExpr().getUnspecifiedType() and
+      toType = getUnspecifiedType() and
       isPointerToMemberOrNullPointer(fromType) and
       isPointerToMemberOrNullPointer(toType) and
       // A conversion from nullptr to nullptr is a `PointerConversion`, not a
@@ -243,9 +254,11 @@ class PointerToMemberConversion extends Cast {
     )
   }
 
-  override string getSemanticConversionString() {
-    result = "pointer-to-member conversion"
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "PointerToMemberConversion"
   }
+
+  override string getSemanticConversionString() { result = "pointer-to-member conversion" }
 }
 
 /**
@@ -254,13 +267,15 @@ class PointerToMemberConversion extends Cast {
 class PointerToIntegralConversion extends Cast {
   PointerToIntegralConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isIntegralOrEnum(getType().getUnspecifiedType()) and
-    isPointerOrNullPointer(getExpr().getType().getUnspecifiedType())
+    isIntegralOrEnum(getUnspecifiedType()) and
+    isPointerOrNullPointer(getExpr().getUnspecifiedType())
   }
 
-  override string getSemanticConversionString() {
-    result = "pointer to integral conversion"
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "PointerToIntegralConversion"
   }
+
+  override string getSemanticConversionString() { result = "pointer to integral conversion" }
 }
 
 /**
@@ -269,13 +284,15 @@ class PointerToIntegralConversion extends Cast {
 class IntegralToPointerConversion extends Cast {
   IntegralToPointerConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isPointerOrNullPointer(getType().getUnspecifiedType()) and
-    isIntegralOrEnum(getExpr().getType().getUnspecifiedType())
+    isPointerOrNullPointer(getUnspecifiedType()) and
+    isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
-  override string getSemanticConversionString() {
-    result = "integral to pointer conversion"
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "IntegralToPointerConversion"
   }
+
+  override string getSemanticConversionString() { result = "integral to pointer conversion" }
 }
 
 /**
@@ -283,13 +300,11 @@ class IntegralToPointerConversion extends Cast {
  * false, or nullptr. Returns `true` otherwise.
  */
 class BoolConversion extends Cast {
-  BoolConversion() {
-    conversionkinds(underlyingElement(this), 1)
-  }
+  BoolConversion() { conversionkinds(underlyingElement(this), 1) }
 
-  override string getSemanticConversionString() {
-    result = "conversion to bool"
-  }
+  override string getCanonicalQLClass() { not exists(qlCast(this)) and result = "BoolConversion" }
+
+  override string getSemanticConversionString() { result = "conversion to bool" }
 }
 
 /**
@@ -298,12 +313,12 @@ class BoolConversion extends Cast {
 class VoidConversion extends Cast {
   VoidConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    getType().getUnspecifiedType() instanceof VoidType
+    getUnspecifiedType() instanceof VoidType
   }
 
-  override string getSemanticConversionString() {
-    result = "conversion to void"
-  }
+  override string getCanonicalQLClass() { not exists(qlCast(this)) and result = "VoidConversion" }
+
+  override string getSemanticConversionString() { result = "conversion to void" }
 }
 
 /**
@@ -334,14 +349,14 @@ class InheritanceConversion extends Cast {
    * derived class.
    */
   Class getBaseClass() {
-    none()  // Overridden by subclasses
+    none() // Overridden by subclasses
   }
 
   /**
    * Gets the derived class of the conversion.
    */
   Class getDerivedClass() {
-    none()  // Overridden by subclasses
+    none() // Overridden by subclasses
   }
 }
 
@@ -353,7 +368,7 @@ class InheritanceConversion extends Cast {
  */
 private Class getConversionClass(Expr expr) {
   exists(Type operandType |
-    operandType = expr.getType().getUnspecifiedType() and
+    operandType = expr.getUnspecifiedType() and
     (
       result = operandType or
       result = operandType.(PointerType).getBaseType()
@@ -366,28 +381,22 @@ private Class getConversionClass(Expr expr) {
  * glvalue of a direct or virtual base class.
  */
 class BaseClassConversion extends InheritanceConversion {
-  BaseClassConversion() {
-    conversionkinds(underlyingElement(this), 2)
+  BaseClassConversion() { conversionkinds(underlyingElement(this), 2) }
+
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "BaseClassConversion"
   }
 
-  override string getSemanticConversionString() {
-    result = "base class conversion"
-  }
+  override string getSemanticConversionString() { result = "base class conversion" }
 
-  override Class getBaseClass() {
-    result = getConversionClass(this)
-  }
+  override Class getBaseClass() { result = getConversionClass(this) }
 
-  override Class getDerivedClass() {
-    result = getConversionClass(getExpr())
-  }
+  override Class getDerivedClass() { result = getConversionClass(getExpr()) }
 
   /**
    * Holds if this conversion is to a virtual base class.
    */
-  predicate isVirtual() {
-    getDerivation().isVirtual() or not exists(getDerivation())
-  }
+  predicate isVirtual() { getDerivation().isVirtual() or not exists(getDerivation()) }
 }
 
 /**
@@ -395,21 +404,17 @@ class BaseClassConversion extends InheritanceConversion {
  * to a direct derived class.
  */
 class DerivedClassConversion extends InheritanceConversion {
-  DerivedClassConversion() {
-    conversionkinds(underlyingElement(this), 3)
+  DerivedClassConversion() { conversionkinds(underlyingElement(this), 3) }
+
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "DerivedClassConversion"
   }
 
-  override string getSemanticConversionString() {
-    result = "derived class conversion"
-  }
+  override string getSemanticConversionString() { result = "derived class conversion" }
 
-  override Class getBaseClass() {
-    result = getConversionClass(getExpr())
-  }
+  override Class getBaseClass() { result = getConversionClass(getExpr()) }
 
-  override Class getDerivedClass() {
-    result = getConversionClass(this)
-  }
+  override Class getDerivedClass() { result = getConversionClass(this) }
 }
 
 /**
@@ -417,8 +422,10 @@ class DerivedClassConversion extends InheritanceConversion {
  * of an immediate base class.
  */
 class PointerToMemberBaseClassConversion extends Cast {
-  PointerToMemberBaseClassConversion() {
-    conversionkinds(underlyingElement(this), 4)
+  PointerToMemberBaseClassConversion() { conversionkinds(underlyingElement(this), 4) }
+
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "PointerToMemberBaseClassConversion"
   }
 
   override string getSemanticConversionString() {
@@ -431,8 +438,10 @@ class PointerToMemberBaseClassConversion extends Cast {
  * of an immediate derived class.
  */
 class PointerToMemberDerivedClassConversion extends Cast {
-  PointerToMemberDerivedClassConversion() {
-    conversionkinds(underlyingElement(this), 5)
+  PointerToMemberDerivedClassConversion() { conversionkinds(underlyingElement(this), 5) }
+
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "PointerToMemberDerivedClassConversion"
   }
 
   override string getSemanticConversionString() {
@@ -446,13 +455,13 @@ class PointerToMemberDerivedClassConversion extends Cast {
  * derived classes, see `BaseClassConversion` and `DerivedClassConversion`.
  */
 class GlvalueConversion extends Cast {
-  GlvalueConversion() {
-    conversionkinds(underlyingElement(this), 6)
+  GlvalueConversion() { conversionkinds(underlyingElement(this), 6) }
+
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "GlvalueConversion"
   }
 
-  override string getSemanticConversionString() {
-    result = "glvalue conversion"
-  }
+  override string getSemanticConversionString() { result = "glvalue conversion" }
 }
 
 /**
@@ -470,13 +479,13 @@ class GlvalueConversion extends Cast {
  * to the reference.
  */
 class PrvalueAdjustmentConversion extends Cast {
-  PrvalueAdjustmentConversion() {
-    conversionkinds(underlyingElement(this), 7)
+  PrvalueAdjustmentConversion() { conversionkinds(underlyingElement(this), 7) }
+
+  override string getCanonicalQLClass() {
+    not exists(qlCast(this)) and result = "PrvalueAdjustmentConversion"
   }
 
-  override string getSemanticConversionString() {
-    result = "prvalue adjustment conversion"
-  }
+  override string getSemanticConversionString() { result = "prvalue adjustment conversion" }
 }
 
 /**
@@ -487,9 +496,9 @@ class DynamicCast extends Cast, @dynamic_cast {
 
   override int getPrecedence() { result = 16 }
 
-  override string getSemanticConversionString() {
-    result = "dynamic_cast"
-  }
+  override string getCanonicalQLClass() { result = "DynamicCast" }
+
+  override string getSemanticConversionString() { result = "dynamic_cast" }
 }
 
 /**
@@ -497,14 +506,16 @@ class DynamicCast extends Cast, @dynamic_cast {
  * specified by the `__declspec(uuid)` attribute.
  */
 class UuidofOperator extends Expr, @uuidof {
-  override string toString() { result = "__uuidof(" + getTypeOperand().getName() + ")" }
+  override string toString() {
+    if exists(getTypeOperand())
+    then result = "__uuidof(" + getTypeOperand().getName() + ")"
+    else result = "__uuidof(0)"
+  }
 
   override int getPrecedence() { result = 15 }
 
   /** Gets the contained type. */
-  Type getTypeOperand() {
-    uuidof_bind(underlyingElement(this), unresolveElement(result))
-  }
+  Type getTypeOperand() { uuidof_bind(underlyingElement(this), unresolveElement(result)) }
 }
 
 /**
@@ -524,7 +535,7 @@ class TypeidOperator extends Expr, @type_id {
    * printf("the type of ptr is: %s\n", typeid(ptr).name);
    * ```
    */
-  Type getResultType() { typeid_bind(underlyingElement(this),unresolveElement(result)) }
+  Type getResultType() { typeid_bind(underlyingElement(this), unresolveElement(result)) }
 
   /**
    * DEPRECATED: Use `getResultType()` instead.
@@ -532,6 +543,8 @@ class TypeidOperator extends Expr, @type_id {
    * Gets the type that is returned by this typeid expression.
    */
   deprecated Type getSpecifiedType() { result = this.getResultType() }
+
+  override string getCanonicalQLClass() { result = "TypeidOperator" }
 
   /**
    * Gets the contained expression, if any (if this typeid contains
@@ -543,12 +556,9 @@ class TypeidOperator extends Expr, @type_id {
 
   override int getPrecedence() { result = 16 }
 
-  override predicate mayBeImpure() {
-    this.getExpr().mayBeImpure()
-  }
-  override predicate mayBeGloballyImpure() {
-    this.getExpr().mayBeGloballyImpure()
-  }
+  override predicate mayBeImpure() { this.getExpr().mayBeImpure() }
+
+  override predicate mayBeGloballyImpure() { this.getExpr().mayBeGloballyImpure() }
 }
 
 /**
@@ -560,12 +570,11 @@ class TypeidOperator extends Expr, @type_id {
 class SizeofPackOperator extends Expr, @sizeof_pack {
   override string toString() { result = "sizeof...(...)" }
 
-  override predicate mayBeImpure() {
-    none()
-  }
-  override predicate mayBeGloballyImpure() {
-    none()
-  }
+  override string getCanonicalQLClass() { result = "SizeofPackOperator" }
+
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
 }
 
 /**
@@ -581,6 +590,8 @@ abstract class SizeofOperator extends Expr, @runtime_sizeof {
 class SizeofExprOperator extends SizeofOperator {
   SizeofExprOperator() { exists(Expr e | this.getChild(0) = e) }
 
+  override string getCanonicalQLClass() { result = "SizeofExprOperator" }
+
   /** Gets the contained expression. */
   Expr getExprOperand() { result = this.getChild(0) }
 
@@ -588,27 +599,26 @@ class SizeofExprOperator extends SizeofOperator {
    * DEPRECATED: Use `getExprOperand()` instead
    *
    * Gets the contained expression.
-   * */
+   */
   deprecated Expr getExpr() { result = this.getExprOperand() }
 
   override string toString() { result = "sizeof(<expr>)" }
 
-  override predicate mayBeImpure() {
-    this.getExprOperand().mayBeImpure()
-  }
-  override predicate mayBeGloballyImpure() {
-    this.getExprOperand().mayBeGloballyImpure()
-  }
+  override predicate mayBeImpure() { this.getExprOperand().mayBeImpure() }
+
+  override predicate mayBeGloballyImpure() { this.getExprOperand().mayBeGloballyImpure() }
 }
 
 /**
  * A C/C++ sizeof expression whose operand is a type name.
  */
 class SizeofTypeOperator extends SizeofOperator {
-  SizeofTypeOperator() { sizeof_bind(underlyingElement(this),_) }
+  SizeofTypeOperator() { sizeof_bind(underlyingElement(this), _) }
+
+  override string getCanonicalQLClass() { result = "SizeofTypeOperator" }
 
   /** Gets the contained type. */
-  Type getTypeOperand() { sizeof_bind(underlyingElement(this),unresolveElement(result)) }
+  Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
 
   /**
    * DEPRECATED: Use `getTypeOperand()` instead
@@ -619,12 +629,9 @@ class SizeofTypeOperator extends SizeofOperator {
 
   override string toString() { result = "sizeof(" + this.getTypeOperand().getName() + ")" }
 
-  override predicate mayBeImpure() {
-    none()
-  }
-  override predicate mayBeGloballyImpure() {
-    none()
-  }
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
 }
 
 /**
@@ -657,10 +664,10 @@ class AlignofExprOperator extends AlignofOperator {
  * A C++11 `alignof` expression whose operand is a type name.
  */
 class AlignofTypeOperator extends AlignofOperator {
-  AlignofTypeOperator() { sizeof_bind(underlyingElement(this),_) }
+  AlignofTypeOperator() { sizeof_bind(underlyingElement(this), _) }
 
   /** Gets the contained type. */
-  Type getTypeOperand() { sizeof_bind(underlyingElement(this),unresolveElement(result)) }
+  Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
 
   /**
    * DEPRECATED: Use `getTypeOperand()` instead.
@@ -677,10 +684,68 @@ class ArrayToPointerConversion extends Conversion, @array_to_pointer {
   /** Gets a textual representation of this conversion. */
   override string toString() { result = "array to pointer conversion" }
 
-  override predicate mayBeImpure() {
-    none()
-  }
-  override predicate mayBeGloballyImpure() {
-    none()
-  }
+  override string getCanonicalQLClass() { result = "ArrayToPointerConversion" }
+
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
+}
+
+/**
+ * A node representing the Cast sub-class of entity `cast`.
+ */
+string qlCast(Cast cast) {
+  // NB: Take care and include only leaf QL classes
+  cast instanceof CStyleCast and result = "CStyleCast"
+  or
+  cast instanceof StaticCast and result = "StaticCast"
+  or
+  cast instanceof DynamicCast and result = "DynamicCast"
+  or
+  cast instanceof ConstCast and result = "ConstCast"
+  or
+  cast instanceof ReinterpretCast and result = "ReinterpretCast"
+}
+
+/**
+ * A node representing the Conversion sub-class of entity `cast`.
+ */
+string qlConversion(Cast cast) {
+  // NB: Take care and include only leaf QL classes
+  cast instanceof IntegralConversion and result = "IntegralConversion"
+  or
+  cast instanceof FloatingPointConversion and result = "FloatingPointConversion"
+  or
+  cast instanceof FloatingPointToIntegralConversion and result = "FloatingPointToIntegralConversion"
+  or
+  cast instanceof IntegralToFloatingPointConversion and result = "IntegralToFloatingPointConversion"
+  or
+  cast instanceof PointerConversion and result = "PointerConversion"
+  or
+  cast instanceof PointerToMemberConversion and result = "PointerToMemberConversion"
+  or
+  cast instanceof PointerToIntegralConversion and result = "PointerToIntegralConversion"
+  or
+  cast instanceof IntegralToPointerConversion and result = "IntegralToPointerConversion"
+  or
+  cast instanceof BoolConversion and result = "BoolConversion"
+  or
+  cast instanceof VoidConversion and result = "VoidConversion"
+  or
+  cast instanceof BaseClassConversion and result = "BaseClassConversion"
+  or
+  cast instanceof DerivedClassConversion and result = "DerivedClassConversion"
+  or
+  cast instanceof PointerToMemberBaseClassConversion and
+  result = "PointerToMemberBaseClassConversion"
+  or
+  cast instanceof PointerToMemberDerivedClassConversion and
+  result = "PointerToMemberDerivedClassConversion"
+  or
+  cast instanceof GlvalueConversion and result = "GlvalueConversion"
+  or
+  cast instanceof PrvalueAdjustmentConversion and result = "PrvalueAdjustmentConversion"
+  or
+  // treat dynamic_cast<...>(...) as a conversion
+  cast instanceof DynamicCast and result = "DynamicCast"
 }

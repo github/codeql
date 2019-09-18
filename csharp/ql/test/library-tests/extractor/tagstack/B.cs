@@ -2,10 +2,6 @@
 
 class C
 {
-    D M1() { M3(); return null; }
+    object M1() { M3(); return null; }
     void M3() { }
-}
-
-class D
-{
 }

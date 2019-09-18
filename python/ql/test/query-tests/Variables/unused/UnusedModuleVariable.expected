@@ -1,0 +1,6 @@
+| variables_test.py:48:1:48:13 | not_used_var1 | The global variable 'not_used_var1' is not used. |
+| variables_test.py:49:1:49:13 | not_used_var2 | The global variable 'not_used_var2' is not used. |
+| variables_test.py:86:1:86:1 | a | The global variable 'a' is not used. |
+| variables_test.py:86:3:86:3 | b | The global variable 'b' is not used. |
+| variables_test.py:86:5:86:5 | c | The global variable 'c' is not used. |
+| variables_test.py:100:1:100:8 | glob_var | The global variable 'glob_var' is not used. |
