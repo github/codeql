@@ -35,3 +35,13 @@ void pmIsConst() {
     void (PM::* pm2)();
   } pms = { &PM::x1, &PM::f1 };
 }
+
+template<typename T>
+void pmIsConstT() {
+  static const struct {
+    int T::* pm1;
+    void (T::* pm2)();
+  } pms = { &T::x1, &T::f1 };
+}
+
+template void pmIsConstT<PM>();
