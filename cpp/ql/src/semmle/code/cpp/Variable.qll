@@ -315,7 +315,7 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
  *   static int c;
  * }
  * ```
- * 
+ *
  * Local variables can be static; use the `isStatic` member predicate to
  * detect those.
  */
@@ -343,7 +343,7 @@ deprecated class StackVariable extends Variable {
  *   static int c;
  * }
  * ```
- * 
+ *
  * Local variables can be static; use the `isStatic` member predicate to detect
  * those.
  *
@@ -512,9 +512,9 @@ class TemplateVariable extends Variable {
  * void myTemplateFunction() {
  *   T b;
  * }
- * 
+ *
  * ...
- * 
+ *
  * myTemplateFunction<int>();
  * ```
  */
