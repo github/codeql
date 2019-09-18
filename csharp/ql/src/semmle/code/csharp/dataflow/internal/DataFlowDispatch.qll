@@ -187,48 +187,15 @@ private module Cached {
       )
     }
   }
-
-  /**
-   * Gets a node that can read the value returned from `call` with return kind
-   * `kind`.
-   */
-  cached
-  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-    // normal `return`
-    result = call.getNode() and
-    kind instanceof NormalReturnKind and
-    not call.getExpr().getType() instanceof VoidType
-    or
-    // `yield return`
-    result = call.getNode() and
-    kind instanceof YieldReturnKind and
-    call.getExpr().getType() instanceof YieldReturnType
-    or
-    // `out`/`ref` parameter
-    exists(Parameter p, AssignableDefinitions::OutRefDefinition def |
-      p.getSourceDeclaration().getPosition() = kind.(OutRefReturnKind).getPosition()
-    |
-      def = result.(SsaDefinitionNode).getDefinition().(Ssa::ExplicitDefinition).getADefinition() and
-      def.getTargetAccess() = call.getExpr().(Call).getArgumentForParameter(p)
-    )
-    or
-    // implicit captured variable return
-    exists(Ssa::ExplicitDefinition def, Ssa::ImplicitCallDefinition cdef, LocalScopeVariable v |
-      kind.(ImplicitCapturedReturnKind).getVariable() = v and
-      def.isCapturedVariableDefinitionFlowOut(cdef, _) and
-      cdef = result.(SsaDefinitionNode).getDefinition() and
-      v = def.getSourceVariable().getAssignable()
-    |
-      call.getControlFlowNode() = cdef.getControlFlowNode()
-      or
-      exists(DataFlowCall outer | call.(ImplicitDelegateDataFlowCall).isArgumentOf(outer, _) |
-        outer.getControlFlowNode() = cdef.getControlFlowNode()
-      )
-    )
-  }
 }
 
 import Cached
+
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
 
 predicate viableCallable = viableImpl/1;
 
@@ -393,6 +360,9 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
 
   /** Gets the number of parameters of the supplied delegate. */
   int getNumberOfDelegateParameters() { result = arg.getDelegateType().getNumberOfParameters() }
+
+  /** Gets the return type of the supplied delegate. */
+  Type getDelegateReturnType() { result = arg.getDelegateType().getReturnType() }
 
   override DotNet::Callable getARuntimeTarget(CallContext::CallContext cc) {
     result = cfn.getElement().(DelegateArgumentToLibraryCallable).getARuntimeTarget(cc)
