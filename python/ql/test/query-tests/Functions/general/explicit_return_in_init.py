@@ -37,3 +37,9 @@ class InitCallsInit(InitCallsError):
 
     def __init__(self):
         return super(InitCallsInit, self).__init__()
+
+# This is not ok, but we will only report root cause (ExplicitReturnInInit)
+class InitCallsBadInit(ExplicitReturnInInit):
+
+    def __init__(self):
+        return ExplicitReturnInInit.__init__(self)
