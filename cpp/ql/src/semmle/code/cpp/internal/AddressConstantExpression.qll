@@ -61,6 +61,10 @@ private predicate constantAddressPointer(Expr pointer) {
   // tells us how it's going to be used.
   pointer.(FunctionAccess).getType() instanceof FunctionPointerType
   or
+  // Pointer to member function. These accesses are always pointers even though
+  // their type is `RoutineType`.
+  pointer.(FunctionAccess).getTarget() instanceof MemberFunction
+  or
   addressConstantVariable(pointer.(VariableAccess).getTarget()) and
   pointer.getType().getUnderlyingType() instanceof PointerType
   or
