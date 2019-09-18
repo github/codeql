@@ -483,7 +483,6 @@ module FinallySplitting {
    */
   class FinallySplitImpl extends SplitImpl, TFinallySplit {
     private FinallySplitType type;
-
     private int nestLevel;
 
     FinallySplitImpl() { this = TFinallySplit(type, nestLevel) }
@@ -553,10 +552,10 @@ module FinallySplitting {
 
     /**
      * Holds if `pred` may exit this split with completion `c`. The Boolean
-     * `derived` indicates whether `c` is a derived completion from a `try`/
+     * `inherited` indicates whether `c` is an inherited completion from a `try`/
      * `catch` block.
      */
-    private predicate exit(ControlFlowElement pred, Completion c, boolean derived) {
+    private predicate exit(ControlFlowElement pred, Completion c, boolean inherited) {
       this.appliesToPredecessor(pred) and
       exists(TryStmt try, FinallySplitType type |
         type = this.getType() and
@@ -568,7 +567,7 @@ module FinallySplitting {
           // Finally block can itself exit with completion `c`: either `c` must
           // match this split, `c` must be an abnormal completion, or this split
           // does not require another completion to be recovered
-          derived = false and
+          inherited = false and
           (
             type.matchesCompletion(c)
             or
@@ -577,15 +576,15 @@ module FinallySplitting {
             type instanceof NormalSuccessor
           )
         else (
-          // Finally block can exit with completion `c` derived from try/catch
+          // Finally block can exit with completion `c` inherited from try/catch
           // block: must match this split
-          derived = true and
+          inherited = true and
           type.matchesCompletion(c) and
           not type instanceof NormalSuccessor
         )
       )
       or
-      // If this split is normal, and an outer split can exit based on a derived
+      // If this split is normal, and an outer split can exit based on a inherited
       // completion, we need to exit this split as well. For example, in
       //
       // ```
@@ -613,9 +612,9 @@ module FinallySplitting {
       this.appliesToPredecessor(pred) and
       exists(FinallySplitInternal outer |
         outer.getNestLevel() = this.getNestLevel() - 1 and
-        outer.exit(pred, c, derived) and
+        outer.exit(pred, c, inherited) and
         this.getType() instanceof NormalSuccessor and
-        derived = true
+        inherited = true
       )
     }
 
