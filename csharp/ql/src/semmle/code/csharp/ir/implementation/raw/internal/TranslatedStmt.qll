@@ -750,40 +750,37 @@ abstract class TranslatedSpecificJump extends TranslatedStmt {
 class TranslatedBreakStmt extends TranslatedSpecificJump {
   override BreakStmt stmt;
 
-  override Instruction getTargetInstruction() {
-    result = getEnclosingLoopOrSwitchNextInstr(stmt)
-  }
+  override Instruction getTargetInstruction() { result = getEnclosingLoopOrSwitchNextInstr(stmt) }
 }
 
 private Instruction getEnclosingLoopOrSwitchNextInstr(Stmt crtStmt) {
   if crtStmt instanceof LoopStmt or crtStmt instanceof SwitchStmt
-  then
-    result = getTranslatedStmt(crtStmt).getParent().getChildSuccessor(getTranslatedStmt(crtStmt))
+  then result = getTranslatedStmt(crtStmt).getParent().getChildSuccessor(getTranslatedStmt(crtStmt))
   else result = getEnclosingLoopOrSwitchNextInstr(crtStmt.getParent())
 }
 
 class TranslatedContinueStmt extends TranslatedSpecificJump {
   override ContinueStmt stmt;
 
-  override Instruction getTargetInstruction() {
-    result = getEnclosingLoopTargetInstruction(stmt)
-  }
+  override Instruction getTargetInstruction() { result = getEnclosingLoopTargetInstruction(stmt) }
 }
 
 private Instruction getEnclosingLoopTargetInstruction(Stmt crtStmt) {
   if crtStmt instanceof ForStmt
   then result = getNextForInstruction(crtStmt)
-  else if crtStmt instanceof LoopStmt
-  then result = getTranslatedStmt(crtStmt).getFirstInstruction()
-  else result = getEnclosingLoopTargetInstruction(crtStmt.getParent())
+  else
+    if crtStmt instanceof LoopStmt
+    then result = getTranslatedStmt(crtStmt).getFirstInstruction()
+    else result = getEnclosingLoopTargetInstruction(crtStmt.getParent())
 }
 
 private Instruction getNextForInstruction(ForStmt for) {
   if exists(for.getUpdate(0))
   then result = getTranslatedStmt(for).(TranslatedForStmt).getUpdate(0).getFirstInstruction()
-  else if exists(for.getCondition())
-  then result = getTranslatedStmt(for).(TranslatedForStmt).getCondition().getFirstInstruction()
-  else result = getTranslatedStmt(for).(TranslatedForStmt).getBody().getFirstInstruction()
+  else
+    if exists(for.getCondition())
+    then result = getTranslatedStmt(for).(TranslatedForStmt).getCondition().getFirstInstruction()
+    else result = getTranslatedStmt(for).(TranslatedForStmt).getBody().getFirstInstruction()
 }
 
 class TranslatedGotoLabelStmt extends TranslatedSpecificJump {
