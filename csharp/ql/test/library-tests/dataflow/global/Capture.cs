@@ -108,6 +108,18 @@ class Capture
         };
         CaptureOut2NotCalled();
         Check(nonSink0);
+        /*string sink40 = "";
+        void CaptureOutMultipleLambdas()
+        {
+            RunAction(() => {
+                sink40 = "taint source";
+            });
+            RunAction(() => {
+                sink40 = "not tainted";
+            });
+        };
+        CaptureOutMultipleLambdas();
+        Check(sink40);*/
     }
 
     void Through(string tainted)

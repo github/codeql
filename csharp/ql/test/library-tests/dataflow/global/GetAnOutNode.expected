@@ -11,20 +11,20 @@
 | Capture.cs:92:9:92:51 | call to method ToArray | return | Capture.cs:92:9:92:51 | call to method ToArray |
 | Capture.cs:92:30:92:40 | [implicit call] access to local variable captureOut3 | captured sink32 | Capture.cs:92:9:92:41 | SSA call def(sink32) |
 | Capture.cs:92:30:92:40 | [implicit call] access to local variable captureOut3 | return | Capture.cs:92:30:92:40 | [output] access to local variable captureOut3 |
-| Capture.cs:120:9:120:25 | call to local function CaptureThrough1 | captured sink33 | Capture.cs:120:9:120:25 | SSA call def(sink33) |
-| Capture.cs:132:9:132:25 | [transitive] call to local function CaptureThrough2 | captured sink34 | Capture.cs:132:9:132:25 | SSA call def(sink34) |
-| Capture.cs:132:9:132:25 | call to local function CaptureThrough2 | captured sink34 | Capture.cs:132:9:132:25 | SSA call def(sink34) |
-| Capture.cs:141:9:141:45 | call to method Select | captured sink35 | Capture.cs:141:9:141:45 | SSA call def(sink35) |
-| Capture.cs:141:9:141:45 | call to method Select | return | Capture.cs:141:9:141:45 | call to method Select |
-| Capture.cs:141:9:141:45 | call to method Select | yield return | Capture.cs:141:9:141:45 | call to method Select |
-| Capture.cs:141:9:141:55 | call to method ToArray | return | Capture.cs:141:9:141:55 | call to method ToArray |
-| Capture.cs:141:30:141:44 | [implicit call] access to local variable captureThrough3 | captured sink35 | Capture.cs:141:9:141:45 | SSA call def(sink35) |
-| Capture.cs:141:30:141:44 | [implicit call] access to local variable captureThrough3 | return | Capture.cs:141:30:141:44 | [output] access to local variable captureThrough3 |
-| Capture.cs:148:22:148:38 | call to local function CaptureThrough4 | return | Capture.cs:148:22:148:38 | call to local function CaptureThrough4 |
-| Capture.cs:156:9:156:32 | call to local function CaptureThrough5 | captured sink37 | Capture.cs:156:9:156:32 | SSA call def(sink37) |
-| Capture.cs:179:20:179:22 | call to local function M | return | Capture.cs:179:20:179:22 | call to local function M |
-| Capture.cs:182:22:182:32 | call to local function Id | return | Capture.cs:182:22:182:32 | call to local function Id |
-| Capture.cs:184:20:184:25 | call to local function Id | return | Capture.cs:184:20:184:25 | call to local function Id |
+| Capture.cs:132:9:132:25 | call to local function CaptureThrough1 | captured sink33 | Capture.cs:132:9:132:25 | SSA call def(sink33) |
+| Capture.cs:144:9:144:25 | [transitive] call to local function CaptureThrough2 | captured sink34 | Capture.cs:144:9:144:25 | SSA call def(sink34) |
+| Capture.cs:144:9:144:25 | call to local function CaptureThrough2 | captured sink34 | Capture.cs:144:9:144:25 | SSA call def(sink34) |
+| Capture.cs:153:9:153:45 | call to method Select | captured sink35 | Capture.cs:153:9:153:45 | SSA call def(sink35) |
+| Capture.cs:153:9:153:45 | call to method Select | return | Capture.cs:153:9:153:45 | call to method Select |
+| Capture.cs:153:9:153:45 | call to method Select | yield return | Capture.cs:153:9:153:45 | call to method Select |
+| Capture.cs:153:9:153:55 | call to method ToArray | return | Capture.cs:153:9:153:55 | call to method ToArray |
+| Capture.cs:153:30:153:44 | [implicit call] access to local variable captureThrough3 | captured sink35 | Capture.cs:153:9:153:45 | SSA call def(sink35) |
+| Capture.cs:153:30:153:44 | [implicit call] access to local variable captureThrough3 | return | Capture.cs:153:30:153:44 | [output] access to local variable captureThrough3 |
+| Capture.cs:160:22:160:38 | call to local function CaptureThrough4 | return | Capture.cs:160:22:160:38 | call to local function CaptureThrough4 |
+| Capture.cs:168:9:168:32 | call to local function CaptureThrough5 | captured sink37 | Capture.cs:168:9:168:32 | SSA call def(sink37) |
+| Capture.cs:191:20:191:22 | call to local function M | return | Capture.cs:191:20:191:22 | call to local function M |
+| Capture.cs:194:22:194:32 | call to local function Id | return | Capture.cs:194:22:194:32 | call to local function Id |
+| Capture.cs:196:20:196:25 | call to local function Id | return | Capture.cs:196:20:196:25 | call to local function Id |
 | GlobalDataFlow.cs:25:9:25:26 | access to property SinkProperty0 | return | GlobalDataFlow.cs:25:9:25:26 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:26:15:26:32 | access to property SinkProperty0 | return | GlobalDataFlow.cs:26:15:26:32 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:29:9:29:29 | access to property NonSinkProperty0 | return | GlobalDataFlow.cs:29:9:29:29 | access to property NonSinkProperty0 |
