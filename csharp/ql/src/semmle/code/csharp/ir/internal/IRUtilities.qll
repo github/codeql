@@ -9,8 +9,7 @@ Type getVariableType(Variable v) {
   exists(Type declaredType |
     declaredType = v.getType() and
     if v instanceof Parameter
-    then
-      result = declaredType
+    then result = declaredType
     else
       if declaredType instanceof ArrayType
       then

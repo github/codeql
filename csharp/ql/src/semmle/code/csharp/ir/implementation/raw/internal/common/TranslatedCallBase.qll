@@ -1,7 +1,7 @@
 /**
-* Contains an abstract class that serves as a Base for classes that deal with the translation of calls 
-* (both AST generated and compiler generated).
-*/
+ * Contains an abstract class that serves as a Base for classes that deal with the translation of calls
+ * (both AST generated and compiler generated).
+ */
 
 import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
@@ -14,7 +14,7 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 private import TranslatedExprBase
 
 abstract class TranslatedCallBase extends TranslatedElement {
-  override final TranslatedElement getChild(int id) {
+  final override TranslatedElement getChild(int id) {
     // We choose the child's id in the order of evaluation.
     // Note: some calls do need qualifiers, though instructions for them have already
     // been generated; eg. a constructor does not need to generate a qualifier,
@@ -174,9 +174,7 @@ abstract class TranslatedCallBase extends TranslatedElement {
   /**
    * Holds if the call has any arguments, not counting the `this` argument.
    */
-  final predicate hasArguments() {
-    exists(getArgument(0))
-  }
+  final predicate hasArguments() { exists(getArgument(0)) }
 
   predicate hasReadSideEffect() { any() }
 

@@ -33,7 +33,8 @@ private predicate canCreateCompilerGeneratedElement(Element generatedBy, int nth
   generatedBy instanceof DelegateCreation and
   nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
   or
-  generatedBy instanceof DelegateCall and nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
+  generatedBy instanceof DelegateCall and
+  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
 }
 
 /**
@@ -90,7 +91,7 @@ private predicate ignoreExprOnly(Expr expr) {
   // Ignore the child expression of a goto case stmt
   expr.getParent() instanceof GotoCaseStmt
   or
-  // Ignore the expression (that is not a declaration) 
+  // Ignore the expression (that is not a declaration)
   // that appears in a using block
   expr.getParent().(UsingBlockStmt).getExpr() = expr
 }
@@ -228,9 +229,7 @@ newtype TTranslatedElement =
       // Because of their implementation in C#,
       // we deal with all the types of initialization separately.
       // First only simple local variable initialization (ie. `int x = 0`)
-      exists(LocalVariableDeclAndInitExpr lvInit |
-        lvInit.getInitializer() = expr
-      )
+      exists(LocalVariableDeclAndInitExpr lvInit | lvInit.getInitializer() = expr)
       or
       // Then treat more complex ones
       expr instanceof ArrayInitializer
