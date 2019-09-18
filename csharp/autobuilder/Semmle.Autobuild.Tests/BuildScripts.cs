@@ -745,7 +745,7 @@ namespace Semmle.Extraction.Tests
             TestAutobuilderScript(autobuilder, 0, 6);
         }
 
-	[Fact]
+    [Fact]
         public void TestWindowCSharpMsBuildMultipleSolutions()
         {
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\csharp\nuget\nuget.exe restore test1.csproj"] = 0;
@@ -757,7 +757,7 @@ namespace Semmle.Extraction.Tests
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"test1.csproj"] = true;
             Actions.FileExists[@"test2.csproj"] = true;
-	    Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
+            Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"] = false;
@@ -791,7 +791,6 @@ namespace Semmle.Extraction.Tests
 
             TestAutobuilderScript(autobuilder, 0, 6);
         }
-
 
         [Fact]
         public void TestWindowCSharpMsBuildFailed()
