@@ -33,7 +33,6 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'hieroglyph',
-    'sphinxcontrib.blockdiag',
     'sphinx.ext.graphviz',
 ]
 
