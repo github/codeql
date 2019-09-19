@@ -28,7 +28,7 @@ struct {
 
 template<typename T>
 struct TemplateWithBitfield {
-  T templatesign : 2; // GOOD [FALSE POSITIVE]
+  T templatesign : 2; // GOOD
 };
 
 TemplateWithBitfield<signed int> twb;
