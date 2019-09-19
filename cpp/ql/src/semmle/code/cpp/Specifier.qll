@@ -29,6 +29,7 @@ class Specifier extends Element, @specifier {
 
 /**
  * A C/C++ function specifier: `inline`, `virtual`, or `explicit`.
+ * TODO
  */
 class FunctionSpecifier extends Specifier {
   FunctionSpecifier() {
@@ -43,6 +44,7 @@ class FunctionSpecifier extends Specifier {
 /**
  * A C/C++ storage class specifier: `auto`, `register`, `static`, `extern`,
  * or `mutable".
+ * TODO
  */
 class StorageClassSpecifier extends Specifier {
   StorageClassSpecifier() {
@@ -58,6 +60,7 @@ class StorageClassSpecifier extends Specifier {
 
 /**
  * A C++ access specifier: `public`, `protected`, or `private`.
+ * TODO
  */
 class AccessSpecifier extends Specifier {
   AccessSpecifier() {
@@ -146,12 +149,14 @@ class Attribute extends Element, @attribute {
 /**
  * An attribute introduced by GNU's `__attribute__((name))` syntax, for
  * example: `__attribute__((__noreturn__))`.
+ * TODO
  */
 class GnuAttribute extends Attribute, @gnuattribute { }
 
 /**
  * An attribute introduced by the C++11 standard `[[name]]` syntax, for
  * example: `[[clang::fallthrough]]`.
+ * TODO
  */
 class StdAttribute extends Attribute, @stdattribute {
   /**
@@ -171,13 +176,20 @@ class StdAttribute extends Attribute, @stdattribute {
 }
 
 /**
- * An attribute introduced by Microsoft's `__declspec(name)` syntax, for
- * example: `__declspec(dllimport)`.
+ * An attribute introduced by Microsoft's `__declspec(name)` syntax.  For
+ * example the attribute on the following declaration:
+ * ```
+ * __declspec(dllimport) void myFunction();
+ * ```
  */
 class Declspec extends Attribute, @declspec { }
 
 /**
- * An attribute introduced by Microsoft's "[name]" syntax, for example "[SA_Pre(Deref=1,Access=SA_Read)]".
+ * An attribute introduced by Microsoft's "[name]" syntax. For example
+ * ```
+ * [SA_Pre(Deref=1,Access=SA_Read)]
+ * TODO
+ * ```
  */
 class MicrosoftAttribute extends Attribute, @msattribute {
   AttributeArgument getNamedArgument(string name) {
@@ -186,8 +198,13 @@ class MicrosoftAttribute extends Attribute, @msattribute {
 }
 
 /**
- * A C++11 `alignas` construct.
- *
+ * A C++11 `alignas` construct. For example the attribute in the following
+ * code:
+ * ```
+ * struct alignas(16) MyStruct {
+ *   int x;
+ * };
+ * ```
  * Though it doesn't use the attribute syntax, `alignas(...)` is presented
  * as an `Attribute` for consistency with the `[[align(...)]]` attribute.
  */
@@ -197,7 +214,11 @@ class AlignAs extends Attribute, @alignas {
 
 /**
  * A GNU `format` attribute of the form `__attribute__((format(archetype, format-index, first-arg)))`
- * that declares a function to accept a `printf` style format string.
+ * that declares a function to accept a `printf` style format string.  For example the attribute
+ * on the following declaration:
+ * ``` 
+ * int myPrintf(const char *format, ...) __attribute__((format(printf, 1, 2)));
+ * ```
  */
 class FormatAttribute extends GnuAttribute {
   FormatAttribute() { getName() = "format" }
@@ -242,7 +263,11 @@ class FormatAttribute extends GnuAttribute {
 }
 
 /**
- * An argument to an `Attribute`.
+ * An argument to an `Attribute`. For example the argument "dllimport" on the
+ * attribute in the following code:
+ * ```
+ * __declspec(dllimport) void myFunction();
+ * ```
  */
 class AttributeArgument extends Element, @attribute_arg {
   /**
