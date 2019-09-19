@@ -47,6 +47,18 @@ class Capture
             };
         };
         CaptureIn2NotCalled();
+        void CaptureTest(string nonSink0, string sink39)
+        {
+            RunAction(() =>       // Check each lambda captures the correct arguments
+            {
+                Check(nonSink0);
+                RunAction(() =>
+                {
+                    Check(sink39);
+                });
+            });
+        }
+        CaptureTest("not tainted", tainted);
     }
 
     void Out()
@@ -96,6 +108,18 @@ class Capture
         };
         CaptureOut2NotCalled();
         Check(nonSink0);
+        string sink40 = "";
+        void CaptureOutMultipleLambdas()
+        {
+            RunAction(() => {
+                sink40 = "taint source";
+            });
+            RunAction(() => {
+                nonSink0 = "not tainted";
+            });
+        };
+        CaptureOutMultipleLambdas();
+        Check(sink40); Check(nonSink0);
     }
 
     void Through(string tainted)
@@ -174,4 +198,9 @@ class Capture
     }
 
     static void Check<T>(T x) { }
+
+    static void RunAction(Action a)
+    {
+        a.Invoke();
+    }
 }
