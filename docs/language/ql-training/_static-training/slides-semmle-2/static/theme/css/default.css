@@ -1589,8 +1589,8 @@ p.first.admonition-title {
   font-size: 1em;
 }
 
-.admonition.note  ul {
-  width: 90%;
+.admonition.note  ul li {
+  width: inherit;
 }
 
 
