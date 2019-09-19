@@ -3,7 +3,6 @@ using Semmle.Util.Logging;
 using System;
 using System.IO;
 using System.IO.Compression;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Semmle.Extraction
@@ -182,8 +181,8 @@ namespace Semmle.Extraction
                         return;
                     }
 
-                    var existingHash = ComputeHash(TrapFile);
-                    var hash = ComputeHash(tmpFile);
+                    var existingHash = FileUtils.ComputeFileHash(TrapFile);
+                    var hash = FileUtils.ComputeFileHash(tmpFile);
                     if (existingHash != hash)
                     {
                         var root = TrapFile.Substring(0, TrapFile.Length - 8); // Remove trailing ".trap.gz"
@@ -203,22 +202,6 @@ namespace Semmle.Extraction
         public void Emit(ITrapEmitter emitter)
         {
             emitter.EmitTrap(Writer);
-        }
-
-        /// <summary>
-        /// Computes the hash of <paramref name="filePath"/>.
-        /// </summary>
-        static string ComputeHash(string filePath)
-        {
-            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var shaAlg = new SHA256Managed())
-            {
-                var sha = shaAlg.ComputeHash(fileStream);
-                var hex = new StringBuilder(sha.Length * 2);
-                foreach (var b in sha)
-                    hex.AppendFormat("{0:x2}", b);
-                return hex.ToString();
-            }
         }
 
         /// <summary>

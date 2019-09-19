@@ -109,6 +109,12 @@ namespace Semmle.Extraction.CSharp
                         return ExitCode.Failed;
                     }
 
+                    if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse))
+                    {
+                        logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");
+                        return ExitCode.Ok;
+                    }
+
                     var referenceTasks = ResolveReferences(compilerArguments, analyser, canonicalPathCache, references);
 
                     var syntaxTrees = new List<SyntaxTree>();
@@ -131,7 +137,6 @@ namespace Semmle.Extraction.CSharp
                     {
                         logger.Log(Severity.Error, "  No source files");
                         ++analyser.CompilationErrors;
-                        analyser.LogDiagnostics(compilerVersion.ArgsWithResponse);
                         return ExitCode.Failed;
                     }
 
@@ -149,7 +154,7 @@ namespace Semmle.Extraction.CSharp
                         // already.
                         );
 
-                    analyser.Initialize(compilerArguments, compilation, commandLineArguments, compilerVersion.ArgsWithResponse);
+                    analyser.EndInitialize(compilerArguments, commandLineArguments, compilation);
                     analyser.AnalyseCompilation(cwd, args);
                     analyser.AnalyseReferences();
 
@@ -175,7 +180,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         Frontend = new Entities.Timings() { Elapsed = sw1.Elapsed, Cpu = cpuTime1, User = userTime1 },
                         Extractor = new Entities.Timings() { Elapsed = sw2.Elapsed, Cpu = cpuTime2 - cpuTime1, User = userTime2 - userTime1 },
-                        Total = new Entities.Timings() {  Elapsed = stopwatch.Elapsed, Cpu=cpuTime2, User = userTime2 },
+                        Total = new Entities.Timings() { Elapsed = stopwatch.Elapsed, Cpu = cpuTime2, User = userTime2 },
                         PeakWorkingSet = currentProcess.PeakWorkingSet64
                     };
 
