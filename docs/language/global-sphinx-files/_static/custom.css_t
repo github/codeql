@@ -456,7 +456,7 @@ blockquote.pull-quote > :last-child {
 }
 
 .toggle .name:hover {
-    text-decoration: underline;
+    cursor: pointer;
 }
 
 .toggle .name:after {
