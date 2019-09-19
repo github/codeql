@@ -456,7 +456,7 @@ namespace Semmle.Extraction.CSharp
             bool argsWritten;
             using (var streamWriter = new StreamWriter(new FileStream(tempFile, FileMode.Append, FileAccess.Write)))
             {
-                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
+                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs.Where(arg => !arg.StartsWith('@')))}");
                 argsWritten = roslynArgs.WriteCommandLine(streamWriter);
             }
 

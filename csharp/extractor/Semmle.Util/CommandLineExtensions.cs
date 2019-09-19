@@ -15,15 +15,16 @@ namespace Semmle.Util
         /// <returns>True iff the file was written.</returns>
         public static bool WriteCommandLine(this IEnumerable<string> commandLineArguments, TextWriter textWriter)
         {
-            foreach (var arg in commandLineArguments.Where(arg => arg[0] == '@').Select(arg => arg.Substring(1)))
+            var found = false;
+            foreach (var arg in commandLineArguments.Where(arg => arg.StartsWith('@')).Select(arg => arg.Substring(1)))
             {
                 string line;
                 using (StreamReader file = new StreamReader(arg))
                     while ((line = file.ReadLine()) != null)
                         textWriter.WriteLine(line);
-                return true;
+                found = true;
             }
-            return false;
+            return found;
         }
     }
 }
