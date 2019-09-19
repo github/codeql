@@ -729,6 +729,18 @@ private predicate mk_AlignofExpr(HashCons child, AlignofExprOperator e) {
   child = hashCons(e.getAChild())
 }
 
+/**
+ * Gets the hash cons of field initializer expressions [0..i), where i > 0, for
+ * the class aggregate literal `cal` of type `c`, where `head` is the hash cons
+ * of the i'th initializer expression.
+ */
+HC_Fields aggInitExprsUpTo(ClassAggregateLiteral cal, Class c, int i) {
+  exists(Field f, HashCons head, HC_Fields tail |
+    result = HC_FieldCons(c, i - 1, f, head, tail) and
+    mk_FieldCons(c, i - 1, f, head, tail, cal)
+  )
+}
+
 private predicate mk_FieldCons(
   Class c, int i, Field f, HashCons hc, HC_Fields hcf, ClassAggregateLiteral cal
 ) {
@@ -738,12 +750,8 @@ private predicate mk_FieldCons(
     e = cal.getFieldExpr(f).getFullyConverted() and
     f.getInitializationOrder() = i and
     (
-      exists(HashCons head, Field f2, HC_Fields tail |
-        hc = hashCons(e) and
-        hcf = HC_FieldCons(c, i - 1, f2, head, tail) and
-        f2.getInitializationOrder() = i - 1 and
-        mk_FieldCons(c, i - 1, f2, head, tail, cal)
-      )
+      hc = hashCons(e) and
+      hcf = aggInitExprsUpTo(cal, c, i)
       or
       hc = hashCons(e) and
       i = 0 and
@@ -766,14 +774,7 @@ private predicate mk_ClassAggregateLiteral(Class c, HC_Fields hcf, ClassAggregat
   analyzableClassAggregateLiteral(cal) and
   c = cal.getUnspecifiedType() and
   (
-    exists(HC_Fields tail, Expr e, Field f, int numChildren, HashCons eCons |
-      f.getInitializationOrder() = cal.getNumChild() - 1 and
-      e = cal.getFieldExpr(f).getFullyConverted() and
-      eCons = hashCons(e) and
-      numChildren = cal.getNumChild() and
-      hcf = HC_FieldCons(c, numChildren - 1, f, eCons, tail) and
-      mk_FieldCons(c, numChildren - 1, f, eCons, tail, cal)
-    )
+    hcf = aggInitExprsUpTo(cal, c, cal.getNumChild())
     or
     cal.getNumChild() = 0 and
     hcf = HC_EmptyFields(c)
@@ -785,15 +786,23 @@ private predicate analyzableArrayAggregateLiteral(ArrayAggregateLiteral aal) {
   strictcount(aal.getUnspecifiedType()) = 1
 }
 
+/**
+ * Gets the hash cons of array elements in [0..i), where i > 0, for
+ * the array aggregate literal `aal` of type `t`.
+ */
+private HC_Array arrayElemsUpTo(ArrayAggregateLiteral aal, Type t, int i) {
+  exists(HC_Array tail, HashCons head |
+    result = HC_ArrayCons(t, i - 1, head, tail) and
+    mk_ArrayCons(t, i - 1, head, tail, aal)
+  )
+}
+
 private predicate mk_ArrayCons(Type t, int i, HashCons hc, HC_Array hca, ArrayAggregateLiteral aal) {
   analyzableArrayAggregateLiteral(aal) and
   t = aal.getUnspecifiedType() and
   hc = hashCons(aal.getChild(i)) and
   (
-    exists(HC_Array tail, HashCons head |
-      hca = HC_ArrayCons(t, i - 1, head, tail) and
-      mk_ArrayCons(t, i - 1, head, tail, aal)
-    )
+    hca = arrayElemsUpTo(aal, t, i)
     or
     i = 0 and
     hca = HC_EmptyArray(t)
