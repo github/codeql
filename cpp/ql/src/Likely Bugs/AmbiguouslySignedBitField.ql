@@ -28,7 +28,8 @@ where
   not bf.getType().hasName("BOOL") and
   // If this is true, then there cannot be unsigned sign extension or overflow.
   not bf.getDeclaredNumBits() = bf.getType().getSize() * 8 and
-  not bf.isAnonymous()
+  not bf.isAnonymous() and
+  not bf.isFromUninstantiatedTemplate(_)
 select bf,
   "Bit field " + bf.getName() + " of type " + bf.getUnderlyingType().getName() +
     " should have explicitly unsigned integral, explicitly signed integral, or enumeration type."
