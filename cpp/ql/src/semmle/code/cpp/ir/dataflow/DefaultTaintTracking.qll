@@ -4,25 +4,17 @@ private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.IR
 
 /**
- * A predictable expression is one where an external user can predict
+ * A predictable instruction is one where an external user can predict
  * the value. For example, a literal in the source code is considered
  * predictable.
  */
-// TODO: Change to use Instruction instead of Expr. Naive attempt breaks
-// TaintedAllocationSize qltest.
-private predicate predictable(Expr expr) {
-  expr instanceof Literal
-  or
-  exists(BinaryOperation binop | binop = expr |
-    predictable(binop.getLeftOperand()) and predictable(binop.getRightOperand())
-  )
-  or
-  exists(UnaryOperation unop | unop = expr | predictable(unop.getOperand()))
-}
-
-// TODO: remove when `predictable` has an `Instruction` parameter instead of `Expr`.
 private predicate predictableInstruction(Instruction instr) {
-  predictable(DataFlow::instructionNode(instr).asExpr())
+  instr instanceof ConstantInstruction
+  or
+  instr instanceof StringConstantInstruction
+  or
+  // This could be a conversion on a string literal
+  predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
