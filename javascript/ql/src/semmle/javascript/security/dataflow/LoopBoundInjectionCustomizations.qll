@@ -8,7 +8,6 @@ import javascript
 
 module LoopBoundInjection {
   import semmle.javascript.security.TaintedObject
-  import DataFlow::PathGraph
 
   /**
    * Holds if an exception will be thrown whenever `e` evaluates to `undefined` or `null`.
