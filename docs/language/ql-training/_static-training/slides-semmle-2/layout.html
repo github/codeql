@@ -148,11 +148,18 @@ URL: https://code.google.com/p/io-2012-slides
 </slides>
 
 
+<script type="text/javascript">
 
-<!--[if IE]>
-  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-  <script>CFInstall.check({mode: 'overlay'});</script>
-<![endif]-->
+//insert info buttons on slides that have additional notes 
+  $(".admonition.note").before("<button id='extra-notes'>&#9432;</button>");
+  $(".admonition-title").before("<button id='close-notes'>&times;</button>");
+  $(document).ready(function() {
+     $('button').click(function() {
+       document.body.classList.toggle('with-notes');
+     });
+  });
+</script>
+
 <script type="text/javascript">
 
 //assigns font-size when document is ready
