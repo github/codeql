@@ -328,7 +328,7 @@ public class Main {
         0,
         "Enable experimental support for pending ECMAScript proposals "
             + "(public class fields, function.sent, decorators, export extensions, function bind, "
-            + "parameter-less catch, dynamic import, numeric separators, bigints), "
+            + "parameter-less catch, dynamic import, numeric separators, bigints, top-level await), "
             + "as well as other language extensions (E4X, JScript, Mozilla and v8-specific extensions) and full HTML extraction.");
     argsParser.addFlag(
         P_EXTERNS, 0, "Extract the given JavaScript files as Closure-style externs.");

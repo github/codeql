@@ -1,9 +1,6 @@
 edges
 | HtmlEncode.cs:12:40:12:65 | call to method UrlEncode | HtmlEncode.cs:12:28:12:65 | ... + ... |
 | InappropriateEncoding.cs:15:28:15:40 | call to method Encode | InappropriateEncoding.cs:20:46:20:51 | access to local variable query1 |
-| InappropriateEncoding.cs:33:22:33:34 | call to method Encode | InappropriateEncoding.cs:33:22:33:34 | call to method Encode |
-| InappropriateEncoding.cs:34:22:34:49 | call to method UrlEncode | InappropriateEncoding.cs:34:22:34:49 | call to method UrlEncode |
-| InappropriateEncoding.cs:35:22:35:73 | call to method UrlEncode | InappropriateEncoding.cs:35:22:35:73 | call to method UrlEncode |
 | InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode | InappropriateEncoding.cs:37:32:37:43 | access to local variable encodedValue |
 | InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode | InappropriateEncoding.cs:38:22:38:59 | ... + ... |
 | InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode | InappropriateEncoding.cs:39:22:39:71 | call to method Format |
@@ -17,10 +14,7 @@ nodes
 | InappropriateEncoding.cs:15:28:15:40 | call to method Encode | semmle.label | call to method Encode |
 | InappropriateEncoding.cs:20:46:20:51 | access to local variable query1 | semmle.label | access to local variable query1 |
 | InappropriateEncoding.cs:33:22:33:34 | call to method Encode | semmle.label | call to method Encode |
-| InappropriateEncoding.cs:33:22:33:34 | call to method Encode | semmle.label | call to method Encode |
 | InappropriateEncoding.cs:34:22:34:49 | call to method UrlEncode | semmle.label | call to method UrlEncode |
-| InappropriateEncoding.cs:34:22:34:49 | call to method UrlEncode | semmle.label | call to method UrlEncode |
-| InappropriateEncoding.cs:35:22:35:73 | call to method UrlEncode | semmle.label | call to method UrlEncode |
 | InappropriateEncoding.cs:35:22:35:73 | call to method UrlEncode | semmle.label | call to method UrlEncode |
 | InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode | semmle.label | call to method UrlEncode |
 | InappropriateEncoding.cs:37:32:37:43 | access to local variable encodedValue | semmle.label | access to local variable encodedValue |

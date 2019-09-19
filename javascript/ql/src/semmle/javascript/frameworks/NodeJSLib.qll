@@ -735,34 +735,17 @@ module NodeJSLib {
         result = this.(DataFlow::SourceNode).getAMethodCall(name).getArgument(0)
       )
     }
-  }
 
-  /**
-   * A data flow node that is the parameter of a result callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `https.request(url, (res) => {})`.
-   */
-  private class ClientRequestCallbackParam extends DataFlow::ParameterNode, RemoteFlowSource {
-    ClientRequestCallbackParam() {
-      exists(NodeJSClientRequest req |
-        this = req.(DataFlow::MethodCallNode).getCallback(1).getParameter(0)
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      promise = false and
+      exists(DataFlow::ParameterNode res, DataFlow::CallNode onData |
+        res = getCallback(1).getParameter(0) and
+        onData = res.getAMethodCall("on") and
+        onData.getArgument(0).mayHaveStringValue("data") and
+        result = onData.getCallback(1).getParameter(0) and
+        responseType = "arraybuffer"
       )
     }
-
-    override string getSourceType() { result = "NodeJSClientRequest callback parameter" }
-  }
-
-  /**
-   * A data flow node that is the parameter of a data callback for an HTTP or HTTPS request made by a Node.js process, for example `body` in `http.request(url, (res) => {res.on('data', (body) => {})})`.
-   */
-  private class ClientRequestCallbackData extends RemoteFlowSource {
-    ClientRequestCallbackData() {
-      exists(ClientRequestCallbackParam rcp, DataFlow::MethodCallNode mcn |
-        rcp.getAMethodCall("on") = mcn and
-        mcn.getArgument(0).mayHaveStringValue("data") and
-        this = mcn.getCallback(1).getParameter(0)
-      )
-    }
-
-    override string getSourceType() { result = "http.request data parameter" }
   }
 
   /**

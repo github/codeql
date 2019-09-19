@@ -28,3 +28,9 @@ int usePM(int PM::* pm) {
 
     return acc;
 }
+
+void pmIsConst() {
+  static const struct {
+    int PM::* pm1;
+  } pms = { &PM::x1 };
+}

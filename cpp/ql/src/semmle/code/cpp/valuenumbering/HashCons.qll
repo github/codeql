@@ -737,14 +737,15 @@ private predicate mk_FieldCons(
   exists(Expr e |
     e = cal.getFieldExpr(f).getFullyConverted() and
     f.getInitializationOrder() = i and
-    hc = hashCons(e) and
     (
       exists(HashCons head, Field f2, HC_Fields tail |
+        hc = hashCons(e) and
         hcf = HC_FieldCons(c, i - 1, f2, head, tail) and
         f2.getInitializationOrder() = i - 1 and
         mk_FieldCons(c, i - 1, f2, head, tail, cal)
       )
       or
+      hc = hashCons(e) and
       i = 0 and
       hcf = HC_EmptyFields(c)
     )
@@ -765,11 +766,13 @@ private predicate mk_ClassAggregateLiteral(Class c, HC_Fields hcf, ClassAggregat
   analyzableClassAggregateLiteral(cal) and
   c = cal.getUnspecifiedType() and
   (
-    exists(HC_Fields tail, Expr e, Field f |
+    exists(HC_Fields tail, Expr e, Field f, int numChildren, HashCons eCons |
       f.getInitializationOrder() = cal.getNumChild() - 1 and
       e = cal.getFieldExpr(f).getFullyConverted() and
-      hcf = HC_FieldCons(c, cal.getNumChild() - 1, f, hashCons(e), tail) and
-      mk_FieldCons(c, cal.getNumChild() - 1, f, hashCons(e), tail, cal)
+      eCons = hashCons(e) and
+      numChildren = cal.getNumChild() and
+      hcf = HC_FieldCons(c, numChildren - 1, f, eCons, tail) and
+      mk_FieldCons(c, numChildren - 1, f, eCons, tail, cal)
     )
     or
     cal.getNumChild() = 0 and
@@ -800,9 +803,10 @@ private predicate mk_ArrayCons(Type t, int i, HashCons hc, HC_Array hca, ArrayAg
 private predicate mk_ArrayAggregateLiteral(Type t, HC_Array hca, ArrayAggregateLiteral aal) {
   t = aal.getUnspecifiedType() and
   (
-    exists(HashCons head, HC_Array tail |
-      hca = HC_ArrayCons(t, aal.getNumChild() - 1, head, tail) and
-      mk_ArrayCons(t, aal.getNumChild() - 1, head, tail, aal)
+    exists(HashCons head, HC_Array tail, int numElements |
+      numElements = aal.getNumChild() and
+      hca = HC_ArrayCons(t, numElements - 1, head, tail) and
+      mk_ArrayCons(t, numElements - 1, head, tail, aal)
     )
     or
     aal.getNumChild() = 0 and

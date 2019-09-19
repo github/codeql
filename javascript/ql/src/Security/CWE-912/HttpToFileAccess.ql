@@ -1,6 +1,6 @@
 /**
- * @name User-controlled data written to file
- * @description Writing user-controlled data directly to the file system allows arbitrary file upload and might indicate a backdoor.
+ * @name Network data written to file
+ * @description Writing network data directly to the file system allows arbitrary file upload and might indicate a backdoor.
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
