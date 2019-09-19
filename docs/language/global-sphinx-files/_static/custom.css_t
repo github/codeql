@@ -455,6 +455,10 @@ blockquote.pull-quote > :last-child {
     clear: both;
 }
 
+.toggle .name:hover {
+    text-decoration: underline;
+}
+
 .toggle .name:after {
     content: " ▶";
 }
