@@ -7,7 +7,6 @@
 import javascript
 
 module LoopBoundInjection {
-  import semmle.javascript.security.dataflow.RemoteFlowSources
   import semmle.javascript.security.TaintedObject
   import DataFlow::PathGraph
 
