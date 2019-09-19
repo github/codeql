@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+HTTP request handlers should not perform expensive operations such as accessing
+the file system, executing an operating system command or interacting with a database
+without limiting the rate at which requests are accepted. Otherwise, the application
+becomes vulnerable to denial-of-service attacks where an attacker can cause the
+application to crash or become unresponsive by issuing a large number of requests at
+the same time.
+</p>
+</overview>
+
+<recommendation>
+<p>
+A rate-limiting middleware should be used to prevent such attacks.
+</p>
+</recommendation>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Denial_of_Service_Cheat_Sheet">Denial of Service Cheat Sheet</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Denial-of-service_attack">Denial-of-service attack</a>.
+</li>
+</references>
+</qhelp>
