@@ -3,56 +3,50 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Calling <code>memset</code> on a buffer in order to clear its contents may get optimized away
-by the compiler if said buffer is not subsequently used.  This is not desirable
-behavior if the buffer contains sensitive data that could be exploited by an attacker.
-The workaround is to use <code>memset_s</code>, use the <code>-fno-builtin-memset</code> compiler flag, or
-to write one's own buffer-clearing routine.</p>
+<p>Calling <code>memset</code>, <code>bzero</code>, <code>FillMemory</code> or
+<code>ZeroMemory</code> on a buffer in order to clear its contents may get
+optimized away by the compiler if said buffer is not subsequently used.
+This is not desirable behavior if the buffer contains sensitive data that
+could be exploited by an attacker.</p>
 
 </overview>
 <recommendation>
-<p>If the argument passed as a format string is meant to be a plain string rather than a format string,
-then pass <code>%s</code> as the format string, and pass the original argument as the sole trailing
-argument.</p>
-
-<p>If the argument passed as a format string is a parameter to the enclosing function, then consider
-redesigning the enclosing function's API to be less brittle.</p>
+<p>The best workaround is to use alternate platform-supplied functions that
+ will not get optimized away: <code>memset_s</code>, <code>SecureZeroMemory</code>,
+ <code>bzero_explicit</code>, and the like (if they are available).
+ Otherwise, passing the <code>-fno-builtin-memset</code> flag to the 
+ GCC/Clang compiler is usually effective.  Finally, the public-domain 
+ <code>secure_memzero</code> routine (see below) can be helpful.</p>
 
 </recommendation>
 <example>
-<p>The following program is meant to echo its command line arguments:</p>
-<sample src="NonConstantFormat-1-bad.c" />
-<p>The above program behaves as expected in most cases, but breaks when one of its command line arguments
-contains a percent character. In such cases, the behavior of the program is undefined: it might echo
-garbage, it might crash, or it might give a malicious attacker root access. One way of addressing
-the problem is to use a constant <code>%s</code> format string, as in the following program:</p>
-<sample src="NonConstantFormat-1-good.c" />
+<p>The following program fragment uses <code>memset</code> to scrub memory after
+ it is no longer used:</p>
+<sample src="MemsetMayBeDeleted-bad.c" />
+<p>Because of dead store elimination (DSE), the <code>memset</code> may be removed
+ by the compiler (since the data being scrubbed is not subsequently used), resulting
+ in potentially sensitive data remaining in memory.</p>
+ 
+<p>The best solution to this problem is to use the <code>memset_s</code> function
+ instead of <code>memset</code>:</p>
+<sample src="MemsetMayBeDeleted-good.c" />
 
 </example>
-<example>
-<p>The following program defines a <code>log_with_timestamp</code> function:</p>
-<sample src="NonConstantFormat-2-bad.c" />
-<p>In the code that is visible, the reader can verify that <code>log_with_timestamp</code> is never called
-with a log message containing a percent character, but even if all current calls are correct, this presents
-an ongoing maintenance burden to ensure that newly-introduced calls don't contain percent characters. As
-in the previous example, one solution is to make the log message a trailing argument of the function call:</p>
-<sample src="NonConstantFormat-2-ok.c" />
-<p>An alternative solution is to allow <code>log_with_timestamp</code> to accept format arguments:</p>
-<sample src="NonConstantFormat-2-good.c" />
-<p>In this formulation, the non-constant format string to <code>printf</code> has been replaced with
-a non-constant format string to <code>vprintf</code>. Semmle will no longer consider the body of
-<code>log_with_timestamp</code> to be a problem, and will instead check that every call to
-<code>log_with_timestamp</code> passes a constant format string.</p>
 
-</example>
 <references>
 
-
-<li>MITRE
-<a href="https://cwe.mitre.org/data/definitions/14.html">CWE-14</a>.</li>
-<li><a href="https://www.cryptologie.net/article/419/zeroing-memory-compiler-optimizations-and-memset_sC">
-    https://www.cryptologie.net/article/419/zeroing-memory-compiler-optimizations-and-memset_sC</a>.</li>
-
+<li>MITRE:
+  <a href="https://cwe.mitre.org/data/definitions/14.html">
+  CWE-14</a>.</li>
+<li>Public domain:
+  <a href="https://compsec.sysnet.ucsd.edu/secure_memzero.h">
+  secure_memzero</a>implementation.</li>
+<li>Blog:
+  <a href="https://www.cryptologie.net/article/419/zeroing-memory-compiler-optimizations-and-memset_sC">
+  Zero'ing memory, compiler optimizations and memset_s</a>.</li>
+<li>USENIX 2017 Paper:
+  <a href="https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-yang.pdf">
+  Dead Store Elimination (Still) Considered Harmful</a>.</li>
 
 </references>
 </qhelp>
