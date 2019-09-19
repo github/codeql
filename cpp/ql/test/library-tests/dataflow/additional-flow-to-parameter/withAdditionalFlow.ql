@@ -2,9 +2,7 @@ import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
 class TestConfig extends DataFlow::Configuration {
-  TestConfig() {
-    this = "TestConfig"
-  }
+  TestConfig() { this = "TestConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr().(FunctionCall).getTarget().getName() = "source"

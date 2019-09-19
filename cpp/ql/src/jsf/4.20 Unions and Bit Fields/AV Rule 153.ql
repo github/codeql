@@ -7,9 +7,12 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
-// see MISRA Rule 9-5-1
+/*
+ * See MISRA Rule 9-5-1
+ */
 
 from Union u
 where u.fromSource()

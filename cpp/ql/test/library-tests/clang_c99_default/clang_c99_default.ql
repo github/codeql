@@ -1,3 +1,4 @@
 import cpp
 
-from Variable v select v, v.getName()
+from Variable v
+select v, v.getName()

@@ -1,9 +1,7 @@
 import cpp
 
 string istr(Initializer i) {
-  if exists(i.toString())
-  then result = i.toString()
-  else result = "<no str>"
+  if exists(i.toString()) then result = i.toString() else result = "<no str>"
 }
 
 string iloc(Initializer i) {
@@ -14,16 +12,15 @@ string iloc(Initializer i) {
 
 string init(Variable v) {
   if v.hasInitializer()
-  then exists(Initializer i | i = v.getInitializer() and
-                              result = iloc(i) + " " + istr(i))
+  then
+    exists(Initializer i |
+      i = v.getInitializer() and
+      result = iloc(i) + " " + istr(i)
+    )
   else result = "<no init>"
 }
 
-string estr(Expr e) {
-  if exists(e.toString())
-  then result = e.toString()
-  else result = "<no str>"
-}
+string estr(Expr e) { if exists(e.toString()) then result = e.toString() else result = "<no str>" }
 
 string eloc(Expr e) {
   if exists(e.getLocation().toString())
@@ -33,11 +30,13 @@ string eloc(Expr e) {
 
 string assigned(Variable v) {
   if exists(v.getAnAssignedValue())
-  then exists(Expr e | e = v.getAnAssignedValue() and
-                       result = eloc(e) + " " + estr(e))
+  then
+    exists(Expr e |
+      e = v.getAnAssignedValue() and
+      result = eloc(e) + " " + estr(e)
+    )
   else result = "<no assigned>"
 }
 
 from Variable v
 select v, count(init(v)), init(v), count(assigned(v)), assigned(v)
-

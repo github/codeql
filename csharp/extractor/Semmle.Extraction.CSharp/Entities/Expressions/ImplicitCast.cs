@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Kinds;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -27,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var target = Method.Create(cx, method);
             if (target != null)
-                cx.Emit(Tuples.expr_call(this, target));
+                cx.TrapWriter.Writer.expr_call(this, target);
             else
                 cx.ModelError(info.Node, "Failed to resolve target for operator invocation");
         }

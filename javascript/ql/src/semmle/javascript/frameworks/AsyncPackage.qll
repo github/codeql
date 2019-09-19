@@ -72,7 +72,6 @@ module AsyncPackage {
    */
   private class WaterfallNextTaskCall extends DataFlow::AdditionalPartialInvokeNode {
     Waterfall waterfall;
-
     int n;
 
     WaterfallNextTaskCall() { this = getLastParameter(waterfall.getTask(n)).getACall() }

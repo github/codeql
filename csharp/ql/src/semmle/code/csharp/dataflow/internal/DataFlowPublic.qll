@@ -1,8 +1,10 @@
 private import csharp
 private import cil
 private import dotnet
+private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.Caching
+private import semmle.code.csharp.controlflow.Guards
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -33,7 +35,7 @@ class Node extends TNode {
 
   /** Gets the enclosing callable of this node. */
   cached
-  DotNet::Callable getEnclosingCallable() { none() }
+  DataFlowCallable getEnclosingCallable() { none() }
 
   /** Gets the control flow node corresponding to this node, if any. */
   cached
@@ -46,6 +48,19 @@ class Node extends TNode {
   /** Gets the location of this node. */
   cached
   Location getLocation() { none() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /**
@@ -74,7 +89,7 @@ class ExprNode extends Node {
     result = cfn.getElement()
   }
 
-  override DotNet::Callable getEnclosingCallable() {
+  override DataFlowCallable getEnclosingCallable() {
     Stages::DataFlowStage::forceCachingInSameStage() and
     result = this.getExpr().getEnclosingCallable()
   }
@@ -122,7 +137,7 @@ class ParameterNode extends Node {
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DotNet::Callable c, int i) { none() }
+  predicate isParameterOf(DataFlowCallable c, int i) { none() }
 }
 
 /** Gets a node corresponding to expression `e`. */
@@ -133,7 +148,15 @@ ExprNode exprNode(DotNet::Expr e) { result.getExpr() = e }
  */
 ParameterNode parameterNode(DotNet::Parameter p) { result.getParameter() = p }
 
-predicate localFlowStep = localFlowStepImpl/2;
+/**
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step.
+ */
+predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo)
+  or
+  extendedLocalFlowStep(nodeFrom, nodeTo)
+}
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
@@ -148,4 +171,26 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 abstract class NonLocalJumpNode extends Node {
   /** Gets a successor node that is potentially in another callable. */
   abstract Node getAJumpSuccessor(boolean preservesValue);
+}
+
+/**
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
+ */
+class BarrierGuard extends Guard {
+  /** Holds if this guard validates `e` upon evaluating to `v`. */
+  abstract predicate checks(Expr e, AbstractValue v);
+
+  /** Gets a node guarded by this guard. */
+  final ExprNode getAGuardedNode() {
+    exists(Expr e, AbstractValue v |
+      this.checks(e, v) and
+      this.controlsNode(result.getControlFlowNode(), e, v)
+    )
+  }
 }

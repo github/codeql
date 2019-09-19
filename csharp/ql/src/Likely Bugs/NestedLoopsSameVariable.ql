@@ -30,11 +30,8 @@ class NestedForConditions extends SC::StructuralComparisonConfiguration {
 /** A nested `for` statement that shares the same iteration variable as an outer `for` statement. */
 class NestedForLoopSameVariable extends ForStmt {
   ForStmt outer;
-
   Variable iteration;
-
   MutatorOperation innerUpdate;
-
   MutatorOperation outerUpdate;
 
   NestedForLoopSameVariable() {

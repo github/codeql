@@ -132,7 +132,6 @@ DataFlow::CallNode moduleRef(AngularModule m) {
 class ModuleApiCall extends DataFlow::CallNode {
   /** The module on which the method is called. */
   AngularModule mod;
-
   /** The name of the called method. */
   string methodName;
 
@@ -146,7 +145,6 @@ class ModuleApiCall extends DataFlow::CallNode {
 
 class ModuleApiCallDependencyInjection extends DependencyInjection {
   ModuleApiCall call;
-
   string methodName;
 
   ModuleApiCallDependencyInjection() {
@@ -711,33 +709,35 @@ private class AngularMethodCall extends AngularJSCall {
 }
 
 /**
- * A call to a method on a builtin service.
+ * A call to a builtin service or one of its methods.
  */
-private class ServiceMethodCall extends AngularJSCall {
-  MethodCallExpr mce;
+private class BuiltinServiceCall extends AngularJSCall {
+  CallExpr call;
 
-  ServiceMethodCall() {
+  BuiltinServiceCall() {
     exists(BuiltinServiceReference service |
-      service.getAMethodCall(_) = this and
-      mce = this
+      service.getAMethodCall(_) = this or
+      service.getACall() = this
+    |
+      call = this
     )
   }
 
   override predicate interpretsArgumentAsHtml(Expr e) {
     exists(ServiceReference service, string methodName |
       service.getName() = "$sce" and
-      mce = service.getAMethodCall(methodName)
+      call = service.getAMethodCall(methodName)
     |
       // specialized call
       (methodName = "trustAsHtml" or methodName = "trustAsCss") and
-      e = mce.getArgument(0)
+      e = call.getArgument(0)
       or
       // generic call with enum argument
       methodName = "trustAs" and
       exists(DataFlow::PropRead prn |
-        prn.asExpr() = mce.getArgument(0) and
+        prn.asExpr() = call.getArgument(0) and
         (prn = service.getAPropertyAccess("HTML") or prn = service.getAPropertyAccess("CSS")) and
-        e = mce.getArgument(1)
+        e = call.getArgument(1)
       )
     )
   }
@@ -745,16 +745,16 @@ private class ServiceMethodCall extends AngularJSCall {
   override predicate storesArgumentGlobally(Expr e) {
     exists(ServiceReference service, string serviceName, string methodName |
       service.getName() = serviceName and
-      mce = service.getAMethodCall(methodName)
+      call = service.getAMethodCall(methodName)
     |
       // AngularJS caches (only available during runtime, so similar to sessionStorage)
       (serviceName = "$cacheFactory" or serviceName = "$templateCache") and
       methodName = "put" and
-      e = mce.getArgument(1)
+      e = call.getArgument(1)
       or
       serviceName = "$cookies" and
       (methodName = "put" or methodName = "putObject") and
-      e = mce.getArgument(1)
+      e = call.getArgument(1)
     )
   }
 
@@ -768,7 +768,8 @@ private class ServiceMethodCall extends AngularJSCall {
       methodName = "$watchCollection" or
       methodName = "$watchGroup"
     |
-      e = scope.getAMethodCall(methodName).getArgument(0)
+      call = scope.getAMethodCall(methodName) and
+      e = call.getArgument(0)
     )
     or
     exists(ServiceReference service |
@@ -776,15 +777,16 @@ private class ServiceMethodCall extends AngularJSCall {
       service.getName() = "$parse" or
       service.getName() = "$interpolate"
     |
-      e = service.getACall().getArgument(0)
+      call = service.getACall() and
+      e = call.getArgument(0)
     )
     or
-    exists(ServiceReference service, CallExpr filter, CallExpr filterInvocation |
+    exists(ServiceReference service, CallExpr filterInvocation |
       // `$filter('orderBy')(collection, expression)`
       service.getName() = "$filter" and
-      filter = service.getACall() and
-      filter.getArgument(0).mayHaveStringValue("orderBy") and
-      filterInvocation.getCallee() = filter and
+      call = service.getACall() and
+      call.getArgument(0).mayHaveStringValue("orderBy") and
+      filterInvocation.getCallee() = call and
       e = filterInvocation.getArgument(1)
     )
   }

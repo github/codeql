@@ -7,6 +7,7 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 from Function f

@@ -146,6 +146,8 @@ module InsecureXML {
   }
 
   module XmlReader {
+    private import semmle.code.csharp.dataflow.DataFlow2
+
     class InsecureXmlReaderCreate extends InsecureXmlProcessing, MethodCall {
       InsecureXmlReaderCreate() { this.getTarget().hasQualifiedName("System.Xml.XmlReader.Create") }
 
@@ -188,7 +190,7 @@ module InsecureXML {
       }
     }
 
-    private class SettingsDataFlowConfig extends DataFlow::Configuration {
+    private class SettingsDataFlowConfig extends DataFlow2::Configuration {
       SettingsDataFlowConfig() { this = "SettingsDataFlowConfig" }
 
       override predicate isSource(DataFlow::Node source) {

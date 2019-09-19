@@ -6,9 +6,9 @@
 import cpp
 
 from DoStmt ds
-where not
-(
-	ds.getStmt() = ds.getASuccessor()
-	and count(ds.getASuccessor()) = 1
-)
+where
+  not (
+    ds.getStmt() = ds.getASuccessor() and
+    count(ds.getASuccessor()) = 1
+  )
 select ds

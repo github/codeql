@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Kinds;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -18,11 +19,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new Invocation(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             if (IsNameof(Syntax))
             {
-                PopulateArguments(Syntax.ArgumentList, 0);
+                PopulateArguments(trapFile, Syntax.ArgumentList, 0);
                 return;
             }
 
@@ -44,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     // Conditionally qualified method call; `x?.M()`
                     memberName = memberBinding.Name.Identifier.Text;
                     Create(cx, FindConditionalQualifier(memberBinding), this, child++);
-                    MakeConditional();
+                    MakeConditional(trapFile);
                     break;
                 case SimpleNameSyntax simpleName when (Kind == ExprKind.METHOD_INVOCATION):
                     // Unqualified method call; `M()`
@@ -52,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     if (target != null && !target.IsStatic)
                     {
                         // Implicit `this` qualifier; add explicitly
-                        var callingMethod = cx.Model(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) as IMethodSymbol;
+                        var callingMethod = cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) as IMethodSymbol;
 
                         if (callingMethod == null)
                             cx.ModelError(Syntax, "Couldn't determine implicit this type");
@@ -75,12 +76,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (isDynamicCall)
             {
                 if (memberName != null)
-                    cx.Emit(Tuples.dynamic_member_name(this, memberName));
+                    trapFile.dynamic_member_name(this, memberName);
                 else
                     cx.ModelError(Syntax, "Unable to get name for dynamic call.");
             }
 
-            PopulateArguments(Syntax.ArgumentList, child);
+            PopulateArguments(trapFile, Syntax.ArgumentList, child);
 
             if (target == null)
             {
@@ -90,7 +91,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             var targetKey = Method.Create(cx, target);
-            cx.Emit(Tuples.expr_call(this, targetKey));
+            trapFile.expr_call(this, targetKey);
         }
 
         static bool IsDynamicCall(ExpressionNodeInfo info)

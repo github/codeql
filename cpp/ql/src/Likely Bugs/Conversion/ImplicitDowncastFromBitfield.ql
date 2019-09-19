@@ -14,10 +14,9 @@
 import cpp
 
 from BitField fi, VariableAccess va
-
-where fi.getNumBits() > va.getFullyConverted().getType().getSize() * 8
-  and va.getExplicitlyConverted().getType().getSize() > va.getFullyConverted().getType().getSize()
-  and va.getTarget() = fi
-  and not va.getActualType() instanceof BoolType
-
+where
+  fi.getNumBits() > va.getFullyConverted().getType().getSize() * 8 and
+  va.getExplicitlyConverted().getType().getSize() > va.getFullyConverted().getType().getSize() and
+  va.getTarget() = fi and
+  not va.getActualType() instanceof BoolType
 select va, "Implicit downcast of bitfield $@", fi, fi.toString()

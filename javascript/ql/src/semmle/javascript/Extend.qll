@@ -93,7 +93,8 @@ private class ExtendCallDeep extends ExtendCall {
       callee = DataFlow::moduleMember("smart-extend", "deep") or
       callee = LodashUnderscore::member("merge") or
       callee = LodashUnderscore::member("mergeWith") or
-      callee = LodashUnderscore::member("defaultsDeep")
+      callee = LodashUnderscore::member("defaultsDeep") or
+      callee = AngularJS::angular().getAPropertyRead("merge")
     )
   }
 
@@ -122,7 +123,8 @@ private class ExtendCallShallow extends ExtendCall {
       callee = DataFlow::moduleImport("util-extend") or
       callee = DataFlow::moduleImport("utils-merge") or
       callee = DataFlow::moduleImport("xtend/mutable") or
-      callee = LodashUnderscore::member("extend")
+      callee = LodashUnderscore::member("extend") or
+      callee = AngularJS::angular().getAPropertyRead("extend")
     )
   }
 

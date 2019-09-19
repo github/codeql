@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -11,14 +12,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         Indexer OriginalDefinition => IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            ExtractNullability(symbol.NullableAnnotation);
+            PopulateNullability(trapFile, symbol.NullableAnnotation);
 
             var type = Type.Create(Context, symbol.Type);
-            Context.Emit(Tuples.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition));
+            trapFile.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition);
             foreach (var l in Locations)
-                Context.Emit(Tuples.indexer_location(this, l));
+                trapFile.indexer_location(this, l);
 
             var getter = symbol.GetMethod;
             var setter = symbol.SetMethod;
@@ -49,7 +50,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            ExtractModifiers();
+            PopulateModifiers(trapFile);
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
@@ -59,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                Context.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences)
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
@@ -70,23 +71,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 TypeMention.Create(Context, syntax.Type, this, type);
         }
 
-
         public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntity(cx, prop);
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(ContainingType);
-                    tb.Append(".");
-                    tb.Append(symbol.MetadataName);
-                    tb.Append("(");
-                    tb.BuildList(",", symbol.Parameters, (p, tb0) => tb0.Append(Type.Create(Context, p.Type)));
-                    tb.Append(");indexer");
-                });
-            }
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write('.');
+            trapFile.Write(symbol.MetadataName);
+            trapFile.Write('(');
+            trapFile.BuildList(",", symbol.Parameters, (p, tb0) => tb0.WriteSubId(Type.Create(Context, p.Type)));
+            trapFile.Write(");indexer");
         }
 
         public override Microsoft.CodeAnalysis.Location FullLocation

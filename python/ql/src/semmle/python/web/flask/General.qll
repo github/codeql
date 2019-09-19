@@ -115,3 +115,18 @@ private class AsView extends TaintSource {
 
 }
 
+
+class FlaskCookieSet extends CookieSet, CallNode {
+
+    FlaskCookieSet() {
+        this.getFunction().(AttrNode).getObject("set_cookie").refersTo(_, theFlaskReponseClass(), _)
+    }
+
+    override string toString() { result = this.(CallNode).toString() }
+
+    override ControlFlowNode getKey() { result = this.getArg(0) }
+
+    override ControlFlowNode getValue() { result = this.getArg(1) }
+
+
+}

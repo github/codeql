@@ -1,9 +1,8 @@
-import cpp
-import cpp
+private import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.IRConfiguration
 private import semmle.code.cpp.ir.implementation.Opcode
-private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -14,9 +13,7 @@ private import IRConstruction
 /**
  * Gets the built-in `int` type.
  */
-Type getIntType() {
-  result.(IntType).isImplicitlySigned()
-}
+Type getIntType() { result.(IntType).isImplicitlySigned() }
 
 /**
  * Gets the "real" parent of `expr`. This predicate treats conversions as if
@@ -37,9 +34,7 @@ private Element getRealParent(Expr expr) {
 predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
 
 // Pulled out to work around QL-796
-private predicate isOrphan(Expr expr) {
-  not exists(getRealParent(expr))
-}
+private predicate isOrphan(Expr expr) { not exists(getRealParent(expr)) }
 
 /**
  * Holds if `expr` should be ignored for the purposes of IR generation due to
@@ -47,29 +42,35 @@ private predicate isOrphan(Expr expr) {
  */
 private predicate ignoreExprAndDescendants(Expr expr) {
   // Ignore parentless expressions
-  isOrphan(expr) or
+  isOrphan(expr)
+  or
   // Ignore the constants in SwitchCase, since their values are embedded in the
   // CaseEdge.
-  getRealParent(expr) instanceof SwitchCase or
+  getRealParent(expr) instanceof SwitchCase
+  or
   // Ignore descendants of constant expressions, since we'll just substitute the
   // constant value.
-  isIRConstant(getRealParent(expr)) or
+  isIRConstant(getRealParent(expr))
+  or
   // The `DestructorCall` node for a `DestructorFieldDestruction` has a `FieldAccess`
   // node as its qualifier, but that `FieldAccess` does not have a child of its own.
   // We'll ignore that `FieldAccess`, and supply the receiver as part of the calling
   // context, much like we do with constructor calls.
-  expr.getParent().(DestructorCall).getParent() instanceof DestructorFieldDestruction or
+  expr.getParent().(DestructorCall).getParent() instanceof DestructorFieldDestruction
+  or
   exists(NewArrayExpr newExpr |
     // REVIEW: Ignore initializers for `NewArrayExpr` until we determine how to
     // represent them.
     newExpr.getInitializer().getFullyConverted() = expr
-  ) or
+  )
+  or
   // Do not translate input/output variables in GNU asm statements
-  getRealParent(expr) instanceof AsmStmt or
+  getRealParent(expr) instanceof AsmStmt
+  or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
+  or
   // We do not yet translate destructors properly, so for now we ignore any
   // custom deallocator call, if present.
-  or
   exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
   or
   exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
@@ -119,13 +120,15 @@ private predicate isInvalidFunction(Function func) {
     // that is a `Literal` with no value.
     literal = func.(Constructor).getAnInitializer().(ConstructorFieldInit).getExpr() and
     not exists(literal.getValue())
-  ) or
+  )
+  or
   exists(ThisExpr thisExpr |
     // An instantiation of a member function template is not treated as a `MemberFunction` if it has
     // only non-type template arguments.
     thisExpr.getEnclosingFunction() = func and
     not func instanceof MemberFunction
-  ) or
+  )
+  or
   exists(Expr expr |
     // Expression missing a type.
     expr.getEnclosingFunction() = func and
@@ -140,17 +143,13 @@ private predicate translateFunction(Function func) {
   not func.isFromUninstantiatedTemplate(_) and
   func.hasEntryPoint() and
   not isInvalidFunction(func) and
-  exists(IRConfiguration config |
-    config.shouldCreateIRForFunction(func)
-  )
+  exists(IRConfiguration config | config.shouldCreateIRForFunction(func))
 }
 
 /**
  * Holds if `stmt` should be translated to IR.
  */
-private predicate translateStmt(Stmt stmt) {
-  translateFunction(stmt.getEnclosingFunction())
-}
+private predicate translateStmt(Stmt stmt) { translateFunction(stmt.getEnclosingFunction()) }
 
 /**
  * Holds if `expr` is most naturally evaluated as control flow, rather than as
@@ -182,20 +181,19 @@ private predicate usedAsCondition(Expr expr) {
   exists(BinaryLogicalOperation op |
     op.getLeftOperand().getFullyConverted() = expr or
     op.getRightOperand().getFullyConverted() = expr
-  ) or
-  exists(Loop loop |
-    loop.getCondition().getFullyConverted() = expr
-  ) or
-  exists(IfStmt ifStmt |
-    ifStmt.getCondition().getFullyConverted() = expr
-  ) or
-  exists(ConditionalExpr condExpr |
-    condExpr.getCondition().getFullyConverted() = expr
-  ) or
+  )
+  or
+  exists(Loop loop | loop.getCondition().getFullyConverted() = expr)
+  or
+  exists(IfStmt ifStmt | ifStmt.getCondition().getFullyConverted() = expr)
+  or
+  exists(ConditionalExpr condExpr | condExpr.getCondition().getFullyConverted() = expr)
+  or
   exists(NotExpr notExpr |
     notExpr.getOperand().getFullyConverted() = expr and
     usedAsCondition(notExpr)
-  ) or
+  )
+  or
   exists(ParenthesisExpr paren |
     paren.getExpr() = expr and
     usedAsCondition(paren)
@@ -214,10 +212,10 @@ predicate ignoreLoad(Expr expr) {
   (
     expr instanceof ThisExpr or
     expr instanceof FunctionAccess or
-    expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().
-      getUnspecifiedType() instanceof FunctionPointerType or
-    expr.(ReferenceDereferenceExpr).getExpr().getType().
-      getUnspecifiedType() instanceof FunctionReferenceType
+    expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
+      instanceof FunctionPointerType or
+    expr.(ReferenceDereferenceExpr).getExpr().getType().getUnspecifiedType() instanceof
+      FunctionReferenceType
   )
 }
 
@@ -269,40 +267,26 @@ newtype TTranslatedElement =
   TTranslatedInitialization(Expr expr) {
     not ignoreExpr(expr) and
     (
-      exists(Initializer init |
-        init.getExpr().getFullyConverted() = expr
-      ) or
-      exists(ClassAggregateLiteral initList |
-        initList.getFieldExpr(_).getFullyConverted() = expr
-      ) or
-      exists(ArrayAggregateLiteral initList |
+      exists(Initializer init | init.getExpr().getFullyConverted() = expr) or
+      exists(ClassAggregateLiteral initList | initList.getFieldExpr(_).getFullyConverted() = expr) or
+      exists(ArrayOrVectorAggregateLiteral initList |
         initList.getElementExpr(_).getFullyConverted() = expr
       ) or
-      exists(ReturnStmt returnStmt |
-        returnStmt.getExpr().getFullyConverted() = expr
-      ) or
-      exists(ConstructorFieldInit fieldInit |
-        fieldInit.getExpr().getFullyConverted() = expr
-      ) or
-      exists(NewExpr newExpr |
-        newExpr.getInitializer().getFullyConverted() = expr
-      ) or
-      exists(ThrowExpr throw |
-        throw.getExpr().getFullyConverted() = expr
-      ) or
-      exists(LambdaExpression lambda |
-        lambda.getInitializer().getFullyConverted() = expr
-      )
+      exists(ReturnStmt returnStmt | returnStmt.getExpr().getFullyConverted() = expr) or
+      exists(ConstructorFieldInit fieldInit | fieldInit.getExpr().getFullyConverted() = expr) or
+      exists(NewExpr newExpr | newExpr.getInitializer().getFullyConverted() = expr) or
+      exists(ThrowExpr throw | throw.getExpr().getFullyConverted() = expr) or
+      exists(LambdaExpression lambda | lambda.getInitializer().getFullyConverted() = expr)
     )
   } or
   // The initialization of a field via a member of an initializer list.
-  TTranslatedExplicitFieldInitialization(Expr ast, Field field,
-      Expr expr) {
+  TTranslatedExplicitFieldInitialization(Expr ast, Field field, Expr expr) {
     exists(ClassAggregateLiteral initList |
       not ignoreExpr(initList) and
       ast = initList and
       expr = initList.getFieldExpr(field).getFullyConverted()
-    ) or
+    )
+    or
     exists(ConstructorFieldInit init |
       not ignoreExpr(init) and
       ast = init and
@@ -320,25 +304,21 @@ newtype TTranslatedElement =
     )
   } or
   // The initialization of an array element via a member of an initializer list.
-  TTranslatedExplicitElementInitialization(
-      ArrayAggregateLiteral initList, int elementIndex) {
+  TTranslatedExplicitElementInitialization(ArrayOrVectorAggregateLiteral initList, int elementIndex) {
     not ignoreExpr(initList) and
     exists(initList.getElementExpr(elementIndex))
   } or
   // The value initialization of a range of array elements that were omitted
   // from an initializer list.
-  TTranslatedElementValueInitialization(ArrayAggregateLiteral initList,
-      int elementIndex, int elementCount) {
+  TTranslatedElementValueInitialization(
+    ArrayOrVectorAggregateLiteral initList, int elementIndex, int elementCount
+  ) {
     not ignoreExpr(initList) and
     isFirstValueInitializedElementInRange(initList, elementIndex) and
-    elementCount = 
-      getEndOfValueInitializedRange(initList, elementIndex) -
-      elementIndex
+    elementCount = getEndOfValueInitializedRange(initList, elementIndex) - elementIndex
   } or
   // The initialization of a base class from within a constructor.
-  TTranslatedConstructorBaseInit(ConstructorBaseInit init) {
-    not ignoreExpr(init)
-  } or
+  TTranslatedConstructorBaseInit(ConstructorBaseInit init) { not ignoreExpr(init) } or
   // The destruction of a base class from within a destructor.
   TTranslatedDestructorBaseDestruction(DestructorBaseDestruction destruction) {
     not ignoreExpr(destruction)
@@ -348,21 +328,13 @@ newtype TTranslatedElement =
     not ignoreExpr(destruction)
   } or
   // A statement
-  TTranslatedStmt(Stmt stmt) {
-    translateStmt(stmt)
-  } or
+  TTranslatedStmt(Stmt stmt) { translateStmt(stmt) } or
   // A function
-  TTranslatedFunction(Function func) {
-    translateFunction(func)
-  } or
+  TTranslatedFunction(Function func) { translateFunction(func) } or
   // A constructor init list
-  TTranslatedConstructorInitList(Function func) {
-    translateFunction(func)
-  } or
+  TTranslatedConstructorInitList(Function func) { translateFunction(func) } or
   // A destructor destruction list
-  TTranslatedDestructorDestructionList(Function func) {
-    translateFunction(func)
-  } or
+  TTranslatedDestructorDestructionList(Function func) { translateFunction(func) } or
   // A function parameter
   TTranslatedParameter(Parameter param) {
     exists(Function func |
@@ -377,7 +349,9 @@ newtype TTranslatedElement =
   TTranslatedDeclarationEntry(DeclarationEntry entry) {
     exists(DeclStmt declStmt |
       translateStmt(declStmt) and
-      declStmt.getADeclarationEntry() = entry
+      declStmt.getADeclarationEntry() = entry and
+      // Only declarations of local variables need to be translated to IR.
+      entry.getDeclaration() instanceof LocalVariable
     )
   } or
   // A compiler-generated variable to implement a range-based for loop. These don't have a
@@ -385,23 +359,17 @@ newtype TTranslatedElement =
   TTranslatedRangeBasedForVariableDeclaration(RangeBasedForStmt forStmt, LocalVariable var) {
     translateStmt(forStmt) and
     (
-      var = forStmt.getRangeVariable()  or
+      var = forStmt.getRangeVariable() or
       var = forStmt.getBeginEndDeclaration().getADeclaration() or
       var = forStmt.getVariable()
     )
   } or
   // An allocator call in a `new` or `new[]` expression
-  TTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
-    not ignoreExpr(newExpr)
-  } or
+  TTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // An allocation size for a `new` or `new[]` expression
-  TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
-    not ignoreExpr(newExpr)
-  } or
+  TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // The declaration/initialization part of a `ConditionDeclExpr`
-  TTranslatedConditionDecl(ConditionDeclExpr expr) {
-    not ignoreExpr(expr)
-  }
+  TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -411,12 +379,14 @@ newtype TTranslatedElement =
  * `initList`, the result is the total number of elements in the array being
  * initialized.
  */
-private int getEndOfValueInitializedRange(ArrayAggregateLiteral initList, int afterElementIndex) {
+private int getEndOfValueInitializedRange(
+  ArrayOrVectorAggregateLiteral initList, int afterElementIndex
+) {
   result = getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)
   or
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
   not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
-  result = initList.getUnspecifiedType().(ArrayType).getArraySize()
+  result = initList.getArraySize()
 }
 
 /**
@@ -426,7 +396,8 @@ private int getEndOfValueInitializedRange(ArrayAggregateLiteral initList, int af
  * `initList`.
  */
 private int getNextExplicitlyInitializedElementAfter(
-    ArrayAggregateLiteral initList, int afterElementIndex) {
+  ArrayOrVectorAggregateLiteral initList, int afterElementIndex
+) {
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
   result = min(int i | exists(initList.getElementExpr(i)) and i > afterElementIndex)
 }
@@ -436,11 +407,12 @@ private int getNextExplicitlyInitializedElementAfter(
  * range of one or more consecutive value-initialized elements in `initList`.
  */
 private predicate isFirstValueInitializedElementInRange(
-  ArrayAggregateLiteral initList, int elementIndex) {
+  ArrayOrVectorAggregateLiteral initList, int elementIndex
+) {
   initList.isValueInitialized(elementIndex) and
   (
     elementIndex = 0 or
-    not initList.isValueInitialized(elementIndex - 1)
+    exists(initList.getElementExpr(elementIndex - 1))
   )
 }
 
@@ -468,9 +440,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Get the immediate child elements of this element.
    */
-  final TranslatedElement getAChild() {
-    result = getChild(_)
-  }
+  final TranslatedElement getAChild() { result = getChild(_) }
 
   /**
    * Gets the immediate child element of this element. The `id` is unique
@@ -483,39 +453,35 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the an identifier string for the element. This string is unique within
    * the scope of the element's function.
    */
-  final string getId() {
-    result = getUniqueId().toString()
-  }
+  final string getId() { result = getUniqueId().toString() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
     result = rank[rankIndex + 1](TranslatedElement child, int id |
-      child = getChild(id) |
-      child order by id
-    )
+        child = getChild(id)
+      |
+        child order by id
+      )
   }
 
   language[monotonicAggregates]
   private int getDescendantCount() {
-    result = 1 + sum(TranslatedElement child |
-      child = getChildByRank(_) |
-      child.getDescendantCount()
-    )
+    result = 1 +
+        sum(TranslatedElement child | child = getChildByRank(_) | child.getDescendantCount())
   }
 
   private int getUniqueId() {
-    if not exists(getParent()) then 
-      result = 0
+    if not exists(getParent())
+    then result = 0
     else
       exists(TranslatedElement parent |
         parent = getParent() and
-        if this = parent.getChildByRank(0) then
-          result = 1 + parent.getUniqueId()
+        if this = parent.getChildByRank(0)
+        then result = 1 + parent.getUniqueId()
         else
           exists(int childIndex, TranslatedElement previousChild |
             this = parent.getChildByRank(childIndex) and
             previousChild = parent.getChildByRank(childIndex - 1) and
-            result = previousChild.getUniqueId() +
-              previousChild.getDescendantCount()
+            result = previousChild.getUniqueId() + previousChild.getDescendantCount()
           )
       )
   }
@@ -528,8 +494,9 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction does not return a result, `resultType` should be
    * `VoidType`.
    */
-  abstract predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue);
+  abstract predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
+  );
 
   /**
    * Gets the `Function` that contains this element.
@@ -540,8 +507,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the successor instruction of the instruction that was generated by
    * this element for tag `tag`. The successor edge kind is specified by `kind`.
    */
-  abstract Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind);
+  abstract Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind);
 
   /**
    * Gets the successor instruction to which control should flow after the
@@ -563,90 +529,74 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the primary instruction for the side effect instruction that was
    * generated by this element for tag `tag`.
    */
-  Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
-    none()
-  }
+  Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) { none() }
 
   /**
    * Holds if this element generates a temporary variable with type `type`.
    * `tag` must be unique for each variable generated from the same AST node
    * (not just from the same `TranslatedElement`).
    */
-  predicate hasTempVariable(TempVariableTag tag, Type type) {
-    none()
-  }
+  predicate hasTempVariable(TempVariableTag tag, Type type) { none() }
 
   /**
    * If the instruction specified by `tag` is a `FunctionInstruction`, gets the
    * `Function` for that instruction.
    */
-  Function getInstructionFunction(InstructionTag tag) {
-    none()
-  }
+  Function getInstructionFunction(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `VariableInstruction`, gets the
    * `IRVariable` for that instruction.
    */
-  IRVariable getInstructionVariable(InstructionTag tag) {
-    none()
-  }
+  IRVariable getInstructionVariable(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `FieldInstruction`, gets the
    * `Field` for that instruction.
    */
-  Field getInstructionField(InstructionTag tag) {
-    none()
-  }
-  
+  Field getInstructionField(InstructionTag tag) { none() }
+
   /**
    * If the instruction specified by `tag` is a `ConstantValueInstruction`, gets
    * the constant value for that instruction.
    */
-  string getInstructionConstantValue(InstructionTag tag) {
-    none()
-  }
+  string getInstructionConstantValue(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `PointerArithmeticInstruction`,
    * gets the size of the type pointed to by the pointer.
    */
-  int getInstructionElementSize(InstructionTag tag) {
-    none()
-  }
+  int getInstructionElementSize(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` has a result of type `UnknownType`,
    * gets the size of the result in bytes. If the result does not have a knonwn
    * constant size, this predicate does not hold.
    */
-  int getInstructionResultSize(InstructionTag tag) {
-    none()
-  }
+  int getInstructionResultSize(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `StringConstantInstruction`,
    * gets the `StringLiteral` for that instruction.
    */
-  StringLiteral getInstructionStringLiteral(InstructionTag tag) {
-    none()
-  }
+  StringLiteral getInstructionStringLiteral(InstructionTag tag) { none() }
+
+  /**
+   * If the instruction specified by `tag` is a `BuiltInInstruction`, gets the built-in operation.
+   */
+  BuiltInOperation getInstructionBuiltInOperation(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `CatchByTypeInstruction`,
    * gets the type of the exception to be caught.
    */
-  Type getInstructionExceptionType(InstructionTag tag) {
-    none()
-  }
+  Type getInstructionExceptionType(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is an `InheritanceConversionInstruction`,
    * gets the inheritance relationship for that instruction.
    */
-  predicate getInstructionInheritance(InstructionTag tag, Class baseClass,
-      Class derivedClass) {
+  predicate getInstructionInheritance(InstructionTag tag, Class baseClass, Class derivedClass) {
     none()
   }
 
@@ -654,24 +604,18 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the instruction whose result is consumed as an operand of the
    * instruction specified by `tag`, with the operand specified by `operandTag`.
    */
-  Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    none()
-  }
+  Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
 
   /**
    * Gets the type of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
    */
-  Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    none()
-  }
+  Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
 
   /**
    * Gets the size of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
    * Only holds for operands whose type is `UnknownType`.
    */
-  int getInstructionOperandSize(InstructionTag tag, SideEffectOperandTag operandTag) {
-    none()
-  }
+  int getInstructionOperandSize(InstructionTag tag, SideEffectOperandTag operandTag) { none() }
 
   /**
    * Gets the instruction generated by this element with tag `tag`.
@@ -693,7 +637,5 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Gets the parent element of this element.
    */
-  final TranslatedElement getParent() {
-    result.getAChild() = this
-  }
+  final TranslatedElement getParent() { result.getAChild() = this }
 }

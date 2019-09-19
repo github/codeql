@@ -1,6 +1,3 @@
-WARNING: Predicate isPrivate has been deprecated and may be removed in future (Typedefs3.ql:11,27-36)
-WARNING: Predicate isProtected has been deprecated and may be removed in future (Typedefs3.ql:14,27-38)
-WARNING: Predicate isPublic has been deprecated and may be removed in future (Typedefs3.ql:17,27-35)
 | ODASA-6095-A.hpp:5:25:5:30 | mytype | MyTemplate<X>::mytype | NestedTypedefType, getBaseType() = MyTemplate<X>, member of MyTemplate<X> |
 | ODASA-6095-B.hpp:6:43:6:49 | mytype2 | MyTemplate2<X>::mytype2 | NestedTypedefType, getBaseType() = decltype(...), member of MyTemplate2<X> |
 | file://:0:0:0:0 | mytype | MyTemplate<char>::mytype | NestedTypedefType, getBaseType() = MyTemplate<char>, member of MyTemplate<char> |

@@ -4,7 +4,6 @@
 
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
-import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.commons.DateTime
 
 /**
@@ -198,18 +197,14 @@ class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
  * `Function` that includes an operation that is checking for leap year.
  */
 class ChecksForLeapYearFunction extends Function {
-  ChecksForLeapYearFunction() {
-    this = any(CheckForLeapYearOperation clyo).getEnclosingFunction()
-  }
+  ChecksForLeapYearFunction() { this = any(CheckForLeapYearOperation clyo).getEnclosingFunction() }
 }
 
 /**
  * `FunctionCall` that includes an operation that is checking for leap year.
  */
 class ChecksForLeapYearFunctionCall extends FunctionCall {
-  ChecksForLeapYearFunctionCall() {
-    this.getTarget() instanceof ChecksForLeapYearFunction
-  }
+  ChecksForLeapYearFunctionCall() { this.getTarget() instanceof ChecksForLeapYearFunction }
 }
 
 /**

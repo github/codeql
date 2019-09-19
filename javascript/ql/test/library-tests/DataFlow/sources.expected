@@ -3,6 +3,7 @@
 | eval.js:1:1:5:1 | functio ... eval`\\n} |
 | eval.js:3:3:3:6 | eval |
 | eval.js:3:3:3:16 | eval("x = 23") |
+| file://:0:0:0:0 | global access path |
 | sources.js:1:1:1:0 | this |
 | sources.js:1:1:1:12 | new (x => x) |
 | sources.js:1:6:1:6 | x |

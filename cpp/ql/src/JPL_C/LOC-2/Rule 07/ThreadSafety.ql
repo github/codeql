@@ -14,8 +14,10 @@ import cpp
 class ForbiddenCall extends FunctionCall {
   ForbiddenCall() {
     exists(string name | name = this.getTarget().getName() |
-      name = "task_delay" or name = "taskDelay" or
-      name = "sleep" or name = "nanosleep" or
+      name = "task_delay" or
+      name = "taskDelay" or
+      name = "sleep" or
+      name = "nanosleep" or
       name = "clock_nanosleep"
     )
   }

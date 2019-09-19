@@ -6,15 +6,13 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.internal.Completion
-private import semmle.code.csharp.controlflow.internal.PreBasicBlocks
 private import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
 private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow::Internal::Successor
-private import semmle.code.csharp.controlflow.Guards as Guards
 private import ControlFlow
 private import SuccessorTypes
 
 /** The maximum number of splits allowed for a given node. */
-private int maxSplits() { result = 7 }
+private int maxSplits() { result = 5 }
 
 cached
 private module Cached {
@@ -28,32 +26,37 @@ private module Cached {
 
   cached
   newtype TSplitKind =
-    TFinallySplitKind() or
+    TInitializerSplitKind() or
+    TFinallySplitKind(int nestLevel) { nestLevel = FinallySplitting::nestLevel(_) } or
     TExceptionHandlerSplitKind() or
-    TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) }
+    TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) } or
+    TLoopUnrollingSplitKind(LoopUnrollingSplitting::UnrollableLoopStmt loop)
 
   cached
   newtype TSplit =
-    TFinallySplit(FinallySplitting::FinallySplitType type) or
+    TInitializerSplit(Constructor c) { InitializerSplitting::constructorInitializes(c, _) } or
+    TFinallySplit(FinallySplitting::FinallySplitType type, int nestLevel) {
+      nestLevel = FinallySplitting::nestLevel(_)
+    } or
     TExceptionHandlerSplit(ExceptionClass ec) or
     TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
       kind.startsSplit(_) and
       (branch = true or branch = false)
-    }
+    } or
+    TLoopUnrollingSplit(LoopUnrollingSplitting::UnrollableLoopStmt loop)
 
   cached
   newtype TSplits =
     TSplitsNil() or
     TSplitsCons(SplitInternal head, Splits tail) {
       exists(
-        ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk,
-        int numberOfSplits
+        ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
       |
-        case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1, numberOfSplits) and
+        case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1) and
         head = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
-      |
-        numberOfSplits < maxSplits() or head.getKind().isMandatory()
       )
+      or
+      succEntrySplitsCons(_, _, head, tail, _)
     }
 
   cached
@@ -75,6 +78,7 @@ private module Cached {
     )
   }
 }
+
 private import Cached
 
 /**
@@ -84,6 +88,18 @@ private import Cached
 class SplitImpl extends TSplit {
   /** Gets a textual representation of this split. */
   string toString() { none() }
+}
+
+/**
+ * Holds if split kinds `sk1` and `sk2` may overlap. That is, they may apply
+ * to at least one common control flow element inside callable `c`.
+ */
+private predicate overlapping(Callable c, SplitKind sk1, SplitKind sk2) {
+  exists(ControlFlowElement cfe |
+    sk1.appliesTo(cfe) and
+    sk2.appliesTo(cfe) and
+    c = cfe.getEnclosingCallable()
+  )
 }
 
 /**
@@ -103,12 +119,20 @@ abstract class SplitKind extends TSplitKind {
    */
   abstract int getListOrder();
 
+  /** Gets the rank of this split kind among all overlapping kinds for `c`. */
+  private int getRank(Callable c) {
+    this = rank[result](SplitKind sk | overlapping(c, this, sk) | sk order by sk.getListOrder())
+  }
+
   /**
-   * Holds if a split of this kind is mandatory. That is, a split of this kind must
-   * be taken into account, regardless of whether we might exceed the maximum number
-   * of splits (`maxSplits()`).
+   * Holds if this split kind is enabled for control flow element `cfe`. For
+   * performance reasons, the number of splits is restricted by the `maxSplits()`
+   * predicate.
    */
-  abstract predicate isMandatory();
+  predicate isEnabled(ControlFlowElement cfe) {
+    this.appliesTo(cfe) and
+    this.getRank(cfe.getEnclosingCallable()) <= maxSplits()
+  }
 
   /**
    * Gets the rank of this split kind among all the split kinds that apply to
@@ -116,7 +140,7 @@ abstract class SplitKind extends TSplitKind {
    * `getListOrder()`.
    */
   int getListRank(ControlFlowElement cfe) {
-    this.appliesTo(cfe) and
+    this.isEnabled(cfe) and
     this = rank[result](SplitKind sk | sk.appliesTo(cfe) | sk order by sk.getListOrder())
   }
 
@@ -139,6 +163,14 @@ abstract class SplitInternal extends SplitImpl {
   abstract predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c);
 
   /**
+   * Holds if this split is entered when control passes from `c` to the entry point
+   * `succ`.
+   *
+   * Invariant: `hasEntry(c, succ) implies succ = Successor::succEntry(c)`.
+   */
+  abstract predicate hasEntry(Callable c, ControlFlowElement succ);
+
+  /**
    * Holds if this split is left when control passes from `pred` to `succ` with
    * completion `c`.
    *
@@ -148,11 +180,11 @@ abstract class SplitInternal extends SplitImpl {
 
   /**
    * Holds if this split is left when control passes from `pred` out of the enclosing
-   * callable with completion `c`.
+   * callable `result` with completion `c`.
    *
-   * Invariant: `hasExit(pred, c) implies pred.getEnclosingCallable() = Successor::succExit(pred, c)`
+   * Invariant: `succ = hasExit(pred, c) implies succ = Successor::succExit(pred, c)`
    */
-  abstract predicate hasExit(ControlFlowElement pred, Completion c);
+  abstract Callable hasExit(ControlFlowElement pred, Completion c);
 
   /**
    * Holds if this split is maintained when control passes from `pred` to `succ` with
@@ -166,8 +198,195 @@ abstract class SplitInternal extends SplitImpl {
   final predicate appliesTo(ControlFlowElement cfe) {
     this.hasEntry(_, cfe, _)
     or
+    this.hasEntry(_, cfe)
+    or
     exists(ControlFlowElement pred | this.appliesTo(pred) | this.hasSuccessor(pred, cfe, _))
   }
+}
+
+module InitializerSplitting {
+  private import semmle.code.csharp.ExprOrStmtParent
+
+  /**
+   * A non-static member with an initializer, for example a field `int Field = 0`.
+   */
+  class InitializedInstanceMember extends Member {
+    private AssignExpr ae;
+
+    InitializedInstanceMember() {
+      not this.isStatic() and
+      expr_parent_top_level_adjusted(ae, _, this)
+    }
+
+    /** Gets the initializer expression. */
+    AssignExpr getInitializer() { result = ae }
+
+    /**
+     * Gets a control flow element that is a syntactic descendant of the
+     * initializer expression.
+     */
+    ControlFlowElement getAnInitializerDescendant() {
+      result = ae
+      or
+      result = this.getAnInitializerDescendant().getAChild()
+    }
+  }
+
+  /**
+   * Holds if `c` is a non-static constructor that performs the initialization
+   * of member `m`.
+   */
+  predicate constructorInitializes(Constructor c, InitializedInstanceMember m) {
+    c = c.getSourceDeclaration() and
+    not c.isStatic() and
+    c.getDeclaringType().hasMember(m) and
+    (
+      not c.hasInitializer()
+      or
+      // Members belonging to the base class are initialized via calls to the
+      // base constructor
+      c.getInitializer().isBase() and
+      m.getDeclaringType() = c.getDeclaringType()
+    )
+  }
+
+  /**
+   * Holds if `m` is the `i`th member initialized by non-static constructor `c`.
+   */
+  predicate constructorInitializeOrder(Constructor c, InitializedInstanceMember m, int i) {
+    constructorInitializes(c, m) and
+    m = rank[i + 1](InitializedInstanceMember m0 |
+        constructorInitializes(c, m0)
+      |
+        m0
+        order by
+          m0.getLocation().getStartLine(), m0.getLocation().getStartColumn(),
+          m0.getLocation().getFile().getAbsolutePath()
+      )
+  }
+
+  /** Gets the last member initialized by non-static constructor `c`. */
+  InitializedInstanceMember lastConstructorInitializer(Constructor c) {
+    exists(int i |
+      constructorInitializeOrder(c, result, i) and
+      not constructorInitializeOrder(c, _, i + 1)
+    )
+  }
+
+  /**
+   * A split for non-static member initializers belonging to a given non-static
+   * constructor. For example, in
+   *
+   * ```
+   * class C
+   * {
+   *     int Field1 = 0;
+   *     int Field2 = Field1 + 1;
+   *     int Field3;
+   *
+   *     public C()
+   *     {
+   *         Field3 = 2;
+   *     }
+   *
+   *     public C(int i)
+   *     {
+   *         Field3 = 3;
+   *     }
+   * }
+   * ```
+   *
+   * the initializer expressions `Field1 = 0` and `Field2 = Field1 + 1` are split
+   * on the two constructors. This is in order to generate CFGs for the two
+   * constructors that mimic
+   *
+   * ```
+   * public C()
+   * {
+   *     Field1 = 0;
+   *     Field2 = Field1 + 1;
+   *     Field3 = 2;
+   * }
+   * ```
+   *
+   * and
+   *
+   * ```
+   * public C()
+   * {
+   *     Field1 = 0;
+   *     Field2 = Field1 + 1;
+   *     Field3 = 3;
+   * }
+   * ```
+   *
+   * respectively.
+   */
+  class InitializerSplitImpl extends SplitImpl, TInitializerSplit {
+    private Constructor c;
+
+    InitializerSplitImpl() { this = TInitializerSplit(c) }
+
+    /** Gets the constructor. */
+    Constructor getConstructor() { result = c }
+
+    override string toString() { result = "" }
+  }
+
+  private class InitializerSplitKind extends SplitKind, TInitializerSplitKind {
+    override int getListOrder() { result = 0 }
+
+    override predicate isEnabled(ControlFlowElement cfe) { this.appliesTo(cfe) }
+
+    override string toString() { result = "Initializer" }
+  }
+
+  int getNextListOrder() { result = 1 }
+
+  private class InitializerSplitInternal extends SplitInternal, InitializerSplitImpl {
+    override InitializerSplitKind getKind() { any() }
+
+    override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      exists(ConstructorInitializer ci |
+        pred = last(ci, c) and
+        succ = succ(pred, c) and
+        succ = any(InitializedInstanceMember m).getAnInitializerDescendant() and
+        this.getConstructor() = ci.getConstructor()
+      )
+    }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) {
+      succ = succEntry(c) and
+      c = this.getConstructor() and
+      succ = any(InitializedInstanceMember m).getAnInitializerDescendant()
+    }
+
+    override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesTo(pred) and
+      succ = succ(pred, c) and
+      not succ = any(InitializedInstanceMember m).getAnInitializerDescendant() and
+      succ.getEnclosingCallable() = this.getConstructor()
+    }
+
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
+      this.appliesTo(pred) and
+      result = succExit(pred, c) and
+      result = this.getConstructor()
+    }
+
+    override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesTo(pred) and
+      succ = succ(pred, c) and
+      succ = any(InitializedInstanceMember m | constructorInitializes(this.getConstructor(), m))
+            .getAnInitializerDescendant()
+    }
+  }
+}
+
+pragma[noinline]
+private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
+  result = cfe.getAChild() and
+  c = result.getEnclosingCallable()
 }
 
 module FinallySplitting {
@@ -193,12 +412,6 @@ module FinallySplitting {
     }
   }
 
-  pragma[noinline]
-  private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
-    result = cfe.getAChild() and
-    c = result.getEnclosingCallable()
-  }
-
   /**
    * Gets a descendant that belongs to the `finally` block of try statement
    * `try`.
@@ -216,23 +429,31 @@ module FinallySplitting {
     )
   }
 
+  /**
+   * Holds if `innerTry` has a `finally` block and is immediately nested inside the
+   * `finally` block of `outerTry`.
+   */
+  private predicate nestedFinally(TryStmt outerTry, TryStmt innerTry) {
+    exists(ControlFlowElement innerFinally |
+      innerFinally = getAChild(getAFinallyDescendant(outerTry), outerTry.getEnclosingCallable()) and
+      innerFinally = innerTry.getFinally()
+    )
+  }
+
+  /** Gets the nesting level of the `finally` block for `try`. */
+  int nestLevel(TryStmt try) { result = strictcount(TryStmt outer | nestedFinally*(outer, try)) }
+
   /** A control flow element that belongs to a `finally` block. */
   private class FinallyControlFlowElement extends ControlFlowElement {
-    FinallyControlFlowElement() { this = getAFinallyDescendant(_) }
+    private TryStmt try;
+
+    FinallyControlFlowElement() { this = getAFinallyDescendant(try) }
+
+    /** Gets the immediate `try` block that this node belongs to. */
+    TryStmt getTryStmt() { result = try }
 
     /** Holds if this node is the entry node in the `finally` block it belongs to. */
-    predicate isEntryNode() {
-      exists(TryStmt try | this = getAFinallyDescendant(try) | this = first(try.getFinally()))
-    }
-
-    /**
-     * Holds if this node is a last element in the `finally` block belonging to
-     * `try` statement `try`, with completion `c`.
-     */
-    predicate isExitNode(TryStmt try, Completion c) {
-      this = getAFinallyDescendant(try) and
-      this = last(try.getFinally(), c)
-    }
+    predicate isEntryNode() { this = first(try.getFinally()) }
   }
 
   /** A control flow element that does not belong to a `finally` block. */
@@ -262,8 +483,9 @@ module FinallySplitting {
    */
   class FinallySplitImpl extends SplitImpl, TFinallySplit {
     private FinallySplitType type;
+    private int nestLevel;
 
-    FinallySplitImpl() { this = TFinallySplit(type) }
+    FinallySplitImpl() { this = TFinallySplit(type, nestLevel) }
 
     /**
      * Gets the type of this `finally` split, that is, how to continue execution after the
@@ -271,37 +493,53 @@ module FinallySplitting {
      */
     FinallySplitType getType() { result = type }
 
+    /** Gets the `finally` nesting level. */
+    int getNestLevel() { result = nestLevel }
+
     override string toString() {
       if type instanceof NormalSuccessor
       then result = ""
-      else result = "finally: " + type.toString()
+      else
+        if nestLevel > 1
+        then result = "finally(" + nestLevel + "): " + type.toString()
+        else result = "finally: " + type.toString()
     }
+  }
+
+  private int getListOrder(FinallySplitKind kind) {
+    result = InitializerSplitting::getNextListOrder() + kind.getNestLevel()
+  }
+
+  int getNextListOrder() {
+    result = max(int i | i = getListOrder(_) + 1 or i = InitializerSplitting::getNextListOrder())
   }
 
   private class FinallySplitKind extends SplitKind, TFinallySplitKind {
-    override int getListOrder() { result = 0 }
+    private int nestLevel;
 
-    override predicate isMandatory() { any() }
+    FinallySplitKind() { this = TFinallySplitKind(nestLevel) }
 
-    override string toString() { result = "Finally" }
+    /** Gets the `finally` nesting level. */
+    int getNestLevel() { result = nestLevel }
+
+    override int getListOrder() { result = getListOrder(this) }
+
+    override string toString() { result = "Finally (" + nestLevel + ")" }
   }
 
   private class FinallySplitInternal extends SplitInternal, FinallySplitImpl {
-    override FinallySplitKind getKind() { any() }
+    override FinallySplitKind getKind() { result.getNestLevel() = this.getNestLevel() }
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      succ.(FinallyControlFlowElement).isEntryNode() and
+      succ = any(FinallyControlFlowElement entry |
+          entry.isEntryNode() and
+          this.getNestLevel() = nestLevel(entry.getTryStmt())
+        ) and
       succ = succ(pred, c) and
-      this.getType().isSplitForEntryCompletion(c) and
-      (
-        // Abnormal entry must enter the correct splitting
-        not c instanceof NormalCompletion
-        or
-        // Normal entry only when not entering a nested `finally` block; in that case,
-        // the outer split must be maintained (see `hasSuccessor()`)
-        pred instanceof NonFinallyControlFlowElement
-      )
+      this.getType().isSplitForEntryCompletion(c)
     }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
 
     /**
      * Holds if this split applies to control flow element `pred`, where `pred`
@@ -312,53 +550,90 @@ module FinallySplitting {
       (exists(succ(pred, _)) or exists(succExit(pred, _)))
     }
 
-    /** Holds if `pred` may exit this split with completion `c`. */
-    private predicate exit(ControlFlowElement pred, Completion c) {
+    /**
+     * Holds if `pred` may exit this split with completion `c`. The Boolean
+     * `inherited` indicates whether `c` is an inherited completion from a `try`/
+     * `catch` block.
+     */
+    private predicate exit(ControlFlowElement pred, Completion c, boolean inherited) {
       this.appliesToPredecessor(pred) and
       exists(TryStmt try, FinallySplitType type |
         type = this.getType() and
+        nestLevel(try) = this.getNestLevel() and
         pred = last(try, c)
       |
-        if pred.(FinallyControlFlowElement).isExitNode(try, c)
-        then (
+        if pred = last(try.getFinally(), c)
+        then
           // Finally block can itself exit with completion `c`: either `c` must
           // match this split, `c` must be an abnormal completion, or this split
           // does not require another completion to be recovered
-          type.matchesCompletion(c)
-          or
-          not c instanceof NormalCompletion
-          or
-          type instanceof NormalSuccessor
-        ) else (
-          // Finally block can exit with completion `c` derived from try/catch
+          inherited = false and
+          (
+            type.matchesCompletion(c)
+            or
+            not c instanceof NormalCompletion
+            or
+            type instanceof NormalSuccessor
+          )
+        else (
+          // Finally block can exit with completion `c` inherited from try/catch
           // block: must match this split
+          inherited = true and
           type.matchesCompletion(c) and
           not type instanceof NormalSuccessor
         )
       )
+      or
+      // If this split is normal, and an outer split can exit based on a inherited
+      // completion, we need to exit this split as well. For example, in
+      //
+      // ```
+      // bool done;
+      // try
+      // {
+      //     if (b1) throw new ExceptionA();
+      // }
+      // finally
+      // {
+      //     try
+      //     {
+      //         if (b2) throw new ExceptionB();
+      //     }
+      //     finally
+      //     {
+      //         done = true;
+      //     }
+      // }
+      // ```
+      //
+      // if the outer split for `done = true` is `ExceptionA` and the inner split
+      // is "normal" (corresponding to `b1 = true` and `b2 = false`), then the inner
+      // split must be able to exit with an `ExceptionA` completion.
+      this.appliesToPredecessor(pred) and
+      exists(FinallySplitInternal outer |
+        outer.getNestLevel() = this.getNestLevel() - 1 and
+        outer.exit(pred, c, inherited) and
+        this.getType() instanceof NormalSuccessor and
+        inherited = true
+      )
     }
 
     override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      this.appliesToPredecessor(pred) and
       succ = succ(pred, c) and
       (
-        // Entering a nested `finally` block abnormally means that we should exit this split
-        succ.(FinallyControlFlowElement).isEntryNode() and
-        not c instanceof NormalCompletion
+        exit(pred, c, _)
         or
-        exit(pred, c)
-        or
-        exit(pred, any(BreakCompletion bc)) and
+        exit(pred, any(BreakCompletion bc), _) and
         c instanceof BreakNormalCompletion
       )
     }
 
-    override predicate hasExit(ControlFlowElement pred, Completion c) {
-      exists(succExit(pred, c)) and
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
+      result = succExit(pred, c) and
       (
-        exit(pred, c)
+        exit(pred, c, _)
         or
-        exit(pred, any(BreakCompletion bc)) and
+        exit(pred, any(BreakCompletion bc), _) and
         c instanceof BreakNormalCompletion
       )
     }
@@ -369,11 +644,11 @@ module FinallySplitting {
       succ = any(FinallyControlFlowElement fcfe |
           if fcfe.isEntryNode()
           then
-            // Entering a nested `finally` block normally must remember the outer split
-            c instanceof NormalCompletion
+            // entering a nested `finally` block
+            nestLevel(fcfe.getTryStmt()) > this.getNestLevel()
           else
-            // Staying in the same `finally` block should maintain this split
-            not this.hasEntry(pred, succ, c)
+            // staying in the same (possibly nested) `finally` block as `pred`
+            nestLevel(fcfe.getTryStmt()) >= this.getNestLevel()
         )
     }
   }
@@ -432,12 +707,12 @@ module ExceptionHandlerSplitting {
   }
 
   private class ExceptionHandlerSplitKind extends SplitKind, TExceptionHandlerSplitKind {
-    override int getListOrder() { result = 1 }
-
-    override predicate isMandatory() { any() }
+    override int getListOrder() { result = FinallySplitting::getNextListOrder() }
 
     override string toString() { result = "ExceptionHandler" }
   }
+
+  int getNextListOrder() { result = FinallySplitting::getNextListOrder() + 1 }
 
   private class ExceptionHandlerSplitInternal extends SplitInternal, ExceptionHandlerSplitImpl {
     override ExceptionHandlerSplitKind getKind() { any() }
@@ -449,6 +724,8 @@ module ExceptionHandlerSplitting {
         succ = ts.getCatchClause(0).(SpecificCatchClause)
       )
     }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
 
     /**
      * Holds if this split applies to catch clause `scc`. The parameter `match`
@@ -528,10 +805,10 @@ module ExceptionHandlerSplitting {
       )
     }
 
-    override predicate hasExit(ControlFlowElement pred, Completion c) {
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
       // Exit out from last `catch` clause (no catch clauses match)
       this.hasLastExit(pred, c) and
-      exists(succExit(pred, c))
+      result = succExit(pred, c)
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -690,7 +967,6 @@ module BooleanSplitting {
    */
   class BooleanSplitImpl extends SplitImpl, TBooleanSplit {
     private BooleanSplitSubKind kind;
-
     private boolean branch;
 
     BooleanSplitImpl() { this = TBooleanSplit(kind, branch) }
@@ -709,6 +985,27 @@ module BooleanSplitting {
     }
   }
 
+  private int getListOrder(BooleanSplitSubKind kind) {
+    exists(Callable c, int r | c = kind.getEnclosingCallable() |
+      result = r + ExceptionHandlerSplitting::getNextListOrder() - 1 and
+      kind = rank[r](BooleanSplitSubKind kind0 |
+          kind0.getEnclosingCallable() = c and
+          kind0.startsSplit(_)
+        |
+          kind0
+          order by
+            kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn(),
+            kind0.toString()
+        )
+    )
+  }
+
+  int getNextListOrder() {
+    result = max(int i |
+        i = getListOrder(_) + 1 or i = ExceptionHandlerSplitting::getNextListOrder()
+      )
+  }
+
   private class BooleanSplitKind extends SplitKind, TBooleanSplitKind {
     private BooleanSplitSubKind kind;
 
@@ -717,22 +1014,7 @@ module BooleanSplitting {
     /** Gets the sub kind of this Boolean split kind. */
     BooleanSplitSubKind getSubKind() { result = kind }
 
-    override int getListOrder() {
-      exists(Callable c, int r | c = kind.getEnclosingCallable() |
-        result = r + 1 and // start the ordering from 2
-        kind = rank[r](BooleanSplitSubKind kind0 |
-            kind0.getEnclosingCallable() = c and
-            kind0.startsSplit(_)
-          |
-            kind0
-            order by
-              kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn(),
-              kind0.toString()
-          )
-      )
-    }
-
-    override predicate isMandatory() { none() }
+    override int getListOrder() { result = getListOrder(kind) }
 
     override string toString() { result = kind.toString() }
   }
@@ -745,6 +1027,8 @@ module BooleanSplitting {
       this.getSubKind().startsSplit(pred) and
       this.getBranch() = c.getInnerCompletion().(BooleanCompletion).getValue()
     }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
 
     private ConditionBlock getACorrelatedCondition(boolean inverted) {
       this.getSubKind().correlatesConditions(_, result, inverted)
@@ -778,10 +1062,10 @@ module BooleanSplitting {
       )
     }
 
-    override predicate hasExit(ControlFlowElement pred, Completion c) {
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
       exists(PreBasicBlock bb | this.appliesToBlock(bb, c) |
         pred = bb.getLastElement() and
-        exists(succExit(pred, c))
+        result = succExit(pred, c)
       )
     }
 
@@ -799,6 +1083,153 @@ module BooleanSplitting {
           )
         )
       )
+    }
+  }
+}
+
+module LoopUnrollingSplitting {
+  private import semmle.code.csharp.controlflow.Guards as Guards
+  private import PreBasicBlocks
+  private import PreSsa
+
+  /** Holds if `ce` is guarded by a (non-)empty check, as specified by `v`. */
+  private predicate emptinessGuarded(
+    Guards::Guard g, Guards::CollectionExpr ce, Guards::AbstractValues::EmptyCollectionValue v
+  ) {
+    exists(PreBasicBlock bb | Guards::Internal::preControls(g, bb, v) |
+      PreSsa::adjacentReadPairSameVar(g, ce) and
+      bb.getAnElement() = ce
+    )
+  }
+
+  /**
+   * A loop where the body is guaranteed to be executed at least once, and
+   * can therefore be unrolled in the control flow graph.
+   */
+  abstract class UnrollableLoopStmt extends LoopStmt {
+    /** Holds if the step `pred --c--> succ` should start loop unrolling. */
+    abstract predicate startUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+
+    /** Holds if the step `pred --c--> succ` should stop loop unrolling. */
+    abstract predicate stopUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+
+    /**
+     * Holds if any step `pred --c--> _` should be pruned from the unrolled loop
+     * (the loop condition evaluating to `false`).
+     */
+    abstract predicate pruneLoopCondition(ControlFlowElement pred, ConditionalCompletion c);
+  }
+
+  private class UnrollableForeachStmt extends UnrollableLoopStmt, ForeachStmt {
+    UnrollableForeachStmt() {
+      exists(Guards::AbstractValues::EmptyCollectionValue v | v.isNonEmpty() |
+        emptinessGuarded(_, this.getIterableExpr(), v)
+        or
+        this.getIterableExpr() = v.getAnExpr()
+      )
+    }
+
+    override predicate startUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      pred = last(this.getIterableExpr(), c) and
+      succ = this
+    }
+
+    override predicate stopUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      pred = this and
+      succ = succ(pred, c)
+    }
+
+    override predicate pruneLoopCondition(ControlFlowElement pred, ConditionalCompletion c) {
+      pred = this and
+      c.(EmptinessCompletion).isEmpty()
+    }
+  }
+
+  /**
+   * A split for loops where the body is guaranteed to be executed at least once, and
+   * can therefore be unrolled in the control flow graph. For example, in
+   *
+   * ```
+   * void M(string[] args)
+   * {
+   *     if (args.Length == 0)
+   *         return;
+   *     foreach (var arg in args)
+   *         System.Console.WriteLine(args);
+   * }
+   * ```
+   *
+   * the `foreach` loop is guaranteed to be executed at least once, as a result of the
+   * `args.Length == 0` check.
+   */
+  class LoopUnrollingSplitImpl extends SplitImpl, TLoopUnrollingSplit {
+    UnrollableLoopStmt loop;
+
+    LoopUnrollingSplitImpl() { this = TLoopUnrollingSplit(loop) }
+
+    override string toString() {
+      result = "unroll (line " + loop.getLocation().getStartLine() + ")"
+    }
+  }
+
+  private int getListOrder(UnrollableLoopStmt loop) {
+    exists(Callable c, int r | c = loop.getEnclosingCallable() |
+      result = r + BooleanSplitting::getNextListOrder() - 1 and
+      loop = rank[r](UnrollableLoopStmt loop0 |
+          loop0.getEnclosingCallable() = c
+        |
+          loop0 order by loop0.getLocation().getStartLine(), loop0.getLocation().getStartColumn()
+        )
+    )
+  }
+
+  int getNextListOrder() {
+    result = max(int i | i = getListOrder(_) + 1 or i = BooleanSplitting::getNextListOrder())
+  }
+
+  private class LoopUnrollingSplitKind extends SplitKind, TLoopUnrollingSplitKind {
+    private UnrollableLoopStmt loop;
+
+    LoopUnrollingSplitKind() { this = TLoopUnrollingSplitKind(loop) }
+
+    override int getListOrder() { result = getListOrder(loop) }
+
+    override string toString() { result = "Unroll" }
+  }
+
+  private class LoopUnrollingSplitInternal extends SplitInternal, LoopUnrollingSplitImpl {
+    override LoopUnrollingSplitKind getKind() { result = TLoopUnrollingSplitKind(loop) }
+
+    override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      loop.startUnroll(pred, succ, c)
+    }
+
+    override predicate hasEntry(Callable pred, ControlFlowElement succ) { none() }
+
+    /**
+     * Holds if this split applies to control flow element `pred`, where `pred`
+     * is a valid predecessor.
+     */
+    private predicate appliesToPredecessor(ControlFlowElement pred, Completion c) {
+      this.appliesTo(pred) and
+      (exists(succ(pred, c)) or exists(succExit(pred, c))) and
+      not loop.pruneLoopCondition(pred, c)
+    }
+
+    override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesToPredecessor(pred, c) and
+      loop.stopUnroll(pred, succ, c)
+    }
+
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
+      this.appliesToPredecessor(pred, c) and
+      result = succExit(pred, c)
+    }
+
+    override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesToPredecessor(pred, c) and
+      succ = succ(pred, c) and
+      not loop.stopUnroll(pred, succ, c)
     }
   }
 }
@@ -821,6 +1252,26 @@ class Splits extends TSplits {
   }
 }
 
+private predicate succEntrySplitsFromRank(
+  @top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits splits, int rnk
+) {
+  splits = TSplitsNil() and
+  succ = succEntry(pred) and
+  rnk = 0
+  or
+  exists(SplitInternal head, Splits tail | succEntrySplitsCons(pred, succ, head, tail, rnk) |
+    splits = TSplitsCons(head, tail)
+  )
+}
+
+private predicate succEntrySplitsCons(
+  Callable pred, ControlFlowElement succ, SplitInternal head, Splits tail, int rnk
+) {
+  succEntrySplitsFromRank(pred, succ, tail, rnk - 1) and
+  head.hasEntry(pred, succ) and
+  rnk = head.getKind().getListRank(succ)
+}
+
 /**
  * Holds if `succ` with splits `succSplits` is the first element that is executed
  * when entering callable `pred`.
@@ -829,9 +1280,16 @@ pragma[noinline]
 predicate succEntrySplits(
   @top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits succSplits, SuccessorType t
 ) {
-  succ = succEntry(pred) and
-  t instanceof NormalSuccessor and
-  succSplits = TSplitsNil() // initially no splits
+  exists(int rnk |
+    succ = succEntry(pred) and
+    t instanceof NormalSuccessor and
+    succEntrySplitsFromRank(pred, succ, succSplits, rnk)
+  |
+    rnk = 0 and
+    not any(SplitInternal split).hasEntry(pred, succ)
+    or
+    rnk = max(SplitInternal split | split.hasEntry(pred, succ) | split.getKind().getListRank(succ))
+  )
 }
 
 /**
@@ -844,7 +1302,7 @@ predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable su
     t.matchesCompletion(c) and
     succ = succExit(pred, c) and
     forall(SplitInternal predSplit | predSplit = predSplits.getASplit() |
-      predSplit.hasExit(pred, c)
+      succ = predSplit.hasExit(pred, c)
     )
   )
 }
@@ -1071,33 +1529,28 @@ private module SuccSplits {
    */
   predicate case2aFromRank(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-    Completion c, int rnk, int numberOfSplits
+    Completion c, int rnk
   ) {
     case2aux(pred, predSplits, succ, c) and
     succSplits = TSplitsNil() and
-    rnk = max(any(SplitKind sk).getListRank(succ)) + 1 and
-    numberOfSplits = 0
+    rnk = max(any(SplitKind sk).getListRank(succ)) + 1
     or
-    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1, numberOfSplits) and
+    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1) and
     case2aNoneAtRank(pred, predSplits, succ, c, rnk)
     or
-    exists(Splits mid, SplitInternal split, int numberOfSplitsMid |
-      split = case2aCons(pred, predSplits, succ, mid, c, rnk, numberOfSplitsMid)
+    exists(Splits mid, SplitInternal split |
+      split = case2aCons(pred, predSplits, succ, mid, c, rnk)
     |
-      if numberOfSplitsMid < maxSplits() or split.getKind().isMandatory()
-      then succSplits = TSplitsCons(split, mid) and numberOfSplits = numberOfSplitsMid + 1
-      else (
-        succSplits = mid and numberOfSplits = numberOfSplitsMid
-      )
+      succSplits = TSplitsCons(split, mid)
     )
   }
 
   pragma[noinline]
   private SplitInternal case2aCons(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-    Completion c, int rnk, int numberOfSplits
+    Completion c, int rnk
   ) {
-    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1, numberOfSplits) and
+    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1) and
     result = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
   }
 
@@ -1131,7 +1584,7 @@ private module SuccSplits {
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
     Completion c
   ) {
-    case2aFromRank(pred, predSplits, succ, succSplits, c, 1, _)
+    case2aFromRank(pred, predSplits, succ, succSplits, c, 1)
     or
     case2bForall(pred, predSplits, succ, c, TSplitsNil()) and
     succSplits = TSplitsNil()
@@ -1151,6 +1604,7 @@ private module SuccSplits {
     case2(pred, predSplits, succ, succSplits, c)
   }
 }
+
 import SuccSplits
 
 /** Provides logic for calculating reachable control flow nodes. */

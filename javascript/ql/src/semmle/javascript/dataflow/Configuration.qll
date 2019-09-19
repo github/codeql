@@ -68,7 +68,7 @@
  * computed by `onPath`.
  */
 
-import javascript
+private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
 
@@ -157,14 +157,14 @@ abstract class Configuration extends string {
    *
    * Holds if flow from `src` to `trg` is prohibited.
    */
-  predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
+  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
 
   /**
    * DEPRECATED: Use `isBarrierEdge` instead.
    *
    * Holds if flow with label `lbl` cannot flow from `src` to `trg`.
    */
-  predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
+  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
 
   /**
    * Holds if flow from `pred` to `succ` is prohibited.
@@ -229,6 +229,25 @@ abstract class Configuration extends string {
 abstract class FlowLabel extends string {
   bindingset[this]
   FlowLabel() { any() }
+
+  /**
+   * Holds if this is the standard `FlowLabel::data()` flow label,
+   * describing values that directly originate from a flow source.
+   */
+  final predicate isData() { this = FlowLabel::data() }
+
+  /**
+   * Holds if this is the standard `FlowLabel::taint()` flow label,
+   * describing values that are influenced ("tainted") by a flow
+   * source, but not necessarily directly derived from it.
+   */
+  final predicate isTaint() { this = FlowLabel::taint() }
+
+  /**
+   * Holds if this is one of the standard flow labels `FlowLabel::data()`
+   * or `FlowLabel::taint()`.
+   */
+  final predicate isDataOrTaint() { isData() or isTaint() }
 }
 
 /**
@@ -261,8 +280,13 @@ module FlowLabel {
 /**
  * A node that can act as a barrier when appearing in a condition.
  *
- * To use this barrier in `Configuration` `cfg`, add this barrier to the
- * extent of `cfg.isBarrierGuard`.
+ * To add a barrier guard to a configuration, define a subclass of this class overriding the
+ * `blocks` predicate, and then extend the configuration's `isBarrierGuard` predicate to include
+ * the new class.
+ *
+ * Note that it is generally a good idea to make the characteristic predicate of barrier guard
+ * classes as precise as possible: if two subclasses of `BarrierGuardNode` overlap, their
+ * implementations of `blocks` will _both_ apply to any configuration that includes either of them.
  */
 abstract class BarrierGuardNode extends DataFlow::Node {
   /**
@@ -486,7 +510,6 @@ private predicate basicFlowStep(
     // Local flow
     exists(FlowLabel predlbl, FlowLabel succlbl |
       localFlowStep(pred, succ, cfg, predlbl, succlbl) and
-      not cfg.isBarrier(pred, succ, predlbl) and
       not cfg.isBarrierEdge(pred, succ, predlbl) and
       summary = MkPathSummary(false, false, predlbl, succlbl)
     )
@@ -601,7 +624,6 @@ private predicate callInputStep(
     )
   ) and
   not cfg.isBarrier(succ) and
-  not cfg.isBarrier(pred, succ) and
   not cfg.isBarrierEdge(pred, succ)
 }
 
@@ -656,7 +678,6 @@ private predicate flowThroughCall(
     ret.asExpr() = f.getAReturnedExpr() and
     calls(output, f) and // Do not consider partial calls
     reachableFromInput(f, output, input, ret, cfg, summary) and
-    not cfg.isBarrier(ret, output) and
     not cfg.isBarrierEdge(ret, output) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
@@ -666,7 +687,6 @@ private predicate flowThroughCall(
     DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
     calls(invk, f) and
     reachableFromInput(f, invk, input, ret, cfg, summary) and
-    not cfg.isBarrier(ret, output) and
     not cfg.isBarrierEdge(ret, output) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
@@ -906,7 +926,6 @@ private predicate flowStep(
     flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
   not cfg.isBarrier(succ) and
-  not cfg.isBarrier(pred, succ) and
   not cfg.isBarrierEdge(pred, succ) and
   not cfg.isLabeledBarrier(succ, summary.getEndLabel())
 }
@@ -997,9 +1016,7 @@ private DataFlow::Configuration id(DataFlow::Configuration cfg) { result >= cfg 
  */
 class PathNode extends TPathNode {
   DataFlow::Node nd;
-
   DataFlow::Configuration cfg;
-
   PathSummary summary;
 
   PathNode() { this = MkPathNode(nd, cfg, summary) }

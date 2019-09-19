@@ -7,6 +7,7 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -23,19 +24,25 @@ import cpp
  * except inside the constructor itself
  */
 
-// Part 1: call chains of public/protected member functions and the variables they need
+/*
+ * Part 1: call chains of public/protected member functions and the variables
+ * they need
+ */
 
 predicate memberDirectlyNeedsVariable(MemberFunction mf, Class c, MemberVariable mv) {
   (mf.isPublic() or mf.isProtected()) and
   c = mf.getDeclaringType() and
   c = mv.getDeclaringType() and
-  exists(VariableAccess va | va = mv.getAnAccess() and
-     not exists(Assignment a | va = a.getLValue()) and
-     va.getEnclosingFunction() = mf)
+  exists(VariableAccess va |
+    va = mv.getAnAccess() and
+    not exists(Assignment a | va = a.getLValue()) and
+    va.getEnclosingFunction() = mf
+  )
 }
 
 predicate memberNeedsVariable(MemberFunction mf, Class c, MemberVariable mv) {
-  memberDirectlyNeedsVariable(mf, c, mv) or
+  memberDirectlyNeedsVariable(mf, c, mv)
+  or
   exists(MemberFunction mf2 |
     memberNeedsVariable(mf2, c, mv) and
     mf.getDeclaringType() = c and
@@ -44,7 +51,10 @@ predicate memberNeedsVariable(MemberFunction mf, Class c, MemberVariable mv) {
   )
 }
 
-// Part 2: call chains of members of the class and the variables they initialise (include private members)
+/*
+ * Part 2: call chains of members of the class and the variables they
+ * initialise (include private members)
+ */
 
 predicate memberDirectlyInitialisesVariable(MemberFunction mf, Class c, MemberVariable mv) {
   c = mf.getDeclaringType() and
@@ -53,7 +63,8 @@ predicate memberDirectlyInitialisesVariable(MemberFunction mf, Class c, MemberVa
 }
 
 predicate memberInitialisesVariable(MemberFunction mf, Class c, MemberVariable mv) {
-  memberDirectlyInitialisesVariable(mf, c, mv) or
+  memberDirectlyInitialisesVariable(mf, c, mv)
+  or
   exists(MemberFunction mf2 |
     memberDirectlyInitialisesVariable(_, c, mv) and // (optimizer hint)
     memberInitialisesVariable(mf2, c, mv) and
@@ -62,7 +73,10 @@ predicate memberInitialisesVariable(MemberFunction mf, Class c, MemberVariable m
   )
 }
 
-// Part 3: which variable a constructor initialises through assignment, calls or initialisers
+/*
+ * Part 3: which variable a constructor initialises through assignment, calls
+ * or initialisers
+ */
 
 predicate preInitialises(Constructor c, MemberVariable mv) {
   exists(ConstructorFieldInit cfi | cfi = c.getAnInitializer() | cfi.getTarget() = mv)
@@ -71,14 +85,14 @@ predicate preInitialises(Constructor c, MemberVariable mv) {
 predicate exprInitialises(Constructor c, ControlFlowNode cf, MemberVariable mv) {
   cf.getControlFlowScope() = c and
   (
-       cf.(Assignment).getLValue() = mv.getAnAccess()
-    or memberInitialisesVariable(cf.(FunctionCall).getTarget(), c.getDeclaringType(), mv)
+    cf.(Assignment).getLValue() = mv.getAnAccess() or
+    memberInitialisesVariable(cf.(FunctionCall).getTarget(), c.getDeclaringType(), mv)
   )
 }
 
 predicate initialises(Constructor c, MemberVariable mv) {
-  exprInitialises(c, _, mv)
-  or preInitialises(c, mv)
+  exprInitialises(c, _, mv) or
+  preInitialises(c, mv)
 }
 
 predicate doesNotInitialise(Constructor c, MemberVariable mv) {
@@ -86,18 +100,21 @@ predicate doesNotInitialise(Constructor c, MemberVariable mv) {
   not initialises(c, mv)
 }
 
-// Part 4: flow-sensitive analysis of the constructor (only) to check the order: only make public/protected
-// calls that require the value of a variable after it has been initialised.
+/*
+ * Part 4: flow-sensitive analysis of the constructor (only) to check the
+ * order: only make public/protected calls that require the value of a variable
+ * after it has been initialised.
+ */
 
 predicate reachableWithoutInitialising(Constructor c, ControlFlowNode cf, MemberVariable mv) {
-  not (preInitialises(c, mv))
-  and
+  not preInitialises(c, mv) and
   (
-    cf = c.getBlock() or
+    cf = c.getBlock()
+    or
     exists(ControlFlowNode mid |
-        reachableWithoutInitialising(c, mid, mv) and
-        cf = mid.getASuccessor() and
-        not exprInitialises(c, cf, mv)
+      reachableWithoutInitialising(c, mid, mv) and
+      cf = mid.getASuccessor() and
+      not exprInitialises(c, cf, mv)
     )
   )
 }
@@ -107,11 +124,15 @@ predicate badCall(Constructor c, FunctionCall call, MemberVariable mv) {
   memberNeedsVariable(call.getTarget(), c.getDeclaringType(), mv)
 }
 
-//
-// Query
-//
+/*
+ * Query
+ */
 
 from Element e, MemberVariable mv, string message
-where (doesNotInitialise(e, mv) and message = "Constructor does not initialize member variable " + mv.getName() + ".") or
-      (badCall(_, e, mv) and message = "Constructor calls function using " + mv.getName() + " before it is initialized.")
+where
+  doesNotInitialise(e, mv) and
+  message = "Constructor does not initialize member variable " + mv.getName() + "."
+  or
+  badCall(_, e, mv) and
+  message = "Constructor calls function using " + mv.getName() + " before it is initialized."
 select e, "AV Rule 71: " + message

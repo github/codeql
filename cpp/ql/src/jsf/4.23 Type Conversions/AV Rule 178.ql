@@ -8,6 +8,7 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 predicate subtype(Type sub, Type sup) {
@@ -15,10 +16,13 @@ predicate subtype(Type sub, Type sup) {
 }
 
 from Expr e, Type declared, Type converted
-where e.fromSource() and
-      declared = e.getUnderlyingType() and
-      converted = e.getActualType() and
-      (subtype(converted.(ReferenceType).getBaseType(), declared.(ReferenceType).getBaseType())
-       or
-       subtype(converted.(PointerType).getBaseType(), declared.(PointerType).getBaseType()))
+where
+  e.fromSource() and
+  declared = e.getUnderlyingType() and
+  converted = e.getActualType() and
+  (
+    subtype(converted.(ReferenceType).getBaseType(), declared.(ReferenceType).getBaseType())
+    or
+    subtype(converted.(PointerType).getBaseType(), declared.(PointerType).getBaseType())
+  )
 select e, "AV Rule 178: Down casting shall only be allowed through virtual functions."

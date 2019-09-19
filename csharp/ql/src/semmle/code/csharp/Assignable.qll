@@ -81,7 +81,7 @@ class AssignableRead extends AssignableAccess {
 
   pragma[noinline]
   private ControlFlow::Node getAnAdjacentReadSameVar() {
-    Ssa::Internal::adjacentReadPairSameVar(this.getAControlFlowNode(), result)
+    Ssa::Internal::adjacentReadPairSameVar(_, this.getAControlFlowNode(), result)
   }
 
   /**
@@ -154,7 +154,6 @@ class AssignableWrite extends AssignableAccess {
  */
 private class RefArg extends AssignableAccess {
   private Expr call;
-
   private int position;
 
   RefArg() {
@@ -315,11 +314,7 @@ module AssignableInternal {
         )
       } or
       TAddressOfDefinition(AddressOfExpr aoe) or
-      TPatternDefinition(TopLevelPatternDecl tlpd) or
-      TInitializer(Assignable a, Expr e) {
-        e = a.(Field).getInitializer() or
-        e = a.(Property).getInitializer()
-      }
+      TPatternDefinition(TopLevelPatternDecl tlpd)
 
     /**
      * Gets the source expression assigned in tuple definition `def`, if any.
@@ -383,8 +378,10 @@ module AssignableInternal {
       )
     }
   }
+
   import Cached
 }
+
 private import AssignableInternal
 
 /**
@@ -530,7 +527,6 @@ module AssignableDefinitions {
    */
   class TupleAssignmentDefinition extends AssignableDefinition, TTupleAssignmentDefinition {
     AssignExpr ae;
-
     Expr leaf;
 
     TupleAssignmentDefinition() { this = TTupleAssignmentDefinition(ae, leaf) }
@@ -571,6 +567,7 @@ module AssignableDefinitions {
    * entry point of `p`'s callable to basic block `bb` without passing through
    * any assignments to `p`.
    */
+  pragma[nomagic]
   private predicate parameterReachesWithoutDef(Parameter p, ControlFlow::BasicBlock bb) {
     forall(AssignableDefinition def | basicBlockRefParamDef(bb, p, def) |
       isUncertainRefCall(def.getTargetAccess())
@@ -727,20 +724,12 @@ module AssignableDefinitions {
    * }
    * ```
    */
-  class InitializerDefinition extends AssignableDefinition, TInitializer {
-    Assignable a;
+  class InitializerDefinition extends AssignmentDefinition {
+    private Assignable fieldOrProp;
 
-    Expr e;
-
-    InitializerDefinition() { this = TInitializer(a, e) }
+    InitializerDefinition() { this.getAssignment().getParent() = fieldOrProp }
 
     /** Gets the assignable (field or property) being initialized. */
-    Assignable getAssignable() { result = a }
-
-    override Expr getSource() { result = e }
-
-    override string toString() { result = e.toString() }
-
-    override Location getLocation() { result = e.getLocation() }
+    Assignable getAssignable() { result = fieldOrProp }
   }
 }

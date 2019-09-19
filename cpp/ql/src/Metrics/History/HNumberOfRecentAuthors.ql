@@ -10,15 +10,18 @@
  * @tags external-data
  * @deprecated
  */
+
 import cpp
 import external.VCS
 
 from File f
 where exists(f.getMetrics().getNumberOfLinesOfCode())
-select f, count(Author author |
-                exists(Commit e |
-                       e = author.getACommit() and
-                       f = e.getAnAffectedFile() and
-                       e.daysToNow() <= 180 and
-                       not artificialChange(e)))
-
+select f,
+  count(Author author |
+    exists(Commit e |
+      e = author.getACommit() and
+      f = e.getAnAffectedFile() and
+      e.daysToNow() <= 180 and
+      not artificialChange(e)
+    )
+  )

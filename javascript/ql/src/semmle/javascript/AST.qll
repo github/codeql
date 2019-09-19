@@ -160,8 +160,8 @@ class TopLevel extends @toplevel, StmtContainer {
     )
     or
     // many variables, and they all have short names
-    count (VarDecl d | d.getTopLevel() = this) > 100 and
-    forall (VarDecl d | d.getTopLevel() = this | d.getName().length() <= 2)
+    count(VarDecl d | d.getTopLevel() = this) > 100 and
+    forall(VarDecl d | d.getTopLevel() = this | d.getName().length() <= 2)
   }
 
   /** Holds if this toplevel is an externs definitions file. */
@@ -317,6 +317,7 @@ class ExprOrStmt extends @exprorstmt, ControlFlowNode, ASTNode { }
  */
 class StmtContainer extends @stmt_container, ASTNode {
   /** Gets the innermost enclosing container in which this container is nested. */
+  cached
   StmtContainer getEnclosingContainer() { none() }
 
   /**

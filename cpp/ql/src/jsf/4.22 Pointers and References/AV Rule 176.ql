@@ -8,14 +8,15 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
-predicate allowed(TypeDeclarationEntry tde, FunctionPointerType t)
-{
+predicate allowed(TypeDeclarationEntry tde, FunctionPointerType t) {
   tde.getDeclaration().(TypedefType).getBaseType() = t
 }
 
 from FunctionPointerType t, Locatable l
-where t.getATypeNameUse() = l and
-      not allowed(l, t)
+where
+  t.getATypeNameUse() = l and
+  not allowed(l, t)
 select l, "AV Rule 176: A typedef will be used when declaring function pointers."

@@ -13,8 +13,7 @@ import cpp
  * Customizable predicates that specify information about
  * the behavior of the program being analyzed.
  */
-class CustomOptions extends Options
-{
+class CustomOptions extends Options {
   /**
    * Holds if we wish to override the "may return NULL" inference for this
    * call. If this holds, then rather than trying to infer whether this
@@ -24,9 +23,7 @@ class CustomOptions extends Options
    * By default, this handles the `Xstrdup` function used by the CVS
    * project.
    */
-  override predicate overrideReturnsNull(Call call) {
-    Options.super.overrideReturnsNull(call)
-  }
+  override predicate overrideReturnsNull(Call call) { Options.super.overrideReturnsNull(call) }
 
   /**
    * Holds if this call may return NULL. This is only used if
@@ -35,9 +32,7 @@ class CustomOptions extends Options
    * By default, this handles the `Xstrdup` function used by the CVS
    * project.
    */
-  override predicate returnsNull(Call call) {
-    Options.super.returnsNull(call)
-  }
+  override predicate returnsNull(Call call) { Options.super.returnsNull(call) }
 
   /**
    * Holds if a call to this function will never return.
@@ -46,9 +41,7 @@ class CustomOptions extends Options
    * `longjmp`, `error`, `__builtin_unreachable` and any function with a
    * `noreturn` attribute.
    */
-  override predicate exits(Function f) {
-    Options.super.exits(f)
-  }
+  override predicate exits(Function f) { Options.super.exits(f) }
 
   /**
    * Holds if evaluating expression `e` will never return, or can be assumed
@@ -59,18 +52,14 @@ class CustomOptions extends Options
    * (note that in this case if the hint is wrong and the expression is reached at
    * runtime, the program's behaviour is undefined)
    */
-  override predicate exprExits(Expr e) {
-    Options.super.exprExits(e)
-  }
+  override predicate exprExits(Expr e) { Options.super.exprExits(e) }
 
   /**
    * Holds if function `f` should always have its return value checked.
    *
    * By default holds only for `fgets`.
    */
-  override predicate alwaysCheckReturnValue(Function f) {
-    Options.super.alwaysCheckReturnValue(f)
-  }
+  override predicate alwaysCheckReturnValue(Function f) { Options.super.alwaysCheckReturnValue(f) }
 
   /**
    * Holds if it is reasonable to ignore the return value of function
@@ -89,33 +78,25 @@ class CustomOptions extends Options
  * A type that acts as a mutex.
  */
 class CustomMutexType extends MutexType {
-  CustomMutexType() {
-    none()
-  }
+  CustomMutexType() { none() }
 
   /**
    * Holds if `fc` is a call that always locks mutex `arg`
    * of this type.
    */
-  override predicate mustlockAccess(FunctionCall fc, Expr arg) {
-    none()
-  }
+  override predicate mustlockAccess(FunctionCall fc, Expr arg) { none() }
 
   /**
    * Holds if `fc` is a call that tries to lock mutex `arg`
    * of this type, but may return without success.
-   */ 
-  override predicate trylockAccess(FunctionCall fc, Expr arg) {
-    none()
-  }
+   */
+  override predicate trylockAccess(FunctionCall fc, Expr arg) { none() }
 
   /**
    * Holds if `fc` is a call that unlocks mutex `arg`
    * of this type.
-   */ 
-  override predicate unlockAccess(FunctionCall fc, Expr arg) {
-    none()
-  }
+   */
+  override predicate unlockAccess(FunctionCall fc, Expr arg) { none() }
 }
 
 /**
@@ -125,9 +106,7 @@ class CustomMutexType extends MutexType {
  * older `Options.qll` files.  It should not be removed or modified by
  * end users.
  */
-predicate overrideReturnsNull(Call call) {
-  none()
-}
+predicate overrideReturnsNull(Call call) { none() }
 
 /**
  * DEPRECATED: customize `CustomOptions.returnsNull` instead.
@@ -136,9 +115,7 @@ predicate overrideReturnsNull(Call call) {
  * older `Options.qll` files.  It should not be removed or modified by
  * end users.
  */
-predicate returnsNull(Call call) {
-  none()
-}
+predicate returnsNull(Call call) { none() }
 
 /**
  * DEPRECATED: customize `CustomOptions.exits` instead.
@@ -147,9 +124,7 @@ predicate returnsNull(Call call) {
  * older `Options.qll` files.  It should not be removed or modified by
  * end users.
  */
-predicate exits(Function f) {
-  none()
-}
+predicate exits(Function f) { none() }
 
 /**
  * DEPRECATED: customize `CustomOptions.exprExits` instead.
@@ -158,9 +133,7 @@ predicate exits(Function f) {
  * older `Options.qll` files.  It should not be removed or modified by
  * end users.
  */
-predicate exprExits(Expr e) {
-  none()
-}
+predicate exprExits(Expr e) { none() }
 
 /**
  * DEPRECATED: customize `CustomOptions.alwaysCheckReturnValue` instead.
@@ -169,9 +142,7 @@ predicate exprExits(Expr e) {
  * older `Options.qll` files.  It should not be removed or modified by
  * end users.
  */
-predicate alwaysCheckReturnValue(Function f) {
-  none()
-}
+predicate alwaysCheckReturnValue(Function f) { none() }
 
 /**
  * DEPRECATED: customize `CustomOptions.okToIgnoreReturnValue` instead.
@@ -180,6 +151,4 @@ predicate alwaysCheckReturnValue(Function f) {
  * older `Options.qll` files.  It should not be removed or modified by
  * end users.
  */
-predicate okToIgnoreReturnValue(FunctionCall fc) {
-  none()
-}
+predicate okToIgnoreReturnValue(FunctionCall fc) { none() }

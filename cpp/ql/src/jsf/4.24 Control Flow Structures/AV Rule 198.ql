@@ -9,14 +9,17 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 predicate isValidLoopInitialization(Stmt s) {
-     s instanceof DeclStmt
-  or s.(ExprStmt).getExpr() instanceof AssignExpr
+  s instanceof DeclStmt or
+  s.(ExprStmt).getExpr() instanceof AssignExpr
 }
 
 from ForStmt for
-where for.fromSource() and
-      not isValidLoopInitialization(for.getInitialization())
-select for, "AV Rule 198: The initialization statement in a for loop will only initialize a single loop parameter."
+where
+  for.fromSource() and
+  not isValidLoopInitialization(for.getInitialization())
+select for,
+  "AV Rule 198: The initialization statement in a for loop will only initialize a single loop parameter."

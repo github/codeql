@@ -7,8 +7,8 @@ import cpp
 
 from DoStmt ds
 where
-	ds.getEnclosingFunction().hasName("normal")
-	and ds.getStmt() = ds.getCondition().getASuccessor()
-	and ds.getStmt() = ds.getCondition().getATrueSuccessor()
-	and count(ds.getCondition().getATrueSuccessor()) = 1
+  ds.getEnclosingFunction().hasName("normal") and
+  ds.getStmt() = ds.getCondition().getASuccessor() and
+  ds.getStmt() = ds.getCondition().getATrueSuccessor() and
+  count(ds.getCondition().getATrueSuccessor()) = 1
 select ds.getCondition(), ds.getStmt()

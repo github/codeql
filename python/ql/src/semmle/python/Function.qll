@@ -187,6 +187,8 @@ class Function extends Function_, Scope, AstNode {
 /** A def statement. Note that FunctionDef extends Assign as a function definition binds the newly created function */
 class FunctionDef extends Assign {
 
+    /* syntax: def name(...): ... */
+
     FunctionDef() {
         /* This is an artificial assignment the rhs of which is a (possibly decorated) FunctionExpr */
         exists(FunctionExpr f | this.getValue() = f or this.getValue() = f.getADecoratorCall())
@@ -224,6 +226,12 @@ class Parameter extends Parameter_ {
     Parameter() {
         /* Parameter_ is just defined as a Name or Tuple, narrow to actual parameters */
         exists(ParameterList pl | py_exprs(this, _, pl, _))
+        or
+        exists(Function f |
+            f.getVararg() = this
+            or
+            f.getKwarg() = this
+        )
     }
 
     Location getLocation() {
@@ -242,6 +250,7 @@ class Parameter extends Parameter_ {
         result = this
     }
 
+    /** Gets the expression for the default value of this parameter */
     Expr getDefault() {
         exists(Function f, int n, int c, int d, Arguments args |
             args = f.getDefinition().getArgs() |
@@ -249,6 +258,24 @@ class Parameter extends Parameter_ {
             c = count(f.getAnArg()) and
             d = count(args.getADefault()) and
             result = args.getDefault(d-c+n)
+        )
+    }
+
+    /** Gets the annotation expression of this parameter */
+    Expr getAnnotation() {
+        exists(Function f, int n, Arguments args |
+            args = f.getDefinition().getArgs() |
+            f.getArg(n) = this and
+            result = args.getAnnotation(n)
+        )
+        or
+        exists(Function f, Arguments args |
+            args = f.getDefinition().getArgs() |
+            f.getKwarg() = this and
+            result = args.getKwargannotation()
+            or
+            f.getVararg() = this and
+            result = args.getVarargannotation()
         )
     }
 

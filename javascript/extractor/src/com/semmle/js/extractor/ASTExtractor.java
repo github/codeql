@@ -98,6 +98,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.ScopeManager.DeclKind;
@@ -125,7 +126,6 @@ import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
 import com.semmle.ts.ast.IsTypeExpr;
-import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
@@ -139,6 +139,7 @@ import com.semmle.ts.ast.TypeAssertion;
 import com.semmle.ts.ast.TypeExpression;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
+import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.trap.TrapWriter;
@@ -190,6 +191,10 @@ public class ASTExtractor {
 
   public ScopeManager getScopeManager() {
     return scopeManager;
+  }
+
+  public ExtractionMetrics getMetrics() {
+    return lexicalExtractor.getMetrics();
   }
 
   /**
@@ -1120,6 +1125,7 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visit(nd.getTag(), key, 0);
       visit(nd.getQuasi(), key, 1);
+      visitAll(nd.getTypeArguments(), key, IdContext.typeBind, 2);
       return key;
     }
 
@@ -1944,9 +1950,11 @@ public class ASTExtractor {
   }
 
   public void extract(Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+    lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
     trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
     locationManager.emitNodeLocation(root, toplevelLabel);
 
     root.accept(new V(platform, sourceType), null);
+    lexicalExtractor.getMetrics().stopPhase(ExtractionPhase.ASTExtractor_extract);
   }
 }

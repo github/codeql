@@ -1,5 +1,5 @@
 import csharp
-import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.controlflow.Guards
 
 class Configuration extends DataFlow::Configuration {
   Configuration() { this = "Configuration" }
@@ -9,12 +9,8 @@ class Configuration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { any() }
 
   override predicate isBarrier(DataFlow::Node node) {
-    exists(EQExpr eq, Expr e, AbstractValues::BooleanValue v |
-      eq = node.(GuardedDataFlowNode).getAGuard(e, v)
-    |
-      v.getValue() = true and
-      eq.getAnOperand() = e and
-      eq.getAnOperand() instanceof NullLiteral
+    exists(AbstractValues::NullValue nv | node.(GuardedDataFlowNode).mustHaveValue(nv) |
+      nv.isNull()
     )
   }
 }

@@ -9,10 +9,14 @@
  * @tags testability
  *       complexity
  */
+
 import cpp
 
 from File f
 where f.fromSource()
-select f, avg(Function fn |
-              fn.getFile() = f and not fn instanceof MemberFunction |
-              fn.getNumberOfParameters())
+select f,
+  avg(Function fn |
+    fn.getFile() = f and not fn instanceof MemberFunction
+  |
+    fn.getNumberOfParameters()
+  )

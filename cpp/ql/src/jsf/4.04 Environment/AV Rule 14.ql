@@ -8,9 +8,11 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 from Literal l
-where l.fromSource() and
-      l.getValueText().regexpMatch(".*[ul][uUlL]*\\s*")
+where
+  l.fromSource() and
+  l.getValueText().regexpMatch(".*[ul][uUlL]*\\s*")
 select l, "AV Rule 14: Literal suffixes shall use uppercase rather than lowercase letters."

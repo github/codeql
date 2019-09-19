@@ -1,20 +1,19 @@
 /**
  * Provides utility predicates used by the pointless comparison queries.
  */
+
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
 /** Gets the lower bound of the fully converted expression. */
-private float lowerBoundFC(Expr expr) {
-  result = lowerBound(expr.getFullyConverted())
-}
+private float lowerBoundFC(Expr expr) { result = lowerBound(expr.getFullyConverted()) }
 
 /** Gets the upper bound of the fully converted expression. */
-private float upperBoundFC(Expr expr) {
-  result = upperBound(expr.getFullyConverted())
-}
+private float upperBoundFC(Expr expr) { result = upperBound(expr.getFullyConverted()) }
 
-newtype SmallSide = LeftIsSmaller() or RightIsSmaller()
+newtype SmallSide =
+  LeftIsSmaller() or
+  RightIsSmaller()
 
 /**
  * Holds if `cmp` is a comparison operation in which the left hand
@@ -25,8 +24,7 @@ newtype SmallSide = LeftIsSmaller() or RightIsSmaller()
  * Note that the comparison operation could be any binary comparison
  * operator, for example,`==`, `>`, or `<=`.
  */
-private
-predicate alwaysLT(ComparisonOperation cmp, float left, float right, SmallSide ss) {
+private predicate alwaysLT(ComparisonOperation cmp, float left, float right, SmallSide ss) {
   ss = LeftIsSmaller() and
   left = upperBoundFC(cmp.getLeftOperand()) and
   right = lowerBoundFC(cmp.getRightOperand()) and
@@ -42,13 +40,11 @@ predicate alwaysLT(ComparisonOperation cmp, float left, float right, SmallSide s
  * Note that the comparison operation could be any binary comparison
  * operator, for example,`==`, `>`, or `<=`.
  */
-private
-predicate alwaysLE(ComparisonOperation cmp, float left, float right, SmallSide ss) {
+private predicate alwaysLE(ComparisonOperation cmp, float left, float right, SmallSide ss) {
   ss = LeftIsSmaller() and
   left = upperBoundFC(cmp.getLeftOperand()) and
   right = lowerBoundFC(cmp.getRightOperand()) and
   left <= right and
-
   // Range analysis is not able to precisely represent large 64 bit numbers,
   // because it stores the range as a `float`, which only has a 53 bit mantissa.
   // For example, the number `2^64-1` is rounded to `2^64`. This means that we
@@ -68,8 +64,7 @@ predicate alwaysLE(ComparisonOperation cmp, float left, float right, SmallSide s
  * Note that the comparison operation could be any binary comparison
  * operator, for example,`==`, `>`, or `<=`.
  */
-private
-predicate alwaysGT(ComparisonOperation cmp, float left, float right, SmallSide ss) {
+private predicate alwaysGT(ComparisonOperation cmp, float left, float right, SmallSide ss) {
   ss = RightIsSmaller() and
   left = lowerBoundFC(cmp.getLeftOperand()) and
   right = upperBoundFC(cmp.getRightOperand()) and
@@ -85,13 +80,11 @@ predicate alwaysGT(ComparisonOperation cmp, float left, float right, SmallSide s
  * Note that the comparison operation could be any binary comparison
  * operator, for example,`==`, `>`, or `<=`.
  */
-private
-predicate alwaysGE(ComparisonOperation cmp, float left, float right, SmallSide ss) {
+private predicate alwaysGE(ComparisonOperation cmp, float left, float right, SmallSide ss) {
   ss = RightIsSmaller() and
   left = lowerBoundFC(cmp.getLeftOperand()) and
   right = upperBoundFC(cmp.getRightOperand()) and
   left >= right and
-
   // Range analysis is not able to precisely represent large 64 bit numbers,
   // because it stores the range as a `float`, which only has a 53 bit mantissa.
   // For example, the number 2^64-1 is rounded to 2^64. This means that we
@@ -120,21 +113,32 @@ predicate alwaysGE(ComparisonOperation cmp, float left, float right, SmallSide s
  * and `7 >= y` then
  * `pointlessComparison(x < y, 9, 7, false, RightIsSmaller)` holds.
  */
-predicate pointlessComparison(ComparisonOperation cmp,
-                              float left, float right,
-                              boolean value, SmallSide ss) {
-  (alwaysLT(cmp.(LTExpr), left, right, ss) and value = true) or
-  (alwaysLE(cmp.(LEExpr), left, right, ss) and value = true) or
-  (alwaysGT(cmp.(GTExpr), left, right, ss) and value = true) or
-  (alwaysGE(cmp.(GEExpr), left, right, ss) and value = true) or
-  (alwaysLT(cmp.(NEExpr), left, right, ss) and value = true) or
-  (alwaysGT(cmp.(NEExpr), left, right, ss) and value = true) or
-  (alwaysGE(cmp.(LTExpr), left, right, ss) and value = false) or
-  (alwaysGT(cmp.(LEExpr), left, right, ss) and value = false) or
-  (alwaysLE(cmp.(GTExpr), left, right, ss) and value = false) or
-  (alwaysLT(cmp.(GEExpr), left, right, ss) and value = false) or
-  (alwaysLT(cmp.(EQExpr), left, right, ss) and value = false) or
-  (alwaysGT(cmp.(EQExpr), left, right, ss) and value = false)
+predicate pointlessComparison(
+  ComparisonOperation cmp, float left, float right, boolean value, SmallSide ss
+) {
+  alwaysLT(cmp.(LTExpr), left, right, ss) and value = true
+  or
+  alwaysLE(cmp.(LEExpr), left, right, ss) and value = true
+  or
+  alwaysGT(cmp.(GTExpr), left, right, ss) and value = true
+  or
+  alwaysGE(cmp.(GEExpr), left, right, ss) and value = true
+  or
+  alwaysLT(cmp.(NEExpr), left, right, ss) and value = true
+  or
+  alwaysGT(cmp.(NEExpr), left, right, ss) and value = true
+  or
+  alwaysGE(cmp.(LTExpr), left, right, ss) and value = false
+  or
+  alwaysGT(cmp.(LEExpr), left, right, ss) and value = false
+  or
+  alwaysLE(cmp.(GTExpr), left, right, ss) and value = false
+  or
+  alwaysLT(cmp.(GEExpr), left, right, ss) and value = false
+  or
+  alwaysLT(cmp.(EQExpr), left, right, ss) and value = false
+  or
+  alwaysGT(cmp.(EQExpr), left, right, ss) and value = false
 }
 
 /**
@@ -149,18 +153,13 @@ predicate pointlessComparison(ComparisonOperation cmp,
  *       return x; // x has an empty range: 10 < x && x < 5
  *     }
  *   }
-
  */
-predicate reachablePointlessComparison(ComparisonOperation cmp,
-                                       float left, float right,
-                                       boolean value, SmallSide ss) {
-  pointlessComparison(cmp, left, right, value, ss)
-
+predicate reachablePointlessComparison(
+  ComparisonOperation cmp, float left, float right, boolean value, SmallSide ss
+) {
+  pointlessComparison(cmp, left, right, value, ss) and
   // Reachable according to control flow analysis.
-  and
-  reachable(cmp)
-
+  reachable(cmp) and
   // Reachable according to range analysis.
-  and
-  not (exprWithEmptyRange(cmp.getAChild+()))
+  not exprWithEmptyRange(cmp.getAChild+())
 }

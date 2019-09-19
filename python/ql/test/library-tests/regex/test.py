@@ -60,3 +60,5 @@ re.compile(r'(?:(?P<n1>^(?:|x)))')
 
 #Misparsed on LGTM
 re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)")
+
+re.compile("", re.M) # ODASA-8056

@@ -57,5 +57,7 @@ predicate declaredInLoop(LocalVariableDecl v, LoopStmt loop) {
 from Assignment a, Variable v
 where
   useAndDef(a, v) and
-  exists(LoopStmt loop | a.getEnclosingStmt().getEnclosingStmt*() = loop | not declaredInLoop(v, loop))
+  exists(LoopStmt loop | a.getEnclosingStmt().getEnclosingStmt*() = loop |
+    not declaredInLoop(v, loop)
+  )
 select a, "The string " + v.getName() + " is built-up in a loop: use string buffer."

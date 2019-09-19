@@ -5,7 +5,7 @@
  */
 
 import javascript
-private import semmle.javascript.security.dataflow.CodeInjection
+private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
 module HardcodedDataInterpretedAsCode {
   /**
@@ -13,7 +13,7 @@ module HardcodedDataInterpretedAsCode {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label for which this is a source. */
-    DataFlow::FlowLabel getLabel() { result = DataFlow::FlowLabel::data() }
+    DataFlow::FlowLabel getLabel() { result.isData() }
   }
 
   /**
@@ -52,7 +52,7 @@ module HardcodedDataInterpretedAsCode {
   private class DefaultCodeInjectionSink extends Sink {
     DefaultCodeInjectionSink() { this instanceof CodeInjection::Sink }
 
-    override DataFlow::FlowLabel getLabel() { result = DataFlow::FlowLabel::taint() }
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
 
     override string getKind() { result = "code" }
   }
@@ -63,11 +63,7 @@ module HardcodedDataInterpretedAsCode {
   private class RequireArgumentSink extends Sink {
     RequireArgumentSink() { this = any(Require r).getAnArgument().flow() }
 
-    override DataFlow::FlowLabel getLabel() {
-      result = DataFlow::FlowLabel::data()
-      or
-      result = DataFlow::FlowLabel::taint()
-    }
+    override DataFlow::FlowLabel getLabel() { result.isDataOrTaint() }
 
     override string getKind() { result = "an import path" }
   }

@@ -1,5 +1,5 @@
 using Microsoft.CodeAnalysis;
-using System;
+using System.IO;
 
 namespace Semmle.Extraction
 {
@@ -21,20 +21,31 @@ namespace Semmle.Extraction
     {
         /// <summary>
         /// The label of the entity, as it is in the trap file.
+        /// For example, "#123".
         /// </summary>
         Label Label { set; get; }
 
         /// <summary>
-        /// The ID used for the entity, as it is in the trap file.
-        /// Could be '*'.
+        /// Writes the unique identifier of this entitiy to a trap file.
         /// </summary>
-        IId Id { get; }
+        /// <param name="trapFile">The trapfile to write to.</param>
+        void WriteId(TextWriter writrapFileter);
+
+        /// <summary>
+        /// Writes the quoted identifier of this entity,
+        /// which could be @"..." or *
+        /// </summary>
+        /// <param name="trapFile">The trapfile to write to.</param>
+        void WriteQuotedId(TextWriter trapFile);
 
         /// <summary>
         /// The location for reporting purposes.
         /// </summary>
         Location ReportingLocation { get; }
 
+        /// <summary>
+        /// How the entity handles .push and .pop.
+        /// </summary>
         TrapStackBehaviour TrapStackBehaviour { get; }
     }
 
@@ -76,7 +87,7 @@ namespace Semmle.Extraction
         /// as required. Is only called when <see cref="NeedsPopulation"/> returns
         /// <code>true</code> and the entity has not already been populated.
         /// </summary>
-        void Populate();
+        void Populate(TextWriter trapFile);
 
         bool NeedsPopulation { get; }
 
@@ -129,5 +140,36 @@ namespace Semmle.Extraction
         /// <returns>The entity.</returns>
         public static Entity CreateEntity2<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
             where Entity : ICachedEntity => cx.CreateEntity2(factory, init);
+
+        public static void DefineLabel(this IEntity entity, TextWriter trapFile)
+        {
+            trapFile.WriteLabel(entity);
+            trapFile.Write("=");
+            entity.WriteQuotedId(trapFile);
+            trapFile.WriteLine();
+        }
+
+        public static void DefineFreshLabel(this IEntity entity, TextWriter trapFile)
+        {
+            trapFile.WriteLabel(entity);
+            trapFile.WriteLine("=*");
+        }
+
+        /// <summary>
+        /// Generates a debug string for this entity.
+        /// </summary>
+        /// <param name="entity">The entity to view.</param>
+        /// <returns>The debug string.</returns>
+        public static string GetDebugLabel(this IEntity entity)
+        {
+            using (var writer = new StringWriter())
+            {
+                writer.WriteLabel(entity.Label.Value);
+                writer.Write('=');
+                entity.WriteQuotedId(writer);
+                return writer.ToString();
+            }
+        }
+
     }
 }

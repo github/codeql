@@ -4,9 +4,9 @@
  * Provides classes implementing type inference across function calls.
  */
 
-import javascript
+private import javascript
 import AbstractValuesImpl
-import semmle.javascript.dataflow.LocalObjects
+private import semmle.javascript.dataflow.LocalObjects
 
 /**
  * Flow analysis for `this` expressions inside functions.
@@ -236,16 +236,13 @@ private class TypeInferredCalleeWithAnalyzedReturnFlow extends CallWithNonLocalA
  * Holds if `call` uses `receiver` as its only receiver value.
  */
 pragma[noinline]
-private predicate hasDefiniteReceiver(
-  DataFlow::MethodCallNode call, LocalObject receiver
-) {
+private predicate hasDefiniteReceiver(DataFlow::MethodCallNode call, LocalObject receiver) {
   call = receiver.getAMethodCall() and
-  exists (DataFlow::AnalyzedNode receiverNode, AbstractValue abstractCapturedReceiver |
+  exists(DataFlow::AnalyzedNode receiverNode, AbstractValue abstractCapturedReceiver |
     receiverNode = call.getReceiver() and
     not receiverNode.getALocalValue().isIndefinite(_) and
     abstractCapturedReceiver = receiver.analyze().getALocalValue() and
-    forall(DataFlow::AbstractValue v |
-      receiverNode.getALocalValue() = v |
+    forall(DataFlow::AbstractValue v | receiverNode.getALocalValue() = v |
       v = abstractCapturedReceiver
     )
   )

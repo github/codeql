@@ -89,3 +89,11 @@ function withIndexOfCheckLowerEq(x, y) {
   let index = x.indexOf(y);
   return !(index <= -1) && index === x.length - y.length - 1; // OK
 }
+
+function lastIndexNeqMinusOne(x) {
+  return x.lastIndexOf("example.com") !== -1 && x.lastIndexOf("example.com") === x.length - "example.com".length; // OK
+}
+
+function lastIndexEqMinusOne(x) {
+  return x.lastIndexOf("example.com") === -1 || x.lastIndexOf("example.com") === x.length - "example.com".length; // OK
+}

@@ -26,14 +26,10 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
   /** DEPRECATED: Use `getAnnotatedReturnType().isRef()` instead. */
-  deprecated predicate returnsRef() {
-    this.getAnnotatedReturnType().isRef()
-  }
+  deprecated predicate returnsRef() { this.getAnnotatedReturnType().isRef() }
 
   /** DEPRECATED: Use `getAnnotatedReturnType().isReadonlyRef()` instead. */
-  deprecated predicate returnsRefReadonly() {
-    this.getAnnotatedReturnType().isReadonlyRef()
-  }
+  deprecated predicate returnsRefReadonly() { this.getAnnotatedReturnType().isReadonlyRef() }
 
   override Callable getSourceDeclaration() { result = Parameterizable.super.getSourceDeclaration() }
 
@@ -209,7 +205,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   override predicate canReturn(DotNet::Expr e) {
     exists(ReturnStmt ret | ret.getEnclosingCallable() = this | e = ret.getExpr())
     or
-    e = getExpressionBody()
+    e = this.getExpressionBody() and
+    not this.getReturnType() instanceof VoidType
   }
 
   /** Holds if this callable can yield return the expression `e`. */

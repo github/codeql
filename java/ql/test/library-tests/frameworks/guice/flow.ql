@@ -5,9 +5,7 @@ import semmle.code.java.dataflow.TaintTracking
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "conf" }
 
-  override predicate isSource(DataFlow::Node src) {
-    src instanceof RemoteFlowSource
-  }
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |

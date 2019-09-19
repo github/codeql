@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.dataflow.TypeFlow
 private import DispatchFlow as DispatchFlow
+private import ObjFlow as ObjFlow
 private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.controlflow.Guards
 
@@ -41,7 +42,15 @@ cached
 private module Dispatch {
   /** Gets a viable implementation of the method called in the given method access. */
   cached
-  Method viableImpl(MethodAccess ma) { result = DispatchFlow::viableImpl_out(ma) }
+  Method viableImpl(MethodAccess ma) { result = ObjFlow::viableImpl_out(ma) }
+
+  /**
+   * INTERNAL: Use `viableImpl` instead.
+   *
+   * Gets a viable implementation of the method called in the given method access.
+   */
+  cached
+  Method viableImpl_v3(MethodAccess ma) { result = DispatchFlow::viableImpl_out(ma) }
 
   private predicate qualType(VirtualMethodAccess ma, RefType t, boolean exact) {
     exprTypeFlow(ma.getQualifier(), t, exact)
@@ -312,6 +321,7 @@ private module Dispatch {
     not sub.isAbstract()
   }
 }
+
 import Dispatch
 
 private Expr variableTrackStep(Expr use) {

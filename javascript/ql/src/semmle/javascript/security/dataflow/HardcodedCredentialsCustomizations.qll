@@ -28,6 +28,8 @@ module HardcodedCredentials {
   /** A constant string, considered as a source of hardcoded credentials. */
   class ConstantStringSource extends Source, DataFlow::ValueNode {
     override ConstantString astNode;
+
+    ConstantStringSource() { not astNode.getStringValue() = "" }
   }
 
   /**
@@ -36,11 +38,6 @@ module HardcodedCredentials {
    */
   class DefaultCredentialsSink extends Sink, DataFlow::ValueNode {
     override CredentialsExpr astNode;
-
-    DefaultCredentialsSink() {
-      // Don't flag an empty user name
-      not (astNode.getCredentialsKind() = "user name" and astNode.getStringValue() = "")
-    }
 
     override string getKind() { result = astNode.getCredentialsKind() }
   }

@@ -9,6 +9,7 @@
  * @metricAggregate avg sum max
  * @tags maintainability
  */
+
 import cpp
 
 from MetricClass mc

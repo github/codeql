@@ -25,6 +25,8 @@ external entities. This query currently identifies vulnerable XML parsing from t
 The best way to prevent XXE attacks is to disable the parsing of any Document Type Declarations (DTDs) in untrusted data.
 If this is not possible you should disable the parsing of external general entities and external parameter entities.
 This improves security but the code will still be at risk of denial of service and server side request forgery attacks.
+Protection against denial of service attacks may also be implemented by setting entity expansion limits, which is done
+by default in recent JDK and JRE implementations.
 </p>
 </recommendation>
 
@@ -63,6 +65,10 @@ Out-of-band data retrieval: Timur Yunusov &amp; Alexey Osipov, Black hat EU 2013
 <li>
 Denial of service attack (Billion laughs):
 <a href="https://en.wikipedia.org/wiki/Billion_laughs">Billion Laughs.</a>
+</li>
+<li>
+The Java Tutorials:
+<a href="https://docs.oracle.com/javase/tutorial/jaxp/limits/limits.html">Processing Limit Definitions.</a>
 </li>
 
 </references>

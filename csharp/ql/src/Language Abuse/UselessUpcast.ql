@@ -75,7 +75,6 @@ private class ConstructorCall extends Call {
 /** An explicit upcast. */
 class ExplicitUpcast extends ExplicitCast {
   ValueOrRefType src;
-
   ValueOrRefType dest;
 
   ExplicitUpcast() {

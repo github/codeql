@@ -46,10 +46,9 @@ predicate inherentlyUnsafe(Function f) {
   exists(Variable v | v.getAnAssignedValue().getEnclosingFunction() = f |
     v instanceof GlobalVariable or
     v.isStatic()
-  ) or
-  exists(FunctionCall c | c.getEnclosingFunction() = f |
-    inherentlyUnsafe(c.getTarget())
   )
+  or
+  exists(FunctionCall c | c.getEnclosingFunction() = f | inherentlyUnsafe(c.getTarget()))
 }
 
 /**
@@ -59,7 +58,9 @@ predicate inherentlyUnsafe(Function f) {
  * not inherently unsafe.
  */
 predicate safeToCall(Function f) {
-  forall(PointerType paramPointerType | paramPointerType = getAPointerType(f.getAParameter().getType()) |
+  forall(PointerType paramPointerType |
+    paramPointerType = getAPointerType(f.getAParameter().getType())
+  |
     paramPointerType.getBaseType().isConst()
   ) and
   not inherentlyUnsafe(f)
@@ -78,12 +79,16 @@ class BooleanExpression extends Expr {
 }
 
 predicate hasSideEffect(Expr e) {
-  e instanceof Assignment or
-  e instanceof CrementOperation or
-  e instanceof ExprCall or
+  e instanceof Assignment
+  or
+  e instanceof CrementOperation
+  or
+  e instanceof ExprCall
+  or
   exists(Function f | f = e.(FunctionCall).getTarget() and not safeFunctionWhitelist(f) |
     inherentlyUnsafe(f) or not safeToCall(f)
-  ) or
+  )
+  or
   hasSideEffect(e.getAChild())
 }
 

@@ -125,9 +125,7 @@ module Connect {
       t.start() and
       result = getARouteHandlerExpr().flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 |
-        result = getARouteHandler(t2).backtrack(t2, t)
-      )
+      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
     override Expr getServer() { result = server }
@@ -159,7 +157,6 @@ module Connect {
    */
   private class RequestInputAccess extends HTTP::RequestInputAccess {
     RequestExpr request;
-
     string kind;
 
     RequestInputAccess() {
@@ -181,10 +178,7 @@ module Connect {
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-
-    TrackedRouteHandlerCandidateWithSetup() {
-      this = any(RouteSetup s).getARouteHandler()
-    }
+    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
       result = getRouteHandlerParameter(astNode, kind)

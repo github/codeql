@@ -10,10 +10,12 @@ import semmle.code.cpp.models.implementations.Printf
 
 /**
  * A function that can be identified as a `printf` style formatting
- * function by it's use of the GNU `format` attribute.
+ * function by its use of the GNU `format` attribute.
  */
 class AttributeFormattingFunction extends FormattingFunction {
   FormatAttribute printf_attrib;
+
+  override string getCanonicalQLClass() { result = "AttributeFormattingFunction" }
 
   AttributeFormattingFunction() {
     printf_attrib = getAnAttribute() and
@@ -64,6 +66,8 @@ predicate variadicFormatter(Function f, int formatParamIndex) {
  * string and a variable number of arguments.
  */
 class UserDefinedFormattingFunction extends FormattingFunction {
+  override string getCanonicalQLClass() { result = "UserDefinedFormattingFunction" }
+
   UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _) }
 
   override int getFormatParameterIndex() { callsVariadicFormatter(this, result) }
@@ -74,6 +78,8 @@ class UserDefinedFormattingFunction extends FormattingFunction {
  */
 class FormattingFunctionCall extends Expr {
   FormattingFunctionCall() { this.(Call).getTarget() instanceof FormattingFunction }
+
+  override string getCanonicalQLClass() { result = "FormattingFunctionCall" }
 
   /**
    * Gets the formatting function being called.
@@ -243,8 +249,11 @@ class FormatLiteral extends Literal {
     )
   }
 
-  // these predicates gets a regular expressions to match each individual
-  // parts of a conversion specifier.
+  /*
+   * Each of these predicates gets a regular expressions to match each individual
+   * parts of a conversion specifier.
+   */
+
   private string getParameterFieldRegexp() {
     // the parameter field is a posix extension, for example `%5$i` uses the fifth
     // parameter as an integer, regardless of the position of this substring in the
@@ -290,9 +299,15 @@ class FormatLiteral extends Literal {
   }
 
   /**
-   * Holds if the arguments are a parsing of a conversion specifier to this format string.
+   * Holds if the arguments are a parsing of a conversion specifier to this
+   * format string, where `n` is which conversion specifier to parse, `spec` is
+   * the whole conversion specifier, `params` is the argument to be converted
+   * in case it's not positional, `flags` contains additional format flags,
+   * `width` is the maximum width option of this input, `len` is the length
+   * flag of this input, and `conv` is the conversion character of this input.
    *
-   * @param n which conversion specifier to parse
+   * Each parameter is the empty string if no value is given by the conversion
+   * specifier.
    */
   predicate parseConvSpec(
     int n, string spec, string params, string flags, string width, string prec, string len,

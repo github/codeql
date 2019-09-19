@@ -11,6 +11,7 @@
  *       correctness
  *       types
  */
+
 import cpp
 
 predicate lossyPointerCast(Expr e, PointerType pt, IntegralType it) {
@@ -25,4 +26,4 @@ predicate lossyPointerCast(Expr e, PointerType pt, IntegralType it) {
 
 from Expr e, PointerType pt, IntegralType it
 where lossyPointerCast(e, pt, it)
-select e, "Converted from " + pt.getName() + " to smaller type "+it.getName()
+select e, "Converted from " + pt.getName() + " to smaller type " + it.getName()

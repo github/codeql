@@ -1,7 +1,6 @@
 
 import python
-import semmle.dataflow.SSA
-import semmle.dataflow.SsaCompute
+import semmle.python.essa.SsaCompute
 
 import Util
 

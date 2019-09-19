@@ -1,0 +1,6 @@
+edges
+| test.py:7:16:7:29 | a password | test.py:8:35:8:42 | a password |
+#select
+| test.py:8:35:8:42 | password | test.py:7:16:7:29 | a password | test.py:8:35:8:42 | a password | Sensitive data returned by $@ is logged here. | test.py:7:16:7:29 | get_password() | a call returning a password |
+| test.py:14:30:14:39 | get_cert() | test.py:14:30:14:39 | a certificate or key | test.py:14:30:14:39 | a certificate or key | Sensitive data returned by $@ is logged here. | test.py:14:30:14:39 | get_cert() | a call returning a certificate or key |
+| test.py:17:11:17:24 | get_password() | test.py:17:11:17:24 | a password | test.py:17:11:17:24 | a password | Sensitive data returned by $@ is logged here. | test.py:17:11:17:24 | get_password() | a call returning a password |

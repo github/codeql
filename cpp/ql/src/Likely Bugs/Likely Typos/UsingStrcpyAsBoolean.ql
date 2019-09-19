@@ -23,7 +23,7 @@ predicate isBoolean(Expr e1) {
 }
 
 predicate isStringCopyCastedAsBoolean(FunctionCall func, Expr expr1, string msg) {
-  DataFlow::localFlow(DataFlow::exprNode(func), DataFlow::exprNode(expr1)) and
+  DataFlow::localExprFlow(func, expr1) and
   isBoolean(expr1.getConversion*()) and
   func.getTarget() instanceof StrcpyFunction and
   msg = "Return value of " + func.getTarget().getName() + " used as a Boolean."
@@ -70,10 +70,8 @@ predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr 
 
 from FunctionCall func, Expr expr1, string msg
 where
-  (
-    isStringCopyCastedAsBoolean(func, expr1, msg) and
-    not isStringCopyUsedInLogicalOperationOrCondition(func, _, _)
-  )
+  isStringCopyCastedAsBoolean(func, expr1, msg) and
+  not isStringCopyUsedInLogicalOperationOrCondition(func, _, _)
   or
   isStringCopyUsedInLogicalOperationOrCondition(func, expr1, msg)
 select expr1, msg

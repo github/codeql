@@ -92,9 +92,7 @@ private class ConsPath extends Path, TConsPath {
  * that is, everything after the last dot. The fourth group includes the dot, the
  * fifth does not.
  */
-private string pathRegex() {
-  result = "(.*)(?:/|^)(([^/]*?)(\\.([^.]*))?)"
-}
+private string pathRegex() { result = "(.*)(?:/|^)(([^/]*?)(\\.([^.]*))?)" }
 
 /**
  * A string value that represents a (relative or absolute) file system path.

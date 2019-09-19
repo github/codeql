@@ -18,6 +18,13 @@ class SystemCollectionsGenericUnboundGenericInterface extends UnboundGenericInte
   }
 }
 
+/** An unbound generic class in the `System.Collections.Generic` namespace. */
+class SystemCollectionsGenericUnboundGenericClass extends UnboundGenericClass {
+  SystemCollectionsGenericUnboundGenericClass() {
+    this.getNamespace() instanceof SystemCollectionsGenericNamespace
+  }
+}
+
 /** An unbound generic struct in the `System.Collections.Generic` namespace. */
 class SystemCollectionsGenericUnboundGenericStruct extends UnboundGenericStruct {
   SystemCollectionsGenericUnboundGenericStruct() {
@@ -86,6 +93,14 @@ class SystemCollectionsGenericIListTInterface extends SystemCollectionsGenericUn
   }
 }
 
+/** The `System.Collections.Generic.List<T>` class. */
+class SystemCollectionsGenericListClass extends SystemCollectionsGenericUnboundGenericClass {
+  SystemCollectionsGenericListClass() {
+    this.hasName("List<>") and
+    this.getNumberOfTypeParameters() = 1
+  }
+}
+
 /** The `System.Collections.Generic.KeyValuePair<TKey, TValue>` structure. */
 class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGenericUnboundGenericStruct {
   SystemCollectionsGenericKeyValuePairStruct() {
@@ -111,4 +126,13 @@ class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGeneri
 /** The `System.Collections.Generic.ICollection<>` interface. */
 class SystemCollectionsGenericICollectionInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericICollectionInterface() { this.hasName("ICollection<>") }
+
+  /** Gets the `Count` property. */
+  Property getCountProperty() { result = this.getProperty("Count") }
+
+  /** Gets the `Clear` method. */
+  Method getClearMethod() { result = this.getAMethod("Clear") }
+
+  /** Gets the `Add` method. */
+  Method getAddMethod() { result = this.getAMethod("Add") }
 }

@@ -10,6 +10,7 @@
  * @tags maintainability
  *       readability
  */
+
 import cpp
 
 predicate preprocessorOpenCondition(PreprocessorDirective d) {
@@ -26,10 +27,12 @@ predicate headerGuard(PreprocessorIfndef notdef) {
 
 from File f
 where f.fromSource()
-select f, count(string s |
-                exists(PreprocessorDirective open |
-                  preprocessorOpenCondition(open)
-                  and not headerGuard(open)
-                  and open.getFile() = f
-                  and s = open.getHead()))
-  
+select f,
+  count(string s |
+    exists(PreprocessorDirective open |
+      preprocessorOpenCondition(open) and
+      not headerGuard(open) and
+      open.getFile() = f and
+      s = open.getHead()
+    )
+  )

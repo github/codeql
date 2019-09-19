@@ -97,8 +97,8 @@ private module Cached {
     TImplicitDelegateCall(ControlFlow::Nodes::ElementNode cfn, DelegateArgumentToLibraryCallable arg) {
       cfn.getElement() = arg
     } or
-    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn) {
-      transitiveCapturedCallTarget(cfn, _)
+    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn, Callable target) {
+      transitiveCapturedCallTarget(cfn, target)
     } or
     TCilCall(CIL::Call call) {
       // No need to include calls that are compiled from source
@@ -107,7 +107,7 @@ private module Cached {
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DotNet::Callable viableImpl(DataFlowCall call) { result = call.getARuntimeTarget() }
+  DataFlowCallable viableImpl(DataFlowCall call) { result = call.getARuntimeTarget() }
 
   /**
    * Gets a viable run-time target for the delegate call `call`, requiring
@@ -122,7 +122,7 @@ private module Cached {
    * targets of call `call` in `c`.
    */
   cached
-  predicate reducedViableImplInCallContext(DataFlowCall call, DotNet::Callable c, DataFlowCall ctx) {
+  predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
     c = viableImpl(ctx) and
     c = call.getEnclosingCallable() and
     exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
@@ -153,7 +153,7 @@ private module Cached {
    * returned to.
    */
   cached
-  predicate reducedViableImplInReturn(DotNet::Callable c, DataFlowCall call) {
+  predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
     exists(int tgts, int ctxtgts |
       c = viableImpl(call) and
       ctxtgts = strictcount(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
@@ -168,7 +168,7 @@ private module Cached {
    * flow from the result to `call` restricts the possible context `ctx`.
    */
   cached
-  DotNet::Callable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
+  DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
     result = viableImplInCallContext(call, ctx) and
     reducedViableImplInReturn(result, call)
   }
@@ -227,6 +227,7 @@ private module Cached {
     )
   }
 }
+
 import Cached
 
 predicate viableCallable = viableImpl/1;
@@ -285,6 +286,8 @@ class ImplicitCapturedReturnKind extends ReturnKind, TImplicitCapturedReturnKind
   override string toString() { result = "captured " + v }
 }
 
+class DataFlowCallable = DotNet::Callable;
+
 /** A call relevant for data flow. */
 abstract class DataFlowCall extends TDataFlowCall {
   /**
@@ -292,7 +295,7 @@ abstract class DataFlowCall extends TDataFlowCall {
    * declaration, and if the callable has both CIL and source code, only
    * the source code version is returned.
    */
-  abstract DotNet::Callable getARuntimeTarget();
+  abstract DataFlowCallable getARuntimeTarget();
 
   /** Gets the control flow node where this call happens, if any. */
   abstract ControlFlow::Nodes::ElementNode getControlFlowNode();
@@ -301,7 +304,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlow::Node getNode();
 
   /** Gets the enclosing callable of this call. */
-  abstract DotNet::Callable getEnclosingCallable();
+  abstract DataFlowCallable getEnclosingCallable();
 
   /** Gets the underlying expression, if any. */
   final DotNet::Expr getExpr() { result = this.getNode().asExpr() }
@@ -319,7 +322,6 @@ abstract class DataFlowCall extends TDataFlowCall {
 /** A non-delegate C# call relevant for data flow. */
 class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   private ControlFlow::Nodes::ElementNode cfn;
-
   private DispatchCall dc;
 
   NonDelegateDataFlowCall() { this = TNonDelegateCall(cfn, dc) }
@@ -350,7 +352,6 @@ abstract class DelegateDataFlowCall extends DataFlowCall {
 /** An explicit delegate call relevant for data flow. */
 class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateCall {
   private ControlFlow::Nodes::ElementNode cfn;
-
   private DelegateCall dc;
 
   ExplicitDelegateDataFlowCall() { this = TExplicitDelegateCall(cfn, dc) }
@@ -377,7 +378,6 @@ class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelega
  */
 class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelegateCall {
   private ControlFlow::Nodes::ElementNode cfn;
-
   private DelegateArgumentToLibraryCallable arg;
 
   ImplicitDelegateDataFlowCall() { this = TImplicitDelegateCall(cfn, arg) }
@@ -387,7 +387,7 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
    * call `c` targeting a library callable. For example, `M` is the `0`th
    * argument of `new Lazy<int>(M)`.
    */
-  predicate isArgumentOf(DataFlowCall c, int i) {
+  predicate isArgumentOf(NonDelegateDataFlowCall c, int i) {
     exists(ImplicitDelegateOutNode out | out.getControlFlowNode() = cfn | out.isArgumentOf(c, i))
   }
 
@@ -415,11 +415,12 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
  * a single call for performance reasons.
  */
 class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCall {
-  ControlFlow::Nodes::ElementNode cfn;
+  private ControlFlow::Nodes::ElementNode cfn;
+  private Callable target;
 
-  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn) }
+  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn, target) }
 
-  override Callable getARuntimeTarget() { transitiveCapturedCallTarget(cfn, result) }
+  override Callable getARuntimeTarget() { result = target }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 

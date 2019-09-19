@@ -12,10 +12,11 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.XSS
 import DataFlow2::PathGraph
 
-class XSSLocalConfig extends TaintTracking::Configuration2 {
+class XSSLocalConfig extends TaintTracking2::Configuration {
   XSSLocalConfig() { this = "XSSLocalConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }

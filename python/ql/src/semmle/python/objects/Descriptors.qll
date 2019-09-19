@@ -32,7 +32,7 @@ class PropertyInternal extends ObjectInternal, TProperty {
     private Context getContext() { this = TProperty(_,result,  _) }
 
     override string toString() {
-        result = "property" + this.getName()
+        result = "property " + this.getName()
     }
 
     override boolean booleanValue() { result = true }
@@ -63,16 +63,19 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        value = TPropertySetterOrDeleter(this, name) and origin = CfgOrigin::unknown()
+    }
 
-    pragma [noinline] override predicate attributesUnknown() { none() }
+    override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() { none() }
 
     override boolean isDescriptor() { result = true }
 
     override int length() { none() }
-    pragma [noinline] override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
+
+    override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
         any(ObjectInternal obj).binds(cls, _, this) and
@@ -93,10 +96,90 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     /* Properties aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
+
+private class PropertySetterOrDeleter extends ObjectInternal, TPropertySetterOrDeleter {
+
+    override string toString() {
+        result = this.getProperty().toString() + "." + this.getName()
+    }
+
+    override string getName() {
+        this = TPropertySetterOrDeleter(_, result)
+    }
+
+    PropertyInternal getProperty() {
+        this = TPropertySetterOrDeleter(result, _)
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        exists(ControlFlowNode call |
+            obj = this.getProperty() and obj = TProperty(call, _, _) and
+            origin = CfgOrigin::fromCfgNode(call)
+        )
+    }
+
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
+        none()
+    }
+
+    override ClassDecl getClassDeclaration() { none() }
+
+    override boolean isClass() { result = false }
+
+    override ObjectInternal getClass() {
+       result = TBuiltinClassObject(Builtin::special("MethodType"))
+    }
+
+    override predicate notTestableForEquality() { none() }
+
+    override Builtin getBuiltin() { none() }
+
+    override ControlFlowNode getOrigin() { none() }
+
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override int intValue() { none() }
+
+    override string strValue() { none() }
+
+    override boolean booleanValue() { result = true }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate attributesUnknown() { none() }
+
+    override predicate subscriptUnknown() { none() }
+
+    override boolean isDescriptor() { result = true }
+
+    override int length() { none() }
+
+    override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
+
+    override predicate contextSensitiveCallee() { none() }
+
+    override ObjectInternal getIterNext() { none() }
+
+    override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
+
+}
+
 
 /** A class representing classmethods in Python */
 class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
@@ -141,9 +224,9 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    pragma [noinline] override predicate attributesUnknown() { none() }
+    override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() { none() }
 
@@ -183,8 +266,12 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     /* Classmethods aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 
@@ -231,9 +318,9 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
         this.getFunction().calleeAndOffset(scope, paramOffset)
     }
 
-    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    pragma [noinline] override predicate attributesUnknown() { none() }
+    override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() { none() }
 
@@ -249,7 +336,7 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
         value = this.getFunction() and origin = CfgOrigin::unknown()
     }
 
-    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { none() }
 
@@ -259,7 +346,11 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     /* Staticmethods aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }

@@ -126,7 +126,6 @@ import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
 import com.semmle.ts.ast.IsTypeExpr;
-import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
@@ -139,6 +138,7 @@ import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
+import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import java.util.ArrayList;
@@ -2034,7 +2034,10 @@ public class TypeScriptASTConverter {
   private Node convertTaggedTemplateExpression(JsonObject node, SourceLocation loc)
       throws ParseError {
     return new TaggedTemplateExpression(
-        loc, convertChild(node, "tag"), convertChild(node, "template"));
+        loc,
+        convertChild(node, "tag"),
+        convertChild(node, "template"),
+        convertChildrenAsTypes(node, "typeArguments"));
   }
 
   private Node convertTemplateExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -2220,7 +2223,7 @@ public class TypeScriptASTConverter {
    * ObjectExpression} with {@link ObjectPattern} and {@link SpreadElement} with {@link
    * RestElement}.
    */
-  private Expression convertLValue(Expression e) {
+  private Expression convertLValue(Expression e) throws ParseError {
     if (e == null) return null;
 
     SourceLocation loc = e.getLoc();
@@ -2249,8 +2252,14 @@ public class TypeScriptASTConverter {
     if (e instanceof ParenthesizedExpression)
       return new ParenthesizedExpression(
           loc, convertLValue(((ParenthesizedExpression) e).getExpression()));
-    if (e instanceof SpreadElement)
-      return new RestElement(e.getLoc(), convertLValue(((SpreadElement) e).getArgument()));
+    if (e instanceof SpreadElement) {
+      Expression argument = convertLValue(((SpreadElement) e).getArgument());
+      if (argument instanceof AssignmentPattern) {
+        throw new ParseError(
+            "Rest patterns cannot have a default value", argument.getLoc().getStart());
+      }
+      return new RestElement(e.getLoc(), argument);
+    }
     return e;
   }
 

@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
@@ -24,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         static ExprKind GetKind(Context cx, ObjectCreationExpressionSyntax node)
         {
-            var si = cx.Model(node).GetSymbolInfo(node.Type);
+            var si = cx.GetModel(node).GetSymbolInfo(node.Type);
             return Entities.Type.IsDelegate(si.Symbol as INamedTypeSymbol) ? ExprKind.EXPLICIT_DELEGATE_CREATION : ExprKind.OBJECT_CREATION;
         }
 
@@ -33,26 +34,26 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new ExplicitObjectCreation(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             if (Syntax.ArgumentList != null)
             {
-                PopulateArguments(Syntax.ArgumentList, 0);
+                PopulateArguments(trapFile, Syntax.ArgumentList, 0);
             }
 
-            var target = cx.Model(Syntax).GetSymbolInfo(Syntax);
+            var target = cx.GetModel(Syntax).GetSymbolInfo(Syntax);
             var method = (IMethodSymbol)target.Symbol;
 
             if (method != null)
             {
-                cx.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
+                trapFile.expr_call(this, Method.Create(cx, method));
             }
 
             if (IsDynamicObjectCreation(cx, Syntax))
             {
                 var name = GetDynamicName(Syntax.Type);
                 if (name.HasValue)
-                    cx.Emit(Tuples.dynamic_member_name(this, name.Value.Text));
+                    trapFile.dynamic_member_name(this, name.Value.Text);
                 else
                     cx.ModelError(Syntax, "Unable to get name for dynamic object creation.");
             }
@@ -101,14 +102,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression Create(ExpressionNodeInfo info) =>
             new ImplicitObjectCreation(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             var target = cx.GetSymbolInfo(Syntax);
             var method = (IMethodSymbol)target.Symbol;
 
             if (method != null)
             {
-                cx.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
+                trapFile.expr_call(this, Method.Create(cx, method));
             }
             var child = 0;
 
@@ -119,7 +120,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             foreach (var init in Syntax.Initializers)
             {
                 // Create an "assignment"
-                var property = cx.Model(init).GetDeclaredSymbol(init);
+                var property = cx.GetModel(init).GetDeclaredSymbol(init);
                 var propEntity = Property.Create(cx, property);
                 var type = Entities.Type.Create(cx, property.GetAnnotatedType());
                 var loc = cx.Create(init.GetLocation());
@@ -129,7 +130,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Property.Create(cx, property);
 
                 var access = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, false, null));
-                cx.Emit(Tuples.expr_access(access, propEntity));
+                trapFile.expr_access(access, propEntity);
             }
         }
     }

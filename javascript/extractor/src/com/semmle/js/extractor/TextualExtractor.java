@@ -20,14 +20,20 @@ public class TextualExtractor {
   private final LocationManager locationManager;
   private final Label fileLabel;
   private final boolean extractLines;
+  private final ExtractionMetrics metrics;
 
   public TextualExtractor(
-      TrapWriter trapwriter, LocationManager locationManager, String source, boolean extractLines) {
+      TrapWriter trapwriter,
+      LocationManager locationManager,
+      String source,
+      boolean extractLines,
+      ExtractionMetrics metrics) {
     this.trapwriter = trapwriter;
     this.locationManager = locationManager;
     this.source = source;
     this.fileLabel = locationManager.getFileLabel();
     this.extractLines = extractLines;
+    this.metrics = metrics;
   }
 
   public TrapWriter getTrapwriter() {
@@ -40,6 +46,10 @@ public class TextualExtractor {
 
   public String getSource() {
     return source;
+  }
+
+  public ExtractionMetrics getMetrics() {
+    return metrics;
   }
 
   public String mkToString(SourceElement nd) {

@@ -422,6 +422,9 @@ class ValueType extends ValueOrRefType, @value_type {
  * (`FloatingPointType`), or a decimal type (`DecimalType`).
  */
 class SimpleType extends ValueType, @simple_type {
+  /** Gets the size of this type, in bytes. */
+  int getSize() { none() }
+
   /** Gets the minimum integral value of this type, if any. */
   int minValue() { none() }
 
@@ -436,6 +439,8 @@ class SimpleType extends ValueType, @simple_type {
  */
 class BoolType extends SimpleType, @bool_type {
   override string toStringWithTypes() { result = "bool" }
+
+  override int getSize() { result = 1 }
 }
 
 /**
@@ -443,6 +448,8 @@ class BoolType extends SimpleType, @bool_type {
  */
 class CharType extends SimpleType, @char_type {
   override string toStringWithTypes() { result = "char" }
+
+  override int getSize() { result = 2 }
 
   override int minValue() { result = 0 }
 
@@ -481,6 +488,8 @@ class SignedIntegralType extends IntegralType, @signed_integral_type { }
 class SByteType extends SignedIntegralType, @sbyte_type {
   override string toStringWithTypes() { result = "sbyte" }
 
+  override int getSize() { result = 1 }
+
   override int minValue() { result = -128 }
 
   override int maxValue() { result = 127 }
@@ -491,6 +500,8 @@ class SByteType extends SignedIntegralType, @sbyte_type {
  */
 class ShortType extends SignedIntegralType, @short_type {
   override string toStringWithTypes() { result = "short" }
+
+  override int getSize() { result = 2 }
 
   override int minValue() { result = -32768 }
 
@@ -503,6 +514,8 @@ class ShortType extends SignedIntegralType, @short_type {
 class IntType extends SignedIntegralType, @int_type {
   override string toStringWithTypes() { result = "int" }
 
+  override int getSize() { result = 4 }
+
   override int minValue() { result = -2147483647 - 1 }
 
   override int maxValue() { result = 2147483647 }
@@ -513,6 +526,8 @@ class IntType extends SignedIntegralType, @int_type {
  */
 class LongType extends SignedIntegralType, @long_type {
   override string toStringWithTypes() { result = "long" }
+
+  override int getSize() { result = 8 }
 }
 
 /**
@@ -520,6 +535,8 @@ class LongType extends SignedIntegralType, @long_type {
  */
 class ByteType extends UnsignedIntegralType, @byte_type {
   override string toStringWithTypes() { result = "byte" }
+
+  override int getSize() { result = 1 }
 
   override int maxValue() { result = 255 }
 }
@@ -530,6 +547,8 @@ class ByteType extends UnsignedIntegralType, @byte_type {
 class UShortType extends UnsignedIntegralType, @ushort_type {
   override string toStringWithTypes() { result = "ushort" }
 
+  override int getSize() { result = 2 }
+
   override int maxValue() { result = 65535 }
 }
 
@@ -538,6 +557,8 @@ class UShortType extends UnsignedIntegralType, @ushort_type {
  */
 class UIntType extends UnsignedIntegralType, @uint_type {
   override string toStringWithTypes() { result = "uint" }
+
+  override int getSize() { result = 4 }
 }
 
 /**
@@ -545,6 +566,8 @@ class UIntType extends UnsignedIntegralType, @uint_type {
  */
 class ULongType extends UnsignedIntegralType, @ulong_type {
   override string toStringWithTypes() { result = "ulong" }
+
+  override int getSize() { result = 8 }
 }
 
 /**
@@ -559,6 +582,8 @@ class FloatingPointType extends SimpleType, @floating_point_type { }
  */
 class FloatType extends FloatingPointType, @float_type {
   override string toStringWithTypes() { result = "float" }
+
+  override int getSize() { result = 4 }
 }
 
 /**
@@ -566,6 +591,8 @@ class FloatType extends FloatingPointType, @float_type {
  */
 class DoubleType extends FloatingPointType, @double_type {
   override string toStringWithTypes() { result = "double" }
+
+  override int getSize() { result = 8 }
 }
 
 /**
@@ -573,6 +600,8 @@ class DoubleType extends FloatingPointType, @double_type {
  */
 class DecimalType extends SimpleType, @decimal_type {
   override string toStringWithTypes() { result = "decimal" }
+
+  override int getSize() { result = 16 }
 }
 
 /**
@@ -920,7 +949,6 @@ class TupleType extends ValueType, @tuple_type {
  */
 class TypeMention extends @type_mention {
   Type type;
-
   @type_mention_parent parent;
 
   TypeMention() { type_mention(this, getTypeRef(type), parent) }

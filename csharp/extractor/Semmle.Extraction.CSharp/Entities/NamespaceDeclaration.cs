@@ -3,29 +3,40 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Entities;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
     class NamespaceDeclaration : FreshEntity
     {
+        private readonly NamespaceDeclaration Parent;
+        private readonly NamespaceDeclarationSyntax Node;
+
         public NamespaceDeclaration(Context cx, NamespaceDeclarationSyntax node, NamespaceDeclaration parent)
             : base(cx)
         {
-            var ns = Namespace.Create(cx, (INamespaceSymbol)cx.Model(node).GetSymbolInfo(node.Name).Symbol);
-            cx.Emit(Tuples.namespace_declarations(this, ns));
-            cx.Emit(Tuples.namespace_declaration_location(this, cx.Create(node.Name.GetLocation())));
+            Node = node;
+            Parent = parent;
+            TryPopulate();
+        }
 
-            var visitor = new Populators.TypeOrNamespaceVisitor(cx, this);
+        protected override void Populate(TextWriter trapFile)
+        {
+            var ns = Namespace.Create(cx, (INamespaceSymbol)cx.GetModel(Node).GetSymbolInfo(Node.Name).Symbol);
+            trapFile.namespace_declarations(this, ns);
+            trapFile.namespace_declaration_location(this, cx.Create(Node.Name.GetLocation()));
 
-            foreach (var member in node.Members.Cast<CSharpSyntaxNode>().Concat(node.Usings))
+            var visitor = new Populators.TypeOrNamespaceVisitor(cx, trapFile, this);
+
+            foreach (var member in Node.Members.Cast<CSharpSyntaxNode>().Concat(Node.Usings))
             {
                 member.Accept(visitor);
             }
 
-            if (parent != null)
+            if (Parent != null)
             {
-                cx.Emit(Tuples.parent_namespace_declaration(this, parent));
+                trapFile.parent_namespace_declaration(this, Parent);
             }
         }
 

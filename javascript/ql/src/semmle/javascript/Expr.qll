@@ -34,14 +34,21 @@ class ExprOrType extends @exprortype, Documentable {
     result = getOwnDocumentation()
     or
     // if there is no JSDoc for the expression itself, check the enclosing property or statement
+    not exists(getOwnDocumentation()) and
     (
-      not exists(getOwnDocumentation()) and
-      if getParent() instanceof Property
-      then result = getParent().(Property).getDocumentation()
-      else
-        if getParent() instanceof MethodDeclaration
-        then result = getParent().(MethodDeclaration).getDocumentation()
-        else result = getEnclosingStmt().getDocumentation()
+      exists(Property prop | prop = getParent() | result = prop.getDocumentation())
+      or
+      exists(MethodDeclaration decl | decl = getParent() | result = decl.getDocumentation())
+      or
+      exists(VariableDeclarator decl | decl = getParent() | result = decl.getDocumentation())
+      or
+      exists(DeclStmt stmt | this = stmt.getDecl(0) | result = stmt.getDocumentation())
+      or
+      exists(DotExpr dot | this = dot.getProperty() | result = dot.getDocumentation())
+      or
+      exists(AssignExpr e | this = e.getRhs() | result = e.getDocumentation())
+      or
+      exists(ParExpr p | this = p.getExpression() | result = p.getDocumentation())
     )
   }
 
@@ -50,7 +57,7 @@ class ExprOrType extends @exprortype, Documentable {
     exists(Token tk | tk = result.getComment().getNextToken() |
       tk = this.getFirstToken()
       or
-      exists(Expr p | p.stripParens() = this | tk = p.getFirstToken())
+      exists(Expr p | p.getUnderlyingValue() = this | tk = p.getFirstToken())
     )
   }
 
@@ -182,13 +189,13 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   /**
    * Holds if the syntactic context that the expression appears in relies on the expression
    * being non-null/non-undefined.
-   * 
+   *
    * A context relies on the subexpression being non-null/non-undefined if either...
-   * 
+   *
    *   * Using null or undefined would cause a runtime error
    *   * Using null or undefined would cause no error due to type conversion, but the
    *     behavior in the broader context is sufficiently non-obvious to warrant explicitly
-   *     converting to ensure that readers understand the intent  
+   *     converting to ensure that readers understand the intent
    */
   predicate inNullSensitiveContext() {
     exists(ExprOrStmt ctx |
@@ -647,7 +654,7 @@ class Property extends @property, Documentable {
 
 /**
  * A value property definition in an object literal.
-
+ *
  * Examples:
  *
  * ```
@@ -751,9 +758,6 @@ class SpreadProperty extends Property {
  * ```
  */
 class FunctionExpr extends @functionexpr, Expr, Function {
-  /** Gets the name of this function expression, if any. */
-  override string getName() { result = getId().getName() }
-
   /** Holds if this function expression is a property setter. */
   predicate isSetter() { exists(PropertySetter s | s.getInit() = this) }
 
@@ -2359,7 +2363,6 @@ class LegacyLetExpr extends Expr, @legacy_letexpr {
 class ImmediatelyInvokedFunctionExpr extends Function {
   /** The invocation expression of this IIFE. */
   InvokeExpr invk;
-
   /**
    * The kind of invocation by which this IIFE is invoked: `"call"`
    * for a direct function call, `"call"` or `"apply"` for a reflective
@@ -2597,7 +2600,7 @@ private class LiteralDynamicImportPath extends PathExprInModule, ConstantString 
     exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
   }
 
-  override string getValue() { result = this.(ConstantString).getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
 /**

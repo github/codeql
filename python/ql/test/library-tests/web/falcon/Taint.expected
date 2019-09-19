@@ -8,7 +8,6 @@
 | test.py:12 | resp | falcon.response |
 | test.py:13 | Dict | {json[externally controlled string]} |
 | test.py:15 | result | json[externally controlled string] |
-| test.py:17 | resp | falcon.response |
 | test.py:17 | result | {json[externally controlled string]} |
 | test.py:19 | req | falcon.request |
 | test.py:19 | resp | falcon.response |

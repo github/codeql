@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Kinds;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -20,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     {
                         if (declPattern.Designation is VariableDesignationSyntax designation)
                         {
-                            if (cx.Model(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+                            if (cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                             {
                                 var type = Type.Create(cx, symbol.GetAnnotatedType());
                                 return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, parent, child);
@@ -43,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         case ParenthesizedVariableDesignationSyntax parDesignation:
                             return VariableDeclaration.CreateParenthesized(cx, varPattern, parDesignation, parent, child);
                         case SingleVariableDesignationSyntax varDesignation:
-                            if (cx.Model(syntax).GetDeclaredSymbol(varDesignation) is ILocalSymbol symbol)
+                            if (cx.GetModel(syntax).GetDeclaredSymbol(varDesignation) is ILocalSymbol symbol)
                             {
                                 var type = Type.Create(cx, symbol.GetAnnotatedType());
 
@@ -72,10 +73,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             base(new ExpressionInfo(cx, Entities.NullType.Create(cx), cx.Create(pp.GetLocation()), ExprKind.PROPERTY_PATTERN, parent, child, false, null))
         {
             child = 0;
+            var trapFile = cx.TrapWriter.Writer;
             foreach (var sub in pp.Subpatterns)
             {
                 var p = cx.CreatePattern(sub.Pattern, this, child++);
-                cx.Emit(Tuples.exprorstmt_name(p, sub.NameColon.Name.ToString()));
+                trapFile.exprorstmt_name(p, sub.NameColon.Name.ToString());
             }
         }
     }
@@ -111,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Expressions.TypeAccess.Create(cx, t, this, 1);
 
             // Extract the local variable declaration
-            if (syntax.Designation is VariableDesignationSyntax designation && cx.Model(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+            if (syntax.Designation is VariableDesignationSyntax designation && cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
             {
                 var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
 
@@ -139,7 +141,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private void PopulatePattern(PatternSyntax pattern, TypeSyntax optionalType, SyntaxToken varKeyword, VariableDesignationSyntax designation)
         {
             var isVar = optionalType is null;
-            if (!(designation is null) && cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+            if (!(designation is null) && cx.GetModel(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
             {
                 var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
                 VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 1);
@@ -148,7 +150,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Expressions.TypeAccess.Create(cx, optionalType, this, 1);
         }
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(cx, Syntax.Expression, this, 0);
             switch (Syntax.Pattern)

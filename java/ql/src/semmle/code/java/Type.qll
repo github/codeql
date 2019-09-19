@@ -216,7 +216,7 @@ private predicate typeArgumentContainsAux1(RefType s, RefType t, int n) {
   |
     exists(RefType tUpperBound | tUpperBound = t.(Wildcard).getUpperBound().getType() |
       // ? extends T <= ? extends S if T <: S
-      hasSubtypeStar0(s.(Wildcard).getUpperBound().getType(), tUpperBound)
+      hasSubtypeStar(s.(Wildcard).getUpperBound().getType(), tUpperBound)
       or
       // ? extends T <= ?
       s.(Wildcard).isUnconstrained()
@@ -224,7 +224,7 @@ private predicate typeArgumentContainsAux1(RefType s, RefType t, int n) {
     or
     exists(RefType tLowerBound | tLowerBound = t.(Wildcard).getLowerBound().getType() |
       // ? super T <= ? super S if s <: T
-      hasSubtypeStar0(tLowerBound, s.(Wildcard).getLowerBound().getType())
+      hasSubtypeStar(tLowerBound, s.(Wildcard).getLowerBound().getType())
       or
       // ? super T <= ?
       s.(Wildcard).isUnconstrained()
@@ -237,10 +237,10 @@ private predicate typeArgumentContainsAux1(RefType s, RefType t, int n) {
     s = t
     or
     // T <= ? extends T
-    hasSubtypeStar0(s.(Wildcard).getUpperBound().getType(), t)
+    hasSubtypeStar(s.(Wildcard).getUpperBound().getType(), t)
     or
     // T <= ? super T
-    hasSubtypeStar0(t, s.(Wildcard).getLowerBound().getType())
+    hasSubtypeStar(t, s.(Wildcard).getLowerBound().getType())
   )
 }
 
@@ -249,17 +249,12 @@ private predicate wildcardExtendsObject(Wildcard wc) {
   wc.getUpperBound().getType() instanceof TypeObject
 }
 
-/**
- * DEPRECATED: Use `hasSubtype*` instead.
- */
-deprecated predicate hasSubtypeStar(RefType t, RefType sub) { hasSubtype*(t, sub) }
-
-private predicate hasSubtypeStar0(RefType t, RefType sub) {
+private predicate hasSubtypeStar(RefType t, RefType sub) {
   sub = t
   or
   hasSubtype(t, sub)
   or
-  exists(RefType mid | hasSubtypeStar0(t, mid) and hasSubtype(mid, sub))
+  exists(RefType mid | hasSubtypeStar(t, mid) and hasSubtype(mid, sub))
 }
 
 /** Holds if type `t` declares member `m`. */

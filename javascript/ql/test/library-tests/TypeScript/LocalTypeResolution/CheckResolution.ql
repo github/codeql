@@ -12,11 +12,8 @@ abstract class Violation extends ASTNode {
  */
 class TypeResolutionAssertion extends TupleTypeExpr, Violation {
   InterfaceDeclaration interface;
-
   LocalTypeAccess typeAccess;
-
   string expected;
-
   string actual;
 
   TypeResolutionAssertion() {

@@ -1,6 +1,5 @@
 
 import python
-import semmle.dataflow.SSA
 import semmle.python.pointsto.PointsTo
 
 import Util

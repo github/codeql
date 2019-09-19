@@ -8,6 +8,7 @@
  * @tags resources
  *       external/jsf
  */
+
 import cpp
 
 predicate occursAfterInitialization(Expr e) {

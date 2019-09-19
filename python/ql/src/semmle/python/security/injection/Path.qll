@@ -6,7 +6,7 @@ import semmle.python.security.strings.Untrusted
 /** Prevents taint flowing through ntpath.normpath()
  * NormalizedPath below handles that case.
  */
-private class PathSanitizer extends Sanitizer {
+class PathSanitizer extends Sanitizer {
 
     PathSanitizer() {
         this = "path.sanitizer"

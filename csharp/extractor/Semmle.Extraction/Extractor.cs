@@ -80,11 +80,6 @@ namespace Semmle.Extraction
         ILogger Logger { get; }
 
         /// <summary>
-        /// The extractor SHA, obtained from the git log.
-        /// </summary>
-        string Version { get; }
-
-        /// <summary>
         /// Creates a new context.
         /// </summary>
         /// <param name="c">The C# compilation.</param>
@@ -201,6 +196,6 @@ namespace Semmle.Extraction
 
         public ILogger Logger { get; private set; }
 
-        public string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
+        public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
     }
 }

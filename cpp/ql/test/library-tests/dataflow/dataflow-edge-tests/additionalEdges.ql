@@ -12,9 +12,7 @@ class EdgeToExcept extends AdditionalControlFlowEdge {
   }
 }
 
-MicrosoftTryExceptStmt getNearestTryExceptParent(Expr e) {
-  result = getANearParent(e)
-}
+MicrosoftTryExceptStmt getNearestTryExceptParent(Expr e) { result = getANearParent(e) }
 
 private Element getANearParent(Expr e) {
   result = e.getParent()
@@ -23,7 +21,8 @@ private Element getANearParent(Expr e) {
     result = prev.(Expr).getParent()
     or
     result = prev.(Stmt).getParent()
-  | // do not recurse past __try
+  |
+    // do not recurse past __try
     not prev instanceof MicrosoftTryStmt and
     prev = getANearParent(e)
   )

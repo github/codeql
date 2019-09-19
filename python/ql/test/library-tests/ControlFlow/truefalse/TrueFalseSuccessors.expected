@@ -85,6 +85,7 @@
 | true_false_test.py | 85 | true_false_test.py:85:22:85:27 | ControlFlowNode for cond24 | ControlFlowNode for cond25 | True |
 | true_succ.py | 4 | true_succ.py:4:8:4:15 | ControlFlowNode for filename | ControlFlowNode for Str | False |
 | true_succ.py | 4 | true_succ.py:4:8:4:15 | ControlFlowNode for filename | ControlFlowNode for Try | True |
+| true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for Function example | False |
 | true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for Str | False |
 | true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for f | True |
 | true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for f | True |

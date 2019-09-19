@@ -14,6 +14,7 @@ import cpp
 class VariableAccessInInitializer extends VariableAccess {
   Variable var;
   Initializer init;
+
   VariableAccessInInitializer() {
     init.getDeclaration() = var and
     init.getExpr().getAChild*() = this
@@ -25,20 +26,18 @@ class VariableAccessInInitializer extends VariableAccess {
 }
 
 from Initializer init, Variable v, VariableAccessInInitializer va
-where va.initializesItself(v, init)
-  and (
+where
+  va.initializesItself(v, init) and
+  (
     va.hasLValueToRValueConversion() or
-    exists (Assignment assn | assn.getLValue() = va) or
-    exists (CrementOperation crement | crement.getAnOperand() = va)
-  )
-  and not va.isUnevaluated()
-  and not (
+    exists(Assignment assn | assn.getLValue() = va) or
+    exists(CrementOperation crement | crement.getAnOperand() = va)
+  ) and
+  not va.isUnevaluated() and
+  not v.isConst() and
+  not (
     va.getParent() = init and
-    exists(MacroInvocation mi |
-      va = mi.getExpr()
-    )
-  )
-  and not (
-    va.getEnclosingStmt().isInMacroExpansion()
-  )
+    exists(MacroInvocation mi | va = mi.getExpr())
+  ) and
+  not va.getEnclosingStmt().isInMacroExpansion()
 select va, v.getName() + " is used in its own initializer."

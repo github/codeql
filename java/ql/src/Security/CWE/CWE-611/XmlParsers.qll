@@ -725,20 +725,26 @@ private class CreatedSafeXMLReaderFlowConfig extends DataFlow3::Configuration {
 }
 
 /** An `XMLReader` that is obtained from a safe source. */
-class CreatedSafeXMLReader extends MethodAccess {
+class CreatedSafeXMLReader extends Call {
   CreatedSafeXMLReader() {
     //Obtained from SAXParser
     exists(SafeSAXParserFlowConfig safeParser |
-      this.getMethod().getDeclaringType() instanceof SAXParser and
-      this.getMethod().hasName("getXMLReader") and
+      this.(MethodAccess).getMethod().getDeclaringType() instanceof SAXParser and
+      this.(MethodAccess).getMethod().hasName("getXMLReader") and
       safeParser.hasFlowToExpr(this.getQualifier())
     )
     or
     //Obtained from SAXReader
     exists(SafeSAXReaderFlowConfig safeReader |
-      this.getMethod().getDeclaringType() instanceof SAXReader and
-      this.getMethod().hasName("getXMLReader") and
+      this.(MethodAccess).getMethod().getDeclaringType() instanceof SAXReader and
+      this.(MethodAccess).getMethod().hasName("getXMLReader") and
       safeReader.hasFlowToExpr(this.getQualifier())
+    )
+    or
+    exists(RefType secureReader, string package |
+      this.(ClassInstanceExpr).getConstructedType() = secureReader and
+      secureReader.hasQualifiedName(package, "SecureJDKXercesXMLReader") and
+      package.matches("com.google.%common.xml.parsing")
     )
   }
 

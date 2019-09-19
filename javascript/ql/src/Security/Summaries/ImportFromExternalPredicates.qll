@@ -36,9 +36,7 @@ external predicate additionalSteps(
  */
 private class AdditionalSourceFromSpec extends DataFlow::AdditionalSource {
   Portal portal;
-
   string flowLabel;
-
   string config;
 
   AdditionalSourceFromSpec() {
@@ -56,9 +54,7 @@ private class AdditionalSourceFromSpec extends DataFlow::AdditionalSource {
  */
 private class AdditionalSinkFromSpec extends DataFlow::AdditionalSink {
   Portal portal;
-
   string flowLabel;
-
   string config;
 
   AdditionalSinkFromSpec() {
@@ -76,11 +72,8 @@ private class AdditionalSinkFromSpec extends DataFlow::AdditionalSink {
  */
 private class AdditionalFlowStepFromSpec extends DataFlow::Configuration {
   DataFlow::Node entry;
-
   string startFlowLabel;
-
   DataFlow::Node exit;
-
   string endFlowLabel;
 
   AdditionalFlowStepFromSpec() {

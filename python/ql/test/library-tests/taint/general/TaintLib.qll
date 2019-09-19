@@ -50,6 +50,13 @@ class SimpleSanitizer extends Sanitizer {
         taint instanceof SimpleTest
     }
 
+    override predicate sanitizingDefinition(TaintKind taint, EssaDefinition def) {
+        exists(CallNode call |
+            def.(ArgumentRefinement).getInput().getAUse() = call.getAnArg() and
+            call.getFunction().(NameNode).getId() = "SANITIZE"
+        ) and
+        taint instanceof SimpleTest
+    }
 }
 
 class BasicCustomTaint extends TaintKind {
@@ -385,6 +392,3 @@ class TaintIterableSource extends TaintSource {
     }
 
 }
-
-
-

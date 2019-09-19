@@ -9,12 +9,10 @@
 import semmle.code.cpp.Function
 
 private Type stripTopLevelSpecifiersOnly(Type t) {
-  (
-    result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
-  ) or (
-    result = t and
-    not t instanceof SpecifiedType
-  )
+  result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
+  or
+  result = t and
+  not t instanceof SpecifiedType
 }
 
 /**
@@ -32,11 +30,10 @@ Type getAFormatterWideType() {
  * there is none.
  */
 private Type getAFormatterWideTypeOrDefault() {
-  result = getAFormatterWideType() or
-  (
-    not exists(getAFormatterWideType()) and
-    result instanceof Wchar_t
-  )
+  result = getAFormatterWideType()
+  or
+  not exists(getAFormatterWideType()) and
+  result instanceof Wchar_t
 }
 
 /**
@@ -46,13 +43,13 @@ abstract class FormattingFunction extends Function {
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
+  override string getCanonicalQLClass() { result = "FormattingFunction" }
+
   /**
    * Holds if this `FormattingFunction` is in a context that supports
    * Microsoft rules and extensions.
    */
-  predicate isMicrosoft() {
-    any(File f).compiledAsMicrosoft()
-  }
+  predicate isMicrosoft() { any(File f).compiledAsMicrosoft() }
 
   /**
    * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
@@ -66,12 +63,9 @@ abstract class FormattingFunction extends Function {
    * Gets the character type used in the format string for this function.
    */
   Type getFormatCharType() {
-    result =
-      stripTopLevelSpecifiersOnly(
-        stripTopLevelSpecifiersOnly(
-          getParameter(getFormatParameterIndex()).getType().getUnderlyingType()
-        ).(PointerType).getBaseType()
-      )
+    result = stripTopLevelSpecifiersOnly(stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex())
+              .getType()
+              .getUnderlyingType()).(PointerType).getBaseType())
   }
 
   /**
@@ -79,13 +73,11 @@ abstract class FormattingFunction extends Function {
    * `char` or `wchar_t`.
    */
   Type getDefaultCharType() {
-    (
-      isMicrosoft() and
-      result = getFormatCharType()
-    ) or (
-      not isMicrosoft() and
-      result instanceof PlainCharType
-    )
+    isMicrosoft() and
+    result = getFormatCharType()
+    or
+    not isMicrosoft() and
+    result instanceof PlainCharType
   }
 
   /**
@@ -94,13 +86,11 @@ abstract class FormattingFunction extends Function {
    * which is correct for a particular function.
    */
   Type getNonDefaultCharType() {
-    (
-      getDefaultCharType().getSize() = 1 and
-      result = getWideCharType()
-    ) or (
-      not getDefaultCharType().getSize() = 1 and
-      result instanceof PlainCharType
-    )
+    getDefaultCharType().getSize() = 1 and
+    result = getWideCharType()
+    or
+    not getDefaultCharType().getSize() = 1 and
+    result instanceof PlainCharType
   }
 
   /**
@@ -109,13 +99,11 @@ abstract class FormattingFunction extends Function {
    * particular function.
    */
   Type getWideCharType() {
-    (
-      result = getFormatCharType() and
-      result.getSize() > 1
-    ) or (
-      not getFormatCharType().getSize() > 1 and
-      result = getAFormatterWideTypeOrDefault() // may have more than one result
-    )
+    result = getFormatCharType() and
+    result.getSize() > 1
+    or
+    not getFormatCharType().getSize() > 1 and
+    result = getAFormatterWideTypeOrDefault() // may have more than one result
   }
 
   /**

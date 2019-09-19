@@ -46,3 +46,15 @@ function good3() {
   }
   return firstName + sep + lastName;
 }
+
+/**
+ * @param {IncomingMessage} opts
+ */
+var Cookie = foo.bar = function Cookie(options) {
+}
+
+/**
+ * @param {IncomingMessage} opts
+ */
+Cookie2 = foo.bar2 = function Cookie2(options) {
+}

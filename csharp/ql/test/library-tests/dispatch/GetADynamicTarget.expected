@@ -58,6 +58,7 @@
 | ExactCallable.cs:184:13:184:16 | call to method M2 | Test.MainClass.M2() |
 | ExactCallable.cs:191:13:191:16 | call to method M1 | Test.MainClass.M1() |
 | TypeFlow.cs:7:7:7:23 | call to method Run | TypeFlow.Run(C1, C1) |
+| TypeFlow.cs:22:8:22:11 | access to property Prop | TypeFlow.set_Prop(C1) |
 | TypeFlow.cs:27:9:27:22 | call to method Method | TypeFlow.C2.Method() |
 | TypeFlow.cs:30:9:30:12 | access to property Prop | TypeFlow.get_Prop() |
 | TypeFlow.cs:30:9:30:21 | call to method Method | TypeFlow.C2.Method() |

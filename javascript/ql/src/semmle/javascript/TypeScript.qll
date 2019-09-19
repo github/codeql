@@ -222,7 +222,7 @@ private class LiteralExternalModulePath extends PathExprInModule, ConstantString
     exists(ExternalModuleReference emr | this.getParentExpr*() = emr.getExpression())
   }
 
-  override string getValue() { result = this.(ConstantString).getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
 /** A TypeScript "export-assign" declaration. */
@@ -550,6 +550,8 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override StmtContainer getContainer() { result = ExprOrType.super.getContainer() }
 
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
+
+  override DataFlow::ClassNode getClass() { result.getAstNode() = getType().(ClassType).getClass() }
 }
 
 /**
@@ -1521,7 +1523,6 @@ class TSGlobalDeclImport extends DataFlow::ModuleImportNode::Range {
  */
 class ReferenceImport extends LineComment {
   string attribute;
-
   string value;
 
   ReferenceImport() {
@@ -1546,14 +1547,18 @@ class ReferenceImport extends LineComment {
   string getAttributeName() { result = attribute }
 
   /**
+   * DEPRECATED. This is no longer supported.
+   *
    * Gets the file referenced by this import.
    */
-  File getImportedFile() { none() } // Overridden in subtypes.
+  deprecated File getImportedFile() { none() }
 
   /**
+   * DEPRECATED. This is no longer supported.
+   *
    * Gets the top-level of the referenced file.
    */
-  TopLevel getImportedTopLevel() { result.getFile() = getImportedFile() }
+  deprecated TopLevel getImportedTopLevel() { none() }
 }
 
 /**
@@ -1564,24 +1569,6 @@ class ReferenceImport extends LineComment {
  */
 class ReferencePathImport extends ReferenceImport {
   ReferencePathImport() { attribute = "path" }
-
-  override File getImportedFile() { result = this.(PathExpr).resolve() }
-}
-
-/**
- * Treats reference imports comments as path expressions without exposing
- * the methods from `PathExpr` on `ReferenceImport`.
- */
-private class ReferenceImportAsPathExpr extends PathExpr {
-  ReferenceImport reference;
-
-  ReferenceImportAsPathExpr() { this = reference }
-
-  override string getValue() { result = reference.getAttributeValue() }
-
-  override Folder getSearchRoot(int priority) {
-    result = reference.getFile().getParentContainer() and priority = 0
-  }
 }
 
 /**
@@ -1592,14 +1579,6 @@ private class ReferenceImportAsPathExpr extends PathExpr {
  */
 class ReferenceTypesImport extends ReferenceImport {
   ReferenceTypesImport() { attribute = "types" }
-
-  override File getImportedFile() {
-    result = min(Folder nodeModules, int distance |
-        findNodeModulesFolder(getFile().getParentContainer(), nodeModules, distance)
-      |
-        nodeModules.getFolder("@types").getFolder(value).getFile("index.d.ts") order by distance
-      )
-  }
 }
 
 /**

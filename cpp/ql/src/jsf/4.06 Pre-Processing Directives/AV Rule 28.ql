@@ -7,10 +7,13 @@
  * @tags maintainability
  *       external/jsf
  */
+
 import cpp
 import semmle.code.cpp.headers.MultipleInclusion
 
 from PreprocessorDirective directive
-where (directive instanceof PreprocessorIfndef or directive instanceof PreprocessorEndif) and
-      not exists(CorrectIncludeGuard cig | directive = cig.getIfndef() or directive = cig.getEndif())
-select directive, "AV Rule 28: the #ifndef and #endif directives will only be used as defined in AV Rule 27."
+where
+  (directive instanceof PreprocessorIfndef or directive instanceof PreprocessorEndif) and
+  not exists(CorrectIncludeGuard cig | directive = cig.getIfndef() or directive = cig.getEndif())
+select directive,
+  "AV Rule 28: the #ifndef and #endif directives will only be used as defined in AV Rule 27."

@@ -4,7 +4,6 @@
  */
 
 import javascript
-
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dependencies.Dependencies
 private import semmle.javascript.dependencies.FrameworkLibraries
@@ -96,17 +95,13 @@ predicate isExternalLibrary(string name) {
  * Holds if the global variable `name` is defined externally.
  */
 predicate isExternalGlobal(string name) {
-  exists(ExternalGlobalDecl decl |
-    decl.getName() = name
-  )
+  exists(ExternalGlobalDecl decl | decl.getName() = name)
   or
   exists(Dependency dep |
     // If name is never assigned anywhere, and it coincides with a dependency,
     // it's most likely coming from there.
     dep.info(name, _) and
-    not exists(Assignment assign |
-      assign.getLhs().(GlobalVarAccess).getName() = name
-    )
+    not exists(Assignment assign | assign.getLhs().(GlobalVarAccess).getName() = name)
   )
   or
   name = "_"
@@ -229,9 +224,7 @@ class UnresolvableCall extends RelevantInvoke {
  * A call that is believed to call a function within the same project.
  */
 class NonExternalCall extends RelevantInvoke {
-  NonExternalCall() {
-    not this instanceof ExternalCall
-  }
+  NonExternalCall() { not this instanceof ExternalCall }
 }
 
 /**
@@ -249,7 +242,5 @@ class FunctionWithCallers extends RelevantFunction {
  * A function without any call sites.
  */
 class FunctionWithoutCallers extends RelevantFunction {
-  FunctionWithoutCallers() {
-    not this instanceof FunctionWithCallers
-  }
+  FunctionWithoutCallers() { not this instanceof FunctionWithCallers }
 }

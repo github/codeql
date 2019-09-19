@@ -1,6 +1,8 @@
 | 1.js:0:0:0:0 | 1.js | generated |
 | AutoRest.js:0:0:0:0 | AutoRest.js | generated |
 | ManyElementsOnLine.html:0:0:0:0 | ManyElementsOnLine.html | generated |
+| __mocks__/test.js:0:0:0:0 | __mocks__/test.js | test |
+| __tests__/test.js:0:0:0:0 | __tests__/test.js | test |
 | ai.1.2.3-build0123.js:0:0:0:0 | ai.1.2.3-build0123.js | library |
 | bundle-directive.js:0:0:0:0 | bundle-directive.js | generated |
 | data.js:0:0:0:0 | data.js | generated |

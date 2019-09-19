@@ -4,7 +4,6 @@
 
 
 import python
-import semmle.dataflow.SSA
 
 /** Holds if `c` is a call to `hasattr(obj, attr)`. */
 predicate hasattr(CallNode c, ControlFlowNode obj, string attr) {

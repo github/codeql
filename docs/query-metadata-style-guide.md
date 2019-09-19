@@ -27,7 +27,7 @@ For examples of query files for the languages supported by Semmle, visit the fol
 
 ## Metadata area
 
-Query file metadata contains important information which defines the identifier and purpose of the query. The metadata is included as the content of a valid [QLDoc](https://help.semmle.com/QL/ql-spec/qldoc.html) comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
+Query file metadata contains important information that defines the identifier and purpose of the query. The metadata is included as the content of a valid [QLDoc](https://help.semmle.com/QL/ql-spec/qldoc.html) comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
 
 ```
 /**
@@ -43,7 +43,10 @@ Query file metadata contains important information which defines the identifier 
  */
  ```
 
-In order to help others use your query, and to ensure that the query works correctly on LGTM, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Query metadata](https://help.semmle.com/QL/learn-ql/ql/writing-queries/query-metadata.html) on help.semmle.com.
+To help others use your query, and to ensure that the query works correctly on LGTM, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Query metadata](https://help.semmle.com/QL/learn-ql/ql/writing-queries/query-metadata.html) on help.semmle.com.
+
+
+
 
 ### Query name `@name`
 

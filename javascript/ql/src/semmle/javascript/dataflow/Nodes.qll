@@ -4,8 +4,8 @@
  * parameters.
  */
 
-import javascript
-import semmle.javascript.dependencies.Dependencies
+private import javascript
+private import semmle.javascript.dependencies.Dependencies
 
 /** A data flow node corresponding to an expression. */
 class ExprNode extends DataFlow::ValueNode {
@@ -77,7 +77,8 @@ class InvokeNode extends DataFlow::SourceNode {
    * x.push(x, ...args, y, ...more);      // 'args' and 'more' are a spread arguments
    * Array.prototype.push.apply(x, args); // 'args' is a spread argument
    * ```
-  .*/
+   *  .
+   */
   DataFlow::Node getASpreadArgument() { result = impl.getASpreadArgument() }
 
   /** Gets the number of arguments of this invocation, if it can be determined. */
@@ -276,18 +277,6 @@ class ThisNode extends DataFlow::Node, DataFlow::SourceNode {
    * which is the nearest enclosing non-arrow function or top-level.
    */
   StmtContainer getBindingContainer() { DataFlow::thisNode(this, result) }
-
-  override string toString() { result = "this" }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    // Use the function entry as the location
-    getBindingContainer()
-        .getEntry()
-        .getLocation()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 }
 
 /** A data flow node corresponding to a global variable access. */
@@ -315,6 +304,9 @@ DataFlow::SourceNode globalObjectRef() {
   or
   // Node.js
   result = globalVarRef("global")
+  or
+  // DOM and service workers
+  result = globalVarRef("self")
   or
   // `require("global")`
   result = moduleImport("global")
@@ -352,12 +344,12 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   int getNumParameter() { result = count(astNode.getAParameter()) }
 
   /** Gets the last parameter of this function. */
-  ParameterNode getLastParameter() { result = getParameter(getNumParameter()-1) }
+  ParameterNode getLastParameter() { result = getParameter(getNumParameter() - 1) }
 
   /** Holds if the last parameter of this function is a rest parameter. */
   predicate hasRestParameter() { astNode.hasRestParameter() }
 
-  /** Gets the name of this function, if it has one. */
+  /** Gets the unqualified name of this function, if it has one or one can be determined from the context. */
   string getName() { result = astNode.getName() }
 
   /** Gets a data flow node corresponding to a return value of this function. */
@@ -484,7 +476,7 @@ module ModuleImportNode {
       exists(AmdModuleDefinition amd, CallExpr req |
         req = amd.getARequireCall() and
         this = DataFlow::valueNode(req) and
-        path = req.getArgument(0).(ConstantString).getStringValue()
+        path = req.getArgument(0).getStringValue()
       )
     }
 
@@ -588,7 +580,7 @@ class ClassNode extends DataFlow::SourceNode {
   ClassNode() { this = impl }
 
   /**
-   * Gets the name of the class, if it has one.
+   * Gets the unqualified name of the class, if it has one or one can be determined from the context.
    */
   string getName() { result = impl.getName() }
 
@@ -663,16 +655,12 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets a direct super class of this class.
    */
-  ClassNode getADirectSuperClass() {
-    result.getAClassReference().flowsTo(getASuperClassNode())
-  }
+  ClassNode getADirectSuperClass() { result.getAClassReference().flowsTo(getASuperClassNode()) }
 
   /**
    * Gets a direct subclass of this class.
    */
-  final ClassNode getADirectSubClass() {
-    this = result.getADirectSuperClass()
-  }
+  final ClassNode getADirectSubClass() { this = result.getADirectSuperClass() }
 
   /**
    * Gets the receiver of an instance member or constructor of this class.
@@ -686,16 +674,12 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets the abstract value representing the class itself.
    */
-  AbstractValue getAbstractClassValue() {
-    result = this.(AnalyzedNode).getAValue()
-  }
+  AbstractValue getAbstractClassValue() { result = this.(AnalyzedNode).getAValue() }
 
   /**
    * Gets the abstract value representing an instance of this class.
    */
-  AbstractValue getAbstractInstanceValue() {
-    result = AbstractInstance::of(getAstNode())
-  }
+  AbstractValue getAbstractInstanceValue() { result = AbstractInstance::of(getAstNode()) }
 
   /**
    * Gets a dataflow node that refers to this class object.
@@ -704,14 +688,13 @@ class ClassNode extends DataFlow::SourceNode {
     t.start() and
     result.(AnalyzedNode).getAValue() = getAbstractClassValue()
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = getAClassReference(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = getAClassReference(t2).track(t2, t))
   }
 
   /**
    * Gets a dataflow node that refers to this class object.
    */
+  cached
   DataFlow::SourceNode getAClassReference() {
     result = getAClassReference(DataFlow::TypeTracker::end())
   }
@@ -728,6 +711,15 @@ class ClassNode extends DataFlow::SourceNode {
     t.start() and
     result = getAReceiverNode()
     or
+    // Use a parameter type as starting point of type tracking.
+    // Use `t.call()` to emulate the value being passed in through an unseen
+    // call site, but not out of the call again.
+    t.call() and
+    exists(Parameter param |
+      this = param.getTypeAnnotation().getClass() and
+      result = DataFlow::parameterNode(param)
+    )
+    or
     result = getAnInstanceReferenceAux(t) and
     // Avoid tracking into the receiver of other classes.
     // Note that this also blocks flows into a property of the receiver,
@@ -737,16 +729,27 @@ class ClassNode extends DataFlow::SourceNode {
 
   pragma[noinline]
   private DataFlow::SourceNode getAnInstanceReferenceAux(DataFlow::TypeTracker t) {
-    exists(DataFlow::TypeTracker t2 |
-      result = getAnInstanceReference(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = getAnInstanceReference(t2).track(t2, t))
   }
 
   /**
    * Gets a dataflow node that refers to an instance of this class.
    */
+  cached
   DataFlow::SourceNode getAnInstanceReference() {
     result = getAnInstanceReference(DataFlow::TypeTracker::end())
+  }
+
+  /**
+   * Holds if this class is exposed in the global scope through the given qualified name.
+   */
+  pragma[noinline]
+  predicate hasQualifiedName(string name) {
+    exists(DataFlow::Node rhs |
+      getAClassReference().flowsTo(rhs) and
+      name = GlobalAccessPath::fromRhs(rhs) and
+      GlobalAccessPath::isAssignedInUniqueFile(name)
+    )
   }
 }
 
@@ -853,6 +856,12 @@ module ClassNode {
     override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }
   }
 
+  private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
+    GlobalAccessPath::getAccessPath(result.getBase()) = name and
+    result.getPropertyName() = "prototype" and
+    result.getFile() = f
+  }
+
   /**
    * A function definition with prototype manipulation as a `ClassNode` instance.
    */
@@ -862,9 +871,16 @@ module ClassNode {
 
     FunctionStyleClass() {
       function.getFunction() = astNode and
-      exists (DataFlow::PropRef read |
-        read.getPropertyName() = "prototype" and
-        read.getBase().analyze().getAValue() = function
+      (
+        exists(DataFlow::PropRef read |
+          read.getPropertyName() = "prototype" and
+          read.getBase().analyze().getAValue() = function
+        )
+        or
+        exists(string name |
+          name = GlobalAccessPath::fromRhs(this) and
+          exists(getAPrototypeReferenceInFile(name, getFile()))
+        )
       )
     }
 
@@ -914,23 +930,26 @@ module ClassNode {
 
     override FunctionNode getStaticMethod(string name) { result = getAPropertySource(name) }
 
-    override FunctionNode getAStaticMethod() {
-      result = getAPropertySource()
-    }
+    override FunctionNode getAStaticMethod() { result = getAPropertySource() }
 
     /**
      * Gets a reference to the prototype of this class.
      */
     DataFlow::SourceNode getAPrototypeReference() {
-      exists (DataFlow::SourceNode base | base.analyze().getAValue() = function |
+      exists(DataFlow::SourceNode base | base.analyze().getAValue() = function |
         result = base.getAPropertyRead("prototype")
         or
         result = base.getAPropertySource("prototype")
-        or
-        exists(ExtendCall call |
-          call.getDestinationOperand() = base.getAPropertyRead("prototype") and
-          result = call.getASourceOperand()
-        )
+      )
+      or
+      exists(string name |
+        GlobalAccessPath::fromRhs(this) = name and
+        result = getAPrototypeReferenceInFile(name, getFile())
+      )
+      or
+      exists(ExtendCall call |
+        call.getDestinationOperand() = getAPrototypeReference() and
+        result = call.getASourceOperand()
       )
     }
 

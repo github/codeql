@@ -1,5 +1,26 @@
 package com.semmle.js.extractor;
 
+import com.semmle.js.extractor.ExtractorConfig.SourceType;
+import com.semmle.js.extractor.FileExtractor.FileType;
+import com.semmle.js.extractor.trapcache.DefaultTrapCache;
+import com.semmle.js.extractor.trapcache.DummyTrapCache;
+import com.semmle.js.extractor.trapcache.ITrapCache;
+import com.semmle.js.parser.ParsedProject;
+import com.semmle.js.parser.TypeScriptParser;
+import com.semmle.ts.extractor.TypeExtractor;
+import com.semmle.ts.extractor.TypeTable;
+import com.semmle.util.data.StringUtil;
+import com.semmle.util.exception.CatastrophicError;
+import com.semmle.util.exception.Exceptions;
+import com.semmle.util.exception.ResourceError;
+import com.semmle.util.exception.UserError;
+import com.semmle.util.extraction.ExtractorOutputConfig;
+import com.semmle.util.files.FileUtil;
+import com.semmle.util.io.csv.CSVReader;
+import com.semmle.util.language.LegacyLanguage;
+import com.semmle.util.process.Env;
+import com.semmle.util.projectstructure.ProjectLayout;
+import com.semmle.util.trap.TrapWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -27,28 +48,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import com.semmle.js.extractor.ExtractorConfig.SourceType;
-import com.semmle.js.extractor.FileExtractor.FileType;
-import com.semmle.js.extractor.trapcache.DefaultTrapCache;
-import com.semmle.js.extractor.trapcache.DummyTrapCache;
-import com.semmle.js.extractor.trapcache.ITrapCache;
-import com.semmle.js.parser.ParsedProject;
-import com.semmle.js.parser.TypeScriptParser;
-import com.semmle.ts.extractor.TypeExtractor;
-import com.semmle.ts.extractor.TypeTable;
-import com.semmle.util.data.StringUtil;
-import com.semmle.util.exception.CatastrophicError;
-import com.semmle.util.exception.Exceptions;
-import com.semmle.util.exception.ResourceError;
-import com.semmle.util.exception.UserError;
-import com.semmle.util.extraction.ExtractorOutputConfig;
-import com.semmle.util.files.FileUtil;
-import com.semmle.util.io.csv.CSVReader;
-import com.semmle.util.language.LegacyLanguage;
-import com.semmle.util.process.Env;
-import com.semmle.util.projectstructure.ProjectLayout;
-import com.semmle.util.trap.TrapWriter;
-
 /**
  * An alternative entry point to the JavaScript extractor.
  *
@@ -71,8 +70,8 @@ import com.semmle.util.trap.TrapWriter;
  *       patterns that can be used to refine the list of files to include and exclude
  *   <li><code>LGTM_INDEX_TYPESCRIPT</code>: whether to extract TypeScript
  *   <li><code>LGTM_INDEX_FILETYPES</code>: a newline-separated list of ".extension:filetype" pairs
- *       specifying which {@link FileType} to use for the given extension; the additional file
- *       type <code>XML</code> is also supported
+ *       specifying which {@link FileType} to use for the given extension; the additional file type
+ *       <code>XML</code> is also supported
  *   <li><code>LGTM_INDEX_XML_MODE</code>: whether to extract XML files
  *   <li><code>LGTM_THREADS</code>: the maximum number of files to extract in parallel
  *   <li><code>LGTM_TRAP_CACHE</code>: the path of a directory to use for trap caching
@@ -166,8 +165,8 @@ import com.semmle.util.trap.TrapWriter;
  * <p>If <code>LGTM_INDEX_XML_MODE</code> is set to <code>ALL</code>, then all files with extension
  * <code>.xml</code> under <code>LGTM_SRC</code> are extracted as XML (in addition to any files
  * whose file type is specified to be <code>XML</code> via <code>LGTM_INDEX_SOURCE_TYPE</code>).
- * Currently XML extraction does not respect inclusion and exclusion filters, but this is a bug,
- * not a feature, and hence will change eventually.
+ * Currently XML extraction does not respect inclusion and exclusion filters, but this is a bug, not
+ * a feature, and hence will change eventually.
  *
  * <p>Note that all these customisations only apply to <code>LGTM_SRC</code>. Extraction of externs
  * is not customisable.
@@ -288,8 +287,7 @@ public class AutoBuild {
       try {
         fileType = StringUtil.uc(fileType);
         if ("XML".equals(fileType)) {
-          if (extension.length() < 2)
-            throw new UserError("Invalid extension '" + extension + "'.");
+          if (extension.length() < 2) throw new UserError("Invalid extension '" + extension + "'.");
           xmlExtensions.add(extension.substring(1));
         } else {
           fileTypes.put(extension, FileType.valueOf(fileType));
@@ -304,8 +302,7 @@ public class AutoBuild {
   private void setupXmlMode() {
     String xmlMode = getEnvVar("LGTM_INDEX_XML_MODE", "DISABLED");
     xmlMode = StringUtil.uc(xmlMode.trim());
-    if ("ALL".equals(xmlMode))
-      xmlExtensions.add("xml");
+    if ("ALL".equals(xmlMode)) xmlExtensions.add("xml");
     else if (!"DISABLED".equals(xmlMode))
       throw new UserError("Invalid XML mode '" + xmlMode + "' (should be either ALL or DISABLED).");
   }
@@ -744,8 +741,7 @@ public class AutoBuild {
     try {
       long start = logBeginProcess("Extracting " + file);
       Integer loc = extractor.extract(f, state);
-      if (!extractor.getConfig().isExterns() && (loc == null || loc != 0))
-        seenCode = true;
+      if (!extractor.getConfig().isExterns() && (loc == null || loc != 0)) seenCode = true;
       logEndProcess(start, "Done extracting " + file);
     } catch (Throwable t) {
       System.err.println("Exception while extracting " + file + ".");
@@ -776,8 +772,7 @@ public class AutoBuild {
   }
 
   protected void extractXml() throws IOException {
-    if (xmlExtensions.isEmpty())
-      return;
+    if (xmlExtensions.isEmpty()) return;
     List<String> cmd = new ArrayList<>();
     cmd.add("odasa");
     cmd.add("index");

@@ -26,6 +26,7 @@ test_RouteSetup
 | src/csurf-example.js:39:1:39:48 | app.get ... es) {}) | src/csurf-example.js:7:11:7:19 | express() | false |
 | src/csurf-example.js:40:1:40:49 | app.pos ... es) {}) | src/csurf-example.js:7:11:7:19 | express() | false |
 | src/express2.js:3:1:3:56 | router. ...  res }) | src/express2.js:5:11:5:13 | e() | false |
+| src/express2.js:3:1:4:77 | router. ... sult }) | src/express2.js:5:11:5:13 | e() | false |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() | false |
 | src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:2:11:2:19 | express() | false |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() | false |
@@ -196,6 +197,7 @@ test_isRequest
 | src/express.js:49:3:49:5 | req |
 | src/express.js:50:3:50:5 | req |
 | src/inheritedFromNode.js:7:2:7:4 | req |
+| src/passport.js:28:2:28:4 | req |
 | src/responseExprs.js:17:5:17:7 | req |
 test_RouteSetup_getRouter
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:1:13:1:32 | require('express')() |
@@ -245,6 +247,7 @@ test_StandardRouteHandler
 | src/csurf-example.js:39:26:39:47 | functio ... res) {} | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:39:36:39:38 | req | src/csurf-example.js:39:41:39:43 | res |
 | src/csurf-example.js:40:27:40:48 | functio ... res) {} | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:40:37:40:39 | req | src/csurf-example.js:40:42:40:44 | res |
 | src/express2.js:3:25:3:55 | functio ... , res } | src/express2.js:5:11:5:13 | e() | src/express2.js:3:34:3:36 | req | src/express2.js:3:39:3:41 | res |
+| src/express2.js:4:32:4:76 | functio ... esult } | src/express2.js:5:11:5:13 | e() | src/express2.js:4:41:4:47 | request | src/express2.js:4:50:4:55 | result |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:2:11:2:19 | express() | src/express3.js:4:32:4:34 | req | src/express3.js:4:37:4:39 | res |
 | src/express4.js:4:23:6:1 | functio ... uery;\\n} | src/express4.js:2:11:2:19 | express() | src/express4.js:4:32:4:34 | req | src/express4.js:4:37:4:39 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:2:11:2:19 | express() | src/express.js:4:32:4:34 | req | src/express.js:4:37:4:39 | res |
@@ -277,6 +280,7 @@ test_RequestInputAccess
 | src/express.js:49:3:49:14 | req.hostname | header | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:50:3:50:32 | req.hea ... erName] | header | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:7:2:7:8 | req.url | url | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/passport.js:28:2:28:9 | req.body | body | src/passport.js:27:4:29:1 | functio ... ccss`\\n} |
 test_SetCookie
 | src/express.js:31:3:31:26 | res.coo ...  'bar') | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/responseExprs.js:23:5:23:16 | res.cookie() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
@@ -395,6 +399,7 @@ test_RouterDefinition_getARouteHandler
 | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:40:27:40:48 | functio ... res) {} |
 | src/csurf-example.js:30:16:30:35 | new express.Router() | src/csurf-example.js:32:30:34:3 | functio ... e')\\n  } |
 | src/express2.js:2:14:2:23 | e.Router() | src/express2.js:3:25:3:55 | functio ... , res } |
+| src/express2.js:2:14:2:23 | e.Router() | src/express2.js:4:32:4:76 | functio ... esult } |
 | src/express3.js:2:11:2:19 | express() | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express4.js:2:11:2:19 | express() | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
 | src/express.js:2:11:2:19 | express() | src/express.js:4:23:9:1 | functio ... res);\\n} |
@@ -407,6 +412,7 @@ test_RouterDefinition_getARouteHandler
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:13:23:15:1 | functio ... res4;\\n} |
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/route.js:2:14:2:29 | express.Router() | src/route.js:5:12:5:38 | functio ... ext) {} |
 test_CookieMiddlewareInstance
 | src/cookie-parser.js:3:1:3:23 | session ... key-1") | src/cookie-parser.js:3:9:3:22 | "secret-key-1" |
 | src/cookie-parser.js:5:1:5:41 | session ... ey-3"]) | src/cookie-parser.js:5:10:5:23 | "secret-key-2" |
@@ -444,6 +450,7 @@ test_ExpressSession
 | src/express-session.js:7:1:9:2 | session ... -3"]\\n}) | secret | src/express-session.js:8:13:8:44 | ["secre ... key-3"] |
 test_RequestBodyAccess
 | src/express.js:23:3:23:10 | req.body |
+| src/passport.js:28:2:28:9 | req.body |
 test_RouteSetup_getServer
 | src/csurf-example.js:20:1:23:2 | app.get ... ) })\\n}) | src/csurf-example.js:7:11:7:19 | express() |
 | src/csurf-example.js:25:1:27:2 | app.pos ... re')\\n}) | src/csurf-example.js:7:11:7:19 | express() |
@@ -451,6 +458,7 @@ test_RouteSetup_getServer
 | src/csurf-example.js:39:1:39:48 | app.get ... es) {}) | src/csurf-example.js:7:11:7:19 | express() |
 | src/csurf-example.js:40:1:40:49 | app.pos ... es) {}) | src/csurf-example.js:7:11:7:19 | express() |
 | src/express2.js:3:1:3:56 | router. ...  res }) | src/express2.js:5:11:5:13 | e() |
+| src/express2.js:3:1:4:77 | router. ... sult }) | src/express2.js:5:11:5:13 | e() |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() |
 | src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:2:11:2:19 | express() |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
@@ -913,6 +921,7 @@ test_RouterDefinition_RouterDefinition
 | src/subrouter.js:8:16:8:31 | express.Router() |
 test_RouteHandler_getARequestBodyAccess
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:23:3:23:10 | req.body |
+| src/passport.js:27:4:29:1 | functio ... ccss`\\n} | src/passport.js:28:2:28:9 | req.body |
 test_RouterDefinition_getMiddlewareStack
 | src/auth.js:1:13:1:32 | require('express')() | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
@@ -1018,7 +1027,10 @@ test_RequestExpr
 | src/express.js:49:3:49:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:50:3:50:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:7:2:7:4 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/passport.js:28:2:28:4 | req | src/passport.js:27:4:29:1 | functio ... ccss`\\n} |
 | src/responseExprs.js:17:5:17:7 | req | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+test_RequestExprStandalone
+| typed_src/tst.ts:6:3:6:3 | x |
 test_RouteHandlerExpr_getAsSubRouter
 | src/csurf-example.js:13:17:13:19 | api | src/csurf-example.js:30:16:30:35 | new express.Router() |
 | src/express2.js:6:9:6:14 | router | src/express2.js:2:14:2:23 | e.Router() |
@@ -1048,4 +1060,5 @@ test_RouteHandler_getARequestExpr
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:49:3:49:5 | req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:50:3:50:5 | req |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:7:2:7:4 | req |
+| src/passport.js:27:4:29:1 | functio ... ccss`\\n} | src/passport.js:28:2:28:4 | req |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:17:5:17:7 | req |

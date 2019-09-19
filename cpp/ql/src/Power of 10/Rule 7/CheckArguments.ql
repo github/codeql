@@ -4,15 +4,15 @@
  * @kind problem
  * @id cpp/power-of-10/check-arguments
  * @problem.severity warning
-+ * @tags correctness
-+ *       reliability
+ * @tags correctness
+ *       reliability
  *       external/powerof10
  */
 
 import cpp
 
 predicate flow(Parameter p, ControlFlowNode n) {
-  (exists(p.getAnAccess()) and n = p.getFunction().getBlock())
+  exists(p.getAnAccess()) and n = p.getFunction().getBlock()
   or
   exists(ControlFlowNode mid |
     flow(p, mid) and not mid = p.getAnAccess() and n = mid.getASuccessor()

@@ -1,6 +1,7 @@
 import python
 
 import semmle.python.security.TaintTracking
+import semmle.python.web.Http
 
 private ClassObject theTornadoRequestHandlerClass() {
     result = ModuleObject::named("tornado.web").attr("RequestHandler")
@@ -32,4 +33,22 @@ predicate isTornadoRequestHandlerInstance(ControlFlowNode node) {
 
 CallNode callToNamedTornadoRequestHandlerMethod(string name) {
     isTornadoRequestHandlerInstance(result.getFunction().(AttrNode).getObject(name))
+}
+
+
+class TornadoCookieSet extends CookieSet, CallNode {
+
+    TornadoCookieSet() {
+        exists(ControlFlowNode f |
+            f = this.getFunction().(AttrNode).getObject("set_cookie") and
+            isTornadoRequestHandlerInstance(f)
+        )
+    }
+
+    override string toString() { result = this.(CallNode).toString() }
+
+    override ControlFlowNode getKey() { result = this.getArg(0) }
+
+    override ControlFlowNode getValue() { result = this.getArg(1) }
+
 }

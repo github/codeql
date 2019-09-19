@@ -127,7 +127,7 @@ private predicate dereferenceAt(BasicBlock bb, int i, Ssa::Definition def, Deref
 private predicate exprImpliesSsaDef(
   Expr e, G::AbstractValue vExpr, Ssa::Definition def, G::AbstractValue vDef
 ) {
-  exists(G::Internal::Guard g | G::Internal::impliesSteps(e, vExpr, g, vDef) |
+  exists(G::Guard g | G::Internal::impliesSteps(e, vExpr, g, vDef) |
     g = def.getARead()
     or
     g = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()
@@ -143,7 +143,7 @@ private predicate ensureNotNullAt(BasicBlock bb, int i, Ssa::Definition def) {
     G::Internal::asserts(bb.getNode(i).getElement(), e, v)
   |
     exprImpliesSsaDef(e, v, def, nv) and
-    not nv.isNull()
+    nv.isNonNull()
   )
 }
 
@@ -258,7 +258,7 @@ private predicate defNullImpliesStep(
     bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
   |
     bb2 = bb1.getASuccessorByType(s) and
-    not nv.isNull()
+    nv.isNonNull()
   )
 }
 
@@ -345,11 +345,8 @@ abstract class PathNode extends TPathNode {
 
 private class SourcePathNode extends PathNode, TSourcePathNode {
   private Ssa::Definition def;
-
   private string msg;
-
   private Element reason;
-
   private boolean isNullArgument;
 
   SourcePathNode() { this = TSourcePathNode(def, msg, reason, isNullArgument) }
@@ -385,7 +382,6 @@ private class SourcePathNode extends PathNode, TSourcePathNode {
 
 private class InternalPathNode extends PathNode, TInternalPathNode {
   private Ssa::Definition def;
-
   private BasicBlock bb;
 
   InternalPathNode() { this = TInternalPathNode(def, bb) }
@@ -405,11 +401,8 @@ private class InternalPathNode extends PathNode, TInternalPathNode {
 
 private class SinkPathNode extends PathNode, TSinkPathNode {
   private Ssa::Definition def;
-
   private BasicBlock bb;
-
   private int i;
-
   private Dereference d;
 
   SinkPathNode() { this = TSinkPathNode(def, bb, i, d) }
@@ -462,7 +455,7 @@ private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean
   (always = true or always = false)
   or
   exists(ControlFlow::Node mid | defReaches(def, mid, always) |
-    Ssa::Internal::adjacentReadPairSameVar(mid, cfn) and
+    Ssa::Internal::adjacentReadPairSameVar(_, mid, cfn) and
     not mid = any(Dereference d |
         if always = true
         then d.isAlwaysNull(def.getSourceVariable())

@@ -99,29 +99,6 @@ module RangeAnalysis {
   }
 
   /**
-   * Holds if the given node has a unique data flow predecessor.
-   */
-  pragma[noinline]
-  private predicate hasUniquePredecessor(DataFlow::Node node) {
-    isRelevant(node) and
-    strictcount(node.getAPredecessor()) = 1 and
-    // exclude parameters with default values
-    not exists(Parameter p |
-      DataFlow::parameterNode(p) = node and
-      exists(p.getDefault())
-    )
-  }
-
-  /**
-   * Gets the definition of `node`, without unfolding phi nodes.
-   */
-  DataFlow::Node getDefinition(DataFlow::Node node) {
-    if hasUniquePredecessor(node)
-    then result = getDefinition(node.getAPredecessor())
-    else result = node
-  }
-
-  /**
    * Gets a data flow node holding the result of the add/subtract operation in
    * the given increment/decrement expression.
    */
@@ -229,8 +206,8 @@ module RangeAnalysis {
    * Holds if `r` can be modelled as `r = root * sign + bias`.
    */
   predicate linearDefinition(DataFlow::Node r, DataFlow::Node root, int sign, Bias bias) {
-    if hasUniquePredecessor(r)
-    then linearDefinition(r.getAPredecessor(), root, sign, bias)
+    if exists(r.getImmediatePredecessor())
+    then linearDefinition(r.getImmediatePredecessor(), root, sign, bias)
     else
       if linearDefinitionStep(r, _, _, _)
       then
@@ -257,8 +234,8 @@ module RangeAnalysis {
   predicate linearDefinitionSum(
     DataFlow::Node r, DataFlow::Node xroot, int xsign, DataFlow::Node yroot, int ysign, Bias bias
   ) {
-    if hasUniquePredecessor(r)
-    then linearDefinitionSum(r.getAPredecessor(), xroot, xsign, yroot, ysign, bias)
+    if exists(r.getImmediatePredecessor())
+    then linearDefinitionSum(r.getImmediatePredecessor(), xroot, xsign, yroot, ysign, bias)
     else
       if exists(r.asExpr().getIntValue())
       then none() // do not model constants as sums
@@ -336,7 +313,8 @@ module RangeAnalysis {
     ConditionGuardNode guard, DataFlow::Node a, int asign, string operator, DataFlow::Node b,
     int bsign, Bias bias
   ) {
-    exists(Comparison compare | compare = getDefinition(guard.getTest().flow()).asExpr() |
+    exists(Comparison compare |
+      compare = guard.getTest().flow().getImmediatePredecessor*().asExpr() and
       linearComparison(compare, a, asign, b, bsign, bias) and
       (
         guard.getOutcome() = true and operator = compare.getOperator()

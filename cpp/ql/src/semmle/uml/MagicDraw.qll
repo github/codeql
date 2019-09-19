@@ -25,9 +25,7 @@ class UMLElement extends XMLElement {
    * `idref` attribute whose value is the same as the value of this
    * element's `id` attribute.
    */
-  UMLElement getUMLReference() {
-    result.getAttributeValue("idref") = this.getAttributeValue("id")
-  }
+  UMLElement getUMLReference() { result.getAttributeValue("idref") = this.getAttributeValue("id") }
 
   /**
    * Gets the name of a stereotype that applies to this element.
@@ -49,15 +47,14 @@ class UMLElement extends XMLElement {
       constrained.getName() = "Constraint.constrainedElement" and
       constraint.getAChild() = constrained and
       constrained.getAChild() = this.getUMLReference() and
-      constraint.getAttribute("name").getValue() = result)
+      constraint.getAttribute("name").getValue() = result
+    )
   }
 
   /**
    * Gets the name of this element, that is, the value of its `name` attribute.
    */
-  string getUMLName() {
-    result = this.getAttribute("name").getValue()
-  }
+  string getUMLName() { result = this.getAttribute("name").getValue() }
 }
 
 /**
@@ -71,61 +68,51 @@ class UMLType extends UMLElement {
     exists(string type |
       this.getName() = "packagedElement" and
       this.getAttribute("type").getValue() = type and
-      (type = "uml:Class" or
-       type = "uml:Interface" or
-       type = "uml:PrimitiveType"))
+      (
+        type = "uml:Class" or
+        type = "uml:Interface" or
+        type = "uml:PrimitiveType"
+      )
+    )
   }
 
   /**
    * Gets the package that contains this type.
    */
-  UMLPackage getUMLPackage() {
-    result.getAClass() = this
-  }
+  UMLPackage getUMLPackage() { result.getAClass() = this }
 
   /**
    * Gets a property directly contained in this type.
    */
-  UMLProperty getUMLProperty() {
-    this.getAChild() = result
-  }
+  UMLProperty getUMLProperty() { this.getAChild() = result }
 
   /**
    * Gets an operation directly contained in this type.
    */
-  UMLOperation getUMLOperation() {
-    this.getAChild() = result
-  }
+  UMLOperation getUMLOperation() { this.getAChild() = result }
 
   /**
    * Holds if this is an enum type, that is, if `enum` is one of its
    * stereotypes.
    */
-  predicate isEnum() {
-    this.getAStereotype() = "enum"
-  }
+  predicate isEnum() { this.getAStereotype() = "enum" }
 
   /**
    * Gets the C class, struct or union type corresponding to this UML type.
    */
-  Class getCType() {
-    result.getQualifiedName() = this.getUMLQualifiedName()
-  }
+  Class getCType() { result.getQualifiedName() = this.getUMLQualifiedName() }
 
   /**
    * Gets the qualified name of this type. If this type is in a package
    * then this is `package.name`; otherwise it is just `name`.
    */
   string getUMLQualifiedName() {
-    if exists(this.getUMLPackage()) then
-      result = this.getUMLPackage().getUMLQualifiedName() + "." + this.getUMLName()
-    else
-      result = this.getUMLName()
+    if exists(this.getUMLPackage())
+    then result = this.getUMLPackage().getUMLQualifiedName() + "." + this.getUMLName()
+    else result = this.getUMLName()
   }
 
-  string toString() {
-    result = this.getUMLName()
-  }
+  string toString() { result = this.getUMLName() }
 }
 
 /**
@@ -160,17 +147,13 @@ class UMLProperty extends UMLElement {
   /**
    * Gets the type that contains this property.
    */
-  UMLType getUMLType() {
-    result.getUMLProperty() = this
-  }
+  UMLType getUMLType() { result.getUMLProperty() = this }
 
   /**
    * Holds if this property represents an enum constant, that is, if it
    * has a stereotype with name `enum+constant`.
    */
-  predicate isEnumConstant() {
-    this.getAStereotype() = "enum+constant"
-  }
+  predicate isEnumConstant() { this.getAStereotype() = "enum+constant" }
 
   /**
    * Gets the C field corresponding to this property, if any.
@@ -181,10 +164,9 @@ class UMLProperty extends UMLElement {
   }
 
   string toString() {
-    if this.isEnumConstant() then
-      result = "- <<enum constant>> " + this.getUMLName()
-    else
-      result = "- " + this.getUMLName()
+    if this.isEnumConstant()
+    then result = "- <<enum constant>> " + this.getUMLName()
+    else result = "- " + this.getUMLName()
   }
 }
 
@@ -204,9 +186,7 @@ class UMLOperation extends UMLElement {
   /**
    * Gets the type that contains this operation.
    */
-  UMLType getUMLType() {
-    result.getUMLOperation() = this
-  }
+  UMLType getUMLType() { result.getUMLOperation() = this }
 
   /**
    * Gets the C function corresponding to this operation, if any.
@@ -216,33 +196,27 @@ class UMLOperation extends UMLElement {
     result.getDeclaringType() = this.getUMLType().getCType()
   }
 
-  string toString() {
-    result = "+ " + this.getUMLName()
-  }
+  string toString() { result = "+ " + this.getUMLName() }
 }
 
 /**
  * A UML property that has an association.
  */
 class UMLAssociation extends UMLProperty {
-  UMLAssociation() {
-    this.hasAttribute("association")
-  }
+  UMLAssociation() { this.hasAttribute("association") }
 
   /**
    * Gets the property that this property is associated with.
    */
   UMLAssociation getConverse() {
-      this.getAttribute("association").getValue() = result.getAttribute("association").getValue() and
-      this != result
+    this.getAttribute("association").getValue() = result.getAttribute("association").getValue() and
+    this != result
   }
 
   /**
    * Gets the name of this property.
    */
-  string getLabel() {
-    result = this.getAttribute("name").getValue()
-  }
+  string getLabel() { result = this.getAttribute("name").getValue() }
 
   /**
    * Gets the C field corresponding to this property, if any.
@@ -255,16 +229,12 @@ class UMLAssociation extends UMLProperty {
   /**
    * Gets the class that this association is contained in.
    */
-  UMLClass getSource() {
-    result = this.getParent()
-  }
+  UMLClass getSource() { result = this.getParent() }
 
   /**
    * Gets the class that this association is associated with.
    */
-  UMLClass getDest() {
-    result = this.getConverse().getParent()
-  }
+  UMLClass getDest() { result = this.getConverse().getParent() }
 }
 
 /**
@@ -286,7 +256,8 @@ class UMLInheritance extends UMLElement {
     exists(UMLElement e |
       e.getName() = "supplier" and
       result.getUMLReference() = e and
-      e = this.getAChild())
+      e = this.getAChild()
+    )
   }
 
   /**
@@ -296,7 +267,8 @@ class UMLInheritance extends UMLElement {
     exists(UMLElement e |
       e.getName() = "client" and
       result.getUMLReference() = e and
-      e = this.getAChild())
+      e = this.getAChild()
+    )
   }
 
   string toString() {
@@ -308,23 +280,17 @@ class UMLInheritance extends UMLElement {
  * A UML element representing a package.
  */
 class UMLPackage extends UMLElement {
-  UMLPackage() {
-    this.getName() = "Package"
-  }
+  UMLPackage() { this.getName() = "Package" }
 
   /**
    * Gets a class in this package.
    */
-  UMLClass getAClass() {
-    result.getAChild().getAChild() = this.getUMLReference()
-  }
+  UMLClass getAClass() { result.getAChild().getAChild() = this.getUMLReference() }
 
   /**
    * Gets the parent package of this package, if any.
    */
-  UMLPackage parentPackage() {
-    result.getAChild().getAChild() = this
-  }
+  UMLPackage parentPackage() { result.getAChild().getAChild() = this }
 
   /**
    * Gets the qualified name of this package. If this package is in a
@@ -332,13 +298,10 @@ class UMLPackage extends UMLElement {
    * `package`.
    */
   string getUMLQualifiedName() {
-    if exists(this.parentPackage()) then
-      result = this.parentPackage().getUMLQualifiedName() + "." + this.getUMLName()
-    else
-      result = this.getUMLName()
+    if exists(this.parentPackage())
+    then result = this.parentPackage().getUMLQualifiedName() + "." + this.getUMLName()
+    else result = this.getUMLName()
   }
 
-  string toString() {
-    result = this.getUMLQualifiedName()
-  }
+  string toString() { result = this.getUMLQualifiedName() }
 }

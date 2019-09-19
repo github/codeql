@@ -37,7 +37,8 @@ predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string 
     ) and
     anchorPart = src.getPattern().regexpCapture(regex, 1) and
     anchorPart.regexpMatch("(?i).*[a-z].*") and
-    msg = "Misleading operator precedence. The subexpression '" + anchorPart + "' is anchored, but the other parts of this regular expression are not"
+    msg = "Misleading operator precedence. The subexpression '" + anchorPart +
+        "' is anchored, but the other parts of this regular expression are not"
   )
 }
 

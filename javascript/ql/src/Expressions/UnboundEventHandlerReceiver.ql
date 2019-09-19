@@ -28,9 +28,10 @@ private predicate isBoundInMethod(MethodDeclaration method) {
     )
     or
     // require("auto-bind")(this)
-    exists (string mod |
+    exists(string mod |
       mod = "auto-bind" or
-      mod = "react-autobind" |
+      mod = "react-autobind"
+    |
       thiz.flowsTo(DataFlow::moduleImport(mod).getACall().getArgument(0))
     )
     or

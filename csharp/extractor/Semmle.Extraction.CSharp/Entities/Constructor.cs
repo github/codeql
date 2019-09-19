@@ -5,6 +5,7 @@ using Semmle.Util;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -13,24 +14,24 @@ namespace Semmle.Extraction.CSharp.Entities
         Constructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            PopulateMethod();
-            ExtractModifiers();
-            ContainingType.ExtractGenerics();
+            PopulateMethod(trapFile);
+            PopulateModifiers(trapFile);
+            ContainingType.PopulateGenerics();
 
-            Context.Emit(Tuples.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition));
-            Context.Emit(Tuples.constructor_location(this, Location));
+            trapFile.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
+            trapFile.constructor_location(this, Location);
 
             if (symbol.IsImplicitlyDeclared)
             {
                 var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
-                Context.Emit(Tuples.numlines(this, lineCounts));
+                trapFile.numlines(this, lineCounts);
             }
-            ExtractCompilerGenerated();
+            ExtractCompilerGenerated(trapFile);
         }
 
-        protected override void ExtractInitializers()
+        protected override void ExtractInitializers(TextWriter trapFile)
         {
             // Do not extract initializers for constructed types.
             if (!IsSourceDeclaration) return;
@@ -75,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            Context.Emit(Tuples.expr_call(init, target));
+            trapFile.expr_call(init, target);
 
             int child = 0;
             foreach (var arg in initializer.ArgumentList.Arguments)
@@ -109,18 +110,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    if (symbol.IsStatic) tb.Append("static");
-                    tb.Append(ContainingType);
-                    AddParametersToId(Context, tb, symbol);
-                    tb.Append(";constructor");
-                });
-            }
+            if (symbol.IsStatic) trapFile.Write("static");
+            trapFile.WriteSubId(ContainingType);
+            AddParametersToId(Context, trapFile, symbol);
+            trapFile.Write(";constructor");
         }
 
         ConstructorDeclarationSyntax GetSyntax() =>

@@ -7,9 +7,11 @@
  * @tags maintainability
  *       external/jsf
  */
+
 import cpp
 
 from HexLiteral l
-where l.fromSource() and
-      l.getValueText().regexpMatch(".*[a-z].*")
+where
+  l.fromSource() and
+  l.getValueText().regexpMatch(".*[a-z].*")
 select l, "AV Rule 150: Hexadecimal constants will be represented using all uppercase letters."

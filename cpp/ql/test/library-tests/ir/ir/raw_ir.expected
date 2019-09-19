@@ -784,7 +784,7 @@ ir.cpp:
 #  174|     r0_10(int *)          = Load                   : &:r0_9, ~mu0_2
 #  174|     r0_11(glval<int>)     = VariableAddress[i]     : 
 #  174|     r0_12(int)            = Load                   : &:r0_11, ~mu0_2
-#  174|     r0_13(int *)          = PointerAdd[4]          : r0_10, r0_12
+#  174|     r0_13(glval<int>)     = PointerAdd[4]          : r0_10, r0_12
 #  174|     r0_14(int)            = Load                   : &:r0_13, ~mu0_2
 #  174|     r0_15(glval<int>)     = VariableAddress[x]     : 
 #  174|     mu0_16(int)           = Store                  : &:r0_15, r0_14
@@ -792,7 +792,7 @@ ir.cpp:
 #  175|     r0_18(int *)          = Load                   : &:r0_17, ~mu0_2
 #  175|     r0_19(glval<int>)     = VariableAddress[i]     : 
 #  175|     r0_20(int)            = Load                   : &:r0_19, ~mu0_2
-#  175|     r0_21(int *)          = PointerAdd[4]          : r0_18, r0_20
+#  175|     r0_21(glval<int>)     = PointerAdd[4]          : r0_18, r0_20
 #  175|     r0_22(int)            = Load                   : &:r0_21, ~mu0_2
 #  175|     r0_23(glval<int>)     = VariableAddress[x]     : 
 #  175|     mu0_24(int)           = Store                  : &:r0_23, r0_22
@@ -802,7 +802,7 @@ ir.cpp:
 #  177|     r0_28(int *)          = Load                   : &:r0_27, ~mu0_2
 #  177|     r0_29(glval<int>)     = VariableAddress[i]     : 
 #  177|     r0_30(int)            = Load                   : &:r0_29, ~mu0_2
-#  177|     r0_31(int *)          = PointerAdd[4]          : r0_28, r0_30
+#  177|     r0_31(glval<int>)     = PointerAdd[4]          : r0_28, r0_30
 #  177|     mu0_32(int)           = Store                  : &:r0_31, r0_26
 #  178|     r0_33(glval<int>)     = VariableAddress[x]     : 
 #  178|     r0_34(int)            = Load                   : &:r0_33, ~mu0_2
@@ -810,7 +810,7 @@ ir.cpp:
 #  178|     r0_36(int *)          = Load                   : &:r0_35, ~mu0_2
 #  178|     r0_37(glval<int>)     = VariableAddress[i]     : 
 #  178|     r0_38(int)            = Load                   : &:r0_37, ~mu0_2
-#  178|     r0_39(int *)          = PointerAdd[4]          : r0_36, r0_38
+#  178|     r0_39(glval<int>)     = PointerAdd[4]          : r0_36, r0_38
 #  178|     mu0_40(int)           = Store                  : &:r0_39, r0_34
 #  180|     r0_41(glval<int[10]>) = VariableAddress[a]     : 
 #  180|     mu0_42(int[10])       = Uninitialized[a]       : &:r0_41
@@ -818,7 +818,7 @@ ir.cpp:
 #  181|     r0_44(int *)          = Convert                : r0_43
 #  181|     r0_45(glval<int>)     = VariableAddress[i]     : 
 #  181|     r0_46(int)            = Load                   : &:r0_45, ~mu0_2
-#  181|     r0_47(int *)          = PointerAdd[4]          : r0_44, r0_46
+#  181|     r0_47(glval<int>)     = PointerAdd[4]          : r0_44, r0_46
 #  181|     r0_48(int)            = Load                   : &:r0_47, ~mu0_2
 #  181|     r0_49(glval<int>)     = VariableAddress[x]     : 
 #  181|     mu0_50(int)           = Store                  : &:r0_49, r0_48
@@ -826,7 +826,7 @@ ir.cpp:
 #  182|     r0_52(int *)          = Convert                : r0_51
 #  182|     r0_53(glval<int>)     = VariableAddress[i]     : 
 #  182|     r0_54(int)            = Load                   : &:r0_53, ~mu0_2
-#  182|     r0_55(int *)          = PointerAdd[4]          : r0_52, r0_54
+#  182|     r0_55(glval<int>)     = PointerAdd[4]          : r0_52, r0_54
 #  182|     r0_56(int)            = Load                   : &:r0_55, ~mu0_2
 #  182|     r0_57(glval<int>)     = VariableAddress[x]     : 
 #  182|     mu0_58(int)           = Store                  : &:r0_57, r0_56
@@ -836,7 +836,7 @@ ir.cpp:
 #  183|     r0_62(int *)          = Convert                : r0_61
 #  183|     r0_63(glval<int>)     = VariableAddress[i]     : 
 #  183|     r0_64(int)            = Load                   : &:r0_63, ~mu0_2
-#  183|     r0_65(int *)          = PointerAdd[4]          : r0_62, r0_64
+#  183|     r0_65(glval<int>)     = PointerAdd[4]          : r0_62, r0_64
 #  183|     mu0_66(int)           = Store                  : &:r0_65, r0_60
 #  184|     r0_67(glval<int>)     = VariableAddress[x]     : 
 #  184|     r0_68(int)            = Load                   : &:r0_67, ~mu0_2
@@ -844,7 +844,7 @@ ir.cpp:
 #  184|     r0_70(int *)          = Convert                : r0_69
 #  184|     r0_71(glval<int>)     = VariableAddress[i]     : 
 #  184|     r0_72(int)            = Load                   : &:r0_71, ~mu0_2
-#  184|     r0_73(int *)          = PointerAdd[4]          : r0_70, r0_72
+#  184|     r0_73(glval<int>)     = PointerAdd[4]          : r0_70, r0_72
 #  184|     mu0_74(int)           = Store                  : &:r0_73, r0_68
 #  185|     v0_75(void)           = NoOp                   : 
 #  171|     v0_76(void)           = ReturnVoid             : 
@@ -863,7 +863,7 @@ ir.cpp:
 #  188|     r0_7(char *)             = Convert                : r0_6
 #  188|     r0_8(glval<int>)         = VariableAddress[i]     : 
 #  188|     r0_9(int)                = Load                   : &:r0_8, ~mu0_2
-#  188|     r0_10(char *)            = PointerAdd[1]          : r0_7, r0_9
+#  188|     r0_10(glval<char>)       = PointerAdd[1]          : r0_7, r0_9
 #  188|     r0_11(char)              = Load                   : &:r0_10, ~mu0_2
 #  188|     mu0_12(char)             = Store                  : &:r0_5, r0_11
 #  189|     r0_13(glval<wchar_t *>)  = VariableAddress[pwc]   : 
@@ -876,7 +876,7 @@ ir.cpp:
 #  190|     r0_20(wchar_t *)         = Load                   : &:r0_19, ~mu0_2
 #  190|     r0_21(glval<int>)        = VariableAddress[i]     : 
 #  190|     r0_22(int)               = Load                   : &:r0_21, ~mu0_2
-#  190|     r0_23(wchar_t *)         = PointerAdd[4]          : r0_20, r0_22
+#  190|     r0_23(glval<wchar_t>)    = PointerAdd[4]          : r0_20, r0_22
 #  190|     r0_24(wchar_t)           = Load                   : &:r0_23, ~mu0_2
 #  190|     mu0_25(wchar_t)          = Store                  : &:r0_18, r0_24
 #  191|     v0_26(void)              = NoOp                   : 
@@ -2402,35 +2402,35 @@ ir.cpp:
 #  520|     r0_7(glval<int[3]>)  = VariableAddress[a1]    : 
 #  520|     mu0_8(int[3])        = Uninitialized[a1]      : &:r0_7
 #  520|     r0_9(int)            = Constant[0]            : 
-#  520|     r0_10(glval<int>)    = PointerAdd             : r0_7, r0_9
+#  520|     r0_10(glval<int>)    = PointerAdd[4]          : r0_7, r0_9
 #  520|     r0_11(unknown[12])   = Constant[0]            : 
 #  520|     mu0_12(unknown[12])  = Store                  : &:r0_10, r0_11
 #  521|     r0_13(glval<int[3]>) = VariableAddress[a2]    : 
 #  521|     mu0_14(int[3])       = Uninitialized[a2]      : &:r0_13
 #  521|     r0_15(int)           = Constant[0]            : 
-#  521|     r0_16(glval<int>)    = PointerAdd             : r0_13, r0_15
+#  521|     r0_16(glval<int>)    = PointerAdd[4]          : r0_13, r0_15
 #  521|     r0_17(glval<int>)    = VariableAddress[x]     : 
 #  521|     r0_18(int)           = Load                   : &:r0_17, ~mu0_2
 #  521|     mu0_19(int)          = Store                  : &:r0_16, r0_18
 #  521|     r0_20(int)           = Constant[1]            : 
-#  521|     r0_21(glval<int>)    = PointerAdd             : r0_13, r0_20
+#  521|     r0_21(glval<int>)    = PointerAdd[4]          : r0_13, r0_20
 #  521|     r0_22(glval<float>)  = VariableAddress[f]     : 
 #  521|     r0_23(float)         = Load                   : &:r0_22, ~mu0_2
 #  521|     r0_24(int)           = Convert                : r0_23
 #  521|     mu0_25(int)          = Store                  : &:r0_21, r0_24
 #  521|     r0_26(int)           = Constant[2]            : 
-#  521|     r0_27(glval<int>)    = PointerAdd             : r0_13, r0_26
+#  521|     r0_27(glval<int>)    = PointerAdd[4]          : r0_13, r0_26
 #  521|     r0_28(int)           = Constant[0]            : 
 #  521|     mu0_29(int)          = Store                  : &:r0_27, r0_28
 #  522|     r0_30(glval<int[3]>) = VariableAddress[a3]    : 
 #  522|     mu0_31(int[3])       = Uninitialized[a3]      : &:r0_30
 #  522|     r0_32(int)           = Constant[0]            : 
-#  522|     r0_33(glval<int>)    = PointerAdd             : r0_30, r0_32
+#  522|     r0_33(glval<int>)    = PointerAdd[4]          : r0_30, r0_32
 #  522|     r0_34(glval<int>)    = VariableAddress[x]     : 
 #  522|     r0_35(int)           = Load                   : &:r0_34, ~mu0_2
 #  522|     mu0_36(int)          = Store                  : &:r0_33, r0_35
 #  522|     r0_37(int)           = Constant[1]            : 
-#  522|     r0_38(glval<int>)    = PointerAdd             : r0_30, r0_37
+#  522|     r0_38(glval<int>)    = PointerAdd[4]          : r0_30, r0_37
 #  522|     r0_39(unknown[8])    = Constant[0]            : 
 #  522|     mu0_40(unknown[8])   = Store                  : &:r0_38, r0_39
 #  523|     v0_41(void)          = NoOp                   : 
@@ -2607,7 +2607,7 @@ ir.cpp:
 #  572|     mu0_6(char[1])        = Store                    : &:r0_3, r0_5
 #  572|     r0_7(unknown[31])     = Constant[0]              : 
 #  572|     r0_8(int)             = Constant[1]              : 
-#  572|     r0_9(glval<char>)     = PointerAdd               : r0_3, r0_8
+#  572|     r0_9(glval<char>)     = PointerAdd[1]            : r0_3, r0_8
 #  572|     mu0_10(unknown[31])   = Store                    : &:r0_9, r0_7
 #  573|     r0_11(glval<char[4]>) = VariableAddress[a_nopad] : 
 #  573|     r0_12(glval<char[4]>) = StringConstant["foo"]    : 
@@ -2622,37 +2622,37 @@ ir.cpp:
 #  576|     r0_21(glval<char[2]>) = VariableAddress[c]       : 
 #  576|     mu0_22(char[2])       = Uninitialized[c]         : &:r0_21
 #  576|     r0_23(int)            = Constant[0]              : 
-#  576|     r0_24(glval<char>)    = PointerAdd               : r0_21, r0_23
+#  576|     r0_24(glval<char>)    = PointerAdd[1]            : r0_21, r0_23
 #  576|     r0_25(unknown[2])     = Constant[0]              : 
 #  576|     mu0_26(unknown[2])    = Store                    : &:r0_24, r0_25
 #  577|     r0_27(glval<char[2]>) = VariableAddress[d]       : 
 #  577|     mu0_28(char[2])       = Uninitialized[d]         : &:r0_27
 #  577|     r0_29(int)            = Constant[0]              : 
-#  577|     r0_30(glval<char>)    = PointerAdd               : r0_27, r0_29
+#  577|     r0_30(glval<char>)    = PointerAdd[1]            : r0_27, r0_29
 #  577|     r0_31(char)           = Constant[0]              : 
 #  577|     mu0_32(char)          = Store                    : &:r0_30, r0_31
 #  577|     r0_33(int)            = Constant[1]              : 
-#  577|     r0_34(glval<char>)    = PointerAdd               : r0_27, r0_33
+#  577|     r0_34(glval<char>)    = PointerAdd[1]            : r0_27, r0_33
 #  577|     r0_35(char)           = Constant[0]              : 
 #  577|     mu0_36(char)          = Store                    : &:r0_34, r0_35
 #  578|     r0_37(glval<char[2]>) = VariableAddress[e]       : 
 #  578|     mu0_38(char[2])       = Uninitialized[e]         : &:r0_37
 #  578|     r0_39(int)            = Constant[0]              : 
-#  578|     r0_40(glval<char>)    = PointerAdd               : r0_37, r0_39
+#  578|     r0_40(glval<char>)    = PointerAdd[1]            : r0_37, r0_39
 #  578|     r0_41(char)           = Constant[0]              : 
 #  578|     mu0_42(char)          = Store                    : &:r0_40, r0_41
 #  578|     r0_43(int)            = Constant[1]              : 
-#  578|     r0_44(glval<char>)    = PointerAdd               : r0_37, r0_43
+#  578|     r0_44(glval<char>)    = PointerAdd[1]            : r0_37, r0_43
 #  578|     r0_45(char)           = Constant[1]              : 
 #  578|     mu0_46(char)          = Store                    : &:r0_44, r0_45
 #  579|     r0_47(glval<char[3]>) = VariableAddress[f]       : 
 #  579|     mu0_48(char[3])       = Uninitialized[f]         : &:r0_47
 #  579|     r0_49(int)            = Constant[0]              : 
-#  579|     r0_50(glval<char>)    = PointerAdd               : r0_47, r0_49
+#  579|     r0_50(glval<char>)    = PointerAdd[1]            : r0_47, r0_49
 #  579|     r0_51(char)           = Constant[0]              : 
 #  579|     mu0_52(char)          = Store                    : &:r0_50, r0_51
 #  579|     r0_53(int)            = Constant[1]              : 
-#  579|     r0_54(glval<char>)    = PointerAdd               : r0_47, r0_53
+#  579|     r0_54(glval<char>)    = PointerAdd[1]            : r0_47, r0_53
 #  579|     r0_55(unknown[2])     = Constant[0]              : 
 #  579|     mu0_56(unknown[2])    = Store                    : &:r0_54, r0_55
 #  580|     v0_57(void)           = NoOp                     : 
@@ -2980,7 +2980,7 @@ ir.cpp:
 #  694|     r0_10(int(&)[10])       = Load                : &:r0_9, ~mu0_2
 #  694|     r0_11(int *)            = Convert             : r0_10
 #  694|     r0_12(int)              = Constant[5]         : 
-#  694|     r0_13(int *)            = PointerAdd[4]       : r0_11, r0_12
+#  694|     r0_13(glval<int>)       = PointerAdd[4]       : r0_11, r0_12
 #  694|     r0_14(int)              = Load                : &:r0_13, ~mu0_2
 #  694|     mu0_15(int)             = Store               : &:r0_8, r0_14
 #  695|     v0_16(void)             = NoOp                : 
@@ -3898,14 +3898,14 @@ ir.cpp:
 #  875|     r0_14(glval<char[5]>)    = VariableAddress[a]     : 
 #  875|     r0_15(char *)            = Convert                : r0_14
 #  875|     r0_16(int)               = Constant[0]            : 
-#  875|     r0_17(char *)            = PointerAdd[1]          : r0_15, r0_16
+#  875|     r0_17(glval<char>)       = PointerAdd[1]          : r0_15, r0_16
 #  875|     r0_18(char *)            = Convert                : r0_17
 #  875|     r0_19(glval<char *>)     = VariableAddress[p]     : 
 #  875|     mu0_20(char *)           = Store                  : &:r0_19, r0_18
 #  876|     r0_21(glval<char[5]>)    = StringConstant["test"] : 
 #  876|     r0_22(char *)            = Convert                : r0_21
 #  876|     r0_23(int)               = Constant[0]            : 
-#  876|     r0_24(char *)            = PointerAdd[1]          : r0_22, r0_23
+#  876|     r0_24(glval<char>)       = PointerAdd[1]          : r0_22, r0_23
 #  876|     r0_25(glval<char *>)     = VariableAddress[p]     : 
 #  876|     mu0_26(char *)           = Store                  : &:r0_25, r0_24
 #  877|     r0_27(glval<char(&)[5]>) = VariableAddress[ra]    : 
@@ -4197,30 +4197,30 @@ ir.cpp:
 #  962|     r0_3(glval<int[1000]>)  = VariableAddress[a1]      : 
 #  962|     mu0_4(int[1000])        = Uninitialized[a1]        : &:r0_3
 #  962|     r0_5(int)               = Constant[0]              : 
-#  962|     r0_6(glval<int>)        = PointerAdd               : r0_3, r0_5
+#  962|     r0_6(glval<int>)        = PointerAdd[4]            : r0_3, r0_5
 #  962|     r0_7(unknown[8])        = Constant[0]              : 
 #  962|     mu0_8(unknown[8])       = Store                    : &:r0_6, r0_7
 #  962|     r0_9(int)               = Constant[2]              : 
-#  962|     r0_10(glval<int>)       = PointerAdd               : r0_3, r0_9
+#  962|     r0_10(glval<int>)       = PointerAdd[4]            : r0_3, r0_9
 #  962|     r0_11(int)              = Constant[10002]          : 
 #  962|     mu0_12(int)             = Store                    : &:r0_10, r0_11
 #  962|     r0_13(int)              = Constant[3]              : 
-#  962|     r0_14(glval<int>)       = PointerAdd               : r0_3, r0_13
+#  962|     r0_14(glval<int>)       = PointerAdd[4]            : r0_3, r0_13
 #  962|     r0_15(unknown[3588])    = Constant[0]              : 
 #  962|     mu0_16(unknown[3588])   = Store                    : &:r0_14, r0_15
 #  962|     r0_17(int)              = Constant[900]            : 
-#  962|     r0_18(glval<int>)       = PointerAdd               : r0_3, r0_17
+#  962|     r0_18(glval<int>)       = PointerAdd[4]            : r0_3, r0_17
 #  962|     r0_19(int)              = Constant[10900]          : 
 #  962|     mu0_20(int)             = Store                    : &:r0_18, r0_19
 #  962|     r0_21(int)              = Constant[901]            : 
-#  962|     r0_22(glval<int>)       = PointerAdd               : r0_3, r0_21
+#  962|     r0_22(glval<int>)       = PointerAdd[4]            : r0_3, r0_21
 #  962|     r0_23(unknown[396])     = Constant[0]              : 
 #  962|     mu0_24(unknown[396])    = Store                    : &:r0_22, r0_23
 #  963|     r0_25(glval<int>)       = VariableAddress[#return] : 
 #  963|     r0_26(glval<int[1000]>) = VariableAddress[a1]      : 
 #  963|     r0_27(int *)            = Convert                  : r0_26
 #  963|     r0_28(int)              = Constant[900]            : 
-#  963|     r0_29(int *)            = PointerAdd[4]            : r0_27, r0_28
+#  963|     r0_29(glval<int>)       = PointerAdd[4]            : r0_27, r0_28
 #  963|     r0_30(int)              = Load                     : &:r0_29, ~mu0_2
 #  963|     mu0_31(int)             = Store                    : &:r0_25, r0_30
 #  961|     r0_32(glval<int>)       = VariableAddress[#return] : 
@@ -4387,7 +4387,7 @@ ir.cpp:
 #  988|     r0_8(glval<int *>)      = VariableAddress[a]       : 
 #  988|     r0_9(int *)             = Load                     : &:r0_8, ~mu0_2
 #  988|     r0_10(int)              = Constant[0]              : 
-#  988|     r0_11(int *)            = PointerAdd[4]            : r0_9, r0_10
+#  988|     r0_11(glval<int>)       = PointerAdd[4]            : r0_9, r0_10
 #  988|     r0_12(int)              = Load                     : &:r0_11, ~mu0_2
 #  988|     r0_13(glval<..(*)(..)>) = VariableAddress[fn]      : 
 #  988|     r0_14(..(*)(..))        = Load                     : &:r0_13, ~mu0_2
@@ -4748,7 +4748,7 @@ ir.cpp:
 #-----|     r0_14(glval<int &>)                           = FieldAddress[x]          : r0_13
 #-----|     r0_15(int &)                                  = Load                     : &:r0_14, ~mu0_2
 # 1034|     r0_16(int)                                    = Load                     : &:r0_15, ~mu0_2
-# 1034|     r0_17(char *)                                 = PointerAdd[1]            : r0_11, r0_16
+# 1034|     r0_17(glval<char>)                            = PointerAdd[1]            : r0_11, r0_16
 # 1034|     r0_18(char)                                   = Load                     : &:r0_17, ~mu0_2
 # 1034|     mu0_19(char)                                  = Store                    : &:r0_6, r0_18
 # 1034|     r0_20(glval<char>)                            = VariableAddress[#return] : 
@@ -4788,7 +4788,7 @@ ir.cpp:
 #-----|     r0_12(lambda [] type at line 1036, col. 21 *) = CopyValue                : r0_3
 #-----|     r0_13(glval<int>)                             = FieldAddress[x]          : r0_12
 #-----|     r0_14(int)                                    = Load                     : &:r0_13, ~mu0_2
-# 1036|     r0_15(char *)                                 = PointerAdd[1]            : r0_10, r0_14
+# 1036|     r0_15(glval<char>)                            = PointerAdd[1]            : r0_10, r0_14
 # 1036|     r0_16(char)                                   = Load                     : &:r0_15, ~mu0_2
 # 1036|     mu0_17(char)                                  = Store                    : &:r0_6, r0_16
 # 1036|     r0_18(glval<char>)                            = VariableAddress[#return] : 
@@ -4812,7 +4812,7 @@ ir.cpp:
 # 1038|     r0_11(char *)                                = Call                     : func:r0_10, this:r0_9
 # 1038|     mu0_12(unknown)                              = ^CallSideEffect          : ~mu0_2
 # 1038|     r0_13(int)                                   = Constant[0]              : 
-# 1038|     r0_14(char *)                                = PointerAdd[1]            : r0_11, r0_13
+# 1038|     r0_14(glval<char>)                           = PointerAdd[1]            : r0_11, r0_13
 # 1038|     r0_15(char)                                  = Load                     : &:r0_14, ~mu0_2
 # 1038|     mu0_16(char)                                 = Store                    : &:r0_6, r0_15
 # 1038|     r0_17(glval<char>)                           = VariableAddress[#return] : 
@@ -4867,7 +4867,7 @@ ir.cpp:
 # 1040|     r0_10(char *)                                = Call                     : func:r0_9, this:r0_8
 # 1040|     mu0_11(unknown)                              = ^CallSideEffect          : ~mu0_2
 # 1040|     r0_12(int)                                   = Constant[0]              : 
-# 1040|     r0_13(char *)                                = PointerAdd[1]            : r0_10, r0_12
+# 1040|     r0_13(glval<char>)                           = PointerAdd[1]            : r0_10, r0_12
 # 1040|     r0_14(char)                                  = Load                     : &:r0_13, ~mu0_2
 # 1040|     mu0_15(char)                                 = Store                    : &:r0_6, r0_14
 # 1040|     r0_16(glval<char>)                           = VariableAddress[#return] : 
@@ -4893,7 +4893,7 @@ ir.cpp:
 #-----|     r0_13(lambda [] type at line 1042, col. 32 *) = CopyValue                : r0_3
 #-----|     r0_14(glval<int>)                             = FieldAddress[x]          : r0_13
 #-----|     r0_15(int)                                    = Load                     : &:r0_14, ~mu0_2
-# 1042|     r0_16(char *)                                 = PointerAdd[1]            : r0_11, r0_15
+# 1042|     r0_16(glval<char>)                            = PointerAdd[1]            : r0_11, r0_15
 # 1042|     r0_17(char)                                   = Load                     : &:r0_16, ~mu0_2
 # 1042|     mu0_18(char)                                  = Store                    : &:r0_6, r0_17
 # 1042|     r0_19(glval<char>)                            = VariableAddress[#return] : 
@@ -4928,7 +4928,7 @@ ir.cpp:
 # 1045|     r0_22(int &)                                  = Load                     : &:r0_21, ~mu0_2
 # 1045|     r0_23(int)                                    = Load                     : &:r0_22, ~mu0_2
 # 1045|     r0_24(int)                                    = Sub                      : r0_19, r0_23
-# 1045|     r0_25(char *)                                 = PointerAdd[1]            : r0_11, r0_24
+# 1045|     r0_25(glval<char>)                            = PointerAdd[1]            : r0_11, r0_24
 # 1045|     r0_26(char)                                   = Load                     : &:r0_25, ~mu0_2
 # 1045|     mu0_27(char)                                  = Store                    : &:r0_6, r0_26
 # 1045|     r0_28(glval<char>)                            = VariableAddress[#return] : 
@@ -5112,3 +5112,262 @@ ir.cpp:
 # 1104|     v0_17(void)                  = ReturnVoid             : 
 # 1104|     v0_18(void)                  = UnmodeledUse           : mu*
 # 1104|     v0_19(void)                  = ExitFunction           : 
+
+# 1113| void ExternDeclarations()
+# 1113|   Block 0
+# 1113|     v0_0(void)       = EnterFunction       : 
+# 1113|     mu0_1(unknown)   = AliasedDefinition   : 
+# 1113|     mu0_2(unknown)   = UnmodeledDefinition : 
+# 1116|     r0_3(glval<int>) = VariableAddress[x]  : 
+# 1116|     mu0_4(int)       = Uninitialized[x]    : &:r0_3
+# 1117|     r0_5(glval<int>) = VariableAddress[y]  : 
+# 1117|     mu0_6(int)       = Uninitialized[y]    : &:r0_5
+# 1118|     r0_7(glval<int>) = VariableAddress[h]  : 
+# 1118|     mu0_8(int)       = Uninitialized[h]    : &:r0_7
+# 1120|     v0_9(void)       = NoOp                : 
+# 1113|     v0_10(void)      = ReturnVoid          : 
+# 1113|     v0_11(void)      = UnmodeledUse        : mu*
+# 1113|     v0_12(void)      = ExitFunction        : 
+
+# 1128| void ExternDeclarationsInMacro()
+# 1128|   Block 0
+# 1128|     v0_0(void)       = EnterFunction       : 
+# 1128|     mu0_1(unknown)   = AliasedDefinition   : 
+# 1128|     mu0_2(unknown)   = UnmodeledDefinition : 
+# 1130|     r0_3(glval<int>) = VariableAddress[i]  : 
+# 1130|     r0_4(int)        = Constant[0]         : 
+# 1130|     mu0_5(int)       = Store               : &:r0_3, r0_4
+#-----|   Goto -> Block 1
+
+# 1130|   Block 1
+# 1130|     r1_0(glval<int>) = VariableAddress[i] : 
+# 1130|     r1_1(int)        = Load               : &:r1_0, ~mu0_2
+# 1130|     r1_2(int)        = Constant[10]       : 
+# 1130|     r1_3(bool)       = CompareLT          : r1_1, r1_2
+# 1130|     v1_4(void)       = ConditionalBranch  : r1_3
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+# 1130|   Block 2
+# 1130|     r2_0(glval<int>) = VariableAddress[i] : 
+# 1130|     r2_1(int)        = Load               : &:r2_0, ~mu0_2
+# 1130|     r2_2(int)        = Constant[1]        : 
+# 1130|     r2_3(int)        = Add                : r2_1, r2_2
+# 1130|     mu2_4(int)       = Store              : &:r2_0, r2_3
+#-----|   Goto (back edge) -> Block 1
+
+# 1130|   Block 3
+# 1130|     v3_0(void) = NoOp         : 
+# 1131|     v3_1(void) = NoOp         : 
+# 1128|     v3_2(void) = ReturnVoid   : 
+# 1128|     v3_3(void) = UnmodeledUse : mu*
+# 1128|     v3_4(void) = ExitFunction : 
+
+# 1133| void TryCatchNoCatchAny(bool)
+# 1133|   Block 0
+# 1133|     v0_0(void)        = EnterFunction          : 
+# 1133|     mu0_1(unknown)    = AliasedDefinition      : 
+# 1133|     mu0_2(unknown)    = UnmodeledDefinition    : 
+# 1133|     r0_3(glval<bool>) = VariableAddress[b]     : 
+# 1133|     mu0_4(bool)       = InitializeParameter[b] : &:r0_3
+# 1135|     r0_5(glval<int>)  = VariableAddress[x]     : 
+# 1135|     r0_6(int)         = Constant[5]            : 
+# 1135|     mu0_7(int)        = Store                  : &:r0_5, r0_6
+# 1136|     r0_8(glval<bool>) = VariableAddress[b]     : 
+# 1136|     r0_9(bool)        = Load                   : &:r0_8, ~mu0_2
+# 1136|     v0_10(void)       = ConditionalBranch      : r0_9
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+# 1133|   Block 1
+# 1133|     v1_0(void) = UnmodeledUse : mu*
+# 1133|     v1_1(void) = ExitFunction : 
+
+# 1133|   Block 2
+# 1133|     v2_0(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+# 1137|   Block 3
+# 1137|     r3_0(glval<char *>)   = VariableAddress[#throw1137:7]    : 
+# 1137|     r3_1(glval<char[15]>) = StringConstant["string literal"] : 
+# 1137|     r3_2(char *)          = Convert                          : r3_1
+# 1137|     mu3_3(char *)         = Store                            : &:r3_0, r3_2
+# 1137|     v3_4(void)            = ThrowValue                       : &:r3_0, ~mu0_2
+#-----|   Exception -> Block 9
+
+# 1139|   Block 4
+# 1139|     r4_0(glval<int>) = VariableAddress[x] : 
+# 1139|     r4_1(int)        = Load               : &:r4_0, ~mu0_2
+# 1139|     r4_2(int)        = Constant[2]        : 
+# 1139|     r4_3(bool)       = CompareLT          : r4_1, r4_2
+# 1139|     v4_4(void)       = ConditionalBranch  : r4_3
+#-----|   False -> Block 8
+#-----|   True -> Block 5
+
+# 1140|   Block 5
+# 1140|     r5_0(glval<bool>) = VariableAddress[b] : 
+# 1140|     r5_1(bool)        = Load               : &:r5_0, ~mu0_2
+# 1140|     v5_2(void)        = ConditionalBranch  : r5_1
+#-----|   False -> Block 7
+#-----|   True -> Block 6
+
+# 1140|   Block 6
+# 1140|     r6_0(int)        = Constant[7]                   : 
+# 1140|     r6_1(glval<int>) = VariableAddress[#temp1140:11] : 
+# 1140|     mu6_2(int)       = Store                         : &:r6_1, r6_0
+# 1140|     r6_3(glval<int>) = VariableAddress[#temp1140:11] : 
+# 1140|     r6_4(int)        = Load                          : &:r6_3, ~mu0_2
+# 1140|     r6_5(glval<int>) = VariableAddress[x]            : 
+# 1140|     mu6_6(int)       = Store                         : &:r6_5, r6_4
+#-----|   Goto -> Block 8
+
+# 1140|   Block 7
+# 1140|     r7_0(glval<String>)   = VariableAddress[#throw1140:19]  : 
+# 1140|     r7_1(glval<unknown>)  = FunctionAddress[String]         : 
+# 1140|     r7_2(glval<char[14]>) = StringConstant["String object"] : 
+# 1140|     r7_3(char *)          = Convert                         : r7_2
+# 1140|     v7_4(void)            = Call                            : func:r7_1, this:r7_0, 0:r7_3
+# 1140|     mu7_5(unknown)        = ^CallSideEffect                 : ~mu0_2
+# 1140|     v7_6(void)            = ThrowValue                      : &:r7_0, ~mu0_2
+#-----|   Exception -> Block 9
+
+# 1142|   Block 8
+# 1142|     r8_0(int)        = Constant[7]        : 
+# 1142|     r8_1(glval<int>) = VariableAddress[x] : 
+# 1142|     mu8_2(int)       = Store              : &:r8_1, r8_0
+#-----|   Goto -> Block 13
+
+# 1144|   Block 9
+# 1144|     v9_0(void) = CatchByType[const char *] : 
+#-----|   Exception -> Block 11
+#-----|   Goto -> Block 10
+
+# 1144|   Block 10
+# 1144|     r10_0(glval<char *>)  = VariableAddress[s]            : 
+# 1144|     mu10_1(char *)        = InitializeParameter[s]        : &:r10_0
+# 1145|     r10_2(glval<String>)  = VariableAddress[#throw1145:5] : 
+# 1145|     r10_3(glval<unknown>) = FunctionAddress[String]       : 
+# 1145|     r10_4(glval<char *>)  = VariableAddress[s]            : 
+# 1145|     r10_5(char *)         = Load                          : &:r10_4, ~mu0_2
+# 1145|     v10_6(void)           = Call                          : func:r10_3, this:r10_2, 0:r10_5
+# 1145|     mu10_7(unknown)       = ^CallSideEffect               : ~mu0_2
+# 1145|     v10_8(void)           = ThrowValue                    : &:r10_2, ~mu0_2
+#-----|   Exception -> Block 2
+
+# 1147|   Block 11
+# 1147|     v11_0(void) = CatchByType[const String &] : 
+#-----|   Exception -> Block 2
+#-----|   Goto -> Block 12
+
+# 1147|   Block 12
+# 1147|     r12_0(glval<String &>) = VariableAddress[e]     : 
+# 1147|     mu12_1(String &)       = InitializeParameter[e] : &:r12_0
+# 1147|     v12_2(void)            = NoOp                   : 
+#-----|   Goto -> Block 13
+
+# 1149|   Block 13
+# 1149|     v13_0(void) = NoOp       : 
+# 1133|     v13_1(void) = ReturnVoid : 
+#-----|   Goto -> Block 1
+
+# 1153| void VectorTypes(int)
+# 1153|   Block 0
+# 1153|     v0_0(void)                                         = EnterFunction                    : 
+# 1153|     mu0_1(unknown)                                     = AliasedDefinition                : 
+# 1153|     mu0_2(unknown)                                     = UnmodeledDefinition              : 
+# 1153|     r0_3(glval<int>)                                   = VariableAddress[i]               : 
+# 1153|     mu0_4(int)                                         = InitializeParameter[i]           : &:r0_3
+# 1154|     r0_5(glval<__attribute((vector_size(16))) int>)    = VariableAddress[vi4]             : 
+# 1154|     mu0_6(__attribute((vector_size(16))) int)          = Uninitialized[vi4]               : &:r0_5
+# 1154|     r0_7(int)                                          = Constant[0]                      : 
+# 1154|     r0_8(glval<int>)                                   = PointerAdd[4]                    : r0_5, r0_7
+# 1154|     r0_9(int)                                          = Constant[0]                      : 
+# 1154|     mu0_10(int)                                        = Store                            : &:r0_8, r0_9
+# 1154|     r0_11(int)                                         = Constant[1]                      : 
+# 1154|     r0_12(glval<int>)                                  = PointerAdd[4]                    : r0_5, r0_11
+# 1154|     r0_13(int)                                         = Constant[1]                      : 
+# 1154|     mu0_14(int)                                        = Store                            : &:r0_12, r0_13
+# 1154|     r0_15(int)                                         = Constant[2]                      : 
+# 1154|     r0_16(glval<int>)                                  = PointerAdd[4]                    : r0_5, r0_15
+# 1154|     r0_17(int)                                         = Constant[2]                      : 
+# 1154|     mu0_18(int)                                        = Store                            : &:r0_16, r0_17
+# 1154|     r0_19(int)                                         = Constant[3]                      : 
+# 1154|     r0_20(glval<int>)                                  = PointerAdd[4]                    : r0_5, r0_19
+# 1154|     r0_21(int)                                         = Constant[3]                      : 
+# 1154|     mu0_22(int)                                        = Store                            : &:r0_20, r0_21
+# 1155|     r0_23(glval<int>)                                  = VariableAddress[x]               : 
+# 1155|     r0_24(glval<__attribute((vector_size(16))) int>)   = VariableAddress[vi4]             : 
+# 1155|     r0_25(glval<int>)                                  = VariableAddress[i]               : 
+# 1155|     r0_26(int)                                         = Load                             : &:r0_25, ~mu0_2
+# 1155|     r0_27(glval<int>)                                  = PointerAdd[4]                    : r0_24, r0_26
+# 1155|     r0_28(int)                                         = Load                             : &:r0_27, ~mu0_2
+# 1155|     mu0_29(int)                                        = Store                            : &:r0_23, r0_28
+# 1156|     r0_30(glval<int>)                                  = VariableAddress[x]               : 
+# 1156|     r0_31(int)                                         = Load                             : &:r0_30, ~mu0_2
+# 1156|     r0_32(glval<__attribute((vector_size(16))) int>)   = VariableAddress[vi4]             : 
+# 1156|     r0_33(glval<int>)                                  = VariableAddress[i]               : 
+# 1156|     r0_34(int)                                         = Load                             : &:r0_33, ~mu0_2
+# 1156|     r0_35(glval<int>)                                  = PointerAdd[4]                    : r0_32, r0_34
+# 1156|     mu0_36(int)                                        = Store                            : &:r0_35, r0_31
+# 1157|     r0_37(glval<__attribute((vector_size(16))) int>)   = VariableAddress[vi4_shuffle]     : 
+# 1157|     r0_38(glval<__attribute((vector_size(16))) int>)   = VariableAddress[vi4]             : 
+# 1157|     r0_39(__attribute((vector_size(16))) int)          = Load                             : &:r0_38, ~mu0_2
+# 1157|     r0_40(glval<__attribute((vector_size(16))) int>)   = VariableAddress[vi4]             : 
+# 1157|     r0_41(__attribute((vector_size(16))) int)          = Load                             : &:r0_40, ~mu0_2
+#-----|     r0_42(int)                                         = Constant[3]                      : 
+# 1157|     r0_43(int)                                         = Constant[2]                      : 
+# 1157|     r0_44(int)                                         = Constant[1]                      : 
+# 1157|     r0_45(int)                                         = Constant[0]                      : 
+# 1157|     r0_46(__attribute((vector_size(16))) int)          = BuiltIn[__builtin_shufflevector] : 0:r0_39, 1:r0_41, 2:r0_42, 3:r0_43, 4:r0_44, 5:r0_45
+# 1157|     mu0_47(__attribute((vector_size(16))) int)         = Store                            : &:r0_37, r0_46
+# 1158|     r0_48(glval<__attribute((vector_size(16))) int>)   = VariableAddress[vi4]             : 
+# 1158|     r0_49(__attribute((vector_size(16))) int)          = Load                             : &:r0_48, ~mu0_2
+# 1158|     r0_50(glval<__attribute((vector_size(16))) int>)   = VariableAddress[vi4_shuffle]     : 
+# 1158|     r0_51(__attribute((vector_size(16))) int)          = Load                             : &:r0_50, ~mu0_2
+# 1158|     r0_52(__attribute((vector_size(16))) int)          = Add                              : r0_49, r0_51
+# 1158|     r0_53(glval<__attribute((vector_size(16))) int>)   = VariableAddress[vi4]             : 
+# 1158|     mu0_54(__attribute((vector_size(16))) int)         = Store                            : &:r0_53, r0_52
+# 1159|     v0_55(void)                                        = NoOp                             : 
+# 1153|     v0_56(void)                                        = ReturnVoid                       : 
+# 1153|     v0_57(void)                                        = UnmodeledUse                     : mu*
+# 1153|     v0_58(void)                                        = ExitFunction                     : 
+
+perf-regression.cpp:
+#    6| void Big::Big()
+#    6|   Block 0
+#    6|     v0_0(void)                    = EnterFunction        : 
+#    6|     mu0_1(unknown)                = AliasedDefinition    : 
+#    6|     mu0_2(unknown)                = UnmodeledDefinition  : 
+#    6|     r0_3(glval<Big>)              = InitializeThis       : 
+#    6|     r0_4(glval<char[1073741824]>) = FieldAddress[buffer] : r0_3
+#    6|     r0_5(int)                     = Constant[0]          : 
+#    6|     r0_6(glval<char>)             = PointerAdd[1]        : r0_4, r0_5
+#    6|     r0_7(unknown[1073741824])     = Constant[0]          : 
+#    6|     mu0_8(unknown[1073741824])    = Store                : &:r0_6, r0_7
+#    6|     v0_9(void)                    = NoOp                 : 
+#    6|     v0_10(void)                   = ReturnVoid           : 
+#    6|     v0_11(void)                   = UnmodeledUse         : mu*
+#    6|     v0_12(void)                   = ExitFunction         : 
+
+#    9| int main()
+#    9|   Block 0
+#    9|     v0_0(void)           = EnterFunction                 : 
+#    9|     mu0_1(unknown)       = AliasedDefinition             : 
+#    9|     mu0_2(unknown)       = UnmodeledDefinition           : 
+#   10|     r0_3(glval<Big *>)   = VariableAddress[big]          : 
+#   10|     r0_4(glval<unknown>) = FunctionAddress[operator new] : 
+#   10|     r0_5(unsigned long)  = Constant[1073741824]          : 
+#   10|     r0_6(void *)         = Call                          : func:r0_4, 0:r0_5
+#   10|     mu0_7(unknown)       = ^CallSideEffect               : ~mu0_2
+#   10|     r0_8(Big *)          = Convert                       : r0_6
+#   10|     r0_9(glval<unknown>) = FunctionAddress[Big]          : 
+#   10|     v0_10(void)          = Call                          : func:r0_9, this:r0_8
+#   10|     mu0_11(unknown)      = ^CallSideEffect               : ~mu0_2
+#   10|     mu0_12(Big *)        = Store                         : &:r0_3, r0_8
+#   12|     r0_13(glval<int>)    = VariableAddress[#return]      : 
+#   12|     r0_14(int)           = Constant[0]                   : 
+#   12|     mu0_15(int)          = Store                         : &:r0_13, r0_14
+#    9|     r0_16(glval<int>)    = VariableAddress[#return]      : 
+#    9|     v0_17(void)          = ReturnValue                   : &:r0_16, ~mu0_2
+#    9|     v0_18(void)          = UnmodeledUse                  : mu*
+#    9|     v0_19(void)          = ExitFunction                  : 

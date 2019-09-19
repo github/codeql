@@ -47,6 +47,7 @@
 | expressions.cs:168:42:168:42 | (...) ... | expressions.cs:168:42:168:42 | access to parameter i |
 | expressions.cs:312:17:312:21 | (...) ... | expressions.cs:312:17:312:21 | access to parameter value |
 | expressions.cs:312:30:312:34 | (...) ... | expressions.cs:312:30:312:34 | access to parameter value |
+| expressions.cs:334:30:334:30 | (...) ... | expressions.cs:334:30:334:30 | 8 |
 | expressions.cs:414:31:414:31 | (...) ... | expressions.cs:414:31:414:31 | 1 |
 | expressions.cs:414:39:414:39 | (...) ... | expressions.cs:414:39:414:39 | 2 |
 | expressions.cs:437:41:437:53 | (...) ... | expressions.cs:437:48:437:52 | ... + ... |

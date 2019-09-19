@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-835
  */
+
 import cpp
 import semmle.code.cpp.controlflow.BasicBlocks
 private import semmle.code.cpp.rangeanalysis.PointlessComparison
@@ -18,13 +19,10 @@ import semmle.code.cpp.controlflow.internal.ConstantExprs
  * Holds if there is a control flow edge from `src` to `dst`, but
  * it can never be taken due to `cmp` always having value `value`.
  */
-predicate impossibleEdge(
-  ComparisonOperation cmp, boolean value, BasicBlock src, BasicBlock dst) {
+predicate impossibleEdge(ComparisonOperation cmp, boolean value, BasicBlock src, BasicBlock dst) {
   cmp = src.getEnd() and
   reachablePointlessComparison(cmp, _, _, value, _) and
-  if value = true
-    then dst = src.getAFalseSuccessor()
-    else dst = src.getATrueSuccessor()
+  if value = true then dst = src.getAFalseSuccessor() else dst = src.getATrueSuccessor()
 }
 
 BasicBlock enhancedSucc(BasicBlock bb) {
@@ -45,20 +43,18 @@ BasicBlock enhancedSucc(BasicBlock bb) {
  * Since this loop is obviously infinite, we assume that it was written
  * intentionally.
  */
-predicate impossibleEdgeCausesNonTermination(
-  ComparisonOperation cmp, boolean value) {
-  exists (BasicBlock src
-  | impossibleEdge(cmp, value, src, _) and
+predicate impossibleEdgeCausesNonTermination(ComparisonOperation cmp, boolean value) {
+  exists(BasicBlock src |
+    impossibleEdge(cmp, value, src, _) and
     src.getASuccessor+() instanceof ExitBasicBlock and
-    not (enhancedSucc+(src) instanceof ExitBasicBlock) and
+    not enhancedSucc+(src) instanceof ExitBasicBlock and
     // Make sure that the source is reachable to reduce
     // false positives.
-    exists (EntryBasicBlock entry | src = enhancedSucc+(entry)))
+    exists(EntryBasicBlock entry | src = enhancedSucc+(entry))
+  )
 }
 
 from ComparisonOperation cmp, boolean value
 where impossibleEdgeCausesNonTermination(cmp, value)
-select
-  cmp,
-  "Function exit is unreachable because this condition is always " +
-  value.toString() + "."
+select cmp,
+  "Function exit is unreachable because this condition is always " + value.toString() + "."

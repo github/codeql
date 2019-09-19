@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -7,14 +8,14 @@ namespace Semmle.Extraction.CSharp.Entities
         Destructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            PopulateMethod();
-            ExtractModifiers();
-            ContainingType.ExtractGenerics();
+            PopulateMethod(trapFile);
+            PopulateModifiers(trapFile);
+            ContainingType.PopulateGenerics();
 
-            Context.Emit(Tuples.destructors(this, string.Format("~{0}", symbol.ContainingType.Name), ContainingType, OriginalDefinition(Context, this, symbol)));
-            Context.Emit(Tuples.destructor_location(this, Location));
+            trapFile.destructors(this, string.Format("~{0}", symbol.ContainingType.Name), ContainingType, OriginalDefinition(Context, this, symbol));
+            trapFile.destructor_location(this, Location);
         }
 
         static new Destructor OriginalDefinition(Context cx, Destructor original, IMethodSymbol symbol)

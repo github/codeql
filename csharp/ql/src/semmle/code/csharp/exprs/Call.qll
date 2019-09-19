@@ -385,14 +385,16 @@ class VirtualMethodCall extends MethodCall {
  * `this(0)` (line 8) in
  *
  * ```
- * class A {
- *   public A() { }
+ * class A
+ * {
+ *     public A() { }
  * }
  *
- * class B : A {
- *   public B(int x) : base() { }
+ * class B : A
+ * {
+ *     public B(int x) : base() { }
  *
- *   public B() : this(0) { }
+ *     public B() : this(0) { }
  * }
  * ```
  */
@@ -403,19 +405,60 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
 
   override string toString() { result = "call to constructor " + this.getTarget().getName() }
 
+  private ValueOrRefType getTargetType() {
+    result = this.getTarget().getDeclaringType().getSourceDeclaration()
+  }
+
+  private ValueOrRefType getConstructorType() {
+    result = this.getConstructor().getDeclaringType().getSourceDeclaration()
+  }
+
+  /**
+   * Holds if this initialier is a `this` initializer, for example `this(0)`
+   * in
+   *
+   * ```
+   * class A
+   * {
+   *     A(int i) { }
+   *     A() : this(0) { }
+   * }
+   * ```
+   */
+  predicate isThis() { this.getTargetType() = this.getConstructorType() }
+
+  /**
+   * Holds if this initialier is a `base` initializer, for example `base(0)`
+   * in
+   *
+   * ```
+   * class A
+   * {
+   *     A(int i) { }
+   * }
+   *
+   * class B : A
+   * {
+   *     B() : base(0) { }
+   * }
+   * ```
+   */
+  predicate isBase() { this.getTargetType() != this.getConstructorType() }
+
   /**
    * Gets the constructor that this initializer call belongs to. For example,
    * the initializer call `base()` on line 7 belongs to the constructor `B`
    * on line 6 in
    *
    * ```
-   * class A {
-   *   public A() { }
+   * class A
+   * {
+   *     public A() { }
    * }
    *
-   * class B : A {
-   *   public B()
-   *     : base() { }
+   * class B : A
+   * {
+   *     public B() : base() { }
    * }
    * ```
    */

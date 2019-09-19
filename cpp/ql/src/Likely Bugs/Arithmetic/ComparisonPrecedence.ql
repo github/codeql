@@ -10,8 +10,8 @@
  * @tags maintainability
  *       readability
  */
-import cpp
 
+import cpp
 
 from ComparisonOperation co, ComparisonOperation chco
 where co.getAChild() = chco and not chco.isParenthesised()

@@ -9,6 +9,7 @@
  *       documentation
  *       external/cwe/cwe-546
  */
+
 import cpp
 import Documentation.CaptionedComments
 

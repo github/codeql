@@ -86,12 +86,12 @@ void class_field_test() {
 	mc1.myMethod();
 
 	sink(mc1.a);
-	sink(mc1.b); // tainted [NOT DETECTED]
-	sink(mc1.c); // tainted [NOT DETECTED]
-	sink(mc1.d); // tainted [NOT DETECTED]
+	sink(mc1.b); // tainted [NOT DETECTED with IR]
+	sink(mc1.c); // tainted [NOT DETECTED with IR]
+	sink(mc1.d); // tainted [NOT DETECTED with IR]
 	sink(mc2.a);
-	sink(mc2.b); // tainted [NOT DETECTED]
-	sink(mc2.c); // tainted [NOT DETECTED]
+	sink(mc2.b); // tainted [NOT DETECTED with IR]
+	sink(mc2.c); // tainted [NOT DETECTED with IR]
 	sink(mc2.d);
 }
 
@@ -106,7 +106,7 @@ void array_test(int i) {
 	arr2[i] = source();
 	arr3[5] = 0;
 
-	sink(arr1[5]); // tainted [NOT DETECTED]
+	sink(arr1[5]); // tainted
 	sink(arr1[i]); // tainted [NOT DETECTED]
 	sink(arr2[5]); // tainted [NOT DETECTED]
 	sink(arr2[i]); // tainted [NOT DETECTED]
@@ -208,10 +208,55 @@ void test_swap() {
 	y = 0;
 
 	sink(x); // tainted
-	sink(y);
+	sink(y); // clean
 
 	std::swap(x, y);
 
-	sink(x); // [FALSE POSITIVE]
+	sink(x); // clean [FALSE POSITIVE]
 	sink(y); // tainted
+}
+
+// --- lambdas ---
+
+void test_lambdas()
+{
+	int t = source();
+	int u = 0;
+	int v = 0;
+	int w = 0;
+
+	auto a = [t, u]() -> int {
+		sink(t); // tainted
+		sink(u); // clean
+		return t;
+	};
+	sink(a()); // tainted
+
+	auto b = [&] {
+		sink(t); // tainted
+		sink(u); // clean
+		v = source(); // (v is reference captured)
+	};
+	b();
+	sink(v); // tainted [NOT DETECTED]
+
+	auto c = [=] {
+		sink(t); // tainted
+		sink(u); // clean
+	};
+	c();
+
+	auto d = [](int a, int b) {
+		sink(a); // tainted
+		sink(b); // clean
+	};
+	d(t, u);
+
+	auto e = [](int &a, int &b, int &c) {
+		sink(a); // tainted
+		sink(b); // clean
+		c = source();
+	};
+	e(t, u, w);
+	sink(w); // tainted [NOT DETECTED]
 }

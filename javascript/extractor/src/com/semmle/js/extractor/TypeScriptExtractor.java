@@ -21,7 +21,7 @@ public class TypeScriptExtractor implements IExtractor {
     LocationManager locationManager = textualExtractor.getLocationManager();
     String source = textualExtractor.getSource();
     File sourceFile = locationManager.getSourceFile();
-    Result res = parser.parse(sourceFile, source);
+    Result res = parser.parse(sourceFile, source, textualExtractor.getMetrics());
     ScopeManager scopeManager =
         new ScopeManager(textualExtractor.getTrapwriter(), ECMAVersion.ECMA2017);
     try {

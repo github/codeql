@@ -7,9 +7,11 @@
  * @tags resources
  *       external/jsf
  */
+
 import cpp
 
 from Function f
-where f.fromSource() and
-      f.calls+(f)
+where
+  f.fromSource() and
+  f.calls+(f)
 select f, "Functions shall not call theselves, either directly or indirectly"

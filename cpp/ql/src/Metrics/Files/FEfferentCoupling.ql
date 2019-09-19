@@ -10,9 +10,9 @@
  *       modularity
  *       maintainability
  */
+
 import cpp
 
 from File f
 where f.fromSource()
-select f, f.getMetrics().getEfferentCoupling() as n
-order by n desc
+select f, f.getMetrics().getEfferentCoupling() as n order by n desc

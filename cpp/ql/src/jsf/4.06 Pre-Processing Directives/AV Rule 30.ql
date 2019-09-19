@@ -7,20 +7,22 @@
  * @tags maintainability
  *       external/jsf
  */
+
 import cpp
 
 /** A macro defining a simple constant. */
 class ConstantDefMacro extends Macro {
   ConstantDefMacro() {
     // Exclude functions
-    not (this.getHead().matches("%(%")) and
-    exists(string body | body = this.getBody() and
-       // Empty defines are allowed (rule 31 restricts their use though)
-       body != "" and
-       // No special characters in the body
-       not (body.matches("%(%")) and
-       not (body.matches("%{%"))
-     )
+    not this.getHead().matches("%(%") and
+    exists(string body |
+      body = this.getBody() and
+      // Empty defines are allowed (rule 31 restricts their use though)
+      body != "" and
+      // No special characters in the body
+      not body.matches("%(%") and
+      not body.matches("%{%")
+    )
   }
 }
 
@@ -30,6 +32,7 @@ predicate commonMacro(string name) {
 }
 
 from ConstantDefMacro m
-where not commonMacro(m.getHead())
-      and m.fromSource()
+where
+  not commonMacro(m.getHead()) and
+  m.fromSource()
 select m, "The #define pre-processor directive shall not be used to define constant values."

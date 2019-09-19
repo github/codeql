@@ -12,7 +12,9 @@ query predicate newExprs(NewExpr expr, string type, string sig, int size, int al
   )
 }
 
-query predicate newArrayExprs(NewArrayExpr expr, string type, string sig, int size, int alignment, string form) {
+query predicate newArrayExprs(
+  NewArrayExpr expr, string type, string sig, int size, int alignment, string form
+) {
   exists(Function allocator, Type elementType |
     expr.getAllocator() = allocator and
     sig = allocator.getFullSignature() and
@@ -24,7 +26,9 @@ query predicate newArrayExprs(NewArrayExpr expr, string type, string sig, int si
   )
 }
 
-query predicate newExprDeallocators(NewExpr expr, string type, string sig, int size, int alignment, string form) {
+query predicate newExprDeallocators(
+  NewExpr expr, string type, string sig, int size, int alignment, string form
+) {
   exists(Function deallocator, Type allocatedType |
     expr.getDeallocator() = deallocator and
     sig = deallocator.getFullSignature() and
@@ -40,7 +44,9 @@ query predicate newExprDeallocators(NewExpr expr, string type, string sig, int s
   )
 }
 
-query predicate newArrayExprDeallocators(NewArrayExpr expr, string type, string sig, int size, int alignment, string form) {
+query predicate newArrayExprDeallocators(
+  NewArrayExpr expr, string type, string sig, int size, int alignment, string form
+) {
   exists(Function deallocator, Type elementType |
     expr.getDeallocator() = deallocator and
     sig = deallocator.getFullSignature() and
@@ -56,7 +62,9 @@ query predicate newArrayExprDeallocators(NewArrayExpr expr, string type, string 
   )
 }
 
-query predicate deleteExprs(DeleteExpr expr, string type, string sig, int size, int alignment, string form) {
+query predicate deleteExprs(
+  DeleteExpr expr, string type, string sig, int size, int alignment, string form
+) {
   exists(Function deallocator, Type deletedType |
     expr.getDeallocator() = deallocator and
     sig = deallocator.getFullSignature() and
@@ -72,7 +80,9 @@ query predicate deleteExprs(DeleteExpr expr, string type, string sig, int size, 
   )
 }
 
-query predicate deleteArrayExprs(DeleteArrayExpr expr, string type, string sig, int size, int alignment, string form) {
+query predicate deleteArrayExprs(
+  DeleteArrayExpr expr, string type, string sig, int size, int alignment, string form
+) {
   exists(Function deallocator, Type elementType |
     expr.getDeallocator() = deallocator and
     sig = deallocator.getFullSignature() and

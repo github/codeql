@@ -9,10 +9,10 @@
  *       documentation
  *       external/cwe/cwe-546
  */
+
 import cpp
 import Documentation.CaptionedComments
 
 from Comment c, string message
 where message = getCommentTextCaptioned(c, "TODO")
 select c, message
-

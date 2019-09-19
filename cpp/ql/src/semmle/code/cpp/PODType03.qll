@@ -14,14 +14,14 @@ import cpp
  *   types (3.9.3) are collectively called scalar types.
  */
 predicate isScalarType03(Type t) {
-  exists (Type ut
-  | ut = t.getUnderlyingType()
-  | ut instanceof ArithmeticType or
+  exists(Type ut | ut = t.getUnderlyingType() |
+    ut instanceof ArithmeticType or
     ut instanceof Enum or
     ut instanceof FunctionPointerType or
     ut instanceof PointerToMemberType or
     ut instanceof PointerType or
-    isScalarType03(ut.(SpecifiedType).getUnspecifiedType()))
+    isScalarType03(ut.(SpecifiedType).getUnspecifiedType())
+  )
 }
 
 /**
@@ -34,18 +34,20 @@ predicate isScalarType03(Type t) {
  *   (10.3).
  */
 predicate isAggregateClass03(Class c) {
-  not (c instanceof TemplateClass) and
-  not exists (Constructor cons
-      | cons.getDeclaringType() = c and
-        not cons.isCompilerGenerated()) and
-  not exists (Variable v
-      | v.getDeclaringType() = c and
-        not v.isStatic()
-      | v.hasSpecifier("private") or
-        v.hasSpecifier("protected")) and
-  not exists (c.getABaseClass()) and
-  not exists (VirtualFunction f
-      | f.getDeclaringType() = c)
+  not c instanceof TemplateClass and
+  not exists(Constructor cons |
+    cons.getDeclaringType() = c and
+    not cons.isCompilerGenerated()
+  ) and
+  not exists(Variable v |
+    v.getDeclaringType() = c and
+    not v.isStatic()
+  |
+    v.hasSpecifier("private") or
+    v.hasSpecifier("protected")
+  ) and
+  not exists(c.getABaseClass()) and
+  not exists(VirtualFunction f | f.getDeclaringType() = c)
 }
 
 /**
@@ -58,10 +60,10 @@ predicate isAggregateClass03(Class c) {
  *   (10.3).
  */
 predicate isAggregateType03(Type t) {
-  exists (Type ut
-  | ut = t.getUnderlyingType()
-  | ut instanceof ArrayType or
-    isAggregateClass03(ut))
+  exists(Type ut | ut = t.getUnderlyingType() |
+    ut instanceof ArrayType or
+    isAggregateClass03(ut)
+  )
 }
 
 /**
@@ -79,18 +81,27 @@ predicate isAggregateType03(Type t) {
  */
 predicate isPODClass03(Class c) {
   isAggregateClass03(c) and
-  not exists (Variable v
-      | v.getDeclaringType() = c and
-        not v.isStatic()
-      | not isPODType03(v.getType()) or
-        exists (ArrayType at
-        | at = v.getType() and
-          not isPODType03(at.getBaseType())) or
-        v.getType() instanceof ReferenceType) and
-  not exists (CopyAssignmentOperator o | o.getDeclaringType() = c and
-                                         not o.isCompilerGenerated()) and
-  not exists (Destructor dest | dest.getDeclaringType() = c and
-                                not dest.isCompilerGenerated())
+  not exists(Variable v |
+    v.getDeclaringType() = c and
+    not v.isStatic()
+  |
+    not isPODType03(v.getType())
+    or
+    exists(ArrayType at |
+      at = v.getType() and
+      not isPODType03(at.getBaseType())
+    )
+    or
+    v.getType() instanceof ReferenceType
+  ) and
+  not exists(CopyAssignmentOperator o |
+    o.getDeclaringType() = c and
+    not o.isCompilerGenerated()
+  ) and
+  not exists(Destructor dest |
+    dest.getDeclaringType() = c and
+    not dest.isCompilerGenerated()
+  )
 }
 
 /**
@@ -101,12 +112,14 @@ predicate isPODClass03(Class c) {
  *   such types and cv-qualified versions of these types (3.9.3) are
  *   collectively called POD types.
  */
-predicate isPODType03(Type t)
-{
-  exists (Type ut
-  | ut = t.getUnderlyingType()
-  | isScalarType03(ut) or
-    isPODClass03(ut) or
-    exists (ArrayType at | at = ut and isPODType03(at.getBaseType())) or
-    isPODType03(ut.(SpecifiedType).getUnspecifiedType()))
+predicate isPODType03(Type t) {
+  exists(Type ut | ut = t.getUnderlyingType() |
+    isScalarType03(ut)
+    or
+    isPODClass03(ut)
+    or
+    exists(ArrayType at | at = ut and isPODType03(at.getBaseType()))
+    or
+    isPODType03(ut.(SpecifiedType).getUnspecifiedType())
+  )
 }

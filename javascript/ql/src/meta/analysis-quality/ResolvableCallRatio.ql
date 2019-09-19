@@ -7,7 +7,8 @@
  * @tags meta
  * @id js/meta/resolvable-call-ratio
  */
+
 import javascript
 import CallGraphQuality
 
-select projectRoot(), 100.0 * count(ResolvableCall call) / (float) count(NonExternalCall call)
+select projectRoot(), 100.0 * count(ResolvableCall call) / count(NonExternalCall call).(float)

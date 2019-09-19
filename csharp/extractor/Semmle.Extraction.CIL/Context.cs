@@ -31,9 +31,9 @@ namespace Semmle.Extraction.CIL
             mdReader = peReader.GetMetadataReader();
             TypeSignatureDecoder = new Entities.TypeSignatureDecoder(this);
 
-            globalNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, GetId(""), null)));
+            globalNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, "", null)));
             systemNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, "System")));
-            genericHandleFactory = new CachedFunction<GenericContext, Handle, ILabelledEntity>(CreateGenericHandle);
+            genericHandleFactory = new CachedFunction<GenericContext, Handle, IExtractedEntity>(CreateGenericHandle);
             namespaceFactory = new CachedFunction<StringHandle, Entities.Namespace>(n => CreateNamespace(mdReader.GetString(n)));
             namespaceDefinitionFactory = new CachedFunction<NamespaceDefinitionHandle, Entities.Namespace>(CreateNamespace);
             sourceFiles = new CachedFunction<PDB.ISourceFile, Entities.PdbSourceFile>(path => new Entities.PdbSourceFile(this, path));
@@ -41,9 +41,6 @@ namespace Semmle.Extraction.CIL
             sourceLocations = new CachedFunction<PDB.Location, Entities.PdbSourceLocation>(location => new Entities.PdbSourceLocation(this, location));
 
             defaultGenericContext = new EmptyContext(this);
-
-            var def = mdReader.GetAssemblyDefinition();
-            AssemblyPrefix = GetId(def.Name) + "_" + def.Version.ToString() + "::";
 
             if (extractPdbs)
             {
@@ -75,7 +72,14 @@ namespace Semmle.Extraction.CIL
             }
         }
 
-        public readonly Id AssemblyPrefix;
+        public void WriteAssemblyPrefix(TextWriter trapFile)
+        {
+            var def = mdReader.GetAssemblyDefinition();
+            trapFile.Write(GetString(def.Name));
+            trapFile.Write('_');
+            trapFile.Write(def.Version.ToString());
+            trapFile.Write("::");
+        }
 
         public readonly Entities.TypeSignatureDecoder TypeSignatureDecoder;
 

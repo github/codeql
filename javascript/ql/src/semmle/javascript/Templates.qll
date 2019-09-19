@@ -18,6 +18,15 @@ class TaggedTemplateExpr extends Expr, @taggedtemplateexpr {
   /** Gets the tagged template itself. */
   TemplateLiteral getTemplate() { result = getChildExpr(1) }
 
+  /** Gets the `i`th type argument to the tag of this template literal. */
+  TypeExpr getTypeArgument(int i) { i >= 0 and result = getChildTypeExpr(2 + i) }
+
+  /** Gets a type argument of the tag of this template literal. */
+  TypeExpr getATypeArgument() { result = getTypeArgument(_) }
+
+  /** Gets the number of type arguments appearing on the tag of this template literal. */
+  int getNumTypeArgument() { result = count(getATypeArgument()) }
+
   override predicate isImpure() { any() }
 }
 
@@ -41,6 +50,11 @@ class TemplateLiteral extends Expr, @templateliteral {
    * Gets an element of this template literal.
    */
   Expr getAnElement() { result = getElement(_) }
+
+  /**
+   * Gets the number of elements of this template literal.
+   */
+  int getNumElement() { result = count(getAnElement()) }
 
   override predicate isImpure() { getAnElement().isImpure() }
 

@@ -211,15 +211,17 @@ private predicate legalShortName(string name) {
  */
 private predicate isPotentialSourcePackage(Folder f) {
     f.getRelativePath() != "" and
-    (
-        exists(f.getFile("__init__.py"))
-        or
-        py_flags_versioned("options.respect_init", "False", _) and major_version() = 2
-    )
+    isPotentialPackage(f)
+}
+
+private predicate isPotentialPackage(Folder f) {
+    exists(f.getFile("__init__.py"))
+    or
+    py_flags_versioned("options.respect_init", "False", _) and major_version() = 2
 }
 
 private string moduleNameFromBase(Container file) {
-    file instanceof Folder and result = file.getBaseName()
+    isPotentialPackage(file) and result = file.getBaseName()
     or
     file instanceof File and result = file.getStem()
 }
@@ -227,17 +229,16 @@ private string moduleNameFromBase(Container file) {
 string moduleNameFromFile(Container file) {
     exists(string basename |
         basename = moduleNameFromBase(file) and
-        legalShortName(basename)
-        |
+        legalShortName(basename) and
         result = moduleNameFromFile(file.getParent()) + "." + basename
-        or
-        isPotentialSourcePackage(file) and result = file.getStem() and
-        (not isPotentialSourcePackage(file.getParent()) or not legalShortName(file.getParent().getBaseName()))
-        or
-        result = file.getStem() and file.getParent() = file.getImportRoot()
-        or
-        result = file.getStem() and isStubRoot(file.getParent())
     )
+    or
+    isPotentialSourcePackage(file) and result = file.getStem() and
+    (not isPotentialSourcePackage(file.getParent()) or not legalShortName(file.getParent().getBaseName()))
+    or
+    result = file.getStem() and file.getParent() = file.getImportRoot()
+    or
+    result = file.getStem() and isStubRoot(file.getParent())
 }
 
 private predicate isStubRoot(Folder f) {

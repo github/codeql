@@ -66,7 +66,6 @@ class NonDelegateCallArgumentCallContext extends ArgumentCallContext, TArgNonDel
 /** An argument of a delegate call. */
 class DelegateCallArgumentCallContext extends ArgumentCallContext, TArgDelegateCallContext {
   DelegateCall dc;
-
   int arg;
 
   DelegateCallArgumentCallContext() { this = TArgDelegateCallContext(dc, arg) }
@@ -93,7 +92,6 @@ class DelegateCallArgumentCallContext extends ArgumentCallContext, TArgDelegateC
 class DelegateArgumentToLibraryCallableArgumentContext extends ArgumentCallContext,
   TDelegateToLibraryCallableArgCallContext {
   Expr delegate;
-
   int arg;
 
   DelegateArgumentToLibraryCallableArgumentContext() {

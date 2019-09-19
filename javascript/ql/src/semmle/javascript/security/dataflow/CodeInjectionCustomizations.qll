@@ -101,4 +101,18 @@ module CodeInjection {
       )
     }
   }
+
+  /**
+   * An event handler attribute as a code injection sink.
+   */
+  class EventHandlerAttributeSink extends Sink {
+    EventHandlerAttributeSink() {
+      exists(DOM::AttributeDefinition def |
+        def.getName().regexpMatch("(?i)on.+") and
+        this = def.getValueNode() and
+        // JSX event handlers are functions, not strings
+        not def instanceof JSXAttribute
+      )
+    }
+  }
 }

@@ -384,6 +384,7 @@ private module Internal {
     rewindReads(bb, i, v) = 1 and result = getDefReachingEndOf(bb.getImmediateDominator(), v)
   }
 }
+
 private import Internal
 
 /**
@@ -520,6 +521,14 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     getDef().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  /**
+   * Gets the data flow node representing the incoming value assigned at this definition,
+   * if any.
+   */
+  DataFlow::Node getRhsNode() {
+    result = DataFlow::ssaDefinitionNode(this).getImmediatePredecessor()
   }
 }
 

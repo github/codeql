@@ -6,7 +6,7 @@
  * local tracking within a function.
  */
 
-import javascript
+private import javascript
 private import semmle.javascript.dataflow.TypeTracking
 
 /**
@@ -158,25 +158,17 @@ class SourceNode extends DataFlow::Node {
   /**
    * Gets a source node whose value is stored in a property of this node.
    */
-  DataFlow::SourceNode getAPropertySource() {
-    result.flowsTo(getAPropertyWrite().getRhs())
-  }
+  DataFlow::SourceNode getAPropertySource() { result.flowsTo(getAPropertyWrite().getRhs()) }
 
   /**
-   * EXPERIMENTAL.
-   *
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
    *
    * See `TypeTracker` for more details about how to use this.
    */
   pragma[inline]
-  DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) {
-    t = t2.step(this, result)
-  }
+  DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 
   /**
-   * EXPERIMENTAL.
-   *
    * Gets a node that may flow into this one using one heap and/or interprocedural step.
    *
    * See `TypeBackTracker` for more details about how to use this.
@@ -242,10 +234,9 @@ module SourceNode {
         astNode instanceof AwaitExpr or
         astNode instanceof FunctionSentExpr or
         astNode instanceof FunctionBindExpr or
-        astNode instanceof DynamicImportExpr
+        astNode instanceof DynamicImportExpr or
+        astNode instanceof ImportSpecifier
       )
-      or
-      this = DataFlow::ssaDefinitionNode(SSA::definition(any(ImportSpecifier imp)))
       or
       DataFlow::parameterNode(this, _)
       or
@@ -254,6 +245,8 @@ module SourceNode {
       DataFlow::thisNode(this, _)
       or
       this = DataFlow::destructuredModuleImportNode(_)
+      or
+      this = DataFlow::globalAccessPathRootPseudoNode()
     }
   }
 }

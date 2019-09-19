@@ -18,7 +18,7 @@ namespace Semmle.Extraction.Entities
 
         public string DatabasePath => File.PathAsDatabaseId(Path);
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             // Ensure that the name of the root directory is consistent
             // with the XmlTrapWriter.
@@ -27,16 +27,20 @@ namespace Semmle.Extraction.Entities
             // On Windows: System.IO.DirectoryInfo.Name returns "L:\"
             string shortName = symbol.Parent == null ? "" : symbol.Name;
 
-            Context.Emit(Tuples.folders(this, File.PathAsDatabaseString(Path), shortName));
+            trapFile.folders(this, File.PathAsDatabaseString(Path), shortName);
             if (symbol.Parent != null)
             {
-                Context.Emit(Tuples.containerparent(Create(Context, symbol.Parent), this));
+                trapFile.containerparent(Create(Context, symbol.Parent), this);
             }
         }
 
         public override bool NeedsPopulation => true;
 
-        public override IId Id => new Key(DatabasePath, ";folder");
+        public override void WriteId(System.IO.TextWriter trapFile)
+        {
+            trapFile.Write(DatabasePath);
+            trapFile.Write(";folder");
+        }
 
         public static Folder Create(Context cx, DirectoryInfo folder) =>
             FolderFactory.Instance.CreateEntity2(cx, folder);

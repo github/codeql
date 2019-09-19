@@ -22,7 +22,7 @@ predicate sourceFlowLabelSpec(DataFlow::FlowLabel lbl, string spec) {
   lbl.toString() = spec
   or
   spec = "" and
-  lbl = DataFlow::FlowLabel::data()
+  lbl.isData()
 }
 
 /**
@@ -33,7 +33,7 @@ predicate sinkFlowLabelSpec(DataFlow::FlowLabel lbl, string spec) {
   lbl.toString() = spec
   or
   spec = "" and
-  lbl instanceof DataFlow::StandardFlowLabel
+  lbl.isDataOrTaint()
 }
 
 /**

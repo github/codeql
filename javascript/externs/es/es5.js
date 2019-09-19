@@ -237,19 +237,12 @@ Date.prototype.toJSON = function(opt_ignoredKey) {};
 
 
 /**
- * A fake type to model the JSON object.
- * @constructor
- */
-function JSONType() {}
-
-
-/**
  * @param {string} jsonStr The string to parse.
  * @param {(function(string, *) : *)=} opt_reviver
  * @return {*} The JSON object.
  * @throws {Error}
  */
-JSONType.prototype.parse = function(jsonStr, opt_reviver) {};
+JSON.parse = function(jsonStr, opt_reviver) {};
 
 
 /**
@@ -259,11 +252,4 @@ JSONType.prototype.parse = function(jsonStr, opt_reviver) {};
  * @return {string} JSON string which represents jsonObj.
  * @throws {Error}
  */
-JSONType.prototype.stringify = function(jsonObj, opt_replacer, opt_space) {};
-
-
-/**
- * @type {!JSONType}
- * @suppress {duplicate}
- */
-var JSON;
+JSON.stringify = function(jsonObj, opt_replacer, opt_space) {};

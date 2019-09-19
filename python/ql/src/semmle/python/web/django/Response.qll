@@ -83,5 +83,16 @@ class DjangoResponseContent extends HttpResponseTaintSink {
 
 }
 
+class DjangoCookieSet extends CookieSet, CallNode {
 
+    DjangoCookieSet() {
+        any(DjangoResponse r).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
+    }
 
+    override string toString() { result = this.(CallNode).toString() }
+
+    override ControlFlowNode getKey() { result = this.getArg(0) }
+
+    override ControlFlowNode getValue() { result = this.getArg(1) }
+
+}

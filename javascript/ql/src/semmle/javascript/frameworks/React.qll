@@ -463,7 +463,6 @@ private class CreateElementDefinition extends ReactElementDefinition {
  */
 private class FactoryDefinition extends ReactElementDefinition {
   DataFlow::MethodCallNode factory;
-
   DataFlow::CallNode call;
 
   FactoryDefinition() {

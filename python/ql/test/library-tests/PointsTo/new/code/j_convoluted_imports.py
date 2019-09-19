@@ -15,3 +15,11 @@ class C(object):
 
 from code.package import moduleX
 moduleX.Y
+
+if unknown:
+    from code.test_package.module1 import *
+else:
+    from code.test_package.module2 import *
+p
+q
+r

@@ -11,16 +11,20 @@ namespace Semmle.Util
         /// Subsequent "@" arguments are ignored.
         /// </summary>
         /// <param name="commandLineArguments">The raw command line arguments.</param>
-        /// <param name="filename">The full filename to write to.</param>
+        /// <param name="textWriter">The writer to archive to.</param>
         /// <returns>True iff the file was written.</returns>
-        public static bool ArchiveCommandLine(this IEnumerable<string> commandLineArguments, string filename)
+        public static bool WriteCommandLine(this IEnumerable<string> commandLineArguments, TextWriter textWriter)
         {
-            foreach (var arg in commandLineArguments.Where(arg => arg[0] == '@').Select(arg => arg.Substring(1)))
+            var found = false;
+            foreach (var arg in commandLineArguments.Where(arg => arg.StartsWith('@')).Select(arg => arg.Substring(1)))
             {
-                File.Copy(arg, filename, true);
-                return true;
+                string line;
+                using (StreamReader file = new StreamReader(arg))
+                    while ((line = file.ReadLine()) != null)
+                        textWriter.WriteLine(line);
+                found = true;
             }
-            return false;
+            return found;
         }
     }
 }

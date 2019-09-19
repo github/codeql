@@ -1,4 +1,5 @@
 import myapi from "@test/myapi";
+import config from "@test/myconfig";
 
 let api = new myapi();
 
@@ -49,3 +50,29 @@ identity(fakeGetDataCallback);
 
 function realGetDataCallback(data) {}    // not found due to missing summarization
 function fakeGetDataCallback(notData) {} // should not be found
+
+config.setConfigValue('connection', getConnection());
+
+function getFromConfigFramework() {
+  let conn = config.getConfigValue('connection');
+  conn.getData(x => {});
+}
+
+function initConnection() {
+  MyApplication.namespace.connection = api.chain1().chain2().createConnection();
+  MyApplication.namespace.conflict = api.chain1().chain2().createConnection();
+}
+
+function useConnection() {
+  let conn = MyApplication.namespace.connection;
+  conn.getData(data => {
+    useData(data);
+  });
+
+  let conflict = MyApplication.namespace.conflict;
+  conflict.getData(data => {
+    useData(data);
+  });
+}
+
+export const exportedConnection = getConnection();

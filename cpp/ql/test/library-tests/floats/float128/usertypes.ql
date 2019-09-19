@@ -1,6 +1,7 @@
 import cpp
 
 from UserType t, Type related
-where related = ((Class)t).getABaseClass()
-   or related = ((TypedefType)t).getUnderlyingType()
+where
+  related = t.(Class).getABaseClass() or
+  related = t.(TypedefType).getUnderlyingType()
 select t, related

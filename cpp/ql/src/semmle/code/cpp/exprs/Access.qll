@@ -10,12 +10,9 @@ abstract class Access extends Expr, NameQualifiableElement {
   /** Gets the accessed function, variable, or enum constant. */
   abstract Declaration getTarget();
 
-  override predicate mayBeImpure() {
-    none()
-  }
-  override predicate mayBeGloballyImpure() {
-    none()
-  }
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
 
   override string toString() { none() }
 }
@@ -24,6 +21,8 @@ abstract class Access extends Expr, NameQualifiableElement {
  * A C/C++ enum constant access expression.
  */
 class EnumConstantAccess extends Access, @varaccess {
+  override string getCanonicalQLClass() { result = "EnumConstantAccess" }
+
   EnumConstantAccess() {
     exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
   }
@@ -39,6 +38,8 @@ class EnumConstantAccess extends Access, @varaccess {
  * A C/C++ variable access expression.
  */
 class VariableAccess extends Access, @varaccess {
+  override string getCanonicalQLClass() { result = "VariableAccess" }
+
   VariableAccess() {
     not exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
   }
@@ -52,11 +53,11 @@ class VariableAccess extends Access, @varaccess {
    * It does not include accesses on the right-hand side of an assignment, even if they could appear on the left-hand side of some assignment.
    */
   predicate isUsedAsLValue() {
-       exists(Assignment a | a.getLValue() = this)
-    or exists(CrementOperation c | c.getOperand() = this)
-    or exists(AddressOfExpr addof | addof.getOperand() = this)
-    or exists(ReferenceToExpr rte | this.getConversion() = rte)
-    or exists(ArrayToPointerConversion atpc | this.getConversion() = atpc)
+    exists(Assignment a | a.getLValue() = this) or
+    exists(CrementOperation c | c.getOperand() = this) or
+    exists(AddressOfExpr addof | addof.getOperand() = this) or
+    exists(ReferenceToExpr rte | this.getConversion() = rte) or
+    exists(ArrayToPointerConversion atpc | this.getConversion() = atpc)
   }
 
   /**
@@ -64,9 +65,11 @@ class VariableAccess extends Access, @varaccess {
    * for instance by an assignment or increment/decrement operator.
    */
   predicate isModified() {
-       exists(Assignment a | a.getLValue() = this)
-    or exists(CrementOperation c | c.getOperand() = this)
-    or exists(FunctionCall c | c.getQualifier() = this and c.getTarget().hasName("operator="))
+    exists(Assignment a | a.getLValue() = this)
+    or
+    exists(CrementOperation c | c.getOperand() = this)
+    or
+    exists(FunctionCall c | c.getQualifier() = this and c.getTarget().hasName("operator="))
   }
 
   /** Holds if this variable access is an rvalue. */
@@ -94,16 +97,16 @@ class VariableAccess extends Access, @varaccess {
 
   /** Gets a textual representation of this variable access. */
   override string toString() {
-    if exists(this.getTarget()) then
-      result = this.getTarget().getName()
-    else
-      result = "variable access"
+    if exists(this.getTarget())
+    then result = this.getTarget().getName()
+    else result = "variable access"
   }
 
   override predicate mayBeImpure() {
     this.getQualifier().mayBeImpure() or
     this.getTarget().getType().isVolatile()
   }
+
   override predicate mayBeGloballyImpure() {
     this.getQualifier().mayBeGloballyImpure() or
     this.getTarget().getType().isVolatile()
@@ -114,9 +117,7 @@ class VariableAccess extends Access, @varaccess {
    * in such a way that the address might escape. This can be either explicit,
    * for example `&x`, or implicit, for example `T& y = x`.
    */
-  predicate isAddressOfAccess() {
-    variableAddressEscapesTree(this, _)
-  }
+  predicate isAddressOfAccess() { variableAddressEscapesTree(this, _) }
 
   /**
    * Holds if this access is used to get the address of the underlying variable
@@ -124,15 +125,15 @@ class VariableAccess extends Access, @varaccess {
    * non-const data. This can be either explicit, for example `&x`, or
    * implicit, for example `T& y = x`.
    */
-  predicate isAddressOfAccessNonConst() {
-    variableAddressEscapesTreeNonConst(this, _)
-  }
+  predicate isAddressOfAccessNonConst() { variableAddressEscapesTreeNonConst(this, _) }
 }
 
 /**
  * A C/C++ field access expression.
  */
 class FieldAccess extends VariableAccess {
+  override string getCanonicalQLClass() { result = "FieldAccess" }
+
   FieldAccess() { exists(Field f | varbind(underlyingElement(this), unresolveElement(f))) }
 
   /** Gets the accessed field. */
@@ -144,10 +145,13 @@ class FieldAccess extends VariableAccess {
  * so this is equivalent to `(*obj).field`.
  */
 class PointerFieldAccess extends FieldAccess {
+  override string getCanonicalQLClass() { result = "PointerFieldAccess" }
+
   PointerFieldAccess() {
-    exists (PointerType t
-    | t = getQualifier().getFullyConverted().getUnspecifiedType() and
-      t.getBaseType() instanceof Class)
+    exists(PointerType t |
+      t = getQualifier().getFullyConverted().getUnspecifiedType() and
+      t.getBaseType() instanceof Class
+    )
   }
 }
 
@@ -158,10 +162,9 @@ class PointerFieldAccess extends FieldAccess {
  * distinguish whether or not the type of `obj` is a reference type.
  */
 class DotFieldAccess extends FieldAccess {
-  DotFieldAccess() {
-    exists (Class c
-    | c = getQualifier().getFullyConverted().getUnspecifiedType())
-  }
+  override string getCanonicalQLClass() { result = "DotFieldAccess" }
+
+  DotFieldAccess() { exists(Class c | c = getQualifier().getFullyConverted().getUnspecifiedType()) }
 }
 
 /**
@@ -169,9 +172,9 @@ class DotFieldAccess extends FieldAccess {
  * reference to a class/struct/union.
  */
 class ReferenceFieldAccess extends DotFieldAccess {
-  ReferenceFieldAccess() {
-    exprHasReferenceConversion(this.getQualifier())
-  }
+  override string getCanonicalQLClass() { result = "ReferenceFieldAccess" }
+
+  ReferenceFieldAccess() { exprHasReferenceConversion(this.getQualifier()) }
 }
 
 /**
@@ -179,9 +182,9 @@ class ReferenceFieldAccess extends DotFieldAccess {
  * class/struct/union (and not a reference).
  */
 class ValueFieldAccess extends DotFieldAccess {
-  ValueFieldAccess() {
-    not exprHasReferenceConversion(this.getQualifier())
-  }
+  override string getCanonicalQLClass() { result = "ValueFieldAccess" }
+
+  ValueFieldAccess() { not exprHasReferenceConversion(this.getQualifier()) }
 }
 
 /**
@@ -205,9 +208,7 @@ private predicate referenceConversion(Conversion c) {
  * In this example, the type of `x` is `MyStruct&`, but it gets implicitly
  * converted to `MyStruct` in the expression `x.field`.
  */
-private predicate exprHasReferenceConversion(Expr e) {
-  referenceConversion(e.getConversion+())
-}
+private predicate exprHasReferenceConversion(Expr e) { referenceConversion(e.getConversion+()) }
 
 /**
  * A field access of a field of `this`. The access has no qualifier because
@@ -220,28 +221,50 @@ private predicate exprHasReferenceConversion(Expr e) {
  * `ImplicitThisFieldAccess`.
  */
 class ImplicitThisFieldAccess extends FieldAccess {
-  ImplicitThisFieldAccess() {
-    not exists (this.getQualifier())
+  override string getCanonicalQLClass() { result = "ImplicitThisFieldAccess" }
+
+  ImplicitThisFieldAccess() { not exists(this.getQualifier()) }
+}
+
+/**
+ * A C++ _pointer to non-static data member_ literal. For example, `&C::x` is
+ * an expression that refers to field `x` of class `C`. If the type of that
+ * field is `int`, then `&C::x` ought to have type `int C::*`. It is currently
+ * modeled in QL as having type `int`.
+ *
+ * See [dcl.mptr] in the C++17 standard or see
+ * https://en.cppreference.com/w/cpp/language/pointer#Pointers_to_data_members.
+ */
+class PointerToFieldLiteral extends ImplicitThisFieldAccess {
+  PointerToFieldLiteral() {
+    // The extractor currently emits a pointer-to-field literal as a field
+    // access without a qualifier. The only other unqualified field accesses it
+    // emits are for compiler-generated constructors and destructors. When we
+    // filter those out, there are only pointer-to-field literals left.
+    not this.isCompilerGenerated()
   }
+
+  override predicate isConstant() { any() }
+
+  override string getCanonicalQLClass() { result = "PointerToFieldLiteral" }
 }
 
 /**
  * A C/C++ function access expression.
  */
 class FunctionAccess extends Access, @routineexpr {
-  FunctionAccess() {
-    not iscall(underlyingElement(this),_)
-  }
+  FunctionAccess() { not iscall(underlyingElement(this), _) }
+
+  override string getCanonicalQLClass() { result = "FunctionAccess" }
 
   /** Gets the accessed function. */
   override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
 
   /** Gets a textual representation of this function access. */
   override string toString() {
-    if exists(this.getTarget()) then
-      result = this.getTarget().getName()
-    else
-      result = "function access"
+    if exists(this.getTarget())
+    then result = this.getTarget().getName()
+    else result = "function access"
   }
 }
 
@@ -259,9 +282,7 @@ class FunctionAccess extends Access, @routineexpr {
  * an add expression, which in turn has two ParamAccessForType children.
  */
 class ParamAccessForType extends Expr, @param_ref {
-  override string toString() {
-    result = "param access"
-  }
+  override string toString() { result = "param access" }
 }
 
 /**
@@ -269,9 +290,9 @@ class ParamAccessForType extends Expr, @param_ref {
  * works on types directly rather than variables, expressions etc.
  */
 class TypeName extends Expr, @type_operand {
-  override string toString() {
-    result = this.getType().getName()
-  }
+  override string getCanonicalQLClass() { result = "TypeName" }
+
+  override string toString() { result = this.getType().getName() }
 }
 
 /**
@@ -280,6 +301,8 @@ class TypeName extends Expr, @type_operand {
  * For calls to operator[], which look syntactically identical, see OverloadedArrayExpr.
  */
 class ArrayExpr extends Expr, @subscriptexpr {
+  override string getCanonicalQLClass() { result = "ArrayExpr" }
+
   /**
    * Gets the array or pointer expression being subscripted.
    *
@@ -299,9 +322,11 @@ class ArrayExpr extends Expr, @subscriptexpr {
    * for instance by an assignment or an increment/decrement operation.
    */
   predicate isModified() {
-       exists(Assignment a | a.getLValue() = this)
-    or exists(CrementOperation c | c.getOperand() = this)
-    or exists(FunctionCall c | c.getQualifier() = this and c.getTarget().hasName("operator="))
+    exists(Assignment a | a.getLValue() = this)
+    or
+    exists(CrementOperation c | c.getOperand() = this)
+    or
+    exists(FunctionCall c | c.getQualifier() = this and c.getTarget().hasName("operator="))
   }
 
   override string toString() { result = "access to array" }
@@ -312,6 +337,7 @@ class ArrayExpr extends Expr, @subscriptexpr {
     this.getArrayBase().getFullyConverted().getType().(DerivedType).getBaseType().isVolatile() or
     this.getArrayOffset().getFullyConverted().getType().(DerivedType).getBaseType().isVolatile()
   }
+
   override predicate mayBeGloballyImpure() {
     this.getArrayBase().mayBeGloballyImpure() or
     this.getArrayOffset().mayBeGloballyImpure() or

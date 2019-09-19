@@ -9,14 +9,13 @@ module BaseSsa {
   private import ControlFlow
   private import AssignableDefinitions
 
+  pragma[noinline]
+  Callable getAnAssigningCallable(LocalScopeVariable v) {
+    result = any(AssignableDefinition def | def.getTarget() = v).getEnclosingCallable()
+  }
+
   private class SimpleLocalScopeVariable extends LocalScopeVariable {
-    SimpleLocalScopeVariable() {
-      not exists(AssignableDefinition def1, AssignableDefinition def2 |
-        def1.getTarget() = this and
-        def2.getTarget() = this and
-        def1.getEnclosingCallable() != def2.getEnclosingCallable()
-      )
-    }
+    SimpleLocalScopeVariable() { not getAnAssigningCallable(this) != getAnAssigningCallable(this) }
   }
 
   /**

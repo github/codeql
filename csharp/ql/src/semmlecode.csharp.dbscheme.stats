@@ -760,6 +760,10 @@
 <v>7589</v>
 </e>
 <e>
+<k>@namespace_access_expr</k>
+<v>1000</v>
+</e>
+<e>
 <k>@interpolated_string_expr</k>
 <v>3470</v>
 </e>

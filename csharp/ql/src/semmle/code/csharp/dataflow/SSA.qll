@@ -76,6 +76,7 @@ module Ssa {
         )
       }
     }
+
     import Cached
 
     /**
@@ -359,6 +360,7 @@ module Ssa {
       exists(int rnk | rnk = refRank(bb, i, v, Write(_)) | liveAtRank(bb, i, v, rnk, rk))
     }
   }
+
   private import SourceVariableImpl
 
   /**
@@ -490,6 +492,7 @@ module Ssa {
       override string toString() { result = getQualifier() + "." + getAssignable() }
     }
   }
+
   private import SourceVariables
 
   private module TrackedVariablesImpl {
@@ -536,6 +539,7 @@ module Ssa {
       )
     }
   }
+
   private import TrackedVariablesImpl
 
   /**
@@ -667,63 +671,82 @@ module Ssa {
       )
     }
 
-    /** Holds if `v` is defined or read in basic block `bb`. */
-    private predicate varOccursInBlock(TrackedVar v, BasicBlock bb) {
-      exists(ssaRefRank(bb, _, v, _))
-    }
-
-    /** Holds if `v` occurs in `bb` or one of `bb`'s transitive successors. */
-    private predicate blockPrecedesVar(TrackedVar v, BasicBlock bb) {
-      varOccursInBlock(v, bb)
-      or
-      blockPrecedesVar(v, bb.getASuccessor())
-    }
-
     /**
-     * Holds if `bb2` is a transitive successor of `bb1` and `v` occurs in `bb1` and
-     * in `bb2` or one of its transitive successors but not in any block on the path
-     * between `bb1` and `bb2`.
+     * Same as `ssaRefRank()`, but restricted to actual reads of `def`, or
+     * `def` itself.
      */
-    private predicate varBlockReaches(TrackedVar v, BasicBlock bb1, BasicBlock bb2) {
-      varOccursInBlock(v, bb1) and
-      bb2 = bb1.getASuccessor() and
-      blockPrecedesVar(v, bb2)
-      or
-      varBlockReachesRec(v, bb1, bb2) and
-      blockPrecedesVar(v, bb2)
+    private int ssaDefRank(TrackedDefinition def, TrackedVar v, BasicBlock bb, int i) {
+      v = def.getSourceVariable() and
+      result = ssaRefRank(bb, i, v, _) and
+      (
+        ssaDefReachesRead(_, def, bb.getNode(i), ActualRead())
+        or
+        definesAt(def, bb, i, _)
+      )
+    }
+
+    private int maxSsaDefRefRank(BasicBlock bb, TrackedVar v) {
+      result = ssaDefRank(_, v, bb, _) and
+      not result + 1 = ssaDefRank(_, v, bb, _)
+    }
+
+    private predicate varOccursInBlock(TrackedDefinition def, BasicBlock bb, TrackedVar v) {
+      exists(ssaDefRank(def, v, bb, _))
     }
 
     pragma[noinline]
-    private predicate varBlockReachesRec(TrackedVar v, BasicBlock bb1, BasicBlock bb2) {
-      exists(BasicBlock mid | varBlockReaches(v, bb1, mid) |
-        bb2 = mid.getASuccessor() and
-        not varOccursInBlock(v, mid)
+    private BasicBlock getAMaybeLiveSuccessor(Definition def, BasicBlock bb) {
+      result = bb.getASuccessor() and
+      not varOccursInBlock(_, bb, def.getSourceVariable()) and
+      ssaDefReachesEndOfBlock(bb, def, _)
+    }
+
+    /**
+     * Holds if `def` is accessed in basic block `bb1` (either a read or a write),
+     * `bb2` is a transitive successor of `bb1`, and `def` is *maybe* read in `bb2`
+     * or one of its transitive successors, but not in any block on the path between
+     * `bb1` and `bb2`.
+     */
+    private predicate varBlockReaches(TrackedDefinition def, BasicBlock bb1, BasicBlock bb2) {
+      varOccursInBlock(def, bb1, _) and
+      bb2 = bb1.getASuccessor()
+      or
+      exists(BasicBlock mid | varBlockReaches(def, bb1, mid) |
+        bb2 = getAMaybeLiveSuccessor(def, mid)
       )
     }
 
     /**
-     * Holds if `bb2` is a transitive successor of `bb1` and `v` occurs in `bb1` and
-     * `bb2` but not in any block on the path between `bb1` and `bb2`.
+     * Holds if `def` is accessed in basic block `bb1` (either a read or a write),
+     * `def` is read at `cfn`, `cfn` is in a transitive successor block of `bb1`,
+     * and `def` is not read in any block on the path between `bb1` and `cfn`.
      */
-    private predicate varBlockStep(TrackedVar v, BasicBlock bb1, BasicBlock bb2) {
-      varBlockReaches(v, bb1, bb2) and
-      varOccursInBlock(v, bb2)
+    private predicate varBlockReachesRead(
+      TrackedDefinition def, BasicBlock bb1, ControlFlow::Node cfn
+    ) {
+      exists(BasicBlock bb2, int i2 |
+        varBlockReaches(def, bb1, bb2) and
+        ssaRefRank(bb2, i2, def.getSourceVariable(), SsaRead()) = 1 and
+        variableRead(bb2, i2, _, cfn, _)
+      )
     }
 
     /**
-     * Holds if `v` is accessed at index `i1` in basic block `bb1` and at index `i2` in
-     * basic block `bb2` and there is a path between them without any access to `v`.
+     * Holds if `def` is accessed at index `i1` in basic block `bb1` (either a read
+     * or a write), `def` is read at `cfn`, and there is a path between them without
+     * any read of `def`.
      */
-    private predicate adjacentVarRefs(TrackedVar v, BasicBlock bb1, int i1, BasicBlock bb2, int i2) {
-      exists(int rankix |
-        bb1 = bb2 and
-        rankix = ssaRefRank(bb1, i1, v, _) and
-        rankix + 1 = ssaRefRank(bb2, i2, v, _)
+    private predicate adjacentVarRead(
+      TrackedDefinition def, BasicBlock bb1, int i1, ControlFlow::Node cfn
+    ) {
+      exists(int rankix, int i2 |
+        rankix = ssaDefRank(def, _, bb1, i1) and
+        rankix + 1 = ssaDefRank(def, _, bb1, i2) and
+        variableRead(bb1, i2, _, cfn, _)
       )
       or
-      ssaRefRank(bb1, i1, v, _) = maxSsaRefRank(bb1, v) and
-      varBlockStep(v, bb1, bb2) and
-      ssaRefRank(bb2, i2, v, _) = 1
+      exists(SourceVariable v | ssaDefRank(def, v, bb1, i1) = maxSsaDefRefRank(bb1, v)) and
+      varBlockReachesRead(def, bb1, cfn)
     }
 
     cached
@@ -736,23 +759,26 @@ module Ssa {
        */
       cached
       predicate lastRead(TrackedDefinition def, ControlFlow::Node cfn) {
-        exists(TrackedVar v, BasicBlock bb, int i, int rnk |
-          exists(def.getAReadAtNode(cfn)) and
-          variableRead(bb, i, v, cfn, _) and
-          rnk = ssaRefRank(bb, i, v, SsaRead())
+        exists(BasicBlock bb1, int i1, int rnk, TrackedVar v |
+          variableRead(bb1, i1, v, cfn, _) and
+          rnk = ssaDefRank(def, v, bb1, i1)
         |
-          // Next reference to `v` inside `bb` is a write
-          rnk + 1 = ssaRefRank(bb, _, v, SsaDef())
+          // Next reference to `v` inside `bb1` is a write
+          rnk + 1 = ssaRefRank(bb1, _, v, SsaDef())
           or
-          // No next reference to `v` inside `bb`
-          rnk = maxSsaRefRank(bb, v) and
+          // No more references to `v` inside `bb1`
+          rnk = maxSsaDefRefRank(bb1, def.getSourceVariable()) and
           (
-            // Read reaches end of enclosing callable
-            not varBlockReaches(v, bb, _)
+            // Can reach exit directly
+            bb1 instanceof ControlFlow::BasicBlocks::ExitBlock
             or
-            // Read reaches an SSA definition in a successor block
-            exists(BasicBlock bb2 | varBlockReaches(v, bb, bb2) |
-              1 = ssaRefRank(bb2, _, v, SsaDef())
+            exists(BasicBlock bb2 | varBlockReaches(def, bb1, bb2) |
+              // Can reach a write using one or more steps
+              1 = ssaRefRank(bb2, _, def.getSourceVariable(), SsaDef())
+              or
+              // Can reach a block using one or more steps, where `def` is no longer live
+              not varOccursInBlock(def, bb2, _) and
+              not ssaDefReachesEndOfBlock(bb2, def, _)
             )
           )
         )
@@ -831,29 +857,31 @@ module Ssa {
        */
       cached
       predicate firstReadSameVar(TrackedDefinition def, ControlFlow::Node cfn) {
-        exists(TrackedVar v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
-          adjacentVarRefs(v, b1, i1, b2, i2) and
-          definesAt(def, b1, i1, v) and
-          variableRead(b2, i2, v, cfn, _)
+        exists(BasicBlock bb1, int i1 |
+          definesAt(def, bb1, i1, _) and
+          adjacentVarRead(def, bb1, i1, cfn)
         )
       }
 
       /**
-       * Holds if the read at `cfn2` is a read of the same SSA definition as the
-       * read at `cfn1`, and `cfn2` can be reached from `cfn1` without passing
-       * through another read.
+       * Holds if the read at `cfn2` is a read of the same SSA definition `def`
+       * as the read at `cfn1`, and `cfn2` can be reached from `cfn1` without
+       * passing through another read.
        */
       cached
-      predicate adjacentReadPairSameVar(ControlFlow::Node cfn1, ControlFlow::Node cfn2) {
-        exists(TrackedVar v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-          adjacentVarRefs(v, bb1, i1, bb2, i2) and
-          variableRead(bb1, i1, v, cfn1, _) and
-          variableRead(bb2, i2, v, cfn2, _)
+      predicate adjacentReadPairSameVar(
+        TrackedDefinition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
+      ) {
+        exists(BasicBlock bb1, int i1 |
+          variableRead(bb1, i1, _, cfn1, _) and
+          adjacentVarRead(def, bb1, i1, cfn2)
         )
       }
     }
+
     import Cached
   }
+
   private import SsaDefReaches
 
   /**
@@ -1076,30 +1104,26 @@ module Ssa {
         )
       }
 
-      private predicate reachableFromDelegateCreation(Expr e) {
-        delegateCreation(e, _, _)
+      private predicate reachesDelegateCall(Expr e) {
+        delegateCall(_, e)
         or
-        exists(Expr mid | reachableFromDelegateCreation(mid) | delegateFlowStep(mid, e))
+        exists(Expr mid | reachesDelegateCall(mid) | delegateFlowStep(e, mid))
       }
 
       pragma[noinline]
-      private predicate delegateFlowStepReachable(Expr pred, Expr succ) {
+      private predicate delegateFlowStepReaches(Expr pred, Expr succ) {
         delegateFlowStep(pred, succ) and
-        reachableFromDelegateCreation(pred)
+        reachesDelegateCall(succ)
       }
 
-      private Expr delegateCallSource(Call c) {
-        // Base case
-        delegateCall(c, result)
+      private Expr delegateCallSource(Callable c) {
+        delegateCreation(result, c, _)
         or
-        // Recursive case
-        delegateFlowStepReachable(result, delegateCallSource(c))
+        delegateFlowStepReaches(delegateCallSource(c), result)
       }
 
       /** Gets a run-time target for the delegate call `c`. */
-      Callable getARuntimeDelegateTarget(Call c) {
-        delegateCreation(delegateCallSource(c), result, _)
-      }
+      Callable getARuntimeDelegateTarget(Call c) { delegateCall(c, delegateCallSource(result)) }
     }
 
     /** Holds if `(c1,c2)` is an edge in the call graph. */
@@ -1321,6 +1345,7 @@ module Ssa {
       )
     }
   }
+
   private import FieldOrPropsImpl
 
   /**
@@ -1520,6 +1545,7 @@ module Ssa {
       )
     }
   }
+
   private import CapturedVariableImpl
 
   /**
@@ -1779,6 +1805,7 @@ module Ssa {
       liveAfterWriteCapturedIn(bb, i, v, _, _, _)
     }
   }
+
   private import CapturedVariableLivenessImpl
 
   cached
@@ -1937,6 +1964,7 @@ module Ssa {
       )
     }
   }
+
   private import SsaImpl
 
   private string getSplitString(Definition def) {
@@ -2271,7 +2299,6 @@ module Ssa {
    */
   class ExplicitDefinition extends Definition, TSsaExplicitDef {
     TrackedVar tv;
-
     AssignableDefinition ad;
 
     ExplicitDefinition() { this = TSsaExplicitDef(tv, ad, _, _) }

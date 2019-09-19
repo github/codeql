@@ -1,3 +1,5 @@
+| Assignables.cs:5:9:5:13 | access to field Field | Assignables.cs:5:9:5:13 | Field | write |
+| Assignables.cs:6:9:6:16 | access to property Property | Assignables.cs:6:9:6:16 | Property | write |
 | Assignables.cs:9:36:9:36 | access to parameter i | Assignables.cs:9:18:9:18 | i | read |
 | Assignables.cs:13:13:13:20 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | write |
 | Assignables.cs:14:9:14:16 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | write |

@@ -328,5 +328,4 @@ where
   not l.isTightlyBounded() and
   alloc = l.getAnAllocaCall() and
   alloc.getASuccessor*() = l.(Loop).getStmt()
-select alloc, "Stack allocation is inside a $@ loop.", l,
-  l.toString()
+select alloc, "Stack allocation is inside a $@ loop.", l, l.toString()

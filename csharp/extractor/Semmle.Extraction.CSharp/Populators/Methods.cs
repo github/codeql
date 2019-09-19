@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
@@ -47,18 +48,18 @@ namespace Semmle.Extraction.CSharp.Populators
             }
         }
 
-        public static void NumberOfLines(this Context cx, ISymbol symbol, IEntity callable)
+        public static void NumberOfLines(this Context cx, TextWriter trapFile, ISymbol symbol, IEntity callable)
         {
             foreach (var decl in symbol.DeclaringSyntaxReferences)
             {
-                cx.NumberOfLines((CSharpSyntaxNode)decl.GetSyntax(), callable);
+                cx.NumberOfLines(trapFile, (CSharpSyntaxNode)decl.GetSyntax(), callable);
             }
         }
 
-        public static void NumberOfLines(this Context cx, CSharpSyntaxNode node, IEntity callable)
+        public static void NumberOfLines(this Context cx, TextWriter trapFile, CSharpSyntaxNode node, IEntity callable)
         {
             var lineCounts = node.Accept(new AstLineCounter());
-            cx.Emit(Tuples.numlines(callable, lineCounts));
+            trapFile.numlines(callable, lineCounts);
         }
     }
 }

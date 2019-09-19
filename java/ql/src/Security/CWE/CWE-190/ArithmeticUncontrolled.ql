@@ -44,36 +44,35 @@ class TaintSource extends DataFlow::ExprNode {
   }
 }
 
-predicate sink(ArithExpr exp, VarAccess tainted, string effect) {
-  exp.getAnOperand() = tainted and
-  (
-    not guardedAgainstUnderflow(exp, tainted) and effect = "underflow"
-    or
-    not guardedAgainstOverflow(exp, tainted) and effect = "overflow"
-  ) and
-  // Exclude widening conversions of tainted values due to binary numeric promotion (JLS 5.6.2)
-  // unless there is an enclosing cast down to a narrower type.
-  narrowerThanOrEqualTo(exp, tainted.getType()) and
-  not overflowIrrelevant(exp) and
-  not exp.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
-}
-
-class ArithmeticUncontrolledFlowConfig extends TaintTracking::Configuration {
-  ArithmeticUncontrolledFlowConfig() { this = "ArithmeticUncontrolledFlowConfig" }
+class ArithmeticUncontrolledOverflowConfig extends TaintTracking::Configuration {
+  ArithmeticUncontrolledOverflowConfig() { this = "ArithmeticUncontrolledOverflowConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink(_, sink.asExpr(), _) }
+  override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  override predicate isSanitizer(DataFlow::Node n) { n.getType() instanceof BooleanType }
+  override predicate isSanitizer(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-from
-  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect,
-  ArithmeticUncontrolledFlowConfig conf
+class ArithmeticUncontrolledUnderflowConfig extends TaintTracking::Configuration {
+  ArithmeticUncontrolledUnderflowConfig() { this = "ArithmeticUncontrolledUnderflowConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
+
+  override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
+
+  override predicate isSanitizer(DataFlow::Node n) { underflowBarrier(n) }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect
 where
-  conf.hasFlowPath(source, sink) and
-  sink(exp, sink.getNode().asExpr(), effect)
+  any(ArithmeticUncontrolledOverflowConfig c).hasFlowPath(source, sink) and
+  overflowSink(exp, sink.getNode().asExpr()) and
+  effect = "overflow"
+  or
+  any(ArithmeticUncontrolledUnderflowConfig c).hasFlowPath(source, sink) and
+  underflowSink(exp, sink.getNode().asExpr()) and
+  effect = "underflow"
 select exp, source, sink,
   "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
   source.getNode(), "Uncontrolled value"

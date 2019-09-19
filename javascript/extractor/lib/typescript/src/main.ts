@@ -271,6 +271,15 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         getCurrentDirectory: () => basePath,
     });
 
+    for (let typeRoot of typeRoots || []) {
+        traverseTypeRoot(typeRoot, "");
+    }
+
+    for (let sourceFile of program.getSourceFiles()) {
+        addModuleBindingsFromModuleDeclarations(sourceFile);
+        addModuleBindingsFromFilePath(sourceFile);
+    }
+
     /** Concatenates two imports paths. These always use `/` as path separator. */
     function joinModulePath(prefix: string, suffix: string) {
         if (prefix.length === 0) return suffix;
@@ -300,36 +309,74 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
             if (sourceFile == null) {
                 continue;
             }
-            let symbol = typeChecker.getSymbolAtLocation(sourceFile);
-            if (symbol == null) continue; // Happens if the source file is not a module.
-
-            let canonicalSymbol = getEffectiveExportTarget(symbol); // Follow `export = X` declarations.
-            let symbolId = state.typeTable.getSymbolId(canonicalSymbol);
-
-            let importPath = (child === "index.d.ts")
-                ? importPrefix
-                : joinModulePath(importPrefix, pathlib.basename(child, ".d.ts"));
-
-            // Associate the module name with this symbol.
-            state.typeTable.addModuleMapping(symbolId, importPath);
-
-            // Associate global variable names with this module.
-            // For each `export as X` declaration, the global X refers to this module.
-            // Note: the `globalExports` map is stored on the original symbol, not the target of `export=`.
-            if (symbol.globalExports != null) {
-                symbol.globalExports.forEach((global: ts.Symbol) => {
-                  state.typeTable.addGlobalMapping(symbolId, global.name);
-                });
-            }
+            addModuleBindingFromRelativePath(sourceFile, importPrefix, child);
         }
     }
-    for (let typeRoot of typeRoots || []) {
-        traverseTypeRoot(typeRoot, "");
+
+    /**
+     * Emits module bindings for a module with relative path `folder/baseName`.
+     */
+    function addModuleBindingFromRelativePath(sourceFile: ts.SourceFile, folder: string, baseName: string) {
+        let symbol = typeChecker.getSymbolAtLocation(sourceFile);
+        if (symbol == null) return; // Happens if the source file is not a module.
+
+        let stem = getStem(baseName);
+        let importPath = (stem === "index")
+            ? folder
+            : joinModulePath(folder, stem);
+
+        let canonicalSymbol = getEffectiveExportTarget(symbol); // Follow `export = X` declarations.
+        let symbolId = state.typeTable.getSymbolId(canonicalSymbol);
+
+        // Associate the module name with this symbol.
+        state.typeTable.addModuleMapping(symbolId, importPath);
+
+        // Associate global variable names with this module.
+        // For each `export as X` declaration, the global X refers to this module.
+        // Note: the `globalExports` map is stored on the original symbol, not the target of `export=`.
+        if (symbol.globalExports != null) {
+            symbol.globalExports.forEach((global: ts.Symbol) => {
+              state.typeTable.addGlobalMapping(symbolId, global.name);
+            });
+        }
     }
 
-    // Emit module name bindings for external module declarations, i.e: `declare module 'X' {..}`
-    // These can generally occur anywhere; they may or may not be on the type root path.
-    for (let sourceFile of program.getSourceFiles()) {
+    /**
+     * Returns the basename of `file` without its extension, while treating `.d.ts` as a
+     * single extension.
+     */
+    function getStem(file: string) {
+        if (file.endsWith(".d.ts")) {
+            return pathlib.basename(file, ".d.ts");
+        }
+        let base = pathlib.basename(file);
+        let dot = base.lastIndexOf('.');
+        return dot === -1 || dot === 0 ? base : base.substring(0, dot);
+    }
+
+    /**
+     * Emits module bindings for a module based on its file path.
+     *
+     * This looks for enclosing `node_modules` folders to determine the module name.
+     * This is needed for modules that ship their own type definitions as opposed to having
+     * type definitions loaded from a type root (conventionally named `@types/xxx`).
+     */
+    function addModuleBindingsFromFilePath(sourceFile: ts.SourceFile) {
+        let fullPath = sourceFile.fileName;
+        let index = fullPath.lastIndexOf('/node_modules/');
+        if (index === -1) return;
+        let relativePath = fullPath.substring(index + '/node_modules/'.length);
+        // Ignore node_modules/@types folders here as they are typically handled as type roots.
+        if (relativePath.startsWith("@types/")) return;
+        let { dir, base } = pathlib.parse(relativePath);
+        addModuleBindingFromRelativePath(sourceFile, dir, base);
+    }
+
+    /**
+     * Emit module name bindings for external module declarations, i.e: `declare module 'X' {..}`
+     * These can generally occur anywhere; they may or may not be on the type root path.
+     */
+    function addModuleBindingsFromModuleDeclarations(sourceFile: ts.SourceFile) {
         for (let stmt of sourceFile.statements) {
             if (ts.isModuleDeclaration(stmt) && ts.isStringLiteral(stmt.name)) {
                 let symbol = (stmt as any).symbol;

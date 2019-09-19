@@ -1,5 +1,5 @@
 private import internal.ValueNumberingInternal
-import cpp
+private import cpp
 private import IR
 
 /**
@@ -10,10 +10,7 @@ class ValueNumberPropertyProvider extends IRPropertyProvider {
     exists(ValueNumber vn |
       vn = valueNumber(instr) and
       key = "valnum" and
-      if strictcount(vn.getAnInstruction()) > 1 then
-        result = vn.toString()
-      else
-        result = "unique"
+      if strictcount(vn.getAnInstruction()) > 1 then result = vn.toString() else result = "unique"
     )
   }
 }
@@ -25,9 +22,7 @@ newtype TValueNumber =
   TInitializeParameterValueNumber(IRFunction irFunc, IRVariable var) {
     initializeParameterValueNumber(_, irFunc, var)
   } or
-  TInitializeThisValueNumber(IRFunction irFunc) {
-    initializeThisValueNumber(_, irFunc)
-  } or
+  TInitializeThisValueNumber(IRFunction irFunc) { initializeThisValueNumber(_, irFunc) } or
   TConstantValueNumber(IRFunction irFunc, Type type, string value) {
     constantValueNumber(_, irFunc, type, value)
   } or
@@ -37,44 +32,40 @@ newtype TValueNumber =
   TFieldAddressValueNumber(IRFunction irFunc, Field field, ValueNumber objectAddress) {
     fieldAddressValueNumber(_, irFunc, field, objectAddress)
   } or
-  TBinaryValueNumber(IRFunction irFunc, Opcode opcode, Type type, ValueNumber leftOperand,
-      ValueNumber rightOperand) {
+  TBinaryValueNumber(
+    IRFunction irFunc, Opcode opcode, Type type, ValueNumber leftOperand, ValueNumber rightOperand
+  ) {
     binaryValueNumber(_, irFunc, opcode, type, leftOperand, rightOperand)
   } or
-  TPointerArithmeticValueNumber(IRFunction irFunc, Opcode opcode, Type type, int elementSize,
-      ValueNumber leftOperand, ValueNumber rightOperand) {
+  TPointerArithmeticValueNumber(
+    IRFunction irFunc, Opcode opcode, Type type, int elementSize, ValueNumber leftOperand,
+    ValueNumber rightOperand
+  ) {
     pointerArithmeticValueNumber(_, irFunc, opcode, type, elementSize, leftOperand, rightOperand)
   } or
   TUnaryValueNumber(IRFunction irFunc, Opcode opcode, Type type, ValueNumber operand) {
     unaryValueNumber(_, irFunc, opcode, type, operand)
   } or
-  TInheritanceConversionValueNumber(IRFunction irFunc, Opcode opcode, Class baseClass,
-      Class derivedClass, ValueNumber operand) {
+  TInheritanceConversionValueNumber(
+    IRFunction irFunc, Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand
+  ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
-  TUniqueValueNumber(IRFunction irFunc, Instruction instr) {
-    uniqueValueNumber(instr, irFunc)
-  }
+  TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
 /**
  * The value number assigned to a particular set of instructions that produce equivalent results.
  */
 class ValueNumber extends TValueNumber {
-  final string toString() {
-    result = getExampleInstruction().getResultId()
-  }
+  final string toString() { result = getExampleInstruction().getResultId() }
 
-  final Location getLocation() {
-    result = getExampleInstruction().getLocation()
-  }
+  final Location getLocation() { result = getExampleInstruction().getLocation() }
 
   /**
    * Gets the instructions that have been assigned this value number. This will always produce at
    * least one result.
    */
-  final Instruction getAnInstruction() {
-    this = valueNumber(result)
-  }
+  final Instruction getAnInstruction() { this = valueNumber(result) }
 
   /**
    * Gets one of the instructions that was assigned this value number. The chosen instuction is
@@ -82,17 +73,16 @@ class ValueNumber extends TValueNumber {
    */
   final Instruction getExampleInstruction() {
     result = min(Instruction instr |
-      instr = getAnInstruction() |
-      instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
-    )
+        instr = getAnInstruction()
+      |
+        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+      )
   }
 
   /**
    * Gets an `Operand` whose definition is exact and has this value number.
    */
-  final Operand getAUse() {
-    this = valueNumber(result.getDef())
-  }
+  final Operand getAUse() { this = valueNumber(result.getDef()) }
 }
 
 /**
@@ -120,26 +110,37 @@ private class CongruentCopyInstruction extends CopyInstruction {
  * a `unique` value number that is never shared by multiple instructions.
  */
 private predicate numberableInstruction(Instruction instr) {
-  instr instanceof VariableAddressInstruction or
-  instr instanceof InitializeParameterInstruction or
-  instr instanceof InitializeThisInstruction or
-  instr instanceof ConstantInstruction or
-  instr instanceof StringConstantInstruction or
-  instr instanceof FieldAddressInstruction or
-  instr instanceof BinaryInstruction or
-  (instr instanceof UnaryInstruction and not instr instanceof CopyInstruction) or
-  instr instanceof PointerArithmeticInstruction or
+  instr instanceof VariableAddressInstruction
+  or
+  instr instanceof InitializeParameterInstruction
+  or
+  instr instanceof InitializeThisInstruction
+  or
+  instr instanceof ConstantInstruction
+  or
+  instr instanceof StringConstantInstruction
+  or
+  instr instanceof FieldAddressInstruction
+  or
+  instr instanceof BinaryInstruction
+  or
+  instr instanceof UnaryInstruction and not instr instanceof CopyInstruction
+  or
+  instr instanceof PointerArithmeticInstruction
+  or
   instr instanceof CongruentCopyInstruction
 }
 
-private predicate variableAddressValueNumber(VariableAddressInstruction instr, IRFunction irFunc,
-    IRVariable var) {
+private predicate variableAddressValueNumber(
+  VariableAddressInstruction instr, IRFunction irFunc, IRVariable var
+) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getVariable() = var
 }
 
-private predicate initializeParameterValueNumber(InitializeParameterInstruction instr,
-    IRFunction irFunc, IRVariable var) {
+private predicate initializeParameterValueNumber(
+  InitializeParameterInstruction instr, IRFunction irFunc, IRVariable var
+) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getVariable() = var
 }
@@ -148,40 +149,46 @@ private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRF
   instr.getEnclosingIRFunction() = irFunc
 }
 
-private predicate constantValueNumber(ConstantInstruction instr, IRFunction irFunc, Type type,
-    string value) {
+private predicate constantValueNumber(
+  ConstantInstruction instr, IRFunction irFunc, Type type, string value
+) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getResultType() = type and
   instr.getValue() = value
 }
 
-private predicate stringConstantValueNumber(StringConstantInstruction instr, IRFunction irFunc, Type type,
-    string value) {
+private predicate stringConstantValueNumber(
+  StringConstantInstruction instr, IRFunction irFunc, Type type, string value
+) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getResultType() = type and
   instr.getValue().getValue() = value
 }
 
-private predicate fieldAddressValueNumber(FieldAddressInstruction instr, IRFunction irFunc,
-    Field field, ValueNumber objectAddress) {
+private predicate fieldAddressValueNumber(
+  FieldAddressInstruction instr, IRFunction irFunc, Field field, ValueNumber objectAddress
+) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getField() = field and
   valueNumber(instr.getObjectAddress()) = objectAddress
 }
 
-private predicate binaryValueNumber(BinaryInstruction instr, IRFunction irFunc, Opcode opcode,
-    Type type, ValueNumber leftOperand, ValueNumber rightOperand) {
+private predicate binaryValueNumber(
+  BinaryInstruction instr, IRFunction irFunc, Opcode opcode, Type type, ValueNumber leftOperand,
+  ValueNumber rightOperand
+) {
   instr.getEnclosingIRFunction() = irFunc and
-  (not instr instanceof PointerArithmeticInstruction) and
+  not instr instanceof PointerArithmeticInstruction and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
   valueNumber(instr.getLeft()) = leftOperand and
   valueNumber(instr.getRight()) = rightOperand
 }
 
-private predicate pointerArithmeticValueNumber(PointerArithmeticInstruction instr,
-    IRFunction irFunc, Opcode opcode, Type type, int elementSize, ValueNumber leftOperand,
-    ValueNumber rightOperand) {
+private predicate pointerArithmeticValueNumber(
+  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, Type type, int elementSize,
+  ValueNumber leftOperand, ValueNumber rightOperand
+) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
@@ -190,18 +197,21 @@ private predicate pointerArithmeticValueNumber(PointerArithmeticInstruction inst
   valueNumber(instr.getRight()) = rightOperand
 }
 
-private predicate unaryValueNumber(UnaryInstruction instr, IRFunction irFunc, Opcode opcode,
-    Type type, ValueNumber operand) {
+private predicate unaryValueNumber(
+  UnaryInstruction instr, IRFunction irFunc, Opcode opcode, Type type, ValueNumber operand
+) {
   instr.getEnclosingIRFunction() = irFunc and
-  (not instr instanceof InheritanceConversionInstruction) and
-  (not instr instanceof CopyInstruction) and
+  not instr instanceof InheritanceConversionInstruction and
+  not instr instanceof CopyInstruction and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
   valueNumber(instr.getUnary()) = operand
 }
 
-private predicate inheritanceConversionValueNumber(InheritanceConversionInstruction instr,
-    IRFunction irFunc, Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand) {
+private predicate inheritanceConversionValueNumber(
+  InheritanceConversionInstruction instr, IRFunction irFunc, Opcode opcode, Class baseClass,
+  Class derivedClass, ValueNumber operand
+) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
   instr.getBaseClass() = baseClass and
@@ -215,15 +225,17 @@ private predicate inheritanceConversionValueNumber(InheritanceConversionInstruct
  */
 private predicate uniqueValueNumber(Instruction instr, IRFunction irFunc) {
   instr.getEnclosingIRFunction() = irFunc and
-  (not instr.getResultType() instanceof VoidType) and
+  not instr.getResultType() instanceof VoidType and
   not numberableInstruction(instr)
 }
 
 /**
  * Gets the value number assigned to `instr`, if any. Returns at most one result.
  */
-cached ValueNumber valueNumber(Instruction instr) {
-  result = nonUniqueValueNumber(instr) or
+cached
+ValueNumber valueNumber(Instruction instr) {
+  result = nonUniqueValueNumber(instr)
+  or
   exists(IRFunction irFunc |
     uniqueValueNumber(instr, irFunc) and
     result = TUniqueValueNumber(irFunc, instr)
@@ -234,9 +246,7 @@ cached ValueNumber valueNumber(Instruction instr) {
  * Gets the value number assigned to the exact definition of `op`, if any.
  * Returns at most one result.
  */
-ValueNumber valueNumberOfOperand(Operand op) {
-  result = valueNumber(op.getDef())
-}
+ValueNumber valueNumberOfOperand(Operand op) { result = valueNumber(op.getDef()) }
 
 /**
  * Gets the value number assigned to `instr`, if any, unless that instruction is assigned a unique
@@ -249,47 +259,55 @@ private ValueNumber nonUniqueValueNumber(Instruction instr) {
       exists(IRVariable var |
         variableAddressValueNumber(instr, irFunc, var) and
         result = TVariableAddressValueNumber(irFunc, var)
-      ) or
+      )
+      or
       exists(IRVariable var |
         initializeParameterValueNumber(instr, irFunc, var) and
         result = TInitializeParameterValueNumber(irFunc, var)
-      ) or
-      (
-        initializeThisValueNumber(instr, irFunc) and
-        result = TInitializeThisValueNumber(irFunc)
-      ) or
+      )
+      or
+      initializeThisValueNumber(instr, irFunc) and
+      result = TInitializeThisValueNumber(irFunc)
+      or
       exists(Type type, string value |
         constantValueNumber(instr, irFunc, type, value) and
         result = TConstantValueNumber(irFunc, type, value)
-      ) or
+      )
+      or
       exists(Type type, string value |
         stringConstantValueNumber(instr, irFunc, type, value) and
         result = TStringConstantValueNumber(irFunc, type, value)
-      ) or
+      )
+      or
       exists(Field field, ValueNumber objectAddress |
         fieldAddressValueNumber(instr, irFunc, field, objectAddress) and
         result = TFieldAddressValueNumber(irFunc, field, objectAddress)
-      ) or
+      )
+      or
       exists(Opcode opcode, Type type, ValueNumber leftOperand, ValueNumber rightOperand |
         binaryValueNumber(instr, irFunc, opcode, type, leftOperand, rightOperand) and
         result = TBinaryValueNumber(irFunc, opcode, type, leftOperand, rightOperand)
-      ) or
+      )
+      or
       exists(Opcode opcode, Type type, ValueNumber operand |
         unaryValueNumber(instr, irFunc, opcode, type, operand) and
         result = TUnaryValueNumber(irFunc, opcode, type, operand)
-      ) or
+      )
+      or
       exists(Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand |
-        inheritanceConversionValueNumber(instr, irFunc, opcode, baseClass, derivedClass,
-            operand) and
+        inheritanceConversionValueNumber(instr, irFunc, opcode, baseClass, derivedClass, operand) and
         result = TInheritanceConversionValueNumber(irFunc, opcode, baseClass, derivedClass, operand)
-      ) or
-      exists(Opcode opcode, Type type, int elementSize, ValueNumber leftOperand,
-          ValueNumber rightOperand |
+      )
+      or
+      exists(
+        Opcode opcode, Type type, int elementSize, ValueNumber leftOperand, ValueNumber rightOperand
+      |
         pointerArithmeticValueNumber(instr, irFunc, opcode, type, elementSize, leftOperand,
-            rightOperand) and
+          rightOperand) and
         result = TPointerArithmeticValueNumber(irFunc, opcode, type, elementSize, leftOperand,
             rightOperand)
-      ) or
+      )
+      or
       // The value number of a copy is just the value number of its source value.
       result = valueNumber(instr.(CongruentCopyInstruction).getSourceValue())
     )

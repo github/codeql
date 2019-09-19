@@ -7,12 +7,13 @@ import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 private import semmle.python.web.django.Shared
+private import semmle.python.web.Http
 
 
 /**
  * Represents an argument to the `django.redirect` function.
  */
-class DjangoRedirect extends TaintSink {
+class DjangoRedirect extends HttpRedirectTaintSink {
 
     override string toString() {
         result = "django.redirect"
@@ -23,10 +24,6 @@ class DjangoRedirect extends TaintSink {
             redirect().getACall() = call and
             this = call.getAnArg() 
         )
-    }
-
-    override predicate sinks(TaintKind kind) {
-        kind instanceof StringKind
     }
 
 }

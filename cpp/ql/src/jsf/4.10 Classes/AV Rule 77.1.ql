@@ -10,9 +10,13 @@
  *       language-features
  *       external/jsf
  */
+
 import cpp
 
 from CopyConstructor f
-where f.getNumberOfParameters() > 1
-  and not f.mayNotBeCopyConstructorInInstantiation()
-select f, f.getName() + " is signature-compatible with a copy constructor when its default arguments are taken into account."
+where
+  f.getNumberOfParameters() > 1 and
+  not f.mayNotBeCopyConstructorInInstantiation()
+select f,
+  f.getName() +
+    " is signature-compatible with a copy constructor when its default arguments are taken into account."

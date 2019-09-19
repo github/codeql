@@ -23,11 +23,11 @@ namespace Semmle.Extraction.Entities
 
         public override bool NeedsPopulation => Context.DefinesFile(Path) || Path == Context.Extractor.OutputPath;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             if (Path == null)
             {
-                Context.Emit(Tuples.files(this, "", "", ""));
+                trapFile.files(this, "", "", "");
             }
             else
             {
@@ -41,9 +41,9 @@ namespace Semmle.Extraction.Entities
                 // remove the dot from the extension
                 if (extension.Length > 0)
                     extension = extension.Substring(1);
-                Context.Emit(Tuples.files(this, PathAsDatabaseString(Path), name, extension));
+                trapFile.files(this, PathAsDatabaseString(Path), name, extension);
 
-                Context.Emit(Tuples.containerparent(Entities.Folder.Create(Context, fi.Directory), this));
+                trapFile.containerparent(Folder.Create(Context, fi.Directory), this);
                 if (fromSource == 1)
                 {
                     foreach (var text in Context.Compilation.SyntaxTrees.
@@ -54,22 +54,23 @@ namespace Semmle.Extraction.Entities
                         var lineCounts = LineCounter.ComputeLineCounts(rawText);
                         if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n') lineCounts.Total++;
 
-                        Context.Emit(Tuples.numlines(this, lineCounts));
+                        trapFile.numlines(this, lineCounts);
                         Context.TrapWriter.Archive(fi.FullName, text.Encoding);
                     }
                 }
 
-                Context.Emit(Tuples.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0));
+                trapFile.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0);
             }
         }
 
-        public override IId Id
+        public override void WriteId(System.IO.TextWriter trapFile)
         {
-            get
+            if (Path is null)
+                trapFile.Write("GENERATED;sourcefile");
+            else
             {
-                return Path == null ?
-                    new Key("GENERATED;sourcefile") :
-                    new Key(DatabasePath, ";sourcefile");
+                trapFile.Write(DatabasePath);
+                trapFile.Write(";sourcefile");
             }
         }
 
@@ -99,12 +100,15 @@ namespace Semmle.Extraction.Entities
 
             public override bool NeedsPopulation => true;
 
-            public override void Populate()
+            public override void Populate(TextWriter trapFile)
             {
-                Context.Emit(Tuples.files(this, "", "", ""));
+                trapFile.files(this, "", "", "");
             }
 
-            public override IId Id => new Key("GENERATED;sourcefile");
+            public override void WriteId(TextWriter trapFile)
+            {
+                trapFile.Write("GENERATED;sourcefile");
+            }
 
             public static GeneratedFile Create(Context cx) =>
                 GeneratedFileFactory.Instance.CreateEntity(cx, null);

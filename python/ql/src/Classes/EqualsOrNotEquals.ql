@@ -25,26 +25,26 @@ predicate total_ordering(Class cls) {
            n.getId() = "total_ordering")
 }
 
-FunctionObject implemented_method(ClassObject c, string name) {
+CallableValue implemented_method(ClassValue c, string name) {
     result = c.declaredAttribute(name) and name = equals_or_ne()
 }
 
-string unimplemented_method(ClassObject c) {
+string unimplemented_method(ClassValue c) {
     not c.declaresAttribute(result) and result = equals_or_ne()
 }
 
-predicate violates_equality_contract(ClassObject c, string present, string missing, FunctionObject method) {
+predicate violates_equality_contract(ClassValue c, string present, string missing, CallableValue method) {
    missing = unimplemented_method(c) and
    method = implemented_method(c, present) and
-   not c.unknowableAttributes() and
-   not total_ordering(c.getPyClass()) and
+   not c.failedInference(_) and
+   not total_ordering(c.getScope()) and
    /* Python 3 automatically implements __ne__ if __eq__ is defined, but not vice-versa */
    not (major_version() = 3 and present = "__eq__" and missing = "__ne__") and
-   not method.getFunction() instanceof DelegatingEqualityMethod and
-   not c.lookupAttribute(missing).(FunctionObject).getFunction() instanceof DelegatingEqualityMethod
+   not method.getScope() instanceof DelegatingEqualityMethod and
+   not c.lookup(missing).(CallableValue).getScope() instanceof DelegatingEqualityMethod
 }
 
-from ClassObject c, string present, string missing, FunctionObject method
+from ClassValue c, string present, string missing, CallableValue method
 where violates_equality_contract(c, present, missing, method)
 
 select method, "Class $@ implements " + present + " but does not implement " + missing + ".", c, c.getName()

@@ -31,6 +31,10 @@ class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
       ma.getQualifier() = node1.asExpr()
     )
   }
+
+  override predicate isBarrier(DataFlow::Node n) {
+    n.asExpr().(MethodAccess).getMethod() instanceof MethodSystemGetenv
+  }
 }
 
 from

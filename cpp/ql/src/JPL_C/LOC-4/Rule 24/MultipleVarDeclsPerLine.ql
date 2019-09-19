@@ -12,7 +12,8 @@
 import cpp
 
 from DeclStmt d
-where exists(Variable v1, Variable v2 | v1 = d.getADeclaration() and v2 = d.getADeclaration() |
+where
+  exists(Variable v1, Variable v2 | v1 = d.getADeclaration() and v2 = d.getADeclaration() |
     v1 != v2 and
     v1.getLocation().getStartLine() = v2.getLocation().getStartLine()
   )

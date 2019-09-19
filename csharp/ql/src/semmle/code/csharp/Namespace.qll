@@ -18,7 +18,7 @@ class TypeContainer extends DotNet::NamedElement, Element, @type_container { }
  * }
  * ```
  */
-class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
+class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespace {
   /** Gets the simple name of this namespace, for example `IO` in `System.IO`. */
   override string getName() { namespaces(this, result) }
 
@@ -117,6 +117,12 @@ class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
   NamespaceDeclaration getADeclaration() { result.getNamespace() = this }
 
   override Location getALocation() { result = this.getADeclaration().getALocation() }
+
+  override string toString() { result = DotNet::Namespace.super.toString() }
+
+  override predicate hasQualifiedName(string a, string b) {
+    DotNet::Namespace.super.hasQualifiedName(a, b)
+  }
 }
 
 /**

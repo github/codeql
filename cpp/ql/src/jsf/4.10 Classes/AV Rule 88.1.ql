@@ -7,12 +7,15 @@
  * @tags maintainability
  *       external/jsf
  */
+
 import cpp
 
-predicate derivesVirtual(Class c, Class base)
-{
-  exists(ClassDerivation d | d.getDerivedClass() = c and d.getBaseClass() = base
-    and d.hasSpecifier("virtual"))
+predicate derivesVirtual(Class c, Class base) {
+  exists(ClassDerivation d |
+    d.getDerivedClass() = c and
+    d.getBaseClass() = base and
+    d.hasSpecifier("virtual")
+  )
 }
 
 predicate derivesVirtualStar(Class c, Class base) {
@@ -20,7 +23,8 @@ predicate derivesVirtualStar(Class c, Class base) {
 }
 
 from Class c, Class base
-where c.getABaseClass+() = base
-  and derivesVirtualStar(c, base)
-  and not derivesVirtual(c, base)
+where
+  c.getABaseClass+() = base and
+  derivesVirtualStar(c, base) and
+  not derivesVirtual(c, base)
 select c, "AV Rule 88.1: The virtual base " + base.getName() + " shall be explicitly declared."

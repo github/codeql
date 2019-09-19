@@ -4,6 +4,7 @@
  * Provides a representation for abstract values.
  */
 
+private import javascript
 import semmle.javascript.dataflow.AbstractValues
 private import semmle.javascript.dataflow.InferredTypes
 import semmle.javascript.dataflow.CustomAbstractValueDefinitions

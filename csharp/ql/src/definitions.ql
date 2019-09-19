@@ -100,7 +100,9 @@ class AccessUse extends Access, Use {
     not this.isImplicit() and
     not this instanceof MethodAccess and // handled by `MethodUse`
     not this instanceof TypeAccess and // handled by `TypeMentionUse`
-    not this.(FieldAccess).getParent() instanceof Field // Enum initializer
+    not this.(FieldAccess).getParent() instanceof Field and // Enum initializer
+    not this.(FieldAccess).getParent().getParent() instanceof Field and // Field initializer
+    not this.(PropertyAccess).getParent().getParent() instanceof Property // Property initializer
   }
 
   /** Gets the qualifier of this acccess, if any. */

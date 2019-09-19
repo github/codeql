@@ -10,14 +10,15 @@
  * @tags security
  *       external/cwe/cwe-468
  */
+
 import cpp
 import IncorrectPointerScalingCommon
 
 private predicate isCharSzPtrExpr(Expr e) {
-  exists (PointerType pt
-  | pt = e.getFullyConverted().getUnspecifiedType()
-  | pt.getBaseType() instanceof CharType
-  or pt.getBaseType() instanceof VoidType)
+  exists(PointerType pt | pt = e.getFullyConverted().getUnspecifiedType() |
+    pt.getBaseType() instanceof CharType or
+    pt.getBaseType() instanceof VoidType
+  )
 }
 
 from Expr sizeofExpr, Expr e
@@ -26,8 +27,6 @@ where
   // the pointer expression to be char* or void*. Otherwise it
   // is probably a mistake.
   addWithSizeof(e, sizeofExpr, _) and not isCharSzPtrExpr(e)
-select
-  sizeofExpr,
-  "Suspicious sizeof offset in a pointer arithmetic expression. " +
-  "The type of the pointer is " +
-  e.getFullyConverted().getType().toString() + "."
+select sizeofExpr,
+  "Suspicious sizeof offset in a pointer arithmetic expression. " + "The type of the pointer is " +
+    e.getFullyConverted().getType().toString() + "."

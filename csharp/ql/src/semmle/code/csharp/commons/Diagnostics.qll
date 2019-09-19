@@ -9,13 +9,9 @@ class Diagnostic extends @diagnostic {
   Compilation getCompilation() { diagnostic_for(this, result, _, _) }
 
   int severity;
-
   string tag;
-
   string message;
-
   string fullMessage;
-
   Location location;
 
   Diagnostic() { diagnostics(this, severity, tag, message, fullMessage, location) }
@@ -67,15 +63,10 @@ class CompilerError extends Diagnostic {
 /** A message from an extractor. */
 class ExtractorMessage extends @extractor_message {
   int severity;
-
   string origin;
-
   string text;
-
   string element;
-
   string stackTrace;
-
   Location location;
 
   ExtractorMessage() {

@@ -4,6 +4,7 @@
  * This performs a "technology inventory" by associating each source file
  * with the libraries it uses.
  */
+
 import cpp
 import semmle.code.cpp.commons.Dependency
 
@@ -12,7 +13,9 @@ import semmle.code.cpp.commons.Dependency
  */
 abstract class LibraryElement extends Element {
   abstract string getName();
+
   abstract string getVersion();
+
   abstract File getAFile();
 }
 
@@ -39,16 +42,11 @@ class Library extends LibraryT {
   string version;
 
   Library() {
-    exists(LibraryElement lib |
-      this = LibraryTElement(lib, name, version)
-    ) or exists(@external_package ep |
-      this = LibraryTExternalPackage(ep, name, version)
-    )
+    exists(LibraryElement lib | this = LibraryTElement(lib, name, version)) or
+    exists(@external_package ep | this = LibraryTExternalPackage(ep, name, version))
   }
 
-  string getName() {
-    result = name
-  }
+  string getName() { result = name }
 
   string getVersion() {
     // The versions reported for C/C++ dependencies are just the versions that
@@ -64,7 +62,9 @@ class Library extends LibraryT {
     exists(LibraryElement lib |
       this = LibraryTElement(lib, _, _) and
       result = lib.getAFile()
-    ) or exists(@external_package ep |
+    )
+    or
+    exists(@external_package ep |
       this = LibraryTExternalPackage(ep, _, _) and
       header_to_external_package(unresolveElement(result), ep)
     )
@@ -77,34 +77,31 @@ class Library extends LibraryT {
  */
 predicate libDependencies(File sourceFile, Library destLib, int num) {
   num = strictcount(Element source, Element dest, File destFile |
-    // dependency from source -> dest.
-    dependsOnSimple(source, dest) and
-    sourceFile = source.getFile() and
-    destFile = dest.getFile() and
-
-    // destFile is inside destLib, sourceFile is outside.
-    destFile = destLib.getAFile() and
-    not sourceFile = destLib.getAFile() and
-
-    // don't include dependencies from template instantiations that
-    // may depend back on types in the using code.
-    not source.isFromTemplateInstantiation(_) and
-
-    // exclude very common dependencies
-    not destLib.getName() = "linux" and
-    not destLib.getName().regexpMatch("gcc-[0-9]+") and
-    not destLib.getName() = "glibc"
-  )
+      // dependency from source -> dest.
+      dependsOnSimple(source, dest) and
+      sourceFile = source.getFile() and
+      destFile = dest.getFile() and
+      // destFile is inside destLib, sourceFile is outside.
+      destFile = destLib.getAFile() and
+      not sourceFile = destLib.getAFile() and
+      // don't include dependencies from template instantiations that
+      // may depend back on types in the using code.
+      not source.isFromTemplateInstantiation(_) and
+      // exclude very common dependencies
+      not destLib.getName() = "linux" and
+      not destLib.getName().regexpMatch("gcc-[0-9]+") and
+      not destLib.getName() = "glibc"
+    )
 }
 
 /**
  * Generate the table of dependencies for the query (with some
  * packages that basically all projects depend on excluded).
  */
-predicate encodedDependencies(File source, string encodedDependency, int num)
-{
+predicate encodedDependencies(File source, string encodedDependency, int num) {
   exists(Library destLib |
     libDependencies(source, destLib, num) and
-    encodedDependency = "/" + source.getRelativePath() + "<|>" + destLib.getName() + "<|>" + destLib.getVersion()
+    encodedDependency = "/" + source.getRelativePath() + "<|>" + destLib.getName() + "<|>" +
+        destLib.getVersion()
   )
 }

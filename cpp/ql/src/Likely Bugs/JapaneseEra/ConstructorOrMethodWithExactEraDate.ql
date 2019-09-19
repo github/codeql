@@ -1,5 +1,5 @@
 /**
- * @name Hard-coded Japanese era start date
+ * @name Hard-coded Japanese era start date in call
  * @description Japanese era changes can lead to code behaving differently. Avoid hard-coding Japanese era start dates.
  * @kind problem
  * @problem.severity warning
@@ -7,6 +7,9 @@
  * @precision medium
  * @tags reliability
  *       japanese-era
+ * @deprecated This query is deprecated, use
+ *             Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`)
+ *             instead.
  */
 
 import cpp

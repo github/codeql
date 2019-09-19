@@ -1,5 +1,6 @@
 using Semmle.Extraction.CommentProcessing;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -8,33 +9,30 @@ namespace Semmle.Extraction.CSharp.Entities
         CommentBlock(Context cx, ICommentBlock init)
             : base(cx, init) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.commentblock(this));
+            trapFile.commentblock(this);
             int child = 0;
-            Context.Emit(Tuples.commentblock_location(this, Context.Create(symbol.Location)));
+            trapFile.commentblock_location(this, Context.Create(symbol.Location));
             foreach (var l in symbol.CommentLines)
             {
-                Context.Emit(Tuples.commentblock_child(this, (CommentLine)l, child++));
+                trapFile.commentblock_child(this, (CommentLine)l, child++);
             }
         }
 
         public override bool NeedsPopulation => true;
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                var loc = Context.Create(symbol.Location);
-                return new Key(loc, ";commentblock");
-            }
+            trapFile.WriteSubId(Context.Create(symbol.Location));
+            trapFile.Write(";commentblock");
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.Location;
 
-        public void BindTo(Label entity, Binding binding)
+        public void BindTo(Label entity, CommentBinding binding)
         {
-            Context.Emit(Tuples.commentblock_binding(this, entity, binding));
+            Context.TrapWriter.Writer.commentblock_binding(this, entity, binding);
         }
 
         public static CommentBlock Create(Context cx, ICommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block);

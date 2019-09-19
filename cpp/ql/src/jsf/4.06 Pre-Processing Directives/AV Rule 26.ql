@@ -7,11 +7,14 @@
  * @tags maintainability
  *       external/jsf
  */
+
 import cpp
 
 from PreprocessorDirective directive
-where not directive instanceof PreprocessorIfndef and
-      not directive instanceof PreprocessorEndif and
-      not directive instanceof Macro and
-      not directive instanceof Include
-select directive, "AV Rule 26: only the #ifndef, #endif, #define and #include directives shall be used."
+where
+  not directive instanceof PreprocessorIfndef and
+  not directive instanceof PreprocessorEndif and
+  not directive instanceof Macro and
+  not directive instanceof Include
+select directive,
+  "AV Rule 26: only the #ifndef, #endif, #define and #include directives shall be used."

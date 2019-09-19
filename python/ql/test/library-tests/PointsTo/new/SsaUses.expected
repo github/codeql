@@ -618,17 +618,133 @@
 | h_classes.py:50 | f_2 | ControlFlowNode for f |
 | h_classes.py:52 | arg1_0 | Exit node for Function n |
 | h_classes.py:52 | self_0 | Exit node for Function n |
-| j_convoluted_imports.py:0 | C_0 | Exit node for Module code.j_convoluted_imports |
-| j_convoluted_imports.py:0 | __name___0 | Exit node for Module code.j_convoluted_imports |
-| j_convoluted_imports.py:0 | __package___0 | Exit node for Module code.j_convoluted_imports |
-| j_convoluted_imports.py:0 | moduleX_0 | Exit node for Module code.j_convoluted_imports |
-| j_convoluted_imports.py:0 | module_0 | Exit node for Module code.j_convoluted_imports |
-| j_convoluted_imports.py:0 | x_0 | Exit node for Module code.j_convoluted_imports |
+| h_classes.py:55 | Base_1 | ControlFlowNode for int() |
+| h_classes.py:55 | C_0 | ControlFlowNode for int() |
+| h_classes.py:55 | D_1 | ControlFlowNode for int() |
+| h_classes.py:55 | Derived1_1 | ControlFlowNode for int() |
+| h_classes.py:55 | Derived2_1 | ControlFlowNode for int() |
+| h_classes.py:55 | Derived3_1 | ControlFlowNode for int() |
+| h_classes.py:55 | __name___0 | ControlFlowNode for int() |
+| h_classes.py:55 | __package___0 | ControlFlowNode for int() |
+| h_classes.py:55 | f_1 | ControlFlowNode for int() |
+| h_classes.py:55 | k_1 | ControlFlowNode for int() |
+| h_classes.py:55 | sys_1 | ControlFlowNode for int() |
+| h_classes.py:55 | thing_1 | ControlFlowNode for int() |
+| h_classes.py:56 | Base_1 | ControlFlowNode for type() |
+| h_classes.py:56 | Base_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | C_0 | ControlFlowNode for type() |
+| h_classes.py:56 | C_0 | ControlFlowNode for type()() |
+| h_classes.py:56 | D_1 | ControlFlowNode for type() |
+| h_classes.py:56 | D_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | Derived1_1 | ControlFlowNode for type() |
+| h_classes.py:56 | Derived1_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | Derived2_1 | ControlFlowNode for type() |
+| h_classes.py:56 | Derived2_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | Derived3_1 | ControlFlowNode for type() |
+| h_classes.py:56 | Derived3_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | __name___0 | ControlFlowNode for type() |
+| h_classes.py:56 | __name___0 | ControlFlowNode for type()() |
+| h_classes.py:56 | __package___0 | ControlFlowNode for type() |
+| h_classes.py:56 | __package___0 | ControlFlowNode for type()() |
+| h_classes.py:56 | f_1 | ControlFlowNode for type() |
+| h_classes.py:56 | f_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | k_1 | ControlFlowNode for type() |
+| h_classes.py:56 | k_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | sys_1 | ControlFlowNode for type() |
+| h_classes.py:56 | sys_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | thing_1 | ControlFlowNode for type() |
+| h_classes.py:56 | thing_1 | ControlFlowNode for type()() |
+| h_classes.py:57 | Base_1 | ControlFlowNode for list() |
+| h_classes.py:57 | C_0 | ControlFlowNode for list() |
+| h_classes.py:57 | D_1 | ControlFlowNode for list() |
+| h_classes.py:57 | Derived1_1 | ControlFlowNode for list() |
+| h_classes.py:57 | Derived2_1 | ControlFlowNode for list() |
+| h_classes.py:57 | Derived3_1 | ControlFlowNode for list() |
+| h_classes.py:57 | __name___0 | ControlFlowNode for list() |
+| h_classes.py:57 | __package___0 | ControlFlowNode for list() |
+| h_classes.py:57 | f_1 | ControlFlowNode for list() |
+| h_classes.py:57 | k_1 | ControlFlowNode for list() |
+| h_classes.py:57 | sys_1 | ControlFlowNode for list() |
+| h_classes.py:57 | thing_1 | ControlFlowNode for list() |
+| h_classes.py:58 | Base_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | C_0 | ControlFlowNode for dict() |
+| h_classes.py:58 | D_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | Derived1_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | Derived2_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | Derived3_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | __name___0 | ControlFlowNode for dict() |
+| h_classes.py:58 | __package___0 | ControlFlowNode for dict() |
+| h_classes.py:58 | f_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | k_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | sys_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | thing_1 | ControlFlowNode for dict() |
+| h_classes.py:59 | Base_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | C_0 | ControlFlowNode for bool() |
+| h_classes.py:59 | D_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | Derived1_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | Derived2_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | Derived3_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | __name___0 | ControlFlowNode for bool() |
+| h_classes.py:59 | __package___0 | ControlFlowNode for bool() |
+| h_classes.py:59 | f_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | k_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | sys_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | thing_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | Base_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | C_0 | ControlFlowNode for bool() |
+| h_classes.py:60 | D_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | Derived1_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | Derived2_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | Derived3_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | __name___0 | ControlFlowNode for bool() |
+| h_classes.py:60 | __package___0 | ControlFlowNode for bool() |
+| h_classes.py:60 | f_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | k_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | sys_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | thing_1 | ControlFlowNode for bool() |
+| j_convoluted_imports.py:0 | C_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | __name___3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | __package___3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | moduleX_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | module_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | object_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | p_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | q_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | r_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | unknown_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | x_3 | Exit node for Module code.j_convoluted_imports |
 | j_convoluted_imports.py:9 | f_0 | Exit node for Class C |
 | j_convoluted_imports.py:9 | module2_0 | Exit node for Class C |
+| j_convoluted_imports.py:9 | object_0 | ControlFlowNode for object |
 | j_convoluted_imports.py:13 | self_0 | Exit node for Function f |
 | j_convoluted_imports.py:13 | x_0 | Exit node for Function f |
 | j_convoluted_imports.py:17 | moduleX_0 | ControlFlowNode for moduleX |
+| j_convoluted_imports.py:19 | unknown_0 | ControlFlowNode for unknown |
+| j_convoluted_imports.py:20 | C_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | __name___0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | __package___0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | moduleX_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | module_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | object_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | p_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | q_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | r_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | unknown_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | x_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:22 | C_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | __name___0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | __package___0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | moduleX_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | module_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | object_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | p_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | q_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | r_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | unknown_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | x_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:23 | p_3 | ControlFlowNode for p |
+| j_convoluted_imports.py:24 | q_3 | ControlFlowNode for q |
+| j_convoluted_imports.py:25 | r_3 | ControlFlowNode for r |
 | k_getsetattr.py:0 | C_0 | Exit node for Module code.k_getsetattr |
 | k_getsetattr.py:0 | __name___0 | Exit node for Module code.k_getsetattr |
 | k_getsetattr.py:0 | __package___0 | Exit node for Module code.k_getsetattr |

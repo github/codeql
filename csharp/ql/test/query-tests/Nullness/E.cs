@@ -32,7 +32,7 @@ public class E
         string last = null;
         foreach (var s in new string[] { "aa", "bb" })
             last = s;
-        last.ToString(); // GOOD (false positive)
+        last.ToString(); // GOOD
 
         last = null;
         if (ss.Any())
@@ -40,7 +40,7 @@ public class E
             foreach (var s in ss)
                 last = s;
 
-            last.ToString(); // GOOD (false positive)
+            last.ToString(); // GOOD
         }
     }
 

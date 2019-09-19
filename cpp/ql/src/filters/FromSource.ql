@@ -13,5 +13,4 @@ import external.DefectFilter
 
 from DefectResult res
 where res.getFile().fromSource()
-select res,
-       res.getMessage()
+select res, res.getMessage()

@@ -9,6 +9,7 @@
  *       security
  *       external/cwe/cwe-676
  */
+
 import cpp
 
 predicate potentiallyDangerousFunction(Function f, string message) {
@@ -22,7 +23,6 @@ predicate potentiallyDangerousFunction(Function f, string message) {
     message = "Call to " + name + " is potentially dangerous"
   )
 }
-
 
 from FunctionCall call, Function target, string message
 where

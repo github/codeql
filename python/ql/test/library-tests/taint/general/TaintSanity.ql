@@ -1,26 +1,26 @@
 import python
-import semmle.python.security.TaintTest
+import semmle.python.dataflow.TaintTracking
+import semmle.python.dataflow.Implementation
 import TaintLib
 
-from TaintFlowTest::TrackedValue taint, CallContext c, ControlFlowNode n, string what
+from TaintKind taint, TaintTrackingContext c, DataFlow::Node n, string what, TaintTrackingImplementation impl
 where
-not exists(TaintedNode t | t.getTrackedValue() = taint and t.getNode() = n and t.getContext() = c) and
+not exists(TaintedNode t | t.getTaintKind() = taint and t.getNode() = n and t.getContext() = c) and
 (
-    TaintFlowTest::step(_, taint, c, n) and what = "missing node at end of step"
+    impl.flowStep(_, n, c, _, taint, _) and what = "missing node at end of step"
     or
-    n.(TaintSource).isSourceOf(taint.(TaintFlowTest::TrackedTaint).getKind(), c) and what = "missing node for source"
-
+    impl.flowSource(n, c, _, taint) and what = "missing node for source"
 )
 or
-exists(TaintedNode t | t.getTrackedValue() = taint and t.getNode() = n and t.getContext() = c
+exists(TaintedNode t | t.getTaintKind() = taint and t.getNode() = n and t.getContext() = c
     |
-    not TaintFlowTest::step(_, taint, c, n) and 
-    not n.(TaintSource).isSourceOf(taint.(TaintFlowTest::TrackedTaint).getKind(), c) and what = "TaintedNode with no reason"
+    not impl.flowStep(_, n, c, _, taint, _) and 
+    not impl.flowSource(n, c, _, taint) and what = "TaintedNode with no reason"
     or
-    TaintFlowTest::step(t, taint, c, n) and what = "step ends where it starts"
+    impl.flowStep(t, n, c, _, taint, _) and what = "step ends where it starts"
     or
-    TaintFlowTest::step(t,  _, _, _) and not TaintFlowTest::step(_, taint, c, n) and
-    not n.(TaintSource).isSourceOf(taint.(TaintFlowTest::TrackedTaint).getKind(), c) and what = "No predecessor and not a source"
+    impl.flowStep(t, _, _, _, _, _) and not impl.flowStep(_, n, c, _, taint, _) and
+    not impl.flowSource(n, c, _, taint) and what = "No predecessor and not a source"
 )
 
 select n.getLocation(), taint, c, n.toString(), what

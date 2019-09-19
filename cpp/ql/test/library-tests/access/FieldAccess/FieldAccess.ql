@@ -1,13 +1,13 @@
 import cpp
 
 string describeAccess(FieldAccess access) {
-  (access instanceof PointerFieldAccess and result = "ptr")
+  access instanceof PointerFieldAccess and result = "ptr"
   or
-  (access instanceof ReferenceFieldAccess and result = "ref")
+  access instanceof ReferenceFieldAccess and result = "ref"
   or
-  (access instanceof ValueFieldAccess and result = "val")
+  access instanceof ValueFieldAccess and result = "val"
   or
-  (access instanceof ImplicitThisFieldAccess and result = "this")
+  access instanceof ImplicitThisFieldAccess and result = "this"
 }
 
 from FieldAccess access

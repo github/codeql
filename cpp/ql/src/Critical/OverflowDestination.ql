@@ -33,12 +33,10 @@ predicate sourceSized(FunctionCall fc, Expr src) {
     fc.getArgument(2) = size and
     src = v.getAnAccess() and
     size.getAChild+() = v.getAnAccess() and
-
     // exception: `dest` is also referenced in the size argument
     not exists(Variable other |
       dest = other.getAnAccess() and size.getAChild+() = other.getAnAccess()
     ) and
-
     // exception: `src` and `dest` are both arrays of the same type and size
     not exists(ArrayType srctype, ArrayType desttype |
       dest.getType().getUnderlyingType() = desttype and

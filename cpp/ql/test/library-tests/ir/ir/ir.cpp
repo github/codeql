@@ -1110,4 +1110,52 @@ static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c
     );
 }
 
-// semmle-extractor-options: -std=c++17
+void ExternDeclarations()
+{
+    extern int g;
+    int x;
+    int y, f(float);
+    int z(float), w(float), h;
+    typedef double d;
+}
+
+#define EXTERNS_IN_MACRO \
+    extern int g; \
+    for (int i = 0; i < 10; ++i) { \
+        extern int g; \
+    }
+
+void ExternDeclarationsInMacro()
+{
+    EXTERNS_IN_MACRO;
+}
+
+void TryCatchNoCatchAny(bool b) {
+  try {
+    int x = 5;
+    if (b) {
+      throw "string literal";
+    }
+    else if (x < 2) {
+      x = b ? 7 : throw String("String object");
+    }
+    x = 7;
+  }
+  catch (const char* s) {
+    throw String(s);
+  }
+  catch (const String& e) {
+  }
+}
+
+#define vector(elcount, type)  __attribute__((vector_size((elcount)*sizeof(type)))) type
+
+void VectorTypes(int i) {
+  vector(4, int) vi4 = { 0, 1, 2, 3 };
+  int x = vi4[i];
+  vi4[i] = x;
+  vector(4, int) vi4_shuffle = __builtin_shufflevector(vi4, vi4, 3+0, 2, 1, 0);
+  vi4 = vi4 + vi4_shuffle;
+}
+
+// semmle-extractor-options: -std=c++17 --clang

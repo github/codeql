@@ -70,7 +70,7 @@ class Replacement extends DataFlow::Node {
   Replacement() {
     exists(DataFlow::MethodCallNode mcn | this = mcn |
       mcn.getMethodName() = "replace" and
-      pattern.flow().(DataFlow::SourceNode).flowsTo(mcn.getArgument(0))and
+      pattern.flow().(DataFlow::SourceNode).flowsTo(mcn.getArgument(0)) and
       mcn.getNumArgument() = 2 and
       pattern.isGlobal()
     )
