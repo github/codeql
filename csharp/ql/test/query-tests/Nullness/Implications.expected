@@ -1171,6 +1171,26 @@
 | E.cs:343:9:343:9 | access to local variable x | non-empty | E.cs:342:17:342:32 | ... ?? ... | non-empty |
 | E.cs:343:9:343:9 | access to local variable x | non-null | E.cs:342:17:342:32 | ... ?? ... | non-null |
 | E.cs:343:9:343:9 | access to local variable x | null | E.cs:342:17:342:32 | ... ?? ... | null |
+| E.cs:348:21:348:36 | ... ?? ... | null | E.cs:348:21:348:21 | access to parameter s | null |
+| E.cs:348:21:348:36 | ... ?? ... | null | E.cs:348:26:348:36 | ... as ... | null |
+| E.cs:349:9:349:9 | access to local variable x | non-null | E.cs:348:21:348:36 | ... ?? ... | non-null |
+| E.cs:349:9:349:9 | access to local variable x | null | E.cs:348:21:348:36 | ... ?? ... | null |
+| E.cs:354:21:354:36 | ... ?? ... | null | E.cs:354:21:354:21 | access to parameter s | null |
+| E.cs:354:21:354:36 | ... ?? ... | null | E.cs:354:26:354:36 | ... as ... | null |
+| E.cs:355:13:355:13 | access to local variable x | non-null | E.cs:354:21:354:36 | ... ?? ... | non-null |
+| E.cs:355:13:355:13 | access to local variable x | null | E.cs:354:21:354:36 | ... ?? ... | null |
+| E.cs:356:13:356:13 | access to local variable x | non-null | E.cs:354:21:354:36 | ... ?? ... | non-null |
+| E.cs:356:13:356:13 | access to local variable x | null | E.cs:354:21:354:36 | ... ?? ... | null |
+| E.cs:361:17:361:32 | ... ?? ... | null | E.cs:361:17:361:17 | access to parameter s | null |
+| E.cs:361:17:361:32 | ... ?? ... | null | E.cs:361:22:361:32 | ... as ... | null |
+| E.cs:362:13:362:13 | access to local variable x | empty | E.cs:361:17:361:32 | ... ?? ... | empty |
+| E.cs:362:13:362:13 | access to local variable x | non-empty | E.cs:361:17:361:32 | ... ?? ... | non-empty |
+| E.cs:362:13:362:13 | access to local variable x | non-null | E.cs:361:17:361:32 | ... ?? ... | non-null |
+| E.cs:362:13:362:13 | access to local variable x | null | E.cs:361:17:361:32 | ... ?? ... | null |
+| E.cs:362:18:362:29 | (...) ... | non-null | E.cs:362:26:362:29 | null | non-null |
+| E.cs:362:18:362:29 | (...) ... | null | E.cs:362:26:362:29 | null | null |
+| E.cs:363:13:363:13 | access to local variable x | non-null | E.cs:361:17:361:32 | ... ?? ... | non-null |
+| E.cs:363:13:363:13 | access to local variable x | null | E.cs:361:17:361:32 | ... ?? ... | null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |
 | Forwarding.cs:9:13:9:30 | !... | true | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | false |
 | Forwarding.cs:9:14:9:14 | access to local variable s | empty | Forwarding.cs:7:20:7:23 | null | empty |
