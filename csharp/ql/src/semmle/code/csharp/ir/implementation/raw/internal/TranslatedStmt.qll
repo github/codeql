@@ -963,3 +963,114 @@ class TranslatedLockStmt extends TranslatedStmt {
     result = LockElements::getLockWasTakenDecl(stmt)
   }
 }
+
+// TODO: Should be modeled using the desugaring framework for a
+//       more exact translation.
+class TranslatedCheckedUncheckedStmt extends TranslatedStmt {
+  TranslatedCheckedUncheckedStmt() {
+    stmt instanceof CheckedStmt or
+    stmt instanceof UncheckedStmt
+  }
+
+  override TranslatedElement getChild(int id) { id = 0 and result = this.getBody() }
+
+  override Instruction getFirstInstruction() { result = this.getBody().getFirstInstruction() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getBody() and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  private TranslatedElement getBody() {
+    result = getTranslatedStmt(stmt.(CheckedStmt).getBlock()) or
+    result = getTranslatedStmt(stmt.(UncheckedStmt).getBlock())
+  }
+}
+
+// TODO: Should be modeled using the desugaring framework for a
+//       more exact translation.
+class TranslatedUsingBlockStmt extends TranslatedStmt {
+  override UsingBlockStmt stmt;
+
+  override TranslatedElement getChild(int id) {
+    result = getDecl(id)
+    or
+    id = getNumberOfDecls() and result = this.getBody()
+  }
+
+  override Instruction getFirstInstruction() {
+    if getNumberOfDecls() > 0
+    then result = this.getDecl(0).getFirstInstruction()
+    else result = this.getBody().getFirstInstruction()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    exists(int id |
+      child = this.getDecl(id) and
+      result = this.getDecl(id + 1).getFirstInstruction()
+    )
+    or
+    child = this.getDecl(this.getNumberOfDecls() - 1) and
+    result = this.getBody().getFirstInstruction()
+    or
+    child = this.getBody() and result = this.getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  private TranslatedLocalDeclaration getDecl(int id) {
+    result = getTranslatedLocalDeclaration(stmt.getVariableDeclExpr(id))
+  }
+
+  private int getNumberOfDecls() { result = count(stmt.getAVariableDeclExpr()) }
+
+  private TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getBody()) }
+}
+
+// TODO: Should be modeled using the desugaring framework for a
+//       more exact translation.
+class TranslatedUsingDeclStmt extends TranslatedStmt {
+  override UsingDeclStmt stmt;
+
+  override TranslatedElement getChild(int id) { result = getDecl(id) }
+
+  override Instruction getFirstInstruction() { result = this.getDecl(0).getFirstInstruction() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    exists(int id |
+      child = this.getDecl(id) and
+      id < this.noDecls() - 1 and
+      result = this.getDecl(id + 1).getFirstInstruction()
+    )
+    or
+    child = this.getDecl(this.noDecls() - 1) and result = this.getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  private TranslatedLocalDeclaration getDecl(int id) {
+    result = getTranslatedLocalDeclaration(stmt.getVariableDeclExpr(id))
+  }
+
+  private int noDecls() { result = count(stmt.getAVariableDeclExpr()) }
+}
