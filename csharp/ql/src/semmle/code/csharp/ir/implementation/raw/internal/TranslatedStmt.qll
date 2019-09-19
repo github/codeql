@@ -923,6 +923,71 @@ class TranslatedEnumeratorForeach extends TranslatedLoop {
   private TranslatedElement getTempEnumDecl() { result = ForeachElements::getEnumDecl(stmt) }
 }
 
+class TranslatedUnsafeStmt extends TranslatedStmt {
+  override UnsafeStmt stmt;
+
+  override TranslatedElement getChild(int id) { id = 0 and result = this.getBlock() }
+
+  override Instruction getFirstInstruction() { result = this.getBlock().getFirstInstruction() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getBlock() and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  private TranslatedStmt getBlock() { result = getTranslatedStmt(stmt.getBlock()) }
+}
+
+// TODO: does not reflect the fixed part, just treats the stmt
+//       as some declarations followed by the body
+class TranslatedFixedStmt extends TranslatedStmt {
+  override FixedStmt stmt;
+
+  override TranslatedElement getChild(int id) {
+    result = getDecl(id)
+    or
+    id = noDecls() and result = this.getBody()
+  }
+
+  override Instruction getFirstInstruction() { result = this.getDecl(0).getFirstInstruction() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    exists(int id |
+      child = this.getDecl(id) and
+      id < this.noDecls() - 1 and
+      result = this.getDecl(id + 1).getFirstInstruction()
+    )
+    or
+    child = this.getDecl(this.noDecls() - 1) and result = this.getBody().getFirstInstruction()
+    or
+    child = this.getBody() and result = this.getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  private TranslatedLocalDeclaration getDecl(int id) {
+    result = getTranslatedLocalDeclaration(stmt.getVariableDeclExpr(id))
+  }
+
+  private int noDecls() { result = count(stmt.getAVariableDeclExpr()) }
+
+  private TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getBody()) }
+}
+
 class TranslatedLockStmt extends TranslatedStmt {
   override LockStmt stmt;
 

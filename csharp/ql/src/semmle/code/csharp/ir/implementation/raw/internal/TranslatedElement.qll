@@ -26,15 +26,15 @@ ArrayType getArrayOfDim(int dim, Type type) {
 }
 
 private predicate canCreateCompilerGeneratedElement(Element generatedBy, int nth) {
-  generatedBy instanceof ForeachStmt and nth in [0 .. ForeachElements::noGeneratedElements()]
+  generatedBy instanceof ForeachStmt and nth in [0 .. ForeachElements::noGeneratedElements() - 1]
   or
-  generatedBy instanceof LockStmt and nth in [0 .. LockElements::noGeneratedElements()]
+  generatedBy instanceof LockStmt and nth in [0 .. LockElements::noGeneratedElements() - 1]
   or
   generatedBy instanceof DelegateCreation and
-  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
+  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy) - 1]
   or
   generatedBy instanceof DelegateCall and
-  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
+  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy) - 1]
 }
 
 /**
@@ -75,7 +75,12 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   expr instanceof LocalVariableDeclExpr and
   expr.getParent() instanceof ForeachStmt
   or
-  ignoreExprAndDescendants(getRealParent(expr)) // recursive case
+  // recursive case
+  ignoreExprAndDescendants(getRealParent(expr)) and
+  // The two children of an `AssignOperation` should not be ignored, but since they are also
+  // descendants of an orphan node (the expanded form of the `AssignOperation` is also retrieved by
+  // the extractor, which is rooted in an AST node without parents) they would be
+  not expr.getParent() instanceof AssignOperation
 }
 
 /**
@@ -167,6 +172,63 @@ private predicate usedAsCondition(Expr expr) {
   )
 }
 
+/**
+ * Holds if we should have a `Load` instruction for `expr` when generating the IR.
+ */
+private predicate mayNeedLoad(Expr expr) {
+  expr instanceof AssignableRead
+  or
+  // We need an extra load for the `PointerIndirectionExpr`
+  expr instanceof PointerIndirectionExpr and
+  // If the dereferencing happens on the lhs of an
+  // assignment we shouldn't have a load instruction
+  not exists(Assignment a | a.getLValue() = expr)
+}
+
+predicate needsLoad(Expr expr) {
+  mayNeedLoad(expr) and
+  not ignoreLoad(expr)
+}
+
+/**
+ * Holds if we should ignore the `Load` instruction for `expr` when generating IR.
+ */
+private predicate ignoreLoad(Expr expr) {
+  // No load needed for the qualifier
+  // in an array access
+  expr = any(ArrayAccess aa).getQualifier()
+  or
+  // No load is needed for the lvalue in an assignment such as:
+  // Eg. `Object obj = oldObj`;
+  expr = any(Assignment a).getLValue() and
+  expr.getType() instanceof RefType
+  or
+  // Since the loads for a crement operation is handled by the translation
+  // of the operation, we ignore the load here
+  expr.getParent() instanceof MutatorOperation
+  or
+  // The `&` operator does not need a load, since the
+  // address is the final value of the expression
+  expr.getParent() instanceof AddressOfExpr
+  or
+  // If expr is a variable access used as the qualifier for a field access and
+  // its target variable is a value type variable,
+  // ignore the load since the address of a variable that is a value type is
+  // given by a single `VariableAddress` instruction.
+  expr = any(FieldAccess fa).getQualifier() and
+  expr = any(VariableAccess va |
+      va.getType().isValueType() and
+      not va.getTarget() = any(Parameter p | p.isOutOrRef() or p.isIn())
+    )
+  or
+  // If expr is passed as an `out,`ref` or `in` argument,
+  // no load should take place since we pass the address, not the
+  // value of the variable
+  expr.(AssignableAccess).isOutOrRefArgument()
+  or
+  expr.(AssignableAccess).isInArgument()
+}
+
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
   TTranslatedValueExpr(Expr expr) {
@@ -182,17 +244,8 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
-    // TODO: Revisit and make sure Loads are only used when needed
     not ignoreExpr(expr) and
-    expr instanceof AssignableRead and
-    not expr.getParent() instanceof ArrayAccess and
-    not (
-      expr.getParent() instanceof Assignment and
-      expr.getType() instanceof RefType
-    ) and
-    // Ignore loads for reads in `++` and `--` since their
-    // translated elements handle them
-    not expr.getParent() instanceof MutatorOperation
+    needsLoad(expr)
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
@@ -250,15 +303,6 @@ newtype TTranslatedElement =
     not ignoreExpr(initList) and
     exists(initList.getElement(elementIndex))
   } or
-  // The value initialization of a range of array elements that were omitted
-  // from an initializer list.
-  TTranslatedElementValueInitialization(
-    ArrayInitializer initList, int elementIndex, int elementCount
-  ) {
-    not ignoreExpr(initList) and
-    isFirstValueInitializedElementInRange(initList, elementIndex) and
-    elementCount = getEndOfValueInitializedRange(initList, elementIndex) - elementIndex
-  } or
   // The initialization of a base class from within a constructor.
   TTranslatedConstructorInitializer(ConstructorInitializer init) { not ignoreExpr(init) } or
   // A statement
@@ -283,47 +327,6 @@ newtype TTranslatedElement =
   TTranslatedCompilerGeneratedElement(Element generatedBy, int index) {
     canCreateCompilerGeneratedElement(generatedBy, index)
   }
-
-/**
- * Gets the index of the first explicitly initialized element in `initList`
- * whose index is greater than `afterElementIndex`, where `afterElementIndex`
- * is a first value-initialized element in a value-initialized range in
- * `initList`. If there are no remaining explicitly initialized elements in
- * `initList`, the result is the total number of elements in the array being
- * initialized.
- */
-private int getEndOfValueInitializedRange(ArrayInitializer initList, int afterElementIndex) {
-  result = getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)
-  or
-  isFirstValueInitializedElementInRange(initList, afterElementIndex) and
-  not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
-  result = initList.getNumberOfElements()
-}
-
-/**
- * Gets the index of the first explicitly initialized element in `initList`
- * whose index is greater than `afterElementIndex`, where `afterElementIndex`
- * is a first value-initialized element in a value-initialized range in
- * `initList`.
- */
-private int getNextExplicitlyInitializedElementAfter(
-  ArrayInitializer initList, int afterElementIndex
-) {
-  isFirstValueInitializedElementInRange(initList, afterElementIndex) and
-  result = min(int i | exists(initList.getElement(i)) and i > afterElementIndex)
-}
-
-/**
- * Holds if element `elementIndex` is the first value-initialized element in a
- * range of one or more consecutive value-initialized elements in `initList`.
- */
-private predicate isFirstValueInitializedElementInRange(ArrayInitWithMod initList, int elementIndex) {
-  initList.isValueInitialized(elementIndex) and
-  (
-    elementIndex = 0 or
-    not initList.isValueInitialized(elementIndex - 1)
-  )
-}
 
 /**
  * Represents an AST node for which IR needs to be generated.
