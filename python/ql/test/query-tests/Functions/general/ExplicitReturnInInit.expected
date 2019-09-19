@@ -1,1 +1,1 @@
-| functions_test.py:45:9:45:19 | Return | Explicit return in __init__ method. |
+| explicit_return_in_init.py:4:9:4:19 | Return | Explicit return in __init__ method. |
