@@ -24,7 +24,7 @@ void myUnionTest()
 	memset(&mu, 0, sizeof(mu.small));
 	memset(&mu, 0, sizeof(mu.large));
 	memset(&mu, 0, 200); // BAD
-	memset(&(mu.small), 0, sizeof(mu));
+	memset(&(mu.small), 0, sizeof(mu)); // (dubious)
 	memset(&(mu.small), 0, sizeof(mu.small));
 	memset(&(mu.small), 0, sizeof(mu.large)); // (dubious)
 	memset(&(mu.small), 0, 200); // BAD

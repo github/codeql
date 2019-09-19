@@ -1,5 +1,6 @@
 | acrossLinkTargets.cpp:12:8:12:8 | x | acrossLinkTargets.cpp:19:27:19:32 | call to source |
 | clang.cpp:18:8:18:19 | sourceArray1 | clang.cpp:12:9:12:20 | sourceArray1 |
+| clang.cpp:22:8:22:20 | & ... | clang.cpp:12:9:12:20 | sourceArray1 |
 | clang.cpp:29:27:29:28 | m1 | clang.cpp:28:27:28:32 | call to source |
 | clang.cpp:30:27:30:34 | call to getFirst | clang.cpp:28:27:28:32 | call to source |
 | clang.cpp:37:10:37:11 | m2 | clang.cpp:34:32:34:37 | call to source |
