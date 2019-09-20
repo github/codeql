@@ -3,6 +3,7 @@ using Semmle.Util.Logging;
 using System;
 using System.IO;
 using Semmle.Util;
+using System.Text.RegularExpressions;
 
 namespace Semmle.Extraction.Tests
 {
@@ -197,7 +198,7 @@ namespace Semmle.Extraction.Tests
             {
                 File.AppendAllText(file, "Test");
                 new string[] { "/noconfig", "@" + file }.WriteCommandLine(sw);
-                Assert.Equal("Test\n", sw.ToString());
+                Assert.Equal("Test", Regex.Replace(sw.ToString(), @"\t|\n|\r", ""));
             }
             finally
             {
