@@ -1,3 +1,7 @@
+| a.c:13:39:13:42 | 1.0 | This argument should be of type 'char *' but is of type 'double' |
+| a.c:13:39:13:42 | 1.0 | This argument should be of type 'int' but is of type 'double' |
+| a.c:15:40:15:43 | 1.0 | This argument should be of type 'char *' but is of type 'double' |
+| a.c:15:40:15:43 | 1.0 | This argument should be of type 'int' but is of type 'double' |
 | format.h:16:59:16:61 | str | This argument should be of type 'int' but is of type 'char *' |
 | format.h:16:64:16:64 | i | This argument should be of type 'double' but is of type 'int' |
 | format.h:16:67:16:67 | d | This argument should be of type 'char *' but is of type 'double' |

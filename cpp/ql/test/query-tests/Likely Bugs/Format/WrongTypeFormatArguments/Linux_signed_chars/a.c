@@ -1,0 +1,16 @@
+
+__attribute__((format(printf, 1, 3)))
+void myMultiplyDefinedPrintf(const char *format, const char *extraArg, ...)
+{
+	// ...
+}
+__attribute__((format(printf, 1, 3)))
+void myMultiplyDefinedPrintf2(const char *format, const char *extraArg, ...);
+
+void test_custom_printf1()
+{
+  myMultiplyDefinedPrintf("%i", "%s", 1); // GOOD
+  myMultiplyDefinedPrintf("%i", "%s", 1.0f); // BAD
+  myMultiplyDefinedPrintf2("%i", "%s", 1); // GOOD (we can't tell which definition is correct so we have to assume this is OK)
+  myMultiplyDefinedPrintf2("%i", "%s", 1.0f); // GOOD (we can't tell which definition is correct so we have to assume this is OK) [FALSE POSITIVE]
+}
