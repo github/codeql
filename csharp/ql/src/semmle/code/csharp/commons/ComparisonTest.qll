@@ -121,7 +121,10 @@ private newtype TComparisonTest =
     )
   } or
   TComparisonOperatorCall(OperatorCall oc, ComparisonKind kind, Expr first, Expr second) {
-    exists(Operator o | o = oc.getTarget() |
+    exists(Operator o |
+      o = oc.getTarget() or
+      o.getName() = oc.(DynamicOperatorCall).getLateBoundTargetName()
+    |
       o instanceof EQOperator and
       kind.isEquality() and
       first = oc.getArgument(0) and
