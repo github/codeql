@@ -369,7 +369,7 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
    where not exists(c.getAReference())
    select c
 
-➤ `See this in the query console <https://lgtm.com/query/666680036/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see `Navigating the call graph <call-graph>`__.
+➤ `See this in the query console <https://lgtm.com/query/666680036/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see :doc:`Navigating the call graph <call-graph>`.
 
 For more information about callables and calls, see the :doc:`call graph tutorial <call-graph>`.
 
