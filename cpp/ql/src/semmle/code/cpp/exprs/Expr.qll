@@ -207,7 +207,7 @@ class Expr extends StmtParent, @expr {
    * - "prvalue"
    * - "prvalue(load)"
    *
-   * The "prvalue*(load)" string is used when the expression is a *prvalue*, but
+   * The "prvalue(load)" string is used when the expression is a *prvalue*, but
    * `hasLValueToRvalueConversion()` holds.
    */
   string getValueCategoryString() {
@@ -278,7 +278,7 @@ class Expr extends StmtParent, @expr {
    *
    * See [basic.lval] in the C++ language specification.
    * In C++03, every expression is either an *lvalue* or an *rvalue*.
-   * In C++11, every expression is exactly one of an *lvalue*, an *xvalue*, or a *prvalue* (with *rvalue*s being the union of *xvalues* and *prvalue*s).
+   * In C++11, every expression is exactly one of an *lvalue*, an *xvalue*, or a *prvalue* (with *rvalue*s being the union of *xvalue*s and *prvalue*s).
    * Using the C++11 terminology, this predicate selects expressions whose value category is *lvalue*.
    */
   predicate isLValue() {
@@ -460,6 +460,8 @@ class Expr extends StmtParent, @expr {
 
 /**
  * A C/C++ operation.
+ *
+ * This is the QL abstract root class for all operations.
  */
 abstract class Operation extends Expr {
   /** Gets the operator of this operation. */
