@@ -2249,6 +2249,25 @@ dominance
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:48:131:51 | null |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:43 | _ |
+| Switch.cs:134:9:134:11 | enter M13 | Switch.cs:135:5:142:5 | {...} |
+| Switch.cs:135:5:142:5 | {...} | Switch.cs:136:9:141:9 | switch (...) {...} |
+| Switch.cs:136:9:141:9 | switch (...) {...} | Switch.cs:136:17:136:17 | access to parameter i |
+| Switch.cs:136:17:136:17 | access to parameter i | Switch.cs:138:13:138:20 | default: |
+| Switch.cs:138:13:138:20 | default: | Switch.cs:138:30:138:30 | 1 |
+| Switch.cs:138:22:138:31 | return ...; | Switch.cs:134:9:134:11 | exit M13 |
+| Switch.cs:138:29:138:30 | -... | Switch.cs:138:22:138:31 | return ...; |
+| Switch.cs:138:30:138:30 | 1 | Switch.cs:138:29:138:30 | -... |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:145:5:152:5 | {...} |
+| Switch.cs:145:5:152:5 | {...} | Switch.cs:146:9:151:9 | switch (...) {...} |
+| Switch.cs:146:9:151:9 | switch (...) {...} | Switch.cs:146:17:146:17 | access to parameter i |
+| Switch.cs:146:17:146:17 | access to parameter i | Switch.cs:148:13:148:19 | case ...: |
+| Switch.cs:148:13:148:19 | case ...: | Switch.cs:148:18:148:18 | 1 |
+| Switch.cs:148:18:148:18 | 1 | Switch.cs:148:28:148:28 | 1 |
+| Switch.cs:148:18:148:18 | 1 | Switch.cs:149:13:149:20 | default: |
+| Switch.cs:148:28:148:28 | 1 | Switch.cs:148:21:148:29 | return ...; |
+| Switch.cs:149:13:149:20 | default: | Switch.cs:149:30:149:30 | 1 |
+| Switch.cs:149:29:149:30 | -... | Switch.cs:149:22:149:31 | return ...; |
+| Switch.cs:149:30:149:30 | 1 | Switch.cs:149:29:149:30 | -... |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:4:5:9:5 | {...} |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:5:9:5:26 | ... ...; |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:25:5:25 | access to parameter o |
@@ -5092,6 +5111,25 @@ postDominance
 | Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:51 | ... => ... |
 | Switch.cs:131:48:131:51 | null | Switch.cs:131:43:131:43 | _ |
+| Switch.cs:134:9:134:11 | exit M13 | Switch.cs:138:22:138:31 | return ...; |
+| Switch.cs:135:5:142:5 | {...} | Switch.cs:134:9:134:11 | enter M13 |
+| Switch.cs:136:9:141:9 | switch (...) {...} | Switch.cs:135:5:142:5 | {...} |
+| Switch.cs:136:17:136:17 | access to parameter i | Switch.cs:136:9:141:9 | switch (...) {...} |
+| Switch.cs:138:13:138:20 | default: | Switch.cs:136:17:136:17 | access to parameter i |
+| Switch.cs:138:22:138:31 | return ...; | Switch.cs:138:29:138:30 | -... |
+| Switch.cs:138:29:138:30 | -... | Switch.cs:138:30:138:30 | 1 |
+| Switch.cs:138:30:138:30 | 1 | Switch.cs:138:13:138:20 | default: |
+| Switch.cs:144:9:144:11 | exit M14 | Switch.cs:148:21:148:29 | return ...; |
+| Switch.cs:144:9:144:11 | exit M14 | Switch.cs:149:22:149:31 | return ...; |
+| Switch.cs:145:5:152:5 | {...} | Switch.cs:144:9:144:11 | enter M14 |
+| Switch.cs:146:9:151:9 | switch (...) {...} | Switch.cs:145:5:152:5 | {...} |
+| Switch.cs:146:17:146:17 | access to parameter i | Switch.cs:146:9:151:9 | switch (...) {...} |
+| Switch.cs:148:13:148:19 | case ...: | Switch.cs:146:17:146:17 | access to parameter i |
+| Switch.cs:148:18:148:18 | 1 | Switch.cs:148:13:148:19 | case ...: |
+| Switch.cs:148:21:148:29 | return ...; | Switch.cs:148:28:148:28 | 1 |
+| Switch.cs:149:22:149:31 | return ...; | Switch.cs:149:29:149:30 | -... |
+| Switch.cs:149:29:149:30 | -... | Switch.cs:149:30:149:30 | 1 |
+| Switch.cs:149:30:149:30 | 1 | Switch.cs:149:13:149:20 | default: |
 | TypeAccesses.cs:3:10:3:10 | exit M | TypeAccesses.cs:8:13:8:27 | Type t = ... |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:3:10:3:10 | enter M |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:4:5:9:5 | {...} |
@@ -7350,6 +7388,14 @@ blockDominance
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString |
+| Switch.cs:134:9:134:11 | enter M13 | Switch.cs:134:9:134:11 | enter M13 |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:144:9:144:11 | enter M14 |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:144:9:144:11 | exit M14 |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:148:28:148:28 | 1 |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:149:13:149:20 | default: |
+| Switch.cs:144:9:144:11 | exit M14 | Switch.cs:144:9:144:11 | exit M14 |
+| Switch.cs:148:28:148:28 | 1 | Switch.cs:148:28:148:28 | 1 |
+| Switch.cs:149:13:149:20 | default: | Switch.cs:149:13:149:20 | default: |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | enter M |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:25:7:25 | ; |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:8:9:8:28 | ... ...; |
@@ -9031,6 +9077,14 @@ postBlockDominance
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString |
+| Switch.cs:134:9:134:11 | enter M13 | Switch.cs:134:9:134:11 | enter M13 |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:144:9:144:11 | enter M14 |
+| Switch.cs:144:9:144:11 | exit M14 | Switch.cs:144:9:144:11 | enter M14 |
+| Switch.cs:144:9:144:11 | exit M14 | Switch.cs:144:9:144:11 | exit M14 |
+| Switch.cs:144:9:144:11 | exit M14 | Switch.cs:148:28:148:28 | 1 |
+| Switch.cs:144:9:144:11 | exit M14 | Switch.cs:149:13:149:20 | default: |
+| Switch.cs:148:28:148:28 | 1 | Switch.cs:148:28:148:28 | 1 |
+| Switch.cs:149:13:149:20 | default: | Switch.cs:149:13:149:20 | default: |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | enter M |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | enter M |

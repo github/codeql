@@ -555,6 +555,11 @@
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s | 1 |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:48:131:51 | null | 3 |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString | 1 |
+| Switch.cs:134:9:134:11 | enter M13 | Switch.cs:134:9:134:11 | exit M13 | 9 |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:148:18:148:18 | 1 | 6 |
+| Switch.cs:144:9:144:11 | exit M14 | Switch.cs:144:9:144:11 | exit M14 | 1 |
+| Switch.cs:148:28:148:28 | 1 | Switch.cs:148:21:148:29 | return ...; | 2 |
+| Switch.cs:149:13:149:20 | default: | Switch.cs:149:22:149:31 | return ...; | 4 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | ... is ... | 14 |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | 1 |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 4 |
