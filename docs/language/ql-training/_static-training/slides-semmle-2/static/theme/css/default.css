@@ -587,15 +587,6 @@ dt {
 /* line 386, ../scss/default.scss */
 button {
   display: inline-block;
-  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSI0MCUiIHN0b3AtY29sb3I9IiNmOWY5ZjkiLz48c3RvcCBvZmZzZXQ9IjcwJSIgc3RvcC1jb2xvcj0iI2UzZTNlMyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(40%, #f9f9f9), color-stop(70%, #e3e3e3));
-  background: -moz-linear-gradient(#f9f9f9 40%, #e3e3e3 70%);
-  background: -webkit-linear-gradient(#f9f9f9 40%, #e3e3e3 70%);
-  background: linear-gradient(#f9f9f9 40%, #e3e3e3 70%);
-  border: 1px solid #a9a9a9;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
   padding: 5px 8px;
   outline: none;
   white-space: nowrap;
@@ -605,7 +596,6 @@ button {
   user-select: none;
   cursor: pointer;
   text-shadow: 1px 1px #fff;
-  font-size: 10pt;
 }
 
 /* line 400, ../scss/default.scss */
@@ -1599,8 +1589,36 @@ p.first.admonition-title {
   font-size: 1em;
 }
 
-.admonition.note  ul {
+.admonition.note  ul li {
   width: inherit;
+}
+
+
+/* styles for information buttons on slides that have notes */
+
+#extra-notes {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 1%;
+  font-size: 1em;
+}
+
+#close-notes {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: -1%;
+  font-size: 1.2em;
+}
+
+button {
+  border: none;
+  background: none;
+}
+
+button:hover {
+  text-decoration: underline;
 }
 
 /********* images ************/
