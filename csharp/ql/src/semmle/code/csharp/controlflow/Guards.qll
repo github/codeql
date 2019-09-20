@@ -277,11 +277,12 @@ class DereferenceableExpr extends Expr {
   private Expr getABooleanNullCheck(BooleanValue v, boolean isNull) {
     exists(boolean branch | branch = v.getValue() |
       // Comparison with `null`, for example `x != null`
-      exists(ComparisonTest ct, ComparisonKind ck, NullLiteral nl |
+      exists(ComparisonTest ct, ComparisonKind ck, Expr e |
         ct.getExpr() = result and
         ct.getAnArgument() = this and
-        ct.getAnArgument() = nl and
-        this != nl and
+        ct.getAnArgument() = e and
+        e = any(NullValue nv | nv.isNull()).getAnExpr() and
+        this != e and
         ck = ct.getComparisonKind()
       |
         ck.isEquality() and isNull = branch

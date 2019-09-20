@@ -360,7 +360,7 @@ public class E
     {
         var x = s ?? o as string;
         if (x != (string)null)
-            x.ToString(); // GOOD (FALSE POSITIVE)
+            x.ToString(); // GOOD
     }
 }
 
