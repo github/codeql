@@ -165,6 +165,7 @@ class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
    *     return 3;
    * }
    * ```
+   * Note that this reorders the `default` case to always be at the end.
    */
   override CaseStmt getCase(int i) { result = SwithStmtInternal::getCase(this, i) }
 
