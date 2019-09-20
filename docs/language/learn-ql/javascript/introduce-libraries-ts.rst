@@ -134,7 +134,7 @@ The QL class `ClassOrInterface <https://help.semmle.com/qldoc/javascript/semmle/
 
 Note that the superclass of a class is an expression, not a type annotation. If the superclass has type arguments, it will be an expression of kind `ExpressionWithTypeArguments <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExpressionWithTypeArguments.html>`__.
 
-Also see the documentation for classes in the `Introduction to the QL libraries for JavaScript <introduce-libraries-js#classes>`__.
+Also see the documentation for classes in the `Introduction to the QL libraries for JavaScript <introduce-libraries-js.html#classes>`__.
 
 To select the type references to a class or an interface, use ``getTypeName()``.
 
@@ -443,6 +443,6 @@ A `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascrip
 What next?
 ----------
 
--  Learn about the QL standard libraries used to write queries for JavaScript in :doc:`Introducing the Javacript libraries <introduce-libraries-js>`.
+-  Learn about the QL standard libraries used to write queries for JavaScript in :doc:`Introducing the JavaScript libraries <introduce-libraries-js>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
