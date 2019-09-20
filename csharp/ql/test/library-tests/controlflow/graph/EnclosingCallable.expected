@@ -2441,6 +2441,14 @@ nodeEnclosing
 | Switch.cs:138:22:138:31 | return ...; | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:138:29:138:30 | -... | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:138:30:138:30 | 1 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:13:139:19 | case ...: | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:18:139:18 | 1 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:21:139:29 | return ...; | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:28:139:28 | 1 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:13:140:19 | case ...: | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:18:140:18 | 2 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:21:140:29 | return ...; | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:28:140:28 | 2 | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:144:9:144:11 | enter M14 | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:144:9:144:11 | exit M14 | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:145:5:152:5 | {...} | Switch.cs:144:9:144:11 | M14 |
@@ -2454,6 +2462,10 @@ nodeEnclosing
 | Switch.cs:149:22:149:31 | return ...; | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:149:29:149:30 | -... | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:149:30:149:30 | 1 | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:13:150:19 | case ...: | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:18:150:18 | 2 | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:21:150:29 | return ...; | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:28:150:28 | 2 | Switch.cs:144:9:144:11 | M14 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:3:10:3:10 | exit M | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:3:10:3:10 | M |
@@ -3721,10 +3733,17 @@ blockEnclosing
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:134:9:134:11 | enter M13 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:134:9:134:11 | exit M13 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:138:13:138:20 | default: | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:28:139:28 | 1 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:13:140:19 | case ...: | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:28:140:28 | 2 | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:144:9:144:11 | enter M14 | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:144:9:144:11 | exit M14 | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:148:28:148:28 | 1 | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:149:13:149:20 | default: | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:13:150:19 | case ...: | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:28:150:28 | 2 | Switch.cs:144:9:144:11 | M14 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | M |
