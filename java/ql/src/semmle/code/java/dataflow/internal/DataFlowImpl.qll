@@ -1075,6 +1075,7 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
     flowCandFwd(mid, fromArg, _, config) and
     store(mid, f, node) and
     nodeCand(node, unbind(config)) and
+    readStoreCand(f, unbind(config)) and
     apf.headUsesContent(f)
   )
   or
