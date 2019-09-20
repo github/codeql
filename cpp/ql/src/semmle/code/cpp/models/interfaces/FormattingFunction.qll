@@ -116,15 +116,14 @@ abstract class FormattingFunction extends Function {
    * the first format specifier in the format string.
    */
   int getFirstFormatArgumentIndex() {
-  	result = getNumberOfParameters()
-  	and
+    result = getNumberOfParameters() and
     // the formatting function either has a definition in the snapshot, or all
     // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
     // really know the correct number)
     (
-      hasDefinition() or
-      forall(FunctionDeclarationEntry fde |
-        fde = getADeclarationEntry() |
+      hasDefinition()
+      or
+      forall(FunctionDeclarationEntry fde | fde = getADeclarationEntry() |
         result = fde.getNumberOfParameters()
       )
     )
