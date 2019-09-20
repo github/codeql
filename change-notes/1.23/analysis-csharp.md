@@ -15,6 +15,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
+| Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | Fewer false positive results | More `null` checks are now taken into account, including `null` checks for `dynamic` expressions and `null` checks such as `object alwaysNull = null; if (x != alwaysNull) ...`. |
 
 ## Removal of old queries
 
