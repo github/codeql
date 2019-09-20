@@ -947,12 +947,6 @@ module ControlFlow {
               result = cs.getCondition() and
               c = specificBoolean(false)
             )
-            or
-            // Last statement exits with any non-break completion
-            exists(int last | last = max(int i | exists(ss.getStmt(i))) |
-              result = ss.getStmt(last) and
-              c = TRec(TLastRecNonBreakCompletion())
-            )
           )
         or
         cfe = any(SwitchExpr se |
