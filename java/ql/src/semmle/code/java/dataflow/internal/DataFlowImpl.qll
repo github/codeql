@@ -1175,12 +1175,12 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
   exists(Content f, AccessPathFront apf0 |
     flowCandStore(node, f, toReturn, apf0, config) and
     apf0.headUsesContent(f) and
-    consCand(f, apf, unbind(config))
+    consCand(f, apf, config)
   )
   or
   exists(Content f, AccessPathFront apf0 |
     flowCandRead(node, f, toReturn, apf0, config) and
-    consCandFwd(f, apf0, unbind(config)) and
+    consCandFwd(f, apf0, config) and
     apf.headUsesContent(f)
   )
 }
