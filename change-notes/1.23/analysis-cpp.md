@@ -23,6 +23,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | Too many arguments to formatting function (`cpp/too-many-format-arguments`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
 | Unclear comparison precedence (`cpp/comparison-precedence`) | Fewer false positive results | False positives involving template classes and functions have been fixed. |
 | Comparison of narrow type with wide type in loop condition (`cpp/comparison-with-wider-type`) | Higher precision | The precision of this query has been increased to "high" as the alerts from this query have proved to be valuable on real-world projects. With this precision, results are now displayed by default in LGTM. |
+| Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
 
 ## Changes to libraries
 
