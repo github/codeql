@@ -10,7 +10,7 @@ void myMultiplyDefinedPrintf2(const char *format, const char *extraArg, ...);
 void test_custom_printf1()
 {
   myMultiplyDefinedPrintf("%i", "%s", 1); // GOOD
-  myMultiplyDefinedPrintf("%i", "%s", 1.0f); // BAD
+  myMultiplyDefinedPrintf("%i", "%s", 1.0f); // BAD [NOT DETECTED]
   myMultiplyDefinedPrintf2("%i", "%s", 1); // GOOD (we can't tell which definition is correct so we have to assume this is OK)
-  myMultiplyDefinedPrintf2("%i", "%s", 1.0f); // GOOD (we can't tell which definition is correct so we have to assume this is OK) [FALSE POSITIVE]
+  myMultiplyDefinedPrintf2("%i", "%s", 1.0f); // GOOD (we can't tell which definition is correct so we have to assume this is OK)
 }
