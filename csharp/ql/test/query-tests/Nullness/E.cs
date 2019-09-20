@@ -353,7 +353,7 @@ public class E
     {
         dynamic x = s ?? o as string;
         if (x != null)
-            x.ToString(); // GOOD (FALSE POSITIVE)
+            x.ToString(); // GOOD
     }
 
     static void Ex33(string s, object o)

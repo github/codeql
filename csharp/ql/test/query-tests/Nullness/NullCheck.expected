@@ -221,6 +221,8 @@
 | E.cs:348:21:348:21 | access to parameter s | E.cs:348:21:348:21 | access to parameter s | null | true |
 | E.cs:354:21:354:21 | access to parameter s | E.cs:354:21:354:21 | access to parameter s | non-null | false |
 | E.cs:354:21:354:21 | access to parameter s | E.cs:354:21:354:21 | access to parameter s | null | true |
+| E.cs:355:13:355:21 | dynamic call to operator != | E.cs:355:13:355:13 | access to local variable x | false | true |
+| E.cs:355:13:355:21 | dynamic call to operator != | E.cs:355:13:355:13 | access to local variable x | true | false |
 | E.cs:361:17:361:17 | access to parameter s | E.cs:361:17:361:17 | access to parameter s | non-null | false |
 | E.cs:361:17:361:17 | access to parameter s | E.cs:361:17:361:17 | access to parameter s | null | true |
 | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | Forwarding.cs:9:14:9:14 | access to local variable s | false | false |
