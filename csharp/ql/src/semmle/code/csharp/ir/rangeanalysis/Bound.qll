@@ -1,6 +1,6 @@
-import cpp
-private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.ir.ValueNumbering
+import csharp
+private import semmle.code.csharp.ir.IR
+private import semmle.code.csharp.ir.ValueNumbering
 
 private newtype TBound =
   TBoundZero() or
@@ -57,7 +57,7 @@ class ZeroBound extends Bound, TBoundZero {
     result.(ConstantValueInstruction).getValue().toInt() = delta
   }
 
-  override Location getLocation() { result instanceof UnknownDefaultLocation }
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**

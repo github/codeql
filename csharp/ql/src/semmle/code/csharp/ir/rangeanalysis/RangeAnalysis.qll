@@ -67,10 +67,10 @@
  * back-edge as a precise bound might require traversing a loop once).
  */
 
-import cpp
-private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.controlflow.IRGuards
-private import semmle.code.cpp.ir.ValueNumbering
+import csharp
+private import semmle.code.csharp.ir.IR
+private import semmle.code.csharp.ir.internal.IRGuards
+private import semmle.code.csharp.ir.ValueNumbering
 private import RangeUtils
 private import SignAnalysis
 import Bound
@@ -205,18 +205,18 @@ pragma[inline]
 private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
   fromtyp.getSize() < totyp.getSize() and
   (
-    fromtyp.isUnsigned()
+    fromtyp instanceof UnsignedIntegralType
     or
-    totyp.isSigned()
+    totyp instanceof SignedIntegralType
   )
   or
   fromtyp.getSize() <= totyp.getSize() and
   (
-    fromtyp.isSigned() and
-    totyp.isSigned()
+    fromtyp instanceof SignedIntegralType and
+    totyp instanceof SignedIntegralType
     or
-    fromtyp.isUnsigned() and
-    totyp.isUnsigned()
+    fromtyp instanceof UnsignedIntegralType and
+    totyp instanceof UnsignedIntegralType
   )
 }
 
@@ -233,13 +233,19 @@ private class SafeCastInstruction extends ConvertInstruction {
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
  */
 private predicate typeBound(IntegralType typ, int lowerbound, int upperbound) {
-  typ.isSigned() and typ.getSize() = 1 and lowerbound = -128 and upperbound = 127
+  typ instanceof SignedIntegralType and typ.getSize() = 1 and lowerbound = -128 and upperbound = 127
   or
-  typ.isUnsigned() and typ.getSize() = 1 and lowerbound = 0 and upperbound = 255
+  typ instanceof UnsignedIntegralType and typ.getSize() = 1 and lowerbound = 0 and upperbound = 255
   or
-  typ.isSigned() and typ.getSize() = 2 and lowerbound = -32768 and upperbound = 32767
+  typ instanceof SignedIntegralType and
+  typ.getSize() = 2 and
+  lowerbound = -32768 and
+  upperbound = 32767
   or
-  typ.isUnsigned() and typ.getSize() = 2 and lowerbound = 0 and upperbound = 65535
+  typ instanceof UnsignedIntegralType and
+  typ.getSize() = 2 and
+  lowerbound = 0 and
+  upperbound = 65535
 }
 
 /**
@@ -608,5 +614,16 @@ private predicate boundedInstruction(
     cast = i and
     safeNarrowingCast(cast, upper.booleanNot()) and
     boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
+  )
+  or
+  exists(PropertyAccess pa | 
+    i.(CallInstruction).getAST() = pa and
+    pa.getProperty().getName() = "Length" and
+    b instanceof ZeroBound and
+    delta = origdelta and
+    (upper = true or upper = false) and
+    fromBackEdge = false and
+    delta = getArrayDim(pa.getQualifier().(VariableAccess).getTarget()) and
+    reason = TNoReason()
   )
 }

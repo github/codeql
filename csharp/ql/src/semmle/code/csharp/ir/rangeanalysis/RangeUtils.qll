@@ -1,7 +1,7 @@
-import cpp
-private import semmle.code.cpp.ir.IR
+import csharp
+private import semmle.code.csharp.ir.IR
 // TODO: move this dependency
-import semmle.code.cpp.ir.internal.IntegerConstant
+import semmle.code.csharp.ir.internal.IntegerConstant
 
 // TODO: move this out of test code
 language[monotonicAggregates]
@@ -37,6 +37,13 @@ IntValue getConstantValue(Instruction instr) {
       |
         getConstantValue(operand.getDef())
       )
+  )
+}
+
+IntValue getArrayDim(Variable arr) {
+  exists(ArrayCreation ac |
+    arr.getInitializer() = ac and
+    result = ac.getInitializer().getNumberOfElements()
   )
 }
 
