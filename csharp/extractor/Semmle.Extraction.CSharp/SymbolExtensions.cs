@@ -367,7 +367,7 @@ namespace Semmle.Extraction.CSharp
         }
 
         public static bool IsReallyUnbound(this INamedTypeSymbol type) =>
-            Equals(type.ConstructedFrom, type) || type.IsUnboundGenericType;
+            /*Equals(type.ConstructedFrom, type) ||*/ type.IsUnboundGenericType;
 
         public static bool IsReallyBound(this INamedTypeSymbol type) => !IsReallyUnbound(type);
 
