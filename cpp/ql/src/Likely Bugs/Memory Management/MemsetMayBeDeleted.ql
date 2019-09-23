@@ -14,15 +14,23 @@
 import semmle.code.cpp.dataflow.TaintTracking
 
 private predicate memsetName(string fn) {
-	fn = "memset" or
-	fn = "bzero" or
-	fn = "ZeroMemory" or
-	fn = "FillMemory" 
+  fn = "memset" or
+  fn = "bzero" or
+  fn = "ZeroMemory" or
+  fn = "FillMemory" or
+  fn = "__builtin_memset"
 }
-	
-from FunctionCall fc, Expr arg, Expr succ
+
+from FunctionCall fc, Expr arg
 where
-  memsetName(fc.getTarget().getName())
-  and arg = fc.getArgument(0)
-  and DataFlow::localFlow(DataFlow::exprNode(arg), DataFlow::exprNode(succ))
-select "Found an edge.", fc, arg, succ
+  memsetName(fc.getTarget().getName()) and
+  arg = fc.getArgument(0) and
+  not exists(Expr succ |
+    TaintTracking::localTaint(DataFlow::definitionByReferenceNodeFromArgument(arg),
+      DataFlow::exprNode(succ))
+  ) and
+  not exists(Parameter parm |
+    TaintTracking::localTaint(DataFlow::parameterNode(parm),
+      DataFlow::exprNode(arg))
+  )
+select fc, "Call to " + fc.getTarget().getName() + " may be deleted by the compiler."

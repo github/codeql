@@ -7,7 +7,7 @@
 <code>ZeroMemory</code> on a buffer in order to clear its contents may get
 optimized away by the compiler if said buffer is not subsequently used.
 This is not desirable behavior if the buffer contains sensitive data that
-could be exploited by an attacker.</p>
+could be somehow retrieved by an attacker.</p>
 
 </overview>
 <recommendation>
