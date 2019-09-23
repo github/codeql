@@ -69,7 +69,7 @@ class State extends string {
    * Holds if predator and prey are on the same shore and the man
    * is not present.
    */
-  predicate eats(Shore predator, Shore prey) { predator = prey and man = predator.other() }
+  predicate eats(Shore predator, Shore prey) { predator = prey and man != predator }
 
   /** Holds if nothing gets eaten in this state. */
   predicate isSafe() { not (eats(goat, cabbage) or eats(wolf, goat)) }
