@@ -30,8 +30,7 @@ class AttributeFormattingFunction extends FormattingFunction {
   }
 
   override int getFormatParameterIndex() {
-    forex(PrintfFormatAttribute printf_attrib |
-      printf_attrib = getAnAttribute() |
+    forex(PrintfFormatAttribute printf_attrib | printf_attrib = getAnAttribute() |
       result = printf_attrib.getFormatIndex()
     )
   }
