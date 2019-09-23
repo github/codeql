@@ -194,8 +194,9 @@ predicate needsLoad(Expr expr) {
  * Holds if we should ignore the `Load` instruction for `expr` when generating IR.
  */
 private predicate ignoreLoad(Expr expr) {
-  // No load needed for the qualifier
-  // in an array access
+  // No load needed for the qualifier of an array access, 
+  // since we use the instruction `ElementsAddress`
+  // to get the address of the first element in an array
   expr = any(ArrayAccess aa).getQualifier()
   or
   // No load is needed for the lvalue in an assignment such as:

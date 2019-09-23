@@ -249,6 +249,11 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     )
   }
 
+  override int getInstructionElementSize(InstructionTag tag) {
+    tag = getElementAddressTag() and
+    result = Language::getTypeSize(getElementType())
+  }
+
   override string getInstructionConstantValue(InstructionTag tag) {
     tag = getElementIndexTag() and
     result = getElementIndex().toString()
