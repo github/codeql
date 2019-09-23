@@ -3672,7 +3672,7 @@ ir.cpp:
 #  560| [TopLevelFunction] int EnumSwitch(E)
 #  560|   params: 
 #  560|     0: [Parameter] e
-#  560|         Type = [TypedefType] E
+#  560|         Type = [CTypedefType] E
 #  560|   body: [Block] { ... }
 #  561|     0: [SwitchStmt] switch (...) ... 
 #  561|       0: [CStyleCast] (int)...
@@ -3680,7 +3680,7 @@ ir.cpp:
 #  561|           Type = [IntType] int
 #  561|           ValueCategory = prvalue
 #  561|         expr: [VariableAccess] e
-#  561|             Type = [TypedefType] E
+#  561|             Type = [CTypedefType] E
 #  561|             ValueCategory = prvalue(load)
 #  561|       1: [Block] { ... }
 #  562|         0: [SwitchCase] case ...:
@@ -6191,19 +6191,19 @@ ir.cpp:
 #  915| [Operator,TopLevelFunction] void* operator new(size_t, float)
 #  915|   params: 
 #  915|     0: [Parameter] p#0
-#  915|         Type = [Size_t,TypedefType] size_t
+#  915|         Type = [CTypedefType,Size_t] size_t
 #  915|     1: [Parameter] p#1
 #  915|         Type = [FloatType] float
 #  916| [Operator,TopLevelFunction] void* operator new[](size_t, float)
 #  916|   params: 
 #  916|     0: [Parameter] p#0
-#  916|         Type = [Size_t,TypedefType] size_t
+#  916|         Type = [CTypedefType,Size_t] size_t
 #  916|     1: [Parameter] p#1
 #  916|         Type = [FloatType] float
 #  917| [Operator,TopLevelFunction] void* operator new(size_t, std::align_val_t, float)
 #  917|   params: 
 #  917|     0: [Parameter] p#0
-#  917|         Type = [Size_t,TypedefType] size_t
+#  917|         Type = [CTypedefType,Size_t] size_t
 #  917|     1: [Parameter] p#1
 #  917|         Type = [ScopedEnum] align_val_t
 #  917|     2: [Parameter] p#2
@@ -6211,7 +6211,7 @@ ir.cpp:
 #  918| [Operator,TopLevelFunction] void* operator new[](size_t, std::align_val_t, float)
 #  918|   params: 
 #  918|     0: [Parameter] p#0
-#  918|         Type = [Size_t,TypedefType] size_t
+#  918|         Type = [CTypedefType,Size_t] size_t
 #  918|     1: [Parameter] p#1
 #  918|         Type = [ScopedEnum] align_val_t
 #  918|     2: [Parameter] p#2
@@ -6255,23 +6255,23 @@ ir.cpp:
 #  926| [MemberFunction] void* SizedDealloc::operator new(size_t)
 #  926|   params: 
 #  926|     0: [Parameter] p#0
-#  926|         Type = [Size_t,TypedefType] size_t
+#  926|         Type = [CTypedefType,Size_t] size_t
 #  927| [MemberFunction] void* SizedDealloc::operator new[](size_t)
 #  927|   params: 
 #  927|     0: [Parameter] p#0
-#  927|         Type = [Size_t,TypedefType] size_t
+#  927|         Type = [CTypedefType,Size_t] size_t
 #  928| [MemberFunction] void SizedDealloc::operator delete(void*, size_t)
 #  928|   params: 
 #  928|     0: [Parameter] p#0
 #  928|         Type = [VoidPointerType] void *
 #  928|     1: [Parameter] p#1
-#  928|         Type = [Size_t,TypedefType] size_t
+#  928|         Type = [CTypedefType,Size_t] size_t
 #  929| [MemberFunction] void SizedDealloc::operator delete[](void*, size_t)
 #  929|   params: 
 #  929|     0: [Parameter] p#0
 #  929|         Type = [VoidPointerType] void *
 #  929|     1: [Parameter] p#1
-#  929|         Type = [Size_t,TypedefType] size_t
+#  929|         Type = [CTypedefType,Size_t] size_t
 #  932| [CopyAssignmentOperator] Overaligned& Overaligned::operator=(Overaligned const&)
 #  932|   params: 
 #-----|     0: [Parameter] p#0
@@ -7855,7 +7855,7 @@ ir.cpp:
 # 1118|           Type = [IntType] int
 # 1119|     4: [DeclStmt] declaration
 # 1119|       0: [TypeDeclarationEntry] declaration of d
-# 1119|           Type = [LocalTypedefType] d
+# 1119|           Type = [CTypedefType,LocalTypedefType] d
 # 1120|     5: [ReturnStmt] return ...
 # 1117| [TopLevelFunction] int f(float)
 # 1117|   params: 
