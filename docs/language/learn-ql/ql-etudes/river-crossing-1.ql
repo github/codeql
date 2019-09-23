@@ -76,7 +76,7 @@ class State extends string {
     exists(int stepsSoFar, string pathSoFar, Cargo cargo |
       result = this.reachesVia(pathSoFar, stepsSoFar).safeFerry(cargo) and
       steps = stepsSoFar + 1 and
-       // We expect a solution in 7 steps, but you can choose any value here.
+      // We expect a solution in 7 steps, but you can choose any value here.
       steps <= 7 and
       path = pathSoFar + "\n Ferry " + cargo
     )
