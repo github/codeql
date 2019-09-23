@@ -307,6 +307,9 @@ class ArrayAggregateLiteral extends ArrayOrVectorAggregateLiteral {
 
 /**
  * A C/C++ aggregate literal that initializes a GNU vector type.
+ *
+ * Braced initializer lists are used, similarly to what is done
+ * for arrays.
  * ```
  * typedef int v4si __attribute__ (( vector_size(4*sizeof(int)) ));
  * v4si v = (v4si){ 1, 2, 3, 4 };
