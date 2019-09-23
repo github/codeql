@@ -1,2 +1,4 @@
+| iter_guard.py:21:5:21:16 | For | $@ of class '$@' may be used in for-loop. | iter_guard.py:25:20:25:20 | ControlFlowNode for IntegerLiteral | Non-iterator | file://:0:0:0:0 | builtin-class int | int |
+| iter_guard.py:37:5:37:16 | For | $@ of class '$@' may be used in for-loop. | iter_guard.py:41:25:41:25 | ControlFlowNode for IntegerLiteral | Non-iterator | file://:0:0:0:0 | builtin-class int | int |
 | test.py:50:1:50:23 | For | $@ of class '$@' may be used in for-loop. | test.py:50:10:50:22 | ControlFlowNode for NonIterator() | Non-iterator | test.py:45:1:45:26 | class NonIterator | NonIterator |
 | test.py:170:10:170:22 | For | $@ of class '$@' may be used in for-loop. | test.py:170:10:170:22 | ControlFlowNode for .0 | Non-iterator | test.py:169:1:169:21 | class false_positive | false_positive |
