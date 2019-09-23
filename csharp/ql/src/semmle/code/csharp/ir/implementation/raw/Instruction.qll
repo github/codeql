@@ -648,7 +648,6 @@ class IndexedInstruction extends Instruction {
   int index;
 
   IndexedInstruction() { index = Construction::getInstructionIndex(this) }
-  
 
   final override string getImmediateString() { result = index.toString() }
 

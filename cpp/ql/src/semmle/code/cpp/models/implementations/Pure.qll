@@ -95,4 +95,3 @@ class PureFunction extends TaintFunction, SideEffectFunction {
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 }
-

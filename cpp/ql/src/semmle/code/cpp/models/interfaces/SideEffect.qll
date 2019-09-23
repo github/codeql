@@ -31,7 +31,7 @@ abstract class SideEffectFunction extends Function {
 
   /**
    * Holds if the value pointed to by the parameter at index `i` is written to. `buffer` is true
-   * if the write may be at an offset. `mustWrite` is true if the write is unconditional. 
+   * if the write may be at an offset. `mustWrite` is true if the write is unconditional.
    */
   predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     none()
@@ -39,7 +39,7 @@ abstract class SideEffectFunction extends Function {
 
   /**
    * Holds if the value pointed to by the parameter at index `i` is read from. `buffer` is true
-   * if the read may be at an offset. 
+   * if the read may be at an offset.
    */
   predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) { none() }
 

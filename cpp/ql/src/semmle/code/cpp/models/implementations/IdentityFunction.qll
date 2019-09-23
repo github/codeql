@@ -37,4 +37,3 @@ class IdentityFunction extends DataFlowFunction, SideEffectFunction, AliasFuncti
     input.isParameter(0) and output.isReturnValue()
   }
 }
-

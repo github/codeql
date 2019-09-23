@@ -460,8 +460,8 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
     result = getTranslatedExpr(call
-            .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index)).getFullyConverted())
-          .getResult()
+            .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
+            .getFullyConverted()).getResult()
   }
 
   override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {

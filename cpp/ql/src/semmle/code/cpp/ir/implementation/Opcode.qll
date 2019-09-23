@@ -485,4 +485,3 @@ module Opcode {
     final override string toString() { result = "NewObj" }
   }
 }
-
