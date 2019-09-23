@@ -806,8 +806,10 @@ isexpr.cs:
 #   13|     r0_13(Object)        = Load                 : &:r0_12, ~mu0_2
 #   13|     r0_14(Is_A)          = CheckedConvertOrNull : r0_13
 #   13|     r0_15(Is_A)          = Constant[0]          : 
-#   13|     r0_16(Boolean)       = CompareNE            : r0_14, r0_15
-#   13|     r0_17(Boolean)       = ConditionalBranch    : r0_16
+#   13|     r0_16(glval<Is_A>)   = VariableAddress[tmp] : 
+#   13|     mu0_17(Is_A)         = Uninitialized[tmp]   : &:r0_16
+#   13|     r0_18(Boolean)       = CompareNE            : r0_14, r0_15
+#   13|     v0_19(Void)          = ConditionalBranch    : r0_18
 #-----|   False -> Block 2
 #-----|   True -> Block 3
 
@@ -817,13 +819,12 @@ isexpr.cs:
 #    8|     v1_2(Void) = ExitFunction : 
 
 #   13|   Block 2
-#   13|     v2_0(Void) = ConditionalBranch : r0_16
+#   13|     v2_0(Void) = ConditionalBranch : r0_18
 #-----|   False -> Block 5
 #-----|   True -> Block 4
 
 #   13|   Block 3
-#   13|     r3_0(glval<Is_A>) = VariableAddress[tmp] : 
-#   13|     mu3_1(Is_A)       = Store                : &:r3_0, r0_14
+#   13|     mu3_0(Is_A) = Store : &:r0_16, r0_14
 #-----|   Goto -> Block 2
 
 #   15|   Block 4
