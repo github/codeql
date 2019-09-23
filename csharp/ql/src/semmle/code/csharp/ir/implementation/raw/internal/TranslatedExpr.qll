@@ -1447,7 +1447,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
       else result instanceof Opcode::Add
     )
     or
-    expr instanceof AssignSubExpr and 
+    expr instanceof AssignSubExpr and
     (
       if expr.getRValue().getType() instanceof PointerType
       then result instanceof Opcode::PointerSub
@@ -1505,7 +1505,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     exists(Opcode opcode |
       opcode = this.getOpcode() and
       (
-        opcode instanceof Opcode::PointerAdd or 
+        opcode instanceof Opcode::PointerAdd or
         opcode instanceof Opcode::PointerSub
       )
     ) and
