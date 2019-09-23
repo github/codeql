@@ -9,7 +9,7 @@ __attribute__((format(printf, 1, 3)))
 void myMultiplyDefinedPrintf2(const char *format, int extraArg, ...);
 
 __attribute__((format(printf, 2, 3)))
-void myMultiplyDefinedPrintf3(int extraArg, const char *format, ...);
+void myMultiplyDefinedPrintf3(const char *extraArg, const char *format, ...);
 
 void test_custom_printf1()
 {
