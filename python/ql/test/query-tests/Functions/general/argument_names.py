@@ -66,3 +66,39 @@ class NonSelf(object):
     def s_cmethod2(cls):
         pass
     s_cmethod2 = classmethod(s_cmethod2)
+
+#Possible FPs for non-self. ODASA-2439
+
+class C(object):
+    def _func(f):
+        return f
+
+    _func(x)
+
+    #or
+    @_func
+    def meth(self):
+        pass
+
+
+def dont_care(arg):
+    pass
+
+class C(object):
+
+    meth = dont_care
+
+class Meta(type):
+
+    #__new__ is an implicit class method, so the first arg is the metaclass
+    def __new__(metacls, name, bases, cls_dict):
+        return super(Meta, metacls).__new__(metacls, name, bases, cls_dict)
+
+#ODASA-6062
+import zope.interface
+class Z(zope.interface.Interface):
+
+    def meth(arg):
+        pass
+
+Z().meth(0)
