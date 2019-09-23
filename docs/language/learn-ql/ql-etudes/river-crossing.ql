@@ -29,8 +29,8 @@ class Shore extends string {
     this = "Right"
   }
 
-  /** Returns "the other shore". */
-  Shore flip() {
+  /** Returns the other shore. */
+  Shore other() {
     this = "Left" and result = "Right"
     or
     this = "Right" and result = "Left"
@@ -56,20 +56,20 @@ class State extends string {
 
   /** Returns the state that is reached after ferrying a particular cargo item. */
   State ferry(Cargo cargo) {
-    cargo = "Nothing" and result = renderState(man.flip(), goat, cabbage, wolf)
+    cargo = "Nothing" and result = renderState(man.other(), goat, cabbage, wolf)
     or
-    cargo = "Goat" and result = renderState(man.flip(), goat.flip(), cabbage, wolf)
+    cargo = "Goat" and result = renderState(man.other(), goat.other(), cabbage, wolf)
     or
-    cargo = "Cabbage" and result = renderState(man.flip(), goat, cabbage.flip(), wolf)
+    cargo = "Cabbage" and result = renderState(man.other(), goat, cabbage.other(), wolf)
     or
-    cargo = "Wolf" and result = renderState(man.flip(), goat, cabbage, wolf.flip())
+    cargo = "Wolf" and result = renderState(man.other(), goat, cabbage, wolf.other())
   }
 
   /**
    * Holds if predator and prey are on the same shore and the man
-   * is on the other shore.
+   * is not present.
    */
-  predicate eats(Shore predator, Shore prey) { predator = prey and man = predator.flip() }
+  predicate eats(Shore predator, Shore prey) { predator = prey and man = predator.other() }
 
   /** Holds if nothing gets eaten in this state. */
   predicate isSafe() { not (eats(goat, cabbage) or eats(wolf, goat)) }
@@ -110,5 +110,5 @@ class GoalState extends State {
 }
 
 from string path
-where any(InitialState is).reachesVia(path, _) = any(GoalState gs)
+where any(InitialState i).reachesVia(path, _) = any(GoalState g)
 select path

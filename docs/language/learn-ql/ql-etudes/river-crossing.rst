@@ -48,7 +48,7 @@ Second, any item can be on one of two shores. Let's call these the "left shore" 
 Define a class ``Shore`` containing ``"Left"`` and ``"Right"``.
 
 It would be helpful to express "the other shore". You can do this by defining a member predicate
-``flip`` in the class ``Shore`` such that ``"Left".flip()`` returns ``"Right"`` and vice versa.
+``other`` in the class ``Shore`` such that ``"Left".other()`` returns ``"Right"`` and vice versa.
 
 .. container:: toggle
 
@@ -74,7 +74,7 @@ temporary variables in the body of a class are called `fields <https://help.semm
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 32-42,83
+      :lines: 33-43,84
 
 We are interested in two particular states, namely the initial state and the goal state.
 Assuming that all items start on the left shore and end up on the right shore, define
@@ -87,7 +87,7 @@ Assuming that all items start on the left shore and end up on the right shore, d
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 85-93
+      :lines: 86-94
 
 .. pull-quote::
 
@@ -114,7 +114,7 @@ The basic act of ferrying moves the man and a cargo item to the other shore,
 resulting in a new state.
 
 Write a member predicate (of ``State``) called ``ferry``, that specifies what happens to the state
-after ferrying a particular cargo. (Hint: Use the predicate ``flip``.)
+after ferrying a particular cargo. (Hint: Use the predicate ``other``.)
 
 .. container:: toggle
 
@@ -129,7 +129,8 @@ Of course, not all ferrying actions are possible. Add some extra conditions to d
 action is "safe", that is, it doesn't lead to a state where the goat or the cabbage get eaten.
 For example, follow these steps:
 
-   #. Define a predicate ``eats`` that encodes the conditions for when something gets eaten.
+   #. Define a predicate ``eats`` that encodes the conditions for when a "predator" is able to eat an
+      unguarded "prey".
    #. Define a predicate ``isSafe`` that holds when nothing gets eaten.
    #. Define a predicate ``safeFerry`` that restricts ``ferry`` to only include safe ferrying actions.
 
@@ -175,7 +176,7 @@ for example ``steps <= 7``.
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 66-82
+      :lines: 67-83
 
 However, although this ensures that the solution is finite, it can still contain loops if the upper bound
 for ``steps`` is large.

@@ -1,7 +1,8 @@
 /**
  * @name River crossing puzzle (version 1)
  * @description An "elementary" version of the solution to
- * the river crossing problem.
+ * the river crossing problem. It introduces more explicit and intuitive
+ * definitions, before tidying them up in the "full" version.
  *
  * Note: Parts of this QL file are included in the corresponding .rst file.
  * Make sure to update the line numbers if you change anything here!
@@ -21,8 +22,8 @@ class Cargo extends string {
 class Shore extends string {
   Shore() { this = "Left" or this = "Right" }
 
-  /** Returns "the other shore". */
-  Shore flip() {
+  /** Returns the other shore. */
+  Shore other() {
     this = "Left" and result = "Right"
     or
     this = "Right" and result = "Left"
@@ -42,20 +43,20 @@ class State extends string {
   State() { this = man + "," + goat + "," + cabbage + "," + wolf }
 
   State ferry(Cargo cargo) {
-    cargo = "Nothing" and result = man.flip() + "," + goat + "," + cabbage + "," + wolf
+    cargo = "Nothing" and result = man.other() + "," + goat + "," + cabbage + "," + wolf
     or
-    cargo = "Goat" and result = man.flip() + "," + goat.flip() + "," + cabbage + "," + wolf
+    cargo = "Goat" and result = man.other() + "," + goat.other() + "," + cabbage + "," + wolf
     or
-    cargo = "Cabbage" and result = man.flip() + "," + goat + "," + cabbage.flip() + "," + wolf
+    cargo = "Cabbage" and result = man.other() + "," + goat + "," + cabbage.other() + "," + wolf
     or
-    cargo = "Wolf" and result = man.flip() + "," + goat + "," + cabbage + "," + wolf.flip()
+    cargo = "Wolf" and result = man.other() + "," + goat + "," + cabbage + "," + wolf.other()
   }
 
   /**
    * Holds if predator and prey are on the same shore and the man
-   * is on the other shore.
+   * is not present.
    */
-  predicate eats(Shore predator, Shore prey) { predator = prey and man = predator.flip() }
+  predicate eats(Shore predator, Shore prey) { predator = prey and man = predator.other() }
 
   /** Holds if nothing gets eaten in this state. */
   predicate isSafe() { not (eats(goat, cabbage) or eats(wolf, goat)) }
@@ -93,6 +94,6 @@ class GoalState extends State {
 }
 
 from string path
-where any(InitialState is).reachesVia(path, _) = any(GoalState gs)
+where any(InitialState i).reachesVia(path, _) = any(GoalState g)
 select path
 
