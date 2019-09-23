@@ -34,6 +34,9 @@ class InvokeNode extends DataFlow::SourceNode {
 
   InvokeNode() { this = impl }
 
+  /** Gets the syntactic invoke expression underlying this function invocation. */
+  InvokeExpr getInvokeExpr() { result = impl.getInvokeExpr() }
+
   /** Gets the name of the function or method being invoked, if it can be determined. */
   string getCalleeName() { result = impl.getCalleeName() }
 
