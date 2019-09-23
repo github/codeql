@@ -332,7 +332,8 @@ private module ImplCommon {
     exists(Node mid1, Node mid2, Content f |
       store(node1, f, mid1) and
       localValueStep*(mid1, mid2) and
-      read(mid2, f, node2)
+      read(mid2, f, node2) and
+      compatibleTypes(node1.getTypeBound(), node2.getTypeBound())
     )
   }
 
