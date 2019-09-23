@@ -1,5 +1,5 @@
 private import internal.ConstantAnalysisInternal
-private import semmle.code.cpp.ir.internal.IntegerPartial
+private import semmle.code.csharp.ir.internal.IntegerPartial
 private import IR
 
 language[monotonicAggregates]

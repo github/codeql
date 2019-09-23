@@ -15,5 +15,7 @@ class IRConfiguration extends TIRConfiguration {
   /**
    * Holds if IR should be created for callable `callable`. By default, holds for all callables.
    */
-  predicate shouldCreateIRForFunction(Callable callable) { any() }
+  predicate shouldCreateIRForFunction(Callable callable) { 
+    callable.getLocation().getFile().getExtension() = "cs"
+  }
 }

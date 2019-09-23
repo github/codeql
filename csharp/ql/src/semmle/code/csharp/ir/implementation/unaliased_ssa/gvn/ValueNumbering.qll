@@ -1,5 +1,5 @@
 private import internal.ValueNumberingInternal
-private import cpp
+private import csharp
 private import IR
 
 /**

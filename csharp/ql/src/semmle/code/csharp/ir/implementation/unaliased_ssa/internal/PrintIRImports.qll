@@ -1,1 +1,1 @@
-import semmle.code.cpp.ir.IRConfiguration as IRConfiguration
+import semmle.code.csharp.ir.IRConfiguration as IRConfiguration

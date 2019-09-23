@@ -1,1 +1,1 @@
-import semmle.code.cpp.ir.implementation.raw.IR as InputIR
+import semmle.code.csharp.ir.implementation.raw.IR as InputIR
