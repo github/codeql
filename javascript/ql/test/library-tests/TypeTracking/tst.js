@@ -76,3 +76,40 @@ function useConnection() {
 }
 
 export const exportedConnection = getConnection();
+
+function outer(conn) {
+  function innerCapture() {
+    return conn;
+  }
+  function innerCall(x) {
+    return x;
+  }
+
+  innerCapture();
+  innerCall(conn);
+  innerCall(somethingElse());
+
+  function otherInner() {
+    innerCapture();
+  }
+  return class {
+    get() { return conn }
+  }
+}
+outer(getConnection());
+new (outer(getConnection())).get();
+new (outer(somethingElse())).get();
+
+function shared(x) {
+  return (function() {
+    return x;
+  })();
+}
+shared(getConnection());
+shared(somethingElse());
+
+function getX(obj) {
+  return obj.x;
+}
+getX({ x: getConnection() });
+getX({ x: somethingElse() });

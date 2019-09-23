@@ -709,7 +709,8 @@ class ClassNode extends DataFlow::SourceNode {
     result = getAClassReference(t.continue()).getAnInstantiation()
     or
     t.start() and
-    result.(AnalyzedNode).getAValue() = getAbstractInstanceValue()
+    result.(AnalyzedNode).getAValue() = getAbstractInstanceValue() and
+    not result = any(DataFlow::ClassNode cls).getAReceiverNode()
     or
     t.start() and
     result = getAReceiverNode()
