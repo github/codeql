@@ -85,11 +85,14 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
   final override predicate producesExprResult() {
     // If there's no load, then this is the only TranslatedExpr for this
     // expression.
-    not expr.hasLValueToRValueConversion()
-    or
-    // If we're supposed to ignore the load on this expression, then this
-    // is the only TranslatedExpr.
-    ignoreLoad(expr)
+    not hasLoad() and
+    // If there's a result copy, then this expression's result is the copy.
+    not exprNeedsCopyIfNotLoaded(expr)
+  }
+
+  private predicate hasLoad() {
+    expr.hasLValueToRValueConversion() and
+    not ignoreLoad(expr)
   }
 
   /**
@@ -106,7 +109,7 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
       or
       // If this TranslatedExpr doesn't produce the result, then it must represent
       // a glvalue that is then loaded by a TranslatedLoad.
-      not producesExprResult()
+      hasLoad()
     then result = true
     else result = false
   }
@@ -298,6 +301,51 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     // A load always produces the result of the expression.
     any()
   }
+
+  private TranslatedCoreExpr getOperand() { result.getExpr() = expr }
+}
+
+/**
+ * IR translation of an implicit lvalue-to-rvalue conversion on the result of
+ * an expression.
+ */
+class TranslatedResultCopy extends TranslatedExpr, TTranslatedResultCopy {
+  TranslatedResultCopy() { this = TTranslatedResultCopy(expr) }
+
+  override string toString() { result = "Result of " + expr.toString() }
+
+  override Instruction getFirstInstruction() { result = getOperand().getFirstInstruction() }
+
+  override TranslatedElement getChild(int id) { id = 0 and result = getOperand() }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
+  ) {
+    tag = ResultCopyTag() and
+    opcode instanceof Opcode::CopyValue and
+    resultType = getOperand().getResultType() and
+    isGLValue = getOperand().isResultGLValue()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = ResultCopyTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getOperand() and result = getInstruction(ResultCopyTag())
+  }
+
+  override Instruction getResult() { result = getInstruction(ResultCopyTag()) }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = ResultCopyTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = getOperand().getResult()
+  }
+
+  final override predicate producesExprResult() { any() }
 
   private TranslatedCoreExpr getOperand() { result.getExpr() = expr }
 }
@@ -2484,4 +2532,38 @@ class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {
   }
 
   final override Opcode getOpcode() { result instanceof Opcode::Error }
+}
+
+/**
+ * Holds if the translation of `expr` will not directly generate any
+ * `Instruction` for use as result. For such instructions we can synthesize a
+ * `CopyValue` instruction to ensure that there is a 1-to-1 mapping between
+ * expressions and result-bearing instructions.
+ */
+// This should ideally be a dispatch predicate on TranslatedNonConstantExpr,
+// but it doesn't look monotonic to QL.
+predicate exprNeedsCopyIfNotLoaded(Expr expr) {
+  expr instanceof AssignExpr
+  or
+  expr instanceof AssignOperation and
+  not expr.isPRValueCategory() // is C++
+  or
+  expr instanceof PrefixCrementOperation and
+  not expr.isPRValueCategory() // is C++
+  or
+  expr instanceof PointerDereferenceExpr
+  or
+  expr instanceof AddressOfExpr
+  or
+  expr instanceof BuiltInOperationBuiltInAddressOf
+  // No case for ParenthesisExpr to avoid getting too many instructions
+  or
+  expr instanceof ReferenceDereferenceExpr
+  or
+  expr instanceof ReferenceToExpr
+  or
+  expr instanceof CommaExpr
+  or
+  expr instanceof ConditionDeclExpr
+  // TODO: simplify TranslatedStmtExpr too
 }

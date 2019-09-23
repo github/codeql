@@ -211,8 +211,10 @@ ssa.cpp:
 #   70|     r1_3(int)           = Constant[1]        : 
 #   70|     r1_4(char *)        = PointerAdd[1]      : r1_2, r1_3
 #   70|     m1_5(char *)        = Store              : &:r1_1, r1_4
-#   70|     m1_6(char)          = Store              : &:r1_2, r1_0
-#   70|     m1_7(unknown)       = Chi                : total:m3_0, partial:m1_6
+#   70|     r1_6(glval<char>)   = CopyValue          : r1_2
+#   70|     m1_7(char)          = Store              : &:r1_6, r1_0
+#   70|     m1_8(unknown)       = Chi                : total:m3_0, partial:m1_7
+#   70|     r1_9(glval<char>)   = CopyValue          : r1_6
 #-----|   Goto (back edge) -> Block 3
 
 #   71|   Block 2
@@ -222,7 +224,7 @@ ssa.cpp:
 #   68|     v2_3(void) = ExitFunction : 
 
 #   69|   Block 3
-#   69|     m3_0(unknown)    = Phi                : from 0:~m0_1, from 1:~m1_7
+#   69|     m3_0(unknown)    = Phi                : from 0:~m0_1, from 1:~m1_8
 #   69|     m3_1(int)        = Phi                : from 0:m0_4, from 1:m3_7
 #   69|     m3_2(char *)     = Phi                : from 0:m0_6, from 1:m1_5
 #   69|     r3_3(glval<int>) = VariableAddress[n] : 
@@ -262,20 +264,23 @@ ssa.cpp:
 #   80|     r1_0(int)        = Constant[3]        : 
 #   80|     r1_1(glval<int>) = VariableAddress[x] : 
 #   80|     m1_2(int)        = Store              : &:r1_1, r1_0
-#   81|     r1_3(int)        = Constant[4]        : 
-#   81|     r1_4(glval<int>) = VariableAddress[y] : 
-#   81|     m1_5(int)        = Store              : &:r1_4, r1_3
+#   80|     r1_3(glval<int>) = CopyValue          : r1_1
+#   81|     r1_4(int)        = Constant[4]        : 
+#   81|     r1_5(glval<int>) = VariableAddress[y] : 
+#   81|     m1_6(int)        = Store              : &:r1_5, r1_4
+#   81|     r1_7(glval<int>) = CopyValue          : r1_5
 #-----|   Goto -> Block 3
 
 #   84|   Block 2
 #   84|     r2_0(int)        = Constant[5]        : 
 #   84|     r2_1(glval<int>) = VariableAddress[x] : 
 #   84|     m2_2(int)        = Store              : &:r2_1, r2_0
+#   84|     r2_3(glval<int>) = CopyValue          : r2_1
 #-----|   Goto -> Block 3
 
 #   86|   Block 3
 #   86|     m3_0(int)         = Phi                      : from 1:m1_2, from 2:m2_2
-#   86|     m3_1(int)         = Phi                      : from 1:m1_5, from 2:m0_10
+#   86|     m3_1(int)         = Phi                      : from 1:m1_6, from 2:m0_10
 #   86|     r3_2(glval<int>)  = VariableAddress[x_merge] : 
 #   86|     r3_3(glval<int>)  = VariableAddress[x]       : 
 #   86|     r3_4(int)         = Load                     : &:r3_3, m3_0
@@ -323,14 +328,15 @@ ssa.cpp:
 #   96|     m0_9(Point)           = Store                   : &:r0_6, r0_8
 #   97|     r0_10(glval<unknown>) = FunctionAddress[Escape] : 
 #   97|     r0_11(glval<Point>)   = VariableAddress[a]      : 
-#   97|     r0_12(void *)         = Convert                 : r0_11
-#   97|     v0_13(void)           = Call                    : func:r0_10, 0:r0_12
-#   97|     m0_14(unknown)        = ^CallSideEffect         : ~m0_5
-#   97|     m0_15(unknown)        = Chi                     : total:m0_5, partial:m0_14
-#   98|     v0_16(void)           = NoOp                    : 
-#   95|     v0_17(void)           = ReturnVoid              : 
-#   95|     v0_18(void)           = UnmodeledUse            : mu*
-#   95|     v0_19(void)           = ExitFunction            : 
+#   97|     r0_12(Point *)        = CopyValue               : r0_11
+#   97|     r0_13(void *)         = Convert                 : r0_12
+#   97|     v0_14(void)           = Call                    : func:r0_10, 0:r0_13
+#   97|     m0_15(unknown)        = ^CallSideEffect         : ~m0_5
+#   97|     m0_16(unknown)        = Chi                     : total:m0_5, partial:m0_15
+#   98|     v0_17(void)           = NoOp                    : 
+#   95|     v0_18(void)           = ReturnVoid              : 
+#   95|     v0_19(void)           = UnmodeledUse            : mu*
+#   95|     v0_20(void)           = ExitFunction            : 
 
 #  100| void MustTotallyOverlap(Point)
 #  100|   Block 0
@@ -374,14 +380,15 @@ ssa.cpp:
 #  107|     m0_15(int)            = Store                   : &:r0_11, r0_14
 #  108|     r0_16(glval<unknown>) = FunctionAddress[Escape] : 
 #  108|     r0_17(glval<Point>)   = VariableAddress[a]      : 
-#  108|     r0_18(void *)         = Convert                 : r0_17
-#  108|     v0_19(void)           = Call                    : func:r0_16, 0:r0_18
-#  108|     m0_20(unknown)        = ^CallSideEffect         : ~m0_5
-#  108|     m0_21(unknown)        = Chi                     : total:m0_5, partial:m0_20
-#  109|     v0_22(void)           = NoOp                    : 
-#  105|     v0_23(void)           = ReturnVoid              : 
-#  105|     v0_24(void)           = UnmodeledUse            : mu*
-#  105|     v0_25(void)           = ExitFunction            : 
+#  108|     r0_18(Point *)        = CopyValue               : r0_17
+#  108|     r0_19(void *)         = Convert                 : r0_18
+#  108|     v0_20(void)           = Call                    : func:r0_16, 0:r0_19
+#  108|     m0_21(unknown)        = ^CallSideEffect         : ~m0_5
+#  108|     m0_22(unknown)        = Chi                     : total:m0_5, partial:m0_21
+#  109|     v0_23(void)           = NoOp                    : 
+#  105|     v0_24(void)           = ReturnVoid              : 
+#  105|     v0_25(void)           = UnmodeledUse            : mu*
+#  105|     v0_26(void)           = ExitFunction            : 
 
 #  111| void MayPartiallyOverlap(int, int)
 #  111|   Block 0
@@ -441,14 +448,15 @@ ssa.cpp:
 #  118|     m0_23(Point)          = Store                   : &:r0_20, r0_22
 #  119|     r0_24(glval<unknown>) = FunctionAddress[Escape] : 
 #  119|     r0_25(glval<Point>)   = VariableAddress[a]      : 
-#  119|     r0_26(void *)         = Convert                 : r0_25
-#  119|     v0_27(void)           = Call                    : func:r0_24, 0:r0_26
-#  119|     m0_28(unknown)        = ^CallSideEffect         : ~m0_19
-#  119|     m0_29(unknown)        = Chi                     : total:m0_19, partial:m0_28
-#  120|     v0_30(void)           = NoOp                    : 
-#  116|     v0_31(void)           = ReturnVoid              : 
-#  116|     v0_32(void)           = UnmodeledUse            : mu*
-#  116|     v0_33(void)           = ExitFunction            : 
+#  119|     r0_26(Point *)        = CopyValue               : r0_25
+#  119|     r0_27(void *)         = Convert                 : r0_26
+#  119|     v0_28(void)           = Call                    : func:r0_24, 0:r0_27
+#  119|     m0_29(unknown)        = ^CallSideEffect         : ~m0_19
+#  119|     m0_30(unknown)        = Chi                     : total:m0_19, partial:m0_29
+#  120|     v0_31(void)           = NoOp                    : 
+#  116|     v0_32(void)           = ReturnVoid              : 
+#  116|     v0_33(void)           = UnmodeledUse            : mu*
+#  116|     v0_34(void)           = ExitFunction            : 
 
 #  122| void MergeMustExactlyOverlap(bool, int, int)
 #  122|   Block 0
@@ -484,6 +492,7 @@ ssa.cpp:
 #  125|     r1_3(glval<int>)   = FieldAddress[x]     : r1_2
 #  125|     m1_4(int)          = Store               : &:r1_3, r1_1
 #  125|     m1_5(Point)        = Chi                 : total:m0_18, partial:m1_4
+#  125|     r1_6(glval<int>)   = CopyValue           : r1_3
 #-----|   Goto -> Block 3
 
 #  128|   Block 2
@@ -493,6 +502,7 @@ ssa.cpp:
 #  128|     r2_3(glval<int>)   = FieldAddress[x]     : r2_2
 #  128|     m2_4(int)          = Store               : &:r2_3, r2_1
 #  128|     m2_5(Point)        = Chi                 : total:m0_18, partial:m2_4
+#  128|     r2_6(glval<int>)   = CopyValue           : r2_3
 #-----|   Goto -> Block 3
 
 #  130|   Block 3
@@ -546,6 +556,7 @@ ssa.cpp:
 #  137|     r1_3(glval<int>)   = FieldAddress[x]     : r1_2
 #  137|     m1_4(int)          = Store               : &:r1_3, r1_1
 #  137|     m1_5(Point)        = Chi                 : total:m0_18, partial:m1_4
+#  137|     r1_6(glval<int>)   = CopyValue           : r1_3
 #-----|   Goto -> Block 3
 
 #  140|   Block 2
@@ -553,6 +564,7 @@ ssa.cpp:
 #  140|     r2_1(Point)        = Load               : &:r2_0, m0_6
 #  140|     r2_2(glval<Point>) = VariableAddress[a] : 
 #  140|     m2_3(Point)        = Store              : &:r2_2, r2_1
+#  140|     r2_4(glval<Point>) = CopyValue          : r2_2
 #-----|   Goto -> Block 3
 
 #  142|   Block 3
@@ -602,6 +614,7 @@ ssa.cpp:
 #  148|     r1_3(glval<int>)   = FieldAddress[x]     : r1_2
 #  148|     m1_4(int)          = Store               : &:r1_3, r1_1
 #  148|     m1_5(Point)        = Chi                 : total:m0_18, partial:m1_4
+#  148|     r1_6(glval<int>)   = CopyValue           : r1_3
 #-----|   Goto -> Block 3
 
 #  151|   Block 2
@@ -609,6 +622,7 @@ ssa.cpp:
 #  151|     r2_1(Point)        = Load               : &:r2_0, m0_6
 #  151|     r2_2(glval<Point>) = VariableAddress[a] : 
 #  151|     m2_3(Point)        = Store              : &:r2_2, r2_1
+#  151|     r2_4(glval<Point>) = CopyValue          : r2_2
 #-----|   Goto -> Block 3
 
 #  153|   Block 3
@@ -657,6 +671,7 @@ ssa.cpp:
 #  159|     r1_4(glval<int>)   = FieldAddress[x]       : r1_3
 #  159|     m1_5(int)          = Store                 : &:r1_4, r1_1
 #  159|     m1_6(Rect)         = Chi                   : total:m0_18, partial:m1_5
+#  159|     r1_7(glval<int>)   = CopyValue             : r1_4
 #-----|   Goto -> Block 3
 
 #  162|   Block 2
@@ -664,6 +679,7 @@ ssa.cpp:
 #  162|     r2_1(Rect)        = Load               : &:r2_0, m0_6
 #  162|     r2_2(glval<Rect>) = VariableAddress[a] : 
 #  162|     m2_3(Rect)        = Store              : &:r2_2, r2_1
+#  162|     r2_4(glval<Rect>) = CopyValue          : r2_2
 #-----|   Goto -> Block 3
 
 #  164|   Block 3
@@ -698,19 +714,22 @@ ssa.cpp:
 #  174|     r0_15(glval<Wrapper>) = VariableAddress[w]     : 
 #  174|     r0_16(glval<int>)     = FieldAddress[f]        : r0_15
 #  174|     m0_17(int)            = Store                  : &:r0_16, r0_14
-#  175|     r0_18(glval<Wrapper>) = VariableAddress[w]     : 
-#  175|     r0_19(glval<int>)     = FieldAddress[f]        : r0_18
-#  175|     r0_20(int)            = Load                   : &:r0_19, m0_17
-#  175|     r0_21(glval<int>)     = VariableAddress[a]     : 
-#  175|     m0_22(int)            = Store                  : &:r0_21, r0_20
-#  176|     r0_23(glval<Wrapper>) = VariableAddress[w]     : 
-#  176|     r0_24(Wrapper)        = Load                   : &:r0_23, ~m0_17
-#  176|     r0_25(glval<Wrapper>) = VariableAddress[x]     : 
-#  176|     m0_26(Wrapper)        = Store                  : &:r0_25, r0_24
-#  177|     v0_27(void)           = NoOp                   : 
-#  171|     v0_28(void)           = ReturnVoid             : 
-#  171|     v0_29(void)           = UnmodeledUse           : mu*
-#  171|     v0_30(void)           = ExitFunction           : 
+#  174|     r0_18(glval<int>)     = CopyValue              : r0_16
+#  175|     r0_19(glval<Wrapper>) = VariableAddress[w]     : 
+#  175|     r0_20(glval<int>)     = FieldAddress[f]        : r0_19
+#  175|     r0_21(int)            = Load                   : &:r0_20, m0_17
+#  175|     r0_22(glval<int>)     = VariableAddress[a]     : 
+#  175|     m0_23(int)            = Store                  : &:r0_22, r0_21
+#  175|     r0_24(glval<int>)     = CopyValue              : r0_22
+#  176|     r0_25(glval<Wrapper>) = VariableAddress[w]     : 
+#  176|     r0_26(Wrapper)        = Load                   : &:r0_25, ~m0_17
+#  176|     r0_27(glval<Wrapper>) = VariableAddress[x]     : 
+#  176|     m0_28(Wrapper)        = Store                  : &:r0_27, r0_26
+#  176|     r0_29(glval<Wrapper>) = CopyValue              : r0_27
+#  177|     v0_30(void)           = NoOp                   : 
+#  171|     v0_31(void)           = ReturnVoid             : 
+#  171|     v0_32(void)           = UnmodeledUse           : mu*
+#  171|     v0_33(void)           = ExitFunction           : 
 
 #  179| int AsmStmt(int*)
 #  179|   Block 0
@@ -791,19 +810,21 @@ ssa.cpp:
 #  200|     r0_27(int)            = Load                      : &:r0_26, m0_19
 #  200|     r0_28(int)            = Add                       : r0_27, r0_24
 #  200|     m0_29(int)            = Store                     : &:r0_26, r0_28
-#  201|     r0_30(glval<unknown>) = FunctionAddress[abs]      : 
-#  201|     r0_31(glval<int>)     = VariableAddress[x]        : 
-#  201|     r0_32(int)            = Load                      : &:r0_31, m0_8
-#  201|     r0_33(int)            = Call                      : func:r0_30, 0:r0_32
-#  201|     r0_34(glval<int>)     = VariableAddress[ret]      : 
-#  201|     r0_35(int)            = Load                      : &:r0_34, m0_29
-#  201|     r0_36(int)            = Add                       : r0_35, r0_33
-#  201|     m0_37(int)            = Store                     : &:r0_34, r0_36
-#  202|     r0_38(glval<int>)     = VariableAddress[#return]  : 
-#  202|     r0_39(glval<int>)     = VariableAddress[ret]      : 
-#  202|     r0_40(int)            = Load                      : &:r0_39, m0_37
-#  202|     m0_41(int)            = Store                     : &:r0_38, r0_40
-#  198|     r0_42(glval<int>)     = VariableAddress[#return]  : 
-#  198|     v0_43(void)           = ReturnValue               : &:r0_42, m0_41
-#  198|     v0_44(void)           = UnmodeledUse              : mu*
-#  198|     v0_45(void)           = ExitFunction              : 
+#  200|     r0_30(glval<int>)     = CopyValue                 : r0_26
+#  201|     r0_31(glval<unknown>) = FunctionAddress[abs]      : 
+#  201|     r0_32(glval<int>)     = VariableAddress[x]        : 
+#  201|     r0_33(int)            = Load                      : &:r0_32, m0_8
+#  201|     r0_34(int)            = Call                      : func:r0_31, 0:r0_33
+#  201|     r0_35(glval<int>)     = VariableAddress[ret]      : 
+#  201|     r0_36(int)            = Load                      : &:r0_35, m0_29
+#  201|     r0_37(int)            = Add                       : r0_36, r0_34
+#  201|     m0_38(int)            = Store                     : &:r0_35, r0_37
+#  201|     r0_39(glval<int>)     = CopyValue                 : r0_35
+#  202|     r0_40(glval<int>)     = VariableAddress[#return]  : 
+#  202|     r0_41(glval<int>)     = VariableAddress[ret]      : 
+#  202|     r0_42(int)            = Load                      : &:r0_41, m0_38
+#  202|     m0_43(int)            = Store                     : &:r0_40, r0_42
+#  198|     r0_44(glval<int>)     = VariableAddress[#return]  : 
+#  198|     v0_45(void)           = ReturnValue               : &:r0_44, m0_43
+#  198|     v0_46(void)           = UnmodeledUse              : mu*
+#  198|     v0_47(void)           = ExitFunction              : 

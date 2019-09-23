@@ -44,6 +44,7 @@ newtype TInstructionTag =
   ConditionValueResultLoadTag() or
   BoolConversionConstantTag() or
   BoolConversionCompareTag() or
+  ResultCopyTag() or
   LoadTag() or // Implicit load due to lvalue-to-rvalue conversion
   CatchTag() or
   ThrowTag() or
