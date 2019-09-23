@@ -1061,10 +1061,11 @@ compgenerated(unique int id: @element ref);
  * destructed in reverse construction order, so for a given `element`
  * these should be called from highest to lowest `i`.
  */
+#keyset[destructor_call, element]
 synthetic_destructor_call(
     int element: @element ref,
     int i: int ref,
-    unique int destructor_call: @routineexpr ref
+    int destructor_call: @routineexpr ref
 );
 
 namespaces(
