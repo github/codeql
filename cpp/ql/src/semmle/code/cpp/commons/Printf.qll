@@ -169,7 +169,11 @@ class FormattingFunctionCall extends Expr {
    * Gets the number of arguments to this call that are parameters to the
    * format string.
    */
-  int getNumFormatArgument() { result = count(this.getFormatArgument(_)) }
+  int getNumFormatArgument() {
+    result = count(this.getFormatArgument(_)) and
+    // format arguments must be known
+    exists(getTarget().(FormattingFunction).getFirstFormatArgumentIndex())
+  }
 }
 
 /**
