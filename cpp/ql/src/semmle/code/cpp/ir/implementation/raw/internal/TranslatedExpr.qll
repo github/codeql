@@ -2556,8 +2556,8 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
   expr instanceof AddressOfExpr
   or
   expr instanceof BuiltInOperationBuiltInAddressOf
-  // No case for ParenthesisExpr to avoid getting too many instructions
   or
+  // No case for ParenthesisExpr to avoid getting too many instructions
   expr instanceof ReferenceDereferenceExpr
   or
   expr instanceof ReferenceToExpr
