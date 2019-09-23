@@ -1,0 +1,2 @@
+| tst.js:20:17:20:33 | onlySideEffects() | the function $@ does not return anything, yet the return value is used. | tst.js:11:5:13:5 | functio ... )\\n    } | onlySideEffects |
+| tst.js:24:13:24:29 | onlySideEffects() | the function $@ does not return anything, yet the return value is used. | tst.js:11:5:13:5 | functio ... )\\n    } | onlySideEffects |

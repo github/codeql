@@ -26,7 +26,9 @@ predicate inVoidContext(Expr e) {
     n = seq.getNumOperands()
   |
     i < n - 1 or inVoidContext(seq)
-  )
+  ) 
+  or
+  exists(ParExpr par | par.getExpression() = e and inVoidContext(par) )
   or
   exists(ForStmt stmt | e = stmt.getUpdate())
   or
@@ -36,4 +38,8 @@ predicate inVoidContext(Expr e) {
   )
   or
   exists(LogicalBinaryExpr logical | e = logical.getRightOperand() and inVoidContext(logical))
+  or 
+  exists(TypeAssertion assert | assert.getExpression() = e and inVoidContext(assert))
+  or 
+  exists(UnaryExpr unOp | unOp.getOperator() = "void" and unOp.getOperand() = e)
 }
