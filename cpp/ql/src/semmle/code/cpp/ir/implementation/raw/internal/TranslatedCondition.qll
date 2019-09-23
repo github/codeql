@@ -1,6 +1,7 @@
 private import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.internal.CppType
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -37,9 +38,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 
   final override Instruction getFirstInstruction() { result = getOperand().getFirstInstruction() }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -105,9 +104,7 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
     result = getLeftOperand().getFirstInstruction()
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -163,13 +160,10 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
 
   override Instruction getFirstInstruction() { result = getValueExpr().getFirstInstruction() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
-    resultType instanceof VoidType and
-    isGLValue = false
+    resultType = getVoidType()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {

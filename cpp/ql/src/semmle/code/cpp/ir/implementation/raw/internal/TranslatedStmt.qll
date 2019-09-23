@@ -1,6 +1,7 @@
 private import cpp
 private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -35,13 +36,10 @@ class TranslatedEmptyStmt extends TranslatedStmt {
 
   override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::NoOp and
-    resultType instanceof VoidType and
-    isGLValue = false
+    resultType = getVoidType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -63,9 +61,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) { result = getDeclarationEntry(id) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -112,9 +108,7 @@ class TranslatedExprStmt extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) { id = 0 and result = getExpr() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -145,13 +139,10 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, InitializationCont
     result = getInstruction(InitializerVariableAddressTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getEnclosingFunction().getReturnVariable().getType() and
-    isGLValue = true
+    resultType = getTypeForGLValue(getEnclosingFunction().getReturnType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -174,7 +165,9 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, InitializationCont
     result = getInstruction(InitializerVariableAddressTag())
   }
 
-  override Type getTargetType() { result = getEnclosingFunction().getReturnVariable().getType() }
+  override Type getTargetType() {
+    result = getEnclosingFunction().getReturnType()
+  }
 
   TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(stmt.getExpr().getFullyConverted())
@@ -188,13 +181,10 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
 
   override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::NoOp and
-    resultType instanceof VoidType and
-    isGLValue = false
+    resultType = getVoidType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -218,9 +208,7 @@ class TranslatedTryStmt extends TranslatedStmt {
     result = getHandler(id - 1)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -262,14 +250,11 @@ class TranslatedBlock extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) { result = getStmt(id) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     isEmpty() and
     opcode instanceof Opcode::NoOp and
     tag = OnlyInstructionTag() and
-    resultType instanceof VoidType and
-    isGLValue = false
+    resultType = getVoidType()
   }
 
   override Instruction getFirstInstruction() {
@@ -330,13 +315,10 @@ abstract class TranslatedHandler extends TranslatedStmt {
 class TranslatedCatchByTypeHandler extends TranslatedHandler {
   TranslatedCatchByTypeHandler() { exists(stmt.getParameter()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = CatchTag() and
     opcode instanceof Opcode::CatchByType and
-    resultType instanceof VoidType and
-    isGLValue = false
+    resultType = getVoidType()
   }
 
   override TranslatedElement getChild(int id) {
@@ -362,9 +344,9 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
     )
   }
 
-  override Type getInstructionExceptionType(InstructionTag tag) {
+  override CppType getInstructionExceptionType(InstructionTag tag) {
     tag = CatchTag() and
-    result = stmt.getParameter().getType()
+    result = getTypeForPRValue(stmt.getParameter().getType())
   }
 
   private TranslatedParameter getParameter() {
@@ -378,13 +360,10 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
 class TranslatedCatchAnyHandler extends TranslatedHandler {
   TranslatedCatchAnyHandler() { not exists(stmt.getParameter()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = CatchTag() and
     opcode instanceof Opcode::CatchAny and
-    resultType instanceof VoidType and
-    isGLValue = false
+    resultType = getVoidType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -436,9 +415,7 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
     result = getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 }
@@ -466,9 +443,7 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
     id = 1 and result = getBody()
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -597,9 +572,7 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
     result = getCondition().getFirstInstruction()
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -649,13 +622,10 @@ class TranslatedJumpStmt extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) { none() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::NoOp and
-    resultType instanceof VoidType and
-    isGLValue = false
+    resultType = getVoidType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -693,13 +663,10 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     id = 1 and result = getBody()
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = SwitchBranchTag() and
     opcode instanceof Opcode::Switch and
-    resultType instanceof VoidType and
-    isGLValue = false
+    resultType = getVoidType()
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -727,37 +694,20 @@ class TranslatedSwitchStmt extends TranslatedStmt {
 class TranslatedAsmStmt extends TranslatedStmt {
   override AsmStmt stmt;
 
-  override TranslatedElement getChild(int id) { none() }
+  override TranslatedExpr getChild(int id) {
+    result = getTranslatedExpr(stmt.getChild(id).(Expr).getFullyConverted())
+  }
 
   override Instruction getFirstInstruction() {
-    if exists(stmt.getChild(0))
-    then result = getInstruction(AsmInputTag(0))
+    if exists(getChild(0))
+    then result = getChild(0).getFirstInstruction()
     else result = getInstruction(AsmTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = AsmTag() and
     opcode instanceof Opcode::InlineAsm and
-    resultType instanceof UnknownType and
-    isGLValue = false
-    or
-    exists(int index, VariableAccess va |
-      tag = AsmInputTag(index) and
-      stmt.getChild(index) = va and
-      opcode instanceof Opcode::VariableAddress and
-      resultType = va.getType().getUnspecifiedType() and
-      isGLValue = true
-    )
-  }
-
-  override IRVariable getInstructionVariable(InstructionTag tag) {
-    exists(int index |
-      tag = AsmInputTag(index) and
-      result = getIRUserVariable(stmt.getEnclosingFunction(),
-          stmt.getChild(index).(VariableAccess).getTarget())
-    )
+    resultType = getUnknownType()
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -768,29 +718,28 @@ class TranslatedAsmStmt extends TranslatedStmt {
     exists(int index |
       tag = AsmTag() and
       operandTag = asmOperand(index) and
-      result = getInstruction(AsmInputTag(index))
+      result = getChild(index).getResult()
     )
   }
 
-  final override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     tag = AsmTag() and
     operandTag instanceof SideEffectOperandTag and
-    result instanceof UnknownType
+    result = getUnknownType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = AsmTag() and
     result = getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
-    or
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
-      tag = AsmInputTag(index) and
-      kind instanceof GotoEdge and
-      if exists(stmt.getChild(index + 1))
-      then result = getInstruction(AsmInputTag(index + 1))
+      child = getChild(index) and
+      if exists(getChild(index + 1))
+      then result = getChild(index + 1).getFirstInstruction()
       else result = getInstruction(AsmTag())
     )
   }
-
-  override Instruction getChildSuccessor(TranslatedElement child) { none() }
 }

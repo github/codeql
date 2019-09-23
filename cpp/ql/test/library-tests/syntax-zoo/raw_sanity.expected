@@ -35,10 +35,12 @@ instructionWithoutSuccessor
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
-| misc.c:171:10:171:13 | Uninitialized: definition of str2 |
+| misc.c:171:10:171:13 | VariableAddress: definition of str2 |
 | misc.c:171:15:171:31 | Add: ... + ... |
+| misc.c:173:10:173:12 | VariableAddress: definition of buf |
 | misc.c:173:14:173:26 | Mul: ... * ... |
 | misc.c:173:37:173:39 | Store: array to pointer conversion |
+| misc.c:174:10:174:15 | VariableAddress: definition of matrix |
 | misc.c:174:17:174:22 | CallSideEffect: call to getInt |
 | misc.c:174:30:174:35 | CallSideEffect: call to getInt |
 | misc.c:174:55:174:60 | Store: (char ****)... |
@@ -78,7 +80,7 @@ instructionWithoutSuccessor
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... |
 | stmt_expr.cpp:29:11:32:11 | CopyValue: (statement expression) |
 | stmt_in_type.cpp:5:53:5:53 | Constant: 1 |
-| vla.c:5:9:5:14 | Uninitialized: definition of matrix |
+| vla.c:5:9:5:14 | VariableAddress: definition of matrix |
 | vla.c:5:16:5:19 | Load: argc |
 | vla.c:5:22:5:25 | CallReadSideEffect: call to atoi |
 | vla.c:11:6:11:16 | UnmodeledDefinition: vla_typedef |
@@ -87,6 +89,7 @@ instructionWithoutSuccessor
 | vla.c:13:12:13:14 | Uninitialized: definition of var |
 | vla.c:14:36:14:47 | Add: ... + ... |
 | vla.c:14:53:14:65 | Mul: ... * ... |
+| vla.c:14:69:14:72 | VariableAddress: definition of buf2 |
 | vla.c:14:74:14:79 | CallSideEffect: call to getInt |
 | vla.c:14:92:14:94 | Store: (char *)... |
 ambiguousSuccessors
@@ -687,3 +690,5 @@ useNotDominatedByDefinition
 | vla.c:14:40:14:45 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
 | vla.c:14:58:14:63 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
 | vla.c:14:74:14:79 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes

@@ -13,3 +13,5 @@ containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes

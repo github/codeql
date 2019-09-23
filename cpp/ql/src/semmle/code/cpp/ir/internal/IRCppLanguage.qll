@@ -1,6 +1,13 @@
 private import cpp as Cpp
 private import semmle.code.cpp.Print as Print
 private import IRUtilities
+private import semmle.code.cpp.ir.implementation.IRType
+private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as IRConstruction
+import CppType
+
+class LanguageType = CppType;
+
+class BlobTypeTag = Cpp::Type;
 
 class Function = Cpp::Function;
 
