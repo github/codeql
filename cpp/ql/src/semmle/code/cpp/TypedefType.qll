@@ -10,10 +10,9 @@ private import semmle.code.cpp.internal.ResolveClass
  *   * UsingAliasTypedefType: using <name> = <type>;
  */
 class TypedefType extends UserType {
-
   TypedefType() {
-    usertypes(underlyingElement(this),_,5) or
-    usertypes(underlyingElement(this),_,14)
+    usertypes(underlyingElement(this), _, 5) or
+    usertypes(underlyingElement(this), _, 14)
   }
 
   /**
@@ -52,28 +51,26 @@ class TypedefType extends UserType {
  * A traditional C/C++ typedef type. See 4.9.1.
  */
 class CTypedefType extends TypedefType {
-
-  CTypedefType() {
-    usertypes(underlyingElement(this),_,5)
-  }
+  CTypedefType() { usertypes(underlyingElement(this), _, 5) }
 
   override string getCanonicalQLClass() { result = "CTypedefType" }
 
-  override string explain() { result =  "typedef {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\"" }
+  override string explain() {
+    result = "typedef {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\""
+  }
 }
 
 /**
  * A using alias C++ typedef type.
  */
 class UsingAliasTypedefType extends TypedefType {
-
-  UsingAliasTypedefType() {
-    usertypes(underlyingElement(this),_,14)
-  }
+  UsingAliasTypedefType() { usertypes(underlyingElement(this), _, 14) }
 
   override string getCanonicalQLClass() { result = "UsingAliasTypedefType" }
 
-  override string explain() { result =  "using {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\"" }
+  override string explain() {
+    result = "using {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\""
+  }
 }
 
 /**
