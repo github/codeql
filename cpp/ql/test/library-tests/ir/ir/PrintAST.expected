@@ -8015,7 +8015,7 @@ ir.cpp:
 # 1154|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1154|         init: [Initializer] initializer for vi4
 # 1154|           expr: [VectorAggregateLiteral] {...}
-# 1154|               Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1154|               Type = [GNUVectorType] __attribute((vector_size(16UL))) int
 # 1154|               ValueCategory = prvalue
 # 1154|             0: [Literal] 0
 # 1154|                 Type = [IntType] int
@@ -8107,7 +8107,7 @@ ir.cpp:
 # 1158|             Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1158|             ValueCategory = lvalue
 # 1158|         1: [AddExpr] ... + ...
-# 1158|             Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1158|             Type = [GNUVectorType] __attribute((vector_size(16UL))) int
 # 1158|             ValueCategory = prvalue
 # 1158|           0: [VariableAccess] vi4
 # 1158|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
