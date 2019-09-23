@@ -34,7 +34,7 @@ module Shared {
     MetacharEscapeSanitizer() {
       getMethodName() = "replace" and
       exists(RegExpConstant c |
-        c.getLiteral() = getArgument(0).asExpr() and
+        c.getLiteral() = getArgument(0).getALocalSource().asExpr() and
         c.getValue().regexpMatch("['\"&<>]")
       )
     }
