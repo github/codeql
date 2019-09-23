@@ -1,5 +1,13 @@
 | NonConstantFormat.c:30:10:30:16 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | NonConstantFormat.c:41:9:41:27 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| a.c:15:37:15:45 | call to getString | The format string argument to myMultiplyDefinedPrintf should be constant to prevent security issues and other potential errors. |
+| a.c:16:27:16:35 | call to getString | The format string argument to myMultiplyDefinedPrintf should be constant to prevent security issues and other potential errors. |
+| a.c:17:38:17:46 | call to getString | The format string argument to myMultiplyDefinedPrintf2 should be constant to prevent security issues and other potential errors. |
+| a.c:18:28:18:36 | call to getString | The format string argument to myMultiplyDefinedPrintf2 should be constant to prevent security issues and other potential errors. |
+| b.c:12:37:12:45 | call to getString | The format string argument to myMultiplyDefinedPrintf should be constant to prevent security issues and other potential errors. |
+| b.c:13:27:13:35 | call to getString | The format string argument to myMultiplyDefinedPrintf should be constant to prevent security issues and other potential errors. |
+| b.c:14:38:14:46 | call to getString | The format string argument to myMultiplyDefinedPrintf2 should be constant to prevent security issues and other potential errors. |
+| b.c:15:28:15:36 | call to getString | The format string argument to myMultiplyDefinedPrintf2 should be constant to prevent security issues and other potential errors. |
 | nested.cpp:21:23:21:26 | fmt0 | The format string argument to snprintf should be constant to prevent security issues and other potential errors. |
 | nested.cpp:79:32:79:38 | call to get_fmt | The format string argument to diagnostic should be constant to prevent security issues and other potential errors. |
 | nested.cpp:87:18:87:20 | fmt | The format string argument to diagnostic should be constant to prevent security issues and other potential errors. |
