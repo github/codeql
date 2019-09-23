@@ -1169,20 +1169,19 @@ pointers.cs:
 #    5|     r0_8(glval<null>)     = FunctionAddress[get_Length] : 
 #    5|     r0_9(Int32)           = Call                        : func:r0_8, this:r0_7
 #    5|     mu0_10(null)          = ^CallSideEffect             : ~mu0_2
-#    5|     r0_11(Int32)          = Load                        : &:r0_9, ~mu0_2
-#    5|     mu0_12(Int32)         = Store                       : &:r0_5, r0_11
-#    6|     r0_13(glval<Int32*>)  = VariableAddress[b]          : 
-#    6|     r0_14(glval<Int32[]>) = VariableAddress[arr]        : 
-#    6|     r0_15(Int32[])        = Load                        : &:r0_14, ~mu0_2
-#    6|     r0_16(Int32*)         = Convert                     : r0_15
-#    6|     mu0_17(Int32*)        = Store                       : &:r0_13, r0_15
-#    8|     r0_18(glval<Int32*>)  = VariableAddress[p]          : 
-#    8|     r0_19(glval<Int32*>)  = VariableAddress[b]          : 
-#    8|     r0_20(Int32*)         = Load                        : &:r0_19, ~mu0_2
-#    8|     mu0_21(Int32*)        = Store                       : &:r0_18, r0_20
-#    9|     r0_22(glval<Int32>)   = VariableAddress[i]          : 
-#    9|     r0_23(Int32)          = Constant[0]                 : 
-#    9|     mu0_24(Int32)         = Store                       : &:r0_22, r0_23
+#    5|     mu0_11(Int32)         = Store                       : &:r0_5, r0_9
+#    6|     r0_12(glval<Int32*>)  = VariableAddress[b]          : 
+#    6|     r0_13(glval<Int32[]>) = VariableAddress[arr]        : 
+#    6|     r0_14(Int32[])        = Load                        : &:r0_13, ~mu0_2
+#    6|     r0_15(Int32*)         = Convert                     : r0_14
+#    6|     mu0_16(Int32*)        = Store                       : &:r0_12, r0_14
+#    8|     r0_17(glval<Int32*>)  = VariableAddress[p]          : 
+#    8|     r0_18(glval<Int32*>)  = VariableAddress[b]          : 
+#    8|     r0_19(Int32*)         = Load                        : &:r0_18, ~mu0_2
+#    8|     mu0_20(Int32*)        = Store                       : &:r0_17, r0_19
+#    9|     r0_21(glval<Int32>)   = VariableAddress[i]          : 
+#    9|     r0_22(Int32)          = Constant[0]                 : 
+#    9|     mu0_23(Int32)         = Store                       : &:r0_21, r0_22
 #-----|   Goto -> Block 2
 
 #    3|   Block 1
@@ -1357,11 +1356,10 @@ prop.cs:
 #   30|     r0_18(glval<null>)      = FunctionAddress[get_Prop]  : 
 #   30|     r0_19(Int32)            = Call                       : func:r0_18, this:r0_17
 #   30|     mu0_20(null)            = ^CallSideEffect            : ~mu0_2
-#   30|     r0_21(Int32)            = Load                       : &:r0_19, ~mu0_2
-#   30|     mu0_22(Int32)           = Store                      : &:r0_15, r0_21
-#   26|     v0_23(Void)             = ReturnVoid                 : 
-#   26|     v0_24(Void)             = UnmodeledUse               : mu*
-#   26|     v0_25(Void)             = ExitFunction               : 
+#   30|     mu0_21(Int32)           = Store                      : &:r0_15, r0_19
+#   26|     v0_22(Void)             = ReturnVoid                 : 
+#   26|     v0_23(Void)             = UnmodeledUse               : mu*
+#   26|     v0_24(Void)             = ExitFunction               : 
 
 simple_call.cs:
 #    5| System.Int32 test_simple_call.f()

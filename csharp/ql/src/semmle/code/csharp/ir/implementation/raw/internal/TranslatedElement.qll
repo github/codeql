@@ -212,6 +212,9 @@ private predicate ignoreLoad(Expr expr) {
   // address is the final value of the expression
   expr.getParent() instanceof AddressOfExpr
   or
+  // A property access does not need a load since it is a call
+  expr instanceof PropertyAccess
+  or
   // If expr is a variable access used as the qualifier for a field access and
   // its target variable is a value type variable,
   // ignore the load since the address of a variable that is a value type is
