@@ -32,34 +32,40 @@ class Shore extends string {
 
 /** A record of where everything is. */
 class State extends string {
-  Shore man;
+  Shore manShore;
 
-  Shore goat;
+  Shore goatShore;
 
-  Shore cabbage;
+  Shore cabbageShore;
 
-  Shore wolf;
+  Shore wolfShore;
 
-  State() { this = man + "," + goat + "," + cabbage + "," + wolf }
+  State() { this = manShore + "," + goatShore + "," + cabbageShore + "," + wolfShore }
 
   State ferry(Cargo cargo) {
-    cargo = "Nothing" and result = man.other() + "," + goat + "," + cabbage + "," + wolf
+    cargo = "Nothing" and
+    result = manShore.other() + "," + goatShore + "," + cabbageShore + "," + wolfShore
     or
-    cargo = "Goat" and result = man.other() + "," + goat.other() + "," + cabbage + "," + wolf
+    cargo = "Goat" and
+    result = manShore.other() + "," + goatShore.other() + "," + cabbageShore + "," + wolfShore
     or
-    cargo = "Cabbage" and result = man.other() + "," + goat + "," + cabbage.other() + "," + wolf
+    cargo = "Cabbage" and
+    result = manShore.other() + "," + goatShore + "," + cabbageShore.other() + "," + wolfShore
     or
-    cargo = "Wolf" and result = man.other() + "," + goat + "," + cabbage + "," + wolf.other()
+    cargo = "Wolf" and
+    result = manShore.other() + "," + goatShore + "," + cabbageShore + "," + wolfShore.other()
   }
 
   /**
-   * Holds if predator and prey are on the same shore and the man
-   * is not present.
+   * Holds if eating occurs. This happens when predator and prey are on the same shore
+   * and the man is not present.
    */
-  predicate eats(Shore predator, Shore prey) { predator = prey and man != predator }
+  predicate eating(Shore predatorShore, Shore preyShore) {
+    predatorShore = preyShore and manShore != predatorShore
+  }
 
   /** Holds if nothing gets eaten in this state. */
-  predicate isSafe() { not (eats(goat, cabbage) or eats(wolf, goat)) }
+  predicate isSafe() { not (eating(goatShore, cabbageShore) or eating(wolfShore, goatShore)) }
 
   /** Returns the state that is reached after safely ferrying a cargo item. */
   State safeFerry(Cargo cargo) { result = this.ferry(cargo) and result.isSafe() }

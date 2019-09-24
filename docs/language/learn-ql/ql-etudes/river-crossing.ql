@@ -1,4 +1,4 @@
-/** 
+/**
  * @name River crossing puzzle
  * @description This implements the classical puzzle where a man is trying to
  * ferry a goat, a cabbage, and a wolf across a river.
@@ -38,41 +38,47 @@ class Shore extends string {
 }
 
 /** Renders the state as a string. */
-string renderState(Shore man, Shore goat, Shore cabbage, Shore wolf) {
-  result = man + "," + goat + "," + cabbage + "," + wolf
+string renderState(Shore manShore, Shore goatShore, Shore cabbageShore, Shore wolfShore) {
+  result = manShore + "," + goatShore + "," + cabbageShore + "," + wolfShore
 }
 
 /** A record of where everything is. */
 class State extends string {
-  Shore man;
+  Shore manShore;
 
-  Shore goat;
+  Shore goatShore;
 
-  Shore cabbage;
+  Shore cabbageShore;
 
-  Shore wolf;
+  Shore wolfShore;
 
-  State() { this = renderState(man, goat, cabbage, wolf) }
+  State() { this = renderState(manShore, goatShore, cabbageShore, wolfShore) }
 
   /** Returns the state that is reached after ferrying a particular cargo item. */
   State ferry(Cargo cargo) {
-    cargo = "Nothing" and result = renderState(man.other(), goat, cabbage, wolf)
+    cargo = "Nothing" and
+    result = renderState(manShore.other(), goatShore, cabbageShore, wolfShore)
     or
-    cargo = "Goat" and result = renderState(man.other(), goat.other(), cabbage, wolf)
+    cargo = "Goat" and
+    result = renderState(manShore.other(), goatShore.other(), cabbageShore, wolfShore)
     or
-    cargo = "Cabbage" and result = renderState(man.other(), goat, cabbage.other(), wolf)
+    cargo = "Cabbage" and
+    result = renderState(manShore.other(), goatShore, cabbageShore.other(), wolfShore)
     or
-    cargo = "Wolf" and result = renderState(man.other(), goat, cabbage, wolf.other())
+    cargo = "Wolf" and
+    result = renderState(manShore.other(), goatShore, cabbageShore, wolfShore.other())
   }
 
   /**
-   * Holds if predator and prey are on the same shore and the man
-   * is not present.
+   * Holds if eating occurs. This happens when predator and prey are on the same shore
+   * and the man is not present.
    */
-  predicate eats(Shore predator, Shore prey) { predator = prey and man != predator }
+  predicate eating(Shore predatorShore, Shore preyShore) {
+    predatorShore = preyShore and manShore != predatorShore
+  }
 
   /** Holds if nothing gets eaten in this state. */
-  predicate isSafe() { not (eats(goat, cabbage) or eats(wolf, goat)) }
+  predicate isSafe() { not (eating(goatShore, cabbageShore) or eating(wolfShore, goatShore)) }
 
   /** Returns the state that is reached after safely ferrying a cargo item. */
   State safeFerry(Cargo cargo) { result = this.ferry(cargo) and result.isSafe() }
@@ -112,3 +118,4 @@ class GoalState extends State {
 from string path
 where any(InitialState i).reachesVia(path, _) = any(GoalState g)
 select path
+

@@ -47,7 +47,8 @@ a piece of cargo.
 Second, any item can be on one of two shores. Let's call these the "left shore" and the "right shore".
 Define a class ``Shore`` containing ``"Left"`` and ``"Right"``.
 
-It would be helpful to express "the other shore". You can do this by defining a member predicate
+It would be helpful to express "the other shore" to model moving from one side of the river to the other.
+You can do this by defining a member predicate
 ``other`` in the class ``Shore`` such that ``"Left".other()`` returns ``"Right"`` and vice versa.
 
 .. container:: toggle
@@ -59,8 +60,8 @@ It would be helpful to express "the other shore". You can do this by defining a 
    .. literalinclude:: river-crossing.ql
       :lines: 25-38
 
-We also want a way to keep track of where the man, the goat, the cabbage, and the wolf are—call this combined
-information the "state". Define a class ``State`` that encodes this information.
+We also want a way to keep track of where the man, the goat, the cabbage, and the wolf are at any point. We can call this combined
+information the "state". Define a class ``State`` that encodes the location of each piece of cargo.
 For example, if the man is on the left shore, the goat on the right shore, and the cabbage and wolf on the left
 shore, the state should be ``Left, Right, Left, Left``.
 
@@ -74,9 +75,10 @@ temporary variables in the body of a class are called `fields <https://help.semm
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 33-43,84
+      :lines: 33-43,90
 
-We are interested in two particular states, namely the initial state and the goal state.
+We are interested in two particular states, namely the initial state and the goal state,
+which we have to achieve to solve the puzzle.
 Assuming that all items start on the left shore and end up on the right shore, define
 ``InitialState`` and ``GoalState`` as subclasses of ``State``.
 
@@ -87,7 +89,7 @@ Assuming that all items start on the left shore and end up on the right shore, d
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 86-94
+      :lines: 92-100
 
 .. pull-quote::
 
@@ -105,12 +107,12 @@ Using the above note, the QL code so far looks like this:
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 14-55,100-110
+      :lines: 14-55,105-115
 
 Model the action of "ferrying"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The basic act of ferrying moves the man and a cargo item to the other shore,
+The basic act of ferrying moves the man and one cargo item to the other shore,
 resulting in a new state.
 
 Write a member predicate (of ``State``) called ``ferry``, that specifies what happens to the state
@@ -123,13 +125,13 @@ after ferrying a particular cargo. (Hint: Use the predicate ``other``.)
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 57-66
+      :lines: 57-70
 
 Of course, not all ferrying actions are possible. Add some extra conditions to describe when a ferrying
-action is "safe", that is, it doesn't lead to a state where the goat or the cabbage get eaten.
+action is "safe". That is, it doesn't lead to a state where the goat or the cabbage get eaten.
 For example, follow these steps:
 
-   #. Define a predicate ``eats`` that encodes the conditions for when a "predator" is able to eat an
+   #. Define a predicate ``eating`` that encodes the conditions for when a "predator" is able to eat an
       unguarded "prey".
    #. Define a predicate ``isSafe`` that holds when nothing gets eaten.
    #. Define a predicate ``safeFerry`` that restricts ``ferry`` to only include safe ferrying actions.
@@ -141,18 +143,20 @@ For example, follow these steps:
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 68-78
+      :lines: 72-84
 
 Find paths from one state to another
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The main aim of this query is to find a path, that is, a list of successive ferrying actions, to get
-from one state to another.
+from the initial state to the goal state.
 
-When finding the path, you should be careful to avoid "infinite" solutions. For example, the man
+When finding the solution, you should be careful to avoid "infinite" paths. For example, the man
 could ferry the goat back and forth any number of times without ever reaching an unsafe state.
+Such a path would have an infinite number of river crossings without ever solving the puzzle.
 
-One way to restrict to finite solutions is to define a `member predicate <https://help.semmle.com/QL/ql-handbook/types.html#member-predicates>`__
+One way to restrict our paths to a finite number of river crossings is to define a 
+`member predicate <https://help.semmle.com/QL/ql-handbook/types.html#member-predicates>`__
 ``State reachesVia(string path, int steps)``.
 The result of this predicate is any state that is reachable from the current state (``this``) via
 the given path in a specified finite number of steps.
@@ -176,10 +180,11 @@ for example ``steps <= 7``.
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 67-83
+      :lines: 73-89
 
 However, although this ensures that the solution is finite, it can still contain loops if the upper bound
-for ``steps`` is large.
+for ``steps`` is large. In other words, you could get an inefficient solution by revisiting the same state
+multiple times.
 
 Instead of picking an arbitrary upper bound for the number of steps, you can avoid
 counting steps altogether. If you keep track of states that have already been visited and ensure
@@ -205,7 +210,7 @@ the given path without revisiting any previously visited states.
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 80-99
+      :lines: 86-105
 
 Display the results
 ~~~~~~~~~~~~~~~~~~~
@@ -220,7 +225,7 @@ that returns the resulting path.
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 112-114
+      :lines: 118-120
 
 For now, the path defined in the above predicate ``reachesVia`` just lists the order of cargo items to ferry.
 You could tweak the predicates and the select clause to make the solution clearer. Here are some suggestions:
@@ -240,5 +245,5 @@ Here are some more example QL queries that solve the river crossing puzzle:
   - Solutions described in more detail: https://lgtm.com/query/4550752404102766320/
   - Solutions displayed in a more visual way: https://lgtm.com/query/5824364611285694673/
 
-.. TODO: Add more examples
+.. TODO: Add more examples + check that the queries are "tidied up" and clear.
 
