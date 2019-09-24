@@ -3,20 +3,27 @@ edges
 | A.java:12:30:12:37 | o [ : Number] | A.java:14:9:14:9 | o |
 | A.java:18:31:18:38 | o [ : Number] | A.java:20:9:20:9 | o |
 | A.java:24:35:24:42 | o [ : Number] | A.java:32:8:32:9 | o3 |
-| A.java:42:18:42:31 | new Integer(...) [ : Number] | A.java:6:29:6:36 | o [ : Number] |
-| A.java:43:19:43:32 | new Integer(...) [ : Number] | A.java:12:30:12:37 | o [ : Number] |
-| A.java:44:20:44:33 | new Integer(...) [ : Number] | A.java:18:31:18:38 | o [ : Number] |
-| A.java:45:24:45:37 | new Integer(...) [ : Number] | A.java:24:35:24:42 | o [ : Number] |
-| A.java:57:18:57:31 | new Integer(...) [ : Number] | A.java:6:29:6:36 | o [ : Number] |
-| A.java:58:19:58:32 | new Integer(...) [ : Number] | A.java:12:30:12:37 | o [ : Number] |
-| A.java:59:20:59:33 | new Integer(...) [ : Number] | A.java:18:31:18:38 | o [ : Number] |
-| A.java:60:24:60:37 | new Integer(...) [ : Number] | A.java:24:35:24:42 | o [ : Number] |
-| A.java:71:20:71:33 | new Integer(...) [ : Number] | A.java:78:30:78:37 | o [ : Number] |
-| A.java:72:21:72:34 | new Integer(...) [ : Number] | A.java:85:31:85:38 | o [ : Number] |
-| A.java:73:26:73:39 | new Integer(...) [ : Number] | A.java:92:36:92:43 | o [ : Number] |
-| A.java:78:30:78:37 | o [ : Number] | A.java:80:10:80:10 | o |
-| A.java:85:31:85:38 | o [ : Number] | A.java:87:10:87:10 | o |
-| A.java:92:36:92:43 | o [ : Number] | A.java:100:9:100:10 | o3 |
+| A.java:35:36:35:43 | o [ : Number] | A.java:43:8:43:9 | o3 |
+| A.java:35:36:35:43 | o [ : Number] | A.java:43:8:43:9 | o3 |
+| A.java:35:36:35:43 | o [ : Number] | A.java:43:8:43:9 | o3 |
+| A.java:53:18:53:31 | new Integer(...) [ : Number] | A.java:6:29:6:36 | o [ : Number] |
+| A.java:54:19:54:32 | new Integer(...) [ : Number] | A.java:12:30:12:37 | o [ : Number] |
+| A.java:55:20:55:33 | new Integer(...) [ : Number] | A.java:18:31:18:38 | o [ : Number] |
+| A.java:56:24:56:37 | new Integer(...) [ : Number] | A.java:24:35:24:42 | o [ : Number] |
+| A.java:57:25:57:38 | new Integer(...) [ : Number] | A.java:35:36:35:43 | o [ : Number] |
+| A.java:58:25:58:38 | new Integer(...) [ : Number] | A.java:35:36:35:43 | o [ : Number] |
+| A.java:59:25:59:38 | new Integer(...) [ : Number] | A.java:35:36:35:43 | o [ : Number] |
+| A.java:61:25:61:38 | new Integer(...) [ : Number] | A.java:35:36:35:43 | o [ : Number] |
+| A.java:73:18:73:31 | new Integer(...) [ : Number] | A.java:6:29:6:36 | o [ : Number] |
+| A.java:74:19:74:32 | new Integer(...) [ : Number] | A.java:12:30:12:37 | o [ : Number] |
+| A.java:75:20:75:33 | new Integer(...) [ : Number] | A.java:18:31:18:38 | o [ : Number] |
+| A.java:76:24:76:37 | new Integer(...) [ : Number] | A.java:24:35:24:42 | o [ : Number] |
+| A.java:87:20:87:33 | new Integer(...) [ : Number] | A.java:94:30:94:37 | o [ : Number] |
+| A.java:88:21:88:34 | new Integer(...) [ : Number] | A.java:101:31:101:38 | o [ : Number] |
+| A.java:89:26:89:39 | new Integer(...) [ : Number] | A.java:108:36:108:43 | o [ : Number] |
+| A.java:94:30:94:37 | o [ : Number] | A.java:96:10:96:10 | o |
+| A.java:101:31:101:38 | o [ : Number] | A.java:103:10:103:10 | o |
+| A.java:108:36:108:43 | o [ : Number] | A.java:116:9:116:10 | o3 |
 nodes
 | A.java:6:29:6:36 | o [ : Number] | semmle.label | o [ : Number] |
 | A.java:8:9:8:9 | o | semmle.label | o |
@@ -26,32 +33,44 @@ nodes
 | A.java:20:9:20:9 | o | semmle.label | o |
 | A.java:24:35:24:42 | o [ : Number] | semmle.label | o [ : Number] |
 | A.java:32:8:32:9 | o3 | semmle.label | o3 |
-| A.java:42:18:42:31 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:43:19:43:32 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:44:20:44:33 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:45:24:45:37 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:57:18:57:31 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:58:19:58:32 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:59:20:59:33 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:60:24:60:37 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:71:20:71:33 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:72:21:72:34 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:73:26:73:39 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
-| A.java:78:30:78:37 | o [ : Number] | semmle.label | o [ : Number] |
-| A.java:80:10:80:10 | o | semmle.label | o |
-| A.java:85:31:85:38 | o [ : Number] | semmle.label | o [ : Number] |
-| A.java:87:10:87:10 | o | semmle.label | o |
-| A.java:92:36:92:43 | o [ : Number] | semmle.label | o [ : Number] |
-| A.java:100:9:100:10 | o3 | semmle.label | o3 |
+| A.java:35:36:35:43 | o [ : Number] | semmle.label | o [ : Number] |
+| A.java:35:36:35:43 | o [ : Number] | semmle.label | o [ : Number] |
+| A.java:35:36:35:43 | o [ : Number] | semmle.label | o [ : Number] |
+| A.java:43:8:43:9 | o3 | semmle.label | o3 |
+| A.java:53:18:53:31 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:54:19:54:32 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:55:20:55:33 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:56:24:56:37 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:57:25:57:38 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:58:25:58:38 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:59:25:59:38 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:61:25:61:38 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:73:18:73:31 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:74:19:74:32 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:75:20:75:33 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:76:24:76:37 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:87:20:87:33 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:88:21:88:34 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:89:26:89:39 | new Integer(...) [ : Number] | semmle.label | new Integer(...) [ : Number] |
+| A.java:94:30:94:37 | o [ : Number] | semmle.label | o [ : Number] |
+| A.java:96:10:96:10 | o | semmle.label | o |
+| A.java:101:31:101:38 | o [ : Number] | semmle.label | o [ : Number] |
+| A.java:103:10:103:10 | o | semmle.label | o |
+| A.java:108:36:108:43 | o [ : Number] | semmle.label | o [ : Number] |
+| A.java:116:9:116:10 | o3 | semmle.label | o3 |
 #select
-| A.java:42:18:42:31 | new Integer(...) [ : Number] | A.java:42:18:42:31 | new Integer(...) [ : Number] | A.java:8:9:8:9 | o | $@ | A.java:8:9:8:9 | o | o |
-| A.java:43:19:43:32 | new Integer(...) [ : Number] | A.java:43:19:43:32 | new Integer(...) [ : Number] | A.java:14:9:14:9 | o | $@ | A.java:14:9:14:9 | o | o |
-| A.java:44:20:44:33 | new Integer(...) [ : Number] | A.java:44:20:44:33 | new Integer(...) [ : Number] | A.java:20:9:20:9 | o | $@ | A.java:20:9:20:9 | o | o |
-| A.java:45:24:45:37 | new Integer(...) [ : Number] | A.java:45:24:45:37 | new Integer(...) [ : Number] | A.java:32:8:32:9 | o3 | $@ | A.java:32:8:32:9 | o3 | o3 |
-| A.java:57:18:57:31 | new Integer(...) [ : Number] | A.java:57:18:57:31 | new Integer(...) [ : Number] | A.java:8:9:8:9 | o | $@ | A.java:8:9:8:9 | o | o |
-| A.java:58:19:58:32 | new Integer(...) [ : Number] | A.java:58:19:58:32 | new Integer(...) [ : Number] | A.java:14:9:14:9 | o | $@ | A.java:14:9:14:9 | o | o |
-| A.java:59:20:59:33 | new Integer(...) [ : Number] | A.java:59:20:59:33 | new Integer(...) [ : Number] | A.java:20:9:20:9 | o | $@ | A.java:20:9:20:9 | o | o |
-| A.java:60:24:60:37 | new Integer(...) [ : Number] | A.java:60:24:60:37 | new Integer(...) [ : Number] | A.java:32:8:32:9 | o3 | $@ | A.java:32:8:32:9 | o3 | o3 |
-| A.java:71:20:71:33 | new Integer(...) [ : Number] | A.java:71:20:71:33 | new Integer(...) [ : Number] | A.java:80:10:80:10 | o | $@ | A.java:80:10:80:10 | o | o |
-| A.java:72:21:72:34 | new Integer(...) [ : Number] | A.java:72:21:72:34 | new Integer(...) [ : Number] | A.java:87:10:87:10 | o | $@ | A.java:87:10:87:10 | o | o |
-| A.java:73:26:73:39 | new Integer(...) [ : Number] | A.java:73:26:73:39 | new Integer(...) [ : Number] | A.java:100:9:100:10 | o3 | $@ | A.java:100:9:100:10 | o3 | o3 |
+| A.java:53:18:53:31 | new Integer(...) [ : Number] | A.java:53:18:53:31 | new Integer(...) [ : Number] | A.java:8:9:8:9 | o | $@ | A.java:8:9:8:9 | o | o |
+| A.java:54:19:54:32 | new Integer(...) [ : Number] | A.java:54:19:54:32 | new Integer(...) [ : Number] | A.java:14:9:14:9 | o | $@ | A.java:14:9:14:9 | o | o |
+| A.java:55:20:55:33 | new Integer(...) [ : Number] | A.java:55:20:55:33 | new Integer(...) [ : Number] | A.java:20:9:20:9 | o | $@ | A.java:20:9:20:9 | o | o |
+| A.java:56:24:56:37 | new Integer(...) [ : Number] | A.java:56:24:56:37 | new Integer(...) [ : Number] | A.java:32:8:32:9 | o3 | $@ | A.java:32:8:32:9 | o3 | o3 |
+| A.java:57:25:57:38 | new Integer(...) [ : Number] | A.java:57:25:57:38 | new Integer(...) [ : Number] | A.java:43:8:43:9 | o3 | $@ | A.java:43:8:43:9 | o3 | o3 |
+| A.java:58:25:58:38 | new Integer(...) [ : Number] | A.java:58:25:58:38 | new Integer(...) [ : Number] | A.java:43:8:43:9 | o3 | $@ | A.java:43:8:43:9 | o3 | o3 |
+| A.java:59:25:59:38 | new Integer(...) [ : Number] | A.java:59:25:59:38 | new Integer(...) [ : Number] | A.java:43:8:43:9 | o3 | $@ | A.java:43:8:43:9 | o3 | o3 |
+| A.java:61:25:61:38 | new Integer(...) [ : Number] | A.java:61:25:61:38 | new Integer(...) [ : Number] | A.java:43:8:43:9 | o3 | $@ | A.java:43:8:43:9 | o3 | o3 |
+| A.java:73:18:73:31 | new Integer(...) [ : Number] | A.java:73:18:73:31 | new Integer(...) [ : Number] | A.java:8:9:8:9 | o | $@ | A.java:8:9:8:9 | o | o |
+| A.java:74:19:74:32 | new Integer(...) [ : Number] | A.java:74:19:74:32 | new Integer(...) [ : Number] | A.java:14:9:14:9 | o | $@ | A.java:14:9:14:9 | o | o |
+| A.java:75:20:75:33 | new Integer(...) [ : Number] | A.java:75:20:75:33 | new Integer(...) [ : Number] | A.java:20:9:20:9 | o | $@ | A.java:20:9:20:9 | o | o |
+| A.java:76:24:76:37 | new Integer(...) [ : Number] | A.java:76:24:76:37 | new Integer(...) [ : Number] | A.java:32:8:32:9 | o3 | $@ | A.java:32:8:32:9 | o3 | o3 |
+| A.java:87:20:87:33 | new Integer(...) [ : Number] | A.java:87:20:87:33 | new Integer(...) [ : Number] | A.java:96:10:96:10 | o | $@ | A.java:96:10:96:10 | o | o |
+| A.java:88:21:88:34 | new Integer(...) [ : Number] | A.java:88:21:88:34 | new Integer(...) [ : Number] | A.java:103:10:103:10 | o | $@ | A.java:103:10:103:10 | o | o |
+| A.java:89:26:89:39 | new Integer(...) [ : Number] | A.java:89:26:89:39 | new Integer(...) [ : Number] | A.java:116:9:116:10 | o3 | $@ | A.java:116:9:116:10 | o3 | o3 |
