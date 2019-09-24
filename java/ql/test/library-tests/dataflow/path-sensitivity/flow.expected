@@ -1,0 +1,67 @@
+edges
+| A.java:10:8:10:21 | new Integer(...) : Number | A.java:13:9:13:9 | x |
+| A.java:21:8:21:21 | new Integer(...) : Number | A.java:27:9:27:9 | x |
+| A.java:36:9:36:22 | new Integer(...) : Number | A.java:41:10:41:10 | x |
+| A.java:51:9:51:22 | new Integer(...) : Number | A.java:55:9:55:9 | x |
+| A.java:61:14:61:27 | new Integer(...) : Number | A.java:67:9:67:9 | j |
+| A.java:76:8:76:21 | new Integer(...) : Number | A.java:80:9:80:9 | x |
+| A.java:95:10:95:23 | new Integer(...) : Number | A.java:101:9:101:9 | x |
+| A.java:116:10:116:23 | new Integer(...) : Number | A.java:122:9:122:9 | x |
+| A.java:137:10:137:23 | new Integer(...) : Number | A.java:143:9:143:9 | x |
+| A.java:164:8:164:21 | new Integer(...) : Number | A.java:167:9:167:9 | x |
+| A.java:187:8:187:21 | new Integer(...) : Number | A.java:197:9:197:9 | y |
+| A.java:204:14:204:27 | new Integer(...) : Number | A.java:211:9:211:9 | x |
+| A.java:223:9:223:22 | new Integer(...) : Number | A.java:226:10:226:10 | x |
+| A.java:238:9:238:22 | new Integer(...) : Number | A.java:241:10:241:10 | x |
+| A.java:264:8:264:21 | new Integer(...) : Number | A.java:267:9:267:9 | x |
+| A.java:277:9:277:22 | new Integer(...) : Number | A.java:280:10:280:10 | x |
+nodes
+| A.java:10:8:10:21 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:13:9:13:9 | x | semmle.label | x |
+| A.java:21:8:21:21 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:27:9:27:9 | x | semmle.label | x |
+| A.java:36:9:36:22 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:41:10:41:10 | x | semmle.label | x |
+| A.java:51:9:51:22 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:55:9:55:9 | x | semmle.label | x |
+| A.java:61:14:61:27 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:67:9:67:9 | j | semmle.label | j |
+| A.java:76:8:76:21 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:80:9:80:9 | x | semmle.label | x |
+| A.java:95:10:95:23 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:101:9:101:9 | x | semmle.label | x |
+| A.java:116:10:116:23 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:122:9:122:9 | x | semmle.label | x |
+| A.java:137:10:137:23 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:143:9:143:9 | x | semmle.label | x |
+| A.java:164:8:164:21 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:167:9:167:9 | x | semmle.label | x |
+| A.java:187:8:187:21 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:197:9:197:9 | y | semmle.label | y |
+| A.java:204:14:204:27 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:211:9:211:9 | x | semmle.label | x |
+| A.java:223:9:223:22 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:226:10:226:10 | x | semmle.label | x |
+| A.java:238:9:238:22 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:241:10:241:10 | x | semmle.label | x |
+| A.java:264:8:264:21 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:267:9:267:9 | x | semmle.label | x |
+| A.java:277:9:277:22 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
+| A.java:280:10:280:10 | x | semmle.label | x |
+#select
+| A.java:10:8:10:21 | new Integer(...) : Number | A.java:10:8:10:21 | new Integer(...) : Number | A.java:13:9:13:9 | x | $@ | A.java:13:9:13:9 | x | x |
+| A.java:21:8:21:21 | new Integer(...) : Number | A.java:21:8:21:21 | new Integer(...) : Number | A.java:27:9:27:9 | x | $@ | A.java:27:9:27:9 | x | x |
+| A.java:36:9:36:22 | new Integer(...) : Number | A.java:36:9:36:22 | new Integer(...) : Number | A.java:41:10:41:10 | x | $@ | A.java:41:10:41:10 | x | x |
+| A.java:51:9:51:22 | new Integer(...) : Number | A.java:51:9:51:22 | new Integer(...) : Number | A.java:55:9:55:9 | x | $@ | A.java:55:9:55:9 | x | x |
+| A.java:61:14:61:27 | new Integer(...) : Number | A.java:61:14:61:27 | new Integer(...) : Number | A.java:67:9:67:9 | j | $@ | A.java:67:9:67:9 | j | j |
+| A.java:76:8:76:21 | new Integer(...) : Number | A.java:76:8:76:21 | new Integer(...) : Number | A.java:80:9:80:9 | x | $@ | A.java:80:9:80:9 | x | x |
+| A.java:95:10:95:23 | new Integer(...) : Number | A.java:95:10:95:23 | new Integer(...) : Number | A.java:101:9:101:9 | x | $@ | A.java:101:9:101:9 | x | x |
+| A.java:116:10:116:23 | new Integer(...) : Number | A.java:116:10:116:23 | new Integer(...) : Number | A.java:122:9:122:9 | x | $@ | A.java:122:9:122:9 | x | x |
+| A.java:137:10:137:23 | new Integer(...) : Number | A.java:137:10:137:23 | new Integer(...) : Number | A.java:143:9:143:9 | x | $@ | A.java:143:9:143:9 | x | x |
+| A.java:164:8:164:21 | new Integer(...) : Number | A.java:164:8:164:21 | new Integer(...) : Number | A.java:167:9:167:9 | x | $@ | A.java:167:9:167:9 | x | x |
+| A.java:187:8:187:21 | new Integer(...) : Number | A.java:187:8:187:21 | new Integer(...) : Number | A.java:197:9:197:9 | y | $@ | A.java:197:9:197:9 | y | y |
+| A.java:204:14:204:27 | new Integer(...) : Number | A.java:204:14:204:27 | new Integer(...) : Number | A.java:211:9:211:9 | x | $@ | A.java:211:9:211:9 | x | x |
+| A.java:223:9:223:22 | new Integer(...) : Number | A.java:223:9:223:22 | new Integer(...) : Number | A.java:226:10:226:10 | x | $@ | A.java:226:10:226:10 | x | x |
+| A.java:238:9:238:22 | new Integer(...) : Number | A.java:238:9:238:22 | new Integer(...) : Number | A.java:241:10:241:10 | x | $@ | A.java:241:10:241:10 | x | x |
+| A.java:264:8:264:21 | new Integer(...) : Number | A.java:264:8:264:21 | new Integer(...) : Number | A.java:267:9:267:9 | x | $@ | A.java:267:9:267:9 | x | x |
+| A.java:277:9:277:22 | new Integer(...) : Number | A.java:277:9:277:22 | new Integer(...) : Number | A.java:280:10:280:10 | x | $@ | A.java:280:10:280:10 | x | x |
