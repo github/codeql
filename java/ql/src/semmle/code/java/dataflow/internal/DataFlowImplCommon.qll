@@ -687,6 +687,11 @@ private module ImplCommon {
     override predicate validFor(Node n) { any() }
   }
 
+  pragma[noinline]
+  private predicate hasUnreachableNode(DataFlowCall call, DataFlowCallable callable) {
+    isUnreachableInCall(any(Node n | n.getEnclosingCallable() = callable), call)
+  }
+
   class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall {
     LocalCallContextSpecificCall() { this = TSpecificLocalCall(call) }
 
@@ -701,9 +706,7 @@ private module ImplCommon {
     }
 
     override predicate validFor(Node n) {
-      exists(Node n2 |
-        isUnreachableInCall(n2, call) and n2.getEnclosingCallable() = n.getEnclosingCallable()
-      )
+    hasUnreachableNode(call, n.getEnclosingCallable())
     }
   }
 
