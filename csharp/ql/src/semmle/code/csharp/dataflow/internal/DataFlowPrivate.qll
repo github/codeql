@@ -1314,3 +1314,5 @@ class DataFlowExpr = DotNet::Expr;
 class DataFlowType = DotNet::Type;
 
 class DataFlowLocation = Location;
+
+predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
