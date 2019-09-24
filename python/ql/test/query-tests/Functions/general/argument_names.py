@@ -17,6 +17,11 @@ class Normal(object):
     def n_cmethod(self):
         pass
 
+    # not ok
+    @classmethod
+    def n_cmethod2():
+        pass
+
     # this is allowed because it has a decorator other than @classmethod
     @classmethod
     @id
@@ -48,6 +53,9 @@ class NonSelf(object):
     def s_method(y):
         pass
 
+    def s_method2():
+        pass
+
     def s_ok(self):
         pass
 
@@ -69,25 +77,32 @@ class NonSelf(object):
 
 #Possible FPs for non-self. ODASA-2439
 
-class C(object):
+class Acceptable1(object):
+    def _func(f):
+        return f
+    _func(x)
+
+class Acceptable2(object):
     def _func(f):
         return f
 
-    _func(x)
-
-    #or
     @_func
     def meth(self):
         pass
 
-
+# Handling methods defined in a different scope than the class it belongs to,
+# gets problmematic since we need to show the full-path from method definition
+# to actually adding it to the class. We tried to enable warnings for these in
+# September 2019, but ended up sticking to the decision from ODASA-2439 (where
+# results are both obvious and useful to the end-user).
 def dont_care(arg):
     pass
 
-class C(object):
+class Acceptable3(object):
 
     meth = dont_care
 
+# OK
 class Meta(type):
 
     #__new__ is an implicit class method, so the first arg is the metaclass
