@@ -458,6 +458,11 @@ class LocalCallContextAny extends LocalCallContext, TAnyLocalCall {
   override predicate validFor(Node n) { any() }
 }
 
+pragma[noinline]
+private predicate hasUnreachableNode(DataFlowCall call, DataFlowCallable callable) {
+  isUnreachableInCall(any(Node n | n.getEnclosingCallable() = callable), call)
+}
+
 class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall {
   LocalCallContextSpecificCall() { this = TSpecificLocalCall(call) }
 
@@ -472,9 +477,7 @@ class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall 
   }
 
   override predicate validFor(Node n) {
-    exists(Node n2 |
-      isUnreachableInCall(n2, call) and n2.getEnclosingCallable() = n.getEnclosingCallable()
-    )
+    hasUnreachableNode(call, n.getEnclosingCallable())
   }
 }
 
