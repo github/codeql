@@ -40,7 +40,7 @@ could be somehow retrieved by an attacker.</p>
   CWE-14</a>.</li>
 <li>Public domain:
   <a href="https://compsec.sysnet.ucsd.edu/secure_memzero.h">
-  secure_memzero</a>implementation.</li>
+  secure_memzero</a> implementation.</li>
 <li>Blog:
   <a href="https://www.cryptologie.net/article/419/zeroing-memory-compiler-optimizations-and-memset_sC">
   Zero'ing memory, compiler optimizations and memset_s</a>.</li>

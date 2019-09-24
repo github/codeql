@@ -1,5 +1,9 @@
-| MemsetMayBeDeleted.c:17:2:17:7 | call to memset | Call to memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.c:25:2:25:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.cpp:33:5:33:10 | call to memset | Call to memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.cpp:52:5:52:10 | call to memset | Call to memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.cpp:63:5:63:10 | call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:19:2:19:7 | call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:29:2:29:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:79:2:79:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:99:2:99:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:109:2:109:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:119:2:119:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.cpp:43:5:43:10 | call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.cpp:71:5:71:10 | call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.cpp:88:5:88:10 | call to memset | Call to memset may be deleted by the compiler. |

@@ -21,6 +21,16 @@ private predicate memsetName(string fn) {
   fn = "__builtin_memset"
 }
 
+private Expr getVariable(Expr expr) {
+  expr instanceof CStyleCast and result = getVariable(expr.(CStyleCast).getExpr())
+  or
+  expr instanceof PointerAddExpr and result = getVariable(expr.getChild(0))
+  or
+  expr instanceof ArrayToPointerConversion and result = getVariable(expr.getChild(0))
+  or
+  result = expr
+}
+
 from FunctionCall fc, Expr arg
 where
   memsetName(fc.getTarget().getName()) and
@@ -30,7 +40,6 @@ where
       DataFlow::exprNode(succ))
   ) and
   not exists(Parameter parm |
-    TaintTracking::localTaint(DataFlow::parameterNode(parm),
-      DataFlow::exprNode(arg))
+    TaintTracking::localTaint(DataFlow::parameterNode(parm), DataFlow::exprNode(arg))
   )
 select fc, "Call to " + fc.getTarget().getName() + " may be deleted by the compiler."
