@@ -32,6 +32,17 @@ public class A {
 		sink(o3);
 	}
 
+	public void localCallSensitivity2(Object o, boolean b, boolean c) {
+		Object o1 = o;
+		Object o2 = null;
+		if (b || c) {
+			Object tmp = o1;
+			o2 = 1 == 1 ? (tmp) : (tmp);
+		}
+		Object o3 = o2;
+		sink(o3);
+	}
+
 	public void f1() {
 		// should not exhibit flow
 		callSinkIfTrue(new Integer(1), false);
@@ -43,6 +54,11 @@ public class A {
 		callSinkIfFalse(new Integer(2), false);
 		callSinkFromLoop(new Integer(3), true);
 		localCallSensitivity(new Integer(4), true);
+		localCallSensitivity2(new Integer(4), true, true);
+		localCallSensitivity2(new Integer(4), false, true);
+		localCallSensitivity2(new Integer(4), true, false);
+		// expected false positive
+		localCallSensitivity2(new Integer(4), false, false);
 	}
 
 	public void f2() {
