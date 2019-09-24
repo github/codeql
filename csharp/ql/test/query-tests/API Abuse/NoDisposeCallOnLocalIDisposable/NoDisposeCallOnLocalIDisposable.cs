@@ -1,4 +1,4 @@
-// semmle-extractor-options: --cil /r:System.Xml.dll /r:System.Xml.ReaderWriter.dll /r:System.Private.Xml.dll /r:System.ComponentModel.Primitives.dll /r:System.IO.Compression.dll /r:System.Runtime.Extensions.dll
+// semmle-extractor-options: --cil /langversion:8.0 /r:System.Xml.dll /r:System.Xml.ReaderWriter.dll /r:System.Private.Xml.dll /r:System.ComponentModel.Primitives.dll /r:System.IO.Compression.dll /r:System.Runtime.Extensions.dll
 
 using System;
 using System.Text;
@@ -51,6 +51,7 @@ class Test
         // BAD: No Dispose call
         var c1d = new Timer(TimerProc);
         var fs = new FileStream("", FileMode.CreateNew, FileAccess.Write);
+        new FileStream("", FileMode.CreateNew, FileAccess.Write).Fluent();
 
         // GOOD: Disposed via wrapper
         fs = new FileStream("", FileMode.CreateNew, FileAccess.Write);
@@ -65,6 +66,7 @@ class Test
         d = new GZipStream(fs, CompressionMode.Compress);
         dProp = new Timer(TimerProc);
         this[0] = new Timer(TimerProc);
+        d = new FileStream("", FileMode.CreateNew, FileAccess.Write).Fluent(); // FALSE POSITIVE
 
         // GOOD: Passed to another IDisposable
         using (var reader = new StreamReader(new FileStream("", FileMode.Open)))
@@ -90,6 +92,11 @@ class Test
     void TimerProc(object obj)
     {
     }
+
+    public void Dispose() { }
 }
 
-// semmle-extractor-options: /langversion:8.0
+static class Extensions
+{
+    public static FileStream Fluent(this FileStream fs) => fs;
+}
