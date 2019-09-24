@@ -616,7 +616,7 @@ private predicate boundedInstruction(
     boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
   )
   or
-  exists(PropertyAccess pa | 
+  exists(PropertyAccess pa |
     i.(CallInstruction).getAST() = pa and
     pa.getProperty().getName() = "Length" and
     b instanceof ZeroBound and

@@ -4,7 +4,7 @@ import semmle.code.csharp.ir.internal.IRGuards
 import semmle.code.csharp.ir.ValueNumbering
 
 query predicate instructionBounds(
-    Instruction i, Bound b, int delta, boolean upper, Reason reason, Location reasonLoc
+  Instruction i, Bound b, int delta, boolean upper, Reason reason, Location reasonLoc
 ) {
   (
     i.getAUse() instanceof ArgumentOperand
@@ -23,4 +23,3 @@ query predicate instructionBounds(
   then reasonLoc = reason.(CondReason).getCond().getLocation()
   else reasonLoc instanceof EmptyLocation
 }
-
