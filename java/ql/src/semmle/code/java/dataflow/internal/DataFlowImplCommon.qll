@@ -350,7 +350,8 @@ private module ImplCommon {
    */
   cached
   predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
-    reducedViableImplInCallContext(_, callable, call) or
+    reducedViableImplInCallContext(_, callable, call)
+    or
     exists(Node n | n.getEnclosingCallable() = callable | isUnreachableInCall(n, call))
   }
 
@@ -378,6 +379,7 @@ private module ImplCommon {
     TAnyLocalCall() or
     TSpecificLocalCall(DataFlowCall call) { isUnreachableInCall(_, call) }
 }
+
 import ImplCommon
 
 pragma[noinline]
@@ -479,7 +481,6 @@ class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall 
 /** A callable tagged with a relevant return kind. */
 class ReturnPosition extends TReturnPosition0 {
   private DataFlowCallable c;
-
   private ReturnKind kind;
 
   ReturnPosition() { this = TReturnPosition0(c, kind) }
