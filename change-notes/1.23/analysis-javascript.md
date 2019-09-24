@@ -22,14 +22,16 @@
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
 | Incomplete string escaping or encoding (`js/incomplete-sanitization`) | Fewer false-positive results | This rule now recognizes additional ways delimiters can be stripped away. |
-| Client-side cross-site scripting (`js/xss`) | More results | More potential vulnerabilities involving functions that manipulate DOM attributes are now recognized. |
+| Client-side cross-site scripting (`js/xss`) | More results, fewer false-positive results | More potential vulnerabilities involving functions that manipulate DOM attributes are now recognized, and more sanitizers are detected. |
 | Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving functions that manipulate DOM event handler attributes are now recognized. |
 | Hard-coded credentials (`js/hardcoded-credentials`) | Fewer false-positive results | This rule now flags fewer password examples. |
 | Illegal invocation (`js/illegal-invocation`) | Fewer false-positive results | This rule now correctly handles methods named `call` and `apply`. |
-| Incorrect suffix check (`js/incorrect-suffix-check`) | Fewer false-positive results | The query recognizes valid checks in more cases. 
+| Incorrect suffix check (`js/incorrect-suffix-check`) | Fewer false-positive results | The query recognizes valid checks in more cases. |
 | Network data written to file (`js/http-to-file-access`) | Fewer false-positive results | This query has been renamed to better match its intended purpose, and now only considers network data untrusted. | 
 | Password in configuration file (`js/password-in-configuration-file`) | Fewer false-positive results | This rule now flags fewer password examples. |
 | Prototype pollution (`js/prototype-pollution`) | More results | The query now highlights vulnerable uses of jQuery and Angular, and the results are shown on LGTM by default. |
+| Reflected cross-site scripting (`js/reflected-xss`) | Fewer false-positive results | The query now recognizes more sanitizers. |
+| Stored cross-site scripting (`js/stored-xss`) | Fewer false-positive results | The query now recognizes more sanitizers. |
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now treats responses from servers as untrusted. |
 
 ## Changes to QL libraries
