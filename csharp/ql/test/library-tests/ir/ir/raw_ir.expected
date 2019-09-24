@@ -480,6 +480,70 @@ delegates.cs:
 #   11|     v0_17(Void)        = UnmodeledUse             : mu*
 #   11|     v0_18(Void)        = ExitFunction             : 
 
+events.cs:
+#    7| System.Void Events..ctor()
+#    7|   Block 0
+#    7|     v0_0(Void)          = EnterFunction                : 
+#    7|     mu0_1(null)         = AliasedDefinition            : 
+#    7|     mu0_2(null)         = UnmodeledDefinition          : 
+#    7|     r0_3(glval<Events>) = InitializeThis               : 
+#    8|     r0_4(Events)        = CopyValue                    : r0_3
+#    8|     r0_5(glval<null>)   = FunctionAddress[add_MyEvent] : 
+#    8|     r0_6(MyDel)         = NewObj                       : 
+#    8|     r0_7(glval<null>)   = FunctionAddress[MyDel]       : 
+#    8|     r0_8(glval<MyDel>)  = FunctionAddress[WelcomeUser] : 
+#    8|     v0_9(Void)          = Call                         : func:r0_7, this:r0_6, 0:r0_8
+#    8|     mu0_10(null)        = ^CallSideEffect              : ~mu0_2
+#    8|     v0_11(Void)         = Call                         : func:r0_5, this:r0_4, 0:r0_6
+#    8|     mu0_12(null)        = ^CallSideEffect              : ~mu0_2
+#    7|     v0_13(Void)         = ReturnVoid                   : 
+#    7|     v0_14(Void)         = UnmodeledUse                 : mu*
+#    7|     v0_15(Void)         = ExitFunction                 : 
+
+#   11| System.String Events.WelcomeUser(System.String)
+#   11|   Block 0
+#   11|     v0_0(Void)           = EnterFunction                 : 
+#   11|     mu0_1(null)          = AliasedDefinition             : 
+#   11|     mu0_2(null)          = UnmodeledDefinition           : 
+#   11|     r0_3(glval<Events>)  = InitializeThis                : 
+#   11|     r0_4(glval<String>)  = VariableAddress[username]     : 
+#   11|     mu0_5(String)        = InitializeParameter[username] : &:r0_4
+#   12|     r0_6(glval<String>)  = VariableAddress[#return]      : 
+#   12|     r0_7(String)         = StringConstant["Welcome "]    : 
+#   12|     r0_8(glval<String>)  = VariableAddress[username]     : 
+#   12|     r0_9(String)         = Load                          : &:r0_8, ~mu0_2
+#   12|     r0_10(String)        = Add                           : r0_7, r0_9
+#   12|     mu0_11(String)       = Store                         : &:r0_6, r0_10
+#   11|     r0_12(glval<String>) = VariableAddress[#return]      : 
+#   11|     v0_13(Void)          = ReturnValue                   : &:r0_12, ~mu0_2
+#   11|     v0_14(Void)          = UnmodeledUse                  : mu*
+#   11|     v0_15(Void)          = ExitFunction                  : 
+
+#   15| System.Void Events.Main(System.String[])
+#   15|   Block 0
+#   15|     v0_0(Void)            = EnterFunction                     : 
+#   15|     mu0_1(null)           = AliasedDefinition                 : 
+#   15|     mu0_2(null)           = UnmodeledDefinition               : 
+#   15|     r0_3(glval<String[]>) = VariableAddress[args]             : 
+#   15|     mu0_4(String[])       = InitializeParameter[args]         : &:r0_3
+#   16|     r0_5(glval<Events>)   = VariableAddress[obj1]             : 
+#   16|     r0_6(Events)          = NewObj                            : 
+#   16|     r0_7(glval<null>)     = FunctionAddress[Events]           : 
+#   16|     v0_8(Void)            = Call                              : func:r0_7, this:r0_6
+#   16|     mu0_9(null)           = ^CallSideEffect                   : ~mu0_2
+#   16|     mu0_10(Events)        = Store                             : &:r0_5, r0_6
+#   17|     r0_11(glval<String>)  = VariableAddress[result]           : 
+#   17|     r0_12(glval<Events>)  = VariableAddress[obj1]             : 
+#   17|     r0_13(Events)         = Load                              : &:r0_12, ~mu0_2
+#   17|     r0_14(glval<null>)    = FunctionAddress[Invoke]           : 
+#   17|     r0_15(String)         = StringConstant["Tutorials Point"] : 
+#   17|     v0_16(Void)           = Call                              : func:r0_14, this:r0_13, 0:r0_15
+#   17|     mu0_17(null)          = ^CallSideEffect                   : ~mu0_2
+#   17|     mu0_18(String)        = Store                             : &:r0_11, v0_16
+#   15|     v0_19(Void)           = ReturnVoid                        : 
+#   15|     v0_20(Void)           = UnmodeledUse                      : mu*
+#   15|     v0_21(Void)           = ExitFunction                      : 
+
 foreach.cs:
 #    4| System.Void ForEach.Main()
 #    4|   Block 0
@@ -597,6 +661,88 @@ func_with_param_call.cs:
 #   10|     v0_11(Void)         = ReturnValue              : &:r0_10, ~mu0_2
 #   10|     v0_12(Void)         = UnmodeledUse             : mu*
 #   10|     v0_13(Void)         = ExitFunction             : 
+
+indexers.cs:
+#    8| System.String Indexers.Contact.get_Item(System.Int32)
+#    8|   Block 0
+#    8|     v0_0(Void)            = EnterFunction              : 
+#    8|     mu0_1(null)           = AliasedDefinition          : 
+#    8|     mu0_2(null)           = UnmodeledDefinition        : 
+#    8|     r0_3(glval<Contact>)  = InitializeThis             : 
+#    6|     r0_4(glval<Int32>)    = VariableAddress[index]     : 
+#    6|     mu0_5(Int32)          = InitializeParameter[index] : &:r0_4
+#   10|     r0_6(glval<String>)   = VariableAddress[#return]   : 
+#   10|     r0_7(Contact)         = CopyValue                  : r0_3
+#   10|     r0_8(glval<String[]>) = FieldAddress[address]      : r0_7
+#   10|     r0_9(String[])        = ElementsAddress            : r0_8
+#   10|     r0_10(glval<Int32>)   = VariableAddress[index]     : 
+#   10|     r0_11(Int32)          = Load                       : &:r0_10, ~mu0_2
+#   10|     r0_12(String[])       = PointerAdd[4]              : r0_9, r0_11
+#   10|     r0_13(String)         = Load                       : &:r0_12, ~mu0_2
+#   10|     mu0_14(String)        = Store                      : &:r0_6, r0_13
+#    8|     r0_15(glval<String>)  = VariableAddress[#return]   : 
+#    8|     v0_16(Void)           = ReturnValue                : &:r0_15, ~mu0_2
+#    8|     v0_17(Void)           = UnmodeledUse               : mu*
+#    8|     v0_18(Void)           = ExitFunction               : 
+
+#   12| System.Void Indexers.Contact.set_Item(System.Int32,System.String)
+#   12|   Block 0
+#   12|     v0_0(Void)             = EnterFunction              : 
+#   12|     mu0_1(null)            = AliasedDefinition          : 
+#   12|     mu0_2(null)            = UnmodeledDefinition        : 
+#   12|     r0_3(glval<Contact>)   = InitializeThis             : 
+#    6|     r0_4(glval<Int32>)     = VariableAddress[index]     : 
+#    6|     mu0_5(Int32)           = InitializeParameter[index] : &:r0_4
+#   12|     r0_6(glval<String>)    = VariableAddress[value]     : 
+#   12|     mu0_7(String)          = InitializeParameter[value] : &:r0_6
+#   14|     r0_8(glval<String>)    = VariableAddress[value]     : 
+#   14|     r0_9(String)           = Load                       : &:r0_8, ~mu0_2
+#   14|     r0_10(Contact)         = CopyValue                  : r0_3
+#   14|     r0_11(glval<String[]>) = FieldAddress[address]      : r0_10
+#   14|     r0_12(String[])        = ElementsAddress            : r0_11
+#   14|     r0_13(glval<Int32>)    = VariableAddress[index]     : 
+#   14|     r0_14(Int32)           = Load                       : &:r0_13, ~mu0_2
+#   14|     r0_15(String[])        = PointerAdd[4]              : r0_12, r0_14
+#   14|     mu0_16(String)         = Store                      : &:r0_15, r0_9
+#   12|     v0_17(Void)            = ReturnVoid                 : 
+#   12|     v0_18(Void)            = UnmodeledUse               : mu*
+#   12|     v0_19(Void)            = ExitFunction               : 
+
+#   19| System.Void Indexers.Main()
+#   19|   Block 0
+#   19|     v0_0(Void)            = EnterFunction               : 
+#   19|     mu0_1(null)           = AliasedDefinition           : 
+#   19|     mu0_2(null)           = UnmodeledDefinition         : 
+#   21|     r0_3(glval<Contact>)  = VariableAddress[contact]    : 
+#   21|     r0_4(Contact)         = NewObj                      : 
+#   21|     r0_5(glval<null>)     = FunctionAddress[Contact]    : 
+#   21|     v0_6(Void)            = Call                        : func:r0_5, this:r0_4
+#   21|     mu0_7(null)           = ^CallSideEffect             : ~mu0_2
+#   21|     mu0_8(Contact)        = Store                       : &:r0_3, r0_4
+#   22|     r0_9(glval<Contact>)  = VariableAddress[contact]    : 
+#   22|     r0_10(Contact)        = Load                        : &:r0_9, ~mu0_2
+#   22|     r0_11(glval<null>)    = FunctionAddress[set_Item]   : 
+#   22|     r0_12(Int32)          = Constant[0]                 : 
+#   22|     r0_13(String)         = StringConstant["Begumpet"]  : 
+#   22|     v0_14(Void)           = Call                        : func:r0_11, this:r0_10, 0:r0_12, 1:r0_13
+#   22|     mu0_15(null)          = ^CallSideEffect             : ~mu0_2
+#   23|     r0_16(glval<Contact>) = VariableAddress[contact]    : 
+#   23|     r0_17(Contact)        = Load                        : &:r0_16, ~mu0_2
+#   23|     r0_18(glval<null>)    = FunctionAddress[set_Item]   : 
+#   23|     r0_19(Int32)          = Constant[1]                 : 
+#   23|     r0_20(String)         = StringConstant["Hyderabad"] : 
+#   23|     v0_21(Void)           = Call                        : func:r0_18, this:r0_17, 0:r0_19, 1:r0_20
+#   23|     mu0_22(null)          = ^CallSideEffect             : ~mu0_2
+#   24|     r0_23(glval<Contact>) = VariableAddress[contact]    : 
+#   24|     r0_24(Contact)        = Load                        : &:r0_23, ~mu0_2
+#   24|     r0_25(glval<null>)    = FunctionAddress[set_Item]   : 
+#   24|     r0_26(Int32)          = Constant[2]                 : 
+#   24|     r0_27(String)         = StringConstant["Telengana"] : 
+#   24|     v0_28(Void)           = Call                        : func:r0_25, this:r0_24, 0:r0_26, 1:r0_27
+#   24|     mu0_29(null)          = ^CallSideEffect             : ~mu0_2
+#   19|     v0_30(Void)           = ReturnVoid                  : 
+#   19|     v0_31(Void)           = UnmodeledUse                : mu*
+#   19|     v0_32(Void)           = ExitFunction                : 
 
 inheritance_polymorphism.cs:
 #    3| System.Int32 A.function()

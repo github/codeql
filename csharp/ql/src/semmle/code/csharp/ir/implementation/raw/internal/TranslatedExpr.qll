@@ -1382,6 +1382,11 @@ class TranslatedAssignExpr extends TranslatedAssignment {
 class TranslatedAssignOperation extends TranslatedAssignment {
   override AssignOperation expr;
 
+  TranslatedAssignOperation() {
+    // Assignments to events is handled differently
+    not expr.getLValue() instanceof EventAccess
+  }
+
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
@@ -2056,4 +2061,38 @@ class TranslatedDelegateCreation extends TranslatedCreation {
   }
 
   override predicate needsLoad() { none() }
+}
+
+/**
+ * Represents the IR translation of an assign operation where the lhs is an event access.
+ */
+class TranslatedEventAccess extends TranslatedNonConstantExpr {
+  override AssignOperation expr;
+
+  TranslatedEventAccess() { expr.getLValue() instanceof EventAccess }
+
+  // We only translate the lhs, since the rhs is translated as part of the
+  // accessor call.
+  override TranslatedElement getChild(int id) { id = 0 and result = this.getLValue() }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  final override Instruction getFirstInstruction() {
+    result = this.getLValue().getFirstInstruction()
+  }
+
+  override Instruction getResult() { none() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getLValue() and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  private TranslatedExpr getLValue() { result = getTranslatedExpr(expr.getLValue()) }
 }
