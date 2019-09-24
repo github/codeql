@@ -53,16 +53,16 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       instr instanceof PointerDiffInstruction
     )
   )
-  //  or
-  //  // Some standard function arguments never escape
-  //  isNeverEscapesArgument(operand)
+  or
+  // Some standard function arguments never escape
+  isNeverEscapesArgument(operand)
 }
 
 private predicate operandEscapesDomain(Operand operand) {
   not operandIsConsumedWithoutEscaping(operand) and
   not operandIsPropagated(operand, _) and
   not isArgumentForParameter(_, operand, _) and
-  //  not isOnlyEscapesViaReturnArgument(operand) and
+  not isOnlyEscapesViaReturnArgument(operand) and
   not operand.getUse() instanceof ReturnValueInstruction and
   not operand instanceof PhiInputOperand
 }
@@ -126,7 +126,6 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       //         virtual memory model for the IR I don't think such conversions provide any meaningful
       //         information;
       // Conversion to another pointer type propagates the source address.
-      // REVIEW: Is this needed?
       exists(ConvertInstruction convert, Type resultType |
         convert = instr and
         resultType = convert.getResultType() and
@@ -141,15 +140,16 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       // the address with an offset.
       bitOffset = getPointerBitOffset(instr.(PointerOffsetInstruction))
       or
-      //      or
-      //      // Computing a field address from a pointer propagates the address plus the
-      //      // offset of the field.
-      //      bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField())
+      // Computing a field address from a pointer propagates the address plus the
+      // offset of the field.
+      // TODO: Fix once class layout is synthesized
+      // bitOffset = Ints::unknown()
+      //or
       // A copy propagates the source value.
       operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
-      //      or
-      //      // Some functions are known to propagate an argument
-      //      isAlwaysReturnedArgument(operand) and bitOffset = 0
+      or
+      // Some functions are known to propagate an argument
+      isAlwaysReturnedArgument(operand) and bitOffset = 0
     )
   )
 }
@@ -169,8 +169,8 @@ private predicate operandEscapesNonReturn(Operand operand) {
     )
   )
   or
-  //  or
-  //  isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUse())
+  isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUse())
+  or
   operand instanceof PhiInputOperand and
   resultEscapesNonReturn(operand.getUse())
   or
@@ -192,8 +192,8 @@ private predicate operandMayReachReturn(Operand operand) {
   // The address is returned
   operand.getUse() instanceof ReturnValueInstruction
   or
-  //  or
-  //  isOnlyEscapesViaReturnArgument(operand) and resultMayReachReturn(operand.getUse())
+  isOnlyEscapesViaReturnArgument(operand) and resultMayReachReturn(operand.getUse())
+  or
   operand instanceof PhiInputOperand and
   resultMayReachReturn(operand.getUse())
 }
@@ -218,7 +218,7 @@ private predicate operandReturned(Operand operand, IntValue bitOffset) {
   operand.getUse() instanceof ReturnValueInstruction and
   bitOffset = 0
   or
-  //  isOnlyEscapesViaReturnArgument(operand) and
+  isOnlyEscapesViaReturnArgument(operand) and
   resultReturned(operand.getUse(), _) and
   bitOffset = Ints::unknown()
 }
@@ -240,28 +240,12 @@ private predicate isArgumentForParameter(CallInstruction ci, Operand operand, In
   )
 }
 
-// REVIEW: Those three predicates are used to model the behaviour of C++ library functions
-//         for which the code was not accessible, so we should ignore them
-//private predicate isAlwaysReturnedArgument(Operand operand) {
-//  exists(AliasFunction f |
-//    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
-//    f.parameterIsAlwaysReturned(operand.(PositionalArgumentOperand).getIndex())
-//  )
-//}
-//
-//private predicate isOnlyEscapesViaReturnArgument(Operand operand) {
-//  exists(AliasFunction f |
-//    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
-//    f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
-//  )
-//}
-//
-//private predicate isNeverEscapesArgument(Operand operand) {
-//  exists(AliasFunction f |
-//    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
-//    f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
-//  )
-//}
+private predicate isAlwaysReturnedArgument(Operand operand) { none() }
+
+private predicate isOnlyEscapesViaReturnArgument(Operand operand) { none() }
+
+private predicate isNeverEscapesArgument(Operand operand) { none() }
+
 private predicate resultReturned(Instruction instr, IntValue bitOffset) {
   operandReturned(instr.getAUse(), bitOffset)
 }
