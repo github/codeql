@@ -66,7 +66,7 @@ class Test
         d = new GZipStream(fs, CompressionMode.Compress);
         dProp = new Timer(TimerProc);
         this[0] = new Timer(TimerProc);
-        d = new FileStream("", FileMode.CreateNew, FileAccess.Write).Fluent(); // FALSE POSITIVE
+        d = new FileStream("", FileMode.CreateNew, FileAccess.Write).Fluent();
 
         // GOOD: Passed to another IDisposable
         using (var reader = new StreamReader(new FileStream("", FileMode.Open)))
