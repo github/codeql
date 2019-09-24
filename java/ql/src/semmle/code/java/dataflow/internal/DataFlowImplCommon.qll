@@ -581,7 +581,8 @@ private module ImplCommon {
      */
     cached
     predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
-      reducedViableImplInCallContext(_, callable, call) or
+    reducedViableImplInCallContext(_, callable, call)
+    or
       exists(Node n | n.getEnclosingCallable() = callable | isUnreachableInCall(n, call))
     }
 
@@ -709,7 +710,6 @@ private module ImplCommon {
   /** A callable tagged with a relevant return kind. */
   class ReturnPosition extends TReturnPosition0 {
     private DataFlowCallable c;
-
     private ReturnKind kind;
 
     ReturnPosition() { this = TReturnPosition0(c, kind) }
