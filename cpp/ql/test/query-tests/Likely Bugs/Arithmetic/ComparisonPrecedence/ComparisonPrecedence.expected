@@ -1,0 +1,8 @@
+| test.cpp:42:6:42:14 | ... < ... | Check the comparison operator precedence. |
+| test.cpp:43:6:43:14 | ... > ... | Check the comparison operator precedence. |
+| test.cpp:44:6:44:16 | ... <= ... | Check the comparison operator precedence. |
+| test.cpp:45:6:45:16 | ... <= ... | Check the comparison operator precedence. |
+| test.cpp:46:6:46:14 | ... > ... | Check the comparison operator precedence. |
+| test.cpp:50:6:50:32 | ... < ... | Check the comparison operator precedence. |
+| test.cpp:51:6:51:18 | ... < ... | Check the comparison operator precedence. |
+| test.cpp:54:8:54:16 | ... < ... | Check the comparison operator precedence. |
