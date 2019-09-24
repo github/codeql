@@ -1792,18 +1792,18 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     this.hasVar() and
     tag = GeneratedBranchTag() and
     (
-      tag = GeneratedBranchTag() and
       kind instanceof TrueEdge and
-      result = getPatternVarDecl().getFirstInstruction()
+      result = this.getInstruction(InitializerStoreTag())
       or
-      tag = GeneratedBranchTag() and
       kind instanceof FalseEdge and
       result = this.getParent().getChildSuccessor(this)
     )
     or
     tag = GeneratedConstantTag() and
     kind instanceof GotoEdge and
-    result = this.getInstruction(GeneratedNEQTag())
+    if this.hasVar()
+    then result = this.getPatternVarDecl().getFirstInstruction()
+    else result = this.getInstruction(GeneratedNEQTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -1811,8 +1811,8 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     result = this.getInstruction(ConvertTag())
     or
     this.hasVar() and
-    child = getPatternVarDecl() and
-    result = this.getInstruction(InitializerStoreTag())
+    child = this.getPatternVarDecl() and
+    result = this.getInstruction(GeneratedNEQTag())
   }
 
   override predicate hasInstruction(
@@ -1842,7 +1842,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     this.hasVar() and
     tag = GeneratedBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
-    resultType = expr.getType() and
+    resultType instanceof VoidType and
     isLValue = false
   }
 
