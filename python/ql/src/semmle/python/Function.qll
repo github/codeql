@@ -41,7 +41,7 @@ class Function extends Function_, Scope, AstNode {
         exists(YieldFrom y | y.getScope() = this)
     }
 
-    /** Whether this function is declared in a class and is named "__init__" */
+    /** Whether this function is declared in a class and is named `__init__` */
     predicate isInitMethod() {
         this.isMethod() and this.getName() = "__init__"
     }
