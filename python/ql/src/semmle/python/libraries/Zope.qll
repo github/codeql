@@ -44,4 +44,15 @@ class ZopeInterfaceMethodValue extends PythonFunctionValue {
         )
     }
 
+    override int minParameters() {
+        result = super.minParameters() + 1
+    }
+
+    override int maxParameters() {
+        if exists(this.getScope().getVararg()) then
+            result = super.maxParameters()
+        else
+            result = super.maxParameters() + 1
+    }
+
 }
