@@ -1,3 +1,6 @@
+| template.cpp:4:7:4:15 | ... < ... | Check the comparison operator precedence. |
+| template.cpp:4:7:4:15 | ... < ... | Check the comparison operator precedence. |
+| template.cpp:10:7:10:15 | ... < ... | Check the comparison operator precedence. |
 | test.cpp:42:6:42:14 | ... < ... | Check the comparison operator precedence. |
 | test.cpp:43:6:43:14 | ... > ... | Check the comparison operator precedence. |
 | test.cpp:44:6:44:16 | ... <= ... | Check the comparison operator precedence. |
