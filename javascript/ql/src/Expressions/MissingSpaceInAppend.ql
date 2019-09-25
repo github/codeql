@@ -22,14 +22,51 @@ Expr leftChild(Expr e) {
   result = e.(AddExpr).getLeftOperand()
 }
 
-class LiteralOrTemplate extends Expr {
-  LiteralOrTemplate() {
-    this instanceof TemplateLiteral or
-    this instanceof Literal
+predicate isInConcat(Expr e) {
+    exists(ParExpr par | par.getExpression() = e)
+    or 
+    exists(AddExpr a | a.getAnOperand() = e)
+}
+
+class ConcatenationLiteral extends Expr {
+  ConcatenationLiteral() {
+    (
+      this instanceof TemplateLiteral 
+      or
+      this instanceof Literal
+    )
+    and isInConcat(this)
   }
 }
 
-from AddExpr e, LiteralOrTemplate l, LiteralOrTemplate r, string word
+Expr getConcatChild(Expr e) {
+    result = rightChild(e) or 
+    result = leftChild(e)
+}
+
+Expr getConcatParent(Expr e) {
+    e = getConcatChild(result)
+}
+
+predicate isWordLike(ConcatenationLiteral lit) {
+    lit.getStringValue().regexpMatch("(?i).*[a-z]{3,}.*")
+}
+
+class ConcatRoot extends AddExpr {
+    ConcatRoot() {
+        not isInConcat(this)
+    }
+}
+
+ConcatRoot getAddRoot(AddExpr e) {
+    result = getConcatParent*(e)
+}
+
+predicate hasWordLikeFragment(AddExpr e) {
+    isWordLike(getConcatChild*(getAddRoot(e)))
+}
+
+from AddExpr e, ConcatenationLiteral l, ConcatenationLiteral r, string word
 where
   // l and r are appended together
   l = rightChild*(e.getLeftOperand()) and
@@ -41,5 +78,8 @@ where
   // needed, and intra-identifier punctuation in, for example, a qualified name.
   word = l.getStringValue().regexpCapture(".* (([-A-Za-z/'\\.:,]*[a-zA-Z]|[0-9]+)[\\.:,!?']*)", 1) and
   r.getStringValue().regexpMatch("[a-zA-Z].*") and
-  not word.regexpMatch(".*[,\\.:].*[a-zA-Z].*[^a-zA-Z]")
+  not word.regexpMatch(".*[,\\.:].*[a-zA-Z].*[^a-zA-Z]") and
+  
+  // There must be a constant-string in the concatenation that looks like a word.
+  hasWordLikeFragment(e)
 select l, "This string appears to be missing a space after '" + word + "'."

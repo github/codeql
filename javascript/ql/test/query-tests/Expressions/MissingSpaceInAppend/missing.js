@@ -27,3 +27,5 @@ s = "missing a space" +
     `here`;
 s = `missing a space` +
     `here`;
+
+s = (("h. 0" + "h")) + "word"

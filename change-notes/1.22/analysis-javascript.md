@@ -36,6 +36,7 @@
 | Shift out of range (`js/shift-out-of-range`| Fewer false positive results | This rule now correctly handles BigInt shift operands. |
 | Superfluous trailing arguments (`js/superfluous-trailing-arguments`) | Fewer false-positive results. | This rule no longer flags calls to placeholder functions that trivially throw an exception. |
 | Undocumented parameter (`js/jsdoc/missing-parameter`) | No changes to results | This rule is now run on LGTM, although its results are still not shown by default. |
+| Missing space in string concatenation (`js/missing-space-in-concatenation`) | Fewer false positive results | The rule now requires a word-like part exists in the string concatenation. | 
 
 ## Changes to QL libraries
 
