@@ -5,7 +5,7 @@
  * predicate that selects the function or set of functions you are trying to
  * model. Within that class, override the predicates provided by `ArrayFunction`
  * to match the flow within that function.  Finally, add a private import
- * statement to `CustomModels.qll`
+ * statement to `Models.qll`
  */
 
 import semmle.code.cpp.Function
