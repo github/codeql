@@ -21,6 +21,8 @@
 | C2[] | Object |
 | C2[] | Object[] |
 | C2[] | dynamic |
+| C3<,> | Object |
+| C3<,> | dynamic |
 | Func<I1<C1>> | Object |
 | Func<I1<C1>> | dynamic |
 | Func<T3,T4,Object,T5,T6> | Func<T3,T4,String,T5,T6> |
@@ -70,6 +72,14 @@
 | I3<C2,C1> | I2<C1> |
 | I3<C2,C1> | Object |
 | I3<C2,C1> | dynamic |
+| I4<,> | Object |
+| I4<,> | dynamic |
+| I4<C1,T4> | Object |
+| I4<C1,T4> | dynamic |
+| I4<C1,T6> | Object |
+| I4<C1,T6> | dynamic |
+| I4<T5,T6> | Object |
+| I4<T5,T6> | dynamic |
 | ICollection<C1> | IEnumerable<C1> |
 | ICollection<C1> | Object |
 | ICollection<C1> | dynamic |
@@ -180,6 +190,9 @@
 | Object[] | dynamic |
 | SByte[] | Object |
 | SByte[] | dynamic |
+| T3 | C1 |
+| T3 | Object |
+| T3 | dynamic |
 | T3[] | ICollection<T3> |
 | T3[] | IEnumerable<T3> |
 | T3[] | IList<T3> |
@@ -203,6 +216,7 @@
 | T4[] | Object |
 | T4[] | Object[] |
 | T4[] | dynamic |
+| T5 | C1 |
 | T5 | Object |
 | T5 | dynamic |
 | UInt32[] | Object |
@@ -215,6 +229,7 @@
 | null | C1[] |
 | null | C2 |
 | null | C2[] |
+| null | C3<,> |
 | null | Func<I1<C1>> |
 | null | Func<T3,T4,Object,T5,T6> |
 | null | Func<T3,T4,String,T5,T6> |
@@ -233,6 +248,10 @@
 | null | I3<,> |
 | null | I3<C1,C2> |
 | null | I3<C2,C1> |
+| null | I4<,> |
+| null | I4<C1,T4> |
+| null | I4<C1,T6> |
+| null | I4<T5,T6> |
 | null | ICollection<C1> |
 | null | ICollection<C2> |
 | null | ICollection<T3> |
@@ -263,6 +282,7 @@
 | null | Object |
 | null | Object[] |
 | null | SByte[] |
+| null | T3 |
 | null | T3[] |
 | null | T4 |
 | null | T4[] |
