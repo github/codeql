@@ -30,19 +30,19 @@ private module ImplCommon {
    * Holds if `p` can flow to `node` in the same callable using only
    * value-preserving steps, not taking call contexts into account.
    */
-  private predicate parameterValueFlowNoCtx(ParameterNode p, Node node) {
+  private predicate parameterValueFlowCand(ParameterNode p, Node node) {
     p = node
     or
     exists(Node mid |
-      parameterValueFlowNoCtx(p, mid) and
+      parameterValueFlowCand(p, mid) and
       simpleLocalFlowStep(mid, node) and
       compatibleTypes(p.getType(), node.getType())
     )
     or
     // flow through a callable
     exists(Node arg |
-      parameterValueFlowNoCtx(p, arg) and
-      argumentValueFlowsThroughNoCtx(arg, node) and
+      parameterValueFlowCand(p, arg) and
+      argumentValueFlowsThroughCand(arg, node) and
       compatibleTypes(p.getType(), node.getType())
     )
   }
@@ -52,16 +52,16 @@ private module ImplCommon {
    * callable using only value-preserving steps, not taking call contexts
    * into account.
    */
-  private predicate parameterValueFlowsThroughNoCtx(ParameterNode p, ReturnKind kind) {
-    parameterValueFlowNoCtx(p, getAReturnNodeOfKind(kind))
+  private predicate parameterValueFlowsThroughCand(ParameterNode p, ReturnKind kind) {
+    parameterValueFlowCand(p, getAReturnNodeOfKind(kind))
   }
 
   pragma[nomagic]
-  private predicate argumentValueFlowsThroughNoCtx0(
+  private predicate argumentValueFlowsThroughCand0(
     DataFlowCall call, ArgumentNode arg, ReturnKind kind
   ) {
     exists(ParameterNode param | viableParamArg(call, param, arg) |
-      parameterValueFlowsThroughNoCtx(param, kind)
+      parameterValueFlowsThroughCand(param, kind)
     )
   }
 
@@ -69,8 +69,8 @@ private module ImplCommon {
    * Holds if `arg` flows to `out` through a call using only value-preserving steps,
    * not taking call contexts into account.
    */
-  private predicate argumentValueFlowsThroughNoCtx(ArgumentNode arg, OutNode out) {
-    exists(DataFlowCall call, ReturnKind kind | argumentValueFlowsThroughNoCtx0(call, arg, kind) |
+  private predicate argumentValueFlowsThroughCand(ArgumentNode arg, OutNode out) {
+    exists(DataFlowCall call, ReturnKind kind | argumentValueFlowsThroughCand0(call, arg, kind) |
       out = getAnOutNode(call, kind) and
       compatibleTypes(arg.getType(), out.getType())
     )
@@ -85,7 +85,7 @@ private module ImplCommon {
     DataFlowCall call, int i, ArgumentNode arg, DataFlowCallable enclosing
   ) {
     arg.argumentOf(call, i) and
-    argumentValueFlowsThroughNoCtx(arg, _) and
+    argumentValueFlowsThroughCand(arg, _) and
     enclosing = arg.getEnclosingCallable()
   }
 
@@ -147,7 +147,7 @@ private module ImplCommon {
    */
   private predicate parameterValueFlow(ParameterNode p, Node node, CallContextCall cc) {
     p = node and
-    parameterValueFlowsThroughNoCtx(p, _) and
+    parameterValueFlowsThroughCand(p, _) and
     cc = getAValidCallContextForParameter(p)
     or
     exists(Node mid |
@@ -211,6 +211,16 @@ private module ImplCommon {
   private predicate localValueStep(Node node1, Node node2) {
     simpleLocalFlowStep(node1, node2) or
     argumentValueFlowsThrough(node1, node2, _)
+  }
+
+  private predicate parameterValueFlowNoCtx(ParameterNode p, Node node) {
+    p = node
+    or
+    exists(Node mid |
+      parameterValueFlowNoCtx(p, mid) and
+      localValueStep(mid, node) and
+      compatibleTypes(p.getType(), node.getType())
+    )
   }
 
   /*
