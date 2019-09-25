@@ -242,8 +242,18 @@ Alternative solutions
 
 Here are some more example QL queries that solve the river crossing puzzle:
 
-  - Solutions described in more detail: https://lgtm.com/query/4550752404102766320/
-  - Solutions displayed in a more visual way: https://lgtm.com/query/5824364611285694673/
+  #. This query uses a modified ``path`` variable to describe the resulting path in
+     more detail.
 
-.. TODO: Add more examples + check that the queries are "tidied up" and clear.
+     ➤ `See solution in the query console <https://lgtm.com/query/766398955877740367/>`__
 
+  #. This query models the man and the cargo items in a different way, using an 
+     `abstract <https://help.semmle.com/QL/ql-handbook/annotations.html#abstract>`__
+     class and predicate. It also displays the resulting path in a more visual way.
+
+     ➤ `See solution in the query console <https://lgtm.com/query/4569245314675800407/>`__
+
+  #. This query introduces `algebraic datatypes <https://help.semmle.com/QL/ql-handbook/types.html#algebraic-datatypes>`__
+     to model the situation, instead of defining everything as a subclass of ``string``.
+
+     ➤ `See solution in the query console <https://lgtm.com/query/7017582538107942633/>`__
