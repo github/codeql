@@ -43,7 +43,7 @@ something like
 def expensive_handler(args):
   '''do something expensive'''
 </source>
-</example>]
+</example>
 
 <references>
 <li>
