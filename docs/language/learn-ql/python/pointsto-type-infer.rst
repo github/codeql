@@ -173,7 +173,7 @@ Many of the results shown will have ``cls`` as ``NoneType``. It is more informat
      not cls.hasAttribute("__iter__")
    select loop, cls, origin
 
-➤ `See this in the query console <https://lgtm.com/query/6718356557331218618/>`__. This reports the same results, but with a third column showing the source of the ``None`` values.
+➤ `See this in the query console <https://lgtm.com/query/3795352249440053606/>`__. This reports the same results, but with a third column showing the source of the ``None`` values.
 
 Finding calls using call-graph analysis
 ----------------------------------------------------
