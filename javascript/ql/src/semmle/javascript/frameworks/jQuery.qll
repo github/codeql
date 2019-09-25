@@ -336,6 +336,8 @@ module JQuery {
 
   /**
    * Gets a data flow node that may refer to the jQuery `$` function.
+   *
+   * This predicate can be extended by subclassing `JQuery::DollarSource::Range`.
    */
   DataFlow::SourceNode dollarSource() { result instanceof DollarSource::Range }
 
@@ -347,7 +349,11 @@ module JQuery {
     exists(DataFlow::TypeTracker t2 | result = dollar(t2).track(t2, t))
   }
 
-  /** Gets a data flow node referring to the jQuery `$` function. */
+  /**
+   * Gets a data flow node referring to the jQuery `$` function.
+   *
+   * This predicate can be extended by subclassing `JQuery::DollarSource::Range`.
+   */
   DataFlow::SourceNode dollar() { result = dollar(DataFlow::TypeTracker::end()) }
 
   /** Gets an invocation of the jQuery `$` function. */
@@ -398,7 +404,11 @@ module JQuery {
     exists(DataFlow::TypeTracker t2 | result = objectRef(t2).track(t2, t))
   }
 
-  /** Gets a data flow node referring to a jQuery object. */
+  /**
+   * Gets a data flow node referring to a jQuery object.
+   *
+   * This predicate can be extended by subclassing `JQuery::ObjectSource::Range`.
+   */
   DataFlow::SourceNode objectRef() { result = objectRef(DataFlow::TypeTracker::end()) }
 
   /** A data flow node that refers to a jQuery object. */
