@@ -6,7 +6,7 @@
  * @kind problem
  * @problem.severity error
  * @precision high
- * @id python/missing-rate-limiting
+ * @id py/missing-rate-limiting
  * @tags security
  *       external/cwe/cwe-770
  */
@@ -16,16 +16,6 @@
 import python
 import semmle.python.web.RateLimiters
 
-class MyExpensiveRouteHandler extends ExpensiveRouteHandler {
-    MyExpensiveRouteHandler() {
-        this.getName().matches("%expensive_handler%")
-    }
-    
-    override string getExplanation() {
-        result = "has expensive in the name"
-    }
-}
-
-from ExpensiveRouteHandler hdlr
-where not hdlr instanceof RateLimitedRouteHandler
-select hdlr, "This route handler " + hdlr.getExplanation() + ", but is not rate-limited."
+from ExpensiveRouteHandler handler
+where not handler instanceof RateLimitedRouteHandler
+select handler, "This route handler " + handler.getExplanation() + ", but is not rate-limited."

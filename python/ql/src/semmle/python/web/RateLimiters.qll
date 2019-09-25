@@ -4,11 +4,15 @@
 import python
 
 /**
- * By assumption, any name that looks roughly like "ratelimiter" should be
- * assumed to be a name of a rate limiter.
+ * Holds if the string `s` is a name that indicates it is likely to be a rate
+ * limiter.
  */
 bindingset[s]
 predicate isRateLimiterName(string s) {
+  /*
+   * By assumption, any name that looks roughly like "ratelimiter" should be
+   * assumed to be a name of a rate limiter.
+   */
   s.toLowerCase().regexpMatch("rate_?limit(s|er|ed)?|(rate_?)?limit(s|er|ed)")
 }
 
@@ -89,9 +93,9 @@ class AttributeLimitingDecorator extends LimitingDecorator, Attribute {
  */
 class CallLimitingDecorator extends LimitingDecorator, Call {
   CallLimitingDecorator() {
-    exists(FunctionObject fo |
-        this.getFunc().getAFlowNode().refersTo(fo) and
-        fo.getFunction() instanceof RateLimiter
+    exists(FunctionValue fv |
+        this.getFunc().getAFlowNode().pointsTo(fv) and
+        fv.getScope() instanceof RateLimiter
     )
   }
 }
