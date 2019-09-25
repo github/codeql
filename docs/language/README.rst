@@ -89,9 +89,11 @@ Building and previewing the QL training presentations
 *****************************************************
 
 To build the QL training presentations, you need to install a Sphinx extension
-called `hieroglyph <https://github.com/nyergler/hieroglyph>`__.
+called `hieroglyph <https://github.com/nyergler/hieroglyph>`__. 
+You also need to install `graphviz <https://graphviz.gitlab.io/download/>`__, which 
+is used to generate graphs on some slides.
 
-After installing hieroglyph, you can build the QL training presentations by running 
+After installing hieroglyph and graphviz, you can build the QL training presentations by running 
 ``sphinx-build``, specifying the ``slides`` builder. For example
 
 .. code::

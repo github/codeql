@@ -12,7 +12,7 @@
 	s.match("^http://test.example.com"); // NOT OK
 
 	function id(e) { return e; }
-	new RegExp(id(id(id("^http://test.example.com")))); // NOT OK, but not supported by type tracking
+	new RegExp(id(id(id("^http://test.example.com")))); // NOT OK
 
 	new RegExp(`test.example.com$`); // NOT OK
 

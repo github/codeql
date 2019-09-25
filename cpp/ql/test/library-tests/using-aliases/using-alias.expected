@@ -1,0 +1,9 @@
+| file://:0:0:0:0 | X | NestedTypedefType | file://:0:0:0:0 | int * |
+| file://:0:0:0:0 | X | UsingAliasTypedefType | file://:0:0:0:0 | int * |
+| using-alias.cpp:2:13:2:17 | type1 | CTypedefType | file://:0:0:0:0 | int |
+| using-alias.cpp:3:7:3:12 | using1 | UsingAliasTypedefType | file://:0:0:0:0 | float |
+| using-alias.cpp:5:16:5:20 | type2 | CTypedefType | file://:0:0:0:0 | float |
+| using-alias.cpp:6:7:6:12 | using2 | UsingAliasTypedefType | file://:0:0:0:0 | int |
+| using-alias.cpp:8:39:8:39 | X | NestedTypedefType | file://:0:0:0:0 | T * |
+| using-alias.cpp:8:39:8:39 | X | UsingAliasTypedefType | file://:0:0:0:0 | T * |
+| using-alias.cpp:10:7:10:7 | Y | UsingAliasTypedefType | file://:0:0:0:0 | int * |

@@ -414,7 +414,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       this.getOpcode() instanceof Opcode::PointerAdd or
       this.getOpcode() instanceof Opcode::PointerSub
     ) and
-    result = 4 //max(getResultType().(PointerType).getSize())
+    result = Language::getTypeSize(this.getResultType().(PointerType).getReferentType())
   }
 
   final TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getOperand()) }
@@ -578,7 +578,6 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
       (
         // The successor of a `PointerAdd` is an `ElementsAddress` if
         // that `PointerAdd` is not the last `PointerAdd` instruction.
-        index < getRank() - 1 and
         tag = PointerAddTag(index) and
         result = this.getInstruction(ElementsAddressTag(index + 1))
         or
@@ -607,10 +606,7 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
     result = this.getInstruction(PointerAddTag(child.getAST().getIndex()))
   }
 
-  override Instruction getResult() {
-    result = this.getInstruction(PointerAddTag(getRank() - 1)) //and
-    //result.getResultType() = expr.getType()
-  }
+  override Instruction getResult() { result = this.getInstruction(PointerAddTag(getRank() - 1)) }
 
   override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
@@ -663,12 +659,14 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
   }
 
   override int getInstructionElementSize(InstructionTag tag) {
-    tag = PointerAddTag(_) and
-    // TODO: Fix sizes once we have type sizes
-    result = 4
+    exists(int index |
+      inBounds(index) and
+      tag = PointerAddTag(index) and
+      result = Language::getTypeSize(expr.getQualifier().getType().(ArrayType).getElementType())
+    )
   }
 
-  private TranslatedExpr getBaseOperand() { result = getTranslatedExpr(expr.getChild(-1)) }
+  private TranslatedExpr getBaseOperand() { result = getTranslatedExpr(expr.getQualifier()) }
 
   private TranslatedExpr getOffsetOperand(int index) {
     this.inBounds(index) and
@@ -1248,16 +1246,14 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
         opcode instanceof Opcode::PointerSub or
         opcode instanceof Opcode::PointerDiff
       ) and
-      result = 8 //max(getPointerOperand().getResultType().(PointerType).getReferentType().getSize()) TODO: SIZE AGAIN
+      result = Language::getTypeSize(this.getPointerOperand().getResultType())
     )
   }
 
-  //  private TranslatedExpr getPointerOperand() {
-  //    if swapOperandsOnOp() then
-  //      result = this.getRightOperand()
-  //    else
-  //      result = this.getLeftOperand()
-  //  }
+  private TranslatedExpr getPointerOperand() {
+    if swapOperandsOnOp() then result = this.getRightOperand() else result = this.getLeftOperand()
+  }
+
   private predicate swapOperandsOnOp() {
     // Swap the operands on a pointer add 'i + p', so that the pointer operand
     // always comes first. Note that we still evaluate the operands
@@ -1444,9 +1440,19 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   }
 
   private Opcode getOpcode() {
-    expr instanceof AssignAddExpr and result instanceof Opcode::Add
+    expr instanceof AssignAddExpr and
+    (
+      if expr.getRValue().getType() instanceof PointerType
+      then result instanceof Opcode::PointerAdd
+      else result instanceof Opcode::Add
+    )
     or
-    expr instanceof AssignSubExpr and result instanceof Opcode::Sub
+    expr instanceof AssignSubExpr and
+    (
+      if expr.getRValue().getType() instanceof PointerType
+      then result instanceof Opcode::PointerSub
+      else result instanceof Opcode::Sub
+    )
     or
     expr instanceof AssignMulExpr and result instanceof Opcode::Mul
     or
@@ -1462,10 +1468,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     or
     expr instanceof AssignLShiftExpr and result instanceof Opcode::ShiftLeft
     or
-    expr instanceof AssignRShiftExpr and result instanceof Opcode::ShiftRight // or
-    // TODO: THE CASES ABOVE DEAL WITH POINTERS
-    //    expr instanceof AssignPointerAddExpr and result instanceof Opcode::PointerAdd or
-    //    expr instanceof AssignPointerSubExpr and result instanceof Opcode::PointerSub
+    expr instanceof AssignRShiftExpr and result instanceof Opcode::ShiftRight
   }
 
   override predicate hasInstruction(
@@ -1500,11 +1503,13 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   override int getInstructionElementSize(InstructionTag tag) {
     tag = AssignOperationOpTag() and
     exists(Opcode opcode |
-      opcode = getOpcode() and
-      // TODO: ADD AND SUB FOR POITNER ARITH (WAS POINTERADD AND POINTERSUB)
-      (opcode instanceof Opcode::Add or opcode instanceof Opcode::Sub)
+      opcode = this.getOpcode() and
+      (
+        opcode instanceof Opcode::PointerAdd or
+        opcode instanceof Opcode::PointerSub
+      )
     ) and
-    result = 8 //max(getResultType().(PointerType).getReferentType().getSize()) TODO: DEAL WITH SIZE
+    result = Language::getTypeSize(getResultType().(PointerType).getReferentType())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -1787,18 +1792,18 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     this.hasVar() and
     tag = GeneratedBranchTag() and
     (
-      tag = GeneratedBranchTag() and
       kind instanceof TrueEdge and
-      result = getPatternVarDecl().getFirstInstruction()
+      result = this.getInstruction(InitializerStoreTag())
       or
-      tag = GeneratedBranchTag() and
       kind instanceof FalseEdge and
       result = this.getParent().getChildSuccessor(this)
     )
     or
     tag = GeneratedConstantTag() and
     kind instanceof GotoEdge and
-    result = this.getInstruction(GeneratedNEQTag())
+    if this.hasVar()
+    then result = this.getPatternVarDecl().getFirstInstruction()
+    else result = this.getInstruction(GeneratedNEQTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -1806,8 +1811,8 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     result = this.getInstruction(ConvertTag())
     or
     this.hasVar() and
-    child = getPatternVarDecl() and
-    result = this.getInstruction(InitializerStoreTag())
+    child = this.getPatternVarDecl() and
+    result = this.getInstruction(GeneratedNEQTag())
   }
 
   override predicate hasInstruction(
@@ -1837,7 +1842,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     this.hasVar() and
     tag = GeneratedBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
-    resultType = expr.getType() and
+    resultType instanceof VoidType and
     isLValue = false
   }
 

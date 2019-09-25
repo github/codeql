@@ -42,6 +42,7 @@
 + semmlecode-javascript-queries/Security/CWE-798/HardcodedCredentials.ql: /Security/CWE/CWE-798
 + semmlecode-javascript-queries/Security/CWE-807/ConditionalBypass.ql: /Security/CWE/CWE-807
 + semmlecode-javascript-queries/Security/CWE-807/DifferentKindsComparisonBypass.ql: /Security/CWE/CWE-807
++ semmlecode-javascript-queries/Security/CWE-834/LoopBoundInjection.ql: /Security/CWE/CWE-834
 + semmlecode-javascript-queries/Security/CWE-843/TypeConfusionThroughParameterTampering.ql: /Security/CWE/CWE-834
 + semmlecode-javascript-queries/Security/CWE-916/InsufficientPasswordHash.ql: /Security/CWE/CWE-916
 + semmlecode-javascript-queries/Security/CWE-918/RequestForgery.ql: /Security/CWE/CWE-918

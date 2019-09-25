@@ -72,6 +72,4 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
         // then the simple variable initialization
         result = getTranslatedInitialization(var.getInitializer())
   }
-
-  override predicate isInitializedByElement() { expr.getParent() instanceof IsExpr }
 }

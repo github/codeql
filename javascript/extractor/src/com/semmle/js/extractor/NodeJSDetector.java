@@ -97,8 +97,9 @@ public class NodeJSDetector {
     if (e instanceof CallExpression) {
       CallExpression call = (CallExpression) e;
       Expression callee = call.getCallee();
-      return (isIdentifier(callee, "require") || isRequireCall(callee))
-          && call.getArguments().size() == 1;
+      if (isIdentifier(callee, "require") && call.getArguments().size() == 1) return true;
+      if (isRequireCall(callee)) return true;
+      return false;
     } else if (e instanceof MemberExpression) {
       return isRequireCall(((MemberExpression) e).getObject());
     } else if (e instanceof AssignmentExpression) {

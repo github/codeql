@@ -38,7 +38,7 @@ class GenericEqMethod extends Function {
     }
 }
 
-/** An __eq__ method that just does self is other */
+/** An `__eq__` method that just does `self is other` */
 class IdentityEqMethod extends Function {
  
     IdentityEqMethod() {

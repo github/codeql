@@ -115,7 +115,19 @@ abstract class FormattingFunction extends Function {
    * Gets the position of the first format argument, corresponding with
    * the first format specifier in the format string.
    */
-  int getFirstFormatArgumentIndex() { result = getNumberOfParameters() }
+  int getFirstFormatArgumentIndex() {
+    result = getNumberOfParameters() and
+    // the formatting function either has a definition in the snapshot, or all
+    // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
+    // really know the correct number)
+    (
+      hasDefinition()
+      or
+      forall(FunctionDeclarationEntry fde | fde = getADeclarationEntry() |
+        result = fde.getNumberOfParameters()
+      )
+    )
+  }
 
   /**
    * Gets the position of the buffer size argument, if any.

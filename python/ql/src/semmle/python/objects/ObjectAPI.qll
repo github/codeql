@@ -350,6 +350,8 @@ class ClassValue extends Value {
     predicate isIterable() {
         this.hasAttribute("__iter__")
         or
+        this.hasAttribute("__aiter__")
+        or
         this.hasAttribute("__getitem__")
     }
 

@@ -90,10 +90,10 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
     predictableInstruction(i2.getAnOperand().getDef()) and
     i1 = i2.getAnOperand().getDef()
   )
-  // TODO: Check that we have flow from `a` to `a[i]`. It may work for constant
-  // `i` because there is flow through `predictable` `BinaryInstruction` and
-  // through `LoadInstruction`.
-  //
+  or
+  // This is part of the translation of `a[i]`, where we want taint to flow
+  // from `a`.
+  i2.(PointerAddInstruction).getLeft() = i1
   // TODO: Flow from argument to return of known functions: Port missing parts
   // of `returnArgument` to the `interfaces.Taint` and `interfaces.DataFlow`
   // libraries.
