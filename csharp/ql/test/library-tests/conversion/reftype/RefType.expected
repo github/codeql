@@ -74,8 +74,10 @@
 | I3<C2,C1> | dynamic |
 | I4<,> | Object |
 | I4<,> | dynamic |
+| I4<C1,T4> | I4<,> |
 | I4<C1,T4> | Object |
 | I4<C1,T4> | dynamic |
+| I4<C1,T6> | I4<T5,T6> |
 | I4<C1,T6> | Object |
 | I4<C1,T6> | dynamic |
 | I4<T5,T6> | Object |
