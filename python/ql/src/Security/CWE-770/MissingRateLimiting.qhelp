@@ -20,6 +20,31 @@ A rate-limiting middleware should be used to prevent such attacks.
 </p>
 </recommendation>
 
+<example>
+<p>
+Assuming that <code>expensive_handler</code> is designated as an expensive handler,
+a declaration of this sort will be flagged:
+</p>
+
+<source>
+def expensive_handler(args):
+  '''do something expensive'''
+</source>
+
+<p>
+The solution to this would be to add some form of rate limiting. For instance, if
+<code>limit</code> is a rate limiter decorator that takes one argument indicating
+the number of requests per second to permit, then the fixed version would be
+something like
+</p>
+
+<source>
+@limit(10)
+def expensive_handler(args):
+  '''do something expensive'''
+</source>
+</example>]
+
 <references>
 <li>
 OWASP:
