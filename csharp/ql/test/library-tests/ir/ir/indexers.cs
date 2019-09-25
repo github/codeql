@@ -1,8 +1,12 @@
 class Indexers
 {
-    public class Contact
+    public class MyClass
     {
-        private string[] address = new string[3];
+        public MyClass()
+        {
+        }
+
+        private string[] address = new string[2];
         public string this[int index]
         {
             get
@@ -18,9 +22,9 @@ class Indexers
 
     public static void Main()
     {
-        Contact contact = new Contact();
-        contact[0] = "Begumpet";
-        contact[1] = "Hyderabad";
-        contact[2] = "Telengana";
+        MyClass inst = new MyClass();
+        inst[0] = "str1";
+        inst[1] = "str1";
+        inst[1] = inst[0];
     }
 }

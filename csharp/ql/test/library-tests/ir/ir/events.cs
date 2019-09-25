@@ -1,19 +1,35 @@
 class Events
 {
     public delegate string MyDel(string str);
+    public MyDel Inst;
 
     event MyDel MyEvent;
 
-    public Events() {
-        this.MyEvent += new MyDel(this.WelcomeUser);
+    public Events()
+    {
+        this.Inst = new MyDel(this.Fun);
     }
 
-    public string WelcomeUser(string username) {
-        return "Welcome " + username;
+    public void AddEvent() 
+    {
+        this.MyEvent += this.Inst;
+    }
+
+    public void RemoveEvent()
+    {
+        this.MyEvent -= this.Inst;
+    }
+
+    public string Fun(string str) 
+    {
+        return str;
     }
     
-    static void Main(string[] args) {
-        Events obj1 = new Events();
-        string result = obj1.MyEvent("Tutorials Point");
+    static void Main(string[] args) 
+    {
+        Events obj = new Events();
+        obj.AddEvent();
+        string result = obj.MyEvent("string");
+        obj.RemoveEvent();
     }
 }

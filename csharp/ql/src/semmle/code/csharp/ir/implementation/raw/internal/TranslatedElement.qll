@@ -205,6 +205,10 @@ private predicate ignoreLoad(Expr expr) {
   // to get the address of the first element in an array
   expr = any(ArrayAccess aa).getQualifier()
   or
+  // Indexer calls returns a reference or a value,
+  // no need to load it
+  expr instanceof IndexerCall
+  or
   // No load is needed for the lvalue in an assignment such as:
   // Eg. `Object obj = oldObj`;
   expr = any(Assignment a).getLValue() and
