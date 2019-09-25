@@ -16,39 +16,37 @@
 import python
 import semmle.python.libraries.Zope
 
-predicate first_arg_self(Function f) {
-    f.getArgName(0) = "self"
+predicate is_type_method(FunctionValue fv) {
+    exists(ClassValue c | c.declaredAttribute(_) = fv and c.getASuperType() = ClassValue::type())
 }
 
-predicate is_type_method(FunctionObject f) {
-    exists(ClassObject c | c.lookupAttribute(_) = f and c.getASuperType() = theTypeType())
-}
-
-predicate used_in_defining_scope(FunctionObject f) {
-    exists(Call c | 
-        c.getScope() = f.getFunction().getScope() and
-        c.getFunc().refersTo(f)
+predicate used_in_defining_scope(FunctionValue fv) {
+    exists(Call c |
+        c.getScope() = fv.getScope().getScope() and c.getFunc().pointsTo(fv)
     )
 }
 
-from Function f, PyFunctionObject func, string message
+from Function f, FunctionValue fv, string message
 where
-exists(ClassObject cls, string name |
-    cls.declaredAttribute(name) = func and cls.isNewStyle() and
+exists(ClassValue cls, string name |
+    cls.declaredAttribute(name) = fv and cls.isNewStyle() and
     not name = "__new__" and
     not name = "__metaclass__" and
     /* declared in scope */
-    f.getScope() = cls.getPyClass()
+    f.getScope() = cls.getScope()
 ) and
-not first_arg_self(f) and not is_type_method(func) and
-func.getFunction() = f and not f.getName() = "lambda" and
-not used_in_defining_scope(func) and
+not f.getArgName(0) = "self" and
+not is_type_method(fv) and
+fv.getScope() = f and
+not f.getName() = "lambda" and
+not used_in_defining_scope(fv) and
 (
   if exists(f.getArgName(0)) then
       message = "Normal methods should have 'self', rather than '" + f.getArgName(0) + "', as their first parameter."
   else
-      message = "Normal methods should have at least one parameter (the first of which should be 'self')." and not f.hasVarArg()
+      message = "Normal methods should have at least one parameter (the first of which should be 'self')." and
+      not f.hasVarArg()
 ) and
-not func instanceof ZopeInterfaceMethod
+not fv instanceof ZopeInterfaceMethodValue
 
 select f, message
