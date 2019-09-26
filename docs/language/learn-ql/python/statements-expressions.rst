@@ -72,7 +72,7 @@ An ``if`` statement where one branch is composed of just ``pass`` statements cou
 
 To find statements like this we can run the following query:
 
-**Find ``if`` statements with empty branches**
+**Find 'if' statements with empty branches**
 
 .. code-block:: ql
 
