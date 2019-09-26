@@ -99,6 +99,12 @@ private predicate ignoreExprOnly(Expr expr) {
   // Ignore the expression (that is not a declaration)
   // that appears in a using block
   expr.getParent().(UsingBlockStmt).getExpr() = expr
+  or
+  // Ignore the `ThisAccess` when it is used as the qualifier for
+  // a callable access (e.g. when a member callable is passed as a
+  // parameter for a delegate creation expression)
+  expr instanceof ThisAccess and
+  expr.getParent() instanceof CallableAccess
 }
 
 /**
@@ -198,6 +204,10 @@ private predicate ignoreLoad(Expr expr) {
   // since we use the instruction `ElementsAddress`
   // to get the address of the first element in an array
   expr = any(ArrayAccess aa).getQualifier()
+  or
+  // Indexer calls returns a reference or a value,
+  // no need to load it
+  expr instanceof IndexerCall
   or
   // No load is needed for the lvalue in an assignment such as:
   // Eg. `Object obj = oldObj`;
