@@ -560,6 +560,11 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("FunctionType"))
     }
 
+    /** Get the `ClassValue` for the `type` class. */
+    ClassValue type() {
+        result = TType()
+    }
+
     /** Get the `ClassValue` for the class of builtin functions. */
     ClassValue builtinFunction() {
         result = Value::named("len").getClass()

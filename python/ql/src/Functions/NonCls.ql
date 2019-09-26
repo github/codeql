@@ -23,13 +23,13 @@ predicate first_arg_cls(Function f) {
 }
 
 predicate is_type_method(Function f) {
-    exists(ClassObject c | c.getPyClass() = f.getScope() and c.getASuperType() = theTypeType())
+    exists(ClassValue c | c.getScope() = f.getScope() and c.getASuperType() = ClassValue::type())
 }
 
 predicate classmethod_decorators_only(Function f) {
     forall(Expr decorator |
         decorator = f.getADecorator() |
-            ((Name) decorator).getId() = "classmethod")
+            decorator.(Name).getId() = "classmethod")
 }
 
 from Function f, string message
