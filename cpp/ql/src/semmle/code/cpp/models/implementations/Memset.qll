@@ -1,17 +1,19 @@
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
-import semmle.code.cpp.models.interfaces.Taint
 
 /**
  * The standard function `memset` and its assorted variants
  */
-class MemsetFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
+class MemsetFunction extends ArrayFunction, DataFlowFunction {
   MemsetFunction() {
     hasGlobalName("memset") or
+    hasGlobalName("wmemset") or
     hasGlobalName("bzero") or
     hasGlobalName("__builtin_memset") or
-    hasQualifiedName("std", "memset")
+    hasGlobalName("__builtin_memset_chk") or
+    hasQualifiedName("std", "memset") or
+    hasQualifiedName("std", "wmemset")
   }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
