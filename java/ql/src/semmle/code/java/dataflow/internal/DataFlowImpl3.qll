@@ -1075,6 +1075,7 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
     flowCandFwd(mid, fromArg, _, config) and
     store(mid, f, node) and
     nodeCand(node, unbind(config)) and
+    readStoreCand(f, unbind(config)) and
     apf.headUsesContent(f)
   )
   or
@@ -1175,12 +1176,12 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
   exists(Content f, AccessPathFront apf0 |
     flowCandStore(node, f, toReturn, apf0, config) and
     apf0.headUsesContent(f) and
-    consCand(f, apf, unbind(config))
+    consCand(f, apf, config)
   )
   or
   exists(Content f, AccessPathFront apf0 |
     flowCandRead(node, f, toReturn, apf0, config) and
-    consCandFwd(f, apf0, unbind(config)) and
+    consCandFwd(f, apf0, config) and
     apf.headUsesContent(f)
   )
 }
@@ -1221,8 +1222,8 @@ private newtype TAccessPath =
   TConsCons(Content f1, Content f2, int len) { consCand(f1, TFrontHead(f2), _) and len in [2 .. 5] }
 
 /**
- * Conceptually a list of `Content`s followed by a `Type`, but only the first
- * element of the list and its length are tracked. If data flows from a source to
+ * Conceptually a list of `Content`s followed by a `Type`, but only the first two
+ * elements of the list and its length are tracked. If data flows from a source to
  * a given node with a given `AccessPath`, this indicates the sequence of
  * dereference operations needed to get from the value in the node to the
  * tracked object. The final type indicates the type of the tracked object.
