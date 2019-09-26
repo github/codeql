@@ -1,7 +1,7 @@
 /**
- * @name First argument of a method is not named 'self'
- * @description Using an alternative name for the first argument of an instance method makes
- *              code more difficult to read; PEP8 states that the first argument to instance
+ * @name First parameter of a method is not named 'self'
+ * @description Using an alternative name for the first parameter of an instance method makes
+ *              code more difficult to read; PEP8 states that the first parameter to instance
  *              methods should be 'self'.
  * @kind problem
  * @tags maintainability

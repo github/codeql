@@ -1,6 +1,6 @@
-# Using name other than 'self' for first argument in methods.
-# This shouldn't apply to classmethods (first argument should be 'cls' or similar)
-# or static methods (first argument can be anything)
+# Using name other than 'self' for first parameter in methods.
+# This shouldn't apply to classmethods (first parameter should be 'cls' or similar)
+# or static methods (first parameter can be anything)
 
 
 class Normal(object):
