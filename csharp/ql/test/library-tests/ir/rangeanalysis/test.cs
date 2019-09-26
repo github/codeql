@@ -1,78 +1,85 @@
 class RangeAnalysis {
-  static void sink(int val) {
-  
+  static void Sink(int val) 
+  {
   }
   
-  static unsafe void sinkp(int* p) {
-  
+  static unsafe void Sinkp(int* p) 
+  {
   }
   
-  static int source() {
+  static int Source() 
+  {
     return 0;
   }
   
   // Guards, inference, critical edges
-  static int test1(int x, int y) {
-    if (x < y) {
+  static int Test1(int x, int y) 
+  {
+    if (x < y) 
+    {
       x = y;
     }
     return x;
   }
   
   // Bounds mergers at phi nodes
-  static int test2(int x, int y) {
-    if (x < y) {
+  static int Test2(int x, int y) 
+  {
+    if (x < y) 
+    {
       x = y;
-    } else {
-      x = x-2;
+    } 
+    else 
+    {
+      x = x - 2;
     }
     return x;
   }
   
   // for loops
-  static void test3(int x) {
+  static void Test3(int x) 
+  {
     int y = x;
-    for(int i = 0; i < x; i++) {
-      sink(i);
+    for(int i = 0; i < x; i++) 
+    {
+      Sink(i);
     }
-    for(int i = y; i > 0; i--) {
-      sink(i);
+    for(int i = y; i > 0; i--) 
+    {
+      Sink(i);
     }
-    for(int i = 0; i < y + 2; i++) {
-      sink(i);
+    for(int i = 0; i < y + 2; i++) 
+    {
+      Sink(i);
     }
   }
   
   // pointer bounds
-  unsafe static void test4(int *begin, int *end) {
-    while (begin < end) {
-      sinkp(begin);
+  unsafe static void Test4(int *begin, int *end) 
+  {
+    while (begin < end) 
+    {
+      Sinkp(begin);
       begin++;
     }
   }
   
   // bound propagation through conditionals
-  static void test5(int x, int y, int z) {
-    if (y < z) {
-      if (x < y) {
-        sink(x);
+  static void Test5(int x, int y, int z) 
+  {
+    if (y < z) 
+    {
+      if (x < y) 
+      {
+        Sink(x);
       }
     }
-    if (x < y) {
-      if (y < z) {
-        sink(x); // x < z is not inferred here
+    if (x < y) 
+    {
+      if (y < z) 
+      {
+        Sink(x); // x < z is not inferred here
       }
     }
   }
-
-    unsafe static void addone(int[] arr) 
-    {
-        int length = arr.Length;
-        fixed (int* b = arr) 
-        {
-            int *p = b;
-            for(int i = 0; i <= length; i++)
-                *p++ += 1;
-        }
-    }  
 }

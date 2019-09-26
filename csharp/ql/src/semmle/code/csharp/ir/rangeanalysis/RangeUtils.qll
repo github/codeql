@@ -40,10 +40,20 @@ IntValue getConstantValue(Instruction instr) {
   )
 }
 
+/**
+ * Gets the dimension of the array (either the declared size, or the
+ * size of the initializer); if no size is declared and no initializer used,
+ * the predicate does not hold.
+ */
 IntValue getArrayDim(Variable arr) {
   exists(ArrayCreation ac |
     arr.getInitializer() = ac and
-    result = ac.getInitializer().getNumberOfElements()
+    if exists(ac.getLengthArgument(0))
+    then result = ac.getLengthArgument(0).getValue().toInt()
+    else
+      if exists(ac.getInitializer())
+      then result = ac.getInitializer().getNumberOfElements()
+      else none()
   )
 }
 

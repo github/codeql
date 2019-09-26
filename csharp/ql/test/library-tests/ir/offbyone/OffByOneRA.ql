@@ -1,6 +1,7 @@
 import csharp
 import semmle.code.csharp.ir.IR
 import semmle.code.csharp.ir.rangeanalysis.RangeAnalysis
+import semmle.code.csharp.ir.rangeanalysis.RangeUtils
 
 /**
  * Holds if the index expression of `aa` is less than or equal to the array length plus `k`.
@@ -27,19 +28,8 @@ predicate boundedArrayAccess(ElementAccess aa, int k) {
             .getTarget()
     )
     or
-    exists(ArrayCreation ac |
-      ac.getParent().(LocalVariableDeclExpr).getVariable() = aa
-            .getQualifier()
-            .(VariableAccess)
-            .getTarget() and
-      b instanceof ZeroBound and
-      if exists(ac.getLengthArgument(0))
-      then k = delta - ac.getLengthArgument(0).getValue().toInt()
-      else
-        if exists(ac.getInitializer())
-        then k = delta - ac.getInitializer().getNumberOfElements()
-        else none()
-    )
+    b instanceof ZeroBound and
+    k = delta - getArrayDim(aa.getQualifier().(VariableAccess).getTarget())
   )
 }
 
@@ -54,12 +44,8 @@ predicate bestArrayAccessBound(ElementAccess aa, int k) {
 from ElementAccess aa, int k, string msg, string add
 where
   bestArrayAccessBound(aa, k) and
+  k >= 0 and
   (if k = 0 then add = "" else add = " + " + k) and
-  (
-    if k >= 0
-    then
-      msg = "This array access might be out of bounds, as the index might be equal to the array length"
-          + add
-    else msg = "This array access is ok, the index is at most the lenth of the array " + add
-  )
+  msg = "This array access might be out of bounds, as the index might be equal to the array length" +
+      add
 select aa.getEnclosingCallable(), aa, msg

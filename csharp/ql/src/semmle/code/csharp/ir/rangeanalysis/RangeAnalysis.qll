@@ -233,19 +233,25 @@ private class SafeCastInstruction extends ConvertInstruction {
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
  */
 private predicate typeBound(IntegralType typ, int lowerbound, int upperbound) {
-  typ instanceof SignedIntegralType and typ.getSize() = 1 and lowerbound = -128 and upperbound = 127
+  typ instanceof SignedIntegralType and
+  typ.getSize() = 1 and
+  lowerbound = typ.minValue() and
+  upperbound = typ.maxValue()
   or
-  typ instanceof UnsignedIntegralType and typ.getSize() = 1 and lowerbound = 0 and upperbound = 255
+  typ instanceof UnsignedIntegralType and
+  typ.getSize() = 1 and
+  lowerbound = typ.minValue() and
+  upperbound = typ.maxValue()
   or
   typ instanceof SignedIntegralType and
   typ.getSize() = 2 and
-  lowerbound = -32768 and
-  upperbound = 32767
+  lowerbound = typ.minValue() and
+  upperbound = typ.maxValue()
   or
   typ instanceof UnsignedIntegralType and
   typ.getSize() = 2 and
-  lowerbound = 0 and
-  upperbound = 65535
+  lowerbound = typ.minValue() and
+  upperbound = typ.maxValue()
 }
 
 /**

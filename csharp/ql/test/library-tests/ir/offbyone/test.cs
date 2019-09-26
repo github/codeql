@@ -3,22 +3,23 @@ class ContainerLengthOffByOne
     public int[] arr;
     public string str;
 
-    public static void fun(int elem)
+    public static void Fun(int elem)
     {
     }
 
-    public void test1() 
+    public void Test1() 
     {
         int len1 = this.arr.Length;
         int len2 = len1 + 1;
         // OK
         for(int i = 0; i < len2 - 1; i++) 
         {
-            ContainerLengthOffByOne.fun(this.arr[i]);
+            ContainerLengthOffByOne.Fun(this.arr[i]);
         }
     }
 
-    public void test2() {
+    public void Test2() 
+    {
         int len1 = this.arr.Length;
 
         int len2;
@@ -30,11 +31,12 @@ class ContainerLengthOffByOne
         // exceeds the size of the array.
         for(int i = 0; i < len2; i++) 
         {
-            ContainerLengthOffByOne.fun(this.arr[i]);
+            ContainerLengthOffByOne.Fun(this.arr[i]);
         }
     }
 
-    public void test3() {
+    public void Test3() 
+    {
         int len1 = this.arr.Length;
         int len2 = len1 - 1;
 
@@ -47,11 +49,12 @@ class ContainerLengthOffByOne
         // we don't get an off by one error.
         for(int i = 0; i < len3; i++) 
         {
-            ContainerLengthOffByOne.fun(this.arr[i]);
+            ContainerLengthOffByOne.Fun(this.arr[i]);
         }
     }   
 
-    public void test4() {
+    public void Test4() 
+    {
         int len1 = this.arr.Length;
 
         int len2 = len1 + 1;
@@ -61,11 +64,11 @@ class ContainerLengthOffByOne
         // Not OK, len5 is off by one.
         for(int i = 0; i < len5; i++) 
         {
-            ContainerLengthOffByOne.fun(this.arr[i]);
+            ContainerLengthOffByOne.Fun(this.arr[i]);
         }
     }
 
-    public void test5()
+    public void Test5()
     {
         int len = this.str.Length;
         // Not OK; test for indexers
@@ -75,20 +78,20 @@ class ContainerLengthOffByOne
         }
     }
 
-    public void test6()
+    public void Test6()
     {
         int len = this.arr.Length - 2;
         int len1 = len + 3;
         int len2 = len1 - 1;
-        // Not OK, of by one
+        // Not OK, off by one
         // The test shows that more complex expressions are treated correctly
         for (int i = 0; i < len2; i++)
         {
-            ContainerLengthOffByOne.fun(this.arr[i + 1]);
+            ContainerLengthOffByOne.Fun(this.arr[i + 1]);
         }
     }
 
-    public void test7()
+    public void Test7()
     {
         int[] arrInit = { 1, 2, 3 };
         int len = (arrInit.Length * 2 + 2) / 2 * 2;
@@ -98,7 +101,7 @@ class ContainerLengthOffByOne
         // are used in bounds
         for (int i = 0; i < len1; i++) 
         {
-            ContainerLengthOffByOne.fun(arrInit[i]);    
+            ContainerLengthOffByOne.Fun(arrInit[i]);    
         }
     }
 }
