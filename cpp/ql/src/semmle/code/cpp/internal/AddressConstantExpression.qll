@@ -32,6 +32,11 @@ private predicate constantAddressLValue(Expr lvalue) {
   // tells us how it's going to be used.
   lvalue.(FunctionAccess).getType() instanceof RoutineType
   or
+  // Pointer-to-member literals in uninstantiated templates
+  lvalue instanceof Literal and
+  not exists(lvalue.getValue()) and
+  lvalue.isFromUninstantiatedTemplate(_)
+  or
   // String literals have array types and undergo array-to-pointer conversion.
   lvalue instanceof StringLiteral
   or
@@ -60,6 +65,10 @@ private predicate constantAddressPointer(Expr pointer) {
   // to a function _pointer_ type. Instead, the type of a `FunctionAccess`
   // tells us how it's going to be used.
   pointer.(FunctionAccess).getType() instanceof FunctionPointerType
+  or
+  // Pointer to member function. These accesses are always pointers even though
+  // their type is `RoutineType`.
+  pointer.(FunctionAccess).getTarget() instanceof MemberFunction
   or
   addressConstantVariable(pointer.(VariableAccess).getTarget()) and
   pointer.getType().getUnderlyingType() instanceof PointerType
