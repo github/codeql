@@ -12,6 +12,10 @@ There is an extensive QL library for analyzing C/C++ code. The QL classes in thi
 
 The rest of this topic briefly summarizes the most important QL classes and predicates provided by this library.
 
+.. pull-quote::
+
+   Tip
+
    You can find related classes and features using the query console's auto-complete feature. You can also press **F3** to jump to the definition of any element (QL library files are opened in new tabs in the console).
 
 Summary of the library classes

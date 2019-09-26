@@ -33,7 +33,7 @@ This part of the library represents the Python source code. The ``Module``, ``Cl
 Scope
 ^^^^^
 
-A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class and function are represented by the three classes (`Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``.
+A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class and function are represented by the three classes `Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__, which are all subclasses of ``Scope``.
 
 -  ``Scope``
 
@@ -110,12 +110,12 @@ Examples
 
 Each syntactic element in Python source is recorded in the snapshot. These can be queried via the corresponding class. Let us start with a couple of simple examples.
 
-1. Finding all finally blocks
-'''''''''''''''''''''''''''''
+1. Finding all ``finally`` blocks
+'''''''''''''''''''''''''''''''''
 
 For our first example, we can find all ``finally`` blocks by using the ``Try`` class:
 
-**Find all ``finally`` blocks**
+**Find all** ``finally`` **blocks**
 
 .. code-block:: ql
 
@@ -126,8 +126,8 @@ For our first example, we can find all ``finally`` blocks by using the ``Try`` c
 
 ➤ `See this in the query console <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
 
-2. Finding 'except' blocks that do nothing
-''''''''''''''''''''''''''''''''''''''''''
+2. Finding ``except`` blocks that do nothing
+''''''''''''''''''''''''''''''''''''''''''''
 
 For our second example, we can use a simplified version of a query from the standard query set. We look for all ``except`` blocks that do nothing.
 
@@ -137,7 +137,7 @@ A block that does nothing is one that contains no statements except ``pass`` sta
 
    not exists(Stmt s | s = ex.getAStmt() | not s instanceof Pass)
 
-where ``ex`` is an ``ExceptStmt`` and ``Pass`` is the class representing ``pass`` statements. Instead of using the double negative, **"no**\ *statements that are*\ **not**\ *pass statements"*, this can also be expressed positively, "all statements must be pass statements." The positive form is expressed in QL using the ``forall`` quantifier:
+where ``ex`` is an ``ExceptStmt`` and ``Pass`` is the class representing ``pass`` statements. Instead of using the double negative, *no statements that are not pass statements*, this can also be expressed positively, *all statements must be pass statements*. The positive form is expressed in QL using the ``forall`` quantifier:
 
 .. code-block:: ql
 
@@ -145,7 +145,7 @@ where ``ex`` is an ``ExceptStmt`` and ``Pass`` is the class representing ``pass`
 
 Both forms are equivalent. Using the positive QL expression, the whole query looks like this:
 
-**Find pass-only ``except`` blocks**
+**Find pass-only** ``except`` **blocks**
 
 .. code-block:: ql
 

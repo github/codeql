@@ -60,6 +60,10 @@ This query returns fewer results. However, if you examine the results then you c
 
 For example, there is a more complicated LGTM `query <https://lgtm.com/rules/2152580467/>`__ that finds unused static functions. To see the QL code for this query, click **Open in query console** at the top of the page.
 
+.. pull-quote::
+
+   Tip
+
    You can explore the definition of an element in the standard QL libraries and see what predicates are available. Use the keyboard **F3** button to open the definition of any element. Alternatively, hover over the element and click **Jump to definition** in the tooltip displayed. The library file is opened in a new tab with the definition highlighted.
 
 Finding a specific function
