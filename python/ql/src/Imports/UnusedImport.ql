@@ -58,15 +58,27 @@ predicate imported_module_used_in_doctest(Import imp) {
 }
 
 predicate imported_module_used_in_typehint(Import imp) {
-    exists(string modname |
-        imp.getAName().getAsname().(Name).getId() = modname
-        and
+    exists(string modname, Location loc |
+        imp.getAName().getAsname().(Name).getId() = modname and
+        loc.getFile() = imp.getScope().(Module).getFile()
+        |
         /* Look for typehints containing the patterns:
          * # type: …name…
          */
         exists(Comment typehint |
-            typehint.getLocation().getFile() = imp.getScope().(Module).getFile() and
+            loc = typehint.getLocation() and
             typehint.getText().regexpMatch("# type:.*" + modname + ".*")
+        )
+        or
+        // Type hint is inside a string annotation, as needed for forward references
+        exists(string typehint, Expr annotation |
+            annotation = any(Arguments a).getAnAnnotation()
+            or
+            annotation = any(AnnAssign a).getAnnotation()
+            |
+            annotation.pointsTo(Value::forString(typehint)) and
+            loc = annotation.getLocation() and
+            typehint.regexpMatch(".*\\b" + modname + "\\b.*")
         )
     )
 }
@@ -100,6 +112,11 @@ predicate unused_import(Import imp, Variable name) {
     not imported_module_used_in_doctest(imp)
     and
     not imported_module_used_in_typehint(imp)
+    and
+    /* Only consider import statements that actually point-to something (possibly an unknown module). 
+     * If this is not the case, it's likely that the import statement never gets executed.
+     */
+    imp.getAName().getValue().pointsTo(_)
 }
 
 
