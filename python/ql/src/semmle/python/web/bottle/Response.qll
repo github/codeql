@@ -18,7 +18,7 @@ class BottleResponse extends TaintKind {
 
 }
 
-private Object theBottleResponseObject() {
+private Value theBottleResponseObject() {
     result = theBottleModule().attr("response")
 }
 
@@ -27,7 +27,7 @@ class BottleResponseBodyAssignment extends HttpResponseTaintSink {
     BottleResponseBodyAssignment() {
         exists(DefinitionNode lhs |
             lhs.getValue() = this and
-            lhs.(AttrNode).getObject("body").refersTo(theBottleResponseObject())
+            lhs.(AttrNode).getObject("body").pointsTo(theBottleResponseObject())
         )
     }
 

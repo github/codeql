@@ -6,7 +6,7 @@ import semmle.python.security.strings.Untrusted
 import semmle.python.web.Http
 import semmle.python.web.bottle.General
 
-private Object theBottleRequestObject() {
+private Value theBottleRequestObject() {
     result = theBottleModule().attr("request")
 }
 
@@ -32,7 +32,7 @@ class BottleRequestKind extends TaintKind {
 private class RequestSource extends TaintSource {
 
     RequestSource() {
-        this.(ControlFlowNode).refersTo(theBottleRequestObject())
+        this.(ControlFlowNode).pointsTo(theBottleRequestObject())
     }
 
     override predicate isSourceOf(TaintKind kind) {
