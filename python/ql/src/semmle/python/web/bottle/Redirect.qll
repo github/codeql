@@ -1,25 +1,21 @@
-/** Provides class representing the `bottle.redirect` function.
+/**
+ * Provides class representing the `bottle.redirect` function.
  * This module is intended to be imported into a taint-tracking query
  * to extend `TaintSink`.
  */
-import python
 
+import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.bottle.General
 
-FunctionValue bottle_redirect() {
-    result = theBottleModule().attr("redirect")
-}
+FunctionValue bottle_redirect() { result = theBottleModule().attr("redirect") }
 
 /**
  * Represents an argument to the `bottle.redirect` function.
  */
 class BottleRedirect extends TaintSink {
-
-    override string toString() {
-        result = "bottle.redirect"
-    }
+    override string toString() { result = "bottle.redirect" }
 
     BottleRedirect() {
         exists(CallNode call |
@@ -28,8 +24,5 @@ class BottleRedirect extends TaintSink {
         )
     }
 
-    override predicate sinks(TaintKind kind) {
-        kind instanceof StringKind
-    }
-
+    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 }
