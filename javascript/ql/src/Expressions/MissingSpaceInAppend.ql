@@ -23,7 +23,7 @@ Expr leftChild(Expr e) {
 }
 
 predicate isInConcat(Expr e) {
-    exists(ParExpr par | par.getExpression() = e)
+    exists(ParExpr par | isInConcat(par) and par.getExpression() = e)
     or 
     exists(AddExpr a | a.getAnOperand() = e)
 }
