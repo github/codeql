@@ -29,28 +29,87 @@ private newtype TFunctionInput =
 class FunctionInput extends TFunctionInput {
   abstract string toString();
 
+  /**
+   * Holds if this is the input value of the parameter with index `index`.
+   * Example:
+   * ```
+   * void func(int n, char* p, float& r);
+   * ```
+   * `isParameter(0)` holds for the `FunctionInput` that represents the value of `n` (with type
+   *   `int`) on entry to the function.
+   * `isParameter(1)` holds for the `FunctionInput` that represents the value of `p` (with type
+   *   `char*`) on entry to the function.
+   * `isParameter(2)` holds for the `FunctionInput` that represents the "value" of the reference `r`
+   *   (with type `float&`) on entry to the function, _not_ the value of the referred-to `float`.
+   */
   predicate isParameter(ParameterIndex index) { none() }
 
+  /**
+   * Holds if this is the input value of the parameter with index `index`.
+   * DEPRECATED: Use `isParameter(index)` instead.
+   */
+  deprecated final predicate isInParameter(ParameterIndex index) { isParameter(index) }
+
+  /**
+   * Holds if this is the input value pointed to by a pointer parameter to a function, or the input
+   *   value referred to by a reference parameter to a function, where the parameter has index
+   *   `index`.
+   * Example:
+   * ```
+   * void func(int n, char* p, float& r);
+   * ```
+   * `isParameterDeref(1)` holds for the `FunctionInput` that represents the value of `*p` (with
+   *   type `char`) on entry to the function.
+   * `isParameterDeref(2)` holds for the `FunctionInput` that represents the value of `r` (with type
+   *   `float`) on entry to the function.
+   * There is no `FunctionInput` for which `isParameterDeref(0)` holds, because `n` is neither a
+   *   pointer nor a reference.
+   */
   predicate isParameterDeref(ParameterIndex index) { none() }
 
+  /**
+   * Holds if this is the input value pointed to by a pointer parameter to a function, or the input
+   *   value referred to by a reference parameter to a function, where the parameter has index
+   *   `index`.
+   * DEPRECATED: Use `isParameterDeref(index)` instead.
+   */
+  deprecated final predicate isInParameterPointer(ParameterIndex index) { isParameterDeref(index) }
+
+  /**
+   * Holds if this is the input value pointed to by the `this` pointer of an instance member
+   *   function.
+   * Example:
+   * ```
+   * struct C {
+   *   void mfunc(int n, char* p, float& r) const;
+   * };
+   * ```
+   * `isQualifierObject()` holds for the `FunctionInput` that represents the value of `*this` (with
+   *   type `C const`) on entry to the function.
+   */
   predicate isQualifierObject() { none() }
 
+  /**
+   * Holds if this is the input value pointed to by the `this` pointer of an instance member
+   *   function.
+   * DEPRECATED: Use `isQualifierObject()` instead.
+   */
+  deprecated final predicate isInQualifier() { isQualifierObject() }
+
+  /**
+   * Holds if this is the input value of the `this` pointer of an instance member function.
+   * Example:
+   * ```
+   * struct C {
+   *   void mfunc(int n, char* p, float& r) const;
+   * };
+   * ```
+   * `isQualifierAddress()` holds for the `FunctionInput` that represents the value of `this` (with
+   *   type `C const *`) on entry to the function.
+   */
   predicate isQualifierAddress() { none() }
 }
 
-/**
- * The input value of a parameter to a function.
- * Example:
- * ```cpp
- * void func(int n, char* p, float& r);
- * ```
- * The `InParameter` with `getIndex() = 0` represents the value of `n` (with type `int`) on entry to
- * the function.
- * The `InParameter` with `getIndex() = 1` represents the value of `p` (with type `char*`) on entry
- * to the function.
- * The `InParameter` with `getIndex() = 2` represents the "value" of the reference `r` (with type 
- * `float&`) on entry to the function, _not_ the value of the referred-to `float`.
- */
 class InParameter extends FunctionInput, TInParameter {
   ParameterIndex index;
 
@@ -64,20 +123,6 @@ class InParameter extends FunctionInput, TInParameter {
   override predicate isParameter(ParameterIndex i) { i = index }
 }
 
-/**
- * The input value pointed to by a pointer parameter to a function, or the input value referred to
- * by a reference parameter to a function.
- * Example:
- * ```cpp
- * void func(int n, char* p, float& r);
- * ```
- * The `InParameterDeref` with `getIndex() = 1` represents the value of `*p` (with type `char`) on
- * entry to the function.
- * The `InParameterDeref` with `getIndex() = 2` represents the value of `r` (with type `float`) on
- * entry to the function.
- * There is no `InParameterDeref` with `getIndex() = 0`, because `n` is neither a pointer nor a
- * reference.
- */
 class InParameterDeref extends FunctionInput, TInParameterDeref {
   ParameterIndex index;
 
@@ -91,34 +136,12 @@ class InParameterDeref extends FunctionInput, TInParameterDeref {
   override predicate isParameterDeref(ParameterIndex i) { i = index }
 }
 
-/**
- * The input value pointed to by the `this` pointer of an instance member function.
- * Example:
- * ```cpp
- * struct C {
- *   void mfunc(int n, char* p, float& r) const;
- * };
- * ```
- * The `InQualifierObject` represents the value of `*this` (with type `C const`) on entry to the
- * function.
- */
 class InQualifierObject extends FunctionInput, TInQualifierObject {
   override string toString() { result = "InQualifierObject" }
 
   override predicate isQualifierObject() { any() }
 }
 
-/**
- * The input value of the `this` pointer of an instance member function.
- * Example:
- * ```cpp
- * struct C {
- *   void mfunc(int n, char* p, float& r) const;
- * };
- * ```
- * The `InQualifierAddress` represents the value of `this` (with type `C const *`) on entry to the
- * function.
- */
 class InQualifierAddress extends FunctionInput, TInQualifierAddress {
   override string toString() { result = "InQualifierAddress" }
 
@@ -142,29 +165,104 @@ private newtype TFunctionOutput =
 class FunctionOutput extends TFunctionOutput {
   abstract string toString();
 
+  /**
+   * Holds if this is the output value pointed to by a pointer parameter to a function, or the
+   *   output value referred to by a reference parameter to a function, where the parameter has
+   *   index `index`.
+   * Example:
+   * ```
+   * void func(int n, char* p, float& r);
+   * ```
+   * `isParameterDeref(1)` holds for the `FunctionOutput` that represents the value of `*p` (with
+   *   type `char`) on return from the function.
+   * `isParameterDeref(2)` holds for the `FunctionOutput` that represents the value of `r` (with
+   *   type `float`) on return from the function.
+   * There is no `FunctionOutput` for which `isParameterDeref(0)` holds, because `n` is neither a
+   *   pointer nor a reference.
+   */
   predicate isParameterDeref(ParameterIndex i) { none() }
 
+  /**
+   * Holds if this is the output value pointed to by a pointer parameter to a function, or the
+   *   output value referred to by a reference parameter to a function, where the parameter has
+   *   index `index`.
+   * DEPRECATED: Use `isParameterDeref(index)` instead.
+   */
+  deprecated final predicate isOutParameterPointer(ParameterIndex index) { isParameterDeref(index) }
+
+  /**
+   * Holds if this is the output value pointed to by the `this` pointer of an instance member
+   *   function.
+   * ```
+   * struct C {
+   *   void mfunc(int n, char* p, float& r);
+   * };
+   * ```
+   * `isQualifierObject()` holds for the `FunctionOutput` that represents the value of `*this` (with
+   *   type `C`) on return from the function.
+   */
   predicate isQualifierObject() { none() }
 
+  /**
+   * Holds if this is the output value pointed to by the `this` pointer of an instance member
+   *   function.
+   * DEPRECATED: Use `isQualifierObject()` instead.
+   */
+  deprecated final predicate isOutQualifier() { isQualifierObject() }
+
+  /**
+   * Holds if this is the value returned by a function.
+   * Example:
+   * ```
+   * int getInt();
+   * char* getPointer();
+   * float& getReference();
+   * ```
+   * `isReturnValue()` holds for the `FunctionOutput` that represents the value returned by
+   *   `getInt()` (with type `int`).
+   * `isReturnValue()` holds for the `FunctionOutput` that represents the value returned by
+   *   `getPointer()` (with type `char*`).
+   * `isReturnValue()` holds for the `FunctionOutput` that represents the "value" of the reference
+   *   returned by `getReference()` (with type `float&`), _not_ the value of the referred-to
+   *   `float`.
+   */
   predicate isReturnValue() { none() }
 
+  /**
+   * Holds if this is the value returned by a function.
+   * DEPRECATED: Use `isReturnValue()` instead.
+   */
+  deprecated final predicate isOutReturnValue() { isReturnValue() }
+
+  /**
+   * Holds if this is the output value pointed to by the return value of a function, if the function
+   *   returns a pointer, or the output value referred to by the return value of a function, if the
+   *   function returns a reference.
+   * Example:
+   * ```
+   * char* getPointer();
+   * float& getReference();
+   * int getInt();
+   * ```
+   * `isReturnValueDeref()` holds for the `FunctionOutput` that represents the value of
+   *   `*getPointer()` (with type `char`).
+   * `isReturnValueDeref()` holds for the `FunctionOutput` that represents the value of
+   *   `getReference()` (with type `float`).
+   * There is no `FunctionOutput` of `getInt()` for which `isReturnValueDeref()` holds because the
+   *   return type of `getInt()` is neither a pointer nor a reference.
+   */
   predicate isReturnValueDeref() { none() }
+
+  /*
+   * Holds if this is the output value pointed to by the return value of a function, if the function
+   *   returns a pointer, or the output value referred to by the return value of a function, if the
+   *   function returns a reference.
+   * DEPRECATED: Use `isReturnValueDeref()` instead.
+   */
+
+  deprecated final predicate isOutReturnPointer() { isReturnValueDeref() }
 }
 
-/**
- * The output value pointed to by a pointer parameter to a function, or the output value referred to
- * by a reference parameter to a function.
- * Example:
- * ```cpp
- * void func(int n, char* p, float& r);
- * ```
- * The `OutParameterDeref` with `getIndex() = 1` represents the value of `*p` (with type `char`) on
- * return from the function.
- * The `OutParameterDeref` with `getIndex() = 2` represents the value of `r` (with type `float`) on
- * return from the function.
- * There is no `OutParameterDeref` with `getIndex() = 0`, because `n` is neither a pointer nor a
- * reference.
- */
 class OutParameterDeref extends FunctionOutput, TOutParameterDeref {
   ParameterIndex index;
 
@@ -177,61 +275,18 @@ class OutParameterDeref extends FunctionOutput, TOutParameterDeref {
   override predicate isParameterDeref(ParameterIndex i) { i = index }
 }
 
-/**
- * The output value pointed to by the `this` pointer of an instance member function.
- * Example:
- * ```cpp
- * struct C {
- *   void mfunc(int n, char* p, float& r);
- * };
- * ```
- * The `OutQualifierObject` represents the value of `*this` (with type `C`) on return from the
- * function.
- */
 class OutQualifierObject extends FunctionOutput, TOutQualifierObject {
   override string toString() { result = "OutQualifier" }
 
   override predicate isQualifierObject() { any() }
 }
 
-/**
- * The value returned by a function.
- * Example:
- * ```cpp
- * int getInt();
- * char* getPointer();
- * float& getReference();
- * ```
- * The `OutReturnValue` for `getInt()` represents the value returned by `getInt()` (with type
- * `int`).
- * The `OutReturnValue` for `getPointer()` represents the value returned by `getPointer()` (with
- * type `char*`).
- * The `OutReturnValue` for `getReference()` represents the "value" of the reference returned by
- * `getReference()` (with type `float&`), _not_ the value of the referred-to `float`.
- */
 class OutReturnValue extends FunctionOutput, TOutReturnValue {
   override string toString() { result = "OutReturnValue" }
 
   override predicate isReturnValue() { any() }
 }
 
-/**
- * The output value pointed to by the return value of a function, if the function returns a pointer,
- * or the output value referred to by the return value of a function, if the function returns a
- * reference.
- * Example:
- * ```cpp
- * char* getPointer();
- * float& getReference();
- * int getInt();
- * ```
- * The `OutReturnValueDeref` for `getPointer()` represents the value of `*getPointer()` (with type
- * `char`).
- * The `OutReturnValueDeref` for `getReference()` represents the value of `getReference()` (with
- * type `float`).
- * There is no `OutReturnValueDeref` for `getInt()`, because the return type of `getInt()` is
- * neither a pointer nor a reference.
- */
 class OutReturnValueDeref extends FunctionOutput, TOutReturnValueDeref {
   override string toString() { result = "OutReturnValueDeref" }
 
