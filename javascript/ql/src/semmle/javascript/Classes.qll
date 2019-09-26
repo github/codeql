@@ -48,6 +48,9 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
   /** Gets a member declared in this class or interface. */
   MemberDeclaration getAMember() { result.getDeclaringType() = this }
 
+  /** Gets the `i`th member declared in this class or interface. */
+  MemberDeclaration getMemberByIndex(int i) { properties(result, this, i, _, _) }
+
   /** Gets the member with the given name declared in this class or interface. */
   MemberDeclaration getMember(string name) {
     result = getAMember() and
@@ -57,8 +60,18 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
   /** Gets a method declared in this class or interface. */
   MethodDeclaration getAMethod() { result = getAMember() }
 
-  /** Gets the method with the given name declared in this class or interface. */
+  /**
+   * Gets the method with the given name declared in this class or interface.
+   *
+   * Note that for overloaded method signatures in TypeScript files, this returns every overload.
+   */
   MethodDeclaration getMethod(string name) { result = getMember(name) }
+
+  /** Gets an overloaded version of the method with the given name declared in this class or interface. */
+  MethodDeclaration getMethodOverload(string name, int overloadIndex) {
+    result = getMethod(name) and
+    overloadIndex = result.getOverloadIndex()
+  }
 
   /** Gets a field declared in this class or interface. */
   FieldDeclaration getAField() { result = getAMember() }
@@ -523,6 +536,9 @@ class MemberDeclaration extends @property, Documentable {
   /** Gets the class this member belongs to, if any. */
   ClassDefinition getDeclaringClass() { properties(this, result, _, _, _) }
 
+  /** Gets the index of this member within its enclosing type. */
+  int getMemberIndex() { properties(this, _, result, _, _) }
+
   /** Gets the nearest enclosing function or toplevel in which this member occurs. */
   StmtContainer getContainer() { result = getDeclaringType().getContainer() }
 
@@ -642,6 +658,80 @@ class MethodDeclaration extends MemberDeclaration {
    * Gets the body of this method.
    */
   FunctionExpr getBody() { result = getChildExpr(1) }
+
+  /**
+   * Holds if this method is overloaded, that is, there are multiple method
+   * signatures with its name declared in the enclosing type.
+   */
+  predicate isOverloaded() {
+    not this instanceof ConstructorDeclaration and
+    hasOverloadedMethod(getDeclaringType(), getName())
+    or
+    this instanceof ConstructorDeclaration and
+    hasOverloadedConstructor(getDeclaringClass())
+  }
+
+  /**
+   * Gets the index of this method declaration among all the method declarations
+   * with this name.
+   *
+   * In the rare case of a class containing multiple concrete methods with the same name,
+   * the overload index is defined as if only one of them was concrete.
+   */
+  int getOverloadIndex() {
+    exists(ClassOrInterface type, string name |
+      this = rank[result + 1](MethodDeclaration method, int i |
+          methodDeclaredInType(type, name, i, method)
+        |
+          method order by i
+        )
+    )
+    or
+    exists(ClassDefinition type |
+      this = rank[result + 1](ConstructorDeclaration ctor, int i |
+          ctor = type.getMemberByIndex(i)
+        |
+          ctor order by i
+        )
+    )
+  }
+}
+
+/**
+ * Holds if the `index`th member of `type` is `method`, which has the given `name`.
+ */
+private predicate methodDeclaredInType(
+  ClassOrInterface type, string name, int index, MethodDeclaration method
+) {
+  not method instanceof ConstructorDeclaration and // distinguish methods named "constructor" from the constructor
+  type.getMemberByIndex(index) = method and
+  method.getName() = name
+}
+
+/**
+ * Holds if `type` has an overloaded method named `name`.
+ */
+private predicate hasOverloadedMethod(ClassOrInterface type, string name) {
+  exists(MethodDeclaration method |
+    method = type.getMethod(name) and
+    not method instanceof ConstructorDeclaration and
+    method.getOverloadIndex() > 0
+  )
+}
+
+/** Holds if `type` has an overloaded constructor declaration. */
+private predicate hasOverloadedConstructor(ClassDefinition type) {
+  type.getConstructor().getOverloadIndex() > 0
+}
+
+/** Holds if `type` has an overloaded function call signature. */
+private predicate hasOverloadedFunctionCallSignature(ClassOrInterface type) {
+  type.getACallSignature().(FunctionCallSignature).getOverloadIndex() > 0
+}
+
+/** Holds if `type` has an overloaded constructor call signature. */
+private predicate hasOverloadedConstructorCallSignature(ClassOrInterface type) {
+  type.getACallSignature().(ConstructorCallSignature).getOverloadIndex() > 0
 }
 
 /**
@@ -1048,7 +1138,24 @@ class CallSignature extends @call_signature, MemberSignature {
  * }
  * ```
  */
-class FunctionCallSignature extends @function_call_signature, CallSignature { }
+class FunctionCallSignature extends @function_call_signature, CallSignature {
+  /** Gets the index of this function call signature among the function call signatures in the enclosing type. */
+  int getOverloadIndex() {
+    exists(ClassOrInterface type | type = getDeclaringType() |
+      this = rank[result + 1](FunctionCallSignature sig, int i |
+          sig = type.getMemberByIndex(i)
+        |
+          sig order by i
+        )
+    )
+  }
+
+  /**
+   * Holds if this function call signature is overloaded, that is, there are multiple function call
+   * signatures declared in the enclosing type.
+   */
+  predicate isOverloaded() { hasOverloadedFunctionCallSignature(getDeclaringType()) }
+}
 
 /**
  * A constructor call signature declared in an interface.
@@ -1061,7 +1168,24 @@ class FunctionCallSignature extends @function_call_signature, CallSignature { }
  * }
  * ```
  */
-class ConstructorCallSignature extends @constructor_call_signature, CallSignature { }
+class ConstructorCallSignature extends @constructor_call_signature, CallSignature {
+  /** Gets the index of this constructor call signature among the constructor call signatures in the enclosing type. */
+  int getOverloadIndex() {
+    exists(ClassOrInterface type | type = getDeclaringType() |
+      this = rank[result + 1](ConstructorCallSignature sig, int i |
+          sig = type.getMemberByIndex(i)
+        |
+          sig order by i
+        )
+    )
+  }
+
+  /**
+   * Holds if this constructor call signature is overloaded, that is, there are multiple constructor call
+   * signatures declared in the enclosing type.
+   */
+  predicate isOverloaded() { hasOverloadedConstructorCallSignature(getDeclaringType()) }
+}
 
 /**
  * An index signature declared in an interface.

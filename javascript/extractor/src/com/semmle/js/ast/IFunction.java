@@ -3,11 +3,12 @@ package com.semmle.js.ast;
 import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.INodeWithSymbol;
 import com.semmle.ts.ast.ITypeExpression;
+import com.semmle.ts.ast.ITypedAstNode;
 import com.semmle.ts.ast.TypeParameter;
 import java.util.List;
 
 /** A function declaration or expression. */
-public interface IFunction extends IStatementContainer, INodeWithSymbol {
+public interface IFunction extends IStatementContainer, INodeWithSymbol, ITypedAstNode {
   /** The function name; may be null for function expressions. */
   public Identifier getId();
 
@@ -63,4 +64,15 @@ public interface IFunction extends IStatementContainer, INodeWithSymbol {
   public List<DecoratorList> getParameterDecorators();
 
   public boolean hasDeclareKeyword();
+
+  /**
+   * Gets the type signature of this function as determined by the TypeScript compiler, or -1 if no
+   * call signature was extracted.
+   *
+   * <p>The ID refers to a signature in a table that is extracted on a per-project basis, and the
+   * meaning of this type ID is not available at the AST level.
+   */
+  public int getDeclaredSignatureId();
+
+  public void setDeclaredSignatureId(int id);
 }

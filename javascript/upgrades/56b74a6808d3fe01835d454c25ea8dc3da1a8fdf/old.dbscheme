@@ -641,11 +641,6 @@ ast_node_type(
   unique int node: @typed_ast_node ref, 
   int typ: @type ref);
 
-declared_function_signature(
-  unique int node: @function ref,
-  int sig: @signature_type ref
-);
-
 invoke_expr_signature(
   unique int node: @invokeexpr ref,
   int sig: @signature_type ref
