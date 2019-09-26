@@ -252,8 +252,7 @@ private class CSharpGLValueAddressType extends CSharpWrappedType, TGLValueAddres
  */
 private class CSharpFunctionAddressType extends CSharpType, TFunctionAddressType {
   override final string toString() {
-//    result = "<funcaddr>"  // FIXME
-    result = "glval<null>"
+    result = "<funcaddr>"
   }
 
   override final IRFunctionAddressType getIRType() {
@@ -270,8 +269,7 @@ private class CSharpFunctionAddressType extends CSharpType, TFunctionAddressType
  */
 private class CSharpUnknownType extends CSharpType, TUnknownType {
   override final string toString() {
-//    result = "<unknown>"  // FIXME
-    result = "null"
+    result = "<unknown>"
   }
 
   override final IRUnknownType getIRType() {
