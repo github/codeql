@@ -262,12 +262,23 @@ namespace Semmle.Autobuild
                         BuildScript.DeleteDirectory(Actions.GetEnvironmentVariable("TRAP_FOLDER"));
                     var cleanSourceArchive =
                         BuildScript.DeleteDirectory(Actions.GetEnvironmentVariable("SOURCE_ARCHIVE"));
-                    var cleanExtractorLog =
-                        BuildScript.DeleteFile(Extractor.GetCSharpLogPath());
+                    var tryCleanExtractorArgsLogs =
+                        BuildScript.Create(actions =>
+                        {
+                            foreach (var file in Extractor.GetCSharpArgsLogs())
+                                try
+                                {
+                                    actions.FileDelete(file);
+                                }
+                                catch // lgtm[cs/catch-of-all-exceptions] lgtm[cs/empty-catch-block]
+                                { }
+                            return 0;
+                        });
                     var attemptExtractorCleanup =
                         BuildScript.Try(cleanTrapFolder) &
                         BuildScript.Try(cleanSourceArchive) &
-                        BuildScript.Try(cleanExtractorLog);
+                        tryCleanExtractorArgsLogs &
+                        BuildScript.DeleteFile(Extractor.GetCSharpLogPath());
 
                     /// <summary>
                     /// Execute script `s` and check that the C# extractor has been executed.

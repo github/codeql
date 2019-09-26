@@ -450,8 +450,7 @@ namespace Semmle.Extraction.CSharp
             LogExtractorInfo(extractorVersion);
             Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
 
-            var csharpLogDir = Extractor.GetCSharpLogDirectory();
-            var tempFile = Path.Combine(csharpLogDir, $"csharp.{Path.GetRandomFileName()}.txt");
+            var tempFile = Extractor.GetCSharpArgsLogPath(Path.GetRandomFileName());
 
             bool argsWritten;
             using (var streamWriter = new StreamWriter(new FileStream(tempFile, FileMode.Append, FileAccess.Write)))
@@ -461,7 +460,7 @@ namespace Semmle.Extraction.CSharp
             }
 
             var hash = FileUtils.ComputeFileHash(tempFile);
-            var argsFile = Path.Combine(csharpLogDir, $"csharp.{hash}.txt");
+            var argsFile = Extractor.GetCSharpArgsLogPath(hash);
 
             if (argsWritten)
                 Logger.Log(Severity.Info, $"  Arguments have been written to {argsFile}");
