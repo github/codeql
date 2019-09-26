@@ -7,7 +7,7 @@ void templateFunc1(T x, T y, T z) {
 
 template <typename T>
 void templateFunc2(T x, T y, T z) {
-  if (x < y < z) {} // GOOD (used with an overloaded `operator<`) [FALSE POSITIVE]
+  if (x < y < z) {} // GOOD (used with an overloaded `operator<`)
   if (x < y && y < z) {} // GOOD
 };
 
