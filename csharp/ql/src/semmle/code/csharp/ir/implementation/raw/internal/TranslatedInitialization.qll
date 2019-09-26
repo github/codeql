@@ -6,6 +6,7 @@
 import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import semmle.code.csharp.ir.internal.CSharpType
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -88,7 +89,7 @@ abstract class TranslatedListInitialization extends TranslatedInitialization, In
   }
 
   final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
     none()
   }
@@ -135,12 +136,11 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
   }
 
   override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = this.getContext().getTargetType() and
-    isLValue = false
+    resultType = getTypeForPRValue(this.getContext().getTargetType())
     or
     needsConversion() and
     tag = AssignmentConvertRightTag() and
@@ -148,8 +148,7 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
     // crudely represent conversions. Could
     // be useful to represent the whole chain of conversions
     opcode instanceof Opcode::Convert and
-    resultType = this.getContext().getTargetType() and
-    isLValue = false
+    resultType = getTypeForPRValue(this.getContext().getTargetType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -219,17 +218,15 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   }
 
   override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
     tag = getElementIndexTag() and
     opcode instanceof Opcode::Constant and
-    resultType = getIntType() and
-    isLValue = false
+    resultType = getIntType()
     or
     tag = getElementAddressTag() and
     opcode instanceof Opcode::PointerAdd and
-    resultType = getElementType() and
-    isLValue = true
+    resultType = getTypeForGLValue(getElementType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -354,13 +351,12 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
   }
 
   override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
     this.needsConversion() and
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::Convert and
-    resultType = call.getTarget().getDeclaringType() and
-    isLValue = true
+    resultType = getTypeForGLValue(call.getTarget().getDeclaringType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {

@@ -1,6 +1,7 @@
 import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import semmle.code.csharp.ir.internal.CSharpType
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -34,7 +35,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
   }
 
   final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
     none()
   }
@@ -100,7 +101,7 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
   }
 
   final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
     none()
   }

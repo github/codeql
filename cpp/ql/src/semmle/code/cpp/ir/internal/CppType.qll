@@ -32,6 +32,13 @@ private int getTypeSize(Type type) {
 }
 
 /**
+ * Holds if an `IRErrorType` should exist.
+ */
+predicate hasErrorType() {
+  exists(ErroneousType t)
+}
+
+/**
  * Holds if an `IRBooleanType` with the specified `byteSize` should exist.
  */
 predicate hasBooleanType(int byteSize) {
@@ -170,9 +177,7 @@ private newtype TCppType =
  *   of a `VariableAddress` where the variable is of reference type)
  */
 class CppType extends TCppType {
-  string toString() {
-    result = ""
-  }
+  abstract string toString();
 
   /** Gets a string used in IR dumps */
   string getDumpString() { result = toString() }
@@ -191,6 +196,13 @@ class CppType extends TCppType {
    * it represents a glvalue of type `Type` (if `isGLValue` is `true`).
    */
   abstract predicate hasType(Type type, boolean isGLValue);
+
+  final predicate hasUnspecifiedType(Type type, boolean isGLValue) {
+    exists(Type specifiedType |
+      hasType(specifiedType, isGLValue) and
+      type = specifiedType.getUnspecifiedType()
+    )
+  }
 }
 
 /**
@@ -204,6 +216,7 @@ private class CppWrappedType extends CppType {
     this = TGLValueAddressType(ctype)
   }
 
+  abstract string toString();
   abstract override IRType getIRType();
   abstract override predicate hasType(Type type, boolean isGLValue);
 }

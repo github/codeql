@@ -1,6 +1,8 @@
 import csharp
 import semmle.code.csharp.ir.implementation.raw.IR
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import semmle.code.csharp.ir.internal.CSharpType
+private import semmle.code.csharp.ir.internal.Overlap
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -31,16 +33,18 @@ private module Cached {
   cached
   newtype TInstruction =
     MkInstruction(TranslatedElement element, InstructionTag tag) {
-      element.hasInstruction(_, tag, _, _)
+      element.hasInstruction(_, tag, _)
     }
 
   cached
-  predicate hasUserVariable(Callable callable, Variable var, Type type) {
+  predicate hasUserVariable(Callable callable, Variable var, CSharpType type) {
     getTranslatedFunction(callable).hasUserVariable(var, type)
   }
 
   cached
-  predicate hasTempVariable(Callable callable, Language::AST ast, TempVariableTag tag, Type type) {
+  predicate hasTempVariable(
+    Callable callable, Language::AST ast, TempVariableTag tag, CSharpType type
+  ) {
     exists(TranslatedElement element |
       element.getAST() = ast and
       callable = element.getFunction() and
@@ -83,20 +87,14 @@ private module Cached {
   }
 
   cached
-  Type getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
+  CSharpType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
     // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
     // the result type of the load.
     if instruction instanceof LoadInstruction
-    then result = instruction.(LoadInstruction).getResultType()
+    then result = instruction.(LoadInstruction).getResultLanguageType()
     else
       result = getInstructionTranslatedElement(instruction)
             .getInstructionOperandType(getInstructionTag(instruction), tag)
-  }
-
-  cached
-  int getInstructionOperandSize(Instruction instruction, SideEffectOperandTag tag) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionOperandSize(getInstructionTag(instruction), tag)
   }
 
   cached
@@ -216,15 +214,15 @@ private module Cached {
   }
 
   cached
-  predicate instructionHasType(Instruction instruction, Type type, boolean isLValue) {
+  CSharpType getInstructionResultType(Instruction instruction) {
     getInstructionTranslatedElement(instruction)
-        .hasInstruction(_, getInstructionTag(instruction), type, isLValue)
+        .hasInstruction(_, getInstructionTag(instruction), result)
   }
 
   cached
   Opcode getInstructionOpcode(Instruction instruction) {
     getInstructionTranslatedElement(instruction)
-        .hasInstruction(result, getInstructionTag(instruction), _, _)
+        .hasInstruction(result, getInstructionTag(instruction), _)
   }
 
   cached
@@ -271,7 +269,7 @@ private module Cached {
   }
 
   cached
-  Type getInstructionExceptionType(Instruction instruction) {
+  CSharpType getInstructionExceptionType(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction)
           .getInstructionExceptionType(getInstructionTag(instruction))
   }

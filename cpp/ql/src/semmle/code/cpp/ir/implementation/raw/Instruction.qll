@@ -5,6 +5,7 @@ import IRVariable
 import Operand
 private import internal.InstructionImports as Imports
 import Imports::EdgeKind
+import Imports::IRType
 import Imports::MemoryAccessKind
 import Imports::Opcode
 private import Imports::OperandTag
@@ -315,7 +316,7 @@ class Instruction extends Construction::TInstruction {
   }
 
   private string getResultPrefix() {
-    if getResultType() instanceof Language::VoidType
+    if getResultIRType() instanceof IRVoidType
     then result = "v"
     else
       if hasMemoryResult()
@@ -441,6 +442,12 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
+   * Gets the type of the result produced by this instruction. If the instruction does not produce
+   * a result, its result type will be `IRVoidType`.
+   */
+  final IRType getResultIRType() { result = getResultLanguageType().getIRType() }
+
+  /**
    * Gets the type of the result produced by this instruction. If the
    * instruction does not produce a result, its result type will be `VoidType`.
    *
@@ -448,13 +455,12 @@ class Instruction extends Construction::TInstruction {
    * thought of as "pointer to `getResultType()`".
    */
   final Language::Type getResultType() {
-    exists(Language::LanguageType resultType, Language::Type langType |
+    exists(Language::LanguageType resultType |
       resultType = getResultLanguageType() and
       (
-        resultType.hasType(langType, _) or
-        not resultType.hasType(_, _) and result instanceof Language::UnknownType
-      ) and
-      result = langType.getUnspecifiedType()
+        resultType.hasUnspecifiedType(result, _) or
+        not resultType.hasUnspecifiedType(_, _) and result instanceof Language::UnknownType
+      )
     )
   }
 

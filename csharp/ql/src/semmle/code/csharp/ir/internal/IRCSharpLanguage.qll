@@ -1,5 +1,9 @@
 private import csharp as CSharp
 private import IRUtilities
+import CSharpType
+
+class LanguageType = CSharpType;
+class BlobTypeTag = CSharp::ValueOrRefType;
 
 class Function = CSharp::Callable;
 
@@ -80,32 +84,6 @@ predicate hasPositionalArgIndex(int argIndex) {
 }
 
 predicate hasAsmOperandIndex(int operandIndex) { none() }
-
-int getTypeSize(Type type) {
-  // REVIEW: Is this complete?
-  result = type.(CSharp::SimpleType).getSize()
-  or
-  result = getTypeSize(type.(CSharp::Enum).getUnderlyingType())
-  or
-  // TODO: Generate a reasonable size
-  type instanceof CSharp::Struct and result = 16
-  or
-  type instanceof CSharp::RefType and result = getPointerSize()
-  or
-  type instanceof CSharp::PointerType and result = getPointerSize()
-  or
-  result = getTypeSize(type.(CSharp::TupleType).getUnderlyingType())
-  or
-  // TODO: Add room for extra field
-  result = getTypeSize(type.(CSharp::NullableType).getUnderlyingType())
-  or
-  type instanceof CSharp::VoidType and result = 0
-}
-
-int getPointerSize() {
-  // TODO: Deal with sizes in general
-  result = 8
-}
 
 predicate isVariableAutomatic(Variable var) { var instanceof CSharp::LocalScopeVariable }
 

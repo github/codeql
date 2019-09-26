@@ -10,6 +10,7 @@ private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.Util
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 private import TranslatedExprBase
 
@@ -33,12 +34,11 @@ abstract class TranslatedCallBase extends TranslatedElement {
   }
 
   override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
     tag = CallTag() and
     opcode instanceof Opcode::Call and
-    resultType = getCallResultType() and
-    isLValue = false
+    resultType = getTypeForPRValue(getCallResultType())
     or
     hasSideEffect() and
     tag = CallSideEffectTag() and
@@ -46,20 +46,18 @@ abstract class TranslatedCallBase extends TranslatedElement {
       if hasWriteSideEffect()
       then (
         opcode instanceof Opcode::CallSideEffect and
-        resultType instanceof Language::UnknownType
+        resultType = getUnknownType()
       ) else (
         opcode instanceof Opcode::CallReadSideEffect and
-        resultType instanceof Language::UnknownType
+        resultType = getUnknownType()
       )
-    ) and
-    isLValue = false
+    )
     or
     tag = CallTargetTag() and
     opcode instanceof Opcode::FunctionAddress and
     // Since the DB does not have a function type,
     // we just use the UnknownType
-    resultType instanceof Language::UnknownType and
-    isLValue = true
+    resultType = getFunctionAddressType()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -115,11 +113,11 @@ abstract class TranslatedCallBase extends TranslatedElement {
     result = getUnmodeledDefinitionInstruction()
   }
 
-  final override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CSharpType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     tag = CallSideEffectTag() and
     hasSideEffect() and
     operandTag instanceof SideEffectOperandTag and
-    result instanceof Language::UnknownType
+    result = getUnknownType()
   }
 
   Instruction getResult() { result = getInstruction(CallTag()) }

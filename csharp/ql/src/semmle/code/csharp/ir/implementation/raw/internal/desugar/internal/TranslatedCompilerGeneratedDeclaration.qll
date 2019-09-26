@@ -12,6 +12,7 @@ private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedEleme
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedFunction
 private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedDeclarationBase
 private import TranslatedCompilerGeneratedElement
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDeclarationBase,
@@ -29,17 +30,16 @@ abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDecla
   }
 
   override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
-    LocalVariableDeclarationBase.super.hasInstruction(opcode, tag, resultType, isLValue)
+    LocalVariableDeclarationBase.super.hasInstruction(opcode, tag, resultType)
     or
     // we can reuse the initializer store tag
     // since compiler generated declarations
     // do not have the `Uninitialized` instruction
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = getVarType() and
-    isLValue = false
+    resultType = getTypeForPRValue(getVarType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
