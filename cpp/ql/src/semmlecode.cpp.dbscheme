@@ -521,18 +521,21 @@ params(
 
 overrides(int new: @function ref, int old: @function ref);
 
+#keyset[id, type_id]
 membervariables(
-    unique int id: @membervariable,
+    int id: @membervariable,
     int type_id: @type ref,
     string name: string ref
 );
 
+#keyset[id, type_id]
 globalvariables(
-    unique int id: @globalvariable,
+    int id: @globalvariable,
     int type_id: @type ref,
     string name: string ref
 );
 
+#keyset[id, type_id]
 localvariables(
     int id: @localvariable,
     int type_id: @type ref,
