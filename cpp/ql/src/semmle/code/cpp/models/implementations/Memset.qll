@@ -1,11 +1,12 @@
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * The standard function `memset` and its assorted variants
  */
-class MemsetFunction extends ArrayFunction, DataFlowFunction {
+class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction {
   MemsetFunction() {
     hasGlobalName("memset") or
     hasGlobalName("wmemset") or
@@ -26,5 +27,17 @@ class MemsetFunction extends ArrayFunction, DataFlowFunction {
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     bufParam = 0 and
     (if hasGlobalName("bzero") then countParam = 1 else countParam = 2)
+  }
+  
+  override predicate parameterNeverEscapes(int index) {
+  	hasGlobalName("bzero") and index = 0
+  }
+  
+  override predicate parameterEscapesOnlyViaReturn(int index) {
+  	not hasGlobalName("bzero") and index = 0
+  }
+  
+  override predicate parameterIsAlwaysReturned(int index) {
+  	not hasGlobalName("bzero") and index = 0
   }
 }
