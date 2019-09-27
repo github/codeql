@@ -21,11 +21,10 @@ import Cyclic
 // 3. 'foo' is defined in M after the import in M which completes the cycle.
 // then if we import the 'used' module, we will reach the cyclic import, start importing the 'using'
 // module, hit the 'use', and then crash due to the imported symbol not having been defined yet
-
 from ModuleValue m1, Stmt imp, ModuleValue m2, string attr, Expr use, ControlFlowNode defn
 where failing_import_due_to_cycle(m1, m2, imp, defn, use, attr)
-select use, "'" + attr + "' may not be defined if module $@ is imported before module $@, " +
-"as the $@ of " + attr + " occurs after the cyclic $@ of " + m2.getName() + ".",
-m1, m1.getName(), m2, m2.getName(), defn, "definition", imp, "import"
-
-  
+select use,
+    "'" + attr + "' may not be defined if module $@ is imported before module $@, as the $@ of " +
+        attr + " occurs after the cyclic $@ of " + m2.getName() + ".",
+    // Arguments for the placeholders in the above message:
+    m1, m1.getName(), m2, m2.getName(), defn, "definition", imp, "import"
