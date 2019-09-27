@@ -125,7 +125,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     then result = this.getBody().getFirstInstruction()
     else result = this.getReturnSuccessorInstruction()
   }
-  
+
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
   ) {
