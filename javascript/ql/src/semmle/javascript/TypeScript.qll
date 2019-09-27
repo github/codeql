@@ -2600,3 +2600,40 @@ class PromiseType extends TypeReference {
    */
   Type getElementType() { result = getTypeArgument(0) }
 }
+
+/**
+ * A type error emitted by the TypeScript compiler during code extraction.
+ */
+class TypeScriptTypeError extends @typescript_type_error {
+  /** Gets this message's location. */
+  Location getLocation() {
+    hasLocation(this, result)
+  }
+
+  /**
+   * Gets the error code of this error, as defined by the TypeScript compiler.
+   *
+   * Can be used to recognize specific kinds of errors.
+   *
+   * For reference, the list of error codes can be found in the
+   * [TypeScript repository](https://github.com/microsoft/TypeScript/blob/master/src/compiler/diagnosticMessages.json).
+   */
+  int getErrorCode() {
+    typescript_type_errors(this, result, _)
+  }
+
+  /** Gets the error message. */
+  string getMessage() {
+    typescript_type_errors(this, _, result)
+  }
+
+  /** Gets a textual representation of this element. */
+  string toString() {
+    result = getMessage()
+  }
+
+  /** Gets the file in which the message was emitted. */
+  File getFile() {
+    result = getLocation().getFile()
+  }
+}

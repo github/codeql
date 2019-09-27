@@ -1,22 +1,26 @@
 import * as ts from "./typescript";
 import { Project } from "./common";
 
+export interface Locatable {
+    $pos?: number;
+    $end?: number;
+}
+
 /**
  * Interface that exposes some internal properties we rely on, as well as
  * some properties we add ourselves.
  */
-export interface AugmentedSourceFile extends ts.SourceFile {
+export interface AugmentedSourceFile extends ts.SourceFile, Locatable {
     parseDiagnostics?: any[];
     /** Internal property that we expose as a workaround. */
     redirectInfo?: object | null;
     $tokens?: Token[];
     $symbol?: number;
     $lineStarts?: ReadonlyArray<number>;
+    $typeErrors?: TypeError[];
 }
 
-export interface AugmentedNode extends ts.Node {
-    $pos?: any;
-    $end?: any;
+export interface AugmentedNode extends ts.Node, Locatable {
     $declarationKind?: string;
     $type?: number;
     $symbol?: number;
@@ -26,6 +30,11 @@ export interface AugmentedNode extends ts.Node {
 }
 
 export type AugmentedPos = number;
+
+export interface TypeError extends Locatable {
+    code: number;
+    message: string;
+}
 
 export interface Token {
     kind: ts.SyntaxKind;
@@ -155,6 +164,38 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
         if (symbol != null) {
             ast.$symbol = typeTable.getSymbolId(symbol);
         }
+    }
+
+    // Extract type errors.
+    if (project != null) {
+        let typeErrors: TypeError[] = [];
+        for (let diagnostic of project.program.getSemanticDiagnostics(ast)) {
+            if (diagnostic.file !== ast) {
+                // Only extract errors with a location in this file.
+                // The call to `getSemanticDiagnostics` returns global diagnostics
+                // the first time it is called, which have a `null` file.
+                continue;
+            }
+            if (diagnostic.category !== ts.DiagnosticCategory.Error) {
+                continue; // Only emit actual errors.
+            }
+            let message = diagnostic.messageText;
+            if (typeof message !== "string") {
+                // Multiline messages are represented as DiagnosticMessageChain objects.
+                // Only extract the first line.
+                message = message.messageText;
+            }
+            if (message.length > 80) { // Truncate very long messages.
+                message = message.substring(0, 80) + "...";
+            }
+            typeErrors.push({
+                $pos: diagnostic.start,
+                $end: diagnostic.start + diagnostic.length,
+                code: diagnostic.code,
+                message
+            });
+        }
+        ast.$typeErrors = typeErrors;
     }
 
     // Number of conditional type expressions the visitor is currently inside.

@@ -1,13 +1,17 @@
 package com.semmle.js.ast;
 
-import com.semmle.ts.ast.INodeWithSymbol;
+import java.util.Collections;
 import java.util.List;
+
+import com.semmle.ts.ast.INodeWithSymbol;
+import com.semmle.ts.ast.TypeErrorDetails;
 
 /** A top-level program entity forming the root of an AST. */
 public class Program extends Node implements IStatementContainer, INodeWithSymbol {
   private final List<Statement> body;
   private final String sourceType;
   private int symbolId = -1;
+  private List<TypeErrorDetails> typeErrors = Collections.emptyList();
 
   public Program(SourceLocation loc, List<Statement> body, String sourceType) {
     super("Program", loc);
@@ -35,5 +39,13 @@ public class Program extends Node implements IStatementContainer, INodeWithSymbo
 
   public void setSymbol(int symbolId) {
     this.symbolId = symbolId;
+  }
+  
+  public void setTypeErrors(List<TypeErrorDetails> list) {
+	  this.typeErrors = list;
+  }
+ 
+  public List<TypeErrorDetails> getTypeErrors() {
+	return typeErrors;
   }
 }

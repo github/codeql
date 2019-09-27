@@ -770,6 +770,12 @@ tuple_type_rest(
   unique int typ: @type ref
 );
 
+typescript_type_errors(
+  unique int id: @typescript_type_error,
+  int code: int ref,
+  varchar(900) message: string ref
+);
+
 // comments
 comments (unique int id: @comment,
           int kind: int ref,
@@ -940,7 +946,9 @@ case @json_value.kind of
     | @jsdoc | @jsdoc_type_expr | @jsdoc_tag
     | @yaml_locatable
     | @xmllocatable
-    | @configLocatable;
+    | @configLocatable
+    | @typescript_type_error
+    ;
 
 hasLocation (unique int locatable: @locatable ref,
     int location: @location ref);

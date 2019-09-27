@@ -1,5 +1,11 @@
 package com.semmle.js.extractor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
 import com.semmle.js.ast.AFunctionExpression;
@@ -136,6 +142,7 @@ import com.semmle.ts.ast.RestTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.TypeErrorDetails;
 import com.semmle.ts.ast.TypeExpression;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
@@ -144,11 +151,6 @@ import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
 
 /** Extractor for AST-based information; invoked by the {@link JSExtractor}. */
 public class ASTExtractor {
@@ -598,6 +600,15 @@ public class ASTExtractor {
       contextManager.leaveContainer();
 
       emitNodeSymbol(nd, toplevelLabel);
+      
+      for (TypeErrorDetails error : nd.getTypeErrors()) {
+    	  Label errorLbl = trapwriter.freshLabel();
+    	  locationManager.emitNodeLocation(error, errorLbl);
+		trapwriter.addTuple("typescript_type_errors",
+				  errorLbl,
+    			  error.getCode(),
+    			  error.getMessage());
+      }
 
       return toplevelLabel;
     }
