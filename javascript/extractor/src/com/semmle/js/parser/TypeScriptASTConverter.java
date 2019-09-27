@@ -1,13 +1,5 @@
 package com.semmle.js.parser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -151,6 +143,13 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for converting a <a
@@ -2028,16 +2027,17 @@ public class TypeScriptASTConverter {
     Program program = new Program(loc, statements, "module");
     attachSymbolInformation(program, node);
     if (node.has("$typeErrors")) {
-    	JsonArray typeErrorElms = node.get("$typeErrors").getAsJsonArray();
-    	List<TypeErrorDetails> details = new ArrayList<>();
-    	for (JsonElement typeErrorElm : typeErrorElms) {
-    		JsonObject typeError = typeErrorElm.getAsJsonObject();
-    		details.add(new TypeErrorDetails(
-    				getSourceLocation(typeError),
-    				typeError.get("code").getAsInt(),
-    				typeError.get("message").getAsString()));
-    	}
-    	program.setTypeErrors(details);
+      JsonArray typeErrorElms = node.get("$typeErrors").getAsJsonArray();
+      List<TypeErrorDetails> details = new ArrayList<>();
+      for (JsonElement typeErrorElm : typeErrorElms) {
+        JsonObject typeError = typeErrorElm.getAsJsonObject();
+        details.add(
+            new TypeErrorDetails(
+                getSourceLocation(typeError),
+                typeError.get("code").getAsInt(),
+                typeError.get("message").getAsString()));
+      }
+      program.setTypeErrors(details);
     }
     return program;
   }
