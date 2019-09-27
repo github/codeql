@@ -14,7 +14,7 @@ import python
 import Variables.Definition
 
 predicate global_name_used(Module m, Variable name) {
-    exists (Name u, GlobalVariable v |
+    exists(Name u, GlobalVariable v |
         u.uses(v) and
         v.getId() = name.getId() and
         u.getEnclosingModule() = m
@@ -31,8 +31,7 @@ predicate global_name_used(Module m, Variable name) {
 
 /** Holds if a module has `__all__` but we don't understand it */
 predicate all_not_understood(Module m) {
-    exists(GlobalVariable a | 
-        a.getId() = "__all__" and a.getScope() = m |
+    exists(GlobalVariable a | a.getId() = "__all__" and a.getScope() = m |
         // `__all__` is not defined as a simple list
         not m.declaredInAll(_)
         or
@@ -43,8 +42,7 @@ predicate all_not_understood(Module m) {
 
 predicate imported_module_used_in_doctest(Import imp) {
     exists(string modname |
-        imp.getAName().getAsname().(Name).getId() = modname
-        and
+        imp.getAName().getAsname().(Name).getId() = modname and
         // Look for doctests containing the patterns:
         // >>> …name…
         // ... …name…
@@ -60,7 +58,7 @@ predicate imported_module_used_in_typehint(Import imp) {
     exists(string modname, Location loc |
         imp.getAName().getAsname().(Name).getId() = modname and
         loc.getFile() = imp.getScope().(Module).getFile()
-        |
+    |
         // Look for type hints containing the patterns:
         // # type: …name…
         exists(Comment typehint |
@@ -73,7 +71,7 @@ predicate imported_module_used_in_typehint(Import imp) {
             annotation = any(Arguments a).getAnAnnotation()
             or
             annotation = any(AnnAssign a).getAnnotation()
-            |
+        |
             annotation.pointsTo(Value::forString(typehint)) and
             loc = annotation.getLocation() and
             typehint.regexpMatch(".*\\b" + modname + "\\b.*")
@@ -81,43 +79,28 @@ predicate imported_module_used_in_typehint(Import imp) {
     )
 }
 
-
 predicate unused_import(Import imp, Variable name) {
-    ((Name)imp.getAName().getAsname()).getVariable() = name
-    and
-    not imp.getAnImportedModuleName() = "__future__"
-    and
-    not imp.getEnclosingModule().declaredInAll(name.getId())
-    and
-    imp.getScope() = imp.getEnclosingModule()
-    and
-    not global_name_used(imp.getScope(), name)
-    and
+    imp.getAName().getAsname().(Name).getVariable() = name and
+    not imp.getAnImportedModuleName() = "__future__" and
+    not imp.getEnclosingModule().declaredInAll(name.getId()) and
+    imp.getScope() = imp.getEnclosingModule() and
+    not global_name_used(imp.getScope(), name) and
     // Imports in `__init__.py` are used to force module loading
-    not imp.getEnclosingModule().isPackageInit()
-    and
+    not imp.getEnclosingModule().isPackageInit() and
     // Name may be imported for use in epytext documentation
-    not exists(Comment cmt |
-        cmt.getText().matches("%L{" + name.getId() + "}%") |
+    not exists(Comment cmt | cmt.getText().matches("%L{" + name.getId() + "}%") |
         cmt.getLocation().getFile() = imp.getLocation().getFile()
-    )
-    and
-    not name_acceptable_for_unused_variable(name)
-    and
+    ) and
+    not name_acceptable_for_unused_variable(name) and
     // Assume that opaque `__all__` includes imported module
-    not all_not_understood(imp.getEnclosingModule())
-    and
-    not imported_module_used_in_doctest(imp)
-    and
-    not imported_module_used_in_typehint(imp)
-    and
-    // Only consider import statements that actually point-to something (possibly an unknown module). 
+    not all_not_understood(imp.getEnclosingModule()) and
+    not imported_module_used_in_doctest(imp) and
+    not imported_module_used_in_typehint(imp) and
+    // Only consider import statements that actually point-to something (possibly an unknown module).
     // If this is not the case, it's likely that the import statement never gets executed.
     imp.getAName().getValue().pointsTo(_)
 }
 
-
 from Stmt s, Variable name
 where unused_import(s, name)
 select s, "Import of '" + name.getId() + "' is not used."
-
