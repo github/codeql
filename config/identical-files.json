@@ -73,6 +73,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/Operand.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/Operand.qll"
   ],
+  "IR IRType": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/IRType.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/IRType.qll"
+  ],
   "IR Operand Tag": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/OperandTag.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/internal/OperandTag.qll"
