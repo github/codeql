@@ -1,24 +1,20 @@
 import AliasAnalysis
-private import csharp
-private import semmle.code.csharp.ir.implementation.raw.IR
-private import semmle.code.csharp.ir.internal.IntegerConstant as Ints
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.Overlap
+private import SimpleSSAImports
 
 private class IntValue = Ints::IntValue;
 
 private predicate hasResultMemoryAccess(
-  Instruction instr, IRVariable var, Type type, IntValue bitOffset
+  Instruction instr, IRVariable var, Language::LanguageType type, IntValue bitOffset
 ) {
   resultPointsTo(instr.getResultAddressOperand().getAnyDef(), var, bitOffset) and
-  type = instr.getResultType()
+  type = instr.getResultLanguageType()
 }
 
 private predicate hasOperandMemoryAccess(
-  MemoryOperand operand, IRVariable var, Type type, IntValue bitOffset
+  MemoryOperand operand, IRVariable var, Language::LanguageType type, IntValue bitOffset
 ) {
   resultPointsTo(operand.getAddressOperand().getAnyDef(), var, bitOffset) and
-  type = operand.getType()
+  type = operand.getLanguageType()
 }
 
 /**
@@ -30,17 +26,17 @@ private predicate isVariableModeled(IRVariable var) {
   not variableAddressEscapes(var) and
   // There's no need to check for the right size. An `IRVariable` never has an `UnknownType`, so the test for
   // `type = var.getType()` is sufficient.
-  forall(Instruction instr, Type type, IntValue bitOffset |
+  forall(Instruction instr, Language::LanguageType type, IntValue bitOffset |
     hasResultMemoryAccess(instr, var, type, bitOffset)
   |
     bitOffset = 0 and
-    type = var.getType()
+    type.getIRType() = var.getIRType()
   ) and
-  forall(MemoryOperand operand, Type type, IntValue bitOffset |
+  forall(MemoryOperand operand, Language::LanguageType type, IntValue bitOffset |
     hasOperandMemoryAccess(operand, var, type, bitOffset)
   |
     bitOffset = 0 and
-    type = var.getType()
+    type.getIRType() = var.getIRType()
   )
 }
 
@@ -59,7 +55,7 @@ class MemoryLocation extends TMemoryLocation {
 
   final VirtualVariable getVirtualVariable() { result = this }
 
-  final Type getType() { result = var.getType() }
+  final Language::LanguageType getType() { result = var.getLanguageType() }
 
   final string getUniqueId() { result = var.getUniqueId() }
 }
@@ -85,3 +81,4 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
     result = getMemoryLocation(var)
   )
 }
+

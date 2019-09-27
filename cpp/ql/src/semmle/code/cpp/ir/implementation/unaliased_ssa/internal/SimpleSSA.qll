@@ -1,9 +1,5 @@
 import AliasAnalysis
-private import semmle.code.cpp.ir.implementation.raw.IR
-private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
-private import semmle.code.cpp.ir.implementation.internal.OperandTag
-private import semmle.code.cpp.ir.internal.IRCppLanguage as Language
-private import semmle.code.cpp.ir.internal.Overlap
+private import SimpleSSAImports
 
 private class IntValue = Ints::IntValue;
 

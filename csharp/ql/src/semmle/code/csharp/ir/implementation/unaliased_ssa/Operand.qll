@@ -1,9 +1,10 @@
 private import internal.IRInternal
-import Instruction
-import IRBlock
+private import Instruction
+private import IRBlock
 private import internal.OperandImports as Imports
-import Imports::MemoryAccessKind
-import Imports::Overlap
+private import Imports::MemoryAccessKind
+private import Imports::IRType
+private import Imports::Overlap
 private import Imports::OperandTag
 
 cached
@@ -143,22 +144,40 @@ class Operand extends TOperand {
    * the definition type, such as in the case of a partial read or a read from a pointer that
    * has been cast to a different type.
    */
-  Language::Type getType() { result = getAnyDef().getResultType() }
+  Language::LanguageType getLanguageType() { result = getAnyDef().getResultLanguageType() }
+
+  /**
+   * Gets the language-neutral type of the value consumed by this operand. This is usually the same
+   * as the result type of the definition instruction consumed by this operand. For register
+   * operands, this is always the case. For some memory operands, the operand type may be different
+   * from the definition type, such as in the case of a partial read or a read from a pointer that
+   * has been cast to a different type.
+   */
+  final IRType getIRType() { result = getLanguageType().getIRType() }
+
+  /**
+   * Gets the type of the value consumed by this operand. This is usually the same as the
+   * result type of the definition instruction consumed by this operand. For register operands,
+   * this is always the case. For some memory operands, the operand type may be different from
+   * the definition type, such as in the case of a partial read or a read from a pointer that
+   * has been cast to a different type.
+   */
+  final Language::Type getType() { getLanguageType().hasType(result, _) }
 
   /**
    * Holds if the value consumed by this operand is a glvalue. If this
    * holds, the value of the operand represents the address of a location,
    * and the type of the location is given by `getType()`. If this does
    * not hold, the value of the operand represents a value whose type is
-   * given by `getResultType()`.
+   * given by `getType()`.
    */
-  predicate isGLValue() { getAnyDef().isGLValue() }
+  final predicate isGLValue() { getLanguageType().hasType(_, true) }
 
   /**
    * Gets the size of the value consumed by this operand, in bytes. If the operand does not have
    * a known constant size, this predicate does not hold.
    */
-  int getSize() { result = Language::getTypeSize(getType()) }
+  final int getSize() { result = getLanguageType().getByteSize() }
 }
 
 /**
@@ -168,11 +187,6 @@ class MemoryOperand extends Operand {
   MemoryOperand() {
     this = TNonPhiMemoryOperand(_, _, _, _) or
     this = TPhiOperand(_, _, _, _)
-  }
-
-  override predicate isGLValue() {
-    // A `MemoryOperand` can never be a glvalue
-    none()
   }
 
   /**
@@ -239,7 +253,7 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOpe
 class TypedOperand extends NonPhiMemoryOperand {
   override TypedOperandTag tag;
 
-  final override Language::Type getType() {
+  final override Language::LanguageType getLanguageType() {
     result = Construction::getInstructionOperandType(useInstr, tag)
   }
 }
@@ -370,12 +384,6 @@ class PositionalArgumentOperand extends ArgumentOperand {
 
 class SideEffectOperand extends TypedOperand {
   override SideEffectOperandTag tag;
-
-  final override int getSize() {
-    if getType() instanceof Language::UnknownType
-    then result = Construction::getInstructionOperandSize(useInstr, tag)
-    else result = Language::getTypeSize(getType())
-  }
 
   override MemoryAccessKind getMemoryAccess() {
     useInstr instanceof CallSideEffectInstruction and

@@ -4,7 +4,7 @@
 
 private import internal.IRTypeInternal
 
-newtype TIRType =
+private newtype TIRType =
   TIRVoidType() or
   TIRUnknownType() or
   TIRErrorType() {

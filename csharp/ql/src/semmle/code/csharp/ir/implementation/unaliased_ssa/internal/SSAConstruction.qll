@@ -1,9 +1,6 @@
 import SSAConstructionInternal
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.Overlap
+private import SSAConstructionImports
 private import NewIR
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 private class OldBlock = Reachability::ReachableBlock;
 
@@ -51,13 +48,13 @@ private module Cached {
 
   cached
   predicate hasTempVariable(
-    Language::Function func, Language::AST ast, TempVariableTag tag, Language::Type type
+    Language::Function func, Language::AST ast, TempVariableTag tag, Language::LanguageType type
   ) {
     exists(OldIR::IRTempVariable var |
       var.getEnclosingFunction() = func and
       var.getAST() = ast and
       var.getTag() = tag and
-      var.getType() = type
+      var.getLanguageType() = type
     )
   }
 
@@ -137,24 +134,12 @@ private module Cached {
   }
 
   cached
-  Language::Type getInstructionOperandType(Instruction instr, TypedOperandTag tag) {
+  Language::LanguageType getInstructionOperandType(Instruction instr, TypedOperandTag tag) {
     exists(OldInstruction oldInstruction, OldIR::TypedOperand oldOperand |
       oldInstruction = getOldInstruction(instr) and
       oldOperand = oldInstruction.getAnOperand() and
       tag = oldOperand.getOperandTag() and
-      result = oldOperand.getType()
-    )
-  }
-
-  cached
-  int getInstructionOperandSize(Instruction instr, SideEffectOperandTag tag) {
-    exists(OldInstruction oldInstruction, OldIR::SideEffectOperand oldOperand |
-      oldInstruction = getOldInstruction(instr) and
-      oldOperand = oldInstruction.getAnOperand() and
-      tag = oldOperand.getOperandTag() and
-      // Only return a result for operands that need an explicit result size.
-      oldOperand.getType() instanceof Language::UnknownType and
-      result = oldOperand.getSize()
+      result = oldOperand.getLanguageType()
     )
   }
 
@@ -273,29 +258,25 @@ private module Cached {
   }
 
   cached
-  predicate instructionHasType(Instruction instruction, Language::Type type, boolean isGLValue) {
+  Language::LanguageType getInstructionResultType(Instruction instruction) {
     exists(OldInstruction oldInstruction |
       instruction = WrappedInstruction(oldInstruction) and
-      type = oldInstruction.getResultType() and
-      if oldInstruction.isGLValue() then isGLValue = true else isGLValue = false
+      result = oldInstruction.getResultLanguageType()
     )
     or
     exists(OldInstruction oldInstruction, Alias::VirtualVariable vvar |
       instruction = Chi(oldInstruction) and
       hasChiNode(vvar, oldInstruction) and
-      type = vvar.getType() and
-      isGLValue = false
+      result = vvar.getType()
     )
     or
     exists(Alias::MemoryLocation location |
       instruction = Phi(_, location) and
-      type = location.getType() and
-      isGLValue = false
+      result = location.getType()
     )
     or
     instruction = Unreached(_) and
-    type instanceof Language::VoidType and
-    isGLValue = false
+    result = Language::getVoidType()
   }
 
   cached
@@ -368,20 +349,13 @@ private module Cached {
   }
 
   cached
-  Language::Type getInstructionExceptionType(Instruction instruction) {
+  Language::LanguageType getInstructionExceptionType(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::CatchByTypeInstruction).getExceptionType()
   }
 
   cached
   int getInstructionElementSize(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::PointerArithmeticInstruction).getElementSize()
-  }
-
-  cached
-  int getInstructionResultSize(Instruction instruction) {
-    // Only return a result for instructions that needed an explicit result size.
-    instruction.getResultType() instanceof Language::UnknownType and
-    result = getOldInstruction(instruction).getResultSize()
   }
 
   cached
@@ -839,7 +813,7 @@ module DefUse {
 }
 
 /**
- * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
+ * Expose some of the internal predicates to PrintSSA.qll. We do this by publically importing those modules in the
  * `DebugSSA` module, which is then imported by PrintSSA.
  */
 module DebugSSA {
@@ -884,3 +858,4 @@ private module CachedForDebugging {
     result.getTag() = var.getTag()
   }
 }
+

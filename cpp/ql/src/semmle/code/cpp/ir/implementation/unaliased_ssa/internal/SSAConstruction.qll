@@ -1,7 +1,5 @@
 import SSAConstructionInternal
-private import semmle.code.cpp.ir.implementation.Opcode
-private import semmle.code.cpp.ir.implementation.internal.OperandTag
-private import semmle.code.cpp.ir.internal.Overlap
+private import SSAConstructionImports
 private import NewIR
 
 private class OldBlock = Reachability::ReachableBlock;
