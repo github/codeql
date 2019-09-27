@@ -4,47 +4,47 @@ predicate is_import_time(Stmt s) {
 	not s.getScope+() instanceof Function
 }
 
-PythonModuleObject module_imported_by(PythonModuleObject m) {
+ModuleValue module_imported_by(ModuleValue m) {
     exists(Stmt imp |
         result = stmt_imports(imp) and
-        imp.getEnclosingModule() = m.getModule() and
+        imp.getEnclosingModule() = m.getScope() and
         // Import must reach exit to be part of a cycle
         imp.getAnEntryNode().getBasicBlock().reachesExit()
     )
 }
 
 /** Is there a circular import of 'm1' beginning with 'm2'? */
-predicate circular_import(PythonModuleObject m1, PythonModuleObject m2) {
+predicate circular_import(ModuleValue m1, ModuleValue m2) {
     m1 != m2 and
     m2 = module_imported_by(m1) and m1 = module_imported_by+(m2)
 }
 
-ModuleObject stmt_imports(ImportingStmt s) {
+ModuleValue stmt_imports(ImportingStmt s) {
     exists(string name |
         result.importedAs(name) and not name = "__main__" |
         name = s.getAnImportedModuleName()
     )
 }
 
-predicate import_time_imported_module(PythonModuleObject m1, PythonModuleObject m2, Stmt imp) {
-    imp.getEnclosingModule() = m1.getModule() and 
+predicate import_time_imported_module(ModuleValue m1, ModuleValue m2, Stmt imp) {
+    imp.getEnclosingModule() = m1.getScope() and
     is_import_time(imp) and
     m2 = stmt_imports(imp)
 }
 
 /** Is there a cyclic import of 'm1' beginning with an import 'm2' at 'imp' where all the imports are top-level? */
-predicate import_time_circular_import(PythonModuleObject m1, PythonModuleObject m2, Stmt imp) {
+predicate import_time_circular_import(ModuleValue m1, ModuleValue m2, Stmt imp) {
     m1 != m2 and
-    import_time_imported_module(m1, m2, imp) and 
+    import_time_imported_module(m1, m2, imp) and
     import_time_transitive_import(m2, _, m1)
 }
 
-predicate import_time_transitive_import(PythonModuleObject base, Stmt imp, PythonModuleObject last) {
+predicate import_time_transitive_import(ModuleValue base, Stmt imp, ModuleValue last) {
     last != base and
     (
         import_time_imported_module(base, last, imp)
         or
-        exists(PythonModuleObject mid | 
+        exists(ModuleValue mid | 
             import_time_transitive_import(base, imp, mid) and 
             import_time_imported_module(mid, last, _)
         )
@@ -56,11 +56,11 @@ predicate import_time_transitive_import(PythonModuleObject base, Stmt imp, Pytho
 /**
  * Returns import-time usages of module 'm' in module 'enclosing'
  */
-predicate import_time_module_use(PythonModuleObject m, PythonModuleObject enclosing, Expr use, string attr) {
+predicate import_time_module_use(ModuleValue m, ModuleValue enclosing, Expr use, string attr) {
     exists(Expr mod | 
-        use.getEnclosingModule() = enclosing.getModule() and
+        use.getEnclosingModule() = enclosing.getScope() and
         not use.getScope+() instanceof Function
-        and mod.refersTo(m)
+        and mod.pointsTo(m)
         |
         // either 'M.foo'
         use.(Attribute).getObject() = mod and use.(Attribute).getName() = attr
@@ -74,14 +74,14 @@ predicate import_time_module_use(PythonModuleObject m, PythonModuleObject enclos
     AttributeError at 'use' (in module 'other') caused by 'first.attr' not being defined as its definition can
     occur after the import 'other' in 'first'.
 */
-predicate failing_import_due_to_cycle(PythonModuleObject first, PythonModuleObject other, Stmt imp,
+predicate failing_import_due_to_cycle(ModuleValue first, ModuleValue other, Stmt imp,
                                       ControlFlowNode defn, Expr use, string attr) {
     import_time_imported_module(other, first, _) and
     import_time_transitive_import(first, imp, other) and
     import_time_module_use(first, other, use, attr) and
-    exists(ImportTimeScope n, SsaVariable v | 
+    exists(ImportTimeScope n, SsaVariable v |
         defn = v.getDefinition() and
-        n = first.getModule() and v.getVariable().getScope() = n and v.getId() = attr |
+        n = first.getScope() and v.getVariable().getScope() = n and v.getId() = attr |
         not defn.strictlyDominates(imp.getAnEntryNode())
     )
     and not exists(If i | i.isNameEqMain() and i.contains(use))

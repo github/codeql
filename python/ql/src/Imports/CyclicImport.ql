@@ -14,9 +14,9 @@
 import python
 import Cyclic
 
-from PythonModuleObject m1, PythonModuleObject m2, Stmt imp
+from ModuleValue m1, ModuleValue m2, Stmt imp
 where 
-  imp.getEnclosingModule() = m1.getModule()
+  imp.getEnclosingModule() = m1.getScope()
   and stmt_imports(imp) = m2
   and circular_import(m1, m2)
   and m1 != m2

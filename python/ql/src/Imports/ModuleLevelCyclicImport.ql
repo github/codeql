@@ -22,7 +22,7 @@ import Cyclic
 // then if we import the 'used' module, we will reach the cyclic import, start importing the 'using'
 // module, hit the 'use', and then crash due to the imported symbol not having been defined yet
 
-from PythonModuleObject m1, Stmt imp, PythonModuleObject m2, string attr, Expr use, ControlFlowNode defn 
+from ModuleValue m1, Stmt imp, ModuleValue m2, string attr, Expr use, ControlFlowNode defn
 where failing_import_due_to_cycle(m1, m2, imp, defn, use, attr)
 select use, "'" + attr + "' may not be defined if module $@ is imported before module $@, " +
 "as the $@ of " + attr + " occurs after the cyclic $@ of " + m2.getName() + ".",
