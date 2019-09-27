@@ -72,10 +72,6 @@ abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDecla
   // element
   override LocalVariable getDeclVar() { none() }
 
-  // A compiler generated element always has an explicit
-  // initialization
-  override predicate isInitializedByElement() { none() }
-
   override Type getVarType() { result = getIRVariable().getType() }
 
   /**

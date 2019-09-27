@@ -1371,6 +1371,11 @@ class TranslatedAssignExpr extends TranslatedAssignment {
 class TranslatedAssignOperation extends TranslatedAssignment {
   override AssignOperation expr;
 
+  TranslatedAssignOperation() {
+    // Assignments to events is handled differently
+    not expr.getLValue() instanceof EventAccess
+  }
+
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
@@ -1775,18 +1780,18 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     this.hasVar() and
     tag = GeneratedBranchTag() and
     (
-      tag = GeneratedBranchTag() and
       kind instanceof TrueEdge and
-      result = getPatternVarDecl().getFirstInstruction()
+      result = this.getInstruction(InitializerStoreTag())
       or
-      tag = GeneratedBranchTag() and
       kind instanceof FalseEdge and
       result = this.getParent().getChildSuccessor(this)
     )
     or
     tag = GeneratedConstantTag() and
     kind instanceof GotoEdge and
-    result = this.getInstruction(GeneratedNEQTag())
+    if this.hasVar()
+    then result = this.getPatternVarDecl().getFirstInstruction()
+    else result = this.getInstruction(GeneratedNEQTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -1794,8 +1799,8 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     result = this.getInstruction(ConvertTag())
     or
     this.hasVar() and
-    child = getPatternVarDecl() and
-    result = this.getInstruction(InitializerStoreTag())
+    child = this.getPatternVarDecl() and
+    result = this.getInstruction(GeneratedNEQTag())
   }
 
   override predicate hasInstruction(
@@ -1821,7 +1826,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     this.hasVar() and
     tag = GeneratedBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
-    resultType = getTypeForPRValue(expr.getType())
+    resultType = getVoidType()
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
@@ -2127,4 +2132,38 @@ class TranslatedDelegateCreation extends TranslatedCreation {
   }
 
   override predicate needsLoad() { none() }
+}
+
+/**
+ * Represents the IR translation of an assign operation where the lhs is an event access.
+ */
+class TranslatedEventAccess extends TranslatedNonConstantExpr {
+  override AssignOperation expr;
+
+  TranslatedEventAccess() { expr.getLValue() instanceof EventAccess }
+
+  // We only translate the lhs, since the rhs is translated as part of the
+  // accessor call.
+  override TranslatedElement getChild(int id) { id = 0 and result = this.getLValue() }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  final override Instruction getFirstInstruction() {
+    result = this.getLValue().getFirstInstruction()
+  }
+
+  override Instruction getResult() { none() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getLValue() and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  private TranslatedExpr getLValue() { result = getTranslatedExpr(expr.getLValue()) }
 }

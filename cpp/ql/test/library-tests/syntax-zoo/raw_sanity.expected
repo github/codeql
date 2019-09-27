@@ -7,7 +7,7 @@ missingOperand
 | misc.c:220:3:223:3 | Store: ... = ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
 | misc.c:220:9:223:3 | FieldAddress: {...} | Instruction 'FieldAddress' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
 | misc.c:220:9:223:3 | FieldAddress: {...} | Instruction 'FieldAddress' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
-| pointer_to_member.cpp:35:13:35:19 | FieldAddress: x1 | Instruction 'FieldAddress' is missing an expected operand with tag 'Unary' in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
+| pointer_to_member.cpp:36:13:36:19 | FieldAddress: x1 | Instruction 'FieldAddress' is missing an expected operand with tag 'Unary' in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
 | range_analysis.c:368:10:368:21 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | range_analysis.c:355:14:355:27 | IR: test_ternary01 | unsigned int test_ternary01(unsigned int) |
 | range_analysis.c:369:10:369:36 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | range_analysis.c:355:14:355:27 | IR: test_ternary01 | unsigned int test_ternary01(unsigned int) |
 | range_analysis.c:370:10:370:38 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | range_analysis.c:355:14:355:27 | IR: test_ternary01 | unsigned int test_ternary01(unsigned int) |
@@ -68,7 +68,7 @@ instructionWithoutSuccessor
 | ms_try_mix.cpp:48:10:48:13 | CallSideEffect: call to C |
 | ms_try_mix.cpp:51:5:51:11 | ThrowValue: throw ... |
 | ms_try_mix.cpp:53:13:54:3 | NoOp: { ... } |
-| pointer_to_member.cpp:35:11:35:21 | FieldAddress: {...} |
+| pointer_to_member.cpp:36:11:36:30 | FieldAddress: {...} |
 | static_init_templates.cpp:80:27:80:36 | Convert: (void *)... |
 | static_init_templates.cpp:80:27:80:36 | Convert: (void *)... |
 | static_init_templates.cpp:89:27:89:36 | Convert: (void *)... |
@@ -676,7 +676,8 @@ useNotDominatedByDefinition
 | ms_try_mix.cpp:38:16:38:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:27:6:27:19 | IR: ms_finally_mix | void ms_finally_mix(int) |
 | ms_try_mix.cpp:41:12:41:15 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:27:6:27:19 | IR: ms_finally_mix | void ms_finally_mix(int) |
 | ms_try_mix.cpp:51:5:51:11 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:47:6:47:28 | IR: ms_empty_finally_at_end | void ms_empty_finally_at_end() |
-| pointer_to_member.cpp:35:13:35:19 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
+| pointer_to_member.cpp:36:11:36:30 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
+| pointer_to_member.cpp:36:13:36:19 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
 | stmt_expr.cpp:30:20:30:21 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | stmt_expr.cpp:21:6:21:6 | IR: g | void stmtexpr::g(int) |
 | stmt_expr.cpp:31:16:31:18 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | stmt_expr.cpp:21:6:21:6 | IR: g | void stmtexpr::g(int) |
 | try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | IR: throw_from_nonstmt | void throw_from_nonstmt(int) |

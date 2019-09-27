@@ -1,2 +1,0 @@
-| tst.ts:9:3:9:22 | [x: number]: string; | interface I | tst.ts:9:3:9:22 | [x: number]: string; | abstract |
-| tst.ts:15:3:15:22 | [x: number]: string; | anonymous interface | tst.ts:15:3:15:22 | [x: number]: string; | abstract |

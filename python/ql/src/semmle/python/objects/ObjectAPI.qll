@@ -572,7 +572,7 @@ module ClassValue {
 
     /** Get the `ClassValue` for the `float` class. */
     ClassValue float_() {
-        result = TBuiltinClassObject(Builtin::builtin("float"))
+        result = TBuiltinClassObject(Builtin::special("float"))
     }
 
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */

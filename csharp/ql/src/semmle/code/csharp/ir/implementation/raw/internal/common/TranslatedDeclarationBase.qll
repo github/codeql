@@ -38,12 +38,7 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
       kind instanceof GotoEdge and
       if hasUninitializedInstruction()
       then result = getInstruction(InitializerStoreTag())
-      else
-        if isInitializedByElement()
-        then
-          // initialization is done by an element
-          result = getParent().getChildSuccessor(this)
-        else result = getInitialization().getFirstInstruction()
+      else result = getInitialization().getFirstInstruction()
     )
     or
     hasUninitializedInstruction() and
@@ -74,11 +69,8 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
    * desugaring process.
    */
   predicate hasUninitializedInstruction() {
-    (
-      not exists(getInitialization()) or
-      getInitialization() instanceof TranslatedListInitialization
-    ) and
-    not isInitializedByElement()
+    not exists(getInitialization()) or
+    getInitialization() instanceof TranslatedListInitialization
   }
 
   Instruction getVarAddress() { result = getInstruction(InitializerVariableAddressTag()) }
@@ -100,10 +92,4 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
    * as a different step, but do it during the declaration.
    */
   abstract TranslatedElement getInitialization();
-
-  /**
-   * Holds if a declaration is not explicitly initialized,
-   * but will be implicitly initialized by an element.
-   */
-  abstract predicate isInitializedByElement();
 }

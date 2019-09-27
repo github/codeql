@@ -762,6 +762,7 @@ public class ASTExtractor {
         trapwriter.addTuple("hasDeclareKeyword", key);
       }
       extractFunction(nd, key);
+      emitStaticType(nd, key);
       return key;
     }
 
@@ -833,7 +834,13 @@ public class ASTExtractor {
       extractParameterDefaultsAndTypes(nd, key, i);
 
       extractFunctionAttributes(nd, key);
+
+      // Extract associated symbol and signature
       emitNodeSymbol(nd, key);
+      if (nd.getDeclaredSignatureId() != -1) {
+        Label signatureKey = trapwriter.globalID("signature;" + nd.getDeclaredSignatureId());
+        trapwriter.addTuple("declared_function_signature", key, signatureKey);
+      }
 
       boolean oldIsStrict = isStrict;
       isStrict = bodyIsStrict;
