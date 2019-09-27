@@ -75,7 +75,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
         else
           if exists(getParameter(0))
           then result = this.getParameter(0).getFirstInstruction()
-          else result = this.getBody().getFirstInstruction()
+          else result = this.getBodyOrReturn()
       )
       or
       (
@@ -85,7 +85,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
         else
           if exists(getConstructorInitializer())
           then result = this.getConstructorInitializer().getFirstInstruction()
-          else result = this.getBody().getFirstInstruction()
+          else result = this.getBodyOrReturn()
       )
       or
       tag = ReturnValueAddressTag() and
@@ -110,16 +110,22 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       else
         if exists(getConstructorInitializer())
         then result = this.getConstructorInitializer().getFirstInstruction()
-        else result = this.getBody().getFirstInstruction()
+        else result = this.getBodyOrReturn()
     )
     or
     child = this.getConstructorInitializer() and
-    result = this.getBody().getFirstInstruction()
+    result = this.getBodyOrReturn()
     or
     child = this.getBody() and
     result = this.getReturnSuccessorInstruction()
   }
 
+  private Instruction getBodyOrReturn() {
+    if exists(this.getBody())
+    then result = this.getBody().getFirstInstruction()
+    else result = this.getReturnSuccessorInstruction()
+  }
+  
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
   ) {
