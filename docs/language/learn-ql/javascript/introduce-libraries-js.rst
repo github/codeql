@@ -224,7 +224,7 @@ The `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.ql
 
 .. pull-quote::
 
-    Note
+   Note
 
    By default, LGTM filters out alerts in minified top-levels, since they are often hard to interpret. When writing your own queries in the LGTM query console, this filtering is *not* done automatically, so you may want to explicitly add a condition of the form ``and not e.getTopLevel().isMinified()`` or similar to your query to exclude results in minified code.
 

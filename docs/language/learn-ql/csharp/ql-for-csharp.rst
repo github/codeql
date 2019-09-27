@@ -14,23 +14,8 @@ These topics provide an overview of the QL C# libraries and show examples of how
 
 -  :doc:`Introducing the C# libraries <introduce-libraries-csharp>` introduces the standard libraries used to write queries for C# code.
 
-.. raw:: html
-
-   <!-- Working with generic types and methods(generics) - how to query generic types and methods. -->
-
 -  :doc:`Tutorial: Analyzing data flow in C# <dataflow>` demonstrates how to write queries using the standard QL for C# data flow and taint tracking libraries.
 
-.. raw:: html
-
-   <!-- Working with call graphs(call-graph) - how to construct and query call graphs, and work with dynamic and virtual dispatch. -->
-
-.. raw:: html
-
-   <!-- Working with control flow(control-flow) - how to query intra-procedural control flow. -->
-
-.. raw:: html
-
-   <!-- Working with comments(comments) - how to query comments and XML documentation. -->
 
 Other resources
 ---------------

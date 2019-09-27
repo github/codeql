@@ -128,7 +128,7 @@ Unlike the earlier versions of the query, this query would return each side of t
 
    Note
    
-    In general, QL predicates named ``getAXxx`` exploit the ability to return multiple results (multiple instances of ``Xxx``) whereas plain ``getXxx`` predicates usually return at most one specific instance of ``Xxx``.
+   In general, QL predicates named ``getAXxx`` exploit the ability to return multiple results (multiple instances of ``Xxx``) whereas plain ``getXxx`` predicates usually return at most one specific instance of ``Xxx``.
 
 Classes
 -------
