@@ -67,9 +67,9 @@ abstract class DjangoRequestSource extends HttpRequestTaintSource {
 private class DjangoFunctionBasedViewRequestArgument extends DjangoRequestSource {
 
     DjangoFunctionBasedViewRequestArgument() {
-        exists(FunctionObject view |
+        exists(FunctionValue view |
             url_dispatch(_, _, view) and
-            this = view.getFunction().getArg(0).asName().getAFlowNode()
+            this = view.getScope().getArg(0).asName().getAFlowNode()
         )
     }
 
@@ -79,23 +79,24 @@ private class DjangoFunctionBasedViewRequestArgument extends DjangoRequestSource
  * https://docs.djangoproject.com/en/1.11/topics/class-based-views/
  * 
  */
-private class DjangoView extends ClassObject {
+private class DjangoView extends ClassValue {
 
     DjangoView() {
-        ModuleObject::named("django.views.generic").attr("View") = this.getAnImproperSuperType()
+        Value::named("django.views.generic.View") = this.getASuperType()
     }
+    
 }
 
-private FunctionObject djangoViewHttpMethod() {
+private FunctionValue djangoViewHttpMethod() {
     exists(DjangoView view |
-        view.lookupAttribute(httpVerbLower()) = result
+        view.attr(httpVerbLower()) = result
     )
 }
 
 class DjangoClassBasedViewRequestArgument extends DjangoRequestSource {
 
     DjangoClassBasedViewRequestArgument() {
-        this = djangoViewHttpMethod().getFunction().getArg(1).asName().getAFlowNode()
+        this = djangoViewHttpMethod().getScope().getArg(1).asName().getAFlowNode()
     }
 
 }
@@ -107,11 +108,11 @@ class DjangoClassBasedViewRequestArgument extends DjangoRequestSource {
 
 
 /* Function based views */
-predicate url_dispatch(CallNode call, ControlFlowNode regex, FunctionObject view) {
-    exists(FunctionObject url |
-        ModuleObject::named("django.conf.urls").attr("url") = url and
+predicate url_dispatch(CallNode call, ControlFlowNode regex, FunctionValue view) {
+    exists(FunctionValue url |
+        Value::named("django.conf.urls.url") = url and
         url.getArgumentForCall(call, 0) = regex and
-        url.getArgumentForCall(call, 1).refersTo(view)
+        url.getArgumentForCall(call, 1).pointsTo(view)
     )
 }
 
@@ -130,7 +131,7 @@ class UrlRouting extends CallNode {
         url_dispatch(this, _, _)
     }
 
-    FunctionObject getViewFunction() {
+    FunctionValue getViewFunction() {
         url_dispatch(this, _, result)
     }
 
@@ -149,7 +150,7 @@ class HttpRequestParameter extends HttpRequestTaintSource {
     HttpRequestParameter() {
         exists(UrlRouting url |
             this.(ControlFlowNode).getNode() = 
-            url.getViewFunction().getFunction().getArgByName(url.getNamedArgument())
+            url.getViewFunction().getScope().getArgByName(url.getNamedArgument())
         )
     }
 

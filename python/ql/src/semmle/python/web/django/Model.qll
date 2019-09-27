@@ -6,10 +6,10 @@ import semmle.python.web.Http
 import semmle.python.security.injection.Sql
 
 /** A django model class */
-class DjangoModel extends ClassObject {
+class DjangoModel extends ClassValue {
 
     DjangoModel() {
-        ModuleObject::named("django.db.models").attr("Model") = this.getAnImproperSuperType()
+        Value::named("django.db.models.Model") = this.getASuperType()
     }
 
 }
@@ -55,7 +55,7 @@ class DjangoDbTableObjects extends TaintKind {
 class DjangoModelObjects extends TaintSource {
 
     DjangoModelObjects() {
-        this.(AttrNode).isLoad() and this.(AttrNode).getObject("objects").refersTo(any(DjangoModel m))
+        this.(AttrNode).isLoad() and this.(AttrNode).getObject("objects").pointsTo(any(DjangoModel m))
     }
 
     override predicate isSourceOf(TaintKind kind) {
@@ -73,7 +73,7 @@ class DjangoModelFieldWrite extends SqlInjectionSink {
 
     DjangoModelFieldWrite() {
         exists(AttrNode attr, DjangoModel model |
-            this = attr and attr.isStore() and attr.getObject(_).refersTo(model)
+            this = attr and attr.isStore() and attr.getObject(_).pointsTo(model)
         )
     }
 
@@ -87,7 +87,7 @@ class DjangoModelFieldWrite extends SqlInjectionSink {
 
 }
 
-/** A direct reference to a django model object, which is a vulnerable to external data. */
+/** A direct reference to a django model object, which is vulnerable to external data. */
 class DjangoModelDirectObjectReference extends TaintSink {
 
     DjangoModelDirectObjectReference() {
@@ -111,7 +111,6 @@ class DjangoModelDirectObjectReference extends TaintSink {
  * A call to the `raw` method on a django model. This allows a raw SQL query 
  * to be sent to the database, which is a security risk.
  */
-
 class DjangoModelRawCall extends SqlInjectionSink {
 
     DjangoModelRawCall() {
@@ -135,8 +134,6 @@ class DjangoModelRawCall extends SqlInjectionSink {
  * A call to the `extra` method on a django model. This allows a raw SQL query 
  * to be sent to the database, which is a security risk.
  */
-
-
 class DjangoModelExtraCall extends SqlInjectionSink {
 
     DjangoModelExtraCall() {

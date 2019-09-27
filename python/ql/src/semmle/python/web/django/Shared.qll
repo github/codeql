@@ -1,9 +1,10 @@
 import python
 
-FunctionObject redirect() {
-    result = ModuleObject::named("django.shortcuts").attr("redirect")
+/** django.shortcuts.redirect */
+FunctionValue redirect() {
+    result = Value::named("django.shortcuts.redirect")
 }
 
-ClassObject theDjangoHttpRedirectClass() {
-    result = ModuleObject::named("django.http.response").attr("HttpResponseRedirectBase")
+ClassValue theDjangoHttpRedirectClass() {
+    result = Value::named("django.http.response.HttpResponseRedirectBase")
 }

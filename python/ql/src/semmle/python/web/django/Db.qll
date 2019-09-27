@@ -11,8 +11,8 @@ class DjangoDbCursor extends DbCursor {
 
 }
 
-private Object theDjangoConnectionObject() {
-    ModuleObject::named("django.db").attr("connection") = result
+private Value theDjangoConnectionObject() {
+    result = Value::named("django.db.connection")
 }
 
 /** A kind of taint source representing sources of django cursor objects.
@@ -22,7 +22,7 @@ class DjangoDbCursorSource extends DbConnectionSource {
     DjangoDbCursorSource() {
         exists(AttrNode cursor |
             this.(CallNode).getFunction()= cursor and
-            cursor.getObject("cursor").refersTo(theDjangoConnectionObject())
+            cursor.getObject("cursor").pointsTo(theDjangoConnectionObject())
         )
     }
 
@@ -37,8 +37,8 @@ class DjangoDbCursorSource extends DbConnectionSource {
 }
 
 
-ClassObject theDjangoRawSqlClass() {
-    result = ModuleObject::named("django.db.models.expressions").attr("RawSQL")
+ClassValue theDjangoRawSqlClass() {
+    result = Value::named("django.db.models.expressions.RawSQL")
 }
 
 /**
