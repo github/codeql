@@ -54,7 +54,7 @@ class CherryPyExposedFunctionParameter extends TaintSource {
 class CherryPyRequestSource extends TaintSource {
 
     CherryPyRequestSource() {
-        this.(ControlFlowNode).refersTo(ModuleObject::named("cherrypy").attr("request"))
+        this.(ControlFlowNode).pointsTo(Value::named("cherrypy.request"))
     }
 
     override predicate isSourceOf(TaintKind kind) {
