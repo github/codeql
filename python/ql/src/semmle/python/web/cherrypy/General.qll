@@ -2,25 +2,18 @@ import python
 import semmle.python.web.Http
 
 module CherryPy {
-
-    FunctionValue expose() {
-        result = Value::named("cherrypy.expose")
-    }
-
+    FunctionValue expose() { result = Value::named("cherrypy.expose") }
 }
 
 class CherryPyExposedFunction extends Function {
-
     CherryPyExposedFunction() {
         this.getADecorator().pointsTo(CherryPy::expose())
         or
         this.getADecorator().(Call).getFunc().pointsTo(CherryPy::expose())
     }
-
 }
 
 class CherryPyRoute extends CallNode {
-
     CherryPyRoute() {
         /* cherrypy.quickstart(root, script_name, config) */
         Value::named("cherrypy.quickstart").(FunctionValue).getACall() = this
@@ -36,9 +29,7 @@ class CherryPyRoute extends CallNode {
     }
 
     string getPath() {
-        exists(StringObject path |
-            result = path.getText() 
-            |
+        exists(StringObject path | result = path.getText() |
             this.getArg(1).refersTo(path)
             or
             this.getArgByName("script_name").refersTo(path)
@@ -50,7 +41,4 @@ class CherryPyRoute extends CallNode {
         or
         this.getArgByName("config").refersTo(_, result, _)
     }
-
 }
-
-
