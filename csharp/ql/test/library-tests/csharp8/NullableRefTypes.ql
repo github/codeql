@@ -21,11 +21,12 @@ query predicate nonNullExpressions(NonNullExpr e) {
   e.getEnclosingCallable().getName() = "TestSuppressNullableWarningExpr"
 }
 
-query predicate assignableTypes(Assignable a, AnnotatedType t) {
+query predicate assignableTypes(Assignable a, AnnotatedType t, string n) {
   a.getFile().getBaseName() = "NullableRefTypes.cs" and
   t.getLocation() instanceof SourceLocation and
   a.getLocation() instanceof SourceLocation and
-  t = a.getAnnotatedType()
+  t = a.getAnnotatedType() and
+  n = t.getAnnotations().getNullability().toString()
 }
 
 query predicate arrayElements(Variable v, AnnotatedArrayType array, AnnotatedType elementType) {
@@ -39,13 +40,17 @@ query predicate returnTypes(Callable c, string t) {
   t = c.getAnnotatedReturnType().toString()
 }
 
-query predicate typeArguments(AnnotatedConstructedType generic, int arg, string argument) {
-  (
-    generic.getType() = any(Variable v | v.fromSource()).getType()
-    //or
-    // generic.getType() = any(MethodCall mc).getTarget()
-  ) and
-  argument = generic.getTypeArgument(arg).toString()
+query predicate methodTypeArguments(ConstructedGeneric generic, int arg, string argument) {
+  generic = any(MethodCall mc).getTarget() and
+  argument = generic.getAnnotatedTypeArgument(arg).toString()
+}
+
+query predicate constructedTypes(
+  AnnotatedConstructedType at, int i, string arg, string nullability
+) {
+  arg = at.getTypeArgument(i).toString() and
+  at.getLocation() instanceof SourceLocation and
+  nullability = at.getAnnotations().getNullability().toString()
 }
 
 query predicate nullableTypeParameters(TypeParameter p) {

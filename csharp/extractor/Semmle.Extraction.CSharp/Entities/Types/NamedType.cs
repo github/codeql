@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            trapFile.typeref_type((NamedTypeRef)TypeRef, this);
+            trapFile.typeref_type((TypeRef)TypeRef, this);
 
             if (symbol.IsGenericType)
             {
@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub, _) => tb0.WriteSubId(Create(cx0, sub)), TypeNameContext.TypeName, symbol);
+            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub, _) => tb0.WriteSubId(Create(cx0, sub)), TypeIdentifierContext.TypeName, symbol);
             trapFile.Write(";type");
         }
 
@@ -151,26 +151,26 @@ namespace Semmle.Extraction.CSharp.Entities
             public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init);
         }
 
-        public override Type TypeRef => NamedTypeRef.Create(Context, this, symbol);
+        public override Type TypeRef => Entities.TypeRef.Create(Context, this, symbol);
     }
 
-    class NamedTypeRef : Type<ITypeSymbol>
+    class TypeRef : Type<ITypeSymbol>
     {
         readonly Type referencedType;
 
-        public NamedTypeRef(Context cx, Type type, ITypeSymbol symbol) : base(cx, symbol)
+        public TypeRef(Context cx, Type type, ITypeSymbol symbol) : base(cx, symbol)
         {
             referencedType = type;
         }
 
-        public static NamedTypeRef Create(Context cx, Type referencedType, ITypeSymbol type) =>
+        public static TypeRef Create(Context cx, Type referencedType, ITypeSymbol type) =>
             NamedTypeRefFactory.Instance.CreateEntity2(cx, (referencedType, type));
 
-        class NamedTypeRefFactory : ICachedEntityFactory<(Type, ITypeSymbol), NamedTypeRef>
+        class NamedTypeRefFactory : ICachedEntityFactory<(Type, ITypeSymbol), TypeRef>
         {
             public static readonly NamedTypeRefFactory Instance = new NamedTypeRefFactory();
 
-            public NamedTypeRef Create(Context cx, (Type, ITypeSymbol) init) => new NamedTypeRef(cx, init.Item1, init.Item2);
+            public TypeRef Create(Context cx, (Type, ITypeSymbol) init) => new TypeRef(cx, init.Item1, init.Item2);
         }
 
         public override bool NeedsPopulation => true;
@@ -179,11 +179,10 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             void ExpandType(Context cx0, TextWriter tb0, ITypeSymbol sub, ISymbol gc)
             {
-                sub.BuildTypeId(cx0, tb0, ExpandType, TypeNameContext.TypeRef, gc);
+                sub.BuildTypeId(cx0, tb0, ExpandType, TypeIdentifierContext.TypeRef, gc);
             }
 
-            // Prefix anonymous types because they shouldn't be visible outside of the current assembly.
-            symbol.BuildTypeId(Context, trapFile, ExpandType, TypeNameContext.TypeRef, symbol);
+            symbol.BuildTypeId(Context, trapFile, ExpandType, TypeIdentifierContext.TypeRef, symbol);
             trapFile.Write(";typeref");
         }
 

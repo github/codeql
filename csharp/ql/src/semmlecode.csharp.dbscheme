@@ -527,10 +527,10 @@ specific_type_parameter_constraints(
   int id: @type_parameter_constraints ref,
   int base_id: @type_or_ref ref);
 
-specific_type_parameter_annotation(
+specific_type_parameter_nullability(
   int id: @type_parameter_constraints ref,
   int base_id: @type_or_ref ref,
-  int annotation: int ref);
+  int nullability: @nullability ref);
 
 /** MODIFIERS */
 

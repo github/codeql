@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var ta = type.Nullability.GetTypeAnnotation();
             var n = NullabilityEntity.Create(Context, Nullability.Create(type));
-            if (ta != Kinds.TypeAnnotation.None || !type.HasConsistentNullability())
+            if (!type.HasObliviousNullability())
             {
                 trapFile.type_nullability(this, n);
             }
