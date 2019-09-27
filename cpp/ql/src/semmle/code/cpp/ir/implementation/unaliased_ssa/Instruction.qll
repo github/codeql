@@ -48,8 +48,8 @@ module InstructionSanity {
         or
         (
           opcode instanceof ReadSideEffectOpcode or
-          opcode instanceof MayWriteSideEffectOpcode or
-          opcode instanceof Opcode::InlineAsm
+          opcode instanceof Opcode::InlineAsm or
+          opcode instanceof Opcode::CallSideEffect
         ) and
         tag instanceof SideEffectOperandTag
       )

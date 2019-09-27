@@ -449,12 +449,7 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     or
     tag instanceof OnlyInstructionTag and
     operandTag instanceof SideEffectOperandTag and
-    not call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(index, _, true) and
-    result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    or
-    tag instanceof OnlyInstructionTag and
-    operandTag instanceof SideEffectOperandTag and
-    call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(index, _) and
+    not isWrite() and
     result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
     or
     tag instanceof OnlyInstructionTag and

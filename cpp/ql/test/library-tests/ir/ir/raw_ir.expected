@@ -15,7 +15,7 @@ bad_asts.cpp:
 #   16|     r0_11(int)           = Call                            : func:r0_9, this:r0_8, 0:r0_10
 #   16|     mu0_12(unknown)      = ^CallSideEffect                 : ~mu0_2
 #   16|     v0_13(void)          = ^IndirectReadSideEffect[-1]     : &:r0_8, ~mu0_2
-#   16|     mu0_14(S)            = ^IndirectMayWriteSideEffect[-1] : &:r0_8, ~mu0_2
+#   16|     mu0_14(S)            = ^IndirectMayWriteSideEffect[-1] : &:r0_8
 #   17|     v0_15(void)          = NoOp                            : 
 #   14|     v0_16(void)          = ReturnVoid                      : 
 #   14|     v0_17(void)          = UnmodeledUse                    : mu*
@@ -2677,8 +2677,8 @@ ir.cpp:
 #  585|     mu0_10(unknown)      = ^CallSideEffect                 : ~mu0_2
 #  585|     v0_11(void)          = ^IndirectReadSideEffect[0]      : &:r0_5, ~mu0_2
 #  585|     v0_12(void)          = ^IndirectReadSideEffect[2]      : &:r0_8, ~mu0_2
-#  585|     mu0_13(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r0_5, ~mu0_2
-#  585|     mu0_14(unknown)      = ^BufferMayWriteSideEffect[2]    : &:r0_8, ~mu0_2
+#  585|     mu0_13(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r0_5
+#  585|     mu0_14(unknown)      = ^BufferMayWriteSideEffect[2]    : &:r0_8
 #  586|     v0_15(void)          = NoOp                            : 
 #  584|     v0_16(void)          = ReturnVoid                      : 
 #  584|     v0_17(void)          = UnmodeledUse                    : mu*
@@ -2722,7 +2722,7 @@ ir.cpp:
 #  617|     v0_11(void)           = Call                          : func:r0_8, this:r0_7, 0:r0_10
 #  617|     mu0_12(unknown)       = ^CallSideEffect               : ~mu0_2
 #  617|     v0_13(void)           = ^IndirectReadSideEffect[0]    : &:r0_10, ~mu0_2
-#  617|     mu0_14(unknown)       = ^BufferMayWriteSideEffect[0]  : &:r0_10, ~mu0_2
+#  617|     mu0_14(unknown)       = ^BufferMayWriteSideEffect[0]  : &:r0_10
 #  618|     r0_15(glval<String>)  = VariableAddress[s3]           : 
 #  618|     r0_16(glval<unknown>) = FunctionAddress[ReturnObject] : 
 #  618|     r0_17(String)         = Call                          : func:r0_16
@@ -2735,7 +2735,7 @@ ir.cpp:
 #  619|     v0_24(void)           = Call                          : func:r0_21, this:r0_20, 0:r0_23
 #  619|     mu0_25(unknown)       = ^CallSideEffect               : ~mu0_2
 #  619|     v0_26(void)           = ^IndirectReadSideEffect[0]    : &:r0_23, ~mu0_2
-#  619|     mu0_27(unknown)       = ^BufferMayWriteSideEffect[0]  : &:r0_23, ~mu0_2
+#  619|     mu0_27(unknown)       = ^BufferMayWriteSideEffect[0]  : &:r0_23
 #  620|     v0_28(void)           = NoOp                          : 
 #  615|     v0_29(void)           = ReturnVoid                    : 
 #  615|     v0_30(void)           = UnmodeledUse                  : mu*
@@ -2759,7 +2759,7 @@ ir.cpp:
 #  623|     r0_13(char *)          = Call                            : func:r0_12, this:r0_11
 #  623|     mu0_14(unknown)        = ^CallSideEffect                 : ~mu0_2
 #  623|     v0_15(void)            = ^IndirectReadSideEffect[-1]     : &:r0_11, ~mu0_2
-#  623|     mu0_16(String)         = ^IndirectMayWriteSideEffect[-1] : &:r0_11, ~mu0_2
+#  623|     mu0_16(String)         = ^IndirectMayWriteSideEffect[-1] : &:r0_11
 #  624|     r0_17(glval<String *>) = VariableAddress[p]              : 
 #  624|     r0_18(String *)        = Load                            : &:r0_17, ~mu0_2
 #  624|     r0_19(String *)        = Convert                         : r0_18
@@ -2767,14 +2767,14 @@ ir.cpp:
 #  624|     r0_21(char *)          = Call                            : func:r0_20, this:r0_19
 #  624|     mu0_22(unknown)        = ^CallSideEffect                 : ~mu0_2
 #  624|     v0_23(void)            = ^IndirectReadSideEffect[-1]     : &:r0_19, ~mu0_2
-#  624|     mu0_24(String)         = ^IndirectMayWriteSideEffect[-1] : &:r0_19, ~mu0_2
+#  624|     mu0_24(String)         = ^IndirectMayWriteSideEffect[-1] : &:r0_19
 #  625|     r0_25(glval<String>)   = VariableAddress[s]              : 
 #  625|     r0_26(glval<String>)   = Convert                         : r0_25
 #  625|     r0_27(glval<unknown>)  = FunctionAddress[c_str]          : 
 #  625|     r0_28(char *)          = Call                            : func:r0_27, this:r0_26
 #  625|     mu0_29(unknown)        = ^CallSideEffect                 : ~mu0_2
 #  625|     v0_30(void)            = ^IndirectReadSideEffect[-1]     : &:r0_26, ~mu0_2
-#  625|     mu0_31(String)         = ^IndirectMayWriteSideEffect[-1] : &:r0_26, ~mu0_2
+#  625|     mu0_31(String)         = ^IndirectMayWriteSideEffect[-1] : &:r0_26
 #  626|     v0_32(void)            = NoOp                            : 
 #  622|     v0_33(void)            = ReturnVoid                      : 
 #  622|     v0_34(void)            = UnmodeledUse                    : mu*
@@ -2882,21 +2882,21 @@ ir.cpp:
 #  653|     r0_7(int)             = Call                                    : func:r0_5, this:r0_4, 0:r0_6
 #  653|     mu0_8(unknown)        = ^CallSideEffect                         : ~mu0_2
 #  653|     v0_9(void)            = ^IndirectReadSideEffect[-1]             : &:r0_4, ~mu0_2
-#  653|     mu0_10(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r0_4, ~mu0_2
+#  653|     mu0_10(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r0_4
 #  654|     r0_11(C *)            = CopyValue                               : r0_3
 #  654|     r0_12(glval<unknown>) = FunctionAddress[InstanceMemberFunction] : 
 #  654|     r0_13(int)            = Constant[1]                             : 
 #  654|     r0_14(int)            = Call                                    : func:r0_12, this:r0_11, 0:r0_13
 #  654|     mu0_15(unknown)       = ^CallSideEffect                         : ~mu0_2
 #  654|     v0_16(void)           = ^IndirectReadSideEffect[-1]             : &:r0_11, ~mu0_2
-#  654|     mu0_17(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r0_11, ~mu0_2
+#  654|     mu0_17(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r0_11
 #-----|     r0_18(C *)            = CopyValue                               : r0_3
 #  655|     r0_19(glval<unknown>) = FunctionAddress[InstanceMemberFunction] : 
 #  655|     r0_20(int)            = Constant[2]                             : 
 #  655|     r0_21(int)            = Call                                    : func:r0_19, this:r0_18, 0:r0_20
 #  655|     mu0_22(unknown)       = ^CallSideEffect                         : ~mu0_2
 #-----|     v0_23(void)           = ^IndirectReadSideEffect[-1]             : &:r0_18, ~mu0_2
-#-----|     mu0_24(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r0_18, ~mu0_2
+#-----|     mu0_24(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r0_18
 #  656|     v0_25(void)           = NoOp                                    : 
 #  652|     v0_26(void)           = ReturnVoid                              : 
 #  652|     v0_27(void)           = UnmodeledUse                            : mu*
@@ -2928,7 +2928,7 @@ ir.cpp:
 #  662|     v0_21(void)           = Call                         : func:r0_18, this:r0_17, 0:r0_20
 #  662|     mu0_22(unknown)       = ^CallSideEffect              : ~mu0_2
 #  662|     v0_23(void)           = ^IndirectReadSideEffect[0]   : &:r0_20, ~mu0_2
-#  662|     mu0_24(unknown)       = ^BufferMayWriteSideEffect[0] : &:r0_20, ~mu0_2
+#  662|     mu0_24(unknown)       = ^BufferMayWriteSideEffect[0] : &:r0_20
 #  664|     v0_25(void)           = NoOp                         : 
 #  658|     v0_26(void)           = ReturnVoid                   : 
 #  658|     v0_27(void)           = UnmodeledUse                 : mu*
@@ -3128,7 +3128,7 @@ ir.cpp:
 #  721|     r0_7(long)           = Call                         : func:r0_4, 0:r0_5, 1:r0_6
 #  721|     mu0_8(unknown)       = ^CallSideEffect              : ~mu0_2
 #  721|     v0_9(void)           = ^IndirectReadSideEffect[0]   : &:r0_5, ~mu0_2
-#  721|     mu0_10(unknown)      = ^BufferMayWriteSideEffect[0] : &:r0_5, ~mu0_2
+#  721|     mu0_10(unknown)      = ^BufferMayWriteSideEffect[0] : &:r0_5
 #  721|     r0_11(double)        = Convert                      : r0_7
 #  721|     mu0_12(double)       = Store                        : &:r0_3, r0_11
 #  720|     r0_13(glval<double>) = VariableAddress[#return]     : 
@@ -3202,7 +3202,7 @@ ir.cpp:
 #  731|     v7_4(void)            = Call                            : func:r7_1, this:r7_0, 0:r7_3
 #  731|     mu7_5(unknown)        = ^CallSideEffect                 : ~mu0_2
 #  731|     v7_6(void)            = ^IndirectReadSideEffect[0]      : &:r7_3, ~mu0_2
-#  731|     mu7_7(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r7_3, ~mu0_2
+#  731|     mu7_7(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r7_3
 #  731|     v7_8(void)            = ThrowValue                      : &:r7_0, ~mu0_2
 #-----|   Exception -> Block 9
 
@@ -3227,7 +3227,7 @@ ir.cpp:
 #  736|     v10_6(void)           = Call                         : func:r10_3, this:r10_2, 0:r10_5
 #  736|     mu10_7(unknown)       = ^CallSideEffect              : ~mu0_2
 #  736|     v10_8(void)           = ^IndirectReadSideEffect[0]   : &:r10_5, ~mu0_2
-#  736|     mu10_9(unknown)       = ^BufferMayWriteSideEffect[0] : &:r10_5, ~mu0_2
+#  736|     mu10_9(unknown)       = ^BufferMayWriteSideEffect[0] : &:r10_5
 #  736|     v10_10(void)          = ThrowValue                   : &:r10_2, ~mu0_2
 #-----|   Exception -> Block 2
 
@@ -3270,8 +3270,8 @@ ir.cpp:
 #  745|     mu0_13(unknown)      = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_14(void)          = ^IndirectReadSideEffect[-1]     : &:r0_7, ~mu0_2
 #-----|     v0_15(void)          = ^IndirectReadSideEffect[0]      : &:r0_11, ~mu0_2
-#-----|     mu0_16(String)       = ^IndirectMayWriteSideEffect[-1] : &:r0_7, ~mu0_2
-#-----|     mu0_17(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r0_11, ~mu0_2
+#-----|     mu0_16(String)       = ^IndirectMayWriteSideEffect[-1] : &:r0_7
+#-----|     mu0_17(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r0_11
 #-----|     r0_18(glval<Base &>) = VariableAddress[#return]        : 
 #-----|     r0_19(Base *)        = CopyValue                       : r0_3
 #-----|     mu0_20(Base &)       = Store                           : &:r0_18, r0_19
@@ -3345,8 +3345,8 @@ ir.cpp:
 #  754|     mu0_13(unknown)        = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_14(void)            = ^IndirectReadSideEffect[-1]     : &:r0_7, ~mu0_2
 #-----|     v0_15(void)            = ^IndirectReadSideEffect[0]      : &:r0_11, ~mu0_2
-#-----|     mu0_16(Base)           = ^IndirectMayWriteSideEffect[-1] : &:r0_7, ~mu0_2
-#-----|     mu0_17(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r0_11, ~mu0_2
+#-----|     mu0_16(Base)           = ^IndirectMayWriteSideEffect[-1] : &:r0_7
+#-----|     mu0_17(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r0_11
 #-----|     r0_18(Middle *)        = CopyValue                       : r0_3
 #-----|     r0_19(glval<String>)   = FieldAddress[middle_s]          : r0_18
 #  754|     r0_20(glval<unknown>)  = FunctionAddress[operator=]      : 
@@ -3357,8 +3357,8 @@ ir.cpp:
 #  754|     mu0_25(unknown)        = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_26(void)            = ^IndirectReadSideEffect[-1]     : &:r0_19, ~mu0_2
 #-----|     v0_27(void)            = ^IndirectReadSideEffect[0]      : &:r0_23, ~mu0_2
-#-----|     mu0_28(String)         = ^IndirectMayWriteSideEffect[-1] : &:r0_19, ~mu0_2
-#-----|     mu0_29(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r0_23, ~mu0_2
+#-----|     mu0_28(String)         = ^IndirectMayWriteSideEffect[-1] : &:r0_19
+#-----|     mu0_29(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r0_23
 #-----|     r0_30(glval<Middle &>) = VariableAddress[#return]        : 
 #-----|     r0_31(Middle *)        = CopyValue                       : r0_3
 #-----|     mu0_32(Middle &)       = Store                           : &:r0_30, r0_31
@@ -3423,8 +3423,8 @@ ir.cpp:
 #  763|     mu0_13(unknown)         = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_14(void)             = ^IndirectReadSideEffect[-1]     : &:r0_7, ~mu0_2
 #-----|     v0_15(void)             = ^IndirectReadSideEffect[0]      : &:r0_11, ~mu0_2
-#-----|     mu0_16(Middle)          = ^IndirectMayWriteSideEffect[-1] : &:r0_7, ~mu0_2
-#-----|     mu0_17(unknown)         = ^BufferMayWriteSideEffect[0]    : &:r0_11, ~mu0_2
+#-----|     mu0_16(Middle)          = ^IndirectMayWriteSideEffect[-1] : &:r0_7
+#-----|     mu0_17(unknown)         = ^BufferMayWriteSideEffect[0]    : &:r0_11
 #-----|     r0_18(Derived *)        = CopyValue                       : r0_3
 #-----|     r0_19(glval<String>)    = FieldAddress[derived_s]         : r0_18
 #  763|     r0_20(glval<unknown>)   = FunctionAddress[operator=]      : 
@@ -3435,8 +3435,8 @@ ir.cpp:
 #  763|     mu0_25(unknown)         = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_26(void)             = ^IndirectReadSideEffect[-1]     : &:r0_19, ~mu0_2
 #-----|     v0_27(void)             = ^IndirectReadSideEffect[0]      : &:r0_23, ~mu0_2
-#-----|     mu0_28(String)          = ^IndirectMayWriteSideEffect[-1] : &:r0_19, ~mu0_2
-#-----|     mu0_29(unknown)         = ^BufferMayWriteSideEffect[0]    : &:r0_23, ~mu0_2
+#-----|     mu0_28(String)          = ^IndirectMayWriteSideEffect[-1] : &:r0_19
+#-----|     mu0_29(unknown)         = ^BufferMayWriteSideEffect[0]    : &:r0_23
 #-----|     r0_30(glval<Derived &>) = VariableAddress[#return]        : 
 #-----|     r0_31(Derived *)        = CopyValue                       : r0_3
 #-----|     mu0_32(Derived &)       = Store                           : &:r0_30, r0_31
@@ -3647,8 +3647,8 @@ ir.cpp:
 #  808|     mu0_29(unknown)            = ^CallSideEffect                        : ~mu0_2
 #  808|     v0_30(void)                = ^IndirectReadSideEffect[-1]            : &:r0_24, ~mu0_2
 #  808|     v0_31(void)                = ^IndirectReadSideEffect[0]             : &:r0_27, ~mu0_2
-#  808|     mu0_32(Base)               = ^IndirectMayWriteSideEffect[-1]        : &:r0_24, ~mu0_2
-#  808|     mu0_33(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_27, ~mu0_2
+#  808|     mu0_32(Base)               = ^IndirectMayWriteSideEffect[-1]        : &:r0_24
+#  808|     mu0_33(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_27
 #  809|     r0_34(glval<Base>)         = VariableAddress[b]                     : 
 #  809|     r0_35(glval<unknown>)      = FunctionAddress[operator=]             : 
 #  809|     r0_36(glval<unknown>)      = FunctionAddress[Base]                  : 
@@ -3657,14 +3657,14 @@ ir.cpp:
 #  809|     v0_39(void)                = Call                                   : func:r0_36, 0:r0_38
 #  809|     mu0_40(unknown)            = ^CallSideEffect                        : ~mu0_2
 #  809|     v0_41(void)                = ^IndirectReadSideEffect[0]             : &:r0_38, ~mu0_2
-#  809|     mu0_42(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_38, ~mu0_2
+#  809|     mu0_42(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_38
 #  809|     r0_43(glval<Base>)         = Convert                                : v0_39
 #  809|     r0_44(Base &)              = Call                                   : func:r0_35, this:r0_34, 0:r0_43
 #  809|     mu0_45(unknown)            = ^CallSideEffect                        : ~mu0_2
 #  809|     v0_46(void)                = ^IndirectReadSideEffect[-1]            : &:r0_34, ~mu0_2
 #  809|     v0_47(void)                = ^IndirectReadSideEffect[0]             : &:r0_43, ~mu0_2
-#  809|     mu0_48(Base)               = ^IndirectMayWriteSideEffect[-1]        : &:r0_34, ~mu0_2
-#  809|     mu0_49(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_43, ~mu0_2
+#  809|     mu0_48(Base)               = ^IndirectMayWriteSideEffect[-1]        : &:r0_34
+#  809|     mu0_49(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_43
 #  810|     r0_50(glval<Base>)         = VariableAddress[b]                     : 
 #  810|     r0_51(glval<unknown>)      = FunctionAddress[operator=]             : 
 #  810|     r0_52(glval<unknown>)      = FunctionAddress[Base]                  : 
@@ -3673,14 +3673,14 @@ ir.cpp:
 #  810|     v0_55(void)                = Call                                   : func:r0_52, 0:r0_54
 #  810|     mu0_56(unknown)            = ^CallSideEffect                        : ~mu0_2
 #  810|     v0_57(void)                = ^IndirectReadSideEffect[0]             : &:r0_54, ~mu0_2
-#  810|     mu0_58(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_54, ~mu0_2
+#  810|     mu0_58(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_54
 #  810|     r0_59(glval<Base>)         = Convert                                : v0_55
 #  810|     r0_60(Base &)              = Call                                   : func:r0_51, this:r0_50, 0:r0_59
 #  810|     mu0_61(unknown)            = ^CallSideEffect                        : ~mu0_2
 #  810|     v0_62(void)                = ^IndirectReadSideEffect[-1]            : &:r0_50, ~mu0_2
 #  810|     v0_63(void)                = ^IndirectReadSideEffect[0]             : &:r0_59, ~mu0_2
-#  810|     mu0_64(Base)               = ^IndirectMayWriteSideEffect[-1]        : &:r0_50, ~mu0_2
-#  810|     mu0_65(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_59, ~mu0_2
+#  810|     mu0_64(Base)               = ^IndirectMayWriteSideEffect[-1]        : &:r0_50
+#  810|     mu0_65(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_59
 #  811|     r0_66(glval<Middle *>)     = VariableAddress[pm]                    : 
 #  811|     r0_67(Middle *)            = Load                                   : &:r0_66, ~mu0_2
 #  811|     r0_68(Base *)              = ConvertToBase[Middle : Base]           : r0_67
@@ -3710,8 +3710,8 @@ ir.cpp:
 #  816|     mu0_92(unknown)            = ^CallSideEffect                        : ~mu0_2
 #  816|     v0_93(void)                = ^IndirectReadSideEffect[-1]            : &:r0_86, ~mu0_2
 #  816|     v0_94(void)                = ^IndirectReadSideEffect[0]             : &:r0_90, ~mu0_2
-#  816|     mu0_95(Middle)             = ^IndirectMayWriteSideEffect[-1]        : &:r0_86, ~mu0_2
-#  816|     mu0_96(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_90, ~mu0_2
+#  816|     mu0_95(Middle)             = ^IndirectMayWriteSideEffect[-1]        : &:r0_86
+#  816|     mu0_96(unknown)            = ^BufferMayWriteSideEffect[0]           : &:r0_90
 #  817|     r0_97(glval<Middle>)       = VariableAddress[m]                     : 
 #  817|     r0_98(glval<unknown>)      = FunctionAddress[operator=]             : 
 #  817|     r0_99(glval<Base>)         = VariableAddress[b]                     : 
@@ -3721,8 +3721,8 @@ ir.cpp:
 #  817|     mu0_103(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  817|     v0_104(void)               = ^IndirectReadSideEffect[-1]            : &:r0_97, ~mu0_2
 #  817|     v0_105(void)               = ^IndirectReadSideEffect[0]             : &:r0_101, ~mu0_2
-#  817|     mu0_106(Middle)            = ^IndirectMayWriteSideEffect[-1]        : &:r0_97, ~mu0_2
-#  817|     mu0_107(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_101, ~mu0_2
+#  817|     mu0_106(Middle)            = ^IndirectMayWriteSideEffect[-1]        : &:r0_97
+#  817|     mu0_107(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_101
 #  818|     r0_108(glval<Base *>)      = VariableAddress[pb]                    : 
 #  818|     r0_109(Base *)             = Load                                   : &:r0_108, ~mu0_2
 #  818|     r0_110(Middle *)           = ConvertToDerived[Middle : Base]        : r0_109
@@ -3747,8 +3747,8 @@ ir.cpp:
 #  822|     mu0_129(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  822|     v0_130(void)               = ^IndirectReadSideEffect[-1]            : &:r0_123, ~mu0_2
 #  822|     v0_131(void)               = ^IndirectReadSideEffect[0]             : &:r0_127, ~mu0_2
-#  822|     mu0_132(Base)              = ^IndirectMayWriteSideEffect[-1]        : &:r0_123, ~mu0_2
-#  822|     mu0_133(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_127, ~mu0_2
+#  822|     mu0_132(Base)              = ^IndirectMayWriteSideEffect[-1]        : &:r0_123
+#  822|     mu0_133(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_127
 #  823|     r0_134(glval<Base>)        = VariableAddress[b]                     : 
 #  823|     r0_135(glval<unknown>)     = FunctionAddress[operator=]             : 
 #  823|     r0_136(glval<unknown>)     = FunctionAddress[Base]                  : 
@@ -3758,14 +3758,14 @@ ir.cpp:
 #  823|     v0_140(void)               = Call                                   : func:r0_136, 0:r0_139
 #  823|     mu0_141(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  823|     v0_142(void)               = ^IndirectReadSideEffect[0]             : &:r0_139, ~mu0_2
-#  823|     mu0_143(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_139, ~mu0_2
+#  823|     mu0_143(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_139
 #  823|     r0_144(glval<Base>)        = Convert                                : v0_140
 #  823|     r0_145(Base &)             = Call                                   : func:r0_135, this:r0_134, 0:r0_144
 #  823|     mu0_146(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  823|     v0_147(void)               = ^IndirectReadSideEffect[-1]            : &:r0_134, ~mu0_2
 #  823|     v0_148(void)               = ^IndirectReadSideEffect[0]             : &:r0_144, ~mu0_2
-#  823|     mu0_149(Base)              = ^IndirectMayWriteSideEffect[-1]        : &:r0_134, ~mu0_2
-#  823|     mu0_150(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_144, ~mu0_2
+#  823|     mu0_149(Base)              = ^IndirectMayWriteSideEffect[-1]        : &:r0_134
+#  823|     mu0_150(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_144
 #  824|     r0_151(glval<Base>)        = VariableAddress[b]                     : 
 #  824|     r0_152(glval<unknown>)     = FunctionAddress[operator=]             : 
 #  824|     r0_153(glval<unknown>)     = FunctionAddress[Base]                  : 
@@ -3775,14 +3775,14 @@ ir.cpp:
 #  824|     v0_157(void)               = Call                                   : func:r0_153, 0:r0_156
 #  824|     mu0_158(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  824|     v0_159(void)               = ^IndirectReadSideEffect[0]             : &:r0_156, ~mu0_2
-#  824|     mu0_160(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_156, ~mu0_2
+#  824|     mu0_160(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_156
 #  824|     r0_161(glval<Base>)        = Convert                                : v0_157
 #  824|     r0_162(Base &)             = Call                                   : func:r0_152, this:r0_151, 0:r0_161
 #  824|     mu0_163(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  824|     v0_164(void)               = ^IndirectReadSideEffect[-1]            : &:r0_151, ~mu0_2
 #  824|     v0_165(void)               = ^IndirectReadSideEffect[0]             : &:r0_161, ~mu0_2
-#  824|     mu0_166(Base)              = ^IndirectMayWriteSideEffect[-1]        : &:r0_151, ~mu0_2
-#  824|     mu0_167(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_161, ~mu0_2
+#  824|     mu0_166(Base)              = ^IndirectMayWriteSideEffect[-1]        : &:r0_151
+#  824|     mu0_167(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_161
 #  825|     r0_168(glval<Derived *>)   = VariableAddress[pd]                    : 
 #  825|     r0_169(Derived *)          = Load                                   : &:r0_168, ~mu0_2
 #  825|     r0_170(Middle *)           = ConvertToBase[Derived : Middle]        : r0_169
@@ -3816,8 +3816,8 @@ ir.cpp:
 #  830|     mu0_198(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  830|     v0_199(void)               = ^IndirectReadSideEffect[-1]            : &:r0_191, ~mu0_2
 #  830|     v0_200(void)               = ^IndirectReadSideEffect[0]             : &:r0_196, ~mu0_2
-#  830|     mu0_201(Derived)           = ^IndirectMayWriteSideEffect[-1]        : &:r0_191, ~mu0_2
-#  830|     mu0_202(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_196, ~mu0_2
+#  830|     mu0_201(Derived)           = ^IndirectMayWriteSideEffect[-1]        : &:r0_191
+#  830|     mu0_202(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_196
 #  831|     r0_203(glval<Derived>)     = VariableAddress[d]                     : 
 #  831|     r0_204(glval<unknown>)     = FunctionAddress[operator=]             : 
 #  831|     r0_205(glval<Base>)        = VariableAddress[b]                     : 
@@ -3828,8 +3828,8 @@ ir.cpp:
 #  831|     mu0_210(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  831|     v0_211(void)               = ^IndirectReadSideEffect[-1]            : &:r0_203, ~mu0_2
 #  831|     v0_212(void)               = ^IndirectReadSideEffect[0]             : &:r0_208, ~mu0_2
-#  831|     mu0_213(Derived)           = ^IndirectMayWriteSideEffect[-1]        : &:r0_203, ~mu0_2
-#  831|     mu0_214(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_208, ~mu0_2
+#  831|     mu0_213(Derived)           = ^IndirectMayWriteSideEffect[-1]        : &:r0_203
+#  831|     mu0_214(unknown)           = ^BufferMayWriteSideEffect[0]           : &:r0_208
 #  832|     r0_215(glval<Base *>)      = VariableAddress[pb]                    : 
 #  832|     r0_216(Base *)             = Load                                   : &:r0_215, ~mu0_2
 #  832|     r0_217(Middle *)           = ConvertToDerived[Middle : Base]        : r0_216
@@ -3973,7 +3973,7 @@ ir.cpp:
 #  868|     v0_7(void)           = Call                         : func:r0_4, this:r0_3, 0:r0_6
 #  868|     mu0_8(unknown)       = ^CallSideEffect              : ~mu0_2
 #  868|     v0_9(void)           = ^IndirectReadSideEffect[0]   : &:r0_6, ~mu0_2
-#  868|     mu0_10(unknown)      = ^BufferMayWriteSideEffect[0] : &:r0_6, ~mu0_2
+#  868|     mu0_10(unknown)      = ^BufferMayWriteSideEffect[0] : &:r0_6
 #  869|     v0_11(void)          = NoOp                         : 
 #  867|     v0_12(void)          = ReturnVoid                   : 
 #  867|     v0_13(void)          = UnmodeledUse                 : mu*
@@ -4190,7 +4190,7 @@ ir.cpp:
 #  945|     v0_38(void)           = Call                          : func:r0_35, this:r0_34, 0:r0_37
 #  945|     mu0_39(unknown)       = ^CallSideEffect               : ~mu0_2
 #  945|     v0_40(void)           = ^IndirectReadSideEffect[0]    : &:r0_37, ~mu0_2
-#  945|     mu0_41(unknown)       = ^BufferMayWriteSideEffect[0]  : &:r0_37, ~mu0_2
+#  945|     mu0_41(unknown)       = ^BufferMayWriteSideEffect[0]  : &:r0_37
 #  946|     r0_42(glval<unknown>) = FunctionAddress[operator new] : 
 #  946|     r0_43(unsigned long)  = Constant[256]                 : 
 #  946|     r0_44(align_val_t)    = Constant[128]                 : 
@@ -4678,7 +4678,7 @@ ir.cpp:
 # 1035|     r0_29(char)                              = Call                                   : func:r0_27, this:r0_26, 0:r0_28
 # 1035|     mu0_30(unknown)                          = ^CallSideEffect                        : ~mu0_2
 # 1035|     v0_31(void)                              = ^IndirectReadSideEffect[-1]            : &:r0_26, ~mu0_2
-# 1035|     mu0_32(decltype([...](...){...}))        = ^IndirectMayWriteSideEffect[-1]        : &:r0_26, ~mu0_2
+# 1035|     mu0_32(decltype([...](...){...}))        = ^IndirectMayWriteSideEffect[-1]        : &:r0_26
 # 1036|     r0_33(glval<decltype([...](...){...})>)  = VariableAddress[lambda_val]            : 
 # 1036|     r0_34(glval<unknown>)                    = FunctionAddress[(constructor)]         : 
 # 1036|     r0_35(glval<decltype([...](...){...})>)  = VariableAddress[#temp1036:21]          : 
@@ -4695,7 +4695,7 @@ ir.cpp:
 # 1036|     v0_46(void)                              = Call                                   : func:r0_34, this:r0_33, 0:r0_45
 # 1036|     mu0_47(unknown)                          = ^CallSideEffect                        : ~mu0_2
 # 1036|     v0_48(void)                              = ^IndirectReadSideEffect[0]             : &:r0_45, ~mu0_2
-# 1036|     mu0_49(unknown)                          = ^BufferMayWriteSideEffect[0]           : &:r0_45, ~mu0_2
+# 1036|     mu0_49(unknown)                          = ^BufferMayWriteSideEffect[0]           : &:r0_45
 # 1037|     r0_50(glval<decltype([...](...){...})>)  = VariableAddress[lambda_val]            : 
 # 1037|     r0_51(glval<decltype([...](...){...})>)  = Convert                                : r0_50
 # 1037|     r0_52(glval<unknown>)                    = FunctionAddress[operator()]            : 
@@ -4703,7 +4703,7 @@ ir.cpp:
 # 1037|     r0_54(char)                              = Call                                   : func:r0_52, this:r0_51, 0:r0_53
 # 1037|     mu0_55(unknown)                          = ^CallSideEffect                        : ~mu0_2
 # 1037|     v0_56(void)                              = ^IndirectReadSideEffect[-1]            : &:r0_51, ~mu0_2
-# 1037|     mu0_57(decltype([...](...){...}))        = ^IndirectMayWriteSideEffect[-1]        : &:r0_51, ~mu0_2
+# 1037|     mu0_57(decltype([...](...){...}))        = ^IndirectMayWriteSideEffect[-1]        : &:r0_51
 # 1038|     r0_58(glval<decltype([...](...){...})>)  = VariableAddress[lambda_ref_explicit]   : 
 # 1038|     r0_59(glval<decltype([...](...){...})>)  = VariableAddress[#temp1038:30]          : 
 # 1038|     mu0_60(decltype([...](...){...}))        = Uninitialized[#temp1038:30]            : &:r0_59
@@ -4720,7 +4720,7 @@ ir.cpp:
 # 1039|     r0_71(char)                              = Call                                   : func:r0_69, this:r0_68, 0:r0_70
 # 1039|     mu0_72(unknown)                          = ^CallSideEffect                        : ~mu0_2
 # 1039|     v0_73(void)                              = ^IndirectReadSideEffect[-1]            : &:r0_68, ~mu0_2
-# 1039|     mu0_74(decltype([...](...){...}))        = ^IndirectMayWriteSideEffect[-1]        : &:r0_68, ~mu0_2
+# 1039|     mu0_74(decltype([...](...){...}))        = ^IndirectMayWriteSideEffect[-1]        : &:r0_68
 # 1040|     r0_75(glval<decltype([...](...){...})>)  = VariableAddress[lambda_val_explicit]   : 
 # 1040|     r0_76(glval<unknown>)                    = FunctionAddress[(constructor)]         : 
 # 1040|     r0_77(glval<decltype([...](...){...})>)  = VariableAddress[#temp1040:30]          : 
@@ -4733,7 +4733,7 @@ ir.cpp:
 # 1040|     v0_84(void)                              = Call                                   : func:r0_76, this:r0_75, 0:r0_83
 # 1040|     mu0_85(unknown)                          = ^CallSideEffect                        : ~mu0_2
 # 1040|     v0_86(void)                              = ^IndirectReadSideEffect[0]             : &:r0_83, ~mu0_2
-# 1040|     mu0_87(unknown)                          = ^BufferMayWriteSideEffect[0]           : &:r0_83, ~mu0_2
+# 1040|     mu0_87(unknown)                          = ^BufferMayWriteSideEffect[0]           : &:r0_83
 # 1041|     r0_88(glval<decltype([...](...){...})>)  = VariableAddress[lambda_val_explicit]   : 
 # 1041|     r0_89(glval<decltype([...](...){...})>)  = Convert                                : r0_88
 # 1041|     r0_90(glval<unknown>)                    = FunctionAddress[operator()]            : 
@@ -4741,7 +4741,7 @@ ir.cpp:
 # 1041|     r0_92(char)                              = Call                                   : func:r0_90, this:r0_89, 0:r0_91
 # 1041|     mu0_93(unknown)                          = ^CallSideEffect                        : ~mu0_2
 # 1041|     v0_94(void)                              = ^IndirectReadSideEffect[-1]            : &:r0_89, ~mu0_2
-# 1041|     mu0_95(decltype([...](...){...}))        = ^IndirectMayWriteSideEffect[-1]        : &:r0_89, ~mu0_2
+# 1041|     mu0_95(decltype([...](...){...}))        = ^IndirectMayWriteSideEffect[-1]        : &:r0_89
 # 1042|     r0_96(glval<decltype([...](...){...})>)  = VariableAddress[lambda_mixed_explicit] : 
 # 1042|     r0_97(glval<decltype([...](...){...})>)  = VariableAddress[#temp1042:32]          : 
 # 1042|     mu0_98(decltype([...](...){...}))        = Uninitialized[#temp1042:32]            : &:r0_97
@@ -4762,7 +4762,7 @@ ir.cpp:
 # 1043|     r0_113(char)                             = Call                                   : func:r0_111, this:r0_110, 0:r0_112
 # 1043|     mu0_114(unknown)                         = ^CallSideEffect                        : ~mu0_2
 # 1043|     v0_115(void)                             = ^IndirectReadSideEffect[-1]            : &:r0_110, ~mu0_2
-# 1043|     mu0_116(decltype([...](...){...}))       = ^IndirectMayWriteSideEffect[-1]        : &:r0_110, ~mu0_2
+# 1043|     mu0_116(decltype([...](...){...}))       = ^IndirectMayWriteSideEffect[-1]        : &:r0_110
 # 1044|     r0_117(glval<int>)                       = VariableAddress[r]                     : 
 # 1044|     r0_118(glval<int>)                       = VariableAddress[x]                     : 
 # 1044|     r0_119(int)                              = Load                                   : &:r0_118, ~mu0_2
@@ -4798,7 +4798,7 @@ ir.cpp:
 # 1046|     r0_149(char)                             = Call                                   : func:r0_147, this:r0_146, 0:r0_148
 # 1046|     mu0_150(unknown)                         = ^CallSideEffect                        : ~mu0_2
 # 1046|     v0_151(void)                             = ^IndirectReadSideEffect[-1]            : &:r0_146, ~mu0_2
-# 1046|     mu0_152(decltype([...](...){...}))       = ^IndirectMayWriteSideEffect[-1]        : &:r0_146, ~mu0_2
+# 1046|     mu0_152(decltype([...](...){...}))       = ^IndirectMayWriteSideEffect[-1]        : &:r0_146
 # 1047|     v0_153(void)                             = NoOp                                   : 
 # 1031|     v0_154(void)                             = ReturnVoid                             : 
 # 1031|     v0_155(void)                             = UnmodeledUse                           : mu*
@@ -4863,7 +4863,7 @@ ir.cpp:
 # 1034|     r0_11(char *)                                 = Call                            : func:r0_10, this:r0_9
 # 1034|     mu0_12(unknown)                               = ^CallSideEffect                 : ~mu0_2
 # 1034|     v0_13(void)                                   = ^IndirectReadSideEffect[-1]     : &:r0_9, ~mu0_2
-# 1034|     mu0_14(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_9, ~mu0_2
+# 1034|     mu0_14(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_9
 #-----|     r0_15(lambda [] type at line 1034, col. 21 *) = CopyValue                       : r0_3
 #-----|     r0_16(glval<int &>)                           = FieldAddress[x]                 : r0_15
 #-----|     r0_17(int &)                                  = Load                            : &:r0_16, ~mu0_2
@@ -4906,7 +4906,7 @@ ir.cpp:
 # 1036|     r0_10(char *)                                 = Call                            : func:r0_9, this:r0_8
 # 1036|     mu0_11(unknown)                               = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_12(void)                                   = ^IndirectReadSideEffect[-1]     : &:r0_8, ~mu0_2
-#-----|     mu0_13(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_8, ~mu0_2
+#-----|     mu0_13(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_8
 #-----|     r0_14(lambda [] type at line 1036, col. 21 *) = CopyValue                       : r0_3
 #-----|     r0_15(glval<int>)                             = FieldAddress[x]                 : r0_14
 #-----|     r0_16(int)                                    = Load                            : &:r0_15, ~mu0_2
@@ -4934,7 +4934,7 @@ ir.cpp:
 # 1038|     r0_11(char *)                                = Call                            : func:r0_10, this:r0_9
 # 1038|     mu0_12(unknown)                              = ^CallSideEffect                 : ~mu0_2
 # 1038|     v0_13(void)                                  = ^IndirectReadSideEffect[-1]     : &:r0_9, ~mu0_2
-# 1038|     mu0_14(String)                               = ^IndirectMayWriteSideEffect[-1] : &:r0_9, ~mu0_2
+# 1038|     mu0_14(String)                               = ^IndirectMayWriteSideEffect[-1] : &:r0_9
 # 1038|     r0_15(int)                                   = Constant[0]                     : 
 # 1038|     r0_16(glval<char>)                           = PointerAdd[1]                   : r0_11, r0_15
 # 1038|     r0_17(char)                                  = Load                            : &:r0_16, ~mu0_2
@@ -4991,7 +4991,7 @@ ir.cpp:
 # 1040|     r0_10(char *)                                = Call                            : func:r0_9, this:r0_8
 # 1040|     mu0_11(unknown)                              = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_12(void)                                  = ^IndirectReadSideEffect[-1]     : &:r0_8, ~mu0_2
-#-----|     mu0_13(String)                               = ^IndirectMayWriteSideEffect[-1] : &:r0_8, ~mu0_2
+#-----|     mu0_13(String)                               = ^IndirectMayWriteSideEffect[-1] : &:r0_8
 # 1040|     r0_14(int)                                   = Constant[0]                     : 
 # 1040|     r0_15(glval<char>)                           = PointerAdd[1]                   : r0_10, r0_14
 # 1040|     r0_16(char)                                  = Load                            : &:r0_15, ~mu0_2
@@ -5017,7 +5017,7 @@ ir.cpp:
 # 1042|     r0_11(char *)                                 = Call                            : func:r0_10, this:r0_9
 # 1042|     mu0_12(unknown)                               = ^CallSideEffect                 : ~mu0_2
 # 1042|     v0_13(void)                                   = ^IndirectReadSideEffect[-1]     : &:r0_9, ~mu0_2
-# 1042|     mu0_14(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_9, ~mu0_2
+# 1042|     mu0_14(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_9
 #-----|     r0_15(lambda [] type at line 1042, col. 32 *) = CopyValue                       : r0_3
 #-----|     r0_16(glval<int>)                             = FieldAddress[x]                 : r0_15
 #-----|     r0_17(int)                                    = Load                            : &:r0_16, ~mu0_2
@@ -5045,7 +5045,7 @@ ir.cpp:
 # 1045|     r0_11(char *)                                 = Call                            : func:r0_10, this:r0_9
 # 1045|     mu0_12(unknown)                               = ^CallSideEffect                 : ~mu0_2
 # 1045|     v0_13(void)                                   = ^IndirectReadSideEffect[-1]     : &:r0_9, ~mu0_2
-# 1045|     mu0_14(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_9, ~mu0_2
+# 1045|     mu0_14(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_9
 #-----|     r0_15(lambda [] type at line 1045, col. 23 *) = CopyValue                       : r0_3
 #-----|     r0_16(glval<int>)                             = FieldAddress[x]                 : r0_15
 #-----|     r0_17(int)                                    = Load                            : &:r0_16, ~mu0_2
@@ -5084,7 +5084,7 @@ ir.cpp:
 # 1069|     r0_13(iterator)             = Call                            : func:r0_12, this:r0_11
 # 1069|     mu0_14(unknown)             = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_15(void)                 = ^IndirectReadSideEffect[-1]     : &:r0_11, ~mu0_2
-#-----|     mu0_16(vector<int>)         = ^IndirectMayWriteSideEffect[-1] : &:r0_11, ~mu0_2
+#-----|     mu0_16(vector<int>)         = ^IndirectMayWriteSideEffect[-1] : &:r0_11
 # 1069|     mu0_17(iterator)            = Store                           : &:r0_9, r0_13
 # 1069|     r0_18(glval<iterator>)      = VariableAddress[(__end)]        : 
 #-----|     r0_19(glval<vector<int> &>) = VariableAddress[(__range)]      : 
@@ -5093,7 +5093,7 @@ ir.cpp:
 # 1069|     r0_22(iterator)             = Call                            : func:r0_21, this:r0_20
 # 1069|     mu0_23(unknown)             = ^CallSideEffect                 : ~mu0_2
 #-----|     v0_24(void)                 = ^IndirectReadSideEffect[-1]     : &:r0_20, ~mu0_2
-#-----|     mu0_25(vector<int>)         = ^IndirectMayWriteSideEffect[-1] : &:r0_20, ~mu0_2
+#-----|     mu0_25(vector<int>)         = ^IndirectMayWriteSideEffect[-1] : &:r0_20
 # 1069|     mu0_26(iterator)            = Store                           : &:r0_18, r0_22
 #-----|   Goto -> Block 4
 
@@ -5105,7 +5105,7 @@ ir.cpp:
 # 1075|     r1_4(int &)           = Call                            : func:r1_3, this:r1_2
 # 1075|     mu1_5(unknown)        = ^CallSideEffect                 : ~mu0_2
 #-----|     v1_6(void)            = ^IndirectReadSideEffect[-1]     : &:r1_2, ~mu0_2
-#-----|     mu1_7(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r1_2, ~mu0_2
+#-----|     mu1_7(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r1_2
 # 1075|     r1_8(glval<int>)      = Convert                         : r1_4
 # 1075|     mu1_9(int &)          = Store                           : &:r1_0, r1_8
 # 1076|     r1_10(glval<int &>)   = VariableAddress[e]              : 
@@ -5137,7 +5137,7 @@ ir.cpp:
 # 1069|     r4_5(bool)            = Call                            : func:r4_2, this:r4_1, 0:r4_4
 # 1069|     mu4_6(unknown)        = ^CallSideEffect                 : ~mu0_2
 #-----|     v4_7(void)            = ^IndirectReadSideEffect[-1]     : &:r4_1, ~mu0_2
-#-----|     mu4_8(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r4_1, ~mu0_2
+#-----|     mu4_8(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r4_1
 # 1069|     v4_9(void)            = ConditionalBranch               : r4_5
 #-----|   False -> Block 8
 #-----|   True -> Block 5
@@ -5150,7 +5150,7 @@ ir.cpp:
 # 1069|     r5_4(int &)           = Call                            : func:r5_3, this:r5_2
 # 1069|     mu5_5(unknown)        = ^CallSideEffect                 : ~mu0_2
 #-----|     v5_6(void)            = ^IndirectReadSideEffect[-1]     : &:r5_2, ~mu0_2
-#-----|     mu5_7(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r5_2, ~mu0_2
+#-----|     mu5_7(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r5_2
 # 1069|     r5_8(int)             = Load                            : &:r5_4, ~mu0_2
 # 1069|     mu5_9(int)            = Store                           : &:r5_0, r5_8
 # 1070|     r5_10(glval<int>)     = VariableAddress[e]              : 
@@ -5172,7 +5172,7 @@ ir.cpp:
 # 1069|     r7_3(iterator &)      = Call                            : func:r7_2, this:r7_1
 # 1069|     mu7_4(unknown)        = ^CallSideEffect                 : ~mu0_2
 #-----|     v7_5(void)            = ^IndirectReadSideEffect[-1]     : &:r7_1, ~mu0_2
-#-----|     mu7_6(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r7_1, ~mu0_2
+#-----|     mu7_6(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r7_1
 #-----|   Goto (back edge) -> Block 4
 
 # 1075|   Block 8
@@ -5187,7 +5187,7 @@ ir.cpp:
 # 1075|     r8_8(iterator)              = Call                            : func:r8_7, this:r8_6
 # 1075|     mu8_9(unknown)              = ^CallSideEffect                 : ~mu0_2
 #-----|     v8_10(void)                 = ^IndirectReadSideEffect[-1]     : &:r8_6, ~mu0_2
-#-----|     mu8_11(vector<int>)         = ^IndirectMayWriteSideEffect[-1] : &:r8_6, ~mu0_2
+#-----|     mu8_11(vector<int>)         = ^IndirectMayWriteSideEffect[-1] : &:r8_6
 # 1075|     mu8_12(iterator)            = Store                           : &:r8_4, r8_8
 # 1075|     r8_13(glval<iterator>)      = VariableAddress[(__end)]        : 
 #-----|     r8_14(glval<vector<int> &>) = VariableAddress[(__range)]      : 
@@ -5196,7 +5196,7 @@ ir.cpp:
 # 1075|     r8_17(iterator)             = Call                            : func:r8_16, this:r8_15
 # 1075|     mu8_18(unknown)             = ^CallSideEffect                 : ~mu0_2
 #-----|     v8_19(void)                 = ^IndirectReadSideEffect[-1]     : &:r8_15, ~mu0_2
-#-----|     mu8_20(vector<int>)         = ^IndirectMayWriteSideEffect[-1] : &:r8_15, ~mu0_2
+#-----|     mu8_20(vector<int>)         = ^IndirectMayWriteSideEffect[-1] : &:r8_15
 # 1075|     mu8_21(iterator)            = Store                           : &:r8_13, r8_17
 #-----|   Goto -> Block 9
 
@@ -5209,7 +5209,7 @@ ir.cpp:
 # 1075|     r9_5(bool)            = Call                            : func:r9_2, this:r9_1, 0:r9_4
 # 1075|     mu9_6(unknown)        = ^CallSideEffect                 : ~mu0_2
 #-----|     v9_7(void)            = ^IndirectReadSideEffect[-1]     : &:r9_1, ~mu0_2
-#-----|     mu9_8(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r9_1, ~mu0_2
+#-----|     mu9_8(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r9_1
 # 1075|     v9_9(void)            = ConditionalBranch               : r9_5
 #-----|   False -> Block 3
 #-----|   True -> Block 1
@@ -5220,7 +5220,7 @@ ir.cpp:
 # 1075|     r10_2(iterator &)      = Call                            : func:r10_1, this:r10_0
 # 1075|     mu10_3(unknown)        = ^CallSideEffect                 : ~mu0_2
 #-----|     v10_4(void)            = ^IndirectReadSideEffect[-1]     : &:r10_0, ~mu0_2
-#-----|     mu10_5(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r10_0, ~mu0_2
+#-----|     mu10_5(iterator)       = ^IndirectMayWriteSideEffect[-1] : &:r10_0
 #-----|   Goto (back edge) -> Block 9
 
 # 1099| int AsmStmt(int)
@@ -5379,7 +5379,7 @@ ir.cpp:
 # 1140|     v7_4(void)            = Call                            : func:r7_1, this:r7_0, 0:r7_3
 # 1140|     mu7_5(unknown)        = ^CallSideEffect                 : ~mu0_2
 # 1140|     v7_6(void)            = ^IndirectReadSideEffect[0]      : &:r7_3, ~mu0_2
-# 1140|     mu7_7(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r7_3, ~mu0_2
+# 1140|     mu7_7(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r7_3
 # 1140|     v7_8(void)            = ThrowValue                      : &:r7_0, ~mu0_2
 #-----|   Exception -> Block 9
 
@@ -5404,7 +5404,7 @@ ir.cpp:
 # 1145|     v10_6(void)           = Call                          : func:r10_3, this:r10_2, 0:r10_5
 # 1145|     mu10_7(unknown)       = ^CallSideEffect               : ~mu0_2
 # 1145|     v10_8(void)           = ^IndirectReadSideEffect[0]    : &:r10_5, ~mu0_2
-# 1145|     mu10_9(unknown)       = ^BufferMayWriteSideEffect[0]  : &:r10_5, ~mu0_2
+# 1145|     mu10_9(unknown)       = ^BufferMayWriteSideEffect[0]  : &:r10_5
 # 1145|     v10_10(void)          = ThrowValue                    : &:r10_2, ~mu0_2
 #-----|   Exception -> Block 2
 
