@@ -484,14 +484,14 @@ events.cs:
 #    8| System.Void Events..ctor()
 #    8|   Block 0
 #    8|     v0_0(Void)          = EnterFunction          : 
-#    8|     mu0_1(null)         = AliasedDefinition      : 
-#    8|     mu0_2(null)         = UnmodeledDefinition    : 
+#    8|     mu0_1(<unknown>)    = AliasedDefinition      : 
+#    8|     mu0_2(<unknown>)    = UnmodeledDefinition    : 
 #    8|     r0_3(glval<Events>) = InitializeThis         : 
 #   10|     r0_4(MyDel)         = NewObj                 : 
-#   10|     r0_5(glval<null>)   = FunctionAddress[MyDel] : 
+#   10|     r0_5(<funcaddr>)    = FunctionAddress[MyDel] : 
 #   10|     r0_6(glval<MyDel>)  = FunctionAddress[Fun]   : 
 #   10|     v0_7(Void)          = Call                   : func:r0_5, this:r0_4, 0:r0_6
-#   10|     mu0_8(null)         = ^CallSideEffect        : ~mu0_2
+#   10|     mu0_8(<unknown>)    = ^CallSideEffect        : ~mu0_2
 #   10|     r0_9(Events)        = CopyValue              : r0_3
 #   10|     r0_10(glval<MyDel>) = FieldAddress[Inst]     : r0_9
 #   10|     mu0_11(MyDel)       = Store                  : &:r0_10, r0_4
@@ -502,16 +502,16 @@ events.cs:
 #   13| System.Void Events.AddEvent()
 #   13|   Block 0
 #   13|     v0_0(Void)          = EnterFunction                : 
-#   13|     mu0_1(null)         = AliasedDefinition            : 
-#   13|     mu0_2(null)         = UnmodeledDefinition          : 
+#   13|     mu0_1(<unknown>)    = AliasedDefinition            : 
+#   13|     mu0_2(<unknown>)    = UnmodeledDefinition          : 
 #   13|     r0_3(glval<Events>) = InitializeThis               : 
 #   15|     r0_4(Events)        = CopyValue                    : r0_3
-#   15|     r0_5(glval<null>)   = FunctionAddress[add_MyEvent] : 
+#   15|     r0_5(<funcaddr>)    = FunctionAddress[add_MyEvent] : 
 #   15|     r0_6(Events)        = CopyValue                    : r0_3
 #   15|     r0_7(glval<MyDel>)  = FieldAddress[Inst]           : r0_6
 #   15|     r0_8(MyDel)         = Load                         : &:r0_7, ~mu0_2
 #   15|     v0_9(Void)          = Call                         : func:r0_5, this:r0_4, 0:r0_8
-#   15|     mu0_10(null)        = ^CallSideEffect              : ~mu0_2
+#   15|     mu0_10(<unknown>)   = ^CallSideEffect              : ~mu0_2
 #   13|     v0_11(Void)         = ReturnVoid                   : 
 #   13|     v0_12(Void)         = UnmodeledUse                 : mu*
 #   13|     v0_13(Void)         = ExitFunction                 : 
@@ -519,16 +519,16 @@ events.cs:
 #   18| System.Void Events.RemoveEvent()
 #   18|   Block 0
 #   18|     v0_0(Void)          = EnterFunction                   : 
-#   18|     mu0_1(null)         = AliasedDefinition               : 
-#   18|     mu0_2(null)         = UnmodeledDefinition             : 
+#   18|     mu0_1(<unknown>)    = AliasedDefinition               : 
+#   18|     mu0_2(<unknown>)    = UnmodeledDefinition             : 
 #   18|     r0_3(glval<Events>) = InitializeThis                  : 
 #   20|     r0_4(Events)        = CopyValue                       : r0_3
-#   20|     r0_5(glval<null>)   = FunctionAddress[remove_MyEvent] : 
+#   20|     r0_5(<funcaddr>)    = FunctionAddress[remove_MyEvent] : 
 #   20|     r0_6(Events)        = CopyValue                       : r0_3
 #   20|     r0_7(glval<MyDel>)  = FieldAddress[Inst]              : r0_6
 #   20|     r0_8(MyDel)         = Load                            : &:r0_7, ~mu0_2
 #   20|     v0_9(Void)          = Call                            : func:r0_5, this:r0_4, 0:r0_8
-#   20|     mu0_10(null)        = ^CallSideEffect                 : ~mu0_2
+#   20|     mu0_10(<unknown>)   = ^CallSideEffect                 : ~mu0_2
 #   18|     v0_11(Void)         = ReturnVoid                      : 
 #   18|     v0_12(Void)         = UnmodeledUse                    : mu*
 #   18|     v0_13(Void)         = ExitFunction                    : 
@@ -536,8 +536,8 @@ events.cs:
 #   23| System.String Events.Fun(System.String)
 #   23|   Block 0
 #   23|     v0_0(Void)           = EnterFunction            : 
-#   23|     mu0_1(null)          = AliasedDefinition        : 
-#   23|     mu0_2(null)          = UnmodeledDefinition      : 
+#   23|     mu0_1(<unknown>)     = AliasedDefinition        : 
+#   23|     mu0_2(<unknown>)     = UnmodeledDefinition      : 
 #   23|     r0_3(glval<Events>)  = InitializeThis           : 
 #   23|     r0_4(glval<String>)  = VariableAddress[str]     : 
 #   23|     mu0_5(String)        = InitializeParameter[str] : &:r0_4
@@ -553,34 +553,34 @@ events.cs:
 #   28| System.Void Events.Main(System.String[])
 #   28|   Block 0
 #   28|     v0_0(Void)            = EnterFunction                : 
-#   28|     mu0_1(null)           = AliasedDefinition            : 
-#   28|     mu0_2(null)           = UnmodeledDefinition          : 
+#   28|     mu0_1(<unknown>)      = AliasedDefinition            : 
+#   28|     mu0_2(<unknown>)      = UnmodeledDefinition          : 
 #   28|     r0_3(glval<String[]>) = VariableAddress[args]        : 
 #   28|     mu0_4(String[])       = InitializeParameter[args]    : &:r0_3
 #   30|     r0_5(glval<Events>)   = VariableAddress[obj]         : 
 #   30|     r0_6(Events)          = NewObj                       : 
-#   30|     r0_7(glval<null>)     = FunctionAddress[Events]      : 
+#   30|     r0_7(<funcaddr>)      = FunctionAddress[Events]      : 
 #   30|     v0_8(Void)            = Call                         : func:r0_7, this:r0_6
-#   30|     mu0_9(null)           = ^CallSideEffect              : ~mu0_2
+#   30|     mu0_9(<unknown>)      = ^CallSideEffect              : ~mu0_2
 #   30|     mu0_10(Events)        = Store                        : &:r0_5, r0_6
 #   31|     r0_11(glval<Events>)  = VariableAddress[obj]         : 
 #   31|     r0_12(Events)         = Load                         : &:r0_11, ~mu0_2
-#   31|     r0_13(glval<null>)    = FunctionAddress[AddEvent]    : 
+#   31|     r0_13(<funcaddr>)     = FunctionAddress[AddEvent]    : 
 #   31|     v0_14(Void)           = Call                         : func:r0_13, this:r0_12
-#   31|     mu0_15(null)          = ^CallSideEffect              : ~mu0_2
+#   31|     mu0_15(<unknown>)     = ^CallSideEffect              : ~mu0_2
 #   32|     r0_16(glval<String>)  = VariableAddress[result]      : 
 #   32|     r0_17(glval<Events>)  = VariableAddress[obj]         : 
 #   32|     r0_18(Events)         = Load                         : &:r0_17, ~mu0_2
-#   32|     r0_19(glval<null>)    = FunctionAddress[Invoke]      : 
+#   32|     r0_19(<funcaddr>)     = FunctionAddress[Invoke]      : 
 #   32|     r0_20(String)         = StringConstant["string"]     : 
 #   32|     v0_21(Void)           = Call                         : func:r0_19, this:r0_18, 0:r0_20
-#   32|     mu0_22(null)          = ^CallSideEffect              : ~mu0_2
+#   32|     mu0_22(<unknown>)     = ^CallSideEffect              : ~mu0_2
 #   32|     mu0_23(String)        = Store                        : &:r0_16, v0_21
 #   33|     r0_24(glval<Events>)  = VariableAddress[obj]         : 
 #   33|     r0_25(Events)         = Load                         : &:r0_24, ~mu0_2
-#   33|     r0_26(glval<null>)    = FunctionAddress[RemoveEvent] : 
+#   33|     r0_26(<funcaddr>)     = FunctionAddress[RemoveEvent] : 
 #   33|     v0_27(Void)           = Call                         : func:r0_26, this:r0_25
-#   33|     mu0_28(null)          = ^CallSideEffect              : ~mu0_2
+#   33|     mu0_28(<unknown>)     = ^CallSideEffect              : ~mu0_2
 #   28|     v0_29(Void)           = ReturnVoid                   : 
 #   28|     v0_30(Void)           = UnmodeledUse                 : mu*
 #   28|     v0_31(Void)           = ExitFunction                 : 
@@ -707,8 +707,8 @@ indexers.cs:
 #    5| System.Void Indexers.MyClass..ctor()
 #    5|   Block 0
 #    5|     v0_0(Void)           = EnterFunction       : 
-#    5|     mu0_1(null)          = AliasedDefinition   : 
-#    5|     mu0_2(null)          = UnmodeledDefinition : 
+#    5|     mu0_1(<unknown>)     = AliasedDefinition   : 
+#    5|     mu0_2(<unknown>)     = UnmodeledDefinition : 
 #    5|     r0_3(glval<MyClass>) = InitializeThis      : 
 #    6|     v0_4(Void)           = NoOp                : 
 #    5|     v0_5(Void)           = ReturnVoid          : 
@@ -718,8 +718,8 @@ indexers.cs:
 #   12| System.String Indexers.MyClass.get_Item(System.Int32)
 #   12|   Block 0
 #   12|     v0_0(Void)            = EnterFunction              : 
-#   12|     mu0_1(null)           = AliasedDefinition          : 
-#   12|     mu0_2(null)           = UnmodeledDefinition        : 
+#   12|     mu0_1(<unknown>)      = AliasedDefinition          : 
+#   12|     mu0_2(<unknown>)      = UnmodeledDefinition        : 
 #   12|     r0_3(glval<MyClass>)  = InitializeThis             : 
 #   10|     r0_4(glval<Int32>)    = VariableAddress[index]     : 
 #   10|     mu0_5(Int32)          = InitializeParameter[index] : &:r0_4
@@ -740,8 +740,8 @@ indexers.cs:
 #   16| System.Void Indexers.MyClass.set_Item(System.Int32,System.String)
 #   16|   Block 0
 #   16|     v0_0(Void)             = EnterFunction              : 
-#   16|     mu0_1(null)            = AliasedDefinition          : 
-#   16|     mu0_2(null)            = UnmodeledDefinition        : 
+#   16|     mu0_1(<unknown>)       = AliasedDefinition          : 
+#   16|     mu0_2(<unknown>)       = UnmodeledDefinition        : 
 #   16|     r0_3(glval<MyClass>)   = InitializeThis             : 
 #   10|     r0_4(glval<Int32>)     = VariableAddress[index]     : 
 #   10|     mu0_5(Int32)           = InitializeParameter[index] : &:r0_4
@@ -763,40 +763,40 @@ indexers.cs:
 #   23| System.Void Indexers.Main()
 #   23|   Block 0
 #   23|     v0_0(Void)            = EnterFunction             : 
-#   23|     mu0_1(null)           = AliasedDefinition         : 
-#   23|     mu0_2(null)           = UnmodeledDefinition       : 
+#   23|     mu0_1(<unknown>)      = AliasedDefinition         : 
+#   23|     mu0_2(<unknown>)      = UnmodeledDefinition       : 
 #   25|     r0_3(glval<MyClass>)  = VariableAddress[inst]     : 
 #   25|     r0_4(MyClass)         = NewObj                    : 
-#   25|     r0_5(glval<null>)     = FunctionAddress[MyClass]  : 
+#   25|     r0_5(<funcaddr>)      = FunctionAddress[MyClass]  : 
 #   25|     v0_6(Void)            = Call                      : func:r0_5, this:r0_4
-#   25|     mu0_7(null)           = ^CallSideEffect           : ~mu0_2
+#   25|     mu0_7(<unknown>)      = ^CallSideEffect           : ~mu0_2
 #   25|     mu0_8(MyClass)        = Store                     : &:r0_3, r0_4
 #   26|     r0_9(glval<MyClass>)  = VariableAddress[inst]     : 
 #   26|     r0_10(MyClass)        = Load                      : &:r0_9, ~mu0_2
-#   26|     r0_11(glval<null>)    = FunctionAddress[set_Item] : 
+#   26|     r0_11(<funcaddr>)     = FunctionAddress[set_Item] : 
 #   26|     r0_12(Int32)          = Constant[0]               : 
 #   26|     r0_13(String)         = StringConstant["str1"]    : 
 #   26|     v0_14(Void)           = Call                      : func:r0_11, this:r0_10, 0:r0_12, 1:r0_13
-#   26|     mu0_15(null)          = ^CallSideEffect           : ~mu0_2
+#   26|     mu0_15(<unknown>)     = ^CallSideEffect           : ~mu0_2
 #   27|     r0_16(glval<MyClass>) = VariableAddress[inst]     : 
 #   27|     r0_17(MyClass)        = Load                      : &:r0_16, ~mu0_2
-#   27|     r0_18(glval<null>)    = FunctionAddress[set_Item] : 
+#   27|     r0_18(<funcaddr>)     = FunctionAddress[set_Item] : 
 #   27|     r0_19(Int32)          = Constant[1]               : 
 #   27|     r0_20(String)         = StringConstant["str1"]    : 
 #   27|     v0_21(Void)           = Call                      : func:r0_18, this:r0_17, 0:r0_19, 1:r0_20
-#   27|     mu0_22(null)          = ^CallSideEffect           : ~mu0_2
+#   27|     mu0_22(<unknown>)     = ^CallSideEffect           : ~mu0_2
 #   28|     r0_23(glval<MyClass>) = VariableAddress[inst]     : 
 #   28|     r0_24(MyClass)        = Load                      : &:r0_23, ~mu0_2
-#   28|     r0_25(glval<null>)    = FunctionAddress[set_Item] : 
+#   28|     r0_25(<funcaddr>)     = FunctionAddress[set_Item] : 
 #   28|     r0_26(Int32)          = Constant[1]               : 
 #   28|     r0_27(glval<MyClass>) = VariableAddress[inst]     : 
 #   28|     r0_28(MyClass)        = Load                      : &:r0_27, ~mu0_2
-#   28|     r0_29(glval<null>)    = FunctionAddress[get_Item] : 
+#   28|     r0_29(<funcaddr>)     = FunctionAddress[get_Item] : 
 #   28|     r0_30(Int32)          = Constant[0]               : 
 #   28|     r0_31(String)         = Call                      : func:r0_29, this:r0_28, 0:r0_30
-#   28|     mu0_32(null)          = ^CallSideEffect           : ~mu0_2
+#   28|     mu0_32(<unknown>)     = ^CallSideEffect           : ~mu0_2
 #   28|     v0_33(Void)           = Call                      : func:r0_25, this:r0_24, 0:r0_26, 1:r0_31
-#   28|     mu0_34(null)          = ^CallSideEffect           : ~mu0_2
+#   28|     mu0_34(<unknown>)     = ^CallSideEffect           : ~mu0_2
 #   23|     v0_35(Void)           = ReturnVoid                : 
 #   23|     v0_36(Void)           = UnmodeledUse              : mu*
 #   23|     v0_37(Void)           = ExitFunction              : 

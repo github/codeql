@@ -2147,7 +2147,7 @@ class TranslatedEventAccess extends TranslatedNonConstantExpr {
   override TranslatedElement getChild(int id) { id = 0 and result = this.getLValue() }
 
   override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+    Opcode opcode, InstructionTag tag, CSharpType resultType
   ) {
     none()
   }
