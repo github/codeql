@@ -88,15 +88,21 @@ namespace Semmle.Extraction
         /// <returns></returns>
         Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope);
 
-        IdentifierMode Identifiers { get; }
+        /// <summary>
+        /// Adjusts the algorithm used to generate identifiers in trap files.
+        /// </summary>
+        TrapIdenfierMode TrapIdentifiers { get; }
     }
 
-    public enum IdentifierMode
+    /// <summary>
+    /// Configures how to generate identifiers in trap files.
+    /// </summary>
+    public enum TrapIdenfierMode
     {
-        Imprecise,
-        Flexible,
-        Precise,
-        ExtraPrecise
+        Imprecise,      // Names are not qualified by assembly version
+        Flexible,       // Some names are qualified by assembly versions - typerefs are not however.
+        Precise,        // All names are qualified by their partial assembly version (excludes build number)
+        ExtraPrecise    // All names are qualified by their full assembly version.
     }
 
     /// <summary>
@@ -122,7 +128,7 @@ namespace Semmle.Extraction
         public Extractor(bool standalone, string outputPath, ILogger logger)
         {
             Standalone = standalone;
-            if (Standalone) Identifiers = IdentifierMode.Imprecise;
+            if (Standalone) TrapIdentifiers = TrapIdenfierMode.Imprecise;
             OutputPath = outputPath;
             Logger = logger;
         }
@@ -209,6 +215,6 @@ namespace Semmle.Extraction
 
         public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
 
-        public IdentifierMode Identifiers { get; } = IdentifierMode.Imprecise;
+        public TrapIdenfierMode TrapIdentifiers { get; } = TrapIdenfierMode.Imprecise;
     }
 }

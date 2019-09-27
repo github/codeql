@@ -1208,7 +1208,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('[');
-                for(int i=1; i<shape.Rank; ++i)
+                for (int i=1; i<shape.Rank; ++i)
                     trapFile.Write(',');
                 trapFile.Write(']');
             }

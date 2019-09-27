@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            AddSignatureTypeToId(Context, trapFile, symbol, symbol.ReturnType, TypeNameContext.MethodParam); // Needed for op_explicit(), which differs only by return type.
+            AddSignatureTypeToId(Context, trapFile, symbol, symbol.ReturnType, TypeIdentifierContext.MethodParam); // Needed for op_explicit(), which differs only by return type.
             trapFile.Write(' ');
             BuildMethodId(this, trapFile);
         }

@@ -258,7 +258,6 @@ namespace Semmle.Extraction.CSharp
 
                 var assemblyPath = r.FilePath;
                 var projectLayout = layout.LookupProjectOrDefault(assemblyPath);
-
                 using (var trapWriter = projectLayout.CreateTrapWriter(Logger, assemblyPath, true, options.TrapCompression))
                 {
                     var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
@@ -278,14 +277,15 @@ namespace Semmle.Extraction.CSharp
                          * then there is a small amount of duplicated work but the output should
                          * still be correct.
                          */
+
                         // compilation.Clone() reduces memory footprint by allowing the symbols
                         // in c to be garbage collected.
                         Compilation c = compilation.Clone();
+
                         var assembly = c.GetAssemblyOrModuleSymbol(r) as IAssemblySymbol;
 
                         if (assembly != null)
                         {
-
                             var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath, false));
 
                             foreach (var module in assembly.Modules)

@@ -15,7 +15,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            // trapFile.WriteSubId(ContainingType.TypeRef);
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
             Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);

@@ -27,7 +27,11 @@ namespace Semmle.Extraction.CSharp
         }
     }
 
-    public enum TypeNameContext
+    /// <summary>
+    /// Marks where a type identifier is being generated, which could change
+    /// the way that the identifier is generated.
+    /// </summary>
+    public enum TypeIdentifierContext
     {
         TypeName,
         TypeRef,
@@ -35,7 +39,6 @@ namespace Semmle.Extraction.CSharp
         MethodName,
         MethodParam
     }
-
 
     static class SymbolExtensions
     {
@@ -143,7 +146,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="cx">The extraction context.</param>
         /// <param name="trapFile">The trap builder used to store the result.</param>
         /// <param name="subTermAction">The action to apply to syntactic sub terms of this type.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction, TypeNameContext assemblyPrefix, ISymbol genericContext)
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction, TypeIdentifierContext tic, ISymbol genericContext)
         {
             switch(type.SpecialType)
             {
@@ -182,8 +185,6 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
                         subTermAction(cx, trapFile, array.ElementType, genericContext);
-                        if(assemblyPrefix == TypeNameContext.TypeName)
-                            trapFile.Write((int)array.ElementNullableAnnotation);
                         array.BuildArraySuffix(trapFile);
                         return;
                     case TypeKind.Class:
@@ -193,7 +194,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeId(cx, trapFile, subTermAction, assemblyPrefix, genericContext);
+                        named.BuildNamedTypeId(cx, trapFile, subTermAction, tic, genericContext);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
@@ -205,12 +206,12 @@ namespace Semmle.Extraction.CSharp
                         switch(tp.TypeParameterKind)
                         {
                             case TypeParameterKind.Method:
-                                if(!Equals(genericContext, tp.DeclaringMethod))
+                                if (!Equals(genericContext, tp.DeclaringMethod))
                                     trapFile.WriteSubId(Method.Create(cx, tp.DeclaringMethod));
                                 trapFile.Write("!!");
                                 break;
                             case TypeParameterKind.Type:
-                                if(!Equals(genericContext,tp.DeclaringType))
+                                if (!Equals(genericContext,tp.DeclaringType))
                                     subTermAction(cx, trapFile, tp.DeclaringType, genericContext);
                                 trapFile.Write("!");
                                 break;
@@ -257,11 +258,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
-        public static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction, TypeNameContext assemblyPrefix, ISymbol genericContext)
+        public static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction, TypeIdentifierContext tic, ISymbol genericContext)
         {
             bool prefixAssembly = false;
             if (named.IsAnonymous()) prefixAssembly = true;
-            else if(assemblyPrefix == TypeNameContext.TypeName && cx.Extractor.Identifiers != IdentifierMode.Imprecise) prefixAssembly = true;
+            else if(tic == TypeIdentifierContext.TypeName && cx.Extractor.TrapIdentifiers != TrapIdenfierMode.Imprecise) prefixAssembly = true;
             if (named.ContainingAssembly is null) prefixAssembly = false;
 
             if (prefixAssembly)
@@ -310,10 +311,9 @@ namespace Semmle.Extraction.CSharp
                 // Type arguments with different nullability can result in 
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
-                trapFile.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => {
-                    subTermAction(cx, tb0, ta.Symbol, genericContext);
-                    tb0.Write((int)ta.Nullability);
-                });
+                trapFile.BuildList(",", named.GetAnnotatedTypeArguments(),
+                    (ta, tb0) => subTermAction(cx, tb0, ta.Symbol, genericContext)
+                    );
                 trapFile.Write('>');
             }
         }
@@ -409,12 +409,11 @@ namespace Semmle.Extraction.CSharp
             }
 
             trapFile.Write(namedType.Name);
-            if (namedType.IsGenericType && /* namedType.TypeKind != TypeKind.Error && */ namedType.TypeArguments.Any())
+            if (namedType.IsGenericType && namedType.TypeArguments.Any())
             {
                 trapFile.Write('<');
                 trapFile.BuildList(",", namedType.TypeArguments, (p, tb0) =>
                 {
-                    // tb0.Write(p.Name);
                     if (IsReallyBound(namedType))
                         p.BuildDisplayName(cx, tb0);
                 });
@@ -543,12 +542,10 @@ namespace Semmle.Extraction.CSharp
             return new AnnotatedTypeSymbol(info.Type.DisambiguateType(), info.Nullability.Annotation);
         }
 
- 
-
         private static bool IsSpecialized(this IMethodSymbol method) =>
             method.IsGenericMethod &&
             !ReferenceEquals(method, method.OriginalDefinition) &&
-            method.TypeParameters.Zip(method.TypeArguments, (a, b) => !ReferenceEquals(a, b)).Any(b=>b);
+            method.TypeParameters.Zip(method.TypeArguments, (a, b) => !ReferenceEquals(a, b)).Any(b => b);
 
         private static bool IsSpecialized(this INamedTypeSymbol type) =>
             type.IsGenericType &&
@@ -595,6 +592,7 @@ namespace Semmle.Extraction.CSharp
         /// The contents of the trap file is dependent upon which dependencies
         /// were resolved. Therefore, we need to compute this in order to determine
         /// whether we need to re-extract an assembly.
+        /// Note: not currently used but might be useful.
         /// </summary>
         /// <param name="asm">The assembly to compute</param>
         /// <returns>A hash string.</returns>

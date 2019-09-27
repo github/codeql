@@ -456,9 +456,9 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("specific_type_parameter_constraints", constraints, baseType);
         }
 
-        internal static void specific_type_parameter_annotation(this TextWriter trapFile, TypeParameterConstraints constraints, Type baseType, TypeAnnotation annotation)
+        internal static void specific_type_parameter_nullability(this TextWriter trapFile, TypeParameterConstraints constraints, Type baseType, NullabilityEntity nullability)
         {
-            trapFile.WriteTuple("specific_type_parameter_annotation", constraints, baseType, (int)annotation);
+            trapFile.WriteTuple("specific_type_parameter_nullability", constraints, baseType, nullability);
         }
 
         internal static void stmt_location(this TextWriter trapFile, Statement stmt, Location location)
@@ -526,12 +526,12 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("type_parameters", param, child, typeOrMethod, (int)param.Variance);
         }
 
-        internal static void typeref_type(this TextWriter trapFile, NamedTypeRef typeref, Type type)
+        internal static void typeref_type(this TextWriter trapFile, TypeRef typeref, Type type)
         {
             trapFile.WriteTuple("typeref_type", typeref, type);
         }
 
-        internal static void typerefs(this TextWriter trapFile, NamedTypeRef type, string name)
+        internal static void typerefs(this TextWriter trapFile, TypeRef type, string name)
         {
             trapFile.WriteTuple("typerefs", type, name);
         }
