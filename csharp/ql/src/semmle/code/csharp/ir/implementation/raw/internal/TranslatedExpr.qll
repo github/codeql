@@ -843,6 +843,9 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
       implies
       expr = expr.getParent().(LocalVariableDeclAndInitExpr).getInitializer()
     )
+    or
+    // Static field accesses should be modeled as `TranslatedNonFieldAccess`
+    expr.(FieldAccess).getTarget().isStatic()
   }
 
   override Instruction getFirstInstruction() {
@@ -874,6 +877,11 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
 
 class TranslatedFieldAccess extends TranslatedVariableAccess {
   override FieldAccess expr;
+
+  TranslatedFieldAccess() {
+    // Static field accesses should be modeled as `TranslatedNonFieldAccess`
+    not expr.getTarget().isStatic()
+  }
 
   override Instruction getFirstInstruction() {
     // If there is a qualifier

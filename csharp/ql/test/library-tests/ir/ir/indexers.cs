@@ -2,10 +2,6 @@ class Indexers
 {
     public class MyClass
     {
-        public MyClass()
-        {
-        }
-
         private string[] address = new string[2];
         public string this[int index]
         {
