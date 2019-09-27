@@ -1505,12 +1505,11 @@ prop.cs:
 #   12|     mu0_5(Int32)           = InitializeParameter[value] : &:r0_4
 #   14|     r0_6(glval<Int32>)     = VariableAddress[value]     : 
 #   14|     r0_7(Int32)            = Load                       : &:r0_6, ~mu0_2
-#   14|     r0_8(PropClass)        = CopyValue                  : r0_3
-#   14|     r0_9(glval<Int32>)     = FieldAddress[prop]         : r0_8
-#   14|     mu0_10(Int32)          = Store                      : &:r0_9, r0_7
-#   12|     v0_11(Void)            = ReturnVoid                 : 
-#   12|     v0_12(Void)            = UnmodeledUse               : mu*
-#   12|     v0_13(Void)            = ExitFunction               : 
+#   14|     r0_8(glval<Int32>)     = VariableAddress[prop]      : 
+#   14|     mu0_9(Int32)           = Store                      : &:r0_8, r0_7
+#   12|     v0_10(Void)            = ReturnVoid                 : 
+#   12|     v0_11(Void)            = UnmodeledUse               : mu*
+#   12|     v0_12(Void)            = ExitFunction               : 
 
 #   18| System.Int32 PropClass.func()
 #   18|   Block 0

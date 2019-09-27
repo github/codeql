@@ -833,16 +833,21 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
 
 class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
   TranslatedNonFieldVariableAccess() {
-    not expr instanceof FieldAccess and
-    // If the parent expression is a `LocalVariableDeclAndInitExpr`,
-    // then translate only the variables that are initializers (on the RHS)
-    // and not the LHS (the address of the LHS is generated during
-    // the translation of the initialization).
     (
-      expr.getParent() instanceof LocalVariableDeclAndInitExpr
-      implies
-      expr = expr.getParent().(LocalVariableDeclAndInitExpr).getInitializer()
+      not expr instanceof FieldAccess and
+      // If the parent expression is a `LocalVariableDeclAndInitExpr`,
+      // then translate only the variables that are initializers (on the RHS)
+      // and not the LHS (the address of the LHS is generated during
+      // the translation of the initialization).
+      (
+        expr.getParent() instanceof LocalVariableDeclAndInitExpr
+        implies
+        expr = expr.getParent().(LocalVariableDeclAndInitExpr).getInitializer()
+      )
     )
+    or
+    // Static field accesses should be modeled as `TranslatedNonFieldAccess`
+    expr.(FieldAccess).getTarget().isStatic()
   }
 
   override Instruction getFirstInstruction() {
@@ -874,6 +879,11 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
 
 class TranslatedFieldAccess extends TranslatedVariableAccess {
   override FieldAccess expr;
+  
+  TranslatedFieldAccess() {
+    // Static field accesses should be modeled as `TranslatedNonFieldAccess`
+    not expr.getTarget().isStatic()
+  }
 
   override Instruction getFirstInstruction() {
     // If there is a qualifier
