@@ -181,6 +181,11 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll"
   ],
+  "C++ IR ValueNumberingImports": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/internal/ValueNumberingImports.qll"
+  ],
   "IR SSA SimpleSSA": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll"
@@ -195,10 +200,12 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintSSA.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/PrintSSA.qll"
   ],
-  "C++ IR ValueNumber": [
+  "IR ValueNumber": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll"
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/ValueNumbering.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll"
   ],
   "C++ IR ConstantAnalysis": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/ConstantAnalysis.qll",
@@ -249,5 +256,9 @@
   "C# IR PrintIRImports": [
     "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/internal/PrintIRImports.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/PrintIRImports.qll"
+  ],
+  "C# IR ValueNumberingImports": [
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll"
   ]
 }
