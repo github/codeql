@@ -345,8 +345,9 @@ private module ImplCommon {
   }
 
   /**
-   * Record a call site in the dataflow graph if it either improves
-   * virtual dispatch or if we can remove unreachable edges by recoring this call site
+   * Holds if recording a dataflow call site either improves
+   * virtual dispatch or if we can remove unreachable edges in the dataflow graph
+   * by recoring this call site
    */
   cached
   predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
@@ -397,7 +398,7 @@ private predicate returnPosition(ReturnNode ret, DataFlowCallable c, ReturnKind 
  * - `TSpecificCall(DataFlowCall call, int i)` : Flow entered through the `i`th
  *    parameter at the given `call`. This call improves the set of viable
  *    dispatch targets for at least one method call in the current callable
- *    or helps pruning unreachable nodes from the data flow graph.
+ *    or helps to prune unreachable nodes from the data flow graph.
  * - `TSomeCall(ParameterNode p)` : Flow entered through parameter `p`. The
  *    originating call does not improve the set of dispatch targets for any
  *    method call in the current callable and was therefore not recorded.
@@ -436,24 +437,29 @@ class CallContextReturn extends CallContext, TReturn {
 }
 
 /**
- * A call context which is used to restrict local data flow nodes
+ * A call context that is used to restrict local data flow nodes
  * to nodes which are actually reachable in a call context.
  */
 abstract class LocalCallContext extends TLocalFlowCallContext {
   abstract string toString();
 
-  abstract predicate matchesCallContext(CallContext ctx);
-
   abstract predicate validFor(Node n);
+}
+
+LocalCallContext getMatchingLocalCallContext(CallContext ctx) {
+  (
+    not ctx instanceof CallContextSpecificCall or
+    not exists(TSpecificLocalCall(ctx.(CallContextSpecificCall).getCall()))
+  ) and
+  exists(LocalCallContextAny l | result = l)
+  or
+  exists(LocalCallContextSpecificCall l |
+    ctx.(CallContextSpecificCall).getCall() = l.getCall() and result = l
+  )
 }
 
 class LocalCallContextAny extends LocalCallContext, TAnyLocalCall {
   override string toString() { result = "LocalCcAny" }
-
-  override predicate matchesCallContext(CallContext ctx) {
-    not ctx instanceof CallContextSpecificCall or
-    not exists(TSpecificLocalCall(ctx.(CallContextSpecificCall).getCall()))
-  }
 
   override predicate validFor(Node n) { any() }
 }
@@ -472,13 +478,7 @@ class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall 
 
   override string toString() { result = "LocalCcCall(" + call + ")" }
 
-  override predicate matchesCallContext(CallContext ctx) {
-    ctx.(CallContextSpecificCall).getCall() = call
-  }
-
-  override predicate validFor(Node n) {
-    hasUnreachableNode(call, n.getEnclosingCallable())
-  }
+  override predicate validFor(Node n) { hasUnreachableNode(call, n.getEnclosingCallable()) }
 }
 
 /** A callable tagged with a relevant return kind. */
