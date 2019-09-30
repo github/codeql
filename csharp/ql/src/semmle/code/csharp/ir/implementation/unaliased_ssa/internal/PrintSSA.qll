@@ -143,4 +143,3 @@ class PropertyProvider extends IRPropertyProvider {
       )
   }
 }
-

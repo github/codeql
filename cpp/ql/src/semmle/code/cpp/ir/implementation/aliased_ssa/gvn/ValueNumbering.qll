@@ -47,7 +47,8 @@ newtype TValueNumber =
     unaryValueNumber(_, irFunc, opcode, type, operand)
   } or
   TInheritanceConversionValueNumber(
-    IRFunction irFunc, Opcode opcode, Language::Class baseClass, Language::Class derivedClass, ValueNumber operand
+    IRFunction irFunc, Opcode opcode, Language::Class baseClass, Language::Class derivedClass,
+    ValueNumber operand
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
@@ -186,8 +187,8 @@ private predicate binaryValueNumber(
 }
 
 private predicate pointerArithmeticValueNumber(
-  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, IRType type, int elementSize,
-  ValueNumber leftOperand, ValueNumber rightOperand
+  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, IRType type,
+  int elementSize, ValueNumber leftOperand, ValueNumber rightOperand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
@@ -294,14 +295,16 @@ private ValueNumber nonUniqueValueNumber(Instruction instr) {
         result = TUnaryValueNumber(irFunc, opcode, type, operand)
       )
       or
-      exists(Opcode opcode, Language::Class baseClass, Language::Class derivedClass,
-        ValueNumber operand |
+      exists(
+        Opcode opcode, Language::Class baseClass, Language::Class derivedClass, ValueNumber operand
+      |
         inheritanceConversionValueNumber(instr, irFunc, opcode, baseClass, derivedClass, operand) and
         result = TInheritanceConversionValueNumber(irFunc, opcode, baseClass, derivedClass, operand)
       )
       or
       exists(
-        Opcode opcode, IRType type, int elementSize, ValueNumber leftOperand, ValueNumber rightOperand
+        Opcode opcode, IRType type, int elementSize, ValueNumber leftOperand,
+        ValueNumber rightOperand
       |
         pointerArithmeticValueNumber(instr, irFunc, opcode, type, elementSize, leftOperand,
           rightOperand) and

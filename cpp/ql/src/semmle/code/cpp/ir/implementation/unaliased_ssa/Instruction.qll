@@ -118,9 +118,8 @@ module InstructionSanity {
       not exists(operand.getType()) and
       use = operand.getUse() and
       func = use.getEnclosingFunction() and
-      message = "Operand '" + operand.toString() + "' of instruction '" +
-        use.getOpcode().toString() + "' missing type in function '" +
-        Language::getIdentityString(func) + "'."
+      message = "Operand '" + operand.toString() + "' of instruction '" + use.getOpcode().toString()
+          + "' missing type in function '" + Language::getIdentityString(func) + "'."
     )
   }
 
@@ -458,7 +457,8 @@ class Instruction extends Construction::TInstruction {
     exists(Language::LanguageType resultType |
       resultType = getResultLanguageType() and
       (
-        resultType.hasUnspecifiedType(result, _) or
+        resultType.hasUnspecifiedType(result, _)
+        or
         not resultType.hasUnspecifiedType(_, _) and result instanceof Language::UnknownType
       )
     )
@@ -482,9 +482,7 @@ class Instruction extends Construction::TInstruction {
    * result of the `Load` instruction is a prvalue of type `int`, representing
    * the integer value loaded from variable `x`.
    */
-  final predicate isGLValue() {
-    Construction::getInstructionResultType(this).hasType(_, true)
-  }
+  final predicate isGLValue() { Construction::getInstructionResultType(this).hasType(_, true) }
 
   /**
    * Gets the size of the result produced by this instruction, in bytes. If the
@@ -493,9 +491,7 @@ class Instruction extends Construction::TInstruction {
    * If `this.isGLValue()` holds for this instruction, the value of
    * `getResultSize()` will always be the size of a pointer.
    */
-  final int getResultSize() {
-    result = Construction::getInstructionResultType(this).getByteSize()
-  }
+  final int getResultSize() { result = Construction::getInstructionResultType(this).getByteSize() }
 
   /**
    * Gets the opcode that specifies the operation performed by this instruction.

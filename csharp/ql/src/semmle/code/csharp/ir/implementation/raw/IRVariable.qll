@@ -25,16 +25,12 @@ abstract class IRVariable extends TIRVariable {
   /**
    * Gets the type of the variable.
    */
-  final Language::Type getType() {
-    getLanguageType().hasType(result, false)
-  }
+  final Language::Type getType() { getLanguageType().hasType(result, false) }
 
   /**
    * Gets the language-neutral type of the variable.
    */
-  final IRType getIRType() {
-    result = getLanguageType().getIRType()
-  }
+  final IRType getIRType() { result = getLanguageType().getIRType() }
 
   /**
    * Gets the type of the variable.

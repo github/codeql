@@ -81,4 +81,3 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
     result = getMemoryLocation(var)
   )
 }
-
