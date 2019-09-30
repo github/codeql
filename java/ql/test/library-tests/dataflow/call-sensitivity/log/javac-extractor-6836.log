@@ -1,0 +1,3 @@
+[2019-09-30 16:01:44] [javac-extractor-6836] Starting extraction for:
+                                             sun.java.command=com.semmle.extractor.java.JavaExtractor --javacOptions -source 8 --strict-javac-errors --encoding UTF-8 --files A.java A2.java InterfaceA.java
+                                             user.dir=/home/corni/build/ql/java/ql/test/library-tests/dataflow/call-sensitivity

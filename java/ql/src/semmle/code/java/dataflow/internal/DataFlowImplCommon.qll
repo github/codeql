@@ -120,6 +120,7 @@ private module ImplCommon {
         int i, ArgumentNode arg, CallContext outercc, DataFlowCall call
       ) {
         exists(DataFlowCallable c | argumentOf(call, i, arg, c) |
+      (
           outercc = TAnyCallContext()
           or
           outercc = TSomeCall(getAParameter(c), _)
@@ -127,6 +128,8 @@ private module ImplCommon {
           exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) |
             recordDataFlowCallSite(other, c)
           )
+      ) and
+      not isUnreachableInCall(arg, outercc.(CallContextSpecificCall).getCall())
         )
       }
 
@@ -180,14 +183,16 @@ private module ImplCommon {
         exists(Node mid |
           parameterValueFlow(p, mid, cc) and
           step(mid, node) and
-          compatibleTypes(p.getType(), node.getType())
+          compatibleTypes(p.getType(), node.getType()) and
+          not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall())
         )
         or
         // flow through a callable
         exists(Node arg |
           parameterValueFlow(p, arg, cc) and
           argumentValueFlowsThrough(arg, node, cc) and
-          compatibleTypes(p.getType(), node.getType())
+      compatibleTypes(p.getType(), node.getType()) and
+      not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall())
         )
       }
 
@@ -220,6 +225,7 @@ private module ImplCommon {
           argumentValueFlowsThrough0(call, arg, kind, cc)
         |
           out = getAnOutNode(call, kind) and
+      not isUnreachableInCall(out, cc.(CallContextSpecificCall).getCall()) and
           compatibleTypes(arg.getType(), out.getType())
         )
       }
@@ -675,16 +681,14 @@ private module ImplCommon {
     abstract predicate validFor(Node n);
   }
 
-  LocalCallContext getMatchingLocalCallContext(CallContext ctx) {
-    (
-      not ctx instanceof CallContextSpecificCall or
-      not exists(TSpecificLocalCall(ctx.(CallContextSpecificCall).getCall()))
-  ) and
-  exists(LocalCallContextAny l | result = l)
-  or
-  exists(LocalCallContextSpecificCall l |
-    ctx.(CallContextSpecificCall).getCall() = l.getCall() and result = l
-  )
+/**
+ * Gets a matching local call context given the call context and a node which is in
+ * the callable the call is targeting.
+ */
+LocalCallContext getMatchingLocalCallContext(CallContext ctx, Node n) {
+  if hasUnreachableNode(ctx.(CallContextSpecificCall).getCall(), n.getEnclosingCallable())
+  then result.(LocalCallContextSpecificCall).getCall() = ctx.(CallContextSpecificCall).getCall()
+  else result instanceof LocalCallContextAny
 }
 
 class LocalCallContextAny extends LocalCallContext, TAnyLocalCall {
