@@ -8,8 +8,8 @@ import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.Http
 
-private ClassObject redirectClass() {
-    exists(ModuleObject ex |
+private ClassValue redirectClass() {
+    exists(ModuleValue ex |
         ex.getName() = "pyramid.httpexceptions" |
         ex.attr("HTTPFound") = result
         or
@@ -28,7 +28,7 @@ class PyramidRedirect extends HttpRedirectTaintSink {
 
     PyramidRedirect() {
         exists(CallNode call |
-            call.getFunction().refersTo(redirectClass()) 
+            call.getFunction().pointsTo(redirectClass()) 
             |
             call.getArg(0) = this
             or
