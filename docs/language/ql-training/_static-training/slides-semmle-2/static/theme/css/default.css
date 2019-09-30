@@ -485,6 +485,7 @@ ul {
   margin-left: 2.2em;
   margin-bottom: 1em;
   position: relative;
+  width: 90%;
 }
 /* line 300, ../scss/default.scss */
 ul li {
@@ -1569,7 +1570,7 @@ p.first.admonition-title {
   text-align: left;
   font-size: 0.8em;
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
   border: 1px solid black;
 }
 
@@ -1608,7 +1609,7 @@ p.first.admonition-title {
   display: block;
   position: fixed;
   top: 0;
-  right: -1%;
+  right: 0;
   font-size: 1.2em;
 }
 
