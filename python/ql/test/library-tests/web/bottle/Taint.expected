@@ -1,8 +1,6 @@
 | ../../../query-tests/Security/lib/bottle.py:64 | LocalRequest() | bottle.request |
-| ../../../query-tests/Security/lib/bottle.py:64 | request | bottle.request |
 | ../../../query-tests/Security/lib/bottle.py:68 | url | externally controlled string |
 | test.py:3 | ImportMember | bottle.request |
-| test.py:3 | request | bottle.request |
 | test.py:8 | name | externally controlled string |
 | test.py:9 | BinaryExpr | externally controlled string |
 | test.py:9 | name | externally controlled string |
