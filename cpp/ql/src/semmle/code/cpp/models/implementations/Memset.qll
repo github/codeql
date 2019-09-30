@@ -20,24 +20,22 @@ class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction {
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isInParameter(0) and
-    output.isOutReturnValue()
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     bufParam = 0 and
     (if hasGlobalName("bzero") then countParam = 1 else countParam = 2)
   }
-  
-  override predicate parameterNeverEscapes(int index) {
-  	hasGlobalName("bzero") and index = 0
-  }
-  
+
+  override predicate parameterNeverEscapes(int index) { hasGlobalName("bzero") and index = 0 }
+
   override predicate parameterEscapesOnlyViaReturn(int index) {
-  	not hasGlobalName("bzero") and index = 0
+    not hasGlobalName("bzero") and index = 0
   }
-  
+
   override predicate parameterIsAlwaysReturned(int index) {
-  	not hasGlobalName("bzero") and index = 0
+    not hasGlobalName("bzero") and index = 0
   }
 }
