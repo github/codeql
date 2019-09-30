@@ -41,17 +41,17 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(ParameterIndex i |
-      input.isInParameter(i) and
+      input.isParameter(i) and
       exists(getParameter(i))
       or
-      input.isInParameterPointer(i) and
+      input.isParameterDeref(i) and
       getParameter(i).getUnspecifiedType() instanceof PointerType
     ) and
     (
-      output.isOutReturnPointer() and
+      output.isReturnValueDeref() and
       getUnspecifiedType() instanceof PointerType
       or
-      output.isOutReturnValue()
+      output.isReturnValue()
     )
   }
 
@@ -85,10 +85,10 @@ class PureFunction extends TaintFunction, SideEffectFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(ParameterIndex i |
-      input.isInParameter(i) and
+      input.isParameter(i) and
       exists(getParameter(i))
     ) and
-    output.isOutReturnValue()
+    output.isReturnValue()
   }
 
   override predicate neverReadsMemory() { any() }

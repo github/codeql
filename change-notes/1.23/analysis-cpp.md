@@ -38,3 +38,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 * There is now a `DataFlow::localExprFlow` predicate and a
   `TaintTracking::localExprTaint` predicate to make it easy to use the most
   common case of local data flow and taint: from one `Expr` to another.
+* The member predicates of the `FunctionInput` and `FunctionOutput` classes have been renamed for
+  clarity (e.g. `isOutReturnPointer()` to `isReturnValueDeref()`). The existing member predicates
+  have been deprecated, and will be removed in a future release. Code that uses the old member
+  predicates should be updated to use the corresponding new member predicate.

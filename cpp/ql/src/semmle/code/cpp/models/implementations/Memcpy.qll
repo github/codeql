@@ -19,22 +19,22 @@ class MemcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isInParameterPointer(1) and
-    output.isOutParameterPointer(0)
+    input.isParameterDeref(1) and
+    output.isParameterDeref(0)
     or
-    input.isInParameterPointer(1) and
-    output.isOutReturnPointer()
+    input.isParameterDeref(1) and
+    output.isReturnValueDeref()
     or
-    input.isInParameter(0) and
-    output.isOutReturnValue()
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isInParameter(2) and
-    output.isOutParameterPointer(0)
+    input.isParameter(2) and
+    output.isParameterDeref(0)
     or
-    input.isInParameter(2) and
-    output.isOutReturnPointer()
+    input.isParameter(2) and
+    output.isReturnValueDeref()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
