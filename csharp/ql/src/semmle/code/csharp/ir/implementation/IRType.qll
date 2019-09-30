@@ -43,7 +43,7 @@ private newtype TIRType =
  * all pointer types map to the same instance of `IRAddressType`.
  */
 class IRType extends TIRType {
-  abstract string toString();
+  string toString() { none() }
 
   /**
    * Gets a string that uniquely identifies this `IRType`. This string is often the same as the
@@ -58,12 +58,12 @@ class IRType extends TIRType {
    *
    * This will hold for all `IRType` objects except `IRUnknownType`.
    */
-  abstract int getByteSize();
+  int getByteSize() { none() }
 
   /**
    * Gets a single instance of `LanguageType` that maps to this `IRType`.
    */
-  abstract Language::LanguageType getCanonicalLanguageType();
+  Language::LanguageType getCanonicalLanguageType() { none() }
 }
 
 /**
@@ -121,11 +121,7 @@ private class IRSizedType extends IRType {
     this = TIRBlobType(_, byteSize)
   }
 
-  abstract override string toString();
-
   final override int getByteSize() { result = byteSize }
-
-  abstract override Language::LanguageType getCanonicalLanguageType();
 }
 
 /**
@@ -149,10 +145,6 @@ class IRNumericType extends IRSizedType {
     this = TIRUnsignedIntegerType(byteSize) or
     this = TIRFloatingPointType(byteSize)
   }
-  
-  abstract override string toString();
-
-  abstract override Language::LanguageType getCanonicalLanguageType();
 }
 
 /**
