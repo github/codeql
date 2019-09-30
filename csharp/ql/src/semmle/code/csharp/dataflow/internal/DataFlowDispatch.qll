@@ -172,21 +172,6 @@ private module Cached {
     result = viableImplInCallContext(call, ctx) and
     reducedViableImplInReturn(result, call)
   }
-
-  /** A valid return type for a method that uses `yield return`. */
-  private class YieldReturnType extends Type {
-    YieldReturnType() {
-      exists(Type t | t = this.getSourceDeclaration() |
-        t instanceof SystemCollectionsIEnumerableInterface
-        or
-        t instanceof SystemCollectionsIEnumeratorInterface
-        or
-        t instanceof SystemCollectionsGenericIEnumerableTInterface
-        or
-        t instanceof SystemCollectionsGenericIEnumeratorInterface
-      )
-    }
-  }
 }
 
 import Cached
