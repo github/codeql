@@ -3,6 +3,14 @@ public class A {
 	public static void sink(Object o) {
 	}
 
+	public Object flowThrough(Object o, boolean cond) {
+		if (cond) {
+			return o;
+		} else {
+			return null;
+		}
+	}
+
 	public void callSinkIfTrue(Object o, boolean cond) {
 		if (cond) {
 			sink(o);
@@ -49,6 +57,7 @@ public class A {
 		callSinkIfFalse(new Integer(2), true);
 		callSinkFromLoop(new Integer(3), false);
 		localCallSensitivity(new Integer(4), false);
+		sink(flowThrough(new Integer(4), false));
 		// should exhibit flow
 		callSinkIfTrue(new Integer(1), true);
 		callSinkIfFalse(new Integer(2), false);
@@ -57,6 +66,7 @@ public class A {
 		localCallSensitivity2(new Integer(4), true, true);
 		localCallSensitivity2(new Integer(4), false, true);
 		localCallSensitivity2(new Integer(4), true, false);
+		sink(flowThrough(new Integer(4), true));
 		// expected false positive
 		localCallSensitivity2(new Integer(4), false, false);
 	}
@@ -69,11 +79,13 @@ public class A {
 		callSinkIfFalse(new Integer(5), t);
 		callSinkFromLoop(new Integer(6), f);
 		localCallSensitivity(new Integer(4), f);
+		sink(flowThrough(new Integer(4), f));
 		// should exhibit flow
 		callSinkIfTrue(new Integer(4), t);
 		callSinkIfFalse(new Integer(5), f);
 		callSinkFromLoop(new Integer(6), t);
 		localCallSensitivity(new Integer(4), t);
+		sink(flowThrough(new Integer(4), t));
 	}
 
 	public void f3(InterfaceA b) {

@@ -1733,7 +1733,7 @@ private class PathNodeSink extends PathNode, TPathNodeSink {
  * a callable is recorded by `cc`.
  */
 private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPath ap) {
-  exists(LocalCallContext localCC | localCC = getMatchingLocalCallContext(cc) |
+  exists(LocalCallContext localCC | localCC = getMatchingLocalCallContext(cc, node) |
     localFlowBigStep(mid.getNode(), node, true, mid.getConfiguration(), localCC) and
     cc = mid.getCallContext() and
     ap = mid.getAp()
