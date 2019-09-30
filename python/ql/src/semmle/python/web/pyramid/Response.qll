@@ -35,7 +35,7 @@ class PyramidCookieSet extends CookieSet, CallNode {
     PyramidCookieSet() {
         exists(ControlFlowNode f |
             f = this.getFunction().(AttrNode).getObject("set_cookie") and
-            f.pointsTo().getClass() = Value::named("pyramid.Response")
+            f.pointsTo().getClass() = Value::named("pyramid.response.Response")
         )
     }
 
