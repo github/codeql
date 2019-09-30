@@ -3,21 +3,21 @@ import semmle.python.web.Http
 
 
 /** The falcon API class */
-ClassObject theFalconAPIClass() {
-    result = ModuleObject::named("falcon").attr("API")
+ClassValue theFalconAPIClass() {
+    result = Value::named("falcon.API")
 }
 
 
 /** Holds if `route` is routed to `resource`
  */
-private predicate api_route(CallNode route_call, ControlFlowNode route, ClassObject resource) {
-    route_call.getFunction().(AttrNode).getObject("add_route").refersTo(_, theFalconAPIClass(), _) and
+private predicate api_route(CallNode route_call, ControlFlowNode route, ClassValue resource) {
+    route_call.getFunction().(AttrNode).getObject("add_route").pointsTo().getClass() = theFalconAPIClass() and
     route_call.getArg(0) = route and
-    route_call.getArg(1).refersTo(_, resource, _)
+    route_call.getArg(1).pointsTo().getClass() = resource
 }
 
 private predicate route(FalconRoute route, Function target, string funcname) {
-    route.getResourceClass().lookupAttribute("on_" + funcname).(FunctionObject).getFunction() = target
+    route.getResourceClass().lookup("on_" + funcname).(FunctionValue).getScope() = target
 }
 
 class FalconRoute extends ControlFlowNode {
@@ -33,7 +33,7 @@ class FalconRoute extends ControlFlowNode {
         )
     }
 
-    ClassObject getResourceClass() {
+    ClassValue getResourceClass() {
         api_route(this, _, result)
     }
 
