@@ -126,6 +126,11 @@ class Expr extends Expr_, AstNode {
         this.pointsTo(value, _)
     }
 
+    /** Gets a value that this expression might "point-to". */
+    Value pointsTo() {
+        this.pointsTo(result)
+    }
+
 }
 
 /** An attribute expression, such as `value.attr` */
