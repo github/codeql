@@ -11,9 +11,17 @@ namespace Semmle.Extraction.CSharp.Entities
         {
         }
 
+        Method ContainingMethod =>
+            symbol.OriginalDefinition.ContainingSymbol is IMethodSymbol m
+            ? Method.Create(Context, m)
+            : throw new InternalError(symbol, "Unable to determine local function's containing callable");
+
         public override void WriteId(TextWriter trapFile)
         {
+            trapFile.WriteSubId(ContainingMethod);
+            trapFile.Write(".(");
             trapFile.WriteSubId(Location);
+            trapFile.Write(')');
             if (symbol.IsGenericMethod && !IsSourceDeclaration)
             {
                 trapFile.Write('<');
@@ -41,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // the "static" modifier is present.
             if (symbol.DeclaringSyntaxReferences.SingleOrDefault().GetSyntax() is LocalFunctionStatementSyntax fn)
             {
-                foreach(var modifier in fn.Modifiers)
+                foreach (var modifier in fn.Modifiers)
                 {
                     Modifier.HasModifier(Context, trapFile, this, modifier.Text);
                 }
