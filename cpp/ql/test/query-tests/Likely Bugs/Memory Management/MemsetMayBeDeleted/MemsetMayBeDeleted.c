@@ -119,3 +119,17 @@ int func8(void) {
 	__builtin_memset(pw1a + pw1a[3], 0, PW_SIZE - 4); // GOOD [FALSE POSITIVE]
 	return pw1a[4];
 }
+
+char *func9(void) {
+	char pw1[PW_SIZE];
+	use_pw(pw1);
+	memset(pw1, 0, PW_SIZE); // BAD
+	return 0;
+}
+
+char *func10(void) {
+	char pw1[PW_SIZE];
+	use_pw(pw1);
+	memset(pw1, 0, PW_SIZE); // GOOD
+	return pw1;
+}
