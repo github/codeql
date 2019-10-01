@@ -21,3 +21,4 @@
 | taint.cpp:244:3:244:6 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:250:8:250:8 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:256:8:256:8 | taint.cpp:223:10:223:15 | AST only |
+| taint.cpp:261:7:261:7 | taint.cpp:258:7:258:12 | AST only |

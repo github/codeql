@@ -5,6 +5,10 @@
 | clang.cpp:37:10:37:11 | Load: m2 | clang.cpp:34:32:34:37 | Call: call to source |
 | clang.cpp:41:18:41:19 | Load: m2 | clang.cpp:39:42:39:47 | Call: call to source |
 | clang.cpp:45:17:45:18 | Load: m2 | clang.cpp:43:35:43:40 | Call: call to source |
+| ref.cpp:56:10:56:11 | Load: x1 | ref.cpp:53:9:53:10 | Uninitialized: definition of x1 |
+| ref.cpp:59:10:59:11 | Load: x2 | ref.cpp:53:13:53:14 | Uninitialized: definition of x2 |
+| ref.cpp:62:10:62:11 | Load: x3 | ref.cpp:53:17:53:18 | Uninitialized: definition of x3 |
+| ref.cpp:65:10:65:11 | Load: x4 | ref.cpp:53:21:53:22 | Uninitialized: definition of x4 |
 | test.cpp:7:8:7:9 | Load: t1 | test.cpp:6:12:6:17 | Call: call to source |
 | test.cpp:9:8:9:9 | Load: t1 | test.cpp:6:12:6:17 | Call: call to source |
 | test.cpp:10:8:10:9 | Load: t2 | test.cpp:6:12:6:17 | Call: call to source |

@@ -51,7 +51,9 @@ class ArgumentNode extends Node {
   DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-private newtype TReturnKind = TNormalReturnKind()
+private newtype TReturnKind =
+  TNormalReturnKind() or
+  TRefReturnKind(int i) { exists(Parameter parameter | i = parameter.getIndex()) }
 
 /**
  * A return kind. A return kind describes how a value can be returned
@@ -59,23 +61,54 @@ private newtype TReturnKind = TNormalReturnKind()
  */
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this return kind. */
-  string toString() { result = "return" }
+  string toString() {
+    this instanceof TNormalReturnKind and
+    result = "return"
+    or
+    this instanceof TRefReturnKind and
+    result = "ref"
+  }
 }
 
-/** A data flow node that occurs as the result of a `ReturnStmt`. */
-class ReturnNode extends ExprNode {
-  ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getExpr()) }
+/** A data flow node that represents a returned value. */
+abstract class ReturnNode extends Node {
+  /** Gets the kind of this returned value. */
+  abstract ReturnKind getKind();
+}
+
+/** A `ReturnNode` that occurs as the result of a `ReturnStmt`. */
+private class NormalReturnNode extends ReturnNode, ExprNode {
+  NormalReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getExpr()) }
 
   /** Gets the kind of this returned value. */
-  ReturnKind getKind() { result = TNormalReturnKind() }
+  override ReturnKind getKind() { result = TNormalReturnKind() }
+}
+
+/**
+ * A `ReturnNode` that occurs as a result of a definition of a reference
+ * parameter reaching the end of a function body.
+ */
+private class RefReturnNode extends ReturnNode, RefParameterFinalValueNode {
+  /** Gets the kind of this returned value. */
+  override ReturnKind getKind() { result = TRefReturnKind(this.getParameter().getIndex()) }
 }
 
 /** A data flow node that represents the output of a call. */
-class OutNode extends ExprNode {
-  OutNode() { this.getExpr() instanceof Call }
+abstract class OutNode extends Node {
+  /** Gets the underlying call. */
+  abstract DataFlowCall getCall();
+}
+
+private class ExprOutNode extends OutNode, ExprNode {
+  ExprOutNode() { this.getExpr() instanceof Call }
 
   /** Gets the underlying call. */
-  DataFlowCall getCall() { result = this.getExpr() }
+  override DataFlowCall getCall() { result = this.getExpr() }
+}
+
+private class RefOutNode extends OutNode, DefinitionByReferenceNode {
+  /** Gets the underlying call. */
+  override DataFlowCall getCall() { result = this.getArgument().getParent() }
 }
 
 /**
@@ -85,6 +118,11 @@ class OutNode extends ExprNode {
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result = call.getNode() and
   kind = TNormalReturnKind()
+  or
+  exists(int i |
+    result.asDefiningArgument() = call.getArgument(i) and
+    kind = TRefReturnKind(i)
+  )
 }
 
 /**

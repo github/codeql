@@ -258,5 +258,5 @@ void test_lambdas()
 		c = source();
 	};
 	e(t, u, w);
-	sink(w); // tainted [NOT DETECTED]
+	sink(w); // tainted
 }
