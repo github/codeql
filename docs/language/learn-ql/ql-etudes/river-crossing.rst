@@ -42,7 +42,7 @@ a piece of cargo.
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 15-22
+      :lines: 15-23
 
 Second, any item can be on one of two shores. Let's call these the "left shore" and the "right shore".
 Define a class ``Shore`` containing ``"Left"`` and ``"Right"``.
@@ -75,7 +75,7 @@ temporary variables in the body of a class are called `fields <https://help.semm
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 33-43,90
+      :lines: 33-40,87
 
 We are interested in two particular states, namely the initial state and the goal state,
 which we have to achieve to solve the puzzle.
@@ -89,7 +89,7 @@ Assuming that all items start on the left shore and end up on the right shore, d
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 92-100
+      :lines: 89-97
 
 .. pull-quote::
 
@@ -107,7 +107,7 @@ Using the above note, the QL code so far looks like this:
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 14-55,105-115
+      :lines: 15-52,103-113
 
 Model the action of "ferrying"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -125,15 +125,14 @@ after ferrying a particular cargo. (Hint: Use the predicate ``other``.)
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 57-70
+      :lines: 54-67
 
 Of course, not all ferrying actions are possible. Add some extra conditions to describe when a ferrying
 action is "safe". That is, it doesn't lead to a state where the goat or the cabbage get eaten.
 For example, follow these steps:
 
-   #. Define a predicate ``eating`` that encodes the conditions for when a "predator" is able to eat an
-      unguarded "prey".
-   #. Define a predicate ``isSafe`` that holds when nothing gets eaten.
+   #. Define a predicate ``isSafe`` that holds when the state itself is safe. Use this to encode the
+      conditions for when nothing gets eaten.
    #. Define a predicate ``safeFerry`` that restricts ``ferry`` to only include safe ferrying actions.
 
 .. container:: toggle
@@ -143,13 +142,14 @@ For example, follow these steps:
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 72-84
+      :lines: 69-81
 
 Find paths from one state to another
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The main aim of this query is to find a path, that is, a list of successive ferrying actions, to get
-from the initial state to the goal state.
+from the initial state to the goal state. You could write this "list" by separating each item by a
+newline (``"\n"``).
 
 When finding the solution, you should be careful to avoid "infinite" paths. For example, the man
 could ferry the goat back and forth any number of times without ever reaching an unsafe state.
@@ -180,7 +180,7 @@ for example ``steps <= 7``.
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
-      :lines: 73-89
+      :lines: 70-86
 
 However, although this ensures that the solution is finite, it can still contain loops if the upper bound
 for ``steps`` is large. In other words, you could get an inefficient solution by revisiting the same state
@@ -210,7 +210,7 @@ the given path without revisiting any previously visited states.
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 86-105
+      :lines: 83-102
 
 Display the results
 ~~~~~~~~~~~~~~~~~~~
@@ -225,7 +225,7 @@ that returns the resulting path.
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
-      :lines: 118-120
+      :lines: 115-117
 
 For now, the path defined in the above predicate ``reachesVia`` just lists the order of cargo items to ferry.
 You could tweak the predicates and the select clause to make the solution clearer. Here are some suggestions:
@@ -245,7 +245,7 @@ Here are some more example QL queries that solve the river crossing puzzle:
   #. This query uses a modified ``path`` variable to describe the resulting path in
      more detail.
 
-     ➤ `See solution in the query console <https://lgtm.com/query/374739798559373721/>`__
+     ➤ `See solution in the query console <https://lgtm.com/query/659603593702729237/>`__
 
   #. This query models the man and the cargo items in a different way, using an 
      `abstract <https://help.semmle.com/QL/ql-handbook/annotations.html#abstract>`__

@@ -33,11 +33,8 @@ class Shore extends string {
 /** A record of where everything is. */
 class State extends string {
   Shore manShore;
-
   Shore goatShore;
-
   Shore cabbageShore;
-
   Shore wolfShore;
 
   State() { this = manShore + "," + goatShore + "," + cabbageShore + "," + wolfShore }
@@ -57,15 +54,15 @@ class State extends string {
   }
 
   /**
-   * Holds if eating occurs. This happens when predator and prey are on the same shore
-   * and the man is not present.
+   * Holds if the state is safe. This occurs when neither the goat nor the cabbage
+   * can get eaten.
    */
-  predicate eating(Shore predatorShore, Shore preyShore) {
-    predatorShore = preyShore and manShore != predatorShore
+  predicate isSafe() {
+    // The goat can't eat the cabbage.
+    (goatShore != cabbageShore or goatShore = manShore) and
+    // The wolf can't eat the goat.
+    (wolfShore != goatShore or wolfShore = manShore)
   }
-
-  /** Holds if nothing gets eaten in this state. */
-  predicate isSafe() { not (eating(goatShore, cabbageShore) or eating(wolfShore, goatShore)) }
 
   /** Returns the state that is reached after safely ferrying a cargo item. */
   State safeFerry(Cargo cargo) { result = this.ferry(cargo) and result.isSafe() }
