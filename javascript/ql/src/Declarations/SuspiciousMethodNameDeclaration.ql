@@ -26,20 +26,17 @@ predicate isSuspisousMethodName(string name, ClassOrInterface container) {
   name = "new" and container instanceof ClassDefinition
 }
 
-from MethodDeclaration member, ClassOrInterface container, string suffixMsg
+from MethodDeclaration member, ClassOrInterface container, string name, string msg
 where
   container.getLocation().getFile().getFileType().isTypeScript() and
-  container.getAMember() = member and
-  isSuspisousMethodName(member.getName(), container) and
+  container.getMember(name) = member and
+  isSuspisousMethodName(name, container) and
   
   // Assume that a "new" method is intentional if the class has an explicit constructor.
   not (
-    member.getName() = "new" and
+    name = "new" and
     container instanceof ClassDefinition and
-    exists(ConstructorDeclaration constructor |
-      container.getAMember() = constructor and
-      not constructor.isSynthetic() 
-    )
+	not container.getMember("constructor").(ConstructorDeclaration).isSynthetic()
   ) and
   
   // Explicitly declared static methods are fine.
@@ -53,18 +50,18 @@ where
   
   // The developer was not confused about "function" when there are other methods in the interface.
   not (
-    member.getName() = "function" and 
-    exists(MethodDeclaration other | other = container.getMethod(_) |
-      other.getName() != "function" and
+    name = "function" and 
+    exists(MethodDeclaration other | other = container.getAMethod() |
+      name != "function" and
       not other.(ConstructorDeclaration).isSynthetic()
     )
   ) and
   
   (
-    member.getName() = "constructor" and suffixMsg = "Did you mean to write a class instead of an interface?" 
+    name = "constructor" and msg = "The member name 'constructor' does not declare a constructor in interface declarations, but it does in class declarations." 
     or
-    member.getName() = "new" and suffixMsg = "Did you mean \"constructor\"?"
+    name = "new" and msg = "The member name 'new' does not declare a constructor, but 'constructor' does in class declarations."
     or
-    member.getName() = "function" and suffixMsg = "Did you mean to omit \"function\"?"
+    name = "function" and msg = "The member name 'function' does not declare a function, it declares a method named 'function'."
   )
-select member, "Declares a suspiciously named method \"" + member.getName() + "\". " + suffixMsg
+select member, msg
