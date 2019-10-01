@@ -26,14 +26,6 @@ predicate isSuspisousMethodName(string name, ClassOrInterface container) {
   name = "new" and container instanceof ClassDefinition
 }
 
-/**
- * Holds if the beginning of the location is before the end.
- */
-predicate isRealLocation(Location l) {
-  l.getEndLine() > l.getStartLine() or
-  (l.getStartLine() = l.getEndLine() and l.getEndColumn() > l.getStartColumn())
-}
-
 from MethodDeclaration member, ClassOrInterface container, string suffixMsg
 where
   container.getLocation().getFile().getFileType().isTypeScript() and
@@ -44,11 +36,9 @@ where
   not (
     member.getName() = "new" and
     container instanceof ClassDefinition and
-    exists(MemberDeclaration constructor |
+    exists(ConstructorDeclaration constructor |
       container.getAMember() = constructor and
-      constructor.getName() = "constructor" and    
-      // Test that it is not an implicitly declared constructor.
-      isRealLocation(constructor.getLocation())
+      not constructor.isSynthetic() 
     )
   ) and
   
@@ -66,7 +56,7 @@ where
     member.getName() = "function" and 
     exists(MethodDeclaration other | other = container.getMethod(_) |
       other.getName() != "function" and
-      isRealLocation(other.getLocation())
+      not other.(ConstructorDeclaration).isSynthetic()
     )
   ) and
   
