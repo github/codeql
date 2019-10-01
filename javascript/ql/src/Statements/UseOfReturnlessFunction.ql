@@ -42,6 +42,10 @@ predicate benignContext(Expr e) {
   exists(SeqExpr parent | parent.getAnOperand() = e and benignContext(parent))
   or
   exists(ParExpr par | par.getExpression() = e and benignContext(par))
+  or 
+  exists(TypeAssertion assert | assert.getExpression() = e and inVoidContext(assert))
+  or 
+  exists(UnaryExpr unOp | unOp.getOperator() = "void" and unOp.getOperand() = e)
   or
   
   // It is ok (or to be flagged by another query?) to await a non-async function. 
