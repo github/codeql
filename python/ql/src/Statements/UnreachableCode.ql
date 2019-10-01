@@ -19,10 +19,10 @@ private Name variableInvolvedInComparison (Compare c) {
 }
 
 private predicate allInvolvedVariablesAreInvolvedInPrevious(Compare c, Compare prevc) {
-    forall (Name n | 
+    forex (Name n | 
         n = variableInvolvedInComparison(c) | 
-        (exists (Name n2, Variable v | 
-            n2 = variableInvolvedInComparison(prevc) and n2.uses(v) and n.uses(v))))
+        exists (Name n2, Variable v | 
+            n2 = variableInvolvedInComparison(prevc) and n2.uses(v) and n.uses(v)))
 }
 
 predicate typing_import(ImportingStmt is) {
@@ -40,7 +40,7 @@ private predicate previousComparisonMightBreakControlFlow(If s, If prev) {
     s.getEnclosingModule() = prev.getEnclosingModule() and
     prev.getLocation().getStartLine() < s.getLocation().getStartLine() and
     prev.getTest().isAComplexComparison() and
-    allInvolvedVariablesAreInvolvedInPrevious(s.getTest().(Compare), prev.getTest().(Compare))
+    allInvolvedVariablesAreInvolvedInPrevious(s.getTest(), prev.getTest())
 }
 
 /** Holds if `s` contains the only `yield` in scope */
@@ -63,7 +63,7 @@ predicate reportable_unreachable(Stmt s) {
         )
     ) and
     not unique_yield(s) and
-    not exists(If prev | previousComparisonMightBreakControlFlow(s.(If), prev))
+    not previousComparisonMightBreakControlFlow(s, _)
 }
 
 from Stmt s
