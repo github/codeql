@@ -514,9 +514,7 @@ module FlowVar_internal {
     }
 
     /** Holds if `sbb` is inside this loop. */
-    predicate sbbInLoop(SubBasicBlock sbb) {
-      this.bbInLoop(sbb.getBasicBlock())
-    }
+    predicate sbbInLoop(SubBasicBlock sbb) { this.bbInLoop(sbb.getBasicBlock()) }
 
     /**
      * Holds if `bb` is a basic block inside this loop where `v` has not been
@@ -568,9 +566,7 @@ module FlowVar_internal {
       start = TBlockVar(sbbDef, v) and
       result = mid.getASuccessor() and
       variableLiveInSBB(result, v) and
-      forall(AlwaysTrueUponEntryLoop loop | skipLoop(mid, result, v, loop) |
-        loop.sbbInLoop(sbbDef)
-      ) and
+      forall(AlwaysTrueUponEntryLoop loop | skipLoop(mid, result, v, loop) | loop.sbbInLoop(sbbDef)) and
       not assignmentLikeOperation(result, v, _, _)
     )
   }
