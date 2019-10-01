@@ -33,7 +33,7 @@ and a method called <code>constructor</code>. The interface does not declare
 a class <code>Point</code> with a constructor, which was likely what the 
 developer meant to create.
 </p>
-<sample src="examples/SuspiciousMethodName.ts" />
+<sample src="examples/SuspiciousMethodNameDeclaration.ts" />
 
 <p>
 The below example is a fixed version of the above, where the interface is 
@@ -41,7 +41,7 @@ instead declared as a class, thereby describing the type the developer meant
 in the first place.
 </p>
 
-<sample src="examples/SuspiciousMethodNameFixed.ts" />
+<sample src="examples/SuspiciousMethodNameDeclarationFixed.ts" />
 
 </example>
 <references>
