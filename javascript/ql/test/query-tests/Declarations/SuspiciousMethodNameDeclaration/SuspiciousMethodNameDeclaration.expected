@@ -1,4 +1,5 @@
-| tst.ts:7:3:7:24 | constru ... string; | Declares a suspiciously named method "constructor". Did you mean to write a class instead of an interface? |
-| tst.ts:16:3:16:21 | function(): number; | Declares a suspiciously named method "function". Did you mean to omit "function"? |
-| tst.ts:37:3:37:21 | function(): number; | Declares a suspiciously named method "function". Did you mean to omit "function"? |
-| tst.ts:48:3:48:13 | new(): Quz; | Declares a suspiciously named method "new". Did you mean "constructor"? |
+| tst.ts:4:3:4:22 | function (): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:7:3:7:24 | constru ... string; | The member name 'constructor' does not declare a constructor in interface declarations, but it does in class declarations. |
+| tst.ts:16:3:16:21 | function(): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:37:3:37:21 | function(): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:48:3:48:13 | new(): Quz; | The member name 'new' does not declare a constructor, but 'constructor' does in class declarations. |
