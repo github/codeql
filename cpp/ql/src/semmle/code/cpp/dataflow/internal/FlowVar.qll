@@ -490,7 +490,7 @@ module FlowVar_internal {
       exists(VariableAccess va |
         va.getTarget() = result and
         readAccess(va) and
-        bbNotInLoop(va.getBasicBlock())
+        exists(BasicBlock bb | bb = va.getBasicBlock() | not this.bbInLoop(bb))
       )
     }
 
@@ -679,10 +679,11 @@ module FlowVar_internal {
   predicate dominatedByOverwrite(UninitializedLocalVariable v, VariableAccess va) {
     exists(BasicBlock bb, int vaIndex |
       va = bb.getNode(vaIndex) and
-      va.getTarget() = v
-    |
+      va.getTarget() = v and
       vaIndex > indexOfFirstOverwriteInBB(v, bb)
       or
+      va = bb.getNode(vaIndex) and
+      va.getTarget() = v and
       bbStrictlyDominates(getAnOverwritingBB(v), bb)
     )
   }
