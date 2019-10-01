@@ -391,7 +391,19 @@ namespace Semmle.Extraction.CSharp
         public static string GetCSharpLogPath() =>
             Path.Combine(GetCSharpLogDirectory(), "csharp.log");
 
-        public static string GetCSharpLogDirectory()
+        /// <summary>
+        /// Gets the path to a `csharp.{hash}.txt` file written to by the C# extractor.
+        /// </summary>
+        public static string GetCSharpArgsLogPath(string hash) =>
+            Path.Combine(GetCSharpLogDirectory(), $"csharp.{hash}.txt");
+
+        /// <summary>
+        /// Gets a list of all `csharp.{hash}.txt` files currently written to the log directory.
+        /// </summary>
+        public static IEnumerable<string> GetCSharpArgsLogs() =>
+            Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
+
+        static string GetCSharpLogDirectory()
         {
             string snapshot = Environment.GetEnvironmentVariable("ODASA_SNAPSHOT");
             string buildErrorDir = Environment.GetEnvironmentVariable("ODASA_BUILD_ERROR_DIR");
