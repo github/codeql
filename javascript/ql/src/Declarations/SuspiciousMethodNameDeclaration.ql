@@ -32,30 +32,33 @@ where
   container.getMember(name) = member and
   isSuspisousMethodName(name, container) and
   
-  // Assume that a "new" method is intentional if the class has an explicit constructor.
+  // Cases to ignore.
   not (
-    name = "new" and
-    container instanceof ClassDefinition and
-	not container.getMember("constructor").(ConstructorDeclaration).isSynthetic()
-  ) and
-  
-  // Explicitly declared static methods are fine.
-  not (
-    container instanceof ClassDefinition and
-    member.isStatic()
-  ) and
-  
-  // Only looking for declared methods. Methods with a body are OK. 
-  not exists(member.getBody().getBody()) and
-  
-  // The developer was not confused about "function" when there are other methods in the interface.
-  not (
-    name = "function" and 
-    exists(MethodDeclaration other | other = container.getAMethod() |
-      name != "function" and
-      not other.(ConstructorDeclaration).isSynthetic()
+	( // Assume that a "new" method is intentional if the class has an explicit constructor.
+	  name = "new" and
+	  container instanceof ClassDefinition and
+	  not container.getMember("constructor").(ConstructorDeclaration).isSynthetic()
+	) 
+	or
+    ( // Explicitly declared static methods are fine.
+      container instanceof ClassDefinition and
+      member.isStatic()
     )
-  ) and
+    or
+    // Only looking for declared methods. Methods with a body are OK. 
+    exists(member.getBody().getBody())
+    
+    or
+    ( // The developer was not confused about "function" when there are other methods in the interface.
+      name = "function" and 
+      exists(MethodDeclaration other | other = container.getAMethod() |
+        name != "function" and
+        not other.(ConstructorDeclaration).isSynthetic()
+      )
+    )
+  )
+  
+  and
   
   (
     name = "constructor" and msg = "The member name 'constructor' does not declare a constructor in interface declarations, but it does in class declarations." 
