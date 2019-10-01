@@ -18,3 +18,9 @@ class Handler3(tornado.web.RequestHandler):
         h = req.headers
         url = h["url"]
         self.redirect(url)
+
+
+class DeepInheritance(Handler3):
+
+    def get(self):
+        self.write(self.get_argument("also_xss"))

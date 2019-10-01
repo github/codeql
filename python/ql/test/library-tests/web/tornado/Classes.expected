@@ -1,3 +1,4 @@
+| class DeepInheritance | test.py:23 |
 | class Handler1 | test.py:4 |
 | class Handler2 | test.py:8 |
 | class Handler3 | test.py:14 |

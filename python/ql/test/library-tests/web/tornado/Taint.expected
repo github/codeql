@@ -9,3 +9,4 @@
 | test.py:19 | Subscript | externally controlled string |
 | test.py:19 | h | {externally controlled string} |
 | test.py:20 | url | externally controlled string |
+| test.py:26 | Attribute() | externally controlled string |
