@@ -1,0 +1,38 @@
+| resources/lib/python/lib/tornado/web.py:406 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:406 | Attribute | {[externally controlled string]} |
+| resources/lib/python/lib/tornado/web.py:449 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:449 | Attribute | {[externally controlled string]} |
+| resources/lib/python/lib/tornado/web.py:2313 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2313 | Attribute | {[externally controlled string]} |
+| resources/lib/python/lib/tornado/web.py:2315 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2315 | Attribute | {[externally controlled string]} |
+| resources/lib/python/lib/tornado/web.py:2421 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2421 | Attribute | {externally controlled string} |
+| resources/lib/python/lib/tornado/web.py:2421 | Attribute() | externally controlled string |
+| resources/lib/python/lib/tornado/web.py:2422 | range_header | externally controlled string |
+| resources/lib/python/lib/tornado/web.py:2425 | range_header | externally controlled string |
+| resources/lib/python/lib/tornado/web.py:2476 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2522 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2522 | Attribute | {externally controlled string} |
+| resources/lib/python/lib/tornado/web.py:2522 | Attribute() | externally controlled string |
+| resources/lib/python/lib/tornado/web.py:2527 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2527 | Attribute | {externally controlled string} |
+| resources/lib/python/lib/tornado/web.py:2527 | Attribute() | externally controlled string |
+| resources/lib/python/lib/tornado/web.py:2528 | ims_value | externally controlled string |
+| resources/lib/python/lib/tornado/web.py:2529 | ims_value | externally controlled string |
+| resources/lib/python/lib/tornado/web.py:2596 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2597 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2728 | Attribute | tornado.request.HttpRequest |
+| resources/lib/python/lib/tornado/web.py:2728 | Attribute | {[externally controlled string]} |
+| resources/lib/python/lib/tornado/web.py:2826 | Attribute | tornado.request.HttpRequest |
+| test.py:6 | Attribute() | externally controlled string |
+| test.py:10 | Attribute() | [externally controlled string] |
+| test.py:11 | Subscript | externally controlled string |
+| test.py:11 | args | [externally controlled string] |
+| test.py:12 | name | externally controlled string |
+| test.py:17 | Attribute | tornado.request.HttpRequest |
+| test.py:18 | Attribute | {externally controlled string} |
+| test.py:18 | req | tornado.request.HttpRequest |
+| test.py:19 | Subscript | externally controlled string |
+| test.py:19 | h | {externally controlled string} |
+| test.py:20 | url | externally controlled string |

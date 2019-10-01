@@ -1,0 +1,7 @@
+| class ErrorHandler | resources/lib/python/lib/tornado/web.py:2260 |
+| class FallbackHandler | resources/lib/python/lib/tornado/web.py:2806 |
+| class Handler1 | test.py:4 |
+| class Handler2 | test.py:8 |
+| class Handler3 | test.py:14 |
+| class RedirectHandler | resources/lib/python/lib/tornado/web.py:2275 |
+| class StaticFileHandler | resources/lib/python/lib/tornado/web.py:2319 |
