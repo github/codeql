@@ -201,3 +201,12 @@ int PureFunctions(char *str1, char *str2, int x) {
   ret += abs(x);
   return ret;
 }
+
+void *memcpy(void *dst, void *src, int size);
+
+int ModeledCallTarget(int x) {
+  int y;
+  memcpy(&y, &x, sizeof(int));
+  return y;
+}
+
