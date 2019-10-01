@@ -374,6 +374,35 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
   override Function getFunction() { result = expr.getEnclosingFunction() }
 }
 
+class TranslatedStructorCallSideEffects extends TranslatedSideEffects {
+  TranslatedStructorCallSideEffects() { getParent().(TranslatedStructorCall).hasQualifier() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type t, boolean isGLValue) {
+    opcode instanceof Opcode::IndirectMustWriteSideEffect and
+    tag instanceof OnlyInstructionTag and
+    t = expr.getTarget().getDeclaringType() and
+    isGLValue = false
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    (
+      if exists(getChild(0))
+      then result = getChild(0).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    ) and
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof AddressOperandTag and
+    result = getParent().(TranslatedStructorCall).getQualifierResult()
+  }
+}
+
 class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEffect {
   Call call;
   Expr arg;
@@ -537,3 +566,4 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
    */
   override Function getFunction() { result = arg.getEnclosingFunction() }
 }
+
