@@ -10,7 +10,7 @@ C#,C# up to 7.3. with .NET up to 4.8 [3]_.,"Microsoft Visual Studio up to 2019,
 
 .NET Core up to 2.2","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
 COBOL,ANSI 85 or newer [4]_.,Not applicable,"``.cbl``, ``.CBL``, ``.cpy``, ``.CPY``, ``.copy``, ``.COPY``"
-Go, "Go up to 1.13", "Go 1.11 or more recent", ``.go``
+Go (aka Golang), "Go up to 1.13", "Go 1.11 or more recent", ``.go``
 Java,"Java 6 to 12 [5]_.","javac (OpenJDK and Oracle JDK),
 
 Eclipse compiler for Java (ECJ) [6]_.",``.java``
