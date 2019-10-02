@@ -371,8 +371,10 @@ newtype TTranslatedElement =
   TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
-  // The side effects of a `Call` {
-  TTranslatedSideEffects(Call expr) { exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or expr instanceof ConstructorCall } or // A precise side effect of an argument to a `Call` {
+  // The side effects of a `Call`
+  TTranslatedSideEffects(Call expr) {
+    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or expr instanceof ConstructorCall
+  } or // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
       expr = call.getArgument(n).getFullyConverted()

@@ -378,7 +378,7 @@ class TranslatedStructorCallSideEffects extends TranslatedSideEffects {
   TranslatedStructorCallSideEffects() { getParent().(TranslatedStructorCall).hasQualifier() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type t, boolean isGLValue) {
-    opcode instanceof Opcode::IndirectMustWriteSideEffect and
+    opcode instanceof Opcode::IndirectMayWriteSideEffect and
     tag instanceof OnlyInstructionTag and
     t = expr.getTarget().getDeclaringType() and
     isGLValue = false
@@ -566,4 +566,3 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
    */
   override Function getFunction() { result = arg.getEnclosingFunction() }
 }
-
