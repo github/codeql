@@ -45,9 +45,7 @@ query predicate methodTypeArguments(ConstructedGeneric generic, int arg, string 
   argument = generic.getAnnotatedTypeArgument(arg).toString()
 }
 
-query predicate constructedTypes(
-  AnnotatedConstructedType at, int i, string arg, string nullability
-) {
+query predicate constructedTypes(AnnotatedConstructedType at, int i, string arg, string nullability) {
   arg = at.getTypeArgument(i).toString() and
   at.getLocation() instanceof SourceLocation and
   nullability = at.getAnnotations().getNullability().toString()
