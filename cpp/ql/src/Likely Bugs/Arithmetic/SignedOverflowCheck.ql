@@ -21,10 +21,10 @@ where
   ro.getAnOperand() = va2 and
   va1.getTarget() = va2.getTarget() and
   /*
-   * if the addition/subtraction (`bao`) has been promoted to a signed type,
+   * if the addition (`bao`) has been promoted to a signed type,
    * then the other operand (`va2`) must have been likewise promoted and so
    * have a signed comparison
    */
 
   bao.getFullyConverted().getType().(IntegralType).isSigned()
-select ro, "Testing for signed overflow/underflow may produce undefined results."
+select ro, "Testing for signed overflow may produce undefined results."
