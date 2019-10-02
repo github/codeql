@@ -1,6 +1,6 @@
 import csharp
 
-from CommentBlock b, Element e, string s
+from CommentBlock b, Element e
 where
   b.getElement() = e and
   (
@@ -8,11 +8,5 @@ where
     e instanceof ConstructedClass or
     e instanceof UnboundGenericClass or
     e instanceof UnboundGenericMethod
-  ) and
-  s = e.getAQlClass() and
-  not s = "SourceDeclarationType" and
-  not s = "SourceDeclarationCallable" and
-  not s = "SourceDeclarationMethod" and
-  not s = "NonConstructedMethod" and
-  not s = "RuntimeInstanceMethod"
-select b, e, s
+  )
+select b, e
