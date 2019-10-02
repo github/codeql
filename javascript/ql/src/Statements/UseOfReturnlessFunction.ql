@@ -70,38 +70,45 @@ predicate benignContext(Expr e) {
   exists(InvokeExpr invoke | invoke.getCallee() = e)
 }
 
+predicate functionBlacklist(Function f) {
+  not returnsVoid(f)
+  or 
+  isStub(f)
+}
+
+predicate callBlacklist(DataFlow::CallNode call) {
+  call.asExpr().getTopLevel().isMinified() or 
+   
+  benignContext(call.asExpr()) or 
+  
+  // anonymous one-shot closure. Those are used in weird ways and we ignore them.
+  call.asExpr() = any(ImmediatelyInvokedFunctionExpr f).getInvocation() or  
+
+  // weeds out calls inside html-attributes.
+  call.asExpr().getParent*() instanceof CodeInAttribute or  
+  // and JSX-attributes.
+  call.asExpr().getParent*() instanceof JSXAttribute or 
+  
+  // Calls on "this" tend to overloaded. So future overloads might start returning something.
+  call.asExpr().(MethodCallExpr).getReceiver() instanceof ThisExpr or 
+  // similarly, methods received through parameters might later receive new dataflow. We have just only seen one callee.
+  call.getCalleeNode().getALocalSource() instanceof DataFlow::ParameterNode or 
+  
+  // arguments to Promise.resolve (and promise library variants) are benign. 
+  exists(MethodCallExpr e | e.getCalleeName() = "resolve" and call.asExpr() = e.getArgument(0))
+}
+
 from Function f, DataFlow::CallNode call
 where
   // Intentionally only considering very precise callee information. It makes almost no difference.
   f = call.getACallee(0) and
   count(call.getACallee(0)) = 1 and 
   
-  returnsVoid(f) and 
+  not functionBlacklist(f) and
   
-  // reflective calls don't have an ast-node, thus we can't decide whether or not they are in void-context.
-  exists(call.asExpr()) and 
+  exists(call.asExpr()) and // TODO: Need to figure out what to do about reflective calls.
   
-  not isStub(f) and 
-  
-  not call.getTopLevel().isMinified() and  
-   
-  not benignContext(call.asExpr()) and
-  
-  // anonymous one-shot closure. Those are used in weird ways and we ignore them.
-  not call.getCalleeNode().asExpr() instanceof FunctionExpr and 
-
-  // weeds out calls inside html-attributes.
-  not(call.asExpr().getParent*() instanceof CodeInAttribute) and 
-  // and JSX-attributes.
-  not(call.asExpr().getParent*() instanceof JSXAttribute) and
-  
-  // Calls on "this" tend to overloaded. So future overloads might start returning something.
-  not call.asExpr().(MethodCallExpr).getReceiver() instanceof ThisExpr and
-  // similarly, methods received through parameters might later receive new dataflow. We have just only seen one callee.
-  not call.getCalleeNode().getALocalSource() instanceof DataFlow::ParameterNode and
-  
-  // arguments to Promise.resolve (and promise library variants) are benign. 
-  not exists(MethodCallExpr e | e.getCalleeName() = "resolve" and call.asExpr() = e.getArgument(0))
+  not callBlacklist(call)
 select
   call, "the function $@ does not return anything, yet the return value is used.", f, call.getCalleeName()
   

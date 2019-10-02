@@ -37,4 +37,11 @@
 	for (i = 0; onlySideEffects(); i++) {
 		// nothing. 
 	}
+	
+	var myObj = {
+		onlySideEffects: onlySideEffects
+	}
+	
+	var e = myObj.onlySideEffects.apply(this, arguments); // NOT OK!
+	console.log(e);
 })();
