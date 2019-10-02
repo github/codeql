@@ -88,13 +88,8 @@ predicate callBlacklist(DataFlow::CallNode call) {
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
   call.asExpr() = any(ImmediatelyInvokedFunctionExpr f).getInvocation() or  
   
-  // Calls on "this" tend to overloaded. So future overloads might start returning something.
-  call.asExpr().(MethodCallExpr).getReceiver() instanceof ThisExpr or 
-  // similarly, methods received through parameters might later receive new dataflow. We have just only seen one callee.
-  call.getCalleeNode().getALocalSource() instanceof DataFlow::ParameterNode or 
-  
   // arguments to Promise.resolve (and promise library variants) are benign. 
-  exists(MethodCallExpr e | e.getCalleeName() = "resolve" and call.asExpr() = e.getArgument(0))
+  call = any(ResolvedPromiseDefinition promise).getValue()
 }
 
 from DataFlow::CallNode call
