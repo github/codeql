@@ -30,7 +30,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void PopulateNullability(TextWriter trapFile, AnnotatedTypeSymbol type)
         {
-            var ta = type.Nullability.GetTypeAnnotation();
             var n = NullabilityEntity.Create(Context, Nullability.Create(type));
             if (!type.HasObliviousNullability())
             {
