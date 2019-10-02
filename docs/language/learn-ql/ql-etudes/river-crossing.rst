@@ -227,8 +227,11 @@ that returns the resulting path.
    .. literalinclude:: river-crossing.ql
       :lines: 115-117
 
-For now, the path defined in the above predicate ``reachesVia`` just lists the order of cargo items to ferry.
-You could tweak the predicates and the select clause to make the solution clearer. Here are some suggestions:
+The `don't-care expression <https://help.semmle.com/QL/ql-handbook/expressions.html#don-t-care-expressions>`__ (``_``),
+as the second argument to the ``reachesVia`` predicate, represents any value of ``visitedStates``.
+
+For now, the path defined in ``reachesVia`` just lists the order of cargo items to ferry.
+You could tweak the predicate and the select clause to make the solution clearer. Here are some suggestions:
 
   - Display more information, such as the direction in which the cargo is ferried, for example
     ``"Goat to the left shore"``.
