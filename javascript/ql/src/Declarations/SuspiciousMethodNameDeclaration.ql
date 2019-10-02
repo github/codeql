@@ -1,7 +1,7 @@
 /**
  * @name Suspicious method name declaration
- * @description A method having the name "function", "new", or "constructor"
- *              is usually caused by a programmer being confused about the TypeScript syntax. 
+ * @description Declaring a class or interface method with a special name may cause a normal 
+ *              named method to be declared when a special type was expected.
  * @kind problem
  * @problem.severity warning
  * @id js/suspicious-method-name-declaration
