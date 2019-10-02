@@ -50,6 +50,10 @@ predicate benignContext(Expr e) {
   exists(VoidExpr voidExpr | voidExpr.getOperand() = e)
 
   or
+  // weeds out calls inside HTML-attributes.
+  e.getContainer() instanceof CodeInAttribute or  
+  // and JSX-attributes.
+  e = any(JSXAttribute attr).getValue() or 
   
   // It is ok (or to be flagged by another query?) to await a non-async function. 
   exists(AwaitExpr await | await.getOperand() = e and benignContext(await)) 
@@ -83,11 +87,6 @@ predicate callBlacklist(DataFlow::CallNode call) {
   
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
   call.asExpr() = any(ImmediatelyInvokedFunctionExpr f).getInvocation() or  
-
-  // weeds out calls inside html-attributes.
-  call.asExpr().getParent*() instanceof CodeInAttribute or  
-  // and JSX-attributes.
-  call.asExpr().getParent*() instanceof JSXAttribute or 
   
   // Calls on "this" tend to overloaded. So future overloads might start returning something.
   call.asExpr().(MethodCallExpr).getReceiver() instanceof ThisExpr or 
