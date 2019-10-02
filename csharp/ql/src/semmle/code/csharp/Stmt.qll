@@ -225,7 +225,9 @@ private module SwithStmtInternal {
   /** Implicitly reorder case statements to put the default case last if needed. */
   private predicate caseIndex(SwitchStmt ss, CaseStmt case, int index) {
     exists(int i | case = ss.getChildStmt(i) |
-      if case instanceof DefaultCase then index = 1000000 else index = i
+      if case instanceof DefaultCase
+      then index = max(int j | exists(ss.getChildStmt(j))) + 1
+      else index = i
     )
   }
 

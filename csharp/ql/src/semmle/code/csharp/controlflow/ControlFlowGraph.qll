@@ -741,7 +741,6 @@ module ControlFlow {
         TLastRecBooleanNegationCompletion() or
         TLastRecNonBooleanCompletion() or
         TLastRecBreakCompletion() or
-        TLastRecNonBreakCompletion() or
         TLastRecSwitchAbnormalCompletion() or
         TLastRecInvalidOperationException() or
         TLastRecNonContinueCompletion() or
@@ -1149,10 +1148,6 @@ module ControlFlow {
           rec = TLastRecBreakCompletion() and
           c0 instanceof BreakCompletion and
           c instanceof BreakNormalCompletion
-          or
-          rec = TLastRecNonBreakCompletion() and
-          not c0 instanceof BreakCompletion and
-          c = c0
           or
           rec = TLastRecSwitchAbnormalCompletion() and
           not c instanceof BreakCompletion and
