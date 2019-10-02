@@ -23,4 +23,10 @@
     
     var b = onlySideEffects();
     console.log(b);
+
+	var c = 42 + (onlySideEffects(), 42); // OK, value is thrown away. 
+	console.log(c);
+	
+	var d = 42 + (42, onlySideEffects()); // NOT OK! 
+	console.log(d);
 })();

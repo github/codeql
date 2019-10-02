@@ -37,34 +37,35 @@ predicate benignContext(Expr e) {
   or 
   exists(ConditionalExpr cond | cond.getABranch() = e and benignContext(cond)) 
   or 
-  exists(BinaryExpr bin | (bin.getOperator() = "&&" or bin.getOperator() = "||") and bin.getAnOperand() = e and benignContext(bin)) 
+  exists(LogicalBinaryExpr bin | bin.getAnOperand() = e and benignContext(bin)) 
   or
-  exists(SeqExpr parent | parent.getAnOperand() = e and benignContext(parent))
+  exists(SeqExpr seq, int i, int n | e = seq.getOperand(i) and n = seq.getNumOperands() |
+    i < n - 1 or benignContext(seq)
+  ) 
   or
-  exists(ParExpr par | par.getExpression() = e and benignContext(par))
+  exists(Expr parent | parent.getUnderlyingValue() = e and benignContext(parent))
   or 
-  exists(TypeAssertion assert | assert.getExpression() = e and inVoidContext(assert))
-  or 
-  exists(UnaryExpr unOp | unOp.getOperator() = "void" and unOp.getOperand() = e)
+  exists(VoidExpr voidExpr | voidExpr.getOperand() = e)
   or
-  
-  // It is ok (or to be flagged by another query?) to await a non-async function. 
-  exists(AwaitExpr await | await.getOperand() = e) 
-  or
-  
-  // Avoid double reporting. It will always evaluate to false.
-  exists(IfStmt ifStmt | ifStmt.getCondition() = e)
-  or 
-  // Avoid double reporting. `e` will always evaluate to undefined.
-  exists(Comparison binOp | binOp.getAnOperand() = e)
-  or
-  // Avoid double reporting of "The base expression of this property access is always undefined.". 
-  exists(PropAccess ac | ac.getBase() = e)
-  or
+ 
   // The call is only in a non-void context because it is in a lambda.
   exists(ArrowFunctionExpr arrow |
     arrow.getBody() = e
   ) 
+  or
+  
+  // It is ok (or to be flagged by another query?) to await a non-async function. 
+  exists(AwaitExpr await | await.getOperand() = e and benignContext(await)) 
+  or
+  
+  // Avoid double reporting with js/trivial-conditional
+  exists(IfStmt ifStmt | ifStmt.getCondition() = e)
+  or 
+  // Avoid double reporting with js/comparison-between-incompatible-types
+  exists(Comparison binOp | binOp.getAnOperand() = e)
+  or
+  // Avoid double reporting with js/property-access-on-non-object
+  exists(PropAccess ac | ac.getBase() = e)
   or
   // Avoid double-reporting with unused local.
   exists(VariableDeclarator v | v.getInit() = e and v.getBindingPattern().getVariable() instanceof UnusedLocal)
