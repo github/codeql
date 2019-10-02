@@ -34,14 +34,14 @@ where
   
   // Cases to ignore.
   not (
-	// Assume that a "new" method is intentional if the class has an explicit constructor.
-	name = "new" and
-	container instanceof ClassDefinition and
-	exists(ConstructorDeclaration constructor |
+    // Assume that a "new" method is intentional if the class has an explicit constructor.
+    name = "new" and
+    container instanceof ClassDefinition and
+    exists(ConstructorDeclaration constructor |
       container.getMember("constructor") = constructor and
       not constructor.isSynthetic() 
     ) 
-	or
+    or
     // Explicitly declared static methods are fine.
     container instanceof ClassDefinition and
     member.isStatic()
