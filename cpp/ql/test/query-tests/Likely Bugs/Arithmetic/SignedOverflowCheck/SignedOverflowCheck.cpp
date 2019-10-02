@@ -7,9 +7,6 @@ bool cannotHoldAnother8(int n1) {
     // msvc 19.22 /O2: not deleted
     return n1 + 8 < n1; // BAD
 }
-bool canHoldPreceding16(int n1) {
-	return n1 - 16 < n1;
-}
 
 /* 2. Signed comparison with a narrower unsigned type.  The narrower
       type gets promoted to the (signed) larger type, and so the
@@ -20,9 +17,6 @@ bool cannotHoldAnotherUShort(int n1, unsigned short delta) {
     // msvc 19.22 /O2: not deleted
     return n1 + delta < n1; // BAD
 }
-bool canHoldPrecedingUShort(int n1, unsigned short delta) {
-	return n1 - delta < n1;
-}
 
 /* 3. Signed comparison with a non-narrower unsigned type.  The
       signed type gets promoted to (a possibly wider) unsigned type,
@@ -32,7 +26,4 @@ bool cannotHoldAnotherUInt(int n1, unsigned int delta) {
     // gcc 9.2 -O2: not deleted
     // msvc 19.22 /O2: not deleted
     return n1 + delta < n1; // GOOD
-}
-bool canHoldPrecedingUInt(int n1, unsigned int delta) {
-	return n1 - delta < n1;
 }

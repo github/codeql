@@ -1,4 +1,0 @@
-| SignedComparisons.cpp:8:12:8:22 | ... < ... | Testing for signed overflow/underflow may produce undefined results. |
-| SignedComparisons.cpp:11:9:11:20 | ... < ... | Testing for signed overflow/underflow may produce undefined results. |
-| SignedComparisons.cpp:21:12:21:26 | ... < ... | Testing for signed overflow/underflow may produce undefined results. |
-| SignedComparisons.cpp:24:9:24:23 | ... < ... | Testing for signed overflow/underflow may produce undefined results. |

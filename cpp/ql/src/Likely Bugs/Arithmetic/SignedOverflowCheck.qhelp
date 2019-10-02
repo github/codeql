@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Testing for <code>signed</code> integer overflow by adding a
+value to a variable and then comparing the result to said variable
+is not defined by the C or C++ standards.  The comparison may
+produce an unintended result, or may be deleted by the compiler
+entirely.
+</p>
+</overview>
+<recommendation>
+<p>
+Make sure that the comparison in question uses <i>unsigned</i> values.
+</p>
+</recommendation>
+<example>
+<p>
+In the following example, even though <code>delta</code> has been declared
+<code>unsigned short</code>, C/C++ type promotion rules require that its
+type is promoted to the larger type used in the addition and comparison,
+namely a <code>signed int</code>.  As a result, the entire expression is
+evaluated using <code>signed values</code> and its value is therefore undefined.
+</p>
+<sample src="SignedOverflowCheck-bad.cpp" />
+<p>
+In the next example, a value of type <code>signed int</code> is
+getting added to a value ot type <code>unsigned int</code>.  Because
+the types are of the same size, C/C++ promotion rules dictate that
+<code>unsigned int</code> is chosen as the overall type of the addition
+operation. The entire expression is evaluated using <code>unsigned</code>
+values, which is allowed and defined behavior per the C/C++ standard.
+</p>
+<sample src="SignedOverflowCheck-good.cpp" />
+</example>
+<references>
+<li><a href="http://c-faq.com/expr/preservingrules.html">Preserving Rules</a></li>
+<li><a href="https://www.securecoding.cert.org/confluence/plugins/servlet/mobile#content/view/20086942">Understand integer conversion rules</a></li>
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+| SignedOverflowCheck.cpp:8:12:8:22 | ... < ... | Testing for signed overflow/underflow may produce undefined results. |
+| SignedOverflowCheck.cpp:18:12:18:26 | ... < ... | Testing for signed overflow/underflow may produce undefined results. |
