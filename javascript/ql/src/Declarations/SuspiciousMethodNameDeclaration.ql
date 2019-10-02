@@ -52,7 +52,7 @@ where
     // The developer was not confused about "function" when there are other methods in the interface.
     name = "function" and 
     exists(MethodDeclaration other | other = container.getAMethod() |
-      name != "function" and
+      other.getName() != "function" and
       not other.(ConstructorDeclaration).isSynthetic()
     )
   )
