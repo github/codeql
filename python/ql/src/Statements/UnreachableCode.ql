@@ -19,6 +19,7 @@ private Name variableInvolvedInComparison (Compare c) {
 }
 
 private predicate allInvolvedVariablesAreInvolvedInPrevious(Compare c, Compare prevc) {
+    prevc.isAComplexComparison() and
     forex (Name n | 
         n = variableInvolvedInComparison(c) | 
         exists (Name n2, Variable v | 
@@ -39,7 +40,6 @@ predicate typing_import(ImportingStmt is) {
 private predicate previousComparisonMightBreakControlFlow(If s, If prev) {
     s.getEnclosingModule() = prev.getEnclosingModule() and
     prev.getLocation().getStartLine() < s.getLocation().getStartLine() and
-    prev.getTest().isAComplexComparison() and
     allInvolvedVariablesAreInvolvedInPrevious(s.getTest(), prev.getTest())
 }
 
