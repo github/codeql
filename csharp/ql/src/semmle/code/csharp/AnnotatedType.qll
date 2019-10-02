@@ -164,7 +164,7 @@ private module Annotations {
 
     /**
      * Gets the `i`th member of this annotation.
-     * Returns `this` if the nullability is not explicitly 
+     * Returns `this` if the nullability is not explicitly
      * stored in the database, since many type annotations will have consistent
      * nullability.
      */
