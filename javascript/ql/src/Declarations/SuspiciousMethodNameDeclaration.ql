@@ -37,7 +37,10 @@ where
 	( // Assume that a "new" method is intentional if the class has an explicit constructor.
 	  name = "new" and
 	  container instanceof ClassDefinition and
-	  not container.getMember("constructor").(ConstructorDeclaration).isSynthetic()
+	  exists(ConstructorDeclaration constructor |
+        container.getMember("constructor") = constructor and
+        not constructor.isSynthetic() 
+      )
 	) 
 	or
     ( // Explicitly declared static methods are fine.
