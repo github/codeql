@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp
            Options options,
            CSharpCompilation compilation)
         {
-            if (!init)
+            if (!init && options.Cache)
                 throw new InternalError("EndInitialize called without BeginInitialize returning true");
             layout = new Layout();
             this.options = options;

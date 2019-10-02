@@ -109,7 +109,7 @@ namespace Semmle.Extraction.CSharp
                         return ExitCode.Failed;
                     }
 
-                    if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse))
+                    if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse) && commandLineArguments.Cache)
                     {
                         logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");
                         return ExitCode.Ok;

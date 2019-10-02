@@ -243,6 +243,8 @@ namespace Semmle.Extraction.CSharp.Entities
             return obj != null && obj.GetType() == typeof(VarargsParam);
         }
 
+        public override bool NeedsPopulation => true;
+
         public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, method);
 
         class VarargsParamFactory : ICachedEntityFactory<Method, VarargsParam>
