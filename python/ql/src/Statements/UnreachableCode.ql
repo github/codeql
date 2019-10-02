@@ -18,7 +18,7 @@ private Name variableInvolvedInComparison (Compare c) {
     result = c.getAComparator().getASubExpression*()
 }
 
-private predicate allInvolvedVariablesAreInvolvedInPrevious(Compare c, Compare prevc) {
+private predicate allInvolvedVariablesAreInvolvedInPreviousComplex(Compare c, Compare prevc) {
     prevc.isAComplexComparison() and
     forex (Name n | 
         n = variableInvolvedInComparison(c) | 
@@ -35,12 +35,12 @@ predicate typing_import(ImportingStmt is) {
     )
 }
 
-/* This predicate holds when a previous complex comparison occured before 
+/* This predicate holds when a previous complex comparison occurred before 
  * on the same variables, and then might break the control flow */
 private predicate previousComparisonMightBreakControlFlow(If s, If prev) {
     s.getEnclosingModule() = prev.getEnclosingModule() and
     prev.getLocation().getStartLine() < s.getLocation().getStartLine() and
-    allInvolvedVariablesAreInvolvedInPrevious(s.getTest(), prev.getTest())
+    allInvolvedVariablesAreInvolvedInPreviousComplex(s.getTest(), prev.getTest())
 }
 
 /** Holds if `s` contains the only `yield` in scope */
