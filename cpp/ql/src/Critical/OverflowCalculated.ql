@@ -36,7 +36,7 @@ predicate spaceProblem(FunctionCall append, string msg) {
     buffer.getAnAccess() = strlen.getStringExpr() and
     (
       insert.getTarget().hasGlobalOrStdName("strcpy") or
-      insert.getTarget().hasGlobalName("strncpy")
+      insert.getTarget().hasGlobalOrStdName("strncpy")
     ) and
     (
       append.getTarget().hasGlobalOrStdName("strcat") or

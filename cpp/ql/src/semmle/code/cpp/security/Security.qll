@@ -73,8 +73,6 @@ class SecurityOptions extends string {
       functionCall.getTarget().hasGlobalOrStdName(fname) and
       exists(functionCall.getArgument(arg)) and
       (
-        fname = "read" and arg = 1
-        or
         fname = "fread" and arg = 0
         or
         fname = "fgets" and arg = 0
@@ -91,6 +89,8 @@ class SecurityOptions extends string {
       functionCall.getTarget().hasGlobalName(fname) and
       exists(functionCall.getArgument(arg)) and
       (
+        fname = "read" and arg = 1
+        or
         fname = "getaddrinfo" and arg = 3
         or
         fname = "recv" and arg = 1

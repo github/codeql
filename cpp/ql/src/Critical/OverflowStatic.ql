@@ -58,7 +58,7 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
 }
 
 predicate bufferAndSizeFunction(Function f, int buf, int size) {
-  f.hasGlobalOrStdName("read") and buf = 1 and size = 2
+  f.hasGlobalName("read") and buf = 1 and size = 2
   or
   f.hasGlobalOrStdName("fgets") and buf = 0 and size = 1
   or

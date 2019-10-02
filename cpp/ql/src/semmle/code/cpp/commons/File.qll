@@ -26,10 +26,10 @@ predicate fcloseCall(FunctionCall fc, Expr closed) {
     f.hasGlobalOrStdName("fclose") and
     closed = fc.getArgument(0)
     or
-    f.hasGlobalOrStdName("close") and
+    f.hasGlobalName("close") and
     closed = fc.getArgument(0)
     or
-    f.hasGlobalOrStdName("_close") and
+    f.hasGlobalName("_close") and
     closed = fc.getArgument(0)
     or
     f.hasGlobalOrStdName("CloseHandle") and

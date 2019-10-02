@@ -34,10 +34,7 @@ class FileFunction extends FunctionWithWrappers {
       nme.matches("CreateFile%")
     )
     or
-    exists(string nme | this.hasStdName(nme) |
-      nme = "fopen" or
-      nme = "open"
-    )
+    this.hasStdName("fopen")
     or
     // on any of the fstream classes, or filebuf
     exists(string nme | this.getDeclaringType().hasStdName(nme) |

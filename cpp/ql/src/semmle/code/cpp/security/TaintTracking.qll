@@ -459,7 +459,7 @@ private predicate copyValueBetweenArguments(Function f, int sourceArg, int destA
   or
   f.hasGlobalName("inet_pton") and sourceArg = 1 and destArg = 2
   or
-  f.hasGlobalName("strftime") and sourceArg in [2 .. maxArgIndex(f)] and destArg = 0
+  f.hasGlobalOrStdName("strftime") and sourceArg in [2 .. maxArgIndex(f)] and destArg = 0
   or
   exists(FormattingFunction ff | ff = f |
     sourceArg in [ff.getFormatParameterIndex() .. maxArgIndex(f)] and
