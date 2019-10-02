@@ -32,9 +32,10 @@ predicate benignContext(Expr e) {
   inVoidContext(e) or 
   
   // A return statement is often used to just end the function.
-  exists(ReturnStmt ret | 
-    ret.getExpr() = e
-  )
+  e = any(Function f).getAReturnedExpr()
+  or
+  // The call is only in a non-void context because it is in a lambda.
+  e = any(ArrowFunctionExpr arrow).getBody()
   or 
   exists(ConditionalExpr cond | cond.getABranch() = e and benignContext(cond)) 
   or 
@@ -47,12 +48,7 @@ predicate benignContext(Expr e) {
   exists(Expr parent | parent.getUnderlyingValue() = e and benignContext(parent))
   or 
   exists(VoidExpr voidExpr | voidExpr.getOperand() = e)
-  or
- 
-  // The call is only in a non-void context because it is in a lambda.
-  exists(ArrowFunctionExpr arrow |
-    arrow.getBody() = e
-  ) 
+
   or
   
   // It is ok (or to be flagged by another query?) to await a non-async function. 
@@ -67,8 +63,11 @@ predicate benignContext(Expr e) {
   // Avoid double reporting with js/property-access-on-non-object
   exists(PropAccess ac | ac.getBase() = e)
   or
-  // Avoid double-reporting with unused local.
+  // Avoid double-reporting with js/unused-local-variable
   exists(VariableDeclarator v | v.getInit() = e and v.getBindingPattern().getVariable() instanceof UnusedLocal)
+  or
+  // Avoid double reporting with js/call-to-non-callable
+  exists(InvokeExpr invoke | invoke.getCallee() = e)
 }
 
 from Function f, DataFlow::CallNode call
