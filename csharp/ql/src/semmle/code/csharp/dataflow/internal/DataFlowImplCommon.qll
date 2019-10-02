@@ -34,6 +34,16 @@ private module ImplCommon {
       )
     }
 
+    /*
+     * The `FlowThrough_*` modules take a `step` relation as input and provide
+     * an `argumentValueFlowsThrough` relation as output.
+     *
+     * `FlowThrough_v1` includes just `simpleLocalFlowStep`, which is then used
+     * to detect getters and setters.
+     * `FlowThrough_v2` then includes a little bit of local field flow on top
+     * of `simpleLocalFlowStep`.
+     */
+
     private module FlowThrough_v1 {
       private predicate step = simpleLocalFlowStep/2;
 
@@ -233,6 +243,11 @@ private module ImplCommon {
       FlowThrough_v1::argumentValueFlowsThrough(node1, node2, _)
     }
 
+    /**
+     * Holds if `p` can flow to `node` in the same callable allowing local flow
+     * steps and value flow through methods. Call contexts are only accounted
+     * for in the nested calls.
+     */
     private predicate parameterValueFlowNoCtx(ParameterNode p, Node node) {
       p = node
       or

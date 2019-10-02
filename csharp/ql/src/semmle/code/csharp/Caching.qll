@@ -50,7 +50,7 @@ module Stages {
   cached
   module DataFlowStage {
     private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-    private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
+    private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon::Public
     private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 
     cached
