@@ -85,7 +85,6 @@ private module Annotations {
 
   class TypeAnnotations extends TAnnotations {
     int flags;
-
     Nullability nullability;
 
     TypeAnnotations() { this = TAnnotationFlags(flags, nullability) }
@@ -277,7 +276,6 @@ private newtype TAnnotatedType =
 /** A type with additional type information. */
 class AnnotatedType extends TAnnotatedType {
   Type type;
-
   Annotations::TypeAnnotations annotations;
 
   AnnotatedType() { this = TAnnotatedTypeNullability(type, annotations) }

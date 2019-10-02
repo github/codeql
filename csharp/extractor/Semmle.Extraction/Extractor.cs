@@ -215,6 +215,6 @@ namespace Semmle.Extraction
 
         public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
 
-        public TrapIdenfierMode TrapIdentifiers { get; } = TrapIdenfierMode.Imprecise;
+        public TrapIdenfierMode TrapIdentifiers { get; } = TrapIdenfierMode.Precise;
     }
 }
