@@ -12,6 +12,7 @@
 import javascript
 import Declarations.UnusedVariable
 import Expressions.ExprHasNoEffect
+import Statements.UselessConditional
 
 predicate returnsVoid(Function f) {
   exists(f.getBody().(Stmt)) and
@@ -57,9 +58,8 @@ predicate benignContext(Expr e) {
   // It is ok (or to be flagged by another query?) to await a non-async function. 
   exists(AwaitExpr await | await.getOperand() = e and benignContext(await)) 
   or
-  
   // Avoid double reporting with js/trivial-conditional
-  exists(IfStmt ifStmt | ifStmt.getCondition() = e)
+  exists(ASTNode cond | isExplicitConditional(cond, e))
   or 
   // Avoid double reporting with js/comparison-between-incompatible-types
   exists(Comparison binOp | binOp.getAnOperand() = e)

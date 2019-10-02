@@ -29,4 +29,12 @@
 	
 	var d = 42 + (42, onlySideEffects()); // NOT OK! 
 	console.log(d);
+	
+	if (onlySideEffects()) { 
+		// nothing.
+	}
+	
+	for (i = 0; onlySideEffects(); i++) {
+		// nothing. 
+	}
 })();
