@@ -90,7 +90,7 @@ private class Conf extends DataFlow::Configuration {
 }
 
 /** Holds if `disposable` may not be disposed. */
-predicate mayNotBeDiposed(LocalScopeDisposableCreation disposable) {
+predicate mayNotBeDisposed(LocalScopeDisposableCreation disposable) {
   exists(Conf conf, DataFlow::ExprNode e |
     e.getExpr() = disposable and
     conf.isSource(e) and
@@ -103,5 +103,5 @@ predicate mayNotBeDiposed(LocalScopeDisposableCreation disposable) {
 }
 
 from LocalScopeDisposableCreation disposable
-where mayNotBeDiposed(disposable)
+where mayNotBeDisposed(disposable)
 select disposable, "Disposable '" + disposable.getType() + "' is created here but is not disposed."
