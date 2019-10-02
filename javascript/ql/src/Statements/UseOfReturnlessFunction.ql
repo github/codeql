@@ -98,17 +98,15 @@ predicate callBlacklist(DataFlow::CallNode call) {
   exists(MethodCallExpr e | e.getCalleeName() = "resolve" and call.asExpr() = e.getArgument(0))
 }
 
-from Function f, DataFlow::CallNode call
+from DataFlow::CallNode call
 where
   // Intentionally only considering very precise callee information. It makes almost no difference.
-  f = call.getACallee(0) and
-  count(call.getACallee(0)) = 1 and 
-  
-  not functionBlacklist(f) and
+  not call.isIndefinite(_) and 
+  forex(Function f | f = call.getACallee() | not functionBlacklist(f)) and
   
   exists(call.asExpr()) and // TODO: Need to figure out what to do about reflective calls.
   
   not callBlacklist(call)
 select
-  call, "the function $@ does not return anything, yet the return value is used.", f, call.getCalleeName()
+  call, "the function $@ does not return anything, yet the return value is used.", call.getACallee(), call.getCalleeName()
   

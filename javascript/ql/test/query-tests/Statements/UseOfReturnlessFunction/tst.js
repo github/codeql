@@ -44,4 +44,16 @@
 	
 	var e = myObj.onlySideEffects.apply(this, arguments); // NOT OK!
 	console.log(e);
+	
+	function onlySideEffects2() {
+        console.log("Boo!")
+    }
+
+	var bothOnlyHaveSideEffects = Math.random() > 0.5 ? onlySideEffects : onlySideEffects2;
+	var f = bothOnlyHaveSideEffects(); // NOT OK!
+	console.log(f);
+	
+	var oneOfEach = Math.random() > 0.5 ? onlySideEffects : returnsValue;
+	var g = oneOfEach(); // OK
+	console.log(g);
 })();
