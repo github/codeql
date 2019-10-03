@@ -294,6 +294,8 @@ class IfStmt extends ConditionalStmt, @stmt_if {
  * ```
  */
 class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
+  override string getCanonicalQLClass() { result = "ConstexprIfStmt" }
+
   /**
    * Gets the condition expression of this 'constexpr if' statement.
    *
