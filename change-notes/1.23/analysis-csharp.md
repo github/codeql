@@ -16,6 +16,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
 | Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | Fewer false positive results | More `null` checks are now taken into account, including `null` checks for `dynamic` expressions and `null` checks such as `object alwaysNull = null; if (x != alwaysNull) ...`. |
+| Missing Dispose call on local IDisposable (`cs/local-not-disposed`) | Fewer false positive results | The query has been rewritten in order to identify more dispose patterns. For example, a local `IDisposable` that is disposed of by passing through a fluent API is no longer reported. |
 
 ## Removal of old queries
 
