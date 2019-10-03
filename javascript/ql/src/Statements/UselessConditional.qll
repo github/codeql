@@ -1,3 +1,7 @@
+/** 
+ * Provides predicates for working with useless conditionals.  
+ */ 
+
 import javascript
 
 /**

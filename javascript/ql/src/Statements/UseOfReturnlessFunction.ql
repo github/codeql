@@ -33,9 +33,6 @@ predicate benignContext(Expr e) {
   
   // A return statement is often used to just end the function.
   e = any(Function f).getAReturnedExpr()
-  or
-  // The call is only in a non-void context because it is in a lambda.
-  e = any(ArrowFunctionExpr arrow).getBody()
   or 
   exists(ConditionalExpr cond | cond.getABranch() = e and benignContext(cond)) 
   or 
@@ -47,11 +44,11 @@ predicate benignContext(Expr e) {
   or
   exists(Expr parent | parent.getUnderlyingValue() = e and benignContext(parent))
   or 
-  exists(VoidExpr voidExpr | voidExpr.getOperand() = e)
+  any(VoidExpr voidExpr).getOperand() = e
 
   or
   // weeds out calls inside HTML-attributes.
-  e.getContainer() instanceof CodeInAttribute or  
+  e.getParent() instanceof CodeInAttribute or  
   // and JSX-attributes.
   e = any(JSXAttribute attr).getValue() or 
   
@@ -59,19 +56,19 @@ predicate benignContext(Expr e) {
   exists(AwaitExpr await | await.getOperand() = e and benignContext(await)) 
   or
   // Avoid double reporting with js/trivial-conditional
-  exists(ASTNode cond | isExplicitConditional(cond, e))
+  isExplicitConditional(_, e)
   or 
   // Avoid double reporting with js/comparison-between-incompatible-types
-  exists(Comparison binOp | binOp.getAnOperand() = e)
+  any(Comparison binOp).getAnOperand() = e
   or
   // Avoid double reporting with js/property-access-on-non-object
-  exists(PropAccess ac | ac.getBase() = e)
+  any(PropAccess ac).getBase() = e
   or
   // Avoid double-reporting with js/unused-local-variable
   exists(VariableDeclarator v | v.getInit() = e and v.getBindingPattern().getVariable() instanceof UnusedLocal)
   or
   // Avoid double reporting with js/call-to-non-callable
-  exists(InvokeExpr invoke | invoke.getCallee() = e)
+  any(InvokeExpr invoke).getCallee() = e
 }
 
 predicate functionBlacklist(Function f) {
