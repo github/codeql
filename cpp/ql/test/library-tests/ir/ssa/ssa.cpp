@@ -210,3 +210,16 @@ int ModeledCallTarget(int x) {
   return y;
 }
 
+class Constructible {
+  public:
+    Constructible(int x) {};
+    void g() {}
+};
+
+void ExplicitConstructorCalls() {
+  Constructible c(1);
+  c.g();
+  c.g();
+  Constructible c2 = Constructible(2);
+  c2.g();
+}
