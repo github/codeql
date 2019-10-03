@@ -22,7 +22,7 @@ a value.
 <example>
 
 <p>
-In the below example the function <code>renderText</code> is used to render 
+In the example below, the function <code>renderText</code> is used to render 
 text through side effects, and the function does not return a value. 
 However, the programmer still uses the return value from 
 <code>renderText</code> as if the function returned a value, which is clearly 
