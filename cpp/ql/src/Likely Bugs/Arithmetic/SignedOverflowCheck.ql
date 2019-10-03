@@ -1,6 +1,6 @@
 /**
  * @name Undefined result of signed test for overflow
- * @description Testing for oveflow by adding a value to a variable
+ * @description Testing for overflow by adding a value to a variable
  *              to see if it "wraps around" works only for
  *              `unsigned` integer values.
  * @kind problem
@@ -13,18 +13,18 @@
 
 import cpp
 
-from RelationalOperation ro, BinaryArithmeticOperation bao, VariableAccess va1, VariableAccess va2
+from RelationalOperation ro, AddExpr add, VariableAccess va1, VariableAccess va2
 where
-  ro.getAnOperand() = bao and
-  bao instanceof AddExpr and
-  bao.getAnOperand() = va1 and
+  ro.getAnOperand() = add and
+  add.getAnOperand() = va1 and
   ro.getAnOperand() = va2 and
   va1.getTarget() = va2.getTarget() and
+  (not exists(va1.getQualifier()) or va1.getQualifier() = va2.getQualifier()) and 
   /*
-   * if the addition (`bao`) has been promoted to a signed type,
+   * if the addition (`add`) has been promoted to a signed type,
    * then the other operand (`va2`) must have been likewise promoted and so
    * have a signed comparison
    */
 
-  bao.getFullyConverted().getType().(IntegralType).isSigned()
+  add.getExplicitlyConverted().getType().(IntegralType).isSigned()
 select ro, "Testing for signed overflow may produce undefined results."
