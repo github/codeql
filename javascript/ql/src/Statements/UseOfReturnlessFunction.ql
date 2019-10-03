@@ -16,7 +16,6 @@ import Statements.UselessConditional
 
 predicate returnsVoid(Function f) {
   f.getBody() instanceof Stmt and
-  not f instanceof ExternalDecl and
   not f.isGenerator() and
   not f.isAsync() and
   not exists(f.getAReturnedExpr())
@@ -25,7 +24,9 @@ predicate returnsVoid(Function f) {
 predicate isStub(Function f) {
     f.getBodyStmt(0) instanceof ThrowStmt
     or
-    f.getBody().(BlockStmt).getNumChild() = 0
+    f.getBody().(BlockStmt).getNumChild() = 0 
+    or
+    f instanceof ExternalDecl
 }
 
 predicate benignContext(Expr e) {
@@ -38,10 +39,6 @@ predicate benignContext(Expr e) {
   or 
   exists(LogicalBinaryExpr bin | bin.getAnOperand() = e and benignContext(bin)) 
   or
-  exists(SeqExpr seq, int i, int n | e = seq.getOperand(i) and n = seq.getNumOperands() |
-    i < n - 1 or benignContext(seq)
-exists(SeqExpr seq | seq.getLastOperand() = e and benignContext(seq))
-  or
   exists(Expr parent | parent.getUnderlyingValue() = e and benignContext(parent))
   or 
   any(VoidExpr voidExpr).getOperand() = e
@@ -52,7 +49,6 @@ exists(SeqExpr seq | seq.getLastOperand() = e and benignContext(seq))
   // and JSX-attributes.
   e = any(JSXAttribute attr).getValue() or 
   
-  // It is ok (or to be flagged by another query?) to await a non-async function. 
   exists(AwaitExpr await | await.getOperand() = e and benignContext(await)) 
   or
   // Avoid double reporting with js/trivial-conditional
@@ -69,35 +65,21 @@ exists(SeqExpr seq | seq.getLastOperand() = e and benignContext(seq))
   or
   // Avoid double reporting with js/call-to-non-callable
   any(InvokeExpr invoke).getCallee() = e
-}
-
-predicate functionBlacklist(Function f) {
-  not returnsVoid(f)
-  or 
-  isStub(f)
-}
-
-predicate callBlacklist(DataFlow::CallNode call) {
-  call.asExpr().getTopLevel().isMinified() or 
-   
-  benignContext(call.asExpr()) or 
-  
-  // anonymous one-shot closure. Those are used in weird ways and we ignore them.
-  call.asExpr() = any(ImmediatelyInvokedFunctionExpr f).getInvocation() or  
-  
+  or
   // arguments to Promise.resolve (and promise library variants) are benign. 
-  call = any(ResolvedPromiseDefinition promise).getValue()
+  e = any(ResolvedPromiseDefinition promise).getValue().asExpr()
 }
+
 
 from DataFlow::CallNode call
 where
-  // Intentionally only considering very precise callee information. It makes almost no difference.
   not call.isIndefinite(_) and 
-  forex(Function f | f = call.getACallee() | not functionBlacklist(f)) and
+  forex(Function f | f = call.getACallee() | returnsVoid(f) and not isStub(f)) and
   
-  exists(call.asExpr()) and // TODO: Need to figure out what to do about reflective calls.
+  not benignContext(call.asExpr()) and
   
-  not callBlacklist(call)
+  // anonymous one-shot closure. Those are used in weird ways and we ignore them.
+  call.asExpr() != any(ImmediatelyInvokedFunctionExpr f).getInvocation()
 select
   call, "the function $@ does not return anything, yet the return value is used.", call.getACallee(), call.getCalleeName()
   
