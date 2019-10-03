@@ -882,7 +882,7 @@ ssa.cpp:
 #  220|     v0_6(void)                  = Call                            : func:r0_4, this:r0_3, 0:r0_5
 #  220|     m0_7(unknown)               = ^CallSideEffect                 : ~m0_1
 #  220|     m0_8(unknown)               = Chi                             : total:m0_1, partial:m0_7
-#  220|     m0_9(Constructible)         = ^IndirectMayWriteSideEffect     : &:r0_3
+#  220|     m0_9(Constructible)         = ^IndirectMayWriteSideEffect[-1] : &:r0_3
 #  221|     r0_10(glval<Constructible>) = VariableAddress[c]              : 
 #  221|     r0_11(glval<unknown>)       = FunctionAddress[g]              : 
 #  221|     v0_12(void)                 = Call                            : func:r0_11, this:r0_10
@@ -903,7 +903,7 @@ ssa.cpp:
 #  223|     v0_27(void)                 = Call                            : func:r0_25, this:r0_24, 0:r0_26
 #  223|     m0_28(unknown)              = ^CallSideEffect                 : ~m0_21
 #  223|     m0_29(unknown)              = Chi                             : total:m0_21, partial:m0_28
-#  223|     m0_30(Constructible)        = ^IndirectMayWriteSideEffect     : &:r0_24
+#  223|     m0_30(Constructible)        = ^IndirectMayWriteSideEffect[-1] : &:r0_24
 #  224|     r0_31(glval<Constructible>) = VariableAddress[c2]             : 
 #  224|     r0_32(glval<unknown>)       = FunctionAddress[g]              : 
 #  224|     v0_33(void)                 = Call                            : func:r0_32, this:r0_31

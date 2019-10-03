@@ -401,6 +401,11 @@ class TranslatedStructorCallSideEffects extends TranslatedSideEffects {
     operandTag instanceof AddressOperandTag and
     result = getParent().(TranslatedStructorCall).getQualifierResult()
   }
+
+  final override int getInstructionIndex(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = -1
+  }
 }
 
 class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEffect {
