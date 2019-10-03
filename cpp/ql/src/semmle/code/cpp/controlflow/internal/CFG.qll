@@ -888,6 +888,21 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeAfter(n2, s)
   )
   or
+  // ConstexprIfStmt -> condition ; { then, else } -> // same as IfStmt
+  exists(ConstexprIfStmt s |
+    p1.nodeAt(n1, s) and
+    p2.nodeBefore(n2, s.getCondition())
+    or
+    p1.nodeAfter(n1, s.getThen()) and
+    p2.nodeBeforeDestructors(n2, s)
+    or
+    p1.nodeAfter(n1, s.getElse()) and
+    p2.nodeBeforeDestructors(n2, s)
+    or
+    p1.nodeAfterDestructors(n1, s) and
+    p2.nodeAfter(n2, s)
+  )
+  or
   // WhileStmt -> condition ; body -> condition ; after dtors -> after
   exists(WhileStmt s |
     p1.nodeAt(n1, s) and
@@ -1175,9 +1190,8 @@ private class ExceptionSource extends Node {
 }
 
 /**
- * Holds if `test` is the test of a control-flow construct that will always
- * have true/false sub-edges out of it, where the `truth`-sub-edge goes to
- * `(n2, p2)`.
+ * Holds if `test` is the test of a control-flow construct where the `truth`
+ * sub-edge goes to `(n2, p2)`.
  */
 private predicate conditionJumpsTop(Expr test, boolean truth, Node n2, Pos p2) {
   exists(IfStmt s | test = s.getCondition() |
@@ -1189,6 +1203,24 @@ private predicate conditionJumpsTop(Expr test, boolean truth, Node n2, Pos p2) {
     or
     not exists(s.getElse()) and
     truth = false and
+    p2.nodeBeforeDestructors(n2, s)
+  )
+  or
+  exists(ConstexprIfStmt s, string cond |
+    test = s.getCondition() and
+    cond = test.getFullyConverted().getValue()
+  |
+    truth = true and
+    cond != "0" and
+    p2.nodeBefore(n2, s.getThen())
+    or
+    truth = false and
+    cond = "0" and
+    p2.nodeBefore(n2, s.getElse())
+    or
+    not exists(s.getElse()) and
+    truth = false and
+    cond = "0" and
     p2.nodeBeforeDestructors(n2, s)
   )
   or
