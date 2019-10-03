@@ -31,9 +31,18 @@ predicate unique_yield(Stmt s) {
     )
 }
 
+/** Holds if `contextlib.suppress` may be used in the same scope as `s` */
+predicate suppression_in_scope(Stmt s) {
+    exists(With w |
+        w.getContextExpr().(Call).getFunc().pointsTo(Value::named("contextlib.suppress")) and
+        w.getScope() = s.getScope()
+    )
+}
+
 predicate reportable_unreachable(Stmt s) {
     s.isUnreachable() and
     not typing_import(s) and
+    not suppression_in_scope(s) and
     not exists(Stmt other | other.isUnreachable() |
         other.contains(s)
         or
