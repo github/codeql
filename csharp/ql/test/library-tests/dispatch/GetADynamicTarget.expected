@@ -401,4 +401,8 @@
 | ViableCallable.cs:424:9:424:21 | call to method M | C15.A4.M<T1>() |
 | ViableCallable.cs:424:9:424:21 | call to method M | C15.A5.M<T1>() |
 | ViableCallable.cs:439:9:439:19 | call to method M1 | C16<String,Int32>.M1(string) |
-| ViableCallable.cs:442:9:442:24 | call to method M2 | C16<String,Int32>.M2<T>(Func<T>) |
+| ViableCallable.cs:442:9:442:24 | call to method M2 | C17.M2<T>(Func<T>) |
+| ViableCallable.cs:456:9:456:30 | call to method M2 | C16<T,Int32>.M2<T>(Func<T>) |
+| ViableCallable.cs:456:9:456:30 | call to method M2 | C17.M2<T>(Func<T>) |
+| ViableCallable.cs:462:9:462:30 | call to method M2 | C16<T,Int32>.M2<T>(Func<T>) |
+| ViableCallable.cs:462:9:462:30 | call to method M2 | C17.M2<T>(Func<T>) |
