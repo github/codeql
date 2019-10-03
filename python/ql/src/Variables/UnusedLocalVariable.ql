@@ -21,6 +21,7 @@ predicate unused_local(Name unused, LocalVariable v) {
         def.isUnused() and
         not exists(def.getARedef()) and
         def.isRelevant() and
+        not v = any(Nonlocal n).getAVariable() and
         not exists(def.getNode().getParentNode().(FunctionDef).getDefinedFunction().getADecorator()) and
         not exists(def.getNode().getParentNode().(ClassDef).getDefinedClass().getADecorator())
     )
