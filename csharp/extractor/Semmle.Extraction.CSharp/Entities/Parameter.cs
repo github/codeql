@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         // If we don't have the type of the parameter, do not populate it.
-        public override bool NeedsPopulation => symbol.Type.TypeKind != TypeKind.Error;
+        public override bool NeedsPopulation => base.NeedsPopulation && (symbol.Type.TypeKind != TypeKind.Error || Context.Extractor.Standalone);
 
         string Name
         {

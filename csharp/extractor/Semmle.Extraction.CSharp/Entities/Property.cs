@@ -17,7 +17,6 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
-            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
             trapFile.Write(symbol.Name);
             trapFile.Write(";property");
         }

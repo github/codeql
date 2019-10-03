@@ -112,8 +112,6 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.WriteSubId(m.ContainingType);
 
-            AddExplicitInterfaceQualifierToId(m.Context, trapFile, m.symbol.ExplicitInterfaceImplementations);
-
             trapFile.Write(".");
             trapFile.Write(m.symbol.Name);
 
@@ -203,7 +201,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type, TypeIdentifierContext tic)
         {
-            if (type.ContainsTypeParameters(cx, method))
+            if (type.ContainsTypeParameters(cx, method) || type.TypeKind == TypeKind.Array)
                 type.BuildTypeId(cx, trapFile, (cx0, tb0, type0, _) => AddSignatureTypeToId(cx, tb0, method, type0, tic), tic, method);
             else
                 trapFile.WriteSubId(Type.Create(cx, type).TypeRef);
@@ -242,14 +240,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             trapFile.Write(')');
-        }
-
-        public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
-        {
-            if (explicitInterfaceImplementations.Any())
-            {
-                trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
-            }
         }
 
         public virtual string Name => symbol.Name;
