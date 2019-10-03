@@ -611,7 +611,7 @@ class VariableInstruction extends Instruction {
 
   override string getImmediateString() { result = var.toString() }
 
-  final IRVariable getVariable() { result = var }
+  final IRVariable getIRVariable() { result = var }
 }
 
 class FieldInstruction extends Instruction {
