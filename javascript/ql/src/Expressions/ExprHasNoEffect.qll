@@ -26,7 +26,7 @@ predicate inVoidContext(Expr e) {
     n = seq.getNumOperands()
   |
     i < n - 1 or inVoidContext(seq)
-  ) 
+  )
   or
   exists(ForStmt stmt | e = stmt.getUpdate())
   or
