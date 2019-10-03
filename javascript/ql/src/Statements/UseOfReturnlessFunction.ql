@@ -1,6 +1,6 @@
 /**
  * @name Use of returnless function.
- * @description Using the return value of a function that does not return anything is highly suspicious.
+ * @description Using the return value of a function that does not explicitly return is indicative of a mistake.
  * @kind problem
  * @problem.severity recommendation
  * @id js/use-of-returnless-function
@@ -15,7 +15,7 @@ import Expressions.ExprHasNoEffect
 import Statements.UselessConditional
 
 predicate returnsVoid(Function f) {
-  exists(f.getBody().(Stmt)) and
+  f.getBody() instanceof Stmt and
   not f instanceof ExternalDecl and
   not f.isGenerator() and
   not f.isAsync() and
@@ -40,7 +40,7 @@ predicate benignContext(Expr e) {
   or
   exists(SeqExpr seq, int i, int n | e = seq.getOperand(i) and n = seq.getNumOperands() |
     i < n - 1 or benignContext(seq)
-  ) 
+exists(SeqExpr seq | seq.getLastOperand() = e and benignContext(seq))
   or
   exists(Expr parent | parent.getUnderlyingValue() = e and benignContext(parent))
   or 
