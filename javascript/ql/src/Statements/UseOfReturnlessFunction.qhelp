@@ -4,10 +4,10 @@
 <qhelp>
 <overview>
 <p>
-JavaScript functions that do not explicitly return a value will implicitly return 
-<code>undefined</code>. Using the return value from a function that never 
-explicitly return a value is not an error in itself, but it is a highly 
-suspicious pattern indicating that some misunderstanding has occurred. 
+JavaScript functions that do not return any value will implicitly return 
+<code>undefined</code>. Using the implicit return value from such a function  
+is not an error in itself, but it is a pattern indicating that some 
+misunderstanding has occurred.
 </p>
 
 </overview>
