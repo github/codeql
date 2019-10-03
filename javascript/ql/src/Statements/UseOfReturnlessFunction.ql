@@ -1,5 +1,5 @@
 /**
- * @name Use of returnless function.
+ * @name Use of returnless function
  * @description Using the return value of a function that does not explicitly return is indicative of a mistake.
  * @kind problem
  * @problem.severity warning
