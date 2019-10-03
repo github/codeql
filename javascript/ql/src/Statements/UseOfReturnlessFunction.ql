@@ -2,7 +2,7 @@
  * @name Use of returnless function.
  * @description Using the return value of a function that does not explicitly return is indicative of a mistake.
  * @kind problem
- * @problem.severity recommendation
+ * @problem.severity warning
  * @id js/use-of-returnless-function
  * @tags maintainability,
  *       correctness
