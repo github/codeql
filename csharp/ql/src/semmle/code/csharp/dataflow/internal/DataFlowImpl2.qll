@@ -1261,7 +1261,7 @@ abstract private class AccessPath extends TAccessPath {
 
 private class AccessPathNil extends AccessPath, TNil {
   override string toString() {
-    exists(DataFlowType t | this = TNil(t) | result = concat(" : " + ppReprType(t)))
+    exists(DataFlowType t | this = TNil(t) | result = concat(": " + ppReprType(t)))
   }
 
   override AccessPathFront getFront() {
@@ -1277,7 +1277,7 @@ private class AccessPathConsNil extends AccessPathCons, TConsNil {
   override string toString() {
     exists(Content f, DataFlowType t | this = TConsNil(f, t) |
       // The `concat` becomes "" if `ppReprType` has no result.
-      result = f.toString() + concat(" : " + ppReprType(t))
+      result = "[" + f.toString() + "]" + concat(" : " + ppReprType(t))
     )
   }
 
@@ -1294,8 +1294,8 @@ private class AccessPathConsCons extends AccessPathCons, TConsCons {
   override string toString() {
     exists(Content f1, Content f2, int len | this = TConsCons(f1, f2, len) |
       if len = 2
-      then result = f1.toString() + ", " + f2.toString()
-      else result = f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")"
+      then result = "[" + f1.toString() + ", " + f2.toString() + "]"
+      else result = "[" + f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")]"
     )
   }
 
@@ -1626,7 +1626,7 @@ abstract class PathNode extends TPathNode {
     this instanceof PathNodeSink and result = ""
     or
     exists(string s | s = this.(PathNodeMid).getAp().toString() |
-      if s = "" then result = "" else result = " [" + s + "]"
+      if s = "" then result = "" else result = " " + s
     )
   }
 
@@ -2071,7 +2071,7 @@ private module FlowExploration {
 
   private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
     override string toString() {
-      exists(DataFlowType t | this = TPartialNil(t) | result = concat(" : " + ppReprType(t)))
+      exists(DataFlowType t | this = TPartialNil(t) | result = concat(": " + ppReprType(t)))
     }
 
     override AccessPathFront getFront() {
@@ -2083,8 +2083,8 @@ private module FlowExploration {
     override string toString() {
       exists(Content f, int len | this = TPartialCons(f, len) |
         if len = 1
-        then result = f.toString()
-        else result = f.toString() + ", ... (" + len.toString() + ")"
+        then result = "[" + f.toString() + "]"
+        else result = "[" + f.toString() + ", ... (" + len.toString() + ")]"
       )
     }
 
@@ -2161,7 +2161,7 @@ private module FlowExploration {
 
     private string ppAp() {
       exists(string s | s = this.(PartialPathNodePriv).getAp().toString() |
-        if s = "" then result = "" else result = " [" + s + "]"
+        if s = "" then result = "" else result = " " + s
       )
     }
 
