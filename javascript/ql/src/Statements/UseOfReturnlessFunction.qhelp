@@ -6,8 +6,8 @@
 <p>
 JavaScript functions that do not return any value will implicitly return 
 <code>undefined</code>. Using the implicit return value from such a function  
-is not an error in itself, but it is a pattern indicating that some 
-misunderstanding has occurred.
+is not an error in itself, but it is a pattern indicating that some
+misunderstanding has occurred. 
 </p>
 
 </overview>
@@ -30,6 +30,12 @@ an error.
 </p>
 
 <sample src="examples/UseOfReturnlessFunction.js" />
+
+<p>
+The program can be fixed either removing the use of the value returned by 
+<code>renderText</code>, or by changing the <code>renderText</code> method 
+to return a value.
+</p>
 
 </example>
 <references>
