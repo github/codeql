@@ -70,7 +70,7 @@ class ReturnKind extends TReturnKind {
   }
 }
 
-/** A data flow node that represents a returned value. */
+/** A data flow node that represents a returned value in the called function. */
 abstract class ReturnNode extends Node {
   /** Gets the kind of this returned value. */
   abstract ReturnKind getKind();
@@ -93,7 +93,7 @@ private class RefReturnNode extends ReturnNode, RefParameterFinalValueNode {
   override ReturnKind getKind() { result = TRefReturnKind(this.getParameter().getIndex()) }
 }
 
-/** A data flow node that represents the output of a call. */
+/** A data flow node that represents the output of a call at the call site. */
 abstract class OutNode extends Node {
   /** Gets the underlying call. */
   abstract DataFlowCall getCall();
