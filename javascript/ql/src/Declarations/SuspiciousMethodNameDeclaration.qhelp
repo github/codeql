@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>
-In TypeScript the keywords <code>constructor</code> and <code>new</code> are
+In TypeScript the keywords <code>constructor</code> and <code>new</code> for member declarations are
 used to declare constructors in classes and interfaces respectively. 
 However, by using the wrong keyword a programmer can accidentally declare e.g. 
 a method called <code>constructor</code> inside an interface.
