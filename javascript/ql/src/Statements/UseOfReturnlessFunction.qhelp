@@ -31,8 +31,8 @@ clearly an error.
 <sample src="examples/UseOfReturnlessFunction.js" />
 
 <p>
-The program can be fixed either removing the use of the value returned by 
-<code>renderText</code>, or by changing the <code>renderText</code> method 
+The program can be fixed either by removing the use of the value returned by 
+<code>renderText</code>, or by changing the <code>renderText</code> function
 to return an expression.
 </p>
 
