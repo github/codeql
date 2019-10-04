@@ -1,4 +1,5 @@
 import AliasAnalysis
+private import semmle.code.cpp.ir.implementation.MemoryAccessKind
 private import cpp
 private import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
@@ -34,7 +35,11 @@ private predicate isVariableModeled(IRVariable var) {
     hasResultMemoryAccess(instr, var, type, bitOffset)
   |
     bitOffset = 0 and
-    type = var.getType()
+    type = var.getType() and
+    not (
+      instr.getResultMemoryAccess() instanceof IndirectMayMemoryAccess or
+      instr.getResultMemoryAccess() instanceof BufferMayMemoryAccess 
+    )
   ) and
   forall(MemoryOperand operand, Type type, IntValue bitOffset |
     hasOperandMemoryAccess(operand, var, type, bitOffset)
