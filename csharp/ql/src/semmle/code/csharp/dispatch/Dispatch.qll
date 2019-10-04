@@ -39,7 +39,7 @@ class DispatchCall extends Internal::TDispatchCall {
 
 /** Internal implementation details. */
 private module Internal {
-  private import semmle.code.csharp.Implements
+  private import semmle.code.csharp.Unification
 
   cached
   private module Cached {
@@ -701,9 +701,9 @@ private module Internal {
   }
 
   pragma[noinline]
-  private Type candidateInternalKind(Type t, Gvn::CompoundTypeKind k) {
+  private Type candidateInternalKind(Type t, CompoundTypeKind k) {
     result = candidateInternal(t) and
-    k = Gvn::getTypeKind(t)
+    k = getTypeKind(t)
   }
 
   /**
@@ -713,7 +713,7 @@ private module Internal {
   pragma[nomagic]
   private predicate sameChildrenModuloTypeParameters(Type x, Type y, int i) {
     i = -1 and
-    y = candidateInternalKind(x, Gvn::getTypeKind(y))
+    y = candidateInternalKind(x, getTypeKind(y))
     or
     sameChildrenModuloTypeParameters(x, y, i - 1) and
     sameModuloTypeParameters(x.getChild(i), y.getChild(i))
