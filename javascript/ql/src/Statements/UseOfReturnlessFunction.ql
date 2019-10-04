@@ -15,7 +15,6 @@ import Expressions.ExprHasNoEffect
 import Statements.UselessConditional
 
 predicate returnsVoid(Function f) {
-  not f instanceof ArrowFunctionExpr and
   not f.isGenerator() and
   not f.isAsync() and
   not exists(f.getAReturnedExpr())
