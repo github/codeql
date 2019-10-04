@@ -82,17 +82,66 @@ predicate alwaysThrows(Function f) {
   )
 }
 
-from DataFlow::CallNode call
-where
+predicate callToVoidFunction(DataFlow::CallNode call, Function func) {
   not call.isIndefinite(_) and 
-  forex(Function f | f = call.getACallee() |
+  func = call.getACallee() and
+  forall(Function f | f = call.getACallee() |
     returnsVoid(f) and not isStub(f) and not alwaysThrows(f)
+  )
+}
+
+predicate hasNonVoidCallbackMethod(string name) {
+  name = "every" or
+  name = "filter" or
+  name = "find" or
+  name = "findIndex" or
+  name = "flatMap" or
+  name = "map" or
+  name = "reduce" or
+  name = "reduceRight" or
+  name = "some" or
+  name = "sort"
+}
+
+DataFlow::SourceNode array(DataFlow::TypeTracker t) {
+  t.start() and result instanceof DataFlow::ArrayCreationNode
+  or
+  exists (DataFlow::TypeTracker t2 |
+    result = array(t2).track(t2, t)
+  )
+}
+
+DataFlow::SourceNode array() { result = array(DataFlow::TypeTracker::end()) }
+
+predicate voidArrayCallback(DataFlow::MethodCallNode call, Function func) {
+  hasNonVoidCallbackMethod(call.getMethodName()) and
+  func = call.getAnArgument().getALocalSource().asExpr() and
+  1 = count(DataFlow::Node arg | arg = call.getAnArgument() and arg.getALocalSource().asExpr() instanceof Function) and
+  returnsVoid(func) and
+  not isStub(func) and
+  not alwaysThrows(func) and
+  (
+    call.getReceiver().getALocalSource() = array()
+    or
+    call.getCalleeNode() instanceof LodashUnderscore::Member
+  )
+}
+
+from DataFlow::CallNode call, Function func, string name, string msg
+where
+  (
+    callToVoidFunction(call, func) and 
+    msg = "the $@ does not return anything, yet the return value is used." and
+    name = "function " + call.getCalleeName()
+    or
+    voidArrayCallback(call, func) and 
+    msg = "the $@ does not return anything, yet the return value from the call to " + call.getCalleeName() + "() is used." and
+    name = "callback function"
   ) and
-  
   not benignContext(call.asExpr()) and
-  
+  // Avoid double reporting from js/useless-expression
+  not hasNoEffect(func.getBodyStmt(func.getNumBodyStmt() - 1).(ExprStmt).getExpr()) and
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
   not oneshotClosure(call.asExpr())
 select
-  call, "the function $@ does not return anything, yet the return value is used.", call.getACallee(), call.getCalleeName()
-  
+  call, msg, func, name
