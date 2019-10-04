@@ -4,10 +4,6 @@ Example: Query injection
 
 CodeQL for Java
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup

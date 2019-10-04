@@ -4,10 +4,6 @@ Introduction to variant analysis
 
 CodeQL for Java
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup

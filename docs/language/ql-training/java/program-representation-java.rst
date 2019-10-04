@@ -4,10 +4,6 @@ Program representation
 
 CodeQL for Java
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: agenda
 
 Agenda

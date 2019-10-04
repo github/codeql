@@ -2,10 +2,6 @@
 Introduction to data flow
 =========================
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 Finding SPARQL injection vulnerabilities in Java
 
 .. rst-class:: setup

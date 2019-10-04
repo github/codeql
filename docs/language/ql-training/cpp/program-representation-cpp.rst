@@ -4,10 +4,6 @@ Program representation
 
 CodeQL for C/C++
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: agenda
 
 Agenda

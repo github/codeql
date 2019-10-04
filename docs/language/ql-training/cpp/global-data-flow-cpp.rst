@@ -3,10 +3,6 @@ Introduction to global data flow
 ================================
 
 CodeQL for C/C++
-
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
    
 .. rst-class:: setup
 

@@ -4,10 +4,6 @@ Example: Bad overflow guard
 
 CodeQL for C/C++
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup

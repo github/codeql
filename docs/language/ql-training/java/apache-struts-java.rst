@@ -8,10 +8,6 @@ Exercise: Apache Struts
 
    CVE-2017-9805
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup
