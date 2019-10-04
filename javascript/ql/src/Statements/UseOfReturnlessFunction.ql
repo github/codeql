@@ -29,6 +29,9 @@ predicate isStub(Function f) {
     f instanceof ExternalDecl
 }
 
+/**
+ * Holds if `e` is in a syntactic context where it likely is fine that the value of `e` comes from a call to a returnless function.
+ */
 predicate benignContext(Expr e) {
   inVoidContext(e) or 
   
