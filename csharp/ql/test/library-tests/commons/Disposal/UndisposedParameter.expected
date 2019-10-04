@@ -1,33 +1,4 @@
-| Execute(TextWriter) | 0 |
-| HtmlDecode(string, TextWriter) | 1 |
-| HtmlEncode(string, TextWriter) | 1 |
-| IndentedTextWriter(TextWriter) | 0 |
-| IndentedTextWriter(TextWriter, string) | 0 |
-| Synchronized(TextWriter) | 0 |
-| System.IO.TextWriter System.Console.EnsureInitialized<System.IO.TextWriter>(System.IO.TextWriter,System.Func<System.IO.TextWriter>) | 0 |
-| System.IO.TextWriter System.IO.TextWriter.Synchronized(System.IO.TextWriter) | 0 |
-| System.IO.TextWriter System.Threading.Volatile.Read<System.IO.TextWriter>(System.IO.TextWriter) | 0 |
-| System.Tuple<System.IO.TextWriter,System.ReadOnlyMemory<System.Char>> System.Tuple.Create<System.IO.TextWriter,System.ReadOnlyMemory<System.Char>>(System.IO.TextWriter,System.ReadOnlyMemory<System.Char>) | 0 |
-| System.Void System.CodeDom.Compiler.IndentedTextWriter..ctor(System.IO.TextWriter) | 0 |
-| System.Void System.CodeDom.Compiler.IndentedTextWriter..ctor(System.IO.TextWriter,System.String) | 0 |
-| System.Void System.IO.TextWriter.SyncTextWriter..ctor(System.IO.TextWriter) | 0 |
-| System.Void System.Net.WebUtility.HtmlDecode(System.String,System.IO.TextWriter) | 1 |
-| System.Void System.Net.WebUtility.HtmlEncode(System.String,System.IO.TextWriter) | 1 |
-| System.Void System.Threading.Volatile.Write<System.IO.TextWriter>(System.IO.TextWriter,System.IO.TextWriter) | 0 |
-| System.Void System.Threading.Volatile.Write<System.IO.TextWriter>(System.IO.TextWriter,System.IO.TextWriter) | 1 |
-| System.Void System.Tuple<System.Char,System.IO.TextWriter>..ctor(System.IO.TextWriter,System.Char) | 0 |
-| System.Void System.Tuple<System.Char[],System.IO.TextWriter,System.Int32,System.Int32>..ctor(System.IO.TextWriter,System.Char[],System.Int32,System.Int32) | 0 |
-| System.Void System.Tuple<System.IO.TextWriter,System.String>..ctor(System.IO.TextWriter,System.String) | 0 |
-| System.Void System.Xml.Serialization.IndentedWriter..ctor(System.IO.TextWriter,System.Boolean) | 0 |
-| System.Void System.Xml.XmlTextEncoder..ctor(System.IO.TextWriter) | 0 |
-| System.Void System.Xml.Xsl.XslTransform.Transform(System.Xml.XPath.IXPathNavigable,System.Xml.Xsl.XsltArgumentList,System.IO.TextWriter) | 2 |
-| System.Void System.Xml.Xsl.XslTransform.Transform(System.Xml.XPath.IXPathNavigable,System.Xml.Xsl.XsltArgumentList,System.IO.TextWriter,System.Xml.XmlResolver) | 2 |
-| System.Void System.Xml.Xsl.XslTransform.Transform(System.Xml.XPath.XPathNavigator,System.Xml.Xsl.XsltArgumentList,System.IO.TextWriter) | 2 |
-| System.Void System.Xml.Xsl.XslTransform.Transform(System.Xml.XPath.XPathNavigator,System.Xml.Xsl.XsltArgumentList,System.IO.TextWriter,System.Xml.XmlResolver) | 2 |
-| System.Void System.Xml.Xsl.XsltOld.Processor.Execute(System.IO.TextWriter) | 0 |
-| System.Void System.Xml.Xsl.XsltOld.TextOnlyOutput..ctor(System.Xml.Xsl.XsltOld.Processor,System.IO.TextWriter) | 1 |
-| System.Void System.Xml.Xsl.XsltOld.TextOutput..ctor(System.Xml.Xsl.XsltOld.Processor,System.IO.TextWriter) | 1 |
-| Transform(IXPathNavigable, XsltArgumentList, TextWriter) | 2 |
-| Transform(IXPathNavigable, XsltArgumentList, TextWriter, XmlResolver) | 2 |
-| Transform(XPathNavigator, XsltArgumentList, TextWriter) | 2 |
-| Transform(XPathNavigator, XsltArgumentList, TextWriter, XmlResolver) | 2 |
+| CapturesDisposable(MyType, MyType) | 1 |
+| DisposesParameter(IDisposable, IDisposable) | 1 |
+| System.Void DisposalTests.Class1.CapturesDisposable(DisposalTests.MyType,DisposalTests.MyType) | 1 |
+| System.Void DisposalTests.Class1.DisposesParameter(System.IDisposable,System.IDisposable) | 1 |

@@ -12,5 +12,5 @@ where
   e.getVariable().getName() = "pi" and
   e.getVariable().getType() instanceof FloatType and
   e.getInitializer() instanceof FloatLiteral and
-  e.getVariable().getValue() = "3.141593"
+  e.getVariable().getValue().matches("3.1415%")
 select m, s, e
