@@ -120,6 +120,10 @@ module InstructionSanity {
     )
   }
 
+  query predicate duplicateChiOperand(ChiInstruction chi) {
+    chi.getTotal() = chi.getPartial()
+  }
+
   /**
    * Holds if an instruction, other than `ExitFunction`, has no successors.
    */

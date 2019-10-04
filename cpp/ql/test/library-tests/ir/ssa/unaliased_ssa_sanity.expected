@@ -3,6 +3,7 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+duplicateChiOperand
 instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
