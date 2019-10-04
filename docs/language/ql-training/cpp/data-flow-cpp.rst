@@ -4,10 +4,6 @@ Introduction to data flow
 
 Finding string formatting vulnerabilities in C/C++
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup

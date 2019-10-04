@@ -4,10 +4,6 @@ Introduction to global data flow
 
 QL for Java
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup

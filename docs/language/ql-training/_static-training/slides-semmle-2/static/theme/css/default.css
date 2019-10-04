@@ -1301,13 +1301,13 @@ aside.gdbar img {
 .title-slide hgroup h1 {
   font-size: 2em;
   line-height: 1.4;
-  /*letter-spacing: -3px;*/
   color: white;
   margin: auto;
   display: block;
   position: absolute;
   top: 0;
   bottom: 10%;
+  left: 1.25em;
   height: 0;
 }
 /* line 898, ../scss/default.scss */
@@ -1431,24 +1431,11 @@ hgroup .pre {
   color: #5c31ff;
 }
 
-/* title slide (deck title, subtitle, semmle logo)*/
+/* title slide (deck title, subtitle)*/
 
 .title-slide {
   background-image: url("../../title-slide.svg");
   background-size: cover;
-}
-
-.semmle-logo sup {
-  vertical-align: super;
-  font-size: 0.3em;
-  font-weight: 100;
-}
-
-.title-slide .semmle-logo {
-  color: white;
-  font-size: 1.2em;
-  position: absolute;
-  top: 10%;
 }
 
 .title-slide p {
@@ -1456,6 +1443,7 @@ hgroup .pre {
   font-size: 1em;
   position: absolute;
   bottom: 30%;
+  left: 2.6em;
 }
 
 .title-slide hgroup .pre {
