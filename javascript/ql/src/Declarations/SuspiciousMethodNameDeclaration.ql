@@ -1,7 +1,7 @@
 /**
  * @name Suspicious method name declaration
- * @description Declaring a class or interface method with a special name may cause a normal 
- *              named method to be declared when a special type was expected.
+ * @description A method declaration with a name that would be a special keyword in another 
+ *              context is suspicious. 
  * @kind problem
  * @problem.severity warning
  * @id js/suspicious-method-name-declaration
