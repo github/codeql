@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>
-JavaScript functions that do not return any value will implicitly return 
+JavaScript functions that do not return an expression will implicitly return 
 <code>undefined</code>. Using the implicit return value from such a function  
 is not an error in itself, but it is a pattern indicating that some
 misunderstanding has occurred. 
@@ -14,8 +14,7 @@ misunderstanding has occurred.
 <recommendation>
 
 <p>
-Do not use the return value from a function that does not explicitly return 
-a value.
+Do not use the return value from a function that does not return an expression.
 </p>
 
 </recommendation>
@@ -23,10 +22,10 @@ a value.
 
 <p>
 In the example below, the function <code>renderText</code> is used to render 
-text through side effects, and the function does not return a value. 
+text through side effects, and the function does not return an expression. 
 However, the programmer still uses the return value from 
-<code>renderText</code> as if the function returned a value, which is clearly 
-an error. 
+<code>renderText</code> as if the function returned an expression, which is 
+clearly an error. 
 </p>
 
 <sample src="examples/UseOfReturnlessFunction.js" />
@@ -34,7 +33,7 @@ an error.
 <p>
 The program can be fixed either removing the use of the value returned by 
 <code>renderText</code>, or by changing the <code>renderText</code> method 
-to return a value.
+to return an expression.
 </p>
 
 </example>

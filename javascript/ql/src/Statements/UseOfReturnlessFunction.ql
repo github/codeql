@@ -1,6 +1,6 @@
 /**
  * @name Use of returnless function
- * @description Using the return value of a function that does not explicitly return is indicative of a mistake.
+ * @description Using the return value of a function that does not return an expression is indicative of a mistake.
  * @kind problem
  * @problem.severity warning
  * @id js/use-of-returnless-function
@@ -15,7 +15,7 @@ import Expressions.ExprHasNoEffect
 import Statements.UselessConditional
 
 predicate returnsVoid(Function f) {
-  f.getBody() instanceof Stmt and
+  not f instanceof ArrowFunctionExpr and
   not f.isGenerator() and
   not f.isAsync() and
   not exists(f.getAReturnedExpr())

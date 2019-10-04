@@ -124,8 +124,6 @@ predicate whitelist(Expr e) {
   isConstantBooleanReturnValue(e)
 }
 
-
-
 /**
  * Holds if `e` is part of a conditional node `cond` that evaluates
  * `e` and checks its value for truthiness.
