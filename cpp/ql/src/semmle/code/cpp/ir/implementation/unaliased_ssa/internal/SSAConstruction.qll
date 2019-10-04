@@ -740,7 +740,9 @@ module DefUse {
       block.getInstruction(index) = def and
       overlap = Alias::getOverlap(defLocation, useLocation) and
       if
-        overlap instanceof MayPartiallyOverlap
+        overlap instanceof MayPartiallyOverlap or
+        def.getResultMemoryAccess() instanceof IndirectMayMemoryAccess or
+        def.getResultMemoryAccess() instanceof BufferMayMemoryAccess
       then offset = (index * 2) + 1 // The use will be connected to the definition on the `Chi` instruction.
       else offset = index * 2 // The use will be connected to the definition on the original instruction.
     )

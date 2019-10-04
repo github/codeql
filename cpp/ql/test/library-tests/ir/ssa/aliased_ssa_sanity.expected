@@ -4,11 +4,6 @@ duplicateOperand
 missingPhiOperand
 missingOperandType
 duplicateChiOperand
-| ssa.cpp:220:19:220:20 | Chi: call to Constructible |
-| ssa.cpp:221:3:221:3 | Chi: c |
-| ssa.cpp:222:3:222:3 | Chi: c |
-| ssa.cpp:223:21:223:37 | Chi: call to Constructible |
-| ssa.cpp:224:3:224:4 | Chi: c2 |
 instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop

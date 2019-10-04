@@ -8,10 +8,6 @@ duplicateOperand
 missingPhiOperand
 missingOperandType
 duplicateChiOperand
-| ir.cpp:1035:3:1035:12 | Chi: (const lambda [] type at line 1034, col. 21)... |
-| ir.cpp:1039:3:1039:21 | Chi: (const lambda [] type at line 1038, col. 30)... |
-| ir.cpp:1043:3:1043:23 | Chi: (const lambda [] type at line 1042, col. 32)... |
-| ir.cpp:1046:3:1046:14 | Chi: (const lambda [] type at line 1045, col. 23)... |
 instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
