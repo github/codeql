@@ -16,7 +16,7 @@ import javascript
 /**
  * Holds if the method name on the given container is likely to be a mistake.
  */
-predicate isSuspisousMethodName(string name, ClassOrInterface container) {
+predicate isSuspiciousMethodName(string name, ClassOrInterface container) {
   name = "function"
   or
   // "constructor" is only suspicious outside a class.  
@@ -30,7 +30,7 @@ from MethodDeclaration member, ClassOrInterface container, string name, string m
 where
   container.getLocation().getFile().getFileType().isTypeScript() and
   container.getMember(name) = member and
-  isSuspisousMethodName(name, container) and
+  isSuspiciousMethodName(name, container) and
   
   // Cases to ignore.
   not (
