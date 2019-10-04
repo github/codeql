@@ -4,13 +4,15 @@
 <qhelp>
 <overview>
 <p>
-In TypeScript the keywords <code>constructor</code> and <code>new</code> for member declarations are
-used to declare constructors in classes and interfaces respectively. 
-However, by using the wrong keyword a programmer can accidentally declare e.g. 
-a method called <code>constructor</code> inside an interface.
-Similarly the keyword <code>function</code> is used to declare functions in 
-some contexts, however, using the keyword <code>function</code> inside a class 
-or interface results in declaring a method called <code>function</code>.  
+In TypeScript the keywords <code>constructor</code> and <code>new</code> for 
+member declarations are used to declare constructors in classes and interfaces 
+respectively. 
+However, a member declaration with the name <code>new</code> in an interface 
+or <code>constructor</code> in a class, will declare ordinary methods named 
+<code>new</code> or <code>constructor</code> rather than constructors.
+Similarly, the keyword <code>function</code> is used to declare functions in 
+some contexts, however, using the name <code>function</code> for a class 
+or interface member declaration declares a method named <code>function</code>.    
 </p>
 
 </overview>
