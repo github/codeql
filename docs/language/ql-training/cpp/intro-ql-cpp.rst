@@ -4,10 +4,6 @@ Introduction to variant analysis
 
 QL for C/C++
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup

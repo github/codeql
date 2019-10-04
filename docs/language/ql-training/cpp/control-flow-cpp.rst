@@ -4,10 +4,6 @@ Analyzing control flow
 
 QL for C/C++
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. Include information slides here
 
 .. rst-class:: setup

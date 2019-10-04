@@ -4,10 +4,6 @@ Introduction to variant analysis
 
 QL for Java
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup
