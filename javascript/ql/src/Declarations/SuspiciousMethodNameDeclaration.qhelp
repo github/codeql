@@ -8,10 +8,10 @@ In TypeScript the keywords <code>constructor</code> and <code>new</code> for
 member declarations are used to declare constructors in classes and interfaces 
 respectively. 
 However, a member declaration with the name <code>new</code> in an interface 
-or <code>constructor</code> in a class, will declare ordinary methods named 
-<code>new</code> or <code>constructor</code> rather than constructors.
+or <code>constructor</code> in a class, will declare an ordinary method named 
+<code>new</code> or <code>constructor</code> rather than a constructor.
 Similarly, the keyword <code>function</code> is used to declare functions in 
-some contexts, however, using the name <code>function</code> for a class 
+some contexts. However, using the name <code>function</code> for a class 
 or interface member declaration declares a method named <code>function</code>.    
 </p>
 
@@ -48,8 +48,8 @@ in the first place.
 </example>
 <references>
 
-<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/master/doc/spec.md#3.8.9">Constructor Type Literals</a></li>
-<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/master/doc/spec.md#8.3.1">Constructor Parameters</a></li>
+<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/master/doc/spec.md#3.8.9">Constructor Type Literals</a>.</li>
+<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/master/doc/spec.md#8.3.1">Constructor Parameters</a>.</li>
 
 </references>
 </qhelp>

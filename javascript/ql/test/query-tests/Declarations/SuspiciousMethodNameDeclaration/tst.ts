@@ -2,7 +2,7 @@ var foo: MyInterface = 123 as any;
 
 interface MyInterface {
   function (): number; // OK. Highly unlikely that it is an accident when there are other named methods in the interface.
-  (): number; // OK: What was probaly meant above. 
+  (): number; // OK: What was probably meant above. 
   new:() => void; // OK! This is a property, not a method, we ignore those.
   constructor(): string; // NOT OK! This a called "constructor"
   new(): Date; // OK! This a constructor signature.

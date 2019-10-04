@@ -1,6 +1,6 @@
 /**
  * @name Suspicious method name declaration
- * @description A method declaration with a name that would be a special keyword in another 
+ * @description A method declaration with a name that is a special keyword in another 
  *              context is suspicious. 
  * @kind problem
  * @problem.severity warning
