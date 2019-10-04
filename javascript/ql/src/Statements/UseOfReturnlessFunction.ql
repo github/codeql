@@ -72,6 +72,9 @@ predicate benignContext(Expr e) {
   e = any(ResolvedPromiseDefinition promise).getValue().asExpr()
 }
 
+predicate oneshotClosure(InvokeExpr call) {
+  call.getCallee().getUnderlyingValue() instanceof ImmediatelyInvokedFunctionExpr
+}
 
 from DataFlow::CallNode call
 where
@@ -81,7 +84,7 @@ where
   not benignContext(call.asExpr()) and
   
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
-  call.asExpr() != any(ImmediatelyInvokedFunctionExpr f).getInvocation()
+  not oneshotClosure(call.asExpr())
 select
   call, "the function $@ does not return anything, yet the return value is used.", call.getACallee(), call.getCalleeName()
   
