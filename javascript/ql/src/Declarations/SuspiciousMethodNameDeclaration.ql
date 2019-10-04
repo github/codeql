@@ -60,7 +60,7 @@ where
   and
   
   (
-    name = "constructor" and msg = "The member name 'constructor' does not declare a constructor in interface declarations, but it does in class declarations." 
+    name = "constructor" and msg = "The member name 'constructor' does not declare a constructor in interfaces, but it does in classes." 
     or
     name = "new" and msg = "The member name 'new' does not declare a constructor, but 'constructor' does in class declarations."
     or
