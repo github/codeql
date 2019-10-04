@@ -22,8 +22,8 @@ or interface member declaration declares a method named <code>function</code>.
 Declare classes as classes and not as interfaces.
 Use the keyword <code>constructor</code> to declare constructors in a class,
 use the keyword <code>new</code> to declare constructors inside interfaces, 
-and don't use <code>function</code> when declaring an interface that is a 
-function.
+and don't use <code>function</code> when declaring a call signature in an 
+interface.
 </p>
 
 </recommendation>
