@@ -19,9 +19,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.WriteSubId(ContainingMethod);
-            trapFile.Write(".(");
+            trapFile.Write(".");
             trapFile.WriteSubId(Location);
-            trapFile.Write(')');
             if (symbol.IsGenericMethod && !IsSourceDeclaration)
             {
                 trapFile.Write('<');
