@@ -1,13 +1,5 @@
 package com.semmle.js.extractor;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import com.semmle.js.extractor.ExtractorConfig.HTMLHandling;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -31,6 +23,13 @@ import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.ArgsParser;
 import com.semmle.util.process.ArgsParser.FileMode;
 import com.semmle.util.trap.TrapWriter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /** The main entry point of the JavaScript extractor. */
 public class Main {

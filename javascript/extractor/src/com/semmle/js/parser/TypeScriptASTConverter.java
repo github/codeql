@@ -1,13 +1,5 @@
 package com.semmle.js.parser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -150,6 +142,13 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for converting a <a
@@ -1229,9 +1228,9 @@ public class TypeScriptASTConverter {
     List<Expression> params = convertParameters(node);
     Identifier fnId = convertChild(node, "name", "Identifier");
     if (fnId == null) {
-    	// Anonymous function declarations may occur as part of default exported functions.
-    	// We represent these as function expressions.
-    	return fixExports(loc, convertFunctionExpression(node, loc));
+      // Anonymous function declarations may occur as part of default exported functions.
+      // We represent these as function expressions.
+      return fixExports(loc, convertFunctionExpression(node, loc));
     }
     BlockStatement fnbody = convertChild(node, "body");
     boolean generator = hasChild(node, "asteriskToken");
