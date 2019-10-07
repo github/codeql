@@ -312,18 +312,15 @@ class ConstantBooleanExprNode extends ArgumentNode, ExprNode {
 cached
 predicate isUnreachableInCall(Node n, DataFlowCall call) {
   exists(
-    ExplicitParameterNode paramNode, ConstantBooleanExprNode arg, BasicBlock bb,
-    SsaImplicitInit varInit, Guard guard
+    ExplicitParameterNode paramNode, ConstantBooleanExprNode arg, SsaImplicitInit param, Guard guard
   |
-    // get argument and parameter for this call
+    // get constant bool argument and parameter for this call
     viableParamArg(call, paramNode, arg) and
     // get the ssa variable definition for this parameter
-    varInit.isParameterDefinition(paramNode.getParameter()) and
+    param.isParameterDefinition(paramNode.getParameter()) and
     // which is used in a guard
-    varInit.getAUse() = guard and
-    // which controls that bb is not active
-    guard.controls(bb, arg.getBooleanValue().booleanNot()) and
-    // and the node we pass in is in this bb
-    bb.getANode() = n.asExpr()
+    param.getAUse() = guard and
+    // which controls `n` with the opposite value of `arg`
+    guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
   )
 }
