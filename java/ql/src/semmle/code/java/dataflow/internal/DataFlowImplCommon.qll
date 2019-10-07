@@ -120,16 +120,16 @@ private module ImplCommon {
         int i, ArgumentNode arg, CallContext outercc, DataFlowCall call
       ) {
         exists(DataFlowCallable c | argumentOf(call, i, arg, c) |
-      (
-          outercc = TAnyCallContext()
-          or
-          outercc = TSomeCall(getAParameter(c), _)
-          or
-          exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) |
-            recordDataFlowCallSite(other, c)
-          )
-      ) and
-      not isUnreachableInCall(arg, outercc.(CallContextSpecificCall).getCall())
+          (
+            outercc = TAnyCallContext()
+            or
+            outercc = TSomeCall(getAParameter(c), _)
+            or
+            exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) |
+              recordDataFlowCallSite(other, c)
+            )
+          ) and
+          not isUnreachableInCall(arg, outercc.(CallContextSpecificCall).getCall())
         )
       }
 
@@ -191,8 +191,8 @@ private module ImplCommon {
         exists(Node arg |
           parameterValueFlow(p, arg, cc) and
           argumentValueFlowsThrough(arg, node, cc) and
-      compatibleTypes(p.getType(), node.getType()) and
-      not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall())
+          compatibleTypes(p.getType(), node.getType()) and
+          not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall())
         )
       }
 
@@ -225,7 +225,7 @@ private module ImplCommon {
           argumentValueFlowsThrough0(call, arg, kind, cc)
         |
           out = getAnOutNode(call, kind) and
-      not isUnreachableInCall(out, cc.(CallContextSpecificCall).getCall()) and
+          not isUnreachableInCall(out, cc.(CallContextSpecificCall).getCall()) and
           compatibleTypes(arg.getType(), out.getType())
         )
       }
@@ -582,14 +582,14 @@ private module ImplCommon {
     }
 
     /**
-   * Holds if recording a dataflow call site either improves
-   * virtual dispatch or if we can remove unreachable edges in the dataflow graph
-   * by recoring this call site
+     * Holds if recording a dataflow call site either improves
+     * virtual dispatch or if we can remove unreachable edges in the dataflow graph
+     * by recoring this call site
      */
     cached
     predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
-    reducedViableImplInCallContext(_, callable, call)
-    or
+      reducedViableImplInCallContext(_, callable, call)
+      or
       exists(Node n | n.getEnclosingCallable() = callable | isUnreachableInCall(n, call))
     }
 
@@ -633,7 +633,7 @@ private module ImplCommon {
    * - `TSpecificCall(DataFlowCall call, int i)` : Flow entered through the `i`th
    *    parameter at the given `call`. This call improves the set of viable
    *    dispatch targets for at least one method call in the current callable
- *    or helps to prune unreachable nodes from the data flow graph.
+   *    or helps to prune unreachable nodes from the data flow graph.
    * - `TSomeCall(ParameterNode p)` : Flow entered through parameter `p`. The
    *    originating call does not improve the set of dispatch targets for any
    *    method call in the current callable and was therefore not recorded.
@@ -681,18 +681,18 @@ private module ImplCommon {
     abstract predicate validFor(Node n);
   }
 
-/**
- * Gets a matching local call context given the call context and a node which is in
- * the callable the call is targeting.
- */
-LocalCallContext getMatchingLocalCallContext(CallContext ctx, Node n) {
-  if hasUnreachableNode(ctx.(CallContextSpecificCall).getCall(), n.getEnclosingCallable())
-  then result.(LocalCallContextSpecificCall).getCall() = ctx.(CallContextSpecificCall).getCall()
-  else result instanceof LocalCallContextAny
-}
+  /**
+   * Gets a matching local call context given the call context and a node which is in
+   * the callable the call is targeting.
+   */
+  LocalCallContext getMatchingLocalCallContext(CallContext ctx, Node n) {
+    if hasUnreachableNode(ctx.(CallContextSpecificCall).getCall(), n.getEnclosingCallable())
+    then result.(LocalCallContextSpecificCall).getCall() = ctx.(CallContextSpecificCall).getCall()
+    else result instanceof LocalCallContextAny
+  }
 
-class LocalCallContextAny extends LocalCallContext, TAnyLocalCall {
-  override string toString() { result = "LocalCcAny" }
+  class LocalCallContextAny extends LocalCallContext, TAnyLocalCall {
+    override string toString() { result = "LocalCcAny" }
 
     override predicate validFor(Node n) { any() }
   }

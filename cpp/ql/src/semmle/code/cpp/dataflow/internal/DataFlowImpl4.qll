@@ -909,30 +909,31 @@ private predicate localFlowStepPlus(
 ) {
   not isUnreachableInCall(node2, cc.(LocalCallContextSpecificCall).getCall()) and
   (
-  localFlowEntry(node1, config) and
-  (
-    localFlowStep(node1, node2, config) and preservesValue = true
-    or
-    additionalLocalFlowStep(node1, node2, config) and preservesValue = false
-  ) and
-  node1 != node2 and
+    localFlowEntry(node1, config) and
+    (
+      localFlowStep(node1, node2, config) and preservesValue = true
+      or
+      additionalLocalFlowStep(node1, node2, config) and preservesValue = false
+    ) and
+    node1 != node2 and
     cc.validFor(node1) and
-  nodeCand(node2, unbind(config))
-  or
-  exists(Node mid |
+    not isUnreachableInCall(node1, cc.(LocalCallContextSpecificCall).getCall()) and
+    nodeCand(node2, unbind(config))
+    or
+    exists(Node mid |
       localFlowStepPlus(node1, mid, preservesValue, config, cc) and
-    localFlowStep(mid, node2, config) and
-    not mid instanceof CastNode and
-    nodeCand(node2, unbind(config))
-  )
-  or
-  exists(Node mid |
+      localFlowStep(mid, node2, config) and
+      not mid instanceof CastNode and
+      nodeCand(node2, unbind(config))
+    )
+    or
+    exists(Node mid |
       localFlowStepPlus(node1, mid, _, config, cc) and
-    additionalLocalFlowStep(mid, node2, config) and
-    not mid instanceof CastNode and
-    preservesValue = false and
-    nodeCand(node2, unbind(config))
-  )
+      additionalLocalFlowStep(mid, node2, config) and
+      not mid instanceof CastNode and
+      preservesValue = false and
+      nodeCand(node2, unbind(config))
+    )
   )
 }
 
@@ -1733,19 +1734,17 @@ private class PathNodeSink extends PathNode, TPathNodeSink {
  * a callable is recorded by `cc`.
  */
 private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPath ap) {
-  exists(LocalCallContext localCC | localCC.matchesCallContext(cc) |
+  exists(LocalCallContext localCC | localCC = getMatchingLocalCallContext(cc, node) |
     localFlowBigStep(mid.getNode(), node, true, mid.getConfiguration(), localCC) and
-  cc = mid.getCallContext() and
-  ap = mid.getAp()
-  or
+    cc = mid.getCallContext() and
+    ap = mid.getAp()
+    or
     localFlowBigStep(mid.getNode(), node, false, mid.getConfiguration(), localCC) and
-  cc = mid.getCallContext() and
-  mid.getAp() instanceof AccessPathNil and
-  ap = node.(AccessPathNilNode).getAp()
+    cc = mid.getCallContext() and
+    mid.getAp() instanceof AccessPathNil and
+    ap = node.(AccessPathNilNode).getAp()
   )
   or
-  not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
-  (
   jumpStep(mid.getNode(), node, mid.getConfiguration()) and
   cc instanceof CallContextAny and
   ap = mid.getAp()
@@ -1755,19 +1754,21 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPat
   mid.getAp() instanceof AccessPathNil and
   ap = node.(AccessPathNilNode).getAp()
   or
-  contentReadStep(mid, node, ap) and cc = mid.getCallContext()
-  or
-  exists(Content f, AccessPath ap0 | contentStoreStep(mid, node, ap0, f, cc) and push(ap0, f, ap))
-  or
-  pathOutOfArgument(mid, node, cc) and ap = mid.getAp()
-  or
-  pathIntoCallable(mid, node, _, cc, _) and ap = mid.getAp()
-  or
-  pathOutOfCallable(mid, node, cc) and ap = mid.getAp()
-  or
-  pathThroughCallable(mid, node, cc, ap)
-  or
-  valuePathThroughCallable(mid, node, cc) and ap = mid.getAp()
+  not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
+  (
+    contentReadStep(mid, node, ap) and cc = mid.getCallContext()
+    or
+    exists(Content f, AccessPath ap0 | contentStoreStep(mid, node, ap0, f, cc) and push(ap0, f, ap))
+    or
+    pathOutOfArgument(mid, node, cc) and ap = mid.getAp()
+    or
+    pathIntoCallable(mid, node, _, cc, _) and ap = mid.getAp()
+    or
+    pathOutOfCallable(mid, node, cc) and ap = mid.getAp()
+    or
+    pathThroughCallable(mid, node, cc, ap)
+    or
+    valuePathThroughCallable(mid, node, cc) and ap = mid.getAp()
   )
 }
 
@@ -2236,24 +2237,27 @@ private module FlowExploration {
     ap = TPartialNil(getErasedRepr(node.getType())) and
     config = mid.getConfiguration()
     or
-    partialPathStoreStep(mid, _, _, node, ap) and
-    cc = mid.getCallContext() and
-    config = mid.getConfiguration()
-    or
-    exists(PartialAccessPath ap0, Content f |
-      partialPathReadStep(mid, ap0, f, node, cc, config) and
-      apConsFwd(ap, f, ap0, config)
+    not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
+    (
+      partialPathStoreStep(mid, _, _, node, ap) and
+      cc = mid.getCallContext() and
+      config = mid.getConfiguration()
+      or
+      exists(PartialAccessPath ap0, Content f |
+        partialPathReadStep(mid, ap0, f, node, cc, config) and
+        apConsFwd(ap, f, ap0, config)
+      )
+      or
+      partialPathOutOfArgument(mid, node, cc, ap, config)
+      or
+      partialPathIntoCallable(mid, node, _, cc, _, ap, config)
+      or
+      partialPathOutOfCallable(mid, node, cc, ap, config)
+      or
+      partialPathThroughCallable(mid, node, cc, ap, config)
+      or
+      valuePartialPathThroughCallable(mid, node, cc, ap, config)
     )
-    or
-    partialPathOutOfArgument(mid, node, cc, ap, config)
-    or
-    partialPathIntoCallable(mid, node, _, cc, _, ap, config)
-    or
-    partialPathOutOfCallable(mid, node, cc, ap, config)
-    or
-    partialPathThroughCallable(mid, node, cc, ap, config)
-    or
-    valuePartialPathThroughCallable(mid, node, cc, ap, config)
   }
 
   bindingset[result, i]
