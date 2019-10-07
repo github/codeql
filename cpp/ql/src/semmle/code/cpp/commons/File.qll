@@ -6,7 +6,7 @@ import cpp
 predicate fopenCall(FunctionCall fc) {
   exists(Function f | f = fc.getTarget() |
     f.hasGlobalOrStdName("fopen") or
-    f.hasGlobalOrStdName("open") or
+    f.hasGlobalName("open") or
     f.hasGlobalName("_open") or
     f.hasGlobalName("_wopen") or
     f.hasGlobalName("CreateFile") or
