@@ -1,6 +1,6 @@
 private import java
 private import DataFlowUtil
-private import DataFlowImplCommon
+private import DataFlowImplCommon::Public
 private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
