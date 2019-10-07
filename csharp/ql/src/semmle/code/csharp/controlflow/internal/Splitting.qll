@@ -527,15 +527,20 @@ module FinallySplitting {
     override string toString() { result = "Finally (" + nestLevel + ")" }
   }
 
+  pragma[noinline]
+  private predicate hasEntry0(
+    ControlFlowElement pred, FinallyControlFlowElement succ, int nestLevel, Completion c
+  ) {
+    succ.isEntryNode() and
+    nestLevel = nestLevel(succ.getTryStmt()) and
+    succ = succ(pred, c)
+  }
+
   private class FinallySplitInternal extends SplitInternal, FinallySplitImpl {
     override FinallySplitKind getKind() { result.getNestLevel() = this.getNestLevel() }
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      succ = any(FinallyControlFlowElement entry |
-          entry.isEntryNode() and
-          this.getNestLevel() = nestLevel(entry.getTryStmt())
-        ) and
-      succ = succ(pred, c) and
+      hasEntry0(pred, succ, this.getNestLevel(), c) and
       this.getType().isSplitForEntryCompletion(c)
     }
 
@@ -550,17 +555,22 @@ module FinallySplitting {
       (exists(succ(pred, _)) or exists(succExit(pred, _)))
     }
 
+    pragma[noinline]
+    private predicate exit0(ControlFlowElement pred, TryStmt try, int nestLevel, Completion c) {
+      this.appliesToPredecessor(pred) and
+      nestLevel = nestLevel(try) and
+      pred = last(try, c)
+    }
+
     /**
      * Holds if `pred` may exit this split with completion `c`. The Boolean
      * `inherited` indicates whether `c` is an inherited completion from a `try`/
      * `catch` block.
      */
     private predicate exit(ControlFlowElement pred, Completion c, boolean inherited) {
-      this.appliesToPredecessor(pred) and
       exists(TryStmt try, FinallySplitType type |
-        type = this.getType() and
-        nestLevel(try) = this.getNestLevel() and
-        pred = last(try, c)
+        exit0(pred, try, this.getNestLevel(), c) and
+        type = this.getType()
       |
         if pred = last(try.getFinally(), c)
         then
@@ -1019,13 +1029,21 @@ module BooleanSplitting {
     override string toString() { result = kind.toString() }
   }
 
+  pragma[noinline]
+  private predicate hasEntry0(
+    ControlFlowElement pred, ControlFlowElement succ, BooleanSplitSubKind kind, boolean b,
+    Completion c
+  ) {
+    kind.startsSplit(pred) and
+    succ = succ(pred, c) and
+    b = c.getInnerCompletion().(BooleanCompletion).getValue()
+  }
+
   private class BooleanSplitInternal extends SplitInternal, BooleanSplitImpl {
     override BooleanSplitKind getKind() { result.getSubKind() = this.getSubKind() }
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      succ = succ(pred, c) and
-      this.getSubKind().startsSplit(pred) and
-      this.getBranch() = c.getInnerCompletion().(BooleanCompletion).getValue()
+      hasEntry0(pred, succ, this.getSubKind(), this.getBranch(), c)
     }
 
     override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
