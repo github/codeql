@@ -48,6 +48,7 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+duplicateChiOperand
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x |

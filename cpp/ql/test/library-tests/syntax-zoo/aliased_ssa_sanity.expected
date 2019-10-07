@@ -28,18 +28,20 @@ missingOperand
 | ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | IR: misc3 | void misc3() |
+| try_catch.cpp:13:5:13:16 | Chi: call to exn1 | Instruction 'Chi' is missing an expected operand with tag 'ChiTotal' in function '$@'. | try_catch.cpp:11:6:11:17 | IR: bypass_catch | void bypass_catch() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
 | cpp11.cpp:141:7:141:7 | Phi: g | cpp11.cpp:161:16:161:16 | NoOp: label ...: |
 missingOperandType
+duplicateChiOperand
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
 | assume0.cpp:7:2:7:2 | Chi: call to f |
-| condition_decls.cpp:16:19:16:20 | IndirectMayWriteSideEffect: call to BoxedInt |
-| condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt |
-| condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt |
-| condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt |
+| condition_decls.cpp:16:19:16:20 | Chi: call to BoxedInt |
+| condition_decls.cpp:26:23:26:24 | Chi: call to BoxedInt |
+| condition_decls.cpp:41:22:41:23 | Chi: call to BoxedInt |
+| condition_decls.cpp:48:52:48:53 | Chi: call to BoxedInt |
 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
 | misc.c:171:10:171:13 | Uninitialized: definition of str2 |
 | misc.c:219:47:219:48 | InitializeParameter: sp |
