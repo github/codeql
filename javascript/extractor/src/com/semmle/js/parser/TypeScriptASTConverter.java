@@ -1,5 +1,13 @@
 package com.semmle.js.parser;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -142,13 +150,6 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Utility class for converting a <a
@@ -942,11 +943,13 @@ public class TypeScriptASTConverter {
     SourceLocation bodyLoc = new SourceLocation(loc.getSource(), loc.getStart(), loc.getEnd());
     advance(bodyLoc, skip);
     ClassBody body = new ClassBody(bodyLoc, convertChildren(node, "members"));
-    if ("ClassExpression".equals(kind)) {
+    if ("ClassExpression".equals(kind) || id == null) {
+      // Note that `export default class {}` is represented as a ClassDeclaration
+      // in TypeScript but we treat this as a ClassExpression.
       ClassExpression classExpr =
           new ClassExpression(loc, id, typeParameters, superClass, superInterfaces, body);
       attachSymbolInformation(classExpr.getClassDef(), node);
-      return classExpr;
+      return fixExports(loc, classExpr);
     }
     boolean hasDeclareKeyword = hasModifier(node, "DeclareKeyword");
     boolean hasAbstractKeyword = hasModifier(node, "AbstractKeyword");
@@ -1225,6 +1228,11 @@ public class TypeScriptASTConverter {
   private Node convertFunctionDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     List<Expression> params = convertParameters(node);
     Identifier fnId = convertChild(node, "name", "Identifier");
+    if (fnId == null) {
+    	// Anonymous function declarations may occur as part of default exported functions.
+    	// We represent these as function expressions.
+    	return fixExports(loc, convertFunctionExpression(node, loc));
+    }
     BlockStatement fnbody = convertChild(node, "body");
     boolean generator = hasChild(node, "asteriskToken");
     boolean async = hasModifier(node, "AsyncKeyword");
@@ -2305,7 +2313,7 @@ public class TypeScriptASTConverter {
    * <p>If the declared statement has decorators, the {@code loc} should first be advanced past
    * these using {@link #advanceUntilAfter}.
    */
-  private Node fixExports(SourceLocation loc, Statement decl) {
+  private Node fixExports(SourceLocation loc, Node decl) {
     Matcher m = EXPORT_DECL_START.matcher(loc.getSource());
     if (m.find()) {
       String skipped = m.group(0);
@@ -2313,7 +2321,7 @@ public class TypeScriptASTConverter {
       advance(loc, skipped);
       // capture group 1 is `default`, if present
       if (m.group(1) == null)
-        return new ExportNamedDeclaration(outerLoc, decl, new ArrayList<>(), null);
+        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null);
       return new ExportDefaultDeclaration(outerLoc, decl);
     }
     return decl;
