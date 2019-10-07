@@ -133,6 +133,12 @@ class ModuleValue extends Value {
         result = this.(PythonModuleObjectInternal).getSourceModule().getFile()
     }
 
+    /** Whether this module is imported by 'import name'. For example on a linux system,
+      * the module 'posixpath' is imported as 'os.path' or as 'posixpath' */
+    predicate importedAs(string name) {
+        PointsToInternal::module_imported_as(this, name)
+    }
+
 }
 
 module Module {
