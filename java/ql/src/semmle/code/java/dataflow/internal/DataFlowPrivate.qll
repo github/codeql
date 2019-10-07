@@ -287,7 +287,7 @@ class DataFlowCall extends Call {
   ExprNode getNode() { result.getExpr() = this }
 }
 
-/** An expression that always has the same boolean value. */
+/** Holds if `e` is an expression that always has the same boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.(CompileTimeConstantExpr).getBooleanValue() = val
   or
@@ -307,7 +307,7 @@ class ConstantBooleanExprNode extends ArgumentNode, ExprNode {
 }
 
 /**
- * holds if the node `n` is unreachable when called from `call`
+ * Holds if the node `n` is unreachable when the call context is `call`.
  */
 cached
 predicate isUnreachableInCall(Node n, DataFlowCall call) {

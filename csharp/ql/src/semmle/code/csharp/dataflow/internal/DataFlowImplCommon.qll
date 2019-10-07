@@ -588,9 +588,8 @@ private module ImplCommon {
     }
 
     /**
-     * Holds if recording a dataflow call site either improves
-     * virtual dispatch or if we can remove unreachable edges in the dataflow graph
-     * by recoring this call site
+     * Holds if the call context `call` either improves virtual dispatch in
+     * `callable` or if it allows us to prune unreachable nodes in `callable`.
      */
     cached
     predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
@@ -631,15 +630,15 @@ private module ImplCommon {
   }
 
   /**
-   * A call context to restrict the targets of virtual dispatch and match the
-   * call sites of flow into a method with flow out of a method.
+   * A call context to restrict the targets of virtual dispatch, prune local flow,
+   * and match the call sites of flow into a method with flow out of a method.
    *
    * There are four cases:
    * - `TAnyCallContext()` : No restrictions on method flow.
    * - `TSpecificCall(DataFlowCall call, int i)` : Flow entered through the `i`th
    *    parameter at the given `call`. This call improves the set of viable
    *    dispatch targets for at least one method call in the current callable
-   *    or helps to prune unreachable nodes from the data flow graph.
+   *    or helps prune unreachable nodes in the current callable.
    * - `TSomeCall(ParameterNode p)` : Flow entered through parameter `p`. The
    *    originating call does not improve the set of dispatch targets for any
    *    method call in the current callable and was therefore not recorded.
@@ -678,8 +677,7 @@ private module ImplCommon {
   }
 
   /**
-   * A call context that is used to restrict local data flow nodes
-   * to nodes which are actually reachable in a call context.
+   * A call context that is relevant for pruning local flow.
    */
   abstract class LocalCallContext extends TLocalFlowCallContext {
     abstract string toString();
