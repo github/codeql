@@ -1,8 +1,0 @@
-[2019-09-30 16:01:44] [ERROR] Exception running the extractor with arguments: --javacOptions -source 8 --strict-javac-errors --encoding UTF-8 --files A.java A2.java InterfaceA.java
-[2019-09-30 16:01:44] [ERROR] Exception: 
-                              com.semmle.util.exception.ResourceError: Neither TRAP_FOLDER nor ODASA_JAVA_LAYOUT was set
-                              	at com.semmle.extractor.java.OdasaOutput.<init>(OdasaOutput.java:95)
-                              	at com.semmle.extractor.java.JavaExtractor.createOutput(JavaExtractor.java:443)
-                              	at com.semmle.extractor.java.JavaExtractor.runExtractor(JavaExtractor.java:234)
-                              	at com.semmle.extractor.java.JavaExtractor.runExtractor(JavaExtractor.java:222)
-                              	at com.semmle.extractor.java.JavaExtractor.main(JavaExtractor.java:475)
