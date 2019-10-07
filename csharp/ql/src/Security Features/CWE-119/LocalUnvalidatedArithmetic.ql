@@ -24,9 +24,7 @@ where
   // one of the operands comes, in zero or more steps, from a virtual method call
   DataFlow::localExprFlow(taintSrc, add.getAnOperand()) and
   // virtual method call result has not been validated
-  not exists(Expr check, ComparisonOperation cmp |
-    DataFlow::localExprFlow(taintSrc, check)
-  |
+  not exists(Expr check, ComparisonOperation cmp | DataFlow::localExprFlow(taintSrc, check) |
     cmp.getAnOperand() = check and
     add.getAnOperand().(GuardedExpr).isGuardedBy(cmp, check, _)
   )
