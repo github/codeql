@@ -545,7 +545,6 @@
 | System.IO.BufferedStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.IO.Compression.DeflateStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
 | System.IO.Compression.DeflateStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
-| System.IO.Compression.DeflateStream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.Compression.DeflateStream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionLevel) | argument 0 -> return | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionLevel, bool) | argument 0 -> return | false |
@@ -1333,19 +1332,9 @@
 | System.Security.Cryptography.CryptoStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
 | System.Security.Cryptography.CryptoStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
 | System.Security.Cryptography.CryptoStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
-| System.Security.PermissionSet.GetEnumerator() | qualifier -> return | false |
 | System.String.Clone() | qualifier -> return | false |
 | System.String.Clone() | qualifier -> return | true |
 | System.String.Concat(IEnumerable<String>) | argument 0 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 0 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 1 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 0 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 1 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 2 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 0 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 1 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 2 -> return | false |
-| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 3 -> return | false |
 | System.String.Concat(object) | argument 0 -> return | false |
 | System.String.Concat(object, object) | argument 0 -> return | false |
 | System.String.Concat(object, object) | argument 1 -> return | false |
@@ -1465,7 +1454,6 @@
 | System.Text.RegularExpressions.GroupCollection.GetEnumerator() | qualifier -> return | false |
 | System.Text.RegularExpressions.GroupCollection.Insert(int, Group) | argument 1 -> qualifier | false |
 | System.Text.RegularExpressions.GroupCollection.Insert(int, object) | argument 1 -> qualifier | false |
-| System.Text.RegularExpressions.GroupCollection.get_Values() | qualifier -> return | false |
 | System.Text.RegularExpressions.MatchCollection.Add(Match) | argument 0 -> qualifier | false |
 | System.Text.RegularExpressions.MatchCollection.Add(object) | argument 0 -> qualifier | false |
 | System.Text.RegularExpressions.MatchCollection.GetEnumerator() | qualifier -> return | false |
