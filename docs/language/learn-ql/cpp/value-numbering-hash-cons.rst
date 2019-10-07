@@ -1,0 +1,99 @@
+Hash consing and value numbering
+=================================================
+Overview
+--------
+The C and C++ QL libraries include two different notions of expressions being the same. The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. The value numbering library (defined in ``semmle.code.cpp.ir.ValueNumber``) provides a mechanism for identifying expressions that compute the same value at runtime.
+
+Example C code
+--------------
+
+In the following C program, ``x + y`` and ``x + z`` will be assigned the same value number but different hash conses.
+
+.. code-block:: c
+
+    int x = 1;
+    int y = 2;
+    int z = y;
+    if(x + y == x + z) {
+      ...
+    }
+
+However, in the next example, the uses of ``x + y`` will have different value numbers but the same hash cons.
+
+.. code-block:: c
+
+    int x = 1;
+    int y = 2;
+    if(x + y) {
+      ...
+    }
+
+    x = 2;
+
+    if(x + y) {
+      ...
+    }
+
+Value numbering
+---------------
+The value numbering library (defined in ``semmle.code.cpp.valuenumbering.GlobalValueNumbering``) provides a mechanism for identifying expressions that compute the same value at runtime. Value numbering is useful when your primary concern is with the values being produced or the eventual machine code being run. For instance, value numbering might be used to determine whether a check is being done against the same value as the operation it is guarding.
+
+The value numbering API
+~~~~~~~~~~~~~~~~~~~~~~~
+The value numbering library exposes its interface primarily through the ``GVN`` class. Each instance of ``GVN`` represents a set of expressions that will always evaluate to the same value. To get an expression in the set represented by a particular ``GVN``, use the ``getAnExpr()`` member predicate.
+
+To get the ``GVN`` of an ``Expr``, use the ``globalValueNumber`` predicate.
+
+.. note::
+
+    While the ``GVN`` class has ``toString`` and ``getLocation`` methods, these are only provided as debugging aids. They give the ``toString`` and ``getLocation`` of an arbitrary ``Expr`` within the set.
+
+Example Queries
+~~~~~~~~~~~~~~~
+
+This query uses the ``GVN`` class to identify calls to ``strncpy`` where the size argument is derived from the source rather than the destination
+
+.. code-block:: ql
+
+    from FunctionCall strncpy, FunctionCall strlen, Expr sized
+    where
+      strncpy.getTarget().hasGlobalName("strncpy") and
+      strlen.getTarget().hasGlobalName("strlen") and
+      globalValueNumber(strncpy.getArgument(0)) != globalValueNumber(sized) and
+      globalValueNumber(strncpy.getArgument(1)) = globalValueNumber(sized) and
+      strlen = strncpy.getArgumen(2)
+      sized = strlen.getArgument(0)
+    select ci, "This call to strncpy is bounded by the size of the source rather than the destination"
+
+.. TODO: a second example
+
+Hash consing
+--------
+The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. Hash consing is useful when your primary concern is with the text of the code. For instance, hash consing might be used to detect duplicate code within a function.
+
+The hash consing API
+~~~~~~~~~~~~~~~~~~~~
+The hash consing library exposes its interface primarily through the ``HashCons`` class. Each instance of ``HashCons`` represents a set of expressions that have the same syntax (including referring to the same variables). To get an expression in the set represented by a particular ``HashCons``, use the ``getAnExpr()`` member predicate.
+
+.. note::
+
+    While the ``HashCons`` class has ``toString`` and ``getLocation`` methods, these are only provided as debugging aids. They give the ``toString`` and ``getLocation`` of an arbitrary ``Instruction`` within the set.
+
+To get the ``HashCons`` of an ``Expr``, use the ``hashCons`` predicate.
+
+Examples
+~~~~~~~~
+
+.. TODO: prose explanations
+
+.. code-block:: ql
+
+    import cpp
+    import semmle.code.cpp.valuenumbering.HashCons
+
+    from IfStmt outer, IfStmt inner
+    where
+      outer.getElse+() = inner and
+      hashCons(outer.getCondition()) = hashCons(inner.getCondition())
+    select inner.getCondition(), "The condition of this if statement duplicates the condition of $@",
+      outer.getCondition(), "an enclosing if statement"

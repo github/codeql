@@ -1,0 +1,39 @@
+Using range analysis for C and C++
+==================================
+
+Overview
+--------
+Range analysis determines upper and lower bounds for an expression.
+
+The range analysis library (defined in ``SimpleRangeAnalysis.qll``) provides a set of predicates for determining constant upper and lower bounds on expressions, as well as recognizing integer overflows. For performance, the library performs automatic widening, and may not provide the tightest possible bounds.
+
+Bounds predicates
+-----------------
+The ``upperBound`` and ``lowerBound`` predicates provide constant bounds on expressions. No conversions of the argument are included in the bound; if your query needs to take conversions into account, call them on the converted form, such as ``upperBound(expr.getFullyConverted())``.
+
+Overflow predicates
+-------------------
+``defMightOverflow``, ``exprMightOverflow``, and related predicates hold if the relevant definition or expression might overflow, as determined by the range analysis library. The ``convertedExprMightOverflow`` family of predicates will take conversions into account.
+
+Example
+-------
+This query uses ``upperBound`` to determine whether the result of ``snprintf`` is checked when used in a loop.
+
+.. code-block:: ql
+
+    from FunctionCall call, DataFlow::Node source, DataFlow::Node sink, Expr convSink
+    where
+      // the call is an snprintf with a string format argument
+      call.getTarget().getName() = "snprintf" and
+      call.getArgument(2).getValue().regexpMatch("(?s).*%s.*") and
+
+      // the result of the call influences its size argument in later iterations
+      TaintTracking::localTaint(source, sink) and
+      source.asExpr() = call and
+      sink.asExpr() = call.getArgument(1) and
+
+      // there is no fixed bound on the snprintf's size argument
+      upperBound(convSink) = typeUpperBound(convSink.getType().getUnspecifiedType()) and
+      convSink = call.getArgument(1).getFullyConverted()
+
+    select call, upperBound(call.getArgument(1).getFullyConverted())

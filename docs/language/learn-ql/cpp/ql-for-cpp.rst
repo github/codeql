@@ -31,6 +31,23 @@ These topics provide an overview of the QL C/C++ standard libraries and show exa
 
 -  :doc:`Example: Checking for allocations equal to strlen(string) without space for a null terminator <zero-space-terminator>` shows how a query to detect this particular buffer issue was developed.
 
+Advanced libraries
+----------------------------------
+
+.. toctree::
+   :hidden:
+
+   guards
+   range-analysis
+   value-numbering-hash-cons
+
+- :doc:`Using the guards library in C and C++ <guards>` demonstrates how to identify conditional expressions that control the execution of other code and what guarantees they provide.
+
+- :doc:`Using range analysis for C and C++ <range-analysis>` demonstrates how to determine constant upper and lower bounds and possible overflow or underflow of expressions.
+
+- :doc:`Using hash consing and value numbering for C and C++ <value-numbering-hash-cons>` demonstrates how to recognize expressions that are syntactically identical or compute the same value at runtime.
+
+
 Other resources
 ---------------
 
