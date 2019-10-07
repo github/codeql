@@ -195,4 +195,3 @@ predicate isDeallocationExpr(Expr e) {
   e instanceof DeleteExpr or
   e instanceof DeleteArrayExpr
 }
-
