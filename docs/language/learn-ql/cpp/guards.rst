@@ -3,7 +3,7 @@ Using the guards library in C and C++
 
 Overview
 --------
-The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides a class ``GuardCondition`` representing boolean values which are used to make control flow decisions.
+The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides a class ``GuardCondition`` representing Boolean values that are used to make control flow decisions.
 
 The ``ensuresEq`` and ``ensuresLt`` predicates
 ----------------------------------------------

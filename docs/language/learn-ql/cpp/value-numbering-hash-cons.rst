@@ -61,7 +61,7 @@ This query uses the ``GVN`` class to identify calls to ``strncpy`` where the siz
       strlen.getTarget().hasGlobalName("strlen") and
       globalValueNumber(strncpy.getArgument(0)) != globalValueNumber(sized) and
       globalValueNumber(strncpy.getArgument(1)) = globalValueNumber(sized) and
-      strlen = strncpy.getArgumen(2)
+      strlen = strncpy.getArgument(2)
       sized = strlen.getArgument(0)
     select ci, "This call to strncpy is bounded by the size of the source rather than the destination"
 
@@ -73,11 +73,11 @@ The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``
 
 The hash consing API
 ~~~~~~~~~~~~~~~~~~~~
-The hash consing library exposes its interface primarily through the ``HashCons`` class. Each instance of ``HashCons`` represents a set of expressions that have the same syntax (including referring to the same variables). To get an expression in the set represented by a particular ``HashCons``, use the ``getAnExpr()`` member predicate.
+The hash consing library exposes its interface primarily through the ``HashCons`` class. Each instance of ``HashCons`` represents a set of expressions within one function that have the same syntax (including referring to the same variables). To get an expression in the set represented by a particular ``HashCons``, use the ``getAnExpr()`` member predicate.
 
 .. note::
 
-    While the ``HashCons`` class has ``toString`` and ``getLocation`` methods, these are only provided as debugging aids. They give the ``toString`` and ``getLocation`` of an arbitrary ``Instruction`` within the set.
+    While the ``HashCons`` class has ``toString`` and ``getLocation`` methods, these are only provided as debugging aids. They give the ``toString`` and ``getLocation`` of an arbitrary ``Expr`` within the set.
 
 To get the ``HashCons`` of an ``Expr``, use the ``hashCons`` predicate.
 

@@ -5,11 +5,11 @@ Overview
 --------
 Range analysis determines upper and lower bounds for an expression.
 
-The range analysis library (defined in ``SimpleRangeAnalysis.qll``) provides a set of predicates for determining constant upper and lower bounds on expressions, as well as recognizing integer overflows. For performance, the library performs automatic widening, and may not provide the tightest possible bounds.
+The range analysis library (defined in ``semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis``) provides a set of predicates for determining constant upper and lower bounds on expressions, as well as recognizing integer overflows. For performance, the library performs automatic widening and therefore may not provide the tightest possible bounds.
 
 Bounds predicates
 -----------------
-The ``upperBound`` and ``lowerBound`` predicates provide constant bounds on expressions. No conversions of the argument are included in the bound; if your query needs to take conversions into account, call them on the converted form, such as ``upperBound(expr.getFullyConverted())``.
+The ``upperBound`` and ``lowerBound`` predicates provide constant bounds on expressions. No conversions of the argument are included in the bound; in the common case that your query needs to take conversions into account, call them on the converted form, such as ``upperBound(expr.getFullyConverted())``.
 
 Overflow predicates
 -------------------
