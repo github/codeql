@@ -2,7 +2,10 @@ Hash consing and value numbering
 =================================================
 Overview
 --------
-The C and C++ QL libraries include two different notions of expressions being the same. The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. The value numbering library (defined in ``semmle.code.cpp.ir.ValueNumber``) provides a mechanism for identifying expressions that compute the same value at runtime.
+In C and C++ QL databases, each node in the abstract syntax tree is represented by a separate object. This allows both analysis and results display to refer to specific appearances of a piece of syntax. However, it is frequently useful to determine whether two expressions are equivalent, either syntactically or semantically.
+
+The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. The value numbering library (defined in ``semmle.code.cpp.ir.ValueNumber``) provides a mechanism for identifying expressions that compute the same value at runtime.
+
 
 Example C code
 --------------
@@ -47,6 +50,10 @@ To get the ``GVN`` of an ``Expr``, use the ``globalValueNumber`` predicate.
 .. note::
 
     While the ``GVN`` class has ``toString`` and ``getLocation`` methods, these are only provided as debugging aids. They give the ``toString`` and ``getLocation`` of an arbitrary ``Expr`` within the set.
+
+Why not a predicate?
+~~~~~~~~~~~~~~~~~~~~
+The obvious interface for this library would be a predicate ``equivalent(Expr e1, Expr e2)``. However, this predicate would be very large, with a quadratic number of rows for each set of equivalent expressions. By using a class as an intermediate step, the number of rows can be kept linear, and therefore can be cached.
 
 Example Queries
 ~~~~~~~~~~~~~~~
