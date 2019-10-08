@@ -10,6 +10,10 @@
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:41:8:41:8 | AST only |
 | lambdas.cpp:43:7:43:12 | lambdas.cpp:46:7:46:7 | AST only |
 | ref.cpp:29:11:29:16 | ref.cpp:62:10:62:11 | AST only |
+| ref.cpp:53:9:53:10 | ref.cpp:56:10:56:11 | AST only |
+| ref.cpp:53:13:53:14 | ref.cpp:59:10:59:11 | AST only |
+| ref.cpp:53:17:53:18 | ref.cpp:62:10:62:11 | AST only |
+| ref.cpp:53:21:53:22 | ref.cpp:65:10:65:11 | AST only |
 | ref.cpp:55:23:55:28 | ref.cpp:56:10:56:11 | AST only |
 | ref.cpp:94:15:94:20 | ref.cpp:129:13:129:15 | AST only |
 | ref.cpp:109:15:109:20 | ref.cpp:132:13:132:15 | AST only |

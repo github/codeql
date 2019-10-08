@@ -72,7 +72,7 @@ module Stages {
       or
       exists(any(DataFlow::Node n).toString())
       or
-      exists(any(OutNode n).getCall())
+      exists(any(OutNode n).getCall(_))
       or
       exists(CallContext cc)
       or

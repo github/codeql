@@ -253,6 +253,9 @@ private module Cached {
   }
 
   cached
+  int getInstructionIndex(Instruction instruction) { none() }
+
+  cached
   Callable getInstructionFunction(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction)
           .getInstructionFunction(getInstructionTag(instruction))

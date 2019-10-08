@@ -6,13 +6,6 @@
 
 import semmle.code.cpp.Parameter
 
-/**
- * An `int` that is a parameter index for some function.  This is needed for binding in certain cases.
- */
-class ParameterIndex extends int {
-  ParameterIndex() { exists(Parameter p | this = p.getIndex()) }
-}
-
 private newtype TFunctionInput =
   TInParameter(ParameterIndex i) or
   TInParameterDeref(ParameterIndex i) or

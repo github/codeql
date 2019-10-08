@@ -343,6 +343,11 @@ private module Cached {
   }
 
   cached
+  int getInstructionIndex(Instruction instruction) {
+    result = getOldInstruction(instruction).(OldIR::IndexedInstruction).getIndex()
+  }
+
+  cached
   Function getInstructionFunction(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::FunctionInstruction).getFunctionSymbol()
   }
