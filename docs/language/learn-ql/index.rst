@@ -23,6 +23,7 @@ If you are new to QL, start by looking at the following topics:
    introduction-to-ql
    about-ql
    beginner/ql-tutorials
+   ql-etudes/river-crossing
 
 QL training and variant analysis examples
 ******************************************

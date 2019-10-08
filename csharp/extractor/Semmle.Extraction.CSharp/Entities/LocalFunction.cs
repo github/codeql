@@ -13,6 +13,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write(".");
             trapFile.WriteSubId(Location);
             if (symbol.IsGenericMethod && !IsSourceDeclaration)
             {
@@ -41,7 +43,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // the "static" modifier is present.
             if (symbol.DeclaringSyntaxReferences.SingleOrDefault().GetSyntax() is LocalFunctionStatementSyntax fn)
             {
-                foreach(var modifier in fn.Modifiers)
+                foreach (var modifier in fn.Modifiers)
                 {
                     Modifier.HasModifier(Context, trapFile, this, modifier.Text);
                 }

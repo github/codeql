@@ -30,7 +30,7 @@ private predicate additionalLogicalCheck(Expr e, string operation, int valueToCh
 /**
  * An `Operation` that seems to be checking for leap year.
  */
-class CheckForLeapYearOperation extends Operation {
+class CheckForLeapYearOperation extends Expr {
   CheckForLeapYearOperation() {
     exists(BinaryArithmeticOperation bo | bo = this |
       bo.getAnOperand().getValue().toInt() = 4 and
@@ -39,8 +39,6 @@ class CheckForLeapYearOperation extends Operation {
       additionalLogicalCheck(this.getEnclosingElement(), "%", 400)
     )
   }
-
-  override string getOperator() { result = "LeapYearCheck" }
 }
 
 /**

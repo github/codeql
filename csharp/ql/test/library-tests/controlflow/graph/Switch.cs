@@ -130,4 +130,24 @@ class Switch
     {
         return (o switch { string s => s, _ => null })?.ToString();
     }
+
+    int M13(int i)
+    {
+        switch (i)
+        {
+            default: return -1;
+            case 1: return 1;
+            case 2: return 2;
+        }
+    }
+
+    int M14(int i)
+    {
+        switch (i)
+        {
+            case 1: return 1;
+            default: return -1;
+            case 2: return 2;
+        }
+    }
 }

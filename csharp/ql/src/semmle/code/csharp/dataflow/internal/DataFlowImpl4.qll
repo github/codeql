@@ -7,7 +7,7 @@
  * on each other without introducing mutual recursion among those configurations.
  */
 
-private import DataFlowImplCommon
+private import DataFlowImplCommon::Public
 private import DataFlowImplSpecific::Private
 import DataFlowImplSpecific::Public
 
@@ -1075,6 +1075,7 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
     flowCandFwd(mid, fromArg, _, config) and
     store(mid, f, node) and
     nodeCand(node, unbind(config)) and
+    readStoreCand(f, unbind(config)) and
     apf.headUsesContent(f)
   )
   or
@@ -1175,12 +1176,12 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
   exists(Content f, AccessPathFront apf0 |
     flowCandStore(node, f, toReturn, apf0, config) and
     apf0.headUsesContent(f) and
-    consCand(f, apf, unbind(config))
+    consCand(f, apf, config)
   )
   or
   exists(Content f, AccessPathFront apf0 |
     flowCandRead(node, f, toReturn, apf0, config) and
-    consCandFwd(f, apf0, unbind(config)) and
+    consCandFwd(f, apf0, config) and
     apf.headUsesContent(f)
   )
 }
@@ -1221,8 +1222,8 @@ private newtype TAccessPath =
   TConsCons(Content f1, Content f2, int len) { consCand(f1, TFrontHead(f2), _) and len in [2 .. 5] }
 
 /**
- * Conceptually a list of `Content`s followed by a `Type`, but only the first
- * element of the list and its length are tracked. If data flows from a source to
+ * Conceptually a list of `Content`s followed by a `Type`, but only the first two
+ * elements of the list and its length are tracked. If data flows from a source to
  * a given node with a given `AccessPath`, this indicates the sequence of
  * dereference operations needed to get from the value in the node to the
  * tracked object. The final type indicates the type of the tracked object.
@@ -1260,7 +1261,7 @@ abstract private class AccessPath extends TAccessPath {
 
 private class AccessPathNil extends AccessPath, TNil {
   override string toString() {
-    exists(DataFlowType t | this = TNil(t) | result = concat(" : " + ppReprType(t)))
+    exists(DataFlowType t | this = TNil(t) | result = concat(": " + ppReprType(t)))
   }
 
   override AccessPathFront getFront() {
@@ -1276,7 +1277,7 @@ private class AccessPathConsNil extends AccessPathCons, TConsNil {
   override string toString() {
     exists(Content f, DataFlowType t | this = TConsNil(f, t) |
       // The `concat` becomes "" if `ppReprType` has no result.
-      result = f.toString() + concat(" : " + ppReprType(t))
+      result = "[" + f.toString() + "]" + concat(" : " + ppReprType(t))
     )
   }
 
@@ -1293,8 +1294,8 @@ private class AccessPathConsCons extends AccessPathCons, TConsCons {
   override string toString() {
     exists(Content f1, Content f2, int len | this = TConsCons(f1, f2, len) |
       if len = 2
-      then result = f1.toString() + ", " + f2.toString()
-      else result = f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")"
+      then result = "[" + f1.toString() + ", " + f2.toString() + "]"
+      else result = "[" + f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")]"
     )
   }
 
@@ -1625,7 +1626,7 @@ abstract class PathNode extends TPathNode {
     this instanceof PathNodeSink and result = ""
     or
     exists(string s | s = this.(PathNodeMid).getAp().toString() |
-      if s = "" then result = "" else result = " [" + s + "]"
+      if s = "" then result = "" else result = " " + s
     )
   }
 
@@ -2070,7 +2071,7 @@ private module FlowExploration {
 
   private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
     override string toString() {
-      exists(DataFlowType t | this = TPartialNil(t) | result = concat(" : " + ppReprType(t)))
+      exists(DataFlowType t | this = TPartialNil(t) | result = concat(": " + ppReprType(t)))
     }
 
     override AccessPathFront getFront() {
@@ -2082,8 +2083,8 @@ private module FlowExploration {
     override string toString() {
       exists(Content f, int len | this = TPartialCons(f, len) |
         if len = 1
-        then result = f.toString()
-        else result = f.toString() + ", ... (" + len.toString() + ")"
+        then result = "[" + f.toString() + "]"
+        else result = "[" + f.toString() + ", ... (" + len.toString() + ")]"
       )
     }
 
@@ -2160,7 +2161,7 @@ private module FlowExploration {
 
     private string ppAp() {
       exists(string s | s = this.(PartialPathNodePriv).getAp().toString() |
-        if s = "" then result = "" else result = " [" + s + "]"
+        if s = "" then result = "" else result = " " + s
       )
     }
 

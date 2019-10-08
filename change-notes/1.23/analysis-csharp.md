@@ -16,6 +16,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
 | Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | Fewer false positive results | More `null` checks are now taken into account, including `null` checks for `dynamic` expressions and `null` checks such as `object alwaysNull = null; if (x != alwaysNull) ...`. |
+| Missing Dispose call on local IDisposable (`cs/local-not-disposed`) | Fewer false positive results | The query has been rewritten in order to identify more dispose patterns. For example, a local `IDisposable` that is disposed of by passing through a fluent API is no longer reported. |
 
 ## Removal of old queries
 
@@ -38,5 +39,6 @@ The following changes in version 1.23 affect C# analysis in all applications.
   disabled by default and can be enabled for individual configurations by
   overriding `int explorationLimit()`.
 * `foreach` statements where the body is guaranteed to be executed at least once, such as `foreach (var x in new string[]{ "a", "b", "c" }) { ... }`, are now recognized by all analyses based on the control flow graph (such as SSA, data flow and taint tracking).
+* Fixed the control flow graph for `switch` statements where the `default` case was not the last case. This had caused the remaining cases to be unreachable. `SwitchStmt.getCase(int i)` now puts the `default` case last.
 
 ## Changes to autobuilder

@@ -1,13 +1,13 @@
 edges
-| Test.java:19:18:19:38 | getHostName(...) [ : String] | Test.java:24:20:24:23 | temp |
-| Test.java:19:18:19:38 | getHostName(...) [ : String] | Test.java:27:21:27:24 | temp |
-| Test.java:19:18:19:38 | getHostName(...) [ : String] | Test.java:30:44:30:47 | temp |
+| Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp |
+| Test.java:19:18:19:38 | getHostName(...) : String | Test.java:27:21:27:24 | temp |
+| Test.java:19:18:19:38 | getHostName(...) : String | Test.java:30:44:30:47 | temp |
 nodes
-| Test.java:19:18:19:38 | getHostName(...) [ : String] | semmle.label | getHostName(...) [ : String] |
+| Test.java:19:18:19:38 | getHostName(...) : String | semmle.label | getHostName(...) : String |
 | Test.java:24:20:24:23 | temp | semmle.label | temp |
 | Test.java:27:21:27:24 | temp | semmle.label | temp |
 | Test.java:30:44:30:47 | temp | semmle.label | temp |
 #select
-| Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) [ : String] | Test.java:24:20:24:23 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
-| Test.java:27:11:27:25 | get(...) | Test.java:19:18:19:38 | getHostName(...) [ : String] | Test.java:27:21:27:24 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
-| Test.java:30:11:30:48 | getPath(...) | Test.java:19:18:19:38 | getHostName(...) [ : String] | Test.java:30:44:30:47 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
+| Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
+| Test.java:27:11:27:25 | get(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:27:21:27:24 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
+| Test.java:30:11:30:48 | getPath(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:30:44:30:47 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
