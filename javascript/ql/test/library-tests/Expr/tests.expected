@@ -104,6 +104,22 @@ test_getParent
 | comparison.js:8:1:8:1 | 2 | comparison.js:8:1:8:6 | 2 >= 1 |
 | comparison.js:8:1:8:6 | 2 >= 1 | comparison.js:8:1:8:7 | 2 >= 1; |
 | comparison.js:8:6:8:6 | 1 | comparison.js:8:1:8:6 | 2 >= 1 |
+| computedFieldNames.ts:1:7:1:10 | key1 | computedFieldNames.ts:1:7:1:19 | key1 = "key1" |
+| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | computedFieldNames.ts:1:1:1:20 | const key1 = "key1"; |
+| computedFieldNames.ts:1:14:1:19 | "key1" | computedFieldNames.ts:1:7:1:19 | key1 = "key1" |
+| computedFieldNames.ts:2:7:2:19 | NoConstructor | computedFieldNames.ts:2:1:4:1 | class N ...  = 4;\\n} |
+| computedFieldNames.ts:2:21:2:20 | () {} | computedFieldNames.ts:2:21:2:20 | constructor() {} |
+| computedFieldNames.ts:2:21:2:20 | constructor | computedFieldNames.ts:2:21:2:20 | constructor() {} |
+| computedFieldNames.ts:3:4:3:7 | key1 | computedFieldNames.ts:3:3:3:13 | [key1] = 4; |
+| computedFieldNames.ts:3:12:3:12 | 4 | computedFieldNames.ts:3:3:3:13 | [key1] = 4; |
+| computedFieldNames.ts:6:7:6:10 | key2 | computedFieldNames.ts:6:7:6:19 | key2 = "key2" |
+| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | computedFieldNames.ts:6:1:6:20 | const key2 = "key2"; |
+| computedFieldNames.ts:6:14:6:19 | "key2" | computedFieldNames.ts:6:7:6:19 | key2 = "key2" |
+| computedFieldNames.ts:7:7:7:21 | WithConstructor | computedFieldNames.ts:7:1:11:1 | class W ... () {}\\n} |
+| computedFieldNames.ts:8:4:8:7 | key2 | computedFieldNames.ts:8:3:8:13 | [key2] = 4; |
+| computedFieldNames.ts:8:12:8:12 | 4 | computedFieldNames.ts:8:3:8:13 | [key2] = 4; |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} | computedFieldNames.ts:10:3:10:18 | constructor() {} |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} | computedFieldNames.ts:10:3:10:18 | constructor() {} |
 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] | es2015.js:1:1:1:22 | ["a", " ... c"].map |
 | es2015.js:1:1:1:22 | ["a", " ... c"].map | es2015.js:1:1:1:37 | ["a", " ... length) |
 | es2015.js:1:1:1:37 | ["a", " ... length) | es2015.js:1:1:1:38 | ["a", " ... ength); |
@@ -557,6 +573,22 @@ test_getTopLevel
 | comparison.js:8:1:8:1 | 2 | comparison.js:1:1:9:0 | <toplevel> |
 | comparison.js:8:1:8:6 | 2 >= 1 | comparison.js:1:1:9:0 | <toplevel> |
 | comparison.js:8:6:8:6 | 1 | comparison.js:1:1:9:0 | <toplevel> |
+| computedFieldNames.ts:1:7:1:10 | key1 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:1:14:1:19 | "key1" | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:2:7:2:19 | NoConstructor | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:2:21:2:20 | () {} | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:2:21:2:20 | constructor | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:3:4:3:7 | key1 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:3:12:3:12 | 4 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:6:7:6:10 | key2 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:6:14:6:19 | "key2" | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:7:7:7:21 | WithConstructor | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:8:4:8:7 | key2 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:8:12:8:12 | 4 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} | computedFieldNames.ts:1:1:12:0 | <toplevel> |
 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:1:1:1:22 | ["a", " ... c"].map | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:1:1:1:37 | ["a", " ... length) | es2015.js:1:1:29:0 | <toplevel> |
@@ -975,6 +1007,10 @@ test_getChild
 | comparison.js:7:1:7:5 | 2 > 1 | 1 | comparison.js:7:5:7:5 | 1 |
 | comparison.js:8:1:8:6 | 2 >= 1 | 0 | comparison.js:8:1:8:1 | 2 |
 | comparison.js:8:1:8:6 | 2 >= 1 | 1 | comparison.js:8:6:8:6 | 1 |
+| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | 0 | computedFieldNames.ts:1:7:1:10 | key1 |
+| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | 1 | computedFieldNames.ts:1:14:1:19 | "key1" |
+| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | 0 | computedFieldNames.ts:6:7:6:10 | key2 |
+| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | 1 | computedFieldNames.ts:6:14:6:19 | "key2" |
 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 0 | es2015.js:1:2:1:4 | "a" |
 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 1 | es2015.js:1:7:1:10 | "ab" |
 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 2 | es2015.js:1:13:1:17 | "abc" |
@@ -1270,6 +1306,20 @@ test_isPure
 | comparison.js:8:1:8:1 | 2 |
 | comparison.js:8:1:8:6 | 2 >= 1 |
 | comparison.js:8:6:8:6 | 1 |
+| computedFieldNames.ts:1:7:1:10 | key1 |
+| computedFieldNames.ts:1:14:1:19 | "key1" |
+| computedFieldNames.ts:2:7:2:19 | NoConstructor |
+| computedFieldNames.ts:2:21:2:20 | () {} |
+| computedFieldNames.ts:2:21:2:20 | constructor |
+| computedFieldNames.ts:3:4:3:7 | key1 |
+| computedFieldNames.ts:3:12:3:12 | 4 |
+| computedFieldNames.ts:6:7:6:10 | key2 |
+| computedFieldNames.ts:6:14:6:19 | "key2" |
+| computedFieldNames.ts:7:7:7:21 | WithConstructor |
+| computedFieldNames.ts:8:4:8:7 | key2 |
+| computedFieldNames.ts:8:12:8:12 | 4 |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} |
 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] |
 | es2015.js:1:1:1:22 | ["a", " ... c"].map |
 | es2015.js:1:2:1:4 | "a" |
@@ -1570,6 +1620,8 @@ test_RelationalComparisons
 | comparison.js:8:1:8:6 | 2 >= 1 | comparison.js:8:6:8:6 | 1 | comparison.js:8:1:8:1 | 2 |
 | es2015.js:23:8:23:12 | n-->0 | es2015.js:23:12:23:12 | 0 | es2015.js:23:8:23:10 | n-- |
 test_getEnclosingFunction
+| computedFieldNames.ts:3:12:3:12 | 4 | computedFieldNames.ts:2:21:2:20 | () {} |
+| computedFieldNames.ts:8:12:8:12 | 4 | computedFieldNames.ts:10:3:10:18 | constructor() {} |
 | es2015.js:1:24:1:24 | s | es2015.js:1:24:1:36 | s => s.length |
 | es2015.js:1:29:1:29 | s | es2015.js:1:24:1:36 | s => s.length |
 | es2015.js:1:29:1:36 | s.length | es2015.js:1:24:1:36 | s => s.length |
@@ -1759,6 +1811,22 @@ test_getContainer
 | comparison.js:8:1:8:1 | 2 | comparison.js:1:1:9:0 | <toplevel> |
 | comparison.js:8:1:8:6 | 2 >= 1 | comparison.js:1:1:9:0 | <toplevel> |
 | comparison.js:8:6:8:6 | 1 | comparison.js:1:1:9:0 | <toplevel> |
+| computedFieldNames.ts:1:7:1:10 | key1 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:1:14:1:19 | "key1" | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:2:7:2:19 | NoConstructor | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:2:21:2:20 | () {} | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:2:21:2:20 | constructor | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:3:4:3:7 | key1 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:3:12:3:12 | 4 | computedFieldNames.ts:2:21:2:20 | () {} |
+| computedFieldNames.ts:6:7:6:10 | key2 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:6:14:6:19 | "key2" | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:7:7:7:21 | WithConstructor | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:8:4:8:7 | key2 | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:8:12:8:12 | 4 | computedFieldNames.ts:10:3:10:18 | constructor() {} |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} | computedFieldNames.ts:1:1:12:0 | <toplevel> |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} | computedFieldNames.ts:1:1:12:0 | <toplevel> |
 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:1:1:1:22 | ["a", " ... c"].map | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:1:1:1:37 | ["a", " ... length) | es2015.js:1:1:29:0 | <toplevel> |
@@ -2212,6 +2280,20 @@ test_getEnclosingStmt
 | comparison.js:8:1:8:1 | 2 | comparison.js:8:1:8:7 | 2 >= 1; |
 | comparison.js:8:1:8:6 | 2 >= 1 | comparison.js:8:1:8:7 | 2 >= 1; |
 | comparison.js:8:6:8:6 | 1 | comparison.js:8:1:8:7 | 2 >= 1; |
+| computedFieldNames.ts:1:7:1:10 | key1 | computedFieldNames.ts:1:1:1:20 | const key1 = "key1"; |
+| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | computedFieldNames.ts:1:1:1:20 | const key1 = "key1"; |
+| computedFieldNames.ts:1:14:1:19 | "key1" | computedFieldNames.ts:1:1:1:20 | const key1 = "key1"; |
+| computedFieldNames.ts:2:7:2:19 | NoConstructor | computedFieldNames.ts:2:1:4:1 | class N ...  = 4;\\n} |
+| computedFieldNames.ts:2:21:2:20 | () {} | computedFieldNames.ts:2:1:4:1 | class N ...  = 4;\\n} |
+| computedFieldNames.ts:2:21:2:20 | constructor | computedFieldNames.ts:2:1:4:1 | class N ...  = 4;\\n} |
+| computedFieldNames.ts:3:4:3:7 | key1 | computedFieldNames.ts:2:1:4:1 | class N ...  = 4;\\n} |
+| computedFieldNames.ts:6:7:6:10 | key2 | computedFieldNames.ts:6:1:6:20 | const key2 = "key2"; |
+| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | computedFieldNames.ts:6:1:6:20 | const key2 = "key2"; |
+| computedFieldNames.ts:6:14:6:19 | "key2" | computedFieldNames.ts:6:1:6:20 | const key2 = "key2"; |
+| computedFieldNames.ts:7:7:7:21 | WithConstructor | computedFieldNames.ts:7:1:11:1 | class W ... () {}\\n} |
+| computedFieldNames.ts:8:4:8:7 | key2 | computedFieldNames.ts:7:1:11:1 | class W ... () {}\\n} |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} | computedFieldNames.ts:7:1:11:1 | class W ... () {}\\n} |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} | computedFieldNames.ts:7:1:11:1 | class W ... () {}\\n} |
 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] | es2015.js:1:1:1:38 | ["a", " ... ength); |
 | es2015.js:1:1:1:22 | ["a", " ... c"].map | es2015.js:1:1:1:38 | ["a", " ... ength); |
 | es2015.js:1:1:1:37 | ["a", " ... length) | es2015.js:1:1:1:38 | ["a", " ... ength); |

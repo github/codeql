@@ -1,3 +1,5 @@
+| computedFieldNames.ts:3:5:3:17 | key1 = "key1" | The initial value of key1 is unused, since it is always overwritten. |
+| computedFieldNames.ts:8:5:8:17 | key2 = "key2" | The initial value of key2 is unused, since it is always overwritten. |
 | overload.ts:10:12:10:14 | baz | This definition of baz is useless, since its value is never read. |
 | tst2.js:26:9:26:14 | x = 23 | The initial value of x is unused, since it is always overwritten. |
 | tst2.js:28:9:28:14 | x = 42 | This definition of x is useless, since its value is never read. |
