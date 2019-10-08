@@ -648,10 +648,15 @@ private module ImplCommon {
    */
   abstract class CallContext extends TCallContext {
     abstract string toString();
+
+    /** Holds if this call context is relevant for `callable`. */
+    abstract predicate relevantFor(DataFlowCallable callable);
   }
 
   class CallContextAny extends CallContext, TAnyCallContext {
     override string toString() { result = "CcAny" }
+
+    override predicate relevantFor(DataFlowCallable callable) { any() }
   }
 
   abstract class CallContextCall extends CallContext { }
@@ -663,16 +668,28 @@ private module ImplCommon {
       )
     }
 
+    override predicate relevantFor(DataFlowCallable callable) {
+      recordDataFlowCallSite(getCall(), callable)
+    }
+
     DataFlowCall getCall() { this = TSpecificCall(result, _, _) }
   }
 
   class CallContextSomeCall extends CallContextCall, TSomeCall {
     override string toString() { result = "CcSomeCall" }
+
+    override predicate relevantFor(DataFlowCallable callable) {
+      exists(ParameterNode p | this = TSomeCall(p, _) and p.getEnclosingCallable() = callable)
+    }
   }
 
   class CallContextReturn extends CallContext, TReturn {
     override string toString() {
       exists(DataFlowCall call | this = TReturn(_, call) | result = "CcReturn(" + call + ")")
+    }
+
+    override predicate relevantFor(DataFlowCallable callable) {
+      exists(DataFlowCall call | this = TReturn(_, call) and call.getEnclosingCallable() = callable)
     }
   }
 
@@ -682,28 +699,14 @@ private module ImplCommon {
   abstract class LocalCallContext extends TLocalFlowCallContext {
     abstract string toString();
 
-    abstract predicate validFor(Node n);
-  }
-
-  /**
-   * Gets a matching local call context given the call context and a node which is in
-   * the callable the call is targeting.
-   */
-  LocalCallContext getMatchingLocalCallContext(CallContext ctx, Node n) {
-    if hasUnreachableNode(ctx.(CallContextSpecificCall).getCall(), n.getEnclosingCallable())
-    then result.(LocalCallContextSpecificCall).getCall() = ctx.(CallContextSpecificCall).getCall()
-    else result instanceof LocalCallContextAny
+    /** Holds if this call context is relevant for `callable`. */
+    abstract predicate relevantFor(DataFlowCallable callable);
   }
 
   class LocalCallContextAny extends LocalCallContext, TAnyLocalCall {
     override string toString() { result = "LocalCcAny" }
 
-    override predicate validFor(Node n) { any() }
-  }
-
-  pragma[noinline]
-  private predicate hasUnreachableNode(DataFlowCall call, DataFlowCallable callable) {
-    isUnreachableInCall(any(Node n | n.getEnclosingCallable() = callable), call)
+    override predicate relevantFor(DataFlowCallable callable) { any() }
   }
 
   class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall {
@@ -715,7 +718,22 @@ private module ImplCommon {
 
     override string toString() { result = "LocalCcCall(" + call + ")" }
 
-    override predicate validFor(Node n) { hasUnreachableNode(call, n.getEnclosingCallable()) }
+    override predicate relevantFor(DataFlowCallable callable) { relevantLocalCCtx(call, callable) }
+  }
+
+  private predicate relevantLocalCCtx(DataFlowCall call, DataFlowCallable callable) {
+    exists(Node n | n.getEnclosingCallable() = callable and isUnreachableInCall(n, call))
+  }
+
+  /**
+   * Gets the local call context given the call context and the callable that
+   * the contexts apply to.
+   */
+  LocalCallContext getLocalCallContext(CallContext ctx, DataFlowCallable callable) {
+    ctx.relevantFor(callable) and
+    if relevantLocalCCtx(ctx.(CallContextSpecificCall).getCall(), callable)
+    then result.(LocalCallContextSpecificCall).getCall() = ctx.(CallContextSpecificCall).getCall()
+    else result instanceof LocalCallContextAny
   }
 
   /** A callable tagged with a relevant return kind. */

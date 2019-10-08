@@ -916,7 +916,7 @@ private predicate localFlowStepPlus(
       additionalLocalFlowStep(node1, node2, config) and preservesValue = false
     ) and
     node1 != node2 and
-    cc.validFor(node1) and
+    cc.relevantFor(node1.getEnclosingCallable()) and
     not isUnreachableInCall(node1, cc.(LocalCallContextSpecificCall).getCall()) and
     nodeCand(node2, unbind(config))
     or
@@ -941,7 +941,7 @@ private predicate localFlowStepPlus(
  * Holds if `node1` can step to `node2` in one or more local steps and this
  * path can occur as a maximal subsequence of local steps in a dataflow path.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate localFlowBigStep(
   Node node1, Node node2, boolean preservesValue, Configuration config, LocalCallContext callContext
 ) {
@@ -1734,14 +1734,17 @@ private class PathNodeSink extends PathNode, TPathNodeSink {
  * a callable is recorded by `cc`.
  */
 private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPath ap) {
-  exists(LocalCallContext localCC | localCC = getMatchingLocalCallContext(cc, node) |
-    localFlowBigStep(mid.getNode(), node, true, mid.getConfiguration(), localCC) and
+  exists(LocalCallContext localCC, AccessPath ap0, boolean preservesValue |
+    localCC = getLocalCallContext(cc, mid.getNode().getEnclosingCallable()) and
+    localFlowBigStep(mid.getNode(), node, preservesValue, mid.getConfiguration(), localCC) and
     cc = mid.getCallContext() and
-    ap = mid.getAp()
+    ap0 = mid.getAp()
+  |
+    preservesValue = true and
+    ap = ap0
     or
-    localFlowBigStep(mid.getNode(), node, false, mid.getConfiguration(), localCC) and
-    cc = mid.getCallContext() and
-    mid.getAp() instanceof AccessPathNil and
+    preservesValue = false and
+    ap0 instanceof AccessPathNil and
     ap = node.(AccessPathNilNode).getAp()
   )
   or
