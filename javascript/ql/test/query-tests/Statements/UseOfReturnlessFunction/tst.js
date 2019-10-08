@@ -56,4 +56,16 @@
 	var oneOfEach = Math.random() > 0.5 ? onlySideEffects : returnsValue;
 	var g = oneOfEach(); // OK
 	console.log(g);
+	
+	function alwaysThrows() {
+		if (Math.random() > 0.5) {
+			console.log("Whatever!")
+		} else {
+			console.log("Boo!")
+		}
+		throw new Error("Important error!")
+	} 
+	
+	var h = returnsValue() || alwaysThrows(); // OK!
+	console.log(h);
 })();

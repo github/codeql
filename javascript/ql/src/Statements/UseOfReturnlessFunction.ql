@@ -21,8 +21,6 @@ predicate returnsVoid(Function f) {
 }
 
 predicate isStub(Function f) {
-    f.getBodyStmt(0) instanceof ThrowStmt
-    or
     f.getBody().(BlockStmt).getNumChild() = 0 
     or
     f instanceof ExternalDecl
@@ -76,10 +74,20 @@ predicate oneshotClosure(InvokeExpr call) {
   call.getCallee().getUnderlyingValue() instanceof ImmediatelyInvokedFunctionExpr
 }
 
+predicate alwaysThrows(Function f) {
+  exists(ReachableBasicBlock entry, DataFlow::Node throwNode |
+    entry = f.getEntryBB() and
+    throwNode.asExpr() = any(ThrowStmt t).getExpr() and
+    entry.dominates(throwNode.getBasicBlock())
+  )
+}
+
 from DataFlow::CallNode call
 where
   not call.isIndefinite(_) and 
-  forex(Function f | f = call.getACallee() | returnsVoid(f) and not isStub(f)) and
+  forex(Function f | f = call.getACallee() |
+    returnsVoid(f) and not isStub(f) and not alwaysThrows(f)
+  ) and
   
   not benignContext(call.asExpr()) and
   
