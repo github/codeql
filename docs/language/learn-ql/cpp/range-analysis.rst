@@ -13,7 +13,7 @@ The ``upperBound`` and ``lowerBound`` predicates provide constant bounds on expr
 
 Overflow predicates
 -------------------
-``defMightOverflow``, ``exprMightOverflow``, and related predicates hold if the relevant definition or expression might overflow, as determined by the range analysis library. The ``convertedExprMightOverflow`` family of predicates will take conversions into account.
+``exprMightOverflow`` and related predicates hold if the relevant expression might overflow, as determined by the range analysis library. The ``convertedExprMightOverflow`` family of predicates will take conversions into account.
 
 Example
 -------
@@ -25,7 +25,7 @@ This query uses ``upperBound`` to determine whether the result of ``snprintf`` i
     where
       // the call is an snprintf with a string format argument
       call.getTarget().getName() = "snprintf" and
-      call.getArgument(2).getValue().regexpMatch("(?s).*%s.*") and
+      call.getArgument(2).getValue().regexpMatch(".*%s.*") and
 
       // the result of the call influences its size argument in later iterations
       TaintTracking::localTaint(source, sink) and

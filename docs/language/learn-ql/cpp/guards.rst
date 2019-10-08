@@ -7,7 +7,7 @@ The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides 
 
 The ``ensuresEq`` and ``ensuresLt`` predicates
 ----------------------------------------------
-The ``ensuresLt`` and ``ensuresEq`` predicates are the main way of determining what, if any, guarantees the ``GuardCondition`` provides for a given basic block.
+The ``ensuresEq`` and ``ensuresLt`` predicates are the main way of determining what, if any, guarantees the ``GuardCondition`` provides for a given basic block.
 
 ``ensuresEq(left, right, k, block, areEqual)`` holds if ``left == right + k`` must be ``areEqual`` for ``block`` to be executed. If ``areEqual = false`` then this implies ``left != right + k`` must be true for ``block`` to be executed.
 

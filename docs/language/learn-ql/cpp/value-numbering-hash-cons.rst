@@ -55,20 +55,18 @@ This query uses the ``GVN`` class to identify calls to ``strncpy`` where the siz
 
 .. code-block:: ql
 
-    from FunctionCall strncpy, FunctionCall strlen, Expr sized
+    from FunctionCall strncpy, FunctionCall strlen
     where
       strncpy.getTarget().hasGlobalName("strncpy") and
       strlen.getTarget().hasGlobalName("strlen") and
-      globalValueNumber(strncpy.getArgument(0)) != globalValueNumber(sized) and
-      globalValueNumber(strncpy.getArgument(1)) = globalValueNumber(sized) and
+      globalValueNumber(strncpy.getArgument(1)) = globalValueNumber(strlen.getArgument(0)) and
       strlen = strncpy.getArgument(2)
-      sized = strlen.getArgument(0)
     select ci, "This call to strncpy is bounded by the size of the source rather than the destination"
 
 .. TODO: a second example
 
 Hash consing
---------
+------------
 The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. Hash consing is useful when your primary concern is with the text of the code. For instance, hash consing might be used to detect duplicate code within a function.
 
 The hash consing API
