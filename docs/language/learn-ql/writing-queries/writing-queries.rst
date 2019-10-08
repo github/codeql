@@ -1,8 +1,8 @@
-Writing QL queries
-##################
+Writing queries
+###############
 
 
-If you are familiar with QL, you can modify the existing Semmle queries or write custom queries to analyze, improve, and secure your own projects. Get started by reading the information for query writers and viewing the examples provided below. 
+If you are familiar with TEST, you can modify the existing Semmle queries or write custom queries to analyze, improve, and secure your own projects. Get started by reading the information for query writers and viewing the examples provided below. 
 
 Information for query writers
 *****************************
@@ -18,19 +18,19 @@ Information for query writers
    ../locations
    
 
-Visit `Learning QL <https://help.semmle.com/QL/learn-ql/>`__ to find basic information about QL, as well as help and advice on writing QL for specific programming languages. To learn more about the structure of query files, the key information to include when writing your own QL queries, and how to format your QL for clarity and consistency, see the following topics: 
+Visit `Learning TEST <https://help.semmle.com/QL/learn-ql/>`__ to find basic information about TEST, as well as help and advice on writing queries for specific programming languages. To learn more about the structure of query files, the key information to include when writing your own queries, and how to format queries for clarity and consistency, see the following topics: 
 
 -  :doc:`Introduction to query files <introduction-to-queries>`–an introduction to the information contained in a basic query file.
 -  :doc:`Constructing path queries <path-queries>`–a quick guide to structuring path queries to use in security research.
--  :doc:`Introduction to data flow analysis in QL <../intro-to-data-flow>`–a brief introduction to modeling data flow using QL.
+-  :doc:`Introduction to data flow analysis in TEST <../intro-to-data-flow>`–a brief introduction to modeling data flow using TEST.
 -  :doc:`Defining 'select' statements <select-statement>`–further detail on developing query alert messages to provide extra information in your query results.
--  :doc:`Locations and strings for QL entities <../locations>`–further detail on providing location information in query results. 
--  `QL style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__–a guide to formatting QL for consistency and clarity.
+-  :doc:`Locations and strings for TEST entities <../locations>`–further detail on providing location information in query results. 
+-  `TEST style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__–a guide to formatting TEST for consistency and clarity.
 
-Viewing the built-in QL queries
-*******************************
+Viewing the built-in queries
+****************************
 
-The easiest way to get started writing your own queries is to modify an existing query. To view examples of the queries included in the latest release of the Semmle tools, or to try out the QL query cookbooks, visit `Exploring QL queries <https://help.semmle.com/QL/ql-explore-queries.html>`__.  You can also find all of the Semmle queries in our `open source repository on GitHub <https://github.com/semmle/ql>`__. 
+The easiest way to get started writing your own queries is to modify an existing query. To view examples of the queries included in the latest release of the Semmle tools, or to try out the query cookbooks, visit `Exploring TEST queries <https://help.semmle.com/QL/ql-explore-queries.html>`__.  You can also find all of the Semmle queries in our `open source repository on GitHub <https://github.com/semmle/ql>`__. 
 
 You can also find examples of queries developed to find security vulnerabilities and bugs in open-source software projects in the `Semmle demos GitHub repository <https://github.com/semmle/demos>`__ and the `Semmle blog <https://blog.semmle.com/tags/security>`__.
 

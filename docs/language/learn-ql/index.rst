@@ -1,21 +1,21 @@
-Learning QL
-###########
+Learning TEST
+###############
 
 
-`QL <https://semmle.com/ql>`__ is the query language used in Semmle's `variant analysis <https://semmle.com/variant-analysis>`__ engine. 
-You can use queries written in QL to explore code and quickly find variants of security vulnerabilities and bugs. 
-The QL language is also part of the technology behind `LGTM <https://lgtm.com>`__,  Semmle's analysis platform that combines deep semantic code search with data science insights to help developers ship secure code.
+`TEST <https://semmle.com/ql>`__ is the query language used by Semmle's `variant analysis <https://semmle.com/variant-analysis>`__ engine. 
+You can use queries written in TEST to explore code and quickly find variants of security vulnerabilities and bugs. 
+TEST is also part of the technology behind `LGTM <https://lgtm.com>`__,  Semmle's analysis platform that combines deep semantic code search with data science insights to help developers ship secure code.
 
-QL queries are easy to write and share–visit the topics below and `our open source repository on GitHub <https://github.com/Semmle/ql>`__ to learn more. 
-You can also try out QL in the `query console <https://lgtm.com/query>`__ on `LGTM.com <https://lgtm.com>`__. 
-Here, you can write QL code to query open source projects directly, without having to download snapshots and libraries. 
+Queries are easy to write and share–visit the topics below and `our open source repository on GitHub <https://github.com/Semmle/ql>`__ to learn more. 
+You can also try out TEST in the `query console <https://lgtm.com/query>`__ on `LGTM.com <https://lgtm.com>`__. 
+Here, you can write queries to explore open source projects directly, without having to download snapshots and libraries. 
 
 .. _getting-started:
 
 Getting started
 ***************
 
-If you are new to QL, start by looking at the following topics:
+If you are new to TEST, start by looking at the following topics:
 
 .. toctree::
    :maxdepth: 1
@@ -25,10 +25,10 @@ If you are new to QL, start by looking at the following topics:
    beginner/ql-tutorials
    ql-etudes/river-crossing
 
-QL training and variant analysis examples
-******************************************
+TEST training and variant analysis examples
+*********************************************
 
-To start learning how to use QL in variant analysis for a specific language, see:
+To start learning how to use TEST in variant analysis for a specific language, see:
 
 .. toctree::
    :maxdepth: -1
@@ -37,8 +37,8 @@ To start learning how to use QL in variant analysis for a specific language, see
 
 .. _writing-ql-queries:
 
-Writing QL queries
-******************
+Writing queries
+***************
 
 To learn more about writing your own queries, see:
 
@@ -48,7 +48,7 @@ To learn more about writing your own queries, see:
 
    writing-queries/writing-queries
 
-For more information on writing QL to query code written in a specific language see:
+For more information on querying code written in a specific language see:
 
 .. toctree::
    :maxdepth: 2
@@ -61,7 +61,7 @@ For more information on writing QL to query code written in a specific language 
    javascript/ql-for-javascript
    python/ql-for-python
 
-Advanced QL and technical information
+Advanced and technical information
 *************************************
 
 For more technical information see:
@@ -76,7 +76,7 @@ For more technical information see:
 Reference topics
 ****************
 
-For a more comprehensive guide to QL see the following reference topics: 
+For a more comprehensive guide, see the following reference topics: 
 
 - `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__—a description of important concepts in QL
 - `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__—a formal specification of the QL language.

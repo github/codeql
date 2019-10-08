@@ -207,5 +207,5 @@ The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.
 Further information
 ===================
 
-- To learn more about contributing to the standard QL queries and libraries, see our `Contributing guidelines <https://github.com/Semmle/ql/blob/master/CONTRIBUTING.md>`__ on GitHub. 
-- To learn more about writing custom queries, and how to format your QL for clarity and consistency, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
+- To learn more about contributing to the standard TEST queries and libraries, see our `Contributing guidelines <https://github.com/Semmle/ql/blob/master/CONTRIBUTING.md>`__ on GitHub. 
+- To learn more about writing custom queries, and how to format them for clarity and consistency, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.

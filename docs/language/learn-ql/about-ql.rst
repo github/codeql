@@ -1,11 +1,11 @@
 About QL
 ========
 
-This section is aimed at users with a background in general purpose programming as well as in databases. For a basic introduction and information on how to get started, see :doc:`Introduction to the QL language <introduction-to-ql>` and :doc:`Learning QL <../index>`.
+This section is aimed at users with a background in general purpose programming as well as in databases. For a basic introduction and information on how to get started, see :doc:`Introduction to the QL language <introduction-to-ql>` and :doc:`Learning TEST <../index>`.
 
 QL is a declarative, object-oriented query language that is optimized to enable efficient analysis of hierarchical data structures, in particular, databases representing software artifacts.
 
-The queries and metrics used in LGTM are implemented using QL. This ensures that they can be extended or revised easily to keep up with changes in definitions of best coding practice. We continually improve existing queries as we work towards the ultimate goal of 100% precision.
+The queries and metrics used in LGTM are implemented using TEST. This ensures that they can be extended or revised easily to keep up with changes in definitions of best coding practice. We continually improve existing queries as we work towards the ultimate goal of 100% precision.
 
 You can write queries to identify security vulnerabilities, find coding errors and bugs, or find code that breaks your team's guidelines for best practice. You can also create customized versions of the default queries to accommodate a new framework.
 

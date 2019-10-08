@@ -1,7 +1,7 @@
 Introduction to the QL language
 ===============================
 
-QL is a powerful query language that is used to analyze code. Queries written in QL can be used to find errors and uncover variants of important security vulnerabilities. Visit Semmle's `security research page <https://lgtm.com/security>`__ to read about examples of vulnerabilities that we have recently found in open source projects using QL queries.
+QL is a powerful query language that can be used to analyze code. The queries, libraries, and tools used to analyze code are known as *TEST*. TEST queries can be used to find errors and uncover variants of important security vulnerabilities. Visit Semmle's `security research page <https://lgtm.com/security>`__ to read about examples of vulnerabilities that we have recently found in open source projects using TEST queries.
 
 QL is a logic programming language, so it is built up of logical formulas. QL uses common logical connectives (such as ``and``, ``or``, and ``not``), quantifiers (such as ``forall`` and ``exists``), and other important logical concepts such as predicates.
 
@@ -12,7 +12,7 @@ Basic syntax
 
 The basic syntax will look familiar to anyone who has used SQL, but it is used somewhat differently.
 
-A QL query is defined by a **select** clause, which specifies what the result of the query should be. You can try out the examples and exercises in this topic directly in LGTM. Open the `query console <https://lgtm.com/query>`__. Before you can run a query, you need to select a language and project to query (for these logic examples, any language and project will do).
+A query is defined by a **select** clause, which specifies what the result of the query should be. You can try out the examples and exercises in this topic directly in LGTM. Open the `query console <https://lgtm.com/query>`__. Before you can run a query, you need to select a language and project to query (for these logic examples, any language and project will do).
 
 Once you have selected a language, the query console is populated with the query:
 
@@ -110,9 +110,9 @@ To simplify the query, we can introduce a class ``SmallInt`` representing the in
 
 ➤ `See this in the query console <https://lgtm.com/query/2101340747/>`__
 
-Now that you've seen some general examples, let's use QL queries to analyze projects. In particular, LGTM generates a database representing the code and then QL is used to query this database. See `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ for more details on how the database is built.
+Now that you've seen some general examples, let's use TEST to analyze projects. In particular, LGTM generates a database representing the code and then TEST is used to analyze this database. See `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ for more details on how the database is built.
 
-The previous exercises just used the primitive types built in to QL. Although we chose a project to query, they did not use the project-specific database. The following example queries *do* use these databases and give you an idea of what QL can be used for. There are more details about how to write QL `below <#learning-ql>`__, so don't worry if you don't fully understand these examples yet!
+The previous exercises just used the primitive types built in to the language. Although we chose a code database to query, they did not use this database. The following example queries *do* use the code databases and give you an idea of what TEST can be used for. There are more details about how to write queries `below <#learning-ql>`__, so don't worry if you don't fully understand these examples yet!
 
 Python
 ~~~~~~
@@ -153,9 +153,9 @@ Java
 
 ➤ `See this in the query console <https://lgtm.com/query/2098670762/>`__. The ``from`` clause defines a variable ``p`` representing a parameter. The ``where`` clause finds unused parameters by limiting the parameters ``p`` to those which are not accessed. Finally, the ``select`` clause lists these parameters.
 
-Learning QL
------------
+Learning TEST
+---------------
 
--  To find out more about how to write your own QL queries, try working through the :doc:`QL detective tutorials <beginner/ql-tutorials>`.
--  For an overview of the other available resources, see :doc:`Learning QL <../index>`.
+-  To find out more about how to write your own queries, try working through the :doc:`QL detective tutorials <beginner/ql-tutorials>`.
+-  For an overview of the other available resources, see :doc:`Learning TEST <../index>`.
 -  For a more technical description of QL, see :doc:`About QL <about-ql>`.

@@ -4,7 +4,7 @@ Introduction to query files
 Overview
 ********
 
-Queries are programs written in QL. The QL queries included in the Semmle tools are designed to highlight issues related to the security, correctness, maintainability, and readability of a code base. You can also write custom queries to find specific issues relevant to your own project. Three important types of query are:
+Queries are programs written in TEST. The queries included in the Semmle tools are designed to highlight issues related to the security, correctness, maintainability, and readability of a codebase. You can also write custom queries to find specific issues relevant to your own project. Three important types of query are:
 
 - **Alert queries**: queries that highlight issues in specific locations in your code.
 - **Path queries**: queries that describe the flow of information between a source and a sink in your code.
@@ -36,9 +36,9 @@ Basic query structure
      *
      */
 
-    import /* ... QL libraries or modules ... */
+    import /* ... libraries or modules ... */
 
-    /* ... Optional, define QL classes and predicates ... */
+    /* ... Optional, define classes and predicates ... */
 
     from /* ... variable declarations ... */
     where /* ... logical formula ... */
@@ -71,8 +71,8 @@ Query metadata is used to identify your custom queries when they are added to th
 Import statements
 =================
 
-Each query generally contains one or more ``import`` statements, which define the `QL libraries <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ or `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ to import into the query. QL libraries and modules provide a way of grouping together related `types <https://help.semmle.com/QL/ql-handbook/types.html>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and other modules. The contents of each library or module that you import can then be accessed by the query. 
-`Semmle's open source repository on GitHub <https://github.com/semmle/ql>`__ contains all of the standard QL libraries for each supported language.   
+Each query generally contains one or more ``import`` statements, which define the `QL libraries <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ or `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ to import into the query. Libraries and modules provide a way of grouping together related `types <https://help.semmle.com/QL/ql-handbook/types.html>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and other modules. The contents of each library or module that you import can then be accessed by the query. 
+`Semmle's open source repository on GitHub <https://github.com/semmle/ql>`__ contains all of the standard TEST libraries for each supported language.   
 
 When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying, using ``import`` followed by a language:
 
@@ -83,13 +83,13 @@ When writing your own alert queries, you would typically import the standard lib
 - JavaScript/TypeScript: ``javascript``
 - Python: ``python``
 
-There are also QL libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Constructing path queries <path-queries>` for further information.
+There are also TEST libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Constructing path queries <path-queries>` for further information.
 
-You can explore the contents of all the standard QL libraries in the `QL library reference documentation <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__, using `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/standard-queries.html>`__, or in the `GitHub repository <https://github.com/semmle/ql>`__.
+You can explore the contents of all the standard libraries in the `TEST library reference documentation <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__, using `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/standard-queries.html>`__, or in the `GitHub repository <https://github.com/semmle/ql>`__.
 
 
-Optional QL classes and predicates
-----------------------------------
+Optional classes and predicates
+-------------------------------
 
 You can customize your analysis by defining your own predicates and classes in the query. See `Defining a predicate <https://help.semmle.com/QL/ql-handbook/predicates.html#defining-a-predicate>`__ and `Defining a class <https://help.semmle.com/QL/ql-handbook/types.html#defining-a-class>`__ for further details. 
 
@@ -103,7 +103,7 @@ Where clause
 ============
 
 The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. This clause uses `aggregations <https://help.semmle.com/QL/ql-handbook/expressions.html#aggregations>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and logical `formulas <https://help.semmle.com/QL/ql-handbook/formulas.html>`_ to limit the variables of interest to a smaller set, which meet the defined conditions. 
-The QL libraries group commonly used predicates for specific languages and frameworks. You can also define your own predicates in the body of the query file or in your own custom modules, as described above.
+The TEST libraries group commonly used predicates for specific languages and frameworks. You can also define your own predicates in the body of the query file or in your own custom modules, as described above.
 
 Select clause
 =============
@@ -139,5 +139,5 @@ What next?
 - See the queries used in real-life variant analysis on the `Semmle blog <https://blog.semmle.com/tags/variant-analysis>`__.
 - To learn more about writing path queries, see :doc:`Constructing path queries <path-queries>`.
 - Take a look at the `built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ to see examples of the queries included in the Semmle tools.
-- Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the QL libraries.
-- For a full list of resources to help you learn QL, including beginner tutorials and language-specific examples, visit `Learning QL <https://help.semmle.com/QL/learn-ql/>`__.
+- Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the TEST libraries.
+- For a full list of resources to help you learn TEST, including beginner tutorials and language-specific examples, visit `Learning TEST <https://help.semmle.com/QL/learn-ql/>`__.
