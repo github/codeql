@@ -2218,16 +2218,19 @@ private module FlowExploration {
   private predicate partialPathStep(
     PartialPathNodePriv mid, Node node, CallContext cc, PartialAccessPath ap, Configuration config
   ) {
-    localFlowStep(mid.getNode(), node, config) and
-    cc = mid.getCallContext() and
-    ap = mid.getAp() and
-    config = mid.getConfiguration()
-    or
-    additionalLocalFlowStep(mid.getNode(), node, config) and
-    cc = mid.getCallContext() and
-    mid.getAp() instanceof PartialAccessPathNil and
-    ap = TPartialNil(getErasedRepr(node.getType())) and
-    config = mid.getConfiguration()
+    not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
+    (
+      localFlowStep(mid.getNode(), node, config) and
+      cc = mid.getCallContext() and
+      ap = mid.getAp() and
+      config = mid.getConfiguration()
+      or
+      additionalLocalFlowStep(mid.getNode(), node, config) and
+      cc = mid.getCallContext() and
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil(getErasedRepr(node.getType())) and
+      config = mid.getConfiguration()
+    )
     or
     jumpStep(mid.getNode(), node, config) and
     cc instanceof CallContextAny and
