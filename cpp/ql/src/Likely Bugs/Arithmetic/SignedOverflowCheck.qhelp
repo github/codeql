@@ -5,7 +5,7 @@
 <overview>
 <p>
 Testing for <code>signed</code> integer overflow by adding a
-value to a variable and then comparing the result to said variable
+value to a variable and then comparing the result to that variable
 is not defined by the C or C++ standards.  The comparison may
 produce an unintended result, or may be deleted by the compiler
 entirely.
@@ -27,7 +27,7 @@ evaluated using <code>signed values</code> and its value is therefore undefined.
 <sample src="SignedOverflowCheck-bad.cpp" />
 <p>
 In the next example, a value of type <code>signed int</code> is
-getting added to a value ot type <code>unsigned int</code>.  Because
+added to a value of type <code>unsigned int</code>.  Because
 the types are of the same size, C/C++ promotion rules dictate that
 <code>unsigned int</code> is chosen as the overall type of the addition
 operation. The entire expression is evaluated using <code>unsigned</code>
@@ -36,7 +36,7 @@ values, which is allowed and defined behavior per the C/C++ standard.
 <sample src="SignedOverflowCheck-good.cpp" />
 </example>
 <references>
-<li><a href="http://c-faq.com/expr/preservingrules.html">Preserving Rules</a></li>
-<li><a href="https://www.securecoding.cert.org/confluence/plugins/servlet/mobile#content/view/20086942">Understand integer conversion rules</a></li>
+<li><a href="http://c-faq.com/expr/preservingrules.html">comp.lang.c FAQ list · Question 3.19 (Preserving rules)</a></li>
+<li><a href="https://wiki.sei.cmu.edu/confluence/display/c/INT31-C.+Ensure+that+integer+conversions+do+not+result+in+lost+or+misinterpreted+data">INT31-C. Ensure that integer conversions do not result in lost or misinterpreted data</a></li>
 </references>
 </qhelp>

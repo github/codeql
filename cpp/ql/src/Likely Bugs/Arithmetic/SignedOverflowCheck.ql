@@ -12,19 +12,19 @@
  */
 
 import cpp
+import semmle.code.cpp.valuenumbering.HashCons
+
+private predicate sameAccess(VariableAccess va1, VariableAccess va2) {
+  hashCons(va1) = hashCons(va2)
+}
 
 from RelationalOperation ro, AddExpr add, VariableAccess va1, VariableAccess va2
 where
   ro.getAnOperand() = add and
   add.getAnOperand() = va1 and
   ro.getAnOperand() = va2 and
-  va1.getTarget() = va2.getTarget() and
-  (not exists(va1.getQualifier()) or va1.getQualifier() = va2.getQualifier()) and 
-  /*
-   * if the addition (`add`) has been promoted to a signed type,
-   * then the other operand (`va2`) must have been likewise promoted and so
-   * have a signed comparison
-   */
-
-  add.getExplicitlyConverted().getType().(IntegralType).isSigned()
-select ro, "Testing for signed overflow may produce undefined results."
+  sameAccess(va1, va2) and
+  add.getExplicitlyConverted().getType().(IntegralType).isSigned() and
+  va2.getExplicitlyConverted().getType().(IntegralType).isSigned()
+select va1, va1.getQualifier().getAQlClass(), va2, va2.getQualifier().getAQlClass(), ro,
+  "Testing for signed overflow may produce undefined results."
