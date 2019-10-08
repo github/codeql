@@ -22,9 +22,18 @@ In the following example, even though <code>delta</code> has been declared
 <code>unsigned short</code>, C/C++ type promotion rules require that its
 type is promoted to the larger type used in the addition and comparison,
 namely a <code>signed int</code>.  As a result, the entire expression is
-evaluated using <code>signed values</code> and its value is therefore undefined.
+evaluated using <code>signed</code> values and its value is therefore undefined.
 </p>
 <sample src="SignedOverflowCheck-bad.cpp" />
+<p>
+In the following example, even though both <code>n</code> and <code>delta</code> 
+have been declared <code>unsigned short</code>, C/C++ type promotion rules 
+require that both parameters be promoted to the next bigger <code>signed</code>
+integer type (in this case <code>signed int</code>) before being added together
+ so as to avoid overflows or underflows.  As a result, the entire expression is
+evaluated using <code>signed</code> values and its value is therefore undefined.
+</p>
+<sample src="SignedOverflowCheck-bad2.cpp" />
 <p>
 In the next example, a value of type <code>signed int</code> is
 added to a value of type <code>unsigned int</code>.  Because

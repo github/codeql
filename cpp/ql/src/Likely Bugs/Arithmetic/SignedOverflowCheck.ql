@@ -5,17 +5,17 @@
  *              `unsigned` integer values.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id cpp/signed-overflow-check
  * @tags reliability
  *       security
  */
 
 import cpp
-import semmle.code.cpp.valuenumbering.HashCons
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 private predicate sameAccess(VariableAccess va1, VariableAccess va2) {
-  hashCons(va1) = hashCons(va2)
+  globalValueNumber(va1) = globalValueNumber(va2)
 }
 
 from RelationalOperation ro, AddExpr add, VariableAccess va1, VariableAccess va2
@@ -26,5 +26,4 @@ where
   sameAccess(va1, va2) and
   add.getExplicitlyConverted().getType().(IntegralType).isSigned() and
   va2.getExplicitlyConverted().getType().(IntegralType).isSigned()
-select va1, va1.getQualifier().getAQlClass(), va2, va2.getQualifier().getAQlClass(), ro,
-  "Testing for signed overflow may produce undefined results."
+select ro, "Testing for signed overflow may produce undefined results."
