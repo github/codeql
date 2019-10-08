@@ -38,3 +38,4 @@
 ## Changes to QL libraries
 
 * `Expr.getDocumentation()` now handles chain assignments.
+* Added `Deferred` as a promise library in Promises.qll
