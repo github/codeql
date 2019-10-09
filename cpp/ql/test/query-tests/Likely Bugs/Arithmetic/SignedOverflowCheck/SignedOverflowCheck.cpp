@@ -32,7 +32,7 @@ bool shortShort1(unsigned short n1, unsigned short delta) {
     // clang 8.0.0 -O2: deleted
     // gcc 9.2 -O2: deleted
     // msvc 19.22 /O2: not deleted
-	return n1 + delta < n1; // BAD
+	return n1 + delta < n1; // BAD [NOT DETECTED]
 }
 
 bool shortShort2(unsigned short n1, unsigned short delta) {
