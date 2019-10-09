@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+When an initialization function is used to initialize a local variable,but the returned status code is not checked, reading the variable may result in undefined behaviour.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Make sure to verify the returned status code from any function that is used to initialize a local variable, and handle errors safely considering that the variable may have not been properly initialized.
+</p>
+
+</recommendation>
+</qhelp>

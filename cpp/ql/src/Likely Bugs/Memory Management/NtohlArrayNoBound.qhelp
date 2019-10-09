@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Using the result of a network-to-host byte order function, such as ntohl, as an array bound or length value without checking it may result in buffer overflows or other vulnerabiltiies.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Add a guard to validate that the value from the network-to-host byte order function is within the bounds of the array.
+</p>
+
+</recommendation>
+<example>
+<p>The return value for <code>ntohs(s)</code> may be outside the bounds of the array, potentially causing a buffer overflow.
+</p>
+
+<sample src="NtohlArrayNoBoundBad.cpp" />
+
+<p>In the revised example, the return value for <code>ntohs(s)</code> is verified to be within the boundaries of the array before being used.
+</p>
+
+<sample src="NtohlArrayNoBoundGood.cpp" />
+
+
+</example>
+</qhelp>

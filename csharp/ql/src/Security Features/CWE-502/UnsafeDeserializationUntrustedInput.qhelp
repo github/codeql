@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Calling an unsafe deserializer can lead to denial of service and other security problems. This version checks the source of the stream for untrusted input.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Only deserialize trusted data. Understand the constructors of the deserialization classes for safe/unsafe patterns.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows a dangerous usage of <code>JavaScriptSerializer</code> with a custom type resolver being called with untrusted data.
+</p>
+
+<sample src="UnsafeDeserializationUntrustedInputBad.cs" />
+
+<p>
+The following example shows a safe usage of <code>JavaScriptSerializer</code>, using the no type resolver.
+</p>
+
+<sample src="UnsafeDeserializationUntrustedInputGood.cs" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Data_Validation">Data Validation</a>.
+</li>
+<li>
+MSDN:
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.web.script.serialization.javascriptserializer.-ctor?view=netframework-4.8#System_Web_Script_Serialization_JavaScriptSerializer__ctor_System_Web_Script_Serialization_JavaScriptTypeResolver_">JavaScriptSerializer Constructors </a>
+</li>
+
+</references>
+</qhelp>

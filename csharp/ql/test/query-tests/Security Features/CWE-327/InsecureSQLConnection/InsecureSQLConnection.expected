@@ -1,0 +1,2 @@
+| Test.cs:47:50:47:94 | object creation of type SqlConnectionStringBuilder | $@ flows to here and does not specific Encrypt=True | Test.cs:46:17:46:64 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd" | Connection string |
+| Test.cs:56:50:56:94 | object creation of type SqlConnectionStringBuilder | $@ flows to here and does not specific Encrypt=True | Test.cs:55:17:55:78 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false" | Connection string |

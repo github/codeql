@@ -1,0 +1,5 @@
+| test.c:18:14:18:14 | l | $@: Unchecked use of data from network function $@ | test.c:21:6:21:12 | BadTest | BadTest | test.c:28:15:28:20 | call to ntohll | call to ntohll |
+| test.c:23:19:23:23 | call to ntohl | $@: Unchecked use of data from network function $@ | test.c:21:6:21:12 | BadTest | BadTest | test.c:23:19:23:23 | call to ntohl | call to ntohl |
+| test.c:26:7:26:11 | call to ntohs | $@: Unchecked use of data from network function $@ | test.c:21:6:21:12 | BadTest | BadTest | test.c:26:7:26:11 | call to ntohs | call to ntohs |
+| test.c:32:9:32:13 | call to ntohl | $@: Unchecked use of data from network function $@ | test.c:21:6:21:12 | BadTest | BadTest | test.c:32:9:32:13 | call to ntohl | call to ntohl |
+| test.c:44:9:44:17 | converted | $@: Unchecked use of data from network function $@ | test.c:21:6:21:12 | BadTest | BadTest | test.c:35:22:35:26 | call to ntohl | call to ntohl |

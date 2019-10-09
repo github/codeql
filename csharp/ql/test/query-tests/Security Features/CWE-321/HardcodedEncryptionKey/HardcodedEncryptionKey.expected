@@ -1,0 +1,6 @@
+| Test.cs:15:21:15:97 | array creation of type Byte[] | Hard-coded symmetric $@ is used in symmetric algorithm in Key property assignment | Test.cs:15:21:15:97 | array creation of type Byte[] | key |
+| Test.cs:20:23:20:99 | array creation of type Byte[] | Hard-coded symmetric $@ is used in symmetric algorithm in Key property assignment | Test.cs:20:23:20:99 | array creation of type Byte[] | key |
+| Test.cs:29:21:29:21 | access to local variable d | Hard-coded symmetric $@ is used in symmetric algorithm in Key property assignment | Test.cs:23:21:23:97 | array creation of type Byte[] | key |
+| Test.cs:77:23:77:25 | access to parameter key | Hard-coded symmetric $@ is used in symmetric algorithm in Key property assignment | Test.cs:23:21:23:97 | array creation of type Byte[] | key |
+| Test.cs:90:87:90:89 | access to parameter key | Hard-coded symmetric $@ is used in symmetric algorithm in Encryptor(rgbKey, IV) | Test.cs:23:21:23:97 | array creation of type Byte[] | key |
+| Test.cs:90:87:90:89 | access to parameter key | Hard-coded symmetric $@ is used in symmetric algorithm in Encryptor(rgbKey, IV) | Test.cs:26:42:26:95 | "Hello, world: here is a very bad way to create a key" | key |

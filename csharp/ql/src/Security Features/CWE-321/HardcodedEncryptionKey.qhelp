@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <p>Cryptographic keys should never be hardcoded into the code as such practice exposes the keys to anyone with access to the bianry or source code, and undermines the purpose for encryption.</p>
+  <p>The .Key property or rgbKey parameter of a SymmetricAlgorithm should never be a hardcoded value.</p>
+
+</overview>
+<recommendation>
+
+<p>Keys and other sensitive material/secrets must be stored in an appropriate secrets management system such as an hardware security module (HSM) or a key management solution.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a newly created <code>AesCryptoServiceProvider</code> object where the <code>.key</code> field is initialized with a hardcoded key.
+</p>
+
+<sample src="HardcodedEncryptionKeyBad.cs" />
+
+</example>
+</qhelp>

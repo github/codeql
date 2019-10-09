@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Building an XML document from user-controlled sources is vulnerable to insertion of malicious code by the user.</p>
+
+</overview>
+<recommendation>
+  <p>Whenever it is possible, use a safe API to handle the user input during the XML construction, or escape the input before using.</p>
+
+</recommendation>
+<example>
+
+<p>The following example uses the raw user input to create an element directly.</p>
+
+<sample src="XMLInjectionBad.cs" />
+
+<p>The following example uses <code>XmlWriter.WriteStartElement</code> to insert an element. It also demonstrates using <code>SecurityElement.Escape(String)</code> as a mechanism to escape the input before using it to create an XML element.</p>
+
+<sample src="XMLInjectionGood.cs" />
+
+
+</example>
+<references>
+
+  <li>
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlwriter.writestartelement?view=netframework-4.8">XmlWriter.WriteStartElement Method</a>
+  </li>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.security.securityelement.escape?view=netframework-4.8">SecurityElement.Escape(String)</a>
+</li>
+
+</references>
+</qhelp>

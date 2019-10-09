@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Deserializing a delegate allows an attacker to take arbitrary actions if they control the deserialized data.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Do not use unsafe deserializers.
+</p>
+
+</recommendation>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Data_Validation">Data Validation</a>.
+</li>
+
+</references>
+</qhelp>

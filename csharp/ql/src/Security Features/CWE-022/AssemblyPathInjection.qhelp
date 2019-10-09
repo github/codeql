@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Loading a DLL based on a path constructed from user-controlled sources may allow a malicious user to load an arbitrary DLL.</p>
+
+</overview>
+<recommendation>
+
+<p>Load DLLs using hardcoded paths, never under the control of an untrusted source.</p>
+
+</recommendation>
+<example>
+
+  <p>Loading a DLL from a user-controlled location.</p>
+
+<sample src="TaintedPath.cs" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.
+</li>
+
+</references>
+</qhelp>
