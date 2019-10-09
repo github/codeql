@@ -17,5 +17,5 @@ from ConditionallyInitializedVariable v, ConditionalInitializationFunction f, Co
 where exists(v.getARiskyAccess(f, call, e))
   and (if e = DefinitionInSnapshot() then defined = "" else if e = SuggestiveSALAnnotation() then defined = "externally defined (SAL) " else defined = "externally defined (CSV) ")
 select call, "The status of this call to " + defined + "$@ is not checked, potentially leaving $@ uninitialized.",
-	f, f.getName(),
-	v, v.getName()
+    f, f.getName(),
+    v, v.getName()

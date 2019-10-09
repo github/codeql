@@ -178,9 +178,9 @@ class MemCpy extends BufferAccess, FunctionCall {
 }
 
 class StrncpySizeExpr extends BufferAccess, FunctionCall {
-	StrncpySizeExpr() {
-		getTarget().hasName("strncpy")
-	}
+    StrncpySizeExpr() {
+        getTarget().hasName("strncpy")
+    }
 
   override Expr getPointer() {
     result = getArgument(0) or
@@ -239,7 +239,7 @@ class MemcmpSizeExpr extends BufferAccess, FunctionCall {
 
   override Expr getPointer() {
     result = getArgument(0) or
-	result = getArgument(1)
+    result = getArgument(1)
   }
   override Expr getAccessedLength() {
     result = getArgument(2)
@@ -252,7 +252,7 @@ class MallocSizeExpr extends BufferAccess, FunctionCall {
   }
 
   override Expr getPointer() {
-	none()
+    none()
   }
   override Expr getAccessedLength() {
     result = getArgument(1)

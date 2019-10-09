@@ -14,10 +14,10 @@ import semmle.code.csharp.security.serialization.Serialization
  * of variable `v` which was checked by the condition `check`.
  */
 Expr checkedWrite(Field f, Variable v, IfStmt check) {
-	result = v.getAnAccess() and
-	result = f.getAnAssignedValue() and
-	check.getCondition() = v.getAnAccess().getParent*() and
-	result.getAControlFlowNode() = check.getAControlFlowNode().getASuccessor*()
+    result = v.getAnAccess() and
+    result = f.getAnAssignedValue() and
+    check.getCondition() = v.getAnAccess().getParent*() and
+    result.getAControlFlowNode() = check.getAControlFlowNode().getASuccessor*()
 }
 from BinarySerializableType t, Field f, IfStmt check, Expr write, Expr unsafeWrite
 where f = t.getASerializedField()
