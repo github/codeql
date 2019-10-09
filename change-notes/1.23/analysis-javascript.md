@@ -17,6 +17,8 @@
 | Unused index variable (`js/unused-index-variable`)                        | correctness                                                       | Highlights loops that iterate over an array, but do not use the index variable to access array elements, indicating a possible typo or logic error. Results are shown on LGTM by default. |
 | Loop bound injection (`js/loop-bound-injection`)                          | security, external/cwe/cwe-834                                      | Highlights loops where a user-controlled object with an arbitrary .length value can trick the server to loop indefinitely. Results are not shown on LGTM by default. |
 | Suspicious method name (`js/suspicious-method-name-declaration`)          | correctness, typescript, methods                                  | Highlights suspiciously named methods where the developer likely meant to write a constructor or function. Results are shown on LGTM by default. |
+| Use of returnless function (`js/use-of-returnless-function`)              | maintainability, correctness                                      | Highlights calls where the return value is used, but the callee never returns a value. Results are shown on LGTM by default. |
+
 
 ## Changes to existing queries
 
