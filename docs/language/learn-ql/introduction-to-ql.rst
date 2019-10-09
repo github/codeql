@@ -1,18 +1,27 @@
-Introduction to the QL language
-===============================
+Introduction to QL 
+==================
 
-QL is a powerful query language that is used to analyze code. Queries written in QL can be used to find errors and uncover variants of important security vulnerabilities. Visit Semmle's `security research page <https://lgtm.com/security>`__ to read about examples of vulnerabilities that we have recently found in open source projects using QL queries.
+.. XX: What should the title be?
 
-QL is a logic programming language, so it is built up of logical formulas. QL uses common logical connectives (such as ``and``, ``or``, and ``not``), quantifiers (such as ``forall`` and ``exists``), and other important logical concepts such as predicates.
+QL is a powerful query language that underlies CodeQL, which is used to analyze code.
+Queries written with CodeQL can be used to find errors and uncover variants of important security vulnerabilities.
+Visit Semmle's `security research page <https://lgtm.com/security>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
+
+.. XX: Some sort of introductory/explanatory sentence like this about CodeQL vs QL would be helpful.
+   Not sure if it belongs here or in a different topic.
+
+Before diving into code analysis with CodeQL, it can be helpful to learn about the underlying language more generally.
+
+QL is a logic programming language, so it is built up of logical formulas. QL uses common logical connectives (such as ``and``, ``or``, and ``not``),quantifiers (such as ``forall`` and ``exists``), and other important logical concepts such as predicates.
 
 QL also supports recursion and aggregates. This allows you to write complex recursive queries using simple QL syntax and directly use aggregates such as ``count``, ``sum`` and ``average``.
 
 Basic syntax
 ------------
 
-The basic syntax will look familiar to anyone who has used SQL, but it is used somewhat differently.
+The basic syntax of QL will look familiar to anyone who has used SQL, but it is used somewhat differently.
 
-A QL query is defined by a **select** clause, which specifies what the result of the query should be. You can try out the examples and exercises in this topic directly in LGTM. Open the `query console <https://lgtm.com/query>`__. Before you can run a query, you need to select a language and project to query (for these logic examples, any language and project will do).
+A query is defined by a **select** clause, which specifies what the result of the query should be. You can try out the examples and exercises in this topic directly in LGTM. Open the `query console <https://lgtm.com/query>`__. Before you can run a query, you need to select a language and project to query (for these logic examples, any language and project will do).
 
 Once you have selected a language, the query console is populated with the query:
 
@@ -53,6 +62,10 @@ Exercise 1
 Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <https://help.semmle.com/QL/ql-spec/language.html#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
 
 ➤ `Answer <https://lgtm.com/query/2103060623/>`__
+
+.. XX: Linking to the "CodeQL console" for QL queries may be confusing, and possibly requires some explanation.
+   Perhaps it isn't a problem and most people won't overthink it.
+   We could easily just include QL snippets (instead of links) to avoid ambiguity.
 
 There is often more than one way to define a query. For example, we can also write the above query in the shorter form:
 
@@ -110,9 +123,12 @@ To simplify the query, we can introduce a class ``SmallInt`` representing the in
 
 ➤ `See this in the query console <https://lgtm.com/query/2101340747/>`__
 
-Now that you've seen some general examples, let's use QL queries to analyze projects. In particular, LGTM generates a database representing the code and then QL is used to query this database. See `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ for more details on how the database is built.
+Now that you've seen some general examples, let's use some of the CodeQL libraries to analyze projects.
+In particular, LGTM generates a database representing the code and then CodeQL is used to query this database. See `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ for more details on how the database is built.
 
-The previous exercises just used the primitive types built in to QL. Although we chose a project to query, they did not use the project-specific database. The following example queries *do* use these databases and give you an idea of what QL can be used for. There are more details about how to write QL `below <#learning-ql>`__, so don't worry if you don't fully understand these examples yet!
+.. XX: Perhaps a link to the "CodeQL libraries for X"?
+
+The previous exercises just used the primitive types built in to QL. Although we chose a project to query, they did not use the project-specific database. The following example queries *do* use these databases and give you an idea of what CodeQL can be used for. There are more details about how to use CodeQL `below <#learning-ql>`__, so don't worry if you don't fully understand these examples yet!
 
 Python
 ~~~~~~
@@ -153,9 +169,9 @@ Java
 
 ➤ `See this in the query console <https://lgtm.com/query/2098670762/>`__. The ``from`` clause defines a variable ``p`` representing a parameter. The ``where`` clause finds unused parameters by limiting the parameters ``p`` to those which are not accessed. Finally, the ``select`` clause lists these parameters.
 
-Learning QL
------------
+Learning CodeQL
+---------------
 
--  To find out more about how to write your own QL queries, try working through the :doc:`QL detective tutorials <beginner/ql-tutorials>`.
--  For an overview of the other available resources, see :doc:`Learning QL <../index>`.
--  For a more technical description of QL, see :doc:`About QL <about-ql>`.
+-  To find out more about how to write your own queries, try working through the :doc:`Detective tutorials <beginner/ql-tutorials>`.
+-  For an overview of the other available resources, see :doc:`Learning CodeQL <../index>`.
+-  For a more technical description of the underlying language, see :doc:`About QL <about-ql>`.
