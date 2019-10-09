@@ -3,15 +3,26 @@ Using the guards library in C and C++
 
 Overview
 --------
-The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides a class ``GuardCondition`` representing Boolean values that are used to make control flow decisions.
+The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides a class ``GuardCondition`` representing Boolean values that are used to make control flow decisions. A ``GuardCondition`` is considered to guard a basic block if the block is only reached if the ``GuardCondition`` evaluated a certain way. For instance, in the following code, ``x < 10`` is a ``GuardCondition``, and it guards all the code before the return statement.
+
+.. code:: cpp
+
+    if(x < 10) {
+      f(x);
+    } else if (x < 20) {
+      g(x);
+    } else {
+      h(x);
+    }
+    return 0;
 
 The ``ensuresEq`` and ``ensuresLt`` predicates
 ----------------------------------------------
 The ``ensuresEq`` and ``ensuresLt`` predicates are the main way of determining what, if any, guarantees the ``GuardCondition`` provides for a given basic block.
 
-``ensuresEq(left, right, k, block, areEqual)`` holds if ``left == right + k`` must be ``areEqual`` for ``block`` to be executed. If ``areEqual = false`` then this implies ``left != right + k`` must be true for ``block`` to be executed.
+When ``ensuresEq(left, right, k, block, true)`` holds, then ``block`` is only executed if ``left`` was equal to ``right + k`` at their last evaluation. When ``ensuresEq(left, right, k, block, false)`` holds, then ``block`` is only executed if ``left`` was not equal to ``right + k`` at their last evaluation.
 
-``ensuresLt(left, right, k, block, isLessThan)`` holds if ``left < right + k`` must be ``isLessThan`` for ``block`` to be executed. If ``isLessThan = false`` then this implies ``left >= right + k`` must be true for ``block`` to be executed.
+When ``ensuresLt(left, right, k, block, true)`` holds, then ``block`` is only executed if ``left`` was strictly less than ``right + k`` at their last evaluation. When ``ensuresLt(left, right, k, block, false)`` holds, then ``block`` is only executed if ``left`` was greater than or equal to ``right + k`` at their last evaluation.
 
 .. TODO: examples for these predicates (none for others?)
 
@@ -20,10 +31,23 @@ The ``comparesEq`` and ``comparesLt`` predicates
 ------------------------------------------------
 The ``comparesEq`` and ``comparesLt`` predicates help determine if the ``GuardCondition`` evaluates to true.
 
-``comparesEq(left, right, k, areEqual, testIsTrue)`` holds if ``left == right + k`` evaluates to ``areEqual`` if the expression evaluates to ``testIsTrue``.
+``comparesEq(left, right, k, true, testIsTrue)`` holds if ``left`` equals ``right + k`` when the expression evaluates to ``testIsTrue``.
 
-``comparesLt(left, right, k, isLessThan, testIsTrue)`` holds if ``left < right + k`` evaluates to ``isLessThan`` if the expression evaluates to ``testIsTrue``.
+``comparesLt(left, right, k, isLessThan, testIsTrue)`` holds if ``left < right + k`` evaluates to ``isLessThan`` when the expression evaluates to ``testIsTrue``.
 
 The ``controls`` predicate
 ------------------------------------------------
-The ``controls`` predicate helps determine which blocks are only run when the ``IRGuardCondition`` evaluates a certain way. ``controls(block, testIsTrue)`` holds if ``block`` is only entered if the value of this condition is ``testIsTrue``.
+The ``controls`` predicate helps determine which blocks are only run when the ``GuardCondition`` evaluates a certain way. ``guard.controls(block, testIsTrue)`` holds if ``block`` is only entered if the value of this condition is ``testIsTrue``.
+
+In the following code sample, the call to ``isValid`` controls the calls to ``performAction`` and ``logFailure`` but not the return statement.
+
+.. code:: cpp
+
+    if(isValid(accessToken)) {
+      performAction();
+      succeeded = 1;
+    } else {
+      logFailure();
+      succeeded = 0;
+    }
+    return succeeded;
