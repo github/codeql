@@ -4,7 +4,6 @@ private import DataFlowImplCommon::Public
 private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
-private import semmle.code.java.dataflow.DefUse
 private import semmle.code.java.dataflow.TypeFlow
 
 private newtype TReturnKind = TNormalReturnKind()
