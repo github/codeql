@@ -69,6 +69,7 @@ typeInferenceMismatch
 | promise.js:5:25:5:32 | source() | promise.js:5:8:5:33 | bluebir ... urce()) |
 | promise.js:10:24:10:31 | source() | promise.js:10:8:10:32 | Promise ... urce()) |
 | promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise |
+| promise.js:22:23:22:30 | source() | promise.js:22:7:22:31 | promise ... urce()) |
 | sanitizer-guards.js:2:11:2:18 | source() | sanitizer-guards.js:4:8:4:8 | x |
 | sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:15:10:15:15 | this.x |
 | sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:21:14:21:19 | this.x |
