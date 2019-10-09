@@ -37,10 +37,23 @@ module Bluebird {
  */
 module Deferred {
   private DataFlow::SourceNode deferred() {
-    exists(VarAccess var, DataFlow::NewNode instantiation |
-      var.getName() = "Deferred" and
-      result = DataFlow::exprNode(var).getALocalSource() and
-      // Sanity check that result really is a Deferred implementation
+    (
+      exists(Variable var | 
+        var.getName() = "Deferred" and
+        (var.getADeclaration() instanceof LocalNamespaceDecl or var.getScope() instanceof GlobalScope) and
+        result = DataFlow::valueNode(var.getADefinition())
+  	  ) 
+  	  or
+  	  result.(DataFlow::ParameterNode).getName() = "Deferred" 
+  	  or
+        exists(Function f |
+        f.getName() = "Deferred" and 
+        result = DataFlow::valueNode(f)
+      )
+    ) 
+    and
+    // Sanity check that it is a Deferred implementation
+    exists(DataFlow::NewNode instantiation |
       instantiation = result.getAnInstantiation() and
       exists(instantiation.getAMemberCall("resolve"))
     )
