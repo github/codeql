@@ -334,7 +334,7 @@ private module Cached {
   IRVariable getInstructionVariable(Instruction instruction) {
     result = getNewIRVariable(getOldInstruction(instruction)
             .(OldIR::VariableInstruction)
-            .getVariable())
+            .getIRVariable())
   }
 
   cached

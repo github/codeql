@@ -611,7 +611,12 @@ class VariableInstruction extends Instruction {
 
   override string getImmediateString() { result = var.toString() }
 
-  final IRVariable getVariable() { result = var }
+  final IRVariable getIRVariable() { result = var }
+
+  /**
+   * Gets the AST variable that this instruction's IR variable refers to, if one exists.
+   */
+  final Language::Variable getASTVariable() { result = var.(IRUserVariable).getVariable() }
 }
 
 class FieldInstruction extends Instruction {
