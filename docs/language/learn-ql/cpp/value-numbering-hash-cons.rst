@@ -4,7 +4,7 @@ Overview
 --------
 In C and C++ QL databases, each node in the abstract syntax tree is represented by a separate object. This allows both analysis and results display to refer to specific appearances of a piece of syntax. However, it is frequently useful to determine whether two expressions are equivalent, either syntactically or semantically.
 
-The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. The value numbering library (defined in ``semmle.code.cpp.ir.ValueNumber``) provides a mechanism for identifying expressions that compute the same value at runtime.
+The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. The value numbering library (defined in ``semmle.code.cpp.valuenumbering.GlobalValueNumbering``) provides a mechanism for identifying expressions that compute the same value at runtime.
 
 
 Example C code
