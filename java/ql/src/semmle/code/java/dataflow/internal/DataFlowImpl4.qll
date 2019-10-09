@@ -1758,22 +1758,19 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPat
   mid.getAp() instanceof AccessPathNil and
   ap = node.(AccessPathNilNode).getAp()
   or
-  not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
-  (
-    contentReadStep(mid, node, ap) and cc = mid.getCallContext()
-    or
-    exists(Content f, AccessPath ap0 | contentStoreStep(mid, node, ap0, f, cc) and push(ap0, f, ap))
-    or
-    pathOutOfArgument(mid, node, cc) and ap = mid.getAp()
-    or
-    pathIntoCallable(mid, node, _, cc, _) and ap = mid.getAp()
-    or
-    pathOutOfCallable(mid, node, cc) and ap = mid.getAp()
-    or
-    pathThroughCallable(mid, node, cc, ap)
-    or
-    valuePathThroughCallable(mid, node, cc) and ap = mid.getAp()
-  )
+  contentReadStep(mid, node, ap) and cc = mid.getCallContext()
+  or
+  exists(Content f, AccessPath ap0 | contentStoreStep(mid, node, ap0, f, cc) and push(ap0, f, ap))
+  or
+  pathOutOfArgument(mid, node, cc) and ap = mid.getAp()
+  or
+  pathIntoCallable(mid, node, _, cc, _) and ap = mid.getAp()
+  or
+  pathOutOfCallable(mid, node, cc) and ap = mid.getAp()
+  or
+  pathThroughCallable(mid, node, cc, ap)
+  or
+  valuePathThroughCallable(mid, node, cc) and ap = mid.getAp()
 }
 
 pragma[noinline]
@@ -2244,27 +2241,24 @@ private module FlowExploration {
     ap = TPartialNil(getErasedRepr(node.getType())) and
     config = mid.getConfiguration()
     or
-    not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
-    (
-      partialPathStoreStep(mid, _, _, node, ap) and
-      cc = mid.getCallContext() and
-      config = mid.getConfiguration()
-      or
-      exists(PartialAccessPath ap0, Content f |
-        partialPathReadStep(mid, ap0, f, node, cc, config) and
-        apConsFwd(ap, f, ap0, config)
-      )
-      or
-      partialPathOutOfArgument(mid, node, cc, ap, config)
-      or
-      partialPathIntoCallable(mid, node, _, cc, _, ap, config)
-      or
-      partialPathOutOfCallable(mid, node, cc, ap, config)
-      or
-      partialPathThroughCallable(mid, node, cc, ap, config)
-      or
-      valuePartialPathThroughCallable(mid, node, cc, ap, config)
+    partialPathStoreStep(mid, _, _, node, ap) and
+    cc = mid.getCallContext() and
+    config = mid.getConfiguration()
+    or
+    exists(PartialAccessPath ap0, Content f |
+      partialPathReadStep(mid, ap0, f, node, cc, config) and
+      apConsFwd(ap, f, ap0, config)
     )
+    or
+    partialPathOutOfArgument(mid, node, cc, ap, config)
+    or
+    partialPathIntoCallable(mid, node, _, cc, _, ap, config)
+    or
+    partialPathOutOfCallable(mid, node, cc, ap, config)
+    or
+    partialPathThroughCallable(mid, node, cc, ap, config)
+    or
+    valuePartialPathThroughCallable(mid, node, cc, ap, config)
   }
 
   bindingset[result, i]
