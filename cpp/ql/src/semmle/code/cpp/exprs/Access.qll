@@ -172,9 +172,12 @@ class FieldAccess extends VariableAccess {
 
 /**
  * A field access whose qualifier is a pointer to a class, struct or union.
- * These typically take the form `obj->field`, but also includes many accesses
- * with an implicit `this->` qualifier. For example the accesses to `x` and
- * `y` in `myMethod` in the following code:
+ * These typically take the form `obj->field`. Another case is a field access
+ * with an implicit `this->` qualifier, which is often a `PointerFieldAccess`
+ * (but see also `ImplicitThisFieldAccess`).
+ * 
+ * For example the accesses to `x` and `y` in `myMethod` in the following code
+ * are each a `PointerFieldAccess`:
  * ```
  * class MyClass {
  * public:
