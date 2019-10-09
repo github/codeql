@@ -156,7 +156,7 @@ private predicate compares_eq(
 
 /**
  * If `test => part` and `part => left == right + k` then `test => left == right + k`.
- *    Similarly for the case where `test` is false.
+ * Similarly for the case where `test` is false.
  */
 private predicate logical_comparison_eq(
   BinaryLogicalOperation test, Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue
@@ -275,7 +275,7 @@ private predicate compares_ge(
 
 /**
  * If `test => part` and `part => left < right + k` then `test => left < right + k`.
- *    Similarly for the case where `test` evaluates false.
+ * Similarly for the case where `test` evaluates false.
  */
 private predicate logical_comparison_lt(
   BinaryLogicalOperation test, Expr left, Expr right, int k, boolean isLt, boolean testIsTrue
@@ -362,7 +362,7 @@ private predicate add_lt(
   )
 }
 
-/** The int value of integer constant expression. */
+/** The `int` value of integer constant expression. */
 private int int_value(Expr e) {
   e.getUnderlyingType() instanceof IntegralType and
   result = e.getValue().toInt()
