@@ -158,7 +158,7 @@ Define a subclass of ``DataFlow::Node`` representing “source” nodes, that is
 Revisiting non-constant format strings
 ======================================
 
-Refine the query to find calls to ``printf``-like functions where the format argument derives from a local source that is, not a constant string.
+Refine the query to find calls to ``printf``-like functions where the format argument derives from a local source that is not a constant string.
 
 .. rst-class:: build
 
