@@ -8,12 +8,12 @@ private import SymmetricAlgorithm
 
   /** Array of type Byte */
   class ByteArray extends ArrayType {
-	  ByteArray () {
-	    getElementType() instanceof ByteType
-	  }
-	}
+      ByteArray () {
+        getElementType() instanceof ByteType
+      }
+    }
 
-	/** Abstract class for all sources of keys */
+    /** Abstract class for all sources of keys */
   abstract class KeySource extends DataFlow::Node { }
 
   /**
@@ -25,8 +25,8 @@ private import SymmetricAlgorithm
   }
 
   /**
-	 * A sanitizer for symmetric encryption key. If present, for example, key is properly constructed or retrieved from secret storage. 
-	 */
+     * A sanitizer for symmetric encryption key. If present, for example, key is properly constructed or retrieved from secret storage. 
+     */
   abstract class KeySanitizer extends DataFlow::ExprNode { }
 
   /**
@@ -41,7 +41,7 @@ private import SymmetricAlgorithm
     string getDescription() {
       result = "Key property assignment"
     }
-	}
+    }
 
   /**
    * Symmetric Algorithm, CreateEncryptor method, rgbKey parameter
