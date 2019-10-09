@@ -40,6 +40,9 @@ following import statement::
 
     import javascript
 
+.. XX: Use less code-y example
+
+
 The compiler first checks for a :ref:`library module <library-modules>` ``javascript.qll``, 
 using the steps described below for qualified references. If that fails, it checks for an 
 :ref:`explicit module <explicit-modules>` named ``javascript`` defined in the 
@@ -53,6 +56,8 @@ Qualified references
 A qualified reference is a module expression that uses ``.`` as a file path separator. You can
 only use such an expression in :ref:`import statements <import-statements>`, to import a 
 library module defined by a relative path.
+
+.. XX: Use less code-y example
 
 For example, suppose you define a :ref:`query module <query-modules>` ``Example.ql`` with the 
 following import statement::

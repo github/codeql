@@ -284,6 +284,8 @@ override the default precedence, but you can also add them to make your code eas
 The logical connectives in QL work similarly to Boolean connectives in other programming
 languages. Here is a brief overview:
 
+.. XX: Lots of CodeQL examples in this section...
+
 .. index:: not, negation
 .. _negation:
 

@@ -184,6 +184,8 @@ The following aggregates are available in QL:
 
 .. index:: count
 
+.. XX: The "file" examples in the following sections technically use CodeQL. Is this a problem?
+
 - ``count``: This aggregate determines the number of distinct values of ``<expression>`` for
   each possible assignment of the aggregation variables.
   
@@ -528,6 +530,8 @@ that have a direct supertype called "List"::
     from Type t
     where t.(Class).getASupertype().hasName("List")    
     select t
+
+.. XX: Definitely CodeQL! Use different example?
 
 Since the predicate ``getASupertype()`` is defined for ``Class``, but not for ``Type``, you 
 can't call ``t.getASupertype()`` directly. The cast ``t.(Class)`` ensures that ``t`` is

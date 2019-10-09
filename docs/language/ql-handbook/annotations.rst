@@ -69,6 +69,8 @@ look like this::
       ...
     }
 
+.. XX: CodeQL examples...
+
 You could then define subtypes of ``Configuration``, which inherit the predicate ``isSource``,
 to describe specific configurations. Any non-abstract subtypes must override it (directly or
 indirectly) to describe what sources of data they each track.
@@ -135,6 +137,8 @@ For example, the name ``DataFlowNode`` is deprecated and has the following QLDoc
     deprecated class DataFlowNode extends @dataflownode {
       ...
     }
+
+.. XX: CodeQL examples...
 
 This QLDoc comment appears when you use the name ``DataFlowNode`` in a QL editor.
 
@@ -245,12 +249,14 @@ Compiler pragmas
 
 **Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
-The following compiler pragmas affect the compilation and optimization of QL queries. You
+The following compiler pragmas affect the compilation and optimization of queries. You
 should avoid using these annotations unless you experience significant performance issues.
 
 Before adding pragmas to your code, contact Semmle to describe the performance problems.
 That way we can suggest the best solution for your problem, and take it into account when
 improving the QL optimizer.
+
+.. XX: (Code)QL optimizer? Just "optimizer"?
 
 Inlining
 --------
