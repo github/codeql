@@ -181,6 +181,11 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintSSA.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintSSA.qll"
   ],
+  "C++ IR ValueNumberInternal": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingInternal.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/internal/ValueNumberingInternal.qll"
+  ],
   "C++ IR ValueNumber": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
