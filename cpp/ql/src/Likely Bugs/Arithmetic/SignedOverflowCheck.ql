@@ -14,16 +14,12 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-private predicate sameAccess(VariableAccess va1, VariableAccess va2) {
-  globalValueNumber(va1) = globalValueNumber(va2)
-}
-
 from RelationalOperation ro, AddExpr add, VariableAccess va1, VariableAccess va2
 where
   ro.getAnOperand() = add and
   add.getAnOperand() = va1 and
   ro.getAnOperand() = va2 and
-  sameAccess(va1, va2) and
-  add.getExplicitlyConverted().getType().(IntegralType).isSigned() and
-  va2.getExplicitlyConverted().getType().(IntegralType).isSigned()
+  globalValueNumber(va1) = globalValueNumber(va2) and
+  add.getFullyConverted().getType().getUnspecifiedType().(IntegralType).isSigned() and
+  not add.getExplicitlyConverted().getType().getUnspecifiedType().(IntegralType).isUnsigned()
 select ro, "Testing for signed overflow may produce undefined results."
