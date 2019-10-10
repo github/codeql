@@ -14,5 +14,8 @@
 import cpp
 
 from ComparisonOperation co, ComparisonOperation chco
-where co.getAChild() = chco and not chco.isParenthesised()
+where
+  co.getAChild() = chco and
+  not chco.isParenthesised() and
+  not co.isFromUninstantiatedTemplate(_)
 select co, "Check the comparison operator precedence."

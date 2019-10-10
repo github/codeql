@@ -20,6 +20,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) | More correct results | This query now checks for the beginning date of the Reiwa era (1st May 2019). |
 | Too few arguments to formatting function (`cpp/wrong-number-format-arguments`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
 | Too many arguments to formatting function (`cpp/too-many-format-arguments`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
+| Unclear comparison precedence (`cpp/comparison-precedence`) | Fewer false positive results | False positives involving template classes and functions have been fixed. |
 
 ## Changes to QL libraries
 
