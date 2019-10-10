@@ -34,7 +34,38 @@ def maybe_xss(request):
     resp.write("first name is " + first_name)
     return resp
 
-urlpatterns2 = [
+urlpatterns = [
     # Route to code_execution
     url(r'^maybe_xss$', maybe_xss, name='maybe_xss')
+]
+
+
+# Non capturing group (we correctly identify page_number as a request parameter)
+
+def show_articles(request, page_number=1):
+    return HttpResponse('articles page: {}'.format(page_number))
+
+urlpatterns = [
+    # one pattern to support `articles/page-<n>` and ensuring that articles/ goes to page-1
+    url(r'articles/^(?:page-(?P<page_number>\d+)/)?$', show_articles),
+]
+
+
+# Positional arguments
+
+def xxs_positional_arg1(request, arg0):
+    return HttpResponse('xxs_positional_arg1: {}'.format(arg0))
+
+def xxs_positional_arg2(request, arg0, arg1, arg2):
+    return HttpResponse('xxs_positional_arg2: {} {} {}'.format(arg0, arg1, arg2))
+
+def xxs_positional_arg3(request, arg0, arg1):
+    return HttpResponse('xxs_positional_arg3: {} {}'.format(arg0, arg1))
+
+urlpatterns = [
+    # passing as positional argument is not the recommended way of doing things,
+    # but it is certainly possible
+    url(r'^(.+)$', xxs_positional_arg1, name='xxs_positional_arg1'),
+    url(r'^([^/]+)/([^/]+)/([^/]+)$', xxs_positional_arg2, name='xxs_positional_arg2'),
+    url(r'^([^/]+)/(?:foo|bar)/([^/]+)$', xxs_positional_arg3, name='xxs_positional_arg3'),
 ]

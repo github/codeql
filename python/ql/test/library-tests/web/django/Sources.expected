@@ -1,2 +1,11 @@
 | test.py:11 | request | django.request.HttpRequest |
 | test.py:31 | request | django.request.HttpRequest |
+| test.py:56 | arg0 | externally controlled string |
+| test.py:56 | request | django.request.HttpRequest |
+| test.py:59 | arg0 | externally controlled string |
+| test.py:59 | arg1 | externally controlled string |
+| test.py:59 | arg2 | externally controlled string |
+| test.py:59 | request | django.request.HttpRequest |
+| test.py:62 | arg0 | externally controlled string |
+| test.py:62 | arg1 | externally controlled string |
+| test.py:62 | request | django.request.HttpRequest |
