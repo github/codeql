@@ -23,6 +23,7 @@
 | Use of returnless function (`js/use-of-returnless-function`)              | maintainability, correctness                                      | Highlights calls where the return value is used, but the callee never returns a value. Results are shown on LGTM by default. |
 | Useless regular expression character escape (`js/useless-regexp-character-escape`) | correctness, security, external/cwe/cwe-20 | Highlights regular expression strings with useless character escapes, indicating a possible violation of [CWE-20](https://cwe.mitre.org/data/definitions/20.html). Results are shown on LGTM by default. |
 | Unreachable method overloads (`js/unreachable-method-overloads`)          | correctness, typescript                                           | Highlights method overloads that are impossible to use from client code. Results are shown on LGTM by default. |
+| Ignoring return from concat (`js/ignore-return-from-concat`)              | maintainability, correctness                                      | Highlights calls to the concat method on array where the return value is ignored. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
