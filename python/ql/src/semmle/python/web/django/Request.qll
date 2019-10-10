@@ -1,7 +1,7 @@
 import python
-import semmle.python.regex
 import semmle.python.security.TaintTracking
 import semmle.python.web.Http
+import semmle.python.web.django.General
 
 /** A django.request.HttpRequest object */
 class DjangoRequest extends TaintKind {
@@ -52,7 +52,7 @@ abstract class DjangoRequestSource extends HttpRequestTaintSource {
 private class DjangoFunctionBasedViewRequestArgument extends DjangoRequestSource {
     DjangoFunctionBasedViewRequestArgument() {
         exists(FunctionValue view |
-            url_dispatch(_, _, view) and
+            django_route(_, _, view) and
             this = view.getScope().getArg(0).asName().getAFlowNode()
         )
     }
@@ -76,41 +76,14 @@ class DjangoClassBasedViewRequestArgument extends DjangoRequestSource {
     }
 }
 
-/* ***********  Routing  ********* */
-/* Function based views */
-predicate url_dispatch(CallNode call, ControlFlowNode regex, FunctionValue view) {
-    exists(FunctionValue url |
-        Value::named("django.conf.urls.url") = url and
-        url.getArgumentForCall(call, 0) = regex and
-        url.getArgumentForCall(call, 1).pointsTo(view)
-    )
-}
-
-class UrlRegex extends RegexString {
-    UrlRegex() { url_dispatch(_, this.getAFlowNode(), _) }
-}
-
-class UrlRouting extends CallNode {
-    UrlRouting() { url_dispatch(this, _, _) }
-
-    FunctionValue getViewFunction() { url_dispatch(this, _, result) }
-
-    string getNamedArgument() {
-        exists(UrlRegex regex |
-            url_dispatch(this, regex.getAFlowNode(), _) and
-            regex.getGroupName(_, _) = result
-        )
-    }
-}
-
 /** An argument specified in a url routing table */
-class HttpRequestParameter extends HttpRequestTaintSource {
-    HttpRequestParameter() {
-        exists(UrlRouting url |
-            this.(ControlFlowNode).getNode() = url
+class DjangoRequestParameter extends HttpRequestTaintSource {
+    DjangoRequestParameter() {
+        exists(DjangoRoute route |
+            this.(ControlFlowNode).getNode() = route
                         .getViewFunction()
                         .getScope()
-                        .getArgByName(url.getNamedArgument())
+                        .getArgByName(route.getNamedArgument())
         )
     }
 
