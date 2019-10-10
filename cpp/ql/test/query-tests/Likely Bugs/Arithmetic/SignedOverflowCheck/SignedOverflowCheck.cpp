@@ -79,3 +79,7 @@ bool func1(se *so) {
 	}
 	return true;
 }
+
+bool checkOverflow3(unsigned int a, unsigned short b) {
+  return (a + b < a);  // GOOD
+}
