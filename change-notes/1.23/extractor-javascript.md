@@ -9,3 +9,4 @@
   global scripts are now extracted as modules.
 * Top-level `await` is now supported.
 * A bug was fixed in how the TypeScript extractor handles default-exported anonymous classes.
+* A bug was fixed in how the TypeScript extractor handles computed instance field names.
