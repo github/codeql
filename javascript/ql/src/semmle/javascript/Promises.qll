@@ -46,9 +46,14 @@ module Deferred {
   	  or
   	  result.(DataFlow::ParameterNode).getName() = "Deferred" 
   	  or
-        exists(Function f |
+      exists(Function f |
         f.getName() = "Deferred" and 
         result = DataFlow::valueNode(f)
+      )
+      or
+      exists(ClassDefinition c | 
+      	c.getName() = "Deferred" and
+      	result = DataFlow::valueNode(c)
       )
     ) 
     and
