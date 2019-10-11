@@ -68,4 +68,11 @@
 	
 	var h = returnsValue() || alwaysThrows(); // OK!
 	console.log(h);
+	
+	function equals(x, y) {
+		return x === y;
+	}
+	
+	var foo = [1,2,3].filter(n => {equals(n, 3)}) // NOT OK!
+	console.log(foo);
 })();
