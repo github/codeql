@@ -15,12 +15,12 @@ The rest of this topic summarizes available QL classes and corresponding C/C++ c
 NOTE: You can find related classes and features using the query console's auto-complete feature.  You can also press *F3* to jump to the definition of any element; QL library files are opened in new tabs in the console.
 
 Summary of the library classes
-==============================
+------------------------------
 
 The most commonly used standard QL library classes are listed below.  The listing is broken down by functionality.  Each QL library class is annotated with a C/C++ construct it corresponds to.
 
 Declaration classes
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 This table lists `Declaration <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Declaration.qll/type.Declaration$Declaration.html>`__ classes representing C/C++ declarations.
 
@@ -149,7 +149,7 @@ This table lists `Declaration <https://help.semmle.com/qldoc/cpp/semmle/code/cpp
 
 
 Statement classes
------------------
+~~~~~~~~~~~~~~~~~
 
 This table lists subclasses of `Stmt <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html>`__ representing C/C++ statements.
 
@@ -210,7 +210,7 @@ This table lists subclasses of `Stmt <https://help.semmle.com/qldoc/cpp/semmle/c
 
 
 Expression classes
-------------------
+~~~~~~~~~~~~~~~~~~
 
 This table lists subclasses of `Expr <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html>`__ representing C/C++ expressions.
 
@@ -412,7 +412,7 @@ This table lists subclasses of `Expr <https://help.semmle.com/qldoc/cpp/semmle/c
 
 
 Type classes
-------------
+~~~~~~~~~~~~
 
 This table lists subclasses of `Type <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html>`__ representing C/C++ types.
 
@@ -480,7 +480,7 @@ This table lists subclasses of `Type <https://help.semmle.com/qldoc/cpp/semmle/c
 
 
 Preprocessor classes
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 This table lists `Preprocessor <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Preprocessor.qll/module.Preprocessor.html>`__ classes representing C/C++ preprocessing directives.
 
