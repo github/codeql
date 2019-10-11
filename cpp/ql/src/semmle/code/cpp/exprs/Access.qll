@@ -175,14 +175,14 @@ class FieldAccess extends VariableAccess {
  * These typically take the form `obj->field`. Another case is a field access
  * with an implicit `this->` qualifier, which is often a `PointerFieldAccess`
  * (but see also `ImplicitThisFieldAccess`).
- * 
+ *
  * For example the accesses to `x` and `y` in `myMethod` in the following code
  * are each a `PointerFieldAccess`:
  * ```
  * class MyClass {
  * public:
  *   void myMethod(MyClass *other) {
-       other->x = y;
+ *       other->x = y;
  *   }
  *
  *   int x, y;

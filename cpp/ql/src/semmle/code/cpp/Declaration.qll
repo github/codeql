@@ -303,7 +303,7 @@ abstract class DeclarationEntry extends Locatable {
  * public:
  *   ...
  * };
- * 
+ *
  * void myFunction() {
  *   // ...
  * }
@@ -449,7 +449,7 @@ abstract class AccessHolder extends Declaration {
  * public:
  *   friend void friendFunction();
  * };
- * 
+ *
  * void friendFunction() {
  *   // ...
  * }
