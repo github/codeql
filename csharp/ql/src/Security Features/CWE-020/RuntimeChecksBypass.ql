@@ -25,4 +25,6 @@ where f = t.getASerializedField()
   and unsafeWrite = f.getAnAssignedValue()
   and t.getADeserializationCallback() = unsafeWrite.getEnclosingCallable()
   and not t.getADeserializationCallback().calls*(checkedWrite(f, _, _).getEnclosingCallable())
-select unsafeWrite, "This write to " + f + " may be circumventing a $@.", check, "check"
+select unsafeWrite, "This write to $@ may be circumventing a $@.",
+    f, f.toString(),
+    check, "check"

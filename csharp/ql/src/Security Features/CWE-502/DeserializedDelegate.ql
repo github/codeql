@@ -15,5 +15,5 @@ from Call deserialization, Expr conversion
 where deserialization.getTarget() instanceof UnsafeDeserializer
   and conversion = deserialization.getParent()
   and (conversion instanceof CastExpr or conversion instanceof AsExpr)
-  and conversion.getType().(RefType).getABaseType*().hasName("Delegate")
+  and conversion.getType().(RefType).getABaseType*() instanceof DelegateType
 select deserialization, "Deserialization of delegate type."

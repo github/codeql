@@ -1,6 +1,6 @@
 /**
- * @name Assembly Path Injection
- * @description Loading a DLL based on a path constructed from user-controlled sources may allow a
+ * @name Assembly path injection
+ * @description Loading an assembly based on a path constructed from user-controlled sources may allow a
  *              malicious user to load an arbitrary DLL.
  * @kind problem
  * @id cs/dll-injection
@@ -9,7 +9,6 @@
  * @tags security
  */
 import csharp
-import semmle.code.csharp.dataflow.flowsources.Remote
 import semmle.code.csharp.dataflow.flowsources.Remote
 
 class MainMethod extends Method {

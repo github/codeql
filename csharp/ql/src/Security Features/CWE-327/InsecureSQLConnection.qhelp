@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Finds uses of insecure Sql Connections string by not enabling the <code>Encrypt</code> option</p>
+<p>Finds uses of insecure SQL Connections string by not enabling the <code>Encrypt</code> option.</p>
 
   <p>
     SQL Server connections where the client is not enforcing the encryption in transit are subsceptible to multiple attacks, including a man-in-the-middle, that would potentially compromise the user credentails and/or the TDS session.

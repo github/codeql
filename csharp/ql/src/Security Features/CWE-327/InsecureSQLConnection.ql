@@ -1,6 +1,6 @@
 /**
  * @name Insecure SQL Connection
- * @description Finds uses of insecure Sql Connections string
+ * @description Finds uses of insecure SQL Connections string.
  * @kind problem
  * @id cs/insecure-sql-connection
  * @problem.severity error

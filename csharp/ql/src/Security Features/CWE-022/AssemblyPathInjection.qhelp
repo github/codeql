@@ -15,7 +15,7 @@
 
   <p>Loading a DLL from a user-controlled location.</p>
 
-<sample src="TaintedPath.cs" />
+<sample src="AssemblyPathInjection.cs" />
 
 </example>
 <references>

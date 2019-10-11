@@ -4,9 +4,7 @@
 <qhelp>
 
 <overview>
-<p>
-Calling an unsafe deserializer can lead to denial of service and other security problems. This version checks the source of the stream for untrusted input.
-</p>
+<p>Calling an unsafe deserializer can lead to denial of service and other security problems. This version checks the source of the stream for untrusted input.</p>
 
 </overview>
 <recommendation>

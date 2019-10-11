@@ -2,7 +2,7 @@
  * Provides classes for working with symmetric cryptography algorithms.
  */
 import csharp
-private import  semmle.code.csharp.Common
+private import  semmle.code.csharp.commons.Common
 
 /**
  * The class `System.Security.Cryptography.SymmetricAlgorithm` or any sub class of this class.

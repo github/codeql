@@ -2,7 +2,7 @@
  * @name Do not use hard-coded encryption keys.
  * @description The .Key property or rgbKey parameter of a SymmetricAlgorithm should never be a hardcoded value.
  * @kind problem
- * @id cs/do-not-use-hardcoded-keys
+ * @id cs/hardcoded-key
  * @problem.severity error
  * @precision high
  * @tags security
