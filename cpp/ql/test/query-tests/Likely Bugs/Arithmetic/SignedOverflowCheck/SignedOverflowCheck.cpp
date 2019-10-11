@@ -83,3 +83,22 @@ bool func1(se *so) {
 bool checkOverflow3(unsigned int a, unsigned short b) {
   return (a + b < a);  // GOOD
 }
+
+struct C {
+  unsigned int length;
+};
+
+int checkOverflow4(unsigned int ioff, C c) {
+  // not deleted by gcc or clang
+  if ((int)(ioff + c.length) < (int)ioff) return 0; // GOOD
+  return 1;
+}
+
+#define AV_INPUT_BUFFER_PADDING_SIZE 64
+
+int overflow12(int codecdata_length) {
+	if(codecdata_length + AV_INPUT_BUFFER_PADDING_SIZE <= (unsigned)codecdata_length) { // GOOD
+	  return -1;
+	}
+	return 1;
+}

@@ -14,12 +14,17 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
+private predicate isSignedWithoutUnsignedCast(Expr e) {
+  e.getType().getUnspecifiedType().(IntegralType).isSigned() and
+  not e.getExplicitlyConverted().getType().getUnspecifiedType().(IntegralType).isUnsigned()
+}
+
 from RelationalOperation ro, AddExpr add, VariableAccess va1, VariableAccess va2
 where
   ro.getAnOperand() = add and
   add.getAnOperand() = va1 and
   ro.getAnOperand() = va2 and
   globalValueNumber(va1) = globalValueNumber(va2) and
-  add.getFullyConverted().getType().getUnspecifiedType().(IntegralType).isSigned() and
-  not add.getExplicitlyConverted().getType().getUnspecifiedType().(IntegralType).isUnsigned()
+  isSignedWithoutUnsignedCast(add) and
+  isSignedWithoutUnsignedCast(va2)
 select ro, "Testing for signed overflow may produce undefined results."
