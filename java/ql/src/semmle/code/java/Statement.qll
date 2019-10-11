@@ -582,8 +582,7 @@ class JumpStmt extends Stmt {
     (
       result instanceof LoopStmt
       or
-      (this instanceof BreakStmt or this instanceof YieldStmt) and
-      result instanceof SwitchStmt
+      this instanceof BreakStmt and result instanceof SwitchStmt
     )
   }
 
