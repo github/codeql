@@ -48,11 +48,12 @@ abstract class DjangoRequestSource extends HttpRequestTaintSource {
 /**
  * Function based views
  * https://docs.djangoproject.com/en/1.11/topics/http/views/
+ * https://docs.djangoproject.com/en/3.0/topics/http/views/
  */
 private class DjangoFunctionBasedViewRequestArgument extends DjangoRequestSource {
     DjangoFunctionBasedViewRequestArgument() {
-        exists(FunctionValue view |
-            django_route(_, _, view) and
+        exists(DjangoRoute route, FunctionValue view |
+            route.getViewFunction() = view and
             this = view.getScope().getArg(0).asName().getAFlowNode()
         )
     }
@@ -61,9 +62,14 @@ private class DjangoFunctionBasedViewRequestArgument extends DjangoRequestSource
 /**
  * Class based views
  * https://docs.djangoproject.com/en/1.11/topics/class-based-views/
+ * https://docs.djangoproject.com/en/3.0/topics/class-based-views/
  */
 private class DjangoView extends ClassValue {
-    DjangoView() { Value::named("django.views.generic.View") = this.getASuperType() }
+    DjangoView() {
+        Value::named("django.views.generic.View") = this.getASuperType()
+        or
+        Value::named("django.views.View") = this.getASuperType()
+    }
 }
 
 private FunctionValue djangoViewHttpMethod() {
