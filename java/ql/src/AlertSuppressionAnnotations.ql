@@ -30,12 +30,39 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   /** Gets the LGTM suppression annotation in this Java annotation. */
   string getAnnotation() { result = annotation }
 
+  private Annotation getASiblingAnnotation() {
+    result = getAnnotatedElement().(Annotatable).getAnAnnotation() and
+    (getAnnotatedElement() instanceof Callable or getAnnotatedElement() instanceof RefType)
+  }
+
+  private Annotation firstAnnotation() {
+    exists(Annotation m, int i |
+      result = m and
+      m = getASiblingAnnotation() and
+      i = rankOfAnnotation(m) and
+      not exists(Annotation other | other = getASiblingAnnotation() | rankOfAnnotation(other) < i)
+    )
+  }
+
+  private int rankOfAnnotation(Annotation m) {
+    this.getASiblingAnnotation() = m and
+    exists(Location mLoc, File f, int maxCol | mLoc = m.getLocation() |
+      f = mLoc.getFile() and
+      maxCol = max(Location loc | loc.getFile() = f | loc.getStartColumn()) and
+      result = mLoc.getStartLine() * maxCol + mLoc.getStartColumn()
+    )
+  }
+
   /**
    * Holds if this annotation applies to the range from column `startcolumn` of line `startline`
    * to column `endcolumn` of line `endline` in file `filepath`.
    */
   predicate covers(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    getAnnotatedElement().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    if firstAnnotation().hasLocationInfo(filepath, _, _, _, _)
+    then
+      getAnnotatedElement().hasLocationInfo(filepath, _, _, endline, endcolumn) and
+      firstAnnotation().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    else getAnnotatedElement().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets the scope of this suppression. */
