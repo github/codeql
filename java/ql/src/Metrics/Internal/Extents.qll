@@ -1,14 +1,18 @@
-import java
-
-/*
+/**
+ * Provides classes that modify the default location information
+ * of `RefType`s and `Callable`s to cover their full extent.
+ *
  * When this library is imported, the `hasLocationInfo` predicate of
  * `Callable` and `RefTypes` is overridden to specify their entire range
  * instead of just the range of their name. The latter can still be
  * obtained by invoking the `getLocation()` predicate.
  *
- * The full ranges are required for the purpose of associating a violation
- * with an individual `Callable` or `RefType` as opposed to a whole `File`.
+ * The full ranges may be used to determine whether a given location
+ * (for example, the location of an alert) is contained within the extent
+ * of a `Callable` or `RefType`.
  */
+
+import java
 
 /**
  * A Callable whose `hasLocationInfo` is overridden to specify its entire range
