@@ -25,6 +25,5 @@ where
   add.getAnOperand() = va1 and
   ro.getAnOperand() = va2 and
   globalValueNumber(va1) = globalValueNumber(va2) and
-  isSignedWithoutUnsignedCast(add) and
-  isSignedWithoutUnsignedCast(va2)
+  isSignedWithoutUnsignedCast(add)
 select ro, "Testing for signed overflow may produce undefined results."

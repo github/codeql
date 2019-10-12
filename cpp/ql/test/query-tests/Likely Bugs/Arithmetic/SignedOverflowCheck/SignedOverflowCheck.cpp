@@ -94,11 +94,7 @@ int checkOverflow4(unsigned int ioff, C c) {
   return 1;
 }
 
-#define AV_INPUT_BUFFER_PADDING_SIZE 64
-
-int overflow12(int codecdata_length) {
-	if(codecdata_length + AV_INPUT_BUFFER_PADDING_SIZE <= (unsigned)codecdata_length) { // GOOD
-	  return -1;
-	}
-	return 1;
+int overflow12(int n) {
+    // not deleted by gcc or clang
+	return (n + 32 <= (unsigned)n? -1: 1); // BAD
 }
