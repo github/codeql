@@ -113,8 +113,8 @@ DataFlow::SourceNode array(DataFlow::TypeTracker t) {
 
 DataFlow::SourceNode array() { result = array(DataFlow::TypeTracker::end()) }
 
-predicate voidArrayCallback(DataFlow::MethodCallNode call, Function func) {
-  hasNonVoidCallbackMethod(call.getMethodName()) and
+predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
+  hasNonVoidCallbackMethod(call.getCalleeName()) and
   func = call.getAnArgument().getALocalSource().asExpr() and
   1 = count(DataFlow::Node arg | arg = call.getAnArgument() and arg.getALocalSource().asExpr() instanceof Function) and
   returnsVoid(func) and
@@ -123,7 +123,7 @@ predicate voidArrayCallback(DataFlow::MethodCallNode call, Function func) {
   (
     call.getReceiver().getALocalSource() = array()
     or
-    call.getCalleeNode() instanceof LodashUnderscore::Member
+    call.getCalleeNode().getALocalSource() instanceof LodashUnderscore::Member
   )
 }
 
