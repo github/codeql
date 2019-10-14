@@ -11,35 +11,56 @@
  *       external/cwe/cwe-14
  */
 
-import semmle.code.cpp.dataflow.TaintTracking
+import cpp
+import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.ValueNumbering
+import semmle.code.cpp.models.implementations.Memset
 
-private predicate memsetName(string fn) {
-  fn = "memset" or
-  fn = "bzero" or
-  fn = "ZeroMemory" or
-  fn = "FillMemory" or
-  fn = "__builtin_memset"
+class MemsetCallInstruction extends CallInstruction {
+  MemsetCallInstruction() {
+    this.getValue() = "0" and
+    this.getResultType().getUnspecifiedType() instanceof PointerType
+  }
 }
 
-private Expr getVariable(Expr expr) {
-  expr instanceof CStyleCast and result = getVariable(expr.(CStyleCast).getExpr())
+predicate explicitNullTestOfInstruction(Instruction checked, Instruction bool) {
+  bool = any(CompareInstruction cmp |
+      exists(NullInstruction null |
+        cmp.getLeft() = null and cmp.getRight() = checked
+        or
+        cmp.getLeft() = checked and cmp.getRight() = null
+      |
+        cmp instanceof CompareEQInstruction
+        or
+        cmp instanceof CompareNEInstruction
+      )
+    )
   or
-  expr instanceof PointerAddExpr and result = getVariable(expr.getChild(0))
-  or
-  expr instanceof ArrayToPointerConversion and result = getVariable(expr.getChild(0))
-  or
-  result = expr
+  bool = any(ConvertInstruction convert |
+      checked = convert.getUnary() and
+      convert.getResultType() instanceof BoolType and
+      checked.getResultType() instanceof PointerType
+    )
 }
 
-from FunctionCall fc, Expr arg
+pragma[noinline]
+predicate candidateResult(LoadInstruction checked, ValueNumber value, IRBlock dominator) {
+  explicitNullTestOfInstruction(checked, _) and
+  not checked.getAST().isInMacroExpansion() and
+  value.getAnInstruction() = checked and
+  dominator.dominates(checked.getBlock())
+}
+
+from LoadInstruction checked, LoadInstruction deref, ValueNumber sourceValue, IRBlock dominator
 where
-  memsetName(fc.getTarget().getName()) and
-  arg = fc.getArgument(0) and
-  not exists(Expr succ |
-    TaintTracking::localTaint(DataFlow::definitionByReferenceNodeFromArgument(arg),
-      DataFlow::exprNode(succ))
-  ) and
-  not exists(Parameter parm |
-    TaintTracking::localTaint(DataFlow::parameterNode(parm), DataFlow::exprNode(arg))
-  )
-select fc, "Call to " + fc.getTarget().getName() + " may be deleted by the compiler."
+  candidateResult(checked, sourceValue, dominator) and
+  sourceValue.getAnInstruction() = deref.getSourceAddress() and
+  // This also holds if the blocks are equal, meaning that the check could come
+  // before the deref. That's still not okay because when they're in the same
+  // basic block then the deref is unavoidable even if the check concluded that
+  // the pointer was null. To follow this idea to its full generality, we
+  // should also give an alert when `check` post-dominates `deref`.
+  deref.getBlock() = dominator
+select checked, "This null check is redundant because the value is $@ in any case", deref,
+  "dereferenced here"
+ select fc, "Call to " + fc.getTarget().getName() + " may be deleted by the compiler."
