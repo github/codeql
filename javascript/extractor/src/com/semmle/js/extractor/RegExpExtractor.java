@@ -341,9 +341,14 @@ public class RegExpExtractor {
     }
   }
 
-  public void extract(String src, Node parent) {
-    this.literalStart = parent.getLoc().getStart();
+  public void extract(String src, Node parent, boolean isSpeculativeParsing) {
     Result res = parser.parse(src);
+
+    if (isSpeculativeParsing && res.getErrors().size() > 0) {
+      return;
+    }
+
+    this.literalStart = parent.getLoc().getStart();
     RegExpTerm ast = res.getAST();
     new V().visit(ast, trapwriter.localID(parent), 0);
 

@@ -516,7 +516,11 @@ public class ASTExtractor {
       String valueString = nd.getStringValue();
 
       trapwriter.addTuple("literals", valueString, source, key);
-      if (nd.isRegExp()) regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), nd);
+      if (nd.isRegExp()) {
+        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), nd, false);
+      } else if (nd.isStringLiteral()) {
+        regexpExtractor.extract(valueString, nd, true);
+      }
       return key;
     }
 
