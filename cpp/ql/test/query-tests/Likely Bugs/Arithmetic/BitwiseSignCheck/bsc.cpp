@@ -7,7 +7,7 @@ bool is_bit_set_v2(int x, int bitnum) {
 }
 
 bool plain_wrong(int x, int bitnum) {
-  return (x & (1 << bitnum)) >= 0; // GOOD (testing for `>= 0` is the logical negation of `< 0`, a negativity test) [FALSE POSITIVE]
+  return (x & (1 << bitnum)) >= 0; // GOOD (testing for `>= 0` is the logical negation of `< 0`, a negativity test)
 }
 
 bool is_bit24_set(int x) {
@@ -31,7 +31,7 @@ bool deliberately_checking_sign(int x, int y) {
 }
 
 bool deliberately_checking_sign2(int x, int y) {
-  return (x & y) >= 0; // GOOD (testing for `>= 0` is the logical negation of `< 0`, a negativity test) [FALSE POSITIVE]
+  return (x & y) >= 0; // GOOD (testing for `>= 0` is the logical negation of `< 0`, a negativity test)
 }
 
 bool is_bit_set_v3(int x, int bitnum) {
