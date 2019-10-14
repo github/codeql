@@ -1515,7 +1515,6 @@ case @expr.kind of
 | 322 = @builtinaddressof
 | 323 = @vec_fill
 | 324 = @builtinconvertvector
-| 325 = @builtincomplex
 ;
 
 new_allocated_type(
