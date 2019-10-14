@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-091
  */
+
 import csharp
 import semmle.code.csharp.dataflow.flowsources.Remote
 import semmle.code.csharp.frameworks.system.Xml
@@ -18,29 +19,28 @@ import semmle.code.csharp.dataflow.flowsources.Remote
  * A taint-tracking configuration for untrusted user input used in XML.
  */
 class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() {
-    this = "XMLInjection"
-  }
+  TaintTrackingConfiguration() { this = "XMLInjection" }
 
-  override
-  predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override
-  predicate isSink(DataFlow::Node sink) {
+  override predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasName("WriteRaw") and
-      mc.getTarget().getDeclaringType().getABaseType*().hasQualifiedName("System.Xml.XmlWriter") |
+      mc.getTarget().getDeclaringType().getABaseType*().hasQualifiedName("System.Xml.XmlWriter")
+    |
       mc.getArgument(0) = sink.asExpr()
     )
   }
 
-  override
-  predicate isSanitizer(DataFlow::Node node) {
+  override predicate isSanitizer(DataFlow::Node node) {
     exists(MethodCall mc |
       mc.getTarget().hasName("Escape") and
-      mc.getTarget().getDeclaringType().getABaseType*().hasQualifiedName("System.Security.SecurityElement") |
+      mc
+          .getTarget()
+          .getDeclaringType()
+          .getABaseType*()
+          .hasQualifiedName("System.Security.SecurityElement")
+    |
       mc = node.asExpr()
     )
   }
