@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@types/node@^9.3.0":
-  version "9.3.0"
-  resolved "@types-node-9.3.0.tgz#3a129cda7c4e5df2409702626892cb4b96546dd5"
+"@types/node@12.7.11":
+  version "12.7.11"
+  resolved "node-12.7.11.tgz#be879b52031cfb5d295b047f5462d8ef1a716446"
 
 ansi-regex@^2.0.0:
   version "2.1.1"
@@ -225,9 +225,9 @@ tsutils@^2.12.1:
   dependencies:
     tslib "^1.8.1"
 
-typescript@3.5.1:
-  version "3.5.1"
-  resolved "typescript-3.5.1.tgz#ba72a6a600b2158139c5dd8850f700e231464202"
+typescript@3.6.3:
+  version "3.6.3"
+  resolved "typescript-3.6.3.tgz#fea942fabb20f7e1ca7164ff626f1a9f3f70b4da"
 
 wrappy@1:
   version "1.0.2"
