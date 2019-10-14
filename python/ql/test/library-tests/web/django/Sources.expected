@@ -1,11 +1,17 @@
 | test.py:11 | request | django.request.HttpRequest |
-| test.py:31 | request | django.request.HttpRequest |
-| test.py:56 | arg0 | externally controlled string |
-| test.py:56 | request | django.request.HttpRequest |
-| test.py:59 | arg0 | externally controlled string |
-| test.py:59 | arg1 | externally controlled string |
-| test.py:59 | arg2 | externally controlled string |
-| test.py:59 | request | django.request.HttpRequest |
-| test.py:62 | arg0 | externally controlled string |
-| test.py:62 | arg1 | externally controlled string |
-| test.py:62 | request | django.request.HttpRequest |
+| test.py:11 | username | externally controlled string |
+| test.py:41 | request | django.request.HttpRequest |
+| test.py:47 | bar | externally controlled string |
+| test.py:47 | foo | externally controlled string |
+| test.py:47 | request | django.request.HttpRequest |
+| test.py:58 | page_number | externally controlled string |
+| test.py:58 | request | django.request.HttpRequest |
+| test.py:69 | arg0 | externally controlled string |
+| test.py:69 | request | django.request.HttpRequest |
+| test.py:72 | arg0 | externally controlled string |
+| test.py:72 | arg1 | externally controlled string |
+| test.py:72 | arg2 | externally controlled string |
+| test.py:72 | request | django.request.HttpRequest |
+| test.py:75 | arg0 | externally controlled string |
+| test.py:75 | arg1 | externally controlled string |
+| test.py:75 | request | django.request.HttpRequest |
