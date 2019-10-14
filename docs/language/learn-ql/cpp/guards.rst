@@ -16,6 +16,24 @@ The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides 
     }
     return 0;
 
+
+The ``controls`` predicate
+------------------------------------------------
+The ``controls`` predicate helps determine which blocks are only run when the ``GuardCondition`` evaluates a certain way. ``guard.controls(block, testIsTrue)`` holds if ``block`` is only entered if the value of this condition is ``testIsTrue``.
+
+In the following code sample, the call to ``isValid`` controls the calls to ``performAction`` and ``logFailure`` but not the return statement.
+
+.. code:: cpp
+
+    if(isValid(accessToken)) {
+      performAction();
+      succeeded = 1;
+    } else {
+      logFailure();
+      succeeded = 0;
+    }
+    return succeeded;
+
 The ``ensuresEq`` and ``ensuresLt`` predicates
 ----------------------------------------------
 The ``ensuresEq`` and ``ensuresLt`` predicates are the main way of determining what, if any, guarantees the ``GuardCondition`` provides for a given basic block.
@@ -35,19 +53,3 @@ The ``comparesEq`` and ``comparesLt`` predicates help determine if the ``GuardCo
 
 ``comparesLt(left, right, k, isLessThan, testIsTrue)`` holds if ``left < right + k`` evaluates to ``isLessThan`` when the expression evaluates to ``testIsTrue``.
 
-The ``controls`` predicate
-------------------------------------------------
-The ``controls`` predicate helps determine which blocks are only run when the ``GuardCondition`` evaluates a certain way. ``guard.controls(block, testIsTrue)`` holds if ``block`` is only entered if the value of this condition is ``testIsTrue``.
-
-In the following code sample, the call to ``isValid`` controls the calls to ``performAction`` and ``logFailure`` but not the return statement.
-
-.. code:: cpp
-
-    if(isValid(accessToken)) {
-      performAction();
-      succeeded = 1;
-    } else {
-      logFailure();
-      succeeded = 0;
-    }
-    return succeeded;
