@@ -314,9 +314,29 @@ public class RegExpParser {
       return this.finishTerm(new Group(loc, capture, number, name, dis));
     }
 
-    char c = this.nextChar();
-    if ("^$\\.*+?()[]{}|".indexOf(c) != -1) this.error(Error.UNEXPECTED_CHARACTER, this.pos - 1);
-    return this.finishTerm(new Constant(loc, String.valueOf(c)));
+    // Parse consecutive constants into a single Constant node.
+    // Due to speculative parsing of string literals, this part of the code is fairly hot.
+    int startPos = this.pos;
+    int endPos = startPos;
+    while (endPos < src.length()) {
+      if ("^$\\.*+?()[]{}|".indexOf(src.charAt(endPos)) != -1) break;
+      ++endPos;
+    }
+    if (startPos == endPos) {
+      this.error(Error.UNEXPECTED_CHARACTER, endPos);
+      endPos = startPos + 1; // To ensure progress, make sure we parse at least one character.
+    }
+    if (endPos != startPos + 1
+        && endPos < src.length()
+        && "*+?{".indexOf(src.charAt(endPos)) != -1) {
+      endPos--; // Last constant belongs under an upcoming quantifier.
+    }
+    String str = src.substring(startPos, endPos);
+    this.pos = endPos;
+    loc.setEnd(pos());
+    loc.setSource(str);
+    // Do not call finishTerm as it will create another copy of 'str'.
+    return new Constant(loc, str);
   }
 
   private RegExpTerm parseAtomEscape(SourceLocation loc, boolean inCharClass) {
