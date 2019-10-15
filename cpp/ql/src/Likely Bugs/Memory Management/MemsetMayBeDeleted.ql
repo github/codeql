@@ -30,10 +30,14 @@ private predicate insnDominates(Instruction i1, Instruction i2) {
   i1.getBlock() = i2.getBlock() and insnSuccessor+(i1) = i2
 }
 
+Instruction getAUseInstruction(Instruction insn) {
+  result=	insn.getAUse().getUse()
+}
+
 //insnDominates(memset, deref) and
 //vn.getAnInstruction() = memset.getAnArgument() and
 //vn.getAnInstruction() = deref.getSourceAddress()
-from MemsetCallInstruction memset
-where not exists(LoadInstruction deref | memset.getBlock().dominates(deref.getBlock())) // insnDominates(memset, deref))
+from MemsetCallInstruction memset, SizedBufferMustWriteSideEffectInstruction sei
+where sei.getPrimaryInstruction() = memset // and forall(Instruction use | use = getAUseInstruction+(sei) | use instanceof ChiInstruction)
 select memset,
   "Call to " + memset.getStaticCallTarget().getName() + " may be deleted by the compiler."
