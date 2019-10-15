@@ -40,5 +40,8 @@ The following changes in version 1.23 affect C# analysis in all applications.
   overriding `int explorationLimit()`.
 * `foreach` statements where the body is guaranteed to be executed at least once, such as `foreach (var x in new string[]{ "a", "b", "c" }) { ... }`, are now recognized by all analyses based on the control flow graph (such as SSA, data flow and taint tracking).
 * Fixed the control flow graph for `switch` statements where the `default` case was not the last case. This had caused the remaining cases to be unreachable. `SwitchStmt.getCase(int i)` now puts the `default` case last.
+* There is now a `DataFlow::localExprFlow` predicate and a
+  `TaintTracking::localExprTaint` predicate to make it easy to use the most
+  common case of local data flow and taint: from one `Expr` to another.
 
 ## Changes to autobuilder
