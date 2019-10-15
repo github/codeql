@@ -422,8 +422,9 @@ function_defaulted(unique int id: @function ref);
 
 
 
+#keyset[id, type_id]
 fun_decls(
-    unique int id: @fun_decl,
+    int id: @fun_decl,
     int function: @function ref,
     int type_id: @type ref,
     string name: string ref,
@@ -460,8 +461,9 @@ param_decl_bind(
     int fun_decl: @fun_decl ref
 );
 
+#keyset[id, type_id]
 var_decls(
-    unique int id: @var_decl,
+    int id: @var_decl,
     int variable: @variable ref,
     int type_id: @type ref,
     string name: string ref,
