@@ -16,7 +16,7 @@ import semmle.python.security.TaintTracking
 
 
 predicate interfaceBinding(ControlFlowNode f) {
-	exists (Tuple p | p = f.getNode() | p.getElt(0).(StrConst).getText() = "0.0.0.0" )	
+  exists(Tuple p | p = f.getNode() | p.getElt(0).(StrConst).getText() = "0.0.0.0" )	
 }
 
 class BindingTuple extends TaintKind {

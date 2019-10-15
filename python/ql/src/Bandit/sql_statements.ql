@@ -13,11 +13,11 @@ import python
 
 from BinaryExpr b, StrConst s
 where (
-		(s.getText().toUpperCase().indexOf("SELECT") >= 0 and s.getText().toUpperCase().indexOf("FROM") >= 0)
-	or 	(s.getText().toUpperCase().indexOf("INSERT") >= 0 and s.getText().toUpperCase().indexOf("INTO") >= 0)
+  (s.getText().toUpperCase().indexOf("SELECT") >= 0 and s.getText().toUpperCase().indexOf("FROM") >= 0)
+    or 	(s.getText().toUpperCase().indexOf("INSERT") >= 0 and s.getText().toUpperCase().indexOf("INTO") >= 0)
     or 	(s.getText().toUpperCase().indexOf("DELETE") >= 0 and s.getText().toUpperCase().indexOf("FROM") >= 0)
     or 	(s.getText().toUpperCase().indexOf("UDPATE") >= 0 and s.getText().toUpperCase().indexOf("SET") >= 0)    
     or 	(s.getText().toUpperCase().indexOf("WITH") >= 0 and s.getText().toUpperCase().indexOf("AS") >= 0)        
-    )
+  )
    and b.getLeft() = s
 select b, "Possible SQL injection vector through string-based query construction."

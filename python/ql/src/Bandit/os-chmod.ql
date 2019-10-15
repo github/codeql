@@ -26,7 +26,7 @@ where isObjectAttribute(c, "os", "chmod")
         or c.getPositionalArg(1).(IntegerLiteral).getText() = "07"
         or c.getPositionalArg(1).(IntegerLiteral).getText() = "0o7"
         or c.getPositionalArg(1).(IntegerLiteral).getText() = "0664"
-		or c.getPositionalArg(1).(IntegerLiteral).getText() = "0o664"        
+        or c.getPositionalArg(1).(IntegerLiteral).getText() = "0o664"        
         or c.getPositionalArg(1).(IntegerLiteral).getText() = "0777"
         or c.getPositionalArg(1).(IntegerLiteral).getText() = "0o777"        
         or c.getPositionalArg(1).(IntegerLiteral).getText() = "0770"

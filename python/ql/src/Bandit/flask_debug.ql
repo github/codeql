@@ -17,6 +17,6 @@ where a.getValue().toString() = "Flask()"
   and exists(Keyword k | k = c.getANamedArg() 
   			and k.getArg() = "debug" 
   			and k.getValue().toString() = "True"
-			and a.getATarget().toString() = c.getFunc().(Attribute).getObject().toString()
+        and a.getATarget().toString() = c.getFunc().(Attribute).getObject().toString()
 			)     
 select c, " A Flask app appears to be run with debug=True"
