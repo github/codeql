@@ -48,7 +48,7 @@ void func3(unsigned long long sz) {
 // x64 msvc v19.22: deleted
 void func4(unsigned long long sz) {
     char buff[128]; 
-    memset(buff, 0, PW_SIZE); // BAD [NOT DETECTED]
+    memset(buff, 0, PW_SIZE); // BAD
     strcpy(buff, "Hello");
 }
 
@@ -76,7 +76,7 @@ void func6(unsigned long long sz) {
 // x64 msvc v19.22: deleted
 void func7(unsigned long long sz) { 
     struct mem m; 
-    memset(&m, 0, PW_SIZE); // BAD [NOT DETECTED]
+    memset(&m, 0, PW_SIZE); // BAD
     m.a = 15;
 }
 
@@ -85,7 +85,7 @@ void func7(unsigned long long sz) {
 // x64 msvc v19.22: not deleted
 void func8(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
-    memset(m, 0, PW_SIZE); // BAD
+    memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
 }
 
 // x86-64 gcc 9.2: deleted
@@ -112,7 +112,7 @@ void func10(unsigned long long sz) {
 // x64 msvc v19.22: not deleted
 void func11(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
-    ::memset(m, 0, PW_SIZE); // BAD [ NOT DETECTED]
+    ::memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
     if (sz > 5) {
     	strcpy(m->b, "Hello");
     }

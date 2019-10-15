@@ -1,9 +1,12 @@
-| MemsetMayBeDeleted.c:19:2:19:7 | call to memset | Call to memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.c:29:2:29:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.c:79:2:79:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.c:99:2:99:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.c:109:2:109:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.c:119:2:119:17 | call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.cpp:43:5:43:10 | call to memset | Call to memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.cpp:71:5:71:10 | call to memset | Call to memset may be deleted by the compiler. |
-| MemsetMayBeDeleted.cpp:88:5:88:10 | call to memset | Call to memset may be deleted by the compiler. |
+WARNING: Unused predicate insnDominates (/mnt/c/code/ql/cpp/ql/src/Likely Bugs/Memory Management/MemsetMayBeDeleted.ql:27,19-32)
+| MemsetMayBeDeleted.c:19:2:19:7 | Call: call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:29:2:29:17 | Call: call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:39:2:39:7 | Call: call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:59:2:59:7 | Call: call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:79:2:79:17 | Call: call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:109:2:109:17 | Call: call to __builtin_memset | Call to __builtin_memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.c:129:2:129:7 | Call: call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.cpp:43:5:43:10 | Call: call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.cpp:51:5:51:10 | Call: call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.cpp:71:5:71:10 | Call: call to memset | Call to memset may be deleted by the compiler. |
+| MemsetMayBeDeleted.cpp:79:5:79:10 | Call: call to memset | Call to memset may be deleted by the compiler. |
