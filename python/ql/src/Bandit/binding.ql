@@ -40,11 +40,11 @@ class BindingTupleSource extends TaintSource {
 class TupleSink extends TaintSink {
       TupleSink() {
         exists(CallNode c | c.getFunction().(AttrNode).getName() = "bind" and c.getAnArg() = this)
-	    }
-	    
+      }
+
     override predicate sinks(TaintKind kind) {
-        kind instanceof BindingTuple
-    }	    
+      kind instanceof BindingTuple
+    }
 }
 
 from TaintSource src, TaintSink sink
