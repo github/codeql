@@ -1683,6 +1683,11 @@ private class PathNodeMid extends PathNode, TPathNodeMid {
 
   override Configuration getConfiguration() { result = config }
 
+  pragma[noinline]
+  LocalCallContext getLocalCallContext() {
+    result = getLocalCallContext(cc, node.getEnclosingCallable())
+  }
+
   private PathNodeMid getSuccMid() {
     pathStep(this, result.getNode(), result.getCallContext(), result.getAp()) and
     result.getConfiguration() = unbind(this.getConfiguration())
@@ -1738,7 +1743,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPat
     midnode = mid.getNode() and
     conf = mid.getConfiguration() and
     cc = mid.getCallContext() and
-    localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
+    localCC = mid.getLocalCallContext() and
     ap0 = mid.getAp()
   |
     localFlowBigStep(midnode, node, true, conf, localCC) and
