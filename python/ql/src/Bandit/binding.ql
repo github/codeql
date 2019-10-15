@@ -38,7 +38,7 @@ class BindingTupleSource extends TaintSource {
 }
 
 class TupleSink extends TaintSink {
-	    TupleSink() {
+      TupleSink() {
 	    	exists(CallNode c | c.getFunction().(AttrNode).getName() = "bind" and c.getAnArg() = this)
 	    }
 	    

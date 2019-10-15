@@ -18,5 +18,5 @@ where a.getValue().toString() = "Flask()"
   			and k.getArg() = "debug" 
   			and k.getValue().toString() = "True"
         and a.getATarget().toString() = c.getFunc().(Attribute).getObject().toString()
-			)     
+        )     
 select c, " A Flask app appears to be run with debug=True"
