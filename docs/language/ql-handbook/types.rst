@@ -71,7 +71,7 @@ Defining a class
 To define a class, you write:
 
 #. The keyword ``class``. 
-#. The name of the class. This is an `identifier <https://help.semmle.com/QL/QLLanguageSpecification.html#identifiers>`_ 
+#. The name of the class. This is an `identifier <https://help.semmle.com/QL/ql-spec/language.html#identifiers>`_ 
    starting with an uppercase letter.
 #. The types to extend. 
 #. The :ref:`body of the class <class-bodies>`, enclosed in braces.
@@ -404,7 +404,7 @@ The branch definitions have the following form::
 
     <BranchName>(<arguments>) { <body> }
 
-- The type name and the branch names must be `identifiers <https://help.semmle.com/QL/QLLanguageSpecification.html#identifiers>`_ 
+- The type name and the branch names must be `identifiers <https://help.semmle.com/QL/ql-spec/language.html#identifiers>`_ 
   starting with an uppercase letter. Conventionally, they start with ``T``.
 - The different branches of an algebraic datatype are separated by ``or``.
 - The arguments to a branch, if any, are :ref:`variable declarations <variable-declarations>`

@@ -56,7 +56,7 @@ You can express certain values directly in QL, such as numbers, booleans, and st
     "hello"
     "They said, \"Please escape quotation marks!\""
   
-  See `String literals <https://help.semmle.com/QL/QLLanguageSpecification.html#string-literals-string>`_ 
+  See `String literals <https://help.semmle.com/QL/ql-spec/language.html#string-literals-string>`_ 
   in the QL language specification for more details. 
     
   Note: there is no "date literal" in QL. Instead, to specify a :ref:`date <date>`, you should
@@ -441,7 +441,7 @@ The following table lists some examples of different forms of ``any`` expression
 +------------------------------------------+-------------------------------------------------+
 
 .. note::
-   There is also a `built-in predicate <https://help.semmle.com/QL/QLLanguageSpecification.html#non-member-built-ins>`_
+   There is also a `built-in predicate <https://help.semmle.com/QL/ql-spec/language.html#non-member-built-ins>`_
    ``any()``. This is a predicate that always holds.
 
 Unary operations

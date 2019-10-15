@@ -81,7 +81,7 @@ statement as follows:
 
 If the compiler cannot resolve an import statement, then it gives a compilation error.
 
-This process is described in more detail in the section on `module resolution <https://help.semmle.com/QL/QLLanguageSpecification.html#module-resolution>`_
+This process is described in more detail in the section on `module resolution <https://help.semmle.com/QL/ql-spec/language.html#module-resolution>`_
 in the QL language specification.
 
 .. _selections:
@@ -152,7 +152,7 @@ Namespaces
 **********
 
 When writing QL, it's useful to understand how namespaces (also known as 
-`environments <https://help.semmle.com/QL/QLLanguageSpecification.html#name-resolution>`_) work.
+`environments <https://help.semmle.com/QL/ql-spec/language.html#name-resolution>`_) work.
 
 As in many other programming languages, a namespace is a mapping from **keys** to
 **entities**. A key is a kind of identifier, for example a name, and a QL entity is
@@ -179,7 +179,7 @@ In particular:
     - The **global module namespace** is empty.
     - The **global type namespace** has entries for the :ref:`primitive types <primitive-types>` ``int``, ``float``, 
       ``string``, ``boolean``, and ``date``, as well as any :ref:`database types <database-types>` defined in the database schema.
-    - The **global predicate namespace** includes all the `built-in predicates <https://help.semmle.com/QL/QLLanguageSpecification.html#built-ins>`_,
+    - The **global predicate namespace** includes all the `built-in predicates <https://help.semmle.com/QL/ql-spec/language.html#built-ins>`_,
       as well as any :ref:`database predicates <database-predicates>`.
 
 In practice, this means that you can use the built-in types and predicates directly in a QL module (without
@@ -295,7 +295,7 @@ The type namespace of ``S`` has entries for:
 The predicate namespace of ``Villagers`` has entries for:
     - The predicate ``isBald``, with arity 1.
     - Any predicates (and their arities) exported by ``tutorial``. 
-    - The `built-in predicates <https://help.semmle.com/QL/QLLanguageSpecification.html#built-ins>`_.
+    - The `built-in predicates <https://help.semmle.com/QL/ql-spec/language.html#built-ins>`_.
 
 The predicate namespace of ``S`` has entries for:
     - All the above predicates.
