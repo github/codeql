@@ -3,7 +3,8 @@ Using the guards library in C and C++
 
 Overview
 --------
-The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides a class ``GuardCondition`` representing Boolean values that are used to make control flow decisions. A ``GuardCondition`` is considered to guard a basic block if the block is only reached if the ``GuardCondition`` evaluated a certain way. For instance, in the following code, ``x < 10`` is a ``GuardCondition``, and it guards all the code before the return statement.
+The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides a class ``GuardCondition`` representing Boolean values that are used to make control flow decisions. 
+A ``GuardCondition`` is considered to guard a basic block if the block can only be reached if the ``GuardCondition`` is evaluated a certain way. For instance, in the following code, ``x < 10`` is a ``GuardCondition``, and it guards all the code before the return statement.
 
 .. code:: cpp
 

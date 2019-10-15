@@ -9,7 +9,7 @@ The range analysis library (defined in ``semmle.code.cpp.rangeanalysis.SimpleRan
 
 Bounds predicates
 -----------------
-The ``upperBound`` and ``lowerBound`` predicates provide constant bounds on expressions. No conversions of the argument are included in the bound; in the common case that your query needs to take conversions into account, call them on the converted form, such as ``upperBound(expr.getFullyConverted())``.
+The ``upperBound`` and ``lowerBound`` predicates provide constant bounds on expressions. No conversions of the argument are included in the bound. In the common case that your query needs to take conversions into account, call them on the converted form, such as ``upperBound(expr.getFullyConverted())``.
 
 Overflow predicates
 -------------------
