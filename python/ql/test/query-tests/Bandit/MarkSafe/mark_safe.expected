@@ -1,0 +1,1 @@
+| Test.py:4:9:4:35 | Attribute() | Use of mark_safe() may expose cross-site scripting vulnerabilities |

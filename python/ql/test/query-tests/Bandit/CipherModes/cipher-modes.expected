@@ -1,0 +1,1 @@
+| Test.py:6:8:6:14 | ECB() | Use of insecure cipher mode cryptography.hazmat.primitives.ciphers.modes.ECB. |

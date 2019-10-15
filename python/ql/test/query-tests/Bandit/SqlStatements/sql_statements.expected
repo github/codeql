@@ -1,0 +1,10 @@
+| Test.py:4:9:4:56 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:5:9:5:57 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:6:9:6:54 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:8:9:9:48 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:11:9:11:53 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:16:13:16:60 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:17:13:17:61 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:18:13:18:58 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:21:13:21:57 | BinaryExpr | Possible SQL injection vector through string-based query construction. |
+| Test.py:37:5:37:30 | BinaryExpr | Possible SQL injection vector through string-based query construction. |

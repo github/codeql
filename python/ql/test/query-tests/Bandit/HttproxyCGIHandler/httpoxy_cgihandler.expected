@@ -1,0 +1,1 @@
+| Test.py:10:5:10:31 | Attribute | Consider possible security implications associated with wsgiref.handlers.CGIHandler module. |

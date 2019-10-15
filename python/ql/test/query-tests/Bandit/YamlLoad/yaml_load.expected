@@ -1,0 +1,3 @@
+| Test.py:7:9:7:17 | Attribute |  Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load(). |
+| Test.py:10:13:10:21 | Attribute |  Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load(). |
+| Test.py:13:13:13:21 | Attribute |  Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load(). |

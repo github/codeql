@@ -1,0 +1,5 @@
+| Test.py:7:8:7:41 | Attribute() | Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue. |
+| Test.py:13:7:13:27 | Attribute() | Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue. |
+| Test.py:16:7:16:22 | Attribute | Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue. |
+| Test.py:20:7:20:31 | Attribute() | Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue. |
+| Test.py:28:7:28:23 | Attribute | Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue. |

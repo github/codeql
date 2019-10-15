@@ -1,0 +1,2 @@
+| Test.py:6:14:6:32 | __import__() | Consider possible security implications associated with Popen module |
+| Test.py:19:5:19:33 | Attribute() | Consider possible security implications associated with Popen module |

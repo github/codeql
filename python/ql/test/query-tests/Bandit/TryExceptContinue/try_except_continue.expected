@@ -1,0 +1,3 @@
+| Test.py:6:9:6:16 | Continue | Try, Except, Continue detected. |
+| Test.py:14:9:14:16 | Continue | Try, Except, Continue detected. |
+| Test.py:22:9:22:16 | Continue | Try, Except, Continue detected. |

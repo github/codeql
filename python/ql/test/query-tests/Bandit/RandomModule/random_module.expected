@@ -1,0 +1,6 @@
+| Test.py:5:7:5:21 | Attribute() | Standard pseudo-random generators are not suitable for security/cryptographic purposes. |
+| Test.py:6:7:6:24 | Attribute() | Standard pseudo-random generators are not suitable for security/cryptographic purposes. |
+| Test.py:7:7:7:22 | Attribute() | Standard pseudo-random generators are not suitable for security/cryptographic purposes. |
+| Test.py:8:7:8:21 | Attribute() | Standard pseudo-random generators are not suitable for security/cryptographic purposes. |
+| Test.py:9:7:9:22 | Attribute() | Standard pseudo-random generators are not suitable for security/cryptographic purposes. |
+| Test.py:10:7:10:25 | Attribute() | Standard pseudo-random generators are not suitable for security/cryptographic purposes. |

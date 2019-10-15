@@ -1,0 +1,3 @@
+| Test.py:1:6:1:26 | open() | Probable insecure usage of temp file/directory. |
+| Test.py:8:6:8:30 | open() | Probable insecure usage of temp file/directory. |
+| Test.py:11:6:11:36 | open() | Probable insecure usage of temp file/directory. |

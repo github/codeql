@@ -1,0 +1,8 @@
+| Test.py:6:1:6:26 | Attribute() | Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell |
+| Test.py:7:1:7:23 | popen() | Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell |
+| Test.py:8:1:8:25 | Attribute() | Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell |
+| Test.py:10:1:10:27 | Attribute() | Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell |
+| Test.py:11:1:11:27 | Attribute() | Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell |
+| Test.py:12:1:12:27 | Attribute() | Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell |
+| Test.py:14:1:14:37 | Attribute() | Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell |
+| Test.py:15:1:15:19 | Attribute() | Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell |

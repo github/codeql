@@ -1,0 +1,13 @@
+| Test.py:4:29:4:46 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:5:20:5:35 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:6:20:6:36 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:8:23:8:40 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:9:18:9:33 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:10:18:10:34 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:13:29:13:46 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:15:20:15:35 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:18:23:18:40 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:20:18:20:33 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:25:29:25:46 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:28:29:28:44 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |
+| Test.py:31:29:31:45 | Attribute | Function call with insecure SSL/TLS protocol identified, possible security issue. |

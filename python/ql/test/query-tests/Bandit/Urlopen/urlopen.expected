@@ -1,0 +1,5 @@
+| Test.py:22:5:22:18 | Attribute | Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected. |
+| Test.py:23:5:23:22 | Attribute | Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected. |
+| Test.py:24:14:24:29 | Attribute | Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected. |
+| Test.py:27:14:27:34 | Attribute | Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected. |
+| Test.py:38:5:38:19 | Attribute | Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected. |

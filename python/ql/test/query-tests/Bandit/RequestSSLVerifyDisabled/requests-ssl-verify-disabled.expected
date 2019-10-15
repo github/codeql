@@ -1,0 +1,7 @@
+| Test.py:4:1:4:47 | Attribute() | Requests call with verify=False disabling SSL certificate checks, security issue. |
+| Test.py:6:1:6:48 | Attribute() | Requests call with verify=False disabling SSL certificate checks, security issue. |
+| Test.py:8:1:8:47 | Attribute() | Requests call with verify=False disabling SSL certificate checks, security issue. |
+| Test.py:10:1:10:50 | Attribute() | Requests call with verify=False disabling SSL certificate checks, security issue. |
+| Test.py:12:1:12:49 | Attribute() | Requests call with verify=False disabling SSL certificate checks, security issue. |
+| Test.py:14:1:14:51 | Attribute() | Requests call with verify=False disabling SSL certificate checks, security issue. |
+| Test.py:16:1:16:48 | Attribute() | Requests call with verify=False disabling SSL certificate checks, security issue. |

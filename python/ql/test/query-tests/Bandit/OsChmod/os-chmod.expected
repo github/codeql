@@ -1,0 +1,11 @@
+| Test.py:6:1:6:30 | Attribute() | Chmod setting a permissive mask on file /etc/passwd |
+| Test.py:7:1:7:28 | Attribute() | Chmod setting a permissive mask on file /etc/passwd |
+| Test.py:8:1:8:30 | Attribute() | Chmod setting a permissive mask on file /etc/passwd |
+| Test.py:9:1:9:30 | Attribute() | Chmod setting a permissive mask on file /etc/passwd |
+| Test.py:10:1:10:30 | Attribute() | Chmod setting a permissive mask on file /etc/passwd |
+| Test.py:11:1:11:30 | Attribute() | Chmod setting a permissive mask on file /etc/passwd |
+| Test.py:12:1:12:30 | Attribute() | Chmod setting a permissive mask on file /etc/passwd |
+| Test.py:13:1:13:26 | Attribute() | Chmod setting a permissive mask on file ~/.bashrc |
+| Test.py:14:1:14:29 | Attribute() | Chmod setting a permissive mask on file /etc/hosts |
+| Test.py:15:1:15:30 | Attribute() | Chmod setting a permissive mask on file /tmp/oh_hai |
+| Test.py:16:1:16:37 | Attribute() | Chmod setting a permissive mask on file /etc/passwd |

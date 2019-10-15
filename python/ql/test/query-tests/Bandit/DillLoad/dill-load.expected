@@ -1,0 +1,2 @@
+| Test.py:6:7:6:22 | Attribute() | Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue. |
+| Test.py:11:7:11:25 | Attribute() | Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue. |

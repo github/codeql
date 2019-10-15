@@ -1,0 +1,4 @@
+| Test.py:5:5:5:8 | Pass | Try, Except, Pass detected. |
+| Test.py:12:5:12:8 | Pass | Try, Except, Pass detected. |
+| Test.py:19:5:19:8 | Pass | Try, Except, Pass detected. |
+| Test.py:35:5:35:8 | Pass | Try, Except, Pass detected. |

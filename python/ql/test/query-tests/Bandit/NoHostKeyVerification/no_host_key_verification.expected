@@ -1,0 +1,2 @@
+| Test.py:4:40:4:59 | Attribute | Paramiko call with policy set to automatically trust the unknown host key. |
+| Test.py:5:40:5:59 | Attribute | Paramiko call with policy set to automatically trust the unknown host key. |

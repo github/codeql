@@ -1,0 +1,4 @@
+| Test.py:5:1:5:27 | Attribute() | Possible wildcard injection in call: system |
+| Test.py:6:1:6:24 | Attribute() | Possible wildcard injection in call: system |
+| Test.py:7:1:7:24 | Attribute() | Possible wildcard injection in call: popen2 |
+| Test.py:8:1:8:38 | Attribute() | Possible wildcard injection in call: Popen |

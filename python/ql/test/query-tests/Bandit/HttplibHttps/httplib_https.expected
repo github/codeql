@@ -1,0 +1,3 @@
+| Test.py:2:5:2:27 | Attribute | Use of HTTPSConnection on older versions of Python prior to 2.7.9 and 3.4.3 do not provide security |
+| Test.py:5:5:5:31 | Attribute | Use of HTTPSConnection on older versions of Python prior to 2.7.9 and 3.4.3 do not provide security |
+| Test.py:8:1:8:37 | Attribute | Use of HTTPSConnection on older versions of Python prior to 2.7.9 and 3.4.3 do not provide security |

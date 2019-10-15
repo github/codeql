@@ -1,0 +1,1 @@
+| Test.py:7:1:7:48 | Attribute() | Possible shell injection via Paramiko call, check inputs are properly sanitized. |

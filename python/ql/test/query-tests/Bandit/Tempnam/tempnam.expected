@@ -1,0 +1,6 @@
+| Test.py:5:1:5:11 | Attribute() | Use of os.tempnam() and os.tmpnam() is vulnerable to symlink attacks. Consider using tmpfile() instead. |
+| Test.py:7:1:7:8 | tmpnam() | Use of os.tempnam() and os.tmpnam() is vulnerable to symlink attacks. Consider using tmpfile() instead. |
+| Test.py:9:1:9:18 | Attribute() | Use of os.tempnam() and os.tmpnam() is vulnerable to symlink attacks. Consider using tmpfile() instead. |
+| Test.py:10:1:10:29 | Attribute() | Use of os.tempnam() and os.tmpnam() is vulnerable to symlink attacks. Consider using tmpfile() instead. |
+| Test.py:12:1:12:15 | tempnam() | Use of os.tempnam() and os.tmpnam() is vulnerable to symlink attacks. Consider using tmpfile() instead. |
+| Test.py:13:1:13:26 | tempnam() | Use of os.tempnam() and os.tmpnam() is vulnerable to symlink attacks. Consider using tmpfile() instead. |

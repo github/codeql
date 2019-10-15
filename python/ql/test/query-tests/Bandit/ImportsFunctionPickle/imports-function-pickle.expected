@@ -1,0 +1,2 @@
+| Test.py:4:10:4:29 | __import__() | Consider possible security implications associated with pickle module |
+| Test.py:17:5:17:37 | Attribute() | Consider possible security implications associated with pickle module |

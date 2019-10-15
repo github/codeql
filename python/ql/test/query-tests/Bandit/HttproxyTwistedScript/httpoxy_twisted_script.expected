@@ -1,0 +1,1 @@
+| Test.py:5:28:5:42 | Attribute | Consider possible security implications associated with twisted.web.twcgi.CGIScript module. |

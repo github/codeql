@@ -1,0 +1,3 @@
+| Test.py:3:7:3:17 | eval() | Use of possibly insecure function - consider using safer ast.literal_eval. |
+| Test.py:4:7:4:25 | eval() | Use of possibly insecure function - consider using safer ast.literal_eval. |
+| Test.py:5:7:5:47 | eval() | Use of possibly insecure function - consider using safer ast.literal_eval. |

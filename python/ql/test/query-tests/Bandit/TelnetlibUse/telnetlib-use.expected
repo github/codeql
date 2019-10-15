@@ -1,0 +1,1 @@
+| Test.py:8:6:8:21 | Attribute | Telnet-related functions are being called. Telnet is considered insecure. Use SSH or some other encrypted protocol. |

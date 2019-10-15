@@ -1,0 +1,1 @@
+| Test.py:1:1:1:7 | input() | The input method in Python 2 will read from standard input, evaluate and run the resulting string as python source code.  |

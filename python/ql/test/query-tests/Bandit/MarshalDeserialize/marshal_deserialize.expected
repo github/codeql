@@ -1,0 +1,2 @@
+| Test.py:6:7:6:31 | Attribute() | Deserialization with the marshal module is possibly dangerous. |
+| Test.py:11:7:11:28 | Attribute() | Deserialization with the marshal module is possibly dangerous. |
