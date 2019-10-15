@@ -512,7 +512,7 @@ private class Spec extends Pos {
   predicate isBarrier() { this = 7 }
 
   Pos getSourcePos() {
-    this = [0..4] and
+    this = [0 .. 4] and
     result = this
     or
     this.isAround() and
@@ -523,7 +523,7 @@ private class Spec extends Pos {
   }
 
   Pos getTargetPos() {
-    this = [0..4] and
+    this = [0 .. 4] and
     result = this
     or
     this.isAround() and
