@@ -1,7 +1,7 @@
 /**
  * @name Try, Except, Pass detected.
  * @description Try, Except, Pass detected.
- * 		https://bandit.readthedocs.io/en/latest/plugins/b110_try_except_pass.html
+ *         https://bandit.readthedocs.io/en/latest/plugins/b110_try_except_pass.html
  * @kind problem
  * @tags security
  * @problem.severity info

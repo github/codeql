@@ -1,7 +1,7 @@
 /**
  * @name Consider using tmpfile() 
  * @description Use of os.tempnam() and os.tmpnam() is vulnerable to symlink attacks. Consider using tmpfile() instead.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b325-tempnam
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b325-tempnam
  * @kind problem
  * @tags security
  * @problem.severity recommendation

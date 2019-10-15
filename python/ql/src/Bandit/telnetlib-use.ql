@@ -1,7 +1,7 @@
 /**
  * @name Telnet-related functions are being called.
  * @description Telnet is considered insecure. Use SSH/SFTP/SCP or some other encrypted protocol.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b312-telnetlib
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b312-telnetlib
  * @kind problem
  * @tags security
  * @problem.severity error

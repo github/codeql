@@ -1,7 +1,7 @@
 /**
  * @name  Security implications associated with pickle module.
  * @description Consider possible security implications associated with subprocess module.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b404-import-subprocess
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b404-import-subprocess
  * @kind problem
  * @tags security
  * @problem.severity recommendation

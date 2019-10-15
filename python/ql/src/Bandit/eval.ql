@@ -1,7 +1,7 @@
 /**
  * @name Use of possibly insecure function
  * @description Use of possibly insecure function - consider using safer ast.literal_eval.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b307-eval
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b307-eval
  * @kind problem
  * @tags security
  * @problem.severity warning

@@ -1,7 +1,7 @@
 /**
  * @name Audit url open for permitted schemes
  * @description Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b310-urllib-urlopen
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b310-urllib-urlopen
  * @kind problem
  * @tags security
  * @problem.severity recommendation

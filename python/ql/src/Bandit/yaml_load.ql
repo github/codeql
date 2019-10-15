@@ -1,7 +1,7 @@
 /**
  * @name Use of unsafe yaml load.
  * @description Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().
- * 		 https://bandit.readthedocs.io/en/latest/plugins/b506_yaml_load.html
+ *          https://bandit.readthedocs.io/en/latest/plugins/b506_yaml_load.html
  * @kind problem
  * @tags security
  * @problem.severity recommendation

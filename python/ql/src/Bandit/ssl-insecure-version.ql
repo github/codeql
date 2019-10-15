@@ -1,7 +1,7 @@
 /**
  * @name Insecure SSL/TLS protocol
  * @description Function call with insecure SSL/TLS protocol identified, possible security issue
- * 		https://bandit.readthedocs.io/en/latest/plugins/b502_ssl_with_bad_version.html
+ *         https://bandit.readthedocs.io/en/latest/plugins/b502_ssl_with_bad_version.html
  * @kind problem
  * @tags security
  * @problem.severity warning

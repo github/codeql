@@ -1,7 +1,7 @@
 /**
  * @name Automatically trust the unknown host key.
  * @description Paramiko call with policy set to automatically trust the unknown host key.
- * 		https://bandit.readthedocs.io/en/latest/plugins/b507_ssh_no_host_key_verification.html
+ *         https://bandit.readthedocs.io/en/latest/plugins/b507_ssh_no_host_key_verification.html
  * @kind problem
  * @tags security
  * @problem.severity error

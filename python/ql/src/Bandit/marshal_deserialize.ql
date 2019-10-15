@@ -1,7 +1,7 @@
 /**
  * @name  Deserialization with the marshal module is possibly dangerous.
  * @description Deserialization with the marshal module is possibly dangerous.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b302-marshal
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b302-marshal
  * @kind problem
  * @tags security
  * @problem.severity warning

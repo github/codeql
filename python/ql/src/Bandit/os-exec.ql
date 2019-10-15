@@ -1,7 +1,7 @@
 /**
  * @name  Starting a process without a shell.
  * @description  Starting a process without a shell.
- * 		https://bandit.readthedocs.io/en/latest/plugins/b606_start_process_with_no_shell.html
+ *         https://bandit.readthedocs.io/en/latest/plugins/b606_start_process_with_no_shell.html
  * @kind problem
  * @tags security
  * @problem.severity recommendation

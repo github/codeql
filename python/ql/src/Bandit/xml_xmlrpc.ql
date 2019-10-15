@@ -1,8 +1,8 @@
 /**
  * @name Dp not use xmlrpclib
  * @description Using xmlrpclib to parse untrusted XML data is known to be vulnerable to XML attacks. 
- * 				Use defused.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b411-import-xmlrpclib
+ *                 Use defused.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b411-import-xmlrpclib
  * @kind problem
  * @tags security
  * @problem.severity error

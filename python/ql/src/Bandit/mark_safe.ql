@@ -1,8 +1,8 @@
 /**
  * @name Use of mark_safe() should be reviewed
  * @description Use of mark_safe() may expose cross-site scripting vulnerabilities and should be reviewed.
- * 				This is similar, though in many ways worse, then using eval. On Python 2, use raw_input instead, input is safe in Python 3.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b308-mark-safe
+ *                 This is similar, though in many ways worse, then using eval. On Python 2, use raw_input instead, input is safe in Python 3.
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b308-mark-safe
  * @kind problem
  * @tags security
  * @problem.severity recommendation

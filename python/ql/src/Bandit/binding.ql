@@ -1,7 +1,7 @@
 /**
  * @name Possible binding to all interfaces.
  * @description Possible binding to all interfaces.
- * 		https://bandit.readthedocs.io/en/latest/plugins/b104_hardcoded_bind_all_interfaces.html
+ *         https://bandit.readthedocs.io/en/latest/plugins/b104_hardcoded_bind_all_interfaces.html
  * @kind problem
  * @tags reliability
  *       security
@@ -16,7 +16,7 @@ import semmle.python.security.TaintTracking
 
 
 predicate interfaceBinding(ControlFlowNode f) {
-  exists(Tuple p | p = f.getNode() | p.getElt(0).(StrConst).getText() = "0.0.0.0" )	
+  exists(Tuple p | p = f.getNode() | p.getElt(0).(StrConst).getText() = "0.0.0.0" )    
 }
 
 class BindingTuple extends TaintKind {

@@ -1,7 +1,7 @@
 /**
  * @name Pseudo-random generators are not suitable for security
  * @description Standard pseudo-random generators are not suitable for security/cryptographic purposes.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b311-random
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b311-random
  * @kind problem
  * @tags security
  * @problem.severity recommendation
@@ -23,5 +23,5 @@ where isObjectAttribute(e, "random", "random")
    or isObjectAttribute(e, "random", "choice")
    or isObjectAttribute(e, "random", "uniform")
    or isObjectAttribute(e, "random", "triangular")
-   			 
+                
 select e, "Standard pseudo-random generators are not suitable for security/cryptographic purposes."

@@ -1,7 +1,7 @@
 /**
  * @name  Security implications associated with Popen module.
  * @description Consider possible security implications associated with Popen module.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b404-import-subprocess
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b404-import-subprocess
  * @kind problem
  * @tags security
  * @problem.severity recommendation

@@ -1,7 +1,7 @@
 /**
  * @name FTP-related functions are being called.
  * @description FTP is considered insecure. Use SSH/SFTP/SCP or some other encrypted protocol.
- * 		https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b321-ftplib
+ *         https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b321-ftplib
  * @kind problem
  * @tags security
  * @problem.severity error
