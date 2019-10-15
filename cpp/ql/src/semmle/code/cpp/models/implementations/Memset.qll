@@ -39,15 +39,17 @@ class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction, Sid
   override predicate parameterIsAlwaysReturned(int index) {
     not hasGlobalName("bzero") and index = 0
   }
-  
+
   override predicate hasOnlySpecificReadSideEffects() { any() }
+
   override predicate hasOnlySpecificWriteSideEffects() { any() }
-  
+
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = 0 and buffer = true and mustWrite = true
   }
-  
-  override ParameterIndex getParameterSizeIndex(ParameterIndex i) { 
-  	i = 0 and if hasGlobalName("bzero") then result = 1 else result = 2
+
+  override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
+    i = 0 and
+    if hasGlobalName("bzero") then result = 1 else result = 2
   }
 }
