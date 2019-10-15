@@ -399,7 +399,7 @@ For example, you can use monotonic aggregates :ref:`recursively <recursion>`.
 You can't do this with normal aggregates.
 
 For more information and examples, see `Monotonic aggregates in QL 
-<https://help.semmle.com/QL/learn-ql/ql/advanced/monotonic-aggregates.html>`_.
+<https://help.semmle.com/QL/learn-ql/advanced/monotonic-aggregates.html>`_.
 
 .. TODO: Eventually replace this link with just the relevant examples.
    (Some of the content is a duplicate of the above discussion on aggregates.)
