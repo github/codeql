@@ -120,7 +120,15 @@ module InstructionSanity {
     )
   }
 
-  query predicate duplicateChiOperand(ChiInstruction chi) { chi.getTotal() = chi.getPartial() }
+  query predicate duplicateChiOperand(
+    ChiInstruction chi, string message, IRFunction func, string funcText
+  ) {
+    chi.getTotal() = chi.getPartial() and
+    message = "Chi instruction for " + chi.getPartial().toString() +
+        " has duplicate operands in function $@" and
+    func = chi.getEnclosingIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction())
+  }
 
   /**
    * Holds if an instruction, other than `ExitFunction`, has no successors.
