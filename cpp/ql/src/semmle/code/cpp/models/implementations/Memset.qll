@@ -2,11 +2,12 @@ import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * The standard function `memset` and its assorted variants
  */
-class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction {
+class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction, SideEffectFunction {
   MemsetFunction() {
     hasGlobalName("memset") or
     hasGlobalName("wmemset") or
@@ -37,5 +38,18 @@ class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction {
 
   override predicate parameterIsAlwaysReturned(int index) {
     not hasGlobalName("bzero") and index = 0
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = 0 and buffer = true and mustWrite = true
+  }
+
+  override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
+    i = 0 and
+    if hasGlobalName("bzero") then result = 1 else result = 2
   }
 }
