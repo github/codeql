@@ -10,7 +10,8 @@ private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * An element containing a regular expression term, that is, either
- * a regular expression literal or another regular expression term.
+ * a regular expression literal, a string literal (parsed as a regular expression),
+ * or another regular expression term.
  *
  * Examples:
  *
@@ -22,8 +23,7 @@ private import semmle.javascript.dataflow.InferredTypes
 class RegExpParent extends Locatable, @regexpparent { }
 
 /**
- * A regular expression term, that is, a syntactic part of a regular
- * expression literal.
+ * A regular expression term, that is, a syntactic part of a regular expression.
  *
  * Examples:
  *
@@ -52,7 +52,7 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
    */
   RegExpParent getParent() { regexpterm(this, _, result, _, _) }
 
-  /** Gets the regular expression literal this term belongs to. */
+  /** Gets the regular expression literal this term belongs to, if any. */
   RegExpLiteral getLiteral() { result = getParent+() }
 
   override string toString() { regexpterm(this, _, _, _, result) }
@@ -141,7 +141,7 @@ abstract class RegExpEscape extends RegExpTerm, @regexp_escape { }
  * Example:
  *
  * ```
- * a
+ * abc
  * ```
  */
 class RegExpConstant extends RegExpTerm, @regexp_constant {
@@ -209,7 +209,7 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
  * (ECMA|Java)Script
  * ```
  *
- * This is a sequence with elements `(ECMA|Java)`, `S`, `c`, `r`, `i`, `p` and `t`.
+ * This is a sequence with the elements `(ECMA|Java)` and `Script`.
  */
 class RegExpSequence extends RegExpTerm, @regexp_seq {
   /** Gets an element of this sequence. */
@@ -472,15 +472,25 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
 }
 
 /**
- * A normal character without special meaning in a regular expression.
+ * A sequence of normal characters without special meaning in a regular expression.
  *
  * Example:
  *
  * ```
+ * abc
  * ;
  * ```
  */
-class RegExpNormalChar extends RegExpConstant, @regexp_normal_char { }
+class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant { }
+
+/**
+ * DEPRECATED. Use `RegExpNormalConstant` instead.
+ *
+ * This class used to represent an individual normal character but has been superceded by
+ * `RegExpNormalConstant`, which represents a sequence of normal characters.
+ * There is no longer a separate node for each individual character in a constant.
+ */
+deprecated class RegExpNormalChar = RegExpNormalConstant;
 
 /**
  * A hexadecimal character escape in a regular expression.

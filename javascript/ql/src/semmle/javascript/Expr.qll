@@ -409,6 +409,9 @@ class BigIntLiteral extends @bigintliteral, Literal {
  */
 class StringLiteral extends @stringliteral, Literal {
   override string getStringValue() { result = getValue() }
+
+  /** Gets the value of this string literal parsed as a regular expression. */
+  RegExpTerm asRegExp() { this = result.getParent() }
 }
 
 /**

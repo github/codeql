@@ -832,7 +832,7 @@ case @regexpterm.kind of
 | 11 = @regexp_range
 | 12 = @regexp_dot
 | 13 = @regexp_group
-| 14 = @regexp_normal_char
+| 14 = @regexp_normal_constant
 | 15 = @regexp_hex_escape
 | 16 = @regexp_unicode_escape
 | 17 = @regexp_dec_escape
@@ -854,7 +854,7 @@ regexpParseErrors (unique int id: @regexp_parse_error,
 @regexp_quantifier = @regexp_star | @regexp_plus | @regexp_opt | @regexp_range;
 @regexp_escape = @regexp_char_escape | @regexp_char_class_escape | @regexp_unicode_property_escape;
 @regexp_char_escape = @regexp_hex_escape | @regexp_unicode_escape | @regexp_dec_escape | @regexp_oct_escape | @regexp_ctrl_escape | @regexp_id_escape;
-@regexp_constant = @regexp_normal_char | @regexp_char_escape;
+@regexp_constant = @regexp_normal_constant | @regexp_char_escape;
 @regexp_lookahead = @regexp_positive_lookahead | @regexp_negative_lookahead;
 @regexp_lookbehind = @regexp_positive_lookbehind | @regexp_negative_lookbehind;
 @regexp_subpattern = @regexp_lookahead | @regexp_lookbehind;
