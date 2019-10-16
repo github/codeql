@@ -46,6 +46,9 @@ class RegExpTerm extends Locatable, @regexpterm {
   /** Gets the number of child terms of this term. */
   int getNumChild() { result = count(getAChild()) }
 
+  /** Gets the last child term of this term. */
+  RegExpTerm getLastChild() { result = getChild(getNumChild() - 1) }
+
   /**
    * Gets the parent term of this regular expression term, or the
    * regular expression literal if this is the root term.
@@ -267,6 +270,20 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
 }
 
 /**
+ * A dollar `$` or caret assertion `^` matching the beginning or end of a line.
+ *
+ * Example:
+ *
+ * ```
+ * ^
+ * $
+ * ```
+ */
+class RegExpAnchor extends RegExpTerm, @regexp_anchor {
+  override predicate isNullable() { any() }
+}
+
+/**
  * A caret assertion `^` matching the beginning of a line.
  *
  * Example:
@@ -275,8 +292,7 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
  * ^
  * ```
  */
-class RegExpCaret extends RegExpTerm, @regexp_caret {
-  override predicate isNullable() { any() }
+class RegExpCaret extends RegExpAnchor, @regexp_caret {
 }
 
 /**
@@ -288,8 +304,7 @@ class RegExpCaret extends RegExpTerm, @regexp_caret {
  * $
  * ```
  */
-class RegExpDollar extends RegExpTerm, @regexp_dollar {
-  override predicate isNullable() { any() }
+class RegExpDollar extends RegExpAnchor, @regexp_dollar {
 }
 
 /**
@@ -814,26 +829,26 @@ abstract class RegExpPatternSource extends DataFlow::Node {
    * of this node.
    */
   abstract DataFlow::SourceNode getARegExpObject();
+
+  abstract RegExpTerm getRegExpTerm();
 }
 
 /**
  * A regular expression literal, viewed as the pattern source for itself.
  */
-private class RegExpLiteralPatternSource extends RegExpPatternSource {
-  string pattern;
-
-  RegExpLiteralPatternSource() {
-    exists(string raw | raw = asExpr().(RegExpLiteral).getRoot().getRawValue() |
-      // hide the fact that `/` is escaped in the literal
-      pattern = raw.regexpReplaceAll("\\\\/", "/")
-    )
-  }
+private class RegExpLiteralPatternSource extends RegExpPatternSource, DataFlow::ValueNode {
+  override RegExpLiteral astNode;
 
   override DataFlow::Node getAParse() { result = this }
 
-  override string getPattern() { result = pattern }
+  override string getPattern() {
+    // hide the fact that `/` is escaped in the literal
+    result = astNode.getRoot().getRawValue().regexpReplaceAll("\\\\/", "/")
+  }
 
   override DataFlow::SourceNode getARegExpObject() { result = this }
+
+  override RegExpTerm getRegExpTerm() { result = astNode.getRoot() }
 }
 
 /**
@@ -856,4 +871,6 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
   }
 
   override string getPattern() { result = getStringValue() }
+
+  override RegExpTerm getRegExpTerm() { result = asExpr().(StringLiteral).asRegExp() }
 }

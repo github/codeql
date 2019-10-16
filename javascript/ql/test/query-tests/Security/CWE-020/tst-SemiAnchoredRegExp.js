@@ -29,9 +29,9 @@
 
 	/^good.com|better.com/; // NOT OK
 	/^good\.com|better\.com/; // NOT OK
-	/^good\\.com|better\\.com/;
-	/^good\\\.com|better\\\.com/;
-	/^good\\\\.com|better\\\\.com/;
+	/^good\\.com|better\\.com/; // NOT OK
+	/^good\\\.com|better\\\.com/; // NOT OK
+	/^good\\\\.com|better\\\\.com/; // NOT OK
 });
 
 (function coreString() {
@@ -67,7 +67,7 @@
 	new RegExp('^good\.com|better\.com'); // NOT OK
 	new RegExp('^good\\.com|better\\.com'); // NOT OK
 	new RegExp('^good\\\.com|better\\\.com'); // NOT OK
-	new RegExp('^good\\\\.com|better\\\\.com');
+	new RegExp('^good\\\\.com|better\\\\.com'); // NOT OK
 });
 
 (function realWorld() {
@@ -80,14 +80,14 @@
 	/(^left|right|center)\sbottom$/; // not flagged at the moment due to multiple anchors
 	/\.xxx|\.yyy|\.zzz$/ig;
 	/\.xxx|\.yyy|zzz$/;
-	/^(?:mouse|contextmenu)|click/; // not flagged at the moment due to nested alternatives
+	/^(?:mouse|contextmenu)|click/;
 	/^([A-Z]|xxx[XY]$)/; // not flagged at the moment due to multiple anchors
 	/^(xxx yyy zzz)|(xxx yyy)/i;
-	/^(xxx yyy zzz)|(xxx yyy)|(1st( xxx)? yyy)|xxx|1st/i; // not flagged at the moment due to nested parens
+	/^(xxx yyy zzz)|(xxx yyy)|(1st( xxx)? yyy)|xxx|1st/i;
 	/^(xxx:)|(yyy:)|(zzz:)/;
 	/^(xxx?:)|(yyy:zzz\/)/;
 	/^@media|@page/;
-	/^\s*(xxx?|yyy|zzz):|xxx:yyy\//; // not flagged at the moment due to quantifiers
+	/^\s*(xxx?|yyy|zzz):|xxx:yyy\//;
 	/^click|mouse|touch/;
 	/^http:\/\/good\.com|http:\/\/better\.com/;
 	/^https?:\/\/good\.com|https?:\/\/better\.com/;

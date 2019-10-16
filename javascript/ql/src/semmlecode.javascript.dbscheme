@@ -858,6 +858,7 @@ regexpParseErrors (unique int id: @regexp_parse_error,
 @regexp_lookahead = @regexp_positive_lookahead | @regexp_negative_lookahead;
 @regexp_lookbehind = @regexp_positive_lookbehind | @regexp_negative_lookbehind;
 @regexp_subpattern = @regexp_lookahead | @regexp_lookbehind;
+@regexp_anchor = @regexp_dollar | @regexp_caret;
 
 isGreedy (int id: @regexp_quantifier ref);
 rangeQuantifierLowerBound (unique int id: @regexp_range ref, int lo: int ref);
