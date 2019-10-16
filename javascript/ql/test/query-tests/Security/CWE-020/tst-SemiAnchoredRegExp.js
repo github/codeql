@@ -32,6 +32,9 @@
 	/^good\\.com|better\\.com/; // NOT OK
 	/^good\\\.com|better\\\.com/; // NOT OK
 	/^good\\\\.com|better\\\\.com/; // NOT OK
+
+
+
 });
 
 (function coreString() {
