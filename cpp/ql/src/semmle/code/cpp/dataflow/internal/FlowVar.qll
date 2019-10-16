@@ -490,7 +490,7 @@ module FlowVar_internal {
       exists(VariableAccess va |
         va.getTarget() = result and
         readAccess(va) and
-        bbNotInLoop(va.getBasicBlock())
+        exists(BasicBlock bb | bb = va.getBasicBlock() | not this.bbInLoop(bb))
       )
     }
 
@@ -513,10 +513,8 @@ module FlowVar_internal {
       bbInLoopCondition(bb)
     }
 
-    predicate bbNotInLoop(BasicBlock bb) {
-      not this.bbInLoop(bb) and
-      bb.getEnclosingFunction() = this.getEnclosingFunction()
-    }
+    /** Holds if `sbb` is inside this loop. */
+    predicate sbbInLoop(SubBasicBlock sbb) { this.bbInLoop(sbb.getBasicBlock()) }
 
     /**
      * Holds if `bb` is a basic block inside this loop where `v` has not been
@@ -537,22 +535,19 @@ module FlowVar_internal {
   }
 
   /**
-   * Holds if some loop always assigns to `v` before leaving through an edge
-   * from `bbInside` in its condition to `bbOutside` outside the loop, where
-   * (`sbbDef`, `v`) is a `BlockVar` defined outside the loop. Also, `v` must
-   * be used outside the loop.
+   * Holds if `loop` always assigns to `v` before leaving through an edge
+   * from `bbInside` in its condition to `bbOutside` outside the loop. Also,
+   * `v` must be used outside the loop.
    */
   predicate skipLoop(
-    SubBasicBlock sbbInside, SubBasicBlock sbbOutside, SubBasicBlock sbbDef, Variable v
+    SubBasicBlock sbbInside, SubBasicBlock sbbOutside, Variable v, AlwaysTrueUponEntryLoop loop
   ) {
-    exists(AlwaysTrueUponEntryLoop loop, BasicBlock bbInside, BasicBlock bbOutside |
+    exists(BasicBlock bbInside, BasicBlock bbOutside |
       loop.alwaysAssignsBeforeLeavingCondition(bbInside, bbOutside, v) and
       bbInside = sbbInside.getBasicBlock() and
       bbOutside = sbbOutside.getBasicBlock() and
       sbbInside.lastInBB() and
-      sbbOutside.firstInBB() and
-      loop.bbNotInLoop(sbbDef.getBasicBlock()) and
-      exists(TBlockVar(sbbDef, v))
+      sbbOutside.firstInBB()
     )
   }
 
@@ -571,7 +566,7 @@ module FlowVar_internal {
       start = TBlockVar(sbbDef, v) and
       result = mid.getASuccessor() and
       variableLiveInSBB(result, v) and
-      not skipLoop(mid, result, sbbDef, v) and
+      forall(AlwaysTrueUponEntryLoop loop | skipLoop(mid, result, v, loop) | loop.sbbInLoop(sbbDef)) and
       not assignmentLikeOperation(result, v, _, _)
     )
   }
@@ -679,10 +674,11 @@ module FlowVar_internal {
   predicate dominatedByOverwrite(UninitializedLocalVariable v, VariableAccess va) {
     exists(BasicBlock bb, int vaIndex |
       va = bb.getNode(vaIndex) and
-      va.getTarget() = v
-    |
+      va.getTarget() = v and
       vaIndex > indexOfFirstOverwriteInBB(v, bb)
       or
+      va = bb.getNode(vaIndex) and
+      va.getTarget() = v and
       bbStrictlyDominates(getAnOverwritingBB(v), bb)
     )
   }

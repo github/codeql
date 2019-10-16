@@ -269,6 +269,16 @@ class AddressOperand extends RegisterOperand {
 }
 
 /**
+ * The buffer size operand of an instruction that represents a read or write of
+ * a buffer.
+ */
+class BufferSizeOperand extends RegisterOperand {
+  override BufferSizeOperandTag tag;
+
+  override string toString() { result = "BufferSize" }
+}
+
+/**
  * The source value operand of an instruction that loads a value from memory (e.g. `Load`,
  * `ReturnValue`, `ThrowValue`).
  */
@@ -398,10 +408,10 @@ class SideEffectOperand extends TypedOperand {
     useInstr instanceof BufferReadSideEffectInstruction and
     result instanceof BufferMemoryAccess
     or
-    useInstr instanceof IndirectWriteSideEffectInstruction and
+    useInstr instanceof IndirectMustWriteSideEffectInstruction and
     result instanceof IndirectMemoryAccess
     or
-    useInstr instanceof BufferWriteSideEffectInstruction and
+    useInstr instanceof BufferMustWriteSideEffectInstruction and
     result instanceof BufferMemoryAccess
     or
     useInstr instanceof IndirectMayWriteSideEffectInstruction and

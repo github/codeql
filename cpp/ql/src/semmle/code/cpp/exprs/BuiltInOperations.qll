@@ -519,3 +519,18 @@ class BuiltInChooseExpr extends BuiltInOperation, @builtinchooseexpr {
 class VectorFillOperation extends UnaryOperation, @vec_fill {
   override string getOperator() { result = "(vector fill)" }
 }
+
+/**
+ * The GNU `__builtin_complex` operation.
+ */
+class BuiltInComplexOperation extends BuiltInOperation, @builtincomplex {
+  override string toString() { result = "__builtin_complex" }
+
+  override string getCanonicalQLClass() { result = "BuiltInComplexOperation" }
+
+  /** Gets the operand corresponding to the real part of the complex number. */
+  Expr getRealOperand() { this.hasChild(result, 0) }
+
+  /** Gets the operand corresponding to the imaginary part of the complex number. */
+  Expr getImaginaryOperand() { this.hasChild(result, 1) }
+}

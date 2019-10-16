@@ -1158,4 +1158,12 @@ void VectorTypes(int i) {
   vi4 = vi4 + vi4_shuffle;
 }
 
+void *memcpy(void *dst, void *src, int size);
+
+int ModeledCallTarget(int x) {
+  int y;
+  memcpy(&y, &x, sizeof(int));
+  return y;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

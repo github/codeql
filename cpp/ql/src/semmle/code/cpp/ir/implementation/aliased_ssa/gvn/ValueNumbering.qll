@@ -136,14 +136,14 @@ private predicate variableAddressValueNumber(
   VariableAddressInstruction instr, IRFunction irFunc, IRVariable var
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getVariable() = var
+  instr.getIRVariable() = var
 }
 
 private predicate initializeParameterValueNumber(
   InitializeParameterInstruction instr, IRFunction irFunc, IRVariable var
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getVariable() = var
+  instr.getIRVariable() = var
 }
 
 private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRFunction irFunc) {

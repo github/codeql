@@ -741,7 +741,6 @@ module ControlFlow {
         TLastRecBooleanNegationCompletion() or
         TLastRecNonBooleanCompletion() or
         TLastRecBreakCompletion() or
-        TLastRecNonBreakCompletion() or
         TLastRecSwitchAbnormalCompletion() or
         TLastRecInvalidOperationException() or
         TLastRecNonContinueCompletion() or
@@ -947,12 +946,6 @@ module ControlFlow {
               result = cs.getCondition() and
               c = specificBoolean(false)
             )
-            or
-            // Last statement exits with any non-break completion
-            exists(int last | last = max(int i | exists(ss.getStmt(i))) |
-              result = ss.getStmt(last) and
-              c = TRec(TLastRecNonBreakCompletion())
-            )
           )
         or
         cfe = any(SwitchExpr se |
@@ -1155,10 +1148,6 @@ module ControlFlow {
           rec = TLastRecBreakCompletion() and
           c0 instanceof BreakCompletion and
           c instanceof BreakNormalCompletion
-          or
-          rec = TLastRecNonBreakCompletion() and
-          not c0 instanceof BreakCompletion and
-          c = c0
           or
           rec = TLastRecSwitchAbnormalCompletion() and
           not c instanceof BreakCompletion and

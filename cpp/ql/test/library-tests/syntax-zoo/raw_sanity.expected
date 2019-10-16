@@ -27,7 +27,7 @@ instructionWithoutSuccessor
 | assume0.cpp:7:2:7:2 | CallSideEffect: call to f |
 | assume0.cpp:9:11:9:11 | Constant: (bool)... |
 | condition_decls.cpp:16:19:16:20 | CallSideEffect: call to BoxedInt |
-| condition_decls.cpp:26:19:26:19 | CallSideEffect: call to operator int |
+| condition_decls.cpp:26:19:26:20 | IndirectMayWriteSideEffect: bi |
 | condition_decls.cpp:26:23:26:24 | CallSideEffect: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | CallSideEffect: call to BoxedInt |
 | condition_decls.cpp:48:52:48:53 | CallSideEffect: call to BoxedInt |
@@ -617,12 +617,14 @@ useNotDominatedByDefinition
 | assume0.cpp:11:2:11:2 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | assume0.cpp:5:6:5:6 | IR: h | void h() |
 | condition_decls.cpp:16:15:16:15 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:16:15:16:16 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
+| condition_decls.cpp:16:15:16:16 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:17:5:17:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:17:11:17:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:20:5:20:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:20:11:20:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:26:19:26:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
 | condition_decls.cpp:26:19:26:20 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
+| condition_decls.cpp:26:19:26:20 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
 | condition_decls.cpp:28:5:28:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
 | condition_decls.cpp:28:11:28:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
 | condition_decls.cpp:31:5:31:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
@@ -631,14 +633,17 @@ useNotDominatedByDefinition
 | condition_decls.cpp:34:9:34:13 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
 | condition_decls.cpp:41:18:41:18 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
 | condition_decls.cpp:41:18:41:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
+| condition_decls.cpp:41:18:41:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
 | condition_decls.cpp:42:5:42:7 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
 | condition_decls.cpp:44:3:44:5 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
 | condition_decls.cpp:48:48:48:48 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
 | condition_decls.cpp:48:48:48:49 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
+| condition_decls.cpp:48:48:48:49 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
 | condition_decls.cpp:48:56:48:61 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
 | condition_decls.cpp:49:5:49:7 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
 | condition_decls.cpp:51:3:51:5 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
 | cpp11.cpp:28:21:28:21 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | cpp11.cpp:27:7:27:14 | IR: getFirst | int range_based_for_11::getFirst() |
+| file://:0:0:0:0 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | cpp11.cpp:27:7:27:14 | IR: getFirst | int range_based_for_11::getFirst() |
 | misc.c:68:16:68:16 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
 | misc.c:70:13:70:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
 | misc.c:72:11:72:11 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |

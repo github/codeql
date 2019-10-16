@@ -256,6 +256,14 @@ private module Cached {
   }
 
   cached
+  int getInstructionIndex(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instruction, element, tag) and
+      result = element.getInstructionIndex(tag)
+    )
+  }
+
+  cached
   StringLiteral getInstructionStringLiteral(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction)
           .getInstructionStringLiteral(getInstructionTag(instruction))

@@ -19,8 +19,8 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction {
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isInParameter(0) and
-    output.isOutReturnValue()
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -31,19 +31,19 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction {
         name = "_mbsncat" or
         name = "_mbsncat_l"
       ) and
-      input.isInParameter(2) and
-      output.isOutParameterPointer(0)
+      input.isParameter(2) and
+      output.isParameterDeref(0)
       or
       name = "_mbsncat_l" and
-      input.isInParameter(3) and
-      output.isOutParameterPointer(0)
+      input.isParameter(3) and
+      output.isParameterDeref(0)
     )
     or
-    input.isInParameterPointer(0) and
-    output.isOutParameterPointer(0)
+    input.isParameterDeref(0) and
+    output.isParameterDeref(0)
     or
-    input.isInParameter(1) and
-    output.isOutParameterPointer(0)
+    input.isParameter(1) and
+    output.isParameterDeref(0)
   }
 
   override predicate hasArrayInput(int param) {

@@ -318,12 +318,17 @@ private module Cached {
   IRVariable getInstructionVariable(Instruction instruction) {
     result = getNewIRVariable(getOldInstruction(instruction)
             .(OldIR::VariableInstruction)
-            .getVariable())
+            .getIRVariable())
   }
 
   cached
   Language::Field getInstructionField(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::FieldInstruction).getField()
+  }
+
+  cached
+  int getInstructionIndex(Instruction instruction) {
+    result = getOldInstruction(instruction).(OldIR::IndexedInstruction).getIndex()
   }
 
   cached

@@ -133,6 +133,12 @@ class ModuleValue extends Value {
         result = this.(PythonModuleObjectInternal).getSourceModule().getFile()
     }
 
+    /** Whether this module is imported by 'import name'. For example on a linux system,
+      * the module 'posixpath' is imported as 'os.path' or as 'posixpath' */
+    predicate importedAs(string name) {
+        PointsToInternal::module_imported_as(this, name)
+    }
+
 }
 
 module Module {
@@ -434,6 +440,11 @@ abstract class FunctionValue extends CallableValue {
 
     abstract string getQualifiedName();
 
+    /** Gets the minimum number of parameters that can be correctly passed to this function */
+    abstract int minParameters();
+
+    /** Gets the maximum number of parameters that can be correctly passed to this function */
+    abstract int maxParameters();
 }
 
 /** Class representing Python functions */
@@ -445,6 +456,23 @@ class PythonFunctionValue extends FunctionValue {
 
     override string getQualifiedName() {
         result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
+    }
+
+    override int minParameters() {
+        exists(Function f |
+            f = this.getScope() and
+            result = count(f.getAnArg()) - count(f.getDefinition().getArgs().getADefault())
+        )
+    }
+
+    override int maxParameters() {
+        exists(Function f |
+            f = this.getScope() and
+            if exists(f.getVararg()) then
+                result = 2147483647 // INT_MAX
+            else
+                result = count(f.getAnArg())
+        )
     }
 
 }
@@ -460,6 +488,13 @@ class BuiltinFunctionValue extends FunctionValue {
         result = this.(BuiltinFunctionObjectInternal).getName()
     }
 
+    override int minParameters() {
+        none()
+    }
+
+    override int maxParameters() {
+        none()
+    }
 }
 
 /** Class representing builtin methods, such as `list.append` or `set.add` */
@@ -475,6 +510,14 @@ class BuiltinMethodValue extends FunctionValue {
             cls.getMember(_) = this.(BuiltinMethodObjectInternal).getBuiltin() and
             result = cls.getName() + "." + this.getName()
         )
+    }
+
+    override int minParameters() {
+        none()
+    }
+
+    override int maxParameters() {
+        none()
     }
 
 }
@@ -558,6 +601,11 @@ module ClassValue {
     /** Get the `ClassValue` for the class of Python functions. */
     ClassValue function() {
         result = TBuiltinClassObject(Builtin::special("FunctionType"))
+    }
+
+    /** Get the `ClassValue` for the `type` class. */
+    ClassValue type() {
+        result = TType()
     }
 
     /** Get the `ClassValue` for the class of builtin functions. */

@@ -1,0 +1,5 @@
+{
+    "name": "codeql-javascript",
+    "version": "0.0.0",
+    "dbscheme": "semmlecode.javascript.dbscheme"
+}
