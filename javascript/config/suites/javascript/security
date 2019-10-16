@@ -4,6 +4,7 @@
 + semmlecode-javascript-queries/Security/CWE-020/IncompleteUrlSubstringSanitization.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/IncorrectSuffixCheck.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/MissingRegExpAnchor.ql: /Security/CWE/CWE-020
++ semmlecode-javascript-queries/Security/CWE-020/UselessRegExpCharacterEscape.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-022/TaintedPath.ql: /Security/CWE/CWE-022
 + semmlecode-javascript-queries/Security/CWE-022/ZipSlip.ql: /Security/CWE/CWE-022
 + semmlecode-javascript-queries/Security/CWE-078/CommandInjection.ql: /Security/CWE/CWE-078
