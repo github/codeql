@@ -8,8 +8,8 @@ import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.flask.General
 
-FunctionObject flask_redirect() {
-    result = theFlaskModule().attr("redirect")
+FunctionValue flask_redirect() {
+    result = Value::named("flask.redirect")
 }
 
 /**

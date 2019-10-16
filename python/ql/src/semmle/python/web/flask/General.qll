@@ -1,23 +1,18 @@
 import python
 import semmle.python.web.Http
 
-/** The flask module */
-ModuleObject theFlaskModule() {
-    result = ModuleObject::named("flask")
-}
-
 /** The flask app class */
-ClassObject theFlaskClass() {
-    result = theFlaskModule().attr("Flask")
+ClassValue theFlaskClass() {
+    result = Value::named("flask.Flask")
 }
 
 /** The flask MethodView class */
-ClassObject theFlaskMethodViewClass() {
-    result = ModuleObject::named("flask.views").attr("MethodView")
+ClassValue theFlaskMethodViewClass() {
+    result = Value::named("flask.views.MethodView")
 }
 
-ClassObject theFlaskReponseClass() {
-    result = theFlaskModule().attr("Response")
+ClassValue theFlaskReponseClass() {
+    result = Value::named("flask.Response")
 }
 
 /** Holds if `route` is routed to `func`
@@ -25,7 +20,7 @@ ClassObject theFlaskReponseClass() {
  */
 predicate app_route(ControlFlowNode route, Function func) {
     exists(CallNode route_call, CallNode decorator_call |
-        route_call.getFunction().(AttrNode).getObject("route").refersTo(_, theFlaskClass(), _) and
+        route_call.getFunction().(AttrNode).getObject("route").pointsTo().getClass() = theFlaskClass() and
         decorator_call.getFunction() = route_call and
         route_call.getArg(0) = route and
         decorator_call.getArg(0).getNode().(FunctionExpr).getInnerScope() = func
@@ -35,7 +30,7 @@ predicate app_route(ControlFlowNode route, Function func) {
 /* Helper for add_url_rule */
 private predicate add_url_rule_call(ControlFlowNode regex, ControlFlowNode callable) {
     exists(CallNode call |
-        call.getFunction().(AttrNode).getObject("add_url_rule").refersTo(_, theFlaskClass(), _) and
+        call.getFunction().(AttrNode).getObject("add_url_rule").pointsTo().getClass() = theFlaskClass() and
         regex = call.getArg(0) |
         callable = call.getArg(2) or
         callable = call.getArgByName("view_func")
@@ -47,14 +42,14 @@ predicate add_url_rule(ControlFlowNode regex, Function func) {
     exists(ControlFlowNode callable |
         add_url_rule_call(regex, callable)
         |
-        exists(PyFunctionObject f | f.getFunction() = func and callable.refersTo(f))
+        exists(PythonFunctionValue f | f.getScope() = func and callable.pointsTo(f))
         or
         /* MethodView.as_view() */
         exists(MethodViewClass view_cls |
             view_cls.asTaint().taints(callable) |
-            func = view_cls.lookupAttribute(httpVerbLower()).(FunctionObject).getFunction()
+            func = view_cls.lookup(httpVerbLower()).(FunctionValue).getScope()
         )
-        /* TO DO -- Handle Views that aren't MethodViews */
+        /* TODO: -- Handle Views that aren't MethodViews */
     )
 }
 
@@ -68,10 +63,10 @@ predicate flask_routing(ControlFlowNode regex, Function func) {
 }
 
 /** A class that extends flask.views.MethodView */
-private class MethodViewClass extends ClassObject {
+private class MethodViewClass extends ClassValue {
 
     MethodViewClass() {
-        this.getAnImproperSuperType() = theFlaskMethodViewClass()
+        this.getASuperType() = theFlaskMethodViewClass()
     }
 
     /* As we are restricted to strings for taint kinds, we need to map these classes to strings. */
@@ -96,9 +91,9 @@ private class MethodViewTaint extends TaintKind {
 private class AsView extends TaintSource {
 
     AsView() {
-        exists(ClassObject view_class |
-            view_class.getAnImproperSuperType() = theFlaskMethodViewClass() and
-            this.(CallNode).getFunction().(AttrNode).getObject("as_view").refersTo(view_class)
+        exists(ClassValue view_class |
+            view_class.getASuperType() = theFlaskMethodViewClass() and
+            this.(CallNode).getFunction().(AttrNode).getObject("as_view").pointsTo(view_class)
         )
     }
 
@@ -109,7 +104,7 @@ private class AsView extends TaintSource {
     override predicate isSourceOf(TaintKind kind) {
         exists(MethodViewClass view_class |
             kind = view_class.asTaint() and
-            this.(CallNode).getFunction().(AttrNode).getObject("as_view").refersTo(view_class)
+            this.(CallNode).getFunction().(AttrNode).getObject("as_view").pointsTo(view_class)
         )
     }
 
@@ -119,7 +114,7 @@ private class AsView extends TaintSource {
 class FlaskCookieSet extends CookieSet, CallNode {
 
     FlaskCookieSet() {
-        this.getFunction().(AttrNode).getObject("set_cookie").refersTo(_, theFlaskReponseClass(), _)
+        this.getFunction().(AttrNode).getObject("set_cookie").pointsTo().getClass() = theFlaskReponseClass()
     }
 
     override string toString() { result = CallNode.super.toString() }

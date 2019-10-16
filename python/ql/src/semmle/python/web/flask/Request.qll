@@ -4,15 +4,15 @@ import semmle.python.security.TaintTracking
 import semmle.python.web.Http
 import semmle.python.web.flask.General
 
-private Object theFlaskRequestObject() {
-    result = theFlaskModule().attr("request")
+private Value theFlaskRequestObject() {
+    result = Value::named("flask.request")
 
 }
 
 /** Holds if `attr` is an access of attribute `name` of the flask request object */
 private predicate flask_request_attr(AttrNode attr, string name) {
     attr.isLoad() and
-    attr.getObject(name).refersTo(theFlaskRequestObject())
+    attr.getObject(name).pointsTo(theFlaskRequestObject())
 }
 
 /** Source of external data from a flask request */

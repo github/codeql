@@ -32,7 +32,7 @@ class FlaskResponseArgument extends HttpResponseTaintSink {
 
     FlaskResponseArgument() {
         exists(CallNode call |
-            call.getFunction().refersTo(theFlaskReponseClass()) and
+            call.getFunction().pointsTo(theFlaskReponseClass()) and
             call.getArg(0) = this
         )
     }
