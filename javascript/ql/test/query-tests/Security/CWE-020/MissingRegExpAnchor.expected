@@ -11,6 +11,8 @@
 | tst-SemiAnchoredRegExp.js:32:2:32:27 | /^good\\ ... \\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\.com' is anchored, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:33:2:33:29 | /^good\\ ... \\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\\\.com' is anchored, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:34:2:34:31 | /^good\\ ... \\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\\\\\.com' is anchored, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:36:2:36:16 | /^foo\|bar\|baz$/ | Misleading operator precedence. The subexpression '^foo' is anchored, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:36:2:36:16 | /^foo\|bar\|baz$/ | Misleading operator precedence. The subexpression 'baz$' is anchored, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:42:13:42:18 | "^a\|b" | Misleading operator precedence. The subexpression '^a' is anchored, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:45:13:45:20 | "^a\|b\|c" | Misleading operator precedence. The subexpression '^a' is anchored, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:51:13:51:20 | "^a\|(b)" | Misleading operator precedence. The subexpression '^a' is anchored, but the other parts of this regular expression are not |
