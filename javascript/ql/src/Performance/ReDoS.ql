@@ -57,8 +57,8 @@ import javascript
  * More precisely, the query constructs an NFA from a regular expression `r`
  * as follows:
  *
- *   * Every sub-term `t` gives rise to an NFA state `Match(t)`, representing
- *     the state of the automaton before attempting to match `t`.
+ *   * Every sub-term `t` gives rise to an NFA state `Match(t,i)`, representing
+ *     the state of the automaton before attempting to match the `i`th character in `t`.
  *   * There is one additional accepting state `Accept(r)`.
  *   * Transitions between states may be labelled with epsilon, or an abstract
  *     input symbol.
@@ -134,7 +134,7 @@ RegExpRoot getRoot(RegExpTerm term) {
  */
 newtype TInputSymbol =
   /** An input symbol corresponding to character `c`. */
-  Char(string c) { c = any(RegExpConstant cc).getValue() } or
+  Char(string c) { c = any(RegExpConstant cc).getValue().charAt(_) } or
   /**
    * An input symbol representing all characters matched by
    * (positive, non-universal) character class `recc`.
@@ -262,25 +262,34 @@ predicate compatible(InputSymbol s1, InputSymbol s2) {
 }
 
 newtype TState =
-  Match(RegExpTerm t) { getRoot(t).isRelevant() } or
+  Match(RegExpTerm t, int i) {
+    getRoot(t).isRelevant() and
+    (
+      i = 0
+      or
+      i = [ 1 .. t.(RegExpConstant).getValue().length() - 1 ]
+    )
+  } or
   Accept(RegExpRoot l) { l.isRelevant() }
 
 /**
  * A state in the NFA corresponding to a regular expression.
  *
  * Each regular expression literal `l` has one accepting state
- * `Accept(l)` and one state `Match(t)` for every subterm `t`,
+ * `Accept(l)` and a state `Match(t, i)` for every subterm `t`,
  * which represents the state of the NFA before starting to
- * match `t`.
+ * match `t`, or the `i`th character in `t` if `t` is a constant.
  */
 class State extends TState {
   RegExpParent repr;
 
-  State() { this = Match(repr) or this = Accept(repr) }
+  State() { this = Match(repr, _) or this = Accept(repr) }
 
   string toString() {
-    result = "Match(" + repr.(RegExpTerm) + ")" or
-    result = "Accept(" + repr.(RegExpRoot) + ")"
+    exists(int i | this = Match(repr, i) | result = "Match(" + repr + "," + i + ")")
+    or
+    this instanceof Accept and
+    result = "Accept(" + repr + ")"
   }
 
   Location getLocation() { result = repr.getLocation() }
@@ -295,23 +304,31 @@ class EdgeLabel extends TInputSymbol {
 }
 
 /**
+ * Gets the state before matching `t`.
+ */
+pragma[inline]
+State before(RegExpTerm t) {
+  result = Match(t, 0)
+}
+
+/**
  * Gets a state the NFA may be in after matching `t`.
  */
 State after(RegExpTerm t) {
   exists(RegExpAlt alt | t = alt.getAChild() | result = after(alt))
   or
   exists(RegExpSequence seq, int i | t = seq.getChild(i) |
-    result = Match(seq.getChild(i + 1))
+    result = before(seq.getChild(i + 1))
     or
     i + 1 = seq.getNumChild() and result = after(seq)
   )
   or
   exists(RegExpGroup grp | t = grp.getAChild() | result = after(grp))
   or
-  exists(RegExpStar star | t = star.getAChild() | result = Match(star))
+  exists(RegExpStar star | t = star.getAChild() | result = before(star))
   or
   exists(RegExpPlus plus | t = plus.getAChild() |
-    result = Match(plus) or
+    result = before(plus) or
     result = after(plus)
   )
   or
@@ -324,38 +341,47 @@ State after(RegExpTerm t) {
  * Holds if the NFA has a transition from `q1` to `q2` labelled with `lbl`.
  */
 predicate delta(State q1, EdgeLabel lbl, State q2) {
-  exists(RegExpConstant s | q1 = Match(s) and lbl = Char(s.getValue()) and q2 = after(s))
+  exists(RegExpConstant s, int i |
+    q1 = Match(s, i) and
+    lbl = Char(s.getValue().charAt(i)) and
+    (
+      q2 = Match(s, i + 1)
+      or
+      s.getValue().length() = i + 1 and
+      q2 = after(s)
+    )
+  )
   or
   exists(RegExpDot dot, RegExpLiteral rel |
-    q1 = Match(dot) and q2 = after(dot) and rel = dot.getLiteral()
+    q1 = before(dot) and q2 = after(dot) and rel = dot.getLiteral()
   |
     if rel.isDotAll() then lbl = Any() else lbl = Dot()
   )
   or
   exists(RegExpCharacterClass cc |
-    isUniversalClass(cc) and q1 = Match(cc) and lbl = Any() and q2 = after(cc)
+    isUniversalClass(cc) and q1 = before(cc) and lbl = Any() and q2 = after(cc)
     or
-    q1 = Match(cc) and lbl = CharClass(cc) and q2 = after(cc)
+    q1 = before(cc) and lbl = CharClass(cc) and q2 = after(cc)
   )
   or
-  exists(RegExpAlt alt | lbl = Epsilon() | q1 = Match(alt) and q2 = Match(alt.getAChild()))
+  exists(RegExpAlt alt | lbl = Epsilon() | q1 = before(alt) and q2 = before(alt.getAChild()))
   or
-  exists(RegExpSequence seq | lbl = Epsilon() | q1 = Match(seq) and q2 = Match(seq.getChild(0)))
+  exists(RegExpSequence seq | lbl = Epsilon() | q1 = before(seq) and q2 = before(seq.getChild(0)))
   or
-  exists(RegExpGroup grp | lbl = Epsilon() | q1 = Match(grp) and q2 = Match(grp.getChild(0)))
+  exists(RegExpGroup grp | lbl = Epsilon() | q1 = before(grp) and q2 = before(grp.getChild(0)))
   or
   exists(RegExpStar star | lbl = Epsilon() |
-    q1 = Match(star) and q2 = Match(star.getChild(0))
+    q1 = before(star) and q2 = before(star.getChild(0))
     or
-    q1 = Match(star) and q2 = after(star)
+    q1 = before(star) and q2 = after(star)
   )
   or
-  exists(RegExpPlus plus | lbl = Epsilon() | q1 = Match(plus) and q2 = Match(plus.getChild(0)))
+  exists(RegExpPlus plus | lbl = Epsilon() | q1 = before(plus) and q2 = before(plus.getChild(0)))
   or
   exists(RegExpOpt opt | lbl = Epsilon() |
-    q1 = Match(opt) and q2 = Match(opt.getChild(0))
+    q1 = before(opt) and q2 = before(opt.getChild(0))
     or
-    q1 = Match(opt) and q2 = after(opt)
+    q1 = before(opt) and q2 = after(opt)
   )
 }
 
@@ -632,11 +658,22 @@ string escape(string s) {
   result = s.replaceAll("\\", "\\\\").replaceAll("\n", "\\n").replaceAll("\r", "\\r")
 }
 
-from RegExpTerm t, string c
+/**
+ * Gets `str` with the last `i` characters moved to the front.
+ *
+ * We use this to adjust the witness string to match with the beginning of
+ * a RegExpTerm, so it doesn't start in the middle of a constant.
+ */
+bindingset[str, i]
+string rotate(string str, int i) {
+  result = str.suffix(str.length() - i) + str.prefix(str.length() - i)
+}
+
+from RegExpTerm t, string c, int i
 where
-  c = min(string w | isPumpable(Match(t), w)) and
-  not isPumpable(epsilonSucc+(Match(t)), _) and
-  not epsilonSucc*(process(Match(t), c, c.length() - 1)) = Accept(_)
+  c = min(string w | isPumpable(Match(t, i), w)) and
+  not isPumpable(epsilonSucc+(Match(t, i)), _) and
+  not epsilonSucc*(process(Match(t, i), c, c.length() - 1)) = Accept(_)
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " +
-    "containing many repetitions of '" + escape(c) + "'."
+    "containing many repetitions of '" + escape(rotate(c, i)) + "'."
