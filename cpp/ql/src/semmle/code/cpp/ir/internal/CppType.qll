@@ -21,6 +21,13 @@ private int getTypeSizeWorkaround(Type type) {
           else result = any(NullPointerType t).getSize()
         )
       )
+      or
+      exists(ArrayType arrayType |
+        // Treat `T[]` as `T*`.
+        arrayType = unspecifiedType and
+        not arrayType.hasArraySize() and
+        result = any(NullPointerType t).getSize()
+      )
     )
   )
 }
@@ -88,7 +95,11 @@ predicate hasFloatingPointType(int byteSize) {
 private predicate isPointerIshType(Type type) {
   type instanceof PointerType or
   type instanceof ReferenceType or
-  type instanceof NullPointerType
+  type instanceof NullPointerType or
+  // Treat `T[]` as a pointer. The only place we should see these is as the type of a parameter. If
+  // the corresponding decayed `T*` type is available, we'll use that, but if it's not available,
+  // we're stuck with `T[]`. Just treat it as a pointer.
+  type instanceof ArrayType and not exists(type.getSize())
 }
 
 /**
@@ -147,7 +158,7 @@ private IRType getIRTypeForPRValue(Type type) {
     isSignedIntegerType(unspecifiedType) and result.(IRSignedIntegerType).getByteSize() = type.getSize() or
     isUnsignedIntegerType(unspecifiedType) and result.(IRUnsignedIntegerType).getByteSize() = type.getSize() or
     unspecifiedType instanceof FloatingPointType and result.(IRFloatingPointType).getByteSize() = type.getSize() or
-    isPointerIshType(unspecifiedType) and result.(IRAddressType).getByteSize() = type.getSize() or
+    isPointerIshType(unspecifiedType) and result.(IRAddressType).getByteSize() = getTypeSize(type) or
     unspecifiedType instanceof FunctionPointerIshType and result.(IRFunctionAddressType).getByteSize() = getTypeSize(type) or
     unspecifiedType instanceof VoidType and result instanceof IRVoidType or
     unspecifiedType instanceof ErroneousType and result instanceof IRErrorType or
@@ -341,6 +352,15 @@ CppType getTypeForPRValue(Type type) {
   if type instanceof UnknownType
   then result instanceof CppUnknownType
   else result.hasType(type, false)
+}
+
+/**
+ * Gets the `CppType` that represents a prvalue of type `type`, if such a `CppType` exists.
+ * Otherwise, gets `CppUnknownType`.
+ */
+CppType getTypeForPRValueOrUnknown(Type type) {
+  result = getTypeForPRValue(type) or
+  not exists(getTypeForPRValue(type)) and result = getUnknownType()
 }
 
 /**

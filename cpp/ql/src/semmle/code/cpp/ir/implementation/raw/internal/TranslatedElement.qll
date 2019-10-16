@@ -49,6 +49,9 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
+  // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
+  getRealParent(expr) instanceof AssumeExpr
+  or
   // The `DestructorCall` node for a `DestructorFieldDestruction` has a `FieldAccess`
   // node as its qualifier, but that `FieldAccess` does not have a child of its own.
   // We'll ignore that `FieldAccess`, and supply the receiver as part of the calling

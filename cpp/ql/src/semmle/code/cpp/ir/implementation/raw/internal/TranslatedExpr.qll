@@ -2409,3 +2409,26 @@ class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {
 
   final override Opcode getOpcode() { result instanceof Opcode::Error }
 }
+
+/**
+ * The IR translation of an `__assume` expression. We currently translate these as `NoOp`. In the
+ * future, we will probably want to do something better. At a minimum, we can model `__assume(0)` as
+ * `Unreached`.
+ */
+class TranslatedAssumeExpr extends TranslatedSingleInstructionExpr {
+  override AssumeExpr expr;
+
+  final override Opcode getOpcode() { result instanceof Opcode::NoOp }
+
+  final override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  final override TranslatedElement getChild(int id) { none() }
+
+  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+}
