@@ -12,8 +12,6 @@
 
 import python
 
-FunctionObject iter_method(ClassObject t) { result = t.lookupAttribute("__iter__") }
-
 cached
 ClassObject return_type(FunctionObject f) {
     exists(ControlFlowNode n, Return ret |
@@ -23,12 +21,12 @@ ClassObject return_type(FunctionObject f) {
     )
 }
 
-from ClassObject t, FunctionObject iter
+from ClassObject container, FunctionObject iter, ClassObject iterator
 where
-    exists(ClassObject ret_t |
-        iter = iter_method(t) and
-        ret_t = return_type(iter) and
-        not ret_t.isIterator()
-    )
-select iter, "The '__iter__' method of iterable class $@ does not return an iterator.", t,
-    t.getName()
+    iter = container.lookupAttribute("__iter__") and
+    iterator = return_type(iter) and
+    not iterator.isIterator()
+select iterator,
+    "Class " + iterator.getName() +
+        " is returned as an iterator (by $@) but does not fully implement the iterator interface.",
+    iter, iter.getName()
