@@ -3,6 +3,15 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+sideEffectWithoutPrimary
+| ssa.cpp:97:10:97:11 | BufferMayWriteSideEffect: (void *)... | Side effect instruction missing primary instruction in function $@ | ssa.cpp:95:6:95:30 | IR: MustExactlyOverlapEscaped | void MustExactlyOverlapEscaped(Point) |
+| ssa.cpp:97:10:97:11 | IndirectReadSideEffect: (void *)... | Side effect instruction missing primary instruction in function $@ | ssa.cpp:95:6:95:30 | IR: MustExactlyOverlapEscaped | void MustExactlyOverlapEscaped(Point) |
+| ssa.cpp:108:10:108:11 | BufferMayWriteSideEffect: (void *)... | Side effect instruction missing primary instruction in function $@ | ssa.cpp:105:6:105:30 | IR: MustTotallyOverlapEscaped | void MustTotallyOverlapEscaped(Point) |
+| ssa.cpp:108:10:108:11 | IndirectReadSideEffect: (void *)... | Side effect instruction missing primary instruction in function $@ | ssa.cpp:105:6:105:30 | IR: MustTotallyOverlapEscaped | void MustTotallyOverlapEscaped(Point) |
+| ssa.cpp:119:10:119:11 | BufferMayWriteSideEffect: (void *)... | Side effect instruction missing primary instruction in function $@ | ssa.cpp:116:6:116:31 | IR: MayPartiallyOverlapEscaped | void MayPartiallyOverlapEscaped(int, int) |
+| ssa.cpp:119:10:119:11 | IndirectReadSideEffect: (void *)... | Side effect instruction missing primary instruction in function $@ | ssa.cpp:116:6:116:31 | IR: MayPartiallyOverlapEscaped | void MayPartiallyOverlapEscaped(int, int) |
+| ssa.cpp:209:10:209:11 | SizedBufferMustWriteSideEffect: (void *)... | Side effect instruction missing primary instruction in function $@ | ssa.cpp:207:5:207:21 | IR: ModeledCallTarget | int ModeledCallTarget(int) |
+| ssa.cpp:209:14:209:15 | SizedBufferReadSideEffect: (void *)... | Side effect instruction missing primary instruction in function $@ | ssa.cpp:207:5:207:21 | IR: ModeledCallTarget | int ModeledCallTarget(int) |
 instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
