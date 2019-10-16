@@ -98,3 +98,17 @@ int overflow12(int n) {
     // not deleted by gcc or clang
 	return (n + 32 <= (unsigned)n? -1: 1); // BAD
 }
+
+bool multipleCasts(char x) {
+    // clang 9.0.0 -O2: deleted
+    // gcc 9.2 -O2: deleted
+    // msvc 19.22 /O2: deleted
+    return (int)(unsigned short)x + 2 < (int)(unsigned short)x; // BAD
+}
+
+bool multipleCasts2(char x) {
+    // clang 9.0.0 -O2: not deleted
+    // gcc 9.2 -O2: not deleted
+    // msvc 19.22 /O2: not deleted
+    return (int)(unsigned short)(x + '1') < (int)(unsigned short)x; // GOOD [FALSE POSITIVE]
+}
