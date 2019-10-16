@@ -1,0 +1,4 @@
+| / | Function hello |
+| /dangerous | Function dangerous |
+| /dangerous-with-cfg-split | Function dangerous2 |
+| /the/ | Function get |
