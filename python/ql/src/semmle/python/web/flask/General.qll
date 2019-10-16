@@ -1,5 +1,6 @@
 import python
 import semmle.python.web.Http
+import semmle.python.web.flask.Response
 
 /** The flask app class */
 ClassValue theFlaskClass() { result = Value::named("flask.Flask") }
@@ -92,7 +93,7 @@ private class AsView extends TaintSource {
 
 class FlaskCookieSet extends CookieSet, CallNode {
     FlaskCookieSet() {
-        this.getFunction().(AttrNode).getObject("set_cookie").pointsTo().getClass() = theFlaskReponseClass()
+        any(FlaskResponseTaintKind t).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
     }
 
     override string toString() { result = CallNode.super.toString() }
