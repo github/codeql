@@ -1,4 +1,6 @@
 | / | Function hello |
 | /dangerous | Function dangerous |
 | /dangerous-with-cfg-split | Function dangerous2 |
+| /safe | Function safe |
 | /the/ | Function get |
+| /unsafe | Function unsafe |

@@ -6,3 +6,12 @@
 | test.py:33 | Subscript | externally controlled string |
 | test.py:35 | Attribute | {externally controlled string} |
 | test.py:35 | Subscript | externally controlled string |
+| test.py:40 | Attribute | {externally controlled string} |
+| test.py:40 | Attribute() | externally controlled string |
+| test.py:41 | BinaryExpr | externally controlled string |
+| test.py:41 | first_name | externally controlled string |
+| test.py:41 | make_response() | flask.Response |
+| test.py:45 | Attribute | {externally controlled string} |
+| test.py:45 | Attribute() | externally controlled string |
+| test.py:46 | first_name | externally controlled string |
+| test.py:46 | make_response() | flask.Response |
