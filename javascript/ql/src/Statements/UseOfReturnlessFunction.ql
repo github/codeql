@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/use-of-returnless-function
- * @tags maintainability,
+ * @tags maintainability
  *       correctness
  * @precision high
  */
