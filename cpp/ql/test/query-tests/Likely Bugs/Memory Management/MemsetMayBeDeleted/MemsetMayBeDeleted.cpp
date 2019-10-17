@@ -126,3 +126,59 @@ int func12(unsigned long long sz) {
     memset(m, 0, sz); // GOOD
     return m->c;
 }
+
+int funcN1() {
+	char pw[PW_SIZE];
+	char *pw_ptr = pw;
+	memset(pw, 0, PW_SIZE); // GOOD
+	use_pw(pw_ptr);
+	return 0;
+}
+
+char pw_global[PW_SIZE];
+int funcN2() {
+	use_pw(pw_global);
+	memset(pw_global, 0, PW_SIZE); // GOOD
+	return 0;
+}
+
+int funcN3(unsigned long long sz) {
+    struct mem m;
+    memset(&m, 0, sizeof(m)); // GOOD
+    return m.a;
+}
+
+void funcN(int num) {
+	char pw[PW_SIZE];
+	int i;
+
+	for (i = 0; i < num; i++)
+	{
+		use_pw(pw);
+		memset(pw, 0, PW_SIZE); // GOOD
+	}
+}
+
+class MyClass
+{
+public:
+	void set(int _x) {
+		x = _x;
+	}
+
+	int get()
+	{
+		return x;
+	}
+
+	void clear1() {
+		memset(&x, 0, sizeof(x)); // GOOD
+	}
+
+	void clear2() {
+		memset(&(this->x), 0, sizeof(this->x)); // GOOD
+	}
+
+private:
+	int x;
+};

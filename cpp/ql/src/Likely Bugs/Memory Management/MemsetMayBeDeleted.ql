@@ -20,24 +20,26 @@ class MemsetCallInstruction extends CallInstruction {
   MemsetCallInstruction() { this.getStaticCallTarget() instanceof MemsetFunction }
 }
 
-private Instruction insnSuccessor(Instruction i) {
-  exists(GotoEdge edge | result = i.getSuccessor(edge))
-}
+/*
+ * private Instruction insnSuccessor(Instruction i) {
+ *  exists(GotoEdge edge | result = i.getSuccessor(edge))
+ * }
+ *
+ * private predicate insnDominates(Instruction i1, Instruction i2) {
+ *  i1.getBlock().dominates(i2.getBlock())
+ *  or
+ *  i1.getBlock() = i2.getBlock() and insnSuccessor+(i1) = i2
+ * }
+ */
 
-private predicate insnDominates(Instruction i1, Instruction i2) {
-  i1.getBlock().dominates(i2.getBlock())
-  or
-  i1.getBlock() = i2.getBlock() and insnSuccessor+(i1) = i2
-}
-
-Instruction getAUseInstruction(Instruction insn) {
-  result=	insn.getAUse().getUse()
-}
+Instruction getAUseInstruction(Instruction insn) { result = insn.getAUse().getUse() }
 
 //insnDominates(memset, deref) and
 //vn.getAnInstruction() = memset.getAnArgument() and
 //vn.getAnInstruction() = deref.getSourceAddress()
 from MemsetCallInstruction memset, SizedBufferMustWriteSideEffectInstruction sei
-where sei.getPrimaryInstruction() = memset // and forall(Instruction use | use = getAUseInstruction+(sei) | use instanceof ChiInstruction)
-select memset,
-  "Call to " + memset.getStaticCallTarget().getName() + " may be deleted by the compiler."
+where
+  //sei.getPrimaryInstruction() = memset and
+  forall(Instruction use | use = getAUseInstruction+(sei) | use instanceof ChiInstruction)
+select sei //, sei.getPrimaryInstruction()
+//  memset, "Call to " + memset.getStaticCallTarget().getName() + " may be deleted by the compiler."
