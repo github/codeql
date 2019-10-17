@@ -21,9 +21,9 @@ ClassObject return_type(FunctionObject f) {
     )
 }
 
-from ClassObject container, FunctionObject iter, ClassObject iterator
+from ClassObject iterable, FunctionObject iter, ClassObject iterator
 where
-    iter = container.lookupAttribute("__iter__") and
+    iter = iterable.lookupAttribute("__iter__") and
     iterator = return_type(iter) and
     not iterator.isIterator()
 select iterator,
