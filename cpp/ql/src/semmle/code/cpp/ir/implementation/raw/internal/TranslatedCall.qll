@@ -460,14 +460,18 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
   }
 
   override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    tag instanceof OnlyInstructionTag and
-    result = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
-    operandTag instanceof SideEffectOperandTag
-    or
-    tag instanceof OnlyInstructionTag and
-    result = arg.getType().getUnspecifiedType() and
-    not result instanceof DerivedType and
-    operandTag instanceof SideEffectOperandTag
+    if hasSpecificReadSideEffect(any(Opcode::BufferReadSideEffect op))
+    then result instanceof UnknownType
+    else (
+      tag instanceof OnlyInstructionTag and
+      result = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
+      operandTag instanceof SideEffectOperandTag
+      or
+      tag instanceof OnlyInstructionTag and
+      result = arg.getType().getUnspecifiedType() and
+      not result instanceof DerivedType and
+      operandTag instanceof SideEffectOperandTag
+    )
   }
 
   predicate hasSpecificWriteSideEffect(Opcode op) {
@@ -517,7 +521,7 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     )
     or
     not call.getTarget() instanceof SideEffectFunction and
-    op instanceof Opcode::IndirectReadSideEffect
+    op instanceof Opcode::BufferReadSideEffect
   }
 
   final override int getInstructionIndex(InstructionTag tag) {
