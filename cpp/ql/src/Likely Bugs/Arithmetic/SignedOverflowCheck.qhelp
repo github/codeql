@@ -24,16 +24,27 @@ type is promoted to the larger type used in the addition and comparison,
 namely a <code>signed int</code>.  As a result, the entire expression is
 evaluated using <code>signed</code> values and its value is therefore undefined.
 </p>
-<sample src="SignedOverflowCheck-bad.cpp" />
+<sample src="SignedOverflowCheck-bad1.cpp" />
 <p>
 In the following example, even though both <code>n</code> and <code>delta</code> 
 have been declared <code>unsigned short</code>, C/C++ type promotion rules 
 require that both parameters be promoted to the next bigger <code>signed</code>
-integer type (in this case <code>signed int</code>) before being added together
- so as to avoid overflows or underflows.  As a result, the entire expression is
-evaluated using <code>signed</code> values and its value is therefore undefined.
+integer type (in this case <code>signed int</code>) before being added together.  
+As a result, the entire expression is evaluated using <code>signed</code> values
+and its value is therefore undefined.  (Note, however, that the addition cannot
+overflow since we are adding two "small" <code>unsigned short</code> values.)
 </p>
 <sample src="SignedOverflowCheck-bad2.cpp" />
+<p>
+The following example builds upon the previous one.  Again, we have two
+<code>unsigned short</code> values getting promoted to a wider type.  However,
+since <code>delta</code> is explicitly cast to an <code>unsigned</code> type,
+<code>n1</code> (on both sides of the comparison) is promoted to
+<code>unsigned</code> as well.  Since we are now operating on
+<code>unsigned</code> values, the overflow check is defined and supported by
+standard C/C++.
+</p>
+<sample src="SignedOverflowCheck-good1.cpp" />
 <p>
 In the next example, a value of type <code>signed int</code> is
 added to a value of type <code>unsigned int</code>.  Because
@@ -42,7 +53,7 @@ the types are of the same size, C/C++ promotion rules dictate that
 operation. The entire expression is evaluated using <code>unsigned</code>
 values, which is allowed and defined behavior per the C/C++ standard.
 </p>
-<sample src="SignedOverflowCheck-good.cpp" />
+<sample src="SignedOverflowCheck-good2.cpp" />
 </example>
 <references>
 <li><a href="http://c-faq.com/expr/preservingrules.html">comp.lang.c FAQ list · Question 3.19 (Preserving rules)</a></li>

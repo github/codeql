@@ -112,3 +112,7 @@ bool multipleCasts2(char x) {
     // msvc 19.22 /O2: not deleted
     return (int)(unsigned short)(x + '1') < (int)(unsigned short)x; // GOOD [FALSE POSITIVE]
 }
+
+int does_it_overflow(int n1, unsigned short delta) {
+    return n1 + (unsigned)delta < n1; // GOOD
+}
