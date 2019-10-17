@@ -6,7 +6,7 @@ In C and C++ QL databases, each node in the abstract syntax tree is represented 
 
 The `hash consing <https://en.wikipedia.org/wiki/Hash_consing>`__ library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. The `global value numbering <https://en.wikipedia.org/wiki/Value_numbering>`__ library (defined in ``semmle.code.cpp.valuenumbering.GlobalValueNumbering``) provides a mechanism for identifying expressions that compute the same value at runtime.
 
-Both libraries divide the expressions in each function into equivalence classes represented by objects. Each ``HashCons`` object represents a set of expressions with identical parse trees, while ``GVN`` objects represent sets of expressions that will always compute the same value.
+Both libraries partition the expressions in each function into equivalence classes represented by objects. Each ``HashCons`` object represents a set of expressions with identical parse trees, while ``GVN`` objects represent sets of expressions that will always compute the same value.
 
 
 Example C code
