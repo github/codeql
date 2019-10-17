@@ -1,0 +1,40 @@
+edges
+| HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:32:21:32:21 | access to local variable d |
+| HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:37:37:37:37 | access to local variable d |
+| HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:42:50:42:50 | access to local variable c |
+| HardcodedSymmetricEncryptionKey.cs:29:62:29:115 | "Hello, world: here is a very bad way to create a key" | HardcodedSymmetricEncryptionKey.cs:45:51:45:69 | access to local variable byteArrayFromString |
+| HardcodedSymmetricEncryptionKey.cs:29:62:29:115 | "Hello, world: here is a very bad way to create a key" | HardcodedSymmetricEncryptionKey.cs:51:42:51:60 | access to local variable byteArrayFromString |
+| HardcodedSymmetricEncryptionKey.cs:37:37:37:37 | access to local variable d | HardcodedSymmetricEncryptionKey.cs:81:57:81:59 | key |
+| HardcodedSymmetricEncryptionKey.cs:42:50:42:50 | access to local variable c | HardcodedSymmetricEncryptionKey.cs:90:63:90:65 | key |
+| HardcodedSymmetricEncryptionKey.cs:45:51:45:69 | access to local variable byteArrayFromString | HardcodedSymmetricEncryptionKey.cs:90:63:90:65 | key |
+| HardcodedSymmetricEncryptionKey.cs:51:42:51:60 | access to local variable byteArrayFromString | HardcodedSymmetricEncryptionKey.cs:111:96:111:100 | bytes |
+| HardcodedSymmetricEncryptionKey.cs:81:57:81:59 | key | HardcodedSymmetricEncryptionKey.cs:86:23:86:25 | access to parameter key |
+| HardcodedSymmetricEncryptionKey.cs:90:63:90:65 | key | HardcodedSymmetricEncryptionKey.cs:99:87:99:89 | access to parameter key |
+| HardcodedSymmetricEncryptionKey.cs:90:63:90:65 | key | HardcodedSymmetricEncryptionKey.cs:99:87:99:89 | access to parameter key |
+| HardcodedSymmetricEncryptionKey.cs:111:96:111:100 | bytes | HardcodedSymmetricEncryptionKey.cs:114:41:114:46 | access to local variable buffer |
+nodes
+| HardcodedSymmetricEncryptionKey.cs:18:21:18:97 | array creation of type Byte[] |
+| HardcodedSymmetricEncryptionKey.cs:23:23:23:99 | array creation of type Byte[] |
+| HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] |
+| HardcodedSymmetricEncryptionKey.cs:29:62:29:115 | "Hello, world: here is a very bad way to create a key" |
+| HardcodedSymmetricEncryptionKey.cs:32:21:32:21 | access to local variable d |
+| HardcodedSymmetricEncryptionKey.cs:37:37:37:37 | access to local variable d |
+| HardcodedSymmetricEncryptionKey.cs:42:50:42:50 | access to local variable c |
+| HardcodedSymmetricEncryptionKey.cs:45:51:45:69 | access to local variable byteArrayFromString |
+| HardcodedSymmetricEncryptionKey.cs:51:42:51:60 | access to local variable byteArrayFromString |
+| HardcodedSymmetricEncryptionKey.cs:81:57:81:59 | key |
+| HardcodedSymmetricEncryptionKey.cs:86:23:86:25 | access to parameter key |
+| HardcodedSymmetricEncryptionKey.cs:90:63:90:65 | key |
+| HardcodedSymmetricEncryptionKey.cs:90:63:90:65 | key |
+| HardcodedSymmetricEncryptionKey.cs:99:87:99:89 | access to parameter key |
+| HardcodedSymmetricEncryptionKey.cs:99:87:99:89 | access to parameter key |
+| HardcodedSymmetricEncryptionKey.cs:111:96:111:100 | bytes |
+| HardcodedSymmetricEncryptionKey.cs:114:41:114:46 | access to local variable buffer |
+#select
+| HardcodedSymmetricEncryptionKey.cs:18:21:18:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:18:21:18:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:18:21:18:97 | array creation of type Byte[] | Hard-coded symmetric $@ is used in symmetric algorithm in 'Key' property assignment. | HardcodedSymmetricEncryptionKey.cs:18:21:18:97 | array creation of type Byte[] | key |
+| HardcodedSymmetricEncryptionKey.cs:23:23:23:99 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:23:23:23:99 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:23:23:23:99 | array creation of type Byte[] | Hard-coded symmetric $@ is used in symmetric algorithm in 'Key' property assignment. | HardcodedSymmetricEncryptionKey.cs:23:23:23:99 | array creation of type Byte[] | key |
+| HardcodedSymmetricEncryptionKey.cs:32:21:32:21 | access to local variable d | HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:32:21:32:21 | access to local variable d | Hard-coded symmetric $@ is used in symmetric algorithm in 'Key' property assignment. | HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | key |
+| HardcodedSymmetricEncryptionKey.cs:86:23:86:25 | access to parameter key | HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:86:23:86:25 | access to parameter key | Hard-coded symmetric $@ is used in symmetric algorithm in 'Key' property assignment. | HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | key |
+| HardcodedSymmetricEncryptionKey.cs:99:87:99:89 | access to parameter key | HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:99:87:99:89 | access to parameter key | Hard-coded symmetric $@ is used in symmetric algorithm in Encryptor(rgbKey, IV). | HardcodedSymmetricEncryptionKey.cs:26:21:26:97 | array creation of type Byte[] | key |
+| HardcodedSymmetricEncryptionKey.cs:99:87:99:89 | access to parameter key | HardcodedSymmetricEncryptionKey.cs:29:62:29:115 | "Hello, world: here is a very bad way to create a key" | HardcodedSymmetricEncryptionKey.cs:99:87:99:89 | access to parameter key | Hard-coded symmetric $@ is used in symmetric algorithm in Encryptor(rgbKey, IV). | HardcodedSymmetricEncryptionKey.cs:29:62:29:115 | "Hello, world: here is a very bad way to create a key" | key |
+| HardcodedSymmetricEncryptionKey.cs:114:41:114:46 | access to local variable buffer | HardcodedSymmetricEncryptionKey.cs:29:62:29:115 | "Hello, world: here is a very bad way to create a key" | HardcodedSymmetricEncryptionKey.cs:114:41:114:46 | access to local variable buffer | Hard-coded symmetric $@ is used in symmetric algorithm in CreateSymmetricKey(IBuffer keyMaterial). | HardcodedSymmetricEncryptionKey.cs:29:62:29:115 | "Hello, world: here is a very bad way to create a key" | key |
