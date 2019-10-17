@@ -120,7 +120,9 @@ module InstructionSanity {
     )
   }
 
-  query predicate sideEffectWithoutPrimary(SideEffectInstruction instr, string message, IRFunction func, string funcText) {
+  query predicate sideEffectWithoutPrimary(
+    SideEffectInstruction instr, string message, IRFunction func, string funcText
+  ) {
     not exists(instr.getPrimaryInstruction()) and
     message = "Side effect instruction missing primary instruction in function $@" and
     func = instr.getEnclosingIRFunction() and
