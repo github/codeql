@@ -105,7 +105,7 @@ compilation_time(
  */
 #keyset[compilation, file_number, file_number_diagnostic_number]
 diagnostic_for(
-    int diagnostic : @diagnostic ref,
+    unique int diagnostic : @diagnostic ref,
     int compilation : @compilation ref,
     int file_number : int ref,
     int file_number_diagnostic_number : int ref
