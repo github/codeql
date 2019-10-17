@@ -520,6 +520,11 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     op instanceof Opcode::IndirectReadSideEffect
   }
 
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getTranslatedExpr(call).getInstruction(CallTag())
+  }
+
   final override int getInstructionIndex(InstructionTag tag) {
     tag = OnlyInstructionTag() and
     result = index
