@@ -38,21 +38,10 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   }
 
   private Annotation firstAnnotation() {
-    exists(Annotation m, int i |
-      result = m and
-      m = getASiblingAnnotation() and
-      i = rankOfAnnotation(m) and
-      not exists(Annotation other | other = getASiblingAnnotation() | rankOfAnnotation(other) < i)
-    )
-  }
-
-  private int rankOfAnnotation(Annotation m) {
-    this.getASiblingAnnotation() = m and
-    exists(Location mLoc, File f, int maxCol | mLoc = m.getLocation() |
-      f = mLoc.getFile() and
-      maxCol = max(Location loc | loc.getFile() = f | loc.getStartColumn()) and
-      result = mLoc.getStartLine() * maxCol + mLoc.getStartColumn()
-    )
+    result = min(this.getASiblingAnnotation() as m
+        order by
+          m.getLocation().getStartLine(), m.getLocation().getStartColumn()
+      )
   }
 
   /**
