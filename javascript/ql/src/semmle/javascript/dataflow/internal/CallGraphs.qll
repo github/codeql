@@ -84,18 +84,18 @@ module CallGraph {
       getAFunctionReference(function, 0, t.continue()).flowsTo(callback)
     )
     or
-    result = getABoundFunctionReferenceAux(function, boundArgs, t)
+    exists(DataFlow::StepSummary summary, DataFlow::TypeTracker t2 |
+      result = getABoundFunctionReferenceAux(function, boundArgs, t2, summary) and
+      t = t2.append(summary)
+    )
   }
 
-  pragma[noopt]
+  pragma[noinline]
   private
-  DataFlow::SourceNode getABoundFunctionReferenceAux(DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t) {
-    exists(DataFlow::TypeTracker t2, DataFlow::SourceNode prev |
-      prev = getABoundFunctionReference(function, boundArgs, t2) and
-      exists(DataFlow::StepSummary summary |
-        DataFlow::StepSummary::step(prev, result, summary) and
-        t = t2.append(summary)
-      )
+  DataFlow::SourceNode getABoundFunctionReferenceAux(DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t, DataFlow::StepSummary summary) {
+    exists(DataFlow::SourceNode prev |
+      prev = getABoundFunctionReference(function, boundArgs, t) and
+      DataFlow::StepSummary::step(prev, result, summary)
     )
   }
 
