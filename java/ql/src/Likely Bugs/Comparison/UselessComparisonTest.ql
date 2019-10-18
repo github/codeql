@@ -168,10 +168,14 @@ Expr increaseOrDecreaseOfVar(SsaVariable v) {
 }
 
 predicate overFlowTest(ComparisonExpr comp) {
-  exists(SsaVariable v | comp.hasOperands(increaseOrDecreaseOfVar(v), v.getAUse()))
-  or
-  comp.getLesserOperand() = overFlowCand() and
-  comp.getGreaterOperand().(IntegerLiteral).getIntValue() = 0
+  (
+    exists(SsaVariable v | comp.hasOperands(increaseOrDecreaseOfVar(v), v.getAUse()))
+    or
+    comp.getLesserOperand() = overFlowCand() and
+    comp.getGreaterOperand().(IntegerLiteral).getIntValue() = 0
+  ) and
+  // exclude loop conditions as they are unlikely to be overflow tests
+  not comp.getEnclosingStmt() instanceof LoopStmt
 }
 
 predicate concurrentModificationTest(BinaryExpr test) {
