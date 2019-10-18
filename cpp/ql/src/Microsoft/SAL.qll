@@ -20,9 +20,7 @@ class SALMacro extends Macro {
 }
 
 pragma[noinline]
-predicate isTopLevelMacroAccess(MacroAccess ma) {
-    not exists(ma.getParentInvocation())
-}
+predicate isTopLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
 
 class SALAnnotation extends MacroInvocation {
   SALAnnotation() {
@@ -61,12 +59,12 @@ class SALNotNull extends SALAnnotation {
         m.getName().matches("_Out%") or
         m.getName() = "_Ret_notnull_"
       )
-    )
-    and
-    exists(Type t
-    | t = this.getDeclaration().(Variable).getType() or
+    ) and
+    exists(Type t |
+      t = this.getDeclaration().(Variable).getType() or
       t = this.getDeclaration().(Function).getType()
-    | t.getUnspecifiedType() instanceof PointerType
+    |
+      t.getUnspecifiedType() instanceof PointerType
     )
   }
 }
@@ -74,9 +72,9 @@ class SALNotNull extends SALAnnotation {
 class SALMaybeNull extends SALAnnotation {
   SALMaybeNull() {
     exists(SALMacro m | m = this.getMacro() |
-    m.getName().matches("%\\_opt\\_%") or
-    m.getName().matches("\\_Ret_maybenull\\_%") or
-    m.getName() = "_Result_nullonfailure_"
+      m.getName().matches("%\\_opt\\_%") or
+      m.getName().matches("\\_Ret_maybenull\\_%") or
+      m.getName() = "_Result_nullonfailure_"
     )
   }
 }
@@ -87,8 +85,7 @@ class SALMaybeNull extends SALAnnotation {
  * Holds if `a` annotates the declaration entry `d` and
  * its start position is the `idx`th position in `file` that holds a SAL element.
  */
-predicate annotatesAt(SALAnnotation a, DeclarationEntry d,
-                              File file, int idx) {
+predicate annotatesAt(SALAnnotation a, DeclarationEntry d, File file, int idx) {
   annotatesAtPosition(a.(SALElement).getStartPosition(), d, file, idx)
 }
 
@@ -100,9 +97,7 @@ predicate annotatesAt(SALAnnotation a, DeclarationEntry d,
 // For performance reasons, do not mention the annotation itself here,
 // but compute with positions instead. This performs better on databases
 // with many annotations at the same position.
-private predicate annotatesAtPosition(
-  SALPosition pos, DeclarationEntry d, File file, int idx
-) {
+private predicate annotatesAtPosition(SALPosition pos, DeclarationEntry d, File file, int idx) {
   pos = salRelevantPositionAt(file, idx) and
   salAnnotationPos(pos) and
   (
@@ -118,18 +113,16 @@ private predicate annotatesAtPosition(
  * A parameter annotated by one or more SAL annotations.
  */
 class SALParameter extends Parameter {
-    /** One of this parameter's annotations. */
-    SALAnnotation a;
+  /** One of this parameter's annotations. */
+  SALAnnotation a;
 
-    SALParameter() {
-        annotatesAt(a, this.getADeclarationEntry(), _, _)
-    }
+  SALParameter() { annotatesAt(a, this.getADeclarationEntry(), _, _) }
 
-    predicate isIn() { a.getMacroName().toLowerCase().matches("%\\_in%") }
+  predicate isIn() { a.getMacroName().toLowerCase().matches("%\\_in%") }
 
-    predicate isOut() { a.getMacroName().toLowerCase().matches("%\\_out%") }
+  predicate isOut() { a.getMacroName().toLowerCase().matches("%\\_out%") }
 
-    predicate isInOut() { a.getMacroName().toLowerCase().matches("%\\_inout%") }
+  predicate isInOut() { a.getMacroName().toLowerCase().matches("%\\_inout%") }
 }
 
 /**
@@ -155,9 +148,9 @@ library class SALElement extends Element {
       loc = this.(FunctionDeclarationEntry).getBlock().getLocation()
       or
       this = any(VariableDeclarationEntry vde |
-        vde.isDefinition() and
-        loc = vde.getVariable().getInitializer().getLocation()
-      )
+          vde.isDefinition() and
+          loc = vde.getVariable().getInitializer().getLocation()
+        )
     |
       file = loc.getFile() and
       line = loc.getEndLine() and
@@ -175,9 +168,7 @@ library class SALElement extends Element {
 
 /** Holds if `file` contains a SAL annotation. */
 pragma[noinline]
-private predicate containsSALAnnotation(File file) {
-  any(SALAnnotation a).getFile() = file
-}
+private predicate containsSALAnnotation(File file) { any(SALAnnotation a).getFile() = file }
 
 /**
  * A source-file position of a `SALElement`. Unlike location, this denotes a
@@ -204,9 +195,8 @@ private predicate salAnnotationPos(SALPosition pos) {
  */
 private SALPosition salRelevantPositionAt(File file, int idx) {
   result = rank[idx](SALPosition pos, int line, int col |
-    pos = MkSALPosition(file, line, col)
-  |
-    pos
-    order by line, col
-  )
+      pos = MkSALPosition(file, line, col)
+    |
+      pos order by line, col
+    )
 }
