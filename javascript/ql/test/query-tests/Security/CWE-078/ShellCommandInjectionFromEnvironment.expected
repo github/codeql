@@ -24,13 +24,10 @@ nodes
 | tst_shell-command-injection-from-environment.js:5:26:5:53 | path.jo ... "temp") |
 | tst_shell-command-injection-from-environment.js:5:36:5:44 | __dirname |
 edges
-| child_process-test.js:36:7:36:20 | sh | child_process-test.js:39:5:39:5 | sh |
 | child_process-test.js:36:7:36:20 | sh | child_process-test.js:39:14:39:15 | sh |
 | child_process-test.js:36:12:36:20 | 'cmd.exe' | child_process-test.js:36:7:36:20 | sh |
-| child_process-test.js:38:7:38:20 | sh | child_process-test.js:39:5:39:5 | sh |
 | child_process-test.js:38:7:38:20 | sh | child_process-test.js:39:14:39:15 | sh |
 | child_process-test.js:38:12:38:20 | '/bin/sh' | child_process-test.js:38:7:38:20 | sh |
-| child_process-test.js:39:5:39:5 | sh | child_process-test.js:39:14:39:15 | sh |
 | child_process-test.js:41:9:41:17 | args | child_process-test.js:44:30:44:33 | args |
 | child_process-test.js:41:9:41:17 | args | child_process-test.js:46:15:46:18 | args |
 | child_process-test.js:41:16:41:17 | [] | child_process-test.js:41:9:41:17 | args |

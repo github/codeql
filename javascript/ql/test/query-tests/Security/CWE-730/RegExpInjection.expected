@@ -45,8 +45,6 @@ edges
 | RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:47:22:47:26 | input |
 | RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:50:46:50:50 | input |
 | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:5:31:5:56 | input |
-| RegExpInjection.js:8:23:8:33 | "\\\\b" + key | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" |
-| RegExpInjection.js:8:31:8:33 | key | RegExpInjection.js:8:23:8:33 | "\\\\b" + key |
 | RegExpInjection.js:8:31:8:33 | key | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" |
 | RegExpInjection.js:19:19:19:21 | key | RegExpInjection.js:19:14:19:22 | wrap(key) |
 | RegExpInjection.js:21:19:21:21 | key | RegExpInjection.js:21:14:21:22 | wrap(key) |
@@ -60,9 +58,7 @@ edges
 | tst.js:2:9:2:21 | data | tst.js:3:21:3:24 | data |
 | tst.js:2:16:2:16 | e | tst.js:2:16:2:21 | e.data |
 | tst.js:2:16:2:21 | e.data | tst.js:2:9:2:21 | data |
-| tst.js:3:16:3:29 | "^"+ data.name | tst.js:3:16:3:35 | "^"+ data.name + "$" |
 | tst.js:3:21:3:24 | data | tst.js:3:21:3:29 | data.name |
-| tst.js:3:21:3:29 | data.name | tst.js:3:16:3:29 | "^"+ data.name |
 | tst.js:3:21:3:29 | data.name | tst.js:3:16:3:35 | "^"+ data.name + "$" |
 #select
 | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" | RegExpInjection.js:5:13:5:28 | req.param("key") | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" | This regular expression is constructed from a $@. | RegExpInjection.js:5:13:5:28 | req.param("key") | user-provided value |

@@ -45,16 +45,9 @@ nodes
 | tst2.js:21:14:21:14 | p |
 edges
 | ReflectedXss.js:8:33:8:45 | req.params.id | ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id |
-| etherpad.js:9:5:9:53 | response | etherpad.js:11:3:11:3 | response |
 | etherpad.js:9:5:9:53 | response | etherpad.js:11:12:11:19 | response |
-| etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:16:9:36 | req.que ... p + "(" |
-| etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:16:9:47 | req.que ... esponse |
 | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:16:9:53 | req.que ... e + ")" |
-| etherpad.js:9:16:9:36 | req.que ... p + "(" | etherpad.js:9:16:9:47 | req.que ... esponse |
-| etherpad.js:9:16:9:36 | req.que ... p + "(" | etherpad.js:9:16:9:53 | req.que ... e + ")" |
-| etherpad.js:9:16:9:47 | req.que ... esponse | etherpad.js:9:16:9:53 | req.que ... e + ")" |
 | etherpad.js:9:16:9:53 | req.que ... e + ")" | etherpad.js:9:5:9:53 | response |
-| etherpad.js:11:3:11:3 | response | etherpad.js:11:12:11:19 | response |
 | formatting.js:4:9:4:29 | evil | formatting.js:6:43:6:46 | evil |
 | formatting.js:4:9:4:29 | evil | formatting.js:7:49:7:52 | evil |
 | formatting.js:4:16:4:29 | req.query.evil | formatting.js:4:9:4:29 | evil |

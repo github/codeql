@@ -97,15 +97,12 @@ edges
 | tst.js:11:9:11:12 | name | tst.js:11:5:11:13 | obj[name] |
 | tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
 | tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
-| tst.js:17:9:17:22 | fn | tst.js:19:9:19:31 | fn |
 | tst.js:17:9:17:22 | fn | tst.js:20:7:20:8 | fn |
 | tst.js:17:9:17:22 | fn | tst.js:22:11:22:12 | fn |
 | tst.js:17:14:17:22 | obj[name] | tst.js:17:9:17:22 | fn |
 | tst.js:17:14:17:22 | obj[name] | tst.js:17:9:17:22 | fn |
 | tst.js:17:18:17:21 | name | tst.js:17:14:17:22 | obj[name] |
 | tst.js:17:18:17:21 | name | tst.js:17:14:17:22 | obj[name] |
-| tst.js:19:9:19:31 | fn | tst.js:20:7:20:8 | fn |
-| tst.js:19:9:19:31 | fn | tst.js:22:11:22:12 | fn |
 | tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] |
 | tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] |
 | tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |

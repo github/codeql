@@ -58,10 +58,8 @@ edges
 | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:4:5:4:47 | content |
 | FileAccessToHttp.js:9:12:9:31 | { Referer: content } | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} |
 | FileAccessToHttp.js:9:23:9:29 | content | FileAccessToHttp.js:9:12:9:31 | { Referer: content } |
-| bufferRead.js:12:13:12:43 | buffer | bufferRead.js:13:53:13:52 | buffer |
 | bufferRead.js:12:13:12:43 | buffer | bufferRead.js:15:26:15:31 | buffer |
 | bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:12:13:12:43 | buffer |
-| bufferRead.js:13:53:13:52 | buffer | bufferRead.js:15:26:15:31 | buffer |
 | bufferRead.js:15:15:15:62 | postData | bufferRead.js:33:21:33:28 | postData |
 | bufferRead.js:15:26:15:31 | buffer | bufferRead.js:15:26:15:62 | buffer. ... esRead) |
 | bufferRead.js:15:26:15:62 | buffer. ... esRead) | bufferRead.js:15:15:15:62 | postData |
@@ -70,9 +68,7 @@ edges
 | googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) | googlecompiler.js:9:7:15:4 | post_data |
 | googlecompiler.js:9:41:15:3 | {\\n      ... ody\\n  } | googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) |
 | googlecompiler.js:14:21:14:30 | codestring | googlecompiler.js:9:41:15:3 | {\\n      ... ody\\n  } |
-| googlecompiler.js:44:54:44:57 | data | googlecompiler.js:55:6:55:9 | data |
 | googlecompiler.js:44:54:44:57 | data | googlecompiler.js:56:14:56:17 | data |
-| googlecompiler.js:55:6:55:9 | data | googlecompiler.js:56:14:56:17 | data |
 | googlecompiler.js:56:14:56:17 | data | googlecompiler.js:7:19:7:28 | codestring |
 | readFileSync.js:5:5:5:39 | data | readFileSync.js:7:11:7:14 | data |
 | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:5:5:5:39 | data |
@@ -85,13 +81,9 @@ edges
 | request.js:8:12:8:19 | jsonData | request.js:8:11:8:20 | {jsonData} |
 | request.js:13:18:13:24 | xmlData | request.js:22:11:22:17 | xmlData |
 | request.js:22:11:22:17 | xmlData | request.js:16:11:23:3 | {\\n    u ... ody\\n  } |
-| request.js:28:52:28:55 | data | request.js:34:6:34:9 | data |
 | request.js:28:52:28:55 | data | request.js:35:14:35:17 | data |
-| request.js:34:6:34:9 | data | request.js:35:14:35:17 | data |
 | request.js:35:14:35:17 | data | request.js:6:19:6:26 | jsonData |
-| request.js:43:51:43:54 | data | request.js:49:6:49:9 | data |
 | request.js:43:51:43:54 | data | request.js:50:13:50:16 | data |
-| request.js:49:6:49:9 | data | request.js:50:13:50:16 | data |
 | request.js:50:13:50:16 | data | request.js:13:18:13:24 | xmlData |
 | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:11:23:11:28 | buffer |
 | sentAsHeaders.js:11:13:11:59 | content | sentAsHeaders.js:12:19:12:25 | content |
