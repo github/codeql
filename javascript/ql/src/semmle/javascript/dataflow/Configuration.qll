@@ -454,6 +454,7 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
 private predicate basicFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, PathSummary summary, DataFlow::Configuration cfg
 ) {
+  isLive() and
   isRelevantForward(pred, cfg) and
   (
     // Local flow
@@ -933,17 +934,17 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
 }
 
 /**
- * Holds if `cfg` has at least one source and at least one sink.
+ * Holds if there is a configuration that has at least one source and at least one sink.
  */
 pragma[noinline]
-private predicate isLive(DataFlow::Configuration cfg) { isSource(_, cfg, _) and isSink(_, cfg, _) }
+private predicate isLive() { exists(DataFlow::Configuration cfg | isSource(_, cfg, _) and isSink(_, cfg, _)) }
 
 /**
  * A data flow node on an inter-procedural path from a source.
  */
 private newtype TPathNode =
   MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
-    isLive(cfg) and
+    isLive() and
     onPath(nd, cfg, summary)
   }
 
