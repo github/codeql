@@ -94,13 +94,32 @@ class InvokeNode extends DataFlow::SourceNode {
    * Gets a function passed as the `i`th argument of this invocation.
    *
    * This predicate only performs local data flow tracking.
-   * Use `getACallbackSource` to handle interprocedural flow of callback functions.
+   * Consider using `getABoundCallbackParameter` to handle interprocedural flow of callback functions.
    */
   FunctionNode getCallback(int i) { result.flowsTo(getArgument(i)) }
 
   /**
-   * Gets a function passed as the `i`th argument of this invocation,
-   * possibly through non-local data flow and bound by partial function invocations.
+   * Gets a parameter of a callback passed into this call.
+   *
+   * `callback` indicates which argument the callback passed into, and `param`
+   * is the index of the parameter in the callback function.
+   *
+   * For example, for the call below, `getABoundCallbackParameter(1, 0)` refers
+   * to the parameter `e` (the first parameter of the second callback argument):
+   * ```js
+   * addEventHandler("click", e => { ... })
+   * ```
+   *
+   * This predicate takes interprocedural data flow into account, as well as
+   * partial function applications such as `.bind`.
+   *
+   * For example, for the call below `getABoundCallbackParameter(1, 0)` returns the parameter `e`,
+   * (the first parameter of the second callback argument), since the first parameter of `foo`
+   * has been bound by the `bind` call:
+   * ```js
+   * function foo(x, e) { }
+   * addEventHandler("click", foo.bind(this, "value of x"))
+   * ```
    */
   ParameterNode getABoundCallbackParameter(int callback, int param) {
     exists(int boundArgs |
