@@ -15,10 +15,11 @@ import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlow::Encryptio
  * The creation of a literal byte array.
  */
 class ByteArrayLiteralSource extends KeySource {
- ByteArrayLiteralSource() {
+  ByteArrayLiteralSource() {
     this.asExpr() = any(ArrayCreation ac |
-      ac.getArrayType().getElementType() instanceof ByteType and
-      ac.hasInitializer())
+        ac.getArrayType().getElementType() instanceof ByteType and
+        ac.hasInitializer()
+      )
   }
 }
 
@@ -26,12 +27,10 @@ class ByteArrayLiteralSource extends KeySource {
  * Any string literal as a source
  */
 class StringLiteralSource extends KeySource {
-  StringLiteralSource() {
-    this.asExpr() instanceof StringLiteral
-  }
+  StringLiteralSource() { this.asExpr() instanceof StringLiteral }
 }
 
 from SymmetricKeyTaintTrackingConfiguration keyFlow, KeySource src, SymmetricEncryptionKeySink sink
 where keyFlow.hasFlow(src, sink)
-select sink, "Hard-coded symmetric $@ is used in symmetric algorithm in " + sink.getDescription(), src, "key"
-
+select sink, "Hard-coded symmetric $@ is used in symmetric algorithm in " + sink.getDescription(),
+  src, "key"
