@@ -141,13 +141,25 @@ class FunctionCall extends Call, @funbindexpr {
   /** Gets an explicit template argument for this call. */
   Type getAnExplicitTemplateArgument() { result = getExplicitTemplateArgument(_) }
 
+  /** Gets an explicit template argument value for this call. */
+  Expr getAnExplicitTemplateArgumentValue() { result = getExplicitTemplateArgumentValue(_) }
+
   /** Gets a template argument for this call. */
   Type getATemplateArgument() { result = getTarget().getATemplateArgument() }
+
+  /** Gets a template argument value for this call. */
+  Expr getATemplateArgumentValue() { result = getTarget().getATemplateArgumentValue() }
 
   /** Gets the nth explicit template argument for this call. */
   Type getExplicitTemplateArgument(int n) {
     n < getNumberOfExplicitTemplateArguments() and
     result = getTemplateArgument(n)
+  }
+
+  /** Gets the nth explicit template argument value for this call. */
+  Expr getExplicitTemplateArgumentValue(int n) {
+    n < getNumberOfExplicitTemplateArguments() and
+    result = getTemplateArgumentValue(n)
   }
 
   /** Gets the number of explicit template arguments for this call. */
@@ -160,8 +172,14 @@ class FunctionCall extends Call, @funbindexpr {
   /** Gets the number of template arguments for this call. */
   int getNumberOfTemplateArguments() { result = count(int i | exists(getTemplateArgument(i))) }
 
+  /** Gets the number of template argument which are values for this call. */
+  int getNumberOfTemplateArgumentValues() { result = count(int i | exists(getTemplateArgumentValue(i))) }
+
   /** Gets the nth template argument for this call (indexed from 0). */
   Type getTemplateArgument(int n) { result = getTarget().getTemplateArgument(n) }
+
+  /** Gets the nth template argument value for this call (indexed from 0). */
+  Expr getTemplateArgumentValue(int n) { result = getTarget().getTemplateArgumentValue(n) }
 
   /** Holds if any template arguments for this call are implicit / deduced. */
   predicate hasImplicitTemplateArguments() {

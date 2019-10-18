@@ -198,6 +198,12 @@ abstract class Declaration extends Locatable, @declaration {
   final Type getATemplateArgument() { result = getTemplateArgument(_) }
 
   /**
+   * Gets a template argument used to instantiate this declaration from a template.
+   * When called on a template, this will return a template parameter value.
+   */
+  final Expr getATemplateArgumentValue() { result = getTemplateArgumentValue(_) }
+
+  /**
    * Gets the `i`th template argument used to instantiate this declaration from a
    * template. When called on a template, this will return the `i`th template parameter.
    */
