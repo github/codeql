@@ -731,6 +731,11 @@ class_template_argument(
     int index: int ref,
     int arg_type: @type ref
 );
+class_template_argument_value(
+    int type_id: @usertype ref,
+    int index: int ref,
+    int arg_value: @expr ref
+);
 
 is_proxy_class_for(
     unique int id: @usertype ref,
@@ -755,6 +760,11 @@ function_template_argument(
     int index: int ref,
     int arg_type: @type ref
 );
+function_template_argument_value(
+    int function_id: @function ref,
+    int index: int ref,
+    int arg_value: @expr ref
+);
 
 is_variable_template(unique int id: @variable ref);
 variable_instantiation(
@@ -765,6 +775,11 @@ variable_template_argument(
     int variable_id: @variable ref,
     int index: int ref,
     int arg_type: @type ref
+);
+variable_template_argument_value(
+    int variable_id: @variable ref,
+    int index: int ref,
+    int arg_value: @expr ref
 );
 
 /*
