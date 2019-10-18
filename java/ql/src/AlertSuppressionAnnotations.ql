@@ -28,7 +28,7 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   string getText() { result = getASuppressedWarningLiteral().getValue() }
 
   /** Gets the LGTM suppression annotation in this Java annotation. */
-  string getAnnotation() { result = annotation }
+  string getAnnotationText() { result = annotation }
 
   private Annotation getASiblingAnnotation() {
     result = getAnnotatedElement().(Annotatable).getAnAnnotation() and
@@ -98,5 +98,5 @@ class SuppressionScope extends @annotation {
 from SuppressionAnnotation c
 select c, // suppression comment
   c.getText(), // text of suppression comment (excluding delimiters)
-  c.getAnnotation(), // text of suppression annotation
+  c.getAnnotationText(), // text of suppression annotation
   c.getScope() // scope of suppression
