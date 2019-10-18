@@ -58,7 +58,7 @@ The ``ensuresLt`` predicate
 ***************************
 When ``ensuresLt(left, right, k, block, true)`` holds, then ``block`` is only executed if ``left`` was strictly less than ``right + k`` at their last evaluation. When ``ensuresLt(left, right, k, block, false)`` holds, then ``block`` is only executed if ``left`` was greater than or equal to ``right + k`` at their last evaluation.
 
-In the following code sample, the comparison on the first line ensures that ``index`` is less than ``size`` in the then block, and that ``index`` is greater than or equal to ``size`` in the else block.
+In the following code sample, the comparison on the first line ensures that ``index`` is less than ``size`` in the "then" block, and that ``index`` is greater than or equal to ``size`` in the "else" block.
 
 .. code-block:: cpp
 
