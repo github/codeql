@@ -84,16 +84,19 @@ import javascript
  * whose root node is not a disjunction.
  */
 class RegExpRoot extends @regexpterm {
+  RegExpParent parent;
+
   // RegExpTerm is abstract, so do not extend it.
   RegExpRoot() {
-    exists(RegExpLiteral literal, RegExpAlt alt | alt.getParent() = literal |
-      this = alt.getAChild()
+    exists(RegExpAlt alt |
+      alt.isRootTerm() and
+      this = alt.getAChild() and
+      parent = alt.getParent()
     )
     or
-    exists(RegExpLiteral literal |
-      not exists(RegExpAlt alt | alt.getParent() = literal) and
-      this.(RegExpTerm).getParent() = literal
-    )
+    this.(RegExpTerm).isRootTerm() and
+    not this instanceof RegExpAlt and
+    parent = this.(RegExpTerm).getParent()
   }
 
   /**
@@ -103,7 +106,13 @@ class RegExpRoot extends @regexpterm {
     // there is at least one repetition
     exists(RegExpRepetition rep | getRoot(rep) = this) and
     // there are no lookbehinds
-    not exists(RegExpLookbehind lbh | getRoot(lbh) = this)
+    not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
+    // is actually used as a RegExp
+    (
+      parent instanceof RegExpLiteral
+      or
+      parent.(StringLiteral).flow() instanceof RegExpPatternSource
+    )
   }
 
   string toString() { result = this.(RegExpTerm).toString() }
@@ -352,10 +361,10 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     )
   )
   or
-  exists(RegExpDot dot, RegExpLiteral rel |
-    q1 = before(dot) and q2 = after(dot) and rel = dot.getLiteral()
+  exists(RegExpDot dot |
+    q1 = before(dot) and q2 = after(dot)
   |
-    if rel.isDotAll() then lbl = Any() else lbl = Dot()
+    if dot.getLiteral().isDotAll() then lbl = Any() else lbl = Dot()
   )
   or
   exists(RegExpCharacterClass cc |

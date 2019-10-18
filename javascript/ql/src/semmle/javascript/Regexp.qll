@@ -105,6 +105,13 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
    * it has an enclosing lookbehind assertions.
    */
   predicate isInBackwardMatchingContext() { this = any(RegExpLookbehind lbh).getAChild+() }
+
+  /**
+   * Holds if this is the root term of a regular expression.
+   */
+  predicate isRootTerm() {
+    not getParent() instanceof RegExpTerm
+  }
 }
 
 /**
