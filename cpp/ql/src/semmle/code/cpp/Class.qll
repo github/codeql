@@ -615,6 +615,15 @@ class Class extends UserType {
   }
 
   /**
+   * Gets the `i`th template argument value used to instantiate this class from a
+   * class template. When called on a class template, this will return the
+   * `i`th template parameter value.
+   */
+  override Expr getTemplateArgumentValue(int i) {
+    class_template_argument_value(underlyingElement(this), i, unresolveElement(result))
+  }
+
+  /**
    * Holds if this class/struct is polymorphic (has a virtual function, or
    * inherits one).
    */

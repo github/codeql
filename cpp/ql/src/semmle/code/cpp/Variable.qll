@@ -165,6 +165,15 @@ class Variable extends Declaration, @variable {
   }
 
   /**
+   * Gets the `i`th template argument value used to instantiate this variable from a
+   * variable template. When called on a variable template, this will return the
+   * `i`th template parameter value.
+   */
+  override Expr getTemplateArgumentValue(int index) {
+    variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+  }
+
+  /**
    * Holds if this is a compiler-generated variable. For example, a
    * [range-based for loop](http://en.cppreference.com/w/cpp/language/range-for)
    * typically has three compiler-generated variables, named `__range`,
