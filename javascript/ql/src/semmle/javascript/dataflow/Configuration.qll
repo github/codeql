@@ -985,26 +985,10 @@ class PathNode extends TPathNode {
     nd = n and cfg = c
   }
 
-  /**
-   * Gets a successor node of this path node, including hidden nodes.
-   */
-  private PathNode getASuccessorInternal() {
-    exists(DataFlow::Node succ, PathSummary newSummary |
-      flowStep(nd, id(cfg), succ, newSummary) and
-      result = MkMidNode(succ, id(cfg), summary.append(newSummary))
-    )
-  }
-
-  /**
-   * Gets a successor of this path node, if it is a hidden node.
-   */
-  private PathNode getAHiddenSuccessor() {
-    isHidden() and
-    result = getASuccessorInternal()
-  }
-
   /** Gets a successor node of this path node. */
-  PathNode getASuccessor() { result = getASuccessorInternal().getAHiddenSuccessor*() }
+  final PathNode getASuccessor() {
+    result = getASuccessorIfHidden*(getASuccessor(this))
+  }
 
   /** Gets a textual representation of this path node. */
   string toString() { result = nd.toString() }
@@ -1035,6 +1019,21 @@ class PathNode extends TPathNode {
     nd = any(AddExpr add).flow() and
     nd = any(AddExpr add).getAnOperand().flow()
   }
+}
+
+private PathNode getASuccessor(PathNode pnd) {
+  exists(DataFlow::Node nd, Configuration cfg, PathSummary summary |
+    pnd = MkMidNode(nd, cfg, summary) and
+    exists(DataFlow::Node succ, PathSummary newSummary |
+      flowStep(nd, id(cfg), succ, newSummary) and
+      result = MkMidNode(succ, id(cfg), summary.append(newSummary))
+    )
+  )
+}
+
+private PathNode getASuccessorIfHidden(PathNode nd) {
+  nd.isHidden() and
+  result = getASuccessor(nd)
 }
 
 /**
