@@ -1,11 +1,11 @@
-#define SSL_OP_ALL										 0x80000BFFU
-/* Removed from OpenSSL 1.1.0. Was 0x01000000L */
-# define SSL_OP_NO_SSLv2                                 0x0
-# define SSL_OP_NO_SSLv3                                 0x02000000U
-# define SSL_OP_NO_TLSv1                                 0x04000000U
-# define SSL_OP_NO_TLSv1_2                               0x08000000U
-# define SSL_OP_NO_TLSv1_1                               0x10000000U
-# define SSL_OP_NO_TLSv1_3                               0x20000000U
+
+#define SSL_OP_ALL 0x80000BFFU
+#define SSL_OP_NO_SSLv2 0
+#define SSL_OP_NO_SSLV3 0x02000000U
+#define SSL_OP_NO_TLSv1 0x04000000U
+#define SSL_OP_NO_TLSv1_1 0x10000000U
+#define SSL_OP_NO_TLSv1_2 0x08000000U
+#define SSL_OP_NO_TLSv1_3 0x20000000U
 
 namespace boost {
 	namespace asio {
