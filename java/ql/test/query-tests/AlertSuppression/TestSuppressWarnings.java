@@ -15,4 +15,8 @@ class TestSuppressWarnings {
     public void test3() {
         
     }
+    @SuppressWarnings({"lgtm[java/confusing-method-name] blah blah lgtm[java/non-sync-override]"})
+    public void test4() {
+        
+    }
 }
