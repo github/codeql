@@ -889,9 +889,9 @@ private predicate flowsTo(
   PathNode flowsource, DataFlow::Node source, SinkPathNode flowsink, DataFlow::Node sink,
   DataFlow::Configuration cfg
 ) {
-  flowsource = MkPathNode(source, cfg, _) and
+  flowsource.wraps(source, cfg) and
   flowsink = flowsource.getASuccessor*() and
-  flowsink = MkPathNode(sink, id(cfg), _)
+  flowsink.wraps(sink, id(cfg))
 }
 
 /**
@@ -979,6 +979,11 @@ class PathNode extends TPathNode {
 
   /** Gets the summary of the path underlying this path node. */
   PathSummary getPathSummary() { result = summary }
+
+  /** Holds if this path node wraps data-flow node `nd` and configuration `c`. */
+  predicate wraps(DataFlow::Node n, DataFlow::Configuration c) {
+    nd = n and cfg = c
+  }
 
   /**
    * Gets a successor node of this path node, including hidden nodes.
