@@ -7,7 +7,7 @@ class TestSuppressWarnings {
         
     }
     @Deprecated
-    @SuppressWarnings("lgtm[java/confusing-method-name]")
+    @SuppressWarnings({"lgtm[java/confusing-method-name] not confusing","lgtm[java/non-sync-override]"})
     public void test2() {
         
     }

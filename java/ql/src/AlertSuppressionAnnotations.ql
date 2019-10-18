@@ -9,26 +9,28 @@
 import java
 import Metrics.Internal.Extents
 
+/** Gets the LGTM suppression annotation text in the string `s`, if any. */
+bindingset[s]
+string getAnnotationText(string s) {
+  // match `lgtm[...]` anywhere in the comment
+  result = s.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)
+}
+
 /**
  * An alert suppression annotation.
  */
 class SuppressionAnnotation extends SuppressWarningsAnnotation {
-  string annotation;
+  string text;
 
   SuppressionAnnotation() {
-    exists(string text | text = this.getASuppressedWarningLiteral().getValue() |
-      // match `lgtm[...]` anywhere in the comment
-      annotation = text.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)
-    )
+    text = this.getASuppressedWarningLiteral().getValue() and
+    exists(getAnnotationText(text))
   }
 
   /**
    * Gets the text of this suppression annotation.
    */
-  string getText() { result = getASuppressedWarningLiteral().getValue() }
-
-  /** Gets the LGTM suppression annotation in this Java annotation. */
-  string getAnnotationText() { result = annotation }
+  string getText() { result = text }
 
   private Annotation getASiblingAnnotation() {
     result = getAnnotatedElement().(Annotatable).getAnAnnotation() and
@@ -95,8 +97,11 @@ class SuppressionScope extends @annotation {
   string toString() { result = "suppression range" }
 }
 
-from SuppressionAnnotation c
-select c, // suppression comment
-  c.getText(), // text of suppression comment (excluding delimiters)
-  c.getAnnotationText(), // text of suppression annotation
+from SuppressionAnnotation c, string text, string annotationText
+where
+  text = c.getText() and
+  annotationText = getAnnotationText(text)
+select c, // suppression entity
+  text, // full text of suppression string
+  annotationText, // LGTM suppression annotation text
   c.getScope() // scope of suppression
