@@ -28,8 +28,8 @@ private newtype TIRType =
   TIRFunctionAddressType(int byteSize) {
     Language::hasFunctionAddressType(byteSize)
   } or
-  TIRBlobType(Language::BlobTypeTag tag, int byteSize) {
-    Language::hasBlobType(tag, byteSize)
+  TIROpaqueType(Language::OpaqueTypeTag tag, int byteSize) {
+    Language::hasOpaqueType(tag, byteSize)
   }
 
 /**
@@ -118,7 +118,7 @@ private class IRSizedType extends IRType {
     this = TIRFloatingPointType(byteSize) or
     this = TIRAddressType(byteSize) or
     this = TIRFunctionAddressType(byteSize) or
-    this = TIRBlobType(_, byteSize)
+    this = TIROpaqueType(_, byteSize)
   }
 
   final override int getByteSize() { result = byteSize }
@@ -212,30 +212,30 @@ class IRFunctionAddressType extends IRSizedType, TIRFunctionAddressType {
  * A type with known size that does not fit any of the other kinds of type. Used to represent
  * classes, structs, unions, fixed-size arrays, pointers-to-member, and more.
  */
-class IRBlobType extends IRSizedType, TIRBlobType {
-  Language::BlobTypeTag tag;
+class IROpaqueType extends IRSizedType, TIROpaqueType {
+  Language::OpaqueTypeTag tag;
 
-  IRBlobType() {
-    this = TIRBlobType(tag, byteSize)
+  IROpaqueType() {
+    this = TIROpaqueType(tag, byteSize)
   }
 
   final override string toString() {
-    result = "blob" + byteSize.toString() + "{" + tag.toString() + "}"
+    result = "opaque" + byteSize.toString() + "{" + tag.toString() + "}"
   }
 
   final override string getIdentityString() {
-    result = "blob" + byteSize.toString() + "{" + Language::getBlobTagIdentityString(tag) + "}"
+    result = "opaque" + byteSize.toString() + "{" + Language::getOpaqueTagIdentityString(tag) + "}"
   }
 
   final override Language::LanguageType getCanonicalLanguageType() {
-    result = Language::getCanonicalBlobType(tag, byteSize)
+    result = Language::getCanonicalOpaqueType(tag, byteSize)
   }
 
   /**
-   * Gets the "tag" that differentiates this type from other incompatible blob types that have the
+   * Gets the "tag" that differentiates this type from other incompatible opaque types that have the
    * same size.
    */
-  final Language::BlobTypeTag getTag() { result = tag }
+  final Language::OpaqueTypeTag getTag() { result = tag }
 }
 
 module IRTypeSanity {

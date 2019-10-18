@@ -3,7 +3,7 @@ private import IRUtilities
 import CSharpType
 
 class LanguageType = CSharpType;
-class BlobTypeTag = CSharp::ValueOrRefType;
+class OpaqueTypeTag = CSharp::ValueOrRefType;
 
 class Function = CSharp::Callable;
 

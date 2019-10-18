@@ -108,17 +108,17 @@ private int getContentSize(ValueOrRefType type) {
     )
 }
 
-private predicate isBlobType(ValueOrRefType type) {
+private predicate isOpaqueType(ValueOrRefType type) {
   type instanceof Struct or
   type instanceof NullableType or
   type instanceof DecimalType
 }
 
 /**
- * Holds if an `IRBlobType` with the specified `tag` and `byteSize` should exist.
+ * Holds if an `IROpaqueType` with the specified `tag` and `byteSize` should exist.
  */
-predicate hasBlobType(Type tag, int byteSize) {
-  isBlobType(tag) and byteSize = getTypeSize(tag)
+predicate hasOpaqueType(Type tag, int byteSize) {
+  isOpaqueType(tag) and byteSize = getTypeSize(tag)
 }
 
 private Type getRepresentationType(Type type) {
@@ -135,10 +135,10 @@ private Type getRepresentationType(Type type) {
 private IRType getIRTypeForPRValue(Type type) {
   exists(Type repType |
     repType = getRepresentationType(type) |
-    exists(IRBlobType blobType |
-      blobType = result |
-      blobType.getByteSize() = getTypeSize(repType) and
-      blobType.getTag() = repType
+    exists(IROpaqueType opaqueType |
+      opaqueType = result |
+      opaqueType.getByteSize() = getTypeSize(repType) and
+      opaqueType.getTag() = repType
     )
     or
     result.(IRBooleanType).getByteSize() = repType.(BoolType).getSize()
@@ -159,7 +159,7 @@ private IRType getIRTypeForPRValue(Type type) {
   )
 }
 
-string getBlobTagIdentityString(Type tag) {
+string getOpaqueTagIdentityString(Type tag) {
   result = tag.getQualifiedName()
 }
 
@@ -412,11 +412,11 @@ CSharpPRValueType getCanonicalVoidType() {
 }
 
 /**
- * Gets the `CSharpType` that is the canonical type for an `IRBlobType` with the specified `tag` and
+ * Gets the `CSharpType` that is the canonical type for an `IROpaqueType` with the specified `tag` and
  * `byteSize`.
  */
-CSharpPRValueType getCanonicalBlobType(Type tag, int byteSize) {
-  isBlobType(tag) and
+CSharpPRValueType getCanonicalOpaqueType(Type tag, int byteSize) {
+  isOpaqueType(tag) and
   result = TPRValueType(tag) and
   getTypeSize(tag) = byteSize
 }

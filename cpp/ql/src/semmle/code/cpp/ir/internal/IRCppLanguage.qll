@@ -7,7 +7,7 @@ import CppType
 
 class LanguageType = CppType;
 
-class BlobTypeTag = Cpp::Type;
+class OpaqueTypeTag = Cpp::Type;
 
 class Function = Cpp::Function;
 

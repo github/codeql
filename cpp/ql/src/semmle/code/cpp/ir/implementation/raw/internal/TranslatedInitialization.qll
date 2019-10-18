@@ -205,7 +205,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
         // space in the target array.
         tag = ZeroPadStringConstantTag() and
         opcode instanceof Opcode::Constant and
-        resultType = getUnknownBlobType(elementCount * getElementType().getSize())
+        resultType = getUnknownOpaqueType(elementCount * getElementType().getSize())
         or
         // The index of the first element to be zero initialized.
         tag = ZeroPadStringElementIndexTag() and
@@ -220,7 +220,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
         // Store the constant zero into the remainder of the string.
         tag = ZeroPadStringStoreTag() and
         opcode instanceof Opcode::Store and
-        resultType = getUnknownBlobType(elementCount * getElementType().getSize())
+        resultType = getUnknownOpaqueType(elementCount * getElementType().getSize())
       )
     )
   }
@@ -314,7 +314,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     )
   }
 
-  override predicate needsUnknownBlobType(int byteSize) {
+  override predicate needsUnknownOpaqueType(int byteSize) {
     exists(int elementCount |
       zeroInitRange(_, elementCount) and
       byteSize = elementCount * getElementType().getSize()
@@ -704,7 +704,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
 
   override int getElementIndex() { result = elementIndex }
 
-  override predicate needsUnknownBlobType(int byteSize) {
+  override predicate needsUnknownOpaqueType(int byteSize) {
     elementCount != 0 and byteSize = elementCount * getElementType().getSize()
   }
 
@@ -720,7 +720,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     if elementCount = 1 then
       result = getTypeForPRValue(getElementType())
     else
-      result = getUnknownBlobType(elementCount * getElementType().getSize())
+      result = getUnknownOpaqueType(elementCount * getElementType().getSize())
   }
 }
 

@@ -119,7 +119,7 @@ predicate hasFunctionAddressType(int byteSize) {
   byteSize = getTypeSize(any(FunctionPointerIshType type))
 }
 
-private predicate isBlobType(Type type) {
+private predicate isOpaqueType(Type type) {
   (
     exists(type.getSize()) and // Only include complete types
     (
@@ -132,12 +132,12 @@ private predicate isBlobType(Type type) {
 }
 
 /**
- * Holds if an `IRBlobType` with the specified `tag` and `byteSize` should exist.
+ * Holds if an `IROpaqueType` with the specified `tag` and `byteSize` should exist.
  */
-predicate hasBlobType(Type tag, int byteSize) {
-  isBlobType(tag) and byteSize = getTypeSize(tag)
+predicate hasOpaqueType(Type tag, int byteSize) {
+  isOpaqueType(tag) and byteSize = getTypeSize(tag)
   or
-  tag instanceof UnknownType and IRConstruction::needsUnknownBlobType(byteSize)
+  tag instanceof UnknownType and IRConstruction::needsUnknownOpaqueType(byteSize)
 }
 
 /**
@@ -147,11 +147,11 @@ private IRType getIRTypeForPRValue(Type type) {
   exists(Type unspecifiedType |
     unspecifiedType = type.getUnspecifiedType() |
     (
-      isBlobType(unspecifiedType) and
-      exists(IRBlobType blobType |
-        blobType = result |
-        blobType.getByteSize() = getTypeSize(type) and
-        blobType.getTag() = unspecifiedType
+      isOpaqueType(unspecifiedType) and
+      exists(IROpaqueType opaqueType |
+        opaqueType = result |
+        opaqueType.getByteSize() = getTypeSize(type) and
+        opaqueType.getTag() = unspecifiedType
       )
     ) or
     unspecifiedType instanceof BoolType and result.(IRBooleanType).getByteSize() = type.getSize() or
@@ -174,8 +174,8 @@ private newtype TCppType =
   TGLValueAddressType(Type type) {
     any()
   } or
-  TUnknownBlobType(int byteSize) {
-    IRConstruction::needsUnknownBlobType(byteSize)
+  TUnknownOpaqueType(int byteSize) {
+    IRConstruction::needsUnknownOpaqueType(byteSize)
   } or
   TUnknownType()
 
@@ -253,18 +253,18 @@ private class CppPRValueType extends CppWrappedType, TPRValueType {
  * occur in certain cases during IR construction, such as the type of a zero-initialized segment of
  * a partially-initialized array.
  */
-private class CppUnknownBlobType extends CppType, TUnknownBlobType {
+private class CppUnknownOpaqueType extends CppType, TUnknownOpaqueType {
   int byteSize;
 
-  CppUnknownBlobType() {
-    this = TUnknownBlobType(byteSize)
+  CppUnknownOpaqueType() {
+    this = TUnknownOpaqueType(byteSize)
   }
 
   override final string toString() {
     result = "unknown[" + byteSize.toString() + "]"
   }
 
-  override final IRBlobType getIRType() {
+  override final IROpaqueType getIRType() {
     result.getByteSize() = byteSize
   }
 
@@ -397,9 +397,9 @@ CppFunctionGLValueType getFunctionGLValueType() {
 }
 
 /**
- * Gets the `CppType` that represents a blob of unknown type with size `byteSize`.
+ * Gets the `CppType` that represents a opaque of unknown type with size `byteSize`.
  */
-CppUnknownBlobType getUnknownBlobType(int byteSize) {
+CppUnknownOpaqueType getUnknownOpaqueType(int byteSize) {
   result.getByteSize() = byteSize
 }
 
@@ -512,22 +512,22 @@ CppPRValueType getCanonicalVoidType() {
 }
 
 /**
- * Gets the `CppType` that is the canonical type for an `IRBlobType` with the specified `tag` and
+ * Gets the `CppType` that is the canonical type for an `IROpaqueType` with the specified `tag` and
  * `byteSize`.
  */
-CppType getCanonicalBlobType(Type tag, int byteSize) {
-  isBlobType(tag) and
+CppType getCanonicalOpaqueType(Type tag, int byteSize) {
+  isOpaqueType(tag) and
   result = TPRValueType(tag.getUnspecifiedType()) and
   getTypeSize(tag) = byteSize
   or
-  tag instanceof UnknownType and result = getUnknownBlobType(byteSize)
+  tag instanceof UnknownType and result = getUnknownOpaqueType(byteSize)
 }
 
 /**
- * Gets a string that uniquely identifies an `IRBlobType` tag. This may be different from the usual
+ * Gets a string that uniquely identifies an `IROpaqueType` tag. This may be different from the usual
  * `toString()` of the tag in order to ensure uniqueness.
  */
-string getBlobTagIdentityString(Type tag) {
-  hasBlobType(tag, _) and
+string getOpaqueTagIdentityString(Type tag) {
+  hasOpaqueType(tag, _) and
   result = getTypeIdentityString(tag)
 }

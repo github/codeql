@@ -616,7 +616,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    */
   int getInstructionResultSize(InstructionTag tag) { none() }
 
-  predicate needsUnknownBlobType(int byteSize) { none() }
+  predicate needsUnknownOpaqueType(int byteSize) { none() }
   
   /**
    * If the instruction specified by `tag` is a `StringConstantInstruction`,
