@@ -29,3 +29,11 @@ def bar(x):
 
 bar(True)
 bar(False)
+
+# False negative
+
+def fn_suppression():
+    with suppress(Exception):
+        raise Exception()
+    return False
+    return True
