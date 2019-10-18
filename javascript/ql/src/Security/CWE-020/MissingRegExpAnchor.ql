@@ -107,11 +107,13 @@ predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string 
     (
       anchoredTerm = root.getChild(0) and
       anchoredTerm.getChild(0) instanceof RegExpCaret and
-      not containsLeadingPseudoAnchor(root.getChild([ 1 .. root.getNumChild() - 1 ]))
+      not containsLeadingPseudoAnchor(root.getChild([ 1 .. root.getNumChild() - 1 ])) and
+      containsLetters(root.getChild([ 1 .. root.getNumChild() - 1 ]))
       or
       anchoredTerm = root.getLastChild() and
       anchoredTerm.getLastChild() instanceof RegExpDollar and
-      not containsTrailingPseudoAnchor(root.getChild([ 0 .. root.getNumChild() - 2 ]))
+      not containsTrailingPseudoAnchor(root.getChild([ 0 .. root.getNumChild() - 2 ])) and
+      containsLetters(root.getChild([ 0 .. root.getNumChild() - 2 ]))
     ) and
     msg = "Misleading operator precedence. The subexpression '" + anchoredTerm.getRawValue() +
         "' is anchored, but the other parts of this regular expression are not"

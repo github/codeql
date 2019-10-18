@@ -34,7 +34,7 @@
 	/^good\\\\.com|better\\\\.com/; // NOT OK
 
 	/^foo|bar|baz$/; // NOT OK
-
+	/^foo|%/; // OK
 });
 
 (function coreString() {
