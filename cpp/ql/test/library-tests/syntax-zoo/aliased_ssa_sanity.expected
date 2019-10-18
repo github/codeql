@@ -11,7 +11,7 @@ missingPhiOperand
 | cpp11.cpp:141:7:141:7 | Phi: g | cpp11.cpp:161:16:161:16 | NoOp: label ...: |
 missingOperandType
 instructionWithoutSuccessor
-| VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
+| VacuousDestructorCall.cpp:2:29:2:29 | Chi: y |
 | assume0.cpp:7:2:7:2 | Chi: call to f |
 | condition_decls.cpp:16:19:16:20 | Chi: call to BoxedInt |
 | condition_decls.cpp:26:23:26:24 | Chi: call to BoxedInt |
@@ -19,7 +19,7 @@ instructionWithoutSuccessor
 | condition_decls.cpp:48:52:48:53 | Chi: call to BoxedInt |
 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
 | misc.c:171:10:171:13 | Uninitialized: definition of str2 |
-| misc.c:219:47:219:48 | InitializeParameter: sp |
+| misc.c:219:47:219:48 | Chi: sp |
 | ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x |
 | ms_try_mix.cpp:11:12:11:15 | Chi: call to C |
 | ms_try_mix.cpp:28:12:28:15 | Chi: call to C |

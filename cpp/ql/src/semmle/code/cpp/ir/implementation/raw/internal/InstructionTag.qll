@@ -6,6 +6,8 @@ newtype TInstructionTag =
   InitializerVariableAddressTag() or
   InitializerLoadStringTag() or
   InitializerStoreTag() or
+  InitializerIndirectAddressTag() or
+  InitializerIndirectStoreTag() or
   ZeroPadStringConstantTag() or
   ZeroPadStringElementIndexTag() or
   ZeroPadStringElementAddressTag() or
@@ -77,6 +79,10 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = InitializerStoreTag() and result = "InitStore"
   or
   tag = InitializerUninitializedTag() and result = "InitUninit"
+  or
+  tag = InitializerIndirectAddressTag() and result = "InitIndirectAddr"
+  or
+  tag = InitializerIndirectStoreTag() and result = "InitIndirectStore"
   or
   tag = ZeroPadStringConstantTag() and result = "ZeroPadConst"
   or

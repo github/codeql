@@ -3,6 +3,7 @@ private newtype TOpcode =
   TUninitialized() or
   TError() or
   TInitializeParameter() or
+  TInitializeIndirection() or
   TInitializeThis() or
   TEnterFunction() or
   TExitFunction() or
@@ -176,6 +177,11 @@ module Opcode {
   class InitializeParameter extends MemoryAccessOpcode, TInitializeParameter {
     final override string toString() { result = "InitializeParameter" }
   }
+
+  class InitializeIndirection extends MemoryAccessOpcode, TInitializeIndirection {
+    final override string toString() { result = "InitializeIndirection" }
+  }
+
 
   class InitializeThis extends Opcode, TInitializeThis {
     final override string toString() { result = "InitializeThis" }

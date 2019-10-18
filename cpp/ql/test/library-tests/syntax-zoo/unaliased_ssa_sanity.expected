@@ -20,7 +20,7 @@ missingPhiOperand
 | range_analysis.c:389:3:389:32 | Phi: return ... | range_analysis.c:387:38:387:38 | Constant: 5 |
 missingOperandType
 instructionWithoutSuccessor
-| VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
+| VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
 | assume0.cpp:7:2:7:2 | CallSideEffect: call to f |
 | condition_decls.cpp:16:19:16:20 | CallSideEffect: call to BoxedInt |
 | condition_decls.cpp:26:23:26:24 | CallSideEffect: call to BoxedInt |
@@ -28,7 +28,7 @@ instructionWithoutSuccessor
 | condition_decls.cpp:48:52:48:53 | CallSideEffect: call to BoxedInt |
 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
 | misc.c:171:10:171:13 | Uninitialized: definition of str2 |
-| misc.c:219:47:219:48 | InitializeParameter: sp |
+| misc.c:219:47:219:48 | InitializeIndirection: sp |
 | ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x |
 | ms_try_mix.cpp:11:12:11:15 | CallSideEffect: call to C |
 | ms_try_mix.cpp:28:12:28:15 | CallSideEffect: call to C |

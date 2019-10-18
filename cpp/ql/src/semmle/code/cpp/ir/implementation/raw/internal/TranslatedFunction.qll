@@ -329,6 +329,14 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
       result = getInstruction(InitializerStoreTag())
       or
       tag = InitializerStoreTag() and
+      if hasIndirection()
+      then result = getInstruction(InitializerIndirectAddressTag())
+      else result = getParent().getChildSuccessor(this)
+      or
+      tag = InitializerIndirectAddressTag() and
+      result = getInstruction(InitializerIndirectStoreTag())
+      or
+      tag = InitializerIndirectStoreTag() and
       result = getParent().getChildSuccessor(this)
     )
   }
@@ -347,12 +355,25 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     opcode instanceof Opcode::InitializeParameter and
     resultType = getVariableType(param) and
     isGLValue = false
+    or
+    hasIndirection() and
+    tag = InitializerIndirectAddressTag() and
+    opcode instanceof Opcode::Load and
+    resultType = getVariableType(param) and // should this strip a layer of indirection? if so, should isGLValue be true?
+    isGLValue = false
+    or
+    hasIndirection() and
+    tag = InitializerIndirectStoreTag() and
+    opcode instanceof Opcode::InitializeIndirection and
+    resultType instanceof UnknownType and // TODO: differentiate single-element and multi-element pointers
+    isGLValue = false
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
     (
       tag = InitializerStoreTag() or
-      tag = InitializerVariableAddressTag()
+      tag = InitializerVariableAddressTag() or
+      tag = InitializerIndirectStoreTag()
     ) and
     result = getIRUserVariable(getFunction(), param)
   }
@@ -362,6 +383,28 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     (
       operandTag instanceof AddressOperandTag and
       result = getInstruction(InitializerVariableAddressTag())
+    )
+    or
+    // this feels a little strange, but I think it's the best we can do
+    tag = InitializerIndirectAddressTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = getInstruction(InitializerVariableAddressTag())
+      or
+      operandTag instanceof LoadOperandTag and
+      result = getInstruction(InitializerStoreTag())
+    )
+    or
+    tag = InitializerIndirectStoreTag() and
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(InitializerIndirectAddressTag())
+  }
+
+  predicate hasIndirection() {
+    exists(Type t | t = param.getUnspecifiedType() |
+      t instanceof ArrayType or
+      t instanceof PointerType or
+      t instanceof ReferenceType
     )
   }
 }

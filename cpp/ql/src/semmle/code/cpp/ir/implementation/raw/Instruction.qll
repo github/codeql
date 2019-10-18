@@ -675,6 +675,14 @@ class InitializeParameterInstruction extends VariableInstruction {
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
 }
 
+class InitializeIndirectionInstruction extends VariableInstruction {
+  InitializeIndirectionInstruction() { getOpcode() instanceof Opcode::InitializeIndirection }
+
+  final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
+}
+
 /**
  * An instruction that initializes the `this` pointer parameter of the enclosing function.
  */

@@ -21,7 +21,7 @@ duplicateOperand
 missingPhiOperand
 missingOperandType
 instructionWithoutSuccessor
-| VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
+| VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y |
 | assume0.cpp:7:2:7:2 | CallSideEffect: call to f |
@@ -42,7 +42,7 @@ instructionWithoutSuccessor
 | misc.c:174:17:174:22 | CallSideEffect: call to getInt |
 | misc.c:174:30:174:35 | CallSideEffect: call to getInt |
 | misc.c:174:55:174:60 | Store: (char ****)... |
-| misc.c:219:47:219:48 | InitializeParameter: sp |
+| misc.c:219:47:219:48 | InitializeIndirection: sp |
 | misc.c:221:10:221:10 | Store: 1 |
 | misc.c:222:10:222:10 | Store: 2 |
 | ms_assume.cpp:20:12:20:12 | Constant: (bool)... |
