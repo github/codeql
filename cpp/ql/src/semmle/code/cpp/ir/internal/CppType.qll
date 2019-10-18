@@ -171,9 +171,7 @@ private newtype TCppType =
     exists(getIRTypeForPRValue(type))
   } or
   TFunctionGLValueType() or
-  TGLValueAddressType(Type type) {
-    any()
-  } or
+  TGLValueAddressType(Type type) or
   TUnknownOpaqueType(int byteSize) {
     IRConstruction::needsUnknownOpaqueType(byteSize)
   } or
