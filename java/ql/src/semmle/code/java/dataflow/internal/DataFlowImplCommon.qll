@@ -615,7 +615,7 @@ private module ImplCommon {
 
     cached
     newtype TReturnPosition =
-      TReturnPosition0(DataFlowCallable c, ReturnKind kind) { returnPosition(_, c, kind) }
+      TReturnPosition0(DataFlowCallable c, ReturnKindExt kind) { returnPosition(_, c, kind) }
 
     cached
     newtype TLocalFlowCallContext =
@@ -624,7 +624,7 @@ private module ImplCommon {
   }
 
   pragma[noinline]
-  private predicate returnPosition(ReturnNode ret, DataFlowCallable c, ReturnKind kind) {
+  private predicate returnPosition(ReturnNodeExt ret, DataFlowCallable c, ReturnKindExt kind) {
     c = returnNodeGetEnclosingCallable(ret) and
     kind = ret.getKind()
   }
@@ -736,10 +736,68 @@ private module ImplCommon {
     else result instanceof LocalCallContextAny
   }
 
+  /**
+   * A node from which flow can return to the caller. This is either a regular
+   * `ReturnNode` or a `PostUpdateNode` corresponding to the value of a parameter.
+   */
+  class ReturnNodeExt extends Node {
+    ReturnNodeExt() {
+      this instanceof ReturnNode or
+      parameterValueFlowsToUpdate(_, this)
+    }
+
+    /** Gets the kind of this returned value. */
+    ReturnKindExt getKind() {
+      result = TValueReturn(this.(ReturnNode).getKind())
+      or
+      exists(ParameterNode p, int pos |
+        parameterValueFlowsToUpdate(p, this) and
+        p.isParameterOf(_, pos) and
+        result = TParamUpdate(pos)
+      )
+    }
+  }
+
+  private newtype TReturnKindExt =
+    TValueReturn(ReturnKind kind) or
+    TParamUpdate(int pos) {
+      exists(ParameterNode p | parameterValueFlowsToUpdate(p, _) and p.isParameterOf(_, pos))
+    }
+
+  /**
+   * An extended return kind. A return kind describes how data can be returned
+   * from a callable. This can either be through a returned value or an updated
+   * parameter.
+   */
+  abstract class ReturnKindExt extends TReturnKindExt {
+    /** Gets a textual representation of this return kind. */
+    abstract string toString();
+  }
+
+  class ValueReturnKind extends ReturnKindExt, TValueReturn {
+    private ReturnKind kind;
+
+    ValueReturnKind() { this = TValueReturn(kind) }
+
+    ReturnKind getKind() { result = kind }
+
+    override string toString() { result = kind.toString() }
+  }
+
+  class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
+    private int pos;
+
+    ParamUpdateReturnKind() { this = TParamUpdate(pos) }
+
+    int getPosition() { result = pos }
+
+    override string toString() { result = "param update " + pos }
+  }
+
   /** A callable tagged with a relevant return kind. */
   class ReturnPosition extends TReturnPosition0 {
     private DataFlowCallable c;
-    private ReturnKind kind;
+    private ReturnKindExt kind;
 
     ReturnPosition() { this = TReturnPosition0(c, kind) }
 
@@ -747,21 +805,30 @@ private module ImplCommon {
     DataFlowCallable getCallable() { result = c }
 
     /** Gets the return kind. */
-    ReturnKind getKind() { result = kind }
+    ReturnKindExt getKind() { result = kind }
 
     /** Gets a textual representation of this return position. */
     string toString() { result = "[" + kind + "] " + c }
   }
 
   pragma[noinline]
-  DataFlowCallable returnNodeGetEnclosingCallable(ReturnNode ret) {
+  DataFlowCallable returnNodeGetEnclosingCallable(ReturnNodeExt ret) {
     result = ret.getEnclosingCallable()
   }
 
   pragma[noinline]
-  ReturnPosition getReturnPosition(ReturnNode ret) {
-    exists(DataFlowCallable c, ReturnKind k | returnPosition(ret, c, k) |
+  ReturnPosition getReturnPosition(ReturnNodeExt ret) {
+    exists(DataFlowCallable c, ReturnKindExt k | returnPosition(ret, c, k) |
       result = TReturnPosition0(c, k)
+    )
+  }
+
+  Node getAnOutNodeExt(DataFlowCall call, ReturnKindExt kind) {
+    result = getAnOutNode(call, kind.(ValueReturnKind).getKind())
+    or
+    exists(ArgumentNode arg |
+      result.(PostUpdateNode).getPreUpdateNode() = arg and
+      arg.argumentOf(call, kind.(ParamUpdateReturnKind).getPosition())
     )
   }
 
