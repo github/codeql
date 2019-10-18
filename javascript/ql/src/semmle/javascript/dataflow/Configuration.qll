@@ -943,7 +943,7 @@ private predicate isLive() { exists(DataFlow::Configuration cfg | isSource(_, cf
  * A data flow node on an inter-procedural path from a source.
  */
 private newtype TPathNode =
-  MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
+  MkMidNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
     isLive() and
     onPath(nd, cfg, summary)
   }
@@ -969,7 +969,7 @@ class PathNode extends TPathNode {
   DataFlow::Configuration cfg;
   PathSummary summary;
 
-  PathNode() { this = MkPathNode(nd, cfg, summary) }
+  PathNode() { this = MkMidNode(nd, cfg, summary) }
 
   /** Gets the underlying data flow node of this path node. */
   DataFlow::Node getNode() { result = nd }
@@ -991,7 +991,7 @@ class PathNode extends TPathNode {
   private PathNode getASuccessorInternal() {
     exists(DataFlow::Node succ, PathSummary newSummary |
       flowStep(nd, id(cfg), succ, newSummary) and
-      result = MkPathNode(succ, id(cfg), summary.append(newSummary))
+      result = MkMidNode(succ, id(cfg), summary.append(newSummary))
     )
   }
 
