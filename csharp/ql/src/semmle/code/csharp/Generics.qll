@@ -366,7 +366,7 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override Location getALocation() { result = this.getSourceDeclaration().getALocation() }
 
-  override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, getTypeRef(this)) }
+  override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, this) }
 
   override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 

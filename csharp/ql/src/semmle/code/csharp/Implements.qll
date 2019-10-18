@@ -250,7 +250,7 @@ module Gvn {
     TArrayTypeKind(int dim, int rnk) {
       exists(ArrayType at | dim = at.getDimension() and rnk = at.getRank())
     } or
-    TConstructedType(UnboundGenericType ugt)
+    TConstructedType(@typeref r) { exists(UnboundGenericType ugt | r = getTypeRef(ugt)) }
 
   /** A type kind for a compound type. */
   class CompoundTypeKind extends TCompoundTypeKind {
@@ -261,7 +261,7 @@ module Gvn {
       or
       this = TArrayTypeKind(_, _) and result = 1
       or
-      exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
+      exists(UnboundGenericType ugt | this = TConstructedType(getTypeRef(ugt)) |
         result = ugt.getNumberOfTypeParameters()
       )
     }
@@ -275,7 +275,7 @@ module Gvn {
         result = "[" + dim + ", " + rnk + "]"
       )
       or
-      exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
+      exists(UnboundGenericType ugt | this = TConstructedType(getTypeRef(ugt)) |
         result = ugt.getNameWithoutBrackets()
       )
     }
@@ -291,11 +291,17 @@ module Gvn {
     or
     t = any(ArrayType at | result = TArrayTypeKind(at.getDimension(), at.getRank()))
     or
-    result = TConstructedType(t.(ConstructedType).getUnboundGeneric())
+    result = TConstructedType(getTypeRef(t.(ConstructedType).getUnboundGeneric()))
   }
 
   private class MethodTypeParameter extends TypeParameter {
     MethodTypeParameter() { this = any(UnboundGenericMethod ugm).getATypeParameter() }
+  }
+
+  predicate convIdentity2(Type t1, Type t2) {
+    getTypeRef(t1) = getTypeRef(t2)
+    or
+    convIdentity(t1, t2)
   }
 
   private class LeafType extends Type {
@@ -305,7 +311,7 @@ module Gvn {
     }
   }
 
-  private predicate id(LeafType t, int i) = equivalenceRelation(convIdentity/2)(t, i)
+  private predicate id(LeafType t, int i) = equivalenceRelation(convIdentity2/2)(t, i)
 
   private newtype TGvnType =
     TLeafGvnType(int i) { id(_, i) } or
