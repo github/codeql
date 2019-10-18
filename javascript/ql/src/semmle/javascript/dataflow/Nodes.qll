@@ -1054,7 +1054,13 @@ module PartialInvokeNode {
   * A partial call through the built-in `Function.prototype.bind`.
   */
   private class BindPartialCall extends PartialInvokeNode::Range, DataFlow::MethodCallNode {
-    BindPartialCall() { getMethodName() = "bind" }
+    BindPartialCall() {
+      getMethodName() = "bind" and
+
+      // Avoid overlap with angular.bind and goog.bind
+      not this = AngularJS::angular().getAMethodCall() and
+      not getReceiver().accessesGlobal("goog")
+    }
 
     override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
       index >= 0 and
@@ -1086,7 +1092,7 @@ module PartialInvokeNode {
     }
 
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
-      callback = getReceiver() and
+      callback = getArgument(0) and
       boundArgs = getNumArgument() - 1 and
       result = this
     }
