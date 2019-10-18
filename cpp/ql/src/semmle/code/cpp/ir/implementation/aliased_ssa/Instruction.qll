@@ -120,6 +120,15 @@ module InstructionSanity {
     )
   }
 
+  query predicate sideEffectWithoutPrimary(
+    SideEffectInstruction instr, string message, IRFunction func, string funcText
+  ) {
+    not exists(instr.getPrimaryInstruction()) and
+    message = "Side effect instruction missing primary instruction in function $@" and
+    func = instr.getEnclosingIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction())
+  }
+
   /**
    * Holds if an instruction, other than `ExitFunction`, has no successors.
    */

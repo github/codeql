@@ -19,6 +19,7 @@ missingPhiOperand
 | range_analysis.c:389:3:389:32 | Phi: return ... | range_analysis.c:387:38:387:38 | Constant: 5 |
 | range_analysis.c:389:3:389:32 | Phi: return ... | range_analysis.c:387:38:387:38 | Constant: 5 |
 missingOperandType
+sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
 | assume0.cpp:7:2:7:2 | CallSideEffect: call to f |
