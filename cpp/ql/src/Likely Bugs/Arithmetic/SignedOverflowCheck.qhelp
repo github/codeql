@@ -26,10 +26,10 @@ evaluated using <code>signed</code> values and its value is therefore undefined.
 </p>
 <sample src="SignedOverflowCheck-bad1.cpp" />
 <p>
-In the following example, even though both <code>n</code> and <code>delta</code> 
-have been declared <code>unsigned short</code>, C/C++ type promotion rules 
+In the following example, even though both <code>n</code> and <code>delta</code>
+have been declared <code>unsigned short</code>, C/C++ type promotion rules
 require that both parameters be promoted to the next bigger <code>signed</code>
-integer type (in this case <code>signed int</code>) before being added together.  
+integer type (in this case <code>signed int</code>) before being added together.
 As a result, the entire expression is evaluated using <code>signed</code> values
 and its value is therefore undefined.  (Note, however, that the addition cannot
 overflow since we are adding two "small" <code>unsigned short</code> values.)
