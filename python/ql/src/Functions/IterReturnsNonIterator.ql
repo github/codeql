@@ -12,7 +12,6 @@
 
 import python
 
-cached
 ClassObject return_type(FunctionObject f) {
     exists(ControlFlowNode n, Return ret |
         ret.getScope() = f.getFunction() and
