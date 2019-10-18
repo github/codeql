@@ -182,7 +182,6 @@ module Opcode {
     final override string toString() { result = "InitializeIndirection" }
   }
 
-
   class InitializeThis extends Opcode, TInitializeThis {
     final override string toString() { result = "InitializeThis" }
   }
