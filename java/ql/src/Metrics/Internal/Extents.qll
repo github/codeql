@@ -52,20 +52,9 @@ class RangeRefType extends RefType {
   }
 
   private Member lastMember() {
-    exists(Member m, int i |
-      result = m and
-      m = getAMember() and
-      i = rankOfMember(m) and
-      not exists(Member other | other = getAMember() and rankOfMember(other) > i)
-    )
-  }
-
-  private int rankOfMember(Member m) {
-    this.getAMember() = m and
-    exists(Location mLoc, File f, int maxCol | mLoc = m.getLocation() |
-      f = mLoc.getFile() and
-      maxCol = max(Location loc | loc.getFile() = f | loc.getStartColumn()) and
-      result = mLoc.getStartLine() * maxCol + mLoc.getStartColumn()
-    )
+    result = max(this.getAMember() as m
+        order by
+          m.getLocation().getStartLine(), m.getLocation().getStartColumn()
+      )
   }
 }
