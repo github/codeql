@@ -10,6 +10,7 @@
 | views.py:7 | Attribute() | externally controlled string |
 | views.py:11 | Attribute() | externally controlled string |
 | views.py:15 | Attribute() | externally controlled string |
-| views.py:22 | Attribute() | externally controlled string |
-| views.py:27 | Attribute() | externally controlled string |
-| views.py:31 | Attribute() | externally controlled string |
+| views.py:23 | Attribute() | externally controlled string |
+| views.py:29 | Attribute() | externally controlled string |
+| views.py:34 | Attribute() | externally controlled string |
+| views.py:38 | Attribute() | externally controlled string |

@@ -67,7 +67,7 @@ private class DjangoView extends ClassValue {
 }
 
 private FunctionValue djangoViewHttpMethod() {
-    exists(DjangoView view | view.attr(httpVerbLower()) = result)
+    exists(DjangoView view | view.lookup(httpVerbLower()) = result)
 }
 
 class DjangoClassBasedViewRequestArgument extends DjangoRequestSource {
