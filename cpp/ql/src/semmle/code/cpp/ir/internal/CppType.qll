@@ -3,6 +3,10 @@ private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.IRType
 private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as IRConstruction
 
+private int getPointerSize() {
+  result = max(any(NullPointerType t).getSize())
+}
+
 /**
  * Works around an extractor bug where a function reference gets a size of one byte.
  */
@@ -11,14 +15,14 @@ private int getTypeSizeWorkaround(Type type) {
     unspecifiedType = type.getUnspecifiedType() and
     (
       unspecifiedType instanceof FunctionReferenceType and
-      result = any(NullPointerType t).getSize()
+      result = getPointerSize()
       or
       exists(PointerToMemberType ptmType |
         ptmType = unspecifiedType and
         (
           if ptmType.getBaseType().getUnspecifiedType() instanceof RoutineType
-          then result = any(NullPointerType t).getSize() * 2
-          else result = any(NullPointerType t).getSize()
+          then result = getPointerSize() * 2
+          else result = getPointerSize()
         )
       )
       or
@@ -26,7 +30,7 @@ private int getTypeSizeWorkaround(Type type) {
         // Treat `T[]` as `T*`.
         arrayType = unspecifiedType and
         not arrayType.hasArraySize() and
-        result = any(NullPointerType t).getSize()
+        result = getPointerSize()
       )
     )
   )
@@ -35,7 +39,7 @@ private int getTypeSizeWorkaround(Type type) {
 private int getTypeSize(Type type) {
   if exists(getTypeSizeWorkaround(type))
   then result = getTypeSizeWorkaround(type)
-  else result = type.getSize()
+  else result = max(type.getSize())
 }
 
 /**
@@ -116,7 +120,7 @@ predicate hasAddressType(int byteSize) {
  * Holds if an `IRFunctionAddressType` with the specified `byteSize` should exist.
  */
 predicate hasFunctionAddressType(int byteSize) {
-  byteSize = any(NullPointerType type).getSize() or // Covers function lvalues
+  byteSize = getPointerSize() or // Covers function lvalues
   byteSize = getTypeSize(any(FunctionPointerIshType type))
 }
 
@@ -285,7 +289,7 @@ private class CppGLValueAddressType extends CppWrappedType, TGLValueAddressType 
   }
 
   override final IRAddressType getIRType() {
-    result.getByteSize() = any(NullPointerType t).getSize()
+    result.getByteSize() = getPointerSize()
   }
 
   override final predicate hasType(Type type, boolean isGLValue) {
@@ -303,7 +307,7 @@ private class CppFunctionGLValueType extends CppType, TFunctionGLValueType {
   }
 
   override final IRFunctionAddressType getIRType() {
-    result.getByteSize() = any(NullPointerType type).getSize()
+    result.getByteSize() = getPointerSize()
   }
 
   override final predicate hasType(Type type, boolean isGLValue) {
