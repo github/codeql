@@ -694,3 +694,5 @@ useNotDominatedByDefinition
 | vla.c:14:74:14:79 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes

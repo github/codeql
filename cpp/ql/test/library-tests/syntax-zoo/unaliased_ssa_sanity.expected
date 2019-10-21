@@ -555,3 +555,5 @@ backEdgeCountMismatch
 useNotDominatedByDefinition
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes

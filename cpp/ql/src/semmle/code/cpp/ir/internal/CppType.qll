@@ -263,7 +263,7 @@ private class CppUnknownOpaqueType extends CppType, TUnknownOpaqueType {
   }
 
   override final IROpaqueType getIRType() {
-    result.getByteSize() = byteSize
+    result.getByteSize() = byteSize and result.getTag() instanceof UnknownType
   }
 
   override predicate hasType(Type type, boolean isGLValue) {
