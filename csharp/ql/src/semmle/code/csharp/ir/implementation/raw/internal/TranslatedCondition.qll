@@ -34,9 +34,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
     result = this.getOperand().getFirstInstruction()
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -100,9 +98,7 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
     result = this.getLeftOperand().getFirstInstruction()
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 

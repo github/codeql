@@ -113,9 +113,7 @@ class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionC
 
   TranslatedForeachWhile() { this = TTranslatedCompilerGeneratedElement(generatedBy, 2) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 

@@ -354,4 +354,3 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
     )
   )
 }
-

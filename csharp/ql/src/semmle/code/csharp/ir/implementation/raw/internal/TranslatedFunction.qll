@@ -127,9 +127,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     else result = this.getReturnSuccessorInstruction()
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     (
       tag = EnterFunctionTag() and
       opcode instanceof Opcode::EnterFunction and
@@ -331,9 +329,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
 
   final override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
     resultType = getTypeForGLValue(param.getType())

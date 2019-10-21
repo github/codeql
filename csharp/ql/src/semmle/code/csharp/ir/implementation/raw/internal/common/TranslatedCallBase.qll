@@ -33,9 +33,7 @@ abstract class TranslatedCallBase extends TranslatedElement {
     else result = getInstruction(CallTargetTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = CallTag() and
     opcode instanceof Opcode::Call and
     resultType = getTypeForPRValue(getCallResultType())

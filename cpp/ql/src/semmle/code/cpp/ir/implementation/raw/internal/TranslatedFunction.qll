@@ -234,9 +234,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   /**
    * Holds if the function has a non-`void` return type.
    */
-  final predicate hasReturnValue() {
-    not func.getUnspecifiedType() instanceof VoidType
-  }
+  final predicate hasReturnValue() { not func.getUnspecifiedType() instanceof VoidType }
 
   /**
    * Gets the single `UnmodeledDefinition` instruction for this function.

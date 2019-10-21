@@ -7,27 +7,13 @@ private import internal.IRTypeInternal
 private newtype TIRType =
   TIRVoidType() or
   TIRUnknownType() or
-  TIRErrorType() {
-    Language::hasErrorType()
-  } or
-  TIRBooleanType(int byteSize) {
-    Language::hasBooleanType(byteSize)
-  } or
-  TIRSignedIntegerType(int byteSize) {
-    Language::hasSignedIntegerType(byteSize)
-  } or
-  TIRUnsignedIntegerType(int byteSize) {
-    Language::hasUnsignedIntegerType(byteSize)
-  } or
-  TIRFloatingPointType(int byteSize) {
-    Language::hasFloatingPointType(byteSize)
-  } or
-  TIRAddressType(int byteSize) {
-    Language::hasAddressType(byteSize)
-  } or
-  TIRFunctionAddressType(int byteSize) {
-    Language::hasFunctionAddressType(byteSize)
-  } or
+  TIRErrorType() { Language::hasErrorType() } or
+  TIRBooleanType(int byteSize) { Language::hasBooleanType(byteSize) } or
+  TIRSignedIntegerType(int byteSize) { Language::hasSignedIntegerType(byteSize) } or
+  TIRUnsignedIntegerType(int byteSize) { Language::hasUnsignedIntegerType(byteSize) } or
+  TIRFloatingPointType(int byteSize) { Language::hasFloatingPointType(byteSize) } or
+  TIRAddressType(int byteSize) { Language::hasAddressType(byteSize) } or
+  TIRFunctionAddressType(int byteSize) { Language::hasFunctionAddressType(byteSize) } or
   TIROpaqueType(Language::OpaqueTypeTag tag, int byteSize) {
     Language::hasOpaqueType(tag, byteSize)
   }
@@ -49,9 +35,7 @@ class IRType extends TIRType {
    * Gets a string that uniquely identifies this `IRType`. This string is often the same as the
    * result of `IRType.toString()`, but for some types it may be more verbose to ensure uniqueness.
    */
-  string getIdentityString() {
-    result = toString()
-  }
+  string getIdentityString() { result = toString() }
 
   /**
    * Gets the size of the type, in bytes, if known.
@@ -215,9 +199,7 @@ class IRFunctionAddressType extends IRSizedType, TIRFunctionAddressType {
 class IROpaqueType extends IRSizedType, TIROpaqueType {
   Language::OpaqueTypeTag tag;
 
-  IROpaqueType() {
-    this = TIROpaqueType(tag, byteSize)
-  }
+  IROpaqueType() { this = TIROpaqueType(tag, byteSize) }
 
   final override string toString() {
     result = "opaque" + byteSize.toString() + "{" + tag.toString() + "}"
@@ -246,7 +228,8 @@ module IRTypeSanity {
 
   query predicate multipleCanonicalLanguageTypes(IRType type, string message) {
     strictcount(type.getCanonicalLanguageType()) > 1 and
-    message = "Type has multiple canonical `LanguageType`s: " + concat(type.getCanonicalLanguageType().toString(), ", ")
+    message = "Type has multiple canonical `LanguageType`s: " +
+        concat(type.getCanonicalLanguageType().toString(), ", ")
   }
 
   query predicate missingIRType(Language::LanguageType type, string message) {
@@ -256,7 +239,8 @@ module IRTypeSanity {
 
   query predicate multipleIRTypes(Language::LanguageType type, string message) {
     strictcount(type.getIRType()) > 1 and
-    message = "`LanguageType` " + type.getAQlClass() + " has multiple `IRType`s: " + concat(type.getIRType().toString(), ", ")
+    message = "`LanguageType` " + type.getAQlClass() + " has multiple `IRType`s: " +
+        concat(type.getIRType().toString(), ", ")
   }
 
   import Language::LanguageTypeSanity

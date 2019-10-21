@@ -39,9 +39,7 @@ abstract class ValueConditionBase extends ConditionBase {
 
   override Instruction getFirstInstruction() { result = getValueExpr().getFirstInstruction() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType = getVoidType()

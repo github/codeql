@@ -29,9 +29,7 @@ abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDecla
     child = getInitialization() and result = getInstruction(InitializerStoreTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     LocalVariableDeclarationBase.super.hasInstruction(opcode, tag, resultType)
     or
     // we can reuse the initializer store tag

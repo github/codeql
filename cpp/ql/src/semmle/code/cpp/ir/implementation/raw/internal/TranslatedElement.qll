@@ -65,8 +65,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   )
   or
   // Do not translate input/output variables in GNU asm statements
-//  getRealParent(expr) instanceof AsmStmt
-//  or
+  //  getRealParent(expr) instanceof AsmStmt
+  //  or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
   or
   // We do not yet translate destructors properly, so for now we ignore any
@@ -617,7 +617,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   int getInstructionResultSize(InstructionTag tag) { none() }
 
   predicate needsUnknownOpaqueType(int byteSize) { none() }
-  
+
   /**
    * If the instruction specified by `tag` is a `StringConstantInstruction`,
    * gets the `StringLiteral` for that instruction.

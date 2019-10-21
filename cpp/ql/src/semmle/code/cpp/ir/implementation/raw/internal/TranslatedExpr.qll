@@ -54,10 +54,9 @@ abstract class TranslatedExpr extends TranslatedElement {
   abstract predicate producesExprResult();
 
   final CppType getResultType() {
-    if isResultGLValue() then
-      result = getTypeForGLValue(expr.getType())
-    else
-      result = getTypeForPRValue(expr.getType())
+    if isResultGLValue()
+    then result = getTypeForGLValue(expr.getType())
+    else result = getTypeForPRValue(expr.getType())
   }
 
   /**
@@ -338,7 +337,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
   final override string getInstructionConstantValue(InstructionTag tag) {
     tag = CrementConstantTag() and
     exists(Type resultType |
-      resultType =  expr.getUnspecifiedType() and
+      resultType = expr.getUnspecifiedType() and
       (
         resultType instanceof IntegralOrEnumType and result = "1"
         or
@@ -353,18 +352,15 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
     exists(Type resultType |
       resultType = expr.getUnspecifiedType() and
       (
-        (
         resultType instanceof ArithmeticType and
         result = getTypeForPRValue(expr.getType())
-        ) or
+        or
         resultType instanceof PointerType and result = getIntType()
       )
     )
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CppType resultType
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = CrementLoadTag() and
     opcode instanceof Opcode::Load and
     resultType = getTypeForPRValue(expr.getType())
@@ -615,9 +611,7 @@ class TranslatedTransparentConversion extends TranslatedTransparentExpr {
     )
   }
 
-  override TranslatedExpr getOperand() {
-    result = getTranslatedExpr(expr.getExpr())
-  }
+  override TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getExpr()) }
 }
 
 class TranslatedThisExpr extends TranslatedNonConstantExpr {
@@ -1242,7 +1236,7 @@ class TranslatedAssignExpr extends TranslatedAssignment {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = AssignmentStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = getTypeForPRValue(expr.getType())  // Always a prvalue
+    resultType = getTypeForPRValue(expr.getType()) // Always a prvalue
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -1326,8 +1320,9 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   }
 
   private predicate leftOperandNeedsConversion() {
-    getConvertedLeftOperandType().getUnspecifiedType() !=
-      getLeftOperand().getExpr().getUnspecifiedType()
+    getConvertedLeftOperandType().getUnspecifiedType() != getLeftOperand()
+          .getExpr()
+          .getUnspecifiedType()
   }
 
   private Opcode getOpcode() {
@@ -1367,7 +1362,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     or
     tag = AssignmentStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = getTypeForPRValue(expr.getType())  // Always a prvalue
+    resultType = getTypeForPRValue(expr.getType()) // Always a prvalue
     or
     leftOperandNeedsConversion() and
     opcode instanceof Opcode::Convert and
@@ -1577,9 +1572,7 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
     tag = CallTargetTag() and result = expr.getAllocator()
   }
 
-  final override Type getCallResultType() {
-    result = expr.getAllocator().getType()
-  }
+  final override Type getCallResultType() { result = expr.getAllocator().getType() }
 
   final override TranslatedExpr getQualifier() { none() }
 

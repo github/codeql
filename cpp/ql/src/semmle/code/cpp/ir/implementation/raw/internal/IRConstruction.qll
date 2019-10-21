@@ -305,9 +305,7 @@ private module Cached {
 
   cached
   predicate needsUnknownOpaqueType(int byteSize) {
-    exists(TranslatedElement element |
-      element.needsUnknownOpaqueType(byteSize)
-    )
+    exists(TranslatedElement element | element.needsUnknownOpaqueType(byteSize))
   }
 
   cached

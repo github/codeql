@@ -165,9 +165,7 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, InitializationCont
     result = getInstruction(InitializerVariableAddressTag())
   }
 
-  override Type getTargetType() {
-    result = getEnclosingFunction().getReturnType()
-  }
+  override Type getTargetType() { result = getEnclosingFunction().getReturnType() }
 
   TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(stmt.getExpr().getFullyConverted())

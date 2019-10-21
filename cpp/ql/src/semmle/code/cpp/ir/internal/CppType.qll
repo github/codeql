@@ -3,9 +3,7 @@ private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.IRType
 private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as IRConstruction
 
-private int getPointerSize() {
-  result = max(any(NullPointerType t).getSize())
-}
+private int getPointerSize() { result = max(any(NullPointerType t).getSize()) }
 
 /**
  * Works around an extractor bug where a function reference gets a size of one byte.
@@ -45,19 +43,16 @@ private int getTypeSize(Type type) {
 /**
  * Holds if an `IRErrorType` should exist.
  */
-predicate hasErrorType() {
-  exists(ErroneousType t)
-}
+predicate hasErrorType() { exists(ErroneousType t) }
 
 /**
  * Holds if an `IRBooleanType` with the specified `byteSize` should exist.
  */
-predicate hasBooleanType(int byteSize) {
-  byteSize = getTypeSize(any(BoolType type))
-}
+predicate hasBooleanType(int byteSize) { byteSize = getTypeSize(any(BoolType type)) }
 
 private predicate isSigned(IntegralOrEnumType type) {
-  type.(IntegralType).isSigned() or
+  type.(IntegralType).isSigned()
+  or
   exists(Enum enumType |
     // If the enum has an explicit underlying type, we'll determine signedness from that. If not,
     // we'll assume unsigned. The actual rules for the implicit underlying type of an enum vary
@@ -93,14 +88,15 @@ predicate hasUnsignedIntegerType(int byteSize) {
 /**
  * Holds if an `IRFloatingPointType` with the specified `byteSize` should exist.
  */
-predicate hasFloatingPointType(int byteSize) {
-  byteSize = any(FloatingPointType type).getSize()
-}
+predicate hasFloatingPointType(int byteSize) { byteSize = any(FloatingPointType type).getSize() }
 
 private predicate isPointerIshType(Type type) {
-  type instanceof PointerType or
-  type instanceof ReferenceType or
-  type instanceof NullPointerType or
+  type instanceof PointerType
+  or
+  type instanceof ReferenceType
+  or
+  type instanceof NullPointerType
+  or
   // Treat `T[]` as a pointer. The only place we should see these is as the type of a parameter. If
   // the corresponding decayed `T*` type is available, we'll use that, but if it's not available,
   // we're stuck with `T[]`. Just treat it as a pointer.
@@ -125,14 +121,13 @@ predicate hasFunctionAddressType(int byteSize) {
 }
 
 private predicate isOpaqueType(Type type) {
+  exists(type.getSize()) and // Only include complete types
   (
-    exists(type.getSize()) and // Only include complete types
-    (
-      type instanceof ArrayType or
-      type instanceof Class or
-      type instanceof GNUVectorType
-    )
-  ) or
+    type instanceof ArrayType or
+    type instanceof Class or
+    type instanceof GNUVectorType
+  )
+  or
   type instanceof PointerToMemberType // PTMs are missing size info
 }
 
@@ -149,37 +144,42 @@ predicate hasOpaqueType(Type tag, int byteSize) {
  * Gets the `IRType` that represents a prvalue of the specified `Type`.
  */
 private IRType getIRTypeForPRValue(Type type) {
-  exists(Type unspecifiedType |
-    unspecifiedType = type.getUnspecifiedType() |
-    (
-      isOpaqueType(unspecifiedType) and
-      exists(IROpaqueType opaqueType |
-        opaqueType = result |
-        opaqueType.getByteSize() = getTypeSize(type) and
-        opaqueType.getTag() = unspecifiedType
-      )
-    ) or
-    unspecifiedType instanceof BoolType and result.(IRBooleanType).getByteSize() = type.getSize() or
-    isSignedIntegerType(unspecifiedType) and result.(IRSignedIntegerType).getByteSize() = type.getSize() or
-    isUnsignedIntegerType(unspecifiedType) and result.(IRUnsignedIntegerType).getByteSize() = type.getSize() or
-    unspecifiedType instanceof FloatingPointType and result.(IRFloatingPointType).getByteSize() = type.getSize() or
-    isPointerIshType(unspecifiedType) and result.(IRAddressType).getByteSize() = getTypeSize(type) or
-    unspecifiedType instanceof FunctionPointerIshType and result.(IRFunctionAddressType).getByteSize() = getTypeSize(type) or
-    unspecifiedType instanceof VoidType and result instanceof IRVoidType or
-    unspecifiedType instanceof ErroneousType and result instanceof IRErrorType or
+  exists(Type unspecifiedType | unspecifiedType = type.getUnspecifiedType() |
+    isOpaqueType(unspecifiedType) and
+    exists(IROpaqueType opaqueType | opaqueType = result |
+      opaqueType.getByteSize() = getTypeSize(type) and
+      opaqueType.getTag() = unspecifiedType
+    )
+    or
+    unspecifiedType instanceof BoolType and result.(IRBooleanType).getByteSize() = type.getSize()
+    or
+    isSignedIntegerType(unspecifiedType) and
+    result.(IRSignedIntegerType).getByteSize() = type.getSize()
+    or
+    isUnsignedIntegerType(unspecifiedType) and
+    result.(IRUnsignedIntegerType).getByteSize() = type.getSize()
+    or
+    unspecifiedType instanceof FloatingPointType and
+    result.(IRFloatingPointType).getByteSize() = type.getSize()
+    or
+    isPointerIshType(unspecifiedType) and result.(IRAddressType).getByteSize() = getTypeSize(type)
+    or
+    unspecifiedType instanceof FunctionPointerIshType and
+    result.(IRFunctionAddressType).getByteSize() = getTypeSize(type)
+    or
+    unspecifiedType instanceof VoidType and result instanceof IRVoidType
+    or
+    unspecifiedType instanceof ErroneousType and result instanceof IRErrorType
+    or
     unspecifiedType instanceof UnknownType and result instanceof IRUnknownType
   )
 }
 
 private newtype TCppType =
-  TPRValueType(Type type) {
-    exists(getIRTypeForPRValue(type))
-  } or
+  TPRValueType(Type type) { exists(getIRTypeForPRValue(type)) } or
   TFunctionGLValueType() or
   TGLValueAddressType(Type type) or
-  TUnknownOpaqueType(int byteSize) {
-    IRConstruction::needsUnknownOpaqueType(byteSize)
-  } or
+  TUnknownOpaqueType(int byteSize) { IRConstruction::needsUnknownOpaqueType(byteSize) } or
   TUnknownType()
 
 /**
@@ -231,7 +231,9 @@ private class CppWrappedType extends CppType {
   }
 
   abstract string toString();
+
   abstract override IRType getIRType();
+
   abstract override predicate hasType(Type type, boolean isGLValue);
 }
 
@@ -239,13 +241,13 @@ private class CppWrappedType extends CppType {
  * A `CppType` that represents a prvalue of an existing `Type`.
  */
 private class CppPRValueType extends CppWrappedType, TPRValueType {
-  override final string toString() { result = ctype.toString() }
+  final override string toString() { result = ctype.toString() }
 
-  override final string getDumpString() { result = ctype.getUnspecifiedType().toString() }
+  final override string getDumpString() { result = ctype.getUnspecifiedType().toString() }
 
-  override final IRType getIRType() { result = getIRTypeForPRValue(ctype) }
+  final override IRType getIRType() { result = getIRTypeForPRValue(ctype) }
 
-  override final predicate hasType(Type type, boolean isGLValue) {
+  final override predicate hasType(Type type, boolean isGLValue) {
     type = ctype and
     isGLValue = false
   }
@@ -259,15 +261,11 @@ private class CppPRValueType extends CppWrappedType, TPRValueType {
 private class CppUnknownOpaqueType extends CppType, TUnknownOpaqueType {
   int byteSize;
 
-  CppUnknownOpaqueType() {
-    this = TUnknownOpaqueType(byteSize)
-  }
+  CppUnknownOpaqueType() { this = TUnknownOpaqueType(byteSize) }
 
-  override final string toString() {
-    result = "unknown[" + byteSize.toString() + "]"
-  }
+  final override string toString() { result = "unknown[" + byteSize.toString() + "]" }
 
-  override final IROpaqueType getIRType() {
+  final override IROpaqueType getIRType() {
     result.getByteSize() = byteSize and result.getTag() instanceof UnknownType
   }
 
@@ -280,19 +278,15 @@ private class CppUnknownOpaqueType extends CppType, TUnknownOpaqueType {
  * A `CppType` that represents a glvalue of an existing `Type`.
  */
 private class CppGLValueAddressType extends CppWrappedType, TGLValueAddressType {
-  override final string toString() {
-    result = "glval<" + ctype.toString() + ">"
-  }
+  final override string toString() { result = "glval<" + ctype.toString() + ">" }
 
-  override final string getDumpString() {
+  final override string getDumpString() {
     result = "glval<" + ctype.getUnspecifiedType().toString() + ">"
   }
 
-  override final IRAddressType getIRType() {
-    result.getByteSize() = getPointerSize()
-  }
+  final override IRAddressType getIRType() { result.getByteSize() = getPointerSize() }
 
-  override final predicate hasType(Type type, boolean isGLValue) {
+  final override predicate hasType(Type type, boolean isGLValue) {
     type = ctype and
     isGLValue = true
   }
@@ -302,15 +296,11 @@ private class CppGLValueAddressType extends CppWrappedType, TGLValueAddressType 
  * A `CppType` that represents a function lvalue.
  */
 private class CppFunctionGLValueType extends CppType, TFunctionGLValueType {
-  override final string toString() {
-    result = "glval<unknown>"
-  }
+  final override string toString() { result = "glval<unknown>" }
 
-  override final IRFunctionAddressType getIRType() {
-    result.getByteSize() = getPointerSize()
-  }
+  final override IRFunctionAddressType getIRType() { result.getByteSize() = getPointerSize() }
 
-  override final predicate hasType(Type type, boolean isGLValue) {
+  final override predicate hasType(Type type, boolean isGLValue) {
     type instanceof UnknownType and isGLValue = true
   }
 }
@@ -319,15 +309,11 @@ private class CppFunctionGLValueType extends CppType, TFunctionGLValueType {
  * A `CppType` that represents an unknown type.
  */
 private class CppUnknownType extends CppType, TUnknownType {
-  override final string toString() {
-    result = any(UnknownType type).toString()
-  }
+  final override string toString() { result = any(UnknownType type).toString() }
 
-  override final IRUnknownType getIRType() {
-    any()
-  }
+  final override IRUnknownType getIRType() { any() }
 
-  override final predicate hasType(Type type, boolean isGLValue) {
+  final override predicate hasType(Type type, boolean isGLValue) {
     type instanceof UnknownType and isGLValue = false
   }
 }
@@ -335,18 +321,12 @@ private class CppUnknownType extends CppType, TUnknownType {
 /**
  * Gets the single instance of `CppUnknownType`.
  */
-CppUnknownType getUnknownType() {
-  any()
-}
+CppUnknownType getUnknownType() { any() }
 
 /**
  * Gets the `CppType` that represents a prvalue of type `void`.
  */
-CppPRValueType getVoidType() {
-  exists(VoidType voidType |
-    result.hasType(voidType, false)
-  )
-}
+CppPRValueType getVoidType() { exists(VoidType voidType | result.hasType(voidType, false)) }
 
 /**
  * Gets the `CppType` that represents a prvalue of type `type`.
@@ -362,16 +342,15 @@ CppType getTypeForPRValue(Type type) {
  * Otherwise, gets `CppUnknownType`.
  */
 CppType getTypeForPRValueOrUnknown(Type type) {
-  result = getTypeForPRValue(type) or
+  result = getTypeForPRValue(type)
+  or
   not exists(getTypeForPRValue(type)) and result = getUnknownType()
 }
 
 /**
  * Gets the `CppType` that represents a glvalue of type `type`.
  */
-CppType getTypeForGLValue(Type type) {
-  result.hasType(type, true)
-}
+CppType getTypeForGLValue(Type type) { result.hasType(type, true) }
 
 /**
  * Gets the `CppType` that represents a prvalue of type `int`.
@@ -386,34 +365,24 @@ CppPRValueType getIntType() {
 /**
  * Gets the `CppType` that represents a prvalue of type `bool`.
  */
-CppPRValueType getBoolType() {
-  exists(BoolType type |
-    result.hasType(type, false)
-  )
-}
+CppPRValueType getBoolType() { exists(BoolType type | result.hasType(type, false)) }
 
 /**
  * Gets the `CppType` that represents a glvalue of function type.
  */
-CppFunctionGLValueType getFunctionGLValueType() {
-  any()
-}
+CppFunctionGLValueType getFunctionGLValueType() { any() }
 
 /**
  * Gets the `CppType` that represents a opaque of unknown type with size `byteSize`.
  */
-CppUnknownOpaqueType getUnknownOpaqueType(int byteSize) {
-  result.getByteSize() = byteSize
-}
+CppUnknownOpaqueType getUnknownOpaqueType(int byteSize) { result.getByteSize() = byteSize }
 
 /**
  * Gets the `CppType` that is the canonical type for an `IRBooleanType` with the specified
  * `byteSize`.
  */
 CppWrappedType getCanonicalBooleanType(int byteSize) {
-  exists(BoolType type |
-    result = TPRValueType(type) and byteSize = type.getSize()
-  )
+  exists(BoolType type | result = TPRValueType(type) and byteSize = type.getSize())
 }
 
 /**
@@ -426,9 +395,10 @@ private int getSignPriority(IntegralType type) {
   // `char` is unsigned.
   if type.isExplicitlyUnsigned()
   then result = 2
-  else if type.isExplicitlySigned()
-  then result = 0
-  else result = 1
+  else
+    if type.isExplicitlySigned()
+    then result = 0
+    else result = 1
 }
 
 /**
@@ -436,12 +406,11 @@ private int getSignPriority(IntegralType type) {
  */
 private int getKindPriority(IntegralType type) {
   /*
-    `CharType` sorts lower so that we prefer the plain integer types when they have the same size as
-    a `CharType`.
-  */
-  if type instanceof CharType
-  then result = 0
-  else result = 1
+   *    `CharType` sorts lower so that we prefer the plain integer types when they have the same size as
+   *    a `CharType`.
+   */
+
+  if type instanceof CharType then result = 0 else result = 1
 }
 
 /**
@@ -449,8 +418,11 @@ private int getKindPriority(IntegralType type) {
  * `byteSize`.
  */
 CppPRValueType getCanonicalSignedIntegerType(int byteSize) {
-  result = TPRValueType(max(IntegralType type | type.isSigned() and type.getSize() = byteSize |
-    type order by getKindPriority(type), getSignPriority(type), type.toString() desc))
+  result = TPRValueType(max(IntegralType type |
+        type.isSigned() and type.getSize() = byteSize
+      |
+        type order by getKindPriority(type), getSignPriority(type), type.toString() desc
+      ))
 }
 
 /**
@@ -458,8 +430,11 @@ CppPRValueType getCanonicalSignedIntegerType(int byteSize) {
  * `byteSize`.
  */
 CppPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
-  result = TPRValueType(max(IntegralType type | type.isUnsigned() and type.getSize() = byteSize |
-    type order by getKindPriority(type), getSignPriority(type), type.toString() desc))
+  result = TPRValueType(max(IntegralType type |
+        type.isUnsigned() and type.getSize() = byteSize
+      |
+        type order by getKindPriority(type), getSignPriority(type), type.toString() desc
+      ))
 }
 
 /**
@@ -467,8 +442,11 @@ CppPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
  * `byteSize`.
  */
 CppPRValueType getCanonicalFloatingPointType(int byteSize) {
-  result = TPRValueType(max(FloatingPointType type | type.getSize() = byteSize |
-    type order by type.toString() desc))
+  result = TPRValueType(max(FloatingPointType type |
+        type.getSize() = byteSize
+      |
+        type order by type.toString() desc
+      ))
 }
 
 /**
@@ -494,23 +472,17 @@ CppFunctionGLValueType getCanonicalFunctionAddressType(int byteSize) {
 /**
  * Gets the `CppType` that is the canonical type for `IRErrorType`.
  */
-CppPRValueType getCanonicalErrorType() {
-  result = TPRValueType(any(ErroneousType type))
-}
+CppPRValueType getCanonicalErrorType() { result = TPRValueType(any(ErroneousType type)) }
 
 /**
  * Gets the `CppType` that is the canonical type for `IRUnknownType`.
  */
-CppUnknownType getCanonicalUnknownType() {
-  any()
-}
+CppUnknownType getCanonicalUnknownType() { any() }
 
 /**
  * Gets the `CppType` that is the canonical type for `IRVoidType`.
  */
-CppPRValueType getCanonicalVoidType() {
-  result = TPRValueType(any(VoidType type))
-}
+CppPRValueType getCanonicalVoidType() { result = TPRValueType(any(VoidType type)) }
 
 /**
  * Gets the `CppType` that is the canonical type for an `IROpaqueType` with the specified `tag` and
@@ -538,7 +510,7 @@ module LanguageTypeSanity {
     not exists(getTypeForPRValue(type)) and
     exists(type.getSize()) and
     // `ProxyClass`es have a size, but only appear in uninstantiated templates
-    not type instanceof ProxyClass and 
+    not type instanceof ProxyClass and
     message = "Type does not have an associated `CppType`."
   }
 }

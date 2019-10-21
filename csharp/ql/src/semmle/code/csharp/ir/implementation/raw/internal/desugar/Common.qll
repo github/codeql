@@ -31,9 +31,7 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 abstract class TranslatedCompilerGeneratedTry extends TranslatedCompilerGeneratedStmt {
   override Stmt generatedBy;
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -73,9 +71,7 @@ abstract class TranslatedCompilerGeneratedTry extends TranslatedCompilerGenerate
  * The concrete implementation needs to specify the immediate operand that represents the constant.
  */
 abstract class TranslatedCompilerGeneratedConstant extends TranslatedCompilerGeneratedExpr {
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     opcode instanceof Opcode::Constant and
     tag = OnlyInstructionTag() and
     resultType = getTypeForPRValue(getResultType())
@@ -117,9 +113,7 @@ abstract class TranslatedCompilerGeneratedBlock extends TranslatedCompilerGenera
     )
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -170,9 +164,7 @@ abstract class TranslatedCompilerGeneratedIfStmt extends TranslatedCompilerGener
     result = getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 }
@@ -190,9 +182,7 @@ abstract class TranslatedCompilerGeneratedVariableAccess extends TranslatedCompi
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = AddressTag() and
     opcode instanceof Opcode::VariableAddress and
     resultType = getTypeForGLValue(getResultType())

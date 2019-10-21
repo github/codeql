@@ -455,7 +455,8 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
       tag instanceof OnlyInstructionTag and
       operandType = arg.getType().getUnspecifiedType() and
       not operandType instanceof DerivedType and
-      operandTag instanceof SideEffectOperandTag |
+      operandTag instanceof SideEffectOperandTag
+    |
       // If the type we select is an incomplete type (e.g. a forward-declared `struct`), there will
       // not be a `CppType` that represents that type. In that case, fall back to `UnknownCppType`.
       result = getTypeForPRValueOrUnknown(operandType)

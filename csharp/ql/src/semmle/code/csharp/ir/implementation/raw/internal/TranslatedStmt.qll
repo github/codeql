@@ -40,9 +40,7 @@ class TranslatedEmptyStmt extends TranslatedStmt {
 
   override Instruction getFirstInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::NoOp and
     resultType = getVoidType()
@@ -62,9 +60,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) { result = this.getLocalDeclaration(id) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -97,9 +93,7 @@ class TranslatedExprStmt extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getExpr() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -161,9 +155,7 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, InitializationCont
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
     resultType = getTypeForGLValue(this.getEnclosingFunction().getFunction().getReturnType())
@@ -205,9 +197,7 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
 
   override Instruction getFirstInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::NoOp and
     resultType = getVoidType()
@@ -238,9 +228,7 @@ class TranslatedTryStmt extends TranslatedStmt {
     result = this.getCatchClause(id - 2)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -287,9 +275,7 @@ class TranslatedBlock extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) { result = this.getStmt(id) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     isEmpty() and
     opcode instanceof Opcode::NoOp and
     tag = OnlyInstructionTag() and
@@ -354,9 +340,7 @@ abstract class TranslatedClause extends TranslatedStmt {
 class TranslatedCatchByTypeClause extends TranslatedClause {
   TranslatedCatchByTypeClause() { stmt instanceof SpecificCatchClause }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = CatchTag() and
     opcode instanceof Opcode::CatchByType and
     resultType = getVoidType()
@@ -401,9 +385,7 @@ class TranslatedCatchByTypeClause extends TranslatedClause {
 class TranslatedGeneralCatchClause extends TranslatedClause {
   TranslatedGeneralCatchClause() { stmt instanceof GeneralCatchClause }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = CatchTag() and
     opcode instanceof Opcode::CatchAny and
     resultType = getVoidType()
@@ -434,9 +416,7 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = ThrowTag() and
     opcode instanceof Opcode::ThrowValue and
     resultType = getVoidType()
@@ -515,9 +495,7 @@ class TranslatedEmptyThrowStmt extends TranslatedStmt {
 
   override Instruction getFirstInstruction() { result = this.getInstruction(ThrowTag()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = ThrowTag() and
     opcode instanceof Opcode::ReThrow and
     resultType = getVoidType()
@@ -574,9 +552,7 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
     result = this.getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 }
@@ -602,9 +578,7 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
     id = 1 and result = this.getBody()
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -716,9 +690,7 @@ abstract class TranslatedSpecificJump extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) { none() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::NoOp and
     resultType = getVoidType()
@@ -843,9 +815,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
         result = getTranslatedStmt(stmt.getChild(id))
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = SwitchBranchTag() and
     opcode instanceof Opcode::Switch and
     resultType = getVoidType()
@@ -925,9 +895,7 @@ class TranslatedUnsafeStmt extends TranslatedStmt {
     result = this.getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -961,9 +929,7 @@ class TranslatedFixedStmt extends TranslatedStmt {
     child = this.getBody() and result = this.getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -1002,9 +968,7 @@ class TranslatedLockStmt extends TranslatedStmt {
     result = getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -1036,9 +1000,7 @@ class TranslatedCheckedUncheckedStmt extends TranslatedStmt {
     result = this.getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -1079,9 +1041,7 @@ class TranslatedUsingBlockStmt extends TranslatedStmt {
     child = this.getBody() and result = this.getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -1115,9 +1075,7 @@ class TranslatedUsingDeclStmt extends TranslatedStmt {
     child = this.getDecl(this.noDecls() - 1) and result = this.getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 

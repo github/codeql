@@ -416,9 +416,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction does not return a result, `resultType` should be
    * `VoidType`.
    */
-  abstract predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  );
+  abstract predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType);
 
   /**
    * Gets the `Function` that contains this element.

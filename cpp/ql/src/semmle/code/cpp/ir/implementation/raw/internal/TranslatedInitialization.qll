@@ -717,10 +717,9 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
   }
 
   private CppType getDefaultValueType() {
-    if elementCount = 1 then
-      result = getTypeForPRValue(getElementType())
-    else
-      result = getUnknownOpaqueType(elementCount * getElementType().getSize())
+    if elementCount = 1
+    then result = getTypeForPRValue(getElementType())
+    else result = getUnknownOpaqueType(elementCount * getElementType().getSize())
   }
 }
 

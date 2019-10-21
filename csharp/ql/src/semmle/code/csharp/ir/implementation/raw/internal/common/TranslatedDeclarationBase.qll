@@ -19,9 +19,7 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
 
   override Instruction getFirstInstruction() { result = getVarAddress() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
     resultType = getTypeForGLValue(getVarType())

@@ -88,9 +88,7 @@ abstract class TranslatedListInitialization extends TranslatedInitialization, In
     )
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -135,9 +133,7 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
     result = this.getInitializer().getFirstInstruction()
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
     resultType = getTypeForPRValue(this.getContext().getTargetType())
@@ -217,9 +213,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = this.getInstruction(getElementIndexTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = getElementIndexTag() and
     opcode instanceof Opcode::Constant and
     resultType = getIntType()
@@ -350,9 +344,7 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
     else result = this.getConstructorCall().getFirstInstruction()
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CSharpType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     this.needsConversion() and
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::Convert and

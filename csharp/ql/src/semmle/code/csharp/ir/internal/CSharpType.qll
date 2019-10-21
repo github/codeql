@@ -23,23 +23,17 @@ int getTypeSize(Type type) {
   type instanceof VoidType and result = 0
 }
 
-int getPointerSize() {
-  result = 8
-}
+int getPointerSize() { result = 8 }
 
 /**
  * Holds if an `IRErrorType` should exist.
  */
-predicate hasErrorType() {
-  exists(UnknownType t)
-}
+predicate hasErrorType() { exists(UnknownType t) }
 
 /**
  * Holds if an `IRBooleanType` with the specified `byteSize` should exist.
  */
-predicate hasBooleanType(int byteSize) {
-  byteSize = getTypeSize(any(BoolType type))
-}
+predicate hasBooleanType(int byteSize) { byteSize = getTypeSize(any(BoolType type)) }
 
 private predicate isSignedIntegerType(ValueType type) {
   type instanceof SignedIntegralType or
@@ -69,9 +63,7 @@ predicate hasUnsignedIntegerType(int byteSize) {
 /**
  * Holds if an `IRFloatingPointType` with the specified `byteSize` should exist.
  */
-predicate hasFloatingPointType(int byteSize) {
-  byteSize = any(FloatingPointType type).getSize()
-}
+predicate hasFloatingPointType(int byteSize) { byteSize = any(FloatingPointType type).getSize() }
 
 private predicate isPointerIshType(Type type) {
   type instanceof PointerType or
@@ -90,22 +82,15 @@ predicate hasAddressType(int byteSize) {
 /**
  * Holds if an `IRFunctionAddressType` with the specified `byteSize` should exist.
  */
-predicate hasFunctionAddressType(int byteSize) {
-  byteSize = getTypeSize(any(NullType type))
-}
+predicate hasFunctionAddressType(int byteSize) { byteSize = getTypeSize(any(NullType type)) }
 
 private int getBaseClassSize(ValueOrRefType type) {
-  if exists(type.getBaseClass())
-  then result = getContentSize(type.getBaseClass())
-  else result = 0
+  if exists(type.getBaseClass()) then result = getContentSize(type.getBaseClass()) else result = 0
 }
 
 private int getContentSize(ValueOrRefType type) {
   result = getBaseClassSize(type) +
-    sum(Field field |
-      not field.isStatic() |
-      getTypeSize(field.getType())
-    )
+      sum(Field field | not field.isStatic() | getTypeSize(field.getType()))
 }
 
 private predicate isOpaqueType(ValueOrRefType type) {
@@ -133,10 +118,8 @@ private Type getRepresentationType(Type type) {
  * Gets the `IRType` that represents a prvalue of the specified `Type`.
  */
 private IRType getIRTypeForPRValue(Type type) {
-  exists(Type repType |
-    repType = getRepresentationType(type) |
-    exists(IROpaqueType opaqueType |
-      opaqueType = result |
+  exists(Type repType | repType = getRepresentationType(type) |
+    exists(IROpaqueType opaqueType | opaqueType = result |
       opaqueType.getByteSize() = getTypeSize(repType) and
       opaqueType.getTag() = repType
     )
@@ -159,17 +142,11 @@ private IRType getIRTypeForPRValue(Type type) {
   )
 }
 
-string getOpaqueTagIdentityString(Type tag) {
-  result = tag.getQualifiedName()
-}
+string getOpaqueTagIdentityString(Type tag) { result = tag.getQualifiedName() }
 
 private newtype TCSharpType =
-  TPRValueType(Type type) {
-    exists(getIRTypeForPRValue(type))
-  } or
-  TGLValueAddressType(Type type) {
-    any()
-  } or
+  TPRValueType(Type type) { exists(getIRTypeForPRValue(type)) } or
+  TGLValueAddressType(Type type) { any() } or
   TFunctionAddressType() or
   TUnknownType()
 
@@ -194,9 +171,7 @@ class CSharpType extends TCSharpType {
    */
   abstract predicate hasType(Type type, boolean isGLValue);
 
-  final predicate hasUnspecifiedType(Type type, boolean isGLValue) {
-    hasType(type, isGLValue)
-  }
+  final predicate hasUnspecifiedType(Type type, boolean isGLValue) { hasType(type, isGLValue) }
 }
 
 /**
@@ -211,7 +186,9 @@ private class CSharpWrappedType extends CSharpType {
   }
 
   abstract override string toString();
+
   abstract override IRType getIRType();
+
   abstract override predicate hasType(Type type, boolean isGLValue);
 }
 
@@ -219,11 +196,11 @@ private class CSharpWrappedType extends CSharpType {
  * A `CSharpType` that represents a prvalue of an existing `Type`.
  */
 private class CSharpPRValueType extends CSharpWrappedType, TPRValueType {
-  override final string toString() { result = cstype.toString() }
+  final override string toString() { result = cstype.toString() }
 
-  override final IRType getIRType() { result = getIRTypeForPRValue(cstype) }
+  final override IRType getIRType() { result = getIRTypeForPRValue(cstype) }
 
-  override final predicate hasType(Type type, boolean isGLValue) {
+  final override predicate hasType(Type type, boolean isGLValue) {
     type = cstype and
     isGLValue = false
   }
@@ -233,15 +210,11 @@ private class CSharpPRValueType extends CSharpWrappedType, TPRValueType {
  * A `CSharpType` that represents a glvalue of an existing `Type`.
  */
 private class CSharpGLValueAddressType extends CSharpWrappedType, TGLValueAddressType {
-  override final string toString() {
-    result = "glval<" + cstype.toString() + ">"
-  }
+  final override string toString() { result = "glval<" + cstype.toString() + ">" }
 
-  override final IRAddressType getIRType() {
-    result.getByteSize() = getPointerSize()
-  }
+  final override IRAddressType getIRType() { result.getByteSize() = getPointerSize() }
 
-  override final predicate hasType(Type type, boolean isGLValue) {
+  final override predicate hasType(Type type, boolean isGLValue) {
     type = cstype and
     isGLValue = true
   }
@@ -251,15 +224,11 @@ private class CSharpGLValueAddressType extends CSharpWrappedType, TGLValueAddres
  * A `CSharpType` that represents a function address.
  */
 private class CSharpFunctionAddressType extends CSharpType, TFunctionAddressType {
-  override final string toString() {
-    result = "<funcaddr>"
-  }
+  final override string toString() { result = "<funcaddr>" }
 
-  override final IRFunctionAddressType getIRType() {
-    result.getByteSize() = getPointerSize()
-  }
+  final override IRFunctionAddressType getIRType() { result.getByteSize() = getPointerSize() }
 
-  override final predicate hasType(Type type, boolean isGLValue) {
+  final override predicate hasType(Type type, boolean isGLValue) {
     type instanceof VoidType and isGLValue = true
   }
 }
@@ -268,15 +237,11 @@ private class CSharpFunctionAddressType extends CSharpType, TFunctionAddressType
  * A `CSharpType` that represents an unknown type.
  */
 private class CSharpUnknownType extends CSharpType, TUnknownType {
-  override final string toString() {
-    result = "<unknown>"
-  }
+  final override string toString() { result = "<unknown>" }
 
-  override final IRUnknownType getIRType() {
-    any()
-  }
+  final override IRUnknownType getIRType() { any() }
 
-  override final predicate hasType(Type type, boolean isGLValue) {
+  final override predicate hasType(Type type, boolean isGLValue) {
     type instanceof VoidType and isGLValue = false
   }
 }
@@ -284,69 +249,49 @@ private class CSharpUnknownType extends CSharpType, TUnknownType {
 /**
  * Gets the single instance of `CSharpUnknownType`.
  */
-CSharpUnknownType getUnknownType() {
-  any()
-}
+CSharpUnknownType getUnknownType() { any() }
 
 /**
  * Gets the `CSharpType` that represents a prvalue of type `void`.
  */
-CSharpPRValueType getVoidType() {
-  exists(VoidType voidType |
-    result.hasType(voidType, false)
-  )
-}
+CSharpPRValueType getVoidType() { exists(VoidType voidType | result.hasType(voidType, false)) }
 
 /**
  * Gets the `CSharpType` that represents a prvalue of type `type`.
  */
-CSharpPRValueType getTypeForPRValue(Type type) {
-  result.hasType(type, false)
-}
+CSharpPRValueType getTypeForPRValue(Type type) { result.hasType(type, false) }
 
 /**
  * Gets the `CSharpType` that represents a glvalue of type `type`.
  */
-CSharpGLValueAddressType getTypeForGLValue(Type type) {
-  result.hasType(type, true)
-}
+CSharpGLValueAddressType getTypeForGLValue(Type type) { result.hasType(type, true) }
 
 /**
  * Gets the `CSharpType` that represents a prvalue of type `int`.
  */
-CSharpPRValueType getIntType() {
-  result.hasType(any(IntType t), false)
-}
+CSharpPRValueType getIntType() { result.hasType(any(IntType t), false) }
 
 /**
  * Gets the `CSharpType` that represents a prvalue of type `bool`.
  */
-CSharpPRValueType getBoolType() {
-  result.hasType(any(BoolType t), false)
-}
+CSharpPRValueType getBoolType() { result.hasType(any(BoolType t), false) }
 
 /**
  * Gets the `CSharpType` that represents a prvalue of `NullType`.
  */
-CSharpPRValueType getNullType() {
-  result.hasType(any(NullType t), false)
-}
+CSharpPRValueType getNullType() { result.hasType(any(NullType t), false) }
 
 /**
  * Gets the `CSharpType` that represents a function address.
  */
-CSharpFunctionAddressType getFunctionAddressType() {
-  any()
-}
+CSharpFunctionAddressType getFunctionAddressType() { any() }
 
 /**
  * Gets the `CSharpType` that is the canonical type for an `IRBooleanType` with the specified
  * `byteSize`.
  */
 CSharpPRValueType getCanonicalBooleanType(int byteSize) {
-  exists(BoolType type |
-    result = TPRValueType(type) and byteSize = type.getSize()
-  )
+  exists(BoolType type | result = TPRValueType(type) and byteSize = type.getSize())
 }
 
 /**
@@ -393,23 +338,17 @@ CSharpFunctionAddressType getCanonicalFunctionAddressType(int byteSize) {
 /**
  * Gets the `CSharpType` that is the canonical type for `IRErrorType`.
  */
-CSharpPRValueType getCanonicalErrorType() {
-  result = TPRValueType(any(UnknownType type))
-}
+CSharpPRValueType getCanonicalErrorType() { result = TPRValueType(any(UnknownType type)) }
 
 /**
  * Gets the `CSharpType` that is the canonical type for `IRUnknownType`.
  */
-CSharpUnknownType getCanonicalUnknownType() {
-  any()
-}
+CSharpUnknownType getCanonicalUnknownType() { any() }
 
 /**
  * Gets the `CSharpType` that is the canonical type for `IRVoidType`.
  */
-CSharpPRValueType getCanonicalVoidType() {
-  result = TPRValueType(any(VoidType type))
-}
+CSharpPRValueType getCanonicalVoidType() { result = TPRValueType(any(VoidType type)) }
 
 /**
  * Gets the `CSharpType` that is the canonical type for an `IROpaqueType` with the specified `tag` and
