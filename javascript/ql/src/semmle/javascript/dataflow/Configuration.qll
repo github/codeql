@@ -943,10 +943,36 @@ private predicate isLive() { exists(DataFlow::Configuration cfg | isSource(_, cf
  * A data flow node on an inter-procedural path from a source.
  */
 private newtype TPathNode =
+  MkSourceNode(DataFlow::Node nd, DataFlow::Configuration cfg) { isSourceNode(nd, cfg, _) }
+  or
   MkMidNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
     isLive() and
     onPath(nd, cfg, summary)
   }
+  or
+  MkSinkNode(DataFlow::Node nd, DataFlow::Configuration cfg) { isSinkNode(nd, cfg, _) }
+
+/**
+ * Holds if `nd` is a source node for configuration `cfg`, and there is a path from `nd` to a sink
+ * with the given `summary`.
+ */
+private predicate isSourceNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
+  exists(FlowLabel lbl | summary = PathSummary::level(lbl) |
+    isSource(nd, cfg, lbl) and
+    isLive() and
+    onPath(nd, cfg, summary)
+  )
+}
+
+/**
+ * Holds if `nd` is a sink node for configuration `cfg`, and there is a path from a source to `nd`
+ * with the given `summary`.
+ */
+private predicate isSinkNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
+  isSink(nd, cfg, summary.getEndLabel()) and
+  isLive() and
+  onPath(nd, cfg, summary)
+}
 
 /**
  * Maps `cfg` to itself.
@@ -958,24 +984,38 @@ bindingset[cfg, result]
 private DataFlow::Configuration id(DataFlow::Configuration cfg) { result >= cfg and cfg >= result }
 
 /**
- * A data flow node on an inter-procedural path from a source to a sink.
+ * A data-flow node on an inter-procedural path from a source to a sink.
  *
- * A path node is a triple `(nd, cfg, summary)` where `nd` is a data flow node and `cfg`
- * is a data flow tracking configuration such that `nd` is on a path from a source to a
- * sink under `cfg` summarized by `summary`.
+ * A path node wraps a data-flow node `nd` and a data-flow configuration `cfg` such that `nd` is
+ * on a path from a source to a sink under `cfg`.
+ *
+ * There are three kinds of path nodes:
+ *
+ *  - source nodes: wrapping a source node and a configuration such that there is a path from that
+ *    source to some sink under the configuration;
+ *  - sink nodes: wrapping a sink node and a configuration such that there is a path from some source
+ *    to that sink under the configuration;
+ *  - mid nodes: wrapping a node, a configuration and a path summary such that there is a path from
+ *    some source to the node with the given summary that can be extended to a path to some sink node,
+ *    all under the configuration.
  */
 class PathNode extends TPathNode {
   DataFlow::Node nd;
   Configuration cfg;
 
   PathNode() {
-    this = MkMidNode(nd, cfg, _)
+    this = MkSourceNode(nd, cfg) or
+    this = MkMidNode(nd, cfg, _) or
+    this = MkSinkNode(nd, cfg)
   }
 
   /** Holds if this path node wraps data-flow node `nd` and configuration `c`. */
   predicate wraps(DataFlow::Node n, DataFlow::Configuration c) {
     nd = n and cfg = c
   }
+
+  /** Gets the underlying configuration of this path node. */
+  DataFlow::Configuration getConfiguration() { result = cfg }
 
   /** Gets the underlying data-flow node of this path node. */
   DataFlow::Node getNode() { result = nd }
@@ -1004,11 +1044,22 @@ class PathNode extends TPathNode {
 
 private PathNode getASuccessor(PathNode pnd) {
   exists(DataFlow::Node nd, Configuration cfg, PathSummary summary |
+    // source node to mid node
+    pnd = MkSourceNode(nd, cfg) and
+    isSourceNode(nd, cfg, summary) and
+    result = MkMidNode(nd, cfg, summary)
+    or
+    // mid node to mid node
     pnd = MkMidNode(nd, cfg, summary) and
     exists(DataFlow::Node succ, PathSummary newSummary |
       flowStep(nd, id(cfg), succ, newSummary) and
       result = MkMidNode(succ, id(cfg), summary.append(newSummary))
     )
+    or
+    // mid node to sink node
+    pnd = MkMidNode(nd, cfg, summary) and
+    isSinkNode(nd, cfg, summary) and
+    result = MkSinkNode(nd, cfg)
   )
 }
 
@@ -1029,9 +1080,6 @@ class MidPathNode extends PathNode, MkMidNode {
 
   MidPathNode() { this = MkMidNode(nd, cfg, summary) }
 
-  /** Gets the underlying configuration of this path node. */
-  DataFlow::Configuration getConfiguration() { result = cfg }
-
   /** Gets the summary of the path underlying this path node. */
   PathSummary getPathSummary() { result = summary }
 
@@ -1047,31 +1095,27 @@ class MidPathNode extends PathNode, MkMidNode {
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and
     nd = any(AddExpr add).getAnOperand().flow()
+    or
+    // Skip mid node immediately following a source node
+    exists(MkSourceNode(nd, cfg))
+    or
+    // Skip mid node immediately preceding a sink node
+    exists(MkSinkNode(nd, cfg))
   }
 }
 
 /**
  * A path node corresponding to a flow source.
  */
-class SourcePathNode extends PathNode {
-  SourcePathNode() {
-    exists(FlowLabel lbl |
-      this = MkMidNode(nd, cfg, PathSummary::level(lbl)) and
-      isSource(nd, cfg, lbl)
-    )
-  }
+class SourcePathNode extends PathNode, MkSourceNode {
+  SourcePathNode() { this = MkSourceNode(nd, cfg) }
 }
 
 /**
  * A path node corresponding to a flow sink.
  */
-class SinkPathNode extends PathNode {
-  SinkPathNode() {
-    exists(PathSummary summary |
-      this = MkMidNode(nd, cfg, summary) and
-      isSink(nd, cfg, summary.getEndLabel())
-    )
-  }
+class SinkPathNode extends PathNode, MkSinkNode {
+  SinkPathNode() { this = MkSinkNode(nd, cfg) }
 }
 
 /**
@@ -1080,9 +1124,7 @@ class SinkPathNode extends PathNode {
 module PathGraph {
   /** Holds if `nd` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode nd) {
-    not nd.(MidPathNode).isHidden() or
-    nd instanceof SourcePathNode or
-    nd instanceof SinkPathNode
+    not nd.(MidPathNode).isHidden()
   }
 
   /** Holds if `pred` &rarr; `succ` is an edge in the graph of data flow path explanations. */

@@ -14,17 +14,19 @@ import PortalExitSource
 import PortalEntrySink
 
 from
-  TaintTracking::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Portal p1,
-  Portal p2, DataFlow::FlowLabel lbl1, DataFlow::FlowLabel lbl2
+  TaintTracking::Configuration cfg, DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink, Portal p1,
+  Portal p2, DataFlow::FlowLabel lbl1, DataFlow::FlowLabel lbl2, DataFlow::MidPathNode last
 where
-  cfg.hasFlowPath(source, sink) and
+  cfg = source.getConfiguration() and
+  last = source.getASuccessor*() and
+  sink = last.getASuccessor() and
   p1 = source.getNode().(PortalExitSource).getPortal() and
   p2 = sink.getNode().(PortalEntrySink).getPortal() and
-  lbl1 = sink.(DataFlow::MidPathNode).getPathSummary().getStartLabel() and
-  lbl2 = sink.(DataFlow::MidPathNode).getPathSummary().getEndLabel() and
+  lbl1 = last.getPathSummary().getStartLabel() and
+  lbl2 = last.getPathSummary().getEndLabel() and
   // avoid constructing infeasible paths
-  sink.(DataFlow::MidPathNode).getPathSummary().hasCall() = false and
-  sink.(DataFlow::MidPathNode).getPathSummary().hasReturn() = false and
+  last.getPathSummary().hasCall() = false and
+  last.getPathSummary().hasReturn() = false and
   // restrict to steps flow function parameters to returns
   p1.(ParameterPortal).getBasePortal() = p2.(ReturnPortal).getBasePortal() and
   // restrict to data/taint flow

@@ -11,10 +11,13 @@ import Configurations
 import PortalEntrySink
 import SourceFromAnnotation
 
-from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Portal p
+from DataFlow::Configuration cfg, DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink,
+  Portal p, DataFlow::MidPathNode last
 where
-  cfg.hasFlowPath(source, sink) and
+  cfg = source.getConfiguration() and
+  last = source.getASuccessor*() and
+  sink = last.getASuccessor() and
   p = sink.getNode().(PortalEntrySink).getPortal() and
   // avoid constructing infeasible paths
-  sink.(DataFlow::MidPathNode).getPathSummary().hasCall() = false
-select p.toString(), sink.(DataFlow::MidPathNode).getPathSummary().getEndLabel().toString(), cfg.toString()
+  last.getPathSummary().hasCall() = false
+select p.toString(), last.getPathSummary().getEndLabel().toString(), cfg.toString()
