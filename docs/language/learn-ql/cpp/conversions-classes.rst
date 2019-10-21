@@ -229,5 +229,5 @@ What next?
 -  Explore other ways of querying classes using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/class>`__.
 -  Take a look at the :doc:`Analyzing data flow in C/C++ <dataflow>` tutorial.
 -  Try the worked examples in the following topics: :doc:`Example: Checking that constructors initialize all private fields <private-field-initialization>` and :doc:`Example: Checking for allocations equal to 'strlen(string)' without space for a null terminator <zero-space-terminator>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
