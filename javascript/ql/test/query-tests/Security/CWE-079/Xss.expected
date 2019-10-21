@@ -2,6 +2,13 @@ nodes
 | addEventListener.js:1:43:1:47 | event |
 | addEventListener.js:2:20:2:24 | event |
 | addEventListener.js:2:20:2:29 | event.data |
+| addEventListener.js:5:43:5:48 | data |
+| addEventListener.js:5:43:5:48 | {data} |
+| addEventListener.js:5:44:5:47 | data |
+| addEventListener.js:6:20:6:23 | data |
+| addEventListener.js:10:21:10:25 | event |
+| addEventListener.js:12:24:12:28 | event |
+| addEventListener.js:12:24:12:33 | event.data |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
 | jquery.js:2:17:2:40 | documen ... .search |
@@ -195,6 +202,11 @@ nodes
 edges
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
 | addEventListener.js:2:20:2:24 | event | addEventListener.js:2:20:2:29 | event.data |
+| addEventListener.js:5:43:5:48 | data | addEventListener.js:6:20:6:23 | data |
+| addEventListener.js:5:43:5:48 | {data} | addEventListener.js:5:44:5:47 | data |
+| addEventListener.js:5:44:5:47 | data | addEventListener.js:5:43:5:48 | data |
+| addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event |
+| addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
@@ -354,6 +366,8 @@ edges
 | winjs.js:2:17:2:53 | documen ... ring(1) | winjs.js:2:7:2:53 | tainted |
 #select
 | addEventListener.js:2:20:2:29 | event.data | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:29 | event.data | Cross-site scripting vulnerability due to $@. | addEventListener.js:1:43:1:47 | event | user-provided value |
+| addEventListener.js:6:20:6:23 | data | addEventListener.js:5:43:5:48 | {data} | addEventListener.js:6:20:6:23 | data | Cross-site scripting vulnerability due to $@. | addEventListener.js:5:43:5:48 | {data} | user-provided value |
+| addEventListener.js:12:24:12:33 | event.data | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:33 | event.data | Cross-site scripting vulnerability due to $@. | addEventListener.js:10:21:10:25 | event | user-provided value |
 | jquery.js:4:5:4:11 | tainted | jquery.js:2:17:2:33 | document.location | jquery.js:4:5:4:11 | tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:33 | document.location | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:33 | document.location | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
