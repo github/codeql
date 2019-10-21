@@ -415,12 +415,10 @@ CppWrappedType getCanonicalBooleanType(int byteSize) {
  * Compute the sorting priority of an `IntegralType` based on its signedness.
  */
 private int getSignPriority(IntegralType type) {
-  /*
-    Explicitly unsigned types sort first. Explicitly signed types sort last. Types with no explicit
-    signedness sort in between. This lets us always choose `int` over `signed int`, while also
-    choosing `unsigned char`+`char` when `char` is signed, and `unsigned char`+`signed char` when
-    `char` is unsigned.
-  */
+  // Explicitly unsigned types sort first. Explicitly signed types sort last. Types with no explicit
+  // signedness sort in between. This lets us always choose `int` over `signed int`, while also
+  // choosing `unsigned char`+`char` when `char` is signed, and `unsigned char`+`signed char` when
+  // `char` is unsigned.
   if type.isExplicitlyUnsigned()
   then result = 2
   else if type.isExplicitlySigned()
