@@ -82,8 +82,19 @@ predicate alwaysThrows(Function f) {
   )
 }
 
+/**
+ * Holds if the last statement in the function is flagged by the js/useless-expression query.
+ */
+predicate alwaysHasNoEffect(Function f) {
+  exists(ReachableBasicBlock entry, DataFlow::Node noEffect |
+    entry = f.getEntryBB() and
+    hasNoEffect(noEffect.asExpr()) and
+    entry.dominates(noEffect.getBasicBlock())
+  )
+}
+
 predicate callToVoidFunction(DataFlow::CallNode call, Function func) {
-  not call.isIndefinite(_) and 
+  not call.isIncomplete() and 
   func = call.getACallee() and
   forall(Function f | f = call.getACallee() |
     returnsVoid(f) and not isStub(f) and not alwaysThrows(f)
@@ -113,6 +124,11 @@ DataFlow::SourceNode array(DataFlow::TypeTracker t) {
 
 DataFlow::SourceNode array() { result = array(DataFlow::TypeTracker::end()) }
 
+/**
+ * Holds if `call` is an Array or Lodash method accepting a callback `func`,
+ * where the `call` expects a callback that returns an expression, 
+ * but `func` does return a value. 
+ */
 predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
   hasNonVoidCallbackMethod(call.getCalleeName()) and
   func = call.getAnArgument().getALocalSource().asExpr() and
@@ -132,15 +148,14 @@ where
   (
     callToVoidFunction(call, func) and 
     msg = "the $@ does not return anything, yet the return value is used." and
-    name = "function " + call.getCalleeName()
+    name = func.describe()
     or
     voidArrayCallback(call, func) and 
-    msg = "the $@ does not return anything, yet the return value from the call to " + call.getCalleeName() + "() is used." and
+    msg = "the $@ does not return anything, yet the return value from the call to " + call.getCalleeName() + " is used." and
     name = "callback function"
   ) and
   not benignContext(call.asExpr()) and
-  // Avoid double reporting from js/useless-expression
-  not hasNoEffect(func.getBodyStmt(func.getNumBodyStmt() - 1).(ExprStmt).getExpr()) and
+  not alwaysHasNoEffect(func) and
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
   not oneshotClosure(call.asExpr())
 select

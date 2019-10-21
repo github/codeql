@@ -5,7 +5,6 @@
 import javascript
 import DOMProperties
 import semmle.javascript.frameworks.xUnit
-import semmle.javascript.RestrictedLocations
 
 /**
  * Holds if `e` appears in a syntactic context where its value is discarded.

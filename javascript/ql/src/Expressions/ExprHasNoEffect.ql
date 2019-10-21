@@ -14,6 +14,7 @@
 
 import javascript
 import ExprHasNoEffect
+import semmle.javascript.RestrictedLocations
 
 
 from Expr e
