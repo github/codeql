@@ -53,6 +53,15 @@ int func1c(char pw1c[PW_SIZE]) {
 // x86-64 gcc 9.2: not deleted
 // x86-64 clang 9.0.0: not deleted
 // x64 msvc v19.14 (WINE): not deleted
+char pw1d[PW_SIZE];
+int func1d() {  
+	use_pw(pw1d);
+	memset(pw1d, 0, PW_SIZE); // GOOD
+	return 0;
+}
+// x86-64 gcc 9.2: not deleted
+// x86-64 clang 9.0.0: not deleted
+// x64 msvc v19.14 (WINE): not deleted
 char *func2(void) {  
 	char pw2[PW_SIZE];
 	use_pw(pw2);
@@ -96,7 +105,7 @@ int func6(void) {
 int func5(void) { 
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
-	__builtin_memset(pw1a + 3, 0, PW_SIZE - 4); // BAD [NOT DETECTED]
+	__builtin_memset(pw1a + 3, 0, PW_SIZE - 4); // GOOD
 	return pw1a[4];
 }
 
