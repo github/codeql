@@ -62,7 +62,7 @@ Why not a predicate?
 
 The obvious interface for this library would be a predicate ``equivalent(Expr e1, Expr e2)``. However, this predicate would be very large, with a quadratic number of rows for each set of equivalent expressions. By using a class as an intermediate step, the number of rows can be kept linear, and therefore can be cached.
 
-Example Queries
+ Example queries
 ~~~~~~~~~~~~~~~
 
 This query uses the ``GVN`` class to identify calls to ``strncpy`` where the size argument is derived from the source rather than the destination
