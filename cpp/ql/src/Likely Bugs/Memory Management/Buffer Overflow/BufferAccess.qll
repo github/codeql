@@ -52,7 +52,7 @@ private class BufferWithSizeConfig extends TaintTracking::Configuration {
 }
 
 /**
- * An access(read or write) to a buffer, provided as a pair of
+ * An access (read or write) to a buffer, provided as a pair of
  * a pointer to the buffer and the length of data to be read or written.
  * Extend this class to support different kinds of buffer access.
  */

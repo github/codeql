@@ -18,7 +18,7 @@ to use a safe deserialization framework.</p>
 
 <p>In this example, text from an HTML text box is deserialized using a
 <code>JavaScriptSerializer</code> with a simple type resolver. Using a type resolver
-means that arbitrary code may be executed</p>
+means that arbitrary code may be executed.</p>
 
 <sample src="UnsafeDeserializationUntrustedInputBad.cs" />
 

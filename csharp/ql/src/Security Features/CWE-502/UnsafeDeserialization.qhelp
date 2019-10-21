@@ -17,7 +17,7 @@ as denial-of-service or remote code execution.</p>
 
 <p>In this example, a string is deserialized using a
 <code>JavaScriptSerializer</code> with a simple type resolver. Using a type resolver
-means that arbitrary code may be executed</p>
+means that arbitrary code may be executed.</p>
 
 <sample src="UnsafeDeserializationBad.cs" />
 

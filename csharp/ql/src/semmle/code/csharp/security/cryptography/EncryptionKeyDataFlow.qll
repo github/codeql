@@ -71,13 +71,13 @@ module EncryptionKeyDataFlow {
   class SymmetricKeyTaintTrackingConfiguration extends TaintTracking::Configuration {
     SymmetricKeyTaintTrackingConfiguration() { this = "SymmetricKeyTaintTracking" }
 
-    /** holds if the node is a key source. */
+    /** Holds if the node is a key source. */
     override predicate isSource(DataFlow::Node src) { src instanceof KeySource }
 
-    /** holds if the node is a symmetric encryption key sink. */
+    /** Holds if the node is a symmetric encryption key sink. */
     override predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricEncryptionKeySink }
 
-    /** holds if the node is a key sanitizer. */
+    /** Holds if the node is a key sanitizer. */
     override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
   }
 }
