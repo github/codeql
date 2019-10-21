@@ -420,3 +420,8 @@ CSharpPRValueType getCanonicalOpaqueType(Type tag, int byteSize) {
   result = TPRValueType(tag) and
   getTypeSize(tag) = byteSize
 }
+
+module LanguageTypeSanity {
+  // Nothing interesting here for C# yet, but the module still has to exist because it is imported
+  // by `IRTypeSanity`.
+}

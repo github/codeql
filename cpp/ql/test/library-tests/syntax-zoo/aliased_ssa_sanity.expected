@@ -548,3 +548,4 @@ missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType
 multipleIRTypes
+missingCppType

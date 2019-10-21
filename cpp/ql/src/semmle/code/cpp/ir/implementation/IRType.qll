@@ -258,4 +258,6 @@ module IRTypeSanity {
     strictcount(type.getIRType()) > 1 and
     message = "`LanguageType` " + type.getAQlClass() + " has multiple `IRType`s: " + concat(type.getIRType().toString(), ", ")
   }
+
+  import Language::LanguageTypeSanity
 }

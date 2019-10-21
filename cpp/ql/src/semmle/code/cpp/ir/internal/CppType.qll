@@ -532,3 +532,13 @@ string getOpaqueTagIdentityString(Type tag) {
   hasOpaqueType(tag, _) and
   result = getTypeIdentityString(tag)
 }
+
+module LanguageTypeSanity {
+  query predicate missingCppType(Type type, string message) {
+    not exists(getTypeForPRValue(type)) and
+    exists(type.getSize()) and
+    // `ProxyClass`es have a size, but only appear in uninstantiated templates
+    not type instanceof ProxyClass and 
+    message = "Type does not have an associated `CppType`."
+  }
+}

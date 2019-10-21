@@ -256,6 +256,8 @@ module IRTypeSanity {
 
   query predicate multipleIRTypes(Language::LanguageType type, string message) {
     strictcount(type.getIRType()) > 1 and
-    message = "`LanguageType` has multiple `IRType`s: " + concat(type.getIRType().toString(), ", ")
+    message = "`LanguageType` " + type.getAQlClass() + " has multiple `IRType`s: " + concat(type.getIRType().toString(), ", ")
   }
+
+  import Language::LanguageTypeSanity
 }
