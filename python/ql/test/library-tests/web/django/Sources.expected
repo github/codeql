@@ -1,17 +1,17 @@
+| test.py:5 | path | externally controlled string |
+| test.py:5 | request | django.request.HttpRequest |
+| test.py:11 | path | externally controlled string |
 | test.py:11 | request | django.request.HttpRequest |
-| test.py:11 | username | externally controlled string |
-| test.py:41 | request | django.request.HttpRequest |
-| test.py:47 | bar | externally controlled string |
-| test.py:47 | foo | externally controlled string |
-| test.py:47 | request | django.request.HttpRequest |
-| test.py:58 | page_number | externally controlled string |
-| test.py:58 | request | django.request.HttpRequest |
-| test.py:69 | arg0 | externally controlled string |
-| test.py:69 | request | django.request.HttpRequest |
-| test.py:72 | arg0 | externally controlled string |
-| test.py:72 | arg1 | externally controlled string |
-| test.py:72 | arg2 | externally controlled string |
-| test.py:72 | request | django.request.HttpRequest |
-| test.py:75 | arg0 | externally controlled string |
-| test.py:75 | arg1 | externally controlled string |
-| test.py:75 | request | django.request.HttpRequest |
+| views.py:6 | bar | externally controlled string |
+| views.py:6 | foo | externally controlled string |
+| views.py:6 | request | django.request.HttpRequest |
+| views.py:10 | request | django.request.HttpRequest |
+| views.py:14 | request | django.request.HttpRequest |
+| views.py:25 | page_number | externally controlled string |
+| views.py:25 | request | django.request.HttpRequest |
+| views.py:30 | arg0 | externally controlled string |
+| views.py:30 | arg1 | externally controlled string |
+| views.py:30 | request | django.request.HttpRequest |
+| views.py:50 | request | django.request.HttpRequest |
+| views.py:50 | username | externally controlled string |
+| views.py:59 | request | django.request.HttpRequest |
