@@ -30,6 +30,7 @@ nodes
 | stored-xss.js:5:20:5:52 | session ... ssion') |
 | stored-xss.js:8:20:8:48 | localSt ... local') |
 | string-manipulations.js:3:16:3:32 | document.location |
+| string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:4:16:4:32 | document.location |
 | string-manipulations.js:4:16:4:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:32 | document.location |
@@ -185,11 +186,16 @@ nodes
 | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted |
 | tst.js:256:7:256:17 | window.name |
+| tst.js:256:7:256:17 | window.name |
+| tst.js:257:7:257:10 | name |
 | tst.js:257:7:257:10 | name |
 | tst.js:261:11:261:21 | window.name |
+| tst.js:261:11:261:21 | window.name |
+| tst.js:277:22:277:29 | location |
 | tst.js:277:22:277:29 | location |
 | tst.js:282:9:282:29 | tainted |
 | tst.js:282:19:282:29 | window.name |
+| tst.js:285:59:285:65 | tainted |
 | tst.js:285:59:285:65 | tainted |
 | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location |
@@ -222,6 +228,7 @@ edges
 | stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') |
 | stored-xss.js:3:35:3:51 | document.location | stored-xss.js:3:35:3:58 | documen ... .search |
 | stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:8:20:8:48 | localSt ... local') |
+| string-manipulations.js:3:16:3:32 | document.location | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:32 | document.location | string-manipulations.js:5:16:5:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
@@ -342,8 +349,13 @@ edges
 | tst.js:238:23:238:29 | tainted | tst.js:228:32:228:49 | prevProps.tainted4 |
 | tst.js:244:39:244:55 | props.propTainted | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted | tst.js:244:39:244:55 | props.propTainted |
+| tst.js:256:7:256:17 | window.name | tst.js:256:7:256:17 | window.name |
+| tst.js:257:7:257:10 | name | tst.js:257:7:257:10 | name |
+| tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name |
+| tst.js:277:22:277:29 | location | tst.js:277:22:277:29 | location |
 | tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
-| tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
+| tst.js:282:19:282:29 | window.name | tst.js:285:59:285:65 | tainted |
+| tst.js:285:59:285:65 | tainted | tst.js:285:59:285:65 | tainted |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
 | winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted |
 | winjs.js:2:7:2:53 | tainted | winjs.js:4:43:4:49 | tainted |

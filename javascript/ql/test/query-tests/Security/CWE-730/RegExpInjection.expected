@@ -14,7 +14,6 @@ nodes
 | RegExpInjection.js:29:21:29:21 | s |
 | RegExpInjection.js:29:21:29:21 | s |
 | RegExpInjection.js:31:23:31:23 | s |
-| RegExpInjection.js:31:23:31:23 | s |
 | RegExpInjection.js:33:12:33:14 | key |
 | RegExpInjection.js:34:12:34:19 | getKey() |
 | RegExpInjection.js:40:19:40:23 | input |

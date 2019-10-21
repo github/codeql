@@ -32,7 +32,6 @@ nodes
 | promises.js:6:11:6:11 | x |
 | promises.js:6:11:6:11 | x |
 | promises.js:6:25:6:25 | x |
-| promises.js:6:25:6:25 | x |
 | tst2.js:6:7:6:30 | p |
 | tst2.js:6:7:6:30 | r |
 | tst2.js:6:9:6:9 | p |
@@ -86,7 +85,6 @@ edges
 | partial.js:19:14:19:18 | x + y | partial.js:22:51:22:57 | req.url | partial.js:19:14:19:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:22:51:22:57 | req.url | user-provided value |
 | partial.js:28:14:28:18 | x + y | partial.js:31:47:31:53 | req.url | partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:31:47:31:53 | req.url | user-provided value |
 | partial.js:37:14:37:18 | x + y | partial.js:40:43:40:49 | req.url | partial.js:37:14:37:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:40:43:40:49 | req.url | user-provided value |
-| promises.js:6:25:6:25 | x | promises.js:5:44:5:57 | req.query.data | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
 | promises.js:6:25:6:25 | x | promises.js:5:44:5:57 | req.query.data | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
 | tst2.js:7:12:7:12 | p | tst2.js:6:9:6:9 | p | tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:6:9:6:9 | p | user-provided value |
 | tst2.js:8:12:8:12 | r | tst2.js:6:12:6:15 | q: r | tst2.js:8:12:8:12 | r | Cross-site scripting vulnerability due to $@. | tst2.js:6:12:6:15 | q: r | user-provided value |

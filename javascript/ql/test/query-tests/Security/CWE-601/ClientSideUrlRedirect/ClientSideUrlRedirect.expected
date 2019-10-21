@@ -2,7 +2,6 @@ nodes
 | tst2.js:2:7:2:33 | href |
 | tst2.js:2:7:2:33 | href |
 | tst2.js:2:14:2:28 | window.location |
-| tst2.js:2:14:2:28 | window.location |
 | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:4:21:4:24 | href |
@@ -18,7 +17,6 @@ nodes
 | tst7.js:2:12:2:35 | documen ... .search |
 | tst7.js:5:27:5:43 | document.location |
 | tst7.js:5:27:5:50 | documen ... .search |
-| tst9.js:2:21:2:37 | document.location |
 | tst9.js:2:21:2:37 | document.location |
 | tst9.js:2:21:2:42 | documen ... on.hash |
 | tst9.js:2:21:2:55 | documen ... ring(1) |
@@ -46,12 +44,12 @@ edges
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
-| tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href |
 | tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href |
+| tst2.js:4:21:4:24 | href | tst2.js:2:14:2:33 | window.location.href |
+| tst2.js:4:21:4:24 | href | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
 | tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
-| tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:28 | window.location |
 | tst6.js:2:7:2:45 | redirect | tst6.js:4:21:4:28 | redirect |
 | tst6.js:2:7:2:45 | redirect | tst6.js:6:17:6:24 | redirect |
 | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:45 | redirect |
@@ -59,9 +57,8 @@ edges
 | tst7.js:2:12:2:28 | document.location | tst7.js:2:12:2:35 | documen ... .search |
 | tst7.js:5:27:5:43 | document.location | tst7.js:5:27:5:50 | documen ... .search |
 | tst9.js:2:21:2:37 | document.location | tst9.js:2:21:2:42 | documen ... on.hash |
-| tst9.js:2:21:2:37 | document.location | tst9.js:2:21:2:42 | documen ... on.hash |
+| tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:42 | documen ... on.hash |
 | tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) |
-| tst9.js:2:21:2:55 | documen ... ring(1) | tst9.js:2:21:2:37 | document.location |
 | tst10.js:5:23:5:39 | document.location | tst10.js:5:23:5:46 | documen ... .search |
 | tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:46 | '/' + d ... .search |
 | tst10.js:8:24:8:40 | document.location | tst10.js:8:24:8:47 | documen ... .search |

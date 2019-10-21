@@ -1,5 +1,7 @@
 nodes
 | express.js:7:16:7:34 | req.param("target") |
+| express.js:7:16:7:34 | req.param("target") |
+| express.js:12:26:12:44 | req.param("target") |
 | express.js:12:26:12:44 | req.param("target") |
 | express.js:27:7:27:34 | target |
 | express.js:27:16:27:34 | req.param("target") |
@@ -53,6 +55,8 @@ nodes
 | react-native.js:8:17:8:23 | tainted |
 | react-native.js:9:26:9:32 | tainted |
 edges
+| express.js:7:16:7:34 | req.param("target") | express.js:7:16:7:34 | req.param("target") |
+| express.js:12:26:12:44 | req.param("target") | express.js:12:26:12:44 | req.param("target") |
 | express.js:27:7:27:34 | target | express.js:33:18:33:23 | target |
 | express.js:27:7:27:34 | target | express.js:35:16:35:21 | target |
 | express.js:27:16:27:34 | req.param("target") | express.js:27:7:27:34 | target |
