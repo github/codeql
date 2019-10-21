@@ -5,9 +5,12 @@
  * @kind path-problem
  * @id cs/unsafe-deserialization-untrusted-input
  * @problem.severity error
- * @precision high
  * @tags security
  *       external/cwe/cwe-502
+ */
+
+/*
+ * consider: @precision high
  */
 
 import csharp

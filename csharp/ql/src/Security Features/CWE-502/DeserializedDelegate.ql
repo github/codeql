@@ -5,9 +5,12 @@
  * @kind problem
  * @id cs/deserialized-delegate
  * @problem.severity warning
- * @precision high
  * @tags security
  *       external/cwe/cwe-502
+ */
+
+/*
+ * consider: @precision high
  */
 
 import csharp

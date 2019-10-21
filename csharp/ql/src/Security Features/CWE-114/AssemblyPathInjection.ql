@@ -6,9 +6,11 @@
  * @kind problem
  * @id cs/assembly-path-injection
  * @problem.severity error
- * @precision high
  * @tags security
  *       external/cwe/cwe-114
+ */
+/*
+ * consider: @precision high
  */
 
 import csharp

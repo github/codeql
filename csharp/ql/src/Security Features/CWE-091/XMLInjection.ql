@@ -5,9 +5,12 @@
  * @kind problem
  * @id cs/xml-injection
  * @problem.severity error
- * @precision high
  * @tags security
  *       external/cwe/cwe-091
+ */
+
+/*
+ * consider: @precision high
  */
 
 import csharp

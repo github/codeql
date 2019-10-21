@@ -4,8 +4,11 @@
  * @kind problem
  * @id cs/hardcoded-key
  * @problem.severity error
- * @precision high
  * @tags security
+ */
+
+/*
+ * consider: @precision high
  */
 
 import csharp

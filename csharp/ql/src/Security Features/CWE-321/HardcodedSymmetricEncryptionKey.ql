@@ -4,8 +4,11 @@
  * @kind path-problem
  * @id cs/hard-coded-symmetric-encryption-key
  * @problem.severity error
- * @precision high
  * @tags security
+ */
+
+/*
+ * consider: @precision high
  */
 
 import csharp
