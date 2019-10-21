@@ -55,11 +55,12 @@ predicate hasBooleanType(int byteSize) {
 private predicate isSigned(IntegralOrEnumType type) {
   type.(IntegralType).isSigned() or
   exists(Enum enumType |
+    // If the enum has an explicit underlying type, we'll determine signedness from that. If not,
+    // we'll assume unsigned. The actual rules for the implicit underlying type of an enum vary
+    // between compilers, so we'll need an extractor change to get this 100% right. Until then,
+    // unsigned is a reasonable default.
     enumType = type.getUnspecifiedType() and
-    (
-      enumType.getExplicitUnderlyingType().getUnspecifiedType().(IntegralType).isSigned() or
-      not exists(enumType.getExplicitUnderlyingType())  // Assume signed.
-    )
+    enumType.getExplicitUnderlyingType().getUnspecifiedType().(IntegralType).isSigned()
   )
 }
 
