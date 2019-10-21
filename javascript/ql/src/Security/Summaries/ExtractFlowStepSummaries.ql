@@ -20,11 +20,11 @@ where
   cfg.hasFlowPath(source, sink) and
   p1 = source.getNode().(PortalExitSource).getPortal() and
   p2 = sink.getNode().(PortalEntrySink).getPortal() and
-  lbl1 = sink.getPathSummary().getStartLabel() and
-  lbl2 = sink.getPathSummary().getEndLabel() and
+  lbl1 = sink.(DataFlow::MidPathNode).getPathSummary().getStartLabel() and
+  lbl2 = sink.(DataFlow::MidPathNode).getPathSummary().getEndLabel() and
   // avoid constructing infeasible paths
-  sink.getPathSummary().hasCall() = false and
-  sink.getPathSummary().hasReturn() = false and
+  sink.(DataFlow::MidPathNode).getPathSummary().hasCall() = false and
+  sink.(DataFlow::MidPathNode).getPathSummary().hasReturn() = false and
   // restrict to steps flow function parameters to returns
   p1.(ParameterPortal).getBasePortal() = p2.(ReturnPortal).getBasePortal() and
   // restrict to data/taint flow

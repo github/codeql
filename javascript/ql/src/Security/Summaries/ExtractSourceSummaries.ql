@@ -16,5 +16,5 @@ where
   cfg.hasFlowPath(source, sink) and
   p = sink.getNode().(PortalEntrySink).getPortal() and
   // avoid constructing infeasible paths
-  sink.getPathSummary().hasCall() = false
-select p.toString(), sink.getPathSummary().getEndLabel().toString(), cfg.toString()
+  sink.(DataFlow::MidPathNode).getPathSummary().hasCall() = false
+select p.toString(), sink.(DataFlow::MidPathNode).getPathSummary().getEndLabel().toString(), cfg.toString()

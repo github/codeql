@@ -966,24 +966,19 @@ private DataFlow::Configuration id(DataFlow::Configuration cfg) { result >= cfg 
  */
 class PathNode extends TPathNode {
   DataFlow::Node nd;
-  DataFlow::Configuration cfg;
-  PathSummary summary;
+  Configuration cfg;
 
-  PathNode() { this = MkMidNode(nd, cfg, summary) }
-
-  /** Gets the underlying data flow node of this path node. */
-  DataFlow::Node getNode() { result = nd }
-
-  /** Gets the underlying data flow tracking configuration of this path node. */
-  DataFlow::Configuration getConfiguration() { result = cfg }
-
-  /** Gets the summary of the path underlying this path node. */
-  PathSummary getPathSummary() { result = summary }
+  PathNode() {
+    this = MkMidNode(nd, cfg, _)
+  }
 
   /** Holds if this path node wraps data-flow node `nd` and configuration `c`. */
   predicate wraps(DataFlow::Node n, DataFlow::Configuration c) {
     nd = n and cfg = c
   }
+
+  /** Gets the underlying data-flow node of this path node. */
+  DataFlow::Node getNode() { result = nd }
 
   /** Gets a successor node of this path node. */
   final PathNode getASuccessor() {
@@ -1005,6 +1000,40 @@ class PathNode extends TPathNode {
   ) {
     nd.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+}
+
+private PathNode getASuccessor(PathNode pnd) {
+  exists(DataFlow::Node nd, Configuration cfg, PathSummary summary |
+    pnd = MkMidNode(nd, cfg, summary) and
+    exists(DataFlow::Node succ, PathSummary newSummary |
+      flowStep(nd, id(cfg), succ, newSummary) and
+      result = MkMidNode(succ, id(cfg), summary.append(newSummary))
+    )
+  )
+}
+
+private PathNode getASuccessorIfHidden(PathNode nd) {
+  nd.(MidPathNode).isHidden() and
+  result = getASuccessor(nd)
+}
+
+/**
+ * A path node corresponding to an intermediate node on a path from a source to a sink.
+ *
+ * A mid node is a triple `(nd, cfg, summary)` where `nd` is a data-flow node and `cfg`
+ * is a configuration such that `nd` is on a path from a source to a sink under `cfg`
+ * summarized by `summary`.
+ */
+class MidPathNode extends PathNode, MkMidNode {
+  PathSummary summary;
+
+  MidPathNode() { this = MkMidNode(nd, cfg, summary) }
+
+  /** Gets the underlying configuration of this path node. */
+  DataFlow::Configuration getConfiguration() { result = cfg }
+
+  /** Gets the summary of the path underlying this path node. */
+  PathSummary getPathSummary() { result = summary }
 
   /**
    * Holds if this node is hidden from paths in path explanation queries, except
@@ -1021,28 +1050,13 @@ class PathNode extends TPathNode {
   }
 }
 
-private PathNode getASuccessor(PathNode pnd) {
-  exists(DataFlow::Node nd, Configuration cfg, PathSummary summary |
-    pnd = MkMidNode(nd, cfg, summary) and
-    exists(DataFlow::Node succ, PathSummary newSummary |
-      flowStep(nd, id(cfg), succ, newSummary) and
-      result = MkMidNode(succ, id(cfg), summary.append(newSummary))
-    )
-  )
-}
-
-private PathNode getASuccessorIfHidden(PathNode nd) {
-  nd.isHidden() and
-  result = getASuccessor(nd)
-}
-
 /**
  * A path node corresponding to a flow source.
  */
 class SourcePathNode extends PathNode {
   SourcePathNode() {
     exists(FlowLabel lbl |
-      summary = PathSummary::level(lbl) and
+      this = MkMidNode(nd, cfg, PathSummary::level(lbl)) and
       isSource(nd, cfg, lbl)
     )
   }
@@ -1052,7 +1066,12 @@ class SourcePathNode extends PathNode {
  * A path node corresponding to a flow sink.
  */
 class SinkPathNode extends PathNode {
-  SinkPathNode() { isSink(nd, cfg, summary.getEndLabel()) }
+  SinkPathNode() {
+    exists(PathSummary summary |
+      this = MkMidNode(nd, cfg, summary) and
+      isSink(nd, cfg, summary.getEndLabel())
+    )
+  }
 }
 
 /**
@@ -1061,7 +1080,7 @@ class SinkPathNode extends PathNode {
 module PathGraph {
   /** Holds if `nd` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode nd) {
-    not nd.isHidden() or
+    not nd.(MidPathNode).isHidden() or
     nd instanceof SourcePathNode or
     nd instanceof SinkPathNode
   }
