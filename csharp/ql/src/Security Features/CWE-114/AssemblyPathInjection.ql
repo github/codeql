@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-114
  */
+
 /*
  * consider: @precision high
  */
