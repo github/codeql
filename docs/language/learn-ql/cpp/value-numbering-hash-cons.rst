@@ -1,7 +1,9 @@
 Hash consing and value numbering
 =================================================
+
 Overview
 --------
+
 In C and C++ QL databases, each node in the abstract syntax tree is represented by a separate object. This allows both analysis and results display to refer to specific appearances of a piece of syntax. However, it is frequently useful to determine whether two expressions are equivalent, either syntactically or semantically.
 
 The `hash consing <https://en.wikipedia.org/wiki/Hash_consing>`__ library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. The `global value numbering <https://en.wikipedia.org/wiki/Value_numbering>`__ library (defined in ``semmle.code.cpp.valuenumbering.GlobalValueNumbering``) provides a mechanism for identifying expressions that compute the same value at runtime.
@@ -41,10 +43,12 @@ However, in the next example, the uses of ``x + y`` will have different value nu
 
 Value numbering
 ---------------
+
 The value numbering library (defined in ``semmle.code.cpp.valuenumbering.GlobalValueNumbering``) provides a mechanism for identifying expressions that compute the same value at runtime. Value numbering is useful when your primary concern is with the values being produced or the eventual machine code being run. For instance, value numbering might be used to determine whether a check is being done against the same value as the operation it is guarding.
 
 The value numbering API
 ~~~~~~~~~~~~~~~~~~~~~~~
+
 The value numbering library exposes its interface primarily through the ``GVN`` class. Each instance of ``GVN`` represents a set of expressions that will always evaluate to the same value. To get an expression in the set represented by a particular ``GVN``, use the ``getAnExpr()`` member predicate.
 
 To get the ``GVN`` of an ``Expr``, use the ``globalValueNumber`` predicate.
@@ -55,6 +59,7 @@ To get the ``GVN`` of an ``Expr``, use the ``globalValueNumber`` predicate.
 
 Why not a predicate?
 ~~~~~~~~~~~~~~~~~~~~
+
 The obvious interface for this library would be a predicate ``equivalent(Expr e1, Expr e2)``. However, this predicate would be very large, with a quadratic number of rows for each set of equivalent expressions. By using a class as an intermediate step, the number of rows can be kept linear, and therefore can be cached.
 
 Example Queries
@@ -76,10 +81,12 @@ This query uses the ``GVN`` class to identify calls to ``strncpy`` where the siz
 
 Hash consing
 ------------
+
 The hash consing library (defined in ``semmle.code.cpp.valuenumbering.HashCons``) provides a mechanism for identifying expressions that have the same syntactic structure. Hash consing is useful when your primary concern is with the text of the code. For instance, hash consing might be used to detect duplicate code within a function.
 
 The hash consing API
 ~~~~~~~~~~~~~~~~~~~~
+
 The hash consing library exposes its interface primarily through the ``HashCons`` class. Each instance of ``HashCons`` represents a set of expressions within one function that have the same syntax (including referring to the same variables). To get an expression in the set represented by a particular ``HashCons``, use the ``getAnExpr()`` member predicate.
 
 .. note::
@@ -104,3 +111,4 @@ Examples
       hashCons(outer.getCondition()) = hashCons(inner.getCondition())
     select inner.getCondition(), "The condition of this if statement duplicates the condition of $@",
       outer.getCondition(), "an enclosing if statement"
+
