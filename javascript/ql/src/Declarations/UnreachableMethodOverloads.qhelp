@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+    <p>
+        The TypeScript compiler has to choose which specific overload is called
+        when a method with multiple overloads is called.
+        The compiler will always choose the textually first overload that does
+        not give rise to any type errors with the arguments provided at the 
+        function call.
+    </p>
+    <p>
+       This behavior can be unintuitive for programmers unfamiliar with the
+       type system in TypeScript, and can in some instances lead to situations
+       where a programmer writes an overloaded method where only the first 
+       overload can ever be used. 
+    </p>
+</overview>
+<recommendation>
+    <p>
+       Either reorder the method overloads if an overload with more type
+       parameters is placed before a similar overload with fewer parameters.  
+       Alternatively, collapse multiple overloads with identical parameter types by 
+       creating a single overload that returns a union of the return types 
+       from the multiple overloads. 
+    </p>
+</recommendation>
+<example>
+    <p>
+        In the example below, a programmer has tried to express that a method 
+        can return multiple possible values by creating multiple overloads 
+        with identical parameter types. However, only the first overload 
+        will ever be selected by the TypeScript compiler.  
+    </p>
+    <sample src="examples/UnreachableMethodOverloads.ts" />
+    <p>
+       The error can be fixed by merging the overloads into a single method 
+       signature that returns a union of the previous return types.
+    </p>
+    <sample src="examples/UnreachableMethodOverloadsGood.ts" />
+    
+    <p>
+        In the example below, an interface <code>Foo</code> declares a method
+        <code>create()</code> with two overloads. The only difference between
+        the two overloads is the type parameter <code>T</code> in the first 
+        overload. The TypeScript compiler will always use the first overload 
+        when <code>create()</code> is called, as a default type will be used 
+        for the type parameter <code>T</code> if none is provided. 
+        This default type is <code>unknown</code> in TypeScript 3.5+, and 
+        <code>{}</code> in earlier versions. 
+    </p>
+    <sample src="examples/UnreachableMethodOverloadsTypeParameters.ts" />
+    <p>
+        In this example, the error has been fixed by switching the order of the two
+        overloads. In this fixed version, if the <code>create()</code> method
+        is called with an explicit type argument the second overload will be
+        used, as the first overload would give rise to a type error.
+    </p>
+    <sample src="examples/UnreachableMethodOverloadsTypeParametersGood.ts" />
+</example>
+<references>
+
+<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/7be7cba050799bc11c9411babd31f44c9ec087f0/doc/spec.md#4.15.1">Overload Resolution</a></li>
+
+</references>
+</qhelp>
