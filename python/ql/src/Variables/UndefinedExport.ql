@@ -42,11 +42,25 @@ predicate mutates_globals(ModuleValue m) {
     )
 }
 
+predicate is_exported_submodule_name(ModuleValue m, string exported_name) {
+    m.getScope().getShortName() = "__init__" and
+    exists(m.getScope().getPackage().getSubModule(exported_name))
+}
+
+predicate contains_unknown_import_star(ModuleValue m) {
+    exists(ImportStarNode imp | imp.getEnclosingModule() = m.getScope() |
+        imp.getModule().pointsTo().isAbsent()
+        or
+        not exists(imp.getModule().pointsTo())
+    )
+}
+
 from ModuleValue m, StrConst name, string exported_name
-where declaredInAll(m.getScope(), name) and
-exported_name = name.strValue() and
-not m.hasAttribute(exported_name) and
-not (m.getScope().getShortName() = "__init__" and exists(m.getScope().getPackage().getSubModule(exported_name))) and
-not exists(ImportStarNode imp | imp.getEnclosingModule() = m.getScope() | imp.getModule().pointsTo().isAbsent()) and
-not mutates_globals(m)
-select name, "The name '" + exported_name  + "' is exported by __all__ but is not defined."
+where
+    declaredInAll(m.getScope(), name) and
+    exported_name = name.strValue() and
+    not m.hasAttribute(exported_name) and
+    not is_exported_submodule_name(m, exported_name) and
+    not contains_unknown_import_star(m) and
+    not mutates_globals(m)
+select name, "The name '" + exported_name + "' is exported by __all__ but is not defined."
