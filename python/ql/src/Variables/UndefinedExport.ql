@@ -22,10 +22,10 @@ predicate declaredInAll(Module m, StrConst name)
     )
 }
 
-predicate mutates_globals(PythonModuleObject m) {
+predicate mutates_globals(ModuleValue m) {
     exists(CallNode globals |
         globals = Object::builtin("globals").(FunctionObject).getACall() and
-        globals.getScope() = m.getModule() |
+        globals.getScope() = m.getScope() |
         exists(AttrNode attr | attr.getObject() = globals)
         or
         exists(SubscriptNode sub | sub.getValue() = globals and sub.isStore())
@@ -34,7 +34,7 @@ predicate mutates_globals(PythonModuleObject m) {
     exists(Object enum_convert |
         enum_convert.hasLongName("enum.Enum._convert") and
         exists(CallNode call |
-            call.getScope() = m.getModule()
+            call.getScope() = m.getScope()
             |
             enum_convert.(FunctionObject).getACall() = call or
             call.getFunction().refersTo(enum_convert)
@@ -42,11 +42,11 @@ predicate mutates_globals(PythonModuleObject m) {
     )
 }
 
-from PythonModuleObject m, StrConst name, string exported_name
-where declaredInAll(m.getModule(), name) and
+from ModuleValue m, StrConst name, string exported_name
+where declaredInAll(m.getScope(), name) and
 exported_name = name.strValue() and
 not m.hasAttribute(exported_name) and
-not (m.getShortName() = "__init__" and exists(m.getPackage().getModule().getSubModule(exported_name))) and
-not exists(ImportStarNode imp | imp.getEnclosingModule() = m.getModule() | not imp.getModule().refersTo(_)) and
+not (m.getScope().getShortName() = "__init__" and exists(m.getScope().getPackage().getSubModule(exported_name))) and
+not exists(ImportStarNode imp | imp.getEnclosingModule() = m.getScope() | imp.getModule().pointsTo().isAbsent()) and
 not mutates_globals(m)
 select name, "The name '" + exported_name  + "' is exported by __all__ but is not defined."
