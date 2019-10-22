@@ -23,7 +23,7 @@ module TaintTracking {
 
         /* Old implementation API */
 
-        predicate isSource(Source source) { none() }
+        predicate isSource(Source src) { none() }
 
         predicate isSink(Sink sink) { none() }
 
@@ -34,14 +34,14 @@ module TaintTracking {
         /* New implementation API */
 
         /**
-         * Holds if `source` is a source of taint of `kind` that is relevant
+         * Holds if `src` is a source of taint of `kind` that is relevant
          * for this configuration.
          */
-        predicate isSource(DataFlow::Node node, TaintKind kind) {
-            exists(TaintSource source |
-                this.isSource(source) and
-                node.asCfgNode() = source and
-                source.isSourceOf(kind)
+        predicate isSource(DataFlow::Node src, TaintKind kind) {
+            exists(TaintSource taintSrc |
+                this.isSource(taintSrc) and
+                src.asCfgNode() = taintSrc and
+                taintSrc.isSourceOf(kind)
             )
         }
 
@@ -49,11 +49,11 @@ module TaintTracking {
          * Holds if `sink` is a sink of taint of `kind` that is relevant
          * for this configuration.
          */
-        predicate isSink(DataFlow::Node node, TaintKind kind) {
-            exists(TaintSink sink |
-                this.isSink(sink) and
-                node.asCfgNode() = sink and
-                sink.sinks(kind)
+        predicate isSink(DataFlow::Node sink, TaintKind kind) {
+            exists(TaintSink taintSink |
+                this.isSink(taintSink) and
+                sink.asCfgNode() = taintSink and
+                taintSink.sinks(kind)
             )
         }
 
@@ -116,27 +116,27 @@ module TaintTracking {
 
         /* Common query API */
 
-        predicate hasFlowPath(PathSource source, PathSink sink) {
-            this.(TaintTrackingImplementation).hasFlowPath(source, sink)
+        predicate hasFlowPath(PathSource src, PathSink sink) {
+            this.(TaintTrackingImplementation).hasFlowPath(src, sink)
         }
 
         /* Old query API */
 
         /* deprecated */
-        predicate hasFlow(Source source, Sink sink) {
-            exists(PathSource psource, PathSink psink |
-                this.hasFlowPath(psource, psink) and
-                source = psource.getNode().asCfgNode() and
+        predicate hasFlow(Source src, Sink sink) {
+            exists(PathSource psrc, PathSink psink |
+                this.hasFlowPath(psrc, psink) and
+                src = psrc.getNode().asCfgNode() and
                 sink = psink.getNode().asCfgNode()
             )
         }
 
         /* New query API */
 
-        predicate hasSimpleFlow(DataFlow::Node source, DataFlow::Node sink) {
-            exists(PathSource psource, PathSink psink |
-                this.hasFlowPath(psource, psink) and
-                source = psource.getNode() and
+        predicate hasSimpleFlow(DataFlow::Node src, DataFlow::Node sink) {
+            exists(PathSource psrc, PathSink psink |
+                this.hasFlowPath(psrc, psink) and
+                src = psrc.getNode() and
                 sink = psink.getNode()
             )
         }
