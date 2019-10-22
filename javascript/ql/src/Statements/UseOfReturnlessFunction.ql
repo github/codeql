@@ -85,11 +85,11 @@ predicate alwaysThrows(Function f) {
 /**
  * Holds if the last statement in the function is flagged by the js/useless-expression query.
  */
-predicate alwaysHasNoEffect(Function f) {
-  exists(ReachableBasicBlock entry, DataFlow::Node noEffect |
-    entry = f.getEntryBB() and
-    hasNoEffect(noEffect.asExpr()) and
-    entry.dominates(noEffect.getBasicBlock())
+predicate lastStatementHasNoEffect(Function f) {
+  exists(DataFlow::Node noEffect |
+    noEffect.getContainer() = f and
+    hasNoEffect(noEffect.asExpr()) and 
+    not exists(noEffect.getASuccessor())
   )
 }
 
@@ -155,7 +155,7 @@ where
     name = "callback function"
   ) and
   not benignContext(call.asExpr()) and
-  not alwaysHasNoEffect(func) and
+  not lastStatementHasNoEffect(func) and
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
   not oneshotClosure(call.asExpr())
 select
