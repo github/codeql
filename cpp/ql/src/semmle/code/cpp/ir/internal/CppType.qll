@@ -191,7 +191,7 @@ private newtype TCppType =
  *   of a `VariableAddress` where the variable is of reference type)
  */
 class CppType extends TCppType {
-  abstract string toString();
+  string toString() { none() }
 
   /** Gets a string used in IR dumps */
   string getDumpString() { result = toString() }
@@ -203,13 +203,13 @@ class CppType extends TCppType {
    * Gets the `IRType` that represents this `CppType`. Many different `CppType`s can map to a single
    * `IRType`.
    */
-  abstract IRType getIRType();
+  IRType getIRType() { none() }
 
   /**
    * Holds if the `CppType` represents a prvalue of type `Type` (if `isGLValue` is `false`), or if
    * it represents a glvalue of type `Type` (if `isGLValue` is `true`).
    */
-  abstract predicate hasType(Type type, boolean isGLValue);
+  predicate hasType(Type type, boolean isGLValue) { none() }
 
   final predicate hasUnspecifiedType(Type type, boolean isGLValue) {
     exists(Type specifiedType |
@@ -229,12 +229,6 @@ private class CppWrappedType extends CppType {
     this = TPRValueType(ctype) or
     this = TGLValueAddressType(ctype)
   }
-
-  abstract string toString();
-
-  abstract override IRType getIRType();
-
-  abstract override predicate hasType(Type type, boolean isGLValue);
 }
 
 /**
