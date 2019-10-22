@@ -39,7 +39,7 @@ bool shortShort2(unsigned short n1, unsigned short delta) {
     // clang 8.0.0 -O2: not deleted
     // gcc 9.2 -O2: not deleted
     // msvc 19.22 /O2: not deleted
-	return (unsigned short)(n1 + delta) < n1; // GOOD
+	return (unsigned short)(n1 + delta) < n1; // BAD: n1 + delta overflow undefined
 }
 
 /* Distinguish `varname` from `ptr->varname` and `obj.varname` */

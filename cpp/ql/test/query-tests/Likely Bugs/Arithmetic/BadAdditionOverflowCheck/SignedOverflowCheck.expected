@@ -1,7 +1,9 @@
 | SignedOverflowCheck.cpp:8:12:8:22 | ... < ... | Testing for signed overflow may produce undefined results. |
 | SignedOverflowCheck.cpp:18:12:18:26 | ... < ... | Testing for signed overflow may produce undefined results. |
 | SignedOverflowCheck.cpp:35:9:35:23 | ... < ... | Testing for signed overflow may produce undefined results. |
+| SignedOverflowCheck.cpp:42:9:42:41 | ... < ... | Testing for signed overflow may produce undefined results. |
 | SignedOverflowCheck.cpp:99:10:99:30 | ... <= ... | Testing for signed overflow may produce undefined results. |
 | SignedOverflowCheck.cpp:106:12:106:62 | ... < ... | Testing for signed overflow may produce undefined results. |
 | SignedOverflowCheck.cpp:113:12:113:66 | ... < ... | Testing for signed overflow may produce undefined results. |
 | test.cpp:3:11:3:19 | ... < ... | Testing for signed overflow may produce undefined results. |
+| test.cpp:8:11:8:37 | ... < ... | Testing for signed overflow may produce undefined results. |

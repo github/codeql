@@ -5,7 +5,7 @@ bool checkOverflow1(unsigned short a, unsigned short b) {
 
 // Test for BadAdditionOverflowCheck.
 bool checkOverflow2(unsigned short a, unsigned short b) {
-  return ((unsigned short)(a + b) < a);  // GOOD: explicit cast
+  return ((unsigned short)(a + b) < a);  // BAD: a + b overflow undefined
 }
 
 // Test for PointlessSelfComparison.
