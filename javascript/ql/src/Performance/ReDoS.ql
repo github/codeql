@@ -108,11 +108,7 @@ class RegExpRoot extends RegExpTerm {
     // there are no lookbehinds
     not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
-    (
-      parent instanceof RegExpLiteral
-      or
-      parent.(StringLiteral).flow() instanceof RegExpPatternSource
-    )
+    isUsedAsRegExp()
   }
 }
 

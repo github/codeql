@@ -53,7 +53,7 @@ class RegExpTerm extends Locatable, @regexpterm {
   RegExpParent getParent() { regexpterm(this, _, result, _, _) }
 
   /** Gets the regular expression literal this term belongs to, if any. */
-  RegExpLiteral getLiteral() { result = getParent+() }
+  RegExpLiteral getLiteral() { result = getRootTerm().getParent() }
 
   override string toString() { regexpterm(this, _, _, _, result) }
 
@@ -111,6 +111,42 @@ class RegExpTerm extends Locatable, @regexpterm {
    */
   predicate isRootTerm() {
     not getParent() instanceof RegExpTerm
+  }
+
+  /**
+   * Gets the outermost term of this regular expression.
+   */
+  RegExpTerm getRootTerm() {
+    isRootTerm() and
+    result = this
+    or
+    result = getParent().(RegExpTerm).getRootTerm()
+  }
+
+  /**
+   * Holds if this term occurs as part of a regular expression literal.
+   */
+  predicate isPartOfRegExpLiteral() {
+    exists(getLiteral())
+  }
+
+  /**
+   * Holds if this term occurs as part of a string literal.
+   */
+  predicate isPartOfStringLiteral() {
+    getRootTerm().getParent() instanceof StringLiteral
+  }
+
+  /**
+   * Holds if this term is part of a regular expression literal or a string literal
+   * that is used as a regular expression.
+   */
+  predicate isUsedAsRegExp() {
+    exists(RegExpParent parent | parent = getRootTerm().getParent() |
+      parent instanceof RegExpLiteral
+      or
+      parent.(StringLiteral).flow() instanceof RegExpPatternSource
+    )
   }
 }
 
