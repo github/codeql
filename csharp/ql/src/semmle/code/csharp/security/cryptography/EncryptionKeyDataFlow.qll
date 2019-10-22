@@ -36,7 +36,7 @@ module EncryptionKeyDataFlow {
       exists(SymmetricAlgorithm ag | asExpr() = ag.getKeyProperty().getAnAssignedValue())
     }
 
-    string getDescription() { result = "Key property assignment" }
+    override string getDescription() { result = "Key property assignment" }
   }
 
   /**
@@ -49,7 +49,7 @@ module EncryptionKeyDataFlow {
       )
     }
 
-    string getDescription() { result = "Encryptor(rgbKey, IV)" }
+    override string getDescription() { result = "Encryptor(rgbKey, IV)" }
   }
 
   /**
@@ -62,7 +62,7 @@ module EncryptionKeyDataFlow {
       )
     }
 
-    string getDescription() { result = "Decryptor(rgbKey, IV)" }
+    override string getDescription() { result = "Decryptor(rgbKey, IV)" }
   }
 
   /**
