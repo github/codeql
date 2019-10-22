@@ -394,27 +394,27 @@ test.cpp:
 #-----|   Goto -> Block 3
 
 #   56|   Block 3
-#   56|     m3_0(char *)        = Phi                  : from 2:m2_3, from 5:m5_4
+#   56|     m3_0(decltype(nullptr)) = Phi                  : from 2:m2_3, from 5:m5_4
 #   56|         valnum = m3_0
-#   56|     r3_1(glval<char *>) = VariableAddress[ptr] : 
+#   56|     r3_1(glval<char *>)     = VariableAddress[ptr] : 
 #   56|         valnum = r0_7
-#   56|     r3_2(char *)        = Load                 : &:r3_1, m3_0
+#   56|     r3_2(char *)            = Load                 : &:r3_1, m3_0
 #   56|         valnum = m3_0
-#   56|     r3_3(char)          = Load                 : &:r3_2, ~m0_1
+#   56|     r3_3(char)              = Load                 : &:r3_2, ~m0_1
 #   56|         valnum = unique
-#   56|     r3_4(int)           = Convert              : r3_3
+#   56|     r3_4(int)               = Convert              : r3_3
 #   56|         valnum = unique
-#   56|     r3_5(glval<char *>) = VariableAddress[str] : 
+#   56|     r3_5(glval<char *>)     = VariableAddress[str] : 
 #   56|         valnum = r0_3
-#   56|     r3_6(char *)        = Load                 : &:r3_5, m0_4
+#   56|     r3_6(char *)            = Load                 : &:r3_5, m0_4
 #   56|         valnum = m0_4
-#   56|     r3_7(char)          = Load                 : &:r3_6, ~m0_1
+#   56|     r3_7(char)              = Load                 : &:r3_6, ~m0_1
 #   56|         valnum = unique
-#   56|     r3_8(int)           = Convert              : r3_7
+#   56|     r3_8(int)               = Convert              : r3_7
 #   56|         valnum = unique
-#   56|     r3_9(bool)          = CompareNE            : r3_4, r3_8
+#   56|     r3_9(bool)              = CompareNE            : r3_4, r3_8
 #   56|         valnum = unique
-#   56|     v3_10(void)         = ConditionalBranch    : r3_9
+#   56|     v3_10(void)             = ConditionalBranch    : r3_9
 #-----|   False -> Block 6
 #-----|   True -> Block 4
 
