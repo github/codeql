@@ -86,11 +86,7 @@ predicate alwaysThrows(Function f) {
  * Holds if the last statement in the function is flagged by the js/useless-expression query.
  */
 predicate lastStatementHasNoEffect(Function f) {
-  exists(DataFlow::Node noEffect |
-    noEffect.getContainer() = f and
-    hasNoEffect(noEffect.asExpr()) and 
-    not exists(noEffect.getASuccessor())
-  )
+  hasNoEffect(f.getExit().getAPredecessor())
 }
 
 predicate callToVoidFunction(DataFlow::CallNode call, Function func) {
