@@ -1,3 +1,4 @@
+| clang.cpp:12:9:12:20 | clang.cpp:18:8:18:19 | AST only |
 | clang.cpp:12:9:12:20 | clang.cpp:22:8:22:20 | AST only |
 | clang.cpp:28:27:28:32 | clang.cpp:29:27:29:28 | AST only |
 | clang.cpp:28:27:28:32 | clang.cpp:30:27:30:34 | AST only |

@@ -1,7 +1,5 @@
 | acrossLinkTargets.cpp:12:8:12:8 | Convert: (int)... | acrossLinkTargets.cpp:19:27:19:32 | Call: call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | Load: x | acrossLinkTargets.cpp:19:27:19:32 | Call: call to source |
-| clang.cpp:18:8:18:19 | Convert: (const int *)... | clang.cpp:12:9:12:20 | InitializeParameter: sourceArray1 |
-| clang.cpp:18:8:18:19 | Load: sourceArray1 | clang.cpp:12:9:12:20 | InitializeParameter: sourceArray1 |
 | clang.cpp:37:10:37:11 | Load: m2 | clang.cpp:34:32:34:37 | Call: call to source |
 | clang.cpp:41:18:41:19 | Load: m2 | clang.cpp:39:42:39:47 | Call: call to source |
 | clang.cpp:45:17:45:18 | Load: m2 | clang.cpp:43:35:43:40 | Call: call to source |
