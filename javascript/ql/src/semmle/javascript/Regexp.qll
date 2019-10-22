@@ -34,7 +34,7 @@ class RegExpParent extends Locatable, @regexpparent { }
  * $
  * ```
  */
-abstract class RegExpTerm extends Locatable, @regexpterm {
+class RegExpTerm extends Locatable, @regexpterm {
   override Location getLocation() { hasLocation(this, result) }
 
   /** Gets the `i`th child term of this term. */
@@ -61,7 +61,7 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
   string getRawValue() { regexpterm(this, _, _, _, result) }
 
   /** Holds if this regular expression term can match the empty string. */
-  abstract predicate isNullable();
+  predicate isNullable() { none() } // Overridden in subclasses.
 
   /** Gets the regular expression term that is matched before this one, if any. */
   RegExpTerm getPredecessor() {
@@ -123,7 +123,7 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
  * ((ECMA|Java)[sS]cript)*
  * ```
  */
-abstract class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
+class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
   /** Holds if the quantifier of this term is a greedy quantifier. */
   predicate isGreedy() { isGreedy(this) }
 }
@@ -139,7 +139,7 @@ abstract class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
  * \w
  * ```
  */
-abstract class RegExpEscape extends RegExpTerm, @regexp_escape { }
+class RegExpEscape extends RegExpTerm, @regexp_escape { }
 
 /**
  * A constant regular expression term, that is, a regular expression
