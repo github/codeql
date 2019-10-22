@@ -12,16 +12,8 @@
  */
 
 import cpp
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-
-private predicate isSignedWithoutUnsignedCast(Expr e) {
-  e.getType().getUnspecifiedType().(IntegralType).isSigned()
-  /*
-   * and
-   *  not e.getExplicitlyConverted().getType().getUnspecifiedType().(IntegralType).isUnsigned()
-   */
-
-  }
+private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
 from RelationalOperation ro, AddExpr add, VariableAccess va1, VariableAccess va2
 where
@@ -29,5 +21,6 @@ where
   add.getAnOperand() = va1 and
   ro.getAnOperand() = va2 and
   globalValueNumber(va1) = globalValueNumber(va2) and
-  isSignedWithoutUnsignedCast(add)
+  add.getType().getUnspecifiedType().(IntegralType).isSigned() and
+  exprMightOverflowPositively(add)
 select ro, "Testing for signed overflow may produce undefined results."

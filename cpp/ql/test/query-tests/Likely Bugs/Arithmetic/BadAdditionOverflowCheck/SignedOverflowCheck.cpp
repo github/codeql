@@ -32,7 +32,7 @@ bool shortShort1(unsigned short n1, unsigned short delta) {
     // clang 8.0.0 -O2: deleted
     // gcc 9.2 -O2: deleted
     // msvc 19.22 /O2: not deleted
-	return n1 + delta < n1; // BAD: will always be false
+	return n1 + delta < n1; // GOOD: always false, but will never overflow
 }
 
 bool shortShort2(unsigned short n1, unsigned short delta) {
@@ -96,28 +96,28 @@ int checkOverflow4(unsigned int ioff, C c) {
 
 int overflow12(int n) {
     // not deleted by gcc or clang
-	return (n + 32 <= (unsigned)n? -1: 1); // BAD
+	return (n + 32 <= (unsigned)n? -1: 1); // BAD: n + 32 can overflow
 }
 
 bool multipleCasts(char x) {
     // clang 9.0.0 -O2: deleted
     // gcc 9.2 -O2: deleted
     // msvc 19.22 /O2: deleted
-    return (int)(unsigned short)x + 2 < (int)(unsigned short)x; // BAD
+    return (int)(unsigned short)x + 2 < (int)(unsigned short)x; // GOOD: cannot overflow
 }
 
 bool multipleCasts2(char x) {
     // clang 9.0.0 -O2: not deleted
     // gcc 9.2 -O2: not deleted
     // msvc 19.22 /O2: not deleted
-    return (int)(unsigned short)(x + '1') < (int)(unsigned short)x; // BAD
+    return (int)(unsigned short)(x + '1') < (int)(unsigned short)x; // GOOD: cannot overflow
 }
 
 int does_it_overflow(int n1, unsigned short delta) {
-    return n1 + (unsigned)delta < n1; // GOOD
+    return n1 + (unsigned)delta < n1; // GOOD: everything converted to unsigned
 }
 
 int overflow12b(int n) {
     // not deleted by gcc or clang
-	return ((unsigned)(n + 32) <= (unsigned)n? -1: 1); // BAD
+	return ((unsigned)(n + 32) <= (unsigned)n? -1: 1); // BAD: n + 32 may overflow
 }
