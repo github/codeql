@@ -5,7 +5,7 @@ import cpp
 import external.ExternalArtifact
 private import semmle.code.cpp.dispatch.VirtualDispatch
 import semmle.code.cpp.NestedFields
-import microsoft.SAL
+import Microsoft.SAL
 import semmle.code.cpp.controlflow.Guards
 
 /** A context under which a function may be called. */

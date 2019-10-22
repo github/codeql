@@ -13,7 +13,7 @@
  * @id cpp/ignorereturnvaluesal
  */
 
-import microsoft.SAL
+import Microsoft.SAL
 
 from Function f, FunctionCall call
 where
