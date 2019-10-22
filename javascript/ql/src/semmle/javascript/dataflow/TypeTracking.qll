@@ -388,7 +388,7 @@ class TypeBackTracker extends TTypeBackTracker {
    *   t.start() and
    *   result = < some API call >.getArgument(< n >)
    *   or
-   *   exists (DataFlow::TypeTracker t2 |
+   *   exists (DataFlow::TypeBackTracker t2 |
    *     t = t2.smallstep(result, myType(t2))
    *   )
    * }
