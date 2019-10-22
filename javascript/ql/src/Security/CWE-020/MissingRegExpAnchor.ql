@@ -151,17 +151,44 @@ predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string 
 }
 
 /**
+ * Holds if the given term contains a constant that is unlikely to occur in the origin part of a URL.
+ */
+predicate isConstantInvalidInsideOrigin(RegExpConstant term) {
+  // Look for any of these cases:
+  // - A character that can't occur in the origin
+  // - Two dashes in a row
+  // - A colon that is not part of port or scheme separator
+  // - A slash that is not part of scheme separator
+  term.getValue().regexpMatch(".*(?:[^a-zA-Z0-9.:/-]|--|:[^0-9/]|(?<![/:]|^)/).*")
+}
+
+/** Holds if `term` is a wildcard `.` or an actual `.` character. */
+predicate isDotLike(RegExpTerm term) {
+  term instanceof RegExpDot
+  or
+  term.(RegExpCharEscape).getValue() = "."
+}
+
+/**
+ * Holds if the given regular expression term contains top-level domain preceded by a dot,
+ * such as `.com`.
+ */
+predicate hasTopLevelDomainEnding(RegExpSequence seq) {
+  exists(int i |
+    seq.getChild(i).(RegExpConstant).getValue().regexpMatch(RegExpPatterns::commonTLD()) and
+    isDotLike(seq.getChild(i - 1))
+  )
+}
+
+/**
  * Holds if `src` is an unanchored pattern for a URL, indicating a
  * mistake explained by `msg`.
  */
 predicate isInterestingUnanchoredRegExpString(RegExpPatternSource src, string msg) {
-  exists(string pattern | pattern = src.getPattern() |
-    // a substring sequence of a protocol and subdomains, perhaps with some regex characters mixed in, followed by a known TLD
-    pattern
-        .regexpMatch("(?i)[():|?a-z0-9-\\\\./]+[.]" + RegExpPatterns::commonTLD() +
-            "([/#?():]\\S*)?") and
-    // without any anchors
-    pattern.regexpMatch("[^$^]+") and
+  exists(RegExpTerm term | term = src.getRegExpTerm() |
+    hasTopLevelDomainEnding(term.getAChild*()) and
+    not isConstantInvalidInsideOrigin(term.getAChild*()) and
+    not term.getAChild*() instanceof RegExpAnchor and
     // that is not used for capture or replace
     not exists(DataFlow::MethodCallNode mcn, string name | name = mcn.getMethodName() |
       name = "exec" and

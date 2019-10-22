@@ -16,7 +16,7 @@
 
 	"something".match("other"); // OK
 	"something".match("x.commissary"); // OK
-	"http://evil.com/?http://good.com".match("https?://good.com/"); // NOT OK
+	"http://evil.com/?http://good.com".match("https?://good.com"); // NOT OK
 	"http://evil.com/?http://good.com".match("https?://good.com:8080"); // NOT OK
 
 	let trustedUrls = [
@@ -46,7 +46,7 @@
 	// missing context of use
 	const urlPatterns  = [
 		{
-			regex: /youtube.com\/embed\/([a-z0-9\?&=\-_]+)/i,
+			regex: /youtube.com\/embed\/([a-z0-9\?&=\-_]+)/i, // OK
 			type: 'iframe', w: 560, h: 314,
 			url: '//www.youtube.com/embed/$1',
 			allowFullscreen: true
