@@ -12,6 +12,9 @@
 
 * The call graph has been improved to resolve method calls in more cases. This may produce more security alerts.
 
+* TypeScript 3.6 features are supported.
+
+
 ## New queries
 
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |

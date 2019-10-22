@@ -2645,3 +2645,15 @@ class OptionalChainRoot extends ChainElem {
    */
   OptionalUse getAnOptionalUse() { result = optionalUse }
 }
+
+/**
+ * An `import.meta` expression.
+ *
+ * Example:
+ * ```js
+ * let url = import.meta.url;
+ * ```
+ */
+class ImportMetaExpr extends @importmetaexpr, Expr {
+  override predicate isImpure() { none() }
+}

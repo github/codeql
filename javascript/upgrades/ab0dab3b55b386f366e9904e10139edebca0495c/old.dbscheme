@@ -349,7 +349,6 @@ case @expr.kind of
 | 112 = @e4x_xml_static_qualident
 | 113 = @e4x_xml_dynamic_qualident
 | 114 = @e4x_xml_dotdotexpr
-| 115 = @importmetaexpr
 ;
 
 @varaccess = @proper_varaccess | @export_varaccess;
