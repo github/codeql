@@ -15,9 +15,13 @@ import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 private predicate isSignedWithoutUnsignedCast(Expr e) {
-  e.getType().getUnspecifiedType().(IntegralType).isSigned() /*and
-  not e.getExplicitlyConverted().getType().getUnspecifiedType().(IntegralType).isUnsigned()*/
-}
+  e.getType().getUnspecifiedType().(IntegralType).isSigned()
+  /*
+   * and
+   *  not e.getExplicitlyConverted().getType().getUnspecifiedType().(IntegralType).isUnsigned()
+   */
+
+  }
 
 from RelationalOperation ro, AddExpr add, VariableAccess va1, VariableAccess va2
 where
