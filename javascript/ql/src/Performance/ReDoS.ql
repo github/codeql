@@ -83,7 +83,7 @@ import javascript
  * A branch in a disjunction that is the root node in a literal, or a literal
  * whose root node is not a disjunction.
  */
-class RegExpRoot extends @regexpterm {
+class RegExpRoot extends RegExpTerm {
   RegExpParent parent;
 
   // RegExpTerm is abstract, so do not extend it.
@@ -94,9 +94,9 @@ class RegExpRoot extends @regexpterm {
       parent = alt.getParent()
     )
     or
-    this.(RegExpTerm).isRootTerm() and
+    this.isRootTerm() and
     not this instanceof RegExpAlt and
-    parent = this.(RegExpTerm).getParent()
+    parent = this.getParent()
   }
 
   /**
@@ -114,8 +114,6 @@ class RegExpRoot extends @regexpterm {
       parent.(StringLiteral).flow() instanceof RegExpPatternSource
     )
   }
-
-  string toString() { result = this.(RegExpTerm).toString() }
 }
 
 /**
