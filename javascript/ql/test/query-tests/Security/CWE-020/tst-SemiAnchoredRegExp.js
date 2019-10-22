@@ -83,7 +83,6 @@
 	/(^left|right|center)\sbottom$/; // not flagged at the moment due to interior anchors
 	/\.xxx|\.yyy|\.zzz$/ig;
 	/\.xxx|\.yyy|zzz$/;
-	/^(?:mouse|contextmenu)|click/;
 	/^([A-Z]|xxx[XY]$)/; // not flagged at the moment due to interior anchors
 	/^(xxx yyy zzz)|(xxx yyy)/i;
 	/^(xxx yyy zzz)|(xxx yyy)|(1st( xxx)? yyy)|xxx|1st/i;
@@ -126,4 +125,5 @@
 	/^9$|27/;
 	/^\+|\s*/g;
 	/xxx_yyy=\w+|^$/;
+	/^(?:mouse|contextmenu)|click/;
 });
