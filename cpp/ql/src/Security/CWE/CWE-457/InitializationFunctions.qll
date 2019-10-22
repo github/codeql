@@ -1,6 +1,7 @@
 /**
  * Provides classes and predicates for identifying functions that initialize their arguments.
  */
+
 import cpp
 import external.ExternalArtifact
 private import semmle.code.cpp.dispatch.VirtualDispatch
@@ -10,20 +11,20 @@ import semmle.code.cpp.controlflow.Guards
 
 /** A context under which a function may be called. */
 private newtype TContext =
-    /** No specific call context. */
-    NoContext() or
-    /**
-     * The call context is that the given other parameter is null.
-     *
-     * This context is created for all parameters that are null checked in the body of the function.
-     */
-    ParamNull(Parameter p) { p = any(ParameterNullCheck pnc).getParameter() } or
-    /**
-     * The call context is that the given other parameter is not null.
-     *
-     * This context is created for all parameters that are null checked in the body of the function.
-     */
-    ParamNotNull(Parameter p) { p = any(ParameterNullCheck pnc).getParameter() }
+  /** No specific call context. */
+  NoContext() or
+  /**
+   * The call context is that the given other parameter is null.
+   *
+   * This context is created for all parameters that are null checked in the body of the function.
+   */
+  ParamNull(Parameter p) { p = any(ParameterNullCheck pnc).getParameter() } or
+  /**
+   * The call context is that the given other parameter is not null.
+   *
+   * This context is created for all parameters that are null checked in the body of the function.
+   */
+  ParamNotNull(Parameter p) { p = any(ParameterNullCheck pnc).getParameter() }
 
 /**
  * A context under which a function may be called.
@@ -53,73 +54,73 @@ private newtype TContext =
  *  - `NoContext()` - applies in all other circumstances.
  */
 class Context extends TContext {
-    string toString() {
-        this = NoContext() and result = "NoContext" or
-        this = ParamNull(any(Parameter p | result = "ParamNull(" + p.getName() + ")")) or
-        this = ParamNotNull(any(Parameter p | result = "ParamNotNull(" + p.getName() + ")"))
-    }
+  string toString() {
+    this = NoContext() and result = "NoContext"
+    or
+    this = ParamNull(any(Parameter p | result = "ParamNull(" + p.getName() + ")"))
+    or
+    this = ParamNotNull(any(Parameter p | result = "ParamNotNull(" + p.getName() + ")"))
+  }
 }
 
 /**
  * A check against a parameter.
  */
 abstract class ParameterCheck extends Expr {
-    /**
-     * Gets a successor of this check that should be ignored for the given context.
-     */
-    abstract ControlFlowNode getIgnoredSuccessorForContext(Context c);
+  /**
+   * Gets a successor of this check that should be ignored for the given context.
+   */
+  abstract ControlFlowNode getIgnoredSuccessorForContext(Context c);
 }
 
 /** A null-check expression on a parameter. */
 class ParameterNullCheck extends ParameterCheck {
-    Parameter p;
-    ControlFlowNode nullSuccessor;
-    ControlFlowNode notNullSuccessor;
-    ParameterNullCheck() {
-        this.isCondition() and
-        p.getFunction() instanceof InitializationFunction and
-        p.getType().getUnspecifiedType() instanceof PointerType and
-        exists(VariableAccess va |
-            va = p.getAnAccess() |
-            (
-                nullSuccessor = getATrueSuccessor() and notNullSuccessor = getAFalseSuccessor() and
-                (
-                    va = this.(NotExpr).getOperand() or
-                    va = any(EQExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
-                    va = getAssertedFalseCondition(this) or
-                    va = any(NEExpr eq | eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0").getAnOperand()
-                )
-            ) or
-            (
-                nullSuccessor = getAFalseSuccessor() and notNullSuccessor = getATrueSuccessor() and
-                (
-                    va = this or
-                    va = any(NEExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
-                    va = any(EQExpr eq | eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0").getAnOperand()
-                )
-            )
-        )
-    }
+  Parameter p;
+  ControlFlowNode nullSuccessor;
+  ControlFlowNode notNullSuccessor;
 
-    /** The parameter being null-checked. */
-    Parameter getParameter() {
-        result = p
-    }
+  ParameterNullCheck() {
+    this.isCondition() and
+    p.getFunction() instanceof InitializationFunction and
+    p.getType().getUnspecifiedType() instanceof PointerType and
+    exists(VariableAccess va | va = p.getAnAccess() |
+      nullSuccessor = getATrueSuccessor() and
+      notNullSuccessor = getAFalseSuccessor() and
+      (
+        va = this.(NotExpr).getOperand() or
+        va = any(EQExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
+        va = getAssertedFalseCondition(this) or
+        va = any(NEExpr eq |
+            eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
+          ).getAnOperand()
+      )
+      or
+      nullSuccessor = getAFalseSuccessor() and
+      notNullSuccessor = getATrueSuccessor() and
+      (
+        va = this or
+        va = any(NEExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
+        va = any(EQExpr eq |
+            eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
+          ).getAnOperand()
+      )
+    )
+  }
 
-    override ControlFlowNode getIgnoredSuccessorForContext(Context c) {
-        c = ParamNull(p) and result = notNullSuccessor or
-        c = ParamNotNull(p) and result = nullSuccessor
-    }
+  /** The parameter being null-checked. */
+  Parameter getParameter() { result = p }
 
-    /** The successor at which the parameter is confirmed to be null. */
-    ControlFlowNode getNullSuccessor() {
-        result = nullSuccessor
-    }
+  override ControlFlowNode getIgnoredSuccessorForContext(Context c) {
+    c = ParamNull(p) and result = notNullSuccessor
+    or
+    c = ParamNotNull(p) and result = nullSuccessor
+  }
 
-    /** The successor at which the parameter is confirmed to be not-null. */
-    ControlFlowNode getNotNullSuccessor() {
-        result = notNullSuccessor
-    }
+  /** The successor at which the parameter is confirmed to be null. */
+  ControlFlowNode getNullSuccessor() { result = nullSuccessor }
+
+  /** The successor at which the parameter is confirmed to be not-null. */
+  ControlFlowNode getNotNullSuccessor() { result = notNullSuccessor }
 }
 
 /**
@@ -128,11 +129,11 @@ class ParameterNullCheck extends ParameterCheck {
  * ConditionallyInitializedFunction companion query.
  */
 class ValidatedExternalCondInitFunction extends ExternalData {
-    ValidatedExternalCondInitFunction() { this.getDataPath().matches("%cond-init%.csv") }
+  ValidatedExternalCondInitFunction() { this.getDataPath().matches("%cond-init%.csv") }
 
-    predicate isExternallyVerified(Function f, int param) {
-        functionSignature(f, getField(1), getField(2)) and param = getFieldAsInt(3)
-    }
+  predicate isExternallyVerified(Function f, int param) {
+    functionSignature(f, getField(1), getField(2)) and param = getFieldAsInt(3)
+  }
 }
 
 /**
@@ -158,228 +159,270 @@ newtype Evidence =
  * A call to an function which initializes one or more of its parameters.
  */
 class InitializationFunctionCall extends FunctionCall {
-    Expr initializedArgument;
+  Expr initializedArgument;
 
-    InitializationFunctionCall() {
-        initializedArgument = getAnInitializedArgument(this)
-    }
+  InitializationFunctionCall() { initializedArgument = getAnInitializedArgument(this) }
 
-    /** Gets a parameter that is initialized by this call. */
-    Parameter getAnInitParameter() {
-        result.getAnAccess() = initializedArgument
-    }
+  /** Gets a parameter that is initialized by this call. */
+  Parameter getAnInitParameter() { result.getAnAccess() = initializedArgument }
 }
-
 
 /**
  * A variable access which is dereferenced then assigned to.
  */
 private predicate isPointerDereferenceAssignmentTarget(VariableAccess target) {
-    target.getParent().(PointerDereferenceExpr) = any(Assignment e).getLValue()
+  target.getParent().(PointerDereferenceExpr) = any(Assignment e).getLValue()
 }
 
 /**
  * A function which initializes one or more of its parameters.
  */
 class InitializationFunction extends Function {
-    int i;
-    Evidence evidence;
+  int i;
+  Evidence evidence;
 
-    InitializationFunction() {
-        (
-            evidence = DefinitionInSnapshot() and
-            (
-                // Assignment by pointer dereferencing the parameter
-                isPointerDereferenceAssignmentTarget(this.getParameter(i).getAnAccess()) or
-                // Field wise assignment to the parameter
-                any(Assignment e).getLValue() = getAFieldAccess(this.getParameter(i)) or
-                i = this.(MemberFunction).getAnOverridingFunction+().(InitializationFunction).initializedParameter() or
-                getParameter(i) = any(InitializationFunctionCall c).getAnInitParameter()
-            )
-        ) or
-        // If we have no definition, we look at SAL annotations
-        (not this.isDefined() and this.getParameter(i).(SALParameter).isOut() and evidence = SuggestiveSALAnnotation()) or
-        // We have some external information that this function conditionally initializes
-        (not this.isDefined() and any(ValidatedExternalCondInitFunction vc).isExternallyVerified(this, i) and evidence = ExternalEvidence())
-    }
+  InitializationFunction() {
+    evidence = DefinitionInSnapshot() and
+    (
+      // Assignment by pointer dereferencing the parameter
+      isPointerDereferenceAssignmentTarget(this.getParameter(i).getAnAccess()) or
+      // Field wise assignment to the parameter
+      any(Assignment e).getLValue() = getAFieldAccess(this.getParameter(i)) or
+      i = this
+            .(MemberFunction)
+            .getAnOverridingFunction+()
+            .(InitializationFunction)
+            .initializedParameter() or
+      getParameter(i) = any(InitializationFunctionCall c).getAnInitParameter()
+    )
+    or
+    // If we have no definition, we look at SAL annotations
+    not this.isDefined() and
+    this.getParameter(i).(SALParameter).isOut() and
+    evidence = SuggestiveSALAnnotation()
+    or
+    // We have some external information that this function conditionally initializes
+    not this.isDefined() and
+    any(ValidatedExternalCondInitFunction vc).isExternallyVerified(this, i) and
+    evidence = ExternalEvidence()
+  }
 
-    /** Gets a parameter index which is initialized by this function. */
-    int initializedParameter() { result = i }
+  /** Gets a parameter index which is initialized by this function. */
+  int initializedParameter() { result = i }
 
-    /** Gets a `ControlFlowNode` which assigns a new value to the parameter with the given index. */
-    ControlFlowNode paramReassignment(int index) {
-        index = i and
-        (
-            result = this.getParameter(i).getAnAccess() and
-            (
-                result = any(Assignment a).getLValue().(PointerDereferenceExpr).getOperand() or
-                // Field wise assignment to the parameter
-                result = any(Assignment a).getLValue().(FieldAccess).getQualifier() or
-                // Assignment to a nested field of the parameter
-                result = any(Assignment a).getLValue().(NestedFieldAccess).getUltimateQualifier() or
-                result = getAnInitializedArgument(any(Call c)) or
-                exists(IfStmt check | result = check.getCondition().getAChild*() |
-                    paramReassignmentCondition(check)
-                )
-            ) or
-            result = any(AssumeExpr e | e.getEnclosingFunction() = this and e.getAChild().(Literal).getValue() = "0")
+  /** Gets a `ControlFlowNode` which assigns a new value to the parameter with the given index. */
+  ControlFlowNode paramReassignment(int index) {
+    index = i and
+    (
+      result = this.getParameter(i).getAnAccess() and
+      (
+        result = any(Assignment a).getLValue().(PointerDereferenceExpr).getOperand()
+        or
+        // Field wise assignment to the parameter
+        result = any(Assignment a).getLValue().(FieldAccess).getQualifier()
+        or
+        // Assignment to a nested field of the parameter
+        result = any(Assignment a).getLValue().(NestedFieldAccess).getUltimateQualifier()
+        or
+        result = getAnInitializedArgument(any(Call c))
+        or
+        exists(IfStmt check | result = check.getCondition().getAChild*() |
+          paramReassignmentCondition(check)
         )
-    }
-
-    /**
-     * Helper predicate: holds if the `if` statement `check` contains a
-     * reassignment to the `i`th parameter within its `then` statement.
-     */
-    pragma[noinline]
-    private predicate paramReassignmentCondition(IfStmt check) {
-      this.paramReassignment(i).getEnclosingStmt().getParentStmt*() = check.getThen()
-    }
-
-    /** Holds if `n` can be reached without the parameter at `index` being reassigned. */
-    predicate paramNotReassignedAt(ControlFlowNode n, int index, Context c) {
-        c = getAContext(index) and
-        (
-            not exists(this.getEntryPoint()) and index = i and n = this or
-            n = this.getEntryPoint() and index = i or
-            exists(ControlFlowNode mid | paramNotReassignedAt(mid, index, c) |
-                n = mid.getASuccessor() and
-                not n = paramReassignment(index) and
-                /*
-                 * Ignore successor edges where the parameter is null, because it is then confirmed to be
-                 * initialized.
-                 */
-                not exists(ParameterNullCheck nullCheck |
-                    nullCheck = mid and
-                    nullCheck = getANullCheck(index) and
-                    n = nullCheck.getNullSuccessor()
-                ) and
-                /*
-                 * Ignore successor edges which are excluded by the given context
-                 */
-                not exists(ParameterCheck paramCheck |
-                    paramCheck = mid |
-                    n = paramCheck.getIgnoredSuccessorForContext(c)
-                )
-            )
+      )
+      or
+      result = any(AssumeExpr e |
+          e.getEnclosingFunction() = this and e.getAChild().(Literal).getValue() = "0"
         )
-    }
+    )
+  }
 
-    /** Gets a null-check on the parameter at `index`. */
-    private ParameterNullCheck getANullCheck(int index) {
-        getParameter(index) = result.getParameter()
-    }
+  /**
+   * Helper predicate: holds if the `if` statement `check` contains a
+   * reassignment to the `i`th parameter within its `then` statement.
+   */
+  pragma[noinline]
+  private predicate paramReassignmentCondition(IfStmt check) {
+    this.paramReassignment(i).getEnclosingStmt().getParentStmt*() = check.getThen()
+  }
 
-    /** Gets a parameter which is not at the given index. */
-    private Parameter getOtherParameter(int index) {
-        index = i and
-        result = getAParameter() and
-        not result.getIndex() = index
-    }
-
-    /**
-     * Gets a call `Context` that is applicable when considering whether parameter at the `index` can
-     * be conditionally initialized.
-     */
-    Context getAContext(int index) {
-        index = i and
+  /** Holds if `n` can be reached without the parameter at `index` being reassigned. */
+  predicate paramNotReassignedAt(ControlFlowNode n, int index, Context c) {
+    c = getAContext(index) and
+    (
+      not exists(this.getEntryPoint()) and index = i and n = this
+      or
+      n = this.getEntryPoint() and index = i
+      or
+      exists(ControlFlowNode mid | paramNotReassignedAt(mid, index, c) |
+        n = mid.getASuccessor() and
+        not n = paramReassignment(index) and
         /*
-         * If there is one and only one other parameter which is null checked in the body of the method,
-         * then we have two contexts to consider - that the other param is null, or that the other param
-         * is not null.
+         * Ignore successor edges where the parameter is null, because it is then confirmed to be
+         * initialized.
          */
-        if (strictcount(Parameter p | exists(Context c | c = ParamNull(p) or c = ParamNotNull(p)) and  p = getOtherParameter(index)) = 1) then
-            exists(Parameter p |
-                p = getOtherParameter(index) |
-                result = ParamNull(p) or result = ParamNotNull(p)
-            )
-        else
-            // Otherwise, only consider NoContext.
-            result = NoContext()
-    }
 
-    /**
-     * Holds if this function should be whitelisted - that is, not considered as conditionally
-     * initializing its parameters.
-     */
-    predicate whitelisted() {
-        exists(string name | this.hasName(name) |
-          // Return value is not a success code but the output functions never fail.
-            name.matches("_Interlocked%") or
-            // Functions that never fail, according to MSDN.
-            name = "QueryPerformanceCounter" or
-            name = "QueryPerformanceFrequency" or
-            // Functions that never fail post-Vista, according to MSDN.
-            name = "InitializeCriticalSectionAndSpinCount" or
-            // `rand_s` writes 0 to a non-null argument if it fails, according to MSDN.
-            name = "rand_s" or
-            // IntersectRect initializes the argument regardless of whether the input intersects
-            name = "IntersectRect" or
-            name = "SetRect" or
-            name = "UnionRect" or
-            // These functions appears to have an incorrect CFG, which leads to false positives
-            name = "PhysicalToLogicalDPIPoint" or
-            name = "LogicalToPhysicalDPIPoint" or
-            // Sets NtProductType to default on error
-            name = "RtlGetNtProductType" or
-            // Our CFG is not sophisticated enough to detect that the argument is always initialized
-            name = "StringCchLengthA" or
-            // All paths init the argument, and always returns SUCCESS.
-            name = "RtlUnicodeToMultiByteSize" or
-            // All paths init the argument, and always returns SUCCESS.
-            name = "RtlMultiByteToUnicodeSize" or
-            // All paths init the argument, and always returns SUCCESS.
-            name = "RtlUnicodeToMultiByteN" or
-            // Always initializes argument
-            name = "RtlGetFirstRange" or
-            // Destination range is zeroed out on failure, assuming first two parameters are valid
-            name = "memcpy_s" or
-            // This zeroes the memory unconditionally
-            name = "SeCreateAccessState"
+        not exists(ParameterNullCheck nullCheck |
+          nullCheck = mid and
+          nullCheck = getANullCheck(index) and
+          n = nullCheck.getNullSuccessor()
+        ) and
+        /*
+         * Ignore successor edges which are excluded by the given context
+         */
+
+        not exists(ParameterCheck paramCheck | paramCheck = mid |
+          n = paramCheck.getIgnoredSuccessorForContext(c)
         )
-    }
+      )
+    )
+  }
+
+  /** Gets a null-check on the parameter at `index`. */
+  private ParameterNullCheck getANullCheck(int index) {
+    getParameter(index) = result.getParameter()
+  }
+
+  /** Gets a parameter which is not at the given index. */
+  private Parameter getOtherParameter(int index) {
+    index = i and
+    result = getAParameter() and
+    not result.getIndex() = index
+  }
+
+  /**
+   * Gets a call `Context` that is applicable when considering whether parameter at the `index` can
+   * be conditionally initialized.
+   */
+  Context getAContext(int index) {
+    index = i and
+    /*
+     * If there is one and only one other parameter which is null checked in the body of the method,
+     * then we have two contexts to consider - that the other param is null, or that the other param
+     * is not null.
+     */
+
+    if
+      strictcount(Parameter p |
+        exists(Context c | c = ParamNull(p) or c = ParamNotNull(p)) and
+        p = getOtherParameter(index)
+      ) = 1
+    then
+      exists(Parameter p | p = getOtherParameter(index) |
+        result = ParamNull(p) or result = ParamNotNull(p)
+      )
+    else
+      // Otherwise, only consider NoContext.
+      result = NoContext()
+  }
+
+  /**
+   * Holds if this function should be whitelisted - that is, not considered as conditionally
+   * initializing its parameters.
+   */
+  predicate whitelisted() {
+    exists(string name | this.hasName(name) |
+      // Return value is not a success code but the output functions never fail.
+      name.matches("_Interlocked%")
+      or
+      // Functions that never fail, according to MSDN.
+      name = "QueryPerformanceCounter"
+      or
+      name = "QueryPerformanceFrequency"
+      or
+      // Functions that never fail post-Vista, according to MSDN.
+      name = "InitializeCriticalSectionAndSpinCount"
+      or
+      // `rand_s` writes 0 to a non-null argument if it fails, according to MSDN.
+      name = "rand_s"
+      or
+      // IntersectRect initializes the argument regardless of whether the input intersects
+      name = "IntersectRect"
+      or
+      name = "SetRect"
+      or
+      name = "UnionRect"
+      or
+      // These functions appears to have an incorrect CFG, which leads to false positives
+      name = "PhysicalToLogicalDPIPoint"
+      or
+      name = "LogicalToPhysicalDPIPoint"
+      or
+      // Sets NtProductType to default on error
+      name = "RtlGetNtProductType"
+      or
+      // Our CFG is not sophisticated enough to detect that the argument is always initialized
+      name = "StringCchLengthA"
+      or
+      // All paths init the argument, and always returns SUCCESS.
+      name = "RtlUnicodeToMultiByteSize"
+      or
+      // All paths init the argument, and always returns SUCCESS.
+      name = "RtlMultiByteToUnicodeSize"
+      or
+      // All paths init the argument, and always returns SUCCESS.
+      name = "RtlUnicodeToMultiByteN"
+      or
+      // Always initializes argument
+      name = "RtlGetFirstRange"
+      or
+      // Destination range is zeroed out on failure, assuming first two parameters are valid
+      name = "memcpy_s"
+      or
+      // This zeroes the memory unconditionally
+      name = "SeCreateAccessState"
+    )
+  }
 }
 
 /**
  * A function which initializes one or more of its parameters, but not on all paths.
  */
 class ConditionalInitializationFunction extends InitializationFunction {
-    Context c;
-    ConditionalInitializationFunction() {
-        c = this.getAContext(i) and
-        not this.whitelisted() and
-        exists(Type status | status = this.getType().getUnspecifiedType() |
-            status instanceof IntegralType or
-            status instanceof Enum
-        ) and
-        not this.getType().getName().toLowerCase() = "size_t" and
-        (
-            /*
-             * If there is no definition, consider this to be conditionally initializing (based on either
-             * SAL or external data).
-             */
-            not evidence = DefinitionInSnapshot() or
-            /*
-             * If this function is defined in this snapshot, then it conditionally initializes if there
-             * is at least one path through the function which doesn't initialize the parameter.
-             *
-             * Explicitly ignore pure virtual functions.
-             */
-            this.isDefined() and this.paramNotReassignedAt(this, i, c) and not this instanceof PureVirtualFunction
-        )
-    }
+  Context c;
 
-    /** Gets the evidence associated with the given parameter. */
-    Evidence getEvidence(int param) {
-        /*
-         * Note: due to the way the predicate dispatch interacts with fields, this needs to be
-         * implemented on this class, not `InitializationFunction`. If implemented on the latter it
-         * can return evidence that does not result in conditional initialization.
-         */
-        param = i and evidence = result
-    }
+  ConditionalInitializationFunction() {
+    c = this.getAContext(i) and
+    not this.whitelisted() and
+    exists(Type status | status = this.getType().getUnspecifiedType() |
+      status instanceof IntegralType or
+      status instanceof Enum
+    ) and
+    not this.getType().getName().toLowerCase() = "size_t" and
+    (
+      /*
+       * If there is no definition, consider this to be conditionally initializing (based on either
+       * SAL or external data).
+       */
 
-    /** Gets the index of a parameter which is conditionally initialized. */
-    int conditionallyInitializedParameter(Context context) { result = i and context = c }
+      not evidence = DefinitionInSnapshot()
+      or
+      /*
+       * If this function is defined in this snapshot, then it conditionally initializes if there
+       * is at least one path through the function which doesn't initialize the parameter.
+       *
+       * Explicitly ignore pure virtual functions.
+       */
+
+      this.isDefined() and
+      this.paramNotReassignedAt(this, i, c) and
+      not this instanceof PureVirtualFunction
+    )
+  }
+
+  /** Gets the evidence associated with the given parameter. */
+  Evidence getEvidence(int param) {
+    /*
+     * Note: due to the way the predicate dispatch interacts with fields, this needs to be
+     * implemented on this class, not `InitializationFunction`. If implemented on the latter it
+     * can return evidence that does not result in conditional initialization.
+     */
+
+    param = i and evidence = result
+  }
+
+  /** Gets the index of a parameter which is conditionally initialized. */
+  int conditionallyInitializedParameter(Context context) { result = i and context = c }
 }
 
 /**
@@ -389,104 +432,118 @@ class ConditionalInitializationFunction extends InitializationFunction {
  * uninitialized variable, may be obtained via `getARiskyAccess`.
  */
 class ConditionalInitializationCall extends FunctionCall {
-    ConditionalInitializationFunction target;
-    ConditionalInitializationCall() { target = getTarget(this) }
+  ConditionalInitializationFunction target;
 
-    /** Gets the argument passed for the given parameter to this call. */
-    Expr getArgumentForParameter(Parameter p) {
-        p = getTarget().getAParameter() and
-        result = getArgument(p.getIndex())
-    }
+  ConditionalInitializationCall() { target = getTarget(this) }
 
-    /**
-     * Gets an argument conditionally initialized by this call.
-     */
-    Expr getAConditionallyInitializedArgument(ConditionalInitializationFunction condTarget, Evidence e) {
-        condTarget = target and
-        exists(Context context |
-            result = getAConditionallyInitializedArgument(this, condTarget, context, e) |
-            context = NoContext() or
-            exists(Parameter otherP, Expr otherArg |
-                context = ParamNotNull(otherP) or
-                context = ParamNull(otherP) |
-                otherArg = getArgumentForParameter(otherP) and
-                (otherArg instanceof AddressOfExpr implies context = ParamNotNull(otherP)) and
-                (otherArg.getType() instanceof ArrayType implies context = ParamNotNull(otherP)) and
-                (otherArg.getValue() = "0" implies context = ParamNull(otherP))
-            )
+  /** Gets the argument passed for the given parameter to this call. */
+  Expr getArgumentForParameter(Parameter p) {
+    p = getTarget().getAParameter() and
+    result = getArgument(p.getIndex())
+  }
+
+  /**
+   * Gets an argument conditionally initialized by this call.
+   */
+  Expr getAConditionallyInitializedArgument(ConditionalInitializationFunction condTarget, Evidence e) {
+    condTarget = target and
+    exists(Context context |
+      result = getAConditionallyInitializedArgument(this, condTarget, context, e)
+    |
+      context = NoContext()
+      or
+      exists(Parameter otherP, Expr otherArg |
+        context = ParamNotNull(otherP) or
+        context = ParamNull(otherP)
+      |
+        otherArg = getArgumentForParameter(otherP) and
+        (otherArg instanceof AddressOfExpr implies context = ParamNotNull(otherP)) and
+        (otherArg.getType() instanceof ArrayType implies context = ParamNotNull(otherP)) and
+        (otherArg.getValue() = "0" implies context = ParamNull(otherP))
+      )
+    )
+  }
+
+  VariableAccess getAConditionallyInitializedVariable() {
+    not result.getTarget().getAnAssignedValue().getASuccessor+() = result and
+    // Should not be assigned field-wise prior to the call.
+    not exists(Assignment a, FieldAccess fa |
+      fa.getQualifier() = result.getTarget().getAnAccess() and
+      a.getLValue() = fa and
+      fa.getASuccessor+() = result
+    ) and
+    result = this
+          .getArgument(getTarget(this)
+                .(ConditionalInitializationFunction)
+                .conditionallyInitializedParameter(_))
+          .(AddressOfExpr)
+          .getOperand()
+  }
+
+  Variable getStatusVariable() {
+    exists(AssignExpr a | a.getLValue() = result.getAnAccess() | a.getRValue() = this)
+    or
+    result.getInitializer().getExpr() = this
+  }
+
+  Expr getSuccessCheck() {
+    exists(this.getAFalseSuccessor()) and result = this
+    or
+    result = this.getParent() and
+    (
+      result instanceof NotExpr or
+      result.(EQExpr).getAnOperand().getValue() = "0" or
+      result.(GEExpr).getLesserOperand().getValue() = "0"
+    )
+  }
+
+  Expr getFailureCheck() {
+    result = this.getParent() and
+    (
+      result instanceof NotExpr or
+      result.(NEExpr).getAnOperand().getValue() = "0" or
+      result.(LTExpr).getLesserOperand().getValue() = "0"
+    )
+  }
+
+  private predicate inCheckedContext() {
+    exists(Call parent | this = parent.getAnArgument() |
+      parent.getTarget() instanceof Operator or
+      parent.getTarget().hasName("VerifyOkCatastrophic")
+    )
+  }
+
+  ControlFlowNode uncheckedReaches(LocalVariable var) {
+    (
+      not exists(var.getInitializer()) and
+      var = this.getAConditionallyInitializedVariable().getTarget() and
+      if exists(this.getFailureCheck())
+      then result = this.getFailureCheck().getATrueSuccessor()
+      else
+        if exists(this.getSuccessCheck())
+        then result = this.getSuccessCheck().getAFalseSuccessor()
+        else (
+          result = this.getASuccessor() and not this.inCheckedContext()
         )
-    }
+    )
+    or
+    exists(ControlFlowNode mid | mid = uncheckedReaches(var) |
+      not mid = getStatusVariable().getAnAccess() and
+      not mid = var.getAnAccess() and
+      not exists(VariableAccess write | result = write and write = var.getAnAccess() |
+        write = any(AssignExpr a).getLValue() or
+        write = any(AddressOfExpr a).getOperand()
+      ) and
+      result = mid.getASuccessor()
+    )
+  }
 
-    VariableAccess getAConditionallyInitializedVariable() {
-        not result.getTarget().getAnAssignedValue().getASuccessor+() = result and
-        // Should not be assigned field-wise prior to the call.
-        not exists(Assignment a, FieldAccess fa |
-            fa.getQualifier() = result.getTarget().getAnAccess() and
-            a.getLValue() = fa and
-            fa.getASuccessor+() = result
-        ) and
-        result = this.getArgument(getTarget(this).(ConditionalInitializationFunction).conditionallyInitializedParameter(_)).(AddressOfExpr).getOperand()
-    }
-
-    Variable getStatusVariable() {
-        exists(AssignExpr a | a.getLValue() = result.getAnAccess() |
-            a.getRValue() = this
-        ) or
-        result.getInitializer().getExpr() = this
-    }
-
-    Expr getSuccessCheck() {
-        exists(this.getAFalseSuccessor()) and result = this or
-        result = this.getParent() and (
-            result instanceof NotExpr or
-            result.(EQExpr).getAnOperand().getValue() = "0" or
-            result.(GEExpr).getLesserOperand().getValue() = "0"
-        )
-    }
-
-    Expr getFailureCheck() {
-        result = this.getParent() and (
-            result instanceof NotExpr or
-            result.(NEExpr).getAnOperand().getValue() = "0" or
-            result.(LTExpr).getLesserOperand().getValue() = "0"
-        )
-    }
-
-    private predicate inCheckedContext() {
-        exists(Call parent | this = parent.getAnArgument() |
-            parent.getTarget() instanceof Operator or
-            parent.getTarget().hasName("VerifyOkCatastrophic")
-        )
-    }
-
-    ControlFlowNode uncheckedReaches(LocalVariable var) {
-        (
-            not exists(var.getInitializer()) and
-            var = this.getAConditionallyInitializedVariable().getTarget() and
-            if exists(this.getFailureCheck()) then
-                result = this.getFailureCheck().getATrueSuccessor()
-            else if exists(this.getSuccessCheck()) then
-                result = this.getSuccessCheck().getAFalseSuccessor()
-            else
-                (result = this.getASuccessor() and not this.inCheckedContext())
-        ) or
-        exists(ControlFlowNode mid | mid = uncheckedReaches(var) |
-            not mid = getStatusVariable().getAnAccess() and
-            not mid = var.getAnAccess() and
-            not exists(VariableAccess write | result = write and write = var.getAnAccess() |
-                write = any(AssignExpr a).getLValue() or
-                write = any(AddressOfExpr a).getOperand()
-            ) and
-            result = mid.getASuccessor()
-        )
-    }
-
-    VariableAccess getARiskyRead(Function f) {
-        f = this.getTarget() and
-        exists(this.getFile().getRelativePath()) and
-        result = this.uncheckedReaches(result.getTarget()) and
-        not this.(GuardCondition).controls(result.getBasicBlock(), _)
-    }
+  VariableAccess getARiskyRead(Function f) {
+    f = this.getTarget() and
+    exists(this.getFile().getRelativePath()) and
+    result = this.uncheckedReaches(result.getTarget()) and
+    not this.(GuardCondition).controls(result.getBasicBlock(), _)
+  }
 }
 
 /**
@@ -494,51 +551,57 @@ class ConditionalInitializationCall extends FunctionCall {
  */
 pragma[nomagic]
 int initializedArgument(Call call) {
-    exists(InitializationFunction target |
-        target = getTarget(call) and
-        result = target.initializedParameter()
-    )
+  exists(InitializationFunction target |
+    target = getTarget(call) and
+    result = target.initializedParameter()
+  )
 }
 
 /**
  * Gets an argument which is initialized by the call.
  */
-Expr getAnInitializedArgument(Call call) {
-    result = call.getArgument(initializedArgument(call))
-}
+Expr getAnInitializedArgument(Call call) { result = call.getArgument(initializedArgument(call)) }
 
 /**
  * Gets the position of an argument to the call to the target which is conditionally initialized by
  * the call, under the given context and evidence.
  */
 pragma[nomagic]
-int conditionallyInitializedArgument(Call call, ConditionalInitializationFunction target, Context c, Evidence e) {
-    target = getTarget(call) and
-    c = target.getAContext(result) and
-    e = target.getEvidence(result) and
-    result = target.conditionallyInitializedParameter(c)
+int conditionallyInitializedArgument(
+  Call call, ConditionalInitializationFunction target, Context c, Evidence e
+) {
+  target = getTarget(call) and
+  c = target.getAContext(result) and
+  e = target.getEvidence(result) and
+  result = target.conditionallyInitializedParameter(c)
 }
 
 /**
  * Gets an argument which is conditionally initialized by the call to the given target under the given context and evidence.
  */
-Expr getAConditionallyInitializedArgument(Call call, ConditionalInitializationFunction target, Context c, Evidence e) {
-    result = call.getArgument(conditionallyInitializedArgument(call, target, c, e))
+Expr getAConditionallyInitializedArgument(
+  Call call, ConditionalInitializationFunction target, Context c, Evidence e
+) {
+  result = call.getArgument(conditionallyInitializedArgument(call, target, c, e))
 }
 
 /**
  * Gets the type signature for the functions parameters.
  */
 string typeSig(Function f) {
-    result = concat(int i, Type pt | pt = f.getParameter(i).getType() | pt.getUnspecifiedType().toString(), "," order by i)
+  result = concat(int i, Type pt |
+      pt = f.getParameter(i).getType()
+    |
+      pt.getUnspecifiedType().toString(), "," order by i
+    )
 }
 
 /**
  * Holds where qualifiedName and typeSig make up the signature for the function.
  */
 predicate functionSignature(Function f, string qualifiedName, string typeSig) {
-    qualifiedName = f.getQualifiedName() and
-    typeSig = typeSig(f)
+  qualifiedName = f.getQualifiedName() and
+  typeSig = typeSig(f)
 }
 
 /**
@@ -549,9 +612,11 @@ predicate functionSignature(Function f, string qualifiedName, string typeSig) {
  * are never statically linked together.
  */
 Function getAPossibleDefinition(Function undefinedFunction) {
-    not undefinedFunction.isDefined() and
-    exists(string qn, string typeSig | functionSignature(undefinedFunction, qn, typeSig) and functionSignature(result, qn, typeSig)) and
-    result.isDefined()
+  not undefinedFunction.isDefined() and
+  exists(string qn, string typeSig |
+    functionSignature(undefinedFunction, qn, typeSig) and functionSignature(result, qn, typeSig)
+  ) and
+  result.isDefined()
 }
 
 /**
@@ -560,40 +625,47 @@ Function getAPossibleDefinition(Function undefinedFunction) {
  * dispatch resolution.
  */
 Function getTarget(Call c) {
-    if VirtualDispatch::getAViableTarget(c).isDefined() then
-        /*
-         * If there is at least one defined target after performing some simple virtual dispatch
-         * resolution, then the result is all the defined targets.
-         */
-        result = VirtualDispatch::getAViableTarget(c) and
-        result.isDefined()
-    else if exists(getAPossibleDefinition(VirtualDispatch::getAViableTarget(c))) then
-        /*
-         * If we can use the heuristic matching of functions to find definitions for some of the viable
-         * targets, return those.
-         */
-        result = getAPossibleDefinition(VirtualDispatch::getAViableTarget(c))
-    else
-        // Otherwise, the result is the undefined `Function` instances
-        result = VirtualDispatch::getAViableTarget(c)
-}
+  if VirtualDispatch::getAViableTarget(c).isDefined()
+  then
+    /*
+     * If there is at least one defined target after performing some simple virtual dispatch
+     * resolution, then the result is all the defined targets.
+     */
 
+    result = VirtualDispatch::getAViableTarget(c) and
+    result.isDefined()
+  else
+    if exists(getAPossibleDefinition(VirtualDispatch::getAViableTarget(c)))
+    then
+      /*
+       * If we can use the heuristic matching of functions to find definitions for some of the viable
+       * targets, return those.
+       */
+
+      result = getAPossibleDefinition(VirtualDispatch::getAViableTarget(c))
+    else
+      // Otherwise, the result is the undefined `Function` instances
+      result = VirtualDispatch::getAViableTarget(c)
+}
 
 /**
  * Get an access of a field on `Variable` v.
  */
 FieldAccess getAFieldAccess(Variable v) {
-    exists(VariableAccess va, Expr qualifierExpr |
-        // Find an access of the variable, or an AddressOfExpr that has the access
-        va = v.getAnAccess() and (
-            qualifierExpr = va or
-            qualifierExpr.(AddressOfExpr).getOperand() = va
-        ) |
-        // Direct field access
-        qualifierExpr = result.getQualifier() or
-        // Nested field access
-        qualifierExpr = result.(NestedFieldAccess).getUltimateQualifier()
+  exists(VariableAccess va, Expr qualifierExpr |
+    // Find an access of the variable, or an AddressOfExpr that has the access
+    va = v.getAnAccess() and
+    (
+      qualifierExpr = va or
+      qualifierExpr.(AddressOfExpr).getOperand() = va
     )
+  |
+    // Direct field access
+    qualifierExpr = result.getQualifier()
+    or
+    // Nested field access
+    qualifierExpr = result.(NestedFieldAccess).getUltimateQualifier()
+  )
 }
 
 /**
@@ -606,15 +678,13 @@ FieldAccess getAFieldAccess(Variable v) {
  * ```
  */
 Expr getAssertedFalseCondition(NotExpr ne) {
-    exists(LocalVariable v |
-        result = v.getInitializer().getExpr().(NotExpr).getOperand().(NotExpr).getOperand() and
-        ne.getOperand() = v.getAnAccess() and
-        nonAssignedVariable(v)
-        // and not passed by val?
-    )
+  exists(LocalVariable v |
+    result = v.getInitializer().getExpr().(NotExpr).getOperand().(NotExpr).getOperand() and
+    ne.getOperand() = v.getAnAccess() and
+    nonAssignedVariable(v)
+    // and not passed by val?
+  )
 }
 
 pragma[noinline]
-private predicate nonAssignedVariable(Variable v) {
-    not exists(v.getAnAssignment())
-}
+private predicate nonAssignedVariable(Variable v) { not exists(v.getAnAssignment()) }
