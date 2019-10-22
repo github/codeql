@@ -29,7 +29,6 @@
 | tst-SemiAnchoredRegExp.js:82:2:82:27 | /(\\.xxx ... .zzz)$/ | Misleading operator precedence. The subexpression '(\\.zzz)$' is anchored at the end, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:84:2:84:23 | /\\.xxx\| ... zzz$/ig | Misleading operator precedence. The subexpression '\\.zzz$' is anchored at the end, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:85:2:85:19 | /\\.xxx\|\\.yyy\|zzz$/ | Misleading operator precedence. The subexpression 'zzz$' is anchored at the end, but the other parts of this regular expression are not |
-| tst-SemiAnchoredRegExp.js:86:2:86:31 | /^(?:mo ... \|click/ | Misleading operator precedence. The subexpression '^(?:mouse\|contextmenu)' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:88:2:88:28 | /^(xxx  ...  yyy)/i | Misleading operator precedence. The subexpression '^(xxx yyy zzz)' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:89:2:89:53 | /^(xxx  ... x\|1st/i | Misleading operator precedence. The subexpression '^(xxx yyy zzz)' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:90:2:90:24 | /^(xxx: ... (zzz:)/ | Misleading operator precedence. The subexpression '^(xxx:)' is anchored at the beginning, but the other parts of this regular expression are not |

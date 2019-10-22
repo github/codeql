@@ -91,6 +91,28 @@ predicate containsLetters(RegExpTerm term) {
 }
 
 /**
+ * Holds if `term` consists only of an anchor and a parenthesized term,
+ * such as the left side of `^(foo|bar)|baz`.
+ *
+ * The precedence of the anchor is likely to be intentional in this case,
+ * as the group wouldn't be needed otherwise.
+ */
+predicate isAnchoredGroup(RegExpSequence term) {
+  term.getNumChild() = 2 and
+  term.getAChild() instanceof RegExpAnchor and
+  term.getAChild() instanceof RegExpGroup
+}
+
+/**
+ * Holds if `alt` has an explicitly anchored group, such as `^(foo|bar)|baz`
+ * and doesn't have any unnecessary groups, such as in `^(foo)|(bar)`.
+ */
+predicate hasExplicitAnchorPrecedence(RegExpAlt alt) {
+  isAnchoredGroup(alt.getAChild()) and
+  not alt.getAChild() instanceof RegExpGroup
+}
+
+/**
  * Holds if `src` is a pattern for a collection of alternatives where
  * only the first or last alternative is anchored, indicating a
  * precedence mistake explained by `msg`.
@@ -103,6 +125,7 @@ predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string 
     root = src.getRegExpTerm() and
     not containsInteriorAnchor(root) and
     not isEmpty(root.getAChild()) and
+    not hasExplicitAnchorPrecedence(root) and
     containsLetters(anchoredTerm) and
     (
       anchoredTerm = root.getChild(0) and
