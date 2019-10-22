@@ -127,3 +127,7 @@
 	/xxx_yyy=\w+|^$/;
 	/^(?:mouse|contextmenu)|click/;
 });
+
+function replaceTest(x) {
+	return x.replace(/^a|b/, ''); // OK - possibly replacing too much, but not obviously a problem
+}

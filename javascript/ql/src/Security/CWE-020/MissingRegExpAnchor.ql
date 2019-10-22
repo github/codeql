@@ -140,6 +140,11 @@ predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string 
       containsLetters(root.getChild([ 0 .. root.getNumChild() - 2 ])) and
       direction = "end"
     ) and
+    // is not used for replace
+    not exists(DataFlow::MethodCallNode replace |
+      replace.getMethodName() = "replace" and
+      src.getARegExpObject().flowsTo(replace.getArgument(0))
+    ) and
     msg = "Misleading operator precedence. The subexpression '" + anchoredTerm.getRawValue() +
         "' is anchored at the " + direction + ", but the other parts of this regular expression are not"
   )
