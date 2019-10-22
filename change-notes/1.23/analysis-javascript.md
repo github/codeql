@@ -43,3 +43,21 @@
 ## Changes to QL libraries
 
 * `Expr.getDocumentation()` now handles chain assignments.
+
+## Removal of deprecated queries
+
+The following queries (deprecated since 1.17) are no longer available in the distribution:
+
+* Builtin redefined (js/builtin-redefinition)
+* Inefficient method definition (js/method-definition-in-constructor)
+* Bad parity check (js/incomplete-parity-check)
+* Potentially misspelled property or variable name (js/wrong-capitalization)
+* Unknown JSDoc tag (js/jsdoc/unknown-tag-type)
+* Invalid JSLint directive (js/jslint/invalid-directive)
+* Malformed JSLint directive (js/jslint/malformed-directive)
+* Use of HTML comments (js/html-comment)
+* Multi-line string literal (js/multi-line-string)
+* Octal literal (js/octal-literal)
+* Reserved word used as variable name (js/use-of-reserved-word)
+* Trailing comma in array or object expressions (js/trailing-comma-in-array-or-object)
+* Call to parseInt without radix (js/parseint-without-radix)
