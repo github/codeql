@@ -1,5 +1,6 @@
 {
     "name": "codeql-python",
     "version": "0.0.0",
-    "dbscheme": "semmlecode.python.dbscheme"
+    "dbscheme": "semmlecode.python.dbscheme",
+    "suites": "codeql-suites"
 }
