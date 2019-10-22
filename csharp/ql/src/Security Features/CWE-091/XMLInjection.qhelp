@@ -24,7 +24,7 @@ document representing a set of names. The <code>WriteRaw</code> API is used to w
 employee record to the XML file.</p>
 <sample src="XMLInjectionBad.cs" />
 <p>However, if a malicious user were to provide the content
- <code>Bobby Pages&lt;/name&gt;&lt;/employee&gt;&lt;employee&gt;&lt;name&gt;Hacker1</code></p>, they
+ <code>Bobby Pages&lt;/name&gt;&lt;/employee&gt;&lt;employee&gt;&lt;name&gt;Hacker1</code>, they
 would be able to add an extra entry into the XML file.
 </p>
 <p>The corrected version demonstrates two ways to avoid this issue. The first is to escape user
