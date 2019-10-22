@@ -3,20 +3,24 @@ Using range analysis for C and C++
 
 Overview
 --------
+
 Range analysis determines upper and lower bounds for an expression.
 
 The range analysis library (defined in ``semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis``) provides a set of predicates for determining constant upper and lower bounds on expressions, as well as recognizing integer overflows. For performance, the library performs automatic widening and therefore may not provide the tightest possible bounds.
 
 Bounds predicates
 -----------------
+
 The ``upperBound`` and ``lowerBound`` predicates provide constant bounds on expressions. No conversions of the argument are included in the bound. In the common case that your query needs to take conversions into account, call them on the converted form, such as ``upperBound(expr.getFullyConverted())``.
 
 Overflow predicates
 -------------------
+
 ``exprMightOverflow`` and related predicates hold if the relevant expression might overflow, as determined by the range analysis library. The ``convertedExprMightOverflow`` family of predicates will take conversions into account.
 
 Example
 -------
+
 This query uses ``upperBound`` to determine whether the result of ``snprintf`` is checked when used in a loop.
 
 .. code-block:: ql
