@@ -14,9 +14,9 @@
  */
 
 import csharp
-import UnsafeDeserialization
+import UnsafeDeserialization::UnsafeDeserialization
 
-from Call deserializeCall, UnsafeDeserialization::Sink sink
+from Call deserializeCall, Sink sink
 where deserializeCall.getAnArgument() = sink.asExpr()
 select deserializeCall,
   "Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source."

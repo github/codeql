@@ -14,11 +14,11 @@
  */
 
 import csharp
-import UnsafeDeserialization
+import UnsafeDeserialization::UnsafeDeserialization
 import DataFlow::PathGraph
 
 from
-  UnsafeDeserialization::TaintTrackingConfig config, DataFlow::PathNode source,
+  TaintTrackingConfig config, DataFlow::PathNode source,
   DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to unsafe deserializer.", source.getNode(),
