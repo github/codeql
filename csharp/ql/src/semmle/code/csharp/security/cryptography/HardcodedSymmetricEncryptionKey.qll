@@ -6,7 +6,7 @@
 import csharp
 
 module HardcodedSymmetricEncryptionKey {
-  private import microsoft.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
+  private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
 
   /** A data flow source for hard-coded symmetric encryption keys. */
   abstract class Source extends DataFlow::Node { }

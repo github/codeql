@@ -5,7 +5,7 @@
 import csharp
 
 module EncryptionKeyDataFlow {
-  private import microsoft.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
+  private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
 
   /** Array of type Byte */
   class ByteArray extends ArrayType {

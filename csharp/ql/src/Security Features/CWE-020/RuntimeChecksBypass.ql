@@ -12,7 +12,7 @@
  * consider: @precision medium
  */
 
-import semmle.code.csharp.security.serialization.Serialization
+import semmle.code.csharp.serialization.Serialization
 
 /**
  * The result is a write to the field `f`, assigning it the value

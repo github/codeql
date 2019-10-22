@@ -12,7 +12,7 @@
  */
 
 import csharp
-import Security.Cryptography.HardcodedSymmetricEncryptionKey::HardcodedSymmetricEncryptionKey
+import semmle.code.csharp.security.cryptography.HardcodedSymmetricEncryptionKey::HardcodedSymmetricEncryptionKey
 import DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -3,7 +3,36 @@
  */
 
 import csharp
-private import microsoft.code.csharp.Common
+
+/**
+ * Holds if the object creation `oc` is the creation of the reference type with the specified `qualifiedName`, or a class derived from
+ * the class with the specified `qualifiedName`.
+ */
+private predicate isCreatingObject(ObjectCreation oc, string qualifiedName) {
+  exists(RefType t | t = oc.getType() | t.getBaseClass*().hasQualifiedName(qualifiedName))
+}
+
+/**
+ * Holds if the method call `mc` is returning the reference type with the specified `qualifiedName`.
+ * and the target of the method call is a library method.
+ */
+private predicate isReturningObject(MethodCall mc, string qualifiedName) {
+  mc.getTarget().fromLibrary() and
+  exists(RefType t | t = mc.getType() | t.hasQualifiedName(qualifiedName))
+}
+
+/**
+ * Holds if the method call `mc` is a call on the library method target with the specified `qualifiedName` and `methodName`, and an argument at
+ * index `argumentIndex` has the specified value `argumentValue` (case-insensitive).
+ */
+bindingset[argumentValue]
+private predicate isMethodCalledWithArg(
+  MethodCall mc, string qualifiedName, string methodName, int argumentIndex, string argumentValue
+) {
+  mc.getTarget().fromLibrary() and
+  mc.getTarget().hasQualifiedName(qualifiedName, methodName) and
+  mc.getArgument(argumentIndex).getValue().toUpperCase() = argumentValue.toUpperCase()
+}
 
 /**
  * The class `System.Security.Cryptography.SymmetricAlgorithm` or any sub class of this class.
