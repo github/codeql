@@ -231,5 +231,5 @@ For more information on writing QL, see:
 
 -  `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ - an introduction to the concepts of QL.
 -  :doc:`Learning QL <../../index>` - an overview of the resources for learning how to write your own QL queries.
--  `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ - an overview of the process that creates a snapshot from source code.
--  :doc:`What's in a snapshot? <../snapshot>` - a description of the snapshot database.
+-  `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ - an overview of the process that creates a database from source code.
+-  :doc:`What's in a CodeQL database? <../database>` - a description of the CodeQL database.

@@ -2,16 +2,16 @@ Query help reference
 ********************
 
 This topic provides detailed information on the structure of query help files. 
-For more information about how to write useful query help in a style that is consistent with Semmle's built-in queries, see the `Query help style guide <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ on GitHub.
+For more information about how to write useful query help in a style that is consistent with the standard CodeQL queries, see the `Query help style guide <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ on GitHub.
 
 
 .. pull-quote::
 
    Note
  
-   You can access the query help for Semmle's built-in queries by visiting the `Built-in query pages <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__.
-   You can also access the raw query help files in the `Semmle/ql GitHub repository <https://github.com/semmle/ql>`__.
-   For example, the `JavaScript security queries <https://github.com/Semmle/ql/tree/master/javascript/ql/src/Security>`__ and `C/C++ critical queries <https://github.com/Semmle/ql/tree/master/cpp/ql/src/Critical>`__. 
+   You can access the query help for CodeQL queries by visiting the `Built-in query pages <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__.
+   You can also access the raw query help files in the `GitHub repository <https://github.com/semmle/ql>`__.
+   For example, see the `JavaScript security queries <https://github.com/Semmle/ql/tree/master/javascript/ql/src/Security>`__ and `C/C++ critical queries <https://github.com/Semmle/ql/tree/master/cpp/ql/src/Critical>`__. 
    
    For queries run by default on LGTM, there are several different ways to access the query help. For further information, see `Where do I see the query help for a query on LGTM? <https://lgtm.com/help/lgtm/query-help#where-query-help-in-lgtm>`__ in the LGTM user help.
    
@@ -207,5 +207,5 @@ The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.
 Further information
 ===================
 
-- To learn more about contributing to the standard QL queries and libraries, see our `Contributing guidelines <https://github.com/Semmle/ql/blob/master/CONTRIBUTING.md>`__ on GitHub. 
-- To learn more about writing custom queries, and how to format your QL for clarity and consistency, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html>`__.
+- To learn more about contributing to the standard CodeQL queries and libraries, see our `Contributing guidelines <https://github.com/Semmle/ql/blob/master/CONTRIBUTING.md>`__ on GitHub. 
+- To learn more about writing custom queries, and how to format your code for clarity and consistency, see `Writing CodeQL queries <https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html>`__.

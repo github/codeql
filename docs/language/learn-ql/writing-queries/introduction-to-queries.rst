@@ -4,13 +4,15 @@ Introduction to query files
 Overview
 ********
 
-Queries are programs written in QL. The QL queries included in the Semmle tools are designed to highlight issues related to the security, correctness, maintainability, and readability of a code base. You can also write custom queries to find specific issues relevant to your own project. Three important types of query are:
+Queries are programs written with CodeQL. They are designed to highlight issues related to the security, correctness, maintainability, and readability of a code base. You can also write custom queries to find specific issues relevant to your own project. Three important types of query are:
 
 - **Alert queries**: queries that highlight issues in specific locations in your code.
 - **Path queries**: queries that describe the flow of information between a source and a sink in your code.
 - **Metric queries**: queries that compute statistics for your code.
 
-You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a project using the `QL command-line tools <https://help.semmle.com/wiki/display/SD/QL+command-line+tools>`__, or you can contribute to Semmle's built-in queries in our `open source repository on GitHub <https://github.com/semmle/ql>`__.
+You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a project using the `command-line tools <https://help.semmle.com/wiki/display/SD/QL+command-line+tools>`__, or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/semmle/ql>`__.
+
+.. TODO: Change "command-line tools" to a link to the CodeQL CLI? Similarly, change "QL for Eclipse". 
 
 .. pull-quote::
 
@@ -22,13 +24,13 @@ You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/ab
 
 
 This topic is a basic introduction to structuring query files. You can find further information on writing queries for specific programming languages `here <https://help.semmle.com/QL/learn-ql/>`__, and detailed technical information about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and the `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
-For information on how to format QL code when contributing queries to the GitHub repository, see the `QL style guide <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__.
+For information on how to format your code when contributing queries to the GitHub repository, see the `QL style guide <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__.
 
 
 Basic query structure
 *********************
 
-`Queries <https://help.semmle.com/QL/ql-handbook/queries.html>`__ written in QL have the file extension ``.ql``, and contain a ``select`` clause. Many of the built-in Semmle queries include additional optional information, and have the following structure::
+`Queries <https://help.semmle.com/QL/ql-handbook/queries.html>`__ written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing CodeQL queries include additional optional information, and have the following structure::
 
     /**
      * 
@@ -36,9 +38,9 @@ Basic query structure
      *
      */
 
-    import /* ... QL libraries or modules ... */
+    import /* ... CodeQL libraries or modules ... */
 
-    /* ... Optional, define QL classes and predicates ... */
+    /* ... Optional, define CodeQL classes and predicates ... */
 
     from /* ... variable declarations ... */
     where /* ... logical formula ... */
@@ -49,9 +51,9 @@ The following sections describe the information that is typically included in a 
 Query metadata
 ==============
 
-Query metadata is used to identify your custom queries when they are added to the Semmle repository or used in your analysis. Metadata provides information about the query's purpose, and also specifies how to interpret and display the query results. For a full list of metadata properties, see the :doc:`query metadata reference <query-metadata>`. The exact metadata requirement depends on how you are going to run your query:
+Query metadata is used to identify your custom queries when they are added to the GitHub repository or used in your analysis. Metadata provides information about the query's purpose, and also specifies how to interpret and display the query results. For a full list of metadata properties, see the :doc:`query metadata reference <query-metadata>`. The exact metadata requirement depends on how you are going to run your query:
 
-- If you are contributing a query to the Semmle open source repository for inclusion in the standard queries, please read the `query metadata style guide <https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md#metadata-area>`__. 
+- If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md#metadata-area>`__. 
 - If you are adding a custom query to a query pack for analysis using LGTM , see `Writing custom queries to include in LGTM analysis <https://lgtm.com/help/lgtm/writing-custom-queries>`__. 
 - If you are analyzing a project using the `QL command-line tools <https://help.semmle.com/wiki/display/SD/QL+command-line+tools>`__, see `Preparing custom queries <https://help.semmle.com/wiki/display/SD/Preparing+custom+queries>`__.
 - If you are running a query in the query console on LGTM or in the Quick query window in QL for Eclipse, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct `@kind` property, as explained below. See `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ and `Running a quick query <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/run-quick-query.html>`__ for further information.
@@ -60,7 +62,7 @@ Query metadata is used to identify your custom queries when they are added to th
 
     Note
 
-    Queries that are contributed to the Semmle open source repository, added to a query pack in LGTM, or used to analyze a project with the QL command-line tools must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
+    Queries that are contributed to the open source repository, added to a query pack in LGTM, or used to analyze a project with the QL command-line tools must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
 
     - Alert query metadata must contain ``@kind problem``.
     - Path query metadata must contain ``@kind path-problem``.
@@ -71,8 +73,8 @@ Query metadata is used to identify your custom queries when they are added to th
 Import statements
 =================
 
-Each query generally contains one or more ``import`` statements, which define the `QL libraries <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ or `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ to import into the query. QL libraries and modules provide a way of grouping together related `types <https://help.semmle.com/QL/ql-handbook/types.html>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and other modules. The contents of each library or module that you import can then be accessed by the query. 
-`Semmle's open source repository on GitHub <https://github.com/semmle/ql>`__ contains all of the standard QL libraries for each supported language.   
+Each query generally contains one or more ``import`` statements, which define the `libraries <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ or `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ to import into the query. Libraries and modules provide a way of grouping together related `types <https://help.semmle.com/QL/ql-handbook/types.html>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and other modules. The contents of each library or module that you import can then be accessed by the query. 
+Our `open source repository on GitHub <https://github.com/semmle/ql>`__ contains the standard CodeQL libraries for each supported language.   
 
 When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying, using ``import`` followed by a language:
 
@@ -83,13 +85,13 @@ When writing your own alert queries, you would typically import the standard lib
 - JavaScript/TypeScript: ``javascript``
 - Python: ``python``
 
-There are also QL libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Constructing path queries <path-queries>` for further information.
+There are also CodeQL libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Constructing path queries <path-queries>` for further information.
 
-You can explore the contents of all the standard QL libraries in the `QL library reference documentation <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__, using `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/standard-queries.html>`__, or in the `GitHub repository <https://github.com/semmle/ql>`__.
+You can explore the contents of all the standard CodeQL libraries in the `CodeQL library reference documentation <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__, using `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/standard-queries.html>`__, or in the `GitHub repository <https://github.com/semmle/ql>`__.
 
 
-Optional QL classes and predicates
-----------------------------------
+Optional CodeQL classes and predicates
+--------------------------------------
 
 You can customize your analysis by defining your own predicates and classes in the query. See `Defining a predicate <https://help.semmle.com/QL/ql-handbook/predicates.html#defining-a-predicate>`__ and `Defining a class <https://help.semmle.com/QL/ql-handbook/types.html#defining-a-class>`__ for further details. 
 
@@ -97,13 +99,13 @@ From clause
 ===========
 
 The ``from`` clause declares the variables that are used in the query. Each declaration must be of the form ``<type> <variable name>``. 
-For more information on the `types <https://help.semmle.com/QL/ql-handbook/types.html>`__ available in QL, and to learn how to define your own types using `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, see the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+For more information on the available `types <https://help.semmle.com/QL/ql-handbook/types.html>`__, and to learn how to define your own types using `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, see the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 
 Where clause
 ============
 
 The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. This clause uses `aggregations <https://help.semmle.com/QL/ql-handbook/expressions.html#aggregations>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and logical `formulas <https://help.semmle.com/QL/ql-handbook/formulas.html>`_ to limit the variables of interest to a smaller set, which meet the defined conditions. 
-The QL libraries group commonly used predicates for specific languages and frameworks. You can also define your own predicates in the body of the query file or in your own custom modules, as described above.
+The CodeQL libraries group commonly used predicates for specific languages and frameworks. You can also define your own predicates in the body of the query file or in your own custom modules, as described above.
 
 Select clause
 =============
@@ -138,6 +140,6 @@ What next?
 
 - See the queries used in real-life variant analysis on the `Semmle blog <https://blog.semmle.com/tags/variant-analysis>`__.
 - To learn more about writing path queries, see :doc:`Constructing path queries <path-queries>`.
-- Take a look at the `built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ to see examples of the queries included in the Semmle tools.
-- Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the QL libraries.
-- For a full list of resources to help you learn QL, including beginner tutorials and language-specific examples, visit `Learning QL <https://help.semmle.com/QL/learn-ql/>`__.
+- Take a look at the `built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ to see examples of the queries included in CodeQL.
+- Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the CodeQL libraries.
+- For a full list of resources to help you learn CodeQL, including beginner tutorials and language-specific examples, visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__.
