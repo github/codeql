@@ -38,16 +38,16 @@ namespace HardcodedSymmetricEncryptionKey
 
             var iv = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 };
 
-            // BAD: hard-coded key passed to Encrypt
+            // BAD: hard-coded key passed to Encrypt [NOT DETECTED]
             var ct = Encrypt("Test string here", c, iv);
 
-            // BAD: hard-coded key converted from string and passed to Encrypt
+            // BAD: hard-coded key converted from string and passed to Encrypt [NOT DETECTED]
             var ct1 = Encrypt("Test string here", byteArrayFromString, iv);
 
             // GOOD (this function hashes password)
             var de = DecryptWithPassword(ct, c, iv);
 
-            // Bad
+            // BAD [NOT DETECTED]
             CreateCryptographicKey(null, byteArrayFromString);
 
             // GOOD

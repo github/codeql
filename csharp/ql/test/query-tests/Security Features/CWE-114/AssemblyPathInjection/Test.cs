@@ -8,7 +8,7 @@ public class DLLInjectionHandler : IHttpHandler {
   public void ProcessRequest(HttpContext ctx) {
     string libraryName = ctx.Request.QueryString["libraryName"];
 
-    // BAD: Load DLL based on user input
+    // BAD: Load DLL based on user input [NOT DETECTED]
     var badDLL = Assembly.LoadFile(libraryName);
 
     // GOOD: Load DLL using fixed string
