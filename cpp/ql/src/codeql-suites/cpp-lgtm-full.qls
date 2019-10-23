@@ -1,0 +1,14 @@
+- description: Standard LGTM queries for C/C++, including ones not displayed by default
+- qlpack: codeql-cpp
+- apply: lgtm-selectors.yml
+  from: codeql-suite-helpers
+# These queries are infeasible to compute on large projects:
+- exclude:
+    query path:
+      - Security/CWE/CWE-497/ExposedSystemData.ql
+      - Critical/DescriptorMayNotBeClosed.ql
+      - Critical/DescriptorNeverClosed.ql
+      - Critical/FileMayNotBeClosed.ql
+      - Critical/FileNeverClosed.ql
+      - Critical/MemoryMayNotBeFreed.ql
+      - Critical/MemoryNeverFreed.ql

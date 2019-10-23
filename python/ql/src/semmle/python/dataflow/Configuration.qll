@@ -51,6 +51,7 @@ module TaintTracking {
          */
         predicate isSink(DataFlow::Node node, TaintKind kind) {
             exists(TaintSink sink |
+                this.isSink(sink) and
                 node.asCfgNode() = sink and
                 sink.sinks(kind)
             )

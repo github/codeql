@@ -311,6 +311,9 @@ DataFlow::SourceNode globalObjectRef() {
   // DOM and service workers
   result = globalVarRef("self")
   or
+  // ECMAScript 2020
+  result = globalVarRef("globalThis")
+  or
   // `require("global")`
   result = moduleImport("global")
   or

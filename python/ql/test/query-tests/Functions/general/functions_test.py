@@ -134,33 +134,6 @@ def augassign(x = []):
     x += ["x"]
 
 
-#Possible FPs for non-self. ODASA-2439
-
-class C(object):
-    def _func(f):
-        return f
-
-    _func(x)
-
-    #or
-    @_func
-    def meth(self):
-        pass
-
-
-def dont_care(arg):
-    pass
-
-class C(object):
-
-    meth = dont_care
-
-class Meta(type):
-
-    #__new__ is an implicit class method, so the first arg is the metaclass
-    def __new__(metacls, name, bases, cls_dict):
-        return super(Meta, metacls).__new__(metacls, name, bases, cls_dict)
-
 #ODASA 3658
 from sys import exit
 #Consistent returns
@@ -172,14 +145,7 @@ def ok5():
         print(e)
         exit(EXIT_ERROR)
 
-#ODASA-6062
-import zope.interface
-class Z(zope.interface.Interface):
 
-    def meth(arg):
-        pass
-
-Z().meth(0)
 
 # indirect modification of parameter with default
 def aug_assign_argument(x):

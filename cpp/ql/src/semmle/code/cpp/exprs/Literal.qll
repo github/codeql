@@ -132,7 +132,6 @@ class HexLiteral extends Literal {
  * A C/C++ aggregate literal.
  */
 class AggregateLiteral extends Expr, @aggregateliteral {
-  // if this is turned into a Literal we need to change mayBeImpure
   override string getCanonicalQLClass() { result = "AggregateLiteral" }
 
   /**
@@ -144,6 +143,10 @@ class AggregateLiteral extends Expr, @aggregateliteral {
   deprecated Expr getCorrespondingExpr(Field f) {
     result = this.(ClassAggregateLiteral).getFieldExpr(f)
   }
+
+  override predicate mayBeImpure() { this.getAChild().mayBeImpure() }
+
+  override predicate mayBeGloballyImpure() { this.getAChild().mayBeGloballyImpure() }
 
   /** Gets a textual representation of this aggregate literal. */
   override string toString() { result = "{...}" }

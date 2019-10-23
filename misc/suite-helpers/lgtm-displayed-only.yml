@@ -1,0 +1,8 @@
+- description: Selectors for excluding queries that LGTM doesn't display by default
+- exclude:
+    kind: problem
+    precision: medium
+- exclude:
+    kind: problem
+    precision: high
+    problem.severity: recommendation

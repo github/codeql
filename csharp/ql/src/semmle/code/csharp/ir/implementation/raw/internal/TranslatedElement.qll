@@ -99,6 +99,12 @@ private predicate ignoreExprOnly(Expr expr) {
   // Ignore the expression (that is not a declaration)
   // that appears in a using block
   expr.getParent().(UsingBlockStmt).getExpr() = expr
+  or
+  // Ignore the `ThisAccess` when it is used as the qualifier for
+  // a callable access (e.g. when a member callable is passed as a
+  // parameter for a delegate creation expression)
+  expr instanceof ThisAccess and
+  expr.getParent() instanceof CallableAccess
 }
 
 /**
@@ -194,9 +200,14 @@ predicate needsLoad(Expr expr) {
  * Holds if we should ignore the `Load` instruction for `expr` when generating IR.
  */
 private predicate ignoreLoad(Expr expr) {
-  // No load needed for the qualifier
-  // in an array access
+  // No load needed for the qualifier of an array access,
+  // since we use the instruction `ElementsAddress`
+  // to get the address of the first element in an array
   expr = any(ArrayAccess aa).getQualifier()
+  or
+  // Indexer calls returns a reference or a value,
+  // no need to load it
+  expr instanceof IndexerCall
   or
   // No load is needed for the lvalue in an assignment such as:
   // Eg. `Object obj = oldObj`;
@@ -210,6 +221,9 @@ private predicate ignoreLoad(Expr expr) {
   // The `&` operator does not need a load, since the
   // address is the final value of the expression
   expr.getParent() instanceof AddressOfExpr
+  or
+  // A property access does not need a load since it is a call
+  expr instanceof PropertyAccess
   or
   // If expr is a variable access used as the qualifier for a field access and
   // its target variable is a value type variable,

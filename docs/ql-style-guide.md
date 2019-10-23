@@ -3,7 +3,7 @@
 ## Introduction
 
 This document describes how to format the QL code you contribute to this repository. It covers aspects such as layout, white-space, naming, and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
-Note, if you use QL for Eclipse, you can auto-format your query in the (QL editor)[https://help.semmle.com/ql-for-eclipse/Content/WebHelp/ql-editor.html].
+Note, if you use QL for Eclipse, you can auto-format your query in the [QL editor](https://help.semmle.com/ql-for-eclipse/Content/WebHelp/ql-editor.html).
 
 Words in *italic* are defined in the [Glossary](#glossary).
 

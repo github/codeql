@@ -4,7 +4,6 @@
 | Capture.cs:33:30:33:39 | [implicit call] access to local variable captureIn3 | return | Capture.cs:33:30:33:39 | [output] access to local variable captureIn3 |
 | Capture.cs:71:9:71:21 | call to local function CaptureOut1 | captured sink30 | Capture.cs:71:9:71:21 | SSA call def(sink30) |
 | Capture.cs:83:9:83:21 | [transitive] call to local function CaptureOut2 | captured sink31 | Capture.cs:83:9:83:21 | SSA call def(sink31) |
-| Capture.cs:83:9:83:21 | call to local function CaptureOut2 | captured sink31 | Capture.cs:83:9:83:21 | SSA call def(sink31) |
 | Capture.cs:92:9:92:41 | call to method Select | captured sink32 | Capture.cs:92:9:92:41 | SSA call def(sink32) |
 | Capture.cs:92:9:92:41 | call to method Select | return | Capture.cs:92:9:92:41 | call to method Select |
 | Capture.cs:92:9:92:41 | call to method Select | yield return | Capture.cs:92:9:92:41 | call to method Select |
@@ -12,14 +11,9 @@
 | Capture.cs:92:30:92:40 | [implicit call] access to local variable captureOut3 | captured sink32 | Capture.cs:92:9:92:41 | SSA call def(sink32) |
 | Capture.cs:92:30:92:40 | [implicit call] access to local variable captureOut3 | return | Capture.cs:92:30:92:40 | [output] access to local variable captureOut3 |
 | Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured nonSink0 | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
-| Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured nonSink0 | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
 | Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured sink40 | Capture.cs:121:9:121:35 | SSA call def(sink40) |
-| Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured sink40 | Capture.cs:121:9:121:35 | SSA call def(sink40) |
-| Capture.cs:121:9:121:35 | call to local function CaptureOutMultipleLambdas | captured nonSink0 | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
-| Capture.cs:121:9:121:35 | call to local function CaptureOutMultipleLambdas | captured sink40 | Capture.cs:121:9:121:35 | SSA call def(sink40) |
 | Capture.cs:132:9:132:25 | call to local function CaptureThrough1 | captured sink33 | Capture.cs:132:9:132:25 | SSA call def(sink33) |
 | Capture.cs:144:9:144:25 | [transitive] call to local function CaptureThrough2 | captured sink34 | Capture.cs:144:9:144:25 | SSA call def(sink34) |
-| Capture.cs:144:9:144:25 | call to local function CaptureThrough2 | captured sink34 | Capture.cs:144:9:144:25 | SSA call def(sink34) |
 | Capture.cs:153:9:153:45 | call to method Select | captured sink35 | Capture.cs:153:9:153:45 | SSA call def(sink35) |
 | Capture.cs:153:9:153:45 | call to method Select | return | Capture.cs:153:9:153:45 | call to method Select |
 | Capture.cs:153:9:153:45 | call to method Select | yield return | Capture.cs:153:9:153:45 | call to method Select |

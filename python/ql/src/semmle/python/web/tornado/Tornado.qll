@@ -45,7 +45,7 @@ class TornadoCookieSet extends CookieSet, CallNode {
         )
     }
 
-    override string toString() { result = this.(CallNode).toString() }
+    override string toString() { result = CallNode.super.toString() }
 
     override ControlFlowNode getKey() { result = this.getArg(0) }
 

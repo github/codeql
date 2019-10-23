@@ -92,5 +92,5 @@ What next?
 
 -  Explore other ways of finding functions using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/function>`__.
 -  Take a look at some of the other tutorials: :doc:`Expressions, types and statements <expressions-types>`, :doc:`Conversions and classes <conversions-classes>`, and :doc:`Analyzing data flow in C/C++ <dataflow>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

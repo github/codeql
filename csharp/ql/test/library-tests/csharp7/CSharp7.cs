@@ -148,9 +148,9 @@ class LocalFunctions
             return f9(1);
         }
 
-        {
+        Action a = () => {
             int f9() => 0;
-        }
+        };
 
         return f1(2);
     }
@@ -162,7 +162,7 @@ class LocalFunctions
 
         U h<T, U>(T t, U u)
         {
-            int f2() => f<T>();
+            int f2<S>(S s, T _t) => f<T>();
             f<T>();
             return g(u);
         }

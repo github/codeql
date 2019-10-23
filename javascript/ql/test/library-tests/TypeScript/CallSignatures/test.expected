@@ -1,0 +1,66 @@
+test_CallSignature
+| tst.ts:7:3:7:22 | (x: number): number; | interface I | tst.ts:7:3:7:22 | (x: number): number; | abstract |
+| tst.ts:8:3:8:21 | new (x: number): C; | interface I | tst.ts:8:3:8:21 | new (x: number): C; | abstract |
+| tst.ts:13:3:13:22 | (x: number): number; | anonymous interface | tst.ts:13:3:13:22 | (x: number): number; | abstract |
+| tst.ts:14:3:14:21 | new (x: number): C; | anonymous interface | tst.ts:14:3:14:21 | new (x: number): C; | abstract |
+| tst.ts:47:3:47:14 | (x: number); | interface ICallSigOverloads | tst.ts:47:3:47:14 | (x: number); | abstract |
+| tst.ts:48:3:48:17 | new(x: number); | interface ICallSigOverloads | tst.ts:48:3:48:17 | new(x: number); | abstract |
+| tst.ts:49:3:49:14 | (x: string); | interface ICallSigOverloads | tst.ts:49:3:49:14 | (x: string); | abstract |
+| tst.ts:50:3:50:17 | new(x: string); | interface ICallSigOverloads | tst.ts:50:3:50:17 | new(x: string); | abstract |
+| tst.ts:52:3:52:17 | new(x: number); | interface ICallSigOverloads | tst.ts:52:3:52:17 | new(x: number); | abstract |
+| tst.ts:53:3:53:14 | (x: number); | interface ICallSigOverloads | tst.ts:53:3:53:14 | (x: number); | abstract |
+test_IndexSignature
+| tst.ts:9:3:9:22 | [x: number]: string; | interface I | tst.ts:9:3:9:22 | [x: number]: string; | abstract |
+| tst.ts:15:3:15:22 | [x: number]: string; | anonymous interface | tst.ts:15:3:15:22 | [x: number]: string; | abstract |
+test_MethodDeclarations
+| tst.ts:1:18:1:17 | constructor() {} | Method constructor in class C |
+| tst.ts:2:3:2:31 | abstrac ... number; | Method abstract in class C |
+| tst.ts:3:3:3:30 | abstrac ... er): C; | Method new in class C |
+| tst.ts:19:3:19:17 | foo(x: number); | Method foo in interface IOverloads |
+| tst.ts:20:3:20:17 | foo(x: string); | Method foo in interface IOverloads |
+| tst.ts:21:3:21:8 | bar(); | Method bar in interface IOverloads |
+| tst.ts:22:3:22:17 | foo(x: number); | Method foo in interface IOverloads |
+| tst.ts:25:27:25:26 | constructor() {} | Method constructor in class COverloads |
+| tst.ts:26:3:26:26 | abstrac ... umber); | Method foo in class COverloads |
+| tst.ts:27:3:27:26 | abstrac ... tring); | Method foo in class COverloads |
+| tst.ts:28:3:28:26 | abstrac ... umber); | Method foo in class COverloads |
+| tst.ts:30:3:30:17 | bar(x: number); | Method bar in class COverloads |
+| tst.ts:31:3:31:17 | bar(x: string); | Method bar in class COverloads |
+| tst.ts:33:3:33:11 | bar(x) {} | Method bar in class COverloads |
+| tst.ts:37:3:37:25 | constru ... umber); | Method constructor in class ConstructorOverloads |
+| tst.ts:38:3:38:25 | constru ... tring); | Method constructor in class ConstructorOverloads |
+| tst.ts:40:3:40:25 | constru ... umber); | Method constructor in class ConstructorOverloads |
+| tst.ts:42:3:42:29 | ["const ... tring); | Method constructor in class ConstructorOverloads |
+| tst.ts:43:3:43:29 | ["const ... umber); | Method constructor in class ConstructorOverloads |
+test_MethodOverload
+| tst.ts:1:18:1:17 | constructor() {} | 0 | false |
+| tst.ts:2:3:2:31 | abstrac ... number; | 0 | false |
+| tst.ts:3:3:3:30 | abstrac ... er): C; | 0 | false |
+| tst.ts:19:3:19:17 | foo(x: number); | 0 | true |
+| tst.ts:20:3:20:17 | foo(x: string); | 1 | true |
+| tst.ts:21:3:21:8 | bar(); | 0 | false |
+| tst.ts:22:3:22:17 | foo(x: number); | 2 | true |
+| tst.ts:25:27:25:26 | constructor() {} | 0 | false |
+| tst.ts:26:3:26:26 | abstrac ... umber); | 0 | true |
+| tst.ts:27:3:27:26 | abstrac ... tring); | 1 | true |
+| tst.ts:28:3:28:26 | abstrac ... umber); | 2 | true |
+| tst.ts:30:3:30:17 | bar(x: number); | 0 | true |
+| tst.ts:31:3:31:17 | bar(x: string); | 1 | true |
+| tst.ts:33:3:33:11 | bar(x) {} | 2 | true |
+| tst.ts:37:3:37:25 | constru ... umber); | 0 | true |
+| tst.ts:38:3:38:25 | constru ... tring); | 1 | true |
+| tst.ts:40:3:40:25 | constru ... umber); | 2 | true |
+| tst.ts:42:3:42:29 | ["const ... tring); | 0 | true |
+| tst.ts:43:3:43:29 | ["const ... umber); | 1 | true |
+test_FunctionCallSigOverload
+| tst.ts:7:3:7:22 | (x: number): number; | 0 | false |
+| tst.ts:13:3:13:22 | (x: number): number; | 0 | false |
+| tst.ts:47:3:47:14 | (x: number); | 0 | true |
+| tst.ts:49:3:49:14 | (x: string); | 1 | true |
+| tst.ts:53:3:53:14 | (x: number); | 2 | true |
+test_ConstructorCallSigOverload
+| tst.ts:8:3:8:21 | new (x: number): C; | 0 | false |
+| tst.ts:14:3:14:21 | new (x: number): C; | 0 | false |
+| tst.ts:48:3:48:17 | new(x: number); | 0 | true |
+| tst.ts:50:3:50:17 | new(x: string); | 1 | true |
+| tst.ts:52:3:52:17 | new(x: number); | 2 | true |

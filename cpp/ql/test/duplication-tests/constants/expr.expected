@@ -1,0 +1,4 @@
+| constants.cpp:2:9:2:13 | 0 | int() |
+| constants.cpp:3:11:3:17 | 0.0 | float() |
+| constants.cpp:4:12:4:19 | 0.0 | double() |
+| constants.cpp:9:11:9:13 | 0 | 0 |

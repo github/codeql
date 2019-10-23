@@ -122,7 +122,7 @@ class FlaskCookieSet extends CookieSet, CallNode {
         this.getFunction().(AttrNode).getObject("set_cookie").refersTo(_, theFlaskReponseClass(), _)
     }
 
-    override string toString() { result = this.(CallNode).toString() }
+    override string toString() { result = CallNode.super.toString() }
 
     override ControlFlowNode getKey() { result = this.getArg(0) }
 

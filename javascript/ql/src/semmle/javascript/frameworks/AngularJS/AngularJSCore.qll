@@ -631,11 +631,11 @@ private class RouteParamSource extends RemoteFlowSource {
  * AngularJS expose a jQuery-like interface through `angular.html(..)`.
  * The interface may be backed by an actual jQuery implementation.
  */
-private class JQLiteObject extends JQueryObject {
+private class JQLiteObject extends JQuery::ObjectSource::Range {
   JQLiteObject() {
-    this = angular().getAMemberCall("element").asExpr()
+    this = angular().getAMemberCall("element")
     or
-    exists(SimpleParameter param |
+    exists(Parameter param | this = DataFlow::parameterNode(param) |
       // element parameters to user-functions invoked by AngularJS
       param = any(LinkFunction link).getElementParameter()
       or
@@ -652,15 +652,13 @@ private class JQLiteObject extends JQueryObject {
           param = f.getAstNode().(Function).getParameter(i)
         )
       )
-    |
-      this = param.getAnInitialUse()
     )
     or
     exists(ServiceReference element |
       element.getName() = "$rootElement" or
       element.getName() = "$document"
     |
-      this = element.getAnAccess()
+      this = element.getAReference()
     )
   }
 }

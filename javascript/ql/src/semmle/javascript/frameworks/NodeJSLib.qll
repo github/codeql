@@ -573,20 +573,31 @@ module NodeJSLib {
       this = DataFlow::moduleMember("child_process", methodName).getACall()
     }
 
-    override DataFlow::Node getACommandArgument() {
+    private DataFlow::Node getACommandArgument(boolean shell) {
       // check whether this is an invocation of an exec/spawn/fork method
       (
-        methodName = "exec" or
-        methodName = "execSync" or
-        methodName = "execFile" or
-        methodName = "execFileSync" or
-        methodName = "spawn" or
-        methodName = "spawnSync" or
-        methodName = "fork"
+        shell = true and
+        (
+          methodName = "exec" or
+          methodName = "execSync"
+        )
+        or
+        shell = false and
+        (
+          methodName = "execFile" or
+          methodName = "execFileSync" or
+          methodName = "spawn" or
+          methodName = "spawnSync" or
+          methodName = "fork"
+        )
       ) and
       // all of the above methods take the command as their first argument
       result = getArgument(0)
     }
+
+    override DataFlow::Node getACommandArgument() { result = getACommandArgument(_) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument(true) }
 
     override DataFlow::Node getArgumentList() {
       (

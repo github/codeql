@@ -42,6 +42,7 @@ import com.semmle.js.ast.ForOfStatement;
 import com.semmle.js.ast.ForStatement;
 import com.semmle.js.ast.FunctionDeclaration;
 import com.semmle.js.ast.FunctionExpression;
+import com.semmle.js.ast.IFunction;
 import com.semmle.js.ast.INode;
 import com.semmle.js.ast.IPattern;
 import com.semmle.js.ast.Identifier;
@@ -670,6 +671,13 @@ public class TypeScriptASTConverter {
     attachSymbolInformation(node, json);
   }
 
+  /** Attached the declared call signature to a function. */
+  private void attachDeclaredSignature(IFunction node, JsonObject json) {
+    if (json.has("$declaredSignature")) {
+      node.setDeclaredSignatureId(json.get("$declaredSignature").getAsInt());
+    }
+  }
+
   /**
    * Convert the given array of TypeScript AST nodes into a list of JavaScript AST nodes, skipping
    * any {@code null} elements.
@@ -786,15 +794,18 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertArrowFunction(JsonObject node, SourceLocation loc) throws ParseError {
-    return new ArrowFunctionExpression(
-        loc,
-        convertParameters(node),
-        convertChild(node, "body"),
-        false,
-        hasModifier(node, "AsyncKeyword"),
-        convertChildrenNotNull(node, "typeParameters"),
-        convertParameterTypes(node),
-        convertChildAsType(node, "type"));
+    ArrowFunctionExpression function =
+        new ArrowFunctionExpression(
+            loc,
+            convertParameters(node),
+            convertChild(node, "body"),
+            false,
+            hasModifier(node, "AsyncKeyword"),
+            convertChildrenNotNull(node, "typeParameters"),
+            convertParameterTypes(node),
+            convertChildAsType(node, "type"));
+    attachDeclaredSignature(function, node);
+    return function;
   }
 
   private Node convertAwaitExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -931,11 +942,13 @@ public class TypeScriptASTConverter {
     SourceLocation bodyLoc = new SourceLocation(loc.getSource(), loc.getStart(), loc.getEnd());
     advance(bodyLoc, skip);
     ClassBody body = new ClassBody(bodyLoc, convertChildren(node, "members"));
-    if ("ClassExpression".equals(kind)) {
+    if ("ClassExpression".equals(kind) || id == null) {
+      // Note that `export default class {}` is represented as a ClassDeclaration
+      // in TypeScript but we treat this as a ClassExpression.
       ClassExpression classExpr =
           new ClassExpression(loc, id, typeParameters, superClass, superInterfaces, body);
       attachSymbolInformation(classExpr.getClassDef(), node);
-      return classExpr;
+      return fixExports(loc, classExpr);
     }
     boolean hasDeclareKeyword = hasModifier(node, "DeclareKeyword");
     boolean hasAbstractKeyword = hasModifier(node, "AbstractKeyword");
@@ -1044,6 +1057,8 @@ public class TypeScriptASTConverter {
             null,
             null);
     attachSymbolInformation(value, node);
+    attachStaticType(value, node);
+    attachDeclaredSignature(value, node);
     List<FieldDefinition> parameterFields = convertParameterFields(node);
     return new MethodDefinition(loc, flags, methodKind, key, value, parameterFields);
   }
@@ -1212,6 +1227,11 @@ public class TypeScriptASTConverter {
   private Node convertFunctionDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     List<Expression> params = convertParameters(node);
     Identifier fnId = convertChild(node, "name", "Identifier");
+    if (fnId == null) {
+      // Anonymous function declarations may occur as part of default exported functions.
+      // We represent these as function expressions.
+      return fixExports(loc, convertFunctionExpression(node, loc));
+    }
     BlockStatement fnbody = convertChild(node, "body");
     boolean generator = hasChild(node, "asteriskToken");
     boolean async = hasModifier(node, "AsyncKeyword");
@@ -1234,6 +1254,8 @@ public class TypeScriptASTConverter {
             returnType,
             thisParam);
     attachSymbolInformation(function, node);
+    attachStaticType(function, node);
+    attachDeclaredSignature(function, node);
     return fixExports(loc, function);
   }
 
@@ -1247,18 +1269,22 @@ public class TypeScriptASTConverter {
     List<DecoratorList> paramDecorators = convertParameterDecorators(node);
     ITypeExpression returnType = convertChildAsType(node, "type");
     ITypeExpression thisParam = convertThisParameterType(node);
-    return new FunctionExpression(
-        loc,
-        fnId,
-        params,
-        fnbody,
-        generator,
-        async,
-        convertChildrenNotNull(node, "typeParameters"),
-        paramTypes,
-        paramDecorators,
-        returnType,
-        thisParam);
+    FunctionExpression function =
+        new FunctionExpression(
+            loc,
+            fnId,
+            params,
+            fnbody,
+            generator,
+            async,
+            convertChildrenNotNull(node, "typeParameters"),
+            paramTypes,
+            paramDecorators,
+            returnType,
+            thisParam);
+    attachStaticType(function, node);
+    attachDeclaredSignature(function, node);
+    return function;
   }
 
   private Node convertFunctionType(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1591,7 +1617,7 @@ public class TypeScriptASTConverter {
     List<DecoratorList> paramDecorators = convertParameterDecorators(node);
     List<TypeParameter> typeParameters = convertChildrenNotNull(node, "typeParameters");
     ITypeExpression thisType = convertThisParameterType(node);
-    FunctionExpression method =
+    FunctionExpression function =
         new FunctionExpression(
             loc,
             null,
@@ -1604,8 +1630,10 @@ public class TypeScriptASTConverter {
             paramDecorators,
             returnType,
             thisType);
-    attachSymbolInformation(method, node);
-    return method;
+    attachSymbolInformation(function, node);
+    attachStaticType(function, node);
+    attachDeclaredSignature(function, node);
+    return function;
   }
 
   private Node convertNamespaceDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
@@ -2284,7 +2312,7 @@ public class TypeScriptASTConverter {
    * <p>If the declared statement has decorators, the {@code loc} should first be advanced past
    * these using {@link #advanceUntilAfter}.
    */
-  private Node fixExports(SourceLocation loc, Statement decl) {
+  private Node fixExports(SourceLocation loc, Node decl) {
     Matcher m = EXPORT_DECL_START.matcher(loc.getSource());
     if (m.find()) {
       String skipped = m.group(0);
@@ -2292,7 +2320,7 @@ public class TypeScriptASTConverter {
       advance(loc, skipped);
       // capture group 1 is `default`, if present
       if (m.group(1) == null)
-        return new ExportNamedDeclaration(outerLoc, decl, new ArrayList<>(), null);
+        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null);
       return new ExportDefaultDeclaration(outerLoc, decl);
     }
     return decl;

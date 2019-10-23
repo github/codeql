@@ -15,12 +15,12 @@ The rest of this topic summarizes available QL classes and corresponding C/C++ c
 NOTE: You can find related classes and features using the query console's auto-complete feature.  You can also press *F3* to jump to the definition of any element; QL library files are opened in new tabs in the console.
 
 Summary of the library classes
-==============================
+------------------------------
 
 The most commonly used standard QL library classes are listed below.  The listing is broken down by functionality.  Each QL library class is annotated with a C/C++ construct it corresponds to.
 
 Declaration classes
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 This table lists `Declaration <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Declaration.qll/type.Declaration$Declaration.html>`__ classes representing C/C++ declarations.
 
@@ -110,7 +110,7 @@ This table lists `Declaration <https://help.semmle.com/qldoc/cpp/semmle/code/cpp
 | |  `Type <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html>`__ *var* ``;``                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | | `Class <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Class.qll/type.Class$Class.html>`__                                                                       |                                                                                                                                                                                                    |
 | |  `Type <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html>`__ *func* ``(`` `Parameter <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html>`__... ``) {`` ... ``}``... ``};``                                                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                                       |                                                                                                                                                                                                    |
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| | ``union`` *U* ``{``                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | | `Union <hhttps://help.semmle.com/qldoc/cpp/semmle/code/cpp/Union.qll/type.Union$Union.html>`__                                                                      |                                                                                                                                                                                                    |
+| | ``union`` *U* ``{``                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | | `Union <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Union.qll/type.Union$Union.html>`__                                                                       |                                                                                                                                                                                                    |
 | |  `Type <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html>`__ *var1* ``;``                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | | `Struct <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Struct.qll/type.Struct$Struct.html>`__                                                                   |                                                                                                                                                                                                    |
 | |  `Type <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html>`__ *var2* ``;`` ... ``};``                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | | `Class <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Class.qll/type.Class$Class.html>`__                                                                       |                                                                                                                                                                                                    |
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -149,7 +149,7 @@ This table lists `Declaration <https://help.semmle.com/qldoc/cpp/semmle/code/cpp
 
 
 Statement classes
------------------
+~~~~~~~~~~~~~~~~~
 
 This table lists subclasses of `Stmt <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html>`__ representing C/C++ statements.
 
@@ -210,7 +210,7 @@ This table lists subclasses of `Stmt <https://help.semmle.com/qldoc/cpp/semmle/c
 
 
 Expression classes
-------------------
+~~~~~~~~~~~~~~~~~~
 
 This table lists subclasses of `Expr <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html>`__ representing C/C++ expressions.
 
@@ -412,7 +412,7 @@ This table lists subclasses of `Expr <https://help.semmle.com/qldoc/cpp/semmle/c
 
 
 Type classes
-------------
+~~~~~~~~~~~~
 
 This table lists subclasses of `Type <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html>`__ representing C/C++ types.
 
@@ -480,7 +480,7 @@ This table lists subclasses of `Type <https://help.semmle.com/qldoc/cpp/semmle/c
 
 
 Preprocessor classes
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 This table lists `Preprocessor <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Preprocessor.qll/module.Preprocessor.html>`__ classes representing C/C++ preprocessing directives.
 
@@ -523,5 +523,5 @@ What next?
 ----------
 
 -  Experiment with the worked examples in the QL for C/C++ topics: :doc:`Function classes <function-classes>`, :doc:`Expressions, types and statements <expressions-types>`, :doc:`Conversions and classes <conversions-classes>`, and :doc:`Analyzing data flow in C/C++ <dataflow>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

@@ -1690,6 +1690,10 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
     any()
   }
 
+  final override int getNumberOfArguments() {
+    result = expr.getAllocatorCall().getNumberOfArguments()
+  }
+
   final override TranslatedExpr getArgument(int index) {
     // If the allocator is the default operator new(void*), there will be no
     // allocator call in the AST. Otherwise, there will be an allocator call

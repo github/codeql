@@ -1,11 +1,16 @@
 missingOperand
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | IR: misc3 | void misc3() |
+| parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
+| parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
+| parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
+| parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
 | try_catch.cpp:13:5:13:16 | ThrowValue: throw ... | Instruction 'ThrowValue' is missing an expected operand with tag 'Load' in function '$@'. | try_catch.cpp:11:6:11:17 | IR: bypass_catch | void bypass_catch() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
 | cpp11.cpp:141:7:141:7 | Phi: g | cpp11.cpp:161:16:161:16 | NoOp: label ...: |
 missingOperandType
+sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
 | assume0.cpp:7:2:7:2 | Chi: call to f |
@@ -20,7 +25,7 @@ instructionWithoutSuccessor
 | ms_try_mix.cpp:11:12:11:15 | Chi: call to C |
 | ms_try_mix.cpp:28:12:28:15 | Chi: call to C |
 | ms_try_mix.cpp:48:10:48:13 | Chi: call to C |
-| pointer_to_member.cpp:35:11:35:21 | FieldAddress: {...} |
+| pointer_to_member.cpp:36:11:36:30 | FieldAddress: {...} |
 | stmt_expr.cpp:27:5:27:15 | CopyValue: ... = ... |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix |
 | vla.c:11:6:11:16 | UnmodeledDefinition: vla_typedef |

@@ -23,6 +23,7 @@ If you are new to QL, start by looking at the following topics:
    introduction-to-ql
    about-ql
    beginner/ql-tutorials
+   ql-etudes/river-crossing
 
 QL training and variant analysis examples
 ******************************************
@@ -78,7 +79,7 @@ Reference topics
 For a more comprehensive guide to QL see the following reference topics: 
 
 - `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__—a description of important concepts in QL
-- `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__—a formal specification of the QL language.
+- `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__—a formal specification of the QL language.
 
 Search
 ******

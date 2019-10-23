@@ -1,4 +1,4 @@
-﻿using Semmle.Extraction.Kinds;
+﻿using Semmle.Extraction.Kinds; // lgtm[cs/similar-file]
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 
