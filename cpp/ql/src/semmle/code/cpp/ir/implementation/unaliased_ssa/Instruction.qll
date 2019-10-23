@@ -49,7 +49,8 @@ module InstructionSanity {
         (
           opcode instanceof ReadSideEffectOpcode or
           opcode instanceof Opcode::InlineAsm or
-          opcode instanceof Opcode::CallSideEffect
+          opcode instanceof Opcode::CallSideEffect or
+          opcode instanceof Opcode::AliasedUse
         ) and
         tag instanceof SideEffectOperandTag
       )
@@ -260,6 +261,7 @@ module InstructionSanity {
   ) {
     exists(IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
       not useOperand.getUse() instanceof UnmodeledUseInstruction and
+      not defInstr instanceof UnmodeledDefinitionInstruction and
       pointOfEvaluation(useOperand, useBlock, useIndex) and
       defInstr = useOperand.getAnyDef() and
       (
@@ -1421,6 +1423,13 @@ class AliasedDefinitionInstruction extends Instruction {
   AliasedDefinitionInstruction() { getOpcode() instanceof Opcode::AliasedDefinition }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
+}
+
+/**
+ * An instruction that consumes all escaped memory on exit from the function.
+ */
+class AliasedUseInstruction extends Instruction {
+  AliasedUseInstruction() { getOpcode() instanceof Opcode::AliasedUse }
 }
 
 class UnmodeledUseInstruction extends Instruction {

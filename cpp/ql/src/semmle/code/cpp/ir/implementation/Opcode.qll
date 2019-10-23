@@ -57,6 +57,7 @@ private newtype TOpcode =
   TUnmodeledDefinition() or
   TUnmodeledUse() or
   TAliasedDefinition() or
+  TAliasedUse() or
   TPhi() or
   TBuiltIn() or
   TVarArgsStart() or
@@ -393,6 +394,10 @@ module Opcode {
     final override string toString() { result = "AliasedDefinition" }
   }
 
+  class AliasedUse extends Opcode, TAliasedUse {
+    final override string toString() { result = "AliasedUse" }
+  }
+  
   class Phi extends Opcode, TPhi {
     final override string toString() { result = "Phi" }
   }
