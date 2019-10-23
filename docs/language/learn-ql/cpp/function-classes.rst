@@ -4,14 +4,14 @@ Tutorial: Function classes
 Overview
 --------
 
-The standard QL library for C and C++ represents functions using the ``Function`` class (see :doc:`Introducing the C/C++ libraries <introduce-libraries-cpp>`).
+The standard CodeQL library for C and C++ represents functions using the ``Function`` class (see :doc:`Introducing the C/C++ libraries <introduce-libraries-cpp>`).
 
 The example queries in this topic explore some of the most useful library predicates for querying functions.
 
 Finding all static functions
 ----------------------------
 
-Using the member predicate ``Function.isStatic()`` we can list all of the static functions in a snapshot:
+Using the member predicate ``Function.isStatic()`` we can list all the static functions in a database:
 
 .. code-block:: ql
 
@@ -26,7 +26,7 @@ This query is very general, so there are probably too many results to be interes
 Finding functions that are not called
 -------------------------------------
 
-It might be more interesting to find functions that are not called, using the standard QL ``FunctionCall`` class from the **abstract syntax tree** category (see :doc:`Introducing the C/C++ libraries <introduce-libraries-cpp>`). The ``FunctionCall`` class can be used to identify places where a function is actually used, and it is related to ``Function`` through the ``FunctionCall.getTarget()`` predicate.
+It might be more interesting to find functions that are not called, using the standard CodeQL ``FunctionCall`` class from the **abstract syntax tree** category (see :doc:`Introducing the C/C++ libraries <introduce-libraries-cpp>`). The ``FunctionCall`` class can be used to identify places where a function is actually used, and it is related to ``Function`` through the ``FunctionCall.getTarget()`` predicate.
 
 .. code-block:: ql
 
@@ -58,9 +58,9 @@ You can modify the query to remove functions where a function pointer is used to
 
 This query returns fewer results. However, if you examine the results then you can probably still find potential refinements.
 
-For example, there is a more complicated LGTM `query <https://lgtm.com/rules/2152580467/>`__ that finds unused static functions. To see the QL code for this query, click **Open in query console** at the top of the page.
+For example, there is a more complicated LGTM `query <https://lgtm.com/rules/2152580467/>`__ that finds unused static functions. To see the code for this query, click **Open in query console** at the top of the page.
 
-   You can explore the definition of an element in the standard QL libraries and see what predicates are available. Use the keyboard **F3** button to open the definition of any element. Alternatively, hover over the element and click **Jump to definition** in the tooltip displayed. The library file is opened in a new tab with the definition highlighted.
+   You can explore the definition of an element in the standard libraries and see what predicates are available. Use the keyboard **F3** button to open the definition of any element. Alternatively, hover over the element and click **Jump to definition** in the tooltip displayed. The library file is opened in a new tab with the definition highlighted.
 
 Finding a specific function
 ---------------------------
