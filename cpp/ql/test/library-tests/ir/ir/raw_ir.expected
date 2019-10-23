@@ -1,5 +1,5 @@
 bad_asts.cpp:
-#    9| int Bad::S::MemberFunction<int>(int)
+#    9| int Bad::S::MemberFunction<int 6>(int)
 #    9|   Block 0
 #    9|     v0_0(void)        = EnterFunction            : 
 #    9|     mu0_1(unknown)    = AliasedDefinition        : 

@@ -67,7 +67,7 @@ bad_asts.cpp:
 #    5|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] S &&
-#    9| [FunctionTemplateInstantiation,MemberFunction] int Bad::S::MemberFunction<int>(int)
+#    9| [FunctionTemplateInstantiation,MemberFunction] int Bad::S::MemberFunction<int 6>(int)
 #    9|   params: 
 #    9|     0: [Parameter] y
 #    9|         Type = [IntType] int
@@ -92,7 +92,7 @@ bad_asts.cpp:
 #   10|         1: [VariableAccess] y
 #   10|             Type = [IntType] int
 #   10|             ValueCategory = prvalue(load)
-#    9| [MemberFunction,TemplateFunction] int Bad::S::MemberFunction<int>(int)
+#    9| [MemberFunction,TemplateFunction] int Bad::S::MemberFunction<int t>(int)
 #    9|   params: 
 #    9|     0: [Parameter] y
 #    9|         Type = [IntType] int
@@ -104,8 +104,9 @@ bad_asts.cpp:
 #   10|         0: [AddExpr] ... + ...
 #   10|             Type = [IntType] int
 #   10|             ValueCategory = prvalue
-#   10|           0: [Literal] Unknown literal
+#   10|           0: [Literal] t
 #   10|               Type = [IntType] int
+#   10|               Value = [Literal] t
 #   10|               ValueCategory = prvalue
 #   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
