@@ -43,5 +43,6 @@ The following changes in version 1.23 affect C# analysis in all applications.
 * There is now a `DataFlow::localExprFlow` predicate and a
   `TaintTracking::localExprTaint` predicate to make it easy to use the most
   common case of local data flow and taint: from one `Expr` to another.
+* Data is now tracked through null-coalescing expressions (`??`).
 
 ## Changes to autobuilder
