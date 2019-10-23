@@ -1,6 +1,3 @@
-| resources/lib/python/lib/tornado/web.py:2316 | to_url | externally controlled string |
-| resources/lib/python/lib/tornado/web.py:2471 | chunk | externally controlled string |
-| resources/lib/python/lib/tornado/web.py:2597 | BinaryExpr | externally controlled string |
 | test.py:6 | Attribute() | externally controlled string |
 | test.py:12 | name | externally controlled string |
 | test.py:20 | url | externally controlled string |

@@ -1,15 +1,3 @@
-| resources/lib/python/lib/tornado/web.py:406 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:449 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2313 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2315 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2421 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2476 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2522 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2527 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2596 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2597 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2728 | Attribute | tornado.request.HttpRequest |
-| resources/lib/python/lib/tornado/web.py:2826 | Attribute | tornado.request.HttpRequest |
 | test.py:6 | Attribute() | externally controlled string |
 | test.py:10 | Attribute() | [externally controlled string] |
 | test.py:17 | Attribute | tornado.request.HttpRequest |
