@@ -19,4 +19,4 @@
 | **Query**                  | **Expected impact**    | **Change** |
 |----------------------------|------------------------|------------|
 | Unreachable code | Fewer false positives | Analysis now accounts for uses of `contextlib.suppress` to suppress exceptions. |
-
+| `__iter__` method returns a non-iterator | Better alert message | Alert now highlights which class is expected to be an iterator. |
