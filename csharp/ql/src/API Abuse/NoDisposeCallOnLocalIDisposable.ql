@@ -81,8 +81,6 @@ private class Conf extends DataFlow::Configuration {
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node2.asExpr() = any(LocalScopeDisposableCreation other | other.getAnArgument() = node1.asExpr())
-    or
-    exists(NullCoalescingExpr nce | node1.asExpr() = nce.getRightOperand() and node2.asExpr() = nce)
   }
 
   override predicate isBarrierOut(DataFlow::Node node) {
