@@ -942,9 +942,7 @@ public class TypeScriptASTConverter {
     SourceLocation bodyLoc = new SourceLocation(loc.getSource(), loc.getStart(), loc.getEnd());
     advance(bodyLoc, skip);
     ClassBody body = new ClassBody(bodyLoc, convertChildren(node, "members"));
-    if ("ClassExpression".equals(kind) || id == null) {
-      // Note that `export default class {}` is represented as a ClassDeclaration
-      // in TypeScript but we treat this as a ClassExpression.
+    if ("ClassExpression".equals(kind)) {
       ClassExpression classExpr =
           new ClassExpression(loc, id, typeParameters, superClass, superInterfaces, body);
       attachSymbolInformation(classExpr.getClassDef(), node);
@@ -967,7 +965,13 @@ public class TypeScriptASTConverter {
       classDecl.addDecorators(convertChildren(node, "decorators"));
       advanceUntilAfter(loc, classDecl.getDecorators());
     }
-    return fixExports(loc, classDecl);
+    Node exportedDecl = fixExports(loc, classDecl);
+    // Convert default-exported anonymous class declarations to class expressions.
+    if (exportedDecl instanceof ExportDefaultDeclaration && !classDecl.getClassDef().hasId()) {
+      return new ExportDefaultDeclaration(
+          exportedDecl.getLoc(), new ClassExpression(classDecl.getLoc(), classDecl.getClassDef()));
+    }
+    return exportedDecl;
   }
 
   private Node convertCommaListExpression(JsonObject node, SourceLocation loc) throws ParseError {
