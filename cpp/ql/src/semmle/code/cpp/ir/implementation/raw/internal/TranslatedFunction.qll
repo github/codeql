@@ -34,6 +34,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   final override Function getFunction() { result = func }
 
   final override TranslatedElement getChild(int id) {
+    id = -4 and result = getReadEffects()
+    or
     id = -3 and result = getConstructorInitList()
     or
     id = -2 and result = getBody()
@@ -52,6 +54,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   }
 
   final private TranslatedStmt getBody() { result = getTranslatedStmt(func.getEntryPoint()) }
+
+  final private TranslatedReadEffects getReadEffects() { result = getTranslatedReadEffects(func) }
 
   final private TranslatedParameter getParameter(int index) {
     result = getTranslatedParameter(func.getParameter(index))
@@ -113,8 +117,11 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     child = getBody() and
     result = getReturnSuccessorInstruction()
     or
+    child = getDestructorDestructionList() and
+    result = getReadEffects().getFirstInstruction()
+    or
     (
-      child = getDestructorDestructionList() and
+      child = getReadEffects() and
       if getReturnType() instanceof VoidType
       then result = getInstruction(ReturnTag())
       else result = getInstruction(ReturnValueAddressTag())
@@ -529,5 +536,103 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
       then result = getChild(id + 1).getFirstInstruction()
       else result = getParent().getChildSuccessor(this)
     )
+  }
+}
+
+TranslatedReadEffects getTranslatedReadEffects(Function func) { result.getAST() = func }
+
+class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
+  Function func;
+
+  TranslatedReadEffects() { this = TTranslatedReadEffects(func) }
+
+  override Locatable getAST() { result = func }
+
+  override Function getFunction() { result = func }
+
+  override string toString() { result = "read effects: " + func.toString() }
+
+  override TranslatedElement getChild(int id) {
+    result = getTranslatedReadEffect(func.getParameter(id))
+  }
+
+  override Instruction getFirstInstruction() {
+    if exists(getAChild())
+    then
+      result = min(TranslatedReadEffect child, int id | child = getChild(id) | child order by id)
+            .getFirstInstruction()
+    else result = getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    exists(int id | child = getChild(id) |
+      if exists(TranslatedReadEffect child2, int id2 | id2 > id and child2 = getChild(id2))
+      then
+        result = min(TranslatedReadEffect child2, int id2 |
+            child2 = getChild(id2) and id2 > id
+          |
+            child2 order by id2
+          ).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    )
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
+  ) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+}
+
+private TranslatedReadEffect getTranslatedReadEffect(Parameter param) { result.getAST() = param }
+
+class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
+  Parameter param;
+
+  TranslatedReadEffect() { this = TTranslatedReadEffect(param) }
+
+  override Locatable getAST() { result = param }
+
+  override string toString() { result = "read effect: " + param.toString() }
+
+  override TranslatedElement getChild(int id) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind edge) {
+    tag = OnlyInstructionTag() and
+    edge = gotoEdge() and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override Function getFunction() { result = param.getFunction() }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
+  ) {
+    opcode instanceof Opcode::ReturnIndirection and
+    tag = OnlyInstructionTag() and
+    resultType instanceof VoidType and
+    isGLValue = false
+  }
+
+  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = sideEffectOperand() and
+    result = getTranslatedFunction(getFunction()).getUnmodeledDefinitionInstruction()
+    or
+    tag = OnlyInstructionTag() and
+    operandTag = addressOperand() and
+    result = getTranslatedParameter(param).getInstruction(InitializerIndirectAddressTag())
+  }
+
+  final override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = sideEffectOperand() and
+    result instanceof UnknownType
   }
 }

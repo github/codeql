@@ -49,7 +49,8 @@ module InstructionSanity {
         (
           opcode instanceof ReadSideEffectOpcode or
           opcode instanceof Opcode::InlineAsm or
-          opcode instanceof Opcode::CallSideEffect
+          opcode instanceof Opcode::CallSideEffect or
+          opcode instanceof Opcode::ReturnIndirection
         ) and
         tag instanceof SideEffectOperandTag
       )
@@ -741,6 +742,18 @@ class ReturnValueInstruction extends ReturnInstruction {
   final LoadOperand getReturnValueOperand() { result = getAnOperand() }
 
   final Instruction getReturnValue() { result = getReturnValueOperand().getDef() }
+}
+
+class ReturnIndirectionInstruction extends Instruction {
+  ReturnIndirectionInstruction() { getOpcode() instanceof Opcode::ReturnIndirection }
+
+  final SideEffectOperand getSideEffectOperand() { result = getAnOperand() }
+
+  final Instruction getSideEffect() { result = getSideEffectOperand().getDef() }
+
+  final AddressOperand getSourceAddressOperand() { result = getAnOperand() }
+
+  final Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
 }
 
 class CopyInstruction extends Instruction {

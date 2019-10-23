@@ -346,6 +346,16 @@ newtype TTranslatedElement =
       translateFunction(func)
     )
   } or
+  TTranslatedReadEffects(Function func) { translateFunction(func) } or
+  // The read side effects in a function's return block
+  TTranslatedReadEffect(Parameter param) {
+    translateFunction(param.getFunction()) and
+    exists(Type t | t = param.getUnspecifiedType() |
+      t instanceof ArrayType or
+      t instanceof PointerType or
+      t instanceof ReferenceType
+    )
+  } or
   // A local declaration
   TTranslatedDeclarationEntry(DeclarationEntry entry) {
     exists(DeclStmt declStmt |
