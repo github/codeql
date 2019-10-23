@@ -83,6 +83,11 @@ class Test
         // GOOD: Disposed automatically.
         using var c2 = new Timer(TimerProc);
 
+        // GOOD: ownership taken via ?? (false positive)
+        StringReader source = null;
+        using(XmlReader.Create(source ?? new StringReader("xml"), null))
+            ;
+
         return null;
     }
 
