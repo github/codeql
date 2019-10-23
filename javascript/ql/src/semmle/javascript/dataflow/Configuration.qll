@@ -987,7 +987,7 @@ class PathNode extends TPathNode {
 
   /** Gets a successor node of this path node. */
   final PathNode getASuccessor() {
-    result = getASuccessorIfHidden*(getASuccessor(this))
+    result = getASuccessor(this)
   }
 
   /** Gets a textual representation of this path node. */
@@ -1067,5 +1067,8 @@ module PathGraph {
   }
 
   /** Holds if `pred` &rarr; `succ` is an edge in the graph of data flow path explanations. */
-  query predicate edges(PathNode pred, PathNode succ) { pred.getASuccessor() = succ and nodes(pred) and nodes(succ) }
+  query predicate edges(PathNode pred, PathNode succ) {
+    succ = getASuccessorIfHidden*(pred.getASuccessor()) and
+    nodes(pred) and nodes(succ)
+  }
 }
