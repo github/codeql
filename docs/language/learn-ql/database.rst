@@ -17,7 +17,7 @@ For a Java program, two key tables are:
 
 The CodeQL library defines classes to provide a layer of abstraction over each of these tables (and the related auxiliary tables): ``Expr`` and ``Stmt``.
 
-Most classes in the CodeQL library are similar: they are abstractions over one or more database tables. Looking at one of the CodeQL libraries illustrates this:
+Most classes in the library are similar: they are abstractions over one or more database tables. Looking at one of the libraries illustrates this:
 
 .. code-block:: ql
 

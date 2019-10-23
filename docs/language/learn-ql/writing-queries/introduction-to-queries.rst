@@ -30,7 +30,7 @@ For information on how to format your code when contributing queries to the GitH
 Basic query structure
 *********************
 
-`Queries <https://help.semmle.com/QL/ql-handbook/queries.html>`__ written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing CodeQL queries include additional optional information, and have the following structure::
+`Queries <https://help.semmle.com/QL/ql-handbook/queries.html>`__ written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure::
 
     /**
      * 
@@ -85,9 +85,9 @@ When writing your own alert queries, you would typically import the standard lib
 - JavaScript/TypeScript: ``javascript``
 - Python: ``python``
 
-There are also CodeQL libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Constructing path queries <path-queries>` for further information.
+There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Constructing path queries <path-queries>` for further information.
 
-You can explore the contents of all the standard CodeQL libraries in the `CodeQL library reference documentation <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__, using `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/standard-queries.html>`__, or in the `GitHub repository <https://github.com/semmle/ql>`__.
+You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__, using `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/z-queries.html>`__, or in the `GitHub repository <https://github.com/semmle/ql>`__.
 
 
 Optional CodeQL classes and predicates

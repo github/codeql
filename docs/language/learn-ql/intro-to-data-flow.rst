@@ -58,9 +58,9 @@ Computing an accurate and complete data flow graph presents several challenges:
 - Aliasing between variables can result in a single write changing the value that multiple pointers point to.
 - The data flow graph can be very large and slow to compute.
 
-To overcome these potential problems, two kinds of data flow are modeled in the CodeQL libraries:
+To overcome these potential problems, two kinds of data flow are modeled in the libraries:
 
-- Local data flow, concerning the data flow within a single function. When reasoning about local, you only considers edges between data flow nodes belonging to the same function.It is generally sufficiently fast, efficient and precise for many queries, and it is usually possible to compute the local data flow for all functions in a CodeQL database.
+- Local data flow, concerning the data flow within a single function. When reasoning about local data flow, you only consider edges between data flow nodes belonging to the same function. It is generally sufficiently fast, efficient and precise for many queries, and it is usually possible to compute the local data flow for all functions in a CodeQL database.
 
 - Global data flow, effectively considers the data flow within an entire program, by calculating data flow between functions and through object properties. Computing global data flow is typically more time and energy intensive than local data flow, therefore queries should be refined to look for more specific sources and sinks.
 
@@ -69,7 +69,7 @@ Many CodeQL queries contain examples of both local and global data flow analysis
 Normal data flow vs taint tracking
 **********************************
 
-In the standard CodeQL libraries, we make a distinction between 'normal' data flow and taint tracking.
+In the standard libraries, we make a distinction between 'normal' data flow and taint tracking.
 The normal data flow libraries are used to analyze the information flow in which data values are preserved at each step.
 
 For example, if you are tracking an insecure object ``x`` (which might be some untrusted or potentially malicious data), a step in the program may 'change' its value. So, in a simple process such as ``y = x + 1``, a normal data flow analysis will highlight the use of ``x``, but not ``y``.

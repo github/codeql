@@ -6,7 +6,7 @@ Overview
 
 Security researchers are particularly interested in the way that information flows in a program. Many vulnerabilities are caused by seemingly benign data flowing to unexpected locations, and being used in a malicious way. 
 Path queries written with CodeQL are particularly useful for analyzing data flow as they can be used to track the path taken by a variable from its possible starting points (``source``) to its possible end points (``sink``).
-To model paths with CodeQL, your query must provide information about the ``source`` and the ``sink``, as well as the data flow steps that link them.
+To model paths, your query must provide information about the ``source`` and the ``sink``, as well as the data flow steps that link them.
 
 This topic provides information on how to structure a path query file so you can explore the paths associated with the results of data flow analysis. 
 
@@ -18,7 +18,7 @@ This topic provides information on how to structure a path query file so you can
 
 
 To learn more about modeling data flow with CodeQL, see :doc:`Introduction to data flow <../intro-to-data-flow>`.
-For more language-specific information on analyzing data flow see:
+For more language-specific information on analyzing data flow, see:
 
 - :doc:`Analyzing data flow in C/C++ <../cpp/dataflow>`
 - :doc:`Analyzing data flow in C# <../csharp/dataflow>`
@@ -103,7 +103,7 @@ Generating path explanations
 In order to generate path explanations, your query needs to compute a `path graph <https://en.wikipedia.org/wiki/Path_graph>`__.
 To do this you need to define a `query predicate <https://help.semmle.com/QL/ql-handbook/queries.html#query-predicates>`__ called ``edges`` in your query.
 This predicate defines the edge relations of the graph you are computing, and it is used to compute the paths related to each result that your query generates. 
-You can import a predefined ``edges`` predicate from a path graph module in one of the standard CodeQL data flow libraries. In addition to the path graph module, the data flow libraries contain the other ``classes``, ``predicates``, and ``modules`` that are commonly used in data flow analysis. The import statement to use depends on the language that you are analyzing.
+You can import a predefined ``edges`` predicate from a path graph module in one of the standard data flow libraries. In addition to the path graph module, the data flow libraries contain the other ``classes``, ``predicates``, and ``modules`` that are commonly used in data flow analysis. The import statement to use depends on the language that you are analyzing.
 
 For C/C++, C#. Java, and JavaScript you would use::
 
@@ -115,7 +115,7 @@ For Python, the ``Paths`` module contains the ``edges`` predicate::
 
     import semmle.python.security.Paths 
 
-You can also import libraries specifically designed to implement data flow analysis in various common frameworks and environments, and many additional libraries are included with CodeQL. To see examples of the different libraries used in data flow analysis, see the links to the built-in queries above or browse the `standard CodeQL libraries <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__.
+You can also import libraries specifically designed to implement data flow analysis in various common frameworks and environments, and many additional libraries are included with CodeQL. To see examples of the different libraries used in data flow analysis, see the links to the built-in queries above or browse the `standard libraries <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__.
 
 For all languages, you can also optionally define a ``nodes`` query predicate, which specifies the nodes of the path graph that you are interested in. If ``nodes`` is defined, only edges with endpoints defined by these nodes are selected. If ``nodes`` is not defined, you select all possible endpoints of ``edges``.
 
