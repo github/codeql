@@ -35,7 +35,7 @@ instructionWithoutSuccessor
 | ms_try_mix.cpp:28:12:28:15 | CallSideEffect: call to C |
 | ms_try_mix.cpp:48:10:48:13 | CallSideEffect: call to C |
 | pointer_to_member.cpp:36:11:36:30 | FieldAddress: {...} |
-| stmt_expr.cpp:27:5:27:15 | CopyValue: ... = ... |
+| stmt_expr.cpp:27:5:27:15 | Store: ... = ... |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix |
 | vla.c:11:6:11:16 | UnmodeledDefinition: vla_typedef |
 ambiguousSuccessors

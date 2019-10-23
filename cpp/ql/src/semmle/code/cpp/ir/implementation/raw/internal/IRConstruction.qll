@@ -49,20 +49,23 @@ private module Cached {
   Expr getInstructionConvertedResultExpression(Instruction instruction) {
     exists(TranslatedExpr translatedExpr |
       translatedExpr = getTranslatedExpr(result) and
-      instruction = translatedExpr.getResult()
+      instruction = translatedExpr.getResult() and
+      // Only associate `instruction` with this expression if the translated
+      // expression actually produced the instruction; not if it merely
+      // forwarded the result of another translated expression.
+      instruction = translatedExpr.getInstruction(_)
     )
   }
 
   cached
   Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
-    exists(Expr converted, TranslatedExpr translatedExpr |
+    exists(Expr converted |
       result = converted.(Conversion).getExpr+()
       or
       result = converted
     |
       not result instanceof Conversion and
-      translatedExpr = getTranslatedExpr(converted) and
-      instruction = translatedExpr.getResult()
+      converted = getInstructionConvertedResultExpression(instruction)
     )
   }
 

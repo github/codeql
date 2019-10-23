@@ -2547,27 +2547,45 @@ class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {
 // This should ideally be a dispatch predicate on TranslatedNonConstantExpr,
 // but it doesn't look monotonic to QL.
 predicate exprNeedsCopyIfNotLoaded(Expr expr) {
-  expr instanceof AssignExpr
+  (
+    expr instanceof AssignExpr
+    or
+    expr instanceof AssignOperation and
+    not expr.isPRValueCategory() // is C++
+    or
+    expr instanceof PrefixCrementOperation and
+    not expr.isPRValueCategory() // is C++
+    or
+    expr instanceof PointerDereferenceExpr
+    or
+    expr instanceof AddressOfExpr
+    or
+    expr instanceof BuiltInOperationBuiltInAddressOf
+    or
+    // No case for ParenthesisExpr to avoid getting too many instructions
+    expr instanceof ReferenceDereferenceExpr
+    or
+    expr instanceof ReferenceToExpr
+    or
+    expr instanceof CommaExpr
+    or
+    expr instanceof ConditionDeclExpr
+    // TODO: simplify TranslatedStmtExpr too
+  ) and
+  not exprImmediatelyDiscarded(expr)
+}
+
+/**
+ * Holds if `expr` is immediately discarded. Such expressions do not need a
+ * `CopyValue` because it's unlikely that anyone is interested in their value.
+ */
+private predicate exprImmediatelyDiscarded(Expr expr) {
+  exists(ExprStmt s |
+    s = expr.getParent() and
+    not exists(StmtExpr se | s = se.getStmt().(Block).getLastStmt())
+  )
   or
-  expr instanceof AssignOperation and
-  not expr.isPRValueCategory() // is C++
+  exists(CommaExpr c | c.getLeftOperand() = expr)
   or
-  expr instanceof PrefixCrementOperation and
-  not expr.isPRValueCategory() // is C++
-  or
-  expr instanceof PointerDereferenceExpr
-  or
-  expr instanceof AddressOfExpr
-  or
-  expr instanceof BuiltInOperationBuiltInAddressOf
-  or
-  // No case for ParenthesisExpr to avoid getting too many instructions
-  expr instanceof ReferenceDereferenceExpr
-  or
-  expr instanceof ReferenceToExpr
-  or
-  expr instanceof CommaExpr
-  or
-  expr instanceof ConditionDeclExpr
-  // TODO: simplify TranslatedStmtExpr too
+  exists(ForStmt for | for.getUpdate() = expr)
 }
