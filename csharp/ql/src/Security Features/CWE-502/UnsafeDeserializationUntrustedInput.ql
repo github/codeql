@@ -17,9 +17,7 @@ import csharp
 import UnsafeDeserialization::UnsafeDeserialization
 import DataFlow::PathGraph
 
-from
-  TaintTrackingConfig config, DataFlow::PathNode source,
-  DataFlow::PathNode sink
+from TaintTrackingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to unsafe deserializer.", source.getNode(),
   "User-provided data"
