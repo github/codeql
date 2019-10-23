@@ -11,6 +11,7 @@
  */
 
 import javascript
+import HostnameRegexpShared
 
 /** Holds if `term` is one of the transitive left children of a regexp. */
 predicate isLeftArmTerm(RegExpTerm term) {
@@ -147,36 +148,6 @@ predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string 
     ) and
     msg = "Misleading operator precedence. The subexpression '" + anchoredTerm.getRawValue() +
         "' is anchored at the " + direction + ", but the other parts of this regular expression are not"
-  )
-}
-
-/**
- * Holds if the given term contains a constant that is unlikely to occur in the origin part of a URL.
- */
-predicate isConstantInvalidInsideOrigin(RegExpConstant term) {
-  // Look for any of these cases:
-  // - A character that can't occur in the origin
-  // - Two dashes in a row
-  // - A colon that is not part of port or scheme separator
-  // - A slash that is not part of scheme separator
-  term.getValue().regexpMatch(".*(?:[^a-zA-Z0-9.:/-]|--|:[^0-9/]|(?<![/:]|^)/).*")
-}
-
-/** Holds if `term` is a wildcard `.` or an actual `.` character. */
-predicate isDotLike(RegExpTerm term) {
-  term instanceof RegExpDot
-  or
-  term.(RegExpCharEscape).getValue() = "."
-}
-
-/**
- * Holds if the given regular expression term contains top-level domain preceded by a dot,
- * such as `.com`.
- */
-predicate hasTopLevelDomainEnding(RegExpSequence seq) {
-  exists(int i |
-    seq.getChild(i).(RegExpConstant).getValue().regexpMatch(RegExpPatterns::commonTLD()) and
-    isDotLike(seq.getChild(i - 1))
   )
 }
 
