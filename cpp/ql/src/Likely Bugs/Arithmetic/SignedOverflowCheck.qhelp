@@ -22,17 +22,19 @@ In the following example, even though <code>delta</code> has been declared
 <code>unsigned short</code>, C/C++ type promotion rules require that its
 type is promoted to the larger type used in the addition and comparison,
 namely a <code>signed int</code>.  As a result, the entire expression is
-evaluated using <code>signed</code> values and its value is therefore undefined.
+evaluated using <code>signed</code> integers and may overflow, and hence
+is undefined.
 </p>
 <sample src="SignedOverflowCheck-bad1.cpp" />
 <p>
 In the following example, even though both <code>n</code> and <code>delta</code>
-have been declared <code>unsigned short</code>, C/C++ type promotion rules
-require that both parameters be promoted to the next bigger <code>signed</code>
-integer type (in this case <code>signed int</code>) before being added together.
-As a result, the entire expression is evaluated using <code>signed</code> values
-and its value is therefore undefined.  (Note, however, that the addition cannot
-overflow since we are adding two "small" <code>unsigned short</code> values.)
+have been declared <code>unsigned short</code>, both are promoted to 
+<code>signed int</code> prior to addition.  Because we started out with the
+narrower <code>short</code> type, the addition is guaranteed not to overflow
+and is therefore defined.  But the fact that <code>n1 + delta</code> never 
+overflows means that the condition <code>n1 + delta &lt; n1</code> will never
+hold true, which likely is not what the programmer intended. (see also the
+<code>BadArithmeticOverflow.Check.ql</code> query).
 </p>
 <sample src="SignedOverflowCheck-bad2.cpp" />
 <p>
@@ -40,7 +42,7 @@ The following example builds upon the previous one.  Again, we have two
 <code>unsigned short</code> values getting promoted to a wider type.  However,
 since <code>delta</code> is explicitly cast to an <code>unsigned</code> type,
 <code>n1</code> (on both sides of the comparison) is promoted to
-<code>unsigned</code> as well.  Since we are now operating on
+<code>unsigned int</code> as well.  Since we are now operating on
 <code>unsigned</code> values, the overflow check is defined and supported by
 standard C/C++.
 </p>
@@ -48,7 +50,7 @@ standard C/C++.
 <p>
 In the next example, a value of type <code>signed int</code> is
 added to a value of type <code>unsigned int</code>.  Because
-the types are of the same size, C/C++ promotion rules dictate that
+the types are of the same size, C/C++ conversion rules dictate that
 <code>unsigned int</code> is chosen as the overall type of the addition
 operation. The entire expression is evaluated using <code>unsigned</code>
 values, which is allowed and defined behavior per the C/C++ standard.
