@@ -54,16 +54,7 @@ private class Conf extends DataFlow::Configuration {
       )
       or
       // A disposing method
-      exists(Call c, Parameter p |
-        e = c.getArgumentForParameter(p)
-        or
-        // e.g `Stream.Create(input ?? new TextReader())`
-        exists(NullCoalescingExpr nce |
-          nce = c.getArgumentForParameter(p) and e = nce.getRightOperand()
-        )
-      |
-        mayBeDisposed(p)
-      )
+      exists(Call c, Parameter p | e = c.getArgumentForParameter(p) | mayBeDisposed(p))
       or
       // Things that are assigned to fields, properties, or indexers may be disposed
       exists(AssignableDefinition def, Assignable a |
@@ -90,6 +81,8 @@ private class Conf extends DataFlow::Configuration {
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node2.asExpr() = any(LocalScopeDisposableCreation other | other.getAnArgument() = node1.asExpr())
+    or
+    exists(NullCoalescingExpr nce | node1.asExpr() = nce.getRightOperand() and node2.asExpr() = nce)
   }
 
   override predicate isBarrierOut(DataFlow::Node node) {
