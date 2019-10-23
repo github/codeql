@@ -54,7 +54,16 @@ private class Conf extends DataFlow::Configuration {
       )
       or
       // A disposing method
-      exists(Call c, Parameter p | e = c.getArgumentForParameter(p) | mayBeDisposed(p))
+      exists(Call c, Parameter p |
+        e = c.getArgumentForParameter(p)
+        or
+        // e.g `Stream.Create(input ?? new TextReader())`
+        exists(NullCoalescingExpr nce |
+          nce = c.getArgumentForParameter(p) and e = nce.getRightOperand()
+        )
+      |
+        mayBeDisposed(p)
+      )
       or
       // Things that are assigned to fields, properties, or indexers may be disposed
       exists(AssignableDefinition def, Assignable a |
