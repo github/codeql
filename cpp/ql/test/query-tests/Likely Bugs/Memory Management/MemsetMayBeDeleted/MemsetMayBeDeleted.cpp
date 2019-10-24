@@ -48,7 +48,7 @@ void func3(unsigned long long sz) {
 // x64 msvc v19.22: deleted
 void func4(unsigned long long sz) {
     char buff[128]; 
-    memset(buff, 0, PW_SIZE); // BAD
+    memset(buff, 0, PW_SIZE); // BAD [NOT DETECTED]
     strcpy(buff, "Hello");
 }
 

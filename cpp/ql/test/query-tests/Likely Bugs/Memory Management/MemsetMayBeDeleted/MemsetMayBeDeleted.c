@@ -85,7 +85,7 @@ int func3(void) {
 int func4(void) { 
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
-	__builtin_memset(pw1a + 3, 0, PW_SIZE - 3); // BAD 
+	__builtin_memset(pw1a + 3, 0, PW_SIZE - 3); // BAD [NOT DETECTED]
 	return 0;
 }
 
@@ -115,7 +115,7 @@ int func5(void) {
 int func7(void) { 
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
-	__builtin_memset(&pw1a[3], 0, PW_SIZE - 5); // BAD
+	__builtin_memset(&pw1a[3], 0, PW_SIZE - 5); // BAD [NOT DETECTED]
 	return 0;
 }
 

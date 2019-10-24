@@ -22,12 +22,20 @@ class MemsetCallInstruction extends CallInstruction {
 
 Instruction getAUseInstruction(Instruction insn) { result = insn.getAUse().getUse() }
 
+predicate pointsIntoStack(Instruction instr) {
+  instr.(VariableAddressInstruction).getIRVariable() instanceof IRAutomaticVariable
+  or
+  pointsIntoStack(instr.(CopyInstruction).getSourceValue())
+  or
+  pointsIntoStack(instr.(ConvertInstruction).getUnary())
+}
+
 from MemsetCallInstruction memset, SizedBufferMustWriteSideEffectInstruction sei
 where
   sei.getPrimaryInstruction() = memset and
-  forall(Instruction use | use = getAUseInstruction+(sei) | use instanceof ChiInstruction) and
-  exists(Instruction def | memset.getPositionalArgument(0) = getAUseInstruction+(def) |
-    def instanceof UninitializedInstruction
-  )
+  // The first argument to memset must reside on the stack
+  pointsIntoStack(valueNumber(memset.getPositionalArgument(0)).getAnInstruction()) and
+  // The result of memset may not be subsequently used
+  forall(Instruction use | use = getAUseInstruction+(sei) | use instanceof ChiInstruction)
 select memset,
   "Call to " + memset.getStaticCallTarget().getName() + " may be deleted by the compiler."
