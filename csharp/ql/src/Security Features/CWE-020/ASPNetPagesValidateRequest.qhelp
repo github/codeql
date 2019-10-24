@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Request validation is a feature in ASP.NET that protects web applications against potentially malicious content 
+in requests, specifically against cross-site scripting attacks (XSS). 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Enable the directive validateRequest in your web.config file:
+<code>
+<pages validateRequest="true" />
+</code>
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows the 'validateRequest' flag set to true in a <code>Web.config</code> file for ASP.NET:
+</p>
+
+<sample src="Web.config.good" />
+
+<p>
+This will protect the web application against common XSS attacks.
+</p>
+
+<p>
+If validateRequest is set to <code>false</code>, validation is disabled:
+</p>
+
+<sample src="Web.config.bad" />
+
+</example>
+<references>
+
+<li>
+MSDN:
+<a href=https://docs.microsoft.com/en-us/previous-versions/aspnet/hh882339(v=vs.110)?redirectedfrom=MSDN">Request Validation in ASP.NET</a>.
+</li>
+<li>
+MSDN:
+<a href="https://docs.microsoft.com/en-us/previous-versions/aspnet/debza5t0(v=vs.100)?redirectedfrom=MSDN">Validation ASP.NET Controls</a>.
+</li>
+
+
+</references>
+</qhelp>
