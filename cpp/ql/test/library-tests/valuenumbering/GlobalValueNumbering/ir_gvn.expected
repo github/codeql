@@ -67,7 +67,8 @@ test.cpp:
 #    1|         valnum = unique
 #    1|     v0_33(void)                 = ReturnValue              : &:r0_32
 #    1|     v0_34(void)                 = UnmodeledUse             : mu*
-#    1|     v0_35(void)                 = ExitFunction             : 
+#    1|     v0_35(void)                 = AliasedUse               : ~m0_1
+#    1|     v0_36(void)                 = ExitFunction             : 
 
 #   12| int test01(int, int)
 #   12|   Block 0
@@ -149,7 +150,8 @@ test.cpp:
 #   12|         valnum = unique
 #   12|     v0_39(void)                 = ReturnValue               : &:r0_38
 #   12|     v0_40(void)                 = UnmodeledUse              : mu*
-#   12|     v0_41(void)                 = ExitFunction              : 
+#   12|     v0_41(void)                 = AliasedUse                : ~m0_1
+#   12|     v0_42(void)                 = ExitFunction              : 
 
 #   25| int test02(int, int)
 #   25|   Block 0
@@ -238,7 +240,8 @@ test.cpp:
 #   25|         valnum = unique
 #   25|     v0_43(void)                 = ReturnValue                      : &:r0_42
 #   25|     v0_44(void)                 = UnmodeledUse                     : mu*
-#   25|     v0_45(void)                 = ExitFunction                     : 
+#   25|     v0_45(void)                 = AliasedUse                       : ~m0_26
+#   25|     v0_46(void)                 = ExitFunction                     : 
 
 #   39| int test03(int, int, int*)
 #   39|   Block 0
@@ -334,7 +337,8 @@ test.cpp:
 #   39|         valnum = unique
 #   39|     v0_46(void)                 = ReturnValue               : &:r0_45
 #   39|     v0_47(void)                 = UnmodeledUse              : mu*
-#   39|     v0_48(void)                 = ExitFunction              : 
+#   39|     v0_48(void)                 = AliasedUse                : ~m0_29
+#   39|     v0_49(void)                 = ExitFunction              : 
 
 #   49| unsigned int my_strspn(char const*, char const*)
 #   49|   Block 0
@@ -496,7 +500,8 @@ test.cpp:
 #   49|         valnum = r9_1
 #   49|     v9_6(void)                = ReturnValue              : &:r9_5, m9_4
 #   49|     v9_7(void)                = UnmodeledUse             : mu*
-#   49|     v9_8(void)                = ExitFunction             : 
+#   49|     v9_8(void)                = AliasedUse               : ~m0_1
+#   49|     v9_9(void)                = ExitFunction             : 
 
 #   75| void test04(two_values*)
 #   75|   Block 0
@@ -575,10 +580,13 @@ test.cpp:
 #-----|   Goto -> Block 2
 
 #   82|   Block 2
-#   82|     v2_0(void) = NoOp         : 
-#   75|     v2_1(void) = ReturnVoid   : 
-#   75|     v2_2(void) = UnmodeledUse : mu*
-#   75|     v2_3(void) = ExitFunction : 
+#   82|     m2_0(unknown) = Phi          : from 0:~m0_9, from 1:~m1_3
+#   82|         valnum = unique
+#   82|     v2_1(void)    = NoOp         : 
+#   75|     v2_2(void)    = ReturnVoid   : 
+#   75|     v2_3(void)    = UnmodeledUse : mu*
+#   75|     v2_4(void)    = AliasedUse   : ~m2_0
+#   75|     v2_5(void)    = ExitFunction : 
 
 #   84| void test05(int, int, void*)
 #   84|   Block 0
@@ -651,7 +659,8 @@ test.cpp:
 #   89|     v3_5(void)       = NoOp                       : 
 #   84|     v3_6(void)       = ReturnVoid                 : 
 #   84|     v3_7(void)       = UnmodeledUse               : mu*
-#   84|     v3_8(void)       = ExitFunction               : 
+#   84|     v3_8(void)       = AliasedUse                 : ~m0_1
+#   84|     v3_9(void)       = ExitFunction               : 
 
 #   91| int regression_test00()
 #   91|   Block 0
@@ -682,7 +691,8 @@ test.cpp:
 #   91|         valnum = r0_8
 #   91|     v0_13(void)       = ReturnValue              : &:r0_12, m0_11
 #   91|     v0_14(void)       = UnmodeledUse             : mu*
-#   91|     v0_15(void)       = ExitFunction             : 
+#   91|     v0_15(void)       = AliasedUse               : ~m0_1
+#   91|     v0_16(void)       = ExitFunction             : 
 
 #  104| int inheritanceConversions(Derived*)
 #  104|   Block 0
@@ -743,7 +753,8 @@ test.cpp:
 #  104|         valnum = r0_23
 #  104|     v0_28(void)             = ReturnValue                   : &:r0_27, m0_26
 #  104|     v0_29(void)             = UnmodeledUse                  : mu*
-#  104|     v0_30(void)             = ExitFunction                  : 
+#  104|     v0_30(void)             = AliasedUse                    : ~m0_1
+#  104|     v0_31(void)             = ExitFunction                  : 
 
 #  112| void test06()
 #  112|   Block 0
@@ -763,4 +774,5 @@ test.cpp:
 #  117|     v0_7(void)           = NoOp                : 
 #  112|     v0_8(void)           = ReturnVoid          : 
 #  112|     v0_9(void)           = UnmodeledUse        : mu*
-#  112|     v0_10(void)          = ExitFunction        : 
+#  112|     v0_10(void)          = AliasedUse          : ~m0_1
+#  112|     v0_11(void)          = ExitFunction        : 
