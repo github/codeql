@@ -201,9 +201,6 @@ methodTypeArguments
 | NullableRefTypes.cs:67:10:67:21 | GenericFn | 0 | MyClass |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn | 0 | MyClass! |
 constructedTypes
-| AsyncStreams.cs:34:15:34:37 | IAsyncEnumerable<int> | 0 | int | _ |
-| AsyncStreams.cs:39:15:39:37 | IAsyncEnumerator<T> | 0 | T | _ |
-| AsyncStreams.cs:39:15:39:37 | IAsyncEnumerator<int> | 0 | int | _ |
 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass, MyClass, IDisposable, MyClass> | 0 | MyClass | _ |
 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass, MyClass, IDisposable, MyClass> | 1 | MyClass | _ |
 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass, MyClass, IDisposable, MyClass> | 2 | IDisposable | _ |

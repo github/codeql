@@ -270,9 +270,6 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             type = type.DisambiguateType();
 
-            if (type is INamedTypeSymbol nt && nt.IsEvilTwin())
-                type = nt.ConstructedFrom;
-
             const bool errorTypeIsNull = false;
             return type == null || (errorTypeIsNull && type.TypeKind == TypeKind.Error) ?
                 NullType.Create(cx).Type : (Type)cx.CreateEntity(type);

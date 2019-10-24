@@ -129,7 +129,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     // Type arguments with different nullability can result in 
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol, TypeIdentifierContext.MethodName); trapFile.Write((int)ta.Nullability); });
+                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); trapFile.Write((int)ta.Nullability); });
                     trapFile.Write('>');
                 }
             }
@@ -199,10 +199,10 @@ namespace Semmle.Extraction.CSharp.Entities
         /// to make the reference to <code>#3</code> in the label definition <code>#4</code> for
         /// <code>T</code> valid.
         /// </summary>
-        protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type, TypeIdentifierContext tic)
+        protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type)
         {
             if (type.ContainsTypeParameters(cx, method))
-                type.BuildTypeId(cx, trapFile, (cx0, tb0, type0, _) => AddSignatureTypeToId(cx, tb0, method, type0, tic), tic, method);
+                type.BuildTypeId(cx, trapFile, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
             else
                 trapFile.WriteSubId(Type.Create(cx, type).TypeRef);
         }
@@ -215,13 +215,13 @@ namespace Semmle.Extraction.CSharp.Entities
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType, TypeIdentifierContext.MethodParam);
+                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType);
             }
 
             foreach (var param in method.Parameters)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, param.Type, TypeIdentifierContext.MethodParam);
+                AddSignatureTypeToId(cx, trapFile, method, param.Type);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:

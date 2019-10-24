@@ -47,12 +47,13 @@ query predicate methodTypeArguments(ConstructedGeneric generic, int arg, string 
 
 query predicate constructedTypes(AnnotatedConstructedType at, int i, string arg, string nullability) {
   arg = at.getTypeArgument(i).toString() and
-  at.getLocation() instanceof SourceLocation and
+  at.getLocation().getFile().getBaseName() = "NullableRefTypes.cs" and
   nullability = at.getAnnotations().getNullability().toString()
 }
 
 query predicate nullableTypeParameters(TypeParameter p) {
   p.getConstraints().hasNullableRefTypeConstraint()
+  and p.getLocation().getFile().getBaseName() = "NullableRefTypes.cs"
 }
 
 query predicate annotatedTypeConstraints(TypeParameter p, AnnotatedType t) {
