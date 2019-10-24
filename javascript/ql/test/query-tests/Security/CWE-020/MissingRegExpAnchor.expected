@@ -1,3 +1,13 @@
+| tst-IncompleteHostnameRegExp.js:2:2:2:24 | /^http: ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:3:2:3:29 | /^http: ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:5:2:5:29 | /^http: ... le.net/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:6:2:6:43 | /^http: ... b).com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:11:13:11:38 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:12:10:12:35 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:15:22:15:47 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:19:17:19:35 | '^test.example.com' | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:40:2:40:30 | /^https ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:55:13:55:39 | '^http: ... le.com' | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | tst-SemiAnchoredRegExp.js:3:2:3:7 | /^a\|b/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:6:2:6:9 | /^a\|b\|c/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:12:2:12:9 | /^a\|(b)/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
@@ -43,6 +53,10 @@
 | tst-SemiAnchoredRegExp.js:98:2:98:18 | /_xxx\|_yyy\|_zzz$/ | Misleading operator precedence. The subexpression '_zzz$' is anchored at the end, but the other parts of this regular expression are not |
 | tst-UnanchoredUrlRegExp.js:3:43:3:61 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:4:54:4:72 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:5:43:5:62 | "^https?://good.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:6:43:6:64 | /^https ... od.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:7:43:7:87 | "(^http ... 2.com)" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:8:43:8:86 | "(https ... e.com)" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | tst-UnanchoredUrlRegExp.js:10:2:10:22 | /https? ... od.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:11:13:11:31 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:13:44:13:62 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
@@ -52,5 +66,6 @@
 | tst-UnanchoredUrlRegExp.js:23:3:23:21 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:24:3:24:23 | /https? ... od.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:25:14:25:32 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:26:3:26:22 | "^https?://good.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | tst-UnanchoredUrlRegExp.js:35:2:35:32 | /https? ... 0-9]+)/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:77:11:77:32 | /vimeo\\ ... 0-9]+)/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |

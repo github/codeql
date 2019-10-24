@@ -55,4 +55,6 @@
 	new RegExp('^http://test\.example.com'); // NOT OK, but flagged by js/useless-regexp-character-escape
 
 	/^http:\/\/(..|...)\.example\.com\/index\.html/; // OK, wildcards are intentional
+	/^http:\/\/.\.example\.com\/index\.html/; // OK, the wildcard is intentional
+	/^(foo.example\.com|whatever)$/; // kinda OK - one disjunction doesn't even look like a hostname
 });

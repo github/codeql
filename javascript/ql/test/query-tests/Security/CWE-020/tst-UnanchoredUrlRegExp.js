@@ -104,4 +104,7 @@
 	path.replace(/engine.io/, "$&-client");
 
 	/\.com|\.org/; // OK, has no domain name
+	/example\.com|whatever/; // OK, the other disjunction doesn't match a hostname
+
+	/^https?:\/\/www\.example\.com\/.*\.html|^https?:\/\/www\.(?:example1|example2).com\/foo\/\d+\/\d+.html/i; // OK
 });

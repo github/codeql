@@ -67,3 +67,38 @@ predicate hasTopLevelDomainEnding(RegExpSequence seq, int i) {
 predicate hasTopLevelDomainEnding(RegExpSequence seq) {
   hasTopLevelDomainEnding(seq, _)
 }
+
+/**
+ * Holds if `term` will always match a hostname, that is, all disjunctions contain
+ * a hostname pattern that isn't inside a quantifier.
+ */
+predicate alwaysMatchesHostname(RegExpTerm term) {
+  hasTopLevelDomainEnding(term, _)
+  or
+  // `localhost` is considered a hostname pattern, but has no TLD
+  term.(RegExpConstant).getValue().regexpMatch("\\blocalhost\\b")
+  or
+  not term instanceof RegExpAlt and
+  not term instanceof RegExpQuantifier and
+  alwaysMatchesHostname(term.getAChild())
+  or
+  alwaysMatchesHostnameAlt(term)
+}
+
+/** Holds if every child of `alt` contains a hostname pattern. */
+predicate alwaysMatchesHostnameAlt(RegExpAlt alt) {
+  alwaysMatchesHostnameAlt(alt, alt.getNumChild() - 1)
+}
+
+/**
+ * Holds if the first `i` children of `alt` contains a hostname pattern.
+ *
+ * This is used instead of `forall` to avoid materializing the set of alternatives
+ * that don't contains hostnames, which is much larger.
+ */
+predicate alwaysMatchesHostnameAlt(RegExpAlt alt, int i) {
+  alwaysMatchesHostname(alt.getChild(0)) and i = 0
+  or
+  alwaysMatchesHostnameAlt(alt, i - 1) and
+  alwaysMatchesHostname(alt.getChild(i))
+}
