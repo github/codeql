@@ -13,6 +13,9 @@ import PrintAST
  * printed.
  */
 class Cfg extends PrintASTConfiguration {
-  /** Holds if the AST for `func` should be printed. */
+  /**
+   * TWEAK THIS PREDICATE AS NEEDED.
+   * Holds if the AST for `func` should be printed.
+   */
   override predicate shouldPrintFunction(Function func) { any() }
 }
