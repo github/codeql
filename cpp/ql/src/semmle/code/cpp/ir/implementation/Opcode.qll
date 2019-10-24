@@ -397,7 +397,7 @@ module Opcode {
   class AliasedUse extends Opcode, TAliasedUse {
     final override string toString() { result = "AliasedUse" }
   }
-  
+
   class Phi extends Opcode, TPhi {
     final override string toString() { result = "Phi" }
   }
