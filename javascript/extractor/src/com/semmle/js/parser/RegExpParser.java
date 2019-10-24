@@ -489,6 +489,11 @@ public class RegExpParser {
       if (this.match("b")) return this.finishTerm(new ControlEscape(loc, "\b", 8, "\\b"));
       return this.finishTerm(this.parseAtomEscape(loc, true));
     }
-    return this.finishTerm(new Constant(loc, String.valueOf(c)));
+    String value = String.valueOf(c);
+    // Extract a surrogate pair as a single constant.
+    if (Character.isHighSurrogate(c) && Character.isLowSurrogate(peekChar(true))) {
+      value += this.nextChar();
+    }
+    return this.finishTerm(new Constant(loc, value));
   }
 }
