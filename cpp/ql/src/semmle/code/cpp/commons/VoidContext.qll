@@ -1,10 +1,9 @@
 import semmle.code.cpp.exprs.Expr
 
 /**
- * DEPRECATED: This class has not been useful.
  * An expression that is used to qualify some other expression.
  */
-deprecated class Qualifier extends Expr {
+class Qualifier extends Expr {
   Qualifier() {
     exists(VariableAccess a | a.getQualifier() = this) or
     exists(Call c | c.getQualifier() = this) or
