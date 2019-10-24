@@ -18,4 +18,4 @@ where
   co.getAChild() = chco and
   not chco.isParenthesised() and
   not co.isFromUninstantiatedTemplate(_)
-select co, "Comparison as an operand to another comparison." 
+select co, "Comparison as an operand to another comparison."
