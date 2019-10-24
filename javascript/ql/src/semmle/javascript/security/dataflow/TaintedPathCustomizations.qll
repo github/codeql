@@ -10,12 +10,22 @@ module TaintedPath {
   /**
    * A data flow source for tainted-path vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a flow label denoting the type of value for which this is a source. */
+    DataFlow::FlowLabel getAFlowLabel() {
+      result instanceof Label::PosixPath
+    }
+  }
 
   /**
    * A data flow sink for tainted-path vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    /** Gets a flow label denoting the type of value for which this is a sink. */
+    DataFlow::FlowLabel getAFlowLabel() {
+      result instanceof Label::PosixPath
+    }
+  }
 
   /**
    * A sanitizer for tainted-path vulnerabilities.
@@ -369,14 +379,33 @@ module TaintedPath {
    * A path argument to a file system access.
    */
   class FsPathSink extends Sink, DataFlow::ValueNode {
+    FileSystemAccess fileSystemAccess;
+
     FsPathSink() {
-      exists(FileSystemAccess fs |
-        this = fs.getAPathArgument() and
-        not exists(fs.getRootPathArgument())
+      (
+        this = fileSystemAccess.getAPathArgument() and
+        not exists(fileSystemAccess.getRootPathArgument())
         or
-        this = fs.getRootPathArgument()
+        this = fileSystemAccess.getRootPathArgument()
       ) and
       not this = any(ResolvingPathCall call).getInput()
+    }
+  }
+
+  /**
+   * A path argument to a file system access, which disallows path traversal.
+   */
+  private class FsPathSinkWithoutPathTraversal extends FsPathSink {
+    FsPathSinkWithoutPathTraversal() {
+      fileSystemAccess.isPathTraversalRejected(this)
+    }
+
+    override DataFlow::FlowLabel getAFlowLabel() {
+      // The protection is ineffective if the ../ segments have already
+      // cancelled out against the intended root dir using path.join or similar.
+      // Only flag normalized paths, as this corresponds to the output
+      // of a normalizing call that had a malicious input.
+      result.(Label::PosixPath).isNormalized()
     }
   }
 

@@ -36,6 +36,14 @@ abstract class FileSystemAccess extends DataFlow::Node {
    * sanitization to prevent the path arguments from traversing outside the root folder.
    */
   DataFlow::Node getRootPathArgument() { none() }
+
+  /**
+   * Holds if this file system access will reject paths containing path traversal
+   * segments (`../`).
+   *
+   * `argument` should refer to the relevant path argument or root path argument.
+   */
+  predicate isPathTraversalRejected(DataFlow::Node argument) { none() }
 }
 
 /**
