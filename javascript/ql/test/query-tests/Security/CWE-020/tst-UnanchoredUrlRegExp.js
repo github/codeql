@@ -101,6 +101,7 @@
 	pkg.source.match(/<a:skin.*?\s+xmlns:a="http:\/\/ajax.org\/2005\/aml"/m)
 
 	// replace
-	path.replace(/engine.io/, "$&-client")
+	path.replace(/engine.io/, "$&-client");
 
+	/\.com|\.org/; // OK, has no domain name
 });

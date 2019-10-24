@@ -156,8 +156,9 @@ predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string 
  * mistake explained by `msg`.
  */
 predicate isInterestingUnanchoredRegExpString(RegExpPatternSource src, string msg) {
-  exists(RegExpTerm term | term = src.getRegExpTerm() |
-    hasTopLevelDomainEnding(term.getAChild*()) and
+  exists(RegExpTerm term, RegExpSequence tld | term = src.getRegExpTerm() |
+    tld = term.getAChild*() and
+    hasTopLevelDomainEnding(tld) and
     not isConstantInvalidInsideOrigin(term.getAChild*()) and
     not term.getAChild*() instanceof RegExpAnchor and
     // that is not used for capture or replace

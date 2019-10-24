@@ -30,14 +30,34 @@ predicate isDotLike(RegExpTerm term) {
   isDotConstant(term)
 }
 
+/** Holds if `term` will only ever be matched against the beginning of the input. */
+predicate matchesBeginningOfString(RegExpTerm term) {
+  term.isRootTerm()
+  or
+  exists(RegExpTerm parent |
+    matchesBeginningOfString(parent)
+  |
+    term = parent.(RegExpSequence).getChild(0)
+    or
+    parent.(RegExpSequence).getChild(0) instanceof RegExpCaret and
+    term = parent.(RegExpSequence).getChild(1)
+    or
+    term = parent.(RegExpAlt).getAChild()
+    or
+    term = parent.(RegExpGroup).getAChild()
+  )
+}
+
 /**
- * Holds if the given sequence contains top-level domain preceded by a dot, such as `.com`.
+ * Holds if the given sequence contains top-level domain preceded by a dot, such as `.com`,
+ * excluding cases where this is at the very beginning of the regexp.
  *
  * `i` is bound to the index of the last child in the top-level domain part.
  */
 predicate hasTopLevelDomainEnding(RegExpSequence seq, int i) {
   seq.getChild(i).(RegExpConstant).getValue().regexpMatch("(?i)" + RegExpPatterns::commonTLD() + "(:\\d+)?([/?#].*)?") and
-  isDotLike(seq.getChild(i - 1))
+  isDotLike(seq.getChild(i - 1)) and
+  not (i = 1 and matchesBeginningOfString(seq))
 }
 
 /**
