@@ -11,10 +11,6 @@ ClassObject aTornadoRequestHandlerClass() {
     result.getASuperType() = theTornadoRequestHandlerClass()
 }
 
-FunctionObject getTornadoRequestHandlerMethod(string name) {
-    result = theTornadoRequestHandlerClass().declaredAttribute(name)
-}
-
 /** Holds if `node` is likely to refer to an instance of a tornado 
  * `RequestHandler` class.
  */
