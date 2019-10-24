@@ -1,25 +1,25 @@
-Introducing the QL libraries for Java
-=====================================
+Introducing the CodeQL libraries for Java
+=========================================
 
 Overview
 --------
 
-There is an extensive QL library for analyzing Java code. The QL classes in this library present the data from a snapshot database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
+There is an extensive library for analyzing CodeQL databases extracted from Java projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
-The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``java.qll`` imports all other standard library modules, so you can include the complete library by beginning your query with:
+The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``java.qll`` imports all the core C/C++ library modules, so you can include the complete library by beginning your query with:
 
 .. code-block:: ql
 
    import java
 
-The rest of this topic briefly summarizes the most important QL classes and predicates provided by this library.
+The rest of this topic briefly summarizes the most important classes and predicates provided by this library.
 
    The example queries in this topic illustrate the types of results returned by different library classes. The results themselves are not interesting but can be used as the basis for developing a more complex query. The tutorial topics show how you can take a simple query and fine-tune it to find precisely the results you're interested in.
 
 Summary of the library classes
 ------------------------------
 
-The most important classes in the standard QL Java library can be grouped into five main categories:
+The most important classes in the standard Java library can be grouped into five main categories:
 
 #. Classes for representing program elements (such as classes and methods)
 #. Classes for representing AST nodes (such as statements and expressions)
@@ -89,7 +89,7 @@ Several more specialized classes are available as well:
    -  A ``LocalClass``, which is `a class declared inside a method or constructor <http://docs.oracle.com/javase/tutorial/java/javaOO/localclasses.html>`__.
    -  An ``AnonymousClass``, which is an `anonymous class <http://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html>`__.
 
-Finally, the QL library also has a number of singleton classes that wrap frequently used Java standard library classes: ``TypeObject``, ``TypeCloneable``, ``TypeRuntime``, ``TypeSerializable``, ``TypeString``, ``TypeSystem`` and ``TypeClass``. Each QL class represents the standard Java class suggested by its name.
+Finally, the library also has a number of singleton classes that wrap frequently used Java standard library classes: ``TypeObject``, ``TypeCloneable``, ``TypeRuntime``, ``TypeSerializable``, ``TypeString``, ``TypeSystem`` and ``TypeClass``. Each CodeQL class represents the standard Java class suggested by its name.
 
 As an example, we can write a query that finds all nested classes that directly extend ``Object``:
 
@@ -160,7 +160,7 @@ As an example, the following query finds all type variables with type bound ``Nu
 
 ➤ `See this in the query console <https://lgtm.com/query/690010016/>`__. When we ran it on the LGTM.com demo projects, the *neo4j/neo4j*, *gradle/gradle* and *hibernate/hibernate-orm* projects all contained examples of this pattern.
 
-For dealing with legacy code that is unaware of generics, every generic type has a "raw" version without any type parameters. In QL, raw types are represented using class ``RawType``, which has the expected subclasses ``RawClass`` and ``RawInterface``. Again, there is a predicate ``getSourceDeclaration`` for obtaining the corresponding generic type. As an example, we can find variables of (raw) type ``Map``:
+For dealing with legacy code that is unaware of generics, every generic type has a "raw" version without any type parameters. In the CodeQL libraries, raw types are represented using class ``RawType``, which has the expected subclasses ``RawClass`` and ``RawInterface``. Again, there is a predicate ``getSourceDeclaration`` for obtaining the corresponding generic type. As an example, we can find variables of (raw) type ``Map``:
 
 .. code-block:: ql
 
@@ -342,7 +342,7 @@ For example, the following query finds methods with a `cyclomatic complexity <ht
 Call graph
 ----------
 
-Snapshots databases generated from Java code bases include precomputed information about the program's call graph, that is, which methods or constructors a given call may dispatch to at runtime.
+CodeQL databases generated from Java code bases include precomputed information about the program's call graph, that is, which methods or constructors a given call may dispatch to at runtime.
 
 The class ``Callable``, introduced above, includes both methods and constructors. Call expressions are abstracted using class ``Call``, which includes method calls, ``new`` expressions, and explicit constructor calls using ``this`` or ``super``.
 
@@ -376,6 +376,6 @@ For more information about callables and calls, see the :doc:`call graph tutoria
 What next?
 ----------
 
--  Experiment with the worked examples in the QL for Java tutorial topics: :doc:`Types and the class hierarchy <types-class-hierarchy>`, :doc:`Expressions and statements <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations <annotations>`, :doc:`Javadoc <javadoc>` and :doc:`Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the QL standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Experiment with the worked examples in the CodeQL for Java tutorial topics: :doc:`Types and the class hierarchy <types-class-hierarchy>`, :doc:`Expressions and statements <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations <annotations>`, :doc:`Javadoc <javadoc>` and :doc:`Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

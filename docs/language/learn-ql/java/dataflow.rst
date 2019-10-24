@@ -4,10 +4,10 @@ Analyzing data flow in Java
 Overview
 --------
 
-This topic describes how data flow analysis is implemented in the QL for Java library and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the QL libraries for local data flow, global data flow and taint tracking.
+This topic describes how data flow analysis is implemented in the CodeQL libraries for Java and includes examples to help you write your own data flow queries.
+The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
 
-For a more general introduction to modeling data flow in QL, see :doc:`Introduction to data flow analysis in QL <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
