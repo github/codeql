@@ -37,7 +37,7 @@ private int getTypeSizeWorkaround(Type type) {
 private int getTypeSize(Type type) {
   if exists(getTypeSizeWorkaround(type))
   then result = getTypeSizeWorkaround(type)
-  else result = max(type.getSize())
+  else result = type.getSize()
 }
 
 /**
@@ -399,11 +399,8 @@ private int getSignPriority(IntegralType type) {
  * Gets the sort priority of an `IntegralType` based on its kind.
  */
 private int getKindPriority(IntegralType type) {
-  /*
-   *    `CharType` sorts lower so that we prefer the plain integer types when they have the same size as
-   *    a `CharType`.
-   */
-
+  // `CharType` sorts lower so that we prefer the plain integer types when they have the same size
+  // as a `CharType`.
   if type instanceof CharType then result = 0 else result = 1
 }
 
