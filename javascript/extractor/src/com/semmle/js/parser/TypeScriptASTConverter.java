@@ -1584,10 +1584,12 @@ public class TypeScriptASTConverter {
 
   private Node convertMetaProperty(JsonObject node, SourceLocation loc) throws ParseError {
     Position metaStart = loc.getStart();
+    String keywordKind = syntaxKinds.get(node.getAsJsonPrimitive("keywordToken").getAsInt() + "").getAsString();
+    String identifier = keywordKind.equals("ImportKeyword") ? "import" : "new";
     Position metaEnd =
-        new Position(metaStart.getLine(), metaStart.getColumn() + 3, metaStart.getOffset() + 3);
-    SourceLocation metaLoc = new SourceLocation("new", metaStart, metaEnd);
-    Identifier meta = new Identifier(metaLoc, "new");
+        new Position(metaStart.getLine(), metaStart.getColumn() + identifier.length(), metaStart.getOffset() + identifier.length());
+    SourceLocation metaLoc = new SourceLocation(identifier, metaStart, metaEnd);
+    Identifier meta = new Identifier(metaLoc, identifier);
     return new MetaProperty(loc, meta, convertChild(node, "name"));
   }
 
