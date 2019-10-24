@@ -36,35 +36,9 @@ module Bluebird {
  * Provides classes for working with various Deferred implementations
  */
 module Deferred {
-  class DeferredClass extends DataFlow::SourceNode {
-    DeferredClass() {
-      exists(Variable var |
-        var.getName() = "Deferred" and
-        (
-          var.getADeclaration() instanceof LocalNamespaceDecl or
-          var.getScope() instanceof GlobalScope
-        ) and
-        this = DataFlow::valueNode(var.getADefinition())
-      )
-      or
-      this.(DataFlow::ParameterNode).getName() = "Deferred"
-      or
-      exists(Function f |
-        f.getName() = "Deferred" and
-        this = DataFlow::valueNode(f)
-      )
-      or
-      exists(ClassDefinition c |
-        c.getName() = "Deferred" and
-        this = DataFlow::valueNode(c)
-      )
-    }
-  }
-
   class DeferredInstance extends DataFlow::NewNode {
-    DeferredClass deferredClass;
-
-    DeferredInstance() { this = deferredClass.getAnInstantiation() }
+  	// Describes both `new Deferred()`, `new $.Deferred` and other variants. 
+    DeferredInstance() { this.getCalleeName() = "Deferred" }
 
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
@@ -72,23 +46,17 @@ module Deferred {
       or
       exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
-
-    DeferredClass getDeferredClass() { result = deferredClass }
-
-    DataFlow::CallNode getPromiseMemberCall(string methodName) {
-      result = ref(DataFlow::TypeTracker::end()).getAMemberCall(methodName)
-    }
+    
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
   }
 
   /**
    * A promise object created by a Deferred constructor
    */
   private class DeferredPromiseDefinition extends PromiseDefinition, DeferredInstance {
-    DeferredPromiseDefinition() { 
-      this = any(DeferredClass c |
-        exists(any(DeferredInstance i | i.getDeferredClass() = c).getPromiseMemberCall("resolve")) and
-        exists(any(DeferredInstance i | i.getDeferredClass() = c).getPromiseMemberCall("reject"))
-      ).getAnInstantiation() 
+    DeferredPromiseDefinition() {
+      // hardening of the "Deferred" heuristic: a method call to `resolve`. 
+      exists(ref().getAMethodCall("resolve"))
     }
 
     override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
@@ -99,7 +67,7 @@ module Deferred {
    */
   class ResolvedDeferredPromiseDefinition extends ResolvedPromiseDefinition {
     ResolvedDeferredPromiseDefinition() {
-      this = any(DeferredPromiseDefinition def).getPromiseMemberCall("resolve")
+      this = any(DeferredPromiseDefinition def).ref().getAMethodCall("resolve")
     }
 
     override DataFlow::Node getValue() { result = getArgument(0) }
