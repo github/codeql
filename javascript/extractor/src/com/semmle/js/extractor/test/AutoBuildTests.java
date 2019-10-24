@@ -484,6 +484,40 @@ public class AutoBuildTests {
   }
 
   @Test
+  public void nodeModulesAreExcluded() throws IOException {
+    addFile(true, LGTM_SRC, "index.js");
+    addFile(false, LGTM_SRC, "node_modules", "dep", "main.js");
+    addFile(false, LGTM_SRC, "node_modules", "dep", "node_modules", "leftpad", "index.js");
+    runTest();
+  }
+
+  @Test
+  public void nodeModulesCanBeReincluded() throws IOException {
+    envVars.put("LGTM_INDEX_FILTERS", "include:**/node_modules");
+    addFile(true, LGTM_SRC, "index.js");
+    addFile(true, LGTM_SRC, "node_modules", "dep", "main.js");
+    addFile(true, LGTM_SRC, "node_modules", "dep", "node_modules", "leftpad", "index.js");
+    runTest();
+  }
+
+  @Test
+  public void bowerComponentsAreExcluded() throws IOException {
+    addFile(true, LGTM_SRC, "index.js");
+    addFile(false, LGTM_SRC, "bower_components", "dep", "main.js");
+    addFile(false, LGTM_SRC, "bower_components", "dep", "bower_components", "leftpad", "index.js");
+    runTest();
+  }
+
+  @Test
+  public void bowerComponentsCanBeReincluded() throws IOException {
+    envVars.put("LGTM_INDEX_FILTERS", "include:**/bower_components");
+    addFile(true, LGTM_SRC, "index.js");
+    addFile(true, LGTM_SRC, "bower_components", "dep", "main.js");
+    addFile(true, LGTM_SRC, "bower_components", "dep", "bower_components", "leftpad", "index.js");
+    runTest();
+  }
+
+  @Test
   public void customExtensions() throws IOException {
     envVars.put("LGTM_INDEX_FILETYPES", ".jsm:js\n.soy:html");
     addFile(true, FileType.JS, LGTM_SRC, "tst.jsm");
