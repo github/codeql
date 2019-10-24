@@ -147,7 +147,12 @@ private ControlFlowNode ensureNotNull(SsaVariable v) {
   result.(AssertStmt).getExpr() = nullGuard(v, true, false) or
   exists(AssertTrueMethod m | result = m.getACheck(nullGuard(v, true, false))) or
   exists(AssertFalseMethod m | result = m.getACheck(nullGuard(v, false, false))) or
-  exists(AssertNotNullMethod m | result = m.getACheck(v.getAUse()))
+  exists(AssertNotNullMethod m | result = m.getACheck(v.getAUse())) or
+  exists(AssertThatMethod m, MethodAccess ma |
+    result = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
+  |
+    ma.getAnArgument().(MethodAccess).getMethod().getName() = "notNullValue"
+  )
 }
 
 /**

@@ -11,7 +11,8 @@ newtype AssertKind =
   AssertKindTrue() or
   AssertKindFalse() or
   AssertKindNotNull() or
-  AssertKindFail()
+  AssertKindFail() or
+  AssertKindThat()
 
 private predicate assertionMethod(Method m, AssertKind kind) {
   exists(RefType junit |
@@ -25,6 +26,13 @@ private predicate assertionMethod(Method m, AssertKind kind) {
     m.hasName("assertFalse") and kind = AssertKindFalse()
     or
     m.hasName("fail") and kind = AssertKindFail()
+  )
+  or
+  exists(RefType hamcrest |
+    m.getDeclaringType() = hamcrest and
+    hamcrest.hasQualifiedName("org.hamcrest", "MatcherAssert") // TODO: Check some older versions of hamcrest
+  |
+    m.hasName("assertThat") and kind = AssertKindThat()
   )
   or
   exists(RefType objects |
@@ -80,6 +88,14 @@ class AssertNotNullMethod extends AssertionMethod {
  */
 class AssertFailMethod extends AssertionMethod {
   AssertFailMethod() { assertionMethod(this, AssertKindFail()) }
+}
+
+/**
+ * A method that asserts that its first argument has a property
+ * given by its second argument.
+ */
+class AssertThatMethod extends AssertionMethod {
+  AssertThatMethod() { assertionMethod(this, AssertKindThat()) }
 }
 
 /** A trivially failing assertion. That is, `assert false` or its equivalents. */
