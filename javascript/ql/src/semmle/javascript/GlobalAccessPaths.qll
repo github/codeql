@@ -184,13 +184,13 @@ module GlobalAccessPath {
    */
   cached
   string fromRhs(DataFlow::Node node, Root root) {
-    exists(DataFlow::SourceNode base, string baseName, string name |
-      node = base.getAPropertyWrite(name).getRhs() and
-      result = baseName + "." + name
+    exists(DataFlow::PropWrite write, string baseName |
+      node = write.getRhs() and
+      result = baseName + "." + write.getPropertyName()
     |
-      baseName = fromReference(base, root)
+      baseName = fromReference(write.getBase(), root)
       or
-      baseName = fromRhs(base, root)
+      baseName = fromRhs(write.getBase(), root)
     )
     or
     exists(GlobalVariable var |
