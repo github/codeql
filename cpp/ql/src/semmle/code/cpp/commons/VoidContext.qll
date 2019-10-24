@@ -1,9 +1,10 @@
 import semmle.code.cpp.exprs.Expr
 
 /**
+ * DEPRECATED: This class has not been useful.
  * An expression that is used to qualify some other expression.
  */
-class Qualifier extends Expr {
+deprecated class Qualifier extends Expr {
   Qualifier() {
     exists(VariableAccess a | a.getQualifier() = this) or
     exists(Call c | c.getQualifier() = this) or
@@ -36,6 +37,5 @@ private predicate exprInVoidContext(Expr e) {
     or
     exists(CommaExpr c | c.getRightOperand() = e and c instanceof ExprInVoidContext)
   ) and
-  not e instanceof Qualifier and
   not e.getActualType() instanceof VoidType
 }
