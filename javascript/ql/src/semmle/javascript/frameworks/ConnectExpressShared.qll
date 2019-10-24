@@ -37,7 +37,7 @@ module ConnectExpressShared {
       exists(string request, string response, string next, string error |
         (request = "request" or request = "req") and
         (response = "response" or response = "res") and
-        next = "next" and
+        (next = "next" or next = "cb") and
         (error = "error" or error = "err")
       |
         // heuristic: parameter names match the documentation
