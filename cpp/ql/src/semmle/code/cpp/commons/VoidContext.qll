@@ -36,6 +36,8 @@ private predicate exprInVoidContext(Expr e) {
     exists(CommaExpr c | c.getLeftOperand() = e)
     or
     exists(CommaExpr c | c.getRightOperand() = e and c instanceof ExprInVoidContext)
+    or
+    exists(ForStmt for | for.getUpdate() = e)
   ) and
   not e.getActualType() instanceof VoidType
 }
