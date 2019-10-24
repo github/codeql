@@ -1,4 +1,4 @@
-// semmle-extractor-options: /nostdlib /noconfig /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll  /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.Web.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.Xml.dll
+// semmle-extractor-options: /r:System.Private.Xml.dll /r:System.Xml.dll /r:System.Xml.ReaderWriter.dll /r:System.Runtime.Extensions.dll /r:System.Collections.Specialized.dll ${testdir}/../../../../resources/stubs/System.Web.cs
 
 using System;
 using System.Security;

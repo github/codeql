@@ -1,4 +1,4 @@
-// semmle-extractor-options: /nostdlib /noconfig /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.Web.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.dll
+// semmle-extractor-options: /r:System.Collections.Specialized.dll ${testdir}/../../../../resources/stubs/System.Web.cs
 
 using System;
 using System.Web;
@@ -8,7 +8,7 @@ public class DLLInjectionHandler : IHttpHandler {
   public void ProcessRequest(HttpContext ctx) {
     string libraryName = ctx.Request.QueryString["libraryName"];
 
-    // BAD: Load DLL based on user input [NOT DETECTED]
+    // BAD: Load DLL based on user input
     var badDLL = Assembly.LoadFile(libraryName);
 
     // GOOD: Load DLL using fixed string
