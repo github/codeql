@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The MaxRequestLength attribute sets the limit for the input stream buffering threshold in KB. Attackers can use large files to cause denial of service attacks.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+The recommended value is 4096 but you should try setting it as small as possible according to business requirements.
+
+</p>
+
+</recommendation>
+
+
+</qhelp>
