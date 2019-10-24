@@ -1,7 +1,7 @@
 /**
  * @name Call to `memset` may be deleted
  * @description Calling `memset` or `bzero` on a buffer in order to clear its contents may get optimized away
- *              by the compiler if said buffer is not subsequently used.  This is not desirable
+ *              by the compiler if the buffer is not subsequently used.  This is not desirable
  *              behavior if the buffer contains sensitive data that could be exploited by an attacker.
  * @kind problem
  * @problem.severity recommendation
