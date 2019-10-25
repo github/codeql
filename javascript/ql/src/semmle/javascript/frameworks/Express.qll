@@ -840,7 +840,7 @@ module Express {
       result = this.(DataFlow::CallNode).getOptionArgument(1, "root")
     }
 
-    override predicate isPathTraversalRejected(DataFlow::Node argument) {
+    override predicate isUpwardNavigationRejected(DataFlow::Node argument) {
       argument = getAPathArgument()
     }
   }

@@ -393,11 +393,11 @@ module TaintedPath {
   }
 
   /**
-   * A path argument to a file system access, which disallows path traversal.
+   * A path argument to a file system access, which disallows upward navigation.
    */
-  private class FsPathSinkWithoutPathTraversal extends FsPathSink {
-    FsPathSinkWithoutPathTraversal() {
-      fileSystemAccess.isPathTraversalRejected(this)
+  private class FsPathSinkWithoutUpwardNavigation extends FsPathSink {
+    FsPathSinkWithoutUpwardNavigation() {
+      fileSystemAccess.isUpwardNavigationRejected(this)
     }
 
     override DataFlow::FlowLabel getAFlowLabel() {
