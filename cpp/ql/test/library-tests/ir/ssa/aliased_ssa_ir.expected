@@ -340,7 +340,7 @@ ssa.cpp:
 #   98|     v0_19(void)           = NoOp                         : 
 #   95|     v0_20(void)           = ReturnVoid                   : 
 #   95|     v0_21(void)           = UnmodeledUse                 : mu*
-#   95|     v0_22(void)           = AliasedUse                   : ~m0_18
+#   95|     v0_22(void)           = AliasedUse                   : ~m0_15
 #   95|     v0_23(void)           = ExitFunction                 : 
 
 #  100| void MustTotallyOverlap(Point)
@@ -396,7 +396,7 @@ ssa.cpp:
 #  109|     v0_25(void)           = NoOp                         : 
 #  105|     v0_26(void)           = ReturnVoid                   : 
 #  105|     v0_27(void)           = UnmodeledUse                 : mu*
-#  105|     v0_28(void)           = AliasedUse                   : ~m0_24
+#  105|     v0_28(void)           = AliasedUse                   : ~m0_21
 #  105|     v0_29(void)           = ExitFunction                 : 
 
 #  111| void MayPartiallyOverlap(int, int)
@@ -468,7 +468,7 @@ ssa.cpp:
 #  120|     v0_33(void)           = NoOp                         : 
 #  116|     v0_34(void)           = ReturnVoid                   : 
 #  116|     v0_35(void)           = UnmodeledUse                 : mu*
-#  116|     v0_36(void)           = AliasedUse                   : ~m0_32
+#  116|     v0_36(void)           = AliasedUse                   : ~m0_29
 #  116|     v0_37(void)           = ExitFunction                 : 
 
 #  122| void MergeMustExactlyOverlap(bool, int, int)
@@ -865,5 +865,5 @@ ssa.cpp:
 #  207|     r0_23(glval<int>)    = VariableAddress[#return]           : 
 #  207|     v0_24(void)          = ReturnValue                        : &:r0_23, m0_22
 #  207|     v0_25(void)          = UnmodeledUse                       : mu*
-#  207|     v0_26(void)          = AliasedUse                         : ~m0_18
+#  207|     v0_26(void)          = AliasedUse                         : ~m0_1
 #  207|     v0_27(void)          = ExitFunction                       : 

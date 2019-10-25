@@ -389,7 +389,7 @@ class SideEffectOperand extends TypedOperand {
 
   override MemoryAccessKind getMemoryAccess() {
     useInstr instanceof AliasedUseInstruction and
-    result instanceof EscapedMayMemoryAccess
+    result instanceof NonLocalMayMemoryAccess
     or
     useInstr instanceof CallSideEffectInstruction and
     result instanceof EscapedMayMemoryAccess
