@@ -188,11 +188,7 @@ module DataFlow {
       lvalueFlowStep(result, this) and
       not lvalueDefaultFlowStep(_, this)
       or
-      // Use of variable -> definition of variable
-      exists(SsaVariable var |
-        this = valueNode(var.getAUse()) and
-        result = TSsaDefNode(var)
-      )
+      immediateFlowStep(result, this)
       or
       // Refinement of variable -> original definition of variable
       exists(SsaRefinementNode refinement |
@@ -1300,6 +1296,44 @@ module DataFlow {
   }
 
   /**
+   * Flow steps shared between `getImmediatePredecessor` and `localFlowStep`.
+   *
+   * Inlining is forced because the two relations are indexed differently.
+   */
+  pragma[inline]
+  private predicate immediateFlowStep(Node pred, Node succ) {
+    exists(SsaVariable v |
+      pred = TSsaDefNode(v.getDefinition()) and
+      succ = valueNode(v.getAUse())
+    )
+    or
+    exists(Expr predExpr, Expr succExpr |
+      pred = valueNode(predExpr) and succ = valueNode(succExpr)
+    |
+      predExpr = succExpr.(ParExpr).getExpression()
+      or
+      predExpr = succExpr.(SeqExpr).getLastOperand()
+      or
+      predExpr = succExpr.(AssignExpr).getRhs()
+      or
+      predExpr = succExpr.(TypeAssertion).getExpression()
+      or
+      predExpr = succExpr.(NonNullAssertion).getExpression()
+      or
+      predExpr = succExpr.(ExpressionWithTypeArguments).getExpression()
+    )
+    or
+    // flow from 'this' parameter into 'this' expressions
+    exists(ThisExpr thiz |
+      pred = TThisNode(thiz.getBindingContainer()) and
+      succ = valueNode(thiz)
+    )
+    or
+    // `f.call(...)` and `f.apply(...)` evaluate to the result of the reflective call they perform
+    pred = TReflectiveCallNode(succ.asExpr(), _)
+  }
+
+  /**
    * Holds if data can flow from `pred` to `succ` in one local step.
    */
   cached
@@ -1308,6 +1342,8 @@ module DataFlow {
     lvalueFlowStep(pred, succ)
     or
     lvalueDefaultFlowStep(pred, succ)
+    or
+    immediateFlowStep(pred, succ)
     or
     // Flow through implicit SSA nodes
     exists(SsaImplicitDefinition ssa | succ = TSsaDefNode(ssa) |
@@ -1326,45 +1362,18 @@ module DataFlow {
       pred = TSsaDefNode(ssa.(SsaPseudoDefinition).getAnInput().getDefinition())
     )
     or
-    // flow out of local variables
-    exists(SsaVariable v |
-      pred = TSsaDefNode(v.getDefinition()) and
-      succ = valueNode(v.getAUse())
-    )
-    or
     exists(Expr predExpr, Expr succExpr |
       pred = valueNode(predExpr) and succ = valueNode(succExpr)
     |
-      predExpr = succExpr.(ParExpr).getExpression()
-      or
-      predExpr = succExpr.(SeqExpr).getLastOperand()
-      or
       predExpr = succExpr.(LogicalBinaryExpr).getAnOperand()
       or
-      predExpr = succExpr.(AssignExpr).getRhs()
-      or
       predExpr = succExpr.(ConditionalExpr).getABranch()
-      or
-      predExpr = succExpr.(TypeAssertion).getExpression()
-      or
-      predExpr = succExpr.(NonNullAssertion).getExpression()
-      or
-      predExpr = succExpr.(ExpressionWithTypeArguments).getExpression()
       or
       exists(Function f |
         predExpr = f.getAReturnedExpr() and
         localCall(succExpr, f)
       )
     )
-    or
-    // flow from 'this' parameter into 'this' expressions
-    exists(ThisExpr thiz |
-      pred = TThisNode(thiz.getBindingContainer()) and
-      succ = valueNode(thiz)
-    )
-    or
-    // `f.call(...)` and `f.apply(...)` evaluate to the result of the reflective call they perform
-    pred = TReflectiveCallNode(succ.asExpr(), _)
   }
 
   /**
