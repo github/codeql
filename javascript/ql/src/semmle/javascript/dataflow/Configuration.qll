@@ -1042,25 +1042,40 @@ class PathNode extends TPathNode {
   }
 }
 
-private PathNode getASuccessor(PathNode pnd) {
+/** Gets the mid node corresponding to `src`. */
+private MidPathNode initialMidNode(SourcePathNode src) {
   exists(DataFlow::Node nd, Configuration cfg, PathSummary summary |
-    // source node to mid node
-    pnd = MkSourceNode(nd, cfg) and
-    isSourceNode(nd, cfg, summary) and
-    result = MkMidNode(nd, cfg, summary)
-    or
-    // mid node to mid node
-    pnd = MkMidNode(nd, cfg, summary) and
-    exists(DataFlow::Node succ, PathSummary newSummary |
-      flowStep(nd, id(cfg), succ, newSummary) and
-      result = MkMidNode(succ, id(cfg), summary.append(newSummary))
-    )
-    or
-    // mid node to sink node
-    pnd = MkMidNode(nd, cfg, summary) and
-    isSinkNode(nd, cfg, summary) and
-    result = MkSinkNode(nd, cfg)
+    result.wraps(nd, cfg, summary) and
+    src = MkSourceNode(nd, cfg) and
+    isSourceNode(nd, cfg, summary)
   )
+}
+
+/** Gets the mid node corresponding to `snk`. */
+private MidPathNode finalMidNode(SinkPathNode snk) {
+  exists(DataFlow::Node nd, Configuration cfg, PathSummary summary |
+    result.wraps(nd, cfg, summary) and
+    snk = MkSinkNode(nd, cfg) and
+    isSinkNode(nd, cfg, summary)
+  )
+}
+
+/**
+ * Gets a node to which data from `nd` may flow in one step.
+ */
+private PathNode getASuccessor(PathNode nd) {
+  // source node to mid node
+  result = initialMidNode(nd)
+  or
+  // mid node to mid node
+  exists(Configuration cfg, DataFlow::Node predNd, PathSummary summary, DataFlow::Node succNd, PathSummary newSummary |
+    nd = MkMidNode(predNd, cfg, summary) and
+    flowStep(predNd, id(cfg), succNd, newSummary) and
+    result = MkMidNode(succNd, id(cfg), summary.append(newSummary))
+  )
+  or
+  // mid node to sink node
+  nd = finalMidNode(result)
 }
 
 private PathNode getASuccessorIfHidden(PathNode nd) {
@@ -1083,6 +1098,11 @@ class MidPathNode extends PathNode, MkMidNode {
   /** Gets the summary of the path underlying this path node. */
   PathSummary getPathSummary() { result = summary }
 
+  /** Holds if this path node wraps data-flow node `nd`, configuration `c` and summary `s`. */
+  predicate wraps(DataFlow::Node n, DataFlow::Configuration c, PathSummary s) {
+    nd = n and cfg = c and summary = s
+  }
+
   /**
    * Holds if this node is hidden from paths in path explanation queries, except
    * in cases where it is the source or sink.
@@ -1095,12 +1115,6 @@ class MidPathNode extends PathNode, MkMidNode {
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and
     nd = any(AddExpr add).getAnOperand().flow()
-    or
-    // Skip mid node immediately following a source node
-    exists(MkSourceNode(nd, cfg))
-    or
-    // Skip mid node immediately preceding a sink node
-    exists(MkSinkNode(nd, cfg))
   }
 }
 
@@ -1127,9 +1141,48 @@ module PathGraph {
     not nd.(MidPathNode).isHidden()
   }
 
+  /**
+   * Gets a node to which data from `nd` may flow in one step, skipping over hidden nodes.
+   */
+  private PathNode succ0(PathNode nd) {
+    result = getASuccessorIfHidden*(nd.getASuccessor()) and
+    // skip hidden nodes
+    nodes(nd) and nodes(result)
+  }
+
+  /**
+   * Gets a node to which data from `nd` may flow in one step, where outgoing edges from intermediate
+   * nodes are merged with any incoming edge from a corresponding source node.
+   *
+   * For example, assume that `src` is a source node for `nd1`, which has `nd2` as its direct
+   * successor. Then `succ0` will yield two edges `src` &rarr; `nd1` and `nd1` &rarr; `nd2`,
+   * to which `succ1` will add the edge `src` &rarr; `nd2`.
+   */
+  private PathNode succ1(PathNode nd) {
+    result = succ0(nd)
+    or
+    result = succ0(initialMidNode(nd))
+  }
+
+  /**
+   * Gets a node to which data from `nd` may flow in one step, where incoming edges into intermediate
+   * nodes are merged with any outgoing edge to a corresponding sink node.
+   *
+   * For example, assume that `snk` is a source node for `nd2`, which has `nd1` as its direct
+   * predecessor. Then `succ1` will yield two edges `nd1` &rarr; `nd2` and `nd2` &rarr; `snk`,
+   * while `succ2` will yield just one edge `nd1` &rarr; `snk`.
+   */
+  private PathNode succ2(PathNode nd) {
+    result = succ1(nd)
+    or
+    succ1(nd) = finalMidNode(result)
+  }
+
   /** Holds if `pred` &rarr; `succ` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode pred, PathNode succ) {
-    succ = getASuccessorIfHidden*(pred.getASuccessor()) and
-    nodes(pred) and nodes(succ)
+    succ = succ2(pred) and
+    // skip over uninteresting edges
+    not succ = initialMidNode(pred) and
+    not pred = finalMidNode(succ)
   }
 }
