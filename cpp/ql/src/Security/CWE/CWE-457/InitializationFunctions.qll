@@ -618,6 +618,33 @@ Function getAPossibleDefinition(Function undefinedFunction) {
   ) and
   result.isDefined()
 }
+ 
+private Function getTarget1(Call c) {
+  /*
+   * If there is at least one defined target after performing some simple virtual dispatch
+   * resolution, then the result is all the defined targets.
+   */
+
+  result = VirtualDispatch::getAViableTarget(c) and
+  result.isDefined()
+}
+
+private Function getTarget2(Call c) {
+  /*
+   * If we can use the heuristic matching of functions to find definitions for some of the viable
+   * targets, return those.
+   */
+
+  not exists(getTarget1(c)) and
+  result = getAPossibleDefinition(VirtualDispatch::getAViableTarget(c))
+}
+
+private Function getTarget3(Call c) {
+  not exists(getTarget1(c)) and
+  not exists(getTarget2(c)) and
+  // Otherwise, the result is the undefined `Function` instances.
+  result = VirtualDispatch::getAViableTarget(c)
+}
 
 /**
  * Gets a possible target for the Call, using the name and parameter matching if we did not associate
@@ -625,27 +652,9 @@ Function getAPossibleDefinition(Function undefinedFunction) {
  * dispatch resolution.
  */
 Function getTarget(Call c) {
-  if VirtualDispatch::getAViableTarget(c).isDefined()
-  then
-    /*
-     * If there is at least one defined target after performing some simple virtual dispatch
-     * resolution, then the result is all the defined targets.
-     */
-
-    result = VirtualDispatch::getAViableTarget(c) and
-    result.isDefined()
-  else
-    if exists(getAPossibleDefinition(VirtualDispatch::getAViableTarget(c)))
-    then
-      /*
-       * If we can use the heuristic matching of functions to find definitions for some of the viable
-       * targets, return those.
-       */
-
-      result = getAPossibleDefinition(VirtualDispatch::getAViableTarget(c))
-    else
-      // Otherwise, the result is the undefined `Function` instances
-      result = VirtualDispatch::getAViableTarget(c)
+  result = getTarget1(c) or
+  result = getTarget2(c) or
+  result = getTarget3(c)
 }
 
 /**
