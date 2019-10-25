@@ -127,8 +127,10 @@ DataFlow::SourceNode array() { result = array(DataFlow::TypeTracker::end()) }
  */
 predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
   hasNonVoidCallbackMethod(call.getCalleeName()) and
-  func = call.getAnArgument().getALocalSource().asExpr() and
-  1 = count(DataFlow::Node arg | arg = call.getAnArgument() and arg.getALocalSource().asExpr() instanceof Function) and
+  exists(int index | 
+    index = min(int i | exists(call.getCallback(i))) and 
+    func = call.getCallback(index).getFunction()
+  ) and
   returnsVoid(func) and
   not isStub(func) and
   not alwaysThrows(func) and
