@@ -5,3 +5,8 @@ const lib = require("./lib"),
 lib.f();
 /** calls:lib.f */
 f();
+
+(function() {
+  /** calls:lib.f */
+  f();
+})();

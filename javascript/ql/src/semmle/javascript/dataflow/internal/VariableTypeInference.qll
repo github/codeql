@@ -245,6 +245,8 @@ private class AnalyzedVariableCapture extends AnalyzedSsaDefinition, SsaVariable
     exists(LocalVariable v | v = getSourceVariable() |
       result = v.(AnalyzedCapturedVariable).getALocalValue()
       or
+      result = any(AnalyzedExplicitDefinition def | def.getSourceVariable() = v).getAnRhsValue()
+      or
       not guaranteedToBeInitialized(v) and result = getImplicitInitValue(v)
     )
   }
