@@ -87,7 +87,7 @@ public class C {
         vals[0] = 0; // OK
         break;
       default:
-        throw new Exception();
+        throw new RuntimeException();
     }
   }
 
