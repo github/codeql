@@ -1,11 +1,14 @@
+import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Taint
 
 /**
  * The standard function `strcpy` and its wide, sized, and Microsoft variants.
  */
-class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
+class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, AliasFunction,
+  SideEffectFunction {
   StrcpyFunction() {
     this.hasName("strcpy") or
     this.hasName("_mbscpy") or
@@ -86,4 +89,22 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
       output.isReturnValueDeref()
     )
   }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 1 and buffer = true
+  }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = 0 and buffer = true and mustWrite = true
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = 1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { index = 0 }
+
+  override predicate parameterIsAlwaysReturned(int index) { index = 0 }
 }
