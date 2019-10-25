@@ -139,6 +139,11 @@ class ModuleValue extends Value {
         PointsToInternal::module_imported_as(this, name)
     }
 
+    /** Whether this module is a package. */
+    predicate isPackage() {
+        this instanceof PackageObjectInternal
+    }
+
 }
 
 module Module {

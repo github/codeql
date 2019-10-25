@@ -36,6 +36,7 @@
 import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
@@ -112,9 +113,7 @@ class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionC
 
   TranslatedForeachWhile() { this = TTranslatedCompilerGeneratedElement(generatedBy, 2) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -329,9 +328,9 @@ private class TranslatedForeachEnumerator extends TranslatedCompilerGeneratedDec
 
   TranslatedForeachEnumerator() { this = TTranslatedCompilerGeneratedElement(generatedBy, 8) }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getInitialization().getCallResultType()
+    type = getTypeForPRValue(getInitialization().getCallResultType())
   }
 
   override IRTempVariable getIRVariable() {
@@ -388,9 +387,9 @@ private class TranslatedMoveNextEnumAcc extends TTranslatedCompilerGeneratedElem
 
   override Type getResultType() { result instanceof BoolType }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getResultType()
+    type = getTypeForPRValue(getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -413,9 +412,9 @@ private class TranslatedForeachCurrentEnumAcc extends TTranslatedCompilerGenerat
 
   override Type getResultType() { result instanceof BoolType }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getResultType()
+    type = getTypeForPRValue(getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -438,9 +437,9 @@ private class TranslatedForeachDisposeEnumAcc extends TTranslatedCompilerGenerat
 
   override Type getResultType() { result instanceof BoolType }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getResultType()
+    type = getTypeForPRValue(getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {

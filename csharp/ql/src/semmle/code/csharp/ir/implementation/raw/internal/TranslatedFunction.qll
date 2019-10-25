@@ -1,6 +1,7 @@
 import csharp
 import semmle.code.csharp.ir.implementation.raw.IR
 private import semmle.code.csharp.ir.implementation.Opcode
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.IRUtilities
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import semmle.code.csharp.ir.internal.TempVariableTag
@@ -129,40 +130,32 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     else result = this.getReturnSuccessorInstruction()
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     (
       tag = EnterFunctionTag() and
       opcode instanceof Opcode::EnterFunction and
-      resultType instanceof VoidType and
-      isLValue = false
+      resultType = getVoidType()
       or
       tag = UnmodeledDefinitionTag() and
       opcode instanceof Opcode::UnmodeledDefinition and
-      resultType instanceof Language::UnknownType and
-      isLValue = false
+      resultType = getUnknownType()
       or
       tag = AliasedDefinitionTag() and
       opcode instanceof Opcode::AliasedDefinition and
-      resultType instanceof Language::UnknownType and
-      isLValue = false
+      resultType = getUnknownType()
       or
       tag = InitializeThisTag() and
       opcode instanceof Opcode::InitializeThis and
-      resultType = getThisType() and
-      isLValue = true
+      resultType = getTypeForGLValue(getThisType())
       or
       tag = ReturnValueAddressTag() and
       opcode instanceof Opcode::VariableAddress and
-      resultType = this.getReturnType() and
-      not resultType instanceof VoidType and
-      isLValue = true
+      not getReturnType() instanceof VoidType and
+      resultType = getTypeForGLValue(getReturnType())
       or
       (
         tag = ReturnTag() and
-        resultType instanceof VoidType and
-        isLValue = false and
+        resultType = getVoidType() and
         if this.getReturnType() instanceof VoidType
         then opcode instanceof Opcode::ReturnVoid
         else opcode instanceof Opcode::ReturnValue
@@ -170,8 +163,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       tag = UnwindTag() and
       opcode instanceof Opcode::Unwind and
-      resultType instanceof VoidType and
-      isLValue = false and
+      resultType = getVoidType() and
       (
         // Only generate the `Unwind` instruction if there is any exception
         // handling present in the function (compiler generated or not).
@@ -181,8 +173,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       tag = UnmodeledUseTag() and
       opcode instanceof Opcode::UnmodeledUse and
-      resultType instanceof VoidType and
-      isLValue = false
+      resultType = getVoidType()
       or
       tag = AliasedUseTag() and
       opcode instanceof Opcode::AliasedUse and
@@ -191,8 +182,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       tag = ExitFunctionTag() and
       opcode instanceof Opcode::ExitFunction and
-      resultType instanceof VoidType and
-      isLValue = false
+      resultType = getVoidType()
     )
   }
 
@@ -225,15 +215,15 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     )
   }
 
-  final override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CSharpType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     tag = ReturnTag() and
     not this.getReturnType() instanceof VoidType and
     operandTag instanceof LoadOperandTag and
-    result = this.getReturnType()
+    result = getTypeForPRValue(this.getReturnType())
     or
     tag = AliasedUseTag() and
     operandTag instanceof SideEffectOperandTag and
-    result instanceof Language::UnknownType
+    result = getUnknownType()
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -241,10 +231,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     result = this.getReturnVariable()
   }
 
-  final override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  final override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ReturnValueTempVar() and
-    type = this.getReturnType() and
-    not type instanceof VoidType
+    type = getTypeForPRValue(this.getReturnType()) and
+    not getReturnType() instanceof VoidType
   }
 
   /**
@@ -300,7 +290,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
    * parameters and local variables, plus any static fields that are directly accessed by the
    * function.
    */
-  final predicate hasUserVariable(Variable var, Type type) {
+  final predicate hasUserVariable(Variable var, CSharpType type) {
     (
       var.(Member).isStatic() and
       exists(VariableAccess access |
@@ -310,7 +300,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       var.(LocalScopeVariable).getCallable() = callable
     ) and
-    type = getVariableType(var)
+    type = getTypeForPRValue(getVariableType(var))
   }
 
   final private Type getReturnType() { result = callable.getReturnType() }
@@ -355,18 +345,14 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
 
   final override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getVariableType(param) and
-    isLValue = true
+    resultType = getTypeForGLValue(param.getType())
     or
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::InitializeParameter and
-    resultType = getVariableType(param) and
-    isLValue = false
+    resultType = getTypeForPRValue(param.getType())
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {

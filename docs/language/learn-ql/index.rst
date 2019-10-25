@@ -57,6 +57,7 @@ For more information on writing QL to query code written in a specific language 
    cpp/ql-for-cpp
    csharp/ql-for-csharp
    cobol/ql-for-cobol
+   go/ql-for-go
    java/ql-for-java
    javascript/ql-for-javascript
    python/ql-for-python

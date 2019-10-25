@@ -12,12 +12,15 @@
 
 * The call graph has been improved to resolve method calls in more cases. This may produce more security alerts.
 
+* TypeScript 3.6 features are supported.
+
+
 ## New queries
 
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
 |---------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Unused index variable (`js/unused-index-variable`)                        | correctness                                                       | Highlights loops that iterate over an array, but do not use the index variable to access array elements, indicating a possible typo or logic error. Results are shown on LGTM by default. |
-| Loop bound injection (`js/loop-bound-injection`)                          | security, external/cwe/cwe-834                                      | Highlights loops where a user-controlled object with an arbitrary .length value can trick the server to loop indefinitely. Results are not shown on LGTM by default. |
+| Loop bound injection (`js/loop-bound-injection`)                          | security, external/cwe/cwe-834                                      | Highlights loops where a user-controlled object with an arbitrary .length value can trick the server to loop indefinitely. Results are shown on LGTM by default. |
 | Suspicious method name (`js/suspicious-method-name-declaration`)          | correctness, typescript, methods                                  | Highlights suspiciously named methods where the developer likely meant to write a constructor or function. Results are shown on LGTM by default. |
 | Shell command built from environment values (`js/shell-command-injection-from-environment`) | correctness, security, external/cwe/cwe-078, external/cwe/cwe-088 | Highlights shell commands that may change behavior inadvertently depending on the execution environment, indicating a possible violation of [CWE-78](https://cwe.mitre.org/data/definitions/78.html). Results are shown on LGTM by default.|
 | Use of returnless function (`js/use-of-returnless-function`)              | maintainability, correctness                                      | Highlights calls where the return value is used, but the callee never returns a value. Results are shown on LGTM by default. |

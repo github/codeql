@@ -942,9 +942,7 @@ public class TypeScriptASTConverter {
     SourceLocation bodyLoc = new SourceLocation(loc.getSource(), loc.getStart(), loc.getEnd());
     advance(bodyLoc, skip);
     ClassBody body = new ClassBody(bodyLoc, convertChildren(node, "members"));
-    if ("ClassExpression".equals(kind) || id == null) {
-      // Note that `export default class {}` is represented as a ClassDeclaration
-      // in TypeScript but we treat this as a ClassExpression.
+    if ("ClassExpression".equals(kind)) {
       ClassExpression classExpr =
           new ClassExpression(loc, id, typeParameters, superClass, superInterfaces, body);
       attachSymbolInformation(classExpr.getClassDef(), node);
@@ -967,7 +965,13 @@ public class TypeScriptASTConverter {
       classDecl.addDecorators(convertChildren(node, "decorators"));
       advanceUntilAfter(loc, classDecl.getDecorators());
     }
-    return fixExports(loc, classDecl);
+    Node exportedDecl = fixExports(loc, classDecl);
+    // Convert default-exported anonymous class declarations to class expressions.
+    if (exportedDecl instanceof ExportDefaultDeclaration && !classDecl.getClassDef().hasId()) {
+      return new ExportDefaultDeclaration(
+          exportedDecl.getLoc(), new ClassExpression(classDecl.getLoc(), classDecl.getClassDef()));
+    }
+    return exportedDecl;
   }
 
   private Node convertCommaListExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1580,10 +1584,12 @@ public class TypeScriptASTConverter {
 
   private Node convertMetaProperty(JsonObject node, SourceLocation loc) throws ParseError {
     Position metaStart = loc.getStart();
+    String keywordKind = syntaxKinds.get(node.getAsJsonPrimitive("keywordToken").getAsInt() + "").getAsString();
+    String identifier = keywordKind.equals("ImportKeyword") ? "import" : "new";
     Position metaEnd =
-        new Position(metaStart.getLine(), metaStart.getColumn() + 3, metaStart.getOffset() + 3);
-    SourceLocation metaLoc = new SourceLocation("new", metaStart, metaEnd);
-    Identifier meta = new Identifier(metaLoc, "new");
+        new Position(metaStart.getLine(), metaStart.getColumn() + identifier.length(), metaStart.getOffset() + identifier.length());
+    SourceLocation metaLoc = new SourceLocation(identifier, metaStart, metaEnd);
+    Identifier meta = new Identifier(metaLoc, identifier);
     return new MetaProperty(loc, meta, convertChild(node, "name"));
   }
 

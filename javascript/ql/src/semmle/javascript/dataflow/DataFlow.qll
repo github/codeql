@@ -1415,6 +1415,8 @@ module DataFlow {
       or
       e instanceof NewTargetExpr
       or
+      e instanceof ImportMetaExpr
+      or
       e instanceof FunctionBindExpr
       or
       e instanceof TaggedTemplateExpr

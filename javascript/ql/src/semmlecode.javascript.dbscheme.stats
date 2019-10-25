@@ -514,6 +514,10 @@
 <v>1</v>
 </e>
 <e>
+<k>@importmetaexpr</k>
+<v>1</v>
+</e>
+<e>
 <k>@namedimportspecifier</k>
 <v>4</v>
 </e>

@@ -7,7 +7,7 @@
  * @id js/loop-bound-injection
  * @tags security
  *       external/cwe/cwe-834
- * @precision medium
+ * @precision high
  */
 
 import javascript
