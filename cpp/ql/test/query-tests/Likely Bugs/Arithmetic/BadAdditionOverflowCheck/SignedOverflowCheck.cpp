@@ -44,7 +44,7 @@ bool shortShort2(unsigned short n1, unsigned short delta) {
 
 /* Distinguish `varname` from `ptr->varname` and `obj.varname` */
 struct N {
-	unsigned short n1;
+	int n1;
 } n, *np;
 
 bool shortStruct1(unsigned short n1, unsigned short delta) {
@@ -60,7 +60,7 @@ bool shortStruct2(unsigned short n1, unsigned short delta) {
 }
 
 struct se {
-        short xPos;
+        int xPos;
         short yPos;
         short xSize;
         short ySize;
@@ -70,7 +70,7 @@ extern se *getSo(void);
 
 bool func1(se *so) {
 	se *o = getSo();
-	if (so->xPos + so->xSize < o->xPos // GOOD
+	if (so->xPos + so->xSize < so->xPos // BAD
 	    || so->xPos > o->xPos + o->xSize) { // GOOD
     	// clang 8.0.0 -O2: not deleted
     	// gcc 9.2 -O2: not deleted
@@ -100,9 +100,9 @@ int overflow12(int n) {
 }
 
 bool multipleCasts(char x) {
-    // clang 9.0.0 -O2: deleted
-    // gcc 9.2 -O2: deleted
-    // msvc 19.22 /O2: deleted
+
+    // BAD [UNDETECTED - BadAdditionOverflowCheck.ql]
+    // GOOD [SigneOverflowCheck.ql]: Test always fails, but will never overflow.
     return (int)(unsigned short)x + 2 < (int)(unsigned short)x; // GOOD: cannot overflow
 }
 
