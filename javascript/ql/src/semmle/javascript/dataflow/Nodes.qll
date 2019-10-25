@@ -147,7 +147,7 @@ class InvokeNode extends DataFlow::SourceNode {
    * To alter the call graph as seen by the interprocedural data flow libraries, override
    * the `getACallee(int imprecision)` predicate instead.
    */
-  final Function getACallee() { result = getACallee(_) }
+  final Function getACallee() { result = getACallee(0) }
 
   /**
    * Gets a callee of this call site where `imprecision` is a heuristic measure of how
@@ -155,7 +155,8 @@ class InvokeNode extends DataFlow::SourceNode {
    * imprecise analysis of global variables and is not, in fact, a viable callee at all.
    *
    * Callees with imprecision zero, in particular, have either been derived without
-   * considering global variables, or are calls to a global variable within the same file.
+   * considering global variables, or are calls to a global variable within the same file,
+   * or a global variable that has unique definition within the project.
    *
    * This predicate can be overridden to alter the call graph used by the interprocedural
    * data flow libraries.

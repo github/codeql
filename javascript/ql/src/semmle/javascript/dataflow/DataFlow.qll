@@ -122,6 +122,11 @@ module DataFlow {
       CallGraph::getAFunctionReference(result, 0).flowsTo(this)
     }
 
+    /** Gets a function value that may reach this node with the given `imprecision` level. */
+    final FunctionNode getAFunctionValue(int imprecision) {
+      CallGraph::getAFunctionReference(result, imprecision).flowsTo(this)
+    }
+
     /**
      * Gets a function value that may reach this node,
      * possibly derived from a partial function invocation.
