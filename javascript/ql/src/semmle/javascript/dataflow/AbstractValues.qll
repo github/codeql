@@ -38,7 +38,7 @@
  * the source of imprecision that caused them to arise.
  */
 
-import javascript
+private import javascript
 private import semmle.javascript.dataflow.internal.AbstractValuesImpl
 private import InferredTypes
 

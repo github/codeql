@@ -31,8 +31,8 @@ namespace Semmle.Extraction
         }
 
         public Location Location { get; }
-        public string Text;
-        public string EntityText;
+        public string Text { get; }
+        public string EntityText { get; }
 
         public override string Message => Text;
     }

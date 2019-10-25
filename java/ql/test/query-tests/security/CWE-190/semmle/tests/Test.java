@@ -149,8 +149,8 @@ class Test {
 
 		{
 			int i = Integer.MAX_VALUE;
-			// FALSE POSITIVE: the query only looks for things that appear to be
-			// guards, it can't find them if they're hidden inside methods
+			// GOOD: The query can detect custom guards.
+
 			if (properlyBounded(i)) {
 				long j = i + 1;
 			}

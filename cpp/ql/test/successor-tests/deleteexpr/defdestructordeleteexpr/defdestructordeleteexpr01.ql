@@ -1,7 +1,8 @@
 /**
  * @name defdestructordeleteexpr01
- * @description Control flow that involves a default constructor. 
+ * @description Control flow that involves a default constructor.
  */
+
 import cpp
 
 from ControlFlowNode c

@@ -3,9 +3,7 @@ import semmle.code.cpp.ir.dataflow.DataFlow
 
 /** Common data flow configuration to be used by tests. */
 class TestAllocationConfig extends DataFlow::Configuration {
-  TestAllocationConfig() {
-    this = "TestAllocationConfig"
-  }
+  TestAllocationConfig() { this = "TestAllocationConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr().(FunctionCall).getTarget().getName() = "source"

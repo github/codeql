@@ -41,7 +41,7 @@ However, a malicious user could enter a file name which is an absolute path, suc
 In the second example, it appears that the user is restricted to opening a file within the
 <code>"user"</code> home directory. However, a malicious user could enter a file name containing
 special characters. For example, the string <code>"../../etc/passwd"</code> will result in the code
-reading the file located at <code>"/home/[user]/../../etc/passwd"</code>, which is the system's
+reading the file located at <code>"/home/user/../../etc/passwd"</code>, which is the system's
 password file. This file would then be sent back to the user, giving them access to all the
 system's passwords.
 </p>

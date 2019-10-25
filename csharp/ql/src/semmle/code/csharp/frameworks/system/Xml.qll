@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.DataFlow2
 
 /** The `System.Xml` namespace. */
 class SystemXmlNamespace extends Namespace {
@@ -155,14 +156,14 @@ class XmlReaderSettingsCreation extends ObjectCreation {
     p = this.getType().(RefType).getAProperty() and
     exists(PropertyCall set, Expr arg |
       set.getTarget() = p.getSetter() and
-      DataFlow::localFlow(DataFlow::exprNode(this), DataFlow::exprNode(set.getQualifier())) and
+      DataFlow::localExprFlow(this, set.getQualifier()) and
       arg = set.getAnArgument() and
       result = getBitwiseOrOperand*(arg)
     )
   }
 }
 
-private class SettingsDataFlowConfig extends DataFlow::Configuration {
+private class SettingsDataFlowConfig extends DataFlow2::Configuration {
   SettingsDataFlowConfig() { this = "SettingsDataFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) {

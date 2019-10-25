@@ -17,3 +17,8 @@
 | tst.js:76:31:76:32 | 42 | Superfluous argument passed to $@. | tst.js:64:33:64:32 | () {} | default constructor of class ImplicitEmptyConstructor |
 | tst.js:77:31:77:32 | 42 | Superfluous argument passed to $@. | tst.js:67:14:68:3 | (){\\n\\t\\t} | constructor of class ExplicitEmptyConstructor |
 | tst.js:78:20:78:21 | 10 | Superfluous argument passed to $@. | externs.js:36:1:36:27 | functio ... num) {} | function parseFloat |
+| tst.js:114:20:114:21 | 42 | Superfluous argument passed to $@. | tst.js:82:2:86:2 | functio ... \\n\\t\\t}\\n\\t} | function notAPlainThrower1 |
+| tst.js:115:20:115:21 | 42 | Superfluous argument passed to $@. | tst.js:87:2:90:2 | functio ... .");\\n\\t} | function notAPlainThrower2 |
+| tst.js:116:20:116:21 | 42 | Superfluous argument passed to $@. | tst.js:91:2:94:2 | functio ... .");\\n\\t} | function notAPlainThrower3 |
+| tst.js:120:23:120:24 | 87 | Superfluous argument passed to $@. | tst.js:102:2:104:2 | functio ... (p);\\n\\t} | function throwerWithParam |
+| tst.js:121:18:121:19 | 42 | Superfluous argument passed to $@. | tst.js:105:2:113:2 | functio ... )();\\n\\t} | function throwerIndirect |

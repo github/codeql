@@ -3,8 +3,7 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ comparison operation, that is, either an equality operation or a relational operation.
  */
-abstract class ComparisonOperation extends BinaryOperation {
-}
+abstract class ComparisonOperation extends BinaryOperation { }
 
 /**
  * A C/C++ equality operation, that is, either "==" or "!=".
@@ -17,6 +16,8 @@ abstract class EqualityOperation extends ComparisonOperation {
  * A C/C++ equal expression.
  */
 class EQExpr extends EqualityOperation, @eqexpr {
+  override string getCanonicalQLClass() { result = "EQExpr" }
+
   override string getOperator() { result = "==" }
 }
 
@@ -24,6 +25,8 @@ class EQExpr extends EqualityOperation, @eqexpr {
  * A C/C++ not equal expression.
  */
 class NEExpr extends EqualityOperation, @neexpr {
+  override string getCanonicalQLClass() { result = "NEExpr" }
+
   override string getOperator() { result = "!=" }
 }
 
@@ -36,18 +39,12 @@ abstract class RelationalOperation extends ComparisonOperation {
   /**
    * DEPRECATED: Use `getGreaterOperand()` instead.
    */
-  deprecated
-  Expr getLarge() {
-    result = getGreaterOperand()
-  }
+  deprecated Expr getLarge() { result = getGreaterOperand() }
 
   /**
    * DEPRECATED: Use `getLesserOperand()` instead.
    */
-  deprecated
-  Expr getSmall() {
-    result = getLesserOperand()
-  }
+  deprecated Expr getSmall() { result = getLesserOperand() }
 
   /**
    * Gets the operand on the "greater" (or "greater-or-equal") side
@@ -70,9 +67,12 @@ abstract class RelationalOperation extends ComparisonOperation {
  * A C/C++ greater than expression.
  */
 class GTExpr extends RelationalOperation, @gtexpr {
+  override string getCanonicalQLClass() { result = "GTExpr" }
+
   override string getOperator() { result = ">" }
- 
+
   override Expr getGreaterOperand() { result = getLeftOperand() }
+
   override Expr getLesserOperand() { result = getRightOperand() }
 }
 
@@ -80,9 +80,12 @@ class GTExpr extends RelationalOperation, @gtexpr {
  * A C/C++ lesser than expression.
  */
 class LTExpr extends RelationalOperation, @ltexpr {
+  override string getCanonicalQLClass() { result = "LTExpr" }
+
   override string getOperator() { result = "<" }
 
   override Expr getGreaterOperand() { result = getRightOperand() }
+
   override Expr getLesserOperand() { result = getLeftOperand() }
 }
 
@@ -90,9 +93,12 @@ class LTExpr extends RelationalOperation, @ltexpr {
  * A C/C++ greater than or equal expression.
  */
 class GEExpr extends RelationalOperation, @geexpr {
+  override string getCanonicalQLClass() { result = "GEExpr" }
+
   override string getOperator() { result = ">=" }
 
   override Expr getGreaterOperand() { result = getLeftOperand() }
+
   override Expr getLesserOperand() { result = getRightOperand() }
 }
 
@@ -100,8 +106,11 @@ class GEExpr extends RelationalOperation, @geexpr {
  * A C/C++ lesser than or equal expression.
  */
 class LEExpr extends RelationalOperation, @leexpr {
+  override string getCanonicalQLClass() { result = "LEExpr" }
+
   override string getOperator() { result = "<=" }
 
   override Expr getGreaterOperand() { result = getRightOperand() }
+
   override Expr getLesserOperand() { result = getLeftOperand() }
 }

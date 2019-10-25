@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks and sanitizers for reasoning about
  * hardcoded credentials, as well as extension points for adding your
  * own.
  */
@@ -28,6 +28,8 @@ module HardcodedCredentials {
   /** A constant string, considered as a source of hardcoded credentials. */
   class ConstantStringSource extends Source, DataFlow::ValueNode {
     override ConstantString astNode;
+
+    ConstantStringSource() { not astNode.getStringValue() = "" }
   }
 
   /**
@@ -36,11 +38,6 @@ module HardcodedCredentials {
    */
   class DefaultCredentialsSink extends Sink, DataFlow::ValueNode {
     override CredentialsExpr astNode;
-
-    DefaultCredentialsSink() {
-      // Don't flag an empty user name
-      not (astNode.getCredentialsKind() = "user name" and astNode.getStringValue() = "")
-    }
 
     override string getKind() { result = astNode.getCredentialsKind() }
   }

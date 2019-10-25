@@ -6,8 +6,7 @@
  * @deprecated This query is not suitable for production use and has been deprecated.
  */
 
- import semmle.code.cpp.pointsto.PointsTo
+import semmle.code.cpp.pointsto.PointsTo
 
- select count(int set, Element location | setlocations(set, unresolveElement(location))),
-        count(int set, Element element | pointstosets(set, unresolveElement(element)))
-
+select count(int set, Element location | setlocations(set, unresolveElement(location))),
+  count(int set, Element element | pointstosets(set, unresolveElement(element)))

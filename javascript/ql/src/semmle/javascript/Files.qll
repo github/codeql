@@ -74,9 +74,7 @@ abstract class Container extends @container {
    * <tr><td>"//FileServer/"</td><td>""</td></tr>
    * </table>
    */
-  string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 1)
-  }
+  string getBaseName() { result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 1) }
 
   /**
    * Gets the extension of this container, that is, the suffix of its base name
@@ -101,7 +99,9 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 4) }
+  string getExtension() {
+    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 4)
+  }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to

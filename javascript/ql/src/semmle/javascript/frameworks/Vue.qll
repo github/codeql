@@ -280,7 +280,6 @@ module Vue {
    */
   class ExtendedInstance extends Instance, MkExtendedInstance {
     VueExtend extend;
-
     DataFlow::NewNode sub;
 
     ExtendedInstance() { this = MkExtendedInstance(extend, sub) }
@@ -352,7 +351,8 @@ module Vue {
     }
 
     private Module getModule() {
-      exists(HTML::ScriptElement elem | elem.getFile() = file |
+      exists(HTML::ScriptElement elem |
+        xmlElements(elem, _, _, _, file) and // Avoid materializing all of Locatable.getFile()
         result.getTopLevel() = elem.getScript()
       )
     }

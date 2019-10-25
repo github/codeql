@@ -3,6 +3,7 @@ using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Populators;
 using Microsoft.CodeAnalysis.CSharp;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -12,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new Literal(info).TryPopulate();
 
-        protected override void Populate() { }
+        protected override void PopulateExpression(TextWriter trapFile) { }
 
         static ExprKind GetKind(ExpressionNodeInfo info)
         {

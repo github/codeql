@@ -395,7 +395,6 @@ newtype TStatePair =
 
 class StatePair extends TStatePair {
   State q1;
-
   State q2;
 
   StatePair() { this = MkStatePair(q1, q2) }

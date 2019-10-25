@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -10,16 +11,20 @@ namespace Semmle.Extraction.CSharp.Entities
             PointedAtType = Create(cx, symbol.PointedAtType);
         }
 
-        public override IId Id => new Key(PointedAtType, "*;type");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteSubId(PointedAtType);
+            trapFile.Write("*;type");
+        }
 
         // All pointer types are extracted because they won't
         // be extracted in their defining assembly.
         public override bool NeedsPopulation => true;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.pointer_referent_type(this, PointedAtType.TypeRef));
-            ExtractType();
+            trapFile.pointer_referent_type(this, PointedAtType.TypeRef);
+            PopulateType(trapFile);
         }
 
         public Type PointedAtType { get; private set; }

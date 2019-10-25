@@ -5,9 +5,9 @@ import semmle.code.cpp.exprs.Expr
  */
 class Qualifier extends Expr {
   Qualifier() {
-       exists(VariableAccess a | a.getQualifier() = this)
-    or exists(Call c | c.getQualifier() = this)
-    or exists(VacuousDestructorCall v | v.getQualifier() = this)
+    exists(VariableAccess a | a.getQualifier() = this) or
+    exists(Call c | c.getQualifier() = this) or
+    exists(VacuousDestructorCall v | v.getQualifier() = this)
   }
 }
 
@@ -18,21 +18,25 @@ class Qualifier extends Expr {
  * Expressions that are explicitly cast to void are not considered to be in void context.
  */
 class ExprInVoidContext extends Expr {
-  ExprInVoidContext() {
-    exprInVoidContext(this)
-  }
+  ExprInVoidContext() { exprInVoidContext(this) }
 }
 
 private predicate exprInVoidContext(Expr e) {
-    (   exists(ExprStmt s |
-               s = e.getParent()
-               and not exists(StmtExpr se |
-                              s = se.getStmt().(Block).getLastStmt()))
-     or exists(ConditionalExpr c | c.getThen() = e and c instanceof ExprInVoidContext)
-     or exists(ConditionalExpr c | c.getElse() = e and c instanceof ExprInVoidContext)
-     or exists(CommaExpr c | c.getLeftOperand() = e)
-     or exists(CommaExpr c | c.getRightOperand() = e and c instanceof ExprInVoidContext)) and
-    not e instanceof Qualifier and
-    not e.getActualType() instanceof VoidType
+  (
+    exists(ExprStmt s |
+      s = e.getParent() and
+      not exists(StmtExpr se | s = se.getStmt().(Block).getLastStmt())
+    )
+    or
+    exists(ConditionalExpr c | c.getThen() = e and c instanceof ExprInVoidContext)
+    or
+    exists(ConditionalExpr c | c.getElse() = e and c instanceof ExprInVoidContext)
+    or
+    exists(CommaExpr c | c.getLeftOperand() = e)
+    or
+    exists(CommaExpr c | c.getRightOperand() = e and c instanceof ExprInVoidContext)
+    or
+    exists(ForStmt for | for.getUpdate() = e)
+  ) and
+  not e.getActualType() instanceof VoidType
 }
-

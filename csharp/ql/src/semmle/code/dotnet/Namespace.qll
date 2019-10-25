@@ -2,10 +2,10 @@
  * Provides the `Namespace` class to represent .Net namespaces.
  */
 
-private import Element
+private import Declaration
 
 /** A namespace. */
-class Namespace extends NamedElement, @namespace {
+class Namespace extends Declaration, @namespace {
   /**
    * Gets the parent namespace, if any. For example the parent namespace of `System.IO`
    * is `System`. The parent namespace of `System` is the global namespace.

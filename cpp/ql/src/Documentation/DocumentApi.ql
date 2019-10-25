@@ -11,26 +11,26 @@
  * @tags maintainability
  *       documentation
  */
-import cpp
 
+import cpp
 
 predicate isCommented(FunctionDeclarationEntry f) {
   exists(Comment c | c.getCommentedElement() = f)
 }
 
 // Uses of 'f' in 'other'
-Call uses(File other, Function f) {
-  result.getTarget() = f and result.getFile() = other
-}
+Call uses(File other, Function f) { result.getTarget() = f and result.getFile() = other }
 
 from File callerFile, Function f, Call use, int numCalls
-where numCalls = strictcount(File other | exists(uses(other, f)) and other != f.getFile())
-  and not isCommented(f.getADeclarationEntry())
-  and not f instanceof Constructor
-  and not f instanceof Destructor
-  and not f.hasName("operator=")
-  and f.getMetrics().getNumberOfLinesOfCode() >= 5
-  and numCalls > 1
-  and use = uses(callerFile, f)
-  and callerFile != f.getFile()
-select f, "Functions called from other files should be documented (called from $@).", use, use.getFile().getRelativePath()
+where
+  numCalls = strictcount(File other | exists(uses(other, f)) and other != f.getFile()) and
+  not isCommented(f.getADeclarationEntry()) and
+  not f instanceof Constructor and
+  not f instanceof Destructor and
+  not f.hasName("operator=") and
+  f.getMetrics().getNumberOfLinesOfCode() >= 5 and
+  numCalls > 1 and
+  use = uses(callerFile, f) and
+  callerFile != f.getFile()
+select f, "Functions called from other files should be documented (called from $@).", use,
+  use.getFile().getRelativePath()

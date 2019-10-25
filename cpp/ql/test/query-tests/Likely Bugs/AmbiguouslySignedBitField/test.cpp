@@ -25,3 +25,10 @@ struct {
     myEnum nosignenum : 2;
     const myEnum constnosignenum : 2;
 };
+
+template<typename T>
+struct TemplateWithBitfield {
+  T templatesign : 2; // GOOD
+};
+
+TemplateWithBitfield<signed int> twb;

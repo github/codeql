@@ -377,7 +377,6 @@ private module ClosureLibraryUri {
    */
   private class SetterCall extends DataFlow::MethodCallNode, UriLibraryStep {
     DataFlow::NewNode uri;
-
     string name;
 
     SetterCall() {

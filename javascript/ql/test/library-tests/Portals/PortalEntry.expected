@@ -1,9 +1,5 @@
-| (member NP (root https://www.npmjs.com/package/typeTracking)) | src/typeTracking/index.js:20:14:20:15 | NP | true |
 | (member Promise (root https://www.npmjs.com/package/bluebird)) | src/bluebird/index.js:9:19:9:25 | Promise | true |
-| (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking)))) | src/typeTracking/index.js:16:24:18:1 | functio ... ck();\\n} | true |
-| (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking)))) | src/typeTracking/index.js:12:25:14:1 | functio ... bj();\\n} | true |
 | (member default (root https://www.npmjs.com/package/m2)) | src/m2/main.js:6:16:16:1 | class { ...  y; }\\n} | true |
-| (member exec (instance (member NP (root https://www.npmjs.com/package/typeTracking)))) | src/typeTracking/index.js:2:14:2:17 | exec | true |
 | (member exec (instance (member Promise (root https://www.npmjs.com/package/bluebird)))) | src/bluebird/index.js:2:15:2:18 | exec | true |
 | (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:5:11:5:13 | foo | true |
 | (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic))))))))) | src/cyclic/index.js:5:11:5:13 | foo | true |
@@ -1018,7 +1014,6 @@
 | (parameter 0 (root https://www.npmjs.com/package/m1)) | src/m3/index.js:3:46:3:60 | "Hello, world!" | false |
 | (parameter 0 (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:4:7:4:10 | "me" | false |
 | (parameter 0 (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:5:7:5:10 | "me" | false |
-| (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking))))) | src/typeTracking/index.js:13:9:13:21 | new tempObj() | true |
 | (return (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:3:10:3:12 | foo | true |
 | (return (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic))))))))) | src/cyclic/index.js:3:10:3:12 | foo | true |
 | (return (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:3:10:3:12 | foo | true |

@@ -3,11 +3,13 @@ import semmle.javascript.security.dataflow.TaintedPath::TaintedPath
 
 class Assertion extends LineComment {
   boolean shouldHaveAlert;
+
   Assertion() {
-    if getText().matches("%NOT OK%") then
-      shouldHaveAlert = true
-    else
-      (getText().matches("%OK%") and shouldHaveAlert = false)
+    if getText().matches("%NOT OK%")
+    then shouldHaveAlert = true
+    else (
+      getText().matches("%OK%") and shouldHaveAlert = false
+    )
   }
 
   predicate shouldHaveAlert() { shouldHaveAlert = true }
@@ -24,8 +26,7 @@ class Assertion extends LineComment {
 
 from Assertion assertion, string message
 where
-  (assertion.shouldHaveAlert() and not assertion.hasAlert() and message = "Missing alert")
+  assertion.shouldHaveAlert() and not assertion.hasAlert() and message = "Missing alert"
   or
-  (not assertion.shouldHaveAlert() and assertion.hasAlert() and message = "Spurious alert")
-select
-  assertion, message
+  not assertion.shouldHaveAlert() and assertion.hasAlert() and message = "Spurious alert"
+select assertion, message

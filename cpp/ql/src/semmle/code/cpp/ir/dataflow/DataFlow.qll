@@ -13,9 +13,12 @@
  *
  * To use global (interprocedural) data flow, extend the class
  * `DataFlow::Configuration` as documented on that class. To use local
- * (intraprocedural) data flow, invoke `DataFlow::localFlow` or
- * `DataFlow::LocalFlowStep` with arguments of type `DataFlow::Node`.
+ * (intraprocedural) data flow between expressions, call
+ * `DataFlow::localExprFlow`. For more general cases of local data flow, call
+ * `DataFlow::localFlow` or `DataFlow::localFlowStep` with arguments of type
+ * `DataFlow::Node`.
  */
+
 import cpp
 
 module DataFlow {

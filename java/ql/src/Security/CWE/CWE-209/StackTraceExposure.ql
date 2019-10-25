@@ -14,6 +14,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.XSS
 
 /**
@@ -80,7 +81,7 @@ predicate stackTraceExpr(Expr exception, MethodAccess stackTraceString) {
   )
 }
 
-class StackTraceStringToXssSinkFlowConfig extends TaintTracking::Configuration2 {
+class StackTraceStringToXssSinkFlowConfig extends TaintTracking2::Configuration {
   StackTraceStringToXssSinkFlowConfig() {
     this = "StackTraceExposure::StackTraceStringToXssSinkFlowConfig"
   }
@@ -119,7 +120,7 @@ class GetMessageFlowSource extends MethodAccess {
   }
 }
 
-class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking::Configuration2 {
+class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking2::Configuration {
   GetMessageFlowSourceToXssSinkFlowConfig() {
     this = "StackTraceExposure::GetMessageFlowSourceToXssSinkFlowConfig"
   }

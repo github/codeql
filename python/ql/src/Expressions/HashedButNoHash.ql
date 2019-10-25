@@ -17,37 +17,39 @@ import python
  * For numpy arrays, the index may be a list, which are not hashable and needs to be treated specially.
  */
 
-predicate numpy_array_type(ClassObject na) {
-    exists(ModuleObject np | np.getName() = "numpy" or np.getName() = "numpy.core" |
-        na.getAnImproperSuperType() = np.attr("ndarray")
+predicate numpy_array_type(ClassValue na) {
+    exists(ModuleValue np | np.getName() = "numpy" or np.getName() = "numpy.core" |
+        na.getASuperType() = np.attr("ndarray")
     )
 }
 
-predicate has_custom_getitem(ClassObject cls) {
-    cls.lookupAttribute("__getitem__") instanceof PyFunctionObject
+predicate has_custom_getitem(Value v) {
+    v.getClass().lookup("__getitem__") instanceof PythonFunctionValue
     or
-    numpy_array_type(cls)
+    numpy_array_type(v.getClass())
 }
 
 predicate explicitly_hashed(ControlFlowNode f) {
      exists(CallNode c, GlobalVariable hash | c.getArg(0) = f and c.getFunction().(NameNode).uses(hash) and hash.getId() = "hash")
 }
 
-predicate unhashable_subscript(ControlFlowNode f, ClassObject c, ControlFlowNode origin) {
+predicate unhashable_subscript(ControlFlowNode f, ClassValue c, ControlFlowNode origin) {
     is_unhashable(f, c, origin) and
     exists(SubscriptNode sub | sub.getIndex() = f |
-        exists(ClassObject custom_getitem |
-            sub.getObject().refersTo(_, custom_getitem, _) and
+        exists(Value custom_getitem |
+            sub.getObject().pointsTo(custom_getitem) and
             not has_custom_getitem(custom_getitem)
         )
     )
 }
 
-predicate is_unhashable(ControlFlowNode f, ClassObject cls, ControlFlowNode origin) {
-    f.refersTo(_, cls, origin) and
-    (not cls.hasAttribute("__hash__") and not cls.unknowableAttributes() and cls.isNewStyle()
-     or
-     cls.lookupAttribute("__hash__") = theNoneObject()
+predicate is_unhashable(ControlFlowNode f, ClassValue cls, ControlFlowNode origin) {
+    exists(Value v |
+        f.pointsTo(v, origin) and v.getClass() = cls
+        |
+        not cls.hasAttribute("__hash__") and not cls.failedInference(_) and cls.isNewStyle()
+        or
+        cls.lookup("__hash__") = Value::named("None")
     )
 }
 
@@ -70,7 +72,7 @@ predicate typeerror_is_caught(ControlFlowNode f) {
         try.getAHandler().getType().refersTo(theTypeErrorType()))
 }
 
-from ControlFlowNode f, ClassObject c, ControlFlowNode origin
+from ControlFlowNode f, ClassValue c, ControlFlowNode origin
 where
 not typeerror_is_caught(f)
 and

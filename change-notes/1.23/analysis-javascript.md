@@ -1,0 +1,67 @@
+# Improvements to JavaScript analysis
+
+## General improvements
+
+* Suppor for `globalThis` has been added.
+
+* Support for the following frameworks and libraries has been improved:
+  - [firebase](https://www.npmjs.com/package/firebase)
+  - [mongodb](https://www.npmjs.com/package/mongodb)
+  - [mongoose](https://www.npmjs.com/package/mongoose)
+  - [rate-limiter-flexible](https://www.npmjs.com/package/rate-limiter-flexible)
+
+* The call graph has been improved to resolve method calls in more cases. This may produce more security alerts.
+
+* TypeScript 3.6 features are supported.
+
+
+## New queries
+
+| **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
+|---------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Unused index variable (`js/unused-index-variable`)                        | correctness                                                       | Highlights loops that iterate over an array, but do not use the index variable to access array elements, indicating a possible typo or logic error. Results are shown on LGTM by default. |
+| Loop bound injection (`js/loop-bound-injection`)                          | security, external/cwe/cwe-834                                      | Highlights loops where a user-controlled object with an arbitrary .length value can trick the server to loop indefinitely. Results are not shown on LGTM by default. |
+| Suspicious method name (`js/suspicious-method-name-declaration`)          | correctness, typescript, methods                                  | Highlights suspiciously named methods where the developer likely meant to write a constructor or function. Results are shown on LGTM by default. |
+| Shell command built from environment values (`js/shell-command-injection-from-environment`) | correctness, security, external/cwe/cwe-078, external/cwe/cwe-088 | Highlights shell commands that may change behavior inadvertently depending on the execution environment, indicating a possible violation of [CWE-78](https://cwe.mitre.org/data/definitions/78.html). Results are shown on LGTM by default.|
+| Use of returnless function (`js/use-of-returnless-function`)              | maintainability, correctness                                      | Highlights calls where the return value is used, but the callee never returns a value. Results are shown on LGTM by default. |
+| Useless regular expression character escape (`js/useless-regexp-character-escape`) | correctness, security, external/cwe/cwe-20 | Highlights regular expression strings with useless character escapes, indicating a possible violation of [CWE-20](https://cwe.mitre.org/data/definitions/20.html). Results are shown on LGTM by default. |
+| Unreachable method overloads (`js/unreachable-method-overloads`)          | correctness, typescript                                           | Highlights method overloads that are impossible to use from client code. Results are shown on LGTM by default. |
+
+## Changes to existing queries
+
+| **Query**                      | **Expected impact**          | **Change**                                                                |
+|--------------------------------|------------------------------|---------------------------------------------------------------------------|
+| Incomplete string escaping or encoding (`js/incomplete-sanitization`) | Fewer false-positive results | This rule now recognizes additional ways delimiters can be stripped away. |
+| Client-side cross-site scripting (`js/xss`) | More results, fewer false-positive results | More potential vulnerabilities involving functions that manipulate DOM attributes are now recognized, and more sanitizers are detected. |
+| Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving functions that manipulate DOM event handler attributes are now recognized. |
+| Hard-coded credentials (`js/hardcoded-credentials`) | Fewer false-positive results | This rule now flags fewer password examples. |
+| Illegal invocation (`js/illegal-invocation`) | Fewer false-positive results | This rule now correctly handles methods named `call` and `apply`. |
+| Incorrect suffix check (`js/incorrect-suffix-check`) | Fewer false-positive results | The query recognizes valid checks in more cases. |
+| Network data written to file (`js/http-to-file-access`) | Fewer false-positive results | This query has been renamed to better match its intended purpose, and now only considers network data untrusted. | 
+| Password in configuration file (`js/password-in-configuration-file`) | Fewer false-positive results | This rule now flags fewer password examples. |
+| Prototype pollution (`js/prototype-pollution`) | More results | The query now highlights vulnerable uses of jQuery and Angular, and the results are shown on LGTM by default. |
+| Reflected cross-site scripting (`js/reflected-xss`) | Fewer false-positive results | The query now recognizes more sanitizers. |
+| Stored cross-site scripting (`js/stored-xss`) | Fewer false-positive results | The query now recognizes more sanitizers. |
+| Uncontrolled command line (`js/command-line-injection`) | More results | This query now treats responses from servers as untrusted. |
+
+## Changes to QL libraries
+
+* `Expr.getDocumentation()` now handles chain assignments.
+
+## Removal of deprecated queries
+
+The following queries (deprecated since 1.17) are no longer available in the distribution:
+
+* Builtin redefined (js/builtin-redefinition)
+* Inefficient method definition (js/method-definition-in-constructor)
+* Bad parity check (js/incomplete-parity-check)
+* Potentially misspelled property or variable name (js/wrong-capitalization)
+* Unknown JSDoc tag (js/jsdoc/unknown-tag-type)
+* Invalid JSLint directive (js/jslint/invalid-directive)
+* Malformed JSLint directive (js/jslint/malformed-directive)
+* Use of HTML comments (js/html-comment)
+* Multi-line string literal (js/multi-line-string)
+* Octal literal (js/octal-literal)
+* Reserved word used as variable name (js/use-of-reserved-word)
+* Trailing comma in array or object expressions (js/trailing-comma-in-array-or-object)
+* Call to parseInt without radix (js/parseint-without-radix)

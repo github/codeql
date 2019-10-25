@@ -5,7 +5,7 @@
  * and property accesses.
  */
 
-import javascript
+private import javascript
 private import AbstractValuesImpl
 private import semmle.javascript.dataflow.InferredTypes
 

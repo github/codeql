@@ -21,13 +21,9 @@ class UserInputIsSensitiveExpr extends SecurityOptions {
 }
 
 class SqliteFunctionCall extends FunctionCall {
-  SqliteFunctionCall() {
-    this.getTarget().getName().matches("sqlite%")
-  }
+  SqliteFunctionCall() { this.getTarget().getName().matches("sqlite%") }
 
-  Expr getASource() {
-    result = this.getAnArgument()
-  }
+  Expr getASource() { result = this.getAnArgument() }
 }
 
 predicate sqlite_encryption_used() {
@@ -37,9 +33,9 @@ predicate sqlite_encryption_used() {
 }
 
 from SensitiveExpr taintSource, Expr taintedArg, SqliteFunctionCall sqliteCall
-where tainted(taintSource, taintedArg)
-  and taintedArg = sqliteCall.getASource()
-  and not sqlite_encryption_used()
-select sqliteCall, "This SQLite call may store $@ in a non-encrypted SQLite database",
-       taintSource, "sensitive information"
-
+where
+  tainted(taintSource, taintedArg) and
+  taintedArg = sqliteCall.getASource() and
+  not sqlite_encryption_used()
+select sqliteCall, "This SQLite call may store $@ in a non-encrypted SQLite database", taintSource,
+  "sensitive information"

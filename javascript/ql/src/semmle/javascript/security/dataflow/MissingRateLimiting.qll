@@ -23,6 +23,7 @@
  */
 
 import javascript
+private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared
 
 // main concepts
 /**
@@ -153,5 +154,45 @@ class RouteHandlerLimitedByExpressLimiter extends RateLimitedRouteHandlerExpr {
             .getSetup()
             .getRouter()
     )
+  }
+}
+
+/**
+ * A rate-handler function implemented using one of the rate-limiting classes provided
+ * by the `rate-limiter-flexible` package.
+ *
+ * We look for route handlers that invoke the `consume` method of one of the `RateLimiter*`
+ * classes from the `rate-limiter-flexible` package on a property of their request parameter,
+ * like the `rateLimiterMiddleware` function in this example:
+ *
+ * ```
+ * import { RateLimiterRedis } from 'rate-limiter-flexible';
+ * const rateLimiter = new RateLimiterRedis(...);
+ * function rateLimiterMiddleware(req, res, next) {
+ *   rateLimiter.consume(req.ip).then(next).catch(res.status(429).send('rate limited'));
+ * }
+ * ```
+ */
+class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
+  RateLimiterFlexibleRateLimiter() {
+    exists(
+      string rateLimiterClassName, DataFlow::SourceNode rateLimiterClass,
+      DataFlow::SourceNode rateLimiterInstance, DataFlow::ParameterNode request
+    |
+      rateLimiterClassName.matches("RateLimiter%") and
+      rateLimiterClass = DataFlow::moduleMember("rate-limiter-flexible", rateLimiterClassName) and
+      rateLimiterInstance = rateLimiterClass.getAnInstantiation() and
+      request.getParameter() = getRouteHandlerParameter(getFunction(), "request") and
+      request.getAPropertyRead() = rateLimiterInstance.getAMemberCall("consume").getAnArgument()
+    )
+  }
+}
+
+/**
+ * A route-handler expression that is rate-limited by the `rate-limiter-flexible` package.
+ */
+class RouteHandlerLimitedByRateLimiterFlexible extends RateLimiter {
+  RouteHandlerLimitedByRateLimiterFlexible() {
+    any(RateLimiterFlexibleRateLimiter rl).flowsToExpr(this)
   }
 }

@@ -1,9 +1,7 @@
 import cpp
 
 class MutexTypeForTest extends MutexType {
-  MutexTypeForTest() {
-    this.(Class).getName() = "Mutex7"
-  }
+  MutexTypeForTest() { this.(Class).getName() = "Mutex7" }
 
   override predicate mustlockAccess(FunctionCall fc, Expr arg) {
     exists(Function f |
@@ -14,9 +12,7 @@ class MutexTypeForTest extends MutexType {
     )
   }
 
-  override predicate trylockAccess(FunctionCall fc, Expr arg) {
-    none()
-  }
+  override predicate trylockAccess(FunctionCall fc, Expr arg) { none() }
 
   override predicate unlockAccess(FunctionCall fc, Expr arg) {
     exists(Function f |

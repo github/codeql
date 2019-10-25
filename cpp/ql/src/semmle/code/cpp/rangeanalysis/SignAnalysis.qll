@@ -5,135 +5,212 @@
  * The analysis is implemented as an abstract interpretation over the
  * three-valued domain `{negative, zero, positive}`.
  */
+
 import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
 private import SignAnalysisCached
 
-private newtype TSign = TNeg() or TZero() or TPos()
+private newtype TSign =
+  TNeg() or
+  TZero() or
+  TPos()
+
 private class Sign extends TSign {
   string toString() {
-    result = "-" and this = TNeg() or
-    result = "0" and this = TZero() or
+    result = "-" and this = TNeg()
+    or
+    result = "0" and this = TZero()
+    or
     result = "+" and this = TPos()
   }
+
   Sign inc() {
-    this = TNeg() and result = TNeg() or
-    this = TNeg() and result = TZero() or
-    this = TZero() and result = TPos() or
+    this = TNeg() and result = TNeg()
+    or
+    this = TNeg() and result = TZero()
+    or
+    this = TZero() and result = TPos()
+    or
     this = TPos() and result = TPos()
   }
-  Sign dec() {
-    result.inc() = this
-  }
+
+  Sign dec() { result.inc() = this }
+
   Sign neg() {
-    this = TNeg() and result = TPos() or
-    this = TZero() and result = TZero() or
+    this = TNeg() and result = TPos()
+    or
+    this = TZero() and result = TZero()
+    or
     this = TPos() and result = TNeg()
   }
+
   Sign bitnot() {
-    this = TNeg() and result = TPos() or
-    this = TNeg() and result = TZero() or
-    this = TZero() and result = TNeg() or
+    this = TNeg() and result = TPos()
+    or
+    this = TNeg() and result = TZero()
+    or
+    this = TZero() and result = TNeg()
+    or
     this = TPos() and result = TNeg()
   }
+
   Sign add(Sign s) {
-    this = TZero() and result = s or
-    s = TZero() and result = this or
-    this = s and this = result or
-    this = TPos() and s = TNeg() or
+    this = TZero() and result = s
+    or
+    s = TZero() and result = this
+    or
+    this = s and this = result
+    or
+    this = TPos() and s = TNeg()
+    or
     this = TNeg() and s = TPos()
   }
+
   Sign mul(Sign s) {
-    result = TZero() and this = TZero() or
-    result = TZero() and s = TZero() or
-    result = TNeg() and this = TPos() and s = TNeg() or
-    result = TNeg() and this = TNeg() and s = TPos() or
-    result = TPos() and this = TPos() and s = TPos() or
+    result = TZero() and this = TZero()
+    or
+    result = TZero() and s = TZero()
+    or
+    result = TNeg() and this = TPos() and s = TNeg()
+    or
+    result = TNeg() and this = TNeg() and s = TPos()
+    or
+    result = TPos() and this = TPos() and s = TPos()
+    or
     result = TPos() and this = TNeg() and s = TNeg()
   }
+
   Sign div(Sign s) {
-    result = TZero() and s = TNeg() or
-    result = TZero() and s = TPos() or
-    result = TNeg() and this = TPos() and s = TNeg() or
-    result = TNeg() and this = TNeg() and s = TPos() or
-    result = TPos() and this = TPos() and s = TPos() or
+    result = TZero() and s = TNeg()
+    or
+    result = TZero() and s = TPos()
+    or
+    result = TNeg() and this = TPos() and s = TNeg()
+    or
+    result = TNeg() and this = TNeg() and s = TPos()
+    or
+    result = TPos() and this = TPos() and s = TPos()
+    or
     result = TPos() and this = TNeg() and s = TNeg()
   }
+
   Sign rem(Sign s) {
-    result = TZero() and s = TNeg() or
-    result = TZero() and s = TPos() or
-    result = this and s = TNeg() or
+    result = TZero() and s = TNeg()
+    or
+    result = TZero() and s = TPos()
+    or
+    result = this and s = TNeg()
+    or
     result = this and s = TPos()
   }
+
   Sign bitand(Sign s) {
-    result = TZero() and this = TZero() or
-    result = TZero() and s = TZero() or
-    result = TZero() and this = TPos() or
-    result = TZero() and s = TPos() or
-    result = TNeg() and this = TNeg() and s = TNeg() or
-    result = TPos() and this = TNeg() and s = TPos() or
-    result = TPos() and this = TPos() and s = TNeg() or
+    result = TZero() and this = TZero()
+    or
+    result = TZero() and s = TZero()
+    or
+    result = TZero() and this = TPos()
+    or
+    result = TZero() and s = TPos()
+    or
+    result = TNeg() and this = TNeg() and s = TNeg()
+    or
+    result = TPos() and this = TNeg() and s = TPos()
+    or
+    result = TPos() and this = TPos() and s = TNeg()
+    or
     result = TPos() and this = TPos() and s = TPos()
   }
+
   Sign bitor(Sign s) {
-    result = TZero() and this = TZero() and s = TZero() or
-    result = TNeg() and this = TNeg() or
-    result = TNeg() and s = TNeg() or
-    result = TPos() and this = TPos() and s = TZero() or
-    result = TPos() and this = TZero() and s = TPos() or
+    result = TZero() and this = TZero() and s = TZero()
+    or
+    result = TNeg() and this = TNeg()
+    or
+    result = TNeg() and s = TNeg()
+    or
+    result = TPos() and this = TPos() and s = TZero()
+    or
+    result = TPos() and this = TZero() and s = TPos()
+    or
     result = TPos() and this = TPos() and s = TPos()
   }
+
   Sign bitxor(Sign s) {
-    result = TZero() and this = s or
-    result = this and s = TZero() or
-    result = s and this = TZero() or
-    result = TPos() and this = TPos() and s = TPos() or
-    result = TNeg() and this = TNeg() and s = TPos() or
-    result = TNeg() and this = TPos() and s = TNeg() or
+    result = TZero() and this = s
+    or
+    result = this and s = TZero()
+    or
+    result = s and this = TZero()
+    or
+    result = TPos() and this = TPos() and s = TPos()
+    or
+    result = TNeg() and this = TNeg() and s = TPos()
+    or
+    result = TNeg() and this = TPos() and s = TNeg()
+    or
     result = TPos() and this = TNeg() and s = TNeg()
   }
+
   Sign lshift(Sign s) {
-    result = TZero() and this = TZero() or
-    result = this and s = TZero() or
+    result = TZero() and this = TZero()
+    or
+    result = this and s = TZero()
+    or
     this != TZero() and s != TZero()
   }
+
   Sign rshift(Sign s) {
-    result = TZero() and this = TZero() or
-    result = this and s = TZero() or
-    result = TNeg() and this = TNeg() or
+    result = TZero() and this = TZero()
+    or
+    result = this and s = TZero()
+    or
+    result = TNeg() and this = TNeg()
+    or
     result != TNeg() and this = TPos() and s != TZero()
   }
+
   Sign urshift(Sign s) {
-    result = TZero() and this = TZero() or
-    result = this and s = TZero() or
-    result != TZero() and this = TNeg() and s != TZero() or
+    result = TZero() and this = TZero()
+    or
+    result = this and s = TZero()
+    or
+    result != TZero() and this = TNeg() and s != TZero()
+    or
     result != TNeg() and this = TPos() and s != TZero()
   }
 }
 
 private Sign certainInstructionSign(Instruction inst) {
   exists(int i | inst.(IntegerConstantInstruction).getValue().toInt() = i |
-    i < 0 and result = TNeg() or
-    i = 0 and result = TZero() or
+    i < 0 and result = TNeg()
+    or
+    i = 0 and result = TZero()
+    or
     i > 0 and result = TPos()
   )
   or
   exists(float f | f = inst.(FloatConstantInstruction).getValue().toFloat() |
-    f < 0 and result = TNeg() or
-    f = 0 and result = TZero() or
+    f < 0 and result = TNeg()
+    or
+    f = 0 and result = TZero()
+    or
     f > 0 and result = TPos()
   )
 }
 
-private newtype CastKind = TWiden() or TSame() or TNarrow()
+private newtype CastKind =
+  TWiden() or
+  TSame() or
+  TNarrow()
 
 private CastKind getCastKind(ConvertInstruction ci) {
   exists(int fromSize, int toSize |
     toSize = ci.getResultSize() and
     fromSize = ci.getUnary().getResultSize()
-    |
+  |
     fromSize < toSize and
     result = TWiden()
     or
@@ -207,7 +284,7 @@ private predicate unknownSign(Instruction i) {
     or
     i instanceof InitializeParameterInstruction
     or
-    i instanceof BuiltInInstruction
+    i instanceof BuiltInOperationInstruction
     or
     i instanceof CallInstruction
     or
@@ -219,28 +296,11 @@ private predicate unknownSign(Instruction i) {
  * Holds if `lowerbound` is a lower bound for `bounded`. This is restricted
  * to only include bounds for which we might determine a sign.
  */
-private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand bounded, boolean isStrict) {
+private predicate lowerBound(
+  IRGuardCondition comp, Operand lowerbound, Operand bounded, boolean isStrict
+) {
   exists(int adjustment, Operand compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
-    (
-      isStrict = true and
-      adjustment = 0
-      or
-      isStrict = false and
-      adjustment = 1
-    )  and
-    comp.ensuresLt(lowerbound, compared, adjustment, bounded.getUseInstruction().getBlock(), true)
-  )
-}
-
-
-/**
- * Holds if `upperbound` is an upper bound for `bounded` at `pos`. This is restricted
- * to only include bounds for which we might determine a sign.
- */
-private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand bounded, boolean isStrict) {
-  exists(int adjustment, Operand compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
+    valueNumberOfOperand(bounded) = valueNumberOfOperand(compared) and
     (
       isStrict = true and
       adjustment = 0
@@ -248,7 +308,27 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
       isStrict = false and
       adjustment = 1
     ) and
-    comp.ensuresLt(compared, upperbound, adjustment, bounded.getUseInstruction().getBlock(), true)
+    comp.ensuresLt(lowerbound, compared, adjustment, bounded.getUse().getBlock(), true)
+  )
+}
+
+/**
+ * Holds if `upperbound` is an upper bound for `bounded` at `pos`. This is restricted
+ * to only include bounds for which we might determine a sign.
+ */
+private predicate upperBound(
+  IRGuardCondition comp, Operand upperbound, Operand bounded, boolean isStrict
+) {
+  exists(int adjustment, Operand compared |
+    valueNumberOfOperand(bounded) = valueNumberOfOperand(compared) and
+    (
+      isStrict = true and
+      adjustment = 0
+      or
+      isStrict = false and
+      adjustment = 1
+    ) and
+    comp.ensuresLt(compared, upperbound, adjustment, bounded.getUse().getBlock(), true)
   )
 }
 
@@ -261,12 +341,10 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
  */
 private predicate eqBound(IRGuardCondition guard, Operand eqbound, Operand bounded, boolean isEq) {
   exists(Operand compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
-    guard.ensuresEq(compared, eqbound, 0, bounded.getUseInstruction().getBlock(), isEq)
+    valueNumberOfOperand(bounded) = valueNumberOfOperand(compared) and
+    guard.ensuresEq(compared, eqbound, 0, bounded.getUse().getBlock(), isEq)
   )
 }
-
-
 
 /**
  * Holds if `bound` is a bound for `v` at `pos` that needs to be positive in
@@ -308,21 +386,22 @@ private predicate negBoundOk(IRGuardCondition comp, Operand bound, Operand op) {
 
 /** Holds if `bound` allows `v` to be zero at `pos`. */
 private predicate zeroBoundOk(IRGuardCondition comp, Operand bound, Operand op) {
-  lowerBound(comp, bound, op, _) and TNeg() = operandSign(bound) or
-  lowerBound(comp, bound, op, false) and TZero() = operandSign(bound) or
-  upperBound(comp, bound, op, _) and TPos() = operandSign(bound) or
-  upperBound(comp, bound, op, false) and TZero() = operandSign(bound) or
-  eqBound(comp, bound, op, true) and TZero() = operandSign(bound) or
+  lowerBound(comp, bound, op, _) and TNeg() = operandSign(bound)
+  or
+  lowerBound(comp, bound, op, false) and TZero() = operandSign(bound)
+  or
+  upperBound(comp, bound, op, _) and TPos() = operandSign(bound)
+  or
+  upperBound(comp, bound, op, false) and TZero() = operandSign(bound)
+  or
+  eqBound(comp, bound, op, true) and TZero() = operandSign(bound)
+  or
   eqBound(comp, bound, op, false) and TZero() != operandSign(bound)
 }
 
-private Sign binaryOpLhsSign(BinaryInstruction i) {
-  result = operandSign(i.getLeftOperand())
-}
+private Sign binaryOpLhsSign(BinaryInstruction i) { result = operandSign(i.getLeftOperand()) }
 
-private Sign binaryOpRhsSign(BinaryInstruction i) {
-  result = operandSign(i.getRightOperand())
-}
+private Sign binaryOpRhsSign(BinaryInstruction i) { result = operandSign(i.getRightOperand()) }
 
 pragma[noinline]
 private predicate binaryOpSigns(BinaryInstruction i, Sign lhs, Sign rhs) {
@@ -331,19 +410,30 @@ private predicate binaryOpSigns(BinaryInstruction i, Sign lhs, Sign rhs) {
 }
 
 private Sign unguardedOperandSign(Operand operand) {
-  result = instructionSign(operand.getDefinitionInstruction()) and
+  result = instructionSign(operand.getDef()) and
   not hasGuard(operand, result)
 }
 
 private Sign guardedOperandSign(Operand operand) {
-  result = instructionSign(operand.getDefinitionInstruction()) and
+  result = instructionSign(operand.getDef()) and
   hasGuard(operand, result)
 }
 
 private Sign guardedOperandSignOk(Operand operand) {
-  result = TPos() and forex(IRGuardCondition guard, Operand bound | posBound(guard, bound, operand) | posBoundOk(guard, bound, operand)) or
-  result = TNeg() and forex(IRGuardCondition guard, Operand bound | negBound(guard, bound, operand) | negBoundOk(guard, bound, operand)) or
-  result = TZero() and forex(IRGuardCondition guard, Operand bound | zeroBound(guard, bound, operand) | zeroBoundOk(guard, bound, operand))
+  result = TPos() and
+  forex(IRGuardCondition guard, Operand bound | posBound(guard, bound, operand) |
+    posBoundOk(guard, bound, operand)
+  )
+  or
+  result = TNeg() and
+  forex(IRGuardCondition guard, Operand bound | negBound(guard, bound, operand) |
+    negBoundOk(guard, bound, operand)
+  )
+  or
+  result = TZero() and
+  forex(IRGuardCondition guard, Operand bound | zeroBound(guard, bound, operand) |
+    zeroBoundOk(guard, bound, operand)
+  )
 }
 
 /**
@@ -351,14 +441,15 @@ private Sign guardedOperandSignOk(Operand operand) {
  * at `pos`.
  */
 private predicate hasGuard(Operand op, Sign s) {
-    s = TPos() and posBound(_, _, op)
-    or
-    s = TNeg() and negBound(_, _, op)
-    or
-    s = TZero() and zeroBound(_, _, op)
+  s = TPos() and posBound(_, _, op)
+  or
+  s = TNeg() and negBound(_, _, op)
+  or
+  s = TZero() and zeroBound(_, _, op)
 }
 
-cached module SignAnalysisCached { 
+cached
+module SignAnalysisCached {
   /**
    * Gets a sign that `operand` may have at `pos`, taking guards into account.
    */
@@ -368,8 +459,11 @@ cached module SignAnalysisCached {
     or
     result = guardedOperandSign(operand) and
     result = guardedOperandSignOk(operand)
+    or
+    // `result` is unconstrained if the definition is inexact. Then any sign is possible.
+    operand.isDefinitionInexact()
   }
-  
+
   cached
   Sign instructionSign(Instruction i) {
     result = certainInstructionSign(i)
@@ -385,11 +479,7 @@ cached module SignAnalysisCached {
       exists(ConvertInstruction ci, Instruction prior, boolean fromSigned, boolean toSigned |
         i = ci and
         prior = ci.getUnary() and
-        (
-          if ci.getResultType().(IntegralType).isSigned()
-          then toSigned = true
-          else toSigned = false
-        ) and
+        (if ci.getResultType().(IntegralType).isSigned() then toSigned = true else toSigned = false) and
         (
           if prior.getResultType().(IntegralType).isSigned()
           then fromSigned = true
@@ -404,9 +494,7 @@ cached module SignAnalysisCached {
       or
       result = operandSign(i.(NegateInstruction).getAnOperand()).neg()
       or
-      exists(Sign s1, Sign s2 |
-        binaryOpSigns(i, s1, s2)
-        |
+      exists(Sign s1, Sign s2 | binaryOpSigns(i, s1, s2) |
         i instanceof AddInstruction and result = s1.add(s2)
         or
         i instanceof SubInstruction and result = s1.add(s2.neg())
@@ -477,6 +565,7 @@ predicate strictlyPositive(Operand op) {
   not operandSign(op) = TNeg() and
   not operandSign(op) = TZero()
 }
+
 /** Holds if `i` is strictly negative. */
 predicate strictlyNegativeInstruction(Instruction i) {
   instructionSign(i) = TNeg() and

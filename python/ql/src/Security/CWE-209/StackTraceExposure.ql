@@ -18,6 +18,18 @@ import semmle.python.security.Paths
 import semmle.python.security.Exceptions
 import semmle.python.web.HttpResponse
 
-from TaintedPathSource src, TaintedPathSink sink
-where src.flowsTo(sink) and src.getSource() instanceof ErrorInfoSource
+class StackTraceExposureConfiguration extends TaintTracking::Configuration {
+
+    StackTraceExposureConfiguration() { this = "Stack trace exposure configuration" }
+
+    override predicate isSource(TaintTracking::Source source) { source instanceof ErrorInfoSource }
+
+    override predicate isSink(TaintTracking::Sink sink) {
+        sink instanceof HttpResponseTaintSink
+    }
+
+}
+
+from StackTraceExposureConfiguration config, TaintedPathSource src, TaintedPathSink sink
+where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "$@ may be exposed to an external user", src.getSource(), "Error information"

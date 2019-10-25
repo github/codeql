@@ -1,5 +1,0 @@
-| virtual_functions.cpp:34:8:34:9 | X1 | virtual_functions.cpp:36:8:36:9 | X3 |
-| virtual_functions.cpp:34:8:34:9 | X1 | virtual_functions.cpp:37:8:37:9 | X4 |
-| virtual_functions.cpp:36:8:36:9 | X3 | virtual_functions.cpp:38:8:38:9 | X5 |
-| virtual_functions.cpp:37:8:37:9 | X4 | virtual_functions.cpp:38:8:38:9 | X5 |
-| virtual_functions.cpp:38:8:38:9 | X5 | virtual_functions.cpp:40:8:40:9 | X7 |

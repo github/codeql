@@ -6,7 +6,7 @@ import com.semmle.js.ast.Visitor;
 /**
  * A unary operator applied to a type.
  *
- * This can be <tt>keyof T</tt> or <tt>readonly T</tt>.
+ * <p>This can be <tt>keyof T</tt> or <tt>readonly T</tt>.
  */
 public class UnaryTypeExpr extends TypeExpression {
   private final ITypeExpression elementType;

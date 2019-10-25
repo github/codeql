@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -22,25 +23,19 @@ namespace Semmle.Extraction.CSharp.Entities
         // be extracted in their defining assembly.
         public override bool NeedsPopulation => true;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.array_element_type(this, Dimension, Rank, element.Type.TypeRef));
-            ExtractType();
-            ExtractNullability(symbol.ElementNullableAnnotation);
+            trapFile.array_element_type(this, Dimension, Rank, element.Type.TypeRef);
+            PopulateType(trapFile);
+            PopulateNullability(trapFile, symbol.ElementNullableAnnotation);
         }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(element.Type);
-                    tb.Append((int)symbol.ElementNullableAnnotation);
-                    symbol.BuildArraySuffix(tb);
-                    tb.Append(";type");
-                });
-            }
+            trapFile.WriteSubId(element.Type);
+            trapFile.Write((int)symbol.ElementNullableAnnotation);
+            symbol.BuildArraySuffix(trapFile);
+            trapFile.Write(";type");
         }
 
         public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) => ArrayTypeFactory.Instance.CreateEntity(cx, symbol);

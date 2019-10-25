@@ -11,7 +11,7 @@ import javascript
  * Example:
  *
  * ```
- * define(['a', 'b'], function(a, b) {
+ * define(['fs', 'express'], function(fs, express) {
  *   ...
  * });
  * ```
@@ -19,7 +19,7 @@ import javascript
  * The first argument is an (optional) array of dependencies,
  * the second a factory method or object.
  *
- * We also recognize the three-argument form `define('m', ['a', 'b'], ...)`
+ * We also recognize the three-argument form `define('m', ['fs', 'express'], ...)`
  * where the first argument is the module name, the second argument an
  * array of dependencies, and the third argument a factory method or object.
  */
@@ -189,7 +189,7 @@ private class AmdDependencyPath extends PathExprCandidate {
 private class ConstantAmdDependencyPathElement extends PathExprInModule, ConstantString {
   ConstantAmdDependencyPathElement() { this = any(AmdDependencyPath amd).getAPart() }
 
-  override string getValue() { result = this.(ConstantString).getStringValue() }
+  override string getValue() { result = getStringValue() }
 }
 
 /**
@@ -274,6 +274,14 @@ private class AmdDependencyImport extends Import {
 
 /**
  * An AMD-style module.
+ *
+ * Example:
+ *
+ * ```
+ * define(['fs', 'express'], function(fs, express) {
+ *   ...
+ * });
+ * ```
  */
 class AmdModule extends Module {
   AmdModule() { strictcount(AmdModuleDefinition def | amdModuleTopLevel(def, this)) = 1 }

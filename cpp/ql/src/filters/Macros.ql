@@ -7,11 +7,12 @@
  * @id cpp/macros-filter
  * @tags filter
  */
+
 import cpp
 import external.DefectFilter
 
 predicate macroLocation(File f, int startLine, int endLine) {
-  exists(MacroInvocation mi, Location l | 
+  exists(MacroInvocation mi, Location l |
     l = mi.getLocation() and
     l.getFile() = f and
     l.getStartLine() = startLine and
@@ -32,5 +33,4 @@ predicate macroCovering(DefectResult r) {
 
 from DefectResult res
 where not macroCovering(res)
-select res,
-       res.getMessage()
+select res, res.getMessage()

@@ -4,6 +4,7 @@ using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -20,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => base.NeedsPopulation || symbol.TypeKind == TypeKind.Error;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             if (symbol.TypeKind == TypeKind.Error)
             {
@@ -28,54 +29,54 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            Context.Emit(Tuples.typeref_type((NamedTypeRef)TypeRef, this));
+            trapFile.typeref_type((NamedTypeRef)TypeRef, this);
 
             if (symbol.IsGenericType)
             {
                 if (symbol.IsBoundNullable())
                 {
                     // An instance of Nullable<T>
-                    Context.Emit(Tuples.nullable_underlying_type(this, Create(Context, symbol.TypeArguments[0]).TypeRef));
+                    trapFile.nullable_underlying_type(this, Create(Context, symbol.TypeArguments[0]).TypeRef);
                 }
                 else if (symbol.IsReallyUnbound())
                 {
-                    Context.Emit(Tuples.is_generic(this));
+                    trapFile.is_generic(this);
 
                     for (int i = 0; i < symbol.TypeParameters.Length; ++i)
                     {
                         TypeParameter.Create(Context, symbol.TypeParameters[i]);
                         var param = symbol.TypeParameters[i];
                         var typeParameter = TypeParameter.Create(Context, param);
-                        Context.Emit(Tuples.type_parameters(typeParameter, i, this));
+                        trapFile.type_parameters(typeParameter, i, this);
                     }
                 }
                 else
                 {
-                    Context.Emit(Tuples.is_constructed(this));
-                    Context.Emit(Tuples.constructed_generic(this, Type.Create(Context, symbol.ConstructedFrom).TypeRef));
+                    trapFile.is_constructed(this);
+                    trapFile.constructed_generic(this, Type.Create(Context, symbol.ConstructedFrom).TypeRef);
 
                     for (int i = 0; i < symbol.TypeArguments.Length; ++i)
                     {
                         var ta = symbol.TypeArgumentsNullableAnnotations[i].GetTypeAnnotation();
                         if (ta != Kinds.TypeAnnotation.None)
-                            Context.Emit(Tuples.type_argument_annotation(this, i, ta));
-                        Context.Emit(Tuples.type_arguments(TypeArguments[i].TypeRef, i, this));
+                            trapFile.type_argument_annotation(this, i, ta);
+                        trapFile.type_arguments(TypeArguments[i].TypeRef, i, this);
                     }
                 }
             }
 
-            ExtractType();
+            PopulateType(trapFile);
 
             if (symbol.EnumUnderlyingType != null)
             {
-                Context.Emit(Tuples.enum_underlying_type(this, Type.Create(Context, symbol.EnumUnderlyingType).TypeRef));
+                trapFile.enum_underlying_type(this, Type.Create(Context, symbol.EnumUnderlyingType).TypeRef);
             }
 
             // Class location
             if (!symbol.IsGenericType || symbol.IsReallyUnbound())
             {
                 foreach (var l in Locations)
-                    Context.Emit(Tuples.type_location(this, l));
+                    trapFile.type_location(this, l);
             }
         }
 
@@ -111,17 +112,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => GetLocations(symbol).FirstOrDefault();
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                    {
-                        // All syntactic sub terms (types) are referenced by key in the ID
-                        symbol.BuildTypeId(Context, tb, (cx0, tb0, sub) => tb0.Append(Create(cx0, sub)));
-                        tb.Append(";type");
-                    });
-            }
+            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            trapFile.Write(";type");
         }
 
         /// <summary>
@@ -183,20 +177,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(referencedType).Append(";typeref");
-                });
-            }
+            trapFile.WriteSubId(referencedType);
+            trapFile.Write(";typeRef");
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.typerefs(this, symbol.Name));
+            trapFile.typerefs(this, symbol.Name);
         }
     };
 }

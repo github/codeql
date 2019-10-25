@@ -13,7 +13,7 @@ hasLocation(#10000,#10003)
 json(#20000,3,#10000,0,"""i get extracted""")
 #20001=@"loc,{#10000},1,1,1,17"
 locations_default(#20001,#10000,1,1,1,17)
-hasLocation(#20000,#20001)
+json_locations(#20000,#20001)
 json_literals("i get extracted","""i get extracted""",#20000)
 numlines(#10000,1,0,0)
 filetype(#10000,"json")

@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -9,26 +10,28 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.namespaces(this, symbol.Name));
+            trapFile.namespaces(this, symbol.Name);
 
             if (symbol.ContainingNamespace != null)
             {
                 Namespace parent = Create(Context, symbol.ContainingNamespace);
-                Context.Emit(Tuples.parent_namespace(this, parent));
+                trapFile.parent_namespace(this, parent);
             }
         }
 
         public override bool NeedsPopulation => true;
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
+            if (!symbol.IsGlobalNamespace)
             {
-                return symbol.IsGlobalNamespace ? new Key(";namespace") :
-                    new Key(Create(Context, symbol.ContainingNamespace), ".", symbol.Name, ";namespace");
+                trapFile.WriteSubId(Create(Context, symbol.ContainingNamespace));
+                trapFile.Write('.');
+                trapFile.Write(symbol.Name);
             }
+            trapFile.Write(";namespace");
         }
 
         public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntity2(cx, ns);

@@ -1,5 +1,10 @@
 | acrossLinkTargets.cpp:12:8:12:8 | Convert: (int)... | acrossLinkTargets.cpp:19:27:19:32 | Call: call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | Load: x | acrossLinkTargets.cpp:19:27:19:32 | Call: call to source |
+| clang.cpp:18:8:18:19 | Convert: (const int *)... | clang.cpp:12:9:12:20 | InitializeParameter: sourceArray1 |
+| clang.cpp:18:8:18:19 | Load: sourceArray1 | clang.cpp:12:9:12:20 | InitializeParameter: sourceArray1 |
+| clang.cpp:37:10:37:11 | Load: m2 | clang.cpp:34:32:34:37 | Call: call to source |
+| clang.cpp:41:18:41:19 | Load: m2 | clang.cpp:39:42:39:47 | Call: call to source |
+| clang.cpp:45:17:45:18 | Load: m2 | clang.cpp:43:35:43:40 | Call: call to source |
 | test.cpp:7:8:7:9 | Load: t1 | test.cpp:6:12:6:17 | Call: call to source |
 | test.cpp:9:8:9:9 | Load: t1 | test.cpp:6:12:6:17 | Call: call to source |
 | test.cpp:10:8:10:9 | Load: t2 | test.cpp:6:12:6:17 | Call: call to source |
@@ -15,24 +20,18 @@
 | test.cpp:90:8:90:14 | Load: source1 | test.cpp:89:28:89:34 | InitializeParameter: source1 |
 | test.cpp:92:8:92:14 | Load: source1 | test.cpp:89:28:89:34 | InitializeParameter: source1 |
 | test.cpp:110:10:110:12 | Load: (reference dereference) | test.cpp:109:9:109:14 | Call: call to source |
-| test.cpp:126:8:126:19 | Convert: (const int *)... | test.cpp:120:9:120:20 | InitializeParameter: sourceArray1 |
-| test.cpp:126:8:126:19 | Load: sourceArray1 | test.cpp:120:9:120:20 | InitializeParameter: sourceArray1 |
-| test.cpp:132:22:132:23 | Load: m1 | test.cpp:122:18:122:30 | InitializeParameter: sourceStruct1 |
-| test.cpp:140:22:140:23 | Load: m1 | test.cpp:122:18:122:30 | InitializeParameter: sourceStruct1 |
-| test.cpp:145:10:145:11 | Load: m2 | test.cpp:142:32:142:37 | Call: call to source |
-| test.cpp:153:17:153:18 | Load: m2 | test.cpp:151:35:151:40 | Call: call to source |
-| test.cpp:188:8:188:8 | Load: y | test.cpp:186:27:186:32 | Call: call to source |
-| test.cpp:192:8:192:8 | Load: s | test.cpp:199:33:199:38 | Call: call to source |
-| test.cpp:200:8:200:8 | Load: y | test.cpp:199:33:199:38 | Call: call to source |
-| test.cpp:205:8:205:8 | Load: x | test.cpp:212:34:212:39 | Call: call to source |
-| test.cpp:213:8:213:8 | Load: y | test.cpp:212:34:212:39 | Call: call to source |
-| test.cpp:226:8:226:8 | Load: y | test.cpp:219:11:219:16 | Call: call to source |
-| test.cpp:308:12:308:12 | Load: x | test.cpp:293:14:293:19 | Call: call to source |
-| test.cpp:314:12:314:12 | Load: x | test.cpp:313:22:313:27 | Call: call to source |
-| test.cpp:337:14:337:14 | Load: x | test.cpp:353:17:353:22 | Call: call to source |
-| test.cpp:366:7:366:7 | Load: x | test.cpp:362:4:362:9 | Call: call to source |
-| test.cpp:498:9:498:22 | CopyValue: (statement expression) | test.cpp:497:26:497:32 | InitializeParameter: source1 |
-| test.cpp:509:8:509:12 | Load: local | test.cpp:497:26:497:32 | InitializeParameter: source1 |
+| test.cpp:140:8:140:8 | Load: y | test.cpp:138:27:138:32 | Call: call to source |
+| test.cpp:144:8:144:8 | Load: s | test.cpp:151:33:151:38 | Call: call to source |
+| test.cpp:152:8:152:8 | Load: y | test.cpp:151:33:151:38 | Call: call to source |
+| test.cpp:157:8:157:8 | Load: x | test.cpp:164:34:164:39 | Call: call to source |
+| test.cpp:165:8:165:8 | Load: y | test.cpp:164:34:164:39 | Call: call to source |
+| test.cpp:178:8:178:8 | Load: y | test.cpp:171:11:171:16 | Call: call to source |
+| test.cpp:260:12:260:12 | Load: x | test.cpp:245:14:245:19 | Call: call to source |
+| test.cpp:266:12:266:12 | Load: x | test.cpp:265:22:265:27 | Call: call to source |
+| test.cpp:289:14:289:14 | Load: x | test.cpp:305:17:305:22 | Call: call to source |
+| test.cpp:318:7:318:7 | Load: x | test.cpp:314:4:314:9 | Call: call to source |
+| test.cpp:450:9:450:22 | CopyValue: (statement expression) | test.cpp:449:26:449:32 | InitializeParameter: source1 |
+| test.cpp:461:8:461:12 | Load: local | test.cpp:449:26:449:32 | InitializeParameter: source1 |
 | true_upon_entry.cpp:13:8:13:8 | Load: x | true_upon_entry.cpp:9:11:9:16 | Call: call to source |
 | true_upon_entry.cpp:21:8:21:8 | Load: x | true_upon_entry.cpp:17:11:17:16 | Call: call to source |
 | true_upon_entry.cpp:29:8:29:8 | Load: x | true_upon_entry.cpp:27:9:27:14 | Call: call to source |

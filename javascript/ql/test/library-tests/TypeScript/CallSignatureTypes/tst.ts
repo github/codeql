@@ -40,3 +40,8 @@ interface Generic<T> {
 function foo(g: Generic<string>) {
   return g.method("foo");
 }
+
+declare class C {
+  constructor(x: string);
+  constructor(x: number);
+}

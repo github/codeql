@@ -9,11 +9,15 @@
  *       reliability
  *       external/jsf
  */
+
 import cpp
 
-// see MISRA Rule 5-3-2
+/*
+ * See MISRA Rule 5-3-2
+ */
 
 from UnaryMinusExpr ume
-where ume.getOperand().getExplicitlyConverted().getUnderlyingType().(IntegralType).isUnsigned()
-      and not ume.getOperand() instanceof Literal
+where
+  ume.getOperand().getExplicitlyConverted().getUnderlyingType().(IntegralType).isUnsigned() and
+  not ume.getOperand() instanceof Literal
 select ume, "The unary minus operator should not be applied to an unsigned expression."

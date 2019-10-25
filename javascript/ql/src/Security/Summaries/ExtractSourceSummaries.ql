@@ -11,7 +11,7 @@ import Configurations
 import PortalEntrySink
 import SourceFromAnnotation
 
-from TaintTracking::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Portal p
+from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Portal p
 where
   cfg.hasFlowPath(source, sink) and
   p = sink.getNode().(PortalEntrySink).getPortal() and

@@ -3,6 +3,7 @@
  * This library defines `PrimitiveBasicBlock`s, an intermediate stage in the
  * computation of `BasicBlock`s.
  */
+
 /*
  * Unlike `BasicBlock`s, `PrimitiveBasicBlock`s are constructed using
  * the primitive `successors_extended` relation only. That is, impossible
@@ -16,41 +17,42 @@
  * (e.g, `primitive_basic_block_entry_node`), as most `BasicBlock`s
  * will coincide with `PrimitiveBasicBlock`s.
  */
+
 import cpp
+
 private class Node = ControlFlowNodeBase;
 
 import Cached
-private cached module Cached {
+
+cached
+private module Cached {
   /** Holds if `node` is the entry node of a primitive basic block. */
   cached
   predicate primitive_basic_block_entry_node(Node node) {
     // The entry point of the CFG is the start of a BB.
-    exists (Function f | f.getEntryPoint() = node)
-
+    exists(Function f | f.getEntryPoint() = node)
+    or
     // If the node has more than one predecessor,
     // or the node's predecessor has more than one successor,
     // then the node is the start of a new primitive basic block.
-    or
     strictcount(Node pred | successors_extended(pred, node)) > 1
     or
     exists(ControlFlowNode pred | successors_extended(pred, node) |
       strictcount(ControlFlowNode other | successors_extended(pred, other)) > 1
     )
-
+    or
     // If the node has zero predecessors then it is the start of
     // a BB. However, the C++ AST contains many nodes with zero
     // predecessors and zero successors, which are not members of
     // the CFG. So we exclude all of those trivial BBs by requiring
     // that the node have at least one successor.
+    not successors_extended(_, node) and successors_extended(node, _)
     or
-    (not successors_extended(_, node) and successors_extended(node, _))
-
     // An exception handler is always the start of a new basic block. We
     // don't generate edges for [possible] exceptions, but in practice control
     // flow could reach the handler from anywhere inside the try block that
     // could throw an exception of a corresponding type. A `Handler` usually
     // needs to be considered reachable (see also `BasicBlock.isReachable`).
-    or
     node instanceof Handler
   }
 
@@ -81,7 +83,7 @@ private cached module Cached {
   cached
   predicate primitive_bb_successor(PrimitiveBasicBlock pred, PrimitiveBasicBlock succ) {
     exists(Node last |
-      primitive_basic_block_member(last, pred, primitive_bb_length(pred)-1) and
+      primitive_basic_block_member(last, pred, primitive_bb_length(pred) - 1) and
       successors_extended(last, succ)
     )
   }
@@ -92,32 +94,17 @@ private cached module Cached {
  * the primitive `successors_extended` relation only.
  */
 class PrimitiveBasicBlock extends Node {
+  PrimitiveBasicBlock() { primitive_basic_block_entry_node(this) }
 
-  PrimitiveBasicBlock() {
-    primitive_basic_block_entry_node(this)
-  }
+  predicate contains(Node node) { primitive_basic_block_member(node, this, _) }
 
-  predicate contains(Node node) {
-    primitive_basic_block_member(node, this, _)
-  }
+  Node getNode(int pos) { primitive_basic_block_member(result, this, pos) }
 
-  Node getNode(int pos) {
-    primitive_basic_block_member(result, this, pos)
-  }
+  Node getANode() { primitive_basic_block_member(result, this, _) }
 
-  Node getANode() {
-    primitive_basic_block_member(result, this, _)
-  }
+  PrimitiveBasicBlock getASuccessor() { primitive_bb_successor(this, result) }
 
-  PrimitiveBasicBlock getASuccessor() {
-    primitive_bb_successor(this, result)
-  }
+  PrimitiveBasicBlock getAPredecessor() { primitive_bb_successor(result, this) }
 
-  PrimitiveBasicBlock getAPredecessor() {
-    primitive_bb_successor(result, this)
-  }
-
-  int length() {
-    result = primitive_bb_length(this)
-  }
+  int length() { result = primitive_bb_length(this) }
 }

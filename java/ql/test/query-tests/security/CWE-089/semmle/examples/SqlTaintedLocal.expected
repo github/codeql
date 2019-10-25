@@ -1,14 +1,33 @@
 edges
-| Test.java:29:30:29:42 | args [String[]] | Test.java:36:47:36:52 | query1 |
-| Test.java:29:30:29:42 | args [String[]] | Test.java:44:62:44:67 | query3 |
-| Test.java:29:30:29:42 | args [String[]] | Test.java:56:47:56:61 | querySbToString |
-| Test.java:160:33:160:45 | args [String[]] | Test.java:186:47:186:68 | queryWithUserTableName |
-| Test.java:190:26:190:38 | args [String[]] | Test.java:191:11:191:14 | args [String[]] |
-| Test.java:190:26:190:38 | args [String[]] | Test.java:195:14:195:17 | args [String[]] |
-| Test.java:191:11:191:14 | args [String[]] | Test.java:29:30:29:42 | args [String[]] |
-| Test.java:195:14:195:17 | args [String[]] | Test.java:160:33:160:45 | args [String[]] |
+| Test.java:29:30:29:42 | args : String[] | Test.java:36:47:36:52 | query1 |
+| Test.java:29:30:29:42 | args : String[] | Test.java:42:57:42:62 | query2 |
+| Test.java:29:30:29:42 | args : String[] | Test.java:50:62:50:67 | query3 |
+| Test.java:29:30:29:42 | args : String[] | Test.java:62:47:62:61 | querySbToString |
+| Test.java:29:30:29:42 | args : String[] | Test.java:70:40:70:44 | query |
+| Test.java:29:30:29:42 | args : String[] | Test.java:78:46:78:50 | query |
+| Test.java:183:33:183:45 | args : String[] | Test.java:209:47:209:68 | queryWithUserTableName |
+| Test.java:213:26:213:38 | args : String[] | Test.java:214:11:214:14 | args : String[] |
+| Test.java:213:26:213:38 | args : String[] | Test.java:218:14:218:17 | args : String[] |
+| Test.java:214:11:214:14 | args : String[] | Test.java:29:30:29:42 | args : String[] |
+| Test.java:218:14:218:17 | args : String[] | Test.java:183:33:183:45 | args : String[] |
+nodes
+| Test.java:29:30:29:42 | args : String[] | semmle.label | args : String[] |
+| Test.java:36:47:36:52 | query1 | semmle.label | query1 |
+| Test.java:42:57:42:62 | query2 | semmle.label | query2 |
+| Test.java:50:62:50:67 | query3 | semmle.label | query3 |
+| Test.java:62:47:62:61 | querySbToString | semmle.label | querySbToString |
+| Test.java:70:40:70:44 | query | semmle.label | query |
+| Test.java:78:46:78:50 | query | semmle.label | query |
+| Test.java:183:33:183:45 | args : String[] | semmle.label | args : String[] |
+| Test.java:209:47:209:68 | queryWithUserTableName | semmle.label | queryWithUserTableName |
+| Test.java:213:26:213:38 | args : String[] | semmle.label | args : String[] |
+| Test.java:214:11:214:14 | args : String[] | semmle.label | args : String[] |
+| Test.java:218:14:218:17 | args : String[] | semmle.label | args : String[] |
 #select
-| Test.java:36:47:36:52 | query1 | Test.java:190:26:190:38 | args [String[]] | Test.java:36:47:36:52 | query1 | Query might include code from $@. | Test.java:190:26:190:38 | args | this user input |
-| Test.java:44:62:44:67 | query3 | Test.java:190:26:190:38 | args [String[]] | Test.java:44:62:44:67 | query3 | Query might include code from $@. | Test.java:190:26:190:38 | args | this user input |
-| Test.java:56:47:56:61 | querySbToString | Test.java:190:26:190:38 | args [String[]] | Test.java:56:47:56:61 | querySbToString | Query might include code from $@. | Test.java:190:26:190:38 | args | this user input |
-| Test.java:186:47:186:68 | queryWithUserTableName | Test.java:190:26:190:38 | args [String[]] | Test.java:186:47:186:68 | queryWithUserTableName | Query might include code from $@. | Test.java:190:26:190:38 | args | this user input |
+| Test.java:36:47:36:52 | query1 | Test.java:213:26:213:38 | args : String[] | Test.java:36:47:36:52 | query1 | Query might include code from $@. | Test.java:213:26:213:38 | args | this user input |
+| Test.java:42:57:42:62 | query2 | Test.java:213:26:213:38 | args : String[] | Test.java:42:57:42:62 | query2 | Query might include code from $@. | Test.java:213:26:213:38 | args | this user input |
+| Test.java:50:62:50:67 | query3 | Test.java:213:26:213:38 | args : String[] | Test.java:50:62:50:67 | query3 | Query might include code from $@. | Test.java:213:26:213:38 | args | this user input |
+| Test.java:62:47:62:61 | querySbToString | Test.java:213:26:213:38 | args : String[] | Test.java:62:47:62:61 | querySbToString | Query might include code from $@. | Test.java:213:26:213:38 | args | this user input |
+| Test.java:70:40:70:44 | query | Test.java:213:26:213:38 | args : String[] | Test.java:70:40:70:44 | query | Query might include code from $@. | Test.java:213:26:213:38 | args | this user input |
+| Test.java:78:46:78:50 | query | Test.java:213:26:213:38 | args : String[] | Test.java:78:46:78:50 | query | Query might include code from $@. | Test.java:213:26:213:38 | args | this user input |
+| Test.java:209:47:209:68 | queryWithUserTableName | Test.java:213:26:213:38 | args : String[] | Test.java:209:47:209:68 | queryWithUserTableName | Query might include code from $@. | Test.java:213:26:213:38 | args | this user input |

@@ -3,6 +3,7 @@
  * may escape an _expression tree_, meaning that it is assigned to a variable,
  * passed to a function, or similar.
  */
+
 private import cpp
 
 /**
@@ -13,9 +14,11 @@ private import cpp
 private predicate stdIdentityFunction(Function f) {
   f.getNamespace().getParentNamespace() instanceof GlobalNamespace and
   f.getNamespace().getName() = "std" and
-  ( f.getName() = "move"
+  (
+    f.getName() = "move"
     or
-    f.getName() = "forward" )
+    f.getName() = "forward"
+  )
 }
 
 private predicate lvalueToLvalueStepPure(Expr lvalueIn, Expr lvalueOut) {
@@ -39,8 +42,7 @@ private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
   lvalueToLvalueStepPure(lvalueIn, lvalueOut)
   or
   // C++ only
-  lvalueIn = lvalueOut.(PrefixCrementOperation).getOperand()
-                      .getFullyConverted()
+  lvalueIn = lvalueOut.(PrefixCrementOperation).getOperand().getFullyConverted()
   or
   // C++ only
   lvalueIn = lvalueOut.(Assignment).getLValue().getFullyConverted()
@@ -49,8 +51,7 @@ private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
 private predicate pointerToLvalueStep(Expr pointerIn, Expr lvalueOut) {
   pointerIn = lvalueOut.(ArrayExpr).getArrayBase().getFullyConverted()
   or
-  pointerIn = lvalueOut.(PointerDereferenceExpr)
-                       .getOperand().getFullyConverted()
+  pointerIn = lvalueOut.(PointerDereferenceExpr).getOperand().getFullyConverted()
   or
   pointerIn = lvalueOut.(PointerFieldAccess).getQualifier().getFullyConverted()
 }
@@ -98,9 +99,9 @@ private predicate referenceToLvalueStep(Expr referenceIn, Expr lvalueOut) {
 
 private predicate referenceToReferenceStep(Expr referenceIn, Expr referenceOut) {
   referenceOut = any(FunctionCall call |
-    stdIdentityFunction(call.getTarget()) and
-    referenceIn = call.getArgument(0).getFullyConverted()
-  )
+      stdIdentityFunction(call.getTarget()) and
+      referenceIn = call.getArgument(0).getFullyConverted()
+    )
   or
   referenceIn.getConversion() = referenceOut.(Cast)
   or
@@ -205,8 +206,7 @@ private predicate valueMayEscapeMutablyAt(Expr e) {
   )
 }
 
-private
-predicate addressFromVariableAccess(VariableAccess va, Expr e) {
+private predicate addressFromVariableAccess(VariableAccess va, Expr e) {
   pointerFromVariableAccess(va, e)
   or
   referenceFromVariableAccess(va, e)
@@ -224,7 +224,9 @@ predicate addressFromVariableAccess(VariableAccess va, Expr e) {
 }
 
 import EscapesTree_Cached
-private cached module EscapesTree_Cached {
+
+cached
+private module EscapesTree_Cached {
   /**
    * Holds if `e` is a fully-converted expression that evaluates to an address
    * derived from the address of `va` and is stored in a variable or passed
@@ -248,7 +250,8 @@ private cached module EscapesTree_Cached {
    * not interested in the value referred to by references should exclude
    * variable accesses to reference-typed values.
    */
-  cached predicate variableAddressEscapesTree(VariableAccess va, Expr e) {
+  cached
+  predicate variableAddressEscapesTree(VariableAccess va, Expr e) {
     valueMayEscapeAt(e) and
     addressFromVariableAccess(va, e)
   }
@@ -277,7 +280,8 @@ private cached module EscapesTree_Cached {
    * interested in the value referred to by references should exclude variable
    * accesses to reference-typed values.
    */
-  cached predicate variableAddressEscapesTreeNonConst(VariableAccess va, Expr e) {
+  cached
+  predicate variableAddressEscapesTreeNonConst(VariableAccess va, Expr e) {
     valueMayEscapeMutablyAt(e) and
     addressFromVariableAccess(va, e)
   }
@@ -296,7 +300,8 @@ private cached module EscapesTree_Cached {
    * the reference rather than the reference itself. The expression `e` may be a
    * `Conversion`.
    */
-  cached predicate variableAccessedAsValue(VariableAccess va, Expr e) {
+  cached
+  predicate variableAccessedAsValue(VariableAccess va, Expr e) {
     lvalueFromVariableAccess(va, e) and
     not lvalueToLvalueStepPure(e, _) and
     not lvalueToPointerStep(e, _) and

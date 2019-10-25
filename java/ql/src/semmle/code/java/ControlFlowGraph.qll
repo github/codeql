@@ -1203,6 +1203,7 @@ private module ControlFlowGraphImpl {
     result = otherBranchSucc(n, branch)
   }
 }
+
 private import ControlFlowGraphImpl
 
 /** A control-flow node that branches based on a condition. */

@@ -106,7 +106,6 @@
 | 76 | ControlFlowNode for sys | Module sys |
 | 76 | ControlFlowNode for type | builtin-class type |
 | 76 | ControlFlowNode for type() | builtin-class module |
-| 77 | ControlFlowNode for unknown | ImportMember |
 | 78 | ControlFlowNode for type | builtin-class type |
 | 79 | ControlFlowNode for Dict | Dict |
 | 79 | ControlFlowNode for Tuple | Tuple |
@@ -160,6 +159,7 @@
 | 106 | ControlFlowNode for inner | Function inner |
 | 108 | ControlFlowNode for IntegerLiteral | int 2 |
 | 108 | ControlFlowNode for z | int 2 |
+| 109 | ControlFlowNode for BinaryExpr | BinaryExpr |
 | 109 | ControlFlowNode for y | int 1 |
 | 109 | ControlFlowNode for z | int 2 |
 | 110 | ControlFlowNode for inner | Function inner |
@@ -233,6 +233,8 @@
 | 161 | ControlFlowNode for ClassExpr | class Derived3 |
 | 161 | ControlFlowNode for Derived3 | class Derived3 |
 | 164 | ControlFlowNode for Base | class Base |
+| 164 | ControlFlowNode for Base() | Base() |
+| 164 | ControlFlowNode for thing | Base() |
 | 167 | ControlFlowNode for FunctionExpr | Function multiple_assignment |
 | 167 | ControlFlowNode for multiple_assignment | Function multiple_assignment |
 | 168 | ControlFlowNode for Tuple | Tuple |

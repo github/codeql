@@ -54,14 +54,15 @@ namespace Semmle.Extraction
             /// </summary>
             /// <param name="srcFile">The source file.</param>
             /// <returns>The full filepath of the trap file.</returns>
-            public string GetTrapPath(ILogger logger, string srcFile) => TrapWriter.TrapPath(logger, TRAP_FOLDER, srcFile);
+            public string GetTrapPath(ILogger logger, string srcFile, TrapWriter.CompressionMode trapCompression) => TrapWriter.TrapPath(logger, TRAP_FOLDER, srcFile, trapCompression);
 
             /// <summary>
             /// Creates a trap writer for a given source/assembly file.
             /// </summary>
             /// <param name="srcFile">The source file.</param>
             /// <returns>A newly created TrapWriter.</returns>
-            public TrapWriter CreateTrapWriter(ILogger logger, string srcFile, bool discardDuplicates) => new TrapWriter(logger, srcFile, TRAP_FOLDER, SOURCE_ARCHIVE, discardDuplicates);
+            public TrapWriter CreateTrapWriter(ILogger logger, string srcFile, bool discardDuplicates, TrapWriter.CompressionMode trapCompression) => 
+                new TrapWriter(logger, srcFile, TRAP_FOLDER, SOURCE_ARCHIVE, discardDuplicates, trapCompression);
         }
 
         readonly SubProject DefaultProject;
@@ -99,8 +100,8 @@ namespace Semmle.Extraction
         /// Default constructor reads parameters from the environment.
         /// </summary>
         public Layout() : this(
-            Environment.GetEnvironmentVariable("TRAP_FOLDER"),
-            Environment.GetEnvironmentVariable("SOURCE_ARCHIVE"),
+            Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR") ?? Environment.GetEnvironmentVariable("TRAP_FOLDER"),
+            Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR") ?? Environment.GetEnvironmentVariable("SOURCE_ARCHIVE"),
             Environment.GetEnvironmentVariable("ODASA_CSHARP_LAYOUT"))
         {
         }

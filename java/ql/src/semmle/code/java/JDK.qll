@@ -265,6 +265,22 @@ class MethodAbs extends Method {
   }
 }
 
+/** The method `Math.min`. */
+class MethodMathMin extends Method {
+  MethodMathMin() {
+    this.getDeclaringType() instanceof TypeMath and
+    this.getName() = "min"
+  }
+}
+
+/** The method `Math.min`. */
+class MethodMathMax extends Method {
+  MethodMathMax() {
+    this.getDeclaringType() instanceof TypeMath and
+    this.getName() = "max"
+  }
+}
+
 // --- Standard fields ---
 /** The field `System.in`. */
 class SystemIn extends Field {

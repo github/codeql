@@ -1,33 +1,31 @@
+using Semmle.Util;
+using Semmle.Util.Logging;
 using System;
 using System.IO;
 using System.IO.Compression;
-using System.Security.Cryptography;
 using System.Text;
-using Semmle.Util;
-using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {
     public interface ITrapEmitter
     {
-        void EmitToTrapBuilder(ITrapBuilder tb);
+        void EmitTrap(TextWriter trapFile);
     }
 
     public sealed class TrapWriter : IDisposable
     {
-        //#################### ENUMERATIONS ####################
-        #region
-
         public enum InnerPathComputation
         {
             ABSOLUTE,
             RELATIVE
         }
 
-        #endregion
-
-        //#################### PRIVATE VARIABLES ####################
-        #region
+        public enum CompressionMode
+        {
+            None,
+            Gzip,
+            Brotli
+        }
 
         /// <summary>
         /// The location of the src_archive directory.
@@ -37,29 +35,22 @@ namespace Semmle.Extraction
 
         private readonly bool discardDuplicates;
 
-        #endregion
-
-        //#################### PROPERTIES ####################
-        #region
-
         public int IdCounter { get; set; } = 1;
 
         readonly Lazy<StreamWriter> WriterLazy;
 
-        readonly Lazy<TrapBuilder> BuilderLazy;
-        TrapBuilder Builder => BuilderLazy.Value;
+        public StreamWriter Writer => WriterLazy.Value;
 
         readonly ILogger Logger;
 
-        #endregion
+        readonly CompressionMode TrapCompression;
 
-        //#################### CONSTRUCTORS ####################
-        #region
-
-        public TrapWriter(ILogger logger, string outputfile, string trap, string archive, bool discardDuplicates)
+        public TrapWriter(ILogger logger, string outputfile, string trap, string archive, bool discardDuplicates, CompressionMode trapCompression)
         {
             Logger = logger;
-            TrapFile = TrapPath(Logger, trap, outputfile);
+            TrapCompression = trapCompression;
+
+            TrapFile = TrapPath(Logger, trap, outputfile, trapCompression);
 
             WriterLazy = new Lazy<StreamWriter>(() =>
             {
@@ -81,10 +72,27 @@ namespace Semmle.Extraction
                 while (File.Exists(tmpFile));
 
                 var fileStream = new FileStream(tmpFile, FileMode.CreateNew, FileAccess.Write);
-                var compressionStream = new GZipStream(fileStream, CompressionMode.Compress);
+
+                Stream compressionStream;
+
+                switch (trapCompression)
+                {
+                    case CompressionMode.Brotli:
+                        compressionStream = new BrotliStream(fileStream, CompressionLevel.Fastest);
+                        break;
+                    case CompressionMode.Gzip:
+                        compressionStream = new GZipStream(fileStream, CompressionLevel.Fastest);
+                        break;
+                    case CompressionMode.None:
+                        compressionStream = fileStream;
+                        break;
+                    default:
+                        throw new ArgumentException(nameof(trapCompression));
+                }
+
+
                 return new StreamWriter(compressionStream, UTF8, 2000000);
             });
-            BuilderLazy = new Lazy<TrapBuilder>(() => new TrapBuilder(WriterLazy.Value));
             this.archive = archive;
             this.discardDuplicates = discardDuplicates;
         }
@@ -94,11 +102,6 @@ namespace Semmle.Extraction
         /// </summary>
         public readonly string TrapFile;
         string tmpFile;     // The temporary file which is moved to trapFile once written.
-
-        #endregion
-
-        //#################### PUBLIC METHODS ####################
-        #region
 
         /// <summary>
         /// Adds the specified input file to the source archive. It may end up in either the normal or long path area
@@ -178,12 +181,12 @@ namespace Semmle.Extraction
                         return;
                     }
 
-                    var existingHash = ComputeHash(TrapFile);
-                    var hash = ComputeHash(tmpFile);
+                    var existingHash = FileUtils.ComputeFileHash(TrapFile);
+                    var hash = FileUtils.ComputeFileHash(tmpFile);
                     if (existingHash != hash)
                     {
                         var root = TrapFile.Substring(0, TrapFile.Length - 8); // Remove trailing ".trap.gz"
-                        if (TryMove(tmpFile, $"{root}-{hash}.trap.gz"))
+                        if (TryMove(tmpFile, $"{root}-{hash}.trap{TrapExtension(TrapCompression)}"))
                             return;
                     }
                     Logger.Log(Severity.Info, "Identical trap file for {0} already exists", TrapFile);
@@ -198,56 +201,7 @@ namespace Semmle.Extraction
 
         public void Emit(ITrapEmitter emitter)
         {
-            emitter.EmitToTrapBuilder(Builder);
-        }
-
-        #endregion
-
-        //#################### PRIVATE METHODS ####################
-        #region
-
-        /// <summary>
-        /// Computes the hash of <paramref name="filePath"/>.
-        /// </summary>
-        static string ComputeHash(string filePath)
-        {
-            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var shaAlg = new SHA256Managed())
-            {
-                var sha = shaAlg.ComputeHash(fileStream);
-                var hex = new StringBuilder(sha.Length * 2);
-                foreach (var b in sha)
-                    hex.AppendFormat("{0:x2}", b);
-                return hex.ToString();
-            }
-        }
-
-        class TrapBuilder : ITrapBuilder
-        {
-            readonly StreamWriter StreamWriter;
-
-            public TrapBuilder(StreamWriter sw)
-            {
-                StreamWriter = sw;
-            }
-
-            public ITrapBuilder Append(object arg)
-            {
-                StreamWriter.Write(arg);
-                return this;
-            }
-
-            public ITrapBuilder Append(string arg)
-            {
-                StreamWriter.Write(arg);
-                return this;
-            }
-
-            public ITrapBuilder AppendLine()
-            {
-                StreamWriter.WriteLine();
-                return this;
-            }
+            emitter.EmitTrap(Writer);
         }
 
         /// <summary>
@@ -311,15 +265,24 @@ namespace Semmle.Extraction
             return nested;
         }
 
-        public static string TrapPath(ILogger logger, string folder, string filename)
+        static string TrapExtension(CompressionMode compression)
         {
-            filename = Path.GetFullPath(filename) + ".trap.gz";
+            switch (compression)
+            {
+                case CompressionMode.None: return "";
+                case CompressionMode.Gzip: return ".gz";
+                case CompressionMode.Brotli: return ".br";
+                default: throw new ArgumentException(nameof(compression));
+            }
+        }
+
+        public static string TrapPath(ILogger logger, string folder, string filename, TrapWriter.CompressionMode trapCompression)
+        {
+            filename = $"{Path.GetFullPath(filename)}.trap{TrapExtension(trapCompression)}";
             if (string.IsNullOrEmpty(folder))
                 folder = Directory.GetCurrentDirectory();
 
             return NestPaths(logger, folder, filename, InnerPathComputation.ABSOLUTE); ;
         }
-
-        #endregion
     }
 }

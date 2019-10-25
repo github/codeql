@@ -9,6 +9,7 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 import Likely_Bugs.NestedLoopSameVar
 
@@ -22,23 +23,26 @@ predicate loopModification(ForStmt for, Variable loopVariable, VariableAccess ac
 
 pragma[noopt]
 predicate stmtInForBody(Stmt stmt, ForStmt forStmt) {
-  (forStmt.getStmt() = stmt or exists(StmtParent parent | parent = stmt.getParent() | stmtInForBody(parent, forStmt)))
-  and forStmt instanceof ForStmt
+  (
+    forStmt.getStmt() = stmt
+    or
+    exists(StmtParent parent | parent = stmt.getParent() | stmtInForBody(parent, forStmt))
+  ) and
+  forStmt instanceof ForStmt
 }
 
 from ForStmt for, Variable loopVariable, VariableAccess acc
 where
   loopModification(for, loopVariable, acc) and
-
   // field accesses must have the same object
   (
-    loopVariable instanceof Field implies
+    loopVariable instanceof Field
+    implies
     exists(Variable obj |
       simpleFieldAccess(obj, loopVariable, acc) and
       simpleFieldAccess(obj, loopVariable, for.getCondition().getAChild*())
     )
   ) and
-
   // don't duplicate results from NestedLoopSameVar.ql
   not exists(ForStmt inner |
     nestedForViolation(inner, loopVariable, for) and
@@ -47,6 +51,4 @@ where
       acc.getParent*() = inner.getInitialization()
     )
   )
-select
-  acc, "Loop counters should not be modified in the body of the $@.",
-  for.getStmt(), "loop"
+select acc, "Loop counters should not be modified in the body of the $@.", for.getStmt(), "loop"

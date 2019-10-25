@@ -40,6 +40,8 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
   or
   exists(ImportEqualsDeclaration i | def = i | lhs = i.getId() and rhs = i.getImportedEntity())
   or
+  exists(ImportSpecifier i | def = i | lhs = i.getLocal() and rhs = i)
+  or
   exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()
   )
@@ -70,8 +72,6 @@ private predicate defn(ControlFlowNode def, Expr lhs) {
   lhs = def.(CompoundAssignExpr).getTarget()
   or
   lhs = def.(UpdateExpr).getOperand().getUnderlyingReference()
-  or
-  lhs = def.(ImportSpecifier).getLocal()
   or
   exists(EnhancedForLoop efl | def = efl.getIteratorExpr() |
     lhs = def.(Expr).stripParens() or

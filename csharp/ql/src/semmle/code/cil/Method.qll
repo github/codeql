@@ -85,13 +85,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   override Location getLocation() { result = Element.super.getLocation() }
 
-  /**
-   * Gets a location of this method, if any.
-   *
-   * This predicate returns locations both in assemblies and in source code
-   * if available.
-   */
-  override Location getALocation() { cil_method_location(this, result) }
+  override Location getALocation() { cil_method_location(this.getSourceDeclaration(), result) }
 
   override Parameter getRawParameter(int n) { cil_parameter(result, this, n, _) }
 

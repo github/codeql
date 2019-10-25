@@ -1,7 +1,8 @@
 import cpp
 
 from Element e, Attribute a
-where a = ((Variable)e).getAnAttribute()
-   or a = ((Function)e).getAnAttribute()
-   or a = ((Struct  )e).getAnAttribute()
+where
+  a = e.(Variable).getAnAttribute() or
+  a = e.(Function).getAnAttribute() or
+  a = e.(Struct).getAnAttribute()
 select e, a, a.getAnArgument()

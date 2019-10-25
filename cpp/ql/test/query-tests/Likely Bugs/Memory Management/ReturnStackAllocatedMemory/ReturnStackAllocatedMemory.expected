@@ -5,5 +5,4 @@
 | test.cpp:92:2:92:12 | return ... | May return stack-allocated memory from $@. | test.cpp:89:10:89:11 | mc | mc |
 | test.cpp:112:2:112:12 | return ... | May return stack-allocated memory from $@. | test.cpp:112:9:112:11 | arr | arr |
 | test.cpp:119:2:119:19 | return ... | May return stack-allocated memory from $@. | test.cpp:119:11:119:13 | arr | arr |
-| test.cpp:149:3:149:22 | return ... | May return stack-allocated memory from $@. | test.cpp:149:11:149:21 | threadLocal | threadLocal |
 | test.cpp:171:3:171:24 | return ... | May return stack-allocated memory from $@. | test.cpp:170:35:170:41 | myLocal | myLocal |

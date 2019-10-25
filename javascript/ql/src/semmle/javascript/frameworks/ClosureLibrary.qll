@@ -11,10 +11,10 @@ module ClosureLibrary {
     Node pred;
 
     StringStep() {
-      exists (string name | this = Closure::moduleImport("goog.string." + name).getACall() |
+      exists(string name | this = Closure::moduleImport("goog.string." + name).getACall() |
         pred = getAnArgument() and
         (
-          name = "canonicalizeNewlines" or 
+          name = "canonicalizeNewlines" or
           name = "capitalize" or
           name = "collapseBreakingSpaces" or
           name = "collapseWhitespace" or

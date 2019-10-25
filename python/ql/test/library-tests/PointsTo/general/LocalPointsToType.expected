@@ -159,6 +159,7 @@
 | 106 | ControlFlowNode for inner | Function inner | builtin-class function |
 | 108 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int |
 | 108 | ControlFlowNode for z | int 2 | builtin-class int |
+| 109 | ControlFlowNode for BinaryExpr | BinaryExpr | builtin-class int |
 | 109 | ControlFlowNode for y | int 1 | builtin-class int |
 | 109 | ControlFlowNode for z | int 2 | builtin-class int |
 | 110 | ControlFlowNode for inner | Function inner | builtin-class function |

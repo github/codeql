@@ -1,7 +1,0 @@
-| virtual_functions.cpp:42:8:42:9 | Y1 | virtual_functions.cpp:44:8:44:9 | Y3 |
-| virtual_functions.cpp:42:8:42:9 | Y1 | virtual_functions.cpp:45:8:45:9 | Y4 |
-| virtual_functions.cpp:42:8:42:9 | Y1 | virtual_functions.cpp:46:8:46:9 | Y5 |
-| virtual_functions.cpp:42:8:42:9 | Y1 | virtual_functions.cpp:48:8:48:9 | Y7 |
-| virtual_functions.cpp:44:8:44:9 | Y3 | virtual_functions.cpp:46:8:46:9 | Y5 |
-| virtual_functions.cpp:45:8:45:9 | Y4 | virtual_functions.cpp:46:8:46:9 | Y5 |
-| virtual_functions.cpp:46:8:46:9 | Y5 | virtual_functions.cpp:48:8:48:9 | Y7 |

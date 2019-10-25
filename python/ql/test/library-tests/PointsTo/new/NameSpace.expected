@@ -79,6 +79,7 @@
 | h_classes.py:0 | Module code.h_classes | f | Function f |
 | h_classes.py:0 | Module code.h_classes | k | Function k |
 | h_classes.py:0 | Module code.h_classes | sys | Module sys |
+| h_classes.py:0 | Module code.h_classes | thing | Base() |
 | h_classes.py:3 | Class C | __init__ | Function __init__ |
 | h_classes.py:3 | Class C | x | 'C_x' |
 | h_classes.py:23 | Class Base | __init__ | Function __init__ |
@@ -107,6 +108,11 @@
 | j_convoluted_imports.py:0 | Module code.j_convoluted_imports | C | class C |
 | j_convoluted_imports.py:0 | Module code.j_convoluted_imports | module | Function module |
 | j_convoluted_imports.py:0 | Module code.j_convoluted_imports | moduleX | Module code.package.moduleX |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | p | int 1 |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | q | int 2 |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | r | Dict |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | r | int 3 |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | s | NoneType None |
 | j_convoluted_imports.py:0 | Module code.j_convoluted_imports | x | Module code.package.x |
 | j_convoluted_imports.py:9 | Class C | f | Function f |
 | j_convoluted_imports.py:9 | Class C | module2 | int 7 |

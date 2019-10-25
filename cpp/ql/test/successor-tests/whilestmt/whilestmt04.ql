@@ -7,9 +7,9 @@ import cpp
 
 from WhileStmt ws, ExprStmt last, Expr succ
 where
-	ws.getEnclosingFunction().hasName("normal")
-	and last = ((Block)ws.getStmt()).getLastStmt()
-	and succ = last.getExpr().getASuccessor()
-	and succ = ws.getCondition().getAChild*()
-	and count(last.getExpr().getASuccessor()) = 1
+  ws.getEnclosingFunction().hasName("normal") and
+  last = ws.getStmt().(Block).getLastStmt() and
+  succ = last.getExpr().getASuccessor() and
+  succ = ws.getCondition().getAChild*() and
+  count(last.getExpr().getASuccessor()) = 1
 select last.getExpr(), succ

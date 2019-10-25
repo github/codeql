@@ -2,7 +2,6 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 
-
 /**
  * The standard function `strcpy` and its wide, sized, and Microsoft variants.
  */
@@ -18,19 +17,13 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
     this.hasName("wcsncpy") or
     this.hasName("_wcsncpy_l")
   }
-  
-  override predicate hasArrayInput(int bufParam) {
-    bufParam = 1
-  }
-  
-  override predicate hasArrayOutput(int bufParam) {
-    bufParam = 0
-  }
-  
-  override predicate hasArrayWithNullTerminator(int bufParam) {
-    bufParam = 1
-  }
-  
+
+  override predicate hasArrayInput(int bufParam) { bufParam = 1 }
+
+  override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
+
+  override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 1 }
+
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     (
       this.hasName("strncpy") or
@@ -55,25 +48,22 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     (
-      (
-        // These always copy the full value of the input buffer to the output
-        // buffer
-        this.hasName("strcpy") or
-        this.hasName("_mbscpy") or
-        this.hasName("wcscpy")
-      ) and (
-        (
-          input.isInParameterPointer(1) and
-          output.isOutParameterPointer(0)
-        ) or (
-          input.isInParameterPointer(1) and
-          output.isOutReturnPointer()
-        )
-      )
-    ) or (
-      input.isInParameter(0) and
-      output.isOutReturnValue()
+      // These always copy the full value of the input buffer to the output
+      // buffer
+      this.hasName("strcpy") or
+      this.hasName("_mbscpy") or
+      this.hasName("wcscpy")
+    ) and
+    (
+      input.isParameterDeref(1) and
+      output.isParameterDeref(0)
+      or
+      input.isParameterDeref(1) and
+      output.isReturnValueDeref()
     )
+    or
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -86,12 +76,14 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
       this.hasName("_mbsncpy_l") or
       this.hasName("wcsncpy") or
       this.hasName("_wcsncpy_l")
-    ) and (
-      input.isInParameter(2) or
-      input.isInParameterPointer(1)
-    ) and (
-      output.isOutParameterPointer(0) or
-      output.isOutReturnPointer()
+    ) and
+    (
+      input.isParameter(2) or
+      input.isParameterDeref(1)
+    ) and
+    (
+      output.isParameterDeref(0) or
+      output.isReturnValueDeref()
     )
   }
 }

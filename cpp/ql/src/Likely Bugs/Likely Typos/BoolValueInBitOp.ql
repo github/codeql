@@ -39,8 +39,9 @@ predicate nonShortCircuitLogic2(BinaryBitwiseOperation op) {
 }
 
 from LogicalOperation o
-where o.getParent() instanceof BitwiseOperation and
-    not nonShortCircuitLogic2(o.getParent()) and
-    not o.getParent().isInMacroExpansion() and // It's ok if o itself is in a macro expansion.
-    not o.getParent().(LShiftExpr).getLeftOperand() = o // Common pattern for producing bit masks: "(a && b) << 16".
+where
+  o.getParent() instanceof BitwiseOperation and
+  not nonShortCircuitLogic2(o.getParent()) and
+  not o.getParent().isInMacroExpansion() and // It's ok if o itself is in a macro expansion.
+  not o.getParent().(LShiftExpr).getLeftOperand() = o // Common pattern for producing bit masks: "(a && b) << 16".
 select o, "The result of this expression is Boolean, but it is used in a bitwise context."

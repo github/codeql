@@ -54,8 +54,24 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     /* Modules aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    /** Holds if this module "exports" name.
+     * That is, does it define `name` in `__all__` or is
+     * `__all__` not defined and `name` a global variable that does not start with "_"
+     * This is the set of names imported by `from ... import *`.
+     */
+    predicate exports(string name) {
+        not this.(ModuleObjectInternal).attribute("__all__", _, _) and this.hasAttribute(name)
+        and not name.charAt(0) = "_"
+        or
+        py_exports(this.getSourceModule(), name)
+    }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 
@@ -207,6 +223,13 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         )
     }
 
+    /** Holds if this value has the attribute `name` */
+    override predicate hasAttribute(string name) {
+        this.getInitModule().hasAttribute(name)
+        or
+        exists(this.submodule(name))
+    }
+
 }
 
 /** A class representing Python modules */
@@ -257,6 +280,24 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
 
     override ControlFlowNode getOrigin() {
         result = this.getSourceModule().getEntryNode()
+    }
+
+    /** Holds if this value has the attribute `name` */
+    override predicate hasAttribute(string name) {
+        name = "__name__"
+        or
+        this.getSourceModule().(ImportTimeScope).definesName(name)
+        or
+        exists(ModuleObjectInternal mod, ImportStarNode imp |
+            PointsToInternal::pointsTo(imp, _, mod, _) and
+            imp.getScope() = this.getSourceModule() and
+            mod.exports(name)
+        )
+        or
+        exists(ObjectInternal defined |
+            this.attribute(name, defined, _) and
+            not defined instanceof UndefinedInternal
+        )
     }
 
 }
@@ -313,10 +354,6 @@ class AbsentModuleObjectInternal extends ModuleObjectInternal, TAbsentModule {
         none()
     }
 
-    override predicate isMissing() {
-        any()
-    }
-
 }
 
 /** A class representing an attribute of a missing module. */
@@ -369,12 +406,10 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
     }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // Don't know, assume not callable.
-        none()
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
     }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        // Don't know, assume not callable.
         none()
     }
 
@@ -402,17 +437,20 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
 
     override predicate subscriptUnknown() { any() }
 
-    override predicate isMissing() {
-        any()
+    /* We know what this is called, but not its innate name.
+     * However, if we are looking for things by name, this is a reasonable approximation */
+    override string getName() {
+        this = TAbsentModuleAttribute(_, result)
     }
-
-    /* We know what this is called, but not its innate name */
-    override string getName() { none() }
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     /* Modules aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 

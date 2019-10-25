@@ -1,7 +1,7 @@
 /**
  * @name Unbounded loop
  * @description All loops should have a fixed upper bound; the counter should also be incremented along all paths within the loop.
-                This check excludes loops that are meant to be nonterminating (like schedulers).
+ *              This check excludes loops that are meant to be nonterminating (like schedulers).
  * @kind problem
  * @id cpp/jpl-c/loop-bounds
  * @problem.severity warning
@@ -30,7 +30,8 @@ predicate upperBoundCheck(Loop loop, VariableAccess checked) {
       rop.getGreaterOperand().(VariableAccess).getTarget().isConst() or
       validVarForBound(loop, rop.getGreaterOperand().(VariableAccess).getTarget())
     ) and
-    not rop.getGreaterOperand() instanceof CharLiteral)
+    not rop.getGreaterOperand() instanceof CharLiteral
+  )
 }
 
 predicate lowerBoundCheck(Loop loop, VariableAccess checked) {
@@ -43,20 +44,23 @@ predicate lowerBoundCheck(Loop loop, VariableAccess checked) {
       rop.getLesserOperand().(VariableAccess).getTarget().isConst() or
       validVarForBound(loop, rop.getLesserOperand().(VariableAccess).getTarget())
     ) and
-    not rop.getLesserOperand() instanceof CharLiteral)
+    not rop.getLesserOperand() instanceof CharLiteral
+  )
 }
 
 VariableAccess getAnIncrement(Variable var) {
   result.getTarget() = var and
   (
     result.getParent() instanceof IncrementOperation
-  or
+    or
     exists(AssignAddExpr a | a.getLValue() = result and a.getRValue().getValue().toInt() > 0)
-  or
+    or
     exists(AssignExpr a | a.getLValue() = result |
-      a.getRValue() =
-        any(AddExpr ae | ae.getAnOperand() = var.getAnAccess() and
-            ae.getAnOperand().getValue().toInt() > 0))
+      a.getRValue() = any(AddExpr ae |
+          ae.getAnOperand() = var.getAnAccess() and
+          ae.getAnOperand().getValue().toInt() > 0
+        )
+    )
   )
 }
 
@@ -64,62 +68,75 @@ VariableAccess getADecrement(Variable var) {
   result.getTarget() = var and
   (
     result.getParent() instanceof DecrementOperation
-  or
+    or
     exists(AssignSubExpr a | a.getLValue() = result and a.getRValue().getValue().toInt() > 0)
-  or
+    or
     exists(AssignExpr a | a.getLValue() = result |
-      a.getRValue() =
-        any(SubExpr ae | ae.getLeftOperand() = var.getAnAccess() and
-            ae.getRightOperand().getValue().toInt() > 0))
+      a.getRValue() = any(SubExpr ae |
+          ae.getLeftOperand() = var.getAnAccess() and
+          ae.getRightOperand().getValue().toInt() > 0
+        )
+    )
   )
 }
 
-predicate inScope(Loop l, Stmt s) {
-  l.getAChild*() = s
-}
+predicate inScope(Loop l, Stmt s) { l.getAChild*() = s }
 
 predicate reachesNoInc(VariableAccess source, ControlFlowNode target) {
-  (upperBoundCheck(_, source) and source.getASuccessor() = target) or
-  exists(ControlFlowNode mid | reachesNoInc(source, mid) and not mid = getAnIncrement(source.getTarget()) |
-                          target = mid.getASuccessor() and
-                          inScope(source.getEnclosingStmt(), target.getEnclosingStmt()))
+  upperBoundCheck(_, source) and source.getASuccessor() = target
+  or
+  exists(ControlFlowNode mid |
+    reachesNoInc(source, mid) and not mid = getAnIncrement(source.getTarget())
+  |
+    target = mid.getASuccessor() and
+    inScope(source.getEnclosingStmt(), target.getEnclosingStmt())
+  )
 }
 
 predicate reachesNoDec(VariableAccess source, ControlFlowNode target) {
-  (lowerBoundCheck(_, source) and source.getASuccessor() = target) or
-  exists(ControlFlowNode mid | reachesNoDec(source, mid) and not mid = getADecrement(source.getTarget()) |
-                          target = mid.getASuccessor() and
-                          inScope(source.getEnclosingStmt(), target.getEnclosingStmt()))
-}
-
-predicate hasSafeBound(Loop l) {
-  exists(VariableAccess bound | upperBoundCheck(l, bound) |
-                          not reachesNoInc(bound, bound)
-  ) or exists(VariableAccess bound | lowerBoundCheck(l, bound) |
-                          not reachesNoDec(bound, bound)
-  ) or exists(l.getControllingExpr().getValue())
-}
-
-predicate markedAsNonterminating(Loop l) {
-  exists(Comment c | c.getContents().matches("%@non-terminating@%") |
-    c.getCommentedElement() = l
+  lowerBoundCheck(_, source) and source.getASuccessor() = target
+  or
+  exists(ControlFlowNode mid |
+    reachesNoDec(source, mid) and not mid = getADecrement(source.getTarget())
+  |
+    target = mid.getASuccessor() and
+    inScope(source.getEnclosingStmt(), target.getEnclosingStmt())
   )
 }
 
+predicate hasSafeBound(Loop l) {
+  exists(VariableAccess bound | upperBoundCheck(l, bound) | not reachesNoInc(bound, bound))
+  or
+  exists(VariableAccess bound | lowerBoundCheck(l, bound) | not reachesNoDec(bound, bound))
+  or
+  exists(l.getControllingExpr().getValue())
+}
+
+predicate markedAsNonterminating(Loop l) {
+  exists(Comment c | c.getContents().matches("%@non-terminating@%") | c.getCommentedElement() = l)
+}
+
 from Loop loop, string msg
-where not hasSafeBound(loop) and
-    not markedAsNonterminating(loop) and
-    (
-      (
-        not upperBoundCheck(loop, _) and
-        not lowerBoundCheck(loop, _) and
-        msg = "This loop does not have a fixed bound."
-      ) or exists(VariableAccess bound | upperBoundCheck(loop, bound) and
-                    reachesNoInc(bound, bound) and
-                    msg = "The loop counter " + bound.getTarget().getName() + " is not always incremented in the loop body."
-      ) or exists(VariableAccess bound | lowerBoundCheck(loop, bound) and
-                    reachesNoDec(bound, bound) and
-                    msg = "The loop counter " + bound.getTarget().getName() + " is not always decremented in the loop body."
-      )
+where
+  not hasSafeBound(loop) and
+  not markedAsNonterminating(loop) and
+  (
+    not upperBoundCheck(loop, _) and
+    not lowerBoundCheck(loop, _) and
+    msg = "This loop does not have a fixed bound."
+    or
+    exists(VariableAccess bound |
+      upperBoundCheck(loop, bound) and
+      reachesNoInc(bound, bound) and
+      msg = "The loop counter " + bound.getTarget().getName() +
+          " is not always incremented in the loop body."
     )
+    or
+    exists(VariableAccess bound |
+      lowerBoundCheck(loop, bound) and
+      reachesNoDec(bound, bound) and
+      msg = "The loop counter " + bound.getTarget().getName() +
+          " is not always decremented in the loop body."
+    )
+  )
 select loop, msg

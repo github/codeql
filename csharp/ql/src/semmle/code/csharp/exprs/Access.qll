@@ -826,3 +826,12 @@ class ArrayRead extends ArrayAccess, AssignableRead { }
  * ```
  */
 class ArrayWrite extends ArrayAccess, AssignableWrite { }
+
+/**
+ * An access to a namespace, for example `System` in `nameof(System)`.
+ */
+class NamespaceAccess extends Access, @namespace_access_expr {
+  override Namespace getTarget() { expr_access(this, result) }
+
+  override string toString() { result = "access to namespace " + this.getTarget().getName() }
+}

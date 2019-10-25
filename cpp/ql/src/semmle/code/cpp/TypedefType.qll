@@ -3,21 +3,26 @@ private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ typedef type. See 4.9.1.
+ *
+ * Represents either of the following typedef styles:
+ *
+ *   * CTypedefType: typedef <type> <name>;
+ *   * UsingAliasTypedefType: using <name> = <type>;
  */
 class TypedefType extends UserType {
-
-  TypedefType() { usertypes(underlyingElement(this),_,5) }
+  TypedefType() {
+    usertypes(underlyingElement(this), _, 5) or
+    usertypes(underlyingElement(this), _, 14)
+  }
 
   /**
    * Gets the base type of this typedef type.
    */
-  Type getBaseType() { typedefbase(underlyingElement(this),unresolveElement(result)) }
+  Type getBaseType() { typedefbase(underlyingElement(this), unresolveElement(result)) }
 
   override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 
-  override Type stripTopLevelSpecifiers() {
-    result = getBaseType().stripTopLevelSpecifiers()
-  }
+  override Type stripTopLevelSpecifiers() { result = getBaseType().stripTopLevelSpecifiers() }
 
   override int getSize() { result = this.getBaseType().getSize() }
 
@@ -27,8 +32,6 @@ class TypedefType extends UserType {
     result = this.getBaseType().getPointerIndirectionLevel()
   }
 
-  override string explain() { result =  "typedef {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\"" }
-
   override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() } // Just an alias
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() } // Just an alias
@@ -37,16 +40,36 @@ class TypedefType extends UserType {
     result = this.getBaseType().getASpecifier()
   }
 
-  override predicate involvesReference() {
-    getBaseType().involvesReference()
-  }
+  override predicate involvesReference() { getBaseType().involvesReference() }
 
-  override Type resolveTypedefs() {
-    result = getBaseType().resolveTypedefs()
-  }
+  override Type resolveTypedefs() { result = getBaseType().resolveTypedefs() }
 
-  override Type stripType() {
-    result = getBaseType().stripType()
+  override Type stripType() { result = getBaseType().stripType() }
+}
+
+/**
+ * A traditional C/C++ typedef type. See 4.9.1.
+ */
+class CTypedefType extends TypedefType {
+  CTypedefType() { usertypes(underlyingElement(this), _, 5) }
+
+  override string getCanonicalQLClass() { result = "CTypedefType" }
+
+  override string explain() {
+    result = "typedef {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\""
+  }
+}
+
+/**
+ * A using alias C++ typedef type.
+ */
+class UsingAliasTypedefType extends TypedefType {
+  UsingAliasTypedefType() { usertypes(underlyingElement(this), _, 14) }
+
+  override string getCanonicalQLClass() { result = "UsingAliasTypedefType" }
+
+  override string explain() {
+    result = "using {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\""
   }
 }
 
@@ -54,33 +77,36 @@ class TypedefType extends UserType {
  * A C++ typedef type that is directly enclosed by a function.
  */
 class LocalTypedefType extends TypedefType {
-  LocalTypedefType() {
-    isLocal()
-  }
+  LocalTypedefType() { isLocal() }
+
+  override string getCanonicalQLClass() { result = "LocalTypedefType" }
 }
 
 /**
  * A C++ typedef type that is directly enclosed by a class, struct or union.
  */
 class NestedTypedefType extends TypedefType {
-  NestedTypedefType() {
-    this.isMember()
-  }
+  NestedTypedefType() { this.isMember() }
+
+  override string getCanonicalQLClass() { result = "NestedTypedefType" }
 
   /**
-   * DEPRECATED
+   * DEPRECATED: use `.hasSpecifier("private")` instead.
+   *
    * Holds if this member is private.
    */
   deprecated predicate isPrivate() { this.hasSpecifier("private") }
 
   /**
-   * DEPRECATED
+   * DEPRECATED: `.hasSpecifier("protected")` instead.
+   *
    * Holds if this member is protected.
    */
   deprecated predicate isProtected() { this.hasSpecifier("protected") }
 
   /**
-   * DEPRECATED
+   * DEPRECATED: use `.hasSpecifier("public")` instead.
+   *
    * Holds if this member is public.
    */
   deprecated predicate isPublic() { this.hasSpecifier("public") }

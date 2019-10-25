@@ -27,3 +27,8 @@ const E = class {},       // "class E", "default constructor of class E"
   get y() {}              // "getter method for property y of class G"
   set y(v) {}             // "setter method for property y of class G"
 };
+
+o.foo = function() {};    // "method foo"
+o["Hey"] = function() {}; // "anonymous function"
+
+o.Foo = class {};         // "class Foo"

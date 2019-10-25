@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks and sanitizers for reasoning about
  * code injection vulnerabilities, as well as extension points for
  * adding your own.
  */
@@ -98,6 +98,20 @@ module CodeInjection {
         or
         // argument to `injectJavascript` method of React Native `WebView`
         this = webView.getAMethodCall("injectJavaScript").getArgument(0)
+      )
+    }
+  }
+
+  /**
+   * An event handler attribute as a code injection sink.
+   */
+  class EventHandlerAttributeSink extends Sink {
+    EventHandlerAttributeSink() {
+      exists(DOM::AttributeDefinition def |
+        def.getName().regexpMatch("(?i)on.+") and
+        this = def.getValueNode() and
+        // JSX event handlers are functions, not strings
+        not def instanceof JSXAttribute
       )
     }
   }

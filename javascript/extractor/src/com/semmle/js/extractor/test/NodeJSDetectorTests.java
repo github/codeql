@@ -1,6 +1,7 @@
 package com.semmle.js.extractor.test;
 
 import com.semmle.js.ast.Node;
+import com.semmle.js.extractor.ExtractionMetrics;
 import com.semmle.js.extractor.ExtractorConfig;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.NodeJSDetector;
@@ -13,7 +14,7 @@ public class NodeJSDetectorTests {
   private static final ExtractorConfig CONFIG = new ExtractorConfig(false);
 
   private void isNodeJS(String src, boolean expected) {
-    Result res = JSParser.parse(CONFIG, SourceType.SCRIPT, src);
+    Result res = JSParser.parse(CONFIG, SourceType.SCRIPT, src, new ExtractionMetrics());
     Node ast = res.getAST();
     Assert.assertNotNull(ast);
     Assert.assertTrue(NodeJSDetector.looksLikeNodeJS(ast) == expected);
@@ -163,9 +164,8 @@ public class NodeJSDetectorTests {
 
   @Test
   public void amdefine() {
-    // not currently detected
     isNodeJS(
-        "if (typeof define !== 'function') define = require('amdefine')(module, require);", false);
+        "if (typeof define !== 'function') define = require('amdefine')(module, require);", true);
   }
 
   @Test
@@ -200,5 +200,15 @@ public class NodeJSDetectorTests {
             + "  fs = require('fs');"
             + "}",
         true);
+  }
+
+  @Test
+  public void requireAndCall() {
+    isNodeJS("var foo = require('foo')();", true);
+  }
+
+  @Test
+  public void requireAndCallMethod() {
+    isNodeJS("var foo = require('foo').bar();", true);
   }
 }

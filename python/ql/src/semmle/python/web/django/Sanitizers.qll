@@ -1,7 +1,6 @@
 import python
-
-
-/* Sanitizers 
+/*
+ * Sanitizers
  * No django sanitizers implemented yet.
  */
 

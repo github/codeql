@@ -2,7 +2,15 @@
 
 import javascript
 
-/** A tagged template literal expression. */
+/**
+ * A tagged template literal expression.
+ *
+ * Example:
+ *
+ * ```
+ * highlight `Hello, ${user.name}!`
+ * ```
+ */
 class TaggedTemplateExpr extends Expr, @taggedtemplateexpr {
   /** Gets the tagging expression of this tagged template. */
   Expr getTag() { result = getChildExpr(0) }
@@ -10,10 +18,27 @@ class TaggedTemplateExpr extends Expr, @taggedtemplateexpr {
   /** Gets the tagged template itself. */
   TemplateLiteral getTemplate() { result = getChildExpr(1) }
 
+  /** Gets the `i`th type argument to the tag of this template literal. */
+  TypeExpr getTypeArgument(int i) { i >= 0 and result = getChildTypeExpr(2 + i) }
+
+  /** Gets a type argument of the tag of this template literal. */
+  TypeExpr getATypeArgument() { result = getTypeArgument(_) }
+
+  /** Gets the number of type arguments appearing on the tag of this template literal. */
+  int getNumTypeArgument() { result = count(getATypeArgument()) }
+
   override predicate isImpure() { any() }
 }
 
-/** A template literal. */
+/**
+ * A template literal.
+ *
+ * Example:
+ *
+ * ```
+ * `Hello, ${user.name}!`
+ * ```
+ */
 class TemplateLiteral extends Expr, @templateliteral {
   /**
    * Gets the `i`th element of this template literal, which may either
@@ -25,6 +50,11 @@ class TemplateLiteral extends Expr, @templateliteral {
    * Gets an element of this template literal.
    */
   Expr getAnElement() { result = getElement(_) }
+
+  /**
+   * Gets the number of elements of this template literal.
+   */
+  int getNumElement() { result = count(getAnElement()) }
 
   override predicate isImpure() { getAnElement().isImpure() }
 
@@ -38,7 +68,15 @@ class TemplateLiteral extends Expr, @templateliteral {
   }
 }
 
-/** A constant template element. */
+/**
+ * A constant template element.
+ *
+ * Example:
+ *
+ * ```
+ * `Hello, ${user.name}!` // "Hello, " and "!" are constant template elements
+ * ```
+ */
 class TemplateElement extends Expr, @templateelement {
   /**
    * Holds if this template element has a "cooked" value.

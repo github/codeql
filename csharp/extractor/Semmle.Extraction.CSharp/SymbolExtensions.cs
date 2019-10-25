@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp
@@ -128,9 +129,9 @@ namespace Semmle.Extraction.CSharp
         /// syntactic sub terms of this type (if any).
         /// </summary>
         /// <param name="cx">The extraction context.</param>
-        /// <param name="tb">The trap builder used to store the result.</param>
+        /// <param name="trapFile">The trap builder used to store the result.</param>
         /// <param name="subTermAction">The action to apply to syntactic sub terms of this type.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, ITrapBuilder tb, Action<Context, ITrapBuilder, ITypeSymbol> subTermAction)
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
             if (type.SpecialType != SpecialType.None)
             {
@@ -139,7 +140,7 @@ namespace Semmle.Extraction.CSharp
                  * This makes the IDs shorter and means that all built-in types map to
                  * the same entities (even when using multiple versions of mscorlib).
                  */
-                tb.Append(type.ToDisplayString());
+                trapFile.Write(type.ToDisplayString());
                 return;
             }
 
@@ -149,8 +150,8 @@ namespace Semmle.Extraction.CSharp
                 {
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
-                        subTermAction(cx, tb, array.ElementType);
-                        array.BuildArraySuffix(tb);
+                        subTermAction(cx, trapFile, array.ElementType);
+                        array.BuildArraySuffix(trapFile);
                         return;
                     case TypeKind.Class:
                     case TypeKind.Interface:
@@ -159,19 +160,19 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeId(cx, tb, subTermAction);
+                        named.BuildNamedTypeId(cx, trapFile, subTermAction);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
-                        subTermAction(cx, tb, ptr.PointedAtType);
-                        tb.Append("*");
+                        subTermAction(cx, trapFile, ptr.PointedAtType);
+                        trapFile.Write('*');
                         return;
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
-                        tb.Append(tp.Name);
+                        trapFile.Write(tp.Name);
                         return;
                     case TypeKind.Dynamic:
-                        tb.Append("dynamic");
+                        trapFile.Write("dynamic");
                         return;
                     default:
                         throw new InternalError(type, $"Unhandled type kind '{type.TypeKind}'");
@@ -179,64 +180,70 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
+
         /// <summary>
         /// Constructs an array suffix string for this array type symbol.
         /// </summary>
-        /// <param name="tb">The trap builder used to store the result.</param>
-        public static void BuildArraySuffix(this IArrayTypeSymbol array, ITrapBuilder tb)
+        /// <param name="trapFile">The trap builder used to store the result.</param>
+        public static void BuildArraySuffix(this IArrayTypeSymbol array, TextWriter trapFile)
         {
-            tb.Append("[");
+            trapFile.Write('[');
             for (int i = 0; i < array.Rank - 1; i++)
-                tb.Append(",");
-            tb.Append("]");
+                trapFile.Write(',');
+            trapFile.Write(']');
         }
 
-        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, ITrapBuilder tb, Action<Context, ITrapBuilder, ITypeSymbol> subTermAction)
+        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
             if (named.IsTupleType)
             {
-                tb.Append("(");
-                tb.BuildList(",", named.TupleElements,
+                trapFile.Write('(');
+                trapFile.BuildList(",", named.TupleElements,
                     (f, tb0) =>
                     {
-                        tb.Append(f.Name).Append(":");
+                        trapFile.Write(f.Name);
+                        trapFile.Write(":");
                         subTermAction(cx, tb0, f.Type);
                     }
                     );
-                tb.Append(")");
+                trapFile.Write(")");
                 return;
             }
 
             if (named.ContainingType != null)
             {
-                subTermAction(cx, tb, named.ContainingType);
-                tb.Append(".");
+                subTermAction(cx, trapFile, named.ContainingType);
+                trapFile.Write('.');
             }
             else if (named.ContainingNamespace != null)
             {
-                named.ContainingNamespace.BuildNamespace(cx, tb);
+                named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
 
             if (named.IsAnonymousType)
-                named.BuildAnonymousName(cx, tb, subTermAction, true);
+                named.BuildAnonymousName(cx, trapFile, subTermAction, true);
             else if (named.TypeParameters.IsEmpty)
-                tb.Append(named.Name);
+                trapFile.Write(named.Name);
             else if (IsReallyUnbound(named))
-                tb.Append(named.Name).Append("`").Append(named.TypeParameters.Length);
+            {
+                trapFile.Write(named.Name);
+                trapFile.Write("`");
+                trapFile.Write(named.TypeParameters.Length);
+            }
             else
             {
-                subTermAction(cx, tb, named.ConstructedFrom);
-                tb.Append("<");
+                subTermAction(cx, trapFile, named.ConstructedFrom);
+                trapFile.Write('<');
                 // Encode the nullability of the type arguments in the label.
                 // Type arguments with different nullability can result in 
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
-                tb.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => { subTermAction(cx, tb0, ta.Symbol); tb.Append((int)ta.Nullability); });
-                tb.Append(">");
+                trapFile.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => { subTermAction(cx, tb0, ta.Symbol); trapFile.Write((int)ta.Nullability); });
+                trapFile.Write('>');
             }
         }
 
-        static void BuildNamespace(this INamespaceSymbol ns, Context cx, ITrapBuilder tb)
+        static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
         {
             // Only include the assembly information in each type ID
             // for normal extractions. This is because standalone extractions
@@ -248,38 +255,44 @@ namespace Semmle.Extraction.CSharp
                 // Note that we exclude the revision number as this has
                 // been observed to be unstable.
                 var assembly = ns.ContainingAssembly.Identity;
-                tb.Append(assembly.Name).Append("_").
-                    Append(assembly.Version.Major).Append(".").
-                    Append(assembly.Version.Minor).Append(".").
-                    Append(assembly.Version.Build).Append("::");
+                trapFile.Write(assembly.Name);
+                trapFile.Write('_');
+                trapFile.Write(assembly.Version.Major);
+                trapFile.Write('.');
+                trapFile.Write(assembly.Version.Minor);
+                trapFile.Write('.');
+                trapFile.Write(assembly.Version.Build);
+                trapFile.Write("::");
             }
 
-            tb.Append(Namespace.Create(cx, ns)).Append(".");
+            trapFile.WriteSubId(Namespace.Create(cx, ns));
+            trapFile.Write('.');
         }
 
-        static void BuildAnonymousName(this ITypeSymbol type, Context cx, ITrapBuilder tb, Action<Context, ITrapBuilder, ITypeSymbol> subTermAction, bool includeParamName)
+        static void BuildAnonymousName(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction, bool includeParamName)
         {
             var buildParam = includeParamName
                 ? (prop, tb0) =>
                 {
-                    tb0.Append(prop.Name).Append(" ");
+                    tb0.Write(prop.Name);
+                    trapFile.Write(' ');
                     subTermAction(cx, tb0, prop.Type);
                 }
-            : (Action<IPropertySymbol, ITrapBuilder>)((prop, tb0) => subTermAction(cx, tb0, prop.Type));
+            : (Action<IPropertySymbol, TextWriter>)((prop, tb0) => subTermAction(cx, tb0, prop.Type));
             int memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
             int hackTypeNumber = memberCount == 1 ? 1 : 0;
-            tb.Append("<>__AnonType");
-            tb.Append(hackTypeNumber);
-            tb.Append("<");
-            tb.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), buildParam);
-            tb.Append(">");
+            trapFile.Write("<>__AnonType");
+            trapFile.Write(hackTypeNumber);
+            trapFile.Write('<');
+            trapFile.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), buildParam);
+            trapFile.Write('>');
         }
 
         /// <summary>
         /// Constructs a display name string for this type symbol.
         /// </summary>
-        /// <param name="tb">The trap builder used to store the result.</param>
-        public static void BuildDisplayName(this ITypeSymbol type, Context cx, ITrapBuilder tb)
+        /// <param name="trapFile">The trap builder used to store the result.</param>
+        public static void BuildDisplayName(this ITypeSymbol type, Context cx, TextWriter trapFile)
         {
             using (cx.StackGuard)
             {
@@ -290,11 +303,11 @@ namespace Semmle.Extraction.CSharp
                         var elementType = array.ElementType;
                         if (elementType.MetadataName.IndexOf("`") >= 0)
                         {
-                            tb.Append(elementType.Name);
+                            trapFile.Write(elementType.Name);
                             return;
                         }
-                        elementType.BuildDisplayName(cx, tb);
-                        array.BuildArraySuffix(tb);
+                        elementType.BuildDisplayName(cx, trapFile);
+                        array.BuildArraySuffix(trapFile);
                         return;
                     case TypeKind.Class:
                     case TypeKind.Interface:
@@ -303,18 +316,18 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeDisplayName(cx, tb);
+                        named.BuildNamedTypeDisplayName(cx, trapFile);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
-                        ptr.PointedAtType.BuildDisplayName(cx, tb);
-                        tb.Append("*");
+                        ptr.PointedAtType.BuildDisplayName(cx, trapFile);
+                        trapFile.Write('*');
                         return;
                     case TypeKind.TypeParameter:
-                        tb.Append(type.Name);
+                        trapFile.Write(type.Name);
                         return;
                     case TypeKind.Dynamic:
-                        tb.Append("dynamic");
+                        trapFile.Write("dynamic");
                         return;
                     default:
                         throw new InternalError(type, $"Unhandled type kind '{type.TypeKind}'");
@@ -322,34 +335,34 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, ITrapBuilder tb)
+        public static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile)
         {
             if (namedType.IsTupleType)
             {
-                tb.Append("(");
-                tb.BuildList(",", namedType.TupleElements.Select(f => f.Type),
+                trapFile.Write('(');
+                trapFile.BuildList(",", namedType.TupleElements.Select(f => f.Type),
                     (t, tb0) => t.BuildDisplayName(cx, tb0)
                     );
 
-                tb.Append(")");
+                trapFile.Write(")");
                 return;
             }
 
             if (namedType.IsAnonymousType)
             {
-                namedType.BuildAnonymousName(cx, tb, (cx0, tb0, sub) => sub.BuildDisplayName(cx0, tb0), false);
+                namedType.BuildAnonymousName(cx, trapFile, (cx0, tb0, sub) => sub.BuildDisplayName(cx0, tb0), false);
             }
 
-            tb.Append(namedType.Name);
+            trapFile.Write(namedType.Name);
             if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
             {
-                tb.Append("<");
-                tb.BuildList(",", namedType.TypeArguments, (p, tb0) =>
+                trapFile.Write('<');
+                trapFile.BuildList(",", namedType.TypeArguments, (p, tb0) =>
                 {
                     if (IsReallyBound(namedType))
                         p.BuildDisplayName(cx, tb0);
                 });
-                tb.Append(">");
+                trapFile.Write('>');
             }
         }
 
@@ -435,10 +448,10 @@ namespace Semmle.Extraction.CSharp
         }
 
         public static TypeInfo GetTypeInfo(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node) =>
-            cx.Model(node).GetTypeInfo(node);
+            cx.GetModel(node).GetTypeInfo(node);
 
         public static SymbolInfo GetSymbolInfo(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node) =>
-            cx.Model(node).GetSymbolInfo(node);
+            cx.GetModel(node).GetSymbolInfo(node);
 
         /// <summary>
         /// Gets the symbol for a particular syntax node.

@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks and sanitizers for reasoning about
  * unvalidated dynamic method calls, as well as extension points for
  * adding your own.
  */
@@ -98,7 +98,6 @@ module UnvalidatedDynamicMethodCall {
    */
   class FunctionCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override EqualityTest astNode;
-
     TypeofExpr t;
 
     FunctionCheck() {

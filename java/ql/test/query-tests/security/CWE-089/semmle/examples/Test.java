@@ -35,7 +35,13 @@ abstract class Test {
 					+ category + "' ORDER BY PRICE";
 			ResultSet results = statement.executeQuery(query1);
 		}
-		
+		// BAD: don't use user input when building a prepared call
+		{
+			String id = args[1];
+			String query2 = "{ call get_product_by_id('" + id + "',?,?,?) }";
+			PreparedStatement statement = connection.prepareCall(query2);
+			ResultSet results = statement.executeQuery();
+		}
 		// BAD: don't use user input when building a prepared query
 		{
 			String category = args[1];
@@ -55,6 +61,23 @@ abstract class Test {
 			Statement statement = connection.createStatement();
 			ResultSet results = statement.executeQuery(querySbToString);
 		}
+		// BAD: executeUpdate
+		{
+			String item = args[1];
+			String price = args[2];
+			Statement statement = connection.createStatement();
+			String query = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+			int count = statement.executeUpdate(query);
+		}
+		// BAD: executeUpdate
+		{
+			String item = args[1];
+			String price = args[2];
+			Statement statement = connection.createStatement();
+			String query = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+			long count = statement.executeLargeUpdate(query);
+		}
+
 		// OK: validate the input first
 		{
 			String category = args[1];

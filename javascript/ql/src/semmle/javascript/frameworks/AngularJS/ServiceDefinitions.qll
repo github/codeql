@@ -35,6 +35,13 @@ abstract class ServiceReference extends TServiceReference {
   abstract string getName();
 
   /**
+   * Gets a data flow node that may refer to this service.
+   */
+  DataFlow::SourceNode getAReference() {
+    result = DataFlow::parameterNode(any(ServiceRequest request).getDependencyParameter(this))
+  }
+
+  /**
    * Gets an access to the referenced service.
    */
   Expr getAnAccess() {
@@ -252,7 +259,6 @@ abstract class CustomServiceDefinition extends DataFlow::Node {
 abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinition,
   DependencyInjection {
   string methodName;
-
   string name;
 
   RecipeDefinition() {
@@ -327,7 +333,6 @@ private predicate isCustomServiceDefinitionOnProvider(
  */
 class ControllerDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   ControllerDefinition() {
@@ -348,7 +353,6 @@ class ControllerDefinition extends CustomSpecialServiceDefinition {
  */
 class FilterDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   FilterDefinition() {
@@ -373,7 +377,6 @@ class FilterDefinition extends CustomSpecialServiceDefinition {
  */
 class DirectiveDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   DirectiveDefinition() {
@@ -413,7 +416,6 @@ private class CustomDirectiveControllerDependencyInjection extends DependencyInj
  */
 class ComponentDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode config;
 
   ComponentDefinition() {
@@ -441,7 +443,6 @@ class ComponentDefinition extends CustomSpecialServiceDefinition {
  */
 class AnimationDefinition extends CustomSpecialServiceDefinition {
   string name;
-
   DataFlow::SourceNode factoryFunction;
 
   AnimationDefinition() {

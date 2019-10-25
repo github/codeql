@@ -1,0 +1,314 @@
+| carrier.py:4 | explicit.carrier | SSA variable arg | no attribute | p1 = explicit.carrier |
+| carrier.py:4 | explicit.carrier | arg | no attribute | p1 = explicit.carrier |
+| carrier.py:4 | simple.test | SSA variable arg | no attribute | p1 = simple.test |
+| carrier.py:4 | simple.test | arg | no attribute | p1 = simple.test |
+| carrier.py:5 | explicit.carrier | SSA variable self | attribute attr | p1 = explicit.carrier |
+| carrier.py:5 | explicit.carrier | arg | no attribute | p1 = explicit.carrier |
+| carrier.py:5 | simple.test | SSA variable self | attribute attr | p1 = simple.test |
+| carrier.py:5 | simple.test | arg | no attribute | p1 = simple.test |
+| carrier.py:10 | simple.test | SSA variable self | attribute attr | p0.attr = simple.test |
+| carrier.py:10 | simple.test | self | attribute attr | p0.attr = simple.test |
+| carrier.py:11 | simple.test | Attribute | no attribute | p0.attr = simple.test |
+| carrier.py:11 | simple.test | self | attribute attr | p0.attr = simple.test |
+| carrier.py:13 | explicit.carrier | SSA variable arg | no attribute | p0 = explicit.carrier |
+| carrier.py:13 | explicit.carrier | arg | no attribute | p0 = explicit.carrier |
+| carrier.py:13 | simple.test | SSA variable arg | attribute attr | p0.attr = simple.test |
+| carrier.py:13 | simple.test | arg | attribute attr | p0.attr = simple.test |
+| carrier.py:14 | explicit.carrier | arg | no attribute | p0 = explicit.carrier |
+| carrier.py:14 | simple.test | arg | attribute attr | p0.attr = simple.test |
+| carrier.py:17 | simple.test | ImplicitCarrier() | attribute attr |  |
+| carrier.py:17 | simple.test | SOURCE | no attribute |  |
+| carrier.py:17 | simple.test | SSA variable c | attribute attr |  |
+| carrier.py:18 | simple.test | Attribute | no attribute |  |
+| carrier.py:18 | simple.test | c | attribute attr |  |
+| carrier.py:21 | explicit.carrier | SSA variable c | no attribute |  |
+| carrier.py:21 | explicit.carrier | TAINT_CARRIER_SOURCE | no attribute |  |
+| carrier.py:22 | explicit.carrier | SSA variable c | no attribute |  |
+| carrier.py:22 | explicit.carrier | c | no attribute |  |
+| carrier.py:22 | simple.test | Attribute() | no attribute |  |
+| carrier.py:25 | simple.test | ImplicitCarrier() | attribute attr |  |
+| carrier.py:25 | simple.test | SOURCE | no attribute |  |
+| carrier.py:25 | simple.test | SSA variable c | attribute attr |  |
+| carrier.py:25 | simple.test | hub() | attribute attr |  |
+| carrier.py:26 | simple.test | Attribute() | no attribute |  |
+| carrier.py:26 | simple.test | SSA variable c | attribute attr |  |
+| carrier.py:26 | simple.test | c | attribute attr |  |
+| carrier.py:29 | explicit.carrier | SSA variable c | no attribute |  |
+| carrier.py:29 | explicit.carrier | TAINT_CARRIER_SOURCE | no attribute |  |
+| carrier.py:29 | explicit.carrier | hub() | no attribute |  |
+| carrier.py:30 | explicit.carrier | SSA variable c | no attribute |  |
+| carrier.py:30 | explicit.carrier | c | no attribute |  |
+| carrier.py:30 | simple.test | Attribute() | no attribute |  |
+| carrier.py:33 | explicit.carrier | ImplicitCarrier() | attribute attr |  |
+| carrier.py:33 | explicit.carrier | SSA variable c | attribute attr |  |
+| carrier.py:33 | explicit.carrier | TAINT_CARRIER_SOURCE | no attribute |  |
+| carrier.py:34 | explicit.carrier | Attribute | no attribute |  |
+| carrier.py:34 | explicit.carrier | SSA variable x | no attribute |  |
+| carrier.py:34 | explicit.carrier | c | attribute attr |  |
+| carrier.py:35 | explicit.carrier | SSA variable x | no attribute |  |
+| carrier.py:35 | explicit.carrier | x | no attribute |  |
+| carrier.py:35 | simple.test | Attribute() | no attribute |  |
+| deep.py:2 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:2 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:3 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:5 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:5 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:6 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:6 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:6 | simple.test | f1() | no attribute | p0 = simple.test |
+| deep.py:8 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:8 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:9 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:9 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:9 | simple.test | f2() | no attribute | p0 = simple.test |
+| deep.py:11 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:11 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:12 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:12 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:12 | simple.test | f3() | no attribute | p0 = simple.test |
+| deep.py:14 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:14 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:15 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:15 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:15 | simple.test | f4() | no attribute | p0 = simple.test |
+| deep.py:17 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:17 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:18 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| deep.py:18 | simple.test | arg | no attribute | p0 = simple.test |
+| deep.py:18 | simple.test | f5() | no attribute | p0 = simple.test |
+| deep.py:20 | simple.test | GSSA Variable x | no attribute |  |
+| deep.py:20 | simple.test | SOURCE | no attribute |  |
+| deep.py:20 | simple.test | f6() | no attribute |  |
+| deep.py:22 | simple.test | GSSA Variable x | no attribute |  |
+| deep.py:22 | simple.test | x | no attribute |  |
+| module.py:3 | simple.test | GSSA Variable dangerous | no attribute |  |
+| module.py:3 | simple.test | SOURCE | no attribute |  |
+| module.py:7 | simple.test | SOURCE | no attribute |  |
+| module.py:10 | simple.test | SOURCE | no attribute |  |
+| rockpaperscissors.py:3 | scissors | SSA variable arg | no attribute | p0 = scissors |
+| rockpaperscissors.py:3 | scissors | arg | no attribute | p0 = scissors |
+| rockpaperscissors.py:6 | paper | SSA variable arg | no attribute | p0 = paper |
+| rockpaperscissors.py:6 | paper | arg | no attribute | p0 = paper |
+| rockpaperscissors.py:6 | rock | SSA variable arg | no attribute | p0 = rock |
+| rockpaperscissors.py:6 | rock | arg | no attribute | p0 = rock |
+| rockpaperscissors.py:6 | scissors | SSA variable arg | no attribute | p0 = scissors |
+| rockpaperscissors.py:6 | scissors | arg | no attribute | p0 = scissors |
+| rockpaperscissors.py:9 | paper | SSA variable arg | no attribute | p0 = paper |
+| rockpaperscissors.py:9 | paper | arg | no attribute | p0 = paper |
+| rockpaperscissors.py:9 | scissors | SSA variable arg | no attribute | p0 = scissors |
+| rockpaperscissors.py:9 | scissors | arg | no attribute | p0 = scissors |
+| rockpaperscissors.py:13 | scissors | SCISSORS | no attribute |  |
+| rockpaperscissors.py:16 | rock | ROCK | no attribute |  |
+| rockpaperscissors.py:19 | rock | ROCK | no attribute |  |
+| rockpaperscissors.py:19 | rock | SSA variable x | no attribute |  |
+| rockpaperscissors.py:20 | rock | SSA variable x | no attribute |  |
+| rockpaperscissors.py:20 | rock | x | no attribute |  |
+| rockpaperscissors.py:20 | scissors | Attribute() | no attribute |  |
+| rockpaperscissors.py:20 | scissors | SSA variable y | no attribute |  |
+| rockpaperscissors.py:21 | scissors | SSA variable y | no attribute |  |
+| rockpaperscissors.py:21 | scissors | y | no attribute |  |
+| rockpaperscissors.py:24 | rock | ROCK | no attribute |  |
+| rockpaperscissors.py:24 | rock | SSA variable x | no attribute |  |
+| rockpaperscissors.py:25 | paper | Attribute() | no attribute |  |
+| rockpaperscissors.py:25 | paper | SSA variable y | no attribute |  |
+| rockpaperscissors.py:25 | rock | SSA variable x | no attribute |  |
+| rockpaperscissors.py:25 | rock | x | no attribute |  |
+| rockpaperscissors.py:25 | scissors | Attribute() | no attribute |  |
+| rockpaperscissors.py:26 | paper | SSA variable y | no attribute |  |
+| rockpaperscissors.py:26 | paper | y | no attribute |  |
+| rockpaperscissors.py:29 | scissors | SCISSORS | no attribute |  |
+| rockpaperscissors.py:29 | scissors | SSA variable x | no attribute |  |
+| rockpaperscissors.py:30 | paper | Attribute() | no attribute |  |
+| rockpaperscissors.py:30 | paper | SSA variable y | no attribute |  |
+| rockpaperscissors.py:30 | scissors | SSA variable x | no attribute |  |
+| rockpaperscissors.py:30 | scissors | x | no attribute |  |
+| rockpaperscissors.py:31 | scissors | SSA variable x | no attribute |  |
+| rockpaperscissors.py:31 | scissors | x | no attribute |  |
+| rockpaperscissors.py:32 | paper | SSA variable y | no attribute |  |
+| rockpaperscissors.py:32 | paper | y | no attribute |  |
+| test.py:3 | simple.test | SOURCE | no attribute |  |
+| test.py:6 | simple.test | SOURCE | no attribute |  |
+| test.py:6 | simple.test | SSA variable s | no attribute |  |
+| test.py:7 | simple.test | SSA variable s | no attribute |  |
+| test.py:7 | simple.test | s | no attribute |  |
+| test.py:10 | simple.test | SOURCE | no attribute |  |
+| test.py:12 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| test.py:12 | simple.test | arg | no attribute | p0 = simple.test |
+| test.py:13 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| test.py:13 | simple.test | arg | no attribute | p0 = simple.test |
+| test.py:16 | simple.test | SSA variable t | no attribute |  |
+| test.py:16 | simple.test | source() | no attribute |  |
+| test.py:17 | simple.test | SSA variable t | no attribute |  |
+| test.py:17 | simple.test | t | no attribute |  |
+| test.py:20 | simple.test | SOURCE | no attribute |  |
+| test.py:20 | simple.test | SSA variable t | no attribute |  |
+| test.py:21 | simple.test | SSA variable t | no attribute |  |
+| test.py:21 | simple.test | t | no attribute |  |
+| test.py:24 | simple.test | SSA variable t | no attribute |  |
+| test.py:24 | simple.test | source() | no attribute |  |
+| test.py:25 | simple.test | SSA variable t | no attribute |  |
+| test.py:25 | simple.test | t | no attribute |  |
+| test.py:31 | simple.test | SOURCE | no attribute |  |
+| test.py:31 | simple.test | SSA variable t | no attribute |  |
+| test.py:37 | simple.test | SOURCE | no attribute |  |
+| test.py:37 | simple.test | SSA variable t | no attribute |  |
+| test.py:41 | simple.test | SSA variable t | no attribute |  |
+| test.py:41 | simple.test | t | no attribute |  |
+| test.py:44 | simple.test | source() | no attribute |  |
+| test.py:46 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| test.py:46 | simple.test | arg | no attribute | p0 = simple.test |
+| test.py:47 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| test.py:47 | simple.test | arg | no attribute | p0 = simple.test |
+| test.py:49 | simple.test | SSA variable arg | no attribute | p1 = simple.test |
+| test.py:49 | simple.test | arg | no attribute | p1 = simple.test |
+| test.py:51 | simple.test | SSA variable arg | no attribute | p1 = simple.test |
+| test.py:51 | simple.test | arg | no attribute | p1 = simple.test |
+| test.py:54 | simple.test | SSA variable t | no attribute |  |
+| test.py:54 | simple.test | source2() | no attribute |  |
+| test.py:55 | simple.test | SSA variable t | no attribute |  |
+| test.py:55 | simple.test | t | no attribute |  |
+| test.py:62 | simple.test | SOURCE | no attribute |  |
+| test.py:62 | simple.test | SSA variable t | no attribute |  |
+| test.py:63 | simple.test | SSA variable t | no attribute |  |
+| test.py:63 | simple.test | t | no attribute |  |
+| test.py:67 | simple.test | SOURCE | no attribute |  |
+| test.py:67 | simple.test | SSA variable t | no attribute |  |
+| test.py:70 | simple.test | SSA variable t | no attribute |  |
+| test.py:70 | simple.test | t | no attribute |  |
+| test.py:72 | simple.test | SSA variable arg | attribute x | p0.x = simple.test |
+| test.py:72 | simple.test | SSA variable arg | no attribute | p0 = simple.test |
+| test.py:72 | simple.test | arg | attribute x | p0.x = simple.test |
+| test.py:72 | simple.test | arg | no attribute | p0 = simple.test |
+| test.py:73 | simple.test | arg | attribute x | p0.x = simple.test |
+| test.py:73 | simple.test | arg | no attribute | p0 = simple.test |
+| test.py:76 | simple.test | SOURCE | no attribute |  |
+| test.py:76 | simple.test | SSA variable t | no attribute |  |
+| test.py:77 | simple.test | SSA variable t | no attribute |  |
+| test.py:77 | simple.test | hub() | no attribute |  |
+| test.py:77 | simple.test | t | no attribute |  |
+| test.py:78 | simple.test | SSA variable t | no attribute |  |
+| test.py:78 | simple.test | t | no attribute |  |
+| test.py:85 | simple.test | GSSA Variable module | attribute dangerous |  |
+| test.py:85 | simple.test | ImportExpr | attribute dangerous |  |
+| test.py:87 | simple.test | GSSA Variable module | attribute dangerous |  |
+| test.py:88 | simple.test | Attribute | no attribute |  |
+| test.py:88 | simple.test | SSA variable t | no attribute |  |
+| test.py:88 | simple.test | module | attribute dangerous |  |
+| test.py:89 | simple.test | SSA variable t | no attribute |  |
+| test.py:89 | simple.test | t | no attribute |  |
+| test.py:91 | simple.test | GSSA Variable module | attribute dangerous |  |
+| test.py:92 | simple.test | module | attribute dangerous |  |
+| test.py:95 | simple.test | GSSA Variable module | attribute dangerous |  |
+| test.py:96 | simple.test | module | attribute dangerous |  |
+| test.py:99 | simple.test | GSSA Variable module | attribute dangerous |  |
+| test.py:100 | simple.test | Attribute() | no attribute |  |
+| test.py:100 | simple.test | SSA variable t | no attribute |  |
+| test.py:100 | simple.test | module | attribute dangerous |  |
+| test.py:101 | simple.test | SSA variable t | no attribute |  |
+| test.py:101 | simple.test | t | no attribute |  |
+| test.py:105 | simple.test | SSA variable arg | attribute x | p0.x = simple.test |
+| test.py:105 | simple.test | arg | attribute x | p0.x = simple.test |
+| test.py:106 | simple.test | Attribute | no attribute | p0.x = simple.test |
+| test.py:106 | simple.test | arg | attribute x | p0.x = simple.test |
+| test.py:108 | simple.test | GSSA Variable module | attribute dangerous |  |
+| test.py:110 | simple.test | Attribute | no attribute |  |
+| test.py:110 | simple.test | SSA variable t | attribute x |  |
+| test.py:110 | simple.test | module | attribute dangerous |  |
+| test.py:111 | simple.test | Attribute | no attribute |  |
+| test.py:111 | simple.test | t | attribute x |  |
+| test.py:113 | simple.test | GSSA Variable module | attribute dangerous |  |
+| test.py:115 | simple.test | Attribute | no attribute |  |
+| test.py:115 | simple.test | SSA variable t | attribute x |  |
+| test.py:115 | simple.test | module | attribute dangerous |  |
+| test.py:116 | simple.test | SSA variable t | attribute x |  |
+| test.py:116 | simple.test | hub() | attribute x |  |
+| test.py:116 | simple.test | t | attribute x |  |
+| test.py:117 | simple.test | SSA variable t | attribute x |  |
+| test.py:117 | simple.test | t | attribute x |  |
+| test.py:120 | simple.test | CUSTOM_SOURCE | no attribute |  |
+| test.py:120 | simple.test | SSA variable t | no attribute |  |
+| test.py:121 | simple.test | t | no attribute |  |
+| test.py:126 | simple.test | CUSTOM_SOURCE | no attribute |  |
+| test.py:126 | simple.test | SSA variable t | no attribute |  |
+| test.py:128 | simple.test | SOURCE | no attribute |  |
+| test.py:128 | simple.test | SSA variable t | no attribute |  |
+| test.py:130 | simple.test | SSA variable t | no attribute |  |
+| test.py:130 | simple.test | t | no attribute |  |
+| test.py:132 | simple.test | SSA variable t | no attribute |  |
+| test.py:132 | simple.test | t | no attribute |  |
+| test.py:136 | simple.test | CUSTOM_SOURCE | no attribute |  |
+| test.py:136 | simple.test | SSA variable t | no attribute |  |
+| test.py:138 | simple.test | SOURCE | no attribute |  |
+| test.py:138 | simple.test | SSA variable t | no attribute |  |
+| test.py:140 | simple.test | SSA variable t | no attribute |  |
+| test.py:140 | simple.test | t | no attribute |  |
+| test.py:142 | simple.test | SSA variable t | no attribute |  |
+| test.py:142 | simple.test | t | no attribute |  |
+| test.py:146 | simple.test | CUSTOM_SOURCE | no attribute |  |
+| test.py:146 | simple.test | SSA variable t | no attribute |  |
+| test.py:148 | simple.test | SOURCE | no attribute |  |
+| test.py:148 | simple.test | SSA variable t | no attribute |  |
+| test.py:149 | simple.test | t | no attribute |  |
+| test.py:155 | simple.test | GSSA Variable unsafe | no attribute |  |
+| test.py:155 | simple.test | ImportExpr | attribute dangerous |  |
+| test.py:155 | simple.test | ImportMember | no attribute |  |
+| test.py:156 | simple.test | GSSA Variable unsafe | no attribute |  |
+| test.py:156 | simple.test | unsafe | no attribute |  |
+| test.py:159 | simple.test | SOURCE | no attribute |  |
+| test.py:159 | simple.test | SSA variable t | no attribute |  |
+| test.py:160 | simple.test | SSA variable t | no attribute |  |
+| test.py:160 | simple.test | t | no attribute |  |
+| test.py:163 | simple.test | SOURCE | no attribute |  |
+| test.py:163 | simple.test | SSA variable s | no attribute |  |
+| test.py:164 | simple.test | SSA variable s | no attribute |  |
+| test.py:164 | simple.test | s | no attribute |  |
+| test.py:165 | simple.test | SSA variable s | no attribute |  |
+| test.py:165 | simple.test | s | no attribute |  |
+| test.py:168 | [simple.test] | List | no attribute |  |
+| test.py:168 | [simple.test] | SSA variable l | no attribute |  |
+| test.py:168 | simple.test | SOURCE | no attribute |  |
+| test.py:169 | simple.test | SOURCE | no attribute |  |
+| test.py:169 | {simple.test} | Dict | no attribute |  |
+| test.py:169 | {simple.test} | SSA variable d | no attribute |  |
+| test.py:170 | [simple.test] | SSA variable l | no attribute |  |
+| test.py:170 | [simple.test] | l | no attribute |  |
+| test.py:171 | {simple.test} | SSA variable d | no attribute |  |
+| test.py:171 | {simple.test} | d | no attribute |  |
+| test.py:174 | [simple.test] | SSA variable l | no attribute |  |
+| test.py:174 | [simple.test] | SSA variable l2 | no attribute |  |
+| test.py:174 | [simple.test] | l | no attribute |  |
+| test.py:174 | [simple.test] | list() | no attribute |  |
+| test.py:175 | {simple.test} | SSA variable d | no attribute |  |
+| test.py:175 | {simple.test} | SSA variable d2 | no attribute |  |
+| test.py:175 | {simple.test} | d | no attribute |  |
+| test.py:175 | {simple.test} | dict() | no attribute |  |
+| test.py:178 | simple.test | SOURCE | no attribute |  |
+| test.py:178 | simple.test | SSA variable t | no attribute |  |
+| test.py:179 | simple.test | t | no attribute |  |
+| test.py:180 | simple.test | SSA variable t | no attribute |  |
+| test.py:180 | simple.test | t | no attribute |  |
+| test.py:183 | simple.test | SSA variable t | no attribute |  |
+| test.py:183 | simple.test | t | no attribute |  |
+| test.py:186 | simple.test | SSA variable t | no attribute |  |
+| test.py:186 | simple.test | t | no attribute |  |
+| test.py:194 | simple.test | SSA variable t | no attribute |  |
+| test.py:195 | simple.test | SOURCE | no attribute |  |
+| test.py:195 | simple.test | SSA variable t | no attribute |  |
+| test.py:196 | simple.test | t | no attribute |  |
+| test.py:197 | simple.test | SSA variable t | no attribute |  |
+| test.py:197 | simple.test | t | no attribute |  |
+| test.py:199 | simple.test | SSA variable t | no attribute |  |
+| test.py:199 | simple.test | t | no attribute |  |
+| test.py:208 | [simple.test] | List | no attribute |  |
+| test.py:208 | [simple.test] | SSA variable seq | no attribute |  |
+| test.py:208 | simple.test | SOURCE | no attribute |  |
+| test.py:209 | [simple.test] | seq | no attribute |  |
+| test.py:209 | simple.test | For | no attribute |  |
+| test.py:209 | simple.test | SSA variable i | no attribute |  |
+| test.py:210 | simple.test | i | no attribute |  |
+| test.py:213 | [simple.test] | flow_in_generator() | no attribute |  |
+| test.py:213 | iterable.simple | flow_in_generator() | no attribute |  |
+| test.py:213 | simple.test | For | no attribute |  |
+| test.py:213 | simple.test | SSA variable x | no attribute |  |
+| test.py:214 | simple.test | SSA variable x | no attribute |  |
+| test.py:214 | simple.test | x | no attribute |  |

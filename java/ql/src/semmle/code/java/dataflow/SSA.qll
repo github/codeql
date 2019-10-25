@@ -205,6 +205,7 @@ private module TrackedVariablesImpl {
 
   class TrackedField extends TrackedVar, SsaSourceField { }
 }
+
 private import TrackedVariablesImpl
 
 cached
@@ -808,6 +809,7 @@ private module SsaImpl {
       defUseRank(v, b2, 1, i2)
     }
   }
+
   private import AdjacentUsesImpl
 
   /**
@@ -868,6 +870,7 @@ private module SsaImpl {
     }
   }
 }
+
 private import SsaImpl
 private import SsaDefReaches
 import SsaPublic
@@ -964,7 +967,7 @@ class SsaVariable extends TSsaVariable {
    * includes inputs to phi nodes, the prior definition of uncertain updates,
    * and the captured ssa variable for a closure variable.
    */
-  private SsaVariable getAPhiInputOrPriorDef() {
+  SsaVariable getAPhiInputOrPriorDef() {
     result = this.(SsaPhiNode).getAPhiInput() or
     result = this.(SsaUncertainImplicitUpdate).getPriorDef() or
     this.(SsaImplicitInit).captures(result)

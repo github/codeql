@@ -11,7 +11,7 @@ private predicate xUnitDetected() {
     mc.getParent() instanceof ExprStmt and
     mc = DataFlow::globalVarRef("Function").getAMemberCall("RegisterNamespace").asExpr() and
     mc.getNumArgument() = 1 and
-    mc.getArgument(0).(ConstantString).getStringValue() = "xUnit.js"
+    mc.getArgument(0).getStringValue() = "xUnit.js"
   )
 }
 

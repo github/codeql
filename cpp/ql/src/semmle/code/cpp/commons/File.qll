@@ -3,8 +3,7 @@ import cpp
 /**
  * A call to a library function that opens a file.
  */
-predicate fopenCall(FunctionCall fc)
-{
+predicate fopenCall(FunctionCall fc) {
   exists(Function f | f = fc.getTarget() |
     f.hasGlobalName("fopen") or
     f.hasGlobalName("open") or
@@ -22,21 +21,18 @@ predicate fopenCall(FunctionCall fc)
 /**
  * A call to a library function that closes a file.
  */
-predicate fcloseCall(FunctionCall fc, Expr closed)
-{
+predicate fcloseCall(FunctionCall fc, Expr closed) {
   exists(Function f | f = fc.getTarget() |
-    (
-      f.hasGlobalName("fclose") and
-      closed = fc.getArgument(0)
-    ) or (
-      f.hasGlobalName("close") and
-      closed = fc.getArgument(0)
-    ) or (
-      f.hasGlobalName("_close") and
-      closed = fc.getArgument(0)
-    ) or (
-      f.hasGlobalName("CloseHandle") and
-      closed = fc.getArgument(0)
-    )
+    f.hasGlobalName("fclose") and
+    closed = fc.getArgument(0)
+    or
+    f.hasGlobalName("close") and
+    closed = fc.getArgument(0)
+    or
+    f.hasGlobalName("_close") and
+    closed = fc.getArgument(0)
+    or
+    f.hasGlobalName("CloseHandle") and
+    closed = fc.getArgument(0)
   )
 }

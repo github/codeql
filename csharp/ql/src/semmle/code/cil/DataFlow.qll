@@ -204,6 +204,7 @@ module DefUse {
     exists(VariableUpdate vu | def = vu.getSource() | variableUpdateUse(target, vu, use))
   }
 }
+
 private import DefUse
 
 abstract library class VariableUpdate extends Instruction {

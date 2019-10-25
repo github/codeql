@@ -12,7 +12,8 @@
 import cpp
 
 from PointerDereferenceExpr e, int n
-where not e.getParent+() instanceof PointerDereferenceExpr
-  and n = strictcount(PointerDereferenceExpr child | child.getParent+() = e)
-  and n > 1
+where
+  not e.getParent+() instanceof PointerDereferenceExpr and
+  n = strictcount(PointerDereferenceExpr child | child.getParent+() = e) and
+  n > 1
 select e, "This expression involves " + n + " levels of pointer dereference; 2 are allowed."

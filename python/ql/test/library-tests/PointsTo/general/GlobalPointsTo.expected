@@ -98,7 +98,6 @@
 | Module pointsto_test | 76 | ControlFlowNode for sys | Module sys |
 | Module pointsto_test | 76 | ControlFlowNode for type | builtin-class type |
 | Module pointsto_test | 76 | ControlFlowNode for type() | builtin-class module |
-| Module pointsto_test | 77 | ControlFlowNode for unknown | ImportMember |
 | Module pointsto_test | 78 | ControlFlowNode for type | builtin-class type |
 | Module pointsto_test | 79 | ControlFlowNode for Dict | Dict |
 | Module pointsto_test | 79 | ControlFlowNode for Tuple | Tuple |
@@ -144,6 +143,8 @@
 | Module pointsto_test | 161 | ControlFlowNode for ClassExpr | class Derived3 |
 | Module pointsto_test | 161 | ControlFlowNode for Derived3 | class Derived3 |
 | Module pointsto_test | 164 | ControlFlowNode for Base | class Base |
+| Module pointsto_test | 164 | ControlFlowNode for Base() | Base() |
+| Module pointsto_test | 164 | ControlFlowNode for thing | Base() |
 | Module pointsto_test | 167 | ControlFlowNode for FunctionExpr | Function multiple_assignment |
 | Module pointsto_test | 167 | ControlFlowNode for multiple_assignment | Function multiple_assignment |
 | Module pointsto_test | 173 | ControlFlowNode for Base2 | class Base2 |

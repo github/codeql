@@ -72,10 +72,10 @@ public class DataFlow
         var sink1 = (string)typeof(DataFlow).GetMethod("Return").Invoke(null, new object[] { sink0 });
         Check(sink1);
         string sink2;
-        ReturnOut(sink1, out sink2);
+        ReturnOut(sink1, out sink2, out var _);
         Check(sink2);
         var sink3 = "";
-        ReturnRef(sink2, ref sink3);
+        ReturnRef(sink2, ref sink3, ref sink3);
         Check(sink3);
         var sink13 = ((IEnumerable<string>)new string[] { sink3 }).SelectEven(x => x);
         Check(sink13);
@@ -101,9 +101,13 @@ public class DataFlow
         Check(nonSink0);
         nonSink0 = (string)typeof(DataFlow).GetMethod("Return").Invoke(null, new object[] { nonSink0 });
         Check(nonSink0);
-        ReturnOut("", out nonSink0);
+        ReturnOut("", out nonSink0, out var _);
         Check(nonSink0);
-        ReturnRef("", ref nonSink0);
+        ReturnOut(sink1, out var _, out nonSink0);
+        Check(nonSink0);
+        ReturnRef("", ref nonSink0, ref nonSink0);
+        Check(nonSink0);
+        ReturnRef(sink1, ref sink1, ref nonSink0);
         Check(nonSink0);
         var nonSink1 = ((IEnumerable<string>)new string[] { nonSink0 }).SelectEven(x => x);
         Check(nonSink1);
@@ -274,12 +278,13 @@ public class DataFlow
         return y == null ? default(T) : y;
     }
 
-    static void ReturnOut<T>(T x, out T y)
+    static void ReturnOut<T>(T x, out T y, out T z)
     {
         y = x;
+        z = default(T);
     }
 
-    static void ReturnRef<T>(T x, ref T y)
+    static void ReturnRef<T>(T x, ref T y, ref T z)
     {
         y = x;
     }

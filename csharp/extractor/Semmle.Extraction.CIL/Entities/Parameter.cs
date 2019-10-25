@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
     /// <summary>
     /// A parameter entity.
     /// </summary>
-    interface IParameter : ILabelledEntity
+    interface IParameter : IExtractedEntity
     {
     }
 
     /// <summary>
     /// A parameter entity.
     /// </summary>
-    class Parameter : LabelledEntity, IParameter
+    sealed class Parameter : LabelledEntity, IParameter
     {
         readonly Method method;
         readonly int index;
@@ -23,14 +24,26 @@ namespace Semmle.Extraction.CIL.Entities
             method = m;
             index = i;
             type = t;
-            ShortId = openCurly + method.Label.Value + closeCurly + index;
         }
 
-        static readonly Id parameterSuffix = CIL.Id.Create(";cil-parameter");
-        static readonly Id openCurly = CIL.Id.Create("{#");
-        static readonly Id closeCurly = CIL.Id.Create("}_");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteSubId(method);
+            trapFile.Write('_');
+            trapFile.Write(index);
+        }
 
-        public override Id IdSuffix => parameterSuffix;
+        public override bool Equals(object obj)
+        {
+            return obj is Parameter param && method.Equals(param.method) && index == param.index;
+        }
+
+        public override int GetHashCode()
+        {
+            return 23 * method.GetHashCode() + index;
+        }
+
+        public override string IdSuffix => ";cil-parameter";
 
         public override IEnumerable<IExtractionProduct> Contents
         {

@@ -12,7 +12,20 @@ import python
 import semmle.python.security.SensitiveData
 import semmle.python.security.Crypto
 
-from SensitiveDataSource src, WeakCryptoSink sink
-where src.flowsToSink(sink)
+class BrokenCryptoConfiguration extends TaintTracking::Configuration {
+
+    BrokenCryptoConfiguration() { this = "Broken crypto configuration" }
+
+    override predicate isSource(TaintTracking::Source source) { source instanceof SensitiveDataSource }
+
+    override predicate isSink(TaintTracking::Sink sink) {
+        sink instanceof WeakCryptoSink
+    }
+
+}
+
+
+from BrokenCryptoConfiguration config, SensitiveDataSource src, WeakCryptoSink sink
+where config.hasFlow(src, sink)
 
 select sink, "Sensitive data from $@ is used in a broken or weak cryptographic algorithm.", src , src.toString()

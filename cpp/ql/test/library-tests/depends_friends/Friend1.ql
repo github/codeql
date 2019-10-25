@@ -2,6 +2,7 @@
  * @name Friends1
  * @description Check that a class depends on its friend class.
  */
+
 import cpp
 
 from MetricClass c, Class f1

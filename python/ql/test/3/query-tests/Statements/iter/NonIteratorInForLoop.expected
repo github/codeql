@@ -1,1 +1,2 @@
-| statements_test.py:34:5:34:19 | For | $@ of class '$@' may be used in for-loop. | statements_test.py:34:18:34:18 | ControlFlowNode for IntegerLiteral | Non-iterator | file://:Compiled Code:0:0:0:0 | builtin-class int | int |
+| async_iterator.py:26:11:26:34 | For | $@ of class '$@' may be used in for-loop. | async_iterator.py:26:20:26:33 | ControlFlowNode for MissingAiter() | Non-iterator | async_iterator.py:13:1:13:19 | class MissingAiter | MissingAiter |
+| statements_test.py:34:5:34:19 | For | $@ of class '$@' may be used in for-loop. | statements_test.py:34:18:34:18 | ControlFlowNode for IntegerLiteral | Non-iterator | file://:0:0:0:0 | builtin-class int | int |

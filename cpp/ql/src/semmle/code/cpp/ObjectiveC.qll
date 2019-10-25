@@ -136,9 +136,7 @@ deprecated class FinallyBlock extends Block {
   FinallyBlock() { none() }
 
   /** Gets the try statement corresponding to this finally block. */
-  ObjcTryStmt getTryStmt() {
-    none()
-  }
+  ObjcTryStmt getTryStmt() { none() }
 }
 
 /**
@@ -166,7 +164,9 @@ deprecated class Property extends Declaration {
   Attribute getAnAttribute() { none() }
 
   override Location getADeclarationLocation() { result = getLocation() }
+
   override Location getDefinitionLocation() { result = getLocation() }
+
   override Location getLocation() { none() }
 
   /** Gets the type of this property. */

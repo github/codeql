@@ -136,7 +136,6 @@ module NodeJSLib {
    */
   private class RequestInputAccess extends HTTP::RequestInputAccess {
     RequestExpr request;
-
     string kind;
 
     RequestInputAccess() {
@@ -190,7 +189,6 @@ module NodeJSLib {
 
   class RouteSetup extends CallExpr, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-
     Expr handler;
 
     RouteSetup() {
@@ -527,7 +525,6 @@ module NodeJSLib {
    */
   private class FileStreamRead extends FileSystemReadAccess, DataFlow::CallNode {
     NodeJSFileSystemAccess stream;
-
     string method;
 
     FileStreamRead() {
@@ -576,20 +573,31 @@ module NodeJSLib {
       this = DataFlow::moduleMember("child_process", methodName).getACall()
     }
 
-    override DataFlow::Node getACommandArgument() {
+    private DataFlow::Node getACommandArgument(boolean shell) {
       // check whether this is an invocation of an exec/spawn/fork method
       (
-        methodName = "exec" or
-        methodName = "execSync" or
-        methodName = "execFile" or
-        methodName = "execFileSync" or
-        methodName = "spawn" or
-        methodName = "spawnSync" or
-        methodName = "fork"
+        shell = true and
+        (
+          methodName = "exec" or
+          methodName = "execSync"
+        )
+        or
+        shell = false and
+        (
+          methodName = "execFile" or
+          methodName = "execFileSync" or
+          methodName = "spawn" or
+          methodName = "spawnSync" or
+          methodName = "fork"
+        )
       ) and
       // all of the above methods take the command as their first argument
       result = getArgument(0)
     }
+
+    override DataFlow::Node getACommandArgument() { result = getACommandArgument(_) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument(true) }
 
     override DataFlow::Node getArgumentList() {
       (
@@ -685,21 +693,29 @@ module NodeJSLib {
   }
 
   /**
-   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application, for example `http.request(url)`.
-   */
-  abstract class CustomNodeJSClientRequest extends CustomClientRequest { }
-
-  /**
-   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application, for example `http.request(url)`.
+   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application,
+   * for example `http.request(url)`.
    */
   class NodeJSClientRequest extends ClientRequest {
-    NodeJSClientRequest() { this instanceof CustomNodeJSClientRequest }
+    override NodeJSClientRequest::Range self;
   }
+
+  module NodeJSClientRequest {
+    /**
+     * A data flow node that is an HTTP or HTTPS client request made by a Node.js application,
+     * for example `http.request(url)`.
+     *
+     * Extend this class to add support for new Node.js client request APIs.
+     */
+    abstract class Range extends ClientRequest::Range { }
+  }
+
+  deprecated class CustomNodeJSClientRequest = NodeJSClientRequest::Range;
 
   /**
    * A model of a URL request in the Node.js `http` library.
    */
-  private class NodeHttpUrlRequest extends CustomNodeJSClientRequest {
+  private class NodeHttpUrlRequest extends NodeJSClientRequest::Range {
     DataFlow::Node url;
 
     NodeHttpUrlRequest() {
@@ -730,34 +746,17 @@ module NodeJSLib {
         result = this.(DataFlow::SourceNode).getAMethodCall(name).getArgument(0)
       )
     }
-  }
 
-  /**
-   * A data flow node that is the parameter of a result callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `https.request(url, (res) => {})`.
-   */
-  private class ClientRequestCallbackParam extends DataFlow::ParameterNode, RemoteFlowSource {
-    ClientRequestCallbackParam() {
-      exists(NodeJSClientRequest req |
-        this = req.(DataFlow::MethodCallNode).getCallback(1).getParameter(0)
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      promise = false and
+      exists(DataFlow::ParameterNode res, DataFlow::CallNode onData |
+        res = getCallback(1).getParameter(0) and
+        onData = res.getAMethodCall("on") and
+        onData.getArgument(0).mayHaveStringValue("data") and
+        result = onData.getCallback(1).getParameter(0) and
+        responseType = "arraybuffer"
       )
     }
-
-    override string getSourceType() { result = "NodeJSClientRequest callback parameter" }
-  }
-
-  /**
-   * A data flow node that is the parameter of a data callback for an HTTP or HTTPS request made by a Node.js process, for example `body` in `http.request(url, (res) => {res.on('data', (body) => {})})`.
-   */
-  private class ClientRequestCallbackData extends RemoteFlowSource {
-    ClientRequestCallbackData() {
-      exists(ClientRequestCallbackParam rcp, DataFlow::MethodCallNode mcn |
-        rcp.getAMethodCall("on") = mcn and
-        mcn.getArgument(0).mayHaveStringValue("data") and
-        this = mcn.getCallback(1).getParameter(0)
-      )
-    }
-
-    override string getSourceType() { result = "http.request data parameter" }
   }
 
   /**
@@ -765,7 +764,6 @@ module NodeJSLib {
    */
   class ClientRequestHandler extends DataFlow::FunctionNode {
     string handledEvent;
-
     NodeJSClientRequest clientRequest;
 
     ClientRequestHandler() {

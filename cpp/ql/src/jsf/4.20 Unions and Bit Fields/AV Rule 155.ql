@@ -8,9 +8,11 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 from BitField bf
-where not bf.getUnderlyingType() instanceof Enum and
-      not bf.getDeclaredNumBits() = 0
+where
+  not bf.getUnderlyingType() instanceof Enum and
+  not bf.getDeclaredNumBits() = 0
 select bf, "AV Rule 155: Bit fields will not be used purely to save space."

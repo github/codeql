@@ -23,7 +23,7 @@ private class RemoteFlowPassword extends HeuristicSource, RemoteFlowSource {
 }
 
 /**
- * A use of `JSON.stringify`, viewed as a source for command line injections
+ * A use of `JSON.stringify`, viewed as a source for command-line injections
  * since it does not properly escape single quotes and dollar symbols.
  */
 private class JSONStringifyAsCommandInjectionSource extends HeuristicSource,
@@ -31,4 +31,25 @@ private class JSONStringifyAsCommandInjectionSource extends HeuristicSource,
   JSONStringifyAsCommandInjectionSource() {
     this = DataFlow::globalVarRef("JSON").getAMemberCall("stringify")
   }
+
+  override string getSourceType() { result = "a string from JSON.stringify" }
+}
+
+/**
+ * A response from a remote server.
+ */
+class RemoteServerResponse extends HeuristicSource, RemoteFlowSource {
+  RemoteServerResponse() {
+    exists(ClientRequest r |
+      this = r.getAResponseDataNode() and
+      not exists(string url, string protocolPattern |
+        // exclude URLs to the current host
+        r.getUrl().mayHaveStringValue(url) and
+        protocolPattern = "(?[a-z+]{3,10}:)" and
+        not url.regexpMatch(protocolPattern + "?//.*")
+      )
+    )
+  }
+
+  override string getSourceType() { result = "a response from a remote server" }
 }

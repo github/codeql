@@ -9,41 +9,25 @@ import javascript
 
 /**
  * A property projection call such as `_.get(o, 'a.b')`, which is equivalent to `o.a.b`.
- */
-abstract class CustomPropertyProjection extends DataFlow::CallNode {
-  /**
-   * Gets the argument for the object to project properties from, such as `o` in `_.get(o, 'a.b')`.
-   */
-  abstract DataFlow::Node getObject();
-
-  /**
-   * Gets an argument that selects the properties to project, such as `'a.b'` in `_.get(o, 'a.b')`.
-   */
-  abstract DataFlow::Node getASelector();
-
-  /**
-   * Holds if this call returns the value of a single projected property, as opposed to an object that can contain multiple projected properties.
-   */
-  abstract predicate isSingletonProjection();
-}
-
-/**
- * A property projection call such as `_.get(o, 'a.b')`, which is equivalent to `o.a.b`.
+ *
+ * Extend this class to work with property project APIs for which there is already a model.
+ * To model additional APIs, extend `PropertyProjection::Range` and implement its abstract member
+ * predicates.
  */
 class PropertyProjection extends DataFlow::CallNode {
-  CustomPropertyProjection custom;
+  PropertyProjection::Range self;
 
-  PropertyProjection() { this = custom }
+  PropertyProjection() { this = self }
 
   /**
    * Gets the argument for the object to project properties from, such as `o` in `_.get(o, 'a.b')`.
    */
-  DataFlow::Node getObject() { result = custom.getObject() }
+  DataFlow::Node getObject() { result = self.getObject() }
 
   /**
    * Gets an argument that selects the properties to project, such as `'a.b'` in `_.get(o, 'a.b')`.
    */
-  DataFlow::Node getASelector() { result = custom.getASelector() }
+  DataFlow::Node getASelector() { result = self.getASelector() }
 
   /**
    * Holds if this call returns the value of a single projected property, as opposed to an object that can contain multiple projected properties.
@@ -52,17 +36,41 @@ class PropertyProjection extends DataFlow::CallNode {
    * - This predicate holds for `_.get({a: 'b'}, 'a')`, which returns `'b'`,
    * - This predicate does not hold for `_.pick({a: 'b', c: 'd'}}, 'a')`, which returns `{a: 'b'}`,
    */
-  predicate isSingletonProjection() { custom.isSingletonProjection() }
+  predicate isSingletonProjection() { self.isSingletonProjection() }
 }
+
+module PropertyProjection {
+  /**
+   * A property projection call such as `_.get(o, 'a.b')`, which is equivalent to `o.a.b`.
+   *
+   * Extends this class to add support for new property projection APIs.
+   */
+  abstract class Range extends DataFlow::CallNode {
+    /**
+     * Gets the argument for the object to project properties from, such as `o` in `_.get(o, 'a.b')`.
+     */
+    abstract DataFlow::Node getObject();
+
+    /**
+     * Gets an argument that selects the properties to project, such as `'a.b'` in `_.get(o, 'a.b')`.
+     */
+    abstract DataFlow::Node getASelector();
+
+    /**
+     * Holds if this call returns the value of a single projected property, as opposed to an object that can contain multiple projected properties.
+     */
+    abstract predicate isSingletonProjection();
+  }
+}
+
+deprecated class CustomPropertyProjection = PropertyProjection::Range;
 
 /**
  * A simple model of common property projection functions.
  */
-private class SimplePropertyProjection extends CustomPropertyProjection {
+private class SimplePropertyProjection extends PropertyProjection::Range {
   int objectIndex;
-
   int selectorIndex;
-
   boolean singleton;
 
   SimplePropertyProjection() {

@@ -1,5 +1,5 @@
 /**
- * @name Hard-coded Japanese era start date
+ * @name Hard-coded Japanese era start date in struct
  * @description Japanese era changes can lead to code behaving differently. Avoid hard-coding Japanese era start dates.
  * @kind problem
  * @problem.severity warning
@@ -7,13 +7,15 @@
  * @precision medium
  * @tags reliability
  *       japanese-era
+ * @deprecated This query is deprecated, use
+ *             Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`)
+ *             instead.
  */
 
 import cpp
 import semmle.code.cpp.commons.DateTime
 
-predicate assignedYear(Struct s, YearFieldAccess year, int value)
-{
+predicate assignedYear(Struct s, YearFieldAccess year, int value) {
   exists(Operation yearAssignment |
     s.getAField().getAnAccess() = year and
     yearAssignment.getAnOperand() = year and
@@ -21,8 +23,7 @@ predicate assignedYear(Struct s, YearFieldAccess year, int value)
   )
 }
 
-predicate assignedMonth(Struct s, MonthFieldAccess month, int value)
-{
+predicate assignedMonth(Struct s, MonthFieldAccess month, int value) {
   exists(Operation monthAssignment |
     s.getAField().getAnAccess() = month and
     monthAssignment.getAnOperand() = month and
@@ -30,8 +31,7 @@ predicate assignedMonth(Struct s, MonthFieldAccess month, int value)
   )
 }
 
-predicate assignedDay(Struct s, DayFieldAccess day, int value)
-{
+predicate assignedDay(Struct s, DayFieldAccess day, int value) {
   exists(Operation dayAssignment |
     s.getAField().getAnAccess() = day and
     dayAssignment.getAnOperand() = day and
@@ -39,8 +39,7 @@ predicate assignedDay(Struct s, DayFieldAccess day, int value)
   )
 }
 
-from
-  StructLikeClass s, YearFieldAccess year, MonthFieldAccess month, DayFieldAccess day
+from StructLikeClass s, YearFieldAccess year, MonthFieldAccess month, DayFieldAccess day
 where
   assignedYear(s, year, 1989) and
   assignedMonth(s, month, 1) and

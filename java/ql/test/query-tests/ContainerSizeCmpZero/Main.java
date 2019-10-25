@@ -110,7 +110,6 @@ public class Main {
         Boolean b;
 
         // NOT OK
-        // false negatives: raw collections and maps are not currently handled
         b = s.size() >= 0;
         b = a.size() >= 0;
         b = 0 <= m.size();

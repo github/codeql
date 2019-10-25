@@ -1,7 +1,0 @@
-| Callable | function | 0 | (x: number): string |
-| Newable | constructor | 0 | new (x: number): any |
-| OverloadedCallable | function | 0 | (x: number): number |
-| OverloadedCallable | function | 1 | (x: string): string |
-| OverloadedCallable | function | 2 | (x: any): any |
-| OverloadedNewable | constructor | 0 | new (x: number): OverloadedNewable |
-| OverloadedNewable | constructor | 1 | new (x: any): any |

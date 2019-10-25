@@ -8,7 +8,7 @@
  * should be part of the standard library.
  */
 
-import javascript
+private import javascript
 private import internal.AbstractValuesImpl
 private import InferredTypes
 

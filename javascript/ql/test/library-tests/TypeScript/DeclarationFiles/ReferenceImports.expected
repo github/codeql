@@ -1,4 +1,4 @@
-| client1.ts:1:1:1:40 | /// <re ... .ts" /> | path | framework1.d.ts | framework1.d.ts:0:0:0:0 | framework1.d.ts |
-| client2.ts:1:1:1:36 | /// <re ... rk2" /> | types | framework2 | node_modules/@types/framework2/index.d.ts:0:0:0:0 | node_modules/@types/framework2/index.d.ts |
-| declare-module-client2.ts:1:1:1:45 | /// <re ... d.ts"/> | path | ./declare-module.d.ts | declare-module.d.ts:0:0:0:0 | declare-module.d.ts |
-| declare-module-client.ts:1:1:1:43 | /// <re ... d.ts"/> | path | declare-module.d.ts | declare-module.d.ts:0:0:0:0 | declare-module.d.ts |
+| client1.ts:1:1:1:40 | /// <re ... .ts" /> | path | framework1.d.ts |
+| client2.ts:1:1:1:36 | /// <re ... rk2" /> | types | framework2 |
+| declare-module-client2.ts:1:1:1:45 | /// <re ... d.ts"/> | path | ./declare-module.d.ts |
+| declare-module-client.ts:1:1:1:43 | /// <re ... d.ts"/> | path | declare-module.d.ts |

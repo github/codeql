@@ -22,12 +22,12 @@ class Initialization extends Function {
 
 class Allocation extends FunctionCall {
   Allocation() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "malloc" or name = "calloc")
+    exists(string name | name = this.getTarget().getName() | name = "malloc" or name = "calloc")
   }
 }
 
 from Function f, Allocation a
-where not f instanceof Initialization and
-   a.getEnclosingFunction() = f
+where
+  not f instanceof Initialization and
+  a.getEnclosingFunction() = f
 select a, "Dynamic memory allocation is only allowed during initialization."

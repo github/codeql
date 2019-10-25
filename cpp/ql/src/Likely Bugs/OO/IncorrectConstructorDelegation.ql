@@ -15,7 +15,9 @@
 import cpp
 
 from FunctionCall call
-where call.getTarget() = call.getEnclosingFunction().(Constructor).getDeclaringType().getAConstructor()
-  and call.getParent() instanceof ExprStmt
-select call, "The constructor " + call.getTarget().getName() +
-  " may leave the instance uninitialized, as it tries to delegate to another constructor."
+where
+  call.getTarget() = call.getEnclosingFunction().(Constructor).getDeclaringType().getAConstructor() and
+  call.getParent() instanceof ExprStmt
+select call,
+  "The constructor " + call.getTarget().getName() +
+    " may leave the instance uninitialized, as it tries to delegate to another constructor."

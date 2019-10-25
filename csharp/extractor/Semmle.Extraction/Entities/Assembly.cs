@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
@@ -25,17 +26,17 @@ namespace Semmle.Extraction.Entities
             }
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             if (assemblyPath != null)
             {
-                Context.Emit(Tuples.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString(),
-                    assembly.Identity.Name, assembly.Identity.Version.ToString()));
+                trapFile.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString(),
+                    assembly.Identity.Name, assembly.Identity.Version.ToString());
             }
         }
 
         public override bool NeedsPopulation =>
-            assembly != Context.Compilation.Assembly || !Context.IsGlobalContext;
+            !Equals(assembly, Context.Compilation.Assembly) || !Context.IsGlobalContext;
 
         public override int GetHashCode() =>
             symbol == null ? 91187354 : symbol.GetHashCode();
@@ -65,14 +66,15 @@ namespace Semmle.Extraction.Entities
             return AssemblyConstructorFactory.Instance.CreateEntity(cx, null);
         }
 
-        public override IId Id
+        public override void WriteId(System.IO.TextWriter trapFile)
         {
-            get
+            trapFile.Write(assembly.ToString());
+            if (!(assemblyPath is null))
             {
-                return assemblyPath == null
-                    ? new Key(assembly, ";assembly")
-                    : new Key(assembly, "#file:///", assemblyPath.Replace("\\", "/"), ";assembly");
+                trapFile.Write("#file:///");
+                trapFile.Write(assemblyPath.Replace("\\", "/"));
             }
+            trapFile.Write(";assembly");
         }
     }
 }

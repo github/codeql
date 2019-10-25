@@ -10,5 +10,5 @@ import semmle.python.security.strings.Untrusted
 
 from TaintedNode node
 
-select node.getLocation().toString(), node.getNode().getNode().toString(), node.getTaintKind().toString()
+select node.getLocation().toString(), node.getAstNode().toString(), node.getTaintKind().toString()
 

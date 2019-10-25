@@ -8,16 +8,16 @@ private import DataFlowDispatch
  * to the callable. Instance arguments (`this` pointer) are also included.
  */
 class ArgumentNode extends Node {
-  ArgumentNode() { exists(CallInstruction call | this = call.getAnArgument()) }
+  ArgumentNode() { exists(CallInstruction call | this.asInstruction() = call.getAnArgument()) }
 
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
   predicate argumentOf(DataFlowCall call, int pos) {
-    this = call.getPositionalArgument(pos)
+    this.asInstruction() = call.getPositionalArgument(pos)
     or
-    this = call.getThisArgument() and pos = -1
+    this.asInstruction() = call.getThisArgument() and pos = -1
   }
 
   /** Gets the call in which this node is an argument. */
@@ -37,16 +37,18 @@ class ReturnKind extends TReturnKind {
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
 class ReturnNode extends Node {
-  ReturnNode() { exists(ReturnValueInstruction ret | this = ret.getReturnValue()) }
+  ReturnNode() { exists(ReturnValueInstruction ret | this.asInstruction() = ret.getReturnValue()) }
 
   /** Gets the kind of this returned value. */
   ReturnKind getKind() { result = TNormalReturnKind() }
 }
 
 /** A data flow node that represents the output of a call. */
-class OutNode extends Node, CallInstruction {
+class OutNode extends Node {
+  override CallInstruction instr;
+
   /** Gets the underlying call. */
-  DataFlowCall getCall() { result = this }
+  DataFlowCall getCall() { result = instr }
 }
 
 /**
@@ -54,7 +56,7 @@ class OutNode extends Node, CallInstruction {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  result = call and
+  result.getCall() = call and
   kind = TNormalReturnKind()
 }
 
@@ -192,11 +194,15 @@ class DataFlowType = Type;
 class DataFlowLocation = Location;
 
 /** A function call relevant for data flow. */
-class DataFlowCall extends CallInstruction, Node {
+class DataFlowCall extends CallInstruction {
   /**
    * Gets the nth argument for this call.
    *
    * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
    */
-  Node getArgument(int n) { result = this.getPositionalArgument(n) }
+  Node getArgument(int n) { result.asInstruction() = this.getPositionalArgument(n) }
+
+  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
+
+predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation

@@ -5,6 +5,8 @@ private import DataFlowDispatch
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
   result.asExpr() = call.getQualifier()
+  or
+  result.(PreObjectInitializerNode).getExpr().(ConstructorCall) = call
   // This does not include the implicit `this` argument on auto-generated
   // base class destructor calls as those do not have an AST element.
 }
@@ -12,7 +14,6 @@ private Node getInstanceArgument(Call call) {
 /** An argument to a call. */
 private class Argument extends Expr {
   Call call;
-
   int pos;
 
   Argument() { call.getArgument(pos) = this }
@@ -50,7 +51,9 @@ class ArgumentNode extends Node {
   DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-private newtype TReturnKind = TNormalReturnKind()
+private newtype TReturnKind =
+  TNormalReturnKind() or
+  TRefReturnKind(int i) { exists(Parameter parameter | i = parameter.getIndex()) }
 
 /**
  * A return kind. A return kind describes how a value can be returned
@@ -58,23 +61,54 @@ private newtype TReturnKind = TNormalReturnKind()
  */
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this return kind. */
-  string toString() { result = "return" }
+  string toString() {
+    this instanceof TNormalReturnKind and
+    result = "return"
+    or
+    this instanceof TRefReturnKind and
+    result = "ref"
+  }
 }
 
-/** A data flow node that occurs as the result of a `ReturnStmt`. */
-class ReturnNode extends ExprNode {
-  ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getExpr()) }
+/** A data flow node that represents a returned value in the called function. */
+abstract class ReturnNode extends Node {
+  /** Gets the kind of this returned value. */
+  abstract ReturnKind getKind();
+}
+
+/** A `ReturnNode` that occurs as the result of a `ReturnStmt`. */
+private class NormalReturnNode extends ReturnNode, ExprNode {
+  NormalReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getExpr()) }
 
   /** Gets the kind of this returned value. */
-  ReturnKind getKind() { result = TNormalReturnKind() }
+  override ReturnKind getKind() { result = TNormalReturnKind() }
 }
 
-/** A data flow node that represents the output of a call. */
-class OutNode extends ExprNode {
-  OutNode() { this.getExpr() instanceof Call }
+/**
+ * A `ReturnNode` that occurs as a result of a definition of a reference
+ * parameter reaching the end of a function body.
+ */
+private class RefReturnNode extends ReturnNode, RefParameterFinalValueNode {
+  /** Gets the kind of this returned value. */
+  override ReturnKind getKind() { result = TRefReturnKind(this.getParameter().getIndex()) }
+}
+
+/** A data flow node that represents the output of a call at the call site. */
+abstract class OutNode extends Node {
+  /** Gets the underlying call. */
+  abstract DataFlowCall getCall();
+}
+
+private class ExprOutNode extends OutNode, ExprNode {
+  ExprOutNode() { this.getExpr() instanceof Call }
 
   /** Gets the underlying call. */
-  DataFlowCall getCall() { result = this.getExpr() }
+  override DataFlowCall getCall() { result = this.getExpr() }
+}
+
+private class RefOutNode extends OutNode, DefinitionByReferenceNode {
+  /** Gets the underlying call. */
+  override DataFlowCall getCall() { result = this.getArgument().getParent() }
 }
 
 /**
@@ -84,6 +118,11 @@ class OutNode extends ExprNode {
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result = call.getNode() and
   kind = TNormalReturnKind()
+  or
+  exists(int i |
+    result.asDefiningArgument() = call.getArgument(i) and
+    kind = TRefReturnKind(i)
+  )
 }
 
 /**
@@ -167,7 +206,29 @@ private class ArrayContent extends Content, TArrayContent {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  none() // stub implementation
+  exists(ClassAggregateLiteral aggr, Field field |
+    // The following line requires `node2` to be both an `ExprNode` and a
+    // `PostUpdateNode`, which means it must be an `ObjectInitializerNode`.
+    node2.asExpr() = aggr and
+    f.(FieldContent).getField() = field and
+    aggr.getFieldExpr(field) = node1.asExpr()
+  )
+  or
+  exists(FieldAccess fa |
+    exists(Assignment a |
+      node1.asExpr() = a and
+      a.getLValue() = fa
+    ) and
+    not fa.getTarget().isStatic() and
+    node2.getPreUpdateNode().asExpr() = fa.getQualifier() and
+    f.(FieldContent).getField() = fa.getTarget()
+  )
+  or
+  exists(ConstructorFieldInit cfi |
+    node2.getPreUpdateNode().(PreConstructorInitThis).getConstructorFieldInit() = cfi and
+    f.(FieldContent).getField() = cfi.getTarget() and
+    node1.asExpr() = cfi.getExpr()
+  )
 }
 
 /**
@@ -176,7 +237,12 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  none() // stub implementation
+  exists(FieldAccess fr |
+    node1.asExpr() = fr.getQualifier() and
+    fr.getTarget() = f.(FieldContent).getField() and
+    fr = node2.asExpr() and
+    not fr = any(AssignExpr a).getLValue()
+  )
 }
 
 /**
@@ -190,7 +256,7 @@ Type getErasedRepr(Type t) {
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) { result = t.toString() }
+string ppReprType(Type t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
@@ -236,3 +302,5 @@ class DataFlowCall extends Expr {
   /** Gets the enclosing callable of this call. */
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
+
+predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation

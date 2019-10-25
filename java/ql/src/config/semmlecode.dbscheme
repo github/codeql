@@ -172,36 +172,6 @@ tokens(
 );
 
 /*
- * Version history
- */
-
-svnentries(
-  int id : @svnentry,
-  string revision : string ref,
-  string author : string ref,
-  date revisionDate : date ref,
-  int changeSize : int ref
-)
-
-svnaffectedfiles(
-  int id : @svnentry ref,
-  int file : @file ref,
-  string action : string ref
-)
-
-svnentrymsg(
-  int id : @svnentry ref,
-  string message : string ref
-)
-
-svnchurn(
-  int commit : @svnentry ref,
-  int file : @file ref,
-  int addedLines : int ref,
-  int deletedLines : int ref
-)
-
-/*
  * Locations and files
  */
 
@@ -531,7 +501,7 @@ exprs(
   unique int id: @expr,
   int kind: int ref,
   int typeid: @type ref,
-  int parent: @element ref,
+  int parent: @exprparent ref,
   int idx: int ref
 );
 

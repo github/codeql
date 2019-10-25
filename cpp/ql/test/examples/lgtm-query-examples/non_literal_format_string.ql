@@ -8,9 +8,11 @@
  * @kind problem
  * @problem.severity warning
  */
+
 import cpp
 
 from FunctionCall fc
-where fc.getTarget().getQualifiedName() = "sprintf"
-and not fc.getArgument(1) instanceof StringLiteral
+where
+  fc.getTarget().getQualifiedName() = "sprintf" and
+  not fc.getArgument(1) instanceof StringLiteral
 select fc, "sprintf called with variable format string."

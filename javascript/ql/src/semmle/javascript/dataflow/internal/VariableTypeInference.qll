@@ -4,7 +4,7 @@
  * Provides classes implementing type inference for variables.
  */
 
-import javascript
+private import javascript
 private import AbstractValuesImpl
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.Refinements
@@ -31,33 +31,46 @@ private class AnalyzedCapturedVariable extends @variable {
 }
 
 /**
- * Flow analysis for accesses to SSA variables.
+ * Flow analysis for SSA nodes.
  */
-private class SsaVarAccessAnalysis extends DataFlow::AnalyzedValueNode {
-  AnalyzedSsaDefinition def;
-
-  SsaVarAccessAnalysis() { astNode = def.getVariable().getAUse() }
-
-  override AbstractValue getALocalValue() { result = def.getAnRhsValue() }
+private class AnalyzedSsaDefinitionNode extends AnalyzedNode, DataFlow::SsaDefinitionNode {
+  override AbstractValue getALocalValue() { result = ssa.(AnalyzedSsaDefinition).getAnRhsValue() }
 }
 
 /**
- * Flow analysis for accesses to SSA variables.
- *
- * Unlike `SsaVarAccessAnalysis`, this only contributes to `getAValue()`, not `getALocalValue()`.
+ * An SSA definition whose right-hand side is a call with non-local data flow.
  */
-private class SsaVarAccessWithNonLocalAnalysis extends SsaVarAccessAnalysis {
-  DataFlow::AnalyzedValueNode src;
+private class SsaDefinitionWithNonLocalFlow extends SsaExplicitDefinition {
+  CallWithNonLocalAnalyzedReturnFlow source;
 
-  SsaVarAccessWithNonLocalAnalysis() {
-    exists(VarDef varDef |
-      varDef = def.(SsaExplicitDefinition).getDef() and
-      varDef.getSource().flow() = src and
-      src instanceof CallWithNonLocalAnalyzedReturnFlow
-    )
+  SsaDefinitionWithNonLocalFlow() { source = getDef().getSource().flow() }
+
+  CallWithNonLocalAnalyzedReturnFlow getSource() { result = source }
+}
+
+/**
+ * Flow analysis for SSA nodes corresponding to `SsaDefinitionWithNonLocalFlow`.
+ */
+private class AnalyzedSsaDefinitionNodeWithNonLocalAnalysis extends AnalyzedSsaDefinitionNode {
+  override SsaDefinitionWithNonLocalFlow ssa;
+
+  override AbstractValue getAValue() { result = ssa.getSource().getAValue() }
+}
+
+/**
+ * Flow analysis for uses of an SSA variable corresponding to `SsaDefinitionWithNonLocalFlow`.
+ */
+private class AnalyzedSsaVariableUseWithNonLocalFlow extends AnalyzedValueNode {
+  SsaDefinitionWithNonLocalFlow ssaDef;
+
+  AnalyzedSsaVariableUseWithNonLocalFlow() {
+    this = DataFlow::valueNode(ssaDef.getVariable().getAUse())
   }
 
-  override AbstractValue getAValue() { result = src.getAValue() }
+  override AbstractValue getAValue() {
+    // Block indefinite values coming from getALocalValue()
+    result = ssaDef.getSource().getAValue()
+  }
 }
 
 /**
@@ -371,7 +384,6 @@ private predicate nodeBuiltins(Variable var, AbstractValue av) {
  */
 private class AnalyzedGlobalVarUse extends DataFlow::AnalyzedValueNode {
   GlobalVariable gv;
-
   AnalyzedGlobal agv;
 
   AnalyzedGlobalVarUse() {
@@ -515,7 +527,6 @@ private class AnalyzedGlobal extends TAnalyzedGlobal {
  */
 private class AnalyzedGlocal extends AnalyzedGlobal, TAnalyzedGlocal {
   GlobalVariable gv;
-
   TopLevel tl;
 
   AnalyzedGlocal() { this = TAnalyzedGlocal(gv, tl) }
@@ -620,7 +631,11 @@ private class ReflectiveVarFlow extends DataFlow::AnalyzedValueNode {
     )
   }
 
-  override AbstractValue getALocalValue() { result = TIndefiniteAbstractValue("eval") }
+  override AbstractValue getALocalValue() {
+    result = TIndefiniteAbstractValue("eval")
+    or
+    result = AnalyzedValueNode.super.getALocalValue()
+  }
 }
 
 /**
@@ -632,7 +647,11 @@ private class ReflectiveVarFlow extends DataFlow::AnalyzedValueNode {
 private class NamespaceExportVarFlow extends DataFlow::AnalyzedValueNode {
   NamespaceExportVarFlow() { astNode.(VarAccess).getVariable().isNamespaceExport() }
 
-  override AbstractValue getALocalValue() { result = TIndefiniteAbstractValue("namespace") }
+  override AbstractValue getALocalValue() {
+    result = TIndefiniteAbstractValue("namespace")
+    or
+    result = AnalyzedValueNode.super.getALocalValue()
+  }
 }
 
 /**

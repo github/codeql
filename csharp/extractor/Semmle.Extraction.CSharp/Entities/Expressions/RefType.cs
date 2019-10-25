@@ -1,5 +1,6 @@
-﻿using Semmle.Extraction.Kinds;
+﻿using Semmle.Extraction.Kinds; // lgtm[cs/similar-file]
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -9,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new RefType(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(cx, Syntax.Expression, this, 0);
         }

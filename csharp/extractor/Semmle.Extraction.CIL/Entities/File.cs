@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -17,8 +18,19 @@ namespace Semmle.Extraction.CIL.Entities
         public File(Context cx, string path) : base(cx)
         {
             this.path = Semmle.Extraction.Entities.File.PathAsDatabaseString(path);
-            ShortId = new StringId(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
         }
+
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return GetType() == obj.GetType() && path == ((File)obj).path;
+        }
+
+        public override int GetHashCode() => 11 * path.GetHashCode();
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -31,9 +43,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override Id IdSuffix => suffix;
-
-        static readonly Id suffix = new StringId(";sourcefile");
+        public override string IdSuffix => ";sourcefile";
     }
 
     public class PdbSourceFile : File

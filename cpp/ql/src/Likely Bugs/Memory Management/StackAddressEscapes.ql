@@ -9,6 +9,7 @@
  * @id cpp/stack-address-escape
  * @tags reliability
  */
+
 import cpp
 import semmle.code.cpp.dataflow.StackAddress
 
@@ -18,7 +19,7 @@ import semmle.code.cpp.dataflow.StackAddress
  * escape.
  */
 predicate stackAddressEscapes(AssignExpr assignExpr, Expr source, boolean isLocal) {
-  stackPointerFlowsToUse(assignExpr.getRValue(), _, source, isLocal)  and
+  stackPointerFlowsToUse(assignExpr.getRValue(), _, source, isLocal) and
   not stackReferenceFlowsToUse(assignExpr.getLValue(), _, _, _)
 }
 
@@ -26,9 +27,11 @@ from Expr use, Expr source, boolean isLocal, string msg, string srcStr
 where
   stackAddressEscapes(use, source, isLocal) and
   if isLocal = true
-    then (msg = "A stack address ($@) may be assigned to a non-local variable." and
-          srcStr = "source")
-    else (msg = "A stack address which arrived via a $@ may be assigned to a non-local variable." and
-          srcStr = "parameter")
-select
-  use, msg, source, srcStr
+  then (
+    msg = "A stack address ($@) may be assigned to a non-local variable." and
+    srcStr = "source"
+  ) else (
+    msg = "A stack address which arrived via a $@ may be assigned to a non-local variable." and
+    srcStr = "parameter"
+  )
+select use, msg, source, srcStr

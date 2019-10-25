@@ -12,8 +12,10 @@
 import cpp
 
 int lineInBlock(File f) {
-  exists(Block block, Location blockLocation | block.getFile() = f and blockLocation = block.getLocation()|
-    result in [blockLocation.getStartLine()..blockLocation.getEndLine()]
+  exists(Block block, Location blockLocation |
+    block.getFile() = f and blockLocation = block.getLocation()
+  |
+    result in [blockLocation.getStartLine() .. blockLocation.getEndLine()]
   )
 }
 

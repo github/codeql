@@ -1,7 +1,6 @@
 import cpp
 
 class ExternalData extends @externalDataElement {
-
   string getDataPath() { externalData(this, result, _, _) }
 
   string getQueryPath() { result = getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
@@ -16,29 +15,25 @@ class ExternalData extends @externalDataElement {
 
   date getFieldAsDate(int index) { result = getField(index).toDate() }
 
-  string toString() { 
-    result = getQueryPath() + ": " + buildTupleString(0)
-  }
-  
-  private string buildTupleString(int start) {
-    (start = getNumFields() - 1 and result = getField(start))
-    or
-    (start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start+1))
-  }
+  string toString() { result = getQueryPath() + ": " + buildTupleString(0) }
 
+  private string buildTupleString(int start) {
+    start = getNumFields() - 1 and result = getField(start)
+    or
+    start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start + 1)
+  }
 }
 
 /**
  * External data with a location, and a message, as produced by tools that used to produce QLDs.
  */
 class DefectExternalData extends ExternalData {
-  DefectExternalData() { 
+  DefectExternalData() {
     this.getField(0).regexpMatch("\\w+://.*:[0-9]+:[0-9]+:[0-9]+:[0-9]+$") and
     this.getNumFields() = 2
   }
-  
+
   string getURL() { result = getField(0) }
 
   string getMessage() { result = getField(1) }
 }
-

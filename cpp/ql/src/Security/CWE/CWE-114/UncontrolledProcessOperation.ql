@@ -15,12 +15,12 @@ import cpp
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
 
-from string processOperation, int processOperationArg,
-     FunctionCall call, Expr arg, Element source
-where isProcessOperationArgument(processOperation, processOperationArg)
-  and call.getTarget().getName() = processOperation
-  and call.getArgument(processOperationArg) = arg
-  and tainted(source, arg)
+from string processOperation, int processOperationArg, FunctionCall call, Expr arg, Element source
+where
+  isProcessOperationArgument(processOperation, processOperationArg) and
+  call.getTarget().getName() = processOperation and
+  call.getArgument(processOperationArg) = arg and
+  tainted(source, arg)
 select arg,
-  "The value of this argument may come from $@ and is being passed to " + processOperation,
-  source, source.toString()
+  "The value of this argument may come from $@ and is being passed to " + processOperation, source,
+  source.toString()

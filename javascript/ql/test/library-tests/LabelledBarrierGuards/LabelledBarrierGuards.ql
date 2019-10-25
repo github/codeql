@@ -1,9 +1,7 @@
 import javascript
 
 class CustomFlowLabel extends DataFlow::FlowLabel {
-  CustomFlowLabel() {
-    this = "A" or this = "B"
-  }
+  CustomFlowLabel() { this = "A" or this = "B" }
 }
 
 class Config extends TaintTracking::Configuration {
@@ -33,9 +31,7 @@ class Config extends TaintTracking::Configuration {
  * sanitize the value, but later sanitizers only need to handle the relevant case.
  */
 class IsTypeAGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::CallNode {
-  IsTypeAGuard() {
-    getCalleeName() = "isTypeA"
-  }
+  IsTypeAGuard() { getCalleeName() = "isTypeA" }
 
   override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
     e = getArgument(0).asExpr() and
@@ -48,9 +44,7 @@ class IsTypeAGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::C
 }
 
 class IsSanitizedGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::CallNode {
-  IsSanitizedGuard() {
-    getCalleeName() = "sanitizeA" or getCalleeName() = "sanitizeB"
-  }
+  IsSanitizedGuard() { getCalleeName() = "sanitizeA" or getCalleeName() = "sanitizeB" }
 
   override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
     e = getArgument(0).asExpr() and

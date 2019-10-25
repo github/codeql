@@ -1,6 +1,7 @@
 import cpp
 import BasicBlocks
 private import semmle.code.cpp.controlflow.internal.ConstantExprs
+private import semmle.code.cpp.controlflow.internal.CFG
 
 /**
  * A control-flow node is either a statement or an expression; in addition,
@@ -66,13 +67,11 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    * taken when this expression is false.
    */
   ControlFlowNode getAFalseSuccessor() {
-    falsecond_base(this,result) and
+    falsecond_base(this, result) and
     result = getASuccessor()
   }
 
-  BasicBlock getBasicBlock() {
-    result.getANode() = this
-  }
+  BasicBlock getBasicBlock() { result.getANode() = this }
 }
 
 import ControlFlowGraphPublic
@@ -85,15 +84,14 @@ import ControlFlowGraphPublic
  * This class can be used as base class for classes that want to inherit the
  * extent of `ControlFlowNode` without inheriting its public member predicates.
  */
-class ControlFlowNodeBase extends ElementBase, @cfgnode {
-}
+class ControlFlowNodeBase extends ElementBase, @cfgnode { }
 
 predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
-  truecond(unresolveElement(n1), unresolveElement(n2))
+  qlCFGTrueSuccessor(n1, n2)
 }
 
 predicate falsecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
-  falsecond(unresolveElement(n1), unresolveElement(n2))
+  qlCFGFalseSuccessor(n1, n2)
 }
 
 /**
@@ -122,9 +120,8 @@ abstract class AdditionalControlFlowEdge extends ControlFlowNodeBase {
  * the extractor-generated control-flow graph or in a subclass of
  * `AdditionalControlFlowEdge`. Use this relation instead of `successors`.
  */
-predicate successors_extended(
-    ControlFlowNodeBase source, ControlFlowNodeBase target) {
-  successors(unresolveElement(source), unresolveElement(target))
+predicate successors_extended(ControlFlowNodeBase source, ControlFlowNodeBase target) {
+  qlCFGSuccessor(source, target)
   or
   source.(AdditionalControlFlowEdge).getAnEdgeTarget() = target
 }

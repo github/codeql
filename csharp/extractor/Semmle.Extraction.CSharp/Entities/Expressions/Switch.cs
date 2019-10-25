@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -14,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public Expression SwitchedExpr { get; private set; }
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             SwitchedExpr = Expression.Create(cx, Syntax.GoverningExpression, this, -1);
             int child = 0;

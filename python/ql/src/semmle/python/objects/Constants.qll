@@ -71,12 +71,28 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
+    /** Gets an AST literal with the same value as this object */
+    abstract ImmutableLiteral getLiteral();
+
+    override predicate isNotSubscriptedType() { any() }
+
+}
+
+pragma[nomagic]
+private boolean callToBool(CallNode call, PointsToContext context) {
+    PointsToInternal::pointsTo(call.getFunction(), context, ClassValue::bool(), _) and
+    exists(ObjectInternal arg |
+        PointsToInternal::pointsTo(call.getArg(0),context, arg, _) and
+        arg.booleanValue() = result
+    )
 }
 
 private abstract class BooleanObjectInternal extends ConstantObjectInternal {
 
     override ObjectInternal getClass() {
-        result = TBuiltinClassObject(Builtin::special("bool"))
+        result = ClassValue::bool()
     }
 
     override int length() { none() }
@@ -87,6 +103,10 @@ private abstract class BooleanObjectInternal extends ConstantObjectInternal {
 
     /* Booleans aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    override ImmutableLiteral getLiteral() {
+        result.(BooleanLiteral).booleanValue() = this.booleanValue()
+    }
 
 }
 
@@ -102,6 +122,8 @@ private class TrueObjectInternal extends BooleanObjectInternal, TTrue {
 
     override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "True" and context.appliesTo(node)
+        or
+        callToBool(node, context) = true
     }
 
     override int intValue() {
@@ -126,6 +148,8 @@ private class FalseObjectInternal extends BooleanObjectInternal, TFalse {
 
     override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "False" and context.appliesTo(node)
+        or
+        callToBool(node, context) = false
     }
 
     override int intValue() {
@@ -173,10 +197,14 @@ private class NoneObjectInternal extends ConstantObjectInternal, TNone {
     /* None isn't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    override ImmutableLiteral getLiteral() {
+        result instanceof None
+    }
+
 }
 
 
-private class IntObjectInternal extends ConstantObjectInternal, TInt {
+class IntObjectInternal extends ConstantObjectInternal, TInt {
 
     override string toString() {
         result = "int " + this.intValue().toString()
@@ -214,9 +242,15 @@ private class IntObjectInternal extends ConstantObjectInternal, TInt {
     /* ints aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    override ImmutableLiteral getLiteral() {
+        result.(IntegerLiteral).getValue() = this.intValue()
+        or
+        result.(NegativeIntegerLiteral).getOperand().(IntegerLiteral).getValue() = -this.intValue()
+    }
+
 }
 
-private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
+class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 
     override string toString() {
         if this.floatValue() = this.floatValue().floor() then (
@@ -239,7 +273,7 @@ private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
         result.floatValue() = this.floatValue()
     }
 
-    private float floatValue() {
+    float floatValue() {
         this = TFloat(result)
     }
 
@@ -262,10 +296,14 @@ private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
     /* floats aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    override ImmutableLiteral getLiteral() {
+        result.(FloatLiteral).getValue() = this.floatValue()
+    }
+
 }
 
 
-private class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
+class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
 
     override string toString() {
         result =  "'" + this.strValue() + "'"
@@ -308,9 +346,13 @@ private class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
         result = TUnknownInstance(this.getClass())
     }
 
+    override ImmutableLiteral getLiteral() {
+        result.(Unicode).getText() = this.strValue()
+    }
+
 }
 
-private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
+class BytesObjectInternal extends ConstantObjectInternal, TBytes {
 
     override string toString() {
         result =  "'" + this.strValue() + "'"
@@ -351,6 +393,10 @@ private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
 
     override ObjectInternal getIterNext() {
         result = TUnknownInstance(this.getClass())
+    }
+
+    override ImmutableLiteral getLiteral() {
+        result.(Bytes).getText() = this.strValue()
     }
 
 }

@@ -37,7 +37,14 @@ class CanonicalName extends @symbol {
   /**
    * Gets the name of the external module represented by this canonical name, if any.
    */
-  string getExternalModuleName() { symbol_module(this, result) }
+  string getExternalModuleName() {
+    symbol_module(this, result)
+    or
+    exists(PackageJSON pkg |
+      getModule() = pkg.getMainModule() and
+      result = pkg.getPackageName()
+    )
+  }
 
   /**
    * Gets the name of the global variable represented by this canonical name, if any.
@@ -203,7 +210,9 @@ class CanonicalName extends @symbol {
 class TypeName extends CanonicalName {
   TypeName() {
     exists(TypeReference ref | type_symbol(ref, this)) or
-    exists(TypeDefinition def | ast_node_symbol(def, this))
+    exists(TypeDefinition def | ast_node_symbol(def, this)) or
+    base_type_names(_, this) or
+    base_type_names(this, _)
   }
 
   /**

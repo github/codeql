@@ -11,7 +11,8 @@
 import cpp
 
 from VariableDeclarationEntry v
-where v.getVariable() instanceof GlobalVariable and
+where
+  v.getVariable() instanceof GlobalVariable and
   v.hasSpecifier("extern") and
   not v.getFile() instanceof HeaderFile
 select v, v.getName() + " should be declared only in a header file that is included as needed."

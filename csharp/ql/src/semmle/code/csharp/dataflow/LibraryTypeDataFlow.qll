@@ -111,6 +111,7 @@ private module Cached {
     )
   }
 }
+
 import Cached
 
 /** An unbound callable. */

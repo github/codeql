@@ -10,11 +10,18 @@
  *       portability
  *       external/jsf
  */
+
 import cpp
 
 from Element u, ArithmeticType at
-where (at.hasName("int") or at.hasName("short") or at.hasName("long")
-       or at.hasName("float") or at.hasName("double")) and
-      u = at.getATypeNameUse() and
-      not at instanceof WideCharType
+where
+  (
+    at.hasName("int") or
+    at.hasName("short") or
+    at.hasName("long") or
+    at.hasName("float") or
+    at.hasName("double")
+  ) and
+  u = at.getATypeNameUse() and
+  not at instanceof WideCharType
 select u, "AV Rule 209: The basic types of int, short, long, float and double shall not be used."

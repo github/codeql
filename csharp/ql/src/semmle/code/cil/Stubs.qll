@@ -40,6 +40,7 @@ private module Cached {
     exists(mi.getAnInstruction())
   }
 }
+
 private import Cached
 
 predicate assemblyIsStub = assemblyIsStubImpl/1;

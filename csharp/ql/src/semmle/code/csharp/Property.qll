@@ -201,7 +201,19 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * }
    * ```
    */
-  Expr getInitializer() { result = this.getChildExpr(1) }
+  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(0) }
+
+  /**
+   * Holds if this property has an initial value. For example, the initial
+   * value of `P` on line 2 is `20` in
+   *
+   * ```
+   * class C {
+   *   public int P { get; set; } = 20;
+   * }
+   * ```
+   */
+  predicate hasInitializer() { exists(this.getInitializer()) }
 
   /**
    * Gets the expression body of this property, if any. For example, the expression
@@ -508,7 +520,7 @@ class IndexerProperty extends Property {
   pragma[nomagic]
   private IndexerCall getAnIndexerCall0() {
     exists(Expr qualifier | qualifier = result.getQualifier() |
-      DataFlow::localFlow(DataFlow::exprNode(this.getAnAccess()), DataFlow::exprNode(qualifier))
+      DataFlow::localExprFlow(this.getAnAccess(), qualifier)
     )
   }
 

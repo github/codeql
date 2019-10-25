@@ -12,49 +12,38 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
   /**
    * Gets the name of this type.
    */
-  override string getName() { usertypes(underlyingElement(this),result,_) }
+  override string getName() { usertypes(underlyingElement(this), result, _) }
+
+  override string getCanonicalQLClass() { result = "UserType" }
 
   /**
    * Gets the simple name of this type, without any template parameters.  For example
    * if the name of the type is `"myType<int>"`, the simple name is just `"myType"`.
    */
-  string getSimpleName() {
-    result = getName().regexpReplaceAll("<.*", "")
-  }
+  string getSimpleName() { result = getName().regexpReplaceAll("<.*", "") }
 
-  override predicate hasName(string name) {
-    usertypes(underlyingElement(this),name,_)
-  }
+  override predicate hasName(string name) { usertypes(underlyingElement(this), name, _) }
 
   /** Holds if this type is anonymous. */
-  predicate isAnonymous() {
-    getName().matches("(unnamed%")
-  }
+  predicate isAnonymous() { getName().matches("(unnamed%") }
 
-  override predicate hasSpecifier(string s) {
-    Type.super.hasSpecifier(s)
-  }
-  override Specifier getASpecifier() {
-    result = Type.super.getASpecifier()
-  }
+  override predicate hasSpecifier(string s) { Type.super.hasSpecifier(s) }
+
+  override Specifier getASpecifier() { result = Type.super.getASpecifier() }
 
   override Location getLocation() {
-    if isDefined() then
-      result = this.getDefinitionLocation()
-    else
-      result = this.getADeclarationLocation()
+    if isDefined()
+    then result = this.getDefinitionLocation()
+    else result = this.getADeclarationLocation()
   }
 
   override TypeDeclarationEntry getADeclarationEntry() {
-    if type_decls(_, underlyingElement(this), _) then
-      type_decls(unresolveElement(result), underlyingElement(this), _)
-    else
-      exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getADeclarationEntry())
+    if type_decls(_, underlyingElement(this), _)
+    then type_decls(unresolveElement(result), underlyingElement(this), _)
+    else exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getADeclarationEntry())
   }
 
-  override Location getADeclarationLocation() {
-    result = getADeclarationEntry().getLocation()
-  }
+  override Location getADeclarationLocation() { result = getADeclarationEntry().getLocation() }
 
   override TypeDeclarationEntry getDefinition() {
     result = getADeclarationEntry() and
@@ -62,39 +51,39 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
   }
 
   override Location getDefinitionLocation() {
-    if exists(getDefinition()) then
-      result = getDefinition().getLocation()
+    if exists(getDefinition())
+    then result = getDefinition().getLocation()
     else
-      exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getDefinition().getLocation())
+      exists(Class t |
+        this.(Class).isConstructedFrom(t) and result = t.getDefinition().getLocation()
+      )
   }
 
   /**
    * Gets the function that directly encloses this type (if any).
    */
   Function getEnclosingFunction() {
-    enclosingfunction(underlyingElement(this),unresolveElement(result))
+    enclosingfunction(underlyingElement(this), unresolveElement(result))
   }
 
   /**
    * Holds if this is a local type (that is, a type that has a directly-enclosing
    * function).
    */
-  predicate isLocal() {
-    exists(getEnclosingFunction())
-  }
+  predicate isLocal() { exists(getEnclosingFunction()) }
 
-  // Dummy implementations of inherited methods. This class must not be
-  // made abstract, because it is important that it captures the @usertype
-  // type exactly - but this is not apparent from its subclasses
+  /*
+   * Dummy implementations of inherited methods. This class must not be
+   * made abstract, because it is important that it captures the @usertype
+   * type exactly - but this is not apparent from its subclasses
+   */
 
   Declaration getADeclaration() { none() }
 
   override string explain() { result = this.getName() }
 
   // further overridden in LocalClass
-  override AccessHolder getEnclosingAccessHolder() {
-    result = this.getDeclaringType()
-  }
+  override AccessHolder getEnclosingAccessHolder() { result = this.getDeclaringType() }
 }
 
 /**
@@ -102,15 +91,20 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
  */
 class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
   override UserType getDeclaration() { result = getType() }
+
   override string getName() { result = getType().getName() }
+
+  override string getCanonicalQLClass() { result = "TypeDeclarationEntry" }
 
   /**
    * The type which is being declared or defined.
    */
-  override Type getType() { type_decls(underlyingElement(this),unresolveElement(result),_) }
+  override Type getType() { type_decls(underlyingElement(this), unresolveElement(result), _) }
 
-  override Location getLocation() { type_decls(underlyingElement(this),_,result) }
+  override Location getLocation() { type_decls(underlyingElement(this), _, result) }
+
   override predicate isDefinition() { type_def(underlyingElement(this)) }
+
   override string getASpecifier() { none() }
 
   /**

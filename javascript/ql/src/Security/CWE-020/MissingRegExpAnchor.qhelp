@@ -47,9 +47,8 @@
 		<p>
 
 			The check with the regular expression match is, however, easy to bypass. For example
-			by embedding <code>example.com</code> in the path component:
-			<code>http://evil-example.net/example.com</code>, or in the query
-			string component: <code>http://evil-example.net/?x=example.com</code>.
+			by embedding <code>http://example.com/</code> in the query
+			string component: <code>http://evil-example.net/?x=http://example.com/</code>.
 
 			Address these shortcomings by using anchors in the regular expression instead:
 
@@ -62,9 +61,9 @@
 			A related mistake is to write a regular expression with
 			multiple alternatives, but to only include an anchor for one of the
 			alternatives. As an example, the regular expression
-			<code>/^www\\.example\\.com|beta\\.example\\.com/</code> will match the host
+			<code>/^www\.example\.com|beta\.example\.com/</code> will match the host
 			<code>evil.beta.example.com</code> because the regular expression is parsed
-			as <code>/(^www\\.example\\.com)|(beta\\.example\\.com)/</code>
+			as <code>/(^www\.example\.com)|(beta\.example\.com)/</code>
 
 		</p>
 	</example>

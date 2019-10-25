@@ -93,6 +93,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.EnumDeclaration;
 import com.semmle.ts.ast.EnumMember;
@@ -171,11 +172,13 @@ public class CFGExtractor {
   private final TrapWriter trapwriter;
   private final Label toplevelLabel;
   private final LocationManager locationManager;
+  private final ExtractionMetrics metrics;
 
   public CFGExtractor(ASTExtractor astExtractor) {
     this.trapwriter = astExtractor.getTrapwriter();
     this.toplevelLabel = astExtractor.getToplevelLabel();
     this.locationManager = astExtractor.getLocationManager();
+    this.metrics = astExtractor.getMetrics();
   }
 
   @SuppressWarnings("unchecked")
@@ -1955,6 +1958,8 @@ public class CFGExtractor {
   }
 
   public void extract(Node nd) {
+    metrics.startPhase(ExtractionPhase.CFGExtractor_extract);
     nd.accept(new V(), new SimpleSuccessorInfo(null));
+    metrics.stopPhase(ExtractionPhase.CFGExtractor_extract);
   }
 }

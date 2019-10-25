@@ -16,6 +16,7 @@
  * LGTM until its performance is well understood.
  */
 
+import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.ValueNumbering
 
@@ -47,8 +48,7 @@ predicate explicitNullTestOfInstruction(Instruction checked, Instruction bool) {
 }
 
 pragma[noinline]
-predicate candidateResult(LoadInstruction checked, ValueNumber value, IRBlock dominator)
-{
+predicate candidateResult(LoadInstruction checked, ValueNumber value, IRBlock dominator) {
   explicitNullTestOfInstruction(checked, _) and
   not checked.getAST().isInMacroExpansion() and
   value.getAnInstruction() = checked and

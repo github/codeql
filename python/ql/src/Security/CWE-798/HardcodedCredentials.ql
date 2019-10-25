@@ -140,9 +140,23 @@ private string getACredentialRegex() {
   result = "(?i).*(cert)(?!.*(format|name)).*"
 }
 
-from TaintSource src, TaintSink sink
+class HardcodedCredentialsConfiguration extends TaintTracking::Configuration {
 
-where src.flowsToSink(sink) and
+    HardcodedCredentialsConfiguration() { this = "Hardcoded coredentials configuration" }
+
+    override predicate isSource(TaintTracking::Source source) { source instanceof HardcodedValueSource }
+
+    override predicate isSink(TaintTracking::Sink sink) {
+        sink instanceof CredentialSink
+    }
+
+}
+
+
+
+from HardcodedCredentialsConfiguration config, TaintSource src, TaintSink sink
+
+where config.hasFlow(src, sink) and
 not any(TestScope test).contains(src.(ControlFlowNode).getNode())
 
 select sink, "Use of hardcoded credentials from $@.", src, src.toString()

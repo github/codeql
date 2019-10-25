@@ -32,7 +32,7 @@ public class E
         string last = null;
         foreach (var s in new string[] { "aa", "bb" })
             last = s;
-        last.ToString(); // GOOD (false positive)
+        last.ToString(); // GOOD
 
         last = null;
         if (ss.Any())
@@ -40,7 +40,7 @@ public class E
             foreach (var s in ss)
                 last = s;
 
-            last.ToString(); // GOOD (false positive)
+            last.ToString(); // GOOD
         }
     }
 
@@ -341,6 +341,26 @@ public class E
     {
         var x = s ?? o as string;
         x.ToString(); // BAD (maybe)
+    }
+
+    static void Ex31(string s, object o)
+    {
+        dynamic x = s ?? o as string;
+        x.ToString(); // BAD (maybe)
+    }
+
+    static void Ex32(string s, object o)
+    {
+        dynamic x = s ?? o as string;
+        if (x != null)
+            x.ToString(); // GOOD
+    }
+
+    static void Ex33(string s, object o)
+    {
+        var x = s ?? o as string;
+        if (x != (string)null)
+            x.ToString(); // GOOD
     }
 }
 

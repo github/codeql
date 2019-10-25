@@ -1,6 +1,7 @@
 | AllocaInLoop1.cpp:31:18:31:23 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1.cpp:22:2:39:2 | for(...;...;...) ... | for(...;...;...) ... |
 | AllocaInLoop1.cpp:55:19:55:24 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1.cpp:45:2:64:2 | for(...;...;...) ... | for(...;...;...) ... |
 | AllocaInLoop1.cpp:80:19:80:24 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1.cpp:71:3:88:3 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1.cpp:110:19:110:24 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1.cpp:109:2:113:13 | do (...) ... | do (...) ... |
 | AllocaInLoop1ms.cpp:28:18:28:24 | call to _alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1ms.cpp:19:2:36:2 | for(...;...;...) ... | for(...;...;...) ... |
 | AllocaInLoop1ms.cpp:52:19:52:26 | call to _malloca | Stack allocation is inside a $@ loop. | AllocaInLoop1ms.cpp:42:2:63:2 | for(...;...;...) ... | for(...;...;...) ... |
 | AllocaInLoop1ms.cpp:79:19:79:25 | call to _alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1ms.cpp:70:3:87:3 | for(...;...;...) ... | for(...;...;...) ... |

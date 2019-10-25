@@ -2,37 +2,58 @@
 using System.Reflection.Metadata;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
     /// <summary>
     /// A property.
     /// </summary>
-    interface IProperty : ILabelledEntity
+    interface IProperty : IExtractedEntity
     {
     }
 
     /// <summary>
     /// A property.
     /// </summary>
-    class Property : LabelledEntity, IProperty
+    sealed class Property : LabelledEntity, IProperty
     {
         readonly Handle handle;
         readonly Type type;
         readonly PropertyDefinition pd;
-        static readonly Id suffix = CIL.Id.Create(";cil-property");
+        public override string IdSuffix => ";cil-property";
+        readonly GenericContext gc;
 
         public Property(GenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.cx)
         {
+            this.gc = gc;
             this.handle = handle;
             pd = cx.mdReader.GetPropertyDefinition(handle);
             this.type = type;
-
-            var id = type.ShortId + gc.cx.Dot + cx.ShortName(pd.Name);
-            var signature = pd.DecodeSignature(new SignatureDecoder(), gc);
-            id += "(" + CIL.Id.CommaSeparatedList(signature.ParameterTypes.Select(p => p.MakeId(gc))) + ")";
-            ShortId = id;
         }
+
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteSubId(type);
+            trapFile.Write('.');
+            trapFile.Write(cx.GetString(pd.Name));
+            trapFile.Write("(");
+            int index=0;
+            var signature = pd.DecodeSignature(new SignatureDecoder(), gc);
+            foreach (var param in signature.ParameterTypes)
+            {
+                trapFile.WriteSeparator(",", ref index);
+                param.WriteId(trapFile, gc);
+            }
+            trapFile.Write(")");
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Property property && Equals(handle, property.handle);
+        }
+
+        public override int GetHashCode() => handle.GetHashCode();
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -62,7 +83,5 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return c;
             }
         }
-
-        public override Id IdSuffix => suffix;
     }
 }

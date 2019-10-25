@@ -121,7 +121,17 @@ class XMLFile extends XMLParent, File {
   XMLDTD getADTD() { xmlDTDs(result, _, _, _, this) }
 }
 
-/** A "Document Type Definition" of an XML file. */
+/**
+ * An XML document type definition (DTD).
+ *
+ * Example:
+ *
+ * ```
+ * <!ELEMENT person (firstName, lastName?)>
+ * <!ELEMENT firstName (#PCDATA)>
+ * <!ELEMENT lastName (#PCDATA)>
+ * ```
+ */
 class XMLDTD extends @xmldtd {
   /** Gets the name of the root element of this DTD. */
   string getRoot() { xmlDTDs(this, result, _, _, _) }
@@ -148,7 +158,17 @@ class XMLDTD extends @xmldtd {
   }
 }
 
-/** An XML tag in an XML file. */
+/**
+ * An XML element in an XML file.
+ *
+ * Example:
+ *
+ * ```
+ * <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+ *           package="com.example.exampleapp" android:versionCode="1">
+ * </manifest>
+ * ```
+ */
 class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   /** Holds if this XML element has the given `name`. */
   predicate hasName(string name) { name = getName() }
@@ -193,7 +213,16 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   override string toString() { result = XMLParent.super.toString() }
 }
 
-/** An attribute that occurs inside an XML element. */
+/**
+ * An attribute that occurs inside an XML element.
+ *
+ * Examples:
+ *
+ * ```
+ * package="com.example.exampleapp"
+ * android:versionCode="1"
+ * ```
+ */
 class XMLAttribute extends @xmlattribute, XMLLocatable {
   /** Gets the name of this attribute. */
   string getName() { xmlAttrs(this, _, result, _, _, _) }
@@ -214,7 +243,15 @@ class XMLAttribute extends @xmlattribute, XMLLocatable {
   override string toString() { result = this.getName() + "=" + this.getValue() }
 }
 
-/** A namespace used in an XML file */
+/**
+ * A namespace used in an XML file.
+ *
+ * Example:
+ *
+ * ```
+ * xmlns:android="http://schemas.android.com/apk/res/android"
+ * ```
+ */
 class XMLNamespace extends @xmlnamespace {
   /** Gets the prefix of this namespace. */
   string getPrefix() { xmlNs(this, result, _, _) }
@@ -233,7 +270,15 @@ class XMLNamespace extends @xmlnamespace {
   }
 }
 
-/** A comment of the form `<!-- ... -->` is an XML comment. */
+/**
+ * A comment in an XML file.
+ *
+ * Example:
+ *
+ * ```
+ * <!-- This is a comment. -->
+ * ```
+ */
 class XMLComment extends @xmlcomment, XMLLocatable {
   /** Gets the text content of this XML comment. */
   string getText() { xmlComments(this, result, _, _) }
@@ -248,6 +293,12 @@ class XMLComment extends @xmlcomment, XMLLocatable {
 /**
  * A sequence of characters that occurs between opening and
  * closing tags of an XML element, excluding other elements.
+ *
+ * Example:
+ *
+ * ```
+ * <content>This is a sequence of characters.</content>
+ * ```
  */
 class XMLCharacters extends @xmlcharacters, XMLLocatable {
   /** Gets the content of this character sequence. */

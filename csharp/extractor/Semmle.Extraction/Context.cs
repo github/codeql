@@ -1,21 +1,22 @@
 using Microsoft.CodeAnalysis;
-using System.Linq;
 using Semmle.Extraction.CommentProcessing;
-using System.Collections.Generic;
-using System;
-using Semmle.Util.Logging;
 using Semmle.Extraction.Entities;
+using Semmle.Util.Logging;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Semmle.Extraction
 {
     /// <summary>
-    /// State which needs needs to be available throughout the extraction process.
-    ///     There is one Context object per trap output file.
+    /// State that needs to be available throughout the extraction process.
+    /// There is one Context object per trap output file.
     /// </summary>
     public class Context
     {
         /// <summary>
-        /// Interface to various extraction functions, e.g. logger, trap writer.
+        /// Access various extraction functions, e.g. logger, trap writer.
         /// </summary>
         public readonly IExtractor Extractor;
 
@@ -23,7 +24,7 @@ namespace Semmle.Extraction
         /// The program database provided by Roslyn.
         /// There's one per syntax tree, which makes things awkward.
         /// </summary>
-        public SemanticModel Model(SyntaxNode node)
+        public SemanticModel GetModel(SyntaxNode node)
         {
             if (cachedModel == null || node.SyntaxTree != cachedModel.SyntaxTree)
             {
@@ -33,14 +34,14 @@ namespace Semmle.Extraction
             return cachedModel;
         }
 
-        SemanticModel cachedModel;
+        private SemanticModel cachedModel;
 
         /// <summary>
-        ///     Access to the trap file.
+        /// Access to the trap file.
         /// </summary>
         public readonly TrapWriter TrapWriter;
 
-        int NewId() => TrapWriter.IdCounter++;
+        int GetNewId() => TrapWriter.IdCounter++;
 
         /// <summary>
         /// Creates a new entity using the factory.
@@ -51,6 +52,30 @@ namespace Semmle.Extraction
         public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
         {
             return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
+        }
+
+        // A recursion guard against writing to the trap file whilst writing an id to the trap file.
+        bool WritingLabel = false;
+
+        public void DefineLabel(IEntity entity, TextWriter trapFile)
+        {
+            if (WritingLabel)
+            {
+                // Don't define a label whilst writing a label.
+                PopulateLater(() => DefineLabel(entity, trapFile));
+            }
+            else
+            {
+                try
+                {
+                    WritingLabel = true;
+                    entity.DefineLabel(trapFile);
+                }
+                finally
+                {
+                    WritingLabel = false;
+                }
+            }
         }
 
         /// <summary>
@@ -73,23 +98,29 @@ namespace Semmle.Extraction
                 }
                 else
                 {
-                    var id = entity.Id;
-#if DEBUG_LABELS
-                    CheckEntityHasUniqueLabel(id, entity);
-#endif
-                    label = new Label(NewId());
+                    label = GetNewLabel();
                     entity.Label = label;
                     entityLabelCache[entity] = label;
-                    DefineLabel(label, id);
+
+                    DefineLabel(entity, TrapWriter.Writer);
+
                     if (entity.NeedsPopulation)
                         Populate(init as ISymbol, entity);
+#if DEBUG_LABELS
+                    using (var id = new StringWriter())
+                    {
+                        entity.WriteId(id);
+                        CheckEntityHasUniqueLabel(id.ToString(), entity);
+                    }
+#endif
+
                 }
                 return entity;
             }
         }
 
 #if DEBUG_LABELS
-        private void CheckEntityHasUniqueLabel(IId id, ICachedEntity entity)
+        private void CheckEntityHasUniqueLabel(string id, ICachedEntity entity)
         {
             if (idLabelCache.TryGetValue(id, out var originalEntity))
             {
@@ -102,6 +133,8 @@ namespace Semmle.Extraction
         }
 #endif
 
+        public Label GetNewLabel() => new Label(GetNewId());
+
         private Entity CreateNonNullEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
         {
             if (objectEntityCache.TryGetValue(init, out var cached))
@@ -109,21 +142,23 @@ namespace Semmle.Extraction
 
             using (StackGuard)
             {
-                var label = new Label(NewId());
+                var label = GetNewLabel();
                 var entity = factory.Create(this, init);
                 entity.Label = label;
 
                 objectEntityCache[init] = entity;
 
-                var id = entity.Id;
-                DefineLabel(label, id);
-
-#if DEBUG_LABELS
-                CheckEntityHasUniqueLabel(id, entity);
-#endif
-
+                DefineLabel(entity, TrapWriter.Writer);
                 if (entity.NeedsPopulation)
                     Populate(init as ISymbol, entity);
+
+#if DEBUG_LABELS
+                using (var id = new StringWriter())
+                {
+                    entity.WriteId(id);
+                    CheckEntityHasUniqueLabel(id.ToString(), entity);
+                }
+#endif
 
                 return entity;
             }
@@ -158,28 +193,16 @@ namespace Semmle.Extraction
         /// </summary>
         public void AddFreshLabel(IEntity entity)
         {
-            var label = new Label(NewId());
-            TrapWriter.Emit(new DefineFreshLabelEmitter(label));
-            entity.Label = label;
+            entity.Label = GetNewLabel();
+            entity.DefineFreshLabel(TrapWriter.Writer);
         }
 
 #if DEBUG_LABELS
-        readonly Dictionary<IId, ICachedEntity> idLabelCache = new Dictionary<IId, ICachedEntity>();
+        readonly Dictionary<string, ICachedEntity> idLabelCache = new Dictionary<string, ICachedEntity>();
 #endif
         readonly Dictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
         readonly Dictionary<ICachedEntity, Label> entityLabelCache = new Dictionary<ICachedEntity, Label>();
         readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
-
-        public void DefineLabel(IEntity entity)
-        {
-            entity.Label = new Label(NewId());
-            DefineLabel(entity.Label, entity.Id);
-        }
-
-        void DefineLabel(Label label, IId id)
-        {
-            TrapWriter.Emit(new DefineLabelEmitter(label, id));
-        }
 
         /// <summary>
         /// Queue of items to populate later.
@@ -300,43 +323,6 @@ namespace Semmle.Extraction
             }
         }
 
-        class DefineLabelEmitter : ITrapEmitter
-        {
-            readonly Label label;
-            readonly IId id;
-
-            public DefineLabelEmitter(Label label, IId id)
-            {
-                this.label = label;
-                this.id = id;
-            }
-
-            public void EmitToTrapBuilder(ITrapBuilder tb)
-            {
-                label.AppendTo(tb);
-                tb.Append("=");
-                id.AppendTo(tb);
-                tb.AppendLine();
-            }
-        }
-
-        class DefineFreshLabelEmitter : ITrapEmitter
-        {
-            readonly Label Label;
-
-            public DefineFreshLabelEmitter(Label label)
-            {
-                Label = label;
-            }
-
-            public void EmitToTrapBuilder(ITrapBuilder tb)
-            {
-                Label.AppendTo(tb);
-                tb.Append("=*");
-                tb.AppendLine();
-            }
-        }
-
         class PushEmitter : ITrapEmitter
         {
             readonly Key Key;
@@ -346,20 +332,19 @@ namespace Semmle.Extraction
                 Key = key;
             }
 
-            public void EmitToTrapBuilder(ITrapBuilder tb)
+            public void EmitTrap(TextWriter trapFile)
             {
-                tb.Append(".push ");
-                Key.AppendTo(tb);
-                tb.AppendLine();
+                trapFile.Write(".push ");
+                Key.AppendTo(trapFile);
+                trapFile.WriteLine();
             }
         }
 
         class PopEmitter : ITrapEmitter
         {
-            public void EmitToTrapBuilder(ITrapBuilder tb)
+            public void EmitTrap(TextWriter trapFile)
             {
-                tb.Append(".pop");
-                tb.AppendLine();
+                trapFile.WriteLine(".pop");
             }
         }
 
@@ -373,6 +358,13 @@ namespace Semmle.Extraction
         /// <exception cref="InternalError">Thrown on invalid trap stack behaviour.</exception>
         public void Populate(ISymbol optionalSymbol, ICachedEntity entity)
         {
+            if (WritingLabel)
+            {
+                // Don't write tuples etc if we're currently defining a label
+                PopulateLater(() => Populate(optionalSymbol, entity));
+                return;
+            }
+
             bool duplicationGuard;
             bool deferred;
 
@@ -401,8 +393,8 @@ namespace Semmle.Extraction
             }
 
             var a = duplicationGuard ?
-                (Action)(() => WithDuplicationGuard(new Key(entity, this.Create(entity.ReportingLocation)), entity.Populate)) :
-                (Action)(() => this.Try(null, optionalSymbol, entity.Populate));
+                (Action)(() => WithDuplicationGuard(new Key(entity, this.Create(entity.ReportingLocation)), () => entity.Populate(TrapWriter.Writer))) :
+                (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
 
             if (deferred)
                 populateQueue.Enqueue(a);
@@ -448,7 +440,7 @@ namespace Semmle.Extraction
         public void BindComments(IEntity entity, Microsoft.CodeAnalysis.Location l)
         {
             var duplicationGuardKey = tagStack.Count > 0 ? tagStack.Peek() : null;
-            CommentGenerator.RegisterElementLocation(entity.Label, duplicationGuardKey, l);
+            CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
         }
 
         /// <summary>

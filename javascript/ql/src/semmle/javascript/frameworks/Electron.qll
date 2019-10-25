@@ -60,9 +60,7 @@ module Electron {
     t.start() and
     result instanceof NewBrowserObject
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = browserObject(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = browserObject(t2).track(t2, t))
   }
 
   /**
@@ -104,7 +102,6 @@ module Electron {
      */
     class Callback extends DataFlow::FunctionNode {
       DataFlow::Node channel;
-
       Process process;
 
       Callback() {
@@ -119,12 +116,10 @@ module Electron {
       Process getProcess() { result = process }
 
       /** Gets the name of the channel the callback is listening on. */
-      string getChannelName() { result = channel.asExpr().getStringValue() }
+      string getChannelName() { result = channel.getStringValue() }
 
       /** Gets the data flow node containing the message received by the callback. */
-      DataFlow::Node getMessage() {
-        result = getParameter(1)
-      }
+      DataFlow::Node getMessage() { result = getParameter(1) }
     }
 
     /**
@@ -143,11 +138,8 @@ module Electron {
      */
     class DirectMessage extends Message {
       DataFlow::MethodCallNode mc;
-
       Process process;
-
       DataFlow::Node channel;
-
       boolean isSync;
 
       DirectMessage() {
@@ -164,7 +156,7 @@ module Electron {
 
       override Process getProcess() { result = process }
 
-      override string getChannelName() { result = channel.asExpr().getStringValue() }
+      override string getChannelName() { result = channel.getStringValue() }
     }
 
     /**
@@ -174,9 +166,7 @@ module Electron {
       SyncDirectMessage() { isSync = true }
 
       /** Gets the data flow node holding the reply to the message. */
-      DataFlow::Node getReply() {
-        result = mc
-      }
+      DataFlow::Node getReply() { result = mc }
     }
 
     /**
@@ -184,7 +174,6 @@ module Electron {
      */
     class AsyncReplyMessage extends Message {
       Callback callback;
-
       DataFlow::Node channel;
 
       AsyncReplyMessage() {
@@ -197,7 +186,7 @@ module Electron {
 
       override Process getProcess() { result = callback.getProcess() }
 
-      override string getChannelName() { result = channel.asExpr().getStringValue() }
+      override string getChannelName() { result = channel.getStringValue() }
     }
 
     /**
@@ -232,7 +221,7 @@ module Electron {
 
       override Process getProcess() { result = Process::main() }
 
-      override string getChannelName() { result = channel.asExpr().getStringValue() }
+      override string getChannelName() { result = channel.getStringValue() }
     }
 
     /**
@@ -263,6 +252,7 @@ module Electron {
       IPCAdditionalFlowStep() { ipcFlowStep(this, _) }
 
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+        pred = this and
         ipcFlowStep(pred, succ)
       }
     }
@@ -271,19 +261,25 @@ module Electron {
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  abstract class CustomElectronClientRequest extends NodeJSLib::CustomNodeJSClientRequest { }
-
-  /**
-   * A Node.js-style HTTP or HTTPS request made using an Electron module.
-   */
   class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {
-    ElectronClientRequest() { this instanceof CustomElectronClientRequest }
+    override ElectronClientRequest::Range self;
   }
+
+  module ElectronClientRequest {
+    /**
+     * A Node.js-style HTTP or HTTPS request made using an Electron module.
+     *
+     * Extends this class to add support for new Electron client-request APIs.
+     */
+    abstract class Range extends NodeJSLib::NodeJSClientRequest::Range { }
+  }
+
+  deprecated class CustomElectronClientRequest = ElectronClientRequest::Range;
 
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.ClientRequest`.
    */
-  private class NewClientRequest extends CustomElectronClientRequest {
+  private class NewClientRequest extends ElectronClientRequest::Range {
     NewClientRequest() {
       this = DataFlow::moduleMember("electron", "ClientRequest").getAnInstantiation() or
       this = DataFlow::moduleMember("electron", "net").getAMemberCall("request") // alias

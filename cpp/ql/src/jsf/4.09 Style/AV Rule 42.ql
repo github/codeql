@@ -8,12 +8,13 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 predicate exprInStmtContext(Expr e, Location l, File f) {
-  e.getParent() instanceof ExprStmt
-  and l = e.getLocation()
-  and f = l.getFile()
+  e.getParent() instanceof ExprStmt and
+  l = e.getLocation() and
+  f = l.getFile()
 }
 
 predicate overlappingExprs(Expr e1, Expr e2) {
@@ -21,8 +22,8 @@ predicate overlappingExprs(Expr e1, Expr e2) {
     exprInStmtContext(e1, l1, f) and
     exprInStmtContext(e2, l2, f) and
     e1 != e2 and
-    (l1.getEndLine() >= l2.getStartLine()) and
-    (l1.getStartLine() <= l2.getEndLine())
+    l1.getEndLine() >= l2.getStartLine() and
+    l1.getStartLine() <= l2.getEndLine()
   )
 }
 

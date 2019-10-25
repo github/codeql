@@ -11,6 +11,8 @@
 import Semaphores
 
 from FunctionCall call, string kind
-where (call instanceof SemaphoreCreation and kind = "semaphores") or
-      (call instanceof LockingPrimitive  and kind = "locking primitives")
+where
+  call instanceof SemaphoreCreation and kind = "semaphores"
+  or
+  call instanceof LockingPrimitive and kind = "locking primitives"
 select call, "Use of " + kind + " should be avoided."

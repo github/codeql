@@ -1,6 +1,7 @@
 /**
  * @name InitializerAccesses
  */
+
 import cpp
 
 from Initializer i, VariableAccess va

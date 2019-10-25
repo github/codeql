@@ -1,7 +1,5 @@
 import python
-import semmle.python.flow.NameNode
 private import semmle.python.pointsto.PointsTo
-private import semmle.python.Pruning
 
 /* Note about matching parent and child nodes and CFG splitting:
  *
@@ -32,10 +30,6 @@ private AstNode toAst(ControlFlowNode n) {
 *  Edges between control flow nodes include exceptional as well as normal control flow.
 */
 class ControlFlowNode extends @py_flow_node {
-
-    cached ControlFlowNode() {
-        Pruner::reachable(this)
-    }
 
     /** Whether this control flow node is a load (including those in augmented assignments) */
     predicate isLoad() {
@@ -180,8 +174,7 @@ class ControlFlowNode extends @py_flow_node {
 
     /** Gets a successor of this flow node */
     ControlFlowNode getASuccessor() {
-        py_successors(this, result) and
-        not Pruner::unreachableEdge(this, result)
+        py_successors(this, result)
     }
 
     /** Gets the immediate dominator of this flow node */
@@ -220,6 +213,11 @@ class ControlFlowNode extends @py_flow_node {
     /** The value that this ControlFlowNode points-to. */
     predicate pointsTo(Value value) {
         this.pointsTo(_, value, _)
+    }
+
+    /** Gets the value that this ControlFlowNode points-to. */
+    Value pointsTo() {
+        this.pointsTo(_, result, _)
     }
 
     /** Gets a value that this ControlFlowNode may points-to. */
@@ -962,71 +960,147 @@ class RaiseStmtNode extends ControlFlowNode {
 
 }
 
-private
-predicate defined_by(NameNode def, Variable v) {
-    def.defines(v) or
-    exists(NameNode p | defined_by(p, v) and p.getASuccessor() = def and not p.defines(v))
-}
+/** A control flow node corresponding to a (plain variable) name expression, such as `var`.
+ * `None`, `True` and `False` are excluded.
+ */
+class NameNode extends ControlFlowNode {
 
-/* Combine extractor-generated basic block after pruning */
-
-private class BasicBlockPart extends @py_flow_node {
-
-    string toString() { result = "Basic block part" }
-
-    BasicBlockPart() {
-        py_flow_bb_node(_, _, this, _) and
-        Pruner::reachable(this)
-    }
-
-    predicate isHead() {
-        count(this.(ControlFlowNode).getAPredecessor()) != 1
+    NameNode() {
+        exists(Name n | py_flow_bb_node(this, n, _, _))
         or
-        exists(ControlFlowNode pred | pred = this.(ControlFlowNode).getAPredecessor() | strictcount(pred.getASuccessor()) > 1)
+        exists(PlaceHolder p | py_flow_bb_node(this, p, _, _))
     }
 
-    private BasicBlockPart previous() {
-        not this.isHead() and
-        py_flow_bb_node(this.(ControlFlowNode).getAPredecessor(), _, result, _)
+    /** Whether this flow node defines the variable `v`. */
+    predicate defines(Variable v) {
+        exists(Name d | this.getNode() = d and d.defines(v))
+        and not this.isLoad()
     }
 
-    BasicBlockPart getHead() {
-        this.isHead() and result = this
+    /** Whether this flow node deletes the variable `v`. */
+    predicate deletes(Variable v) {
+        exists(Name d | this.getNode() = d and d.deletes(v))
+    }
+
+    /** Whether this flow node uses the variable `v`. */
+    predicate uses(Variable v) {
+        this.isLoad() and exists(Name u | this.getNode() = u and u.uses(v))
         or
-        result = this.previous().getHead()
-    }
-
-    predicate isLast() {
-        not exists(BasicBlockPart part | part.previous() = this)
-    }
-
-    int length() {
-        result = max(int j | py_flow_bb_node(_, _, this, j)) + 1
-    }
-
-    int startIndex() {
-        this.isHead() and result = 0
+        exists(PlaceHolder u | this.getNode() = u and u.getVariable() = v and u.getCtx() instanceof Load)
         or
-        exists(BasicBlockPart prev |
-            prev = this.previous() and
-            result = prev.startIndex() + prev.length()
+        Scopes::use_of_global_variable(this, v.getScope(), v.getId())
+    }
+
+    string getId() {
+        result = this.getNode().(Name).getId()
+        or
+        result = this.getNode().(PlaceHolder).getId()
+    }
+
+    /** Whether this is a use of a local variable. */
+    predicate isLocal() {
+        Scopes::local(this)
+    }
+
+    /** Whether this is a use of a non-local variable. */
+    predicate isNonLocal() {
+        Scopes::non_local(this)
+    }
+
+    /** Whether this is a use of a global (including builtin) variable. */
+    predicate isGlobal() {
+        Scopes::use_of_global_variable(this, _, _)
+    }
+
+    predicate isSelf() {
+        exists(SsaVariable selfvar |
+          selfvar.isSelf() and selfvar.getAUse() = this
         )
     }
 
-    predicate contains(ControlFlowNode node) {
-        py_flow_bb_node(node, _, this, _)
+}
+
+/** A control flow node corresponding to a named constant, one of `None`, `True` or `False`. */
+class NameConstantNode extends NameNode {
+
+    NameConstantNode() {
+        exists(NameConstant n | py_flow_bb_node(this, n, _, _))
     }
 
-    int indexOf(ControlFlowNode node) {
-        py_flow_bb_node(node, _, this, result)
+    override deprecated predicate defines(Variable v) { none() }
+
+    override deprecated predicate deletes(Variable v) { none() }
+
+    /* We ought to override uses as well, but that has
+     * a serious performance impact.
+    deprecated predicate uses(Variable v) { none() }
+    */
+}
+
+private module Scopes {
+
+    private predicate fast_local(NameNode n) {
+        exists(FastLocalVariable v |
+            n.uses(v) and
+            v.getScope() = n.getScope()
+        )
     }
 
-    ControlFlowNode lastNode() {
-        this.indexOf(result) = max(this.indexOf(_))
+    predicate local(NameNode n) {
+        fast_local(n)
+        or
+        exists(SsaVariable var |
+            var.getAUse() = n and
+            n.getScope() instanceof Class and
+            exists(var.getDefinition())
+        )
     }
 
-    BasicBlockPart getImmediateDominator() {
-        result.contains(this.(ControlFlowNode).getImmediateDominator())
+    predicate non_local(NameNode n) {
+        exists(FastLocalVariable flv |
+            flv.getALoad() = n.getNode() and
+            not flv.getScope() = n.getScope()
+        )
+    }
+
+    // magic is fine, but we get questionable join-ordering of it
+    pragma [nomagic]
+    predicate use_of_global_variable(NameNode n, Module scope, string name) {
+        n.isLoad() and
+        not non_local(n)
+        and
+        not exists(SsaVariable var |
+            var.getAUse() = n |
+            var.getVariable() instanceof FastLocalVariable 
+            or
+            n.getScope() instanceof Class and
+            not maybe_undefined(var)
+        )
+        and name = n.getId() 
+        and scope = n.getEnclosingModule()
+    }
+
+    private predicate maybe_defined(SsaVariable var) {
+        exists(var.getDefinition()) and not py_ssa_phi(var, _) and not var.getDefinition().isDelete()
+        or
+        exists(SsaVariable input |
+            input = var.getAPhiInput() |
+            maybe_defined(input)
+        )
+    }
+
+    private predicate maybe_undefined(SsaVariable var) {
+        not exists(var.getDefinition()) and not py_ssa_phi(var, _)
+        or
+        var.getDefinition().isDelete()
+        or
+        maybe_undefined(var.getAPhiInput())
+        or
+        exists(BasicBlock incoming |
+            exists(var.getAPhiInput()) and 
+            incoming.getASuccessor() = var.getDefinition().getBasicBlock() and
+            not var.getAPhiInput().getDefinition().getBasicBlock().dominates(incoming)
+        )
     }
 
 }
@@ -1035,24 +1109,17 @@ private class BasicBlockPart extends @py_flow_node {
 class BasicBlock extends @py_flow_node {
 
     BasicBlock() {
-        this.(BasicBlockPart).isHead()
-    }
-
-    private BasicBlockPart getAPart() {
-        result.getHead() = this
+        py_flow_bb_node(_, _, this, _)
     }
 
     /** Whether this basic block contains the specified node */
     predicate contains(ControlFlowNode node) {
-        this.getAPart().contains(node)
+        py_flow_bb_node(node, _, this, _)
     }
 
     /** Gets the nth node in this basic block */
     ControlFlowNode getNode(int n) {
-        exists(BasicBlockPart part |
-            part = this.getAPart() and
-            n = part.startIndex() + part.indexOf(result)
-        )
+        py_flow_bb_node(result, _, this, n)
     }
 
     string toString() {
@@ -1072,7 +1139,7 @@ class BasicBlock extends @py_flow_node {
     }
 
     cached BasicBlock getImmediateDominator() {
-        this.getAPart().getImmediateDominator() = result.getAPart()
+        this.firstNode().getImmediateDominator().getBasicBlock() = result
     }
 
     /** Dominance frontier of a node x is the set of all nodes `other` such that `this` dominates a predecessor
@@ -1088,10 +1155,9 @@ class BasicBlock extends @py_flow_node {
 
     /** Gets the last node in this basic block */
     ControlFlowNode getLastNode() {
-        exists(BasicBlockPart part |
-            part = this.getAPart() and
-            part.isLast() and
-            result = part.lastNode()
+        exists(int i |
+            this.getNode(i) = result and
+            i = max(int j | py_flow_bb_node(_, _, this, j))
         )
     }
 

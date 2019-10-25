@@ -6,9 +6,9 @@
 import cpp
 
 from IfStmt is
-where not
-(
-	is.getASuccessor() = is.getCondition().getAChild*()
-	and count(is.getASuccessor()) = 1
-)
+where
+  not (
+    is.getASuccessor() = is.getCondition().getAChild*() and
+    count(is.getASuccessor()) = 1
+  )
 select is

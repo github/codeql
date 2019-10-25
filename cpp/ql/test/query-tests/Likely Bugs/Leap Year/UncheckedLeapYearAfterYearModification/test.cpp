@@ -445,7 +445,7 @@ void CorrectPattern_check4()
 	if (fixDate(st.wDay, st.wMonth, st.wYear))
 	{
 		// move back a day when landing on Feb 29 in an non-leap year
-		st.wDay = 28;
+		st.wDay = 28; // GOOD [FALSE POSITIVE]
 	}
 
 	// Safe to use
@@ -679,4 +679,58 @@ void mkDateTest(int year)
 		// fail
 	}
 	// ...
+}
+
+void unmodified1()
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	WORD w;
+
+	GetSystemTime(&st);
+
+	w = st.wYear;
+
+	SystemTimeToFileTime(&st, &ft); // GOOD - no modification
+}
+
+void unmodified2()
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	WORD *w_ptr;
+
+	GetSystemTime(&st);
+
+	w_ptr = &(st.wYear);
+
+	SystemTimeToFileTime(&st, &ft); // GOOD - no modification
+}
+
+void modified3()
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	WORD *w_ptr;
+
+	GetSystemTime(&st);
+
+	st.wYear = st.wYear + 1; // BAD
+
+	SystemTimeToFileTime(&st, &ft);
+}
+
+void modified4()
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	WORD *w_ptr;
+
+	GetSystemTime(&st);
+
+	st.wYear++; // BAD
+	st.wYear++; // BAD
+	st.wYear++; // BAD
+
+	SystemTimeToFileTime(&st, &ft);
 }

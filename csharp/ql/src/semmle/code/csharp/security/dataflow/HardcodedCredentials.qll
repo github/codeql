@@ -166,9 +166,7 @@ module HardcodedCredentials {
    */
   class HardcodedCredentialsSinkExpr extends Sink {
     private string description;
-
     private Element supplementaryElement;
-
     private string sinkName;
 
     HardcodedCredentialsSinkExpr() {

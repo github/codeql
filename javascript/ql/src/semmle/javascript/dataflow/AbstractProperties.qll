@@ -1,4 +1,4 @@
-import javascript
+private import javascript
 private import semmle.javascript.dataflow.internal.AbstractValuesImpl
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.internal.AbstractPropertiesImpl

@@ -10,35 +10,55 @@ abstract class Access extends Expr, NameQualifiableElement {
   /** Gets the accessed function, variable, or enum constant. */
   abstract Declaration getTarget();
 
-  override predicate mayBeImpure() {
-    none()
-  }
-  override predicate mayBeGloballyImpure() {
-    none()
-  }
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
 
   override string toString() { none() }
 }
 
 /**
- * A C/C++ enum constant access expression.
+ * A C/C++ `enum` constant access expression. For example the access to
+ * `MYENUMCONST1` in `myFunction` in the following code:
+ * ```
+ * enum MyEnum {
+ *   MYENUMCONST1,
+ *   MYENUMCONST2
+ * };
+ *
+ * void myFunction() {
+ *   MyEnum v = MYENUMCONST1;
+ * };
+ * ```
  */
 class EnumConstantAccess extends Access, @varaccess {
+  override string getCanonicalQLClass() { result = "EnumConstantAccess" }
+
   EnumConstantAccess() {
     exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
   }
 
-  /** Gets the accessed enum constant. */
+  /** Gets the accessed `enum` constant. */
   override EnumConstant getTarget() { varbind(underlyingElement(this), unresolveElement(result)) }
 
-  /** Gets a textual representation of this enum constant access. */
+  /** Gets a textual representation of this `enum` constant access. */
   override string toString() { result = this.getTarget().getName() }
 }
 
 /**
- * A C/C++ variable access expression.
+ * A C/C++ variable access expression. For example the accesses to
+ * `x` and `y` in `myFunction` in the following code:
+ * ```
+ * int x;
+ *
+ * void myFunction(int y) {
+ *   x = y;
+ * };
+ * ```
  */
 class VariableAccess extends Access, @varaccess {
+  override string getCanonicalQLClass() { result = "VariableAccess" }
+
   VariableAccess() {
     not exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
   }
@@ -52,11 +72,11 @@ class VariableAccess extends Access, @varaccess {
    * It does not include accesses on the right-hand side of an assignment, even if they could appear on the left-hand side of some assignment.
    */
   predicate isUsedAsLValue() {
-       exists(Assignment a | a.getLValue() = this)
-    or exists(CrementOperation c | c.getOperand() = this)
-    or exists(AddressOfExpr addof | addof.getOperand() = this)
-    or exists(ReferenceToExpr rte | this.getConversion() = rte)
-    or exists(ArrayToPointerConversion atpc | this.getConversion() = atpc)
+    exists(Assignment a | a.getLValue() = this) or
+    exists(CrementOperation c | c.getOperand() = this) or
+    exists(AddressOfExpr addof | addof.getOperand() = this) or
+    exists(ReferenceToExpr rte | this.getConversion() = rte) or
+    exists(ArrayToPointerConversion atpc | this.getConversion() = atpc)
   }
 
   /**
@@ -64,9 +84,11 @@ class VariableAccess extends Access, @varaccess {
    * for instance by an assignment or increment/decrement operator.
    */
   predicate isModified() {
-       exists(Assignment a | a.getLValue() = this)
-    or exists(CrementOperation c | c.getOperand() = this)
-    or exists(FunctionCall c | c.getQualifier() = this and c.getTarget().hasName("operator="))
+    exists(Assignment a | a.getLValue() = this)
+    or
+    exists(CrementOperation c | c.getOperand() = this)
+    or
+    exists(FunctionCall c | c.getQualifier() = this and c.getTarget().hasName("operator="))
   }
 
   /** Holds if this variable access is an rvalue. */
@@ -94,16 +116,16 @@ class VariableAccess extends Access, @varaccess {
 
   /** Gets a textual representation of this variable access. */
   override string toString() {
-    if exists(this.getTarget()) then
-      result = this.getTarget().getName()
-    else
-      result = "variable access"
+    if exists(this.getTarget())
+    then result = this.getTarget().getName()
+    else result = "variable access"
   }
 
   override predicate mayBeImpure() {
     this.getQualifier().mayBeImpure() or
     this.getTarget().getType().isVolatile()
   }
+
   override predicate mayBeGloballyImpure() {
     this.getQualifier().mayBeGloballyImpure() or
     this.getTarget().getType().isVolatile()
@@ -114,9 +136,7 @@ class VariableAccess extends Access, @varaccess {
    * in such a way that the address might escape. This can be either explicit,
    * for example `&x`, or implicit, for example `T& y = x`.
    */
-  predicate isAddressOfAccess() {
-    variableAddressEscapesTree(this, _)
-  }
+  predicate isAddressOfAccess() { variableAddressEscapesTree(this, _) }
 
   /**
    * Holds if this access is used to get the address of the underlying variable
@@ -124,15 +144,26 @@ class VariableAccess extends Access, @varaccess {
    * non-const data. This can be either explicit, for example `&x`, or
    * implicit, for example `T& y = x`.
    */
-  predicate isAddressOfAccessNonConst() {
-    variableAddressEscapesTreeNonConst(this, _)
-  }
+  predicate isAddressOfAccessNonConst() { variableAddressEscapesTreeNonConst(this, _) }
 }
 
 /**
- * A C/C++ field access expression.
+ * A C/C++ field access expression. For example the accesses to
+ * `x` and `y` in `myMethod` in the following code:
+ * ```
+ * class MyClass {
+ * public:
+ *   void myMethod(MyClass &other) {
+ *     x = other.y;
+ *   }
+ *
+ *   int x, y;
+ * };
+ * ```
  */
 class FieldAccess extends VariableAccess {
+  override string getCanonicalQLClass() { result = "FieldAccess" }
+
   FieldAccess() { exists(Field f | varbind(underlyingElement(this), unresolveElement(f))) }
 
   /** Gets the accessed field. */
@@ -140,14 +171,32 @@ class FieldAccess extends VariableAccess {
 }
 
 /**
- * A field access of the form `obj->field`. The type of `obj` is a pointer,
- * so this is equivalent to `(*obj).field`.
+ * A field access whose qualifier is a pointer to a class, struct or union.
+ * These typically take the form `obj->field`. Another case is a field access
+ * with an implicit `this->` qualifier, which is often a `PointerFieldAccess`
+ * (but see also `ImplicitThisFieldAccess`).
+ *
+ * For example the accesses to `x` and `y` in `myMethod` in the following code
+ * are each a `PointerFieldAccess`:
+ * ```
+ * class MyClass {
+ * public:
+ *   void myMethod(MyClass *other) {
+ *       other->x = y;
+ *   }
+ *
+ *   int x, y;
+ * };
+ * ```
  */
 class PointerFieldAccess extends FieldAccess {
+  override string getCanonicalQLClass() { result = "PointerFieldAccess" }
+
   PointerFieldAccess() {
-    exists (PointerType t
-    | t = getQualifier().getFullyConverted().getUnspecifiedType() and
-      t.getBaseType() instanceof Class)
+    exists(PointerType t |
+      t = getQualifier().getFullyConverted().getUnspecifiedType() and
+      t.getBaseType() instanceof Class
+    )
   }
 }
 
@@ -158,30 +207,51 @@ class PointerFieldAccess extends FieldAccess {
  * distinguish whether or not the type of `obj` is a reference type.
  */
 class DotFieldAccess extends FieldAccess {
-  DotFieldAccess() {
-    exists (Class c
-    | c = getQualifier().getFullyConverted().getUnspecifiedType())
-  }
+  override string getCanonicalQLClass() { result = "DotFieldAccess" }
+
+  DotFieldAccess() { exists(Class c | c = getQualifier().getFullyConverted().getUnspecifiedType()) }
 }
 
 /**
  * A field access of the form `obj.field`, where the type of `obj` is a
- * reference to a class/struct/union.
+ * reference to a class/struct/union. For example the accesses to `y` in
+ * `myMethod` in the following code:
+ * ```
+ * class MyClass {
+ * public:
+ *   void myMethod(MyClass a, MyClass &b) {
+ *     a.x = b.y;
+ *   }
+ *
+ *   int x, y;
+ * };
+ * ```
  */
 class ReferenceFieldAccess extends DotFieldAccess {
-  ReferenceFieldAccess() {
-    exprHasReferenceConversion(this.getQualifier())
-  }
+  override string getCanonicalQLClass() { result = "ReferenceFieldAccess" }
+
+  ReferenceFieldAccess() { exprHasReferenceConversion(this.getQualifier()) }
 }
 
 /**
  * A field access of the form `obj.field`, where the type of `obj` is a
- * class/struct/union (and not a reference).
+ * class/struct/union (and not a reference). For example the accesses to `x`
+ * in `myMethod` in the following code:
+ * ```
+ * class MyClass {
+ * public:
+ *   void myMethod(MyClass a, MyClass &b) {
+ *     a.x = b.y;
+ *   }
+ *
+ *   int x, y;
+ * };
+ * ```
  */
 class ValueFieldAccess extends DotFieldAccess {
-  ValueFieldAccess() {
-    not exprHasReferenceConversion(this.getQualifier())
-  }
+  override string getCanonicalQLClass() { result = "ValueFieldAccess" }
+
+  ValueFieldAccess() { not exprHasReferenceConversion(this.getQualifier()) }
 }
 
 /**
@@ -195,58 +265,101 @@ private predicate referenceConversion(Conversion c) {
 /**
  * Holds if `e` is a reference expression (that is, it has a type of the
  * form `T&`), which is converted to a value. For example:
- *
  * ```
  * int myfcn(MyStruct &x) {
  *   return x.field;
  * }
  * ```
- *
  * In this example, the type of `x` is `MyStruct&`, but it gets implicitly
  * converted to `MyStruct` in the expression `x.field`.
  */
-private predicate exprHasReferenceConversion(Expr e) {
-  referenceConversion(e.getConversion+())
-}
+private predicate exprHasReferenceConversion(Expr e) { referenceConversion(e.getConversion+()) }
 
 /**
- * A field access of a field of `this`. The access has no qualifier because
- * the use of `this` is implicit. For example, `field` is equivalent to
- * `this->field` if `field` is a member of `this`.
+ * A field access of a field of `this` which has no qualifier because
+ * the use of `this` is implicit. For example, in the following code the
+ * implicit call to the destructor of `A` has no qualifier because the
+ * use of `this` is implicit:
+ * ```
+ * class A {
+ * public:
+ *   ~A() {
+ *     // ...
+ *   }
+ * };
  *
+ * class B {
+ * public:
+ *   A a;
+ *
+ *   ~B() {
+ *     // Implicit call to the destructor of `A`.
+ *   }
+ * };
+ * ```
  * Note: the C++ front-end often automatically desugars `field` to
- * `this->field`, so most implicit accesses of `this->field` are instances
+ * `this->field`, so most accesses of `this->field` are instances
  * of `PointerFieldAccess` (with `ThisExpr` as the qualifier), not
  * `ImplicitThisFieldAccess`.
  */
 class ImplicitThisFieldAccess extends FieldAccess {
-  ImplicitThisFieldAccess() {
-    not exists (this.getQualifier())
-  }
+  override string getCanonicalQLClass() { result = "ImplicitThisFieldAccess" }
+
+  ImplicitThisFieldAccess() { not exists(this.getQualifier()) }
 }
 
 /**
- * A C/C++ function access expression.
+ * A C++ _pointer to non-static data member_ literal. For example, `&C::x` is
+ * an expression that refers to field `x` of class `C`. If the type of that
+ * field is `int`, then `&C::x` ought to have type `int C::*`. It is currently
+ * modeled in QL as having type `int`.
+ *
+ * See [dcl.mptr] in the C++17 standard or see
+ * https://en.cppreference.com/w/cpp/language/pointer#Pointers_to_data_members.
+ */
+class PointerToFieldLiteral extends ImplicitThisFieldAccess {
+  PointerToFieldLiteral() {
+    // The extractor currently emits a pointer-to-field literal as a field
+    // access without a qualifier. The only other unqualified field accesses it
+    // emits are for compiler-generated constructors and destructors. When we
+    // filter those out, there are only pointer-to-field literals left.
+    not this.isCompilerGenerated()
+  }
+
+  override predicate isConstant() { any() }
+
+  override string getCanonicalQLClass() { result = "PointerToFieldLiteral" }
+}
+
+/**
+ * A C/C++ function access expression. For example the access to
+ * `myFunctionTarget` in `myFunction` in the following code:
+ * ```
+ * int myFunctionTarget(int);
+ *
+ * void myFunction() {
+ *   int (*myFunctionPointer)(int) = &myTarget;
+ * }
+ * ```
  */
 class FunctionAccess extends Access, @routineexpr {
-  FunctionAccess() {
-    not iscall(underlyingElement(this),_)
-  }
+  FunctionAccess() { not iscall(underlyingElement(this), _) }
+
+  override string getCanonicalQLClass() { result = "FunctionAccess" }
 
   /** Gets the accessed function. */
   override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
 
   /** Gets a textual representation of this function access. */
   override string toString() {
-    if exists(this.getTarget()) then
-      result = this.getTarget().getName()
-    else
-      result = "function access"
+    if exists(this.getTarget())
+    then result = this.getTarget().getName()
+    else result = "function access"
   }
 }
 
 /**
- * An access to a parameter of a function signature for the purposes of a decltype.
+ * An access to a parameter of a function signature for the purposes of a `decltype`.
  *
  * For example, given the following code:
  * ```
@@ -256,41 +369,64 @@ class FunctionAccess extends Access, @routineexpr {
  *   }
  * ```
  * The return type of the function is a decltype, the expression of which contains
- * an add expression, which in turn has two ParamAccessForType children.
+ * an add expression, which in turn has two `ParamAccessForType` children.
  */
 class ParamAccessForType extends Expr, @param_ref {
-  override string toString() {
-    result = "param access"
-  }
+  override string toString() { result = "param access" }
 }
 
 /**
  * An access to a type.  This occurs in certain contexts where a built-in
- * works on types directly rather than variables, expressions etc.
+ * works on types directly rather than variables, expressions etc.  For
+ * example the reference to `MyClass` in `__is_pod` in the following code:
+ * ```
+ * class MyClass {
+ *   ...
+ * };
+ *
+ * void myFunction() {
+ *   if (__is_pod(MyClass))
+ *   {
+ *     ...
+ *   } else {
+ *     ...
+ *   }
+ * }
+ * ```
  */
 class TypeName extends Expr, @type_operand {
-  override string toString() {
-    result = this.getType().getName()
-  }
+  override string getCanonicalQLClass() { result = "TypeName" }
+
+  override string toString() { result = this.getType().getName() }
 }
 
 /**
- * A C/C++ array access expression.
+ * A C/C++ array access expression. For example, the access to `as` in
+ * `myFunction` in the following code:
+ * ```
+ * int as[10];
  *
- * For calls to operator[], which look syntactically identical, see OverloadedArrayExpr.
+ * void myFunction() {
+ *   as[0]++;
+ * }
+ * ```
+ * For calls to `operator[]`, which look syntactically identical, see
+ * `OverloadedArrayExpr`.
  */
 class ArrayExpr extends Expr, @subscriptexpr {
+  override string getCanonicalQLClass() { result = "ArrayExpr" }
+
   /**
    * Gets the array or pointer expression being subscripted.
    *
-   * This is arr in both arr[0] and 0[arr].
+   * This is `arr` in both `arr[0]` and `0[arr]`.
    */
   Expr getArrayBase() { result = this.getChild(0) }
 
   /**
    * Gets the expression giving the index into the array.
    *
-   * This is 0 in both arr[0] and 0[arr].
+   * This is `0` in both `arr[0]` and `0[arr]`.
    */
   Expr getArrayOffset() { result = this.getChild(1) }
 
@@ -299,9 +435,11 @@ class ArrayExpr extends Expr, @subscriptexpr {
    * for instance by an assignment or an increment/decrement operation.
    */
   predicate isModified() {
-       exists(Assignment a | a.getLValue() = this)
-    or exists(CrementOperation c | c.getOperand() = this)
-    or exists(FunctionCall c | c.getQualifier() = this and c.getTarget().hasName("operator="))
+    exists(Assignment a | a.getLValue() = this)
+    or
+    exists(CrementOperation c | c.getOperand() = this)
+    or
+    exists(FunctionCall c | c.getQualifier() = this and c.getTarget().hasName("operator="))
   }
 
   override string toString() { result = "access to array" }
@@ -312,6 +450,7 @@ class ArrayExpr extends Expr, @subscriptexpr {
     this.getArrayBase().getFullyConverted().getType().(DerivedType).getBaseType().isVolatile() or
     this.getArrayOffset().getFullyConverted().getType().(DerivedType).getBaseType().isVolatile()
   }
+
   override predicate mayBeGloballyImpure() {
     this.getArrayBase().mayBeGloballyImpure() or
     this.getArrayOffset().mayBeGloballyImpure() or

@@ -1,0 +1,182 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+{%- block doctype -%}
+<!DOCTYPE html>
+{%- endblock %}
+
+{%- set reldelim1 = reldelim1 is not defined and ' &raquo;' or reldelim1 %}
+{%- set reldelim2 = reldelim2 is not defined and ' |' or reldelim2 %}
+{%- set render_sidebar = (not embedded) and (not theme_nosidebar|tobool) and
+                         (sidebars != []) %}
+{%- set url_root = pathto('', 1) %}
+{# XXX necessary? #}
+{%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
+{%- if not embedded and docstitle %}
+  {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+{%- else %}
+  {%- set titlesuffix = "" %}
+{%- endif %}
+
+{%- macro relbar() %}
+{%- endmacro %}
+
+{%- macro sidebar() %}
+{%- endmacro %}
+
+{%- macro script() %}
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.21',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+
+<script data-main="{{ pathto('_static/js/slides', 1) }}"
+            src="{{ pathto('_static/js/require-1.0.8.min.js', 1) }}"></script>
+
+    {%- for scriptfile in script_files %}
+    <script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
+    {%- endfor %}
+    {% if theme_custom_js %}
+    <script type="text/javascript" src="{{ pathto('_static/' + theme_custom_js, 1) }}"></script>
+    {% endif %}
+
+{%- endmacro %}
+
+{%- macro css() %}
+  <link rel="stylesheet" media="all"
+        href="{{ pathto('_static/theme/css/default.css', 1) }}">
+  <link rel="stylesheet" media="all"
+        href="{{ pathto('_static/theme/css/hieroglyph.css', 1) }}">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="{{ pathto('_static/theme/css/phone.css', 1) }}">
+
+  <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}" type="text/css" />
+  {% if theme_custom_css %}
+  <link rel="stylesheet" href="{{ pathto('_static/' + theme_custom_css, 1) }}"
+        type="text/css" />
+  {% endif %}
+  
+  {%- for cssfile in css_files %}
+  <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+  {%- endfor %}
+{%- endmacro %}
+
+<html>
+<head>
+  {%- block htmltitle %}
+  <title>{{ title|striptags|e }}{{ titlesuffix }}</title>
+  {%- endblock %}
+  <meta charset="{{ encoding }}">
+  {{ metatags }}
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!-- comment -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <!-- end comment -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="hieroglyph-title" data-config-title>
+  <meta name="hieroglyph-subtitle" data-config-subtitle>
+  <meta name="hieroglyph-presenter" data-config-presenter>
+
+  {{ css() }}
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  {%- if not embedded %}
+  {{ script() }}
+  {%- if use_opensearch %}
+  <link rel="search" type="application/opensearchdescription+xml"
+        title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}"
+        href="{{ pathto('_static/opensearch.xml', 1) }}"/>
+  {%- endif %}
+  {%- if favicon %}
+  <link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>
+  {%- endif %}
+  {%- endif %}
+{%- block linktags %}
+    {%- if hasdoc('about') %}
+    <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}" />
+    {%- endif %}
+    {%- if hasdoc('genindex') %}
+    <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}" />
+    {%- endif %}
+    {%- if hasdoc('search') %}
+    <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}" />
+    {%- endif %}
+    {%- if hasdoc('copyright') %}
+    <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}" />
+    {%- endif %}
+    <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}" />
+    {%- if parents %}
+    <link rel="up" title="{{ parents[-1].title|striptags|e }}" href="{{ parents[-1].link|e }}" />
+    {%- endif %}
+    {%- if next %}
+    <link rel="next" title="{{ next.title|striptags|e }}" href="{{ next.link|e }}" />
+    {%- endif %}
+    {%- if prev %}
+    <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}" />
+    {%- endif %}
+{%- endblock %}
+{%- block extrahead %} 
+<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Work+Sans&display=swap' rel='stylesheet'>
+{% endblock %}
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen" id="slides">
+
+<!--  {% include "title_slide.html" %} -->
+
+  {% block body %}{% endblock %}
+
+  {% include "end_slide.html" %}
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+
+<script type="text/javascript">
+
+//insert info buttons on slides that have additional notes 
+  $(".admonition.note").before("<button id='extra-notes'>&#9432;</button>");
+  $(".admonition-title").before("<button id='close-notes'>&times;</button>");
+  $(document).ready(function() {
+     $('button').click(function() {
+       document.body.classList.toggle('with-notes');
+     });
+  });
+</script>
+
+<script type="text/javascript">
+
+//assigns font-size when document is ready
+document.onreadystatechange = () => {
+  if (document.readyState === 'complete') {
+    var wrapperHeight = document.getElementById('slides').clientHeight;
+    var relativeFontSize = wrapperHeight / 45 + 'px'; //change integer to set desired font size
+    document.getElementById("slides").style.fontSize = relativeFontSize;
+  }
+};
+//then on window resize
+window.onresize = function(event) {
+  var wrapperHeight = document.getElementById('slides').clientHeight;
+  var relativeFontSize = wrapperHeight / 45 + 'px'; //change integer to set for desired font size
+  document.getElementById("slides").style.fontSize = relativeFontSize;
+};
+</script>
+
+</body>
+</html>

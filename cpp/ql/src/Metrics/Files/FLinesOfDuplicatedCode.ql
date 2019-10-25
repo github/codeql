@@ -12,12 +12,15 @@
  * @tags testability
  *       modularity
  */
+
 import external.CodeDuplication
 
 from File f, int n
-where n = count(int line |
-                exists(DuplicateBlock d | d.sourceFile() = f |
-                       line in [d.sourceStartLine()..d.sourceEndLine()])
-                and not whitelistedLineForDuplication(f, line))
-select f, n
-order by n desc
+where
+  n = count(int line |
+      exists(DuplicateBlock d | d.sourceFile() = f |
+        line in [d.sourceStartLine() .. d.sourceEndLine()]
+      ) and
+      not whitelistedLineForDuplication(f, line)
+    )
+select f, n order by n desc

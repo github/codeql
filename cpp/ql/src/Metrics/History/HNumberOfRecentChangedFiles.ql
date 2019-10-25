@@ -9,14 +9,16 @@
  * @tags external-data
  * @deprecated
  */
+
 import cpp
 import external.VCS
 
 from File f
-where exists(Commit e |
-             e.getAnAffectedFile() = f and
-             e.daysToNow() <= 180 and
-             not artificialChange(e))
-  and exists(f.getMetrics().getNumberOfLinesOfCode())
+where
+  exists(Commit e |
+    e.getAnAffectedFile() = f and
+    e.daysToNow() <= 180 and
+    not artificialChange(e)
+  ) and
+  exists(f.getMetrics().getNumberOfLinesOfCode())
 select f, 1
-

@@ -30,7 +30,6 @@ private class ComposedFunction extends DataFlow::CallNode {
  */
 private class ComposedFunctionTaintStep extends TaintTracking::AdditionalTaintStep {
   ComposedFunction composed;
-
   DataFlow::CallNode call;
 
   ComposedFunctionTaintStep() {

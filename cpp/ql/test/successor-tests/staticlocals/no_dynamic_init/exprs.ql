@@ -5,4 +5,3 @@ import cpp
 // expressions seeing as we have to compile a query anyway.
 from Expr e
 select e.getLocation(), e
-

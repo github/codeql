@@ -2,6 +2,7 @@
  * @name MemberVariable
  * @kind table
  */
+
 import cpp
 
 from MemberVariable m, string static

@@ -2,7 +2,18 @@
 
 import javascript
 
-/** A JavaScript source code comment. */
+/**
+ * A JavaScript source-code comment.
+ *
+ * Examples:
+ *
+ * <pre>
+ * // a line comment
+ * /* a block
+ *   comment *&#47
+ * &lt;!-- an HTML line comment
+ * </pre>
+ */
 class Comment extends @comment, Locatable {
   override Location getLocation() { hasLocation(this, result) }
 
@@ -32,26 +43,95 @@ class Comment extends @comment, Locatable {
   }
 }
 
-/** A line comment, that is, either an HTML comment or a `//` comment. */
+/**
+ * A line comment, that is, either an HTML comment or a `//` comment.
+ *
+ * Examples:
+ *
+ * <pre>
+ * // a line comment
+ * &lt;!-- an HTML line comment
+ * </pre>
+ */
 class LineComment extends @linecomment, Comment { }
 
-/** An HTML comment start/end token interpreted as a line comment. */
+/**
+ * An HTML comment start/end token interpreted as a line comment.
+ *
+ * Example:
+ *
+ * ```
+ * &lt;!-- an HTML line comment
+ * --> also an HTML line comment
+ * ```
+ */
 class HtmlLineComment extends @htmlcomment, LineComment { }
 
-/** An HTML comment start token interpreted as a line comment. */
+/**
+ * An HTML comment start token interpreted as a line comment.
+ *
+ * Example:
+ *
+ * ```
+ * &lt;!-- an HTML line comment
+ * ```
+ */
 class HtmlCommentStart extends @htmlcommentstart, HtmlLineComment { }
 
-/** An HTML comment end token interpreted as a line comment. */
+/**
+ * An HTML comment end token interpreted as a line comment.
+ *
+ * Example:
+ *
+ * ```
+ * --> also an HTML line comment
+ * ```
+ */
 class HtmlCommentEnd extends @htmlcommentend, HtmlLineComment { }
 
-/** A `//` comment. */
+/**
+ * A `//` comment.
+ *
+ * Example:
+ *
+ * ```
+ * // a line comment
+ * ```
+ */
 class SlashSlashComment extends @slashslashcomment, LineComment { }
 
-/** A block comment (which may be a JSDoc comment). */
+/**
+ * A block comment (which may be a JSDoc comment).
+ *
+ * Examples:
+ *
+ * <pre>
+ * /* a block comment
+ *   (but not a JSDoc comment) *&#47;
+ * /** a JSDoc comment *&#47;
+ * </pre>
+ */
 class BlockComment extends @blockcomment, Comment { }
 
-/** A C-style block comment which is not a JSDoc comment. */
+/**
+ * A C-style block comment which is not a JSDoc comment.
+ *
+ * Example:
+ *
+ * <pre>
+ * /* a block comment
+ *   (but not a JSDoc comment) *&#47;
+ * </pre>
+ */
 class SlashStarComment extends @slashstarcomment, BlockComment { }
 
-/** A JSDoc comment. */
+/**
+ * A JSDoc comment.
+ *
+ * Example:
+ *
+ * <pre>
+ * /** a JSDoc comment *&#47;
+ * </pre>
+ */
 class DocComment extends @doccomment, BlockComment { }

@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -12,18 +13,19 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Context.Compilation.ObjectType.Locations.FirstOrDefault();
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.types(this, Kinds.TypeKind.DYNAMIC, "dynamic"));
-            Context.Emit(Tuples.type_location(this, Location));
+            trapFile.types(this, Kinds.TypeKind.DYNAMIC, "dynamic");
+            trapFile.type_location(this, Location);
 
-            Context.Emit(Tuples.has_modifiers(this, Modifier.Create(Context, "public")));
-            Context.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace)));
+            trapFile.has_modifiers(this, Modifier.Create(Context, "public"));
+            trapFile.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace));
         }
 
-        static readonly Key id = new Key("dynamic;type");
-
-        public override IId Id => id;
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write("dynamic;type");
+        }
 
         class DynamicTypeFactory : ICachedEntityFactory<IDynamicTypeSymbol, DynamicType>
         {

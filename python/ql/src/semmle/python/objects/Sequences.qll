@@ -49,7 +49,14 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
         or
         n = 3 and this.length() > 3 and result = (this.length()-3).toString() + " more..."
         or
-        result = this.getItem(n).toString() + ", " + this.contents(n+1)
+        result = this.item(n) + ", " + this.contents(n+1)
+    }
+
+    private string item(int n) {
+        result = this.getItem(n).toString()
+        or
+        n in [0..this.length()-1] and
+        not exists(this.getItem(n)) and result = "?"
     }
 
     /** Gets the class declaration for this object, if it is a declared class. */
@@ -121,6 +128,11 @@ class BuiltinTupleObjectInternal extends TBuiltinTuple, TupleObjectInternal {
             result = count(int n | exists(b.getItem(n)))
         )
     }
+
+    override predicate useOriginAsLegacyObject() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 /** A tuple declared by a tuple expression in the Python source code */
@@ -152,6 +164,10 @@ class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
         )
     }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 /** A tuple created by a `*` parameter */
@@ -180,6 +196,11 @@ class VarargsTupleObjectInternal extends TVarargsTuple,  TupleObjectInternal {
     override int length() {
         this = TVarargsTuple(_, _, _, result)
     }
+
+    override predicate useOriginAsLegacyObject() { any() }
+
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 
@@ -259,5 +280,9 @@ class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectIntern
     override int length() { result = 5 }
 
     override predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
+
+    override predicate useOriginAsLegacyObject() { any() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }

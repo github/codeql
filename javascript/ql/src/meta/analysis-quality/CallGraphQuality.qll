@@ -4,7 +4,6 @@
  */
 
 import javascript
-
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dependencies.Dependencies
 private import semmle.javascript.dependencies.FrameworkLibraries
@@ -38,6 +37,14 @@ class IgnoredFile extends File {
 /** An call site that is relevant for analysis quality. */
 class RelevantInvoke extends InvokeNode {
   RelevantInvoke() { not getFile() instanceof IgnoredFile }
+}
+
+/** An call site that is relevant for analysis quality. */
+class RelevantFunction extends Function {
+  RelevantFunction() {
+    not getFile() instanceof IgnoredFile and
+    hasBody() // ignore abstract or ambient functions
+  }
 }
 
 /**
@@ -88,17 +95,13 @@ predicate isExternalLibrary(string name) {
  * Holds if the global variable `name` is defined externally.
  */
 predicate isExternalGlobal(string name) {
-  exists(ExternalGlobalDecl decl |
-    decl.getName() = name
-  )
+  exists(ExternalGlobalDecl decl | decl.getName() = name)
   or
   exists(Dependency dep |
     // If name is never assigned anywhere, and it coincides with a dependency,
     // it's most likely coming from there.
     dep.info(name, _) and
-    not exists(Assignment assign |
-      assign.getLhs().(GlobalVarAccess).getName() = name
-    )
+    not exists(Assignment assign | assign.getLhs().(GlobalVarAccess).getName() = name)
   )
   or
   name = "_"
@@ -136,7 +139,7 @@ SourceNode externalNode() {
 }
 
 /**
- * Gets a data flow node that can be resolved to a callback.
+ * Gets a data flow node that can be resolved to a function, usually a callback.
  *
  * These are not part of the static call graph, but the data flow analysis can
  * track them, so we consider them resolved.
@@ -151,11 +154,39 @@ SourceNode resolvableCallback() {
 }
 
 /**
+ * Gets a data flow node that can be resolved to an invocation of a callback.
+ *
+ * These are not part of the static call graph, but the data flow analysis can
+ * track them, so we consider them resolved.
+ */
+SourceNode nodeLeadingToInvocation() {
+  exists(result.getAnInvocation())
+  or
+  exists(Node arg |
+    FlowSteps::argumentPassing(_, arg, _, nodeLeadingToInvocation()) and
+    result.flowsTo(arg)
+  )
+  or
+  exists(AdditionalPartialInvokeNode invoke, Node arg |
+    invoke.isPartialArgument(arg, _, _) and
+    result.flowsTo(arg)
+  )
+}
+
+/**
+ * Holds if there is a call edge `invoke -> f` between a relevant invocation
+ * and a relevant function.
+ */
+predicate relevantCall(RelevantInvoke invoke, RelevantFunction f) {
+  FlowSteps::calls(invoke, f)
+}
+
+/**
  * A call site that can be resolved to a function in the same project.
  */
 class ResolvableCall extends RelevantInvoke {
   ResolvableCall() {
-    FlowSteps::calls(this, _)
+    relevantCall(this, _)
     or
     this = resolvableCallback().getAnInvocation()
   }
@@ -201,7 +232,23 @@ class UnresolvableCall extends RelevantInvoke {
  * A call that is believed to call a function within the same project.
  */
 class NonExternalCall extends RelevantInvoke {
-  NonExternalCall() {
-    not this instanceof ExternalCall
+  NonExternalCall() { not this instanceof ExternalCall }
+}
+
+/**
+ * A function with at least one call site.
+ */
+class FunctionWithCallers extends RelevantFunction {
+  FunctionWithCallers() {
+    FlowSteps::calls(_, this)
+    or
+    this = nodeLeadingToInvocation().getAstNode()
   }
+}
+
+/**
+ * A function without any call sites.
+ */
+class FunctionWithoutCallers extends RelevantFunction {
+  FunctionWithoutCallers() { not this instanceof FunctionWithCallers }
 }

@@ -55,6 +55,8 @@ abstract class InstanceObject extends ObjectInternal {
 
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 private predicate self_variable_reaching_init_exit(EssaVariable self) {
@@ -91,7 +93,14 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
     override predicate notTestableForEquality() { none() }
 
     override ObjectInternal getClass() {
-        this = TSpecificInstance(_, result, _)
+        exists(ClassObjectInternal cls, ClassDecl decl |
+            this = TSpecificInstance(_, cls, _) and
+            decl = cls.getClassDeclaration() |
+            if decl.callReturnsInstance() then
+                result = cls
+            else
+               result = TUnknownClass()
+        )
     }
 
     /** Gets the `Builtin` for this object, if any.
@@ -163,6 +172,8 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
             cls.lookup("__init__", init, _)
         )
     }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
 }
 
@@ -265,6 +276,8 @@ class SelfInstanceInternal extends TSelfInstance, InstanceObject {
         init.getScope() != this.getParameter().getScope() and
         this.getClass().attribute("__init__", init, _)
     }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
 }
 
@@ -372,7 +385,11 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { any() }
+
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 
@@ -482,7 +499,11 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { any() }
+
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 

@@ -84,13 +84,15 @@ private module Internal {
     Expr getQualifier(DispatchCall dc) { result = dc.(DispatchCallImpl).getQualifier() }
 
     cached
+    Callable getAStaticTarget(DispatchCall dc) { result = dc.(DispatchCallImpl).getAStaticTarget() }
+
+    cached
     RuntimeCallable getADynamicTarget(DispatchCall dc) {
       result = dc.(DispatchCallImpl).getADynamicTarget()
     }
   }
-  import Cached
 
-  Callable getAStaticTarget(DispatchCall dc) { result = dc.(DispatchCallImpl).getAStaticTarget() }
+  import Cached
 
   /**
    * Holds if `mc` is a reflection call to a method named `name`, where
@@ -383,6 +385,7 @@ private module Internal {
       )
     }
   }
+
   private import SimpleTypeDataFlow
 
   /**

@@ -2,27 +2,31 @@ import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Class
 
 /**
- * A C++11 lambda expression, such as `[&amp;, =y](int x) mutable -> double {return z = (y += x);}`.
+ * A C++11 lambda expression, for example the expression initializing `a` in
+ * the following code:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  *
  * The type given by `getType()` will be an instance of `Closure`.
  */
 class LambdaExpression extends Expr, @lambdaexpr {
-  override string toString() {
-    result = "[...](...){...}"
-  }
+  override string toString() { result = "[...](...){...}" }
+
+  override string getCanonicalQLClass() { result = "LambdaExpression" }
 
   /**
    * Gets an implicitly or explicitly captured value of this lambda expression.
    */
-  LambdaCapture getACapture() {
-    result = getCapture(_)
-  }
+  LambdaCapture getACapture() { result = getCapture(_) }
 
   /**
    * Gets the nth implicitly or explicitly captured value of this lambda expression.
    */
   LambdaCapture getCapture(int index) {
-    lambda_capture(result, underlyingElement(this), index, _, _, _)
+    lambda_capture(result, underlyingElement(this), index, _, _, _, _)
   }
 
   /**
@@ -33,16 +37,12 @@ class LambdaExpression extends Expr, @lambdaexpr {
    *   - "&amp;" if capture-by-reference is the default for implicit captures.
    *   - "=" if capture-by-value is the default for implicit captures.
    */
-  string getDefaultCaptureMode() {
-    lambdas(underlyingElement(this), result, _)
-  }
+  string getDefaultCaptureMode() { lambdas(underlyingElement(this), result, _) }
 
   /**
    * Holds if the return type (of the call operator of the resulting object) was explicitly specified.
    */
-  predicate returnTypeIsExplicit() {
-    lambdas(underlyingElement(this), _, true)
-  }
+  predicate returnTypeIsExplicit() { lambdas(underlyingElement(this), _, true) }
 
   /**
    * Gets the function which will be invoked when the resulting object is called.
@@ -54,57 +54,59 @@ class LambdaExpression extends Expr, @lambdaexpr {
    *   - The return type.
    *   - The statements comprising the lambda body.
    */
-  Operator getLambdaFunction() {
-    result = getType().(Closure).getLambdaFunction()
-  }
+  Operator getLambdaFunction() { result = getType().(Closure).getLambdaFunction() }
 
   /**
    * Gets the initializer that initializes the captured variables in the closure, if any.
    * A lambda that does not capture any variables will not have an initializer.
    */
-  Expr getInitializer() {
-    result = getChild(0)
-  }
+  ClassAggregateLiteral getInitializer() { result = getChild(0) }
 }
 
 /**
  * A class written by the compiler to be the type of a C++11 lambda expression.
+ * For example the variable `a` in the following code has a closure type:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  */
 class Closure extends Class {
-  Closure() {
-    exists(LambdaExpression e | this = e.getType())
-  }
+  Closure() { exists(LambdaExpression e | this = e.getType()) }
+
+  override string getCanonicalQLClass() { result = "Closure" }
 
   /** Gets the lambda expression of which this is the type. */
-  LambdaExpression getLambdaExpression() {
-    result.getType() = this
-  }
+  LambdaExpression getLambdaExpression() { result.getType() = this }
 
   /** Gets the compiler-generated operator() of this closure type. */
   Operator getLambdaFunction() {
-    result = this.getAMember()
-    and result.getName() = "operator()"
+    result = this.getAMember() and
+    result.getName() = "operator()"
   }
 
-  override string toString() {
-    result = "decltype([...](...){...})"
-  }
+  override string toString() { result = "decltype([...](...){...})" }
 }
 
 /**
- * Information about a value captured as part of a lambda expression.
+ * Information about a value captured as part of a lambda expression.  For
+ * example in the following code, information about `x` and `y` is captured:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  */
-class LambdaCapture extends @lambdacapture {
-  string toString() {
-    result = getField().toString()
-  }
+class LambdaCapture extends Locatable, @lambdacapture {
+  override string toString() { result = getField().toString() }
+
+  override string getCanonicalQLClass() { result = "LambdaCapture" }
 
   /**
    * Holds if this capture was made implicitly.
    */
-  predicate isImplicit() {
-    lambda_capture(this, _, _, _, true, _)
-  }
+  predicate isImplicit() { lambda_capture(this, _, _, _, _, true, _) }
 
   /**
    * Holds if the variable was captured by reference.
@@ -115,9 +117,7 @@ class LambdaCapture extends @lambdacapture {
    *   - The identifier is "this". [Said behaviour is dictated by the C++11 standard, but it
    *                                is actually "*this" being captured rather than "this".]
    */
-  predicate isCapturedByReference() {
-    lambda_capture(this, _, _, true, _, _)
-  }
+  predicate isCapturedByReference() { lambda_capture(this, _, _, _, true, _, _) }
 
   /**
    * Gets the location of the declaration of this capture.
@@ -127,18 +127,12 @@ class LambdaCapture extends @lambdacapture {
    * For implicit captures, this is the first location within the "{...}" part of the lambda
    * expression which accesses the captured variable.
    */
-  Location getLocation() {
-    lambda_capture(this, _, _, _, _, result)
-  }
+  override Location getLocation() { lambda_capture(this, _, _, _, _, _, result) }
 
   /**
    * Gets the field of the lambda expression's closure type which is used to store this capture.
    */
-  MemberVariable getField() {
-    exists(LambdaExpression lambda, int index | this = lambda.getCapture(index) |
-      result = lambda.getType().(Closure).getCanonicalMember(index)
-    )
-  }
+  MemberVariable getField() { lambda_capture(this, _, _, result, _, _, _) }
 
   /**
    * Gets the expression which yields the final captured value.
@@ -148,9 +142,8 @@ class LambdaCapture extends @lambdacapture {
    * For by-value captures of non-primitive types, this will be a call to a copy constructor.
    */
   Expr getInitializer() {
-    exists(LambdaExpression lambda, int index | this = lambda.getCapture(index) |
-      result = lambda.getChild(0)     // Call to the constructor of the closure type.
-                     .getChild(index) // The appropriate argument to the constructor.
+    exists(LambdaExpression lambda | this = lambda.getCapture(_) |
+      result = lambda.getInitializer().getFieldExpr(this.getField())
     )
   }
 }

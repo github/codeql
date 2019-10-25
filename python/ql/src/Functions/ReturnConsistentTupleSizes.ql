@@ -13,10 +13,10 @@
 import python
 
 predicate returns_tuple_of_size(Function func, int size, AstNode origin) {
-    exists(Return return, TupleObject val |
+    exists(Return return, TupleValue val |
         return.getScope() = func and
-        return.getValue().refersTo(val, origin) |
-        size = val.getLength()
+        return.getValue().pointsTo(val, origin) |
+        size = val.length()
     )
 }
 

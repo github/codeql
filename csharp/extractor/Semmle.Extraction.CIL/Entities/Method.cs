@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.IO;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -41,34 +43,40 @@ namespace Semmle.Extraction.CIL.Entities
         public virtual IList<LocalVariable> LocalVariables => throw new NotImplementedException();
         public IList<Parameter> Parameters { get; private set; }
 
-        static readonly Id tick = CIL.Id.Create("`");
-        static readonly Id space = CIL.Id.Create(" ");
-        static readonly Id dot = CIL.Id.Create(".");
-        static readonly Id open = CIL.Id.Create("(");
-        static readonly Id close = CIL.Id.Create(")");
+        public override void WriteId(TextWriter trapFile) => WriteMethodId(trapFile, DeclaringType, NameLabel);
 
-        internal protected Id MakeMethodId(Type parent, Id methodName)
+        public abstract string NameLabel { get; }
+
+        internal protected void WriteMethodId(TextWriter trapFile, Type parent, string methodName)
         {
-            var id = signature.ReturnType.MakeId(this) + space + parent.ShortId + dot + methodName;
+            signature.ReturnType.WriteId(trapFile, this);
+            trapFile.Write(' ');
+            parent.WriteId(trapFile);
+            trapFile.Write('.');
+            trapFile.Write(methodName);
 
             if (signature.GenericParameterCount > 0)
             {
-                id += tick + signature.GenericParameterCount;
+                trapFile.Write('`');
+                trapFile.Write(signature.GenericParameterCount);
             }
-
-            id += open + CIL.Id.CommaSeparatedList(signature.ParameterTypes.Select(p => p.MakeId(this))) + close;
-            return id;
+            trapFile.Write('(');
+            int index = 0;
+            foreach (var param in signature.ParameterTypes)
+            {
+                trapFile.WriteSeparator(",", ref index);
+                param.WriteId(trapFile, this);
+            }
+            trapFile.Write(')');
         }
 
         protected MethodTypeParameter[] genericParams;
         protected Type declaringType;
         protected GenericContext gc;
         protected MethodSignature<ITypeSignature> signature;
-        protected Id name;
+        protected string name;
 
-        static readonly StringId methodSuffix = new StringId(";cil-method");
-
-        public override Id IdSuffix => methodSuffix;
+        public override string IdSuffix => ";cil-method";
 
         protected void PopulateParameters(IEnumerable<Type> parameterTypes)
         {
@@ -133,7 +141,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A definition method - a method defined in the current assembly.
     /// </summary>
-    class DefinitionMethod : Method, IMember
+    sealed class DefinitionMethod : Method, IMember
     {
         readonly Handle handle;
         readonly MethodDefinition md;
@@ -150,21 +158,29 @@ namespace Semmle.Extraction.CIL.Entities
             md = cx.mdReader.GetMethodDefinition(handle);
             this.gc = gc;
             this.handle = handle;
-            name = cx.GetId(md.Name);
+            name = cx.GetString(md.Name);
 
             declaringType = (Type)cx.CreateGeneric(this, md.GetDeclaringType());
 
             signature = md.DecodeSignature(new SignatureDecoder(), this);
-            ShortId = MakeMethodId(declaringType, name);
 
             methodDebugInformation = cx.GetMethodDebugInformation(handle);
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is DefinitionMethod method && handle.Equals(method.handle);
+        }
+
+        public override int GetHashCode() => handle.GetHashCode();
 
         public override bool IsStatic => !signature.Header.IsInstance;
 
         public override Type DeclaringType => declaringType;
 
         public override string Name => cx.ShortName(md.Name);
+
+        public override string NameLabel => name;
 
         /// <summary>
         /// Holds if this method has bytecode.
@@ -381,8 +397,9 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// This is a late-bound reference to a method.
     /// </summary>
-    class MemberReferenceMethod : Method
+    sealed class MemberReferenceMethod : Method
     {
+        readonly MemberReferenceHandle handle;
         readonly MemberReference mr;
         readonly Type declType;
         readonly GenericContext parent;
@@ -390,6 +407,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public MemberReferenceMethod(GenericContext gc, MemberReferenceHandle handle) : base(gc)
         {
+            this.handle = handle;
             this.gc = gc;
             mr = cx.mdReader.GetMemberReference(handle);
 
@@ -398,17 +416,29 @@ namespace Semmle.Extraction.CIL.Entities
             parent = (GenericContext)cx.CreateGeneric(gc, mr.Parent);
 
             var parentMethod = parent as Method;
-            var nameLabel = cx.GetId(mr.Name);
+            nameLabel = cx.GetString(mr.Name);
 
             declType = parentMethod == null ? parent as Type : parentMethod.DeclaringType;
 
             if (declType is null)
                 throw new InternalError("Parent context of method is not a type");
 
-            ShortId = MakeMethodId(declType, nameLabel);
-
             var typeSourceDeclaration = declType.SourceDeclaration;
             sourceDeclaration = typeSourceDeclaration == declType ? (Method)this : typeSourceDeclaration.LookupMethod(mr.Name, mr.Signature);
+        }
+
+        private readonly string nameLabel;
+
+        public override string NameLabel => nameLabel;
+
+        public override bool Equals(object obj)
+        {
+            return obj is MemberReferenceMethod method && handle.Equals(method.handle);
+        }
+
+        public override int GetHashCode()
+        {
+            return handle.GetHashCode();
         }
 
         public override Method SourceDeclaration => sourceDeclaration;
@@ -450,26 +480,43 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A constructed method.
     /// </summary>
-    class MethodSpecificationMethod : Method
+    sealed class MethodSpecificationMethod : Method
     {
+        readonly MethodSpecificationHandle handle;
         readonly MethodSpecification ms;
         readonly Method unboundMethod;
         readonly ImmutableArray<Type> typeParams;
 
         public MethodSpecificationMethod(GenericContext gc, MethodSpecificationHandle handle) : base(gc)
         {
+            this.handle = handle;
             ms = cx.mdReader.GetMethodSpecification(handle);
-
             typeParams = ms.DecodeSignature(cx.TypeSignatureDecoder, gc);
-
             unboundMethod = (Method)cx.CreateGeneric(gc, ms.Method);
             declaringType = unboundMethod.DeclaringType;
-
-            ShortId = unboundMethod.ShortId + openAngle + CIL.Id.CommaSeparatedList(typeParams.Select(p => p.ShortId)) + closeAngle;
         }
 
-        static readonly Id openAngle = CIL.Id.Create("<");
-        static readonly Id closeAngle = CIL.Id.Create(">");
+        public override void WriteId(TextWriter trapFile)
+        {
+            unboundMethod.WriteId(trapFile);
+            trapFile.Write('<');
+            int index = 0;
+            foreach(var param in typeParams)
+            {
+                trapFile.WriteSeparator(",", ref index);
+                trapFile.WriteSubId(param);
+            }
+            trapFile.Write('>');
+        }
+
+        public override string NameLabel => throw new NotImplementedException();
+
+        public override bool Equals(object obj)
+        {
+            return obj is MethodSpecificationMethod method && handle.Equals(method.handle) && typeParams.SequenceEqual(method.typeParams);
+        }
+
+        public override int GetHashCode() => handle.GetHashCode() * 11 + typeParams.SequenceHash();
 
         public override Method SourceDeclaration => unboundMethod;
 

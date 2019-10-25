@@ -12,6 +12,7 @@
  * Recursive use of `DataFlow{2..4}::Configuration` is always disallowed, so no
  * import is needed for those.
  */
+
 import cpp
 private import semmle.code.cpp.dataflow.DataFlow
 
@@ -22,8 +23,7 @@ private import semmle.code.cpp.dataflow.DataFlow
  * it should be replaced by using more than one copy of the data flow library.
  * Four copies are available: `DataFlow` through `DataFlow4`.
  */
-private abstract
-class ConfigurationRecursionPrevention extends DataFlow::Configuration {
+abstract private class ConfigurationRecursionPrevention extends DataFlow::Configuration {
   bindingset[this]
   ConfigurationRecursionPrevention() { any() }
 

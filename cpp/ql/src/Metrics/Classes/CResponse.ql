@@ -10,6 +10,7 @@
  * @tags maintainability
  *       complexity
  */
+
 import cpp
 
 from Class c

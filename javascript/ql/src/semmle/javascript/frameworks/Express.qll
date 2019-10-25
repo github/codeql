@@ -35,29 +35,25 @@ module Express {
   /**
    * Holds if `e` may refer to the given `router` object.
    */
-  private predicate isRouter(Expr e, RouterDefinition router) {
-    router.flowsTo(e)
+  private predicate isRouter(Expr e, RouterDefinition router) { router.flowsTo(e) }
+
+  /**
+   * Holds if `e` may refer to a router object.
+   */
+  private predicate isRouter(Expr e) {
+    isRouter(e, _)
     or
-    exists(DataFlow::MethodCallNode chain, DataFlow::Node base, string name |
-      name = "route" or
-      name = routeSetupMethodName()
-    |
-      chain.calls(base, name) and
-      isRouter(base.asExpr(), router) and
-      chain.flowsToExpr(e)
-    )
+    e.getType().hasUnderlyingType("express", "Router")
   }
 
   /**
    * An expression that refers to a route.
    */
   class RouteExpr extends MethodCallExpr {
-    RouterDefinition router;
+    RouteExpr() { isRouter(this) }
 
-    RouteExpr() { isRouter(this, router) }
-
-    /** Gets the router from which this route was created. */
-    RouterDefinition getRouter() { result = router }
+    /** Gets the router from which this route was created, if it is known. */
+    RouterDefinition getRouter() { isRouter(this, result) }
   }
 
   /**
@@ -77,10 +73,8 @@ module Express {
    * A call to an Express router method that sets up a route.
    */
   class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
-    RouterDefinition router;
-
     RouteSetup() {
-      isRouter(getReceiver(), router) and
+      isRouter(getReceiver()) and
       getMethodName() = routeSetupMethodName()
     }
 
@@ -88,7 +82,7 @@ module Express {
     string getPath() { getArgument(0).mayHaveStringValue(result) }
 
     /** Gets the router on which handlers are being registered. */
-    RouterDefinition getRouter() { result = router }
+    RouterDefinition getRouter() { isRouter(getReceiver(), result) }
 
     /** Holds if this is a call `use`, such as `app.use(handler)`. */
     predicate isUseCall() { getMethodName() = "use" }
@@ -153,6 +147,48 @@ module Express {
       this.getRequestMethod() = that.getRequestMethod()
     }
   }
+  
+  /**
+   * A call that sets up a Passport router that includes the request object.
+   */
+  private class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+    DataFlow::ModuleImportNode importNode;
+    DataFlow::FunctionNode callback;
+  	
+    // looks for this pattern: passport.use(new Strategy({passReqToCallback: true}, callback))
+    PassportRouteSetup() {
+      importNode = DataFlow::moduleImport("passport") and
+      this = importNode.getAMemberCall("use").asExpr() and
+      exists(DataFlow::NewNode strategy | 
+      	strategy.flowsToExpr(this.getArgument(0)) and
+      	strategy.getNumArgument() = 2 and 
+      	// new Strategy({passReqToCallback: true}, ...)
+      	strategy.getOptionArgument(0, "passReqToCallback").mayHaveBooleanValue(true) and 
+      	callback.flowsTo(strategy.getArgument(1))
+      )
+    }
+    
+    override Expr getServer() { result = importNode.asExpr() }
+    
+    override DataFlow::SourceNode getARouteHandler() {
+      result = callback
+    }
+  }
+  
+  /**
+   * The callback given to passport in PassportRouteSetup. 
+   */
+  private class PassportRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
+    DataFlow::ValueNode {
+    override Function astNode;
+
+    PassportRouteHandler() { this = any(PassportRouteSetup setup).getARouteHandler() }
+
+    override SimpleParameter getRouteHandlerParameter(string kind) {
+      kind = "request" and 
+      result = astNode.getParameter(0)
+    }
+  }
 
   /**
    * An expression used as an Express route handler, such as `submitHandler` below:
@@ -165,7 +201,6 @@ module Express {
    */
   class RouteHandlerExpr extends Expr {
     RouteSetup setup;
-
     int index;
 
     RouteHandlerExpr() { this = setup.getRouteHandlerExpr(index) }
@@ -340,14 +375,17 @@ module Express {
     )
   }
 
+  /** An Express response source. */
+  abstract private class ResponseSource extends HTTP::Servers::ResponseSource { }
+
   /**
    * An Express response source, that is, the response parameter of a
    * route handler, or a chained method call on a response.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
+  private class ExplicitResponseSource extends ResponseSource {
     RouteHandler rh;
 
-    ResponseSource() {
+    ExplicitResponseSource() {
       this = DataFlow::parameterNode(rh.getResponseParameter())
       or
       isChainableResponseMethodCall(rh, this.asExpr())
@@ -360,18 +398,39 @@ module Express {
   }
 
   /**
+   * An Express response source, based on static type information.
+   */
+  private class TypedResponseSource extends ResponseSource {
+    TypedResponseSource() { hasUnderlyingType("express", "Response") }
+
+    override RouteHandler getRouteHandler() { none() } // Not known.
+  }
+
+  /** An Express request source. */
+  abstract private class RequestSource extends HTTP::Servers::RequestSource { }
+
+  /**
    * An Express request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class ExplicitRequestSource extends RequestSource {
     RouteHandler rh;
 
-    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    ExplicitRequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
 
     /**
      * Gets the route handler that handles this request.
      */
     override RouteHandler getRouteHandler() { result = rh }
+  }
+
+  /**
+   * An Express request source, based on static type information.
+   */
+  private class TypedRequestSource extends RequestSource {
+    TypedRequestSource() { hasUnderlyingType("express", "Request") }
+
+    override RouteHandler getRouteHandler() { none() } // Not known.
   }
 
   /**
@@ -393,7 +452,6 @@ module Express {
    */
   class RequestInputAccess extends HTTP::RequestInputAccess {
     RouteHandler rh;
-
     string kind;
 
     RequestInputAccess() {
@@ -567,7 +625,6 @@ module Express {
    */
   class SetMultipleHeaders extends ExplicitHeader, DataFlow::ValueNode {
     override MethodCallExpr astNode;
-
     RouteHandler rh;
 
     SetMultipleHeaders() {
@@ -678,15 +735,18 @@ module Express {
       t.start() and
       result = DataFlow::exprNode(this)
       or
+      exists(string name | result = ref(t.continue()).getAMethodCall(name) |
+        name = "route" or
+        name = routeSetupMethodName()
+      )
+      or
       exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
 
     /**
      * Holds if `sink` may refer to this router.
      */
-    predicate flowsTo(Expr sink) {
-      ref(DataFlow::TypeTracker::end()).flowsToExpr(sink)
-    }
+    predicate flowsTo(Expr sink) { ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
 
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.

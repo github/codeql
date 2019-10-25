@@ -1,5 +1,6 @@
 import python
 private import semmle.python.pointsto.PointsTo
+private import semmle.python.objects.ObjectInternal
 
 /** An expression */
 class Expr extends Expr_, AstNode {
@@ -71,7 +72,8 @@ class Expr extends Expr_, AstNode {
         result = this.getASubExpression()
     }
 
-    /** Gets what this expression might "refer-to". Performs a combination of localized (intra-procedural) points-to
+    /** NOTE: `refersTo` will be deprecated in 2019. Use `pointsTo` instead.
+     * Gets what this expression might "refer-to". Performs a combination of localized (intra-procedural) points-to
      *  analysis and global module-level analysis. This points-to analysis favours precision over recall. It is highly
      *  precise, but may not provide information for a significant number of flow-nodes. 
      *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
@@ -82,13 +84,15 @@ class Expr extends Expr_, AstNode {
         this.refersTo(_, obj, cls, origin)
     }
 
-    /** Gets what this expression might "refer-to" in the given `context`.
+    /** NOTE: `refersTo` will be deprecated in 2019. Use `pointsTo` instead.
+     * Gets what this expression might "refer-to" in the given `context`.
      */
     predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
         this.getAFlowNode().refersTo(context, obj, cls, origin.getAFlowNode())
     }
 
-    /** Whether this expression might "refer-to" to `value` which is from `origin` 
+    /** NOTE: `refersTo` will be deprecated in 2019. Use `pointsTo` instead.
+     * Holds if this expression might "refer-to" to `value` which is from `origin` 
      * Unlike `this.refersTo(value, _, origin)`, this predicate includes results 
      * where the class cannot be inferred.
      */
@@ -97,15 +101,37 @@ class Expr extends Expr_, AstNode {
         this.getAFlowNode().refersTo(obj, origin.getAFlowNode())
     }
 
-    /** Equivalent to `this.refersTo(value, _)` */
+    /** NOTE: `refersTo` will be deprecated in 2019. Use `pointsTo` instead.
+     * Equivalent to `this.refersTo(value, _)` */
     predicate refersTo(Object obj) {
         this.refersTo(obj, _)
+    }
+
+    /** Holds if this expression might "point-to" to `value` which is from `origin`
+     * in the given `context`.
+     */
+    predicate pointsTo(Context context, Value value, AstNode origin) {
+        this.getAFlowNode().pointsTo(context, value, origin.getAFlowNode())
+    }
+
+    /** Holds if this expression might "point-to" to `value` which is from `origin`.
+     */
+    predicate pointsTo(Value value, AstNode origin) {
+        this.getAFlowNode().pointsTo(value, origin.getAFlowNode())
+    }
+
+    /** Holds if this expression might "point-to" to `value`.
+     */
+    predicate pointsTo(Value value) {
+        this.pointsTo(value, _)
     }
 
 }
 
 /** An attribute expression, such as `value.attr` */
 class Attribute extends Attribute_ {
+
+    /* syntax: Expr.name */
 
     override Expr getASubExpression() {
         result = this.getObject()
@@ -136,6 +162,8 @@ class Attribute extends Attribute_ {
 /** A subscript expression, such as `value[slice]` */
 class Subscript extends Subscript_ {
 
+    /* syntax: Expr[Expr] */
+
     override Expr getASubExpression() {
         result = this.getIndex()
         or
@@ -151,6 +179,8 @@ class Subscript extends Subscript_ {
 
 /** A call expression, such as `func(...)` */
 class Call extends Call_ {
+
+    /* syntax: Expr(...) */
 
     override Expr getASubExpression() {
         result = this.getAPositionalArg() or
@@ -244,6 +274,8 @@ class Call extends Call_ {
 /** A conditional expression such as, `body if test else orelse` */
 class IfExp extends IfExp_ {
 
+    /* syntax: Expr if Expr else Expr */
+
     override Expr getASubExpression() {
         result = this.getTest() or result = this.getBody() or result = this.getOrelse()
     }
@@ -254,6 +286,8 @@ class IfExp extends IfExp_ {
 /** A starred expression, such as the `*rest` in the assignment `first, *rest = seq` */
 class Starred extends Starred_ {
 
+    /* syntax: *Expr */
+
     override Expr getASubExpression() {
         result = this.getValue()
     }
@@ -263,6 +297,8 @@ class Starred extends Starred_ {
 
 /** A yield expression, such as `yield value` */
 class Yield extends Yield_ {
+
+    /* syntax: yield Expr */
 
     override Expr getASubExpression() {
         result = this.getValue()
@@ -277,6 +313,8 @@ class Yield extends Yield_ {
 /** A yield expression, such as `yield from value` */
 class YieldFrom extends YieldFrom_ {
 
+    /* syntax: yield from Expr */
+
     override Expr getASubExpression() {
         result = this.getValue()
     }
@@ -289,6 +327,8 @@ class YieldFrom extends YieldFrom_ {
 
 /** A repr (backticks) expression, such as `` `value` `` */
 class Repr extends Repr_ {
+
+    /* syntax: `Expr` */
 
     override Expr getASubExpression() {
         result = this.getValue()
@@ -305,6 +345,8 @@ class Repr extends Repr_ {
 /** A bytes constant, such as `b'ascii'`. Note that unadorned string constants such as
    `"hello"` are treated as Bytes for Python2, but Unicode for Python3. */
 class Bytes extends StrConst {
+
+    /* syntax: b"hello" */
 
     Bytes() {
         not this.isUnicode()
@@ -331,6 +373,8 @@ class Bytes extends StrConst {
 /** An ellipsis expression, such as `...` */
 class Ellipsis extends Ellipsis_ {
 
+    /* syntax: ... */
+
     override Expr getASubExpression() {
         none()
     }
@@ -346,6 +390,10 @@ abstract class ImmutableLiteral extends Expr {
     abstract Object getLiteralObject();
 
     abstract boolean booleanValue();
+
+    final Value getLiteralValue() {
+        result.(ConstantObjectInternal).getLiteral() = this
+    }
 
 }
 
@@ -365,6 +413,8 @@ abstract class Num extends Num_, ImmutableLiteral {
 
 /** An integer numeric constant, such as `7` or `0x9` */
 class IntegerLiteral extends Num {
+
+    /* syntax: 4 */
 
     IntegerLiteral() {
         not this instanceof FloatLiteral and not this instanceof ImaginaryLiteral
@@ -397,6 +447,8 @@ class IntegerLiteral extends Num {
 /** A floating point numeric constant, such as `0.4` or `4e3` */
 class FloatLiteral extends Num {
 
+    /* syntax: 4.2 */
+
     FloatLiteral() {
         not this instanceof ImaginaryLiteral and
         this.getN().regexpMatch(".*[.eE].*")
@@ -422,12 +474,13 @@ class FloatLiteral extends Num {
         or
         this.getValue() != 0.0 and this.getValue() != -0.0 and result = true
     }
-
 }
 
 /** An imaginary numeric constant, such as `3j` */
 class ImaginaryLiteral extends Num {
     private float value;
+
+    /* syntax: 1.0j */
 
     ImaginaryLiteral() {
         value = this.getN().regexpCapture("(.+)j.*", 1).toFloat()
@@ -474,11 +527,19 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
         py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
     }
 
+    /** Gets the (integer) value of this constant. Will not return a result if the value does not fit into
+        a 32 bit signed value */
+    int getValue() {
+        result = -(this.getOperand().(IntegerLiteral).getValue())
+    }
+
 }
 
 /** A unicode string expression, such as `u"\u20ac"`. Note that unadorned string constants such as
    "hello" are treated as Bytes for Python2, but Unicode for Python3. */
 class Unicode extends StrConst {
+
+    /* syntax: "hello" */
 
     Unicode() {
         this.isUnicode()
@@ -508,6 +569,8 @@ class Unicode extends StrConst {
 /** A dictionary expression, such as `{'key':'value'}` */
 class Dict extends Dict_ {
 
+    /* syntax: {Expr: Expr, ...} */
+
     /** Gets the value of an item of this dict display */
     Expr getAValue() {
         result = this.getAnItem().(DictDisplayItem).getValue()
@@ -533,6 +596,8 @@ class Dict extends Dict_ {
 /** A list expression, such as `[ 1, 3, 5, 7, 9 ]` */
 class List extends List_ {
 
+    /* syntax: [Expr, ...] */
+
     override Expr getASubExpression() {
         result = this.getAnElt()
     }
@@ -541,6 +606,8 @@ class List extends List_ {
 
 /** A set expression such as `{ 1, 3, 5, 7, 9 }` */
 class Set extends Set_ {
+
+    /* syntax: {Expr, ...} */
 
     override Expr getASubExpression() {
         result = this.getAnElt()
@@ -568,6 +635,8 @@ class PlaceHolder extends PlaceHolder_ {
 /** A tuple expression such as `( 1, 3, 5, 7, 9 )` */
 class Tuple extends Tuple_ {
 
+    /* syntax: (Expr, ...) */
+
     override Expr getASubExpression() {
         result = this.getAnElt()
     }
@@ -578,6 +647,8 @@ class Tuple extends Tuple_ {
  * `None`, `True` and `False` are excluded.
  */
 class Name extends Name_ {
+
+    /* syntax: name */
 
     string getId() {
         result = this.getVariable().getId()
@@ -600,7 +671,7 @@ class Name extends Name_ {
         v = this.getVariable()
     }
 
-    /** Whether this expression is a definition */
+    /** Whether this expression is a deletion */
     predicate isDeletion() {
         py_expr_contexts(_, 2, this)
     }
@@ -671,6 +742,8 @@ class Slice extends Slice_ {
 
 /** A string constant. */
 class StrConst extends Str_, ImmutableLiteral {
+
+    /* syntax: "hello" */
 
     predicate isUnicode() {
         this.getPrefix().charAt(_) = "u"
@@ -757,6 +830,8 @@ abstract class BooleanLiteral extends NameConstant {
 /** The boolean named constant `True` */
 class True extends BooleanLiteral {
 
+    /* syntax: True */
+
     True() {
         name_consts(this, "True")
     }
@@ -773,6 +848,8 @@ class True extends BooleanLiteral {
 
 /** The boolean named constant `False` */
 class False extends BooleanLiteral {
+
+    /* syntax: False */
 
     False() {
         name_consts(this, "False")
@@ -791,6 +868,8 @@ class False extends BooleanLiteral {
 /** `None` */
 class None extends NameConstant {
 
+    /* syntax: None */
+
     None() {
         name_consts(this, "None")
     }
@@ -802,11 +881,12 @@ class None extends NameConstant {
     override boolean booleanValue() {
         result = false
     }
-
 }
 
 /** An await expression such as `await coro`. */
 class Await extends Await_ {
+
+    /* syntax: await Expr */
 
     override Expr getASubExpression() {
         result = this.getValue()
@@ -816,6 +896,8 @@ class Await extends Await_ {
 
 /** A formatted string literal expression, such as `f'hello {world!s}'` */
 class Fstring extends Fstring_ {
+
+    /* syntax: f"Yes!" */
 
     override Expr getASubExpression() {
         result = this.getAValue()

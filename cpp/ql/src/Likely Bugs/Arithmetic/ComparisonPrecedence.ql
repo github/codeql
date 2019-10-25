@@ -10,9 +10,12 @@
  * @tags maintainability
  *       readability
  */
+
 import cpp
 
-
 from ComparisonOperation co, ComparisonOperation chco
-where co.getAChild() = chco and not chco.isParenthesised()
-select co, "Check the comparison operator precedence."
+where
+  co.getAChild() = chco and
+  not chco.isParenthesised() and
+  not co.isFromUninstantiatedTemplate(_)
+select co, "Comparison as an operand to another comparison."

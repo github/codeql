@@ -75,7 +75,7 @@ class BasicBlock extends TBasicBlockStart {
   ControlFlow::Node getLastNode() { result = getNode(length() - 1) }
 
   /** Gets the callable that this basic block belongs to. */
-  Callable getCallable() { result = this.getAPredecessor().getCallable() }
+  final Callable getCallable() { result = this.getFirstNode().getEnclosingCallable() }
 
   /** Gets the length of this basic block. */
   int length() { result = strictcount(getANode()) }
@@ -338,6 +338,7 @@ private module Internal {
   predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
     idominance(exitBB/1, predBB/2)(_, dom, bb)
 }
+
 private import Internal
 
 /**
@@ -346,8 +347,6 @@ private import Internal
  */
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
-
-  override Callable getCallable() { result.getEntryPoint() = this.getFirstNode() }
 }
 
 /** Holds if `bb` is an entry basic block. */

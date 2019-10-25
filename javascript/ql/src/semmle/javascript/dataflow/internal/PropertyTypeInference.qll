@@ -4,7 +4,7 @@
  * Provides classes implementing type inference for properties.
  */
 
-import javascript
+private import javascript
 import semmle.javascript.dataflow.AbstractProperties
 private import AbstractPropertiesImpl
 private import AbstractValuesImpl
@@ -54,9 +54,7 @@ abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
  */
 private class AnalyzedPropertyAccess extends AnalyzedPropertyRead, DataFlow::ValueNode {
   override PropAccess astNode;
-
   DataFlow::AnalyzedNode baseNode;
-
   string propName;
 
   AnalyzedPropertyAccess() {

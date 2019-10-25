@@ -56,14 +56,16 @@ module TaintTracking {
      *
      * Holds if the edge from `source` to `sink` is a taint sanitizer.
      */
-    predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) { none() }
+    deprecated predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) { none() }
 
     /**
      * DEPRECATED: Use `isSanitizerEdge` instead.
      *
      * Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`.
      */
-    predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
+    deprecated predicate isSanitizer(
+      DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
+    ) {
       none()
     }
 
@@ -92,7 +94,6 @@ module TaintTracking {
 
     final override predicate isBarrierEdge(DataFlow::Node source, DataFlow::Node sink) {
       super.isBarrierEdge(source, sink) or
-      isSanitizer(source, sink) or
       isSanitizerEdge(source, sink)
     }
 
@@ -100,7 +101,6 @@ module TaintTracking {
       DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
     ) {
       super.isBarrierEdge(source, sink, lbl) or
-      isSanitizer(source, sink, lbl) or
       isSanitizerEdge(source, sink, lbl)
     }
 
@@ -145,6 +145,15 @@ module TaintTracking {
 
   /**
    * A node that can act as a sanitizer when appearing in a condition.
+   *
+   * To add a sanitizer guard to a configuration, define a subclass of this class overriding the
+   * `sanitizes` predicate, and then extend the configuration's `isSanitizerGuard` predicate to
+   * include the new class.
+   *
+   * Note that it is generally a good idea to make the characteristic predicate of sanitizer guard
+   * classes as precise as possible: if two subclasses of `SanitizerGuardNode` overlap, their
+   * implementations of `sanitizes` will _both_ apply to any configuration that includes either of
+   * them.
    */
   abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
     override predicate blocks(boolean outcome, Expr e) { sanitizes(outcome, e) }
@@ -231,10 +240,10 @@ module TaintTracking {
       succ.(DataFlow::PropRead).getBase() = pred
       or
       // iterating over a tainted iterator taints the loop variable
-      exists(EnhancedForLoop efl |
-        this = DataFlow::valueNode(efl.getIterationDomain()) and
+      exists(ForOfStmt fos |
+        this = DataFlow::valueNode(fos.getIterationDomain()) and
         pred = this and
-        succ = DataFlow::ssaDefinitionNode(SSA::definition(efl.getIteratorExpr()))
+        succ = DataFlow::lvalueNode(fos.getLValue())
       )
     }
   }
@@ -290,6 +299,23 @@ module TaintTracking {
         succ.(DataFlow::SourceNode).getAMethodCall(name) = call
       )
       or
+      // `array.push(...e)`, `array.unshift(...e)`: if `e` is tainted, then so is `array`.
+      exists(string name |
+        name = "push" or
+        name = "unshift"
+      |
+        pred = call.getASpreadArgument() and
+        // Make sure we handle reflective calls
+        succ = call.getReceiver().getALocalSource() and
+        call.getCalleeName() = name
+      )
+      or
+      // `array.splice(i, del, e)`: if `e` is tainted, then so is `array`.
+      exists(string name | name = "splice" |
+        pred = call.getArgument(2) and
+        succ.(DataFlow::SourceNode).getAMethodCall(name) = call
+      )
+      or
       // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
       exists(string name |
         name = "pop" or
@@ -320,7 +346,6 @@ module TaintTracking {
    */
   private class DictionaryTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
     override VarAccess astNode;
-
     DataFlow::Node source;
 
     DictionaryTaintStep() {
@@ -617,9 +642,7 @@ module TaintTracking {
    */
   class ErrorConstructorTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
     ErrorConstructorTaintStep() {
-      exists(string name |
-        this = DataFlow::globalVarRef(name).getAnInvocation()
-      |
+      exists(string name | this = DataFlow::globalVarRef(name).getAnInvocation() |
         name = "Error" or
         name = "EvalError" or
         name = "RangeError" or
@@ -736,7 +759,6 @@ module TaintTracking {
   /** A check of the form `if(o[x] != undefined)`, which sanitizes `x` in its "then" branch. */
   class UndefinedCheckSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
-
     override EqualityTest astNode;
 
     UndefinedCheckSanitizer() {
@@ -780,7 +802,6 @@ module TaintTracking {
    */
   class PositiveIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
-
     override RelationalComparison astNode;
 
     PositiveIndexOfSanitizer() {
@@ -801,21 +822,18 @@ module TaintTracking {
   }
 
   /** Gets a variable that is defined exactly once. */
-  private Variable singleDef() {
-    strictcount(result.getADefinition()) = 1
-  }
+  private Variable singleDef() { strictcount(result.getADefinition()) = 1 }
 
   /** A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch. */
   class ConstantComparison extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
-
     override EqualityTest astNode;
 
     ConstantComparison() {
-      exists(Expr const |
-        astNode.hasOperands(x, const) |
+      exists(Expr const | astNode.hasOperands(x, const) |
         // either the other operand is a constant
-        const instanceof ConstantExpr or
+        const instanceof ConstantExpr
+        or
         // or it's an access to a variable that probably acts as a symbolic constant
         const = singleDef().getAnAccess()
       )
@@ -833,9 +851,7 @@ module TaintTracking {
    */
   private class SanitizingFunction extends Function {
     DataFlow::ParameterNode sanitizedParameter;
-
     SanitizerGuardNode sanitizer;
-
     boolean sanitizerOutcome;
 
     SanitizingFunction() {
@@ -901,7 +917,6 @@ module TaintTracking {
    */
   private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     VarAccess event;
-
     override EqualityTest astNode;
 
     PostMessageEventSanitizer() {

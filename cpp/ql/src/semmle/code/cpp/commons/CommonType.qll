@@ -4,28 +4,27 @@ import semmle.code.cpp.Type
  * The C/C++ `char*` type.
  */
 class CharPointerType extends PointerType {
-
   CharPointerType() { this.getBaseType() instanceof CharType }
 
+  override string getCanonicalQLClass() { result = "CharPointerType" }
 }
 
 /**
  * The C/C++ `int*` type.
  */
 class IntPointerType extends PointerType {
-
   IntPointerType() { this.getBaseType() instanceof IntType }
 
+  override string getCanonicalQLClass() { result = "IntPointerType" }
 }
-
 
 /**
  * The C/C++ `void*` type.
  */
 class VoidPointerType extends PointerType {
-
   VoidPointerType() { this.getBaseType() instanceof VoidType }
 
+  override string getCanonicalQLClass() { result = "VoidPointerType" }
 }
 
 /**
@@ -36,6 +35,8 @@ class Size_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("size_t")
   }
+
+  override string getCanonicalQLClass() { result = "Size_t" }
 }
 
 /**
@@ -46,6 +47,8 @@ class Ssize_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("ssize_t")
   }
+
+  override string getCanonicalQLClass() { result = "Ssize_t" }
 }
 
 /**
@@ -56,6 +59,8 @@ class Ptrdiff_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("ptrdiff_t")
   }
+
+  override string getCanonicalQLClass() { result = "Ptrdiff_t" }
 }
 
 /**
@@ -66,6 +71,8 @@ class Intmax_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("intmax_t")
   }
+
+  override string getCanonicalQLClass() { result = "Intmax_t" }
 }
 
 /**
@@ -76,6 +83,8 @@ class Uintmax_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("uintmax_t")
   }
+
+  override string getCanonicalQLClass() { result = "Uintmax_t" }
 }
 
 /**
@@ -90,6 +99,8 @@ class Wchar_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("wchar_t")
   }
+
+  override string getCanonicalQLClass() { result = "Wchar_t" }
 }
 
 /**
@@ -97,7 +108,7 @@ class Wchar_t extends Type {
  * synonym for.  Note that since `__int8` is not a distinct type,
  * `MicrosoftInt8Type` corresponds to an existing `IntegralType` as
  * well.
- * 
+ *
  * This class is meaningless if a Microsoft compiler was not used.
  */
 class MicrosoftInt8Type extends IntegralType {
@@ -113,7 +124,7 @@ class MicrosoftInt8Type extends IntegralType {
  * synonym for.  Note that since `__int16` is not a distinct type,
  * `MicrosoftInt16Type` corresponds to an existing `IntegralType` as
  * well.
- * 
+ *
  * This class is meaningless if a Microsoft compiler was not used.
  */
 class MicrosoftInt16Type extends IntegralType {
@@ -129,7 +140,7 @@ class MicrosoftInt16Type extends IntegralType {
  * synonym for.  Note that since `__int32` is not a distinct type,
  * `MicrosoftInt32Type` corresponds to an existing `IntegralType` as
  * well.
- * 
+ *
  * This class is meaningless if a Microsoft compiler was not used.
  */
 class MicrosoftInt32Type extends IntegralType {
@@ -145,7 +156,7 @@ class MicrosoftInt32Type extends IntegralType {
  * synonym for.  Note that since `__int64` is not a distinct type,
  * `MicrosoftInt64Type` corresponds to an existing `IntegralType` as
  * well.
- * 
+ *
  * This class is meaningless if a Microsoft compiler was not used.
  */
 class MicrosoftInt64Type extends IntegralType {
@@ -154,4 +165,16 @@ class MicrosoftInt64Type extends IntegralType {
     not isExplicitlyUnsigned() and
     not isExplicitlySigned()
   }
+}
+
+/**
+ * The `__builtin_va_list` type, used to provide variadic functionality.
+ *
+ * This is a complement to the `__builtin_va_start`, `__builtin_va_end`,
+ * `__builtin_va_copy` and `__builtin_va_arg` expressions.
+ */
+class BuiltInVarArgsList extends Type {
+  BuiltInVarArgsList() { this.hasName("__builtin_va_list") }
+
+  override string getCanonicalQLClass() { result = "BuiltInVarArgsList" }
 }

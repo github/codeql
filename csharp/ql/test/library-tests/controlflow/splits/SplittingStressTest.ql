@@ -1,5 +1,7 @@
 import csharp
 
-from ControlFlowElement cfe, int i
-where i = strictcount(ControlFlow::Nodes::ElementNode n | n.getElement() = cfe)
-select cfe, i
+query predicate countSplits(ControlFlowElement cfe, int i) {
+  i = strictcount(ControlFlow::Nodes::ElementNode n | n.getElement() = cfe)
+}
+
+query predicate ssaDef(Ssa::Definition def) { any() }

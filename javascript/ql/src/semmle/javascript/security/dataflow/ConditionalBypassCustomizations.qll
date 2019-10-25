@@ -1,8 +1,9 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks and sanitizers for reasoning about
  * bypass of sensitive action guards, as well as extension points for
  * adding your own.
  */
+
 import javascript
 private import semmle.javascript.security.SensitiveActions
 

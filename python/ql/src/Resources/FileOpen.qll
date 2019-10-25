@@ -1,6 +1,5 @@
 import python
 import semmle.python.GuardedControlFlow
-import semmle.python.dataflow.SsaDefinitions
 import semmle.python.pointsto.Filters
 
 /** Holds if `open` is a call that returns a newly opened file */

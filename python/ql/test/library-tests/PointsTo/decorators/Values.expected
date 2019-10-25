@@ -12,6 +12,7 @@
 | test.py:16:22:16:25 | ControlFlowNode for func | runtime | Unknown value |
 | test.py:16:22:16:25 | ControlFlowNode for func | test.py:30 from import | Function func3 |
 | test.py:18:21:18:24 | ControlFlowNode for args | runtime | instance of tuple |
+| test.py:20:12:20:18 | ControlFlowNode for wrapper | runtime | Decorated Function wraps2.wrapper |
 | test.py:20:12:20:18 | ControlFlowNode for wrapper | test.py:30 from import | Decorated Function wraps2.wrapper |
 | test.py:22:2:22:9 | ControlFlowNode for annotate | import | Function annotate |
 | test.py:26:2:26:7 | ControlFlowNode for wraps1 | import | Function wraps1 |

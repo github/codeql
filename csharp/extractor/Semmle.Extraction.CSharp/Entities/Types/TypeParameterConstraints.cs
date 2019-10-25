@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Semmle.Extraction.CSharp.Entities
 {
     class TypeParameterConstraints : FreshEntity
@@ -6,5 +8,9 @@ namespace Semmle.Extraction.CSharp.Entities
             : base(cx) { }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        protected override void Populate(TextWriter trapFile)
+        {
+        }
     }
 }

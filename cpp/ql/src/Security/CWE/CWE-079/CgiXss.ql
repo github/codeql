@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-079
  */
+
 import cpp
 import semmle.code.cpp.commons.Environment
 import semmle.code.cpp.security.TaintTracking
@@ -23,13 +24,11 @@ class PrintStdoutCall extends FunctionCall {
 
 /** A read of the QUERY_STRING environment variable */
 class QueryString extends EnvironmentRead {
-  QueryString() {
-    getEnvironmentVariable() = "QUERY_STRING"
-  }
+  QueryString() { getEnvironmentVariable() = "QUERY_STRING" }
 }
 
 from QueryString query, PrintStdoutCall call, Element printedArg
-where call.getAnArgument() = printedArg
-  and tainted(query, printedArg)
-select printedArg, "Cross-site scripting vulnerability due to $@.",
-  query, "this query data"
+where
+  call.getAnArgument() = printedArg and
+  tainted(query, printedArg)
+select printedArg, "Cross-site scripting vulnerability due to $@.", query, "this query data"

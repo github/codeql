@@ -3,6 +3,7 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+sideEffectWithoutPrimary
 instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
@@ -12,3 +13,9 @@ instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
+useNotDominatedByDefinition
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType

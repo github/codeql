@@ -81,6 +81,7 @@ private module AlgorithmNames {
 
   predicate isWeakPasswordHashingAlgorithm(string name) { none() }
 }
+
 private import AlgorithmNames
 
 /**
@@ -135,7 +136,6 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
  */
 class HashingAlgorithm extends MkHashingAlgorithm, CryptographicAlgorithm {
   string name;
-
   boolean isWeak;
 
   HashingAlgorithm() { this = MkHashingAlgorithm(name, isWeak) }
@@ -150,7 +150,6 @@ class HashingAlgorithm extends MkHashingAlgorithm, CryptographicAlgorithm {
  */
 class EncryptionAlgorithm extends MkEncryptionAlgorithm, CryptographicAlgorithm {
   string name;
-
   boolean isWeak;
 
   EncryptionAlgorithm() { this = MkEncryptionAlgorithm(name, isWeak) }
@@ -165,7 +164,6 @@ class EncryptionAlgorithm extends MkEncryptionAlgorithm, CryptographicAlgorithm 
  */
 class PasswordHashingAlgorithm extends MkPasswordHashingAlgorithm, CryptographicAlgorithm {
   string name;
-
   boolean isWeak;
 
   PasswordHashingAlgorithm() { this = MkPasswordHashingAlgorithm(name, isWeak) }
@@ -210,7 +208,6 @@ class CryptographicKeyCredentialsExpr extends CredentialsExpr {
 private module AsmCrypto {
   private class Apply extends CryptographicOperation {
     Expr input;
-
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
@@ -250,7 +247,6 @@ private module BrowserIdCrypto {
 
   private class Apply extends CryptographicOperation {
     CryptographicAlgorithm algorithm; // non-functional
-
     MethodCallExpr mce;
 
     Apply() {
@@ -329,8 +325,6 @@ private module NodeJSCrypto {
   }
 
   private class Apply extends CryptographicOperation, MethodCallExpr {
-    Expr input;
-
     InstantiatedAlgorithm instantiation;
 
     Apply() {
@@ -426,7 +420,6 @@ private module CryptoJS {
 
   private class Apply extends CryptographicOperation {
     Expr input;
-
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
@@ -465,9 +458,7 @@ private module CryptoJS {
 private module TweetNaCl {
   private class Apply extends CryptographicOperation {
     Expr input;
-
     CryptographicAlgorithm algorithm;
-
     MethodCallExpr mce;
 
     Apply() {
@@ -529,9 +520,7 @@ private module HashJs {
 
   private class Apply extends CryptographicOperation {
     Expr input;
-
     CryptographicAlgorithm algorithm; // non-functional
-
     MethodCallExpr mce;
 
     Apply() {
@@ -574,7 +563,6 @@ private module Forge {
 
   private class KeyCipher extends Cipher {
     DataFlow::Node key;
-
     CryptographicAlgorithm algorithm; // non-functional
 
     KeyCipher() {
@@ -633,9 +621,7 @@ private module Forge {
 
   private class Apply extends CryptographicOperation {
     Expr input;
-
     CryptographicAlgorithm algorithm; // non-functional
-
     MethodCallExpr mce;
 
     Apply() {
@@ -663,9 +649,7 @@ private module Forge {
 private module Md5 {
   private class Apply extends CryptographicOperation {
     Expr input;
-
     CryptographicAlgorithm algorithm;
-
     CallExpr call;
 
     Apply() {
@@ -691,9 +675,7 @@ private module Md5 {
 private module Bcrypt {
   private class Apply extends CryptographicOperation {
     Expr input;
-
     CryptographicAlgorithm algorithm;
-
     MethodCallExpr mce;
 
     Apply() {
@@ -728,9 +710,7 @@ private module Bcrypt {
 private module Hasha {
   private class Apply extends CryptographicOperation {
     Expr input;
-
     CryptographicAlgorithm algorithm;
-
     CallExpr call;
 
     Apply() {

@@ -282,12 +282,15 @@ module ControlFlow {
      */
     class ElementNode extends Node, TElementNode {
       private Splits splits;
-
       private ControlFlowElement cfe;
 
       ElementNode() { this = TElementNode(cfe, splits) }
 
-      override Callable getEnclosingCallable() { result = cfe.getEnclosingCallable() }
+      override Callable getEnclosingCallable() {
+        result = cfe.getEnclosingCallable()
+        or
+        result = this.getASplit().(InitializerSplitting::InitializerSplitImpl).getConstructor()
+      }
 
       override ControlFlowElement getElement() { result = cfe }
 
@@ -314,6 +317,8 @@ module ControlFlow {
     class ExceptionHandlerSplit = ExceptionHandlerSplitting::ExceptionHandlerSplitImpl;
 
     class BooleanSplit = BooleanSplitting::BooleanSplitImpl;
+
+    class LoopUnrollingSplit = LoopUnrollingSplitting::LoopUnrollingSplitImpl;
   }
 
   class BasicBlock = BBs::BasicBlock;
@@ -736,7 +741,6 @@ module ControlFlow {
         TLastRecBooleanNegationCompletion() or
         TLastRecNonBooleanCompletion() or
         TLastRecBreakCompletion() or
-        TLastRecNonBreakCompletion() or
         TLastRecSwitchAbnormalCompletion() or
         TLastRecInvalidOperationException() or
         TLastRecNonContinueCompletion() or
@@ -744,6 +748,10 @@ module ControlFlow {
 
       private TSelf getValidSelfCompletion(ControlFlowElement cfe) {
         result = TSelf(any(Completion c | c.isValidFor(cfe)))
+      }
+
+      private TRec specificBoolean(boolean value) {
+        result = TRec(TLastRecSpecificCompletion(any(BooleanCompletion bc | bc.getValue() = value)))
       }
 
       /**
@@ -788,7 +796,7 @@ module ControlFlow {
         cfe = any(LogicalAndExpr lae |
             // Left operand exits with a false completion
             result = lae.getLeftOperand() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+            c = specificBoolean(false)
             or
             // Left operand exits abnormally
             result = lae.getLeftOperand() and
@@ -802,7 +810,7 @@ module ControlFlow {
         cfe = any(LogicalOrExpr loe |
             // Left operand exits with a true completion
             result = loe.getLeftOperand() and
-            c = TRec(TLastRecSpecificCompletion(any(TrueCompletion tc)))
+            c = specificBoolean(true)
             or
             // Left operand exits abnormally
             result = loe.getLeftOperand() and
@@ -887,7 +895,7 @@ module ControlFlow {
         cfe = any(IfStmt is |
             // Condition exits with a false completion and there is no `else` branch
             result = is.getCondition() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc))) and
+            c = specificBoolean(false) and
             not exists(is.getElse())
             or
             // Condition exits abnormally
@@ -936,13 +944,7 @@ module ControlFlow {
               c = TRec(TLastRecSpecificNegCompletion(any(MatchingCompletion mc | mc.isMatch())))
               or
               result = cs.getCondition() and
-              c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
-            )
-            or
-            // Last statement exits with any non-break completion
-            exists(int last | last = max(int i | exists(ss.getStmt(i))) |
-              result = ss.getStmt(last) and
-              c = TRec(TLastRecNonBreakCompletion())
+              c = specificBoolean(false)
             )
           )
         or
@@ -966,7 +968,7 @@ module ControlFlow {
         cfe = any(Case case |
             // Condition exists with a `false` completion
             result = case.getCondition() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+            c = specificBoolean(false)
             or
             // Condition exists abnormally
             result = case.getCondition() and
@@ -987,7 +989,7 @@ module ControlFlow {
         |
           // Condition exits with a false completion
           result = ls.getCondition() and
-          c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+          c = specificBoolean(false)
           or
           // Condition exits abnormally
           result = ls.getCondition() and
@@ -1046,7 +1048,7 @@ module ControlFlow {
               or
               // Incompatible filter
               result = scc.getFilterClause() and
-              c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+              c = specificBoolean(false)
             )
           )
         or
@@ -1085,6 +1087,12 @@ module ControlFlow {
                   comp.isValidFor(result) and not comp instanceof NormalCompletion
                 ))
           )
+      }
+
+      pragma[noinline]
+      private LabeledStmt getLabledStmt(string label, Callable c) {
+        result.getEnclosingCallable() = c and
+        label = result.getLabel()
       }
 
       /**
@@ -1141,15 +1149,11 @@ module ControlFlow {
           c0 instanceof BreakCompletion and
           c instanceof BreakNormalCompletion
           or
-          rec = TLastRecNonBreakCompletion() and
-          not c0 instanceof BreakCompletion and
-          c = c0
-          or
           rec = TLastRecSwitchAbnormalCompletion() and
           not c instanceof BreakCompletion and
           not c instanceof NormalCompletion and
-          not c instanceof GotoDefaultCompletion and
-          not c instanceof GotoCaseCompletion and
+          not getLabledStmt(c.(GotoCompletion).getLabel(), cfe.getEnclosingCallable()) instanceof
+            CaseStmt and
           c = c0
           or
           rec = TLastRecInvalidOperationException() and
@@ -1515,24 +1519,6 @@ module ControlFlow {
             c instanceof NormalCompletion and
             result = first(ss.getStmt(i + 1))
           )
-          or
-          exists(GotoCompletion gc |
-            cfe = last(ss.getAStmt(), gc) and
-            gc = c
-          |
-            // Flow from last element of a statement with a `goto default` completion
-            // to first element `default` statement
-            gc instanceof GotoDefaultCompletion and
-            result = first(ss.getDefaultCase())
-            or
-            // Flow from last element of a statement with a `goto case` completion
-            // to first element of relevant case
-            exists(ConstCase cc |
-              cc = ss.getAConstCase() and
-              cc.getLabel() = gc.(GotoCaseCompletion).getLabel() and
-              result = first(cc.getBody())
-            )
-          )
         )
         or
         exists(Case case |
@@ -1758,21 +1744,48 @@ module ControlFlow {
         cfe = last(result.(JumpStmt).getChild(0), c) and
         c instanceof NormalCompletion
         or
-        // Flow from constructor initializer to first element of constructor body
-        cfe = any(ConstructorInitializer ci |
-            c instanceof SimpleCompletion and
-            result = first(ci.getConstructor().getBody())
+        exists(ConstructorInitializer ci, Constructor con |
+          cfe = last(ci, c) and
+          con = ci.getConstructor() and
+          c instanceof NormalCompletion
+        |
+          // Flow from constructor initializer to first member initializer
+          exists(InitializerSplitting::InitializedInstanceMember m |
+            InitializerSplitting::constructorInitializeOrder(con, m, 0)
+          |
+            result = first(m.getInitializer())
           )
+          or
+          // Flow from constructor initializer to first element of constructor body
+          not InitializerSplitting::constructorInitializeOrder(con, _, _) and
+          result = first(con.getBody())
+        )
+        or
+        exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
+          cfe = last(m.getInitializer(), c) and
+          c instanceof NormalCompletion and
+          InitializerSplitting::constructorInitializeOrder(con, m, i)
+        |
+          // Flow from one member initializer to the next
+          exists(InitializerSplitting::InitializedInstanceMember next |
+            InitializerSplitting::constructorInitializeOrder(con, next, i + 1) and
+            result = first(next.getInitializer())
+          )
+          or
+          // Flow from last member initializer to constructor body
+          m = InitializerSplitting::lastConstructorInitializer(con) and
+          result = first(con.getBody())
+        )
         or
         // Flow from element with `goto` completion to first element of relevant
         // target
-        c = any(GotoLabelCompletion glc |
-            cfe = last(_, glc) and
+        c = any(GotoCompletion gc |
+            cfe = last(_, gc) and
             // Special case: when a `goto` happens inside a `try` statement with a
             // `finally` block, flow does not go directly to the target, but instead
             // to the `finally` block (and from there possibly to the target)
             not cfe = getBlockOrCatchFinallyPred(any(TryStmt ts | ts.hasFinally()), _) and
-            result = first(glc.getGotoStmt().getTarget())
+            result = first(getLabledStmt(gc.getLabel(), cfe.getEnclosingCallable()))
           )
         or
         // Standard left-to-right evaluation
@@ -1839,11 +1852,18 @@ module ControlFlow {
         p = any(Callable c |
             if exists(c.(Constructor).getInitializer())
             then result = first(c.(Constructor).getInitializer())
-            else result = first(c.getBody())
+            else
+              if InitializerSplitting::constructorInitializes(c, _)
+              then
+                result = first(any(InitializerSplitting::InitializedInstanceMember m |
+                      InitializerSplitting::constructorInitializeOrder(c, m, 0)
+                    ).getInitializer())
+              else result = first(c.getBody())
           )
         or
         expr_parent_top_level_adjusted(any(Expr e | result = first(e)), _, p) and
-        not p instanceof Callable
+        not p instanceof Callable and
+        not p instanceof InitializerSplitting::InitializedInstanceMember
       }
 
       /**
@@ -1853,8 +1873,15 @@ module ControlFlow {
       Callable succExit(ControlFlowElement cfe, Completion c) {
         cfe = last(result.getBody(), c) and
         not c instanceof GotoCompletion
+        or
+        exists(InitializerSplitting::InitializedInstanceMember m |
+          m = InitializerSplitting::lastConstructorInitializer(result) and
+          cfe = last(m.getInitializer(), c) and
+          not result.hasBody()
+        )
       }
     }
+
     import Successor
 
     cached
@@ -1918,6 +1945,7 @@ module ControlFlow {
       cached
       ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) { result = last(cfe, _) }
     }
+
     import Cached
 
     /** A control flow element that is split into multiple control flow nodes. */
@@ -1925,5 +1953,6 @@ module ControlFlow {
       SplitControlFlowElement() { strictcount(this.getAControlFlowNode()) > 1 }
     }
   }
+
   private import Internal
 }

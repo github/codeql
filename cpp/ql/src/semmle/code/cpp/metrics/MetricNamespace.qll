@@ -4,7 +4,6 @@ import cpp
  * A wrapper that provides metrics for a C/C++ namespace.
  */
 class MetricNamespace extends Namespace {
-
   /** Gets the number of incoming dependencies from other namespaces. */
   int getAfferentCoupling() {
     result = count(MetricNamespace that | that.getANamespaceDependency() = this)
@@ -23,11 +22,12 @@ class MetricNamespace extends Namespace {
    * outgoing dependencies relative to the total number of dependencies.
    */
   float getInstability() {
-      exists(int ecoupling, int sumcoupling |
-                 ecoupling = this.getEfferentCoupling() and
-                 sumcoupling = ecoupling + this.getAfferentCoupling() and
-                 sumcoupling > 0 and
-                 result = ecoupling / ((float)sumcoupling))
+    exists(int ecoupling, int sumcoupling |
+      ecoupling = this.getEfferentCoupling() and
+      sumcoupling = ecoupling + this.getAfferentCoupling() and
+      sumcoupling > 0 and
+      result = ecoupling / sumcoupling.(float)
+    )
   }
 
   /**
@@ -39,10 +39,15 @@ class MetricNamespace extends Namespace {
    * abstract classes are not heavily used.
    */
   float getAbstractness() {
-      exists(int i, int j | i = count(Class c | c.getNamespace()=this) and
-                            j = count(Class c | c.getNamespace()=this and
-                                                c.isAbstract()) and
-                            result = j / ((float)i) and i > 0)
+    exists(int i, int j |
+      i = count(Class c | c.getNamespace() = this) and
+      j = count(Class c |
+          c.getNamespace() = this and
+          c.isAbstract()
+        ) and
+      result = j / i.(float) and
+      i > 0
+    )
   }
 
   /**
@@ -55,29 +60,53 @@ class MetricNamespace extends Namespace {
    * ideal situation.
    */
   float getDistanceFromMain() {
-      exists(float r |
-        r = this.getAbstractness() + this.getInstability() - 1
-        and
-        ( (r >= 0 and result = r)
-          or
-          (r < 0 and result = -r) ) )
-   }
+    exists(float r |
+      r = this.getAbstractness() + this.getInstability() - 1 and
+      (
+        r >= 0 and result = r
+        or
+        r < 0 and result = -r
+      )
+    )
+  }
 
   /** Gets a namespace dependency of this element. */
   MetricNamespace getANamespaceDependency() {
-    exists(MetricClass c | c.getNamespace() = this
-      and c.getAClassDependency().getNamespace() = result)
-    or exists(FunctionCall c | c.getEnclosingFunction().getNamespace() = this
-      and c.getTarget().getNamespace() = result)
-    or exists(FunctionCall c | c.getEnclosingVariable().getNamespace() = this
-      and c.getTarget().getNamespace() = result)
-    or exists(Access a | a.getEnclosingFunction().getNamespace() = this
-      and a.getTarget().getNamespace() = result)
-    or exists(Access a | a.getEnclosingVariable().getNamespace() = this
-      and a.getTarget().getNamespace() = result)
-    or exists(Variable v, UserType t | v.getNamespace() = this
-      and v.getType().refersTo(t) and t.getNamespace() = result)
-    or exists(Function f, UserType t | f.getNamespace() = this
-      and f.getType().refersTo(t) and t.getNamespace() = result)
+    exists(MetricClass c |
+      c.getNamespace() = this and
+      c.getAClassDependency().getNamespace() = result
+    )
+    or
+    exists(FunctionCall c |
+      c.getEnclosingFunction().getNamespace() = this and
+      c.getTarget().getNamespace() = result
+    )
+    or
+    exists(FunctionCall c |
+      c.getEnclosingVariable().getNamespace() = this and
+      c.getTarget().getNamespace() = result
+    )
+    or
+    exists(Access a |
+      a.getEnclosingFunction().getNamespace() = this and
+      a.getTarget().getNamespace() = result
+    )
+    or
+    exists(Access a |
+      a.getEnclosingVariable().getNamespace() = this and
+      a.getTarget().getNamespace() = result
+    )
+    or
+    exists(Variable v, UserType t |
+      v.getNamespace() = this and
+      v.getType().refersTo(t) and
+      t.getNamespace() = result
+    )
+    or
+    exists(Function f, UserType t |
+      f.getNamespace() = this and
+      f.getType().refersTo(t) and
+      t.getNamespace() = result
+    )
   }
 }

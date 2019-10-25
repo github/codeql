@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.Implementation
 import semmle.python.security.strings.External
 import HttpConstants
 
@@ -16,7 +16,7 @@ class WsgiEnvironment extends TaintKind {
     WsgiEnvironment() { this = "wsgi.environment" }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
+        result = this and Implementation::copyCall(fromnode, tonode)
         or
         result = this and
         tonode.(CallNode).getFunction().refersTo(theDictType()) and
@@ -72,6 +72,19 @@ class UntrustedCookie extends TaintKind {
 
 }
 
+abstract class CookieOperation extends @py_flow_node {
+
+    abstract string toString();
+
+    abstract ControlFlowNode getKey();
+
+    abstract ControlFlowNode getValue();
+
+}
+
+abstract class CookieGet extends CookieOperation {}
+
+abstract class CookieSet extends CookieOperation {}
 
 /** Generic taint sink in a http response */
 abstract class HttpResponseTaintSink extends TaintSink {
@@ -81,3 +94,12 @@ abstract class HttpResponseTaintSink extends TaintSink {
     }
 
 }
+
+abstract class HttpRedirectTaintSink extends TaintSink {
+
+    override predicate sinks(TaintKind kind) { 
+        kind instanceof ExternalStringKind
+    }
+
+}
+

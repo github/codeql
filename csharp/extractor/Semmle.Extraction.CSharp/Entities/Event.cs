@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -9,27 +10,21 @@ namespace Semmle.Extraction.CSharp.Entities
         Event(Context cx, IEventSymbol init)
             : base(cx, init) { }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(ContainingType);
-                    tb.Append(".");
-                    Method.AddExplicitInterfaceQualifierToId(Context, tb, symbol.ExplicitInterfaceImplementations);
-                    tb.Append(symbol.Name);
-                    tb.Append(";event");
-                });
-            }
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write('.');
+            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
+            trapFile.Write(symbol.Name);
+            trapFile.Write(";event");
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            ExtractNullability(symbol.NullableAnnotation);
+            PopulateNullability(trapFile, symbol.NullableAnnotation);
 
             var type = Type.Create(Context, symbol.Type);
-            Context.Emit(Tuples.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
+            trapFile.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));
 
             var adder = symbol.AddMethod;
             var remover = symbol.RemoveMethod;
@@ -40,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (!(remover is null))
                 Method.Create(Context, remover);
 
-            ExtractModifiers();
+            PopulateModifiers(trapFile);
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
@@ -49,14 +44,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                Context.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences.OfType<EventDeclarationSyntax>())
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
             }
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.event_location(this, l));
+                trapFile.event_location(this, l);
 
             foreach (var syntaxType in declSyntaxReferences.OfType<VariableDeclaratorSyntax>().
                 Select(d => d.Parent).

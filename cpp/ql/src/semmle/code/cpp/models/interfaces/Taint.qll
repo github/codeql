@@ -14,7 +14,7 @@ import semmle.code.cpp.models.Models
 /**
  * A library function for which a taint-tracking library should propagate taint
  * from a parameter or qualifier to an output buffer, return value, or qualifier.
- * 
+ *
  * Note that this does not include direct copying of values; that is covered by
  * DataFlowModel.qll
  */

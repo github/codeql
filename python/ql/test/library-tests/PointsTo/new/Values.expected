@@ -321,6 +321,22 @@
 | h_classes.py:48 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | h_classes.py:50 | ControlFlowNode for f | import | Function f | builtin-class function |
 | h_classes.py:52 | ControlFlowNode for FunctionExpr | import | Function D.n | builtin-class function |
+| h_classes.py:55 | ControlFlowNode for int | import | builtin-class int | builtin-class type |
+| h_classes.py:55 | ControlFlowNode for int() | import | int() | builtin-class int |
+| h_classes.py:56 | ControlFlowNode for Str | import | '' | builtin-class str |
+| h_classes.py:56 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
+| h_classes.py:56 | ControlFlowNode for type() | import | builtin-class str | builtin-class type |
+| h_classes.py:56 | ControlFlowNode for type()() | import | type()() | builtin-class str |
+| h_classes.py:57 | ControlFlowNode for list | import | builtin-class list | builtin-class type |
+| h_classes.py:57 | ControlFlowNode for list() | import | list() | builtin-class list |
+| h_classes.py:58 | ControlFlowNode for dict | import | builtin-class dict | builtin-class type |
+| h_classes.py:58 | ControlFlowNode for dict() | import | dict() | builtin-class dict |
+| h_classes.py:59 | ControlFlowNode for Str | import | 'hi' | builtin-class str |
+| h_classes.py:59 | ControlFlowNode for bool | import | builtin-class bool | builtin-class type |
+| h_classes.py:59 | ControlFlowNode for bool() | import | bool True | builtin-class bool |
+| h_classes.py:60 | ControlFlowNode for IntegerLiteral | import | int 0 | builtin-class int |
+| h_classes.py:60 | ControlFlowNode for bool | import | builtin-class bool | builtin-class type |
+| h_classes.py:60 | ControlFlowNode for bool() | import | bool False | builtin-class bool |
 | i_imports.py:3 | ControlFlowNode for IntegerLiteral | import | int 1 | builtin-class int |
 | i_imports.py:4 | ControlFlowNode for IntegerLiteral | import | int 2 | builtin-class int |
 | i_imports.py:5 | ControlFlowNode for IntegerLiteral | import | int 3 | builtin-class int |
@@ -372,6 +388,12 @@
 | j_convoluted_imports.py:16 | ControlFlowNode for ImportMember | import | Module code.package.moduleX | builtin-class module |
 | j_convoluted_imports.py:17 | ControlFlowNode for Attribute | import | class Y | builtin-class type |
 | j_convoluted_imports.py:17 | ControlFlowNode for moduleX | import | Module code.package.moduleX | builtin-class module |
+| j_convoluted_imports.py:20 | ControlFlowNode for ImportExpr | import | Module code.test_package.module1 | builtin-class module |
+| j_convoluted_imports.py:22 | ControlFlowNode for ImportExpr | import | Module code.test_package.module2 | builtin-class module |
+| j_convoluted_imports.py:23 | ControlFlowNode for p | import | int 1 | builtin-class int |
+| j_convoluted_imports.py:24 | ControlFlowNode for q | import | int 2 | builtin-class int |
+| j_convoluted_imports.py:25 | ControlFlowNode for r | import | Dict | builtin-class dict |
+| j_convoluted_imports.py:25 | ControlFlowNode for r | import | int 3 | builtin-class int |
 | k_getsetattr.py:4 | ControlFlowNode for ClassExpr | import | class C | builtin-class type |
 | k_getsetattr.py:4 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | k_getsetattr.py:6 | ControlFlowNode for FunctionExpr | import | Function C.meth1 | builtin-class function |

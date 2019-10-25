@@ -11,7 +11,7 @@ module Babel {
    */
   class Config extends JSONObject {
     Config() {
-      isTopLevel() and getFile().getBaseName().matches(".babelrc%")
+      isTopLevel() and getJsonFile().getBaseName().matches(".babelrc%")
       or
       this = any(PackageJSON pkg).getPropValue("babel")
     }
@@ -34,12 +34,12 @@ module Babel {
      * Gets a file affected by this Babel configuration.
      */
     Container getAContainerInScope() {
-      result = getFile().getParentContainer()
+      result = getJsonFile().getParentContainer()
       or
       result = getAContainerInScope().getAChildContainer() and
       // File-relative .babelrc search stops at any package.json or .babelrc file.
-      not result.getAChildContainer() = any(PackageJSON pkg).getFile() and
-      not result.getAChildContainer() = any(Config pkg).getFile()
+      not result.getAChildContainer() = any(PackageJSON pkg).getJsonFile() and
+      not result.getAChildContainer() = any(Config pkg).getJsonFile()
     }
 
     /**
@@ -53,7 +53,6 @@ module Babel {
    */
   class Plugin extends JSONValue {
     Config cfg;
-
     string pluginName;
 
     Plugin() { this = cfg.getPluginConfig(pluginName) }
@@ -133,7 +132,7 @@ module Babel {
     /**
      * Gets the folder in which this configuration is located.
      */
-    Folder getFolder() { result = getFile().getParentContainer() }
+    Folder getFolder() { result = getJsonFile().getParentContainer() }
   }
 
   /**
@@ -141,13 +140,9 @@ module Babel {
    */
   private class BabelRootTransformedPathExpr extends PathExpr, Expr {
     RootImportConfig plugin;
-
     string rawPath;
-
     string prefix;
-
     string mappedPrefix;
-
     string suffix;
 
     BabelRootTransformedPathExpr() {

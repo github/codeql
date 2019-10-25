@@ -1,6 +1,5 @@
 tooManyMatchingHandles
 missingCil
-cilLocationViolation
 csharpLocationViolation
 matchingObjectMethods
 | Equals(object) | System.Boolean System.Object.Equals(System.Object) |

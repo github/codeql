@@ -1,6 +1,5 @@
 | foo.bar | tests/nestedAccess.js:3:14:3:36 | goog.re ... o.bar') |
 | foo.bar.x | tests/nestedAccess.js:5:1:5:8 | fooBar.x |
-| foo.bar.x | tests/nestedAccess.js:10:9:10:11 | z.x |
 | foo.bar.x.y | tests/nestedAccess.js:5:1:5:10 | fooBar.x.y |
 | foo.bar.x.y.z | tests/nestedAccess.js:5:1:5:12 | fooBar.x.y.z |
 | goog | tests/es6Module.js:1:1:1:4 | goog |

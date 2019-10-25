@@ -125,7 +125,7 @@ class Definition extends TPreSsaDef {
 
   Definition getAnUltimateDefinition() {
     result = this.getAPhiInput*() and
-    not this = TPhiPreSsaDef(_, _)
+    not result = TPhiPreSsaDef(_, _)
   }
 }
 
@@ -265,77 +265,6 @@ private int maxSsaRefRank(PreBasicBlock bb, SimpleAssignable a) {
   not result + 1 = ssaRefRank(bb, _, a, _)
 }
 
-private predicate reachesEndOf(Definition def, SimpleAssignable a, PreBasicBlock bb) {
-  exists(int last | last = maxSsaRefRank(bb, a) | defReachesRank(bb, def, a, last))
-  or
-  exists(PreBasicBlock mid |
-    reachesEndOf(def, a, mid) and
-    not exists(ssaRefRank(mid, _, a, SsaDef())) and
-    bb = mid.getASuccessor()
-  )
-}
-
-private predicate varOccursInBlock(SimpleAssignable a, PreBasicBlock bb) {
-  exists(ssaRefRank(bb, _, a, _))
-}
-
-pragma[nomagic]
-private predicate blockPrecedesVar(SimpleAssignable a, PreBasicBlock bb) {
-  varOccursInBlock(a, bb.getASuccessor*())
-}
-
-private predicate varBlockReaches(SimpleAssignable a, PreBasicBlock bb1, PreBasicBlock bb2) {
-  varOccursInBlock(a, bb1) and
-  bb2 = bb1.getASuccessor() and
-  blockPrecedesVar(a, bb2)
-  or
-  varBlockReachesRec(a, bb1, bb2) and
-  blockPrecedesVar(a, bb2)
-}
-
-pragma[nomagic]
-private predicate varBlockReachesRec(SimpleAssignable a, PreBasicBlock bb1, PreBasicBlock bb2) {
-  exists(PreBasicBlock mid | varBlockReaches(a, bb1, mid) |
-    bb2 = mid.getASuccessor() and
-    not varOccursInBlock(a, mid)
-  )
-}
-
-private predicate varBlockStep(SimpleAssignable a, PreBasicBlock bb1, PreBasicBlock bb2) {
-  varBlockReaches(a, bb1, bb2) and
-  varOccursInBlock(a, bb2)
-}
-
-private predicate adjacentVarRefs(
-  SimpleAssignable a, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2
-) {
-  exists(int rankix |
-    bb1 = bb2 and
-    rankix = ssaRefRank(bb1, i1, a, _) and
-    rankix + 1 = ssaRefRank(bb2, i2, a, _)
-  )
-  or
-  ssaRefRank(bb1, i1, a, _) = maxSsaRefRank(bb1, a) and
-  varBlockStep(a, bb1, bb2) and
-  ssaRefRank(bb2, i2, a, _) = 1
-}
-
-predicate firstReadSameVar(Definition def, AssignableRead read) {
-  exists(SimpleAssignable a, PreBasicBlock b1, int i1, PreBasicBlock b2, int i2 |
-    adjacentVarRefs(a, b1, i1, b2, i2) and
-    defAt(b1, i1, def, a) and
-    readAt(b2, i2, read, a)
-  )
-}
-
-predicate adjacentReadPairSameVar(AssignableRead read1, AssignableRead read2) {
-  exists(SimpleAssignable a, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2 |
-    adjacentVarRefs(a, bb1, i1, bb2, i2) and
-    readAt(bb1, i1, read1, a) and
-    readAt(bb2, i2, read2, a)
-  )
-}
-
 pragma[noinline]
 private predicate ssaDefReachesEndOfBlockRec(PreBasicBlock bb, Definition def, SimpleAssignable a) {
   exists(PreBasicBlock idom | ssaDefReachesEndOfBlock(idom, def, a) | idom.immediatelyDominates(bb))
@@ -350,4 +279,83 @@ predicate ssaDefReachesEndOfBlock(PreBasicBlock bb, Definition def, SimpleAssign
   ssaDefReachesEndOfBlockRec(bb, def, a) and
   liveAtExit(bb, a) and
   not ssaRef(bb, _, a, SsaDef())
+}
+
+private predicate ssaDefReachesReadWithinBlock(
+  SimpleAssignable a, Definition def, PreBasicBlock bb, int i
+) {
+  defReachesRank(bb, def, a, ssaRefRank(bb, i, a, SsaRead()))
+}
+
+private predicate ssaDefReachesRead(SimpleAssignable a, Definition def, PreBasicBlock bb, int i) {
+  ssaDefReachesReadWithinBlock(a, def, bb, i)
+  or
+  ssaRef(bb, i, a, SsaRead()) and
+  ssaDefReachesEndOfBlock(bb.getAPredecessor(), def, a) and
+  not ssaDefReachesReadWithinBlock(a, _, bb, i)
+}
+
+private int ssaDefRank(Definition def, PreBasicBlock bb, int i) {
+  exists(SimpleAssignable a |
+    a = def.getAssignable() and
+    result = ssaRefRank(bb, i, a, _)
+  |
+    ssaDefReachesRead(a, def, bb, i)
+    or
+    defAt(bb, i, def, a)
+  )
+}
+
+private predicate varOccursInBlock(Definition def, PreBasicBlock bb, SimpleAssignable a) {
+  exists(ssaDefRank(def, bb, _)) and
+  a = def.getAssignable()
+}
+
+pragma[noinline]
+private PreBasicBlock getAMaybeLiveSuccessor(Definition def, PreBasicBlock bb) {
+  result = bb.getASuccessor() and
+  not varOccursInBlock(_, bb, def.getAssignable()) and
+  ssaDefReachesEndOfBlock(bb, def, _)
+}
+
+private predicate varBlockReaches(Definition def, PreBasicBlock bb1, PreBasicBlock bb2) {
+  varOccursInBlock(def, bb1, _) and
+  bb2 = bb1.getASuccessor()
+  or
+  exists(PreBasicBlock mid | varBlockReaches(def, bb1, mid) |
+    bb2 = getAMaybeLiveSuccessor(def, mid)
+  )
+}
+
+private predicate varBlockReachesRead(Definition def, PreBasicBlock bb1, AssignableRead read) {
+  exists(PreBasicBlock bb2, int i2 |
+    varBlockReaches(def, bb1, bb2) and
+    ssaRefRank(bb2, i2, def.getAssignable(), SsaRead()) = 1 and
+    readAt(bb2, i2, read, _)
+  )
+}
+
+private predicate adjacentVarRead(Definition def, PreBasicBlock bb1, int i1, AssignableRead read) {
+  exists(int rankix, int i2 |
+    rankix = ssaDefRank(def, bb1, i1) and
+    rankix + 1 = ssaDefRank(def, bb1, i2) and
+    readAt(bb1, i2, read, _)
+  )
+  or
+  ssaDefRank(def, bb1, i1) = maxSsaRefRank(bb1, def.getAssignable()) and
+  varBlockReachesRead(def, bb1, read)
+}
+
+predicate firstReadSameVar(Definition def, AssignableRead read) {
+  exists(PreBasicBlock bb1, int i1 |
+    defAt(bb1, i1, def, _) and
+    adjacentVarRead(def, bb1, i1, read)
+  )
+}
+
+predicate adjacentReadPairSameVar(AssignableRead read1, AssignableRead read2) {
+  exists(Definition def, PreBasicBlock bb1, int i1 |
+    readAt(bb1, i1, read1, _) and
+    adjacentVarRead(def, bb1, i1, read2)
+  )
 }

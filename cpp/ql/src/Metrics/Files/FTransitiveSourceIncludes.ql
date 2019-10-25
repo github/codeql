@@ -14,15 +14,17 @@
  * @tags maintainability
  *       modularity
  */
+
 import cpp
 
 predicate isInCodebase(File f) {
-  exists(string prefix |
-         sourceLocationPrefix(prefix) |
-         f.getAbsolutePath().prefix(prefix.length()) = prefix)
+  exists(string prefix | sourceLocationPrefix(prefix) |
+    f.getAbsolutePath().prefix(prefix.length()) = prefix
+  )
 }
 
 from File f, int n
-where f.fromSource()
-  and n = count(File g | g = f.getAnIncludedFile+() and isInCodebase(g))
+where
+  f.fromSource() and
+  n = count(File g | g = f.getAnIncludedFile+() and isInCodebase(g))
 select f, n

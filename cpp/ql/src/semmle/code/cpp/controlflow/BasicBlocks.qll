@@ -42,7 +42,9 @@ private import internal.ConstantExprs
  */
 
 private import Cached
-private cached module Cached {
+
+cached
+private module Cached {
   /**
    * Any node that is the entry point of a primitive basic block is
    * also the entry point of a basic block. In addition, all nodes
@@ -80,8 +82,7 @@ private cached module Cached {
    * reuse predicates already computed for `PrimitiveBasicBlocks`.
    */
   private predicate equalsPrimitiveBasicBlock(BasicBlock bb) {
-    primitive_basic_block_entry_node(bb)
-    and
+    primitive_basic_block_entry_node(bb) and
     not exists(int i |
       i > 0 and
       non_primitive_basic_block_entry_node(bb.(PrimitiveBasicBlock).getNode(i))
@@ -89,34 +90,35 @@ private cached module Cached {
   }
 
   /** Holds if `node` is the `pos`th control-flow node in basic block `bb`. */
-  cached predicate basic_block_member(ControlFlowNode node, BasicBlock bb, int pos) {
+  cached
+  predicate basic_block_member(ControlFlowNode node, BasicBlock bb, int pos) {
     equalsPrimitiveBasicBlock(bb) and primitive_basic_block_member(node, bb, pos) // reuse already computed relation
     or
     non_primitive_basic_block_member(node, bb, pos)
   }
 
   private predicate non_primitive_basic_block_member(ControlFlowNode node, BasicBlock bb, int pos) {
-    (not equalsPrimitiveBasicBlock(bb) and node = bb and pos = 0)
+    not equalsPrimitiveBasicBlock(bb) and node = bb and pos = 0
     or
-    (not (node instanceof BasicBlock) and
-     exists (ControlFlowNode pred
-     | successors_extended(pred, node)
-     | non_primitive_basic_block_member(pred, bb, pos - 1)))
+    not node instanceof BasicBlock and
+    exists(ControlFlowNode pred | successors_extended(pred, node) |
+      non_primitive_basic_block_member(pred, bb, pos - 1)
+    )
   }
 
   /** Gets the number of control-flow nodes in the basic block `bb`. */
-  cached int bb_length(BasicBlock bb) {
-    if equalsPrimitiveBasicBlock(bb) then
-      result = bb.(PrimitiveBasicBlock).length() // reuse already computed relation
-    else
-      result = strictcount(ControlFlowNode node | basic_block_member(node, bb, _))
+  cached
+  int bb_length(BasicBlock bb) {
+    if equalsPrimitiveBasicBlock(bb)
+    then result = bb.(PrimitiveBasicBlock).length() // reuse already computed relation
+    else result = strictcount(ControlFlowNode node | basic_block_member(node, bb, _))
   }
 
   /** Successor relation for basic blocks. */
   cached
   predicate bb_successor_cached(BasicBlock pred, BasicBlock succ) {
     exists(ControlFlowNode last |
-      basic_block_member(last, pred, bb_length(pred)-1) and
+      basic_block_member(last, pred, bb_length(pred) - 1) and
       last.getASuccessor() = succ
     )
   }
@@ -144,51 +146,28 @@ predicate bb_successor = bb_successor_cached/2;
  * ```
  */
 class BasicBlock extends ControlFlowNodeBase {
+  BasicBlock() { basic_block_entry_node(this) }
 
-  BasicBlock() {
-    basic_block_entry_node(this)
-  }
+  predicate contains(ControlFlowNode node) { basic_block_member(node, this, _) }
 
-  predicate contains(ControlFlowNode node) {
-    basic_block_member(node, this, _)
-  }
+  ControlFlowNode getNode(int pos) { basic_block_member(result, this, pos) }
 
-  ControlFlowNode getNode(int pos) {
-    basic_block_member(result, this, pos)
-  }
+  ControlFlowNode getANode() { basic_block_member(result, this, _) }
 
-  ControlFlowNode getANode() {
-    basic_block_member(result, this, _)
-  }
+  BasicBlock getASuccessor() { bb_successor(this, result) }
 
-  BasicBlock getASuccessor() {
-    bb_successor(this, result)
-  }
+  BasicBlock getAPredecessor() { bb_successor(result, this) }
 
-  BasicBlock getAPredecessor() {
-    bb_successor(result, this)
-  }
+  BasicBlock getATrueSuccessor() { result.getStart() = this.getEnd().getATrueSuccessor() }
 
-  BasicBlock getATrueSuccessor() {
-    result.getStart() = this.getEnd().getATrueSuccessor()
-  }
+  BasicBlock getAFalseSuccessor() { result.getStart() = this.getEnd().getAFalseSuccessor() }
 
-  BasicBlock getAFalseSuccessor() {
-    result.getStart() = this.getEnd().getAFalseSuccessor()
-  }
+  ControlFlowNode getEnd() { basic_block_member(result, this, bb_length(this) - 1) }
 
-  ControlFlowNode getEnd() {
-    basic_block_member(result, this, bb_length(this)-1)
-  }
-
-  ControlFlowNode getStart() {
-    result = this
-  }
+  ControlFlowNode getStart() { result = this }
 
   /** Gets the number of `ControlFlowNode`s in this basic block. */
-  int length() {
-    result = bb_length(this)
-  }
+  int length() { result = bb_length(this) }
 
   /**
    * Holds if this element is at the specified location.
@@ -199,20 +178,21 @@ class BasicBlock extends ControlFlowNodeBase {
    *
    * Yields no result if this basic block spans multiple source files.
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     hasLocationInfoInternal(filepath, startline, startcolumn, filepath, endline, endcolumn)
   }
 
-  pragma[noinline] private
-  predicate hasLocationInfoInternal(string file, int line, int col, string endf, int endl, int endc) {
-    this.getStart().getLocation().hasLocationInfo(file, line, col, _, _)
-    and
+  pragma[noinline]
+  private predicate hasLocationInfoInternal(
+    string file, int line, int col, string endf, int endl, int endc
+  ) {
+    this.getStart().getLocation().hasLocationInfo(file, line, col, _, _) and
     this.getEnd().getLocation().hasLocationInfo(endf, _, _, endl, endc)
   }
 
-  Function getEnclosingFunction() {
-    result = this.getStart().getControlFlowScope()
-  }
+  Function getEnclosingFunction() { result = this.getStart().getControlFlowScope() }
 
   /**
    * Holds if this basic block is in a loop of the control-flow graph. This
@@ -220,9 +200,7 @@ class BasicBlock extends ControlFlowNodeBase {
    * even if this basic block is syntactically inside a `while` loop if the
    * necessary back edges are unreachable.
    */
-  predicate inLoop() {
-    this.getASuccessor+() = this
-  }
+  predicate inLoop() { this.getASuccessor+() = this }
 
   /**
    * DEPRECATED since version 1.11: this predicate does not match the standard
@@ -233,9 +211,9 @@ class BasicBlock extends ControlFlowNodeBase {
    * this basic block. A typical example would be the basic block that computes
    * `x > 0` in an outermost loop `while (x > 0) { ... }`.
    */
-  deprecated
-  predicate isLoopHeader() {
-    this.inLoop() and exists(BasicBlock pred | pred = this.getAPredecessor() and not pred = this.getASuccessor+())
+  deprecated predicate isLoopHeader() {
+    this.inLoop() and
+    exists(BasicBlock pred | pred = this.getAPredecessor() and not pred = this.getASuccessor+())
   }
 
   /**
@@ -251,15 +229,13 @@ class BasicBlock extends ControlFlowNodeBase {
       this.(Handler).getTryStmt() = t and
       tryblock.isReachable() and
       tryblock.contains(t)
-    ) or
+    )
+    or
     exists(BasicBlock pred | pred.getASuccessor() = this and pred.isReachable())
   }
 
   /** Means `not isReachable()`. */
-  predicate isUnreachable() {
-    not this.isReachable()
-  }
-
+  predicate isUnreachable() { not this.isReachable() }
 }
 
 /** Correct relation for reachability of ControlFlowNodes. */
@@ -271,9 +247,7 @@ predicate unreachable(ControlFlowNode n) {
  * An entry point of a function.
  */
 class EntryBasicBlock extends BasicBlock {
-  EntryBasicBlock() {
-    exists (Function f | this = f.getEntryPoint())
-  }
+  EntryBasicBlock() { exists(Function f | this = f.getEntryPoint()) }
 }
 
 /**

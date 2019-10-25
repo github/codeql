@@ -12,6 +12,7 @@ import java.util.List;
 public abstract class AFunctionExpression extends Expression implements IFunction {
   private final AFunction<? extends Node> fn;
   private int symbol = -1;
+  private int declaredSignature = -1;
 
   public AFunctionExpression(
       String type,
@@ -143,5 +144,15 @@ public abstract class AFunctionExpression extends Expression implements IFunctio
   @Override
   public void setSymbol(int symbol) {
     this.symbol = symbol;
+  }
+
+  @Override
+  public int getDeclaredSignatureId() {
+    return declaredSignature;
+  }
+
+  @Override
+  public void setDeclaredSignatureId(int id) {
+    declaredSignature = id;
   }
 }

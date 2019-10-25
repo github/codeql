@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -20,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             return ret;
         }
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             var operatorKind = OperatorKind;
             if (operatorKind.HasValue)
@@ -31,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var opexpr = new Expression(new ExpressionInfo(cx, Type, Location, operatorKind.Value, simpleAssignExpr, 0, false, null));
                 Create(cx, Syntax.Left, opexpr, 0);
                 Create(cx, Syntax.Right, opexpr, 1);
-                opexpr.OperatorCall(Syntax);
+                opexpr.OperatorCall(trapFile, Syntax);
             }
             else
             {
@@ -40,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 if (Kind == ExprKind.ADD_EVENT || Kind == ExprKind.REMOVE_EVENT)
                 {
-                    OperatorCall(Syntax);
+                    OperatorCall(trapFile, Syntax);
                 }
             }
         }

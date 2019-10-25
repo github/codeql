@@ -12,7 +12,7 @@ predicate isDefaultInit(Expr e) {
   // primitive default values: zero, false, empty string, and (integer) -1
   e.(NumberLiteral).getValue().toFloat() = 0.0 or
   e.(NegExpr).getOperand().(NumberLiteral).getValue() = "1" or
-  e.(ConstantString).getStringValue() = "" or
+  e.getStringValue() = "" or
   e.(BooleanLiteral).getValue() = "false" or
   // initialising to an empty array or object literal, even if unnecessary,
   // can convey useful type information to the reader

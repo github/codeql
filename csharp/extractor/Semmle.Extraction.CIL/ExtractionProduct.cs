@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Semmle.Extraction.CIL
 {
@@ -11,7 +12,7 @@ namespace Semmle.Extraction.CIL
     /// The extraction algorithm proceeds as follows:
     /// - Construct entity
     /// - Call Extract()
-    /// - ILabelledEntity check if already extracted
+    /// - IExtractedEntity check if already extracted
     /// - Enumerate Contents to produce more extraction products
     /// - Extract these until there is nothing left to extract
     /// </remarks>
@@ -45,9 +46,17 @@ namespace Semmle.Extraction.CIL
         public abstract IEnumerable<IExtractionProduct> Contents { get; }
         public Label Label { get; set; }
 
-        public Microsoft.CodeAnalysis.Location ReportingLocation => throw new NotImplementedException();
+        public void WriteId(System.IO.TextWriter trapFile)
+        {
+            trapFile.Write('*');
+        }
 
-        public virtual IId Id => FreshId.Instance;
+        public void WriteQuotedId(TextWriter trapFile)
+        {
+            WriteId(trapFile);
+        }
+
+        public Microsoft.CodeAnalysis.Location ReportingLocation => throw new NotImplementedException();
 
         public virtual void Extract(Context cx2)
         {
@@ -69,15 +78,23 @@ namespace Semmle.Extraction.CIL
     /// An entity that needs to be populated during extraction.
     /// This assigns a key and optionally extracts its contents.
     /// </summary>
-    public abstract class LabelledEntity : ILabelledEntity
+    public abstract class LabelledEntity : IExtractedEntity
     {
         public abstract IEnumerable<IExtractionProduct> Contents { get; }
         public Label Label { get; set; }
         public Microsoft.CodeAnalysis.Location ReportingLocation => throw new NotImplementedException();
 
-        public Id ShortId { get; set; }
-        public abstract Id IdSuffix { get; }
-        public IId Id => ShortId + IdSuffix;
+        public abstract void WriteId(System.IO.TextWriter trapFile);
+
+        public abstract string IdSuffix { get; }
+
+        public void WriteQuotedId(TextWriter trapFile)
+        {
+            trapFile.Write("@\"");
+            WriteId(trapFile);
+            trapFile.Write(IdSuffix);
+            trapFile.Write('\"');
+        }
 
         public void Extract(Context cx2)
         {
@@ -91,18 +108,16 @@ namespace Semmle.Extraction.CIL
             this.cx = cx;
         }
 
-        public override string ToString() => Id.ToString();
+        public override string ToString()
+        {
+            using (var writer = new StringWriter())
+            {
+                WriteQuotedId(writer);
+                return writer.ToString();
+            }
+        }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-    }
-
-    /// <summary>
-    /// An entity with a defined ID.
-    /// </summary>
-    public interface ILabelledEntity : IExtractedEntity
-    {
-        Id ShortId { get; set; }
-        Id IdSuffix { get; }
     }
 
     /// <summary>

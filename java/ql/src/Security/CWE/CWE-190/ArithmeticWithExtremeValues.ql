@@ -33,62 +33,59 @@ class ExtremeSource extends VarAccess {
   ExtremeSource() { this.getVariable() instanceof ExtremeValueField }
 }
 
-class ExtremeSourceFlowConfig extends DataFlow::Configuration {
-  ExtremeSourceFlowConfig() { this = "ExtremeSourceFlowConfig" }
+class MaxValueFlowConfig extends DataFlow::Configuration {
+  MaxValueFlowConfig() { this = "MaxValueFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof ExtremeSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink(_, sink.asExpr()) }
-
-  override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
-    isSource(node1) and isSource(node2)
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().(ExtremeSource).getVariable() instanceof MaxValueField
   }
 
-  override predicate isBarrier(DataFlow::Node n) { n.getType() instanceof BooleanType }
+  override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
+
+  override predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
+
+  override predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-predicate sink(ArithExpr exp, VarAccess use) {
-  use = exp.getAnOperand() and
-  (
-    not guardedAgainstUnderflow(exp, use) or
-    not guardedAgainstOverflow(exp, use)
-  ) and
-  not overflowIrrelevant(exp) and
-  not exp instanceof DivExpr
+class MinValueFlowConfig extends DataFlow::Configuration {
+  MinValueFlowConfig() { this = "MinValueFlowConfig" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().(ExtremeSource).getVariable() instanceof MinValueField
+  }
+
+  override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
+
+  override predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
+
+  override predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
 }
 
 predicate query(
-  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, Variable v,
-  ExtremeValueField f, VarAccess use, ExtremeSource s, Type t
+  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect, Type srctyp
 ) {
-  // `use` is the use of `v` in `exp`.
-  use = exp.getAnOperand() and
-  use = v.getAnAccess() and
-  // An extreme field flows to `use`.
-  f = s.getVariable() and
-  any(ExtremeSourceFlowConfig conf).hasFlowPath(source, sink) and
-  s = source.getNode().asExpr() and
-  use = sink.getNode().asExpr() and
-  t = s.getType() and
-  // Division isn't a problem in this case.
-  not exp instanceof DivExpr
+  (
+    any(MaxValueFlowConfig c).hasFlowPath(source, sink) and
+    overflowSink(exp, sink.getNode().asExpr()) and
+    effect = "overflow"
+    or
+    any(MinValueFlowConfig c).hasFlowPath(source, sink) and
+    underflowSink(exp, sink.getNode().asExpr()) and
+    effect = "underflow"
+  ) and
+  srctyp = source.getNode().asExpr().getType()
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, Variable v,
-  ExtremeValueField f, VarAccess use, ExtremeSource s, string effect, Type t
+  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, Variable v, ExtremeSource s,
+  string effect, Type srctyp
 where
-  query(source, sink, exp, v, f, use, s, t) and
-  // We're not guarded against the appropriate kind of flow error.
-  (
-    f instanceof MinValueField and not guardedAgainstUnderflow(exp, use) and effect = "underflow"
-    or
-    f instanceof MaxValueField and not guardedAgainstOverflow(exp, use) and effect = "overflow"
-  ) and
+  query(source, sink, exp, effect, srctyp) and
   // Exclude widening conversions of extreme values due to binary numeric promotion (JLS 5.6.2)
   // unless there is an enclosing cast down to a narrower type.
-  narrowerThanOrEqualTo(exp, t) and
-  not overflowIrrelevant(exp)
+  narrowerThanOrEqualTo(exp, srctyp) and
+  v = sink.getNode().asExpr().(VarAccess).getVariable() and
+  s = source.getNode().asExpr()
 select exp, source, sink,
   "Variable " + v.getName() + " is assigned an extreme value $@, and may cause an " + effect + ".",
-  s, f.getName()
+  s, s.getVariable().getName()

@@ -9,6 +9,7 @@
 | sources.js:5:4:5:5 | 23 | sources.js:3:11:3:11 | x |
 | tst.js:1:1:1:1 | x | tst.js:28:2:28:1 | x |
 | tst.js:1:1:1:1 | x | tst.js:32:1:32:0 | x |
+| tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:7:1:7:2 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:22:24:22:25 | fs |
 | tst.js:3:5:3:10 | x | tst.js:8:1:8:1 | x |

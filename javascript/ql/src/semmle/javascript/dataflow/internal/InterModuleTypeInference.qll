@@ -4,7 +4,7 @@
  * Provides classes implementing type inference across imports.
  */
 
-import javascript
+private import javascript
 private import AbstractValuesImpl
 private import semmle.javascript.dataflow.InferredTypes
 private import AbstractPropertiesImpl
@@ -263,7 +263,8 @@ private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
         requireCall = amd.getDefine().getARequireCall() and
         dep = requireCall.getAnArgument() and
         this = requireCall.flow()
-      ) |
+      )
+    |
       required = dep.(Import).getImportedModule()
     )
   }
@@ -290,7 +291,6 @@ private class AnalyzedAmdParameter extends AnalyzedVarDef, @vardecl {
  */
 private class AnalyzedValueExport extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   ExportDeclaration export;
-
   string name;
 
   AnalyzedValueExport() { this = export.getSourceNode(name) }
@@ -307,9 +307,7 @@ private class AnalyzedValueExport extends AnalyzedPropertyWrite, DataFlow::Value
  */
 private class AnalyzedVariableExport extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   ExportDeclaration export;
-
   string name;
-
   AnalyzedVarDef varDef;
 
   AnalyzedVariableExport() {
@@ -370,7 +368,6 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
  */
 private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   override AssignExpr astNode;
-
   Closure::ClosureModule mod;
 
   AnalyzedClosureExportAssign() { astNode.getLhs() = mod.getExportsVariable().getAReference() }
@@ -392,13 +389,6 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
 
   AnalyzedClosureGlobalAccessPath() {
     accessPath = Closure::getClosureNamespaceFromSourceNode(this)
-  }
-
-  override AnalyzedNode globalFlowPred() {
-    exists(DataFlow::PropWrite write |
-      Closure::getWrittenClosureNamespace(write) = accessPath and
-      result = write.getRhs()
-    )
   }
 
   override predicate reads(AbstractValue base, string propName) {

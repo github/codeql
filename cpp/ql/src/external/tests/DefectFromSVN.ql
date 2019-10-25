@@ -8,21 +8,13 @@
  */
 
 import cpp
-
 import external.ExternalArtifact
 import external.VCS
 
-predicate numCommits(File f, int i) {
-  i = count(Commit e | e.getAnAffectedFile() = f)
-}
+predicate numCommits(File f, int i) { i = count(Commit e | e.getAnAffectedFile() = f) }
 
-predicate maxCommits(int i) {
-  i = max(File f, int j | numCommits(f, j) | j)
-}
+predicate maxCommits(int i) { i = max(File f, int j | numCommits(f, j) | j) }
 
 from File f, int i
-where numCommits(f,i) and maxCommits(i)
+where numCommits(f, i) and maxCommits(i)
 select f, "This file has " + i + " commits."
-
-
-

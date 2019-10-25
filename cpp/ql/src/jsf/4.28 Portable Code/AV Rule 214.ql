@@ -8,12 +8,15 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 // whether e is part of an initializer of a global variable in file f
 predicate inGlobalInitializer(Expr e, File f) {
-  exists(GlobalVariable gv | gv.getInitializer().getExpr() = e.getParent*() and
-                             f = gv.getFile())
+  exists(GlobalVariable gv |
+    gv.getInitializer().getExpr() = e.getParent*() and
+    f = gv.getFile()
+  )
 }
 
 // whether c is called from within a global initializer in f
@@ -24,7 +27,8 @@ predicate calledFromGlobalInitializer(Function fn, File f) {
 
 predicate evaluatedBeforeMain(Expr e, File f) {
   inGlobalInitializer(e, f)
-  or exists(Function fn | calledFromGlobalInitializer(fn, f) and fn = e.getControlFlowScope())
+  or
+  exists(Function fn | calledFromGlobalInitializer(fn, f) and fn = e.getControlFlowScope())
 }
 
 // whether f1 and f2 belong to the same translation unit
@@ -33,9 +37,11 @@ predicate sameTranslationUnit(File f1, File f2) {
 }
 
 from VariableAccess v, File f1, File f2
-where v.fromSource() and
-      v.isRValue() and
-      evaluatedBeforeMain(v, f1) and
-      v.getTarget().getFile() = f2 and
-      not sameTranslationUnit(f1, f2)
-select v, "AV Rule 214: It shall not be assumed that objects in separated translation units are initialized in a special order."
+where
+  v.fromSource() and
+  v.isRValue() and
+  evaluatedBeforeMain(v, f1) and
+  v.getTarget().getFile() = f2 and
+  not sameTranslationUnit(f1, f2)
+select v,
+  "AV Rule 214: It shall not be assumed that objects in separated translation units are initialized in a special order."

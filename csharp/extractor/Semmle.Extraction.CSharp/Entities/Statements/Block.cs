@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
@@ -16,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return ret;
         }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             var child = 0;
             foreach (var childStmt in Stmt.Statements.Select(c => Statement.Create(cx, c, this, child)))

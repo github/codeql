@@ -173,49 +173,36 @@ predicate excludeNode(Node n) {
   excludeNode(n.getParentNode())
 }
 
-private newtype TPos =
-  PosBefore() or
-  PosAt() or
-  PosAfter() or
-  PosBeforeDestructors() or
-  PosAfterDestructors()
-
-/** A `Pos` without a `bindingset` requirement on the constructor. */
-private class AnyPos extends TPos {
-  string toString() { result = "Pos" }
-}
-
 /**
  * A constant that indicates the type of sub-node in a pair of `(Node, Pos)`.
  * See the comment block at the top of this file.
  */
-private class Pos extends AnyPos {
-  // This is to make sure we get compile errors in code that forgets to restrict a `Pos`.
+private class Pos extends int {
   bindingset[this]
   Pos() { any() }
 
   /** Holds if this is the position just _before_ the associated `Node`. */
-  predicate isBefore() { this = PosBefore() }
+  predicate isBefore() { this = 0 }
 
   /** Holds if `(n, this)` is the sub-node that represents `n` itself. */
-  predicate isAt() { this = PosAt() }
+  predicate isAt() { this = 1 }
 
   /** Holds if this is the position just _after_ the associated `Node`. */
-  predicate isAfter() { this = PosAfter() }
+  predicate isAfter() { this = 2 }
 
   /**
    * Holds if `(n, this)` is the virtual sub-node that comes just _before_ any
    * implicit destructor calls following `n`. The node `n` will be some node
    * that may be followed by local variables going out of scope.
    */
-  predicate isBeforeDestructors() { this = PosBeforeDestructors() }
+  predicate isBeforeDestructors() { this = 3 }
 
   /**
    * Holds if `(n, this)` is the virtual sub-node that comes just _after_ any
    * implicit destructor calls following `n`. The node `n` will be some node
    * that may be followed by local variables going out of scope.
    */
-  predicate isAfterDestructors() { this = PosAfterDestructors() }
+  predicate isAfterDestructors() { this = 4 }
 
   pragma[inline]
   predicate nodeBefore(Node n, Node nEq) { this.isBefore() and n = nEq }
@@ -480,26 +467,13 @@ private Node getControlOrderChildDense(Node n, int i) {
   result = rank[i + 1](Node child, int childIdx |
       child = getControlOrderChildSparse(n, childIdx)
     |
-      child
-      order by
-        childIdx
+      child order by childIdx
     )
 }
 
 /** Gets the last child of `n` in control-flow order. */
 private Node getLastControlOrderChild(Node n) {
   result = getControlOrderChildDense(n, max(int i | exists(getControlOrderChildDense(n, i))))
-}
-
-private newtype TSpec =
-  SpecPos(AnyPos p) or
-  SpecAround() or
-  SpecAroundDestructors() or
-  SpecBarrier()
-
-/** A `Spec` without a `bindingset` requirement on the constructor. */
-private class AnySpec extends TSpec {
-  string toString() { result = "Spec" }
 }
 
 /**
@@ -509,24 +483,9 @@ private class AnySpec extends TSpec {
  * themselves as both source and target, as well as two _around_ values and a
  * _barrier_ value.
  */
-private class Spec extends AnySpec {
+private class Spec extends Pos {
   bindingset[this]
   Spec() { any() }
-
-  /** See Pos.isBefore. */
-  predicate isBefore() { this = SpecPos(PosBefore()) }
-
-  /** See Pos.isAt. */
-  predicate isAt() { this = SpecPos(PosAt()) }
-
-  /** See Pos.isAfter. */
-  predicate isAfter() { this = SpecPos(PosAfter()) }
-
-  /** See Pos.isBeforeDestructors. */
-  predicate isBeforeDestructors() { this = SpecPos(PosBeforeDestructors()) }
-
-  /** See Pos.isAfterDestructors. */
-  predicate isAfterDestructors() { this = SpecPos(PosAfterDestructors()) }
 
   /**
    * Holds if this spec, when used on a node `n` between `(n1, p1)` and
@@ -535,7 +494,7 @@ private class Spec extends AnySpec {
    *     (n1, p1) ----> before(n)
    *     after(n) ----> (n2, p2)
    */
-  predicate isAround() { this = SpecAround() }
+  predicate isAround() { this = 5 }
 
   /**
    * Holds if this spec, when used on a node `n` between `(n1, p1)` and
@@ -544,16 +503,17 @@ private class Spec extends AnySpec {
    *     (n1, p1)            ----> beforeDestructors(n)
    *     afterDestructors(n) ----> (n2, p2)
    */
-  predicate isAroundDestructors() { this = SpecAroundDestructors() }
+  predicate isAroundDestructors() { this = 6 }
 
   /**
    * Holds if this node is a _barrier_. A barrier resolves to no positions and
    * can be inserted between nodes that should have no sub-edges between them.
    */
-  predicate isBarrier() { this = SpecBarrier() }
+  predicate isBarrier() { this = 7 }
 
   Pos getSourcePos() {
-    this = SpecPos(result)
+    this = [0 .. 4] and
+    result = this
     or
     this.isAround() and
     result.isAfter()
@@ -563,7 +523,8 @@ private class Spec extends AnySpec {
   }
 
   Pos getTargetPos() {
-    this = SpecPos(result)
+    this = [0 .. 4] and
+    result = this
     or
     this.isAround() and
     result.isBefore()
@@ -890,6 +851,21 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeAfter(n2, s)
   )
   or
+  // ConstexprIfStmt -> condition ; { then, else } -> // same as IfStmt
+  exists(ConstexprIfStmt s |
+    p1.nodeAt(n1, s) and
+    p2.nodeBefore(n2, s.getCondition())
+    or
+    p1.nodeAfter(n1, s.getThen()) and
+    p2.nodeBeforeDestructors(n2, s)
+    or
+    p1.nodeAfter(n1, s.getElse()) and
+    p2.nodeBeforeDestructors(n2, s)
+    or
+    p1.nodeAfterDestructors(n1, s) and
+    p2.nodeAfter(n2, s)
+  )
+  or
   // WhileStmt -> condition ; body -> condition ; after dtors -> after
   exists(WhileStmt s |
     p1.nodeAt(n1, s) and
@@ -990,7 +966,8 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
     exists(int maxCallIndex |
       maxCallIndex = max(int i | exists(getSynthesisedDestructorCallAfterNode(n, i))) and
       p1.nodeBeforeDestructors(n1, n) and
-      p2.nodeAt(n2, getSynthesisedDestructorCallAfterNode(n, maxCallIndex).getQualifier()))
+      p2.nodeAt(n2, getSynthesisedDestructorCallAfterNode(n, maxCallIndex).getQualifier())
+    )
     or
     // call(i+1) -> access(i)
     exists(int i |
@@ -1054,7 +1031,6 @@ private class LogicalAndLikeExpr extends ShortCircuitOperator, LogicalAndExpr { 
 /** An expression whose control flow is the same as `||`. */
 private class LogicalOrLikeExpr extends ShortCircuitOperator {
   Expr left;
-
   Expr right;
 
   LogicalOrLikeExpr() {
@@ -1079,9 +1055,7 @@ private class LogicalOrLikeExpr extends ShortCircuitOperator {
 /** An expression whose control flow is the same as `b ? x : y`. */
 private class ConditionalLikeExpr extends ShortCircuitOperator {
   Expr condition;
-
   Expr thenExpr;
-
   Expr elseExpr;
 
   ConditionalLikeExpr() {
@@ -1179,9 +1153,8 @@ private class ExceptionSource extends Node {
 }
 
 /**
- * Holds if `test` is the test of a control-flow construct that will always
- * have true/false sub-edges out of it, where the `truth`-sub-edge goes to
- * `(n2, p2)`.
+ * Holds if `test` is the test of a control-flow construct where the `truth`
+ * sub-edge goes to `(n2, p2)`.
  */
 private predicate conditionJumpsTop(Expr test, boolean truth, Node n2, Pos p2) {
   exists(IfStmt s | test = s.getCondition() |
@@ -1193,6 +1166,24 @@ private predicate conditionJumpsTop(Expr test, boolean truth, Node n2, Pos p2) {
     or
     not exists(s.getElse()) and
     truth = false and
+    p2.nodeBeforeDestructors(n2, s)
+  )
+  or
+  exists(ConstexprIfStmt s, string cond |
+    test = s.getCondition() and
+    cond = test.getFullyConverted().getValue()
+  |
+    truth = true and
+    cond != "0" and
+    p2.nodeBefore(n2, s.getThen())
+    or
+    truth = false and
+    cond = "0" and
+    p2.nodeBefore(n2, s.getElse())
+    or
+    not exists(s.getElse()) and
+    truth = false and
+    cond = "0" and
     p2.nodeBeforeDestructors(n2, s)
   )
   or
@@ -1353,6 +1344,7 @@ private predicate conditionalSuccessor(Node n1, boolean truth, Node n2) {
     normalGroupMember(targetNode, targetPos, n2)
   )
 }
+
 import Cached
 
 cached

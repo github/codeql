@@ -98,6 +98,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.ScopeManager.DeclKind;
@@ -125,7 +126,6 @@ import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
 import com.semmle.ts.ast.IsTypeExpr;
-import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
@@ -139,6 +139,7 @@ import com.semmle.ts.ast.TypeAssertion;
 import com.semmle.ts.ast.TypeExpression;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
+import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.trap.TrapWriter;
@@ -190,6 +191,10 @@ public class ASTExtractor {
 
   public ScopeManager getScopeManager() {
     return scopeManager;
+  }
+
+  public ExtractionMetrics getMetrics() {
+    return lexicalExtractor.getMetrics();
   }
 
   /**
@@ -757,6 +762,7 @@ public class ASTExtractor {
         trapwriter.addTuple("hasDeclareKeyword", key);
       }
       extractFunction(nd, key);
+      emitStaticType(nd, key);
       return key;
     }
 
@@ -828,7 +834,13 @@ public class ASTExtractor {
       extractParameterDefaultsAndTypes(nd, key, i);
 
       extractFunctionAttributes(nd, key);
+
+      // Extract associated symbol and signature
       emitNodeSymbol(nd, key);
+      if (nd.getDeclaredSignatureId() != -1) {
+        Label signatureKey = trapwriter.globalID("signature;" + nd.getDeclaredSignatureId());
+        trapwriter.addTuple("declared_function_signature", key, signatureKey);
+      }
 
       boolean oldIsStrict = isStrict;
       isStrict = bodyIsStrict;
@@ -1120,6 +1132,7 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visit(nd.getTag(), key, 0);
       visit(nd.getQuasi(), key, 1);
+      visitAll(nd.getTypeArguments(), key, IdContext.typeBind, 2);
       return key;
     }
 
@@ -1364,9 +1377,8 @@ public class ASTExtractor {
       trapwriter.addTuple("properties", methkey, c.parent, c.childIndex, kind, tostring);
       locationManager.emitNodeLocation(nd, methkey);
       visitAll(nd.getDecorators(), methkey, IdContext.varBind, -1, -1);
-      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
 
-      // the initialiser expression of an instance field is evaluated as part of
+      // the name and initialiser expression of an instance field is evaluated as part of
       // the constructor, so we adjust our syntactic context to reflect this
       MethodDefinition ctor = null;
       if (nd instanceof FieldDefinition && !nd.isStatic() && !ctors.isEmpty()) ctor = ctors.peek();
@@ -1375,6 +1387,7 @@ public class ASTExtractor {
         constructorKey = trapwriter.localID(ctor.getValue());
         contextManager.enterContainer(constructorKey);
       }
+      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
       visit(nd.getValue(), methkey, 1, c.idcontext);
       if (ctor != null) contextManager.leaveContainer();
 
@@ -1944,9 +1957,11 @@ public class ASTExtractor {
   }
 
   public void extract(Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+    lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
     trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
     locationManager.emitNodeLocation(root, toplevelLabel);
 
     root.accept(new V(platform, sourceType), null);
+    lexicalExtractor.getMetrics().stopPhase(ExtractionPhase.ASTExtractor_extract);
   }
 }

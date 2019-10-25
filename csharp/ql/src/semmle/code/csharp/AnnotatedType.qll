@@ -175,14 +175,14 @@ private newtype TAnnotatedType =
 /** A type with additional information. */
 class AnnotatedType extends TAnnotatedType {
   Type type;
-
   Annotations::TypeAnnotations annotations;
 
   AnnotatedType() { this = TAnnotatedTypeNullability(type, annotations) }
 
   /** Gets a textual representation of this annotated type. */
   string toString() {
-    result = annotations.getTypePrefix() + getUnderlyingType().toStringWithTypes() + annotations.getTypeSuffix()
+    result = annotations.getTypePrefix() + getUnderlyingType().toStringWithTypes() +
+        annotations.getTypeSuffix()
   }
 
   /** Gets the location of this annotated type. */

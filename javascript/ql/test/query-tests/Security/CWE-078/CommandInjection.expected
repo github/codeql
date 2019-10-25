@@ -67,6 +67,9 @@ nodes
 | other.js:17:27:17:29 | cmd |
 | other.js:18:22:18:24 | cmd |
 | other.js:19:36:19:38 | cmd |
+| third-party-command-injection.js:5:20:5:26 | command |
+| third-party-command-injection.js:6:21:6:27 | command |
+| tst_shell-command-injection-from-environment.js:4:25:4:61 | ['-rf', ... temp")] |
 edges
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:18:17:18:19 | cmd |
@@ -134,6 +137,7 @@ edges
 | other.js:5:15:5:44 | url.par ... ).query | other.js:5:15:5:49 | url.par ... ry.path |
 | other.js:5:15:5:49 | url.par ... ry.path | other.js:5:9:5:49 | cmd |
 | other.js:5:25:5:31 | req.url | other.js:5:15:5:38 | url.par ... , true) |
+| third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
 #select
 | child_process-test.js:17:13:17:15 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:17:13:17:15 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:18:17:18:19 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:18:17:18:19 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
@@ -160,3 +164,4 @@ edges
 | other.js:17:27:17:29 | cmd | other.js:5:25:5:31 | req.url | other.js:17:27:17:29 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:18:22:18:24 | cmd | other.js:5:25:5:31 | req.url | other.js:18:22:18:24 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:19:36:19:38 | cmd | other.js:5:25:5:31 | req.url | other.js:19:36:19:38 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| third-party-command-injection.js:6:21:6:27 | command | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | This command depends on $@. | third-party-command-injection.js:5:20:5:26 | command | a server-provided value |

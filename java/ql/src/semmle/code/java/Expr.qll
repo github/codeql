@@ -799,16 +799,6 @@ class LogicExpr extends Expr {
  */
 abstract class ComparisonExpr extends BinaryExpr {
   /**
-   * DEPRECATED: use `getLesserOperand()` instead.
-   */
-  deprecated Expr getLesser() { result = getLesserOperand() }
-
-  /**
-   * DEPRECATED: use `getGreaterOperand()` instead.
-   */
-  deprecated Expr getGreater() { result = getGreaterOperand() }
-
-  /**
    * Gets the lesser operand of this comparison expression.
    *
    * For example, `x` is the lesser operand
@@ -1127,10 +1117,11 @@ class SwitchExpr extends Expr, @switchexpr {
   Expr getAResult() {
     result = getACase().getRuleExpression()
     or
-    exists(BreakStmt break |
-      break.(JumpStmt).getTarget() = this and result = break.getValue()
-    )
+    exists(BreakStmt break | break.(JumpStmt).getTarget() = this and result = break.getValue())
   }
+
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "switch (...)" }
 }
 
 /** A parenthesised expression. */
@@ -1769,7 +1760,6 @@ private predicate hasInstantiation(RefType t) {
 /** An argument to a call. */
 class Argument extends Expr {
   Call call;
-
   int pos;
 
   Argument() { call.getArgument(pos) = this }

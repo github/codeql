@@ -10,7 +10,5 @@
 | test.py:108:13:108:18 | ControlFlowNode for SOURCE | test.py:112:14:112:14 | ControlFlowNode for t |
 | test.py:139:10:139:15 | ControlFlowNode for SOURCE | test.py:140:14:140:14 | ControlFlowNode for t |
 | test.py:143:9:143:14 | ControlFlowNode for SOURCE | test.py:145:10:145:10 | ControlFlowNode for s |
-| test.py:148:10:148:15 | ControlFlowNode for SOURCE | test.py:152:10:152:13 | ControlFlowNode for Subscript |
-| test.py:149:18:149:23 | ControlFlowNode for SOURCE | test.py:153:10:153:17 | ControlFlowNode for Subscript |
 | test.py:158:9:158:14 | ControlFlowNode for SOURCE | test.py:160:14:160:14 | ControlFlowNode for t |
 | test.py:158:9:158:14 | ControlFlowNode for SOURCE | test.py:166:14:166:14 | ControlFlowNode for t |

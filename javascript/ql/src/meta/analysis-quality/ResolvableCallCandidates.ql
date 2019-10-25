@@ -7,7 +7,8 @@
  * @tags meta
  * @id js/meta/resolvable-call-candidates
  */
+
 import javascript
 import CallGraphQuality
 
-select projectRoot(), count(NonExternalCall call)
+select projectRoot(), count(RelevantInvoke call)

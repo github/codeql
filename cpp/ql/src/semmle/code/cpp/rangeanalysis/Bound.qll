@@ -53,28 +53,27 @@ abstract class Bound extends TBound {
 class ZeroBound extends Bound, TBoundZero {
   override string toString() { result = "0" }
 
-  override Instruction getInstruction(int delta) { result.(ConstantValueInstruction).getValue().toInt() = delta }
-  
-  override Location getLocation() {
-    result instanceof UnknownDefaultLocation
+  override Instruction getInstruction(int delta) {
+    result.(ConstantValueInstruction).getValue().toInt() = delta
   }
+
+  override Location getLocation() { result instanceof UnknownDefaultLocation }
 }
+
 /**
  * A bound corresponding to the value of an `Instruction`.
  */
 class ValueNumberBound extends Bound, TBoundValueNumber {
   ValueNumber vn;
-  
-  ValueNumberBound() {
-    this = TBoundValueNumber(vn)
-  }
-  
+
+  ValueNumberBound() { this = TBoundValueNumber(vn) }
+
   /** Gets the SSA variable that equals this bound. */
-  override Instruction getInstruction(int delta) { this = TBoundValueNumber(valueNumber(result)) and delta = 0}
+  override Instruction getInstruction(int delta) {
+    this = TBoundValueNumber(valueNumber(result)) and delta = 0
+  }
 
   override string toString() { result = vn.getExampleInstruction().toString() }
 
-  override Location getLocation() {
-    result = vn.getLocation()
-  }
+  override Location getLocation() { result = vn.getLocation() }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Semmle.Util.Logging;
 using System;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -20,8 +21,6 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public class Assembly : LabelledEntity, IAssembly
     {
-        public override Id IdSuffix => suffix;
-
         readonly File file;
         readonly AssemblyName assemblyName;
 
@@ -38,12 +37,24 @@ namespace Semmle.Extraction.CIL.Entities
             if (!def.PublicKey.IsNil)
                 assemblyName.SetPublicKey(cx.mdReader.GetBlobBytes(def.PublicKey));
 
-            ShortId = cx.GetId(FullName) + "#file:///" + cx.assemblyPath.Replace("\\", "/");
-
             file = new File(cx, cx.assemblyPath);
         }
 
-        static readonly Id suffix = new StringId(";assembly");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write(FullName);
+            trapFile.Write("#file:///");
+            trapFile.Write(cx.assemblyPath.Replace("\\", "/"));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return GetType() == obj.GetType() && Equals(file, ((Assembly)obj).file);
+        }
+
+        public override int GetHashCode() => 7 * file.GetHashCode();
+
+        public override string IdSuffix => ";assembly";
 
         string FullName => assemblyName.GetPublicKey() is null ? assemblyName.FullName + ", PublicKeyToken=null" : assemblyName.FullName;
 
@@ -117,7 +128,7 @@ namespace Semmle.Extraction.CIL.Entities
         /// <param name="extractPdbs">Whether to extract PDBs.</param>
         /// <param name="trapFile">The path of the trap file.</param>
         /// <param name="extracted">Whether the file was extracted (false=cached).</param>
-        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, bool nocache, bool extractPdbs, out string trapFile, out bool extracted)
+        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, bool nocache, bool extractPdbs, TrapWriter.CompressionMode trapCompression, out string trapFile, out bool extracted)
         {
             trapFile = "";
             extracted = false;
@@ -125,7 +136,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 var extractor = new Extractor(false, assemblyPath, logger);
                 var project = layout.LookupProjectOrDefault(assemblyPath);
-                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true))
+                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true, trapCompression))
                 {
                     trapFile = trapWriter.TrapFile;
                     if (nocache || !System.IO.File.Exists(trapFile))
