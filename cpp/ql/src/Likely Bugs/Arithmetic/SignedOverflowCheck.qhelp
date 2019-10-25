@@ -4,16 +4,16 @@
 <qhelp>
 <overview>
 <p>
-Testing for <code>signed</code> integer overflow by adding a
-value to a variable and then comparing the result to that variable
-is not defined by the C or C++ standards.  The comparison may
-produce an unintended result, or may be deleted by the compiler
-entirely.
+Testing for signed integer overflow by adding a
+two signed values together and then comparing the result to one
+of the values is ill-formed since the overflow check is undefined.
+The comparison may produce an unintended result, or may be deleted
+by the compiler entirely.
 </p>
 </overview>
 <recommendation>
 <p>
-Make sure that the comparison in question uses <i>unsigned</i> values.
+When checking for overflow, make sure that <code>unsigned</code> values are used.
 </p>
 </recommendation>
 <example>
