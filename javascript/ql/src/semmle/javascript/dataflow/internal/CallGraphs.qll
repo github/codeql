@@ -43,7 +43,7 @@ module CallGraph {
     or
     imprecision = 0 and
     t.start() and
-    GlobalAccessPath::step(function, result)
+    AccessPath::step(function, result)
     or
     imprecision = 0 and
     exists(DataFlow::ClassNode cls |

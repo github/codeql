@@ -13,10 +13,9 @@ private class PropertyName extends string {
   PropertyName() {
     this = any(DataFlow::PropRef pr).getPropertyName()
     or
-    GlobalAccessPath::isAssignedInUniqueFile(this)
+    AccessPath::isAssignedInUniqueFile(this)
     or
-    this = GlobalAccessPath::fromRhs(_, _) and
-    this != ""
+    exists(AccessPath::getAnAssignmentTo(_, this))
   }
 }
 
@@ -100,31 +99,29 @@ module StepSummary {
     or
     // Store to global access path
     exists(string name |
-      name = GlobalAccessPath::fromRhs(pred) and
-      GlobalAccessPath::isAssignedInUniqueFile(name) and
+      pred = AccessPath::getAnAssignmentTo(name) and
+      AccessPath::isAssignedInUniqueFile(name) and
       succ = DataFlow::globalAccessPathRootPseudoNode() and
       summary = StoreStep(name)
     )
     or
     // Load from global access path
     exists(string name |
-      name = GlobalAccessPath::fromReference(succ) and
-      GlobalAccessPath::isAssignedInUniqueFile(name) and
+      succ = AccessPath::getAReferenceTo(name) and
+      AccessPath::isAssignedInUniqueFile(name) and
       pred = DataFlow::globalAccessPathRootPseudoNode() and
       summary = LoadStep(name)
     )
     or
     // Store to non-global access path
     exists(string name |
-      name = GlobalAccessPath::fromRhs(pred, succ) and
-      succ != DataFlow::globalAccessPathRootPseudoNode() and
+      pred = AccessPath::getAnAssignmentTo(succ, name) and
       summary = StoreStep(name)
     )
     or
     // Load from non-global access path
     exists(string name |
-      name = GlobalAccessPath::fromReference(succ, pred) and
-      pred != DataFlow::globalAccessPathRootPseudoNode() and
+      succ = AccessPath::getAReferenceTo(pred, name) and
       summary = LoadStep(name) and
       name != ""
     )

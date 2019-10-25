@@ -582,7 +582,7 @@ module JSDoc {
      * within this container.
      */
     string resolveAlias(string alias) {
-      result = GlobalAccessPath::getAccessPath(getNodeFromAlias(alias))
+      getNodeFromAlias(alias) = AccessPath::getAReferenceOrAssignmentTo(result)
     }
 
     /**

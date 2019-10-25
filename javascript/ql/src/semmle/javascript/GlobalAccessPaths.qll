@@ -4,11 +4,41 @@
 
 import javascript
 
+deprecated
 module GlobalAccessPath {
+  /**
+   * DEPRECATED. Instead use `AccessPath::getAReferenceTo` with the result and parameter reversed.
+   */
+  pragma[inline]
+  string fromReference(DataFlow::Node node) {
+    node = AccessPath::getAReferenceTo(result)
+  }
+
+  /**
+   * DEPRECATED. Instead use `AccessPath::getAnAssignmentTo` with the result and parameter reversed.
+   */
+  pragma[inline]
+  string fromRhs(DataFlow::Node node) {
+    node = AccessPath::getAnAssignmentTo(result)
+  }
+
+  /**
+   * DEPRECATED. Use `AccessPath::getAReferenceOrAssignmentTo`.
+   */
+  pragma[inline]
+  string getAccessPath(DataFlow::Node node) {
+    result = fromReference(node)
+    or
+    not exists(fromReference(node)) and
+    result = fromRhs(node)
+  }
+}
+
+module AccessPath {
   /**
    * A source node that can be the root of an access path.
    */
-  private class Root extends DataFlow::SourceNode {
+  class Root extends DataFlow::SourceNode {
     Root() {
       not this.accessesGlobal(_) and
       not this instanceof DataFlow::PropRead and
@@ -53,7 +83,7 @@ module GlobalAccessPath {
    * ```
    */
   cached
-  string fromReference(DataFlow::Node node, Root root) {
+  private string fromReference(DataFlow::Node node, Root root) {
     root = node and
     not root.isGlobal() and
     result = ""
@@ -111,29 +141,6 @@ module GlobalAccessPath {
   }
 
   /**
-   * Gets the global access path referred to by `node`.
-   *
-   * This holds for direct references as well as for aliases
-   * established through local data flow.
-   *
-   * Examples:
-   * ```
-   * function f() {
-   *   let v = foo.bar; // reference to 'foo.bar'
-   *   v.baz;           // reference to 'foo.bar.baz'
-   * }
-   *
-   * (function(ns) {
-   *   ns.x;            // reference to 'NS.x'
-   * })(NS = NS || {});
-   * ```
-   */
-  cached
-  string fromReference(DataFlow::Node node) {
-    result = fromReference(node, DataFlow::globalAccessPathRootPseudoNode())
-  }
-
-  /**
    * Holds if `rhs` is the right-hand side of a self-assignment.
    *
    * This usually happens in defensive initialization, for example:
@@ -183,7 +190,7 @@ module GlobalAccessPath {
    * ```
    */
   cached
-  string fromRhs(DataFlow::Node node, Root root) {
+  private string fromRhs(DataFlow::Node node, Root root) {
     exists(DataFlow::PropWrite write, string baseName |
       node = write.getRhs() and
       result = baseName + "." + write.getPropertyName()
@@ -225,42 +232,109 @@ module GlobalAccessPath {
   }
 
   /**
-   * Gets the global access path `node` is being assigned to, if any.
+   * Gets a node that refers to the given access path relative to the given `root` node,
+   * or `root` itself if the access path is empty.
    *
-   * Only holds for the immediate right-hand side of an assignment or property, not
-   * for nodes that transitively flow there.
+   * This works for direct references as well as for aliases established through local data flow.
    *
-   * For example, the class nodes below all map to `foo.bar`:
+   * Note that non-empty access paths contain an initial `.`, such as in `.foo.bar`.
+   *
+   * For example:
+   * ```
+   * function f(x) {
+   *   let a = x.f.g; // reference to (x, ".f.g")
+   *   let b = a.h;   // reference to (x, ".f.g.h")
+   * }
+   * ```
+   */
+  DataFlow::Node getAReferenceTo(Root root, string path) {
+    path = fromReference(result, root) and
+    not root.isGlobal()
+  }
+
+  /**
+   * Gets a node that refers to the given global access path.
+   *
+   * This works for direct references as well as for aliases established through local data flow.
+   *
+   * Examples:
+   * ```
+   * function f() {
+   *   let v = foo.bar; // reference to 'foo.bar'
+   *   v.baz;           // reference to 'foo.bar.baz'
+   * }
+   *
+   * (function(ns) {
+   *   ns.x;            // reference to 'NS.x'
+   * })(NS = NS || {});
+   * ```
+   */
+  DataFlow::Node getAReferenceTo(string path) {
+    path = fromReference(result, DataFlow::globalAccessPathRootPseudoNode())
+  }
+
+  /**
+   * Gets a node that is assigned to the given access path relative to the given `root` node.
+   *
+   * Only gets the immediate right-hand side of an assignment or property, not
+   * nodes that transitively flow there.
+   *
+   * Note that access paths contain an initial `.`, such as in `.foo.bar`.
+   *
+   * For example, the class nodes below are all assignments to `(x, ".foo.bar")`.
+   * ```
+   * function f(x) {
+   *   x.foo.bar = class {};
+   *   x.foo = { bar: class() };
+   *   let alias = x;
+   *   alias.foo.bar = class {};
+   * }
+   * ```
+   */
+  DataFlow::Node getAnAssignmentTo(Root root, string path) {
+    path = fromRhs(result, root) and
+    not root.isGlobal()
+  }
+
+  /**
+   * Gets a node that is assigned to the given global access path.
+   *
+   * Only gets the immediate right-hand side of an assignment or property or a global declaration,
+   * not nodes that transitively flow there.
+   *
+   * For example, the class nodes below are all assignmetns to `foo.bar`:
    * ```
    * foo.bar = class {};
-   *
    * foo = { bar: class {} };
-   *
    * (function(f) {
    *   f.bar = class {}
    *  })(foo = foo || {});
    * ```
    */
-  cached
-  string fromRhs(DataFlow::Node node) {
-    result = fromRhs(node, DataFlow::globalAccessPathRootPseudoNode())
+  DataFlow::Node getAnAssignmentTo(string path) {
+    path = fromRhs(result, DataFlow::globalAccessPathRootPseudoNode())
   }
 
   /**
-   * Gets the access path relative to `root` referenced by or assigned to `node`.
+   * Gets a node that refers to or is assigned to the given global access path.
+   *
+   * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
-  string getAccessPath(DataFlow::Node node, Root root) {
-    result = fromReference(node, root)
+  DataFlow::Node getAReferenceOrAssignmentTo(string path) {
+    result = getAReferenceTo(path)
     or
-    not exists(fromReference(node, root)) and
-    result = fromRhs(node, root)
+    result = getAnAssignmentTo(path)
   }
 
   /**
-   * Gets the global access path referenced by or assigned to `node`.
+   * Gets a node that refers to or is assigned to the given access path.
+   *
+   * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
-  string getAccessPath(DataFlow::Node node) {
-    result = getAccessPath(node, DataFlow::globalAccessPathRootPseudoNode())
+  DataFlow::Node getAReferenceOrAssignmentTo(Root root, string path) {
+    result = getAReferenceTo(root, path)
+    or
+    result = getAnAssignmentTo(root, path)
   }
 
   /**
@@ -269,14 +343,13 @@ module GlobalAccessPath {
   pragma[inline]
   predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(string name, Root root |
-      name = fromRhs(pred, root) and
-      name = fromReference(succ, root) and
-      not root.isGlobal()
+      pred = getAnAssignmentTo(root, name) and
+      succ = getAReferenceTo(root, name)
     )
     or
     exists(string name |
-      name = fromRhs(pred) and
-      name = fromReference(succ) and
+      pred = getAnAssignmentTo(name) and
+      succ = getAReferenceTo(name) and
       isAssignedInUniqueFile(name)
     )
   }
