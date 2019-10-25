@@ -439,7 +439,6 @@ test_getACallee
 | tst.js:64:13:64:19 | new B() | tst.js:50:1:50:15 | function B() {} |
 | tst.js:66:5:66:9 | b.f() | tst.js:52:5:54:2 | functio ... g();\\n\\t} |
 | tst.js:66:5:66:9 | b.f() | tst.js:65:11:65:23 | function() {} |
-| tst.js:69:1:69:10 | globalfn() | tst3.js:1:1:1:22 | functio ... fn() {} |
 | tst.js:70:1:70:11 | globalfn2() | tst3.js:2:1:2:23 | functio ... n2() {} |
 test_getCalleeName
 | a.js:2:1:2:5 | foo() | foo |
