@@ -540,6 +540,13 @@ class ErrorExpr extends Expr, @errorexpr {
  */
 class AssumeExpr extends Expr, @assume {
   override string toString() { result = "__assume(...)" }
+
+  override string getCanonicalQLClass() { result = "AssumeExpr" }
+
+  /**
+   * Gets the operand of the `__assume` expressions.
+   */
+  Expr getOperand() { this.hasChild(result, 0) }
 }
 
 /**

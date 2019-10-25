@@ -13,7 +13,6 @@ missingOperandType
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
-| assume0.cpp:7:2:7:2 | Chi: call to f |
 | condition_decls.cpp:16:19:16:20 | Chi: call to BoxedInt |
 | condition_decls.cpp:26:23:26:24 | Chi: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | Chi: call to BoxedInt |
@@ -546,3 +545,8 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType
