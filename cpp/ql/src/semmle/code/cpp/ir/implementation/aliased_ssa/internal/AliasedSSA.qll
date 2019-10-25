@@ -176,7 +176,9 @@ class UnknownNonLocalMemoryLocation extends TUnknownNonLocalMemoryLocation, Memo
 
   final override VirtualVariable getVirtualVariable() { result = TUnknownVirtualVariable(irFunc) }
 
-  final override Type getType() { result instanceof UnknownType }
+  final override Language::LanguageType getType() {
+    result = any(IRUnknownType type).getCanonicalLanguageType()
+  }
 
   final override string getUniqueId() { result = "{UnknownNonLocal}" }
 }

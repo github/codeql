@@ -177,8 +177,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       tag = AliasedUseTag() and
       opcode instanceof Opcode::AliasedUse and
-      resultType instanceof VoidType and
-      isLValue = false
+      resultType = getVoidType()
       or
       tag = ExitFunctionTag() and
       opcode instanceof Opcode::ExitFunction and
