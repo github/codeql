@@ -29,10 +29,10 @@ bool cannotHoldAnotherUInt(int n1, unsigned int delta) {
 }
 
 bool shortShort1(unsigned short n1, unsigned short delta) {
-    // clang 8.0.0 -O2: deleted
-    // gcc 9.2 -O2: deleted
-    // msvc 19.22 /O2: not deleted
-	return n1 + delta < n1; // GOOD: always false, but will never overflow
+
+    // BAD [BadAdditionOverflowCheck.ql]
+    // GOOD [SigneOverflowCheck.ql]: Test always fails, but will never overflow.
+	return n1 + delta < n1;
 }
 
 bool shortShort2(unsigned short n1, unsigned short delta) {
@@ -107,10 +107,10 @@ bool multipleCasts(char x) {
 }
 
 bool multipleCasts2(char x) {
-    // clang 9.0.0 -O2: not deleted
-    // gcc 9.2 -O2: not deleted
-    // msvc 19.22 /O2: not deleted
-    return (int)(unsigned short)(x + '1') < (int)(unsigned short)x; // GOOD: cannot overflow
+
+    // BAD [BadAdditionOverflowCheck.ql]
+    // GOOD [SigneOverflowCheck.ql]: Test always fails, but will never overflow.
+    return (int)(unsigned short)(x + '1') < (int)(unsigned short)x;
 }
 
 int does_it_overflow(int n1, unsigned short delta) {
