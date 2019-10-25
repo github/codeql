@@ -14,6 +14,9 @@ private class PropertyName extends string {
     this = any(DataFlow::PropRef pr).getPropertyName()
     or
     GlobalAccessPath::isAssignedInUniqueFile(this)
+    or
+    this = GlobalAccessPath::fromRhs(_, _) and
+    this != ""
   }
 }
 
@@ -95,6 +98,7 @@ module StepSummary {
     any(AdditionalTypeTrackingStep st).step(pred, succ) and
     summary = LevelStep()
     or
+    // Store to global access path
     exists(string name |
       name = GlobalAccessPath::fromRhs(pred) and
       GlobalAccessPath::isAssignedInUniqueFile(name) and
@@ -102,11 +106,27 @@ module StepSummary {
       summary = StoreStep(name)
     )
     or
+    // Load from global access path
     exists(string name |
       name = GlobalAccessPath::fromReference(succ) and
       GlobalAccessPath::isAssignedInUniqueFile(name) and
       pred = DataFlow::globalAccessPathRootPseudoNode() and
       summary = LoadStep(name)
+    )
+    or
+    // Store to non-global access path
+    exists(string name |
+      name = GlobalAccessPath::fromRhs(pred, succ) and
+      succ != DataFlow::globalAccessPathRootPseudoNode() and
+      summary = StoreStep(name)
+    )
+    or
+    // Load from non-global access path
+    exists(string name |
+      name = GlobalAccessPath::fromReference(succ, pred) and
+      pred != DataFlow::globalAccessPathRootPseudoNode() and
+      summary = LoadStep(name) and
+      name != ""
     )
     or
     // Summarize calls with flow directly from a parameter to a return.
