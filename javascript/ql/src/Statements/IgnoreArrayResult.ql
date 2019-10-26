@@ -41,5 +41,7 @@ predicate isIgnoredPureArrayCall(DataFlow::MethodCallNode call) {
 }
 
 from DataFlow::MethodCallNode call
-where callsArray(call) instanceof DataFlow::ArrayCreationNode
+where 
+  callsArray(call) instanceof DataFlow::ArrayCreationNode and
+  not call.getReceiver().asExpr().(ArrayExpr).getSize() = 0
 select call, "Result from call to " + call.getMethodName() + " ignored."
