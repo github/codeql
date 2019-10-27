@@ -18,18 +18,18 @@ Association
 A QLDoc comment may be 'associated with' any of the following QL syntax elements:
 
 -  Class declarations
--  Predicate declarations
--  Method declarations
+-  Non-member predicate declarations
+-  Member predicate declarations
 -  Modules
 
-For class, method, and predicate declarations, the associated QLDoc comment (if any) is the closest preceding QLDoc comment.
+For class and predicate declarations, the associated QLDoc comment (if any) is the closest preceding QLDoc comment.
 
 For modules, the associated QLDoc comment (if any) is the QLDoc comment which is the first element in the file, and moreover is not associated with any other QL element.
 
 Inheritance
 -----------
 
-If a method has no directly associated QLDoc and overrides a set of methods which all have the same QLDoc, then the method inherits that QLDoc.
+If a member predicate has no directly associated QLDoc and overrides a set of member predicates which all have the same QLDoc, then the member predicate inherits that QLDoc.
 
 Content
 -------

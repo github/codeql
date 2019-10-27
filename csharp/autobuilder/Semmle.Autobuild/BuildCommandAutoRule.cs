@@ -52,7 +52,7 @@ namespace Semmle.Autobuild
                 if (vsTools != null)
                     command.CallBatFile(vsTools.Path);
 
-                command.IndexCommand(builder.Odasa, scriptPath);
+                builder.MaybeIndex(command, scriptPath);
                 return command.Script;
             });
         }

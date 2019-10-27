@@ -107,6 +107,27 @@ module StepSummary {
       pred = DataFlow::globalAccessPathRootPseudoNode() and
       summary = LoadStep(name)
     )
+    or
+    // Summarize calls with flow directly from a parameter to a return.
+    exists(DataFlow::ParameterNode param, DataFlow::FunctionNode fun |
+      (
+        param.flowsTo(fun.getAReturn()) and
+        summary = LevelStep()
+        or
+        exists(string prop |
+          param.getAPropertyRead(prop).flowsTo(fun.getAReturn()) and
+          summary = LoadStep(prop)
+        )
+      ) and
+      if param = fun.getAParameter() then (
+        // Step from argument to call site.
+        argumentPassing(succ, pred, fun.getFunction(), param)
+      ) else (
+        // Step from captured parameter to local call sites
+        pred = param and
+        succ = fun.getAnInvocation()
+      )
+    )
   }
 }
 
@@ -367,7 +388,7 @@ class TypeBackTracker extends TTypeBackTracker {
    *   t.start() and
    *   result = < some API call >.getArgument(< n >)
    *   or
-   *   exists (DataFlow::TypeTracker t2 |
+   *   exists (DataFlow::TypeBackTracker t2 |
    *     t = t2.smallstep(result, myType(t2))
    *   )
    * }

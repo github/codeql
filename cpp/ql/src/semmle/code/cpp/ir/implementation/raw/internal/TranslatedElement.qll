@@ -3,17 +3,14 @@ import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.IRConfiguration
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedFunction
 private import TranslatedStmt
 private import IRConstruction
-
-/**
- * Gets the built-in `int` type.
- */
-Type getIntType() { result.(IntType).isImplicitlySigned() }
+private import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * Gets the "real" parent of `expr`. This predicate treats conversions as if
@@ -52,6 +49,9 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
+  // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
+  getRealParent(expr) instanceof AssumeExpr
+  or
   // The `DestructorCall` node for a `DestructorFieldDestruction` has a `FieldAccess`
   // node as its qualifier, but that `FieldAccess` does not have a child of its own.
   // We'll ignore that `FieldAccess`, and supply the receiver as part of the calling
@@ -65,8 +65,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   )
   or
   // Do not translate input/output variables in GNU asm statements
-  getRealParent(expr) instanceof AsmStmt
-  or
+  //  getRealParent(expr) instanceof AsmStmt
+  //  or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
   or
   // We do not yet translate destructors properly, so for now we ignore any
@@ -369,7 +369,44 @@ newtype TTranslatedElement =
   // An allocation size for a `new` or `new[]` expression
   TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // The declaration/initialization part of a `ConditionDeclExpr`
-  TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) }
+  TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
+  // The side effects of a `Call` {
+  TTranslatedSideEffects(Call expr) { exists(TTranslatedArgumentSideEffect(expr, _, _, _)) } or // A precise side effect of an argument to a `Call` {
+  TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
+    (
+      expr = call.getArgument(n).getFullyConverted()
+      or
+      expr = call.getQualifier().getFullyConverted() and
+      n = -1
+    ) and
+    (
+      call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(n, _) and
+      isWrite = false
+      or
+      call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(n, _, _) and
+      isWrite = true
+      or
+      not call.getTarget() instanceof SideEffectFunction and
+      exists(Type t | t = expr.getUnspecifiedType() |
+        t instanceof ArrayType or
+        t instanceof PointerType or
+        t instanceof ReferenceType
+      ) and
+      (
+        isWrite = true or
+        isWrite = false
+      )
+      or
+      not call.getTarget() instanceof SideEffectFunction and
+      n = -1 and
+      (
+        isWrite = true or
+        isWrite = false
+      )
+    ) and
+    not ignoreExpr(expr) and
+    not ignoreExpr(call)
+  }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -494,9 +531,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction does not return a result, `resultType` should be
    * `VoidType`.
    */
-  abstract predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  );
+  abstract predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType);
 
   /**
    * Gets the `Function` that contains this element.
@@ -536,7 +571,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * `tag` must be unique for each variable generated from the same AST node
    * (not just from the same `TranslatedElement`).
    */
-  predicate hasTempVariable(TempVariableTag tag, Type type) { none() }
+  predicate hasTempVariable(TempVariableTag tag, CppType type) { none() }
 
   /**
    * If the instruction specified by `tag` is a `FunctionInstruction`, gets the
@@ -563,6 +598,12 @@ abstract class TranslatedElement extends TTranslatedElement {
   string getInstructionConstantValue(InstructionTag tag) { none() }
 
   /**
+   * If the instruction specified by `tag` is an `IndexedInstruction`, gets the
+   * index for that instruction.
+   */
+  int getInstructionIndex(InstructionTag tag) { none() }
+
+  /**
    * If the instruction specified by `tag` is a `PointerArithmeticInstruction`,
    * gets the size of the type pointed to by the pointer.
    */
@@ -574,6 +615,8 @@ abstract class TranslatedElement extends TTranslatedElement {
    * constant size, this predicate does not hold.
    */
   int getInstructionResultSize(InstructionTag tag) { none() }
+
+  predicate needsUnknownOpaqueType(int byteSize) { none() }
 
   /**
    * If the instruction specified by `tag` is a `StringConstantInstruction`,
@@ -590,7 +633,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction specified by `tag` is a `CatchByTypeInstruction`,
    * gets the type of the exception to be caught.
    */
-  Type getInstructionExceptionType(InstructionTag tag) { none() }
+  CppType getInstructionExceptionType(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is an `InheritanceConversionInstruction`,
@@ -609,7 +652,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Gets the type of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
    */
-  Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
+  CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
 
   /**
    * Gets the size of the memory operand specified by `operandTag` on the the instruction specified by `tag`.

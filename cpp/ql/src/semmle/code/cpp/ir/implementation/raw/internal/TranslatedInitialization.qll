@@ -1,6 +1,7 @@
 private import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.internal.CppType
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -79,9 +80,7 @@ abstract class TranslatedListInitialization extends TranslatedInitialization, In
     )
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -150,13 +149,10 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
     not expr instanceof StringLiteral
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = getContext().getTargetType() and
-    isGLValue = false
+    resultType = getTypeForPRValue(getContext().getTargetType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -188,20 +184,16 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
 class TranslatedStringLiteralInitialization extends TranslatedDirectInitialization {
   override StringLiteral expr;
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     // Load the string literal to make it a prvalue of type `char[len]`
     tag = InitializerLoadStringTag() and
     opcode instanceof Opcode::Load and
-    resultType = getInitializer().getResultType() and
-    isGLValue = false
+    resultType = getTypeForPRValue(expr.getType())
     or
     // Store the string into the target.
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = getInitializer().getResultType() and
-    isGLValue = false
+    resultType = getTypeForPRValue(expr.getType())
     or
     exists(int startIndex, int elementCount |
       // If the initializer string isn't large enough to fill the target, then
@@ -213,26 +205,22 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
         // space in the target array.
         tag = ZeroPadStringConstantTag() and
         opcode instanceof Opcode::Constant and
-        resultType instanceof UnknownType and
-        isGLValue = false
+        resultType = getUnknownOpaqueType(elementCount * getElementType().getSize())
         or
         // The index of the first element to be zero initialized.
         tag = ZeroPadStringElementIndexTag() and
         opcode instanceof Opcode::Constant and
-        resultType = getIntType() and
-        isGLValue = false
+        resultType = getIntType()
         or
         // Compute the address of the first element to be zero initialized.
         tag = ZeroPadStringElementAddressTag() and
         opcode instanceof Opcode::PointerAdd and
-        resultType = getElementType() and
-        isGLValue = true
+        resultType = getTypeForGLValue(getElementType())
         or
         // Store the constant zero into the remainder of the string.
         tag = ZeroPadStringStoreTag() and
         opcode instanceof Opcode::Store and
-        resultType instanceof UnknownType and
-        isGLValue = false
+        resultType = getUnknownOpaqueType(elementCount * getElementType().getSize())
       )
     )
   }
@@ -326,6 +314,13 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     )
   }
 
+  override predicate needsUnknownOpaqueType(int byteSize) {
+    exists(int elementCount |
+      zeroInitRange(_, elementCount) and
+      byteSize = elementCount * getElementType().getSize()
+    )
+  }
+
   override int getInstructionResultSize(InstructionTag tag) {
     exists(int elementCount |
       zeroInitRange(_, elementCount) and
@@ -338,7 +333,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
   }
 
   private Type getElementType() {
-    result = getContext().getTargetType().(ArrayType).getBaseType().getUnspecifiedType()
+    result = getContext().getTargetType().getUnspecifiedType().(ArrayType).getBaseType()
   }
 
   /**
@@ -348,7 +343,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
   private predicate zeroInitRange(int startIndex, int elementCount) {
     exists(int targetCount |
       startIndex = expr.getUnspecifiedType().(ArrayType).getArraySize() and
-      targetCount = getContext().getTargetType().(ArrayType).getArraySize() and
+      targetCount = getContext().getTargetType().getUnspecifiedType().(ArrayType).getArraySize() and
       elementCount = targetCount - startIndex and
       elementCount > 0
     )
@@ -359,9 +354,7 @@ class TranslatedConstructorInitialization extends TranslatedDirectInitialization
   StructorCallContext {
   override ConstructorCall expr;
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -412,13 +405,10 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
    */
   final int getOrder() { result = field.getInitializationOrder() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = getFieldAddressTag() and
     opcode instanceof Opcode::FieldAddress and
-    resultType = field.getUnspecifiedType() and
-    isGLValue = true
+    resultType = getTypeForGLValue(field.getType())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -481,20 +471,16 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
   TTranslatedFieldValueInitialization {
   TranslatedFieldValueInitialization() { this = TTranslatedFieldValueInitialization(ast, field) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
-    TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType, isGLValue)
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType)
     or
     tag = getFieldDefaultValueTag() and
     opcode instanceof Opcode::Constant and
-    resultType = field.getUnspecifiedType() and
-    isGLValue = false
+    resultType = getTypeForPRValue(field.getType())
     or
     tag = getFieldDefaultValueStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = field.getUnspecifiedType() and
-    isGLValue = false
+    resultType = getTypeForPRValue(field.getUnspecifiedType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -557,18 +543,14 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
 
   final override Instruction getFirstInstruction() { result = getInstruction(getElementIndexTag()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = getElementIndexTag() and
     opcode instanceof Opcode::Constant and
-    resultType = getIntType() and
-    isGLValue = false
+    resultType = getIntType()
     or
     tag = getElementAddressTag() and
     opcode instanceof Opcode::PointerAdd and
-    resultType = getElementType() and
-    isGLValue = true
+    resultType = getTypeForGLValue(getElementType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -606,7 +588,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
 
   final ArrayOrVectorAggregateLiteral getInitList() { result = initList }
 
-  final Type getElementType() { result = initList.getElementType().getUnspecifiedType() }
+  final Type getElementType() { result = initList.getElementType() }
 }
 
 /**
@@ -659,20 +641,16 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     this = TTranslatedElementValueInitialization(initList, elementIndex, elementCount)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
-    TranslatedElementInitialization.super.hasInstruction(opcode, tag, resultType, isGLValue)
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    TranslatedElementInitialization.super.hasInstruction(opcode, tag, resultType)
     or
     tag = getElementDefaultValueTag() and
     opcode instanceof Opcode::Constant and
-    resultType = getDefaultValueType() and
-    isGLValue = false
+    resultType = getDefaultValueType()
     or
     tag = getElementDefaultValueStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = getDefaultValueType() and
-    isGLValue = false
+    resultType = getDefaultValueType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -726,6 +704,10 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
 
   override int getElementIndex() { result = elementIndex }
 
+  override predicate needsUnknownOpaqueType(int byteSize) {
+    elementCount != 0 and byteSize = elementCount * getElementType().getSize()
+  }
+
   private InstructionTag getElementDefaultValueTag() {
     result = InitializerElementDefaultValueTag()
   }
@@ -734,8 +716,10 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     result = InitializerElementDefaultValueStoreTag()
   }
 
-  private Type getDefaultValueType() {
-    if elementCount = 1 then result = getElementType() else result instanceof UnknownType
+  private CppType getDefaultValueType() {
+    if elementCount = 1
+    then result = getTypeForPRValue(getElementType())
+    else result = getUnknownOpaqueType(elementCount * getElementType().getSize())
   }
 }
 
@@ -766,13 +750,10 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
 abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStructor {
   final override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::ConvertToBase and
-    resultType = call.getTarget().getDeclaringType().getUnspecifiedType() and
-    isGLValue = true
+    resultType = getTypeForGLValue(call.getTarget().getDeclaringType())
   }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -822,9 +803,7 @@ class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromC
     result = getStructorCall().getFirstInstruction()
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 

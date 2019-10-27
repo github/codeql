@@ -34,6 +34,9 @@ class InvokeNode extends DataFlow::SourceNode {
 
   InvokeNode() { this = impl }
 
+  /** Gets the syntactic invoke expression underlying this function invocation. */
+  InvokeExpr getInvokeExpr() { result = impl.getInvokeExpr() }
+
   /** Gets the name of the function or method being invoked, if it can be determined. */
   string getCalleeName() { result = impl.getCalleeName() }
 
@@ -307,6 +310,9 @@ DataFlow::SourceNode globalObjectRef() {
   or
   // DOM and service workers
   result = globalVarRef("self")
+  or
+  // ECMAScript 2020
+  result = globalVarRef("globalThis")
   or
   // `require("global")`
   result = moduleImport("global")
@@ -706,7 +712,8 @@ class ClassNode extends DataFlow::SourceNode {
     result = getAClassReference(t.continue()).getAnInstantiation()
     or
     t.start() and
-    result.(AnalyzedNode).getAValue() = getAbstractInstanceValue()
+    result.(AnalyzedNode).getAValue() = getAbstractInstanceValue() and
+    not result = any(DataFlow::ClassNode cls).getAReceiverNode()
     or
     t.start() and
     result = getAReceiverNode()

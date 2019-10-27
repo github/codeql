@@ -45,4 +45,12 @@ new h()          // NOT OK
 C.call();        // NOT OK
 C.apply();       // NOT OK
 
+class E {
+  static call() {}
+  static apply() {}
+}
+
+E.call();        // OK
+E.apply();       // OK
+
 //semmle-extractor-options: --experimental

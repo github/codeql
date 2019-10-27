@@ -10,7 +10,7 @@
 
 /*
  * See More Effective C++ item 7.
- * Note: Meyers allows unary & to be overloaded but not comma
+ * Note: Meyers allows unary `&` to be overloaded but not comma.
  */
 
 import cpp

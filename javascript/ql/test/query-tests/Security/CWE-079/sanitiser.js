@@ -1,8 +1,9 @@
 function escapeHtml(s) {
+    var amp = /&/g, lt = /</g, gt = />/g;
     return s.toString()
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+        .replace(amp, '&amp;')
+        .replace(lt, '&lt;')
+        .replace(gt, '&gt;');
 }
 
 function escapeAttr(s) {

@@ -501,7 +501,7 @@ exprs(
   unique int id: @expr,
   int kind: int ref,
   int typeid: @type ref,
-  int parent: @element ref,
+  int parent: @exprparent ref,
   int idx: int ref
 );
 

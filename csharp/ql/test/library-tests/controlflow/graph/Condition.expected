@@ -43,74 +43,6 @@ conditionBlock
 | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | BreakInTry.cs:68:21:68:26 | break; | false |
 | BreakInTry.cs:65:26:65:28 | String arg | BreakInTry.cs:68:21:68:26 | break; | true |
 | BreakInTry.cs:65:26:65:28 | [finally: return] String arg | BreakInTry.cs:68:21:68:26 | [finally: return] break; | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:10:17:10:50 | throw ...; | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:13:9:27:9 | {...} | false |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:16:36:16:36 | 1 | false |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:21:17:45 | throw ...; | false |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:41:17:43 | "1" | false |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | false |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | false |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:20:13:22:13 | {...} | false |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | true |
-| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:23:13:26:13 | catch {...} | false |
-| CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:17:21:17:45 | throw ...; | true |
-| CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:17:41:17:43 | "1" | true |
-| CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; | true |
-| CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | true |
-| CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; | true |
-| CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | false |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:44:25:44:47 | [b1 (line 34): false, b2 (line 34): true] throw ...; | false |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:44:25:44:47 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] throw ...; | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:44:25:44:47 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] throw ...; | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | false |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | false |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | false |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | false |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | CatchInFinally.cs:44:25:44:47 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] throw ...; | true |
-| CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | true |
-| CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | true |
-| CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | true |
-| CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | CatchInFinally.cs:44:25:44:47 | [b1 (line 34): false, b2 (line 34): true] throw ...; | true |
-| CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | true |
-| CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | true |
-| CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | true |
-| CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | true |
-| CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:44:25:44:47 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] throw ...; | true |
-| CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | true |
-| CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | true |
-| CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | true |
-| CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | true |
-| CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | true |
-| CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | true |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:28:3:38 | call to method ToString | false |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:40:3:49 | call to method ToLower | false |
 | ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:40:3:49 | call to method ToLower | false |
@@ -214,6 +146,269 @@ conditionBlock
 | ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:111:69:111:75 | "input" | false |
 | ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:116:34:116:34 | 0 | true |
 | ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:116:38:116:38 | 1 | false |
+| Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:26:38:26:39 | [exception: Exception] IOException ex | true |
+| Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | false |
+| Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:30:41:30:42 | [exception: Exception] ArgumentException ex | false |
+| Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:41:9:43:9 | [exception: Exception] catch (...) {...} | false |
+| Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | Finally.cs:30:41:30:42 | [exception: Exception] ArgumentException ex | true |
+| Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | Finally.cs:41:9:43:9 | [exception: Exception] catch (...) {...} | false |
+| Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | Finally.cs:61:38:61:39 | [exception: Exception] IOException ex | true |
+| Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | Finally.cs:65:9:67:9 | [exception: Exception] catch (...) {...} | false |
+| Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | Finally.cs:69:9:71:9 | [finally: exception(Exception)] {...} | false |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:78:9:100:9 | {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:82:21:82:27 | return ...; | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:83:17:84:29 | if (...) ... | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:84:21:84:29 | continue; | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:85:17:86:26 | if (...) ... | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:86:21:86:26 | break; | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:89:13:99:13 | {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:93:25:93:46 | [finally: break] throw ...; | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:93:25:93:46 | [finally: continue] throw ...; | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:93:25:93:46 | [finally: return] throw ...; | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:93:25:93:46 | throw ...; | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:93:31:93:45 | object creation of type Exception | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:96:17:98:17 | [finally: break] {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:96:17:98:17 | [finally: continue, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:96:17:98:17 | [finally: continue] {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:96:17:98:17 | [finally: return, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:96:17:98:17 | [finally: return] {...} | true |
+| Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:96:17:98:17 | {...} | true |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:82:21:82:27 | return ...; | true |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:83:17:84:29 | if (...) ... | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:84:21:84:29 | continue; | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:85:17:86:26 | if (...) ... | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:86:21:86:26 | break; | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:89:13:99:13 | {...} | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:93:25:93:46 | [finally: break] throw ...; | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:93:25:93:46 | [finally: continue] throw ...; | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:93:25:93:46 | [finally: return] throw ...; | true |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:93:25:93:46 | throw ...; | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | true |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:93:31:93:45 | object creation of type Exception | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:96:17:98:17 | [finally: break] {...} | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:96:17:98:17 | [finally: continue, finally(2): exception(Exception)] {...} | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:96:17:98:17 | [finally: continue] {...} | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:96:17:98:17 | [finally: return, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:96:17:98:17 | [finally: return] {...} | true |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:96:17:98:17 | {...} | false |
+| Finally.cs:82:21:82:27 | return ...; | Finally.cs:93:25:93:46 | [finally: return] throw ...; | true |
+| Finally.cs:82:21:82:27 | return ...; | Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | true |
+| Finally.cs:82:21:82:27 | return ...; | Finally.cs:96:17:98:17 | [finally: return, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:82:21:82:27 | return ...; | Finally.cs:96:17:98:17 | [finally: return] {...} | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:84:21:84:29 | continue; | true |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:85:17:86:26 | if (...) ... | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:86:21:86:26 | break; | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:89:13:99:13 | {...} | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:93:25:93:46 | [finally: break] throw ...; | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:93:25:93:46 | [finally: continue] throw ...; | true |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:93:25:93:46 | throw ...; | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | true |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:93:31:93:45 | object creation of type Exception | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:96:17:98:17 | [finally: break] {...} | false |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:96:17:98:17 | [finally: continue, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:96:17:98:17 | [finally: continue] {...} | true |
+| Finally.cs:83:17:84:29 | if (...) ... | Finally.cs:96:17:98:17 | {...} | false |
+| Finally.cs:84:21:84:29 | continue; | Finally.cs:93:25:93:46 | [finally: continue] throw ...; | true |
+| Finally.cs:84:21:84:29 | continue; | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | true |
+| Finally.cs:84:21:84:29 | continue; | Finally.cs:96:17:98:17 | [finally: continue, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:84:21:84:29 | continue; | Finally.cs:96:17:98:17 | [finally: continue] {...} | false |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:86:21:86:26 | break; | true |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:89:13:99:13 | {...} | false |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:93:25:93:46 | [finally: break] throw ...; | true |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:93:25:93:46 | throw ...; | false |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | true |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:93:31:93:45 | object creation of type Exception | false |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | false |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:96:17:98:17 | [finally: break] {...} | true |
+| Finally.cs:85:17:86:26 | if (...) ... | Finally.cs:96:17:98:17 | {...} | false |
+| Finally.cs:86:21:86:26 | break; | Finally.cs:93:25:93:46 | [finally: break] throw ...; | true |
+| Finally.cs:86:21:86:26 | break; | Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | true |
+| Finally.cs:86:21:86:26 | break; | Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | true |
+| Finally.cs:86:21:86:26 | break; | Finally.cs:96:17:98:17 | [finally: break] {...} | false |
+| Finally.cs:89:13:99:13 | {...} | Finally.cs:93:25:93:46 | throw ...; | true |
+| Finally.cs:89:13:99:13 | {...} | Finally.cs:93:31:93:45 | object creation of type Exception | true |
+| Finally.cs:89:13:99:13 | {...} | Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | true |
+| Finally.cs:89:13:99:13 | {...} | Finally.cs:96:17:98:17 | {...} | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:108:17:108:23 | return ...; | true |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:109:13:110:49 | if (...) ... | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:109:17:109:28 | access to property Length | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:109:33:109:33 | 1 | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:110:17:110:49 | throw ...; | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:110:23:110:48 | object creation of type OutOfMemoryException | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:113:9:118:9 | {...} | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:115:17:115:41 | ...; | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:115:17:115:41 | [finally: return] ...; | true |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:116:13:117:37 | [finally: return] if (...) ... | true |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:116:13:117:37 | if (...) ... | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:117:17:117:37 | ...; | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | false |
+| Finally.cs:107:33:107:33 | 0 | Finally.cs:117:17:117:37 | [finally: return] ...; | true |
+| Finally.cs:108:17:108:23 | return ...; | Finally.cs:115:17:115:41 | [finally: return] ...; | false |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:110:17:110:49 | throw ...; | true |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:110:23:110:48 | object creation of type OutOfMemoryException | true |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:113:9:118:9 | {...} | false |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:115:17:115:41 | ...; | false |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | true |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | true |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:116:13:117:37 | if (...) ... | false |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:117:17:117:37 | ...; | false |
+| Finally.cs:109:33:109:33 | 1 | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | true |
+| Finally.cs:110:17:110:49 | throw ...; | Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | false |
+| Finally.cs:113:9:118:9 | [finally: exception(Exception)] {...} | Finally.cs:115:17:115:41 | [finally: exception(Exception)] ...; | false |
+| Finally.cs:113:9:118:9 | [finally: exception(NullReferenceException)] {...} | Finally.cs:115:17:115:41 | [finally: exception(NullReferenceException)] ...; | false |
+| Finally.cs:113:9:118:9 | {...} | Finally.cs:115:17:115:41 | ...; | false |
+| Finally.cs:116:13:117:37 | [finally: exception(Exception)] if (...) ... | Finally.cs:117:17:117:37 | [finally: exception(Exception)] ...; | true |
+| Finally.cs:116:13:117:37 | [finally: exception(NullReferenceException)] if (...) ... | Finally.cs:117:17:117:37 | [finally: exception(NullReferenceException)] ...; | true |
+| Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | true |
+| Finally.cs:116:13:117:37 | [finally: return] if (...) ... | Finally.cs:117:17:117:37 | [finally: return] ...; | true |
+| Finally.cs:116:13:117:37 | if (...) ... | Finally.cs:117:17:117:37 | ...; | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:152:17:152:50 | throw ...; | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:155:9:169:9 | {...} | false |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:158:36:158:36 | 1 | false |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:21:159:45 | throw ...; | false |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:41:159:43 | "1" | false |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | false |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | false |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:162:13:164:13 | {...} | false |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} | true |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:165:13:168:13 | catch {...} | false |
+| Finally.cs:158:36:158:36 | 1 | Finally.cs:159:21:159:45 | throw ...; | true |
+| Finally.cs:158:36:158:36 | 1 | Finally.cs:159:41:159:43 | "1" | true |
+| Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | true |
+| Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | true |
+| Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | true |
+| Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:180:27:180:42 | [b1 (line 176): true] object creation of type ExceptionA | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | false |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:183:9:192:9 | [finally: exception(Exception), b1 (line 176): true] {...} | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:186:25:186:47 | [b1 (line 176): false, b2 (line 176): true] throw ...; | false |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:186:25:186:47 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] throw ...; | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:186:25:186:47 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] throw ...; | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:186:31:186:46 | [b1 (line 176): false, b2 (line 176): true] object creation of type ExceptionB | false |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:186:31:186:46 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:186:31:186:46 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:188:13:191:13 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] catch (...) {...} | false |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:188:13:191:13 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:188:13:191:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:188:38:188:39 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | false |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:189:13:191:13 | [b1 (line 176): false] {...} | false |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:189:13:191:13 | [finally: exception(Exception), b1 (line 176): true] {...} | true |
+| Finally.cs:176:10:176:11 | enter M9 | Finally.cs:189:13:191:13 | [finally: exception(ExceptionA), b1 (line 176): true] {...} | true |
+| Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | Finally.cs:186:25:186:47 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] throw ...; | true |
+| Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | Finally.cs:186:31:186:46 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | true |
+| Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | Finally.cs:188:13:191:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | true |
+| Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | true |
+| Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | Finally.cs:189:13:191:13 | [finally: exception(ExceptionA), b1 (line 176): true] {...} | true |
+| Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | Finally.cs:186:25:186:47 | [b1 (line 176): false, b2 (line 176): true] throw ...; | true |
+| Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | Finally.cs:186:31:186:46 | [b1 (line 176): false, b2 (line 176): true] object creation of type ExceptionB | true |
+| Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | Finally.cs:188:13:191:13 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] catch (...) {...} | true |
+| Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | Finally.cs:188:38:188:39 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | true |
+| Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | Finally.cs:189:13:191:13 | [b1 (line 176): false] {...} | true |
+| Finally.cs:183:9:192:9 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:186:25:186:47 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] throw ...; | true |
+| Finally.cs:183:9:192:9 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:186:31:186:46 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | true |
+| Finally.cs:183:9:192:9 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:188:13:191:13 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | true |
+| Finally.cs:183:9:192:9 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | true |
+| Finally.cs:183:9:192:9 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:189:13:191:13 | [finally: exception(Exception), b1 (line 176): true] {...} | true |
+| Finally.cs:188:13:191:13 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] catch (...) {...} | Finally.cs:188:38:188:39 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | true |
+| Finally.cs:188:13:191:13 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | true |
+| Finally.cs:188:13:191:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:199:21:199:43 | throw ...; | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:199:27:199:42 | object creation of type ExceptionA | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:202:9:212:9 | {...} | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:205:25:205:47 | [finally: exception(Exception)] throw ...; | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:205:25:205:47 | throw ...; | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:205:31:205:46 | object creation of type ExceptionB | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:208:13:210:13 | [finally(2): exception(Exception)] {...} | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:208:13:210:13 | {...} | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | [finally(2): exception(Exception)] object creation of type ExceptionC | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | [finally(2): exception(ExceptionB)] object creation of type ExceptionC | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:211:13:211:29 | ...; | false |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | true |
+| Finally.cs:195:10:195:12 | enter M10 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | true |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | true |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | true |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | true |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | false |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | false |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | false |
+| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:205:25:205:47 | [finally: exception(Exception)] throw ...; | true |
+| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | true |
+| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | true |
+| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | false |
+| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | false |
+| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | false |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:205:25:205:47 | throw ...; | true |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:205:31:205:46 | object creation of type ExceptionB | true |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:208:13:210:13 | [finally(2): exception(Exception)] {...} | true |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:208:13:210:13 | {...} | false |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:209:31:209:46 | [finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:209:31:209:46 | [finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:209:31:209:46 | object creation of type ExceptionC | false |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:211:13:211:29 | ...; | false |
+| Finally.cs:205:25:205:47 | [finally: exception(Exception)] throw ...; | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:205:25:205:47 | throw ...; | Finally.cs:209:31:209:46 | [finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:208:13:210:13 | [finally(2): exception(Exception)] {...} | Finally.cs:209:31:209:46 | [finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | false |
+| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | true |
+| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | false |
+| Finally.cs:208:13:210:13 | {...} | Finally.cs:209:31:209:46 | object creation of type ExceptionC | true |
+| Finally.cs:208:13:210:13 | {...} | Finally.cs:211:13:211:29 | ...; | false |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:6:10:6:11 | exit M1 | true |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:22:8:24 | String arg | false |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 | true |
@@ -408,6 +603,18 @@ conditionBlock
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:43:131:51 | ... => ... | false |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:56:131:66 | call to method ToString | true |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString | false |
+| Switch.cs:134:9:134:11 | enter M13 | Switch.cs:138:13:138:20 | default: | false |
+| Switch.cs:134:9:134:11 | enter M13 | Switch.cs:139:28:139:28 | 1 | true |
+| Switch.cs:134:9:134:11 | enter M13 | Switch.cs:140:13:140:19 | case ...: | false |
+| Switch.cs:134:9:134:11 | enter M13 | Switch.cs:140:28:140:28 | 2 | false |
+| Switch.cs:140:13:140:19 | case ...: | Switch.cs:138:13:138:20 | default: | false |
+| Switch.cs:140:13:140:19 | case ...: | Switch.cs:140:28:140:28 | 2 | true |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:148:28:148:28 | 1 | true |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:149:13:149:20 | default: | false |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:150:13:150:19 | case ...: | false |
+| Switch.cs:144:9:144:11 | enter M14 | Switch.cs:150:28:150:28 | 2 | false |
+| Switch.cs:150:13:150:19 | case ...: | Switch.cs:149:13:149:20 | default: | false |
+| Switch.cs:150:13:150:19 | case ...: | Switch.cs:150:28:150:28 | 2 | true |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:25:7:25 | ; | true |
 | VarDecls.cs:19:7:19:8 | enter M3 | VarDecls.cs:25:24:25:24 | access to local variable x | true |
 | VarDecls.cs:19:7:19:8 | enter M3 | VarDecls.cs:25:28:25:28 | access to local variable y | false |
@@ -503,205 +710,88 @@ conditionBlock
 | cflow.cs:106:18:106:19 | enter M4 | cflow.cs:116:9:116:29 | ...; | false |
 | cflow.cs:127:19:127:21 | enter get_Prop | cflow.cs:127:48:127:49 | "" | true |
 | cflow.cs:127:19:127:21 | enter get_Prop | cflow.cs:127:53:127:57 | this access | false |
-| cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:162:38:162:39 | [exception: Exception] IOException ex | true |
-| cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | false |
-| cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex | false |
-| cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:177:9:179:9 | [exception: Exception] catch (...) {...} | false |
-| cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex | true |
-| cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | cflow.cs:177:9:179:9 | [exception: Exception] catch (...) {...} | false |
-| cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex | true |
-| cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} | false |
-| cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} | false |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:208:9:230:9 | {...} | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:212:21:212:27 | return ...; | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:213:17:214:29 | if (...) ... | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:214:21:214:29 | continue; | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:215:17:216:26 | if (...) ... | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:216:21:216:26 | break; | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:219:13:229:13 | {...} | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:223:25:223:46 | [finally: break] throw ...; | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:223:25:223:46 | [finally: continue] throw ...; | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:223:25:223:46 | [finally: return] throw ...; | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:223:25:223:46 | throw ...; | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:223:31:223:45 | object creation of type Exception | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:226:17:228:17 | [finally: break] {...} | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:226:17:228:17 | [finally: continue] {...} | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:226:17:228:17 | [finally: return] {...} | true |
-| cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:226:17:228:17 | {...} | true |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:212:21:212:27 | return ...; | true |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:213:17:214:29 | if (...) ... | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:214:21:214:29 | continue; | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:215:17:216:26 | if (...) ... | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:216:21:216:26 | break; | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:219:13:229:13 | {...} | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:223:25:223:46 | [finally: break] throw ...; | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:223:25:223:46 | [finally: continue] throw ...; | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:223:25:223:46 | [finally: return] throw ...; | true |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:223:25:223:46 | throw ...; | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception | true |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:223:31:223:45 | object creation of type Exception | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:226:17:228:17 | [finally: break] {...} | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:226:17:228:17 | [finally: continue] {...} | false |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:226:17:228:17 | [finally: return] {...} | true |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:226:17:228:17 | {...} | false |
-| cflow.cs:212:21:212:27 | return ...; | cflow.cs:223:25:223:46 | [finally: return] throw ...; | true |
-| cflow.cs:212:21:212:27 | return ...; | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception | true |
-| cflow.cs:212:21:212:27 | return ...; | cflow.cs:226:17:228:17 | [finally: return] {...} | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:214:21:214:29 | continue; | true |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:215:17:216:26 | if (...) ... | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:216:21:216:26 | break; | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:219:13:229:13 | {...} | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:223:25:223:46 | [finally: break] throw ...; | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:223:25:223:46 | [finally: continue] throw ...; | true |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:223:25:223:46 | throw ...; | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | true |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:223:31:223:45 | object creation of type Exception | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:226:17:228:17 | [finally: break] {...} | false |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:226:17:228:17 | [finally: continue] {...} | true |
-| cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:226:17:228:17 | {...} | false |
-| cflow.cs:214:21:214:29 | continue; | cflow.cs:223:25:223:46 | [finally: continue] throw ...; | true |
-| cflow.cs:214:21:214:29 | continue; | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | true |
-| cflow.cs:214:21:214:29 | continue; | cflow.cs:226:17:228:17 | [finally: continue] {...} | false |
-| cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:216:21:216:26 | break; | true |
-| cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:219:13:229:13 | {...} | false |
-| cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:223:25:223:46 | [finally: break] throw ...; | true |
-| cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:223:25:223:46 | throw ...; | false |
-| cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | true |
-| cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:223:31:223:45 | object creation of type Exception | false |
-| cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:226:17:228:17 | [finally: break] {...} | true |
-| cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:226:17:228:17 | {...} | false |
-| cflow.cs:216:21:216:26 | break; | cflow.cs:223:25:223:46 | [finally: break] throw ...; | true |
-| cflow.cs:216:21:216:26 | break; | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | true |
-| cflow.cs:216:21:216:26 | break; | cflow.cs:226:17:228:17 | [finally: break] {...} | false |
-| cflow.cs:219:13:229:13 | {...} | cflow.cs:223:25:223:46 | throw ...; | true |
-| cflow.cs:219:13:229:13 | {...} | cflow.cs:223:31:223:45 | object creation of type Exception | true |
-| cflow.cs:219:13:229:13 | {...} | cflow.cs:226:17:228:17 | {...} | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:235:17:235:23 | return ...; | true |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:236:13:237:49 | if (...) ... | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:236:17:236:28 | access to property Length | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:236:33:236:33 | 1 | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:237:17:237:49 | throw ...; | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:240:9:245:9 | {...} | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:242:17:242:41 | ...; | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:242:17:242:41 | [finally: return] ...; | true |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:243:13:244:37 | [finally: return] if (...) ... | true |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:243:13:244:37 | if (...) ... | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:244:17:244:37 | ...; | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | false |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:244:17:244:37 | [finally: return] ...; | true |
-| cflow.cs:234:33:234:33 | 0 | cflow.cs:247:9:254:9 | try {...} ... | false |
-| cflow.cs:235:17:235:23 | return ...; | cflow.cs:242:17:242:41 | [finally: return] ...; | false |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:237:17:237:49 | throw ...; | true |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException | true |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:240:9:245:9 | {...} | false |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:242:17:242:41 | ...; | false |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; | true |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | true |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:243:13:244:37 | if (...) ... | false |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:244:17:244:37 | ...; | false |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | true |
-| cflow.cs:236:33:236:33 | 1 | cflow.cs:247:9:254:9 | try {...} ... | false |
-| cflow.cs:237:17:237:49 | throw ...; | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; | false |
-| cflow.cs:240:9:245:9 | [finally: exception(Exception)] {...} | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; | false |
-| cflow.cs:240:9:245:9 | [finally: exception(NullReferenceException)] {...} | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; | false |
-| cflow.cs:240:9:245:9 | {...} | cflow.cs:242:17:242:41 | ...; | false |
-| cflow.cs:243:13:244:37 | [finally: exception(Exception)] if (...) ... | cflow.cs:244:17:244:37 | [finally: exception(Exception)] ...; | true |
-| cflow.cs:243:13:244:37 | [finally: exception(NullReferenceException)] if (...) ... | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; | true |
-| cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | true |
-| cflow.cs:243:13:244:37 | [finally: return] if (...) ... | cflow.cs:244:17:244:37 | [finally: return] ...; | true |
-| cflow.cs:243:13:244:37 | if (...) ... | cflow.cs:244:17:244:37 | ...; | true |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:257:10:257:12 | exit For | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:261:13:261:33 | ...; | true |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:263:9:268:9 | for (...;...;...) ... | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:263:18:263:18 | access to local variable x | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:264:9:268:9 | {...} | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:267:17:267:22 | break; | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:271:9:276:9 | {...} | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:275:17:275:22 | break; | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:278:16:278:16 | access to local variable x | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:279:9:282:9 | {...} | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:284:9:287:9 | for (...;...;...) ... | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:284:32:284:32 | access to local variable i | false |
-| cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:285:9:287:9 | {...} | false |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:257:10:257:12 | exit For | true |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:263:18:263:18 | access to local variable x | false |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:267:17:267:22 | break; | true |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:271:9:276:9 | {...} | true |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:275:17:275:22 | break; | true |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:278:16:278:16 | access to local variable x | true |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:279:9:282:9 | {...} | true |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:284:9:287:9 | for (...;...;...) ... | true |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:284:32:284:32 | access to local variable i | true |
-| cflow.cs:264:9:268:9 | {...} | cflow.cs:285:9:287:9 | {...} | true |
-| cflow.cs:271:9:276:9 | {...} | cflow.cs:257:10:257:12 | exit For | true |
-| cflow.cs:271:9:276:9 | {...} | cflow.cs:275:17:275:22 | break; | true |
-| cflow.cs:271:9:276:9 | {...} | cflow.cs:278:16:278:16 | access to local variable x | true |
-| cflow.cs:271:9:276:9 | {...} | cflow.cs:279:9:282:9 | {...} | true |
-| cflow.cs:271:9:276:9 | {...} | cflow.cs:284:9:287:9 | for (...;...;...) ... | true |
-| cflow.cs:271:9:276:9 | {...} | cflow.cs:284:32:284:32 | access to local variable i | true |
-| cflow.cs:271:9:276:9 | {...} | cflow.cs:285:9:287:9 | {...} | true |
-| cflow.cs:278:16:278:16 | access to local variable x | cflow.cs:257:10:257:12 | exit For | false |
-| cflow.cs:278:16:278:16 | access to local variable x | cflow.cs:279:9:282:9 | {...} | true |
-| cflow.cs:278:16:278:16 | access to local variable x | cflow.cs:284:9:287:9 | for (...;...;...) ... | false |
-| cflow.cs:278:16:278:16 | access to local variable x | cflow.cs:284:32:284:32 | access to local variable i | false |
-| cflow.cs:278:16:278:16 | access to local variable x | cflow.cs:285:9:287:9 | {...} | false |
-| cflow.cs:284:32:284:32 | access to local variable i | cflow.cs:257:10:257:12 | exit For | false |
-| cflow.cs:284:32:284:32 | access to local variable i | cflow.cs:285:9:287:9 | {...} | true |
-| cflow.cs:304:10:304:17 | enter Booleans | cflow.cs:306:37:306:56 | !... | true |
-| cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:308:35:308:39 | false | true |
-| cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:308:43:308:46 | true | false |
-| cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:309:13:309:48 | ... = ... | true |
-| cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:309:37:309:41 | false | true |
-| cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:309:45:309:48 | true | true |
-| cflow.cs:308:35:308:39 | false | cflow.cs:309:37:309:41 | false | true |
-| cflow.cs:308:35:308:39 | false | cflow.cs:309:45:309:48 | true | false |
-| cflow.cs:311:9:316:9 | if (...) ... | cflow.cs:311:37:311:62 | !... | true |
-| cflow.cs:311:9:316:9 | if (...) ... | cflow.cs:311:61:311:61 | access to local variable b | true |
-| cflow.cs:311:37:311:62 | !... | cflow.cs:311:61:311:61 | access to local variable b | true |
-| cflow.cs:322:9:332:9 | {...} | cflow.cs:325:13:327:13 | {...} | true |
-| cflow.cs:322:9:332:9 | {...} | cflow.cs:328:13:331:13 | if (...) ... | false |
-| cflow.cs:322:9:332:9 | {...} | cflow.cs:329:13:331:13 | {...} | false |
-| cflow.cs:328:13:331:13 | if (...) ... | cflow.cs:329:13:331:13 | {...} | true |
-| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:337:22:337:22 | String x | false |
-| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:341:13:343:13 | {...} | false |
-| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:344:13:347:13 | if (...) ... | false |
-| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:345:13:347:13 | {...} | false |
-| cflow.cs:337:22:337:22 | String x | cflow.cs:341:13:343:13 | {...} | true |
-| cflow.cs:337:22:337:22 | String x | cflow.cs:344:13:347:13 | if (...) ... | false |
-| cflow.cs:337:22:337:22 | String x | cflow.cs:345:13:347:13 | {...} | false |
-| cflow.cs:344:13:347:13 | if (...) ... | cflow.cs:345:13:347:13 | {...} | true |
-| cflow.cs:353:9:353:13 | Label: | cflow.cs:353:43:353:45 | {...} | true |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:351:10:351:13 | exit Goto | false |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:355:31:355:41 | goto ...; | true |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:357:9:369:9 | switch (...) {...} | false |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:360:17:360:29 | goto default; | false |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:361:13:361:19 | case ...: | false |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:362:17:362:37 | ...; | false |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:364:13:364:19 | case ...: | false |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:365:17:365:27 | goto ...; | false |
-| cflow.cs:355:9:355:41 | if (...) ... | cflow.cs:366:13:366:20 | default: | false |
-| cflow.cs:357:9:369:9 | switch (...) {...} | cflow.cs:360:17:360:29 | goto default; | true |
-| cflow.cs:357:9:369:9 | switch (...) {...} | cflow.cs:361:13:361:19 | case ...: | false |
-| cflow.cs:357:9:369:9 | switch (...) {...} | cflow.cs:362:17:362:37 | ...; | false |
-| cflow.cs:357:9:369:9 | switch (...) {...} | cflow.cs:364:13:364:19 | case ...: | false |
-| cflow.cs:357:9:369:9 | switch (...) {...} | cflow.cs:365:17:365:27 | goto ...; | false |
-| cflow.cs:361:13:361:19 | case ...: | cflow.cs:362:17:362:37 | ...; | true |
-| cflow.cs:361:13:361:19 | case ...: | cflow.cs:364:13:364:19 | case ...: | false |
-| cflow.cs:361:13:361:19 | case ...: | cflow.cs:365:17:365:27 | goto ...; | false |
-| cflow.cs:364:13:364:19 | case ...: | cflow.cs:365:17:365:27 | goto ...; | true |
-| cflow.cs:375:25:375:25 | access to local variable i | cflow.cs:376:9:378:9 | {...} | true |
-| cflow.cs:375:25:375:25 | access to local variable i | cflow.cs:379:9:387:9 | try {...} ... | false |
-| cflow.cs:426:10:426:10 | enter M | cflow.cs:428:56:428:56 | access to parameter s | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:146:10:146:12 | exit For | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:150:13:150:33 | ...; | true |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:152:9:157:9 | for (...;...;...) ... | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:152:18:152:18 | access to local variable x | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:153:9:157:9 | {...} | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:156:17:156:22 | break; | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:160:9:165:9 | {...} | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:164:17:164:22 | break; | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:167:16:167:16 | access to local variable x | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:168:9:171:9 | {...} | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:173:9:176:9 | for (...;...;...) ... | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:173:32:173:32 | access to local variable i | false |
+| cflow.cs:149:16:149:16 | access to local variable x | cflow.cs:174:9:176:9 | {...} | false |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:146:10:146:12 | exit For | true |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:152:18:152:18 | access to local variable x | false |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:156:17:156:22 | break; | true |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:160:9:165:9 | {...} | true |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:164:17:164:22 | break; | true |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:167:16:167:16 | access to local variable x | true |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:168:9:171:9 | {...} | true |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:173:9:176:9 | for (...;...;...) ... | true |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:173:32:173:32 | access to local variable i | true |
+| cflow.cs:153:9:157:9 | {...} | cflow.cs:174:9:176:9 | {...} | true |
+| cflow.cs:160:9:165:9 | {...} | cflow.cs:146:10:146:12 | exit For | true |
+| cflow.cs:160:9:165:9 | {...} | cflow.cs:164:17:164:22 | break; | true |
+| cflow.cs:160:9:165:9 | {...} | cflow.cs:167:16:167:16 | access to local variable x | true |
+| cflow.cs:160:9:165:9 | {...} | cflow.cs:168:9:171:9 | {...} | true |
+| cflow.cs:160:9:165:9 | {...} | cflow.cs:173:9:176:9 | for (...;...;...) ... | true |
+| cflow.cs:160:9:165:9 | {...} | cflow.cs:173:32:173:32 | access to local variable i | true |
+| cflow.cs:160:9:165:9 | {...} | cflow.cs:174:9:176:9 | {...} | true |
+| cflow.cs:167:16:167:16 | access to local variable x | cflow.cs:146:10:146:12 | exit For | false |
+| cflow.cs:167:16:167:16 | access to local variable x | cflow.cs:168:9:171:9 | {...} | true |
+| cflow.cs:167:16:167:16 | access to local variable x | cflow.cs:173:9:176:9 | for (...;...;...) ... | false |
+| cflow.cs:167:16:167:16 | access to local variable x | cflow.cs:173:32:173:32 | access to local variable i | false |
+| cflow.cs:167:16:167:16 | access to local variable x | cflow.cs:174:9:176:9 | {...} | false |
+| cflow.cs:173:32:173:32 | access to local variable i | cflow.cs:146:10:146:12 | exit For | false |
+| cflow.cs:173:32:173:32 | access to local variable i | cflow.cs:174:9:176:9 | {...} | true |
+| cflow.cs:193:10:193:17 | enter Booleans | cflow.cs:195:37:195:56 | !... | true |
+| cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:197:35:197:39 | false | true |
+| cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:197:43:197:46 | true | false |
+| cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:198:13:198:48 | ... = ... | true |
+| cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:198:37:198:41 | false | true |
+| cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:198:45:198:48 | true | true |
+| cflow.cs:197:35:197:39 | false | cflow.cs:198:37:198:41 | false | true |
+| cflow.cs:197:35:197:39 | false | cflow.cs:198:45:198:48 | true | false |
+| cflow.cs:200:9:205:9 | if (...) ... | cflow.cs:200:37:200:62 | !... | true |
+| cflow.cs:200:9:205:9 | if (...) ... | cflow.cs:200:61:200:61 | access to local variable b | true |
+| cflow.cs:200:37:200:62 | !... | cflow.cs:200:61:200:61 | access to local variable b | true |
+| cflow.cs:211:9:221:9 | {...} | cflow.cs:214:13:216:13 | {...} | true |
+| cflow.cs:211:9:221:9 | {...} | cflow.cs:217:13:220:13 | if (...) ... | false |
+| cflow.cs:211:9:221:9 | {...} | cflow.cs:218:13:220:13 | {...} | false |
+| cflow.cs:217:13:220:13 | if (...) ... | cflow.cs:218:13:220:13 | {...} | true |
+| cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:22:226:22 | String x | false |
+| cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:230:13:232:13 | {...} | false |
+| cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:233:13:236:13 | if (...) ... | false |
+| cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:234:13:236:13 | {...} | false |
+| cflow.cs:226:22:226:22 | String x | cflow.cs:230:13:232:13 | {...} | true |
+| cflow.cs:226:22:226:22 | String x | cflow.cs:233:13:236:13 | if (...) ... | false |
+| cflow.cs:226:22:226:22 | String x | cflow.cs:234:13:236:13 | {...} | false |
+| cflow.cs:233:13:236:13 | if (...) ... | cflow.cs:234:13:236:13 | {...} | true |
+| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:43:242:45 | {...} | true |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:240:10:240:13 | exit Goto | false |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:31:244:41 | goto ...; | true |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:246:9:258:9 | switch (...) {...} | false |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:249:17:249:29 | goto default; | false |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:250:13:250:19 | case ...: | false |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:251:17:251:37 | ...; | false |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:253:13:253:19 | case ...: | false |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:254:17:254:27 | goto ...; | false |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:255:13:255:20 | default: | false |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:249:17:249:29 | goto default; | true |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:250:13:250:19 | case ...: | false |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:251:17:251:37 | ...; | false |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:253:13:253:19 | case ...: | false |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:254:17:254:27 | goto ...; | false |
+| cflow.cs:250:13:250:19 | case ...: | cflow.cs:251:17:251:37 | ...; | true |
+| cflow.cs:250:13:250:19 | case ...: | cflow.cs:253:13:253:19 | case ...: | false |
+| cflow.cs:250:13:250:19 | case ...: | cflow.cs:254:17:254:27 | goto ...; | false |
+| cflow.cs:253:13:253:19 | case ...: | cflow.cs:254:17:254:27 | goto ...; | true |
+| cflow.cs:264:25:264:25 | access to local variable i | cflow.cs:265:9:267:9 | {...} | true |
+| cflow.cs:264:25:264:25 | access to local variable i | cflow.cs:268:9:276:9 | try {...} ... | false |
+| cflow.cs:298:10:298:10 | enter M | cflow.cs:300:56:300:56 | access to parameter s | false |
 conditionFlow
 | BreakInTry.cs:9:21:9:31 | ... == ... | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | false |
 | BreakInTry.cs:9:21:9:31 | ... == ... | BreakInTry.cs:10:21:10:26 | break; | true |
@@ -724,39 +814,6 @@ conditionFlow
 | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:68:21:68:26 | break; | true |
 | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | BreakInTry.cs:65:13:69:13 | [finally: return] foreach (... ... in ...) ... | false |
 | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | BreakInTry.cs:68:21:68:26 | [finally: return] break; | true |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | true |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:13:9:27:9 | {...} | false |
-| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:5:10:5:11 | exit M1 | false |
-| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:17:41:17:43 | "1" | true |
-| CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | true |
-| CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | true |
-| CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | CatchInFinally.cs:20:13:22:13 | {...} | true |
-| CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | CatchInFinally.cs:23:13:26:13 | catch {...} | false |
-| CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | CatchInFinally.cs:20:13:22:13 | {...} | true |
-| CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | CatchInFinally.cs:23:13:26:13 | catch {...} | false |
-| CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | true |
-| CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | false |
-| CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | true |
-| CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | false |
-| CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: Exception] ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | true |
-| CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: Exception] ... == ... | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | false |
-| CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | true |
-| CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | false |
-| CatchInFinally.cs:38:17:38:18 | access to parameter b1 | CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | true |
-| CatchInFinally.cs:38:17:38:18 | access to parameter b1 | CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | false |
-| CatchInFinally.cs:44:21:44:22 | [b1 (line 34): false] access to parameter b2 | CatchInFinally.cs:34:24:34:25 | exit M2 | false |
-| CatchInFinally.cs:44:21:44:22 | [b1 (line 34): false] access to parameter b2 | CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | true |
-| CatchInFinally.cs:44:21:44:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b2 | CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | true |
-| CatchInFinally.cs:44:21:44:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b2 | CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | true |
-| CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | true |
-| CatchInFinally.cs:46:38:46:39 | [exception: ExceptionB, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | true |
-| CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | true |
-| CatchInFinally.cs:48:21:48:22 | [b1 (line 34): false] access to parameter b1 | CatchInFinally.cs:34:24:34:25 | exit M2 | false |
-| CatchInFinally.cs:48:21:48:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b1 | CatchInFinally.cs:48:31:48:46 | [finally: exception(Exception)] object creation of type ExceptionC | true |
-| CatchInFinally.cs:48:21:48:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b1 | CatchInFinally.cs:48:31:48:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | true |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:14:20:14:20 | 0 | true |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:16:20:16:20 | 1 | false |
 | Conditions.cs:5:13:5:15 | access to parameter inc | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | true |
@@ -856,6 +913,100 @@ conditionFlow
 | ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:69:111:75 | "input" | false |
 | ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:34:116:34 | 0 | true |
 | ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:38:116:38 | 1 | false |
+| Finally.cs:26:48:26:51 | [exception: Exception] true | Finally.cs:27:9:29:9 | {...} | true |
+| Finally.cs:34:21:34:24 | true | Finally.cs:34:27:34:32 | throw ...; | true |
+| Finally.cs:61:48:61:51 | [exception: Exception] true | Finally.cs:62:9:64:9 | {...} | true |
+| Finally.cs:65:35:65:51 | [exception: Exception] ... != ... | Finally.cs:66:9:67:9 | {...} | true |
+| Finally.cs:65:35:65:51 | [exception: OutOfMemoryException] ... != ... | Finally.cs:66:9:67:9 | {...} | true |
+| Finally.cs:77:16:77:20 | ... > ... | Finally.cs:74:10:74:11 | exit M4 | false |
+| Finally.cs:77:16:77:20 | ... > ... | Finally.cs:78:9:100:9 | {...} | true |
+| Finally.cs:81:21:81:26 | ... == ... | Finally.cs:82:21:82:27 | return ...; | true |
+| Finally.cs:81:21:81:26 | ... == ... | Finally.cs:83:17:84:29 | if (...) ... | false |
+| Finally.cs:83:21:83:26 | ... == ... | Finally.cs:84:21:84:29 | continue; | true |
+| Finally.cs:83:21:83:26 | ... == ... | Finally.cs:85:17:86:26 | if (...) ... | false |
+| Finally.cs:85:21:85:26 | ... == ... | Finally.cs:86:21:86:26 | break; | true |
+| Finally.cs:85:21:85:26 | ... == ... | Finally.cs:89:13:99:13 | {...} | false |
+| Finally.cs:92:25:92:30 | ... == ... | Finally.cs:93:31:93:45 | object creation of type Exception | true |
+| Finally.cs:92:25:92:30 | ... == ... | Finally.cs:96:17:98:17 | {...} | false |
+| Finally.cs:92:25:92:30 | [finally: break] ... == ... | Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | true |
+| Finally.cs:92:25:92:30 | [finally: break] ... == ... | Finally.cs:96:17:98:17 | [finally: break] {...} | false |
+| Finally.cs:92:25:92:30 | [finally: continue] ... == ... | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | true |
+| Finally.cs:92:25:92:30 | [finally: continue] ... == ... | Finally.cs:96:17:98:17 | [finally: continue] {...} | false |
+| Finally.cs:92:25:92:30 | [finally: return] ... == ... | Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | true |
+| Finally.cs:92:25:92:30 | [finally: return] ... == ... | Finally.cs:96:17:98:17 | [finally: return] {...} | false |
+| Finally.cs:107:17:107:33 | ... == ... | Finally.cs:108:17:108:23 | return ...; | true |
+| Finally.cs:107:17:107:33 | ... == ... | Finally.cs:109:13:110:49 | if (...) ... | false |
+| Finally.cs:109:17:109:33 | ... == ... | Finally.cs:110:23:110:48 | object creation of type OutOfMemoryException | true |
+| Finally.cs:109:17:109:33 | ... == ... | Finally.cs:113:9:118:9 | {...} | false |
+| Finally.cs:114:19:114:35 | ... == ... | Finally.cs:115:17:115:41 | ...; | false |
+| Finally.cs:114:19:114:35 | ... == ... | Finally.cs:116:13:117:37 | if (...) ... | true |
+| Finally.cs:114:19:114:35 | [finally: exception(Exception)] ... == ... | Finally.cs:115:17:115:41 | [finally: exception(Exception)] ...; | false |
+| Finally.cs:114:19:114:35 | [finally: exception(Exception)] ... == ... | Finally.cs:116:13:117:37 | [finally: exception(Exception)] if (...) ... | true |
+| Finally.cs:114:19:114:35 | [finally: exception(NullReferenceException)] ... == ... | Finally.cs:115:17:115:41 | [finally: exception(NullReferenceException)] ...; | false |
+| Finally.cs:114:19:114:35 | [finally: exception(NullReferenceException)] ... == ... | Finally.cs:116:13:117:37 | [finally: exception(NullReferenceException)] if (...) ... | true |
+| Finally.cs:114:19:114:35 | [finally: exception(OutOfMemoryException)] ... == ... | Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | false |
+| Finally.cs:114:19:114:35 | [finally: exception(OutOfMemoryException)] ... == ... | Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | true |
+| Finally.cs:114:19:114:35 | [finally: return] ... == ... | Finally.cs:115:17:115:41 | [finally: return] ...; | false |
+| Finally.cs:114:19:114:35 | [finally: return] ... == ... | Finally.cs:116:13:117:37 | [finally: return] if (...) ... | true |
+| Finally.cs:116:17:116:32 | ... > ... | Finally.cs:103:10:103:11 | exit M5 | false |
+| Finally.cs:116:17:116:32 | ... > ... | Finally.cs:117:17:117:37 | ...; | true |
+| Finally.cs:116:17:116:32 | [finally: exception(Exception)] ... > ... | Finally.cs:117:17:117:37 | [finally: exception(Exception)] ...; | true |
+| Finally.cs:116:17:116:32 | [finally: exception(NullReferenceException)] ... > ... | Finally.cs:117:17:117:37 | [finally: exception(NullReferenceException)] ...; | true |
+| Finally.cs:116:17:116:32 | [finally: exception(OutOfMemoryException)] ... > ... | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | true |
+| Finally.cs:116:17:116:32 | [finally: return] ... > ... | Finally.cs:117:17:117:37 | [finally: return] ...; | true |
+| Finally.cs:151:17:151:28 | ... == ... | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | true |
+| Finally.cs:151:17:151:28 | ... == ... | Finally.cs:155:9:169:9 | {...} | false |
+| Finally.cs:158:21:158:36 | ... == ... | Finally.cs:147:10:147:11 | exit M8 | false |
+| Finally.cs:158:21:158:36 | ... == ... | Finally.cs:159:41:159:43 | "1" | true |
+| Finally.cs:158:21:158:36 | [finally: exception(ArgumentNullException)] ... == ... | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | true |
+| Finally.cs:158:21:158:36 | [finally: exception(Exception)] ... == ... | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | true |
+| Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | Finally.cs:162:13:164:13 | {...} | true |
+| Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | Finally.cs:165:13:168:13 | catch {...} | false |
+| Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | Finally.cs:162:13:164:13 | {...} | true |
+| Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | Finally.cs:165:13:168:13 | catch {...} | false |
+| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | true |
+| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} | false |
+| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | true |
+| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} | false |
+| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | true |
+| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} | false |
+| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | true |
+| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} | false |
+| Finally.cs:180:17:180:18 | access to parameter b1 | Finally.cs:180:27:180:42 | [b1 (line 176): true] object creation of type ExceptionA | true |
+| Finally.cs:180:17:180:18 | access to parameter b1 | Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | false |
+| Finally.cs:186:21:186:22 | [b1 (line 176): false] access to parameter b2 | Finally.cs:176:10:176:11 | exit M9 | false |
+| Finally.cs:186:21:186:22 | [b1 (line 176): false] access to parameter b2 | Finally.cs:186:31:186:46 | [b1 (line 176): false, b2 (line 176): true] object creation of type ExceptionB | true |
+| Finally.cs:186:21:186:22 | [finally: exception(Exception), b1 (line 176): true] access to parameter b2 | Finally.cs:186:31:186:46 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | true |
+| Finally.cs:186:21:186:22 | [finally: exception(ExceptionA), b1 (line 176): true] access to parameter b2 | Finally.cs:186:31:186:46 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | true |
+| Finally.cs:188:38:188:39 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | Finally.cs:189:13:191:13 | [b1 (line 176): false] {...} | true |
+| Finally.cs:188:38:188:39 | [exception: ExceptionB, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | Finally.cs:189:13:191:13 | [b1 (line 176): false] {...} | true |
+| Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:189:13:191:13 | [finally: exception(Exception), b1 (line 176): true] {...} | true |
+| Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:189:13:191:13 | [finally: exception(Exception), b1 (line 176): true] {...} | true |
+| Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:189:13:191:13 | [finally: exception(ExceptionA), b1 (line 176): true] {...} | true |
+| Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:189:13:191:13 | [finally: exception(ExceptionA), b1 (line 176): true] {...} | true |
+| Finally.cs:190:21:190:22 | [b1 (line 176): false] access to parameter b1 | Finally.cs:176:10:176:11 | exit M9 | false |
+| Finally.cs:190:21:190:22 | [finally: exception(Exception), b1 (line 176): true] access to parameter b1 | Finally.cs:190:31:190:46 | [finally: exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:190:21:190:22 | [finally: exception(ExceptionA), b1 (line 176): true] access to parameter b1 | Finally.cs:190:31:190:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | true |
+| Finally.cs:199:17:199:18 | access to parameter b1 | Finally.cs:199:27:199:42 | object creation of type ExceptionA | true |
+| Finally.cs:199:17:199:18 | access to parameter b1 | Finally.cs:202:9:212:9 | {...} | false |
+| Finally.cs:205:21:205:22 | [finally: exception(Exception)] access to parameter b2 | Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | true |
+| Finally.cs:205:21:205:22 | [finally: exception(Exception)] access to parameter b2 | Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | false |
+| Finally.cs:205:21:205:22 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | true |
+| Finally.cs:205:21:205:22 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | false |
+| Finally.cs:205:21:205:22 | access to parameter b2 | Finally.cs:205:31:205:46 | object creation of type ExceptionB | true |
+| Finally.cs:205:21:205:22 | access to parameter b2 | Finally.cs:208:13:210:13 | {...} | false |
+| Finally.cs:209:21:209:22 | [finally(2): exception(Exception)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | [finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(Exception)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception)] access to parameter b3 | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | false |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(Exception)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(Exception)] object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA)] access to parameter b3 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | false |
+| Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | true |
+| Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:211:13:211:29 | ...; | false |
 | LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:10:13:10:19 | return ...; | true |
 | LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:11:28:11:31 | access to parameter args | false |
 | LoopUnrolling.cs:60:17:60:17 | [b (line 55): false] access to parameter b | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | false |
@@ -945,89 +1096,48 @@ conditionFlow
 | cflow.cs:110:20:110:23 | true | cflow.cs:111:13:113:13 | {...} | true |
 | cflow.cs:127:32:127:44 | ... == ... | cflow.cs:127:48:127:49 | "" | true |
 | cflow.cs:127:32:127:44 | ... == ... | cflow.cs:127:53:127:57 | this access | false |
-| cflow.cs:162:48:162:51 | [exception: Exception] true | cflow.cs:163:9:165:9 | {...} | true |
-| cflow.cs:170:21:170:24 | true | cflow.cs:170:27:170:32 | throw ...; | true |
-| cflow.cs:194:48:194:51 | [exception: Exception] true | cflow.cs:195:9:197:9 | {...} | true |
-| cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | cflow.cs:199:9:200:9 | {...} | true |
-| cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | cflow.cs:199:9:200:9 | {...} | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:208:9:230:9 | {...} | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:232:9:245:9 | try {...} ... | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:212:21:212:27 | return ...; | true |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:213:17:214:29 | if (...) ... | false |
-| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:214:21:214:29 | continue; | true |
-| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:215:17:216:26 | if (...) ... | false |
-| cflow.cs:215:21:215:26 | ... == ... | cflow.cs:216:21:216:26 | break; | true |
-| cflow.cs:215:21:215:26 | ... == ... | cflow.cs:219:13:229:13 | {...} | false |
-| cflow.cs:222:25:222:30 | ... == ... | cflow.cs:223:31:223:45 | object creation of type Exception | true |
-| cflow.cs:222:25:222:30 | ... == ... | cflow.cs:226:17:228:17 | {...} | false |
-| cflow.cs:222:25:222:30 | [finally: break] ... == ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | true |
-| cflow.cs:222:25:222:30 | [finally: break] ... == ... | cflow.cs:226:17:228:17 | [finally: break] {...} | false |
-| cflow.cs:222:25:222:30 | [finally: continue] ... == ... | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | true |
-| cflow.cs:222:25:222:30 | [finally: continue] ... == ... | cflow.cs:226:17:228:17 | [finally: continue] {...} | false |
-| cflow.cs:222:25:222:30 | [finally: return] ... == ... | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception | true |
-| cflow.cs:222:25:222:30 | [finally: return] ... == ... | cflow.cs:226:17:228:17 | [finally: return] {...} | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:235:17:235:23 | return ...; | true |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:236:13:237:49 | if (...) ... | false |
-| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException | true |
-| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:240:9:245:9 | {...} | false |
-| cflow.cs:241:19:241:35 | ... == ... | cflow.cs:242:17:242:41 | ...; | false |
-| cflow.cs:241:19:241:35 | ... == ... | cflow.cs:243:13:244:37 | if (...) ... | true |
-| cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; | false |
-| cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | cflow.cs:243:13:244:37 | [finally: exception(Exception)] if (...) ... | true |
-| cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; | false |
-| cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | cflow.cs:243:13:244:37 | [finally: exception(NullReferenceException)] if (...) ... | true |
-| cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; | false |
-| cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | true |
-| cflow.cs:241:19:241:35 | [finally: return] ... == ... | cflow.cs:242:17:242:41 | [finally: return] ...; | false |
-| cflow.cs:241:19:241:35 | [finally: return] ... == ... | cflow.cs:243:13:244:37 | [finally: return] if (...) ... | true |
-| cflow.cs:243:17:243:32 | ... > ... | cflow.cs:244:17:244:37 | ...; | true |
-| cflow.cs:243:17:243:32 | ... > ... | cflow.cs:247:9:254:9 | try {...} ... | false |
-| cflow.cs:243:17:243:32 | [finally: exception(Exception)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(Exception)] ...; | true |
-| cflow.cs:243:17:243:32 | [finally: exception(NullReferenceException)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; | true |
-| cflow.cs:243:17:243:32 | [finally: exception(OutOfMemoryException)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | true |
-| cflow.cs:243:17:243:32 | [finally: return] ... > ... | cflow.cs:244:17:244:37 | [finally: return] ...; | true |
-| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:261:13:261:33 | ...; | true |
-| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:263:9:268:9 | for (...;...;...) ... | false |
-| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:263:18:263:18 | access to local variable x | false |
-| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:267:17:267:22 | break; | true |
-| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:271:9:276:9 | {...} | false |
-| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:275:17:275:22 | break; | true |
-| cflow.cs:278:16:278:21 | ... < ... | cflow.cs:279:9:282:9 | {...} | true |
-| cflow.cs:278:16:278:21 | ... < ... | cflow.cs:284:9:287:9 | for (...;...;...) ... | false |
-| cflow.cs:284:32:284:41 | ... < ... | cflow.cs:257:10:257:12 | exit For | false |
-| cflow.cs:284:32:284:41 | ... < ... | cflow.cs:285:9:287:9 | {...} | true |
-| cflow.cs:298:13:298:18 | ... == ... | cflow.cs:298:23:298:23 | 2 | false |
-| cflow.cs:298:23:298:28 | ... == ... | cflow.cs:298:34:298:49 | ... && ... | false |
-| cflow.cs:298:34:298:39 | ... == ... | cflow.cs:301:13:301:52 | ...; | false |
-| cflow.cs:306:17:306:32 | ... > ... | cflow.cs:306:13:306:56 | Boolean b = ... | false |
-| cflow.cs:306:17:306:32 | ... > ... | cflow.cs:306:37:306:56 | !... | true |
-| cflow.cs:308:15:308:31 | ... == ... | cflow.cs:308:35:308:39 | false | true |
-| cflow.cs:308:15:308:31 | ... == ... | cflow.cs:308:43:308:46 | true | false |
-| cflow.cs:308:35:308:39 | false | cflow.cs:309:13:309:49 | ...; | false |
-| cflow.cs:308:43:308:46 | true | cflow.cs:311:9:316:9 | if (...) ... | true |
-| cflow.cs:309:17:309:33 | ... == ... | cflow.cs:309:37:309:41 | false | true |
-| cflow.cs:309:17:309:33 | ... == ... | cflow.cs:309:45:309:48 | true | false |
-| cflow.cs:311:15:311:31 | ... == ... | cflow.cs:311:37:311:62 | !... | true |
-| cflow.cs:311:15:311:31 | ... == ... | cflow.cs:312:9:316:9 | {...} | false |
-| cflow.cs:311:40:311:56 | ... == ... | cflow.cs:304:10:304:17 | exit Booleans | false |
-| cflow.cs:311:40:311:56 | ... == ... | cflow.cs:311:61:311:61 | access to local variable b | true |
-| cflow.cs:311:61:311:61 | access to local variable b | cflow.cs:304:10:304:17 | exit Booleans | false |
-| cflow.cs:311:61:311:61 | access to local variable b | cflow.cs:312:9:316:9 | {...} | true |
-| cflow.cs:324:17:324:32 | ... > ... | cflow.cs:325:13:327:13 | {...} | true |
-| cflow.cs:324:17:324:32 | ... > ... | cflow.cs:328:13:331:13 | if (...) ... | false |
-| cflow.cs:328:17:328:32 | ... < ... | cflow.cs:329:13:331:13 | {...} | true |
-| cflow.cs:328:17:328:32 | ... < ... | cflow.cs:332:18:332:22 | this access | false |
-| cflow.cs:332:18:332:34 | ... < ... | cflow.cs:319:10:319:11 | exit Do | false |
-| cflow.cs:332:18:332:34 | ... < ... | cflow.cs:322:9:332:9 | {...} | true |
-| cflow.cs:340:17:340:32 | ... > ... | cflow.cs:341:13:343:13 | {...} | true |
-| cflow.cs:340:17:340:32 | ... > ... | cflow.cs:344:13:347:13 | if (...) ... | false |
-| cflow.cs:344:17:344:32 | ... < ... | cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | false |
-| cflow.cs:344:17:344:32 | ... < ... | cflow.cs:345:13:347:13 | {...} | true |
-| cflow.cs:353:23:353:39 | ... == ... | cflow.cs:353:43:353:45 | {...} | true |
-| cflow.cs:353:23:353:39 | ... == ... | cflow.cs:355:9:355:41 | if (...) ... | false |
-| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:355:31:355:41 | goto ...; | true |
-| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:357:9:369:9 | switch (...) {...} | false |
-| cflow.cs:375:25:375:30 | ... < ... | cflow.cs:376:9:378:9 | {...} | true |
-| cflow.cs:375:25:375:30 | ... < ... | cflow.cs:379:9:387:9 | try {...} ... | false |
-| cflow.cs:428:46:428:50 | ... > ... | cflow.cs:428:56:428:56 | access to parameter s | false |
-| cflow.cs:428:46:428:50 | ... > ... | cflow.cs:428:70:428:71 | "" | true |
+| cflow.cs:149:16:149:21 | ... < ... | cflow.cs:150:13:150:33 | ...; | true |
+| cflow.cs:149:16:149:21 | ... < ... | cflow.cs:152:9:157:9 | for (...;...;...) ... | false |
+| cflow.cs:155:17:155:22 | ... > ... | cflow.cs:152:18:152:18 | access to local variable x | false |
+| cflow.cs:155:17:155:22 | ... > ... | cflow.cs:156:17:156:22 | break; | true |
+| cflow.cs:163:17:163:22 | ... > ... | cflow.cs:160:9:165:9 | {...} | false |
+| cflow.cs:163:17:163:22 | ... > ... | cflow.cs:164:17:164:22 | break; | true |
+| cflow.cs:167:16:167:21 | ... < ... | cflow.cs:168:9:171:9 | {...} | true |
+| cflow.cs:167:16:167:21 | ... < ... | cflow.cs:173:9:176:9 | for (...;...;...) ... | false |
+| cflow.cs:173:32:173:41 | ... < ... | cflow.cs:146:10:146:12 | exit For | false |
+| cflow.cs:173:32:173:41 | ... < ... | cflow.cs:174:9:176:9 | {...} | true |
+| cflow.cs:187:13:187:18 | ... == ... | cflow.cs:187:23:187:23 | 2 | false |
+| cflow.cs:187:23:187:28 | ... == ... | cflow.cs:187:34:187:49 | ... && ... | false |
+| cflow.cs:187:34:187:39 | ... == ... | cflow.cs:190:13:190:52 | ...; | false |
+| cflow.cs:195:17:195:32 | ... > ... | cflow.cs:195:13:195:56 | Boolean b = ... | false |
+| cflow.cs:195:17:195:32 | ... > ... | cflow.cs:195:37:195:56 | !... | true |
+| cflow.cs:197:15:197:31 | ... == ... | cflow.cs:197:35:197:39 | false | true |
+| cflow.cs:197:15:197:31 | ... == ... | cflow.cs:197:43:197:46 | true | false |
+| cflow.cs:197:35:197:39 | false | cflow.cs:198:13:198:49 | ...; | false |
+| cflow.cs:197:43:197:46 | true | cflow.cs:200:9:205:9 | if (...) ... | true |
+| cflow.cs:198:17:198:33 | ... == ... | cflow.cs:198:37:198:41 | false | true |
+| cflow.cs:198:17:198:33 | ... == ... | cflow.cs:198:45:198:48 | true | false |
+| cflow.cs:200:15:200:31 | ... == ... | cflow.cs:200:37:200:62 | !... | true |
+| cflow.cs:200:15:200:31 | ... == ... | cflow.cs:201:9:205:9 | {...} | false |
+| cflow.cs:200:40:200:56 | ... == ... | cflow.cs:193:10:193:17 | exit Booleans | false |
+| cflow.cs:200:40:200:56 | ... == ... | cflow.cs:200:61:200:61 | access to local variable b | true |
+| cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:193:10:193:17 | exit Booleans | false |
+| cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:201:9:205:9 | {...} | true |
+| cflow.cs:213:17:213:32 | ... > ... | cflow.cs:214:13:216:13 | {...} | true |
+| cflow.cs:213:17:213:32 | ... > ... | cflow.cs:217:13:220:13 | if (...) ... | false |
+| cflow.cs:217:17:217:32 | ... < ... | cflow.cs:218:13:220:13 | {...} | true |
+| cflow.cs:217:17:217:32 | ... < ... | cflow.cs:221:18:221:22 | this access | false |
+| cflow.cs:221:18:221:34 | ... < ... | cflow.cs:208:10:208:11 | exit Do | false |
+| cflow.cs:221:18:221:34 | ... < ... | cflow.cs:211:9:221:9 | {...} | true |
+| cflow.cs:229:17:229:32 | ... > ... | cflow.cs:230:13:232:13 | {...} | true |
+| cflow.cs:229:17:229:32 | ... > ... | cflow.cs:233:13:236:13 | if (...) ... | false |
+| cflow.cs:233:17:233:32 | ... < ... | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | false |
+| cflow.cs:233:17:233:32 | ... < ... | cflow.cs:234:13:236:13 | {...} | true |
+| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:43:242:45 | {...} | true |
+| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:244:9:244:41 | if (...) ... | false |
+| cflow.cs:244:13:244:28 | ... > ... | cflow.cs:244:31:244:41 | goto ...; | true |
+| cflow.cs:244:13:244:28 | ... > ... | cflow.cs:246:9:258:9 | switch (...) {...} | false |
+| cflow.cs:264:25:264:30 | ... < ... | cflow.cs:265:9:267:9 | {...} | true |
+| cflow.cs:264:25:264:30 | ... < ... | cflow.cs:268:9:276:9 | try {...} ... | false |
+| cflow.cs:300:46:300:50 | ... > ... | cflow.cs:300:56:300:56 | access to parameter s | false |
+| cflow.cs:300:46:300:50 | ... > ... | cflow.cs:300:70:300:71 | "" | true |

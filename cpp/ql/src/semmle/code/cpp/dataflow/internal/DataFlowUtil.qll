@@ -25,7 +25,8 @@ private newtype TNode =
       not c.getTarget().getParameter(i).getUnderlyingType().(PointerType).getBaseType().isConst()
     )
   } or
-  TUninitializedNode(LocalVariable v) { not v.hasInitializer() }
+  TUninitializedNode(LocalVariable v) { not v.hasInitializer() } or
+  TRefParameterFinalValueNode(Parameter p) { exists(FlowVar var | var.reachesRefParameter(p)) }
 
 /**
  * A node in a data flow graph.
@@ -246,6 +247,23 @@ class UninitializedNode extends Node, TUninitializedNode {
 
   /** Gets the uninitialized local variable corresponding to this node. */
   LocalVariable getLocalVariable() { result = v }
+}
+
+/** INTERNAL: do not use. The final value of a non-const ref parameter. */
+class RefParameterFinalValueNode extends Node, TRefParameterFinalValueNode {
+  Parameter p;
+
+  RefParameterFinalValueNode() { this = TRefParameterFinalValueNode(p) }
+
+  override Function getFunction() { result = p.getFunction() }
+
+  override Type getType() { result = p.getType() }
+
+  override string toString() { result = p.toString() }
+
+  override Location getLocation() { result = p.getLocation() }
+
+  Parameter getParameter() { result = p }
 }
 
 /**
@@ -490,7 +508,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
       or
       var.definedPartiallyAt(nodeFrom.asPartialDefinition())
     ) and
-    varToExprStep(var, nodeTo.asExpr())
+    varToNodeStep(var, nodeTo)
   )
   or
   // Expr -> DefinitionByReferenceNode
@@ -533,9 +551,13 @@ private predicate exprToVarStep(Expr assignedExpr, FlowVar var) {
 }
 
 /**
- * Holds if the expression `e` is an access of the variable `var`.
+ * Holds if the node `n` is an access of the variable `var`.
  */
-private predicate varToExprStep(FlowVar var, Expr e) { e = var.getAnAccess() }
+private predicate varToNodeStep(FlowVar var, Node n) {
+  n.asExpr() = var.getAnAccess()
+  or
+  var.reachesRefParameter(n.(RefParameterFinalValueNode).getParameter())
+}
 
 /**
  * Holds if data flows from `fromExpr` to `toExpr` directly, in the case
@@ -552,6 +574,10 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   toExpr = any(PostfixCrementOperation op | fromExpr = op.getOperand())
   or
   toExpr = any(StmtExpr stmtExpr | fromExpr = stmtExpr.getResultExpr())
+  or
+  toExpr.(AddressOfExpr).getOperand() = fromExpr
+  or
+  toExpr.(BuiltInOperationBuiltInAddressOf).getOperand() = fromExpr
   or
   // The following case is needed to track the qualifier object for flow
   // through fields. It gives flow from `T(x)` to `new T(x)`. That's not
@@ -574,8 +600,8 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
       exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
         call.getTarget() = f and
         f.hasDataFlow(inModel, outModel) and
-        outModel.isOutReturnValue() and
-        inModel.isInParameter(iIn) and
+        outModel.isReturnValue() and
+        inModel.isParameter(iIn) and
         fromExpr = call.getArgument(iIn)
       )
     )
@@ -585,12 +611,12 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
-    outModel.isOutParameterPointer(argOutIndex) and
+    outModel.isParameterDeref(argOutIndex) and
     exists(int argInIndex, FunctionInput inModel | f.hasDataFlow(inModel, outModel) |
-      inModel.isInParameterPointer(argInIndex) and
+      inModel.isParameterDeref(argInIndex) and
       call.passesByReference(argInIndex, exprIn)
       or
-      inModel.isInParameter(argInIndex) and
+      inModel.isParameter(argInIndex) and
       exprIn = call.getArgument(argInIndex)
     )
   )

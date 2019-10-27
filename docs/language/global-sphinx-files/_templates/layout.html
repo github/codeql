@@ -4,6 +4,8 @@
     This header (including the SVG logo) is copied from the Semmle 
     documentation home page at help.semmle.com.
 
+    It also adds some JavaScript (in the footer) to allow collapsible sections.
+
     The source for the default Alabaster stylesheet can be found at:
     https://github.com/bitprophet/alabaster/blob/master/alabaster/layout.html
 #}
@@ -108,6 +110,18 @@
 
 {% endblock %}
 
+{% block footer %}
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function() {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+{% endblock %}
 
     
 

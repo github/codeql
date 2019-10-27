@@ -50,7 +50,7 @@ module Stages {
   cached
   module DataFlowStage {
     private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-    private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
+    private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon::Public
     private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 
     cached
@@ -72,7 +72,7 @@ module Stages {
       or
       exists(any(DataFlow::Node n).toString())
       or
-      exists(any(OutNode n).getCall())
+      exists(any(OutNode n).getCall(_))
       or
       exists(CallContext cc)
       or

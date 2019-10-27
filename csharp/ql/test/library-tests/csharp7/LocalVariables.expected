@@ -35,6 +35,7 @@
 | CSharp7.cs:123:16:123:18 | m13 | string |
 | CSharp7.cs:135:19:135:20 | f4 | Func<int> |
 | CSharp7.cs:139:24:139:25 | f5 | Func<int, int> |
+| CSharp7.cs:151:16:151:16 | a | Action |
 | CSharp7.cs:176:16:176:18 | src | string |
 | CSharp7.cs:181:13:181:17 | sink1 | string |
 | CSharp7.cs:182:13:182:17 | sink2 | string |

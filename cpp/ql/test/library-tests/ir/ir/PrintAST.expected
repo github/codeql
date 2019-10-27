@@ -3672,7 +3672,7 @@ ir.cpp:
 #  560| [TopLevelFunction] int EnumSwitch(E)
 #  560|   params: 
 #  560|     0: [Parameter] e
-#  560|         Type = [TypedefType] E
+#  560|         Type = [CTypedefType] E
 #  560|   body: [Block] { ... }
 #  561|     0: [SwitchStmt] switch (...) ... 
 #  561|       0: [CStyleCast] (int)...
@@ -3680,7 +3680,7 @@ ir.cpp:
 #  561|           Type = [IntType] int
 #  561|           ValueCategory = prvalue
 #  561|         expr: [VariableAccess] e
-#  561|             Type = [TypedefType] E
+#  561|             Type = [CTypedefType] E
 #  561|             ValueCategory = prvalue(load)
 #  561|       1: [Block] { ... }
 #  562|         0: [SwitchCase] case ...:
@@ -6191,19 +6191,19 @@ ir.cpp:
 #  915| [Operator,TopLevelFunction] void* operator new(size_t, float)
 #  915|   params: 
 #  915|     0: [Parameter] p#0
-#  915|         Type = [Size_t,TypedefType] size_t
+#  915|         Type = [CTypedefType,Size_t] size_t
 #  915|     1: [Parameter] p#1
 #  915|         Type = [FloatType] float
 #  916| [Operator,TopLevelFunction] void* operator new[](size_t, float)
 #  916|   params: 
 #  916|     0: [Parameter] p#0
-#  916|         Type = [Size_t,TypedefType] size_t
+#  916|         Type = [CTypedefType,Size_t] size_t
 #  916|     1: [Parameter] p#1
 #  916|         Type = [FloatType] float
 #  917| [Operator,TopLevelFunction] void* operator new(size_t, std::align_val_t, float)
 #  917|   params: 
 #  917|     0: [Parameter] p#0
-#  917|         Type = [Size_t,TypedefType] size_t
+#  917|         Type = [CTypedefType,Size_t] size_t
 #  917|     1: [Parameter] p#1
 #  917|         Type = [ScopedEnum] align_val_t
 #  917|     2: [Parameter] p#2
@@ -6211,7 +6211,7 @@ ir.cpp:
 #  918| [Operator,TopLevelFunction] void* operator new[](size_t, std::align_val_t, float)
 #  918|   params: 
 #  918|     0: [Parameter] p#0
-#  918|         Type = [Size_t,TypedefType] size_t
+#  918|         Type = [CTypedefType,Size_t] size_t
 #  918|     1: [Parameter] p#1
 #  918|         Type = [ScopedEnum] align_val_t
 #  918|     2: [Parameter] p#2
@@ -6255,23 +6255,23 @@ ir.cpp:
 #  926| [MemberFunction] void* SizedDealloc::operator new(size_t)
 #  926|   params: 
 #  926|     0: [Parameter] p#0
-#  926|         Type = [Size_t,TypedefType] size_t
+#  926|         Type = [CTypedefType,Size_t] size_t
 #  927| [MemberFunction] void* SizedDealloc::operator new[](size_t)
 #  927|   params: 
 #  927|     0: [Parameter] p#0
-#  927|         Type = [Size_t,TypedefType] size_t
+#  927|         Type = [CTypedefType,Size_t] size_t
 #  928| [MemberFunction] void SizedDealloc::operator delete(void*, size_t)
 #  928|   params: 
 #  928|     0: [Parameter] p#0
 #  928|         Type = [VoidPointerType] void *
 #  928|     1: [Parameter] p#1
-#  928|         Type = [Size_t,TypedefType] size_t
+#  928|         Type = [CTypedefType,Size_t] size_t
 #  929| [MemberFunction] void SizedDealloc::operator delete[](void*, size_t)
 #  929|   params: 
 #  929|     0: [Parameter] p#0
 #  929|         Type = [VoidPointerType] void *
 #  929|     1: [Parameter] p#1
-#  929|         Type = [Size_t,TypedefType] size_t
+#  929|         Type = [CTypedefType,Size_t] size_t
 #  932| [CopyAssignmentOperator] Overaligned& Overaligned::operator=(Overaligned const&)
 #  932|   params: 
 #-----|     0: [Parameter] p#0
@@ -7795,16 +7795,16 @@ ir.cpp:
 # 1101|       0: [VariableAccess] x
 # 1101|           Type = [IntType] int
 # 1101|           ValueCategory = prvalue(load)
-# 1104| [TopLevelFunction] void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
+# 1104| [TopLevelFunction] void AsmStmtWithOutputs(unsigned int&, unsigned int, unsigned int&, unsigned int)
 # 1104|   params: 
 # 1104|     0: [Parameter] a
 # 1104|         Type = [LValueReferenceType] unsigned int &
 # 1104|     1: [Parameter] b
-# 1104|         Type = [LValueReferenceType] unsigned int &
+# 1104|         Type = [IntType] unsigned int
 # 1104|     2: [Parameter] c
 # 1104|         Type = [LValueReferenceType] unsigned int &
 # 1104|     3: [Parameter] d
-# 1104|         Type = [LValueReferenceType] unsigned int &
+# 1104|         Type = [IntType] unsigned int
 # 1105|   body: [Block] { ... }
 # 1106|     0: [AsmStmt] asm statement
 # 1109|       0: [ReferenceDereferenceExpr] (reference dereference)
@@ -7813,24 +7813,18 @@ ir.cpp:
 # 1109|         expr: [VariableAccess] a
 # 1109|             Type = [LValueReferenceType] unsigned int &
 # 1109|             ValueCategory = prvalue(load)
-# 1109|       1: [ReferenceDereferenceExpr] (reference dereference)
+# 1109|       1: [VariableAccess] b
 # 1109|           Type = [IntType] unsigned int
 # 1109|           ValueCategory = lvalue
-# 1109|         expr: [VariableAccess] b
-# 1109|             Type = [LValueReferenceType] unsigned int &
-# 1109|             ValueCategory = prvalue(load)
 # 1109|       2: [ReferenceDereferenceExpr] (reference dereference)
 # 1109|           Type = [IntType] unsigned int
-# 1109|           ValueCategory = lvalue
+# 1109|           ValueCategory = prvalue(load)
 # 1109|         expr: [VariableAccess] c
 # 1109|             Type = [LValueReferenceType] unsigned int &
 # 1109|             ValueCategory = prvalue(load)
-# 1109|       3: [ReferenceDereferenceExpr] (reference dereference)
+# 1109|       3: [VariableAccess] d
 # 1109|           Type = [IntType] unsigned int
-# 1109|           ValueCategory = lvalue
-# 1109|         expr: [VariableAccess] d
-# 1109|             Type = [LValueReferenceType] unsigned int &
-# 1109|             ValueCategory = prvalue(load)
+# 1109|           ValueCategory = prvalue(load)
 # 1111|     1: [ReturnStmt] return ...
 # 1113| [TopLevelFunction] void ExternDeclarations()
 # 1113|   params: 
@@ -7855,7 +7849,7 @@ ir.cpp:
 # 1118|           Type = [IntType] int
 # 1119|     4: [DeclStmt] declaration
 # 1119|       0: [TypeDeclarationEntry] declaration of d
-# 1119|           Type = [LocalTypedefType] d
+# 1119|           Type = [CTypedefType,LocalTypedefType] d
 # 1120|     5: [ReturnStmt] return ...
 # 1117| [TopLevelFunction] int f(float)
 # 1117|   params: 
@@ -8015,7 +8009,7 @@ ir.cpp:
 # 1154|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1154|         init: [Initializer] initializer for vi4
 # 1154|           expr: [VectorAggregateLiteral] {...}
-# 1154|               Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1154|               Type = [GNUVectorType] __attribute((vector_size(16UL))) int
 # 1154|               ValueCategory = prvalue
 # 1154|             0: [Literal] 0
 # 1154|                 Type = [IntType] int
@@ -8107,7 +8101,7 @@ ir.cpp:
 # 1158|             Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1158|             ValueCategory = lvalue
 # 1158|         1: [AddExpr] ... + ...
-# 1158|             Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1158|             Type = [GNUVectorType] __attribute((vector_size(16UL))) int
 # 1158|             ValueCategory = prvalue
 # 1158|           0: [VariableAccess] vi4
 # 1158|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
@@ -8116,6 +8110,59 @@ ir.cpp:
 # 1158|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1158|               ValueCategory = prvalue(load)
 # 1159|     5: [ReturnStmt] return ...
+# 1161| [TopLevelFunction] void* memcpy(void*, void*, int)
+# 1161|   params: 
+# 1161|     0: [Parameter] dst
+# 1161|         Type = [VoidPointerType] void *
+# 1161|     1: [Parameter] src
+# 1161|         Type = [VoidPointerType] void *
+# 1161|     2: [Parameter] size
+# 1161|         Type = [IntType] int
+# 1163| [TopLevelFunction] int ModeledCallTarget(int)
+# 1163|   params: 
+# 1163|     0: [Parameter] x
+# 1163|         Type = [IntType] int
+# 1163|   body: [Block] { ... }
+# 1164|     0: [DeclStmt] declaration
+# 1164|       0: [VariableDeclarationEntry] definition of y
+# 1164|           Type = [IntType] int
+# 1165|     1: [ExprStmt] ExprStmt
+# 1165|       0: [FunctionCall] call to memcpy
+# 1165|           Type = [VoidPointerType] void *
+# 1165|           ValueCategory = prvalue
+# 1165|         0: [CStyleCast] (void *)...
+# 1165|             Conversion = [PointerConversion] pointer conversion
+# 1165|             Type = [VoidPointerType] void *
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [AddressOfExpr] & ...
+# 1165|               Type = [IntPointerType] int *
+# 1165|               ValueCategory = prvalue
+# 1165|             0: [VariableAccess] y
+# 1165|                 Type = [IntType] int
+# 1165|                 ValueCategory = lvalue
+# 1165|         1: [CStyleCast] (void *)...
+# 1165|             Conversion = [PointerConversion] pointer conversion
+# 1165|             Type = [VoidPointerType] void *
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [AddressOfExpr] & ...
+# 1165|               Type = [IntPointerType] int *
+# 1165|               ValueCategory = prvalue
+# 1165|             0: [VariableAccess] x
+# 1165|                 Type = [IntType] int
+# 1165|                 ValueCategory = lvalue
+# 1165|         2: [CStyleCast] (int)...
+# 1165|             Conversion = [IntegralConversion] integral conversion
+# 1165|             Type = [IntType] int
+# 1165|             Value = [CStyleCast] 4
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [SizeofTypeOperator] sizeof(int)
+# 1165|               Type = [LongType] unsigned long
+# 1165|               Value = [SizeofTypeOperator] 4
+# 1165|               ValueCategory = prvalue
+# 1166|     2: [ReturnStmt] return ...
+# 1166|       0: [VariableAccess] y
+# 1166|           Type = [IntType] int
+# 1166|           ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

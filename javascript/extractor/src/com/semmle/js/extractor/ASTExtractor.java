@@ -762,6 +762,7 @@ public class ASTExtractor {
         trapwriter.addTuple("hasDeclareKeyword", key);
       }
       extractFunction(nd, key);
+      emitStaticType(nd, key);
       return key;
     }
 
@@ -833,7 +834,13 @@ public class ASTExtractor {
       extractParameterDefaultsAndTypes(nd, key, i);
 
       extractFunctionAttributes(nd, key);
+
+      // Extract associated symbol and signature
       emitNodeSymbol(nd, key);
+      if (nd.getDeclaredSignatureId() != -1) {
+        Label signatureKey = trapwriter.globalID("signature;" + nd.getDeclaredSignatureId());
+        trapwriter.addTuple("declared_function_signature", key, signatureKey);
+      }
 
       boolean oldIsStrict = isStrict;
       isStrict = bodyIsStrict;
@@ -1370,9 +1377,8 @@ public class ASTExtractor {
       trapwriter.addTuple("properties", methkey, c.parent, c.childIndex, kind, tostring);
       locationManager.emitNodeLocation(nd, methkey);
       visitAll(nd.getDecorators(), methkey, IdContext.varBind, -1, -1);
-      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
 
-      // the initialiser expression of an instance field is evaluated as part of
+      // the name and initialiser expression of an instance field is evaluated as part of
       // the constructor, so we adjust our syntactic context to reflect this
       MethodDefinition ctor = null;
       if (nd instanceof FieldDefinition && !nd.isStatic() && !ctors.isEmpty()) ctor = ctors.peek();
@@ -1381,6 +1387,7 @@ public class ASTExtractor {
         constructorKey = trapwriter.localID(ctor.getValue());
         contextManager.enterContainer(constructorKey);
       }
+      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
       visit(nd.getValue(), methkey, 1, c.idcontext);
       if (ctor != null) contextManager.leaveContainer();
 

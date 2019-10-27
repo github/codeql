@@ -12,7 +12,6 @@
 | B.java:72:15:72:16 | xs | Variable $@ may be null here because of $@ assignment. | B.java:68:5:68:41 | int[] xs | xs | B.java:68:11:68:40 | xs | this |
 | B.java:75:20:75:21 | xs | Variable $@ may be null here because of $@ assignment. | B.java:68:5:68:41 | int[] xs | xs | B.java:68:11:68:40 | xs | this |
 | B.java:78:20:78:21 | xs | Variable $@ may be null here because of $@ assignment. | B.java:68:5:68:41 | int[] xs | xs | B.java:68:11:68:40 | xs | this |
-| B.java:104:16:104:16 | b | Variable $@ may be null here as suggested by $@ null guard. | B.java:97:36:97:42 | b | b | B.java:99:16:99:24 | ... == ... | this |
 | B.java:118:5:118:7 | obj | Variable $@ may be null here as suggested by $@ null guard. | B.java:117:27:117:36 | obj | obj | B.java:119:13:119:23 | ... != ... | this |
 | B.java:133:5:133:7 | obj | Variable $@ may be null here because of $@ assignment. | B.java:128:5:128:22 | Object obj | obj | B.java:128:12:128:21 | obj | this |
 | B.java:190:7:190:7 | o | Variable $@ may be null here because of $@ assignment. | B.java:178:5:178:20 | Object o | o | B.java:186:5:186:12 | ...=... | this |

@@ -37,7 +37,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2019-09-13";
+  public static final String EXTRACTOR_VERSION = "2019-10-08";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 

@@ -935,6 +935,9 @@ module DataFlow {
      * and either with or without `new`.
      */
     abstract class InvokeNodeDef extends DataFlow::Node {
+      /** Gets the syntactic invoke expression underlying this function invocation. */
+      abstract InvokeExpr getInvokeExpr();
+
       /** Gets the name of the function or method being invoked, if it can be determined. */
       abstract string getCalleeName();
 
@@ -984,6 +987,8 @@ module DataFlow {
      */
     class ExplicitInvokeNode extends InvokeNodeDef, DataFlow::ValueNode {
       override InvokeExpr astNode;
+
+      override InvokeExpr getInvokeExpr() { result = astNode }
 
       override string getCalleeName() { result = astNode.getCalleeName() }
 
@@ -1045,6 +1050,8 @@ module DataFlow {
       string kind;
 
       ReflectiveCallNodeDef() { this = TReflectiveCallNode(originalCall.asExpr(), kind) }
+
+      override InvokeExpr getInvokeExpr() { result = originalCall.getInvokeExpr() }
 
       override string getCalleeName() {
         result = originalCall.getReceiver().asExpr().(PropAccess).getPropertyName()
@@ -1407,6 +1414,8 @@ module DataFlow {
       e instanceof SuperExpr
       or
       e instanceof NewTargetExpr
+      or
+      e instanceof ImportMetaExpr
       or
       e instanceof FunctionBindExpr
       or

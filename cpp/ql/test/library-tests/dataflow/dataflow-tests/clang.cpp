@@ -19,7 +19,7 @@ void following_pointers(
 
   sink(sourceArray1[0]); // no flow
   sink(*sourceArray1); // no flow
-  sink(&sourceArray1); // no flow (since sourceArray1 is really a pointer)
+  sink(&sourceArray1); // flow (should probably be taint only)
 
   sink(sourceStruct1.m1); // no flow
   sink(sourceStruct1_ptr->m1); // no flow

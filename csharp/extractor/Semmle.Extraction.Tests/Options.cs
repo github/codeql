@@ -3,6 +3,7 @@ using Semmle.Util.Logging;
 using System;
 using System.IO;
 using Semmle.Util;
+using System.Text.RegularExpressions;
 
 namespace Semmle.Extraction.Tests
 {
@@ -183,26 +184,25 @@ namespace Semmle.Extraction.Tests
         public void Fast()
         {
             Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "--fast");
-            options = CSharp.Options.CreateWithEnvironment(new string[] {});
+            options = CSharp.Options.CreateWithEnvironment(new string[] { });
             Assert.True(options.Fast);
         }
 
         [Fact]
         public void ArchiveArguments()
         {
-            var file1 = Path.GetTempFileName();
-            var file2 = Path.GetTempFileName();
+            var sw = new StringWriter();
+            var file = Path.GetTempFileName();
 
             try
             {
-                File.AppendAllText(file1, "Test");
-                new string[] { "/noconfig", "@" + file1 }.ArchiveCommandLine(file2);
-                Assert.Equal("Test", File.ReadAllText(file2));
+                File.AppendAllText(file, "Test");
+                new string[] { "/noconfig", "@" + file }.WriteCommandLine(sw);
+                Assert.Equal("Test", Regex.Replace(sw.ToString(), @"\t|\n|\r", ""));
             }
             finally
             {
-                File.Delete(file1);
-                File.Delete(file2);
+                File.Delete(file);
             }
         }
     }

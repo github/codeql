@@ -1,3 +1,0 @@
-| tst.ts:1:18:1:17 | constructor() {} | Method constructor in class C |
-| tst.ts:2:3:2:31 | abstrac ... number; | Method abstract in class C |
-| tst.ts:3:3:3:30 | abstrac ... er): C; | Method new in class C |

@@ -342,6 +342,26 @@ public class E
         var x = s ?? o as string;
         x.ToString(); // BAD (maybe)
     }
+
+    static void Ex31(string s, object o)
+    {
+        dynamic x = s ?? o as string;
+        x.ToString(); // BAD (maybe)
+    }
+
+    static void Ex32(string s, object o)
+    {
+        dynamic x = s ?? o as string;
+        if (x != null)
+            x.ToString(); // GOOD
+    }
+
+    static void Ex33(string s, object o)
+    {
+        var x = s ?? o as string;
+        if (x != (string)null)
+            x.ToString(); // GOOD
+    }
 }
 
 public static class Extensions

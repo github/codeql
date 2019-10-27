@@ -24,6 +24,20 @@ test_Connection
 | tst.js:63:38:63:77 | api.cha ... ction() |
 | tst.js:67:14:67:47 | MyAppli ... nection |
 | tst.js:78:35:78:49 | getConnection() |
+| tst.js:80:16:80:19 | conn |
+| tst.js:84:22:84:22 | x |
+| tst.js:88:3:88:16 | innerCapture() |
+| tst.js:89:3:89:17 | innerCall(conn) |
+| tst.js:93:5:93:18 | innerCapture() |
+| tst.js:99:7:99:21 | getConnection() |
+| tst.js:100:12:100:26 | getConnection() |
+| tst.js:103:17:103:17 | x |
+| tst.js:104:10:106:6 | (functi ... \\n  })() |
+| tst.js:108:1:108:23 | shared( ... tion()) |
+| tst.js:108:8:108:22 | getConnection() |
+| tst.js:112:10:112:14 | obj.x |
+| tst.js:114:1:114:28 | getX({  ... on() }) |
+| tst.js:114:11:114:25 | getConnection() |
 | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
 test_DataCallback
 | client.js:3:28:3:34 | x => {} |
@@ -35,6 +49,7 @@ test_DataCallback
 | tst.js:40:32:40:45 | getDataCurry() |
 | tst.js:45:19:45:20 | cb |
 | tst.js:48:32:48:60 | identit ... llback) |
+| tst.js:51:1:51:37 | functio ... ata) {} |
 | tst.js:58:16:58:22 | x => {} |
 | tst.js:68:16:70:3 | data => ... a);\\n  } |
 test_DataValue
@@ -43,5 +58,6 @@ test_DataValue
 | tst.js:25:19:25:22 | data |
 | tst.js:33:17:33:20 | data |
 | tst.js:38:10:38:13 | data |
+| tst.js:51:30:51:33 | data |
 | tst.js:58:16:58:16 | x |
 | tst.js:68:16:68:19 | data |

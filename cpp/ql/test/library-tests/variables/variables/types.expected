@@ -1,18 +1,18 @@
 | ..()(..) | RoutineType |  |  |  |  |
 | ..(*)(..) | FunctionPointerType |  | ..()(..) |  |  |
-| _Complex __float128 | ArithmeticType |  |  |  |  |
+| _Complex __float128 | FloatingPointType |  |  |  |  |
 | _Complex double | FloatingPointType |  |  |  |  |
 | _Complex float | FloatingPointType |  |  |  |  |
 | _Complex long double | FloatingPointType |  |  |  |  |
-| _Decimal32 | ArithmeticType |  |  |  |  |
-| _Decimal64 | ArithmeticType |  |  |  |  |
-| _Decimal128 | ArithmeticType |  |  |  |  |
-| _Float32 | ArithmeticType |  |  |  |  |
-| _Float32x | ArithmeticType |  |  |  |  |
-| _Float64 | ArithmeticType |  |  |  |  |
-| _Float64x | ArithmeticType |  |  |  |  |
-| _Float128 | ArithmeticType |  |  |  |  |
-| _Float128x | ArithmeticType |  |  |  |  |
+| _Decimal32 | Decimal32Type |  |  |  |  |
+| _Decimal64 | Decimal64Type |  |  |  |  |
+| _Decimal128 | Decimal128Type |  |  |  |  |
+| _Float32 | FloatingPointType |  |  |  |  |
+| _Float32x | FloatingPointType |  |  |  |  |
+| _Float64 | FloatingPointType |  |  |  |  |
+| _Float64x | FloatingPointType |  |  |  |  |
+| _Float128 | FloatingPointType |  |  |  |  |
+| _Float128x | FloatingPointType |  |  |  |  |
 | _Imaginary double | FloatingPointType |  |  |  |  |
 | _Imaginary float | FloatingPointType |  |  |  |  |
 | _Imaginary long double | FloatingPointType |  |  |  |  |

@@ -5,6 +5,9 @@ public class ArrayTest {
         one_dim[0] = 1000;
         one_dim[1] = one_dim[0];
         one_dim[1] = 1003;
+
+        int i = 0;
+        one_dim[i] = 0;
     }
 
     public void twod_and_init_acc() 

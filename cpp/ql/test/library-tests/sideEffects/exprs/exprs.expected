@@ -10,6 +10,26 @@
 | exprs.c:9:3:9:5 | ++ ... |  | mayBeImpure |  |
 | exprs.c:9:5:9:5 | p | isPure |  |  |
 | exprs.c:12:12:12:12 | p | isPure |  |  |
+| exprs.c:18:5:18:14 | global_int | isPure |  |  |
+| exprs.c:18:5:18:18 | ... = ... |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.c:18:18:18:18 | 3 | isPure |  |  |
+| exprs.c:19:12:19:12 | 1 | isPure |  |  |
+| exprs.c:23:12:23:12 | 2 | isPure |  |  |
+| exprs.c:27:13:27:13 | 3 | isPure |  |  |
+| exprs.c:27:17:27:28 | {...} | isPure |  |  |
+| exprs.c:27:20:27:20 | 3 | isPure |  |  |
+| exprs.c:27:23:27:23 | 4 | isPure |  |  |
+| exprs.c:27:26:27:26 | 5 | isPure |  |  |
+| exprs.c:28:13:28:13 | 3 | isPure |  |  |
+| exprs.c:28:17:28:31 | {...} |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.c:28:20:28:20 | 3 | isPure |  |  |
+| exprs.c:28:23:28:24 | call to f2 |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.c:28:29:28:29 | 5 | isPure |  |  |
+| exprs.c:29:13:29:13 | 3 | isPure |  |  |
+| exprs.c:29:17:29:31 | {...} | isPure |  |  |
+| exprs.c:29:20:29:20 | 3 | isPure |  |  |
+| exprs.c:29:23:29:24 | call to f3 | isPure |  |  |
+| exprs.c:29:29:29:29 | 5 | isPure |  |  |
 | exprs.cpp:7:10:7:16 | (...) | isPure |  |  |
 | exprs.cpp:7:10:7:16 | (reference to) | isPure |  |  |
 | exprs.cpp:7:11:7:15 | * ... | isPure |  |  |
