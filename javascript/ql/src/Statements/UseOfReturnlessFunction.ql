@@ -89,6 +89,9 @@ predicate lastStatementHasNoEffect(Function f) {
   hasNoEffect(f.getExit().getAPredecessor())
 }
 
+/**
+ * Holds if `func` is a callee of `call`, and all possible callees of `call` never return a value.
+ */
 predicate callToVoidFunction(DataFlow::CallNode call, Function func) {
   not call.isIncomplete() and 
   func = call.getACallee() and
@@ -97,6 +100,11 @@ predicate callToVoidFunction(DataFlow::CallNode call, Function func) {
   )
 }
 
+/**
+ * Holds if `name` is the name of a method from `Array.prototype` or Lodash,
+ * where that method takes a callback as parameter,
+ * and the callback is expected to return a value.
+ */
 predicate hasNonVoidCallbackMethod(string name) {
   name = "every" or
   name = "filter" or
