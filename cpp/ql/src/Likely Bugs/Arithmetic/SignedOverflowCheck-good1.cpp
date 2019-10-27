@@ -1,3 +1,3 @@
 bool baf(unsigned short n1, unsigned short delta) {
-    return n1 + (unsigned)delta < n1; // GOOD
+    return (unsigned short)(n1 + delta) < n1; // GOOD
 }
