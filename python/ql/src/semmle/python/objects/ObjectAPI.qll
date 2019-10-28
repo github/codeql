@@ -389,12 +389,12 @@ class ClassValue extends Value {
         Types::failedInference(this, reason)
     }
 
-    /** Gets the nth base class of this class */
+    /** Gets the nth immediate base type of this class. */
     ClassValue getBaseType(int n) {
         result = Types::getBase(this, n)
     }
 
-    /** Gets a base class of this class */
+    /** Gets an immediate base type of this class. */
     ClassValue getABaseType() {
         result = Types::getBase(this, _)
     }
