@@ -120,11 +120,11 @@ public class RegExpExtractor {
   }
 
   public void emitLocation(SourceElement term, Label lbl) {
+    int col = literalStart.getColumn();
     int sl, sc, el, ec;
     sl = el = literalStart.getLine();
-    // the offset table accounts for the position on the line and for skipping the initial '/'
-    sc = offsets.get(term.getLoc().getStart().getColumn());
-    ec = offsets.get(term.getLoc().getEnd().getColumn());
+    sc = col + offsets.get(term.getLoc().getStart().getColumn());
+    ec = col + offsets.get(term.getLoc().getEnd().getColumn());
     sc += 1; // convert to 1-based
     ec += 1; // convert to 1-based
     ec -= 1; // convert to inclusive
@@ -346,7 +346,8 @@ public class RegExpExtractor {
     }
   }
 
-  public void extract(String src, Node parent, boolean isSpeculativeParsing) {
+  public void extract(
+      String src, OffsetTranslation offsets, Node parent, boolean isSpeculativeParsing) {
     Result res = parser.parse(src);
 
     if (isSpeculativeParsing && res.getErrors().size() > 0) {
@@ -354,8 +355,7 @@ public class RegExpExtractor {
     }
 
     this.literalStart = parent.getLoc().getStart();
-    offsets = new OffsetTranslation();
-    offsets.set(0, literalStart.getColumn() + 1); // add 1 to skip the leading '/' or quote
+    this.offsets = offsets;
     RegExpTerm ast = res.getAST();
     new V().visit(ast, trapwriter.localID(parent), 0);
 
