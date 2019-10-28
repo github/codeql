@@ -39,6 +39,10 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   definition of `x` when `x` is a variable of pointer type. It no longer
   considers deep paths such as `f(&x.myField)` to be definitions of `x`. These
   changes are in line with the user expectations we've observed.
+* The data-flow library now makes it easier to specify barriers/sanitizers
+  arising from guards by overriding the predicate
+  `isBarrierGuard`/`isSanitizerGuard` on data-flow and taint-tracking
+  configurations respectively.
 * There is now a `DataFlow::localExprFlow` predicate and a
   `TaintTracking::localExprTaint` predicate to make it easy to use the most
   common case of local data flow and taint: from one `Expr` to another.
