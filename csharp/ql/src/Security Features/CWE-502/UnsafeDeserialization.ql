@@ -14,7 +14,7 @@
  */
 
 import csharp
-import UnsafeDeserialization::UnsafeDeserialization
+import semmle.code.csharp.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
 
 from Call deserializeCall, Sink sink
 where deserializeCall.getAnArgument() = sink.asExpr()

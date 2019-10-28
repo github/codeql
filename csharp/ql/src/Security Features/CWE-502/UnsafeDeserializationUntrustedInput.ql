@@ -14,7 +14,7 @@
  */
 
 import csharp
-import UnsafeDeserialization::UnsafeDeserialization
+import semmle.code.csharp.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
 import DataFlow::PathGraph
 
 from TaintTrackingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
