@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-The MaxRequestLength attribute sets the limit for the input stream buffering threshold in KB. Attackers can use large files to cause denial of service attacks.
+The <code>MaxRequestLength</code> attribute sets the limit for the input stream buffering threshold in KB. Attackers can use large files to cause denial of service attacks.
 </p>
 
 </overview>
