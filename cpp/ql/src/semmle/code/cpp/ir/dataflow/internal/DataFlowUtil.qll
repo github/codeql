@@ -5,6 +5,7 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
+private import semmle.code.cpp.ir.internal.IRCppLanguage as Language
 
 /**
  * A newtype wrapper to prevent accidental casts between `Node` and
@@ -33,7 +34,16 @@ class Node extends TIRDataFlowNode {
   Function getFunction() { result = instr.getEnclosingFunction() }
 
   /** Gets the type of this node. */
-  Type getType() { result = instr.getResultType() }
+  Type getType() {
+    exists(Language::LanguageType resultType |
+      resultType = instr.getResultLanguageType() and
+      (
+        resultType.hasUnspecifiedType(result, _)
+        or
+        not resultType.hasUnspecifiedType(_, _) and result instanceof Language::UnknownType
+      )
+    )
+  }
 
   Instruction asInstruction() { this = MkIRDataFlowNode(result) }
 

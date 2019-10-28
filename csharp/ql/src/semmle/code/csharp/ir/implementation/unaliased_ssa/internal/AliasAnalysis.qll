@@ -126,15 +126,8 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       //         virtual memory model for the IR I don't think such conversions provide any meaningful
       //         information;
       // Conversion to another pointer type propagates the source address.
-      exists(ConvertInstruction convert, Type resultType |
-        convert = instr and
-        resultType = convert.getResultType() and
-        (
-          resultType instanceof PointerType or
-          resultType instanceof RefType
-        ) and
-        bitOffset = 0
-      )
+      instr.(ConvertInstruction).getResultIRType() instanceof IRAddressType and
+      bitOffset = 0
       or
       // Adding an integer to or subtracting an integer from a pointer propagates
       // the address with an offset.

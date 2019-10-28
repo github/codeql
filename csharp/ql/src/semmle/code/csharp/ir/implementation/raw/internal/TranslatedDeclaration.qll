@@ -6,6 +6,7 @@ private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 private import common.TranslatedDeclarationBase
 
@@ -50,7 +51,7 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
 
   override Type getVarType() { result = getVariableType(getDeclVar()) }
 
-  override Type getTargetType() { result = getVariableType(var) }
+  override CSharpType getTargetType() { result = getTypeForPRValue(getVariableType(var)) }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     (

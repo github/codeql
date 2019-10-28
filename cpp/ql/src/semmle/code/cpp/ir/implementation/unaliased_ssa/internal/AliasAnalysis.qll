@@ -55,7 +55,7 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       instr instanceof PointerDiffInstruction
       or
       // Converting an address to a `bool` does not escape the address.
-      instr.(ConvertInstruction).getResultType() instanceof BoolType
+      instr.(ConvertInstruction).getResultIRType() instanceof IRBooleanType
     )
   )
   or
@@ -125,15 +125,8 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       bitOffset = Ints::unknown()
       or
       // Conversion to another pointer type propagates the source address.
-      exists(ConvertInstruction convert, Type resultType |
-        convert = instr and
-        resultType = convert.getResultType() and
-        (
-          resultType instanceof PointerType or
-          resultType instanceof Class //REVIEW: Remove when all glvalues are pointers
-        ) and
-        bitOffset = 0
-      )
+      instr.(ConvertInstruction).getResultIRType() instanceof IRAddressType and
+      bitOffset = 0
       or
       // Adding an integer to or subtracting an integer from a pointer propagates
       // the address with an offset.
