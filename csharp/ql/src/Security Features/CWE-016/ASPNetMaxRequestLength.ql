@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision very-high
- * @id cs/web/debug-binary
+ * @id cs/web/max-request-length
  * @tags security
  *       maintainability
  *       frameworks/asp.net
