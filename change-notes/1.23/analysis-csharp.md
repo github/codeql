@@ -8,6 +8,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Deserialized delegate (`cs/deserialized-delegate`) | security | Finds unsafe deserialization of delegate types. |
 | Unsafe year argument for 'DateTime' constructor (`cs/unsafe-year-construction`) | reliability, date-time | Finds incorrect manipulation of `DateTime` values, which could lead to invalid dates. |
 | Mishandling the Japanese era start date (`cs/mishandling-japanese-era`) | reliability, date-time | Finds hard-coded Japanese era start dates that could be invalid. |
 
