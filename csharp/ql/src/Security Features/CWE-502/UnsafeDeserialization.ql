@@ -5,12 +5,9 @@
  * @kind problem
  * @id cs/unsafe-deserialization
  * @problem.severity warning
+ * @precision low
  * @tags security
  *       external/cwe/cwe-502
- */
-
-/*
- * consider: @precision low
  */
 
 import csharp
