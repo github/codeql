@@ -1,33 +1,444 @@
 missingOperand
+| FunctionTryStmt.cpp:1:5:1:7 | ReturnValue: foo | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | FunctionTryStmt.cpp:1:5:1:7 | IR: foo | int foo() |
+| allocators.cpp:7:16:7:27 | ReturnValue: operator new | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | allocators.cpp:7:16:7:27 | IR: operator new | void* Foo::operator new(unsigned long, int, int) |
+| allocators.cpp:14:5:14:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
+| allocators.cpp:14:5:14:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
+| allocators.cpp:14:5:14:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
+| allocators.cpp:14:5:14:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
+| builtin.c:5:5:5:11 | ReturnValue: builtin | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
+| builtin.cpp:4:4:4:4 | ReturnValue: addressof | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | builtin.cpp:4:4:4:4 | IR: addressof | int* addressof<int>(int&) |
+| condition_decls.cpp:8:3:8:14 | ReturnValue: operator int | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | condition_decls.cpp:8:3:8:14 | IR: operator int | int BoxedInt::operator int() |
+| conditional_destructors.cpp:9:10:9:19 | ReturnValue: operator== | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:9:10:9:19 | IR: operator== | bool C1::operator==(C1 const&) const |
+| conditional_destructors.cpp:24:10:24:19 | ReturnValue: operator== | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:24:10:24:19 | IR: operator== | bool C2::operator==(C2 const&) const |
+| cpp11.cpp:27:7:27:14 | ReturnValue: getFirst | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:27:7:27:14 | IR: getFirst | int range_based_for_11::getFirst() |
+| cpp11.cpp:65:23:65:23 | ReturnValue: operator() | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:65:23:65:23 | IR: operator() | int (void lambda::simple(int))::(lambda [] type at line 65, col. 20)::operator()() const |
+| cpp11.cpp:106:7:106:9 | ReturnValue: ret | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:106:7:106:9 | IR: ret | int synthetic_dtor_calls::ret() |
+| cpp11.cpp:141:7:141:7 | ReturnValue: g | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:141:7:141:7 | IR: g | int synthetic_dtor_calls::g(int) |
+| destructors.cpp:6:5:6:20 | ReturnValue: destructors_main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | destructors.cpp:6:5:6:20 | IR: destructors_main | int destructors_main(HasDtor) |
+| destructors.cpp:49:7:49:7 | ReturnValue: f | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | destructors.cpp:49:7:49:7 | IR: f | int cond_destruct::f(int) |
+| ir.cpp:235:5:235:14 | ReturnValue: Parameters | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:235:5:235:14 | IR: Parameters | int Parameters(int, int) |
+| ir.cpp:341:5:341:15 | ReturnValue: Dereference | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:341:5:341:15 | IR: Dereference | int Dereference(int*) |
+| ir.cpp:348:6:348:14 | ReturnValue: AddressOf | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:348:6:348:14 | IR: AddressOf | int* AddressOf() |
+| ir.cpp:376:5:376:11 | ReturnValue: CallAdd | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:376:5:376:11 | IR: CallAdd | int CallAdd(int, int) |
+| ir.cpp:380:5:380:9 | ReturnValue: Comma | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:380:5:380:9 | IR: Comma | int Comma(int, int) |
+| ir.cpp:422:7:422:18 | ReturnValue: ReturnStruct | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:422:7:422:18 | IR: ReturnStruct | Point ReturnStruct(Point) |
+| ir.cpp:543:5:543:20 | ReturnValue: EarlyReturnValue | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:543:5:543:20 | IR: EarlyReturnValue | int EarlyReturnValue(int, int) |
+| ir.cpp:551:5:551:18 | ReturnValue: CallViaFuncPtr | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:551:5:551:18 | IR: CallViaFuncPtr | int CallViaFuncPtr(int(*)(int)) |
+| ir.cpp:560:5:560:14 | ReturnValue: EnumSwitch | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:560:5:560:14 | IR: EnumSwitch | int EnumSwitch(E) |
+| ir.cpp:630:16:630:35 | ReturnValue: StaticMemberFunction | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:630:16:630:35 | IR: StaticMemberFunction | int C::StaticMemberFunction(int) |
+| ir.cpp:634:9:634:30 | ReturnValue: InstanceMemberFunction | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:634:9:634:30 | IR: InstanceMemberFunction | int C::InstanceMemberFunction(int) |
+| ir.cpp:638:17:638:37 | ReturnValue: VirtualMemberFunction | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:638:17:638:37 | IR: VirtualMemberFunction | int C::VirtualMemberFunction(int) |
+| ir.cpp:675:5:675:18 | ReturnValue: DerefReference | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:675:5:675:18 | IR: DerefReference | int DerefReference(int&) |
+| ir.cpp:679:6:679:18 | ReturnValue: TakeReference | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:679:6:679:18 | IR: TakeReference | int& TakeReference() |
+| ir.cpp:704:3:704:3 | ReturnValue: min | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:704:3:704:3 | IR: min | int min<int>(int, int) |
+| ir.cpp:708:5:708:11 | ReturnValue: CallMin | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:708:5:708:11 | IR: CallMin | int CallMin(int, int) |
+| ir.cpp:715:12:715:12 | ReturnValue: Func | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:715:12:715:12 | IR: Func | long Outer<long>::Func<void*, char>(void*, char) |
+| ir.cpp:720:8:720:29 | ReturnValue: CallNestedTemplateFunc | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:720:8:720:29 | IR: CallNestedTemplateFunc | double CallNestedTemplateFunc() |
+| ir.cpp:745:8:745:8 | ReturnValue: operator= | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:745:8:745:8 | IR: operator= | Base& Base::operator=(Base const&) |
+| ir.cpp:754:8:754:8 | ReturnValue: operator= | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:754:8:754:8 | IR: operator= | Middle& Middle::operator=(Middle const&) |
+| ir.cpp:763:8:763:8 | ReturnValue: operator= | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:763:8:763:8 | IR: operator= | Derived& Derived::operator=(Derived const&) |
+| ir.cpp:961:5:961:18 | ReturnValue: designatedInit | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:961:5:961:18 | IR: designatedInit | int designatedInit() |
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | IR: misc3 | void misc3() |
+| misc.c:187:5:187:9 | ReturnValue: freti | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | misc.c:187:5:187:9 | IR: freti | int freti(int) |
+| misc.c:208:1:208:3 | ReturnValue: fmac | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | misc.c:208:1:208:3 | IR: fmac | int fmac() |
+| misc.c:212:5:212:16 | ReturnValue: extern_local | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | misc.c:212:5:212:16 | IR: extern_local | int extern_local() |
+| misc.c:227:7:227:28 | ReturnValue: builtin_addressof_test | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | misc.c:227:7:227:28 | IR: builtin_addressof_test | void* builtin_addressof_test() |
+| ms_assume.cpp:11:5:11:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ms_assume.cpp:11:5:11:8 | IR: main | int main(int, char*[]) |
+| no_dynamic_init.cpp:9:5:9:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
+| no_dynamic_init.cpp:9:5:9:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
+| no_dynamic_init.cpp:9:5:9:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
+| no_dynamic_init.cpp:9:5:9:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
+| parameterinitializer.cpp:18:5:18:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
+| parameterinitializer.cpp:18:5:18:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
+| parameterinitializer.cpp:18:5:18:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
+| parameterinitializer.cpp:18:5:18:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
 | parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
 | parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
 | parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
 | parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
+| pointer_to_member.cpp:14:5:14:9 | ReturnValue: usePM | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | pointer_to_member.cpp:14:5:14:9 | IR: usePM | int usePM(int PM::*) |
+| range_analysis.c:5:5:5:9 | ReturnValue: test1 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:5:5:5:9 | IR: test1 | int test1(List*) |
+| range_analysis.c:13:5:13:9 | ReturnValue: test2 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:13:5:13:9 | IR: test2 | int test2(List*) |
+| range_analysis.c:21:5:21:9 | ReturnValue: test3 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:21:5:21:9 | IR: test3 | int test3(List*) |
+| range_analysis.c:30:5:30:9 | ReturnValue: test4 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:30:5:30:9 | IR: test4 | int test4() |
+| range_analysis.c:39:5:39:9 | ReturnValue: test5 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:39:5:39:9 | IR: test5 | int test5() |
+| range_analysis.c:48:5:48:9 | ReturnValue: test6 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:48:5:48:9 | IR: test6 | int test6() |
+| range_analysis.c:57:5:57:9 | ReturnValue: test7 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:57:5:57:9 | IR: test7 | int test7(int) |
+| range_analysis.c:66:5:66:9 | ReturnValue: test8 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:66:5:66:9 | IR: test8 | int test8(int, int) |
+| range_analysis.c:75:5:75:9 | ReturnValue: test9 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:75:5:75:9 | IR: test9 | int test9(int, int) |
+| range_analysis.c:88:5:88:10 | ReturnValue: test10 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:88:5:88:10 | IR: test10 | int test10(int, int) |
+| range_analysis.c:98:5:98:10 | ReturnValue: test11 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:98:5:98:10 | IR: test11 | int test11(char*) |
+| range_analysis.c:117:11:117:23 | ReturnValue: test12_helper | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:117:11:117:23 | IR: test12_helper | size_type test12_helper() |
+| range_analysis.c:122:5:122:10 | ReturnValue: test12 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:122:5:122:10 | IR: test12 | int test12() |
+| range_analysis.c:134:5:134:10 | ReturnValue: test13 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:134:5:134:10 | IR: test13 | int test13(char, int) |
+| range_analysis.c:143:5:143:10 | ReturnValue: test14 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:143:5:143:10 | IR: test14 | int test14(int) |
+| range_analysis.c:153:11:153:16 | ReturnValue: test15 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:153:11:153:16 | IR: test15 | long long test15(long long) |
+| range_analysis.c:158:5:158:14 | ReturnValue: test_unary | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:158:5:158:14 | IR: test_unary | int test_unary(int) |
+| range_analysis.c:197:5:197:15 | ReturnValue: test_mult01 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:197:5:197:15 | IR: test_mult01 | int test_mult01(int, int) |
+| range_analysis.c:225:5:225:15 | ReturnValue: test_mult02 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:225:5:225:15 | IR: test_mult02 | int test_mult02(int, int) |
+| range_analysis.c:253:5:253:15 | ReturnValue: test_mult03 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:253:5:253:15 | IR: test_mult03 | int test_mult03(int, int) |
+| range_analysis.c:281:5:281:15 | ReturnValue: test_mult04 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:281:5:281:15 | IR: test_mult04 | int test_mult04(int, int) |
+| range_analysis.c:309:5:309:15 | ReturnValue: test_mult05 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:309:5:309:15 | IR: test_mult05 | int test_mult05(int, int) |
+| range_analysis.c:336:5:336:10 | ReturnValue: test16 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:336:5:336:10 | IR: test16 | int test16(int) |
+| range_analysis.c:355:14:355:27 | ReturnValue: test_ternary01 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:355:14:355:27 | IR: test_ternary01 | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:377:14:377:27 | ReturnValue: test_ternary02 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:377:14:377:27 | IR: test_ternary02 | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:393:14:393:25 | ReturnValue: test_comma01 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | range_analysis.c:393:14:393:25 | IR: test_comma01 | unsigned int test_comma01(unsigned int) |
+| rethrow_error.cpp:8:5:8:5 | ReturnValue: fun2 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | rethrow_error.cpp:8:5:8:5 | IR: fun2 | int fun2<int>() |
+| returnstmt.c:7:5:7:14 | ReturnValue: return_int | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | returnstmt.c:7:5:7:14 | IR: return_int | int return_int() |
+| static_init_templates.cpp:77:28:77:28 | ReturnValue: instantiatedTemplateFunction | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:77:28:77:28 | IR: instantiatedTemplateFunction | void* instantiatedTemplateFunction<float>() |
+| static_init_templates.cpp:77:28:77:28 | ReturnValue: instantiatedTemplateFunction | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:77:28:77:28 | IR: instantiatedTemplateFunction | void* instantiatedTemplateFunction<int>() |
+| static_init_templates.cpp:86:28:86:28 | ReturnValue: instantiatedTemplateFunction2 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:86:28:86:28 | IR: instantiatedTemplateFunction2 | void* instantiatedTemplateFunction2<float>() |
+| static_init_templates.cpp:86:28:86:28 | ReturnValue: instantiatedTemplateFunction2 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:86:28:86:28 | IR: instantiatedTemplateFunction2 | void* instantiatedTemplateFunction2<int>() |
+| static_init_templates.cpp:94:28:94:28 | ReturnValue: instantiatedTemplateFunction3 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:94:28:94:28 | IR: instantiatedTemplateFunction3 | void* instantiatedTemplateFunction3<float>() |
+| static_init_templates.cpp:94:28:94:28 | ReturnValue: instantiatedTemplateFunction3 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:94:28:94:28 | IR: instantiatedTemplateFunction3 | void* instantiatedTemplateFunction3<int>() |
+| static_init_templates.cpp:102:28:102:28 | ReturnValue: instantiatedTemplateFunction4 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:102:28:102:28 | IR: instantiatedTemplateFunction4 | void* instantiatedTemplateFunction4<float>() |
+| static_init_templates.cpp:102:28:102:28 | ReturnValue: instantiatedTemplateFunction4 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:102:28:102:28 | IR: instantiatedTemplateFunction4 | void* instantiatedTemplateFunction4<int>() |
+| static_init_templates.cpp:122:7:122:25 | ReturnValue: nonTemplateFunction | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:122:7:122:25 | IR: nonTemplateFunction | void* nonTemplateFunction() |
+| static_init_templates.cpp:130:7:130:26 | ReturnValue: nonTemplateFunction2 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | static_init_templates.cpp:130:7:130:26 | IR: nonTemplateFunction2 | void* nonTemplateFunction2() |
+| staticlocals.cpp:3:5:3:5 | ReturnValue: g | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | staticlocals.cpp:3:5:3:5 | IR: g | int staticlocals::g() |
+| staticlocals.cpp:7:5:7:5 | ReturnValue: h | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | staticlocals.cpp:7:5:7:5 | IR: h | int staticlocals::h() |
+| staticlocals.cpp:17:15:17:20 | ReturnValue: addOne | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | staticlocals.cpp:17:15:17:20 | IR: addOne | int staticlocals::addOne(int) |
+| stream_it.cpp:4:6:4:6 | ReturnValue: begin | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | stream_it.cpp:4:6:4:6 | IR: begin | int* vector<int>::begin() |
+| stream_it.cpp:5:6:5:6 | ReturnValue: end | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | stream_it.cpp:5:6:5:6 | IR: end | int* vector<int>::end() |
+| stream_it.cpp:16:5:16:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
+| stream_it.cpp:16:5:16:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
+| stream_it.cpp:16:5:16:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
+| stream_it.cpp:16:5:16:8 | ReturnValue: main | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
+| switchbody.c:4:5:4:16 | ReturnValue: switch_block | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | switchbody.c:4:5:4:16 | IR: switch_block | int switch_block(int) |
+| switchbody.c:15:5:15:17 | ReturnValue: switch_single | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | switchbody.c:15:5:15:17 | IR: switch_single | int switch_single(int) |
+| switchbody.c:27:5:27:19 | ReturnValue: switch_notblock | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | switchbody.c:27:5:27:19 | IR: switch_notblock | int switch_notblock(int) |
+| test.c:218:5:218:11 | ReturnValue: f_and_1 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | test.c:218:5:218:11 | IR: f_and_1 | int f_and_1(int, int) |
+| test.c:225:5:225:11 | ReturnValue: f_and_2 | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | test.c:225:5:225:11 | IR: f_and_2 | int f_and_2(int, int) |
 | try_catch.cpp:13:5:13:16 | ThrowValue: throw ... | Instruction 'ThrowValue' is missing an expected operand with tag 'Load' in function '$@'. | try_catch.cpp:11:6:11:17 | IR: bypass_catch | void bypass_catch() |
+| void_bug.cpp:3:5:3:12 | ReturnValue: void_bug | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | void_bug.cpp:3:5:3:12 | IR: void_bug | int void_bug() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
-| cpp11.cpp:141:7:141:7 | Phi: g | cpp11.cpp:161:16:161:16 | NoOp: label ...: |
 missingOperandType
+sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| CPP-309.cpp:8:1:8:1 | NoOp: return ... |
+| CPP-309.cpp:12:1:12:1 | NoOp: return ... |
+| FunctionTryStmt.cpp:11:5:11:11 | NoOp: return ... |
 | VacuousDestructorCall.cpp:2:29:2:29 | Chi: y |
-| assume0.cpp:7:2:7:2 | Chi: call to f |
+| VacuousDestructorCall.cpp:11:1:11:1 | NoOp: return ... |
+| abortingfunctions.cpp:10:1:10:1 | NoOp: return ... |
+| abortingfunctions.cpp:17:1:17:1 | NoOp: return ... |
+| abortingfunctions.cpp:25:1:25:1 | NoOp: return ... |
+| abortingfunctions.cpp:35:1:35:1 | NoOp: return ... |
+| abortingfunctions.cpp:42:1:42:1 | NoOp: return ... |
+| abortingfunctions.cpp:46:1:46:1 | NoOp: return ... |
+| aggregateinitializer.c:4:1:4:1 | NoOp: return ... |
+| allocators.cpp:3:39:3:39 | NoOp: return ... |
+| allocators.cpp:4:25:4:25 | NoOp: return ... |
+| allocators.cpp:8:37:8:40 | ReturnIndirection: self |
+| array_delete.cpp:7:1:7:1 | NoOp: return ... |
+| assignexpr.cpp:11:1:11:1 | NoOp: return ... |
+| assume0.cpp:12:1:12:1 | NoOp: return ... |
+| assume0.cpp:20:1:20:1 | NoOp: return ... |
+| bad_asts.cpp:17:3:17:3 | NoOp: return ... |
+| bad_asts.cpp:23:5:23:5 | NoOp: return ... |
+| bad_asts.cpp:26:41:26:41 | ReturnIndirection: a |
+| break_labels.c:13:12:13:17 | Chi: result |
+| break_labels.c:29:1:29:1 | NoOp: return ... |
+| builtin.cpp:11:1:11:1 | NoOp: return ... |
+| builtin.cpp:16:1:16:1 | NoOp: return ... |
+| condition_decl_int.cpp:5:1:5:1 | NoOp: return ... |
+| condition_decls.cpp:4:3:4:3 | NoOp: return ... |
+| condition_decls.cpp:7:3:7:3 | NoOp: return ... |
 | condition_decls.cpp:16:19:16:20 | Chi: call to BoxedInt |
 | condition_decls.cpp:26:23:26:24 | Chi: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | Chi: call to BoxedInt |
 | condition_decls.cpp:48:52:48:53 | Chi: call to BoxedInt |
+| conditional_destructors.cpp:7:9:7:9 | NoOp: return ... |
+| conditional_destructors.cpp:19:9:19:9 | NoOp: return ... |
+| conditional_destructors.cpp:22:9:22:9 | NoOp: return ... |
+| conditional_destructors.cpp:36:1:36:1 | NoOp: return ... |
+| conditional_destructors.cpp:45:1:45:1 | NoOp: return ... |
+| constmemberaccess.cpp:10:1:10:1 | NoOp: return ... |
+| constructorinitializer.cpp:9:1:9:1 | NoOp: return ... |
+| cpp11.cpp:9:3:9:3 | NoOp: return ... |
+| cpp11.cpp:52:1:52:1 | NoOp: return ... |
+| cpp11.cpp:61:1:61:1 | NoOp: return ... |
+| cpp11.cpp:66:3:66:3 | NoOp: return ... |
+| cpp11.cpp:78:3:78:3 | NoOp: return ... |
+| cpp11.cpp:82:55:82:55 | NoOp: return ... |
+| cpp11.cpp:83:3:83:3 | NoOp: return ... |
+| cpp11.cpp:89:3:89:3 | NoOp: return ... |
+| cpp11.cpp:104:3:104:3 | NoOp: return ... |
+| cpp11.cpp:115:3:115:3 | NoOp: return ... |
+| cpp11.cpp:136:3:136:3 | NoOp: return ... |
+| cpp11.cpp:166:14:166:14 | NoOp: return ... |
+| cpp11.cpp:171:3:171:3 | NoOp: return ... |
 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
+| cpp17.cpp:18:42:18:42 | ReturnIndirection: p |
+| defconstructornewexpr.cpp:5:3:5:9 | NoOp: return ... |
+| defdestructordeleteexpr.cpp:6:1:6:1 | NoOp: return ... |
+| deleteexpr.cpp:9:1:9:1 | NoOp: return ... |
+| destructors.cpp:31:1:31:1 | NoOp: return ... |
+| destructors.cpp:38:1:38:1 | NoOp: return ... |
+| dostmt.c:6:1:6:1 | NoOp: return ... |
+| dostmt.c:14:1:14:1 | NoOp: return ... |
+| dostmt.c:23:1:23:1 | NoOp: return ... |
+| dostmt.c:38:1:38:1 | NoOp: return ... |
+| duff2.c:14:1:14:1 | NoOp: return ... |
+| duff2.c:22:1:22:1 | NoOp: return ... |
+| duff.c:15:1:15:1 | NoOp: return ... |
+| dummyblock.c:4:1:4:1 | NoOp: return ... |
+| ellipsisexceptionhandler.cpp:12:1:12:1 | NoOp: return ... |
+| ellipsisexceptionhandler.cpp:19:1:19:1 | NoOp: return ... |
+| emptyblock.c:5:1:5:1 | NoOp: return ... |
+| enum.c:6:9:6:9 | Chi: (int)... |
+| exceptionhandler.cpp:24:1:24:1 | NoOp: return ... |
+| exprstmt.c:4:1:4:1 | NoOp: return ... |
+| fieldaccess.cpp:10:1:10:1 | NoOp: return ... |
+| file://:0:0:0:0 | ReturnIndirection: p#0 |
+| file://:0:0:0:0 | ReturnIndirection: p#0 |
+| file://:0:0:0:0 | ReturnIndirection: p#0 |
+| file://:0:0:0:0 | ReturnIndirection: p#2 |
+| forstmt.cpp:6:1:6:1 | NoOp: return ... |
+| forstmt.cpp:11:1:11:1 | NoOp: return ... |
+| forstmt.cpp:21:1:21:1 | NoOp: return ... |
+| gotostmt.c:5:1:5:1 | NoOp: return ... |
+| ifelsestmt.c:9:1:9:1 | NoOp: return ... |
+| ifelsestmt.c:17:1:17:1 | NoOp: return ... |
+| ifelsestmt.c:27:1:27:1 | NoOp: return ... |
+| ifelsestmt.c:35:1:35:1 | NoOp: return ... |
+| ifelsestmt.c:45:1:45:1 | NoOp: return ... |
+| ifstmt.c:6:1:6:1 | NoOp: return ... |
+| ifstmt.c:12:1:12:1 | NoOp: return ... |
+| ifstmt.c:19:1:19:1 | NoOp: return ... |
+| ifstmt.c:25:1:25:1 | NoOp: return ... |
+| ifstmt.c:32:1:32:1 | NoOp: return ... |
+| initializer.c:4:1:4:1 | NoOp: return ... |
+| ir.cpp:41:1:41:1 | NoOp: return ... |
+| ir.cpp:48:1:48:1 | NoOp: return ... |
+| ir.cpp:85:1:85:1 | NoOp: return ... |
+| ir.cpp:96:1:96:1 | NoOp: return ... |
+| ir.cpp:105:1:105:1 | NoOp: return ... |
+| ir.cpp:112:1:112:1 | NoOp: return ... |
+| ir.cpp:131:1:131:1 | NoOp: return ... |
+| ir.cpp:142:1:142:1 | NoOp: return ... |
+| ir.cpp:151:1:151:1 | NoOp: return ... |
+| ir.cpp:153:22:153:22 | ReturnIndirection: p |
+| ir.cpp:171:23:171:23 | ReturnIndirection: p |
+| ir.cpp:191:1:191:1 | NoOp: return ... |
+| ir.cpp:193:34:193:34 | ReturnIndirection: q |
+| ir.cpp:204:26:204:26 | ReturnIndirection: p |
+| ir.cpp:228:1:228:1 | NoOp: return ... |
+| ir.cpp:233:1:233:1 | NoOp: return ... |
+| ir.cpp:251:1:251:1 | NoOp: return ... |
+| ir.cpp:257:1:257:1 | NoOp: return ... |
+| ir.cpp:263:1:263:1 | NoOp: return ... |
+| ir.cpp:309:1:309:1 | NoOp: return ... |
+| ir.cpp:315:1:315:1 | NoOp: return ... |
+| ir.cpp:323:1:323:1 | NoOp: return ... |
+| ir.cpp:331:1:331:1 | NoOp: return ... |
+| ir.cpp:358:1:358:1 | NoOp: return ... |
+| ir.cpp:367:1:367:1 | NoOp: return ... |
+| ir.cpp:374:1:374:1 | NoOp: return ... |
+| ir.cpp:410:1:410:1 | NoOp: return ... |
+| ir.cpp:431:1:431:1 | NoOp: return ... |
+| ir.cpp:445:1:445:1 | NoOp: return ... |
+| ir.cpp:459:1:459:1 | NoOp: return ... |
+| ir.cpp:473:1:473:1 | NoOp: return ... |
+| ir.cpp:480:1:480:1 | NoOp: return ... |
+| ir.cpp:484:1:484:1 | NoOp: return ... |
+| ir.cpp:490:1:490:1 | NoOp: return ... |
+| ir.cpp:494:1:494:1 | NoOp: return ... |
+| ir.cpp:501:1:501:1 | NoOp: return ... |
+| ir.cpp:510:1:510:1 | NoOp: return ... |
+| ir.cpp:517:1:517:1 | NoOp: return ... |
+| ir.cpp:523:1:523:1 | NoOp: return ... |
+| ir.cpp:533:1:533:1 | NoOp: return ... |
+| ir.cpp:537:9:537:15 | NoOp: return ... |
+| ir.cpp:541:1:541:1 | NoOp: return ... |
+| ir.cpp:580:1:580:1 | NoOp: return ... |
+| ir.cpp:586:1:586:1 | NoOp: return ... |
+| ir.cpp:595:1:595:1 | NoOp: return ... |
+| ir.cpp:620:1:620:1 | NoOp: return ... |
+| ir.cpp:622:37:622:37 | ReturnIndirection: p |
+| ir.cpp:650:5:650:5 | NoOp: return ... |
+| ir.cpp:656:5:656:5 | NoOp: return ... |
+| ir.cpp:664:5:664:5 | NoOp: return ... |
+| ir.cpp:689:1:689:1 | NoOp: return ... |
+| ir.cpp:695:1:695:1 | NoOp: return ... |
+| ir.cpp:701:1:701:1 | NoOp: return ... |
+| ir.cpp:743:1:743:1 | NoOp: return ... |
+| ir.cpp:749:3:749:3 | NoOp: return ... |
+| ir.cpp:751:3:751:3 | Chi: call to ~String |
+| ir.cpp:758:3:758:3 | NoOp: return ... |
+| ir.cpp:760:3:760:3 | Chi: call to ~Base |
+| ir.cpp:767:3:767:3 | NoOp: return ... |
+| ir.cpp:769:3:769:3 | Chi: call to ~Middle |
+| ir.cpp:776:3:776:3 | NoOp: return ... |
+| ir.cpp:778:3:778:3 | Chi: call to ~Base |
+| ir.cpp:785:3:785:3 | NoOp: return ... |
+| ir.cpp:787:3:787:3 | Chi: call to ~Base |
+| ir.cpp:794:3:794:3 | NoOp: return ... |
+| ir.cpp:796:3:796:3 | Chi: call to ~Base |
+| ir.cpp:840:1:840:1 | NoOp: return ... |
+| ir.cpp:842:8:842:8 | NoOp: return ... |
+| ir.cpp:846:8:846:8 | Chi: call to ~PolymorphicBase |
+| ir.cpp:846:8:846:8 | NoOp: return ... |
+| ir.cpp:865:1:865:1 | NoOp: return ... |
+| ir.cpp:869:1:869:1 | NoOp: return ... |
+| ir.cpp:881:1:881:1 | NoOp: return ... |
+| ir.cpp:883:47:883:47 | ReturnIndirection: p |
+| ir.cpp:898:1:898:1 | NoOp: return ... |
+| ir.cpp:902:1:902:1 | NoOp: return ... |
+| ir.cpp:907:1:907:1 | NoOp: return ... |
+| ir.cpp:948:1:948:1 | NoOp: return ... |
+| ir.cpp:959:1:959:1 | NoOp: return ... |
+| landexpr.c:6:1:6:1 | NoOp: return ... |
+| lorexpr.c:6:1:6:1 | NoOp: return ... |
+| ltrbinopexpr.c:43:1:43:1 | NoOp: return ... |
+| membercallexpr.cpp:10:1:10:1 | NoOp: return ... |
+| membercallexpr_args.cpp:11:1:11:1 | NoOp: return ... |
+| misc.c:91:54:91:55 | ReturnIndirection: sp |
+| misc.c:142:1:142:1 | NoOp: return ... |
+| misc.c:150:1:150:1 | NoOp: return ... |
+| misc.c:161:1:161:1 | NoOp: return ... |
+| misc.c:166:1:166:1 | NoOp: return ... |
 | misc.c:171:10:171:13 | Uninitialized: definition of str2 |
+| misc.c:181:1:181:1 | NoOp: return ... |
+| misc.c:184:5:184:11 | NoOp: return ... |
+| misc.c:197:23:197:25 | ReturnIndirection: fmt |
 | misc.c:219:47:219:48 | Chi: sp |
 | ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x |
 | ms_try_mix.cpp:11:12:11:15 | Chi: call to C |
 | ms_try_mix.cpp:28:12:28:15 | Chi: call to C |
 | ms_try_mix.cpp:48:10:48:13 | Chi: call to C |
+| newexpr.cpp:9:1:9:1 | NoOp: return ... |
+| no_dynamic_init.cpp:6:3:6:3 | NoOp: return ... |
+| nodefaultswitchstmt.c:7:1:7:1 | NoOp: return ... |
+| nonmembercallexpr.c:1:12:1:12 | NoOp: return ... |
+| nonmembercallexpr.c:6:1:6:1 | NoOp: return ... |
+| nonmemberfp2callexpr.c:6:1:6:1 | NoOp: return ... |
+| nonmemberfpcallexpr.c:5:1:5:1 | NoOp: return ... |
+| ops.cpp:14:29:14:29 | NoOp: return ... |
+| ops.cpp:15:30:15:30 | NoOp: return ... |
+| ops.cpp:28:1:28:1 | NoOp: return ... |
+| parameterinitializer.cpp:4:12:4:12 | Chi: 5 |
+| parameterinitializer.cpp:9:1:9:1 | NoOp: return ... |
+| parameterinitializer.cpp:13:18:13:18 | NoOp: return ... |
+| parameterinitializer.cpp:15:28:15:28 | NoOp: return ... |
+| pmcallexpr.cpp:10:1:10:1 | NoOp: return ... |
 | pointer_to_member.cpp:36:11:36:30 | FieldAddress: {...} |
+| pruning.c:10:1:10:1 | NoOp: return ... |
+| pruning.c:14:9:14:15 | NoOp: return ... |
+| pruning.c:22:9:22:15 | NoOp: return ... |
+| pruning.c:34:1:34:1 | NoOp: return ... |
+| pruning.c:38:9:38:15 | NoOp: return ... |
+| pruning.c:50:1:50:1 | NoOp: return ... |
+| pruning.c:54:9:54:15 | NoOp: return ... |
+| pruning.c:62:9:62:15 | NoOp: return ... |
+| pruning.c:75:1:75:1 | NoOp: return ... |
+| pruning.c:80:9:80:15 | NoOp: return ... |
+| pruning.c:89:9:89:15 | NoOp: return ... |
+| pruning.c:102:1:102:1 | NoOp: return ... |
+| pruning.c:107:9:107:15 | NoOp: return ... |
+| pruning.c:120:1:120:1 | NoOp: return ... |
+| pruning.c:125:9:125:15 | NoOp: return ... |
+| pruning.c:134:9:134:15 | NoOp: return ... |
+| pruning.c:138:1:138:1 | NoOp: return ... |
+| pruning.c:144:1:144:1 | NoOp: return ... |
+| pruning.c:150:1:150:1 | NoOp: return ... |
+| pruning.c:156:1:156:1 | NoOp: return ... |
+| pruning.c:162:1:162:1 | NoOp: return ... |
+| pruning.c:169:1:169:1 | NoOp: return ... |
+| pruning.c:176:1:176:1 | NoOp: return ... |
+| pruning.c:183:1:183:1 | NoOp: return ... |
+| pruning.c:190:1:190:1 | NoOp: return ... |
+| pruning.c:198:1:198:1 | NoOp: return ... |
+| questionexpr.c:4:1:4:1 | NoOp: return ... |
+| rethrow_error.cpp:3:13:3:13 | NoOp: return ... |
+| rethrow_error.cpp:4:21:4:21 | NoOp: return ... |
+| rethrow_error.cpp:22:1:22:1 | NoOp: return ... |
+| returnstmt.c:3:5:3:11 | NoOp: return ... |
+| revsubscriptexpr.c:5:1:5:1 | NoOp: return ... |
+| shortforstmt.cpp:6:1:6:1 | NoOp: return ... |
+| shortforstmt.cpp:14:1:14:1 | NoOp: return ... |
+| shortforstmt.cpp:24:1:24:1 | NoOp: return ... |
+| shortforstmt.cpp:38:1:38:1 | NoOp: return ... |
+| statements.cpp:5:1:5:1 | NoOp: return ... |
+| statements.cpp:10:1:10:1 | NoOp: return ... |
+| statements.cpp:16:5:16:11 | NoOp: return ... |
+| statements.cpp:19:1:19:1 | NoOp: return ... |
+| statements.cpp:28:1:28:1 | NoOp: return ... |
+| statements.cpp:36:1:36:1 | NoOp: return ... |
+| statements.cpp:57:1:57:1 | NoOp: return ... |
+| statements.h:3:3:3:3 | NoOp: return ... |
+| static_init_templates.cpp:2:21:2:23 | ReturnIndirection: ref |
+| static_init_templates.cpp:27:1:27:1 | NoOp: return ... |
+| static_init_templates.cpp:34:1:34:1 | NoOp: return ... |
+| static_init_templates.cpp:119:1:119:1 | NoOp: return ... |
+| static_init_templates.cpp:227:30:227:30 | NoOp: return ... |
+| static_init_templates.cpp:233:35:233:35 | NoOp: return ... |
+| static_init_templates.cpp:236:7:236:7 | NoOp: return ... |
+| static_init_templates.cpp:240:7:240:7 | NoOp: return ... |
+| static_init_templates.cpp:252:1:252:1 | NoOp: return ... |
+| staticlocals.cpp:15:1:15:1 | NoOp: return ... |
+| staticlocals.cpp:22:19:22:19 | NoOp: return ... |
+| staticlocals.cpp:30:1:30:1 | NoOp: return ... |
+| staticmembercallexpr.cpp:10:1:10:1 | NoOp: return ... |
+| staticmembercallexpr_args.cpp:11:1:11:1 | NoOp: return ... |
+| stmt_expr.cpp:19:1:19:1 | NoOp: return ... |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... |
+| stmt_in_type.cpp:6:1:6:1 | NoOp: return ... |
+| stream_it.cpp:9:27:9:27 | ReturnIndirection: t |
+| subscriptexpr.c:5:1:5:1 | NoOp: return ... |
+| switchstmt.c:8:1:8:1 | NoOp: return ... |
+| test.c:8:1:8:1 | NoOp: return ... |
+| test.c:16:1:16:1 | NoOp: return ... |
+| test.c:24:1:24:1 | NoOp: return ... |
+| test.c:31:5:31:11 | NoOp: return ... |
+| test.c:47:5:47:11 | NoOp: return ... |
+| test.c:54:5:54:11 | NoOp: return ... |
+| test.c:68:5:68:11 | NoOp: return ... |
+| test.c:75:5:75:11 | NoOp: return ... |
+| test.c:89:5:89:11 | NoOp: return ... |
+| test.c:94:5:94:11 | NoOp: return ... |
+| test.c:99:5:99:11 | NoOp: return ... |
+| test.c:104:5:104:11 | NoOp: return ... |
+| test.c:110:13:110:19 | NoOp: return ... |
+| test.c:112:13:112:19 | NoOp: return ... |
+| test.c:117:13:117:19 | NoOp: return ... |
+| test.c:119:13:119:19 | NoOp: return ... |
+| test.c:127:13:127:19 | NoOp: return ... |
+| test.c:129:13:129:19 | NoOp: return ... |
+| test.c:134:13:134:19 | NoOp: return ... |
+| test.c:142:13:142:19 | NoOp: return ... |
+| test.c:144:13:144:19 | NoOp: return ... |
+| test.c:149:13:149:19 | NoOp: return ... |
+| test.c:151:13:151:19 | NoOp: return ... |
+| test.c:159:13:159:19 | NoOp: return ... |
+| test.c:161:13:161:19 | NoOp: return ... |
+| test.c:166:13:166:19 | NoOp: return ... |
+| test.c:174:13:174:19 | NoOp: return ... |
+| test.c:176:13:176:19 | NoOp: return ... |
+| test.c:181:13:181:19 | NoOp: return ... |
+| test.c:183:13:183:19 | NoOp: return ... |
+| test.c:191:13:191:19 | NoOp: return ... |
+| test.c:193:13:193:19 | NoOp: return ... |
+| test.c:198:13:198:19 | NoOp: return ... |
+| test.c:206:13:206:19 | NoOp: return ... |
+| test.c:208:13:208:19 | NoOp: return ... |
+| test.c:213:13:213:19 | NoOp: return ... |
+| test.c:235:1:235:1 | NoOp: return ... |
+| try_catch.cpp:2:10:2:10 | NoOp: return ... |
+| try_catch.cpp:7:8:7:8 | Chi: call to ~exception |
+| try_catch.cpp:7:8:7:8 | NoOp: return ... |
+| try_catch.cpp:15:5:15:11 | NoOp: return ... |
+| unaryopexpr.c:14:1:14:1 | NoOp: return ... |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix |
 | vla.c:11:6:11:16 | UnmodeledDefinition: vla_typedef |
+| void_bug.h:2:15:2:15 | NoOp: return ... |
+| whilestmt.c:6:1:6:1 | NoOp: return ... |
+| whilestmt.c:13:1:13:1 | NoOp: return ... |
+| whilestmt.c:21:1:21:1 | NoOp: return ... |
+| whilestmt.c:30:1:30:1 | NoOp: return ... |
+| whilestmt.c:45:1:45:1 | NoOp: return ... |
 ambiguousSuccessors
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
@@ -545,3 +956,8 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType

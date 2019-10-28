@@ -1,0 +1,16 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <p>Using boost::asio library but specifying a deprecated hardcoded protocol.</p>
+  <p>Using a deprecated hardcoded protocol instead of negotiting would lock your application to a protocol that has known vulnerabilities or weaknesses.</p>
+</overview>
+
+<references>
+  <li>
+    <a href="https://www.boost.org/doc/libs/1_71_0/doc/html/boost_asio.html">Boost.Asio documentation</a>.
+  </li>
+</references>
+</qhelp>
+

@@ -1,25 +1,13 @@
 private import csharp
 
 /**
- * Get the actual type of the specified variable, as opposed to the declared type.
- * This returns the type of the variable after any pointer decay is applied, and
- * after any unsized array type has its size inferred from the initializer.
+ * Get the actual type of the specified variable, as opposed to the declared
+ * type.
  */
 Type getVariableType(Variable v) {
-  exists(Type declaredType |
-    declaredType = v.getType() and
-    if v instanceof Parameter
-    then result = declaredType
-    else
-      if declaredType instanceof ArrayType
-      then
-        // TODO: Arrays have a declared dimension in C#, so this should not be needed
-        // and not declaredType.(ArrayType).hasArraySize()
-        result = v.getInitializer().getType()
-        or
-        not exists(v.getInitializer()) and result = declaredType
-      else result = declaredType
-  )
+  // C# doesn't seem to have any cases where the variable's actual type differs
+  // from its declared type.
+  result = v.getType()
 }
 
 predicate hasCaseEdge(CaseStmt caseStmt, string minValue, string maxValue) {

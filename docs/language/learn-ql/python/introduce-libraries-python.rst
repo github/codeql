@@ -337,4 +337,4 @@ What next?
 ----------
 
 -  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Functions <functions>`, :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>` and :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

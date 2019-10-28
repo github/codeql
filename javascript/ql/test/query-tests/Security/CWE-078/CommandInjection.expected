@@ -69,6 +69,7 @@ nodes
 | other.js:19:36:19:38 | cmd |
 | third-party-command-injection.js:5:20:5:26 | command |
 | third-party-command-injection.js:6:21:6:27 | command |
+| tst_shell-command-injection-from-environment.js:4:25:4:61 | ['-rf', ... temp")] |
 edges
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:18:17:18:19 | cmd |

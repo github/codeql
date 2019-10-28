@@ -2,6 +2,12 @@
 
 The following changes in version 1.23 affect Java analysis in all applications.
 
+## New queries
+
+| **Query**                   | **Tags**  | **Purpose**                                                        |
+|-----------------------------|-----------|--------------------------------------------------------------------|
+| Continue statement that does not continue (`java/continue-in-false-loop`) | correctness | Finds `continue` statements in `do { ... } while (false)` loops. |
+
 ## Changes to existing queries
 
 | **Query**                    | **Expected impact**    | **Change**                        |
@@ -11,6 +17,7 @@ The following changes in version 1.23 affect Java analysis in all applications.
 | Query built from user-controlled sources (`java/sql-injection`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as SQL expressions sinks. |
 | Query built from local-user-controlled sources (`java/sql-injection-local`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as SQL expressions sinks. |
 | Query built without neutralizing special characters (`java/concatenated-sql-query`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as SQL expressions sinks. |
+| Useless comparison test (`java/constant-comparison`) | Fewer false positives | Additional overflow check patterns are now recognized and no longer reported. |
 
 ## Changes to QL libraries
 

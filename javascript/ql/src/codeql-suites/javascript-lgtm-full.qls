@@ -1,0 +1,4 @@
+- description: Standard LGTM queries for JavaScript, including ones not displayed by default
+- qlpack: codeql-javascript
+- apply: lgtm-selectors.yml
+  from: codeql-suite-helpers

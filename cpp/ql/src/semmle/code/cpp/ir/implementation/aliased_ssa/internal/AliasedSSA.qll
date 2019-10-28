@@ -1,6 +1,6 @@
-private import cpp
 import AliasAnalysis
 import semmle.code.cpp.ir.internal.Overlap
+private import semmle.code.cpp.ir.internal.IRCppLanguage as Language
 private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
@@ -10,29 +10,39 @@ private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private class IntValue = Ints::IntValue;
 
 private predicate hasResultMemoryAccess(
-  Instruction instr, IRVariable var, Type type, IntValue startBitOffset, IntValue endBitOffset
+  Instruction instr, IRVariable var, IRType type, Language::LanguageType languageType,
+  IntValue startBitOffset, IntValue endBitOffset
 ) {
   resultPointsTo(instr.getResultAddress(), var, startBitOffset) and
-  type = instr.getResultType() and
-  if exists(instr.getResultSize())
-  then endBitOffset = Ints::add(startBitOffset, Ints::mul(instr.getResultSize(), 8))
+  languageType = instr.getResultLanguageType() and
+  type = languageType.getIRType() and
+  if exists(type.getByteSize())
+  then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
   else endBitOffset = Ints::unknown()
 }
 
 private predicate hasOperandMemoryAccess(
-  MemoryOperand operand, IRVariable var, Type type, IntValue startBitOffset, IntValue endBitOffset
+  MemoryOperand operand, IRVariable var, IRType type, Language::LanguageType languageType,
+  IntValue startBitOffset, IntValue endBitOffset
 ) {
   resultPointsTo(operand.getAddressOperand().getAnyDef(), var, startBitOffset) and
-  type = operand.getType() and
-  if exists(operand.getSize())
-  then endBitOffset = Ints::add(startBitOffset, Ints::mul(operand.getSize(), 8))
+  languageType = operand.getLanguageType() and
+  type = languageType.getIRType() and
+  if exists(type.getByteSize())
+  then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
   else endBitOffset = Ints::unknown()
 }
 
 private newtype TMemoryLocation =
-  TVariableMemoryLocation(IRVariable var, Type type, IntValue startBitOffset, IntValue endBitOffset) {
-    hasResultMemoryAccess(_, var, type, startBitOffset, endBitOffset) or
-    hasOperandMemoryAccess(_, var, type, startBitOffset, endBitOffset)
+  TVariableMemoryLocation(
+    IRVariable var, IRType type, Language::LanguageType languageType, IntValue startBitOffset,
+    IntValue endBitOffset
+  ) {
+    (
+      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset) or
+      hasOperandMemoryAccess(_, var, type, _, startBitOffset, endBitOffset)
+    ) and
+    languageType = type.getCanonicalLanguageType()
   } or
   TUnknownMemoryLocation(IRFunction irFunc) or
   TUnknownVirtualVariable(IRFunction irFunc)
@@ -49,9 +59,11 @@ abstract class MemoryLocation extends TMemoryLocation {
 
   abstract VirtualVariable getVirtualVariable();
 
-  abstract Type getType();
+  abstract Language::LanguageType getType();
 
   abstract string getUniqueId();
+
+  final IRType getIRType() { result = getType().getIRType() }
 }
 
 abstract class VirtualVariable extends MemoryLocation { }
@@ -62,20 +74,34 @@ abstract class VirtualVariable extends MemoryLocation { }
  */
 class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
   IRVariable var;
-  Type type;
+  IRType type;
+  Language::LanguageType languageType;
   IntValue startBitOffset;
   IntValue endBitOffset;
 
   VariableMemoryLocation() {
-    this = TVariableMemoryLocation(var, type, startBitOffset, endBitOffset)
+    this = TVariableMemoryLocation(var, type, languageType, startBitOffset, endBitOffset)
   }
 
   final override string toString() {
     result = var.toString() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
-        type.toString() + ">"
+        type.toString() + ", " + languageType.toString() + ">"
   }
 
-  final override Type getType() { result = type }
+  final override Language::LanguageType getType() {
+    if
+      strictcount(Language::LanguageType accessType |
+        hasResultMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset) or
+        hasOperandMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset)
+      ) = 1
+    then
+      // All of the accesses have the same `LanguageType`, so just use that.
+      hasResultMemoryAccess(_, var, type, result, startBitOffset, endBitOffset) or
+      hasOperandMemoryAccess(_, var, type, result, startBitOffset, endBitOffset)
+    else
+      // There is no single type for all accesses, so just use the canonical one for this `IRType`.
+      result = type.getCanonicalLanguageType()
+  }
 
   final IntValue getStartBitOffset() { result = startBitOffset }
 
@@ -85,13 +111,14 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
 
   final override string getUniqueId() {
     result = var.getUniqueId() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
-        getTypeIdentityString(type) + ">"
+        type.getIdentityString() + ">"
   }
 
   final override VirtualVariable getVirtualVariable() {
     if variableAddressEscapes(var)
     then result = TUnknownVirtualVariable(var.getEnclosingIRFunction())
-    else result = TVariableMemoryLocation(var, var.getType(), 0, var.getType().getSize() * 8)
+    else
+      result = TVariableMemoryLocation(var, var.getIRType(), _, 0, var.getIRType().getByteSize() * 8)
   }
 
   /**
@@ -99,7 +126,7 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
    */
   final predicate coversEntireVariable() {
     startBitOffset = 0 and
-    endBitOffset = var.getType().getSize() * 8
+    endBitOffset = var.getIRType().getByteSize() * 8
   }
 }
 
@@ -111,7 +138,7 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
 class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
   VariableVirtualVariable() {
     not variableAddressEscapes(var) and
-    type = var.getType() and
+    type = var.getIRType() and
     coversEntireVariable()
   }
 }
@@ -128,7 +155,9 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
 
   final override VirtualVariable getVirtualVariable() { result = TUnknownVirtualVariable(irFunc) }
 
-  final override Type getType() { result instanceof UnknownType }
+  final override Language::LanguageType getType() {
+    result = any(IRUnknownType type).getCanonicalLanguageType()
+  }
 
   final override string getUniqueId() { result = "{Unknown}" }
 }
@@ -143,7 +172,9 @@ class UnknownVirtualVariable extends TUnknownVirtualVariable, VirtualVariable {
 
   final override string toString() { result = "{AllAliased}" }
 
-  final override Type getType() { result instanceof UnknownType }
+  final override Language::LanguageType getType() {
+    result = any(IRUnknownType type).getCanonicalLanguageType()
+  }
 
   final override string getUniqueId() { result = " " + toString() }
 
@@ -177,7 +208,7 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
           intervalOverlap = getVariableMemoryLocationOverlap(def, use) and
           if intervalOverlap instanceof MustExactlyOverlap
           then
-            if def.getType() = use.getType()
+            if def.getIRType() = use.getIRType()
             then
               // The def and use types match, so it's an exact overlap.
               result instanceof MustExactlyOverlap
@@ -282,11 +313,11 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
     (
       (
         kind.usesAddressOperand() and
-        if hasResultMemoryAccess(instr, _, _, _, _)
+        if hasResultMemoryAccess(instr, _, _, _, _, _)
         then
-          exists(IRVariable var, Type type, IntValue startBitOffset, IntValue endBitOffset |
-            hasResultMemoryAccess(instr, var, type, startBitOffset, endBitOffset) and
-            result = TVariableMemoryLocation(var, type, startBitOffset, endBitOffset)
+          exists(IRVariable var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
+            hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset) and
+            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset)
           )
         else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction())
       )
@@ -306,11 +337,11 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
     (
       (
         kind.usesAddressOperand() and
-        if hasOperandMemoryAccess(operand, _, _, _, _)
+        if hasOperandMemoryAccess(operand, _, _, _, _, _)
         then
-          exists(IRVariable var, Type type, IntValue startBitOffset, IntValue endBitOffset |
-            hasOperandMemoryAccess(operand, var, type, startBitOffset, endBitOffset) and
-            result = TVariableMemoryLocation(var, type, startBitOffset, endBitOffset)
+          exists(IRVariable var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
+            hasOperandMemoryAccess(operand, var, type, _, startBitOffset, endBitOffset) and
+            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset)
           )
         else result = TUnknownMemoryLocation(operand.getEnclosingIRFunction())
       )

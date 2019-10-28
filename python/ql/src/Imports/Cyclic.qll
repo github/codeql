@@ -21,7 +21,8 @@ predicate circular_import(ModuleValue m1, ModuleValue m2) {
 ModuleValue stmt_imports(ImportingStmt s) {
     exists(string name | result.importedAs(name) and not name = "__main__" |
         name = s.getAnImportedModuleName() and
-        s.getASubExpression().pointsTo(result)
+        s.getASubExpression().pointsTo(result) and
+        not result.isPackage()
     )
 }
 

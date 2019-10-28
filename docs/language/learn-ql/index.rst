@@ -57,6 +57,7 @@ For more information on writing QL to query code written in a specific language 
    cpp/ql-for-cpp
    csharp/ql-for-csharp
    cobol/ql-for-cobol
+   go/ql-for-go
    java/ql-for-java
    javascript/ql-for-javascript
    python/ql-for-python
@@ -79,7 +80,7 @@ Reference topics
 For a more comprehensive guide to QL see the following reference topics: 
 
 - `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__—a description of important concepts in QL
-- `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__—a formal specification of the QL language.
+- `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__—a formal specification of the QL language.
 
 Search
 ******

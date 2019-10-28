@@ -54,6 +54,7 @@ nodes
 | command-line-parameter-command-injection.js:27:14:27:57 | `node $ ... ption"` |
 | command-line-parameter-command-injection.js:27:32:27:35 | args |
 | command-line-parameter-command-injection.js:27:32:27:45 | args.join(' ') |
+| tst_shell-command-injection-from-environment.js:4:25:4:61 | ['-rf', ... temp")] |
 edges
 | child_process-test.js:36:7:36:20 | sh | child_process-test.js:39:5:39:5 | sh |
 | child_process-test.js:36:7:36:20 | sh | child_process-test.js:39:14:39:15 | sh |
