@@ -51,6 +51,7 @@ public class RegExpExtractor {
   private final LocationManager locationManager;
   private final RegExpParser parser = new RegExpParser();
   private Position literalStart;
+  private OffsetTranslation offsets;
 
   public RegExpExtractor(TrapWriter trapwriter, LocationManager locationManager) {
     this.trapwriter = trapwriter;
@@ -121,8 +122,12 @@ public class RegExpExtractor {
   public void emitLocation(SourceElement term, Label lbl) {
     int sl, sc, el, ec;
     sl = el = literalStart.getLine();
-    sc = literalStart.getColumn() + 2 + term.getLoc().getStart().getColumn();
-    ec = literalStart.getColumn() + 1 + term.getLoc().getEnd().getColumn();
+    // the offset table accounts for the position on the line and for skipping the initial '/'
+    sc = offsets.get(term.getLoc().getStart().getColumn());
+    ec = offsets.get(term.getLoc().getEnd().getColumn());
+    sc += 1; // convert to 1-based
+    ec += 1; // convert to 1-based
+    ec -= 1; // convert to inclusive
     locationManager.emitSnippetLocation(lbl, sl, sc, el, ec);
   }
 
@@ -349,6 +354,8 @@ public class RegExpExtractor {
     }
 
     this.literalStart = parent.getLoc().getStart();
+    offsets = new OffsetTranslation();
+    offsets.set(0, literalStart.getColumn() + 1); // add 1 to skip the leading '/' or quote
     RegExpTerm ast = res.getAST();
     new V().visit(ast, trapwriter.localID(parent), 0);
 
