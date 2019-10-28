@@ -433,18 +433,6 @@ abstract class AdditionalSink extends DataFlow::Node {
 }
 
 /**
- * An invocation that is modeled as a partial function application.
- *
- * This contributes additional argument-passing flow edges that should be added to all data flow configurations.
- */
-abstract class AdditionalPartialInvokeNode extends DataFlow::InvokeNode {
-  /**
-   * Holds if `argument` is passed as argument `index` to the function in `callback`.
-   */
-  abstract predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index);
-}
-
-/**
  * Additional flow step to model flow from import specifiers into the SSA variable
  * corresponding to the imported variable.
  */
@@ -454,45 +442,6 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = this and
     succ = DataFlow::ssaDefinitionNode(SSA::definition(astNode))
-  }
-}
-
-/**
- * A partial call through the built-in `Function.prototype.bind`.
- */
-private class BindPartialCall extends AdditionalPartialInvokeNode, DataFlow::MethodCallNode {
-  BindPartialCall() { getMethodName() = "bind" }
-
-  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
-    callback = getReceiver() and
-    argument = getArgument(index + 1)
-  }
-}
-
-/**
- * A partial call through `_.partial`.
- */
-private class LodashPartialCall extends AdditionalPartialInvokeNode {
-  LodashPartialCall() { this = LodashUnderscore::member("partial").getACall() }
-
-  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
-    callback = getArgument(0) and
-    argument = getArgument(index + 1)
-  }
-}
-
-/**
- * A partial call through `ramda.partial`.
- */
-private class RamdaPartialCall extends AdditionalPartialInvokeNode {
-  RamdaPartialCall() { this = DataFlow::moduleMember("ramda", "partial").getACall() }
-
-  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
-    callback = getArgument(0) and
-    exists(DataFlow::ArrayCreationNode array |
-      array.flowsTo(getArgument(1)) and
-      argument = array.getElement(index)
-    )
   }
 }
 

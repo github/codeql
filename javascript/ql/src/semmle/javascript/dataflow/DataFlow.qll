@@ -19,6 +19,7 @@
  */
 
 import javascript
+private import internal.CallGraphs
 
 module DataFlow {
   cached
@@ -117,14 +118,23 @@ module DataFlow {
     int getIntValue() { result = asExpr().getIntValue() }
 
     /** Gets a function value that may reach this node. */
-    FunctionNode getAFunctionValue() {
-      result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction()
+    final FunctionNode getAFunctionValue() {
+      CallGraph::getAFunctionReference(result, 0).flowsTo(this)
+    }
+
+    /** Gets a function value that may reach this node with the given `imprecision` level. */
+    final FunctionNode getAFunctionValue(int imprecision) {
+      CallGraph::getAFunctionReference(result, imprecision).flowsTo(this)
+    }
+
+    /**
+     * Gets a function value that may reach this node,
+     * possibly derived from a partial function invocation.
+     */
+    final FunctionNode getABoundFunctionValue(int boundArgs) {
+      result = getAFunctionValue() and boundArgs = 0
       or
-      exists(string name |
-        GlobalAccessPath::isAssignedInUniqueFile(name) and
-        GlobalAccessPath::fromRhs(result) = name and
-        GlobalAccessPath::fromReference(this) = name
-      )
+      CallGraph::getABoundFunctionReference(result, boundArgs).flowsTo(this)
     }
 
     /**

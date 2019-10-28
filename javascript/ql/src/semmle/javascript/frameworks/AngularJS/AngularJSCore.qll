@@ -1060,21 +1060,42 @@ private class RouteInstantiatedController extends Controller {
 /**
  * Dataflow for the arguments of AngularJS dependency-injected functions.
  */
-private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedValueNode {
+private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedNode {
   DataFlow::AnalyzedNode service;
 
   DependencyInjectedArgumentInitializer() {
     exists(
-      AngularJS::InjectableFunction f, SimpleParameter param, AngularJS::CustomServiceDefinition def
+      AngularJS::InjectableFunction f, Parameter param, AngularJS::CustomServiceDefinition def
     |
-      astNode = param.getAnInitialUse() and
+      this = DataFlow::parameterNode(param) and
       def.getServiceReference() = f.getAResolvedDependency(param) and
       service = def.getAService()
     )
   }
 
   override AbstractValue getAValue() {
-    result = DataFlow::AnalyzedValueNode.super.getAValue() or
+    result = DataFlow::AnalyzedNode.super.getAValue() or
     result = service.getALocalValue()
   }
+}
+
+/**
+ * A call to `angular.bind`, as a partial function invocation.
+ */
+private class BindCall extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
+  BindCall() { this = angular().getAMemberCall("bind") }
+
+  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+    index >= 0 and
+    callback = getArgument(1) and
+    argument = getArgument(index + 2)
+  }
+
+  override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+    callback = getArgument(1) and
+    boundArgs = getNumArgument() - 2 and
+    result = this
+  }
+
+  override DataFlow::Node getBoundReceiver() { result = getArgument(0) }
 }
