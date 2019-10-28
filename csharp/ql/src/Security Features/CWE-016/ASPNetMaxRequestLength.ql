@@ -14,5 +14,5 @@
 import csharp
 from XMLAttribute a
 where
-  a.getName().toLowerCase() = "maxrequestlength" and a.getValue() > "4096"
-select a, "maxRequestLength is set too large: "+a.getValue()+" KB. It is recommended to set it as minimum as possible based on business requirements."
+  a.getName().toLowerCase() = "maxrequestlength" and a.getValue().toInt() > 4096
+select a, "Large 'maxRequestLength' value (" + a.getValue() + ")."
