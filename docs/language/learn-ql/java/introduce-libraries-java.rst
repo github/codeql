@@ -6,7 +6,7 @@ Overview
 
 There is an extensive library for analyzing CodeQL databases extracted from Java projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
-The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``java.qll`` imports all the core C/C++ library modules, so you can include the complete library by beginning your query with:
+The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``java.qll`` imports all the core Java library modules, so you can include the complete library by beginning your query with:
 
 .. code-block:: ql
 
