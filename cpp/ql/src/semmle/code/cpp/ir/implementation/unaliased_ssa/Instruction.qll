@@ -758,7 +758,9 @@ class ConstantInstruction extends ConstantValueInstruction {
 }
 
 class IntegerConstantInstruction extends ConstantInstruction {
-  IntegerConstantInstruction() { getResultIRType() instanceof IRIntegerType or getResultIRType() instanceof IRBooleanType }
+  IntegerConstantInstruction() {
+    getResultIRType() instanceof IRIntegerType or getResultIRType() instanceof IRBooleanType
+  }
 }
 
 class FloatConstantInstruction extends ConstantInstruction {
