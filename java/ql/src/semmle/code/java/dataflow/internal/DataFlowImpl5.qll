@@ -317,7 +317,7 @@ private predicate nodeCandFwd1(Node node, Configuration config) {
     exists(DataFlowCall call, ReturnNodeExt ret, ReturnKindExt kind |
       nodeCandFwd1(ret, config) and
       getReturnPosition(ret) = viableReturnPos(call, kind) and
-      node = getAnOutNodeExt(call, kind)
+      node = kind.getAnOutNode(call)
     )
   )
 }
@@ -409,7 +409,7 @@ private predicate nodeCand1ReturnPosition(ReturnPosition pos, Configuration conf
   exists(DataFlowCall call, ReturnKindExt kind, Node out |
     nodeCand1(out, config) and
     pos = viableReturnPos(call, kind) and
-    out = getAnOutNodeExt(call, kind)
+    out = kind.getAnOutNode(call)
   )
 }
 
@@ -576,7 +576,7 @@ private predicate flowOutOfCallable(Node node1, Node node2, Configuration config
   not inBarrier(node2, config) and
   exists(DataFlowCall call, ReturnKindExt kind |
     getReturnPosition1(node1, unbind(config)) = viableReturnPos(call, kind) and
-    node2 = getAnOutNodeExt(call, kind)
+    node2 = kind.getAnOutNode(call)
   )
 }
 
@@ -1806,7 +1806,7 @@ private predicate pathOutOfCallable1(
 pragma[noinline]
 private predicate pathOutOfCallable(PathNodeMid mid, Node out, CallContext cc) {
   exists(ReturnKindExt kind, DataFlowCall call | pathOutOfCallable1(mid, call, kind, cc) |
-    out = getAnOutNodeExt(call, kind)
+    out = kind.getAnOutNode(call)
   )
 }
 
@@ -1905,7 +1905,7 @@ pragma[noinline]
 private predicate pathThroughCallable(PathNodeMid mid, Node out, CallContext cc, AccessPathNil apnil) {
   exists(DataFlowCall call, ReturnKindExt kind |
     pathThroughCallable0(call, mid, kind, cc, apnil) and
-    out = getAnOutNodeExt(call, kind)
+    out = kind.getAnOutNode(call)
   )
 }
 
@@ -1965,7 +1965,7 @@ private module FlowExploration {
       // flow out of a callable
       exists(DataFlowCall call, ReturnKindExt kind |
         getReturnPosition(node1) = viableReturnPos(call, kind) and
-        node2 = getAnOutNodeExt(call, kind)
+        node2 = kind.getAnOutNode(call)
       )
     |
       c1 = node1.getEnclosingCallable() and
@@ -2287,7 +2287,7 @@ private module FlowExploration {
     exists(ReturnKindExt kind, DataFlowCall call |
       partialPathOutOfCallable1(mid, call, kind, cc, ap, config)
     |
-      out = getAnOutNodeExt(call, kind)
+      out = kind.getAnOutNode(call)
     )
   }
 
@@ -2370,7 +2370,7 @@ private module FlowExploration {
   ) {
     exists(DataFlowCall call, ReturnKindExt kind |
       partialPathThroughCallable0(call, mid, kind, cc, apnil, config) and
-      out = getAnOutNodeExt(call, kind)
+      out = kind.getAnOutNode(call)
     )
   }
 

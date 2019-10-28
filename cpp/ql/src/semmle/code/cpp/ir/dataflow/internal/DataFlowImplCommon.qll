@@ -772,6 +772,9 @@ private module ImplCommon {
   abstract class ReturnKindExt extends TReturnKindExt {
     /** Gets a textual representation of this return kind. */
     abstract string toString();
+
+    /** Gets a node corresponding to data flow out of `call`. */
+    abstract Node getAnOutNode(DataFlowCall call);
   }
 
   class ValueReturnKind extends ReturnKindExt, TValueReturn {
@@ -782,6 +785,8 @@ private module ImplCommon {
     ReturnKind getKind() { result = kind }
 
     override string toString() { result = kind.toString() }
+
+    override Node getAnOutNode(DataFlowCall call) { result = getAnOutNode(call, this.getKind()) }
   }
 
   class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
@@ -792,6 +797,13 @@ private module ImplCommon {
     int getPosition() { result = pos }
 
     override string toString() { result = "param update " + pos }
+
+    override Node getAnOutNode(DataFlowCall call) {
+      exists(ArgumentNode arg |
+        result.(PostUpdateNode).getPreUpdateNode() = arg and
+        arg.argumentOf(call, this.getPosition())
+      )
+    }
   }
 
   /** A callable tagged with a relevant return kind. */
@@ -820,15 +832,6 @@ private module ImplCommon {
   ReturnPosition getReturnPosition(ReturnNodeExt ret) {
     exists(DataFlowCallable c, ReturnKindExt k | returnPosition(ret, c, k) |
       result = TReturnPosition0(c, k)
-    )
-  }
-
-  Node getAnOutNodeExt(DataFlowCall call, ReturnKindExt kind) {
-    result = getAnOutNode(call, kind.(ValueReturnKind).getKind())
-    or
-    exists(ArgumentNode arg |
-      result.(PostUpdateNode).getPreUpdateNode() = arg and
-      arg.argumentOf(call, kind.(ParamUpdateReturnKind).getPosition())
     )
   }
 
