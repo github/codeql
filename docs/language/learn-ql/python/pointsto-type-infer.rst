@@ -1,12 +1,12 @@
 Tutorial: Points-to analysis and type inference
 ===============================================
 
-This topic contains worked examples of how to write queries using the standard QL library classes for Python type inference.
+This topic contains worked examples of how to write queries using the standard CodeQL library classes for Python type inference.
 
 The ``Value`` class
 --------------------
 
-The ``Value`` class and its subclasses ``FunctionValue``, ``ClassValue`` and ``ModuleValue`` represent the values an expression may hold at runtime.
+The ``Value`` class and its subclasses ``FunctionValue``, ``ClassValue``, and ``ModuleValue`` represent the values an expression may hold at runtime.
 
 Summary
 ~~~~~~~
@@ -201,7 +201,7 @@ There are two problems with this query:
 -  It assumes that any call to something named "eval" is a call to the builtin ``eval`` function, which may result in some false positive results.
 -  It assumes that ``eval`` cannot be referred to by any other name, which may result in some false negative results.
 
-We can get much more accurate results using call-graph analysis. First, we can precisely identify the ``FunctionValue`` for the ``eval`` function, by using the ``Value::named`` QL predicate as follows:
+We can get much more accurate results using call-graph analysis. First, we can precisely identify the ``FunctionValue`` for the ``eval`` function, by using the ``Value::named`` predicate as follows:
 
 .. code-block:: ql
 
@@ -227,9 +227,5 @@ Then we can use ``Value.getACall()`` to identify calls to the ``eval`` function,
 What next?
 ----------
 
-For more information on writing QL, see:
-
--  `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ - an introduction to the concepts of QL.
--  :doc:`Learning QL <../../index>` - an overview of the resources for learning how to write your own QL queries.
--  `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ - an overview of the process that creates a database from source code.
--  :doc:`What's in a CodeQL database? <../database>` - a description of the CodeQL database.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+-  Read a description of the CodeQL database in :doc:`What's in a CodeQL database? <../database>`
