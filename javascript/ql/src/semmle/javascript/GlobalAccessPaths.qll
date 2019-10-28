@@ -69,6 +69,18 @@ module AccessPath {
   }
 
   /**
+   * Appends a single property name onto the access path `base`, where
+   * the empty string represents the empty access path.
+   */
+  bindingset[base, prop]
+  private string join(string base, string prop) {
+    base = "" and result = prop
+    or
+    base != "" and
+    result = base + "." + prop
+  }
+
+  /**
    * Gets the access path relative to `root` referred to by `node`.
    *
    * This holds for direct references as well as for aliases
@@ -77,8 +89,8 @@ module AccessPath {
    * Examples:
    * ```
    * function f(x) {
-   *   let a = x.f.g; // access path relative to 'x' is '.f.g'
-   *   let b = a.h;   // access path relative to 'x' is '.f.g.h'
+   *   let a = x.f.g; // access path relative to 'x' is 'f.g'
+   *   let b = a.h;   // access path relative to 'x' is 'f.g.h'
    * }
    * ```
    */
@@ -102,7 +114,7 @@ module AccessPath {
     or
     not node.accessesGlobal(_) and
     exists(DataFlow::PropRead prop | node = prop |
-      result = fromReference(prop.getBase(), root) + "." + prop.getPropertyName()
+      result = join(fromReference(prop.getBase(), root), prop.getPropertyName())
     )
     or
     exists(Closure::ClosureNamespaceAccess acc | node = acc |
@@ -112,7 +124,7 @@ module AccessPath {
     or
     exists(PropertyProjection proj | node = proj |
       proj.isSingletonProjection() and
-      result = fromReference(proj.getObject(), root) + "." + proj.getASelector()
+      result = join(fromReference(proj.getObject(), root), proj.getASelector().getStringValue())
     )
     or
     // Treat 'e || {}' as having the same name as 'e'
@@ -179,7 +191,7 @@ module AccessPath {
    * Only holds for the immediate right-hand side of an assignment or property, not
    * for nodes that transitively flow there.
    *
-   * For example, the class nodes below all map to `.foo.bar` relative to `x`:
+   * For example, the class nodes below all map to `foo.bar` relative to `x`:
    * ```
    * function f(x) {
    *   x.foo.bar = class {};
@@ -193,7 +205,7 @@ module AccessPath {
   private string fromRhs(DataFlow::Node node, Root root) {
     exists(DataFlow::PropWrite write, string baseName |
       node = write.getRhs() and
-      result = baseName + "." + write.getPropertyName()
+      result = join(baseName, write.getPropertyName())
     |
       baseName = fromReference(write.getBase(), root)
       or
@@ -237,13 +249,11 @@ module AccessPath {
    *
    * This works for direct references as well as for aliases established through local data flow.
    *
-   * Note that non-empty access paths contain an initial `.`, such as in `.foo.bar`.
-   *
    * For example:
    * ```
    * function f(x) {
-   *   let a = x.f.g; // reference to (x, ".f.g")
-   *   let b = a.h;   // reference to (x, ".f.g.h")
+   *   let a = x.f.g; // reference to (x, "f.g")
+   *   let b = a.h;   // reference to (x, "f.g.h")
    * }
    * ```
    */
@@ -279,9 +289,7 @@ module AccessPath {
    * Only gets the immediate right-hand side of an assignment or property, not
    * nodes that transitively flow there.
    *
-   * Note that access paths contain an initial `.`, such as in `.foo.bar`.
-   *
-   * For example, the class nodes below are all assignments to `(x, ".foo.bar")`.
+   * For example, the class nodes below are all assignments to `(x, "foo.bar")`.
    * ```
    * function f(x) {
    *   x.foo.bar = class {};
