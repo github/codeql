@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Request validation is a feature in ASP.NET that protects web applications against potentially malicious content 
+<code>Request validation</code> is a feature in ASP.NET that protects web applications against potentially malicious content 
 in requests, specifically against cross-site scripting attacks (XSS). 
 </p>
 
