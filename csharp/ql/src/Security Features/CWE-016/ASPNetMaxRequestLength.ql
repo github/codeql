@@ -3,7 +3,6 @@
  * @description maxRequestLength should be set as minimum as possible.
  * @kind problem
  * @problem.severity warning
- * @precision very-high
  * @id cs/web/max-request-length
  * @tags security
  *       maintainability
