@@ -1785,7 +1785,7 @@ private predicate pathOutOfCallable0(PathNodeMid mid, ReturnPosition pos, CallCo
   not innercc instanceof CallContextCall
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate pathOutOfCallable1(
   PathNodeMid mid, DataFlowCall call, ReturnKindExt kind, CallContext cc
 ) {
