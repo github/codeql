@@ -411,6 +411,9 @@ class SideEffectOperand extends TypedOperand {
     or
     useInstr instanceof BufferMayWriteSideEffectInstruction and
     result instanceof BufferMayMemoryAccess
+    or
+    useInstr instanceof ReturnIndirectionInstruction and
+    result instanceof BufferMemoryAccess
   }
 }
 

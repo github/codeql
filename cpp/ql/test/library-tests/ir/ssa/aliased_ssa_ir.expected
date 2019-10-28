@@ -84,7 +84,7 @@ ssa.cpp:
 #   28|     r6_9(int)            = Load                     : &:r6_8, ~m6_0
 #   28|     r6_10(int)           = Add                      : r6_5, r6_9
 #   28|     m6_11(int)           = Store                    : &:r6_1, r6_10
-#   13|     v6_12(void)          = ReturnIndirection        : &:r0_5, ~mu0_2
+#   13|     v6_12(void)          = ReturnIndirection        : &:r0_5, ~m6_0
 #   13|     r6_13(glval<int>)    = VariableAddress[#return] : 
 #   13|     v6_14(void)          = ReturnValue              : &:r6_13, m6_11
 #   13|     v6_15(void)          = UnmodeledUse             : mu*
@@ -224,7 +224,7 @@ ssa.cpp:
 
 #   71|   Block 2
 #   71|     v2_0(void) = NoOp              : 
-#   68|     v2_1(void) = ReturnIndirection : &:r0_7, ~mu0_2
+#   68|     v2_1(void) = ReturnIndirection : &:r0_7, ~m3_0
 #   68|     v2_2(void) = ReturnVoid        : 
 #   68|     v2_3(void) = UnmodeledUse      : mu*
 #   68|     v2_4(void) = ExitFunction      : 
@@ -746,7 +746,7 @@ ssa.cpp:
 #  181|     r0_12(int *)        = Load                     : &:r0_11, m0_4
 #  181|     r0_13(int)          = Load                     : &:r0_12, ~m0_9
 #  181|     m0_14(int)          = Store                    : &:r0_10, r0_13
-#  179|     v0_15(void)         = ReturnIndirection        : &:r0_5, ~mu0_2
+#  179|     v0_15(void)         = ReturnIndirection        : &:r0_5, ~m0_9
 #  179|     r0_16(glval<int>)   = VariableAddress[#return] : 
 #  179|     v0_17(void)         = ReturnValue              : &:r0_16, m0_14
 #  179|     v0_18(void)         = UnmodeledUse             : mu*
@@ -788,10 +788,10 @@ ssa.cpp:
 #  186|     m0_31(unknown)               = InlineAsm                : ~mu0_2, 0:r0_27, 1:r0_28, 2:r0_29, 3:r0_30
 #  186|     m0_32(unknown)               = Chi                      : total:m0_26, partial:m0_31
 #  192|     v0_33(void)                  = NoOp                     : 
-#  184|     v0_34(void)                  = ReturnIndirection        : &:r0_6, ~mu0_2
-#  184|     v0_35(void)                  = ReturnIndirection        : &:r0_12, ~mu0_2
-#  184|     v0_36(void)                  = ReturnIndirection        : &:r0_18, ~mu0_2
-#  184|     v0_37(void)                  = ReturnIndirection        : &:r0_24, ~mu0_2
+#  184|     v0_34(void)                  = ReturnIndirection        : &:r0_6, ~m0_32
+#  184|     v0_35(void)                  = ReturnIndirection        : &:r0_12, ~m0_32
+#  184|     v0_36(void)                  = ReturnIndirection        : &:r0_18, ~m0_32
+#  184|     v0_37(void)                  = ReturnIndirection        : &:r0_24, ~m0_32
 #  184|     v0_38(void)                  = ReturnVoid               : 
 #  184|     v0_39(void)                  = UnmodeledUse             : mu*
 #  184|     v0_40(void)                  = ExitFunction             : 
@@ -846,8 +846,8 @@ ssa.cpp:
 #  202|     r0_45(glval<int>)     = VariableAddress[ret]        : 
 #  202|     r0_46(int)            = Load                        : &:r0_45, m0_43
 #  202|     m0_47(int)            = Store                       : &:r0_44, r0_46
-#  198|     v0_48(void)           = ReturnIndirection           : &:r0_5, ~mu0_2
-#  198|     v0_49(void)           = ReturnIndirection           : &:r0_10, ~mu0_2
+#  198|     v0_48(void)           = ReturnIndirection           : &:r0_5, ~m0_12
+#  198|     v0_49(void)           = ReturnIndirection           : &:r0_10, ~m0_12
 #  198|     r0_50(glval<int>)     = VariableAddress[#return]    : 
 #  198|     v0_51(void)           = ReturnValue                 : &:r0_50, m0_47
 #  198|     v0_52(void)           = UnmodeledUse                : mu*

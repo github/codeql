@@ -610,6 +610,8 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+| VacuousDestructorCall.cpp:2:29:2:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | IR: CallDestructor | void CallDestructor<int>(int, int*) |
+| VacuousDestructorCall.cpp:2:29:2:29 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | IR: CallDestructor | void CallDestructor<int>(int, int*) |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | IR: CallDestructor | void CallDestructor<int>(int, int*) |
 | assume0.cpp:11:2:11:2 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | assume0.cpp:5:6:5:6 | IR: h | void h() |
 | condition_decls.cpp:16:15:16:15 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
@@ -662,6 +664,8 @@ useNotDominatedByDefinition
 | misc.c:174:17:174:22 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:168:6:168:8 | IR: vla | void vla() |
 | misc.c:174:30:174:35 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:168:6:168:8 | IR: vla | void vla() |
 | misc.c:219:5:219:26 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
+| misc.c:219:47:219:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
+| misc.c:219:47:219:48 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
 | misc.c:220:4:220:5 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
 | ms_try_except.cpp:9:19:9:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | IR: ms_try_except | void ms_try_except(int) |
 | ms_try_except.cpp:19:17:19:17 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | IR: ms_try_except | void ms_try_except(int) |
@@ -684,6 +688,8 @@ useNotDominatedByDefinition
 | stmt_expr.cpp:31:16:31:18 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | stmt_expr.cpp:21:6:21:6 | IR: g | void stmtexpr::g(int) |
 | try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | IR: throw_from_nonstmt | void throw_from_nonstmt(int) |
 | vla.c:3:5:3:8 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
+| vla.c:3:27:3:30 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
+| vla.c:3:27:3:30 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
 | vla.c:5:16:5:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
 | vla.c:5:22:5:25 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
 | vla.c:5:27:5:30 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |

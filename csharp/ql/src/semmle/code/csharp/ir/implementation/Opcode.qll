@@ -9,6 +9,7 @@ private newtype TOpcode =
   TExitFunction() or
   TReturnValue() or
   TReturnVoid() or
+  TReturnIndirection() or
   TCopyValue() or
   TLoad() or
   TStore() or
@@ -200,6 +201,10 @@ module Opcode {
 
   class ReturnVoid extends ReturnOpcode, TReturnVoid {
     final override string toString() { result = "ReturnVoid" }
+  }
+
+  class ReturnIndirection extends MemoryAccessOpcode, TReturnIndirection {
+    final override string toString() { result = "ReturnIndirection" }
   }
 
   class CopyValue extends UnaryOpcode, CopyOpcode, TCopyValue {

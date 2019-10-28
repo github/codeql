@@ -69,6 +69,7 @@ private predicate operandEscapesDomain(Operand operand) {
   not isArgumentForParameter(_, operand, _) and
   not isOnlyEscapesViaReturnArgument(operand) and
   not operand.getUse() instanceof ReturnValueInstruction and
+  not operand.getUse() instanceof ReturnIndirectionInstruction and
   not operand instanceof PhiInputOperand
 }
 
