@@ -1,10 +1,9 @@
 /**
- * @name Page Request Validation is disabled.
+ * @name Page Request Validation is disabled
  * @description ASP.NET Pages should not disable the built-in request validation.
  * @kind problem
  * @problem.severity warning
- * @precision very-high
- * @id cs/web/debug-binary
+ * @id cs/web/validate-request
  * @tags security
  *       maintainability
  *       frameworks/asp.net
