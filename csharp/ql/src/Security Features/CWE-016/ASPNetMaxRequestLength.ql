@@ -1,5 +1,5 @@
 /**
- * @name Large maxRequestLength value.
+ * @name Large maxRequestLength value
  * @description maxRequestLength should be set as minimum as possible.
  * @kind problem
  * @problem.severity warning
