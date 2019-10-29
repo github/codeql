@@ -42,6 +42,14 @@ module CleartextLogging {
         write.getRhs() = src and
         trg.(DataFlow::SourceNode).flowsTo(write.getBase())
       )
+      or
+      // Taint step through `util.inspect(..)` from Node.js
+      trg = DataFlow::moduleImport("util").getAMethodCall("inspect") and
+      trg.(DataFlow::CallNode).getAnArgument() = src
+      or
+      // Taint step through a `str.replace(..)` call.
+      trg.(DataFlow::MethodCallNode).getCalleeName() = "replace" and
+      trg.(DataFlow::MethodCallNode).getReceiver() = src
     }
   }
 }

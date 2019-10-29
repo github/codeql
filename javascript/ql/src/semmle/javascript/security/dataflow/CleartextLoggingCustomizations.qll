@@ -144,4 +144,13 @@ module CleartextLogging {
 
     override string describe() { result = "a call to " + name }
   }
+
+
+  private class ProcessEnvSource extends Source {
+    ProcessEnvSource() {
+      this = DataFlow::globalVarRef("process").getAPropertyRead("env")
+    }
+
+    override string describe() { result = "process environment" }
+  }
 }

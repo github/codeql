@@ -137,3 +137,19 @@
     console.log(config.y); // NOT OK
     console.log(config[x]); // OK (probably)
 });
+
+function indirectLogCall() {
+	console.log.apply(this, arguments);
+}
+var Util = require('util');
+(function() {
+    var config = {
+        x: password
+    };
+    indirectLogCall(config.x); // NOT OK
+    indirectLogCall(process.env); // NOT OK
+
+    var procdesc = Util.inspect(process.env).replace(/\n/g, '')
+
+    indirectLogCall(procdesc); // NOT OK
+});
