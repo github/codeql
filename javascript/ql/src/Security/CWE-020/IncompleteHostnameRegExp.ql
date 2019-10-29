@@ -37,14 +37,15 @@ predicate isLikelyCaptureGroup(RegExpGroup group) {
 }
 
 /**
- * Holds if `seq` contains two consecutive wildcards `..`.
+ * Holds if `seq` contains two consecutive dots `..` or escaped dots.
  *
- * Such wildcards are clearly not intended to be subdomain separators.
+ * At least one of these dots is not intended to be a subdomain separator,
+ * so we avoid flagging the pattenr in this case.
  */
-predicate hasConsecutiveWildcards(RegExpSequence seq) {
+predicate hasConsecutiveDots(RegExpSequence seq) {
   exists(int i |
-    seq.getChild(i) instanceof RegExpDot and
-    seq.getChild(i + 1) instanceof RegExpDot
+    isDotLike(seq.getChild(i)) and
+    isDotLike(seq.getChild(i + 1))
   )
 }
 
@@ -56,7 +57,7 @@ predicate isIncompleteHostNameRegExpPattern(RegExpTerm regexp, RegExpSequence se
     not isLikelyCaptureGroup(seq.getChild([i .. seq.getNumChild() - 1]).getAChild*()) and
     unescapedDot = seq.getChild([0 .. i - 1]).getAChild*() and
     unescapedDot != seq.getChild(i - 1) and // Should not be the '.' immediately before the TLD
-    not hasConsecutiveWildcards(unescapedDot.getParent()) and
+    not hasConsecutiveDots(unescapedDot.getParent()) and
     hostname = seq.getChild(i - 2).getRawValue() + seq.getChild(i - 1).getRawValue() + seq.getChild(i).getRawValue()
   |
     if unescapedDot.getParent() instanceof RegExpQuantifier then (
