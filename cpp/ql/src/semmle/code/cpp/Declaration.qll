@@ -193,19 +193,34 @@ abstract class Declaration extends Locatable, @declaration {
 
   /**
    * Gets a template argument used to instantiate this declaration from a template.
-   * When called on a template, this will return a template parameter.
+   * When called on a template, this will return a template parameter type for
+   * both typed and non-typed parameters.
    */
   final Type getATemplateArgument() { result = getTemplateArgument(_) }
 
   /**
    * Gets a template argument used to instantiate this declaration from a template.
-   * When called on a template, this will return a template parameter value.
+   * When called on a template, this will return a non-typed template
+   * parameter value.
    */
   final Expr getATemplateArgumentValue() { result = getTemplateArgumentValue(_) }
 
   /**
    * Gets the `i`th template argument used to instantiate this declaration from a
-   * template. When called on a template, this will return the `i`th template parameter.
+   * template. When called on a template, this will return the `i`th template
+   * parameter's type.
+   *
+   * For example:
+   *
+   * `template<typename T, T X> class Foo;`
+   *
+   * Will have `getTemplateArgument(0)` return `T`, and
+   * `getTemplateArgument(1)` return `T`.
+   *
+   * `Foo<int, 1> bar;
+   *
+   * Will have `getTemplateArgument())` return `int`, and
+   * `getTemplateArgument(1)` return `int`.
    */
   Type getTemplateArgument(int index) { none() }
 
@@ -213,6 +228,18 @@ abstract class Declaration extends Locatable, @declaration {
    * Gets the `i`th template argument value used to instantiate this declaration
    * from a template. When called on a template, this will return the `i`th template
    * parameter value if it exists.
+   *
+   * For example:
+   *
+   * `template<typename T, T X> class Foo;`
+   *
+   * Will have `getTemplateArgumentValue(1)` return `X`, and no result for
+   * `getTemplateArgumentValue(0)`.
+   *
+   * `Foo<int, 10> bar;
+   *
+   * Will have `getTemplateArgumentValue(1)` return `10`, and no result for
+   * `getTemplateArgumentValue(0)`.
    */
   Expr getTemplateArgumentValue(int index) { none() }
 
