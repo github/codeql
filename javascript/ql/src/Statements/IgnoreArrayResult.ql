@@ -1,10 +1,10 @@
 /**
  * @name Ignoring result from pure array method
- * @description The array methods do not modify the array, ignoring the result of such a call is therefore generally an error.
+ * @description Ignoring the result of an array method that does not modify its receiver is generally an error.
  * @kind problem
  * @problem.severity warning
  * @id js/ignore-array-result
- * @tags maintainability,
+ * @tags maintainability
  *       correctness
  * @precision high
  */
@@ -16,7 +16,7 @@ DataFlow::SourceNode callsArray(DataFlow::TypeBackTracker t, DataFlow::MethodCal
   isIgnoredPureArrayCall(call) and
   (
     t.start() and
-    result = call.getReceiver()
+    result = call.getReceiver().getALocalSource()
     or
     exists(DataFlow::TypeBackTracker t2 | result = callsArray(t2, call).backtrack(t2, t))
   )

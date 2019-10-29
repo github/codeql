@@ -5,7 +5,7 @@
 <overview>
 <p>
 The <code>concat</code>, <code>join</code> and <code>slice</code> methods are
-pure and does not modify any of the inputs or the array the method was called 
+pure and do not modify any of the inputs or the array the method was called 
 on. It is therefore generally an error to ignore the return value from a call
 to one of these methods. 
 </p>
