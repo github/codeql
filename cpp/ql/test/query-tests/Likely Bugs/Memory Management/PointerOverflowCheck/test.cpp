@@ -11,3 +11,17 @@ bool check_pointer_overflow(P *ptr, P *ptr_end) {
     // x64 msvc v19.22 /O2: not deleted
     return ptr + 4 >= ptr_end; // GOOD
 }
+
+struct Q {
+	#define Q_SIZE 32
+	char arr[Q_SIZE];
+	char *begin() { return &arr[0]; }
+	char *end() { return &arr[Q_SIZE]; }
+};
+
+void foo(int untrusted_int) {
+	Q q;
+    if (q.begin() + untrusted_int > q.end() || // GOOD
+          q.begin() + untrusted_int < q.begin()) // BAD
+      throw q;
+}
