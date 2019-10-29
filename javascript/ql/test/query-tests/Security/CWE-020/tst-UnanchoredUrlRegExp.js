@@ -2,10 +2,10 @@
 
 	"http://evil.com/?http://good.com".match("https?://good.com"); // NOT OK
 	"http://evil.com/?http://good.com".match(new RegExp("https?://good.com")); // NOT OK
-	"http://evil.com/?http://good.com".match("^https?://good.com"); // OK
-	"http://evil.com/?http://good.com".match(/^https?:\/\/good.com/); // OK
-	"http://evil.com/?http://good.com".match("(^https?://good1.com)|(^https?://good2.com)"); // OK
-	"http://evil.com/?http://good.com".match("(https?://good.com)|(^https?://goodie.com)"); // NOT OK, but not detected
+	"http://evil.com/?http://good.com".match("^https?://good.com"); // NOT OK - missing post-anchor
+	"http://evil.com/?http://good.com".match(/^https?:\/\/good.com/); // NOT OK - missing post-anchor
+	"http://evil.com/?http://good.com".match("(^https?://good1.com)|(^https?://good2.com)"); // NOT OK - missing post-anchor
+	"http://evil.com/?http://good.com".match("(https?://good.com)|(^https?://goodie.com)"); // NOT OK - missing post-anchor
 
 	/https?:\/\/good.com/.exec("http://evil.com/?http://good.com"); // NOT OK
 	new RegExp("https?://good.com").exec("http://evil.com/?http://good.com"); // NOT OK
@@ -23,7 +23,7 @@
 		"https?://good.com", // NOT OK, referenced below
 		/https?:\/\/good.com/, // NOT OK, referenced below
 		new RegExp("https?://good.com"), // NOT OK, referenced below
-		"^https?://good.com"
+		"^https?://good.com" // NOT OK - missing post-anchor
 	];
 	function isTrustedUrl(url) {
 		for (let trustedUrl of trustedUrls) {
@@ -105,6 +105,4 @@
 
 	/\.com|\.org/; // OK, has no domain name
 	/example\.com|whatever/; // OK, the other disjunction doesn't match a hostname
-
-	/^https?:\/\/www\.example\.com\/.*\.html|^https?:\/\/www\.(?:example1|example2).com\/foo\/\d+\/\d+.html/i; // OK
 });
