@@ -20,7 +20,8 @@ bad_asts.cpp:
 #    9|     r0_16(glval<int>) = VariableAddress[#return] : 
 #    9|     v0_17(void)       = ReturnValue              : &:r0_16, ~mu0_2
 #    9|     v0_18(void)       = UnmodeledUse             : mu*
-#    9|     v0_19(void)       = ExitFunction             : 
+#    9|     v0_19(void)       = AliasedUse               : ~mu0_2
+#    9|     v0_20(void)       = ExitFunction             : 
 
 #   14| void Bad::CallBadMemberFunction()
 #   14|   Block 0
