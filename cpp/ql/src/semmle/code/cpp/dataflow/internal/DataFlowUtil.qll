@@ -684,7 +684,7 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
  */
 class BarrierGuard extends GuardCondition {
   /** Override this predicate to hold if this guard validates `e` upon evaluating to `b`. */
-  abstract predicate checks(Expr e, boolean branch);
+  abstract predicate checks(Expr e, boolean b);
 
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
