@@ -7,7 +7,7 @@
 When checking for out-of-range pointer values, one might write tests like
 <code>p + a &lt; p</code> and check if the value "wraps around".
 Such a test is wrong in that it relies on the overflow of <code>p + a</code>,
-which is undefined behavior. In fact, many optimizing compilers will remove
+which has undefined behavior. In fact, many optimizing compilers will remove
 <code>p + a &lt; p</code> altogether and replace it with the value <code>0</code> 
 (<code>false</code>).  Conversely, should <code>p + a</code> <i>not</i> overflow,
 the programmer may erroneously assume that the memory location <code>p + a</code>
