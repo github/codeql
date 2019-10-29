@@ -96,6 +96,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       result = getInstruction(UnmodeledUseTag())
       or
       tag = UnmodeledUseTag() and
+      result = getInstruction(AliasedUseTag())
+      or
+      tag = AliasedUseTag() and
       result = getInstruction(ExitFunctionTag())
     )
   }
@@ -167,6 +170,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       opcode instanceof Opcode::UnmodeledUse and
       resultType = getVoidType()
       or
+      tag = AliasedUseTag() and
+      opcode instanceof Opcode::AliasedUse and
+      resultType = getVoidType()
+      or
       tag = ExitFunctionTag() and
       opcode instanceof Opcode::ExitFunction and
       resultType = getVoidType()
@@ -187,6 +194,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     operandTag instanceof UnmodeledUseOperandTag and
     result = getUnmodeledDefinitionInstruction()
     or
+    tag = AliasedUseTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getUnmodeledDefinitionInstruction()
+    or
     tag = ReturnTag() and
     hasReturnValue() and
     (
@@ -203,6 +214,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     hasReturnValue() and
     operandTag instanceof LoadOperandTag and
     result = getTypeForPRValue(getReturnType())
+    or
+    tag = AliasedUseTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getUnknownType()
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
