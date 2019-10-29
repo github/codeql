@@ -148,7 +148,7 @@ module CleartextLogging {
 
   private class ProcessEnvSource extends Source {
     ProcessEnvSource() {
-      this = DataFlow::globalVarRef("process").getAPropertyRead("env")
+      this = NodeJSLib::process().getAPropertyRead("env")
     }
 
     override string describe() { result = "process environment" }
