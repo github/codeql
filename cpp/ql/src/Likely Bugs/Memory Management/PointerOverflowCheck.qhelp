@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+When checking for out-of-range pointer values, one might write tests like
+<code>p + a &lt; p</code> and check if the value "wraps around".
+Such a test is wrong in that it relies on the overflow of <code>p + a</code>,
+which is undefined behavior. In fact, many optimizing compilers will remove
+<code>p + a &lt; p</code> altogether and replace it with the value <code>0</code> 
+(<code>false</code>).  Conversely, should <code>p + a</code> <i>not</i> overflow,
+the programmer may erroneously assume that the memory location <code>p + a</code>
+is accessible to the program, even though it may be inaccessible (protected by
+the operating system) or nonexistent. 
+</p>
+</overview>
+<recommendation>
+<p>
+When checking for an out-of-range pointer, compare the pointer
+value <code>p</code> against a known value <code>p_max</code> representing
+the highest allowable memory address.  Ideally, <code>p_max</code> should
+point just past the end of a data structure, such as an array or a vector.
+For lower-level work, it should point at the highest address in the program
+heap. It is also important that <code>p + a</code> points at a valid object
+and that <code>a</code> is small enough so that the expression <code>p + a</code> 
+does not itself overflow.
+</p>
+</recommendation>
+<example>
+<p>
+In the first example, a constant value is being added to a pointer and
+then tested for "wrap around".  Should the test fail, the developer
+might assume that memory location <code>ptr + 0x12345678</code> is a
+valid one for the program to use, even though it may be either
+inaccessible (protected from the current process by the operating
+system) or nonexistent. Furthermore, it may be impossible to tell when
+the test succeeds, since pointer overflow has undefined behavior.
+</p>
+<sample src="PointerOverflowCheck-bad.cpp" />
+<p>
+The next example shows how to properly check for an out-of-range pointer.
+In order to do so, we need to obtain the value <code>ptr_end</code>
+representing the highest allowable memory address.  In this case,
+the address lies just beyond the end of an array.
+</p>
+<sample src="PointerOverflowCheck-good.cpp" />
+</example>
+<references>
+<li><a href="https://blog.regehr.org/archives/1395">Pointer Overflow Checking [Embedded in Academia]</a></li>
+<li><a href="https://lwn.net/Articles/278137/">GCC and pointer overflows [LWN]</a></li>
+</references>
+</qhelp>
