@@ -152,4 +152,7 @@ var Util = require('util');
     var procdesc = Util.inspect(process.env).replace(/\n/g, '')
 
     indirectLogCall(procdesc); // NOT OK
+
+    console.log(process.env); // NOT OK
+    console.log(process.env.PATH); // <- Should be marked, but isn't. Hopefully fixed when introducing flow-labels.
 });

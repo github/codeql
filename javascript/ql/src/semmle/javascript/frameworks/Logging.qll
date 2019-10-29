@@ -61,6 +61,8 @@ private module Console {
       if name = "assert"
       then result = getArgument([1 .. getNumArgument()])
       else result = getAnArgument()
+      or
+      result = getASpreadArgument()
     }
 
     /**
@@ -70,32 +72,6 @@ private module Console {
       result = name
     }
   }
-
- /**
-  * A call to a function that forwards all arguments to some console logging mechanism.
-  * The called function contain a single statement similar to: `console.log.apply(this, arguments)`.
-  */
- class IndirectConsoleLoggerCall extends LoggerCall {
-   ConsoleLoggerCall consoleCall;
-   DataFlow::MethodCallNode applyCall;
-
-   IndirectConsoleLoggerCall() {
-     forex(Function f | f = this.getACallee() |
-       f.getNumBodyStmt() = 1 and
-       consoleCall.getContainer() = f and
-       applyCall.getContainer() = f and
-       applyCall.getMethodName() = "apply" and
-       applyCall.getReceiver() = consoleCall.getCalleeNode() and
-       applyCall.getArgument(1).asExpr().(VarAccess).getName() = "arguments"
-     )
-   }
-
-   override DataFlow::Node getAMessageComponent() {
-      if consoleCall.getName() = "assert"
-      then result = getArgument([1 .. getNumArgument()])
-      else result = getAnArgument()
-   }
- }
 }
 
 /**

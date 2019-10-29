@@ -50,6 +50,16 @@ module CleartextLogging {
       // Taint step through a `str.replace(..)` call.
       trg.(DataFlow::MethodCallNode).getCalleeName() = "replace" and
       trg.(DataFlow::MethodCallNode).getReceiver() = src
+      or
+      // Taint through the arguments object.
+      exists(DataFlow::CallNode call, Function f, VarAccess var |
+        src = call.getAnArgument() and
+        f = call.getACallee() and
+        not call.isImprecise() and
+        var.getName() = "arguments" and
+        var.getContainer() = f and
+        trg.asExpr() = var
+      )
     }
   }
 }
