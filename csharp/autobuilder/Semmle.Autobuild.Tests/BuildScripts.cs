@@ -902,7 +902,7 @@ namespace Semmle.Extraction.Tests
         {
             Actions.RunProcess["dotnet --list-sdks"] = 0;
             Actions.RunProcessOut["dotnet --list-sdks"] = "2.1.2 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
-            Actions.RunProcess[@"curl -sO https://dot.net/v1/dotnet-install.sh"] = 0;
+            Actions.RunProcess[@"curl -L -sO https://dot.net/v1/dotnet-install.sh"] = 0;
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
             Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
             Actions.RunProcess[@"rm dotnet-install.sh"] = 0;
@@ -938,7 +938,7 @@ namespace Semmle.Extraction.Tests
         {
             Actions.RunProcess["dotnet --list-sdks"] = 0;
             Actions.RunProcessOut["dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
-            Actions.RunProcess[@"curl -sO https://dot.net/v1/dotnet-install.sh"] = 0;
+            Actions.RunProcess[@"curl -L -sO https://dot.net/v1/dotnet-install.sh"] = 0;
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
             Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
             Actions.RunProcess[@"rm dotnet-install.sh"] = 0;
