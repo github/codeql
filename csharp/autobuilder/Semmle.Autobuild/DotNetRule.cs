@@ -196,6 +196,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                     {
                         var curl = new CommandBuilder(builder.Actions).
                             RunCommand("curl").
+                            Argument("-L").
                             Argument("-sO").
                             Argument("https://dot.net/v1/dotnet-install.sh");
 
