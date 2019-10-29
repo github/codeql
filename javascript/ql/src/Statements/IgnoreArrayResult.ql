@@ -13,13 +13,11 @@ import javascript
 import Expressions.ExprHasNoEffect
 
 DataFlow::SourceNode callsArray(DataFlow::TypeBackTracker t, DataFlow::MethodCallNode call) {
-  isIgnoredPureArrayCall(call) and
-  (
-    t.start() and
-    result = call.getReceiver().getALocalSource()
-    or
-    exists(DataFlow::TypeBackTracker t2 | result = callsArray(t2, call).backtrack(t2, t))
-  )
+  isIgnoredPureArrayCall(call) and 
+  t.start() and
+  result = call.getReceiver().getALocalSource()
+  or
+  exists(DataFlow::TypeBackTracker t2 | result = callsArray(t2, call).backtrack(t2, t))
 }
 
 DataFlow::SourceNode callsArray(DataFlow::MethodCallNode call) {
