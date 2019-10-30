@@ -28,6 +28,12 @@ edges
 | rockpaperscissors.py:25:9:25:9 | rock | rockpaperscissors.py:25:9:25:16 | scissors |
 | rockpaperscissors.py:25:9:25:16 | scissors | rockpaperscissors.py:25:9:25:23 | paper |
 | rockpaperscissors.py:25:9:25:23 | paper | rockpaperscissors.py:26:14:26:14 | paper |
+| sanitizer.py:9:9:9:20 | SQL injection | sanitizer.py:13:19:13:19 | SQL injection |
+| sanitizer.py:16:9:16:20 | Command injection | sanitizer.py:20:20:20:20 | Command injection |
+| sanitizer.py:24:9:24:20 | SQL injection | sanitizer.py:26:19:26:19 | SQL injection |
+| sanitizer.py:24:9:24:20 | SQL injection | sanitizer.py:28:19:28:19 | SQL injection |
+| sanitizer.py:31:9:31:20 | Command injection | sanitizer.py:33:20:33:20 | Command injection |
+| sanitizer.py:31:9:31:20 | Command injection | sanitizer.py:35:20:35:20 | Command injection |
 | test.py:6:9:6:14 | simple.test | test.py:7:10:7:10 | simple.test |
 | test.py:10:12:10:17 | simple.test | test.py:16:9:16:16 | simple.test |
 | test.py:10:12:10:17 | simple.test | test.py:24:9:24:16 | simple.test |
