@@ -98,3 +98,11 @@ function badEncodeWithReplacer(s) {
   };
   return s.replace(/["']/g, (c) => repl[c]).replace(/&/g, "&amp;");
 }
+
+function encodeDoubleQuotes(s) {
+  return s.replace(/"/g, "&quot;");
+}
+
+function badWrappedEncode(s) {
+  return encodeDoubleQuotes(s).replace(/&/g, "&amp;");
+}

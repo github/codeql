@@ -221,6 +221,34 @@ class JsonParseReplacement extends Replacement {
   }
 }
 
+/**
+ * A string replacement wrapped in a utility function.
+ */
+class WrappedReplacement extends Replacement, DataFlow::CallNode {
+  int i;
+
+  Replacement inner;
+
+  WrappedReplacement() {
+    exists(DataFlow::FunctionNode wrapped | wrapped.getFunction() = getACallee() |
+      wrapped.getParameter(i).flowsTo(inner.getInput()) and
+      inner.getOutput().flowsTo(wrapped.getAReturn())
+    )
+  }
+
+  override predicate replaces(string input, string output) {
+    inner.replaces(input, output)
+  }
+
+  override DataFlow::Node getInput() {
+    result = getArgument(i)
+  }
+
+  override DataFlow::SourceNode getOutput() {
+    result = this
+  }
+}
+
 from Replacement primary, Replacement supplementary, string message, string metachar
 where
   primary.escapes(metachar, _) and
