@@ -62,30 +62,23 @@ predicate escapingScheme(string metachar, string regex) {
 }
 
 /**
- * A call to `String.prototype.replace` that replaces all instances of a pattern.
+ * A method call that performs string replacement.
  */
-class Replacement extends DataFlow::Node {
-  RegExpLiteral pattern;
-
-  Replacement() {
-    exists(DataFlow::MethodCallNode mcn | this = mcn |
-      mcn.getMethodName() = "replace" and
-      pattern.flow().(DataFlow::SourceNode).flowsTo(mcn.getArgument(0)) and
-      mcn.getNumArgument() = 2 and
-      pattern.isGlobal()
-    )
-  }
-
+abstract class Replacement extends DataFlow::Node {
   /**
    * Holds if this replacement replaces the string `input` with `output`.
    */
-  predicate replaces(string input, string output) {
-    exists(DataFlow::MethodCallNode mcn |
-      mcn = this and
-      input = getStringValue(pattern) and
-      output = mcn.getArgument(1).getStringValue()
-    )
-  }
+  abstract predicate replaces(string input, string output);
+
+  /**
+   * Gets the input of this replacement.
+   */
+  abstract DataFlow::Node getInput();
+
+  /**
+   * Gets the output of this replacement.
+   */
+  abstract DataFlow::SourceNode getOutput();
 
   /**
    * Holds if this replacement escapes `char` using `metachar`.
@@ -119,7 +112,7 @@ class Replacement extends DataFlow::Node {
    * Gets the previous replacement in this chain of replacements.
    */
   Replacement getPreviousReplacement() {
-    result = getASimplePredecessor*(this.(DataFlow::MethodCallNode).getReceiver())
+    result.getOutput() = getASimplePredecessor*(getInput())
   }
 
   /**
@@ -144,6 +137,33 @@ class Replacement extends DataFlow::Node {
       then result = succ
       else result = succ.getALaterUnescaping(metachar)
     )
+  }
+}
+
+/**
+ * A call to `String.prototype.replace` that replaces all instances of a pattern.
+ */
+class GlobalStringReplacement extends Replacement, DataFlow::MethodCallNode {
+  RegExpLiteral pattern;
+
+  GlobalStringReplacement() {
+    this.getMethodName() = "replace" and
+    pattern.flow().(DataFlow::SourceNode).flowsTo(this.getArgument(0)) and
+    this.getNumArgument() = 2 and
+    pattern.isGlobal()
+  }
+
+  override predicate replaces(string input, string output) {
+    input = getStringValue(pattern) and
+    output = this.getArgument(1).getStringValue()
+  }
+
+  override DataFlow::Node getInput() {
+    result = this.getReceiver()
+  }
+
+  override DataFlow::SourceNode getOutput() {
+    result = this
   }
 }
 
