@@ -800,21 +800,24 @@ class FormatLiteral extends Literal {
   int getFormatArgumentIndexFor(int n, int mode) {
     hasFormatArgumentIndexFor(n, mode) and
     result = count(int n2, int mode2 |
-      hasFormatArgumentIndexFor(n2, mode2) and
-      (
-        n2 < n
-        or
-        n2 = n and
-        mode2 < mode
+        hasFormatArgumentIndexFor(n2, mode2) and
+        (
+          n2 < n
+          or
+          n2 = n and
+          mode2 < mode
+        )
       )
-    )
   }
 
   /**
    * Gets the number of arguments required by the nth conversion specifier
    * of this format string.
+   *
+   * DEPRECATED.  This was a helper function for `getNumArgNeeded` and is no
+   * longer required.
    */
-  int getNumArgNeeded(int n) {
+  deprecated int getNumArgNeeded(int n) {
     exists(this.getConvSpecOffset(n)) and
     result = count(int mode | hasFormatArgumentIndexFor(n, mode))
   }
@@ -828,7 +831,7 @@ class FormatLiteral extends Literal {
       // At least one conversion specifier has a parameter field, in which case,
       // they all should have.
       result = max(string s | this.getParameterField(_) = s + "$" | s.toInt())
-    else result = sum(int n, int toSum | toSum = this.getNumArgNeeded(n) | toSum)
+    else result = count(int n, int mode | hasFormatArgumentIndexFor(n, mode))
   }
 
   /**
