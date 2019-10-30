@@ -559,7 +559,7 @@ case @typeexpr.kind of
 | 17 = @localvartypeaccess
 | 18 = @qualifiedvartypeaccess
 | 19 = @thisvartypeaccess
-| 20 = @istypeexpr
+| 20 = @predicatetypeexpr
 | 21 = @interfacetypeexpr
 | 22 = @typeparameter
 | 23 = @plainfunctiontypeexpr

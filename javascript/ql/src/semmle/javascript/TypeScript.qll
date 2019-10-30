@@ -918,7 +918,7 @@ class TypeofTypeExpr extends @typeoftypeexpr, TypeExpr {
  *
  * This can only occur as the return type of a function type.
  */
-class IsTypeExpr extends @istypeexpr, TypeExpr {
+class IsTypeExpr extends @predicatetypeexpr, TypeExpr {
   /**
    * Gets the parameter name or `this` token `E` in `E is T`.
    */
