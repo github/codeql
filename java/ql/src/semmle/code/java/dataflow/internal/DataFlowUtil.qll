@@ -217,7 +217,7 @@ class ImplicitInstanceAccess extends Node, TImplicitInstanceAccess {
  * A node that corresponds to the value of a `ClassInstanceExpr` before the
  * constructor has run.
  */
-private class MallocNode extends Node, TMallocNode {
+class MallocNode extends Node, TMallocNode {
   ClassInstanceExpr cie;
 
   MallocNode() { this = TMallocNode(cie) }

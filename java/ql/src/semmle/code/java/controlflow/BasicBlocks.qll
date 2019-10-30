@@ -55,6 +55,10 @@ class BasicBlock extends ControlFlowNode {
   cached
   int length() { result = strictcount(getANode()) }
 
+  /** Holds if this basic block is in a loop */
+  cached
+  predicate inLoop() { this = getASuccessor+() }
+
   /** Holds if this basic block strictly dominates `node`. */
   predicate bbStrictlyDominates(BasicBlock node) { bbStrictlyDominates(this, node) }
 

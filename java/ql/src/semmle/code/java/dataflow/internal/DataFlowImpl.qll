@@ -936,6 +936,56 @@ private predicate localFlowStepPlus(
 }
 
 /**
+ * Holds if `property` is a property that holds at a (reflexive, transitive)
+ * local successor node of `node1`.
+ */
+private predicate relevantProperty(Node node1, Configuration config, Property property) {
+  localFlowEntry(node1, config) and
+  property.holdsAt(getBasicBlock(node1), _)
+  or
+  exists(Node node2 |
+    localFlowStepPlus(node1, node2, _, config, _) and
+    property.holdsAt(getBasicBlock(node2), _)
+  )
+}
+
+/**
+ * This is the transitive closure of `[additional]localFlowStep` beginning
+ * at `localFlowEntry`, respecting that `prop` holds with `b` somewhere along the path,
+ * which implies that `prop` holds nowhere on the path with `b.booleanNot()`.
+ */
+pragma[nomagic]
+private predicate localFlowStepPlus_pathsens(
+  Node node1, Node node2, Configuration config, LocalCallContext cc, Property prop, boolean b
+) {
+  localFlowStepPlus(node1, node2, _, config, cc) and
+  not prop.holdsAt(getBasicBlock(node2), b.booleanNot()) and
+  (
+    localFlowEntry(node1, config) and
+    (
+      localFlowStep(node1, node2, config)
+      or
+      additionalLocalFlowStep(node1, node2, config)
+    ) and
+    relevantProperty(node1, config, prop) and
+    not prop.holdsAt(getBasicBlock(node1), b.booleanNot()) and
+    (b = true or b = false)
+    or
+    exists(Node mid |
+      localFlowStepPlus_pathsens(node1, mid, config, cc, prop, b) and
+      localFlowStep(mid, node2, config) and
+      not mid instanceof CastNode
+    )
+    or
+    exists(Node mid |
+      localFlowStepPlus_pathsens(node1, mid, config, cc, prop, b) and
+      additionalLocalFlowStep(mid, node2, config) and
+      not mid instanceof CastNode
+    )
+  )
+}
+
+/**
  * Holds if `node1` can step to `node2` in one or more local steps and this
  * path can occur as a maximal subsequence of local steps in a dataflow path.
  */
@@ -944,6 +994,9 @@ private predicate localFlowBigStep(
   Node node1, Node node2, boolean preservesValue, Configuration config, LocalCallContext callContext
 ) {
   localFlowStepPlus(node1, node2, preservesValue, config, callContext) and
+  forall(Property prop | relevantProperty(node1, config, prop) |
+    localFlowStepPlus_pathsens(node1, node2, config, callContext, prop, _)
+  ) and
   localFlowExit(node2, config)
 }
 

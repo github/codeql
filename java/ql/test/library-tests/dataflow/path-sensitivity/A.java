@@ -3,7 +3,7 @@ public class A {
 	public static void sink(Object o) {
 	}
 
-	// false positive
+	// no flow
 	public void f1(boolean b) {
 		Object x = null;
 		if (b) {
@@ -28,7 +28,7 @@ public class A {
 		}
 	}
 
-	// false positive
+	// no flow
 	public void f3(boolean b, boolean c) {
 		Object x = null;
 		if (b) {
@@ -43,7 +43,7 @@ public class A {
 		}
 	}
 
-	// false positive
+	// no flow
 	public void f4(boolean b, boolean c) {
 		Object x = null;
 		if (b) {
@@ -56,7 +56,7 @@ public class A {
 		}
 	}
 
-	// false positive
+	// no flow
 	public void f5(boolean b, boolean c) {
 		Object x = new Integer(6);
 		Object j = null;
@@ -144,11 +144,11 @@ public class A {
 		}
 	}
 
-	// false positive, because the code defining b before has a quite complicated
+	// no flow, although the code defining b before has a quite complicated
 	// control flow,
 	// but we only use b outside of loops, and after all control flow paths joined,
 	// so it is constant
-	// morally this should exhibit no flow
+	// 
 	public void f10(int c, boolean a) {
 		Object x = null;
 		boolean b = false;
@@ -199,7 +199,7 @@ public class A {
 	}
 
 	// false positive, where we would need to look at the actual CFG (not just the
-	// dataflow graph) to learn about the property
+	// dataflow graph) to learn about the property - however, already doesn't exhibit flow
 	public void f13(boolean b) {
 		Object x = new Integer(1);
 		while (true) {
@@ -212,7 +212,7 @@ public class A {
 		}
 	}
 
-	// false positive, because everything happens inside a loop
+	// no flow, everything happens inside a loop
 	public void f14() {
 		int j = 0;
 		do {
@@ -229,7 +229,7 @@ public class A {
 		} while (j < 100);
 	}
 
-	// false positive
+	// no flow
 	public void f15(boolean b) {
 		int j = 0;
 		do {
@@ -244,7 +244,7 @@ public class A {
 		} while (j < 100);
 	}
 
-	// false positive
+	// no flow
 	// attempts to confuse the guard detection logic
 	public void f16(int c, boolean a) {
 		Object x = null;
@@ -268,7 +268,7 @@ public class A {
 		}
 	}
 
-	// false positive
+	// no flow
 	public void f17(boolean b) {
 		int j = 0;
 		do {

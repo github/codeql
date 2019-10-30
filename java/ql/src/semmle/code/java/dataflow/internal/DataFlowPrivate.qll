@@ -281,6 +281,17 @@ class DataFlowType = RefType;
 
 class DataFlowLocation = Location;
 
+class DataFlowBasicBlock = BasicBlock;
+
+/** Gets the basic block in which the node `n` occurs. */
+DataFlowBasicBlock getBasicBlock(Node n) {
+  result = n.asExpr().getBasicBlock() or
+  result = n.(ImplicitVarargsArray).getCall().(Expr).getBasicBlock() or
+  result = n.(ImplicitInstanceAccess).getInstanceAccess().getCfgNode().getBasicBlock() or
+  result = n.(MallocNode).getClassInstanceExpr().getBasicBlock() or
+  result = getBasicBlock(n.(PostUpdateNode).getPreUpdateNode())
+}
+
 class DataFlowCall extends Call {
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
@@ -324,3 +335,87 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
   )
 }
+
+cached
+module DataFlowPropertyImpl {
+  /**
+   * Holds if the guards `g1` and `g2` both read `v` with inverted polarity
+   * and there exists a use-use chain from `g1` to `g2`.
+   */
+  cached
+  private predicate useUseGuards(SsaVariable v, Guard g1, Guard g2) {
+    g1 = v.getAUse() and
+    exists(boolean b |
+      adjacentUseUseSameVar+(g1, g2) and
+      g1.controls(_, b) and
+      g2.controls(_, b.booleanNot())
+    )
+  }
+
+  /**
+   * Holds if `useUseGuards` holds, and no control flow path
+   * from `g1` to the definition of `v` exists without passing
+   * through the guard `g2`.
+   */
+  cached
+  private predicate interestingGuardsWithSsaVar(SsaVariable v, Guard g1, Guard g2) {
+    useUseGuards(v, g1, g2) and
+    not readReachesCfnWithout(v, g1, g2, v.getCFGNode())
+  }
+
+  /**
+   * Holds if `read` is a read of SSA definition `def`, and `read` can
+   * reach control flow node `cfn` without passing through `except`, which is also a
+   * read of `def`.
+   * Furthermore, `read` and `except` have to be guards of opposite polarity in a
+   * use-use chain of `def`.
+   */
+  cached
+  private predicate readReachesCfnWithout(
+    SsaVariable def, RValue read, RValue except, ControlFlowNode cfn
+  ) {
+    cfn = read.getControlFlowNode() and
+    useUseGuards(def, read, except)
+    or
+    exists(ControlFlowNode mid | readReachesCfnWithout(def, read, except, mid) |
+      cfn = mid.getASuccessor() and
+      not cfn = except.getControlFlowNode()
+    )
+  }
+
+  cached
+  newtype TProperty = TBooleanSsaVar(SsaVariable v) { interestingGuardsWithSsaVar(v, _, _) }
+
+  /**
+   * A property is an object that guards (parts) of a dataflow path.
+   * If it holds at one DataFlowBasicBlock `bb1` of a dataflow path with boolean `b`,
+   * that implies that all DataFlowBasicBlock `bb2` where the property holds with
+   * `b.booleanNot()` can *not* be part of that dataflow path.
+   */
+  cached
+  abstract class Property extends TProperty {
+    cached
+    abstract predicate holdsAt(DataFlowBasicBlock bb, boolean b);
+
+    cached
+    abstract string toString();
+  }
+
+  private class BooleanSsaVarProperty extends Property, TBooleanSsaVar {
+    SsaVariable v;
+
+    BooleanSsaVarProperty() { this = TBooleanSsaVar(v) }
+
+    override predicate holdsAt(DataFlowBasicBlock bb, boolean b) {
+      exists(Guard g |
+        interestingGuardsWithSsaVar(v, g, _) or interestingGuardsWithSsaVar(v, _, g)
+      |
+        g.controls(bb, b)
+      )
+    }
+
+    override string toString() { result = "BooleanSsaVarProperty " + v.toString() }
+  }
+}
+
+import DataFlowPropertyImpl
