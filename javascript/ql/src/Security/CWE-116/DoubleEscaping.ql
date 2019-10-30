@@ -116,16 +116,12 @@ abstract class Replacement extends DataFlow::Node {
   /**
    * Gets the previous replacement in this chain of replacements.
    */
-  Replacement getPreviousReplacement() {
-    result.getOutput() = getASimplePredecessor*(getInput())
-  }
+  Replacement getPreviousReplacement() { result.getOutput() = getASimplePredecessor*(getInput()) }
 
   /**
    * Gets the next replacement in this chain of replacements.
    */
-  Replacement getNextReplacement() {
-    this = result.getPreviousReplacement()
-  }
+  Replacement getNextReplacement() { this = result.getPreviousReplacement() }
 
   /**
    * Gets an earlier replacement in this chain of replacements that
@@ -182,35 +178,25 @@ class GlobalStringReplacement extends Replacement, DataFlow::MethodCallNode {
     )
   }
 
-  override DataFlow::Node getInput() {
-    result = this.getReceiver()
-  }
+  override DataFlow::Node getInput() { result = this.getReceiver() }
 
-  override DataFlow::SourceNode getOutput() {
-    result = this
-  }
+  override DataFlow::SourceNode getOutput() { result = this }
 }
 
 /**
  * A call to `JSON.stringify`, viewed as a string replacement.
  */
 class JsonStringifyReplacement extends Replacement, DataFlow::CallNode {
-  JsonStringifyReplacement() {
-    this = DataFlow::globalVarRef("JSON").getAMemberCall("stringify")
-  }
+  JsonStringifyReplacement() { this = DataFlow::globalVarRef("JSON").getAMemberCall("stringify") }
 
   override predicate replaces(string input, string output) {
     input = "\\" and output = "\\\\"
     // the other replacements are not relevant for this query
   }
 
-  override DataFlow::Node getInput() {
-    result = this.getArgument(0)
-  }
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
 
-  override DataFlow::SourceNode getOutput() {
-    result = this
-  }
+  override DataFlow::SourceNode getOutput() { result = this }
 }
 
 /**
@@ -219,22 +205,16 @@ class JsonStringifyReplacement extends Replacement, DataFlow::CallNode {
 class JsonParseReplacement extends Replacement {
   JsonParserCall self;
 
-  JsonParseReplacement() {
-    this = self
-  }
+  JsonParseReplacement() { this = self }
 
   override predicate replaces(string input, string output) {
     input = "\\\\" and output = "\\"
     // the other replacements are not relevant for this query
   }
 
-  override DataFlow::Node getInput() {
-    result = self.getInput()
-  }
+  override DataFlow::Node getInput() { result = self.getInput() }
 
-  override DataFlow::SourceNode getOutput() {
-    result = self.getOutput()
-  }
+  override DataFlow::SourceNode getOutput() { result = self.getOutput() }
 }
 
 /**
@@ -252,17 +232,11 @@ class WrappedReplacement extends Replacement, DataFlow::CallNode {
     )
   }
 
-  override predicate replaces(string input, string output) {
-    inner.replaces(input, output)
-  }
+  override predicate replaces(string input, string output) { inner.replaces(input, output) }
 
-  override DataFlow::Node getInput() {
-    result = getArgument(i)
-  }
+  override DataFlow::Node getInput() { result = getArgument(i) }
 
-  override DataFlow::SourceNode getOutput() {
-    result = this
-  }
+  override DataFlow::SourceNode getOutput() { result = this }
 }
 
 from Replacement primary, Replacement supplementary, string message, string metachar
