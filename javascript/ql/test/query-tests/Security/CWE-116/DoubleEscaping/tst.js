@@ -106,3 +106,11 @@ function encodeDoubleQuotes(s) {
 function badWrappedEncode(s) {
   return encodeDoubleQuotes(s).replace(/&/g, "&amp;");
 }
+
+function encodeQuotes(s) {
+  return s.replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+}
+
+function badWrappedEncode2(s) {
+  return encodeQuotes(s).replace(/&/g, "&amp;");
+}

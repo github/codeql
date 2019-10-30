@@ -116,6 +116,13 @@ abstract class Replacement extends DataFlow::Node {
   }
 
   /**
+   * Gets the next replacement in this chain of replacements.
+   */
+  Replacement getNextReplacement() {
+    this = result.getPreviousReplacement()
+  }
+
+  /**
    * Gets an earlier replacement in this chain of replacements that
    * performs an escaping.
    */
@@ -231,8 +238,8 @@ class WrappedReplacement extends Replacement, DataFlow::CallNode {
 
   WrappedReplacement() {
     exists(DataFlow::FunctionNode wrapped | wrapped.getFunction() = getACallee() |
-      wrapped.getParameter(i).flowsTo(inner.getInput()) and
-      inner.getOutput().flowsTo(wrapped.getAReturn())
+      wrapped.getParameter(i).flowsTo(inner.getPreviousReplacement*().getInput()) and
+      inner.getNextReplacement*().getOutput().flowsTo(wrapped.getAReturn())
     )
   }
 
