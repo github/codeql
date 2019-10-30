@@ -914,20 +914,49 @@ class TypeofTypeExpr extends @typeoftypeexpr, TypeExpr {
 }
 
 /**
- * A type of form `E is T` where `E` is a parameter name or `this`, and `T` is a type.
+ * A function return type that refines the type of one of its parameters or `this`.
  *
- * This can only occur as the return type of a function type.
+ * Examples:
+ * ```js
+ * function f(x): x is string {}
+ * function f(x): asserts x is string {}
+ * function f(x): asserts x {}
+ * ```
  */
-class IsTypeExpr extends @predicatetypeexpr, TypeExpr {
+class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
   /**
    * Gets the parameter name or `this` token `E` in `E is T`.
    */
   VarTypeAccess getParameterName() { result = this.getChildTypeExpr(0) }
 
   /**
-   * Gets the type `T` in `E is T`.
+   * Gets the type `T` in `E is T` or `asserts E is T`.
+   *
+   * Has no results for types of form `asserts E`.
    */
   TypeExpr getPredicateType() { result = this.getChildTypeExpr(1) }
+
+  /**
+   * Holds if this is a type of form `asserts E is T` or `asserts E`.
+   */
+  predicate hasAssertsKeyword() {
+    hasAssertsKeyword(this)
+  }
+}
+
+/**
+ * A function return type of form `x is T` or `asserts x is T`.
+ *
+ * Examples:
+ * ```js
+ * function f(x): x is string {}
+ * function f(x): asserts x is string {}
+ * ```
+ */
+class IsTypeExpr extends PredicateTypeExpr {
+  IsTypeExpr() {
+    exists(getPredicateType())
+  }
 }
 
 /**
@@ -966,15 +995,16 @@ class ReadonlyTypeExpr extends @readonlytypeexpr, TypeExpr {
  *
  * This can occur as
  * - part of the operand to a `typeof` type, or
- * - as the first operand to an `is` type.
+ * - as the first operand to a predicate type
  *
  * For example, it may occur as the `E` in these examples:
  * ```
  * var x : typeof E
  * function f(...) : E is T {}
+ * function f(...) : asserts E  {}
  * ```
  *
- * In the latter case, this may also refer to the pseudo-variable `this`.
+ * In the latter two cases, this may also refer to the pseudo-variable `this`.
  */
 class VarTypeAccess extends @vartypeaccess, TypeExpr { }
 

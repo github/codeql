@@ -10,11 +10,17 @@ import com.semmle.js.ast.Visitor;
 public class PredicateTypeExpr extends TypeExpression {
   private final ITypeExpression expression;
   private final ITypeExpression type;
+  private final boolean hasAssertsKeyword;
 
-  public PredicateTypeExpr(SourceLocation loc, ITypeExpression expression, ITypeExpression type) {
+  public PredicateTypeExpr(
+      SourceLocation loc,
+      ITypeExpression expression,
+      ITypeExpression type,
+      boolean hasAssertsKeyword) {
     super("PredicateTypeExpr", loc);
     this.expression = expression;
     this.type = type;
+    this.hasAssertsKeyword = hasAssertsKeyword;
   }
 
   /** Returns the <tt>E</tt> in <tt>E is T</tt>. */
@@ -25,6 +31,10 @@ public class PredicateTypeExpr extends TypeExpression {
   /** Returns the <tt>T</tt> in <tt>E is T</tt>. */
   public ITypeExpression getTypeExpr() {
     return type;
+  }
+
+  public boolean hasAssertsKeyword() {
+    return hasAssertsKeyword;
   }
 
   @Override

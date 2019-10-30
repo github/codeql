@@ -1711,6 +1711,9 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visit(nd.getExpression(), key, 0, IdContext.varInTypeBind);
       visit(nd.getTypeExpr(), key, 1, IdContext.typeBind);
+      if (nd.hasAssertsKeyword()) {
+        trapwriter.addTuple("hasAssertsKeyword", key);
+      }
       return key;
     }
 

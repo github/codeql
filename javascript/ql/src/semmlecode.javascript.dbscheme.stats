@@ -7918,6 +7918,17 @@
 <dependencies/>
 </relation>
 <relation>
+<name>hasAssertsKeyword</name>
+<cardinality>66</cardinality>
+<columnsizes>
+<e>
+<k>stmt</k>
+<v>66</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
 <name>isAbstractMember</name>
 <cardinality>66</cardinality>
 <columnsizes>

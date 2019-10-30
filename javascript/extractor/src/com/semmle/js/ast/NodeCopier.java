@@ -719,7 +719,10 @@ public class NodeCopier implements Visitor<Void, INode> {
   @Override
   public INode visit(PredicateTypeExpr nd, Void c) {
     return new PredicateTypeExpr(
-        visit(nd.getLoc()), copy(nd.getExpression()), copy(nd.getTypeExpr()));
+        visit(nd.getLoc()),
+        copy(nd.getExpression()),
+        copy(nd.getTypeExpr()),
+        nd.hasAssertsKeyword());
   }
 
   @Override

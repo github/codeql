@@ -2200,7 +2200,10 @@ public class TypeScriptASTConverter {
 
   private Node convertTypePredicate(JsonObject node, SourceLocation loc) throws ParseError {
     return new PredicateTypeExpr(
-        loc, convertChildAsType(node, "parameterName"), convertChildAsType(node, "type"));
+        loc,
+        convertChildAsType(node, "parameterName"),
+        convertChildAsType(node, "type"),
+        node.has("assertsModifier"));
   }
 
   private Node convertTypeReference(JsonObject node, SourceLocation loc) throws ParseError {
