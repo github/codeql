@@ -54,11 +54,11 @@ DataFlow::Node getASimplePredecessor(DataFlow::Node nd) {
  * into a form described by regular expression `regex`.
  */
 predicate escapingScheme(string metachar, string regex) {
-  metachar = "&" and regex = "&.*;"
+  metachar = "&" and regex = "&.+;"
   or
-  metachar = "%" and regex = "%.*"
+  metachar = "%" and regex = "%.+"
   or
-  metachar = "\\" and regex = "\\\\.*"
+  metachar = "\\" and regex = "\\\\.+"
 }
 
 /**

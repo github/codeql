@@ -114,3 +114,12 @@ function encodeQuotes(s) {
 function badWrappedEncode2(s) {
   return encodeQuotes(s).replace(/&/g, "&amp;");
 }
+
+function roundtrip(s) {
+  return JSON.parse(JSON.stringify(s));
+}
+
+// dubious, but out of scope for this query
+function badRoundtrip(s) {
+  return s.replace(/\\\\/g, "\\").replace(/\\/g, "\\\\");
+}
