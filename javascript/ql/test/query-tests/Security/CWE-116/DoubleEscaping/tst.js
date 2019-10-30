@@ -83,3 +83,10 @@ function badEncodeWithReplacer(s) {
 function badRoundtrip(s) {
   return s.replace(/\\\\/g, "\\").replace(/\\/g, "\\\\");
 }
+
+function testWithCapturedVar(x) {
+  var captured = x;
+  (function() {
+    captured = captured.replace(/\\/g, "\\\\");
+  })();
+}

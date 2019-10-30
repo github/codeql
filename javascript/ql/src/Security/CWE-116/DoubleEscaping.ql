@@ -46,7 +46,12 @@ string getStringValue(RegExpLiteral rl) {
  */
 DataFlow::Node getASimplePredecessor(DataFlow::Node nd) {
   result = nd.getAPredecessor() and
-  not nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof SsaPhiNode
+  not exists(SsaDefinition ssa |
+    ssa = nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition()
+  |
+    ssa instanceof SsaPhiNode or
+    ssa instanceof SsaVariableCapture
+  )
 }
 
 /**
