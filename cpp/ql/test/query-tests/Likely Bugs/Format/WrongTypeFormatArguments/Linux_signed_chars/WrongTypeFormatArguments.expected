@@ -16,8 +16,8 @@
 | printf1.h:114:18:114:18 | d | This argument should be of type 'long double' but is of type 'double' |
 | printf1.h:147:19:147:19 | i | This argument should be of type 'long long' but is of type 'int' |
 | printf1.h:148:19:148:20 | ui | This argument should be of type 'unsigned long long' but is of type 'unsigned int' |
-| printf1.h:159:18:159:18 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:160:18:160:18 | i | This argument should be of type 'char *' but is of type 'int' |
+| printf1.h:161:21:161:21 | s | This argument should be of type 'int' but is of type 'char *' |
 | printf1.h:167:17:167:17 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:168:18:168:18 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:169:19:169:19 | i | This argument should be of type 'char *' but is of type 'int' |
@@ -35,18 +35,24 @@
 | printf1.h:192:19:192:19 | s | This argument should be of type 'int' but is of type 'char *' |
 | printf1.h:193:22:193:22 | s | This argument should be of type 'int' but is of type 'char *' |
 | printf1.h:194:25:194:25 | i | This argument should be of type 'char *' but is of type 'int' |
-| printf1.h:213:28:213:28 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:198:24:198:24 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:199:21:199:21 | i | This argument should be of type 'char *' but is of type 'int' |
+| printf1.h:202:26:202:26 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:203:23:203:23 | i | This argument should be of type 'char *' but is of type 'int' |
+| printf1.h:206:25:206:25 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:207:22:207:22 | i | This argument should be of type 'char *' but is of type 'int' |
+| printf1.h:210:26:210:26 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:211:23:211:23 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:214:28:214:28 | s | This argument should be of type 'int' but is of type 'char *' |
 | printf1.h:215:28:215:28 | s | This argument should be of type 'int' but is of type 'char *' |
-| printf1.h:216:28:216:28 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:216:25:216:25 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:221:18:221:18 | s | This argument should be of type 'int' but is of type 'char *' |
 | printf1.h:222:20:222:20 | s | This argument should be of type 'int' but is of type 'char *' |
-| printf1.h:233:22:233:22 | s | This argument should be of type 'int' but is of type 'char *' |
-| printf1.h:233:25:233:25 | i | This argument should be of type 'char *' but is of type 'int' |
-| printf1.h:234:22:234:22 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:225:23:225:23 | i | This argument should be of type 'char *' but is of type 'int' |
+| printf1.h:228:24:228:24 | i | This argument should be of type 'char *' but is of type 'int' |
+| printf1.h:231:25:231:25 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:234:25:234:25 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:235:22:235:22 | s | This argument should be of type 'int' but is of type 'char *' |
-| printf1.h:235:25:235:25 | i | This argument should be of type 'char *' but is of type 'int' |
 | real_world.h:61:21:61:22 | & ... | This argument should be of type 'int *' but is of type 'short *' |
 | real_world.h:62:22:62:23 | & ... | This argument should be of type 'short *' but is of type 'int *' |
 | real_world.h:63:22:63:24 | & ... | This argument should be of type 'short *' but is of type 'unsigned int *' |

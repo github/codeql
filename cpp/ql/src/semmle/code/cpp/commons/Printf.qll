@@ -134,8 +134,15 @@ class FormattingFunctionCall extends Expr {
    * Gets the argument corresponding to the nth conversion specifier.
    */
   Expr getConversionArgument(int n) {
-    result = this
-          .getFormatArgument(this.getFormat().(FormatLiteral).getFormatArgumentIndexFor(n, 2))
+    exists(FormatLiteral fl |
+      fl = this.getFormat() and
+      (
+        result = this.getFormatArgument(fl.getParameterFieldPositional(n))
+        or
+        result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 2)) and
+        not exists(fl.getParameterFieldPositional(n))
+      )
+    )
   }
 
   /**
@@ -144,8 +151,15 @@ class FormattingFunctionCall extends Expr {
    * an explicit minimum field width).
    */
   Expr getMinFieldWidthArgument(int n) {
-    result = this
-          .getFormatArgument(this.getFormat().(FormatLiteral).getFormatArgumentIndexFor(n, 0))
+    exists(FormatLiteral fl |
+      fl = this.getFormat() and
+      (
+        result = this.getFormatArgument(fl.getMinFieldWidthPositional(n))
+        or
+        result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 0)) and
+        not exists(fl.getMinFieldWidthPositional(n))
+      )
+    )
   }
 
   /**
@@ -154,8 +168,15 @@ class FormattingFunctionCall extends Expr {
    * precision).
    */
   Expr getPrecisionArgument(int n) {
-    result = this
-          .getFormatArgument(this.getFormat().(FormatLiteral).getFormatArgumentIndexFor(n, 1))
+    exists(FormatLiteral fl |
+      fl = this.getFormat() and
+      (
+        result = this.getFormatArgument(fl.getPrecisionPositional(n))
+        or
+        result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 1)) and
+        not exists(fl.getPrecisionPositional(n))
+      )
+    )
   }
 
   /**
@@ -355,6 +376,14 @@ class FormatLiteral extends Literal {
   string getParameterField(int n) { this.parseConvSpec(n, _, result, _, _, _, _, _) }
 
   /**
+   * Gets the parameter field of the nth conversion specifier (if it has one) as a
+   * zero-based number.
+   */
+  int getParameterFieldPositional(int n) {
+    result = this.getParameterField(n).regexpCapture("([0-9]*)\\$", 1).toInt() - 1
+  }
+
+  /**
    * Gets the flags of the nth conversion specifier.
    */
   string getFlags(int n) { this.parseConvSpec(n, _, _, result, _, _, _, _) }
@@ -424,6 +453,14 @@ class FormatLiteral extends Literal {
   int getMinFieldWidth(int n) { result = this.getMinFieldWidthOpt(n).toInt() }
 
   /**
+   * Gets the zero-based parameter number of the minimum field width of the nth
+   * conversion specifier, if it is implicit and uses a positional parameter.
+   */
+  int getMinFieldWidthPositional(int n) {
+    result = this.getMinFieldWidthOpt(n).regexpCapture("\\*([0-9]*)\\$", 1).toInt() - 1
+  }
+
+  /**
    * Gets the precision of the nth conversion specifier (empty string if none is given).
    */
   string getPrecisionOpt(int n) { this.parseConvSpec(n, _, _, _, _, result, _, _) }
@@ -451,6 +488,14 @@ class FormatLiteral extends Literal {
     if this.getPrecisionOpt(n) = "."
     then result = 0
     else result = this.getPrecisionOpt(n).regexpCapture("\\.([0-9]*)", 1).toInt()
+  }
+
+  /**
+   * Gets the zero-based parameter number of the precision of the nth conversion
+   * specifier, if it is implicit and uses a positional parameter.
+   */
+  int getPrecisionPositional(int n) {
+    result = this.getPrecisionOpt(n).regexpCapture("\\.\\*([0-9]*)\\$", 1).toInt() - 1
   }
 
   /**

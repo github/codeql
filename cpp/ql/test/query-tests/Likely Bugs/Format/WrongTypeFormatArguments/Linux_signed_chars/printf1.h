@@ -156,9 +156,9 @@ void complexFormatSymbols(int i, const char *s)
 {
   // positional arguments
   printf("%1$i", i, s); // GOOD
-  printf("%2$s", i, s); // GOOD [FALSE POSITIVE]
+  printf("%2$s", i, s); // GOOD
   printf("%1$s", i, s); // BAD
-  printf("%2$i", i, s); // BAD [NOT DETECTED]
+  printf("%2$i", i, s); // BAD
 
   // width / precision
   printf("%4i", i); // GOOD
@@ -195,22 +195,22 @@ void complexFormatSymbols(int i, const char *s)
 
   // positional arguments mixed with variable width / precision
   printf("%2$*1$s", i, s); // GOOD
-  printf("%2$*2$s", i, s); // BAD [NOT DETECTED]
-  printf("%1$*1$s", i, s); // BAD [NOT DETECTED]
+  printf("%2$*2$s", i, s); // BAD
+  printf("%1$*1$s", i, s); // BAD
 
   printf("%2$*1$.4s", i, s); // GOOD
-  printf("%2$*2$.4s", i, s); // BAD [NOT DETECTED]
-  printf("%1$*1$.4s", i, s); // BAD [NOT DETECTED]
+  printf("%2$*2$.4s", i, s); // BAD
+  printf("%1$*1$.4s", i, s); // BAD
 
   printf("%2$.*1$s", i, s); // GOOD
-  printf("%2$.*2$s", i, s); // BAD [NOT DETECTED]
-  printf("%1$.*1$s", i, s); // BAD [NOT DETECTED]
+  printf("%2$.*2$s", i, s); // BAD
+  printf("%1$.*1$s", i, s); // BAD
 
   printf("%2$4.*1$s", i, s); // GOOD
-  printf("%2$4.*2$s", i, s); // BAD [NOT DETECTED]
-  printf("%1$4.*1$s", i, s); // BAD [NOT DETECTED]
+  printf("%2$4.*2$s", i, s); // BAD
+  printf("%1$4.*1$s", i, s); // BAD
 
-  printf("%2$*1$.*1$s", i, s); // GOOD [FALSE POSITIVE]
+  printf("%2$*1$.*1$s", i, s); // GOOD
   printf("%2$*2$.*1$s", i, s); // BAD
   printf("%2$*1$.*2$s", i, s); // BAD
   printf("%1$*1$.*1$s", i, s); // BAD
@@ -222,15 +222,15 @@ void complexFormatSymbols(int i, const char *s)
   printf("%1$-4i", s); // BAD
 
   printf("%1$-4s", s, i); // GOOD
-  printf("%2$-4s", s, i); // BAD [NOT DETECTED]
+  printf("%2$-4s", s, i); // BAD
 
   printf("%1$-.4s", s, i); // GOOD
-  printf("%2$-.4s", s, i); // BAD [NOT DETECTED]
+  printf("%2$-.4s", s, i); // BAD
 
   printf("%1$-4.4s", s, i); // GOOD
-  printf("%2$-4.4s", s, i); // BAD [NOT DETECTED]
- 
-  printf("%1$-*2$s", s, i); // GOOD [FALSE POSITIVE x2]
-  printf("%2$-*2$s", s, i); // BAD [ADDITIONAL RESULT IS A FALSE POSITIVE]
-  printf("%1$-*1$s", s, i); // BAD [ADDITIONAL RESULT IS A FALSE POSITIVE]
+  printf("%2$-4.4s", s, i); // BAD
+
+  printf("%1$-*2$s", s, i); // GOOD
+  printf("%2$-*2$s", s, i); // BAD
+  printf("%1$-*1$s", s, i); // BAD
 }
