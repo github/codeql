@@ -89,3 +89,12 @@ function badUnescape2(s) {
 function goodUnescape2(s) {
   return JSON.parse(s.replace(/\\u003C/g, "<").replace(/\\u003E/g, ">"));
 }
+
+function badEncodeWithReplacer(s) {
+  var repl = {
+    '"': "&quot;",
+    "'": "&apos;",
+    "&": "&amp;"
+  };
+  return s.replace(/["']/g, (c) => repl[c]).replace(/&/g, "&amp;");
+}
