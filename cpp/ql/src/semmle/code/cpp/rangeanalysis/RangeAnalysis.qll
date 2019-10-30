@@ -80,7 +80,7 @@ private module RangeAnalysisCache {
   cached
   module RangeAnalysisPublic {
     /**
-     * Holds if `b + delta` is a valid bound for `i`.
+     * Holds if `b + delta` is a valid bound for `i` and this is the best such delta.
      * - `upper = true`  : `i <= b + delta`
      * - `upper = false` : `i >= b + delta`
      *
@@ -90,11 +90,12 @@ private module RangeAnalysisCache {
      */
     cached
     predicate boundedInstruction(Instruction i, Bound b, int delta, boolean upper, Reason reason) {
-      boundedInstruction(i, b, delta, upper, _, _, reason)
+      boundedInstruction(i, b, delta, upper, _, _, reason) and
+      bestInstructionBound(i, b, delta, upper)
     }
 
     /**
-     * Holds if `b + delta` is a valid bound for `op`.
+     * Holds if `b + delta` is a valid bound for `op` and this is the best such delta.
      * - `upper = true`  : `op <= b + delta`
      * - `upper = false` : `op >= b + delta`
      *
@@ -104,9 +105,8 @@ private module RangeAnalysisCache {
      */
     cached
     predicate boundedOperand(Operand op, Bound b, int delta, boolean upper, Reason reason) {
-      boundedNonPhiOperand(op, b, delta, upper, _, _, reason)
-      or
-      boundedPhiOperand(op, b, delta, upper, _, _, reason)
+      boundedOperandCand(op, b, delta, upper, reason) and
+      bestOperandBound(op, b, delta, upper)
     }
   }
 
@@ -123,6 +123,43 @@ private module RangeAnalysisCache {
 
 private import RangeAnalysisCache
 import RangeAnalysisPublic
+
+/**
+ * Holds if `b + delta` is a valid bound for `e` and this is the best such delta.
+ * - `upper = true`  : `e <= b + delta`
+ * - `upper = false` : `e >= b + delta`
+ */
+private predicate bestInstructionBound(Instruction i, Bound b, int delta, boolean upper) {
+  delta = min(int d | boundedInstruction(i, b, d, upper, _, _, _)) and upper = true
+  or
+  delta = max(int d | boundedInstruction(i, b, d, upper, _, _, _)) and upper = false
+}
+
+/**
+ * Holds if `b + delta` is a valid bound for `op`.
+ * - `upper = true`  : `op <= b + delta`
+ * - `upper = false` : `op >= b + delta`
+ *
+ * The reason for the bound is given by `reason` and may be either a condition
+ * or `NoReason` if the bound was proven directly without the use of a bounding
+ * condition.
+ */
+private predicate boundedOperandCand(Operand op, Bound b, int delta, boolean upper, Reason reason) {
+  boundedNonPhiOperand(op, b, delta, upper, _, _, reason)
+  or
+  boundedPhiOperand(op, b, delta, upper, _, _, reason)
+}
+
+/**
+ * Holds if `b + delta` is a valid bound for `op` and this is the best such delta.
+ * - `upper = true`  : `op <= b + delta`
+ * - `upper = false` : `op >= b + delta`
+ */
+private predicate bestOperandBound(Operand op, Bound b, int delta, boolean upper) {
+  delta = min(int d | boundedOperandCand(op, b, d, upper, _)) and upper = true
+  or
+  delta = max(int d | boundedOperandCand(op, b, d, upper, _)) and upper = false
+}
 
 /**
  * Gets a condition that tests whether `vn` equals `bound + delta`.
