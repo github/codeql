@@ -156,6 +156,14 @@ class GlobalStringReplacement extends Replacement, DataFlow::MethodCallNode {
   override predicate replaces(string input, string output) {
     input = getStringValue(pattern) and
     output = this.getArgument(1).getStringValue()
+    or
+    exists(DataFlow::FunctionNode replacer, DataFlow::PropRead pr, DataFlow::ObjectLiteralNode map |
+      replacer = getCallback(1) and
+      replacer.getParameter(0).flowsToExpr(pr.getPropertyNameExpr()) and
+      pr = map.getAPropertyRead() and
+      pr.flowsTo(replacer.getAReturn()) and
+      map.asExpr().(ObjectExpr).getPropertyByName(input).getInit().getStringValue() = output
+    )
   }
 
   override DataFlow::Node getInput() {

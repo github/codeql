@@ -69,3 +69,12 @@ function badEncode(s) {
           .replace(indirect2, "&apos;")
           .replace(indirect3, "&amp;");
 }
+
+function badEncodeWithReplacer(s) {
+  var repl = {
+    '"': "&quot;",
+    "'": "&apos;",
+    "&": "&amp;"
+  };
+  return s.replace(/["']/g, (c) => repl[c]).replace(/&/g, "&amp;");
+}
