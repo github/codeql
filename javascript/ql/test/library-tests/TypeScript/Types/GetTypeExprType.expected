@@ -57,14 +57,14 @@
 | tst.ts:37:17:37:18 | [] | [] |
 | tst.ts:38:27:38:47 | [number ... ring[]] | [number, ...string[]] |
 | tst.ts:38:28:38:33 | number | number |
-| tst.ts:38:36:38:46 | ...string[] | string[] |
+| tst.ts:38:36:38:46 | ...string[] | string |
 | tst.ts:38:39:38:44 | string | string |
 | tst.ts:38:39:38:46 | string[] | string[] |
 | tst.ts:39:39:39:68 | [number ... mber[]] | [number, string?, ...number[]] |
 | tst.ts:39:40:39:45 | number | number |
 | tst.ts:39:48:39:53 | string | string |
 | tst.ts:39:48:39:54 | string? | string |
-| tst.ts:39:57:39:67 | ...number[] | number[] |
+| tst.ts:39:57:39:67 | ...number[] | number |
 | tst.ts:39:60:39:65 | number | number |
 | tst.ts:39:60:39:67 | number[] | number[] |
 | tst.ts:40:18:40:24 | unknown | unknown |
@@ -84,10 +84,10 @@
 | type_definitions.ts:11:10:11:15 | number | number |
 | type_definitions.ts:16:12:16:16 | Color | Color |
 | type_definitions.ts:19:8:19:24 | EnumWithOneMember | EnumWithOneMember |
-| type_definitions.ts:21:6:21:10 | Alias | T[] |
+| type_definitions.ts:21:6:21:10 | Alias | Alias<T> |
 | type_definitions.ts:21:12:21:12 | T | T |
 | type_definitions.ts:21:17:21:17 | T | T |
-| type_definitions.ts:21:17:21:19 | T[] | T[] |
-| type_definitions.ts:22:26:22:30 | Alias | T[] |
-| type_definitions.ts:22:26:22:38 | Alias<number> | number[] |
+| type_definitions.ts:21:17:21:19 | T[] | Alias<T> |
+| type_definitions.ts:22:26:22:30 | Alias | Alias<T> |
+| type_definitions.ts:22:26:22:38 | Alias<number> | Alias<number> |
 | type_definitions.ts:22:32:22:37 | number | number |

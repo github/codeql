@@ -1,3 +1,5 @@
+| Alias<T> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
+| Alias<number> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
 | C | type_definition_objects.ts:3:8:3:17 | class C {} |
 | C<T> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
 | C<number> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
