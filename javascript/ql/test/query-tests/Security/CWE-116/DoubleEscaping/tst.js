@@ -90,3 +90,7 @@ function testWithCapturedVar(x) {
     captured = captured.replace(/\\/g, "\\\\");
   })();
 }
+
+function encodeDecodeEncode(s) {
+ return goodEncode(goodDecode(goodEncode(s)));
+}
