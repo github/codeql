@@ -78,3 +78,8 @@ function badEncodeWithReplacer(s) {
   };
   return s.replace(/["']/g, (c) => repl[c]).replace(/&/g, "&amp;");
 }
+
+// dubious, but out of scope for this query
+function badRoundtrip(s) {
+  return s.replace(/\\\\/g, "\\").replace(/\\/g, "\\\\");
+}
