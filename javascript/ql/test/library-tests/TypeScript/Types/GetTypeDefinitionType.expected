@@ -1,4 +1,7 @@
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
+| type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
+| type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
+| type_alias.ts:19:1:21:57 | type Vi ... ode[]]; | VirtualNode |
 | type_definition_objects.ts:3:8:3:17 | class C {} | C |
 | type_definition_objects.ts:6:8:6:16 | enum E {} | E |
 | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} | I<S> |

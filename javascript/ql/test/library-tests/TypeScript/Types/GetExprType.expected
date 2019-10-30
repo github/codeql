@@ -93,6 +93,30 @@
 | tst.ts:43:28:43:30 | foo | "foo" |
 | tst.ts:43:33:43:37 | "foo" | "foo" |
 | type_alias.ts:3:5:3:5 | b | boolean |
+| type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
+| type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
+| type_alias.ts:14:10:14:17 | property | string |
+| type_alias.ts:17:5:17:8 | json | Json |
+| type_alias.ts:21:18:21:35 | [key: string]: any | any |
+| type_alias.ts:21:19:21:21 | key | string |
+| type_alias.ts:23:7:23:12 | myNode | VirtualNode |
+| type_alias.ts:24:5:27:5 | ["div", ... ]\\n    ] | VirtualNode |
+| type_alias.ts:24:6:24:10 | "div" | "div" |
+| type_alias.ts:24:13:24:28 | { id: "parent" } | string \| { [key: string]: any; } |
+| type_alias.ts:24:15:24:16 | id | string |
+| type_alias.ts:24:19:24:26 | "parent" | "parent" |
+| type_alias.ts:25:9:25:61 | ["div", ... child"] | VirtualNode |
+| type_alias.ts:25:10:25:14 | "div" | "div" |
+| type_alias.ts:25:17:25:37 | { id: " ... hild" } | string \| { [key: string]: any; } |
+| type_alias.ts:25:19:25:20 | id | string |
+| type_alias.ts:25:23:25:35 | "first-child" | "first-child" |
+| type_alias.ts:25:40:25:60 | "I'm th ...  child" | "I'm the first child" |
+| type_alias.ts:26:9:26:63 | ["div", ... child"] | VirtualNode |
+| type_alias.ts:26:10:26:14 | "div" | "div" |
+| type_alias.ts:26:17:26:38 | { id: " ... hild" } | string \| { [key: string]: any; } |
+| type_alias.ts:26:19:26:20 | id | string |
+| type_alias.ts:26:23:26:36 | "second-child" | "second-child" |
+| type_alias.ts:26:41:26:62 | "I'm th ...  child" | "I'm the second child" |
 | type_definition_objects.ts:1:13:1:17 | dummy | typeof dummy.ts |
 | type_definition_objects.ts:1:24:1:32 | "./dummy" | any |
 | type_definition_objects.ts:3:14:3:14 | C | C |
