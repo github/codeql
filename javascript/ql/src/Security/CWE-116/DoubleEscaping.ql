@@ -167,6 +167,52 @@ class GlobalStringReplacement extends Replacement, DataFlow::MethodCallNode {
   }
 }
 
+/**
+ * A call to `JSON.stringify`, viewed as a string replacement.
+ */
+class JsonStringifyReplacement extends Replacement, DataFlow::CallNode {
+  JsonStringifyReplacement() {
+    this = DataFlow::globalVarRef("JSON").getAMemberCall("stringify")
+  }
+
+  override predicate replaces(string input, string output) {
+    input = "\\" and output = "\\\\"
+    // the other replacements are not relevant for this query
+  }
+
+  override DataFlow::Node getInput() {
+    result = this.getArgument(0)
+  }
+
+  override DataFlow::SourceNode getOutput() {
+    result = this
+  }
+}
+
+/**
+ * A call to `JSON.parse`, viewed as a string replacement.
+ */
+class JsonParseReplacement extends Replacement {
+  JsonParserCall self;
+
+  JsonParseReplacement() {
+    this = self
+  }
+
+  override predicate replaces(string input, string output) {
+    input = "\\\\" and output = "\\"
+    // the other replacements are not relevant for this query
+  }
+
+  override DataFlow::Node getInput() {
+    result = self.getInput()
+  }
+
+  override DataFlow::SourceNode getOutput() {
+    result = self.getOutput()
+  }
+}
+
 from Replacement primary, Replacement supplementary, string message, string metachar
 where
   primary.escapes(metachar, _) and

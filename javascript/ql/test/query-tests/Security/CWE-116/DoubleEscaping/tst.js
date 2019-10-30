@@ -69,3 +69,23 @@ function badEncode(s) {
           .replace(indirect2, "&apos;")
           .replace(indirect3, "&amp;");
 }
+
+function badEscape1(s) {
+  return JSON.stringify(
+           s.replace(/</g, "\\u003C")
+            .replace(/>/g, "\\u003E")
+         );
+}
+
+function goodEscape1(s) {
+  return JSON.stringify(s)
+             .replace(/</g, "\\u003C").replace(/>/g, "\\u003E");
+}
+
+function badUnescape2(s) {
+  return JSON.parse(s).replace(/\\u003C/g, "<").replace(/\\u003E/g, ">");
+}
+
+function goodUnescape2(s) {
+  return JSON.parse(s.replace(/\\u003C/g, "<").replace(/\\u003E/g, ">"));
+}
