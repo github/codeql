@@ -461,7 +461,10 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
 
   override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     if hasSpecificReadSideEffect(any(Opcode::BufferReadSideEffect op))
-    then result instanceof UnknownType
+    then
+      result instanceof UnknownType and
+      tag instanceof OnlyInstructionTag and
+      operandTag instanceof SideEffectOperandTag
     else (
       tag instanceof OnlyInstructionTag and
       result = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
