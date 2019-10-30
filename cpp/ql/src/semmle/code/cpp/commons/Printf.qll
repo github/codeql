@@ -131,16 +131,11 @@ class FormattingFunctionCall extends Expr {
   }
 
   /**
-   * Gets the argument corresponding to the nth conversion specifier
+   * Gets the argument corresponding to the nth conversion specifier.
    */
   Expr getConversionArgument(int n) {
-    exists(FormatLiteral fl, int b, int o |
-      fl = this.getFormat() and
-      b = sum(int i, int toSum | i < n and toSum = fl.getNumArgNeeded(i) | toSum) and
-      o = fl.getNumArgNeeded(n) and
-      o > 0 and
-      result = this.getFormatArgument(b + o - 1)
-    )
+    result = this
+          .getFormatArgument(this.getFormat().(FormatLiteral).getFormatArgumentIndexFor(n, 2))
   }
 
   /**
@@ -149,12 +144,8 @@ class FormattingFunctionCall extends Expr {
    * an explicit minimum field width).
    */
   Expr getMinFieldWidthArgument(int n) {
-    exists(FormatLiteral fl, int b |
-      fl = this.getFormat() and
-      b = sum(int i, int toSum | i < n and toSum = fl.getNumArgNeeded(i) | toSum) and
-      fl.hasImplicitMinFieldWidth(n) and
-      result = this.getFormatArgument(b)
-    )
+    result = this
+          .getFormatArgument(this.getFormat().(FormatLiteral).getFormatArgumentIndexFor(n, 0))
   }
 
   /**
@@ -163,13 +154,8 @@ class FormattingFunctionCall extends Expr {
    * precision).
    */
   Expr getPrecisionArgument(int n) {
-    exists(FormatLiteral fl, int b, int o |
-      fl = this.getFormat() and
-      b = sum(int i, int toSum | i < n and toSum = fl.getNumArgNeeded(i) | toSum) and
-      (if fl.hasImplicitMinFieldWidth(n) then o = 1 else o = 0) and
-      fl.hasImplicitPrecision(n) and
-      result = this.getFormatArgument(b + o)
-    )
+    result = this
+          .getFormatArgument(this.getFormat().(FormatLiteral).getFormatArgumentIndexFor(n, 1))
   }
 
   /**
@@ -785,18 +771,52 @@ class FormatLiteral extends Literal {
   }
 
   /**
+   * Holds if the nth conversion specifier of this format string (if `mode = 2`), it's
+   * minimum field width (if `mode = 0`) or it's precision (if `mode = 1`) requires a
+   * format argument.
+   *
+   * Most conversion specifiers require a format argument, whereas minimum field width
+   * and precision only require a format argument if they are present and a `*` was
+   * used for it's value in the format string.
+   */
+  private predicate hasFormatArgumentIndexFor(int n, int mode) {
+    mode = 0 and
+    this.hasImplicitMinFieldWidth(n)
+    or
+    mode = 1 and
+    this.hasImplicitPrecision(n)
+    or
+    mode = 2 and
+    exists(this.getConvSpecOffset(n)) and
+    not this.getConversionChar(n) = "m"
+  }
+
+  /**
+   * Gets the format argument index for the nth conversion specifier of this format
+   * string (if `mode = 2`), it's minimum field width (if `mode = 0`) or it's
+   * precision (if `mode = 1`).  Has no result if that element is not present.  Does
+   * not account for positional arguments (`$`).
+   */
+  int getFormatArgumentIndexFor(int n, int mode) {
+    hasFormatArgumentIndexFor(n, mode) and
+    result = count(int n2, int mode2 |
+      hasFormatArgumentIndexFor(n2, mode2) and
+      (
+        n2 < n
+        or
+        n2 = n and
+        mode2 < mode
+      )
+    )
+  }
+
+  /**
    * Gets the number of arguments required by the nth conversion specifier
    * of this format string.
    */
   int getNumArgNeeded(int n) {
     exists(this.getConvSpecOffset(n)) and
-    not this.getConversionChar(n) = "%" and
-    exists(int n1, int n2, int n3 |
-      (if this.hasImplicitMinFieldWidth(n) then n1 = 1 else n1 = 0) and
-      (if this.hasImplicitPrecision(n) then n2 = 1 else n2 = 0) and
-      (if this.getConversionChar(n) = "m" then n3 = 0 else n3 = 1) and
-      result = n1 + n2 + n3
-    )
+    result = count(int mode | hasFormatArgumentIndexFor(n, mode))
   }
 
   /**
