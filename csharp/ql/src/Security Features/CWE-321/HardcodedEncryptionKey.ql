@@ -1,6 +1,6 @@
 /**
- * @name Do not use hard-coded encryption keys.
- * @description The .Key property or rgbKey parameter of a SymmetricAlgorithm should never be a hardcoded value.
+ * @name Hard-coded encryption key
+ * @description The .Key property or rgbKey parameter of a SymmetricAlgorithm should never be a hard-coded value.
  * @kind problem
  * @id cs/hardcoded-key
  * @problem.severity error
