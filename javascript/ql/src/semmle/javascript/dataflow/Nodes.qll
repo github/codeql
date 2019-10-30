@@ -965,7 +965,7 @@ module ClassNode {
       )
       or
       exists(string name |
-        GlobalAccessPath::fromRhs(this) = name and
+        this = AccessPath::getAnAssignmentTo(name) and
         result = getAPrototypeReferenceInFile(name, getFile())
       )
       or
