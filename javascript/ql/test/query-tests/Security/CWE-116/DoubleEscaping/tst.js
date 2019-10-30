@@ -130,3 +130,7 @@ function testWithCapturedVar(x) {
     captured = captured.replace(/\\/g, "\\\\");
   })();
 }
+
+function cloneAndStringify(s) {
+  return JSON.stringify(JSON.parse(JSON.stringify(s)));
+}

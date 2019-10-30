@@ -135,7 +135,9 @@ abstract class Replacement extends DataFlow::Node {
     exists(Replacement pred | pred = this.getPreviousReplacement() |
       if pred.escapes(_, metachar)
       then result = pred
-      else result = pred.getAnEarlierEscaping(metachar)
+      else (
+        not pred.unescapes(metachar, _) and result = pred.getAnEarlierEscaping(metachar)
+      )
     )
   }
 
@@ -147,7 +149,9 @@ abstract class Replacement extends DataFlow::Node {
     exists(Replacement succ | this = succ.getPreviousReplacement() |
       if succ.unescapes(metachar, _)
       then result = succ
-      else result = succ.getALaterUnescaping(metachar)
+      else (
+        not succ.escapes(_, metachar) and result = succ.getALaterUnescaping(metachar)
+      )
     )
   }
 }
