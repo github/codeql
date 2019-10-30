@@ -165,7 +165,7 @@ module AccessPath {
   }
 
   /**
-   * Holds if there is an assignment to `accessPath` in `file`, not counting
+   * Holds if there is an assignment to the global `accessPath` in `file`, not counting
    * self-assignments.
    */
   private predicate isAssignedInFile(string accessPath, File file) {
