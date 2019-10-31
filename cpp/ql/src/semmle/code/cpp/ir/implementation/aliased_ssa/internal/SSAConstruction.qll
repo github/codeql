@@ -1,8 +1,5 @@
 import SSAConstructionInternal
-private import cpp
-private import semmle.code.cpp.ir.implementation.Opcode
-private import semmle.code.cpp.ir.implementation.internal.OperandTag
-private import semmle.code.cpp.ir.internal.Overlap
+private import SSAConstructionImports
 private import NewIR
 
 private class OldBlock = Reachability::ReachableBlock;
@@ -18,7 +15,7 @@ private module Cached {
   }
 
   cached
-  predicate functionHasIR(Function func) {
+  predicate functionHasIR(Language::Function func) {
     exists(OldIR::IRFunction irFunc | irFunc.getFunction() = func)
   }
 
@@ -42,7 +39,7 @@ private module Cached {
       not oldInstruction instanceof OldIR::PhiInstruction and
       hasChiNode(_, oldInstruction)
     } or
-    Unreached(Function function) {
+    Unreached(Language::Function function) {
       exists(OldInstruction oldInstruction |
         function = oldInstruction.getEnclosingFunction() and
         Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
@@ -50,12 +47,14 @@ private module Cached {
     }
 
   cached
-  predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag, Type type) {
+  predicate hasTempVariable(
+    Language::Function func, Language::AST ast, TempVariableTag tag, Language::LanguageType type
+  ) {
     exists(OldIR::IRTempVariable var |
       var.getEnclosingFunction() = func and
       var.getAST() = ast and
       var.getTag() = tag and
-      var.getType() = type
+      var.getLanguageType() = type
     )
   }
 
@@ -135,24 +134,12 @@ private module Cached {
   }
 
   cached
-  Type getInstructionOperandType(Instruction instr, TypedOperandTag tag) {
+  Language::LanguageType getInstructionOperandType(Instruction instr, TypedOperandTag tag) {
     exists(OldInstruction oldInstruction, OldIR::TypedOperand oldOperand |
       oldInstruction = getOldInstruction(instr) and
       oldOperand = oldInstruction.getAnOperand() and
       tag = oldOperand.getOperandTag() and
-      result = oldOperand.getType()
-    )
-  }
-
-  cached
-  int getInstructionOperandSize(Instruction instr, SideEffectOperandTag tag) {
-    exists(OldInstruction oldInstruction, OldIR::SideEffectOperand oldOperand |
-      oldInstruction = getOldInstruction(instr) and
-      oldOperand = oldInstruction.getAnOperand() and
-      tag = oldOperand.getOperandTag() and
-      // Only return a result for operands that need an explicit result size.
-      oldOperand.getType() instanceof UnknownType and
-      result = oldOperand.getSize()
+      result = oldOperand.getLanguageType()
     )
   }
 
@@ -196,20 +183,21 @@ private module Cached {
   }
 
   cached
-  Expr getInstructionConvertedResultExpression(Instruction instruction) {
+  Language::Expr getInstructionConvertedResultExpression(Instruction instruction) {
     result = getOldInstruction(instruction).getConvertedResultExpression()
   }
 
   cached
-  Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
+  Language::Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
     result = getOldInstruction(instruction).getUnconvertedResultExpression()
   }
 
-  /**
+  /*
    * This adds Chi nodes to the instruction successor relation; if an instruction has a Chi node,
    * that node is its successor in the new successor relation, and the Chi node's successors are
    * the new instructions generated from the successors of the old instruction
    */
+
   cached
   Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
     if hasChiNode(_, getOldInstruction(instruction))
@@ -252,7 +240,7 @@ private module Cached {
   }
 
   cached
-  Locatable getInstructionAST(Instruction instruction) {
+  Language::AST getInstructionAST(Instruction instruction) {
     exists(OldInstruction oldInstruction |
       instruction = WrappedInstruction(oldInstruction)
       or
@@ -270,29 +258,25 @@ private module Cached {
   }
 
   cached
-  predicate instructionHasType(Instruction instruction, Type type, boolean isGLValue) {
+  Language::LanguageType getInstructionResultType(Instruction instruction) {
     exists(OldInstruction oldInstruction |
       instruction = WrappedInstruction(oldInstruction) and
-      type = oldInstruction.getResultType() and
-      if oldInstruction.isGLValue() then isGLValue = true else isGLValue = false
+      result = oldInstruction.getResultLanguageType()
     )
     or
     exists(OldInstruction oldInstruction, Alias::VirtualVariable vvar |
       instruction = Chi(oldInstruction) and
       hasChiNode(vvar, oldInstruction) and
-      type = vvar.getType() and
-      isGLValue = false
+      result = vvar.getType()
     )
     or
     exists(Alias::MemoryLocation location |
       instruction = Phi(_, location) and
-      type = location.getType() and
-      isGLValue = false
+      result = location.getType()
     )
     or
     instruction = Unreached(_) and
-    type instanceof VoidType and
-    isGLValue = false
+    result = Language::getVoidType()
   }
 
   cached
@@ -334,11 +318,11 @@ private module Cached {
   IRVariable getInstructionVariable(Instruction instruction) {
     result = getNewIRVariable(getOldInstruction(instruction)
             .(OldIR::VariableInstruction)
-            .getVariable())
+            .getIRVariable())
   }
 
   cached
-  Field getInstructionField(Instruction instruction) {
+  Language::Field getInstructionField(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::FieldInstruction).getField()
   }
 
@@ -348,7 +332,7 @@ private module Cached {
   }
 
   cached
-  Function getInstructionFunction(Instruction instruction) {
+  Language::Function getInstructionFunction(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::FunctionInstruction).getFunctionSymbol()
   }
 
@@ -358,19 +342,19 @@ private module Cached {
   }
 
   cached
-  StringLiteral getInstructionStringLiteral(Instruction instruction) {
+  Language::StringLiteral getInstructionStringLiteral(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::StringConstantInstruction).getValue()
   }
 
   cached
-  BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
+  Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
     result = getOldInstruction(instruction)
           .(OldIR::BuiltInOperationInstruction)
           .getBuiltInOperation()
   }
 
   cached
-  Type getInstructionExceptionType(Instruction instruction) {
+  Language::LanguageType getInstructionExceptionType(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::CatchByTypeInstruction).getExceptionType()
   }
 
@@ -380,14 +364,9 @@ private module Cached {
   }
 
   cached
-  int getInstructionResultSize(Instruction instruction) {
-    // Only return a result for instructions that needed an explicit result size.
-    instruction.getResultType() instanceof UnknownType and
-    result = getOldInstruction(instruction).getResultSize()
-  }
-
-  cached
-  predicate getInstructionInheritance(Instruction instruction, Class baseClass, Class derivedClass) {
+  predicate getInstructionInheritance(
+    Instruction instruction, Language::Class baseClass, Language::Class derivedClass
+  ) {
     exists(OldIR::InheritanceConversionInstruction oldInstr |
       oldInstr = getOldInstruction(instruction) and
       baseClass = oldInstr.getBaseClass() and

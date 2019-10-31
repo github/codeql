@@ -148,9 +148,9 @@ class LocalFunctions
             return f9(1);
         }
 
-        {
+        Action a = () => {
             int f9() => 0;
-        }
+        };
 
         return f1(2);
     }

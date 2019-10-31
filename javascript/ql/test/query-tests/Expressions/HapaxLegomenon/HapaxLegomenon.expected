@@ -1,2 +1,0 @@
-| tst.js:9:1:9:5 | o.Foo | 'Foo' is mentioned only once; it may be a typo for 'foo'. |
-| tst.js:26:5:26:9 | iccID | 'iccID' is mentioned only once; it may be a typo for 'iccId'. |

@@ -47,7 +47,9 @@ private class ExtendCallWithFlag extends ExtendCall {
       name = "node.extend"
     )
     or
-    this = jquery().getAPropertyRead("extend").getACall()
+    // Match $.extend using the source of `$` only, as ExtendCall should not
+    // depend on type tracking.
+    this = JQuery::dollarSource().getAMemberCall("extend")
   }
 
   /**

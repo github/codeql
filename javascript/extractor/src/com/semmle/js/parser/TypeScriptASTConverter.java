@@ -946,7 +946,7 @@ public class TypeScriptASTConverter {
       ClassExpression classExpr =
           new ClassExpression(loc, id, typeParameters, superClass, superInterfaces, body);
       attachSymbolInformation(classExpr.getClassDef(), node);
-      return classExpr;
+      return fixExports(loc, classExpr);
     }
     boolean hasDeclareKeyword = hasModifier(node, "DeclareKeyword");
     boolean hasAbstractKeyword = hasModifier(node, "AbstractKeyword");
@@ -965,7 +965,13 @@ public class TypeScriptASTConverter {
       classDecl.addDecorators(convertChildren(node, "decorators"));
       advanceUntilAfter(loc, classDecl.getDecorators());
     }
-    return fixExports(loc, classDecl);
+    Node exportedDecl = fixExports(loc, classDecl);
+    // Convert default-exported anonymous class declarations to class expressions.
+    if (exportedDecl instanceof ExportDefaultDeclaration && !classDecl.getClassDef().hasId()) {
+      return new ExportDefaultDeclaration(
+          exportedDecl.getLoc(), new ClassExpression(classDecl.getLoc(), classDecl.getClassDef()));
+    }
+    return exportedDecl;
   }
 
   private Node convertCommaListExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1225,6 +1231,11 @@ public class TypeScriptASTConverter {
   private Node convertFunctionDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     List<Expression> params = convertParameters(node);
     Identifier fnId = convertChild(node, "name", "Identifier");
+    if (fnId == null) {
+      // Anonymous function declarations may occur as part of default exported functions.
+      // We represent these as function expressions.
+      return fixExports(loc, convertFunctionExpression(node, loc));
+    }
     BlockStatement fnbody = convertChild(node, "body");
     boolean generator = hasChild(node, "asteriskToken");
     boolean async = hasModifier(node, "AsyncKeyword");
@@ -1573,10 +1584,12 @@ public class TypeScriptASTConverter {
 
   private Node convertMetaProperty(JsonObject node, SourceLocation loc) throws ParseError {
     Position metaStart = loc.getStart();
+    String keywordKind = syntaxKinds.get(node.getAsJsonPrimitive("keywordToken").getAsInt() + "").getAsString();
+    String identifier = keywordKind.equals("ImportKeyword") ? "import" : "new";
     Position metaEnd =
-        new Position(metaStart.getLine(), metaStart.getColumn() + 3, metaStart.getOffset() + 3);
-    SourceLocation metaLoc = new SourceLocation("new", metaStart, metaEnd);
-    Identifier meta = new Identifier(metaLoc, "new");
+        new Position(metaStart.getLine(), metaStart.getColumn() + identifier.length(), metaStart.getOffset() + identifier.length());
+    SourceLocation metaLoc = new SourceLocation(identifier, metaStart, metaEnd);
+    Identifier meta = new Identifier(metaLoc, identifier);
     return new MetaProperty(loc, meta, convertChild(node, "name"));
   }
 
@@ -2305,7 +2318,7 @@ public class TypeScriptASTConverter {
    * <p>If the declared statement has decorators, the {@code loc} should first be advanced past
    * these using {@link #advanceUntilAfter}.
    */
-  private Node fixExports(SourceLocation loc, Statement decl) {
+  private Node fixExports(SourceLocation loc, Node decl) {
     Matcher m = EXPORT_DECL_START.matcher(loc.getSource());
     if (m.find()) {
       String skipped = m.group(0);
@@ -2313,7 +2326,7 @@ public class TypeScriptASTConverter {
       advance(loc, skipped);
       // capture group 1 is `default`, if present
       if (m.group(1) == null)
-        return new ExportNamedDeclaration(outerLoc, decl, new ArrayList<>(), null);
+        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null);
       return new ExportDefaultDeclaration(outerLoc, decl);
     }
     return decl;

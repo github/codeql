@@ -15,7 +15,7 @@ for a list of the available resources.
 .. index:: specification
 
 For a formal specification of the QL language, see the `QL language specification
-<https://help.semmle.com/QL/QLLanguageSpecification.html>`_.
+<https://help.semmle.com/QL/ql-spec/language.html>`_.
 
 Table of contents
 *****************

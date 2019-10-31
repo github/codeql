@@ -1,6 +1,5 @@
 private import csharp
 private import TaintTrackingPublic
-private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow

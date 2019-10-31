@@ -14,8 +14,12 @@ private import semmle.code.cpp.internal.QualifiedName as Q
  * ```
  *   extern int myglobal;
  * ```
- * Each of these declarations is given its own distinct `DeclarationEntry`,
- * but they all share the same `Declaration`.
+ * and defined in one:
+ * ```
+ *   int myglobal;
+ * ```
+ * Each of these declarations (including the definition) is given its own
+ * distinct `DeclarationEntry`, but they all share the same `Declaration`.
  *
  * Some derived class of `Declaration` do not have a corresponding
  * `DeclarationEntry`, because they always have a unique source location.
@@ -206,9 +210,19 @@ abstract class Declaration extends Locatable, @declaration {
 }
 
 /**
- * A C/C++ declaration entry. See the comment above `Declaration` for an
- * explanation of the relationship between `Declaration` and
- * `DeclarationEntry`.
+ * A C/C++ declaration entry. For example the following code contains five
+ * declaration entries:
+ * ```
+ * extern int myGlobal;
+ * int myVariable;
+ * typedef char MyChar;
+ * void myFunction();
+ * void myFunction() {
+ *   // ...
+ * }
+ * ```
+ * See the comment above `Declaration` for an explanation of the relationship
+ * between `Declaration` and `DeclarationEntry`.
  */
 abstract class DeclarationEntry extends Locatable {
   /** Gets a specifier associated with this declaration entry. */
@@ -281,8 +295,19 @@ abstract class DeclarationEntry extends Locatable {
  * A declaration that can potentially have more C++ access rights than its
  * enclosing element. This comprises `Class` (they have access to their own
  * private members) along with other `UserType`s and `Function` (they can be
- * the target of `friend` declarations).
+ * the target of `friend` declarations).  For example `MyClass` and
+ * `myFunction` in the following code:
+ * ```
+ * class MyClass
+ * {
+ * public:
+ *   ...
+ * };
  *
+ * void myFunction() {
+ *   // ...
+ * }
+ * ```
  * In the C++ standard (N4140 11.2), rules for access control revolve around
  * the informal phrase "_R_ occurs in a member or friend of class C", where
  * `AccessHolder` corresponds to this _R_.
@@ -416,8 +441,19 @@ abstract class AccessHolder extends Declaration {
 /**
  * A declaration that very likely has more C++ access rights than its
  * enclosing element. This comprises `Class` (they have access to their own
- * private members) along with any target of a `friend` declaration.
+ * private members) along with any target of a `friend` declaration.  For
+ * example `MyClass` and `friendFunction` in the following code:
+ * ```
+ * class MyClass
+ * {
+ * public:
+ *   friend void friendFunction();
+ * };
  *
+ * void friendFunction() {
+ *   // ...
+ * }
+ * ```
  * Most access rights are computed for `DirectAccessHolder` instead of
  * `AccessHolder` -- that's more efficient because there are fewer
  * `DirectAccessHolder`s. If a `DirectAccessHolder` contains an `AccessHolder`,

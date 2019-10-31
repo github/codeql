@@ -39,6 +39,18 @@ module Shared {
       )
     }
   }
+
+  /**
+   * A call to `encodeURI` or `encodeURIComponent`, viewed as a sanitizer for
+   * XSS vulnerabilities.
+   */
+  class UriEncodingSanitizer extends Sanitizer, DataFlow::CallNode {
+    UriEncodingSanitizer() {
+      exists(string name | this = DataFlow::globalVarRef(name).getACall() |
+        name = "encodeURI" or name = "encodeURIComponent"
+      )
+    }
+  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -59,14 +71,14 @@ module DomBasedXss {
   class LibrarySink extends Sink, DataFlow::ValueNode {
     LibrarySink() {
       // call to a jQuery method that interprets its argument as HTML
-      exists(JQueryMethodCall call | call.interpretsArgumentAsHtml(astNode) |
+      exists(JQuery::MethodCall call | call.interpretsArgumentAsHtml(this) |
         // either the argument is always interpreted as HTML
-        not call.interpretsArgumentAsSelector(astNode)
+        not call.interpretsArgumentAsSelector(this)
         or
         // or it doesn't start with something other than `<`, and so at least
         // _may_ be interpreted as HTML
         not exists(DataFlow::Node prefix, string strval |
-          isPrefixOfJQueryHtmlString(astNode, prefix) and
+          isPrefixOfJQueryHtmlString(this, prefix) and
           strval = prefix.getStringValue() and
           not strval.regexpMatch("\\s*<.*")
         ) and
@@ -90,9 +102,9 @@ module DomBasedXss {
    * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
    * HTML by a jQuery method.
    */
-  private predicate isPrefixOfJQueryHtmlString(Expr htmlString, DataFlow::Node prefix) {
-    any(JQueryMethodCall call).interpretsArgumentAsHtml(htmlString) and
-    prefix = htmlString.flow()
+  private predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
+    any(JQuery::MethodCall call).interpretsArgumentAsHtml(htmlString) and
+    prefix = htmlString
     or
     exists(DataFlow::Node pred | isPrefixOfJQueryHtmlString(htmlString, pred) |
       prefix = StringConcatenation::getFirstOperand(pred)
@@ -251,6 +263,8 @@ module DomBasedXss {
    * so any such replacement stops taint propagation.
    */
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
+
+  private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -294,6 +308,8 @@ module ReflectedXss {
    * so any such replacement stops taint propagation.
    */
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
+
+  private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -320,4 +336,6 @@ module StoredXss {
    * so any such replacement stops taint propagation.
    */
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
+
+  private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 }

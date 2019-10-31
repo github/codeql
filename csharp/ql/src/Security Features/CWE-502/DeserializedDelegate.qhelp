@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Deserializing a delegate object may result in remote code execution, when an
+attacker can control the serialized data.</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid deserializing delegate objects, if possible, or make sure that the serialized
+data cannot be controlled by an attacker.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, a file stream is deserialized to a <code>Func&lt;int&gt;</code>
+object, using a <code>BinaryFormatter</code>. The file stream is a parameter of a public
+method, so depending on the calls to <code>InvokeSerialized</code>, this may or may not
+pose a security problem.</p>
+
+<sample src="DeserializedDelegateBad.cs" />
+
+</example>
+<references>
+
+<li>
+Microsoft:
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.runtime.serialization.formatters.binary.binaryformatter">BinaryFormatter Class</a>.
+</li>
+
+</references>
+</qhelp>

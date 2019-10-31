@@ -8,6 +8,49 @@ duplicateOperand
 missingPhiOperand
 missingOperandType
 duplicateChiOperand
+sideEffectWithoutPrimary
+| file://:0:0:0:0 | IndirectMayWriteSideEffect: call to PolymorphicBase | Side effect instruction missing primary instruction in function $@ | ir.cpp:849:6:849:16 | IR: DynamicCast | void DynamicCast() |
+| file://:0:0:0:0 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:1031:6:1031:11 | IR: Lambda | void Lambda(int, String const&) |
+| file://:0:0:0:0 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:1031:6:1031:11 | IR: Lambda | void Lambda(int, String const&) |
+| ir.cpp:616:12:616:13 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:615:6:615:18 | IR: DeclareObject | void DeclareObject() |
+| ir.cpp:617:15:617:22 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:615:6:615:18 | IR: DeclareObject | void DeclareObject() |
+| ir.cpp:619:16:619:30 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:615:6:615:18 | IR: DeclareObject | void DeclareObject() |
+| ir.cpp:662:9:662:19 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:658:5:658:5 | IR: C | void C::C() |
+| ir.cpp:663:5:663:5 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:658:5:658:5 | IR: C | void C::C() |
+| ir.cpp:731:19:731:47 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:724:6:724:13 | IR: TryCatch | void TryCatch(bool) |
+| ir.cpp:736:5:736:19 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:724:6:724:13 | IR: TryCatch | void TryCatch(bool) |
+| ir.cpp:745:8:745:8 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:745:8:745:8 | IR: Base | void Base::Base(Base const&) |
+| ir.cpp:748:10:748:10 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:748:3:748:6 | IR: Base | void Base::Base() |
+| ir.cpp:757:12:757:12 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:757:3:757:8 | IR: Middle | void Middle::Middle() |
+| ir.cpp:757:12:757:12 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:757:3:757:8 | IR: Middle | void Middle::Middle() |
+| ir.cpp:766:13:766:13 | IndirectMayWriteSideEffect: call to Middle | Side effect instruction missing primary instruction in function $@ | ir.cpp:766:3:766:9 | IR: Derived | void Derived::Derived() |
+| ir.cpp:766:13:766:13 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:766:3:766:9 | IR: Derived | void Derived::Derived() |
+| ir.cpp:775:15:775:15 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:775:3:775:11 | IR: MiddleVB1 | void MiddleVB1::MiddleVB1() |
+| ir.cpp:775:15:775:15 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:775:3:775:11 | IR: MiddleVB1 | void MiddleVB1::MiddleVB1() |
+| ir.cpp:784:15:784:15 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:784:3:784:11 | IR: MiddleVB2 | void MiddleVB2::MiddleVB2() |
+| ir.cpp:784:15:784:15 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:784:3:784:11 | IR: MiddleVB2 | void MiddleVB2::MiddleVB2() |
+| ir.cpp:793:15:793:15 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:793:3:793:11 | IR: DerivedVB | void DerivedVB::DerivedVB() |
+| ir.cpp:793:15:793:15 | IndirectMayWriteSideEffect: call to MiddleVB1 | Side effect instruction missing primary instruction in function $@ | ir.cpp:793:3:793:11 | IR: DerivedVB | void DerivedVB::DerivedVB() |
+| ir.cpp:793:15:793:15 | IndirectMayWriteSideEffect: call to MiddleVB2 | Side effect instruction missing primary instruction in function $@ | ir.cpp:793:3:793:11 | IR: DerivedVB | void DerivedVB::DerivedVB() |
+| ir.cpp:793:15:793:15 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:793:3:793:11 | IR: DerivedVB | void DerivedVB::DerivedVB() |
+| ir.cpp:800:8:800:8 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:801:10:801:10 | IndirectMayWriteSideEffect: call to Middle | Side effect instruction missing primary instruction in function $@ | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:802:11:802:11 | IndirectMayWriteSideEffect: call to Derived | Side effect instruction missing primary instruction in function $@ | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Side effect instruction missing primary instruction in function $@ | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:846:8:846:8 | IndirectMayWriteSideEffect: call to PolymorphicBase | Side effect instruction missing primary instruction in function $@ | ir.cpp:846:8:846:8 | IR: PolymorphicDerived | void PolymorphicDerived::PolymorphicDerived() |
+| ir.cpp:851:22:851:22 | IndirectMayWriteSideEffect: call to PolymorphicDerived | Side effect instruction missing primary instruction in function $@ | ir.cpp:849:6:849:16 | IR: DynamicCast | void DynamicCast() |
+| ir.cpp:868:3:868:12 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:867:1:867:14 | IR: String | void String::String() |
+| ir.cpp:944:3:944:14 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:940:6:940:16 | IR: OperatorNew | void OperatorNew() |
+| ir.cpp:945:3:945:27 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:940:6:940:16 | IR: OperatorNew | void OperatorNew() |
+| ir.cpp:1036:20:1036:57 | IndirectMayWriteSideEffect: call to (constructor) | Side effect instruction missing primary instruction in function $@ | ir.cpp:1031:6:1031:11 | IR: Lambda | void Lambda(int, String const&) |
+| ir.cpp:1040:29:1040:66 | IndirectMayWriteSideEffect: call to (constructor) | Side effect instruction missing primary instruction in function $@ | ir.cpp:1031:6:1031:11 | IR: Lambda | void Lambda(int, String const&) |
+| ir.cpp:1040:30:1040:30 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:1040:30:1040:30 | IR: (constructor) | void (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)&&) |
+| ir.cpp:1140:19:1140:47 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:1133:6:1133:23 | IR: TryCatchNoCatchAny | void TryCatchNoCatchAny(bool) |
+| ir.cpp:1145:5:1145:19 | IndirectMayWriteSideEffect: call to String | Side effect instruction missing primary instruction in function $@ | ir.cpp:1133:6:1133:23 | IR: TryCatchNoCatchAny | void TryCatchNoCatchAny(bool) |
+| perf-regression.cpp:10:14:10:20 | IndirectMayWriteSideEffect: call to Big | Side effect instruction missing primary instruction in function $@ | perf-regression.cpp:9:5:9:8 | IR: main | int main() |
 instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
@@ -18,3 +61,8 @@ containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType

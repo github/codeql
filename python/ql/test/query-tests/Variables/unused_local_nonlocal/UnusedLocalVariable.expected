@@ -1,0 +1,1 @@
+| variables_test.py:32:9:32:12 | test | The value assigned to local variable 'test' is never used. |

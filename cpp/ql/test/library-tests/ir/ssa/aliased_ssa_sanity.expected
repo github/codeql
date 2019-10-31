@@ -4,6 +4,9 @@ duplicateOperand
 missingPhiOperand
 missingOperandType
 duplicateChiOperand
+sideEffectWithoutPrimary
+| ssa.cpp:220:19:220:20 | IndirectMayWriteSideEffect: call to Constructible | Side effect instruction missing primary instruction in function $@ | ssa.cpp:219:6:219:29 | IR: ExplicitConstructorCalls | void ExplicitConstructorCalls() |
+| ssa.cpp:223:21:223:37 | IndirectMayWriteSideEffect: call to Constructible | Side effect instruction missing primary instruction in function $@ | ssa.cpp:219:6:219:29 | IR: ExplicitConstructorCalls | void ExplicitConstructorCalls() |
 instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
@@ -14,3 +17,8 @@ containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType

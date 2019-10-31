@@ -62,8 +62,19 @@ class FlowVar extends TFlowVar {
   cached
   abstract predicate definedByReference(Expr arg);
 
+  /**
+   * Holds if this `FlowVar` is a `PartialDefinition` whose defined expression
+   * is `e`.
+   */
   cached
   abstract predicate definedPartiallyAt(Expr e);
+
+  /**
+   * Holds if this `FlowVar` is a definition of a reference parameter `p` that
+   * persists until the function returns.
+   */
+  cached
+  abstract predicate reachesRefParameter(Parameter p);
 
   /**
    * Holds if this `FlowVar` corresponds to the initial value of `v`. The following
@@ -338,6 +349,9 @@ module FlowVar_internal {
       param = v
     }
 
+    // `fullySupportedSsaVariable` excludes reference types
+    override predicate reachesRefParameter(Parameter p) { none() }
+
     /**
      * Holds if this `SsaVar` corresponds to a non-phi definition. Users of this
      * library will never directly use an `SsaVar` that comes from a phi node,
@@ -385,6 +399,13 @@ module FlowVar_internal {
       or
       parameterUsedInConstructorFieldInit(v, result) and
       sbb = v.(Parameter).getFunction().getEntryPoint()
+    }
+
+    override predicate reachesRefParameter(Parameter p) {
+      parameterIsNonConstReference(p) and
+      p = v and
+      // This definition reaches the exit node of the function CFG
+      getAReachedBlockVarSBB(this).getANode() = p.getFunction()
     }
 
     override predicate definedByInitialValue(LocalScopeVariable lsv) {
@@ -490,7 +511,7 @@ module FlowVar_internal {
       exists(VariableAccess va |
         va.getTarget() = result and
         readAccess(va) and
-        bbNotInLoop(va.getBasicBlock())
+        exists(BasicBlock bb | bb = va.getBasicBlock() | not this.bbInLoop(bb))
       )
     }
 
@@ -513,10 +534,8 @@ module FlowVar_internal {
       bbInLoopCondition(bb)
     }
 
-    predicate bbNotInLoop(BasicBlock bb) {
-      not this.bbInLoop(bb) and
-      bb.getEnclosingFunction() = this.getEnclosingFunction()
-    }
+    /** Holds if `sbb` is inside this loop. */
+    predicate sbbInLoop(SubBasicBlock sbb) { this.bbInLoop(sbb.getBasicBlock()) }
 
     /**
      * Holds if `bb` is a basic block inside this loop where `v` has not been
@@ -537,22 +556,19 @@ module FlowVar_internal {
   }
 
   /**
-   * Holds if some loop always assigns to `v` before leaving through an edge
-   * from `bbInside` in its condition to `bbOutside` outside the loop, where
-   * (`sbbDef`, `v`) is a `BlockVar` defined outside the loop. Also, `v` must
-   * be used outside the loop.
+   * Holds if `loop` always assigns to `v` before leaving through an edge
+   * from `bbInside` in its condition to `bbOutside` outside the loop. Also,
+   * `v` must be used outside the loop.
    */
   predicate skipLoop(
-    SubBasicBlock sbbInside, SubBasicBlock sbbOutside, SubBasicBlock sbbDef, Variable v
+    SubBasicBlock sbbInside, SubBasicBlock sbbOutside, Variable v, AlwaysTrueUponEntryLoop loop
   ) {
-    exists(AlwaysTrueUponEntryLoop loop, BasicBlock bbInside, BasicBlock bbOutside |
+    exists(BasicBlock bbInside, BasicBlock bbOutside |
       loop.alwaysAssignsBeforeLeavingCondition(bbInside, bbOutside, v) and
       bbInside = sbbInside.getBasicBlock() and
       bbOutside = sbbOutside.getBasicBlock() and
       sbbInside.lastInBB() and
-      sbbOutside.firstInBB() and
-      loop.bbNotInLoop(sbbDef.getBasicBlock()) and
-      exists(TBlockVar(sbbDef, v))
+      sbbOutside.firstInBB()
     )
   }
 
@@ -571,7 +587,7 @@ module FlowVar_internal {
       start = TBlockVar(sbbDef, v) and
       result = mid.getASuccessor() and
       variableLiveInSBB(result, v) and
-      not skipLoop(mid, result, sbbDef, v) and
+      forall(AlwaysTrueUponEntryLoop loop | skipLoop(mid, result, v, loop) | loop.sbbInLoop(sbbDef)) and
       not assignmentLikeOperation(result, v, _, _)
     )
   }
@@ -593,9 +609,20 @@ module FlowVar_internal {
   private predicate variableLiveInSBB(SubBasicBlock sbb, Variable v) {
     variableAccessInSBB(v, sbb, _)
     or
+    // Non-const reference parameters are live at the end of the function
+    parameterIsNonConstReference(v) and
+    sbb.contains(v.(Parameter).getFunction())
+    or
     exists(SubBasicBlock succ | succ = sbb.getASuccessor() |
       variableLiveInSBB(succ, v) and
       not variableNotLiveBefore(succ, v)
+    )
+  }
+
+  predicate parameterIsNonConstReference(Parameter p) {
+    exists(ReferenceType refType |
+      refType = p.getUnderlyingType() and
+      not refType.getBaseType().isConst()
     )
   }
 
@@ -679,10 +706,11 @@ module FlowVar_internal {
   predicate dominatedByOverwrite(UninitializedLocalVariable v, VariableAccess va) {
     exists(BasicBlock bb, int vaIndex |
       va = bb.getNode(vaIndex) and
-      va.getTarget() = v
-    |
+      va.getTarget() = v and
       vaIndex > indexOfFirstOverwriteInBB(v, bb)
       or
+      va = bb.getNode(vaIndex) and
+      va.getTarget() = v and
       bbStrictlyDominates(getAnOverwritingBB(v), bb)
     )
   }

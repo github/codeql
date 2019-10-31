@@ -1,7 +1,8 @@
 private import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
-private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.internal.CppType
+private import semmle.code.cpp.ir.internal.IRUtilities
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -54,19 +55,15 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
     result = getInstruction(InitializerVariableAddressTag())
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getVariableType(getVariable()) and
-    isGLValue = true
+    resultType = getTypeForGLValue(getVariableType(getVariable()))
     or
     hasUninitializedInstruction() and
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Uninitialized and
-    resultType = getVariableType(getVariable()) and
-    isGLValue = false
+    resultType = getTypeForPRValue(getVariableType(getVariable()))
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {

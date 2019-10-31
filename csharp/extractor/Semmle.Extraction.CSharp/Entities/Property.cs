@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Property Create(Context cx, IPropertySymbol prop)
         {
-            bool isIndexer = prop.IsIndexer || prop.ExplicitInterfaceImplementations.Any(e => e.IsIndexer);
+            bool isIndexer = prop.IsIndexer || prop.Parameters.Any();
 
             return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntity(cx, prop);
         }
