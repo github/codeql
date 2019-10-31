@@ -352,6 +352,12 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
     none()
   }
 
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getTranslatedExpr(expr).getInstruction(CallTag())
+  }
+
+
   /**
    * Gets the `TranslatedFunction` containing this expression.
    */
