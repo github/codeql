@@ -334,7 +334,7 @@ ssa.cpp:
 #   97|     v0_13(void)           = Call                         : func:r0_10, 0:r0_12
 #   97|     m0_14(unknown)        = ^CallSideEffect              : ~m0_5
 #   97|     m0_15(unknown)        = Chi                          : total:m0_5, partial:m0_14
-#   97|     v0_16(void)           = ^IndirectReadSideEffect[0]   : &:r0_12, ~m0_15
+#   97|     v0_16(void)           = ^BufferReadSideEffect[0]     : &:r0_12, ~m0_15
 #   97|     m0_17(unknown)        = ^BufferMayWriteSideEffect[0] : &:r0_12
 #   97|     m0_18(unknown)        = Chi                          : total:m0_15, partial:m0_17
 #   98|     v0_19(void)           = NoOp                         : 
@@ -390,7 +390,7 @@ ssa.cpp:
 #  108|     v0_19(void)           = Call                         : func:r0_16, 0:r0_18
 #  108|     m0_20(unknown)        = ^CallSideEffect              : ~m0_5
 #  108|     m0_21(unknown)        = Chi                          : total:m0_5, partial:m0_20
-#  108|     v0_22(void)           = ^IndirectReadSideEffect[0]   : &:r0_18, ~m0_21
+#  108|     v0_22(void)           = ^BufferReadSideEffect[0]     : &:r0_18, ~m0_21
 #  108|     m0_23(unknown)        = ^BufferMayWriteSideEffect[0] : &:r0_18
 #  108|     m0_24(unknown)        = Chi                          : total:m0_21, partial:m0_23
 #  109|     v0_25(void)           = NoOp                         : 
@@ -462,7 +462,7 @@ ssa.cpp:
 #  119|     v0_27(void)           = Call                         : func:r0_24, 0:r0_26
 #  119|     m0_28(unknown)        = ^CallSideEffect              : ~m0_19
 #  119|     m0_29(unknown)        = Chi                          : total:m0_19, partial:m0_28
-#  119|     v0_30(void)           = ^IndirectReadSideEffect[0]   : &:r0_26, ~m0_29
+#  119|     v0_30(void)           = ^BufferReadSideEffect[0]     : &:r0_26, ~m0_29
 #  119|     m0_31(unknown)        = ^BufferMayWriteSideEffect[0] : &:r0_26
 #  119|     m0_32(unknown)        = Chi                          : total:m0_29, partial:m0_31
 #  120|     v0_33(void)           = NoOp                         : 
