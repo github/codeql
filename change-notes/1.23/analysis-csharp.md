@@ -9,6 +9,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Unsafe year argument for 'DateTime' constructor (`cs/unsafe-year-construction`) | reliability, date-time | Finds incorrect manipulation of `DateTime` values, which could lead to invalid dates. |
+| Large 'maxRequestLength' value (`cs/web/large-max-request-length`) | security, frameworks/asp.net, external/cwe/cwe-16 | Finds `web.config` files with large (greater than 4096) `maxRequestLength` attributes. |
 | Mishandling the Japanese era start date (`cs/mishandling-japanese-era`) | reliability, date-time | Finds hard-coded Japanese era start dates that could be invalid. |
 
 ## Changes to existing queries
