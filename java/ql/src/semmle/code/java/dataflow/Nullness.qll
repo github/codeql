@@ -143,11 +143,16 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
  * subsequent use, either by dereferencing it or by an assertion.
  */
 private ControlFlowNode ensureNotNull(SsaVariable v) {
-  result = varDereference(v, _) or
-  result.(AssertStmt).getExpr() = nullGuard(v, true, false) or
-  exists(AssertTrueMethod m | result = m.getACheck(nullGuard(v, true, false))) or
-  exists(AssertFalseMethod m | result = m.getACheck(nullGuard(v, false, false))) or
-  exists(AssertNotNullMethod m | result = m.getACheck(v.getAUse())) or
+  result = varDereference(v, _)
+  or
+  result.(AssertStmt).getExpr() = nullGuard(v, true, false)
+  or
+  exists(AssertTrueMethod m | result = m.getACheck(nullGuard(v, true, false)))
+  or
+  exists(AssertFalseMethod m | result = m.getACheck(nullGuard(v, false, false)))
+  or
+  exists(AssertNotNullMethod m | result = m.getACheck(v.getAUse()))
+  or
   exists(AssertThatMethod m, MethodAccess ma |
     result = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
   |
