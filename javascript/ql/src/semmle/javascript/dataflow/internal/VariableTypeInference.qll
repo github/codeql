@@ -223,7 +223,11 @@ abstract class AnalyzedSsaDefinition extends SsaDefinition {
  * Flow analysis for SSA definitions corresponding to `VarDef`s.
  */
 private class AnalyzedExplicitDefinition extends AnalyzedSsaDefinition, SsaExplicitDefinition {
-  override AbstractValue getAnRhsValue() { result = getDef().(AnalyzedVarDef).getAnAssignedValue() }
+  override AbstractValue getAnRhsValue() {
+    result = getDef().(AnalyzedVarDef).getAnAssignedValue()
+    or
+    result = getRhsNode().analyze().getALocalValue()
+  }
 }
 
 /**
@@ -240,6 +244,8 @@ private class AnalyzedVariableCapture extends AnalyzedSsaDefinition, SsaVariable
   override AbstractValue getAnRhsValue() {
     exists(LocalVariable v | v = getSourceVariable() |
       result = v.(AnalyzedCapturedVariable).getALocalValue()
+      or
+      result = any(AnalyzedExplicitDefinition def | def.getSourceVariable() = v).getAnRhsValue()
       or
       not guaranteedToBeInitialized(v) and result = getImplicitInitValue(v)
     )

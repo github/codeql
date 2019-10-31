@@ -7,7 +7,7 @@ To try the examples in this presentation we recommend you download `QL for Eclip
 
 - If you are new to QL, try the QL language tutorials at `Learning QL <https://help.semmle.com/QL/learn-ql/>`__.
 - To learn more about the main features of QL, try looking at the `QL language handbook <https://help.semmle.com/QL/ql-handbook/>`__.
-- For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
+- For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html>`__.
 
 **QL queries**
 

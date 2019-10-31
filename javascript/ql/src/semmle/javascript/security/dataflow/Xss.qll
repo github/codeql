@@ -39,6 +39,18 @@ module Shared {
       )
     }
   }
+
+  /**
+   * A call to `encodeURI` or `encodeURIComponent`, viewed as a sanitizer for
+   * XSS vulnerabilities.
+   */
+  class UriEncodingSanitizer extends Sanitizer, DataFlow::CallNode {
+    UriEncodingSanitizer() {
+      exists(string name | this = DataFlow::globalVarRef(name).getACall() |
+        name = "encodeURI" or name = "encodeURIComponent"
+      )
+    }
+  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -251,6 +263,8 @@ module DomBasedXss {
    * so any such replacement stops taint propagation.
    */
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
+
+  private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -294,6 +308,8 @@ module ReflectedXss {
    * so any such replacement stops taint propagation.
    */
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
+
+  private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -320,4 +336,6 @@ module StoredXss {
    * so any such replacement stops taint propagation.
    */
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
+
+  private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 }

@@ -25,7 +25,8 @@ private newtype TNode =
       not c.getTarget().getParameter(i).getUnderlyingType().(PointerType).getBaseType().isConst()
     )
   } or
-  TUninitializedNode(LocalVariable v) { not v.hasInitializer() }
+  TUninitializedNode(LocalVariable v) { not v.hasInitializer() } or
+  TRefParameterFinalValueNode(Parameter p) { exists(FlowVar var | var.reachesRefParameter(p)) }
 
 /**
  * A node in a data flow graph.
@@ -246,6 +247,23 @@ class UninitializedNode extends Node, TUninitializedNode {
 
   /** Gets the uninitialized local variable corresponding to this node. */
   LocalVariable getLocalVariable() { result = v }
+}
+
+/** INTERNAL: do not use. The final value of a non-const ref parameter. */
+class RefParameterFinalValueNode extends Node, TRefParameterFinalValueNode {
+  Parameter p;
+
+  RefParameterFinalValueNode() { this = TRefParameterFinalValueNode(p) }
+
+  override Function getFunction() { result = p.getFunction() }
+
+  override Type getType() { result = p.getType() }
+
+  override string toString() { result = p.toString() }
+
+  override Location getLocation() { result = p.getLocation() }
+
+  Parameter getParameter() { result = p }
 }
 
 /**
@@ -490,7 +508,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
       or
       var.definedPartiallyAt(nodeFrom.asPartialDefinition())
     ) and
-    varToExprStep(var, nodeTo.asExpr())
+    varToNodeStep(var, nodeTo)
   )
   or
   // Expr -> DefinitionByReferenceNode
@@ -533,9 +551,13 @@ private predicate exprToVarStep(Expr assignedExpr, FlowVar var) {
 }
 
 /**
- * Holds if the expression `e` is an access of the variable `var`.
+ * Holds if the node `n` is an access of the variable `var`.
  */
-private predicate varToExprStep(FlowVar var, Expr e) { e = var.getAnAccess() }
+private predicate varToNodeStep(FlowVar var, Node n) {
+  n.asExpr() = var.getAnAccess()
+  or
+  var.reachesRefParameter(n.(RefParameterFinalValueNode).getParameter())
+}
 
 /**
  * Holds if data flows from `fromExpr` to `toExpr` directly, in the case

@@ -123,6 +123,14 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
    * Anonymous classes and interfaces do not have a canonical name.
    */
   TypeName getTypeName() { result.getADefinition() = this }
+  
+  /**
+   * Gets the ClassOrInterface corresponding to either a super type or an implemented interface.
+   */
+  ClassOrInterface getASuperTypeDeclaration() {
+    this.getSuperClass().(VarAccess).getVariable().getADeclaration() = result.getIdentifier() or
+    this.getASuperInterface().(LocalTypeAccess).getLocalTypeName().getADeclaration() = result.getIdentifier()
+  }
 }
 
 /**

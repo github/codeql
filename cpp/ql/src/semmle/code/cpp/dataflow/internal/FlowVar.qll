@@ -62,8 +62,19 @@ class FlowVar extends TFlowVar {
   cached
   abstract predicate definedByReference(Expr arg);
 
+  /**
+   * Holds if this `FlowVar` is a `PartialDefinition` whose defined expression
+   * is `e`.
+   */
   cached
   abstract predicate definedPartiallyAt(Expr e);
+
+  /**
+   * Holds if this `FlowVar` is a definition of a reference parameter `p` that
+   * persists until the function returns.
+   */
+  cached
+  abstract predicate reachesRefParameter(Parameter p);
 
   /**
    * Holds if this `FlowVar` corresponds to the initial value of `v`. The following
@@ -338,6 +349,9 @@ module FlowVar_internal {
       param = v
     }
 
+    // `fullySupportedSsaVariable` excludes reference types
+    override predicate reachesRefParameter(Parameter p) { none() }
+
     /**
      * Holds if this `SsaVar` corresponds to a non-phi definition. Users of this
      * library will never directly use an `SsaVar` that comes from a phi node,
@@ -385,6 +399,13 @@ module FlowVar_internal {
       or
       parameterUsedInConstructorFieldInit(v, result) and
       sbb = v.(Parameter).getFunction().getEntryPoint()
+    }
+
+    override predicate reachesRefParameter(Parameter p) {
+      parameterIsNonConstReference(p) and
+      p = v and
+      // This definition reaches the exit node of the function CFG
+      getAReachedBlockVarSBB(this).getANode() = p.getFunction()
     }
 
     override predicate definedByInitialValue(LocalScopeVariable lsv) {
@@ -588,9 +609,20 @@ module FlowVar_internal {
   private predicate variableLiveInSBB(SubBasicBlock sbb, Variable v) {
     variableAccessInSBB(v, sbb, _)
     or
+    // Non-const reference parameters are live at the end of the function
+    parameterIsNonConstReference(v) and
+    sbb.contains(v.(Parameter).getFunction())
+    or
     exists(SubBasicBlock succ | succ = sbb.getASuccessor() |
       variableLiveInSBB(succ, v) and
       not variableNotLiveBefore(succ, v)
+    )
+  }
+
+  predicate parameterIsNonConstReference(Parameter p) {
+    exists(ReferenceType refType |
+      refType = p.getUnderlyingType() and
+      not refType.getBaseType().isConst()
     )
   }
 

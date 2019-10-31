@@ -22,6 +22,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | Too few arguments to formatting function (`cpp/wrong-number-format-arguments`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
 | Too many arguments to formatting function (`cpp/too-many-format-arguments`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
 | Unclear comparison precedence (`cpp/comparison-precedence`) | Fewer false positive results | False positives involving template classes and functions have been fixed. |
+| Comparison of narrow type with wide type in loop condition (`cpp/comparison-with-wider-type`) | Higher precision | The precision of this query has been increased to "high" as the alerts from this query have proved to be valuable on real-world projects. With this precision, results are now displayed by default in LGTM. |
 
 ## Changes to QL libraries
 
@@ -32,6 +33,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   picture of the partial flow paths from a given source. The feature is
   disabled by default and can be enabled for individual configurations by
   overriding `int explorationLimit()`.
+* The data-flow library now supports flow out of C++ reference parameters.
 * The data-flow library now allows flow through the address-of operator (`&`).
 * The `DataFlow::DefinitionByReferenceNode` class now considers `f(x)` to be a
   definition of `x` when `x` is a variable of pointer type. It no longer

@@ -275,4 +275,4 @@ What next?
 ----------
 
 -  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

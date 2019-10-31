@@ -55,6 +55,7 @@ module StepSummary {
   /**
    * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
    */
+  cached
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
     exists(DataFlow::Node mid | pred.flowsTo(mid) | smallstep(mid, succ, summary))
   }
@@ -170,6 +171,7 @@ class TypeTracker extends TTypeTracker {
   TypeTracker() { this = MkTypeTracker(hasCall, prop) }
 
   /** Gets the summary resulting from appending `step` to this type-tracking summary. */
+  cached
   TypeTracker append(StepSummary step) {
     step = LevelStep() and result = this
     or
@@ -388,7 +390,7 @@ class TypeBackTracker extends TTypeBackTracker {
    *   t.start() and
    *   result = < some API call >.getArgument(< n >)
    *   or
-   *   exists (DataFlow::TypeTracker t2 |
+   *   exists (DataFlow::TypeBackTracker t2 |
    *     t = t2.smallstep(result, myType(t2))
    *   )
    * }

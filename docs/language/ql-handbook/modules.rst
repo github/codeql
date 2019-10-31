@@ -25,7 +25,7 @@ a class ``OneTwoThree``::
       }
     } 
 
-The name of a module can be any `identifier <https://help.semmle.com/QL/QLLanguageSpecification.html#identifiers>`_
+The name of a module can be any `identifier <https://help.semmle.com/QL/ql-spec/language.html#identifiers>`_
 that starts with an uppercase or lowercase letter. 
 
 ``.ql`` or ``.qll`` files also implicitly define modules.

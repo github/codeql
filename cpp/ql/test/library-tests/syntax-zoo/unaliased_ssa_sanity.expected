@@ -15,9 +15,9 @@ missingPhiOperand
 | range_analysis.c:389:3:389:32 | Phi: return ... | range_analysis.c:387:38:387:38 | Constant: 5 |
 | range_analysis.c:389:3:389:32 | Phi: return ... | range_analysis.c:387:38:387:38 | Constant: 5 |
 missingOperandType
+sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
-| assume0.cpp:7:2:7:2 | CallSideEffect: call to f |
 | condition_decls.cpp:16:19:16:20 | CallSideEffect: call to BoxedInt |
 | condition_decls.cpp:26:23:26:24 | CallSideEffect: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | CallSideEffect: call to BoxedInt |
@@ -550,3 +550,8 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType
