@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-The <code>MaxRequestLength</code> attribute sets the limit for the input stream buffering threshold in KB. Attackers can use large files to cause denial of service attacks.
+The <code>maxRequestLength</code> attribute sets the limit for the input stream buffering threshold in KB. Attackers can use large files to cause denial-of-service attacks.
 </p>
 
 </overview>
@@ -17,6 +17,20 @@ The recommended value is 4096 but you should try setting it as small as possible
 </p>
 
 </recommendation>
+<example>
 
+<p>
+The following example shows the <code>maxRequestLength</code> attribute set to a high value (256 MB) in a <code>Web.config</code> file for ASP.NET:
+</p>
+
+<sample src="Web.config.bad" />
+
+<p>
+Unless such a high value is strictly needed, it is better to set a lower value, for example 4096:
+</p>
+
+<sample src="Web.config.good" />
+
+</example>
 
 </qhelp>
