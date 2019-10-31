@@ -741,7 +741,8 @@ module DataFlow {
     PropReadAsSourceNode() {
       this = TPropNode(any(PropertyPattern p)) or
       this instanceof RestPatternNode or
-      this instanceof ElementPatternNode
+      this instanceof ElementPatternNode or
+      this = lvalueNode(any(ForOfStmt stmt).getLValue())
     }
   }
 
@@ -824,6 +825,24 @@ module DataFlow {
     override Expr getPropertyNameExpr() { result = astNode.getImported() }
 
     override string getPropertyName() { result = astNode.getImportedName() }
+  }
+
+  /**
+   * The left-hand side of a `for..of` statement, seen as a property read
+   * on the object being iterated over.
+   */
+  private class ForOfLvalueAsPropRead extends PropRead {
+    ForOfStmt stmt;
+
+    ForOfLvalueAsPropRead() {
+      this = lvalueNode(stmt.getLValue())
+    }
+
+    override Node getBase() { result = stmt.getIterationDomain().flow() }
+
+    override Expr getPropertyNameExpr() { none() }
+
+    override string getPropertyName() { none() }
   }
 
   /**
