@@ -22,11 +22,9 @@ class ExistsAnyFlowConfig extends DataFlow::Configuration {
 
 bindingset[flag]
 predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
-  exists(
-    BoostorgAsio::SslContextFlowsToSetOptionConfig config, ExistsAnyFlowConfig anyFlowConfig,
-    Expr optionsSink
+  exists(BoostorgAsio::SslContextClass c, ExistsAnyFlowConfig anyFlowConfig
   |
-    config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
+    c.getAContructorCall() = cc and
     exists(VariableAccess contextSetOptions |
       anyFlowConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
       exists(BoostorgAsio::SslSetOptionsFunction f | f.getACallToThisFunction() = fcSetOptions |
@@ -55,15 +53,14 @@ predicate isOptionNotSet(ConstructorCall cc, int flag) {
 
 from
   BoostorgAsio::SslContextCallTlsProtocolConfig configConstructor,
-  BoostorgAsio::SslContextFlowsToSetOptionConfig config, Expr protocolSource, Expr protocolSink,
-  ConstructorCall cc, Expr e, string msg
+  Expr protocolSource, Expr protocolSink,
+  BoostorgAsio::SslContextClass c, ConstructorCall cc, Expr e, string msg
 where
   configConstructor.hasFlow(DataFlow::exprNode(protocolSource), DataFlow::exprNode(protocolSink)) and
   cc.getArgument(0) = protocolSink and
   (
     BoostorgAsio::isExprSslV23BoostProtocol(protocolSource) and
-    not exists(Expr optionsSink |
-      config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
+    not (
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoSsl3(), _) and
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1(), _) and
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1_1(), _) and
@@ -72,8 +69,7 @@ where
     or
     BoostorgAsio::isExprTlsBoostProtocol(protocolSource) and
     not BoostorgAsio::isExprSslV23BoostProtocol(protocolSource) and
-    not exists(Expr optionsSink |
-      config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
+    not (
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1(), _) and
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1_1(), _) and
       isOptionNotSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1_2())
