@@ -5,7 +5,7 @@ This open source repository contains the standard CodeQL libraries and queries t
 ## How do I learn CodeQL and run queries?
 
 There is [extensive documentation](https://help.semmle.com/QL/learn-ql/) on getting started with writing CodeQL.
-You can use the [interactive query console](https://lgtm.com/help/lgtm/using-query-console) on LGTM.com or the [QL for Eclipse](https://lgtm.com/help/lgtm/running-queries-ide) plugin to try out your queries on any open-source project that's currently being analyzed.
+You can use the [interactive query console](https://lgtm.com/help/lgtm/using-query-console) on LGTM.com or the [QL for Eclipse](https://lgtm.com/help/lgtm/running-queries-ide) plugin to try out your queries on any open source project that's currently being analyzed.
 
 ## Contributing
 
