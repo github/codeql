@@ -46,29 +46,8 @@ predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
 
 bindingset[flag]
 predicate isOptionNotSet(ConstructorCall cc, int flag) {
-  not exists(
-    BoostorgAsio::SslContextFlowsToSetOptionConfig config, ExistsAnyFlowConfig testConfig,
-    Expr optionsSink
-  |
-    config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
-    exists(VariableAccess contextSetOptions |
-      testConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
-      exists(FunctionCall fcSetOptions, BoostorgAsio::SslSetOptionsFunction f |
-        f.getACallToThisFunction() = fcSetOptions
-      |
-        contextSetOptions = fcSetOptions.getQualifier() and
-        forall(
-          Expr optionArgument, BoostorgAsio::SslOptionConfig optionArgConfig,
-          Expr optionArgumentSource
-        |
-          optionArgument = fcSetOptions.getArgument(0) and
-          optionArgConfig
-              .hasFlow(DataFlow::exprNode(optionArgumentSource), DataFlow::exprNode(optionArgument))
-        |
-          optionArgument.getValue().toInt().bitShiftRight(16).bitAnd(flag) = flag
-        )
-      )
-    )
+  not exists(FunctionCall fcSetOptions |
+    isOptionSet(cc, flag, fcSetOptions)
   )
 }
 
