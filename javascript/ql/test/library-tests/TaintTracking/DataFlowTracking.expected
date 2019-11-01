@@ -50,6 +50,9 @@
 | sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:15:10:15:15 | this.x |
 | sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:21:14:21:19 | this.x |
 | sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:26:9:26:14 | this.x |
+| sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:45:8:45:8 | x |
+| sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:48:10:48:10 | x |
+| sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:52:10:52:10 | x |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
