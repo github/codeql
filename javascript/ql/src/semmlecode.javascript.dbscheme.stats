@@ -7922,7 +7922,7 @@
 <cardinality>66</cardinality>
 <columnsizes>
 <e>
-<k>stmt</k>
+<k>node</k>
 <v>66</v>
 </e>
 </columnsizes>
