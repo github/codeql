@@ -13,7 +13,7 @@ Query files have the extension `.ql`. Each file has two distinct areas:
     *   [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html)
     *   [QL language handbook](https://help.semmle.com/QL/ql-handbook/index.html)
     *   [QL language specification](https://help.semmle.com/QL/ql-spec/language.html)
-    *   [QL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
+    *   [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
 
 
 For examples of query files for the languages supported by CodeQL, visit the following links: 
