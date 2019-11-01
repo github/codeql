@@ -24,7 +24,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 
 * `nameof` expressions are now extracted correctly when the name is a namespace.
 
-## Changes to QL libraries
+## Changes to libraries
 
 * The new class `NamespaceAccess` models accesses to namespaces, for example in `nameof` expressions.
 * The data-flow library now makes it easier to specify barriers/sanitizers

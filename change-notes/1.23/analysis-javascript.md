@@ -46,7 +46,7 @@
 | Uncontrolled data used in path expression (`js/path-injection`) | Fewer false-positive results | This query now recognizes calls to Express `sendFile` as safe in some cases. |
 | Unknown directive (`js/unknown-directive`) | Fewer false positive results | This query no longer flags uses of ":", which is sometimes used like a directive. |
 
-## Changes to QL libraries
+## Changes to libraries
 
 * `Expr.getDocumentation()` now handles chain assignments.
 
