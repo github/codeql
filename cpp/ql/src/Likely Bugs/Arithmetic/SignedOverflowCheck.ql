@@ -22,5 +22,6 @@ where
   ro.getAnOperand() = expr2 and
   globalValueNumber(expr1) = globalValueNumber(expr2) and
   add.getUnspecifiedType().(IntegralType).isSigned() and
+  not exists(MacroInvocation mi | mi.getAnAffectedElement() = add) and
   exprMightOverflowPositively(add)
 select ro, "Testing for signed overflow may produce undefined results."

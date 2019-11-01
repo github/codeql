@@ -24,81 +24,81 @@ into unsigned form.
 
 The table below lists various expressions where signed overflow may
 occur, along with proposed rewritings.  It should not be
-considered as exhaustive.
+considered exhaustive.
 </p>
 <table>
-  <tr>
+  <thead><tr>
     <th>Original Construct</th>
     <th>Alternate Construct(s)</th>
     <th>Notes</th>
-  </tr>
-  <tr>
+  </tr></thead>
+  <tbody><tr>
     <td><tt><table>
-      <tr>
+      <tbody><tr>
         <td>unsigned short i, delta;</td>
       </tr><tr>
         <td>i + delta &lt; i</td>
-      </tr>
+      </tr></tbody>
     </table></tt></td>
     <td><tt><table>
-      <tr>
+      <tbody><tr>
         <td>unsigned short i, delta;</td>
       </tr><tr>
         <td>(unsigned short)(i + delta)&nbsp;&lt;&nbsp;i</td>
-      </tr>
+      </tr></tbody>
     </table></tt></td>
     <td><tt>i + delta</tt>does not actually overflow due to <tt>int</tt> promotion</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td><tt><table>
-      <tr>
+      <tbody><tr>
         <td>unsigned short i, delta;</td>
       </tr><tr>
         <td>i > USHORT_MAX - delta</td>
-      </tr>
+      </tr></tbody>
     </table></tt></td>
-    <td>Must include <tt>limits.h</tt> or <tt>climits</tt></td>
+    <td>Must include <tt>limits.h</tt> or <tt>climits</tt>; <tt>delta &gt; 0</tt></td>
   </tr>
   <tr>
     <td><tt><table>
-      <tr>
+      <tbody><tr>
         <td>int i, delta;</td>
       </tr><tr>
         <td>i + delta &lt; i</td>
-      </tr>
+      </tr></tbody>
     </table></tt></td>
     <td><tt><table>
-      <tr>
+      <tbody><tr>
         <td>int i, delta;</td>
       </tr><tr>
         <td>i &gt; INT_MAX - delta</td>
-      </tr>
+      </tr></tbody>
     </table></tt></td>
-    <td>Must include <tt>limits.h</tt> or <tt>climits</tt></td>
+    <td>Must include <tt>limits.h</tt> or <tt>climits</tt>; <tt>delta &gt; 0</tt></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td><tt><table>
-      <tr>
+      <tbody><tr>
         <td>int i, delta;</td>
       </tr><tr>
         <td>(unsigned)i + delta &lt; i</td>
-      </tr>
+      </tr></tbody>
     </table></tt></td>
     <td>Change in program semantics</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td><tt><table>
-      <tr>
+      <tbody><tr>
         <td>unsigned int i, delta;</td>
       </tr><tr>
         <td>i + delta &lt; i</td>
-      </tr>
+      </tr></tbody>
     </table></tt></td>
     <td>Change in program semantics</td>
-  </tr>
+  </tr></tbody>
 </table>
 </recommendation>
 <example>
@@ -131,7 +131,7 @@ narrower <code>short</code> type, the addition is guaranteed not to overflow
 and is therefore defined.  But the fact that <code>n1 + delta</code> never 
 overflows means that the condition <code>n1 + delta &lt; n1</code> will never
 hold true, which likely is not what the programmer intended. (see also the
-<code>BadArithmeticOverflow.Check.ql</code> query).
+<code>cpp/bad-addition-overflow-check</code> query).
 </p>
 <sample src="SignedOverflowCheck-bad2.cpp" />
 <p>
@@ -147,6 +147,6 @@ the right-hand side does not need to be promoted to a <code>signed int</code>.
 <references>
 <li><a href="http://c-faq.com/expr/preservingrules.html">comp.lang.c FAQ list · Question 3.19 (Preserving rules)</a></li>
 <li><a href="https://wiki.sei.cmu.edu/confluence/display/c/INT31-C.+Ensure+that+integer+conversions+do+not+result+in+lost+or+misinterpreted+data">INT31-C. Ensure that integer conversions do not result in lost or misinterpreted data</a></li>
-<li>W. Dietz,∗ P. Li, J. Regehr, V. Adve. <a href="http://www.cs.utah.edu/~regehr/papers/overflow12.pdf">Understanding Integer Overflow in C/C++</a></li>
+<li>W. Dietz, P. Li, J. Regehr, V. Adve. <a href="https://www.cs.utah.edu/~regehr/papers/overflow12.pdf">Understanding Integer Overflow in C/C++</a></li>
 </references>
 </qhelp>

@@ -121,3 +121,10 @@ int overflow12b(int n) {
     // not deleted by gcc or clang
 	return ((unsigned)(n + 32) <= (unsigned)n? -1: 1); // BAD: n + 32 may overflow
 }
+
+#define MACRO(E1, E2) (E1) <= (E2)? -1: 1
+
+int overflow12_macro(int n) {
+	return MACRO((unsigned)(n + 32), (unsigned)n); // GOOD: inside a macro expansion
+}
+
