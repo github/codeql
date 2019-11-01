@@ -14,7 +14,9 @@ class ExistsAnyFlowConfig extends DataFlow::Configuration {
   ExistsAnyFlowConfig() { this = "ExistsAnyFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-  	source.asExpr() instanceof ConstructorCall
+  	exists(BoostorgAsio::SslContextClass c |
+  	  c.getAContructorCall() = source.asExpr()
+ 	)
   }
 
   override predicate isSink(DataFlow::Node sink) { any() }
@@ -22,23 +24,19 @@ class ExistsAnyFlowConfig extends DataFlow::Configuration {
 
 bindingset[flag]
 predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
-  exists(BoostorgAsio::SslContextClass c, ExistsAnyFlowConfig anyFlowConfig
-  |
-    c.getAContructorCall() = cc and
-    exists(VariableAccess contextSetOptions |
-      anyFlowConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
-      exists(BoostorgAsio::SslSetOptionsFunction f | f.getACallToThisFunction() = fcSetOptions |
-        contextSetOptions = fcSetOptions.getQualifier() and
-        forall(
-          Expr optionArgument, BoostorgAsio::SslOptionConfig optionArgConfig,
-          Expr optionArgumentSource
-        |
-          optionArgument = fcSetOptions.getArgument(0) and
-          optionArgConfig
-              .hasFlow(DataFlow::exprNode(optionArgumentSource), DataFlow::exprNode(optionArgument))
-        |
-          optionArgument.getValue().toInt().bitShiftRight(16).bitAnd(flag) = flag
-        )
+  exists(ExistsAnyFlowConfig anyFlowConfig, VariableAccess contextSetOptions |
+    anyFlowConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
+    exists(BoostorgAsio::SslSetOptionsFunction f | f.getACallToThisFunction() = fcSetOptions |
+      contextSetOptions = fcSetOptions.getQualifier() and
+      forall(
+        Expr optionArgument, BoostorgAsio::SslOptionConfig optionArgConfig,
+        Expr optionArgumentSource
+      |
+        optionArgument = fcSetOptions.getArgument(0) and
+        optionArgConfig
+            .hasFlow(DataFlow::exprNode(optionArgumentSource), DataFlow::exprNode(optionArgument))
+      |
+        optionArgument.getValue().toInt().bitShiftRight(16).bitAnd(flag) = flag
       )
     )
   )
@@ -54,7 +52,7 @@ predicate isOptionNotSet(ConstructorCall cc, int flag) {
 from
   BoostorgAsio::SslContextCallTlsProtocolConfig configConstructor,
   Expr protocolSource, Expr protocolSink,
-  BoostorgAsio::SslContextClass c, ConstructorCall cc, Expr e, string msg
+  ConstructorCall cc, Expr e, string msg
 where
   configConstructor.hasFlow(DataFlow::exprNode(protocolSource), DataFlow::exprNode(protocolSink)) and
   cc.getArgument(0) = protocolSink and
