@@ -2009,6 +2009,9 @@ public class TypeScriptASTConverter {
     if (node.get("exclamationToken") != null) {
       flags |= DeclarationFlags.definiteAssignmentAssertion;
     }
+    if (hasModifier(node, "DeclareKeyword")) {
+      flags |= DeclarationFlags.declareKeyword;
+    }
     FieldDefinition fieldDefinition =
         new FieldDefinition(
             loc,

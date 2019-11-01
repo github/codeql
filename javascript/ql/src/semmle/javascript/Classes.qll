@@ -1059,6 +1059,12 @@ class FieldDeclaration extends MemberDeclaration, @field {
 
   /** Holds if this is a TypeScript field marked as definitely assigned with the `!` operator. */
   predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }
+
+  override predicate isAmbient() {
+    hasDeclareKeyword(this)
+    or
+    getParent().isAmbient()
+  }
 }
 
 /**

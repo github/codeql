@@ -1410,6 +1410,10 @@ public class ASTExtractor {
         }
       }
 
+      if (nd.hasDeclareKeyword()) {
+        trapwriter.addTuple("hasDeclareKeyword", methkey);
+      }
+
       return methkey;
     }
 
