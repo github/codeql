@@ -1,4 +1,4 @@
 import cpp
 
 from Function f
-select f, f.getATemplateArgument(), f.getATemplateArgumentValue()
+select f, f.getATemplateArgumentKind(), f.getATemplateArgument()

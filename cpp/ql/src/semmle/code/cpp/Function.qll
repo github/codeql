@@ -348,7 +348,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * function template. When called on a function template, this will return the
    * `i`th template parameter.
    */
-  override Type getTemplateArgument(int index) {
+  override Type getTemplateArgumentType(int index) {
     function_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 

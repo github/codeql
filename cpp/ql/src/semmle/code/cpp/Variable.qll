@@ -160,7 +160,7 @@ class Variable extends Declaration, @variable {
    * variable template. When called on a variable template, this will return the
    * `i`th template parameter.
    */
-  override Type getTemplateArgument(int index) {
+  override Type getTemplateArgumentType(int index) {
     variable_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 

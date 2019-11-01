@@ -196,33 +196,36 @@ abstract class Declaration extends Locatable, @declaration {
    * When called on a template, this will return a template parameter type for
    * both typed and non-typed parameters.
    */
-  final Type getATemplateArgument() { result = getTemplateArgument(_) }
+  final Locatable getATemplateArgument() { result = getTemplateArgument(_) }
 
   /**
    * Gets a template argument used to instantiate this declaration from a template.
    * When called on a template, this will return a non-typed template
    * parameter value.
    */
-  final Expr getATemplateArgumentValue() { result = getTemplateArgumentValue(_) }
+  final Locatable getATemplateArgumentKind() { result = getTemplateArgumentKind(_) }
 
   /**
    * Gets the `i`th template argument used to instantiate this declaration from a
-   * template. When called on a template, this will return the `i`th template
-   * parameter's type.
+   * template.
    *
    * For example:
    *
    * `template<typename T, T X> class Foo;`
    *
    * Will have `getTemplateArgument(0)` return `T`, and
-   * `getTemplateArgument(1)` return `T`.
+   * `getTemplateArgument(1)` return `X`.
    *
    * `Foo<int, 1> bar;
    *
    * Will have `getTemplateArgument())` return `int`, and
-   * `getTemplateArgument(1)` return `int`.
+   * `getTemplateArgument(1)` return `1`.
    */
-  Type getTemplateArgument(int index) { none() }
+  final Locatable getTemplateArgument(int index) {
+    if exists(getTemplateArgumentValue(index))
+    then result = getTemplateArgumentValue(index)
+    else result = getTemplateArgumentType(index)
+  }
 
   /**
    * Gets the `i`th template argument value used to instantiate this declaration
@@ -233,20 +236,44 @@ abstract class Declaration extends Locatable, @declaration {
    *
    * `template<typename T, T X> class Foo;`
    *
-   * Will have `getTemplateArgumentValue(1)` return `X`, and no result for
-   * `getTemplateArgumentValue(0)`.
+   * Will have `getTemplateArgumentKind(1)` return `T`, and no result for
+   * `getTemplateArgumentKind(0)`.
    *
    * `Foo<int, 10> bar;
    *
-   * Will have `getTemplateArgumentValue(1)` return `10`, and no result for
-   * `getTemplateArgumentValue(0)`.
+   * Will have `getTemplateArgumentKind(1)` return `int`, and no result for
+   * `getTemplateArgumentKind(0)`.
    */
-  Expr getTemplateArgumentValue(int index) { none() }
+  final Locatable getTemplateArgumentKind(int index) {
+    if exists(getTemplateArgumentValue(index))
+    then result = getTemplateArgumentType(index)
+    else none()
+  }
 
   /** Gets the number of template arguments for this declaration. */
   final int getNumberOfTemplateArguments() {
     result = count(int i | exists(getTemplateArgument(i)))
   }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets a Type for a template argument.  May be the template argument itself
+   * or the type of a non-type template argument.
+   *
+   * Use `getTemplateArgument` or `getTemplateKind` instead.
+   */
+  Type getTemplateArgumentType(int index) { none() }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets an Expression representing the value of a non-type template
+   * argument.
+   *
+   * Use `getTemplateArgument` or `getTemplateKind` instead.
+   */
+  Expr getTemplateArgumentValue(int index) { none() }
 }
 
 /**

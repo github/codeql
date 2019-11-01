@@ -36,11 +36,11 @@ private string getParameterTypeString(Type parameterType) {
 }
 
 private string getTemplateArgumentString(Declaration d, int i) {
-  if exists(d.getTemplateArgumentValue(i))
+  if exists(d.getTemplateArgumentKind(i))
   then
-    result = d.getTemplateArgument(i).(DumpType).getTypeIdentityString() + " " + d.getTemplateArgumentValue(i)
-  else
-    result = d.getTemplateArgument(i).(DumpType).getTypeIdentityString()
+    result = d.getTemplateArgumentKind(i).(DumpType).getTypeIdentityString() + " " +
+        d.getTemplateArgument(i)
+  else result = d.getTemplateArgument(i).(DumpType).getTypeIdentityString()
 }
 
 /**

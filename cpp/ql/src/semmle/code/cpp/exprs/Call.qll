@@ -139,27 +139,27 @@ class FunctionCall extends Call, @funbindexpr {
   override string getCanonicalQLClass() { result = "FunctionCall" }
 
   /** Gets an explicit template argument for this call. */
-  Type getAnExplicitTemplateArgument() { result = getExplicitTemplateArgument(_) }
+  Locatable getAnExplicitTemplateArgument() { result = getExplicitTemplateArgument(_) }
 
   /** Gets an explicit template argument value for this call. */
-  Expr getAnExplicitTemplateArgumentValue() { result = getExplicitTemplateArgumentValue(_) }
+  Locatable getAnExplicitTemplateArgumentKind() { result = getExplicitTemplateArgumentKind(_) }
 
   /** Gets a template argument for this call. */
-  Type getATemplateArgument() { result = getTarget().getATemplateArgument() }
+  Locatable getATemplateArgument() { result = getTarget().getATemplateArgument() }
 
   /** Gets a template argument value for this call. */
-  Expr getATemplateArgumentValue() { result = getTarget().getATemplateArgumentValue() }
+  Locatable getATemplateArgumentKind() { result = getTarget().getATemplateArgumentKind() }
 
   /** Gets the nth explicit template argument for this call. */
-  Type getExplicitTemplateArgument(int n) {
+  Locatable getExplicitTemplateArgument(int n) {
     n < getNumberOfExplicitTemplateArguments() and
     result = getTemplateArgument(n)
   }
 
   /** Gets the nth explicit template argument value for this call. */
-  Expr getExplicitTemplateArgumentValue(int n) {
+  Locatable getExplicitTemplateArgumentKind(int n) {
     n < getNumberOfExplicitTemplateArguments() and
-    result = getTemplateArgumentValue(n)
+    result = getTemplateArgumentKind(n)
   }
 
   /** Gets the number of explicit template arguments for this call. */
@@ -172,14 +172,11 @@ class FunctionCall extends Call, @funbindexpr {
   /** Gets the number of template arguments for this call. */
   int getNumberOfTemplateArguments() { result = count(int i | exists(getTemplateArgument(i))) }
 
-  /** Gets the number of template argument which are values for this call. */
-  int getNumberOfTemplateArgumentValues() { result = count(int i | exists(getTemplateArgumentValue(i))) }
-
   /** Gets the nth template argument for this call (indexed from 0). */
-  Type getTemplateArgument(int n) { result = getTarget().getTemplateArgument(n) }
+  Locatable getTemplateArgument(int n) { result = getTarget().getTemplateArgument(n) }
 
   /** Gets the nth template argument value for this call (indexed from 0). */
-  Expr getTemplateArgumentValue(int n) { result = getTarget().getTemplateArgumentValue(n) }
+  Locatable getTemplateArgumentKind(int n) { result = getTarget().getTemplateArgumentKind(n) }
 
   /** Holds if any template arguments for this call are implicit / deduced. */
   predicate hasImplicitTemplateArguments() {
