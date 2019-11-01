@@ -4,8 +4,8 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
 /**
- * A type of form <tt>E is T</tt> where <tt>E</tt> is a parameter name or <tt>this</tt> and
- * <tt>T</tt> is a type.
+ * A type of form <tt>E is T</tt>, <tt>asserts E is T</tt> or <tt>asserts E</tt> where <tt>E</tt> is
+ * a parameter name or <tt>this</tt> and <tt>T</tt> is a type.
  */
 public class PredicateTypeExpr extends TypeExpression {
   private final ITypeExpression expression;
