@@ -13,7 +13,9 @@ import semmle.code.cpp.security.boostorg.asio.protocols
 class ExistsAnyFlowConfig extends DataFlow::Configuration {
   ExistsAnyFlowConfig() { this = "ExistsAnyFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { any() }
+  override predicate isSource(DataFlow::Node source) {
+  	source.asExpr() instanceof ConstructorCall
+  }
 
   override predicate isSink(DataFlow::Node sink) { any() }
 }
@@ -21,12 +23,12 @@ class ExistsAnyFlowConfig extends DataFlow::Configuration {
 bindingset[flag]
 predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
   exists(
-    BoostorgAsio::SslContextFlowsToSetOptionConfig config, ExistsAnyFlowConfig testConfig,
+    BoostorgAsio::SslContextFlowsToSetOptionConfig config, ExistsAnyFlowConfig anyFlowConfig,
     Expr optionsSink
   |
     config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
     exists(VariableAccess contextSetOptions |
-      testConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
+      anyFlowConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
       exists(BoostorgAsio::SslSetOptionsFunction f | f.getACallToThisFunction() = fcSetOptions |
         contextSetOptions = fcSetOptions.getQualifier() and
         forall(
