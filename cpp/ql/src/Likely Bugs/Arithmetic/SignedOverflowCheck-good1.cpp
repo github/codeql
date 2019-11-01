@@ -1,3 +1,4 @@
-bool baf(unsigned short n1, unsigned short delta) {
-    return (unsigned short)(n1 + delta) < n1; // GOOD
+#include <limits.h>
+bool foo(int n1, unsigned short delta) {
+    return n1 > INT_MAX - delta; // GOOD
 }

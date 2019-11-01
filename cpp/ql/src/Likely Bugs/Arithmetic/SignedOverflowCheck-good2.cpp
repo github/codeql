@@ -1,3 +1,3 @@
-bool baz(int n1, int delta) {
-    return (unsigned)n1 + delta < n1; // GOOD
+bool bar(unsigned short n1, unsigned short delta) {
+    return (unsigned short)(n1 + delta) < n1; // GOOD
 }
