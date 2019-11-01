@@ -19,7 +19,12 @@ class ExistsAnyFlowConfig extends DataFlow::Configuration {
  	)
   }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) {
+  	exists(BoostorgAsio::SslSetOptionsFunction f, FunctionCall fcSetOptions |
+  	  f.getACallToThisFunction() = fcSetOptions and
+  	  fcSetOptions.getQualifier() = sink.asExpr()
+  	)
+  }
 }
 
 bindingset[flag]
