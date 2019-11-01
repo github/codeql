@@ -105,7 +105,7 @@ To do this you need to define a `query predicate <https://help.semmle.com/QL/ql-
 This predicate defines the edge relations of the graph you are computing, and it is used to compute the paths related to each result that your query generates. 
 You can import a predefined ``edges`` predicate from a path graph module in one of the standard data flow libraries. In addition to the path graph module, the data flow libraries contain the other ``classes``, ``predicates``, and ``modules`` that are commonly used in data flow analysis. The import statement to use depends on the language that you are analyzing.
 
-For C/C++, C#. Java, and JavaScript you would use::
+For C/C++, C#, Java, and JavaScript you would use::
 
     import DataFlow::PathGraph
 

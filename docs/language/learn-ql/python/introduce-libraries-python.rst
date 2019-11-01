@@ -12,7 +12,7 @@ The rest of this tutorial summarizes the contents of the standard libraries for 
 Overview of the library
 -----------------------
 
-The CodeQL library for Python incorporates a large number of classes. Each class corresponds either to one kind of entity in Python source code or to an entity that can be derived form the source code using static analysis. These classes can be divided into four categories:
+The CodeQL library for Python incorporates a large number of classes. Each class corresponds either to one kind of entity in Python source code or to an entity that can be derived from the source code using static analysis. These classes can be divided into four categories:
 
 -  **Syntactic** - classes that represent entities in the Python source code.
 -  **Control flow** - classes that represent entities from the control flow graphs.
