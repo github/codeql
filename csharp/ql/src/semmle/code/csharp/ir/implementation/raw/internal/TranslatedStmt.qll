@@ -181,8 +181,8 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, InitializationCont
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  override Type getTargetType() {
-    result = this.getEnclosingFunction().getReturnVariable().getType()
+  override CSharpType getTargetType() {
+    result = getTypeForPRValue(this.getEnclosingFunction().getReturnVariable().getType())
   }
 
   TranslatedInitialization getInitialization() {
@@ -473,7 +473,7 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  override Type getTargetType() { result = this.getExceptionType() }
+  override CSharpType getTargetType() { result = getTypeForPRValue(this.getExceptionType()) }
 
   TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(stmt.getExpr())

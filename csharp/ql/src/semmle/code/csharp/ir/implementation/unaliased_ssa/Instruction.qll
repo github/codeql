@@ -116,7 +116,7 @@ module InstructionSanity {
 
   query predicate missingOperandType(Operand operand, string message) {
     exists(Language::Function func, Instruction use |
-      not exists(operand.getType()) and
+      not exists(operand.getLanguageType()) and
       use = operand.getUse() and
       func = use.getEnclosingFunction() and
       message = "Operand '" + operand.toString() + "' of instruction '" + use.getOpcode().toString()
@@ -458,51 +458,10 @@ class Instruction extends Construction::TInstruction {
   final IRType getResultIRType() { result = getResultLanguageType().getIRType() }
 
   /**
-   * Gets the type of the result produced by this instruction. If the
-   * instruction does not produce a result, its result type will be `VoidType`.
-   *
-   * If `isGLValue()` holds, then the result type of this instruction should be
-   * thought of as "pointer to `getResultType()`".
-   */
-  final Language::Type getResultType() {
-    exists(Language::LanguageType resultType |
-      resultType = getResultLanguageType() and
-      (
-        resultType.hasUnspecifiedType(result, _)
-        or
-        not resultType.hasUnspecifiedType(_, _) and result instanceof Language::UnknownType
-      )
-    )
-  }
-
-  /**
-   * Holds if the result produced by this instruction is a glvalue. If this
-   * holds, the result of the instruction represents the address of a location,
-   * and the type of the location is given by `getResultType()`. If this does
-   * not hold, the result of the instruction represents a value whose type is
-   * given by `getResultType()`.
-   *
-   * For example, the statement `y = x;` generates the following IR:
-   * r1_0(glval: int) = VariableAddress[x]
-   * r1_1(int)        = Load r1_0, mu0_1
-   * r1_2(glval: int) = VariableAddress[y]
-   * mu1_3(int)       = Store r1_2, r1_1
-   *
-   * The result of each `VariableAddress` instruction is a glvalue of type
-   * `int`, representing the address of the corresponding integer variable. The
-   * result of the `Load` instruction is a prvalue of type `int`, representing
-   * the integer value loaded from variable `x`.
-   */
-  final predicate isGLValue() { Construction::getInstructionResultType(this).hasType(_, true) }
-
-  /**
    * Gets the size of the result produced by this instruction, in bytes. If the
    * result does not have a known constant size, this predicate does not hold.
-   *
-   * If `this.isGLValue()` holds for this instruction, the value of
-   * `getResultSize()` will always be the size of a pointer.
    */
-  final int getResultSize() { result = Construction::getInstructionResultType(this).getByteSize() }
+  final int getResultSize() { result = getResultLanguageType().getByteSize() }
 
   /**
    * Gets the opcode that specifies the operation performed by this instruction.
@@ -801,11 +760,13 @@ class ConstantInstruction extends ConstantValueInstruction {
 }
 
 class IntegerConstantInstruction extends ConstantInstruction {
-  IntegerConstantInstruction() { getResultType() instanceof Language::IntegralType }
+  IntegerConstantInstruction() {
+    getResultIRType() instanceof IRIntegerType or getResultIRType() instanceof IRBooleanType
+  }
 }
 
 class FloatConstantInstruction extends ConstantInstruction {
-  FloatConstantInstruction() { getResultType() instanceof Language::FloatingPointType }
+  FloatConstantInstruction() { getResultIRType() instanceof IRFloatingPointType }
 }
 
 class StringConstantInstruction extends Instruction {

@@ -156,24 +156,6 @@ class Operand extends TOperand {
   final IRType getIRType() { result = getLanguageType().getIRType() }
 
   /**
-   * Gets the type of the value consumed by this operand. This is usually the same as the
-   * result type of the definition instruction consumed by this operand. For register operands,
-   * this is always the case. For some memory operands, the operand type may be different from
-   * the definition type, such as in the case of a partial read or a read from a pointer that
-   * has been cast to a different type.
-   */
-  final Language::Type getType() { getLanguageType().hasType(result, _) }
-
-  /**
-   * Holds if the value consumed by this operand is a glvalue. If this
-   * holds, the value of the operand represents the address of a location,
-   * and the type of the location is given by `getType()`. If this does
-   * not hold, the value of the operand represents a value whose type is
-   * given by `getType()`.
-   */
-  final predicate isGLValue() { getLanguageType().hasType(_, true) }
-
-  /**
    * Gets the size of the value consumed by this operand, in bytes. If the operand does not have
    * a known constant size, this predicate does not hold.
    */

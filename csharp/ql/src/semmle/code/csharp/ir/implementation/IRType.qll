@@ -120,7 +120,7 @@ class IRBooleanType extends IRSizedType, TIRBooleanType {
 }
 
 /**
- * A numberic type. This includes `IRSignedIntegerType`, `IRUnsignedIntegerType`, and
+ * A numeric type. This includes `IRSignedIntegerType`, `IRUnsignedIntegerType`, and
  * `IRFloatingPointType`.
  */
 class IRNumericType extends IRSizedType {
@@ -132,10 +132,20 @@ class IRNumericType extends IRSizedType {
 }
 
 /**
+ * An integer type. This includes `IRSignedIntegerType` and `IRUnsignedIntegerType`.
+ */
+class IRIntegerType extends IRNumericType {
+  IRIntegerType() {
+    this = TIRSignedIntegerType(byteSize) or
+    this = TIRUnsignedIntegerType(byteSize)
+  }
+}
+
+/**
  * A signed two's-complement integer. Also used to represent enums whose underlying type is a signed
  * integer, as well as character types whose representation is signed.
  */
-class IRSignedIntegerType extends IRNumericType, TIRSignedIntegerType {
+class IRSignedIntegerType extends IRIntegerType, TIRSignedIntegerType {
   final override string toString() { result = "int" + byteSize.toString() }
 
   final override Language::LanguageType getCanonicalLanguageType() {
@@ -147,7 +157,7 @@ class IRSignedIntegerType extends IRNumericType, TIRSignedIntegerType {
  * An unsigned two's-complement integer. Also used to represent enums whose underlying type is an
  * unsigned integer, as well as character types whose representation is unsigned.
  */
-class IRUnsignedIntegerType extends IRNumericType, TIRUnsignedIntegerType {
+class IRUnsignedIntegerType extends IRIntegerType, TIRUnsignedIntegerType {
   final override string toString() { result = "uint" + byteSize.toString() }
 
   final override Language::LanguageType getCanonicalLanguageType() {

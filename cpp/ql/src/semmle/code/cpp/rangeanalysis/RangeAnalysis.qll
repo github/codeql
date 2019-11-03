@@ -67,7 +67,6 @@
  * back-edge as a precise bound might require traversing a loop once).
  */
 
-import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
@@ -239,44 +238,44 @@ class CondReason extends Reason, TCondReason {
  * range analysis.
  */
 pragma[inline]
-private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
-  fromtyp.getSize() < totyp.getSize() and
+private predicate safeCast(IRIntegerType fromtyp, IRIntegerType totyp) {
+  fromtyp.getByteSize() < totyp.getByteSize() and
   (
-    fromtyp.isUnsigned()
+    fromtyp instanceof IRUnsignedIntegerType
     or
-    totyp.isSigned()
+    totyp instanceof IRSignedIntegerType
   )
   or
-  fromtyp.getSize() <= totyp.getSize() and
+  fromtyp.getByteSize() <= totyp.getByteSize() and
   (
-    fromtyp.isSigned() and
-    totyp.isSigned()
+    fromtyp instanceof IRSignedIntegerType and
+    totyp instanceof IRSignedIntegerType
     or
-    fromtyp.isUnsigned() and
-    totyp.isUnsigned()
+    fromtyp instanceof IRUnsignedIntegerType and
+    totyp instanceof IRUnsignedIntegerType
   )
 }
 
 private class SafeCastInstruction extends ConvertInstruction {
   SafeCastInstruction() {
-    safeCast(getResultType(), getUnary().getResultType())
+    safeCast(getResultIRType(), getUnary().getResultIRType())
     or
-    getResultType() instanceof PointerType and
-    getUnary().getResultType() instanceof PointerType
+    getResultIRType() instanceof IRAddressType and
+    getUnary().getResultIRType() instanceof IRAddressType
   }
 }
 
 /**
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
  */
-private predicate typeBound(IntegralType typ, int lowerbound, int upperbound) {
-  typ.isSigned() and typ.getSize() = 1 and lowerbound = -128 and upperbound = 127
+private predicate typeBound(IRIntegerType typ, int lowerbound, int upperbound) {
+  typ instanceof IRSignedIntegerType and typ.getByteSize() = 1 and lowerbound = -128 and upperbound = 127
   or
-  typ.isUnsigned() and typ.getSize() = 1 and lowerbound = 0 and upperbound = 255
+  typ instanceof IRUnsignedIntegerType and typ.getByteSize() = 1 and lowerbound = 0 and upperbound = 255
   or
-  typ.isSigned() and typ.getSize() = 2 and lowerbound = -32768 and upperbound = 32767
+  typ instanceof IRSignedIntegerType and typ.getByteSize() = 2 and lowerbound = -32768 and upperbound = 32767
   or
-  typ.isUnsigned() and typ.getSize() = 2 and lowerbound = 0 and upperbound = 65535
+  typ instanceof IRUnsignedIntegerType and typ.getByteSize() = 2 and lowerbound = 0 and upperbound = 65535
 }
 
 /**
@@ -285,14 +284,14 @@ private predicate typeBound(IntegralType typ, int lowerbound, int upperbound) {
 private class NarrowingCastInstruction extends ConvertInstruction {
   NarrowingCastInstruction() {
     not this instanceof SafeCastInstruction and
-    typeBound(getResultType(), _, _)
+    typeBound(getResultIRType(), _, _)
   }
 
   /** Gets the lower bound of the resulting type. */
-  int getLowerBound() { typeBound(getResultType(), result, _) }
+  int getLowerBound() { typeBound(getResultIRType(), result, _) }
 
   /** Gets the upper bound of the resulting type. */
-  int getUpperBound() { typeBound(getResultType(), _, result) }
+  int getUpperBound() { typeBound(getResultIRType(), _, result) }
 }
 
 /**

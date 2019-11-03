@@ -486,8 +486,8 @@ class TranslatedObjectInitializerExpr extends TranslatedNonConstantExpr, Initial
     result = this.getParent().getInstruction(NewObjTag())
   }
 
-  override Type getTargetType() {
-    result = this.getParent().getInstruction(NewObjTag()).getResultType()
+  override CSharpType getTargetType() {
+    result = this.getParent().getInstruction(NewObjTag()).getResultLanguageType()
   }
 }
 
@@ -526,8 +526,8 @@ class TranslatedCollectionInitializer extends TranslatedNonConstantExpr, Initial
     result = this.getParent().getInstruction(NewObjTag())
   }
 
-  override Type getTargetType() {
-    result = this.getParent().getInstruction(NewObjTag()).getResultType()
+  override CSharpType getTargetType() {
+    result = this.getParent().getInstruction(NewObjTag()).getResultLanguageType()
   }
 }
 
@@ -1928,7 +1928,7 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  final override Type getTargetType() { result = this.getResultType() }
+  final override CSharpType getTargetType() { result = getTypeForPRValue(this.getResultType()) }
 
   private predicate hasInitializer() { exists(this.getInitialization()) }
 

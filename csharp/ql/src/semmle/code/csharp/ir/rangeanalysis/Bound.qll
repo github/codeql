@@ -8,8 +8,8 @@ private newtype TBound =
     exists(Instruction i |
       vn.getAnInstruction() = i and
       (
-        i.getResultType() instanceof IntegralType or
-        i.getResultType() instanceof PointerType
+        i.getResultIRType() instanceof IRIntegerType or
+        i.getResultIRType() instanceof IRAddressType
       ) and
       not vn.getAnInstruction() instanceof ConstantInstruction
     |

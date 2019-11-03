@@ -6,7 +6,6 @@
  * three-valued domain `{negative, zero, positive}`.
  */
 
-import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
@@ -471,7 +470,7 @@ module SignAnalysisCached {
     not exists(certainInstructionSign(i)) and
     not (
       result = TNeg() and
-      i.getResultType().(IntegralType).isUnsigned()
+      i.getResultIRType() instanceof IRUnsignedIntegerType
     ) and
     (
       unknownSign(i)
@@ -479,9 +478,9 @@ module SignAnalysisCached {
       exists(ConvertInstruction ci, Instruction prior, boolean fromSigned, boolean toSigned |
         i = ci and
         prior = ci.getUnary() and
-        (if ci.getResultType().(IntegralType).isSigned() then toSigned = true else toSigned = false) and
+        (if ci.getResultIRType() instanceof IRSignedIntegerType then toSigned = true else toSigned = false) and
         (
-          if prior.getResultType().(IntegralType).isSigned()
+          if prior.getResultIRType() instanceof IRSignedIntegerType
           then fromSigned = true
           else fromSigned = false
         ) and
@@ -514,11 +513,11 @@ module SignAnalysisCached {
         i instanceof ShiftLeftInstruction and result = s1.lshift(s2)
         or
         i instanceof ShiftRightInstruction and
-        i.getResultType().(IntegralType).isSigned() and
+        i.getResultIRType() instanceof IRSignedIntegerType and
         result = s1.rshift(s2)
         or
         i instanceof ShiftRightInstruction and
-        not i.getResultType().(IntegralType).isSigned() and
+        not i.getResultIRType() instanceof IRSignedIntegerType and
         result = s1.urshift(s2)
       )
       or

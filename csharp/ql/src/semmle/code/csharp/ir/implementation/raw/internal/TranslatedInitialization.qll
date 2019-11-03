@@ -35,7 +35,7 @@ abstract class InitializationContext extends TranslatedElement {
   /**
    * Gets the type of the location to be initialized.
    */
-  abstract Type getTargetType();
+  abstract CSharpType getTargetType();
 }
 
 /**
@@ -96,7 +96,7 @@ abstract class TranslatedListInitialization extends TranslatedInitialization, In
 
   override Instruction getTargetAddress() { result = this.getContext().getTargetAddress() }
 
-  override Type getTargetType() { result = this.getContext().getTargetType() }
+  override CSharpType getTargetType() { result = this.getContext().getTargetType() }
 }
 
 /**
@@ -136,7 +136,7 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = getTypeForPRValue(this.getContext().getTargetType())
+    resultType = this.getContext().getTargetType()
     or
     needsConversion() and
     tag = AssignmentConvertRightTag() and
@@ -144,7 +144,7 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
     // crudely represent conversions. Could
     // be useful to represent the whole chain of conversions
     opcode instanceof Opcode::Convert and
-    resultType = getTypeForPRValue(this.getContext().getTargetType())
+    resultType = this.getContext().getTargetType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -191,7 +191,9 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
 
   TranslatedExpr getInitializer() { result = getTranslatedExpr(expr) }
 
-  private predicate needsConversion() { expr.getType() != this.getContext().getTargetType() }
+  private predicate needsConversion() {
+    getTypeForPRValue(expr.getType()) != this.getContext().getTargetType()
+  }
 }
 
 /**
@@ -279,7 +281,7 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 
   override Instruction getTargetAddress() { result = this.getInstruction(getElementAddressTag()) }
 
-  override Type getTargetType() { result = getElementType() }
+  override CSharpType getTargetType() { result = getTypeForPRValue(getElementType()) }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     result = TranslatedElementInitialization.super.getInstructionSuccessor(tag, kind)
