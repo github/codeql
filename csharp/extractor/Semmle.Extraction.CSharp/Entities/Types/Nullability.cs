@@ -7,14 +7,14 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public sealed class Nullability
     {
-        public int Annotation { get; private set; }
+        public int Annotation { get; }
 
         static readonly Nullability[] EmptyArray = new Nullability[0];
         public readonly Nullability[] NullableParameters;
 
         public static Nullability Create(AnnotatedTypeSymbol ts)
         {
-            if(ts.HasConsistentNullability())
+            if (ts.HasConsistentNullability())
             {
                 switch (ts.Nullability)
                 {
@@ -36,12 +36,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Nullability(NullableAnnotation n)
         {
-            SetNullability(n);
-            NullableParameters = new Nullability[0];
-        }
-
-        private void SetNullability(NullableAnnotation n)
-        {
             switch (n)
             {
                 case NullableAnnotation.NotAnnotated:
@@ -54,6 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     Annotation = 0;
                     break;
             }
+            NullableParameters = EmptyArray;
         }
 
         private Nullability(AnnotatedTypeSymbol ts) : this(ts.Nullability)

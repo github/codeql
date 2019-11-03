@@ -8,173 +8,163 @@
 
 import csharp
 
-private module Annotations {
+module Annotations {
   newtype TAnnotation =
-    TNotNullableRefType() or
-    TNullableRefType() or
     TReadonlyRefType() or
     TRefType() or
-    TOutType()
+    TOutType() or
+    TNullability(@nullability n)
 
   /** An annotation on a type. */
   class TypeAnnotation extends TAnnotation {
-    /** Holds if this string should prefix the type string. */
-    predicate isPrefix() { none() }
-
-    /** Holds if this string should suffix the type string. */
-    predicate isSuffix() { none() }
-
-    /** Gets the bit position in the bit-field. */
+    /** Gets the bit position in the bit-field, also used to order the annotations in the text format. */
     abstract int getBit();
 
+    /** Gets the string prefixing the type, if any. */
+    string getPrefix() { none() }
+
+    /** Gets the string suffixing the type, if any. */
+    string getSuffix() { none() }
+
     /** Gets a string representation of this type annotation. */
-    abstract string toString();
-  }
-
-  /** An annotation indicating that the type is not nullable. */
-  class NonNullableRefType extends TypeAnnotation, TNotNullableRefType {
-    override predicate isSuffix() { any() }
-
-    override string toString() { result = "!" }
-
-    override int getBit() { result = 2 }
-  }
-
-  /** An annotation indicating that the type is a nullable reference type. */
-  class NullableRefType extends TypeAnnotation, TNullableRefType {
-    override predicate isSuffix() { any() }
-
-    override string toString() { result = "?" }
-
-    override int getBit() { result = 3 }
+    string toString() { none() }
   }
 
   /** An annotation indicating that the type is a readonly reference. */
   class ReadonlyRefType extends TypeAnnotation, TReadonlyRefType {
-    override predicate isPrefix() { any() }
+    override string getPrefix() { result = "readonly " }
 
-    override string toString() { result = "readonly " }
+    override string toString() { result = "readonly ref" }
 
     override int getBit() { result = 4 }
   }
 
   /** An annotation indicating that the variable or return is by `ref`. */
   class RefTypeAnnotation extends TypeAnnotation, TRefType {
-    override predicate isPrefix() { any() }
+    override string getPrefix() { result = "ref " }
 
-    override string toString() { result = "ref " }
+    override string toString() { result = "ref" }
 
     override int getBit() { result = 5 }
   }
 
   /** An annotation indicating that the parameter is `out`. */
   class OutType extends TypeAnnotation, TOutType {
-    override predicate isPrefix() { any() }
+    override string getPrefix() { result = "out " }
 
-    override string toString() { result = "out " }
+    override string toString() { result = "out" }
 
     override int getBit() { result = 6 }
   }
 
-  newtype TAnnotations =
+  private newtype TAnnotations =
     TAnnotationFlags(int flags, Nullability n) {
-      exists(Element e | flags = getElementTypeFlags(e) and n = getElementNullability(e))
-      or
-      flags = 0 // n is unbound
-    }
+      exists(Element e |
+        flags = getElementTypeFlags(e) and
+        n = getElementNullability(e)
+      )
+    } or
+    TAnnotationsNoFlags(Nullability n)
 
+  /** A collection of type annotations. */
   class TypeAnnotations extends TAnnotations {
-    int flags;
-
-    Nullability nullability;
-
-    TypeAnnotations() { this = TAnnotationFlags(flags, nullability) }
-
-    /** Gets the flags (as a bitset) of this type annotation. */
-    int getFlags() { result = flags }
-
     /** Gets the nullability of this type annotation. */
-    Nullability getNullability() { result = nullability }
-
-    /**
-     * Gets the `i`th "child" of this type annotation.
-     * This is used to represent structured datatypes, where the structure
-     * of the type annotation mirrors the structure of the annotated type.
-     */
-    bindingset[i]
-    TypeAnnotations getChild(int i) {
-      result.getFlags() = 0 and result.getNullability() = this.getNullability().getMember(i)
+    Nullability getNullability() {
+      this = TAnnotationFlags(_, result)
+      or
+      this = TAnnotationsNoFlags(result)
     }
+
+    /** Gets the nullability with no additional flags. */
+    Nullability getNoFlagsNullability() { this = TAnnotationsNoFlags(result) }
 
     /** Gets text to be displayed before the type. */
     string getTypePrefix() {
       result = concat(TypeAnnotation a |
-          a = this.getAnAnnotation() and a.isPrefix()
+          a = this.getAnAnnotation()
         |
-          a.toString(), "" order by a.getBit()
+          a.getPrefix(), "" order by a.getBit()
         )
     }
 
     /** Gets text to be displayed after the type. */
     string getTypeSuffix() {
       result = concat(TypeAnnotation a |
-          a = this.getAnAnnotation() and a.isSuffix()
+          a = this.getAnAnnotation()
         |
-          a.toString(), "" order by a.getBit()
+          a.getSuffix(), "" order by a.getBit()
         )
     }
 
     /** Gets a textual representation of this type annotation. */
-    string toString() { result = getTypePrefix() + getTypeSuffix() }
+    string toString() { result = getTypePrefix() + getNullability() + getTypeSuffix() }
+
+    private int getFlags() { this = TAnnotationFlags(result, _) }
 
     private predicate isSet(int bit) {
       isBit(bit) and
-      exists(int mask | mask = getBitMask(bit) | flags.bitAnd(mask) = mask)
+      exists(int mask | mask = getBitMask(bit) | this.getFlags().bitAnd(mask) = mask)
     }
 
     /** Gets an annotation in this set of annotations. */
     TypeAnnotation getAnAnnotation() {
       isSet(result.getBit())
       or
-      nullability instanceof AnnotatedNullability and result instanceof NullableRefType
-      or
-      nullability instanceof NotAnnotatedNullability and result instanceof NonNullableRefType
+      result = this.getNullability()
     }
+  }
+
+  /**
+   * Gets the `i`th child of type annotations `annotations`.
+   * This is used to represent structured datatypes, where the structure
+   * of the type annotation mirrors the structure of the annotated type.
+   */
+  bindingset[i]
+  TypeAnnotations getChild(TypeAnnotations annotations, int i) {
+    result.getNoFlagsNullability() = getChildNullability(annotations.getNullability(), i)
   }
 
   /**
    * A structured type annotation representing type nullability.
    * For example, `IDictionary<string!,string?>?` has nullability `<!,?>?`.
    */
-  class Nullability extends @nullability {
-    string toString() { result = getMemberString() + getSelfNullability() }
+  abstract class Nullability extends TypeAnnotation, TNullability {
+    @nullability nullability;
+
+    Nullability() { this = TNullability(nullability) }
+
+    @nullability getNullability() { result = nullability }
+
+    override string toString() { result = getMemberString() + getSelfNullability() }
 
     language[monotonicAggregates]
     private string getMemberString() {
-      if nullability_member(this, _, _)
+      if nullability_member(nullability, _, _)
       then
         result = "<" +
             concat(int i, Nullability child |
-              nullability_member(this, i, child)
+              nullability_member(nullability, i, child.getNullability())
             |
               child.toString(), "," order by i
             ) + ">"
       else result = ""
     }
 
-    /**
-     * Gets the `i`th member of this annotation.
-     * Returns `this` if the nullability is not explicitly
-     * stored in the database, since many type annotations will have consistent
-     * nullability.
-     */
-    bindingset[i]
-    Nullability getMember(int i) {
-      if nullability_member(this, i, _) then nullability_member(this, i, result) else result = this
-    }
+    /** Gets a string representing the nullability, disregarding child nullability. */
+    string getSelfNullability() { none() }
+  }
 
-    /** Gets a string representing the nullability. */
-    abstract string getSelfNullability();
+  /**
+   * Gets the `i`th child of nullability `n`.
+   * Returns `n` if the nullability is not explicitly
+   * stored in the database, since many type annotations will have consistent
+   * nullability.
+   */
+  bindingset[i]
+  Nullability getChildNullability(Nullability n, int i) {
+    if nullability_member(n.getNullability(), i, _)
+    then nullability_member(n.getNullability(), i, result.getNullability())
+    else result = n
   }
 
   /**
@@ -182,8 +172,12 @@ private module Annotations {
    * applicable, because the code was not compiled in a nullable context, or
    * because the C# language version is less than 8.
    */
-  class ObliviousNullability extends Nullability, @oblivious {
+  class ObliviousNullability extends Nullability {
+    ObliviousNullability() { nullability instanceof @oblivious }
+
     override string getSelfNullability() { result = "_" }
+
+    override int getBit() { none() }
   }
 
   /**
@@ -191,26 +185,43 @@ private module Annotations {
    * and all type arguments are oblivious.
    */
   class NoNullability extends ObliviousNullability {
-    NoNullability() { not nullability_member(this, _, _) }
+    NoNullability() { not nullability_member(nullability, _, _) }
   }
 
   /** A type with annotated nullablity, `?`. */
-  class AnnotatedNullability extends Nullability, @annotated {
+  class AnnotatedNullability extends Nullability {
+    AnnotatedNullability() { nullability instanceof @annotated }
+
     override string getSelfNullability() { result = "?" }
+
+    override int getBit() { result = 3 }
+
+    override string getSuffix() { result = "?" }
   }
 
   /**
    * A ref type not annotated with `?` in a nullable context.
    */
-  class NotAnnotatedNullability extends Nullability, @not_annotated {
+  class NotAnnotatedNullability extends Nullability {
+    NotAnnotatedNullability() { nullability instanceof @not_annotated }
+
     override string getSelfNullability() { result = "!" }
+
+    override int getBit() { result = 2 }
+
+    override string getSuffix() { result = "!" }
   }
 
   /** Holds if the type annotations `annotations` apply to type `type` on element `element`. */
   predicate elementTypeAnnotations(
     @has_type_annotation element, Type type, TypeAnnotations annotations
   ) {
-    annotations = TAnnotationFlags(getElementTypeFlags(element), getElementNullability(element)) and
+    (
+      annotations = TAnnotationFlags(getElementTypeFlags(element), getElementNullability(element))
+      or
+      not exists(getElementTypeFlags(element)) and
+      annotations.getNoFlagsNullability() = getElementNullability(element)
+    ) and
     (
       type = element.(Assignable).getType()
       or
@@ -232,14 +243,14 @@ private int getBitMask(int bit) {
 }
 
 private int getElementTypeFlags(@has_type_annotation element) {
-  result = sum(int b | type_annotation(element, b) | b)
+  result = strictsum(int b | type_annotation(element, b) | b)
 }
 
 private Annotations::Nullability getTypeParameterNullability(
   TypeParameterConstraints constraints, Type type
 ) {
   if specific_type_parameter_nullability(constraints, getTypeRef(type), _)
-  then specific_type_parameter_nullability(constraints, getTypeRef(type), result)
+  then specific_type_parameter_nullability(constraints, getTypeRef(type), result.getNullability())
   else (
     specific_type_parameter_constraints(constraints, type) and
     result instanceof Annotations::NoNullability
@@ -248,7 +259,7 @@ private Annotations::Nullability getTypeParameterNullability(
 
 private Annotations::Nullability getElementNullability(@has_type_annotation element) {
   if type_nullability(element, _)
-  then type_nullability(element, result)
+  then type_nullability(element, result.getNullability())
   else result instanceof Annotations::NoNullability
 }
 
@@ -258,26 +269,23 @@ private newtype TAnnotatedType =
     or
     exists(AnnotatedConstructedType c, int i |
       type = c.getType().(ConstructedType).getTypeArgument(i) and
-      annotations = c.getAnnotations().getChild(i)
+      annotations = Annotations::getChild(c.getAnnotations(), i)
     )
     or
-    annotations.getFlags() = 0 and
-    annotations.getNullability() = getTypeParameterNullability(_, type)
+    annotations.getNoFlagsNullability() = getTypeParameterNullability(_, type)
     or
-    // All types exist as AnnotatedTypes with NoNullability.
-    annotations.getFlags() = 0 and
-    annotations.getNullability() instanceof Annotations::NoNullability
+    // All types have at least one annotated type
+    annotations.getNoFlagsNullability() instanceof Annotations::NoNullability
     or
     exists(AnnotatedArrayType at |
       type = at.getType().(ArrayType).getElementType() and
-      annotations = at.getAnnotations().getChild(0)
+      annotations = Annotations::getChild(at.getAnnotations(), 0)
     )
   }
 
 /** A type with additional type information. */
 class AnnotatedType extends TAnnotatedType {
   Type type;
-
   Annotations::TypeAnnotations annotations;
 
   AnnotatedType() { this = TAnnotatedTypeNullability(type, annotations) }
@@ -317,12 +325,12 @@ class AnnotatedType extends TAnnotatedType {
   }
 
   /** Holds if the type is a non-nullable reference, for example, `string` in a nullable-enabled context. */
-  predicate isNonNullableRefType() {
-    this.getAnAnnotation() instanceof Annotations::NonNullableRefType
-  }
+  predicate isNonNullableRefType() { this.getAnAnnotation() instanceof Annotations::NoNullability }
 
   /** Holds if the type is a nullable reference, for example `string?`. */
-  predicate isNullableRefType() { this.getAnAnnotation() instanceof Annotations::NullableRefType }
+  predicate isNullableRefType() {
+    this.getAnAnnotation() instanceof Annotations::AnnotatedNullability
+  }
 
   /** Holds if the type is a `ref`, for example the return type of `ref int F()`. */
   predicate isRef() { this.getAnAnnotation() instanceof Annotations::RefTypeAnnotation }
@@ -336,17 +344,16 @@ class AnnotatedType extends TAnnotatedType {
   /** Holds if this annotated type applies to element `e`. */
   predicate appliesTo(Element e) { Annotations::elementTypeAnnotations(e, type, annotations) }
 
-  /** Holds if this annotated type is the type argument 'i' of constructed generic 'g'. */
+  /** Holds if this annotated type is the `ith` type argument of constructed generic 'g'. */
   predicate appliesToTypeArgument(ConstructedGeneric g, int i) {
-    this.getAnnotations().getFlags() = 0 and
-    this.getAnnotations().getNullability() = getElementNullability(g).getMember(i) and
+    this.getAnnotations().getNoFlagsNullability() = Annotations::getChildNullability(getElementNullability(g),
+        i) and
     this.getType() = g.getTypeArgument(i)
   }
 
   /** Holds if this annotated type applies to type parameter constraints `constraints`. */
   predicate appliesToTypeConstraint(TypeParameterConstraints constraints) {
-    this.getAnnotations().getFlags() = 0 and
-    this.getAnnotations().getNullability() = getTypeParameterNullability(constraints, type)
+    this.getAnnotations().getNoFlagsNullability() = getTypeParameterNullability(constraints, type)
   }
 }
 
@@ -357,7 +364,7 @@ class AnnotatedArrayType extends AnnotatedType {
   /** Gets the annotated element type of this array, for example `int?` in `int?[]`. */
   final AnnotatedType getElementType() {
     result.getType() = type.getElementType() and
-    result.getAnnotations() = this.getAnnotations().getChild(0)
+    result.getAnnotations() = Annotations::getChild(this.getAnnotations(), 0)
   }
 
   private string getDimensionString(AnnotatedType elementType) {
@@ -387,7 +394,7 @@ class AnnotatedConstructedType extends AnnotatedType {
   /** Gets the `i`th type argument of this constructed type. */
   AnnotatedType getTypeArgument(int i) {
     result.getType() = type.getTypeArgument(i) and
-    result.getAnnotations() = this.getAnnotations().getChild(i)
+    result.getAnnotations() = Annotations::getChild(this.getAnnotations(), i)
   }
 
   override string toString() {
