@@ -22,85 +22,36 @@ categories: (1) rewrite the signed expression so that overflow cannot occur
 but the signedness remains, or (2) rewrite (or cast) the signed expression
 into unsigned form.
 
-The table below lists various expressions where signed overflow may
+The bullet list below lists various expressions where signed overflow may
 occur, along with proposed rewritings.  It should not be
 considered exhaustive.
 </p>
-<table>
-  <thead><tr>
-    <th>Original Construct</th>
-    <th>Alternate Construct(s)</th>
-    <th>Notes</th>
-  </tr></thead>
-  <tbody><tr>
-    <td><tt><table>
-      <tbody><tr>
-        <td>unsigned short i, delta;</td>
-      </tr><tr>
-        <td>i + delta &lt; i</td>
-      </tr></tbody>
-    </table></tt></td>
-    <td><tt><table>
-      <tbody><tr>
-        <td>unsigned short i, delta;</td>
-      </tr><tr>
-        <td>(unsigned short)(i + delta)&nbsp;&lt;&nbsp;i</td>
-      </tr></tbody>
-    </table></tt></td>
-    <td><tt>i + delta</tt>does not actually overflow due to <tt>int</tt> promotion</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td><tt><table>
-      <tbody><tr>
-        <td>unsigned short i, delta;</td>
-      </tr><tr>
-        <td>i > USHORT_MAX - delta</td>
-      </tr></tbody>
-    </table></tt></td>
-    <td>Must include <tt>limits.h</tt> or <tt>climits</tt>; <tt>delta &gt; 0</tt></td>
-  </tr>
-  <tr>
-    <td><tt><table>
-      <tbody><tr>
-        <td>int i, delta;</td>
-      </tr><tr>
-        <td>i + delta &lt; i</td>
-      </tr></tbody>
-    </table></tt></td>
-    <td><tt><table>
-      <tbody><tr>
-        <td>int i, delta;</td>
-      </tr><tr>
-        <td>i &gt; INT_MAX - delta</td>
-      </tr></tbody>
-    </table></tt></td>
-    <td>Must include <tt>limits.h</tt> or <tt>climits</tt>; <tt>delta &gt; 0</tt></td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td><tt><table>
-      <tbody><tr>
-        <td>int i, delta;</td>
-      </tr><tr>
-        <td>(unsigned)i + delta &lt; i</td>
-      </tr></tbody>
-    </table></tt></td>
-    <td>Change in program semantics</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td><tt><table>
-      <tbody><tr>
-        <td>unsigned int i, delta;</td>
-      </tr><tr>
-        <td>i + delta &lt; i</td>
-      </tr></tbody>
-    </table></tt></td>
-    <td>Change in program semantics</td>
-  </tr></tbody>
-</table>
+
+<li>Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>, 
+it is possible to rewrite it as <code>(unsigned short)(i + delta)&nbsp;&lt;&nbsp;i</code>.
+Note that <code>i + delta</code>does not actually overflow, due to <code>int</code> promotion</li>
+
+<li>Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>,
+it is also possible to rewrite it as <code>USHORT_MAX - delta</code>. It must be true
+that <code>delta &gt; 0</code> and the <code>limits.h</code> or <code>climits</code>
+header has been included.</li>
+
+<li>Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
+it is possible to rewrite it as <code>INT_MAX - delta</code>. It must be true
+that <code>delta &gt; 0</code> and the <code>limits.h</code> or <code>climits</code>
+header has been included.</li>
+
+<li>Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
+it is also possible to rewrite it as <code>(unsigned)i + delta &lt; i</code>.
+Note that program semantics are affected by this change.</li>
+
+<li>Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
+it is also possible to rewrite it as <code>unsigned int i, delta</code> and
+<code>i + delta &lt; i</code>.  Note that program semantics are 
+affected by this change.</li>
+
 </recommendation>
+
 <example>
 <p>
 In the following example, even though <code>delta</code> has been declared
@@ -142,6 +93,7 @@ so that <code>unsigned short</code> "wrap around" may now be observed.
 Furthermore, since the left-hand side is now of type <code>unsigned short</code>,
 the right-hand side does not need to be promoted to a <code>signed int</code>.
 </p>
+
 <sample src="SignedOverflowCheck-good2.cpp" />
 </example>
 <references>
