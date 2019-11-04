@@ -844,14 +844,10 @@ class FormatLiteral extends Literal {
    */
   int getFormatArgumentIndexFor(int n, int mode) {
     hasFormatArgumentIndexFor(n, mode) and
-    result = count(int n2, int mode2 |
-        hasFormatArgumentIndexFor(n2, mode2) and
-        (
-          n2 < n
-          or
-          n2 = n and
-          mode2 < mode
-        )
+    (3 * n) + mode = rank[result + 1](int n2, int mode2 |
+        hasFormatArgumentIndexFor(n2, mode2)
+      |
+        (3 * n2) + mode2
       )
   }
 
