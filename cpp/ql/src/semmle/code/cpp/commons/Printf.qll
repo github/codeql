@@ -854,11 +854,8 @@ class FormatLiteral extends Literal {
   /**
    * Gets the number of arguments required by the nth conversion specifier
    * of this format string.
-   *
-   * DEPRECATED.  This was a helper function for `getNumArgNeeded` and is no
-   * longer required.
    */
-  deprecated int getNumArgNeeded(int n) {
+  int getNumArgNeeded(int n) {
     exists(this.getConvSpecOffset(n)) and
     result = count(int mode | hasFormatArgumentIndexFor(n, mode))
   }
