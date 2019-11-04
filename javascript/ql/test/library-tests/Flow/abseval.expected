@@ -204,6 +204,8 @@
 | nodeJsClient.js:5:5:5:6 | x2 | nodeJsClient.js:5:10:5:15 | es.foo | esLib.js:3:8:3:24 | function foo |
 | nodeJsClient.js:5:5:5:6 | x2 | nodeJsClient.js:5:10:5:15 | es.foo | file://:0:0:0:0 | indefinite value (call) |
 | nodeJsClient.js:5:5:5:6 | x2 | nodeJsClient.js:5:10:5:15 | es.foo | file://:0:0:0:0 | indefinite value (heap) |
+| nullish-coalescing-op.ts:2:7:2:7 | y | nullish-coalescing-op.ts:2:11:2:18 | x ?? 0.5 | file://:0:0:0:0 | indefinite value (call) |
+| nullish-coalescing-op.ts:2:7:2:7 | y | nullish-coalescing-op.ts:2:11:2:18 | x ?? 0.5 | file://:0:0:0:0 | non-zero value |
 | objlit.js:1:5:1:5 | A | objlit.js:1:9:1:15 | A \|\| {} | file://:0:0:0:0 | indefinite value (global) |
 | objlit.js:1:5:1:5 | A | objlit.js:1:9:1:15 | A \|\| {} | objlit.js:1:14:1:15 | object literal |
 | objlit.js:7:5:7:5 | B | objlit.js:7:9:7:10 | {} | objlit.js:7:9:7:10 | object literal |

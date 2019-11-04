@@ -126,7 +126,7 @@ function checkCycle(root: any) {
 function isBlacklistedProperty(k: string) {
     return k === "parent" || k === "pos" || k === "end"
         || k === "symbol" || k === "localSymbol"
-        || k === "flowNode" || k === "returnFlowNode"
+        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode"
         || k === "nextContainer" || k === "locals"
         || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics";
 }

@@ -200,8 +200,8 @@ case @stmt.kind of
 
 isInstantiated(unique int decl: @namespacedeclaration ref);
 
-@declarablenode = @declstmt | @namespacedeclaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration | @field;
-hasDeclareKeyword(unique int stmt: @declarablenode ref);
+@declarablestmt = @declstmt | @namespacedeclaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration;
+hasDeclareKeyword(unique int stmt: @declarablestmt ref);
 
 isForAwaitOf(unique int forof: @forofstmt ref);
 
@@ -559,7 +559,7 @@ case @typeexpr.kind of
 | 17 = @localvartypeaccess
 | 18 = @qualifiedvartypeaccess
 | 19 = @thisvartypeaccess
-| 20 = @predicatetypeexpr
+| 20 = @istypeexpr
 | 21 = @interfacetypeexpr
 | 22 = @typeparameter
 | 23 = @plainfunctiontypeexpr
@@ -636,8 +636,6 @@ case @type.kind of
 @symboltype = @plainsymboltype | @uniquesymboltype;
 @unionorintersectiontype = @uniontype | @intersectiontype;
 @typevariabletype = @canonicaltypevariabletype | @lexicaltypevariabletype;
-
-hasAssertsKeyword(int node: @predicatetypeexpr ref);
 
 @typed_ast_node = @expr | @typeexpr | @function;
 ast_node_type(
