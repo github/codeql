@@ -25,7 +25,7 @@ predicate declaredInAll(Module m, StrConst name) {
 
 predicate mutates_globals(ModuleValue m) {
     exists(CallNode globals |
-        globals = Object::builtin("globals").(FunctionObject).getACall() and
+        globals = Value::named("globals").(FunctionValue).getACall() and
         globals.getScope() = m.getScope()
     |
         exists(AttrNode attr | attr.getObject() = globals)
@@ -33,11 +33,12 @@ predicate mutates_globals(ModuleValue m) {
         exists(SubscriptNode sub | sub.getValue() = globals and sub.isStore())
     )
     or
-    exists(Object enum_convert |
-        enum_convert.hasLongName("enum.Enum._convert") and
+    exists(Value enum_convert, ClassValue enum_class |
+        enum_class.getASuperType() = Value::named("enum.Enum") and
+        enum_convert = enum_class.attr("_convert") and
         exists(CallNode call | call.getScope() = m.getScope() |
-            enum_convert.(FunctionObject).getACall() = call or
-            call.getFunction().refersTo(enum_convert)
+            enum_convert.getACall() = call or
+            call.getFunction().pointsTo(enum_convert)
         )
     )
 }
