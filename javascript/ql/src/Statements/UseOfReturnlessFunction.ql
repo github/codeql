@@ -131,7 +131,7 @@ DataFlow::SourceNode array() { result = array(DataFlow::TypeTracker::end()) }
 /**
  * Holds if `call` is an Array or Lodash method accepting a callback `func`,
  * where the `call` expects a callback that returns an expression, 
- * but `func` does return a value. 
+ * but `func` does not return a value. 
  */
 predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
   hasNonVoidCallbackMethod(call.getCalleeName()) and
