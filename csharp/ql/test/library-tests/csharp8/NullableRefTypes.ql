@@ -52,8 +52,8 @@ query predicate constructedTypes(AnnotatedConstructedType at, int i, string arg,
 }
 
 query predicate nullableTypeParameters(TypeParameter p) {
-  p.getConstraints().hasNullableRefTypeConstraint()
-  and p.getLocation().getFile().getBaseName() = "NullableRefTypes.cs"
+  p.getConstraints().hasNullableRefTypeConstraint() and
+  p.getLocation().getFile().getBaseName() = "NullableRefTypes.cs"
 }
 
 query predicate annotatedTypeConstraints(TypeParameter p, AnnotatedType t) {
