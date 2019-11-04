@@ -35,9 +35,11 @@ module CleartextLogging {
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Barrier }
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl) {
-      // Property reads do not propagate taint.
+      // Only unknown property reads on `process.env` propagate taint.
       not lbl instanceof ProcessEnvLabel and 
       succ.(DataFlow::PropRead).getBase() = pred
+      or 
+      exists(succ.(DataFlow::PropRead).getPropertyName())
     }
        
     override predicate isAdditionalFlowStep(
@@ -56,13 +58,11 @@ module CleartextLogging {
       )
       or
       // Taint through the arguments object.
-      exists(DataFlow::CallNode call, Function f, VarAccess var |
+      exists(DataFlow::CallNode call, Function f |
         src = call.getAnArgument() and
         f = call.getACallee() and
         not call.isImprecise() and
-        var.getName() = "arguments" and
-        var.getContainer() = f and
-        trg.asExpr() = var
+        trg.asExpr() = f.getArgumentsVariable().getAnAccess()
       )
     }
   }

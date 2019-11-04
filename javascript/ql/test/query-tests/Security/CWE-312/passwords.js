@@ -154,5 +154,6 @@ var Util = require('util');
     indirectLogCall(procdesc); // NOT OK
 
     console.log(process.env); // NOT OK
-    console.log(process.env.PATH); // NOT OK.
+    console.log(process.env.PATH); // OK.
+    console.log(process.env["foo" + "bar"]); // NOT OK.
 });

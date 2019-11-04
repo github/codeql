@@ -660,11 +660,11 @@ module TaintTracking {
   }
 
   /**
-   * A taint step through the NodeJS function `util.inspect(..)`.
+   * A taint step through the Node.JS function `util.inspect(..)`.
    */
   class UtilInspectTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
     UtilInspectTaintStep() {
-      this =  DataFlow::moduleImport("util").getAMethodCall("inspect")
+      this = DataFlow::moduleImport("util").getAMemberCall("inspect")
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
