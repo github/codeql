@@ -166,6 +166,7 @@ The following predicates are defined in the configuration:
 -  ``isSource``—defines where data may flow from
 -  ``isSink``—defines where data may flow to
 -  ``isBarrier``—optional, restricts the data flow
+-  ``isBarrierGuard``—optional, restricts the data flow
 -  ``isAdditionalFlowStep``—optional, adds additional flow steps
 
 The characteristic predicate ``MyDataFlowConfiguration()`` defines the name of the configuration, so ``"MyDataFlowConfiguration"`` should be replaced by the name of your class.
@@ -204,6 +205,7 @@ The following predicates are defined in the configuration:
 -  ``isSource``—defines where taint may flow from
 -  ``isSink``—defines where taint may flow to
 -  ``isSanitizer``—optional, restricts the taint flow
+-  ``isSanitizerGuard``—optional, restricts the taint flow
 -  ``isAdditionalTaintStep``—optional, adds additional taint steps
 
 Similar to global data flow, the characteristic predicate ``MyTaintTrackingConfiguration()`` defines the unique name of the configuration, so ``"MyTaintTrackingConfiguration"`` should be replaced by the name of your class.
