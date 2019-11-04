@@ -15,12 +15,18 @@ module CleartextLogging {
   abstract class Source extends DataFlow::Node {
     /** Gets a string that describes the type of this data flow source. */
     abstract string describe();
+    
+    abstract DataFlow::FlowLabel getLabel();
   }
 
   /**
    * A data flow sink for clear-text logging of sensitive information.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    DataFlow::FlowLabel getLabel() {
+      result.isDataOrTaint()
+    }
+  }
 
   /**
    * A barrier for clear-text logging of sensitive information.
@@ -107,6 +113,10 @@ module CleartextLogging {
     }
 
     override string describe() { result = "an access to " + name }
+    
+    override DataFlow::FlowLabel getLabel() {
+      result.isData()
+    }
   }
 
   /** An access to a variable or property that might contain a password. */
@@ -131,6 +141,10 @@ module CleartextLogging {
     }
 
     override string describe() { result = "an access to " + name }
+    
+    override DataFlow::FlowLabel getLabel() {
+      result.isData()
+    }
   }
 
   /** A call that might return a password. */
@@ -143,14 +157,28 @@ module CleartextLogging {
     }
 
     override string describe() { result = "a call to " + name }
+    
+    override DataFlow::FlowLabel getLabel() {
+      result.isData()
+    }
   }
 
 
-  private class ProcessEnvSource extends Source {
+  class ProcessEnvSource extends Source {
     ProcessEnvSource() {
       this = NodeJSLib::process().getAPropertyRead("env")
     }
 
     override string describe() { result = "process environment" }
+    
+    override DataFlow::FlowLabel getLabel() {
+      result.isData() or 
+      result instanceof ProcessEnvLabel
+    }
+  }
+  class ProcessEnvLabel extends DataFlow::FlowLabel{
+    ProcessEnvLabel() {
+      this = "processEnv"
+    }
   }
 }

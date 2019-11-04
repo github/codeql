@@ -89,12 +89,15 @@ nodes
 | passwords.js:123:31:123:38 | password |
 | passwords.js:123:31:123:48 | password.valueOf() |
 | passwords.js:127:9:132:5 | config |
+| passwords.js:127:9:132:5 | config |
+| passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
 | passwords.js:130:12:130:19 | password |
 | passwords.js:130:12:130:19 | password |
 | passwords.js:131:12:131:24 | getPassword() |
 | passwords.js:131:12:131:24 | getPassword() |
+| passwords.js:135:17:135:22 | config |
 | passwords.js:135:17:135:22 | config |
 | passwords.js:135:17:135:22 | config |
 | passwords.js:136:17:136:24 | config.x |
@@ -111,6 +114,8 @@ nodes
 | passwords.js:152:33:152:43 | process.env |
 | passwords.js:154:21:154:28 | procdesc |
 | passwords.js:156:17:156:27 | process.env |
+| passwords.js:157:17:157:27 | process.env |
+| passwords.js:157:17:157:32 | process.env.PATH |
 | passwords_in_browser1.js:2:13:2:20 | password |
 | passwords_in_browser1.js:2:13:2:20 | password |
 | passwords_in_browser1.js:2:13:2:20 | password |
@@ -209,6 +214,8 @@ edges
 | passwords.js:123:31:123:48 | password.valueOf() | passwords.js:123:17:123:48 | name +  ... lueOf() |
 | passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
 | passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
+| passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
+| passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:127:9:132:5 | config |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:127:9:132:5 | config |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:127:9:132:5 | config |
 | passwords.js:130:12:130:19 | password | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
@@ -228,6 +235,7 @@ edges
 | passwords.js:152:20:152:63 | Util.in ... /g, '') | passwords.js:152:9:152:63 | procdesc |
 | passwords.js:152:33:152:43 | process.env | passwords.js:152:20:152:44 | Util.in ... ss.env) |
 | passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments |
+| passwords.js:157:17:157:27 | process.env | passwords.js:157:17:157:32 | process.env.PATH |
 | passwords_in_server_5.js:4:7:4:24 | req.query.password | passwords_in_server_5.js:7:12:7:12 | x |
 | passwords_in_server_5.js:7:12:7:12 | x | passwords_in_server_5.js:8:17:8:17 | x |
 | passwords_in_server_5.js:7:12:7:12 | x | passwords_in_server_5.js:8:17:8:17 | x |
@@ -262,6 +270,7 @@ edges
 | passwords.js:142:26:142:34 | arguments | passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments | Sensitive data returned by $@ is logged here. | passwords.js:150:21:150:31 | process.env | process environment |
 | passwords.js:142:26:142:34 | arguments | passwords.js:152:33:152:43 | process.env | passwords.js:142:26:142:34 | arguments | Sensitive data returned by $@ is logged here. | passwords.js:152:33:152:43 | process.env | process environment |
 | passwords.js:156:17:156:27 | process.env | passwords.js:156:17:156:27 | process.env | passwords.js:156:17:156:27 | process.env | Sensitive data returned by $@ is logged here. | passwords.js:156:17:156:27 | process.env | process environment |
+| passwords.js:157:17:157:32 | process.env.PATH | passwords.js:157:17:157:27 | process.env | passwords.js:157:17:157:32 | process.env.PATH | Sensitive data returned by $@ is logged here. | passwords.js:157:17:157:27 | process.env | process environment |
 | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_1.js:6:13:6:20 | password | an access to password |
 | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_2.js:3:13:3:20 | password | an access to password |
 | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_3.js:2:13:2:20 | password | an access to password |

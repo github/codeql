@@ -154,5 +154,5 @@ var Util = require('util');
     indirectLogCall(procdesc); // NOT OK
 
     console.log(process.env); // NOT OK
-    console.log(process.env.PATH); // <- Should be marked, but isn't. Hopefully fixed when introducing flow-labels.
+    console.log(process.env.PATH); // NOT OK.
 });
