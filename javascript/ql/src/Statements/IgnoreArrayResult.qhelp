@@ -22,17 +22,17 @@ or <code>slice</code>.
 <example>
 
 <p>
-In the following example a function <code>extend</code> is defined. The 
+A function <code>extend</code> is defined in the following example. The 
 function uses the <code>concat</code> method to add elements to the 
 <code>arr</code> array. However, the <code>extend</code> function has no 
-effect as the return value from <code>concat</code> is ignored.
+effect as the return value from <code>concat</code> is ignored:
 </p>
 
 <sample src="examples/IgnoreArrayResult.js" />
 
 <p>
 Assigning the returned value from the call to <code>concat</code> to the 
-<code>arr</code> variable fixes the error.
+<code>arr</code> variable fixes the error:
 </p>
 
 <sample src="examples/IgnoreArrayResultFixed.js" />
