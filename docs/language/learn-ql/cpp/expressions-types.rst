@@ -4,12 +4,12 @@ Tutorial: Expressions, types and statements
 Overview
 --------
 
-This topic contains worked examples of how to write queries using the standard QL library classes for C/C++ expressions, types, and statements.
+This topic contains worked examples of how to write queries using the standard CodeQL library classes for C/C++ expressions, types, and statements.
 
 Expressions and types
 ---------------------
 
-Each part of an expression in C becomes an instance of the QL ``Expr`` class. For example, the C code ``x = x + 1`` becomes an ``AssignExpr``, an ``AddExpr``, two instances of ``VariableAccess`` and a ``Literal``. All of these QL classes extend ``Expr``.
+Each part of an expression in C becomes an instance of the ``Expr`` class. For example, the C code ``x = x + 1`` becomes an ``AssignExpr``, an ``AddExpr``, two instances of ``VariableAccess`` and a ``Literal``. All of these CodeQL classes extend ``Expr``.
 
 Finding assignments to zero
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,7 +26,7 @@ In the following example we find instances of ``AssignExpr`` which assign the co
 
 ➤ `See this in the query console <https://lgtm.com/query/1505908086530/>`__
 
-The ``where`` clause in this example gets the expression on the right side of the assignment, ``getRValue()``, and compares it with zero. Notice that there are no checks to make sure that the right side of the assignment is an integer or that it has a value (that is, it is compile-time constant, rather than a variable). For expressions where either of these assumptions is wrong, the associated QL predicate simply does not return anything and the ``where`` clause will not produce a result. You could think of it as if there is an implicit ``exists(e.getRValue().getValue().toInt())`` at the beginning of this line.
+The ``where`` clause in this example gets the expression on the right side of the assignment, ``getRValue()``, and compares it with zero. Notice that there are no checks to make sure that the right side of the assignment is an integer or that it has a value (that is, it is compile-time constant, rather than a variable). For expressions where either of these assumptions is wrong, the associated predicate simply does not return anything and the ``where`` clause will not produce a result. You could think of it as if there is an implicit ``exists(e.getRValue().getValue().toInt())`` at the beginning of this line.
 
 It is also worth noting that the query above would find this C code:
 
@@ -34,7 +34,7 @@ It is also worth noting that the query above would find this C code:
 
    yPtr = NULL;
 
-This is because the snapshot contains a representation of the code base after the preprocessor transforms have run (for more information, see `Database generation <https://lgtm.com/help/lgtm/generate-database>`__). This means that any macro invocations, such as the ``NULL`` define used here, are expanded during the creation of the snapshot. If you want to write queries about macros then there are some special library classes that have been designed specifically for this purpose (for example, the ``Macro``, ``MacroInvocation`` classes and predicates like ``Element.isInMacroExpansion()``). In this case, it is good that macros are expanded, but we do not want to find assignments to pointers.
+This is because the database contains a representation of the code base after the preprocessor transforms have run (for more information, see `Database generation <https://lgtm.com/help/lgtm/generate-database>`__). This means that any macro invocations, such as the ``NULL`` define used here, are expanded during the creation of the database. If you want to write queries about macros then there are some special library classes that have been designed specifically for this purpose (for example, the ``Macro``, ``MacroInvocation`` classes and predicates like ``Element.isInMacroExpansion()``). In this case, it is good that macros are expanded, but we do not want to find assignments to pointers.
 
 Finding assignments of 0 to an integer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
