@@ -86,6 +86,10 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
+        e1 = e2.(NullCoalescingExpr).getAnOperand() and
+        scope = e2 and
+        isSuccessor = false
+        or
         e1 = e2.(SuppressNullableWarningExpr).getExpr() and
         scope = e2 and
         isSuccessor = true

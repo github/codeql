@@ -1,3 +1,10 @@
+| BarrierGuard.cpp:9:10:9:15 | Load: source | BarrierGuard.cpp:5:19:5:24 | InitializeParameter: source |
+| BarrierGuard.cpp:15:10:15:15 | Load: source | BarrierGuard.cpp:13:17:13:22 | InitializeParameter: source |
+| BarrierGuard.cpp:25:10:25:15 | Load: source | BarrierGuard.cpp:21:17:21:22 | InitializeParameter: source |
+| BarrierGuard.cpp:31:10:31:15 | Load: source | BarrierGuard.cpp:29:16:29:21 | InitializeParameter: source |
+| BarrierGuard.cpp:33:10:33:15 | Load: source | BarrierGuard.cpp:29:16:29:21 | InitializeParameter: source |
+| BarrierGuard.cpp:53:13:53:13 | Load: x | BarrierGuard.cpp:49:10:49:15 | Call: call to source |
+| BarrierGuard.cpp:55:13:55:13 | Load: x | BarrierGuard.cpp:49:10:49:15 | Call: call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | Convert: (int)... | acrossLinkTargets.cpp:19:27:19:32 | Call: call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | Load: x | acrossLinkTargets.cpp:19:27:19:32 | Call: call to source |
 | clang.cpp:18:8:18:19 | Convert: (const int *)... | clang.cpp:12:9:12:20 | InitializeParameter: sourceArray1 |

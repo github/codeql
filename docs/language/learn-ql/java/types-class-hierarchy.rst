@@ -4,7 +4,7 @@ Tutorial: Types and the class hierarchy
 Overview
 --------
 
-The standard QL library for Java represents Java types by means of the ``Type`` class and its various subclasses.
+The standard CodeQL library represents Java types by means of the ``Type`` class and its various subclasses.
 
 In particular, class ``PrimitiveType`` represents primitive types that are built into the Java language (such as ``boolean`` and ``int``), whereas ``RefType`` and its subclasses represent reference types, that is classes, interfaces, array types, and so on. This includes both types from the Java standard library (like ``java.lang.Object``) and types defined by non-library code.
 
@@ -62,7 +62,7 @@ In this tutorial, we do not try to distinguish these two cases. Our query should
 -  Both ``source`` and ``target`` are array types.
 -  The element type of ``source`` is a transitive super type of the element type of ``target``.
 
-This recipe is not too difficult to translate into a QL query:
+This recipe is not too difficult to translate into a query:
 
 .. code-block:: ql
 
@@ -93,7 +93,7 @@ In code that does not use generics, this method is often used in the following w
 
 Here, ``l`` has the raw type ``List``, so ``l.toArray`` has return type ``Object[]``, independent of the type of its argument array. Hence the cast goes from ``Object[]`` to ``A[]`` and will be flagged as problematic by our query, although at runtime this cast can never go wrong.
 
-To identify these cases, we can create two QL classes that represent, respectively, the ``Collection.toArray`` class, and calls to this method or any method that overrides it:
+To identify these cases, we can create two CodeQL classes that represent, respectively, the ``Collection.toArray`` class, and calls to this method or any method that overrides it:
 
 .. code-block:: ql
 
@@ -160,7 +160,7 @@ Since ``zkProp`` is a map from ``Object`` to ``Object``, ``zkProp.entrySet`` ret
 
 In general, we want to find calls to ``Collection.contains`` (or any of its overriding methods in any parameterized instance of ``Collection``), such that the type ``E`` of collection elements and the type ``A`` of the argument to ``contains`` are unrelated, that is, they have no common subtype.
 
-We start by creating a QL class that describes ``java.util.Collection``:
+We start by creating a class that describes ``java.util.Collection``:
 
 .. code-block:: ql
 
@@ -179,7 +179,7 @@ To make sure we have not mistyped anything, we can run a simple test query:
 
 This query should return precisely one result.
 
-Next, we can create a QL class that describes ``java.util.Collection.contains``:
+Next, we can create a class that describes ``java.util.Collection.contains``:
 
 .. code-block:: ql
 
@@ -198,9 +198,9 @@ Notice that we use ``hasStringSignature`` to check that:
 
 Alternatively, we could have implemented these three checks more verbosely using ``hasName``, ``getNumberOfParameters``, and ``getParameter(0).getType() instanceof TypeObject``.
 
-As before, it is a good idea to test the new QL class by running a simple query to select all instances of ``JavaUtilCollectionContains``; again there should only be a single result.
+As before, it is a good idea to test the new class by running a simple query to select all instances of ``JavaUtilCollectionContains``; again there should only be a single result.
 
-Now we want to identify all calls to ``Collection.contains``, including any methods that override it, and considering all parameterized instances of ``Collection`` and its subclasses. That is, we are looking for method accesses where the source declaration of the invoked method (reflexively or transitively) overrides ``Collection.contains``. We encode this in a QL class ``JavaUtilCollectionContainsCall``:
+Now we want to identify all calls to ``Collection.contains``, including any methods that override it, and considering all parameterized instances of ``Collection`` and its subclasses. That is, we are looking for method accesses where the source declaration of the invoked method (reflexively or transitively) overrides ``Collection.contains``. We encode this in a CodeQL class ``JavaUtilCollectionContainsCall``:
 
 .. code-block:: ql
 
@@ -230,7 +230,7 @@ For the latter, we proceed as follows:
 -  Find a (reflexive or transitive) super type ``S`` of ``D`` that is a parameterized instance of ``java.util.Collection``.
 -  Return the (only) type argument of ``S``.
 
-We encode this in QL as follows:
+We encode this as follows:
 
 .. code-block:: ql
 
@@ -268,11 +268,11 @@ Now we are ready to write a first version of our query:
 Improvements
 ~~~~~~~~~~~~
 
-For many programs, this query yields a large number of false positive results due to type variables and wild cards: if the collection element type is some type variable ``E`` and the argument type is ``String``, for example, QL will consider that the two have no common subtype, and our query will flag the call. An easy way to exclude such false positive results is to simply require that neither ``collEltType`` nor ``argType`` are instances of ``TypeVariable``.
+For many programs, this query yields a large number of false positive results due to type variables and wild cards: if the collection element type is some type variable ``E`` and the argument type is ``String``, for example, CodeQL will consider that the two have no common subtype, and our query will flag the call. An easy way to exclude such false positive results is to simply require that neither ``collEltType`` nor ``argType`` are instances of ``TypeVariable``.
 
 Another source of false positives is autoboxing of primitive types: if, for example, the collection's element type is ``Integer`` and the argument is of type ``int``, predicate ``haveCommonDescendant`` will fail, since ``int`` is not a ``RefType``. Thus, our query should check that ``collEltType`` is not the boxed type of ``argType``.
 
-Finally, ``null`` is special because its type (known as ``<nulltype>`` in QL) is compatible with every reference type, so we should exclude it from consideration.
+Finally, ``null`` is special because its type (known as ``<nulltype>`` in the CodeQL library) is compatible with every reference type, so we should exclude it from consideration.
 
 Adding these three improvements, our final query becomes:
 
@@ -295,6 +295,6 @@ Adding these three improvements, our final query becomes:
 What next?
 ----------
 
--  Take a look at some of the other tutorials: :doc:`Tutorial: Expressions and statements <expressions-statements>`, :doc:`Tutorial: Navigating the call graph <call-graph>`, :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the QL standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Take a look at some of the other tutorials: :doc:`Tutorial: Expressions and statements <expressions-statements>`, :doc:`Tutorial: Navigating the call graph <call-graph>`, :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

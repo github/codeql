@@ -16,12 +16,12 @@ Note that the source layout gives a fairly clear indication of the intended mean
 
 We will now develop a query that finds this kind of suspicious nesting, where the operator of the inner expression has more white space around it than the operator of the outer expression. This pattern may not necessarily indicate a bug, but at the very least it makes the code hard to read and prone to misinterpretation.
 
-White space is not directly represented in the snapshot database, but we can deduce its presence from the location information associated with program elements and AST nodes. So we will start by providing an overview of source location management in the QL standard library.
+White space is not directly represented in the CodeQL database, but we can deduce its presence from the location information associated with program elements and AST nodes. So we will start by providing an overview of source location management in the standard library for Java.
 
 Location API
 ------------
 
-For every entity that has a representation in Java source code (including, in particular, program elements and AST nodes), the QL standard library provides the following predicates for accessing source location information:
+For every entity that has a representation in Java source code (including, in particular, program elements and AST nodes), the standard CodeQL library provides the following predicates for accessing source location information:
 
 -  ``getLocation`` returns a ``Location`` object describing the start and end position of the entity.
 -  ``getFile`` returns a ``File`` object representing the file containing the entity.
@@ -123,7 +123,7 @@ If we run this initial query, we might notice some false positives arising from 
 
    i< start + 100
 
-Note that our predicate ``operatorWS`` computes the **total** amount of white space around the operator, which, in this case, is one for the ``<`` and two for the ``+``. Ideally, we would like to exclude cases where the amount of white space before and after the operator are not the same. Currently, snapshot databases do not record enough information to figure this out, but as an approximation we could require that the total number of white space characters is even:
+Note that our predicate ``operatorWS`` computes the **total** amount of white space around the operator, which, in this case, is one for the ``<`` and two for the ``+``. Ideally, we would like to exclude cases where the amount of white space before and after the operator are not the same. Currently, CodeQL databases do not record enough information to figure this out, but as an approximation we could require that the total number of white space characters is even:
 
 .. code-block:: ql
 
@@ -141,7 +141,7 @@ Note that our predicate ``operatorWS`` computes the **total** amount of white sp
 
 ➤ `See this in the query console <https://lgtm.com/query/665761067/>`__. Any results will be refined by our changes to the query.
 
-Another source of false positives are associative operators: in an expression of the form ``x + y+z``, the first plus is syntactically nested inside the second, since + in Java associates to the left; hence the expression is flagged as suspicious. But since + is associative to begin with, it does not matter which way around the operators are nested, so this is a false positive.To exclude these cases, let us define a new QL class identifying binary expressions with an associative operator:
+Another source of false positives are associative operators: in an expression of the form ``x + y+z``, the first plus is syntactically nested inside the second, since + in Java associates to the left; hence the expression is flagged as suspicious. But since + is associative to begin with, it does not matter which way around the operators are nested, so this is a false positive.To exclude these cases, let us define a new class identifying binary expressions with an associative operator:
 
 .. code-block:: ql
 
@@ -184,5 +184,5 @@ Whitespace suggests that the programmer meant to toggle ``i`` between zero and o
 What next?
 ----------
 
--  Find out how specific classes in the AST are represented in the QL standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

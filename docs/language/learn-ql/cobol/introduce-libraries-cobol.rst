@@ -1,10 +1,10 @@
-Introducing the QL libraries for COBOL
-======================================
+Introducing the CodeQL libraries for COBOL
+==========================================
 
 Overview
 --------
 
-There is an extensive QL library for analyzing COBOL code. The classes in this library present the data from a snapshot database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
+There is an extensive library for analyzing COBOL code. The classes in this library present the data from a CodeQL database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
 The library is implemented as a set of QL modules–that is, files with the extension ``.qll``. The module ``cobol.qll`` imports most other standard library modules, so you can include the complete library by beginning your query with:
 
@@ -12,12 +12,12 @@ The library is implemented as a set of QL modules–that is, files with the exte
 
    import cobol
 
-The rest of this tutorial briefly summarizes the most important QL classes and predicates provided by this library, including references to the `detailed API documentation <https://help.semmle.com/qldoc/cobol/>`__ where applicable.
+The rest of this tutorial briefly summarizes the most important classes and predicates provided by this library, including references to the `detailed API documentation <https://help.semmle.com/qldoc/cobol/>`__ where applicable.
 
 Introducing the library
 -----------------------
 
-The QL COBOL library presents information about COBOL source code at different levels:
+The CodeQL library for COBOL presents information about COBOL source code at different levels:
 
 -  **Textual** — classes that represent source code as unstructured text files
 -  **Lexical** — classes that represent comments and other tokens of interest
@@ -36,7 +36,7 @@ At its most basic level, a COBOL code base can simply be viewed as a collection 
 Files and folders
 ^^^^^^^^^^^^^^^^^
 
-In QL, files are represented as entities of class `File <https://help.semmle.com/qldoc/cobol/semmle/cobol/Files.qll/type.Files$File.html>`__, and folders as entities of class `Folder <https://help.semmle.com/qldoc/cobol/semmle/cobol/Files.qll/type.Files$Folder.html>`__, both of which are subclasses of class `Container <https://help.semmle.com/qldoc/cobol/semmle/cobol/Files.qll/type.Files$Container.html>`__.
+Files are represented as entities of class `File <https://help.semmle.com/qldoc/cobol/semmle/cobol/Files.qll/type.Files$File.html>`__, and folders as entities of class `Folder <https://help.semmle.com/qldoc/cobol/semmle/cobol/Files.qll/type.Files$Folder.html>`__, both of which are subclasses of class `Container <https://help.semmle.com/qldoc/cobol/semmle/cobol/Files.qll/type.Files$Container.html>`__.
 
 Class `Container <https://help.semmle.com/qldoc/cobol/semmle/cobol/Files.qll/type.Files$Container.html>`__ provides the following member predicates:
 
@@ -48,7 +48,7 @@ Note that while ``getAFile`` and ``getAFolder`` are declared on class `Container
 
 Both files and folders have paths, which can be accessed by the predicate ``Container.getAbsolutePath()``. For example, if ``f`` represents a file with the path ``/home/user/project/src/main.cbl``, then ``f.getAbsolutePath()`` evaluates to the string ``"/home/user/project/src/main.cbl"``, while ``f.getParentContainer().getAbsolutePath()`` returns ``"/home/user/project/src"``.
 
-These paths are absolute file system paths. If you want to obtain the path of a file relative to the snapshot source location, use ``Container.getRelativePath()`` instead. Note, however, that a snapshot may contain files that are not located underneath the snapshot source location; for such files, ``getRelativePath()`` will not return anything.
+These paths are absolute file system paths. If you want to obtain the path of a file relative to the source location in the CodeQL database, use ``Container.getRelativePath()`` instead. Note, however, that a database may contain files that are not located underneath the source location; for such files, ``getRelativePath()`` will not return anything.
 
 The following member predicates of class `Container <https://help.semmle.com/qldoc/cobol/semmle/cobol/Files.qll/type.Files$Container.html>`__ provide more information about the name of a file or folder:
 
@@ -68,9 +68,9 @@ For example, the following query computes, for each folder, the number of COBOL 
 Locations
 ^^^^^^^^^
 
-Most entities in a snapshot database have an associated source location. Locations are identified by four pieces of information: a file, a start line, a start column, an end line, and an end column. Line and column counts are 1-based (so the first character of a file is at line 1, column 1), and the end position is inclusive.
+Most entities in a CodeQL database have an associated source location. Locations are identified by four pieces of information: a file, a start line, a start column, an end line, and an end column. Line and column counts are 1-based (so the first character of a file is at line 1, column 1), and the end position is inclusive.
 
-All entities associated with a source location belong to the QL class `Locatable <https://help.semmle.com/qldoc/cobol/semmle/cobol/Location.qll/type.Location$Locatable.html>`__. The location itself is modeled by the QL class `Location <https://help.semmle.com/qldoc/cobol/semmle/cobol/Location.qll/type.Location$Location.html>`__ and can be accessed through the member predicate ``Locatable.getLocation()``. The `Location <https://help.semmle.com/qldoc/cobol/semmle/cobol/Location.qll/type.Location$Location.html>`__ class provides the following member predicates:
+All entities associated with a source location belong to the class `Locatable <https://help.semmle.com/qldoc/cobol/semmle/cobol/Location.qll/type.Location$Locatable.html>`__. The location itself is modeled by the class `Location <https://help.semmle.com/qldoc/cobol/semmle/cobol/Location.qll/type.Location$Location.html>`__ and can be accessed through the member predicate ``Locatable.getLocation()``. The `Location <https://help.semmle.com/qldoc/cobol/semmle/cobol/Location.qll/type.Location$Location.html>`__ class provides the following member predicates:
 
 -  ``Location.getFile()``, ``Location.getStartLine()``, ``Location.getStartColumn()``, ``Location.getEndLine()``, ``Location.getEndColumn()`` return detailed information about the location.
 -  ``Location.getNumLines()`` returns the number of (whole or partial) lines covered by the location.
@@ -104,13 +104,13 @@ The most important member predicates are as follows:
 Syntactic level
 ~~~~~~~~~~~~~~~
 
-The majority of classes in the QL COBOL library is concerned with representing a COBOL program as a collection of `abstract syntax trees <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (ASTs).
+The majority of classes in the CodeQL library for COBOL are concerned with representing a COBOL program as a collection of `abstract syntax trees <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (ASTs).
 
-The QL class `ASTNode <https://help.semmle.com/qldoc/cobol/semmle/cobol/AstNode.qll/type.AstNode$AstNode.html>`__ contains all entities representing nodes in the abstract syntax trees and defines generic tree traversal predicates:
+The class `ASTNode <https://help.semmle.com/qldoc/cobol/semmle/cobol/AstNode.qll/type.AstNode$AstNode.html>`__ contains all entities representing nodes in the abstract syntax trees and defines generic tree traversal predicates:
 
 -  ``ASTNode.getParent()``: returns the parent node of this AST node, if any.
 
-Please note that the QL libraries for COBOL do not currently represent all possible parts of a COBOL program. Due to the complexity of the language, and its many dialects, this is an ongoing task. We prioritize elements that are of interest to queries, and expand this selection over time. Please check the `detailed API documentation <https://help.semmle.com/qldoc/cobol/>`__ to see what is currently available.
+Please note that the libraries for COBOL do not currently represent all possible parts of a COBOL program. Due to the complexity of the language, and its many dialects, this is an ongoing task. We prioritize elements that are of interest to queries, and expand this selection over time. Please check the `detailed API documentation <https://help.semmle.com/qldoc/cobol/>`__ to see what is currently available.
 
 The main structure of any COBOL program is represented by the `Unit <https://help.semmle.com/qldoc/cobol/semmle/cobol/Units.qll/type.Units$Unit.html>`__ class and its subclasses. For example, each program definition has a `ProgramDefinition <https://help.semmle.com/qldoc/cobol/semmle/cobol/Units.qll/type.Units$ProgramDefinition.html>`__ counterpart. For each ``PROCEDURE DIVISION`` in the program, there will be a `ProcedureDivision <https://help.semmle.com/qldoc/cobol/semmle/cobol/AST_extended.qll/type.AST_extended$ProcedureDivision.html>`__ class.
 

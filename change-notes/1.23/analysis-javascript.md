@@ -44,6 +44,7 @@
 | Stored cross-site scripting (`js/stored-xss`) | Fewer false-positive results | The query now recognizes more sanitizers. |
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now treats responses from servers as untrusted. |
 | Uncontrolled data used in path expression (`js/path-injection`) | Fewer false-positive results | This query now recognizes calls to Express `sendFile` as safe in some cases. |
+| Unknown directive (`js/unknown-directive`) | Fewer false positive results | This query no longer flags uses of ":", which is sometimes used like a directive. |
 
 ## Changes to QL libraries
 

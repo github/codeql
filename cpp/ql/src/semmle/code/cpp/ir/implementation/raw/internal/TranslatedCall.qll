@@ -447,20 +447,26 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
   }
 
   override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    exists(Type operandType |
+    if hasSpecificReadSideEffect(any(Opcode::BufferReadSideEffect op))
+    then
+      result = getUnknownType() and
       tag instanceof OnlyInstructionTag and
-      operandType = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
       operandTag instanceof SideEffectOperandTag
-      or
-      tag instanceof OnlyInstructionTag and
-      operandType = arg.getType().getUnspecifiedType() and
-      not operandType instanceof DerivedType and
-      operandTag instanceof SideEffectOperandTag
-    |
-      // If the type we select is an incomplete type (e.g. a forward-declared `struct`), there will
-      // not be a `CppType` that represents that type. In that case, fall back to `UnknownCppType`.
-      result = getTypeForPRValueOrUnknown(operandType)
-    )
+    else
+      exists(Type operandType |
+        tag instanceof OnlyInstructionTag and
+        operandType = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
+        operandTag instanceof SideEffectOperandTag
+        or
+        tag instanceof OnlyInstructionTag and
+        operandType = arg.getType().getUnspecifiedType() and
+        not operandType instanceof DerivedType and
+        operandTag instanceof SideEffectOperandTag
+      |
+        // If the type we select is an incomplete type (e.g. a forward-declared `struct`), there will
+        // not be a `CppType` that represents that type. In that case, fall back to `UnknownCppType`.
+        result = getTypeForPRValueOrUnknown(operandType)
+      )
   }
 
   predicate hasSpecificWriteSideEffect(Opcode op) {
@@ -510,7 +516,7 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     )
     or
     not call.getTarget() instanceof SideEffectFunction and
-    op instanceof Opcode::IndirectReadSideEffect
+    op instanceof Opcode::BufferReadSideEffect
   }
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
