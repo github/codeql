@@ -154,7 +154,7 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
 /**
  * A promise that is resolved with the given value.
  */
-abstract class ResolvedPromiseDefinition extends DataFlow::CallNode {
+abstract class PromiseCreationCall extends DataFlow::CallNode {
   /**
    * Gets the value this promise is resolved with.
    */
@@ -164,12 +164,27 @@ abstract class ResolvedPromiseDefinition extends DataFlow::CallNode {
 /**
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
  */
-class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
+class ResolvedES2015PromiseDefinition extends PromiseCreationCall {
   ResolvedES2015PromiseDefinition() {
     this = DataFlow::globalVarRef("Promise").getAMemberCall("resolve")
   }
 
   override DataFlow::Node getValue() { result = getArgument(0) }
+}
+
+/**
+ * An aggregated promise produced either by `Primise.all` or `Promise.race`. 
+ */
+class AggregateES2015PromiseDefinition extends PromiseCreationCall {
+  AggregateES2015PromiseDefinition() {
+    exists(string m | m = "all" or m = "race" | 
+      this = DataFlow::globalVarRef("Promise").getAMemberCall(m)
+    )
+  }
+
+  override DataFlow::Node getValue() {
+    result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
+  }
 }
 
 /**
@@ -197,7 +212,7 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
   or
   // from `x` to `Promise.resolve(x)`
-  pred = succ.(ResolvedPromiseDefinition).getValue()
+  pred = succ.(PromiseCreationCall).getValue()
   or
   exists(DataFlow::MethodCallNode thn, DataFlow::FunctionNode cb |
     thn.getMethodName() = "then" and cb = thn.getCallback(0)

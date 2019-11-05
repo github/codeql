@@ -88,4 +88,6 @@
 	}
 	
 	new Deferred().resolve(onlySideEffects()); // OK
+	
+	Promise.all([onlySideEffects(), onlySideEffects()])
 })();
