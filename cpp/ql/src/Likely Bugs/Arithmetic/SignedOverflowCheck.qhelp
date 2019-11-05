@@ -22,34 +22,35 @@ categories: (1) rewrite the signed expression so that overflow cannot occur
 but the signedness remains, or (2) rewrite (or cast) the signed expression
 into unsigned form.
 
-The bullet list below lists various expressions where signed overflow may
-occur, along with proposed rewritings.  It should not be
+Below we list examples of expressions where signed overflow may
+occur, along with proposed solutions.  The list should not be
 considered exhaustive.
 </p>
 
-<li>Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>, 
+<p>
+Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>, 
 it is possible to rewrite it as <code>(unsigned short)(i + delta)&nbsp;&lt;&nbsp;i</code>.
-Note that <code>i + delta</code>does not actually overflow, due to <code>int</code> promotion</li>
+Note that <code>i + delta</code>does not actually overflow, due to <code>int</code> promotion
 
-<li>Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>,
+Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>,
 it is also possible to rewrite it as <code>USHORT_MAX - delta</code>. It must be true
 that <code>delta &gt; 0</code> and the <code>limits.h</code> or <code>climits</code>
-header has been included.</li>
+header has been included.
 
-<li>Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
+Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
 it is possible to rewrite it as <code>INT_MAX - delta</code>. It must be true
 that <code>delta &gt; 0</code> and the <code>limits.h</code> or <code>climits</code>
-header has been included.</li>
+header has been included.
 
-<li>Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
+Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
 it is also possible to rewrite it as <code>(unsigned)i + delta &lt; i</code>.
-Note that program semantics are affected by this change.</li>
+Note that program semantics are affected by this change.
 
-<li>Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
+Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
 it is also possible to rewrite it as <code>unsigned int i, delta</code> and
 <code>i + delta &lt; i</code>.  Note that program semantics are 
-affected by this change.</li>
-
+affected by this change.
+</p>
 </recommendation>
 
 <example>
