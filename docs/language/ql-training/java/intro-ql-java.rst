@@ -158,7 +158,7 @@ Member predicates are inherited and can be overridden.
 
   In the example, declaring a variable “EmptyBlock e” will allow it to range over only those blocks that have zero statements.
 
-Classes in continued
+Classes continued
 =======================
 
 .. container:: column-left

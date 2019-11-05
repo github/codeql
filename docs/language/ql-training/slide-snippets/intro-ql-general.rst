@@ -121,7 +121,7 @@ QL is:
 - a **logic** language based on first-order logic
 - a **declarative** language without side effects
 - an **object-oriented** language
-- a **query** language working on a read-only CodeQL database database
+- a **query** language working on a read-only CodeQL database
 - equipped with rich standard libraries **for program analysis**
 
 .. note::

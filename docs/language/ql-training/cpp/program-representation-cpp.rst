@@ -64,7 +64,7 @@ Working with functions
 
 Functions are represented by the Function class. Each declaration or definition of a function is represented by a ``FunctionDeclarationEntry``.
 
-Calls to functions are modeled by class Call and its subclasses:
+Calls to functions are modeled by class ``Call`` and its subclasses:
 
 - ``Call.getTarget()`` gets the declared target of the call; undefined for calls through function pointers
 - ``Function.getACallToThisFunction()`` gets a call to this function
@@ -103,7 +103,7 @@ Working with macros
     #define square(x) x*x
     y = square(y0), z = square(z0)
 
-is represented in the CodeQL database database as:
+is represented in the CodeQL database as:
 
 - A Macro entity representing the text of the *head* and *body* of the macro
 - Assignment nodes, representing the two assignments after preprocessing

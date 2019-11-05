@@ -108,7 +108,7 @@ Each query library also implicitly defines a module.
 
   Queries are always contained in query files with the file extension ``.ql``. `Quick queries <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/quick-query.html>`__, run in `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/home-page.html>`__, are no exception: the quick query window maintains a temporary query file in the background.
 
-  Parts of queries can be lifted into `library files <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ with the extension ``qll``. Definitions within such libraries can be brought into scope using ``import`` statements, and similarly QLL files can import each other’s definitions using “import” statements.
+  Parts of queries can be lifted into `library files <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ with the extension ``.qll``. Definitions within such libraries can be brought into scope using ``import`` statements, and similarly QLL files can import each other’s definitions using “import” statements.
 
   Logic can be encapsulated as user-defined `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, and organized into `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__. Each QLL file implicitly defines a module, but QL and QLL files can also contain explicit module definitions, as we will see later.
 

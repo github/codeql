@@ -1,8 +1,8 @@
 CodeQL training and variant analysis examples
 =============================================
 
-QL and variant analysis
------------------------
+CodeQL and variant analysis
+---------------------------
 
 `Variant analysis <https://semmle.com/variant-analysis>`__ is the process of using a known vulnerability as a seed to find similar problems in your code. Security engineers typically perform variant analysis to identify possible vulnerabilities and to ensure that these threats are properly fixed across multiple code bases.
 
@@ -10,8 +10,8 @@ QL and variant analysis
 
 CodeQL is easy to learn, and exploring code using CodeQL is the most efficient way to perform variant analysis. 
 
-Learning QL for variant analysis
---------------------------------
+Learning CodeQL for variant analysis
+------------------------------------
 
 Start learning how to use CodeQL in variant analysis for a specific language by looking at the topics below. Each topic links to a short presentation on CodeQL, its libraries, or an example variant discovered using CodeQL.
 
@@ -45,7 +45,7 @@ CodeQL and variant analysis for C/C++
 - `Introduction to local data flow <../ql-training/cpp/data-flow-cpp.html>`__–an introduction to analyzing local data flow in C/C++ using CodeQL, including an example demonstrating how to develop a query to find a real CVE.
 - `Exercise: snprintf overflow <../ql-training/cpp/snprintf.html>`__–an example demonstrating how to develop a data flow query.
 - `Introduction to global data flow <../ql-training/cpp/global-data-flow-cpp.html>`__–an introduction to analyzing global data flow in C/C++ using CodeQL.
-- `Analyzing control flow: CodeQL for C/C++  <../ql-training/cpp/control-flow-cpp.html>`__–an introduction to analyzing control flow in C/C++ using QL.
+- `Analyzing control flow: CodeQL for C/C++  <../ql-training/cpp/control-flow-cpp.html>`__–an introduction to analyzing control flow in C/C++ using CodeQL.
 
 CodeQL and variant analysis for Java
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,6 +61,6 @@ More resources
 ~~~~~~~~~~~~~~
 
 - If you are completely new to CodeQL, look at our introductory topics in :doc:`Learning CodeQL <index>`.
-- To find more detailed information about how to write CodeQL queries for specific languages, visit the links in :ref:`Writing CodeQL queries <writing-ql-queries>`.
+- To find more detailed information about how to write queries for specific languages, visit the links in :ref:`Writing CodeQL queries <writing-ql-queries>`.
 - To read more about how CodeQL queries have been used in Semmle's security research, and to read about new CodeQL developments, visit the `Semmle blog <https://blog.semmle.com>`__. 
 - Find more examples of queries written by Semmle's own security researchers in the `Semmle Demos repository <https://github.com/semmle/demos>`__ on GitHub.
