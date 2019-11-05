@@ -5,6 +5,8 @@
 | clang.cpp:28:27:28:32 | clang.cpp:29:27:29:28 | AST only |
 | clang.cpp:28:27:28:32 | clang.cpp:30:27:30:34 | AST only |
 | clang.cpp:39:42:39:47 | clang.cpp:41:18:41:19 | IR only |
+| dispatch.cpp:16:37:16:42 | dispatch.cpp:32:16:32:24 | IR only |
+| dispatch.cpp:16:37:16:42 | dispatch.cpp:40:15:40:23 | IR only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:14:3:14:6 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:18:8:18:8 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:21:3:21:6 | AST only |
