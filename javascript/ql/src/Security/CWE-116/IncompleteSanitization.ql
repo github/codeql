@@ -21,22 +21,9 @@ string metachar() { result = "'\"\\&<>\n\r\t*|{}[]%$".charAt(_) }
 
 /** Gets a string matched by `e` in a `replace` call. */
 string getAMatchedString(Expr e) {
-  result = getAMatchedConstant(e.(RegExpLiteral).getRoot()).getValue()
+  result = e.(RegExpLiteral).getRoot().getAMatchedString()
   or
   result = e.getStringValue()
-}
-
-/** Gets a constant matched by `t`. */
-RegExpConstant getAMatchedConstant(RegExpTerm t) {
-  result = t
-  or
-  result = getAMatchedConstant(t.(RegExpAlt).getAlternative())
-  or
-  result = getAMatchedConstant(t.(RegExpGroup).getAChild())
-  or
-  exists(RegExpCharacterClass recc | recc = t and not recc.isInverted() |
-    result = getAMatchedConstant(recc.getAChild())
-  )
 }
 
 /** Holds if `t` is simple, that is, a union of constants. */
