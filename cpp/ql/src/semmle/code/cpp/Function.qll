@@ -344,25 +344,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   }
 
   /**
-   * Gets the `i`th template argument used to instantiate this function from a
-   * function template. When called on a function template, this will return the
-   * `i`th template parameter.
-   */
-  override Type getTemplateArgumentType(int index) {
-    function_template_argument(underlyingElement(this), index, unresolveElement(result))
-  }
-
-  /**
-   * Gets the value of the `i`th template argument used to instantiate this
-   * function from a function template if that argument was a 'non-type'
-   * argument.  When called on a function template, this with return the value
-   * of the `i`th template parameter.
-   */
-  override Expr getTemplateArgumentValue(int index) {
-    function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
-  }
-
-  /**
    * Holds if this function is defined in several files. This is illegal in
    * C (though possible in some C++ compilers), and likely indicates that
    * several functions that are not linked together have been compiled. An

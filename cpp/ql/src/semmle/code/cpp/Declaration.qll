@@ -255,25 +255,22 @@ abstract class Declaration extends Locatable, @declaration {
     result = count(int i | exists(getTemplateArgument(i)))
   }
 
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Gets a Type for a template argument.  May be the template argument itself
-   * or the type of a non-type template argument.
-   *
-   * Use `getTemplateArgument` or `getTemplateKind` instead.
-   */
-  Type getTemplateArgumentType(int index) { none() }
+  private Type getTemplateArgumentType(int index) {
+    class_template_argument(underlyingElement(this), index, unresolveElement(result))
+      or
+    function_template_argument(underlyingElement(this), index, unresolveElement(result))
+      or
+    variable_template_argument(underlyingElement(this), index, unresolveElement(result))
+  }
 
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Gets an Expression representing the value of a non-type template
-   * argument.
-   *
-   * Use `getTemplateArgument` or `getTemplateKind` instead.
-   */
-  Expr getTemplateArgumentValue(int index) { none() }
+
+  private Expr getTemplateArgumentValue(int index) {
+    class_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+      or
+    function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+      or
+    variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+  }
 }
 
 /**
