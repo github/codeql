@@ -2,7 +2,7 @@
 Introduction to global data flow
 ================================
 
-QL for C/C++
+CodeQL for C/C++
 
 .. container:: semmle-logo
 
@@ -77,7 +77,7 @@ The library class ``SecurityOptions`` provides a (configurable) model of what co
 
 .. note::
 
-  We first define what it means to be a *source* of tainted data for this particular problem. In this case, what we care about is whether the format string can be provided by an external user to our application or service. As there are many such ways external data could be introduced into the system, the standard QL libraries for C/C++ include an extensible API for modeling user input. In this case, we will simply use the predefined set of *user inputs*, which includes arguments provided to command line applications.
+  We first define what it means to be a *source* of tainted data for this particular problem. In this case, what we care about is whether the format string can be provided by an external user to our application or service. As there are many such ways external data could be introduced into the system, the standard CodeQL libraries for C/C++ include an extensible API for modeling user input. In this case, we will simply use the predefined set of *user inputs*, which includes arguments provided to command line applications.
 
 
 Defining sinks (exercise)

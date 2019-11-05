@@ -2,7 +2,7 @@
 Introduction to variant analysis
 ================================
 
-QL for C/C++
+CodeQL for C/C++
 
 .. container:: semmle-logo
 
@@ -56,14 +56,14 @@ Oops
 
 .. note::
 
-   Here’s a simple (artificial) bug, which we’ll develop a QL query to catch.
+   Here’s a simple (artificial) bug, which we’ll develop a query to catch.
 
    This function writes a value to a given location in an array, first trying to do a bounds check to validate that the location is within bounds. However, the return statement has been commented out, leaving a redundant if statement and no bounds checking.
 
    This case can act as our “patient zero” in the variant analysis game.
 
-A simple QL query
-=================
+A simple CodeQL query
+=====================
 
 .. literalinclude:: ../query-examples/cpp/empty-if-cpp.ql
    :language: ql
@@ -72,9 +72,9 @@ A simple QL query
 
    We are going to write a simple query which finds “if statements” with empty “then” blocks, so we can highlight the results like those on the previous slide. The query can be run in the `query console on LGTM <https://lgtm.com/query>`__, or in your `IDE <https://lgtm.com/help/lgtm/running-queries-ide>`__.
 
-   A `QL query <https://help.semmle.com/QL/ql-handbook/queries.html>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__), see `Introduction to query files <https://help.semmle.com/QL/learn-ql/ql/writing-queries/introduction-to-queries.html>`__.
+   A `query <https://help.semmle.com/QL/ql-handbook/queries.html>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__), see `Introduction to query files <https://help.semmle.com/QL/learn-ql/ql/writing-queries/introduction-to-queries.html>`__.
 
-   In our example here, the first line of the query imports the `C/C++ standard QL library <https://help.semmle.com/qldoc/cpp/>`__, which defines concepts like ``IfStmt`` and ``Block``.
+   In our example here, the first line of the query imports the `CodeQL for C/C++ standard library <https://help.semmle.com/qldoc/cpp/>`__, which defines concepts like ``IfStmt`` and ``Block``.
    The query proper starts by declaring two variables–ifStmt and block. These variables represent sets of values in the database, according to the type of each of the variables. For example, ifStmt has the type IfStmt, which means it represents the set of all if statements in the program.
 
    If we simply selected these two variables::
@@ -97,8 +97,8 @@ A simple QL query
 
 
 
-Structure of a QL query
-=======================
+Structure of a query
+====================
 
 A **query file** has the extension ``.ql`` and contains a **query clause**, and optionally **predicates**, **classes**, and **modules**.
 
@@ -110,14 +110,14 @@ Each query library also implicitly defines a module.
 
 .. note::
 
-  QL queries are always contained in query files with the file extension ``.ql``. `Quick queries <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/quick-query.html>`__, run in `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/home-page.html>`__, are no exception: the quick query window maintains a temporary QL file in the background.
+  Queries are always contained in query files with the file extension ``.ql``. `Quick queries <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/quick-query.html>`__, run in `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/home-page.html>`__, are no exception: the quick query window maintains a temporary query file in the background.
 
-  Parts of queries can be lifted into `QL library files <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ with the extension ``qll``. Definitions within such libraries can be brought into scope using ``import`` statements, and similarly QLL files can import each other’s definitions using “import” statements.
+  Parts of queries can be lifted into `library files <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ with the extension ``qll``. Definitions within such libraries can be brought into scope using ``import`` statements, and similarly QLL files can import each other’s definitions using “import” statements.
 
   Logic can be encapsulated as user-defined `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, and organized into `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__. Each QLL file implicitly defines a module, but QL and QLL files can also contain explicit module definitions, as we will see later.
 
-Predicates in QL
-================
+Predicates
+==========
 
 A predicate allows you to pull out and name parts of a query.
 
@@ -135,14 +135,14 @@ A predicate allows you to pull out and name parts of a query.
 
 .. note::
 
-   A QL predicate takes zero or more parameters, and its body is a condition on those parameters. The predicate may (or may not) hold. Predicates may also be recursive, simply by referring to themselves (directly or indirectly).
+   A `predicate <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ takes zero or more parameters, and its body is a condition on those parameters. The predicate may (or may not) hold. Predicates may also be `recursive <https://help.semmle.com/QL/ql-handbook/predicates.html#recursive-predicates>`__, simply by referring to themselves (directly or indirectly).
 
    You can imagine a predicate to be a self-contained from-where-select statement, that produces an intermediate relation, or table. In this case, the ``isEmpty`` predicate will be the set of all blocks which are empty.
 
-Classes in QL
-=============
+Classes
+=======
 
-A QL class allows you to name a set of values and define (member) predicates on them.
+A class allows you to name a set of values and define (member) predicates on them.
 
 A class has at least one supertype and optionally a **characteristic predicate**; it contains the values that belong to *all* supertypes *and* satisfy the characteristic predicate, if provided.
 
@@ -162,8 +162,8 @@ Member predicates are inherited and can be overridden.
 
   In the example, declaring a variable “EmptyBlock e” will allow it to range over only those blocks that have zero statements.
 
-Classes in QL continued
-=======================
+Classes continued
+=================
 
 .. container:: column-left
 
@@ -198,7 +198,7 @@ Iterative query refinement
 
 .. note::
 
-   QL makes it very easy to experiment with analysis ideas. A common workflow is to start with a simple query (like our “redundant if-statement” example), examine a few results, refine the query based on any patterns that emerge and repeat.
+   CodeQL makes it very easy to experiment with analysis ideas. A common workflow is to start with a simple query (like our “redundant if-statement” example), examine a few results, refine the query based on any patterns that emerge and repeat.
 
    As an exercise, refine the redundant-if query based on the observation that if the if-statement has an “else” clause, then even if the body of the “then” clause is empty, it’s not actually redundant.
 

@@ -2,7 +2,7 @@
 Analyzing control flow
 ======================
 
-QL for C/C++
+CodeQL for C/C++
 
 .. container:: semmle-logo
 
@@ -226,7 +226,7 @@ A ``GuardCondition`` is a ``Boolean`` condition that controls one or more basic 
 Further materials
 =================
 
-- QL for C/C++: https://help.semmle.com/QL/learn-ql/ql/cpp/ql-for-cpp.html 
+- CodeQL for C/C++: https://help.semmle.com/QL/learn-ql/ql/cpp/ql-for-cpp.html 
 - API reference: https://help.semmle.com/qldoc/cpp 
 
 .. rst-class:: end-slide

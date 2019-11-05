@@ -86,9 +86,9 @@ Write a query that flags ``printf`` calls where the format argument is not a ``S
 
 .. note::
 
-  This first query is about finding places where the format specifier is not a constant string. In QL for C/C++, constant strings are modeled as ``StringLiteral`` nodes, so we are looking for calls to format functions where the format specifier argument is not a string literal.
+  This first query is about finding places where the format specifier is not a constant string. In CodeQL for C/C++, constant strings are modeled as ``StringLiteral`` nodes, so we are looking for calls to format functions where the format specifier argument is not a string literal.
 
-  The `C/C++ standard libraries <https://help.semmle.com/qldoc/cpp/>`__ include many different formatting functions that may be vulnerable to this particular attack–including ``printf``, ``snprintf``, and others. Furthermore, each of these different formatting functions may include the format string in a different position in the argument list. Instead of laboriously listing all these different variants, we can make use of the QL for C/C++ standard library class ``FormattingFunction``, which provides an interface that models common formatting functions in C/C++.
+  The `C/C++ standard libraries <https://help.semmle.com/qldoc/cpp/>`__ include many different formatting functions that may be vulnerable to this particular attack–including ``printf``, ``snprintf``, and others. Furthermore, each of these different formatting functions may include the format string in a different position in the argument list. Instead of laboriously listing all these different variants, we can make use of the CodeQL for C/C++ standard library class ``FormattingFunction``, which provides an interface that models common formatting functions in C/C++.
 
 Meh...
 ======

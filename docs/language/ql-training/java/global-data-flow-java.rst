@@ -2,7 +2,7 @@
 Introduction to global data flow
 ================================
 
-QL for Java
+CodeQL for Java
 
 .. container:: semmle-logo
 

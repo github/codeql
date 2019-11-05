@@ -1,5 +1,5 @@
-QL training and variant analysis examples
-=========================================
+CodeQL training and variant analysis examples
+=============================================
 
 .. container:: semmle-logo
 

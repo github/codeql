@@ -2,7 +2,7 @@
 Program representation
 ======================
 
-QL for Java
+CodeQL for Java
 
 .. container:: semmle-logo
 

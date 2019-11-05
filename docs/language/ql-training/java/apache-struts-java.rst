@@ -67,7 +67,7 @@ RCE in Apache Struts
 Finding the RCE yourself
 ========================
 
-#. Create a QL class to find the interface ``org.apache.struts2.rest.handler.ContentTypeHandler``
+#. Create a class to find the interface ``org.apache.struts2.rest.handler.ContentTypeHandler``
 
    **Hint**: Use predicate ``hasQualifiedName(...)``
 

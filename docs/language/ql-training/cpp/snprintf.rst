@@ -2,7 +2,7 @@
 Exercise: ``snprintf`` overflow
 ===============================
 
-QL for C/C++
+CodeQL for C/C++
 
 .. container:: semmle-logo
 

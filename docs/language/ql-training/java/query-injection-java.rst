@@ -2,7 +2,7 @@
 Example: Query injection
 ========================
 
-QL for Java
+CodeQL for Java
 
 .. container:: semmle-logo
 
@@ -65,13 +65,13 @@ SPARQL injection
 
 .. rst-class:: background2
 
-Developing a QL query
-======================
+Developing a query
+===================
 
 Finding a query concatenation
 
-QL query: find SPARQL methods
-=============================
+CodeQL query: find SPARQL methods
+=================================
 
 Let’s start by looking for calls to methods with names of the form ``sparql*Query``, using the classes ``Method`` and ``MethodAccess`` from the Java library.
 
@@ -88,10 +88,10 @@ Let’s start by looking for calls to methods with names of the form ``sparql*Qu
     - a ``MethodAccess``: the call to a SPARQL query method
     - a ``Method``: the SPARQL query method.
   
-  - The ``where`` part of the query ties these three QL variables   together using `predicates <https://help.semmle.com/QL/  ql-handbook/predicates.html>`__ defined in the `standard QL for   Java library <https://help.semmle.com/qldoc/java/>`__.
+  - The ``where`` part of the query ties these variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL for   Java library <https://help.semmle.com/qldoc/java/>`__.
 
-QL query: find string concatenation
-===================================
+CodeQL query: find string concatenation
+=======================================
 
 - We now need to define what would make these API calls unsafe.
 - A simple heuristic would be to look for string concatenation used in the query argument. 
@@ -113,8 +113,8 @@ Looking at autocomplete suggestions, we see that we can get the type of an expre
   - We therefore write a helper predicate for finding string concatenation.
   - This predicate effectively represents the set of all ``add`` expressions in the database where the type of the expression is ``TypeString`` - that is, the addition produces a ``String``   value.
 
-QL query: SPARQL injection
-==========================
+CodeQL query: SPARQL injection
+==============================
 
 We can now combine our predicate with the existing query.
 Note that we do not need to specify that the argument of the method access is an ``AddExpr`` - this is implied by the ``isStringConcat`` requirement.

@@ -2,7 +2,7 @@
 Program representation 
 ======================
 
-QL for C/C++
+CodeQL for C/C++
 
 .. container:: semmle-logo
 
@@ -25,8 +25,8 @@ Agenda
 
 .. resume slides
 
-AST QL classes
-==============
+AST classes
+===========
 
 Important AST classes include:
 
@@ -66,9 +66,9 @@ Working with variables
 Working with functions
 ======================
 
-Functions are represented by the Function QL class. Each declaration or definition of a function is represented by a ``FunctionDeclarationEntry``.
+Functions are represented by the Function class. Each declaration or definition of a function is represented by a ``FunctionDeclarationEntry``.
 
-Calls to functions are modeled by QL class Call and its subclasses:
+Calls to functions are modeled by class Call and its subclasses:
 
 - ``Call.getTarget()`` gets the declared target of the call; undefined for calls through function pointers
 - ``Function.getACallToThisFunction()`` gets a call to this function

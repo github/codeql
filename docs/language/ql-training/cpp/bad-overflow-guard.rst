@@ -2,7 +2,7 @@
 Example: Bad overflow guard
 ===========================
 
-QL for C/C++
+CodeQL for C/C++
 
 .. container:: semmle-logo
 
@@ -127,13 +127,13 @@ This happens even though the overflow check passed!
 
 .. rst-class:: background2
 
-Developing a QL query
-=====================
+Developing a CodeQL query
+=========================
 
 Finding bad overflow guards
 
-QL query: bad overflow guards
-=============================
+CodeQL query: bad overflow guards
+==================================
 
 Let’s look for overflow guards of the form ``v + b < v``, using the classes
 ``AddExpr``, ``Variable`` and ``RelationalOperation`` from the ``cpp`` library.
@@ -153,10 +153,10 @@ Let’s look for overflow guards of the form ``v + b < v``, using the classes
     - a ``RelationalOperation``: the overflow comparison check.
     - a ``Variable``: used as an argument to both the addition and comparison.
 
-  - The ``where`` part of the query ties these three QL variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard QL for C/C++ library <https://help.semmle.com/qldoc/cpp/>`__.
+  - The ``where`` part of the query ties these three variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL for C/C++ library <https://help.semmle.com/qldoc/cpp/>`__.
 
-QL query: bad overflow guards
-=============================
+CodeQL query: bad overflow guards
+=================================
 
 We want to ensure the operands being added have size less than 4 bytes.
 
@@ -180,8 +180,8 @@ We can get the size (in bytes) of a type using the ``getSize()`` method.
   - We therefore write a helper predicate for small expressions.
   - This predicate effectively represents the set of all expressions in the database where the size of the type of the expression is less than 4 bytes, that is, less than 32-bits.
 
-QL query: bad overflow guards
-=============================
+CodeQL query: bad overflow guards
+==================================
 
 We can ensure the operands being added have size less than 4 bytes, using our new predicate.
 
@@ -216,8 +216,8 @@ Now our query becomes:
     - The “range” part, ``op = a.getAnOperand()``,  restricts ``op`` to being one of the two operands to the addition.
     - The “condition” part, ``isSmall(op)``, says that the ``forall`` holds only if the condition (that the ``op`` is small) holds for everything in the range–that is, both the arguments to the addition.
 
-QL query: bad overflow guards
-=============================
+CodeQL query: bad overflow guards
+=================================
 
 Sometimes the result of the addition is cast to a small type of size less than 4 bytes, preventing automatic widening. We don’t want our query to flag these instances.
 
