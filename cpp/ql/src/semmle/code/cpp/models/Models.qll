@@ -1,3 +1,4 @@
+private import implementations.Fread
 private import implementations.IdentityFunction
 private import implementations.Inet
 private import implementations.Memcpy
