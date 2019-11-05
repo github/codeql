@@ -257,18 +257,17 @@ abstract class Declaration extends Locatable, @declaration {
 
   private Type getTemplateArgumentType(int index) {
     class_template_argument(underlyingElement(this), index, unresolveElement(result))
-      or
+    or
     function_template_argument(underlyingElement(this), index, unresolveElement(result))
-      or
+    or
     variable_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 
-
   private Expr getTemplateArgumentValue(int index) {
     class_template_argument_value(underlyingElement(this), index, unresolveElement(result))
-      or
+    or
     function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
-      or
+    or
     variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
   }
 }
