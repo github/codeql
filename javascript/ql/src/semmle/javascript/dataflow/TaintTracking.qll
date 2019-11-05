@@ -781,15 +781,18 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
-  /** A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch. */
-  class StringInclusionSanitizer extends AdditionalSanitizerGuardNode {
-    StringOps::Includes includes;
+  /** DEPRECATED. This class has been renamed to `InclusionSanitizer`. */
+  deprecated class StringInclusionSanitizer = InclusionSanitizer;
 
-    StringInclusionSanitizer() { this = includes }
+  /** A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch. */
+  class InclusionSanitizer extends AdditionalSanitizerGuardNode {
+    InclusionTest inclusion;
+
+    InclusionSanitizer() { this = inclusion }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = includes.getPolarity() and
-      e = includes.getSubstring().asExpr()
+      outcome = inclusion.getPolarity() and
+      e = inclusion.getContainedNode().asExpr()
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
