@@ -126,27 +126,13 @@ abstract class Replacement extends DataFlow::Node {
 /**
  * A call to `String.prototype.replace` that replaces all instances of a pattern.
  */
-class GlobalStringReplacement extends Replacement, DataFlow::MethodCallNode {
-  RegExpLiteral pattern;
-
+class GlobalStringReplacement extends Replacement, StringReplaceCall {
   GlobalStringReplacement() {
-    this.getMethodName() = "replace" and
-    pattern.flow().(DataFlow::SourceNode).flowsTo(this.getArgument(0)) and
-    this.getNumArgument() = 2 and
-    pattern.isGlobal()
+    isGlobal()
   }
 
   override predicate replaces(string input, string output) {
-    input = pattern.getRoot().getConstantValue() and
-    output = this.getArgument(1).getStringValue()
-    or
-    exists(DataFlow::FunctionNode replacer, DataFlow::PropRead pr, DataFlow::ObjectLiteralNode map |
-      replacer = getCallback(1) and
-      replacer.getParameter(0).flowsToExpr(pr.getPropertyNameExpr()) and
-      pr = map.getAPropertyRead() and
-      pr.flowsTo(replacer.getAReturn()) and
-      map.asExpr().(ObjectExpr).getPropertyByName(input).getInit().getStringValue() = output
-    )
+    StringReplaceCall.super.replaces(input, output)
   }
 
   override DataFlow::Node getInput() {

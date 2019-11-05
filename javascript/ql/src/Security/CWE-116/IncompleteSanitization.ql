@@ -20,8 +20,8 @@ import javascript
 string metachar() { result = "'\"\\&<>\n\r\t*|{}[]%$".charAt(_) }
 
 /** Gets a string matched by `e` in a `replace` call. */
-string getAMatchedString(Expr e) {
-  result = e.(RegExpLiteral).getRoot().getAMatchedString()
+string getAMatchedString(DataFlow::Node e) {
+  result = e.(DataFlow::RegExpLiteralNode).getRoot().getAMatchedString()
   or
   result = e.getStringValue()
 }
@@ -44,16 +44,15 @@ predicate isSimple(RegExpTerm t) {
  * Holds if `mce` is of the form `x.replace(re, new)`, where `re` is a global
  * regular expression and `new` prefixes the matched string with a backslash.
  */
-predicate isBackslashEscape(MethodCallExpr mce, RegExpLiteral re) {
-  mce.getMethodName() = "replace" and
-  re.flow().(DataFlow::SourceNode).flowsToExpr(mce.getArgument(0)) and
-  re.isGlobal() and
-  exists(string new | new = mce.getArgument(1).getStringValue() |
-    // `new` is `\$&`, `\$1` or similar
-    new.regexpMatch("\\\\\\$(&|\\d)")
+predicate isBackslashEscape(StringReplaceCall mce, DataFlow::RegExpLiteralNode re) {
+  mce.isGlobal() and
+  re = mce.getRegExp() and
+  (
+    // replacement with `\$&`, `\$1` or similar
+    mce.getRawReplacement().getStringValue().regexpMatch("\\\\\\$(&|\\d)")
     or
-    // `new` is `\c`, where `c` is a constant matched by `re`
-    new.regexpMatch("\\\\\\Q" + getAMatchedString(re) + "\\E")
+    // replacement of `c` with `\c`
+    exists(string c | mce.replaces(c, "\\" + c))
   )
 }
 
@@ -65,7 +64,7 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
   nd = DataFlow::globalVarRef("JSON").getAMemberCall("stringify")
   or
   // check whether `nd` itself escapes backslashes
-  exists(RegExpLiteral rel | isBackslashEscape(nd.asExpr(), rel) |
+  exists(DataFlow::RegExpLiteralNode rel | isBackslashEscape(nd, rel) |
     // if it's a complex regexp, we conservatively assume that it probably escapes backslashes
     not isSimple(rel.getRoot()) or
     getAMatchedString(rel) = "\\"
@@ -91,10 +90,8 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
 /**
  * Holds if `repl` looks like a call to "String.prototype.replace" that deliberately removes the first occurrence of `str`.
  */
-predicate removesFirstOccurence(DataFlow::MethodCallNode repl, string str) {
-  repl.getMethodName() = "replace" and
-  repl.getArgument(0).getStringValue() = str and
-  repl.getArgument(1).getStringValue() = ""
+predicate removesFirstOccurence(StringReplaceCall repl, string str) {
+  not exists(repl.getRegExp()) and repl.replaces(str, "")
 }
 
 /**
@@ -124,22 +121,20 @@ predicate isDelimiterUnwrapper(
  * Holds if `repl` is a standalone use of `String.prototype.replace` to remove a single newline.
  */
 
-predicate removesTrailingNewLine(DataFlow::MethodCallNode repl) {
-  repl.getMethodName() = "replace" and
-  repl.getArgument(0).mayHaveStringValue("\n") and
-  repl.getArgument(1).mayHaveStringValue("") and
-  not exists(DataFlow::MethodCallNode other | other.getMethodName() = "replace" |
+predicate removesTrailingNewLine(StringReplaceCall repl) {
+  not repl.isGlobal() and
+  repl.replaces("\n", "") and
+  not exists(StringReplaceCall other |
     repl.getAMethodCall() = other or
     other.getAMethodCall() = repl
   )
 }
 
-from MethodCallExpr repl, Expr old, string msg
+from StringReplaceCall repl, DataFlow::Node old, string msg
 where
-  repl.getMethodName() = "replace" and
-  (old = repl.getArgument(0) or old.flow().(DataFlow::SourceNode).flowsToExpr(repl.getArgument(0))) and
+  (old = repl.getArgument(0) or old = repl.getRegExp()) and
   (
-    not old.(RegExpLiteral).isGlobal() and
+    not repl.isGlobal() and
     msg = "This replaces only the first occurrence of " + old + "." and
     // only flag if this is likely to be a sanitizer or URL encoder or decoder
     exists(string m | m = getAMatchedString(old) |
@@ -158,17 +153,17 @@ where
       (m = ".." or m = "/.." or m = "../" or m = "/../")
     ) and
     // don't flag replace operations in a loop
-    not DataFlow::valueNode(repl.getReceiver()) = DataFlow::valueNode(repl).getASuccessor+() and
+    not repl.getReceiver() = repl.getASuccessor+() and
     // dont' flag unwrapper
-    not isDelimiterUnwrapper(repl.flow(), _) and
-    not isDelimiterUnwrapper(_, repl.flow()) and
+    not isDelimiterUnwrapper(repl, _) and
+    not isDelimiterUnwrapper(_, repl) and
     // dont' flag the removal of trailing newlines
-    not removesTrailingNewLine(repl.flow())
+    not removesTrailingNewLine(repl)
     or
-    exists(RegExpLiteral rel |
+    exists(DataFlow::RegExpLiteralNode rel |
       isBackslashEscape(repl, rel) and
-      not allBackslashesEscaped(DataFlow::valueNode(repl)) and
+      not allBackslashesEscaped(repl) and
       msg = "This does not escape backslash characters in the input."
     )
   )
-select repl.getCallee(), msg
+select repl.getCalleeNode(), msg
