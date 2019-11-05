@@ -36,10 +36,8 @@ module CleartextLogging {
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl) {
       // Only unknown property reads on `process.env` propagate taint.
-      not lbl instanceof ProcessEnvLabel and 
+      (not lbl instanceof ProcessEnvLabel or exists(succ.(DataFlow::PropRead).getPropertyName())) and 
       succ.(DataFlow::PropRead).getBase() = pred
-      or 
-      exists(succ.(DataFlow::PropRead).getPropertyName())
     }
        
     override predicate isAdditionalFlowStep(
