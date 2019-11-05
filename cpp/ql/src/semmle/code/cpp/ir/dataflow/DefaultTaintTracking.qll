@@ -18,10 +18,32 @@ private predicate predictableInstruction(Instruction instr) {
   predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
+private predicate userInputInstruction(Instruction instr) {
+    exists(CallInstruction ci, WriteSideEffectInstruction wsei |
+      userInputArgument(ci.getConvertedResultExpression(), wsei.getIndex()) and
+      instr = wsei and
+      wsei.getPrimaryInstruction() = ci
+    )
+  or
+  userInputReturned(instr.getConvertedResultExpression())
+  or
+  instr.getConvertedResultExpression() instanceof EnvironmentRead
+  or
+  instr
+      .(LoadInstruction)
+      .getSourceAddress()
+      .(VariableAddressInstruction)
+      .getASTVariable()
+      .hasName("argv") and
+  instr.getEnclosingFunction().hasGlobalName("main")
+}
+
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
 
-  override predicate isSource(DataFlow::Node source) { isUserInput(source.asExpr(), _) }
+  override predicate isSource(DataFlow::Node source) {
+    userInputInstruction(source.asInstruction())
+  }
 
   override predicate isSink(DataFlow::Node sink) { any() }
 
@@ -87,6 +109,10 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // This is part of the translation of `a[i]`, where we want taint to flow
   // from `a`.
   i2.(PointerAddInstruction).getLeft() = i1
+  or
+  i2.(ChiInstruction).getPartial() = i1
+  or
+  i2.(ChiInstruction).getTotal() = i1
   // TODO: Flow from argument to return of known functions: Port missing parts
   // of `returnArgument` to the `interfaces.Taint` and `interfaces.DataFlow`
   // libraries.
@@ -102,6 +128,8 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
     cfg.hasFlow(DataFlow::exprNode(source), sink)
+    or
+    cfg.hasFlow(DataFlow::definitionByReferenceNode(source), sink)
   |
     // TODO: is it more appropriate to use asConvertedExpr here and avoid
     // `getConversion*`? Or will that cause us to miss some cases where there's
@@ -128,6 +156,23 @@ predicate tainted(Expr source, Element tainted) {
     // For compatibility, send flow into a `NotExpr` even if it's part of a
     // short-circuiting condition and thus might get skipped.
     tainted.(NotExpr).getOperand() = sink.asExpr()
+    or
+    // For compatibility, send flow from argument read side effects to their
+    // corresponding argument expression
+    exists(IndirectReadSideEffectInstruction read |
+      read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
+      read.getArgumentDef().getUnconvertedResultExpression() = tainted
+    )
+    or
+    exists(BufferReadSideEffectInstruction read |
+      read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
+      read.getArgumentDef().getUnconvertedResultExpression() = tainted
+    )
+    or
+    exists(SizedBufferReadSideEffectInstruction read |
+      read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
+      read.getArgumentDef().getUnconvertedResultExpression() = tainted
+    )
   )
 }
 
