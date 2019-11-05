@@ -163,7 +163,7 @@ module CleartextLogging {
     }
   }
 
-
+  /** An access to the sensitive object `process.env`. */
   class ProcessEnvSource extends Source {
     ProcessEnvSource() {
       this = NodeJSLib::process().getAPropertyRead("env")
@@ -173,11 +173,16 @@ module CleartextLogging {
     
     override DataFlow::FlowLabel getLabel() {
       result.isData() or 
-      result instanceof ProcessEnvLabel
+      result instanceof PartiallySensitiveMap
     }
   }
-  class ProcessEnvLabel extends DataFlow::FlowLabel{
-    ProcessEnvLabel() {
+  
+  /**
+   * A flow label describing a map that might contain sensitive information in some properties.
+   * Property reads on such maps where the property name is fixed is unlikely to leak sensitive information. 
+   */
+  class PartiallySensitiveMap extends DataFlow::FlowLabel {
+    PartiallySensitiveMap() {
       this = "processEnv"
     }
   }

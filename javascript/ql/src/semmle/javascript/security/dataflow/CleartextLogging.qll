@@ -35,8 +35,8 @@ module CleartextLogging {
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Barrier }
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl) {
-      // Only unknown property reads on `process.env` propagate taint.
-      (not lbl instanceof ProcessEnvLabel or exists(succ.(DataFlow::PropRead).getPropertyName())) and 
+      // Only unknown property reads on sensitive objects propagate taint.
+      (not lbl instanceof PartiallySensitiveMap or exists(succ.(DataFlow::PropRead).getPropertyName())) and 
       succ.(DataFlow::PropRead).getBase() = pred
     }
        
@@ -44,7 +44,7 @@ module CleartextLogging {
       DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
     ) {
       trg.(DataFlow::PropRead).getBase() = src and
-      inlbl instanceof ProcessEnvLabel and 
+      inlbl instanceof PartiallySensitiveMap and 
       outlbl.isData() 
     }
     
