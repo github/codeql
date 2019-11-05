@@ -174,9 +174,51 @@ abstract class PostUpdateNode extends Node {
 }
 
 /**
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference.
+ *
+ * A typical example would be a call `f(&x)`. Firstly, there will be flow into
+ * `x` from previous definitions of `x`. Secondly, there will be a
+ * `DefinitionByReferenceNode` to represent the value of `x` after the call has
+ * returned. This node will have its `getArgument()` equal to `&x` and its
+ * `getVariableAccess()` equal to `x`.
+ */
+class DefinitionByReferenceNode extends Node {
+  override WriteSideEffectInstruction instr;
+
+  /** Gets the argument corresponding to this node. */
+  Expr getArgument() {
+    result = instr
+          .getPrimaryInstruction()
+          .(CallInstruction)
+          .getPositionalArgument(instr.getIndex())
+          .getUnconvertedResultExpression()
+    or
+    result = instr
+          .getPrimaryInstruction()
+          .(CallInstruction)
+          .getThisArgument()
+          .getUnconvertedResultExpression() and
+    instr.getIndex() = -1
+  }
+
+  
+  /** Gets the parameter through which this value is assigned. */
+  Parameter getParameter() {
+    exists(CallInstruction ci |
+      result = ci.getStaticCallTarget().getParameter(instr.getIndex())
+    )
+  }
+}
+
+/**
  * Gets the node corresponding to `instr`.
  */
 Node instructionNode(Instruction instr) { result.asInstruction() = instr }
+
+DefinitionByReferenceNode definitionByReferenceNode(Expr e) {
+  result.getArgument() = e
+}
 
 /**
  * Gets a `Node` corresponding to `e` or any of its conversions. There is no
