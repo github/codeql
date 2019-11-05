@@ -2,9 +2,9 @@
 /java/ @Semmle/java
 /javascript/ @Semmle/js
 /cpp/ @Semmle/cpp-analysis
-/cpp/**/*.qhelp @semmledocs-ac
+/cpp/**/*.qhelp @hubwriter
 /csharp/**/*.qhelp @jf205
-/java/**/*.qhelp @felicity-semmle
-/javascript/**/*.qhelp @mc-semmle
-/python/**/*.qhelp @felicity-semmle
-/docs/language/ @felicity-semmle @jf205
+/java/**/*.qhelp @felicitymay
+/javascript/**/*.qhelp @mchammer01
+/python/**/*.qhelp @felicitymay
+/docs/language/ @shati-patel @jf205

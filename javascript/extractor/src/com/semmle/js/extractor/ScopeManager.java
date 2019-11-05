@@ -46,9 +46,9 @@ import com.semmle.ts.ast.InferTypeExpr;
 import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
-import com.semmle.ts.ast.IsTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
+import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.UnionTypeExpr;
@@ -660,8 +660,8 @@ public class ScopeManager {
           }
 
           @Override
-          public Void visit(IsTypeExpr nd, Void c) {
-            return nd.getRight().accept(this, c);
+          public Void visit(PredicateTypeExpr nd, Void c) {
+            return nd.getTypeExpr().accept(this, c);
           }
 
           @Override

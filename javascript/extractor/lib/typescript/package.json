@@ -2,19 +2,16 @@
     "name": "typescript-parser-wrapper",
     "private": true,
     "dependencies": {
-        "typescript": "3.5.1"
+        "typescript": "^3.7.2"
     },
     "scripts": {
-        "build": "tsc --project tsconfig.json && rollup -c",
+        "build": "tsc --project tsconfig.json",
         "check": "tsc --noEmit --project . && tslint --project .",
         "lint": "tslint --project .",
         "lint-fix": "tslint --project . --fix"
     },
     "devDependencies": {
-        "@types/node": "^9.3.0",
-        "rollup": "^0.66.6",
-        "rollup-plugin-commonjs": "^9.2.0",
-        "rollup-plugin-node-resolve": "^3.4.0",
+        "@types/node": "12.7.11",
         "tslint": "^5.9.1"
     }
 }

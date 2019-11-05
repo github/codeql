@@ -610,7 +610,9 @@ class FloatingPointType extends ArithmeticType {
       (
         kind >= 24 and kind <= 32
         or
-        kind = 38
+        kind >= 38 and kind <= 42
+        or
+        kind >= 45 and kind <= 50
       )
     )
   }

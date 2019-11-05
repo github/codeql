@@ -32,6 +32,8 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, @unaryplusexpr {
  */
 class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
   override string getOperator() { result = "~" }
+
+  override string getCanonicalQLClass() { result = "ConjugationExpr" }
 }
 
 /**
@@ -142,6 +144,8 @@ class PostfixDecrExpr extends DecrementOperation, PostfixCrementOperation, @post
  */
 class RealPartExpr extends UnaryArithmeticOperation, @realpartexpr {
   override string getOperator() { result = "__real" }
+
+  override string getCanonicalQLClass() { result = "RealPartExpr" }
 }
 
 /**
@@ -149,6 +153,8 @@ class RealPartExpr extends UnaryArithmeticOperation, @realpartexpr {
  */
 class ImaginaryPartExpr extends UnaryArithmeticOperation, @imagpartexpr {
   override string getOperator() { result = "__imag" }
+
+  override string getCanonicalQLClass() { result = "ImaginaryPartExpr" }
 }
 
 /**
@@ -217,6 +223,8 @@ class RemExpr extends BinaryArithmeticOperation, @remexpr {
 class ImaginaryMulExpr extends BinaryArithmeticOperation, @jmulexpr {
   override string getOperator() { result = "*" }
 
+  override string getCanonicalQLClass() { result = "ImaginaryMulExpr" }
+
   override int getPrecedence() { result = 13 }
 }
 
@@ -225,6 +233,8 @@ class ImaginaryMulExpr extends BinaryArithmeticOperation, @jmulexpr {
  */
 class ImaginaryDivExpr extends BinaryArithmeticOperation, @jdivexpr {
   override string getOperator() { result = "/" }
+
+  override string getCanonicalQLClass() { result = "ImaginaryDivExpr" }
 
   override int getPrecedence() { result = 13 }
 }
@@ -235,6 +245,8 @@ class ImaginaryDivExpr extends BinaryArithmeticOperation, @jdivexpr {
 class RealImaginaryAddExpr extends BinaryArithmeticOperation, @fjaddexpr {
   override string getOperator() { result = "+" }
 
+  override string getCanonicalQLClass() { result = "RealImaginaryAddExpr" }
+
   override int getPrecedence() { result = 12 }
 }
 
@@ -243,6 +255,8 @@ class RealImaginaryAddExpr extends BinaryArithmeticOperation, @fjaddexpr {
  */
 class ImaginaryRealAddExpr extends BinaryArithmeticOperation, @jfaddexpr {
   override string getOperator() { result = "+" }
+
+  override string getCanonicalQLClass() { result = "ImaginaryRealAddExpr" }
 
   override int getPrecedence() { result = 12 }
 }
@@ -253,6 +267,8 @@ class ImaginaryRealAddExpr extends BinaryArithmeticOperation, @jfaddexpr {
 class RealImaginarySubExpr extends BinaryArithmeticOperation, @fjsubexpr {
   override string getOperator() { result = "-" }
 
+  override string getCanonicalQLClass() { result = "RealImaginarySubExpr" }
+
   override int getPrecedence() { result = 12 }
 }
 
@@ -262,6 +278,8 @@ class RealImaginarySubExpr extends BinaryArithmeticOperation, @fjsubexpr {
 class ImaginaryRealSubExpr extends BinaryArithmeticOperation, @jfsubexpr {
   override string getOperator() { result = "-" }
 
+  override string getCanonicalQLClass() { result = "ImaginaryRealSubExpr" }
+
   override int getPrecedence() { result = 12 }
 }
 
@@ -270,6 +288,8 @@ class ImaginaryRealSubExpr extends BinaryArithmeticOperation, @jfsubexpr {
  */
 class MinExpr extends BinaryArithmeticOperation, @minexpr {
   override string getOperator() { result = "<?" }
+
+  override string getCanonicalQLClass() { result = "MinExpr" }
 }
 
 /**
@@ -277,6 +297,8 @@ class MinExpr extends BinaryArithmeticOperation, @minexpr {
  */
 class MaxExpr extends BinaryArithmeticOperation, @maxexpr {
   override string getOperator() { result = ">?" }
+
+  override string getCanonicalQLClass() { result = "MaxExpr" }
 }
 
 /**

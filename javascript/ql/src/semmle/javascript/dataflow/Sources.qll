@@ -235,7 +235,8 @@ module SourceNode {
         astNode instanceof FunctionSentExpr or
         astNode instanceof FunctionBindExpr or
         astNode instanceof DynamicImportExpr or
-        astNode instanceof ImportSpecifier
+        astNode instanceof ImportSpecifier or
+        astNode instanceof ImportMetaExpr
       )
       or
       DataFlow::parameterNode(this, _)

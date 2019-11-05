@@ -10,8 +10,8 @@ attacks such as cross-site scripting. One particular example of this is HTML ent
 where HTML special characters are replaced by HTML character entities to prevent them from being
 interpreted as HTML markup. For example, the less-than character is encoded as <code>&amp;lt;</code>
 and the double-quote character as <code>&amp;quot;</code>.
-Other examples include backslash-escaping for including untrusted data in string literals and
-percent-encoding for URI components.
+Other examples include backslash escaping or JSON encoding for including untrusted data in string
+literals, and percent-encoding for URI components.
 </p>
 <p>
 The reverse process of replacing escape sequences with the characters they represent is known as

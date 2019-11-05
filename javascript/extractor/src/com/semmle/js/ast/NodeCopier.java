@@ -30,13 +30,13 @@ import com.semmle.ts.ast.InferTypeExpr;
 import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
-import com.semmle.ts.ast.IsTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
 import com.semmle.ts.ast.NonNullAssertion;
 import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
+import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
@@ -717,8 +717,12 @@ public class NodeCopier implements Visitor<Void, INode> {
   }
 
   @Override
-  public INode visit(IsTypeExpr nd, Void c) {
-    return new IsTypeExpr(visit(nd.getLoc()), copy(nd.getLeft()), copy(nd.getRight()));
+  public INode visit(PredicateTypeExpr nd, Void c) {
+    return new PredicateTypeExpr(
+        visit(nd.getLoc()),
+        copy(nd.getExpression()),
+        copy(nd.getTypeExpr()),
+        nd.hasAssertsKeyword());
   }
 
   @Override

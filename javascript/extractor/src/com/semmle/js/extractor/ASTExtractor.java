@@ -125,13 +125,13 @@ import com.semmle.ts.ast.InferTypeExpr;
 import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
-import com.semmle.ts.ast.IsTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
 import com.semmle.ts.ast.NonNullAssertion;
 import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
+import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
@@ -1377,9 +1377,8 @@ public class ASTExtractor {
       trapwriter.addTuple("properties", methkey, c.parent, c.childIndex, kind, tostring);
       locationManager.emitNodeLocation(nd, methkey);
       visitAll(nd.getDecorators(), methkey, IdContext.varBind, -1, -1);
-      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
 
-      // the initialiser expression of an instance field is evaluated as part of
+      // the name and initialiser expression of an instance field is evaluated as part of
       // the constructor, so we adjust our syntactic context to reflect this
       MethodDefinition ctor = null;
       if (nd instanceof FieldDefinition && !nd.isStatic() && !ctors.isEmpty()) ctor = ctors.peek();
@@ -1388,6 +1387,7 @@ public class ASTExtractor {
         constructorKey = trapwriter.localID(ctor.getValue());
         contextManager.enterContainer(constructorKey);
       }
+      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
       visit(nd.getValue(), methkey, 1, c.idcontext);
       if (ctor != null) contextManager.leaveContainer();
 
@@ -1408,6 +1408,10 @@ public class ASTExtractor {
         } else {
           visit(field.getTypeAnnotation(), methkey, 2, IdContext.typeBind);
         }
+      }
+
+      if (nd.hasDeclareKeyword()) {
+        trapwriter.addTuple("hasDeclareKeyword", methkey);
       }
 
       return methkey;
@@ -1707,10 +1711,13 @@ public class ASTExtractor {
     }
 
     @Override
-    public Label visit(IsTypeExpr nd, Context c) {
+    public Label visit(PredicateTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getLeft(), key, 0, IdContext.varInTypeBind);
-      visit(nd.getRight(), key, 1, IdContext.typeBind);
+      visit(nd.getExpression(), key, 0, IdContext.varInTypeBind);
+      visit(nd.getTypeExpr(), key, 1, IdContext.typeBind);
+      if (nd.hasAssertsKeyword()) {
+        trapwriter.addTuple("hasAssertsKeyword", key);
+      }
       return key;
     }
 

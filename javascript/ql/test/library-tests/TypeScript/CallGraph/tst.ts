@@ -4,7 +4,7 @@ class MyClass {
     x.method("Hello");
 
     // Resolve based on local dataflow.
-    // Type information should not degrade call graph precision.
+    // Type information may degrade call graph precision.
     var newLogger: Logger;
     newLogger = new AngryLogger();
     (newLogger as Logger).method("I said, hello");

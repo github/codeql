@@ -1,7 +1,7 @@
 River crossing puzzle
 #####################
 
-The aim of this tutorial is to write a QL query that finds a solution to the following classical logic puzzle:
+The aim of this tutorial is to write a query that finds a solution to the following classical logic puzzle:
 
 .. pull-quote::
 
@@ -17,7 +17,7 @@ A solution should be a set of instructions for how to ferry the items, such as "
 across the river, and come back with nothing. Then ferry the cabbage across, and come back with ..."
 
 There are lots of ways to approach this problem and implement it in QL. Before you start, make
-sure that you are familiar with how to define `classes <https://help.semmle.com/QL/ql-handbook/classes.html>`__
+sure that you are familiar with how to define `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__
 and `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ in QL.
 The following walkthrough is just one of many possible implementations, so have a go at writing your
 own query too! To find more example queries, see the list :ref:`below <alternatives>`.
@@ -243,7 +243,7 @@ You could tweak the predicate and the select clause to make the solution clearer
 Alternative solutions
 ---------------------
 
-Here are some more example QL queries that solve the river crossing puzzle:
+Here are some more example queries that solve the river crossing puzzle:
 
   #. This query uses a modified ``path`` variable to describe the resulting path in
      more detail.

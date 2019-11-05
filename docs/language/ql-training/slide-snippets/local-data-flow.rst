@@ -7,7 +7,7 @@ Data flow analysis
 
   - Nodes of the data flow graph.
 
-- Various predicated represent flow between these nodes.
+- Various predicates represent flow between these nodes.
   
   - Edges of the data flow graph.
 
@@ -26,7 +26,7 @@ Data flow graphs
 
    .. code-block:: cpp
 
-      int func(int, tainted) {
+      int func(int tainted) {
          int x = tainted;
          if (someCondition) {
            int y = x;

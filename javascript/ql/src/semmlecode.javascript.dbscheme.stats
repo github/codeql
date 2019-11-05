@@ -514,6 +514,10 @@
 <v>1</v>
 </e>
 <e>
+<k>@importmetaexpr</k>
+<v>1</v>
+</e>
+<e>
 <k>@namedimportspecifier</k>
 <v>4</v>
 </e>
@@ -846,7 +850,7 @@
 <v>20</v>
 </e>
 <e>
-<k>@istypeexpr</k>
+<k>@predicatetypeexpr</k>
 <v>86</v>
 </e>
 <e>
@@ -7908,6 +7912,17 @@
 <columnsizes>
 <e>
 <k>stmt</k>
+<v>66</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
+<name>hasAssertsKeyword</name>
+<cardinality>66</cardinality>
+<columnsizes>
+<e>
+<k>node</k>
 <v>66</v>
 </e>
 </columnsizes>

@@ -1101,12 +1101,12 @@ int AsmStmt(int x) {
   return x;
 }
 
-static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c, unsigned int& d)
+static void AsmStmtWithOutputs(unsigned int& a, unsigned int b, unsigned int& c, unsigned int d)
 {
   __asm__ __volatile__
     (
   "cpuid\n\t"
-    : "+a" (a), "+b" (b), "+c" (c), "+d" (d)
+    : "+a" (a), "+b" (b) : "c" (c), "d" (d)
     );
 }
 
