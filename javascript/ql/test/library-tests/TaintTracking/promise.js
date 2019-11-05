@@ -12,14 +12,3 @@ function closure() {
   resolver.resolve(source());
   sink(resolver.promise); // NOT OK
 }
-
-class Deferred {
-	
-}
-
-function deferred() {
-	var promise = new Deferred();
-	sink(promise.resolve(source())); // NOT OK
-	
-	new Deferred().reject("foo") // <- a reject has to exist.
-}

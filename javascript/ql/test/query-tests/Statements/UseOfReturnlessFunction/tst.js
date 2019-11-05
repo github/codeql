@@ -82,4 +82,10 @@
 	
 	var baz = [1,2,3].filter(n => {n === 3}) // OK
 	console.log(baz);
+	
+	class Deferred {
+	
+	}
+	
+	new Deferred().resolve(onlySideEffects()); // OK
 })();

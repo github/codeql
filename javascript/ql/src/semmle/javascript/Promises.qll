@@ -33,48 +33,6 @@ module Bluebird {
 }
 
 /**
- * Provides classes for working with various Deferred implementations
- */
-module Deferred {
-  class DeferredInstance extends DataFlow::NewNode {
-  	// Describes both `new Deferred()`, `new $.Deferred` and other variants. 
-    DeferredInstance() { this.getCalleeName() = "Deferred" }
-
-    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
-      t.start() and
-      result = this
-      or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
-    }
-    
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
-  }
-
-  /**
-   * A promise object created by a Deferred constructor
-   */
-  private class DeferredPromiseDefinition extends PromiseDefinition, DeferredInstance {
-    DeferredPromiseDefinition() {
-      // hardening of the "Deferred" heuristic: a method call to `resolve`. 
-      exists(ref().getAMethodCall("resolve"))
-    }
-
-    override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
-  }
-
-  /**
-   * A resolved promise created by a `new Deferred().resolve()` call.
-   */
-  class ResolvedDeferredPromiseDefinition extends ResolvedPromiseDefinition {
-    ResolvedDeferredPromiseDefinition() {
-      this = any(DeferredPromiseDefinition def).ref().getAMethodCall("resolve")
-    }
-
-    override DataFlow::Node getValue() { result = getArgument(0) }
-  }
-}
-
-/**
  * Provides classes for working with the `q` library (https://github.com/kriskowal/q).
  */
 module Q {
