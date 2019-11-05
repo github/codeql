@@ -20,3 +20,8 @@
 |----------------------------|------------------------|------------|
 | Unreachable code | Fewer false positives | Analysis now accounts for uses of `contextlib.suppress` to suppress exceptions. |
 | `__iter__` method returns a non-iterator | Better alert message | Alert now highlights which class is expected to be an iterator. |
+
+
+## Changes to QL libraries
+
+* Django library now recognizes positional arguments from a `django.conf.urls.url` regex (Django version 1.x)

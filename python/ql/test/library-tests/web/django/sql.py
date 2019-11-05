@@ -1,15 +1,13 @@
-"""This is copied from ql/python/ql/test/library-tests/web/django/test.py
-and a only a slight extension of ql/python/ql/src/Security/CWE-089/examples/sql_injection.py
-"""
-
-from django.conf.urls import url
 from django.db import connection, models
 from django.db.models.expressions import RawSQL
 
-class User(models.Model):
-    pass
 
-def show_user(request, username):
+class User(models.Model):
+    username = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+
+
+def show_user(username):
     with connection.cursor() as cursor:
         # GOOD -- Using parameters
         cursor.execute("SELECT * FROM users WHERE username = %s", username)
@@ -37,4 +35,19 @@ def show_user(request, username):
         # the SQL injection against MySQL.
         User.objects.raw("SELECT * FROM users WHERE username = '%s'", (username,))
 
-urlpatterns = [url(r'^users/(?P<username>[^/]+)$', show_user)]
+
+def raw3(arg):
+    m = User.objects.filter('foo')
+    m = m.filter('bar')
+    m.raw("select foo from bar where baz = %s" % arg)
+
+
+def raw4(arg):
+    m = User.objects.filter('foo')
+    m.extra("select foo from bar where baz = %s" % arg)
+
+
+def update_user(key, description1):
+    # Neither of these are exposed to sql-injections
+    user = User.objects.get(pk=key)
+    item.description = description
