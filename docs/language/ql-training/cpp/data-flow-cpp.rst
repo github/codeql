@@ -16,7 +16,7 @@ Setup
 For this example you should download:
 
 - `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- `dotnet/coreclr snapshot <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
+- `dotnet/coreclr database <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
 
 .. note::
 
@@ -24,9 +24,9 @@ For this example you should download:
 
    You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
 
-   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
 
-   .. include:: ../slide-snippets/snapshot-note.rst
+   .. include:: ../slide-snippets/database-note.rst
 
    .. resume slides
 

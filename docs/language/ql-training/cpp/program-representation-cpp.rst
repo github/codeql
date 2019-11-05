@@ -107,7 +107,7 @@ Working with macros
     #define square(x) x*x
     y = square(y0), z = square(z0)
 
-is represented in the snapshot database as:
+is represented in the CodeQL database database as:
 
 - A Macro entity representing the text of the *head* and *body* of the macro
 - Assignment nodes, representing the two assignments after preprocessing
@@ -121,4 +121,4 @@ Useful predicates on ``Element``: ``isInMacroExpansion()``, ``isAffectedByMacro(
 
 .. note::
 
-  The snapshot also contains information about macro definitions, which are represented by class ``Macro``. These macro definitions are related to the AST nodes resulting from their uses by the class ``MacroAccess``.
+  The CodeQL database also contains information about macro definitions, which are represented by class ``Macro``. These macro definitions are related to the AST nodes resulting from their uses by the class ``MacroAccess``.

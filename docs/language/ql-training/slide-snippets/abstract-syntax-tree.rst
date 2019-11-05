@@ -63,7 +63,7 @@ Entity types are rarely used directly, the usual pattern is to define a class th
 
   The interface between entity types and extensional relations on the one hand and QL predicates and classes on the other hand is provided by the *database schema*, which defines the available entity types and the schema of each extensional relation, that is, how many columns the relation has, and which entity type or primitive type the values in each column come from. QL programs can refer to entity types and extensional relations just as they would refer to QL classes and predicates, with the restriction that entity types cannot be directly selected in a ``select`` clause, since they do not have a well-defined string representation.
 
-  For example, the database schemas for C/++, C#, and Java snapshot databases are here: 
+  For example, the database schemas for C/++, C#, and Java CodeQL databases are here: 
   
   - https://github.com/Semmle/ql/blob/master/cpp/ql/src/semmlecode.cpp.dbscheme 
   - https://github.com/Semmle/ql/blob/master/csharp/ql/src/semmlecode.csharp.dbscheme 
