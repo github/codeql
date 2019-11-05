@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# QL training slides build configuration file
+# CodeQL training slides build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -59,7 +59,7 @@ highlight_language = 'ql'
 master_doc = 'index'
 
 # General information about the project.
-project = u'QL training and variant analysis examples'
+project = u'CodeQL training and variant analysis examples'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -77,10 +77,10 @@ slide_theme_path = ["_static-training/"]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = 'QL training and variant analysis examples'
+html_title = 'CodeQL training and variant analysis examples'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'QL training'
+htmlhelp_basename = 'CodeQL training'
 # The Semmle version info for the current release you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.

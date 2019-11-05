@@ -70,7 +70,7 @@ Local vs global data flow
 
   For further information, see:
 
-  - `Introduction to data flow analysis in QL <https://help.semmle.com/QL/learn-ql/ql/intro-to-data-flow.html>`__
+  - `Introduction to data flow analysis in CodeQL <https://help.semmle.com/QL/learn-ql/ql/intro-to-data-flow.html>`__
 
 .. rst-class:: background2
 
