@@ -19,5 +19,3 @@ class C2 extends React.Component {
     const { p1: p2 } = state
   }
 }
-
-// semmle-extractor-options: --experimental

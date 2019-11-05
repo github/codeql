@@ -107,4 +107,3 @@ function l() {
     g();
 });
 
-// semmle-extractor-options: --experimental

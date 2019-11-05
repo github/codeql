@@ -13,5 +13,3 @@ a?.m().b;
 a.m?.().b;
 a.m()?.b;
 a?.m?.()?.b;
-
-// semmle-extractor-options: --experimental
