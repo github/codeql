@@ -669,7 +669,7 @@ module TaintTracking {
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
-      this.(DataFlow::CallNode).getAnArgument() = pred
+      this.getAnArgument() = pred
     }
   }
 
