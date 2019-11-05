@@ -68,4 +68,18 @@
 	
 	var h = returnsValue() || alwaysThrows(); // OK!
 	console.log(h);
+	
+	function equals(x, y) {
+		return x === y;
+	}
+	
+	var foo = [1,2,3].filter(n => {equals(n, 3)}) // NOT OK!
+	console.log(foo);
+	
+	import { filter } from 'lodash'
+	var bar = filter([1,2,4], x => { equals(x, 3) } ) // NOT OK!
+	console.log(bar);
+	
+	var baz = [1,2,3].filter(n => {n === 3}) // OK
+	console.log(baz);
 })();
