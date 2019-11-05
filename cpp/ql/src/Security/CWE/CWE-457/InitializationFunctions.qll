@@ -618,7 +618,7 @@ Function getAPossibleDefinition(Function undefinedFunction) {
   ) and
   result.isDefined()
 }
- 
+
 /**
  * Helper predicate for `getTarget`, that computes possible targets of a `Call`.
  *
