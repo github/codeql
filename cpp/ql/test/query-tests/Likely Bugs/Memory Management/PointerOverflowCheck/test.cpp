@@ -9,7 +9,7 @@ bool check_pointer_overflow(P *ptr, P *ptr_end) {
     // x86-64 gcc 9.2 -O2: not deleted
     // x86-64 clang 9.0.0 -O2: not deleted
     // x64 msvc v19.22 /O2: not deleted
-    return ptr + 4 >= ptr_end; // GOOD
+    return ptr_end - ptr > 4; // GOOD
 }
 
 struct Q {
@@ -22,6 +22,6 @@ struct Q {
 void foo(int untrusted_int) {
 	Q q;
     if (q.begin() + untrusted_int > q.end() || // GOOD
-          q.begin() + untrusted_int < q.begin()) // BAD
+          q.begin() + untrusted_int < q.begin()) // BAD [NOT DETECTED]
       throw q;
 }
