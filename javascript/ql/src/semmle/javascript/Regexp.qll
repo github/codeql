@@ -173,6 +173,18 @@ class RegExpTerm extends Locatable, @regexpterm {
       parent.(StringLiteral).flow() instanceof RegExpPatternSource
     )
   }
+
+  /**
+   * Gets the single string this regular-expression term matches.
+   *
+   * This predicate is only defined for (sequences/groups of) constant regular expressions.
+   * In particular, terms involving zero-width assertions like `^` or `\b` are not considered
+   * to have a constant value.
+   *
+   * Note that this predicate does not take flags of the enclosing regular-expression literal
+   * into account.
+   */
+  string getConstantValue() { none() }
 }
 
 /**
@@ -223,6 +235,8 @@ class RegExpConstant extends RegExpTerm, @regexp_constant {
   predicate isCharacter() { any() }
 
   override predicate isNullable() { none() }
+
+  override string getConstantValue() { result = getValue() }
 }
 
 /**
@@ -288,6 +302,15 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
 
   override predicate isNullable() {
     forall(RegExpTerm child | child = getAChild() | child.isNullable())
+  }
+
+  language[monotonicAggregates]
+  override string getConstantValue() {
+    // note: due to use of monotonic aggregates, this `strictconcat` will fail if
+    // `getConstantValue` is undefined for any child
+    result = strictconcat(RegExpTerm ch, int i | ch = getChild(i) |
+      ch.getConstantValue() order by i
+    )
   }
 }
 
@@ -549,6 +572,8 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
   string getName() { isNamedCapture(this, result) }
 
   override predicate isNullable() { getAChild().isNullable() }
+
+  override string getConstantValue() { result = getAChild().getConstantValue() }
 }
 
 /**

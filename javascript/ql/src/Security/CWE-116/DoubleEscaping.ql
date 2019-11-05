@@ -16,32 +16,6 @@
 import javascript
 
 /**
- * Holds if `rl` is a simple constant, which is bound to the result of the predicate.
- *
- * For example, `/a/g` has string value `"a"` and `/abc/` has string value `"abc"`,
- * while `/ab?/` and `/a(?=b)/` do not have a string value.
- *
- * Flags are ignored, so `/a/i` is still considered to have string value `"a"`,
- * even though it also matches `"A"`.
- *
- * Note the somewhat subtle use of monotonic aggregate semantics, which makes the
- * `strictconcat` fail if one of the children of the root is not a constant (legacy
- * semantics would simply skip such children).
- */
-language[monotonicAggregates]
-string getStringValue(RegExpLiteral rl) {
-  exists(RegExpTerm root | root = rl.getRoot() |
-    result = root.(RegExpConstant).getValue()
-    or
-    result = strictconcat(RegExpTerm ch, int i |
-        ch = root.(RegExpSequence).getChild(i)
-      |
-        ch.(RegExpConstant).getValue() order by i
-      )
-  )
-}
-
-/**
  * Gets a predecessor of `nd` that is not an SSA phi node.
  */
 DataFlow::Node getASimplePredecessor(DataFlow::Node nd) {
@@ -163,7 +137,7 @@ class GlobalStringReplacement extends Replacement, DataFlow::MethodCallNode {
   }
 
   override predicate replaces(string input, string output) {
-    input = getStringValue(pattern) and
+    input = pattern.getRoot().getConstantValue() and
     output = this.getArgument(1).getStringValue()
     or
     exists(DataFlow::FunctionNode replacer, DataFlow::PropRead pr, DataFlow::ObjectLiteralNode map |
