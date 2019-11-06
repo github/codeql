@@ -1,3 +1,3 @@
 bool check_pointer_overflow(P *ptr, P *ptr_end) {
-    return ptr + 4 >= ptr_end; // GOOD
+    return ptr_end - ptr >= 4; // GOOD
 }

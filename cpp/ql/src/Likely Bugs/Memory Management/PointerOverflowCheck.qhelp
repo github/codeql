@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>
-When checking for out-of-range pointer values, one might write tests like
+When checking for out-of-range pointer values, we might write tests like
 <code>p + a &lt; p</code> and check if the value "wraps around".
 Such a test is wrong in that it relies on the overflow of <code>p + a</code>,
 which has undefined behavior. In fact, many optimizing compilers will remove
@@ -18,13 +18,12 @@ the operating system) or nonexistent.
 <recommendation>
 <p>
 When checking for an out-of-range pointer, compare the pointer
-value <code>p</code> against a known value <code>p_max</code> representing
-the highest allowable memory address.  Ideally, <code>p_max</code> should
-point just past the end of a data structure, such as an array or a vector.
-For lower-level work, it should point at the highest address in the program
-heap. It is also important that <code>p + a</code> points at a valid object
-and that <code>a</code> is small enough so that the expression <code>p + a</code> 
-does not itself overflow.
+value <code>p</code> against a known pointer value <code>p_max</code> representing
+the highest allowable memory address.  The <code>p_max</code> pointer should
+point inside or just past the end of a defined memory region, such that 
+<code>p + a &lt;= p_max</code>.  Since we do not wish to evaluate <code>p + a</code>
+(which may result in undefined behavior), we rewrite the inequality as 
+<code>p_max - p &gt; a</code>.
 </p>
 </recommendation>
 <example>
