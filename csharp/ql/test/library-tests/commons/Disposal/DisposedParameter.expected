@@ -332,7 +332,7 @@
 | XmlEncodedRawTextWriterIndent(Stream, XmlWriterSettings) | 0 |
 | XmlEncodedRawTextWriterIndent(TextWriter, XmlWriterSettings) | 0 |
 | XmlRawWriterWrapper(XmlWriter) | 0 |
-| XmlSqlBinaryReader(Stream, byte[], int, string, bool, XmlReaderSettings) | 0 |
+| XmlSqlBinaryReader(Stream, Byte[], int, string, bool, XmlReaderSettings) | 0 |
 | XmlTextReader(Stream) | 0 |
 | XmlTextReader(Stream, XmlNameTable) | 0 |
 | XmlTextReader(Stream, XmlNodeType, XmlParserContext) | 0 |

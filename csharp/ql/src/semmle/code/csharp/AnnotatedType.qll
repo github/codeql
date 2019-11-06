@@ -8,7 +8,7 @@
 
 import csharp
 
-module Annotations {
+private module Annotations {
   newtype TAnnotation =
     TReadonlyRefType() or
     TRefType() or

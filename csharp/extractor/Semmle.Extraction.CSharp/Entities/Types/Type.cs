@@ -95,7 +95,6 @@ namespace Semmle.Extraction.CSharp.Entities
             var baseTypes = new List<Type>();
             if (symbol.BaseType != null)
             {
-                // !! Do not extend "object" if the base type is missing :-(
                 Type baseKey = Create(Context, symbol.BaseType);
                 trapFile.extend(this, baseKey.TypeRef);
                 if (symbol.TypeKind != TypeKind.Struct)
@@ -269,7 +268,6 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Type Create(Context cx, ITypeSymbol type)
         {
             type = type.DisambiguateType();
-
             const bool errorTypeIsNull = false;
             return type == null || (errorTypeIsNull && type.TypeKind == TypeKind.Error) ?
                 NullType.Create(cx).Type : (Type)cx.CreateEntity(type);

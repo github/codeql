@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            trapFile.typeref_type((TypeRef)TypeRef, this);
+            trapFile.typeref_type((NamedTypeRef)TypeRef, this);
 
             if (symbol.IsGenericType)
             {
@@ -151,39 +151,34 @@ namespace Semmle.Extraction.CSharp.Entities
             public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init);
         }
 
-        public override Type TypeRef => Entities.TypeRef.Create(Context, this, symbol);
+        public override Type TypeRef => NamedTypeRef.Create(Context, symbol);
     }
 
-    class TypeRef : Type<ITypeSymbol>
+    class NamedTypeRef : Type<INamedTypeSymbol>
     {
         readonly Type referencedType;
 
-        public TypeRef(Context cx, Type type, ITypeSymbol symbol) : base(cx, symbol)
+        public NamedTypeRef(Context cx, INamedTypeSymbol symbol) : base(cx, symbol)
         {
-            referencedType = type;
+            referencedType = Type.Create(cx, symbol);
         }
 
-        public static TypeRef Create(Context cx, Type referencedType, ITypeSymbol type) =>
-            NamedTypeRefFactory.Instance.CreateEntity2(cx, (referencedType, type));
+        public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) =>
+            NamedTypeRefFactory.Instance.CreateEntity2(cx, type);
 
-        class NamedTypeRefFactory : ICachedEntityFactory<(Type, ITypeSymbol), TypeRef>
+        class NamedTypeRefFactory : ICachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
         {
             public static readonly NamedTypeRefFactory Instance = new NamedTypeRefFactory();
 
-            public TypeRef Create(Context cx, (Type, ITypeSymbol) init) => new TypeRef(cx, init.Item1, init.Item2);
+            public NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
         }
 
         public override bool NeedsPopulation => true;
 
         public override void WriteId(TextWriter trapFile)
         {
-            void ExpandType(Context cx0, TextWriter tb0, ITypeSymbol sub)
-            {
-                sub.BuildTypeId(cx0, tb0, ExpandType);
-            }
-
-            symbol.BuildTypeId(Context, trapFile, ExpandType);
-            trapFile.Write(";typeref");
+            trapFile.WriteSubId(referencedType);
+            trapFile.Write(";typeRef");
         }
 
         public override void Populate(TextWriter trapFile)

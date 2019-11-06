@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateGenerics();
 
             var underlyingType = NamedType.Create(Context, symbol.TupleUnderlyingType);
-            trapFile.tuple_underlying_type(this, underlyingType.TypeRef);
+            trapFile.tuple_underlying_type(this, underlyingType);
 
             int index = 0;
             foreach (var element in TupleElements)

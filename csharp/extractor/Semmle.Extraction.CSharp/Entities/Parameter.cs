@@ -86,8 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";parameter");
         }
 
-        // If we don't have the type of the parameter, do not populate it.
-        public override bool NeedsPopulation => symbol.Type.TypeKind != TypeKind.Error;
+        public override bool NeedsPopulation => true;
 
         string Name
         {

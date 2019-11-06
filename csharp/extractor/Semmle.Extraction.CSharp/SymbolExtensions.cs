@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -135,34 +133,15 @@ namespace Semmle.Extraction.CSharp
         /// <param name="subTermAction">The action to apply to syntactic sub terms of this type.</param>
         public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
-            switch(type.SpecialType)
+            if (type.SpecialType != SpecialType.None)
             {
-                case SpecialType.System_Object:
-                case SpecialType.System_Void:
-                case SpecialType.System_Boolean:
-                case SpecialType.System_Char:
-                case SpecialType.System_SByte:
-                case SpecialType.System_Byte:
-                case SpecialType.System_Int16:
-                case SpecialType.System_UInt16:
-                case SpecialType.System_Int32:
-                case SpecialType.System_UInt32:
-                case SpecialType.System_Int64:
-                case SpecialType.System_UInt64:
-                case SpecialType.System_Decimal:
-                case SpecialType.System_Single:
-                case SpecialType.System_Double:
-                case SpecialType.System_String:
-                case SpecialType.System_IntPtr:
-                case SpecialType.System_UIntPtr:
-
-                    /*
-                     * Use the keyword ("int" etc) for the built-in types.
-                     * This makes the IDs shorter and means that all built-in types map to
-                     * the same entities (even when using multiple versions of mscorlib).
-                     */
-                    trapFile.Write(type.ToDisplayString());
-                    return;
+                /*
+                 * Use the keyword ("int" etc) for the built-in types.
+                 * This makes the IDs shorter and means that all built-in types map to
+                 * the same entities (even when using multiple versions of mscorlib).
+                 */
+                trapFile.Write(type.ToDisplayString());
+                return;
             }
 
             using (cx.StackGuard)
@@ -186,7 +165,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
                         subTermAction(cx, trapFile, ptr.PointedAtType);
-                        trapFile.Write("*");
+                        trapFile.Write('*');
                         return;
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
@@ -214,28 +193,8 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write(']');
         }
 
-        private static void BuildAssembly(IAssemblySymbol asm, TextWriter trapFile, bool extraPrecise = false)
+        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
-            var assembly = asm.Identity;
-            trapFile.Write(assembly.Name);
-            trapFile.Write('_');
-            trapFile.Write(assembly.Version.Major);
-            trapFile.Write('.');
-            trapFile.Write(assembly.Version.Minor);
-            trapFile.Write('.');
-            trapFile.Write(assembly.Version.Build);
-            if (extraPrecise)
-            {
-                trapFile.Write('.');
-                trapFile.Write(assembly.Version.Revision);
-            }
-            trapFile.Write("::");
-        }
-
-        public static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
-        {
-            bool prefixAssembly = !(named.ContainingAssembly is null);
-
             if (named.IsTupleType)
             {
                 trapFile.Write('(');
@@ -258,8 +217,6 @@ namespace Semmle.Extraction.CSharp
             }
             else if (named.ContainingNamespace != null)
             {
-                if (prefixAssembly)
-                    BuildAssembly(named.ContainingAssembly, trapFile);
                 named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
 
@@ -290,6 +247,26 @@ namespace Semmle.Extraction.CSharp
 
         static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
         {
+            // Only include the assembly information in each type ID
+            // for normal extractions. This is because standalone extractions
+            // lack assembly information or may be ambiguous.
+            bool prependAssemblyToTypeId = !cx.Extractor.Standalone && ns.ContainingAssembly != null;
+
+            if (prependAssemblyToTypeId)
+            {
+                // Note that we exclude the revision number as this has
+                // been observed to be unstable.
+                var assembly = ns.ContainingAssembly.Identity;
+                trapFile.Write(assembly.Name);
+                trapFile.Write('_');
+                trapFile.Write(assembly.Version.Major);
+                trapFile.Write('.');
+                trapFile.Write(assembly.Version.Minor);
+                trapFile.Write('.');
+                trapFile.Write(assembly.Version.Build);
+                trapFile.Write("::");
+            }
+
             trapFile.WriteSubId(Namespace.Create(cx, ns));
             trapFile.Write('.');
         }
@@ -379,7 +356,7 @@ namespace Semmle.Extraction.CSharp
             }
 
             trapFile.Write(namedType.Name);
-            if (namedType.IsGenericType && namedType.TypeArguments.Any())
+            if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
             {
                 trapFile.Write('<');
                 trapFile.BuildList(",", namedType.TypeArguments, (p, tb0) =>
@@ -479,30 +456,6 @@ namespace Semmle.Extraction.CSharp
             cx.GetModel(node).GetSymbolInfo(node);
 
         /// <summary>
-        /// Gets the symbol for a particular syntax node.
-        /// Throws an exception if the symbol is not found.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// This gives a nicer message than a "null pointer exception",
-        /// and should be used where we require a symbol to be resolved.
-        /// </remarks>
-        ///
-        /// <param name="cx">The extraction context.</param>
-        /// <param name="node">The syntax node.</param>
-        /// <returns>The resolved symbol.</returns>
-        public static ISymbol GetSymbol(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node)
-        {
-            var info = GetSymbolInfo(cx, node);
-            if (info.Symbol == null)
-            {
-                throw new InternalError(node, "Could not resolve symbol");
-            }
-
-            return info.Symbol;
-        }
-
-        /// <summary>
         /// Determines the type of a node, or default
         /// if the type could not be determined.
         /// </summary>
@@ -516,83 +469,10 @@ namespace Semmle.Extraction.CSharp
         }
 
         /// <summary>
-        /// Gets the annotated type of an IPropertySymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedType(this IPropertySymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
-
-        /// <summary>
-        /// Gets the annotated type of an IFieldSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedType(this IFieldSymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
-        private static bool IsSpecialized(this IMethodSymbol method) =>
-            method.IsGenericMethod &&
-            !ReferenceEquals(method, method.OriginalDefinition) &&
-            method.TypeParameters.Zip(method.TypeArguments, (a, b) => !ReferenceEquals(a, b)).Any(b => b);
-
-        /// <summary>
-        /// Gets the annotated return type of an IMethodSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedReturnType(this IMethodSymbol symbol) => new AnnotatedTypeSymbol(symbol.ReturnType, symbol.ReturnNullableAnnotation);
-
-        /// <summary>
-        /// Gets the type annotation for a NullableAnnotation.
-        /// </summary>
-        public static Kinds.TypeAnnotation GetTypeAnnotation(this NullableAnnotation na)
-        {
-            switch(na)
-            {
-                case NullableAnnotation.Annotated:
-                    return Kinds.TypeAnnotation.Annotated;
-                case NullableAnnotation.NotAnnotated:
-                    return Kinds.TypeAnnotation.NotAnnotated;
-                default:
-                    return Kinds.TypeAnnotation.None;
-            }
-        }
-
-        /// <summary>
-        /// Gets the annotated element type of an IArrayTypeSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedElementType(this IArrayTypeSymbol symbol) =>
-            new AnnotatedTypeSymbol(symbol.ElementType, symbol.ElementNullableAnnotation);
-
-        /// <summary>
         /// Gets the annotated type arguments of an INamedTypeSymbol.
         /// This has not yet been exposed on the public API.
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
             symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
-
-        /// <summary>
-        /// Gets the annotated type arguments of an IMethodSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this IMethodSymbol symbol) =>
-            symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
-
-        /// <summary>
-        /// Gets the annotated type constraints of an ITypeParameterSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeConstraints(this ITypeParameterSymbol symbol) =>
-            symbol.ConstraintTypes.Zip(symbol.ConstraintNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
-
-        /// <summary>
-        /// Creates an AnnotatedTypeSymbol from an ITypeSymbol.
-        /// Note: not currently used but might be useful.
-        /// </summary>
-        public static AnnotatedTypeSymbol WithAnnotation(this ITypeSymbol symbol, NullableAnnotation annotation) =>
-            new AnnotatedTypeSymbol(symbol, annotation);
-
-        /// <summary>
-        /// Holds if this type looks like an "anonymous" type. Names of anonymous types
-        /// sometimes collide so they need to be handled separately.
-        /// </summary>
-        public static bool IsAnonymous(this INamedTypeSymbol type) =>
-            type.IsAnonymousType || type.Name.StartsWith("<>");
     }
 }

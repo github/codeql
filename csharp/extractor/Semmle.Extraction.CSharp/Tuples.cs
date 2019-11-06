@@ -388,7 +388,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void nullability_member(this TextWriter trapFile, NullabilityEntity nullability, int index, NullabilityEntity child)
         {
-            trapFile.WriteTuple(nameof(nullability_member), nullability, index, child);
+            trapFile.WriteTuple("nullability_member", nullability, index, child);
         }
 
         internal static void numlines(this TextWriter trapFile, IEntity label, LineCounts lineCounts)
@@ -481,7 +481,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("tuple_element", type, index, field);
         }
 
-        internal static void tuple_underlying_type(this TextWriter trapFile, TupleType type, Type underlying)
+        internal static void tuple_underlying_type(this TextWriter trapFile, TupleType type, NamedType underlying)
         {
             trapFile.WriteTuple("tuple_underlying_type", type, underlying);
         }
@@ -526,12 +526,12 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("type_parameters", param, child, typeOrMethod, (int)param.Variance);
         }
 
-        internal static void typeref_type(this TextWriter trapFile, TypeRef typeref, Type type)
+        internal static void typeref_type(this TextWriter trapFile, NamedTypeRef typeref, Type type)
         {
             trapFile.WriteTuple("typeref_type", typeref, type);
         }
 
-        internal static void typerefs(this TextWriter trapFile, TypeRef type, string name)
+        internal static void typerefs(this TextWriter trapFile, NamedTypeRef type, string name)
         {
             trapFile.WriteTuple("typerefs", type, name);
         }
