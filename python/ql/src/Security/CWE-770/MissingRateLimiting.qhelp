@@ -26,10 +26,10 @@ Assuming that <code>expensive_handler</code> is designated as an expensive handl
 a declaration of this sort will be flagged:
 </p>
 
-<source>
+<sample language=python>
 def expensive_handler(args):
   '''do something expensive'''
-</source>
+</sample>
 
 <p>
 The solution to this would be to add some form of rate limiting. For instance, if
@@ -38,11 +38,11 @@ the number of requests per second to permit, then the fixed version would be
 something like
 </p>
 
-<source>
+<sample language=python>
 @limit(10)
 def expensive_handler(args):
   '''do something expensive'''
-</source>
+</sample>
 </example>
 
 <references>
