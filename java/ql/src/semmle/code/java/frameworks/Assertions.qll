@@ -30,7 +30,7 @@ private predicate assertionMethod(Method m, AssertKind kind) {
   or
   exists(RefType hamcrest |
     m.getDeclaringType() = hamcrest and
-    hamcrest.hasQualifiedName("org.hamcrest", "MatcherAssert") // TODO: Check some older versions of hamcrest
+    hamcrest.hasQualifiedName("org.hamcrest", "MatcherAssert")
   |
     m.hasName("assertThat") and kind = AssertKindThat()
   )
