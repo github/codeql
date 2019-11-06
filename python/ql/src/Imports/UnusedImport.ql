@@ -13,17 +13,17 @@
 import python
 import Variables.Definition
 
-predicate global_name_used(Module m, Variable name) {
+predicate global_name_used(Module m, string name) {
     exists(Name u, GlobalVariable v |
         u.uses(v) and
-        v.getId() = name.getId() and
+        v.getId() = name and
         u.getEnclosingModule() = m
     )
     or
     // A use of an undefined class local variable, will use the global variable
     exists(Name u, LocalVariable v |
         u.uses(v) and
-        v.getId() = name.getId() and
+        v.getId() = name and
         u.getEnclosingModule() = m and
         not v.getScope().getEnclosingScope*() instanceof Function
     )
@@ -84,7 +84,7 @@ predicate unused_import(Import imp, Variable name) {
     not imp.getAnImportedModuleName() = "__future__" and
     not imp.getEnclosingModule().declaredInAll(name.getId()) and
     imp.getScope() = imp.getEnclosingModule() and
-    not global_name_used(imp.getScope(), name) and
+    not global_name_used(imp.getScope(), name.getId()) and
     // Imports in `__init__.py` are used to force module loading
     not imp.getEnclosingModule().isPackageInit() and
     // Name may be imported for use in epytext documentation
