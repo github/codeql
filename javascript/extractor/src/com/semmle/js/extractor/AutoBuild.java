@@ -387,6 +387,10 @@ public class AutoBuild {
     patterns.add("-**/*.min.js");
     patterns.add("-**/*-min.js");
 
+    // exclude `node_modules` and `bower_components`
+    patterns.add("-**/node_modules");
+    patterns.add("-**/bower_components");
+
     String base = LGTM_SRC.toString().replace('\\', '/');
     // process `$LGTM_INDEX_FILTERS`
     for (String pattern : Main.NEWLINE.split(getEnvVar("LGTM_INDEX_FILTERS", ""))) {

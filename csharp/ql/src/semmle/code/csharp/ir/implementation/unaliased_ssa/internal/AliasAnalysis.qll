@@ -269,7 +269,7 @@ private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
   // The variable's address escapes if the result of any
   // VariableAddressInstruction that computes the variable's address escapes.
   exists(VariableAddressInstruction instr |
-    instr.getVariable() = var and
+    instr.getIRVariable() = var and
     resultEscapesNonReturn(instr)
   )
 }
@@ -292,7 +292,7 @@ predicate variableAddressEscapes(IRVariable var) {
  */
 predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) {
   // The address of a variable points to that variable, at offset 0.
-  instr.(VariableAddressInstruction).getVariable() = var and
+  instr.(VariableAddressInstruction).getIRVariable() = var and
   bitOffset = 0
   or
   exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |

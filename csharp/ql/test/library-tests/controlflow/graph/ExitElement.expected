@@ -2433,6 +2433,52 @@
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:40:131:40 | access to local variable s | null |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:48:131:51 | null | null |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString | normal |
+| Switch.cs:135:5:142:5 | {...} | Switch.cs:138:22:138:31 | return ...; | return |
+| Switch.cs:135:5:142:5 | {...} | Switch.cs:139:21:139:29 | return ...; | return |
+| Switch.cs:135:5:142:5 | {...} | Switch.cs:140:21:140:29 | return ...; | return |
+| Switch.cs:136:9:141:9 | switch (...) {...} | Switch.cs:138:22:138:31 | return ...; | return |
+| Switch.cs:136:9:141:9 | switch (...) {...} | Switch.cs:139:21:139:29 | return ...; | return |
+| Switch.cs:136:9:141:9 | switch (...) {...} | Switch.cs:140:21:140:29 | return ...; | return |
+| Switch.cs:136:17:136:17 | access to parameter i | Switch.cs:136:17:136:17 | access to parameter i | normal |
+| Switch.cs:138:13:138:20 | default: | Switch.cs:138:22:138:31 | return ...; | return |
+| Switch.cs:138:22:138:31 | return ...; | Switch.cs:138:22:138:31 | return ...; | return |
+| Switch.cs:138:29:138:30 | -... | Switch.cs:138:29:138:30 | -... | normal |
+| Switch.cs:138:30:138:30 | 1 | Switch.cs:138:30:138:30 | 1 | normal |
+| Switch.cs:139:13:139:19 | case ...: | Switch.cs:139:18:139:18 | 1 | no-match |
+| Switch.cs:139:13:139:19 | case ...: | Switch.cs:139:21:139:29 | return ...; | return |
+| Switch.cs:139:18:139:18 | 1 | Switch.cs:139:18:139:18 | 1 | match |
+| Switch.cs:139:18:139:18 | 1 | Switch.cs:139:18:139:18 | 1 | no-match |
+| Switch.cs:139:21:139:29 | return ...; | Switch.cs:139:21:139:29 | return ...; | return |
+| Switch.cs:139:28:139:28 | 1 | Switch.cs:139:28:139:28 | 1 | normal |
+| Switch.cs:140:13:140:19 | case ...: | Switch.cs:140:18:140:18 | 2 | no-match |
+| Switch.cs:140:13:140:19 | case ...: | Switch.cs:140:21:140:29 | return ...; | return |
+| Switch.cs:140:18:140:18 | 2 | Switch.cs:140:18:140:18 | 2 | match |
+| Switch.cs:140:18:140:18 | 2 | Switch.cs:140:18:140:18 | 2 | no-match |
+| Switch.cs:140:21:140:29 | return ...; | Switch.cs:140:21:140:29 | return ...; | return |
+| Switch.cs:140:28:140:28 | 2 | Switch.cs:140:28:140:28 | 2 | normal |
+| Switch.cs:145:5:152:5 | {...} | Switch.cs:148:21:148:29 | return ...; | return |
+| Switch.cs:145:5:152:5 | {...} | Switch.cs:149:22:149:31 | return ...; | return |
+| Switch.cs:145:5:152:5 | {...} | Switch.cs:150:21:150:29 | return ...; | return |
+| Switch.cs:146:9:151:9 | switch (...) {...} | Switch.cs:148:21:148:29 | return ...; | return |
+| Switch.cs:146:9:151:9 | switch (...) {...} | Switch.cs:149:22:149:31 | return ...; | return |
+| Switch.cs:146:9:151:9 | switch (...) {...} | Switch.cs:150:21:150:29 | return ...; | return |
+| Switch.cs:146:17:146:17 | access to parameter i | Switch.cs:146:17:146:17 | access to parameter i | normal |
+| Switch.cs:148:13:148:19 | case ...: | Switch.cs:148:18:148:18 | 1 | no-match |
+| Switch.cs:148:13:148:19 | case ...: | Switch.cs:148:21:148:29 | return ...; | return |
+| Switch.cs:148:18:148:18 | 1 | Switch.cs:148:18:148:18 | 1 | match |
+| Switch.cs:148:18:148:18 | 1 | Switch.cs:148:18:148:18 | 1 | no-match |
+| Switch.cs:148:21:148:29 | return ...; | Switch.cs:148:21:148:29 | return ...; | return |
+| Switch.cs:148:28:148:28 | 1 | Switch.cs:148:28:148:28 | 1 | normal |
+| Switch.cs:149:13:149:20 | default: | Switch.cs:149:22:149:31 | return ...; | return |
+| Switch.cs:149:22:149:31 | return ...; | Switch.cs:149:22:149:31 | return ...; | return |
+| Switch.cs:149:29:149:30 | -... | Switch.cs:149:29:149:30 | -... | normal |
+| Switch.cs:149:30:149:30 | 1 | Switch.cs:149:30:149:30 | 1 | normal |
+| Switch.cs:150:13:150:19 | case ...: | Switch.cs:150:18:150:18 | 2 | no-match |
+| Switch.cs:150:13:150:19 | case ...: | Switch.cs:150:21:150:29 | return ...; | return |
+| Switch.cs:150:18:150:18 | 2 | Switch.cs:150:18:150:18 | 2 | match |
+| Switch.cs:150:18:150:18 | 2 | Switch.cs:150:18:150:18 | 2 | no-match |
+| Switch.cs:150:21:150:29 | return ...; | Switch.cs:150:21:150:29 | return ...; | return |
+| Switch.cs:150:28:150:28 | 2 | Switch.cs:150:28:150:28 | 2 | normal |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |
 | TypeAccesses.cs:5:13:5:25 | String s = ... | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |

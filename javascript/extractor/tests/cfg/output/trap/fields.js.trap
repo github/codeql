@@ -457,8 +457,7 @@ hasLocation(#20156,#20157)
 #20158=*
 exprs(#20158,0,#20156,0,"x")
 hasLocation(#20158,#20059)
-enclosingStmt(#20158,#20139)
-exprContainers(#20158,#20001)
+exprContainers(#20158,#20146)
 literals("x","x",#20158)
 #20159=*
 properties(#20159,#20139,4,8,"static y;")
@@ -650,8 +649,7 @@ hasLocation(#20207,#20208)
 #20209=*
 exprs(#20209,0,#20207,0,"z")
 hasLocation(#20209,#20128)
-enclosingStmt(#20209,#20180)
-exprContainers(#20209,#20001)
+exprContainers(#20209,#20188)
 literals("z","z",#20209)
 #20210=*
 entry_cfg_node(#20210,#20001)

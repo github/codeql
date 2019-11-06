@@ -20,7 +20,7 @@ Declaring a variable
 ********************
 
 All variable declarations consist of a :ref:`type <types>` and a name for the variable. 
-The name can be any `identifier <https://help.semmle.com/QL/QLLanguageSpecification.html#identifiers>`_
+The name can be any `identifier <https://help.semmle.com/QL/ql-spec/language.html#identifiers>`_
 that starts with an uppercase or lowercase letter.
 
 For example, ``int i``, ``SsaDefinitionNode node``, and ``LocalScopeVariable lsv`` declare

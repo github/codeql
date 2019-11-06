@@ -4,9 +4,9 @@ test_AttributeDefinition
 | tst.js:2:22:2:37 | target: "_blank" |
 | tst.js:3:11:3:66 | $("<a/> ... e.com") |
 | tst.js:4:3:4:27 | a.attr( ... pener") |
-| tst.js:5:3:7:4 | a.attr( ... f"\\n  }) |
+| tst.js:6:5:6:24 | "data-bind": "stuff" |
 | tst.js:8:3:8:29 | a.prop( ... errer") |
-| tst.js:9:3:11:4 | a.prop( ... f"\\n  }) |
+| tst.js:10:5:10:29 | "data-b ... rstuff" |
 | tst.js:12:3:12:41 | $.attr( ... errer") |
 | tst.js:13:3:13:28 | $.prop( ... d", "") |
 | tst.jsx:4:14:4:38 | href="h ... le.com" |
@@ -38,8 +38,8 @@ test_WebStorageWrite
 test_ElementDefinition_getAttributeByName
 | tst.html:3:3:3:57 | <a>...</> | href | tst.html:3:6:3:30 | href=https://semmle.com |
 | tst.html:3:3:3:57 | <a>...</> | target | tst.html:3:32:3:46 | target=_blank |
-| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | data-bind | tst.js:5:3:7:4 | a.attr( ... f"\\n  }) |
-| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | data-bind | tst.js:9:3:11:4 | a.prop( ... f"\\n  }) |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | data-bind | tst.js:6:5:6:24 | "data-bind": "stuff" |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | data-bind | tst.js:10:5:10:29 | "data-b ... rstuff" |
 | tst.js:3:11:3:31 | $("<a/> ... rAttrs) | data-bind | tst.js:13:3:13:28 | $.prop( ... d", "") |
 | tst.js:3:11:3:31 | $("<a/> ... rAttrs) | href | tst.js:3:11:3:66 | $("<a/> ... e.com") |
 | tst.js:3:11:3:31 | $("<a/> ... rAttrs) | rel | tst.js:4:3:4:27 | a.attr( ... pener") |
@@ -54,9 +54,9 @@ test_AttributeDefinition_getStringValue
 | tst.js:2:22:2:37 | target: "_blank" | _blank |
 | tst.js:3:11:3:66 | $("<a/> ... e.com") | https://semmle.com |
 | tst.js:4:3:4:27 | a.attr( ... pener") | noopener |
-| tst.js:5:3:7:4 | a.attr( ... f"\\n  }) | stuff |
+| tst.js:6:5:6:24 | "data-bind": "stuff" | stuff |
 | tst.js:8:3:8:29 | a.prop( ... errer") | noreferrer |
-| tst.js:9:3:11:4 | a.prop( ... f"\\n  }) | otherstuff |
+| tst.js:10:5:10:29 | "data-b ... rstuff" | otherstuff |
 | tst.js:12:3:12:41 | $.attr( ... errer") | noopener noreferrer |
 | tst.js:13:3:13:28 | $.prop( ... d", "") |  |
 | tst.jsx:4:14:4:38 | href="h ... le.com" | https://semmle.com |
@@ -66,9 +66,9 @@ test_AttributeDefinition_getName
 | tst.js:2:22:2:37 | target: "_blank" | target |
 | tst.js:3:11:3:66 | $("<a/> ... e.com") | href |
 | tst.js:4:3:4:27 | a.attr( ... pener") | rel |
-| tst.js:5:3:7:4 | a.attr( ... f"\\n  }) | data-bind |
+| tst.js:6:5:6:24 | "data-bind": "stuff" | data-bind |
 | tst.js:8:3:8:29 | a.prop( ... errer") | rel |
-| tst.js:9:3:11:4 | a.prop( ... f"\\n  }) | data-bind |
+| tst.js:10:5:10:29 | "data-b ... rstuff" | data-bind |
 | tst.js:12:3:12:41 | $.attr( ... errer") | rel |
 | tst.js:13:3:13:28 | $.prop( ... d", "") | data-bind |
 | tst.jsx:4:14:4:38 | href="h ... le.com" | href |
@@ -101,9 +101,9 @@ test_AttributeDefinition_getValueNode
 | tst.js:2:22:2:37 | target: "_blank" | tst.js:2:30:2:37 | "_blank" |
 | tst.js:3:11:3:66 | $("<a/> ... e.com") | tst.js:3:46:3:65 | "https://semmle.com" |
 | tst.js:4:3:4:27 | a.attr( ... pener") | tst.js:4:17:4:26 | "noopener" |
-| tst.js:5:3:7:4 | a.attr( ... f"\\n  }) | tst.js:6:18:6:24 | "stuff" |
+| tst.js:6:5:6:24 | "data-bind": "stuff" | tst.js:6:18:6:24 | "stuff" |
 | tst.js:8:3:8:29 | a.prop( ... errer") | tst.js:8:17:8:28 | "noreferrer" |
-| tst.js:9:3:11:4 | a.prop( ... f"\\n  }) | tst.js:10:18:10:29 | "otherstuff" |
+| tst.js:10:5:10:29 | "data-b ... rstuff" | tst.js:10:18:10:29 | "otherstuff" |
 | tst.js:12:3:12:41 | $.attr( ... errer") | tst.js:12:20:12:40 | "noopen ... ferrer" |
 | tst.js:13:3:13:28 | $.prop( ... d", "") | tst.js:13:26:13:27 | "" |
 | tst.jsx:4:14:4:38 | href="h ... le.com" | tst.jsx:4:19:4:38 | "https://semmle.com" |

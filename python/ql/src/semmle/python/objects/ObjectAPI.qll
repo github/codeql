@@ -99,6 +99,12 @@ class Value extends TObject {
         this.(ObjectInternal).hasAttribute(name)
     }
 
+    /** Whether this value is absent from the database, but has been inferred to likely exist */
+    predicate isAbsent() {
+        this instanceof AbsentModuleObjectInternal
+        or
+        this instanceof AbsentModuleAttributeObjectInternal
+    }
 }
 
 /** Class representing modules in the Python program
@@ -131,6 +137,17 @@ class ModuleValue extends Value {
         result = this.(PackageObjectInternal).getFolder()
         or
         result = this.(PythonModuleObjectInternal).getSourceModule().getFile()
+    }
+
+    /** Whether this module is imported by 'import name'. For example on a linux system,
+      * the module 'posixpath' is imported as 'os.path' or as 'posixpath' */
+    predicate importedAs(string name) {
+        PointsToInternal::module_imported_as(this, name)
+    }
+
+    /** Whether this module is a package. */
+    predicate isPackage() {
+        this instanceof PackageObjectInternal
     }
 
 }
@@ -378,12 +395,12 @@ class ClassValue extends Value {
         Types::failedInference(this, reason)
     }
 
-    /** Gets the nth base class of this class */
+    /** Gets the nth immediate base type of this class. */
     ClassValue getBaseType(int n) {
         result = Types::getBase(this, n)
     }
 
-    /** Gets a base class of this class */
+    /** Gets an immediate base type of this class. */
     ClassValue getABaseType() {
         result = Types::getBase(this, _)
     }
@@ -434,6 +451,11 @@ abstract class FunctionValue extends CallableValue {
 
     abstract string getQualifiedName();
 
+    /** Gets the minimum number of parameters that can be correctly passed to this function */
+    abstract int minParameters();
+
+    /** Gets the maximum number of parameters that can be correctly passed to this function */
+    abstract int maxParameters();
 }
 
 /** Class representing Python functions */
@@ -445,6 +467,23 @@ class PythonFunctionValue extends FunctionValue {
 
     override string getQualifiedName() {
         result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
+    }
+
+    override int minParameters() {
+        exists(Function f |
+            f = this.getScope() and
+            result = count(f.getAnArg()) - count(f.getDefinition().getArgs().getADefault())
+        )
+    }
+
+    override int maxParameters() {
+        exists(Function f |
+            f = this.getScope() and
+            if exists(f.getVararg()) then
+                result = 2147483647 // INT_MAX
+            else
+                result = count(f.getAnArg())
+        )
     }
 
 }
@@ -460,6 +499,13 @@ class BuiltinFunctionValue extends FunctionValue {
         result = this.(BuiltinFunctionObjectInternal).getName()
     }
 
+    override int minParameters() {
+        none()
+    }
+
+    override int maxParameters() {
+        none()
+    }
 }
 
 /** Class representing builtin methods, such as `list.append` or `set.add` */
@@ -475,6 +521,14 @@ class BuiltinMethodValue extends FunctionValue {
             cls.getMember(_) = this.(BuiltinMethodObjectInternal).getBuiltin() and
             result = cls.getName() + "." + this.getName()
         )
+    }
+
+    override int minParameters() {
+        none()
+    }
+
+    override int maxParameters() {
+        none()
     }
 
 }
@@ -560,6 +614,11 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("FunctionType"))
     }
 
+    /** Get the `ClassValue` for the `type` class. */
+    ClassValue type() {
+        result = TType()
+    }
+
     /** Get the `ClassValue` for the class of builtin functions. */
     ClassValue builtinFunction() {
         result = Value::named("len").getClass()
@@ -572,7 +631,7 @@ module ClassValue {
 
     /** Get the `ClassValue` for the `float` class. */
     ClassValue float_() {
-        result = TBuiltinClassObject(Builtin::builtin("float"))
+        result = TBuiltinClassObject(Builtin::special("float"))
     }
 
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */

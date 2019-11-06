@@ -29,6 +29,7 @@ namespace Semmle.Autobuild
         public bool NugetRestore;
 
         public Language Language;
+        public bool Indexing;
 
         /// <summary>
         /// Reads options from environment variables.
@@ -53,6 +54,7 @@ namespace Semmle.Autobuild
             NugetRestore = actions.GetEnvironmentVariable(prefix + "NUGET_RESTORE").AsBool("nuget_restore", true);
 
             Language = actions.GetEnvironmentVariable("LGTM_PROJECT_LANGUAGE").AsLanguage();
+            Indexing = !actions.GetEnvironmentVariable("CODEQL_AUTOBUILDER_CSHARP_NO_INDEXING").AsBool("no_indexing", false);
         }
     }
 

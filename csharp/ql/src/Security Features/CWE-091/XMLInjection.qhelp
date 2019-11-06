@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The APIs provided by the .NET libraries for XML manipulation allow the insertion of "raw" text at
+a specified point in an XML document. If user input is passed to this API, it could allow a
+malicious user to add extra content that could corrupt or supersede existing content, or enable
+unintended additional functionality.
+</p>
+</overview>
+<recommendation>
+<p>
+Avoid using the <code>WriteRaw</code> method on <code>System.Xml.XmlWriter</code> with user input.
+If possible, use the high-level APIs to write new XML elements to a document, as these automatically
+escape user content. If that is not possible, then user input should be escaped before being
+included in a string that will be used with the <code>WriteRaw</code> API.
+</p>
+</recommendation>
+<example>
+<p>In this example, user input is provided describing the name of an employee to add to an XML
+document representing a set of names. The <code>WriteRaw</code> API is used to write the new
+employee record to the XML file.</p>
+<sample src="XMLInjectionBad.cs" />
+<p>However, if a malicious user were to provide the content
+ <code>Bobby Pages&lt;/name&gt;&lt;/employee&gt;&lt;employee&gt;&lt;name&gt;Hacker1</code>, they
+would be able to add an extra entry into the XML file.
+</p>
+<p>The corrected version demonstrates two ways to avoid this issue. The first is to escape user
+input before passing it to the <code>WriteRaw</code> API, which prevents a malicious user from
+closing or opening XML tags. The second approach uses the high level XML API to add XML elements,
+which ensures the content is appropriately escaped.</p>
+<sample src="XMLInjectionGood.cs" />
+</example>
+
+<references>
+  <li>
+    Web Application Security Consortium: <a href="http://projects.webappsec.org/w/page/13247004/XML%20Injection">XML Injection</a>.
+  </li>
+  <li>
+    Microsoft Docs: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlwriter.writeraw?view=netframework-4.8">WriteRaw</a>.
+  </li>
+</references>
+</qhelp>

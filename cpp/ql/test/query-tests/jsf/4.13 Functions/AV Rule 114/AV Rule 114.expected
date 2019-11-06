@@ -1,3 +1,5 @@
+| complex.c:3:2:3:45 | declaration | Function complexTest1 should return a value of type _Complex double but does not return a value here |
+| complex.c:7:2:7:41 | declaration | Function complexTest2 should return a value of type _Complex double but does not return a value here |
 | test.c:8:5:8:14 | declaration | Function f2 should return a value of type int but does not return a value here |
 | test.c:25:9:25:14 | ExprStmt | Function f4 should return a value of type int but does not return a value here |
 | test.c:39:9:39:14 | ExprStmt | Function f6 should return a value of type int but does not return a value here |

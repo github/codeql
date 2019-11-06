@@ -2,5 +2,5 @@
 import python
 import semmle.python.libraries.Zope
 
-from ZopeInterfaceMethod f
+from ZopeInterfaceMethodValue f
 select f.toString()

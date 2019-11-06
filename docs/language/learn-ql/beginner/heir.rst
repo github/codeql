@@ -160,4 +160,5 @@ What next?
 ----------
 
 -  Learn more about recursion in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Start using QL to analyze projects. See :doc:`Learning QL <../../index>` for a summary of the available languages and resources.
+-  Put your QL skills to the test and solve the :doc:`River crossing puzzle <../ql-etudes/river-crossing>`.
+-  Start using QL to analyze projects. See :doc:`Learning CodeQL <../../index>` for a summary of the available languages and resources.

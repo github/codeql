@@ -36,7 +36,10 @@ namespace Semmle.Autobuild
                 builder.Log(Severity.Warning, "Could not find a suitable version of vcvarsall.bat");
             }
 
-            var nuget = builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "nuget", "nuget.exe");
+            var nuget =
+                builder.SemmlePlatformTools != null ?
+                builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "nuget", "nuget.exe") :
+                "nuget";
 
             var ret = BuildScript.Success;
 
@@ -56,7 +59,7 @@ namespace Semmle.Autobuild
                 if (vsTools != null)
                     command.CallBatFile(vsTools.Path);
 
-                command.IndexCommand(builder.Odasa, MsBuild);
+                builder.MaybeIndex(command, MsBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
                 command.Argument("/p:UseSharedCompilation=false");

@@ -671,7 +671,7 @@ class Name extends Name_ {
         v = this.getVariable()
     }
 
-    /** Whether this expression is a definition */
+    /** Whether this expression is a deletion */
     predicate isDeletion() {
         py_expr_contexts(_, 2, this)
     }

@@ -84,3 +84,34 @@ int test_val00(S s) {
 int test_val01(U u) {
   return u.x;
 }
+
+class MyClass {
+public:
+  void myMethod(MyClass a, MyClass &b, MyClass *c) {
+    a.x = b.y; // val, ref
+    c->x = y; // ptr, ptr
+    c->x = this->y; // ptr, ptr
+    (&b)->y = (*c).y; // ptr, val
+  }
+
+  int x, y;
+};
+
+class MyHasDestructor1 {
+public:
+  ~MyHasDestructor1() {
+    // ...
+  }
+};
+
+class MyHasDestructor2 {
+public:
+  int x;
+  MyHasDestructor1 v;
+
+  ~MyHasDestructor2() {
+    x++; // PointerFieldAccess, the `this->` is generated rather than implicit.
+
+    // ImplicitThisFieldAccess on call `v`s destructor.
+  }
+};

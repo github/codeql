@@ -32,7 +32,7 @@ predicate returnsCollection(Callable c, Field f) {
 predicate mayWriteToCollection(Expr modified) {
   modified instanceof CollectionModificationAccess
   or
-  exists(Expr mid | mayWriteToCollection(mid) | localFlow(exprNode(modified), exprNode(mid)))
+  exists(Expr mid | mayWriteToCollection(mid) | localExprFlow(modified, mid))
   or
   exists(MethodCall mid, Callable c | mayWriteToCollection(mid) |
     mid.getTarget() = c and

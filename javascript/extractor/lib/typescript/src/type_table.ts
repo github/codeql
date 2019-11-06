@@ -597,7 +597,7 @@ export class TypeTable {
       let tupleType = tupleReference.target;
       let minLength = tupleType.minLength != null
           ? tupleType.minLength
-          : tupleReference.typeArguments.length;
+          : this.typeChecker.getTypeArguments(tupleReference).length;
       let hasRestElement = tupleType.hasRestElement ? 't' : 'f';
       let prefix = `tuple;${minLength};${hasRestElement}`;
       return this.makeTypeStringVectorFromTypeReferenceArguments(prefix, type);
@@ -714,11 +714,12 @@ export class TypeTable {
     // There can be an extra type argument at the end, denoting an explicit 'this' type argument.
     // We discard the extra argument in our model.
     let target = type.target;
-    if (type.typeArguments == null) return tag;
+    let typeArguments = this.typeChecker.getTypeArguments(type);
+    if (typeArguments == null) return tag;
     if (target.typeParameters != null) {
-      return this.makeTypeStringVector(tag, type.typeArguments, target.typeParameters.length);
+      return this.makeTypeStringVector(tag, typeArguments, target.typeParameters.length);
     } else {
-      return this.makeTypeStringVector(tag, type.typeArguments);
+      return this.makeTypeStringVector(tag, typeArguments);
     }
   }
 
@@ -992,7 +993,7 @@ export class TypeTable {
    * `T` is the type parameter declared on the `Promise` interface.
    */
   private getSelfType(type: ts.Type): ts.TypeReference {
-    if (isTypeReference(type) && type.typeArguments != null && type.typeArguments.length > 0) {
+    if (isTypeReference(type) && this.typeChecker.getTypeArguments(type).length > 0) {
       return type.target;
     }
     return null;
@@ -1181,8 +1182,9 @@ export class TypeTable {
     if (isTypeReference(type)) {
       // Note that this case also handles tuple types, since a tuple type is represented as
       // a reference to a synthetic generic interface.
-      if (type.typeArguments != null) {
-        type.typeArguments.forEach(callback);
+      let typeArguments = this.typeChecker.getTypeArguments(type);
+      if (typeArguments != null) {
+        typeArguments.forEach(callback);
       }
     } else if (type.flags & ts.TypeFlags.UnionOrIntersection) {
       (type as ts.UnionOrIntersectionType).types.forEach(callback);

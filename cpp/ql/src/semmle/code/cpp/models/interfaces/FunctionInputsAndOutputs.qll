@@ -6,26 +6,106 @@
 
 import semmle.code.cpp.Parameter
 
-/**
- * An `int` that is a parameter index for some function.  This is needed for binding in certain cases.
- */
-class ParameterIndex extends int {
-  ParameterIndex() { exists(Parameter p | this = p.getIndex()) }
-}
-
-newtype TFunctionInput =
+private newtype TFunctionInput =
   TInParameter(ParameterIndex i) or
-  TInParameterPointer(ParameterIndex i) or
-  TInQualifier()
+  TInParameterDeref(ParameterIndex i) or
+  TInQualifierObject() or
+  TInQualifierAddress()
 
+/**
+ * An input to a function. This can be:
+ * - The value of one of the function's parameters
+ * - The value pointed to by one of function's pointer or reference parameters
+ * - The value of the function's `this` pointer
+ * - The value pointed to by the function's `this` pointer
+ */
 class FunctionInput extends TFunctionInput {
   abstract string toString();
 
-  predicate isInParameter(ParameterIndex index) { none() }
+  /**
+   * Holds if this is the input value of the parameter with index `index`.
+   *
+   * Example:
+   * ```
+   * void func(int n, char* p, float& r);
+   * ```
+   * - `isParameter(0)` holds for the `FunctionInput` that represents the value of `n` (with type
+   *   `int`) on entry to the function.
+   * - `isParameter(1)` holds for the `FunctionInput` that represents the value of `p` (with type
+   *   `char*`) on entry to the function.
+   * - `isParameter(2)` holds for the `FunctionInput` that represents the "value" of the reference
+   *   `r` (with type `float&`) on entry to the function, _not_ the value of the referred-to
+   *   `float`.
+   */
+  predicate isParameter(ParameterIndex index) { none() }
 
-  predicate isInParameterPointer(ParameterIndex index) { none() }
+  /**
+   * Holds if this is the input value of the parameter with index `index`.
+   * DEPRECATED: Use `isParameter(index)` instead.
+   */
+  deprecated final predicate isInParameter(ParameterIndex index) { isParameter(index) }
 
-  predicate isInQualifier() { none() }
+  /**
+   * Holds if this is the input value pointed to by a pointer parameter to a function, or the input
+   * value referred to by a reference parameter to a function, where the parameter has index
+   * `index`.
+   *
+   * Example:
+   * ```
+   * void func(int n, char* p, float& r);
+   * ```
+   * - `isParameterDeref(1)` holds for the `FunctionInput` that represents the value of `*p` (with
+   *   type `char`) on entry to the function.
+   * - `isParameterDeref(2)` holds for the `FunctionInput` that represents the value of `r` (with type
+   *   `float`) on entry to the function.
+   * - There is no `FunctionInput` for which `isParameterDeref(0)` holds, because `n` is neither a
+   *   pointer nor a reference.
+   */
+  predicate isParameterDeref(ParameterIndex index) { none() }
+
+  /**
+   * Holds if this is the input value pointed to by a pointer parameter to a function, or the input
+   * value referred to by a reference parameter to a function, where the parameter has index
+   * `index`.
+   * DEPRECATED: Use `isParameterDeref(index)` instead.
+   */
+  deprecated final predicate isInParameterPointer(ParameterIndex index) { isParameterDeref(index) }
+
+  /**
+   * Holds if this is the input value pointed to by the `this` pointer of an instance member
+   * function.
+   *
+   * Example:
+   * ```
+   * struct C {
+   *   void mfunc(int n, char* p, float& r) const;
+   * };
+   * ```
+   * - `isQualifierObject()` holds for the `FunctionInput` that represents the value of `*this`
+   *   (with type `C const`) on entry to the function.
+   */
+  predicate isQualifierObject() { none() }
+
+  /**
+   * Holds if this is the input value pointed to by the `this` pointer of an instance member
+   * function.
+   * DEPRECATED: Use `isQualifierObject()` instead.
+   */
+  deprecated final predicate isInQualifier() { isQualifierObject() }
+
+  /**
+   * Holds if this is the input value of the `this` pointer of an instance member function.
+   *
+   * Example:
+   * ```
+   * struct C {
+   *   void mfunc(int n, char* p, float& r) const;
+   * };
+   * ```
+   * - `isQualifierAddress()` holds for the `FunctionInput` that represents the value of `this`
+   *   (with type `C const *`) on entry to the function.
+   */
+  predicate isQualifierAddress() { none() }
 }
 
 class InParameter extends FunctionInput, TInParameter {
@@ -35,73 +115,182 @@ class InParameter extends FunctionInput, TInParameter {
 
   override string toString() { result = "InParameter " + index.toString() }
 
+  /** Gets the zero-based index of the parameter. */
   ParameterIndex getIndex() { result = index }
 
-  override predicate isInParameter(ParameterIndex i) { i = index }
+  override predicate isParameter(ParameterIndex i) { i = index }
 }
 
-class InParameterPointer extends FunctionInput, TInParameterPointer {
+class InParameterDeref extends FunctionInput, TInParameterDeref {
   ParameterIndex index;
 
-  InParameterPointer() { this = TInParameterPointer(index) }
+  InParameterDeref() { this = TInParameterDeref(index) }
 
-  override string toString() { result = "InParameterPointer " + index.toString() }
+  override string toString() { result = "InParameterDeref " + index.toString() }
 
+  /** Gets the zero-based index of the parameter. */
   ParameterIndex getIndex() { result = index }
 
-  override predicate isInParameterPointer(ParameterIndex i) { i = index }
+  override predicate isParameterDeref(ParameterIndex i) { i = index }
 }
 
-class InQualifier extends FunctionInput, TInQualifier {
-  override string toString() { result = "InQualifier" }
+class InQualifierObject extends FunctionInput, TInQualifierObject {
+  override string toString() { result = "InQualifierObject" }
 
-  override predicate isInQualifier() { any() }
+  override predicate isQualifierObject() { any() }
 }
 
-newtype TFunctionOutput =
-  TOutParameterPointer(ParameterIndex i) or
-  TOutQualifier() or
+class InQualifierAddress extends FunctionInput, TInQualifierAddress {
+  override string toString() { result = "InQualifierAddress" }
+
+  override predicate isQualifierAddress() { any() }
+}
+
+private newtype TFunctionOutput =
+  TOutParameterDeref(ParameterIndex i) or
+  TOutQualifierObject() or
   TOutReturnValue() or
-  TOutReturnPointer()
+  TOutReturnValueDeref()
 
+/**
+ * An output from a function. This can be:
+ * - The value pointed to by one of function's pointer or reference parameters
+ * - The value pointed to by the function's `this` pointer
+ * - The function's return value
+ * - The value pointed to by the function's return value, if the return value is a pointer or
+ *   reference
+ */
 class FunctionOutput extends TFunctionOutput {
   abstract string toString();
 
-  predicate isOutParameterPointer(ParameterIndex i) { none() }
+  /**
+   * Holds if this is the output value pointed to by a pointer parameter to a function, or the
+   * output value referred to by a reference parameter to a function, where the parameter has
+   * index `index`.
+   *
+   * Example:
+   * ```
+   * void func(int n, char* p, float& r);
+   * ```
+   * - `isParameterDeref(1)` holds for the `FunctionOutput` that represents the value of `*p` (with
+   *   type `char`) on return from the function.
+   * - `isParameterDeref(2)` holds for the `FunctionOutput` that represents the value of `r` (with
+   *   type `float`) on return from the function.
+   * - There is no `FunctionOutput` for which `isParameterDeref(0)` holds, because `n` is neither a
+   *   pointer nor a reference.
+   */
+  predicate isParameterDeref(ParameterIndex i) { none() }
 
-  predicate isOutQualifier() { none() }
+  /**
+   * Holds if this is the output value pointed to by a pointer parameter to a function, or the
+   * output value referred to by a reference parameter to a function, where the parameter has
+   * index `index`.
+   * DEPRECATED: Use `isParameterDeref(index)` instead.
+   */
+  deprecated final predicate isOutParameterPointer(ParameterIndex index) { isParameterDeref(index) }
 
-  predicate isOutReturnValue() { none() }
+  /**
+   * Holds if this is the output value pointed to by the `this` pointer of an instance member
+   *   function.
+   *
+   * Example:
+   * ```
+   * struct C {
+   *   void mfunc(int n, char* p, float& r);
+   * };
+   * ```
+   * - `isQualifierObject()` holds for the `FunctionOutput` that represents the value of `*this`
+   *   (with type `C`) on return from the function.
+   */
+  predicate isQualifierObject() { none() }
 
-  predicate isOutReturnPointer() { none() }
+  /**
+   * Holds if this is the output value pointed to by the `this` pointer of an instance member
+   * function.
+   * DEPRECATED: Use `isQualifierObject()` instead.
+   */
+  deprecated final predicate isOutQualifier() { isQualifierObject() }
+
+  /**
+   * Holds if this is the value returned by a function.
+   *
+   * Example:
+   * ```
+   * int getInt();
+   * char* getPointer();
+   * float& getReference();
+   * ```
+   * - `isReturnValue()` holds for the `FunctionOutput` that represents the value returned by
+   *   `getInt()` (with type `int`).
+   * - `isReturnValue()` holds for the `FunctionOutput` that represents the value returned by
+   *   `getPointer()` (with type `char*`).
+   * - `isReturnValue()` holds for the `FunctionOutput` that represents the "value" of the reference
+   *   returned by `getReference()` (with type `float&`), _not_ the value of the referred-to
+   *   `float`.
+   */
+  predicate isReturnValue() { none() }
+
+  /**
+   * Holds if this is the value returned by a function.
+   * DEPRECATED: Use `isReturnValue()` instead.
+   */
+  deprecated final predicate isOutReturnValue() { isReturnValue() }
+
+  /**
+   * Holds if this is the output value pointed to by the return value of a function, if the function
+   * returns a pointer, or the output value referred to by the return value of a function, if the
+   * function returns a reference.
+   *
+   * Example:
+   * ```
+   * char* getPointer();
+   * float& getReference();
+   * int getInt();
+   * ```
+   * - `isReturnValueDeref()` holds for the `FunctionOutput` that represents the value of
+   *   `*getPointer()` (with type `char`).
+   * - `isReturnValueDeref()` holds for the `FunctionOutput` that represents the value of
+   *   `getReference()` (with type `float`).
+   * - There is no `FunctionOutput` of `getInt()` for which `isReturnValueDeref()` holds because the
+   *   return type of `getInt()` is neither a pointer nor a reference.
+   */
+  predicate isReturnValueDeref() { none() }
+
+  /**
+   * Holds if this is the output value pointed to by the return value of a function, if the function
+   * returns a pointer, or the output value referred to by the return value of a function, if the
+   * function returns a reference.
+   * DEPRECATED: Use `isReturnValueDeref()` instead.
+   */
+  deprecated final predicate isOutReturnPointer() { isReturnValueDeref() }
 }
 
-class OutParameterPointer extends FunctionOutput, TOutParameterPointer {
+class OutParameterDeref extends FunctionOutput, TOutParameterDeref {
   ParameterIndex index;
 
-  OutParameterPointer() { this = TOutParameterPointer(index) }
+  OutParameterDeref() { this = TOutParameterDeref(index) }
 
-  override string toString() { result = "OutParameterPointer " + index.toString() }
+  override string toString() { result = "OutParameterDeref " + index.toString() }
 
   ParameterIndex getIndex() { result = index }
 
-  override predicate isOutParameterPointer(ParameterIndex i) { i = index }
+  override predicate isParameterDeref(ParameterIndex i) { i = index }
 }
 
-class OutQualifier extends FunctionOutput, TOutQualifier {
-  override string toString() { result = "OutQualifier" }
+class OutQualifierObject extends FunctionOutput, TOutQualifierObject {
+  override string toString() { result = "OutQualifierObject" }
 
-  override predicate isOutQualifier() { any() }
+  override predicate isQualifierObject() { any() }
 }
 
 class OutReturnValue extends FunctionOutput, TOutReturnValue {
   override string toString() { result = "OutReturnValue" }
 
-  override predicate isOutReturnValue() { any() }
+  override predicate isReturnValue() { any() }
 }
 
-class OutReturnPointer extends FunctionOutput, TOutReturnPointer {
-  override string toString() { result = "OutReturnPointer" }
+class OutReturnValueDeref extends FunctionOutput, TOutReturnValueDeref {
+  override string toString() { result = "OutReturnValueDeref" }
 
-  override predicate isOutReturnPointer() { any() }
+  override predicate isReturnValueDeref() { any() }
 }

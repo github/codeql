@@ -196,6 +196,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                     {
                         var curl = new CommandBuilder(builder.Actions).
                             RunCommand("curl").
+                            Argument("-L").
                             Argument("-sO").
                             Argument("https://dot.net/v1/dotnet-install.sh");
 
@@ -259,13 +260,12 @@ Invoke-Command -ScriptBlock $ScriptBlock";
 
         CommandBuilder GetBuildCommand(Autobuilder builder, (string DotNetPath, IDictionary<string, string> Environment)? arg)
         {
-            var build = new CommandBuilder(builder.Actions, null, arg?.Environment).
-                IndexCommand(builder.Odasa, DotNetCommand(builder.Actions, arg?.DotNetPath)).
+            var build = new CommandBuilder(builder.Actions, null, arg?.Environment);
+            return builder.MaybeIndex(build, DotNetCommand(builder.Actions, arg?.DotNetPath)).
                 Argument("build").
                 Argument("--no-incremental").
                 Argument("/p:UseSharedCompilation=false").
                 Argument(builder.Options.DotNetArguments);
-            return build;
         }
     }
 }

@@ -391,24 +391,37 @@ namespace Semmle.Extraction.CSharp
         public static string GetCSharpLogPath() =>
             Path.Combine(GetCSharpLogDirectory(), "csharp.log");
 
-        public static string GetCSharpLogDirectory()
+        /// <summary>
+        /// Gets the path to a `csharp.{hash}.txt` file written to by the C# extractor.
+        /// </summary>
+        public static string GetCSharpArgsLogPath(string hash) =>
+            Path.Combine(GetCSharpLogDirectory(), $"csharp.{hash}.txt");
+
+        /// <summary>
+        /// Gets a list of all `csharp.{hash}.txt` files currently written to the log directory.
+        /// </summary>
+        public static IEnumerable<string> GetCSharpArgsLogs() =>
+            Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
+
+        static string GetCSharpLogDirectory()
         {
-            string snapshot = Environment.GetEnvironmentVariable("ODASA_SNAPSHOT");
-            string buildErrorDir = Environment.GetEnvironmentVariable("ODASA_BUILD_ERROR_DIR");
-            string traps = Environment.GetEnvironmentVariable("TRAP_FOLDER");
+            var codeQlLogDir = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_LOG_DIR");
+            if (!string.IsNullOrEmpty(codeQlLogDir))
+                return codeQlLogDir;
+
+            var snapshot = Environment.GetEnvironmentVariable("ODASA_SNAPSHOT");
             if (!string.IsNullOrEmpty(snapshot))
-            {
                 return Path.Combine(snapshot, "log");
-            }
+
+            var buildErrorDir = Environment.GetEnvironmentVariable("ODASA_BUILD_ERROR_DIR");
             if (!string.IsNullOrEmpty(buildErrorDir))
-            {
                 // Used by `qltest`
                 return buildErrorDir;
-            }
+
+            var traps = Environment.GetEnvironmentVariable("TRAP_FOLDER");
             if (!string.IsNullOrEmpty(traps))
-            {
                 return traps;
-            }
+
             return Directory.GetCurrentDirectory();
         }
     }

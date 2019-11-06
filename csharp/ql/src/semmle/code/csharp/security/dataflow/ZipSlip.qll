@@ -142,7 +142,7 @@ module ZipSlip {
       // not yet been resolved.
       not exists(MethodCall combineCall |
         combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
-        DataFlow::localFlow(DataFlow::exprNode(combineCall), DataFlow::exprNode(q))
+        DataFlow::localExprFlow(combineCall, q)
       )
     }
 

@@ -51,7 +51,7 @@ class ReferenceCopyAssignmentOperator extends MemberFunction {
 
   /**
    * A call to a function called swap. Note: could be a member,
-   * std::swap or a function overloading std::swap (not in std::)
+   * `std::swap` or a function overloading `std::swap` (not in `std::`)
    * so keep it simple
    */
   FunctionCall getASwapCall() {

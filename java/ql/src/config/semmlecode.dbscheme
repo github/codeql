@@ -494,6 +494,7 @@ case @stmt.kind of
 | 20 = @superconstructorinvocationstmt
 | 21 = @case
 | 22 = @catchclause
+| 23 = @yieldstmt
 ;
 
 #keyset[parent,idx]
@@ -501,7 +502,7 @@ exprs(
   unique int id: @expr,
   int kind: int ref,
   int typeid: @type ref,
-  int parent: @element ref,
+  int parent: @exprparent ref,
   int idx: int ref
 );
 

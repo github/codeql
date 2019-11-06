@@ -22,12 +22,12 @@ If ``l`` is bigger than 2\ :sup:`31`\ - 1 (the largest positive value of type ``
 
    All primitive numeric types have a maximum value, beyond which they will wrap around to their lowest possible value (called an "overflow"). For ``int``, this maximum value is 2\ :sup:`31`\ - 1. Type ``long`` can accommodate larger values up to a maximum of 2\ :sup:`63`\ - 1. In this example, this means that ``l`` can take on a value that is higher than the maximum for type ``int``; ``i`` will never be able to reach this value, instead overflowing and returning to a low value.
 
-We will develop a query that finds code that looks like it might exhibit this kind of behavior. We will be using several of the standard QL library classes for representing statements and functions, a full list of which can be found in the :doc:`AST class reference <ast-class-reference>`.
+We will develop a query that finds code that looks like it might exhibit this kind of behavior. We will be using several of the standard library classes for representing statements and functions, a full list of which can be found in the :doc:`AST class reference <ast-class-reference>`.
 
 Initial query
 -------------
 
-We start out by writing a query that finds less-than expressions (QL class ``LTExpr``) where the left operand is of type ``int`` and the right operand is of type ``long``:
+We start out by writing a query that finds less-than expressions (CodeQL class ``LTExpr``) where the left operand is of type ``int`` and the right operand is of type ``long``:
 
 .. code-block:: ql
 
@@ -57,7 +57,7 @@ Notice that we use the predicate ``getType`` (available on all subclasses of ``E
 
 The class ``LoopStmt`` is a common superclass of all loops, including, in particular, ``for`` loops as in our example above. While different kinds of loops have different syntax, they all have a loop condition, which can be accessed through predicate ``getCondition``. We use the reflexive transitive closure operator ``*`` applied to the ``getAChildExpr`` predicate to express the requirement that ``expr`` should be nested inside the loop condition. In particular, it can be the loop condition itself.
 
-The final conjunct in the ``where`` clause takes advantage of the fact that QL predicates can return more than one value (they are really relations). In particular, ``getAnOperand`` may return *either* operand of ``expr``, so ``expr.getAnOperand().isCompileTimeConstant()`` holds if at least one of the operands is constant. Negating this condition means that the query will only find expressions where *neither* of the operands is constant.
+The final conjunct in the ``where`` clause takes advantage of the fact that `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ can return more than one value (they are really relations). In particular, ``getAnOperand`` may return *either* operand of ``expr``, so ``expr.getAnOperand().isCompileTimeConstant()`` holds if at least one of the operands is constant. Negating this condition means that the query will only find expressions where *neither* of the operands is constant.
 
 Generalizing the query
 ----------------------
@@ -76,7 +76,7 @@ In order to compare the ranges of types, we define a predicate that returns the 
        (pt.hasName("long") and result=64)
    }
 
-We now want to generalize our query to apply to any comparison where the width of the type on the smaller end of the comparison is less than the width of the type on the greater end. Let us call such a comparison *overflow prone*, and introduce an abstract QL class to model it:
+We now want to generalize our query to apply to any comparison where the width of the type on the smaller end of the comparison is less than the width of the type on the greater end. Let us call such a comparison *overflow prone*, and introduce an abstract class to model it:
 
 .. code-block:: ql
 
@@ -121,6 +121,6 @@ Now we rewrite our query to make use of these new classes:
 What next?
 ----------
 
--  Have a look at some of the other tutorials: :doc:`Tutorial: Types and the class hierarchy <types-class-hierarchy>`, :doc:`Tutorial: Navigating the call graph <call-graph>`, :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the QL standard library for Java: :doc:`AST class reference <ast-class-reference>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Have a look at some of the other tutorials: :doc:`Tutorial: Types and the class hierarchy <types-class-hierarchy>`, :doc:`Tutorial: Navigating the call graph <call-graph>`, :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

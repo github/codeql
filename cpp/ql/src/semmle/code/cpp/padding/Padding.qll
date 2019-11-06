@@ -2,8 +2,8 @@ import cpp
 
 /**
  * Align the specified offset up to the specified alignment boundary.
- * The result is the smallest integer i such that (i % alignment) = 0
- * and (i >= offset)
+ * The result is the smallest integer `i` such that `(i % alignment) = 0`
+ * and `(i >= offset)`.
  */
 bindingset[offset, alignment]
 private int alignUp(int offset, int alignment) {
@@ -30,16 +30,16 @@ abstract class Architecture extends string {
   /** Gets the size of a pointer, in bits. */
   abstract int pointerSize();
 
-  /** Gets the size of a 'long int', in bits. */
+  /** Gets the size of a `long int`, in bits. */
   abstract int longSize();
 
-  /** Gets the size of a 'long double', in bits. */
+  /** Gets the size of a `long double`, in bits. */
   abstract int longDoubleSize();
 
-  /** Gets the size of a 'long long', in bits. */
+  /** Gets the size of a `long long`, in bits. */
   abstract int longLongSize();
 
-  /** Gets the size of a 'wchar_t', in bits. */
+  /** Gets the size of a `wchar_t`, in bits. */
   abstract int wideCharSize();
 
   /** Gets the alignment boundary for doubles, in bits. */
@@ -479,8 +479,10 @@ class PaddedType extends Class {
   int typeBitSize(Architecture arch) {
     if this instanceof Union
     then
-      // A correct implementation for unions would be
+      // A correct implementation for unions would be:
+      // ```
       //     result = max(fieldSize(_, arch))
+      // ```
       // but that uses a recursive aggregate, which isn't supported in
       // QL. We therefore use this slightly more complex implementation
       // instead.

@@ -9,13 +9,13 @@ help you understand how the language works, and how to write more advanced QL co
 Each section describes an important concept or syntactic construct of QL. For an overview, see
 the table of contents below.
 
-If you are just getting started with QL, see `Learning QL <https://help.semmle.com/QL/learn-ql/>`_
+If you are just getting started with QL, see `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`_
 for a list of the available resources.
 
 .. index:: specification
 
 For a formal specification of the QL language, see the `QL language specification
-<https://help.semmle.com/QL/QLLanguageSpecification.html>`_.
+<https://help.semmle.com/QL/ql-spec/language.html>`_.
 
 Table of contents
 *****************

@@ -122,11 +122,11 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
-    outModel.isOutParameterPointer(argOutIndex) and
+    outModel.isParameterDeref(argOutIndex) and
     exists(int argInIndex, FunctionInput inModel | f.hasDataFlow(inModel, outModel) |
       // Taint flows from a pointer to a dereference, which DataFlow does not handle
       // memcpy(&dest_var, tainted_ptr, len)
-      inModel.isInParameterPointer(argInIndex) and
+      inModel.isParameterDeref(argInIndex) and
       exprIn = call.getArgument(argInIndex)
     )
   )
@@ -134,15 +134,15 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(TaintFunction f, Call call, FunctionOutput outModel, int argOutIndex |
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
-    outModel.isOutParameterPointer(argOutIndex) and
+    outModel.isParameterDeref(argOutIndex) and
     exists(int argInIndex, FunctionInput inModel | f.hasTaintFlow(inModel, outModel) |
-      inModel.isInParameterPointer(argInIndex) and
+      inModel.isParameterDeref(argInIndex) and
       exprIn = call.getArgument(argInIndex)
       or
-      inModel.isInParameterPointer(argInIndex) and
+      inModel.isParameterDeref(argInIndex) and
       call.passesByReference(argInIndex, exprIn)
       or
-      inModel.isInParameter(argInIndex) and
+      inModel.isParameter(argInIndex) and
       exprIn = call.getArgument(argInIndex)
     )
   )

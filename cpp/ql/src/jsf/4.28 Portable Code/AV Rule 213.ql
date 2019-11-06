@@ -15,11 +15,11 @@ import cpp
 /*
  * Interpretation and deviations:
  *   - if the higher operator has precedence > arithmetic then it is fine
- *     RATIONALE: exprs like f(), *x, &x are easily understood to bind tightly
+ *     RATIONALE: exprs like `f()`, `*x`, `&x` are easily understood to bind tightly
  *   - if the higher operator is the RHS of an assign then it is fine
  *     RATIONALE: cf. MISRA, too many cases excluded otherwise
  *   - comparison operators can be mixed with arithmetic
- *     RATIONALE: x==y+z is common and unambiguous
+ *     RATIONALE: `x==y+z` is common and unambiguous
  */
 
 predicate arithmeticPrecedence(int p) { p = 12 or p = 13 }
