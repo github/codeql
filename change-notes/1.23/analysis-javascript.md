@@ -11,7 +11,6 @@
   - [rate-limiter-flexible](https://www.npmjs.com/package/rate-limiter-flexible)
 
 * The call graph has been improved to resolve method calls in more cases. This may produce more security alerts.
-* Promises derived from a Deferred object are now recognized.
 
 * TypeScript 3.6 and 3.7 features are now supported.
 
