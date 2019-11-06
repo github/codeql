@@ -56,7 +56,8 @@ module BoostorgAsio {
     }
 
     /**
-     * returns the value for a approved protocols, but that are hard-coded (i.e. no protocol negotiation)
+     * returns the value for an approved protocol, but that are hard-coded
+     * (that is, no protocol negotiation)
      */
     EnumConstant getAnApprovedButHardcodedProtocolConstant() {
       result = this.getATls12ProtocolConstant()
