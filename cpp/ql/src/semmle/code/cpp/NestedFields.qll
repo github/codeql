@@ -1,9 +1,8 @@
 import cpp
 
 /**
- * Gets a `Field` that is nested within the given `Struct`.
- *
- * This identifies `Field`s which are located in the same memory
+ * Gets a `Field` that is within the given `Struct`, either directly or nested
+ * inside one or more levels of member structs.
  */
 private Field getANestedField(Struct s) {
   result = s.getAField()
@@ -15,7 +14,7 @@ private Field getANestedField(Struct s) {
 }
 
 /**
- * Unwraps a series of field accesses to determine the inner-most qualifier.
+ * Unwraps a series of field accesses to determine the outer-most qualifier.
  */
 private Expr getUltimateQualifier(FieldAccess fa) {
   exists(Expr qualifier | qualifier = fa.getQualifier() |
