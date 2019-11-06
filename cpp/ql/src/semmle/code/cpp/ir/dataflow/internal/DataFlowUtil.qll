@@ -202,12 +202,9 @@ class DefinitionByReferenceNode extends Node {
     instr.getIndex() = -1
   }
 
-  
   /** Gets the parameter through which this value is assigned. */
   Parameter getParameter() {
-    exists(CallInstruction ci |
-      result = ci.getStaticCallTarget().getParameter(instr.getIndex())
-    )
+    exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
   }
 }
 
@@ -216,9 +213,7 @@ class DefinitionByReferenceNode extends Node {
  */
 Node instructionNode(Instruction instr) { result.asInstruction() = instr }
 
-DefinitionByReferenceNode definitionByReferenceNode(Expr e) {
-  result.getArgument() = e
-}
+DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
  * Gets a `Node` corresponding to `e` or any of its conversions. There is no

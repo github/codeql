@@ -19,11 +19,11 @@ private predicate predictableInstruction(Instruction instr) {
 }
 
 private predicate userInputInstruction(Instruction instr) {
-    exists(CallInstruction ci, WriteSideEffectInstruction wsei |
-      userInputArgument(ci.getConvertedResultExpression(), wsei.getIndex()) and
-      instr = wsei and
-      wsei.getPrimaryInstruction() = ci
-    )
+  exists(CallInstruction ci, WriteSideEffectInstruction wsei |
+    userInputArgument(ci.getConvertedResultExpression(), wsei.getIndex()) and
+    instr = wsei and
+    wsei.getPrimaryInstruction() = ci
+  )
   or
   userInputReturned(instr.getConvertedResultExpression())
   or
