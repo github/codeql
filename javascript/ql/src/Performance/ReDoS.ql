@@ -269,7 +269,7 @@ newtype TState =
     (
       i = 0
       or
-      i = [ 1 .. t.(RegExpConstant).getValue().length() - 1 ]
+      exists(t.(RegExpConstant).getValue().charAt(i))
     )
   } or
   Accept(RegExpRoot l) { l.isRelevant() }
