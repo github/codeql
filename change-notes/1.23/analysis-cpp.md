@@ -54,3 +54,8 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   lead to regressions (or improvements) in how queries are optimized because
   optimization in QL relies on static size estimates, and the control-flow edge
   relations will now have different size estimates than before.
+* Support has been added for non-type template arguments.  This means that the
+  return type of `Declaration::getTemplateArgument()` and
+  `Declaration::getATemplateArgument` have changed to `Locatable`.  See the
+  documentation for `Declaration::getTemplateArgument()` and
+  `Declaration::getTemplateArgumentKind()` for details.
