@@ -77,14 +77,14 @@ Let’s start by looking for calls to methods with names of the form ``sparql*Qu
 
 .. note::
 
-  - When performing `variant analysis <https://semmle.com/  variant-analysis>`__, it is usually helpful to write a simple   query that finds the simple syntactic pattern, before trying to   go on to describe the cases where it goes wrong.
-  - In this case, we start by looking for all the method calls   which appear to run, before trying to refine the query to find   cases which are vulnerable to query injection.
+  - When performing `variant analysis <https://semmle.com/variant-analysis>`__, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
+  - In this case, we start by looking for all the method calls that appear to run, before trying to refine the query to find cases which are vulnerable to query injection.
   - The ``select`` clause defines what this query is looking for:
   
     - a ``MethodAccess``: the call to a SPARQL query method
     - a ``Method``: the SPARQL query method.
   
-  - The ``where`` part of the query ties these variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL for   Java library <https://help.semmle.com/qldoc/java/>`__.
+  - The ``where`` part of the query ties these variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL library for Java <https://help.semmle.com/qldoc/java/>`__.
 
 CodeQL query: find string concatenation
 =======================================

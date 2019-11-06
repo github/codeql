@@ -89,7 +89,7 @@ Control flow graphs
 Modeling control flow
 =====================
 
-The control flow is modeled with a QL class, ``ControlFlowNode``. Examples of control flow nodes include statements and expressions.
+The control flow is modeled with a CodeQL class, ``ControlFlowNode``. Examples of control flow nodes include statements and expressions.
 
 - ``ControlFlowNode`` provides API for traversing the control flow graph:
 

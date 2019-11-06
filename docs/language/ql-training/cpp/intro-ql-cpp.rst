@@ -70,7 +70,7 @@ A simple CodeQL query
 
    A `query <https://help.semmle.com/QL/ql-handbook/queries.html>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__), see `Introduction to query files <https://help.semmle.com/QL/learn-ql/ql/writing-queries/introduction-to-queries.html>`__.
 
-   In our example here, the first line of the query imports the `CodeQL for C/C++ standard library <https://help.semmle.com/qldoc/cpp/>`__, which defines concepts like ``IfStmt`` and ``Block``.
+   In our example here, the first line of the query imports the `CodeQL library for C/C++ <https://help.semmle.com/qldoc/cpp/>`__, which defines concepts like ``IfStmt`` and ``Block``.
    The query proper starts by declaring two variables–ifStmt and block. These variables represent sets of values in the database, according to the type of each of the variables. For example, ifStmt has the type IfStmt, which means it represents the set of all if statements in the program.
 
    If we simply selected these two variables::
@@ -135,10 +135,10 @@ A predicate allows you to pull out and name parts of a query.
 
    You can imagine a predicate to be a self-contained from-where-select statement, that produces an intermediate relation, or table. In this case, the ``isEmpty`` predicate will be the set of all blocks which are empty.
 
-Classes
-=======
+Classes in QL
+=============
 
-A class allows you to name a set of values and define (member) predicates on them.
+A QL class allows you to name a set of values and define (member) predicates on them.
 
 A class has at least one supertype and optionally a **characteristic predicate**; it contains the values that belong to *all* supertypes *and* satisfy the characteristic predicate, if provided.
 
@@ -158,8 +158,8 @@ Member predicates are inherited and can be overridden.
 
   In the example, declaring a variable “EmptyBlock e” will allow it to range over only those blocks that have zero statements.
 
-Classes continued
-=================
+Classes in QL continued
+=======================
 
 .. container:: column-left
 

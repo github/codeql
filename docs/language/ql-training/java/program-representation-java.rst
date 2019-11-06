@@ -12,7 +12,7 @@ Agenda
 - Abstract syntax trees
 - Database representation
 - Program elements
-- AST classes
+- AST CodeQL classes
 
 .. insert abstract-syntax-tree.rst
 
@@ -23,7 +23,7 @@ Agenda
 Program elements
 ================
 
-- The QL class ``Element`` represents program elements with a name.
+- The CodeQL class ``Element`` represents program elements with a name.
 - This includes: packages (``Package``), compilation units (``CompilationUnit``), types (``Type``), methods (``Method``), constructors (``Constructor``), and variables (``Variable``).
 - It is often convenient to refer to an element that might either be a method or a constructor; the class ``Callable``, which is a common superclass of ``Method`` and ``Constructor``, can be used for this purpose.
 
@@ -31,7 +31,7 @@ Program elements
 AST
 ===
 
-There are two primary AST classes, used within ``Callables``:
+There are two primary AST CodeQL classes, used within ``Callables``:
 
    - ``Expr``: expressions such as assignments, variable references, function calls, ...
    - ``Stmt``: statements such as conditionals, loops, try statements, ... 
@@ -47,7 +47,7 @@ Types
 
 The database also includes information about the types used in a program:
 
-- ``PrimitiveType`` represents a `primitive type <http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html>`__, that is, one of ``boolean``, ``byte``, ``char``, ``double``, ``float``, ``int``, ``long``, ``short``. QL also classifies ``void`` and ``<nulltype>`` (the type of the ``null`` literal) as primitive types.
+- ``PrimitiveType`` represents a `primitive type <http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html>`__, that is, one of ``boolean``, ``byte``, ``char``, ``double``, ``float``, ``int``, ``long``, ``short``. CodeQL also classifies ``void`` and ``<nulltype>`` (the type of the ``null`` literal) as primitive types.
 - ``RefType`` represents a reference type; it has several subclasses:
 
   - ``Class`` represents a Java class.
@@ -74,9 +74,9 @@ Working with variables
 Working with callables
 ======================
 
-Callables are represented by the ``Callable`` QL class. 
+Callables are represented by the ``Callable`` CodeQL class. 
 
-Calls to callables are modeled by the QL class ``Call`` and its subclasses:
+Calls to callables are modeled by the CodeQL class ``Call`` and its subclasses:
 
 - ``Call.getCallee()`` gets the declared target of the call
 - ``Call.getAReference()`` gets a call to this function
