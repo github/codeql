@@ -29,11 +29,11 @@ class SsaDefinition extends ControlFlowNodeBase {
 
   /**
    * Gets a string representation of the SSA variable represented by the pair
-   * (this, v).
+   * `(this, v)`.
    */
   string toString(LocalScopeVariable v) { exists(StandardSSA x | result = x.toString(this, v)) }
 
-  /** Gets a use of the SSA variable represented by the pair (this, v). */
+  /** Gets a use of the SSA variable represented by the pair `(this, v)`. */
   VariableAccess getAUse(LocalScopeVariable v) {
     exists(StandardSSA x | result = x.getAUse(this, v))
   }

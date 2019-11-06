@@ -5,6 +5,7 @@ private newtype TMemoryAccessKind =
   TBufferMayMemoryAccess() or
   TEscapedMemoryAccess() or
   TEscapedMayMemoryAccess() or
+  TNonLocalMayMemoryAccess() or
   TPhiMemoryAccess() or
   TUnmodeledMemoryAccess() or
   TChiTotalMemoryAccess() or
@@ -78,6 +79,14 @@ class EscapedMemoryAccess extends MemoryAccessKind, TEscapedMemoryAccess {
  */
 class EscapedMayMemoryAccess extends MemoryAccessKind, TEscapedMayMemoryAccess {
   override string toString() { result = "escaped(may)" }
+}
+
+/**
+ * The operand or result may access all memory whose address has escaped, other than data on the
+ * stack frame of the current function.
+ */
+class NonLocalMayMemoryAccess extends MemoryAccessKind, TNonLocalMayMemoryAccess {
+  override string toString() { result = "nonlocal(may)" }
 }
 
 /**

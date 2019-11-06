@@ -56,7 +56,7 @@ You can express certain values directly in QL, such as numbers, booleans, and st
     "hello"
     "They said, \"Please escape quotation marks!\""
   
-  See `String literals <https://help.semmle.com/QL/QLLanguageSpecification.html#string-literals-string>`_ 
+  See `String literals <https://help.semmle.com/QL/ql-spec/language.html#string-literals-string>`_ 
   in the QL language specification for more details. 
     
   Note: there is no "date literal" in QL. Instead, to specify a :ref:`date <date>`, you should
@@ -303,22 +303,22 @@ Let us apply these steps to the ``sum`` aggregate in the following query:
 .. code-block:: ql
 
    select sum(int i, int j |
-       exists(string char | char = "hello".charAt(i)) and exists(string char | char = "world!".charAt(j)) | i)
+       exists(string s | s = "hello".charAt(i)) and exists(string s | s = "world!".charAt(j)) | i)
 
 #. Input variables: ``i``, ``j``.
 
 #. All possible tuples ``(<value of i>, <value of j>)`` satisfying the given condition: 
-   ``(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (1, 0), (1, 1),...,(4, 5)``.
+   ``(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (1, 0), (1, 1), ..., (4, 5)``.
 
-   ``30`` tuples are generated in this step.
+   30 tuples are generated in this step.
 
 #. Apply the ``<expression> i`` on all tuples. This means selecting all values of ``i`` from 
    all tuples: ``0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4.``
 
 #. Apply the aggregation function ``sum`` on the above values to get the final result ``60``.
 
-If we change ``<expression>`` to ``i+j`` in the above query, the query result is ``135`` since 
-applying ``i+j`` on all tuples results in following values: 
+If we change ``<expression>`` to ``i + j`` in the above query, the query result is ``135`` since 
+applying ``i + j`` on all tuples results in following values: 
 \ ``0, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 6, 2, 3, 4, 5, 6, 7, 3, 4, 5, 6, 7, 8, 4, 5, 6, 7, 8, 9``.
 
 Next, consider the following query:
@@ -327,11 +327,15 @@ Next, consider the following query:
  
    select count(string s | s = "hello" | s.charAt(_))
 
-``s`` is the input variable of the aggregate. A single tuple ``("hello")`` is generated after 
-applying step 2. When the ``<expression> charAt(_)`` is applied on this tuple, it generates ``4`` 
-distinct values ``'h', 'e', 'l', 'o'``. Note that ``'l'`` only appears once as this step collects 
-the distinct values generated as a result of applying ``<expression>``. Finally, ``count`` is 
-applied on these values, and the query returns ``4``.  
+#. ``s`` is the input variable of the aggregate.
+
+#. A single tuple ``"hello"`` is generated in this step.
+
+#. The ``<expression> charAt(_)`` is applied on this tuple. The underscore ``_`` in ``charAt(_)``
+   is a :ref:`don't-care expression <dont-care>`, which represents any value.
+   ``s.charAt(_)`` generates four distinct values ``h, e, l, o``.
+
+#. Finally, ``count`` is applied on these values, and the query returns ``4``.  
 
 
 
@@ -395,7 +399,7 @@ For example, you can use monotonic aggregates :ref:`recursively <recursion>`.
 You can't do this with normal aggregates.
 
 For more information and examples, see `Monotonic aggregates in QL 
-<https://help.semmle.com/QL/learn-ql/ql/advanced/monotonic-aggregates.html>`_.
+<https://help.semmle.com/QL/learn-ql/advanced/monotonic-aggregates.html>`_.
 
 .. TODO: Eventually replace this link with just the relevant examples.
    (Some of the content is a duplicate of the above discussion on aggregates.)
@@ -437,7 +441,7 @@ The following table lists some examples of different forms of ``any`` expression
 +------------------------------------------+-------------------------------------------------+
 
 .. note::
-   There is also a `built-in predicate <https://help.semmle.com/QL/QLLanguageSpecification.html#non-member-built-ins>`_
+   There is also a `built-in predicate <https://help.semmle.com/QL/ql-spec/language.html#non-member-built-ins>`_
    ``any()``. This is a predicate that always holds.
 
 Unary operations

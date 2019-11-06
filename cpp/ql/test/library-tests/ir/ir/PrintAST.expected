@@ -67,31 +67,7 @@ bad_asts.cpp:
 #    5|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] S &&
-#    9| [MemberFunction] int Bad::S::MemberFunction(int)
-#    9|   params: 
-#    9|     0: [Parameter] y
-#    9|         Type = [IntType] int
-#    9|   body: [Block] { ... }
-#   10|     0: [ReturnStmt] return ...
-#   10|       0: [AddExpr] ... + ...
-#   10|           Type = [IntType] int
-#   10|           ValueCategory = prvalue
-#   10|         0: [AddExpr] ... + ...
-#   10|             Type = [IntType] int
-#   10|             ValueCategory = prvalue
-#   10|           0: [Literal] Unknown literal
-#   10|               Type = [IntType] int
-#   10|               ValueCategory = prvalue
-#   10|           1: [PointerFieldAccess] x
-#   10|               Type = [IntType] int
-#   10|               ValueCategory = prvalue(load)
-#-----|             -1: [ThisExpr] this
-#-----|                 Type = [PointerType] S *
-#-----|                 ValueCategory = prvalue(load)
-#   10|         1: [VariableAccess] y
-#   10|             Type = [IntType] int
-#   10|             ValueCategory = prvalue(load)
-#    9| [TopLevelFunction] int MemberFunction(int)
+#    9| [FunctionTemplateInstantiation,MemberFunction] int Bad::S::MemberFunction<int 6>(int)
 #    9|   params: 
 #    9|     0: [Parameter] y
 #    9|         Type = [IntType] int
@@ -106,6 +82,31 @@ bad_asts.cpp:
 #   10|           0: [Literal] 6
 #   10|               Type = [IntType] int
 #   10|               Value = [Literal] 6
+#   10|               ValueCategory = prvalue
+#   10|           1: [PointerFieldAccess] x
+#   10|               Type = [IntType] int
+#   10|               ValueCategory = prvalue(load)
+#-----|             -1: [ThisExpr] this
+#-----|                 Type = [PointerType] S *
+#-----|                 ValueCategory = prvalue(load)
+#   10|         1: [VariableAccess] y
+#   10|             Type = [IntType] int
+#   10|             ValueCategory = prvalue(load)
+#    9| [MemberFunction,TemplateFunction] int Bad::S::MemberFunction<int t>(int)
+#    9|   params: 
+#    9|     0: [Parameter] y
+#    9|         Type = [IntType] int
+#    9|   body: [Block] { ... }
+#   10|     0: [ReturnStmt] return ...
+#   10|       0: [AddExpr] ... + ...
+#   10|           Type = [IntType] int
+#   10|           ValueCategory = prvalue
+#   10|         0: [AddExpr] ... + ...
+#   10|             Type = [IntType] int
+#   10|             ValueCategory = prvalue
+#   10|           0: [Literal] t
+#   10|               Type = [IntType] int
+#   10|               Value = [Literal] t
 #   10|               ValueCategory = prvalue
 #   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
@@ -7795,16 +7796,16 @@ ir.cpp:
 # 1101|       0: [VariableAccess] x
 # 1101|           Type = [IntType] int
 # 1101|           ValueCategory = prvalue(load)
-# 1104| [TopLevelFunction] void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
+# 1104| [TopLevelFunction] void AsmStmtWithOutputs(unsigned int&, unsigned int, unsigned int&, unsigned int)
 # 1104|   params: 
 # 1104|     0: [Parameter] a
 # 1104|         Type = [LValueReferenceType] unsigned int &
 # 1104|     1: [Parameter] b
-# 1104|         Type = [LValueReferenceType] unsigned int &
+# 1104|         Type = [IntType] unsigned int
 # 1104|     2: [Parameter] c
 # 1104|         Type = [LValueReferenceType] unsigned int &
 # 1104|     3: [Parameter] d
-# 1104|         Type = [LValueReferenceType] unsigned int &
+# 1104|         Type = [IntType] unsigned int
 # 1105|   body: [Block] { ... }
 # 1106|     0: [AsmStmt] asm statement
 # 1109|       0: [ReferenceDereferenceExpr] (reference dereference)
@@ -7813,24 +7814,18 @@ ir.cpp:
 # 1109|         expr: [VariableAccess] a
 # 1109|             Type = [LValueReferenceType] unsigned int &
 # 1109|             ValueCategory = prvalue(load)
-# 1109|       1: [ReferenceDereferenceExpr] (reference dereference)
+# 1109|       1: [VariableAccess] b
 # 1109|           Type = [IntType] unsigned int
 # 1109|           ValueCategory = lvalue
-# 1109|         expr: [VariableAccess] b
-# 1109|             Type = [LValueReferenceType] unsigned int &
-# 1109|             ValueCategory = prvalue(load)
 # 1109|       2: [ReferenceDereferenceExpr] (reference dereference)
 # 1109|           Type = [IntType] unsigned int
-# 1109|           ValueCategory = lvalue
+# 1109|           ValueCategory = prvalue(load)
 # 1109|         expr: [VariableAccess] c
 # 1109|             Type = [LValueReferenceType] unsigned int &
 # 1109|             ValueCategory = prvalue(load)
-# 1109|       3: [ReferenceDereferenceExpr] (reference dereference)
+# 1109|       3: [VariableAccess] d
 # 1109|           Type = [IntType] unsigned int
-# 1109|           ValueCategory = lvalue
-# 1109|         expr: [VariableAccess] d
-# 1109|             Type = [LValueReferenceType] unsigned int &
-# 1109|             ValueCategory = prvalue(load)
+# 1109|           ValueCategory = prvalue(load)
 # 1111|     1: [ReturnStmt] return ...
 # 1113| [TopLevelFunction] void ExternDeclarations()
 # 1113|   params: 
@@ -8015,7 +8010,7 @@ ir.cpp:
 # 1154|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1154|         init: [Initializer] initializer for vi4
 # 1154|           expr: [VectorAggregateLiteral] {...}
-# 1154|               Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1154|               Type = [GNUVectorType] __attribute((vector_size(16UL))) int
 # 1154|               ValueCategory = prvalue
 # 1154|             0: [Literal] 0
 # 1154|                 Type = [IntType] int
@@ -8107,7 +8102,7 @@ ir.cpp:
 # 1158|             Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1158|             ValueCategory = lvalue
 # 1158|         1: [AddExpr] ... + ...
-# 1158|             Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1158|             Type = [GNUVectorType] __attribute((vector_size(16UL))) int
 # 1158|             ValueCategory = prvalue
 # 1158|           0: [VariableAccess] vi4
 # 1158|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
@@ -8116,6 +8111,59 @@ ir.cpp:
 # 1158|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1158|               ValueCategory = prvalue(load)
 # 1159|     5: [ReturnStmt] return ...
+# 1161| [TopLevelFunction] void* memcpy(void*, void*, int)
+# 1161|   params: 
+# 1161|     0: [Parameter] dst
+# 1161|         Type = [VoidPointerType] void *
+# 1161|     1: [Parameter] src
+# 1161|         Type = [VoidPointerType] void *
+# 1161|     2: [Parameter] size
+# 1161|         Type = [IntType] int
+# 1163| [TopLevelFunction] int ModeledCallTarget(int)
+# 1163|   params: 
+# 1163|     0: [Parameter] x
+# 1163|         Type = [IntType] int
+# 1163|   body: [Block] { ... }
+# 1164|     0: [DeclStmt] declaration
+# 1164|       0: [VariableDeclarationEntry] definition of y
+# 1164|           Type = [IntType] int
+# 1165|     1: [ExprStmt] ExprStmt
+# 1165|       0: [FunctionCall] call to memcpy
+# 1165|           Type = [VoidPointerType] void *
+# 1165|           ValueCategory = prvalue
+# 1165|         0: [CStyleCast] (void *)...
+# 1165|             Conversion = [PointerConversion] pointer conversion
+# 1165|             Type = [VoidPointerType] void *
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [AddressOfExpr] & ...
+# 1165|               Type = [IntPointerType] int *
+# 1165|               ValueCategory = prvalue
+# 1165|             0: [VariableAccess] y
+# 1165|                 Type = [IntType] int
+# 1165|                 ValueCategory = lvalue
+# 1165|         1: [CStyleCast] (void *)...
+# 1165|             Conversion = [PointerConversion] pointer conversion
+# 1165|             Type = [VoidPointerType] void *
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [AddressOfExpr] & ...
+# 1165|               Type = [IntPointerType] int *
+# 1165|               ValueCategory = prvalue
+# 1165|             0: [VariableAccess] x
+# 1165|                 Type = [IntType] int
+# 1165|                 ValueCategory = lvalue
+# 1165|         2: [CStyleCast] (int)...
+# 1165|             Conversion = [IntegralConversion] integral conversion
+# 1165|             Type = [IntType] int
+# 1165|             Value = [CStyleCast] 4
+# 1165|             ValueCategory = prvalue
+# 1165|           expr: [SizeofTypeOperator] sizeof(int)
+# 1165|               Type = [LongType] unsigned long
+# 1165|               Value = [SizeofTypeOperator] 4
+# 1165|               ValueCategory = prvalue
+# 1166|     2: [ReturnStmt] return ...
+# 1166|       0: [VariableAccess] y
+# 1166|           Type = [IntType] int
+# 1166|           ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

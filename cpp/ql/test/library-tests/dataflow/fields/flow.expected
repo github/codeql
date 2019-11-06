@@ -125,6 +125,8 @@ edges
 | aliasing.cpp:9:3:9:3 | s [post update] [m1] | aliasing.cpp:25:17:25:19 | ref arg & ... [m1] |
 | aliasing.cpp:9:3:9:22 | ... = ... | aliasing.cpp:9:3:9:3 | s [post update] [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | ... = ... |
+| aliasing.cpp:12:25:12:25 | s [m1] | aliasing.cpp:26:19:26:20 | ref arg s2 [m1] |
+| aliasing.cpp:13:3:13:3 | s [post update] [m1] | aliasing.cpp:12:25:12:25 | s [m1] |
 | aliasing.cpp:13:3:13:3 | s [post update] [m1] | aliasing.cpp:26:19:26:20 | ref arg s2 [m1] |
 | aliasing.cpp:13:3:13:21 | ... = ... | aliasing.cpp:13:3:13:3 | s [post update] [m1] |
 | aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:13:3:13:21 | ... = ... |
@@ -379,6 +381,7 @@ nodes
 | aliasing.cpp:9:3:9:3 | s [post update] [m1] | semmle.label | s [post update] [m1] |
 | aliasing.cpp:9:3:9:22 | ... = ... | semmle.label | ... = ... |
 | aliasing.cpp:9:11:9:20 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:12:25:12:25 | s [m1] | semmle.label | s [m1] |
 | aliasing.cpp:13:3:13:3 | s [post update] [m1] | semmle.label | s [post update] [m1] |
 | aliasing.cpp:13:3:13:21 | ... = ... | semmle.label | ... = ... |
 | aliasing.cpp:13:10:13:19 | call to user_input | semmle.label | call to user_input |

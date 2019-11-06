@@ -1,6 +1,6 @@
 class PropClass 
 {
-    private int prop;
+    private static int prop;
 
     public int Prop
     { 

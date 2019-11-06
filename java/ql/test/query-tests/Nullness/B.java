@@ -101,7 +101,7 @@ public class B {
     if (alen == blen) {
       for(int i = 0; i < alen; i++) {
         sum += a[i]; // OK
-        sum += b[i]; // NPE - false positive
+        sum += b[i]; // OK
       }
     }
     int alen2;

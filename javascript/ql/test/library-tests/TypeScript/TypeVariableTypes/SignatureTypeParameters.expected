@@ -1,5 +1,6 @@
 | <D>(x: D): D | 1 | 0 | D | no bound |
 | <E>(x: () => E): E | 1 | 0 | E | no bound |
+| <E>(x: E[] \| (() => E)): E | 1 | 0 | E | no bound |
 | <E>(x: E[]): E | 1 | 0 | E | no bound |
 | <S extends E>(callbackfn: (value: E, index: number, array: E[]) => va... | 1 | 0 | S | no bound |
 | <S extends T \| S>(callbackfn: (value: T \| S, index: number, array: (T... | 1 | 0 | S | no bound |

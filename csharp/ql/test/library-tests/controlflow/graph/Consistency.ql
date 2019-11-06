@@ -94,3 +94,10 @@ query predicate breakInvariant5(
   not (split.hasSuccessor(pred, succ, c) and split = predSplits.getASplit()) and
   not (split.hasEntry(pred, succ, c) and not split = predSplits.getASplit())
 }
+
+query predicate multipleSuccessors(
+  ControlFlow::Node node, SuccessorType t, ControlFlow::Node successor
+) {
+  strictcount(node.getASuccessorByType(t)) > 1 and
+  successor = node.getASuccessorByType(t)
+}

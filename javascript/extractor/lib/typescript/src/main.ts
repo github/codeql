@@ -126,7 +126,7 @@ function checkCycle(root: any) {
 function isBlacklistedProperty(k: string) {
     return k === "parent" || k === "pos" || k === "end"
         || k === "symbol" || k === "localSymbol"
-        || k === "flowNode" || k === "returnFlowNode"
+        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode"
         || k === "nextContainer" || k === "locals"
         || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics";
 }
@@ -162,10 +162,10 @@ function prepareNextFile() {
     }
 }
 
-function handleParseCommand(command: ParseCommand) {
+function handleParseCommand(command: ParseCommand, checkPending = true) {
     let filename = command.filename;
     let expectedFilename = state.pendingFiles[state.pendingFileIndex];
-    if (expectedFilename !== filename) {
+    if (expectedFilename !== filename && checkPending) {
         throw new Error("File requested out of order. Expected '" + expectedFilename + "' but got '" + filename + "'");
     }
     ++state.pendingFileIndex;
@@ -515,13 +515,13 @@ if (process.argv.length > 2) {
             handleParseCommand({
                 command: "parse",
                 filename: sf.fileName,
-            });
+            }, false);
         }
     } else if (pathlib.extname(argument) === ".ts" || pathlib.extname(argument) === ".tsx") {
         handleParseCommand({
             command: "parse",
             filename: argument,
-        });
+        }, false);
     } else {
         console.error("Unrecognized file or flag: " + argument);
     }

@@ -8,10 +8,10 @@ class Swap extends DataFlowFunction {
   Swap() { this.hasQualifiedName("std", "swap") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isInParameterPointer(0) and
-    output.isOutParameterPointer(1)
+    input.isParameterDeref(0) and
+    output.isParameterDeref(1)
     or
-    input.isInParameterPointer(1) and
-    output.isOutParameterPointer(0)
+    input.isParameterDeref(1) and
+    output.isParameterDeref(0)
   }
 }

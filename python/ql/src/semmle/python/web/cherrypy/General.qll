@@ -2,31 +2,24 @@ import python
 import semmle.python.web.Http
 
 module CherryPy {
-
-    FunctionObject expose() {
-        result = ModuleObject::named("cherrypy").attr("expose")
-    }
-
+    FunctionValue expose() { result = Value::named("cherrypy.expose") }
 }
 
 class CherryPyExposedFunction extends Function {
-
     CherryPyExposedFunction() {
-        this.getADecorator().refersTo(CherryPy::expose())
+        this.getADecorator().pointsTo(CherryPy::expose())
         or
-        this.getADecorator().(Call).getFunc().refersTo(CherryPy::expose())
+        this.getADecorator().(Call).getFunc().pointsTo(CherryPy::expose())
     }
-
 }
 
 class CherryPyRoute extends CallNode {
-
     CherryPyRoute() {
         /* cherrypy.quickstart(root, script_name, config) */
-        ModuleObject::named("cherrypy").attr("quickstart").(FunctionObject).getACall() = this
+        Value::named("cherrypy.quickstart").(FunctionValue).getACall() = this
         or
         /* cherrypy.tree.mount(root, script_name, config) */
-        this.getFunction().(AttrNode).getObject("mount").refersTo(ModuleObject::named("cherrypy").attr("tree"))
+        this.getFunction().(AttrNode).getObject("mount").pointsTo(Value::named("cherrypy.tree"))
     }
 
     ClassObject getAppClass() {
@@ -36,9 +29,7 @@ class CherryPyRoute extends CallNode {
     }
 
     string getPath() {
-        exists(StringObject path |
-            result = path.getText() 
-            |
+        exists(StringObject path | result = path.getText() |
             this.getArg(1).refersTo(path)
             or
             this.getArgByName("script_name").refersTo(path)
@@ -50,7 +41,4 @@ class CherryPyRoute extends CallNode {
         or
         this.getArgByName("config").refersTo(_, result, _)
     }
-
 }
-
-

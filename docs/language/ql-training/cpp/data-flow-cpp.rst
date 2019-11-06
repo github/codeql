@@ -4,10 +4,6 @@ Introduction to data flow
 
 Finding string formatting vulnerabilities in C/C++
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup
@@ -16,7 +12,7 @@ Setup
 For this example you should download:
 
 - `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- `dotnet/coreclr snapshot <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
+- `dotnet/coreclr database <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
 
 .. note::
 
@@ -24,9 +20,9 @@ For this example you should download:
 
    You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
 
-   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
 
-   .. include:: ../slide-snippets/snapshot-note.rst
+   .. include:: ../slide-snippets/database-note.rst
 
    .. resume slides
 
@@ -86,9 +82,9 @@ Write a query that flags ``printf`` calls where the format argument is not a ``S
 
 .. note::
 
-  This first query is about finding places where the format specifier is not a constant string. In QL for C/C++, constant strings are modeled as ``StringLiteral`` nodes, so we are looking for calls to format functions where the format specifier argument is not a string literal.
+  This first query is about finding places where the format specifier is not a constant string. In the CodeQL libraries for C/C++, constant strings are modeled as ``StringLiteral`` nodes, so we are looking for calls to format functions where the format specifier argument is not a string literal.
 
-  The `C/C++ standard libraries <https://help.semmle.com/qldoc/cpp/>`__ include many different formatting functions that may be vulnerable to this particular attack–including ``printf``, ``snprintf``, and others. Furthermore, each of these different formatting functions may include the format string in a different position in the argument list. Instead of laboriously listing all these different variants, we can make use of the QL for C/C++ standard library class ``FormattingFunction``, which provides an interface that models common formatting functions in C/C++.
+  The `C/C++ standard libraries <https://help.semmle.com/qldoc/cpp/>`__ include many different formatting functions that may be vulnerable to this particular attack–including ``printf``, ``snprintf``, and others. Furthermore, each of these different formatting functions may include the format string in a different position in the argument list. Instead of laboriously listing all these different variants, we can make use of the standard CodeQL class ``FormattingFunction``, which provides an interface that models common formatting functions in C/C++.
 
 Meh...
 ======
@@ -158,7 +154,7 @@ Define a subclass of ``DataFlow::Node`` representing “source” nodes, that is
 Revisiting non-constant format strings
 ======================================
 
-Refine the query to find calls to ``printf``-like functions where the format argument derives from a local source that is, not a constant string.
+Refine the query to find calls to ``printf``-like functions where the format argument derives from a local source that is not a constant string.
 
 .. rst-class:: build
 

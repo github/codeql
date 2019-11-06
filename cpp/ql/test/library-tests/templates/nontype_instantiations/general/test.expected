@@ -1,0 +1,13 @@
+| test.cpp:3:8:3:8 | C<1> | 0 | int | test.cpp:5:25:5:25 | 1 |
+| test.cpp:3:8:3:8 | C<2> | 0 | int | file://:0:0:0:0 | 2 |
+| test.cpp:3:8:3:8 | C<x> | 0 | int | file://:0:0:0:0 | x |
+| test.cpp:10:8:10:8 | D<T, X> | 0 | <none> | test.cpp:9:19:9:19 | T |
+| test.cpp:10:8:10:8 | D<T, X> | 1 | T | file://:0:0:0:0 | X |
+| test.cpp:10:8:10:8 | D<int, 2> | 0 | <none> | file://:0:0:0:0 | int |
+| test.cpp:10:8:10:8 | D<int, 2> | 1 | int | test.cpp:12:8:12:8 | 2 |
+| test.cpp:10:8:10:8 | D<long, 2L> | 0 | <none> | file://:0:0:0:0 | long |
+| test.cpp:10:8:10:8 | D<long, 2L> | 1 | long | file://:0:0:0:0 | 2 |
+| test.cpp:16:8:16:8 | E<T, X> | 0 | <none> | test.cpp:15:19:15:19 | T |
+| test.cpp:16:8:16:8 | E<T, X> | 1 | T * | file://:0:0:0:0 | X |
+| test.cpp:16:8:16:8 | E<int, (int *)nullptr> | 0 | <none> | file://:0:0:0:0 | int |
+| test.cpp:16:8:16:8 | E<int, (int *)nullptr> | 1 | int * | file://:0:0:0:0 | 0 |

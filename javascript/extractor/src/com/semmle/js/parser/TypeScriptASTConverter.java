@@ -17,6 +17,7 @@ import com.semmle.js.ast.BlockStatement;
 import com.semmle.js.ast.BreakStatement;
 import com.semmle.js.ast.CallExpression;
 import com.semmle.js.ast.CatchClause;
+import com.semmle.js.ast.Chainable;
 import com.semmle.js.ast.ClassBody;
 import com.semmle.js.ast.ClassDeclaration;
 import com.semmle.js.ast.ClassExpression;
@@ -42,6 +43,7 @@ import com.semmle.js.ast.ForOfStatement;
 import com.semmle.js.ast.ForStatement;
 import com.semmle.js.ast.FunctionDeclaration;
 import com.semmle.js.ast.FunctionExpression;
+import com.semmle.js.ast.IFunction;
 import com.semmle.js.ast.INode;
 import com.semmle.js.ast.IPattern;
 import com.semmle.js.ast.Identifier;
@@ -125,13 +127,13 @@ import com.semmle.ts.ast.InferTypeExpr;
 import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
-import com.semmle.ts.ast.IsTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
 import com.semmle.ts.ast.NonNullAssertion;
 import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
+import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
@@ -670,6 +672,13 @@ public class TypeScriptASTConverter {
     attachSymbolInformation(node, json);
   }
 
+  /** Attached the declared call signature to a function. */
+  private void attachDeclaredSignature(IFunction node, JsonObject json) {
+    if (json.has("$declaredSignature")) {
+      node.setDeclaredSignatureId(json.get("$declaredSignature").getAsInt());
+    }
+  }
+
   /**
    * Convert the given array of TypeScript AST nodes into a list of JavaScript AST nodes, skipping
    * any {@code null} elements.
@@ -786,15 +795,18 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertArrowFunction(JsonObject node, SourceLocation loc) throws ParseError {
-    return new ArrowFunctionExpression(
-        loc,
-        convertParameters(node),
-        convertChild(node, "body"),
-        false,
-        hasModifier(node, "AsyncKeyword"),
-        convertChildrenNotNull(node, "typeParameters"),
-        convertParameterTypes(node),
-        convertChildAsType(node, "type"));
+    ArrowFunctionExpression function =
+        new ArrowFunctionExpression(
+            loc,
+            convertParameters(node),
+            convertChild(node, "body"),
+            false,
+            hasModifier(node, "AsyncKeyword"),
+            convertChildrenNotNull(node, "typeParameters"),
+            convertParameterTypes(node),
+            convertChildAsType(node, "type"));
+    attachDeclaredSignature(function, node);
+    return function;
   }
 
   private Node convertAwaitExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -866,7 +878,10 @@ public class TypeScriptASTConverter {
     }
     Expression callee = convertChild(node, "expression");
     List<ITypeExpression> typeArguments = convertChildrenAsTypes(node, "typeArguments");
-    CallExpression call = new CallExpression(loc, callee, typeArguments, arguments, false, false);
+    boolean optional = node.has("questionDotToken");
+    boolean onOptionalChain = Chainable.isOnOptionalChain(optional, callee);
+    CallExpression call =
+        new CallExpression(loc, callee, typeArguments, arguments, optional, onOptionalChain);
     attachResolvedSignature(call, node);
     return call;
   }
@@ -935,7 +950,7 @@ public class TypeScriptASTConverter {
       ClassExpression classExpr =
           new ClassExpression(loc, id, typeParameters, superClass, superInterfaces, body);
       attachSymbolInformation(classExpr.getClassDef(), node);
-      return classExpr;
+      return fixExports(loc, classExpr);
     }
     boolean hasDeclareKeyword = hasModifier(node, "DeclareKeyword");
     boolean hasAbstractKeyword = hasModifier(node, "AbstractKeyword");
@@ -954,7 +969,13 @@ public class TypeScriptASTConverter {
       classDecl.addDecorators(convertChildren(node, "decorators"));
       advanceUntilAfter(loc, classDecl.getDecorators());
     }
-    return fixExports(loc, classDecl);
+    Node exportedDecl = fixExports(loc, classDecl);
+    // Convert default-exported anonymous class declarations to class expressions.
+    if (exportedDecl instanceof ExportDefaultDeclaration && !classDecl.getClassDef().hasId()) {
+      return new ExportDefaultDeclaration(
+          exportedDecl.getLoc(), new ClassExpression(classDecl.getLoc(), classDecl.getClassDef()));
+    }
+    return exportedDecl;
   }
 
   private Node convertCommaListExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1044,6 +1065,8 @@ public class TypeScriptASTConverter {
             null,
             null);
     attachSymbolInformation(value, node);
+    attachStaticType(value, node);
+    attachDeclaredSignature(value, node);
     List<FieldDefinition> parameterFields = convertParameterFields(node);
     return new MethodDefinition(loc, flags, methodKind, key, value, parameterFields);
   }
@@ -1089,7 +1112,9 @@ public class TypeScriptASTConverter {
       throws ParseError {
     Expression object = convertChild(node, "expression");
     Expression property = convertChild(node, "argumentExpression");
-    return new MemberExpression(loc, object, property, true, false, false);
+    boolean optional = node.has("questionDotToken");
+    boolean onOptionalChain = Chainable.isOnOptionalChain(optional, object);
+    return new MemberExpression(loc, object, property, true, optional, onOptionalChain);
   }
 
   private Node convertEmptyStatement(SourceLocation loc) {
@@ -1212,6 +1237,11 @@ public class TypeScriptASTConverter {
   private Node convertFunctionDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     List<Expression> params = convertParameters(node);
     Identifier fnId = convertChild(node, "name", "Identifier");
+    if (fnId == null) {
+      // Anonymous function declarations may occur as part of default exported functions.
+      // We represent these as function expressions.
+      return fixExports(loc, convertFunctionExpression(node, loc));
+    }
     BlockStatement fnbody = convertChild(node, "body");
     boolean generator = hasChild(node, "asteriskToken");
     boolean async = hasModifier(node, "AsyncKeyword");
@@ -1234,6 +1264,8 @@ public class TypeScriptASTConverter {
             returnType,
             thisParam);
     attachSymbolInformation(function, node);
+    attachStaticType(function, node);
+    attachDeclaredSignature(function, node);
     return fixExports(loc, function);
   }
 
@@ -1247,18 +1279,22 @@ public class TypeScriptASTConverter {
     List<DecoratorList> paramDecorators = convertParameterDecorators(node);
     ITypeExpression returnType = convertChildAsType(node, "type");
     ITypeExpression thisParam = convertThisParameterType(node);
-    return new FunctionExpression(
-        loc,
-        fnId,
-        params,
-        fnbody,
-        generator,
-        async,
-        convertChildrenNotNull(node, "typeParameters"),
-        paramTypes,
-        paramDecorators,
-        returnType,
-        thisParam);
+    FunctionExpression function =
+        new FunctionExpression(
+            loc,
+            fnId,
+            params,
+            fnbody,
+            generator,
+            async,
+            convertChildrenNotNull(node, "typeParameters"),
+            paramTypes,
+            paramDecorators,
+            returnType,
+            thisParam);
+    attachStaticType(function, node);
+    attachDeclaredSignature(function, node);
+    return function;
   }
 
   private Node convertFunctionType(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1554,10 +1590,16 @@ public class TypeScriptASTConverter {
 
   private Node convertMetaProperty(JsonObject node, SourceLocation loc) throws ParseError {
     Position metaStart = loc.getStart();
+    String keywordKind =
+        syntaxKinds.get(node.getAsJsonPrimitive("keywordToken").getAsInt() + "").getAsString();
+    String identifier = keywordKind.equals("ImportKeyword") ? "import" : "new";
     Position metaEnd =
-        new Position(metaStart.getLine(), metaStart.getColumn() + 3, metaStart.getOffset() + 3);
-    SourceLocation metaLoc = new SourceLocation("new", metaStart, metaEnd);
-    Identifier meta = new Identifier(metaLoc, "new");
+        new Position(
+            metaStart.getLine(),
+            metaStart.getColumn() + identifier.length(),
+            metaStart.getOffset() + identifier.length());
+    SourceLocation metaLoc = new SourceLocation(identifier, metaStart, metaEnd);
+    Identifier meta = new Identifier(metaLoc, identifier);
     return new MetaProperty(loc, meta, convertChild(node, "name"));
   }
 
@@ -1591,7 +1633,7 @@ public class TypeScriptASTConverter {
     List<DecoratorList> paramDecorators = convertParameterDecorators(node);
     List<TypeParameter> typeParameters = convertChildrenNotNull(node, "typeParameters");
     ITypeExpression thisType = convertThisParameterType(node);
-    FunctionExpression method =
+    FunctionExpression function =
         new FunctionExpression(
             loc,
             null,
@@ -1604,8 +1646,10 @@ public class TypeScriptASTConverter {
             paramDecorators,
             returnType,
             thisType);
-    attachSymbolInformation(method, node);
-    return method;
+    attachSymbolInformation(function, node);
+    attachStaticType(function, node);
+    attachDeclaredSignature(function, node);
+    return function;
   }
 
   private Node convertNamespaceDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1933,8 +1977,11 @@ public class TypeScriptASTConverter {
 
   private Node convertPropertyAccessExpression(JsonObject node, SourceLocation loc)
       throws ParseError {
+    Expression base = convertChild(node, "expression");
+    boolean optional = node.has("questionDotToken");
+    boolean onOptionalChain = Chainable.isOnOptionalChain(optional, base);
     return new MemberExpression(
-        loc, convertChild(node, "expression"), convertChild(node, "name"), false, false, false);
+        loc, base, convertChild(node, "name"), false, optional, onOptionalChain);
   }
 
   private Node convertPropertyAssignment(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1961,6 +2008,9 @@ public class TypeScriptASTConverter {
     }
     if (node.get("exclamationToken") != null) {
       flags |= DeclarationFlags.definiteAssignmentAssertion;
+    }
+    if (hasModifier(node, "DeclareKeyword")) {
+      flags |= DeclarationFlags.declareKeyword;
     }
     FieldDefinition fieldDefinition =
         new FieldDefinition(
@@ -2152,8 +2202,11 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertTypePredicate(JsonObject node, SourceLocation loc) throws ParseError {
-    return new IsTypeExpr(
-        loc, convertChildAsType(node, "parameterName"), convertChildAsType(node, "type"));
+    return new PredicateTypeExpr(
+        loc,
+        convertChildAsType(node, "parameterName"),
+        convertChildAsType(node, "type"),
+        node.has("assertsModifier"));
   }
 
   private Node convertTypeReference(JsonObject node, SourceLocation loc) throws ParseError {
@@ -2284,7 +2337,7 @@ public class TypeScriptASTConverter {
    * <p>If the declared statement has decorators, the {@code loc} should first be advanced past
    * these using {@link #advanceUntilAfter}.
    */
-  private Node fixExports(SourceLocation loc, Statement decl) {
+  private Node fixExports(SourceLocation loc, Node decl) {
     Matcher m = EXPORT_DECL_START.matcher(loc.getSource());
     if (m.find()) {
       String skipped = m.group(0);
@@ -2292,7 +2345,7 @@ public class TypeScriptASTConverter {
       advance(loc, skipped);
       // capture group 1 is `default`, if present
       if (m.group(1) == null)
-        return new ExportNamedDeclaration(outerLoc, decl, new ArrayList<>(), null);
+        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null);
       return new ExportDefaultDeclaration(outerLoc, decl);
     }
     return decl;

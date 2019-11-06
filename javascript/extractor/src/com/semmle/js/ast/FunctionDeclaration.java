@@ -19,6 +19,8 @@ public class FunctionDeclaration extends Statement implements IFunction {
   private final AFunction<? extends Node> fn;
   private final boolean hasDeclareKeyword;
   private int symbol = -1;
+  private int staticType = -1;
+  private int declaredSignature = -1;
 
   public FunctionDeclaration(
       SourceLocation loc,
@@ -184,5 +186,25 @@ public class FunctionDeclaration extends Statement implements IFunction {
   @Override
   public void setSymbol(int symbol) {
     this.symbol = symbol;
+  }
+
+  @Override
+  public int getStaticTypeId() {
+    return staticType;
+  }
+
+  @Override
+  public void setStaticTypeId(int id) {
+    staticType = id;
+  }
+
+  @Override
+  public int getDeclaredSignatureId() {
+    return declaredSignature;
+  }
+
+  @Override
+  public void setDeclaredSignatureId(int id) {
+    declaredSignature = id;
   }
 }

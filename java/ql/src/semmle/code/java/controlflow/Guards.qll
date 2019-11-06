@@ -98,6 +98,16 @@ class Guard extends ExprParent {
   }
 
   /**
+   * Gets the basic block containing this guard or the basic block containing
+   * the switch expression if the guard is a switch case.
+   */
+  BasicBlock getBasicBlock() {
+    result = this.(Expr).getBasicBlock() or
+    result = this.(SwitchCase).getSwitch().getExpr().getProperExpr().getBasicBlock() or
+    result = this.(SwitchCase).getSwitchExpr().getExpr().getProperExpr().getBasicBlock()
+  }
+
+  /**
    * Holds if this guard is an equality test between `e1` and `e2`. The test
    * can be either `==`, `!=`, `.equals`, or a switch case. If the test is
    * negated, that is `!=`, then `polarity` is false, otherwise `polarity` is

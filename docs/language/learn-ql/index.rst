@@ -1,14 +1,13 @@
-Learning QL
-###########
+Learning CodeQL
+###############
 
+CodeQL is the code analysis platform used by security researchers to automate `variant analysis <https://semmle.com/variant-analysis>`__. 
+You can use CodeQL queries to explore code and quickly find variants of security vulnerabilities and bugs. 
+These queries are easy to write and share–visit the topics below and `our open source repository on GitHub <https://github.com/Semmle/ql>`__ to learn more. 
+You can also try out CodeQL in the `query console <https://lgtm.com/query>`__ on `LGTM.com <https://lgtm.com>`__. 
+Here, you can query open source projects directly, without having to download CodeQL databases and libraries. 
 
-`QL <https://semmle.com/ql>`__ is the query language used in Semmle's `variant analysis <https://semmle.com/variant-analysis>`__ engine. 
-You can use queries written in QL to explore code and quickly find variants of security vulnerabilities and bugs. 
-The QL language is also part of the technology behind `LGTM <https://lgtm.com>`__,  Semmle's analysis platform that combines deep semantic code search with data science insights to help developers ship secure code.
-
-QL queries are easy to write and share–visit the topics below and `our open source repository on GitHub <https://github.com/Semmle/ql>`__ to learn more. 
-You can also try out QL in the `query console <https://lgtm.com/query>`__ on `LGTM.com <https://lgtm.com>`__. 
-Here, you can write QL code to query open source projects directly, without having to download snapshots and libraries. 
+CodeQL is based on a powerful query language called QL. The following topics help you understand QL in general, as well as how to use it when analyzing code with CodeQL.
 
 .. _getting-started:
 
@@ -23,11 +22,12 @@ If you are new to QL, start by looking at the following topics:
    introduction-to-ql
    about-ql
    beginner/ql-tutorials
+   ql-etudes/river-crossing
 
-QL training and variant analysis examples
-******************************************
+CodeQL training and variant analysis examples
+*********************************************
 
-To start learning how to use QL in variant analysis for a specific language, see:
+To start learning how to use CodeQL for variant analysis for code written in a specific language, see:
 
 .. toctree::
    :maxdepth: -1
@@ -36,8 +36,8 @@ To start learning how to use QL in variant analysis for a specific language, see
 
 .. _writing-ql-queries:
 
-Writing QL queries
-******************
+Writing CodeQL queries
+**********************
 
 To learn more about writing your own queries, see:
 
@@ -47,7 +47,7 @@ To learn more about writing your own queries, see:
 
    writing-queries/writing-queries
 
-For more information on writing QL to query code written in a specific language see:
+For more information on using CodeQL to query code written in a specific language, see:
 
 .. toctree::
    :maxdepth: 2
@@ -56,6 +56,7 @@ For more information on writing QL to query code written in a specific language 
    cpp/ql-for-cpp
    csharp/ql-for-csharp
    cobol/ql-for-cobol
+   go/ql-for-go
    java/ql-for-java
    javascript/ql-for-javascript
    python/ql-for-python
@@ -75,10 +76,10 @@ For more technical information see:
 Reference topics
 ****************
 
-For a more comprehensive guide to QL see the following reference topics: 
+For a more comprehensive guide to the query language itself, see the following reference topics: 
 
-- `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__—a description of important concepts in QL
-- `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__—a formal specification of the QL language.
+- `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__—a description of important concepts in QL.
+- `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__—a formal specification of QL.
 
 Search
 ******

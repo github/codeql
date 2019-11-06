@@ -416,6 +416,13 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
   CanonicalFunctionName getCanonicalName() { ast_node_symbol(this, result) }
+
+  /**
+   * Gets the call signature of this function, as determined by the TypeScript compiler, if any.
+   */
+  CallSignatureType getCallSignature() {
+    declared_function_signature(this, result)
+  }
 }
 
 /**

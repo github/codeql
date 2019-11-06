@@ -3,11 +3,12 @@ private import cil
 private import dotnet
 private import DataFlowPublic
 private import DataFlowDispatch
-private import DataFlowImplCommon
+private import DataFlowImplCommon::Public
 private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
@@ -84,6 +85,10 @@ module LocalFlow {
         e1 = e2.(ParenthesizedExpr).getExpr() and
         scope = e2 and
         isSuccessor = true
+        or
+        e1 = e2.(NullCoalescingExpr).getAnOperand() and
+        scope = e2 and
+        isSuccessor = false
         or
         e1 = e2.(SuppressNullableWarningExpr).getExpr() and
         scope = e2 and
@@ -438,6 +443,22 @@ private module Cached {
     exists(ReadStepConfiguration x |
       x.hasNodePath(node1, node2) and
       c.(FieldLikeContent).getField() = node2.asExpr().(FieldLikeRead).getTarget()
+    )
+  }
+
+  /**
+   * Holds if the node `n` is unreachable when the call context is `call`.
+   */
+  cached
+  predicate isUnreachableInCall(Node n, DataFlowCall call) {
+    exists(
+      SsaDefinitionNode paramNode, Ssa::ExplicitDefinition param, Guard guard,
+      ControlFlow::SuccessorTypes::BooleanSuccessor bs
+    |
+      viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
+      paramNode.getDefinition() = param and
+      param.getARead() = guard and
+      guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs)
     )
   }
 }
@@ -944,15 +965,33 @@ import ReturnNodes
 
 /** A data flow node that represents the output of a call. */
 abstract class OutNode extends Node {
-  /** Gets the underlying call. */
+  /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
   cached
-  abstract DataFlowCall getCall();
+  abstract DataFlowCall getCall(ReturnKind kind);
 }
 
 private module OutNodes {
+  private import semmle.code.csharp.frameworks.system.Collections
+  private import semmle.code.csharp.frameworks.system.collections.Generic
+
   private DataFlowCall csharpCall(Expr e, ControlFlow::Node cfn) {
     e = any(DispatchCall dc | result = TNonDelegateCall(cfn, dc)).getCall() or
     result = TExplicitDelegateCall(cfn, e)
+  }
+
+  /** A valid return type for a method that uses `yield return`. */
+  private class YieldReturnType extends Type {
+    YieldReturnType() {
+      exists(Type t | t = this.getSourceDeclaration() |
+        t instanceof SystemCollectionsIEnumerableInterface
+        or
+        t instanceof SystemCollectionsIEnumeratorInterface
+        or
+        t instanceof SystemCollectionsGenericIEnumerableTInterface
+        or
+        t instanceof SystemCollectionsGenericIEnumeratorInterface
+      )
+    }
   }
 
   /**
@@ -969,8 +1008,16 @@ private module OutNodes {
       )
     }
 
-    override DataFlowCall getCall() {
-      Stages::DataFlowStage::forceCachingInSameStage() and result = call
+    override DataFlowCall getCall(ReturnKind kind) {
+      Stages::DataFlowStage::forceCachingInSameStage() and
+      result = call and
+      (
+        kind instanceof NormalReturnKind and
+        not call.getExpr().getType() instanceof VoidType
+        or
+        kind instanceof YieldReturnKind and
+        call.getExpr().getType() instanceof YieldReturnType
+      )
     }
   }
 
@@ -995,7 +1042,13 @@ private module OutNodes {
       )
     }
 
-    override DataFlowCall getCall() { result = call }
+    override DataFlowCall getCall(ReturnKind kind) {
+      result = call and
+      kind.(ImplicitCapturedReturnKind).getVariable() = this
+            .getDefinition()
+            .getSourceVariable()
+            .getAssignable()
+    }
   }
 
   /**
@@ -1003,13 +1056,16 @@ private module OutNodes {
    * `out` or `ref` parameter.
    */
   class ParamOutNode extends OutNode, SsaDefinitionNode {
-    ParamOutNode() {
-      this.getDefinition().(Ssa::ExplicitDefinition).getADefinition() instanceof
-        AssignableDefinitions::OutRefDefinition
-    }
+    private AssignableDefinitions::OutRefDefinition outRefDef;
 
-    override DataFlowCall getCall() {
-      result = csharpCall(_, this.getDefinition().getControlFlowNode())
+    ParamOutNode() { outRefDef = this.getDefinition().(Ssa::ExplicitDefinition).getADefinition() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result = csharpCall(_, this.getDefinition().getControlFlowNode()) and
+      exists(Parameter p |
+        p.getSourceDeclaration().getPosition() = kind.(OutRefReturnKind).getPosition() and
+        outRefDef.getTargetAccess() = result.getExpr().(Call).getArgumentForParameter(p)
+      )
     }
   }
 
@@ -1036,7 +1092,16 @@ private module OutNodes {
 
     override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
-    override ImplicitDelegateDataFlowCall getCall() { result.getNode() = this }
+    override ImplicitDelegateDataFlowCall getCall(ReturnKind kind) {
+      result.getNode() = this and
+      (
+        kind instanceof NormalReturnKind and
+        not result.getDelegateReturnType() instanceof VoidType
+        or
+        kind instanceof YieldReturnKind and
+        result.getDelegateReturnType() instanceof YieldReturnType
+      )
+    }
 
     override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
@@ -1314,3 +1379,32 @@ class DataFlowExpr = DotNet::Expr;
 class DataFlowType = DotNet::Type;
 
 class DataFlowLocation = Location;
+
+/** Holds if `e` is an expression that always has the same Boolean value `val`. */
+private predicate constantBooleanExpr(Expr e, boolean val) {
+  e = any(AbstractValues::BooleanValue bv | val = bv.getValue()).getAnExpr()
+  or
+  exists(Ssa::ExplicitDefinition def, Expr src |
+    e = def.getARead() and
+    src = def.getADefinition().getSource() and
+    constantBooleanExpr(src, val)
+  )
+}
+
+/** An argument that always has the same Boolean value. */
+private class ConstantBooleanArgumentNode extends ExprNode {
+  ConstantBooleanArgumentNode() { constantBooleanExpr(this.(ArgumentNode).asExpr(), _) }
+
+  /** Gets the Boolean value of this expression. */
+  boolean getBooleanValue() { constantBooleanExpr(this.getExpr(), result) }
+}
+
+pragma[noinline]
+private predicate viableConstantBooleanParamArg(
+  SsaDefinitionNode paramNode, boolean b, DataFlowCall call
+) {
+  exists(ConstantBooleanArgumentNode arg |
+    viableParamArg(call, paramNode, arg) and
+    b = arg.getBooleanValue()
+  )
+}

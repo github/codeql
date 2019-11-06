@@ -631,11 +631,11 @@ private class RouteParamSource extends RemoteFlowSource {
  * AngularJS expose a jQuery-like interface through `angular.html(..)`.
  * The interface may be backed by an actual jQuery implementation.
  */
-private class JQLiteObject extends JQueryObject {
+private class JQLiteObject extends JQuery::ObjectSource::Range {
   JQLiteObject() {
-    this = angular().getAMemberCall("element").asExpr()
+    this = angular().getAMemberCall("element")
     or
-    exists(SimpleParameter param |
+    exists(Parameter param | this = DataFlow::parameterNode(param) |
       // element parameters to user-functions invoked by AngularJS
       param = any(LinkFunction link).getElementParameter()
       or
@@ -652,15 +652,13 @@ private class JQLiteObject extends JQueryObject {
           param = f.getAstNode().(Function).getParameter(i)
         )
       )
-    |
-      this = param.getAnInitialUse()
     )
     or
     exists(ServiceReference element |
       element.getName() = "$rootElement" or
       element.getName() = "$document"
     |
-      this = element.getAnAccess()
+      this = element.getAReference()
     )
   }
 }
@@ -1062,21 +1060,42 @@ private class RouteInstantiatedController extends Controller {
 /**
  * Dataflow for the arguments of AngularJS dependency-injected functions.
  */
-private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedValueNode {
+private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedNode {
   DataFlow::AnalyzedNode service;
 
   DependencyInjectedArgumentInitializer() {
     exists(
-      AngularJS::InjectableFunction f, SimpleParameter param, AngularJS::CustomServiceDefinition def
+      AngularJS::InjectableFunction f, Parameter param, AngularJS::CustomServiceDefinition def
     |
-      astNode = param.getAnInitialUse() and
+      this = DataFlow::parameterNode(param) and
       def.getServiceReference() = f.getAResolvedDependency(param) and
       service = def.getAService()
     )
   }
 
   override AbstractValue getAValue() {
-    result = DataFlow::AnalyzedValueNode.super.getAValue() or
+    result = DataFlow::AnalyzedNode.super.getAValue() or
     result = service.getALocalValue()
   }
+}
+
+/**
+ * A call to `angular.bind`, as a partial function invocation.
+ */
+private class BindCall extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
+  BindCall() { this = angular().getAMemberCall("bind") }
+
+  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+    index >= 0 and
+    callback = getArgument(1) and
+    argument = getArgument(index + 2)
+  }
+
+  override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+    callback = getArgument(1) and
+    boundArgs = getNumArgument() - 2 and
+    result = this
+  }
+
+  override DataFlow::Node getBoundReceiver() { result = getArgument(0) }
 }

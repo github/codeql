@@ -5,6 +5,7 @@ import IRVariable
 import Operand
 private import internal.InstructionImports as Imports
 import Imports::EdgeKind
+import Imports::IRType
 import Imports::MemoryAccessKind
 import Imports::Opcode
 private import Imports::OperandTag
@@ -30,7 +31,7 @@ module InstructionSanity {
         or
         opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag
         or
-        opcode instanceof BufferAccessOpcode and tag instanceof BufferSizeOperand
+        opcode instanceof SizedBufferAccessOpcode and tag instanceof BufferSizeOperandTag
         or
         opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag
         or
@@ -48,8 +49,9 @@ module InstructionSanity {
         or
         (
           opcode instanceof ReadSideEffectOpcode or
-          opcode instanceof MayWriteSideEffectOpcode or
-          opcode instanceof Opcode::InlineAsm
+          opcode instanceof Opcode::InlineAsm or
+          opcode instanceof Opcode::CallSideEffect or
+          opcode instanceof Opcode::AliasedUse
         ) and
         tag instanceof SideEffectOperandTag
       )
@@ -113,11 +115,22 @@ module InstructionSanity {
   }
 
   query predicate missingOperandType(Operand operand, string message) {
-    exists(Language::Function func |
+    exists(Language::Function func, Instruction use |
       not exists(operand.getType()) and
-      func = operand.getUse().getEnclosingFunction() and
-      message = "Operand missing type in function '" + Language::getIdentityString(func) + "'."
+      use = operand.getUse() and
+      func = use.getEnclosingFunction() and
+      message = "Operand '" + operand.toString() + "' of instruction '" + use.getOpcode().toString()
+          + "' missing type in function '" + Language::getIdentityString(func) + "'."
     )
+  }
+
+  query predicate sideEffectWithoutPrimary(
+    SideEffectInstruction instr, string message, IRFunction func, string funcText
+  ) {
+    not exists(instr.getPrimaryInstruction()) and
+    message = "Side effect instruction missing primary instruction in function $@" and
+    func = instr.getEnclosingIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction())
   }
 
   /**
@@ -251,6 +264,7 @@ module InstructionSanity {
   ) {
     exists(IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
       not useOperand.getUse() instanceof UnmodeledUseInstruction and
+      not defInstr instanceof UnmodeledDefinitionInstruction and
       pointOfEvaluation(useOperand, useBlock, useIndex) and
       defInstr = useOperand.getAnyDef() and
       (
@@ -312,7 +326,7 @@ class Instruction extends Construction::TInstruction {
   }
 
   private string getResultPrefix() {
-    if getResultType() instanceof Language::VoidType
+    if getResultIRType() instanceof IRVoidType
     then result = "v"
     else
       if hasMemoryResult()
@@ -344,23 +358,6 @@ class Instruction extends Construction::TInstruction {
     )
   }
 
-  bindingset[type]
-  private string getValueCategoryString(string type) {
-    if isGLValue() then result = "glval<" + type + ">" else result = type
-  }
-
-  string getResultTypeString() {
-    exists(string valcat |
-      valcat = getValueCategoryString(getResultType().toString()) and
-      if
-        getResultType() instanceof Language::UnknownType and
-        not isGLValue() and
-        exists(getResultSize())
-      then result = valcat + "[" + getResultSize().toString() + "]"
-      else result = valcat
-    )
-  }
-
   /**
    * Gets a human-readable string that uniquely identifies this instruction
    * within the function. This string is used to refer to this instruction when
@@ -380,7 +377,9 @@ class Instruction extends Construction::TInstruction {
    *
    * Example: `r1_1(int*)`
    */
-  final string getResultString() { result = getResultId() + "(" + getResultTypeString() + ")" }
+  final string getResultString() {
+    result = getResultId() + "(" + getResultLanguageType().getDumpString() + ")"
+  }
 
   /**
    * Gets a string describing the operands of this instruction, suitable for
@@ -448,6 +447,16 @@ class Instruction extends Construction::TInstruction {
     result = Construction::getInstructionUnconvertedResultExpression(this)
   }
 
+  final Language::LanguageType getResultLanguageType() {
+    result = Construction::getInstructionResultType(this)
+  }
+
+  /**
+   * Gets the type of the result produced by this instruction. If the instruction does not produce
+   * a result, its result type will be `IRVoidType`.
+   */
+  final IRType getResultIRType() { result = getResultLanguageType().getIRType() }
+
   /**
    * Gets the type of the result produced by this instruction. If the
    * instruction does not produce a result, its result type will be `VoidType`.
@@ -455,7 +464,16 @@ class Instruction extends Construction::TInstruction {
    * If `isGLValue()` holds, then the result type of this instruction should be
    * thought of as "pointer to `getResultType()`".
    */
-  final Language::Type getResultType() { Construction::instructionHasType(this, result, _) }
+  final Language::Type getResultType() {
+    exists(Language::LanguageType resultType |
+      resultType = getResultLanguageType() and
+      (
+        resultType.hasUnspecifiedType(result, _)
+        or
+        not resultType.hasUnspecifiedType(_, _) and result instanceof Language::UnknownType
+      )
+    )
+  }
 
   /**
    * Holds if the result produced by this instruction is a glvalue. If this
@@ -475,7 +493,7 @@ class Instruction extends Construction::TInstruction {
    * result of the `Load` instruction is a prvalue of type `int`, representing
    * the integer value loaded from variable `x`.
    */
-  final predicate isGLValue() { Construction::instructionHasType(this, _, true) }
+  final predicate isGLValue() { Construction::getInstructionResultType(this).hasType(_, true) }
 
   /**
    * Gets the size of the result produced by this instruction, in bytes. If the
@@ -484,16 +502,7 @@ class Instruction extends Construction::TInstruction {
    * If `this.isGLValue()` holds for this instruction, the value of
    * `getResultSize()` will always be the size of a pointer.
    */
-  final int getResultSize() {
-    if isGLValue()
-    then
-      // a glvalue is always pointer-sized.
-      result = Language::getPointerSize()
-    else
-      if getResultType() instanceof Language::UnknownType
-      then result = Construction::getInstructionResultSize(this)
-      else result = Language::getTypeSize(getResultType())
-  }
+  final int getResultSize() { result = Construction::getInstructionResultType(this).getByteSize() }
 
   /**
    * Gets the opcode that specifies the operation performed by this instruction.
@@ -609,9 +618,14 @@ class VariableInstruction extends Instruction {
 
   VariableInstruction() { var = Construction::getInstructionVariable(this) }
 
-  final override string getImmediateString() { result = var.toString() }
+  override string getImmediateString() { result = var.toString() }
 
-  final IRVariable getVariable() { result = var }
+  final IRVariable getIRVariable() { result = var }
+
+  /**
+   * Gets the AST variable that this instruction's IR variable refers to, if one exists.
+   */
+  final Language::Variable getASTVariable() { result = var.(IRUserVariable).getVariable() }
 }
 
 class FieldInstruction extends Instruction {
@@ -642,6 +656,16 @@ class ConstantValueInstruction extends Instruction {
   final override string getImmediateString() { result = value }
 
   final string getValue() { result = value }
+}
+
+class IndexedInstruction extends Instruction {
+  int index;
+
+  IndexedInstruction() { index = Construction::getInstructionIndex(this) }
+
+  final override string getImmediateString() { result = index.toString() }
+
+  final int getIndex() { result = index }
 }
 
 class EnterFunctionInstruction extends Instruction {
@@ -1175,6 +1199,8 @@ class CallReadSideEffectInstruction extends SideEffectInstruction {
  */
 class IndirectReadSideEffectInstruction extends SideEffectInstruction {
   IndirectReadSideEffectInstruction() { getOpcode() instanceof Opcode::IndirectReadSideEffect }
+
+  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
 }
 
 /**
@@ -1182,13 +1208,39 @@ class IndirectReadSideEffectInstruction extends SideEffectInstruction {
  */
 class BufferReadSideEffectInstruction extends SideEffectInstruction {
   BufferReadSideEffectInstruction() { getOpcode() instanceof Opcode::BufferReadSideEffect }
+
+  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
+}
+
+/**
+ * An instruction representing the read of an indirect buffer parameter within a function call.
+ */
+class SizedBufferReadSideEffectInstruction extends SideEffectInstruction {
+  SizedBufferReadSideEffectInstruction() {
+    getOpcode() instanceof Opcode::SizedBufferReadSideEffect
+  }
+
+  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
+
+  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
+}
+
+/**
+ * An instruction representing a side effect of a function call.
+ */
+class WriteSideEffectInstruction extends SideEffectInstruction {
+  WriteSideEffectInstruction() { getOpcode() instanceof WriteSideEffectOpcode }
+
+  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
 }
 
 /**
  * An instruction representing the write of an indirect parameter within a function call.
  */
-class IndirectWriteSideEffectInstruction extends SideEffectInstruction {
-  IndirectWriteSideEffectInstruction() { getOpcode() instanceof Opcode::IndirectWriteSideEffect }
+class IndirectMustWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  IndirectMustWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::IndirectMustWriteSideEffect
+  }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
 }
@@ -1197,10 +1249,26 @@ class IndirectWriteSideEffectInstruction extends SideEffectInstruction {
  * An instruction representing the write of an indirect buffer parameter within a function call. The
  * entire buffer is overwritten.
  */
-class BufferWriteSideEffectInstruction extends SideEffectInstruction {
-  BufferWriteSideEffectInstruction() { getOpcode() instanceof Opcode::BufferWriteSideEffect }
+class BufferMustWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  BufferMustWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::BufferMustWriteSideEffect
+  }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
+}
+
+/**
+ * An instruction representing the write of an indirect buffer parameter within a function call. The
+ * entire buffer is overwritten.
+ */
+class SizedBufferMustWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  SizedBufferMustWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::SizedBufferMustWriteSideEffect
+  }
+
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
+
+  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
 
 /**
@@ -1208,7 +1276,7 @@ class BufferWriteSideEffectInstruction extends SideEffectInstruction {
  * Unlike `IndirectWriteSideEffectInstruction`, the location might not be completely overwritten.
  * written.
  */
-class IndirectMayWriteSideEffectInstruction extends SideEffectInstruction {
+class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
   IndirectMayWriteSideEffectInstruction() {
     getOpcode() instanceof Opcode::IndirectMayWriteSideEffect
   }
@@ -1222,12 +1290,28 @@ class IndirectMayWriteSideEffectInstruction extends SideEffectInstruction {
  * An instruction representing the write of an indirect buffer parameter within a function call.
  * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
  */
-class BufferMayWriteSideEffectInstruction extends SideEffectInstruction {
+class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
   BufferMayWriteSideEffectInstruction() { getOpcode() instanceof Opcode::BufferMayWriteSideEffect }
 
   final override MemoryAccessKind getResultMemoryAccess() {
     result instanceof BufferMayMemoryAccess
   }
+}
+
+/**
+ * An instruction representing the write of an indirect buffer parameter within a function call.
+ * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
+ */
+class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
+  SizedBufferMayWriteSideEffectInstruction() {
+    getOpcode() instanceof Opcode::SizedBufferMayWriteSideEffect
+  }
+
+  final override MemoryAccessKind getResultMemoryAccess() {
+    result instanceof BufferMayMemoryAccess
+  }
+
+  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
 
 /**
@@ -1300,7 +1384,7 @@ class CatchInstruction extends Instruction {
  * An instruction that catches an exception of a specific type.
  */
 class CatchByTypeInstruction extends CatchInstruction {
-  Language::Type exceptionType;
+  Language::LanguageType exceptionType;
 
   CatchByTypeInstruction() {
     getOpcode() instanceof Opcode::CatchByType and
@@ -1312,7 +1396,7 @@ class CatchByTypeInstruction extends CatchInstruction {
   /**
    * Gets the type of exception to be caught.
    */
-  final Language::Type getExceptionType() { result = exceptionType }
+  final Language::LanguageType getExceptionType() { result = exceptionType }
 }
 
 /**
@@ -1337,6 +1421,13 @@ class AliasedDefinitionInstruction extends Instruction {
   AliasedDefinitionInstruction() { getOpcode() instanceof Opcode::AliasedDefinition }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
+}
+
+/**
+ * An instruction that consumes all escaped memory on exit from the function.
+ */
+class AliasedUseInstruction extends Instruction {
+  AliasedUseInstruction() { getOpcode() instanceof Opcode::AliasedUse }
 }
 
 class UnmodeledUseInstruction extends Instruction {

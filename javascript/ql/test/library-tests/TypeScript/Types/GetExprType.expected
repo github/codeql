@@ -64,10 +64,12 @@
 | tst.ts:22:29:22:29 | 2 | 2 |
 | tst.ts:24:5:24:9 | array | number[] |
 | tst.ts:26:5:26:12 | voidType | () => void |
+| tst.ts:26:15:26:24 | () => void | () => void |
 | tst.ts:27:5:27:17 | undefinedType | undefined |
 | tst.ts:28:5:28:12 | nullType | null |
 | tst.ts:28:22:28:25 | null | null |
 | tst.ts:29:5:29:13 | neverType | () => never |
+| tst.ts:29:16:29:26 | () => never | () => never |
 | tst.ts:30:5:30:14 | symbolType | symbol |
 | tst.ts:31:7:31:22 | uniqueSymbolType | typeof uniqueSymbolType |
 | tst.ts:31:41:31:44 | null | null |
@@ -91,6 +93,30 @@
 | tst.ts:43:28:43:30 | foo | "foo" |
 | tst.ts:43:33:43:37 | "foo" | "foo" |
 | type_alias.ts:3:5:3:5 | b | boolean |
+| type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
+| type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
+| type_alias.ts:14:10:14:17 | property | string |
+| type_alias.ts:17:5:17:8 | json | Json |
+| type_alias.ts:21:18:21:35 | [key: string]: any | any |
+| type_alias.ts:21:19:21:21 | key | string |
+| type_alias.ts:23:7:23:12 | myNode | VirtualNode |
+| type_alias.ts:24:5:27:5 | ["div", ... ]\\n    ] | VirtualNode |
+| type_alias.ts:24:6:24:10 | "div" | "div" |
+| type_alias.ts:24:13:24:28 | { id: "parent" } | string \| { [key: string]: any; } |
+| type_alias.ts:24:15:24:16 | id | string |
+| type_alias.ts:24:19:24:26 | "parent" | "parent" |
+| type_alias.ts:25:9:25:61 | ["div", ... child"] | VirtualNode |
+| type_alias.ts:25:10:25:14 | "div" | "div" |
+| type_alias.ts:25:17:25:37 | { id: " ... hild" } | string \| { [key: string]: any; } |
+| type_alias.ts:25:19:25:20 | id | string |
+| type_alias.ts:25:23:25:35 | "first-child" | "first-child" |
+| type_alias.ts:25:40:25:60 | "I'm th ...  child" | "I'm the first child" |
+| type_alias.ts:26:9:26:63 | ["div", ... child"] | VirtualNode |
+| type_alias.ts:26:10:26:14 | "div" | "div" |
+| type_alias.ts:26:17:26:38 | { id: " ... hild" } | string \| { [key: string]: any; } |
+| type_alias.ts:26:19:26:20 | id | string |
+| type_alias.ts:26:23:26:36 | "second-child" | "second-child" |
+| type_alias.ts:26:41:26:62 | "I'm th ...  child" | "I'm the second child" |
 | type_definition_objects.ts:1:13:1:17 | dummy | typeof dummy.ts |
 | type_definition_objects.ts:1:24:1:32 | "./dummy" | any |
 | type_definition_objects.ts:3:14:3:14 | C | C |
@@ -113,4 +139,4 @@
 | type_definitions.ts:16:5:16:9 | color | Color |
 | type_definitions.ts:18:6:18:22 | EnumWithOneMember | EnumWithOneMember |
 | type_definitions.ts:19:5:19:5 | e | EnumWithOneMember |
-| type_definitions.ts:22:5:22:23 | aliasForNumberArray | number[] |
+| type_definitions.ts:22:5:22:23 | aliasForNumberArray | Alias<number> |

@@ -7,7 +7,7 @@ Data flow analysis
 
   - Nodes of the data flow graph.
 
-- Various predicated represent flow between these nodes.
+- Various predicates represent flow between these nodes.
   
   - Edges of the data flow graph.
 
@@ -26,7 +26,7 @@ Data flow graphs
 
    .. code-block:: cpp
 
-      int func(int, tainted) {
+      int func(int tainted) {
          int x = tainted;
          if (someCondition) {
            int y = x;
@@ -61,8 +61,8 @@ Data flow graphs
 Local vs global data flow
 =========================
 
-- Local (“intra-procedural”) data flow models flow within one function; feasible to compute for all functions in a snapshot
-- Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a snapshot
+- Local (“intra-procedural”) data flow models flow within one function; feasible to compute for all functions in a CodeQL database
+- Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a CodeQL database
 - Different APIs, so discussed separately
 - This slide deck focuses on the former
 
@@ -70,7 +70,7 @@ Local vs global data flow
 
   For further information, see:
 
-  - `Introduction to data flow analysis in QL <https://help.semmle.com/QL/learn-ql/ql/intro-to-data-flow.html>`__
+  - `Introduction to data flow analysis with CodeQL <https://help.semmle.com/QL/learn-ql/ql/intro-to-data-flow.html>`__
 
 .. rst-class:: background2
 
