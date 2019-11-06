@@ -21,7 +21,9 @@ Solutions to this problem can be thought of as falling into one of two
 categories: (1) rewrite the signed expression so that overflow cannot occur
 but the signedness remains, or (2) rewrite (or cast) the signed expression
 into unsigned form.
+</p>
 
+<p>
 Below we list examples of expressions where signed overflow may
 occur, along with proposed solutions.  The list should not be
 considered exhaustive.
@@ -31,21 +33,29 @@ considered exhaustive.
 Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>, 
 it is possible to rewrite it as <code>(unsigned short)(i + delta)&nbsp;&lt;&nbsp;i</code>.
 Note that <code>i + delta</code>does not actually overflow, due to <code>int</code> promotion
+</p>
 
+<p>
 Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>,
 it is also possible to rewrite it as <code>USHORT_MAX - delta</code>. It must be true
 that <code>delta &gt; 0</code> and the <code>limits.h</code> or <code>climits</code>
 header has been included.
+</p>
 
+<p>
 Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
 it is possible to rewrite it as <code>INT_MAX - delta</code>. It must be true
 that <code>delta &gt; 0</code> and the <code>limits.h</code> or <code>climits</code>
 header has been included.
+</p>
 
+<p>
 Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
 it is also possible to rewrite it as <code>(unsigned)i + delta &lt; i</code>.
 Note that program semantics are affected by this change.
+</p>
 
+<p>
 Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
 it is also possible to rewrite it as <code>unsigned int i, delta</code> and
 <code>i + delta &lt; i</code>.  Note that program semantics are 
