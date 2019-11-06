@@ -567,7 +567,7 @@ Expr getAnInitializedArgument(Call call) { result = call.getArgument(initialized
  * the call, under the given context and evidence.
  */
 pragma[nomagic]
-int conditionallyInitializedArgument(
+private int conditionallyInitializedArgument(
   Call call, ConditionalInitializationFunction target, Context c, Evidence e
 ) {
   target = getTarget(call) and
@@ -588,7 +588,7 @@ Expr getAConditionallyInitializedArgument(
 /**
  * Gets the type signature for the functions parameters.
  */
-string typeSig(Function f) {
+private string typeSig(Function f) {
   result = concat(int i, Type pt |
       pt = f.getParameter(i).getType()
     |
@@ -599,7 +599,7 @@ string typeSig(Function f) {
 /**
  * Holds where qualifiedName and typeSig make up the signature for the function.
  */
-predicate functionSignature(Function f, string qualifiedName, string typeSig) {
+private predicate functionSignature(Function f, string qualifiedName, string typeSig) {
   qualifiedName = f.getQualifiedName() and
   typeSig = typeSig(f)
 }
@@ -611,7 +611,7 @@ predicate functionSignature(Function f, string qualifiedName, string typeSig) {
  * This is useful for identifying call to target dependencies across libraries, where the libraries
  * are never statically linked together.
  */
-Function getAPossibleDefinition(Function undefinedFunction) {
+private Function getAPossibleDefinition(Function undefinedFunction) {
   not undefinedFunction.isDefined() and
   exists(string qn, string typeSig |
     functionSignature(undefinedFunction, qn, typeSig) and functionSignature(result, qn, typeSig)
