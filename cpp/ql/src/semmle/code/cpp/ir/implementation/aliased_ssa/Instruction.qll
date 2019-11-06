@@ -808,14 +808,12 @@ class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() { getResultType() instanceof Language::FloatingPointType }
 }
 
-class StringConstantInstruction extends Instruction {
-  Language::StringLiteral value;
+class StringConstantInstruction extends VariableInstruction {
+  override IRStringLiteral var;
 
-  StringConstantInstruction() { value = Construction::getInstructionStringLiteral(this) }
+  final override string getImmediateString() { result = Language::getStringLiteralText(getValue()) }
 
-  final override string getImmediateString() { result = Language::getStringLiteralText(value) }
-
-  final Language::StringLiteral getValue() { result = value }
+  final Language::StringLiteral getValue() { result = var.getLiteral() }
 }
 
 class BinaryInstruction extends Instruction {

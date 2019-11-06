@@ -308,6 +308,10 @@ predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) 
   instr.(VariableAddressInstruction).getIRVariable() = var and
   bitOffset = 0
   or
+  // A string literal is just a special read-only global variable.
+  instr.(StringConstantInstruction).getIRVariable() = var and
+  bitOffset = 0
+  or
   exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |
     operand = instr.getAnOperand() and
     // If an operand is propagated, then the result points to the same variable,

@@ -9,4 +9,10 @@ newtype TIRVariable =
     Language::Function func, Language::AST ast, TempVariableTag tag, Language::LanguageType type
   ) {
     Construction::hasTempVariable(func, ast, tag, type)
+  } or
+  TIRStringLiteral(
+    Language::Function func, Language::AST ast, Language::LanguageType type,
+    Language::StringLiteral literal
+  ) {
+    Construction::hasStringLiteral(func, ast, type, literal)
   }

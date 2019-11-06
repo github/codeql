@@ -869,3 +869,29 @@ ssa.cpp:
 #  207|     v0_25(void)          = UnmodeledUse                       : mu*
 #  207|     v0_26(void)          = AliasedUse                         : ~m0_1
 #  207|     v0_27(void)          = ExitFunction                       : 
+
+#  215| char StringLiteralAliasing()
+#  215|   Block 0
+#  215|     v0_0(void)           = EnterFunction                 : 
+#  215|     m0_1(unknown)        = AliasedDefinition             : 
+#  215|     mu0_2(unknown)       = UnmodeledDefinition           : 
+#  216|     r0_3(glval<unknown>) = FunctionAddress[ExternalFunc] : 
+#  216|     v0_4(void)           = Call                          : func:r0_3
+#  216|     m0_5(unknown)        = ^CallSideEffect               : ~m0_1
+#  216|     m0_6(unknown)        = Chi                           : total:m0_1, partial:m0_5
+#  218|     r0_7(glval<char *>)  = VariableAddress[s]            : 
+#  218|     r0_8(glval<char[8]>) = StringConstant["Literal"]     : 
+#  218|     r0_9(char *)         = Convert                       : r0_8
+#  218|     m0_10(char *)        = Store                         : &:r0_7, r0_9
+#  219|     r0_11(glval<char>)   = VariableAddress[#return]      : 
+#  219|     r0_12(glval<char *>) = VariableAddress[s]            : 
+#  219|     r0_13(char *)        = Load                          : &:r0_12, m0_10
+#  219|     r0_14(int)           = Constant[2]                   : 
+#  219|     r0_15(glval<char>)   = PointerAdd[1]                 : r0_13, r0_14
+#  219|     r0_16(char)          = Load                          : &:r0_15, ~m0_1
+#  219|     m0_17(char)          = Store                         : &:r0_11, r0_16
+#  215|     r0_18(glval<char>)   = VariableAddress[#return]      : 
+#  215|     v0_19(void)          = ReturnValue                   : &:r0_18, m0_17
+#  215|     v0_20(void)          = UnmodeledUse                  : mu*
+#  215|     v0_21(void)          = AliasedUse                    : ~m0_6
+#  215|     v0_22(void)          = ExitFunction                  : 
