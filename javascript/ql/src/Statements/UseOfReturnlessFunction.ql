@@ -160,7 +160,7 @@ predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
 module Deferred {
   /**
    * An instance of a `Deferred` class. 
-   * E.g. the result from `new Deferred()` or `new $.Deferred()`.  
+   * For example the result from `new Deferred()` or `new $.Deferred()`.
    */
   class DeferredInstance extends DataFlow::NewNode {
   	// Describes both `new Deferred()`, `new $.Deferred` and other variants. 
