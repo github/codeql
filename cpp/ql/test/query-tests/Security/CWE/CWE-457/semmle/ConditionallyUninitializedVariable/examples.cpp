@@ -1,3 +1,10 @@
+// based on the qhelp
+
+int getMaxDevices();
+bool fetchIsDeviceEnabled(int deviceNumber);
+int fetchDeviceChannel(int deviceNumber);
+void notifyChannel(int channel);
+
 struct DeviceConfig {
   bool isEnabled;
   int channel;
@@ -15,7 +22,18 @@ int initDeviceConfig(DeviceConfig *ref, int deviceNumber) {
   return 0;
 }
 
-int notify(int deviceNumber) {
+void notifyGood(int deviceNumber) {
+  DeviceConfig config;
+  int statusCode = initDeviceConfig(&config, deviceNumber);
+  if (statusCode == 0) {
+    // GOOD: Status code returned by initialization function is checked, so this is safe
+    if (config.isEnabled) {
+      notifyChannel(config.channel);
+    }
+  }
+}
+
+int notifyBad(int deviceNumber) {
   DeviceConfig config;
   initDeviceConfig(&config, deviceNumber);
   // BAD: Using config without checking the status code that is returned
