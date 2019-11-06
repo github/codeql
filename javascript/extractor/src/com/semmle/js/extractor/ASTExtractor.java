@@ -526,6 +526,10 @@ public class ASTExtractor {
       return key;
     }
 
+    private boolean isOctalDigit(char ch) {
+      return '0' <= ch && ch <= '7';
+    }
+
     /**
      * Builds a translation from offsets in a string value back to its original raw literal text
      * (including quotes).
@@ -551,8 +555,14 @@ public class ASTExtractor {
         int outputLength = 1; // Number characters the sequence expands to.
         char ch = rawLiteral.charAt(pos + 1);
         if ('0' <= ch && ch <= '7') {
-          // Octal escape: \NNN
-          length = 4;
+          // Octal escape: \N, \NN, or \NNN
+          int firstDigit = pos + 1;
+          int end = firstDigit;
+          int maxEnd = Math.min(firstDigit + (ch <= '3' ? 3 : 2), rawLiteral.length());
+          while (end < maxEnd && isOctalDigit(rawLiteral.charAt(end))) {
+            ++end;
+          }
+          length = end - pos;
         } else if (ch == 'x') {
           // Hex escape: \xNN
           length = 4;
@@ -562,11 +572,16 @@ public class ASTExtractor {
             // Scan for the ending '}'
             int firstDigit = pos + 3;
             int end = firstDigit;
+            int leadingZeros = 0;
+            while (end < rawLiteral.length() && rawLiteral.charAt(end) == '0') {
+              ++end;
+              ++leadingZeros;
+            }
             while (end < rawLiteral.length() && rawLiteral.charAt(end) != '}') {
               ++end;
             }
             int numDigits = end - firstDigit;
-            if (numDigits > 4) {
+            if (numDigits - leadingZeros > 4) {
               outputLength = 2; // Encoded as a surrogate pair
             }
             ++end; // Include '}' character
