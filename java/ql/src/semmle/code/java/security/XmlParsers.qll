@@ -49,7 +49,7 @@ abstract class ParserConfig extends MethodAccess {
 }
 
 /*
- *  https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#DocumentBuilder
+ * https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#jaxp-documentbuilderfactory-saxparserfactory-and-dom4j
  */
 
 /** The class `javax.xml.parsers.DocumentBuilderFactory`. */
@@ -227,7 +227,7 @@ class SafeDocumentBuilder extends DocumentBuilderConstruction {
 }
 
 /*
- * https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#XMLInputFactory_.28a_StAX_parser.29
+ * https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#xmlinputfactory-a-stax-parser
  */
 
 /** The class `javax.xml.stream.XMLInputFactory`. */
@@ -353,7 +353,7 @@ class SafeXmlInputFactory extends VarAccess {
 }
 
 /*
- * https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#SAXBuilder
+ * https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#saxbuilder
  */
 
 /**
@@ -429,7 +429,7 @@ class SafeSAXBuilder extends VarAccess {
 
 /*
  * The case in
- * https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#Unmarshaller
+ * https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#jaxb-unmarshaller
  * will be split into two, one covers a SAXParser as a sink, the other the SAXSource as a sink.
  */
 
@@ -545,7 +545,7 @@ class SafeSAXParser extends MethodAccess {
   }
 }
 
-/* SAXReader: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#SAXReader */
+/* SAXReader: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#saxreader */
 /**
  * The class `org.dom4j.io.SAXReader`.
  */
@@ -621,7 +621,7 @@ class SafeSAXReader extends VarAccess {
   }
 }
 
-/* https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#XMLReader */
+/* https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#xmlreader */
 /** The class `org.xml.sax.XMLReader`. */
 class XMLReader extends RefType {
   XMLReader() { this.hasQualifiedName("org.xml.sax", "XMLReader") }
@@ -756,7 +756,7 @@ class CreatedSafeXMLReader extends Call {
 
 /*
  * SAXSource in
- * https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#Unmarshaller
+ * https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#jaxb-unmarshaller
  */
 
 /** The class `javax.xml.transform.sax.SAXSource` */
@@ -811,7 +811,7 @@ class SafeSAXSource extends Expr {
   }
 }
 
-/* Transformer: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#TransformerFactory */
+/* Transformer: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#transformerfactory */
 /** An access to a method use for configuring a transformer or schema. */
 abstract class TransformerConfig extends MethodAccess {
   /** Holds if the configuration is disabled */
@@ -975,7 +975,7 @@ class SafeTransformer extends MethodAccess {
 }
 
 /*
- * SAXTransformer: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#SAXTransformerFactory
+ * SAXTransformer: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#saxtransformerfactory
  * Has an extra method called newFilter.
  */
 
@@ -996,7 +996,7 @@ class SAXTransformerFactoryNewXMLFilter extends XmlParserCall {
   }
 }
 
-/* Schema: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#SchemaFactory */
+/* Schema: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#schemafactory */
 /** The class `javax.xml.validation.SchemaFactory`. */
 class SchemaFactory extends RefType {
   SchemaFactory() { this.hasQualifiedName("javax.xml.validation", "SchemaFactory") }
@@ -1060,7 +1060,7 @@ class SafeSchemaFactory extends VarAccess {
   }
 }
 
-/* Unmarshaller: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#Unmarshaller */
+/* Unmarshaller: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#jaxb-unmarshaller */
 /** The class `javax.xml.bind.Unmarshaller`. */
 class XmlUnmarshaller extends RefType {
   XmlUnmarshaller() { this.hasQualifiedName("javax.xml.bind", "Unmarshaller") }
@@ -1081,7 +1081,7 @@ class XmlUnmarshal extends XmlParserCall {
   override predicate isSafe() { none() }
 }
 
-/* XPathExpression: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#XPathExpression */
+/* XPathExpression: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#xpathexpression */
 /** The class `javax.xml.xpath.XPathExpression`. */
 class XPathExpression extends RefType {
   XPathExpression() { this.hasQualifiedName("javax.xml.xpath", "XPathExpression") }
