@@ -89,9 +89,9 @@ class ParameterNullCheck extends ParameterCheck {
       (
         va = this.(NotExpr).getOperand() or
         va = any(EQExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
-        va = getAssertedFalseCondition(this) or
+        va = getCheckedFalseCondition(this) or
         va = any(NEExpr eq |
-            eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
+            eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
           ).getAnOperand()
       )
       or
@@ -101,7 +101,7 @@ class ParameterNullCheck extends ParameterCheck {
         va = this or
         va = any(NEExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
         va = any(EQExpr eq |
-            eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
+            eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
           ).getAnOperand()
       )
     )
@@ -669,7 +669,7 @@ FieldAccess getAFieldAccess(Variable v) {
 }
 
 /**
- * Gets a condition which is asserted to be false by the given `ne` expression, according to this pattern:
+ * Gets a condition which is checked to be false by the given `ne` expression, according to this pattern:
  * ```
  * int a = !!result;
  * if (!a) {  // <- ne
@@ -677,7 +677,7 @@ FieldAccess getAFieldAccess(Variable v) {
  * }
  * ```
  */
-Expr getAssertedFalseCondition(NotExpr ne) {
+private Expr getCheckedFalseCondition(NotExpr ne) {
   exists(LocalVariable v |
     result = v.getInitializer().getExpr().(NotExpr).getOperand().(NotExpr).getOperand() and
     ne.getOperand() = v.getAnAccess() and
