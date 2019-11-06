@@ -85,6 +85,18 @@ module DataFlow {
     /** Gets the expression corresponding to this data flow node, if any. */
     Expr asExpr() { this = TValueNode(result) }
 
+    /**
+     * Gets the expression enclosing this data flow node. 
+     * In most cases the result is the same as `asExpr()`, however this method 
+     * additionally the `InvokeExpr` corresponding to reflective calls, and the `Parameter` 
+     * for a `DataFlow::ParameterNode`. 
+     */
+    Expr getEnclosingExpr() {
+      result = asExpr() or
+      this = DataFlow::reflectiveCallNode(result) or
+      result = this.(ParameterNode).getParameter()
+    }
+
     /** Gets the AST node corresponding to this data flow node, if any. */
     ASTNode getAstNode() { none() }
 
@@ -950,6 +962,16 @@ module DataFlow {
    * Gets a pseudo-node representing the root of a global access path.
    */
   DataFlow::Node globalAccessPathRootPseudoNode() { result instanceof TGlobalAccessPathRoot }
+  
+  /**
+   * Gets a data flow node representing the underlying call performed by the given
+   * call to `Function.prototype.call` or `Function.prototype.apply`.
+   *
+   * For example, for an expression `fn.call(x, y)`, this gets a call node with `fn` as the
+   * callee, `x` as the receiver, and `y` as the first argument.
+   */
+  DataFlow::InvokeNode reflectiveCallNode(InvokeExpr expr) { result = TReflectiveCallNode(expr, _) }
+  
 
   /**
    * Provides classes representing various kinds of calls.
