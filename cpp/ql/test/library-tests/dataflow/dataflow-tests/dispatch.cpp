@@ -28,17 +28,17 @@ struct Bottom : Middle {
 void VirtualDispatch(Bottom *bottomPtr, Bottom &bottomRef) {
   Top *topPtr = bottomPtr, &topRef = bottomRef;
 
-  sink(topPtr->isSource1()); // flow [NOT DETECTED]
+  sink(topPtr->isSource1()); // flow [NOT DETECTED by AST]
   sink(topPtr->isSource2()); // flow [NOT DETECTED by AST]
-  topPtr->isSink(source()); // flow [NOT DETECTED]
+  topPtr->isSink(source()); // flow [NOT DETECTED by AST]
 
   sink(topPtr->notSource1()); // no flow [FALSE POSITIVE]
   sink(topPtr->notSource2()); // no flow [FALSE POSITIVE]
   topPtr->notSink(source()); // no flow [FALSE POSITIVE]
 
-  sink(topRef.isSource1()); // flow [NOT DETECTED]
+  sink(topRef.isSource1()); // flow [NOT DETECTED by AST]
   sink(topRef.isSource2()); // flow [NOT DETECTED by AST]
-  topRef.isSink(source()); // flow [NOT DETECTED]
+  topRef.isSink(source()); // flow [NOT DETECTED by AST]
 
   sink(topRef.notSource1()); // no flow [FALSE POSITIVE]
   sink(topRef.notSource2()); // no flow [FALSE POSITIVE]

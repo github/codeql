@@ -205,7 +205,8 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   iTo.(CopyInstruction).getSourceValue() = iFrom or
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnary() = iFrom
+  iTo.(ConvertInstruction).getUnary() = iFrom or
+  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
 }
 
 /**
