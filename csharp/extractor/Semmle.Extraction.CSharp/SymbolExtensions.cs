@@ -234,12 +234,7 @@ namespace Semmle.Extraction.CSharp
 
         public static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
-            bool prefixAssembly = false;
-            if (named.IsAnonymous()) prefixAssembly = true;
-            if (named.ContainingAssembly is null) prefixAssembly = false;
-
-            if (prefixAssembly)
-                BuildAssembly(named.ContainingAssembly, trapFile);
+            bool prefixAssembly = !(named.ContainingAssembly is null);
 
             if (named.IsTupleType)
             {
@@ -263,6 +258,8 @@ namespace Semmle.Extraction.CSharp
             }
             else if (named.ContainingNamespace != null)
             {
+                if (prefixAssembly)
+                    BuildAssembly(named.ContainingAssembly, trapFile);
                 named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
 
