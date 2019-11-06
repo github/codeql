@@ -86,7 +86,6 @@ import javascript
 class RegExpRoot extends RegExpTerm {
   RegExpParent parent;
 
-  // RegExpTerm is abstract, so do not extend it.
   RegExpRoot() {
     exists(RegExpAlt alt |
       alt.isRootTerm() and
