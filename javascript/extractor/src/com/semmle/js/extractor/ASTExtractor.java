@@ -520,7 +520,7 @@ public class ASTExtractor {
         OffsetTranslation offsets = new OffsetTranslation();
         offsets.set(0, 1); // skip the initial '/'
         regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), offsets, nd, false);
-      } else if (nd.isStringLiteral()) {
+      } else if (nd.isStringLiteral() && !c.isInsideType()) {
         regexpExtractor.extract(valueString, makeStringLiteralOffsets(nd.getRaw()), nd, true);
       }
       return key;
