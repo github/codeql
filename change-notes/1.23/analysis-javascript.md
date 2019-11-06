@@ -2,7 +2,7 @@
 
 ## General improvements
 
-* Suppor for `globalThis` has been added.
+* Support for `globalThis` has been added.
 
 * Support for the following frameworks and libraries has been improved:
   - [firebase](https://www.npmjs.com/package/firebase)
