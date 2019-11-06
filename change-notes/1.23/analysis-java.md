@@ -2,6 +2,12 @@
 
 The following changes in version 1.23 affect Java analysis in all applications.
 
+## New queries
+
+| **Query**                   | **Tags**  | **Purpose**                                                        |
+|-----------------------------|-----------|--------------------------------------------------------------------|
+| Continue statement that does not continue (`java/continue-in-false-loop`) | correctness | Finds `continue` statements in `do { ... } while (false)` loops. |
+
 ## Changes to existing queries
 
 | **Query**                    | **Expected impact**    | **Change**                        |

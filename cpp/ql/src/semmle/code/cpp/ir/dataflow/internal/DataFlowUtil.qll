@@ -5,6 +5,7 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
+private import semmle.code.cpp.ir.ValueNumbering
 
 /**
  * A newtype wrapper to prevent accidental casts between `Node` and
@@ -214,13 +215,21 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
+ * Holds if data can flow from `i1` to `i2` in zero or more
+ * local (intra-procedural) steps.
+ */
+predicate localInstructionFlow(Instruction e1, Instruction e2) {
+  localFlow(instructionNode(e1), instructionNode(e2))
+}
+
+/**
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
- * A guard that validates some expression.
+ * A guard that validates some instruction.
  *
  * To use this in a configuration, extend the class and provide a
  * characteristic predicate precisely specifying the guard, and override
@@ -229,11 +238,15 @@ predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)
  * It is important that all extending classes in scope are disjoint.
  */
 class BarrierGuard extends IRGuardCondition {
-  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `b`. */
-  abstract deprecated predicate checks(Instruction e, boolean b);
+  /** Override this predicate to hold if this guard validates `instr` upon evaluating to `b`. */
+  abstract predicate checks(Instruction instr, boolean b);
 
   /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
-    none() // stub
+    exists(ValueNumber value, boolean edge |
+      result.asInstruction() = value.getAnInstruction() and
+      this.checks(value.getAnInstruction(), edge) and
+      this.controls(result.asInstruction().getBlock(), edge)
+    )
   }
 }

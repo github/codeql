@@ -4,12 +4,12 @@ Tutorial: Conversions and classes
 Overview
 --------
 
-This topic contains worked examples of how to write queries using the standard QL library classes for C/C++ conversions and classes.
+This topic contains worked examples of how to write queries using the CodeQL library classes for C/C++ conversions and classes.
 
 Conversions
 -----------
 
-Let us take a look at the QL ``Conversion`` class in the standard library:
+Let us take a look at the ``Conversion`` class in the standard library:
 
 -  ``Expr``
 
@@ -128,26 +128,26 @@ Unlike the earlier versions of the query, this query would return each side of t
 
    Note
    
-    In general, QL predicates named ``getAXxx`` exploit the ability to return multiple results (multiple instances of ``Xxx``) whereas plain ``getXxx`` predicates usually return at most one specific instance of ``Xxx``.
+    In general, predicates named ``getAXxx`` exploit the ability to return multiple results (multiple instances of ``Xxx``) whereas plain ``getXxx`` predicates usually return at most one specific instance of ``Xxx``.
 
 Classes
 -------
 
-Next we're going to look at C++ classes, using the following QL classes:
+Next we're going to look at C++ classes, using the following CodeQL classes:
 
 -  ``Type``
 
-   -  ``UserType``—includes classes, typedefs and enums
+   -  ``UserType``—includes classes, typedefs, and enums
 
       -  ``Class``—a class or struct
 
-         -  ``Struct``—a struct, which is treated as a subtype of Class in QL.
+         -  ``Struct``—a struct, which is treated as a subtype of ``Class``
          -  ``TemplateClass``—a C++ class template
 
 Finding derived classes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-We want to create a query that checks for destructors that should be ``virtual``. Specifically, when a class and a class derived from it both have destructors, the base class destructor should generally be virtual. This ensures that the derived class destructor is always invoked. A ``Destructor`` in QL is a subtype of ``MemberFunction``:
+We want to create a query that checks for destructors that should be ``virtual``. Specifically, when a class and a class derived from it both have destructors, the base class destructor should generally be virtual. This ensures that the derived class destructor is always invoked. In the CodeQL library, ``Destructor`` is a subtype of ``MemberFunction``:
 
 -  ``Function``
 
@@ -221,13 +221,13 @@ Our last change is to use ``Function.isVirtual()`` to find cases where the base 
 
 That completes the query.
 
-There is a similar built-in LGTM `query <https://lgtm.com/rules/2158670642/>`__ that finds classes in a C/C++ project with virtual functions but no virtual destructor. You can take a look at the QL code for this query by clicking **Open in query console** at the top of that page.
+There is a similar built-in LGTM `query <https://lgtm.com/rules/2158670642/>`__ that finds classes in a C/C++ project with virtual functions but no virtual destructor. You can take a look at the code for this query by clicking **Open in query console** at the top of that page.
 
 What next?
 ----------
 
 -  Explore other ways of querying classes using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/class>`__.
 -  Take a look at the :doc:`Analyzing data flow in C/C++ <dataflow>` tutorial.
--  Try the worked examples in the following topics: :doc:`Example: Checking that constructors initialize all private fields <private-field-initialization>` and :doc:`Example: Checking for allocations equal to 'strlen(string)' without space for a null terminator <zero-space-terminator>`.
+-  Try the worked examples in the following topics: :doc:`Example: Checking that constructors initialize all private fields <private-field-initialization>`, and :doc:`Example: Checking for allocations equal to 'strlen(string)' without space for a null terminator <zero-space-terminator>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

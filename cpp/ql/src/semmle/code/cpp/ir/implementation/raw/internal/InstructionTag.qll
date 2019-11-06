@@ -26,6 +26,7 @@ newtype TInstructionTag =
   UnmodeledDefinitionTag() or
   UnmodeledUseTag() or
   AliasedDefinitionTag() or
+  AliasedUseTag() or
   SwitchBranchTag() or
   CallTargetTag() or
   CallTag() or
@@ -118,6 +119,8 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = UnmodeledUseTag() and result = "UnmodeledUse"
   or
   tag = AliasedDefinitionTag() and result = "AliasedDef"
+  or
+  tag = AliasedUseTag() and result = "AliasedUse"
   or
   tag = SwitchBranchTag() and result = "SwitchBranch"
   or

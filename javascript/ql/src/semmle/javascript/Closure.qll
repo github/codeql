@@ -248,4 +248,25 @@ module Closure {
   DataFlow::SourceNode moduleImport(string moduleName) {
     getClosureNamespaceFromSourceNode(result) = moduleName
   }
+
+  /**
+   * A call to `goog.bind`, as a partial function invocation.
+   */
+  private class BindCall extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
+    BindCall() { this = moduleImport("goog.bind").getACall() }
+
+    override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      index >= 0 and
+      callback = getArgument(0) and
+      argument = getArgument(index + 2)
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      boundArgs = getNumArgument() - 2 and
+      callback = getArgument(0) and
+      result = this
+    }
+
+    override DataFlow::Node getBoundReceiver() { result = getArgument(1) }
+  }
 }

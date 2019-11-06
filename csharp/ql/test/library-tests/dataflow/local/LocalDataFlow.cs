@@ -438,6 +438,12 @@ public class LocalDataFlow
                 Check(nonSink17);
                 break;
         }
+
+        // Null-coalescing expressions
+        var sink73 = nonSink0 ?? sink0;
+        var sink74 = sink0 ?? nonSink0;
+        Check(sink73);
+        Check(sink74);
     }
 
     static void Check<T>(T x) { }

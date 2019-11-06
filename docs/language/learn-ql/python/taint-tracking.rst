@@ -13,10 +13,10 @@ Taint tracking differs from basic data flow in that it considers non-value-prese
 For example, in the assignment ``dir = path + "/"``, if ``path`` is tainted then ``dir`` is also tainted,
 even though there is no data flow from ``path`` to ``path + "/"``.
 
-Separate QL libraries have been written to handle 'normal' data flow and taint tracking in :doc:`C/C++ <../cpp/dataflow>`, :doc:`C# <../csharp/dataflow>`, :doc:`Java <../java/dataflow>`, and :doc:`JavaScript <../javascript/dataflow>`. You can access the appropriate classes and predicates that reason about these different modes of data flow by importing the appropriate QL library in your query. 
+Separate CodeQL libraries have been written to handle 'normal' data flow and taint tracking in :doc:`C/C++ <../cpp/dataflow>`, :doc:`C# <../csharp/dataflow>`, :doc:`Java <../java/dataflow>`, and :doc:`JavaScript <../javascript/dataflow>`. You can access the appropriate classes and predicates that reason about these different modes of data flow by importing the appropriate library in your query. 
 In Python analysis, we can use the same taint tracking library to model both 'normal' data flow and taint flow, but we are still able make the distinction between steps that preserve value and those that don't by defining additional data flow properties. 
 
-For further information on data flow and taint tracking in QL, see :doc:`Introduction to data flow <../intro-to-data-flow>`.
+For further information on data flow and taint tracking with CodeQL, see :doc:`Introduction to data flow <../intro-to-data-flow>`.
 
 Fundamentals of taint tracking and data flow analysis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -222,7 +222,7 @@ The ``TaintTracking::Source`` and ``TaintTracking::Sink`` classes have predicate
         ...
     }
 
-The ``TaintKind`` itself is just a string (a QL string, not a QL entity representing a Python string),
+The ``TaintKind`` itself is just a string (a QL string, not a CodeQL entity representing a Python string),
 which provides methods to extend flow and allow the kind of taint to change along the path.
 The ``TaintKind`` class has many predicates allowing flow to be modified.
 This simplest ``TaintKind`` does not override any predicates, meaning that it only flows as opaque data.
@@ -254,5 +254,5 @@ which defines the simplest possible taint kind class, ``HardcodedValue``, and cu
 What next?
 ----------
 
--  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Control flow <control-flow>`, and :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
+-  Experiment with the worked examples in the following tutorial topics: :doc:`Control flow <control-flow>` and :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

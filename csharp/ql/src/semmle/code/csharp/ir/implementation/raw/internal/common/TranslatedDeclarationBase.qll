@@ -11,6 +11,7 @@ private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedInitialization
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 abstract class LocalVariableDeclarationBase extends TranslatedElement {
@@ -18,19 +19,15 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
 
   override Instruction getFirstInstruction() { result = getVarAddress() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getVarType() and
-    isLValue = true
+    resultType = getTypeForGLValue(getVarType())
     or
     hasUninitializedInstruction() and
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Uninitialized and
-    resultType = getVarType() and
-    isLValue = false
+    resultType = getTypeForPRValue(getVarType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {

@@ -10,7 +10,7 @@ import javascript
  * That is, either `shell` is a Unix shell (`sh` or similar) and
  * `arg` is `"-c"`, or `shell` is `cmd.exe` and `arg` is `"/c"`.
  */
-private predicate shellCmd(ConstantString shell, string arg) {
+private predicate shellCmd(Expr shell, string arg) {
   exists(string s | s = shell.getStringValue() |
     (s = "sh" or s = "bash" or s = "/bin/sh" or s = "/bin/bash") and
     arg = "-c"
@@ -23,25 +23,29 @@ private predicate shellCmd(ConstantString shell, string arg) {
 }
 
 /**
- * Data flow configuration for tracking string literals that look like they
- * may refer to an operating-system shell, and array literals that may end up being
- * interpreted as argument lists for system commands.
+ * Gets a data-flow node whose value ends up being interpreted as the command argument in `sys`
+ * after a flow summarized by `t`.
  */
-private class ArgumentListTracking extends DataFlow::Configuration {
-  ArgumentListTracking() { this = "ArgumentListTracking" }
+private DataFlow::Node commandArgument(SystemCommandExecution sys, DataFlow::TypeBackTracker t) {
+  t.start() and
+  result = sys.getACommandArgument()
+  or
+  exists(DataFlow::TypeBackTracker t2 |
+    t = t2.smallstep(result, commandArgument(sys, t2))
+  )
+}
 
-  override predicate isSource(DataFlow::Node nd) {
-    nd instanceof DataFlow::ArrayCreationNode
-    or
-    exists(ConstantString shell | shellCmd(shell, _) | nd = DataFlow::valueNode(shell))
-  }
-
-  override predicate isSink(DataFlow::Node nd) {
-    exists(SystemCommandExecution sys |
-      nd = sys.getACommandArgument() or
-      nd = sys.getArgumentList()
-    )
-  }
+/**
+ * Gets a data-flow node whose value ends up being interpreted as the argument list in `sys`
+ * after a flow summarized by `t`.
+ */
+private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::TypeBackTracker t) {
+  t.start() and
+  result = sys.getArgumentList().getALocalSource()
+  or
+  exists(DataFlow::TypeBackTracker t2 |
+    result = argumentList(sys, t2).backtrack(t2, t)
+  )
 }
 
 /**
@@ -60,11 +64,11 @@ private class ArgumentListTracking extends DataFlow::Configuration {
  */
 predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecution sys) {
   exists(
-    ArgumentListTracking cfg, DataFlow::ArrayCreationNode args, ConstantString shell, string dashC
+    DataFlow::ArrayCreationNode args, DataFlow::Node shell, string dashC
   |
-    shellCmd(shell, dashC) and
-    cfg.hasFlow(DataFlow::valueNode(shell), sys.getACommandArgument()) and
-    cfg.hasFlow(args, sys.getArgumentList()) and
+    shellCmd(shell.asExpr(), dashC) and
+    shell = commandArgument(sys, DataFlow::TypeBackTracker::end()) and
+    args = argumentList(sys, DataFlow::TypeBackTracker::end()) and
     args.getAPropertyWrite().getRhs().mayHaveStringValue(dashC) and
     source = args.getAPropertyWrite().getRhs()
   )

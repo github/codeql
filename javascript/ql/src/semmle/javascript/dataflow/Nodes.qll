@@ -6,6 +6,7 @@
 
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
+private import internal.CallGraphs
 
 /** A data flow node corresponding to an expression. */
 class ExprNode extends DataFlow::ValueNode {
@@ -89,8 +90,42 @@ class InvokeNode extends DataFlow::SourceNode {
 
   Function getEnclosingFunction() { result = getBasicBlock().getContainer() }
 
-  /** Gets a function passed as the `i`th argument of this invocation. */
+  /**
+   * Gets a function passed as the `i`th argument of this invocation.
+   *
+   * This predicate only performs local data flow tracking.
+   * Consider using `getABoundCallbackParameter` to handle interprocedural flow of callback functions.
+   */
   FunctionNode getCallback(int i) { result.flowsTo(getArgument(i)) }
+
+  /**
+   * Gets a parameter of a callback passed into this call.
+   *
+   * `callback` indicates which argument the callback passed into, and `param`
+   * is the index of the parameter in the callback function.
+   *
+   * For example, for the call below, `getABoundCallbackParameter(1, 0)` refers
+   * to the parameter `e` (the first parameter of the second callback argument):
+   * ```js
+   * addEventHandler("click", e => { ... })
+   * ```
+   *
+   * This predicate takes interprocedural data flow into account, as well as
+   * partial function applications such as `.bind`.
+   *
+   * For example, for the call below `getABoundCallbackParameter(1, 0)` returns the parameter `e`,
+   * (the first parameter of the second callback argument), since the first parameter of `foo`
+   * has been bound by the `bind` call:
+   * ```js
+   * function foo(x, e) { }
+   * addEventHandler("click", foo.bind(this, "value of x"))
+   * ```
+   */
+  ParameterNode getABoundCallbackParameter(int callback, int param) {
+    exists(int boundArgs |
+      result = getArgument(callback).getABoundFunctionValue(boundArgs).getParameter(param + boundArgs)
+    )
+  }
 
   /**
    * Holds if the `i`th argument of this invocation is an object literal whose property
@@ -104,7 +139,7 @@ class InvokeNode extends DataFlow::SourceNode {
   }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  AbstractValue getACalleeValue() { result = InvokeNode::getACalleeValue(this) }
+  final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
 
   /**
    * Gets a potential callee of this call site.
@@ -112,7 +147,7 @@ class InvokeNode extends DataFlow::SourceNode {
    * To alter the call graph as seen by the interprocedural data flow libraries, override
    * the `getACallee(int imprecision)` predicate instead.
    */
-  Function getACallee() { result = InvokeNode::getACallee(this) }
+  final Function getACallee() { result = getACallee(0) }
 
   /**
    * Gets a callee of this call site where `imprecision` is a heuristic measure of how
@@ -120,12 +155,15 @@ class InvokeNode extends DataFlow::SourceNode {
    * imprecise analysis of global variables and is not, in fact, a viable callee at all.
    *
    * Callees with imprecision zero, in particular, have either been derived without
-   * considering global variables, or are calls to a global variable within the same file.
+   * considering global variables, or are calls to a global variable within the same file,
+   * or a global variable that has unique definition within the project.
    *
    * This predicate can be overridden to alter the call graph used by the interprocedural
    * data flow libraries.
    */
-  Function getACallee(int imprecision) { result = InvokeNode::getACallee(this, imprecision) }
+  Function getACallee(int imprecision) {
+    result = CallGraph::getACallee(this, imprecision).getFunction()
+  }
 
   /**
    * Holds if the approximation of possible callees for this call site is
@@ -170,60 +208,6 @@ class InvokeNode extends DataFlow::SourceNode {
    */
   DataFlow::ExceptionalInvocationReturnNode getExceptionalReturn() {
     DataFlow::exceptionalInvocationReturnNode(result, asExpr())
-  }
-}
-
-/** Auxiliary module used to cache a few related predicates together. */
-cached
-private module InvokeNode {
-  /** Gets an abstract value representing possible callees of `invk`. */
-  cached
-  AbstractValue getACalleeValue(InvokeNode invk) {
-    result = invk.getCalleeNode().analyze().getAValue()
-  }
-
-  /** Gets a potential callee of `invk` based on dataflow analysis results. */
-  private Function getACalleeFromDataflow(InvokeNode invk) {
-    result = getACalleeValue(invk).(AbstractCallable).getFunction()
-  }
-
-  /** Gets a potential callee of `invk`. */
-  cached
-  Function getACallee(InvokeNode invk) {
-    result = getACalleeFromDataflow(invk)
-    or
-    not exists(getACalleeFromDataflow(invk)) and
-    result = invk.(DataFlow::Impl::ExplicitInvokeNode).asExpr().(InvokeExpr).getResolvedCallee()
-  }
-
-  /**
-   * Gets a callee of `invk` where `imprecision` is a heuristic measure of how
-   * likely it is that `callee` is only suggested as a potential callee due to
-   * imprecise analysis of global variables and is not, in fact, a viable callee at all.
-   *
-   * Callees with imprecision zero, in particular, have either been derived without
-   * considering global variables, or are calls to a global variable within the same file.
-   */
-  cached
-  Function getACallee(InvokeNode invk, int imprecision) {
-    result = getACallee(invk) and
-    (
-      // if global flow was used to derive the callee, we may be imprecise
-      if invk.isIndefinite("global")
-      then
-        // callees within the same file are probably genuine
-        result.getFile() = invk.getFile() and imprecision = 0
-        or
-        // calls to global functions declared in an externs file are fairly
-        // safe as well
-        result.inExternsFile() and imprecision = 1
-        or
-        // otherwise we make worst-case assumptions
-        imprecision = 2
-      else
-        // no global flow, so no imprecision
-        imprecision = 0
-    )
   }
 }
 
@@ -403,6 +387,9 @@ class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 
   /** Gets an element of this array literal. */
   DataFlow::ValueNode getAnElement() { result = DataFlow::valueNode(astNode.getAnElement()) }
+
+  /** Gets the initial size of this array. */
+  int getSize() { result = astNode.getSize() }
 }
 
 /** A data flow node corresponding to a `new Array()` or `Array()` invocation. */
@@ -419,6 +406,14 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
   DataFlow::ValueNode getAnElement() {
     getNumArgument() > 1 and
     result = getAnArgument()
+  }
+
+  /** Gets the initial size of the created array, if it can be determined. */
+  int getSize() {
+    if getNumArgument() = 1 then
+      result = getArgument(0).getIntValue()
+    else
+      result = count(getAnElement())
   }
 }
 
@@ -440,6 +435,12 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 
   /** Gets an initial element of this array, if one if provided. */
   DataFlow::ValueNode getAnElement() { result = getElement(_) }
+
+  /** Gets the initial size of the created array, if it can be determined. */
+  int getSize() {
+    result = this.(ArrayLiteralNode).getSize() or
+    result = this.(ArrayConstructorInvokeNode).getSize()
+  }
 }
 
 /**
@@ -660,6 +661,8 @@ class ClassNode extends DataFlow::SourceNode {
 
   /**
    * Gets a direct super class of this class.
+   *
+   * This predicate can be overridden to customize the class hierarchy.
    */
   ClassNode getADirectSuperClass() { result.getAClassReference().flowsTo(getASuperClassNode()) }
 
@@ -689,10 +692,17 @@ class ClassNode extends DataFlow::SourceNode {
 
   /**
    * Gets a dataflow node that refers to this class object.
+   *
+   * This predicate can be overridden to customize the tracking of class objects.
    */
-  private DataFlow::SourceNode getAClassReference(DataFlow::TypeTracker t) {
+  DataFlow::SourceNode getAClassReference(DataFlow::TypeTracker t) {
     t.start() and
-    result.(AnalyzedNode).getAValue() = getAbstractClassValue()
+    result.(AnalyzedNode).getAValue() = getAbstractClassValue() and
+    (
+      not CallGraph::isIndefiniteGlobal(result)
+      or
+      result.getAstNode().getFile() = this.getAstNode().getFile()
+    )
     or
     exists(DataFlow::TypeTracker t2 | result = getAClassReference(t2).track(t2, t))
   }
@@ -701,14 +711,16 @@ class ClassNode extends DataFlow::SourceNode {
    * Gets a dataflow node that refers to this class object.
    */
   cached
-  DataFlow::SourceNode getAClassReference() {
+  final DataFlow::SourceNode getAClassReference() {
     result = getAClassReference(DataFlow::TypeTracker::end())
   }
 
   /**
    * Gets a dataflow node that refers to an instance of this class.
+   *
+   * This predicate can be overridden to customize the tracking of class instances.
    */
-  private DataFlow::SourceNode getAnInstanceReference(DataFlow::TypeTracker t) {
+  DataFlow::SourceNode getAnInstanceReference(DataFlow::TypeTracker t) {
     result = getAClassReference(t.continue()).getAnInstantiation()
     or
     t.start() and
@@ -743,8 +755,15 @@ class ClassNode extends DataFlow::SourceNode {
    * Gets a dataflow node that refers to an instance of this class.
    */
   cached
-  DataFlow::SourceNode getAnInstanceReference() {
+  final DataFlow::SourceNode getAnInstanceReference() {
     result = getAnInstanceReference(DataFlow::TypeTracker::end())
+  }
+
+  /**
+   * Gets an access to a static member of this class.
+   */
+  DataFlow::PropRead getAStaticMemberAccess(string name) {
+    result = getAClassReference().getAPropertyRead(name)
   }
 
   /**
@@ -978,3 +997,140 @@ module ClassNode {
     }
   }
 }
+
+/**
+ * A data flow node that performs a partial function application.
+ *
+ * Examples:
+ * ```js
+ * fn.bind(this)
+ * x.method.bind(x)
+ * _.partial(fn, x, y, z)
+ * ```
+ */
+class PartialInvokeNode extends DataFlow::Node {
+  PartialInvokeNode::Range range;
+
+  PartialInvokeNode() { this = range }
+
+  /**
+   * Holds if `argument` is passed as argument `index` to the function in `callback`.
+   */
+  predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+    range.isPartialArgument(callback, argument, index)
+  }
+
+  /**
+   * Gets a node referring to a bound version of `callback` with `boundArgs` arguments bound.
+   */
+  DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+    result = range.getBoundFunction(callback, boundArgs)
+  }
+
+  /**
+   * Gets the node holding the receiver to be passed to the bound function, if specified.
+   */
+  DataFlow::Node getBoundReceiver() { result = range.getBoundReceiver() }
+}
+
+module PartialInvokeNode {
+  /**
+   * A data flow node that performs a partial function application.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Holds if `argument` is passed as argument `index` to the function in `callback`.
+     */
+    predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) { none() }
+
+    /**
+     * Gets a node referring to a bound version of `callback` with `boundArgs` arguments bound.
+     */
+    DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) { none() }
+
+    /**
+     * Gets the node holding the receiver to be passed to the bound function, if specified.
+     */
+    DataFlow::Node getBoundReceiver() { none() }
+  }
+
+  /**
+  * A partial call through the built-in `Function.prototype.bind`.
+  */
+  private class BindPartialCall extends PartialInvokeNode::Range, DataFlow::MethodCallNode {
+    BindPartialCall() {
+      getMethodName() = "bind" and
+
+      // Avoid overlap with angular.bind and goog.bind
+      not this = AngularJS::angular().getAMethodCall() and
+      not getReceiver().accessesGlobal("goog")
+    }
+
+    override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      index >= 0 and
+      callback = getReceiver() and
+      argument = getArgument(index + 1)
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      callback = getReceiver() and
+      boundArgs = getNumArgument() - 1 and
+      result = this
+    }
+
+    override DataFlow::Node getBoundReceiver() {
+      result = getArgument(0)
+    }
+  }
+
+  /**
+  * A partial call through `_.partial`.
+  */
+  private class LodashPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
+    LodashPartialCall() { this = LodashUnderscore::member("partial").getACall() }
+
+    override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      index >= 0 and
+      callback = getArgument(0) and
+      argument = getArgument(index + 1)
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      callback = getArgument(0) and
+      boundArgs = getNumArgument() - 1 and
+      result = this
+    }
+  }
+
+  /**
+   * A partial call through `ramda.partial`.
+   */
+  private class RamdaPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
+    RamdaPartialCall() { this = DataFlow::moduleMember("ramda", "partial").getACall() }
+
+    private DataFlow::ArrayCreationNode getArgumentsArray() {
+      result.flowsTo(getArgument(1))
+    }
+
+    override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      callback = getArgument(0) and
+      argument = getArgumentsArray().getElement(index)
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      callback = getArgument(0) and
+      boundArgs = getArgumentsArray().getSize() and
+      result = this
+    }
+  }
+}
+
+/**
+ * DEPRECATED. Subclasses should extend `PartialInvokeNode::Range` instead,
+ * and predicates should use `PartialInvokeNode` instead.
+ *
+ * An invocation that is modeled as a partial function application.
+ *
+ * This contributes additional argument-passing flow edges that should be added to all data flow configurations.
+ */
+deprecated class AdditionalPartialInvokeNode = PartialInvokeNode::Range;

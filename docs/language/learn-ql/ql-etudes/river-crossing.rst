@@ -1,7 +1,7 @@
 River crossing puzzle
 #####################
 
-The aim of this tutorial is to write a QL query that finds a solution to the following classical logic puzzle:
+The aim of this tutorial is to write a query that finds a solution to the following classical logic puzzle:
 
 .. pull-quote::
 
@@ -243,7 +243,7 @@ You could tweak the predicate and the select clause to make the solution clearer
 Alternative solutions
 ---------------------
 
-Here are some more example QL queries that solve the river crossing puzzle:
+Here are some more example queries that solve the river crossing puzzle:
 
   #. This query uses a modified ``path`` variable to describe the resulting path in
      more detail.

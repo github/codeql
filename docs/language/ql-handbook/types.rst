@@ -230,7 +230,7 @@ abstract class, you can add more subclasses to it.
 
 **Example**
 
-If you are writing a security query in QL, you may be interested in identifying 
+If you are writing a security query, you may be interested in identifying 
 all expressions that can be interpreted as SQL queries. 
 You can use the following abstract class to describe these expressions::
 
@@ -438,7 +438,7 @@ In the standard QL language libraries, this is usually done as follows:
   and provide a definition for any abstract predicates from ``A``.
 - Annotate the algebraic datatype with :ref:`private`, and leave the classes public.
 
-For example, the following code snippet from the QL for C# data flow library defines classes
+For example, the following code snippet from the CodeQL data-flow library for C# defines classes
 for dealing with tainted or untainted values. In this case, it doesn't make sense for 
 ``TaintType`` to extend a database type. It is part of the taint analysis, not the underlying
 program, so it's helpful to extend a new type (namely ``TTaintType``):: 
@@ -473,7 +473,7 @@ Database types
 Database types are defined in the database schema. This means that they depend on the database
 that you are querying, and vary according to the data you are analyzing.
 
-For example, if you are querying a QL database for a Java project, the database types may
+For example, if you are querying a CodeQL database for a Java project, the database types may
 include ``@ifstmt``, representing an if statement in the Java code, and ``@variable``, 
 representing a variable.
 

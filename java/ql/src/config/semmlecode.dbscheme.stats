@@ -189,6 +189,10 @@
 <v>28672</v>
 </e>
 <e>
+<k>@yieldstmt</k>
+<v>100</v>
+</e>
+<e>
 <k>@arrayaccess</k>
 <v>53561</v>
 </e>

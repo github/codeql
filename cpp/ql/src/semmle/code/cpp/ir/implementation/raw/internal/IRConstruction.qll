@@ -1,6 +1,8 @@
 private import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.internal.CppType
+private import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -25,16 +27,16 @@ private module Cached {
   cached
   newtype TInstruction =
     MkInstruction(TranslatedElement element, InstructionTag tag) {
-      element.hasInstruction(_, tag, _, _)
+      element.hasInstruction(_, tag, _)
     }
 
   cached
-  predicate hasUserVariable(Function func, Variable var, Type type) {
+  predicate hasUserVariable(Function func, Variable var, CppType type) {
     getTranslatedFunction(func).hasUserVariable(var, type)
   }
 
   cached
-  predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag, Type type) {
+  predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag, CppType type) {
     exists(TranslatedElement element |
       element.getAST() = ast and
       func = element.getFunction() and
@@ -85,20 +87,14 @@ private module Cached {
   }
 
   cached
-  Type getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
+  CppType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
     // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
     // the result type of the load.
-    result = instruction.(LoadInstruction).getResultType()
+    result = instruction.(LoadInstruction).getResultLanguageType()
     or
     not instruction instanceof LoadInstruction and
     result = getInstructionTranslatedElement(instruction)
           .getInstructionOperandType(getInstructionTag(instruction), tag)
-  }
-
-  cached
-  int getInstructionOperandSize(Instruction instruction, SideEffectOperandTag tag) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionOperandSize(getInstructionTag(instruction), tag)
   }
 
   cached
@@ -220,15 +216,15 @@ private module Cached {
   }
 
   cached
-  predicate instructionHasType(Instruction instruction, Type type, boolean isGLValue) {
+  CppType getInstructionResultType(Instruction instruction) {
     getInstructionTranslatedElement(instruction)
-        .hasInstruction(_, getInstructionTag(instruction), type, isGLValue)
+        .hasInstruction(_, getInstructionTag(instruction), result)
   }
 
   cached
   Opcode getInstructionOpcode(Instruction instruction) {
     getInstructionTranslatedElement(instruction)
-        .hasInstruction(result, getInstructionTag(instruction), _, _)
+        .hasInstruction(result, getInstructionTag(instruction), _)
   }
 
   cached
@@ -283,7 +279,7 @@ private module Cached {
   }
 
   cached
-  Type getInstructionExceptionType(Instruction instruction) {
+  CppType getInstructionExceptionType(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction)
           .getInstructionExceptionType(getInstructionTag(instruction))
   }
@@ -308,6 +304,11 @@ private module Cached {
       instructionOrigin(instruction, element, tag) and
       result = element.getInstructionElementSize(tag)
     )
+  }
+
+  cached
+  predicate needsUnknownOpaqueType(int byteSize) {
+    exists(TranslatedElement element | element.needsUnknownOpaqueType(byteSize))
   }
 
   cached
