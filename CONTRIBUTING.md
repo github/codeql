@@ -1,4 +1,4 @@
-# Contributing to QL
+# Contributing to CodeQL
 
 We welcome contributions to our standard library and standard checks. Got an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request!
 
@@ -9,13 +9,13 @@ Before we accept your pull request, we require that you have agreed to our Contr
 If you have an idea for a query that you would like to share with other Semmle users, please open a pull request to add it to this repository. 
 Follow the steps below to help other users understand what your query does, and to ensure that your query is consistent with the other Semmle queries.
 
-1. **Consult the QL documentation for query writers**
+1. **Consult the documentation for query writers**
 
-   There is lots of useful documentation to help you write QL, ranging from information about query file structure to language-specific tutorials. For more information on the documentation available, see [Writing QL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
+   There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
 
-2. **Format your QL correctly**
+2. **Format your code correctly**
 
-   All of Semmle's standard QL queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all QL contributions follow the same formatting guidelines. If you use QL for Eclipse, you can auto-format your query in the [QL editor](https://help.semmle.com/ql-for-eclipse/Content/WebHelp/ql-editor.html). For more information, see the [QL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
+   All of Semmle's standard queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use QL for Eclipse, you can auto-format your query in the [QL editor](https://help.semmle.com/ql-for-eclipse/Content/WebHelp/ql-editor.html). For more information, see the [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
 
 3. **Make sure your query has the correct metadata**
 
@@ -29,7 +29,7 @@ Follow the steps below to help other users understand what your query does, and 
    The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and QL for Eclipse.
    For more information on `select` statement format, see [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
 
-5. **Save your query in a `.ql` file in correct language directory in this repository**
+5. **Save your query in a `.ql` file in the correct language directory in this repository**
 
    There are five language-specific directories in this repository:
    
@@ -54,7 +54,7 @@ repositories, which might be made public. We might also use this information
 to contact you in relation to your contributions, as well as in the
 normal course of software development. We also store records of your
 CLA agreements. Under GDPR legislation, we do this
-on the basis of our legitimate interest in creating the QL product.
+on the basis of our legitimate interest in creating the CodeQL product.
 
 Please do get in touch (privacy@semmle.com) if you have any questions about
 this or our data protection policies.

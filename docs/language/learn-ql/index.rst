@@ -9,6 +9,18 @@ Here, you can query open source projects directly, without having to download Co
 
 CodeQL is based on a powerful query language called QL. The following topics help you understand QL in general, as well as how to use it when analyzing code with CodeQL.
 
+.. pull-quote::
+
+   Important 
+
+   If you've previously used QL, you may notice slight changes in terms we use to describe some important concepts. For more information, see our note about :doc:`Recent terminology changes <terminology-note>`.
+
+.. toctree::
+   :hidden:
+
+   terminology-note
+   
+
 .. _getting-started:
 
 Getting started

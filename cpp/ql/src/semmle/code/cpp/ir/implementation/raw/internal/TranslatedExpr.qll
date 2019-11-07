@@ -62,12 +62,11 @@ abstract class TranslatedExpr extends TranslatedElement {
   /**
    * Holds if the result of this `TranslatedExpr` is a glvalue.
    */
-  private predicate isResultGLValue() {
+  predicate isResultGLValue() {
+    // This implementation is overridden in `TranslatedCoreExpr` to mark them
+    // as glvalues if they have loads on them. It's not overridden in
+    // `TranslatedResultCopy` since result copies never have loads.
     expr.isGLValueCategory()
-    or
-    // If this TranslatedExpr doesn't produce the result, then it must represent
-    // a glvalue that is then loaded by a TranslatedLoad.
-    not producesExprResult()
   }
 
   final override Locatable getAST() { result = expr }
@@ -96,14 +95,28 @@ abstract class TranslatedExpr extends TranslatedElement {
 abstract class TranslatedCoreExpr extends TranslatedExpr {
   final override string toString() { result = expr.toString() }
 
+  /**
+   * Holds if the result of this `TranslatedExpr` is a glvalue.
+   */
+  override predicate isResultGLValue() {
+    super.isResultGLValue()
+    or
+    // If this TranslatedExpr doesn't produce the result, then it must represent
+    // a glvalue that is then loaded by a TranslatedLoad.
+    hasLoad()
+  }
+
+  final predicate hasLoad() {
+    expr.hasLValueToRValueConversion() and
+    not ignoreLoad(expr)
+  }
+
   final override predicate producesExprResult() {
     // If there's no load, then this is the only TranslatedExpr for this
     // expression.
-    not expr.hasLValueToRValueConversion()
-    or
-    // If we're supposed to ignore the load on this expression, then this
-    // is the only TranslatedExpr.
-    ignoreLoad(expr)
+    not hasLoad() and
+    // If there's a result copy, then this expression's result is the copy.
+    not exprNeedsCopyIfNotLoaded(expr)
   }
 }
 
@@ -284,6 +297,48 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     // A load always produces the result of the expression.
     any()
   }
+
+  private TranslatedCoreExpr getOperand() { result.getExpr() = expr }
+}
+
+/**
+ * IR translation of an implicit lvalue-to-rvalue conversion on the result of
+ * an expression.
+ */
+class TranslatedResultCopy extends TranslatedExpr, TTranslatedResultCopy {
+  TranslatedResultCopy() { this = TTranslatedResultCopy(expr) }
+
+  override string toString() { result = "Result of " + expr.toString() }
+
+  override Instruction getFirstInstruction() { result = getOperand().getFirstInstruction() }
+
+  override TranslatedElement getChild(int id) { id = 0 and result = getOperand() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = ResultCopyTag() and
+    opcode instanceof Opcode::CopyValue and
+    resultType = getOperand().getResultType()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = ResultCopyTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getOperand() and result = getInstruction(ResultCopyTag())
+  }
+
+  override Instruction getResult() { result = getInstruction(ResultCopyTag()) }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = ResultCopyTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = getOperand().getResult()
+  }
+
+  final override predicate producesExprResult() { any() }
 
   private TranslatedCoreExpr getOperand() { result.getExpr() = expr }
 }
@@ -2401,6 +2456,58 @@ class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {
   }
 
   final override Opcode getOpcode() { result instanceof Opcode::Error }
+}
+
+/**
+ * Holds if the translation of `expr` will not directly generate any
+ * `Instruction` for use as result. For such instructions we can synthesize a
+ * `CopyValue` instruction to ensure that there is a 1-to-1 mapping between
+ * expressions and result-bearing instructions.
+ */
+// This should ideally be a dispatch predicate on TranslatedNonConstantExpr,
+// but it doesn't look monotonic to QL.
+predicate exprNeedsCopyIfNotLoaded(Expr expr) {
+  (
+    expr instanceof AssignExpr
+    or
+    expr instanceof AssignOperation and
+    not expr.isPRValueCategory() // is C++
+    or
+    expr instanceof PrefixCrementOperation and
+    not expr.isPRValueCategory() // is C++
+    or
+    expr instanceof PointerDereferenceExpr
+    or
+    expr instanceof AddressOfExpr
+    or
+    expr instanceof BuiltInOperationBuiltInAddressOf
+    or
+    // No case for ParenthesisExpr to avoid getting too many instructions
+    expr instanceof ReferenceDereferenceExpr
+    or
+    expr instanceof ReferenceToExpr
+    or
+    expr instanceof CommaExpr
+    or
+    expr instanceof ConditionDeclExpr
+    // TODO: simplify TranslatedStmtExpr too
+  ) and
+  not exprImmediatelyDiscarded(expr)
+}
+
+/**
+ * Holds if `expr` is immediately discarded. Such expressions do not need a
+ * `CopyValue` because it's unlikely that anyone is interested in their value.
+ */
+private predicate exprImmediatelyDiscarded(Expr expr) {
+  exists(ExprStmt s |
+    s = expr.getParent() and
+    not exists(StmtExpr se | s = se.getStmt().(Block).getLastStmt())
+  )
+  or
+  exists(CommaExpr c | c.getLeftOperand() = expr)
+  or
+  exists(ForStmt for | for.getUpdate() = expr)
 }
 
 /**
