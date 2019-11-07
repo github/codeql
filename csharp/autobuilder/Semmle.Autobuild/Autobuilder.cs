@@ -214,8 +214,17 @@ namespace Semmle.Autobuild
             if (Options.IgnoreErrors)
                 script |= BuildScript.Success;
 
-            void startCallback(string s) => Log(Severity.Info, $"\nRunning {s}");
-            void exitCallback(int ret, string msg) => Log(Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
+            void startCallback(string s, bool silent)
+            {
+                if (!silent) Log(Severity.Info, $"\nRunning {s}");
+            }
+
+            void exitCallback(int ret, string msg, bool silent)
+            {
+                if (!silent)
+                    Log(Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
+            }
+
             return script.Run(Actions, startCallback, exitCallback);
         }
 
