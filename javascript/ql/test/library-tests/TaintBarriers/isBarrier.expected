@@ -37,6 +37,7 @@
 | tst.js:265:14:265:14 | v | ExampleConfiguration |
 | tst.js:284:14:284:14 | v | ExampleConfiguration |
 | tst.js:331:14:331:14 | v | ExampleConfiguration |
+| tst.js:350:14:350:14 | v | ExampleConfiguration |
 | tst.js:356:16:356:27 | x10 | ExampleConfiguration |
 | tst.js:356:32:356:34 | x10 | ExampleConfiguration |
 | tst.js:361:14:361:14 | v | ExampleConfiguration |
