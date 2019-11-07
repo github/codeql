@@ -121,7 +121,7 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
   private predicate hasUninitializedInstruction() {
     not exists(getInitialization()) or
     getInitialization() instanceof TranslatedListInitialization or
-    getInitialization() instanceof TranslatedStringLiteralInitialization
+    getInitialization().(TranslatedStringLiteralInitialization).zeroInitRange(_, _)
   }
 }
 
