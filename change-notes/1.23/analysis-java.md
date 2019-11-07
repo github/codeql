@@ -19,7 +19,7 @@ The following changes in version 1.23 affect Java analysis in all applications.
 | Query built without neutralizing special characters (`java/concatenated-sql-query`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as SQL expressions sinks. |
 | Useless comparison test (`java/constant-comparison`) | Fewer false positives | Additional overflow check patterns are now recognized and no longer reported. |
 
-## Changes to QL libraries
+## Changes to libraries
 
 * The data-flow library has been extended with a new feature to aid debugging.
   Instead of specifying `isSink(Node n) { any() }` on a configuration to
