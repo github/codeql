@@ -1,4 +1,3 @@
-// semmle-extractor-options: --experimental
 var obj = {
     x: 4,
     func: function() {

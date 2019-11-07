@@ -43,11 +43,7 @@ module CallGraph {
     or
     imprecision = 0 and
     t.start() and
-    exists(string name |
-      GlobalAccessPath::isAssignedInUniqueFile(name) and
-      GlobalAccessPath::fromRhs(function) = name and
-      GlobalAccessPath::fromReference(result) = name
-    )
+    AccessPath::step(function, result)
     or
     imprecision = 0 and
     exists(DataFlow::ClassNode cls |

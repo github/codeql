@@ -2,6 +2,7 @@ import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.IR
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
 
 /**
  * A predictable instruction is one where an external user can predict
@@ -145,7 +146,8 @@ GlobalOrNamespaceVariable globalVarFromId(string id) {
 }
 
 Function resolveCall(Call call) {
-  // TODO: improve virtual dispatch. This will help in the test for
-  // `UncontrolledProcessOperation.ql`.
-  result = call.getTarget()
+  exists(CallInstruction callInstruction |
+    callInstruction.getAST() = call and
+    result = Dispatch::viableCallable(callInstruction)
+  )
 }

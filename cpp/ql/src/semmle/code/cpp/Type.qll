@@ -210,7 +210,7 @@ class Type extends Locatable, @type {
     // A function call that provides an explicit template argument that refers to T uses T.
     // We exclude calls within instantiations, since they do not appear directly in the source.
     exists(FunctionCall c |
-      c.getAnExplicitTemplateArgument().refersTo(this) and
+      c.getAnExplicitTemplateArgument().(Type).refersTo(this) and
       result = c and
       not c.getEnclosingFunction().isConstructedFrom(_)
     )
