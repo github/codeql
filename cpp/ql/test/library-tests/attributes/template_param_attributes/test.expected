@@ -1,0 +1,4 @@
+| test.cpp:2:10:2:14 | align | test.cpp:2:16:2:16 | 128 |
+| test.cpp:2:10:2:14 | align | test.cpp:2:16:2:16 | i |
+| test.cpp:7:43:7:49 | aligned | test.cpp:7:51:7:51 | 1024 |
+| test.cpp:7:43:7:49 | aligned | test.cpp:7:51:7:51 | x |
