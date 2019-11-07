@@ -105,6 +105,9 @@ test_VariableTypes
 | tst.ts:135:5:135:24 | tupleWithRestElement | tupleWithRestElement | tst.ts:135:27:135:47 | [number ... ring[]] |
 | tst.ts:136:5:136:36 | tupleWi ... lements | tupleWithOptionalAndRestElements | tst.ts:136:39:136:68 | [number ... mber[]] |
 | tst.ts:137:5:137:15 | unknownType | unknownType | tst.ts:137:18:137:24 | unknown |
+| tst.ts:142:17:142:25 | condition | condition | tst.ts:142:28:142:30 | any |
+| tst.ts:142:33:142:35 | msg | msg | tst.ts:142:39:142:44 | string |
+| tst.ts:148:25:148:27 | val | val | tst.ts:148:30:148:32 | any |
 test_QualifiedTypeAccess
 | tst.ts:63:19:63:21 | N.I | tst.ts:63:19:63:19 | N | tst.ts:63:21:63:21 | I |
 | tst.ts:64:20:64:24 | N.M.I | tst.ts:64:20:64:22 | N.M | tst.ts:64:24:64:24 | I |
@@ -148,6 +151,17 @@ test_IsTypeExpr
 | tst.ts:76:21:76:32 | that is Leaf | tst.ts:76:21:76:24 | that | tst.ts:76:29:76:32 | Leaf |
 | tst.ts:80:36:80:55 | x is Generic<Leaf[]> | tst.ts:80:36:80:36 | x | tst.ts:80:41:80:55 | Generic<Leaf[]> |
 | tst.ts:81:38:81:50 | x is typeof x | tst.ts:81:38:81:38 | x | tst.ts:81:43:81:50 | typeof x |
+| tst.ts:148:36:148:56 | asserts ...  string | tst.ts:148:44:148:46 | val | tst.ts:148:51:148:56 | string |
+test_PredicateTypeExpr
+| tst.ts:75:17:75:28 | this is Leaf | tst.ts:75:17:75:20 | this |
+| tst.ts:76:21:76:32 | that is Leaf | tst.ts:76:21:76:24 | that |
+| tst.ts:80:36:80:55 | x is Generic<Leaf[]> | tst.ts:80:36:80:36 | x |
+| tst.ts:81:38:81:50 | x is typeof x | tst.ts:81:38:81:38 | x |
+| tst.ts:142:48:142:64 | asserts condition | tst.ts:142:56:142:64 | condition |
+| tst.ts:148:36:148:56 | asserts ...  string | tst.ts:148:44:148:46 | val |
+test_hasAssertsKeyword
+| tst.ts:142:48:142:64 | asserts condition |
+| tst.ts:148:36:148:56 | asserts ...  string |
 test_ThisParameterTypes
 | function hasThisParam | tst.ts:116:29:116:32 | void |
 | method hasThisParam of interface InterfaceWithThisParam | tst.ts:119:22:119:43 | Interfa ... isParam |
@@ -254,6 +268,8 @@ test_ReturnTypes
 | tst.ts:94:1:94:37 | functio ... rn x; } | function f1 | tst.ts:94:23:94:23 | S |
 | tst.ts:95:1:95:53 | functio ... x,y]; } | function f2 | tst.ts:95:31:95:35 | [S,T] |
 | tst.ts:96:1:96:52 | functio ... rn x; } | function f3 | tst.ts:96:38:96:38 | S |
+| tst.ts:142:1:146:1 | functio ... )\\n  }\\n} | function assert | tst.ts:142:48:142:64 | asserts condition |
+| tst.ts:148:1:152:1 | functio ... ;\\n  }\\n} | function assertIsString | tst.ts:148:36:148:56 | asserts ...  string |
 test_KeyofTypeExpr
 | tst.ts:49:16:49:30 | keyof Interface | tst.ts:49:22:49:30 | Interface |
 | tst.ts:113:26:113:35 | keyof Node | tst.ts:113:32:113:35 | Node |

@@ -29,6 +29,19 @@ module VirtualDispatch {
   }
 
   /**
+   * Helper predicate for `getAViableTarget`, which computes the viable targets for
+   * virtual calls based on the qualifier type.
+   */
+  private Function getAViableVirtualCallTarget(Class qualifierType, MemberFunction staticTarget) {
+    exists(Class qualifierSubType |
+      result = getAPossibleImplementation(staticTarget) and
+      qualifierType = qualifierSubType.getABaseClass*() and
+      mayInherit(qualifierSubType, result) and
+      not cannotInherit(qualifierSubType, result)
+    )
+  }
+
+  /**
    * Gets a viable target for the given function call.
    *
    * If `c` is a virtual call, then we will perform a simple virtual dispatch analysis to return
@@ -42,18 +55,9 @@ module VirtualDispatch {
    * If `c` is not a virtual call, the result will be `c.getTarget()`.
    */
   Function getAViableTarget(Call c) {
-    exists(Function staticTarget | staticTarget = c.getTarget() |
-      if c.(FunctionCall).isVirtual() and staticTarget instanceof MemberFunction
-      then
-        exists(Class qualifierType, Class qualifierSubType |
-          result = getAPossibleImplementation(staticTarget) and
-          qualifierType = getCallQualifierType(c) and
-          qualifierType = qualifierSubType.getABaseClass*() and
-          mayInherit(qualifierSubType, result) and
-          not cannotInherit(qualifierSubType, result)
-        )
-      else result = staticTarget
-    )
+    if c.(FunctionCall).isVirtual() and c.getTarget() instanceof MemberFunction
+    then result = getAViableVirtualCallTarget(getCallQualifierType(c), c.getTarget())
+    else result = c.getTarget()
   }
 
   /** Holds if `f` is declared in `c` or a transitive base class of `c`. */

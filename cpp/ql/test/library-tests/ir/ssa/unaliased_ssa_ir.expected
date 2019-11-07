@@ -333,7 +333,7 @@ ssa.cpp:
 #   97|     r0_11(void *)        = Convert                      : r0_10
 #   97|     v0_12(void)          = Call                         : func:r0_9, 0:r0_11
 #   97|     mu0_13(unknown)      = ^CallSideEffect              : ~mu0_2
-#   97|     v0_14(void)          = ^IndirectReadSideEffect[0]   : &:r0_11, ~mu0_2
+#   97|     v0_14(void)          = ^BufferReadSideEffect[0]     : &:r0_11, ~mu0_2
 #   97|     mu0_15(unknown)      = ^BufferMayWriteSideEffect[0] : &:r0_11
 #   98|     v0_16(void)          = NoOp                         : 
 #   95|     v0_17(void)          = ReturnVoid                   : 
@@ -386,7 +386,7 @@ ssa.cpp:
 #  108|     r0_17(void *)         = Convert                      : r0_16
 #  108|     v0_18(void)           = Call                         : func:r0_15, 0:r0_17
 #  108|     mu0_19(unknown)       = ^CallSideEffect              : ~mu0_2
-#  108|     v0_20(void)           = ^IndirectReadSideEffect[0]   : &:r0_17, ~mu0_2
+#  108|     v0_20(void)           = ^BufferReadSideEffect[0]     : &:r0_17, ~mu0_2
 #  108|     mu0_21(unknown)       = ^BufferMayWriteSideEffect[0] : &:r0_17
 #  109|     v0_22(void)           = NoOp                         : 
 #  105|     v0_23(void)           = ReturnVoid                   : 
@@ -451,7 +451,7 @@ ssa.cpp:
 #  119|     r0_23(void *)         = Convert                      : r0_22
 #  119|     v0_24(void)           = Call                         : func:r0_21, 0:r0_23
 #  119|     mu0_25(unknown)       = ^CallSideEffect              : ~mu0_2
-#  119|     v0_26(void)           = ^IndirectReadSideEffect[0]   : &:r0_23, ~mu0_2
+#  119|     v0_26(void)           = ^BufferReadSideEffect[0]     : &:r0_23, ~mu0_2
 #  119|     mu0_27(unknown)       = ^BufferMayWriteSideEffect[0] : &:r0_23
 #  120|     v0_28(void)           = NoOp                         : 
 #  116|     v0_29(void)           = ReturnVoid                   : 
@@ -876,13 +876,13 @@ ssa.cpp:
 #  221|     r0_11(glval<unknown>)       = FunctionAddress[g]              : 
 #  221|     v0_12(void)                 = Call                            : func:r0_11, this:r0_10
 #  221|     mu0_13(unknown)             = ^CallSideEffect                 : ~mu0_2
-#  221|     v0_14(void)                 = ^IndirectReadSideEffect[-1]     : &:r0_10, ~mu0_2
+#  221|     v0_14(void)                 = ^BufferReadSideEffect[-1]       : &:r0_10, ~mu0_2
 #  221|     mu0_15(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r0_10
 #  222|     r0_16(glval<Constructible>) = VariableAddress[c]              : 
 #  222|     r0_17(glval<unknown>)       = FunctionAddress[g]              : 
 #  222|     v0_18(void)                 = Call                            : func:r0_17, this:r0_16
 #  222|     mu0_19(unknown)             = ^CallSideEffect                 : ~mu0_2
-#  222|     v0_20(void)                 = ^IndirectReadSideEffect[-1]     : &:r0_16, ~mu0_2
+#  222|     v0_20(void)                 = ^BufferReadSideEffect[-1]       : &:r0_16, ~mu0_2
 #  222|     mu0_21(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r0_16
 #  223|     r0_22(glval<Constructible>) = VariableAddress[c2]             : 
 #  223|     mu0_23(Constructible)       = Uninitialized[c2]               : &:r0_22
@@ -895,7 +895,7 @@ ssa.cpp:
 #  224|     r0_30(glval<unknown>)       = FunctionAddress[g]              : 
 #  224|     v0_31(void)                 = Call                            : func:r0_30, this:r0_29
 #  224|     mu0_32(unknown)             = ^CallSideEffect                 : ~mu0_2
-#  224|     v0_33(void)                 = ^IndirectReadSideEffect[-1]     : &:r0_29, ~mu0_2
+#  224|     v0_33(void)                 = ^BufferReadSideEffect[-1]       : &:r0_29, ~mu0_2
 #  224|     mu0_34(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r0_29
 #  225|     v0_35(void)                 = NoOp                            : 
 #  219|     v0_36(void)                 = ReturnVoid                      : 

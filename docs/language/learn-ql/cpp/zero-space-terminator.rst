@@ -4,7 +4,7 @@ Example: Checking for allocations equal to ``strlen(string)`` without space for 
 Overview
 --------
 
-This topic describes how a C/C++ query for detecting a potential buffer overflow was developed. For a full overview of the topics available for learning to write QL queries for C/C++ code, see :doc:`QL for C/C++ <ql-for-cpp>`.
+This topic describes how a C/C++ query for detecting a potential buffer overflow was developed. For a full overview of the topics available for learning to write queries for C/C++ code, see :doc:`CodeQL for C/C++ <ql-for-cpp>`.
 
 Problem—detecting memory allocation that omits space for a null termination character
 -------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Defining the entities of interest
 
 You could approach this problem either by searching for code similar to the call to ``malloc`` in line 3 or the call to ``strcpy`` in line 5 (see example above). For our basic query, we start with a simple assumption: any call to ``malloc`` with only a ``strlen`` to define the memory size is likely to cause an error when the memory is populated.
 
-Calls to ``strlen`` can be identified using the library `StrlenCall <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/commons/StringAnalysis.qll/type.StringAnalysis$StrlenCall.html>`__ class, but we need to define a new class to identify calls to ``malloc``. Both the library class and the new class need to extend the standard QL class ``FunctionCall``, with the added restriction of the function name that they apply to:
+Calls to ``strlen`` can be identified using the library `StrlenCall <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/commons/StringAnalysis.qll/type.StringAnalysis$StrlenCall.html>`__ class, but we need to define a new class to identify calls to ``malloc``. Both the library class and the new class need to extend the standard class ``FunctionCall``, with the added restriction of the function name that they apply to:
 
 .. code-block:: ql
 
@@ -52,7 +52,7 @@ Calls to ``strlen`` can be identified using the library `StrlenCall <https://hel
 Finding the ``strlen(string)`` pattern
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before we start to write our query, there's one remaining task. We need to modify our new ``MallocCall`` class, so it returns an expression for the size of the allocation. Currently this will be the first argument to the ``malloc`` call, ``FunctionCall.getArgument(0)``, but converting this into a QL predicate makes it more flexible for future refinements.
+Before we start to write our query, there's one remaining task. We need to modify our new ``MallocCall`` class, so it returns an expression for the size of the allocation. Currently this will be the first argument to the ``malloc`` call, ``FunctionCall.getArgument(0)``, but converting this into a predicate makes it more flexible for future refinements.
 
 .. code-block:: ql
 
@@ -106,7 +106,7 @@ The query above works for simple cases, but does not identify a common coding pa
        int len = strlen(input);
        buffer = malloc(len);
 
-To identify this case we can use the standard QL library ``SSA.qll`` (imported as ``semmle.code.cpp.controlflow.SSA``).
+To identify this case we can use the standard library ``SSA.qll`` (imported as ``semmle.code.cpp.controlflow.SSA``).
 
 This library helps us identify where values assigned to local variables may subsequently be used.
 

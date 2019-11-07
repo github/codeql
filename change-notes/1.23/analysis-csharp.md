@@ -8,6 +8,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Deserialized delegate (`cs/deserialized-delegate`) | security, external/cwe/cwe-502 | Finds unsafe deserialization of delegate types. |
 | Unsafe year argument for 'DateTime' constructor (`cs/unsafe-year-construction`) | reliability, date-time | Finds incorrect manipulation of `DateTime` values, which could lead to invalid dates. |
 | Mishandling the Japanese era start date (`cs/mishandling-japanese-era`) | reliability, date-time | Finds hard-coded Japanese era start dates that could be invalid. |
 
@@ -43,5 +44,6 @@ The following changes in version 1.23 affect C# analysis in all applications.
 * There is now a `DataFlow::localExprFlow` predicate and a
   `TaintTracking::localExprTaint` predicate to make it easy to use the most
   common case of local data flow and taint: from one `Expr` to another.
+* Data is now tracked through null-coalescing expressions (`??`).
 
 ## Changes to autobuilder

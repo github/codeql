@@ -17,6 +17,7 @@ import com.semmle.js.ast.BlockStatement;
 import com.semmle.js.ast.BreakStatement;
 import com.semmle.js.ast.CallExpression;
 import com.semmle.js.ast.CatchClause;
+import com.semmle.js.ast.Chainable;
 import com.semmle.js.ast.ClassBody;
 import com.semmle.js.ast.ClassDeclaration;
 import com.semmle.js.ast.ClassExpression;
@@ -126,13 +127,13 @@ import com.semmle.ts.ast.InferTypeExpr;
 import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
-import com.semmle.ts.ast.IsTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
 import com.semmle.ts.ast.NonNullAssertion;
 import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
+import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
@@ -877,7 +878,10 @@ public class TypeScriptASTConverter {
     }
     Expression callee = convertChild(node, "expression");
     List<ITypeExpression> typeArguments = convertChildrenAsTypes(node, "typeArguments");
-    CallExpression call = new CallExpression(loc, callee, typeArguments, arguments, false, false);
+    boolean optional = node.has("questionDotToken");
+    boolean onOptionalChain = Chainable.isOnOptionalChain(optional, callee);
+    CallExpression call =
+        new CallExpression(loc, callee, typeArguments, arguments, optional, onOptionalChain);
     attachResolvedSignature(call, node);
     return call;
   }
@@ -1108,7 +1112,9 @@ public class TypeScriptASTConverter {
       throws ParseError {
     Expression object = convertChild(node, "expression");
     Expression property = convertChild(node, "argumentExpression");
-    return new MemberExpression(loc, object, property, true, false, false);
+    boolean optional = node.has("questionDotToken");
+    boolean onOptionalChain = Chainable.isOnOptionalChain(optional, object);
+    return new MemberExpression(loc, object, property, true, optional, onOptionalChain);
   }
 
   private Node convertEmptyStatement(SourceLocation loc) {
@@ -1584,10 +1590,14 @@ public class TypeScriptASTConverter {
 
   private Node convertMetaProperty(JsonObject node, SourceLocation loc) throws ParseError {
     Position metaStart = loc.getStart();
-    String keywordKind = syntaxKinds.get(node.getAsJsonPrimitive("keywordToken").getAsInt() + "").getAsString();
+    String keywordKind =
+        syntaxKinds.get(node.getAsJsonPrimitive("keywordToken").getAsInt() + "").getAsString();
     String identifier = keywordKind.equals("ImportKeyword") ? "import" : "new";
     Position metaEnd =
-        new Position(metaStart.getLine(), metaStart.getColumn() + identifier.length(), metaStart.getOffset() + identifier.length());
+        new Position(
+            metaStart.getLine(),
+            metaStart.getColumn() + identifier.length(),
+            metaStart.getOffset() + identifier.length());
     SourceLocation metaLoc = new SourceLocation(identifier, metaStart, metaEnd);
     Identifier meta = new Identifier(metaLoc, identifier);
     return new MetaProperty(loc, meta, convertChild(node, "name"));
@@ -1967,8 +1977,11 @@ public class TypeScriptASTConverter {
 
   private Node convertPropertyAccessExpression(JsonObject node, SourceLocation loc)
       throws ParseError {
+    Expression base = convertChild(node, "expression");
+    boolean optional = node.has("questionDotToken");
+    boolean onOptionalChain = Chainable.isOnOptionalChain(optional, base);
     return new MemberExpression(
-        loc, convertChild(node, "expression"), convertChild(node, "name"), false, false, false);
+        loc, base, convertChild(node, "name"), false, optional, onOptionalChain);
   }
 
   private Node convertPropertyAssignment(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1995,6 +2008,9 @@ public class TypeScriptASTConverter {
     }
     if (node.get("exclamationToken") != null) {
       flags |= DeclarationFlags.definiteAssignmentAssertion;
+    }
+    if (hasModifier(node, "DeclareKeyword")) {
+      flags |= DeclarationFlags.declareKeyword;
     }
     FieldDefinition fieldDefinition =
         new FieldDefinition(
@@ -2186,8 +2202,11 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertTypePredicate(JsonObject node, SourceLocation loc) throws ParseError {
-    return new IsTypeExpr(
-        loc, convertChildAsType(node, "parameterName"), convertChildAsType(node, "type"));
+    return new PredicateTypeExpr(
+        loc,
+        convertChildAsType(node, "parameterName"),
+        convertChildAsType(node, "type"),
+        node.has("assertsModifier"));
   }
 
   private Node convertTypeReference(JsonObject node, SourceLocation loc) throws ParseError {

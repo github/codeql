@@ -1,15 +1,15 @@
-Introduction to data flow analysis in QL
-########################################
+Introduction to data flow analysis with CodeQL
+##############################################
 
 Overview
 ********
 
 Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program and where they are used. 
-Many of Semmle's built-in security queries implement data flow analysis, which can highlight the fate of potentially malicious or insecure data that can cause vulnerabilities in your code base.
+Many CodeQL security queries implement data flow analysis, which can highlight the fate of potentially malicious or insecure data that can cause vulnerabilities in your code base.
 These queries help you understand if data is used in an insecure way, whether dangerous arguments are passed to functions, or whether sensitive data can leak.
-As well as highlighting potential security issues, you can also use data flow analysis to understand other aspects of how a program behaves, by finding, for example, uses of unititialized variables and resource leaks.
+As well as highlighting potential security issues, you can also use data flow analysis to understand other aspects of how a program behaves, by finding, for example, uses of uninitialized variables and resource leaks.
 
-The following sections provide a brief introduction to data flow analysis in QL.
+The following sections provide a brief introduction to data flow analysis with CodeQL.
 
 See the following tutorials for more information about analyzing data flow in specific languages:
 
@@ -30,7 +30,7 @@ See the following tutorials for more information about analyzing data flow in sp
 Data flow graph
 ***************
 
-The QL data flow libraries implement data flow analysis on a program or function by modeling its data flow graph.
+The CodeQL data flow libraries implement data flow analysis on a program or function by modeling its data flow graph.
 Unlike the `abstract syntax tree <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__, the
 data flow graph does not reflect the syntactic structure of the program, but models the way data flows through the program at runtime. Nodes in the abstract syntax tree
 represent syntactic elements such as statements or expressions. Nodes in the data flow graph, on the other hand, represent semantic elements that carry values at runtime.
@@ -58,18 +58,18 @@ Computing an accurate and complete data flow graph presents several challenges:
 - Aliasing between variables can result in a single write changing the value that multiple pointers point to.
 - The data flow graph can be very large and slow to compute.
 
-To overcome these potential problems, two kinds of data flow are modeled in the QL libraries:
+To overcome these potential problems, two kinds of data flow are modeled in the libraries:
 
-- Local data flow, concerning the data flow within a single function. When reasoning about local, you only considers edges between data flow nodes belonging to the same function.It is generally sufficiently fast, efficient and precise for many queries, and it is usually possible to compute the local data flow for all functions in a snapshot.
+- Local data flow, concerning the data flow within a single function. When reasoning about local data flow, you only consider edges between data flow nodes belonging to the same function. It is generally sufficiently fast, efficient and precise for many queries, and it is usually possible to compute the local data flow for all functions in a CodeQL database.
 
 - Global data flow, effectively considers the data flow within an entire program, by calculating data flow between functions and through object properties. Computing global data flow is typically more time and energy intensive than local data flow, therefore queries should be refined to look for more specific sources and sinks.
 
-Many of the built-in queries included in the latest Semmle release contain examples of both local and global data flow analysis. See `the built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ for details.
+Many CodeQL queries contain examples of both local and global data flow analysis. See `the built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ for details.
 
 Normal data flow vs taint tracking
 **********************************
 
-In the QL standard libraries, we make a distinction between 'normal' data flow and taint tracking.
+In the standard libraries, we make a distinction between 'normal' data flow and taint tracking.
 The normal data flow libraries are used to analyze the information flow in which data values are preserved at each step.
 
 For example, if you are tracking an insecure object ``x`` (which might be some untrusted or potentially malicious data), a step in the program may 'change' its value. So, in a simple process such as ``y = x + 1``, a normal data flow analysis will highlight the use of ``x``, but not ``y``.
@@ -81,5 +81,5 @@ These flow steps are modeled in the taint-tracking library using predicates that
 What next?
 **********
 
-- Search for ``DataFlow`` and ``TaintTracking`` in the `QL standard libraries <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__ to learn more about the technical implementation of data flow analysis in QL for specific programming languages.
-- Visit `Learning QL <https://help.semmle.com/QL/learn-ql/>`__ to find language-specific QL tutorials on data flow and other topics.
+- Search for ``DataFlow`` and ``TaintTracking`` in the `standard CodeQL libraries <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__ to learn more about the technical implementation of data flow analysis for specific programming languages.
+- Visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__ to find language-specific tutorials on data flow and other topics.
