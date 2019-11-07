@@ -172,5 +172,3 @@ class Component4 extends React.Component {
         this.setState({ });
     }
 }
-
-// semmle-extractor-options: --experimental

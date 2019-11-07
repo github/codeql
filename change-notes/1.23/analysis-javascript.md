@@ -2,7 +2,7 @@
 
 ## General improvements
 
-* Suppor for `globalThis` has been added.
+* Support for `globalThis` has been added.
 
 * Support for the following frameworks and libraries has been improved:
   - [firebase](https://www.npmjs.com/package/firebase)
@@ -27,6 +27,7 @@
 | Use of returnless function (`js/use-of-returnless-function`)              | maintainability, correctness                                      | Highlights calls where the return value is used, but the callee never returns a value. Results are shown on LGTM by default. |
 | Useless regular expression character escape (`js/useless-regexp-character-escape`) | correctness, security, external/cwe/cwe-20 | Highlights regular expression strings with useless character escapes, indicating a possible violation of [CWE-20](https://cwe.mitre.org/data/definitions/20.html). Results are shown on LGTM by default. |
 | Unreachable method overloads (`js/unreachable-method-overloads`)          | correctness, typescript                                           | Highlights method overloads that are impossible to use from client code. Results are shown on LGTM by default. |
+| Ignoring result from pure array method (`js/ignore-array-result`)         | maintainability, correctness                                      | Highlights calls to array methods without side effects where the return value is ignored. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
@@ -48,7 +49,7 @@
 | Uncontrolled data used in path expression (`js/path-injection`) | Fewer false-positive results | This query now recognizes calls to Express `sendFile` as safe in some cases. |
 | Unknown directive (`js/unknown-directive`) | Fewer false positive results | This query no longer flags uses of ":", which is sometimes used like a directive. |
 
-## Changes to QL libraries
+## Changes to libraries
 
 * `Expr.getDocumentation()` now handles chain assignments.
 

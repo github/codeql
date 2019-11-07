@@ -11,4 +11,4 @@ fs.rename;
 
 module.exports = fs;
 
-//semmle-extractor-options: --externs
+/** @externs */

@@ -24,7 +24,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | Unclear comparison precedence (`cpp/comparison-precedence`) | Fewer false positive results | False positives involving template classes and functions have been fixed. |
 | Comparison of narrow type with wide type in loop condition (`cpp/comparison-with-wider-type`) | Higher precision | The precision of this query has been increased to "high" as the alerts from this query have proved to be valuable on real-world projects. With this precision, results are now displayed by default in LGTM. |
 
-## Changes to QL libraries
+## Changes to libraries
 
 * The data-flow library has been extended with a new feature to aid debugging.
   Instead of specifying `isSink(Node n) { any() }` on a configuration to
@@ -54,3 +54,8 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   lead to regressions (or improvements) in how queries are optimized because
   optimization in QL relies on static size estimates, and the control-flow edge
   relations will now have different size estimates than before.
+* Support has been added for non-type template arguments.  This means that the
+  return type of `Declaration::getTemplateArgument()` and
+  `Declaration::getATemplateArgument` have changed to `Locatable`.  See the
+  documentation for `Declaration::getTemplateArgument()` and
+  `Declaration::getTemplateArgumentKind()` for details.

@@ -13,17 +13,17 @@
 import python
 import Variables.Definition
 
-predicate global_name_used(Module m, Variable name) {
+predicate global_name_used(Module m, string name) {
     exists(Name u, GlobalVariable v |
         u.uses(v) and
-        v.getId() = name.getId() and
+        v.getId() = name and
         u.getEnclosingModule() = m
     )
     or
     // A use of an undefined class local variable, will use the global variable
     exists(Name u, LocalVariable v |
         u.uses(v) and
-        v.getId() = name.getId() and
+        v.getId() = name and
         u.getEnclosingModule() = m and
         not v.getScope().getEnclosingScope*() instanceof Function
     )
@@ -41,41 +41,58 @@ predicate all_not_understood(Module m) {
 }
 
 predicate imported_module_used_in_doctest(Import imp) {
-    exists(string modname |
+    exists(string modname, string docstring |
         imp.getAName().getAsname().(Name).getId() = modname and
         // Look for doctests containing the patterns:
         // >>> …name…
         // ... …name…
-        exists(StrConst doc |
-            doc.getEnclosingModule() = imp.getScope() and
-            doc.isDocString() and
-            doc.getText().regexpMatch("[\\s\\S]*(>>>|\\.\\.\\.).*" + modname + "[\\s\\S]*")
-        )
+        docstring = doctest_in_scope(imp.getScope()) and
+        docstring.regexpMatch("[\\s\\S]*(>>>|\\.\\.\\.).*" + modname + "[\\s\\S]*")
+    )
+}
+
+pragma[noinline]
+private string doctest_in_scope(Scope scope) {
+    exists(StrConst doc |
+        doc.getEnclosingModule() = scope and
+        doc.isDocString() and
+        result = doc.getText() and
+        result.regexpMatch("[\\s\\S]*(>>>|\\.\\.\\.)[\\s\\S]*")
+    )
+}
+
+pragma[noinline]
+private string typehint_annotation_in_file(File file) {
+    exists(StrConst annotation |
+        annotation = any(Arguments a).getAnAnnotation()
+        or
+        annotation = any(AnnAssign a).getAnnotation()
+    |
+        annotation.pointsTo(Value::forString(result)) and
+        file = annotation.getLocation().getFile()
+    )
+}
+
+pragma[noinline]
+private string typehint_comment_in_file(File file) {
+    exists(Comment typehint |
+        file = typehint.getLocation().getFile() and
+        result = typehint.getText() and
+        result.matches("# type:%")
     )
 }
 
 predicate imported_module_used_in_typehint(Import imp) {
-    exists(string modname, Location loc |
+    exists(string modname, File file |
         imp.getAName().getAsname().(Name).getId() = modname and
-        loc.getFile() = imp.getScope().(Module).getFile()
+        file = imp.getScope().(Module).getFile()
     |
         // Look for type hints containing the patterns:
         // # type: …name…
-        exists(Comment typehint |
-            loc = typehint.getLocation() and
-            typehint.getText().regexpMatch("# type:.*" + modname + ".*")
-        )
+        typehint_comment_in_file(file).regexpMatch("# type:.*" + modname + ".*")
         or
         // Type hint is inside a string annotation, as needed for forward references
-        exists(string typehint, Expr annotation |
-            annotation = any(Arguments a).getAnAnnotation()
-            or
-            annotation = any(AnnAssign a).getAnnotation()
-        |
-            annotation.pointsTo(Value::forString(typehint)) and
-            loc = annotation.getLocation() and
-            typehint.regexpMatch(".*\\b" + modname + "\\b.*")
-        )
+        typehint_annotation_in_file(file).regexpMatch(".*\\b" + modname + "\\b.*")
     )
 }
 
@@ -84,7 +101,7 @@ predicate unused_import(Import imp, Variable name) {
     not imp.getAnImportedModuleName() = "__future__" and
     not imp.getEnclosingModule().declaredInAll(name.getId()) and
     imp.getScope() = imp.getEnclosingModule() and
-    not global_name_used(imp.getScope(), name) and
+    not global_name_used(imp.getScope(), name.getId()) and
     // Imports in `__init__.py` are used to force module loading
     not imp.getEnclosingModule().isPackageInit() and
     // Name may be imported for use in epytext documentation

@@ -7,4 +7,4 @@ String.prototype.toString = function() {};
 function Array() {}
 Array.prototype.toString = function() {};
 
-//semmle-extractor-options: --externs
+/** @externs */

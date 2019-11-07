@@ -13,4 +13,3 @@
     DUMP(o3);
     DUMP(o4);
 });
-// semmle-extractor-options: --experimental

@@ -175,6 +175,7 @@ private IRType getIRTypeForPRValue(Type type) {
   )
 }
 
+cached
 private newtype TCppType =
   TPRValueType(Type type) { exists(getIRTypeForPRValue(type)) } or
   TFunctionGLValueType() or
@@ -203,6 +204,7 @@ class CppType extends TCppType {
    * Gets the `IRType` that represents this `CppType`. Many different `CppType`s can map to a single
    * `IRType`.
    */
+  cached
   IRType getIRType() { none() }
 
   /**

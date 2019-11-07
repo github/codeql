@@ -139,15 +139,27 @@ class FunctionCall extends Call, @funbindexpr {
   override string getCanonicalQLClass() { result = "FunctionCall" }
 
   /** Gets an explicit template argument for this call. */
-  Type getAnExplicitTemplateArgument() { result = getExplicitTemplateArgument(_) }
+  Locatable getAnExplicitTemplateArgument() { result = getExplicitTemplateArgument(_) }
+
+  /** Gets an explicit template argument value for this call. */
+  Locatable getAnExplicitTemplateArgumentKind() { result = getExplicitTemplateArgumentKind(_) }
 
   /** Gets a template argument for this call. */
-  Type getATemplateArgument() { result = getTarget().getATemplateArgument() }
+  Locatable getATemplateArgument() { result = getTarget().getATemplateArgument() }
+
+  /** Gets a template argument value for this call. */
+  Locatable getATemplateArgumentKind() { result = getTarget().getATemplateArgumentKind() }
 
   /** Gets the nth explicit template argument for this call. */
-  Type getExplicitTemplateArgument(int n) {
+  Locatable getExplicitTemplateArgument(int n) {
     n < getNumberOfExplicitTemplateArguments() and
     result = getTemplateArgument(n)
+  }
+
+  /** Gets the nth explicit template argument value for this call. */
+  Locatable getExplicitTemplateArgumentKind(int n) {
+    n < getNumberOfExplicitTemplateArguments() and
+    result = getTemplateArgumentKind(n)
   }
 
   /** Gets the number of explicit template arguments for this call. */
@@ -161,7 +173,10 @@ class FunctionCall extends Call, @funbindexpr {
   int getNumberOfTemplateArguments() { result = count(int i | exists(getTemplateArgument(i))) }
 
   /** Gets the nth template argument for this call (indexed from 0). */
-  Type getTemplateArgument(int n) { result = getTarget().getTemplateArgument(n) }
+  Locatable getTemplateArgument(int n) { result = getTarget().getTemplateArgument(n) }
+
+  /** Gets the nth template argument value for this call (indexed from 0). */
+  Locatable getTemplateArgumentKind(int n) { result = getTarget().getTemplateArgumentKind(n) }
 
   /** Holds if any template arguments for this call are implicit / deduced. */
   predicate hasImplicitTemplateArguments() {

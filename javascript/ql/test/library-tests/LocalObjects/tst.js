@@ -89,5 +89,3 @@
 	let bound = {};
 	bound::unknown();
 });
-
-// semmle-extractor-options: --experimental

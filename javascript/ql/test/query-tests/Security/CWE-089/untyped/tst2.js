@@ -8,5 +8,3 @@ app.get('/post/:id', async function(req, res) {
   // NOT OK
   new sql.Request().query("select * from mytable where id = '" + req.params.id + "'");
 });
-
-// semmle-extractor-options: --experimental
