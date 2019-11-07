@@ -22,6 +22,19 @@
 | sources.js:4:12:4:13 | 19 | sources.js:4:12:4:13 | 19 |
 | sources.js:5:4:5:5 | 23 | sources.js:5:4:5:5 | 23 |
 | sources.js:7:1:7:3 | /x/ | sources.js:7:1:7:3 | /x/ |
+| sources.js:9:10:9:12 | foo | sources.js:9:10:9:12 | foo |
+| sources.js:9:14:9:18 | array | sources.js:9:14:9:18 | array |
+| sources.js:9:14:9:18 | array | sources.js:9:14:9:18 | array |
+| sources.js:10:12:10:14 | key | sources.js:10:12:10:14 | key |
+| sources.js:10:12:10:14 | key | sources.js:10:12:10:14 | key |
+| sources.js:10:19:10:23 | array | sources.js:10:19:10:23 | array |
+| sources.js:10:28:10:30 | key | sources.js:10:28:10:30 | key |
+| sources.js:11:12:11:18 | { key } | sources.js:11:12:11:18 | { key } |
+| sources.js:11:12:11:18 | { key } | sources.js:11:12:11:18 | { key } |
+| sources.js:11:14:11:16 | key | sources.js:11:14:11:16 | key |
+| sources.js:11:14:11:16 | key | sources.js:11:14:11:16 | key |
+| sources.js:11:23:11:27 | array | sources.js:11:23:11:27 | array |
+| sources.js:11:32:11:34 | key | sources.js:11:32:11:34 | key |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -276,7 +289,7 @@
 | tst.js:115:1:115:12 | Array.call() | tst.js:115:1:115:12 | Array.call() |
 | tst.js:115:1:115:12 | reflective call | tst.js:115:1:115:12 | Array.call() |
 | tst.js:115:7:115:10 | call | tst.js:115:7:115:10 | call |
-| tst.ts:1:11:1:11 | A | tst.ts:1:11:1:11 | A |
+| tst.ts:1:18:1:18 | A | tst.ts:1:18:1:18 | A |
 | tst.ts:2:14:2:14 | x | tst.ts:2:14:2:14 | x |
 | tst.ts:2:14:2:19 | x = 42 | tst.ts:2:14:2:19 | x = 42 |
 | tst.ts:2:18:2:19 | 42 | tst.ts:2:18:2:19 | 42 |
