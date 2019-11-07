@@ -84,5 +84,3 @@ var bad16 = /(.|\n)*!/s;
 
 // GOOD
 var good8 = /([\w.]+)*/;
-
-// semmle-extractor-options: --experimental
