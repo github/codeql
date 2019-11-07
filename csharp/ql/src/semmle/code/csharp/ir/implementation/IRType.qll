@@ -42,6 +42,10 @@ class IRType extends TIRType {
    *
    * This will hold for all `IRType` objects except `IRUnknownType`.
    */
+  // This predicate is overridden with `pragma[noinline]` in every leaf subclass.
+  // This allows callers to ask for things like _the_ floating-point type of
+  // size 4 without getting a join that first finds all types of size 4 and
+  // _then_ restricts them to floating-point types.
   int getByteSize() { none() }
 
   /**
@@ -104,8 +108,6 @@ private class IRSizedType extends IRType {
     this = TIRFunctionAddressType(byteSize) or
     this = TIROpaqueType(_, byteSize)
   }
-
-  final override int getByteSize() { result = byteSize }
 }
 
 /**
@@ -117,6 +119,9 @@ class IRBooleanType extends IRSizedType, TIRBooleanType {
   final override Language::LanguageType getCanonicalLanguageType() {
     result = Language::getCanonicalBooleanType(byteSize)
   }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 /**
@@ -141,6 +146,9 @@ class IRSignedIntegerType extends IRNumericType, TIRSignedIntegerType {
   final override Language::LanguageType getCanonicalLanguageType() {
     result = Language::getCanonicalSignedIntegerType(byteSize)
   }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 /**
@@ -153,6 +161,9 @@ class IRUnsignedIntegerType extends IRNumericType, TIRUnsignedIntegerType {
   final override Language::LanguageType getCanonicalLanguageType() {
     result = Language::getCanonicalUnsignedIntegerType(byteSize)
   }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 /**
@@ -164,6 +175,9 @@ class IRFloatingPointType extends IRNumericType, TIRFloatingPointType {
   final override Language::LanguageType getCanonicalLanguageType() {
     result = Language::getCanonicalFloatingPointType(byteSize)
   }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 /**
@@ -178,6 +192,9 @@ class IRAddressType extends IRSizedType, TIRAddressType {
   final override Language::LanguageType getCanonicalLanguageType() {
     result = Language::getCanonicalAddressType(byteSize)
   }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 /**
@@ -190,6 +207,9 @@ class IRFunctionAddressType extends IRSizedType, TIRFunctionAddressType {
   final override Language::LanguageType getCanonicalLanguageType() {
     result = Language::getCanonicalFunctionAddressType(byteSize)
   }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 /**
@@ -218,6 +238,9 @@ class IROpaqueType extends IRSizedType, TIROpaqueType {
    * same size.
    */
   final Language::OpaqueTypeTag getTag() { result = tag }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 module IRTypeSanity {
