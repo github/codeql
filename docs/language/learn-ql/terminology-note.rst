@@ -24,4 +24,4 @@ QL is a general-purpose, object-oriented language that can be used to query any 
 CodeQL databases
 ----------------
 
-QL snapshots have been renamed CodeQL databases. CodeQL databases contain relational data created and analyzed using CodeQL. They are the equivalent of QL snapshots, but have been optimized for use with the CodeQL tools.
+QL snapshots have been renamed CodeQL databases. :doc:`CodeQL databases <database>` contain relational data created and analyzed using CodeQL. They are the equivalent of QL snapshots, but have been optimized for use with the CodeQL tools.
