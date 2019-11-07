@@ -144,6 +144,7 @@ private IRType getIRTypeForPRValue(Type type) {
 
 string getOpaqueTagIdentityString(Type tag) { result = tag.getQualifiedName() }
 
+cached
 private newtype TCSharpType =
   TPRValueType(Type type) { exists(getIRTypeForPRValue(type)) } or
   TGLValueAddressType(Type type) { any() } or
@@ -163,6 +164,7 @@ class CSharpType extends TCSharpType {
    * Gets the `IRType` that represents this `CSharpType`. Many different `CSharpType`s can map to a
    * single `IRType`.
    */
+  cached
   abstract IRType getIRType();
 
   /**

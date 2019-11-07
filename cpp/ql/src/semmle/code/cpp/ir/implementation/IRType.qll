@@ -4,6 +4,7 @@
 
 private import internal.IRTypeInternal
 
+cached
 private newtype TIRType =
   TIRVoidType() or
   TIRUnknownType() or
