@@ -666,7 +666,7 @@ public class AutoBuild {
               throws IOException {
             if (!dir.equals(currentRoot[0]) && (excludes.contains(dir) || dir.toFile().isHidden()))
               return FileVisitResult.SKIP_SUBTREE;
-            if (dir.resolve("codeql-database.yml").toFile().exists()) {
+            if (Files.exists(dir.resolve("codeql-database.yml"))) {
               return FileVisitResult.SKIP_SUBTREE;
             }
             return super.preVisitDirectory(dir, attrs);
