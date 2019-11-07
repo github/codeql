@@ -9,7 +9,9 @@ The following changes in version 1.23 affect C# analysis in all applications.
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Deserialized delegate (`cs/deserialized-delegate`) | security, external/cwe/cwe-502 | Finds unsafe deserialization of delegate types. |
+| Deserialization of untrusted data (`cs/unsafe-deserialization-untrusted-input`) | security, external/cwe/cwe-502 | Finds flow of untrusted input to calls to unsafe deserializers. |
 | Unsafe year argument for 'DateTime' constructor (`cs/unsafe-year-construction`) | reliability, date-time | Finds incorrect manipulation of `DateTime` values, which could lead to invalid dates. |
+| Unsafe deserializer (`cs/unsafe-deserialization`) | security, external/cwe/cwe-502 | Finds calls to unsafe deserializers. |
 | Mishandling the Japanese era start date (`cs/mishandling-japanese-era`) | reliability, date-time | Finds hard-coded Japanese era start dates that could be invalid. |
 
 ## Changes to existing queries
