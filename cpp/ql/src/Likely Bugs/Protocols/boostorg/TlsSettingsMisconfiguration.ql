@@ -14,16 +14,14 @@ class ExistsAnyFlowConfig extends DataFlow::Configuration {
   ExistsAnyFlowConfig() { this = "ExistsAnyFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-  	exists(BoostorgAsio::SslContextClass c |
-  	  c.getAContructorCall() = source.asExpr()
- 	)
+    exists(BoostorgAsio::SslContextClass c | c.getAContructorCall() = source.asExpr())
   }
 
   override predicate isSink(DataFlow::Node sink) {
-  	exists(BoostorgAsio::SslSetOptionsFunction f, FunctionCall fcSetOptions |
-  	  f.getACallToThisFunction() = fcSetOptions and
-  	  fcSetOptions.getQualifier() = sink.asExpr()
-  	)
+    exists(BoostorgAsio::SslSetOptionsFunction f, FunctionCall fcSetOptions |
+      f.getACallToThisFunction() = fcSetOptions and
+      fcSetOptions.getQualifier() = sink.asExpr()
+    )
   }
 }
 
@@ -49,15 +47,12 @@ predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
 
 bindingset[flag]
 predicate isOptionNotSet(ConstructorCall cc, int flag) {
-  not exists(FunctionCall fcSetOptions |
-    isOptionSet(cc, flag, fcSetOptions)
-  )
+  not exists(FunctionCall fcSetOptions | isOptionSet(cc, flag, fcSetOptions))
 }
 
 from
-  BoostorgAsio::SslContextCallTlsProtocolConfig configConstructor,
-  Expr protocolSource, Expr protocolSink,
-  ConstructorCall cc, Expr e, string msg
+  BoostorgAsio::SslContextCallTlsProtocolConfig configConstructor, Expr protocolSource,
+  Expr protocolSink, ConstructorCall cc, Expr e, string msg
 where
   configConstructor.hasFlow(DataFlow::exprNode(protocolSource), DataFlow::exprNode(protocolSink)) and
   cc.getArgument(0) = protocolSink and
