@@ -25,6 +25,13 @@ class RegExpParent extends Locatable, @regexpparent { }
 /**
  * A regular expression term, that is, a syntactic part of a regular expression.
  *
+ * Regular expression terms may occur as part of a regular expression literal,
+ * such as `/[a-z]+/`, or as part of a string literal, such as `"[a-z]+"`.
+ *
+ * Note that some terms will occur as part of a string literal that isn't actually
+ * interpreted as regular expression at runtime. Use `isPartOfRegExpLiteral`
+ * or `isUsedAsRegExp` to check if a term is really used as a regular expression.
+ *
  * Examples:
  *
  * ```
@@ -135,14 +142,29 @@ class RegExpTerm extends Locatable, @regexpterm {
 
   /**
    * Holds if this term occurs as part of a string literal.
+   *
+   * This predicate holds regardless of whether the string literal is actually
+   * used as a regular expression. See `isUsedAsRegExp`.
    */
   predicate isPartOfStringLiteral() {
     getRootTerm().getParent() instanceof StringLiteral
   }
 
   /**
-   * Holds if this term is part of a regular expression literal or a string literal
-   * that is used as a regular expression.
+   * Holds if this term is part of a regular expression literal, or a string literal
+   * that is interpreted as a regular expression.
+   *
+   * Unlike `isPartOfRegExpLiteral` and `isPartOfStringLiteral`, this predicate takes
+   * data flow into account, to exclude string literals that aren't used as regular expressions.
+   *
+   * For example:
+   * ```js
+   * location.href.match("^https://example\\.com/") // YES - String is used as regexpp
+   *
+   * console.log("Hello world"); // NO - string is not used as regexp
+   *
+   * /[a-z]+/g; // YES - Regexp literals are always used as regexp
+   * ```
    */
   predicate isUsedAsRegExp() {
     exists(RegExpParent parent | parent = getRootTerm().getParent() |
