@@ -1,0 +1,2 @@
+| DuplicateBranches.go:4:5:4:10 | ...>=... | The 'then' and 'else' branches of this if statement are identical. |
+| main.go:6:5:6:9 | ...<... | The 'then' and 'else' branches of this if statement are identical. |

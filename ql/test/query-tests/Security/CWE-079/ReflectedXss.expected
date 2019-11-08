@@ -1,0 +1,6 @@
+edges
+| ReflectedXss.go:11:15:11:20 | selection of Form [Values] | ReflectedXss.go:14:39:14:46 | username |
+| contenttype.go:10:11:10:16 | selection of Form [Values] | contenttype.go:16:11:16:22 | type conversion |
+#select
+| ReflectedXss.go:14:39:14:46 | username | ReflectedXss.go:11:15:11:20 | selection of Form [Values] | ReflectedXss.go:14:39:14:46 | username | Cross-site scripting vulnerability due to $@. | ReflectedXss.go:11:15:11:20 | selection of Form | user-provided value |
+| contenttype.go:16:11:16:22 | type conversion | contenttype.go:10:11:10:16 | selection of Form [Values] | contenttype.go:16:11:16:22 | type conversion | Cross-site scripting vulnerability due to $@. | contenttype.go:10:11:10:16 | selection of Form | user-provided value |

@@ -1,0 +1,7 @@
+| HTMLEscape | html |
+| HTMLEscapeString | html |
+| HTMLEscaper | html |
+| JSEscape | js |
+| JSEscapeString | js |
+| JSEscaper | js |
+| URLQueryEscaper | url |

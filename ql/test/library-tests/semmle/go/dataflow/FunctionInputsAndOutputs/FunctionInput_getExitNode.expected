@@ -1,0 +1,8 @@
+| parameter 0 | main.go:5:1:11:1 | function declaration | main.go:5:9:5:10 | definition of op |
+| parameter 0 | main.go:13:1:20:1 | function declaration | main.go:13:10:13:11 | definition of op |
+| parameter 0 | main.go:40:1:48:1 | function declaration | main.go:40:12:40:12 | definition of b |
+| parameter 1 | main.go:5:1:11:1 | function declaration | main.go:5:20:5:20 | definition of x |
+| parameter 1 | main.go:13:1:20:1 | function declaration | main.go:13:21:13:21 | definition of x |
+| parameter 2 | main.go:5:1:11:1 | function declaration | main.go:5:27:5:27 | definition of y |
+| parameter 2 | main.go:13:1:20:1 | function declaration | main.go:13:28:13:28 | definition of y |
+| receiver | main.go:26:1:29:1 | function declaration | main.go:26:7:26:7 | definition of c |

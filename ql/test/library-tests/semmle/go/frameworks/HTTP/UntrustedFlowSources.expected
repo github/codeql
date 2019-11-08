@@ -1,0 +1,11 @@
+| main.go:16:10:16:15 | selection of Body |
+| main.go:17:10:17:15 | selection of Form |
+| main.go:18:10:18:17 | selection of Header |
+| main.go:19:10:19:14 | selection of URL |
+| main.go:23:10:23:16 | selection of Body |
+| main.go:24:10:24:16 | selection of Form |
+| main.go:25:10:25:18 | selection of Header |
+| main.go:26:10:26:15 | selection of URL |
+| main.go:48:2:48:11 | selection of Header |
+| main.go:49:2:49:11 | selection of Header |
+| main.go:50:2:50:11 | selection of Header |

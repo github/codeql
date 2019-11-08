@@ -1,0 +1,16 @@
+edges
+| OpenUrlRedirect.go:10:23:10:28 | selection of Form [Values] | OpenUrlRedirect.go:10:23:10:42 | call to Get |
+| stdlib.go:12:13:12:18 | selection of Form [Values] | stdlib.go:14:30:14:35 | target |
+| stdlib.go:21:13:21:18 | selection of Form [Values] | stdlib.go:23:30:23:35 | target |
+| stdlib.go:30:13:30:18 | selection of Form [Values] | stdlib.go:34:30:34:39 | ...+... |
+| stdlib.go:43:13:43:18 | selection of Form [Values] | stdlib.go:45:23:45:28 | target |
+| stdlib.go:63:13:63:18 | selection of Form [Values] | stdlib.go:66:23:66:40 | ...+... |
+| stdlib.go:88:13:88:18 | selection of Form [Values] | stdlib.go:91:23:91:28 | target |
+#select
+| OpenUrlRedirect.go:10:23:10:42 | call to Get | OpenUrlRedirect.go:10:23:10:28 | selection of Form [Values] | OpenUrlRedirect.go:10:23:10:42 | call to Get | Untrusted URL redirection due to $@. | OpenUrlRedirect.go:10:23:10:28 | selection of Form | user-provided value |
+| stdlib.go:14:30:14:35 | target | stdlib.go:12:13:12:18 | selection of Form [Values] | stdlib.go:14:30:14:35 | target | Untrusted URL redirection due to $@. | stdlib.go:12:13:12:18 | selection of Form | user-provided value |
+| stdlib.go:23:30:23:35 | target | stdlib.go:21:13:21:18 | selection of Form [Values] | stdlib.go:23:30:23:35 | target | Untrusted URL redirection due to $@. | stdlib.go:21:13:21:18 | selection of Form | user-provided value |
+| stdlib.go:34:30:34:39 | ...+... | stdlib.go:30:13:30:18 | selection of Form [Values] | stdlib.go:34:30:34:39 | ...+... | Untrusted URL redirection due to $@. | stdlib.go:30:13:30:18 | selection of Form | user-provided value |
+| stdlib.go:45:23:45:28 | target | stdlib.go:43:13:43:18 | selection of Form [Values] | stdlib.go:45:23:45:28 | target | Untrusted URL redirection due to $@. | stdlib.go:43:13:43:18 | selection of Form | user-provided value |
+| stdlib.go:66:23:66:40 | ...+... | stdlib.go:63:13:63:18 | selection of Form [Values] | stdlib.go:66:23:66:40 | ...+... | Untrusted URL redirection due to $@. | stdlib.go:63:13:63:18 | selection of Form | user-provided value |
+| stdlib.go:91:23:91:28 | target | stdlib.go:88:13:88:18 | selection of Form [Values] | stdlib.go:91:23:91:28 | target | Untrusted URL redirection due to $@. | stdlib.go:88:13:88:18 | selection of Form | user-provided value |

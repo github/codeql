@@ -1,0 +1,4 @@
+- description: Standard LGTM queries for Go, including ones not displayed by default
+- qlpack: codeql-go
+- apply: lgtm-selectors.yml
+  from: codeql-suite-helpers

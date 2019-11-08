@@ -1,0 +1,2 @@
++ go-queries/Metrics/FLinesOfCode.ql: /Metrics/Files
+    @_namespace com.lgtm/go-queries

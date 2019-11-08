@@ -1,0 +1,16 @@
+| crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | ... := ...[0] |
+| crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | ... := ...[1] |
+| crypto.go:10:15:10:34 | call to NewGCM | crypto.go:10:2:10:34 | ... := ...[0] |
+| crypto.go:10:15:10:34 | call to NewGCM | crypto.go:10:2:10:34 | ... := ...[1] |
+| crypto.go:11:18:11:57 | call to Open | crypto.go:11:2:11:57 | ... := ...[0] |
+| crypto.go:11:18:11:57 | call to Open | crypto.go:11:2:11:57 | ... := ...[1] |
+| crypto.go:11:42:11:51 | ciphertext | crypto.go:11:2:11:57 | ... := ...[0] |
+| main.go:10:12:10:26 | call to Marshal | main.go:10:2:10:26 | ... := ...[0] |
+| main.go:10:12:10:26 | call to Marshal | main.go:10:2:10:26 | ... := ...[1] |
+| main.go:10:25:10:25 | v | main.go:10:2:10:26 | ... := ...[0] |
+| main.go:12:14:12:52 | call to MarshalIndent | main.go:12:2:12:52 | ... := ...[0] |
+| main.go:12:14:12:52 | call to MarshalIndent | main.go:12:2:12:52 | ... := ...[1] |
+| main.go:12:33:12:33 | v | main.go:12:2:12:52 | ... := ...[0] |
+| main.go:18:18:18:42 | call to DecodeString | main.go:18:2:18:42 | ... := ...[0] |
+| main.go:18:18:18:42 | call to DecodeString | main.go:18:2:18:42 | ... := ...[1] |
+| main.go:18:35:18:41 | encoded | main.go:18:2:18:42 | ... := ...[0] |

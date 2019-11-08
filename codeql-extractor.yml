@@ -1,0 +1,16 @@
+name: "go"
+display_name: "Go"
+version: 0.1.0
+pull_request_triggers:
+  - "**/go.mod"
+  - "**/glide.yaml"
+  - "**/Gopkg.toml"
+column_kind: "utf8"
+extra_env_vars:
+  SOURCE_ARCHIVE: ${env.CODEQL_EXTRACTOR_GO_SOURCE_ARCHIVE_DIR}
+  TRAP_FOLDER: ${env.CODEQL_EXTRACTOR_GO_TRAP_DIR}
+file_types:
+  - name: go
+    display_name: Go
+    extensions:
+      - .go

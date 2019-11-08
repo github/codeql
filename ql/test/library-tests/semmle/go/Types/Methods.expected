@@ -1,0 +1,3 @@
+| T | half | func() Foo |
+| T3 | half | func() Foo |
+| T4 | half | func() Foo |

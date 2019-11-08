@@ -1,0 +1,4 @@
+| ShiftOutOfRange.go:4:9:4:18 | ...<<... | Shifting a value of 32 bits by 40 always yields either 0 or -1. |
+| main.go:4:9:4:14 | ...<<... | Shifting a value of 8 bits by 8 always yields either 0 or -1. |
+| main.go:8:9:8:15 | ...>>... | Shifting a value of 32 bits by 33 always yields either 0 or -1. |
+| main.go:12:9:12:15 | ...<<... | Shifting a value of (at most) 64 bits by 64 always yields either 0 or -1. |

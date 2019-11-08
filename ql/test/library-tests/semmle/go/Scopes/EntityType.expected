@@ -1,0 +1,20 @@
+| a | int |
+| foo | func(iHaveAMethod, * t)  |
+| iHaveAMethod | iHaveAMethod |
+| main | func()  |
+| meth | func() int |
+| meth | func() int |
+| meth1 | func() bool |
+| meth1 | func() bool |
+| meth1 | func(int) bool |
+| meth2 | func() int |
+| meth2 | func() int |
+| meth2 | func() int |
+| notImpl | notImpl |
+| recv | * t |
+| starImpl | starImpl |
+| t | t |
+| twoMethods | twoMethods |
+| x | iHaveAMethod |
+| x | int |
+| y | * t |

@@ -1,0 +1,21 @@
+| Bar | pkg1/tst.go:29:10:31:1 | struct type | flag | bool |
+| Foo | pkg1/tst.go:24:10:27:1 | struct type | flag | bool |
+| Foo | pkg1/tst.go:24:10:27:1 | struct type | val | int |
+| G | pkg2/tst.go:3:8:5:1 | struct type | g | int |
+| G | pkg2/tst.go:7:8:9:1 | struct type | g | int |
+| T | pkg1/tst.go:3:8:7:1 | struct type | Bar | Bar |
+| T | pkg1/tst.go:3:8:7:1 | struct type | Foo | Foo |
+| T | pkg1/tst.go:3:8:7:1 | struct type | f | int |
+| T | pkg1/tst.go:3:8:7:1 | struct type | val | int |
+| T | pkg2/tst.go:3:8:5:1 | struct type | g | int |
+| T | pkg2/tst.go:7:8:9:1 | struct type | g | int |
+| T2 | pkg1/tst.go:9:9:12:1 | struct type | Bar | Bar |
+| T2 | pkg1/tst.go:9:9:12:1 | struct type | Foo | Foo |
+| T2 | pkg1/tst.go:9:9:12:1 | struct type | flag | bool |
+| T3 | pkg1/tst.go:14:9:17:1 | struct type | Bar | * Bar |
+| T3 | pkg1/tst.go:14:9:17:1 | struct type | Foo | * Foo |
+| T3 | pkg1/tst.go:14:9:17:1 | struct type | val | int |
+| T4 | pkg1/tst.go:19:9:22:1 | struct type | Bar | Bar |
+| T4 | pkg1/tst.go:19:9:22:1 | struct type | Foo | * Foo |
+| T4 | pkg1/tst.go:19:9:22:1 | struct type | flag | bool |
+| T4 | pkg1/tst.go:19:9:22:1 | struct type | val | int |

@@ -1,0 +1,13 @@
+| parameter 0 | main.go:51:2:51:14 | call to op | main.go:51:5:51:7 | "+" |
+| parameter 0 | main.go:53:2:53:22 | call to op2 | main.go:53:6:53:8 | "-" |
+| parameter 0 | main.go:55:2:55:27 | call to Printf | main.go:55:13:55:20 | "%d, %d" |
+| parameter 0 | main.go:57:2:57:27 | call to Printf | main.go:57:13:57:20 | "%d, %d" |
+| parameter 1 | main.go:51:2:51:14 | call to op | main.go:51:10:51:10 | 1 |
+| parameter 1 | main.go:53:2:53:22 | call to op2 | main.go:53:11:53:11 | 2 |
+| parameter 1 | main.go:55:2:55:27 | call to Printf | main.go:55:23:55:23 | x |
+| parameter 1 | main.go:57:2:57:27 | call to Printf | main.go:57:23:57:23 | x |
+| parameter 2 | main.go:51:2:51:14 | call to op | main.go:51:13:51:13 | 1 |
+| parameter 2 | main.go:53:2:53:22 | call to op2 | main.go:53:14:53:21 | call to bump |
+| parameter 2 | main.go:55:2:55:27 | call to Printf | main.go:55:26:55:26 | y |
+| parameter 2 | main.go:57:2:57:27 | call to Printf | main.go:57:26:57:26 | y |
+| receiver | main.go:53:14:53:21 | call to bump | main.go:53:14:53:14 | c |

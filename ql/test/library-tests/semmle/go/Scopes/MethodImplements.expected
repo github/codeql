@@ -1,0 +1,6 @@
+| iHaveAMethod | meth | iHaveAMethod | meth |
+| pointer type | meth | iHaveAMethod | meth |
+| pointer type | meth1 | twoMethods | meth1 |
+| starImpl | meth2 | twoMethods | meth2 |
+| twoMethods | meth1 | twoMethods | meth1 |
+| twoMethods | meth2 | twoMethods | meth2 |

@@ -1,0 +1,6 @@
+edges
+| SqlInjection.go:11:3:11:9 | selection of URL [pointer type] | SqlInjection.go:12:11:12:11 | q |
+| main.go:9:11:9:16 | selection of Form [Values] | main.go:9:11:9:28 | index expression |
+#select
+| SqlInjection.go:12:11:12:11 | q | SqlInjection.go:11:3:11:9 | selection of URL [pointer type] | SqlInjection.go:12:11:12:11 | q | This query depends on $@. | SqlInjection.go:11:3:11:9 | selection of URL | a user-provided value |
+| main.go:9:11:9:28 | index expression | main.go:9:11:9:16 | selection of Form [Values] | main.go:9:11:9:28 | index expression | This query depends on $@. | main.go:9:11:9:16 | selection of Form | a user-provided value |

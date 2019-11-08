@@ -1,0 +1,4 @@
+edges
+| CommandInjection.go:9:13:9:19 | selection of URL [pointer type] | CommandInjection.go:10:22:10:28 | cmdName |
+#select
+| CommandInjection.go:10:22:10:28 | cmdName | CommandInjection.go:9:13:9:19 | selection of URL [pointer type] | CommandInjection.go:10:22:10:28 | cmdName | This command depends on $@. | CommandInjection.go:9:13:9:19 | selection of URL | a user-provided value |

@@ -1,0 +1,6 @@
+| iHaveAMethod | meth | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes | iHaveAMethod | meth |
+| pointer type | meth | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes | iHaveAMethod | meth |
+| pointer type | meth1 | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes | twoMethods | meth1 |
+| starImpl | meth2 | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes | twoMethods | meth2 |
+| twoMethods | meth1 | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes | twoMethods | meth1 |
+| twoMethods | meth2 | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes | twoMethods | meth2 |

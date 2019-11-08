@@ -1,0 +1,4 @@
+name: codeql-go
+version: 0.0.0
+dbscheme: go.dbscheme
+suites: codeql-suites

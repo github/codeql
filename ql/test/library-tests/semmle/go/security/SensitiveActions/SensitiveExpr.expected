@@ -1,0 +1,13 @@
+| main.go:14:9:14:18 | selection of password |
+| main.go:14:11:14:18 | password |
+| main.go:32:6:32:13 | password |
+| main.go:33:6:33:13 | PassWord |
+| main.go:34:6:34:26 | myPasswordInCleartext |
+| main.go:37:6:37:15 | selection of password |
+| main.go:37:8:37:15 | password |
+| main.go:38:2:38:14 | selection of getPassword |
+| main.go:38:2:38:16 | call to getPassword |
+| main.go:38:4:38:14 | getPassword |
+| main.go:39:2:39:18 | call to get |
+| main.go:40:2:40:16 | call to get |
+| main.go:50:6:50:11 | secret |

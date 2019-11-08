@@ -1,0 +1,21 @@
+# editor and OS artifacts
+*~
+.DS_STORE
+
+# query compilation caches
+.cache
+
+# build artifacts
+build/*
+
+# qltest projects and artifacts
+ql/test/**/*.testproj
+ql/test/**/*.actual
+ql/test/**/go.sum
+
+# Java class files
+**/*.class
+
+# binaries
+tools/bin
+tools/tokenizer.jar

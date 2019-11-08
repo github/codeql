@@ -1,0 +1,54 @@
+edges
+| passwords.go:8:12:8:12 | definition of x [string] | passwords.go:9:14:9:14 | x |
+| passwords.go:25:14:25:21 | password [string] | passwords.go:25:14:25:21 | password |
+| passwords.go:26:14:26:23 | selection of password [string] | passwords.go:26:14:26:23 | selection of password |
+| passwords.go:27:14:27:26 | call to getPassword [string] | passwords.go:27:14:27:26 | call to getPassword |
+| passwords.go:28:14:28:28 | call to getPassword [string] | passwords.go:28:14:28:28 | call to getPassword |
+| passwords.go:30:8:30:15 | password [string] | passwords.go:8:12:8:12 | definition of x [string] |
+| passwords.go:32:12:32:19 | password [string] | passwords.go:32:12:32:19 | password |
+| passwords.go:34:28:34:35 | password [string] | passwords.go:34:14:34:35 | ...+... |
+| passwords.go:36:10:38:2 | composite literal [passStruct] | passwords.go:39:14:39:17 | obj1 |
+| passwords.go:42:6:42:13 | password [string] | passwords.go:44:14:44:17 | obj2 |
+| passwords.go:48:11:48:18 | password [string] | passwords.go:47:14:47:17 | obj3 |
+| passwords.go:51:14:51:27 | fixed_password [string] | passwords.go:51:14:51:27 | fixed_password |
+| passwords.go:85:19:87:2 | composite literal [passSetStruct] | passwords.go:88:14:88:26 | utilityObject |
+| passwords.go:90:12:90:19 | password [string] | passwords.go:91:23:91:28 | secret |
+| passwords.go:101:33:101:40 | password [string] | passwords.go:101:15:101:40 | ...+... |
+| passwords.go:107:34:107:41 | password [string] | passwords.go:107:16:107:41 | ...+... |
+| passwords.go:112:33:112:40 | password [string] | passwords.go:112:15:112:40 | ...+... |
+| passwords.go:116:28:116:36 | password1 [stringable] | passwords.go:116:14:116:45 | ...+... |
+| passwords.go:118:12:123:2 | composite literal [Config] | passwords.go:125:14:125:19 | config |
+| passwords.go:118:12:123:2 | composite literal [x, ... (1)] | passwords.go:126:14:126:19 | config [x, ... (1)] |
+| passwords.go:118:12:123:2 | composite literal [y, ... (1)] | passwords.go:127:14:127:19 | config [y, ... (1)] |
+| passwords.go:121:13:121:20 | password [string] | passwords.go:118:12:123:2 | composite literal [x, ... (1)] |
+| passwords.go:121:13:121:20 | password [string] | passwords.go:125:14:125:19 | config |
+| passwords.go:122:13:122:25 | call to getPassword [string] | passwords.go:118:12:123:2 | composite literal [y, ... (1)] |
+| passwords.go:122:13:122:25 | call to getPassword [string] | passwords.go:125:14:125:19 | config |
+| passwords.go:126:14:126:19 | config [x, ... (1)] | passwords.go:126:14:126:21 | selection of x |
+| passwords.go:127:14:127:19 | config [y, ... (1)] | passwords.go:127:14:127:21 | selection of y |
+| util.go:14:9:14:18 | selection of password [string] | passwords.go:28:14:28:28 | call to getPassword |
+| util.go:14:9:14:18 | selection of password [string] | passwords.go:28:14:28:28 | call to getPassword [string] |
+#select
+| passwords.go:9:14:9:14 | x | passwords.go:30:8:30:15 | password [string] | passwords.go:9:14:9:14 | x | Sensitive data returned by $@ is logged here. | passwords.go:30:8:30:15 | password | an access to password |
+| passwords.go:25:14:25:21 | password | passwords.go:25:14:25:21 | password [string] | passwords.go:25:14:25:21 | password | Sensitive data returned by $@ is logged here. | passwords.go:25:14:25:21 | password | an access to password |
+| passwords.go:26:14:26:23 | selection of password | passwords.go:26:14:26:23 | selection of password [string] | passwords.go:26:14:26:23 | selection of password | Sensitive data returned by $@ is logged here. | passwords.go:26:14:26:23 | selection of password | an access to password |
+| passwords.go:27:14:27:26 | call to getPassword | passwords.go:27:14:27:26 | call to getPassword [string] | passwords.go:27:14:27:26 | call to getPassword | Sensitive data returned by $@ is logged here. | passwords.go:27:14:27:26 | call to getPassword | a call to getPassword |
+| passwords.go:28:14:28:28 | call to getPassword | passwords.go:28:14:28:28 | call to getPassword [string] | passwords.go:28:14:28:28 | call to getPassword | Sensitive data returned by $@ is logged here. | passwords.go:28:14:28:28 | call to getPassword | a call to getPassword |
+| passwords.go:28:14:28:28 | call to getPassword | util.go:14:9:14:18 | selection of password [string] | passwords.go:28:14:28:28 | call to getPassword | Sensitive data returned by $@ is logged here. | util.go:14:9:14:18 | selection of password | an access to password |
+| passwords.go:32:12:32:19 | password | passwords.go:32:12:32:19 | password [string] | passwords.go:32:12:32:19 | password | Sensitive data returned by $@ is logged here. | passwords.go:32:12:32:19 | password | an access to password |
+| passwords.go:34:14:34:35 | ...+... | passwords.go:34:28:34:35 | password [string] | passwords.go:34:14:34:35 | ...+... | Sensitive data returned by $@ is logged here. | passwords.go:34:28:34:35 | password | an access to password |
+| passwords.go:39:14:39:17 | obj1 | passwords.go:36:10:38:2 | composite literal [passStruct] | passwords.go:39:14:39:17 | obj1 | Sensitive data returned by $@ is logged here. | passwords.go:36:10:38:2 | composite literal | an access to password |
+| passwords.go:44:14:44:17 | obj2 | passwords.go:42:6:42:13 | password [string] | passwords.go:44:14:44:17 | obj2 | Sensitive data returned by $@ is logged here. | passwords.go:42:6:42:13 | password | an access to password |
+| passwords.go:47:14:47:17 | obj3 | passwords.go:48:11:48:18 | password [string] | passwords.go:47:14:47:17 | obj3 | Sensitive data returned by $@ is logged here. | passwords.go:48:11:48:18 | password | an access to password |
+| passwords.go:51:14:51:27 | fixed_password | passwords.go:51:14:51:27 | fixed_password [string] | passwords.go:51:14:51:27 | fixed_password | Sensitive data returned by $@ is logged here. | passwords.go:51:14:51:27 | fixed_password | an access to fixed_password |
+| passwords.go:88:14:88:26 | utilityObject | passwords.go:85:19:87:2 | composite literal [passSetStruct] | passwords.go:88:14:88:26 | utilityObject | Sensitive data returned by $@ is logged here. | passwords.go:85:19:87:2 | composite literal | an access to passwordSet |
+| passwords.go:91:23:91:28 | secret | passwords.go:90:12:90:19 | password [string] | passwords.go:91:23:91:28 | secret | Sensitive data returned by $@ is logged here. | passwords.go:90:12:90:19 | password | an access to password |
+| passwords.go:101:15:101:40 | ...+... | passwords.go:101:33:101:40 | password [string] | passwords.go:101:15:101:40 | ...+... | Sensitive data returned by $@ is logged here. | passwords.go:101:33:101:40 | password | an access to password |
+| passwords.go:107:16:107:41 | ...+... | passwords.go:107:34:107:41 | password [string] | passwords.go:107:16:107:41 | ...+... | Sensitive data returned by $@ is logged here. | passwords.go:107:34:107:41 | password | an access to password |
+| passwords.go:112:15:112:40 | ...+... | passwords.go:112:33:112:40 | password [string] | passwords.go:112:15:112:40 | ...+... | Sensitive data returned by $@ is logged here. | passwords.go:112:33:112:40 | password | an access to password |
+| passwords.go:116:14:116:45 | ...+... | passwords.go:116:28:116:36 | password1 [stringable] | passwords.go:116:14:116:45 | ...+... | Sensitive data returned by $@ is logged here. | passwords.go:116:28:116:36 | password1 | an access to password1 |
+| passwords.go:125:14:125:19 | config | passwords.go:118:12:123:2 | composite literal [Config] | passwords.go:125:14:125:19 | config | Sensitive data returned by $@ is logged here. | passwords.go:118:12:123:2 | composite literal | an access to password |
+| passwords.go:125:14:125:19 | config | passwords.go:121:13:121:20 | password [string] | passwords.go:125:14:125:19 | config | Sensitive data returned by $@ is logged here. | passwords.go:121:13:121:20 | password | an access to password |
+| passwords.go:125:14:125:19 | config | passwords.go:122:13:122:25 | call to getPassword [string] | passwords.go:125:14:125:19 | config | Sensitive data returned by $@ is logged here. | passwords.go:122:13:122:25 | call to getPassword | a call to getPassword |
+| passwords.go:126:14:126:21 | selection of x | passwords.go:121:13:121:20 | password [string] | passwords.go:126:14:126:21 | selection of x | Sensitive data returned by $@ is logged here. | passwords.go:121:13:121:20 | password | an access to password |
+| passwords.go:127:14:127:21 | selection of y | passwords.go:122:13:122:25 | call to getPassword [string] | passwords.go:127:14:127:21 | selection of y | Sensitive data returned by $@ is logged here. | passwords.go:122:13:122:25 | call to getPassword | a call to getPassword |

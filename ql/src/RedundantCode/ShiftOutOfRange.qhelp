@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Shifting an integer value by more than the number of bits in its type always results in -1 for
+right-shifts of negative values and 0 for other shifts. Hence, such a shift expression is either
+redundant or indicates a logic mistake.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the length check to see whether it is redundant and can be removed, or a mistake that
+should be fixed.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code snippet attempts to compute the value 2<sup>40</sup> (1099511627776). However,
+since the left operand <code>base</code> is of type <code>int32</code> (32 bits), the shift
+operation overflows, yielding zero.
+</p>
+<sample src="ShiftOutOfRange.go"/>
+<p>
+To prevent this, the type of <code>base</code> should be changed to <code>int64</code>:
+</p>
+<sample src="ShiftOutOfRangeGood.go"/>
+</example>
+
+<references>
+<li>
+The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Arithmetic_operators">Arithmetic operators</a>.
+</li>
+</references>
+</qhelp>

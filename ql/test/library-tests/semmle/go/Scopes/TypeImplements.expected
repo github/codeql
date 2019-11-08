@@ -1,0 +1,6 @@
+| * starImpl | twoMethods |
+| * t | iHaveAMethod |
+| iHaveAMethod | iHaveAMethod |
+| interface { meth1 func() bool; meth2 func() int } | twoMethods |
+| interface { meth func() int } | iHaveAMethod |
+| twoMethods | twoMethods |

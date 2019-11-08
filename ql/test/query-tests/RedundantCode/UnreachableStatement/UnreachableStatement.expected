@@ -1,0 +1,8 @@
+| UnreachableStatement.go:5:27:5:29 | increment statement | This statement is unreachable. |
+| main.go:9:2:9:14 | expression statement | This statement is unreachable. |
+| main.go:14:2:14:14 | expression statement | This statement is unreachable. |
+| main.go:18:22:18:34 | expression statement | This statement is unreachable. |
+| main.go:26:2:26:14 | expression statement | This statement is unreachable. |
+| main.go:45:2:45:14 | expression statement | This statement is unreachable. |
+| main.go:51:3:51:15 | expression statement | This statement is unreachable. |
+| main.go:53:2:53:14 | expression statement | This statement is unreachable. |

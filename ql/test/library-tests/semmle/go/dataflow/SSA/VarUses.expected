@@ -1,0 +1,30 @@
+| main.go:15:12:15:12 | x | x |
+| main.go:15:15:15:15 | y | y |
+| main.go:17:3:17:3 | y | y |
+| main.go:19:12:19:12 | x | x |
+| main.go:19:15:19:15 | y | y |
+| main.go:21:7:21:7 | y | y |
+| main.go:23:12:23:12 | x | x |
+| main.go:23:15:23:15 | y | y |
+| main.go:27:10:27:10 | x | x |
+| main.go:29:10:29:10 | b | b |
+| main.go:29:13:29:13 | a | a |
+| main.go:31:9:31:9 | a | a |
+| main.go:31:12:31:12 | b | b |
+| main.go:35:3:35:3 | x | x |
+| main.go:40:10:40:10 | x | x |
+| main.go:42:8:42:10 | ptr | ptr |
+| main.go:44:12:44:12 | x | x |
+| main.go:47:13:47:18 | implicit read of result | result |
+| main.go:52:14:52:19 | implicit read of result | result |
+| main.go:61:12:61:12 | x | x |
+| main.go:64:16:64:16 | i | i |
+| main.go:70:12:70:12 | y | y |
+| main.go:73:16:73:16 | i | i |
+| main.go:79:12:79:12 | z | z |
+| main.go:82:18:82:18 | implicit read of a | a |
+| main.go:82:25:82:25 | implicit read of b | b |
+| main.go:84:9:84:9 | x | x |
+| main.go:84:15:84:15 | x | x |
+| main.go:94:2:94:8 | wrapper | wrapper |
+| main.go:97:9:97:9 | x | x |

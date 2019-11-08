@@ -1,0 +1,8 @@
+| Bar | github.com/Semmle/go/ql/test/library-tests/semmle/go/Types/pkg1.Bar |
+| Foo | github.com/Semmle/go/ql/test/library-tests/semmle/go/Types/pkg1.Foo |
+| G | github.com/Semmle/go/ql/test/library-tests/semmle/go/Types/pkg2.G |
+| T | github.com/Semmle/go/ql/test/library-tests/semmle/go/Types/pkg1.T |
+| T | github.com/Semmle/go/ql/test/library-tests/semmle/go/Types/pkg2.T |
+| T2 | github.com/Semmle/go/ql/test/library-tests/semmle/go/Types/pkg1.T2 |
+| T3 | github.com/Semmle/go/ql/test/library-tests/semmle/go/Types/pkg1.T3 |
+| T4 | github.com/Semmle/go/ql/test/library-tests/semmle/go/Types/pkg1.T4 |

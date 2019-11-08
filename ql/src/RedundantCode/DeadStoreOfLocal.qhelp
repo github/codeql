@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A value is assigned to a variable, but either it is never read, or its value is
+always overwritten before being read. This means that the original assignment
+has no effect, and could indicate a logic error or incomplete code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Remove assignments to variables that are immediately overwritten, or use the
+blank identifier <code>_</code> as a placeholder for return values that are
+never used.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, a value is assigned to <code>a</code>, but then
+immediately overwritten, a value is assigned to <code>b</code> and never used,
+and finally, the results of a call to <code>fmt.Println</code> are assigned to
+two temporary variables, which are then immediately overwritten by a call to
+<code>function</code>.
+</p>
+<sample src="DeadStoreOfLocalBad.go" />
+<p>
+The result of <code>calculateValue</code> is never used, and
+if <code>calculateValue</code> is a side-effect free function, those assignments
+can be removed. To ignore all the return values of <code>fmt.Println</code>, you
+can simply not assign it to any variables. To ignore only certain return values,
+use <code>_</code>.
+</p>
+<sample src="DeadStoreOfLocalGood.go" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Blank_identifier">Blank identifier</a>.</li>
+</references>
+</qhelp>
