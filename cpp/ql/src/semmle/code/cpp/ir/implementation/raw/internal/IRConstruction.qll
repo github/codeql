@@ -45,6 +45,13 @@ private module Cached {
   }
 
   cached
+  predicate hasStringLiteral(Function func, Locatable ast, CppType type, StringLiteral literal) {
+    literal = ast and
+    literal.getEnclosingFunction() = func and
+    getTypeForPRValue(literal.getType()) = type
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
   cached
@@ -234,8 +241,14 @@ private module Cached {
 
   cached
   IRVariable getInstructionVariable(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionVariable(getInstructionTag(instruction))
+    exists(TranslatedElement element, InstructionTag tag |
+      element = getInstructionTranslatedElement(instruction) and
+      tag = getInstructionTag(instruction) and
+      (
+        result = element.getInstructionVariable(tag) or
+        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+      )
+    )
   }
 
   cached
@@ -264,12 +277,6 @@ private module Cached {
       instructionOrigin(instruction, element, tag) and
       result = element.getInstructionIndex(tag)
     )
-  }
-
-  cached
-  StringLiteral getInstructionStringLiteral(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionStringLiteral(getInstructionTag(instruction))
   }
 
   cached

@@ -221,6 +221,15 @@ void InitArray() {
     char f[3] = { 0 };
 }
 
+extern void ExternalFunc();
+
+char StringLiteralAliasing() {
+  ExternalFunc();
+
+  const char* s = "Literal";
+  return s[2];  // Should be defined by `AliasedDefinition`, not `Chi` or `CallSideEffect`.
+}
+
 class Constructible {
   public:
     Constructible(int x) {};

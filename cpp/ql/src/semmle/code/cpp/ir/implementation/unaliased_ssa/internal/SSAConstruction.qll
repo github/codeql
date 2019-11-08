@@ -342,11 +342,6 @@ private module Cached {
   }
 
   cached
-  Language::StringLiteral getInstructionStringLiteral(Instruction instruction) {
-    result = getOldInstruction(instruction).(OldIR::StringConstantInstruction).getValue()
-  }
-
-  cached
   Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
     result = getOldInstruction(instruction)
           .(OldIR::BuiltInOperationInstruction)

@@ -53,6 +53,15 @@ private module Cached {
   }
 
   cached
+  predicate hasStringLiteral(
+    Callable callable, Language::AST ast, CSharpType type, StringLiteral literal
+  ) {
+    literal = ast and
+    literal.getEnclosingCallable() = callable and
+    getTypeForPRValue(literal.getType()) = type
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
   cached
@@ -232,8 +241,14 @@ private module Cached {
 
   cached
   IRVariable getInstructionVariable(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionVariable(getInstructionTag(instruction))
+    exists(TranslatedElement element, InstructionTag tag |
+      element = getInstructionTranslatedElement(instruction) and
+      tag = getInstructionTag(instruction) and
+      (
+        result = element.getInstructionVariable(tag) or
+        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+      )
+    )
   }
 
   cached
@@ -263,12 +278,6 @@ private module Cached {
   string getInstructionConstantValue(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction)
           .getInstructionConstantValue(getInstructionTag(instruction))
-  }
-
-  cached
-  StringLiteral getInstructionStringLiteral(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionStringLiteral(getInstructionTag(instruction))
   }
 
   cached
