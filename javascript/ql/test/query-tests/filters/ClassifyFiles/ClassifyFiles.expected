@@ -39,8 +39,11 @@
 | textmate.html:0:0:0:0 | textmate.html | generated |
 | tmpl2.html:0:0:0:0 | tmpl2.html | template |
 | tmpl.html:0:0:0:0 | tmpl.html | template |
+| tst-min.js:0:0:0:0 | tst-min.js | generated |
 | tst.browserify.js:0:0:0:0 | tst.browserify.js | generated |
 | tst.dart.js:0:0:0:0 | tst.dart.js | generated |
+| tst.min.js:0:0:0:0 | tst.min.js | generated |
+| tst_min.js:0:0:0:0 | tst_min.js | generated |
 | twitter-text.js:0:0:0:0 | twitter-text.js | library |
 | twitter_text.js:0:0:0:0 | twitter_text.js | library |
 | unannotated-externs-1.js:0:0:0:0 | unannotated-externs-1.js | externs |
