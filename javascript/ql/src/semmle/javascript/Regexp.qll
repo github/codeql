@@ -855,6 +855,9 @@ abstract class RegExpPatternSource extends DataFlow::Node {
    */
   abstract DataFlow::SourceNode getARegExpObject();
 
+  /**
+   * Gets the root term of the regular expression parsed from this pattern.
+   */
   abstract RegExpTerm getRegExpTerm();
 }
 
