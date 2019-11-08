@@ -1,3 +1,3 @@
-bool check_pointer_overflow(P *ptr) {
-    return ptr + 0x12345678 < ptr; // BAD
+bool not_in_range(T *ptr, size_t a) {
+    return ptr + a < ptr; // BAD
 }

@@ -12,36 +12,39 @@ which has undefined behavior. In fact, many optimizing compilers will remove
 (<code>false</code>).  Conversely, should <code>p + a</code> <i>not</i> overflow,
 the programmer may erroneously assume that the memory location <code>p + a</code>
 is accessible to the program, even though it may be inaccessible (protected by
-the operating system) or nonexistent. 
+the operating system) or nonexistent; writing to such memory, if allowed, can
+lead to memory corruption. 
 </p>
 </overview>
 <recommendation>
 <p>
-When checking for an out-of-range pointer, compare the pointer
-value <code>p</code> against a known pointer value <code>p_max</code> representing
-the highest allowable memory address.  The <code>p_max</code> pointer should
-point inside or just past the end of a defined memory region, such that 
-<code>p + a &lt;= p_max</code>.  Since we do not wish to evaluate <code>p + a</code>
-(which may result in undefined behavior), we rewrite the inequality as 
-<code>p_max - p &gt; a</code>.
-</p>
+To check whether an index <code>a</code> is less than the length of an array, 
+simply compare these two numbers as unsigned integers: <code>a &lt; ARRAY_LENGTH</code>. 
+If the length of the array is defined as the difference between two pointers 
+<code>p</code> and <code>p_end</code>, write <code>a &lt; p_end - p</code>.
+If a is <code>signed</code>, cast it to <code>unsigned</code> 
+in order to guard against negative <code>a</code>. For example, write 
+<code>(size_t)a &lt; p_end - p</code>.</p>
 </recommendation>
 <example>
 <p>
-In the first example, a constant value is being added to a pointer and
-then tested for "wrap around".  Should the test fail, the developer
-might assume that memory location <code>ptr + 0x12345678</code> is a
-valid one for the program to use, even though it may be either
-inaccessible (protected from the current process by the operating
-system) or nonexistent. Furthermore, it may be impossible to tell when
-the test succeeds, since pointer overflow has undefined behavior.
+In the first example, an index <code>a</code>is being added to a pointer <code>p</code>
+to an array with elements of type <code>T</code>.  Since we are not provided a
+separate pointer pointing to the end of the array, we fall back 
+on a check for address "wrap-around" to see if <code>p + a</code> points at 
+valid memory.  This scheme does not work, unfortunately, since the
+value of <code>p + a</code> is undefined if it points at invalid memory (for 
+example, outside our array).  Even if <code>p + a</code> were to point to 
+some accessible memory location, it would almost certainly lie 
+<i>outside</i> the bounds of the array.
 </p>
 <sample src="PointerOverflowCheck-bad.cpp" />
 <p>
 The next example shows how to properly check for an out-of-range pointer.
 In order to do so, we need to obtain the value <code>ptr_end</code>
-representing the highest allowable memory address.  In this case,
-the address lies just beyond the end of an array.
+representing the end of the array (or the address immediately past
+the end).  We can then express the condition <code>p + a &lt; p_end</code> as a
+difference of two pointers, even if <code>p + a</code> happens to be undefined. 
 </p>
 <sample src="PointerOverflowCheck-good.cpp" />
 </example>

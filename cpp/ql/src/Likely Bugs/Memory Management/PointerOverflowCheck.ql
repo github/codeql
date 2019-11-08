@@ -1,11 +1,11 @@
 /**
- * @name Dangerous pointer out-of-range check
+ * @name Reliance on pointer wrap-around
  * @description Testing for out-of-range pointers by adding a value to a pointer
  *              to see if it "wraps around" is dangerous because it relies
  *              on undefined behavior and may lead to attempted use of
  *              nonexistent or inaccessible memory locations.
  * @kind problem
- * @problem.severity warning
+ * @problem.severity error
  * @precision high
  * @id cpp/pointer-overflow-check
  * @tags reliability

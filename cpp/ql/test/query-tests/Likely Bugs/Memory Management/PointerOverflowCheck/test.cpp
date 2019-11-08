@@ -25,3 +25,13 @@ void foo(int untrusted_int) {
           q.begin() + untrusted_int < q.begin()) // BAD [NOT DETECTED]
       throw q;
 }
+
+typedef unsigned long long size_t;
+
+bool not_in_range(Q *ptr, size_t a) {
+    return ptr + a < ptr; // BAD
+}
+
+bool in_range(Q *ptr, Q *ptr_end, size_t a) {
+    return a < ptr_end - ptr; // GOOD
+}
