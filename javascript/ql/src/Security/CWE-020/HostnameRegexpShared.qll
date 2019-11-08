@@ -18,6 +18,7 @@ predicate isDotConstant(RegExpTerm term) {
   or
   exists(RegExpCharacterClass cls |
     term = cls and
+    not cls.isInverted() and
     cls.getNumChild() = 1 and
     cls.getAChild().(RegExpConstant).getValue() = "."
   )
