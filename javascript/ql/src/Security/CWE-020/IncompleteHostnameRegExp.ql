@@ -15,16 +15,19 @@ import semmle.javascript.CharacterEscapes
 import HostnameRegexpShared
 
 /**
- * Holds if `term` occurs inside a quantifier or alternative, and thus
- * can not be expected to correspond to a unique match.
+ * Holds if `term` occurs inside a quantifier or alternative (and thus
+ * can not be expected to correspond to a unique match), or as part of
+ * a lookaround assertion (which are rarely used for capture groups).
  */
-predicate isInsideChoice(RegExpTerm term) {
+predicate isInsideChoiceOrSubPattern(RegExpTerm term) {
   exists(RegExpParent parent | parent = term.getParent() |
     parent instanceof RegExpAlt
     or
     parent instanceof RegExpQuantifier
     or
-    isInsideChoice(parent)
+    parent instanceof RegExpSubPattern
+    or
+    isInsideChoiceOrSubPattern(parent)
   )
 }
 
@@ -33,7 +36,7 @@ predicate isInsideChoice(RegExpTerm term) {
  */
 predicate isLikelyCaptureGroup(RegExpGroup group) {
   group.isCapture() and
-  not isInsideChoice(group)
+  not isInsideChoiceOrSubPattern(group)
 }
 
 /**
