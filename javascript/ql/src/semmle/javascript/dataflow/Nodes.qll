@@ -11,7 +11,7 @@ private import internal.CallGraphs
 /**
  * A data flow node corresponding to an expression. 
  *
- * Example:
+ * Examples:
  * ```js
  * x + y
  * Math.abs(x)
