@@ -529,7 +529,7 @@ module DataFlow {
    * obj[e] = value; // assignment to a computed member
    * { f: value }    // property initializer
    * { g() {} }      // object literal method
-   * { get g() {}, set g(v) {} }  // accessor methods (has no rhs value)
+   * { get g() {}, set g(v) {} }  // accessor methods (have no rhs value)
    * class C {
    *   constructor(public x: number); // parameter field (TypeScript only)
    *   static m() {} // static method
