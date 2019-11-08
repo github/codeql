@@ -23,5 +23,9 @@ where
   globalValueNumber(expr1) = globalValueNumber(expr2) and
   add.getUnspecifiedType().(IntegralType).isSigned() and
   not exists(MacroInvocation mi | mi.getAnAffectedElement() = add) and
-  exprMightOverflowPositively(add)
+  exprMightOverflowPositively(add) and
+  exists(Compilation c | c.getAFileCompiled() = ro.getFile() |
+    not c.getAnArgument() = "-fwrapv" and
+    not c.getAnArgument() = "-fno-strict-overflow"
+  )
 select ro, "Testing for signed overflow may produce undefined results."
