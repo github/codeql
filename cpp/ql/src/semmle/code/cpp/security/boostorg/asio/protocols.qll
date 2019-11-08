@@ -137,7 +137,7 @@ module BoostorgAsio {
 
   /**
    * Gets the value for the no_sslv2 constant, right shifted by 16 bits.
-   * 
+   *
    * Note that modern versions of OpelSSL do not support SSL v2, so this option is for backwards compatibility only.
    */
   int getShiftedSslOptionsNoSsl2() {
