@@ -150,7 +150,7 @@ class TopLevel extends @toplevel, StmtContainer {
   /** Holds if this toplevel is minified. */
   predicate isMinified() {
     // file name contains 'min' (not as part of a longer word)
-    getFile().getBaseName().regexpMatch(".*[^-.]*[-.]min([-.].*)?\\.\\w+")
+    getFile().getBaseName().regexpMatch(".*[^-._]*[-._]min([-._].*)?\\.\\w+")
     or
     exists(int numstmt | numstmt = strictcount(Stmt s | s.getTopLevel() = this) |
       // there are more than two statements per line on average
