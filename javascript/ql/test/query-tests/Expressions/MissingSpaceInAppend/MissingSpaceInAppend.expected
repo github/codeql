@@ -11,3 +11,5 @@
 | missing.js:24:5:24:21 | `missing a space` | This string appears to be missing a space after 'space'. |
 | missing.js:26:5:26:21 | "missing a space" | This string appears to be missing a space after 'space'. |
 | missing.js:28:5:28:21 | `missing a space` | This string appears to be missing a space after 'space'. |
+| missing.js:30:7:30:21 | "missing space" | This string appears to be missing a space after 'space'. |
+| missing.js:32:7:32:12 | "h. 0" | This string appears to be missing a space after '0'. |

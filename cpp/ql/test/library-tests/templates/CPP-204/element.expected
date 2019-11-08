@@ -1,6 +1,12 @@
 | file://:0:0:0:0 |  |
 | file://:0:0:0:0 | 0 |
 | file://:0:0:0:0 | (global namespace) |
+| file://:0:0:0:0 | B |
+| file://:0:0:0:0 | X |
+| file://:0:0:0:0 | X |
+| file://:0:0:0:0 | X |
+| file://:0:0:0:0 | X |
+| file://:0:0:0:0 | Y |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |
 | file://:0:0:0:0 | __va_list_tag && |

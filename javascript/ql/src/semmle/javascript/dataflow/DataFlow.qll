@@ -19,6 +19,7 @@
  */
 
 import javascript
+private import internal.CallGraphs
 
 module DataFlow {
   cached
@@ -117,14 +118,23 @@ module DataFlow {
     int getIntValue() { result = asExpr().getIntValue() }
 
     /** Gets a function value that may reach this node. */
-    FunctionNode getAFunctionValue() {
-      result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction()
+    final FunctionNode getAFunctionValue() {
+      CallGraph::getAFunctionReference(result, 0).flowsTo(this)
+    }
+
+    /** Gets a function value that may reach this node with the given `imprecision` level. */
+    final FunctionNode getAFunctionValue(int imprecision) {
+      CallGraph::getAFunctionReference(result, imprecision).flowsTo(this)
+    }
+
+    /**
+     * Gets a function value that may reach this node,
+     * possibly derived from a partial function invocation.
+     */
+    final FunctionNode getABoundFunctionValue(int boundArgs) {
+      result = getAFunctionValue() and boundArgs = 0
       or
-      exists(string name |
-        GlobalAccessPath::isAssignedInUniqueFile(name) and
-        GlobalAccessPath::fromRhs(result) = name and
-        GlobalAccessPath::fromReference(this) = name
-      )
+      CallGraph::getABoundFunctionReference(result, boundArgs).flowsTo(this)
     }
 
     /**
@@ -731,7 +741,8 @@ module DataFlow {
     PropReadAsSourceNode() {
       this = TPropNode(any(PropertyPattern p)) or
       this instanceof RestPatternNode or
-      this instanceof ElementPatternNode
+      this instanceof ElementPatternNode or
+      this = lvalueNode(any(ForOfStmt stmt).getLValue())
     }
   }
 
@@ -814,6 +825,24 @@ module DataFlow {
     override Expr getPropertyNameExpr() { result = astNode.getImported() }
 
     override string getPropertyName() { result = astNode.getImportedName() }
+  }
+
+  /**
+   * The left-hand side of a `for..of` statement, seen as a property read
+   * on the object being iterated over.
+   */
+  private class ForOfLvalueAsPropRead extends PropRead {
+    ForOfStmt stmt;
+
+    ForOfLvalueAsPropRead() {
+      this = lvalueNode(stmt.getLValue())
+    }
+
+    override Node getBase() { result = stmt.getIterationDomain().flow() }
+
+    override Expr getPropertyNameExpr() { none() }
+
+    override string getPropertyName() { none() }
   }
 
   /**
@@ -1414,6 +1443,8 @@ module DataFlow {
       e instanceof SuperExpr
       or
       e instanceof NewTargetExpr
+      or
+      e instanceof ImportMetaExpr
       or
       e instanceof FunctionBindExpr
       or

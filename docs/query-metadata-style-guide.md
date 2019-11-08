@@ -168,7 +168,7 @@ The select clause of each alert query defines the alert message that is displaye
 *   Program element references should be in 'single quotes' to distinguish them from ordinary words. Quotes are not needed around substitutions ($@).
 *   Avoid constant alert message strings and include some context, if possible. For example, `The class 'Foo' is duplicated as 'Bar'.` is preferable to `This class is duplicated here.`
 *   Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions. 
-*   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining select statements](https://help.semmle.com/QL/learn-ql/ql/writing-queries/select-statement.html)
+*   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining select statements](https://help.semmle.com/QL/learn-ql/ql/writing-queries/select-statement.html).
 
 For examples of select clauses and alert messages, see the query source files at the following pages:
 

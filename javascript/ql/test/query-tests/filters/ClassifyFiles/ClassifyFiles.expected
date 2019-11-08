@@ -6,6 +6,7 @@
 | ai.1.2.3-build0123.js:0:0:0:0 | ai.1.2.3-build0123.js | library |
 | bundle-directive.js:0:0:0:0 | bundle-directive.js | generated |
 | data.js:0:0:0:0 | data.js | generated |
+| doxygen-generated.html:0:0:0:0 | doxygen-generated.html | generated |
 | etherpad.html:0:0:0:0 | etherpad.html | generated |
 | exported-data.js:0:0:0:0 | exported-data.js | generated |
 | htmltidy.html:0:0:0:0 | htmltidy.html | generated |

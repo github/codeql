@@ -1,0 +1,4 @@
+| tst.ts:7:3:7:24 | constru ... string; | The member name 'constructor' does not declare a constructor in interfaces, but it does in classes. |
+| tst.ts:16:3:16:21 | function(): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:37:3:37:21 | function(): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:48:3:48:13 | new(): Quz; | The member name 'new' does not declare a constructor, but 'constructor' does in class declarations. |

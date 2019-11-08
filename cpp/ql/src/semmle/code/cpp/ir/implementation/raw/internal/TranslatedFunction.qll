@@ -1,6 +1,7 @@
 private import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
@@ -95,6 +96,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       result = getInstruction(UnmodeledUseTag())
       or
       tag = UnmodeledUseTag() and
+      result = getInstruction(AliasedUseTag())
+      or
+      tag = AliasedUseTag() and
       result = getInstruction(ExitFunctionTag())
     )
   }
@@ -115,55 +119,46 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     or
     (
       child = getDestructorDestructionList() and
-      if getReturnType() instanceof VoidType
-      then result = getInstruction(ReturnTag())
-      else result = getInstruction(ReturnValueAddressTag())
+      if hasReturnValue()
+      then result = getInstruction(ReturnValueAddressTag())
+      else result = getInstruction(ReturnTag())
     )
   }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     (
       tag = EnterFunctionTag() and
       opcode instanceof Opcode::EnterFunction and
-      resultType instanceof VoidType and
-      isGLValue = false
+      resultType = getVoidType()
       or
       tag = UnmodeledDefinitionTag() and
       opcode instanceof Opcode::UnmodeledDefinition and
-      resultType instanceof UnknownType and
-      isGLValue = false
+      resultType = getUnknownType()
       or
       tag = AliasedDefinitionTag() and
       opcode instanceof Opcode::AliasedDefinition and
-      resultType instanceof UnknownType and
-      isGLValue = false
+      resultType = getUnknownType()
       or
       tag = InitializeThisTag() and
       opcode instanceof Opcode::InitializeThis and
-      resultType = getThisType() and
-      isGLValue = true
+      resultType = getTypeForGLValue(getThisType())
       or
       tag = ReturnValueAddressTag() and
       opcode instanceof Opcode::VariableAddress and
-      resultType = getReturnType() and
-      not resultType instanceof VoidType and
-      isGLValue = true
+      resultType = getTypeForGLValue(getReturnType()) and
+      hasReturnValue()
       or
       (
         tag = ReturnTag() and
-        resultType instanceof VoidType and
-        isGLValue = false and
-        if getReturnType() instanceof VoidType
-        then opcode instanceof Opcode::ReturnVoid
-        else opcode instanceof Opcode::ReturnValue
+        resultType = getVoidType() and
+        if hasReturnValue()
+        then opcode instanceof Opcode::ReturnValue
+        else opcode instanceof Opcode::ReturnVoid
       )
       or
       tag = UnwindTag() and
       opcode instanceof Opcode::Unwind and
-      resultType instanceof VoidType and
-      isGLValue = false and
+      resultType = getVoidType() and
       (
         // Only generate the `Unwind` instruction if there is any exception
         // handling present in the function.
@@ -173,13 +168,15 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       tag = UnmodeledUseTag() and
       opcode instanceof Opcode::UnmodeledUse and
-      resultType instanceof VoidType and
-      isGLValue = false
+      resultType = getVoidType()
+      or
+      tag = AliasedUseTag() and
+      opcode instanceof Opcode::AliasedUse and
+      resultType = getVoidType()
       or
       tag = ExitFunctionTag() and
       opcode instanceof Opcode::ExitFunction and
-      resultType instanceof VoidType and
-      isGLValue = false
+      resultType = getVoidType()
     )
   }
 
@@ -197,8 +194,12 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     operandTag instanceof UnmodeledUseOperandTag and
     result = getUnmodeledDefinitionInstruction()
     or
+    tag = AliasedUseTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getUnmodeledDefinitionInstruction()
+    or
     tag = ReturnTag() and
-    not getReturnType() instanceof VoidType and
+    hasReturnValue() and
     (
       operandTag instanceof AddressOperandTag and
       result = getInstruction(ReturnValueAddressTag())
@@ -208,11 +209,15 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     )
   }
 
-  final override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     tag = ReturnTag() and
-    not getReturnType() instanceof VoidType and
+    hasReturnValue() and
     operandTag instanceof LoadOperandTag and
-    result = getReturnType()
+    result = getTypeForPRValue(getReturnType())
+    or
+    tag = AliasedUseTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getUnknownType()
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -220,10 +225,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     result = getReturnVariable()
   }
 
-  final override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
     tag = ReturnValueTempVar() and
-    type = getReturnType() and
-    not type instanceof VoidType
+    hasReturnValue() and
+    type = getTypeForPRValue(getReturnType())
   }
 
   /**
@@ -240,6 +245,11 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   final IRReturnVariable getReturnVariable() {
     result = getIRTempVariable(func, ReturnValueTempVar())
   }
+
+  /**
+   * Holds if the function has a non-`void` return type.
+   */
+  final predicate hasReturnValue() { not func.getUnspecifiedType() instanceof VoidType }
 
   /**
    * Gets the single `UnmodeledDefinition` instruction for this function.
@@ -271,7 +281,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
    * parameters and local variables, plus any global variables or static data members that are
    * directly accessed by the function.
    */
-  final predicate hasUserVariable(Variable var, Type type) {
+  final predicate hasUserVariable(Variable var, CppType type) {
     (
       (
         var instanceof GlobalOrNamespaceVariable
@@ -287,10 +297,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       var.(Parameter).getCatchBlock().getEnclosingFunction() = func
     ) and
-    type = getVariableType(var)
+    type = getTypeForPRValue(getVariableType(var))
   }
 
-  final private Type getReturnType() { result = func.getUnspecifiedType() }
+  final Type getReturnType() { result = func.getType() }
 }
 
 /**
@@ -335,18 +345,14 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
 
   final override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  final override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getVariableType(param) and
-    isGLValue = true
+    resultType = getTypeForGLValue(getVariableType(param))
     or
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::InitializeParameter and
-    resultType = getVariableType(param) and
-    isGLValue = false
+    resultType = getTypeForPRValue(getVariableType(param))
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -404,9 +410,7 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
     else result = getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -469,9 +473,7 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
     else result = getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 

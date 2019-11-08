@@ -21,6 +21,7 @@
 import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
@@ -259,9 +260,9 @@ private class TranslatedLockWasTakenDecl extends TranslatedCompilerGeneratedDecl
 
   TranslatedLockWasTakenDecl() { this = TTranslatedCompilerGeneratedElement(generatedBy, 8) }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockWasTakenTemp() and
-    type instanceof BoolType
+    type = getBoolType()
   }
 
   override IRTempVariable getIRVariable() {
@@ -290,9 +291,9 @@ private class TranslatedLockedVarDecl extends TranslatedCompilerGeneratedDeclara
 
   TranslatedLockedVarDecl() { this = TTranslatedCompilerGeneratedElement(generatedBy, 9) }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockedVarTemp() and
-    type = generatedBy.getExpr().getType()
+    type = getTypeForPRValue(generatedBy.getExpr().getType())
   }
 
   override IRTempVariable getIRVariable() {
@@ -321,9 +322,9 @@ private class TranslatedMonitorEnterVarAcc extends TTranslatedCompilerGeneratedE
 
   override Type getResultType() { result = generatedBy.getExpr().getType() }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockedVarTemp() and
-    type = getResultType()
+    type = getTypeForPRValue(getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -352,9 +353,9 @@ private class TranslatedMonitorExitVarAcc extends TTranslatedCompilerGeneratedEl
     result = getTempVariable(LockedVarTemp())
   }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockedVarTemp() and
-    type = getResultType()
+    type = getTypeForPRValue(getResultType())
   }
 
   override predicate needsLoad() { any() }
@@ -372,9 +373,9 @@ private class TranslatedLockWasTakenCondVarAcc extends TTranslatedCompilerGenera
 
   override Type getResultType() { result instanceof BoolType }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockWasTakenTemp() and
-    type = getResultType()
+    type = getTypeForPRValue(getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -397,9 +398,9 @@ private class TranslatedLockWasTakenRefArg extends TTranslatedCompilerGeneratedE
 
   override Type getResultType() { result instanceof BoolType }
 
-  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+  override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockWasTakenTemp() and
-    type = getResultType()
+    type = getTypeForPRValue(getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {

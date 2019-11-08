@@ -14,8 +14,12 @@ private import semmle.code.cpp.internal.QualifiedName as Q
  * ```
  *   extern int myglobal;
  * ```
- * Each of these declarations is given its own distinct `DeclarationEntry`,
- * but they all share the same `Declaration`.
+ * and defined in one:
+ * ```
+ *   int myglobal;
+ * ```
+ * Each of these declarations (including the definition) is given its own
+ * distinct `DeclarationEntry`, but they all share the same `Declaration`.
  *
  * Some derived class of `Declaration` do not have a corresponding
  * `DeclarationEntry`, because they always have a unique source location.
@@ -196,26 +200,99 @@ abstract class Declaration extends Locatable, @declaration {
 
   /**
    * Gets a template argument used to instantiate this declaration from a template.
-   * When called on a template, this will return a template parameter.
+   * When called on a template, this will return a template parameter type for
+   * both typed and non-typed parameters.
    */
-  final Type getATemplateArgument() { result = getTemplateArgument(_) }
+  final Locatable getATemplateArgument() { result = getTemplateArgument(_) }
+
+  /**
+   * Gets a template argument used to instantiate this declaration from a template.
+   * When called on a template, this will return a non-typed template
+   * parameter value.
+   */
+  final Locatable getATemplateArgumentKind() { result = getTemplateArgumentKind(_) }
 
   /**
    * Gets the `i`th template argument used to instantiate this declaration from a
-   * template. When called on a template, this will return the `i`th template parameter.
+   * template.
+   *
+   * For example:
+   *
+   * `template<typename T, T X> class Foo;`
+   *
+   * Will have `getTemplateArgument(0)` return `T`, and
+   * `getTemplateArgument(1)` return `X`.
+   *
+   * `Foo<int, 1> bar;
+   *
+   * Will have `getTemplateArgument())` return `int`, and
+   * `getTemplateArgument(1)` return `1`.
    */
-  Type getTemplateArgument(int index) { none() }
+  final Locatable getTemplateArgument(int index) {
+    if exists(getTemplateArgumentValue(index))
+    then result = getTemplateArgumentValue(index)
+    else result = getTemplateArgumentType(index)
+  }
+
+  /**
+   * Gets the `i`th template argument value used to instantiate this declaration
+   * from a template. When called on a template, this will return the `i`th template
+   * parameter value if it exists.
+   *
+   * For example:
+   *
+   * `template<typename T, T X> class Foo;`
+   *
+   * Will have `getTemplateArgumentKind(1)` return `T`, and no result for
+   * `getTemplateArgumentKind(0)`.
+   *
+   * `Foo<int, 10> bar;
+   *
+   * Will have `getTemplateArgumentKind(1)` return `int`, and no result for
+   * `getTemplateArgumentKind(0)`.
+   */
+  final Locatable getTemplateArgumentKind(int index) {
+    if exists(getTemplateArgumentValue(index))
+    then result = getTemplateArgumentType(index)
+    else none()
+  }
 
   /** Gets the number of template arguments for this declaration. */
   final int getNumberOfTemplateArguments() {
     result = count(int i | exists(getTemplateArgument(i)))
   }
+
+  private Type getTemplateArgumentType(int index) {
+    class_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    function_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    variable_template_argument(underlyingElement(this), index, unresolveElement(result))
+  }
+
+  private Expr getTemplateArgumentValue(int index) {
+    class_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+  }
 }
 
 /**
- * A C/C++ declaration entry. See the comment above `Declaration` for an
- * explanation of the relationship between `Declaration` and
- * `DeclarationEntry`.
+ * A C/C++ declaration entry. For example the following code contains five
+ * declaration entries:
+ * ```
+ * extern int myGlobal;
+ * int myVariable;
+ * typedef char MyChar;
+ * void myFunction();
+ * void myFunction() {
+ *   // ...
+ * }
+ * ```
+ * See the comment above `Declaration` for an explanation of the relationship
+ * between `Declaration` and `DeclarationEntry`.
  */
 abstract class DeclarationEntry extends Locatable {
   /** Gets a specifier associated with this declaration entry. */
@@ -288,8 +365,19 @@ abstract class DeclarationEntry extends Locatable {
  * A declaration that can potentially have more C++ access rights than its
  * enclosing element. This comprises `Class` (they have access to their own
  * private members) along with other `UserType`s and `Function` (they can be
- * the target of `friend` declarations).
+ * the target of `friend` declarations).  For example `MyClass` and
+ * `myFunction` in the following code:
+ * ```
+ * class MyClass
+ * {
+ * public:
+ *   ...
+ * };
  *
+ * void myFunction() {
+ *   // ...
+ * }
+ * ```
  * In the C++ standard (N4140 11.2), rules for access control revolve around
  * the informal phrase "_R_ occurs in a member or friend of class C", where
  * `AccessHolder` corresponds to this _R_.
@@ -423,8 +511,19 @@ abstract class AccessHolder extends Declaration {
 /**
  * A declaration that very likely has more C++ access rights than its
  * enclosing element. This comprises `Class` (they have access to their own
- * private members) along with any target of a `friend` declaration.
+ * private members) along with any target of a `friend` declaration.  For
+ * example `MyClass` and `friendFunction` in the following code:
+ * ```
+ * class MyClass
+ * {
+ * public:
+ *   friend void friendFunction();
+ * };
  *
+ * void friendFunction() {
+ *   // ...
+ * }
+ * ```
  * Most access rights are computed for `DirectAccessHolder` instead of
  * `AccessHolder` -- that's more efficient because there are fewer
  * `DirectAccessHolder`s. If a `DirectAccessHolder` contains an `AccessHolder`,

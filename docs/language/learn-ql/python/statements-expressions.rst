@@ -4,7 +4,7 @@ Tutorial: Statements and expressions
 Statements
 ----------
 
-The bulk of Python code takes the form of statements. Each different type of statement in Python is represented by a separate class in QL.
+The bulk of Python code takes the form of statements. Each different type of statement in Python is represented by a separate CodeQL class.
 
 Here is the full class hierarchy:
 
@@ -165,7 +165,7 @@ The clause ``cmp.getOp(0) instanceof Is and cmp.getComparator(0) = literal`` che
 Example: Duplicates in dictionary literals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If there are duplicate keys in a Python dictionary, then the second key will overwrite the first, which is almost certainly a mistake. We can find these duplicates in QL, but the query is more complex than previous examples and will require us to write a ``predicate`` as a helper.
+If there are duplicate keys in a Python dictionary, then the second key will overwrite the first, which is almost certainly a mistake. We can find these duplicates with CodeQL, but the query is more complex than previous examples and will require us to write a ``predicate`` as a helper.
 
 Here is the query:
 
@@ -274,5 +274,5 @@ Here is the relevant part of the class hierarchy:
 What next?
 ----------
 
--  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Experiment with the worked examples in the following tutorial topics: :doc:`Control flow <control-flow>` and :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

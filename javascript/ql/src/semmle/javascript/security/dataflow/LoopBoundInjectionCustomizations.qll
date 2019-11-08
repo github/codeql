@@ -80,20 +80,25 @@ module LoopBoundInjection {
   abstract class Sink extends DataFlow::Node { }
 
   /**
+   * Holds if there exists an array access indexed by the variable `var` where it is likely that
+   * the array access will cause a crash if `var` grows unbounded.
+   */
+  predicate hasCrashingArrayAccess(Variable var) {
+    exists(DataFlow::PropRead arrayRead, Expr throws |
+      arrayRead.getPropertyNameExpr() = var.getAnAccess() and
+      arrayRead.flowsToExpr(throws) and
+      isCrashingWithNullValues(throws)
+    )
+  }
+
+  /**
    * An object that that is being iterated in a `for` loop, such as `for (..; .. sink.length; ...) ...`
    */
   private class LoopSink extends Sink {
     LoopSink() {
       exists(ArrayIterationLoop loop |
         this = loop.getLengthRead().getBase() and
-        // In the DoS we are looking for arrayRead will evaluate to undefined,
-        // this may cause an exception to be thrown, thus bailing out of the loop.
-        // A DoS cannot happen if such an exception is thrown.
-        not exists(DataFlow::PropRead arrayRead, Expr throws |
-          arrayRead.getPropertyNameExpr() = loop.getIndexVariable().getAnAccess() and
-          arrayRead.flowsToExpr(throws) and
-          isCrashingWithNullValues(throws)
-        ) and
+        not hasCrashingArrayAccess(loop.getIndexVariable()) and
         // The existence of some kind of early-exit usually indicates that the loop will stop early and no DoS happens.
         not exists(BreakStmt br | br.getTarget() = loop) and
         not exists(ReturnStmt ret |
@@ -187,14 +192,13 @@ module LoopBoundInjection {
         call = LodashUnderscore::member(name).getACall() and
         call.getArgument(0) = this and
         // Here it is just assumed that the array element is the first parameter in the callback function.
-        not exists(DataFlow::FunctionNode func, DataFlow::ParameterNode e |
+        not exists(DataFlow::FunctionNode func |
           func.flowsTo(call.getAnArgument()) and
-          e = func.getParameter(0) and
           (
             // Looking for obvious null-pointers happening on the array elements in the iteration.
             // Similar to what is done in the loop iteration sink.
             exists(Expr throws |
-              e.flowsToExpr(throws) and
+              func.getParameter(0).flowsToExpr(throws) and
               isCrashingWithNullValues(throws)
             )
             or
@@ -202,6 +206,9 @@ module LoopBoundInjection {
             exists(ThrowStmt throw |
               throw.getTarget() = func.asExpr()
             )
+            or
+            // A crash happens looking up the index variable.
+            hasCrashingArrayAccess(func.getParameter(1).getParameter().getVariable())
           )
         )
       )

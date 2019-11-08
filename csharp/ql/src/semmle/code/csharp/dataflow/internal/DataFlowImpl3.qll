@@ -905,30 +905,35 @@ private predicate localFlowExit(Node node, Configuration config) {
  */
 pragma[nomagic]
 private predicate localFlowStepPlus(
-  Node node1, Node node2, boolean preservesValue, Configuration config
+  Node node1, Node node2, boolean preservesValue, Configuration config, LocalCallContext cc
 ) {
-  localFlowEntry(node1, config) and
+  not isUnreachableInCall(node2, cc.(LocalCallContextSpecificCall).getCall()) and
   (
-    localFlowStep(node1, node2, config) and preservesValue = true
+    localFlowEntry(node1, config) and
+    (
+      localFlowStep(node1, node2, config) and preservesValue = true
+      or
+      additionalLocalFlowStep(node1, node2, config) and preservesValue = false
+    ) and
+    node1 != node2 and
+    cc.relevantFor(node1.getEnclosingCallable()) and
+    not isUnreachableInCall(node1, cc.(LocalCallContextSpecificCall).getCall()) and
+    nodeCand(node2, unbind(config))
     or
-    additionalLocalFlowStep(node1, node2, config) and preservesValue = false
-  ) and
-  node1 != node2 and
-  nodeCand(node2, unbind(config))
-  or
-  exists(Node mid |
-    localFlowStepPlus(node1, mid, preservesValue, config) and
-    localFlowStep(mid, node2, config) and
-    not mid instanceof CastNode and
-    nodeCand(node2, unbind(config))
-  )
-  or
-  exists(Node mid |
-    localFlowStepPlus(node1, mid, _, config) and
-    additionalLocalFlowStep(mid, node2, config) and
-    not mid instanceof CastNode and
-    preservesValue = false and
-    nodeCand(node2, unbind(config))
+    exists(Node mid |
+      localFlowStepPlus(node1, mid, preservesValue, config, cc) and
+      localFlowStep(mid, node2, config) and
+      not mid instanceof CastNode and
+      nodeCand(node2, unbind(config))
+    )
+    or
+    exists(Node mid |
+      localFlowStepPlus(node1, mid, _, config, cc) and
+      additionalLocalFlowStep(mid, node2, config) and
+      not mid instanceof CastNode and
+      preservesValue = false and
+      nodeCand(node2, unbind(config))
+    )
   )
 }
 
@@ -936,11 +941,11 @@ private predicate localFlowStepPlus(
  * Holds if `node1` can step to `node2` in one or more local steps and this
  * path can occur as a maximal subsequence of local steps in a dataflow path.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate localFlowBigStep(
-  Node node1, Node node2, boolean preservesValue, Configuration config
+  Node node1, Node node2, boolean preservesValue, Configuration config, LocalCallContext callContext
 ) {
-  localFlowStepPlus(node1, node2, preservesValue, config) and
+  localFlowStepPlus(node1, node2, preservesValue, config, callContext) and
   localFlowExit(node2, config)
 }
 
@@ -1000,7 +1005,7 @@ private class AccessPathFrontNilNode extends Node {
     (
       any(Configuration c).isSource(this)
       or
-      localFlowBigStep(_, this, false, _)
+      localFlowBigStep(_, this, false, _, _)
       or
       additionalJumpStep(_, this, _)
     )
@@ -1023,12 +1028,12 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
   (
     exists(Node mid |
       flowCandFwd(mid, fromArg, apf, config) and
-      localFlowBigStep(mid, node, true, config)
+      localFlowBigStep(mid, node, true, config, _)
     )
     or
     exists(Node mid, AccessPathFrontNil nil |
       flowCandFwd(mid, fromArg, nil, config) and
-      localFlowBigStep(mid, node, false, config) and
+      localFlowBigStep(mid, node, false, config, _) and
       apf = node.(AccessPathFrontNilNode).getApf()
     )
     or
@@ -1122,13 +1127,13 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
   apf instanceof AccessPathFrontNil
   or
   exists(Node mid |
-    localFlowBigStep(node, mid, true, config) and
+    localFlowBigStep(node, mid, true, config, _) and
     flowCand(mid, toReturn, apf, config)
   )
   or
   exists(Node mid, AccessPathFrontNil nil |
     flowCandFwd(node, _, apf, config) and
-    localFlowBigStep(node, mid, false, config) and
+    localFlowBigStep(node, mid, false, config, _) and
     flowCand(mid, toReturn, nil, config) and
     apf instanceof AccessPathFrontNil
   )
@@ -1261,7 +1266,7 @@ abstract private class AccessPath extends TAccessPath {
 
 private class AccessPathNil extends AccessPath, TNil {
   override string toString() {
-    exists(DataFlowType t | this = TNil(t) | result = concat(" : " + ppReprType(t)))
+    exists(DataFlowType t | this = TNil(t) | result = concat(": " + ppReprType(t)))
   }
 
   override AccessPathFront getFront() {
@@ -1277,7 +1282,7 @@ private class AccessPathConsNil extends AccessPathCons, TConsNil {
   override string toString() {
     exists(Content f, DataFlowType t | this = TConsNil(f, t) |
       // The `concat` becomes "" if `ppReprType` has no result.
-      result = f.toString() + concat(" : " + ppReprType(t))
+      result = "[" + f.toString() + "]" + concat(" : " + ppReprType(t))
     )
   }
 
@@ -1294,8 +1299,8 @@ private class AccessPathConsCons extends AccessPathCons, TConsCons {
   override string toString() {
     exists(Content f1, Content f2, int len | this = TConsCons(f1, f2, len) |
       if len = 2
-      then result = f1.toString() + ", " + f2.toString()
-      else result = f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")"
+      then result = "[" + f1.toString() + ", " + f2.toString() + "]"
+      else result = "[" + f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")]"
     )
   }
 
@@ -1363,12 +1368,12 @@ private predicate flowFwd0(
   (
     exists(Node mid |
       flowFwd(mid, fromArg, apf, ap, config) and
-      localFlowBigStep(mid, node, true, config)
+      localFlowBigStep(mid, node, true, config, _)
     )
     or
     exists(Node mid, AccessPathNil nil |
       flowFwd(mid, fromArg, _, nil, config) and
-      localFlowBigStep(mid, node, false, config) and
+      localFlowBigStep(mid, node, false, config, _) and
       ap = node.(AccessPathNilNode).getAp() and
       apf = ap.(AccessPathNil).getFront()
     )
@@ -1472,13 +1477,13 @@ private predicate flow0(Node node, boolean toReturn, AccessPath ap, Configuratio
   ap instanceof AccessPathNil
   or
   exists(Node mid |
-    localFlowBigStep(node, mid, true, config) and
+    localFlowBigStep(node, mid, true, config, _) and
     flow(mid, toReturn, ap, config)
   )
   or
   exists(Node mid, AccessPathNil nil |
     flowFwd(node, _, _, ap, config) and
-    localFlowBigStep(node, mid, false, config) and
+    localFlowBigStep(node, mid, false, config, _) and
     flow(mid, toReturn, nil, config) and
     ap instanceof AccessPathNil
   )
@@ -1626,7 +1631,7 @@ abstract class PathNode extends TPathNode {
     this instanceof PathNodeSink and result = ""
     or
     exists(string s | s = this.(PathNodeMid).getAp().toString() |
-      if s = "" then result = "" else result = " [" + s + "]"
+      if s = "" then result = "" else result = " " + s
     )
   }
 
@@ -1729,14 +1734,20 @@ private class PathNodeSink extends PathNode, TPathNodeSink {
  * a callable is recorded by `cc`.
  */
 private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPath ap) {
-  localFlowBigStep(mid.getNode(), node, true, mid.getConfiguration()) and
-  cc = mid.getCallContext() and
-  ap = mid.getAp()
-  or
-  localFlowBigStep(mid.getNode(), node, false, mid.getConfiguration()) and
-  cc = mid.getCallContext() and
-  mid.getAp() instanceof AccessPathNil and
-  ap = node.(AccessPathNilNode).getAp()
+  exists(LocalCallContext localCC, AccessPath ap0, Node midnode, Configuration conf |
+    midnode = mid.getNode() and
+    conf = mid.getConfiguration() and
+    cc = mid.getCallContext() and
+    localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
+    ap0 = mid.getAp()
+  |
+    localFlowBigStep(midnode, node, true, conf, localCC) and
+    ap = ap0
+    or
+    localFlowBigStep(midnode, node, false, conf, localCC) and
+    ap0 instanceof AccessPathNil and
+    ap = node.(AccessPathNilNode).getAp()
+  )
   or
   jumpStep(mid.getNode(), node, mid.getConfiguration()) and
   cc instanceof CallContextAny and
@@ -1880,7 +1891,7 @@ private predicate pathIntoCallable(
     pathIntoCallable0(mid, callable, i, outercc, call, emptyAp) and
     p.isParameterOf(callable, i)
   |
-    if reducedViableImplInCallContext(_, callable, call)
+    if recordDataFlowCallSite(call, callable)
     then innercc = TSpecificCall(call, i, emptyAp)
     else innercc = TSomeCall(p, emptyAp)
   )
@@ -2071,7 +2082,7 @@ private module FlowExploration {
 
   private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
     override string toString() {
-      exists(DataFlowType t | this = TPartialNil(t) | result = concat(" : " + ppReprType(t)))
+      exists(DataFlowType t | this = TPartialNil(t) | result = concat(": " + ppReprType(t)))
     }
 
     override AccessPathFront getFront() {
@@ -2083,8 +2094,8 @@ private module FlowExploration {
     override string toString() {
       exists(Content f, int len | this = TPartialCons(f, len) |
         if len = 1
-        then result = f.toString()
-        else result = f.toString() + ", ... (" + len.toString() + ")"
+        then result = "[" + f.toString() + "]"
+        else result = "[" + f.toString() + ", ... (" + len.toString() + ")]"
       )
     }
 
@@ -2161,7 +2172,7 @@ private module FlowExploration {
 
     private string ppAp() {
       exists(string s | s = this.(PartialPathNodePriv).getAp().toString() |
-        if s = "" then result = "" else result = " [" + s + "]"
+        if s = "" then result = "" else result = " " + s
       )
     }
 
@@ -2205,16 +2216,19 @@ private module FlowExploration {
   private predicate partialPathStep(
     PartialPathNodePriv mid, Node node, CallContext cc, PartialAccessPath ap, Configuration config
   ) {
-    localFlowStep(mid.getNode(), node, config) and
-    cc = mid.getCallContext() and
-    ap = mid.getAp() and
-    config = mid.getConfiguration()
-    or
-    additionalLocalFlowStep(mid.getNode(), node, config) and
-    cc = mid.getCallContext() and
-    mid.getAp() instanceof PartialAccessPathNil and
-    ap = TPartialNil(getErasedRepr(node.getType())) and
-    config = mid.getConfiguration()
+    not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
+    (
+      localFlowStep(mid.getNode(), node, config) and
+      cc = mid.getCallContext() and
+      ap = mid.getAp() and
+      config = mid.getConfiguration()
+      or
+      additionalLocalFlowStep(mid.getNode(), node, config) and
+      cc = mid.getCallContext() and
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil(getErasedRepr(node.getType())) and
+      config = mid.getConfiguration()
+    )
     or
     jumpStep(mid.getNode(), node, config) and
     cc instanceof CallContextAny and
@@ -2378,7 +2392,7 @@ private module FlowExploration {
       partialPathIntoCallable0(mid, callable, i, outercc, call, emptyAp, ap, config) and
       p.isParameterOf(callable, i)
     |
-      if reducedViableImplInCallContext(_, callable, call)
+      if recordDataFlowCallSite(call, callable)
       then innercc = TSpecificCall(call, i, emptyAp)
       else innercc = TSomeCall(p, emptyAp)
     )

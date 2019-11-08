@@ -121,6 +121,26 @@ public class A {
     }
   }
 
+  static final long VAL = 100L;
+
+  long overflowAwareIncrease(long x) {
+    if (x + VAL > x) {
+      return x + VAL;
+    } else {
+      overflow();
+      return Long.MAX_VALUE;
+    }
+  }
+
+  long overflowAwareDecrease(long x) {
+    if (x - VAL < x) {
+      return x - VAL;
+    } else {
+      overflow();
+      return Long.MIN_VALUE;
+    }
+  }
+
   void overflow() { }
 
   void unreachableCode() {

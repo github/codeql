@@ -4,7 +4,7 @@ Example: Checking that constructors initialize all private fields
 Overview
 --------
 
-This topic describes how a C++ query was developed. The example introduces recursive predicates and demonstrates the typical workflow used to refine a query. For a full overview of the topics available for learning to write QL queries for C/C++ code, see :doc:`QL for C/C++ <ql-for-cpp>`.
+This topic describes how a C++ query was developed. The example introduces recursive predicates and demonstrates the typical workflow used to refine a query. For a full overview of the topics available for learning to write queries for C/C++ code, see :doc:`CodeQL for C/C++ <ql-for-cpp>`.
 
 Problem—finding every private field and checking for initialization
 -------------------------------------------------------------------
@@ -29,7 +29,7 @@ We can start by looking at every private field in a class and checking that ever
 #. ``f.isPrivate()`` checks if the field is private.
 #. ``not exists(Assignment a | a = f.getAnAssignment() and a.getEnclosingFunction() = c)`` checks that there is no assignment to the field in the constructor.
 
-This QL code looks fairly complete, but when you test it on a project, there are several results that contain examples that we have overlooked.
+This code looks fairly complete, but when you test it on a project, there are several results that contain examples that we have overlooked.
 
 Refinement 1—excluding fields initialized by lists
 --------------------------------------------------
@@ -62,7 +62,7 @@ These can be excluded by adding an extra condition to check for this special con
 Refinement 2—excluding fields initialized by external libraries
 ---------------------------------------------------------------
 
-When you test the revised query, you may discover that fields from classes in external libraries are over-reported. This is often because a header file declares a constructor that is defined in a source file that is not analyzed (external libraries are often excluded from analysis). When the source code is analyzed, the snapshot is populated with a ``Constructor`` entry with no body. This ``constructor`` therefore contains no assignments and consequently the query reports that any fields initialized by the constructor are "uninitialized." There is no particular reason to be suspicious of these cases, and we can exclude them from the results by defining a condition to exclude constructors that have no body:
+When you test the revised query, you may discover that fields from classes in external libraries are over-reported. This is often because a header file declares a constructor that is defined in a source file that is not analyzed (external libraries are often excluded from analysis). When the source code is analyzed, the CodeQL database is populated with a ``Constructor`` entry with no body. This ``constructor`` therefore contains no assignments and consequently the query reports that any fields initialized by the constructor are "uninitialized." There is no particular reason to be suspicious of these cases, and we can exclude them from the results by defining a condition to exclude constructors that have no body:
 
 .. code-block:: ql
 
@@ -148,5 +148,5 @@ What next?
 ----------
 
 -  Take a look at another example: :doc:`Checking for allocations equal to 'strlen(string)' without space for a null terminator <zero-space-terminator>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

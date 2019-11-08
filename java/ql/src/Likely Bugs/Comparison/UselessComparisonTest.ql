@@ -134,37 +134,48 @@ Expr overFlowCand() {
   result.(LocalVariableDeclExpr).getInit() = overFlowCand()
 }
 
-/** Gets an expression that equals `v` plus a positive value. */
-Expr increaseOfVar(SsaVariable v) {
+predicate positiveOrNegative(Expr e) { positive(e) or negative(e) }
+
+/** Gets an expression that equals `v` plus a positive or negative value. */
+Expr increaseOrDecreaseOfVar(SsaVariable v) {
   exists(AssignAddExpr add |
     result = add and
-    positive(add.getDest()) and
+    positiveOrNegative(add.getDest()) and
     add.getRhs() = v.getAUse()
   )
   or
   exists(AddExpr add, Expr e |
     result = add and
     add.hasOperands(v.getAUse(), e) and
-    positive(e)
+    positiveOrNegative(e)
   )
   or
-  exists(SsaExplicitUpdate x | result = x.getAUse() and x.getDefiningExpr() = increaseOfVar(v))
+  exists(SubExpr sub |
+    result = sub and
+    sub.getLeftOperand() = v.getAUse() and
+    positiveOrNegative(sub.getRightOperand())
+  )
   or
-  result.(ParExpr).getExpr() = increaseOfVar(v)
+  exists(SsaExplicitUpdate x |
+    result = x.getAUse() and x.getDefiningExpr() = increaseOrDecreaseOfVar(v)
+  )
   or
-  result.(AssignExpr).getRhs() = increaseOfVar(v)
+  result.(ParExpr).getExpr() = increaseOrDecreaseOfVar(v)
   or
-  result.(LocalVariableDeclExpr).getInit() = increaseOfVar(v)
+  result.(AssignExpr).getRhs() = increaseOrDecreaseOfVar(v)
+  or
+  result.(LocalVariableDeclExpr).getInit() = increaseOrDecreaseOfVar(v)
 }
 
 predicate overFlowTest(ComparisonExpr comp) {
-  exists(SsaVariable v |
-    comp.getLesserOperand() = increaseOfVar(v) and
-    comp.getGreaterOperand() = v.getAUse()
-  )
-  or
-  comp.getLesserOperand() = overFlowCand() and
-  comp.getGreaterOperand().(IntegerLiteral).getIntValue() = 0
+  (
+    exists(SsaVariable v | comp.hasOperands(increaseOrDecreaseOfVar(v), v.getAUse()))
+    or
+    comp.getLesserOperand() = overFlowCand() and
+    comp.getGreaterOperand().(IntegerLiteral).getIntValue() = 0
+  ) and
+  // exclude loop conditions as they are unlikely to be overflow tests
+  not comp.getEnclosingStmt() instanceof LoopStmt
 }
 
 predicate concurrentModificationTest(BinaryExpr test) {

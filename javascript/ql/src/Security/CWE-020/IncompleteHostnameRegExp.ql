@@ -11,6 +11,7 @@
  */
 
 import javascript
+import semmle.javascript.CharacterEscapes
 
 /**
  * Holds if `pattern` is a regular expression pattern for URLs with a host matched by `hostPart`,
@@ -40,7 +41,9 @@ where
     )
   ) and
   // ignore patterns with capture groups after the TLD
-  not pattern.regexpMatch("(?i).*[.](" + RegExpPatterns::commonTLD() + ").*[(][?]:.*[)].*")
+  not pattern.regexpMatch("(?i).*[.](" + RegExpPatterns::commonTLD() + ").*[(][?]:.*[)].*") and
+  // avoid double reporting
+  not CharacterEscapes::hasALikelyRegExpPatternMistake(re)
 select re,
   "This " + kind + " has an unescaped '.' before '" + hostPart +
     "', so it might match more hosts than expected.", aux, "here"

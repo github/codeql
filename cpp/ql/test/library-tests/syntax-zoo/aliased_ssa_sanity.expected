@@ -1,18 +1,18 @@
 missingOperand
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | IR: misc3 | void misc3() |
-| parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
-| parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
-| parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
-| parameterinitializer.cpp:27:3:27:6 | IndirectReadSideEffect: my_c | Instruction 'IndirectReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
+| parameterinitializer.cpp:27:3:27:6 | BufferReadSideEffect: my_c | Instruction 'BufferReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
+| parameterinitializer.cpp:27:3:27:6 | BufferReadSideEffect: my_c | Instruction 'BufferReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
+| parameterinitializer.cpp:27:3:27:6 | BufferReadSideEffect: my_c | Instruction 'BufferReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
+| parameterinitializer.cpp:27:3:27:6 | BufferReadSideEffect: my_c | Instruction 'BufferReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
 | try_catch.cpp:13:5:13:16 | ThrowValue: throw ... | Instruction 'ThrowValue' is missing an expected operand with tag 'Load' in function '$@'. | try_catch.cpp:11:6:11:17 | IR: bypass_catch | void bypass_catch() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
 | cpp11.cpp:141:7:141:7 | Phi: g | cpp11.cpp:161:16:161:16 | NoOp: label ...: |
 missingOperandType
+sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
-| assume0.cpp:7:2:7:2 | Chi: call to f |
 | condition_decls.cpp:16:19:16:20 | Chi: call to BoxedInt |
 | condition_decls.cpp:26:23:26:24 | Chi: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | Chi: call to BoxedInt |
@@ -545,3 +545,8 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType

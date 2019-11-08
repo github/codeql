@@ -1,177 +1,35 @@
-| conjugation.c:3:5:3:5 | x | AnalysedExpr |
-| conjugation.c:3:5:3:5 | x | CompileTimeVariableExpr |
-| conjugation.c:3:5:3:5 | x | DefOrUse |
 | conjugation.c:3:5:3:5 | x | VariableAccess |
-| conjugation.c:3:5:3:10 | ... = ... | AnalysedExpr |
 | conjugation.c:3:5:3:10 | ... = ... | AssignExpr |
-| conjugation.c:3:5:3:10 | ... = ... | CompileTimeVariableExpr |
-| conjugation.c:3:5:3:10 | ... = ... | Def |
-| conjugation.c:3:5:3:10 | ... = ... | ExprInVoidContext |
-| conjugation.c:3:5:3:10 | ... = ... | NameQualifiableElement |
-| conjugation.c:3:5:3:10 | ... = ... | RangeSsaDefinition |
-| conjugation.c:3:5:3:10 | ... = ... | SsaDefinition |
-| conjugation.c:3:9:3:10 | ~ ... | AnalysedExpr |
-| conjugation.c:3:9:3:10 | ~ ... | CompileTimeVariableExpr |
 | conjugation.c:3:9:3:10 | ~ ... | ConjugationExpr |
-| conjugation.c:3:9:3:10 | ~ ... | DefOrUse |
-| conjugation.c:3:9:3:10 | ~ ... | NameQualifiableElement |
-| conjugation.c:3:10:3:10 | x | AnalysedExpr |
-| conjugation.c:3:10:3:10 | x | CompileTimeVariableExpr |
-| conjugation.c:3:10:3:10 | x | Use |
 | conjugation.c:3:10:3:10 | x | VariableAccess |
-| test.c:5:5:5:5 | z | AnalysedExpr |
-| test.c:5:5:5:5 | z | CompileTimeVariableExpr |
-| test.c:5:5:5:5 | z | DefOrUse |
 | test.c:5:5:5:5 | z | VariableAccess |
-| test.c:5:5:5:13 | ... = ... | AnalysedExpr |
 | test.c:5:5:5:13 | ... = ... | AssignExpr |
-| test.c:5:5:5:13 | ... = ... | CompileTimeVariableExpr |
-| test.c:5:5:5:13 | ... = ... | Def |
-| test.c:5:5:5:13 | ... = ... | ExprInVoidContext |
-| test.c:5:5:5:13 | ... = ... | NameQualifiableElement |
-| test.c:5:5:5:13 | ... = ... | RangeSsaDefinition |
-| test.c:5:5:5:13 | ... = ... | SsaDefinition |
-| test.c:5:9:5:9 | x | AnalysedExpr |
-| test.c:5:9:5:9 | x | CompileTimeVariableExpr |
-| test.c:5:9:5:9 | x | Use |
 | test.c:5:9:5:9 | x | VariableAccess |
-| test.c:5:9:5:13 | ... * ... | AnalysedExpr |
-| test.c:5:9:5:13 | ... * ... | CompileTimeVariableExpr |
-| test.c:5:9:5:13 | ... * ... | DefOrUse |
 | test.c:5:9:5:13 | ... * ... | ImaginaryMulExpr |
-| test.c:5:9:5:13 | ... * ... | NameQualifiableElement |
-| test.c:5:13:5:13 | y | AnalysedExpr |
-| test.c:5:13:5:13 | y | CompileTimeVariableExpr |
-| test.c:5:13:5:13 | y | Use |
 | test.c:5:13:5:13 | y | VariableAccess |
-| test.c:6:5:6:5 | z | AnalysedExpr |
-| test.c:6:5:6:5 | z | CompileTimeVariableExpr |
-| test.c:6:5:6:5 | z | DefOrUse |
 | test.c:6:5:6:5 | z | VariableAccess |
-| test.c:6:5:6:13 | ... = ... | AnalysedExpr |
 | test.c:6:5:6:13 | ... = ... | AssignExpr |
-| test.c:6:5:6:13 | ... = ... | CompileTimeVariableExpr |
-| test.c:6:5:6:13 | ... = ... | Def |
-| test.c:6:5:6:13 | ... = ... | ExprInVoidContext |
-| test.c:6:5:6:13 | ... = ... | NameQualifiableElement |
-| test.c:6:5:6:13 | ... = ... | RangeSsaDefinition |
-| test.c:6:5:6:13 | ... = ... | SsaDefinition |
-| test.c:6:9:6:9 | z | AnalysedExpr |
-| test.c:6:9:6:9 | z | CompileTimeVariableExpr |
-| test.c:6:9:6:9 | z | Use |
 | test.c:6:9:6:9 | z | VariableAccess |
-| test.c:6:9:6:13 | (double)... | AnalysedExpr |
 | test.c:6:9:6:13 | (double)... | CStyleCast |
-| test.c:6:9:6:13 | (double)... | CompileTimeVariableExpr |
-| test.c:6:9:6:13 | (double)... | DefOrUse |
-| test.c:6:9:6:13 | (double)... | FloatingPointConversion |
-| test.c:6:9:6:13 | (double)... | NameQualifiableElement |
-| test.c:6:9:6:13 | ... / ... | AnalysedExpr |
-| test.c:6:9:6:13 | ... / ... | CompileTimeVariableExpr |
-| test.c:6:9:6:13 | ... / ... | DefOrUse |
 | test.c:6:9:6:13 | ... / ... | ImaginaryDivExpr |
-| test.c:6:9:6:13 | ... / ... | NameQualifiableElement |
-| test.c:6:13:6:13 | y | AnalysedExpr |
-| test.c:6:13:6:13 | y | CompileTimeVariableExpr |
-| test.c:6:13:6:13 | y | Use |
 | test.c:6:13:6:13 | y | VariableAccess |
-| test.c:7:5:7:5 | w | AnalysedExpr |
-| test.c:7:5:7:5 | w | CompileTimeVariableExpr |
-| test.c:7:5:7:5 | w | DefOrUse |
 | test.c:7:5:7:5 | w | VariableAccess |
-| test.c:7:5:7:13 | ... = ... | AnalysedExpr |
 | test.c:7:5:7:13 | ... = ... | AssignExpr |
-| test.c:7:5:7:13 | ... = ... | CompileTimeVariableExpr |
-| test.c:7:5:7:13 | ... = ... | Def |
-| test.c:7:5:7:13 | ... = ... | ExprInVoidContext |
-| test.c:7:5:7:13 | ... = ... | NameQualifiableElement |
-| test.c:7:5:7:13 | ... = ... | RangeSsaDefinition |
-| test.c:7:5:7:13 | ... = ... | SsaDefinition |
-| test.c:7:9:7:9 | z | AnalysedExpr |
-| test.c:7:9:7:9 | z | CompileTimeVariableExpr |
-| test.c:7:9:7:9 | z | Use |
 | test.c:7:9:7:9 | z | VariableAccess |
-| test.c:7:9:7:13 | ... + ... | AnalysedExpr |
-| test.c:7:9:7:13 | ... + ... | CompileTimeVariableExpr |
-| test.c:7:9:7:13 | ... + ... | DefOrUse |
-| test.c:7:9:7:13 | ... + ... | NameQualifiableElement |
 | test.c:7:9:7:13 | ... + ... | RealImaginaryAddExpr |
-| test.c:7:13:7:13 | x | AnalysedExpr |
-| test.c:7:13:7:13 | x | CompileTimeVariableExpr |
-| test.c:7:13:7:13 | x | Use |
 | test.c:7:13:7:13 | x | VariableAccess |
-| test.c:8:5:8:5 | w | AnalysedExpr |
-| test.c:8:5:8:5 | w | CompileTimeVariableExpr |
-| test.c:8:5:8:5 | w | DefOrUse |
 | test.c:8:5:8:5 | w | VariableAccess |
-| test.c:8:5:8:13 | ... = ... | AnalysedExpr |
 | test.c:8:5:8:13 | ... = ... | AssignExpr |
-| test.c:8:5:8:13 | ... = ... | CompileTimeVariableExpr |
-| test.c:8:5:8:13 | ... = ... | Def |
-| test.c:8:5:8:13 | ... = ... | ExprInVoidContext |
-| test.c:8:5:8:13 | ... = ... | NameQualifiableElement |
-| test.c:8:5:8:13 | ... = ... | RangeSsaDefinition |
-| test.c:8:5:8:13 | ... = ... | SsaDefinition |
-| test.c:8:9:8:9 | x | AnalysedExpr |
-| test.c:8:9:8:9 | x | CompileTimeVariableExpr |
-| test.c:8:9:8:9 | x | Use |
 | test.c:8:9:8:9 | x | VariableAccess |
-| test.c:8:9:8:13 | ... + ... | AnalysedExpr |
-| test.c:8:9:8:13 | ... + ... | CompileTimeVariableExpr |
-| test.c:8:9:8:13 | ... + ... | DefOrUse |
 | test.c:8:9:8:13 | ... + ... | ImaginaryRealAddExpr |
-| test.c:8:9:8:13 | ... + ... | NameQualifiableElement |
-| test.c:8:13:8:13 | z | AnalysedExpr |
-| test.c:8:13:8:13 | z | CompileTimeVariableExpr |
-| test.c:8:13:8:13 | z | Use |
 | test.c:8:13:8:13 | z | VariableAccess |
-| test.c:9:5:9:5 | w | AnalysedExpr |
-| test.c:9:5:9:5 | w | CompileTimeVariableExpr |
-| test.c:9:5:9:5 | w | DefOrUse |
 | test.c:9:5:9:5 | w | VariableAccess |
-| test.c:9:5:9:13 | ... = ... | AnalysedExpr |
 | test.c:9:5:9:13 | ... = ... | AssignExpr |
-| test.c:9:5:9:13 | ... = ... | CompileTimeVariableExpr |
-| test.c:9:5:9:13 | ... = ... | Def |
-| test.c:9:5:9:13 | ... = ... | ExprInVoidContext |
-| test.c:9:5:9:13 | ... = ... | NameQualifiableElement |
-| test.c:9:5:9:13 | ... = ... | RangeSsaDefinition |
-| test.c:9:5:9:13 | ... = ... | SsaDefinition |
-| test.c:9:9:9:9 | z | AnalysedExpr |
-| test.c:9:9:9:9 | z | CompileTimeVariableExpr |
-| test.c:9:9:9:9 | z | Use |
 | test.c:9:9:9:9 | z | VariableAccess |
-| test.c:9:9:9:13 | ... - ... | AnalysedExpr |
-| test.c:9:9:9:13 | ... - ... | CompileTimeVariableExpr |
-| test.c:9:9:9:13 | ... - ... | DefOrUse |
-| test.c:9:9:9:13 | ... - ... | NameQualifiableElement |
 | test.c:9:9:9:13 | ... - ... | RealImaginarySubExpr |
-| test.c:9:13:9:13 | x | AnalysedExpr |
-| test.c:9:13:9:13 | x | CompileTimeVariableExpr |
-| test.c:9:13:9:13 | x | Use |
 | test.c:9:13:9:13 | x | VariableAccess |
-| test.c:10:5:10:5 | w | AnalysedExpr |
-| test.c:10:5:10:5 | w | CompileTimeVariableExpr |
-| test.c:10:5:10:5 | w | DefOrUse |
 | test.c:10:5:10:5 | w | VariableAccess |
-| test.c:10:5:10:13 | ... = ... | AnalysedExpr |
 | test.c:10:5:10:13 | ... = ... | AssignExpr |
-| test.c:10:5:10:13 | ... = ... | CompileTimeVariableExpr |
-| test.c:10:5:10:13 | ... = ... | Def |
-| test.c:10:5:10:13 | ... = ... | ExprInVoidContext |
-| test.c:10:5:10:13 | ... = ... | NameQualifiableElement |
-| test.c:10:5:10:13 | ... = ... | RangeSsaDefinition |
-| test.c:10:5:10:13 | ... = ... | SsaDefinition |
-| test.c:10:9:10:9 | x | AnalysedExpr |
-| test.c:10:9:10:9 | x | CompileTimeVariableExpr |
-| test.c:10:9:10:9 | x | Use |
 | test.c:10:9:10:9 | x | VariableAccess |
-| test.c:10:9:10:13 | ... - ... | AnalysedExpr |
-| test.c:10:9:10:13 | ... - ... | CompileTimeVariableExpr |
-| test.c:10:9:10:13 | ... - ... | DefOrUse |
 | test.c:10:9:10:13 | ... - ... | ImaginaryRealSubExpr |
-| test.c:10:9:10:13 | ... - ... | NameQualifiableElement |
-| test.c:10:13:10:13 | z | AnalysedExpr |
-| test.c:10:13:10:13 | z | CompileTimeVariableExpr |
-| test.c:10:13:10:13 | z | Use |
 | test.c:10:13:10:13 | z | VariableAccess |

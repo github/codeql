@@ -1,0 +1,26 @@
+getBoundFunction
+| closure.js:4:29:4:69 | goog.bi ... his, x) | closure.js:4:39:4:59 | functio ... ent) {} | 1 | closure.js:4:29:4:69 | goog.bi ... his, x) |
+| tst.js:5:29:5:63 | functio ... his, x) | tst.js:5:29:5:49 | functio ... ent) {} | 1 | tst.js:5:29:5:63 | functio ... his, x) |
+| tst.js:6:29:6:68 | lodash. ...  {}, x) | tst.js:6:44:6:64 | functio ... ent) {} | 1 | tst.js:6:29:6:68 | lodash. ...  {}, x) |
+| tst.js:7:29:7:65 | R.parti ... }, [x]) | tst.js:7:39:7:59 | functio ... ent) {} | 1 | tst.js:7:29:7:65 | R.parti ... }, [x]) |
+| tst.js:8:29:8:72 | angular ...  {}, x) | tst.js:8:48:8:68 | functio ... ent) {} | 1 | tst.js:8:29:8:72 | angular ...  {}, x) |
+| tst.js:11:29:11:43 | f.bind(this, x) | tst.js:11:29:11:29 | f | 1 | tst.js:11:29:11:43 | f.bind(this, x) |
+isPartialArgument
+| closure.js:4:29:4:69 | goog.bi ... his, x) | closure.js:4:39:4:59 | functio ... ent) {} | closure.js:4:68:4:68 | x | 0 |
+| tst.js:5:29:5:63 | functio ... his, x) | tst.js:5:29:5:49 | functio ... ent) {} | tst.js:5:62:5:62 | x | 0 |
+| tst.js:6:29:6:68 | lodash. ...  {}, x) | tst.js:6:44:6:64 | functio ... ent) {} | tst.js:6:67:6:67 | x | 0 |
+| tst.js:7:29:7:65 | R.parti ... }, [x]) | tst.js:7:39:7:59 | functio ... ent) {} | tst.js:7:63:7:63 | x | 0 |
+| tst.js:8:29:8:72 | angular ...  {}, x) | tst.js:8:48:8:68 | functio ... ent) {} | tst.js:8:71:8:71 | x | 0 |
+| tst.js:11:29:11:43 | f.bind(this, x) | tst.js:11:29:11:29 | f | tst.js:11:42:11:42 | x | 0 |
+getBoundReceiver
+| closure.js:4:29:4:69 | goog.bi ... his, x) | closure.js:4:62:4:65 | this |
+| tst.js:5:29:5:63 | functio ... his, x) | tst.js:5:56:5:59 | this |
+| tst.js:8:29:8:72 | angular ...  {}, x) | tst.js:8:42:8:45 | this |
+| tst.js:11:29:11:43 | f.bind(this, x) | tst.js:11:36:11:39 | this |
+clickEvent
+| closure.js:4:51:4:55 | event |
+| tst.js:5:41:5:45 | event |
+| tst.js:6:56:6:60 | event |
+| tst.js:7:51:7:55 | event |
+| tst.js:8:60:8:64 | event |
+| tst.js:10:17:10:21 | event |

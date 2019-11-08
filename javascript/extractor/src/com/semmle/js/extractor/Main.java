@@ -1,13 +1,5 @@
 package com.semmle.js.extractor;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import com.semmle.js.extractor.ExtractorConfig.HTMLHandling;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -31,6 +23,13 @@ import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.ArgsParser;
 import com.semmle.util.process.ArgsParser.FileMode;
 import com.semmle.util.trap.TrapWriter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /** The main entry point of the JavaScript extractor. */
 public class Main {
@@ -38,7 +37,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2019-09-18";
+  public static final String EXTRACTOR_VERSION = "2019-10-08";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 

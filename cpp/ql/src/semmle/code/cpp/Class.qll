@@ -606,15 +606,6 @@ class Class extends UserType {
   }
 
   /**
-   * Gets the `i`th template argument used to instantiate this class from a
-   * class template. When called on a class template, this will return the
-   * `i`th template parameter.
-   */
-  override Type getTemplateArgument(int i) {
-    class_template_argument(underlyingElement(this), i, unresolveElement(result))
-  }
-
-  /**
    * Holds if this class/struct is polymorphic (has a virtual function, or
    * inherits one).
    */
@@ -623,7 +614,7 @@ class Class extends UserType {
   }
 
   override predicate involvesTemplateParameter() {
-    getATemplateArgument().involvesTemplateParameter()
+    getATemplateArgument().(Type).involvesTemplateParameter()
   }
 
   /** Holds if this class, struct or union was declared 'final'. */

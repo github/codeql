@@ -46,7 +46,12 @@ string getStringValue(RegExpLiteral rl) {
  */
 DataFlow::Node getASimplePredecessor(DataFlow::Node nd) {
   result = nd.getAPredecessor() and
-  not nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof SsaPhiNode
+  not exists(SsaDefinition ssa |
+    ssa = nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition()
+  |
+    ssa instanceof SsaPhiNode or
+    ssa instanceof SsaVariableCapture
+  )
 }
 
 /**
@@ -54,38 +59,31 @@ DataFlow::Node getASimplePredecessor(DataFlow::Node nd) {
  * into a form described by regular expression `regex`.
  */
 predicate escapingScheme(string metachar, string regex) {
-  metachar = "&" and regex = "&.*;"
+  metachar = "&" and regex = "&.+;"
   or
-  metachar = "%" and regex = "%.*"
+  metachar = "%" and regex = "%.+"
   or
-  metachar = "\\" and regex = "\\\\.*"
+  metachar = "\\" and regex = "\\\\.+"
 }
 
 /**
- * A call to `String.prototype.replace` that replaces all instances of a pattern.
+ * A method call that performs string replacement.
  */
-class Replacement extends DataFlow::Node {
-  RegExpLiteral pattern;
-
-  Replacement() {
-    exists(DataFlow::MethodCallNode mcn | this = mcn |
-      mcn.getMethodName() = "replace" and
-      pattern.flow().(DataFlow::SourceNode).flowsTo(mcn.getArgument(0)) and
-      mcn.getNumArgument() = 2 and
-      pattern.isGlobal()
-    )
-  }
-
+abstract class Replacement extends DataFlow::Node {
   /**
    * Holds if this replacement replaces the string `input` with `output`.
    */
-  predicate replaces(string input, string output) {
-    exists(DataFlow::MethodCallNode mcn |
-      mcn = this and
-      input = getStringValue(pattern) and
-      output = mcn.getArgument(1).getStringValue()
-    )
-  }
+  abstract predicate replaces(string input, string output);
+
+  /**
+   * Gets the input of this replacement.
+   */
+  abstract DataFlow::Node getInput();
+
+  /**
+   * Gets the output of this replacement.
+   */
+  abstract DataFlow::SourceNode getOutput();
 
   /**
    * Holds if this replacement escapes `char` using `metachar`.
@@ -118,9 +116,12 @@ class Replacement extends DataFlow::Node {
   /**
    * Gets the previous replacement in this chain of replacements.
    */
-  Replacement getPreviousReplacement() {
-    result = getASimplePredecessor*(this.(DataFlow::MethodCallNode).getReceiver())
-  }
+  Replacement getPreviousReplacement() { result.getOutput() = getASimplePredecessor*(getInput()) }
+
+  /**
+   * Gets the next replacement in this chain of replacements.
+   */
+  Replacement getNextReplacement() { this = result.getPreviousReplacement() }
 
   /**
    * Gets an earlier replacement in this chain of replacements that
@@ -130,7 +131,9 @@ class Replacement extends DataFlow::Node {
     exists(Replacement pred | pred = this.getPreviousReplacement() |
       if pred.escapes(_, metachar)
       then result = pred
-      else result = pred.getAnEarlierEscaping(metachar)
+      else (
+        not pred.unescapes(metachar, _) and result = pred.getAnEarlierEscaping(metachar)
+      )
     )
   }
 
@@ -142,9 +145,98 @@ class Replacement extends DataFlow::Node {
     exists(Replacement succ | this = succ.getPreviousReplacement() |
       if succ.unescapes(metachar, _)
       then result = succ
-      else result = succ.getALaterUnescaping(metachar)
+      else (
+        not succ.escapes(_, metachar) and result = succ.getALaterUnescaping(metachar)
+      )
     )
   }
+}
+
+/**
+ * A call to `String.prototype.replace` that replaces all instances of a pattern.
+ */
+class GlobalStringReplacement extends Replacement, DataFlow::MethodCallNode {
+  RegExpLiteral pattern;
+
+  GlobalStringReplacement() {
+    this.getMethodName() = "replace" and
+    pattern.flow().(DataFlow::SourceNode).flowsTo(this.getArgument(0)) and
+    this.getNumArgument() = 2 and
+    pattern.isGlobal()
+  }
+
+  override predicate replaces(string input, string output) {
+    input = getStringValue(pattern) and
+    output = this.getArgument(1).getStringValue()
+    or
+    exists(DataFlow::FunctionNode replacer, DataFlow::PropRead pr, DataFlow::ObjectLiteralNode map |
+      replacer = getCallback(1) and
+      replacer.getParameter(0).flowsToExpr(pr.getPropertyNameExpr()) and
+      pr = map.getAPropertyRead() and
+      pr.flowsTo(replacer.getAReturn()) and
+      map.asExpr().(ObjectExpr).getPropertyByName(input).getInit().getStringValue() = output
+    )
+  }
+
+  override DataFlow::Node getInput() { result = this.getReceiver() }
+
+  override DataFlow::SourceNode getOutput() { result = this }
+}
+
+/**
+ * A call to `JSON.stringify`, viewed as a string replacement.
+ */
+class JsonStringifyReplacement extends Replacement, DataFlow::CallNode {
+  JsonStringifyReplacement() { this = DataFlow::globalVarRef("JSON").getAMemberCall("stringify") }
+
+  override predicate replaces(string input, string output) {
+    input = "\\" and output = "\\\\"
+    // the other replacements are not relevant for this query
+  }
+
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
+
+  override DataFlow::SourceNode getOutput() { result = this }
+}
+
+/**
+ * A call to `JSON.parse`, viewed as a string replacement.
+ */
+class JsonParseReplacement extends Replacement {
+  JsonParserCall self;
+
+  JsonParseReplacement() { this = self }
+
+  override predicate replaces(string input, string output) {
+    input = "\\\\" and output = "\\"
+    // the other replacements are not relevant for this query
+  }
+
+  override DataFlow::Node getInput() { result = self.getInput() }
+
+  override DataFlow::SourceNode getOutput() { result = self.getOutput() }
+}
+
+/**
+ * A string replacement wrapped in a utility function.
+ */
+class WrappedReplacement extends Replacement, DataFlow::CallNode {
+  int i;
+
+  Replacement inner;
+
+  WrappedReplacement() {
+    exists(DataFlow::FunctionNode wrapped | wrapped.getFunction() = getACallee() |
+      wrapped.getParameter(i).flowsTo(inner.getPreviousReplacement*().getInput()) and
+      inner.getNextReplacement*().getOutput().flowsTo(wrapped.getAReturn())
+    )
+  }
+
+  override predicate replaces(string input, string output) { inner.replaces(input, output) }
+
+  override DataFlow::Node getInput() { result = getArgument(i) }
+
+  override DataFlow::SourceNode getOutput() { result = this }
 }
 
 from Replacement primary, Replacement supplementary, string message, string metachar

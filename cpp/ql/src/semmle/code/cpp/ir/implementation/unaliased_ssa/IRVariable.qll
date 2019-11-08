@@ -5,6 +5,7 @@ import Imports::TempVariableTag
 private import Imports::IRUtilities
 private import Imports::TTempVariableTag
 private import Imports::TIRVariable
+private import Imports::IRType
 
 IRUserVariable getIRUserVariable(Language::Function func, Language::Variable var) {
   result.getVariable() = var and
@@ -24,7 +25,17 @@ abstract class IRVariable extends TIRVariable {
   /**
    * Gets the type of the variable.
    */
-  abstract Language::Type getType();
+  final Language::Type getType() { getLanguageType().hasType(result, false) }
+
+  /**
+   * Gets the language-neutral type of the variable.
+   */
+  final IRType getIRType() { result = getLanguageType().getIRType() }
+
+  /**
+   * Gets the type of the variable.
+   */
+  abstract Language::LanguageType getLanguageType();
 
   /**
    * Gets the AST node that declared this variable, or that introduced this
@@ -59,7 +70,7 @@ abstract class IRVariable extends TIRVariable {
  */
 class IRUserVariable extends IRVariable, TIRUserVariable {
   Language::Variable var;
-  Language::Type type;
+  Language::LanguageType type;
 
   IRUserVariable() { this = TIRUserVariable(var, type, func) }
 
@@ -71,7 +82,7 @@ class IRUserVariable extends IRVariable, TIRUserVariable {
     result = getVariable().toString() + " " + getVariable().getLocation().toString()
   }
 
-  final override Language::Type getType() { result = type }
+  final override Language::LanguageType getLanguageType() { result = type }
 
   /**
    * Gets the original user-declared variable.
@@ -110,11 +121,11 @@ IRTempVariable getIRTempVariable(Language::AST ast, TempVariableTag tag) {
 class IRTempVariable extends IRVariable, IRAutomaticVariable, TIRTempVariable {
   Language::AST ast;
   TempVariableTag tag;
-  Language::Type type;
+  Language::LanguageType type;
 
   IRTempVariable() { this = TIRTempVariable(func, ast, tag, type) }
 
-  final override Language::Type getType() { result = type }
+  final override Language::LanguageType getLanguageType() { result = type }
 
   final override Language::AST getAST() { result = ast }
 

@@ -2,7 +2,7 @@
  * This library is a clone of semmle.code.cpp.controlflow.SSA, with
  * only one difference: extra phi definitions are added after
  * guards. For example:
- *
+ * ```
  *     x = f();
  *     if (x < 10) {
  *       // Block 1
@@ -11,12 +11,12 @@
  *       // Block 2
  *       ...
  *     }
- *
+ * ```
  * In standard SSA, basic blocks 1 and 2 do not need phi definitions
- * for x, because they are dominated by the definition of x on the
- * first line.  In RangeSSA, however, we add phi definitions for x at
+ * for `x`, because they are dominated by the definition of `x` on the
+ * first line.  In RangeSSA, however, we add phi definitions for `x` at
  * the beginning of blocks 1 and 2. This is useful for range analysis
- * because it enables us to deduce a more accurate range for x in the
+ * because it enables us to deduce a more accurate range for `x` in the
  * two branches of the if-statement.
  */
 
@@ -74,19 +74,19 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
 
   /**
    * A string representation of the SSA variable represented by the pair
-   * (this, v).
+   * `(this, v)`.
    */
   string toString(LocalScopeVariable v) { exists(RangeSSA x | result = x.toString(this, v)) }
 
-  /** Gets a use of the SSA variable represented by the pair (this, v) */
+  /** Gets a use of the SSA variable represented by the pair `(this, v)`. */
   VariableAccess getAUse(LocalScopeVariable v) { exists(RangeSSA x | result = x.getAUse(this, v)) }
 
-  /** Gets the control flow node for this definition */
+  /** Gets the control flow node for this definition. */
   ControlFlowNode getDefinition() { result = this }
 
   BasicBlock getBasicBlock() { result.contains(getDefinition()) }
 
-  /** Whether this definition is a phi node for variable v */
+  /** Whether this definition is a phi node for variable `v`. */
   predicate isPhiNode(LocalScopeVariable v) {
     exists(RangeSSA x | x.phi_node(v, this.(BasicBlock)))
   }
@@ -136,7 +136,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
     )
   }
 
-  /** Gets the expression assigned to this SsaDefinition */
+  /** Gets the expression assigned to this SsaDefinition. */
   Expr getDefiningValue(LocalScopeVariable v) {
     exists(ControlFlowNode def | def = this.getDefinition() |
       def = v.getInitializer().getExpr() and def = result

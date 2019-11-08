@@ -99,6 +99,12 @@ class Value extends TObject {
         this.(ObjectInternal).hasAttribute(name)
     }
 
+    /** Whether this value is absent from the database, but has been inferred to likely exist */
+    predicate isAbsent() {
+        this instanceof AbsentModuleObjectInternal
+        or
+        this instanceof AbsentModuleAttributeObjectInternal
+    }
 }
 
 /** Class representing modules in the Python program
@@ -131,6 +137,17 @@ class ModuleValue extends Value {
         result = this.(PackageObjectInternal).getFolder()
         or
         result = this.(PythonModuleObjectInternal).getSourceModule().getFile()
+    }
+
+    /** Whether this module is imported by 'import name'. For example on a linux system,
+      * the module 'posixpath' is imported as 'os.path' or as 'posixpath' */
+    predicate importedAs(string name) {
+        PointsToInternal::module_imported_as(this, name)
+    }
+
+    /** Whether this module is a package. */
+    predicate isPackage() {
+        this instanceof PackageObjectInternal
     }
 
 }
@@ -378,12 +395,12 @@ class ClassValue extends Value {
         Types::failedInference(this, reason)
     }
 
-    /** Gets the nth base class of this class */
+    /** Gets the nth immediate base type of this class. */
     ClassValue getBaseType(int n) {
         result = Types::getBase(this, n)
     }
 
-    /** Gets a base class of this class */
+    /** Gets an immediate base type of this class. */
     ClassValue getABaseType() {
         result = Types::getBase(this, _)
     }

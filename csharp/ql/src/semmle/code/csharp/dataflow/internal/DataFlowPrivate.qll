@@ -3,10 +3,12 @@ private import cil
 private import dotnet
 private import DataFlowPublic
 private import DataFlowDispatch
+private import DataFlowImplCommon::Public
 private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
@@ -83,6 +85,10 @@ module LocalFlow {
         e1 = e2.(ParenthesizedExpr).getExpr() and
         scope = e2 and
         isSuccessor = true
+        or
+        e1 = e2.(NullCoalescingExpr).getAnOperand() and
+        scope = e2 and
+        isSuccessor = false
         or
         e1 = e2.(SuppressNullableWarningExpr).getExpr() and
         scope = e2 and
@@ -437,6 +443,22 @@ private module Cached {
     exists(ReadStepConfiguration x |
       x.hasNodePath(node1, node2) and
       c.(FieldLikeContent).getField() = node2.asExpr().(FieldLikeRead).getTarget()
+    )
+  }
+
+  /**
+   * Holds if the node `n` is unreachable when the call context is `call`.
+   */
+  cached
+  predicate isUnreachableInCall(Node n, DataFlowCall call) {
+    exists(
+      SsaDefinitionNode paramNode, Ssa::ExplicitDefinition param, Guard guard,
+      ControlFlow::SuccessorTypes::BooleanSuccessor bs
+    |
+      viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
+      paramNode.getDefinition() = param and
+      param.getARead() = guard and
+      guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs)
     )
   }
 }
@@ -1357,3 +1379,32 @@ class DataFlowExpr = DotNet::Expr;
 class DataFlowType = DotNet::Type;
 
 class DataFlowLocation = Location;
+
+/** Holds if `e` is an expression that always has the same Boolean value `val`. */
+private predicate constantBooleanExpr(Expr e, boolean val) {
+  e = any(AbstractValues::BooleanValue bv | val = bv.getValue()).getAnExpr()
+  or
+  exists(Ssa::ExplicitDefinition def, Expr src |
+    e = def.getARead() and
+    src = def.getADefinition().getSource() and
+    constantBooleanExpr(src, val)
+  )
+}
+
+/** An argument that always has the same Boolean value. */
+private class ConstantBooleanArgumentNode extends ExprNode {
+  ConstantBooleanArgumentNode() { constantBooleanExpr(this.(ArgumentNode).asExpr(), _) }
+
+  /** Gets the Boolean value of this expression. */
+  boolean getBooleanValue() { constantBooleanExpr(this.getExpr(), result) }
+}
+
+pragma[noinline]
+private predicate viableConstantBooleanParamArg(
+  SsaDefinitionNode paramNode, boolean b, DataFlowCall call
+) {
+  exists(ConstantBooleanArgumentNode arg |
+    viableParamArg(call, paramNode, arg) and
+    b = arg.getBooleanValue()
+  )
+}

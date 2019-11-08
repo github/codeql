@@ -9,3 +9,8 @@
 | taint.cpp:167:8:167:13 | Call: call to source | taint.cpp:167:8:167:13 | Call: call to source |
 | taint.cpp:168:8:168:14 | Load: tainted | taint.cpp:164:19:164:24 | Call: call to source |
 | taint.cpp:210:7:210:7 | Load: x | taint.cpp:207:6:207:11 | Call: call to source |
+| taint.cpp:280:7:280:7 | Load: t | taint.cpp:275:6:275:11 | Call: call to source |
+| taint.cpp:289:7:289:7 | Load: t | taint.cpp:275:6:275:11 | Call: call to source |
+| taint.cpp:290:7:290:7 | Load: x | taint.cpp:275:6:275:11 | Call: call to source |
+| taint.cpp:291:7:291:7 | Load: y | taint.cpp:275:6:275:11 | Call: call to source |
+| taint.cpp:337:7:337:7 | Load: t | taint.cpp:330:6:330:11 | Call: call to source |

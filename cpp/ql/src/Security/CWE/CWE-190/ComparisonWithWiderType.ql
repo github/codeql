@@ -5,7 +5,7 @@
  * @id cpp/comparison-with-wider-type
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @tags reliability
  *       security
  *       external/cwe/cwe-190

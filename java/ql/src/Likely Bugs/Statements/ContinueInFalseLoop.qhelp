@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A <code>continue</code> statement only re-runs the loop if the loop condition is true. Therefore using <code>continue</code> in a loop with a constant false condition will never cause the loop body to be re-run, which is misleading.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Replace the <code>continue</code> statement with a <code>break</code> statement if the intent is to break from the loop.
+</p>
+
+</recommendation>
+
+<references>
+<li>
+Java Language Specification:
+<a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-14.html#jls-14.13">14.13 The do Statement</a>.
+</li>
+</references>
+</qhelp>
