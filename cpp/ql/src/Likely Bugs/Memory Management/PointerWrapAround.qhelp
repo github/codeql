@@ -38,7 +38,7 @@ example, outside our array).  Even if <code>p + a</code> were to point to
 some accessible memory location, it would almost certainly lie 
 <i>outside</i> the bounds of the array.
 </p>
-<sample src="PointerOverflowCheck-bad.cpp" />
+<sample src="PointerWrapAround-bad.cpp" />
 <p>
 The next example shows how to properly check for an out-of-range pointer.
 In order to do so, we need to obtain the value <code>ptr_end</code>
@@ -46,7 +46,7 @@ representing the end of the array (or the address immediately past
 the end).  We can then express the condition <code>p + a &lt; p_end</code> as a
 difference of two pointers, even if <code>p + a</code> happens to be undefined. 
 </p>
-<sample src="PointerOverflowCheck-good.cpp" />
+<sample src="PointerWrapAround-good.cpp" />
 </example>
 <references>
 <li><a href="https://blog.regehr.org/archives/1395">Pointer Overflow Checking [Embedded in Academia]</a></li>
