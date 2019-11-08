@@ -210,6 +210,17 @@ int ModeledCallTarget(int x) {
   return y;
 }
 
+void InitArray() {
+    char a_pad[32] = ""; 
+    char a_nopad[4] = "foo";
+    char a_infer[] = "blah";
+    char b[2];
+    char c[2] = {};
+    char d[2] = { 0 };
+    char e[2] = { 0, 1 };
+    char f[3] = { 0 };
+}
+
 extern void ExternalFunc();
 
 char StringLiteralAliasing() {

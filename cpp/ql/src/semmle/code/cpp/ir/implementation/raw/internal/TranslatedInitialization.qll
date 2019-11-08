@@ -340,7 +340,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
    * Holds if the `elementCount` array elements starting at `startIndex` must be
    * zero initialized.
    */
-  private predicate zeroInitRange(int startIndex, int elementCount) {
+  predicate zeroInitRange(int startIndex, int elementCount) {
     exists(int targetCount |
       startIndex = expr.getUnspecifiedType().(ArrayType).getArraySize() and
       targetCount = getContext().getTargetType().getUnspecifiedType().(ArrayType).getArraySize() and
