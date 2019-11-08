@@ -525,8 +525,8 @@ module DataFlow {
    *
    * For example, all of the following are property writes:
    * ```js
-   * obj.f = value;  // assignment to a member
-   * obj[e] = value; // assignment to a computed member
+   * obj.f = value;  // assignment to a property
+   * obj[e] = value; // assignment to a computed property
    * { f: value }    // property initializer
    * { g() {} }      // object literal method
    * { get g() {}, set g(v) {} }  // accessor methods (have no rhs value)
@@ -753,8 +753,8 @@ module DataFlow {
    *
    * For example, all the following are property reads:
    * ```js
-   * obj.f               // member access
-   * obj[e]              // computed member access
+   * obj.f               // property access
+   * obj[e]              // computed property access
    * let { f } = obj;    // destructuring object pattern
    * let [x, y] = array; // destructuring array pattern
    * function f({ f }) {} // destructuring pattern (in parameter)
