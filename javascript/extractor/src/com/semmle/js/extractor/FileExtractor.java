@@ -156,6 +156,9 @@ public class FileExtractor {
           byte[] bytes = new byte[fileHeaderSize];
           int length = fis.read(bytes);
 
+          if (length == -1)
+            return false;
+
           // Avoid invalid or unprintable UTF-8 files.
           if (config.getDefaultEncoding().equals("UTF-8") && hasUnprintableUtf8(bytes, length)) {
             return true;
