@@ -349,17 +349,78 @@ string deriveExprName(DataFlow::Node node) {
   result = "this object"
 }
 
+/**
+ * Holds if the dynamic property write `base[prop] = rhs` can pollute the prototype
+ * of `base` due to flow from `enum`.
+ *
+ * In most cases this will result in an alert, the exception being the case where
+ * `base` does not have a prototype at all.
+ */
+predicate isPrototypePollutingAssignment(Node base, Node prop, Node rhs, EnumeratedPropName enum) {
+  dynamicPropWrite(base, prop, rhs) and
+  exists(PropNameTracking cfg |
+    cfg.hasFlow(enum, base) and
+    cfg.hasFlow(enum, prop) and
+    cfg.hasFlow(enum, rhs) and
+    cfg.hasFlow(enum.getASourceProp(), rhs)
+  )
+}
+
+/** Gets a data flow node leading to the base of a prototype-polluting assignment. */
+private DataFlow::SourceNode getANodeLeadingToBase(DataFlow::TypeBackTracker t, Node base) {
+  t.start() and
+  isPrototypePollutingAssignment(base, _, _, _) and
+  result = base.getALocalSource()
+  or
+  exists(DataFlow::TypeBackTracker t2 |
+    result = getANodeLeadingToBase(t2, base).backtrack(t2, t)
+  )
+}
+
+/**
+ * Gets a data flow node leading to the base of dynamic property read leading to a
+ * prototype-polluting assignment.
+ *
+ * For example, this is the `dst` in `dst[key1][key2] = ...`.
+ * This dynamic read is where the reference to a built-in prototype object is obtained,
+ * and we need this to ensure that this object actually has a prototype.
+ */
+private DataFlow::SourceNode getANodeLeadingToBaseBase(DataFlow::TypeBackTracker t, Node base) {
+  exists(DynamicPropRead read |
+    read = getANodeLeadingToBase(t, base) and
+    result = read.getBase().getALocalSource()
+  )
+  or
+  exists(DataFlow::TypeBackTracker t2 |
+    result = getANodeLeadingToBaseBase(t2, base).backtrack(t2, t)
+  )
+}
+
+DataFlow::SourceNode getANodeLeadingToBaseBase(Node base) {
+  result = getANodeLeadingToBaseBase(DataFlow::TypeBackTracker::end(), base)
+}
+
+/** A call to `Object.create(null)`. */
+class ObjectCreateNullCall extends CallNode {
+  ObjectCreateNullCall() {
+    this = globalVarRef("Object").getAMemberCall("create") and
+    getArgument(0).asExpr() instanceof NullLiteral
+  }
+}
+
 from
   PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, EnumeratedPropName enum,
-  Node base, Node prop, Node rhs
+  Node base
 where
   cfg.hasFlowPath(source, sink) and
-  dynamicPropWrite(base, prop, rhs) and
+  isPrototypePollutingAssignment(base, _, _, enum) and
   sink.getNode() = base and
   source.getNode() = enum and
-  cfg.hasFlow(enum, prop) and
-  cfg.hasFlow(enum, rhs) and
-  cfg.hasFlow(enum.getASourceProp(), rhs)
+  (
+    getANodeLeadingToBaseBase(base) instanceof ObjectLiteralNode
+    or
+    not getANodeLeadingToBaseBase(base) instanceof ObjectCreateNullCall
+  )
 select base, source, sink,
   "Properties are copied from $@ to $@ without guarding against prototype pollution.",
   enum.getSourceObject(), deriveExprName(enum.getSourceObject()), base, deriveExprName(base)

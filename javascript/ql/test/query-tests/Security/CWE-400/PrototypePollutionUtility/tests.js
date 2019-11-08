@@ -209,3 +209,34 @@ function copyUsingPlainForLoopNoAlias(dst, src) {
         }
     }
 }
+
+function deepSet(map, key1, key2, value) {
+    if (!map[key1]) {
+        map[key1] = Object.create(null);
+    }
+    map[key1][key2] = value; // OK
+}
+
+function deepSetCaller(data) {
+    let map1 = Object.create(null);
+    let map2 = Object.create(null);
+    for (let key in data) {
+        deepSet(map1, key, 'x', data[key]);
+        deepSet(map2, 'x', key, data[key]);
+    }
+}
+
+function deepSetBad(map, key1, key2, value) {
+    if (!map[key1]) {
+        map[key1] = Object.create(null);
+    }
+    map[key1][key2] = value; // NOT OK - object literal can flow here
+}
+
+function deepSetCallerBad(data) {
+    let map1 = Object.create(null);
+    for (let key in data) {
+        deepSetBad({}, key, 'x', data[key]); // oops
+        deepSetBad(map1, 'x', key, data[key]);
+    }
+}
