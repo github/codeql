@@ -36,6 +36,14 @@ variable.
 	fmt.Fprintf(os.Stderr, "Usage:\n\n  %s\n", os.Args[0])
 }
 
+func getEnvGoVersion() string {
+	gover, err := exec.Command("go", "version").CombinedOutput()
+	if err != nil {
+		log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
+	}
+	return strings.Fields(string(gover))[2]
+}
+
 func fileExists(filename string) bool {
 	_, err := os.Stat(filename)
 	if err != nil && !os.IsNotExist(err) {
@@ -96,6 +104,8 @@ func main() {
 		usage()
 		os.Exit(2)
 	}
+
+	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), getEnvGoVersion())
 
 	srcdir := os.Getenv("LGTM_SRC")
 	inLGTM := srcdir != ""
