@@ -29,7 +29,8 @@ dependencies.
 
 This behavior can be further customized using environment variables: setting LGTM_INDEX_NEED_GOPATH
 to 'false' disables the GOPATH set-up, LGTM_INDEX_BUILD_COMMAND can be set to a newline-separated
-list of commands to run in order to install dependencies, and LGTM_INDEX_IMPORT_PATH can be used to override the package import path, which is otherwise inferred from the SEMMLE_REPO_URL environment 
+list of commands to run in order to install dependencies, and LGTM_INDEX_IMPORT_PATH can be used to
+override the package import path, which is otherwise inferred from the SEMMLE_REPO_URL environment
 variable.
 `,
 		os.Args[0])
