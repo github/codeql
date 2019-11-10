@@ -110,6 +110,8 @@ abstract class RelationalOpcode extends CompareOpcode { }
 
 abstract class CopyOpcode extends Opcode { }
 
+abstract class ConvertToBaseOpcode extends UnaryOpcode { }
+
 abstract class MemoryAccessOpcode extends Opcode { }
 
 abstract class ReturnOpcode extends Opcode { }
@@ -302,11 +304,11 @@ module Opcode {
     final override string toString() { result = "Convert" }
   }
 
-  class ConvertToNonVirtualBase extends UnaryOpcode, TConvertToNonVirtualBase {
+  class ConvertToNonVirtualBase extends ConvertToBaseOpcode, TConvertToNonVirtualBase {
     final override string toString() { result = "ConvertToNonVirtualBase" }
   }
 
-  class ConvertToVirtualBase extends UnaryOpcode, TConvertToVirtualBase {
+  class ConvertToVirtualBase extends ConvertToBaseOpcode, TConvertToVirtualBase {
     final override string toString() { result = "ConvertToVirtualBase" }
   }
 
