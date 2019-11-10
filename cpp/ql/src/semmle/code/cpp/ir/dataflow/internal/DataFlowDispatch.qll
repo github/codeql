@@ -57,13 +57,13 @@ private predicate overrideMayAffectCall(
  * should usually be fewer classes than calls.
  *
  * If a value is cast several classes up in the hierarchy, that will be modeled
- * as a chain of `ConvertToNonVirtualBaseInstruction`s and will cause the search to start
+ * as a chain of `ConvertToBaseInstruction`s and will cause the search to start
  * from each of them and pass through subsequent ones. There might be
  * performance to gain by stopping before a second upcast and reconstructing
  * the full chain in a "big-step" recursion after this one.
  */
 private predicate nodeMayHaveClass(Class derived, DataFlow::Node node) {
-  exists(ConvertToNonVirtualBaseInstruction toBase |
+  exists(ConvertToBaseInstruction toBase |
     derived = toBase.getDerivedClass() and
     overrideMayAffectCall(derived, _, toBase.getEnclosingFunction(), _, _) and
     node.asInstruction() = toBase
