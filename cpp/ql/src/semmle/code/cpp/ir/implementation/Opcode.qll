@@ -34,7 +34,7 @@ private newtype TOpcode =
   TPointerSub() or
   TPointerDiff() or
   TConvert() or
-  TConvertToBase() or
+  TConvertToNonVirtualBase() or
   TConvertToVirtualBase() or
   TConvertToDerived() or
   TCheckedConvertOrNull() or
@@ -302,8 +302,8 @@ module Opcode {
     final override string toString() { result = "Convert" }
   }
 
-  class ConvertToBase extends UnaryOpcode, TConvertToBase {
-    final override string toString() { result = "ConvertToBase" }
+  class ConvertToNonVirtualBase extends UnaryOpcode, TConvertToNonVirtualBase {
+    final override string toString() { result = "ConvertToNonVirtualBase" }
   }
 
   class ConvertToVirtualBase extends UnaryOpcode, TConvertToVirtualBase {

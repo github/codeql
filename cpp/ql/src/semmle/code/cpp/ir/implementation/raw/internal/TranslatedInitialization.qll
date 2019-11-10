@@ -752,7 +752,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::ConvertToBase and
+    opcode instanceof Opcode::ConvertToNonVirtualBase and
     resultType = getTypeForGLValue(call.getTarget().getDeclaringType())
   }
 

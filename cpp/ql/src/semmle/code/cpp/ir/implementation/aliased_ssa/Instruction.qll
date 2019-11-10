@@ -980,8 +980,8 @@ class InheritanceConversionInstruction extends UnaryInstruction {
  * Represents an instruction that converts from the address of a derived class
  * to the address of a direct non-virtual base class.
  */
-class ConvertToBaseInstruction extends InheritanceConversionInstruction {
-  ConvertToBaseInstruction() { getOpcode() instanceof Opcode::ConvertToBase }
+class ConvertToNonVirtualBaseInstruction extends InheritanceConversionInstruction {
+  ConvertToNonVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToNonVirtualBase }
 }
 
 /**

@@ -35,15 +35,15 @@
 | escape.cpp:146:5:146:18 | CopyValue | no_Point+8:0 | no_Point+8:0 |
 | escape.cpp:146:7:146:17 | CopyValue | no_Point+8:0 | no_Point+8:0 |
 | escape.cpp:146:17:146:17 | FieldAddress[z] | no_Point+8:0 | no_Point+8:0 |
-| escape.cpp:149:5:149:14 | ConvertToBase[Derived : Intermediate1] | no_Derived+0:0 | no_Derived+0:0 |
-| escape.cpp:149:5:149:14 | ConvertToBase[Intermediate1 : Base] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:149:5:149:14 | ConvertToNonVirtualBase[Derived : Intermediate1] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:149:5:149:14 | ConvertToNonVirtualBase[Intermediate1 : Base] | no_Derived+0:0 | no_Derived+0:0 |
 | escape.cpp:149:16:149:16 | FieldAddress[b] | no_Derived+0:0 | no_Derived+0:0 |
-| escape.cpp:150:18:150:27 | ConvertToBase[Derived : Intermediate1] | no_Derived+0:0 | no_Derived+0:0 |
-| escape.cpp:150:18:150:27 | ConvertToBase[Intermediate1 : Base] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:150:18:150:27 | ConvertToNonVirtualBase[Derived : Intermediate1] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:150:18:150:27 | ConvertToNonVirtualBase[Intermediate1 : Base] | no_Derived+0:0 | no_Derived+0:0 |
 | escape.cpp:150:29:150:29 | FieldAddress[b] | no_Derived+0:0 | no_Derived+0:0 |
-| escape.cpp:151:5:151:14 | ConvertToBase[Derived : Intermediate2] | no_Derived+12:0 | no_Derived+12:0 |
+| escape.cpp:151:5:151:14 | ConvertToNonVirtualBase[Derived : Intermediate2] | no_Derived+12:0 | no_Derived+12:0 |
 | escape.cpp:151:16:151:17 | FieldAddress[i2] | no_Derived+16:0 | no_Derived+16:0 |
-| escape.cpp:152:19:152:28 | ConvertToBase[Derived : Intermediate2] | no_Derived+12:0 | no_Derived+12:0 |
+| escape.cpp:152:19:152:28 | ConvertToNonVirtualBase[Derived : Intermediate2] | no_Derived+12:0 | no_Derived+12:0 |
 | escape.cpp:152:30:152:31 | FieldAddress[i2] | no_Derived+16:0 | no_Derived+16:0 |
 | escape.cpp:155:17:155:30 | CopyValue | no_ssa_addrOf+0:0 | no_ssa_addrOf+0:0 |
 | escape.cpp:155:17:155:30 | Store | no_ssa_addrOf+0:0 | no_ssa_addrOf+0:0 |
