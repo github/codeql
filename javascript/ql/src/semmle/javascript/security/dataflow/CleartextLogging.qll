@@ -34,20 +34,10 @@ module CleartextLogging {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Barrier }
 
-    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl) {
-      // Only unknown property reads on sensitive objects propagate taint.
-      (not lbl instanceof PartiallySensitiveMap or exists(succ.(DataFlow::PropRead).getPropertyName())) and 
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       succ.(DataFlow::PropRead).getBase() = pred
     }
        
-    override predicate isAdditionalFlowStep(
-      DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
-    ) {
-      trg.(DataFlow::PropRead).getBase() = src and
-      inlbl instanceof PartiallySensitiveMap and 
-      outlbl.isData() 
-    }
-    
     override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
       // A taint propagating data flow edge through objects: a tainted write taints the entire object.
       exists(DataFlow::PropWrite write |

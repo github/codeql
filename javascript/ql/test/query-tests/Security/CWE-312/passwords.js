@@ -155,5 +155,5 @@ var Util = require('util');
 
     console.log(process.env); // NOT OK
     console.log(process.env.PATH); // OK.
-    console.log(process.env["foo" + "bar"]); // NOT OK.
+    console.log(process.env["foo" + "bar"]); // OK.
 });

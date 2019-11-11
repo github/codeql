@@ -32,6 +32,22 @@ module CleartextLogging {
    * A barrier for clear-text logging of sensitive information.
    */
   abstract class Barrier extends DataFlow::Node { }
+  
+  /**
+   * A call to `.replace()` that seems to mask 
+   */
+  class MaskingReplacer extends Barrier, DataFlow::MethodCallNode {
+  	MaskingReplacer() {
+  	  this.getCalleeName() = "replace" and
+  	  exists(RegExpLiteral reg| 
+  	    reg = this.getArgument(0).getALocalSource().asExpr() and
+  	    reg.getFlags().regexpMatch("(?i).*g.*") and
+  	    reg.getRoot().getRawValue().regexpMatch(".*\\..*")
+  	  ) 
+  	  and
+  	  this.getArgument(1).asExpr() instanceof StringLiteral
+  	}
+  }
 
   /**
    * An argument to a logging mechanism.
