@@ -67,7 +67,7 @@ module VirtualDispatch {
 
   /**
    * Holds if `c` cannot inherit the member function `f`,
-   * i.e. `c` or one of its supertypes overrides `f`.
+   * that is, `c` or one of its supertypes overrides `f`.
    */
   private predicate cannotInherit(Class c, MemberFunction f) {
     exists(Class overridingType, MemberFunction override |
