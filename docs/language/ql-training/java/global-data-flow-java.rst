@@ -3,6 +3,7 @@ Introduction to global data flow
 ================================
 
 CodeQL for Java
+===============
 
 .. rst-class:: setup
 

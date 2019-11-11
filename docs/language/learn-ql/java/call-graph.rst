@@ -78,6 +78,8 @@ Given this API, we can easily write a query that finds methods that are not call
 
 ➤ `See this in the query console <https://lgtm.com/query/665280012/>`__. This simple query typically returns a large number of results.
 
+.. pull-quote::
+
    Note
 
    We have to use ``polyCalls`` instead of ``calls`` here: we want to be reasonably sure that ``callee`` is not called, either directly or via overriding.

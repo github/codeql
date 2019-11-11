@@ -1,7 +1,7 @@
 Frameworks and libraries
 ########################
 
-The QL libraries and queries in version |version| have been explicitly checked against the libraries and frameworks listed below.
+The libraries and queries in version |version| have been explicitly checked against the libraries and frameworks listed below.
 
 .. pull-quote::
 

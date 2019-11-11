@@ -3,6 +3,7 @@ Program representation
 ======================
 
 CodeQL for C/C++
+================
 
 .. rst-class:: agenda
 

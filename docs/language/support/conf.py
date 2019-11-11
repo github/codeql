@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# QL and LGTM support info build configuration file, created 
+# CodeQL and LGTM support info build configuration file, created 
 # on Tuesday 19th February.
 #
 # This file is execfile()d with the current directory set to its

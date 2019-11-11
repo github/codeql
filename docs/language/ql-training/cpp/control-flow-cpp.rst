@@ -3,6 +3,7 @@ Analyzing control flow
 ======================
 
 CodeQL for C/C++
+================
 
 .. Include information slides here
 

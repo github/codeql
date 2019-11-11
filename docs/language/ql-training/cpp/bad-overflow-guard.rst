@@ -3,6 +3,7 @@ Example: Bad overflow guard
 ===========================
 
 CodeQL for C/C++
+================
 
 .. rst-class:: setup
 
