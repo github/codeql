@@ -1,4 +1,28 @@
 bad_asts.cpp:
+#    9| int Bad::S::MemberFunction<int 6>(int)
+#    9|   Block 0
+#    9|     v0_0(void)        = EnterFunction            : 
+#    9|     mu0_1(unknown)    = AliasedDefinition        : 
+#    9|     mu0_2(unknown)    = UnmodeledDefinition      : 
+#    9|     r0_3(glval<S>)    = InitializeThis           : 
+#    9|     r0_4(glval<int>)  = VariableAddress[y]       : 
+#    9|     mu0_5(int)        = InitializeParameter[y]   : &:r0_4
+#   10|     r0_6(glval<int>)  = VariableAddress[#return] : 
+#   10|     r0_7(int)         = Constant[6]              : 
+#-----|     r0_8(S *)         = CopyValue                : r0_3
+#   10|     r0_9(glval<int>)  = FieldAddress[x]          : r0_8
+#   10|     r0_10(int)        = Load                     : &:r0_9, ~mu0_2
+#   10|     r0_11(int)        = Add                      : r0_7, r0_10
+#   10|     r0_12(glval<int>) = VariableAddress[y]       : 
+#   10|     r0_13(int)        = Load                     : &:r0_12, ~mu0_2
+#   10|     r0_14(int)        = Add                      : r0_11, r0_13
+#   10|     mu0_15(int)       = Store                    : &:r0_6, r0_14
+#    9|     r0_16(glval<int>) = VariableAddress[#return] : 
+#    9|     v0_17(void)       = ReturnValue              : &:r0_16, ~mu0_2
+#    9|     v0_18(void)       = UnmodeledUse             : mu*
+#    9|     v0_19(void)       = AliasedUse               : ~mu0_2
+#    9|     v0_20(void)       = ExitFunction             : 
+
 #   14| void Bad::CallBadMemberFunction()
 #   14|   Block 0
 #   14|     v0_0(void)           = EnterFunction                   : 
