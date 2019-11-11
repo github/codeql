@@ -106,12 +106,12 @@ Examples
 
 Each syntactic element in Python source is recorded in the CodeQL database. These can be queried via the corresponding class. Let us start with a couple of simple examples.
 
-1. Finding all finally blocks
-'''''''''''''''''''''''''''''
+1. Finding all ``finally`` blocks
+'''''''''''''''''''''''''''''''''
 
 For our first example, we can find all ``finally`` blocks by using the ``Try`` class:
 
-**Find all ``finally`` blocks**
+**Find all** ``finally`` **blocks**
 
 .. code-block:: ql
 
@@ -122,8 +122,8 @@ For our first example, we can find all ``finally`` blocks by using the ``Try`` c
 
 ➤ `See this in the query console <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
 
-2. Finding 'except' blocks that do nothing
-''''''''''''''''''''''''''''''''''''''''''
+2. Finding ``except`` blocks that do nothing
+''''''''''''''''''''''''''''''''''''''''''''
 
 For our second example, we can use a simplified version of a query from the standard query set. We look for all ``except`` blocks that do nothing.
 
@@ -141,7 +141,7 @@ where ``ex`` is an ``ExceptStmt`` and ``Pass`` is the class representing ``pass`
 
 Both forms are equivalent. Using the positive expression, the whole query looks like this:
 
-**Find pass-only ``except`` blocks**
+**Find pass-only** ``except`` **blocks**
 
 .. code-block:: ql
 

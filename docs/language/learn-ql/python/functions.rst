@@ -10,6 +10,8 @@ In this example we look for all the "getters" in a program. Programmers moving t
 
 Using the member predicate ``Function.getName()``, we can list all of the getter functions in a database:
 
+.. pull-quote::
+
    Tip
 
    Instead of copying this query, try typing the code. As you start to write a name that matches a library class, a pop-up is displayed making it easy for you to select the class that you want.
