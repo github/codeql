@@ -32,11 +32,19 @@ predicate isSimple(RegExpTerm t) {
   or
   isSimple(t.(RegExpGroup).getAChild())
   or
-  (
-    t instanceof RegExpAlt
-    or
-    t instanceof RegExpCharacterClass and not t.(RegExpCharacterClass).isInverted()
-  ) and
+  isSimpleCharacterClass(t)
+  or
+  isSimpleAlt(t)
+}
+
+/** Holds if `t` is a non-inverted character class that contains no ranges. */
+predicate isSimpleCharacterClass(RegExpCharacterClass t) {
+  not t.isInverted() and
+  forall(RegExpTerm ch | ch = t.getAChild() | isSimple(ch))
+}
+
+/** Holds if `t` is an alternation of simple terms. */
+predicate isSimpleAlt(RegExpAlt t) {
   forall(RegExpTerm ch | ch = t.getAChild() | isSimple(ch))
 }
 

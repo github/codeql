@@ -311,13 +311,19 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
     forall(RegExpTerm child | child = getAChild() | child.isNullable())
   }
 
-  language[monotonicAggregates]
   override string getConstantValue() {
-    // note: due to use of monotonic aggregates, this `strictconcat` will fail if
-    // `getConstantValue` is undefined for any child
-    result = strictconcat(RegExpTerm ch, int i | ch = getChild(i) |
-      ch.getConstantValue() order by i
-    )
+    result = getConstantValue(0)
+  }
+
+  /**
+   * Gets the single string matched by the `i`th child and all following children of
+   * this sequence, if any.
+   */
+  private string getConstantValue(int i) {
+    i = getNumChild() and
+    result = ""
+    or
+    result = getChild(i).getConstantValue() + getConstantValue(i+1)
   }
 }
 
