@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var methodKind = methodDecl.MethodKind;
 
-            if(methodKind == MethodKind.ExplicitInterfaceImplementation)
+            if (methodKind == MethodKind.ExplicitInterfaceImplementation)
             {
                 // Retrieve the original method kind
                 methodKind = methodDecl.ExplicitInterfaceImplementations.Select(m => m.MethodKind).FirstOrDefault();
@@ -348,7 +348,9 @@ namespace Semmle.Extraction.CSharp.Entities
                         child++;
                     }
 
-                    trapFile.type_nullability(this, NullabilityEntity.Create(Context, new Nullability(symbol)));
+                    var nullability = new Nullability(symbol);
+                    if (!nullability.IsOblivious)
+                        trapFile.type_nullability(this, NullabilityEntity.Create(Context, nullability));
                 }
                 else
                 {

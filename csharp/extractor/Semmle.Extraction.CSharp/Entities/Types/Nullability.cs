@@ -30,6 +30,8 @@ namespace Semmle.Extraction.CSharp.Entities
             return new Nullability(ts);
         }
 
+        public bool IsOblivious => Annotation == 0 && NullableParameters.Length == 0;
+
         static readonly Nullability oblivious = new Nullability(NullableAnnotation.Disabled);
         static readonly Nullability annotated = new Nullability(NullableAnnotation.Annotated);
         static readonly Nullability notannotated = new Nullability(NullableAnnotation.NotAnnotated);
@@ -113,7 +115,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.nullability(this, symbol.Annotation);
 
             int i = 0;
-            foreach(var s in symbol.NullableParameters)
+            foreach (var s in symbol.NullableParameters)
             {
                 trapFile.nullability_member(this, i, Create(Context, s));
                 i++;
