@@ -70,11 +70,11 @@ private module Annotations {
 
     language[monotonicAggregates]
     private string getMemberString() {
-      if nullability_member(nullability, _, _)
+      if nullability_parent(_, _, nullability)
       then
         result = "<" +
             concat(int i, Nullability child |
-              nullability_member(nullability, i, getNullability(child))
+              nullability_parent(getNullability(child), i, nullability)
             |
               child.toString(), "," order by i
             ) + ">"
@@ -169,8 +169,8 @@ private module Annotations {
    */
   bindingset[i]
   Nullability getChildNullability(Nullability n, int i) {
-    if nullability_member(getNullability(n), i, _)
-    then nullability_member(getNullability(n), i, getNullability(result))
+    if nullability_parent(_, i, getNullability(n))
+    then nullability_parent(getNullability(result), i, getNullability(n))
     else result = n
   }
 
@@ -190,7 +190,7 @@ private module Annotations {
    * and all type arguments are oblivious.
    */
   class NoNullability extends ObliviousNullability {
-    NoNullability() { not nullability_member(nullability, _, _) }
+    NoNullability() { not nullability_parent(_, _, nullability) }
   }
 
   /** A type with annotated nullablity, `?`. */

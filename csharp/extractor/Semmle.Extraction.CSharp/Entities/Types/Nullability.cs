@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Entities
             int i = 0;
             foreach (var s in symbol.NullableParameters)
             {
-                trapFile.nullability_member(this, i, Create(Context, s));
+                trapFile.nullability_parent(Create(Context, s), i, this);
                 i++;
             }
         }

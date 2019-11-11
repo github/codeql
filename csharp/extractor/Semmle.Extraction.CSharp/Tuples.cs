@@ -386,9 +386,9 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("nullability", nullability, annotation);
         }
 
-        internal static void nullability_member(this TextWriter trapFile, NullabilityEntity nullability, int index, NullabilityEntity child)
+        internal static void nullability_parent(this TextWriter trapFile, NullabilityEntity nullability, int index, NullabilityEntity parent)
         {
-            trapFile.WriteTuple("nullability_member", nullability, index, child);
+            trapFile.WriteTuple("nullability_parent", nullability, index, parent);
         }
 
         internal static void numlines(this TextWriter trapFile, IEntity label, LineCounts lineCounts)
