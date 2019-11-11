@@ -126,15 +126,22 @@ predicate isDelimiterUnwrapper(
 }
 
 /*
- * Holds if `repl` is a standalone use of `String.prototype.replace` to remove a single newline.
+ * Holds if `repl` is a standalone use of `String.prototype.replace` to remove a single newline,
+ * dollar or percent character.
+ *
+ * This is often done on inputs that are known to only contain a single instance of the character,
+ * such as output from a shell command that is known to end with a single newline, or strings
+ * like "$1.20" or "50%".
  */
 
-predicate removesTrailingNewLine(StringReplaceCall repl) {
+predicate whitelistedRemoval(StringReplaceCall repl) {
   not repl.isGlobal() and
-  repl.replaces("\n", "") and
-  not exists(StringReplaceCall other |
-    repl.getAMethodCall() = other or
-    other.getAMethodCall() = repl
+  exists(string s | s = "\n" or s = "%" or s = "$" |
+    repl.replaces(s, "") and
+    not exists(StringReplaceCall other |
+      repl.getAMethodCall() = other or
+      other.getAMethodCall() = repl
+    )
   )
 }
 
@@ -165,8 +172,8 @@ where
     // dont' flag unwrapper
     not isDelimiterUnwrapper(repl, _) and
     not isDelimiterUnwrapper(_, repl) and
-    // dont' flag the removal of trailing newlines
-    not removesTrailingNewLine(repl)
+    // don't flag replacements of certain characters with whitespace
+    not whitelistedRemoval(repl)
     or
     exists(DataFlow::RegExpLiteralNode rel |
       isBackslashEscape(repl, rel) and
