@@ -8,25 +8,32 @@ import semmle.code.cpp.commons.StringAnalysis
 import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.implementations.Printf
 
+class PrintfFormatAttribute extends FormatAttribute {
+  PrintfFormatAttribute() {
+    getArchetype() = "printf" or
+    getArchetype() = "__printf__"
+  }
+}
+
 /**
  * A function that can be identified as a `printf` style formatting
  * function by its use of the GNU `format` attribute.
  */
 class AttributeFormattingFunction extends FormattingFunction {
-  FormatAttribute printf_attrib;
-
   override string getCanonicalQLClass() { result = "AttributeFormattingFunction" }
 
   AttributeFormattingFunction() {
-    printf_attrib = getAnAttribute() and
-    (
-      printf_attrib.getArchetype() = "printf" or
-      printf_attrib.getArchetype() = "__printf__"
-    ) and
-    exists(printf_attrib.getFirstFormatArgIndex()) // exclude `vprintf` style format functions
+    exists(PrintfFormatAttribute printf_attrib |
+      printf_attrib = getAnAttribute() and
+      exists(printf_attrib.getFirstFormatArgIndex()) // exclude `vprintf` style format functions
+    )
   }
 
-  override int getFormatParameterIndex() { result = printf_attrib.getFormatIndex() }
+  override int getFormatParameterIndex() {
+    forex(PrintfFormatAttribute printf_attrib | printf_attrib = getAnAttribute() |
+      result = printf_attrib.getFormatIndex()
+    )
+  }
 }
 
 /**
