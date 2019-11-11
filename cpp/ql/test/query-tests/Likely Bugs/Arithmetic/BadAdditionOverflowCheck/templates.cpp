@@ -12,8 +12,8 @@ bool compareValues() {
   // all instantiations in the program, there could still be more such
   // instantiations outside.
   return
-    T1::value < T2::value || // GOOD [FALSE POSITIVE]
-    T1::value < T1::value || // BAD
+    T1::value < T2::value || // GOOD
+    T1::value < T1::value || // BAD [NOT DETECTED]
     C1::value < C1::value ; // BAD
 }
 

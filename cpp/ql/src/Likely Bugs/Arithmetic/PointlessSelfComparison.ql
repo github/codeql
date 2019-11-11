@@ -19,6 +19,7 @@ where
   pointlessSelfComparison(cmp) and
   not nanTest(cmp) and
   not overflowTest(cmp) and
+  not cmp.isFromTemplateInstantiation(_) and
   not exists(MacroInvocation mi |
     // cmp is in mi
     mi.getAnExpandedElement() = cmp and
