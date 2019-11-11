@@ -122,6 +122,7 @@ class Expr extends Expr_, AstNode {
 
     /** Holds if this expression might "point-to" to `value`.
      */
+    pragma [nomagic]
     predicate pointsTo(Value value) {
         this.pointsTo(value, _)
     }
