@@ -3,7 +3,6 @@ Introduction to variant analysis
 ================================
 
 CodeQL for C/C++
-================
 
 .. rst-class:: setup
 

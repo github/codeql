@@ -3,7 +3,6 @@ Introduction to variant analysis
 ================================
 
 CodeQL for Java
-===============
 
 .. rst-class:: setup
 

@@ -3,7 +3,6 @@ Exercise: ``snprintf`` overflow
 ===============================
 
 CodeQL for C/C++
-================
 
 .. rst-class:: setup
 

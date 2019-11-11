@@ -3,7 +3,6 @@ Introduction to global data flow
 ================================
 
 CodeQL for C/C++
-================
    
 .. rst-class:: setup
 

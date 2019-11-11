@@ -3,7 +3,6 @@ Example: Query injection
 ========================
 
 CodeQL for Java
-===============
 
 .. rst-class:: setup
 

@@ -3,7 +3,6 @@ Program representation
 ======================
 
 CodeQL for Java
-===============
 
 .. rst-class:: agenda
 
