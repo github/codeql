@@ -131,15 +131,17 @@ class FormattingFunctionCall extends Expr {
   }
 
   /**
-   * Gets the argument corresponding to the nth conversion specifier
+   * Gets the argument corresponding to the nth conversion specifier.
    */
   Expr getConversionArgument(int n) {
-    exists(FormatLiteral fl, int b, int o |
+    exists(FormatLiteral fl |
       fl = this.getFormat() and
-      b = sum(int i, int toSum | i < n and toSum = fl.getNumArgNeeded(i) | toSum) and
-      o = fl.getNumArgNeeded(n) and
-      o > 0 and
-      result = this.getFormatArgument(b + o - 1)
+      (
+        result = this.getFormatArgument(fl.getParameterFieldValue(n))
+        or
+        result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 2)) and
+        not exists(fl.getParameterFieldValue(n))
+      )
     )
   }
 
@@ -149,11 +151,14 @@ class FormattingFunctionCall extends Expr {
    * an explicit minimum field width).
    */
   Expr getMinFieldWidthArgument(int n) {
-    exists(FormatLiteral fl, int b |
+    exists(FormatLiteral fl |
       fl = this.getFormat() and
-      b = sum(int i, int toSum | i < n and toSum = fl.getNumArgNeeded(i) | toSum) and
-      fl.hasImplicitMinFieldWidth(n) and
-      result = this.getFormatArgument(b)
+      (
+        result = this.getFormatArgument(fl.getMinFieldWidthParameterFieldValue(n))
+        or
+        result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 0)) and
+        not exists(fl.getMinFieldWidthParameterFieldValue(n))
+      )
     )
   }
 
@@ -163,12 +168,14 @@ class FormattingFunctionCall extends Expr {
    * precision).
    */
   Expr getPrecisionArgument(int n) {
-    exists(FormatLiteral fl, int b, int o |
+    exists(FormatLiteral fl |
       fl = this.getFormat() and
-      b = sum(int i, int toSum | i < n and toSum = fl.getNumArgNeeded(i) | toSum) and
-      (if fl.hasImplicitMinFieldWidth(n) then o = 1 else o = 0) and
-      fl.hasImplicitPrecision(n) and
-      result = this.getFormatArgument(b + o)
+      (
+        result = this.getFormatArgument(fl.getPrecisionParameterFieldValue(n))
+        or
+        result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 1)) and
+        not exists(fl.getPrecisionParameterFieldValue(n))
+      )
     )
   }
 
@@ -369,6 +376,14 @@ class FormatLiteral extends Literal {
   string getParameterField(int n) { this.parseConvSpec(n, _, result, _, _, _, _, _) }
 
   /**
+   * Gets the parameter field of the nth conversion specifier (if it has one) as a
+   * zero-based number.
+   */
+  int getParameterFieldValue(int n) {
+    result = this.getParameterField(n).regexpCapture("([0-9]*)\\$", 1).toInt() - 1
+  }
+
+  /**
    * Gets the flags of the nth conversion specifier.
    */
   string getFlags(int n) { this.parseConvSpec(n, _, _, result, _, _, _, _) }
@@ -438,6 +453,14 @@ class FormatLiteral extends Literal {
   int getMinFieldWidth(int n) { result = this.getMinFieldWidthOpt(n).toInt() }
 
   /**
+   * Gets the zero-based parameter number of the minimum field width of the nth
+   * conversion specifier, if it is implicit and uses a parameter field (such as `*1$`).
+   */
+  int getMinFieldWidthParameterFieldValue(int n) {
+    result = this.getMinFieldWidthOpt(n).regexpCapture("\\*([0-9]*)\\$", 1).toInt() - 1
+  }
+
+  /**
    * Gets the precision of the nth conversion specifier (empty string if none is given).
    */
   string getPrecisionOpt(int n) { this.parseConvSpec(n, _, _, _, _, result, _, _) }
@@ -465,6 +488,14 @@ class FormatLiteral extends Literal {
     if this.getPrecisionOpt(n) = "."
     then result = 0
     else result = this.getPrecisionOpt(n).regexpCapture("\\.([0-9]*)", 1).toInt()
+  }
+
+  /**
+   * Gets the zero-based parameter number of the precision of the nth conversion
+   * specifier, if it is implicit and uses a parameter field (such as `*1$`).
+   */
+  int getPrecisionParameterFieldValue(int n) {
+    result = this.getPrecisionOpt(n).regexpCapture("\\.\\*([0-9]*)\\$", 1).toInt() - 1
   }
 
   /**
@@ -785,18 +816,48 @@ class FormatLiteral extends Literal {
   }
 
   /**
+   * Holds if the nth conversion specifier of this format string (if `mode = 2`), it's
+   * minimum field width (if `mode = 0`) or it's precision (if `mode = 1`) requires a
+   * format argument.
+   *
+   * Most conversion specifiers require a format argument, whereas minimum field width
+   * and precision only require a format argument if they are present and a `*` was
+   * used for it's value in the format string.
+   */
+  private predicate hasFormatArgumentIndexFor(int n, int mode) {
+    mode = 0 and
+    this.hasImplicitMinFieldWidth(n)
+    or
+    mode = 1 and
+    this.hasImplicitPrecision(n)
+    or
+    mode = 2 and
+    exists(this.getConvSpecOffset(n)) and
+    not this.getConversionChar(n) = "m"
+  }
+
+  /**
+   * Gets the computed format argument index for the nth conversion specifier of this
+   * format string (if `mode = 2`), it's minimum field width (if `mode = 0`) or it's
+   * precision (if `mode = 1`).  Has no result if that element is not present.  Does
+   * not account for positional arguments (`$`).
+   */
+  int getFormatArgumentIndexFor(int n, int mode) {
+    hasFormatArgumentIndexFor(n, mode) and
+    (3 * n) + mode = rank[result + 1](int n2, int mode2 |
+        hasFormatArgumentIndexFor(n2, mode2)
+      |
+        (3 * n2) + mode2
+      )
+  }
+
+  /**
    * Gets the number of arguments required by the nth conversion specifier
    * of this format string.
    */
   int getNumArgNeeded(int n) {
     exists(this.getConvSpecOffset(n)) and
-    not this.getConversionChar(n) = "%" and
-    exists(int n1, int n2, int n3 |
-      (if this.hasImplicitMinFieldWidth(n) then n1 = 1 else n1 = 0) and
-      (if this.hasImplicitPrecision(n) then n2 = 1 else n2 = 0) and
-      (if this.getConversionChar(n) = "m" then n3 = 0 else n3 = 1) and
-      result = n1 + n2 + n3
-    )
+    result = count(int mode | hasFormatArgumentIndexFor(n, mode))
   }
 
   /**
@@ -808,7 +869,7 @@ class FormatLiteral extends Literal {
       // At least one conversion specifier has a parameter field, in which case,
       // they all should have.
       result = max(string s | this.getParameterField(_) = s + "$" | s.toInt())
-    else result = sum(int n, int toSum | toSum = this.getNumArgNeeded(n) | toSum)
+    else result = count(int n, int mode | hasFormatArgumentIndexFor(n, mode))
   }
 
   /**
