@@ -13,9 +13,7 @@
 import cpp
 
 class MallocCall extends FunctionCall {
-  MallocCall() {
-    this.getTarget().hasGlobalOrStdName("malloc")
-  }
+  MallocCall() { this.getTarget().hasGlobalOrStdName("malloc") }
 
   Expr getAllocatedSize() {
     if this.getArgument(0) instanceof VariableAccess
