@@ -7,7 +7,7 @@ import (
 
 const (
 	user     = "dbuser"
-	password = "secretpassword"
+	password = "s3cretp4ssword"
 )
 
 func connect() *sql.DB {

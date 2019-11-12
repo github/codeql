@@ -63,10 +63,10 @@ module HeuristicNames {
 
   /**
    * Gets a regular expression that identifies strings that may indicate the presence of data
-   * that is hashed or encrypted, and hence rendered non-sensitive.
+   * that is hashed, encrypted, or a test value, and hence non-sensitive.
    */
   string notSensitive() {
-    result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+    result = "(?is).*(test|redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
   }
 }
 
@@ -244,7 +244,8 @@ module PasswordHeuristics {
     or
     exists(string normalized | normalized = password.toLowerCase() |
       count(normalized.charAt(_)) = 1 or
-      normalized.regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth).*")
+      normalized
+          .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|redacted).*")
     )
   }
 }

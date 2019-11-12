@@ -3,9 +3,8 @@ package main
 import "fmt"
 
 const (
-	passwd       = "passw0rd" // NOT OK
-	notAPassword = "hello"    // OK
-	_password    = ""         // OK
+	passwd    = "p4ssw0rd" // NOT OK
+	_password = ""         // OK
 )
 
 // generated using http://travistidwell.com/jsencrypt/demo
@@ -42,15 +41,15 @@ type info struct {
 }
 
 func main() {
-	password := "pass" // NOT OK
+	password := "p4ss" // NOT OK
 	tmp := password
 	i := info{
 		username: "me",
 		password: tmp, // NOT OK
 	}
-	i.password = "pass2" // NOT OK
+	i.password = "p4ss2" // NOT OK
 	fmt.Println(password, i)
-	testPassword := "pass"          // OK
+	testPassword := "p4ss"          // OK
 	i.password = "test"             // OK
 	i.password = testPassword       // OK
 	secretKey = "secret"            // OK
