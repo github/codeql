@@ -480,8 +480,8 @@ case @nullability.kind of
 | 2 = @annotated
 ;
 
-#keyset[nullability, index]
-nullability_member(int nullability: @nullability ref, int index: int ref, int child: @nullability ref)
+#keyset[parent, index]
+nullability_parent(int nullability: @nullability ref, int index: int ref, int parent: @nullability ref)
 
 type_nullability(int id: @has_type_annotation ref, int nullability: @nullability ref)
 
