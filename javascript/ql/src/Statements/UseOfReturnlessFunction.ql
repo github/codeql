@@ -45,7 +45,7 @@ predicate benignContext(Expr e) {
 
   or
   // weeds out calls inside HTML-attributes.
-  e.getParent() instanceof CodeInAttribute or  
+  e.getParent().(ExprStmt).getParent() instanceof CodeInAttribute or
   // and JSX-attributes.
   e = any(JSXAttribute attr).getValue() or 
   
