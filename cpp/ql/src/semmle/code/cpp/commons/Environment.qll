@@ -28,7 +28,7 @@ class EnvironmentRead extends Expr {
 private predicate readsEnvironment(Expr read, string sourceDescription) {
   exists(FunctionCall call, string name |
     read = call and
-    call.getTarget().hasGlobalName(name) and
+    call.getTarget().hasGlobalOrStdName(name) and
     (name = "getenv" or name = "secure_getenv" or name = "_wgetenv") and
     sourceDescription = name
   )

@@ -425,7 +425,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       // ... and likewise for destructors.
       this.(Destructor).getADestruction().mayBeGloballyImpure()
     else
-      not exists(string name | this.hasGlobalName(name) |
+      not exists(string name | this.hasGlobalOrStdName(name) |
         // Unless it's a function that we know is side-effect-free, it may
         // have side-effects.
         name = "strcmp" or
