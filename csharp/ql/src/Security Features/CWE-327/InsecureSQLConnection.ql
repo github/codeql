@@ -1,6 +1,6 @@
 /**
  * @name Insecure SQL connection
- * @description TODO.
+ * @description Using an SQL Server connection without enforcing encryption is a security vulnerability.
  * @kind path-problem
  * @id cs/insecure-sql-connection
  * @problem.severity error

@@ -205,7 +205,8 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   iTo.(CopyInstruction).getSourceValue() = iFrom or
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnary() = iFrom
+  iTo.(ConvertInstruction).getUnary() = iFrom or
+  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
 }
 
 /**
@@ -213,6 +214,14 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
  * (intra-procedural) steps.
  */
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
+
+/**
+ * Holds if data can flow from `i1` to `i2` in zero or more
+ * local (intra-procedural) steps.
+ */
+predicate localInstructionFlow(Instruction e1, Instruction e2) {
+  localFlow(instructionNode(e1), instructionNode(e2))
+}
 
 /**
  * Holds if data can flow from `e1` to `e2` in zero or more

@@ -23,5 +23,3 @@ foo();
 foo();
 foo();
 foo();
-
-//semmle-extractor-options: --experimental

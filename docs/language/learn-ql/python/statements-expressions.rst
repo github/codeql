@@ -143,7 +143,7 @@ Python implementations commonly cache small integers and single character string
 
 We can check for these as follows:
 
-**Find comparisons to integer or string literals using ``is``**
+**Find comparisons to integer or string literals using** ``is``
 
 .. code-block:: ql
 
@@ -157,6 +157,8 @@ We can check for these as follows:
 ➤ `See this in the query console <https://lgtm.com/query/688180010/>`__. Two of the demo projects on LGTM.com use this pattern: *saltstack/salt* and *openstack/nova*.
 
 The clause ``cmp.getOp(0) instanceof Is and cmp.getComparator(0) = literal`` checks that the first comparison operator is "is" and that the first comparator is a literal.
+
+.. pull-quote::
 
    Tip
 
@@ -253,9 +255,7 @@ checks that the value of the attribute (the expression to the left of the dot in
 Class and function definitions
 ------------------------------
 
-As Python is a dynamically typed language, class, and function definitions are executable statements. This means that a class statement is both a statement and a scope containing statements. To represent this cleanly the class definition is broken into a number of parts. At runtime, when a class definition is executed a class object is created and then assigned to a variable of the same name in the scope enclosing the class. This class is created from a code-object representing the source code for the body of the class. To represent this the ``ClassDef`` class (which represents a ``class`` statement) subclasses ``Assign``. The ``Class`` class, which represents the body of the class, can be accessed via the ``ClassDef.getDefinedClass()``
-
-``FunctionDef``, ``Function`` are handled similarly.
+As Python is a dynamically typed language, class, and function definitions are executable statements. This means that a class statement is both a statement and a scope containing statements. To represent this cleanly the class definition is broken into a number of parts. At runtime, when a class definition is executed a class object is created and then assigned to a variable of the same name in the scope enclosing the class. This class is created from a code-object representing the source code for the body of the class. To represent this the ``ClassDef`` class (which represents a ``class`` statement) subclasses ``Assign``. The ``Class`` class, which represents the body of the class, can be accessed via the ``ClassDef.getDefinedClass()``. ``FunctionDef`` and ``Function`` are handled similarly.
 
 Here is the relevant part of the class hierarchy:
 

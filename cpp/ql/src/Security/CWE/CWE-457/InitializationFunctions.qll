@@ -89,9 +89,9 @@ class ParameterNullCheck extends ParameterCheck {
       (
         va = this.(NotExpr).getOperand() or
         va = any(EQExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
-        va = getAssertedFalseCondition(this) or
+        va = getCheckedFalseCondition(this) or
         va = any(NEExpr eq |
-            eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
+            eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
           ).getAnOperand()
       )
       or
@@ -101,7 +101,7 @@ class ParameterNullCheck extends ParameterCheck {
         va = this or
         va = any(NEExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
         va = any(EQExpr eq |
-            eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
+            eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
           ).getAnOperand()
       )
     )
@@ -567,7 +567,7 @@ Expr getAnInitializedArgument(Call call) { result = call.getArgument(initialized
  * the call, under the given context and evidence.
  */
 pragma[nomagic]
-int conditionallyInitializedArgument(
+private int conditionallyInitializedArgument(
   Call call, ConditionalInitializationFunction target, Context c, Evidence e
 ) {
   target = getTarget(call) and
@@ -588,7 +588,7 @@ Expr getAConditionallyInitializedArgument(
 /**
  * Gets the type signature for the functions parameters.
  */
-string typeSig(Function f) {
+private string typeSig(Function f) {
   result = concat(int i, Type pt |
       pt = f.getParameter(i).getType()
     |
@@ -599,7 +599,7 @@ string typeSig(Function f) {
 /**
  * Holds where qualifiedName and typeSig make up the signature for the function.
  */
-predicate functionSignature(Function f, string qualifiedName, string typeSig) {
+private predicate functionSignature(Function f, string qualifiedName, string typeSig) {
   qualifiedName = f.getQualifiedName() and
   typeSig = typeSig(f)
 }
@@ -611,7 +611,7 @@ predicate functionSignature(Function f, string qualifiedName, string typeSig) {
  * This is useful for identifying call to target dependencies across libraries, where the libraries
  * are never statically linked together.
  */
-Function getAPossibleDefinition(Function undefinedFunction) {
+private Function getAPossibleDefinition(Function undefinedFunction) {
   not undefinedFunction.isDefined() and
   exists(string qn, string typeSig |
     functionSignature(undefinedFunction, qn, typeSig) and functionSignature(result, qn, typeSig)
@@ -620,32 +620,47 @@ Function getAPossibleDefinition(Function undefinedFunction) {
 }
 
 /**
- * Gets a possible target for the Call, using the name and parameter matching if we did not associate
+ * Helper predicate for `getTarget`, that computes possible targets of a `Call`.
+ *
+ * If there is at least one defined target after performing some simple virtual dispatch
+ * resolution, then the result is all the defined targets.
+ */
+private Function getTarget1(Call c) {
+  result = VirtualDispatch::getAViableTarget(c) and
+  result.isDefined()
+}
+
+/**
+ * Helper predicate for `getTarget`, that computes possible targets of a `Call`.
+ *
+ * If we can use the heuristic matching of functions to find definitions for some of the viable
+ * targets, return those.
+ */
+private Function getTarget2(Call c) {
+  not exists(getTarget1(c)) and
+  result = getAPossibleDefinition(VirtualDispatch::getAViableTarget(c))
+}
+
+/**
+ * Helper predicate for `getTarget`, that computes possible targets of a `Call`.
+ *
+ * Otherwise, the result is the undefined `Function` instances.
+ */
+private Function getTarget3(Call c) {
+  not exists(getTarget1(c)) and
+  not exists(getTarget2(c)) and
+  result = VirtualDispatch::getAViableTarget(c)
+}
+
+/**
+ * Gets a possible target for the `Call`, using the name and parameter matching if we did not associate
  * this call with a specific definition at link or compile time, and performing simple virtual
  * dispatch resolution.
  */
 Function getTarget(Call c) {
-  if VirtualDispatch::getAViableTarget(c).isDefined()
-  then
-    /*
-     * If there is at least one defined target after performing some simple virtual dispatch
-     * resolution, then the result is all the defined targets.
-     */
-
-    result = VirtualDispatch::getAViableTarget(c) and
-    result.isDefined()
-  else
-    if exists(getAPossibleDefinition(VirtualDispatch::getAViableTarget(c)))
-    then
-      /*
-       * If we can use the heuristic matching of functions to find definitions for some of the viable
-       * targets, return those.
-       */
-
-      result = getAPossibleDefinition(VirtualDispatch::getAViableTarget(c))
-    else
-      // Otherwise, the result is the undefined `Function` instances
-      result = VirtualDispatch::getAViableTarget(c)
+  result = getTarget1(c) or
+  result = getTarget2(c) or
+  result = getTarget3(c)
 }
 
 /**
@@ -669,7 +684,7 @@ FieldAccess getAFieldAccess(Variable v) {
 }
 
 /**
- * Gets a condition which is asserted to be false by the given `ne` expression, according to this pattern:
+ * Gets a condition which is checked to be false by the given `ne` expression, according to this pattern:
  * ```
  * int a = !!result;
  * if (!a) {  // <- ne
@@ -677,7 +692,7 @@ FieldAccess getAFieldAccess(Variable v) {
  * }
  * ```
  */
-Expr getAssertedFalseCondition(NotExpr ne) {
+private Expr getCheckedFalseCondition(NotExpr ne) {
   exists(LocalVariable v |
     result = v.getInitializer().getExpr().(NotExpr).getOperand().(NotExpr).getOperand() and
     ne.getOperand() = v.getAnAccess() and

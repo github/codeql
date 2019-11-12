@@ -194,8 +194,8 @@
 | n.js:2:1:2:15 | function g |
 | n.js:2:1:2:15 | instance of function g |
 | n.js:3:16:3:23 | object literal |
-| namespace-reexport.js:1:1:4:0 | exports object of module namespace-reexport |
-| namespace-reexport.js:1:1:4:0 | module object of module namespace-reexport |
+| namespace-reexport.js:1:1:2:0 | exports object of module namespace-reexport |
+| namespace-reexport.js:1:1:2:0 | module object of module namespace-reexport |
 | nestedImport.js:1:1:13:0 | exports object of module nestedImport |
 | nestedImport.js:1:1:13:0 | module object of module nestedImport |
 | nestedImport.js:9:1:12:1 | function tst |
@@ -235,14 +235,14 @@
 | objlit.js:43:12:45:3 | object literal |
 | reexport-d.js:1:1:2:0 | exports object of module reexport-d |
 | reexport-d.js:1:1:2:0 | module object of module reexport-d |
-| reexport-mixins.js:1:1:4:0 | exports object of module reexport-mixins |
-| reexport-mixins.js:1:1:4:0 | module object of module reexport-mixins |
+| reexport-mixins.js:1:1:2:0 | exports object of module reexport-mixins |
+| reexport-mixins.js:1:1:2:0 | module object of module reexport-mixins |
 | reexport-unknown.js:1:1:2:0 | exports object of module reexport-unknown |
 | reexport-unknown.js:1:1:2:0 | module object of module reexport-unknown |
 | reexport/client/src/index.js:1:1:3:0 | exports object of module index |
 | reexport/client/src/index.js:1:1:3:0 | module object of module index |
-| reexport/lib/index.js:1:1:4:0 | exports object of module index |
-| reexport/lib/index.js:1:1:4:0 | module object of module index |
+| reexport/lib/index.js:1:1:2:0 | exports object of module index |
+| reexport/lib/index.js:1:1:2:0 | module object of module index |
 | reexport/lib/src/utils/util.js:1:1:3:0 | exports object of module util |
 | reexport/lib/src/utils/util.js:1:1:3:0 | module object of module util |
 | refinements.js:1:1:8:1 | function f1 |
@@ -341,8 +341,8 @@
 | tst.js:174:1:183:1 | function awaitFlow |
 | tst.mjs:1:1:4:0 | exports object of module tst |
 | tst.mjs:1:1:4:0 | module object of module tst |
-| tst.ts:1:1:15:0 | exports object of module tst |
-| tst.ts:1:1:15:0 | module object of module tst |
+| tst.ts:1:1:13:0 | exports object of module tst |
+| tst.ts:1:1:13:0 | module object of module tst |
 | tst.ts:8:1:10:1 | function setX |
 | tst.ts:8:1:10:1 | instance of function setX |
 | with.js:1:1:17:1 | function f |

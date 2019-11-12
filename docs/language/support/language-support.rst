@@ -1,7 +1,8 @@
 Languages and compilers
 #######################
 
-QL and LGTM version |version| support analysis of the following languages compiled by the following compilers.
+CodeQL and LGTM version |version| support analysis of the following languages compiled by the following compilers.
+(CodeQL was previously known as QL.)
 
 Note that where there are several versions or dialects of a language, the supported variants are listed.
 If your code requires a particular version of a compiler, check that this version is included below. 

@@ -649,12 +649,14 @@
 | test.c:397:9:397:11 | Constant: ++ ... | positive strictlyPositive |
 | test.c:397:9:397:11 | Load: ++ ... | positive |
 | test.c:397:9:397:11 | Store: ++ ... | positive strictlyPositive |
+| test.c:397:9:397:14 | CopyValue: ... , ... | positive strictlyPositive |
 | test.c:397:14:397:14 | Load: y | positive strictlyPositive |
 | test.c:398:3:398:23 | Store: ... = ... | positive strictlyPositive |
 | test.c:398:9:398:11 | Add: ... ++ | positive strictlyPositive |
 | test.c:398:9:398:11 | Constant: ... ++ | positive strictlyPositive |
 | test.c:398:9:398:11 | Load: ... ++ | positive strictlyPositive |
 | test.c:398:9:398:11 | Store: ... ++ | positive strictlyPositive |
+| test.c:398:9:398:22 | CopyValue: ... , ... | positive strictlyPositive |
 | test.c:398:14:398:19 | Add: ... += ... | positive strictlyPositive |
 | test.c:398:14:398:19 | Load: ... += ... | positive strictlyPositive |
 | test.c:398:14:398:19 | Store: ... += ... | positive strictlyPositive |

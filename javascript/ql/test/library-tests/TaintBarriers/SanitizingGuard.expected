@@ -44,14 +44,11 @@
 | tst.js:236:9:236:24 | isWhitelisted(v) | ExampleConfiguration | true | tst.js:236:23:236:23 | v |
 | tst.js:240:9:240:28 | config.allowValue(v) | ExampleConfiguration | true | tst.js:240:27:240:27 | v |
 | tst.js:252:16:252:36 | whiteli ... ains(x) | ExampleConfiguration | true | tst.js:252:35:252:35 | x |
-| tst.js:254:9:254:12 | f(v) | ExampleConfiguration | true | tst.js:254:11:254:11 | v |
 | tst.js:261:25:261:45 | whiteli ... ains(y) | ExampleConfiguration | true | tst.js:261:44:261:44 | y |
-| tst.js:264:9:264:12 | g(v) | ExampleConfiguration | true | tst.js:264:11:264:11 | v |
 | tst.js:271:25:271:45 | whiteli ... ains(z) | ExampleConfiguration | true | tst.js:271:44:271:44 | z |
 | tst.js:281:16:281:25 | x2 != null | ExampleConfiguration | false | tst.js:281:16:281:17 | x2 |
 | tst.js:281:16:281:25 | x2 != null | ExampleConfiguration | false | tst.js:281:22:281:25 | null |
 | tst.js:281:30:281:51 | whiteli ... ins(x2) | ExampleConfiguration | true | tst.js:281:49:281:50 | x2 |
-| tst.js:283:9:283:13 | f2(v) | ExampleConfiguration | true | tst.js:283:12:283:12 | v |
 | tst.js:290:16:290:25 | x3 == null | ExampleConfiguration | true | tst.js:290:16:290:17 | x3 |
 | tst.js:290:16:290:25 | x3 == null | ExampleConfiguration | true | tst.js:290:22:290:25 | null |
 | tst.js:290:30:290:51 | whiteli ... ins(x3) | ExampleConfiguration | true | tst.js:290:49:290:50 | x3 |
@@ -61,7 +58,6 @@
 | tst.js:327:25:327:34 | x7 != null | ExampleConfiguration | false | tst.js:327:25:327:26 | x7 |
 | tst.js:327:25:327:34 | x7 != null | ExampleConfiguration | false | tst.js:327:31:327:34 | null |
 | tst.js:327:39:327:60 | whiteli ... ins(x7) | ExampleConfiguration | true | tst.js:327:58:327:59 | x7 |
-| tst.js:330:9:330:13 | f7(v) | ExampleConfiguration | true | tst.js:330:12:330:12 | v |
 | tst.js:337:25:337:46 | whiteli ... ins(x8) | ExampleConfiguration | true | tst.js:337:44:337:45 | x8 |
 | tst.js:338:16:338:25 | x8 != null | ExampleConfiguration | false | tst.js:338:16:338:17 | x8 |
 | tst.js:338:16:338:25 | x8 != null | ExampleConfiguration | false | tst.js:338:22:338:25 | null |
@@ -70,6 +66,5 @@
 | tst.js:356:16:356:27 | x10 !== null | ExampleConfiguration | false | tst.js:356:24:356:27 | null |
 | tst.js:356:32:356:48 | x10 !== undefined | ExampleConfiguration | false | tst.js:356:32:356:34 | x10 |
 | tst.js:356:32:356:48 | x10 !== undefined | ExampleConfiguration | false | tst.js:356:40:356:48 | undefined |
-| tst.js:358:9:358:14 | f10(v) | ExampleConfiguration | false | tst.js:358:13:358:13 | v |
 | tst.js:370:9:370:29 | o.p ==  ... listed" | ExampleConfiguration | true | tst.js:370:9:370:11 | o.p |
 | tst.js:377:11:377:32 | o[p] == ... listed" | ExampleConfiguration | true | tst.js:377:11:377:14 | o[p] |

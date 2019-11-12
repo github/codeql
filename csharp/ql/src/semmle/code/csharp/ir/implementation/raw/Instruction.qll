@@ -808,14 +808,12 @@ class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() { getResultType() instanceof Language::FloatingPointType }
 }
 
-class StringConstantInstruction extends Instruction {
-  Language::StringLiteral value;
+class StringConstantInstruction extends VariableInstruction {
+  override IRStringLiteral var;
 
-  StringConstantInstruction() { value = Construction::getInstructionStringLiteral(this) }
+  final override string getImmediateString() { result = Language::getStringLiteralText(getValue()) }
 
-  final override string getImmediateString() { result = Language::getStringLiteralText(value) }
-
-  final Language::StringLiteral getValue() { result = value }
+  final Language::StringLiteral getValue() { result = var.getLiteral() }
 }
 
 class BinaryInstruction extends Instruction {
@@ -983,14 +981,22 @@ class InheritanceConversionInstruction extends UnaryInstruction {
  * to the address of a direct non-virtual base class.
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
-  ConvertToBaseInstruction() { getOpcode() instanceof Opcode::ConvertToBase }
+  ConvertToBaseInstruction() { getOpcode() instanceof ConvertToBaseOpcode }
+}
+
+/**
+ * Represents an instruction that converts from the address of a derived class
+ * to the address of a direct non-virtual base class.
+ */
+class ConvertToNonVirtualBaseInstruction extends ConvertToBaseInstruction {
+  ConvertToNonVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToNonVirtualBase }
 }
 
 /**
  * Represents an instruction that converts from the address of a derived class
  * to the address of a virtual base class.
  */
-class ConvertToVirtualBaseInstruction extends InheritanceConversionInstruction {
+class ConvertToVirtualBaseInstruction extends ConvertToBaseInstruction {
   ConvertToVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToVirtualBase }
 }
 

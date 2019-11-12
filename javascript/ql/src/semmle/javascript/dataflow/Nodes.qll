@@ -771,11 +771,7 @@ class ClassNode extends DataFlow::SourceNode {
    */
   pragma[noinline]
   predicate hasQualifiedName(string name) {
-    exists(DataFlow::Node rhs |
-      getAClassReference().flowsTo(rhs) and
-      name = GlobalAccessPath::fromRhs(rhs) and
-      GlobalAccessPath::isAssignedInUniqueFile(name)
-    )
+    getAClassReference().flowsTo(AccessPath::getAnAssignmentTo(name))
   }
 }
 
@@ -883,7 +879,7 @@ module ClassNode {
   }
 
   private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
-    GlobalAccessPath::getAccessPath(result.getBase()) = name and
+    result.getBase() = AccessPath::getAReferenceOrAssignmentTo(name) and
     result.getPropertyName() = "prototype" and
     result.getFile() = f
   }
@@ -904,7 +900,7 @@ module ClassNode {
         )
         or
         exists(string name |
-          name = GlobalAccessPath::fromRhs(this) and
+          this = AccessPath::getAnAssignmentTo(name) and
           exists(getAPrototypeReferenceInFile(name, getFile()))
         )
       )
@@ -969,7 +965,7 @@ module ClassNode {
       )
       or
       exists(string name |
-        GlobalAccessPath::fromRhs(this) = name and
+        this = AccessPath::getAnAssignmentTo(name) and
         result = getAPrototypeReferenceInFile(name, getFile())
       )
       or

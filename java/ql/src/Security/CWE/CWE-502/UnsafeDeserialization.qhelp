@@ -58,7 +58,7 @@ OWASP vulnerability description:
 </li>
 <li>
 OWASP guidance on deserializing objects:
-<a href="https://www.owasp.org/index.php/Deserialization_Cheat_Sheet">Deserialization Cheat Sheet</a>.
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">Deserialization Cheat Sheet</a>.
 </li>
 <li>
 Talks by Chris Frohoff &amp; Gabriel Lawrence:

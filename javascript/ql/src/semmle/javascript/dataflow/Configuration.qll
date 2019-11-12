@@ -147,7 +147,7 @@ abstract class Configuration extends string {
    */
   predicate isBarrier(DataFlow::Node node) {
     exists(BarrierGuardNode guard |
-      isBarrierGuard(guard) and
+      isBarrierGuardInternal(guard) and
       guard.internalBlocks(node, "")
     )
   }
@@ -181,7 +181,7 @@ abstract class Configuration extends string {
    */
   predicate isLabeledBarrier(DataFlow::Node node, FlowLabel lbl) {
     exists(BarrierGuardNode guard |
-      isBarrierGuard(guard) and
+      isBarrierGuardInternal(guard) and
       guard.internalBlocks(node, lbl)
     )
     or
@@ -197,6 +197,12 @@ abstract class Configuration extends string {
    * `x` into the "then" branch.
    */
   predicate isBarrierGuard(BarrierGuardNode guard) { none() }
+
+  private predicate isBarrierGuardInternal(BarrierGuardNode guard) {
+    isBarrierGuard(guard)
+    or
+    guard.(AdditionalBarrierGuardNode).appliesTo(this)
+  }
 
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.
@@ -302,42 +308,27 @@ abstract class BarrierGuardNode extends DataFlow::Node {
     exists(SsaRefinementNode ref, boolean outcome |
       nd = DataFlow::ssaDefinitionNode(ref) and
       forex(SsaVariable input | input = ref.getAnInput() |
-        asExpr() = ref.getGuard().getTest() and
+        getExpr() = ref.getGuard().getTest() and
         outcome = ref.getGuard().(ConditionGuardNode).getOutcome() and
-        internalBlocksExpr(outcome, input.getAUse(), label)
+        barrierGuardBlocksExpr(this, outcome, input.getAUse(), label)
       )
     )
     or
     // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
     exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
       nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
-      asExpr() = cond.getTest() and
+      getExpr() = cond.getTest() and
       outcome = cond.getOutcome() and
-      internalBlocksAccessPath(outcome, p, label) and
+      barrierGuardBlocksAccessPath(this, outcome, p, label) and
       cond.dominates(bb)
     )
   }
 
-  /**
-   * Holds if data flow node `nd` acts as a barrier for data flow.
-   *
-   * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
-   */
-  private predicate internalBlocksExpr(boolean outcome, Expr test, string label) {
-    blocks(outcome, test) and label = ""
+  /** Gets the corresponding expression, including that of reflective calls. */
+  private Expr getExpr() {
+    result = asExpr()
     or
-    blocks(outcome, test, label)
-  }
-
-  /**
-   * Holds if data flow node `nd` acts as a barrier for data flow due to aliasing through
-   * an access path.
-   *
-   * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
-   */
-  pragma[noinline]
-  private predicate internalBlocksAccessPath(boolean outcome, AccessPath ap, string label) {
-    internalBlocksExpr(outcome, ap.getAnInstance(), label)
+    this = DataFlow::reflectiveCallNode(result)
   }
 
   /**
@@ -351,6 +342,32 @@ abstract class BarrierGuardNode extends DataFlow::Node {
    * Holds if this node blocks expression `e` from flow of type `label`, provided it evaluates to `outcome`.
    */
   predicate blocks(boolean outcome, Expr e, FlowLabel label) { none() }
+}
+
+/**
+  * Holds if data flow node `nd` acts as a barrier for data flow.
+  *
+  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
+  */
+private predicate barrierGuardBlocksExpr(BarrierGuardNode guard, boolean outcome, Expr test, string label) {
+  guard.blocks(outcome, test) and label = ""
+  or
+  guard.blocks(outcome, test, label)
+  or
+  // Handle labelled barrier guard functions specially, to avoid negative recursion
+  // through the non-abstract 3-argument version of blocks().
+  guard.(AdditionalBarrierGuardCall).internalBlocksLabel(outcome, test, label)
+}
+
+/**
+  * Holds if data flow node `nd` acts as a barrier for data flow due to aliasing through
+  * an access path.
+  *
+  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
+  */
+pragma[noinline]
+private predicate barrierGuardBlocksAccessPath(BarrierGuardNode guard, boolean outcome, AccessPath ap, string label) {
+  barrierGuardBlocksExpr(guard, outcome, ap.getAnInstance(), label)
 }
 
 /**
@@ -1185,4 +1202,111 @@ module PathGraph {
     not succ = initialMidNode(pred) and
     not pred = finalMidNode(succ)
   }
+}
+
+
+
+/**
+  * Gets an operand of the given `&&` operator.
+  *
+  * We use this to construct the transitive closure over a relation
+  * that does not include all of `BinaryExpr.getAnOperand`.
+  */
+private Expr getALogicalAndOperand(LogAndExpr e) {
+  result = e.getAnOperand()
+}
+
+/**
+  * Gets an operand of the given `||` operator.
+  *
+  * We use this to construct the transitive closure over a relation
+  * that does not include all of `BinaryExpr.getAnOperand`.
+  */
+private Expr getALogicalOrOperand(LogOrExpr e) {
+  result = e.getAnOperand()
+}
+
+/**
+ * A `BarrierGuardNode` that controls which data flow
+ * configurations it is used in.
+ *
+ * Note: For performance reasons, all subclasses of this class should be part
+ * of the standard library. Override `Configuration::isBarrierGuard`
+ * for analysis-specific barrier guards.
+ */
+abstract class AdditionalBarrierGuardNode extends BarrierGuardNode {
+  abstract predicate appliesTo(Configuration cfg);
+}
+
+/**
+  * A function that returns the result of a barrier guard.
+  */
+private class BarrierGuardFunction extends Function {
+  DataFlow::ParameterNode sanitizedParameter;
+  BarrierGuardNode guard;
+  boolean guardOutcome;
+  string label;
+
+  BarrierGuardFunction() {
+    exists(Expr e |
+      exists(Expr returnExpr |
+        returnExpr = guard.asExpr()
+        or
+        // ad hoc support for conjunctions:
+        getALogicalAndOperand+(returnExpr) = guard.asExpr() and guardOutcome = true
+        or
+        // ad hoc support for disjunctions:
+        getALogicalOrOperand+(returnExpr) = guard.asExpr() and guardOutcome = false
+      |
+        exists(SsaExplicitDefinition ssa |
+          ssa.getDef().getSource() = returnExpr and
+          ssa.getVariable().getAUse() = getAReturnedExpr()
+        )
+        or
+        returnExpr = getAReturnedExpr()
+      ) and
+      sanitizedParameter.flowsToExpr(e) and
+      barrierGuardBlocksExpr(guard, guardOutcome, e, label)
+    ) and
+    getNumParameter() = 1 and
+    sanitizedParameter.getParameter() = getParameter(0)
+  }
+
+  /**
+    * Holds if this function sanitizes argument `e` of call `call`, provided the call evaluates to `outcome`.
+    */
+  predicate isBarrierCall(DataFlow::CallNode call, Expr e, boolean outcome, string lbl) {
+    exists(DataFlow::Node arg |
+      arg.asExpr() = e and
+      arg = call.getArgument(0) and
+      call.getNumArgument() = 1 and
+      argumentPassing(call, arg, this, sanitizedParameter) and
+      outcome = guardOutcome and
+      lbl = label
+    )
+  }
+
+  /**
+    * Holds if this function applies to the flow in `cfg`.
+    */
+  predicate appliesTo(Configuration cfg) { cfg.isBarrierGuard(guard) }
+}
+
+/**
+  * A call that sanitizes an argument.
+  */
+private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, DataFlow::CallNode {
+  BarrierGuardFunction f;
+
+  AdditionalBarrierGuardCall() { f.isBarrierCall(this, _, _, _) }
+
+  override predicate blocks(boolean outcome, Expr e) {
+    f.isBarrierCall(this, e, outcome, "")
+  }
+
+  predicate internalBlocksLabel(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    f.isBarrierCall(this, e, outcome, label)
+  }
+
+  override predicate appliesTo(Configuration cfg) { f.appliesTo(cfg) }
 }

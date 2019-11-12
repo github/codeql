@@ -1,4 +1,4 @@
-with(a) { // semmle-extractor-options: --extract-program-text
+with(a) {
 }
 debugger;
 var x = 23, y;

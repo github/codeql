@@ -14,6 +14,10 @@ The library is implemented as a set of QL modules, that is, files with the exten
 
 The rest of this topic briefly summarizes the most important classes and predicates provided by this library.
 
+.. pull-quote::
+
+   Note
+
    The example queries in this topic illustrate the types of results returned by different library classes. The results themselves are not interesting but can be used as the basis for developing a more complex query. The tutorial topics show how you can take a simple query and fine-tune it to find precisely the results you're interested in.
 
 Summary of the library classes
@@ -315,7 +319,11 @@ Class ``Javadoc`` represents an entire Javadoc comment as a tree of ``JavadocEle
 
 ➤ `See this in the query console <https://lgtm.com/query/670490015/>`__. None of the LGTM.com demo projects uses the ``@author`` tag on private fields.
 
-   Note that on line 5 we used ``getParent+`` to capture tags that are nested at any depth within the Javadoc comment.
+.. pull-quote::
+
+   Note
+
+   On line 5 we used ``getParent+`` to capture tags that are nested at any depth within the Javadoc comment.
 
 For more information on working with Javadoc, see the :doc:`tutorial on Javadoc <javadoc>`.
 
@@ -369,7 +377,7 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
    where not exists(c.getAReference())
    select c
 
-➤ `See this in the query console <https://lgtm.com/query/666680036/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see `Navigating the call graph <call-graph>`__.
+➤ `See this in the query console <https://lgtm.com/query/666680036/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see :doc:`Navigating the call graph <call-graph>`.
 
 For more information about callables and calls, see the :doc:`call graph tutorial <call-graph>`.
 

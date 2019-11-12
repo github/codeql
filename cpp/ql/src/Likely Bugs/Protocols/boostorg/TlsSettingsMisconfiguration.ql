@@ -13,32 +13,33 @@ import semmle.code.cpp.security.boostorg.asio.protocols
 class ExistsAnyFlowConfig extends DataFlow::Configuration {
   ExistsAnyFlowConfig() { this = "ExistsAnyFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { any() }
+  override predicate isSource(DataFlow::Node source) {
+    exists(BoostorgAsio::SslContextClass c | c.getAContructorCall() = source.asExpr())
+  }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(BoostorgAsio::SslSetOptionsFunction f, FunctionCall fcSetOptions |
+      f.getACallToThisFunction() = fcSetOptions and
+      fcSetOptions.getQualifier() = sink.asExpr()
+    )
+  }
 }
 
 bindingset[flag]
 predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
-  exists(
-    BoostorgAsio::SslContextFlowsToSetOptionConfig config, ExistsAnyFlowConfig testConfig,
-    Expr optionsSink
-  |
-    config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
-    exists(VariableAccess contextSetOptions |
-      testConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
-      exists(BoostorgAsio::SslSetOptionsFunction f | f.getACallToThisFunction() = fcSetOptions |
-        contextSetOptions = fcSetOptions.getQualifier() and
-        forall(
-          Expr optionArgument, BoostorgAsio::SslOptionConfig optionArgConfig,
-          Expr optionArgumentSource
-        |
-          optionArgument = fcSetOptions.getArgument(0) and
-          optionArgConfig
-              .hasFlow(DataFlow::exprNode(optionArgumentSource), DataFlow::exprNode(optionArgument))
-        |
-          optionArgument.getValue().toInt().bitShiftRight(16).bitAnd(flag) = flag
-        )
+  exists(ExistsAnyFlowConfig anyFlowConfig, VariableAccess contextSetOptions |
+    anyFlowConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
+    exists(BoostorgAsio::SslSetOptionsFunction f | f.getACallToThisFunction() = fcSetOptions |
+      contextSetOptions = fcSetOptions.getQualifier() and
+      forall(
+        Expr optionArgument, BoostorgAsio::SslOptionConfig optionArgConfig,
+        Expr optionArgumentSource
+      |
+        optionArgument = fcSetOptions.getArgument(0) and
+        optionArgConfig
+            .hasFlow(DataFlow::exprNode(optionArgumentSource), DataFlow::exprNode(optionArgument))
+      |
+        optionArgument.getValue().toInt().bitShiftRight(16).bitAnd(flag) = flag
       )
     )
   )
@@ -46,43 +47,18 @@ predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
 
 bindingset[flag]
 predicate isOptionNotSet(ConstructorCall cc, int flag) {
-  not exists(
-    BoostorgAsio::SslContextFlowsToSetOptionConfig config, ExistsAnyFlowConfig testConfig,
-    Expr optionsSink
-  |
-    config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
-    exists(VariableAccess contextSetOptions |
-      testConfig.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(contextSetOptions)) and
-      exists(FunctionCall fcSetOptions, BoostorgAsio::SslSetOptionsFunction f |
-        f.getACallToThisFunction() = fcSetOptions
-      |
-        contextSetOptions = fcSetOptions.getQualifier() and
-        forall(
-          Expr optionArgument, BoostorgAsio::SslOptionConfig optionArgConfig,
-          Expr optionArgumentSource
-        |
-          optionArgument = fcSetOptions.getArgument(0) and
-          optionArgConfig
-              .hasFlow(DataFlow::exprNode(optionArgumentSource), DataFlow::exprNode(optionArgument))
-        |
-          optionArgument.getValue().toInt().bitShiftRight(16).bitAnd(flag) = flag
-        )
-      )
-    )
-  )
+  not exists(FunctionCall fcSetOptions | isOptionSet(cc, flag, fcSetOptions))
 }
 
 from
-  BoostorgAsio::SslContextCallTlsProtocolConfig configConstructor,
-  BoostorgAsio::SslContextFlowsToSetOptionConfig config, Expr protocolSource, Expr protocolSink,
-  ConstructorCall cc, Expr e, string msg
+  BoostorgAsio::SslContextCallTlsProtocolConfig configConstructor, Expr protocolSource,
+  Expr protocolSink, ConstructorCall cc, Expr e, string msg
 where
   configConstructor.hasFlow(DataFlow::exprNode(protocolSource), DataFlow::exprNode(protocolSink)) and
   cc.getArgument(0) = protocolSink and
   (
     BoostorgAsio::isExprSslV23BoostProtocol(protocolSource) and
-    not exists(Expr optionsSink |
-      config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
+    not (
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoSsl3(), _) and
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1(), _) and
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1_1(), _) and
@@ -91,8 +67,7 @@ where
     or
     BoostorgAsio::isExprTlsBoostProtocol(protocolSource) and
     not BoostorgAsio::isExprSslV23BoostProtocol(protocolSource) and
-    not exists(Expr optionsSink |
-      config.hasFlow(DataFlow::exprNode(cc), DataFlow::exprNode(optionsSink)) and
+    not (
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1(), _) and
       isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1_1(), _) and
       isOptionNotSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1_2())
