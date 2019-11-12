@@ -1,4 +1,4 @@
 name: codeql-java
-version: 0.0.0
+version: 1.0.0
 dbscheme: config/semmlecode.dbscheme
 suites: codeql-suites
