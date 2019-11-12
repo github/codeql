@@ -1,2 +1,2 @@
-| test.cpp:6:12:6:33 | ... < ... | Pointer out-of-range check relying on pointer overflow is undefined. |
-| test.cpp:32:12:32:24 | ... < ... | Pointer out-of-range check relying on pointer overflow is undefined. |
+| test.cpp:6:12:6:33 | ... < ... | Range check relying on pointer overflow. |
+| test.cpp:33:9:33:21 | ... < ... | Range check relying on pointer overflow. |

@@ -4,16 +4,18 @@
 <qhelp>
 <overview>
 <p>
-When checking for out-of-range pointer values, we might write tests like
-<code>p + a &lt; p</code> and check if the value "wraps around".
-Such a test is wrong in that it relies on the overflow of <code>p + a</code>,
-which has undefined behavior. In fact, many optimizing compilers will remove
-<code>p + a &lt; p</code> altogether and replace it with the value <code>0</code> 
-(<code>false</code>).  Conversely, should <code>p + a</code> <i>not</i> overflow,
-the programmer may erroneously assume that the memory location <code>p + a</code>
-is accessible to the program, even though it may be inaccessible (protected by
-the operating system) or nonexistent; writing to such memory, if allowed, can
-lead to memory corruption. 
+The expression <code>ptr + a &lt; ptr</code> is equivalent to <code>a &lt;
+0</code>, and an optimizing compiler is likely to make that replacement,
+thereby removing a range check that might have been necessary for security.
+If `a` is known to be non-negative, the compiler can even replace <code>ptr +
+a &lt; ptr</code> with <code>false</code>.
+</p>
+
+<p>
+The reason is that pointer arithmetic overflow in C/C++ is undefined
+behavior. The optimizing compiler can assume that the program has no
+undefined behavior, which means that adding a positive number to `ptr` cannot
+produce a pointer less than `ptr`.
 </p>
 </overview>
 <recommendation>
@@ -21,30 +23,42 @@ lead to memory corruption.
 To check whether an index <code>a</code> is less than the length of an array, 
 simply compare these two numbers as unsigned integers: <code>a &lt; ARRAY_LENGTH</code>. 
 If the length of the array is defined as the difference between two pointers 
-<code>p</code> and <code>p_end</code>, write <code>a &lt; p_end - p</code>.
+<code>ptr</code> and <code>p_end</code>, write <code>a &lt; p_end - ptr</code>.
 If a is <code>signed</code>, cast it to <code>unsigned</code> 
 in order to guard against negative <code>a</code>. For example, write 
-<code>(size_t)a &lt; p_end - p</code>.</p>
+<code>(size_t)a &lt; p_end - ptr</code>.
+</p>
 </recommendation>
 <example>
 <p>
-In the first example, an index <code>a</code>is being added to a pointer <code>p</code>
-to an array with elements of type <code>T</code>.  Since we are not provided a
-separate pointer pointing to the end of the array, we fall back 
-on a check for address "wrap-around" to see if <code>p + a</code> points at 
-valid memory.  This scheme does not work, unfortunately, since the
-value of <code>p + a</code> is undefined if it points at invalid memory (for 
-example, outside our array).  Even if <code>p + a</code> were to point to 
-some accessible memory location, it would almost certainly lie 
-<i>outside</i> the bounds of the array.
+An invalid check for pointer overflow is most often seen as part of checking
+whether a number <code>a</code> is too large by checking first if adding the
+number to <code>ptr</code> goes past the end of an allocation and then
+checking if adding it to <code>ptr</code> creates a pointer so large that it
+overflows and wraps around.
 </p>
+
 <sample src="PointerWrapAround-bad.cpp" />
+
 <p>
-The next example shows how to properly check for an out-of-range pointer.
-In order to do so, we need to obtain the value <code>ptr_end</code>
-representing the end of the array (or the address immediately past
-the end).  We can then express the condition <code>p + a &lt; p_end</code> as a
-difference of two pointers, even if <code>p + a</code> happens to be undefined. 
+In both of these checks, the operations are performed in the wrong order.
+First, an expression that may lead to undefined behavior is evaluated
+(<code>ptr + a</code>), and then the result is checked for being in range.
+But once undefined behavior has happened in the pointer addition, it cannot
+be recovered from: it's too late to perform the range check after a possible
+pointer overflow.
+</p>
+
+<p>
+While it's not the subject of this query, the expression <code>ptr + a &lt;
+ptr_end</code> is also an invalid range check. It's undefined behavor in
+C/C++ to create a pointer that points more than one past the end of an
+allocation.
+</p>
+
+<p>
+The next example shows how to portably check whether a number is outside the
+range of an allocation between <code>ptr</code> and <code>ptr_end</code>.
 </p>
 <sample src="PointerWrapAround-good.cpp" />
 </example>
