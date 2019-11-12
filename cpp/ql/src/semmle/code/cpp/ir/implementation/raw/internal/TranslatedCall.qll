@@ -357,7 +357,6 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
     result = getTranslatedExpr(expr).getInstruction(CallTag())
   }
 
-
   /**
    * Gets the `TranslatedFunction` containing this expression.
    */
