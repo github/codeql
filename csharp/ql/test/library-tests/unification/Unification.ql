@@ -3,7 +3,7 @@ import semmle.code.csharp.Unification
 class InterestingType extends Type {
   InterestingType() {
     this.fromSource() or
-    this.getAChild() instanceof InterestingType
+    this.(TupleType).getAChild() instanceof InterestingType
   }
 }
 

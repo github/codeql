@@ -22,3 +22,12 @@ class ConstructSomeTypes
 
     void M<Tm>(C6<C2<S2>, Tm, C3<Tm>, S2> x, C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> y) where Tm : C2<S2> { }
 }
+
+class Tuples<T8, T9>
+{
+    static (T8, int) t1;
+    static (string, int) t2;
+    static (string, T9) t3;
+    static (T8, T9) t4;
+    static (T8 a, T9 b) t5 = t4;
+}
