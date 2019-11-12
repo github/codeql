@@ -298,10 +298,11 @@ private predicate boundFlowStepSsa(
   )
 }
 
-/** Holds if `v != e + delta` at `pos`. */
-private predicate unequalFlowStepSsa(
+/** Holds if `v != e + delta` at `pos` and `v` is of integral type. */
+private predicate unequalFlowStepIntegralSsa(
   SsaVariable v, SsaReadPosition pos, Expr e, int delta, Reason reason
 ) {
+  v.getSourceVariable().getType() instanceof IntegralType and
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = eqFlowCond(v, e, delta, false, testIsTrue) and
@@ -555,7 +556,7 @@ private predicate boundedSsa(
     boundedSsa(v, pos, b, d, upper, fromBackEdge, origdelta, r2) or
     boundedPhi(v, b, d, upper, fromBackEdge, origdelta, r2)
   |
-    unequalSsa(v, pos, b, d, r1) and
+    unequalIntegralSsa(v, pos, b, d, r1) and
     (
       upper = true and delta = d - 1
       or
@@ -570,11 +571,13 @@ private predicate boundedSsa(
 }
 
 /**
- * Holds if `v != b + delta` at `pos`.
+ * Holds if `v != b + delta` at `pos` and `v` is of integral type.
  */
-private predicate unequalSsa(SsaVariable v, SsaReadPosition pos, Bound b, int delta, Reason reason) {
+private predicate unequalIntegralSsa(
+  SsaVariable v, SsaReadPosition pos, Bound b, int delta, Reason reason
+) {
   exists(Expr e, int d1, int d2 |
-    unequalFlowStepSsa(v, pos, e, d1, reason) and
+    unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
     bounded(e, b, d2, true, _, _, _) and
     bounded(e, b, d2, false, _, _, _) and
     delta = d2 + d1
