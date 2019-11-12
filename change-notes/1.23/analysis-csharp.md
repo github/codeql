@@ -47,5 +47,6 @@ The following changes in version 1.23 affect C# analysis in all applications.
   `TaintTracking::localExprTaint` predicate to make it easy to use the most
   common case of local data flow and taint: from one `Expr` to another.
 * Data is now tracked through null-coalescing expressions (`??`).
+* A new library `semmle.code.csharp.Unification` has been added. This library exposes two predicates `unifiable` and `subsumes` for calculating type unification and type subsumption, respectively.
 
 ## Changes to autobuilder
