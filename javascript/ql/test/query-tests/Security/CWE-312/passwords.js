@@ -157,3 +157,9 @@ var Util = require('util');
     console.log(process.env.PATH); // OK.
     console.log(process.env["foo" + "bar"]); // OK.
 });
+
+(function () {
+	console.log(password.replace(/./g, "*")); // OK!
+	console.log(password.replace(/\./g, "*")); // NOT OK!
+	console.log(password.replace(/foo/g, "*")); // NOT OK!
+})();
