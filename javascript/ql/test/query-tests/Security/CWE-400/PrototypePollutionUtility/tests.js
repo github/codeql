@@ -240,3 +240,22 @@ function deepSetCallerBad(data) {
         deepSetBad(map1, 'x', key, data[key]);
     }
 }
+
+function maybeCopy(x) {
+    if (x && typeof x === 'object') {
+        return {...x};
+    } else {
+        return x;
+    }
+}
+
+function mergeWithCopy(dst, src) {
+    if (dst == null) return src;
+    let result = maybeCopy(dst);
+    for (let key in src) {
+        if (src.hasOwnProperty(key)) {
+            result[key] = mergeWithCopy(dst[key], src[key]); // OK
+        }
+    }
+    return result;
+}

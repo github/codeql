@@ -214,6 +214,17 @@ class PropNameTracking extends DataFlow::Configuration {
     )
   }
 
+  override predicate isBarrier(DataFlow::Node node) {
+    super.isBarrier(node)
+    or
+    exists(ConditionGuardNode guard, SsaRefinementNode refinement |
+      node = DataFlow::ssaDefinitionNode(refinement) and
+      refinement.getGuard() = guard and
+      guard.getTest() instanceof VarAccess and
+      guard.getOutcome() = false
+    )
+  }
+
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
     node instanceof EqualityGuard or
     node instanceof HasOwnPropertyGuard or
@@ -306,6 +317,18 @@ class TypeofGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::ValueNode
       or
       typeofStr = "function" and
       label = "__proto__"
+    )
+    or
+    e = typeof.getOperand() and
+    outcome = astNode.getPolarity().booleanNot() and
+    (
+      // If something is not an object, sanitize object, as both must end
+      // in non-function prototype object.
+      typeofStr = "object" and
+      label instanceof UnsafePropLabel
+      or
+      typeofStr = "function" and
+      label = "constructor"
     )
   }
 }

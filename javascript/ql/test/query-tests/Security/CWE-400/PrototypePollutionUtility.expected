@@ -314,24 +314,12 @@ nodes
 | PrototypePollutionUtility/tests.js:128:20:128:27 | src[key] |
 | PrototypePollutionUtility/tests.js:128:24:128:26 | key |
 | PrototypePollutionUtility/tests.js:128:24:128:26 | key |
-| PrototypePollutionUtility/tests.js:140:16:140:18 | src |
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key |
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key |
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key |
 | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
 | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
 | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
-| PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:31 | src |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] |
-| PrototypePollutionUtility/tests.js:144:33:144:35 | key |
-| PrototypePollutionUtility/tests.js:144:33:144:35 | key |
 | PrototypePollutionUtility/tests.js:149:31:149:33 | dst |
 | PrototypePollutionUtility/tests.js:149:31:149:33 | dst |
 | PrototypePollutionUtility/tests.js:149:31:149:33 | dst |
@@ -628,6 +616,28 @@ nodes
 | PrototypePollutionUtility/tests.js:240:36:240:44 | data[key] |
 | PrototypePollutionUtility/tests.js:240:41:240:43 | key |
 | PrototypePollutionUtility/tests.js:240:41:240:43 | key |
+| PrototypePollutionUtility/tests.js:252:29:252:31 | src |
+| PrototypePollutionUtility/tests.js:252:29:252:31 | src |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key |
+| PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:53 | src |
+| PrototypePollutionUtility/tests.js:257:51:257:53 | src |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
+| PrototypePollutionUtility/tests.js:257:55:257:57 | key |
+| PrototypePollutionUtility/tests.js:257:55:257:57 | key |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst |
 | examples/PrototypePollutionUtility.js:1:21:1:23 | src |
@@ -1113,7 +1123,6 @@ edges
 | PrototypePollutionUtility/tests.js:128:24:128:26 | key | PrototypePollutionUtility/tests.js:128:20:128:27 | src[key] |
 | PrototypePollutionUtility/tests.js:128:24:128:26 | key | PrototypePollutionUtility/tests.js:128:20:128:27 | src[key] |
 | PrototypePollutionUtility/tests.js:128:24:128:26 | key | PrototypePollutionUtility/tests.js:128:20:128:27 | src[key] |
-| PrototypePollutionUtility/tests.js:140:16:140:18 | src | PrototypePollutionUtility/tests.js:144:29:144:31 | src |
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
@@ -1121,25 +1130,6 @@ edges
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
 | PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:16:144:18 | key |
-| PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:33:144:35 | key |
-| PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:33:144:35 | key |
-| PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:33:144:35 | key |
-| PrototypePollutionUtility/tests.js:143:14:143:16 | key | PrototypePollutionUtility/tests.js:144:33:144:35 | key |
-| PrototypePollutionUtility/tests.js:144:29:144:31 | src | PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:140:16:140:18 | src |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:140:16:140:18 | src |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:140:16:140:18 | src |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] | PrototypePollutionUtility/tests.js:144:23:144:37 | clone(src[key]) |
-| PrototypePollutionUtility/tests.js:144:33:144:35 | key | PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] |
-| PrototypePollutionUtility/tests.js:144:33:144:35 | key | PrototypePollutionUtility/tests.js:144:29:144:36 | src[key] |
 | PrototypePollutionUtility/tests.js:149:31:149:33 | dst | PrototypePollutionUtility/tests.js:152:22:152:24 | dst |
 | PrototypePollutionUtility/tests.js:149:31:149:33 | dst | PrototypePollutionUtility/tests.js:152:22:152:24 | dst |
 | PrototypePollutionUtility/tests.js:149:31:149:33 | dst | PrototypePollutionUtility/tests.js:152:22:152:24 | dst |
@@ -1515,6 +1505,40 @@ edges
 | PrototypePollutionUtility/tests.js:240:36:240:44 | data[key] | PrototypePollutionUtility/tests.js:229:38:229:42 | value |
 | PrototypePollutionUtility/tests.js:240:41:240:43 | key | PrototypePollutionUtility/tests.js:240:36:240:44 | data[key] |
 | PrototypePollutionUtility/tests.js:240:41:240:43 | key | PrototypePollutionUtility/tests.js:240:36:240:44 | data[key] |
+| PrototypePollutionUtility/tests.js:252:29:252:31 | src | PrototypePollutionUtility/tests.js:257:51:257:53 | src |
+| PrototypePollutionUtility/tests.js:252:29:252:31 | src | PrototypePollutionUtility/tests.js:257:51:257:53 | src |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:20:257:22 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:55:257:57 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:55:257:57 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:55:257:57 | key |
+| PrototypePollutionUtility/tests.js:255:14:255:16 | key | PrototypePollutionUtility/tests.js:257:55:257:57 | key |
+| PrototypePollutionUtility/tests.js:257:51:257:53 | src | PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
+| PrototypePollutionUtility/tests.js:257:51:257:53 | src | PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:252:29:252:31 | src |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:252:29:252:31 | src |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:252:29:252:31 | src |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:252:29:252:31 | src |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:252:29:252:31 | src |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:252:29:252:31 | src |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] | PrototypePollutionUtility/tests.js:257:27:257:59 | mergeWi ... c[key]) |
+| PrototypePollutionUtility/tests.js:257:55:257:57 | key | PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
+| PrototypePollutionUtility/tests.js:257:55:257:57 | key | PrototypePollutionUtility/tests.js:257:51:257:58 | src[key] |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst | examples/PrototypePollutionUtility.js:5:19:5:21 | dst |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst | examples/PrototypePollutionUtility.js:5:19:5:21 | dst |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst | examples/PrototypePollutionUtility.js:7:13:7:15 | dst |
