@@ -37,3 +37,25 @@ func baz() bool {
 	bump(&x)
 	return x == 0
 }
+
+type counter int
+
+func (x *counter) bump() {
+	*x++
+}
+
+func (x counter) bimp() {
+	x++
+}
+
+func baz2() bool {
+	var x counter
+	x.bump()
+	return x == 0 // OK
+}
+
+func baz3() bool {
+	var y counter
+	y.bimp()
+	return y == 0 // NOT OK
+}
