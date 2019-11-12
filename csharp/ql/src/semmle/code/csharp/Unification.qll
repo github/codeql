@@ -70,6 +70,8 @@ private module Gvn {
     or
     result = TConstructedType(t.(ConstructedType).getUnboundGeneric())
     or
+    result = TConstructedType(t.(TupleType).getUnderlyingType().getUnboundGeneric())
+    or
     result = TConstructedType(t)
   }
 

@@ -243,6 +243,21 @@ subsumes
 | Unification.cs:11:7:11:28 | C6<C2<S2>,Tm,C3<Tm>,S2> | Unification.cs:11:7:11:28 | C6<C2<S2>,C2<S2>,C3<C2<S2>>,S2> |
 | Unification.cs:11:7:11:28 | C6<C2<S2>,Tm,C3<Tm>,S2> | Unification.cs:11:7:11:28 | C6<C2<S2>,Tm,C3<Tm>,S2> |
 | Unification.cs:26:7:26:20 | Tuples<,> | Unification.cs:26:7:26:20 | Tuples<,> |
+| Unification.cs:28:12:28:20 | (T8,Int32) | Unification.cs:28:12:28:20 | (T8,Int32) |
+| Unification.cs:28:12:28:20 | (T8,Int32) | Unification.cs:29:12:29:24 | (String,Int32) |
+| Unification.cs:29:12:29:24 | (String,Int32) | Unification.cs:29:12:29:24 | (String,Int32) |
+| Unification.cs:30:12:30:23 | (String,T9) | Unification.cs:29:12:29:24 | (String,Int32) |
+| Unification.cs:30:12:30:23 | (String,T9) | Unification.cs:30:12:30:23 | (String,T9) |
+| Unification.cs:31:12:31:19 | (T8,T9) | Unification.cs:28:12:28:20 | (T8,Int32) |
+| Unification.cs:31:12:31:19 | (T8,T9) | Unification.cs:29:12:29:24 | (String,Int32) |
+| Unification.cs:31:12:31:19 | (T8,T9) | Unification.cs:30:12:30:23 | (String,T9) |
+| Unification.cs:31:12:31:19 | (T8,T9) | Unification.cs:31:12:31:19 | (T8,T9) |
+| Unification.cs:31:12:31:19 | (T8,T9) | Unification.cs:32:12:32:23 | (T8,T9) |
+| Unification.cs:32:12:32:23 | (T8,T9) | Unification.cs:28:12:28:20 | (T8,Int32) |
+| Unification.cs:32:12:32:23 | (T8,T9) | Unification.cs:29:12:29:24 | (String,Int32) |
+| Unification.cs:32:12:32:23 | (T8,T9) | Unification.cs:30:12:30:23 | (String,T9) |
+| Unification.cs:32:12:32:23 | (T8,T9) | Unification.cs:31:12:31:19 | (T8,T9) |
+| Unification.cs:32:12:32:23 | (T8,T9) | Unification.cs:32:12:32:23 | (T8,T9) |
 subsumptionImpliesUnification
 unifiable
 | Unification.cs:6:7:6:12 | C1<C0> | Unification.cs:6:7:6:12 | C1<> |
@@ -271,3 +286,13 @@ unifiable
 | Unification.cs:11:7:11:28 | C6<C2<S2>,C2<S2>,C3<C2<S2>>,S2> | Unification.cs:11:7:11:28 | C6<,,,> |
 | Unification.cs:11:7:11:28 | C6<C2<S2>,C2<S2>,C3<C2<S2>>,S2> | Unification.cs:11:7:11:28 | C6<C2<S2>,Tm,C3<Tm>,S2> |
 | Unification.cs:11:7:11:28 | C6<C2<S2>,Tm,C3<Tm>,S2> | Unification.cs:11:7:11:28 | C6<,,,> |
+| Unification.cs:28:12:28:20 | (T8,Int32) | Unification.cs:30:12:30:23 | (String,T9) |
+| Unification.cs:28:12:28:20 | (T8,Int32) | Unification.cs:31:12:31:19 | (T8,T9) |
+| Unification.cs:28:12:28:20 | (T8,Int32) | Unification.cs:32:12:32:23 | (T8,T9) |
+| Unification.cs:29:12:29:24 | (String,Int32) | Unification.cs:28:12:28:20 | (T8,Int32) |
+| Unification.cs:29:12:29:24 | (String,Int32) | Unification.cs:30:12:30:23 | (String,T9) |
+| Unification.cs:29:12:29:24 | (String,Int32) | Unification.cs:31:12:31:19 | (T8,T9) |
+| Unification.cs:29:12:29:24 | (String,Int32) | Unification.cs:32:12:32:23 | (T8,T9) |
+| Unification.cs:30:12:30:23 | (String,T9) | Unification.cs:28:12:28:20 | (T8,Int32) |
+| Unification.cs:30:12:30:23 | (String,T9) | Unification.cs:31:12:31:19 | (T8,T9) |
+| Unification.cs:30:12:30:23 | (String,T9) | Unification.cs:32:12:32:23 | (T8,T9) |
