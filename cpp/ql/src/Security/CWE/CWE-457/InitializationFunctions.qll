@@ -89,9 +89,9 @@ class ParameterNullCheck extends ParameterCheck {
       (
         va = this.(NotExpr).getOperand() or
         va = any(EQExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
-        va = getAssertedFalseCondition(this) or
+        va = getCheckedFalseCondition(this) or
         va = any(NEExpr eq |
-            eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
+            eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
           ).getAnOperand()
       )
       or
@@ -101,7 +101,7 @@ class ParameterNullCheck extends ParameterCheck {
         va = this or
         va = any(NEExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
         va = any(EQExpr eq |
-            eq = getAssertedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
+            eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
           ).getAnOperand()
       )
     )
@@ -567,7 +567,7 @@ Expr getAnInitializedArgument(Call call) { result = call.getArgument(initialized
  * the call, under the given context and evidence.
  */
 pragma[nomagic]
-int conditionallyInitializedArgument(
+private int conditionallyInitializedArgument(
   Call call, ConditionalInitializationFunction target, Context c, Evidence e
 ) {
   target = getTarget(call) and
@@ -588,7 +588,7 @@ Expr getAConditionallyInitializedArgument(
 /**
  * Gets the type signature for the functions parameters.
  */
-string typeSig(Function f) {
+private string typeSig(Function f) {
   result = concat(int i, Type pt |
       pt = f.getParameter(i).getType()
     |
@@ -599,7 +599,7 @@ string typeSig(Function f) {
 /**
  * Holds where qualifiedName and typeSig make up the signature for the function.
  */
-predicate functionSignature(Function f, string qualifiedName, string typeSig) {
+private predicate functionSignature(Function f, string qualifiedName, string typeSig) {
   qualifiedName = f.getQualifiedName() and
   typeSig = typeSig(f)
 }
@@ -611,7 +611,7 @@ predicate functionSignature(Function f, string qualifiedName, string typeSig) {
  * This is useful for identifying call to target dependencies across libraries, where the libraries
  * are never statically linked together.
  */
-Function getAPossibleDefinition(Function undefinedFunction) {
+private Function getAPossibleDefinition(Function undefinedFunction) {
   not undefinedFunction.isDefined() and
   exists(string qn, string typeSig |
     functionSignature(undefinedFunction, qn, typeSig) and functionSignature(result, qn, typeSig)
@@ -684,7 +684,7 @@ FieldAccess getAFieldAccess(Variable v) {
 }
 
 /**
- * Gets a condition which is asserted to be false by the given `ne` expression, according to this pattern:
+ * Gets a condition which is checked to be false by the given `ne` expression, according to this pattern:
  * ```
  * int a = !!result;
  * if (!a) {  // <- ne
@@ -692,7 +692,7 @@ FieldAccess getAFieldAccess(Variable v) {
  * }
  * ```
  */
-Expr getAssertedFalseCondition(NotExpr ne) {
+private Expr getCheckedFalseCondition(NotExpr ne) {
   exists(LocalVariable v |
     result = v.getInitializer().getExpr().(NotExpr).getOperand().(NotExpr).getOperand() and
     ne.getOperand() = v.getAnAccess() and

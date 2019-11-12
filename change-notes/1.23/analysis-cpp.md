@@ -9,6 +9,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) | reliability, japanese-era | This query is a combination of two old queries that were identical in purpose but separate as an implementation detail.  This new query replaces Hard-coded Japanese era start date in call (`cpp/japanese-era/constructor-or-method-with-exact-era-date`) and Hard-coded Japanese era start date in struct (`cpp/japanese-era/struct-with-exact-era-date`). |
+| Signed overflow check (`cpp/signed-overflow-check`) | correctness, reliability | Finds overflow checks that rely on signed integer addition to overflow, which has undefined behavior. Example: `a + b < a`. |
 
 ## Changes to existing queries
 
@@ -23,6 +24,8 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | Too many arguments to formatting function (`cpp/too-many-format-arguments`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
 | Unclear comparison precedence (`cpp/comparison-precedence`) | Fewer false positive results | False positives involving template classes and functions have been fixed. |
 | Comparison of narrow type with wide type in loop condition (`cpp/comparison-with-wider-type`) | Higher precision | The precision of this query has been increased to "high" as the alerts from this query have proved to be valuable on real-world projects. With this precision, results are now displayed by default in LGTM. |
+| Non-constant format string (`cpp/non-constant-format`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
+| Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | More correct results and fewer false positive results | This query now understands explicitly specified argument numbers in format strings, such as the `1$` in `%1$s`. |
 
 ## Changes to libraries
 

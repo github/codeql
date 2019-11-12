@@ -32,6 +32,8 @@ To determine ancestor types (including immediate super types, and also *their* s
 
 ➤ `See this in the query console <https://lgtm.com/query/674620010/>`__. If this query were run on the example snippet above, the query would return ``A``, ``I``, and ``java.lang.Object``.
 
+.. pull-quote::
+
    Tip
 
    If you want to see the location of ``B`` as well as ``A``, you can replace ``B.getASupertype+()`` with ``B.getASupertype*()`` and re-run the query.

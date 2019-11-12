@@ -1038,7 +1038,7 @@ class TranslatedInheritanceConversion extends TranslatedSingleInstructionConvers
     then
       if expr.(BaseClassConversion).isVirtual()
       then result instanceof Opcode::ConvertToVirtualBase
-      else result instanceof Opcode::ConvertToBase
+      else result instanceof Opcode::ConvertToNonVirtualBase
     else result instanceof Opcode::ConvertToDerived
   }
 }
