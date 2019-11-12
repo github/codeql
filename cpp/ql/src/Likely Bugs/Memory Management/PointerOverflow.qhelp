@@ -38,7 +38,7 @@ checking if adding it to <code>ptr</code> creates a pointer so large that it
 overflows and wraps around.
 </p>
 
-<sample src="PointerWrapAround-bad.cpp" />
+<sample src="PointerOverflow-bad.cpp" />
 
 <p>
 In both of these checks, the operations are performed in the wrong order.
@@ -60,7 +60,7 @@ allocation.
 The next example shows how to portably check whether a number is outside the
 range of an allocation between <code>ptr</code> and <code>ptr_end</code>.
 </p>
-<sample src="PointerWrapAround-good.cpp" />
+<sample src="PointerOverflow-good.cpp" />
 </example>
 <references>
 <li><a href="https://blog.regehr.org/archives/1395">Pointer Overflow Checking [Embedded in Academia]</a></li>

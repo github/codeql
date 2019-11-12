@@ -1,12 +1,11 @@
 /**
- * @name Reliance on pointer wrap-around
- * @description Adding a value to a pointer
- *              to see if it "wraps around" is dangerous because it relies
+ * @name Range check relying on pointer overflow
+ * @description Adding a value to a pointer to see if it overflows relies
  *              on undefined behavior and may lead to memory corruption.
  * @kind problem
  * @problem.severity error
  * @precision high
- * @id cpp/pointer-wrap-around
+ * @id cpp/pointer-overflow
  * @tags reliability
  *       security
  */
