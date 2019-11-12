@@ -265,6 +265,14 @@ module DataFlow {
   /**
    * An expression or a declaration of a function, class, namespace or enum,
    * viewed as a node in the data flow graph.
+   *
+   * Examples:
+   * ```js
+   * x + y
+   * Math.abs(x)
+   * class C {}
+   * function f(x, y) {}
+   * ```
    */
   class ValueNode extends Node, TValueNode {
     AST::ValueNode astNode;
@@ -478,6 +486,8 @@ module DataFlow {
    *
    * The default subclasses do not model global variable references or variable
    * references inside `with` statements as property references.
+   *
+   * See `PropWrite` and `PropRead` for concrete syntax examples.
    */
   abstract class PropRef extends Node {
     /**
@@ -512,6 +522,22 @@ module DataFlow {
 
   /**
    * A data flow node that writes to an object property.
+   *
+   * For example, all of the following are property writes:
+   * ```js
+   * obj.f = value;  // assignment to a property
+   * obj[e] = value; // assignment to a computed property
+   * { f: value }    // property initializer
+   * { g() {} }      // object literal method
+   * { get g() {}, set g(v) {} }  // accessor methods (have no rhs value)
+   * class C {
+   *   constructor(public x: number); // parameter field (TypeScript only)
+   *   static m() {} // static method
+   *   g() {}        // instance method
+   * }
+   * Object.defineProperty(obj, 'f', { value: 5} ) // call to defineProperty
+   * <View width={value}/>  // JSX attribute
+   * ```
    */
   abstract class PropWrite extends PropRef {
     /**
@@ -724,6 +750,17 @@ module DataFlow {
 
   /**
    * A data flow node that reads an object property.
+   *
+   * For example, all the following are property reads:
+   * ```js
+   * obj.f               // property access
+   * obj[e]              // computed property access
+   * let { f } = obj;    // destructuring object pattern
+   * let [x, y] = array; // destructuring array pattern
+   * function f({ f }) {} // destructuring pattern (in parameter)
+   * for (let elm of array) {}     // element access in for..of loop
+   * import { join } from 'path';  // named import specifier
+   * ```
    */
   abstract class PropRead extends PropRef, SourceNode { }
 
