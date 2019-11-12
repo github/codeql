@@ -24,6 +24,11 @@ class SsaSourceVariable extends LocalVariable {
     // variables that have their address taken
     exists(AddressExpr addr | addr.getOperand().stripParens() = getAUse())
     or
+    exists(DataFlow::MethodReadNode mrn |
+      mrn.getReceiver() = getARead() and
+      mrn.getMethod().getReceiverType() instanceof PointerType
+    )
+    or
     // variables where there is an unresolved reference with the same name in the same
     // scope or a nested scope, suggesting that name resolution information may be incomplete
     exists(FunctionScope scope, FuncDef inner |
