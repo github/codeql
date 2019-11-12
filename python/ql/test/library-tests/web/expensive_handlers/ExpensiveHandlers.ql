@@ -53,10 +53,8 @@ class QuerySetCreateMethodCallNode extends CallNode {
     }
 }
 
-
 from Attribute c, Value v
-where c.getLocation().getFile().getBaseName() = "expensive_handlers.py"
-and c.getLocation().getStartLine() = 20
+where c.getLocation().getFile().getBaseName() = "test.py"
 and c.pointsTo(v)
 select c, v
 
@@ -67,3 +65,4 @@ where cv.getName() = "MyModel"
 select cv, cv.getABaseType()
 
 */
+
