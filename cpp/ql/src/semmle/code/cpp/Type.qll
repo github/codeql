@@ -629,7 +629,7 @@ class ShortType extends IntegralType {
 
 /**
  * The C/C++ integer types. See 4.4.  This includes `int`, `signed int`
- * and `unsigned int`; `int` and `signed int` are equivalent.
+ * and `unsigned int`.
  * ```
  * unsigned int ui;
  * ```
@@ -646,7 +646,7 @@ class IntType extends IntegralType {
 
 /**
  * The C/C++ long types. See 4.4.  This includes `long`, `signed long`
- * and `unsigned long`; `long` and `signed long` are equivalent.
+ * and `unsigned long`.
  * ```
  * long l;
  * ```
@@ -663,7 +663,7 @@ class LongType extends IntegralType {
 
 /**
  * The C/C++ long long types. See 4.4.  This includes `long long`, `signed long long`
- * and `unsigned long long`; `long long` and `signed long long` are equivalent.
+ * and `unsigned long long`.
  * ```
  * signed long long sll;
  * ```
@@ -681,8 +681,7 @@ class LongLongType extends IntegralType {
 /**
  * The GNU C __int128 primitive types.  They are not part of standard C/C++.
  *
- * This includes `__int128`, `signed __int128`
- * and `unsigned __int128`; `__int128` and `signed __int128` are equivalent.
+ * This includes `__int128`, `signed __int128` and `unsigned __int128`.
  * ```
  * unsigned __int128 ui128;
  * ```
