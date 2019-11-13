@@ -12,6 +12,11 @@ module CleartextLogging {
    * A data-flow source for clear-text logging of sensitive information.
    */
   abstract class Source extends DataFlow::Node {
+    Source() {
+      // hard-coded strings are uninteresting
+      not exists(getStringValue())
+    }
+
     /** Gets a string that describes the type of this data-flow source. */
     abstract string describe();
   }

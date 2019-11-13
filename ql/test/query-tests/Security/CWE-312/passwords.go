@@ -126,3 +126,9 @@ func test() {
 	log.Println(config.x)        // NOT OK
 	log.Println(config.y)        // NOT OK
 }
+
+const password = "horsebatterystaplecorrect"
+
+func test2() {
+	log.Println(password) // OK
+}
