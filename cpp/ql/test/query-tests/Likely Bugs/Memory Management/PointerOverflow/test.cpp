@@ -40,3 +40,19 @@ bool not_in_range_good(Q *ptr, Q *ptr_end, size_t a) {
 bool in_range(Q *ptr, Q *ptr_end, size_t a) {
     return a < ptr_end - ptr; // GOOD
 }
+
+extern "C" void abort(void);
+
+#define MYASSERT(cond) if (cond) abort()
+
+void assert_not_in_range_bad(Q *ptr, Q *ptr_end, size_t a) {
+    MYASSERT(ptr + a >= ptr_end || ptr + a < ptr); // BAD
+    MYASSERT(ptr + a >= ptr_end); // GOOD (for the purpose of this test)
+    MYASSERT(ptr + a < ptr); // BAD
+}
+
+#define IS_LESS_THAN(lhs, rhs) ((lhs) < (rhs))
+
+bool not_in_range_macro(Q *ptr, Q *ptr_end, size_t a) {
+    return ptr + a >= ptr_end || IS_LESS_THAN(ptr + a, ptr); // GOOD (meant to be excluded)
+}
