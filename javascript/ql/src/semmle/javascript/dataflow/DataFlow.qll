@@ -1004,16 +1004,6 @@ module DataFlow {
    * callee, `x` as the receiver, and `y` as the first argument.
    */
   DataFlow::InvokeNode reflectiveCallNode(InvokeExpr expr) { result = TReflectiveCallNode(expr, _) }
-  
-
-  /**
-   * Gets a data flow node representing the underlying call performed by the given
-   * call to `Function.prototype.call` or `Function.prototype.apply`.
-   *
-   * For example, for an expression `fn.call(x, y)`, this gets a call node with `fn` as the
-   * callee, `x` as the receiver, and `y` as the first argument.
-   */
-  DataFlow::InvokeNode reflectiveCallNode(InvokeExpr expr) { result = TReflectiveCallNode(expr, _) }
 
   /**
    * Provides classes representing various kinds of calls.
