@@ -5,8 +5,3 @@
 | tst.js:53:10:53:33 | s.repla ... , '\\\\') | This replacement may produce '\\' characters that are double-unescaped $@. | tst.js:53:10:54:33 | s.repla ... , '\\'') | here |
 | tst.js:60:7:60:28 | s.repla ...  '%25') | This replacement may double-escape '%' characters from $@. | tst.js:59:7:59:28 | s.repla ...  '%26') | here |
 | tst.js:68:10:70:38 | s.repla ... &amp;") | This replacement may double-escape '&' characters from $@. | tst.js:68:10:69:39 | s.repla ... apos;") | here |
-| tst.js:74:10:77:10 | JSON.st ...       ) | This replacement may double-escape '\\' characters from $@. | tst.js:75:12:76:37 | s.repla ... u003E") | here |
-| tst.js:86:10:86:22 | JSON.parse(s) | This replacement may produce '\\' characters that are double-unescaped $@. | tst.js:86:10:86:47 | JSON.pa ... g, "<") | here |
-| tst.js:99:10:99:66 | s.repla ... &amp;") | This replacement may double-escape '&' characters from $@. | tst.js:99:10:99:43 | s.repla ... epl[c]) | here |
-| tst.js:107:10:107:53 | encodeD ... &amp;") | This replacement may double-escape '&' characters from $@. | tst.js:107:10:107:30 | encodeD ... otes(s) | here |
-| tst.js:115:10:115:47 | encodeQ ... &amp;") | This replacement may double-escape '&' characters from $@. | tst.js:115:10:115:24 | encodeQuotes(s) | here |
