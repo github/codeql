@@ -43,7 +43,7 @@ predicate isLikelyCaptureGroup(RegExpGroup group) {
  * Holds if `seq` contains two consecutive dots `..` or escaped dots.
  *
  * At least one of these dots is not intended to be a subdomain separator,
- * so we avoid flagging the pattenr in this case.
+ * so we avoid flagging the pattern in this case.
  */
 predicate hasConsecutiveDots(RegExpSequence seq) {
   exists(int i |
