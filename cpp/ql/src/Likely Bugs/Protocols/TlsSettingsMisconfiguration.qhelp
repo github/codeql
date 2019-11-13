@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-  <p>Using TLS or SSLv23 protool from the boost::asio library, but not disabling deprecated protocols or disabling minimum-recommended protocols.</p>
+  <p>Using the TLS or SSLv23 protocol from the boost::asio library, but not disabling deprecated protocols or disabling minimum-recommended protocols.</p>
 </overview>
 
 <references>
