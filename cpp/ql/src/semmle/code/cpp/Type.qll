@@ -381,7 +381,7 @@ private predicate isIntegralType(@builtintype type, int kind) {
 /**
  * A C/C++ integral or `enum` type.
  *
- * The definition of "integral type" in the C++ Standard excludes `enum` types,
+ * The definition of "integral type" in the C++ standard excludes `enum` types,
  * but because an `enum` type holds a value of its underlying integral type,
  * it is often useful to have a common category that includes both integral
  * and `enum` types.
