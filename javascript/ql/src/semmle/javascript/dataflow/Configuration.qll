@@ -308,7 +308,7 @@ abstract class BarrierGuardNode extends DataFlow::Node {
     exists(SsaRefinementNode ref, boolean outcome |
       nd = DataFlow::ssaDefinitionNode(ref) and
       forex(SsaVariable input | input = ref.getAnInput() |
-        getExpr() = ref.getGuard().getTest() and
+        getEnclosingExpr() = ref.getGuard().getTest() and
         outcome = ref.getGuard().(ConditionGuardNode).getOutcome() and
         barrierGuardBlocksExpr(this, outcome, input.getAUse(), label)
       )
@@ -317,18 +317,11 @@ abstract class BarrierGuardNode extends DataFlow::Node {
     // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
     exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
       nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
-      getExpr() = cond.getTest() and
+      getEnclosingExpr() = cond.getTest() and
       outcome = cond.getOutcome() and
       barrierGuardBlocksAccessPath(this, outcome, p, label) and
       cond.dominates(bb)
     )
-  }
-
-  /** Gets the corresponding expression, including that of reflective calls. */
-  private Expr getExpr() {
-    result = asExpr()
-    or
-    this = DataFlow::reflectiveCallNode(result)
   }
 
   /**
