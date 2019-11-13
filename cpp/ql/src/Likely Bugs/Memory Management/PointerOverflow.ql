@@ -1,11 +1,11 @@
 /**
- * @name Range check relying on pointer overflow
+ * @name Pointer overflow check
  * @description Adding a value to a pointer to see if it overflows relies
  *              on undefined behavior and may lead to memory corruption.
  * @kind problem
  * @problem.severity error
  * @precision high
- * @id cpp/pointer-overflow
+ * @id cpp/pointer-overflow-check
  * @tags reliability
  *       security
  */
