@@ -187,7 +187,7 @@ class Expr extends StmtParent, @expr {
   predicate isPRValueCategory() { expr_types(underlyingElement(this), _, 1) }
 
   /**
-   * Holds if this expression is a glvalue. A glvalue is either an _lvalue_ or an
+   * Holds if this expression is a _glvalue_. A _glvalue_ is either an _lvalue_ or an
    * _xvalue_.
    */
   predicate isGLValueCategory() { isLValueCategory() or isXValueCategory() }
