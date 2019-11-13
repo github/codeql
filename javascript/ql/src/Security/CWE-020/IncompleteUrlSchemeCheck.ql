@@ -39,7 +39,7 @@ DataFlow::Node schemeCheck(
     nd = stringop.getReceiver()
   )
   or
-  // propagate througb local data flow
+  // propagate through local data flow
   result = schemeCheck(nd.getASuccessor(), scheme)
 }
 
