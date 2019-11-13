@@ -56,7 +56,6 @@ class QuerySetCreateMethodCallNode extends CallNode {
 
 from Attribute c, Value v
 where c.getLocation().getFile().getBaseName() = "expensive_handlers.py"
-and c.getLocation().getStartLine() = 20
 and c.pointsTo(v)
 select c, v
 
