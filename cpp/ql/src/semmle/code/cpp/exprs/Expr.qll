@@ -165,36 +165,36 @@ class Expr extends StmtParent, @expr {
   predicate mayBeGloballyImpure() { any() }
 
   /**
-   * Holds if this expression is an *lvalue*. An *lvalue* is an expression that
+   * Holds if this expression is an _lvalue_. An _lvalue_ is an expression that
    * represents a location, rather than a value.
    * See [basic.lval] for more about lvalues.
    */
   predicate isLValueCategory() { expr_types(underlyingElement(this), _, 3) }
 
   /**
-   * Holds if this expression is an *xvalue*. An *xvalue* is a location whose
-   * lifetime is about to end (e.g. an *rvalue* reference returned from a function
+   * Holds if this expression is an _xvalue_. An _xvalue_ is a location whose
+   * lifetime is about to end (e.g. an _rvalue_ reference returned from a function
    * call).
    * See [basic.lval] for more about xvalues.
    */
   predicate isXValueCategory() { expr_types(underlyingElement(this), _, 2) }
 
   /**
-   * Holds if this expression is a *prvalue*. A *prvalue* is an expression that
+   * Holds if this expression is a _prvalue_. A _prvalue_ is an expression that
    * represents a value, rather than a location.
    * See [basic.lval] for more about prvalues.
    */
   predicate isPRValueCategory() { expr_types(underlyingElement(this), _, 1) }
 
   /**
-   * Holds if this expression is a glvalue. A glvalue is either an *lvalue* or an
-   * *xvalue*.
+   * Holds if this expression is a glvalue. A glvalue is either an _lvalue_ or an
+   * _xvalue_.
    */
   predicate isGLValueCategory() { isLValueCategory() or isXValueCategory() }
 
   /**
-   * Holds if this expression is an *rvalue*. An *rvalue* is either a *prvalue* or an
-   * *xvalue*.
+   * Holds if this expression is an _rvalue_. An _rvalue_ is either a _prvalue_ or an
+   * _xvalue_.
    */
   predicate isRValueCategory() { isPRValueCategory() or isXValueCategory() }
 
@@ -207,7 +207,7 @@ class Expr extends StmtParent, @expr {
    * - "prvalue"
    * - "prvalue(load)"
    *
-   * The "prvalue(load)" string is used when the expression is a *prvalue*, but
+   * The "prvalue(load)" string is used when the expression is a _prvalue_, but
    * `hasLValueToRvalueConversion()` holds.
    */
   string getValueCategoryString() {
@@ -254,32 +254,32 @@ class Expr extends StmtParent, @expr {
   }
 
   /**
-   * Holds if this expression has undergone an *lvalue*-to-*rvalue* conversion to
+   * Holds if this expression has undergone an _lvalue_-to-_rvalue_ conversion to
    * extract its value.
    * for example:
    * ```
    *  y = x;
    * ```
-   * The `VariableAccess` for `x` is a *prvalue*, and `hasLValueToRValueConversion()`
+   * The `VariableAccess` for `x` is a _prvalue_, and `hasLValueToRValueConversion()`
    * holds because the value of `x` was loaded from the location of `x`.
-   * The `VariableAccess` for `y` is an *lvalue*, and `hasLValueToRValueConversion()`
+   * The `VariableAccess` for `y` is an _lvalue_, and `hasLValueToRValueConversion()`
    * does not hold because the value of `y` was not extracted.
    *
-   * See [conv.lval] for more about the *lvalue*-to-*rvalue* conversion
+   * See [conv.lval] for more about the _lvalue_-to-_rvalue_ conversion
    */
   predicate hasLValueToRValueConversion() { expr_isload(underlyingElement(this)) }
 
   /**
-   * Holds if this expression is an *lvalue*, in the sense of having an address.
+   * Holds if this expression is an _lvalue_, in the sense of having an address.
    *
-   * Being an *lvalue* is best approximated as having an address.
-   * This is a strict superset of modifiable *lvalue*s, which are best approximated by things which could be on the left-hand side of an assignment.
-   * This is also a strict superset of expressions which provide an *lvalue*, which is best approximated by things whose address is important.
+   * Being an _lvalue_ is best approximated as having an address.
+   * This is a strict superset of modifiable _lvalue_s, which are best approximated by things which could be on the left-hand side of an assignment.
+   * This is also a strict superset of expressions which provide an _lvalue_, which is best approximated by things whose address is important.
    *
    * See [basic.lval] in the C++ language specification.
-   * In C++03, every expression is either an *lvalue* or an *rvalue*.
-   * In C++11, every expression is exactly one of an *lvalue*, an *xvalue*, or a *prvalue* (with *rvalue*s being the union of *xvalue*s and *prvalue*s).
-   * Using the C++11 terminology, this predicate selects expressions whose value category is *lvalue*.
+   * In C++03, every expression is either an _lvalue_ or an _rvalue_.
+   * In C++11, every expression is exactly one of an _lvalue_, an _xvalue_, or a _prvalue_ (with _rvalue_s being the union of _xvalue_s and _prvalue_s).
+   * Using the C++11 terminology, this predicate selects expressions whose value category is _lvalue_.
    */
   predicate isLValue() {
     // C++ n3337 - 5.1.1 clause 1

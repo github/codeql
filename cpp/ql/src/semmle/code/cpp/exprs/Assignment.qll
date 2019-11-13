@@ -10,7 +10,7 @@ import semmle.code.cpp.exprs.BitwiseOperation
  * This is an abstract root QL class for all (non-overloaded) assignments.
  */
 abstract class Assignment extends Operation {
-  /** Gets the *lvalue* of this assignment. */
+  /** Gets the _lvalue_ of this assignment. */
   Expr getLValue() { this.hasChild(result, 0) }
 
   /** Gets the rvalue of this assignment. */
@@ -53,13 +53,13 @@ abstract class AssignOperation extends Assignment {
 }
 
 /**
- * A non-overloaded arithmetic assignment operation on a non-pointer *lvalue*:
+ * A non-overloaded arithmetic assignment operation on a non-pointer _lvalue_:
  * `+=`, `-=`, `*=`, `/=` and `%=`.
  */
 abstract class AssignArithmeticOperation extends AssignOperation { }
 
 /**
- * A non-overloaded `+=` assignment expression on a non-pointer *lvalue*.
+ * A non-overloaded `+=` assignment expression on a non-pointer _lvalue_.
  * ```
  * a += b;
  * ```
@@ -71,7 +71,7 @@ class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
 }
 
 /**
- * A non-overloaded `-=` assignment expression on a non-pointer *lvalue*.
+ * A non-overloaded `-=` assignment expression on a non-pointer _lvalue_.
  * ```
  * a -= b;
  * ```

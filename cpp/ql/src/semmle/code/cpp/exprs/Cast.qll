@@ -399,7 +399,7 @@ class VoidConversion extends Cast {
 }
 
 /**
- * A conversion between two pointers or *glvalue*s related by inheritance.
+ * A conversion between two pointers or _glvalue_s related by inheritance.
  *
  * The base class will always be either a direct base class of the derived class,
  * or a virtual base class of the derived class. A conversion to an indirect
@@ -459,8 +459,8 @@ private Class getConversionClass(Expr expr) {
 }
 
 /**
- * A conversion from a pointer or *glvalue* of a derived class to a pointer or
- * *glvalue* of a direct or virtual base class.
+ * A conversion from a pointer or _glvalue_ of a derived class to a pointer or
+ * _glvalue_ of a direct or virtual base class.
  *
  * The conversion is either implicit or underlies a particular cast.
  * Please see `CStyleCast`, `StaticCast`, `ConstCast`
@@ -486,7 +486,7 @@ class BaseClassConversion extends InheritanceConversion {
 }
 
 /**
- * A conversion from a pointer or *glvalue* to a base class to a pointer or *glvalue*
+ * A conversion from a pointer or _glvalue_ to a base class to a pointer or _glvalue_
  * to a direct derived class.
  *
  * The conversion is either implicit or underlies a particular cast.
@@ -548,8 +548,8 @@ class PointerToMemberDerivedClassConversion extends Cast {
 }
 
 /**
- * A conversion of a *glvalue* from one type to another. The conversion does not
- * modify the address of the *glvalue*. For *glvalue* conversions involving base and
+ * A conversion of a _glvalue_ from one type to another. The conversion does not
+ * modify the address of the _glvalue_. For _glvalue_ conversions involving base and
  * derived classes, see `BaseClassConversion` and `DerivedClassConversion`.
  *
  * The conversion is either implicit or underlies a particular cast.
@@ -567,7 +567,7 @@ class GlvalueConversion extends Cast {
 }
 
 /**
- * The adjustment of the type of a class *prvalue*. Most commonly seen in code
+ * The adjustment of the type of a class _prvalue_. Most commonly seen in code
  * similar to:
  * ```
  * class String { ... };
@@ -576,7 +576,7 @@ class GlvalueConversion extends Cast {
  *   const String& r = func();
  * }
  * ```
- * In the above example, the result of the call to `func` is a *prvalue* of type
+ * In the above example, the result of the call to `func` is a _prvalue_ of type
  * `String`, which will be adjusted to type `const String` before being bound
  * to the reference.
  *
