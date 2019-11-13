@@ -209,9 +209,9 @@ class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
 }
 
 /**
- * A C++ variable declaration inside the conditional expression of a `while` or `if`
- * compound statement.  Declaring a variable this way narrows its lifetime and scope
- * to be strictly the compound statement itself.  For example:
+ * A C++ variable declaration inside the conditional expression of a `while`, `if` or
+ * `for` compound statement.  Declaring a variable this way narrows its lifetime and
+ * scope to be strictly the compound statement itself.  For example:
  * ```
  * extern int x, y;
  * if (bool c = x < y) { do_something_with(c); }

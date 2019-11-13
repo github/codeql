@@ -1064,7 +1064,7 @@ private Expr getStmtResultExpr(Stmt stmt) {
 }
 
 /**
- * The C++ `this` pointer.
+ * The C++ `this` expression.
  */
 class ThisExpr extends Expr, @thisaccess {
   override string toString() { result = "this" }
