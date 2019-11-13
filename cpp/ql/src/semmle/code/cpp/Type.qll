@@ -355,7 +355,7 @@ private predicate isArithmeticType(@builtintype type, int kind) {
  *
  * This includes primitive types on which arithmetic, bitwise or logical
  * operations may be performed.  Examples of arithmetic types include
- * `char`, `int`, `float` and `bool`.
+ * `char`, `int`, `float`, and `bool`.
  */
 class ArithmeticType extends BuiltInType {
   ArithmeticType() { isArithmeticType(underlyingElement(this), _) }
