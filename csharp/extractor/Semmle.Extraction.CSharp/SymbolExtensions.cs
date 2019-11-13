@@ -193,8 +193,30 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write(']');
         }
 
+        private static void BuildAssembly(IAssemblySymbol asm, TextWriter trapFile, bool extraPrecise = false)
+        {
+            var assembly = asm.Identity;
+            trapFile.Write(assembly.Name);
+            trapFile.Write('_');
+            trapFile.Write(assembly.Version.Major);
+            trapFile.Write('.');
+            trapFile.Write(assembly.Version.Minor);
+            trapFile.Write('.');
+            trapFile.Write(assembly.Version.Build);
+            if (extraPrecise)
+            {
+                trapFile.Write('.');
+                trapFile.Write(assembly.Version.Revision);
+            }
+            trapFile.Write("::");
+        }
+
         static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
+            bool prefixAssembly = true;
+            if (cx.Extractor.Standalone) prefixAssembly = false;
+            if (named.ContainingAssembly is null) prefixAssembly = false;
+
             if (named.IsTupleType)
             {
                 trapFile.Write('(');
@@ -217,6 +239,8 @@ namespace Semmle.Extraction.CSharp
             }
             else if (named.ContainingNamespace != null)
             {
+                if (prefixAssembly)
+                    BuildAssembly(named.ContainingAssembly, trapFile);
                 named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
 
@@ -247,26 +271,6 @@ namespace Semmle.Extraction.CSharp
 
         static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
         {
-            // Only include the assembly information in each type ID
-            // for normal extractions. This is because standalone extractions
-            // lack assembly information or may be ambiguous.
-            bool prependAssemblyToTypeId = !cx.Extractor.Standalone && ns.ContainingAssembly != null;
-
-            if (prependAssemblyToTypeId)
-            {
-                // Note that we exclude the revision number as this has
-                // been observed to be unstable.
-                var assembly = ns.ContainingAssembly.Identity;
-                trapFile.Write(assembly.Name);
-                trapFile.Write('_');
-                trapFile.Write(assembly.Version.Major);
-                trapFile.Write('.');
-                trapFile.Write(assembly.Version.Minor);
-                trapFile.Write('.');
-                trapFile.Write(assembly.Version.Build);
-                trapFile.Write("::");
-            }
-
             trapFile.WriteSubId(Namespace.Create(cx, ns));
             trapFile.Write('.');
         }

@@ -1,55 +1,7 @@
 import cpp
-import semmle.code.cpp.dataflow.TaintTracking
-private import semmle.code.cpp.dataflow.RecursionPrevention
-
-/**
- * A buffer which includes an allocation size.
- */
-abstract class BufferWithSize extends DataFlow::Node {
-  abstract Expr getSizeExpr();
-
-  BufferAccess getAnAccess() {
-    any(BufferWithSizeConfig bsc).hasFlow(this, DataFlow::exprNode(result.getPointer()))
-  }
-}
-
-/** An allocation function. */
-abstract class Alloc extends Function { }
-
-/**
- * Allocation functions identified by the QL for C/C++ standard library.
- */
-class DefaultAlloc extends Alloc {
-  DefaultAlloc() { allocationFunction(this) }
-}
-
-/** A buffer created through a call to an allocation function. */
-class AllocBuffer extends BufferWithSize {
-  FunctionCall call;
-
-  AllocBuffer() {
-    asExpr() = call and
-    call.getTarget() instanceof Alloc
-  }
-
-  override Expr getSizeExpr() { result = call.getArgument(0) }
-}
-
-/**
- * Find accesses of buffers for which we have a size expression.
- */
-private class BufferWithSizeConfig extends TaintTracking::Configuration {
-  BufferWithSizeConfig() { this = "BufferWithSize" }
-
-  override predicate isSource(DataFlow::Node n) { n = any(BufferWithSize b) }
-
-  override predicate isSink(DataFlow::Node n) { n.asExpr() = any(BufferAccess ae).getPointer() }
-
-  override predicate isSanitizer(DataFlow::Node s) {
-    s = any(BufferWithSize b) and
-    s.asExpr().getControlFlowScope() instanceof Alloc
-  }
-}
+import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  * An access (read or write) to a buffer, provided as a pair of
@@ -171,4 +123,32 @@ class MallocSizeExpr extends BufferAccess, FunctionCall {
   override Expr getPointer() { none() }
 
   override Expr getAccessedLength() { result = getArgument(1) }
+}
+
+class NetworkFunctionCall extends FunctionCall {
+  NetworkFunctionCall() {
+    getTarget().hasName("ntohd") or
+    getTarget().hasName("ntohf") or
+    getTarget().hasName("ntohl") or
+    getTarget().hasName("ntohll") or
+    getTarget().hasName("ntohs")
+  }
+}
+
+class NetworkToBufferSizeConfiguration extends DataFlow::Configuration {
+  NetworkToBufferSizeConfiguration() { this = "NetworkToBufferSizeConfiguration" }
+
+  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof NetworkFunctionCall }
+
+  override predicate isSink(DataFlow::Node node) {
+    node.asExpr() = any(BufferAccess ba).getAccessedLength()
+  }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    exists(GuardCondition gc, GVN gvn |
+      gc.getAChild*() = gvn.getAnExpr() and
+      globalValueNumber(node.asExpr()) = gvn and
+      gc.controls(node.asExpr().getBasicBlock(), _)
+    )
+  }
 }

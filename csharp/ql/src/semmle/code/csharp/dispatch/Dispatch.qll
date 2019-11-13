@@ -7,11 +7,6 @@
 
 import csharp
 private import RuntimeCallable
-private import OverridableCallable
-private import semmle.code.csharp.Conversion
-private import semmle.code.csharp.dataflow.internal.Steps
-private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.frameworks.system.Reflection
 
 /** A call. */
 class DispatchCall extends Internal::TDispatchCall {
@@ -39,7 +34,12 @@ class DispatchCall extends Internal::TDispatchCall {
 
 /** Internal implementation details. */
 private module Internal {
-  private import semmle.code.csharp.Implements
+  private import OverridableCallable
+  private import semmle.code.csharp.Conversion
+  private import semmle.code.csharp.Unification
+  private import semmle.code.csharp.dataflow.internal.Steps
+  private import semmle.code.csharp.frameworks.System
+  private import semmle.code.csharp.frameworks.system.Reflection
 
   cached
   private module Cached {
@@ -166,7 +166,10 @@ private module Internal {
   /** A call. */
   abstract private class DispatchCallImpl extends TDispatchCall {
     /** Gets a textual representation of this call. */
-    string toString() { none() }
+    string toString() { result = this.getCall().toString() }
+
+    /** Gets the location of this call. */
+    Location getLocation() { result = this.getCall().getLocation() }
 
     /** Gets the underlying expression of this call. */
     abstract Expr getCall();
@@ -185,56 +188,65 @@ private module Internal {
 
     /** Gets a dynamic (run-time) target of this call, if any. */
     abstract RuntimeCallable getADynamicTarget();
+  }
 
-    /**
-     * Holds if the qualifier of this call has type `qualifierType`.
-     * `isExactType` indicates whether the type is exact, that is, whether
-     * the qualifier is guaranteed not to be a subtype of `qualifierType`.
-     */
-    predicate hasQualifierType(Type qualifierType, boolean isExactType) {
-      exists(Type trackedType | trackedType = getAPossibleType(this.getQualifier(), isExactType) |
-        qualifierType = trackedType and
-        not qualifierType instanceof TypeParameter
-        or
-        qualifierType = trackedType.(TypeParameter).getAnUltimatelySuppliedType()
-      )
+  pragma[noinline]
+  private predicate hasCallable(OverridableCallable source, ValueOrRefType t, OverridableCallable c) {
+    c.getSourceDeclaration() = source and
+    t.hasCallable(c) and
+    hasQualifierTypeOverridden0(t, _) and
+    hasQualifierTypeOverridden1(source, _)
+  }
+
+  pragma[noinline]
+  private Unification::ConstrainedTypeParameter getAConstrainedTypeParameterQualifierType(
+    DispatchMethodOrAccessorCall call
+  ) {
+    result = getAPossibleType(call.getQualifier(), false)
+  }
+
+  pragma[noinline]
+  private predicate constrainedTypeParameterQualifierTypeSubsumes(
+    ValueOrRefType t, Unification::ConstrainedTypeParameter tp
+  ) {
+    tp = getAConstrainedTypeParameterQualifierType(_) and
+    tp.subsumes(t)
+  }
+
+  pragma[noinline]
+  private predicate hasQualifierTypeOverridden0(ValueOrRefType t, DispatchMethodOrAccessorCall call) {
+    exists(Type t0 | t0 = getAPossibleType(call.getQualifier(), false) |
+      t = t0
+      or
+      Unification::subsumes(t0, t)
+      or
+      t = t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+    )
+    or
+    constrainedTypeParameterQualifierTypeSubsumes(t, getAConstrainedTypeParameterQualifierType(call))
+  }
+
+  pragma[noinline]
+  private predicate hasQualifierTypeOverridden1(
+    OverridableCallable c, DispatchMethodOrAccessorCall call
+  ) {
+    exists(OverridableCallable target | call.getAStaticTarget() = target |
+      c = target.getSourceDeclaration()
+      or
+      c = target.getAnUltimateImplementor().getSourceDeclaration()
+    )
+  }
+
+  abstract private class DispatchMethodOrAccessorCall extends DispatchCallImpl {
+    pragma[nomagic]
+    predicate hasQualifierTypeInherited(SourceDeclarationType t) {
+      t = getAPossibleType(this.getQualifier(), _).getSourceDeclaration()
     }
 
-    /**
-     * Gets a non-exact (see `hasQualifierType()`) qualifier type of this call
-     * that does not contain type parameters.
-     */
-    private TypeWithoutTypeParameters getANonExactQualifierTypeWithoutTypeParameters() {
-      exists(Type qualifierType | hasQualifierType(qualifierType, false) |
-        // Qualifier type contains no type parameters: use it
-        result = qualifierType
-        or
-        // Qualifier type is a constructed type where all type arguments are type
-        // parameters: use the unbound generic type
-        exists(ConstructedType ct |
-          ct = qualifierType and
-          forex(Type arg | arg = ct.getATypeArgument() | arg instanceof TypeParameter) and
-          result = ct.getUnboundGeneric()
-        )
-        or
-        // Qualifier type is a constructed type where some (but not all) type arguments
-        // are type parameters: consider all potential instantiations
-        result = qualifierType.(QualifierTypeWithTypeParameters).getAPotentialInstance()
-      )
-    }
-
-    /**
-     * Gets a non-exact (see `hasQualifierType()`) qualifier type of this call.
-     */
-    ValueOrRefType getANonExactQualifierType() {
-      exists(TypeWithoutTypeParameters t |
-        t = this.getANonExactQualifierTypeWithoutTypeParameters()
-      |
-        result.(ConstructedType).getUnboundGeneric() = t
-        or
-        not t instanceof UnboundGenericType and
-        result = t
-      )
+    pragma[nomagic]
+    predicate hasQualifierTypeOverridden(ValueOrRefType t, OverridableCallable c) {
+      hasQualifierTypeOverridden0(t, this) and
+      hasCallable(any(OverridableCallable oc | hasQualifierTypeOverridden1(oc, this)), t, c)
     }
   }
 
@@ -394,7 +406,7 @@ private module Internal {
    * The set of viable targets is determined by taking virtual dispatch
    * into account.
    */
-  private class DispatchMethodCall extends DispatchCallImpl, TDispatchMethodCall {
+  private class DispatchMethodCall extends DispatchMethodOrAccessorCall, TDispatchMethodCall {
     override MethodCall getCall() { this = TDispatchMethodCall(result) }
 
     override Expr getArgument(int i) {
@@ -453,11 +465,14 @@ private module Internal {
      * `B.M`, and `B.M`, respectively.
      */
     private RuntimeInstanceMethod getViableInherited() {
-      exists(NonConstructedOverridableMethod m, Type qualifierType, SourceDeclarationType t |
-        getAStaticTarget() = m.getAConstructingMethodOrSelf() and
-        hasQualifierType(qualifierType, _) and
-        t = qualifierType.getSourceDeclaration() and
+      exists(NonConstructedOverridableMethod m, SourceDeclarationType t |
+        this.getAStaticTarget() = m.getAConstructingMethodOrSelf() and
+        this.hasQualifierTypeInherited(t)
+      |
         result = m.getInherited(t)
+        or
+        t instanceof TypeParameter and
+        result = m
       )
     }
 
@@ -498,8 +513,7 @@ private module Internal {
      */
     private RuntimeInstanceMethod getAViableOverrider() {
       exists(ValueOrRefType t, NonConstructedOverridableMethod m |
-        t = this.getANonExactQualifierType() and
-        this.getAStaticTarget() = m.getAConstructingMethodOrSelf() and
+        this.hasQualifierTypeOverridden(t, m.getAConstructingMethodOrSelf()) and
         result = m.getAnOverrider(t)
       )
     }
@@ -514,7 +528,7 @@ private module Internal {
    * The set of viable targets is determined by taking virtual dispatch
    * into account.
    */
-  private class DispatchAccessorCall extends DispatchCallImpl, TDispatchAccessorCall {
+  private class DispatchAccessorCall extends DispatchMethodOrAccessorCall, TDispatchAccessorCall {
     override AccessorCall getCall() { this = TDispatchAccessorCall(result) }
 
     override Expr getArgument(int i) { result = getCall().getArgument(i) }
@@ -587,16 +601,8 @@ private module Internal {
     private RuntimeAccessor getViableInherited() {
       exists(OverridableAccessor a, SourceDeclarationType t |
         this.getAStaticTarget() = a and
-        this.hasQualifierTypeSourceDecl(t) and
+        this.hasQualifierTypeInherited(t) and
         result = a.getInherited(t)
-      )
-    }
-
-    pragma[noinline]
-    private predicate hasQualifierTypeSourceDecl(SourceDeclarationType t) {
-      exists(Type qualifierType |
-        this.hasQualifierType(qualifierType, _) and
-        t = qualifierType.getSourceDeclaration()
       )
     }
 
@@ -637,102 +643,10 @@ private module Internal {
      * respectively.
      */
     private RuntimeAccessor getAViableOverrider() {
-      exists(ValueOrRefType t | t = this.getANonExactQualifierType() |
-        result = this.getAStaticTarget().(OverridableAccessor).getAnOverrider(t)
+      exists(ValueOrRefType t, OverridableAccessor a |
+        this.hasQualifierTypeOverridden(t, a) and
+        result = a.getAnOverrider(t)
       )
-    }
-  }
-
-  /** An internal helper class for comparing two types modulo type parameters. */
-  abstract private class StructurallyComparedModuloTypeParameters extends Type {
-    /** Gets a candidate for comparison against this type. */
-    abstract Type getACandidate();
-
-    /**
-     * Holds if this type equals the type `t` modulo type parameters.
-     *
-     * Equality modulo type parameters is a weaker form of type unifiability.
-     * That is, if constructed types `s` and `t` are unifiable, then `s` and
-     * `t` are equal modulo type parameters, but the converse does not
-     * necessarily hold. (For example, `C<int, string, T, T[]>` and
-     * `C<T, T, int, string[]>` are equal modulo type parameters, but not
-     * unifiable.)
-     */
-    predicate equalsModuloTypeParameters(Type t) {
-      t = getACandidate() and
-      sameModuloTypeParameters(this, t)
-    }
-
-    /**
-     * Gets a potential instantiation of this type.
-     *
-     * A potential instantiation is a type without type parameters that
-     * is the result of replacing all type parameters in this type with
-     * non-type parameters. Note: the same type parameter may be replaced
-     * by different types at different positions. For example,
-     * `C<int, string>` is considered a potential instantiation of `C<T, T>`.
-     */
-    TypeWithoutTypeParameters getAPotentialInstance() { equalsModuloTypeParameters(result) }
-  }
-
-  private Type candidateInternal(Type t) {
-    result = t.(StructurallyComparedModuloTypeParameters).getACandidate()
-    or
-    exists(Type parent, Type uncle, int i |
-      uncle = candidateInternal(parent) and
-      t = parent.getChild(i) and
-      result = uncle.getChild(i)
-    )
-  }
-
-  /** Holds if types `x` and `y` are equal modulo type parameters. */
-  private predicate sameModuloTypeParameters(Type x, Type y) {
-    y = candidateInternal(x) and
-    (
-      x = y
-      or
-      x instanceof TypeParameter
-      or
-      y instanceof TypeParameter
-      or
-      // All of the children must be structurally equal
-      sameChildrenModuloTypeParameters(x, y, x.getNumberOfChildren() - 1)
-    )
-  }
-
-  pragma[noinline]
-  private Type candidateInternalKind(Type t, Gvn::CompoundTypeKind k) {
-    result = candidateInternal(t) and
-    k = Gvn::getTypeKind(t)
-  }
-
-  /**
-   * Holds if the `i+1` first children of types `x` and `y` are equal
-   * modulo type parameters.
-   */
-  pragma[nomagic]
-  private predicate sameChildrenModuloTypeParameters(Type x, Type y, int i) {
-    i = -1 and
-    y = candidateInternalKind(x, Gvn::getTypeKind(y))
-    or
-    sameChildrenModuloTypeParameters(x, y, i - 1) and
-    sameModuloTypeParameters(x.getChild(i), y.getChild(i))
-  }
-
-  /**
-   * A qualifier type containing type parameters for which at
-   * least one of the type arguments is *not* a type parameter.
-   */
-  private class QualifierTypeWithTypeParameters extends StructurallyComparedModuloTypeParameters {
-    QualifierTypeWithTypeParameters() {
-      containsTypeParameters() and
-      any(DispatchCallImpl dc).hasQualifierType(this, false) and
-      exists(Type arg | arg = getAChild() | not arg instanceof TypeParameter)
-    }
-
-    override ConstructedType getACandidate() {
-      not result.containsTypeParameters() and
-      this.(ConstructedType).getUnboundGeneric() = result.getUnboundGeneric()
     }
   }
 
@@ -740,6 +654,20 @@ private module Internal {
   abstract private class DispatchReflectionOrDynamicCall extends DispatchCallImpl {
     /** Gets the name of the callable being called in this call. */
     abstract string getName();
+
+    pragma[nomagic]
+    private predicate hasQualifierType(Type qualifierType, boolean isExactType) {
+      exists(Type t | t = getAPossibleType(this.getQualifier(), isExactType) |
+        qualifierType = t and
+        not t instanceof TypeParameter
+        or
+        Unification::subsumes(t, qualifierType)
+        or
+        t.(Unification::ConstrainedTypeParameter).unifiable(qualifierType)
+        or
+        qualifierType = t.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+      )
+    }
 
     /**
      * Gets a potential qualifier type of this call.
@@ -779,13 +707,9 @@ private module Internal {
       this.hasQualifierType(result, true)
       or
       // Non-exact qualifier type
-      exists(Type qualifierType | this.hasNonExactQualifierType(qualifierType) |
+      exists(Type qualifierType | this.hasQualifierType(qualifierType, false) |
         result = getANonExactQualifierSubType(qualifierType)
       )
-    }
-
-    private predicate hasNonExactQualifierType(Type qualifierType) {
-      this.hasQualifierType(qualifierType, false)
     }
 
     /**
@@ -793,7 +717,7 @@ private module Internal {
      * `dynamic`).
      */
     private predicate hasUnknownQualifierType() {
-      exists(Type qualifierType | this.hasNonExactQualifierType(qualifierType) |
+      exists(Type qualifierType | this.hasQualifierType(qualifierType, false) |
         isUnknownType(qualifierType)
       )
     }
@@ -952,10 +876,21 @@ private module Internal {
   private predicate reflectionOrDynamicArgEqualsParamModuloTypeParameters(
     Type argumentType, Type parameterType
   ) {
-    exists(Type t | reflectionOrDynamicArgumentTypeIsImplicitlyConvertibleTo(argumentType, t) |
-      t
-          .(ReflectionOrDynamicCallArgumentWithTypeParameters)
-          .equalsModuloTypeParameters(parameterType)
+    exists(Type t |
+      reflectionOrDynamicArgumentTypeIsImplicitlyConvertibleTo(argumentType, t) and
+      isReflectionOrDynamicCallArgumentWithTypeParameters(t, parameterType)
+    |
+      parameterType = t
+      or
+      t instanceof Unification::UnconstrainedTypeParameter
+      or
+      parameterType instanceof Unification::UnconstrainedTypeParameter
+      or
+      t.(Unification::ConstrainedTypeParameter).unifiable(parameterType)
+      or
+      parameterType.(Unification::ConstrainedTypeParameter).unifiable(t)
+      or
+      Unification::unifiable(parameterType, t)
     )
   }
 
@@ -997,21 +932,6 @@ private module Internal {
       or
       paramType.containsTypeParameters()
     )
-  }
-
-  /**
-   * A type that is the argument type of a reflection-based call or a call using
-   * dynamic types, where either the type or the relevant parameter type of a
-   * potential run-time target contains type parameters.
-   */
-  private class ReflectionOrDynamicCallArgumentWithTypeParameters extends StructurallyComparedModuloTypeParameters {
-    ReflectionOrDynamicCallArgumentWithTypeParameters() {
-      isReflectionOrDynamicCallArgumentWithTypeParameters(this, _)
-    }
-
-    override Type getACandidate() {
-      isReflectionOrDynamicCallArgumentWithTypeParameters(this, result)
-    }
   }
 
   /** A call using reflection. */

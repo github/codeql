@@ -8,12 +8,28 @@ private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
 
-/** A data flow node corresponding to an expression. */
+/**
+ * A data flow node corresponding to an expression. 
+ *
+ * Examples:
+ * ```js
+ * x + y
+ * Math.abs(x)
+ * ```
+ */
 class ExprNode extends DataFlow::ValueNode {
   override Expr astNode;
 }
 
-/** A data flow node corresponding to a parameter. */
+/**
+ * A data flow node corresponding to a parameter.
+ *
+ * For example, `x` is a parameter of `function f(x) {}`.
+ *
+ * When a parameter is a destructuring pattern, such as `{x, y}`, there is one
+ * parameter node representing the entire parameter, and separate `PropRead` nodes
+ * for the individual property patterns (`x` and `y`).
+ */
 class ParameterNode extends DataFlow::SourceNode {
   Parameter p;
 
@@ -29,7 +45,15 @@ class ParameterNode extends DataFlow::SourceNode {
   predicate isRestParameter() { p.isRestParameter() }
 }
 
-/** A data flow node corresponding to a function invocation (with or without `new`). */
+/**
+ * A data flow node corresponding to a function invocation (with or without `new`).
+ *
+ * Examples:
+ * ```js
+ * Math.abs(x)
+ * new Array(16)
+ * ```
+ */
 class InvokeNode extends DataFlow::SourceNode {
   DataFlow::Impl::InvokeNodeDef impl;
 
@@ -211,7 +235,14 @@ class InvokeNode extends DataFlow::SourceNode {
   }
 }
 
-/** A data flow node corresponding to a function call without `new`. */
+/**
+ * A data flow node corresponding to a function call without `new`.
+ *
+ * Examples:
+ * ```js
+ * Math.abs(x)
+ * ```
+ */
 class CallNode extends InvokeNode {
   override DataFlow::Impl::CallNodeDef impl;
 
@@ -223,7 +254,16 @@ class CallNode extends InvokeNode {
   DataFlow::Node getReceiver() { result = impl.getReceiver() }
 }
 
-/** A data flow node corresponding to a method call. */
+/**
+ * A data flow node corresponding to a method call, that is,
+ * a call of form `x.m(...)`.
+ *
+ * Examples:
+ * ```js
+ * obj.foo()
+ * Math.abs(x)
+ * ```
+ */
 class MethodCallNode extends CallNode {
   override DataFlow::Impl::MethodCallNodeDef impl;
 
@@ -239,12 +279,23 @@ class MethodCallNode extends CallNode {
   }
 }
 
-/** A data flow node corresponding to a `new` expression. */
+/**
+ * A data flow node corresponding to a `new` expression.
+ *
+ * Examples:
+ * ```js
+ * new Array(16)
+ * ```
+ */
 class NewNode extends InvokeNode {
   override DataFlow::Impl::NewNodeDef impl;
 }
 
-/** A data flow node corresponding to the `this` parameter in a function or `this` at the top-level. */
+/**
+ * A data flow node corresponding to the `this` parameter in a function or `this` at the top-level.
+ *
+ * Each function only has one `this` node, even if it references `this` multiple times.
+ */
 class ThisNode extends DataFlow::Node, DataFlow::SourceNode {
   ThisNode() { DataFlow::thisNode(this, _) }
 
@@ -266,7 +317,21 @@ class ThisNode extends DataFlow::Node, DataFlow::SourceNode {
   StmtContainer getBindingContainer() { DataFlow::thisNode(this, result) }
 }
 
-/** A data flow node corresponding to a global variable access. */
+/**
+ * A data flow node corresponding to a global variable access through a simple identifier.
+ *
+ * For example, this includes `document` but not `window.document`.
+ * To recognize global variable access more generally, instead use `DataFlow::globalVarRef`
+ * or the member predicate `accessesGlobal`.
+ *
+ * Examples:
+ * ```js
+ * document
+ * Math
+ * NaN
+ * undefined
+ * ```
+ */
 class GlobalVarRefNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override GlobalVarAccess astNode;
 
@@ -278,6 +343,17 @@ class GlobalVarRefNode extends DataFlow::ValueNode, DataFlow::SourceNode {
  * Gets a data flow node corresponding to an access to the global object, including
  * `this` expressions outside functions, references to global variables `window`
  * and `global`, and uses of the `global` npm package.
+ *
+ * Examples:
+ * ```js
+ * window
+ * window.window
+ * global
+ * globalThis
+ * this
+ * self
+ * require('global/window')
+ * ```
  */
 DataFlow::SourceNode globalObjectRef() {
   // top-level `this`
@@ -308,6 +384,15 @@ DataFlow::SourceNode globalObjectRef() {
 /**
  * Gets a data flow node corresponding to an access to global variable `name`,
  * either directly, through `window` or `global`, or through the `global` npm package.
+ *
+ * Examples:
+ * ```js
+ * document
+ * Math
+ * window.document
+ * window.Math
+ * require('global/document')
+ * ```
  */
 pragma[nomagic]
 DataFlow::SourceNode globalVarRef(string name) {
@@ -320,7 +405,40 @@ DataFlow::SourceNode globalVarRef(string name) {
   result = moduleImport("global/" + name)
 }
 
-/** A data flow node corresponding to a function definition. */
+/**
+ * A data flow node corresponding to a function definition.
+ *
+ * Examples:
+ *
+ * ```
+ * function greet() {         // function declaration
+ *   console.log("Hi");
+ * }
+ *
+ * var greet =
+ *   function() {             // function expression
+ *     console.log("Hi");
+ *   };
+ *
+ * var greet2 =
+ *   () => console.log("Hi")  // arrow function expression
+ *
+ * var o = {
+ *   m() {                    // function expression in a method definition in an object literal
+ *     return 0;
+ *   },
+ *   get x() {                // function expression in a getter method definition in an object literal
+ *     return 1
+ *   }
+ * };
+ *
+ * class C {
+ *   m() {                    // function expression in a method definition in a class
+ *     return 0;
+ *   }
+ * }
+ * ```
+ */
 class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override Function astNode;
 
@@ -373,12 +491,32 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   }
 }
 
-/** A data flow node corresponding to an object literal expression. */
+/**
+ * A data flow node corresponding to an object literal expression.
+ *
+ * Example:
+ * ```js
+ * var p = {  // object literal containing five property definitions
+ *   x: 1,
+ *   y: 1,
+ *   diag: function() { return this.x - this.y; },
+ *   get area() { return this.x * this.y; },
+ *   set area(a) { this.x = Math.sqrt(a); this.y = Math.sqrt(a); }
+ * };
+ * ```
+ */
 class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override ObjectExpr astNode;
 }
 
-/** A data flow node corresponding to an array literal expression. */
+/**
+ * A data flow node corresponding to an array literal expression.
+ *
+ * Example:
+ * ```
+ * [ 1, , [ 3, 4 ] ]
+ * ```
+ */
 class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override ArrayExpr astNode;
 
@@ -392,7 +530,17 @@ class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   int getSize() { result = astNode.getSize() }
 }
 
-/** A data flow node corresponding to a `new Array()` or `Array()` invocation. */
+/**
+ * A data flow node corresponding to a `new Array()` or `Array()` invocation.
+ *
+ * Examples:
+ * ```js
+ * Array('apple', 'orange') // two initial elements
+ * new Array('apple', 'orange')
+ * Array(16) // size 16 but no initial elements
+ * new Array(16)
+ * ```
+ */
 class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
   ArrayConstructorInvokeNode() { getCalleeNode() = DataFlow::globalVarRef("Array") }
 
@@ -420,6 +568,16 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
 /**
  * A data flow node corresponding to the creation or a new array, either through an array literal
  * or an invocation of the `Array` constructor.
+ *
+ *
+ * Examples:
+ * ```js
+ * ['apple', 'orange'];
+ * Array('apple', 'orange') 
+ * new Array('apple', 'orange')
+ * Array(16)
+ * new Array(16)
+ * ```
  */
 class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   ArrayCreationNode() {
@@ -444,13 +602,22 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 }
 
 /**
- * A data flow node corresponding to a `default` import from a module, or a
- * (AMD or CommonJS) `require` of a module.
+ * A data flow node representing an import of a module, either through
+ * an `import` declaration, a call to `require`, or an AMD dependency parameter.
  *
- * For compatibility with old transpilers, we treat `import * from '...'`
- * as a default import as well.
+ * For compatibility with old transpilers, we treat both `import * as x from '...'` and
+ * `import x from '...'` as module import nodes.
  *
  * Additional import nodes can be added by subclassing `ModuleImportNode::Range`.
+ *
+ * Examples:
+ * ```js
+ * require('fs');
+ * import * as fs from 'fs';
+ * import fs from 'fs';
+ * import { readDir } from 'fs'; // Note: 'readDir' is a PropRead with a ModuleImportNode as base
+ * define(["fs"], function(fs) { ... }); // AMD module
+ * ```
  */
 class ModuleImportNode extends DataFlow::SourceNode {
   ModuleImportNode::Range range;

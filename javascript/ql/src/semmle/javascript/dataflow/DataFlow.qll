@@ -85,6 +85,18 @@ module DataFlow {
     /** Gets the expression corresponding to this data flow node, if any. */
     Expr asExpr() { this = TValueNode(result) }
 
+    /**
+     * Gets the expression enclosing this data flow node. 
+     * In most cases the result is the same as `asExpr()`, however this method 
+     * additionally the `InvokeExpr` corresponding to reflective calls, and the `Parameter` 
+     * for a `DataFlow::ParameterNode`. 
+     */
+    Expr getEnclosingExpr() {
+      result = asExpr() or
+      this = DataFlow::reflectiveCallNode(result) or
+      result = this.(ParameterNode).getParameter()
+    }
+
     /** Gets the AST node corresponding to this data flow node, if any. */
     ASTNode getAstNode() { none() }
 
@@ -265,6 +277,14 @@ module DataFlow {
   /**
    * An expression or a declaration of a function, class, namespace or enum,
    * viewed as a node in the data flow graph.
+   *
+   * Examples:
+   * ```js
+   * x + y
+   * Math.abs(x)
+   * class C {}
+   * function f(x, y) {}
+   * ```
    */
   class ValueNode extends Node, TValueNode {
     AST::ValueNode astNode;
@@ -478,6 +498,8 @@ module DataFlow {
    *
    * The default subclasses do not model global variable references or variable
    * references inside `with` statements as property references.
+   *
+   * See `PropWrite` and `PropRead` for concrete syntax examples.
    */
   abstract class PropRef extends Node {
     /**
@@ -512,6 +534,22 @@ module DataFlow {
 
   /**
    * A data flow node that writes to an object property.
+   *
+   * For example, all of the following are property writes:
+   * ```js
+   * obj.f = value;  // assignment to a property
+   * obj[e] = value; // assignment to a computed property
+   * { f: value }    // property initializer
+   * { g() {} }      // object literal method
+   * { get g() {}, set g(v) {} }  // accessor methods (have no rhs value)
+   * class C {
+   *   constructor(public x: number); // parameter field (TypeScript only)
+   *   static m() {} // static method
+   *   g() {}        // instance method
+   * }
+   * Object.defineProperty(obj, 'f', { value: 5} ) // call to defineProperty
+   * <View width={value}/>  // JSX attribute
+   * ```
    */
   abstract class PropWrite extends PropRef {
     /**
@@ -724,6 +762,17 @@ module DataFlow {
 
   /**
    * A data flow node that reads an object property.
+   *
+   * For example, all the following are property reads:
+   * ```js
+   * obj.f               // property access
+   * obj[e]              // computed property access
+   * let { f } = obj;    // destructuring object pattern
+   * let [x, y] = array; // destructuring array pattern
+   * function f({ f }) {} // destructuring pattern (in parameter)
+   * for (let elm of array) {}     // element access in for..of loop
+   * import { join } from 'path';  // named import specifier
+   * ```
    */
   abstract class PropRead extends PropRef, SourceNode { }
 
@@ -946,6 +995,16 @@ module DataFlow {
    * Gets a pseudo-node representing the root of a global access path.
    */
   DataFlow::Node globalAccessPathRootPseudoNode() { result instanceof TGlobalAccessPathRoot }
+  
+  /**
+   * Gets a data flow node representing the underlying call performed by the given
+   * call to `Function.prototype.call` or `Function.prototype.apply`.
+   *
+   * For example, for an expression `fn.call(x, y)`, this gets a call node with `fn` as the
+   * callee, `x` as the receiver, and `y` as the first argument.
+   */
+  DataFlow::InvokeNode reflectiveCallNode(InvokeExpr expr) { result = TReflectiveCallNode(expr, _) }
+  
 
   /**
    * Gets a data flow node representing the underlying call performed by the given

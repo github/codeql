@@ -125,7 +125,7 @@ private predicate fileWrite(Call write, Expr source, Expr dest) {
   exists(Function f, int s, int d |
     f = write.getTarget() and source = write.getArgument(s) and dest = write.getArgument(d)
   |
-    exists(string name | f.hasGlobalName(name) |
+    exists(string name | f.hasGlobalOrStdName(name) |
       // named functions
       name = "fwrite" and s = 0 and d = 3
       or
