@@ -378,7 +378,7 @@ class AnnotatedArrayType extends AnnotatedType {
   private string getDimensionString(AnnotatedType elementType) {
     exists(AnnotatedType et, string res |
       et = getElementType() and
-      res = "[" + type.getRankString(0) + "]" and
+      res = type.getArraySuffix() and
       if et.getUnderlyingType() instanceof ArrayType and not et.isNullableRefType()
       then result = res + et.(AnnotatedArrayType).getDimensionString(elementType)
       else (
