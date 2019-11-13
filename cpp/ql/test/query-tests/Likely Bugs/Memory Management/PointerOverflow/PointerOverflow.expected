@@ -1,3 +1,2 @@
-| no_strict_overflow.c:5:9:5:21 | ... < ... | Range check relying on pointer overflow. |
 | test.cpp:6:12:6:33 | ... < ... | Range check relying on pointer overflow. |
 | test.cpp:33:9:33:21 | ... < ... | Range check relying on pointer overflow. |

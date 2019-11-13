@@ -25,6 +25,11 @@ where
   not exists(MacroInvocation mi |
     mi.getAnAffectedElement() = add and
     not mi.getMacroName().toLowerCase().matches("%assert%")
+  ) and
+  // There must be a compilation of this file without a flag that makes pointer
+  // overflow well defined.
+  exists(Compilation c | c.getAFileCompiled() = ro.getFile() |
+    not c.getAnArgument() = "-fwrapv-pointer" and
+    not c.getAnArgument() = "-fno-strict-overflow"
   )
-  // TODO: Add a check for -fno-strict-overflow and -fwrapv-pointer
 select ro, "Range check relying on pointer overflow."
