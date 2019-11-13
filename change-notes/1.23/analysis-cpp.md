@@ -9,7 +9,8 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) | reliability, japanese-era | This query is a combination of two old queries that were identical in purpose but separate as an implementation detail.  This new query replaces Hard-coded Japanese era start date in call (`cpp/japanese-era/constructor-or-method-with-exact-era-date`) and Hard-coded Japanese era start date in struct (`cpp/japanese-era/struct-with-exact-era-date`). |
-| Signed overflow check (`cpp/signed-overflow-check`) | correctness, reliability | Finds overflow checks that rely on signed integer addition to overflow, which has undefined behavior. Example: `a + b < a`. |
+| Signed overflow check (`cpp/signed-overflow-check`) | correctness, security | Finds overflow checks that rely on signed integer addition to overflow, which has undefined behavior. Example: `a + b < a`. |
+| Pointer overflow check (`cpp/pointer-overflow-check`) | correctness, security | Finds overflow checks that rely on pointer addition to overflow, which has undefined behavior. Example: `ptr + a < ptr`. |
 
 ## Changes to existing queries
 

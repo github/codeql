@@ -1,5 +1,5 @@
 /**
- * @name Undefined result of signed test for overflow
+ * @name Signed overflow check
  * @description Testing for overflow by adding a value to a variable
  *              to see if it "wraps around" works only for
  *              unsigned integer values.
@@ -7,7 +7,7 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/signed-overflow-check
- * @tags reliability
+ * @tags correctness
  *       security
  */
 
