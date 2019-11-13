@@ -413,7 +413,7 @@ class StringLiteral extends @stringliteral, Literal {
   /**
    * Gets the value of this string literal parsed as a regular expression, if possible.
    *
-   * All string literals have an associated regular expression tree, provided it can
+   * All string literals have an associated regular expression tree, provided they can
    * be parsed without syntax errors.
    */
   RegExpTerm asRegExp() { this = result.getParent() }
