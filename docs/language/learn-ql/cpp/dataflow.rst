@@ -244,7 +244,7 @@ The following data flow configuration tracks data flow from environment variable
    select fopen, "This 'fopen' uses data from $@.",
      getenv, "call to 'getenv'"
 
-The following taint tracking configuration tracks data from a call to ``ntohl`` to an array index operation. It uses the ``Guards`` library to recognize expressions that have been bounds checked and avoid propagating taint through them.
+The following taint tracking configuration tracks data from a call to ``ntohl`` to an array index operation. It uses the ``Guards`` library to recognize expressions that have been bounds checked and avoid propagating taint through them. It also uses ``isAdditionalTaintStep`` to add flow from loop bounds to loop indexes.
 
 .. code-block:: ql
 
@@ -252,7 +252,7 @@ The following taint tracking configuration tracks data from a call to ``ntohl`` 
   import semmle.code.cpp.controlflow.Guards
   import semmle.code.cpp.dataflow.TaintTracking
 
-  class NetworkToBufferSizeConfiguration extends DataFlow::Configuration {
+  class NetworkToBufferSizeConfiguration extends TaintTracking::Configuration {
     NetworkToBufferSizeConfiguration() { this = "NetworkToBufferSizeConfiguration" }
 
     override predicate isSource(DataFlow::Node node) {
@@ -263,7 +263,15 @@ The following taint tracking configuration tracks data from a call to ``ntohl`` 
       exists(ArrayExpr ae | node.asExpr() = ae.getArrayOffset())
     }
 
-    override predicate isBarrier(DataFlow::Node node) {
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Loop loop, LoopCounter lc |
+        loop = lc.getALoop() and
+        loop.getControllingExpr().(RelationalOperation).getGreaterOperand() = pred.asExpr() |
+        succ.asExpr() = lc.getVariableAccessInLoop(loop)
+      )
+    }
+
+    override predicate isSanitizer(DataFlow::Node node) {
       exists(GuardCondition gc, Variable v |
         gc.getAChild*() = v.getAnAccess() and
         node.asExpr() = v.getAnAccess() and
