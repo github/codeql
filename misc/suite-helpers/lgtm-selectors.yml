@@ -5,7 +5,7 @@
     - path-problem
     precision:
     - high
-    - very high
+    - very-high
 - include:
     kind:
     - problem
