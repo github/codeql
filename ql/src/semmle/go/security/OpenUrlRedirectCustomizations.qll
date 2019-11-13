@@ -93,20 +93,16 @@ module OpenUrlRedirect {
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
   class RegexpCheck extends BarrierGuard {
+    RegexpMatchFunction matchfn;
     DataFlow::CallNode call;
 
     RegexpCheck() {
-      exists(string fn | fn.matches("Match%") |
-        call.getTarget().hasQualifiedName("regexp", fn) and
-        this = DataFlow::extractTupleElement(call, 0).getASuccessor*()
-        or
-        call.getTarget().(Method).hasQualifiedName("regexp", "Regexp", fn) and
-        this = call.getASuccessor*()
-      )
+      matchfn.getACall() = call and
+      this = matchfn.getResult().getNode(call).getASuccessor*()
     }
 
     override predicate checks(Expr e, boolean branch) {
-      e = call.getAnArgument().asExpr() and
+      e = matchfn.getValue().getNode(call).asExpr() and
       (branch = false or branch = true)
     }
   }
