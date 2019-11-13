@@ -932,3 +932,72 @@ ssa.cpp:
 #  226|     v0_19(void)          = UnmodeledUse                  : mu*
 #  226|     v0_20(void)          = AliasedUse                    : ~mu0_2
 #  226|     v0_21(void)          = ExitFunction                  : 
+
+#  235| void Constructible::Constructible(int)
+#  235|   Block 0
+#  235|     v0_0(void)                 = EnterFunction          : 
+#  235|     mu0_1(unknown)             = AliasedDefinition      : 
+#  235|     mu0_2(unknown)             = UnmodeledDefinition    : 
+#  235|     r0_3(glval<Constructible>) = InitializeThis         : 
+#  235|     r0_4(glval<int>)           = VariableAddress[x]     : 
+#  235|     m0_5(int)                  = InitializeParameter[x] : &:r0_4
+#  235|     v0_6(void)                 = NoOp                   : 
+#  235|     v0_7(void)                 = ReturnVoid             : 
+#  235|     v0_8(void)                 = UnmodeledUse           : mu*
+#  235|     v0_9(void)                 = AliasedUse             : ~mu0_2
+#  235|     v0_10(void)                = ExitFunction           : 
+
+#  236| void Constructible::g()
+#  236|   Block 0
+#  236|     v0_0(void)                 = EnterFunction       : 
+#  236|     mu0_1(unknown)             = AliasedDefinition   : 
+#  236|     mu0_2(unknown)             = UnmodeledDefinition : 
+#  236|     r0_3(glval<Constructible>) = InitializeThis      : 
+#  236|     v0_4(void)                 = NoOp                : 
+#  236|     v0_5(void)                 = ReturnVoid          : 
+#  236|     v0_6(void)                 = UnmodeledUse        : mu*
+#  236|     v0_7(void)                 = AliasedUse          : ~mu0_2
+#  236|     v0_8(void)                 = ExitFunction        : 
+
+#  239| void ExplicitConstructorCalls()
+#  239|   Block 0
+#  239|     v0_0(void)                  = EnterFunction                   : 
+#  239|     mu0_1(unknown)              = AliasedDefinition               : 
+#  239|     mu0_2(unknown)              = UnmodeledDefinition             : 
+#  240|     r0_3(glval<Constructible>)  = VariableAddress[c]              : 
+#  240|     mu0_4(Constructible)        = Uninitialized[c]                : &:r0_3
+#  240|     r0_5(glval<unknown>)        = FunctionAddress[Constructible]  : 
+#  240|     r0_6(int)                   = Constant[1]                     : 
+#  240|     v0_7(void)                  = Call                            : func:r0_5, this:r0_3, 0:r0_6
+#  240|     mu0_8(unknown)              = ^CallSideEffect                 : ~mu0_2
+#  240|     mu0_9(Constructible)        = ^IndirectMayWriteSideEffect[-1] : &:r0_3
+#  241|     r0_10(glval<Constructible>) = VariableAddress[c]              : 
+#  241|     r0_11(glval<unknown>)       = FunctionAddress[g]              : 
+#  241|     v0_12(void)                 = Call                            : func:r0_11, this:r0_10
+#  241|     mu0_13(unknown)             = ^CallSideEffect                 : ~mu0_2
+#  241|     v0_14(void)                 = ^BufferReadSideEffect[-1]       : &:r0_10, ~mu0_2
+#  241|     mu0_15(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r0_10
+#  242|     r0_16(glval<Constructible>) = VariableAddress[c]              : 
+#  242|     r0_17(glval<unknown>)       = FunctionAddress[g]              : 
+#  242|     v0_18(void)                 = Call                            : func:r0_17, this:r0_16
+#  242|     mu0_19(unknown)             = ^CallSideEffect                 : ~mu0_2
+#  242|     v0_20(void)                 = ^BufferReadSideEffect[-1]       : &:r0_16, ~mu0_2
+#  242|     mu0_21(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r0_16
+#  243|     r0_22(glval<Constructible>) = VariableAddress[c2]             : 
+#  243|     mu0_23(Constructible)       = Uninitialized[c2]               : &:r0_22
+#  243|     r0_24(glval<unknown>)       = FunctionAddress[Constructible]  : 
+#  243|     r0_25(int)                  = Constant[2]                     : 
+#  243|     v0_26(void)                 = Call                            : func:r0_24, this:r0_22, 0:r0_25
+#  243|     mu0_27(unknown)             = ^CallSideEffect                 : ~mu0_2
+#  243|     mu0_28(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r0_22
+#  244|     r0_29(glval<Constructible>) = VariableAddress[c2]             : 
+#  244|     r0_30(glval<unknown>)       = FunctionAddress[g]              : 
+#  244|     v0_31(void)                 = Call                            : func:r0_30, this:r0_29
+#  244|     mu0_32(unknown)             = ^CallSideEffect                 : ~mu0_2
+#  244|     v0_33(void)                 = ^BufferReadSideEffect[-1]       : &:r0_29, ~mu0_2
+#  244|     mu0_34(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r0_29
+#  245|     v0_35(void)                 = NoOp                            : 
+#  239|     v0_36(void)                 = ReturnVoid                      : 
+#  239|     v0_37(void)                 = UnmodeledUse                    : mu*
+#  239|     v0_38(void)                 = AliasedUse                      : ~mu0_2
+#  239|     v0_39(void)                 = ExitFunction                    : 

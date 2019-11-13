@@ -229,3 +229,17 @@ char StringLiteralAliasing() {
   const char* s = "Literal";
   return s[2];  // Should be defined by `AliasedDefinition`, not `Chi` or `CallSideEffect`.
 }
+
+class Constructible {
+  public:
+    Constructible(int x) {};
+    void g() {}
+};
+
+void ExplicitConstructorCalls() {
+  Constructible c(1);
+  c.g();
+  c.g();
+  Constructible c2 = Constructible(2);
+  c2.g();
+}

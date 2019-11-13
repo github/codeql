@@ -30,7 +30,11 @@ private predicate isVariableModeled(IRVariable var) {
     hasResultMemoryAccess(instr, var, type, bitOffset)
   |
     bitOffset = 0 and
-    type.getIRType() = var.getIRType()
+    type.getIRType() = var.getIRType() and
+    not (
+      instr.getResultMemoryAccess() instanceof IndirectMayMemoryAccess or
+      instr.getResultMemoryAccess() instanceof BufferMayMemoryAccess
+    )
   ) and
   forall(MemoryOperand operand, Language::LanguageType type, IntValue bitOffset |
     hasOperandMemoryAccess(operand, var, type, bitOffset)
