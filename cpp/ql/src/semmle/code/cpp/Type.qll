@@ -329,12 +329,13 @@ class ErroneousType extends BuiltInType {
  * The unknown type.  This type has no corresponding C/C++ syntax.
  *
  * Unknown types usually occur inside _uninstantiated_ template functions.
- * In the example below, the type of the ternary `?:` expression cannot
- * be determined:
+ * In the example below, the expressions `x.a` and `x.b` have unknown type
+ * in the _uninstantiated_ template.
  * ```
- * template <typename T>
- * T min(T x, T y) {
- *   return (x < y) ? x : y;
+ * template<typename T>
+ * bool check(T x) {
+ *   if (x.a == x.b)
+ *     abort();
  * }
  * ```
  */
