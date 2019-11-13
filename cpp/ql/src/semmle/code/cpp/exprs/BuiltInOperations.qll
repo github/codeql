@@ -90,7 +90,7 @@ deprecated class BuiltInOperationOffsetOf = BuiltInOperationBuiltInOffsetOf;
  * struct S {
  *   int a, b;
  * };
- * int d = __builtin_offsetof(struct S, b); // usually 4 
+ * int d = __builtin_offsetof(struct S, b); // usually 4
  * ```
  */
 class BuiltInOperationBuiltInOffsetOf extends BuiltInOperation, @offsetofexpr {
@@ -107,7 +107,7 @@ class BuiltInOperationBuiltInOffsetOf extends BuiltInOperation, @offsetofexpr {
  * struct S {
  *   int a, b;
  * };
- * int d = __INTADDR__(struct S, b); // usually 4 
+ * int d = __INTADDR__(struct S, b); // usually 4
  * ```
  */
 class BuiltInIntAddr extends BuiltInOperation, @intaddrexpr {
