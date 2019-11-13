@@ -312,7 +312,7 @@ class BuiltInType extends Type, @builtintype {
 /**
  * An erroneous type.  This type has no corresponding C/C++ syntax.
  *
- * ErroneousType is the type of ErrorExpr, which in turn refers to an illegal
+ * `ErroneousType` is the type of `ErrorExpr`, which in turn refers to an illegal
  * language construct.  In the example below, a temporary (`0`) cannot be bound
  * to an lvalue reference (`int &`):
  * ```
