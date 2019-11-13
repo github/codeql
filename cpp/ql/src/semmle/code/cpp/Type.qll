@@ -612,7 +612,7 @@ class SignedCharType extends CharType {
 
 /**
  * The C/C++ short types. See 4.3.  This includes `short`, `signed short`
- * and `unsigned short`; `short` and `signed short` are equivalent.
+ * and `unsigned short`.
  * ```
  * signed short ss;
  * ```
