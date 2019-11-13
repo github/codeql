@@ -315,7 +315,7 @@ class InvalidReturn extends InstructionViolation {
 /**
  * A throw instruction that does not have a stack size of 0 after it.
  */
-class InvalidThrow extends InstructionViolation {
+class InvalidThrow extends InstructionViolation, DisabledCheck {
   InvalidThrow() { instruction instanceof Throw and instruction.getStackSizeAfter() != 0 }
 
   override string getMessage() {
