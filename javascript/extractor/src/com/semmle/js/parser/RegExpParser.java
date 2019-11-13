@@ -326,10 +326,21 @@ public class RegExpParser {
       this.error(Error.UNEXPECTED_CHARACTER, endPos);
       endPos = startPos + 1; // To ensure progress, make sure we parse at least one character.
     }
+    // Check if the end of the constant belongs under an upcoming quantifier.
     if (endPos != startPos + 1
         && endPos < src.length()
         && "*+?{".indexOf(src.charAt(endPos)) != -1) {
-      endPos--; // Last constant belongs under an upcoming quantifier.
+      if (Character.isLowSurrogate(src.charAt(endPos - 1))
+          && Character.isHighSurrogate(src.charAt(endPos - 2))) {
+        // Don't split the surrogate pair.
+        if (endPos == startPos + 2) {
+          // The whole constant is a single wide character.
+        } else {
+          endPos -= 2; // Last 2 characters belong to an upcoming quantifier.
+        }
+      } else {
+        endPos--; // Last character belongs to an upcoming quantifier.
+      }
     }
     String str = src.substring(startPos, endPos);
     this.pos = endPos;

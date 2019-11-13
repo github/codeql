@@ -8,5 +8,7 @@ where wideConstant.getLiteral() = literal and
     wideConstant.getParent() instanceof RegExpCharacterClass
     or
     wideConstant.getParent() instanceof RegExpCharacterRange
+    or
+    wideConstant.getParent() instanceof RegExpQuantifier
   )
-select literal, "Character class with supplementary characters in non-unicode literal."
+select literal, "Split supplementary character in non-unicode literal."
