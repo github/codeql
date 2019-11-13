@@ -12,6 +12,7 @@
 
 import cpp
 private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+private import semmle.code.cpp.commons.Exclusions
 
 from RelationalOperation ro, PointerAddExpr add, Expr expr1, Expr expr2
 where
@@ -19,13 +20,8 @@ where
   add.getAnOperand() = expr1 and
   ro.getAnOperand() = expr2 and
   globalValueNumber(expr1) = globalValueNumber(expr2) and
-  // Exclude macros except for assert macros.
-  // TODO: port that location-based macro check we have in another query. Then
-  // we don't need to special-case on names.
-  not exists(MacroInvocation mi |
-    mi.getAnAffectedElement() = add and
-    not mi.getMacroName().toLowerCase().matches("%assert%")
-  ) and
+  // Exclude macros but not their arguments
+  not isFromMacroDefinition(ro) and
   // There must be a compilation of this file without a flag that makes pointer
   // overflow well defined.
   exists(Compilation c | c.getAFileCompiled() = ro.getFile() |
