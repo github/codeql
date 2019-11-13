@@ -4,7 +4,7 @@
 
 import cpp
 import external.ExternalArtifact
-private import semmle.code.cpp.dispatch.VirtualDispatch
+private import semmle.code.cpp.dispatch.VirtualDispatchPrototype
 import semmle.code.cpp.NestedFields
 import Microsoft.SAL
 import semmle.code.cpp.controlflow.Guards

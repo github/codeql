@@ -31,10 +31,10 @@ it to host byte order. The data is then used as an index in an array access expr
 there is no validation that the data returned by <code>ntohl</code> is within the bounds of the array,
 which could lead to reading outside the bounds of the buffer.
 </p>
-<sample src="NtohlArrayBad.cpp" />
+<sample src="NtohlArrayNoBound-bad.cpp" />
 <p>In the corrected example, the returned data is validated against the known size of the buffer,
 before being used as an array index.</p>
-<sample src="NtohlArrayGood.cpp" />
+<sample src="NtohlArrayNoBound-good.cpp" />
 </example>
 
 <references>
