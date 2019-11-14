@@ -121,6 +121,11 @@ public class A {
     }
   }
 
+  void overflowTests2(int[] a, boolean b) {
+    int newlen = b ? (a.length + 1) << 1 : (a.length >> 1) + a.length;
+    if (newlen < 0) overflow();
+  }
+
   static final long VAL = 100L;
 
   long overflowAwareIncrease(long x) {

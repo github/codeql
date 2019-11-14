@@ -20,8 +20,8 @@ void notify(int deviceNumber) {
   int statusCode = initDeviceConfig(&config, deviceNumber);
   if (statusCode == 0) {
     // GOOD: Status code returned by initialization function is checked, so this is safe
-    if (config->isEnabled) {
-      notifyChannel(config->channel);
+    if (config.isEnabled) {
+      notifyChannel(config.channel);
     }
   }
 }

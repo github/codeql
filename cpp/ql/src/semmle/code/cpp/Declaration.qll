@@ -123,6 +123,13 @@ abstract class Declaration extends Locatable, @declaration {
   /** Holds if this declaration has the given name in the global namespace. */
   predicate hasGlobalName(string name) { this.hasQualifiedName("", "", name) }
 
+  /** Holds if this declaration has the given name in the global namespace or the `std` namespace. */
+  predicate hasGlobalOrStdName(string name) {
+    this.hasGlobalName(name)
+    or
+    this.hasQualifiedName("std", "", name)
+  }
+
   /** Gets a specifier of this declaration. */
   abstract Specifier getASpecifier();
 
@@ -193,19 +200,82 @@ abstract class Declaration extends Locatable, @declaration {
 
   /**
    * Gets a template argument used to instantiate this declaration from a template.
-   * When called on a template, this will return a template parameter.
+   * When called on a template, this will return a template parameter type for
+   * both typed and non-typed parameters.
    */
-  final Type getATemplateArgument() { result = getTemplateArgument(_) }
+  final Locatable getATemplateArgument() { result = getTemplateArgument(_) }
+
+  /**
+   * Gets a template argument used to instantiate this declaration from a template.
+   * When called on a template, this will return a non-typed template
+   * parameter value.
+   */
+  final Locatable getATemplateArgumentKind() { result = getTemplateArgumentKind(_) }
 
   /**
    * Gets the `i`th template argument used to instantiate this declaration from a
-   * template. When called on a template, this will return the `i`th template parameter.
+   * template.
+   *
+   * For example:
+   *
+   * `template<typename T, T X> class Foo;`
+   *
+   * Will have `getTemplateArgument(0)` return `T`, and
+   * `getTemplateArgument(1)` return `X`.
+   *
+   * `Foo<int, 1> bar;
+   *
+   * Will have `getTemplateArgument())` return `int`, and
+   * `getTemplateArgument(1)` return `1`.
    */
-  Type getTemplateArgument(int index) { none() }
+  final Locatable getTemplateArgument(int index) {
+    if exists(getTemplateArgumentValue(index))
+    then result = getTemplateArgumentValue(index)
+    else result = getTemplateArgumentType(index)
+  }
+
+  /**
+   * Gets the `i`th template argument value used to instantiate this declaration
+   * from a template. When called on a template, this will return the `i`th template
+   * parameter value if it exists.
+   *
+   * For example:
+   *
+   * `template<typename T, T X> class Foo;`
+   *
+   * Will have `getTemplateArgumentKind(1)` return `T`, and no result for
+   * `getTemplateArgumentKind(0)`.
+   *
+   * `Foo<int, 10> bar;
+   *
+   * Will have `getTemplateArgumentKind(1)` return `int`, and no result for
+   * `getTemplateArgumentKind(0)`.
+   */
+  final Locatable getTemplateArgumentKind(int index) {
+    if exists(getTemplateArgumentValue(index))
+    then result = getTemplateArgumentType(index)
+    else none()
+  }
 
   /** Gets the number of template arguments for this declaration. */
   final int getNumberOfTemplateArguments() {
     result = count(int i | exists(getTemplateArgument(i)))
+  }
+
+  private Type getTemplateArgumentType(int index) {
+    class_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    function_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    variable_template_argument(underlyingElement(this), index, unresolveElement(result))
+  }
+
+  private Expr getTemplateArgumentValue(int index) {
+    class_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
   }
 }
 

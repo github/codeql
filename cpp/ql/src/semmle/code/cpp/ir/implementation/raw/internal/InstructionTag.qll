@@ -28,6 +28,7 @@ newtype TInstructionTag =
   UnmodeledDefinitionTag() or
   UnmodeledUseTag() or
   AliasedDefinitionTag() or
+  AliasedUseTag() or
   SwitchBranchTag() or
   CallTargetTag() or
   CallTag() or
@@ -46,6 +47,7 @@ newtype TInstructionTag =
   ConditionValueResultLoadTag() or
   BoolConversionConstantTag() or
   BoolConversionCompareTag() or
+  ResultCopyTag() or
   LoadTag() or // Implicit load due to lvalue-to-rvalue conversion
   CatchTag() or
   ThrowTag() or
@@ -123,6 +125,8 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = UnmodeledUseTag() and result = "UnmodeledUse"
   or
   tag = AliasedDefinitionTag() and result = "AliasedDef"
+  or
+  tag = AliasedUseTag() and result = "AliasedUse"
   or
   tag = SwitchBranchTag() and result = "SwitchBranch"
   or

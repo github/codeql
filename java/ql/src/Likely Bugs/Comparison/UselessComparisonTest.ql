@@ -132,6 +132,11 @@ Expr overFlowCand() {
   result.(AssignExpr).getRhs() = overFlowCand()
   or
   result.(LocalVariableDeclExpr).getInit() = overFlowCand()
+  or
+  exists(ConditionalExpr c | c = result |
+    c.getTrueExpr() = overFlowCand() and
+    c.getFalseExpr() = overFlowCand()
+  )
 }
 
 predicate positiveOrNegative(Expr e) { positive(e) or negative(e) }

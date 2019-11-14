@@ -342,11 +342,6 @@ private module Cached {
   }
 
   cached
-  Language::StringLiteral getInstructionStringLiteral(Instruction instruction) {
-    result = getOldInstruction(instruction).(OldIR::StringConstantInstruction).getValue()
-  }
-
-  cached
   Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
     result = getOldInstruction(instruction)
           .(OldIR::BuiltInOperationInstruction)
@@ -401,7 +396,11 @@ private predicate hasChiNode(Alias::VirtualVariable vvar, OldInstruction def) {
     defLocation.getVirtualVariable() = vvar and
     // If the definition totally (or exactly) overlaps the virtual variable, then there's no need for a `Chi`
     // instruction.
-    Alias::getOverlap(defLocation, vvar) instanceof MayPartiallyOverlap
+    (
+      Alias::getOverlap(defLocation, vvar) instanceof MayPartiallyOverlap or
+      def.getResultMemoryAccess() instanceof IndirectMayMemoryAccess or
+      def.getResultMemoryAccess() instanceof BufferMayMemoryAccess
+    )
   )
 }
 
@@ -714,7 +713,10 @@ module DefUse {
       defLocation = Alias::getResultMemoryLocation(def) and
       block.getInstruction(index) = def and
       overlap = Alias::getOverlap(defLocation, useLocation) and
-      if overlap instanceof MayPartiallyOverlap
+      if
+        overlap instanceof MayPartiallyOverlap or
+        def.getResultMemoryAccess() instanceof IndirectMayMemoryAccess or
+        def.getResultMemoryAccess() instanceof BufferMayMemoryAccess
       then offset = (index * 2) + 1 // The use will be connected to the definition on the `Chi` instruction.
       else offset = index * 2 // The use will be connected to the definition on the original instruction.
     )

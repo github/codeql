@@ -110,7 +110,7 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
     instr = operand.getUse() and
     (
       // Converting to a non-virtual base class adds the offset of the base class.
-      exists(ConvertToBaseInstruction convert |
+      exists(ConvertToNonVirtualBaseInstruction convert |
         convert = instr and
         bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
       )
@@ -307,6 +307,10 @@ predicate variableAddressEscapes(IRVariable var) {
 predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) {
   // The address of a variable points to that variable, at offset 0.
   instr.(VariableAddressInstruction).getIRVariable() = var and
+  bitOffset = 0
+  or
+  // A string literal is just a special read-only global variable.
+  instr.(StringConstantInstruction).getIRVariable() = var and
   bitOffset = 0
   or
   exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |

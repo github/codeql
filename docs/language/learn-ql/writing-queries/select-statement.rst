@@ -27,7 +27,7 @@ If you look at some of the LGTM queries, you'll see that they can select extra e
 Developing a select statement
 -----------------------------
 
-Here's a simple query that uses the standard QL ``CodeDuplication.qll`` library to identify similar files.
+Here's a simple query that uses the standard CodeQL ``CodeDuplication.qll`` library to identify similar files.
 
 Basic select statement
 ~~~~~~~~~~~~~~~~~~~~~~

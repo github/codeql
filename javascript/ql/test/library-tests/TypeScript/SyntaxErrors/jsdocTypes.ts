@@ -23,5 +23,3 @@ var nns: Array<?number>;
 var dns: Array<!number>;
 var anys: Array<*>;
 var vars: Array<...number>;
-
-// semmle-extractor-options: --tolerate-parse-errors

@@ -9,6 +9,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) | reliability, japanese-era | This query is a combination of two old queries that were identical in purpose but separate as an implementation detail.  This new query replaces Hard-coded Japanese era start date in call (`cpp/japanese-era/constructor-or-method-with-exact-era-date`) and Hard-coded Japanese era start date in struct (`cpp/japanese-era/struct-with-exact-era-date`). |
+| Signed overflow check (`cpp/signed-overflow-check`) | correctness, reliability | Finds overflow checks that rely on signed integer addition to overflow, which has undefined behavior. Example: `a + b < a`. |
 
 ## Changes to existing queries
 
@@ -23,8 +24,10 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 | Too many arguments to formatting function (`cpp/too-many-format-arguments`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
 | Unclear comparison precedence (`cpp/comparison-precedence`) | Fewer false positive results | False positives involving template classes and functions have been fixed. |
 | Comparison of narrow type with wide type in loop condition (`cpp/comparison-with-wider-type`) | Higher precision | The precision of this query has been increased to "high" as the alerts from this query have proved to be valuable on real-world projects. With this precision, results are now displayed by default in LGTM. |
+| Non-constant format string (`cpp/non-constant-format`) | Fewer false positive results | Fixed false positives resulting from mistmatching declarations of a formatting function. |
+| Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | More correct results and fewer false positive results | This query now understands explicitly specified argument numbers in format strings, such as the `1$` in `%1$s`. |
 
-## Changes to QL libraries
+## Changes to libraries
 
 * The data-flow library has been extended with a new feature to aid debugging.
   Instead of specifying `isSink(Node n) { any() }` on a configuration to
@@ -39,6 +42,10 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   definition of `x` when `x` is a variable of pointer type. It no longer
   considers deep paths such as `f(&x.myField)` to be definitions of `x`. These
   changes are in line with the user expectations we've observed.
+* The data-flow library now makes it easier to specify barriers/sanitizers
+  arising from guards by overriding the predicate
+  `isBarrierGuard`/`isSanitizerGuard` on data-flow and taint-tracking
+  configurations respectively.
 * There is now a `DataFlow::localExprFlow` predicate and a
   `TaintTracking::localExprTaint` predicate to make it easy to use the most
   common case of local data flow and taint: from one `Expr` to another.
@@ -46,7 +53,14 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   clarity (e.g. `isOutReturnPointer()` to `isReturnValueDeref()`). The existing member predicates
   have been deprecated, and will be removed in a future release. Code that uses the old member
   predicates should be updated to use the corresponding new member predicate.
+* The predicates `Declaration.hasStdName()` and `Declaration.hasGlobalOrStdName`
+  have been added, simplifying handling of C++ standard library functions.
 * The control-flow graph is now computed in QL, not in the extractor. This can
   lead to regressions (or improvements) in how queries are optimized because
   optimization in QL relies on static size estimates, and the control-flow edge
   relations will now have different size estimates than before.
+* Support has been added for non-type template arguments.  This means that the
+  return type of `Declaration::getTemplateArgument()` and
+  `Declaration::getATemplateArgument` have changed to `Locatable`.  See the
+  documentation for `Declaration::getTemplateArgument()` and
+  `Declaration::getTemplateArgumentKind()` for details.

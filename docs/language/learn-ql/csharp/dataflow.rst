@@ -4,10 +4,10 @@ Analyzing data flow in C#
 Overview
 --------
 
-This topic describes how data flow analysis is implemented in the QL for C# library and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the QL libraries for local data flow, global data flow and taint tracking.
+This topic describes how data flow analysis is implemented in the CodeQL libraries for C# and includes examples to help you write your own data flow queries.
+The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
 
-For a more general introduction to modeling data flow in QL, see :doc:`Introduction to data flow analysis in QL <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
@@ -548,6 +548,6 @@ This can be adapted from the ``SystemUriFlow`` class:
 What next?
 ----------
 
--  Learn about the QL standard libraries used to write queries for C# in :doc:`Introducing the C# libraries <introduce-libraries-csharp>`.
+-  Learn about the standard libraries used to write queries for C# in :doc:`Introducing the C# libraries <introduce-libraries-csharp>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

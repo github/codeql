@@ -99,6 +99,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       result = this.getInstruction(UnmodeledUseTag())
       or
       tag = UnmodeledUseTag() and
+      result = getInstruction(AliasedUseTag())
+      or
+      tag = AliasedUseTag() and
       result = this.getInstruction(ExitFunctionTag())
     )
   }
@@ -172,6 +175,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       opcode instanceof Opcode::UnmodeledUse and
       resultType = getVoidType()
       or
+      tag = AliasedUseTag() and
+      opcode instanceof Opcode::AliasedUse and
+      resultType = getVoidType()
+      or
       tag = ExitFunctionTag() and
       opcode instanceof Opcode::ExitFunction and
       resultType = getVoidType()
@@ -192,6 +199,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     operandTag instanceof UnmodeledUseOperandTag and
     result = getUnmodeledDefinitionInstruction()
     or
+    tag = AliasedUseTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getUnmodeledDefinitionInstruction()
+    or
     tag = ReturnTag() and
     not this.getReturnType() instanceof VoidType and
     (
@@ -208,6 +219,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     not this.getReturnType() instanceof VoidType and
     operandTag instanceof LoadOperandTag and
     result = getTypeForPRValue(this.getReturnType())
+    or
+    tag = AliasedUseTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getUnknownType()
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {

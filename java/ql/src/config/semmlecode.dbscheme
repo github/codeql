@@ -494,6 +494,7 @@ case @stmt.kind of
 | 20 = @superconstructorinvocationstmt
 | 21 = @case
 | 22 = @catchclause
+| 23 = @yieldstmt
 ;
 
 #keyset[parent,idx]

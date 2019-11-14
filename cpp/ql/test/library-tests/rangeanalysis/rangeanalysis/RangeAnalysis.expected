@@ -51,7 +51,6 @@
 | test.cpp:163:12:163:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | -1 | false | CompareNE: ... != ... | test.cpp:160:9:160:16 | test.cpp:160:9:160:16 |
 | test.cpp:163:12:163:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | -1 | true | CompareLT: ... < ... | test.cpp:154:6:154:10 | test.cpp:154:6:154:10 |
 | test.cpp:163:12:163:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | -1 | true | CompareNE: ... != ... | test.cpp:160:9:160:16 | test.cpp:160:9:160:16 |
-| test.cpp:167:12:167:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | 0 | false | CompareLT: ... < ... | test.cpp:154:6:154:10 | test.cpp:154:6:154:10 |
 | test.cpp:167:12:167:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | 1 | false | CompareEQ: ... == ... | test.cpp:166:9:166:16 | test.cpp:166:9:166:16 |
 | test.cpp:167:12:167:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | 1 | true | CompareEQ: ... == ... | test.cpp:166:9:166:16 | test.cpp:166:9:166:16 |
 | test.cpp:169:12:169:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | 0 | false | CompareLT: ... < ... | test.cpp:154:6:154:10 | test.cpp:154:6:154:10 |

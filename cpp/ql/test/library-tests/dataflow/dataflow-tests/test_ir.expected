@@ -1,8 +1,27 @@
+| BarrierGuard.cpp:9:10:9:15 | Load: source | BarrierGuard.cpp:5:19:5:24 | InitializeParameter: source |
+| BarrierGuard.cpp:15:10:15:15 | Load: source | BarrierGuard.cpp:13:17:13:22 | InitializeParameter: source |
+| BarrierGuard.cpp:25:10:25:15 | Load: source | BarrierGuard.cpp:21:17:21:22 | InitializeParameter: source |
+| BarrierGuard.cpp:31:10:31:15 | Load: source | BarrierGuard.cpp:29:16:29:21 | InitializeParameter: source |
+| BarrierGuard.cpp:33:10:33:15 | Load: source | BarrierGuard.cpp:29:16:29:21 | InitializeParameter: source |
+| BarrierGuard.cpp:53:13:53:13 | Load: x | BarrierGuard.cpp:49:10:49:15 | Call: call to source |
+| BarrierGuard.cpp:55:13:55:13 | Load: x | BarrierGuard.cpp:49:10:49:15 | Call: call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | Convert: (int)... | acrossLinkTargets.cpp:19:27:19:32 | Call: call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | Load: x | acrossLinkTargets.cpp:19:27:19:32 | Call: call to source |
 | clang.cpp:37:10:37:11 | Load: m2 | clang.cpp:34:32:34:37 | Call: call to source |
 | clang.cpp:41:18:41:19 | Load: m2 | clang.cpp:39:42:39:47 | Call: call to source |
 | clang.cpp:45:17:45:18 | Load: m2 | clang.cpp:43:35:43:40 | Call: call to source |
+| dispatch.cpp:11:38:11:38 | Load: x | dispatch.cpp:37:19:37:24 | Call: call to source |
+| dispatch.cpp:11:38:11:38 | Load: x | dispatch.cpp:45:18:45:23 | Call: call to source |
+| dispatch.cpp:23:38:23:38 | Load: x | dispatch.cpp:33:18:33:23 | Call: call to source |
+| dispatch.cpp:23:38:23:38 | Load: x | dispatch.cpp:41:17:41:22 | Call: call to source |
+| dispatch.cpp:31:16:31:24 | Call: call to isSource1 | dispatch.cpp:22:37:22:42 | Call: call to source |
+| dispatch.cpp:32:16:32:24 | Call: call to isSource2 | dispatch.cpp:16:37:16:42 | Call: call to source |
+| dispatch.cpp:35:16:35:25 | Call: call to notSource1 | dispatch.cpp:9:37:9:42 | Call: call to source |
+| dispatch.cpp:36:16:36:25 | Call: call to notSource2 | dispatch.cpp:10:37:10:42 | Call: call to source |
+| dispatch.cpp:39:15:39:23 | Call: call to isSource1 | dispatch.cpp:22:37:22:42 | Call: call to source |
+| dispatch.cpp:40:15:40:23 | Call: call to isSource2 | dispatch.cpp:16:37:16:42 | Call: call to source |
+| dispatch.cpp:43:15:43:24 | Call: call to notSource1 | dispatch.cpp:9:37:9:42 | Call: call to source |
+| dispatch.cpp:44:15:44:24 | Call: call to notSource2 | dispatch.cpp:10:37:10:42 | Call: call to source |
 | test.cpp:7:8:7:9 | Load: t1 | test.cpp:6:12:6:17 | Call: call to source |
 | test.cpp:9:8:9:9 | Load: t1 | test.cpp:6:12:6:17 | Call: call to source |
 | test.cpp:10:8:10:9 | Load: t2 | test.cpp:6:12:6:17 | Call: call to source |

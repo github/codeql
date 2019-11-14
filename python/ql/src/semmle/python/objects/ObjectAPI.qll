@@ -99,6 +99,12 @@ class Value extends TObject {
         this.(ObjectInternal).hasAttribute(name)
     }
 
+    /** Whether this value is absent from the database, but has been inferred to likely exist */
+    predicate isAbsent() {
+        this instanceof AbsentModuleObjectInternal
+        or
+        this instanceof AbsentModuleAttributeObjectInternal
+    }
 }
 
 /** Class representing modules in the Python program

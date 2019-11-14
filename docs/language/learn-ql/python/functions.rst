@@ -1,14 +1,16 @@
 Tutorial: Functions
 ===================
 
-This example uses the standard QL class ``Function`` (see :doc:`Introducing the Python libraries <introduce-libraries-python>`).
+This example uses the standard CodeQL class ``Function`` (see :doc:`Introducing the Python libraries <introduce-libraries-python>`).
 
 Finding all functions called "get..."
 -------------------------------------
 
 In this example we look for all the "getters" in a program. Programmers moving to Python from Java are often tempted to write lots of getter and setter methods, rather than use properties. We might want to find those methods.
 
-Using the member predicate ``Function.getName()``, we can list all of the getter functions in a snapshot:
+Using the member predicate ``Function.getName()``, we can list all of the getter functions in a database:
+
+.. pull-quote::
 
    Tip
 
@@ -77,5 +79,5 @@ In a later tutorial we will see how to use the type-inference library to find ca
 What next?
 ----------
 
--  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
+-  Experiment with the worked examples in the following tutorial topics: :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, and :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

@@ -105,7 +105,7 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
     (
       // REVIEW: See the REVIEW comment bellow
       //      // Converting to a non-virtual base class adds the offset of the base class.
-      //      exists(ConvertToBaseInstruction convert |
+      //      exists(ConvertToNonVirtualBaseInstruction convert |
       //        convert = instr and
       //        bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
       //      )

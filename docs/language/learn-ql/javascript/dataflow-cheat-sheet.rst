@@ -1,14 +1,14 @@
 Data flow cheat sheet
 =====================
 
-This page describes parts of the JavaScript QL libraries commonly used for variant analysis and in data flow queries.
+This page describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
 
 Taint tracking path queries
 ---------------------------
 
 Use the following template to create a taint tracking path query:
 
-..  code-block:: ql
+.. code-block:: ql
 
     /**
      * @kind path-problem
@@ -134,10 +134,10 @@ Files
 
 -  `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__,
    `Folder <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Folder.html>`__ extends
-   `Container <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Container.html>`__ -- file or folder in the snapshot
+   `Container <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Container.html>`__ -- file or folder in the database
 
    -  `getBaseName <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/predicate.Files$Container$getBaseName.0.html>`__ -- the name of the file or folder
-   -  `getRelativePath <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/predicate.Files$Container$getRelativePath.0.html>`__ -- path relative to the snapshot root
+   -  `getRelativePath <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/predicate.Files$Container$getRelativePath.0.html>`__ -- path relative to the database root
 
 AST nodes
 ---------

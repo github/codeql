@@ -9,6 +9,7 @@ private import InstructionTag
 private import TranslatedCondition
 private import TranslatedFunction
 private import TranslatedStmt
+private import TranslatedExpr
 private import IRConstruction
 private import semmle.code.cpp.models.interfaces.SideEffect
 
@@ -235,6 +236,15 @@ newtype TTranslatedElement =
     expr.hasLValueToRValueConversion() and
     not ignoreLoad(expr)
   } or
+  TTranslatedResultCopy(Expr expr) {
+    not ignoreExpr(expr) and
+    exprNeedsCopyIfNotLoaded(expr) and
+    // Doesn't have a TTranslatedLoad
+    not (
+      expr.hasLValueToRValueConversion() and
+      not ignoreLoad(expr)
+    )
+  } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
     not ignoreExpr(expr) and
@@ -380,8 +390,10 @@ newtype TTranslatedElement =
   TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
-  // The side effects of a `Call` {
-  TTranslatedSideEffects(Call expr) { exists(TTranslatedArgumentSideEffect(expr, _, _, _)) } or // A precise side effect of an argument to a `Call` {
+  // The side effects of a `Call`
+  TTranslatedSideEffects(Call expr) {
+    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or expr instanceof ConstructorCall
+  } or // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
       expr = call.getArgument(n).getFullyConverted()

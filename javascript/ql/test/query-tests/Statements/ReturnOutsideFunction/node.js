@@ -1,5 +1,4 @@
 // not a syntax error, but still NOT OK
 return 42;
 
-// semmle-extractor-options: --platform
-// semmle-extractor-options: node
+require("path") // ensure this is treated as Node.js code
