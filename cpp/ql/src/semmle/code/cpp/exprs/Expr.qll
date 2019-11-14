@@ -534,7 +534,7 @@ class ParenthesizedBracedInitializerList extends Expr, @braced_init_list {
  * It is typically used to raise the syntactic precedence of the subexpression that
  * it contains.  For example:
  * ```
- * int d = a & ( b | c )
+ * int d = a & ( b | c );
  * ```
  */
 class ParenthesisExpr extends Conversion, @parexpr {
