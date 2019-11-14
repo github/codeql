@@ -88,7 +88,7 @@ class GTExpr extends RelationalOperation, @gtexpr {
 }
 
 /**
- * A C/C++ lesser than expression.
+ * A C/C++ less than expression.
  * ```
  * bool c = (a < b);
  * ```
@@ -120,7 +120,7 @@ class GEExpr extends RelationalOperation, @geexpr {
 }
 
 /**
- * A C/C++ lesser than or equal expression.
+ * A C/C++ less than or equal expression.
  * ```
  * bool c = (a <= b);
  * ```
