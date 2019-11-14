@@ -41,23 +41,26 @@ predicate escapingScheme(string metachar, string regex) {
 }
 
 /**
- * A method call that performs string replacement.
+ * A call to `String.prototype.replace` that replaces all instances of a pattern.
  */
-abstract class Replacement extends DataFlow::Node {
-  /**
-   * Holds if this replacement replaces the string `input` with `output`.
-   */
-  abstract predicate replaces(string input, string output);
+class Replacement extends StringReplaceCall {
+  Replacement() {
+    isGlobal()
+  }
 
   /**
    * Gets the input of this replacement.
    */
-  abstract DataFlow::Node getInput();
+  DataFlow::Node getInput() {
+    result = this.getReceiver()
+  }
 
   /**
    * Gets the output of this replacement.
    */
-  abstract DataFlow::SourceNode getOutput();
+  DataFlow::SourceNode getOutput() {
+    result = this
+  }
 
   /**
    * Holds if this replacement escapes `char` using `metachar`.
@@ -120,27 +123,6 @@ abstract class Replacement extends DataFlow::Node {
         not succ.escapes(_, metachar) and result = succ.getALaterUnescaping(metachar)
       )
     )
-  }
-}
-
-/**
- * A call to `String.prototype.replace` that replaces all instances of a pattern.
- */
-class GlobalStringReplacement extends Replacement, StringReplaceCall {
-  GlobalStringReplacement() {
-    isGlobal()
-  }
-
-  override predicate replaces(string input, string output) {
-    StringReplaceCall.super.replaces(input, output)
-  }
-
-  override DataFlow::Node getInput() {
-    result = this.getReceiver()
-  }
-
-  override DataFlow::SourceNode getOutput() {
-    result = this
   }
 }
 
