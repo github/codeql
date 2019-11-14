@@ -1,8 +1,8 @@
 rightHandSide
 | tst.ts:1:1:1:16 | type A = number; | number |
-| tst.ts:2:1:2:16 | type B<T> = T[]; | B<T> |
+| tst.ts:2:1:2:16 | type B<T> = T[]; | T[] |
 | tst.ts:8:10:8:20 | type C = A; | number |
-| tst.ts:15:1:15:23 | type Un ...  \| Two; | Union |
+| tst.ts:15:1:15:23 | type Un ...  \| Two; | One \| Two |
 #select
 | tst.ts:1:1:1:16 | type A = number; | tst.ts:1:6:1:6 | A | 0 | tst.ts:1:10:1:15 | number |
 | tst.ts:2:1:2:16 | type B<T> = T[]; | tst.ts:2:6:2:6 | B | 1 | tst.ts:2:13:2:15 | T[] |

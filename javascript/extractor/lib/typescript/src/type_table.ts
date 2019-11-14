@@ -372,9 +372,9 @@ export class TypeTable {
   /**
    * Gets the canonical ID for the given type, generating a fresh ID if necessary.
    */
-  public buildType(type: ts.Type): number | null {
+  public buildType(type: ts.Type, unfoldAlias: boolean): number | null {
     this.isInShallowTypeContext = false;
-    let id = this.getId(type);
+    let id = this.getId(type, unfoldAlias);
     this.iterateBuildTypeWorklist();
     if (id == null) return null;
     return id;
@@ -385,7 +385,7 @@ export class TypeTable {
    *
    * Returns `null` if we do not support extraction of this type.
    */
-  public getId(type: ts.Type): number | null {
+  public getId(type: ts.Type, unfoldAlias: boolean): number | null {
     if (this.typeRecursionDepth > 100) {
       // Ignore infinitely nested anonymous types, such as `{x: {x: {x: ... }}}`.
       // Such a type can't be written directly with TypeScript syntax (as it would need to be named),
@@ -397,12 +397,12 @@ export class TypeTable {
       type = this.typeChecker.getBaseTypeOfLiteralType(type);
     }
     ++this.typeRecursionDepth;
-    let content = this.getTypeString(type);
+    let content = this.getTypeString(type, unfoldAlias);
     --this.typeRecursionDepth;
     if (content == null) return null; // Type not supported.
     let id = this.typeIds.get(content);
     if (id == null) {
-      let stringValue = this.stringifyType(type);
+      let stringValue = this.stringifyType(type, unfoldAlias);
       if (stringValue == null) {
         return null; // Type not supported.
       }
@@ -432,14 +432,14 @@ export class TypeTable {
     return id;
   }
 
-  private stringifyType(type: ts.Type): string {
+  private stringifyType(type: ts.Type, unfoldAlias: boolean): string {
+    let formatFlags = unfoldAlias
+        ? ts.TypeFormatFlags.InTypeAlias
+        : ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope;
     let toStringValue: string;
     // Some types can't be stringified. Just discard the type if we can't stringify it.
     try {
-      toStringValue = this.typeChecker.typeToString(
-            type,
-            undefined,
-            ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope);
+      toStringValue = this.typeChecker.typeToString(type, undefined, formatFlags);
     } catch (e) {
       console.warn("Recovered from a compiler crash while stringifying a type. Discarding the type.");
       console.warn(e.stack);
@@ -477,9 +477,9 @@ export class TypeTable {
   /**
    * Gets a string representing the kind and contents of the given type.
    */
-  private getTypeString(type: AugmentedType): string | null {
+  private getTypeString(type: AugmentedType, unfoldAlias: boolean): string | null {
     // Reference to a type alias.
-    if (type.aliasSymbol != null) {
+    if (!unfoldAlias && type.aliasSymbol != null) {
       let tag = "reference;" + this.getSymbolId(type.aliasSymbol);
       return type.aliasTypeArguments == null
           ? tag
@@ -499,7 +499,7 @@ export class TypeTable {
       if (flags & ts.TypeFlags.TypeVariable) {
         let enclosingType = getEnclosingTypeOfThisType(type);
         if (enclosingType != null) {
-          return "this;" + this.getId(enclosingType);
+          return "this;" + this.getId(enclosingType, false);
         } else if (symbol.parent == null) {
           // The type variable is bound on a call signature. Only extract it by name.
           return "lextypevar;" + symbol.name;
@@ -730,7 +730,7 @@ export class TypeTable {
   private makeTypeStringVector(tag: string, types: ReadonlyArray<ts.Type>, length = types.length): string | null {
     let hash = tag;
     for (let i = 0; i < length; ++i) {
-      let id = this.getId(types[i]);
+      let id = this.getId(types[i], false);
       if (id == null) return null;
       hash += ";" + id;
     }
@@ -748,7 +748,7 @@ export class TypeTable {
     for (let property of type.getProperties()) {
       let propertyType = this.typeChecker.getTypeOfSymbolAtLocation(property, this.arbitraryAstNode);
       if (propertyType == null) return null;
-      let propertyTypeId = this.getId(propertyType);
+      let propertyTypeId = this.getId(propertyType, false);
       if (propertyTypeId == null) return null;
       hash += ";p" + this.getSymbolId(property) + ';' + propertyTypeId;
     }
@@ -761,13 +761,13 @@ export class TypeTable {
     }
     let indexType = type.getStringIndexType();
     if (indexType != null) {
-      let indexTypeId = this.getId(indexType);
+      let indexTypeId = this.getId(indexType, false);
       if (indexTypeId == null) return null;
       hash += ";s" + indexTypeId;
     }
     indexType = type.getNumberIndexType();
     if (indexType != null) {
-      let indexTypeId = this.getId(indexType);
+      let indexTypeId = this.getId(indexType, false);
       if (indexTypeId == null) return null;
       hash += ";i" + indexTypeId;
     }
@@ -847,7 +847,7 @@ export class TypeTable {
     for (let symbol of props) {
       let propertyType = this.typeChecker.getTypeOfSymbolAtLocation(symbol, this.arbitraryAstNode);
       if (propertyType == null) continue;
-      let propertyTypeId = this.getId(propertyType);
+      let propertyTypeId = this.getId(propertyType, false);
       if (propertyTypeId == null) continue;
       this.propertyLookups.baseTypes.push(id);
       this.propertyLookups.names.push(symbol.name);
@@ -892,7 +892,7 @@ export class TypeTable {
         break;
       }
     }
-    let returnTypeId = this.getId(signature.getReturnType());
+    let returnTypeId = this.getId(signature.getReturnType(), false);
     if (returnTypeId == null) {
       return null;
     }
@@ -901,7 +901,7 @@ export class TypeTable {
       tag += ";" + typeParameter.symbol.name;
       let constraint = typeParameter.getConstraint();
       let constraintId: number;
-      if (constraint == null || (constraintId = this.getId(constraint)) == null) {
+      if (constraint == null || (constraintId = this.getId(constraint, false)) == null) {
         tag += ";";
       } else {
         tag += ";" + constraintId;
@@ -912,7 +912,7 @@ export class TypeTable {
       if (parameterType == null) {
         return null;
       }
-      let parameterTypeId = this.getId(parameterType);
+      let parameterTypeId = this.getId(parameterType, false);
       if (parameterTypeId == null) {
         return null;
       }
@@ -946,7 +946,7 @@ export class TypeTable {
 
   private extractIndexer(baseType: number, indexType: ts.Type, table: IndexerTable) {
     if (indexType == null) return;
-    let indexTypeId = this.getId(indexType);
+    let indexTypeId = this.getId(indexType, false);
     if (indexTypeId == null) return;
     table.baseTypes.push(baseType);
     table.propertyTypes.push(indexTypeId);
@@ -1017,7 +1017,7 @@ export class TypeTable {
     let selfType = this.getSelfType(type);
     if (selfType != null) {
       this.checkExpansiveness(selfType);
-      let id = this.getId(selfType);
+      let id = this.getId(selfType, false);
       return this.expansiveTypes.get(id);
     }
     return false;
@@ -1086,7 +1086,7 @@ export class TypeTable {
     search(type, 0);
 
     function search(type: ts.TypeReference, expansionDepth: number): number | null {
-      let id = typeTable.getId(type);
+      let id = typeTable.getId(type, false);
       if (id == null) return null;
 
       let index = indexTable.get(id);
