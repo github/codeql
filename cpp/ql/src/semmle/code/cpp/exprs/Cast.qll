@@ -646,7 +646,7 @@ class UuidofOperator extends Expr, @uuidof {
  * ```
  * Base *ptr = new Derived;
  * const std::type_info &info1 = typeid(ptr);
- * printf("the type of ptr is: %s\n", typeid(ptr).name);
+ * printf("the type of ptr is: %s\n", typeid(ptr).name());
  * ```
  */
 class TypeidOperator extends Expr, @type_id {
