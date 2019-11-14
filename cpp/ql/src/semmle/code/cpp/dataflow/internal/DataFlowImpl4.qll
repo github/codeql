@@ -314,11 +314,19 @@ private predicate nodeCandFwd1(Node node, Configuration config) {
     )
     or
     // flow out of a callable
-    exists(DataFlowCall call, ReturnNodeExt ret, ReturnKindExt kind |
-      nodeCandFwd1(ret, config) and
-      getReturnPosition(ret) = viableReturnPos(call, kind) and
+    exists(DataFlowCall call, ReturnPosition pos, ReturnKindExt kind |
+      nodeCandFwd1ReturnPosition(pos, config) and
+      pos = viableReturnPos(call, kind) and
       node = kind.getAnOutNode(call)
     )
+  )
+}
+
+pragma[noinline]
+private predicate nodeCandFwd1ReturnPosition(ReturnPosition pos, Configuration config) {
+  exists(ReturnNodeExt ret |
+    nodeCandFwd1(ret, config) and
+    getReturnPosition(ret) = pos
   )
 }
 
@@ -1885,7 +1893,7 @@ private predicate paramFlowsThrough(
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate pathThroughCallable0(
   DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, CallContext cc, AccessPathNil apnil
 ) {
