@@ -228,7 +228,7 @@ class BuiltInOperationHasTrivialConstructor extends BuiltInOperation, @hastrivia
  * A C++ `__has_trivial_copy` built-in operation (used by some implementations
  * of the `<type_traits>` header).
  *
- * Returns true if the type has a trivial (compiler-generated) copy constructor.
+ * Returns true if the type has a trivial copy constructor.
  * ```
  * std::integral_constant< bool, __has_trivial_copy(MyType) > htc;
  * ```
