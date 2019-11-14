@@ -244,7 +244,7 @@ The following data flow configuration tracks data flow from environment variable
    select fopen, "This 'fopen' uses data from $@.",
      getenv, "call to 'getenv'"
 
-The following taint tracking configuration tracks data from a call to ``ntohl`` to an array index operation. It uses the ``Guards`` library to recognize expressions that have been bounds checked and avoid propagating taint through them. It also uses ``isAdditionalTaintStep`` to add flow from loop bounds to loop indexes.
+The following taint-tracking configuration tracks data from a call to ``ntohl`` to an array index operation. It uses the ``Guards`` library to recognize expressions that have been bounds-checked and defines ``isSanitizer`` to prevent taint from propagating through them. It also uses ``isAdditionalTaintStep`` to add flow from loop bounds to loop indexes.
 
 .. code-block:: ql
 
