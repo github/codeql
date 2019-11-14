@@ -4,7 +4,7 @@ import semmle.code.cpp.exprs.BitwiseOperation
 
 /**
  * A non-overloaded binary assignment operation, including `=`, `+=`, `&=`,
- * etc. A C++ overloaded `operator` looks syntactically identical but is instead
+ * etc. A C++ overloaded assignment operation looks syntactically identical but is instead
  * a `FunctionCall`.
  *
  * This is an abstract root QL class for all (non-overloaded) assignments.
