@@ -582,7 +582,7 @@ class BuiltInOperationIsTriviallyDestructible extends BuiltInOperation, @istrivi
  * implementations of the `<type_traits>` header).
  *
  * Returns `true` if the assignment operator `C::operator =(const C& c)` is
- * trivial (compiler-generated).
+ * trivial.
  * ```
  * template<typename T>
  *   struct is_trivially_assignable
