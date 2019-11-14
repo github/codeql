@@ -1460,7 +1460,7 @@ class TemplateParameter extends UserType {
  * may be omitted):
  * ```
  * template <template <typename T> class Container, class Elem>
- * void foo(const ContainerH<Elem> &value) { }
+ * void foo(const Container<Elem> &value) { }
  * ```
  */
 class TemplateTemplateParameter extends TemplateParameter {
