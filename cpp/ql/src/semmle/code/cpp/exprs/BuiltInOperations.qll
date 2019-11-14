@@ -213,7 +213,7 @@ class BuiltInOperationHasTrivialAssign extends BuiltInOperation, @hastrivialassi
  * A C++ `__has_trivial_constructor` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns `true` if the type has a trivial (compiler-generated) constructor.
+ * Returns `true` if the type has a trivial constructor.
  * ```
  * bool v = __has_trivial_constructor(MyType);
  * ```
