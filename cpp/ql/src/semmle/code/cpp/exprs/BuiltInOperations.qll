@@ -566,7 +566,7 @@ class BuiltInOperationIsNothrowDestructible extends BuiltInOperation, @isnothrow
  * implementations of the `<type_traits>` header).
  *
  * Returns `true` if the type is destructible and whose destructor, and those
- * of member data and any super`class`es are all trivial (compiler-generated).
+ * of member data and any superclasses are all trivial.
  * ```
  * bool v = __is_trivially_destructible(MyType);
  * ```
