@@ -1,6 +1,7 @@
 + semmlecode-javascript-queries/DOM/TargetBlank.ql: /Security/CWE/CWE-200
 + semmlecode-javascript-queries/Electron/EnablingNodeIntegration.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-020/IncompleteHostnameRegExp.ql: /Security/CWE/CWE-020
++ semmlecode-javascript-queries/Security/CWE-020/IncompleteUrlSchemeCheck.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/IncompleteUrlSubstringSanitization.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/IncorrectSuffixCheck.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/MissingRegExpAnchor.ql: /Security/CWE/CWE-020

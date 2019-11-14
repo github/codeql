@@ -1,0 +1,1 @@
+| IncompleteUrlSchemeCheck.js:3:9:3:35 | u.start ... ript:") | This check does not consider data: and vbscript:. |
