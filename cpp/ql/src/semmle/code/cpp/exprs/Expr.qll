@@ -557,7 +557,7 @@ class ErrorExpr extends Expr, @errorexpr {
 /**
  * A Microsoft C/C++ __assume expression.
  *
- * Unlike `assert`, `__assume` is evaluated at compile-time and
+ * Unlike `assert`, `__assume` is evaluated at compile time and
  * is treated as a hint to the optimizer
  * ```
  * __assume(ptr < end_buf);
