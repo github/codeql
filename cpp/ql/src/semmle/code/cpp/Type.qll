@@ -1374,8 +1374,14 @@ class PointerToMemberType extends Type, @ptrtomember {
 }
 
 /**
- * A C/C++ routine type. Conceptually, this is what results from stripping away the pointer from a function pointer type.
- * It has no corresponding syntax in C/C++.
+ * A C/C++ routine type. Conceptually, this is what results from stripping
+ * away the pointer from a function pointer type.  It can also occur in C++
+ * code, for example the base type of `myRoutineType` in the following code:
+ * ```
+ * using myRoutineType = int(int);
+ *
+ * myRoutineType *fp = 0;
+ * ```
  */
 class RoutineType extends Type, @routinetype {
   /** a printable representation of this named element */
