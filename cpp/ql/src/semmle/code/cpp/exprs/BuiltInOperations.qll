@@ -197,7 +197,7 @@ class BuiltInOperationHasNoThrowCopy extends BuiltInOperation, @hasnothrowcopy {
  * A C++ `__has_trivial_assign` built-in operation (used by some implementations
  * of the `<type_traits>` header).
  *
- * Returns `true` if the type has a trivial (compiler-generated) assignment
+ * Returns `true` if the type has a trivial assignment
  * operator (`operator =`).
  * ```
  * bool v = __has_trivial_assign(MyType);
