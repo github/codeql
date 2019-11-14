@@ -81,6 +81,7 @@ public class TypeExtractor {
       extractType(i);
     }
     extractPropertyLookups(table.getPropertyLookups());
+    extractTypeAliases(table.getTypeAliases());
     for (int i = 0; i < table.getNumberOfSymbols(); ++i) {
       extractSymbol(i);
     }
@@ -158,6 +159,19 @@ public class TypeExtractor {
           trapWriter.globalID("type;" + baseType),
           name,
           trapWriter.globalID("type;" + propertyType));
+    }
+  }
+
+  private void extractTypeAliases(JsonObject aliases) {
+    JsonArray aliasTypes = aliases.get("aliasTypes").getAsJsonArray();
+    JsonArray underlyingTypes = aliases.get("underlyingTypes").getAsJsonArray();
+    for (int i = 0; i < aliasTypes.size(); ++i) {
+      int aliasType = aliasTypes.get(i).getAsInt();
+      int underlyingType = underlyingTypes.get(i).getAsInt();
+      trapWriter.addTuple(
+          "type_alias",
+          trapWriter.globalID("type;" + aliasType),
+          trapWriter.globalID("type;" + underlyingType));
     }
   }
 

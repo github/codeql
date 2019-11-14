@@ -703,6 +703,10 @@ type_property(
   varchar(900) name: string ref,
   int propertyType: @type ref);
 
+type_alias(
+  unique int aliasType: @type ref,
+  int underlyingType: @type ref);
+
 @literaltype = @stringliteraltype | @numberliteraltype | @booleanliteraltype | @bigintliteraltype;
 @type_with_literal_value = @stringliteraltype | @numberliteraltype | @bigintliteraltype;
 type_literal_value(

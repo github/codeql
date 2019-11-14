@@ -2288,6 +2288,24 @@ class EnumLiteralType extends TypeReference {
 }
 
 /**
+ * A type that refers to a type alias.
+ */
+class TypeAliasReference extends TypeReference {
+  TypeAliasReference() {
+    type_alias(this, _)
+  }
+
+  /**
+   * Gets the type behind the type alias.
+   *
+   * For example, for `type B<T> = T[][]`, this maps the type `B<number>` to `number[][]`.
+   */
+  Type getAliasedType() {
+    type_alias(this, result)
+  }
+}
+
+/**
  * An anonymous interface type, such as `{ x: number }`.
  */
 class AnonymousInterfaceType extends Type, @objecttype { }

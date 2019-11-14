@@ -103,6 +103,16 @@ interface PropertyLookupTable {
 }
 
 /**
+ * Encodes `(aliasType, underlyingType)` tuples as two staggered arrays.
+ *
+ * Such a tuple denotes that `aliasType` is an alias for `underlyingType`.
+ */
+interface TypeAliasTable {
+  aliasTypes: number[];
+  underlyingTypes: number[];
+}
+
+/**
  * Encodes type signature tuples `(baseType, kind, index, signature)` as four
  * staggered arrays.
  */
@@ -287,6 +297,11 @@ export class TypeTable {
     propertyTypes: [],
   };
 
+  private typeAliases: TypeAliasTable = {
+    aliasTypes: [],
+    underlyingTypes: [],
+  };
+
   private signatureMappings: SignatureTable = {
     baseTypes: [],
     kinds: [],
@@ -304,7 +319,7 @@ export class TypeTable {
     propertyTypes: [],
   };
 
-  private buildTypeWorklist: [ts.Type, number][] = [];
+  private buildTypeWorklist: [ts.Type, number, boolean][] = [];
 
   private expansiveTypes: Map<number, boolean> = new Map();
 
@@ -409,7 +424,7 @@ export class TypeTable {
       id = this.typeIds.size;
       this.typeIds.set(content, id);
       this.typeToStringValues.push(stringValue);
-      this.buildTypeWorklist.push([type, id]);
+      this.buildTypeWorklist.push([type, id, unfoldAlias]);
       this.typeExtractionState.push(
         this.isInShallowTypeContext ? TypeExtractionState.PendingShallow : TypeExtractionState.PendingFull);
       // If the type is the self-type for a named type (not a generic instantiation of it),
@@ -426,7 +441,7 @@ export class TypeTable {
         this.typeExtractionState[id] = TypeExtractionState.PendingFull;
       } else if (state === TypeExtractionState.DoneShallow) {
         this.typeExtractionState[id] = TypeExtractionState.PendingFull;
-        this.buildTypeWorklist.push([type, id]);
+        this.buildTypeWorklist.push([type, id, unfoldAlias]);
       }
     }
     return id;
@@ -789,6 +804,7 @@ export class TypeTable {
       typeStrings: Array.from(this.typeIds.keys()),
       typeToStringValues: this.typeToStringValues,
       propertyLookups: this.propertyLookups,
+      typeAliases: this.typeAliases,
       symbolStrings: Array.from(this.symbolIds.keys()),
       moduleMappings: this.moduleMappings,
       globalMappings: this.globalMappings,
@@ -812,10 +828,17 @@ export class TypeTable {
     let worklist = this.buildTypeWorklist;
     let typeExtractionState = this.typeExtractionState;
     while (worklist.length > 0) {
-      let [type, id] = worklist.pop();
+      let [type, id, unfoldAlias] = worklist.pop();
       let isShallowContext = typeExtractionState[id] === TypeExtractionState.PendingShallow;
       if (isShallowContext && !isTypeAlwaysSafeToExpand(type)) {
         typeExtractionState[id] = TypeExtractionState.DoneShallow;
+      } else if (type.aliasSymbol != null && !unfoldAlias) {
+        typeExtractionState[id] = TypeExtractionState.DoneFull;
+        let underlyingTypeId = this.getId(type, true);
+        if (underlyingTypeId != null) {
+          this.typeAliases.aliasTypes.push(id);
+          this.typeAliases.underlyingTypes.push(underlyingTypeId);
+        }
       } else {
         typeExtractionState[id] = TypeExtractionState.DoneFull;
         this.isInShallowTypeContext = isShallowContext || this.isExpansiveTypeReference(type);
