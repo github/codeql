@@ -1286,7 +1286,7 @@ class BlockType extends FunctionPointerIshType {
 /**
  * A C/C++ pointer to a function, a C++ function reference, or a clang/Apple block.
  *
- * See FunctionPointerType, FunctionReferenceType and BlockType for more information.
+ * See `FunctionPointerType`, `FunctionReferenceType` and `BlockType` for more information.
  */
 class FunctionPointerIshType extends DerivedType {
   FunctionPointerIshType() {
