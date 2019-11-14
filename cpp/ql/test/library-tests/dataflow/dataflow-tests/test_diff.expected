@@ -7,6 +7,7 @@
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:18:8:18:8 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:21:3:21:6 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:29:3:29:6 | AST only |
+| lambdas.cpp:8:10:8:15 | lambdas.cpp:35:8:35:8 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:41:8:41:8 | AST only |
 | lambdas.cpp:43:7:43:12 | lambdas.cpp:46:7:46:7 | AST only |
 | ref.cpp:29:11:29:16 | ref.cpp:62:10:62:11 | AST only |
@@ -22,13 +23,6 @@
 | test.cpp:89:28:89:34 | test.cpp:92:8:92:14 | IR only |
 | test.cpp:100:13:100:18 | test.cpp:103:10:103:12 | AST only |
 | test.cpp:109:9:109:14 | test.cpp:110:10:110:12 | IR only |
-| test.cpp:138:27:138:32 | test.cpp:140:8:140:8 | AST only |
-| test.cpp:151:33:151:38 | test.cpp:152:8:152:8 | AST only |
-| test.cpp:164:34:164:39 | test.cpp:165:8:165:8 | AST only |
-| test.cpp:171:11:171:16 | test.cpp:178:8:178:8 | AST only |
-| test.cpp:265:22:265:27 | test.cpp:266:12:266:12 | AST only |
-| test.cpp:305:17:305:22 | test.cpp:289:14:289:14 | AST only |
-| test.cpp:314:4:314:9 | test.cpp:318:7:318:7 | AST only |
 | test.cpp:347:17:347:22 | test.cpp:349:10:349:18 | AST only |
 | test.cpp:359:13:359:18 | test.cpp:365:10:365:14 | AST only |
 | test.cpp:373:13:373:18 | test.cpp:369:10:369:14 | AST only |

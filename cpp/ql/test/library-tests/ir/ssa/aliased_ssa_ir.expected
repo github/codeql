@@ -85,9 +85,10 @@ ssa.cpp:
 #   28|     r6_10(int)           = Add                      : r6_5, r6_9
 #   28|     m6_11(int)           = Store                    : &:r6_1, r6_10
 #   13|     v6_12(void)          = ReturnIndirection        : &:r0_5, ~m6_0
-#   13|     v6_13(void)          = ReturnValue              : ~m6_0
-#   13|     v6_14(void)          = UnmodeledUse             : mu*
-#   13|     v6_15(void)          = ExitFunction             : 
+#   13|     r6_13(glval<int>)    = VariableAddress[#return] : 
+#   13|     v6_14(void)          = ReturnValue              : &:r6_13, m6_11
+#   13|     v6_15(void)          = UnmodeledUse             : mu*
+#   13|     v6_16(void)          = ExitFunction             : 
 
 #   31| int UnreachableViaGoto()
 #   31|   Block 0
@@ -99,9 +100,10 @@ ssa.cpp:
 #   35|     r0_5(glval<int>) = VariableAddress[#return] : 
 #   35|     r0_6(int)        = Constant[0]              : 
 #   35|     m0_7(int)        = Store                    : &:r0_5, r0_6
-#   31|     v0_8(void)       = ReturnValue              : ~m0_1
-#   31|     v0_9(void)       = UnmodeledUse             : mu*
-#   31|     v0_10(void)      = ExitFunction             : 
+#   31|     r0_8(glval<int>) = VariableAddress[#return] : 
+#   31|     v0_9(void)       = ReturnValue              : &:r0_8, m0_7
+#   31|     v0_10(void)      = UnmodeledUse             : mu*
+#   31|     v0_11(void)      = ExitFunction             : 
 
 #   38| int UnreachableIf(bool)
 #   38|   Block 0
@@ -123,9 +125,11 @@ ssa.cpp:
 #-----|   True -> Block 2
 
 #   38|   Block 1
-#   38|     v1_0(void) = ReturnValue  : ~m0_1
-#   38|     v1_1(void) = UnmodeledUse : mu*
-#   38|     v1_2(void) = ExitFunction : 
+#   38|     m1_0(int)        = Phi                      : from 3:m3_2, from 5:m5_2
+#   38|     r1_1(glval<int>) = VariableAddress[#return] : 
+#   38|     v1_2(void)       = ReturnValue              : &:r1_1, m1_0
+#   38|     v1_3(void)       = UnmodeledUse             : mu*
+#   38|     v1_4(void)       = ExitFunction             : 
 
 #   42|   Block 2
 #   42|     r2_0(glval<int>) = VariableAddress[x] : 
@@ -185,9 +189,10 @@ ssa.cpp:
 #   65|     r1_1(glval<int>) = VariableAddress[i]       : 
 #   65|     r1_2(int)        = Load                     : &:r1_1, m0_10
 #   65|     m1_3(int)        = Store                    : &:r1_0, r1_2
-#   59|     v1_4(void)       = ReturnValue              : ~m0_1
-#   59|     v1_5(void)       = UnmodeledUse             : mu*
-#   59|     v1_6(void)       = ExitFunction             : 
+#   59|     r1_4(glval<int>) = VariableAddress[#return] : 
+#   59|     v1_5(void)       = ReturnValue              : &:r1_4, m1_3
+#   59|     v1_6(void)       = UnmodeledUse             : mu*
+#   59|     v1_7(void)       = ExitFunction             : 
 
 #   59|   Block 2
 #   59|     v2_0(void) = Unreached : 
@@ -220,6 +225,9 @@ ssa.cpp:
 #   71|   Block 2
 #   71|     v2_0(void) = NoOp              : 
 #   68|     v2_1(void) = ReturnIndirection : &:r0_7, ~m3_0
+#   68|     v2_2(void) = ReturnVoid        : 
+#   68|     v2_3(void) = UnmodeledUse      : mu*
+#   68|     v2_4(void) = ExitFunction      : 
 
 #   69|   Block 3
 #   69|     m3_0(unknown)    = Phi                : from 0:~m0_9, from 1:~m1_7
@@ -289,6 +297,9 @@ ssa.cpp:
 #   88|     r3_12(int)        = Load                     : &:r3_11, m0_13
 #   88|     m3_13(int)        = Store                    : &:r3_10, r3_12
 #   89|     v3_14(void)       = NoOp                     : 
+#   75|     v3_15(void)       = ReturnVoid               : 
+#   75|     v3_16(void)       = UnmodeledUse             : mu*
+#   75|     v3_17(void)       = ExitFunction             : 
 
 #   91| void MustExactlyOverlap(Point)
 #   91|   Block 0
@@ -302,6 +313,9 @@ ssa.cpp:
 #   92|     r0_7(Point)        = Load                   : &:r0_6, m0_4
 #   92|     m0_8(Point)        = Store                  : &:r0_5, r0_7
 #   93|     v0_9(void)         = NoOp                   : 
+#   91|     v0_10(void)        = ReturnVoid             : 
+#   91|     v0_11(void)        = UnmodeledUse           : mu*
+#   91|     v0_12(void)        = ExitFunction           : 
 
 #   95| void MustExactlyOverlapEscaped(Point)
 #   95|   Block 0
@@ -325,6 +339,9 @@ ssa.cpp:
 #   97|     m0_17(unknown)        = ^BufferMayWriteSideEffect[0] : &:r0_12
 #   97|     m0_18(unknown)        = Chi                          : total:m0_15, partial:m0_17
 #   98|     v0_19(void)           = NoOp                         : 
+#   95|     v0_20(void)           = ReturnVoid                   : 
+#   95|     v0_21(void)           = UnmodeledUse                 : mu*
+#   95|     v0_22(void)           = ExitFunction                 : 
 
 #  100| void MustTotallyOverlap(Point)
 #  100|   Block 0
@@ -344,6 +361,9 @@ ssa.cpp:
 #  102|     r0_13(int)          = Load                   : &:r0_12, ~m0_4
 #  102|     m0_14(int)          = Store                  : &:r0_10, r0_13
 #  103|     v0_15(void)         = NoOp                   : 
+#  100|     v0_16(void)         = ReturnVoid             : 
+#  100|     v0_17(void)         = UnmodeledUse           : mu*
+#  100|     v0_18(void)         = ExitFunction           : 
 
 #  105| void MustTotallyOverlapEscaped(Point)
 #  105|   Block 0
@@ -373,6 +393,9 @@ ssa.cpp:
 #  108|     m0_23(unknown)        = ^BufferMayWriteSideEffect[0] : &:r0_18
 #  108|     m0_24(unknown)        = Chi                          : total:m0_21, partial:m0_23
 #  109|     v0_25(void)           = NoOp                         : 
+#  105|     v0_26(void)           = ReturnVoid                   : 
+#  105|     v0_27(void)           = UnmodeledUse                 : mu*
+#  105|     v0_28(void)           = ExitFunction                 : 
 
 #  111| void MayPartiallyOverlap(int, int)
 #  111|   Block 0
@@ -400,6 +423,9 @@ ssa.cpp:
 #  113|     r0_21(Point)        = Load                   : &:r0_20, ~m0_18
 #  113|     m0_22(Point)        = Store                  : &:r0_19, r0_21
 #  114|     v0_23(void)         = NoOp                   : 
+#  111|     v0_24(void)         = ReturnVoid             : 
+#  111|     v0_25(void)         = UnmodeledUse           : mu*
+#  111|     v0_26(void)         = ExitFunction           : 
 
 #  116| void MayPartiallyOverlapEscaped(int, int)
 #  116|   Block 0
@@ -437,6 +463,9 @@ ssa.cpp:
 #  119|     m0_31(unknown)        = ^BufferMayWriteSideEffect[0] : &:r0_26
 #  119|     m0_32(unknown)        = Chi                          : total:m0_29, partial:m0_31
 #  120|     v0_33(void)           = NoOp                         : 
+#  116|     v0_34(void)           = ReturnVoid                   : 
+#  116|     v0_35(void)           = UnmodeledUse                 : mu*
+#  116|     v0_36(void)           = ExitFunction                 : 
 
 #  122| void MergeMustExactlyOverlap(bool, int, int)
 #  122|   Block 0
@@ -496,6 +525,9 @@ ssa.cpp:
 #  131|     r3_9(Point)        = Load               : &:r3_8, m3_0
 #  131|     m3_10(Point)       = Store              : &:r3_7, r3_9
 #  132|     v3_11(void)        = NoOp               : 
+#  122|     v3_12(void)        = ReturnVoid         : 
+#  122|     v3_13(void)        = UnmodeledUse       : mu*
+#  122|     v3_14(void)        = ExitFunction       : 
 
 #  134| void MergeMustExactlyWithMustTotallyOverlap(bool, Point, int)
 #  134|   Block 0
@@ -549,6 +581,9 @@ ssa.cpp:
 #  142|     r3_5(int)          = Load               : &:r3_4, m3_1
 #  142|     m3_6(int)          = Store              : &:r3_2, r3_5
 #  143|     v3_7(void)         = NoOp               : 
+#  134|     v3_8(void)         = ReturnVoid         : 
+#  134|     v3_9(void)         = UnmodeledUse       : mu*
+#  134|     v3_10(void)        = ExitFunction       : 
 
 #  145| void MergeMustExactlyWithMayPartiallyOverlap(bool, Point, int)
 #  145|   Block 0
@@ -600,6 +635,9 @@ ssa.cpp:
 #  153|     r3_3(Point)        = Load               : &:r3_2, m3_0
 #  153|     m3_4(Point)        = Store              : &:r3_1, r3_3
 #  154|     v3_5(void)         = NoOp               : 
+#  145|     v3_6(void)         = ReturnVoid         : 
+#  145|     v3_7(void)         = UnmodeledUse       : mu*
+#  145|     v3_8(void)         = ExitFunction       : 
 
 #  156| void MergeMustTotallyOverlapWithMayPartiallyOverlap(bool, Rect, int)
 #  156|   Block 0
@@ -653,6 +691,9 @@ ssa.cpp:
 #  164|     r3_4(Point)        = Load                  : &:r3_3, ~m3_0
 #  164|     m3_5(Point)        = Store                 : &:r3_1, r3_4
 #  165|     v3_6(void)         = NoOp                  : 
+#  156|     v3_7(void)         = ReturnVoid            : 
+#  156|     v3_8(void)         = UnmodeledUse          : mu*
+#  156|     v3_9(void)         = ExitFunction          : 
 
 #  171| void WrapperStruct(Wrapper)
 #  171|   Block 0
@@ -684,6 +725,9 @@ ssa.cpp:
 #  176|     r0_25(glval<Wrapper>) = VariableAddress[x]     : 
 #  176|     m0_26(Wrapper)        = Store                  : &:r0_25, r0_24
 #  177|     v0_27(void)           = NoOp                   : 
+#  171|     v0_28(void)           = ReturnVoid             : 
+#  171|     v0_29(void)           = UnmodeledUse           : mu*
+#  171|     v0_30(void)           = ExitFunction           : 
 
 #  179| int AsmStmt(int*)
 #  179|   Block 0
@@ -703,9 +747,10 @@ ssa.cpp:
 #  181|     r0_13(int)          = Load                     : &:r0_12, ~m0_9
 #  181|     m0_14(int)          = Store                    : &:r0_10, r0_13
 #  179|     v0_15(void)         = ReturnIndirection        : &:r0_5, ~m0_9
-#  179|     v0_16(void)         = ReturnValue              : ~m0_9
-#  179|     v0_17(void)         = UnmodeledUse             : mu*
-#  179|     v0_18(void)         = ExitFunction             : 
+#  179|     r0_16(glval<int>)   = VariableAddress[#return] : 
+#  179|     v0_17(void)         = ReturnValue              : &:r0_16, m0_14
+#  179|     v0_18(void)         = UnmodeledUse             : mu*
+#  179|     v0_19(void)         = ExitFunction             : 
 
 #  184| void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
 #  184|   Block 0
@@ -749,6 +794,9 @@ ssa.cpp:
 #  184|     v0_37(void)                  = ReturnIndirection        : &:r0_10, ~m0_34
 #  184|     v0_38(void)                  = ReturnIndirection        : &:r0_15, ~m0_34
 #  184|     v0_39(void)                  = ReturnIndirection        : &:r0_20, ~m0_34
+#  184|     v0_40(void)                  = ReturnVoid               : 
+#  184|     v0_41(void)                  = UnmodeledUse             : mu*
+#  184|     v0_42(void)                  = ExitFunction             : 
 
 #  198| int PureFunctions(char*, char*, int)
 #  198|   Block 0
@@ -802,9 +850,10 @@ ssa.cpp:
 #  202|     m0_47(int)            = Store                       : &:r0_44, r0_46
 #  198|     v0_48(void)           = ReturnIndirection           : &:r0_5, ~m0_12
 #  198|     v0_49(void)           = ReturnIndirection           : &:r0_10, ~m0_12
-#  198|     v0_50(void)           = ReturnValue                 : ~m0_12
-#  198|     v0_51(void)           = UnmodeledUse                : mu*
-#  198|     v0_52(void)           = ExitFunction                : 
+#  198|     r0_50(glval<int>)     = VariableAddress[#return]    : 
+#  198|     v0_51(void)           = ReturnValue                 : &:r0_50, m0_47
+#  198|     v0_52(void)           = UnmodeledUse                : mu*
+#  198|     v0_53(void)           = ExitFunction                : 
 
 #  207| int ModeledCallTarget(int)
 #  207|   Block 0
@@ -831,6 +880,7 @@ ssa.cpp:
 #  210|     r0_20(glval<int>)    = VariableAddress[y]                 : 
 #  210|     r0_21(int)           = Load                               : &:r0_20, ~m0_18
 #  210|     m0_22(int)           = Store                              : &:r0_19, r0_21
-#  207|     v0_23(void)          = ReturnValue                        : ~m0_18
-#  207|     v0_24(void)          = UnmodeledUse                       : mu*
-#  207|     v0_25(void)          = ExitFunction                       : 
+#  207|     r0_23(glval<int>)    = VariableAddress[#return]           : 
+#  207|     v0_24(void)          = ReturnValue                        : &:r0_23, m0_22
+#  207|     v0_25(void)          = UnmodeledUse                       : mu*
+#  207|     v0_26(void)          = ExitFunction                       : 

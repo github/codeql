@@ -123,8 +123,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     or
     child = getReadEffects() and
     if hasReturnValue()
-    then result = getInstruction(ReturnTag())
-    else result = getInstruction(ReturnValueAddressTag())
+    then result = getInstruction(ReturnValueAddressTag())
+    else result = getInstruction(ReturnTag())
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {

@@ -1,31 +1,10 @@
 missingOperand
-| ssa.cpp:13:5:13:14 | ReturnValue: ChiPhiNode | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ssa.cpp:13:5:13:14 | IR: ChiPhiNode | int ChiPhiNode(Point*, bool, bool) |
-| ssa.cpp:31:5:31:22 | ReturnValue: UnreachableViaGoto | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ssa.cpp:31:5:31:22 | IR: UnreachableViaGoto | int UnreachableViaGoto() |
-| ssa.cpp:38:5:38:17 | ReturnValue: UnreachableIf | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ssa.cpp:38:5:38:17 | IR: UnreachableIf | int UnreachableIf(bool) |
-| ssa.cpp:59:5:59:16 | ReturnValue: DoWhileFalse | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ssa.cpp:59:5:59:16 | IR: DoWhileFalse | int DoWhileFalse() |
-| ssa.cpp:179:5:179:11 | ReturnValue: AsmStmt | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ssa.cpp:179:5:179:11 | IR: AsmStmt | int AsmStmt(int*) |
-| ssa.cpp:198:5:198:17 | ReturnValue: PureFunctions | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ssa.cpp:198:5:198:17 | IR: PureFunctions | int PureFunctions(char*, char*, int) |
-| ssa.cpp:207:5:207:21 | ReturnValue: ModeledCallTarget | Instruction 'ReturnValue' is missing an expected operand with tag 'Address' in function '$@'. | ssa.cpp:207:5:207:21 | IR: ModeledCallTarget | int ModeledCallTarget(int) |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ssa.cpp:68:38:68:38 | ReturnIndirection: p |
-| ssa.cpp:89:1:89:1 | NoOp: return ... |
-| ssa.cpp:93:1:93:1 | NoOp: return ... |
-| ssa.cpp:98:1:98:1 | NoOp: return ... |
-| ssa.cpp:103:1:103:1 | NoOp: return ... |
-| ssa.cpp:109:1:109:1 | NoOp: return ... |
-| ssa.cpp:114:1:114:1 | NoOp: return ... |
-| ssa.cpp:120:1:120:1 | NoOp: return ... |
-| ssa.cpp:132:1:132:1 | NoOp: return ... |
-| ssa.cpp:143:1:143:1 | NoOp: return ... |
-| ssa.cpp:154:1:154:1 | NoOp: return ... |
-| ssa.cpp:165:1:165:1 | NoOp: return ... |
-| ssa.cpp:177:1:177:1 | NoOp: return ... |
-| ssa.cpp:184:97:184:97 | ReturnIndirection: d |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
