@@ -10,6 +10,7 @@
   - [firebase](https://www.npmjs.com/package/firebase)
   - [mongodb](https://www.npmjs.com/package/mongodb)
   - [mongoose](https://www.npmjs.com/package/mongoose)
+  - [parse-torrent](https://github.com/webtorrent/parse-torrent)
   - [rate-limiter-flexible](https://www.npmjs.com/package/rate-limiter-flexible)
 
 * The call graph has been improved to resolve method calls in more cases. This may produce more security alerts.
