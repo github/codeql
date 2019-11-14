@@ -1068,7 +1068,7 @@ class LValueReferenceType extends ReferenceType {
  * ```
  * class C {
  *   E e;
- *   C(C&& from): e(from.e) { }
+ *   C(C&& from): e(std::move(from.e)) { }
  * };
  * ```
  */
