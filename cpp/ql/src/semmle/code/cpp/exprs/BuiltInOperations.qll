@@ -636,8 +636,8 @@ class BuiltInOperationIsStandardLayout extends BuiltInOperation, @isstandardlayo
  * The `__is_trivially_copyable` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns `true` if instances of this type can be copied by trivial (compiler-
- * generated) means.  The copying is done in a manner similar to the `memcpy`
+ * Returns `true` if instances of this type can be copied by trivial
+ * means.  The copying is done in a manner similar to the `memcpy`
  * function.
  */
 class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istriviallycopyableexpr {
