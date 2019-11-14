@@ -516,7 +516,7 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
  * ```
  * template<typename T, typename... Args>
  *   struct is_trivially_constructible
- *   : public integral_constant<bool, __is_trivially_constructible(T) >
+ *   : public integral_constant<bool, __is_trivially_constructible(T, Args...) >
  *   { };
  * ```
  */
