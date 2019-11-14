@@ -13,7 +13,7 @@ the URL scheme of any untrusted URL, and reject URLs with the <code>javascript:<
 <p>
 However, the <code>data:</code> and <code>vbscript:</code> schemes can be used to represent
 executable code in a very similar way, so any validation logic that checks against
-<code>javascript:</code> but not against <code>data:</code> and <code>vbscript:</code> is likely to
+<code>javascript:</code>, but not against <code>data:</code> and <code>vbscript:</code>, is likely to
 be insufficient.
 </p>
 </overview>
