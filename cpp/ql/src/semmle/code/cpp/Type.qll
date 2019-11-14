@@ -953,7 +953,7 @@ class Decltype extends Type, @decltype {
    * struct A { double x; };
    * const A* a = new A();
    * decltype( a->x ); // type is double
-   * decltype((a->x)); // type is const double&amp;
+   * decltype((a->x)); // type is const double&
    * ```
    * Please consult the C++11 standard for more details.
    */
