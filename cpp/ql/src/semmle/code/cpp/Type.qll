@@ -808,7 +808,7 @@ class Decimal128Type extends FloatingPointType {
 /**
  * The C/C++ `void` type. See 4.7.
  * ```
- * const void *cvp;
+ * void foo();
  * ```
  */
 class VoidType extends BuiltInType {
