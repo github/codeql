@@ -727,7 +727,7 @@ class BuiltInOperationHasNothrowMoveAssign extends BuiltInOperation, @hasnothrow
  * ```
  * template<typename T, typename... Args>
  *   struct is_constructible
- *   : public integral_constant<bool, __is_constructible(T) >
+ *   : public integral_constant<bool, __is_constructible(T, Args...) >
  *   { };
  * ```
  */
