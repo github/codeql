@@ -72,11 +72,11 @@
 | ViableCallable.cs:12:9:12:28 | call to method M | C2<Int32>.M<T3>(string, T3) |
 | ViableCallable.cs:12:9:12:28 | call to method M | C3.M<T3>(string, T3) |
 | ViableCallable.cs:12:9:12:28 | call to method M | C4<>.M<T3>(T[], T3) |
-| ViableCallable.cs:12:9:12:28 | call to method M | C4<Int32>.M<T3>(int[], T3) |
+| ViableCallable.cs:12:9:12:28 | call to method M | C4<Int32>.M<T3>(Int32[], T3) |
 | ViableCallable.cs:12:9:12:28 | call to method M | C5.M<T3>(string, T3) |
 | ViableCallable.cs:12:9:12:28 | call to method M | C6<,>.M<T3>(T1, T3) |
 | ViableCallable.cs:12:9:12:28 | call to method M | C6<Boolean,Byte>.M<T3>(bool, T3) |
-| ViableCallable.cs:12:9:12:28 | call to method M | C6<Int32[],Boolean>.M<T3>(int[], T3) |
+| ViableCallable.cs:12:9:12:28 | call to method M | C6<Int32[],Boolean>.M<T3>(Int32[], T3) |
 | ViableCallable.cs:12:9:12:28 | call to method M | C6<String,Boolean>.M<T3>(string, T3) |
 | ViableCallable.cs:12:9:12:28 | call to method M | C6<String,Decimal>.M<T3>(string, T3) |
 | ViableCallable.cs:12:9:12:28 | call to method M | C6<String,Int32>.M<T3>(string, T3) |
@@ -90,11 +90,11 @@
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C2<Int32>.set_Prop(string) |
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C3.set_Prop(string) |
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C4<>.set_Prop(T[]) |
-| ViableCallable.cs:14:9:14:15 | access to property Prop | C4<Int32>.set_Prop(int[]) |
+| ViableCallable.cs:14:9:14:15 | access to property Prop | C4<Int32>.set_Prop(Int32[]) |
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C5.set_Prop(string) |
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C6<,>.set_Prop(T1) |
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C6<Boolean,Byte>.set_Prop(bool) |
-| ViableCallable.cs:14:9:14:15 | access to property Prop | C6<Int32[],Boolean>.set_Prop(int[]) |
+| ViableCallable.cs:14:9:14:15 | access to property Prop | C6<Int32[],Boolean>.set_Prop(Int32[]) |
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C6<String,Boolean>.set_Prop(string) |
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C6<String,Decimal>.set_Prop(string) |
 | ViableCallable.cs:14:9:14:15 | access to property Prop | C6<String,Int32>.set_Prop(string) |
@@ -126,11 +126,11 @@
 | ViableCallable.cs:16:9:16:23 | access to indexer | C2<Int32>.set_Item(int, string) |
 | ViableCallable.cs:16:9:16:23 | access to indexer | C3.set_Item(decimal, string) |
 | ViableCallable.cs:16:9:16:23 | access to indexer | C4<>.set_Item(bool, T[]) |
-| ViableCallable.cs:16:9:16:23 | access to indexer | C4<Int32>.set_Item(bool, int[]) |
+| ViableCallable.cs:16:9:16:23 | access to indexer | C4<Int32>.set_Item(bool, Int32[]) |
 | ViableCallable.cs:16:9:16:23 | access to indexer | C5.set_Item(bool, string) |
 | ViableCallable.cs:16:9:16:23 | access to indexer | C6<,>.set_Item(T2, T1) |
 | ViableCallable.cs:16:9:16:23 | access to indexer | C6<Boolean,Byte>.set_Item(byte, bool) |
-| ViableCallable.cs:16:9:16:23 | access to indexer | C6<Int32[],Boolean>.set_Item(bool, int[]) |
+| ViableCallable.cs:16:9:16:23 | access to indexer | C6<Int32[],Boolean>.set_Item(bool, Int32[]) |
 | ViableCallable.cs:16:9:16:23 | access to indexer | C6<String,Boolean>.set_Item(bool, string) |
 | ViableCallable.cs:16:9:16:23 | access to indexer | C6<String,Decimal>.set_Item(decimal, string) |
 | ViableCallable.cs:16:9:16:23 | access to indexer | C6<String,Int32>.set_Item(int, string) |
@@ -156,64 +156,64 @@
 | ViableCallable.cs:16:27:16:41 | access to indexer | C6<T1,Byte>.get_Item(byte) |
 | ViableCallable.cs:16:27:16:41 | access to indexer | C7<>.get_Item(byte) |
 | ViableCallable.cs:16:27:16:41 | access to indexer | C7<Boolean>.get_Item(byte) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C2<>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C2<Boolean>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C2<Decimal>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C2<Int32>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C3.add_Event(EventHandler<string>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C2<>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C2<Boolean>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C2<Decimal>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C2<Int32>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C3.add_Event(EventHandler<String>) |
 | ViableCallable.cs:18:9:18:16 | access to event Event | C4<>.add_Event(EventHandler<T[]>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C4<Int32>.add_Event(EventHandler<int[]>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C5.add_Event(EventHandler<string>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C4<Int32>.add_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C5.add_Event(EventHandler<String>) |
 | ViableCallable.cs:18:9:18:16 | access to event Event | C6<,>.add_Event(EventHandler<T1>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C6<Boolean,Byte>.add_Event(EventHandler<bool>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C6<Int32[],Boolean>.add_Event(EventHandler<int[]>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C6<String,Boolean>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C6<String,Decimal>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C6<String,Int32>.add_Event(EventHandler<string>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C6<Boolean,Byte>.add_Event(EventHandler<Boolean>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C6<Int32[],Boolean>.add_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C6<String,Boolean>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C6<String,Decimal>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C6<String,Int32>.add_Event(EventHandler<String>) |
 | ViableCallable.cs:18:9:18:16 | access to event Event | C6<T1,Boolean>.add_Event(EventHandler<T1>) |
 | ViableCallable.cs:18:9:18:16 | access to event Event | C6<T1,Byte>.add_Event(EventHandler<T1>) |
 | ViableCallable.cs:18:9:18:16 | access to event Event | C7<>.add_Event(EventHandler<T1>) |
-| ViableCallable.cs:18:9:18:16 | access to event Event | C7<Boolean>.add_Event(EventHandler<bool>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C2<>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C2<Boolean>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C2<Decimal>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C2<Int32>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C3.remove_Event(EventHandler<string>) |
+| ViableCallable.cs:18:9:18:16 | access to event Event | C7<Boolean>.add_Event(EventHandler<Boolean>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C2<>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C2<Boolean>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C2<Decimal>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C2<Int32>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C3.remove_Event(EventHandler<String>) |
 | ViableCallable.cs:19:9:19:16 | access to event Event | C4<>.remove_Event(EventHandler<T[]>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C4<Int32>.remove_Event(EventHandler<int[]>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C5.remove_Event(EventHandler<string>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C4<Int32>.remove_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C5.remove_Event(EventHandler<String>) |
 | ViableCallable.cs:19:9:19:16 | access to event Event | C6<,>.remove_Event(EventHandler<T1>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C6<Boolean,Byte>.remove_Event(EventHandler<bool>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C6<Int32[],Boolean>.remove_Event(EventHandler<int[]>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C6<String,Boolean>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C6<String,Decimal>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C6<String,Int32>.remove_Event(EventHandler<string>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C6<Boolean,Byte>.remove_Event(EventHandler<Boolean>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C6<Int32[],Boolean>.remove_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C6<String,Boolean>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C6<String,Decimal>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C6<String,Int32>.remove_Event(EventHandler<String>) |
 | ViableCallable.cs:19:9:19:16 | access to event Event | C6<T1,Boolean>.remove_Event(EventHandler<T1>) |
 | ViableCallable.cs:19:9:19:16 | access to event Event | C6<T1,Byte>.remove_Event(EventHandler<T1>) |
 | ViableCallable.cs:19:9:19:16 | access to event Event | C7<>.remove_Event(EventHandler<T1>) |
-| ViableCallable.cs:19:9:19:16 | access to event Event | C7<Boolean>.remove_Event(EventHandler<bool>) |
+| ViableCallable.cs:19:9:19:16 | access to event Event | C7<Boolean>.remove_Event(EventHandler<Boolean>) |
 | ViableCallable.cs:22:9:22:30 | call to method M | C4<>.M<T3>(T[], T3) |
-| ViableCallable.cs:22:9:22:30 | call to method M | C4<Int32>.M<T3>(int[], T3) |
-| ViableCallable.cs:22:9:22:30 | call to method M | C6<Int32[],Boolean>.M<T3>(int[], T3) |
+| ViableCallable.cs:22:9:22:30 | call to method M | C4<Int32>.M<T3>(Int32[], T3) |
+| ViableCallable.cs:22:9:22:30 | call to method M | C6<Int32[],Boolean>.M<T3>(Int32[], T3) |
 | ViableCallable.cs:24:9:24:15 | access to property Prop | C4<>.set_Prop(T[]) |
-| ViableCallable.cs:24:9:24:15 | access to property Prop | C4<Int32>.set_Prop(int[]) |
-| ViableCallable.cs:24:9:24:15 | access to property Prop | C6<Int32[],Boolean>.set_Prop(int[]) |
+| ViableCallable.cs:24:9:24:15 | access to property Prop | C4<Int32>.set_Prop(Int32[]) |
+| ViableCallable.cs:24:9:24:15 | access to property Prop | C6<Int32[],Boolean>.set_Prop(Int32[]) |
 | ViableCallable.cs:24:19:24:25 | access to property Prop | C4<>.get_Prop() |
 | ViableCallable.cs:24:19:24:25 | access to property Prop | C4<Int32>.get_Prop() |
 | ViableCallable.cs:24:19:24:25 | access to property Prop | C6<Int32[],Boolean>.get_Prop() |
 | ViableCallable.cs:26:9:26:23 | access to indexer | C4<>.set_Item(bool, T[]) |
-| ViableCallable.cs:26:9:26:23 | access to indexer | C4<Int32>.set_Item(bool, int[]) |
-| ViableCallable.cs:26:9:26:23 | access to indexer | C6<Int32[],Boolean>.set_Item(bool, int[]) |
+| ViableCallable.cs:26:9:26:23 | access to indexer | C4<Int32>.set_Item(bool, Int32[]) |
+| ViableCallable.cs:26:9:26:23 | access to indexer | C6<Int32[],Boolean>.set_Item(bool, Int32[]) |
 | ViableCallable.cs:26:27:26:41 | access to indexer | C4<>.get_Item(bool) |
 | ViableCallable.cs:26:27:26:41 | access to indexer | C4<Int32>.get_Item(bool) |
 | ViableCallable.cs:26:27:26:41 | access to indexer | C6<Int32[],Boolean>.get_Item(bool) |
 | ViableCallable.cs:28:9:28:16 | access to event Event | C4<>.add_Event(EventHandler<T[]>) |
-| ViableCallable.cs:28:9:28:16 | access to event Event | C4<Int32>.add_Event(EventHandler<int[]>) |
-| ViableCallable.cs:28:9:28:16 | access to event Event | C6<Int32[],Boolean>.add_Event(EventHandler<int[]>) |
+| ViableCallable.cs:28:9:28:16 | access to event Event | C4<Int32>.add_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:28:9:28:16 | access to event Event | C6<Int32[],Boolean>.add_Event(EventHandler<Int32[]>) |
 | ViableCallable.cs:29:9:29:16 | access to event Event | C4<>.remove_Event(EventHandler<T[]>) |
-| ViableCallable.cs:29:9:29:16 | access to event Event | C4<Int32>.remove_Event(EventHandler<int[]>) |
-| ViableCallable.cs:29:9:29:16 | access to event Event | C6<Int32[],Boolean>.remove_Event(EventHandler<int[]>) |
-| ViableCallable.cs:32:30:32:52 | call to method Mock | ViableCallable.Mock<C1<string, int>>() |
+| ViableCallable.cs:29:9:29:16 | access to event Event | C4<Int32>.remove_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:29:9:29:16 | access to event Event | C6<Int32[],Boolean>.remove_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:32:30:32:52 | call to method Mock | ViableCallable.Mock<C1<String, Int32>>() |
 | ViableCallable.cs:33:9:33:23 | call to method M | C2<Int32>.M<T3>(string, T3) |
 | ViableCallable.cs:33:9:33:23 | call to method M | C6<String,Int32>.M<T3>(string, T3) |
 | ViableCallable.cs:35:9:35:15 | access to property Prop | C2<Int32>.set_Prop(string) |
@@ -224,11 +224,11 @@
 | ViableCallable.cs:37:9:37:13 | access to indexer | C6<String,Int32>.set_Item(int, string) |
 | ViableCallable.cs:37:17:37:21 | access to indexer | C2<Int32>.get_Item(int) |
 | ViableCallable.cs:37:17:37:21 | access to indexer | C6<String,Int32>.get_Item(int) |
-| ViableCallable.cs:39:9:39:16 | access to event Event | C2<Int32>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:39:9:39:16 | access to event Event | C6<String,Int32>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:40:9:40:16 | access to event Event | C2<Int32>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:40:9:40:16 | access to event Event | C6<String,Int32>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:43:34:43:60 | call to method Mock | ViableCallable.Mock<C1<string, decimal>>() |
+| ViableCallable.cs:39:9:39:16 | access to event Event | C2<Int32>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:39:9:39:16 | access to event Event | C6<String,Int32>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:40:9:40:16 | access to event Event | C2<Int32>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:40:9:40:16 | access to event Event | C6<String,Int32>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:43:34:43:60 | call to method Mock | ViableCallable.Mock<C1<String, Decimal>>() |
 | ViableCallable.cs:44:9:44:24 | call to method M | C2<Decimal>.M<T3>(string, T3) |
 | ViableCallable.cs:44:9:44:24 | call to method M | C3.M<T3>(string, T3) |
 | ViableCallable.cs:44:9:44:24 | call to method M | C6<String,Decimal>.M<T3>(string, T3) |
@@ -244,28 +244,28 @@
 | ViableCallable.cs:48:18:48:23 | access to indexer | C2<Decimal>.get_Item(decimal) |
 | ViableCallable.cs:48:18:48:23 | access to indexer | C3.get_Item(decimal) |
 | ViableCallable.cs:48:18:48:23 | access to indexer | C6<String,Decimal>.get_Item(decimal) |
-| ViableCallable.cs:50:9:50:16 | access to event Event | C2<Decimal>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:50:9:50:16 | access to event Event | C3.add_Event(EventHandler<string>) |
-| ViableCallable.cs:50:9:50:16 | access to event Event | C6<String,Decimal>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:51:9:51:16 | access to event Event | C2<Decimal>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:51:9:51:16 | access to event Event | C3.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:51:9:51:16 | access to event Event | C6<String,Decimal>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:54:30:54:52 | call to method Mock | ViableCallable.Mock<C1<int[], bool>>() |
-| ViableCallable.cs:55:9:55:44 | call to method M | C4<Int32>.M<T3>(int[], T3) |
-| ViableCallable.cs:55:9:55:44 | call to method M | C6<Int32[],Boolean>.M<T3>(int[], T3) |
-| ViableCallable.cs:57:9:57:15 | access to property Prop | C4<Int32>.set_Prop(int[]) |
-| ViableCallable.cs:57:9:57:15 | access to property Prop | C6<Int32[],Boolean>.set_Prop(int[]) |
+| ViableCallable.cs:50:9:50:16 | access to event Event | C2<Decimal>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:50:9:50:16 | access to event Event | C3.add_Event(EventHandler<String>) |
+| ViableCallable.cs:50:9:50:16 | access to event Event | C6<String,Decimal>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:51:9:51:16 | access to event Event | C2<Decimal>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:51:9:51:16 | access to event Event | C3.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:51:9:51:16 | access to event Event | C6<String,Decimal>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:54:30:54:52 | call to method Mock | ViableCallable.Mock<C1<Int32[], Boolean>>() |
+| ViableCallable.cs:55:9:55:44 | call to method M | C4<Int32>.M<T3>(Int32[], T3) |
+| ViableCallable.cs:55:9:55:44 | call to method M | C6<Int32[],Boolean>.M<T3>(Int32[], T3) |
+| ViableCallable.cs:57:9:57:15 | access to property Prop | C4<Int32>.set_Prop(Int32[]) |
+| ViableCallable.cs:57:9:57:15 | access to property Prop | C6<Int32[],Boolean>.set_Prop(Int32[]) |
 | ViableCallable.cs:57:19:57:25 | access to property Prop | C4<Int32>.get_Prop() |
 | ViableCallable.cs:57:19:57:25 | access to property Prop | C6<Int32[],Boolean>.get_Prop() |
-| ViableCallable.cs:59:9:59:17 | access to indexer | C4<Int32>.set_Item(bool, int[]) |
-| ViableCallable.cs:59:9:59:17 | access to indexer | C6<Int32[],Boolean>.set_Item(bool, int[]) |
+| ViableCallable.cs:59:9:59:17 | access to indexer | C4<Int32>.set_Item(bool, Int32[]) |
+| ViableCallable.cs:59:9:59:17 | access to indexer | C6<Int32[],Boolean>.set_Item(bool, Int32[]) |
 | ViableCallable.cs:59:21:59:29 | access to indexer | C4<Int32>.get_Item(bool) |
 | ViableCallable.cs:59:21:59:29 | access to indexer | C6<Int32[],Boolean>.get_Item(bool) |
-| ViableCallable.cs:61:9:61:16 | access to event Event | C4<Int32>.add_Event(EventHandler<int[]>) |
-| ViableCallable.cs:61:9:61:16 | access to event Event | C6<Int32[],Boolean>.add_Event(EventHandler<int[]>) |
-| ViableCallable.cs:62:9:62:16 | access to event Event | C4<Int32>.remove_Event(EventHandler<int[]>) |
-| ViableCallable.cs:62:9:62:16 | access to event Event | C6<Int32[],Boolean>.remove_Event(EventHandler<int[]>) |
-| ViableCallable.cs:65:31:65:54 | call to method Mock | ViableCallable.Mock<C1<string, bool>>() |
+| ViableCallable.cs:61:9:61:16 | access to event Event | C4<Int32>.add_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:61:9:61:16 | access to event Event | C6<Int32[],Boolean>.add_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:62:9:62:16 | access to event Event | C4<Int32>.remove_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:62:9:62:16 | access to event Event | C6<Int32[],Boolean>.remove_Event(EventHandler<Int32[]>) |
+| ViableCallable.cs:65:31:65:54 | call to method Mock | ViableCallable.Mock<C1<String, Boolean>>() |
 | ViableCallable.cs:66:9:66:30 | call to method M | C2<Boolean>.M<T3>(string, T3) |
 | ViableCallable.cs:66:9:66:30 | call to method M | C5.M<T3>(string, T3) |
 | ViableCallable.cs:66:9:66:30 | call to method M | C6<String,Boolean>.M<T3>(string, T3) |
@@ -281,12 +281,12 @@
 | ViableCallable.cs:70:21:70:29 | access to indexer | C2<Boolean>.get_Item(bool) |
 | ViableCallable.cs:70:21:70:29 | access to indexer | C5.get_Item(bool) |
 | ViableCallable.cs:70:21:70:29 | access to indexer | C6<String,Boolean>.get_Item(bool) |
-| ViableCallable.cs:72:9:72:16 | access to event Event | C2<Boolean>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:72:9:72:16 | access to event Event | C5.add_Event(EventHandler<string>) |
-| ViableCallable.cs:72:9:72:16 | access to event Event | C6<String,Boolean>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:73:9:73:16 | access to event Event | C2<Boolean>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:73:9:73:16 | access to event Event | C5.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:73:9:73:16 | access to event Event | C6<String,Boolean>.remove_Event(EventHandler<string>) |
+| ViableCallable.cs:72:9:72:16 | access to event Event | C2<Boolean>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:72:9:72:16 | access to event Event | C5.add_Event(EventHandler<String>) |
+| ViableCallable.cs:72:9:72:16 | access to event Event | C6<String,Boolean>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:73:9:73:16 | access to event Event | C2<Boolean>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:73:9:73:16 | access to event Event | C5.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:73:9:73:16 | access to event Event | C6<String,Boolean>.remove_Event(EventHandler<String>) |
 | ViableCallable.cs:77:9:77:29 | call to method M | C6<T1,Boolean>.M<T3>(T1, T3) |
 | ViableCallable.cs:79:9:79:15 | access to property Prop | C6<T1,Boolean>.set_Prop(T1) |
 | ViableCallable.cs:79:19:79:25 | access to property Prop | C6<T1,Boolean>.get_Prop() |
@@ -295,9 +295,9 @@
 | ViableCallable.cs:83:9:83:16 | access to event Event | C6<T1,Boolean>.add_Event(EventHandler<T1>) |
 | ViableCallable.cs:84:9:84:16 | access to event Event | C6<T1,Boolean>.remove_Event(EventHandler<T1>) |
 | ViableCallable.cs:87:21:87:30 | call to method Mock | ViableCallable.Mock<C8>() |
-| ViableCallable.cs:88:9:88:44 | dynamic call to method M | C8.M(IEnumerable<C1<string[], bool>>) |
-| ViableCallable.cs:88:9:88:44 | dynamic call to method M | C9<>.M(IEnumerable<C1<string[], bool>>) |
-| ViableCallable.cs:88:13:88:43 | call to method Mock | ViableCallable.Mock<IEnumerable<C4<string>>>() |
+| ViableCallable.cs:88:9:88:44 | dynamic call to method M | C8.M(IEnumerable<C1<String[],Boolean>>) |
+| ViableCallable.cs:88:9:88:44 | dynamic call to method M | C9<>.M(IEnumerable<C1<String[],Boolean>>) |
+| ViableCallable.cs:88:13:88:43 | call to method Mock | ViableCallable.Mock<IEnumerable<C4<String>>>() |
 | ViableCallable.cs:90:9:90:15 | dynamic access to member Prop1 | C8.set_Prop1(string) |
 | ViableCallable.cs:90:9:90:15 | dynamic access to member Prop1 | C9<>.set_Prop1(string) |
 | ViableCallable.cs:90:19:90:25 | dynamic access to member Prop1 | C8.get_Prop1() |
@@ -306,13 +306,13 @@
 | ViableCallable.cs:92:9:92:12 | dynamic access to element | C9<>.set_Item(int, string) |
 | ViableCallable.cs:92:16:92:19 | dynamic access to element | C8.get_Item(int) |
 | ViableCallable.cs:92:16:92:19 | dynamic access to element | C9<>.get_Item(int) |
-| ViableCallable.cs:95:13:95:40 | call to method Mock | ViableCallable.Mock<IEnumerable<C4<int>>>() |
+| ViableCallable.cs:95:13:95:40 | call to method Mock | ViableCallable.Mock<IEnumerable<C4<Int32>>>() |
 | ViableCallable.cs:99:9:99:15 | dynamic call to method M | C5.M(int) |
 | ViableCallable.cs:102:9:102:16 | access to property Prop2 | C5.set_Prop2(string) |
-| ViableCallable.cs:105:9:105:17 | access to event Event2 | C5.add_Event2(EventHandler<string>) |
-| ViableCallable.cs:106:9:106:17 | access to event Event2 | C5.remove_Event2(EventHandler<string>) |
-| ViableCallable.cs:120:9:120:25 | dynamic call to method M2 | C8.M2<decimal>(decimal[]) |
-| ViableCallable.cs:124:9:124:24 | dynamic call to method M2 | C8.M2<string>(string[]) |
+| ViableCallable.cs:105:9:105:17 | access to event Event2 | C5.add_Event2(EventHandler<String>) |
+| ViableCallable.cs:106:9:106:17 | access to event Event2 | C5.remove_Event2(EventHandler<String>) |
+| ViableCallable.cs:120:9:120:25 | dynamic call to method M2 | C8.M2<decimal>(Decimal[]) |
+| ViableCallable.cs:124:9:124:24 | dynamic call to method M2 | C8.M2<string>(String[]) |
 | ViableCallable.cs:132:9:132:28 | dynamic call to method M | C6<Boolean,Byte>.M<T3>(bool, T3) |
 | ViableCallable.cs:132:9:132:28 | dynamic call to method M | C6<T1,Byte>.M<T3>(T1, T3) |
 | ViableCallable.cs:134:9:134:14 | dynamic access to member Prop | C6<Boolean,Byte>.set_Prop(bool) |
@@ -326,23 +326,23 @@
 | ViableCallable.cs:138:9:138:52 | ... += ... | C6<T1,Byte>.add_Event(EventHandler<T1>) |
 | ViableCallable.cs:139:9:139:52 | ... -= ... | C6<T1,Byte>.remove_Event(EventHandler<T1>) |
 | ViableCallable.cs:143:13:143:22 | call to method Mock | ViableCallable.Mock<C8>() |
-| ViableCallable.cs:144:9:144:14 | dynamic call to method M3 | C8.M3(params double[]) |
+| ViableCallable.cs:144:9:144:14 | dynamic call to method M3 | C8.M3(params Double[]) |
 | ViableCallable.cs:144:9:144:14 | dynamic call to method M3 | C9<>.M3(params T[]) |
-| ViableCallable.cs:145:9:145:15 | dynamic call to method M3 | C8.M3(params double[]) |
+| ViableCallable.cs:145:9:145:15 | dynamic call to method M3 | C8.M3(params Double[]) |
 | ViableCallable.cs:145:9:145:15 | dynamic call to method M3 | C9<>.M3(params T[]) |
-| ViableCallable.cs:146:9:146:20 | dynamic call to method M3 | C8.M3(params double[]) |
+| ViableCallable.cs:146:9:146:20 | dynamic call to method M3 | C8.M3(params Double[]) |
 | ViableCallable.cs:146:9:146:20 | dynamic call to method M3 | C9<>.M3(params T[]) |
-| ViableCallable.cs:149:9:149:16 | dynamic call to method M3 | C8.M3(params double[]) |
+| ViableCallable.cs:149:9:149:16 | dynamic call to method M3 | C8.M3(params Double[]) |
 | ViableCallable.cs:149:9:149:16 | dynamic call to method M3 | C9<>.M3(params T[]) |
-| ViableCallable.cs:149:9:149:16 | dynamic call to method M3 | C10.M3(params double[]) |
+| ViableCallable.cs:149:9:149:16 | dynamic call to method M3 | C10.M3(params Double[]) |
 | ViableCallable.cs:149:9:149:16 | dynamic call to method M3 | Test.MainClass.ImplAlpha.M3() |
 | ViableCallable.cs:149:9:149:16 | dynamic call to method M3 | Test.MainClass.SecondLevelImpl.M3() |
-| ViableCallable.cs:150:9:150:17 | dynamic call to method M3 | C8.M3(params double[]) |
+| ViableCallable.cs:150:9:150:17 | dynamic call to method M3 | C8.M3(params Double[]) |
 | ViableCallable.cs:150:9:150:17 | dynamic call to method M3 | C9<>.M3(params T[]) |
-| ViableCallable.cs:150:9:150:17 | dynamic call to method M3 | C10.M3(params double[]) |
-| ViableCallable.cs:151:9:151:22 | dynamic call to method M3 | C8.M3(params double[]) |
+| ViableCallable.cs:150:9:150:17 | dynamic call to method M3 | C10.M3(params Double[]) |
+| ViableCallable.cs:151:9:151:22 | dynamic call to method M3 | C8.M3(params Double[]) |
 | ViableCallable.cs:151:9:151:22 | dynamic call to method M3 | C9<>.M3(params T[]) |
-| ViableCallable.cs:151:9:151:22 | dynamic call to method M3 | C10.M3(params double[]) |
+| ViableCallable.cs:151:9:151:22 | dynamic call to method M3 | C10.M3(params Double[]) |
 | ViableCallable.cs:153:9:153:17 | dynamic access to member Prop1 | C8.set_Prop1(string) |
 | ViableCallable.cs:153:9:153:17 | dynamic access to member Prop1 | C9<>.set_Prop1(string) |
 | ViableCallable.cs:153:9:153:17 | dynamic access to member Prop1 | C10.set_Prop1(bool) |
@@ -377,39 +377,39 @@
 | ViableCallable.cs:155:18:155:23 | dynamic access to element | C8.get_Item(int) |
 | ViableCallable.cs:155:18:155:23 | dynamic access to element | C9<>.get_Item(int) |
 | ViableCallable.cs:155:18:155:23 | dynamic access to element | C10.get_Item(int) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C2<>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C2<Boolean>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C2<Decimal>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C2<Int32>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C3.add_Event(EventHandler<string>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C5.add_Event(EventHandler<string>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C2<>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C2<Boolean>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C2<Decimal>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C2<Int32>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C3.add_Event(EventHandler<String>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C5.add_Event(EventHandler<String>) |
 | ViableCallable.cs:157:9:157:54 | ... += ... | C6<,>.add_Event(EventHandler<T1>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C6<String,Boolean>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C6<String,Decimal>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C6<String,Int32>.add_Event(EventHandler<string>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C6<String,Boolean>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C6<String,Decimal>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C6<String,Int32>.add_Event(EventHandler<String>) |
 | ViableCallable.cs:157:9:157:54 | ... += ... | C6<T1,Boolean>.add_Event(EventHandler<T1>) |
 | ViableCallable.cs:157:9:157:54 | ... += ... | C6<T1,Byte>.add_Event(EventHandler<T1>) |
 | ViableCallable.cs:157:9:157:54 | ... += ... | C7<>.add_Event(EventHandler<T1>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C8.add_Event(EventHandler<string>) |
-| ViableCallable.cs:157:9:157:54 | ... += ... | C9<>.add_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C2<>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C2<Boolean>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C2<Decimal>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C2<Int32>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C3.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C5.remove_Event(EventHandler<string>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C8.add_Event(EventHandler<String>) |
+| ViableCallable.cs:157:9:157:54 | ... += ... | C9<>.add_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C2<>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C2<Boolean>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C2<Decimal>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C2<Int32>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C3.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C5.remove_Event(EventHandler<String>) |
 | ViableCallable.cs:158:9:158:54 | ... -= ... | C6<,>.remove_Event(EventHandler<T1>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C6<String,Boolean>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C6<String,Decimal>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C6<String,Int32>.remove_Event(EventHandler<string>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C6<String,Boolean>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C6<String,Decimal>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C6<String,Int32>.remove_Event(EventHandler<String>) |
 | ViableCallable.cs:158:9:158:54 | ... -= ... | C6<T1,Boolean>.remove_Event(EventHandler<T1>) |
 | ViableCallable.cs:158:9:158:54 | ... -= ... | C6<T1,Byte>.remove_Event(EventHandler<T1>) |
 | ViableCallable.cs:158:9:158:54 | ... -= ... | C7<>.remove_Event(EventHandler<T1>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C8.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:158:9:158:54 | ... -= ... | C9<>.remove_Event(EventHandler<string>) |
-| ViableCallable.cs:161:9:161:40 | dynamic call to method M4 | C8.M4(byte, IEnumerable<string>) |
-| ViableCallable.cs:161:19:161:39 | call to method Mock | ViableCallable.Mock<IList<string>>() |
-| ViableCallable.cs:162:9:162:38 | dynamic call to method M4 | C8.M4(byte, IEnumerable<string>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C8.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:158:9:158:54 | ... -= ... | C9<>.remove_Event(EventHandler<String>) |
+| ViableCallable.cs:161:9:161:40 | dynamic call to method M4 | C8.M4(byte, IEnumerable<String>) |
+| ViableCallable.cs:161:19:161:39 | call to method Mock | ViableCallable.Mock<IList<String>>() |
+| ViableCallable.cs:162:9:162:38 | dynamic call to method M4 | C8.M4(byte, IEnumerable<String>) |
 | ViableCallable.cs:165:9:165:17 | dynamic access to member Prop1 | C10.set_Prop1(bool) |
 | ViableCallable.cs:175:9:175:15 | dynamic access to element | C2<>.set_Item(T, string) |
 | ViableCallable.cs:175:9:175:15 | dynamic access to element | C6<,>.set_Item(T2, T1) |
@@ -420,19 +420,19 @@
 | ViableCallable.cs:191:9:191:149 | call to method InvokeMember | C10.set_Prop3(string) |
 | ViableCallable.cs:194:9:194:146 | call to method InvokeMember | C10.get_Item(int) |
 | ViableCallable.cs:195:9:195:152 | call to method InvokeMember | C10.set_Item(int, bool) |
-| ViableCallable.cs:199:9:199:147 | call to method InvokeMember | C10.add_Event(EventHandler<bool>) |
-| ViableCallable.cs:200:9:200:150 | call to method InvokeMember | C10.remove_Event(EventHandler<bool>) |
+| ViableCallable.cs:199:9:199:147 | call to method InvokeMember | C10.add_Event(EventHandler<Boolean>) |
+| ViableCallable.cs:200:9:200:150 | call to method InvokeMember | C10.remove_Event(EventHandler<Boolean>) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C2<>.M<T3>(string, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C2<Boolean>.M<T3>(string, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C2<Decimal>.M<T3>(string, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C2<Int32>.M<T3>(string, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C3.M<T3>(string, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C4<>.M<T3>(T[], T3) |
-| ViableCallable.cs:235:9:235:15 | call to method M | C4<Int32>.M<T3>(int[], T3) |
+| ViableCallable.cs:235:9:235:15 | call to method M | C4<Int32>.M<T3>(Int32[], T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C5.M<T3>(string, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C6<,>.M<T3>(T1, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C6<Boolean,Byte>.M<T3>(bool, T3) |
-| ViableCallable.cs:235:9:235:15 | call to method M | C6<Int32[],Boolean>.M<T3>(int[], T3) |
+| ViableCallable.cs:235:9:235:15 | call to method M | C6<Int32[],Boolean>.M<T3>(Int32[], T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C6<String,Boolean>.M<T3>(string, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C6<String,Decimal>.M<T3>(string, T3) |
 | ViableCallable.cs:235:9:235:15 | call to method M | C6<String,Int32>.M<T3>(string, T3) |

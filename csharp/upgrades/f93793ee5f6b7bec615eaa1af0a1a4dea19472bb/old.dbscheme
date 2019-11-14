@@ -157,28 +157,28 @@ compilation_finished(
 
 externalDefects(
   unique int id: @externalDefect,
-  string queryPath: string ref,
+  varchar(900) queryPath: string ref,
   int location: @location ref,
-  string message: string ref,
+  varchar(900) message: string ref,
   float severity: float ref);
 
 externalMetrics(
   unique int id: @externalMetric,
-  string queryPath: string ref,
+  varchar(900) queryPath: string ref,
   int location: @location ref,
   float value: float ref);
 
 externalData(
   int id: @externalDataElement,
-  string path: string ref,
+  varchar(900) path: string ref,
   int column: int ref,
-  string value: string ref);
+  varchar(900) value: string ref);
 
 snapshotDate(
   unique date snapshotDate: date ref);
 
 sourceLocationPrefix(
-  string prefix: string ref);
+  varchar(900) prefix: string ref);
 
 /*
  * Duplicate code
@@ -186,12 +186,12 @@ sourceLocationPrefix(
 
 duplicateCode(
   unique int id: @duplication,
-  string relativePath: string ref,
+  varchar(900) relativePath: string ref,
   int equivClass: int ref);
 
 similarCode(
   unique int id: @similarity,
-  string relativePath: string ref,
+  varchar(900) relativePath: string ref,
   int equivClass: int ref);
 
 @duplication_or_similarity = @duplication | @similarity
@@ -244,7 +244,7 @@ locations_default(
 @sourceline = @file | @callable | @xmllocatable;
 
 numlines(
-  int element_id: @sourceline ref,
+  unique int element_id: @sourceline ref,
   int num_lines: int ref,
   int num_code: int ref,
   int num_comment: int ref);
@@ -252,9 +252,9 @@ numlines(
 assemblies(
   unique int id: @assembly,
   int file: @file ref,
-  string fullname: string ref,
-  string name: string ref,
-  string version: string ref);
+  varchar(900) fullname: string ref,
+  varchar(900) name: string ref,
+  varchar(900) version: string ref);
 
 /*
   fromSource(0) = unknown,
@@ -263,15 +263,15 @@ assemblies(
 */
 files(
   unique int id: @file,
-  string name: string ref,
-  string simple: string ref,
-  string ext: string ref,
+  varchar(900) name: string ref,
+  varchar(900) simple: string ref,
+  varchar(900) ext: string ref,
   int fromSource: int ref);
 
 folders(
   unique int id: @folder,
-  string name: string ref,
-  string simple: string ref);
+  varchar(900) name: string ref,
+  varchar(900) simple: string ref);
 
 @container = @folder | @file ;
 
@@ -291,7 +291,7 @@ file_extraction_mode(
 
 namespaces(
   unique int id: @namespace,
-  string name: string ref);
+  varchar(900) name: string ref);
 
 namespace_declarations(
   unique int id: @namespace_declaration,
@@ -330,7 +330,7 @@ using_directive_location(
 types(
   unique int id: @type,
   int kind: int ref,
-  string name: string ref);
+  varchar(900) name: string ref);
 
 case @type.kind of
    1 = @bool_type
@@ -378,10 +378,10 @@ case @type.kind of
 
 typerefs(
   unique int id: @typeref,
-  string name: string ref);
+  varchar(900) name: string ref);
 
 typeref_type(
-  int id: @typeref ref,
+  unique int id: @typeref ref,
   unique int typeId: @type ref);
 
 @type_or_ref = @type | @typeref;
@@ -424,7 +424,7 @@ type_location(
 
 tuple_underlying_type(
   unique int tuple: @tuple_type ref,
-  int struct: @type_or_ref ref);
+  int struct: @struct_type ref);
 
 #keyset[tuple, index]
 tuple_element(
@@ -452,7 +452,7 @@ type_mention_location(
   unique int id: @type_mention ref,
   int loc: @location ref);
 
-@has_type_annotation = @assignable | @type_parameter | @callable | @expr | @delegate_type | @generic;
+@has_type_annotation = @assignable | @type_parameter | @callable | @array_type | @expr | @delegate_type;
 
 /**
  * A direct annotation on an entity, for example `string? x;`.
@@ -472,18 +472,8 @@ type_mention_location(
  */
 type_annotation(int id: @has_type_annotation ref, int annotation: int ref);
 
-nullability(unique int nullability: @nullability, int kind: int ref);
-
-case @nullability.kind of
-  0 = @oblivious
-| 1 = @not_annotated
-| 2 = @annotated
-;
-
-#keyset[parent, index]
-nullability_parent(int nullability: @nullability ref, int index: int ref, int parent: @nullability ref)
-
-type_nullability(int id: @has_type_annotation ref, int nullability: @nullability ref)
+/** The annotation of type arguments of a constructed type or method. */ 
+type_argument_annotation(int constructedgeneric: @generic ref, int position: int ref, int annotation: int ref);
 
 /** GENERICS **/
 
@@ -527,10 +517,10 @@ specific_type_parameter_constraints(
   int id: @type_parameter_constraints ref,
   int base_id: @type_or_ref ref);
 
-specific_type_parameter_nullability(
+specific_type_parameter_annotation(
   int id: @type_parameter_constraints ref,
   int base_id: @type_or_ref ref,
-  int nullability: @nullability ref);
+  int annotation: int ref);
 
 /** MODIFIERS */
 
@@ -540,7 +530,7 @@ specific_type_parameter_nullability(
 
 modifiers(
   unique int id: @modifier,
-  string name: string ref);
+  varchar(900) name: string ref);
 
 has_modifiers(
   int id: @modifiable_direct ref,
@@ -558,7 +548,7 @@ compiler_generated(unique int id: @modifiable_direct ref);
 
 exprorstmt_name(
   unique int parent_id: @named_exprorstmt ref,
-  string name: string ref);
+  varchar(900) name: string ref);
 
 nested_types(
   unique int id: @type ref,
@@ -567,7 +557,7 @@ nested_types(
 
 properties(
   unique int id: @property,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_type_id: @type ref,
   int type_id: @type_or_ref ref,
   int unbound_id: @property ref);
@@ -578,7 +568,7 @@ property_location(
 
 indexers(
   unique int id: @indexer,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_type_id: @type ref,
   int type_id: @type_or_ref ref,
   int unbound_id: @indexer ref);
@@ -590,7 +580,7 @@ indexer_location(
 accessors(
   unique int id: @accessor,
   int kind: int ref,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_member_id: @member ref,
   int unbound_id: @accessor ref);
 
@@ -605,7 +595,7 @@ accessor_location(
 
 events(
   unique int id: @event,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_type_id: @type ref,
   int type_id: @type_or_ref ref,
   int unbound_id: @event ref);
@@ -617,7 +607,7 @@ event_location(
 event_accessors(
   unique int id: @event_accessor,
   int kind: int ref,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_event_id: @event ref,
   int unbound_id: @event_accessor ref);
 
@@ -632,8 +622,8 @@ event_accessor_location(
 
 operators(
   unique int id: @operator,
-  string name: string ref,
-  string symbol: string ref,
+  varchar(900) name: string ref,
+  varchar(900) symbol: string ref,
   int declaring_type_id: @type ref,
   int type_id: @type_or_ref ref,
   int unbound_id: @operator ref);
@@ -643,8 +633,8 @@ operator_location(
   int loc: @location ref);
 
 constant_value(
-  int id: @variable ref,
-  string value: string ref);
+  unique int id: @variable ref,
+  varchar(900) value: string ref);
 
 /** CALLABLES **/
 
@@ -654,7 +644,7 @@ constant_value(
 
 methods(
   unique int id: @method,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_type_id: @type ref,
   int type_id: @type_or_ref ref,
   int unbound_id: @method ref);
@@ -665,7 +655,7 @@ method_location(
 
 constructors(
   unique int id: @constructor,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_type_id: @type ref,
   int unbound_id: @constructor ref);
 
@@ -675,7 +665,7 @@ constructor_location(
 
 destructors(
   unique int id: @destructor,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_type_id: @type ref,
   int unbound_id: @destructor ref);
 
@@ -684,7 +674,7 @@ destructor_location(
   int loc: @location ref);
 
 overrides(
-  int id: @callable ref,
+  unique int id: @callable ref,
   int base_id: @callable ref);
 
 explicitly_implements(
@@ -693,7 +683,7 @@ explicitly_implements(
 
 local_functions(
     unique int id: @local_function,
-    string name: string ref,
+    varchar(900) name: string ref,
     int return_type: @type ref,
     int unbound_id: @local_function ref);
 
@@ -710,7 +700,7 @@ local_function_stmts(
 fields(
   unique int id: @field,
   int kind: int ref,
-  string name: string ref,
+  varchar(900) name: string ref,
   int declaring_type_id: @type ref,
   int type_id: @type_or_ref ref,
   int unbound_id: @field ref);
@@ -727,7 +717,7 @@ field_location(
 localvars(
   unique int id: @local_variable,
   int kind: int ref,
-  string name: string ref,
+  varchar(900) name: string ref,
   int implicitly_typed: int ref /* 0 = no, 1 = yes */,
   int type_id: @type_or_ref ref,
   int parent_id: @local_var_decl_expr ref);
@@ -748,7 +738,7 @@ localvar_location(
 #keyset[index, parent_id]
 params(
   unique int id: @parameter,
-  string name: string ref,
+  varchar(900) name: string ref,
   int type_id: @type_or_ref ref,
   int index: int ref,
   int mode: int ref, /* value = 0, ref = 1, out = 2, array = 3, this = 4 */
@@ -1085,7 +1075,7 @@ expr_compiler_generated(
 
 expr_value(
   unique int id: @expr ref,
-  string value: string ref);
+  varchar(900) value: string ref);
 
 expr_call(
   unique int caller_id: @expr ref,
@@ -1103,7 +1093,7 @@ expr_location(
 
 dynamic_member_name(
   unique int id: @late_bindable_expr ref,
-  string name: string ref);
+  varchar(900) name: string ref);
 
 @qualifiable_expr = @member_access_expr
                   | @method_invocation_expr
@@ -1119,7 +1109,7 @@ expr_argument(
 
 expr_argument_name(
   unique int id: @expr ref,
-  string name: string ref);
+  varchar(900) name: string ref);
 
 /** CONTROL/DATA FLOW **/
 
@@ -1129,18 +1119,18 @@ expr_argument_name(
 
 xmlEncoding  (
   unique int id: @file ref,
-  string encoding: string ref);
+  varchar(900) encoding: string ref);
 
 xmlDTDs(
   unique int id: @xmldtd,
-  string root: string ref,
-  string publicId: string ref,
-  string systemId: string ref,
+  varchar(900) root: string ref,
+  varchar(900) publicId: string ref,
+  varchar(900) systemId: string ref,
   int fileid: @file ref);
 
 xmlElements(
   unique int id: @xmlelement,
-  string name: string ref,
+  varchar(900) name: string ref,
   int parentid: @xmlparent ref,
   int idx: int ref,
   int fileid: @file ref);
@@ -1148,15 +1138,15 @@ xmlElements(
 xmlAttrs(
   unique int id: @xmlattribute,
   int elementid: @xmlelement ref,
-  string name: string ref,
-  string value: string ref,
+  varchar(900) name: string ref,
+  varchar(3600) value: string ref,
   int idx: int ref,
   int fileid: @file ref);
 
 xmlNs(
   int id: @xmlnamespace,
-  string prefixName: string ref,
-  string URI: string ref,
+  varchar(900) prefixName: string ref,
+  varchar(900) URI: string ref,
   int fileid: @file ref);
 
 xmlHasNs(
@@ -1166,13 +1156,13 @@ xmlHasNs(
 
 xmlComments(
   unique int id: @xmlcomment,
-  string text: string ref,
+  varchar(3600) text: string ref,
   int parentid: @xmlparent ref,
   int fileid: @file ref);
 
 xmlChars(
   unique int id: @xmlcharacters,
-  string text: string ref,
+  varchar(3600) text: string ref,
   int parentid: @xmlparent ref,
   int idx: int ref,
   int isCDATA: int ref,
@@ -1192,8 +1182,8 @@ xmllocations(
 commentline(
   unique int id: @commentline,
   int kind: int ref,
-  string text: string ref,
-  string rawtext: string ref);
+  varchar(800) text: string ref,
+  varchar(800) rawtext: string ref);
 
 case @commentline.kind of
   0 = @singlelinecomment
@@ -1246,22 +1236,22 @@ asp_code_inline(unique int code: @asp_code ref);
 asp_directive_attribute(
   int directive: @asp_directive ref,
   int index: int ref,
-  string name: string ref,
+  varchar(1000) name: string ref,
   int value: @asp_quoted_string ref);
 asp_directive_name(
   unique int directive: @asp_directive ref,
-  string name: string ref);
+  varchar(1000) name: string ref);
 asp_element_body(
   unique int element: @asp_element ref,
-  string body: string ref);
+  varchar(1000) body: string ref);
 asp_tag_attribute(
   int tag: @asp_open_tag ref,
   int index: int ref,
-  string name: string ref,
+  varchar(1000) name: string ref,
   int attribute: @asp_attribute ref);
 asp_tag_name(
   unique int tag: @asp_open_tag ref,
-  string name: string ref);
+  varchar(1000) name: string ref);
 asp_tag_isempty(int tag: @asp_open_tag ref);
 
 /* Common Intermediate Language - CIL */
@@ -1616,7 +1606,7 @@ cil_access(
 
 cil_value(
   unique int instruction: @cil_literal ref,
-  string value: string ref);
+  varchar(900) value: string ref);
 
 #keyset[instruction, index]
 cil_switch(
@@ -1649,7 +1639,7 @@ case @cil_type.kind of
 
 cil_type(
   unique int id: @cil_type,
-  string name: string ref,
+  varchar(900) name: string ref,
   int kind: int ref,
   int parent: @cil_type_container ref,
   int sourceDecl: @cil_type ref);
@@ -1665,7 +1655,7 @@ cil_array_type(
 
 cil_method(
   unique int id: @cil_method,
-  string name: string ref,
+  varchar(900) name: string ref,
   int parent: @cil_type ref,
   int return_type: @cil_type ref);
 
@@ -1686,7 +1676,7 @@ cil_implements(
 cil_field(
   unique int id: @cil_field,
   int parent: @cil_type ref,
-  string name: string ref,
+  varchar(900) name: string ref,
   int field_type: @cil_type ref);
 
 @cil_element = @cil_instruction | @cil_declaration | @cil_handler | @cil_attribute | @cil_namespace;
@@ -1723,13 +1713,13 @@ cil_raiser(unique int event: @cil_event ref, int method: @cil_method ref);
 cil_property(
   unique int id: @cil_property,
   int parent: @cil_type ref,
-  string name: string ref,
+  varchar(900) name: string ref,
   int property_type: @cil_type ref);
 
 #keyset[parent, name]
 cil_event(unique int id: @cil_event,
   int parent: @cil_type ref,
-  string name: string ref,
+  varchar(900) name: string ref,
   int event_type: @cil_type ref);
 
 #keyset[impl, index]
@@ -1827,14 +1817,14 @@ cil_attribute(
 #keyset[attribute_id, param]
 cil_attribute_named_argument(
   int attribute_id: @cil_attribute ref,
-  string param: string ref,
-  string value: string ref);
+  varchar(100) param: string ref,
+  varchar(900) value: string ref);
 
 #keyset[attribute_id, index]
 cil_attribute_positional_argument(
   int attribute_id: @cil_attribute ref,
   int index: int ref,
-  string value: string ref);
+  varchar(900) value: string ref);
 
 
 // Common .Net data model covering both C# and CIL

@@ -1,7 +1,7 @@
 | Delegate<> | Delegate<T>(int, T) |
-| Delegate<String> | Delegate<string> |
 | Item | Item[T, bool] |
-| M | M(IEnumerable<int>) |
+| M | M(IEnumerable<Int32>) |
+| M | M(Int32[,,,][][,][,,]) |
 | M | M(__arglist) |
 | M | M(bool) |
 | M | M(byte) |
@@ -13,7 +13,6 @@
 | M | M(float) |
 | M | M(int) |
 | M | M(int*) |
-| M | M(int[,,,][][,][,,]) |
 | M | M(long) |
 | M | M(object) |
 | M | M(out T) |
@@ -27,6 +26,6 @@
 | M | M<S>(ref S) |
 | M | M<char?>(ref char?) |
 | ToStringWithTypes<> | ToStringWithTypes<T> |
-| add_Event | add_Event(Delegate<string>) |
+| add_Event | add_Event(Delegate<String>) |
 | get_Item | get_Item(T, bool) |
-| remove_Event | remove_Event(Delegate<string>) |
+| remove_Event | remove_Event(Delegate<String>) |
