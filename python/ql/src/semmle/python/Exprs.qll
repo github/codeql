@@ -128,6 +128,14 @@ class Expr extends Expr_, AstNode {
 
 }
 
+/** An assignment expression, such as `x := y` */
+class AssignExpr extends AssignExpr_ {
+    override Expr getASubExpression() {
+        result = this.getValue() or
+        result = this.getTarget()
+    }
+}
+
 /** An attribute expression, such as `value.attr` */
 class Attribute extends Attribute_ {
 
