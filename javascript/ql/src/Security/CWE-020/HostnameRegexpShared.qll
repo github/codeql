@@ -1,3 +1,7 @@
+/**
+ * Provides predicates for reasoning about regular expressions
+ * that match URLs and hostname patterns.
+ */
 import javascript
 
 /**
