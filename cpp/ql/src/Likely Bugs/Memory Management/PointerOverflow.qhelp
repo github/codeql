@@ -7,15 +7,15 @@
 The expression <code>ptr + a &lt; ptr</code> is equivalent to <code>a &lt;
 0</code>, and an optimizing compiler is likely to make that replacement,
 thereby removing a range check that might have been necessary for security.
-If `a` is known to be non-negative, the compiler can even replace <code>ptr +
+If <code>a</code> is known to be non-negative, the compiler can even replace <code>ptr +
 a &lt; ptr</code> with <code>false</code>.
 </p>
 
 <p>
 The reason is that pointer arithmetic overflow in C/C++ is undefined
 behavior. The optimizing compiler can assume that the program has no
-undefined behavior, which means that adding a positive number to `ptr` cannot
-produce a pointer less than `ptr`.
+undefined behavior, which means that adding a positive number to <code>ptr</code> cannot
+produce a pointer less than  <code>ptr</code>.
 </p>
 </overview>
 <recommendation>
@@ -63,7 +63,7 @@ range of an allocation between <code>ptr</code> and <code>ptr_end</code>.
 <sample src="PointerOverflow-good.cpp" />
 </example>
 <references>
-<li><a href="https://blog.regehr.org/archives/1395">Pointer Overflow Checking [Embedded in Academia]</a></li>
-<li><a href="https://lwn.net/Articles/278137/">GCC and pointer overflows [LWN]</a></li>
+<li>Embedded in Academia: <a href="https://blog.regehr.org/archives/1395">Pointer Overflow Checking</a>.</li>
+<li>LWN: <a href="https://lwn.net/Articles/278137/">GCC and pointer overflows</a>.</li>
 </references>
 </qhelp>
