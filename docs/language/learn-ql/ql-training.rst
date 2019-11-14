@@ -25,7 +25,7 @@ When you have selected a presentation, use |arrow-r| and |arrow-l| to navigate b
 Press **p** to view the additional notes on slides that have an information icon |info| in the top right corner, and press **f** to enter full-screen mode.
 
 The presentations contain a number of query examples.
-We recommend that you download `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/home-page.html>`__ and import the example snapshot for each presentation so that you can find the bugs mentioned in the slides. 
+We recommend that you download `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/home-page.html>`__ and import the example database for each presentation so that you can find the bugs mentioned in the slides. 
 
 
 .. pull-quote:: 
