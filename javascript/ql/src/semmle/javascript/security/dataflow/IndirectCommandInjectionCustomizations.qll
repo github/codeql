@@ -40,6 +40,22 @@ module IndirectCommandInjection {
   }
 
   /**
+   * An object containing command-line arguments that were parsed with a default configuration, considered as a flow source for command injection.
+   */
+  class DefaultParsedCommandLineArgumentsAsSource extends Source {
+    DefaultParsedCommandLineArgumentsAsSource() {
+      // `require('get-them-args')(...)` => `{ unknown: [], a: ... b: ... }`
+      this = DataFlow::moduleImport("get-them-args").getACall() or
+      // `require('minimist')(...)` => `{ _: [], a: ... b: ... }`
+      this = DataFlow::moduleImport("minimist").getACall() or
+      // `require('yargs').argv` => `{ _: [], a: ... b: ... }`
+      this = DataFlow::moduleMember("yargs", "argv") or
+      // `require('optimist').argv` => `{ _: [], a: ... b: ... }`
+      this = DataFlow::moduleMember("optimist", "argv")
+    }
+  }
+
+  /**
    * A command-line argument that effectively is system-controlled, and therefore not likely to be exploitable when used in the execution of another command.
    */
   private class SystemControlledCommandLineArgumentSanitizer extends Sanitizer {

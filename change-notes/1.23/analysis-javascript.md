@@ -8,10 +8,14 @@
 
 * Support for the following frameworks and libraries has been improved:
   - [firebase](https://www.npmjs.com/package/firebase)
+  - [get-them-args](https://www.npmjs.com/package/get-them-args)
+  - [minimist](https://www.npmjs.com/package/minimist)
   - [mongodb](https://www.npmjs.com/package/mongodb)
   - [mongoose](https://www.npmjs.com/package/mongoose)
-  - [parse-torrent](https://github.com/webtorrent/parse-torrent)
+  - [optimits](https://www.npmjs.com/package/optimist)
+  - [parse-torrent](https://www.npmjs.com/package/parse-torrent)
   - [rate-limiter-flexible](https://www.npmjs.com/package/rate-limiter-flexible)
+  - [yargs](https://www.npmjs.com/package/yargs) 
 
 * The call graph has been improved to resolve method calls in more cases. This may produce more security alerts.
 
