@@ -511,7 +511,7 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
  * The `__is_trivially_constructible` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns `true` if the type has a trivial (compiler-generated) default
+ * Returns `true` if the type has a trivial default
  * constructor, copy constructor or move constructor.
  * ```
  * template<typename T, typename... Args>
