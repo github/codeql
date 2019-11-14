@@ -1,6 +1,6 @@
 /**
  * @name Pointer overflow check
- * @description Adding a value to a pointer to see if it overflows relies
+ * @description Adding a value to a pointer to check if it overflows relies
  *              on undefined behavior and may lead to memory corruption.
  * @kind problem
  * @problem.severity error

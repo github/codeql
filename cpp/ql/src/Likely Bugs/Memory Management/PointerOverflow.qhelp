@@ -42,7 +42,7 @@ overflows and wraps around.
 
 <p>
 In both of these checks, the operations are performed in the wrong order.
-First, an expression that may lead to undefined behavior is evaluated
+First, an expression that may cause undefined behavior is evaluated
 (<code>ptr + a</code>), and then the result is checked for being in range.
 But once undefined behavior has happened in the pointer addition, it cannot
 be recovered from: it's too late to perform the range check after a possible
@@ -57,7 +57,7 @@ allocation.
 </p>
 
 <p>
-The next example shows how to portably check whether a number is outside the
+The next example shows how to portably check whether an unsigned number is outside the
 range of an allocation between <code>ptr</code> and <code>ptr_end</code>.
 </p>
 <sample src="PointerOverflow-good.cpp" />
