@@ -216,13 +216,12 @@ namespace Semmle.Autobuild
 
             void startCallback(string s, bool silent)
             {
-                if (!silent) Log(Severity.Info, $"\nRunning {s}");
+                Log(silent ? Severity.Debug : Severity.Info, $"\nRunning {s}");
             }
 
             void exitCallback(int ret, string msg, bool silent)
             {
-                if (!silent)
-                    Log(Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
+                Log(silent ? Severity.Debug : Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
             }
 
             return script.Run(Actions, startCallback, exitCallback);
