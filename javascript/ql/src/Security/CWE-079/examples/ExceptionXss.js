@@ -3,7 +3,7 @@ function setLanguageOptions() {
         deflt = href.substring(href.indexOf("default=")+8);
     
     try {
-	    var parsed = unknownParseFunction(deflt); 
+        var parsed = unknownParseFunction(deflt); 
     } catch(e) {
         document.write("Had an error: " + e + ".");
     }

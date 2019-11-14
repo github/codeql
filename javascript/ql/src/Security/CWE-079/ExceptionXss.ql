@@ -5,7 +5,7 @@
  *              to the DOM.  
  * @kind path-problem
  * @problem.severity error
- * @precision low
+ * @precision medium
  * @id js/xss-through-exception
  * @tags security
  *       external/cwe/cwe-079
