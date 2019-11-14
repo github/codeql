@@ -25,7 +25,7 @@ To learn more about the structure of query files, the key information to include
 -  :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`–a brief introduction to modeling data flow using CodeQL.
 -  :doc:`Defining 'select' statements <select-statement>`–further detail on developing query alert messages to provide extra information in your query results.
 -  :doc:`Locations and strings for CodeQL entities <../locations>`–further detail on providing location information in query results. 
--  `QL style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__–a guide to formatting QL for consistency and clarity.
+-  `CodeQL style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__–a guide to formatting your queries for consistency and clarity.
 
 Viewing existing CodeQL queries
 *******************************
