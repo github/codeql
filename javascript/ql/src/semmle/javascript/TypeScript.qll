@@ -1816,7 +1816,7 @@ class Type extends @type {
    *
    * For example, for a type `(S & T) | U` this gets the types `S`, `T`, and `U`.
    */
-  Type unfold() {
+  Type unfoldUnionAndIntersection() {
     not result instanceof UnionOrIntersectionType and
     (
       result = this
@@ -1827,6 +1827,27 @@ class Type extends @type {
       // We can use this to avoid recursion.
       result = this.(UnionType).getAnElementType().(IntersectionType).getAnElementType()
     )
+  }
+
+  /**
+   * Repeatedly unfolds unions, intersections, and type aliases and gets any of the underlying types,
+   * or this type itself if it is not a union or intersection.
+   *
+   * For example, the type `(S & T) | U` unfolds to `S`, `T`, and `U`.
+   *
+   * If this is a type alias, the alias is itself included in the result, but this is not the case for intermediate type aliases.
+   * For example:
+   * ```js
+   * type One = number | string;
+   * type Two = One | Function & {x: string};
+   * One; // unfolds to number, string, and One
+   * Two; // unfolds to number, string, One, Function, {x: string}, and Two
+   * ```
+   */
+  Type unfold() {
+    result = unfoldUnionAndIntersection()
+    or
+    result = this.(TypeAliasReference).getAliasedType().unfoldUnionAndIntersection()
   }
 
   /**

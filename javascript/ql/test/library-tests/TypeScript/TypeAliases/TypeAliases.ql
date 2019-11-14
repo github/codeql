@@ -14,3 +14,7 @@ query Type getAliasedType(TypeAliasReference ref) {
 query Type getTypeArgument(TypeAliasReference ref, int n) {
   result = ref.getTypeArgument(n)
 }
+
+query Type unfold(TypeAliasReference t) {
+  result = t.unfold()
+}
