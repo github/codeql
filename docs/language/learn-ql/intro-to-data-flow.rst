@@ -81,5 +81,5 @@ These flow steps are modeled in the taint-tracking library using predicates that
 What next?
 **********
 
-- Search for ``DataFlow`` and ``TaintTracking`` in the `standard CodeQL libraries <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__ to learn more about the technical implementation of data flow analysis for specific programming languages.
+- Search for ``DataFlow`` and ``TaintTracking`` in the `standard CodeQL libraries <https://help.semmle.com/QL/ql-libraries.html>`__ to learn more about the technical implementation of data flow analysis for specific programming languages.
 - Visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__ to find language-specific tutorials on data flow and other topics.

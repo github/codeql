@@ -24,7 +24,7 @@ You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/ab
 
 
 This topic is a basic introduction to structuring query files. You can find further information on writing queries for specific programming languages `here <https://help.semmle.com/QL/learn-ql/>`__, and detailed technical information about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and the `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
-For information on how to format your code when contributing queries to the GitHub repository, see the `QL style guide <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__.
+For information on how to format your code when contributing queries to the GitHub repository, see the `CodeQL style guide <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__.
 
 
 Basic query structure
@@ -87,7 +87,7 @@ When writing your own alert queries, you would typically import the standard lib
 
 There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Constructing path queries <path-queries>` for further information.
 
-You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__, using `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/z-queries.html>`__, or in the `GitHub repository <https://github.com/semmle/ql>`__.
+You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/QL/ql-libraries.html>`__, using `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/z-queries.html>`__, or in the `GitHub repository <https://github.com/semmle/ql>`__.
 
 
 Optional CodeQL classes and predicates

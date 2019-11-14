@@ -115,7 +115,7 @@ For Python, the ``Paths`` module contains the ``edges`` predicate::
 
     import semmle.python.security.Paths 
 
-You can also import libraries specifically designed to implement data flow analysis in various common frameworks and environments, and many additional libraries are included with CodeQL. To see examples of the different libraries used in data flow analysis, see the links to the built-in queries above or browse the `standard libraries <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__.
+You can also import libraries specifically designed to implement data flow analysis in various common frameworks and environments, and many additional libraries are included with CodeQL. To see examples of the different libraries used in data flow analysis, see the links to the built-in queries above or browse the `standard libraries <https://help.semmle.com/QL/ql-libraries.html>`__.
 
 For all languages, you can also optionally define a ``nodes`` query predicate, which specifies the nodes of the path graph that you are interested in. If ``nodes`` is defined, only edges with endpoints defined by these nodes are selected. If ``nodes`` is not defined, you select all possible endpoints of ``edges``.
 
@@ -128,7 +128,7 @@ You can also define your own ``edges`` predicate in the body of your query. It s
     /** Logical conditions which hold if `(a,b)` is an edge in the data flow graph */
     }
 
-For more examples of how to define an ``edges`` predicate, visit the `standard CodeQL libraries <https://help.semmle.com/wiki/display/QL/QL+standard+libraries>`__ and search for ``edges``.
+For more examples of how to define an ``edges`` predicate, visit the `standard CodeQL libraries <https://help.semmle.com/QL/ql-libraries.html>`__ and search for ``edges``.
 
 Declaring sources and sinks
 ***************************
