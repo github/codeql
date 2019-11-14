@@ -585,4 +585,12 @@ public class AutoBuildTests {
     addFile(true, LGTM_SRC, "tst.qhelp");
     runTest();
   }
+
+  @Test
+  public void skipCodeQLDatabases() throws IOException {
+    addFile(true, LGTM_SRC, "tst.js");
+    addFile(false, LGTM_SRC, "db/codeql-database.yml");
+    addFile(false, LGTM_SRC, "db/foo.js");
+    runTest();
+  }
 }
