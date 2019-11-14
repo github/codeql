@@ -1,3 +1,5 @@
 { "provide": [ "ql/src/qlpack.yml",
+               "ql/test/qlpack.yml",
+               "upgrades/qlpack.yml",
                "ql/config/legacy-support/qlpack.yml" ],
   "ignore": [ "the-extractor-which-needs-to-be-built" ] }
