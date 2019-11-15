@@ -39,29 +39,13 @@ SourceNode getAnEnumeratedArrayElement(SourceNode array) {
  * A data flow node that refers to the name of a property obtained by enumerating
  * the properties of some object.
  */
-class EnumeratedPropName extends DataFlow::Node {
-  DataFlow::Node object;
-
-  EnumeratedPropName() {
-    exists(ForInStmt stmt |
-      this = DataFlow::lvalueNode(stmt.getLValue()) and
-      object = stmt.getIterationDomain().flow()
-    )
-    or
-    exists(CallNode call, string name |
-      call = globalVarRef("Object").getAMemberCall(name) and
-      (name = "keys" or name = "getOwnPropertyNames") and
-      object = call.getArgument(0) and
-      this = getAnEnumeratedArrayElement(call)
-    )
-  }
-
+abstract class EnumeratedPropName extends DataFlow::Node {
   /**
    * Gets the object whose properties are being enumerated.
    *
    * For example, gets `src` in `for (var key in src)`.
    */
-  Node getSourceObject() { result = object }
+  abstract DataFlow::Node getSourceObject();
 
   /**
    * Gets a local reference of the source object.
@@ -83,6 +67,53 @@ class EnumeratedPropName extends DataFlow::Node {
   PropRead getASourceProp() {
     result = getASourceObjectRef().getAPropertyRead() and
     result.getPropertyNameExpr().flow().getImmediatePredecessor*() = this
+  }
+}
+
+/**
+ * Property enumeration through `for-in` for `Object.keys` or `Object.getOwnPropertyName`.
+ */
+class ForInEnumeratedPropName extends EnumeratedPropName {
+  DataFlow::Node object;
+
+  ForInEnumeratedPropName() {
+    exists(ForInStmt stmt |
+      this = DataFlow::lvalueNode(stmt.getLValue()) and
+      object = stmt.getIterationDomain().flow()
+    )
+    or
+    exists(CallNode call, string name |
+      call = globalVarRef("Object").getAMemberCall(name) and
+      (name = "keys" or name = "getOwnPropertyNames") and
+      object = call.getArgument(0) and
+      this = getAnEnumeratedArrayElement(call)
+    )
+  }
+
+  override Node getSourceObject() { result = object }
+}
+
+/**
+ * Property enumeration through `Object.entries`.
+ */
+class EntriesEnumeratedPropName extends EnumeratedPropName {
+  CallNode entries;
+  SourceNode entry;
+
+  EntriesEnumeratedPropName() {
+    entries = globalVarRef("Object").getAMemberCall("entries") and
+    entry = getAnEnumeratedArrayElement(entries) and
+    this = entry.getAPropertyRead("0")
+  }
+
+  override DataFlow::Node getSourceObject() {
+    result = entries.getArgument(0)
+  }
+
+  override PropRead getASourceProp() {
+    result = super.getASourceProp()
+    or
+    result = entry.getAPropertyRead("1")
   }
 }
 

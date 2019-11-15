@@ -259,3 +259,15 @@ function mergeWithCopy(dst, src) {
     }
     return result;
 }
+
+function copyUsingEntries(dst, src) {
+    Object.entries(src).forEach(entry => {
+        let key = entry[0];
+        let value = entry[1];
+        if (dst[key]) {
+            copyUsingEntries(dst[key], value);
+        } else {
+            dst[key] = value; // NOT OK
+        }
+    });
+}
