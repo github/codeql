@@ -840,16 +840,18 @@ module DataFlow {
    * An array element pattern viewed as a property read; for instance, in
    * `var [ x, y ] = arr`, `x` is a read of property 0 of `arr` and similar
    * for `y`.
-   *
-   * Note: We currently do not expose the array index as the property name,
-   * instead treating it as a read of an unknown property.
    */
   private class ElementPatternAsPropRead extends PropRead, ElementPatternNode {
     override Node getBase() { result = TDestructuringPatternNode(pattern) }
 
     override Expr getPropertyNameExpr() { none() }
 
-    override string getPropertyName() { none() }
+    override string getPropertyName() {
+      exists (int i |
+        elt = pattern.getElement(i) and
+        result = i.toString()
+      )
+    }
   }
 
   /**

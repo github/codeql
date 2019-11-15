@@ -10,6 +10,9 @@ test_getAPropertyRead
 | tst.js:34:6:34:12 | vvv.ppp | tst.js:34:6:34:16 | vvv.ppp.qqq |
 | tst.js:44:3:44:9 | console | tst.js:44:3:44:13 | console.log |
 | tst.js:44:15:44:17 | obj | tst.js:44:15:44:20 | obj[p] |
+| tst.js:46:17:46:21 | array | tst.js:47:10:47:10 | x |
+| tst.js:46:17:46:21 | array | tst.js:47:13:47:13 | y |
+| tst.js:46:17:46:21 | array | tst.js:47:16:47:16 | z |
 test_getAPropertyReference
 | classes.ts:3:21:3:20 | this | classes.ts:4:3:4:24 | instanc ...  foo(); |
 | classes.ts:8:3:8:2 | this | classes.ts:8:15:8:35 | public  ... erField |
@@ -50,6 +53,9 @@ test_getAPropertyReference
 | tst.js:41:12:41:30 | ["a", ...arr3, "d"] | tst.js:41:27:41:29 | "d" |
 | tst.js:44:3:44:9 | console | tst.js:44:3:44:13 | console.log |
 | tst.js:44:15:44:17 | obj | tst.js:44:15:44:20 | obj[p] |
+| tst.js:46:17:46:21 | array | tst.js:47:10:47:10 | x |
+| tst.js:46:17:46:21 | array | tst.js:47:13:47:13 | y |
+| tst.js:46:17:46:21 | array | tst.js:47:16:47:16 | z |
 test_getAPropertySource
 | classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:19:4:23 | foo() |
 | classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:22:8:35 | parameterField |
@@ -92,6 +98,9 @@ test_getAPropertyRead2
 | tst.js:34:6:34:8 | vvv | ppp | tst.js:34:6:34:12 | vvv.ppp |
 | tst.js:34:6:34:12 | vvv.ppp | qqq | tst.js:34:6:34:16 | vvv.ppp.qqq |
 | tst.js:44:3:44:9 | console | log | tst.js:44:3:44:13 | console.log |
+| tst.js:46:17:46:21 | array | 0 | tst.js:47:10:47:10 | x |
+| tst.js:46:17:46:21 | array | 1 | tst.js:47:13:47:13 | y |
+| tst.js:46:17:46:21 | array | 2 | tst.js:47:16:47:16 | z |
 test_getAPropertyReference2
 | classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:3:4:24 | instanc ...  foo(); |
 | classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:15:8:35 | public  ... erField |
@@ -116,6 +125,9 @@ test_getAPropertyReference2
 | tst.js:34:6:34:8 | vvv | ppp | tst.js:34:6:34:12 | vvv.ppp |
 | tst.js:34:6:34:12 | vvv.ppp | qqq | tst.js:34:6:34:16 | vvv.ppp.qqq |
 | tst.js:44:3:44:9 | console | log | tst.js:44:3:44:13 | console.log |
+| tst.js:46:17:46:21 | array | 0 | tst.js:47:10:47:10 | x |
+| tst.js:46:17:46:21 | array | 1 | tst.js:47:13:47:13 | y |
+| tst.js:46:17:46:21 | array | 2 | tst.js:47:16:47:16 | z |
 test_hasPropertyWrite
 | classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:19:4:23 | foo() |
 | classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:22:8:35 | parameterField |
