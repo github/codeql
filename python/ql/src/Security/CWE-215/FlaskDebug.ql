@@ -17,7 +17,7 @@ import semmle.python.web.flask.General
 
 from CallNode call, Object isTrue
 where
-    call = theFlaskClass().declaredAttribute("run").(FunctionObject).getACall() and
+    call = theFlaskClass().declaredAttribute("run").(FunctionValue).getACall() and
     call.getArgByName("debug").refersTo(isTrue) and
     isTrue.booleanValue() = true
 select call, "A Flask app appears to be run in debug mode. This may allow an attacker to run arbitrary code through the debugger."
