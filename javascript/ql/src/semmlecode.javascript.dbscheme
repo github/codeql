@@ -721,6 +721,11 @@ signature_types (
   int required_params: int ref
 );
 
+signature_rest_parameter(
+  unique int sig: @signature_type ref,
+  int rest_param_arra_type: @type ref
+);
+
 case @signature_type.kind of
   0 = @function_signature_type
 | 1 = @constructor_signature_type

@@ -93,6 +93,20 @@ function isTypeofCandidateSymbol(symbol: ts.Symbol) {
 const signatureKinds = [ts.SignatureKind.Call, ts.SignatureKind.Construct];
 
 /**
+ * Bitmask of flags set on a signature, but not exposed in the public API.
+ */
+const enum InternalSignatureFlags {
+  HasRestParameter = 1
+}
+
+/**
+ * Signature interface with some internal properties exposed.
+ */
+interface AugmentedSignature extends ts.Signature {
+  flags?: InternalSignatureFlags;
+}
+
+/**
  * Encodes property lookup tuples `(baseType, name, property)` as three
  * staggered arrays.
  */
@@ -902,7 +916,7 @@ export class TypeTable {
   /**
    * Returns a unique string for the given call/constructor signature.
    */
-  private getSignatureString(kind: ts.SignatureKind, signature: ts.Signature): string {
+  private getSignatureString(kind: ts.SignatureKind, signature: AugmentedSignature): string {
     let parameters = signature.getParameters();
     let numberOfTypeParameters = signature.typeParameters == null
         ? 0
@@ -915,11 +929,26 @@ export class TypeTable {
         break;
       }
     }
+    let hasRestParam = (signature.flags & InternalSignatureFlags.HasRestParameter) !== 0;
+    let restParameterTag = '';
+    if (hasRestParam) {
+      if (requiredParameters === parameters.length) {
+        // Do not count the rest parameter as a required parameter
+        requiredParameters = parameters.length - 1;
+      }
+      if (parameters.length === 0) return null;
+      let restParameter = parameters[parameters.length - 1];
+      let restParameterType = this.typeChecker.getTypeOfSymbolAtLocation(restParameter, this.arbitraryAstNode);
+      if (restParameterType == null) return null;
+      let restParameterTypeId = this.getId(restParameterType, false);
+      if (restParameterTypeId == null) return null;
+      restParameterTag = '' + restParameterTypeId;
+    }
     let returnTypeId = this.getId(signature.getReturnType(), false);
     if (returnTypeId == null) {
       return null;
     }
-    let tag = `${kind};${numberOfTypeParameters};${requiredParameters};${returnTypeId}`;
+    let tag = `${kind};${numberOfTypeParameters};${requiredParameters};${restParameterTag};${returnTypeId}`;
     for (let typeParameter of signature.typeParameters || []) {
       tag += ";" + typeParameter.symbol.name;
       let constraint = typeParameter.getConstraint();
@@ -930,10 +959,19 @@ export class TypeTable {
         tag += ";" + constraintId;
       }
     }
-    for (let parameter of parameters) {
+    for (let paramIndex = 0; paramIndex < parameters.length; ++paramIndex) {
+      let parameter = parameters[paramIndex];
       let parameterType = this.typeChecker.getTypeOfSymbolAtLocation(parameter, this.arbitraryAstNode);
       if (parameterType == null) {
         return null;
+      }
+      let isRestParameter = hasRestParam && (paramIndex === parameters.length - 1);
+      if (isRestParameter) {
+        // The type of the rest parameter is the array type, but we wish to extract the non-array type.
+        if (!isTypeReference(parameterType)) return null;
+        let typeArguments = parameterType.typeArguments;
+        if (typeArguments == null || typeArguments.length === 0) return null;
+        parameterType = typeArguments[0];
       }
       let parameterTypeId = this.getId(parameterType, false);
       if (parameterTypeId == null) {

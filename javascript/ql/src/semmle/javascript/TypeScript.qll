@@ -2555,17 +2555,19 @@ class CallSignatureType extends @signature_type {
   predicate hasTypeParameters() { getNumTypeParameter() > 0 }
 
   /**
-   * Gets the type of the `n`th parameter of this signature.
+   * Gets the type of the `n`th parameter declared in this signature.
+   *
+   * If the `n`th parameter is a rest parameter `...T[]`, gets type `T`.
    */
   Type getParameter(int n) { n >= 0 and result = getChild(n + getNumTypeParameter()) }
 
   /**
-   * Gets the type of a parameter of this signature.
+   * Gets the type of a parameter of this signature, including the rest parameter, if any.
    */
   Type getAParameter() { result = getParameter(_) }
 
   /**
-   * Gets the number of parameters.
+   * Gets the number of parameters, including the rest parameter, if any.
    */
   int getNumParameter() { result = count(int i | exists(getParameter(i))) }
 
@@ -2577,7 +2579,7 @@ class CallSignatureType extends @signature_type {
 
   /**
    * Gets the number of optional parameters, that is,
-   * parameters that are marked as optional with the `?` suffix.
+   * parameters that are marked as optional with the `?` suffix or is a rest parameter.
    */
   int getNumOptionalParameter() { result = getNumParameter() - getNumRequiredParameter() }
 
@@ -2591,7 +2593,9 @@ class CallSignatureType extends @signature_type {
   }
 
   /**
-   * Holds if the `n`th parameter is declared optional with the `?` suffix.
+   * Holds if the `n`th parameter is declared optional with the `?` suffix or is the rest parameter.
+   *
+   * Note that rest parameters are not considered optional in this sense.
    */
   predicate isOptionalParameter(int n) {
     exists(getParameter(n)) and
@@ -2610,6 +2614,30 @@ class CallSignatureType extends @signature_type {
    * Gets the name of a parameter of this signature.
    */
   string getAParameterName() { result = getParameterName(_) }
+
+  /**
+   * Holds if this signature declares a rest parameter, such as `(x: number, ...y: string[])`.
+   */
+  predicate hasRestParameter() { signature_rest_parameter(this, _) } // TODO
+
+  /**
+   * Gets the type of the rest parameter, if any.
+   *
+   * For example, for the signature `(...y: string[])`, this gets the type `string`.
+   */
+  Type getRestParameterType() {
+    hasRestParameter() and
+    result = getParameter(getNumParameter() - 1)
+  }
+
+  /**
+   * Gets the type of the rest parameter as an array, if it exists.
+   *
+   * For example, for the signature `(...y: string[])`, this gets the type `string[]`.
+   */
+  PlainArrayType getRestParameterArrayType() {
+    signature_rest_parameter(this, result)
+  }
 }
 
 /**
