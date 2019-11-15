@@ -6,7 +6,7 @@
 import javascript
 
 module ReflectedXss {
-  import Xss::ReflectedXss
+  import ReflectedXssCustomizations::ReflectedXss
 
   /**
    * A taint-tracking configuration for reasoning about XSS.
@@ -21,15 +21,6 @@ module ReflectedXss {
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer
-    }
-  }
-
-  /** A third-party controllable request input, considered as a flow source for reflected XSS. */
-  class ThirdPartyRequestInputAccessAsSource extends Source {
-    ThirdPartyRequestInputAccessAsSource() {
-      this.(HTTP::RequestInputAccess).isThirdPartyControllable()
-      or
-      this.(HTTP::RequestHeaderAccess).getAHeaderName() = "referer"
     }
   }
 }

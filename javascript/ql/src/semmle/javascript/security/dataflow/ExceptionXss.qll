@@ -1,12 +1,18 @@
 /**
- * Provides a taint-tracking configuration for TODO:
+ * Provides a taint-tracking configuration for reasoning about cross-site 
+ * scripting vulnerabilities where the taint-flow passes through a thrown 
+ * exception. 
  */
 
 import javascript
 
 module ExceptionXss {
-  import Xss::DomBasedXss // imports sinks
-  import DomBasedXssCustomizations::DomBasedXss // imports sources
+  import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
+  import ReflectedXssCustomizations::ReflectedXss as ReflectedXssCustom 
+  import Xss::DomBasedXss as DomBasedXss 
+  import Xss::ReflectedXss as ReflectedXSS
+  import Xss::StoredXss as StoredXss
+  import Xss as XSS
 
   DataFlow::Node getExceptionalSuccssor(DataFlow::Node pred) {
     exists(DataFlow::FunctionNode func |
@@ -53,16 +59,16 @@ module ExceptionXss {
     Configuration() { this = "ExceptionXss"}
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-      source instanceof Source and label instanceof NotYetThrown
+      source instanceof XSS::Shared::Source and label instanceof NotYetThrown
     }
     
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-   	  sink instanceof Sink and label.isDataOrTaint()
+   	  sink instanceof XSS::Shared::Sink and label.isDataOrTaint()
    	}
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
-      node instanceof Sanitizer
+      node instanceof XSS::Shared::Sanitizer
     }
 
     override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl) {

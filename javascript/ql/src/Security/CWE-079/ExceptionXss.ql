@@ -21,5 +21,5 @@ from
 where
   cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  sink.getNode().(Sink).getVulnerabilityKind() + " vulnerability due to $@.", source.getNode(),
+  sink.getNode().(XSS::Shared::Sink).getVulnerabilityKind() + " vulnerability due to $@.", source.getNode(),
   "user-provided value"

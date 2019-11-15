@@ -97,3 +97,16 @@
 		$('myId').html(e); // NOT OK! 
 	}
 });
+
+var express = require('express');
+
+var app = express();
+
+app.get('/user/:id', function(req, res) {
+  try {
+    unknown(req.params.id);
+  } catch(e) {
+    res.send("Exception: " + e); // NOT OK!
+  }
+});
+
