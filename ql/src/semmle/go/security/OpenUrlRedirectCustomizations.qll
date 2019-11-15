@@ -51,6 +51,41 @@ module OpenUrlRedirect {
   }
 
   /**
+   * Holds if `a` and `b` read the same variable, field, or method.
+   */
+  predicate readsSameEntity(Read a, Read b) {
+    exists(DataFlow::Node aBase, DataFlow::Node bBase | readsSameEntity(aBase, bBase) |
+      exists(Field f | a.readsField(aBase, f) | b.readsField(bBase, f))
+      or
+      exists(Method m | a.readsMethod(aBase, m) | b.readsMethod(bBase, m))
+    )
+  }
+
+  /**
+   * An access to a variable that is preceded by an assignment to its `Path` field.
+   *
+   * This is overapproximate; this will currently remove flow through all `Url.Path` assignments
+   * which contain a substring that could sanitize data.
+   */
+  class PathAssignmentBarrier extends Barrier, Read {
+    PathAssignmentBarrier() {
+      exists(Write w, Field f, Read writeBase, ValueEntity v |
+        f.getName() = "Path" and
+        hasHostnameSanitizingSubstring(w.getRhs()) and
+        readsSameEntity(this, writeBase)
+      |
+        w.writesField(writeBase, f, _) and
+        w.getBasicBlock().(ReachableBasicBlock).dominates(this.asInstruction().getBasicBlock()) and
+        (
+          not w.getBasicBlock() = this.asInstruction().getBasicBlock()
+          or
+          w.getASuccessor+() = this.asInstruction()
+        )
+      )
+    }
+  }
+
+  /**
    * A call to a function called `isLocalUrl` or similar, which is
    * considered a barrier for purposes of URL redirection.
    */
