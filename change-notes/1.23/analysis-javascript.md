@@ -12,7 +12,7 @@
   - [minimist](https://www.npmjs.com/package/minimist)
   - [mongodb](https://www.npmjs.com/package/mongodb)
   - [mongoose](https://www.npmjs.com/package/mongoose)
-  - [optimits](https://www.npmjs.com/package/optimist)
+  - [optimist](https://www.npmjs.com/package/optimist)
   - [parse-torrent](https://www.npmjs.com/package/parse-torrent)
   - [rate-limiter-flexible](https://www.npmjs.com/package/rate-limiter-flexible)
   - [yargs](https://www.npmjs.com/package/yargs) 
