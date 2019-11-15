@@ -33,17 +33,6 @@ module ExceptionXss {
     not node = any(DataFlow::InvokeNode call | exists(call.getACallee())).getAnArgument()
     or
     node.asExpr().getEnclosingStmt() instanceof ThrowStmt
-    or
-    // TODO: Do some flow label for deeply tainted objects?
-    exists(DataFlow::ObjectLiteralNode obj |
-      obj.asExpr().(ObjectExpr).getAProperty().getInit() = node.asExpr() and
-      canThrowSensitiveInformation(obj)
-    )
-    or
-    exists(DataFlow::ArrayCreationNode arr |
-      arr.getAnElement() = node and
-      canThrowSensitiveInformation(arr)
-    )
   }
 
   TryStmt getEnclosingTryStmt(Stmt stmt) {
@@ -52,48 +41,39 @@ module ExceptionXss {
       stmt.getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result.getBody()
     )
   }
+  
+  class NotYetThrown extends DataFlow::FlowLabel {
+    NotYetThrown() { this = "NotYetThrown" }
+  }
 
   /**
    * A taint-tracking configuration for reasoning about XSS with possible exceptional flow.
    */
-  abstract class BaseConfiguration extends TaintTracking::Configuration {
-    BaseConfiguration() { this = "ExceptionXss" or this = "ExceptionXssNoException" }
+  class Configuration extends TaintTracking::Configuration {
+    Configuration() { this = "ExceptionXss"}
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+      source instanceof Source and label instanceof NotYetThrown
+    }
+    
+    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+   	  sink instanceof Sink and label.isDataOrTaint()
+   	}
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
 
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl) {
+      this.isAdditionalFlowStep(pred, succ) and inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown 
+      or
+      inlbl instanceof NotYetThrown and outlbl.isTaint() and
       succ = getExceptionalSuccssor(pred) and
-      (
-        canThrowSensitiveInformation(pred)
-        or
-        pred = any(DataFlow::FunctionNode func).getExceptionalReturn()
-      )
-    }
-  }
-
-  /**
-   * Instantiation of BaseConfiguration. 
-   */
-  class Configuration extends BaseConfiguration {
-    Configuration() { this = "ExceptionXss" }
-  }
-
-  /**
-   * Same as configuration, except that all additional exceptional flows has been removed.
-   */
-  class ConfigurationNoException extends BaseConfiguration {
-    ConfigurationNoException() { this = "ExceptionXssNoException" }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      super.isAdditionalTaintStep(pred, succ) and
-      not succ = getExceptionalSuccssor(pred)
+      canThrowSensitiveInformation(pred)
+      or  
+      inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown and
+      exists(DataFlow::PropWrite write | write.getRhs() = pred and write.getBase() = succ)
     }
   }
 }

@@ -84,4 +84,16 @@
 	}
 	
 	$('myId').html(foo); // Direct leak, reported by other query.
+	
+	try {
+		unknown(foo.match(/foo/));
+	} catch(e) {
+		$('myId').html(e); // NOT OK! 
+	}
+	
+	try {
+		unknown([foo, "bar"]);
+	} catch(e) {
+		$('myId').html(e); // NOT OK! 
+	}
 });
