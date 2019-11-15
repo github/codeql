@@ -78,7 +78,7 @@ hold true, which likely is not what the programmer intended. (see also the
 <sample src="SignedOverflowCheck-bad2.cpp" />
 <p>
 The next example provides a solution to the previous one.  Even though
-<code>i + delta</code> does not overflow, casting it to an
+<code>n1 + delta</code> does not overflow, casting it to an
 <code>unsigned short</code> truncates the addition modulo 2^16,
 so that <code>unsigned short</code> "wrap around" may now be observed.
 Furthermore, since the left-hand side is now of type <code>unsigned short</code>,
