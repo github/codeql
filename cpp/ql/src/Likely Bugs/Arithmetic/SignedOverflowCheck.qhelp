@@ -24,20 +24,20 @@ be unsigned. The following cases all fall into the first category.
 </p>
 
 <p>
-Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>, 
-it is possible to rewrite it as <code>(unsigned short)(i + delta)&nbsp;&lt;&nbsp;i</code>.
-Note that <code>i + delta</code> does not actually overflow, due to <code>int</code> promotion.
+Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>, 
+it is possible to rewrite it as <code>(unsigned short)(n1 + delta)&nbsp;&lt;&nbsp;n1</code>.
+Note that <code>n1 + delta</code> does not actually overflow, due to <code>int</code> promotion.
 </p>
 
 <p>
-Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>,
-it is also possible to rewrite it as <code>i &gt; USHORT_MAX - delta</code>. The
+Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>,
+it is also possible to rewrite it as <code>n1 &gt; USHORT_MAX - delta</code>. The
 <code>limits.h</code> or <code>climits</code> header must then be included.
 </p>
 
 <p>
-Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
-it is possible to rewrite it as <code>i &gt; INT_MAX - delta</code>. It must be true
+Given <code>int n1, delta</code> and <code>n1 + delta &lt; n1</code>,
+it is possible to rewrite it as <code>n1 &gt; INT_MAX - delta</code>. It must be true
 that <code>delta &gt;= 0</code> and the <code>limits.h</code> or <code>climits</code>
 header has been included.
 </p>
