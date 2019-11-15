@@ -22,7 +22,7 @@ abstract class Conversion extends Expr {
 /**
  * A C/C++ cast expression.
  *
- * To get the type which the expression is being cast to, use getType().
+ * To get the type which the expression is being cast to, use `Cast::getType()`.
  *
  * There are two groups of subtypes of `Cast`. The first group differentiates
  * between the different cast syntax forms, e.g. `CStyleCast`, `StaticCast`,
@@ -33,6 +33,9 @@ abstract class Conversion extends Expr {
  * cast that is syntactically as `CStyleCast` may also be an `IntegralConversion`,
  * a `PointerBaseClassConversion`, or some other semantic conversion. Similarly,
  * a `PointerDerivedClassConversion` may also be a `CStyleCast` or a `StaticCast`.
+ *
+ * This is an abstract root QL class representing the different casts.  For
+ * specific examples, consult the documentation for any of QL classes mentioned above.
  */
 abstract class Cast extends Conversion, @cast {
   /**
@@ -71,6 +74,10 @@ module CastSanity {
 
 /**
  * A cast expression in C, or a C-style cast expression in C++.
+ * ```
+ * float f = 3.0f;
+ * int i = (int)f;
+ * ```
  */
 class CStyleCast extends Cast, @c_style_cast {
   override string toString() { result = "(" + this.getType().getName() + ")..." }
@@ -82,6 +89,14 @@ class CStyleCast extends Cast, @c_style_cast {
 
 /**
  * A C++ `static_cast` expression.
+ *
+ * Please see https://en.cppreference.com/w/cpp/language/static_cast for
+ * more information.
+ * ```
+ * struct T: S {};
+ * struct S *s = get_S();
+ * struct T *t = static_cast<struct T *>(s); // downcast
+ * ```
  */
 class StaticCast extends Cast, @static_cast {
   override string toString() { result = "static_cast<" + this.getType().getName() + ">..." }
@@ -93,6 +108,13 @@ class StaticCast extends Cast, @static_cast {
 
 /**
  * A C++ `const_cast` expression.
+ *
+ * Please see https://en.cppreference.com/w/cpp/language/const_cast for
+ * more information.
+ * ```
+ * const struct S *s = get_S();
+ * struct S *t = const_cast<struct S *>(s);
+ * ```
  */
 class ConstCast extends Cast, @const_cast {
   override string toString() { result = "const_cast<" + this.getType().getName() + ">..." }
@@ -104,6 +126,13 @@ class ConstCast extends Cast, @const_cast {
 
 /**
  * A C++ `reinterpret_cast` expression.
+ *
+ * Please see https://en.cppreference.com/w/cpp/language/reinterpret_cast for
+ * more information.
+ * ```
+ * struct S *s = get_S();
+ * std::uintptr_t p = reinterpret_cast<std::uintptr_t>(s);
+ * ```
  */
 class ReinterpretCast extends Cast, @reinterpret_cast {
   override string toString() { result = "reinterpret_cast<" + this.getType().getName() + ">..." }
@@ -135,7 +164,11 @@ private predicate isPointerToMemberOrNullPointer(Type type) {
 }
 
 /**
- * A conversion from one arithmetic or enum type to another.
+ * A conversion from one arithmetic or `enum` type to another.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class ArithmeticConversion extends Cast {
   ArithmeticConversion() {
@@ -149,6 +182,10 @@ class ArithmeticConversion extends Cast {
 
 /**
  * A conversion from one integral or enum type to another.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`,  `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class IntegralConversion extends ArithmeticConversion {
   IntegralConversion() {
@@ -164,7 +201,11 @@ class IntegralConversion extends ArithmeticConversion {
 }
 
 /**
- * A conversion from one floating point type to another.
+ * A conversion from one floating point type.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class FloatingPointConversion extends ArithmeticConversion {
   FloatingPointConversion() {
@@ -181,6 +222,10 @@ class FloatingPointConversion extends ArithmeticConversion {
 
 /**
  * A conversion from a floating point type to an integral or enum type.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class FloatingPointToIntegralConversion extends ArithmeticConversion {
   FloatingPointToIntegralConversion() {
@@ -197,6 +242,10 @@ class FloatingPointToIntegralConversion extends ArithmeticConversion {
 
 /**
  * A conversion from an integral or enum type to a floating point type.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class IntegralToFloatingPointConversion extends ArithmeticConversion {
   IntegralToFloatingPointConversion() {
@@ -212,9 +261,15 @@ class IntegralToFloatingPointConversion extends ArithmeticConversion {
 }
 
 /**
- * A conversion from one pointer type to another. The conversion does
+ * A conversion from one pointer type to another.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`,  `ConstCast`
+ * or `ReinterpretCast` for more information.
+ *
+ * The conversion does
  * not modify the value of the pointer. For pointer conversions involving
- * casts between base and derived classes, see `BaseClassConversion` and
+ * casts between base and derived classes, please see see `BaseClassConversion` or
  * `DerivedClassConversion`.
  */
 class PointerConversion extends Cast {
@@ -232,10 +287,16 @@ class PointerConversion extends Cast {
 }
 
 /**
- * A conversion from one pointer-to-member type to another. The conversion
- * does not modify the value of the pointer-to-member. For pointer-to-member
- * conversions involving casts between base and derived classes, see
- * `PointerToMemberBaseClassConversion` and `PointerToMemberDerivedClassConversion`.
+ * A conversion from one pointer-to-member type to another.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
+ *
+ * The conversion does not modify the value of the pointer-to-member.
+ * For pointer-to-member conversions involving casts between base and
+ * derived classes, please see `PointerToMemberBaseClassConversion`
+ * or `PointerToMemberDerivedClassConversion`.
  */
 class PointerToMemberConversion extends Cast {
   PointerToMemberConversion() {
@@ -263,6 +324,10 @@ class PointerToMemberConversion extends Cast {
 
 /**
  * A conversion from a pointer type to an integral or enum type.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class PointerToIntegralConversion extends Cast {
   PointerToIntegralConversion() {
@@ -280,6 +345,10 @@ class PointerToIntegralConversion extends Cast {
 
 /**
  * A conversion from an integral or enum type to a pointer type.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class IntegralToPointerConversion extends Cast {
   IntegralToPointerConversion() {
@@ -297,7 +366,11 @@ class IntegralToPointerConversion extends Cast {
 
 /**
  * A conversion to `bool`. Returns `false` if the source value is zero,
- * false, or nullptr. Returns `true` otherwise.
+ * `false`, or `nullptr`. Returns `true` otherwise.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class BoolConversion extends Cast {
   BoolConversion() { conversionkinds(underlyingElement(this), 1) }
@@ -309,6 +382,10 @@ class BoolConversion extends Cast {
 
 /**
  * A conversion to `void`.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class VoidConversion extends Cast {
   VoidConversion() {
@@ -322,11 +399,16 @@ class VoidConversion extends Cast {
 }
 
 /**
- * A conversion between two pointers or glvalues related by inheritance. The
- * base class will always be either a direct base class of the derived class,
+ * A conversion between two pointers or _glvalue_s related by inheritance.
+ *
+ * The base class will always be either a direct base class of the derived class,
  * or a virtual base class of the derived class. A conversion to an indirect
  * non-virtual base class will be represented as a sequence of conversions to
  * direct base classes.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class InheritanceConversion extends Cast {
   InheritanceConversion() {
@@ -377,8 +459,12 @@ private Class getConversionClass(Expr expr) {
 }
 
 /**
- * A conversion from a pointer or glvalue of a derived class to a pointer or
- * glvalue of a direct or virtual base class.
+ * A conversion from a pointer or _glvalue_ of a derived class to a pointer or
+ * _glvalue_ of a direct or virtual base class.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class BaseClassConversion extends InheritanceConversion {
   BaseClassConversion() { conversionkinds(underlyingElement(this), 2) }
@@ -400,8 +486,12 @@ class BaseClassConversion extends InheritanceConversion {
 }
 
 /**
- * A conversion from a pointer or glvalue to a base class to a pointer or glvalue
+ * A conversion from a pointer or _glvalue_ to a base class to a pointer or _glvalue_
  * to a direct derived class.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class DerivedClassConversion extends InheritanceConversion {
   DerivedClassConversion() { conversionkinds(underlyingElement(this), 3) }
@@ -420,6 +510,10 @@ class DerivedClassConversion extends InheritanceConversion {
 /**
  * A conversion from a pointer-to-member of a derived class to a pointer-to-member
  * of an immediate base class.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class PointerToMemberBaseClassConversion extends Cast {
   PointerToMemberBaseClassConversion() { conversionkinds(underlyingElement(this), 4) }
@@ -436,6 +530,10 @@ class PointerToMemberBaseClassConversion extends Cast {
 /**
  * A conversion from a pointer-to-member of a base class to a pointer-to-member
  * of an immediate derived class.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class PointerToMemberDerivedClassConversion extends Cast {
   PointerToMemberDerivedClassConversion() { conversionkinds(underlyingElement(this), 5) }
@@ -450,9 +548,13 @@ class PointerToMemberDerivedClassConversion extends Cast {
 }
 
 /**
- * A conversion of a glvalue from one type to another. The conversion does not
- * modify the address of the glvalue. For glvalue conversions involving base and
+ * A conversion of a _glvalue_ from one type to another. The conversion does not
+ * modify the address of the _glvalue_. For _glvalue_ conversions involving base and
  * derived classes, see `BaseClassConversion` and `DerivedClassConversion`.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class GlvalueConversion extends Cast {
   GlvalueConversion() { conversionkinds(underlyingElement(this), 6) }
@@ -465,18 +567,22 @@ class GlvalueConversion extends Cast {
 }
 
 /**
- * The adjustment of the type of a class prvalue. Most commonly seen in code
+ * The adjustment of the type of a class _prvalue_. Most commonly seen in code
  * similar to:
- *
+ * ```
  * class String { ... };
  * String func();
  * void caller() {
  *   const String& r = func();
  * }
- *
- * In the above example, the result of the call to `func` is a prvalue of type
+ * ```
+ * In the above example, the result of the call to `func` is a _prvalue_ of type
  * `String`, which will be adjusted to type `const String` before being bound
  * to the reference.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`, `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class PrvalueAdjustmentConversion extends Cast {
   PrvalueAdjustmentConversion() { conversionkinds(underlyingElement(this), 7) }
@@ -490,6 +596,14 @@ class PrvalueAdjustmentConversion extends Cast {
 
 /**
  * A C++ `dynamic_cast` expression.
+ *
+ * Please see https://en.cppreference.com/w/cpp/language/dynamic_cast for
+ * more information.
+ * ```
+ * struct T: S {};
+ * struct S *s = get_S();
+ * struct T *t = dynamic_cast<struct T *>(s); // downcast
+ * ```
  */
 class DynamicCast extends Cast, @dynamic_cast {
   override string toString() { result = "dynamic_cast<" + this.getType().getName() + ">..." }
@@ -504,6 +618,11 @@ class DynamicCast extends Cast, @dynamic_cast {
 /**
  * A Microsoft C/C++ `__uuidof` expression that returns the UUID of a type, as
  * specified by the `__declspec(uuid)` attribute.
+ * ```
+ * struct UUID { char a[16]; };
+ * struct __declspec(uuid("{01234567-89ab-cdef-0123-456789ABCDEF}")) S {};
+ * UUID uuid = __uuidof(S);
+ * ```
  */
 class UuidofOperator extends Expr, @uuidof {
   override string toString() {
@@ -519,22 +638,18 @@ class UuidofOperator extends Expr, @uuidof {
 }
 
 /**
- * A C++ `typeid` expression which provides runtime type information
- * about an expression or type.
+ * A C++ `typeid` expression which provides run-time type information (RTTI)
+ * about its argument.
+ *
+ * Please see https://en.cppreference.com/w/cpp/language/typeid for more
+ * information.
+ * ```
+ * Base *ptr = new Derived;
+ * const std::type_info &info1 = typeid(ptr);
+ * printf("the type of ptr is: %s\n", typeid(ptr).name());
+ * ```
  */
 class TypeidOperator extends Expr, @type_id {
-  /**
-   * Gets the type that is returned by this typeid expression.
-   *
-   * For example in the following code the `typeid` returns the
-   * type `MyClass *`.
-   *
-   * ```
-   * MyClass *ptr;
-   *
-   * printf("the type of ptr is: %s\n", typeid(ptr).name);
-   * ```
-   */
   Type getResultType() { typeid_bind(underlyingElement(this), unresolveElement(result)) }
 
   /**
@@ -566,6 +681,10 @@ class TypeidOperator extends Expr, @type_id {
  *
  * This expression only appears in templates themselves - in any actual
  * instantiations, "sizeof...(x)" will be replaced by its integer value.
+ * ```
+ * template < typename... T >
+ * int count ( T &&... t ) { return sizeof... ( t ); }
+ * ```
  */
 class SizeofPackOperator extends Expr, @sizeof_pack {
   override string toString() { result = "sizeof...(...)" }
@@ -586,6 +705,9 @@ abstract class SizeofOperator extends Expr, @runtime_sizeof {
 
 /**
  * A C/C++ sizeof expression whose operand is an expression.
+ * ```
+ * if (sizeof(a) == sizeof(b)) { c = (b)a; }
+ * ```
  */
 class SizeofExprOperator extends SizeofOperator {
   SizeofExprOperator() { exists(Expr e | this.getChild(0) = e) }
@@ -611,6 +733,9 @@ class SizeofExprOperator extends SizeofOperator {
 
 /**
  * A C/C++ sizeof expression whose operand is a type name.
+ * ```
+ * int szlong = sizeof(int) == sizeof(long)? 4 : 8;
+ * ```
  */
 class SizeofTypeOperator extends SizeofOperator {
   SizeofTypeOperator() { sizeof_bind(underlyingElement(this), _) }
@@ -643,6 +768,9 @@ abstract class AlignofOperator extends Expr, @runtime_alignof {
 
 /**
  * A C++11 `alignof` expression whose operand is an expression.
+ * ```
+ * int addrMask = ~(alignof(expr) - 1);
+ * ```
  */
 class AlignofExprOperator extends AlignofOperator {
   AlignofExprOperator() { exists(Expr e | this.getChild(0) = e) }
@@ -662,6 +790,9 @@ class AlignofExprOperator extends AlignofOperator {
 
 /**
  * A C++11 `alignof` expression whose operand is a type name.
+ * ```
+ * bool proper_alignment = (alingof(T) == alignof(T[0]);
+ * ```
  */
 class AlignofTypeOperator extends AlignofOperator {
   AlignofTypeOperator() { sizeof_bind(underlyingElement(this), _) }
@@ -679,6 +810,10 @@ class AlignofTypeOperator extends AlignofOperator {
 
 /**
  * A C/C++ array to pointer conversion.
+ *
+ * The conversion is either implicit or underlies a particular cast.
+ * Please see `CStyleCast`, `StaticCast`,  `ConstCast`
+ * or `ReinterpretCast` for more information.
  */
 class ArrayToPointerConversion extends Conversion, @array_to_pointer {
   /** Gets a textual representation of this conversion. */
