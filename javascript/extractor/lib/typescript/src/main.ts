@@ -253,7 +253,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         fileExists: (path: string) => fs.existsSync(path),
         readFile: ts.sys.readFile,
     };
-    let config = ts.parseJsonConfigFileContent(tsConfig, parseConfigHost, basePath);
+    let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
     let project = new Project(tsConfigFilename, config, state.typeTable);
     project.load();
 
