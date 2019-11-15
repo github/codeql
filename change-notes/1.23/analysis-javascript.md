@@ -53,6 +53,11 @@
 ## Changes to libraries
 
 * `Expr.getDocumentation()` now handles chain assignments.
+* String literals are now parsed as regular expressions.
+  Consequently, a `RegExpTerm` may occur as part of a string literal or
+  as a regular expression literal. Queries that search for regular expressions may need to
+  use `RegExpTerm.isPartOfRegExpLiteral` or `RegExpTerm.isUsedAsRegExp` to restrict the search.
+  A regular expression AST can be obtained from a string literal using `StringLiteral.asRegExp`.
 
 ## Removal of deprecated queries
 

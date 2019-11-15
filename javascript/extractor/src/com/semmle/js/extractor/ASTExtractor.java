@@ -516,8 +516,95 @@ public class ASTExtractor {
       String valueString = nd.getStringValue();
 
       trapwriter.addTuple("literals", valueString, source, key);
-      if (nd.isRegExp()) regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), nd);
+      if (nd.isRegExp()) {
+        OffsetTranslation offsets = new OffsetTranslation();
+        offsets.set(0, 1); // skip the initial '/'
+        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), offsets, nd, false);
+      } else if (nd.isStringLiteral() && !c.isInsideType()) {
+        regexpExtractor.extract(valueString, makeStringLiteralOffsets(nd.getRaw()), nd, true);
+      }
       return key;
+    }
+
+    private boolean isOctalDigit(char ch) {
+      return '0' <= ch && ch <= '7';
+    }
+
+    /**
+     * Builds a translation from offsets in a string value back to its original raw literal text
+     * (including quotes).
+     *
+     * <p>This is not a 1:1 mapping since escape sequences take up more characters in the raw
+     * literal than in the resulting string value. This mapping includes the surrounding quotes.
+     *
+     * <p>For example: for the raw literal value <code>'x\.y'</code> (quotes included), the <code>y
+     * </code> at index 2 in <code>x.y</code> maps to index 4 in the raw literal.
+     */
+    public OffsetTranslation makeStringLiteralOffsets(String rawLiteral) {
+      OffsetTranslation offsets = new OffsetTranslation();
+      offsets.set(0, 1); // Skip the initial quote
+      // Invariant: raw character at 'pos' corresponds to decoded character at 'pos - delta'
+      int pos = 1;
+      int delta = 1;
+      while (pos < rawLiteral.length() - 1) {
+        if (rawLiteral.charAt(pos) != '\\') {
+          ++pos;
+          continue;
+        }
+        final int length; // Length of the escape sequence, including slash.
+        int outputLength = 1; // Number characters the sequence expands to.
+        char ch = rawLiteral.charAt(pos + 1);
+        if ('0' <= ch && ch <= '7') {
+          // Octal escape: \N, \NN, or \NNN
+          int firstDigit = pos + 1;
+          int end = firstDigit;
+          int maxEnd = Math.min(firstDigit + (ch <= '3' ? 3 : 2), rawLiteral.length());
+          while (end < maxEnd && isOctalDigit(rawLiteral.charAt(end))) {
+            ++end;
+          }
+          length = end - pos;
+        } else if (ch == 'x') {
+          // Hex escape: \xNN
+          length = 4;
+        } else if (ch == 'u' && pos + 2 < rawLiteral.length()) {
+          if (rawLiteral.charAt(pos + 2) == '{') {
+            // Variable-length unicode escape: \U{N...}
+            // Scan for the ending '}'
+            int firstDigit = pos + 3;
+            int end = firstDigit;
+            int leadingZeros = 0;
+            while (end < rawLiteral.length() && rawLiteral.charAt(end) == '0') {
+              ++end;
+              ++leadingZeros;
+            }
+            while (end < rawLiteral.length() && rawLiteral.charAt(end) != '}') {
+              ++end;
+            }
+            int numDigits = end - firstDigit;
+            if (numDigits - leadingZeros > 4) {
+              outputLength = 2; // Encoded as a surrogate pair
+            }
+            ++end; // Include '}' character
+            length = end - pos;
+          } else {
+            // Fixed-length unicode escape: \UNNNN
+            length = 6;
+          }
+        } else {
+          // Simple escape: \n or similar.
+          length = 2;
+        }
+        int end = pos + length;
+        if (end > rawLiteral.length()) {
+          end = rawLiteral.length();
+        }
+        int outputPos = pos - delta;
+        // Map the next character to the adjusted offset.
+        offsets.set(outputPos + outputLength, end);
+        delta += length - outputLength;
+        pos = end;
+      }
+      return offsets;
     }
 
     @Override
