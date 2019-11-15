@@ -14,29 +14,21 @@ module ExceptionXss {
   import Xss::StoredXss as StoredXss
   import Xss as XSS
 
-  DataFlow::ExceptionalInvocationReturnNode getCallerExceptionalReturn(DataFlow::FunctionNode func) {
+  DataFlow::ExceptionalInvocationReturnNode getCallerExceptionalReturn(Function func) {
     exists(DataFlow::InvokeNode call |
       not call.isImprecise() and
-      func.getFunction() = call.(DataFlow::InvokeNode).getACallee() and
+      func = call.(DataFlow::InvokeNode).getACallee() and
       result = call.getExceptionalReturn()
     )
   }
 
   DataFlow::Node getExceptionalSuccssor(DataFlow::Node pred) {
-    exists(DataFlow::FunctionNode func |
-      pred.getContainer() = func.getFunction() and
-      if exists(getEnclosingTryStmt(pred.asExpr().getEnclosingStmt()))
-      then
-        result.(DataFlow::ParameterNode).getParameter() = getEnclosingTryStmt(pred
-                .asExpr()
-                .getEnclosingStmt()).getACatchClause().getAParameter()
-      else result = getCallerExceptionalReturn(func)
-    )
-    or
-    exists(DataFlow::InvokeNode call |
-      pred = call.getExceptionalReturn() and 
-      result = getExceptionalSuccssor(call)
-    )
+    if exists(getEnclosingTryStmt(pred.asExpr().getEnclosingStmt()))
+    then
+      result.(DataFlow::ParameterNode).getParameter() = getEnclosingTryStmt(pred
+              .asExpr()
+              .getEnclosingStmt()).getACatchClause().getAParameter()
+    else result = getCallerExceptionalReturn(pred.getContainer())
   }
 
   predicate canThrowSensitiveInformation(DataFlow::Node node) {
