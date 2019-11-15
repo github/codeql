@@ -131,7 +131,7 @@
 | test.c:93:12:93:12 | Store: x | positive strictlyPositive |
 | test.c:95:10:95:10 | Constant: 1 | positive strictlyPositive |
 | test.c:95:10:95:10 | Store: 1 | positive strictlyPositive |
-| test.c:98:5:98:10 | Phi: test11 | positive |
+| test.c:98:18:98:18 | Phi: p | positive |
 | test.c:102:6:102:8 | Constant: ... ++ | positive strictlyPositive |
 | test.c:104:12:104:14 | Constant: 58 | positive strictlyPositive |
 | test.c:107:8:107:10 | Constant: ... ++ | positive strictlyPositive |
