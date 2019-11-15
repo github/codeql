@@ -40,10 +40,10 @@ module IndirectCommandInjection {
   }
 
   /**
-   * An object containing command-line arguments that were parsed with a default configuration, considered as a flow source for command injection.
+   * An object containing parsed command-line arguments, considered as a flow source for command injection.
    */
-  class DefaultParsedCommandLineArgumentsAsSource extends Source {
-    DefaultParsedCommandLineArgumentsAsSource() {
+  class ParsedCommandLineArgumentsAsSource extends Source {
+    ParsedCommandLineArgumentsAsSource() {
       // `require('get-them-args')(...)` => `{ unknown: [], a: ... b: ... }`
       this = DataFlow::moduleImport("get-them-args").getACall() or
       // `require('minimist')(...)` => `{ _: [], a: ... b: ... }`
