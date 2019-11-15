@@ -161,12 +161,12 @@ class UnsafePropLabel extends FlowLabel {
  * }
  * ```
  *
- * This configuration is used to find four separate data flow paths originating
+ * This configuration is used to find three separate data flow paths originating
  * from a property enumeration, all leading to the same dynamic property write.
  *
- * In particular, the base, property name, and rhs of the property write should all
+ * In particular, the base and property name of the property write should all
  * depend on the enumerated property name (`key`) and the right-hand side should
- * additionally depend on the source object (`src`), while allowing steps of form
+ * depend on the source property (`src[key]`), while allowing steps of form
  * `x -> x[p]` and `p -> x[p]`.
  *
  * Note that in the above example, the flow from `key` to the base of the write (`dst`)
@@ -384,7 +384,6 @@ predicate isPrototypePollutingAssignment(Node base, Node prop, Node rhs, Enumera
   exists(PropNameTracking cfg |
     cfg.hasFlow(enum, base) and
     cfg.hasFlow(enum, prop) and
-    cfg.hasFlow(enum, rhs) and
     cfg.hasFlow(enum.getASourceProp(), rhs)
   )
 }
