@@ -75,19 +75,6 @@ module ExceptionXss {
         or
         pred = any(DataFlow::FunctionNode func).getExceptionalReturn()
       )
-      or
-      // String.prototype.match()
-      exists(DataFlow::MethodCallNode call |
-        call = succ and
-        pred = call.getReceiver() and
-        call.getMethodName() = "match" and
-        call.getNumArgument() = 1 and
-        // TODO: Better way of detecting regExp / String.prototype.match() calls?
-        (
-          call.getArgument(0).getALocalSource().asExpr() instanceof RegExpLiteral or
-          call.getArgument(0).getALocalSource().(DataFlow::NewNode).getCalleeName() = "RegExp"
-        )
-      )
     }
   }
 

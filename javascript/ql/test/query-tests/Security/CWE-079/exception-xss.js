@@ -82,4 +82,6 @@
 	} catch(e) {
 		$('myId').html(e); // NOT OK! 
 	}
+	
+	$('myId').html(foo); // Direct leak, reported by other query.
 });
