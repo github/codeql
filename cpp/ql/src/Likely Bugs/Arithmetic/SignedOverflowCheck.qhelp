@@ -24,7 +24,7 @@ be unsigned. The following cases all fall into the first category.
 </p>
 
 <p>
-Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>, 
+Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>,
 it is possible to rewrite it as <code>(unsigned short)(n1 + delta)&nbsp;&lt;&nbsp;n1</code>.
 Note that <code>n1 + delta</code> does not actually overflow, due to <code>int</code> promotion.
 </p>
@@ -48,7 +48,7 @@ header has been included.
 In the following example, even though <code>delta</code> has been declared
 <code>unsigned short</code>, C/C++ type promotion rules require that its
 type is promoted to the larger type used in the addition and comparison,
-namely a <code>signed int</code>.  Addition is performed on 
+namely a <code>signed int</code>.  Addition is performed on
 signed integers, and may have undefined behavior if an overflow occurs.
 As a result, the entire (comparison) expression may also have an undefined
 result.
@@ -67,10 +67,10 @@ are avoided.
 <sample src="SignedOverflowCheck-good1.cpp" />
 <p>
 In the following example, even though both <code>n</code> and <code>delta</code>
-have been declared <code>unsigned short</code>, both are promoted to 
+have been declared <code>unsigned short</code>, both are promoted to
 <code>signed int</code> prior to addition.  Because we started out with the
 narrower <code>short</code> type, the addition is guaranteed not to overflow
-and is therefore defined.  But the fact that <code>n1 + delta</code> never 
+and is therefore defined.  But the fact that <code>n1 + delta</code> never
 overflows means that the condition <code>n1 + delta &lt; n1</code> will never
 hold true, which likely is not what the programmer intended. (see also the
 <code>cpp/bad-addition-overflow-check</code> query).
