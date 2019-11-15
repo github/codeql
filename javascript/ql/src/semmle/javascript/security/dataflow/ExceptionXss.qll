@@ -14,6 +14,14 @@ module ExceptionXss {
   import Xss::StoredXss as StoredXss
   import Xss as XSS
 
+  DataFlow::ExceptionalInvocationReturnNode getCallerExceptionalReturn(DataFlow::FunctionNode func) {
+    exists(DataFlow::InvokeNode call |
+      not call.isImprecise() and
+      func.getFunction() = call.(DataFlow::InvokeNode).getACallee() and
+      result = call.getExceptionalReturn()
+    )
+  }
+
   DataFlow::Node getExceptionalSuccssor(DataFlow::Node pred) {
     exists(DataFlow::FunctionNode func |
       pred.getContainer() = func.getFunction() and
@@ -22,14 +30,12 @@ module ExceptionXss {
         result.(DataFlow::ParameterNode).getParameter() = getEnclosingTryStmt(pred
                 .asExpr()
                 .getEnclosingStmt()).getACatchClause().getAParameter()
-      else result = getExceptionalSuccssor(func.getExceptionalReturn())
-      or
-      pred = func.getExceptionalReturn() and
-      exists(DataFlow::InvokeNode call |
-        not call.isImprecise() and
-        func.getFunction() = call.(DataFlow::InvokeNode).getACallee() and
-        result = getExceptionalSuccssor(call)
-      )
+      else result = getCallerExceptionalReturn(func)
+    )
+    or
+    exists(DataFlow::InvokeNode call |
+      pred = call.getExceptionalReturn() and 
+      result = getExceptionalSuccssor(call)
     )
   }
 
@@ -53,7 +59,9 @@ module ExceptionXss {
   }
 
   /**
-   * A taint-tracking configuration for reasoning about XSS with possible exceptional flow.
+   * A taint-tracking configuration for reasoning about XSS with possible exceptional flow. 
+   * Flow labels are used to ensure that we only report taint-flow that has been thrown in 
+   * an exception.  
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ExceptionXss"}
@@ -63,8 +71,8 @@ module ExceptionXss {
     }
     
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-   	  sink instanceof XSS::Shared::Sink and label.isDataOrTaint()
-   	}
+      sink instanceof XSS::Shared::Sink and not label instanceof NotYetThrown
+    }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -72,12 +80,14 @@ module ExceptionXss {
     }
 
     override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl) {
+      inlbl instanceof NotYetThrown and (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
+      succ = getExceptionalSuccssor(pred) and
+      (canThrowSensitiveInformation(pred) or pred = any(DataFlow::InvokeNode c).getExceptionalReturn())
+      or
+      // All the usual taint-flow steps applies on data-flow before it has been thrown in an exception.
       this.isAdditionalFlowStep(pred, succ) and inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown 
       or
-      inlbl instanceof NotYetThrown and outlbl.isTaint() and
-      succ = getExceptionalSuccssor(pred) and
-      canThrowSensitiveInformation(pred)
-      or  
+      // We taint an object deep if it happens before an exception has been thrown. 
       inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown and
       exists(DataFlow::PropWrite write | write.getRhs() = pred and write.getBase() = succ)
     }

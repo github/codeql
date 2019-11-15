@@ -8,6 +8,8 @@ nodes
 | exception-xss.js:10:10:10:10 | e |
 | exception-xss.js:11:18:11:18 | e |
 | exception-xss.js:11:18:11:18 | e |
+| exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
+| exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
 | exception-xss.js:15:9:15:11 | foo |
 | exception-xss.js:16:10:16:10 | e |
 | exception-xss.js:17:18:17:18 | e |
@@ -28,16 +30,23 @@ nodes
 | exception-xss.js:35:18:35:18 | e |
 | exception-xss.js:35:18:35:18 | e |
 | exception-xss.js:38:16:38:16 | x |
+| exception-xss.js:39:3:39:10 | exceptional return of deep2(x) |
 | exception-xss.js:39:9:39:9 | x |
 | exception-xss.js:41:17:41:17 | x |
+| exception-xss.js:42:3:42:10 | exceptional return of inner(x) |
 | exception-xss.js:42:9:42:9 | x |
+| exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
+| exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
 | exception-xss.js:46:8:46:18 | "bar" + foo |
 | exception-xss.js:46:16:46:18 | foo |
 | exception-xss.js:47:10:47:10 | e |
 | exception-xss.js:48:18:48:18 | e |
 | exception-xss.js:48:18:48:18 | e |
 | exception-xss.js:74:28:74:28 | x |
+| exception-xss.js:75:4:75:11 | exceptional return of inner(x) |
 | exception-xss.js:75:10:75:10 | x |
+| exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
+| exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
 | exception-xss.js:81:16:81:18 | foo |
 | exception-xss.js:82:10:82:10 | e |
 | exception-xss.js:83:18:83:18 | e |
@@ -71,12 +80,15 @@ edges
 | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
 | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
 | exception-xss.js:4:20:4:20 | x | exception-xss.js:5:14:5:14 | x |
-| exception-xss.js:5:14:5:14 | x | exception-xss.js:16:10:16:10 | e |
-| exception-xss.js:5:14:5:14 | x | exception-xss.js:47:10:47:10 | e |
-| exception-xss.js:5:14:5:14 | x | exception-xss.js:82:10:82:10 | e |
+| exception-xss.js:5:14:5:14 | x | exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
+| exception-xss.js:5:14:5:14 | x | exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
+| exception-xss.js:5:14:5:14 | x | exception-xss.js:42:3:42:10 | exceptional return of inner(x) |
+| exception-xss.js:5:14:5:14 | x | exception-xss.js:75:4:75:11 | exceptional return of inner(x) |
 | exception-xss.js:9:11:9:13 | foo | exception-xss.js:10:10:10:10 | e |
 | exception-xss.js:10:10:10:10 | e | exception-xss.js:11:18:11:18 | e |
 | exception-xss.js:10:10:10:10 | e | exception-xss.js:11:18:11:18 | e |
+| exception-xss.js:15:3:15:12 | exceptional return of inner(foo) | exception-xss.js:16:10:16:10 | e |
+| exception-xss.js:15:3:15:12 | exceptional return of inner(foo) | exception-xss.js:16:10:16:10 | e |
 | exception-xss.js:15:9:15:11 | foo | exception-xss.js:4:20:4:20 | x |
 | exception-xss.js:16:10:16:10 | e | exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:16:10:16:10 | e | exception-xss.js:17:18:17:18 | e |
@@ -93,15 +105,24 @@ edges
 | exception-xss.js:34:10:34:10 | e | exception-xss.js:35:18:35:18 | e |
 | exception-xss.js:34:10:34:10 | e | exception-xss.js:35:18:35:18 | e |
 | exception-xss.js:38:16:38:16 | x | exception-xss.js:39:9:39:9 | x |
+| exception-xss.js:39:3:39:10 | exceptional return of deep2(x) | exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
+| exception-xss.js:39:3:39:10 | exceptional return of deep2(x) | exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
 | exception-xss.js:39:9:39:9 | x | exception-xss.js:41:17:41:17 | x |
 | exception-xss.js:41:17:41:17 | x | exception-xss.js:42:9:42:9 | x |
+| exception-xss.js:42:3:42:10 | exceptional return of inner(x) | exception-xss.js:39:3:39:10 | exceptional return of deep2(x) |
 | exception-xss.js:42:9:42:9 | x | exception-xss.js:4:20:4:20 | x |
+| exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) | exception-xss.js:47:10:47:10 | e |
+| exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) | exception-xss.js:47:10:47:10 | e |
 | exception-xss.js:46:8:46:18 | "bar" + foo | exception-xss.js:38:16:38:16 | x |
 | exception-xss.js:46:16:46:18 | foo | exception-xss.js:46:8:46:18 | "bar" + foo |
 | exception-xss.js:47:10:47:10 | e | exception-xss.js:48:18:48:18 | e |
 | exception-xss.js:47:10:47:10 | e | exception-xss.js:48:18:48:18 | e |
 | exception-xss.js:74:28:74:28 | x | exception-xss.js:75:10:75:10 | x |
+| exception-xss.js:75:4:75:11 | exceptional return of inner(x) | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
+| exception-xss.js:75:4:75:11 | exceptional return of inner(x) | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
 | exception-xss.js:75:10:75:10 | x | exception-xss.js:4:20:4:20 | x |
+| exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) | exception-xss.js:82:10:82:10 | e |
+| exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) | exception-xss.js:82:10:82:10 | e |
 | exception-xss.js:81:16:81:18 | foo | exception-xss.js:74:28:74:28 | x |
 | exception-xss.js:82:10:82:10 | e | exception-xss.js:83:18:83:18 | e |
 | exception-xss.js:82:10:82:10 | e | exception-xss.js:83:18:83:18 | e |
@@ -128,3 +149,4 @@ edges
 | exception-xss.js:83:18:83:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:83:18:83:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:91:18:91:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:91:18:91:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:97:18:97:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:97:18:97:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
+| exception-xss.js:109:14:109:30 | "Exception: " + e | exception-xss.js:107:13:107:25 | req.params.id | exception-xss.js:109:14:109:30 | "Exception: " + e | Cross-site scripting vulnerability due to $@. | exception-xss.js:107:13:107:25 | req.params.id | user-provided value |
