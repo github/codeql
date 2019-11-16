@@ -272,7 +272,9 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     });
 
     for (let typeRoot of typeRoots || []) {
-        traverseTypeRoot(typeRoot, "");
+        if (fs.existsSync(typeRoot) && fs.statSync(typeRoot).isDirectory()) {
+            traverseTypeRoot(typeRoot, "");
+        }
     }
 
     for (let sourceFile of program.getSourceFiles()) {
