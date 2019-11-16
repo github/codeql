@@ -3,6 +3,7 @@ package com.semmle.js.ast;
 import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.ITypeExpression;
 import com.semmle.ts.ast.TypeParameter;
+import com.semmle.util.data.IntList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class AFunction<B> {
   private final List<ITypeExpression> parameterTypes;
   private final ITypeExpression thisParameterType;
   private final List<DecoratorList> parameterDecorators;
+  private final IntList optionalParmaeterIndices;
+
+  public static final IntList noOptionalParams = IntList.create(0, 0);
 
   public AFunction(
       Identifier id,
@@ -29,7 +33,8 @@ public class AFunction<B> {
       List<ITypeExpression> parameterTypes,
       List<DecoratorList> parameterDecorators,
       ITypeExpression returnType,
-      ITypeExpression thisParameterType) {
+      ITypeExpression thisParameterType,
+      IntList optionalParmaeterIndices) {
     this.id = id;
     this.params = new ArrayList<IPattern>(params.size());
     this.defaults = new ArrayList<Expression>(params.size());
@@ -42,6 +47,7 @@ public class AFunction<B> {
     this.returnType = returnType;
     this.thisParameterType = thisParameterType;
     this.parameterDecorators = parameterDecorators;
+    this.optionalParmaeterIndices = optionalParmaeterIndices;
 
     IPattern rest = null;
     for (Expression param : params) {
@@ -142,5 +148,9 @@ public class AFunction<B> {
 
   public List<DecoratorList> getParameterDecorators() {
     return parameterDecorators;
+  }
+
+  public IntList getOptionalParmaeterIndices() {
+    return optionalParmaeterIndices;
   }
 }

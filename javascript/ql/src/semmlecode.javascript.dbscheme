@@ -520,6 +520,7 @@ hasProtectedKeyword (int id: @property ref);
 hasReadonlyKeyword (int id: @property ref);
 isOptionalMember (int id: @property ref);
 hasDefiniteAssignmentAssertion (int id: @field_or_vardeclarator ref);
+isOptionalParameterDeclaration (unique int parameter: @pattern ref);
 
 #keyset[constructor, param_index]
 parameter_fields(
