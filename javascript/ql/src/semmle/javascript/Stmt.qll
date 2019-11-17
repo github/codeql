@@ -55,6 +55,17 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
   }
 
   override predicate isAmbient() { hasDeclareKeyword(this) or getParent().isAmbient() }
+  
+  /**
+  * Gets the `try` statement containing this statement without crossing function
+  * boundaries or other `try ` statements.
+  */
+  TryStmt getEnclosingTryStmt() {
+    getParentStmt+() = result.getBody() and
+    not exists(TryStmt mid |
+      getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result.getBody()
+    )
+  }
 }
 
 /**
