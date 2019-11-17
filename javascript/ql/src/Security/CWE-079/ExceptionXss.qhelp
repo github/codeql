@@ -5,8 +5,8 @@
 
 <overview>
 <p>
-Directly writing exceptions to a webpage with sanitization allows for a cross-site scripting
-vulnerability if the value of the exception can be influenzed by a user.
+Directly writing exceptions to a webpage without sanitization allows for a cross-site scripting
+vulnerability if the value of the exception can be influenced by a user.
 </p>
 </overview>
 
@@ -21,7 +21,7 @@ references.
 <example>
 <p>
 The following example shows an exception being written directly to the document, 
-and this exception can potentially be influenzed the page URL, 
+and this exception can potentially be influenced the page URL, 
 leaving the website vulnerable to cross-site scripting.
 </p>
 <sample src="examples/ExceptionXss.js" />

@@ -22,7 +22,7 @@ module ExceptionXss {
     )
   }
 
-  DataFlow::Node getExceptionalSuccssor(DataFlow::Node pred) {
+  DataFlow::Node getExceptionalSuccessor(DataFlow::Node pred) {
     if exists(getEnclosingTryStmt(pred.asExpr().getEnclosingStmt()))
     then
       result.(DataFlow::ParameterNode).getParameter() = getEnclosingTryStmt(pred
@@ -76,7 +76,7 @@ module ExceptionXss {
       succ = getExceptionalSuccssor(pred) and
       (canThrowSensitiveInformation(pred) or pred = any(DataFlow::InvokeNode c).getExceptionalReturn())
       or
-      // All the usual taint-flow steps applies on data-flow before it has been thrown in an exception.
+      // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
       this.isAdditionalFlowStep(pred, succ) and inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown 
       or
       // We taint an object deep if it happens before an exception has been thrown. 
