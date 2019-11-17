@@ -13,6 +13,7 @@
 
 import cpp
 import PointlessSelfComparison
+import semmle.code.cpp.commons.Exclusions
 
 from ComparisonOperation cmp
 where
@@ -20,11 +21,5 @@ where
   not nanTest(cmp) and
   not overflowTest(cmp) and
   not cmp.isFromTemplateInstantiation(_) and
-  not exists(MacroInvocation mi |
-    // cmp is in mi
-    mi.getAnExpandedElement() = cmp and
-    // and cmp was apparently not passed in as a macro parameter
-    cmp.getLocation().getStartLine() = mi.getLocation().getStartLine() and
-    cmp.getLocation().getStartColumn() = mi.getLocation().getStartColumn()
-  )
+  not isFromMacroDefinition(cmp)
 select cmp, "Self comparison."

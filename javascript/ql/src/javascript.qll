@@ -90,6 +90,7 @@ import semmle.javascript.frameworks.SystemCommandExecutors
 import semmle.javascript.frameworks.SQL
 import semmle.javascript.frameworks.SocketIO
 import semmle.javascript.frameworks.StringFormatters
+import semmle.javascript.frameworks.TorrentLibraries
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
 import semmle.javascript.frameworks.XmlParsers

@@ -375,6 +375,16 @@ private class NarrowingCastExpr extends CastExpr {
   int getUpperBound() { typeBound(getType(), _, result) }
 }
 
+/** Holds if `e >= 1` as determined by sign analysis. */
+private predicate strictlyPositiveIntegralExpr(Expr e) {
+  strictlyPositive(e) and e.getType() instanceof IntegralType
+}
+
+/** Holds if `e <= -1` as determined by sign analysis. */
+private predicate strictlyNegativeIntegralExpr(Expr e) {
+  strictlyNegative(e) and e.getType() instanceof IntegralType
+}
+
 /**
  * Holds if `e1 + delta` is a valid bound for `e2`.
  * - `upper = true`  : `e2 <= e1 + delta`
@@ -400,13 +410,13 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
     // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
     not e1 instanceof ConstantIntegerExpr and
-    if strictlyPositive(x)
+    if strictlyPositiveIntegralExpr(x)
     then upper = false and delta = 1
     else
       if positive(x)
       then upper = false and delta = 0
       else
-        if strictlyNegative(x)
+        if strictlyNegativeIntegralExpr(x)
         then upper = true and delta = -1
         else
           if negative(x)
@@ -429,13 +439,13 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   |
     // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
-    if strictlyPositive(x)
+    if strictlyPositiveIntegralExpr(x)
     then upper = true and delta = -1
     else
       if positive(x)
       then upper = true and delta = 0
       else
-        if strictlyNegative(x)
+        if strictlyNegativeIntegralExpr(x)
         then upper = false and delta = 1
         else
           if negative(x)

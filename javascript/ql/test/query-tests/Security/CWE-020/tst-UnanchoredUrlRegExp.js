@@ -2,10 +2,10 @@
 
 	"http://evil.com/?http://good.com".match("https?://good.com"); // NOT OK
 	"http://evil.com/?http://good.com".match(new RegExp("https?://good.com")); // NOT OK
-	"http://evil.com/?http://good.com".match("^https?://good.com"); // OK
-	"http://evil.com/?http://good.com".match(/^https?:\/\/good.com/); // OK
-	"http://evil.com/?http://good.com".match("(^https?://good1.com)|(^https?://good2.com)"); // OK
-	"http://evil.com/?http://good.com".match("(https?://good.com)|(^https?://goodie.com)"); // NOT OK, but not detected
+	"http://evil.com/?http://good.com".match("^https?://good.com"); // NOT OK - missing post-anchor
+	"http://evil.com/?http://good.com".match(/^https?:\/\/good.com/); // NOT OK - missing post-anchor
+	"http://evil.com/?http://good.com".match("(^https?://good1.com)|(^https?://good2.com)"); // NOT OK - missing post-anchor
+	"http://evil.com/?http://good.com".match("(https?://good.com)|(^https?://goodie.com)"); // NOT OK - missing post-anchor
 
 	/https?:\/\/good.com/.exec("http://evil.com/?http://good.com"); // NOT OK
 	new RegExp("https?://good.com").exec("http://evil.com/?http://good.com"); // NOT OK
@@ -16,14 +16,14 @@
 
 	"something".match("other"); // OK
 	"something".match("x.commissary"); // OK
-	"http://evil.com/?http://good.com".match("https?://good.com/"); // NOT OK
+	"http://evil.com/?http://good.com".match("https?://good.com"); // NOT OK
 	"http://evil.com/?http://good.com".match("https?://good.com:8080"); // NOT OK
 
 	let trustedUrls = [
 		"https?://good.com", // NOT OK, referenced below
 		/https?:\/\/good.com/, // NOT OK, referenced below
 		new RegExp("https?://good.com"), // NOT OK, referenced below
-		"^https?://good.com"
+		"^https?://good.com" // NOT OK - missing post-anchor
 	];
 	function isTrustedUrl(url) {
 		for (let trustedUrl of trustedUrls) {
@@ -46,7 +46,7 @@
 	// missing context of use
 	const urlPatterns  = [
 		{
-			regex: /youtube.com\/embed\/([a-z0-9\?&=\-_]+)/i,
+			regex: /youtube.com\/embed\/([a-z0-9\?&=\-_]+)/i, // OK
 			type: 'iframe', w: 560, h: 314,
 			url: '//www.youtube.com/embed/$1',
 			allowFullscreen: true
@@ -101,6 +101,8 @@
 	pkg.source.match(/<a:skin.*?\s+xmlns:a="http:\/\/ajax.org\/2005\/aml"/m)
 
 	// replace
-	path.replace(/engine.io/, "$&-client")
+	path.replace(/engine.io/, "$&-client");
 
+	/\.com|\.org/; // OK, has no domain name
+	/example\.com|whatever/; // OK, the other disjunction doesn't match a hostname
 });

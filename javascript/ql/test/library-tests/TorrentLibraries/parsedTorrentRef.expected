@@ -1,0 +1,3 @@
+| tst.js:4:15:4:28 | parseTorrent() |
+| tst.js:14:2:14:20 | indirection1.parsed |
+| tst.js:19:23:19:23 | t |

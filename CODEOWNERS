@@ -1,7 +1,8 @@
+/cpp/ @Semmle/cpp-analysis
 /csharp/ @Semmle/cs
 /java/ @Semmle/java
 /javascript/ @Semmle/js
-/cpp/ @Semmle/cpp-analysis
+/python/ @Semmle/python
 /cpp/**/*.qhelp @hubwriter
 /csharp/**/*.qhelp @jf205
 /java/**/*.qhelp @felicitymay

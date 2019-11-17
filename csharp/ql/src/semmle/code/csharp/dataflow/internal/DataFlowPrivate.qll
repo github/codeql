@@ -111,7 +111,7 @@ module LocalFlow {
         or
         // An `=` expression, where the result of the expression is used
         e2 = any(AssignExpr ae |
-            ae.getParent() instanceof Expr and
+            ae.getParent() = any(ControlFlowElement cfe | not cfe instanceof ExprStmt) and
             e1 = ae.getRValue()
           ) and
         scope = e2 and

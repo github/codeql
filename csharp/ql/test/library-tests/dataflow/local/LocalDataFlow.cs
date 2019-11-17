@@ -476,4 +476,13 @@ public class LocalDataFlow
     {
         Check(nonTainted);
     }
+
+    public void AssignmentFlow(IDisposable x, IEnumerable<object> os)
+    {
+        IDisposable x1;
+        using (x1 = x) { }
+
+        IEnumerable<object> os2;
+        foreach(var o in os2 = os) { }
+    }
 }

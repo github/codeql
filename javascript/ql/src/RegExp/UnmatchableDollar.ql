@@ -17,6 +17,7 @@ import javascript
 
 from RegExpDollar dollar, RegExpTerm t
 where
+  dollar.isPartOfRegExpLiteral() and
   t = dollar.getSuccessor+() and
   not t.isNullable() and
   // conservative handling of multi-line regular expressions

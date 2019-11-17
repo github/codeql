@@ -84,3 +84,9 @@ var bad16 = /(.|\n)*!/s;
 
 // GOOD
 var good8 = /([\w.]+)*/;
+
+// NOT GOOD
+var bad17 = new RegExp('(a|aa?)*b');
+
+// GOOD - not used as regexp
+var good9 = '(a|aa?)*b';
