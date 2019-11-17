@@ -17,7 +17,7 @@ module ExceptionXss {
   DataFlow::ExceptionalInvocationReturnNode getCallerExceptionalReturn(Function func) {
     exists(DataFlow::InvokeNode call |
       not call.isImprecise() and
-      func = call.(DataFlow::InvokeNode).getACallee() and
+      func = call.getACallee() and
       result = call.getExceptionalReturn()
     )
   }
@@ -25,16 +25,15 @@ module ExceptionXss {
   DataFlow::Node getExceptionalSuccessor(DataFlow::Node pred) {
     if exists(getEnclosingTryStmt(pred.asExpr().getEnclosingStmt()))
     then
-      result.(DataFlow::ParameterNode).getParameter() = getEnclosingTryStmt(pred
+      result = DataFlow::parameterNode(getEnclosingTryStmt(pred
               .asExpr()
-              .getEnclosingStmt()).getACatchClause().getAParameter()
+              .getEnclosingStmt()).getACatchClause().getAParameter())
     else result = getCallerExceptionalReturn(pred.getContainer())
   }
 
   predicate canThrowSensitiveInformation(DataFlow::Node node) {
-    // i have to do this "dual" check because there are two data-flow nodes associated with reflective calls.
-    node = any(DataFlow::InvokeNode call).getAnArgument() and
-    not node = any(DataFlow::InvokeNode call | exists(call.getACallee())).getAnArgument()
+    // in the case of reflective calls the below ensures that both InvokeNodes have no known callee.
+    forex(DataFlow::InvokeNode call | node = call.getAnArgument() | not exists(call.getACallee()))
     or
     node.asExpr().getEnclosingStmt() instanceof ThrowStmt
   }
@@ -46,6 +45,12 @@ module ExceptionXss {
     )
   }
   
+  /**
+   * A FlowLabel representing tainted data that has not been thrown in an exception. 
+   * In the js/xss-through-exception query data-flow can only reach a sink after
+   * the data has been thrown as an exception, and data that has not been thrown 
+   * as an exception therefore has this flow label, and only this flow label, associated with it. 
+   */
   class NotYetThrown extends DataFlow::FlowLabel {
     NotYetThrown() { this = "NotYetThrown" }
   }
@@ -67,13 +72,12 @@ module ExceptionXss {
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
       node instanceof XSS::Shared::Sanitizer
     }
 
     override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl) {
       inlbl instanceof NotYetThrown and (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
-      succ = getExceptionalSuccssor(pred) and
+      succ = getExceptionalSuccessor(pred) and
       (canThrowSensitiveInformation(pred) or pred = any(DataFlow::InvokeNode c).getExceptionalReturn())
       or
       // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
