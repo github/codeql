@@ -1,5 +1,5 @@
 import cpp
-private import semmle.code.cpp.controlflow.LocalScopeVariableReachability
+private import semmle.code.cpp.controlflow.StackVariableReachability
 private import semmle.code.cpp.dataflow.EscapesTree
 
 /**
@@ -108,7 +108,7 @@ library class DefOrUse extends ControlFlowNodeBase {
     /*
      * Implementation detail: this predicate and its private auxiliary
      * predicates are instances of the more general predicates in
-     * LocalScopeVariableReachability.qll, and should be kept in sync.
+     * StackVariableReachability.qll, and should be kept in sync.
      *
      * Unfortunately, caching of abstract predicates does not work well, so the
      * predicates are duplicated for now.
