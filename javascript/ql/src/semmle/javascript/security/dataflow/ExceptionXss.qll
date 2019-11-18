@@ -33,12 +33,31 @@ module ExceptionXss {
               .getAParameter())
     else result = getCallerExceptionalReturn(pred.getContainer())
   }
-
-  predicate canThrowSensitiveInformation(DataFlow::Node node) {
-    // in the case of reflective calls the below ensures that both InvokeNodes have no known callee.
-    forex(DataFlow::InvokeNode call | node = call.getAnArgument() | not exists(call.getACallee()))
+  
+  /**
+   * Holds if `node` cannot cause an exception containing sensitive information to be thrown.
+   */
+  predicate canDefinitelyNotThrowSensitiveInformation(DataFlow::Node node) {
+    node = any(DataFlow::CallNode call | call.getCalleeName() = "getElementById").getAnArgument()
     or
-    node.asExpr().getEnclosingStmt() instanceof ThrowStmt
+    node = any(DataFlow::CallNode call | call.getCalleeName() = "indexOf").getAnArgument()
+    or
+    node = any(DataFlow::CallNode call | call.getCalleeName() = "stringify").getAnArgument()
+    or
+    node = DataFlow::globalVarRef("console").getAMemberCall(_).getAnArgument()
+  }
+
+  /**
+   * Holds if `node` can possibly cause an exception containing sensitive information to be thrown.
+   */
+  predicate canThrowSensitiveInformation(DataFlow::Node node) {
+    not canDefinitelyNotThrowSensitiveInformation(node) and 
+    (
+      // in the case of reflective calls the below ensures that both InvokeNodes have no known callee.
+      forex(DataFlow::InvokeNode call | node = call.getAnArgument() | not exists(call.getACallee()))
+      or
+      node.asExpr().getEnclosingStmt() instanceof ThrowStmt
+    )
   }
 
   /**
