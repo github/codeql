@@ -146,31 +146,31 @@ class NUnitAssertClass extends Class {
     result.hasName("IsNotNull")
   }
 
-  /** Gets an `void True(bool, ...)` method. */
+  /** Gets a `True(bool, ...)` method. */
   Method getATrueMethod() {
     result.getDeclaringType() = this and
     result.hasName("True")
   }
 
-  /** Gets an `void IsTrue(bool, ...)` method. */
+  /** Gets an `IsTrue(bool, ...)` method. */
   Method getAnIsTrueMethod() {
     result.getDeclaringType() = this and
     result.hasName("IsTrue")
   }
 
-  /** Gets an `void False(bool, ...)` method. */
+  /** Gets a `False(bool, ...)` method. */
   Method getAFalseMethod() {
     result.getDeclaringType() = this and
     result.hasName("False")
   }
 
-  /** Gets an `void IsFalse(bool, ...)` method. */
+  /** Gets an `IsFalse(bool, ...)` method. */
   Method getAnIsFalseMethod() {
     result.getDeclaringType() = this and
     result.hasName("IsFalse")
   }
 
-  /** Gets an `void That(...)` method. */
+  /** Gets a `That(...)` method. */
   Method getAThatMethod() {
     result.getDeclaringType() = this and
     result.hasName("That")
