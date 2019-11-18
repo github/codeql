@@ -24,7 +24,9 @@ class ArgumentNode extends Node {
   DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-private newtype TReturnKind = TNormalReturnKind()
+private newtype TReturnKind = 
+  TNormalReturnKind() or
+  TIndirectReturnKind(ParameterIndex index)
 
 /**
  * A return kind. A return kind describes how a value can be returned
@@ -32,32 +34,91 @@ private newtype TReturnKind = TNormalReturnKind()
  */
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this return kind. */
-  string toString() { result = "return" }
+  abstract string toString();
+}
+
+private class NormalReturnKind extends ReturnKind, TNormalReturnKind {
+  override string toString() { result = "return" }
+}
+
+private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
+  ParameterIndex index;
+
+  IndirectReturnKind() {
+    this = TIndirectReturnKind(index)
+  }
+
+  override string toString() { result = "outparam[" + index.toString() +"]" }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
 class ReturnNode extends Node {
-  ReturnNode() { exists(ReturnValueInstruction ret | this.asInstruction() = ret.getReturnValue()) }
+  Instruction primary;
+  ReturnNode() {
+    exists(ReturnValueInstruction ret | this.asInstruction() = ret.getReturnValue() and primary = ret)
+    or
+    exists(ReturnIndirectionInstruction rii | this.asInstruction() = rii.getSideEffectOperand().getAnyDef() and primary = rii)
+  }
 
   /** Gets the kind of this returned value. */
-  ReturnKind getKind() { result = TNormalReturnKind() }
+  abstract ReturnKind getKind();
+}
+
+class ReturnValueNode extends ReturnNode {
+  override ReturnValueInstruction primary;
+
+  override ReturnKind getKind()  { result = TNormalReturnKind() }
+}
+
+class ReturnIndirectionNode extends ReturnNode {
+  override ReturnIndirectionInstruction primary;
+
+  override ReturnKind getKind()  { result = TIndirectReturnKind(primary.getParameter().getIndex()) }
 }
 
 /** A data flow node that represents the output of a call. */
 class OutNode extends Node {
-  override CallInstruction instr;
+  OutNode() {
+    instr instanceof CallInstruction or
+    instr instanceof WriteSideEffectInstruction
+  }
 
   /** Gets the underlying call. */
-  DataFlowCall getCall() { result = instr }
+  abstract DataFlowCall getCall();
+
+  abstract ReturnKind getReturnKind();
 }
 
+private class CallOutNode extends OutNode {
+  override CallInstruction instr;
+
+  override DataFlowCall getCall() {
+    result = instr
+  }
+
+  override ReturnKind getReturnKind() {
+    result instanceof NormalReturnKind
+  }
+}
+
+private class SideEffectOutNode extends OutNode {
+  override WriteSideEffectInstruction instr;
+
+  override DataFlowCall getCall() {
+    result = instr.getPrimaryInstruction()
+  }
+
+  override ReturnKind getReturnKind() {
+    result  = TIndirectReturnKind(instr.getIndex())
+  }
+}
 /**
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result.getCall() = call and
-  kind = TNormalReturnKind()
+  result.getReturnKind() = kind
 }
 
 /**

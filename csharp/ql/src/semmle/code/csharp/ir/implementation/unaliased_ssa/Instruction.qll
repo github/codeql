@@ -743,7 +743,7 @@ class ReturnValueInstruction extends ReturnInstruction {
   final Instruction getReturnValue() { result = getReturnValueOperand().getDef() }
 }
 
-class ReturnIndirectionInstruction extends Instruction {
+class ReturnIndirectionInstruction extends VariableInstruction {
   ReturnIndirectionInstruction() { getOpcode() instanceof Opcode::ReturnIndirection }
 
   final SideEffectOperand getSideEffectOperand() { result = getAnOperand() }
@@ -753,6 +753,8 @@ class ReturnIndirectionInstruction extends Instruction {
   final AddressOperand getSourceAddressOperand() { result = getAnOperand() }
 
   final Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
+
+  final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
 }
 
 class CopyInstruction extends Instruction {
@@ -1237,11 +1239,6 @@ class IndirectReadSideEffectInstruction extends ReadSideEffectInstruction {
 /**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
-class BufferReadSideEffectInstruction extends ReadSideEffectInstruction {
-  BufferReadSideEffectInstruction() { getOpcode() instanceof Opcode::BufferReadSideEffect }
-}
-
-/**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
 class SizedBufferReadSideEffectInstruction extends ReadSideEffectInstruction {
