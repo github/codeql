@@ -9,11 +9,11 @@ library class StandardSSA extends SSAHelper {
 /**
  * A definition of one or more SSA variables, including phi node definitions.
  * An _SSA variable_, as defined in the literature, is effectively the pair of
- * an `SsaDefinition d` and a `LocalScopeVariable v`, written `(d, v)` in this
+ * an `SsaDefinition d` and a `StackVariable v`, written `(d, v)` in this
  * documentation. Note that definitions and uses can be coincident due to the
  * presence of parameter definitions and phi nodes.
  *
- * Not all `LocalScopeVariable`s of a function have SSA definitions. If the variable
+ * Not all `StackVariable`s of a function have SSA definitions. If the variable
  * has its address taken, either explicitly or implicitly, then it is excluded
  * from analysis. `SsaDefinition`s are not generated in locations that are
  * statically seen to be unreachable.
@@ -22,21 +22,19 @@ class SsaDefinition extends ControlFlowNodeBase {
   SsaDefinition() { exists(StandardSSA x | x.ssa_defn(_, this, _, _)) }
 
   /**
-   * Gets a variable corresponding to an SSA LocalScopeVariable defined by
+   * Gets a variable corresponding to an SSA StackVariable defined by
    * this definition.
    */
-  LocalScopeVariable getAVariable() { exists(StandardSSA x | x.ssa_defn(result, this, _, _)) }
+  StackVariable getAVariable() { exists(StandardSSA x | x.ssa_defn(result, this, _, _)) }
 
   /**
    * Gets a string representation of the SSA variable represented by the pair
    * `(this, v)`.
    */
-  string toString(LocalScopeVariable v) { exists(StandardSSA x | result = x.toString(this, v)) }
+  string toString(StackVariable v) { exists(StandardSSA x | result = x.toString(this, v)) }
 
   /** Gets a use of the SSA variable represented by the pair `(this, v)`. */
-  VariableAccess getAUse(LocalScopeVariable v) {
-    exists(StandardSSA x | result = x.getAUse(this, v))
-  }
+  VariableAccess getAUse(StackVariable v) { exists(StandardSSA x | result = x.getAUse(this, v)) }
 
   /**
    * Gets the control-flow node for this definition. This will usually be the
@@ -55,9 +53,7 @@ class SsaDefinition extends ControlFlowNodeBase {
   BasicBlock getBasicBlock() { result.contains(getDefinition()) }
 
   /** Holds if this definition is a phi node for variable `v`. */
-  predicate isPhiNode(LocalScopeVariable v) {
-    exists(StandardSSA x | x.phi_node(v, this.(BasicBlock)))
-  }
+  predicate isPhiNode(StackVariable v) { exists(StandardSSA x | x.phi_node(v, this.(BasicBlock))) }
 
   Location getLocation() { result = this.(ControlFlowNode).getLocation() }
 
@@ -68,7 +64,7 @@ class SsaDefinition extends ControlFlowNodeBase {
    * Holds if the SSA variable `(result, v)` is an input to the phi definition
    * `(this, v)`.
    */
-  SsaDefinition getAPhiInput(LocalScopeVariable v) {
+  SsaDefinition getAPhiInput(StackVariable v) {
     this.isPhiNode(v) and
     result.reachesEndOfBB(v, this.(BasicBlock).getAPredecessor())
   }
@@ -92,7 +88,7 @@ class SsaDefinition extends ControlFlowNodeBase {
    * instead covered via `definedByParameter` and `getDefinition`,
    * respectively.
    */
-  Expr getDefiningValue(LocalScopeVariable v) {
+  Expr getDefiningValue(StackVariable v) {
     exists(ControlFlowNode def | def = this.getDefinition() |
       def = v.getInitializer().getExpr() and def = result
       or
@@ -117,7 +113,7 @@ class SsaDefinition extends ControlFlowNodeBase {
   }
 
   /** Holds if `(this, v)` reaches the end of basic block `b`. */
-  predicate reachesEndOfBB(LocalScopeVariable v, BasicBlock b) {
+  predicate reachesEndOfBB(StackVariable v, BasicBlock b) {
     exists(StandardSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
   }
 
@@ -125,7 +121,7 @@ class SsaDefinition extends ControlFlowNodeBase {
    * Gets a definition that ultimately defines this variable and is not
    * itself a phi node.
    */
-  SsaDefinition getAnUltimateSsaDefinition(LocalScopeVariable v) {
+  SsaDefinition getAnUltimateSsaDefinition(StackVariable v) {
     result = this.getAPhiInput(v).getAnUltimateSsaDefinition(v)
     or
     v = this.getAVariable() and
@@ -138,7 +134,7 @@ class SsaDefinition extends ControlFlowNodeBase {
    * recursing backwards through phi definitions. Not all definitions have a
    * defining expression---see the documentation for `getDefiningValue`.
    */
-  Expr getAnUltimateDefiningValue(LocalScopeVariable v) {
+  Expr getAnUltimateDefiningValue(StackVariable v) {
     result = this.getAnUltimateSsaDefinition(v).getDefiningValue(v)
   }
 
@@ -149,7 +145,7 @@ class SsaDefinition extends ControlFlowNodeBase {
    * `getAnUltimateSsaDefinition` to refer to a predicate named
    * `getAnUltimateSsaDefinition` in this class.
    */
-  deprecated Expr getAnUltimateDefinition(LocalScopeVariable v) {
+  deprecated Expr getAnUltimateDefinition(StackVariable v) {
     result = this.getAnUltimateDefiningValue(v)
   }
 }

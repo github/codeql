@@ -8,8 +8,7 @@ import cpp
 import semmle.code.cpp.controlflow.SSA
 
 from
-  File file, SsaDefinition phi, LocalScopeVariable var, SsaDefinition input, int philine,
-  int inputline
+  File file, SsaDefinition phi, StackVariable var, SsaDefinition input, int philine, int inputline
 where
   phi.getAPhiInput(var) = input and
   file = phi.getLocation().getFile() and
