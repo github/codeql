@@ -4,7 +4,10 @@
  *              included by default in ASP.NET. Disabling or downgrading this protection is not
  *              recommended.
  * @kind problem
+ * @id cs/insecure-request-validation-mode
  * @problem.severity warning
+ * @tags security
+ *       external/cwe/cwe-016
  */
 
 import csharp
