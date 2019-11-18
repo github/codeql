@@ -73,6 +73,11 @@ class MutableDefaultValue extends TaintSource {
     }
 }
 
+private ClassValue mutable_class() {
+    result = Value::named("list") or
+    result = Value::named("dict")
+}
+
 class Mutation extends TaintSink {
     Mutation() {
         exists(AugAssign a | a.getTarget().getAFlowNode() = this)
@@ -80,7 +85,8 @@ class Mutation extends TaintSink {
         exists(Call c, Attribute a |
             c.getFunc() = a |
             a.getObject().getAFlowNode() = this and
-            not safe_method(a.getName())
+            not safe_method(a.getName()) and
+            this.(ControlFlowNode).pointsTo().getClass() = mutable_class()
         )
     }
 
