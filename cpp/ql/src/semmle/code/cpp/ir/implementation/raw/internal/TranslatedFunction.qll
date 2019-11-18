@@ -575,9 +575,7 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
     )
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CppType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
@@ -609,9 +607,7 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
 
   override Function getFunction() { result = param.getFunction() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, CppType resultType
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     opcode instanceof Opcode::ReturnIndirection and
     tag = OnlyInstructionTag() and
     resultType = getVoidType()
@@ -630,6 +626,6 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
   final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag = sideEffectOperand() and
-    result  = getUnknownType()
+    result = getUnknownType()
   }
 }
