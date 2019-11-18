@@ -42,10 +42,8 @@ predicate hasNontrivialConversion(Expr e) {
   hasNontrivialConversion(e.getConversion())
 }
 
-from LocalScopeVariable var, VariableAccess va, ReturnStmt r
+from StackVariable var, VariableAccess va, ReturnStmt r
 where
-  not var.isStatic() and
-  not var.isThreadLocal() and
   not var.getUnspecifiedType() instanceof ReferenceType and
   not r.isFromUninstantiatedTemplate(_) and
   va = var.getAnAccess() and

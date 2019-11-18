@@ -88,7 +88,7 @@ class FlowVar extends TFlowVar {
    *   `FlowVar` instance for the uninitialized value of that variable.
    */
   cached
-  abstract predicate definedByInitialValue(LocalScopeVariable v);
+  abstract predicate definedByInitialValue(StackVariable v);
 
   /** Gets a textual representation of this element. */
   cached
@@ -269,7 +269,7 @@ module FlowVar_internal {
    * Holds if `sbb` is the `SubBasicBlock` where `v` receives its initial value.
    * See the documentation for `FlowVar.definedByInitialValue`.
    */
-  predicate blockVarDefinedByVariable(SubBasicBlock sbb, LocalScopeVariable v) {
+  predicate blockVarDefinedByVariable(SubBasicBlock sbb, StackVariable v) {
     sbb = v.(Parameter).getFunction().getEntryPoint()
     or
     exists(DeclStmt declStmt |
@@ -280,7 +280,7 @@ module FlowVar_internal {
   }
 
   newtype TFlowVar =
-    TSsaVar(SsaDefinition def, LocalScopeVariable v) {
+    TSsaVar(SsaDefinition def, StackVariable v) {
       fullySupportedSsaVariable(v) and
       v = def.getAVariable()
     } or
@@ -304,7 +304,7 @@ module FlowVar_internal {
    */
   class SsaVar extends TSsaVar, FlowVar {
     SsaDefinition def;
-    LocalScopeVariable v;
+    StackVariable v;
 
     SsaVar() { this = TSsaVar(def, v) }
 
@@ -344,7 +344,7 @@ module FlowVar_internal {
 
     override predicate definedPartiallyAt(Expr e) { none() }
 
-    override predicate definedByInitialValue(LocalScopeVariable param) {
+    override predicate definedByInitialValue(StackVariable param) {
       def.definedByParameter(param) and
       param = v
     }
@@ -408,7 +408,7 @@ module FlowVar_internal {
       getAReachedBlockVarSBB(this).getANode() = p.getFunction()
     }
 
-    override predicate definedByInitialValue(LocalScopeVariable lsv) {
+    override predicate definedByInitialValue(StackVariable lsv) {
       blockVarDefinedByVariable(sbb, lsv) and
       lsv = v
     }
@@ -648,11 +648,8 @@ module FlowVar_internal {
   /**
    * A local variable that is uninitialized immediately after its declaration.
    */
-  class UninitializedLocalVariable extends LocalVariable {
-    UninitializedLocalVariable() {
-      not this.hasInitializer() and
-      not this.isStatic()
-    }
+  class UninitializedLocalVariable extends LocalVariable, StackVariable {
+    UninitializedLocalVariable() { not this.hasInitializer() }
   }
 
   /** Holds if `va` may be an uninitialized access to `v`. */

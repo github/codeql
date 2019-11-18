@@ -20,11 +20,10 @@ class ScopeUtilityClass extends Class {
   Call getAUse() { result = this.getAConstructor().getACallToThisFunction() }
 }
 
-from LocalScopeVariable v, ControlFlowNode def
+from StackVariable v, ControlFlowNode def
 where
   definition(v, def) and
   not definitionUsePair(v, def, _) and
-  not v.isStatic() and
   not v.getAnAccess().isAddressOfAccess() and
   // parameter initializers are not in the call-graph at the moment
   not v.(Parameter).getInitializer().getExpr() = def and

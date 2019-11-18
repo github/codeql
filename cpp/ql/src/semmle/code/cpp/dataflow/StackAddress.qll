@@ -61,7 +61,7 @@ predicate stackPointerFlowsToUse(Expr use, Type useType, Expr source, boolean is
   stackPointerFlowsToUse(use.(PointerAddExpr).getAnOperand(), useType, source, isLocal)
   or
   // Indirect use of a stack address.
-  exists(SsaDefinition def, LocalScopeVariable var |
+  exists(SsaDefinition def, StackVariable var |
     stackPointerFlowsToDef(def, var, useType, source, isLocal) and
     use = def.getAUse(var)
   )
@@ -97,8 +97,7 @@ private PointerType getExprPtrType(Expr use) { result = use.getUnspecifiedType()
 
 predicate stackReferenceFlowsToUse(Expr use, Type useType, Expr source, boolean isLocal) {
   // Stack variables
-  exists(LocalScopeVariable var |
-    not var.isStatic() and
+  exists(StackVariable var |
     use = source and
     source = var.getAnAccess() and
     isLocal = true and
@@ -140,7 +139,7 @@ predicate stackReferenceFlowsToUse(Expr use, Type useType, Expr source, boolean 
   stackPointerFlowsToUse(use.(PointerDereferenceExpr).getOperand(), useType, source, isLocal)
   or
   // Indirect use of a stack reference, via a reference variable.
-  exists(SsaDefinition def, LocalScopeVariable var |
+  exists(SsaDefinition def, StackVariable var |
     stackReferenceFlowsToDef(def, var, useType, source, isLocal) and
     use = def.getAUse(var)
   )
@@ -162,7 +161,7 @@ predicate stackReferenceFlowsToUse(Expr use, Type useType, Expr source, boolean 
  * addresses through SSA definitions.
  */
 predicate stackPointerFlowsToDef(
-  SsaDefinition def, LocalScopeVariable var, Type useType, Expr source, boolean isLocal
+  SsaDefinition def, StackVariable var, Type useType, Expr source, boolean isLocal
 ) {
   stackPointerFlowsToUse(def.getDefiningValue(var), useType, source, isLocal)
   or
@@ -184,7 +183,7 @@ predicate stackPointerFlowsToDef(
  * int&, rather than pointers.
  */
 predicate stackReferenceFlowsToDef(
-  SsaDefinition def, LocalScopeVariable var, Type useType, Expr source, boolean isLocal
+  SsaDefinition def, StackVariable var, Type useType, Expr source, boolean isLocal
 ) {
   // Check that the type of the variable is a reference type and delegate
   // the rest of the work to stackReferenceFlowsToDef_Impl.
@@ -197,7 +196,7 @@ predicate stackReferenceFlowsToDef(
  * predicate.
  */
 predicate stackReferenceFlowsToDef_Impl(
-  SsaDefinition def, LocalScopeVariable var, Type useType, Expr source, boolean isLocal
+  SsaDefinition def, StackVariable var, Type useType, Expr source, boolean isLocal
 ) {
   stackReferenceFlowsToUse(def.getDefiningValue(var), useType, source, isLocal)
   or
@@ -213,7 +212,7 @@ predicate stackReferenceFlowsToDef_Impl(
 }
 
 /** The type of the variable is a reference type, such as int&. */
-predicate isReferenceVariable(LocalScopeVariable var) {
+predicate isReferenceVariable(StackVariable var) {
   var.getUnspecifiedType() instanceof ReferenceType
 }
 
@@ -284,7 +283,7 @@ predicate memberFcnMightRunOnStack(MemberFunction fcn, Type useType) {
 predicate constructorMightRunOnStack(Constructor constructor) {
   exists(ConstructorCall call | call.getTarget() = constructor |
     // Call to a constructor from a stack variable's initializer.
-    exists(LocalScopeVariable var | var.getInitializer().getExpr() = call)
+    exists(StackVariable var | var.getInitializer().getExpr() = call)
     or
     // Call to a constructor from another constructor which might
     // also run on the stack.
