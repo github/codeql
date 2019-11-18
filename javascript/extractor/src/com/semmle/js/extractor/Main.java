@@ -147,7 +147,8 @@ public class Main {
       List<File> filesToExtract = new ArrayList<>();
       for (File sourceFile : project.getSourceFiles()) {
         if (files.contains(normalizeFile(sourceFile))
-            && !extractedFiles.contains(sourceFile.getAbsoluteFile())) {
+            && !extractedFiles.contains(sourceFile.getAbsoluteFile())
+            && FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourceFile))) {
           filesToExtract.add(sourceFile);
         }
       }
