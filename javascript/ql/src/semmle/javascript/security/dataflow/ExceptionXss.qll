@@ -13,26 +13,6 @@ module ExceptionXss {
   import Xss::ReflectedXss as ReflectedXSS
   import Xss::StoredXss as StoredXss
   import Xss as XSS
-
-  DataFlow::ExceptionalInvocationReturnNode getCallerExceptionalReturn(Function func) {
-    exists(DataFlow::InvokeNode call |
-      not call.isImprecise() and
-      func = call.getACallee(0) and
-      result = call.getExceptionalReturn()
-    )
-  }
-
-  DataFlow::Node getExceptionalSuccessor(DataFlow::Node pred) {
-    if exists(pred.asExpr().getEnclosingStmt().getEnclosingTryStmt())
-    then
-      result = DataFlow::parameterNode(pred
-              .asExpr()
-              .getEnclosingStmt()
-              .getEnclosingTryStmt()
-              .getACatchClause()
-              .getAParameter())
-    else result = getCallerExceptionalReturn(pred.getContainer())
-  }
   
   /**
    * Holds if `node` cannot cause an exception containing sensitive information to be thrown.
@@ -92,13 +72,9 @@ module ExceptionXss {
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl,
       DataFlow::FlowLabel outlbl
     ) {
-      inlbl instanceof NotYetThrown and
-      (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
-      succ = getExceptionalSuccessor(pred) and
-      (
-        canThrowSensitiveInformation(pred) or
-        pred = any(DataFlow::InvokeNode c).getExceptionalReturn()
-      )
+      inlbl instanceof NotYetThrown and (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
+      succ = pred.asExpr().getThrowsToNode() and
+      canThrowSensitiveInformation(pred)
       or
       // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
       this.isAdditionalFlowStep(pred, succ) and inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown

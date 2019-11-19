@@ -66,19 +66,7 @@ predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
     or
     DataFlow::exceptionalInvocationReturnNode(pred, expr)
   |
-    // Propagate out of enclosing function.
-    not exists(expr.getEnclosingStmt().getEnclosingTryStmt()) and
-    exists(Function f |
-      f = expr.getEnclosingFunction() and
-      DataFlow::exceptionalFunctionReturnNode(succ, f)
-    )
-    or
-    // Propagate to enclosing try/catch.
-    // To avoid false flow, we only propagate to an unguarded catch clause.
-    exists(TryStmt try |
-      try = expr.getEnclosingStmt().getEnclosingTryStmt() and
-      DataFlow::parameterNode(succ, try.getCatchClause().getAParameter())
-    )
+    succ = expr.getThrowsToNode()
   )
 }
 

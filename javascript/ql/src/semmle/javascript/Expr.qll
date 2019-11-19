@@ -245,6 +245,21 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       ctx.(ConditionalExpr).inNullSensitiveContext()
     )
   }
+
+  /**
+   * Gets the data-flow node where exceptional data-flow will flow if this expression
+   * causes an exception to be thrown.
+   */
+  DataFlow::Node getThrowsToNode() {
+    if exists(this.getEnclosingStmt().getEnclosingTryStmt())
+    then
+      result = DataFlow::parameterNode(this
+              .getEnclosingStmt()
+              .getEnclosingTryStmt()
+              .getACatchClause()
+              .getAParameter())
+    else result = any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
+  }
 }
 
 /**

@@ -1125,6 +1125,9 @@ class MidPathNode extends PathNode, MkMidNode {
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and
     nd = any(AddExpr add).getAnOperand().flow()
+    or
+    // Skip the exceptional return on functions, as this highlights the entire function.
+    nd = any(DataFlow::FunctionNode f).getExceptionalReturn()
   }
 }
 
