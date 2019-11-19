@@ -250,7 +250,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * Gets the data-flow node where exceptions thrown by this expression will
    * propagate if this expression causes an exception to be thrown.
    */
-  DataFlow::Node getExceptionalNode() {
+  DataFlow::Node getExceptionTarget() {
     if exists(this.getEnclosingStmt().getEnclosingTryCatchStmt())
     then
       result = DataFlow::parameterNode(this

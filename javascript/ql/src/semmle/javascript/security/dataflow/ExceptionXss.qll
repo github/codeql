@@ -73,7 +73,7 @@ module ExceptionXss {
       DataFlow::FlowLabel outlbl
     ) {
       inlbl instanceof NotYetThrown and (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
-      succ = pred.asExpr().getExceptionalNode() and
+      succ = pred.asExpr().getExceptionTarget() and
       canThrowSensitiveInformation(pred)
       or
       // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
