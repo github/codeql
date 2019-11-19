@@ -2618,7 +2618,7 @@ class CallSignatureType extends @signature_type {
   /**
    * Holds if this signature declares a rest parameter, such as `(x: number, ...y: string[])`.
    */
-  predicate hasRestParameter() { signature_rest_parameter(this, _) } // TODO
+  predicate hasRestParameter() { signature_rest_parameter(this, _) }
 
   /**
    * Gets the type of the rest parameter, if any.

@@ -1903,7 +1903,6 @@ public class TypeScriptASTConverter {
       ++index;
       if (param.getAsJsonObject().has("questionToken")) {
         list.add(index);
-        ;
       }
     }
     return list;

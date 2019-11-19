@@ -19,7 +19,7 @@ public class AFunction<B> {
   private final List<ITypeExpression> parameterTypes;
   private final ITypeExpression thisParameterType;
   private final List<DecoratorList> parameterDecorators;
-  private final IntList optionalParmaeterIndices;
+  private final IntList optionalParameterIndices;
 
   public static final IntList noOptionalParams = IntList.create(0, 0);
 
@@ -34,7 +34,7 @@ public class AFunction<B> {
       List<DecoratorList> parameterDecorators,
       ITypeExpression returnType,
       ITypeExpression thisParameterType,
-      IntList optionalParmaeterIndices) {
+      IntList optionalParameterIndices) {
     this.id = id;
     this.params = new ArrayList<IPattern>(params.size());
     this.defaults = new ArrayList<Expression>(params.size());
@@ -47,7 +47,7 @@ public class AFunction<B> {
     this.returnType = returnType;
     this.thisParameterType = thisParameterType;
     this.parameterDecorators = parameterDecorators;
-    this.optionalParmaeterIndices = optionalParmaeterIndices;
+    this.optionalParameterIndices = optionalParameterIndices;
 
     IPattern rest = null;
     for (Expression param : params) {
@@ -151,6 +151,6 @@ public class AFunction<B> {
   }
 
   public IntList getOptionalParmaeterIndices() {
-    return optionalParmaeterIndices;
+    return optionalParameterIndices;
   }
 }
