@@ -924,7 +924,7 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
     /*
      * Use primitive basic blocks in reachability analysis for better performance.
      * This is similar to the pattern used in e.g. `DefinitionsAndUses` and
-     * `LocalScopeVariableReachability`.
+     * `StackVariableReachability`.
      */
 
     exists(PrimitiveBasicBlock bb1, int pos1 | bb1.getNode(pos1) = valueOrDef |

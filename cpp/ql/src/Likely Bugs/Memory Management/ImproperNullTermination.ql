@@ -11,7 +11,7 @@
  */
 
 import cpp
-import semmle.code.cpp.controlflow.LocalScopeVariableReachability
+import semmle.code.cpp.controlflow.StackVariableReachability
 import semmle.code.cpp.commons.NullTermination
 
 /**
@@ -22,10 +22,10 @@ DeclStmt declWithNoInit(LocalVariable v) {
   not exists(v.getInitializer())
 }
 
-class ImproperNullTerminationReachability extends LocalScopeVariableReachabilityWithReassignment {
+class ImproperNullTerminationReachability extends StackVariableReachabilityWithReassignment {
   ImproperNullTerminationReachability() { this = "ImproperNullTerminationReachability" }
 
-  override predicate isSourceActual(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isSourceActual(ControlFlowNode node, StackVariable v) {
     node = declWithNoInit(v)
     or
     exists(Call c, VariableAccess va |
@@ -36,12 +36,12 @@ class ImproperNullTerminationReachability extends LocalScopeVariableReachability
     )
   }
 
-  override predicate isSinkActual(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isSinkActual(ControlFlowNode node, StackVariable v) {
     node.(VariableAccess).getTarget() = v and
     variableMustBeNullTerminated(node)
   }
 
-  override predicate isBarrier(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
     exprDefinition(v, node, _) or
     mayAddNullTerminator(node, v.getAnAccess()) or
     isSinkActual(node, v) // only report first use

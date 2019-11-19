@@ -10,7 +10,7 @@
  */
 
 import FileClosed
-import semmle.code.cpp.controlflow.LocalScopeVariableReachability
+import semmle.code.cpp.controlflow.StackVariableReachability
 
 /**
  * Extend the NullValue class used by Nullness.qll to include simple -1 as a 'null' value
@@ -68,18 +68,18 @@ predicate fcloseCallOrIndirect(FunctionCall fc, Variable v) {
   )
 }
 
-predicate fopenDefinition(LocalScopeVariable v, ControlFlowNode def) {
+predicate fopenDefinition(StackVariable v, ControlFlowNode def) {
   exists(Expr expr | exprDefinition(v, def, expr) and fopenCallOrIndirect(expr))
 }
 
-class FOpenVariableReachability extends LocalScopeVariableReachabilityWithReassignment {
+class FOpenVariableReachability extends StackVariableReachabilityWithReassignment {
   FOpenVariableReachability() { this = "FOpenVariableReachability" }
 
-  override predicate isSourceActual(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isSourceActual(ControlFlowNode node, StackVariable v) {
     fopenDefinition(v, node)
   }
 
-  override predicate isSinkActual(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isSinkActual(ControlFlowNode node, StackVariable v) {
     // node may be used in fopenReaches
     exists(node.(AnalysedExpr).getNullSuccessor(v)) or
     fcloseCallOrIndirect(node, v) or
@@ -88,15 +88,13 @@ class FOpenVariableReachability extends LocalScopeVariableReachabilityWithReassi
     v.getFunction() = node.(ReturnStmt).getEnclosingFunction()
   }
 
-  override predicate isBarrier(ControlFlowNode node, LocalScopeVariable v) {
-    definitionBarrier(v, node)
-  }
+  override predicate isBarrier(ControlFlowNode node, StackVariable v) { definitionBarrier(v, node) }
 }
 
 /**
  * The value from fopen at `def` is still held in Variable `v` upon entering `node`.
  */
-predicate fopenVariableReaches(LocalScopeVariable v, ControlFlowNode def, ControlFlowNode node) {
+predicate fopenVariableReaches(StackVariable v, ControlFlowNode def, ControlFlowNode node) {
   exists(FOpenVariableReachability r |
     // reachability
     r.reachesTo(def, _, node, v)
@@ -107,25 +105,23 @@ predicate fopenVariableReaches(LocalScopeVariable v, ControlFlowNode def, Contro
   )
 }
 
-class FOpenReachability extends LocalScopeVariableReachabilityExt {
+class FOpenReachability extends StackVariableReachabilityExt {
   FOpenReachability() { this = "FOpenReachability" }
 
-  override predicate isSource(ControlFlowNode node, LocalScopeVariable v) {
-    fopenDefinition(v, node)
-  }
+  override predicate isSource(ControlFlowNode node, StackVariable v) { fopenDefinition(v, node) }
 
-  override predicate isSink(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isSink(ControlFlowNode node, StackVariable v) {
     v.getFunction() = node.(ReturnStmt).getEnclosingFunction()
   }
 
   override predicate isBarrier(
-    ControlFlowNode source, ControlFlowNode node, ControlFlowNode next, LocalScopeVariable v
+    ControlFlowNode source, ControlFlowNode node, ControlFlowNode next, StackVariable v
   ) {
     isSource(source, v) and
     next = node.getASuccessor() and
     // the file (stored in any variable `v0`) opened at `source` is closed or
     // assigned to a global at node, or NULL checked on the edge node -> next.
-    exists(LocalScopeVariable v0 | fopenVariableReaches(v0, source, node) |
+    exists(StackVariable v0 | fopenVariableReaches(v0, source, node) |
       node.(AnalysedExpr).getNullSuccessor(v0) = next or
       fcloseCallOrIndirect(node, v0) or
       assignedToFieldOrGlobal(v0, node)
@@ -142,11 +138,11 @@ predicate fopenReaches(ControlFlowNode def, ControlFlowNode node) {
   exists(FOpenReachability r | r.reaches(def, _, node))
 }
 
-predicate assignedToFieldOrGlobal(LocalScopeVariable v, Expr e) {
-  // assigned to anything except a LocalScopeVariable
+predicate assignedToFieldOrGlobal(StackVariable v, Expr e) {
+  // assigned to anything except a StackVariable
   // (typically a field or global, but for example also *ptr = v)
   e.(Assignment).getRValue() = v.getAnAccess() and
-  not e.(Assignment).getLValue().(VariableAccess).getTarget() instanceof LocalScopeVariable
+  not e.(Assignment).getLValue().(VariableAccess).getTarget() instanceof StackVariable
   or
   exists(Expr midExpr, Function mid, int arg |
     // indirect assignment
@@ -163,7 +159,7 @@ predicate assignedToFieldOrGlobal(LocalScopeVariable v, Expr e) {
 from ControlFlowNode def, ReturnStmt ret
 where
   fopenReaches(def, ret) and
-  not exists(LocalScopeVariable v |
+  not exists(StackVariable v |
     fopenVariableReaches(v, def, ret) and
     ret.getAChild*() = v.getAnAccess()
   )
