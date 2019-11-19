@@ -288,3 +288,97 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
     getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
 }
+
+/**
+ * An SSA variable, possibly with a chain of field reads on it.
+ */
+private newtype TSsaWithFields =
+  TRoot(SsaVariable v) or
+  TStep(SsaWithFields base, Field f) { exists(accessPathAux(base, f)) }
+
+/**
+ * Gets a representation of `nd` as an ssa-with-fields value if there is one.
+ */
+private TSsaWithFields accessPath(IR::Instruction insn) {
+  exists(SsaVariable v | insn = v.getAUse() | result = TRoot(v))
+  or
+  exists(SsaWithFields base, Field f | insn = accessPathAux(base, f) | result = TStep(base, f))
+}
+
+/**
+ * Gets a data-flow node that reads a field `f` from a node that is represented
+ * by ssa-with-fields value `base`.
+ */
+private IR::Instruction accessPathAux(TSsaWithFields base, Field f) {
+  exists(IR::FieldReadInstruction fr | fr = result |
+    base = accessPath(fr.getBase()) and
+    f = fr.getField()
+  )
+}
+
+abstract class SsaWithFields extends TSsaWithFields {
+  /**
+   * Gets the SSA variable corresponding to the base of this SSA variable with fields.
+   *
+   * For example, the SSA variable corresponding to `a` for the SSA variable with fields
+   * corresponding to `a.b`.
+   */
+  abstract SsaVariable getBaseVariable();
+
+  /** Gets the type of this SSA variable with fields. */
+  abstract Type getType();
+
+  /** Gets a use in basic block `bb` that refers to this SSA variable with fields. */
+  abstract IR::Instruction getAUseIn(ReachableBasicBlock bb);
+
+  /** Gets a use that refers to this SSA variable with fields. */
+  IR::Instruction getAUse() { result = this.getAUseIn(_) }
+
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getBaseVariable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+private class SsaWithFieldsRoot extends SsaWithFields, TRoot {
+  SsaVariable self;
+
+  SsaWithFieldsRoot() { this = TRoot(self) }
+
+  override SsaVariable getBaseVariable() { result = self }
+
+  override Type getType() { result = self.getType() }
+
+  override IR::Instruction getAUseIn(ReachableBasicBlock bb) { result = self.getAUseIn(bb) }
+
+  override string toString() { result = "(" + self.toString() + ")" }
+}
+
+private class SsaWithFieldsStep extends SsaWithFields, TStep {
+  SsaWithFields base;
+  Field f;
+
+  SsaWithFieldsStep() { this = TStep(base, f) }
+
+  override SsaVariable getBaseVariable() { result = base.getBaseVariable() }
+
+  override Type getType() { result = f.getType() }
+
+  override IR::FieldReadInstruction getAUseIn(ReachableBasicBlock bb) {
+    result.getBase() = base.getAUseIn(bb) and
+    result.getField() = f
+  }
+
+  override string toString() { result = base.toString() + "." + f.getName() }
+}

@@ -734,33 +734,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
- * An SSA variable, possibly with a chain of field reads on it.
- */
-private newtype SsaWithFields =
-  Root(SsaVariable v) or
-  Step(SsaWithFields base, Field f) { exists(accessPathAux(base, f)) }
-
-/**
- * Gets a representation of `nd` as an ssa-with-fields value if there is one.
- */
-private SsaWithFields accessPath(Node nd) {
-  exists(SsaVariable v | nd.asInstruction() = v.getAUse() | result = Root(v))
-  or
-  exists(SsaWithFields base, Field f | nd = accessPathAux(base, f) | result = Step(base, f))
-}
-
-/**
- * Gets a data-flow node that reads a field `f` from a node that is represented
- * by ssa-with-fields value `base`.
- */
-private Node accessPathAux(SsaWithFields base, Field f) {
-  exists(IR::FieldReadInstruction fr | fr = result.asInstruction() |
-    base = accessPath(instructionNode(fr.getBase())) and
-    f = fr.getField()
-  )
-}
-
-/**
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -776,8 +749,10 @@ abstract class BarrierGuard extends Node {
   /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
     exists(ControlFlow::ConditionGuardNode guard, Node nd |
-      guards(guard, nd, accessPath(result)) and
-      guard.dominates(result.asInstruction().getBasicBlock())
+      exists(SsaWithFields var | result.asInstruction() = var.getAUse() |
+        guards(guard, nd, var) and
+        guard.dominates(result.asInstruction().getBasicBlock())
+      )
     )
   }
 
@@ -789,8 +764,7 @@ abstract class BarrierGuard extends Node {
    */
   pragma[noinline]
   private predicate guards(ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields ap) {
-    guards(guard, nd) and
-    ap = accessPath(nd)
+    guards(guard, nd) and nd.asInstruction() = ap.getAUse()
   }
 
   /**
