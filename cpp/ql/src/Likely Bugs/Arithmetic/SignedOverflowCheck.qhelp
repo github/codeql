@@ -18,29 +18,39 @@ optimizing compiler.
 <recommendation>
 <p>
 Solutions to this problem can be thought of as falling into one of two
-categories: (1) rewrite the signed expression so that overflow cannot occur
-but the signedness remains, or (2) change the variables and all their uses to
-be unsigned. The following cases all fall into the first category.
+categories:
 </p>
 
+<ol>
+<li>Rewrite the signed expression so that overflow cannot occur
+but the signedness remains.</li>
+<li>Change the variables and all their uses to be unsigned.</li>
+</ol>
+
 <p>
+The following cases all fall into the first category.
+</p>
+
+<ol>
+<li>
 Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>,
 it is possible to rewrite it as <code>(unsigned short)(n1 + delta)&nbsp;&lt;&nbsp;n1</code>.
 Note that <code>n1 + delta</code> does not actually overflow, due to <code>int</code> promotion.
-</p>
+</li>
 
-<p>
+<li>
 Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>,
 it is also possible to rewrite it as <code>n1 &gt; USHORT_MAX - delta</code>. The
 <code>limits.h</code> or <code>climits</code> header must then be included.
-</p>
+</li>
 
-<p>
+<li>
 Given <code>int n1, delta</code> and <code>n1 + delta &lt; n1</code>,
 it is possible to rewrite it as <code>n1 &gt; INT_MAX - delta</code>. It must be true
 that <code>delta &gt;= 0</code> and the <code>limits.h</code> or <code>climits</code>
 header has been included.
-</p>
+</li>
+</ol>
 </recommendation>
 
 <example>
