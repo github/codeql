@@ -31,7 +31,7 @@ namespace std
 //// Test code /////
 
 void bad1(char *str) {
-    // BAD -- Not allocating space for '\0' terminator
+    // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
     char *buffer = (char *)malloc(strlen(str));
     std::string str2(buffer);
     free(buffer);

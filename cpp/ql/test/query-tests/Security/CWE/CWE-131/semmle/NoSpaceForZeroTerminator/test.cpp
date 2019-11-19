@@ -41,7 +41,7 @@ void good1(wchar_t *wstr) {
 }
 
 void bad3(char *str) {
-    // BAD -- zero-termination proved by sprintf (as destination)
+    // BAD -- zero-termination proved by sprintf (as destination) [NOT DETECTED]
     char *buffer = (char *)malloc(strlen(str));
     sprintf(buffer, "%s", str);
     free(buffer);
@@ -51,7 +51,7 @@ void decode(char *dest, char *src);
 void wdecode(wchar_t *dest, wchar_t *src);
 
 void bad4(char *str) {
-    // BAD -- zero-termination proved by wprintf (as parameter)
+    // BAD -- zero-termination proved by wprintf (as parameter) [NOT DETECTED]
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
     wprintf(L"%s", buffer);
@@ -75,7 +75,7 @@ void bad6(char *str, char *dest) {
 }
 
 void bad7(char *str, char *str2) {
-    // BAD -- zero-termination proved by strcmp
+    // BAD -- zero-termination proved by strcmp [NOT DETECTED]
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
     if (strcmp(buffer, str2) == 0) {
@@ -85,7 +85,7 @@ void bad7(char *str, char *str2) {
 }
 
 void bad8(wchar_t *str) {
-    // BAD -- zero-termination proved by wcslen
+    // BAD -- zero-termination proved by wcslen [NOT DETECTED]
     wchar_t *wbuffer = (wchar_t *)malloc(wcslen(str));
     wdecode(wbuffer, str);
     if (wcslen(wbuffer) == 0) {
@@ -95,7 +95,7 @@ void bad8(wchar_t *str) {
 }
 
 void good2(char *str, char *dest) {
-    // GOOD -- zero-termination not proven [FALSE POSITIVE]
+    // GOOD -- zero-termination not proven
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
     free(buffer);

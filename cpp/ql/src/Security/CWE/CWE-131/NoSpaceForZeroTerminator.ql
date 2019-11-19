@@ -16,7 +16,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
-import semmle.code.cpp.models.implementations.Memcpy
+import semmle.code.cpp.models.interfaces.ArrayFunction
 
 class MallocCall extends FunctionCall {
   MallocCall() { this.getTarget().hasGlobalOrStdName("malloc") }
@@ -33,11 +33,19 @@ class MallocCall extends FunctionCall {
 }
 
 predicate terminationProblem(MallocCall malloc, string msg) {
+  // malloc(strlen(...))
   malloc.getAllocatedSize() instanceof StrlenCall and
-  not exists(FunctionCall fc, MemcpyFunction memcpy, int ix |
-    DataFlow::localExprFlow(malloc, fc.getArgument(ix)) and
-    fc.getTarget() = memcpy and
-    memcpy.hasArrayOutput(ix)
+  // flows into a null-terminated string function
+  exists(ArrayFunction af, FunctionCall fc, int arg |
+    DataFlow::localExprFlow(malloc, fc.getArgument(arg)) and
+    fc.getTarget() = af and
+    (
+      // null terminated string
+      af.hasArrayWithNullTerminator(arg)
+      or
+      // likely a null terminated string (such as `strcpy`, `strcat`)
+      af.hasArrayWithUnknownSize(arg)
+    )
   ) and
   msg = "This allocation does not include space to null-terminate the string."
 }
