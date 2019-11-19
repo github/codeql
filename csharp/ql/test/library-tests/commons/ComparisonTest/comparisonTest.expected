@@ -62,3 +62,9 @@
 | ComparisonTest.cs:106:17:106:61 | ... == ... | < | ComparisonTest.cs:106:42:106:42 | 0 | ComparisonTest.cs:106:17:106:30 | call to method CompareTo |
 | ComparisonTest.cs:106:17:106:61 | ... == ... | = | ComparisonTest.cs:106:17:106:43 | call to method CompareTo | ComparisonTest.cs:106:55:106:55 | 1 |
 | ComparisonTest.cs:106:17:106:61 | ... == ... | = | ComparisonTest.cs:106:17:106:56 | call to method CompareTo | ComparisonTest.cs:106:61:106:61 | 0 |
+| ComparisonTest.cs:114:17:114:24 | dynamic call to operator == | = | ComparisonTest.cs:114:17:114:18 | access to local variable d1 | ComparisonTest.cs:114:23:114:24 | access to local variable d2 |
+| ComparisonTest.cs:115:13:115:20 | dynamic call to operator != | != | ComparisonTest.cs:115:13:115:14 | access to local variable d1 | ComparisonTest.cs:115:19:115:20 | access to local variable d2 |
+| ComparisonTest.cs:116:13:116:19 | dynamic call to operator > | < | ComparisonTest.cs:116:18:116:19 | access to local variable d2 | ComparisonTest.cs:116:13:116:14 | access to local variable d1 |
+| ComparisonTest.cs:117:13:117:19 | dynamic call to operator < | < | ComparisonTest.cs:117:13:117:14 | access to local variable d1 | ComparisonTest.cs:117:18:117:19 | access to local variable d2 |
+| ComparisonTest.cs:118:13:118:20 | dynamic call to operator >= | <= | ComparisonTest.cs:118:19:118:20 | access to local variable d2 | ComparisonTest.cs:118:13:118:14 | access to local variable d1 |
+| ComparisonTest.cs:119:13:119:20 | dynamic call to operator <= | <= | ComparisonTest.cs:119:13:119:14 | access to local variable d1 | ComparisonTest.cs:119:19:119:20 | access to local variable d2 |

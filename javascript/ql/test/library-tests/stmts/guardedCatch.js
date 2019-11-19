@@ -7,5 +7,3 @@ function f(g) {
 		console.log("something else!");
 	}
 }
-
-//semmle-extractor-options: --experimental --extract-program-text

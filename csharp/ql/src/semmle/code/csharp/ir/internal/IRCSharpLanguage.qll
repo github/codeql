@@ -1,5 +1,10 @@
 private import csharp as CSharp
 private import IRUtilities
+import CSharpType
+
+class LanguageType = CSharpType;
+
+class OpaqueTypeTag = CSharp::ValueOrRefType;
 
 class Function = CSharp::Callable;
 
@@ -76,36 +81,10 @@ predicate hasPositionalArgIndex(int argIndex) {
   // correct number of parameters; it is an overestimation,
   // since we don't care about all the callables, so it
   // should be restricted more
-  argIndex in [0..any(CSharp::Callable c).getNumberOfParameters() - 1]
+  argIndex in [0 .. any(CSharp::Callable c).getNumberOfParameters() - 1]
 }
 
 predicate hasAsmOperandIndex(int operandIndex) { none() }
-
-int getTypeSize(Type type) {
-  // REVIEW: Is this complete?
-  result = type.(CSharp::SimpleType).getSize()
-  or
-  result = getTypeSize(type.(CSharp::Enum).getUnderlyingType())
-  or
-  // TODO: Generate a reasonable size
-  type instanceof CSharp::Struct and result = 16
-  or
-  type instanceof CSharp::RefType and result = getPointerSize()
-  or
-  type instanceof CSharp::PointerType and result = getPointerSize()
-  or
-  result = getTypeSize(type.(CSharp::TupleType).getUnderlyingType())
-  or
-  // TODO: Add room for extra field
-  result = getTypeSize(type.(CSharp::NullableType).getUnderlyingType())
-  or
-  type instanceof CSharp::VoidType and result = 0
-}
-
-int getPointerSize() {
-  // TODO: Deal with sizes in general
-  result = 8
-}
 
 predicate isVariableAutomatic(Variable var) { var instanceof CSharp::LocalScopeVariable }
 

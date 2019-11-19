@@ -11,6 +11,7 @@ private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedInitialization
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 abstract class LocalVariableDeclarationBase extends TranslatedElement {
@@ -18,19 +19,15 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
 
   override Instruction getFirstInstruction() { result = getVarAddress() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getVarType() and
-    isLValue = true
+    resultType = getTypeForGLValue(getVarType())
     or
     hasUninitializedInstruction() and
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Uninitialized and
-    resultType = getVarType() and
-    isLValue = false
+    resultType = getTypeForPRValue(getVarType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -39,12 +36,7 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
       kind instanceof GotoEdge and
       if hasUninitializedInstruction()
       then result = getInstruction(InitializerStoreTag())
-      else
-        if isInitializedByElement()
-        then
-          // initialization is done by an element
-          result = getParent().getChildSuccessor(this)
-        else result = getInitialization().getFirstInstruction()
+      else result = getInitialization().getFirstInstruction()
     )
     or
     hasUninitializedInstruction() and
@@ -75,11 +67,8 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
    * desugaring process.
    */
   predicate hasUninitializedInstruction() {
-    (
-      not exists(getInitialization()) or
-      getInitialization() instanceof TranslatedListInitialization
-    ) and
-    not isInitializedByElement()
+    not exists(getInitialization()) or
+    getInitialization() instanceof TranslatedListInitialization
   }
 
   Instruction getVarAddress() { result = getInstruction(InitializerVariableAddressTag()) }
@@ -101,10 +90,4 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
    * as a different step, but do it during the declaration.
    */
   abstract TranslatedElement getInitialization();
-
-  /**
-   * Holds if a declaration is not explicitly initialized,
-   * but will be implicitly initialized by an element.
-   */
-  abstract predicate isInitializedByElement();
 }

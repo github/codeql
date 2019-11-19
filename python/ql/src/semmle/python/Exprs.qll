@@ -126,6 +126,19 @@ class Expr extends Expr_, AstNode {
         this.pointsTo(value, _)
     }
 
+    /** Gets a value that this expression might "point-to". */
+    Value pointsTo() {
+        this.pointsTo(result)
+    }
+
+}
+
+/** An assignment expression, such as `x := y` */
+class AssignExpr extends AssignExpr_ {
+    override Expr getASubExpression() {
+        result = this.getValue() or
+        result = this.getTarget()
+    }
 }
 
 /** An attribute expression, such as `value.attr` */
@@ -671,7 +684,7 @@ class Name extends Name_ {
         v = this.getVariable()
     }
 
-    /** Whether this expression is a definition */
+    /** Whether this expression is a deletion */
     predicate isDeletion() {
         py_expr_contexts(_, 2, this)
     }

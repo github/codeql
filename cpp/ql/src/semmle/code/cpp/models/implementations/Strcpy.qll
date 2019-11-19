@@ -55,15 +55,15 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
       this.hasName("wcscpy")
     ) and
     (
-      input.isInParameterPointer(1) and
-      output.isOutParameterPointer(0)
+      input.isParameterDeref(1) and
+      output.isParameterDeref(0)
       or
-      input.isInParameterPointer(1) and
-      output.isOutReturnPointer()
+      input.isParameterDeref(1) and
+      output.isReturnValueDeref()
     )
     or
-    input.isInParameter(0) and
-    output.isOutReturnValue()
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -78,12 +78,12 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
       this.hasName("_wcsncpy_l")
     ) and
     (
-      input.isInParameter(2) or
-      input.isInParameterPointer(1)
+      input.isParameter(2) or
+      input.isParameterDeref(1)
     ) and
     (
-      output.isOutParameterPointer(0) or
-      output.isOutReturnPointer()
+      output.isParameterDeref(0) or
+      output.isReturnValueDeref()
     )
   }
 }

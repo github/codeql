@@ -11,4 +11,4 @@
 import javascript
 import CallGraphQuality
 
-select projectRoot(), 100.0 * count(ResolvableCall call) / count(NonExternalCall call).(float)
+select projectRoot(), 100.0 * count(ResolvableCall call) / count(RelevantInvoke call).(float)

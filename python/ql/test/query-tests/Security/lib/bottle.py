@@ -67,4 +67,3 @@ response = LocalResponse()
 
 def redirect(url, code=None):
     pass
-

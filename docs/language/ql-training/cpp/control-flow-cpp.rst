@@ -2,11 +2,7 @@
 Analyzing control flow
 ======================
 
-QL for C/C++
-
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
+CodeQL for C/C++
 
 .. Include information slides here
 
@@ -18,7 +14,7 @@ Setup
 For this example you should download:
 
 - `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- `ChakraCore snapshot <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__
+- `ChakraCore database <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__
 
 .. note::
 
@@ -26,9 +22,9 @@ For this example you should download:
 
    You can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
 
-   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
 
-   .. include:: ../slide-snippets/snapshot-note.rst
+   .. include:: ../slide-snippets/database-note.rst
 
    .. resume slides
 
@@ -93,7 +89,7 @@ Control flow graphs
 Modeling control flow
 =====================
 
-The control flow is modeled with a QL class, ``ControlFlowNode``. Examples of control flow nodes include statements and expressions.
+The control flow is modeled with a CodeQL class, ``ControlFlowNode``. Examples of control flow nodes include statements and expressions.
 
 - ``ControlFlowNode`` provides API for traversing the control flow graph:
 
@@ -226,7 +222,7 @@ A ``GuardCondition`` is a ``Boolean`` condition that controls one or more basic 
 Further materials
 =================
 
-- QL for C/C++: https://help.semmle.com/QL/learn-ql/ql/cpp/ql-for-cpp.html 
+- CodeQL for C/C++: https://help.semmle.com/QL/learn-ql/ql/cpp/ql-for-cpp.html 
 - API reference: https://help.semmle.com/qldoc/cpp 
 
 .. rst-class:: end-slide

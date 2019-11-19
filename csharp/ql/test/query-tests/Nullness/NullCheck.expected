@@ -18,18 +18,36 @@
 | Assert.cs:50:24:50:32 | ... != ... | Assert.cs:50:24:50:24 | access to local variable s | true | false |
 | B.cs:12:13:12:32 | call to operator == | B.cs:12:13:12:24 | access to local variable eqCallAlways | false | false |
 | B.cs:12:13:12:32 | call to operator == | B.cs:12:13:12:24 | access to local variable eqCallAlways | true | true |
+| B.cs:12:13:12:32 | call to operator == | B.cs:12:29:12:32 | null | false | false |
+| B.cs:12:13:12:32 | call to operator == | B.cs:12:29:12:32 | null | true | true |
 | B.cs:15:13:15:22 | call to operator != | B.cs:15:13:15:14 | access to local variable b2 | false | true |
 | B.cs:15:13:15:22 | call to operator != | B.cs:15:13:15:14 | access to local variable b2 | true | false |
+| B.cs:15:13:15:22 | call to operator != | B.cs:15:19:15:22 | null | false | true |
+| B.cs:15:13:15:22 | call to operator != | B.cs:15:19:15:22 | null | true | false |
 | B.cs:18:13:18:22 | call to operator == | B.cs:18:13:18:14 | access to local variable b3 | false | false |
 | B.cs:18:13:18:22 | call to operator == | B.cs:18:13:18:14 | access to local variable b3 | true | true |
+| B.cs:18:13:18:22 | call to operator == | B.cs:18:19:18:22 | null | false | false |
+| B.cs:18:13:18:22 | call to operator == | B.cs:18:19:18:22 | null | true | true |
 | B.cs:22:13:22:33 | call to operator != | B.cs:22:13:22:25 | access to local variable neqCallAlways | false | true |
 | B.cs:22:13:22:33 | call to operator != | B.cs:22:13:22:25 | access to local variable neqCallAlways | true | false |
+| B.cs:22:13:22:33 | call to operator != | B.cs:22:30:22:33 | null | false | true |
+| B.cs:22:13:22:33 | call to operator != | B.cs:22:30:22:33 | null | true | false |
 | B.cs:53:17:53:33 | ... != ... | B.cs:53:17:53:25 | (...) ... | false | true |
 | B.cs:53:17:53:33 | ... != ... | B.cs:53:17:53:25 | (...) ... | true | false |
+| B.cs:53:17:53:33 | ... != ... | B.cs:53:30:53:33 | null | false | true |
+| B.cs:53:17:53:33 | ... != ... | B.cs:53:30:53:33 | null | true | false |
+| B.cs:55:26:55:36 | call to method Equals | B.cs:55:26:55:26 | access to local variable o | false | false |
+| B.cs:55:26:55:36 | call to method Equals | B.cs:55:26:55:26 | access to local variable o | true | true |
+| B.cs:55:26:55:36 | call to method Equals | B.cs:55:35:55:35 | access to local variable o | false | false |
+| B.cs:55:26:55:36 | call to method Equals | B.cs:55:35:55:35 | access to local variable o | true | true |
 | C.cs:11:19:11:27 | ... == ... | C.cs:11:19:11:19 | access to local variable o | false | false |
 | C.cs:11:19:11:27 | ... == ... | C.cs:11:19:11:19 | access to local variable o | true | true |
+| C.cs:11:19:11:27 | ... == ... | C.cs:11:24:11:27 | null | false | false |
+| C.cs:11:19:11:27 | ... == ... | C.cs:11:24:11:27 | null | true | true |
 | C.cs:16:15:16:23 | ... != ... | C.cs:16:15:16:15 | access to local variable o | false | true |
 | C.cs:16:15:16:23 | ... != ... | C.cs:16:15:16:15 | access to local variable o | true | false |
+| C.cs:16:15:16:23 | ... != ... | C.cs:16:20:16:23 | null | false | true |
+| C.cs:16:15:16:23 | ... != ... | C.cs:16:20:16:23 | null | true | false |
 | C.cs:24:13:24:21 | ... != ... | C.cs:24:13:24:13 | access to parameter o | false | true |
 | C.cs:24:13:24:21 | ... != ... | C.cs:24:13:24:13 | access to parameter o | true | false |
 | C.cs:28:37:28:45 | ... == ... | C.cs:28:37:28:37 | access to parameter o | false | false |
@@ -49,18 +67,32 @@
 | C.cs:89:13:89:23 | ... is ... | C.cs:89:13:89:13 | access to local variable o | true | false |
 | C.cs:114:22:114:36 | ... == ... | C.cs:114:22:114:28 | access to local variable colours | false | false |
 | C.cs:114:22:114:36 | ... == ... | C.cs:114:22:114:28 | access to local variable colours | true | true |
+| C.cs:114:22:114:36 | ... == ... | C.cs:114:33:114:36 | null | false | false |
+| C.cs:114:22:114:36 | ... == ... | C.cs:114:33:114:36 | null | true | true |
 | C.cs:121:13:121:28 | ... == ... | C.cs:121:13:121:20 | access to local variable children | false | false |
 | C.cs:121:13:121:28 | ... == ... | C.cs:121:13:121:20 | access to local variable children | true | true |
+| C.cs:121:13:121:28 | ... == ... | C.cs:121:25:121:28 | null | false | false |
+| C.cs:121:13:121:28 | ... == ... | C.cs:121:25:121:28 | null | true | true |
 | C.cs:130:13:130:38 | ... == ... | C.cs:130:14:130:29 | ... = ... | false | false |
 | C.cs:130:13:130:38 | ... == ... | C.cs:130:14:130:29 | ... = ... | true | true |
+| C.cs:130:13:130:38 | ... == ... | C.cs:130:35:130:38 | null | false | false |
+| C.cs:130:13:130:38 | ... == ... | C.cs:130:35:130:38 | null | true | true |
 | C.cs:146:13:146:39 | ... != ... | C.cs:146:14:146:30 | ... = ... | false | true |
 | C.cs:146:13:146:39 | ... != ... | C.cs:146:14:146:30 | ... = ... | true | false |
+| C.cs:146:13:146:39 | ... != ... | C.cs:146:36:146:39 | null | false | true |
+| C.cs:146:13:146:39 | ... != ... | C.cs:146:36:146:39 | null | true | false |
 | C.cs:158:16:158:24 | ... != ... | C.cs:158:16:158:16 | access to local variable s | false | true |
 | C.cs:158:16:158:24 | ... != ... | C.cs:158:16:158:16 | access to local variable s | true | false |
+| C.cs:158:16:158:24 | ... != ... | C.cs:158:21:158:24 | null | false | true |
+| C.cs:158:16:158:24 | ... != ... | C.cs:158:21:158:24 | null | true | false |
 | C.cs:166:16:166:24 | ... != ... | C.cs:166:16:166:16 | access to local variable s | false | true |
 | C.cs:166:16:166:24 | ... != ... | C.cs:166:16:166:16 | access to local variable s | true | false |
+| C.cs:166:16:166:24 | ... != ... | C.cs:166:21:166:24 | null | false | true |
+| C.cs:166:16:166:24 | ... != ... | C.cs:166:21:166:24 | null | true | false |
 | C.cs:173:16:173:24 | ... != ... | C.cs:173:16:173:16 | access to local variable s | false | true |
 | C.cs:173:16:173:24 | ... != ... | C.cs:173:16:173:16 | access to local variable s | true | false |
+| C.cs:173:16:173:24 | ... != ... | C.cs:173:21:173:24 | null | false | true |
+| C.cs:173:16:173:24 | ... != ... | C.cs:173:21:173:24 | null | true | false |
 | C.cs:187:16:187:24 | ... != ... | C.cs:187:16:187:16 | access to local variable s | false | true |
 | C.cs:187:16:187:24 | ... != ... | C.cs:187:16:187:16 | access to local variable s | true | false |
 | C.cs:212:13:212:21 | ... != ... | C.cs:212:13:212:13 | access to local variable s | false | true |
@@ -74,6 +106,8 @@
 | C.cs:230:22:230:30 | ... != ... | C.cs:230:22:230:22 | access to local variable s | true | false |
 | C.cs:236:24:236:32 | ... == ... | C.cs:236:24:236:24 | access to local variable s | false | false |
 | C.cs:236:24:236:32 | ... == ... | C.cs:236:24:236:24 | access to local variable s | true | true |
+| C.cs:236:24:236:32 | ... == ... | C.cs:236:29:236:32 | null | false | false |
+| C.cs:236:24:236:32 | ... == ... | C.cs:236:29:236:32 | null | true | true |
 | D.cs:28:13:28:25 | ... != ... | D.cs:28:13:28:17 | access to parameter param | false | true |
 | D.cs:28:13:28:25 | ... != ... | D.cs:28:13:28:17 | access to parameter param | true | false |
 | D.cs:37:13:37:23 | ... is ... | D.cs:37:13:37:13 | access to parameter x | true | false |
@@ -122,6 +156,8 @@
 | D.cs:206:17:206:25 | ... == ... | D.cs:206:17:206:17 | access to local variable e | true | true |
 | D.cs:212:18:212:26 | ... == ... | D.cs:212:18:212:18 | access to local variable n | false | false |
 | D.cs:212:18:212:26 | ... == ... | D.cs:212:18:212:18 | access to local variable n | true | true |
+| D.cs:212:18:212:26 | ... == ... | D.cs:212:23:212:26 | null | false | false |
+| D.cs:212:18:212:26 | ... == ... | D.cs:212:23:212:26 | null | true | true |
 | D.cs:216:13:216:22 | ... == ... | D.cs:216:13:216:14 | access to local variable o3 | false | false |
 | D.cs:216:13:216:22 | ... == ... | D.cs:216:13:216:14 | access to local variable o3 | true | true |
 | D.cs:216:13:216:22 | ... == ... | D.cs:216:19:216:22 | null | true | false |
@@ -217,6 +253,16 @@
 | E.cs:336:17:336:17 | access to parameter s | E.cs:336:17:336:17 | access to parameter s | null | true |
 | E.cs:342:17:342:17 | access to parameter s | E.cs:342:17:342:17 | access to parameter s | non-null | false |
 | E.cs:342:17:342:17 | access to parameter s | E.cs:342:17:342:17 | access to parameter s | null | true |
+| E.cs:348:21:348:21 | access to parameter s | E.cs:348:21:348:21 | access to parameter s | non-null | false |
+| E.cs:348:21:348:21 | access to parameter s | E.cs:348:21:348:21 | access to parameter s | null | true |
+| E.cs:354:21:354:21 | access to parameter s | E.cs:354:21:354:21 | access to parameter s | non-null | false |
+| E.cs:354:21:354:21 | access to parameter s | E.cs:354:21:354:21 | access to parameter s | null | true |
+| E.cs:355:13:355:21 | dynamic call to operator != | E.cs:355:13:355:13 | access to local variable x | false | true |
+| E.cs:355:13:355:21 | dynamic call to operator != | E.cs:355:13:355:13 | access to local variable x | true | false |
+| E.cs:361:17:361:17 | access to parameter s | E.cs:361:17:361:17 | access to parameter s | non-null | false |
+| E.cs:361:17:361:17 | access to parameter s | E.cs:361:17:361:17 | access to parameter s | null | true |
+| E.cs:362:13:362:29 | ... != ... | E.cs:362:13:362:13 | access to local variable x | false | true |
+| E.cs:362:13:362:29 | ... != ... | E.cs:362:13:362:13 | access to local variable x | true | false |
 | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | Forwarding.cs:9:14:9:14 | access to local variable s | false | false |
 | Forwarding.cs:14:13:14:32 | call to method IsNotNullOrEmpty | Forwarding.cs:14:13:14:13 | access to local variable s | true | false |
 | Forwarding.cs:19:14:19:23 | call to method IsNull | Forwarding.cs:19:14:19:14 | access to local variable s | false | false |

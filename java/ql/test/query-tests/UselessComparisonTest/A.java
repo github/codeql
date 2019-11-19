@@ -121,6 +121,31 @@ public class A {
     }
   }
 
+  void overflowTests2(int[] a, boolean b) {
+    int newlen = b ? (a.length + 1) << 1 : (a.length >> 1) + a.length;
+    if (newlen < 0) overflow();
+  }
+
+  static final long VAL = 100L;
+
+  long overflowAwareIncrease(long x) {
+    if (x + VAL > x) {
+      return x + VAL;
+    } else {
+      overflow();
+      return Long.MAX_VALUE;
+    }
+  }
+
+  long overflowAwareDecrease(long x) {
+    if (x - VAL < x) {
+      return x - VAL;
+    } else {
+      overflow();
+      return Long.MIN_VALUE;
+    }
+  }
+
   void overflow() { }
 
   void unreachableCode() {

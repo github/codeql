@@ -10,7 +10,7 @@ import semmle.javascript.dataflow.Configuration
 /**
  * Holds if flow should be tracked through properties of `obj`.
  *
- * Flow is tracked through object literals, `module` and `module.exports` objects.
+ * Flow is tracked through `module` and `module.exports` objects.
  */
 predicate shouldTrackProperties(AbstractValue obj) {
   obj instanceof AbstractExportsObject or
@@ -98,53 +98,10 @@ private module CachedSteps {
   }
 
   /**
-   * Holds if the method invoked by `invoke` resolved to a member named `name` in `cls`
-   * or one of its super classes.
-   */
-  cached
-  predicate callResolvesToMember(DataFlow::InvokeNode invoke, DataFlow::ClassNode cls, string name) {
-    invoke = cls.getAnInstanceReference().getAMethodCall(name)
-    or
-    exists(DataFlow::ClassNode subclass |
-      callResolvesToMember(invoke, subclass, name) and
-      not exists(subclass.getAnInstanceMember(name)) and
-      cls = subclass.getADirectSuperClass()
-    )
-  }
-
-  /**
    * Holds if `invk` may invoke `f`.
    */
   cached
-  predicate calls(DataFlow::InvokeNode invk, Function f) {
-    f = invk.getACallee(0)
-    or
-    exists(DataFlow::ClassNode cls |
-      // Call to class member
-      exists(string name |
-        callResolvesToMember(invk, cls, name) and
-        f = cls.getInstanceMethod(name).getFunction()
-        or
-        invk = cls.getAClassReference().getAMethodCall(name) and
-        f = cls.getStaticMethod(name).getFunction()
-      )
-      or
-      // Call to constructor
-      invk = cls.getAClassReference().getAnInvocation() and
-      f = cls.getConstructor().getFunction()
-      or
-      // Super call to constructor
-      invk.asExpr().(SuperCall).getBinder() = cls.getConstructor().getFunction() and
-      f = cls.getADirectSuperClass().getConstructor().getFunction()
-    )
-    or
-    // Call from `foo.bar.baz()` to `foo.bar.baz = function()`
-    exists(string name |
-      GlobalAccessPath::isAssignedInUniqueFile(name) and
-      GlobalAccessPath::fromRhs(f.flow()) = name and
-      GlobalAccessPath::fromReference(invk.getCalleeNode()) = name
-    )
-  }
+  predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
 
   /**
    * Holds if `invk` may invoke `f` indirectly through the given `callback` argument.
@@ -152,7 +109,7 @@ private module CachedSteps {
    * This only holds for explicitly modeled partial calls.
    */
   private predicate partiallyCalls(
-    DataFlow::AdditionalPartialInvokeNode invk, DataFlow::AnalyzedNode callback, Function f
+    DataFlow::PartialInvokeNode invk, DataFlow::AnalyzedNode callback, Function f
   ) {
     invk.isPartialArgument(callback, _, _) and
     exists(AbstractFunction callee | callee = callback.getAValue() |
@@ -184,7 +141,7 @@ private module CachedSteps {
     )
     or
     exists(DataFlow::Node callback, int i, Parameter p |
-      invk.(DataFlow::AdditionalPartialInvokeNode).isPartialArgument(callback, arg, i) and
+      invk.(DataFlow::PartialInvokeNode).isPartialArgument(callback, arg, i) and
       partiallyCalls(invk, callback, f) and
       f.getParameter(i) = p and
       not p.isRestParameter() and
@@ -525,3 +482,4 @@ module PathSummary {
    */
   PathSummary return() { exists(FlowLabel lbl | result = MkPathSummary(true, false, lbl, lbl)) }
 }
+

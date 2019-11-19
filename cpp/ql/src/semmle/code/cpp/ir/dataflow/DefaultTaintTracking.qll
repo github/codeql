@@ -2,27 +2,20 @@ import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.IR
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
 
 /**
- * A predictable expression is one where an external user can predict
+ * A predictable instruction is one where an external user can predict
  * the value. For example, a literal in the source code is considered
  * predictable.
  */
-// TODO: Change to use Instruction instead of Expr. Naive attempt breaks
-// TaintedAllocationSize qltest.
-private predicate predictable(Expr expr) {
-  expr instanceof Literal
-  or
-  exists(BinaryOperation binop | binop = expr |
-    predictable(binop.getLeftOperand()) and predictable(binop.getRightOperand())
-  )
-  or
-  exists(UnaryOperation unop | unop = expr | predictable(unop.getOperand()))
-}
-
-// TODO: remove when `predictable` has an `Instruction` parameter instead of `Expr`.
 private predicate predictableInstruction(Instruction instr) {
-  predictable(DataFlow::instructionNode(instr).asExpr())
+  instr instanceof ConstantInstruction
+  or
+  instr instanceof StringConstantInstruction
+  or
+  // This could be a conversion on a string literal
+  predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
@@ -45,7 +38,7 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
 }
 
 private predicate accessesVariable(CopyInstruction copy, Variable var) {
-  exists(VariableAddressInstruction va | va.getVariable().getAST() = var |
+  exists(VariableAddressInstruction va | va.getASTVariable() = var |
     copy.(StoreInstruction).getDestinationAddress() = va
     or
     copy.(LoadInstruction).getSourceAddress() = va
@@ -90,10 +83,10 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
     predictableInstruction(i2.getAnOperand().getDef()) and
     i1 = i2.getAnOperand().getDef()
   )
-  // TODO: Check that we have flow from `a` to `a[i]`. It may work for constant
-  // `i` because there is flow through `predictable` `BinaryInstruction` and
-  // through `LoadInstruction`.
-  //
+  or
+  // This is part of the translation of `a[i]`, where we want taint to flow
+  // from `a`.
+  i2.(PointerAddInstruction).getLeft() = i1
   // TODO: Flow from argument to return of known functions: Port missing parts
   // of `returnArgument` to the `interfaces.Taint` and `interfaces.DataFlow`
   // libraries.
@@ -153,7 +146,8 @@ GlobalOrNamespaceVariable globalVarFromId(string id) {
 }
 
 Function resolveCall(Call call) {
-  // TODO: improve virtual dispatch. This will help in the test for
-  // `UncontrolledProcessOperation.ql`.
-  result = call.getTarget()
+  exists(CallInstruction callInstruction |
+    callInstruction.getAST() = call and
+    result = Dispatch::viableCallable(callInstruction)
+  )
 }

@@ -125,13 +125,13 @@ import com.semmle.ts.ast.InferTypeExpr;
 import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
-import com.semmle.ts.ast.IsTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
 import com.semmle.ts.ast.NonNullAssertion;
 import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
+import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
@@ -516,8 +516,95 @@ public class ASTExtractor {
       String valueString = nd.getStringValue();
 
       trapwriter.addTuple("literals", valueString, source, key);
-      if (nd.isRegExp()) regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), nd);
+      if (nd.isRegExp()) {
+        OffsetTranslation offsets = new OffsetTranslation();
+        offsets.set(0, 1); // skip the initial '/'
+        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), offsets, nd, false);
+      } else if (nd.isStringLiteral() && !c.isInsideType() && nd.getRaw().length() < 1000) {
+        regexpExtractor.extract(valueString, makeStringLiteralOffsets(nd.getRaw()), nd, true);
+      }
       return key;
+    }
+
+    private boolean isOctalDigit(char ch) {
+      return '0' <= ch && ch <= '7';
+    }
+
+    /**
+     * Builds a translation from offsets in a string value back to its original raw literal text
+     * (including quotes).
+     *
+     * <p>This is not a 1:1 mapping since escape sequences take up more characters in the raw
+     * literal than in the resulting string value. This mapping includes the surrounding quotes.
+     *
+     * <p>For example: for the raw literal value <code>'x\.y'</code> (quotes included), the <code>y
+     * </code> at index 2 in <code>x.y</code> maps to index 4 in the raw literal.
+     */
+    public OffsetTranslation makeStringLiteralOffsets(String rawLiteral) {
+      OffsetTranslation offsets = new OffsetTranslation();
+      offsets.set(0, 1); // Skip the initial quote
+      // Invariant: raw character at 'pos' corresponds to decoded character at 'pos - delta'
+      int pos = 1;
+      int delta = 1;
+      while (pos < rawLiteral.length() - 1) {
+        if (rawLiteral.charAt(pos) != '\\') {
+          ++pos;
+          continue;
+        }
+        final int length; // Length of the escape sequence, including slash.
+        int outputLength = 1; // Number characters the sequence expands to.
+        char ch = rawLiteral.charAt(pos + 1);
+        if ('0' <= ch && ch <= '7') {
+          // Octal escape: \N, \NN, or \NNN
+          int firstDigit = pos + 1;
+          int end = firstDigit;
+          int maxEnd = Math.min(firstDigit + (ch <= '3' ? 3 : 2), rawLiteral.length());
+          while (end < maxEnd && isOctalDigit(rawLiteral.charAt(end))) {
+            ++end;
+          }
+          length = end - pos;
+        } else if (ch == 'x') {
+          // Hex escape: \xNN
+          length = 4;
+        } else if (ch == 'u' && pos + 2 < rawLiteral.length()) {
+          if (rawLiteral.charAt(pos + 2) == '{') {
+            // Variable-length unicode escape: \U{N...}
+            // Scan for the ending '}'
+            int firstDigit = pos + 3;
+            int end = firstDigit;
+            int leadingZeros = 0;
+            while (end < rawLiteral.length() && rawLiteral.charAt(end) == '0') {
+              ++end;
+              ++leadingZeros;
+            }
+            while (end < rawLiteral.length() && rawLiteral.charAt(end) != '}') {
+              ++end;
+            }
+            int numDigits = end - firstDigit;
+            if (numDigits - leadingZeros > 4) {
+              outputLength = 2; // Encoded as a surrogate pair
+            }
+            ++end; // Include '}' character
+            length = end - pos;
+          } else {
+            // Fixed-length unicode escape: \UNNNN
+            length = 6;
+          }
+        } else {
+          // Simple escape: \n or similar.
+          length = 2;
+        }
+        int end = pos + length;
+        if (end > rawLiteral.length()) {
+          end = rawLiteral.length();
+        }
+        int outputPos = pos - delta;
+        // Map the next character to the adjusted offset.
+        offsets.set(outputPos + outputLength, end);
+        delta += length - outputLength;
+        pos = end;
+      }
+      return offsets;
     }
 
     @Override
@@ -762,6 +849,7 @@ public class ASTExtractor {
         trapwriter.addTuple("hasDeclareKeyword", key);
       }
       extractFunction(nd, key);
+      emitStaticType(nd, key);
       return key;
     }
 
@@ -833,7 +921,13 @@ public class ASTExtractor {
       extractParameterDefaultsAndTypes(nd, key, i);
 
       extractFunctionAttributes(nd, key);
+
+      // Extract associated symbol and signature
       emitNodeSymbol(nd, key);
+      if (nd.getDeclaredSignatureId() != -1) {
+        Label signatureKey = trapwriter.globalID("signature;" + nd.getDeclaredSignatureId());
+        trapwriter.addTuple("declared_function_signature", key, signatureKey);
+      }
 
       boolean oldIsStrict = isStrict;
       isStrict = bodyIsStrict;
@@ -1370,9 +1464,8 @@ public class ASTExtractor {
       trapwriter.addTuple("properties", methkey, c.parent, c.childIndex, kind, tostring);
       locationManager.emitNodeLocation(nd, methkey);
       visitAll(nd.getDecorators(), methkey, IdContext.varBind, -1, -1);
-      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
 
-      // the initialiser expression of an instance field is evaluated as part of
+      // the name and initialiser expression of an instance field is evaluated as part of
       // the constructor, so we adjust our syntactic context to reflect this
       MethodDefinition ctor = null;
       if (nd instanceof FieldDefinition && !nd.isStatic() && !ctors.isEmpty()) ctor = ctors.peek();
@@ -1381,6 +1474,7 @@ public class ASTExtractor {
         constructorKey = trapwriter.localID(ctor.getValue());
         contextManager.enterContainer(constructorKey);
       }
+      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
       visit(nd.getValue(), methkey, 1, c.idcontext);
       if (ctor != null) contextManager.leaveContainer();
 
@@ -1401,6 +1495,10 @@ public class ASTExtractor {
         } else {
           visit(field.getTypeAnnotation(), methkey, 2, IdContext.typeBind);
         }
+      }
+
+      if (nd.hasDeclareKeyword()) {
+        trapwriter.addTuple("hasDeclareKeyword", methkey);
       }
 
       return methkey;
@@ -1700,10 +1798,13 @@ public class ASTExtractor {
     }
 
     @Override
-    public Label visit(IsTypeExpr nd, Context c) {
+    public Label visit(PredicateTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getLeft(), key, 0, IdContext.varInTypeBind);
-      visit(nd.getRight(), key, 1, IdContext.typeBind);
+      visit(nd.getExpression(), key, 0, IdContext.varInTypeBind);
+      visit(nd.getTypeExpr(), key, 1, IdContext.typeBind);
+      if (nd.hasAssertsKeyword()) {
+        trapwriter.addTuple("hasAssertsKeyword", key);
+      }
       return key;
     }
 

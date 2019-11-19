@@ -2,6 +2,8 @@ import semmle.code.cpp.exprs.Expr
 
 /**
  * A C/C++ literal.
+ *
+ * The is the QL root class for all literals.
  */
 class Literal extends Expr, @literal {
   /** Gets a textual representation of this literal. */
@@ -26,9 +28,7 @@ class Literal extends Expr, @literal {
  * For example:
  * ```
  * void *label_ptr = &&myLabel; // &&myLabel is a LabelLiteral
- *
  * goto *label_ptr; // this is a ComputedGotoStmt
- *
  * myLabel: // this is a LabelStmt
  * ```
  */
@@ -84,7 +84,11 @@ abstract class TextLiteral extends Literal {
 }
 
 /**
- * A character literal, for example `'a'` or `L'a'`.
+ * A character literal.  For example:
+ * ```
+ * char c1 = 'a';
+ * wchar_t c2 = L'b';
+ * ```
  */
 class CharLiteral extends TextLiteral {
   CharLiteral() { this.getValueText().regexpMatch("(?s)\\s*L?'.*") }
@@ -98,7 +102,11 @@ class CharLiteral extends TextLiteral {
 }
 
 /**
- * A string literal, for example `"abcdef"` or `L"123456"`.
+ * A string literal. For example:
+ * ```
+ * const char *s1 = "abcdef";
+ * const wchar_t *s2 = L"123456";
+ * ```
  */
 class StringLiteral extends TextLiteral {
   StringLiteral() {
@@ -111,7 +119,11 @@ class StringLiteral extends TextLiteral {
 }
 
 /**
- * An octal literal.
+ * An octal literal. For example:
+ * ```
+ * char esc = 033;
+ * ```
+ * Octal literals must always start with the digit `0`.
  */
 class OctalLiteral extends Literal {
   OctalLiteral() { super.getValueText().regexpMatch("\\s*0[0-7]+[uUlL]*\\s*") }
@@ -121,6 +133,9 @@ class OctalLiteral extends Literal {
 
 /**
  * A hexadecimal literal.
+ * ```
+ * unsigned int32_t minus2 = 0xfffffffe;
+ * ```
  */
 class HexLiteral extends Literal {
   HexLiteral() { super.getValueText().regexpMatch("\\s*0[xX][0-9a-fA-F]+[uUlL]*\\s*") }
@@ -130,9 +145,10 @@ class HexLiteral extends Literal {
 
 /**
  * A C/C++ aggregate literal.
+ *
+ * For example:
  */
 class AggregateLiteral extends Expr, @aggregateliteral {
-  // if this is turned into a Literal we need to change mayBeImpure
   override string getCanonicalQLClass() { result = "AggregateLiteral" }
 
   /**
@@ -145,12 +161,20 @@ class AggregateLiteral extends Expr, @aggregateliteral {
     result = this.(ClassAggregateLiteral).getFieldExpr(f)
   }
 
+  override predicate mayBeImpure() { this.getAChild().mayBeImpure() }
+
+  override predicate mayBeGloballyImpure() { this.getAChild().mayBeGloballyImpure() }
+
   /** Gets a textual representation of this aggregate literal. */
   override string toString() { result = "{...}" }
 }
 
 /**
- * A C/C++ aggregate literal that initializes a class, struct, or union
+ * A C/C++ aggregate literal that initializes a `class`, `struct`, or `union`.
+ * For example:
+ * ```
+ * S s = { arg1, arg2, { arg3, arg4 }, arg5 };
+ * ```
  */
 class ClassAggregateLiteral extends AggregateLiteral {
   Class classType;
@@ -268,6 +292,9 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
 
 /**
  * A C/C++ aggregate literal that initializes an array
+ * ```
+ * S s[4] = { s_1, s_2, s_3, s_n };
+ * ```
  */
 class ArrayAggregateLiteral extends ArrayOrVectorAggregateLiteral {
   ArrayType arrayType;
@@ -283,6 +310,15 @@ class ArrayAggregateLiteral extends ArrayOrVectorAggregateLiteral {
 
 /**
  * A C/C++ aggregate literal that initializes a GNU vector type.
+ *
+ * Braced initializer lists are used, similarly to what is done
+ * for arrays.
+ * ```
+ * typedef int v4si __attribute__ (( vector_size(4*sizeof(int)) ));
+ * v4si v = (v4si){ 1, 2, 3, 4 };
+ * typedef float float4 __attribute__((ext_vector_type(4)));
+ * float4 vf = {1.0f, 2.0f, 3.0f, 4.0f};
+ * ```
  */
 class VectorAggregateLiteral extends ArrayOrVectorAggregateLiteral {
   GNUVectorType vectorType;

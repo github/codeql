@@ -344,15 +344,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   }
 
   /**
-   * Gets the `i`th template argument used to instantiate this function from a
-   * function template. When called on a function template, this will return the
-   * `i`th template parameter.
-   */
-  override Type getTemplateArgument(int index) {
-    function_template_argument(underlyingElement(this), index, unresolveElement(result))
-  }
-
-  /**
    * Holds if this function is defined in several files. This is illegal in
    * C (though possible in some C++ compilers), and likely indicates that
    * several functions that are not linked together have been compiled. An
@@ -434,7 +425,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       // ... and likewise for destructors.
       this.(Destructor).getADestruction().mayBeGloballyImpure()
     else
-      not exists(string name | this.hasGlobalName(name) |
+      not exists(string name | this.hasGlobalOrStdName(name) |
         // Unless it's a function that we know is side-effect-free, it may
         // have side-effects.
         name = "strcmp" or

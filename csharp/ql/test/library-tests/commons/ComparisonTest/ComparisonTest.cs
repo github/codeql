@@ -106,4 +106,16 @@ class ComparisonTest
             b = x.CompareTo(y).CompareTo(0).CompareTo(1) == 0;
         }
     }
+
+    void DynamicComparisons(object o1, object o2)
+    {
+        dynamic d1 = o1;
+        dynamic d2 = o2;
+        var b = d1 == d2;
+        b = d1 != d2;
+        b = d1 > d2;
+        b = d1 < d2;
+        b = d1 >= d2;
+        b = d1 <= d2;
+    }
 }

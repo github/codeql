@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Diagnostics;
 using System.IO;
 using System.Linq;
 using Semmle.Extraction.CSharp.Populators;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Semmle.Util.Logging;
@@ -40,27 +36,37 @@ namespace Semmle.Extraction.CSharp
         CSharpCompilation compilation;
         Layout layout;
 
+        private bool init;
         /// <summary>
-        /// Initialize the analyser.
+        /// Start initialization of the analyser.
+        /// </summary>
+        /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
+        /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
+        public bool BeginInitialize(string[] roslynArgs)
+        {
+            return init = LogRoslynArgs(roslynArgs, Extraction.Extractor.Version);
+        }
+
+        /// <summary>
+        /// End initialization of the analyser.
         /// </summary>
         /// <param name="commandLineArguments">Arguments passed to csc.</param>
-        /// <param name="compilationIn">The Roslyn compilation.</param>
         /// <param name="options">Extractor options.</param>
-        /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
-        public void Initialize(
-            CSharpCommandLineArguments commandLineArguments,
-            CSharpCompilation compilationIn,
-            Options options,
-            string[] roslynArgs)
+        /// <param name="compilation">The Roslyn compilation.</param>
+        /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
+        public void EndInitialize(
+           CSharpCommandLineArguments commandLineArguments,
+           Options options,
+           CSharpCompilation compilation)
         {
-            compilation = compilationIn;
-
+            if (!init)
+                throw new InternalError("EndInitialize called without BeginInitialize returning true");
             layout = new Layout();
             this.options = options;
-
+            this.compilation = compilation;
             extractor = new Extraction.Extractor(false, GetOutputName(compilation, commandLineArguments), Logger);
+            LogDiagnostics();
 
-            LogDiagnostics(roslynArgs);
             SetReferencePaths();
 
             CompilationErrors += FilteredDiagnostics.Count();
@@ -110,7 +116,7 @@ namespace Semmle.Extraction.CSharp
             layout = new Layout();
             extractor = new Extraction.Extractor(true, null, Logger);
             this.options = options;
-            LogDiagnostics(null);
+            LogExtractorInfo(Extraction.Extractor.Version);
             SetReferencePaths();
         }
 
@@ -205,11 +211,6 @@ namespace Semmle.Extraction.CSharp
                 File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
         }
 
-        bool FileIsCached(string src, string dest)
-        {
-            return options.Cache && FileIsUpToDate(src, dest);
-        }
-
         /// <summary>
         /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
         /// </summary>
@@ -241,7 +242,7 @@ namespace Semmle.Extraction.CSharp
         }
 
         public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
- 
+
         /// <summary>
         ///     Extract an assembly to a new trap file.
         ///     If the trap file exists, skip extraction to avoid duplicating
@@ -259,7 +260,7 @@ namespace Semmle.Extraction.CSharp
                 var projectLayout = layout.LookupProjectOrDefault(assemblyPath);
                 using (var trapWriter = projectLayout.CreateTrapWriter(Logger, assemblyPath, true, options.TrapCompression))
                 {
-                    var skipExtraction = FileIsCached(assemblyPath, trapWriter.TrapFile);
+                    var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
 
                     if (!skipExtraction)
                     {
@@ -430,29 +431,73 @@ namespace Semmle.Extraction.CSharp
         public int TotalErrors => CompilationErrors + ExtractorErrors;
 
         /// <summary>
+        /// Logs information about the extractor.
+        /// </summary>
+        public void LogExtractorInfo(string extractorVersion)
+        {
+            Logger.Log(Severity.Info, "  Extractor: {0}", Environment.GetCommandLineArgs().First());
+            Logger.Log(Severity.Info, "  Extractor version: {0}", extractorVersion);
+            Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
+        }
+
+        /// <summary>
+        /// Logs information about the extractor, as well as the arguments to Roslyn.
+        /// </summary>
+        /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
+        /// <returns>A Boolean indicating whether the same arguments have been logged previously.</returns>
+        public bool LogRoslynArgs(string[] roslynArgs, string extractorVersion)
+        {
+            LogExtractorInfo(extractorVersion);
+            Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
+
+            var tempFile = Extractor.GetCSharpArgsLogPath(Path.GetRandomFileName());
+
+            bool argsWritten;
+            using (var streamWriter = new StreamWriter(new FileStream(tempFile, FileMode.Append, FileAccess.Write)))
+            {
+                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs.Where(arg => !arg.StartsWith('@')))}");
+                argsWritten = roslynArgs.WriteCommandLine(streamWriter);
+            }
+
+            var hash = FileUtils.ComputeFileHash(tempFile);
+            var argsFile = Extractor.GetCSharpArgsLogPath(hash);
+
+            if (argsWritten)
+                Logger.Log(Severity.Info, $"  Arguments have been written to {argsFile}");
+
+            if (File.Exists(argsFile))
+            {
+                try
+                {
+                    File.Delete(tempFile);
+                }
+                catch (IOException e)
+                {
+                    Logger.Log(Severity.Warning, $"  Failed to remove {tempFile}: {e.Message}");
+                }
+                return false;
+            }
+
+            try
+            {
+                File.Move(tempFile, argsFile);
+            }
+            catch (IOException e)
+            {
+                Logger.Log(Severity.Warning, $"  Failed to move {tempFile} to {argsFile}: {e.Message}");
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
         /// Logs detailed information about this invocation,
         /// in the event that errors were detected.
         /// </summary>
-        /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
-        public void LogDiagnostics(string[] roslynArgs)
+        /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
+        public void LogDiagnostics()
         {
-            Logger.Log(Severity.Info, "  Extractor: {0}", Environment.GetCommandLineArgs().First());
-            if (extractor != null)
-                Logger.Log(Severity.Info, "  Extractor version: {0}", extractor.Version);
-
-            Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
-
-            if (roslynArgs != null)
-            {
-                Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
-
-                // Create a new file in the log folder.
-                var argsFile = Path.Combine(Extractor.GetCSharpLogDirectory(), $"csharp.{Path.GetRandomFileName()}.txt");
-
-                if (roslynArgs.ArchiveCommandLine(argsFile))
-                    Logger.Log(Severity.Info, $"  Arguments have been written to {argsFile}");
-            }
-
             foreach (var error in FilteredDiagnostics)
             {
                 Logger.Log(Severity.Error, "  Compilation error: {0}", error);

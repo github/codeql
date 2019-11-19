@@ -1,5 +1,16 @@
 package com.semmle.js.extractor;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.trapcache.CachingTrapWriter;
 import com.semmle.js.extractor.trapcache.ITrapCache;
@@ -10,15 +21,6 @@ import com.semmle.util.files.FileUtil;
 import com.semmle.util.io.WholeIO;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * The file extractor extracts a single file and handles source archive population and TRAP caching;
@@ -154,6 +156,9 @@ public class FileExtractor {
           byte[] bytes = new byte[fileHeaderSize];
           int length = fis.read(bytes);
 
+          if (length == -1)
+            return false;
+
           // Avoid invalid or unprintable UTF-8 files.
           if (config.getDefaultEncoding().equals("UTF-8") && hasUnprintableUtf8(bytes, length)) {
             return true;
@@ -166,6 +171,9 @@ public class FileExtractor {
           if (hasUnrecognizedShebang(bytes, length)) {
             return true;
           }
+
+          // Avoid Touchstone files
+          if (isTouchstone(bytes, length)) return true;
 
           return false;
         } catch (IOException e) {
@@ -196,6 +204,11 @@ public class FileExtractor {
           return true;
         }
         return false;
+      }
+
+      private boolean isTouchstone(byte[] bytes, int length) {
+        String s = new String(bytes, 0, length, StandardCharsets.US_ASCII);
+        return s.startsWith("! TOUCHSTONE file ") || s.startsWith("[Version] 2.0");
       }
 
       /**

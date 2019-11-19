@@ -67,9 +67,9 @@ Complete text of the analysis (nothing left out!):
 
 .. note::
  
-  Once the mission critical bug was discovered on Curiosity, JPL contacted Semmle for help discovering whether variants of the problem might exist elsewhere in the Curiosity control software.  In 20 minutes, research engineers from Semmle produced a QL query and shared it with the JPL team. It finds all functions that are passed an array as an argument whose size is smaller than expected.
+  Once the mission critical bug was discovered on Curiosity, JPL contacted Semmle for help discovering whether variants of the problem might exist elsewhere in the Curiosity control software.  In 20 minutes, research engineers from Semmle produced a CodeQL query and shared it with the JPL team. It finds all functions that are passed an array as an argument whose size is smaller than expected.
 
-  (The goal here is not to fully understand the QL, but to illustrate the power of the language and its standard libraries.)
+  (The goal here is not to fully understand the query, but to illustrate the power of the language and its standard libraries.)
 
 
 Find all instances!
@@ -105,33 +105,33 @@ Analysis overview
 
   Semmle’s analysis works by extracting a queryable database from your project. For compiled languages, Semmle’s tools observe an ordinary build of the source code. Each time a compiler is invoked to process a source file, a copy of that file is made, and all relevant information about the source code (syntactic data about the abstract syntax tree, semantic data like name binding and type information, data on the operation of the C preprocessor, etc.) is collected. For interpreted languages, the extractor gathers similar information by running directly on the source code. Multi-language code bases are analyzed one language at a time.
 
-  Once the extraction finishes, all this information is collected into a single `snapshot database <https://help.semmle.com/QL/learn-ql/ql/snapshot.html>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the snapshot so analysis results can be displayed at the correct location in the code. The database schema is (source) language specific.
+  Once the extraction finishes, all this information is collected into a single `CodeQL database <https://help.semmle.com/QL/learn-ql/database.html>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the CodeQL database so analysis results can be displayed at the correct location in the code. The database schema is (source) language specific.
 
-  Queries are written in `QL <https://semmle.com/ql>`__ and usually depend on one or more of the `standard QL libraries <https://github.com/semmle/ql>`__ (and of course you can write your own custom libraries). They are compiled into an efficiently executable format by the QL compiler and then run on a snapshot database by the QL evaluator, either on a remote worker machine or locally on a developer’s machine.
+  Queries are written in `QL <https://semmle.com/ql>`__ and usually depend on one or more of the `standard CodeQL libraries <https://github.com/semmle/ql>`__ (and of course you can write your own custom libraries). They are compiled into an efficiently executable format by the QL compiler and then run on a CodeQL database by the QL evaluator, either on a remote worker machine or locally on a developer’s machine.
 
   Query results can be interpreted and presented in a variety of ways, including displaying them in an `IDE plugin <https://lgtm.com/help/lgtm/running-queries-ide>`__ such as QL for Eclipse, or in a web dashboard as on `LGTM <https://lgtm.com/help/lgtm/about-lgtm>`__.
 
 Introducing QL
 ==============
 
-QL is the query language running all Semmle analysis.
+QL is the query language running all CodeQL analysis.
 
 QL is:
 
 - a **logic** language based on first-order logic
 - a **declarative** language without side effects
 - an **object-oriented** language
-- a **query** language working on a read-only snapshot database
+- a **query** language working on a read-only CodeQL database
 - equipped with rich standard libraries **for program analysis**
 
 .. note::
 
-  QL is the high-level, object-oriented logic language that underpins all of Semmle’s libraries and analyses. You can learn lots more about QL by visiting `Introduction to the QL language <https://help.semmle.com/QL/learn-ql/ql/introduction-to-ql.html>`__ and `About QL <https://help.semmle.com/QL/learn-ql/ql/about-ql.html>`__.
+  QL is the high-level, object-oriented logic language that underpins all CodeQL libraries and analyses. You can learn lots more about QL by visiting `Introduction to the QL language <https://help.semmle.com/QL/learn-ql/ql/introduction-to-ql.html>`__ and `About QL <https://help.semmle.com/QL/learn-ql/ql/about-ql.html>`__.
   The key features of QL are:
   
   - All common logic connectives are available, including quantifiers like ``exist``, which can also introduce new variables. 
   - The language is declarative–the user focuses on stating what they would like to find, and leaves the details of how to evaluate the query to the engine. 
-  - The object-oriented layer allows Semmle to distribute rich standard libraries for program analysis. These model the common AST node types, control flow and name lookup, and define further layers on top–for example control flow or data flow analysis. The `standard QL libraries and queries <https://github.com/semmle/ql>`__ ship as source and can be inspected by the user, and new abstractions are readily defined.
+  - The object-oriented layer allows Semmle to distribute rich standard libraries for program analysis. These model the common AST node types, control flow and name lookup, and define further layers on top–for example control flow or data flow analysis. The `standard CodeQL libraries and queries <https://github.com/semmle/ql>`__ ship as source and can be inspected by the user, and new abstractions are readily defined.
   - The database generated by Semmle’s tools is treated as read-only; queries cannot insert new data into it, though they can inspect its contents in various ways.
 
-  You can start writing QL and running QL queries on open source projects in the `query console <https://lgtm.com/query>`__ on LGTM.com. You can also download snapshots from LGTM.com to query locally, by `running queries in your IDE <https://lgtm.com/help/lgtm/running-queries-ide>`__ equipped with a QL plugin or extension.
+  You can start writing running queries on open source projects in the `query console <https://lgtm.com/query>`__ on LGTM.com. You can also download CodeQL databases from LGTM.com to query locally, by `running queries in your IDE <https://lgtm.com/help/lgtm/running-queries-ide>`__.

@@ -106,19 +106,25 @@ enclosingStmt(#20030,#20022)
 exprContainers(#20030,#20001)
 literals("Hello ES6","""Hello ES6""",#20030)
 #20031=*
-entry_cfg_node(#20031,#20001)
-#20032=@"loc,{#10000},1,1,1,0"
-locations_default(#20032,#10000,1,1,1,0)
+regexpterm(#20031,14,#20030,0,"Hello ES6")
+#20032=@"loc,{#10000},1,14,1,22"
+locations_default(#20032,#10000,1,14,1,22)
 hasLocation(#20031,#20032)
+regexpConstValue(#20031,"Hello ES6")
 #20033=*
-exit_cfg_node(#20033,#20001)
-hasLocation(#20033,#20019)
+entry_cfg_node(#20033,#20001)
+#20034=@"loc,{#10000},1,1,1,0"
+locations_default(#20034,#10000,1,1,1,0)
+hasLocation(#20033,#20034)
+#20035=*
+exit_cfg_node(#20035,#20001)
+hasLocation(#20035,#20019)
 successor(#20022,#20027)
 successor(#20030,#20023)
 successor(#20029,#20025)
 successor(#20027,#20029)
 successor(#20025,#20030)
-successor(#20023,#20033)
-successor(#20031,#20022)
+successor(#20023,#20035)
+successor(#20033,#20022)
 numlines(#10000,1,1,0)
 filetype(#10000,"javascript")

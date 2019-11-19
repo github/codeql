@@ -63,3 +63,11 @@ app3.get('/:path', expensiveHandler1); // OK
 
 express().get('/:path', function(req, res) { verifyUser(req); });  // NOT OK
 express().get('/:path', RateLimit(), function(req, res) { verifyUser(req); });  // OK
+
+// rate limiting using rate-limiter-flexible
+const { RateLimiterRedis } = require('rate-limiter-flexible');
+const rateLimiter = new RateLimiterRedis();
+const rateLimiterMiddleware = (req, res, next) => {
+  rateLimiter.consume(req.ip).then(next).catch(res.status(429).send('rate limited'));
+};
+express().get('/:path', rateLimiterMiddleware, expensiveHandler1);

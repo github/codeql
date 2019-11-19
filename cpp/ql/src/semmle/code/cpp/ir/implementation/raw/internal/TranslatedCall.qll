@@ -1,10 +1,12 @@
 private import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
+private import TranslatedFunction
 
 /**
  * The IR translation of a call to a function. The call may be from an actual
@@ -22,6 +24,8 @@ abstract class TranslatedCall extends TranslatedExpr {
     id = -1 and result = getCallTarget()
     or
     result = getArgument(id)
+    or
+    id = getNumberOfArguments() and result = getSideEffects()
   }
 
   final override Instruction getFirstInstruction() {
@@ -30,13 +34,10 @@ abstract class TranslatedCall extends TranslatedExpr {
     else result = getFirstCallTargetInstruction()
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = CallTag() and
     opcode instanceof Opcode::Call and
-    resultType = getCallResultType() and
-    isGLValue = false
+    resultType = getTypeForPRValue(getCallResultType())
     or
     hasSideEffect() and
     tag = CallSideEffectTag() and
@@ -44,13 +45,12 @@ abstract class TranslatedCall extends TranslatedExpr {
       if hasWriteSideEffect()
       then (
         opcode instanceof Opcode::CallSideEffect and
-        resultType instanceof UnknownType
+        resultType = getUnknownType()
       ) else (
         opcode instanceof Opcode::CallReadSideEffect and
-        resultType instanceof VoidType
+        resultType = getVoidType()
       )
-    ) and
-    isGLValue = false
+    )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -66,6 +66,9 @@ abstract class TranslatedCall extends TranslatedExpr {
       then result = getArgument(argIndex + 1).getFirstInstruction()
       else result = getInstruction(CallTag())
     )
+    or
+    child = getSideEffects() and
+    result = getParent().getChildSuccessor(this)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -75,12 +78,19 @@ abstract class TranslatedCall extends TranslatedExpr {
         tag = CallTag() and
         if hasSideEffect()
         then result = getInstruction(CallSideEffectTag())
-        else result = getParent().getChildSuccessor(this)
+        else
+          if hasPreciseSideEffect()
+          then result = getSideEffects().getFirstInstruction()
+          else result = getParent().getChildSuccessor(this)
       )
       or
-      hasSideEffect() and
-      tag = CallSideEffectTag() and
-      result = getParent().getChildSuccessor(this)
+      (
+        hasSideEffect() and
+        tag = CallSideEffectTag() and
+        if hasPreciseSideEffect()
+        then result = getSideEffects().getFirstInstruction()
+        else result = getParent().getChildSuccessor(this)
+      )
     )
   }
 
@@ -105,11 +115,11 @@ abstract class TranslatedCall extends TranslatedExpr {
     result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
   }
 
-  final override Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     tag = CallSideEffectTag() and
     hasSideEffect() and
     operandTag instanceof SideEffectOperandTag and
-    result instanceof UnknownType
+    result = getUnknownType()
   }
 
   final override Instruction getResult() { result = getInstruction(CallTag()) }
@@ -165,6 +175,8 @@ abstract class TranslatedCall extends TranslatedExpr {
    */
   abstract TranslatedExpr getArgument(int index);
 
+  abstract int getNumberOfArguments();
+
   /**
    * If there are any arguments, gets the first instruction of the first
    * argument. Otherwise, returns the call instruction.
@@ -191,6 +203,10 @@ abstract class TranslatedCall extends TranslatedExpr {
     tag = CallSideEffectTag() and
     result = getResult()
   }
+
+  predicate hasPreciseSideEffect() { exists(getSideEffects()) }
+
+  TranslatedSideEffects getSideEffects() { result.getCall() = expr }
 }
 
 /**
@@ -205,18 +221,12 @@ abstract class TranslatedDirectCall extends TranslatedCall {
 
   final override Instruction getCallTargetResult() { result = getInstruction(CallTargetTag()) }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  ) {
-    TranslatedCall.super.hasInstruction(opcode, tag, resultType, isGLValue)
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    TranslatedCall.super.hasInstruction(opcode, tag, resultType)
     or
     tag = CallTargetTag() and
     opcode instanceof Opcode::FunctionAddress and
-    // The database does not contain a `FunctionType` for a function unless
-    // its address was taken, so we'll just use glval<Unknown> instead of
-    // glval<FunctionType>.
-    resultType instanceof UnknownType and
-    isGLValue = true
+    resultType = getFunctionGLValueType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -234,7 +244,7 @@ abstract class TranslatedDirectCall extends TranslatedCall {
 abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedCall {
   override Call expr;
 
-  final override Type getCallResultType() { result = getResultType() }
+  final override Type getCallResultType() { result = expr.getType() }
 
   final override predicate hasArguments() { exists(expr.getArgument(0)) }
 
@@ -245,6 +255,8 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   final override TranslatedExpr getArgument(int index) {
     result = getTranslatedExpr(expr.getArgument(index).getFullyConverted())
   }
+
+  final override int getNumberOfArguments() { result = expr.getNumberOfArguments() }
 }
 
 /**
@@ -269,11 +281,11 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   }
 
   override predicate hasReadSideEffect() {
-    not expr.getTarget().(SideEffectFunction).neverReadsMemory()
+    not expr.getTarget().(SideEffectFunction).hasOnlySpecificReadSideEffects()
   }
 
   override predicate hasWriteSideEffect() {
-    not expr.getTarget().(SideEffectFunction).neverWritesMemory()
+    not expr.getTarget().(SideEffectFunction).hasOnlySpecificWriteSideEffects()
   }
 }
 
@@ -294,4 +306,276 @@ class TranslatedStructorCall extends TranslatedFunctionCall {
   }
 
   override predicate hasQualifier() { any() }
+}
+
+class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
+  Call expr;
+
+  TranslatedSideEffects() { this = TTranslatedSideEffects(expr) }
+
+  override string toString() { result = "(side effects  for " + expr.toString() + ")" }
+
+  override Locatable getAST() { result = expr }
+
+  Call getCall() { result = expr }
+
+  override TranslatedElement getChild(int i) {
+    result = rank[i + 1](TranslatedSideEffect tse, int isWrite, int index |
+        (
+          tse.getCall() = getCall() and
+          tse.getArgumentIndex() = index and
+          if tse.isWrite() then isWrite = 1 else isWrite = 0
+        )
+      |
+        tse order by isWrite, index
+      )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement te) {
+    exists(int i |
+      getChild(i) = te and
+      if exists(getChild(i + 1))
+      then result = getChild(i + 1).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    )
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) { none() }
+
+  override Instruction getFirstInstruction() { result = getChild(0).getFirstInstruction() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+    none()
+  }
+
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getTranslatedExpr(expr).getInstruction(CallTag())
+  }
+
+  /**
+   * Gets the `TranslatedFunction` containing this expression.
+   */
+  final TranslatedFunction getEnclosingFunction() {
+    result = getTranslatedFunction(expr.getEnclosingFunction())
+  }
+
+  /**
+   * Gets the `Function` containing this expression.
+   */
+  override Function getFunction() { result = expr.getEnclosingFunction() }
+}
+
+class TranslatedStructorCallSideEffects extends TranslatedSideEffects {
+  TranslatedStructorCallSideEffects() { getParent().(TranslatedStructorCall).hasQualifier() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType t) {
+    opcode instanceof Opcode::IndirectMayWriteSideEffect and
+    tag instanceof OnlyInstructionTag and
+    t = getTypeForPRValue(expr.getTarget().getDeclaringType())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    (
+      if exists(getChild(0))
+      then result = getChild(0).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    ) and
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof AddressOperandTag and
+    result = getParent().(TranslatedStructorCall).getQualifierResult()
+  }
+
+  final override int getInstructionIndex(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = -1
+  }
+}
+
+class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEffect {
+  Call call;
+  Expr arg;
+  int index;
+  boolean write;
+
+  TranslatedSideEffect() { this = TTranslatedArgumentSideEffect(call, arg, index, write) }
+
+  override Locatable getAST() { result = arg }
+
+  Expr getExpr() { result = arg }
+
+  Call getCall() { result = call }
+
+  int getArgumentIndex() { result = index }
+
+  predicate isWrite() { write = true }
+
+  override string toString() {
+    write = true and
+    result = "(write side effect for " + arg.toString() + ")"
+    or
+    write = false and
+    result = "(read side effect for " + arg.toString() + ")"
+  }
+
+  override TranslatedElement getChild(int n) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
+    isWrite() and
+    hasSpecificWriteSideEffect(opcode) and
+    tag = OnlyInstructionTag() and
+    (
+      opcode instanceof BufferAccessOpcode and
+      type = getUnknownType()
+      or
+      not opcode instanceof BufferAccessOpcode and
+      exists(Type baseType | baseType = arg.getUnspecifiedType().(DerivedType).getBaseType() |
+        if baseType instanceof VoidType
+        then type = getUnknownType()
+        else type = getTypeForPRValueOrUnknown(baseType)
+      )
+      or
+      index = -1 and
+      not arg.getUnspecifiedType() instanceof DerivedType and
+      type = getTypeForPRValueOrUnknown(arg.getUnspecifiedType())
+    )
+    or
+    not isWrite() and
+    hasSpecificReadSideEffect(opcode) and
+    tag = OnlyInstructionTag() and
+    type = getVoidType()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    result = getParent().getChildSuccessor(this) and
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof AddressOperandTag and
+    result = getTranslatedExpr(arg).getResult()
+    or
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof SideEffectOperandTag and
+    not isWrite() and
+    result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+    or
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof BufferSizeOperandTag and
+    result = getTranslatedExpr(call
+            .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
+            .getFullyConverted()).getResult()
+  }
+
+  override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+    if hasSpecificReadSideEffect(any(Opcode::BufferReadSideEffect op))
+    then
+      result = getUnknownType() and
+      tag instanceof OnlyInstructionTag and
+      operandTag instanceof SideEffectOperandTag
+    else
+      exists(Type operandType |
+        tag instanceof OnlyInstructionTag and
+        operandType = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
+        operandTag instanceof SideEffectOperandTag
+        or
+        tag instanceof OnlyInstructionTag and
+        operandType = arg.getType().getUnspecifiedType() and
+        not operandType instanceof DerivedType and
+        operandTag instanceof SideEffectOperandTag
+      |
+        // If the type we select is an incomplete type (e.g. a forward-declared `struct`), there will
+        // not be a `CppType` that represents that type. In that case, fall back to `UnknownCppType`.
+        result = getTypeForPRValueOrUnknown(operandType)
+      )
+  }
+
+  predicate hasSpecificWriteSideEffect(Opcode op) {
+    exists(boolean buffer, boolean mustWrite |
+      if exists(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
+      then
+        call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(index, true, mustWrite) and
+        buffer = true and
+        (
+          mustWrite = false and op instanceof Opcode::SizedBufferMayWriteSideEffect
+          or
+          mustWrite = true and op instanceof Opcode::SizedBufferMustWriteSideEffect
+        )
+      else (
+        call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(index, buffer, mustWrite) and
+        (
+          buffer = true and mustWrite = false and op instanceof Opcode::BufferMayWriteSideEffect
+          or
+          buffer = false and mustWrite = false and op instanceof Opcode::IndirectMayWriteSideEffect
+          or
+          buffer = true and mustWrite = true and op instanceof Opcode::BufferMustWriteSideEffect
+          or
+          buffer = false and mustWrite = true and op instanceof Opcode::IndirectMustWriteSideEffect
+        )
+      )
+    )
+    or
+    not call.getTarget() instanceof SideEffectFunction and
+    getArgumentIndex() != -1 and
+    op instanceof Opcode::BufferMayWriteSideEffect
+    or
+    not call.getTarget() instanceof SideEffectFunction and
+    getArgumentIndex() = -1 and
+    op instanceof Opcode::IndirectMayWriteSideEffect
+  }
+
+  predicate hasSpecificReadSideEffect(Opcode op) {
+    exists(boolean buffer |
+      call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(index, buffer) and
+      if exists(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
+      then buffer = true and op instanceof Opcode::SizedBufferReadSideEffect
+      else (
+        buffer = true and op instanceof Opcode::BufferReadSideEffect
+        or
+        buffer = false and op instanceof Opcode::IndirectReadSideEffect
+      )
+    )
+    or
+    not call.getTarget() instanceof SideEffectFunction and
+    op instanceof Opcode::BufferReadSideEffect
+  }
+
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getTranslatedExpr(call).getInstruction(CallTag())
+  }
+
+  final override int getInstructionIndex(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = index
+  }
+
+  /**
+   * Gets the `TranslatedFunction` containing this expression.
+   */
+  final TranslatedFunction getEnclosingFunction() {
+    result = getTranslatedFunction(arg.getEnclosingFunction())
+  }
+
+  /**
+   * Gets the `Function` containing this expression.
+   */
+  override Function getFunction() { result = arg.getEnclosingFunction() }
 }

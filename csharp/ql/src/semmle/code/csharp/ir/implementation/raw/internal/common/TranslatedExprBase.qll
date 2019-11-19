@@ -1,5 +1,5 @@
 /**
- * Contains an abstract class that serves as a Base for classes that deal with the translation of exprs 
+ * Contains an abstract class that serves as a Base for classes that deal with the translation of exprs
  * (both AST generated and compiler generated).
  */
 

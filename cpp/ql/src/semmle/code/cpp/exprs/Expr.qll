@@ -5,6 +5,8 @@ private import semmle.code.cpp.internal.AddressConstantExpression
 
 /**
  * A C/C++ expression.
+ *
+ * This is the root QL class for all expressions.
  */
 class Expr extends StmtParent, @expr {
   /** Gets the nth child of this expression. */
@@ -131,6 +133,8 @@ class Expr extends StmtParent, @expr {
     valuebind(_, underlyingElement(this))
     or
     addressConstantExpression(this)
+    or
+    constantTemplateLiteral(this)
   }
 
   /**
@@ -161,36 +165,36 @@ class Expr extends StmtParent, @expr {
   predicate mayBeGloballyImpure() { any() }
 
   /**
-   * Holds if this expression is an lvalue. An lvalue is an expression that
+   * Holds if this expression is an _lvalue_. An _lvalue_ is an expression that
    * represents a location, rather than a value.
    * See [basic.lval] for more about lvalues.
    */
   predicate isLValueCategory() { expr_types(underlyingElement(this), _, 3) }
 
   /**
-   * Holds if this expression is an xvalue. An xvalue is a location whose
-   * lifetime is about to end (e.g. an rvalue reference returned from a function
+   * Holds if this expression is an _xvalue_. An _xvalue_ is a location whose
+   * lifetime is about to end (e.g. an _rvalue_ reference returned from a function
    * call).
    * See [basic.lval] for more about xvalues.
    */
   predicate isXValueCategory() { expr_types(underlyingElement(this), _, 2) }
 
   /**
-   * Holds if this expression is a prvalue. A prvalue is an expression that
+   * Holds if this expression is a _prvalue_. A _prvalue_ is an expression that
    * represents a value, rather than a location.
    * See [basic.lval] for more about prvalues.
    */
   predicate isPRValueCategory() { expr_types(underlyingElement(this), _, 1) }
 
   /**
-   * Holds if this expression is a glvalue. A glvalue is either an lvalue or an
-   * xvalue.
+   * Holds if this expression is a _glvalue_. A _glvalue_ is either an _lvalue_ or an
+   * _xvalue_.
    */
   predicate isGLValueCategory() { isLValueCategory() or isXValueCategory() }
 
   /**
-   * Holds if this expression is an rvalue. An rvalue is either a prvalue or an
-   * xvalue.
+   * Holds if this expression is an _rvalue_. An _rvalue_ is either a _prvalue_ or an
+   * _xvalue_.
    */
   predicate isRValueCategory() { isPRValueCategory() or isXValueCategory() }
 
@@ -203,7 +207,7 @@ class Expr extends StmtParent, @expr {
    * - "prvalue"
    * - "prvalue(load)"
    *
-   * The "prvalue(load)" string is used when the expression is a prvalue, but
+   * The "prvalue(load)" string is used when the expression is a _prvalue_, but
    * `hasLValueToRvalueConversion()` holds.
    */
   string getValueCategoryString() {
@@ -250,32 +254,32 @@ class Expr extends StmtParent, @expr {
   }
 
   /**
-   * Holds if this expression has undergone an lvalue-to-rvalue conversion to
+   * Holds if this expression has undergone an _lvalue_-to-_rvalue_ conversion to
    * extract its value.
    * for example:
    * ```
    *  y = x;
    * ```
-   * The VariableAccess for `x` is a prvalue, and hasLValueToRValueConversion()
+   * The `VariableAccess` for `x` is a _prvalue_, and `hasLValueToRValueConversion()`
    * holds because the value of `x` was loaded from the location of `x`.
-   * The VariableAccess for `y` is an lvalue, and hasLValueToRValueConversion()
+   * The `VariableAccess` for `y` is an _lvalue_, and `hasLValueToRValueConversion()`
    * does not hold because the value of `y` was not extracted.
    *
-   * See [conv.lval] for more about the lvalue-to-rvalue conversion
+   * See [conv.lval] for more about the _lvalue_-to-_rvalue_ conversion
    */
   predicate hasLValueToRValueConversion() { expr_isload(underlyingElement(this)) }
 
   /**
-   * Holds if this expression is an LValue, in the sense of having an address.
+   * Holds if this expression is an _lvalue_, in the sense of having an address.
    *
-   * Being an LValue is best approximated as having an address.
-   * This is a strict superset of modifiable LValues, which are best approximated by things which could be on the left-hand side of an assignment.
-   * This is also a strict superset of expressions which provide an LValue, which is best approximated by things whose address is important.
+   * Being an _lvalue_ is best approximated as having an address.
+   * This is a strict superset of modifiable _lvalue_s, which are best approximated by things which could be on the left-hand side of an assignment.
+   * This is also a strict superset of expressions which provide an _lvalue_, which is best approximated by things whose address is important.
    *
    * See [basic.lval] in the C++ language specification.
-   * In C++03, every expression is either an LValue or an RValue.
-   * In C++11, every expression is exactly one of an LValue, an XValue, or a PRValue (with RValues being the union of XValues and PRValues).
-   * Using the C++11 terminology, this predicate selects expressions whose value category is lvalue.
+   * In C++03, every expression is either an _lvalue_ or an _rvalue_.
+   * In C++11, every expression is exactly one of an _lvalue_, an _xvalue_, or a _prvalue_ (with _rvalue_s being the union of _xvalue_s and _prvalue_s).
+   * Using the C++11 terminology, this predicate selects expressions whose value category is _lvalue_.
    */
   predicate isLValue() {
     // C++ n3337 - 5.1.1 clause 1
@@ -456,6 +460,8 @@ class Expr extends StmtParent, @expr {
 
 /**
  * A C/C++ operation.
+ *
+ * This is the QL abstract root class for all operations.
  */
 abstract class Operation extends Expr {
   /** Gets the operator of this operation. */
@@ -507,7 +513,14 @@ abstract class BinaryOperation extends Operation {
  *
  * This is used to represent particular syntax within templates where the final
  * form of the expression is not known. In actual instantiations, it will have
- * been turned into a constructor call or aggregate initializer or similar.
+ * been turned into either a constructor call or an aggregate initializer or similar.
+ * ```
+ * template <typename T>
+ * struct S {
+ *   T member;
+ *   S() { member = T({ arg1, arg2 }); }
+ * };
+ * ```
  */
 class ParenthesizedBracedInitializerList extends Expr, @braced_init_list {
   override string toString() { result = "({...})" }
@@ -517,6 +530,12 @@ class ParenthesizedBracedInitializerList extends Expr, @braced_init_list {
 
 /**
  * A C/C++ parenthesis expression.
+ *
+ * It is typically used to raise the syntactic precedence of the subexpression that
+ * it contains.  For example:
+ * ```
+ * int d = a & ( b | c );
+ * ```
  */
 class ParenthesisExpr extends Conversion, @parexpr {
   override string toString() { result = "(...)" }
@@ -526,6 +545,8 @@ class ParenthesisExpr extends Conversion, @parexpr {
 
 /**
  * A C/C++ expression that has not been resolved.
+ *
+ * It is assigned `ErroneousType` as its type.
  */
 class ErrorExpr extends Expr, @errorexpr {
   override string toString() { result = "<error expr>" }
@@ -535,13 +556,29 @@ class ErrorExpr extends Expr, @errorexpr {
 
 /**
  * A Microsoft C/C++ __assume expression.
+ *
+ * Unlike `assert`, `__assume` is evaluated at compile time and
+ * is treated as a hint to the optimizer
+ * ```
+ * __assume(ptr < end_buf);
+ * ```
  */
 class AssumeExpr extends Expr, @assume {
   override string toString() { result = "__assume(...)" }
+
+  override string getCanonicalQLClass() { result = "AssumeExpr" }
+
+  /**
+   * Gets the operand of the `__assume` expressions.
+   */
+  Expr getOperand() { this.hasChild(result, 0) }
 }
 
 /**
  * A C/C++ comma expression.
+ * ```
+ * int c = compute1(), compute2(), resulting_value;
+ * ```
  */
 class CommaExpr extends Expr, @commaexpr {
   override string getCanonicalQLClass() { result = "CommaExpr" }
@@ -574,6 +611,9 @@ class CommaExpr extends Expr, @commaexpr {
 
 /**
  * A C/C++ address-of expression.
+ * ```
+ * int *ptr = &var;
+ * ```
  */
 class AddressOfExpr extends UnaryOperation, @address_of {
   override string getCanonicalQLClass() { result = "AddressOfExpr" }
@@ -596,11 +636,14 @@ class AddressOfExpr extends UnaryOperation, @address_of {
 }
 
 /**
- * An implicit conversion from type T to type T&amp;.
+ * An implicit conversion from type `T` to type `T &`.
  *
- * This typically occurs when an expression of type T is used to initialize a variable or parameter of
- * type T&amp;, and is to reference types what AddressOfExpr is to pointer types - though this class is
+ * This typically occurs when an expression of type `T` is used to initialize a variable or parameter of
+ * type `T &`, and is to reference types what `AddressOfExpr` is to pointer types, though this class is
  * considered to be a conversion rather than an operation, and as such doesn't occur in the main AST.
+ * ```
+ * int &var_ref = var;
+ * ```
  */
 class ReferenceToExpr extends Conversion, @reference_to {
   override string toString() { result = "(reference to)" }
@@ -611,9 +654,12 @@ class ReferenceToExpr extends Conversion, @reference_to {
 }
 
 /**
- * An instance of unary operator * applied to a built-in type.
+ * An instance of the built-in unary `operator *` applied to a type.
  *
- * For user-defined types, see OverloadedPointerDereferenceExpr.
+ * For user-defined overloads of `operator *`, see `OverloadedPointerDereferenceExpr`.
+ * ```
+ * int var = *varptr;
+ * ```
  */
 class PointerDereferenceExpr extends UnaryOperation, @indirect {
   override string getCanonicalQLClass() { result = "PointerDereferenceExpr" }
@@ -641,11 +687,15 @@ class PointerDereferenceExpr extends UnaryOperation, @indirect {
 }
 
 /**
- * An implicit conversion from type T&amp; to type T.
+ * An implicit conversion from type `T &` to type `T`.
  *
- * This typically occurs when an variable of type T&amp; is used in a context which expects type T, and
- * is to reference types what PointerDereferenceExpr is to pointer types - though this class is
+ * This typically occurs when an variable of type `T &` is used in a context which expects type `T`, and
+ * is to reference types what `PointerDereferenceExpr` is to pointer types - though this class is
  * considered to be a conversion rather than an operation, and as such doesn't occur in the main AST.
+ * ```
+ * float &f_ref = get_ref();
+ * float f = f_ref;
+ * ```
  */
 class ReferenceDereferenceExpr extends Conversion, @ref_indirect {
   override string toString() { result = "(reference dereference)" }
@@ -747,6 +797,9 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
 
 /**
  * A C++ `new` (non-array) expression.
+ * ```
+ * Foo *ptr = new Foo(3);
+ * ```
  */
 class NewExpr extends NewOrNewArrayExpr, @new_expr {
   override string toString() { result = "new" }
@@ -773,6 +826,10 @@ class NewExpr extends NewOrNewArrayExpr, @new_expr {
 
 /**
  * A C++ `new[]` (array) expression.
+ * ```
+ * Foo *foo = new Foo[]{1, 3, 5};
+ * Bar *bar = new Bar[5];
+ * ```
  */
 class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
   override string toString() { result = "new[]" }
@@ -818,6 +875,9 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
 
 /**
  * A C++ `delete` (non-array) expression.
+ * ```
+ * delete ptr;
+ * ```
  */
 class DeleteExpr extends Expr, @delete_expr {
   override string toString() { result = "delete" }
@@ -893,6 +953,9 @@ class DeleteExpr extends Expr, @delete_expr {
 
 /**
  * A C++ `delete[]` (array) expression.
+ * ```
+ * delete[] arr;
+ * ```
  */
 class DeleteArrayExpr extends Expr, @delete_array_expr {
   override string toString() { result = "delete[]" }
@@ -968,6 +1031,10 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
 
 /**
  * A compound statement enclosed in parentheses used as an expression (a GNU extension to C/C++).
+ * In the example below, `b` is the return value from the compound statement.
+ * ```
+ * int a = ({ int b = c + d; b; });
+ * ```
  */
 class StmtExpr extends Expr, @expr_stmt {
   override string toString() { result = "(statement expression)" }
@@ -997,7 +1064,7 @@ private Expr getStmtResultExpr(Stmt stmt) {
 }
 
 /**
- * A C/C++ this expression.
+ * A C++ `this` expression.
  */
 class ThisExpr extends Expr, @thisaccess {
   override string toString() { result = "this" }
@@ -1010,8 +1077,10 @@ class ThisExpr extends Expr, @thisaccess {
 }
 
 /**
- * A code block expression, for example `^ int (int x, int y) {return x + y;}`.
- *
+ * A code block expression, for example:
+ * ```
+ * ^ int (int x, int y) {return x + y;}
+ * ```
  * Blocks are a language extension supported by Clang, and by Apple's
  * branch of GCC.
  */
@@ -1027,7 +1096,11 @@ class BlockExpr extends Literal {
 }
 
 /**
- * A C++11 `noexcept` expression, for example `noexcept(1 + 2)`.
+ * A C++11 `noexcept` expression, returning `true` if its subexpression is guaranteed
+ * not to `throw` exceptions.  For example:
+ * ```
+ * if (noexcept(func_1() + func_2())) { }
+ * ```
  */
 class NoExceptExpr extends Expr, @noexceptexpr {
   override string toString() { result = "noexcept(...)" }
@@ -1043,6 +1116,10 @@ class NoExceptExpr extends Expr, @noexceptexpr {
 /**
  * A C++17 fold expression. This will only appear in an uninstantiated template; any instantiations
  * of the template will instead contain the sequence of expressions given by expanding the fold.
+ * ```
+ * template < typename... T >
+ * auto sum ( T... t ) { return ( t + ... + 0 ); }
+ * ```
  */
 class FoldExpr extends Expr, @foldexpr {
   override string toString() {
@@ -1119,3 +1196,17 @@ private predicate isStandardPlacementNewAllocator(Function operatorNew) {
 
 // Pulled out for performance. See QL-796.
 private predicate hasNoConversions(Expr e) { not e.hasConversion() }
+
+/**
+ * Holds if `e` is a literal of unknown value in a template, or a cast thereof.
+ * We assume that such literals are constant.
+ */
+private predicate constantTemplateLiteral(Expr e) {
+  // Unknown literals in uninstantiated templates could be enum constant
+  // accesses or pointer-to-member literals.
+  e instanceof Literal and
+  e.isFromUninstantiatedTemplate(_) and
+  not exists(e.getValue())
+  or
+  constantTemplateLiteral(e.(Cast).getExpr())
+}

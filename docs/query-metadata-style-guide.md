@@ -1,6 +1,5 @@
 # Query file metadata and alert message style guide
 
-
 ## Introduction
 
 This document outlines the structure of Semmle query files. You should adopt this structure when contributing custom queries to this repository, in order to ensure that new queries are consistent with the standard Semmle queries.
@@ -11,13 +10,13 @@ Query files have the extension `.ql`. Each file has two distinct areas:
 
 *   Metadata area–displayed at the top of the file, contains the metadata that defines how results for the query are interpreted and gives a brief description of the purpose of the query.
 *   Query definition–defined using QL. The query includes a select statement, which defines the content and format of the results. For further information about writing QL, see the following topics:
-    *   [Learning QL](https://help.semmle.com/QL/learn-ql/index.html)
+    *   [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html)
     *   [QL language handbook](https://help.semmle.com/QL/ql-handbook/index.html)
     *   [QL language specification](https://help.semmle.com/QL/ql-spec/language.html)
-    *   [QL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
+    *   [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
 
 
-For examples of query files for the languages supported by Semmle, visit the following links: 
+For examples of query files for the languages supported by CodeQL, visit the following links: 
 
 *   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
 *   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
@@ -168,7 +167,7 @@ The select clause of each alert query defines the alert message that is displaye
 *   Program element references should be in 'single quotes' to distinguish them from ordinary words. Quotes are not needed around substitutions ($@).
 *   Avoid constant alert message strings and include some context, if possible. For example, `The class 'Foo' is duplicated as 'Bar'.` is preferable to `This class is duplicated here.`
 *   Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions. 
-*   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining select statements](https://help.semmle.com/QL/learn-ql/ql/writing-queries/select-statement.html)
+*   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining select statements](https://help.semmle.com/QL/learn-ql/ql/writing-queries/select-statement.html).
 
 For examples of select clauses and alert messages, see the query source files at the following pages:
 
@@ -178,4 +177,4 @@ For examples of select clauses and alert messages, see the query source files at
 *   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
 *   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
 
-For further information on query writing, see  [Writing QL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html). For more information on learning QL, see [Learning QL](https://help.semmle.com/QL/learn-ql/index.html).
+For further information on query writing, see  [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html). For more information on learning CodeQL, see [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html).

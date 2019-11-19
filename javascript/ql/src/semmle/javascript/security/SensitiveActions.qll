@@ -245,3 +245,21 @@ class CleartextPasswordExpr extends SensitiveExpr {
 
   override SensitiveExpr::Classification getClassification() { none() }
 }
+
+/**
+ * Provides heuristics for classifying passwords.
+ */
+module PasswordHeuristics {
+  /**
+   * Holds if `password` looks like a deliberately weak password that the user should change.
+   */
+  bindingset[password]
+  predicate isDummyPassword(string password) {
+    password.length() < 4
+    or
+    exists(string normalized | normalized = password.toLowerCase() |
+      count(normalized.charAt(_)) = 1 or
+      normalized.regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth).*")
+    )
+  }
+}

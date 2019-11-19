@@ -5,14 +5,14 @@
 
 
 <overview>
-<p> The first argument of a class method, a new method or any metaclass method
-should be called <code>cls</code>. This makes the purpose of the argument clear to other developers.
+<p> The first parameter of a class method, a new method or any metaclass method
+should be called <code>cls</code>. This makes the purpose of the parameter clear to other developers.
 </p>
 
 </overview>
 <recommendation>
 
-<p>Change the name of the first argument to <code>cls</code> as recommended by the style guidelines
+<p>Change the name of the first parameter to <code>cls</code> as recommended by the style guidelines
 in PEP 8.</p>
 
 </recommendation>

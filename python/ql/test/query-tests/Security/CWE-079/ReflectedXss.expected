@@ -1,8 +1,9 @@
 edges
-| ../lib/flask/__init__.py:14:19:14:20 | externally controlled string | ../lib/flask/__init__.py:16:25:16:26 | externally controlled string |
+| reflected_xss.py:7:18:7:29 | dict of externally controlled string | reflected_xss.py:7:18:7:45 | externally controlled string |
 | reflected_xss.py:7:18:7:29 | dict of externally controlled string | reflected_xss.py:7:18:7:45 | externally controlled string |
 | reflected_xss.py:7:18:7:45 | externally controlled string | reflected_xss.py:8:44:8:53 | externally controlled string |
-| reflected_xss.py:8:26:8:53 | externally controlled string | ../lib/flask/__init__.py:14:19:14:20 | externally controlled string |
+| reflected_xss.py:7:18:7:45 | externally controlled string | reflected_xss.py:8:44:8:53 | externally controlled string |
+| reflected_xss.py:8:44:8:53 | externally controlled string | reflected_xss.py:8:26:8:53 | externally controlled string |
 | reflected_xss.py:8:44:8:53 | externally controlled string | reflected_xss.py:8:26:8:53 | externally controlled string |
 #select
-| ../lib/flask/__init__.py:16:25:16:26 | rv | reflected_xss.py:7:18:7:29 | dict of externally controlled string | ../lib/flask/__init__.py:16:25:16:26 | externally controlled string | Cross-site scripting vulnerability due to $@. | reflected_xss.py:7:18:7:29 | Attribute | user-provided value |
+| reflected_xss.py:8:26:8:53 | BinaryExpr | reflected_xss.py:7:18:7:29 | dict of externally controlled string | reflected_xss.py:8:26:8:53 | externally controlled string | Cross-site scripting vulnerability due to $@. | reflected_xss.py:7:18:7:29 | Attribute | user-provided value |

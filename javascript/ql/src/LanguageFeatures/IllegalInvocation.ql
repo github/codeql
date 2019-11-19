@@ -58,7 +58,10 @@ where
   // filter out some easy cases
   not isCallToFunction(cs) and
   // conservatively only flag call sites where _all_ callees are illegal
-  forex(Function otherCallee | otherCallee = cs.getACallee() |
+  forex(DataFlow::InvokeNode cs2, Function otherCallee |
+    cs2.getInvokeExpr() = cs.getInvokeExpr() and otherCallee = cs2.getACallee() |
     illegalInvocation(cs, otherCallee, _, _)
-  )
+  ) and
+  // require that all callees are known
+  not cs.isIncomplete()
 select cs, "Illegal invocation of $@ " + how + ".", callee, calleeDesc

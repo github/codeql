@@ -2,6 +2,8 @@
  * @name Use of an undefined placeholder variable
  * @description Using a variable before it is initialized causes an exception.
  * @kind problem
+ * @tags reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision medium

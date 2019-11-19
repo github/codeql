@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks and sanitizers for reasoning about
  * command-injection vulnerabilities, as well as extension points for
  * adding your own.
  */
@@ -36,6 +36,22 @@ module IndirectCommandInjection {
   class CommandLineArgumentsArray extends DataFlow::SourceNode {
     CommandLineArgumentsArray() {
       this = DataFlow::globalVarRef("process").getAPropertyRead("argv")
+    }
+  }
+
+  /**
+   * An object containing parsed command-line arguments, considered as a flow source for command injection.
+   */
+  class ParsedCommandLineArgumentsAsSource extends Source {
+    ParsedCommandLineArgumentsAsSource() {
+      // `require('get-them-args')(...)` => `{ unknown: [], a: ... b: ... }`
+      this = DataFlow::moduleImport("get-them-args").getACall() or
+      // `require('minimist')(...)` => `{ _: [], a: ... b: ... }`
+      this = DataFlow::moduleImport("minimist").getACall() or
+      // `require('yargs').argv` => `{ _: [], a: ... b: ... }`
+      this = DataFlow::moduleMember("yargs", "argv") or
+      // `require('optimist').argv` => `{ _: [], a: ... b: ... }`
+      this = DataFlow::moduleMember("optimist", "argv")
     }
   }
 

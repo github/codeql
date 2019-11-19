@@ -22,4 +22,3 @@
     var v11 = h();
     var v12 = h?.();
 });
-// semmle-extractor-options: --experimental

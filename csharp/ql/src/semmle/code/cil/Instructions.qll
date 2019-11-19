@@ -167,7 +167,11 @@ module Opcodes {
   class Neg extends UnaryExpr, @cil_neg {
     override string getOpcodeName() { result = "neg" }
 
-    override NumericType getType() { result = getOperand(0).getType() }
+    override NumericType getType() {
+      result = getOperand().getType()
+      or
+      getOperand().getType() instanceof Enum and result instanceof IntType
+    }
   }
 
   // Binary operations
@@ -1176,7 +1180,9 @@ module Opcodes {
   class Localloc extends Expr, @cil_localloc {
     override string getOpcodeName() { result = "localloc" }
 
-    override int getPopCount() { result = 1 } // ??
+    override int getPopCount() { result = 1 }
+
+    override PointerType getType() { result.getReferentType() instanceof ByteType }
   }
 
   class Readonly extends Instruction, @cil_readonly {

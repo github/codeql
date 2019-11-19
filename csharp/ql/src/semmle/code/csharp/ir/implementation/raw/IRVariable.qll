@@ -5,6 +5,7 @@ import Imports::TempVariableTag
 private import Imports::IRUtilities
 private import Imports::TTempVariableTag
 private import Imports::TIRVariable
+private import Imports::IRType
 
 IRUserVariable getIRUserVariable(Language::Function func, Language::Variable var) {
   result.getVariable() = var and
@@ -22,9 +23,25 @@ abstract class IRVariable extends TIRVariable {
   abstract string toString();
 
   /**
+   * Holds if this variable's value cannot be changed within a function. Currently used for string
+   * literals, but could also apply to `const` global and static variables.
+   */
+  predicate isReadOnly() { none() }
+
+  /**
    * Gets the type of the variable.
    */
-  abstract Language::Type getType();
+  final Language::Type getType() { getLanguageType().hasType(result, false) }
+
+  /**
+   * Gets the language-neutral type of the variable.
+   */
+  final IRType getIRType() { result = getLanguageType().getIRType() }
+
+  /**
+   * Gets the type of the variable.
+   */
+  abstract Language::LanguageType getLanguageType();
 
   /**
    * Gets the AST node that declared this variable, or that introduced this
@@ -59,7 +76,7 @@ abstract class IRVariable extends TIRVariable {
  */
 class IRUserVariable extends IRVariable, TIRUserVariable {
   Language::Variable var;
-  Language::Type type;
+  Language::LanguageType type;
 
   IRUserVariable() { this = TIRUserVariable(var, type, func) }
 
@@ -71,7 +88,7 @@ class IRUserVariable extends IRVariable, TIRUserVariable {
     result = getVariable().toString() + " " + getVariable().getLocation().toString()
   }
 
-  final override Language::Type getType() { result = type }
+  final override Language::LanguageType getLanguageType() { result = type }
 
   /**
    * Gets the original user-declared variable.
@@ -102,21 +119,35 @@ class IRStaticUserVariable extends IRUserVariable {
   final override Language::StaticVariable getVariable() { result = var }
 }
 
+abstract class IRGeneratedVariable extends IRVariable {
+  Language::AST ast;
+  Language::LanguageType type;
+
+  final override Language::LanguageType getLanguageType() { result = type }
+
+  final override Language::AST getAST() { result = ast }
+
+  override string toString() { result = getBaseString() + getLocationString() }
+
+  override string getUniqueId() { none() }
+
+  final string getLocationString() {
+    result = ast.getLocation().getStartLine().toString() + ":" +
+        ast.getLocation().getStartColumn().toString()
+  }
+
+  string getBaseString() { none() }
+}
+
 IRTempVariable getIRTempVariable(Language::AST ast, TempVariableTag tag) {
   result.getAST() = ast and
   result.getTag() = tag
 }
 
-class IRTempVariable extends IRVariable, IRAutomaticVariable, TIRTempVariable {
-  Language::AST ast;
+class IRTempVariable extends IRGeneratedVariable, IRAutomaticVariable, TIRTempVariable {
   TempVariableTag tag;
-  Language::Type type;
 
   IRTempVariable() { this = TIRTempVariable(func, ast, tag, type) }
-
-  final override Language::Type getType() { result = type }
-
-  final override Language::AST getAST() { result = ast }
 
   final override string getUniqueId() {
     result = "Temp: " + Construction::getTempVariableUniqueId(this)
@@ -124,12 +155,7 @@ class IRTempVariable extends IRVariable, IRAutomaticVariable, TIRTempVariable {
 
   final TempVariableTag getTag() { result = tag }
 
-  override string toString() {
-    result = getBaseString() + ast.getLocation().getStartLine().toString() + ":" +
-        ast.getLocation().getStartColumn().toString()
-  }
-
-  string getBaseString() { result = "#temp" }
+  override string getBaseString() { result = "#temp" }
 }
 
 class IRReturnVariable extends IRTempVariable {
@@ -142,4 +168,20 @@ class IRThrowVariable extends IRTempVariable {
   IRThrowVariable() { tag = ThrowTempVar() }
 
   override string getBaseString() { result = "#throw" }
+}
+
+class IRStringLiteral extends IRGeneratedVariable, TIRStringLiteral {
+  Language::StringLiteral literal;
+
+  IRStringLiteral() { this = TIRStringLiteral(func, ast, type, literal) }
+
+  final override predicate isReadOnly() { any() }
+
+  final override string getUniqueId() {
+    result = "String: " + getLocationString() + "=" + Language::getStringLiteralText(literal)
+  }
+
+  override string getBaseString() { result = "#string" }
+
+  final Language::StringLiteral getLiteral() { result = literal }
 }

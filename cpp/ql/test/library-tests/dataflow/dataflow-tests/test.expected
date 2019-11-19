@@ -1,15 +1,43 @@
+| BarrierGuard.cpp:9:10:9:15 | source | BarrierGuard.cpp:5:19:5:24 | source |
+| BarrierGuard.cpp:15:10:15:15 | source | BarrierGuard.cpp:13:17:13:22 | source |
+| BarrierGuard.cpp:25:10:25:15 | source | BarrierGuard.cpp:21:17:21:22 | source |
+| BarrierGuard.cpp:31:10:31:15 | source | BarrierGuard.cpp:29:16:29:21 | source |
+| BarrierGuard.cpp:33:10:33:15 | source | BarrierGuard.cpp:29:16:29:21 | source |
+| BarrierGuard.cpp:53:13:53:13 | x | BarrierGuard.cpp:49:10:49:15 | call to source |
+| BarrierGuard.cpp:55:13:55:13 | x | BarrierGuard.cpp:49:10:49:15 | call to source |
+| BarrierGuard.cpp:62:14:62:14 | x | BarrierGuard.cpp:60:11:60:16 | call to source |
+| BarrierGuard.cpp:64:14:64:14 | x | BarrierGuard.cpp:60:11:60:16 | call to source |
+| BarrierGuard.cpp:66:14:66:14 | x | BarrierGuard.cpp:60:11:60:16 | call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | x | acrossLinkTargets.cpp:19:27:19:32 | call to source |
 | clang.cpp:18:8:18:19 | sourceArray1 | clang.cpp:12:9:12:20 | sourceArray1 |
+| clang.cpp:22:8:22:20 | & ... | clang.cpp:12:9:12:20 | sourceArray1 |
 | clang.cpp:29:27:29:28 | m1 | clang.cpp:28:27:28:32 | call to source |
 | clang.cpp:30:27:30:34 | call to getFirst | clang.cpp:28:27:28:32 | call to source |
 | clang.cpp:37:10:37:11 | m2 | clang.cpp:34:32:34:37 | call to source |
 | clang.cpp:45:17:45:18 | m2 | clang.cpp:43:35:43:40 | call to source |
+| dispatch.cpp:11:38:11:38 | x | dispatch.cpp:37:19:37:24 | call to source |
+| dispatch.cpp:11:38:11:38 | x | dispatch.cpp:45:18:45:23 | call to source |
+| dispatch.cpp:35:16:35:25 | call to notSource1 | dispatch.cpp:9:37:9:42 | call to source |
+| dispatch.cpp:36:16:36:25 | call to notSource2 | dispatch.cpp:10:37:10:42 | call to source |
+| dispatch.cpp:43:15:43:24 | call to notSource1 | dispatch.cpp:9:37:9:42 | call to source |
+| dispatch.cpp:44:15:44:24 | call to notSource2 | dispatch.cpp:10:37:10:42 | call to source |
 | lambdas.cpp:14:3:14:6 | t | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:18:8:18:8 | call to operator() | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:21:3:21:6 | t | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:29:3:29:6 | t | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:35:8:35:8 | a | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:41:8:41:8 | a | lambdas.cpp:8:10:8:15 | call to source |
+| lambdas.cpp:46:7:46:7 | w | lambdas.cpp:43:7:43:12 | call to source |
+| ref.cpp:56:10:56:11 | x1 | ref.cpp:53:9:53:10 | x1 |
+| ref.cpp:56:10:56:11 | x1 | ref.cpp:55:23:55:28 | call to source |
+| ref.cpp:59:10:59:11 | x2 | ref.cpp:53:13:53:14 | x2 |
+| ref.cpp:62:10:62:11 | x3 | ref.cpp:29:11:29:16 | call to source |
+| ref.cpp:62:10:62:11 | x3 | ref.cpp:53:17:53:18 | x3 |
+| ref.cpp:65:10:65:11 | x4 | ref.cpp:53:21:53:22 | x4 |
+| ref.cpp:123:13:123:15 | val | ref.cpp:122:23:122:28 | call to source |
+| ref.cpp:126:13:126:15 | val | ref.cpp:125:19:125:24 | call to source |
+| ref.cpp:129:13:129:15 | val | ref.cpp:94:15:94:20 | call to source |
+| ref.cpp:132:13:132:15 | val | ref.cpp:109:15:109:20 | call to source |
 | test.cpp:7:8:7:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:9:8:9:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:10:8:10:9 | t2 | test.cpp:6:12:6:17 | call to source |

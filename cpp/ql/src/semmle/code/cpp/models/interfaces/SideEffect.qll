@@ -9,6 +9,7 @@
 
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.Models
+import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
 /**
  * Models the side effects of a library function.
@@ -19,12 +20,33 @@ abstract class SideEffectFunction extends Function {
    * This memory could be from global variables, or from other memory that was reachable from a
    * pointer that was passed into the function.
    */
-  abstract predicate neverReadsMemory();
+  abstract predicate hasOnlySpecificReadSideEffects();
 
   /**
    * Holds if the function never writes to memory that remains allocated after the function
    * returns. This memory could be from global variables, or from other memory that was reachable
    * from a pointer that was passed into the function.
    */
-  abstract predicate neverWritesMemory();
+  abstract predicate hasOnlySpecificWriteSideEffects();
+
+  /**
+   * Holds if the value pointed to by the parameter at index `i` is written to. `buffer` is true
+   * if the write may be at an offset. `mustWrite` is true if the write is unconditional.
+   */
+  predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    none()
+  }
+
+  /**
+   * Holds if the value pointed to by the parameter at index `i` is read from. `buffer` is true
+   * if the read may be at an offset.
+   */
+  predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) { none() }
+
+  // TODO: name?
+  /**
+   * Gets the index of the parameter that indicates the size of the buffer pointed to by the
+   * parameter at index `i`.
+   */
+  ParameterIndex getParameterSizeIndex(ParameterIndex i) { none() }
 }

@@ -2,8 +2,8 @@ Defining 'select' statements
 ============================
 
 The information contained in the results of a query is controlled by the ``select`` statement. Part of the process of developing a useful query is to make the results clear and easy for other users to understand.
-When you write your own queries in the query console or QL for Eclipse there are no constraints on what can be selected.
-However, if you want to use a query to create alerts in LGTM or generate valid analysis results using the QL command-line tools, you'll need to make the ``select`` statement report results in the required format. 
+When you write your own queries in the query console or in the CodeQL `extension for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__ there are no constraints on what can be selected.
+However, if you want to use a query to create alerts in LGTM or generate valid analysis results using the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__, you'll need to make the ``select`` statement report results in the required format. 
 You must also ensure that the query has the appropriate metadata properties defined. 
 This topic explains how to write your select statement to generate helpful analysis results. 
 
@@ -27,7 +27,7 @@ If you look at some of the LGTM queries, you'll see that they can select extra e
 Developing a select statement
 -----------------------------
 
-Here's a simple query that uses the standard QL ``CodeDuplication.qll`` library to identify similar files.
+Here's a simple query that uses the standard CodeQL ``CodeDuplication.qll`` library to identify similar files.
 
 Basic select statement
 ~~~~~~~~~~~~~~~~~~~~~~

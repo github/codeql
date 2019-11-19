@@ -1,39 +1,35 @@
-Introducing the QL libraries for Python
-=======================================
+Introducing the CodeQL libraries for Python
+===========================================
 
-These libraries have been created to help you analyze Python code, providing an object-oriented layer on top of the raw data in the snapshot database. They are written in standard QL.
-
-The QL libraries all have a ``.qll`` extension, to signify that they contain QL library code but no actual queries. Each file contains a QL class or hierarchy of classes.
-
-You can include all of the standard libraries by beginning each query with this statement:
+There is an extensive library for analyzing CodeQL databases extracted from Python projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.  The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``python.qll`` imports all the core Python library modules, so you can include the complete library by beginning your query with:
 
 .. code-block:: ql
 
    import python
 
-The rest of this tutorial summarizes the contents of the standard QL libraries. We recommend that you read this and then work through the practical examples in the Python tutorials shown at the end of the page.
+The rest of this tutorial summarizes the contents of the standard libraries for Python. We recommend that you read this and then work through the practical examples in the tutorials shown at the end of the page.
 
 Overview of the library
 -----------------------
 
-The QL Python library incorporates a large number of classes, each class corresponding either to one kind of entity in Python source code or to an entity that can be derived form the source code using static analysis. These classes can be divided into four categories:
+The CodeQL library for Python incorporates a large number of classes. Each class corresponds either to one kind of entity in Python source code or to an entity that can be derived from the source code using static analysis. These classes can be divided into four categories:
 
 -  **Syntactic** - classes that represent entities in the Python source code.
 -  **Control flow** - classes that represent entities from the control flow graphs.
 -  **Type inference** - classes that represent the inferred values and types of entities in the Python source code.
--  **Taint tracking** -  classes that represent the source, sinks and kinds of taint used to implement taint-tracking queries.
+-  **Taint tracking** - classes that represent the source, sinks and kinds of taint used to implement taint-tracking queries.
 
 Syntactic classes
 ~~~~~~~~~~~~~~~~~
 
-This part of the library represents the Python source code. The ``Module``, ``Class`` and ``Function`` classes correspond to Python modules, classes and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (AST). The root of each AST is a ``Module``.
+This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (AST). The root of each AST is a ``Module``.
 
 `Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__ is attached to the AST in the form of variables (represented by the class ``Variable``).
 
 Scope
 ^^^^^
 
-A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class and function are represented by the three classes (`Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``.
+A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class, and function are represented by the three CodeQL classes (`Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``.
 
 -  ``Scope``
 
@@ -65,7 +61,7 @@ A statement is represented by the `Stmt <https://help.semmle.com/qldoc/python/se
    else:
        return 0
 
-The QL `For <https://help.semmle.com/qldoc/python/semmle/python/Stmts.qll/type.Stmts$For.html>`__ class representing the ``for`` statement has a number of member predicates to access its parts:
+The `For <https://help.semmle.com/qldoc/python/semmle/python/Stmts.qll/type.Stmts$For.html>`__ class representing the ``for`` statement has a number of member predicates to access its parts:
 
 -  ``getTarget()`` returns the ``Expr`` representing the variable ``var``.
 -  ``getIter()`` returns the ``Expr`` resenting the variable ``seq``.
@@ -98,7 +94,7 @@ As an example, to find expressions of the form ``a+2`` where the left is a simpl
 Variable
 ^^^^^^^^
 
-Variables are represented by the `Variable <https://help.semmle.com/qldoc/python/semmle/python/Variables.qll/type.Variables$Variable.html>`__ class in the Python QL library. There are two subclasses, ``LocalVariable`` for function-level and class-level variables and ``GlobalVariable`` for module-level variables.
+Variables are represented by the `Variable <https://help.semmle.com/qldoc/python/semmle/python/Variables.qll/type.Variables$Variable.html>`__ class in the CodeQL library. There are two subclasses, ``LocalVariable`` for function-level and class-level variables and ``GlobalVariable`` for module-level variables.
 
 Other source code elements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -108,14 +104,14 @@ Although the meaning of the program is encoded by the syntactic elements, ``Scop
 Examples
 ^^^^^^^^
 
-Each syntactic element in Python source is recorded in the snapshot. These can be queried via the corresponding class. Let us start with a couple of simple examples.
+Each syntactic element in Python source is recorded in the CodeQL database. These can be queried via the corresponding class. Let us start with a couple of simple examples.
 
-1. Finding all finally blocks
-'''''''''''''''''''''''''''''
+1. Finding all ``finally`` blocks
+'''''''''''''''''''''''''''''''''
 
 For our first example, we can find all ``finally`` blocks by using the ``Try`` class:
 
-**Find all ``finally`` blocks**
+**Find all** ``finally`` **blocks**
 
 .. code-block:: ql
 
@@ -126,8 +122,8 @@ For our first example, we can find all ``finally`` blocks by using the ``Try`` c
 
 ➤ `See this in the query console <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
 
-2. Finding 'except' blocks that do nothing
-''''''''''''''''''''''''''''''''''''''''''
+2. Finding ``except`` blocks that do nothing
+''''''''''''''''''''''''''''''''''''''''''''
 
 For our second example, we can use a simplified version of a query from the standard query set. We look for all ``except`` blocks that do nothing.
 
@@ -137,15 +133,15 @@ A block that does nothing is one that contains no statements except ``pass`` sta
 
    not exists(Stmt s | s = ex.getAStmt() | not s instanceof Pass)
 
-where ``ex`` is an ``ExceptStmt`` and ``Pass`` is the class representing ``pass`` statements. Instead of using the double negative, **"no**\ *statements that are*\ **not**\ *pass statements"*, this can also be expressed positively, "all statements must be pass statements." The positive form is expressed in QL using the ``forall`` quantifier:
+where ``ex`` is an ``ExceptStmt`` and ``Pass`` is the class representing ``pass`` statements. Instead of using the double negative, "**no** \ *statements that are* \ **not** \ *pass statements"*, this can also be expressed positively, *"all statements must be pass statements."* The positive form is expressed using the ``forall`` quantifier:
 
 .. code-block:: ql
 
    forall(Stmt s | s = ex.getAStmt() | s instanceof Pass)
 
-Both forms are equivalent. Using the positive QL expression, the whole query looks like this:
+Both forms are equivalent. Using the positive expression, the whole query looks like this:
 
-**Find pass-only ``except`` blocks**
+**Find pass-only** ``except`` **blocks**
 
 .. code-block:: ql
 
@@ -160,9 +156,9 @@ Both forms are equivalent. Using the positive QL expression, the whole query loo
 Summary
 ^^^^^^^
 
-The most commonly used standard QL library classes in the syntactic part of the library are organized as follows:
+The most commonly used standard classes in the syntactic part of the library are organized as follows:
 
-``Module``, ``Class``, ``Function``, ``Stmt`` and ``Expr`` - they are all subclasses of `AstNode <https://help.semmle.com/qldoc/python/semmle/python/AST.qll/type.AST$AstNode.html>`__.
+``Module``, ``Class``, ``Function``, ``Stmt``, and ``Expr`` - they are all subclasses of `AstNode <https://help.semmle.com/qldoc/python/semmle/python/AST.qll/type.AST$AstNode.html>`__.
 
 Abstract syntax tree
 ''''''''''''''''''''
@@ -293,7 +289,7 @@ The classes in the control-flow part of the library are:
 Type-inference classes
 ----------------------
 
-The QL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassValue``\ s are iterable can be determined using the query:
+The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassValue``\ s are iterable can be determined using the query:
 
 **Find iterable "ClassValue"s**
 
@@ -321,7 +317,7 @@ These classes are explained in more detail in :doc:`Tutorial: Points-to analysis
 Taint-tracking classes
 ----------------------
 
-The QL library for Python also supplies classes to specify taint-tracking analyses. The ``Configuration`` class can be overrridden to specify a taint-tracking analysis, by specifying source, sinks, sanitizers and additional flow steps. For those analyses that require additional types of taint to be tracked the ``TaintKind`` class can be overridden.
+The CodeQL library for Python also supplies classes to specify taint-tracking analyses. The ``Configuration`` class can be overridden to specify a taint-tracking analysis, by specifying source, sinks, sanitizers and additional flow steps. For those analyses that require additional types of taint to be tracked the ``TaintKind`` class can be overridden.
 
 
 Summary
@@ -336,5 +332,5 @@ These classes are explained in more detail in :doc:`Tutorial: Taint tracking and
 What next?
 ----------
 
--  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Functions <functions>`, :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>` and :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Experiment with the worked examples in the following tutorial topics: :doc:`Functions <functions>`, :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>`, and :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

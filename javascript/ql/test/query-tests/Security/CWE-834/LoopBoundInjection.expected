@@ -1,0 +1,93 @@
+nodes
+| LoopBoundInjectionBad.js:8:13:8:20 | req.body |
+| LoopBoundInjectionBad.js:8:13:8:20 | req.body |
+| LoopBoundInjectionBad.js:10:15:10:22 | req.body |
+| LoopBoundInjectionBad.js:10:15:10:22 | req.body |
+| LoopBoundInjectionBad.js:12:25:12:32 | req.body |
+| LoopBoundInjectionBad.js:12:25:12:32 | req.body |
+| LoopBoundInjectionBad.js:14:19:14:26 | req.body |
+| LoopBoundInjectionBad.js:14:19:14:26 | req.body |
+| LoopBoundInjectionBad.js:17:18:17:20 | val |
+| LoopBoundInjectionBad.js:20:25:20:27 | val |
+| LoopBoundInjectionBad.js:20:25:20:27 | val |
+| LoopBoundInjectionBad.js:25:20:25:22 | val |
+| LoopBoundInjectionBad.js:29:16:29:18 | val |
+| LoopBoundInjectionBad.js:29:16:29:18 | val |
+| LoopBoundInjectionBad.js:35:30:35:32 | val |
+| LoopBoundInjectionBad.js:38:15:38:17 | val |
+| LoopBoundInjectionBad.js:38:15:38:17 | val |
+| LoopBoundInjectionBad.js:46:24:46:26 | val |
+| LoopBoundInjectionBad.js:51:25:51:27 | val |
+| LoopBoundInjectionBad.js:51:25:51:27 | val |
+| LoopBoundInjectionExitBad.js:8:9:8:16 | req.body |
+| LoopBoundInjectionExitBad.js:8:9:8:16 | req.body |
+| LoopBoundInjectionExitBad.js:10:9:10:16 | req.body |
+| LoopBoundInjectionExitBad.js:10:9:10:16 | req.body |
+| LoopBoundInjectionExitBad.js:12:10:12:17 | req.body |
+| LoopBoundInjectionExitBad.js:12:10:12:17 | req.body |
+| LoopBoundInjectionExitBad.js:14:14:14:21 | req.body |
+| LoopBoundInjectionExitBad.js:14:14:14:21 | req.body |
+| LoopBoundInjectionExitBad.js:17:17:17:19 | val |
+| LoopBoundInjectionExitBad.js:20:22:20:24 | val |
+| LoopBoundInjectionExitBad.js:20:22:20:24 | val |
+| LoopBoundInjectionExitBad.js:31:17:31:19 | val |
+| LoopBoundInjectionExitBad.js:34:22:34:24 | val |
+| LoopBoundInjectionExitBad.js:34:22:34:24 | val |
+| LoopBoundInjectionExitBad.js:46:18:46:20 | val |
+| LoopBoundInjectionExitBad.js:49:22:49:24 | val |
+| LoopBoundInjectionExitBad.js:49:22:49:24 | val |
+| LoopBoundInjectionExitBad.js:59:22:59:24 | val |
+| LoopBoundInjectionExitBad.js:60:8:60:10 | val |
+| LoopBoundInjectionExitBad.js:60:8:60:10 | val |
+| LoopBoundInjectionLodash.js:9:13:9:20 | req.body |
+| LoopBoundInjectionLodash.js:9:13:9:20 | req.body |
+| LoopBoundInjectionLodash.js:12:18:12:20 | val |
+| LoopBoundInjectionLodash.js:13:13:13:15 | val |
+| LoopBoundInjectionLodash.js:13:13:13:15 | val |
+edges
+| LoopBoundInjectionBad.js:8:13:8:20 | req.body | LoopBoundInjectionBad.js:17:18:17:20 | val |
+| LoopBoundInjectionBad.js:8:13:8:20 | req.body | LoopBoundInjectionBad.js:17:18:17:20 | val |
+| LoopBoundInjectionBad.js:10:15:10:22 | req.body | LoopBoundInjectionBad.js:25:20:25:22 | val |
+| LoopBoundInjectionBad.js:10:15:10:22 | req.body | LoopBoundInjectionBad.js:25:20:25:22 | val |
+| LoopBoundInjectionBad.js:12:25:12:32 | req.body | LoopBoundInjectionBad.js:35:30:35:32 | val |
+| LoopBoundInjectionBad.js:12:25:12:32 | req.body | LoopBoundInjectionBad.js:35:30:35:32 | val |
+| LoopBoundInjectionBad.js:14:19:14:26 | req.body | LoopBoundInjectionBad.js:46:24:46:26 | val |
+| LoopBoundInjectionBad.js:14:19:14:26 | req.body | LoopBoundInjectionBad.js:46:24:46:26 | val |
+| LoopBoundInjectionBad.js:17:18:17:20 | val | LoopBoundInjectionBad.js:20:25:20:27 | val |
+| LoopBoundInjectionBad.js:17:18:17:20 | val | LoopBoundInjectionBad.js:20:25:20:27 | val |
+| LoopBoundInjectionBad.js:25:20:25:22 | val | LoopBoundInjectionBad.js:29:16:29:18 | val |
+| LoopBoundInjectionBad.js:25:20:25:22 | val | LoopBoundInjectionBad.js:29:16:29:18 | val |
+| LoopBoundInjectionBad.js:35:30:35:32 | val | LoopBoundInjectionBad.js:38:15:38:17 | val |
+| LoopBoundInjectionBad.js:35:30:35:32 | val | LoopBoundInjectionBad.js:38:15:38:17 | val |
+| LoopBoundInjectionBad.js:46:24:46:26 | val | LoopBoundInjectionBad.js:51:25:51:27 | val |
+| LoopBoundInjectionBad.js:46:24:46:26 | val | LoopBoundInjectionBad.js:51:25:51:27 | val |
+| LoopBoundInjectionExitBad.js:8:9:8:16 | req.body | LoopBoundInjectionExitBad.js:17:17:17:19 | val |
+| LoopBoundInjectionExitBad.js:8:9:8:16 | req.body | LoopBoundInjectionExitBad.js:17:17:17:19 | val |
+| LoopBoundInjectionExitBad.js:10:9:10:16 | req.body | LoopBoundInjectionExitBad.js:31:17:31:19 | val |
+| LoopBoundInjectionExitBad.js:10:9:10:16 | req.body | LoopBoundInjectionExitBad.js:31:17:31:19 | val |
+| LoopBoundInjectionExitBad.js:12:10:12:17 | req.body | LoopBoundInjectionExitBad.js:46:18:46:20 | val |
+| LoopBoundInjectionExitBad.js:12:10:12:17 | req.body | LoopBoundInjectionExitBad.js:46:18:46:20 | val |
+| LoopBoundInjectionExitBad.js:14:14:14:21 | req.body | LoopBoundInjectionExitBad.js:59:22:59:24 | val |
+| LoopBoundInjectionExitBad.js:14:14:14:21 | req.body | LoopBoundInjectionExitBad.js:59:22:59:24 | val |
+| LoopBoundInjectionExitBad.js:17:17:17:19 | val | LoopBoundInjectionExitBad.js:20:22:20:24 | val |
+| LoopBoundInjectionExitBad.js:17:17:17:19 | val | LoopBoundInjectionExitBad.js:20:22:20:24 | val |
+| LoopBoundInjectionExitBad.js:31:17:31:19 | val | LoopBoundInjectionExitBad.js:34:22:34:24 | val |
+| LoopBoundInjectionExitBad.js:31:17:31:19 | val | LoopBoundInjectionExitBad.js:34:22:34:24 | val |
+| LoopBoundInjectionExitBad.js:46:18:46:20 | val | LoopBoundInjectionExitBad.js:49:22:49:24 | val |
+| LoopBoundInjectionExitBad.js:46:18:46:20 | val | LoopBoundInjectionExitBad.js:49:22:49:24 | val |
+| LoopBoundInjectionExitBad.js:59:22:59:24 | val | LoopBoundInjectionExitBad.js:60:8:60:10 | val |
+| LoopBoundInjectionExitBad.js:59:22:59:24 | val | LoopBoundInjectionExitBad.js:60:8:60:10 | val |
+| LoopBoundInjectionLodash.js:9:13:9:20 | req.body | LoopBoundInjectionLodash.js:12:18:12:20 | val |
+| LoopBoundInjectionLodash.js:9:13:9:20 | req.body | LoopBoundInjectionLodash.js:12:18:12:20 | val |
+| LoopBoundInjectionLodash.js:12:18:12:20 | val | LoopBoundInjectionLodash.js:13:13:13:15 | val |
+| LoopBoundInjectionLodash.js:12:18:12:20 | val | LoopBoundInjectionLodash.js:13:13:13:15 | val |
+#select
+| LoopBoundInjectionBad.js:20:25:20:27 | val | LoopBoundInjectionBad.js:8:13:8:20 | req.body | LoopBoundInjectionBad.js:20:25:20:27 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionBad.js:8:13:8:20 | req.body | here |
+| LoopBoundInjectionBad.js:29:16:29:18 | val | LoopBoundInjectionBad.js:10:15:10:22 | req.body | LoopBoundInjectionBad.js:29:16:29:18 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionBad.js:10:15:10:22 | req.body | here |
+| LoopBoundInjectionBad.js:38:15:38:17 | val | LoopBoundInjectionBad.js:12:25:12:32 | req.body | LoopBoundInjectionBad.js:38:15:38:17 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionBad.js:12:25:12:32 | req.body | here |
+| LoopBoundInjectionBad.js:51:25:51:27 | val | LoopBoundInjectionBad.js:14:19:14:26 | req.body | LoopBoundInjectionBad.js:51:25:51:27 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionBad.js:14:19:14:26 | req.body | here |
+| LoopBoundInjectionExitBad.js:20:22:20:24 | val | LoopBoundInjectionExitBad.js:8:9:8:16 | req.body | LoopBoundInjectionExitBad.js:20:22:20:24 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionExitBad.js:8:9:8:16 | req.body | here |
+| LoopBoundInjectionExitBad.js:34:22:34:24 | val | LoopBoundInjectionExitBad.js:10:9:10:16 | req.body | LoopBoundInjectionExitBad.js:34:22:34:24 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionExitBad.js:10:9:10:16 | req.body | here |
+| LoopBoundInjectionExitBad.js:49:22:49:24 | val | LoopBoundInjectionExitBad.js:12:10:12:17 | req.body | LoopBoundInjectionExitBad.js:49:22:49:24 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionExitBad.js:12:10:12:17 | req.body | here |
+| LoopBoundInjectionExitBad.js:60:8:60:10 | val | LoopBoundInjectionExitBad.js:14:14:14:21 | req.body | LoopBoundInjectionExitBad.js:60:8:60:10 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionExitBad.js:14:14:14:21 | req.body | here |
+| LoopBoundInjectionLodash.js:13:13:13:15 | val | LoopBoundInjectionLodash.js:9:13:9:20 | req.body | LoopBoundInjectionLodash.js:13:13:13:15 | val | Iterating over user-controlled object with a potentially unbounded .length property from $@. | LoopBoundInjectionLodash.js:9:13:9:20 | req.body | here |

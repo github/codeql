@@ -216,6 +216,10 @@
 | E.cs:293:13:293:24 | ... == ... | true | E.cs:293:15:293:19 | call to method M2 | E.cs:293:24:293:24 | (...) ... |
 | E.cs:293:13:293:24 | ... == ... | true | E.cs:293:24:293:24 | (...) ... | E.cs:293:15:293:19 | call to method M2 |
 | E.cs:321:13:321:30 | ... is ... | true | E.cs:321:14:321:21 | ... ?? ... | E.cs:321:27:321:30 | null |
+| E.cs:355:13:355:21 | dynamic call to operator != | false | E.cs:355:13:355:13 | access to local variable x | E.cs:355:18:355:21 | null |
+| E.cs:355:13:355:21 | dynamic call to operator != | false | E.cs:355:18:355:21 | null | E.cs:355:13:355:13 | access to local variable x |
+| E.cs:362:13:362:29 | ... != ... | false | E.cs:362:13:362:13 | access to local variable x | E.cs:362:18:362:29 | (...) ... |
+| E.cs:362:13:362:29 | ... != ... | false | E.cs:362:18:362:29 | (...) ... | E.cs:362:13:362:13 | access to local variable x |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:13:59:13 | access to parameter o | Forwarding.cs:59:18:59:21 | null |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:18:59:21 | null | Forwarding.cs:59:13:59:13 | access to parameter o |
 | Forwarding.cs:78:16:78:39 | call to method ReferenceEquals | true | Forwarding.cs:78:32:78:32 | access to parameter o | Forwarding.cs:78:35:78:38 | null |

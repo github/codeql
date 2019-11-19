@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks and sanitizers for reasoning about
  * method invocations with a user-controlled method name on objects
  * with unsafe methods, as well as extension points for adding your
  * own.

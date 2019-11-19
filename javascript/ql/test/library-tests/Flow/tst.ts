@@ -1,4 +1,4 @@
-namespace A {
+export namespace A {
   export let x = 42;
   setX();
   let x2 = x;
@@ -10,5 +10,3 @@ function setX() {
 }
 
 let a = A;
-
-// semmle-extractor-options: --source-type module

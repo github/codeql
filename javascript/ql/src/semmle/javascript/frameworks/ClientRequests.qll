@@ -452,6 +452,8 @@ module ClientRequest {
           or
           prop = "responseText" and responseType = "text"
           or
+          prop = "responseUrl" and responseType = "text"
+          or
           prop = "statusText" and responseType = "text"
           or
           prop = "responseXML" and responseType = "document"

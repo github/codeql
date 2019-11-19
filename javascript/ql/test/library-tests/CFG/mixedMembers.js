@@ -3,5 +3,3 @@ class Mixed {
   constructor(y) {}
   method(z) {}
 }
-
-// semmle-extractor-options: --experimental

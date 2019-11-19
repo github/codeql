@@ -31,16 +31,25 @@ class IndexOfCall extends DataFlow::MethodCallNode {
   }
 
   /**
+   * Holds if `recv` is the local source of the receiver of this call, and `m`
+   * is the name of the invoked method.
+   */
+  private predicate receiverAndMethodName(DataFlow::Node recv, string m) {
+    this.getReceiver().getALocalSource() = recv and
+    this.getMethodName() = m
+  }
+
+  /**
    * Gets an `indexOf` call with the same receiver, argument, and method name, including this call itself.
    */
   IndexOfCall getAnEquivalentIndexOfCall() {
-    result.getReceiver().getALocalSource() = this.getReceiver().getALocalSource() and
-    (
+    exists(DataFlow::Node recv, string m |
+      this.receiverAndMethodName(recv, m) and result.receiverAndMethodName(recv, m)
+    |
       result.getArgument(0).getALocalSource() = this.getArgument(0).getALocalSource()
       or
       result.getArgument(0).getStringValue() = this.getArgument(0).getStringValue()
-    ) and
-    result.getMethodName() = this.getMethodName()
+    )
   }
 
   /**

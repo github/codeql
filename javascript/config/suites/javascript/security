@@ -1,13 +1,16 @@
 + semmlecode-javascript-queries/DOM/TargetBlank.ql: /Security/CWE/CWE-200
 + semmlecode-javascript-queries/Electron/EnablingNodeIntegration.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-020/IncompleteHostnameRegExp.ql: /Security/CWE/CWE-020
++ semmlecode-javascript-queries/Security/CWE-020/IncompleteUrlSchemeCheck.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/IncompleteUrlSubstringSanitization.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/IncorrectSuffixCheck.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/MissingRegExpAnchor.ql: /Security/CWE/CWE-020
++ semmlecode-javascript-queries/Security/CWE-020/UselessRegExpCharacterEscape.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-022/TaintedPath.ql: /Security/CWE/CWE-022
 + semmlecode-javascript-queries/Security/CWE-022/ZipSlip.ql: /Security/CWE/CWE-022
 + semmlecode-javascript-queries/Security/CWE-078/CommandInjection.ql: /Security/CWE/CWE-078
 + semmlecode-javascript-queries/Security/CWE-078/IndirectCommandInjection.ql: /Security/CWE/CWE-078
++ semmlecode-javascript-queries/Security/CWE-078/ShellCommandInjectionFromEnvironment.ql: /Security/CWE/CWE-078
 + semmlecode-javascript-queries/Security/CWE-079/ReflectedXss.ql: /Security/CWE/CWE-079
 + semmlecode-javascript-queries/Security/CWE-079/StoredXss.ql: /Security/CWE/CWE-079
 + semmlecode-javascript-queries/Security/CWE-079/Xss.ql: /Security/CWE/CWE-079
@@ -42,6 +45,7 @@
 + semmlecode-javascript-queries/Security/CWE-798/HardcodedCredentials.ql: /Security/CWE/CWE-798
 + semmlecode-javascript-queries/Security/CWE-807/ConditionalBypass.ql: /Security/CWE/CWE-807
 + semmlecode-javascript-queries/Security/CWE-807/DifferentKindsComparisonBypass.ql: /Security/CWE/CWE-807
++ semmlecode-javascript-queries/Security/CWE-834/LoopBoundInjection.ql: /Security/CWE/CWE-834
 + semmlecode-javascript-queries/Security/CWE-843/TypeConfusionThroughParameterTampering.ql: /Security/CWE/CWE-834
 + semmlecode-javascript-queries/Security/CWE-916/InsufficientPasswordHash.ql: /Security/CWE/CWE-916
 + semmlecode-javascript-queries/Security/CWE-918/RequestForgery.ql: /Security/CWE/CWE-918

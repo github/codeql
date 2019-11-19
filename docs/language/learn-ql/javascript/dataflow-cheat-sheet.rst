@@ -1,14 +1,14 @@
 Data flow cheat sheet
 =====================
 
-This page describes parts of the JavaScript QL libraries commonly used for variant analysis and in data flow queries.
+This page describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
 
 Taint tracking path queries
 ---------------------------
 
 Use the following template to create a taint tracking path query:
 
-..  code-block:: ql
+.. code-block:: ql
 
     /**
      * @kind path-problem
@@ -31,7 +31,7 @@ Use the following template to create a taint tracking path query:
 This query reports flow paths which:
 
 - Begin at a node matched by `isSource <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Configuration.qll/predicate.Configuration$Configuration$isSource.1.html>`__.
-- Step through variables, function calls, properties, strings, arrays, promises, exceptions, and steps added by `isAdditionalTaintStep <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Configuration.qll/predicate.Configuration$Configuration$isAdditionalTaintStep.2.html>`__.
+- Step through variables, function calls, properties, strings, arrays, promises, exceptions, and steps added by `isAdditionalTaintStep <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TaintTracking.qll/predicate.TaintTracking$TaintTracking$Configuration$isAdditionalTaintStep.2.html>`__.
 - End at a node matched by `isSink <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Configuration.qll/predicate.Configuration$Configuration$isSink.1.html>`__.
 
 See also: `Global data flow <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#global-data-flow>`__ and :doc:`Constructing path queries <../writing-queries/path-queries>`.
@@ -134,10 +134,10 @@ Files
 
 -  `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__,
    `Folder <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Folder.html>`__ extends
-   `Container <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Container.html>`__ -- file or folder in the snapshot
+   `Container <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Container.html>`__ -- file or folder in the database
 
    -  `getBaseName <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/predicate.Files$Container$getBaseName.0.html>`__ -- the name of the file or folder
-   -  `getRelativePath <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/predicate.Files$Container$getRelativePath.0.html>`__ -- path relative to the snapshot root
+   -  `getRelativePath <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/predicate.Files$Container$getRelativePath.0.html>`__ -- path relative to the database root
 
 AST nodes
 ---------

@@ -29,4 +29,16 @@ void f2() {
     static C c{};
 }
 
+template<typename T>
+struct Sizeof {
+  enum sizeof_enum { value = sizeof(T) };
+};
+
+template<typename T>
+void f3() {
+  static int i = Sizeof<T>::value;
+}
+
+template void f3<int>();
+
 }

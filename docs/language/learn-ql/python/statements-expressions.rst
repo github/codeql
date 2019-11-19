@@ -4,7 +4,7 @@ Tutorial: Statements and expressions
 Statements
 ----------
 
-The bulk of Python code takes the form of statements. Each different type of statement in Python is represented by a separate class in QL.
+The bulk of Python code takes the form of statements. Each different type of statement in Python is represented by a separate CodeQL class.
 
 Here is the full class hierarchy:
 
@@ -72,7 +72,7 @@ An ``if`` statement where one branch is composed of just ``pass`` statements cou
 
 To find statements like this we can run the following query:
 
-**Find ``if`` statements with empty branches**
+**Find 'if' statements with empty branches**
 
 .. code-block:: ql
 
@@ -143,7 +143,7 @@ Python implementations commonly cache small integers and single character string
 
 We can check for these as follows:
 
-**Find comparisons to integer or string literals using ``is``**
+**Find comparisons to integer or string literals using** ``is``
 
 .. code-block:: ql
 
@@ -158,6 +158,8 @@ We can check for these as follows:
 
 The clause ``cmp.getOp(0) instanceof Is and cmp.getComparator(0) = literal`` checks that the first comparison operator is "is" and that the first comparator is a literal.
 
+.. pull-quote::
+
    Tip
 
    We have to use ``cmp.getOp(0)`` and ``cmp.getComparator(0)``\ as there is no ``cmp.getOp()`` or ``cmp.getComparator()``. The reason for this is that a ``Compare`` expression can have multiple operators. For example, the expression ``3 < x < 7`` has two operators and two comparators. You use ``cmp.getComparator(0)`` to get the first comparator (in this example the ``3``) and ``cmp.getComparator(1)`` to get the second comparator (in this example the ``7``).
@@ -165,7 +167,7 @@ The clause ``cmp.getOp(0) instanceof Is and cmp.getComparator(0) = literal`` che
 Example: Duplicates in dictionary literals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If there are duplicate keys in a Python dictionary, then the second key will overwrite the first, which is almost certainly a mistake. We can find these duplicates in QL, but the query is more complex than previous examples and will require us to write a ``predicate`` as a helper.
+If there are duplicate keys in a Python dictionary, then the second key will overwrite the first, which is almost certainly a mistake. We can find these duplicates with CodeQL, but the query is more complex than previous examples and will require us to write a ``predicate`` as a helper.
 
 Here is the query:
 
@@ -253,9 +255,7 @@ checks that the value of the attribute (the expression to the left of the dot in
 Class and function definitions
 ------------------------------
 
-As Python is a dynamically typed language, class, and function definitions are executable statements. This means that a class statement is both a statement and a scope containing statements. To represent this cleanly the class definition is broken into a number of parts. At runtime, when a class definition is executed a class object is created and then assigned to a variable of the same name in the scope enclosing the class. This class is created from a code-object representing the source code for the body of the class. To represent this the ``ClassDef`` class (which represents a ``class`` statement) subclasses ``Assign``. The ``Class`` class, which represents the body of the class, can be accessed via the ``ClassDef.getDefinedClass()``
-
-``FunctionDef``, ``Function`` are handled similarly.
+As Python is a dynamically typed language, class, and function definitions are executable statements. This means that a class statement is both a statement and a scope containing statements. To represent this cleanly the class definition is broken into a number of parts. At runtime, when a class definition is executed a class object is created and then assigned to a variable of the same name in the scope enclosing the class. This class is created from a code-object representing the source code for the body of the class. To represent this the ``ClassDef`` class (which represents a ``class`` statement) subclasses ``Assign``. The ``Class`` class, which represents the body of the class, can be accessed via the ``ClassDef.getDefinedClass()``. ``FunctionDef`` and ``Function`` are handled similarly.
 
 Here is the relevant part of the class hierarchy:
 
@@ -274,5 +274,5 @@ Here is the relevant part of the class hierarchy:
 What next?
 ----------
 
--  Experiment with the worked examples in the QL for Python tutorial topics: :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Experiment with the worked examples in the following tutorial topics: :doc:`Control flow <control-flow>` and :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

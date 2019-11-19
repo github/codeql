@@ -409,6 +409,14 @@ class BigIntLiteral extends @bigintliteral, Literal {
  */
 class StringLiteral extends @stringliteral, Literal {
   override string getStringValue() { result = getValue() }
+
+  /**
+   * Gets the value of this string literal parsed as a regular expression, if possible.
+   *
+   * All string literals have an associated regular expression tree, provided they can
+   * be parsed without syntax errors.
+   */
+  RegExpTerm asRegExp() { this = result.getParent() }
 }
 
 /**
@@ -2644,4 +2652,16 @@ class OptionalChainRoot extends ChainElem {
    * Gets an optional call or property access in the chain of this root.
    */
   OptionalUse getAnOptionalUse() { result = optionalUse }
+}
+
+/**
+ * An `import.meta` expression.
+ *
+ * Example:
+ * ```js
+ * let url = import.meta.url;
+ * ```
+ */
+class ImportMetaExpr extends @importmetaexpr, Expr {
+  override predicate isImpure() { none() }
 }

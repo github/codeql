@@ -157,7 +157,8 @@ where
     formatOtherArgType(ffc, n, expected, arg, actual) and
     not actual.getUnspecifiedType().(IntegralType).getSize() = sizeof_IntType()
   ) and
-  not arg.isAffectedByMacro()
+  not arg.isAffectedByMacro() and
+  not arg.isFromUninstantiatedTemplate(_)
 select arg,
   "This argument should be of type '" + expected.getName() + "' but is of type '" +
     actual.getUnspecifiedType().getName() + "'"

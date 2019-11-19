@@ -49,7 +49,7 @@ The ``JavadocTag`` has several subclasses representing specific kinds of Javadoc
 Example: Finding spurious @param tags
 -------------------------------------
 
-As an example of using the QL Javadoc API, let us write a query that finds ``@param`` tags that refer to a non-existent parameter.
+As an example of using the CodeQL Javadoc API, let us write a query that finds ``@param`` tags that refer to a non-existent parameter.
 
 For example, consider the following program:
 
@@ -110,7 +110,7 @@ For example, consider the following Java program:
 
 Notice that the Javadoc comment of ``A.foo`` documents two thrown exceptions: ``IOException`` and ``RuntimeException``. The former is clearly spurious: ``A.foo`` does not have a ``throws IOException`` clause, and thus cannot throw this kind of exception. On the other hand, ``RuntimeException`` is an unchecked exception, so it can be thrown even if there is no explicit ``throws`` clause listing it. Therefore, our query should flag the ``@throws`` tag for ``IOException``, but not the one for ``RuntimeException.``
 
-Recall from above that QL represents ``@throws`` tags using class ``ThrowsTag``. This class does not provide a member predicate for determining the exception type that is being documented, so we first need to implement our own version. A simple version might look as follows:
+Recall from above that the CodeQL library represents ``@throws`` tags using class ``ThrowsTag``. This class does not provide a member predicate for determining the exception type that is being documented, so we first need to implement our own version. A simple version might look as follows:
 
 .. code-block:: ql
 
@@ -170,7 +170,7 @@ This program defines its own class ``IOException``, which is unrelated to the cl
 
 As an example of the second problem, method ``A.foo`` from our previous example was annotated with a ``@throws RuntimeException`` tag. Our current version of ``mayThrow``, however, would think that ``A.foo`` cannot throw a ``RuntimeException``, and thus flag the tag as spurious.
 
-We can make ``mayThrow`` less restrictive by introducing a new QL class to represent unchecked exceptions, which are just the subtypes of ``java.lang.RuntimeException`` and ``java.lang.Error``:
+We can make ``mayThrow`` less restrictive by introducing a new class to represent unchecked exceptions, which are just the subtypes of ``java.lang.RuntimeException`` and ``java.lang.Error``:
 
 .. code-block:: ql
 
@@ -220,5 +220,5 @@ What next?
 ----------
 
 -  Find out how you can use the location API to define queries on whitespace: :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the QL standard library for Java: :doc:`AST class reference <ast-class-reference>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

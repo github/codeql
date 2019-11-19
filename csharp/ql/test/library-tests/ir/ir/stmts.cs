@@ -56,7 +56,8 @@ public class test_stmts
         {
             x = 1;
         }
-        catch {
+        catch 
+        {
             throw;
         }
         finally
@@ -73,8 +74,8 @@ public class test_stmts
             x = x - 1; 
         }
         
-        int a = 0, b = 10;
-        for (; a < b; ) 
+        int a, b = 10;
+        for (a = 0; a < b; ) 
         {
             a++;
         }
@@ -94,5 +95,17 @@ public class test_stmts
         }
         while (x < 10);
     }
-
+    
+    public static void checkedUnchecked()
+    {
+        int num = Int32.MaxValue;
+        unchecked
+        {
+            num = num + 1;
+        }
+        checked
+        {
+            num = num + 1;
+        }    
+    }
 }

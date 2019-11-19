@@ -1,10 +1,10 @@
-Introducing the QL libraries for JavaScript
-===========================================
+Introducing the CodeQL libraries for JavaScript
+===============================================
 
 Overview
 --------
 
-There is an extensive QL library for analyzing JavaScript code. The classes in this library present the data from a snapshot database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
+There is an extensive CodeQL library for analyzing JavaScript code. The classes in this library present the data from a CodeQL database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
 The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``javascript.qll`` imports most other standard library modules, so you can include the complete library by beginning your query with:
 
@@ -12,12 +12,12 @@ The library is implemented as a set of QL modules, that is, files with the exten
 
    import javascript
 
-The rest of this tutorial briefly summarizes the most important QL classes and predicates provided by this library, including references to the `detailed API documentation <https://help.semmle.com/qldoc/javascript/>`__ where applicable.
+The rest of this tutorial briefly summarizes the most important classes and predicates provided by this library, including references to the `detailed API documentation <https://help.semmle.com/qldoc/javascript/>`__ where applicable.
 
 Introducing the library
 -----------------------
 
-The QL JavaScript library presents information about JavaScript source code at different levels:
+The CodeQL library for JavaScript presents information about JavaScript source code at different levels:
 
 -  **Textual** — classes that represent source code as unstructured text files
 -  **Lexical** — classes that represent source code as a series of tokens and comments
@@ -39,12 +39,12 @@ Textual level
 
 At its most basic level, a JavaScript code base can simply be viewed as a collection of files organized into folders, where each file is composed of zero or more lines of text.
 
-Note that the textual content of a program is not included in the snapshot database unless you specifically request it during extraction. In particular, snapshots on LGTM do not normally include textual information.
+Note that the textual content of a program is not included in the CodeQL database unless you specifically request it during extraction. In particular, databases on LGTM (also known as "snapshots") do not normally include textual information.
 
 Files and folders
 ^^^^^^^^^^^^^^^^^
 
-In QL, files are represented as entities of class `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__, and folders as entities of class `Folder <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Folder.html>`__, both of which are subclasses of class `Container <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Container.html>`__.
+In the CodeQL libraries, files are represented as entities of class `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__, and folders as entities of class `Folder <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Folder.html>`__, both of which are subclasses of class `Container <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Container.html>`__.
 
 Class `Container <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Container.html>`__ provides the following member predicates:
 
@@ -56,7 +56,7 @@ Note that while ``getAFile`` and ``getAFolder`` are declared on class `Container
 
 Both files and folders have paths, which can be accessed by the predicate ``Container.getAbsolutePath()``. For example, if ``f`` represents a file with the path ``/home/user/project/src/index.js``, then ``f.getAbsolutePath()`` evaluates to the string ``"/home/user/project/src/index.js"``, while ``f.getParentContainer().getAbsolutePath()`` returns ``"/home/user/project/src"``.
 
-These paths are absolute file system paths. If you want to obtain the path of a file relative to the snapshot source location, use ``Container.getRelativePath()`` instead. Note, however, that a snapshot may contain files that are not located underneath the snapshot source location; for such files, ``getRelativePath()`` will not return anything.
+These paths are absolute file system paths. If you want to obtain the path of a file relative to the source location in the CodeQL database, use ``Container.getRelativePath()`` instead. Note, however, that a database may contain files that are not located underneath the source location; for such files, ``getRelativePath()`` will not return anything.
 
 The following member predicates of class `Container <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$Container.html>`__ provide more information about the name of a file or folder:
 
@@ -78,9 +78,9 @@ For example, the following query computes, for each folder, the number of JavaSc
 Locations
 ^^^^^^^^^
 
-Most entities in a snapshot database have an associated source location. Locations are identified by four pieces of information: a file, a start line, a start column, an end line, and an end column. Line and column counts are 1-based (so the first character of a file is at line 1, column 1), and the end position is inclusive.
+Most entities in a CodeQL database have an associated source location. Locations are identified by four pieces of information: a file, a start line, a start column, an end line, and an end column. Line and column counts are 1-based (so the first character of a file is at line 1, column 1), and the end position is inclusive.
 
-All entities associated with a source location belong to the QL class `Locatable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Locations.qll/type.Locations$Locatable.html>`__. The location itself is modeled by the QL class `Location <https://help.semmle.com/qldoc/javascript/semmle/javascript/Locations.qll/type.Locations$Location.html>`__ and can be accessed through the member predicate ``Locatable.getLocation()``. The `Location <https://help.semmle.com/qldoc/javascript/semmle/javascript/Locations.qll/type.Locations$Location.html>`__ class provides the following member predicates:
+All entities associated with a source location belong to the class `Locatable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Locations.qll/type.Locations$Locatable.html>`__. The location itself is modeled by the class `Location <https://help.semmle.com/qldoc/javascript/semmle/javascript/Locations.qll/type.Locations$Location.html>`__ and can be accessed through the member predicate ``Locatable.getLocation()``. The `Location <https://help.semmle.com/qldoc/javascript/semmle/javascript/Locations.qll/type.Locations$Location.html>`__ class provides the following member predicates:
 
 -  ``Location.getFile()``, ``Location.getStartLine()``, ``Location.getStartColumn()``, ``Location.getEndLine()``, ``Location.getEndColumn()`` return detailed information about the location.
 -  ``Location.getNumLines()`` returns the number of (whole or partial) lines covered by the location.
@@ -90,12 +90,12 @@ All entities associated with a source location belong to the QL class `Locatable
 Lines
 ^^^^^
 
-Lines of text in files are represented by the QL class `Line <https://help.semmle.com/qldoc/javascript/semmle/javascript/Lines.qll/type.Lines$Line.html>`__. This class offers the following member predicates:
+Lines of text in files are represented by the class `Line <https://help.semmle.com/qldoc/javascript/semmle/javascript/Lines.qll/type.Lines$Line.html>`__. This class offers the following member predicates:
 
 -  ``Line.getText()`` returns the text of the line, excluding any terminating newline characters.
 -  ``Line.getTerminator()`` returns the terminator character(s) of the line. The last line in a file may not have any terminator characters, in which case this predicate does not return anything; otherwise it returns either the two-character string ``"\r\n"`` (carriage-return followed by newline), or one of the one-character strings ``"\n"`` (newline), ``"\r"`` (carriage-return), ``"\u2028"`` (Unicode character LINE SEPARATOR), ``"\u2029"`` (Unicode character PARAGRAPH SEPARATOR).
 
-Note that, as mentioned above, the textual representation of the program is not included in the snapshot database by default.
+Note that, as mentioned above, the textual representation of the program is not included in the CodeQL database by default.
 
 Lexical level
 ~~~~~~~~~~~~~
@@ -180,9 +180,9 @@ As an example of a query using only lexical information, consider the following 
 Syntactic level
 ~~~~~~~~~~~~~~~
 
-The majority of classes in the QL JavaScript library is concerned with representing a JavaScript program as a collection of `abstract syntax trees <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (ASTs).
+The majority of classes in the JavaScript library is concerned with representing a JavaScript program as a collection of `abstract syntax trees <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (ASTs).
 
-The QL class `ASTNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$ASTNode.html>`__ contains all entities representing nodes in the abstract syntax trees and defines generic tree traversal predicates:
+The class `ASTNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$ASTNode.html>`__ contains all entities representing nodes in the abstract syntax trees and defines generic tree traversal predicates:
 
 -  ``ASTNode.getChild(i)``: returns the ``i``\ th child of this AST node.
 -  ``ASTNode.getAChild()``: returns any child of this AST node.
@@ -224,7 +224,7 @@ The `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.ql
 
 .. pull-quote::
 
-    Note
+   Note
 
    By default, LGTM filters out alerts in minified top-levels, since they are often hard to interpret. When writing your own queries in the LGTM query console, this filtering is *not* done automatically, so you may want to explicitly add a condition of the form ``and not e.getTopLevel().isMinified()`` or similar to your query to exclude results in minified code.
 
@@ -352,12 +352,12 @@ As an example of how to use expression AST nodes, here is a query that finds exp
 Functions
 ^^^^^^^^^
 
-JavaScript provides several ways of defining functions: in ECMAScript 5, there are function declaration statements and function expressions, and ECMAScript 2015 adds arrow function expressions. These different syntactic forms are represented by the QL classes `FunctionDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$FunctionDeclStmt.html>`__ (a subclass of `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__), `FunctionExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$FunctionExpr.html>`__ (a subclass of `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__) and `ArrowFunctionExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$ArrowFunctionExpr.html>`__ (also a subclass of
+JavaScript provides several ways of defining functions: in ECMAScript 5, there are function declaration statements and function expressions, and ECMAScript 2015 adds arrow function expressions. These different syntactic forms are represented by the classes `FunctionDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$FunctionDeclStmt.html>`__ (a subclass of `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__), `FunctionExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$FunctionExpr.html>`__ (a subclass of `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__) and `ArrowFunctionExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$ArrowFunctionExpr.html>`__ (also a subclass of
 `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__), respectively. All three are subclasses of `Function <https://help.semmle.com/qldoc/javascript/semmle/javascript/Functions.qll/type.Functions$Function.html>`__, which provides common member predicates for accessing function parameters or the function body:
 
 -  ``Function.getId()`` returns the `Identifier <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Identifier.html>`__ naming the function, which may not be defined for function expressions.
 -  ``Function.getParameter(i)`` and ``Function.getAParameter()`` access the ``i``\ th parameter or any parameter, respectively; parameters are modeled by the class `Parameter <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Parameter.html>`__, which is a subclass of `BindingPattern <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$BindingPattern.html>`__ (see below).
--  ``Function.getBody()`` returns the body of the function, which is usually a `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__, but may be an `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ for arrow function expressions and legacy `expression closures <https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Closures#Expression_closures>`__.
+-  ``Function.getBody()`` returns the body of the function, which is usually a `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__, but may be an `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ for arrow function expressions and legacy `expression closures <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Expression_closures>`__.
 
 As an example, here is a query that finds all expression closures:
 
@@ -389,7 +389,7 @@ As another example, this query finds functions that have two parameters that bin
 Classes
 ^^^^^^^
 
-Classes can be defined either by class declaration statements, represented by the QL class `ClassDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassDeclStmt.html>`__ (which is a subclass of `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__), or by class expressions, represented by the QL class `ClassExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassExpr.html>`__ (which is a subclass of `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__). Both of these classes are also subclasses of `ClassDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassDefinition.html>`__, which provides common member predicates for accessing the name of a class, its superclass, and its body:
+Classes can be defined either by class declaration statements, represented by the CodeQL class `ClassDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassDeclStmt.html>`__ (which is a subclass of `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__), or by class expressions, represented by the CodeQL class `ClassExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassExpr.html>`__ (which is a subclass of `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__). Both of these classes are also subclasses of `ClassDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassDefinition.html>`__, which provides common member predicates for accessing the name of a class, its superclass, and its body:
 
 -  ``ClassDefinition.getIdentifier()`` returns the `Identifier <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Identifier.html>`__ naming the function, which may not be defined for class expressions.
 -  ``ClassDefinition.getSuperClass()`` returns the `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ specifying the superclass, which may not be defined.
@@ -400,14 +400,14 @@ Classes can be defined either by class declaration statements, represented by th
 
 Note that class fields are not a standard language feature yet, so details of their representation may change.
 
-Method definitions are represented by the QL class `MethodDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$MethodDefinition.html>`__, which (like its counterpart `FieldDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$FieldDefinition.html>`__ for fields) is a subclass of `MemberDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$MemberDefinition.html>`__. That class provides the following important member predicates:
+Method definitions are represented by the class `MethodDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$MethodDefinition.html>`__, which (like its counterpart `FieldDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$FieldDefinition.html>`__ for fields) is a subclass of `MemberDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$MemberDefinition.html>`__. That class provides the following important member predicates:
 
 -  ``MemberDefinition.isStatic()``: holds if this is a static member.
 -  ``MemberDefinition.isComputed()``: holds if the name of this member is computed at runtime.
 -  ``MemberDefinition.getName()``: gets the name of this member if it can be determined statically.
 -  ``MemberDefinition.getInit()``: gets the initializer of this field; for methods, the initializer is a function expressions, for fields it may be an arbitrary expression, and may be undefined.
 
-There are three QL classes for modeling special methods: `ConstructorDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ConstructorDefinition.html>`__ models constructors, while `GetterMethodDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$GetterMethodDefinition.html>`__ and `SetterMethodDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$SetterMethodDefinition.html>`__ model getter and setter methods, respectively.
+There are three classes for modeling special methods: `ConstructorDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ConstructorDefinition.html>`__ models constructors, while `GetterMethodDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$GetterMethodDefinition.html>`__ and `SetterMethodDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$SetterMethodDefinition.html>`__ model getter and setter methods, respectively.
 
 Declarations and binding patterns
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -472,7 +472,7 @@ As an example of a query involving properties, consider the following query that
 Modules
 ^^^^^^^
 
-The JavaScript library has support for working with ECMAScript 2015 modules, as well as legacy CommonJS modules (still commonly employed by Node.js code bases) and AMD-style modules. The QL classes `ES2015Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/ES2015Modules.qll/type.ES2015Modules$ES2015Module.html>`__, `NodeModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$NodeModule.html>`__ and `AMDModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/AMD.qll/type.AMD$AMDModule.html>`__ represent these three types of modules, and all three extend the common superclass `Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/Modules.qll/type.Modules$Module.html>`__.
+The JavaScript library has support for working with ECMAScript 2015 modules, as well as legacy CommonJS modules (still commonly employed by Node.js code bases) and AMD-style modules. The classes `ES2015Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/ES2015Modules.qll/type.ES2015Modules$ES2015Module.html>`__, `NodeModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$NodeModule.html>`__, and `AMDModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/AMD.qll/type.AMD$AmdModule.html>`__ represent these three types of modules, and all three extend the common superclass `Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/Modules.qll/type.Modules$Module.html>`__.
 
 The most important member predicates defined by `Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/Modules.qll/type.Modules$Module.html>`__ are:
 
@@ -485,12 +485,12 @@ Moreover, there is a class `Import <https://help.semmle.com/qldoc/javascript/sem
 Name binding
 ~~~~~~~~~~~~
 
-Name binding is modeled in the JavaScript QL libraries using four concepts: *scopes*, *variables*, *variable declarations*, and *variable accesses*, represented by the QL classes `Scope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Scope.html>`__, `Variable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__, `VarDecl <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarDecl.html>`__ and `VarAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarAccess.html>`__, respectively.
+Name binding is modeled in the JavaScript libraries using four concepts: *scopes*, *variables*, *variable declarations*, and *variable accesses*, represented by the classes `Scope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Scope.html>`__, `Variable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__, `VarDecl <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarDecl.html>`__ and `VarAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarAccess.html>`__, respectively.
 
 Scopes
 ^^^^^^
 
-In ECMAScript 5, there are three kinds of scopes: the global scope (one per program), function scopes (one per function), and catch clause scopes (one per ``catch`` clause). These three kinds of scopes are represented by the QL classes `GlobalScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$GlobalScope.html>`__, `FunctionScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$FunctionScope.html>`__ and `CatchScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$CatchScope.html>`__. ECMAScript 2015 adds block scopes for ``let``-bound variables, which are also represented by QL class `Scope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Scope.html>`__, class expression scopes (`ClassExprScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassExprScope.html>`__),
+In ECMAScript 5, there are three kinds of scopes: the global scope (one per program), function scopes (one per function), and catch clause scopes (one per ``catch`` clause). These three kinds of scopes are represented by the classes `GlobalScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$GlobalScope.html>`__, `FunctionScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$FunctionScope.html>`__ and `CatchScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$CatchScope.html>`__. ECMAScript 2015 adds block scopes for ``let``-bound variables, which are also represented by class `Scope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Scope.html>`__, class expression scopes (`ClassExprScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassExprScope.html>`__),
 and module scopes (`ModuleScope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$ModuleScope.html>`__).
 
 Class `Scope <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Scope.html>`__ provides the following API:
@@ -510,7 +510,7 @@ It is important not to confuse variables and their declarations: local variables
 Variable declarations and accesses
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Variables may be declared by variable declarators, by function declaration statements and expressions, by class declaration statements or expressions, or by parameters of functions and ``catch`` clauses. While these declarations differ in their syntactic form, in each case there is an identifier naming the declared variable. We consider that identifier to be the declaration proper, and assign it the QL class `VarDecl <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarDecl.html>`__. Identifiers that reference a variable, on the other hand, are given the QL class `VarAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarAccess.html>`__.
+Variables may be declared by variable declarators, by function declaration statements and expressions, by class declaration statements or expressions, or by parameters of functions and ``catch`` clauses. While these declarations differ in their syntactic form, in each case there is an identifier naming the declared variable. We consider that identifier to be the declaration proper, and assign it the class `VarDecl <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarDecl.html>`__. Identifiers that reference a variable, on the other hand, are given the class `VarAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarAccess.html>`__.
 
 The most important predicates involving variables, their declarations, and their accesses are as follows:
 
@@ -538,9 +538,9 @@ As an example, consider the following query which finds distinct function declar
 Control flow
 ~~~~~~~~~~~~
 
-A different program representation in terms of intraprocedural control flow graphs (CFGs) is provided by the QL classes in library `CFG.qll <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/module.CFG.html>`__.
+A different program representation in terms of intraprocedural control flow graphs (CFGs) is provided by the classes in library `CFG.qll <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/module.CFG.html>`__.
 
-Class `ControlFlowNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowNode.html>`__ represents a single node in the control flow graph, which is either an expression, a statement, or a synthetic control flow node. Note that `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ and `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__ do not inherit from `ControlFlowNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowNode.html>`__ at the QL level, although their entity types are compatible, so you can explicitly cast from one to the other if you need to map between the AST-based and the CFG-based program representations.
+Class `ControlFlowNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowNode.html>`__ represents a single node in the control flow graph, which is either an expression, a statement, or a synthetic control flow node. Note that `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ and `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__ do not inherit from `ControlFlowNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowNode.html>`__ at the CodeQL level, although their entity types are compatible, so you can explicitly cast from one to the other if you need to map between the AST-based and the CFG-based program representations.
 
 There are two kinds of synthetic control flow nodes: entry nodes (class `ControlFlowEntryNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowEntryNode.html>`__), which represent the beginning of a top-level or function, and exit nodes (class `ControlFlowExitNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowExitNode.html>`__), which represent their end. They do not correspond to any AST nodes, but simply serve as the unique entry point and exit point of a control flow graph. Entry and exit nodes can be accessed through the predicates ``StmtContainer.getEntry()`` and ``StmtContainer.getExit()``.
 
@@ -578,7 +578,7 @@ Data flow
 Definitions and uses
 ^^^^^^^^^^^^^^^^^^^^
 
-Library `DefUse.qll <https://help.semmle.com/qldoc/javascript/semmle/javascript/DefUse.qll/module.DefUse.html>`__ provides QL classes and predicates to determine `def-use <http://en.wikipedia.org/wiki/Use-define_chain>`__ relationships between definitions and uses of variables.
+Library `DefUse.qll <https://help.semmle.com/qldoc/javascript/semmle/javascript/DefUse.qll/module.DefUse.html>`__ provides classes and predicates to determine `def-use <http://en.wikipedia.org/wiki/Use-define_chain>`__ relationships between definitions and uses of variables.
 
 Classes `VarDef <https://help.semmle.com/qldoc/javascript/semmle/javascript/DefUse.qll/type.DefUse$VarDef.html>`__ and `VarUse <https://help.semmle.com/qldoc/javascript/semmle/javascript/DefUse.qll/type.DefUse$VarUse.html>`__ contain all expressions that define and use a variable, respectively. For the former, you can use predicate ``VarDef.getAVariable()`` to find out which variables are defined by a given variable definition (recall that destructuring assignments in ECMAScript 2015 define several variables at the same time). Similarly, predicate ``VarUse.getVariable()`` returns the (single) variable being accessed by a variable use.
 
@@ -645,7 +645,7 @@ Note that the data flow modeling in this library is intraprocedural, that is, fl
 Type inference
 ~~~~~~~~~~~~~~
 
-The library ``semmle.javascript.dataflow.TypeInference`` implements a simple type inference for JavaScript based on intraprocedural, heap-insensitive flow analysis. Basically, the inference algorithm approximates the possible concrete runtime values of variables and expressions as sets of abstract values (represented by QL class `AbstractValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/AbstractValues.qll/type.AbstractValues$AbstractValue.html>`__), each of which stands for a set of concrete values.
+The library ``semmle.javascript.dataflow.TypeInference`` implements a simple type inference for JavaScript based on intraprocedural, heap-insensitive flow analysis. Basically, the inference algorithm approximates the possible concrete runtime values of variables and expressions as sets of abstract values (represented by the class `AbstractValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/AbstractValues.qll/type.AbstractValues$AbstractValue.html>`__), each of which stands for a set of concrete values.
 
 For example, there is an abstract value representing all non-zero numbers, and another representing all non-empty strings except for those that can be converted to a number. Both of these abstract values are fairly coarse approximations that represent very large sets of concrete values.
 
@@ -657,7 +657,7 @@ Each indefinite abstract value is associated with a string value describing the 
 
 To check whether an abstract value is indefinite, you can use the ``isIndefinite`` member predicate. Its single argument describes the cause of imprecision.
 
-Each abstract value has one or more associated types (QL class `InferredType <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/InferredTypes.qll/type.InferredTypes$InferredType.html>`__ corresponding roughly to the type tags computed by the ``typeof`` operator. The types are ``null``, ``undefined``, ``boolean``, ``number``, ``string``, ``function``, ``class``, ``date`` and ``object``.
+Each abstract value has one or more associated types (CodeQL class `InferredType <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/InferredTypes.qll/type.InferredTypes$InferredType.html>`__ corresponding roughly to the type tags computed by the ``typeof`` operator. The types are ``null``, ``undefined``, ``boolean``, ``number``, ``string``, ``function``, ``class``, ``date`` and ``object``.
 
 To access the results of the type inference, use class `DataFlow::AnalyzedNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TypeInference.qll/type.TypeInference$AnalyzedNode.html>`__: any `DataFlow::Node <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/DataFlow.qll/type.DataFlow$DataFlow$Node.html>`__ can be cast to this class, and additionally there is a convenience predicate ``Expr::analyze`` that maps expressions directly to their corresponding ``AnalyzedNode``\ s.
 
@@ -682,28 +682,28 @@ You can add custom type inference rules by defining new subclasses of ``DataFlow
 Call graph
 ~~~~~~~~~~
 
-The library ``semmle.javascript.dataflow.CallGraph`` implements a simple `call graph <http://en.wikipedia.org/wiki/Call_graph>`__ construction algorithm to statically approximate the possible call targets of function calls and ``new`` expressions. Due to the dynamically typed nature of JavaScript and its support for higher-order functions and reflective language features, building static call graphs is quite difficult. Simple call graph algorithms tend to be incomplete, that is, they often fail to resolve all possible call targets. More sophisticated algorithms can suffer from the opposite problem of imprecision, that is, they may infer many spurious call targets.
+The JavaScript library implements a simple `call graph <http://en.wikipedia.org/wiki/Call_graph>`__ construction algorithm to statically approximate the possible call targets of function calls and ``new`` expressions. Due to the dynamically typed nature of JavaScript and its support for higher-order functions and reflective language features, building static call graphs is quite difficult. Simple call graph algorithms tend to be incomplete, that is, they often fail to resolve all possible call targets. More sophisticated algorithms can suffer from the opposite problem of imprecision, that is, they may infer many spurious call targets.
 
-The library provides a QL class `CallSite <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/CallGraph.qll/type.CallGraph$CallSite.html>`__, which extends `InvokeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$InvokeExpr.html>`__ with a member predicate ``getACallee()`` that computes possible callees of the given call site, that is, functions that may at runtime be invoked by this expression.
+The call graph is represented by the member predicate ``getACallee()`` of class `DataFlow::InvokeNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Nodes.qll/type.Nodes$InvokeNode.html>`__, which computes possible callees of the given invocation, that is, functions that may at runtime be invoked by this expression.
 
-Furthermore, there are three member predicates that indicate the quality of the callee information for this call site:
+Furthermore, there are three member predicates that indicate the quality of the callee information for this invocation:
 
--  ``CallSite.isImprecise()``: holds for call sites where the call graph builder might infer spurious call targets.
--  ``CallSite.isIncomplete()``: holds for call sites where the call graph builder might fail to infer possible call targets.
--  ``CallSite.isUncertain()``: holds if either ``isImprecise()`` or ``isUncertain()`` holds.
+-  ``DataFlow::InvokeNode.isImprecise()``: holds for invocations where the call graph builder might infer spurious call targets.
+-  ``DataFlow::InvokeNode.isIncomplete()``: holds for invocations where the call graph builder might fail to infer possible call targets.
+-  ``DataFlow::InvokeNode.isUncertain()``: holds if either ``isImprecise()`` or ``isUncertain()`` holds.
 
-As an example of a call-graph-based query, here is a query to find call sites for which the call graph builder could not find any callees, despite the analysis being complete for this call site:
+As an example of a call-graph-based query, here is a query to find invocations for which the call graph builder could not find any callees, despite the analysis being complete for this invocation:
 
 .. code-block:: ql
 
    import javascript
 
-   from CallSite cs
-   where not cs.isIncomplete() and
-         not exists(cs.getACallee())
-   select cs, "Unable to find a callee for this call site."
+   from DataFlow::InvokeNode invk
+   where not invk.isIncomplete() and
+         not exists(invk.getACallee())
+   select invk, "Unable to find a callee for this invocation."
 
-➤ `See this in the query console <https://lgtm.com/query/1506065666123/>`__
+➤ `See this in the query console <https://lgtm.com/query/3260345690335671362/>`__
 
 Inter-procedural data flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -808,7 +808,7 @@ HTTP framework libraries
 
 The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks. 
 
-Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapijs.com/>`__ and `Restify <https://restify.com/>`__.
+Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapijs.com/>`__ and `Restify <http://restify.com/>`__.
 
 The most important classes include (all in module ``HTTP``):
 
@@ -820,12 +820,12 @@ The most important classes include (all in module ``HTTP``):
 -  ``CookieDefinition``: an expression that sets a cookie in an HTTP response.
 -  ``RequestInputAccess``: an expression that accesses user-controlled request data.
 
-For each framework library, there is a corresponding QL library (for example ``semmle.javacript.frameworks.Express``) that instantiates the above classes for that framework and adds framework-specific classes.
+For each framework library, there is a corresponding CodeQL library (for example ``semmle.javacript.frameworks.Express``) that instantiates the above classes for that framework and adds framework-specific classes.
 
 Node.js
 ^^^^^^^
 
-The ``semmle.javascript.NodeJS`` library provides support for working with `Node.js <http://nodejs.org/>`__ modules through the following QL classes:
+The ``semmle.javascript.NodeJS`` library provides support for working with `Node.js <http://nodejs.org/>`__ modules through the following classes:
 
 -  `NodeModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$NodeModule.html>`__: a top-level that defines a Node.js module; see the section on `Modules <#modules>`__ for more information.
 -  `Require <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$Require.html>`__: a call to the special ``require`` function that imports a module.
@@ -844,7 +844,7 @@ As an example of the use of these classes, here is a query that counts for every
 NPM
 ^^^
 
-The ``semmle.javascript.NPM`` library provides support for working with `NPM <http://npmjs.org/>`__ packages through the following QL classes:
+The ``semmle.javascript.NPM`` library provides support for working with `NPM <http://npmjs.org/>`__ packages through the following classes:
 
 -  `PackageJSON <https://help.semmle.com/qldoc/javascript/semmle/javascript/NPM.qll/type.NPM$PackageJSON.html>`__: a ``package.json`` file describing an NPM package; various getter predicates are available for accessing detailed information about the package, which are described in the `online API documentation <https://help.semmle.com/qldoc/javascript/semmle/javascript/NPM.qll/module.NPM.html>`__.
 -  `BugTrackerInfo <https://help.semmle.com/qldoc/javascript/semmle/javascript/NPM.qll/type.NPM$BugTrackerInfo.html>`__, `ContributorInfo <https://help.semmle.com/qldoc/javascript/semmle/javascript/NPM.qll/type.NPM$ContributorInfo.html>`__, `RepositoryInfo <https://help.semmle.com/qldoc/javascript/semmle/javascript/NPM.qll/type.NPM$RepositoryInfo.html>`__: these classes model parts of the ``package.json`` file providing information on bug tracking systems, contributors and repositories.
@@ -903,7 +903,7 @@ Miscellaneous
 Externs
 ^^^^^^^
 
-The ``semmle.javascript.Externs`` library provides support for working with `externs <https://developers.google.com/closure/compiler/docs/api-tutorial3>`__ through the following QL classes:
+The ``semmle.javascript.Externs`` library provides support for working with `externs <https://developers.google.com/closure/compiler/docs/api-tutorial3>`__ through the following classes:
 
 -  `ExternalDecl <https://help.semmle.com/qldoc/javascript/semmle/javascript/Externs.qll/type.Externs$ExternalDecl.html>`__: common superclass modeling all different kinds of externs declarations; it defines two member predicates:
 
@@ -938,7 +938,7 @@ JSDoc
 
 The ``semmle.javascript.JSDoc`` library provides support for working with `JSDoc comments <http://usejsdoc.org/>`__. Documentation comments are parsed into an abstract syntax tree representation closely following the format employed by the `Doctrine <https://github.com/Constellation/doctrine>`__ JSDoc parser.
 
-A JSDoc comment as a whole is represented by an entity of QL class `JSDoc <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDoc.html>`__, while individual tags are represented by QL class `JSDocTag <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocTag.html>`__. Important member predicates of these two classes include:
+A JSDoc comment as a whole is represented by an entity of class `JSDoc <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDoc.html>`__, while individual tags are represented by class `JSDocTag <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocTag.html>`__. Important member predicates of these two classes include:
 
 -  ``JSDoc.getDescription()`` returns the descriptive header of the JSDoc comment, if any.
 -  ``JSDoc.getComment()`` maps the `JSDoc <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDoc.html>`__ entity to its underlying `Comment <https://help.semmle.com/qldoc/javascript/semmle/javascript/Comments.qll/type.Comments$Comment.html>`__ entity.
@@ -948,7 +948,7 @@ A JSDoc comment as a whole is represented by an entity of QL class `JSDoc <https
 -  ``JSDocTag.getType()`` returns the type of the parameter or variable documented by this tag.
 -  ``JSDocTag.getDescription()`` returns the description associated with this tag.
 
-Types in JSDoc comments are represented by the QL class `JSDocTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocTypeExpr.html>`__ and its subclasses, which again represent type expressions as abstract syntax trees. Examples of type expressions are `JSDocAnyTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocAnyTypeExpr.html>`__, representing the "any" type ``*``, or `JSDocNullTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocNullTypeExpr.html>`__, representing the null type.
+Types in JSDoc comments are represented by the class `JSDocTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocTypeExpr.html>`__ and its subclasses, which again represent type expressions as abstract syntax trees. Examples of type expressions are `JSDocAnyTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocAnyTypeExpr.html>`__, representing the "any" type ``*``, or `JSDocNullTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocNullTypeExpr.html>`__, representing the null type.
 
 As an example, here is a query that finds ``@param`` tags that do not specify the name of the documented parameter:
 
@@ -979,9 +979,9 @@ However, unlike HTML, JSX is interleaved with JavaScript, hence `JSXElement <htt
 JSON
 ^^^^
 
-The ``semmle.javascript.JSON`` library provides support for working with `JSON <http://json.org/>`__ files that were processed by the JavaScript extractor when building the snapshot database.
+The ``semmle.javascript.JSON`` library provides support for working with `JSON <http://json.org/>`__ files that were processed by the JavaScript extractor when building the CodeQL database.
 
-JSON files are modeled as trees of JSON values. Each JSON value is represented by an entity of QL class `JSONValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSON.qll/type.JSON$JSONValue.html>`__, which provides the following member predicates:
+JSON files are modeled as trees of JSON values. Each JSON value is represented by an entity of class `JSONValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSON.qll/type.JSON$JSONValue.html>`__, which provides the following member predicates:
 
 -  ``JSONValue.getParent()`` returns the JSON object or array in which this value occurs.
 -  ``JSONValue.getChild(i)`` returns the ``i``\ th child of this JSON object or array.
@@ -1000,16 +1000,16 @@ Class `JSONValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSO
 Regular expressions
 ^^^^^^^^^^^^^^^^^^^
 
-The ``semmle.javascript.Regexp`` library provides support for working with regular expression literals. The syntactic structure of regular expression literals is represented as an abstract syntax tree of regular expression terms, modeled by the QL class `RegExpTerm <https://help.semmle.com/qldoc/javascript/semmle/javascript/Regexp.qll/type.Regexp$RegExpTerm.html>`__. Similar to `ASTNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$ASTNode.html>`__, class `RegExpTerm <https://help.semmle.com/qldoc/javascript/semmle/javascript/Regexp.qll/type.Regexp$RegExpTerm.html>`__ provides member predicates ``getParent()`` and ``getChild(i)`` to navigate the structure of the syntax tree.
+The ``semmle.javascript.Regexp`` library provides support for working with regular expression literals. The syntactic structure of regular expression literals is represented as an abstract syntax tree of regular expression terms, modeled by the class `RegExpTerm <https://help.semmle.com/qldoc/javascript/semmle/javascript/Regexp.qll/type.Regexp$RegExpTerm.html>`__. Similar to `ASTNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$ASTNode.html>`__, class `RegExpTerm <https://help.semmle.com/qldoc/javascript/semmle/javascript/Regexp.qll/type.Regexp$RegExpTerm.html>`__ provides member predicates ``getParent()`` and ``getChild(i)`` to navigate the structure of the syntax tree.
 
 Various subclasses of `RegExpTerm <https://help.semmle.com/qldoc/javascript/semmle/javascript/Regexp.qll/type.Regexp$RegExpTerm.html>`__ model different kinds of regular expression constructs and operators; see `the API documentation <https://help.semmle.com/qldoc/javascript/semmle/javascript/Regexp.qll/module.Regexp.html>`__ for details.
 
 YAML
 ^^^^
 
-The ``semmle.javascript.YAML`` library provides support for working with `YAML <http://yaml.org/>`__ files that were processed by the JavaScript extractor when building the snapshot database.
+The ``semmle.javascript.YAML`` library provides support for working with `YAML <http://yaml.org/>`__ files that were processed by the JavaScript extractor when building the CodeQL database.
 
-YAML files are modeled as trees of YAML nodes. Each YAML node is represented by an entity of QL class `YAMLNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/YAML.qll/type.YAML$YAMLNode.html>`__, which provides, among others, the following member predicates:
+YAML files are modeled as trees of YAML nodes. Each YAML node is represented by an entity of class `YAMLNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/YAML.qll/type.YAML$YAMLNode.html>`__, which provides, among others, the following member predicates:
 
 -  ``YAMLNode.getParentNode()`` returns the YAML collection in which this node is syntactically nested.
 -  ``YAMLNode.getChildNode(i)`` returns the ``i``\ th child node of this node, ``YAMLNode.getAChildNode()`` returns any child node of this node.
@@ -1029,6 +1029,6 @@ Predicate ``YAMLMapping.maps(key, value)`` models the key-value relation represe
 What next?
 ----------
 
--  Learn about the QL standard libraries used to write queries for TypeScript in :doc:`Introducing the TypeScript libraries <introduce-libraries-ts>`.
+-  Learn about the standard CodeQL libraries used to write queries for TypeScript in :doc:`Introducing the TypeScript libraries <introduce-libraries-ts>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

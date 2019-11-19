@@ -1,8 +1,8 @@
 /**
  * @name Print IR
  * @description Outputs a representation of the IR graph
- * @id charp/print-ir
+ * @id csharp/print-ir
  * @kind graph
  */
 
-import implementation.raw.PrintIR
+import implementation.unaliased_ssa.PrintIR

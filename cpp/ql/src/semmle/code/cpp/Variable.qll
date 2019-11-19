@@ -156,15 +156,6 @@ class Variable extends Declaration, @variable {
   }
 
   /**
-   * Gets the `i`th template argument used to instantiate this variable from a
-   * variable template. When called on a variable template, this will return the
-   * `i`th template parameter.
-   */
-  override Type getTemplateArgument(int index) {
-    variable_template_argument(underlyingElement(this), index, unresolveElement(result))
-  }
-
-  /**
    * Holds if this is a compiler-generated variable. For example, a
    * [range-based for loop](http://en.cppreference.com/w/cpp/language/range-for)
    * typically has three compiler-generated variables, named `__range`,
@@ -315,7 +306,7 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
  *   static int c;
  * }
  * ```
- * 
+ *
  * Local variables can be static; use the `isStatic` member predicate to
  * detect those.
  */
@@ -343,7 +334,7 @@ deprecated class StackVariable extends Variable {
  *   static int c;
  * }
  * ```
- * 
+ *
  * Local variables can be static; use the `isStatic` member predicate to detect
  * those.
  *
@@ -512,9 +503,9 @@ class TemplateVariable extends Variable {
  * void myTemplateFunction() {
  *   T b;
  * }
- * 
+ *
  * ...
- * 
+ *
  * myTemplateFunction<int>();
  * ```
  */

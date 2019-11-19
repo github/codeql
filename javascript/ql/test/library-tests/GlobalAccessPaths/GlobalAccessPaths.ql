@@ -1,9 +1,11 @@
 import javascript
 
-query string test_fromReference(DataFlow::Node node) {
-  result = GlobalAccessPath::fromReference(node)
+query string test_getAReferenceTo(DataFlow::Node node) {
+  node = AccessPath::getAReferenceTo(result)
 }
 
-query string test_fromRhs(DataFlow::Node node) { result = GlobalAccessPath::fromRhs(node) }
+query string test_getAnAssignmentTo(DataFlow::Node node) {
+  node = AccessPath::getAnAssignmentTo(result)
+}
 
-query string test_assignedUnique() { GlobalAccessPath::isAssignedInUniqueFile(result) }
+query string test_assignedUnique() { AccessPath::isAssignedInUniqueFile(result) }

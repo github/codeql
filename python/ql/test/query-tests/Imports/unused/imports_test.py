@@ -76,3 +76,17 @@ import typing
 
 foo = None # type: typing.Optional[int]
 
+
+# OK since the import statement is never executed
+if False:
+    import never_imported
+
+# OK since the imported module is used in a forward-referenced type annotation.
+import only_used_in_parameter_annotation
+
+def func(x: 'Optional[only_used_in_parameter_annotation]'):
+    pass
+
+import only_used_in_annotated_assignment
+
+var : 'Optional[only_used_in_annotated_assignment]' = 5

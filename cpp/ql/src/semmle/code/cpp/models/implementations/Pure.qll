@@ -6,7 +6,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
   PureStrFunction() {
     exists(string name |
-      hasGlobalName(name) and
+      hasGlobalOrStdName(name) and
       (
         name = "atof" or
         name = "atoi" or
@@ -41,17 +41,17 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(ParameterIndex i |
-      input.isInParameter(i) and
+      input.isParameter(i) and
       exists(getParameter(i))
       or
-      input.isInParameterPointer(i) and
+      input.isParameterDeref(i) and
       getParameter(i).getUnspecifiedType() instanceof PointerType
     ) and
     (
-      output.isOutReturnPointer() and
+      output.isReturnValueDeref() and
       getUnspecifiedType() instanceof PointerType
       or
-      output.isOutReturnValue()
+      output.isReturnValue()
     )
   }
 
@@ -67,15 +67,15 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 
   override predicate parameterIsAlwaysReturned(int i) { none() }
 
-  override predicate neverReadsMemory() { none() }
+  override predicate hasOnlySpecificReadSideEffects() { none() }
 
-  override predicate neverWritesMemory() { any() }
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
 }
 
 class PureFunction extends TaintFunction, SideEffectFunction {
   PureFunction() {
     exists(string name |
-      hasGlobalName(name) and
+      hasGlobalOrStdName(name) and
       (
         name = "abs" or
         name = "labs"
@@ -85,13 +85,13 @@ class PureFunction extends TaintFunction, SideEffectFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(ParameterIndex i |
-      input.isInParameter(i) and
+      input.isParameter(i) and
       exists(getParameter(i))
     ) and
-    output.isOutReturnValue()
+    output.isReturnValue()
   }
 
-  override predicate neverReadsMemory() { any() }
+  override predicate hasOnlySpecificReadSideEffects() { any() }
 
-  override predicate neverWritesMemory() { any() }
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
 }

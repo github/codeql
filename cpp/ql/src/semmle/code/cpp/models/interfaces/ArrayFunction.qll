@@ -1,11 +1,11 @@
 /**
  * Provides an abstract class for accurate modeling of input and output buffers
  * in library functions when source code is not available.  To use this QL
- * library, create a QL class extending `BufferFunction` with a characteristic
+ * library, create a QL class extending `ArrayFunction` with a characteristic
  * predicate that selects the function or set of functions you are trying to
- * model. Within that class, override the predicates provided by `BufferFunction`
+ * model. Within that class, override the predicates provided by `ArrayFunction`
  * to match the flow within that function.  Finally, add a private import
- * statement to `CustomModels.qll`
+ * statement to `Models.qll`
  */
 
 import semmle.code.cpp.Function

@@ -1,4 +1,4 @@
-test_fromReference
+test_getAReferenceTo
 | other_ns.js:2:11:2:12 | ns | NS |
 | other_ns.js:3:3:3:4 | ns | NS |
 | other_ns.js:3:3:3:8 | ns.foo | NS.foo |
@@ -39,6 +39,7 @@ test_fromReference
 | test.js:12:19:12:25 | foo.bar | foo.bar |
 | test.js:13:7:13:15 | something | something |
 | test.js:14:5:14:23 | notUnique | bar.baz |
+| test.js:14:5:14:23 | notUnique = bar.baz | bar.baz |
 | test.js:14:17:14:19 | bar | bar |
 | test.js:14:17:14:23 | bar.baz | bar.baz |
 | test.js:22:11:22:12 | ns | NS |
@@ -54,10 +55,11 @@ test_fromReference
 | test.js:33:9:33:16 | bar = {} | foo.bar |
 | test.js:33:22:33:24 | foo | foo |
 | test.js:39:3:39:20 | lazyInit | foo.bar |
+| test.js:39:3:39:20 | lazyInit = foo.bar | foo.bar |
 | test.js:39:14:39:16 | foo | foo |
 | test.js:39:14:39:20 | foo.bar | foo.bar |
 | test.js:40:3:40:10 | lazyInit | foo.bar |
-test_fromRhs
+test_getAnAssignmentTo
 | other_ns.js:4:9:4:16 | NS \|\| {} | NS |
 | other_ns.js:6:12:6:13 | {} | Conflict |
 | test.js:1:1:20:1 | functio ... ss {}\\n} | f |

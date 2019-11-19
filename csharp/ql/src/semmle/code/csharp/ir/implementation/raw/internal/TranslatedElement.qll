@@ -3,6 +3,7 @@ import semmle.code.csharp.ir.implementation.raw.IR
 private import semmle.code.csharp.ir.IRConfiguration
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -15,25 +16,21 @@ private import desugar.Foreach
 private import desugar.Delegate
 private import desugar.Lock
 
-/**
- * Gets the built-in `int` type.
- */
-IntType getIntType() { any() }
-
 ArrayType getArrayOfDim(int dim, Type type) {
   result.getRank() = dim and
   result.getElementType() = type
 }
 
 private predicate canCreateCompilerGeneratedElement(Element generatedBy, int nth) {
-  generatedBy instanceof ForeachStmt and nth in [0 .. ForeachElements::noGeneratedElements()]
+  generatedBy instanceof ForeachStmt and nth in [0 .. ForeachElements::noGeneratedElements() - 1]
   or
-  generatedBy instanceof LockStmt and nth in [0 .. LockElements::noGeneratedElements()]
+  generatedBy instanceof LockStmt and nth in [0 .. LockElements::noGeneratedElements() - 1]
   or
   generatedBy instanceof DelegateCreation and
-  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
+  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy) - 1]
   or
-  generatedBy instanceof DelegateCall and nth in [0 .. DelegateElements::noGeneratedElements(generatedBy)]
+  generatedBy instanceof DelegateCall and
+  nth in [0 .. DelegateElements::noGeneratedElements(generatedBy) - 1]
 }
 
 /**
@@ -74,7 +71,12 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   expr instanceof LocalVariableDeclExpr and
   expr.getParent() instanceof ForeachStmt
   or
-  ignoreExprAndDescendants(getRealParent(expr)) // recursive case
+  // recursive case
+  ignoreExprAndDescendants(getRealParent(expr)) and
+  // The two children of an `AssignOperation` should not be ignored, but since they are also
+  // descendants of an orphan node (the expanded form of the `AssignOperation` is also retrieved by
+  // the extractor, which is rooted in an AST node without parents) they would be
+  not expr.getParent() instanceof AssignOperation
 }
 
 /**
@@ -89,6 +91,16 @@ private predicate ignoreExprOnly(Expr expr) {
   or
   // Ignore the child expression of a goto case stmt
   expr.getParent() instanceof GotoCaseStmt
+  or
+  // Ignore the expression (that is not a declaration)
+  // that appears in a using block
+  expr.getParent().(UsingBlockStmt).getExpr() = expr
+  or
+  // Ignore the `ThisAccess` when it is used as the qualifier for
+  // a callable access (e.g. when a member callable is passed as a
+  // parameter for a delegate creation expression)
+  expr instanceof ThisAccess and
+  expr.getParent() instanceof CallableAccess
 }
 
 /**
@@ -162,6 +174,71 @@ private predicate usedAsCondition(Expr expr) {
   )
 }
 
+/**
+ * Holds if we should have a `Load` instruction for `expr` when generating the IR.
+ */
+private predicate mayNeedLoad(Expr expr) {
+  expr instanceof AssignableRead
+  or
+  // We need an extra load for the `PointerIndirectionExpr`
+  expr instanceof PointerIndirectionExpr and
+  // If the dereferencing happens on the lhs of an
+  // assignment we shouldn't have a load instruction
+  not exists(Assignment a | a.getLValue() = expr)
+}
+
+predicate needsLoad(Expr expr) {
+  mayNeedLoad(expr) and
+  not ignoreLoad(expr)
+}
+
+/**
+ * Holds if we should ignore the `Load` instruction for `expr` when generating IR.
+ */
+private predicate ignoreLoad(Expr expr) {
+  // No load needed for the qualifier of an array access,
+  // since we use the instruction `ElementsAddress`
+  // to get the address of the first element in an array
+  expr = any(ArrayAccess aa).getQualifier()
+  or
+  // Indexer calls returns a reference or a value,
+  // no need to load it
+  expr instanceof IndexerCall
+  or
+  // No load is needed for the lvalue in an assignment such as:
+  // Eg. `Object obj = oldObj`;
+  expr = any(Assignment a).getLValue() and
+  expr.getType() instanceof RefType
+  or
+  // Since the loads for a crement operation is handled by the translation
+  // of the operation, we ignore the load here
+  expr.getParent() instanceof MutatorOperation
+  or
+  // The `&` operator does not need a load, since the
+  // address is the final value of the expression
+  expr.getParent() instanceof AddressOfExpr
+  or
+  // A property access does not need a load since it is a call
+  expr instanceof PropertyAccess
+  or
+  // If expr is a variable access used as the qualifier for a field access and
+  // its target variable is a value type variable,
+  // ignore the load since the address of a variable that is a value type is
+  // given by a single `VariableAddress` instruction.
+  expr = any(FieldAccess fa).getQualifier() and
+  expr = any(VariableAccess va |
+      va.getType().isValueType() and
+      not va.getTarget() = any(Parameter p | p.isOutOrRef() or p.isIn())
+    )
+  or
+  // If expr is passed as an `out,`ref` or `in` argument,
+  // no load should take place since we pass the address, not the
+  // value of the variable
+  expr.(AssignableAccess).isOutOrRefArgument()
+  or
+  expr.(AssignableAccess).isInArgument()
+}
+
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
   TTranslatedValueExpr(Expr expr) {
@@ -169,19 +246,16 @@ newtype TTranslatedElement =
     not isNativeCondition(expr) and
     not isFlexibleCondition(expr)
   } or
+  // A creation expression
+  TTranslatedCreationExpr(Expr expr) {
+    not ignoreExpr(expr) and
+    (expr instanceof ObjectCreation or expr instanceof DelegateCreation)
+  } or
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
-    // TODO: Revisit and make sure Loads are only used when needed
-    expr instanceof AssignableRead and
-    not expr.getParent() instanceof ArrayAccess and
-    not (
-      expr.getParent() instanceof Assignment and
-      expr.getType() instanceof RefType
-    ) and
-    // Ignore loads for reads in `++` and `--` since their
-    // translated elements handle them
-    not expr.getParent() instanceof MutatorOperation
+    not ignoreExpr(expr) and
+    needsLoad(expr)
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
@@ -218,48 +292,26 @@ newtype TTranslatedElement =
       // Because of their implementation in C#,
       // we deal with all the types of initialization separately.
       // First only simple local variable initialization (ie. `int x = 0`)
-      exists(LocalVariableDeclAndInitExpr lvInit |
-        lvInit.getInitializer() = expr and
-        not expr instanceof ArrayCreation and
-        not expr instanceof ObjectCreation and
-        not expr instanceof DelegateCreation
-      )
+      exists(LocalVariableDeclAndInitExpr lvInit | lvInit.getInitializer() = expr)
       or
       // Then treat more complex ones
-      expr instanceof ObjectCreation
-      or
-      expr instanceof DelegateCreation
-      or
       expr instanceof ArrayInitializer
       or
       expr instanceof ObjectInitializer
       or
-      expr = any(ThrowExpr throw).getExpr()
+      expr = any(ThrowElement throwElement).getExpr()
       or
       expr = any(CollectionInitializer colInit).getAnElementInitializer()
       or
       expr = any(ReturnStmt returnStmt).getExpr()
       or
       expr = any(ArrayInitializer arrInit).getAnElement()
-      or
-      expr = any(LambdaExpr lambda).getSourceDeclaration()
-      or
-      expr = any(AnonymousMethodExpr anonMethExpr).getSourceDeclaration()
     )
   } or
   // The initialization of an array element via a member of an initializer list.
   TTranslatedExplicitElementInitialization(ArrayInitializer initList, int elementIndex) {
     not ignoreExpr(initList) and
     exists(initList.getElement(elementIndex))
-  } or
-  // The value initialization of a range of array elements that were omitted
-  // from an initializer list.
-  TTranslatedElementValueInitialization(
-    ArrayInitializer initList, int elementIndex, int elementCount
-  ) {
-    not ignoreExpr(initList) and
-    isFirstValueInitializedElementInRange(initList, elementIndex) and
-    elementCount = getEndOfValueInitializedRange(initList, elementIndex) - elementIndex
   } or
   // The initialization of a base class from within a constructor.
   TTranslatedConstructorInitializer(ConstructorInitializer init) { not ignoreExpr(init) } or
@@ -285,47 +337,6 @@ newtype TTranslatedElement =
   TTranslatedCompilerGeneratedElement(Element generatedBy, int index) {
     canCreateCompilerGeneratedElement(generatedBy, index)
   }
-
-/**
- * Gets the index of the first explicitly initialized element in `initList`
- * whose index is greater than `afterElementIndex`, where `afterElementIndex`
- * is a first value-initialized element in a value-initialized range in
- * `initList`. If there are no remaining explicitly initialized elements in
- * `initList`, the result is the total number of elements in the array being
- * initialized.
- */
-private int getEndOfValueInitializedRange(ArrayInitializer initList, int afterElementIndex) {
-  result = getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)
-  or
-  isFirstValueInitializedElementInRange(initList, afterElementIndex) and
-  not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
-  result = initList.getNumberOfElements()
-}
-
-/**
- * Gets the index of the first explicitly initialized element in `initList`
- * whose index is greater than `afterElementIndex`, where `afterElementIndex`
- * is a first value-initialized element in a value-initialized range in
- * `initList`.
- */
-private int getNextExplicitlyInitializedElementAfter(
-  ArrayInitializer initList, int afterElementIndex
-) {
-  isFirstValueInitializedElementInRange(initList, afterElementIndex) and
-  result = min(int i | exists(initList.getElement(i)) and i > afterElementIndex)
-}
-
-/**
- * Holds if element `elementIndex` is the first value-initialized element in a
- * range of one or more consecutive value-initialized elements in `initList`.
- */
-private predicate isFirstValueInitializedElementInRange(ArrayInitWithMod initList, int elementIndex) {
-  initList.isValueInitialized(elementIndex) and
-  (
-    elementIndex = 0 or
-    not initList.isValueInitialized(elementIndex - 1)
-  )
-}
 
 /**
  * Represents an AST node for which IR needs to be generated.
@@ -405,9 +416,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction does not return a result, `resultType` should be
    * `VoidType`.
    */
-  abstract predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  );
+  abstract predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType);
 
   /**
    * Gets the `Function` that contains this element.
@@ -447,7 +456,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * `tag` must be unique for each variable generated from the same AST node
    * (not just from the same `TranslatedElement`).
    */
-  predicate hasTempVariable(TempVariableTag tag, Type type) { none() }
+  predicate hasTempVariable(TempVariableTag tag, CSharpType type) { none() }
 
   /**
    * If the instruction specified by `tag` is a `FunctionInstruction`, gets the
@@ -502,7 +511,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction specified by `tag` is a `CatchByTypeInstruction`,
    * gets the type of the exception to be caught.
    */
-  Type getInstructionExceptionType(InstructionTag tag) { none() }
+  CSharpType getInstructionExceptionType(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is an `InheritanceConversionInstruction`,
@@ -521,13 +530,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Gets the type of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
    */
-  Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
-
-  /**
-   * Gets the size of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
-   * Only holds for operands whose type is `UnknownType`.
-   */
-  int getInstructionOperandSize(InstructionTag tag, SideEffectOperandTag operandTag) { none() }
+  CSharpType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
 
   /**
    * Gets the instruction generated by this element with tag `tag`.

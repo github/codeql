@@ -1101,12 +1101,12 @@ int AsmStmt(int x) {
   return x;
 }
 
-static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c, unsigned int& d)
+static void AsmStmtWithOutputs(unsigned int& a, unsigned int b, unsigned int& c, unsigned int d)
 {
   __asm__ __volatile__
     (
   "cpuid\n\t"
-    : "+a" (a), "+b" (b), "+c" (c), "+d" (d)
+    : "+a" (a), "+b" (b) : "c" (c), "d" (d)
     );
 }
 
@@ -1156,6 +1156,14 @@ void VectorTypes(int i) {
   vi4[i] = x;
   vector(4, int) vi4_shuffle = __builtin_shufflevector(vi4, vi4, 3+0, 2, 1, 0);
   vi4 = vi4 + vi4_shuffle;
+}
+
+void *memcpy(void *dst, void *src, int size);
+
+int ModeledCallTarget(int x) {
+  int y;
+  memcpy(&y, &x, sizeof(int));
+  return y;
 }
 
 // semmle-extractor-options: -std=c++17 --clang

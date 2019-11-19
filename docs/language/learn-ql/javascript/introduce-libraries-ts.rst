@@ -1,16 +1,16 @@
-Introducing the QL libraries for TypeScript
-===========================================
+Introducing the CodeQL libraries for TypeScript
+===============================================
 
 Overview
 --------
 
-Support for analyzing TypeScript code is bundled with the JavaScript QL libraries, so you can include the full TypeScript library by importing the ``javascript.qll`` module:
+Support for analyzing TypeScript code is bundled with the CodeQL libraries for JavaScript, so you can include the full TypeScript library by importing the ``javascript.qll`` module:
 
 .. code-block:: ql
 
    import javascript
 
-The :doc:`QL library introduction for JavaScript <introduce-libraries-js>` covers most of this library, and is also relevant for TypeScript analysis. This document supplements the JavaScript QL documentation with the TypeScript-specific classes and predicates.
+The :doc:`CodeQL library introduction for JavaScript <introduce-libraries-js>` covers most of this library, and is also relevant for TypeScript analysis. This document supplements the JavaScript documentation with the TypeScript-specific classes and predicates.
 
 Syntax
 ------
@@ -124,7 +124,7 @@ Select expressions that cast a value to a type parameter:
 Classes and interfaces
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The QL class `ClassOrInterface <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassOrInterface.html>`__ is a common supertype of classes and interfaces, and provides some TypeScript-specific member predicates:
+The CodeQL class `ClassOrInterface <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassOrInterface.html>`__ is a common supertype of classes and interfaces, and provides some TypeScript-specific member predicates:
 
 -  ``ClassOrInterface.isAbstract()`` holds if this is an interface or a class with the ``abstract`` modifier.
 -  ``ClassOrInterface.getASuperInterface()`` gets a type from the ``implements`` clause of a class or from the ``extends`` clause of an interface.
@@ -134,7 +134,7 @@ The QL class `ClassOrInterface <https://help.semmle.com/qldoc/javascript/semmle/
 
 Note that the superclass of a class is an expression, not a type annotation. If the superclass has type arguments, it will be an expression of kind `ExpressionWithTypeArguments <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExpressionWithTypeArguments.html>`__.
 
-Also see the documentation for classes in the `Introduction to the QL libraries for JavaScript <introduce-libraries-js#classes>`__.
+Also see the documentation for classes in the `Introduction to the CodeQL libraries for JavaScript <introduce-libraries-js#classes>`__.
 
 To select the type references to a class or an interface, use ``getTypeName()``.
 
@@ -175,9 +175,13 @@ Ambient nodes are mostly ignored by control flow and data flow analysis. The out
 Static type information
 -----------------------
 
-Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default for projects on LGTM.com. If you are using the `QL command-line tools <https://help.semmle.com/wiki/display/SD/QL+command-line+tools>`__, you must enable it by passing ``--typescript-full`` to the JavaScript extractor. For further information on customizing calls to the extractor, see `Customizing JavaScript extraction <https://help.semmle.com/wiki/display/SD/Customizing+JavaScript+extraction>`__.
+Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default for projects on LGTM.com and when you create databases with the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__.
 
-**Note:** Without full extraction, the classes and predicates described in this section are empty.
+.. pull-quote:: Note
+
+   If you are using the `legacy QL command-line tools <https://help.semmle.com/wiki/display/SD/QL+command-line+tools>`__, you must enable full TypeScript extraction by passing ``--typescript-full`` to the JavaScript extractor. For further information on customizing calls to the extractor, see `Customizing JavaScript extraction <https://help.semmle.com/wiki/display/SD/Customizing+JavaScript+extraction>`__.
+
+   Without full extraction, the classes and predicates described in this section are empty.
 
 Basic usage
 ~~~~~~~~~~~
@@ -262,7 +266,7 @@ Additionally, ``Type`` has the following subclasses which overlap partially with
 Canonical names and named types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``CanonicalName`` is a QL class representing a qualified name relative to a root scope, such as a module or the global scope. It typically represents an entity such as a type, namespace, variable, or function. ``TypeName`` and ``Namespace`` are subclasses of this class.
+``CanonicalName`` is a CodeQL class representing a qualified name relative to a root scope, such as a module or the global scope. It typically represents an entity such as a type, namespace, variable, or function. ``TypeName`` and ``Namespace`` are subclasses of this class.
 
 Canonical names can be recognized using the ``hasQualifiedName`` predicate:
 
@@ -274,7 +278,7 @@ For convenience, this predicate is also available on other classes, such as ``Ty
 Function types
 ~~~~~~~~~~~~~~
 
-There is no QL class for function types, as any type with a call or construct signature is usable as a function. The type ``CallSignatureType`` represents such a signature (with or without the ``new`` keyword).
+There is no CodeQL class for function types, as any type with a call or construct signature is usable as a function. The type ``CallSignatureType`` represents such a signature (with or without the ``new`` keyword).
 
 Signatures can be obtained in several ways:
 
@@ -353,7 +357,7 @@ TypeScript also allows you to import types and namespaces, and give them local n
 
 The local name ``B`` is represented as a `LocalTypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeName.html>`__ named ``B``, restricted to just the file containing the import. An import statement can also introduce a `Variable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__ and a `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__.
 
-The following table shows the relevant QL classes for working with each kind of name. The classes are described in more detail below.
+The following table shows the relevant classes for working with each kind of name. The classes are described in more detail below.
 
 +-----------+------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
 | Kind      | Local alias                                                                                                                                    | Canonical name                                                                                                                       | Definition                                                                                                                                        | Access                                                                                                                                   |
@@ -419,7 +423,7 @@ Find imported names that are used as both a type and a value:
 Namespace names
 ~~~~~~~~~~~~~~~
 
-Namespaces are represented by the QL classes `Namespace <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__ and `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__. The `NamespaceDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceDefinition.html>`__ class represents a syntactic definition of a namespace, which includes ordinary namespace declarations as well as enum declarations.
+Namespaces are represented by the classes `Namespace <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__ and `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__. The `NamespaceDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceDefinition.html>`__ class represents a syntactic definition of a namespace, which includes ordinary namespace declarations as well as enum declarations.
 
 Note that these classes deal exclusively with namespaces referenced from inside type annotations, not through expressions.
 
@@ -443,6 +447,6 @@ A `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascrip
 What next?
 ----------
 
--  Learn about the QL standard libraries used to write queries for JavaScript in :doc:`Introducing the Javacript libraries <introduce-libraries-js>`.
+-  Learn about the standard CodeQL libraries used to write queries for JavaScript in :doc:`Introducing the JavaScript libraries <introduce-libraries-js>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
