@@ -37,7 +37,7 @@ The easiest way to get started writing your own path query is to modify one of t
 - `JavaScript path queries <https://help.semmle.com/wiki/label/js/path-problem>`__
 - `Python path queries <https://help.semmle.com/wiki/label/python/path-problem>`__
  
-The Semmle security research team have used path queries to find security vulnerabilities in various open source projects. To see articles describing how these queries were written, as well as other posts describing other aspects of security research such as exploiting vulnerabilities, browse the security posts on the `Semmle blog <https://blog.semmle.com/tags/security>`__.
+The Security lab researchers have used path queries to find security vulnerabilities in various open source projects. To see articles describing how these queries were written, as well as other posts describing other aspects of security research such as exploiting vulnerabilities, see the `GitHub Security Lab website <https://securitylab.github.com/research>`__.
 
 Constructing a path query
 =========================
