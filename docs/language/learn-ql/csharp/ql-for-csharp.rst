@@ -20,17 +20,6 @@ These topics provide an overview of the CodeQL libraries for C# and show example
 
 -  :doc:`Tutorial: Analyzing data flow in C# <dataflow>` demonstrates how to write queries using the standard data flow and taint tracking libraries for C#.
 
-.. raw:: html
-
-   <!-- Working with call graphs(call-graph) - how to construct and query call graphs, and work with dynamic and virtual dispatch. -->
-
-.. raw:: html
-
-   <!-- Working with control flow(control-flow) - how to query intra-procedural control flow. -->
-
-.. raw:: html
-
-   <!-- Working with comments(comments) - how to query comments and XML documentation. -->
 
 Other resources
 ---------------

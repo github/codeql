@@ -352,6 +352,11 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
     none()
   }
 
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getTranslatedExpr(expr).getInstruction(CallTag())
+  }
+
   /**
    * Gets the `TranslatedFunction` containing this expression.
    */
@@ -363,6 +368,39 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
    * Gets the `Function` containing this expression.
    */
   override Function getFunction() { result = expr.getEnclosingFunction() }
+}
+
+class TranslatedStructorCallSideEffects extends TranslatedSideEffects {
+  TranslatedStructorCallSideEffects() { getParent().(TranslatedStructorCall).hasQualifier() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType t) {
+    opcode instanceof Opcode::IndirectMayWriteSideEffect and
+    tag instanceof OnlyInstructionTag and
+    t = getTypeForPRValue(expr.getTarget().getDeclaringType())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    (
+      if exists(getChild(0))
+      then result = getChild(0).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    ) and
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof AddressOperandTag and
+    result = getParent().(TranslatedStructorCall).getQualifierResult()
+  }
+
+  final override int getInstructionIndex(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = -1
+  }
 }
 
 class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEffect {

@@ -23,7 +23,7 @@ private newtype TNode =
   TExplicitExprPostUpdate(Expr e) {
     explicitInstanceArgument(_, e)
     or
-    e instanceof Argument
+    e instanceof Argument and not e.getType() instanceof ImmutableType
     or
     exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
   } or

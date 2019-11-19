@@ -6,7 +6,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
   PureStrFunction() {
     exists(string name |
-      hasGlobalName(name) and
+      hasGlobalOrStdName(name) and
       (
         name = "atof" or
         name = "atoi" or
@@ -75,7 +75,7 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 class PureFunction extends TaintFunction, SideEffectFunction {
   PureFunction() {
     exists(string name |
-      hasGlobalName(name) and
+      hasGlobalOrStdName(name) and
       (
         name = "abs" or
         name = "labs"

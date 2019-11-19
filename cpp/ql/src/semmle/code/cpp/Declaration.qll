@@ -123,6 +123,13 @@ abstract class Declaration extends Locatable, @declaration {
   /** Holds if this declaration has the given name in the global namespace. */
   predicate hasGlobalName(string name) { this.hasQualifiedName("", "", name) }
 
+  /** Holds if this declaration has the given name in the global namespace or the `std` namespace. */
+  predicate hasGlobalOrStdName(string name) {
+    this.hasGlobalName(name)
+    or
+    this.hasQualifiedName("std", "", name)
+  }
+
   /** Gets a specifier of this declaration. */
   abstract Specifier getASpecifier();
 
@@ -216,7 +223,7 @@ abstract class Declaration extends Locatable, @declaration {
    * Will have `getTemplateArgument(0)` return `T`, and
    * `getTemplateArgument(1)` return `X`.
    *
-   * `Foo<int, 1> bar;
+   * `Foo<int, 1> bar;`
    *
    * Will have `getTemplateArgument())` return `int`, and
    * `getTemplateArgument(1)` return `1`.

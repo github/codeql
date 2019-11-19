@@ -45,7 +45,7 @@ predicate benignContext(Expr e) {
 
   or
   // weeds out calls inside HTML-attributes.
-  e.getParent() instanceof CodeInAttribute or  
+  e.getParent().(ExprStmt).getParent() instanceof CodeInAttribute or
   // and JSX-attributes.
   e = any(JSXAttribute attr).getValue() or 
   
@@ -211,9 +211,9 @@ where
     msg = "the $@ does not return anything, yet the return value from the call to " + call.getCalleeName() + " is used." and
     name = "callback function"
   ) and
-  not benignContext(call.asExpr()) and
+  not benignContext(call.getEnclosingExpr()) and
   not lastStatementHasNoEffect(func) and
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
-  not oneshotClosure(call.asExpr())
+  not oneshotClosure(call.getEnclosingExpr())
 select
   call, msg, func, name

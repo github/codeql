@@ -314,9 +314,40 @@ public class RegExpParser {
       return this.finishTerm(new Group(loc, capture, number, name, dis));
     }
 
-    char c = this.nextChar();
-    if ("^$\\.*+?()[]{}|".indexOf(c) != -1) this.error(Error.UNEXPECTED_CHARACTER, this.pos - 1);
-    return this.finishTerm(new Constant(loc, String.valueOf(c)));
+    // Parse consecutive constants into a single Constant node.
+    // Due to speculative parsing of string literals, this part of the code is fairly hot.
+    int startPos = this.pos;
+    int endPos = startPos;
+    while (endPos < src.length()) {
+      if ("^$\\.*+?()[]{}|".indexOf(src.charAt(endPos)) != -1) break;
+      ++endPos;
+    }
+    if (startPos == endPos) {
+      this.error(Error.UNEXPECTED_CHARACTER, endPos);
+      endPos = startPos + 1; // To ensure progress, make sure we parse at least one character.
+    }
+    // Check if the end of the constant belongs under an upcoming quantifier.
+    if (endPos != startPos + 1
+        && endPos < src.length()
+        && "*+?{".indexOf(src.charAt(endPos)) != -1) {
+      if (Character.isLowSurrogate(src.charAt(endPos - 1))
+          && Character.isHighSurrogate(src.charAt(endPos - 2))) {
+        // Don't split the surrogate pair.
+        if (endPos == startPos + 2) {
+          // The whole constant is a single wide character.
+        } else {
+          endPos -= 2; // Last 2 characters belong to an upcoming quantifier.
+        }
+      } else {
+        endPos--; // Last character belongs to an upcoming quantifier.
+      }
+    }
+    String str = src.substring(startPos, endPos);
+    this.pos = endPos;
+    loc.setEnd(pos());
+    loc.setSource(str);
+    // Do not call finishTerm as it will create another copy of 'str'.
+    return new Constant(loc, str);
   }
 
   private RegExpTerm parseAtomEscape(SourceLocation loc, boolean inCharClass) {
@@ -469,6 +500,11 @@ public class RegExpParser {
       if (this.match("b")) return this.finishTerm(new ControlEscape(loc, "\b", 8, "\\b"));
       return this.finishTerm(this.parseAtomEscape(loc, true));
     }
-    return this.finishTerm(new Constant(loc, String.valueOf(c)));
+    String value = String.valueOf(c);
+    // Extract a surrogate pair as a single constant.
+    if (Character.isHighSurrogate(c) && Character.isLowSurrogate(peekChar(true))) {
+      value += this.nextChar();
+    }
+    return this.finishTerm(new Constant(loc, value));
   }
 }

@@ -9,7 +9,9 @@ The following changes in version 1.23 affect C# analysis in all applications.
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Deserialized delegate (`cs/deserialized-delegate`) | security, external/cwe/cwe-502 | Finds unsafe deserialization of delegate types. |
+| Deserialization of untrusted data (`cs/unsafe-deserialization-untrusted-input`) | security, external/cwe/cwe-502 | Finds flow of untrusted input to calls to unsafe deserializers. |
 | Unsafe year argument for 'DateTime' constructor (`cs/unsafe-year-construction`) | reliability, date-time | Finds incorrect manipulation of `DateTime` values, which could lead to invalid dates. |
+| Unsafe deserializer (`cs/unsafe-deserialization`) | security, external/cwe/cwe-502 | Finds calls to unsafe deserializers. |
 | Mishandling the Japanese era start date (`cs/mishandling-japanese-era`) | reliability, date-time | Finds hard-coded Japanese era start dates that could be invalid. |
 
 ## Changes to existing queries
@@ -25,7 +27,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 
 * `nameof` expressions are now extracted correctly when the name is a namespace.
 
-## Changes to QL libraries
+## Changes to libraries
 
 * The new class `NamespaceAccess` models accesses to namespaces, for example in `nameof` expressions.
 * The data-flow library now makes it easier to specify barriers/sanitizers
@@ -45,5 +47,6 @@ The following changes in version 1.23 affect C# analysis in all applications.
   `TaintTracking::localExprTaint` predicate to make it easy to use the most
   common case of local data flow and taint: from one `Expr` to another.
 * Data is now tracked through null-coalescing expressions (`??`).
+* A new library `semmle.code.csharp.Unification` has been added. This library exposes two predicates `unifiable` and `subsumes` for calculating type unification and type subsumption, respectively.
 
 ## Changes to autobuilder

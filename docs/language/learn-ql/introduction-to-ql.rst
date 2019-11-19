@@ -3,7 +3,7 @@ Introduction to QL
 
 QL is the powerful query language that underlies CodeQL, which is used to analyze code.
 Queries written with CodeQL can find errors and uncover variants of important security vulnerabilities.
-Visit Semmle's `security research page <https://lgtm.com/security>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
+Visit `GitHub Security Lab <https://securitylab.github.com/>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
 
 Before diving into code analysis with CodeQL, it can be helpful to learn about the underlying language more generally.
 

@@ -8,7 +8,7 @@ import semmle.code.cpp.security.FunctionWithWrappers
  */
 class SystemFunction extends FunctionWithWrappers {
   SystemFunction() {
-    hasGlobalName("system") or
+    hasGlobalOrStdName("system") or
     hasGlobalName("popen") or
     // Windows variants
     hasGlobalName("_popen") or

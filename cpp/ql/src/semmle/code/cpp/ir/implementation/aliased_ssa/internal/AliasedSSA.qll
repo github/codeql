@@ -210,17 +210,21 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
     def instanceof UnknownVirtualVariable and
     result instanceof MustTotallyOverlap
     or
-    // An UnknownMemoryLocation may partially overlap any Location within the same virtual variable.
+    // An UnknownMemoryLocation may partially overlap any Location within the same virtual variable,
+    // unless the location is read-only.
     def.getVirtualVariable() = use.getVirtualVariable() and
     def instanceof UnknownMemoryLocation and
-    result instanceof MayPartiallyOverlap
+    result instanceof MayPartiallyOverlap and
+    not use.(VariableMemoryLocation).getVariable().isReadOnly()
     or
     // An UnknownNonLocalMemoryLocation may partially overlap any location within the same virtual
-    // variable, except a local variable.
+    // variable, except a local variable or read-only variable.
     def.getVirtualVariable() = use.getVirtualVariable() and
     def instanceof UnknownNonLocalMemoryLocation and
     result instanceof MayPartiallyOverlap and
-    not use.(VariableMemoryLocation).getVariable() instanceof IRAutomaticVariable
+    not exists(IRVariable var | var = use.(VariableMemoryLocation).getVariable() |
+      var instanceof IRAutomaticVariable or var.isReadOnly()
+    )
     or
     exists(VariableMemoryLocation defVariableLocation |
       defVariableLocation = def and

@@ -93,6 +93,26 @@ library class Assign_ extends @py_Assign, Stmt {
 
 }
 
+library class AssignExpr_ extends @py_AssignExpr, Expr {
+
+
+    /** Gets the value of this assignment expression. */
+    Expr getValue() {
+        py_exprs(result, _, this, 2)
+    }
+
+
+    /** Gets the target of this assignment expression. */
+    Expr getTarget() {
+        py_exprs(result, _, this, 3)
+    }
+
+    override string toString() {
+        result = "AssignExpr"
+    }
+
+}
+
 library class Attribute_ extends @py_Attribute, Expr {
 
 

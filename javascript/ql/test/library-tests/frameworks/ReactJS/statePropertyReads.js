@@ -11,5 +11,3 @@ class Reads extends React.Component {
         prevState.p4;
     }
 }
-
-//semmle-extractor-options: --experimental

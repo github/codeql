@@ -126,7 +126,7 @@ class SALParameter extends Parameter {
 }
 
 /**
- * A SAL element, i.e. a SAL annotation or a declaration entry
+ * A SAL element, that is, a SAL annotation or a declaration entry
  * that may have SAL annotations.
  */
 library class SALElement extends Element {

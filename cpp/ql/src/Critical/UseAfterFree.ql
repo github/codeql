@@ -16,7 +16,7 @@ import semmle.code.cpp.controlflow.LocalScopeVariableReachability
 predicate isFreeExpr(Expr e, LocalScopeVariable v) {
   exists(VariableAccess va | va.getTarget() = v |
     exists(FunctionCall fc | fc = e |
-      fc.getTarget().hasGlobalName("free") and
+      fc.getTarget().hasGlobalOrStdName("free") and
       va = fc.getArgument(0)
     )
     or

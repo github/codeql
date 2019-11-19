@@ -45,26 +45,36 @@ private module Cached {
   }
 
   cached
+  predicate hasStringLiteral(Function func, Locatable ast, CppType type, StringLiteral literal) {
+    literal = ast and
+    literal.getEnclosingFunction() = func and
+    getTypeForPRValue(literal.getType()) = type
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
   cached
   Expr getInstructionConvertedResultExpression(Instruction instruction) {
     exists(TranslatedExpr translatedExpr |
       translatedExpr = getTranslatedExpr(result) and
-      instruction = translatedExpr.getResult()
+      instruction = translatedExpr.getResult() and
+      // Only associate `instruction` with this expression if the translated
+      // expression actually produced the instruction; not if it merely
+      // forwarded the result of another translated expression.
+      instruction = translatedExpr.getInstruction(_)
     )
   }
 
   cached
   Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
-    exists(Expr converted, TranslatedExpr translatedExpr |
+    exists(Expr converted |
       result = converted.(Conversion).getExpr+()
       or
       result = converted
     |
       not result instanceof Conversion and
-      translatedExpr = getTranslatedExpr(converted) and
-      instruction = translatedExpr.getResult()
+      converted = getInstructionConvertedResultExpression(instruction)
     )
   }
 
@@ -231,8 +241,14 @@ private module Cached {
 
   cached
   IRVariable getInstructionVariable(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionVariable(getInstructionTag(instruction))
+    exists(TranslatedElement element, InstructionTag tag |
+      element = getInstructionTranslatedElement(instruction) and
+      tag = getInstructionTag(instruction) and
+      (
+        result = element.getInstructionVariable(tag) or
+        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+      )
+    )
   }
 
   cached
@@ -261,12 +277,6 @@ private module Cached {
       instructionOrigin(instruction, element, tag) and
       result = element.getInstructionIndex(tag)
     )
-  }
-
-  cached
-  StringLiteral getInstructionStringLiteral(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionStringLiteral(getInstructionTag(instruction))
   }
 
   cached

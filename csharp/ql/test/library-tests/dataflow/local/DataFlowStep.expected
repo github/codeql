@@ -582,6 +582,10 @@
 | LocalDataFlow.cs:464:50:464:52 | value | LocalDataFlow.cs:464:64:464:68 | access to parameter value |
 | LocalDataFlow.cs:470:41:470:47 | tainted | LocalDataFlow.cs:472:15:472:21 | access to parameter tainted |
 | LocalDataFlow.cs:475:44:475:53 | nonTainted | LocalDataFlow.cs:477:15:477:24 | access to parameter nonTainted |
+| LocalDataFlow.cs:480:44:480:44 | x | LocalDataFlow.cs:483:21:483:21 | access to parameter x |
+| LocalDataFlow.cs:480:67:480:68 | os | LocalDataFlow.cs:486:32:486:33 | access to parameter os |
+| LocalDataFlow.cs:483:21:483:21 | access to parameter x | LocalDataFlow.cs:483:16:483:21 | ... = ... |
+| LocalDataFlow.cs:486:32:486:33 | access to parameter os | LocalDataFlow.cs:486:26:486:33 | ... = ... |
 | SSA.cs:5:17:5:17 | SSA entry def(this.S) | SSA.cs:67:9:67:14 | access to field S |
 | SSA.cs:5:17:5:17 | this | SSA.cs:67:9:67:12 | this access |
 | SSA.cs:5:26:5:32 | tainted | SSA.cs:8:24:8:30 | access to parameter tainted |

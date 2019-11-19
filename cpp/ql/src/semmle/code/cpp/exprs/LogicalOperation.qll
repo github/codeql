@@ -7,6 +7,9 @@ abstract class UnaryLogicalOperation extends UnaryOperation { }
 
 /**
  * A C/C++ logical not expression.
+ * ```
+ * c = !a;
+ * ```
  */
 class NotExpr extends UnaryLogicalOperation, @notexpr {
   override string getOperator() { result = "!" }
@@ -35,7 +38,10 @@ abstract class BinaryLogicalOperation extends BinaryOperation {
 }
 
 /**
- * A C/C++ logical and expression.
+ * A C/C++ logical AND expression.
+ * ```
+ * if (a && b) { }
+ * ```
  */
 class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
   override string getOperator() { result = "&&" }
@@ -53,7 +59,10 @@ class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
 }
 
 /**
- * A C/C++ logical or expression.
+ * A C/C++ logical OR expression.
+ * ```
+ * if (a || b) { }
+ * ```
  */
 class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
   override string getOperator() { result = "||" }
@@ -72,6 +81,9 @@ class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
 
 /**
  * A C/C++ conditional ternary expression.
+ * ```
+ * a = (b > c ? d : e);
+ * ```
  */
 class ConditionalExpr extends Operation, @conditionalexpr {
   /** Gets the condition of this conditional expression. */

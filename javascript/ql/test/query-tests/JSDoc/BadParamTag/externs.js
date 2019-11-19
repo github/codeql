@@ -3,4 +3,4 @@
  */
 function f(x) {}
 
-//semmle-extractor-options: --externs
+/** @externs */
