@@ -3,7 +3,7 @@ private import semmle.code.cpp.models.interfaces.ArrayFunction
 private import semmle.code.cpp.models.implementations.Strcat
 
 private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, Expr e0) {
-  exists(LocalScopeVariable v0, Expr val |
+  exists(StackVariable v0, Expr val |
     exprDefinition(v0, e, val) and
     val.getAChild*() = va and
     mayAddNullTerminator(e0, v0.getAnAccess())
@@ -41,7 +41,7 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   or
   // Assignment to non-stack variable
   exists(AssignExpr ae | e = ae |
-    not ae.getLValue().(VariableAccess).getTarget() instanceof LocalScopeVariable and
+    not ae.getLValue().(VariableAccess).getTarget() instanceof StackVariable and
     ae.getRValue().getAChild*() = va
   )
   or

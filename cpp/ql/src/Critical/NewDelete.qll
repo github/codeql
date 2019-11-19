@@ -60,7 +60,7 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
 pragma[nomagic]
 private predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
   exists(Expr mid |
-    not v instanceof LocalScopeVariable and
+    not v instanceof StackVariable and
     v.getAnAssignedValue() = mid and
     allocReaches0(mid, alloc, kind)
   )
@@ -76,7 +76,7 @@ private predicate allocReaches0(Expr e, Expr alloc, string kind) {
   allocExprOrIndirect(alloc, kind) and
   e = alloc
   or
-  exists(SsaDefinition def, LocalScopeVariable v |
+  exists(SsaDefinition def, StackVariable v |
     // alloc via SSA
     allocReaches0(def.getAnUltimateDefiningValue(v), alloc, kind) and
     e = def.getAUse(v)

@@ -43,7 +43,7 @@ class FunctionWithNegativeReturn extends Function {
 predicate dangerousUse(IntegralReturnValue val, Expr use) {
   exists(ArrayExpr ae | ae.getArrayOffset() = val and use = val)
   or
-  exists(LocalScopeVariable v, ControlFlowNode def, ArrayExpr ae |
+  exists(StackVariable v, ControlFlowNode def, ArrayExpr ae |
     exprDefinition(v, def, val) and
     use = ae.getArrayOffset() and
     not boundsChecked(v, use) and
@@ -54,7 +54,7 @@ predicate dangerousUse(IntegralReturnValue val, Expr use) {
   val = use and
   use.getType().getUnderlyingType() instanceof PointerType
   or
-  exists(LocalScopeVariable v, ControlFlowNode def, AddExpr add |
+  exists(StackVariable v, ControlFlowNode def, AddExpr add |
     exprDefinition(v, def, val) and
     definitionUsePair(v, def, use) and
     add.getAnOperand() = use and

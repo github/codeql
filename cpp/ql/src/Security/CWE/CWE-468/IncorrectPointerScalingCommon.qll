@@ -100,9 +100,9 @@ Type baseType(Type t) {
  */
 predicate exprSourceType(Expr use, Type sourceType, Location sourceLoc) {
   // Reaching definitions.
-  if exists(SsaDefinition def, LocalScopeVariable v | use = def.getAUse(v))
+  if exists(SsaDefinition def, StackVariable v | use = def.getAUse(v))
   then
-    exists(SsaDefinition def, LocalScopeVariable v | use = def.getAUse(v) |
+    exists(SsaDefinition def, StackVariable v | use = def.getAUse(v) |
       defSourceType(def, v, sourceType, sourceLoc)
     )
   else
@@ -137,7 +137,7 @@ predicate exprSourceType(Expr use, Type sourceType, Location sourceLoc) {
  * Holds if there is a pointer expression with type `sourceType` at
  * location `sourceLoc` which might define the value of `v` at `def`.
  */
-predicate defSourceType(SsaDefinition def, LocalScopeVariable v, Type sourceType, Location sourceLoc) {
+predicate defSourceType(SsaDefinition def, StackVariable v, Type sourceType, Location sourceLoc) {
   exprSourceType(def.getDefiningValue(v), sourceType, sourceLoc)
   or
   defSourceType(def.getAPhiInput(v), v, sourceType, sourceLoc)

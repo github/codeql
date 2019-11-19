@@ -18,7 +18,7 @@ class MallocCall extends FunctionCall {
   Expr getAllocatedSize() {
     if this.getArgument(0) instanceof VariableAccess
     then
-      exists(LocalScopeVariable v, ControlFlowNode def |
+      exists(StackVariable v, ControlFlowNode def |
         definitionUsePair(v, def, this.getArgument(0)) and
         exprDefinition(v, def, result)
       )
