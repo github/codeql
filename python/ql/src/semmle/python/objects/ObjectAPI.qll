@@ -660,4 +660,9 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("ModuleType"))
     }
 
+    /** Get the `ClassValue` for the `NoneType` class. */
+    ClassValue nonetype() {
+        result = TBuiltinClassObject(Builtin::special("NoneType"))
+    }
+
 }
