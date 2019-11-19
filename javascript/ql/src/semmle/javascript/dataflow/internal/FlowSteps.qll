@@ -66,7 +66,7 @@ predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
     or
     DataFlow::exceptionalInvocationReturnNode(pred, expr)
   |
-    succ = expr.getThrowsToNode()
+    succ = expr.getExceptionalNode()
   )
 }
 
