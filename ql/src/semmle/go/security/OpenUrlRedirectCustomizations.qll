@@ -58,19 +58,13 @@ module OpenUrlRedirect {
    */
   class PathAssignmentBarrier extends Barrier, Read {
     PathAssignmentBarrier() {
-      exists(Write w, Field f, Read writeBase, SsaWithFields var |
+      exists(Write w, Field f, SsaWithFields var |
         f.getName() = "Path" and
         hasHostnameSanitizingSubstring(w.getRhs()) and
-        this.asInstruction() = var.getAUse() and
-        writeBase.asInstruction() = var.getAUse()
+        this = var.getAUse()
       |
-        w.writesField(writeBase, f, _) and
-        w.getBasicBlock().(ReachableBasicBlock).dominates(this.asInstruction().getBasicBlock()) and
-        (
-          not w.getBasicBlock() = this.asInstruction().getBasicBlock()
-          or
-          w.getASuccessor+() = this.asInstruction()
-        )
+        w.writesField(var.getAUse(), f, _) and
+        w.dominatesNode(insn)
       )
     }
   }

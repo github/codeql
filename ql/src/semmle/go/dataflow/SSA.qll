@@ -316,26 +316,28 @@ private IR::Instruction accessPathAux(TSsaWithFields base, Field f) {
   )
 }
 
-abstract class SsaWithFields extends TSsaWithFields {
+class SsaWithFields extends TSsaWithFields {
   /**
    * Gets the SSA variable corresponding to the base of this SSA variable with fields.
    *
    * For example, the SSA variable corresponding to `a` for the SSA variable with fields
    * corresponding to `a.b`.
    */
-  abstract SsaVariable getBaseVariable();
-
-  /** Gets the type of this SSA variable with fields. */
-  abstract Type getType();
-
-  /** Gets a use in basic block `bb` that refers to this SSA variable with fields. */
-  abstract IR::Instruction getAUseIn(ReachableBasicBlock bb);
+  SsaVariable getBaseVariable() {
+    this = TRoot(result)
+    or
+    exists(SsaWithFields base, Field f | this = TStep(base, f) | result = base.getBaseVariable())
+  }
 
   /** Gets a use that refers to this SSA variable with fields. */
-  IR::Instruction getAUse() { result = this.getAUseIn(_) }
+  DataFlow::Node getAUse() { this = accessPath(result.asInstruction()) }
 
   /** Gets a textual representation of this element. */
-  abstract string toString();
+  string toString() {
+    exists(SsaVariable var | this = TRoot(var) | result = "(" + var + ")")
+    or
+    exists(SsaWithFields base, Field f | this = TStep(base, f) | result = base + "." + f.getName())
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -349,36 +351,4 @@ abstract class SsaWithFields extends TSsaWithFields {
   ) {
     this.getBaseVariable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-}
-
-private class SsaWithFieldsRoot extends SsaWithFields, TRoot {
-  SsaVariable self;
-
-  SsaWithFieldsRoot() { this = TRoot(self) }
-
-  override SsaVariable getBaseVariable() { result = self }
-
-  override Type getType() { result = self.getType() }
-
-  override IR::Instruction getAUseIn(ReachableBasicBlock bb) { result = self.getAUseIn(bb) }
-
-  override string toString() { result = "(" + self.toString() + ")" }
-}
-
-private class SsaWithFieldsStep extends SsaWithFields, TStep {
-  SsaWithFields base;
-  Field f;
-
-  SsaWithFieldsStep() { this = TStep(base, f) }
-
-  override SsaVariable getBaseVariable() { result = base.getBaseVariable() }
-
-  override Type getType() { result = f.getType() }
-
-  override IR::FieldReadInstruction getAUseIn(ReachableBasicBlock bb) {
-    result.getBase() = base.getAUseIn(bb) and
-    result.getField() = f
-  }
-
-  override string toString() { result = base.toString() + "." + f.getName() }
 }

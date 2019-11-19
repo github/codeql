@@ -57,6 +57,18 @@ module ControlFlow {
     /** Gets the basic block to which this node belongs. */
     BasicBlock getBasicBlock() { result.getANode() = this }
 
+    /** Holds if this node dominates `dominee` in the control-flow graph. */
+    pragma[inline]
+    predicate dominatesNode(ControlFlow::Node dominee) {
+      exists(ReachableBasicBlock thisbb, ReachableBasicBlock dbb, int i, int j |
+        this = thisbb.getNode(i) and dominee = dbb.getNode(j)
+      |
+        thisbb.strictlyDominates(dbb)
+        or
+        thisbb = dbb and i <= j
+      )
+    }
+
     /** Gets the innermost function or file to which this node belongs. */
     Root getRoot() { none() }
 

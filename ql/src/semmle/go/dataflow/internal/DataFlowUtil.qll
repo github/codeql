@@ -748,11 +748,11 @@ abstract class BarrierGuard extends Node {
 
   /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
-    exists(ControlFlow::ConditionGuardNode guard, Node nd |
-      exists(SsaWithFields var | result.asInstruction() = var.getAUse() |
-        guards(guard, nd, var) and
-        guard.dominates(result.asInstruction().getBasicBlock())
-      )
+    exists(ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields var |
+      result = var.getAUse()
+    |
+      guards(guard, nd, var) and
+      guard.dominates(result.asInstruction().getBasicBlock())
     )
   }
 
@@ -764,7 +764,7 @@ abstract class BarrierGuard extends Node {
    */
   pragma[noinline]
   private predicate guards(ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields ap) {
-    guards(guard, nd) and nd.asInstruction() = ap.getAUse()
+    guards(guard, nd) and nd = ap.getAUse()
   }
 
   /**
