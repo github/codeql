@@ -100,3 +100,10 @@ void good2(char *str, char *dest) {
     decode(buffer, str);
     free(buffer);
 }
+
+void bad9(wchar_t *wstr) {
+    // BAD -- using new [NOT DETECTED]
+    wchar_t *wbuffer = new wchar_t[wcslen(wstr)];
+    wcscpy(wbuffer, wstr);
+    delete wbuffer;
+}
