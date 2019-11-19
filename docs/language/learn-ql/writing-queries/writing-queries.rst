@@ -33,7 +33,7 @@ Viewing existing CodeQL queries
 The easiest way to get started writing your own queries is to modify an existing query. To see these queries, or to try out the CodeQL query cookbooks, visit `Exploring CodeQL queries <https://help.semmle.com/QL/ql-explore-queries.html>`__.
 You can also find all the CodeQL queries in our `open source repository on GitHub <https://github.com/semmle/ql>`__. 
 
-You can also find examples of queries developed to find security vulnerabilities and bugs in open-source software projects in the `Semmle demos GitHub repository <https://github.com/semmle/demos>`__ and the `Semmle blog <https://blog.semmle.com/tags/security>`__.
+You can also find examples of queries developed to find security vulnerabilities and bugs in open-source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/security-lab>`__.
 
 Contributing queries
 ********************
