@@ -199,7 +199,7 @@ module CleartextLogging {
    */
   class PartiallySensitiveMap extends DataFlow::FlowLabel {
     PartiallySensitiveMap() {
-      this = "processEnv"
+      this = "PartiallySensitiveMap"
     }
   }
 }
