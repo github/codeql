@@ -8,14 +8,16 @@
 			The
 			<code>maxRequestLength</code>
 			attribute sets the limit for the input stream buffering
-			threshold in KB. Attackers can use large requests to cause denial-of-service
+			threshold in
+			KB. Attackers can use large requests to cause denial-of-service
 			attacks.
 		</p>
 	</overview>
 	<recommendation>
 
 		<p>
-			The recommended value is 4096 KB but you should try setting it as small
+			The recommended value is 4096 KB but you should try setting it as
+			small
 			as possible according
 			to business requirements.
 		</p>
@@ -35,7 +37,8 @@
 		<sample src="Web.config.ASPNetMaxRequestLength.bad" />
 
 		<p>
-			Unless such a high value is strictly needed, it is better to set the
+			Unless such a high value is strictly needed, it is better to set
+			the
 			recommended value (4096 KB):
 		</p>
 
