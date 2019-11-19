@@ -4,7 +4,7 @@
  *              result of a typo.
  * @kind problem
  * @problem.severity warning
- * @precision high
+ * @precision medium
  * @id cpp/useless-expression
  * @tags maintainability
  *       correctness
