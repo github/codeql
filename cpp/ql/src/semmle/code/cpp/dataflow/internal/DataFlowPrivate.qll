@@ -219,7 +219,6 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
       node1.asExpr() = a and
       a.getLValue() = fa
     ) and
-    not fa.getTarget().isStatic() and
     node2.getPreUpdateNode().asExpr() = fa.getQualifier() and
     f.(FieldContent).getField() = fa.getTarget()
   )
