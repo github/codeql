@@ -26,7 +26,7 @@
 	try {
 		unknown({prop: foo});
 	} catch(e) {
-		$('myId').html(e); // NOT OK!
+		$('myId').html(e); // We don't flag this for now.
 	}
 	
 	try {

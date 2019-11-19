@@ -78,9 +78,6 @@ module ExceptionXss {
       or
       // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
       this.isAdditionalFlowStep(pred, succ) and inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown
-      or
-      // We taint an object deep if it happens before an exception has been thrown.
-      inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown and exists(DataFlow::PropWrite write | write.getRhs() = pred and write.getBase() = succ)
     }
   }
 }
