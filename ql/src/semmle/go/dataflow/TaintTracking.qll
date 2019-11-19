@@ -95,6 +95,11 @@ module TaintTracking {
     succ.asExpr().(StarExpr).getBase() = pred.asExpr()
   }
 
+  predicate fieldReadStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // if x is tainted, then so is `x.y`
+    succ.(DataFlow::FieldReadNode).getBase() = pred
+  }
+
   predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
     // if an array is tainted, then so are all its elements
     succ.asExpr().(IndexExpr).getBase() = pred.asExpr()
@@ -130,6 +135,7 @@ module TaintTracking {
    */
   private predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
     referenceStep(pred, succ) or
+    fieldReadStep(pred, succ) or
     arrayStep(pred, succ) or
     tupleStep(pred, succ) or
     stringConcatStep(pred, succ) or
