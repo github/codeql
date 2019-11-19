@@ -22,19 +22,15 @@ class MallocCall extends FunctionCall {
   MallocCall() { this.getTarget().hasGlobalOrStdName("malloc") }
 
   Expr getAllocatedSize() {
-    if this.getArgument(0) instanceof VariableAccess
-    then
-      exists(LocalScopeVariable v, ControlFlowNode def |
-        definitionUsePair(v, def, this.getArgument(0)) and
-        exprDefinition(v, def, result)
-      )
-    else result = this.getArgument(0)
+    result = this.getArgument(0)
   }
 }
 
 predicate terminationProblem(MallocCall malloc, string msg) {
   // malloc(strlen(...))
-  malloc.getAllocatedSize() instanceof StrlenCall and
+  exists(StrlenCall strlen |
+    DataFlow::localExprFlow(strlen, malloc.getAllocatedSize())
+  ) and
   // flows into a null-terminated string function
   exists(ArrayFunction af, FunctionCall fc, int arg |
     DataFlow::localExprFlow(malloc, fc.getArgument(arg)) and
