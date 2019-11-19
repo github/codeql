@@ -1,7 +1,7 @@
 import javascript
 
 query predicate test_ResolvedPromiseDefinition(
-  ResolvedPromiseDefinition resolved, DataFlow::Node res
+  PromiseCreationCall resolved, DataFlow::Node res
 ) {
   res = resolved.getValue()
 }
