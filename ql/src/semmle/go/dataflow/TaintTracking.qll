@@ -87,28 +87,35 @@ module TaintTracking {
     }
   }
 
-  /**
-   * Holds if taint flows from `pred` to `succ` in one step.
-   */
-  private predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
     // if x is tainted, then so is &x
     succ.asExpr().(AddressExpr).getOperand() = pred.asExpr()
     or
     // if x is tainted, then so is *x
     succ.asExpr().(StarExpr).getBase() = pred.asExpr()
-    or
+  }
+
+  predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
     // if an array is tainted, then so are all its elements
     succ.asExpr().(IndexExpr).getBase() = pred.asExpr()
-    or
+  }
+
+  predicate tupleStep(DataFlow::Node pred, DataFlow::Node succ) {
     // if a tuple is tainted, then so are all its components
     succ = DataFlow::extractTupleElement(pred, _)
-    or
+  }
+
+  predicate stringConcatStep(DataFlow::Node pred, DataFlow::Node succ) {
     // taint propagates through string concatenation
     succ.asExpr().(AddExpr).getAnOperand() = pred.asExpr()
-    or
+  }
+
+  predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
     // taint propagates through slicing
     succ.asExpr().(SliceExpr).getBase() = pred.asExpr()
-    or
+  }
+
+  predicate functionModelStep(DataFlow::Node pred, DataFlow::Node succ) {
     // step through function model
     exists(FunctionModel m, DataFlow::CallNode c, FunctionInput inp, FunctionOutput outp |
       c = m.getACall() and
@@ -116,6 +123,18 @@ module TaintTracking {
       pred = inp.getNode(c) and
       succ = outp.getNode(c)
     )
+  }
+
+  /**
+   * Holds if taint flows from `pred` to `succ` in one step.
+   */
+  private predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    referenceStep(pred, succ) or
+    arrayStep(pred, succ) or
+    tupleStep(pred, succ) or
+    stringConcatStep(pred, succ) or
+    sliceStep(pred, succ) or
+    functionModelStep(pred, succ)
   }
 
   /**
