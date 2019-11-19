@@ -47,12 +47,16 @@ nodes
 | exception-xss.js:96:10:96:10 | e |
 | exception-xss.js:97:18:97:18 | e |
 | exception-xss.js:97:18:97:18 | e |
-| exception-xss.js:107:13:107:25 | req.params.id |
-| exception-xss.js:107:13:107:25 | req.params.id |
-| exception-xss.js:108:11:108:11 | e |
-| exception-xss.js:109:14:109:30 | "Exception: " + e |
-| exception-xss.js:109:14:109:30 | "Exception: " + e |
-| exception-xss.js:109:30:109:30 | e |
+| exception-xss.js:102:12:102:14 | foo |
+| exception-xss.js:106:10:106:10 | e |
+| exception-xss.js:107:18:107:18 | e |
+| exception-xss.js:107:18:107:18 | e |
+| exception-xss.js:117:13:117:25 | req.params.id |
+| exception-xss.js:117:13:117:25 | req.params.id |
+| exception-xss.js:118:11:118:11 | e |
+| exception-xss.js:119:14:119:30 | "Exception: " + e |
+| exception-xss.js:119:14:119:30 | "Exception: " + e |
+| exception-xss.js:119:30:119:30 | e |
 edges
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:9:11:9:13 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:15:9:15:11 | foo |
@@ -63,6 +67,7 @@ edges
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:81:16:81:18 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:89:11:89:13 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:95:12:95:14 | foo |
+| exception-xss.js:2:9:2:31 | foo | exception-xss.js:102:12:102:14 | foo |
 | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
 | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
 | exception-xss.js:9:11:9:13 | foo | exception-xss.js:10:10:10:10 | e |
@@ -101,11 +106,14 @@ edges
 | exception-xss.js:95:12:95:14 | foo | exception-xss.js:95:11:95:22 | [foo, "bar"] |
 | exception-xss.js:96:10:96:10 | e | exception-xss.js:97:18:97:18 | e |
 | exception-xss.js:96:10:96:10 | e | exception-xss.js:97:18:97:18 | e |
-| exception-xss.js:107:13:107:25 | req.params.id | exception-xss.js:108:11:108:11 | e |
-| exception-xss.js:107:13:107:25 | req.params.id | exception-xss.js:108:11:108:11 | e |
-| exception-xss.js:108:11:108:11 | e | exception-xss.js:109:30:109:30 | e |
-| exception-xss.js:109:30:109:30 | e | exception-xss.js:109:14:109:30 | "Exception: " + e |
-| exception-xss.js:109:30:109:30 | e | exception-xss.js:109:14:109:30 | "Exception: " + e |
+| exception-xss.js:102:12:102:14 | foo | exception-xss.js:106:10:106:10 | e |
+| exception-xss.js:106:10:106:10 | e | exception-xss.js:107:18:107:18 | e |
+| exception-xss.js:106:10:106:10 | e | exception-xss.js:107:18:107:18 | e |
+| exception-xss.js:117:13:117:25 | req.params.id | exception-xss.js:118:11:118:11 | e |
+| exception-xss.js:117:13:117:25 | req.params.id | exception-xss.js:118:11:118:11 | e |
+| exception-xss.js:118:11:118:11 | e | exception-xss.js:119:30:119:30 | e |
+| exception-xss.js:119:30:119:30 | e | exception-xss.js:119:14:119:30 | "Exception: " + e |
+| exception-xss.js:119:30:119:30 | e | exception-xss.js:119:14:119:30 | "Exception: " + e |
 #select
 | exception-xss.js:11:18:11:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:11:18:11:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:17:18:17:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:17:18:17:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
@@ -116,4 +124,5 @@ edges
 | exception-xss.js:83:18:83:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:83:18:83:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:91:18:91:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:91:18:91:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:97:18:97:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:97:18:97:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
-| exception-xss.js:109:14:109:30 | "Exception: " + e | exception-xss.js:107:13:107:25 | req.params.id | exception-xss.js:109:14:109:30 | "Exception: " + e | Cross-site scripting vulnerability due to $@. | exception-xss.js:107:13:107:25 | req.params.id | user-provided value |
+| exception-xss.js:107:18:107:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:107:18:107:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
+| exception-xss.js:119:14:119:30 | "Exception: " + e | exception-xss.js:117:13:117:25 | req.params.id | exception-xss.js:119:14:119:30 | "Exception: " + e | Cross-site scripting vulnerability due to $@. | exception-xss.js:117:13:117:25 | req.params.id | user-provided value |

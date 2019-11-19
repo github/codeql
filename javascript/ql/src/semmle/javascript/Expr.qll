@@ -251,11 +251,11 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * causes an exception to be thrown.
    */
   DataFlow::Node getThrowsToNode() {
-    if exists(this.getEnclosingStmt().getEnclosingTryStmt())
+    if exists(this.getEnclosingStmt().getEnclosingTryCatchStmt())
     then
       result = DataFlow::parameterNode(this
               .getEnclosingStmt()
-              .getEnclosingTryStmt()
+              .getEnclosingTryCatchStmt()
               .getACatchClause()
               .getAParameter())
     else result = any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()

@@ -96,6 +96,16 @@
 	} catch(e) {
 		$('myId').html(e); // NOT OK! 
 	}
+
+	try {
+		try {
+			unknown(foo);
+		} finally {
+			// nothing
+		}
+	} catch(e) {
+		$('myId').html(e); // NOT OK! 
+	}
 });
 
 var express = require('express');
