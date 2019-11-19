@@ -1,9 +1,13 @@
 /**
- * @name Large maxRequestLength value
+ * @name Large 'maxRequestLength' value
  * @description Setting a large 'maxRequestLength' value may render a webpage vulnerable to
  *              denial-of-service attacks.
  * @kind problem
  * @problem.severity warning
+ * @id cs/web/large-max-request-length
+ * @tags security
+ *       frameworks/asp.net
+ *       external/cwe/cwe-16
  */
 
 import csharp
