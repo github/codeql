@@ -32,7 +32,7 @@ module Bluebird {
   }
   
   /**
-   * An aggregated promise produced either by `Primise.all`, `Promise.race` or `Promise.map`. 
+   * An aggregated promise produced either by `Promise.all`, `Promise.race` or `Promise.map`. 
    */
   class AggregateBluebirdPromiseDefinition extends PromiseCreationCall {
     AggregateBluebirdPromiseDefinition() {

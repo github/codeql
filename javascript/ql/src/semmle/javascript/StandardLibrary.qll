@@ -173,7 +173,7 @@ class ResolvedES2015PromiseDefinition extends PromiseCreationCall {
 }
 
 /**
- * An aggregated promise produced either by `Primise.all` or `Promise.race`. 
+ * An aggregated promise produced either by `Promise.all` or `Promise.race`. 
  */
 class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   AggregateES2015PromiseDefinition() {
