@@ -13,7 +13,7 @@ module CleartextLogging {
   import CleartextLoggingCustomizations::CleartextLogging
 
   /**
-   * A dataflow tracking configuration for clear-text logging of sensitive information.
+   * A taint tracking configuration for clear-text logging of sensitive information.
    *
    * This configuration identifies flows from `Source`s, which are sources of
    * sensitive data, to `Sink`s, which is an abstract class representing all
@@ -21,26 +21,36 @@ module CleartextLogging {
    * added either by extending the relevant class, or by subclassing this configuration itself,
    * and amending the sources and sinks.
    */
-  class Configuration extends DataFlow::Configuration {
+  class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "CleartextLogging" }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
+      source.(Source).getLabel() = lbl
+    }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
+      sink.(Sink).getLabel() = lbl
+    }
 
-    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Barrier }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
-      StringConcatenation::taintStep(src, trg)
-      or
-      exists(string name | name = "toString" or name = "valueOf" |
-        src.(DataFlow::SourceNode).getAMethodCall(name) = trg
-      )
-      or
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+      succ.(DataFlow::PropRead).getBase() = pred
+    }
+       
+    override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
       // A taint propagating data flow edge through objects: a tainted write taints the entire object.
       exists(DataFlow::PropWrite write |
         write.getRhs() = src and
         trg.(DataFlow::SourceNode).flowsTo(write.getBase())
+      )
+      or
+      // Taint through the arguments object.
+      exists(DataFlow::CallNode call, Function f |
+        src = call.getAnArgument() and
+        f = call.getACallee() and
+        not call.isImprecise() and
+        trg.asExpr() = f.getArgumentsVariable().getAnAccess()
       )
     }
   }
