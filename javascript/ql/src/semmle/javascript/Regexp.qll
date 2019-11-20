@@ -113,9 +113,7 @@ class RegExpTerm extends Locatable, @regexpterm {
   /**
    * Holds if this is the root term of a regular expression.
    */
-  predicate isRootTerm() {
-    not getParent() instanceof RegExpTerm
-  }
+  predicate isRootTerm() { not getParent() instanceof RegExpTerm }
 
   /**
    * Gets the outermost term of this regular expression.
@@ -130,9 +128,7 @@ class RegExpTerm extends Locatable, @regexpterm {
   /**
    * Holds if this term occurs as part of a regular expression literal.
    */
-  predicate isPartOfRegExpLiteral() {
-    exists(getLiteral())
-  }
+  predicate isPartOfRegExpLiteral() { exists(getLiteral()) }
 
   /**
    * Holds if this term occurs as part of a string literal.
@@ -140,9 +136,7 @@ class RegExpTerm extends Locatable, @regexpterm {
    * This predicate holds regardless of whether the string literal is actually
    * used as a regular expression. See `isUsedAsRegExp`.
    */
-  predicate isPartOfStringLiteral() {
-    getRootTerm().getParent() instanceof StringLiteral
-  }
+  predicate isPartOfStringLiteral() { getRootTerm().getParent() instanceof StringLiteral }
 
   /**
    * Holds if this term is part of a regular expression literal, or a string literal
@@ -344,8 +338,7 @@ class RegExpAnchor extends RegExpTerm, @regexp_anchor {
  * ^
  * ```
  */
-class RegExpCaret extends RegExpAnchor, @regexp_caret {
-}
+class RegExpCaret extends RegExpAnchor, @regexp_caret { }
 
 /**
  * A dollar assertion `$` matching the end of a line.
@@ -356,8 +349,7 @@ class RegExpCaret extends RegExpAnchor, @regexp_caret {
  * $
  * ```
  */
-class RegExpDollar extends RegExpAnchor, @regexp_dollar {
-}
+class RegExpDollar extends RegExpAnchor, @regexp_dollar { }
 
 /**
  * A word boundary assertion.
@@ -939,4 +931,41 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
   override string getPattern() { result = getStringValue() }
 
   override RegExpTerm getRegExpTerm() { result = asExpr().(StringLiteral).asRegExp() }
+}
+
+module RegExp {
+  /** Gets the string `"?"` used to represent a regular expression whose flags are unknown. */
+  string unknownFlag() { result = "?" }
+
+  /** Holds `flags` includes the `m` flag. */
+  bindingset[flags]
+  predicate isMultiline(string flags) { flags.matches("%m%") }
+
+  /** Holds `flags` includes the `g` flag. */
+  bindingset[flags]
+  predicate isGlobal(string flags) { flags.matches("%g%") }
+
+  /** Holds `flags` includes the `i` flag. */
+  bindingset[flags]
+  predicate isIgnoreCase(string flags) { flags.matches("%i%") }
+
+  /** Holds `flags` includes the `s` flag. */
+  bindingset[flags]
+  predicate isDotAll(string flags) { flags.matches("%s%") }
+
+  /** Holds `flags` includes the `m` flag or is the unknown flag `?`. */
+  bindingset[flags]
+  predicate maybeMultiline(string flags) { flags = unknownFlag() or isMultiline(flags) }
+
+  /** Holds `flags` includes the `g` flag or is the unknown flag `?`. */
+  bindingset[flags]
+  predicate maybeGlobal(string flags) { flags = unknownFlag() or isGlobal(flags) }
+
+  /** Holds `flags` includes the `i` flag or is the unknown flag `?`. */
+  bindingset[flags]
+  predicate maybeIgnoreCase(string flags) { flags = unknownFlag() or isIgnoreCase(flags) }
+
+  /** Holds `flags` includes the `s` flag or is the unknown flag `?`. */
+  bindingset[flags]
+  predicate maybeDotAll(string flags) { flags = unknownFlag() or isDotAll(flags) }
 }

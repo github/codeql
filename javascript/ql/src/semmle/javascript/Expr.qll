@@ -454,16 +454,16 @@ class RegExpLiteral extends @regexpliteral, Literal, RegExpParent {
   string getFlags() { result = getValue().regexpCapture(".*/(\\w*)$", 1) }
 
   /** Holds if this regular expression has an `m` flag. */
-  predicate isMultiline() { getFlags().matches("%m%") }
+  predicate isMultiline() { RegExp::isMultiline(getFlags()) }
 
   /** Holds if this regular expression has a `g` flag. */
-  predicate isGlobal() { getFlags().matches("%g%") }
+  predicate isGlobal() { RegExp::isGlobal(getFlags()) }
 
   /** Holds if this regular expression has an `i` flag. */
-  predicate isIgnoreCase() { getFlags().matches("%i%") }
+  predicate isIgnoreCase() { RegExp::isIgnoreCase(getFlags()) }
 
   /** Holds if this regular expression has an `s` flag. */
-  predicate isDotAll() { getFlags().matches("%s%") }
+  predicate isDotAll() { RegExp::isDotAll(getFlags()) }
 }
 
 /**
