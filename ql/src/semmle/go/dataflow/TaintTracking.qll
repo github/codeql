@@ -87,41 +87,40 @@ module TaintTracking {
     }
   }
 
+  /** Holds if taint flows from `pred` to `succ` via a reference or dereference. */
   predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // if x is tainted, then so is &x
     succ.asExpr().(AddressExpr).getOperand() = pred.asExpr()
     or
-    // if x is tainted, then so is *x
     succ.asExpr().(StarExpr).getBase() = pred.asExpr()
   }
 
+  /** Holds if taint flows from `pred` to `succ` via a field read. */
   predicate fieldReadStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // if x is tainted, then so is `x.y`
     succ.(DataFlow::FieldReadNode).getBase() = pred
   }
 
+  /** Holds if taint flows from `pred` to `succ` via an array index operation. */
   predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // if an array is tainted, then so are all its elements
     succ.asExpr().(IndexExpr).getBase() = pred.asExpr()
   }
 
+  /** Holds if taint flows from `pred` to `succ` via an extract tuple operation. */
   predicate tupleStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // if a tuple is tainted, then so are all its components
     succ = DataFlow::extractTupleElement(pred, _)
   }
 
+  /** Holds if taint flows from `pred` to `succ` via string concatenation. */
   predicate stringConcatStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // taint propagates through string concatenation
     succ.asExpr().(AddExpr).getAnOperand() = pred.asExpr()
   }
 
+  /** Holds if taint flows from `pred` to `succ` via a slice operation. */
   predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // taint propagates through slicing
     succ.asExpr().(SliceExpr).getBase() = pred.asExpr()
   }
 
+  /** Holds if taint flows from `pred` to `succ` via a function model. */
   predicate functionModelStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // step through function model
     exists(FunctionModel m, DataFlow::CallNode c, FunctionInput inp, FunctionOutput outp |
       c = m.getACall() and
       m.hasTaintFlow(inp, outp) and
