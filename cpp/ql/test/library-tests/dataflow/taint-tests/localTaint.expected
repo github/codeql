@@ -178,29 +178,31 @@
 | taint.cpp:213:15:213:15 | ref arg y | taint.cpp:216:7:216:7 | y |  |
 | taint.cpp:213:15:213:15 | y | taint.cpp:213:12:213:12 | ref arg x |  |
 | taint.cpp:223:10:223:15 | call to source | taint.cpp:228:12:228:12 | t |  |
-| taint.cpp:223:10:223:15 | call to source | taint.cpp:235:11:239:2 | t |  |
-| taint.cpp:223:10:223:15 | call to source | taint.cpp:243:11:246:2 | t |  |
+| taint.cpp:223:10:223:15 | call to source | taint.cpp:235:10:239:2 | t |  |
+| taint.cpp:223:10:223:15 | call to source | taint.cpp:243:10:246:2 | t |  |
 | taint.cpp:223:10:223:15 | call to source | taint.cpp:253:4:253:4 | t |  |
 | taint.cpp:223:10:223:15 | call to source | taint.cpp:260:4:260:4 | t |  |
 | taint.cpp:224:9:224:10 | 0 | taint.cpp:228:15:228:15 | u |  |
-| taint.cpp:224:9:224:10 | 0 | taint.cpp:235:11:239:2 | u |  |
-| taint.cpp:224:9:224:10 | 0 | taint.cpp:243:11:246:2 | u |  |
+| taint.cpp:224:9:224:10 | 0 | taint.cpp:235:10:239:2 | u |  |
+| taint.cpp:224:9:224:10 | 0 | taint.cpp:243:10:246:2 | u |  |
 | taint.cpp:224:9:224:10 | 0 | taint.cpp:253:7:253:7 | u |  |
 | taint.cpp:224:9:224:10 | 0 | taint.cpp:260:7:260:7 | u |  |
-| taint.cpp:225:9:225:10 | 0 | taint.cpp:235:11:239:2 | v |  |
+| taint.cpp:225:9:225:10 | 0 | taint.cpp:235:10:239:2 | v |  |
 | taint.cpp:225:9:225:10 | 0 | taint.cpp:241:7:241:7 | v |  |
 | taint.cpp:226:9:226:10 | 0 | taint.cpp:260:10:260:10 | w |  |
 | taint.cpp:226:9:226:10 | 0 | taint.cpp:261:7:261:7 | w |  |
+| taint.cpp:228:10:232:2 | [...](...){...} | taint.cpp:233:7:233:7 | a |  |
+| taint.cpp:228:10:232:2 | {...} | taint.cpp:228:10:232:2 | [...](...){...} |  |
 | taint.cpp:228:11:228:11 | Unknown literal | taint.cpp:228:11:228:11 | constructor init of field t | TAINT |
 | taint.cpp:228:11:228:11 | Unknown literal | taint.cpp:228:11:228:11 | constructor init of field u | TAINT |
 | taint.cpp:228:11:228:11 | `this` parameter in (constructor) | taint.cpp:228:11:228:11 | constructor init of field t [pre-this] |  |
 | taint.cpp:228:11:228:11 | constructor init of field t [post-this] | taint.cpp:228:11:228:11 | constructor init of field u [pre-this] |  |
 | taint.cpp:228:11:228:11 | constructor init of field t [pre-this] | taint.cpp:228:11:228:11 | constructor init of field u [pre-this] |  |
-| taint.cpp:228:11:232:2 | [...](...){...} | taint.cpp:233:7:233:7 | a |  |
-| taint.cpp:228:11:232:2 | {...} | taint.cpp:228:11:232:2 | [...](...){...} |  |
 | taint.cpp:228:17:228:17 | `this` parameter in operator() | taint.cpp:229:3:229:6 | this |  |
 | taint.cpp:229:3:229:6 | this | taint.cpp:230:3:230:6 | this |  |
 | taint.cpp:230:3:230:6 | this | taint.cpp:231:3:231:11 | this |  |
+| taint.cpp:235:10:239:2 | [...](...){...} | taint.cpp:240:2:240:2 | b |  |
+| taint.cpp:235:10:239:2 | {...} | taint.cpp:235:10:239:2 | [...](...){...} |  |
 | taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field t | TAINT |
 | taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field u | TAINT |
 | taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field v | TAINT |
@@ -209,19 +211,17 @@
 | taint.cpp:235:11:235:11 | constructor init of field t [pre-this] | taint.cpp:235:11:235:11 | constructor init of field u [pre-this] |  |
 | taint.cpp:235:11:235:11 | constructor init of field u [post-this] | taint.cpp:235:11:235:11 | constructor init of field v [pre-this] |  |
 | taint.cpp:235:11:235:11 | constructor init of field u [pre-this] | taint.cpp:235:11:235:11 | constructor init of field v [pre-this] |  |
-| taint.cpp:235:11:239:2 | [...](...){...} | taint.cpp:240:2:240:2 | b |  |
-| taint.cpp:235:11:239:2 | {...} | taint.cpp:235:11:239:2 | [...](...){...} |  |
 | taint.cpp:235:15:235:15 | `this` parameter in operator() | taint.cpp:236:3:236:6 | this |  |
 | taint.cpp:236:3:236:6 | this | taint.cpp:237:3:237:6 | this |  |
 | taint.cpp:237:3:237:6 | this | taint.cpp:238:3:238:14 | this |  |
 | taint.cpp:238:7:238:12 | call to source | taint.cpp:238:3:238:14 | ... = ... |  |
+| taint.cpp:243:10:246:2 | [...](...){...} | taint.cpp:247:2:247:2 | c |  |
+| taint.cpp:243:10:246:2 | {...} | taint.cpp:243:10:246:2 | [...](...){...} |  |
 | taint.cpp:243:11:243:11 | Unknown literal | taint.cpp:243:11:243:11 | constructor init of field t | TAINT |
 | taint.cpp:243:11:243:11 | Unknown literal | taint.cpp:243:11:243:11 | constructor init of field u | TAINT |
 | taint.cpp:243:11:243:11 | `this` parameter in (constructor) | taint.cpp:243:11:243:11 | constructor init of field t [pre-this] |  |
 | taint.cpp:243:11:243:11 | constructor init of field t [post-this] | taint.cpp:243:11:243:11 | constructor init of field u [pre-this] |  |
 | taint.cpp:243:11:243:11 | constructor init of field t [pre-this] | taint.cpp:243:11:243:11 | constructor init of field u [pre-this] |  |
-| taint.cpp:243:11:246:2 | [...](...){...} | taint.cpp:247:2:247:2 | c |  |
-| taint.cpp:243:11:246:2 | {...} | taint.cpp:243:11:246:2 | [...](...){...} |  |
 | taint.cpp:243:15:243:15 | `this` parameter in operator() | taint.cpp:244:3:244:6 | this |  |
 | taint.cpp:244:3:244:6 | this | taint.cpp:245:3:245:6 | this |  |
 | taint.cpp:249:11:252:2 | [...](...){...} | taint.cpp:253:2:253:2 | d |  |

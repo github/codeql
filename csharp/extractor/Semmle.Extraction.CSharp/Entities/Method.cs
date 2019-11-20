@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var methodKind = methodDecl.MethodKind;
 
-            if(methodKind == MethodKind.ExplicitInterfaceImplementation)
+            if (methodKind == MethodKind.ExplicitInterfaceImplementation)
             {
                 // Retrieve the original method kind
                 methodKind = methodDecl.ExplicitInterfaceImplementations.Select(m => m.MethodKind).FirstOrDefault();
@@ -345,11 +345,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     foreach (var tp in symbol.GetAnnotatedTypeArguments())
                     {
                         trapFile.type_arguments(Type.Create(Context, tp.Symbol), child, this);
-                        var ta = tp.Nullability.GetTypeAnnotation();
-                        if (ta != Kinds.TypeAnnotation.None)
-                            trapFile.type_argument_annotation(this, child, ta);
                         child++;
                     }
+
+                    var nullability = new Nullability(symbol);
+                    if (!nullability.IsOblivious)
+                        trapFile.type_nullability(this, NullabilityEntity.Create(Context, nullability));
                 }
                 else
                 {
@@ -380,7 +381,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateMethodBody(trapFile);
             PopulateGenerics(trapFile);
             PopulateMetadataHandle(trapFile);
-            PopulateNullability(trapFile, symbol.ReturnNullableAnnotation);
+            PopulateNullability(trapFile, symbol.GetAnnotatedReturnType());
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

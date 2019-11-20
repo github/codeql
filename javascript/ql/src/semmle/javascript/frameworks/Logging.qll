@@ -61,6 +61,15 @@ private module Console {
       if name = "assert"
       then result = getArgument([1 .. getNumArgument()])
       else result = getAnArgument()
+      or
+      result = getASpreadArgument()
+    }
+
+    /**
+     * Gets the name of the console logging method, e.g. "log", "error", "assert", etc.
+     */
+    string getName() {
+      result = name
     }
   }
 }

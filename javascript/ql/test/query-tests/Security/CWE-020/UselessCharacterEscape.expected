@@ -1,5 +1,5 @@
 | tst-IncompleteHostnameRegExp.js:42:13:42:65 | '^http[ ... \\/(.+)' | The escape sequence '\\/' is equivalent to just '/'. |
-| tst-SemiAnchoredRegExp.js:107:2:107:45 | /^((\\+\| ... ?\\d\\d)/ | The escape sequence '\\:' is equivalent to just ':'. |
+| tst-SemiAnchoredRegExp.js:109:2:109:45 | /^((\\+\| ... ?\\d\\d)/ | The escape sequence '\\:' is equivalent to just ':'. |
 | tst-escapes.js:19:8:19:11 | "\\ " | The escape sequence '\\ ' is equivalent to just ' '. |
 | tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\a' is equivalent to just 'a'. |
 | tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\e' is equivalent to just 'e'. |

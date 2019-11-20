@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateAttributes();
             PopulateModifiers(trapFile);
             BindComments();
-            PopulateNullability(trapFile, symbol.NullableAnnotation);
+            PopulateNullability(trapFile, symbol.GetAnnotatedType());
             PopulateRefKind(trapFile, symbol.RefKind);
 
             var type = Type.Create(Context, symbol.Type);

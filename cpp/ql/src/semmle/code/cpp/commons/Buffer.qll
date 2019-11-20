@@ -44,7 +44,7 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
       aoe.getAddressable() = v
     )
     or
-    exists(BuiltInOperationOffsetOf oo |
+    exists(BuiltInOperationBuiltInOffsetOf oo |
       // `offsetof(c, v)` using a builtin
       oo.getAChild().(VariableAccess).getTarget() = v
     )

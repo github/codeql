@@ -10,7 +10,7 @@ import semmle.javascript.dataflow.Configuration
 /**
  * Holds if flow should be tracked through properties of `obj`.
  *
- * Flow is tracked through object literals, `module` and `module.exports` objects.
+ * Flow is tracked through `module` and `module.exports` objects.
  */
 predicate shouldTrackProperties(AbstractValue obj) {
   obj instanceof AbstractExportsObject or

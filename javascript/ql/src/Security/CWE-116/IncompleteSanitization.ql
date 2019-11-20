@@ -166,6 +166,9 @@ where
         // URL encoder
         repl.getArgument(1).getStringValue().regexpMatch(urlEscapePattern)
       )
+      or
+      // path sanitizer
+      (m = ".." or m = "/.." or m = "../" or m = "/../")
     ) and
     // don't flag replace operations in a loop
     not DataFlow::valueNode(repl.getReceiver()) = DataFlow::valueNode(repl).getASuccessor+() and

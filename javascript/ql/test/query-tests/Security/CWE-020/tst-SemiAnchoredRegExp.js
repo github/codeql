@@ -29,9 +29,12 @@
 
 	/^good.com|better.com/; // NOT OK
 	/^good\.com|better\.com/; // NOT OK
-	/^good\\.com|better\\.com/;
-	/^good\\\.com|better\\\.com/;
-	/^good\\\\.com|better\\\\.com/;
+	/^good\\.com|better\\.com/; // NOT OK
+	/^good\\\.com|better\\\.com/; // NOT OK
+	/^good\\\\.com|better\\\\.com/; // NOT OK
+
+	/^foo|bar|baz$/; // NOT OK
+	/^foo|%/; // OK
 });
 
 (function coreString() {
@@ -67,7 +70,7 @@
 	new RegExp('^good\.com|better\.com'); // NOT OK
 	new RegExp('^good\\.com|better\\.com'); // NOT OK
 	new RegExp('^good\\\.com|better\\\.com'); // NOT OK
-	new RegExp('^good\\\\.com|better\\\\.com');
+	new RegExp('^good\\\\.com|better\\\\.com'); // NOT OK
 });
 
 (function realWorld() {
@@ -77,17 +80,16 @@
 	 * NOT OK: flagged
 	 */
 	/(\.xxx)|(\.yyy)|(\.zzz)$/;
-	/(^left|right|center)\sbottom$/; // not flagged at the moment due to multiple anchors
+	/(^left|right|center)\sbottom$/; // not flagged at the moment due to interior anchors
 	/\.xxx|\.yyy|\.zzz$/ig;
 	/\.xxx|\.yyy|zzz$/;
-	/^(?:mouse|contextmenu)|click/; // not flagged at the moment due to nested alternatives
-	/^([A-Z]|xxx[XY]$)/; // not flagged at the moment due to multiple anchors
+	/^([A-Z]|xxx[XY]$)/; // not flagged at the moment due to interior anchors
 	/^(xxx yyy zzz)|(xxx yyy)/i;
-	/^(xxx yyy zzz)|(xxx yyy)|(1st( xxx)? yyy)|xxx|1st/i; // not flagged at the moment due to nested parens
+	/^(xxx yyy zzz)|(xxx yyy)|(1st( xxx)? yyy)|xxx|1st/i;
 	/^(xxx:)|(yyy:)|(zzz:)/;
 	/^(xxx?:)|(yyy:zzz\/)/;
 	/^@media|@page/;
-	/^\s*(xxx?|yyy|zzz):|xxx:yyy\//; // not flagged at the moment due to quantifiers
+	/^\s*(xxx?|yyy|zzz):|xxx:yyy\//;
 	/^click|mouse|touch/;
 	/^http:\/\/good\.com|http:\/\/better\.com/;
 	/^https?:\/\/good\.com|https?:\/\/better\.com/;
@@ -123,4 +125,9 @@
 	/^9$|27/;
 	/^\+|\s*/g;
 	/xxx_yyy=\w+|^$/;
+	/^(?:mouse|contextmenu)|click/;
 });
+
+function replaceTest(x) {
+	return x.replace(/^a|b/, ''); // OK - possibly replacing too much, but not obviously a problem
+}

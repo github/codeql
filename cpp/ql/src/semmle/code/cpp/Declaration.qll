@@ -223,7 +223,7 @@ abstract class Declaration extends Locatable, @declaration {
    * Will have `getTemplateArgument(0)` return `T`, and
    * `getTemplateArgument(1)` return `X`.
    *
-   * `Foo<int, 1> bar;
+   * `Foo<int, 1> bar;`
    *
    * Will have `getTemplateArgument())` return `int`, and
    * `getTemplateArgument(1)` return `1`.

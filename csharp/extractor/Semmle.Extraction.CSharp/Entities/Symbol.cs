@@ -28,11 +28,13 @@ namespace Semmle.Extraction.CSharp.Entities
                 Attribute.ExtractAttributes(Context, symbol, this);
         }
 
-        protected void PopulateNullability(TextWriter trapFile, NullableAnnotation annotation)
+        protected void PopulateNullability(TextWriter trapFile, AnnotatedTypeSymbol type)
         {
-            var ta = annotation.GetTypeAnnotation();
-            if (ta != Kinds.TypeAnnotation.None)
-                trapFile.type_annotation(this, ta);
+            var n = NullabilityEntity.Create(Context, Nullability.Create(type));
+            if (!type.HasObliviousNullability())
+            {
+                trapFile.type_nullability(this, n);
+            }
         }
 
         protected void PopulateRefKind(TextWriter trapFile, RefKind kind)
