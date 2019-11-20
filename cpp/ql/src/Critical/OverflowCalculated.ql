@@ -11,18 +11,13 @@
  */
 
 import cpp
+import semmle.code.cpp.dataflow.DataFlow
 
 class MallocCall extends FunctionCall {
   MallocCall() { this.getTarget().hasGlobalOrStdName("malloc") }
 
   Expr getAllocatedSize() {
-    if this.getArgument(0) instanceof VariableAccess
-    then
-      exists(LocalScopeVariable v, ControlFlowNode def |
-        definitionUsePair(v, def, this.getArgument(0)) and
-        exprDefinition(v, def, result)
-      )
-    else result = this.getArgument(0)
+    result = this.getArgument(0)
   }
 }
 
@@ -30,7 +25,7 @@ predicate spaceProblem(FunctionCall append, string msg) {
   exists(MallocCall malloc, StrlenCall strlen, AddExpr add, FunctionCall insert, Variable buffer |
     add.getAChild() = strlen and
     exists(add.getAChild().getValue()) and
-    malloc.getAllocatedSize() = add and
+    DataFlow::localExprFlow(add, malloc.getAllocatedSize()) and
     buffer.getAnAccess() = strlen.getStringExpr() and
     (
       insert.getTarget().hasGlobalOrStdName("strcpy") or
