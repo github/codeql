@@ -32,6 +32,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 
 * The data-flow library in `semmle.code.cpp.dataflow.DataFlow` and
   `semmle.code.cpp.dataflow.TaintTracking` have had extensive changes:
+  * Data flow through fields is now more complete and reliable.
   * To debug a lack of flow, instead of specifying `isSink(Node n) { any() }`
     on a configuration to
     explore the possible flow from a source, it is recommended to use the new
