@@ -968,4 +968,92 @@ module RegExp {
   /** Holds `flags` includes the `s` flag or is the unknown flag `?`. */
   bindingset[flags]
   predicate maybeDotAll(string flags) { flags = unknownFlag() or isDotAll(flags) }
+
+  /** Holds if `term` and all of its disjuncts are anchored on both ends. */
+  predicate isFullyAnchoredTerm(RegExpTerm term) {
+    exists(RegExpSequence seq | term = seq |
+      seq.getChild(0) instanceof RegExpCaret and
+      seq.getLastChild() instanceof RegExpDollar
+    )
+    or
+    isFullyAnchoredTerm(term.(RegExpGroup).getAChild())
+    or
+    isFullyAnchoredAlt(term, term.getNumChild())
+  }
+
+  /** Holds if the first `i` disjuncts of `term` are fully anchored. */
+  private predicate isFullyAnchoredAlt(RegExpAlt term, int i) {
+    isFullyAnchoredTerm(term.getChild(0)) and i = 1
+    or
+    isFullyAnchoredAlt(term, i - 1) and
+    isFullyAnchoredTerm(term.getChild(i - 1))
+  }
+
+  /**
+   * Holds if `term` is matches any character except for explicitly listed exceptions.
+   *
+   * For example, holds for `.`, `[^<>]`, or `\W`, but not for `[a-z]`, `\w`, or `[^\W\S]`.
+   */
+  predicate isWildcardLike(RegExpTerm term) {
+    term instanceof RegExpDot
+    or
+    term.(RegExpCharacterClassEscape).getValue().isUppercase()
+    or
+    exists(RegExpCharacterClass cls | term = cls |
+      cls.isInverted() and
+      not cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
+    )
+    or
+    exists(RegExpCharacterClass cls | term = cls |
+      not cls.isInverted() and
+      cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
+    )
+  }
+
+  /**
+   * Holds if `term` is a generic sanitizer for strings that match (if `outcome` is true)
+   * or strings that don't match (if `outcome` is false).
+   *
+   * Specifically, whitelisting regexps such as `^(foo|bar)$` sanitize matches in the true case.
+   * Inverted character classes such as `[^a-z]` or `\W` sanitize matches in the false case.
+   */
+  predicate isGenericRegExpSanitizer(RegExpTerm term, boolean outcome) {
+    term.isRootTerm() and
+    (
+      outcome = true and
+      isFullyAnchoredTerm(term) and
+      not isWildcardLike(term.getAChild*())
+      or
+      outcome = false and
+      exists(RegExpTerm root |
+        root = term
+        or
+        root = term.(RegExpGroup).getAChild()
+      |
+        isWildcardLike(root)
+        or
+        isWildcardLike(root.(RegExpAlt).getAChild())
+      )
+    )
+  }
+
+  /**
+   * Gets the AST of a regular expression object that can flow to `node`.
+   */
+  RegExpTerm getRegExpObjectFromNode(DataFlow::Node node) {
+    exists(DataFlow::RegExpCreationNode regexp |
+      regexp.getAReference().flowsTo(node) and
+      result = regexp.getRegExpTerm()
+    )
+  }
+
+  /**
+   * Gets the AST of a regular expression that can flow to `node`,
+   * including `RegExp` objects as well as strings interpreted as regular expressions.
+   */
+  RegExpTerm getRegExpFromNode(DataFlow::Node node) {
+    result = getRegExpObjectFromNode(node)
+    or
+    result = node.asExpr().(StringLiteral).asRegExp()
+  }
 }

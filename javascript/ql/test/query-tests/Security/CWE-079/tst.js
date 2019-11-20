@@ -132,7 +132,7 @@ function tst() {
       document.write(v);
   }
 
-  if (!(/\d+/.test(v)))
+  if (!(/^\d+$/.test(v)))
     return;
 
   // OK
