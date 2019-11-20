@@ -530,6 +530,13 @@ module DataFlow {
      */
     pragma[noinline]
     predicate accesses(Node base, string p) { getBase() = base and getPropertyName() = p }
+
+    /**
+     * Gets an accessor (`get` or `set` method) that may be invoked by this property reference.
+     */
+    final DataFlow::FunctionNode getAnAccessorCallee() {
+      result = CallGraph::getAnAccessorCallee(this)
+    }
   }
 
   /**

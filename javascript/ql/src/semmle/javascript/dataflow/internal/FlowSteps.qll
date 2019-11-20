@@ -23,7 +23,8 @@ predicate shouldTrackProperties(AbstractValue obj) {
  */
 pragma[noinline]
 predicate returnExpr(Function f, DataFlow::Node source, DataFlow::Node sink) {
-  sink.asExpr() = f.getAReturnedExpr() and source = sink
+  sink.asExpr() = f.getAReturnedExpr() and source = sink and
+  not f = any(SetterMethodDeclaration decl).getBody()
 }
 
 /**
@@ -101,7 +102,11 @@ private module CachedSteps {
    * Holds if `invk` may invoke `f`.
    */
   cached
-  predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
+  predicate calls(DataFlow::SourceNode invk, Function f) {
+    f = invk.(DataFlow::InvokeNode).getACallee(0)
+    or
+    f = invk.(DataFlow::PropRef).getAnAccessorCallee().getFunction()
+  }
 
   /**
    * Holds if `invk` may invoke `f` indirectly through the given `callback` argument.
@@ -125,19 +130,25 @@ private module CachedSteps {
    */
   cached
   predicate argumentPassing(
-    DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::SourceNode parm
+    DataFlow::SourceNode invk, DataFlow::ValueNode arg, Function f, DataFlow::SourceNode parm
   ) {
     calls(invk, f) and
     (
       exists(int i, Parameter p |
         f.getParameter(i) = p and
         not p.isRestParameter() and
-        arg = invk.getArgument(i) and
+        arg = invk.(DataFlow::InvokeNode).getArgument(i) and
         parm = DataFlow::parameterNode(p)
       )
       or
       arg = invk.(DataFlow::CallNode).getReceiver() and
       parm = DataFlow::thisNode(f)
+      or
+      arg = invk.(DataFlow::PropRef).getBase() and
+      parm = DataFlow::thisNode(f)
+      or
+      arg = invk.(DataFlow::PropWrite).getRhs() and
+      parm = DataFlow::parameterNode(f.getParameter(0))
     )
     or
     exists(DataFlow::Node callback, int i, Parameter p |
