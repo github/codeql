@@ -48,4 +48,7 @@ func main() {
 </autoupdate>
 `, export))
 	err = ioutil.WriteFile(buildSteps, content, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
