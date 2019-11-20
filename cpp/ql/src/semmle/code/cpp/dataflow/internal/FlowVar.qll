@@ -133,8 +133,7 @@ private module PartialDefinitions {
     TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(va, arg) }
 
   private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
-    not fa.getTarget().isStatic() and
-    assignmentLikeOperation(node, fa.getTarget(), fa, _)
+    assignmentLikeOperation(node, _, fa, _)
   }
 
   class PartialDefinition extends TPartialDefinition {
