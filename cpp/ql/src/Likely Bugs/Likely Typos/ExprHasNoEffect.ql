@@ -86,6 +86,7 @@ where
   not peivc.isFromTemplateInstantiation(_) and
   parent = peivc.getParent() and
   not parent.isInMacroExpansion() and
+  not peivc.isUnevaluated() and
   not parent instanceof PureExprInVoidContext and
   not peivc.getEnclosingFunction().isCompilerGenerated() and
   not peivc.getType() instanceof UnknownType and
