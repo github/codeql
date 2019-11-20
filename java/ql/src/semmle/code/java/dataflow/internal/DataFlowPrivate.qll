@@ -279,6 +279,8 @@ class DataFlowExpr = Expr;
 
 class DataFlowType = RefType;
 
+class DataFlowErasedType = RefType;
+
 class DataFlowLocation = Location;
 
 class DataFlowCall extends Call {
