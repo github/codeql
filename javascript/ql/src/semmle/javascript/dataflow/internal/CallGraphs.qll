@@ -162,4 +162,18 @@ module CallGraph {
       )
     )
   }
+
+  /**
+   * Gets a getter or setter invoked as a result of the given property access.
+   */
+  cached
+  DataFlow::FunctionNode getAnAccessorCallee(DataFlow::PropRef ref) {
+    exists(DataFlow::ClassNode cls, string name |
+      ref = cls.getAnInstanceReference().getAPropertyRead(name) and
+      result = cls.getInstanceMember(name, DataFlow::MemberKind::getter())
+      or
+      ref = cls.getAnInstanceReference().getAPropertyWrite(name) and
+      result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
+    )
+  }
 }

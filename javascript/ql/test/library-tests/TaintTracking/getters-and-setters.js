@@ -50,6 +50,6 @@ function testFlowThroughGetter() {
     function getX(c) {
         return c.x;
     }
-    sink(getX(new C(source()))); // NOT OK
-    sink(getX(new C(source()))); // NOT OK
+    sink(getX(new C(source()))); // NOT OK - but not flagged
+    getX(null);
 }

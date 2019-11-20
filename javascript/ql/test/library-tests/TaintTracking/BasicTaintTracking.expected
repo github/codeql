@@ -66,6 +66,10 @@ typeInferenceMismatch
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:9:10:9:18 | new C().x |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
+| getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |
+| getters-and-setters.js:47:23:47:30 | source() | getters-and-setters.js:45:14:45:16 | c.x |
 | importedReactComponent.jsx:4:40:4:47 | source() | exportedReactComponent.jsx:2:10:2:19 | props.text |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:5:8:5:29 | JSON.st ... source) |
