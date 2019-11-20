@@ -281,7 +281,7 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
   }
 
   /**
-   * Holds if this is a global replacement, that is, the first argument is a regulare expression
+   * Holds if this is a global replacement, that is, the first argument is a regular expression
    * with the `g` flag.
    */
   predicate isGlobal() {
@@ -303,7 +303,7 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       replacer.getParameter(0).flowsToExpr(pr.getPropertyNameExpr()) and
       pr = map.getAPropertyRead() and
       pr.flowsTo(replacer.getAReturn()) and
-      map.asExpr().(ObjectExpr).getPropertyByName(old).getInit().getStringValue() = new
+      map.hasPropertyWrite(old, any(DataFlow::Node repl | repl.getStringValue() = new))
     )
   }
 }
