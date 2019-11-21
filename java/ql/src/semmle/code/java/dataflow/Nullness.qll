@@ -515,6 +515,13 @@ private predicate correlatedConditions(
       cond2.getCondition() = enumConstEquality(v.getAUse(), pol2, c) and
       inverted = pol1.booleanXor(pol2)
     )
+    or
+    exists(SsaVariable v, Expr t1, Expr t2 |
+      cond1.getCondition() = instanceofExpr(v, t1) and
+      cond2.getCondition() = instanceofExpr(v, t2) and
+      t1.getType() = t2.getType() and
+      inverted = false
+    )
   )
 }
 

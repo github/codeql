@@ -24,6 +24,12 @@ Expr enumConstEquality(Expr e, boolean polarity, EnumConstant c) {
   )
 }
 
+/** Gets an instanceof expression of `v` with type `type` */
+InstanceOfExpr instanceofExpr(SsaVariable v, Expr type) {
+  result.getTypeName() = type and
+  result.getExpr() = v.getAUse()
+}
+
 /** Gets an expression that is provably not `null`. */
 Expr clearlyNotNullExpr(Expr reason) {
   result instanceof ClassInstanceExpr and reason = result
