@@ -110,6 +110,4 @@ predicate isFromMacroDefinition(Element e) {
  * be used to avoid bad join orders where integers are joined too early.
  */
 bindingset[x, y]
-private predicate nonBindingIntEquality(int x, int y) {
-  x >= y and y >= x
-}
+private predicate nonBindingIntEquality(int x, int y) { x >= y and y >= x }
