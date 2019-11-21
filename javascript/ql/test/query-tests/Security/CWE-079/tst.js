@@ -292,3 +292,20 @@ function flowThroughPropertyNames() {
     for (var p in obj)
       $(p); // OK
 }
+
+function basicExceptions() {
+	try {
+		throw location;
+	} catch(e) {
+		$("body").append(e); // NOT OK
+	}
+
+	try {
+		try {
+			throw location
+		} finally {}
+	} catch(e) {
+		$("body").append(e); // NOT OK
+	}
+
+}
