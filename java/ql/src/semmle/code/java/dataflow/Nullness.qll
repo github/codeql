@@ -522,6 +522,12 @@ private predicate correlatedConditions(
       t1.getType() = t2.getType() and
       inverted = false
     )
+    or
+    exists(SsaVariable v1, SsaVariable v2, boolean branch1, boolean branch2  |
+      cond1.getCondition() = varComparisonExpr(v1, v2, branch1) and
+      cond2.getCondition() = varComparisonExpr(v1, v2, branch2) and
+      inverted = branch1.booleanXor(branch2)
+    )
   )
 }
 
