@@ -284,19 +284,54 @@ predicate freeFunction(Function f, int argNum) {
 }
 
 /**
+ * A deallocation function such as `free`.
+ */
+class FreeFunction extends Function {
+  FreeFunction() {
+    freeFunction(this, _)
+  }
+
+  /**
+   * Gets the index of the argument that is freed by this function.
+   */
+  int getFreedArg() {
+  	freeFunction(this, result)
+  }
+}
+
+/**
+ * An deallocation expression such as call to `free` or a `delete` expression.
+ */
+class DeallocationExpr extends Expr {
+  DeallocationExpr() {
+  	this.(FunctionCall).getTarget() instanceof FreeFunction or
+    this instanceof DeleteExpr or
+    this instanceof DeleteArrayExpr
+  }
+
+  /**
+   * Gets the expression that is freed by this function.
+   */
+  Expr getFreedExpr() {
+    exists(FunctionCall fc | fc = this |
+      result = fc.getArgument(fc.getTarget().(FreeFunction).getFreedArg())
+    ) or
+    result = this.(DeleteExpr).getExpr() or
+    result = this.(DeleteArrayExpr).getExpr()
+  }
+}
+
+/**
  * A call to a library routine that frees memory.
  */
 predicate freeCall(FunctionCall fc, Expr arg) {
-  exists(int argNum |
-    freeFunction(fc.getTarget(), argNum) and
-    arg = fc.getArgument(argNum)
-  )
+  arg = fc.(DeallocationExpr).getFreedExpr()
 }
 
 /**
  * Is e some kind of allocation or deallocation (`new`, `alloc`, `realloc`, `delete`, `free` etc)?
  */
-predicate isMemoryManagementExpr(Expr e) { isAllocationExpr(e) or isDeallocationExpr(e) }
+predicate isMemoryManagementExpr(Expr e) { isAllocationExpr(e) or e instanceof DeallocationExpr }
 
 /**
  * Is e an allocation from stdlib.h (`malloc`, `realloc` etc)?
@@ -325,9 +360,9 @@ deprecated predicate isFixedSizeAllocationExpr(Expr allocExpr, int size) {
 
 /**
  * Is e some kind of deallocation (`delete`, `free`, `realloc` etc)?
+ *
+ * DEPRECATED: Use `DeallocationExpr` instead.
  */
-predicate isDeallocationExpr(Expr e) {
-  freeCall(e, _) or
-  e instanceof DeleteExpr or
-  e instanceof DeleteArrayExpr
+deprecated predicate isDeallocationExpr(Expr e) {
+  e instanceof DeallocationExpr
 }
