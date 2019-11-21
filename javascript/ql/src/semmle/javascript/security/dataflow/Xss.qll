@@ -95,6 +95,8 @@ module DomBasedXss {
         mcn.getMethodName() = m and
         this = mcn.getArgument(1)
       )
+      or
+      this = any(Handlebars::SafeString s).getAnArgument()
     }
   }
 
