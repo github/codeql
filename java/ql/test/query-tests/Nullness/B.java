@@ -324,4 +324,24 @@ public class B {
     if (x != null) y.hashCode(); // OK
     if (y != null) x.hashCode(); // OK
   }
+
+  public void corrConds3(Object y) {
+    Object x = null;
+    if(y instanceof String) {
+      x = new Object();
+    }
+    if(y instanceof String) {
+      x.hashCode(); // OK
+    }
+  }
+
+  public void corrConds4(Object y) {
+    Object x = null;
+    if(!(y instanceof String)) {
+      x = new Object();
+    }
+    if(!(y instanceof String)) {
+      x.hashCode(); // OK
+    }
+  }
 }
