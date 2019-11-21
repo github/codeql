@@ -31,6 +31,7 @@ where
         cls.isNewStyle() and
         not name = "__new__" and
         not name = "__metaclass__" and
+        not name = "__init_subclass__" and
         /* declared in scope */
         f.getScope() = cls.getScope()
     ) and
@@ -38,7 +39,6 @@ where
     not is_type_method(fv) and
     fv.getScope() = f and
     not f.getName() = "lambda" and
-    not f.getName() = "__init_subclass__" and
     not used_in_defining_scope(fv) and
     (
         (
