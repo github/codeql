@@ -7,7 +7,7 @@ import semmle.code.cpp.models.interfaces.Allocation
  * DEPRECATED: Use the `MallocFunction` class instead of this predicate.
  */
 deprecated predicate allocationFunction(Function f) {
-  f instanceof MallocFunction
+  f instanceof AllocationFunction
 }
 
 /**
@@ -23,7 +23,7 @@ deprecated predicate allocationCall(FunctionCall fc) {
  * A library routine that frees memory.
  */
 predicate freeFunction(Function f, int argNum) {
-  argNum = f.(FreeFunction).getFreedArg()
+  argNum = f.(DeallocationFunction).getFreedArg()
 }
 
 /**
