@@ -94,11 +94,22 @@ predicate functionContainsPreprocCode(Function f) {
  * ```
  */
 predicate isFromMacroDefinition(Element e) {
-  exists(MacroInvocation mi |
+  exists(MacroInvocation mi, Location eLocation, Location miLocation |
     // e is in mi
     mi.getAnExpandedElement() = e and
     // and e was apparently not passed in as a macro parameter
-    e.getLocation().getStartLine() = mi.getLocation().getStartLine() and
-    e.getLocation().getStartColumn() = mi.getLocation().getStartColumn()
+    eLocation = e.getLocation() and
+    miLocation = mi.getLocation() and
+    nonBindingIntEquality(eLocation.getStartLine(), miLocation.getStartLine()) and
+    nonBindingIntEquality(eLocation.getStartColumn(), miLocation.getStartColumn())
   )
+}
+
+/**
+ * Holds if `x = y` but gets compiled to a filter instead of a join. This can
+ * be used to avoid bad join orders where integers are joined too early.
+ */
+bindingset[x, y]
+private predicate nonBindingIntEquality(int x, int y) {
+  x >= y and y >= x
 }
