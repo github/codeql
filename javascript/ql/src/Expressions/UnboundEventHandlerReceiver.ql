@@ -48,16 +48,16 @@ private predicate isBoundInMethod(MethodDeclaration method) {
       // exclude the binding assignments
       not thiz.getAPropertySource() = binder
     |
-      // myBindAll(this)
+      // `myBindAll(this)`
       binder.getNumArgument() = 1
       or
-      // myBindSome(this, [<name1>, <name2>])
+      // `myBindSome(this, [<name1>, <name2>])`
       exists(DataFlow::ArrayCreationNode names |
         names.flowsTo(binder.getAnArgument()) and
         names.getAnElement().mayHaveStringValue(name)
       )
       or
-      // myBindSome(this, <name1>, <name2>)
+      // `myBindSome(this, <name1>, <name2>)`
       binder.getAnArgument().mayHaveStringValue(name)
     )
   )
@@ -70,10 +70,10 @@ private predicate isBoundInMethod(MethodDeclaration method) {
     ) and
     name.regexpMatch("(?i).*(bind|bound).*")
   |
-    // @autobind
+    // `@autobind`
     decoration.(Identifier).getName() = name
     or
-    // @action.bound
+    // `@action.bound`
     decoration.(PropAccess).getPropertyName() = name
   )
 }
