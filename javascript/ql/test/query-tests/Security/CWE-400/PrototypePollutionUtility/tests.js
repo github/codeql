@@ -271,3 +271,13 @@ function copyUsingEntries(dst, src) {
         }
     });
 }
+
+function copyUsingReflect(dst, src) {
+    Reflect.ownKeys(src).forEach(key => {
+        if (dst[key]) {
+            copyUsingReflect(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // NOT OK
+        }
+    });
+}

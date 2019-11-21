@@ -71,7 +71,7 @@ abstract class EnumeratedPropName extends DataFlow::Node {
 }
 
 /**
- * Property enumeration through `for-in` for `Object.keys` or `Object.getOwnPropertyName`.
+ * Property enumeration through `for-in` for `Object.keys` or similar.
  */
 class ForInEnumeratedPropName extends EnumeratedPropName {
   DataFlow::Node object;
@@ -82,9 +82,13 @@ class ForInEnumeratedPropName extends EnumeratedPropName {
       object = stmt.getIterationDomain().flow()
     )
     or
-    exists(CallNode call, string name |
-      call = globalVarRef("Object").getAMemberCall(name) and
-      (name = "keys" or name = "getOwnPropertyNames") and
+    exists(CallNode call |
+      call = globalVarRef("Object").getAMemberCall("keys")
+      or
+      call = globalVarRef("Object").getAMemberCall("getOwnPropertyNames")
+      or
+      call = globalVarRef("Reflect").getAMemberCall("ownKeys")
+    |
       object = call.getArgument(0) and
       this = getAnEnumeratedArrayElement(call)
     )
