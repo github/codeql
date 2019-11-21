@@ -83,9 +83,13 @@ abstract class Module extends TopLevel {
         result = c.(Folder).getJavaScriptFile("index")
       )
       or
-      // handle the case where the import path is missing an extension
+      // handle the case where the import path is missing the extension
       exists(Folder f | f = path.resolveUpTo(path.getNumComponent() - 1) |
         result = f.getJavaScriptFile(path.getBaseName())
+        or
+        // If a js file was not found look for a file that compiles to js
+        not exists(f.getJavaScriptFile(path.getBaseName())) and
+        result = f.getJavaScriptFile(path.getStem())
       )
     )
   }

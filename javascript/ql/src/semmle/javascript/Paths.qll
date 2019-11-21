@@ -205,6 +205,9 @@ abstract class PathExpr extends PathExprBase {
   /** Gets the base name of the folder or file this path refers to. */
   string getBaseName() { result = getValue().(PathString).getBaseName() }
 
+  /** Gets the stem, that is, base name without extension, of the folder or file this path refers to. */
+  string getStem() { result = getValue().(PathString).getStem() }
+
   /**
    * Gets the file or folder that the first `n` components of this path refer to
    * when resolved relative to the root folder of the given `priority`.
