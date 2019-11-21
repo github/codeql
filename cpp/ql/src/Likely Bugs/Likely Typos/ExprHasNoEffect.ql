@@ -84,6 +84,7 @@ where
   not peivc.getEnclosingFunction().isDefaulted() and
   not exists(Macro m | peivc = m.getAnInvocation().getAnExpandedElement()) and
   not peivc.isFromTemplateInstantiation(_) and
+  not peivc.isFromUninstantiatedTemplate(_) and
   parent = peivc.getParent() and
   not parent.isInMacroExpansion() and
   not peivc.isUnevaluated() and
