@@ -4,4 +4,5 @@
 int b() {
   return A;
 }
-// semmle-extractor-options: --microsoft /Yub.h /Fp${testdir}/microsoft-pch.testproj/a.pch
+// codeql-extractor-compiler: cl
+// codeql-extractor-compiler-options: /Yub.h /Fp${testdir}/microsoft-pch.testproj/a.pch

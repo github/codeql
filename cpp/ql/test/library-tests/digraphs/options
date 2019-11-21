@@ -1,1 +1,1 @@
-semmle-extractor-options: --gnu_version 40801
+codeql-extractor-compiler: gcc-4.8.1

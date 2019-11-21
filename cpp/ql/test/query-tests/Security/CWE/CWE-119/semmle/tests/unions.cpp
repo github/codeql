@@ -1,4 +1,4 @@
-//semmle-extractor-options: --edg --target --edg linux_x86_64
+// codeql-extractor-target: linux_x86_64
 
 // Semmle test cases for rule CWE-119 involving unions.
 

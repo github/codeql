@@ -13,7 +13,7 @@
 | comments.c:36:1:36:20 | // On union my_union | 1 | comments.c:37:7:37:14 | definition of my_union |
 | comments.c:42:1:43:24 | // This is a legal alternative way to achieve a \\\nmulti-line comment on j. | 1 | comments.c:44:5:44:5 | definition of j |
 | comments_99.c:2:4:2:35 | /* This is wrong for INT_MIN. */ | 1 | comments_99.c:3:4:6:15 | if (...) ...  |
-| comments_cpp.cpp:1:1:1:40 | // semmle-extractor-options: --microsoft | 1 | comments_cpp.cpp:2:1:2:27 | #define FIRST_VALUE 0x0001 |
+| comments_cpp.cpp:1:1:1:32 | // codeql-extractor-compiler: cl | 1 | comments_cpp.cpp:2:1:2:27 | #define FIRST_VALUE 0x0001 |
 | comments_cpp.cpp:2:29:2:53 | // Comment on FIRST_VALUE | 1 | comments_cpp.cpp:2:1:2:27 | #define FIRST_VALUE 0x0001 |
 | comments_cpp.cpp:3:29:3:52 | // that spans two lines. | 1 | comments_cpp.cpp:4:1:4:27 | #define SECOND_VALUE 0x0002 |
 | comments_cpp.cpp:4:29:4:54 | // Comment on SECOND_VALUE | 1 | comments_cpp.cpp:4:1:4:27 | #define SECOND_VALUE 0x0002 |

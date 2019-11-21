@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 #define EXCEPTION_EXECUTE_HANDLER 1
 
 class C {

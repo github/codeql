@@ -1,4 +1,4 @@
-// semmle-extractor-options: --c++11
+// codeql-extractor-compiler-options: -std=c++11
 
 namespace range_based_for_11 {
   void array() {

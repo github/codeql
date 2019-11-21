@@ -4,4 +4,5 @@ void enabled(void) {
    p = &(int)a;
 }
 
-// semmle-extractor-options: --microsoft /Zc:rvalueCast --expect_errors
+// codeql-extractor-compiler: cl
+// codeql-extractor-compiler-options: /Zc:rvalueCast -dsemmle--expect_errors

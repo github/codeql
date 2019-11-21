@@ -1,2 +1,2 @@
-semmle-extractor-options: --edg --anachronisms
+codeql-extractor-compiler-options: -Xsemmle--anachronisms
 

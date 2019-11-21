@@ -1,1 +1,1 @@
-semmle-extractor-options: --edg --unsigned_chars
+codeql-extractor-compiler-options: -funsigned-char

@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang
+// codeql-extractor-compiler: clang
 
 template<typename T>
 T *addressof(T &x) noexcept {

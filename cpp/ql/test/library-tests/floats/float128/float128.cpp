@@ -25,4 +25,4 @@ __float128 id(__float128 q)
 {
   return q;
 }
-// semmle-extractor-options: --expect_errors
+// codeql-extractor-compiler-options: -Xsemmle--expect_errors

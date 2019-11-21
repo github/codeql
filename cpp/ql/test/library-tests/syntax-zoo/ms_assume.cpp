@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 
 char *Xstrdup(const char *string);
 void abort();

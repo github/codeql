@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --c++20
+// codeql-extractor-compiler-options: -Xsemmle--c++20
 
 void test(void) {
     int x;

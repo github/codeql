@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 void ms_try_except(int j) {
     int x;
 

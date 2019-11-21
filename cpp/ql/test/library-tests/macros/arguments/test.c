@@ -1,6 +1,6 @@
 #include "top_and_nested.h"
 #define ID(x) x
-// semmle-extractor-options: -DCMD_LINE_MACRO(x,y)=x+y
+// codeql-extractor-compiler-options: -DCMD_LINE_MACRO(x,y)=x+y
 top(1)
 
 top("\"Hello "

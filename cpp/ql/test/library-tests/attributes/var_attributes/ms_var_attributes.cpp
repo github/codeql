@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 // ms_var_attributes.cpp
 #define DLLEXPORT __declspec(dllexport)
 #include "ms_var_attributes.h"

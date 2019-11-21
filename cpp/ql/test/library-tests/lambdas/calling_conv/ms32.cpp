@@ -1,4 +1,5 @@
 static void ms32() {
   auto NormalizeAssembly = [](int& str) -> int { return str; };
 }
-// semmle-extractor-options: --microsoft --microsoft_version 1900 --edg --target --edg win32
+// codeql-extractor-compiler: cl-1900
+// codeql-extractor-target:  win32

@@ -1,1 +1,1 @@
-semmle-extractor-options: -std=gnu99
+codeql-extractor-compiler-options: -std=gnu99

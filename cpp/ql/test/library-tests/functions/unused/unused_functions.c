@@ -1,4 +1,4 @@
-// semmle-extractor-options: -fblocks
+
 #ifdef COMPILABLE_TEST
 #include <stdio.h>
 #else
@@ -62,3 +62,6 @@ static void __attribute__ ((unused)) h3(void) {
 
 static void h4(void) {
 }
+
+// codeql-extractor-compiler: clang
+// codeql-extractor-compiler-options: -fblocks

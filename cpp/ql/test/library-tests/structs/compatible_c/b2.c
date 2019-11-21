@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft --edg --c99
+
 struct AppleCompatible { // Definitions of Apple are exactly the same in b1.c and b2.c
   int apple_x;
 };
@@ -81,3 +81,6 @@ struct Papaya {
 struct Quince {
   int (*quince_fp)(long,int);
 };
+
+// codeql-extractor-compiler: cl
+// codeql-extractor-compiler-options: -dsemmle--c99

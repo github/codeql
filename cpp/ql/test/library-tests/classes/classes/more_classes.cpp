@@ -1,7 +1,9 @@
-// semmle-extractor-options: --edg --no_c++11 --gnu_version 40700
+
 class D1 final {
 };
 
 class D2 __final {
 };
 
+// codeql-extractor-compiler: gcc-4.7.0
+// codeql-extractor-compiler-options: -std=c++03

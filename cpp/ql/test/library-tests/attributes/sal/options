@@ -1,1 +1,1 @@
-semmle-extractor-options: --microsoft --microsoft_version 1700
+codeql-extractor-compiler: cl-1700

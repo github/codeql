@@ -1,4 +1,4 @@
-// semmle-extractor-options: --g++ --gnu_version 40602
+// codeql-extractor-compiler: g++-4.6.2
 // this test is in a .c file with compiler flags set to be like g++.  This is a workaround to
 // build as C++ without C++11, a configuration where we've had problems in the past.
 enum {

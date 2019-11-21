@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --clang
+// codeql-extractor-compiler: clang
 
 int x = 0;
 

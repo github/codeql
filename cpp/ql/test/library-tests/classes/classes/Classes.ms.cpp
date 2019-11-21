@@ -38,4 +38,4 @@ class D::E::F: D::E::G {
   }
 };
 
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl

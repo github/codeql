@@ -6,4 +6,5 @@ void ComplexNumbers() {
   c = i;
   c = r;
 }
-// semmle-extractor-options: --microsoft --edg --c99
+// codeql-extractor-compiler: cl
+// codeql-extractor-compiler-options: -dsemmle--c99

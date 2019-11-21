@@ -54,4 +54,4 @@ void aggregates() {
   
   argused(id, x_axis);
 }
-// semmle-extractor-options: --edg --target --edg win64
+// codeql-extractor-target: win64

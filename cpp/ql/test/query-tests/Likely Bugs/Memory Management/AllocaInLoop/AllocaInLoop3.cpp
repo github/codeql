@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang
+// codeql-extractor-compiler: clang
 
 #ifdef _MSC_VER
 #define restrict __restrict

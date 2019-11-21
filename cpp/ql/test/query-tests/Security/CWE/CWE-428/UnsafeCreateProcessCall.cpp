@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 #define NULL 0
 #define FALSE 0
 #define LOGON_WITH_PROFILE 0x00000001

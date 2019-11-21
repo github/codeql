@@ -1,3 +1,3 @@
 void MsDoesReturn();
 __declspec(noreturn) void MsDoesNotReturn();
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl

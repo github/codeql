@@ -17,4 +17,4 @@ static char atomic_increment_c1(char* ptr)
 {
   return __atomic_fetch_add_1(ptr, 1, 0);
 }
-// semmle-extractor-options: --gnu_version 40700
+// codeql-extractor-compiler: gcc-4.7.0

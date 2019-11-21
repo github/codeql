@@ -8,4 +8,4 @@ static int is_one(int x) {
     default: return zero;
   }
 }
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl

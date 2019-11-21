@@ -1,7 +1,7 @@
 // For the canonical behaviour, run: clang -E -w test.cpp
 #define __builtin_TRAP __builtin_trap
 #define BAR "bar.h"
-// semmle-extractor-options: --edg --clang --expect_errors
+
 #if defined(__has_include)
 static int has_include = 1;
 #else
@@ -61,3 +61,5 @@ static int has_malformed_include = __has_include(bar_h);
 static int include_level_0 = __INCLUDE_LEVEL__;
 #include "h1.h"
 
+// codeql-extractor-compiler: clang
+// codeql-extractor-compiler-options: -Xsemmle--expect_errors

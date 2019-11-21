@@ -7,7 +7,7 @@
 #else
 #warning "This shouldn't happen either"
 #endif
-// semmle-extractor-options: -I${testdir}/more_headers/ "-U SOME_SYM"
+// codeql-extractor-compiler-options: -I${testdir}/more_headers/ "-U SOME_SYM"
 #undef BAR
 //#define SCARY(a,aa,aaah) /* we ignore a */ (aa /* but we take aa */) /* and we ignore aaa */
 #define LOG(fmt, ...)  printf("Warning: %s", fmt, __VA__ARGS__)  

@@ -1,4 +1,4 @@
-// semmle-extractor-options: -std=c11
+// codeql-extractor-compiler-options: -std=c11
 
 int printf(const char *format, ...);
 

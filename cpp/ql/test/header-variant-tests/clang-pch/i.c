@@ -13,4 +13,5 @@ static int h2() {
   return 32; // [FALSE POSITIVE] (#pragma hdrstop bug, H2 should not be defined in the precompiled header)
 }
 #endif
-// semmle-extractor-options: --clang -include-pch ${testdir}/clang-pch.testproj/h.pch
+// codeql-extractor-compiler: clang-cc1
+// codeql-extractor-compiler-options: -include-pch ${testdir}/clang-pch.testproj/h.pch

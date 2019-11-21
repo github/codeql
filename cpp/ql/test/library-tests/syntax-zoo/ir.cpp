@@ -981,4 +981,4 @@ void OperatorDeleteArray() {
 }
 #endif
 
-// semmle-extractor-options: -std=c++17
+// codeql-extractor-compiler-options: -std=c++17

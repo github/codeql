@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --clang
+// codeql-extractor-compiler: clang
 
 int source();
 void sink(int); void sink(const int *); void sink(int **);

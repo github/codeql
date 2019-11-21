@@ -1,1 +1,2 @@
-semmle-extractor-options: --microsoft --edg --target --edg win32
+codeql-extractor-target: win32
+codeql-extractor-compiler: cl

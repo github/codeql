@@ -1,3 +1,3 @@
-// semmle-extractor-options: -I${testdir}/a -I${testdir}/b
+// codeql-extractor-compiler-options: -I${testdir}/a -I${testdir}/b
 #include <test.h>
 

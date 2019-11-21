@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 typedef unsigned long       DWORD;
 typedef unsigned long       ULONG;
 typedef unsigned char       BYTE;

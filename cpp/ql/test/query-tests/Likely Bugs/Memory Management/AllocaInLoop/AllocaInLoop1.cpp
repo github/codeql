@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang
+// codeql-extractor-compiler: clang
 struct vtype {
 	int i1, i2;
 };

@@ -1,4 +1,4 @@
-// semmle-extractor-options: -I${testdir}/subdir1
+// codeql-extractor-compiler-options: -I${testdir}/subdir1
 // main1.cpp
 #include "common.h"
 

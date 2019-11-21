@@ -1,4 +1,4 @@
-// semmle-extractor-options: -isystem ${testdir}/../system_header
+// codeql-extractor-compiler-options: -isystem ${testdir}/../system_header
 
 #include <system_header.h>
 

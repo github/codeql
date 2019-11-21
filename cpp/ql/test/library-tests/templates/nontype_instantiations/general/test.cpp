@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --trap_container=folder --edg --trap-compression=none
+// codeql-extractor-compiler-options: -Xsemmle--trap_container=folder -Xsemmle--trap-compression=none
 template<int x>
 struct C { };
 

@@ -17,4 +17,4 @@ void GetUUID() {
     uuid = __uuidof(s);
     uuid = __uuidof(0);
 }
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl

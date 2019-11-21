@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang -std=c++11
+
 // The C11 _Generic keyword is supported in C++ mode in clang >= 4.0.0.
 
 int printf(const char *format, ...);
@@ -24,3 +24,6 @@ int main()
 	printf("s is %s\n", describe(s)); // string
 	printf("f is %s\n", describe(f)); // unknown
 }
+
+// codeql-extractor-compiler: clang
+// codeql-extractor-compiler-options: -std=c++11

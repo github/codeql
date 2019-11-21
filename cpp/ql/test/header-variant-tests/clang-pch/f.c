@@ -3,4 +3,5 @@
 extern int x;
 #define SEEN_F
 #endif
-// semmle-extractor-options: --clang -emit-pch -o ${testdir}/clang-pch.testproj/f.pch
+// codeql-extractor-compiler: clang-cc1
+// codeql-extractor-compiler-options: -emit-pch -o ${testdir}/clang-pch.testproj/f.pch

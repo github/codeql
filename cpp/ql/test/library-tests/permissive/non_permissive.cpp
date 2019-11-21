@@ -1,4 +1,4 @@
-// semmle-extractor-options: --expect_errors
+// codeql-extractor-compiler-options: -Xsemmle--expect_errors
 static void f(char* foo) {}
 
 static void g(void) {

@@ -1,4 +1,5 @@
 int main() {
   return SEVENTEEN;
 }
-// semmle-extractor-options: --clang -include-pch ${testdir}/clang-pch.testproj/d.pch
+// codeql-extractor-compiler: clang-cc1
+// codeql-extractor-compiler-options: -include-pch ${testdir}/clang-pch.testproj/d.pch

@@ -1,4 +1,4 @@
-// semmle-extractor-options: --gnu_version 40700
+// codeql-extractor-compiler: gcc-4.7.0
 class C1 final {
 };
 

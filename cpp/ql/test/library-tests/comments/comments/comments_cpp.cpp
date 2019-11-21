@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 #define FIRST_VALUE  0x0001 // Comment on FIRST_VALUE
                             // that spans two lines.
 #define SECOND_VALUE 0x0002 // Comment on SECOND_VALUE

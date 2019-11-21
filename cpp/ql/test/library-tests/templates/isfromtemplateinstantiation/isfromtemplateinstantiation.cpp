@@ -1,5 +1,5 @@
 #define A_MACRO i++
-// semmle-extractor-options: -std=c++14
+// codeql-extractor-compiler-options: -std=c++14
 // non-template function
 void normal_function()
 {

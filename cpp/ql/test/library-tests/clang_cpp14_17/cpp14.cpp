@@ -1,4 +1,4 @@
-// semmle-extractor-options: -std=c++14
+// codeql-extractor-compiler-options: -std=c++14
 
 
 

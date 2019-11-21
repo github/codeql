@@ -1,4 +1,5 @@
 int main() {
   return ONE + FOUR;
 }
-// semmle-extractor-options: --clang -include ${testdir}/clang-pch.testproj/a -Iextra_dummy_path
+// codeql-extractor-compiler: clang-cc1
+// codeql-extractor-compiler-options: -include-pch ${testdir}/clang-pch.testproj/a.pch -Iextra_dummy_path

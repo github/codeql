@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --target --edg linux_x86_64
+// codeql-extractor-target: linux_x86_64
 /*
  * Test for printf in a snapshot that contains multiple word/pointer sizes.
  */

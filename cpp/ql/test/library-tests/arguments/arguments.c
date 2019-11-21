@@ -1,1 +1,1 @@
-// semmle-extractor-options: -Werror
+// codeql-extractor-compiler-options: -Werror

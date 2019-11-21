@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft  --edg --target --edg linux_x86_64
+
 typedef unsigned __int64 size_t;
 void *malloc(size_t size);
 void free(void *ptr);
@@ -424,3 +424,6 @@ void test13()
 
 	delete myPointer3.getPointer(); // GOOD
 }
+
+// codeql-extractor-target: linux_x86_64
+// codeql-extractor-compiler: cl

@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --microsoft
+// codeql-extractor-compiler: cl
 
 void f(__declspec(guard(overflow)) size_t length) {
 }

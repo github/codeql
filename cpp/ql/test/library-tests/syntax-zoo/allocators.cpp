@@ -17,4 +17,4 @@ int main()
   delete foo;
 }
 
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl

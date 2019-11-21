@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft --edg --target --edg win64
+
 /** standard library functions */
 typedef __int32 int32_t;
 typedef __int64 int64_t;
@@ -18,3 +18,6 @@ void test()
 		printf("= %I64i\n", i64);
 	}
 }
+
+// codeql-extractor-compiler: cl
+// codeql-extractor-target: win64

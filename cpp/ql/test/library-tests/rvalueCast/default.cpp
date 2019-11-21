@@ -4,4 +4,4 @@ void def(void) {
    p = &(int)a;
 }
 
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl

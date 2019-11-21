@@ -1,4 +1,4 @@
-// semmle-extractor-options: -std=c++17
+// codeql-extractor-compiler-options: -std=c++17
 
 // GOOD:
 void f() {

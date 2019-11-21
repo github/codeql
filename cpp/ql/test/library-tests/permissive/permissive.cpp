@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --permissive
+// codeql-extractor-compiler-options: -fpermissive
 static void f(char* foo) {}
 
 static void g(void) {

@@ -35,4 +35,5 @@ static int has_missing_system_include = 1;
 static int has_missing_system_include = 0;
 #endif
 
-// semmle-extractor-options: --gnu_version 40902 -D__has_include(STR)=__has_include__(STR) -D__has_include_next(STR)=__has_include_next__(STR)
+// codeql-extractor-compiler: gcc-4.9.2
+// codeql-extractor-compiler-options: -D__has_include(STR)=__has_include__(STR) -D__has_include_next(STR)=__has_include_next__(STR)

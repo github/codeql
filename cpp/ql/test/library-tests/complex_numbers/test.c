@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft --edg --c99
+
 void f(_Imaginary double x, _Imaginary double y) {
     double z;
     _Complex double w;
@@ -10,3 +10,5 @@ void f(_Imaginary double x, _Imaginary double y) {
     w = x - z;
 }
 
+// codeql-extractor-compiler: cl
+// codeql-extractor-compiler-options: -dsemmle--c99

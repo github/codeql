@@ -1,4 +1,4 @@
-// semmle-extractor-options: -std=gnu99
+// codeql-extractor-compiler-options: -std=gnu99
 int f_gnu99(int x) {
     switch(x) {
     case 1:

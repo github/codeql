@@ -1,1 +1,2 @@
-semmle-extractor-options: --gnu_version 40801 --clang -Xclang-only=-Wno-reserved-user-defined-literal
+codeql-extractor-compiler: clang-4.8.1
+codeql-extractor-compiler-options: -Xsemmle--no_reserved_user_defined_literal

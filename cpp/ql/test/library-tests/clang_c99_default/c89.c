@@ -1,2 +1,3 @@
 void g(int restrict);
-// semmle-extractor-options: --clang -std=gnu89
+// codeql-extractor-compiler: clang
+// codeql-extractor-compiler-options: -std=gnu89

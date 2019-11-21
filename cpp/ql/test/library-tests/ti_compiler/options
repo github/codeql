@@ -1,1 +1,1 @@
-semmle-extractor-options: --edg --ti
+codeql-extractor-compiler-options: -Xsemmle--ti

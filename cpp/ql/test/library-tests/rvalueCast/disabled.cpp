@@ -4,4 +4,5 @@ void disabled(void) {
    p = &(int)a;
 }
 
-// semmle-extractor-options: --microsoft /Zc:rvalueCast-
+// codeql-extractor-compiler: cl
+// codeql-extractor-compiler-options: /Zc:rvalueCast-

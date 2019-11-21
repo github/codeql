@@ -1,4 +1,4 @@
-//semmle-extractor-options: --edg --target --edg linux_x86_64 -std=c99
+
 
 // library types, functions etc
 typedef unsigned long size_t;
@@ -18,3 +18,6 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+
+// codeql-extractor-target: linux_x86_64
+// codeql-extractor-compiler-options: -std=c99

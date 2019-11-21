@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang
+// codeql-extractor-compiler: clang
 int printf(const char *restrict format, ...);
 int sprintf(char *restrict s, const char *restrict format, ...);
 typedef unsigned long long size_t;

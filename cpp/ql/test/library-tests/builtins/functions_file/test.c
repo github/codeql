@@ -17,4 +17,5 @@ long f(int a, int b, int c) {
 
   return 42;
 }
-// semmle-extractor-options: --gnu_version 50100 --edg --builtin_functions_file --edg ${testdir}/builtins.txt
+// codeql-extractor-compiler: gcc-5.1.0
+// codeql-extractor-compiler-options: -Xsemmle--builtin_functions_file -Xsemmle${testdir}/builtins.txt

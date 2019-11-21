@@ -1,1 +1,3 @@
-semmle-extractor-options: --microsoft /Zc:wchar_t- --edg --target --edg win64
+codeql-extractor-target: win64
+codeql-extractor-compiler: cl
+codeql-extractor-compiler-options: /Zc:wchar_t-

@@ -1,4 +1,4 @@
-// semmle-extractor-options: --expect_errors
+// codeql-extractor-compiler-options: -Xsemmle--expect_errors
 template <typename T>
 void report_type_via_error(T&& t) {
   static_assert(sizeof(T) == 0, "");

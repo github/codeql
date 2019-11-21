@@ -5,4 +5,4 @@ static int abs(int x) {
    else
      return -x;
 }
-// semmle-extractor-options: -std=c99
+// codeql-extractor-compiler-options: -std=c99

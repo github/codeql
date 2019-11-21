@@ -1,1 +1,2 @@
-semmle-extractor-options: --clang --edg --signed_chars
+codeql-extractor-compiler: clang
+codeql-extractor-compiler-options: -fno-unsigned-char

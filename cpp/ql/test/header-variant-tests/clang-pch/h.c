@@ -2,4 +2,5 @@
 #pragma hdrstop
 #include "h2.h"
 #define SEEN_H
-// semmle-extractor-options: --clang -emit-pch -o ${testdir}/clang-pch.testproj/h.pch
+// codeql-extractor-compiler: clang-cc1
+// codeql-extractor-compiler-options: -emit-pch -o ${testdir}/clang-pch.testproj/h.pch

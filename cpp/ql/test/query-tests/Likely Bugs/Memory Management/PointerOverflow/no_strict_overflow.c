@@ -1,4 +1,4 @@
-// semmle-extractor-options: -fno-strict-overflow
+// codeql-extractor-compiler-options: -fno-strict-overflow
 
 int not_in_range_nostrict(int *ptr, int *ptr_end, unsigned int a) {
     return ptr + a < ptr_end || // GOOD (for the purpose of this test)

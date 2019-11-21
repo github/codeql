@@ -11,4 +11,4 @@ void test() {
 	};
 }
 
-// semmle-extractor-options: --microsoft --microsoft_version 1800
+// codeql-extractor-compiler: cl-1800

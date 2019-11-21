@@ -1,1 +1,2 @@
-semmle-extractor-options: -fblocks
+codeql-extractor-compiler: clang
+codeql-extractor-compiler-options: -fblocks

@@ -1,1 +1,2 @@
-semmle-extractor-options: --edg --clang --edg --clang_builtin_functions --edg --clang_vector_types --gnu_version 40600
+codeql-extractor-compiler: clang-4.6.0
+codeql-extractor-compiler-options: --clang_builtin_functions --clang_vector_types

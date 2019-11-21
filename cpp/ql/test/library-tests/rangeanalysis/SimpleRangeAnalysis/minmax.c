@@ -1,4 +1,4 @@
-// semmle-extractor-options: --gnu_version 40400
+// codeql-extractor-compiler: gcc-4.4.0
 // Note: this file uses statement expressions, which are a GNU extension,
 // so it has an options file to specify the compiler version. The statement
 // expression extension is described here:

@@ -1166,4 +1166,5 @@ int ModeledCallTarget(int x) {
   return y;
 }
 
-// semmle-extractor-options: -std=c++17 --clang
+// codeql-extractor-compiler: clang
+// codeql-extractor-compiler-options: -std=c++17

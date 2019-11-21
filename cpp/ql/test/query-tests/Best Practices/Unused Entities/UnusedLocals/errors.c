@@ -1,4 +1,4 @@
-// semmle-extractor-options: --expect_errors
+// codeql-extractor-compiler-options: -Xsemmle--expect_errors
 void f_error(void) {
     int x, z;
     // There is an error in here, so we don't see the use of x. But we
@@ -11,4 +11,3 @@ void g_error(void) {
     // This one should be reported despite the error in another function.
     z = y + y;
 }
-

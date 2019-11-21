@@ -1,4 +1,4 @@
-// semmle-extractor-options: -std=c++17 --expect_errors
+// codeql-extractor-compiler-options: -std=c++17 -Xsemmle--expect_errors
 
 // Test cases that illustrate known bad ASTs that we have to work around in IR generation.
 namespace Bad {

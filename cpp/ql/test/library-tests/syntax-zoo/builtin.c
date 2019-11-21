@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang
+// codeql-extractor-compiler: clang
 
 #define vector(elcount, type)  __attribute__((vector_size((elcount)*sizeof(type)))) type
 

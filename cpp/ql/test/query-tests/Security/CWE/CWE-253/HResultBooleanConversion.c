@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 // winnt.h
 typedef long HRESULT;
 #define SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)

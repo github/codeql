@@ -11,4 +11,4 @@ class X {
    }   // will not inline
 };
 static __declspec(nothrow, safebuffers) int noCheckBuffers();
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl

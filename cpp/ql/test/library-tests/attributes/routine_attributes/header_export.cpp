@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft
+// codeql-extractor-compiler: cl
 // header_export.cpp
 #define DLLEXPORT __declspec(dllexport)
 #include "header.h"
