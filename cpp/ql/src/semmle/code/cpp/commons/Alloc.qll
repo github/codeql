@@ -86,7 +86,7 @@ private predicate allocationFunctionNoSize(Function f) {
 /**
  * An allocation function such as `malloc`.
  */
-abstract class MallocFunction extends Function {
+class MallocFunction extends Function {
   MallocFunction() {
   	allocationFunctionWithSize(this, _) or
   	allocationFunctionWithSizeAndMult(this, _, _) or
@@ -95,21 +95,22 @@ abstract class MallocFunction extends Function {
   }
 
   /**
-   * Gets the index of an argument that controls the allocation size, if any.
-   * The actual allocation size is the product of all size arguments *
-   * `getSizeMult()`. If there is no result, the size cannot be determined.
+   * Gets the index of the argument for the allocation size, if any. The actual
+   * allocation size is the value of this argument multiplied by the result of
+   * `getSizeMult()`, in bytes.
    */
-  int getASizeArg() {
+  int getSizeArg() {
   	allocationFunctionWithSize(this, result) or
   	allocationFunctionWithSizeAndMult(this, result, _) or
   	allocationFunctionWithSizeRealloc(this, result, _)
   }
 
   /**
-   * Gets a constant multiplier for the allocation size, in bytes (usually 1).
+   * Gets the index of an argument that multiplies the allocation size given by
+   * `getSizeArg`, if any.
    */
   int getSizeMult() {
-  	result = 1
+  	allocationFunctionWithSizeAndMult(this, _, result)
   }
 
   /**
@@ -121,14 +122,10 @@ abstract class MallocFunction extends Function {
   }
 }
 
-private bindingset[f] int round(float f) {
-  result = (f + 0.5).floor()
-}
-
 /**
  * An allocation expression such as call to `malloc` or a `new` expression.
  */
-abstract class AllocationExpr extends Expr {
+class AllocationExpr extends Expr {
   AllocationExpr() {
   	exists(MallocFunction malloc |
   	  // alloc call
@@ -136,7 +133,7 @@ abstract class AllocationExpr extends Expr {
   	  // realloc(ptr, 0) only frees the pointer
   	  not (
   	    exists(malloc.getReallocPtrArg()) and
-  	    this.(FunctionCall).getArgument(malloc.getASizeArg()).getValue().toInt() = 0
+  	    this.(FunctionCall).getArgument(malloc.getSizeArg()).getValue().toInt() = 0
   	  )
   	) or
   	this instanceof NewExpr or
@@ -144,25 +141,32 @@ abstract class AllocationExpr extends Expr {
   }
 
   /**
-   * Gets an expression that controls the allocation size, if any. The actual
-   * allocation size is the product of all size expressions * `getSizeMult()`.
-   * If there is no result, the size cannot be determined.
+   * Gets an expression for the allocation size, if any. The actual allocation
+   * size is the value of this expression multiplied by the result of
+   * `getSizeMult()`, in bytes.
    */
-  Expr getASizeExpr() {
+  Expr getSizeExpr() {
   	exists(FunctionCall fc | fc = this |
-  	  result = fc.getArgument(fc.getTarget().(MallocFunction).getASizeArg())
+  	  result = fc.getArgument(fc.getTarget().(MallocFunction).getSizeArg())
   	) or
   	// new array expr with variable size
   	result = this.(NewArrayExpr).getExtent()
   }
 
-
   /**
-   * Gets a constant multiplier for the allocation size, in bytes (usually 1).
+   * Gets a constant multiplier for the allocation size given by `getSizeExpr`,
+   * in bytes.
    */
   int getSizeMult() {
   	exists(FunctionCall fc | fc = this |
-  	  result = fc.getTarget().(MallocFunction).getSizeMult()
+  	  // malloc with multiplier argument that is a constant
+  	  result = fc.getArgument(fc.getTarget().(MallocFunction).getSizeMult()).getValue().toInt()
+      or
+  	  // malloc with no multiplier argument
+  	  (
+  	    not exists(fc.getTarget().(MallocFunction).getSizeMult()) and
+  	    result = 1
+  	  )
   	) or
   	(
   	  // new array expr with variable size
@@ -176,10 +180,8 @@ abstract class AllocationExpr extends Expr {
    * size can be determined.
    */
   int getSizeBytes() {
-  	(
-  	  // exp(sum(log(x))) = product(x)
-  	  result = round(sum(Expr e | e = getASizeExpr() | e.getValue().toInt().log()).exp()) * getSizeMult()
-  	) or
+  	result = getSizeExpr().getValue().toInt() * getSizeMult()
+  	or
     result = this.(NewExpr).getAllocatedType().getSize()
     or
     result = this.(NewArrayExpr).getAllocatedType().getSize()
