@@ -344,4 +344,31 @@ public class B {
       x.hashCode(); // OK
     }
   }
+
+  public void corrConds5(Object y, Object z) {
+    Object x = null;
+    if(y == z) {
+      x = new Object();
+    }
+    if(y == z) {
+      x.hashCode(); // OK
+    }
+
+    Object x2 = null;
+    if(y != z) {
+      x2 = new Object();
+    }
+    if(y != z) {
+      x2.hashCode(); // OK
+    }
+
+    Object x3 = null;
+    if(y != z) {
+      x3 = new Object();
+    }
+    if(!(y == z)) {
+      x3.hashCode(); // OK
+    }
+  }
+
 }
