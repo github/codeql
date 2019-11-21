@@ -11,15 +11,18 @@ newExprs
 | allocators.cpp:129:3:129:21 | new | int | operator new(size_t, void *) -> void * | 4 | 4 |  |
 | allocators.cpp:135:3:135:26 | new | int | operator new(size_t, const nothrow_t &) -> void * | 4 | 4 |  |
 newArrayExprs
-| allocators.cpp:68:3:68:12 | new[] | int | operator new[](unsigned long) -> void * | 4 | 4 |  |
-| allocators.cpp:69:3:69:18 | new[] | int | operator new[](size_t, float) -> void * | 4 | 4 |  |
-| allocators.cpp:70:3:70:15 | new[] | String | operator new[](unsigned long) -> void * | 8 | 8 |  |
-| allocators.cpp:71:3:71:20 | new[] | Overaligned | operator new[](unsigned long, align_val_t) -> void * | 256 | 128 | aligned |
-| allocators.cpp:72:3:72:16 | new[] | String | operator new[](unsigned long) -> void * | 8 | 8 |  |
-| allocators.cpp:108:3:108:19 | new[] | FailedInit | FailedInit::operator new[](size_t) -> void * | 1 | 1 |  |
-| allocators.cpp:110:3:110:37 | new[] | FailedInitOveraligned | FailedInitOveraligned::operator new[](size_t, align_val_t, float) -> void * | 128 | 128 | aligned |
-| allocators.cpp:132:3:132:17 | new[] | int | operator new[](size_t, void *) -> void * | 4 | 4 |  |
-| allocators.cpp:136:3:136:26 | new[] | int | operator new[](size_t, const nothrow_t &) -> void * | 4 | 4 |  |
+| allocators.cpp:68:3:68:12 | new[] | int[] | int | operator new[](unsigned long) -> void * | 4 | 4 |  | n |
+| allocators.cpp:69:3:69:18 | new[] | int[] | int | operator new[](size_t, float) -> void * | 4 | 4 |  | n |
+| allocators.cpp:70:3:70:15 | new[] | String[] | String | operator new[](unsigned long) -> void * | 8 | 8 |  | n |
+| allocators.cpp:71:3:71:20 | new[] | Overaligned[] | Overaligned | operator new[](unsigned long, align_val_t) -> void * | 256 | 128 | aligned | n |
+| allocators.cpp:72:3:72:16 | new[] | String[10] | String | operator new[](unsigned long) -> void * | 8 | 8 |  |  |
+| allocators.cpp:108:3:108:19 | new[] | FailedInit[] | FailedInit | FailedInit::operator new[](size_t) -> void * | 1 | 1 |  | n |
+| allocators.cpp:110:3:110:37 | new[] | FailedInitOveraligned[10] | FailedInitOveraligned | FailedInitOveraligned::operator new[](size_t, align_val_t, float) -> void * | 128 | 128 | aligned |  |
+| allocators.cpp:132:3:132:17 | new[] | int[1] | int | operator new[](size_t, void *) -> void * | 4 | 4 |  |  |
+| allocators.cpp:136:3:136:26 | new[] | int[2] | int | operator new[](size_t, const nothrow_t &) -> void * | 4 | 4 |  |  |
+| allocators.cpp:142:13:142:27 | new[] | char[][10] | char[10] | operator new[](unsigned long) -> void * | 10 | 1 |  | x |
+| allocators.cpp:143:13:143:28 | new[] | char[20][20] | char[20] | operator new[](unsigned long) -> void * | 20 | 1 |  |  |
+| allocators.cpp:144:13:144:31 | new[] | char[][30][30] | char[30][30] | operator new[](unsigned long) -> void * | 900 | 1 |  | x |
 newExprDeallocators
 | allocators.cpp:52:3:52:14 | new | String | operator delete(void *, unsigned long) -> void | 8 | 8 | sized  |
 | allocators.cpp:53:3:53:27 | new | String | operator delete(void *, float) -> void | 8 | 8 |   |
