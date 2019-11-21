@@ -89,3 +89,7 @@
 	
 	new Deferred().resolve(onlySideEffects()); // OK
 })();
+
++function() {
+    console.log("FOO");
+}.call(this);
