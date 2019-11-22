@@ -55,7 +55,7 @@ predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
  * In the latter two cases, the additional check is necessary to avoid a `/` that could be interpreted as
  * the `//` separating the (optional) scheme from the hostname.
  */
-private predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
+predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
   nd.getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*")
   or
   hasHostnameSanitizingSubstring(StringConcatenation::getAnOperand(nd))

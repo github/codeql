@@ -288,3 +288,67 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
     getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
 }
+
+/**
+ * An SSA variable, possibly with a chain of field reads on it.
+ */
+private newtype TSsaWithFields =
+  TRoot(SsaVariable v) or
+  TStep(SsaWithFields base, Field f) { exists(accessPathAux(base, f)) }
+
+/**
+ * Gets a representation of `nd` as an ssa-with-fields value if there is one.
+ */
+private TSsaWithFields accessPath(IR::Instruction insn) {
+  exists(SsaVariable v | insn = v.getAUse() | result = TRoot(v))
+  or
+  exists(SsaWithFields base, Field f | insn = accessPathAux(base, f) | result = TStep(base, f))
+}
+
+/**
+ * Gets a data-flow node that reads a field `f` from a node that is represented
+ * by ssa-with-fields value `base`.
+ */
+private IR::Instruction accessPathAux(TSsaWithFields base, Field f) {
+  exists(IR::FieldReadInstruction fr | fr = result |
+    base = accessPath(fr.getBase()) and
+    f = fr.getField()
+  )
+}
+
+class SsaWithFields extends TSsaWithFields {
+  /**
+   * Gets the SSA variable corresponding to the base of this SSA variable with fields.
+   *
+   * For example, the SSA variable corresponding to `a` for the SSA variable with fields
+   * corresponding to `a.b`.
+   */
+  SsaVariable getBaseVariable() {
+    this = TRoot(result)
+    or
+    exists(SsaWithFields base, Field f | this = TStep(base, f) | result = base.getBaseVariable())
+  }
+
+  /** Gets a use that refers to this SSA variable with fields. */
+  DataFlow::Node getAUse() { this = accessPath(result.asInstruction()) }
+
+  /** Gets a textual representation of this element. */
+  string toString() {
+    exists(SsaVariable var | this = TRoot(var) | result = "(" + var + ")")
+    or
+    exists(SsaWithFields base, Field f | this = TStep(base, f) | result = base + "." + f.getName())
+  }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getBaseVariable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}

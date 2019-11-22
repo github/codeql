@@ -51,6 +51,25 @@ module OpenUrlRedirect {
   }
 
   /**
+   * An access to a variable that is preceded by an assignment to its `Path` field.
+   *
+   * This is overapproximate; this will currently remove flow through all `Url.Path` assignments
+   * which contain a substring that could sanitize data.
+   */
+  class PathAssignmentBarrier extends Barrier, Read {
+    PathAssignmentBarrier() {
+      exists(Write w, Field f, SsaWithFields var |
+        f.getName() = "Path" and
+        hasHostnameSanitizingSubstring(w.getRhs()) and
+        this = var.getAUse()
+      |
+        w.writesField(var.getAUse(), f, _) and
+        w.dominatesNode(insn)
+      )
+    }
+  }
+
+  /**
    * A call to a function called `isLocalUrl` or similar, which is
    * considered a barrier for purposes of URL redirection.
    */
