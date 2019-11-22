@@ -4,8 +4,13 @@
 typedef unsigned long size_t;
 
 void *malloc(size_t size);
+void *realloc(void *ptr, size_t size);
+void *calloc(size_t nmemb, size_t size); 
 void free(void *ptr);
 size_t strlen(const char *s);
+size_t wcslen(const wchar_t *s);
+char *strcpy(char *s1, const char *s2);
+wchar_t *wcscpy(wchar_t *s1, const wchar_t *s2);
 
 namespace std
 {
@@ -47,4 +52,23 @@ void good1(char *str) {
     free(buffer);
 }
 
+void bad2(wchar_t *str) {
+    // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
+    wchar_t *buffer = (wchar_t *)calloc(wcslen(str), sizeof(wchar_t));
+    wcscpy(buffer, str);
+    free(buffer);
+}
 
+void bad3(wchar_t *str) {
+    // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
+    wchar_t *buffer = (wchar_t *)calloc(sizeof(wchar_t), wcslen(str));
+    wcscpy(buffer, str);
+    free(buffer);
+}
+
+void bad4(char *str) {
+    // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
+    char *buffer = (char *)realloc(0, strlen(str));
+    strcpy(buffer, str);
+    free(buffer);
+}
