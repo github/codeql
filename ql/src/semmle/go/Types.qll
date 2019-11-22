@@ -581,6 +581,7 @@ class NamedType extends @namedtype, CompositeType {
 /**
  * Holds if `i` is the empty interface type, which is implemented by every type with a method set.
  */
+pragma[noinline]
 private predicate isEmptyInterface(InterfaceType i) { not i.hasMethod(_, _) }
 
 /**
