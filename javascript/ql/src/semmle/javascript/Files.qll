@@ -198,8 +198,8 @@ class Folder extends Container, @folder {
 }
 
 /** A file. */
-class File extends Container, @file, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
+class File extends Container, @file {
+  Location getLocation() { hasLocation(this, result) }
 
   override string getAbsolutePath() { files(this, result, _, _, _) }
 
