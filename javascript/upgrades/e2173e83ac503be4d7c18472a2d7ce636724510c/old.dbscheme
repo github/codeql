@@ -520,7 +520,6 @@ hasProtectedKeyword (int id: @property ref);
 hasReadonlyKeyword (int id: @property ref);
 isOptionalMember (int id: @property ref);
 hasDefiniteAssignmentAssertion (int id: @field_or_vardeclarator ref);
-isOptionalParameterDeclaration (unique int parameter: @pattern ref);
 
 #keyset[constructor, param_index]
 parameter_fields(
@@ -704,10 +703,6 @@ type_property(
   varchar(900) name: string ref,
   int propertyType: @type ref);
 
-type_alias(
-  unique int aliasType: @type ref,
-  int underlyingType: @type ref);
-
 @literaltype = @stringliteraltype | @numberliteraltype | @booleanliteraltype | @bigintliteraltype;
 @type_with_literal_value = @stringliteraltype | @numberliteraltype | @bigintliteraltype;
 type_literal_value(
@@ -720,11 +715,6 @@ signature_types (
   varchar(900) tostring: string ref,
   int type_parameters: int ref,
   int required_params: int ref
-);
-
-signature_rest_parameter(
-  unique int sig: @signature_type ref,
-  int rest_param_arra_type: @type ref
 );
 
 case @signature_type.kind of

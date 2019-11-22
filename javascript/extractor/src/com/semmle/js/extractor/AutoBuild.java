@@ -578,6 +578,11 @@ public class AutoBuild {
         for (File sourceFile : project.getSourceFiles()) {
           Path sourcePath = sourceFile.toPath();
           if (!files.contains(normalizePath(sourcePath))) continue;
+          if (!FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourcePath))) {
+            // For the time being, skip non-TypeScript files, even if the TypeScript
+            // compiler can parse them for us.
+            continue;
+          }
           if (!extractedFiles.contains(sourcePath)) {
             typeScriptFiles.add(sourcePath.toFile());
           }
