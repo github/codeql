@@ -2,16 +2,16 @@ function SanitizingRegExpTest () {
     var v = SOURCE();
     SINK(v);
 
-    if (/x/.test(v)) {
-        SINK(v);
+    if (/^x$/.test(v)) {
+        SINK(v); // sanitized
     } else {
         SINK(v);
     }
 
-    if (v.match(/x/)) {
+    if (v.match(/[^a-z]/)) {
         SINK(v);
     } else {
-        SINK(v);
+        SINK(v); // sanitized
     }
 
 }
