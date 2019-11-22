@@ -35,18 +35,8 @@ module OpenUrlRedirect {
         var.getType().hasQualifiedName("net/url", "URL")
       )
       or
-      StringConcatenation::taintStep(pred, succ)
-      or
-      // Allow flow through functions that are considered for taint flow.
-      exists(
-        TaintTracking::FunctionModel m, DataFlow::CallNode c, DataFlow::FunctionInput inp,
-        DataFlow::FunctionOutput outp
-      |
-        c = m.getACall() and
-        m.hasTaintFlow(inp, outp) and
-        pred = inp.getNode(c) and
-        succ = outp.getNode(c)
-      )
+      // taint steps that do not include flow through fields
+      TaintTracking::taintStep(pred, succ) and not TaintTracking::fieldReadStep(pred, succ)
     }
 
     override predicate isBarrierOut(DataFlow::Node node) { hostnameSanitizingPrefixEdge(node, _) }

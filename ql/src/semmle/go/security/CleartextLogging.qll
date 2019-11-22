@@ -34,19 +34,8 @@ module CleartextLogging {
       // A taint propagating data-flow edge through structs: a tainted write taints the entire struct.
       exists(Write write | write.writesField(trg.getASuccessor*(), _, src))
       or
-      trg.(DataFlow::BinaryOperationNode).getOperator() = "+" and
-      src = trg.(DataFlow::BinaryOperationNode).getAnOperand()
-      or
-      // Allow flow through functions that are considered for taint flow.
-      exists(
-        TaintTracking::FunctionModel m, DataFlow::CallNode c, DataFlow::FunctionInput inp,
-        DataFlow::FunctionOutput outp
-      |
-        c = m.getACall() and
-        m.hasTaintFlow(inp, outp) and
-        src = inp.getNode(c) and
-        trg = outp.getNode(c)
-      )
+      // taint steps that do not include flow through fields
+      TaintTracking::taintStep(src, trg) and not TaintTracking::fieldReadStep(src, trg)
     }
   }
 }
