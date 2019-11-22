@@ -2,6 +2,8 @@
 
 ## General improvements
 
+* Support for the following frameworks and libraries has been improved:
+  - [react](https://www.npmjs.com/package/react)
 
 ## New queries
 
