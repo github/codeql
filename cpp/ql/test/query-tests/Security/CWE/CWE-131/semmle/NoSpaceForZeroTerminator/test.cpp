@@ -102,7 +102,7 @@ void good2(char *str, char *dest) {
 }
 
 void bad9(wchar_t *wstr) {
-    // BAD -- using new [NOT DETECTED]
+    // BAD -- using new
     wchar_t *wbuffer = new wchar_t[wcslen(wstr)];
     wcscpy(wbuffer, wstr);
     delete wbuffer;

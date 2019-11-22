@@ -60,14 +60,14 @@ void bad2(wchar_t *str) {
 }
 
 void bad3(wchar_t *str) {
-    // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
+    // BAD -- Not allocating space for '\0' terminator
     wchar_t *buffer = (wchar_t *)calloc(sizeof(wchar_t), wcslen(str));
     wcscpy(buffer, str);
     free(buffer);
 }
 
 void bad4(char *str) {
-    // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
+    // BAD -- Not allocating space for '\0' terminator
     char *buffer = (char *)realloc(0, strlen(str));
     strcpy(buffer, str);
     free(buffer);
