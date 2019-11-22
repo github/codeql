@@ -112,7 +112,8 @@ class IRAutomaticVariable extends IRVariable {
     exists(Language::Variable var |
       this = TIRUserVariable(var, _, func) and
       Language::isVariableAutomatic(var)
-    ) or
+    )
+    or
     this = TIRTempVariable(func, _, _, _)
   }
 }

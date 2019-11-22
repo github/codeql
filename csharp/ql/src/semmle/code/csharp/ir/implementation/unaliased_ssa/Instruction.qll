@@ -94,17 +94,18 @@ module InstructionSanity {
   /**
    * Holds if instruction `instr` has multiple operands with tag `tag`.
    */
-  query predicate duplicateOperand(Instruction instr, string message, IRFunction func,
-      string funcText) {
+  query predicate duplicateOperand(
+    Instruction instr, string message, IRFunction func, string funcText
+  ) {
     exists(OperandTag tag, int operandCount |
       operandCount = strictcount(NonPhiOperand operand |
-        operand = instr.getAnOperand() and
-        operand.getOperandTag() = tag
-      ) and
+          operand = instr.getAnOperand() and
+          operand.getOperandTag() = tag
+        ) and
       operandCount > 1 and
       not tag instanceof UnmodeledUseOperandTag and
       message = "Instruction has " + operandCount + " operands with tag '" + tag.toString() + "'" +
-        " in function '$@'." and
+          " in function '$@'." and
       func = instr.getEnclosingIRFunction() and
       funcText = Language::getIdentityString(func.getFunction())
     )

@@ -867,8 +867,9 @@ private module CachedForDebugging {
 }
 
 module SSASanity {
-  query predicate multipleOperandMemoryLocations(OldIR::MemoryOperand operand, string message,
-      OldIR::IRFunction func, string funcText) {
+  query predicate multipleOperandMemoryLocations(
+    OldIR::MemoryOperand operand, string message, OldIR::IRFunction func, string funcText
+  ) {
     exists(int locationCount |
       locationCount = strictcount(Alias::getOperandMemoryLocation(operand)) and
       locationCount > 1 and
