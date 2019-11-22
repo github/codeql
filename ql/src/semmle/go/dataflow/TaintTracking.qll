@@ -132,7 +132,7 @@ module TaintTracking {
   /**
    * Holds if taint flows from `pred` to `succ` in one step.
    */
-  private predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
     referenceStep(pred, succ) or
     fieldReadStep(pred, succ) or
     arrayStep(pred, succ) or
