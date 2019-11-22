@@ -54,12 +54,12 @@ public:
 		myFile1 = fopen("file1.txt", "rt"); // GOOD
 		myFile2 = fopen("file2.txt", "rt"); // BAD: not closed in destructor
 
+		myArray1 = (int *)calloc(100, sizeof(int)); // BAD: not freed in destructor
+		myArray2 = new int[100]; // BAD: not deleted in destructor
+		myArray3 = new int[100]; // GOOD: deleted in destructor
 
-
-
-
-
-
+		myPtr7 = (int*)realloc(0, sizeof(int)); // GOOD: freed below (assuming the realloc succeeds)
+		myPtr8 = (int*)realloc(myPtr7, sizeof(int)); // BAD: not freed in destructor
 	}
 	
 	~MyClass()
@@ -67,7 +67,7 @@ public:
 		delete myPtr1;
 		free(myPtr3);
 		fclose(myFile1);
-
+		delete [] myArray3;
 	}
 
 	void close()
@@ -85,6 +85,11 @@ public:
 	AutoPtr<int> myAutoPtr;
 	FILE *myFile1;
 	FILE *myFile2;
+	int *myArray1;
+	int *myArray2;
+	int *myArray3;
+	int *myPtr7;
+	int *myPtr8;
 };
 
 int main()

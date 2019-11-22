@@ -3,6 +3,9 @@
 | AV Rule 79.cpp:49:3:49:18 | ... = ... | Resource myPtr5 is acquired by class MyClass but not released in the destructor. It is released from close on line 75, so this function may need to be called from the destructor. |
 | AV Rule 79.cpp:50:3:50:37 | ... = ... | Resource myPtr6 is acquired by class MyClass but not released in the destructor. It is released from close on line 76, so this function may need to be called from the destructor. |
 | AV Rule 79.cpp:55:3:55:36 | ... = ... | Resource myFile2 is acquired by class MyClass but not released anywhere in this class. |
+| AV Rule 79.cpp:57:3:57:44 | ... = ... | Resource myArray1 is acquired by class MyClass but not released anywhere in this class. |
+| AV Rule 79.cpp:58:3:58:25 | ... = ... | Resource myArray2 is acquired by class MyClass but not released anywhere in this class. |
+| AV Rule 79.cpp:62:3:62:45 | ... = ... | Resource myPtr8 is acquired by class MyClass but not released anywhere in this class. |
 | Container2.cpp:21:3:21:16 | ... = ... | Resource ptr3 is acquired by class Container2<char> but not released anywhere in this class. |
 | Container2.cpp:21:3:21:16 | ... = ... | Resource ptr3 is acquired by class Container2<int> but not released anywhere in this class. |
 | DeleteThis.cpp:56:3:56:24 | ... = ... | Resource ptr10 is acquired by class MyClass3 but not released anywhere in this class. |
