@@ -1,5 +1,6 @@
 import AliasAnalysis
 private import SimpleSSAImports
+import SimpleSSAPublicImports
 
 private class IntValue = Ints::IntValue;
 
