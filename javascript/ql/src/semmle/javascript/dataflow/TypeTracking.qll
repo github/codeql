@@ -13,7 +13,9 @@ private class PropertyName extends string {
   PropertyName() {
     this = any(DataFlow::PropRef pr).getPropertyName()
     or
-    GlobalAccessPath::isAssignedInUniqueFile(this)
+    AccessPath::isAssignedInUniqueFile(this)
+    or
+    exists(AccessPath::getAnAssignmentTo(_, this))
   }
 }
 
@@ -55,6 +57,7 @@ module StepSummary {
   /**
    * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
    */
+  cached
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
     exists(DataFlow::Node mid | pred.flowsTo(mid) | smallstep(mid, succ, summary))
   }
@@ -94,18 +97,33 @@ module StepSummary {
     any(AdditionalTypeTrackingStep st).step(pred, succ) and
     summary = LevelStep()
     or
+    // Store to global access path
     exists(string name |
-      name = GlobalAccessPath::fromRhs(pred) and
-      GlobalAccessPath::isAssignedInUniqueFile(name) and
+      pred = AccessPath::getAnAssignmentTo(name) and
+      AccessPath::isAssignedInUniqueFile(name) and
       succ = DataFlow::globalAccessPathRootPseudoNode() and
       summary = StoreStep(name)
     )
     or
+    // Load from global access path
     exists(string name |
-      name = GlobalAccessPath::fromReference(succ) and
-      GlobalAccessPath::isAssignedInUniqueFile(name) and
+      succ = AccessPath::getAReferenceTo(name) and
+      AccessPath::isAssignedInUniqueFile(name) and
       pred = DataFlow::globalAccessPathRootPseudoNode() and
       summary = LoadStep(name)
+    )
+    or
+    // Store to non-global access path
+    exists(string name |
+      pred = AccessPath::getAnAssignmentTo(succ, name) and
+      summary = StoreStep(name)
+    )
+    or
+    // Load from non-global access path
+    exists(string name |
+      succ = AccessPath::getAReferenceTo(pred, name) and
+      summary = LoadStep(name) and
+      name != ""
     )
     or
     // Summarize calls with flow directly from a parameter to a return.
@@ -170,6 +188,7 @@ class TypeTracker extends TTypeTracker {
   TypeTracker() { this = MkTypeTracker(hasCall, prop) }
 
   /** Gets the summary resulting from appending `step` to this type-tracking summary. */
+  cached
   TypeTracker append(StepSummary step) {
     step = LevelStep() and result = this
     or

@@ -37,9 +37,9 @@ namespace Semmle.Autobuild
             }
 
             var nuget =
-                builder.CodeQLExtractorCSharpRoot != null ?
-                builder.Actions.PathCombine(builder.CodeQLExtractorCSharpRoot, "tools", "nuget.exe") :
-                builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "nuget", "nuget.exe");
+                builder.SemmlePlatformTools != null ?
+                builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "nuget", "nuget.exe") :
+                "nuget";
 
             var ret = BuildScript.Success;
 

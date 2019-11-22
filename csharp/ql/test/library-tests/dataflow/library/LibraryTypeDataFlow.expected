@@ -178,7 +178,7 @@
 | System.Collections.Specialized.OrderedDictionary.get_Values() | qualifier -> return | false |
 | System.Collections.Specialized.StringCollection.Add(object) | argument 0 -> qualifier | false |
 | System.Collections.Specialized.StringCollection.Add(string) | argument 0 -> qualifier | false |
-| System.Collections.Specialized.StringCollection.AddRange(string[]) | argument 0 -> qualifier | false |
+| System.Collections.Specialized.StringCollection.AddRange(String[]) | argument 0 -> qualifier | false |
 | System.Collections.Specialized.StringCollection.GetEnumerator() | qualifier -> return | false |
 | System.Collections.Specialized.StringCollection.Insert(int, object) | argument 1 -> qualifier | false |
 | System.Collections.Specialized.StringCollection.Insert(int, string) | argument 1 -> qualifier | false |
@@ -221,17 +221,17 @@
 | System.Convert.ChangeType(object, Type, IFormatProvider) | argument 0 -> return | false |
 | System.Convert.ChangeType(object, TypeCode) | argument 0 -> return | false |
 | System.Convert.ChangeType(object, TypeCode, IFormatProvider) | argument 0 -> return | false |
-| System.Convert.FromBase64CharArray(char[], int, int) | argument 0 -> return | false |
+| System.Convert.FromBase64CharArray(Char[], int, int) | argument 0 -> return | false |
 | System.Convert.FromBase64String(string) | argument 0 -> return | false |
 | System.Convert.GetTypeCode(object) | argument 0 -> return | false |
 | System.Convert.IsDBNull(object) | argument 0 -> return | false |
-| System.Convert.ToBase64CharArray(byte[], int, int, char[], int) | argument 0 -> return | false |
-| System.Convert.ToBase64CharArray(byte[], int, int, char[], int, Base64FormattingOptions) | argument 0 -> return | false |
-| System.Convert.ToBase64String(ReadOnlySpan<byte>, Base64FormattingOptions) | argument 0 -> return | false |
-| System.Convert.ToBase64String(byte[]) | argument 0 -> return | false |
-| System.Convert.ToBase64String(byte[], Base64FormattingOptions) | argument 0 -> return | false |
-| System.Convert.ToBase64String(byte[], int, int) | argument 0 -> return | false |
-| System.Convert.ToBase64String(byte[], int, int, Base64FormattingOptions) | argument 0 -> return | false |
+| System.Convert.ToBase64CharArray(Byte[], int, int, Char[], int) | argument 0 -> return | false |
+| System.Convert.ToBase64CharArray(Byte[], int, int, Char[], int, Base64FormattingOptions) | argument 0 -> return | false |
+| System.Convert.ToBase64String(Byte[]) | argument 0 -> return | false |
+| System.Convert.ToBase64String(Byte[], Base64FormattingOptions) | argument 0 -> return | false |
+| System.Convert.ToBase64String(Byte[], int, int) | argument 0 -> return | false |
+| System.Convert.ToBase64String(Byte[], int, int, Base64FormattingOptions) | argument 0 -> return | false |
+| System.Convert.ToBase64String(ReadOnlySpan<Byte>, Base64FormattingOptions) | argument 0 -> return | false |
 | System.Convert.ToBoolean(DateTime) | argument 0 -> return | false |
 | System.Convert.ToBoolean(bool) | argument 0 -> return | false |
 | System.Convert.ToBoolean(byte) | argument 0 -> return | false |
@@ -528,58 +528,59 @@
 | System.Convert.ToUInt64(uint) | argument 0 -> return | false |
 | System.Convert.ToUInt64(ulong) | argument 0 -> return | false |
 | System.Convert.ToUInt64(ushort) | argument 0 -> return | false |
-| System.Convert.TryFromBase64Chars(ReadOnlySpan<char>, Span<byte>, out int) | argument 0 -> return | false |
-| System.Convert.TryFromBase64String(string, Span<byte>, out int) | argument 0 -> return | false |
-| System.Convert.TryToBase64Chars(ReadOnlySpan<byte>, Span<char>, out int, Base64FormattingOptions) | argument 0 -> return | false |
-| System.Dynamic.ExpandoObject.Add(KeyValuePair<string, object>) | argument 0 -> qualifier | false |
+| System.Convert.TryFromBase64Chars(ReadOnlySpan<Char>, Span<Byte>, out int) | argument 0 -> return | false |
+| System.Convert.TryFromBase64String(string, Span<Byte>, out int) | argument 0 -> return | false |
+| System.Convert.TryToBase64Chars(ReadOnlySpan<Byte>, Span<Char>, out int, Base64FormattingOptions) | argument 0 -> return | false |
+| System.Dynamic.ExpandoObject.Add(KeyValuePair<String, Object>) | argument 0 -> qualifier | false |
 | System.Dynamic.ExpandoObject.Add(string, object) | argument 1 -> qualifier | false |
 | System.Dynamic.ExpandoObject.GetEnumerator() | qualifier -> return | false |
 | System.ICloneable.Clone() | qualifier -> return | false |
-| System.IO.BufferedStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.IO.BufferedStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.BufferedStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.IO.BufferedStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
 | System.IO.BufferedStream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.BufferedStream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.BufferedStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.BufferedStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.BufferedStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.BufferedStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
-| System.IO.Compression.DeflateStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.IO.Compression.DeflateStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.BufferedStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.BufferedStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.IO.BufferedStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.BufferedStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.IO.Compression.DeflateStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.IO.Compression.DeflateStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.Compression.DeflateStream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.Compression.DeflateStream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionLevel) | argument 0 -> return | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionLevel, bool) | argument 0 -> return | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionMode) | argument 0 -> return | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionMode, bool) | argument 0 -> return | false |
-| System.IO.Compression.DeflateStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.Compression.DeflateStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.Compression.DeflateStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.Compression.DeflateStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
-| System.IO.Compression.GZipStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.IO.Compression.GZipStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.Compression.DeflateStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.Compression.DeflateStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.IO.Compression.DeflateStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.Compression.DeflateStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.IO.Compression.GZipStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.IO.Compression.GZipStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
 | System.IO.Compression.GZipStream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.Compression.GZipStream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.Compression.GZipStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.Compression.GZipStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.Compression.GZipStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.Compression.GZipStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
-| System.IO.FileStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.IO.FileStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
-| System.IO.FileStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.FileStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.FileStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.FileStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.IO.Compression.GZipStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.Compression.GZipStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.IO.Compression.GZipStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.Compression.GZipStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.IO.FileStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.IO.FileStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.FileStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.FileStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.IO.FileStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.FileStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.IO.MemoryStream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.MemoryStream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.MemoryStream.MemoryStream(byte[]) | argument 0 -> return | false |
-| System.IO.MemoryStream.MemoryStream(byte[], bool) | argument 0 -> return | false |
-| System.IO.MemoryStream.MemoryStream(byte[], int, int) | argument 0 -> return | false |
-| System.IO.MemoryStream.MemoryStream(byte[], int, int, bool) | argument 0 -> return | false |
-| System.IO.MemoryStream.MemoryStream(byte[], int, int, bool, bool) | argument 0 -> return | false |
-| System.IO.MemoryStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.MemoryStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.IO.MemoryStream.MemoryStream(Byte[]) | argument 0 -> return | false |
+| System.IO.MemoryStream.MemoryStream(Byte[], bool) | argument 0 -> return | false |
+| System.IO.MemoryStream.MemoryStream(Byte[], int, int) | argument 0 -> return | false |
+| System.IO.MemoryStream.MemoryStream(Byte[], int, int, bool) | argument 0 -> return | false |
+| System.IO.MemoryStream.MemoryStream(Byte[], int, int, bool, bool) | argument 0 -> return | false |
+| System.IO.MemoryStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.MemoryStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
 | System.IO.MemoryStream.ToArray() | qualifier -> return | false |
-| System.IO.MemoryStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.MemoryStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.IO.MemoryStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.MemoryStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.IO.Path.Combine(string, string) | argument 0 -> return | false |
 | System.IO.Path.Combine(string, string) | argument 1 -> return | false |
 | System.IO.Path.Combine(string, string, string) | argument 0 -> return | false |
@@ -589,69 +590,69 @@
 | System.IO.Path.Combine(string, string, string, string) | argument 1 -> return | false |
 | System.IO.Path.Combine(string, string, string, string) | argument 2 -> return | false |
 | System.IO.Path.Combine(string, string, string, string) | argument 3 -> return | false |
-| System.IO.Path.GetDirectoryName(ReadOnlySpan<char>) | argument 0 -> return | false |
+| System.IO.Path.GetDirectoryName(ReadOnlySpan<Char>) | argument 0 -> return | false |
 | System.IO.Path.GetDirectoryName(string) | argument 0 -> return | false |
-| System.IO.Path.GetExtension(ReadOnlySpan<char>) | argument 0 -> return | false |
+| System.IO.Path.GetExtension(ReadOnlySpan<Char>) | argument 0 -> return | false |
 | System.IO.Path.GetExtension(string) | argument 0 -> return | false |
-| System.IO.Path.GetFileName(ReadOnlySpan<char>) | argument 0 -> return | false |
+| System.IO.Path.GetFileName(ReadOnlySpan<Char>) | argument 0 -> return | false |
 | System.IO.Path.GetFileName(string) | argument 0 -> return | false |
-| System.IO.Path.GetFileNameWithoutExtension(ReadOnlySpan<char>) | argument 0 -> return | false |
+| System.IO.Path.GetFileNameWithoutExtension(ReadOnlySpan<Char>) | argument 0 -> return | false |
 | System.IO.Path.GetFileNameWithoutExtension(string) | argument 0 -> return | false |
 | System.IO.Path.GetFullPath(string) | argument 0 -> return | false |
 | System.IO.Path.GetFullPath(string, string) | argument 0 -> return | false |
-| System.IO.Path.GetPathRoot(ReadOnlySpan<char>) | argument 0 -> return | false |
+| System.IO.Path.GetPathRoot(ReadOnlySpan<Char>) | argument 0 -> return | false |
 | System.IO.Path.GetPathRoot(string) | argument 0 -> return | false |
 | System.IO.Path.GetRelativePath(string, string) | argument 1 -> return | false |
-| System.IO.Pipes.PipeStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.IO.Pipes.PipeStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
-| System.IO.Pipes.PipeStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.Pipes.PipeStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.Pipes.PipeStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.Pipes.PipeStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
-| System.IO.Stream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.IO.Stream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.Pipes.PipeStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.IO.Pipes.PipeStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.Pipes.PipeStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.Pipes.PipeStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.IO.Pipes.PipeStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.Pipes.PipeStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.IO.Stream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.IO.Stream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
 | System.IO.Stream.CopyTo(Stream) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyToAsync(Stream) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyToAsync(Stream, CancellationToken) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyToAsync(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.Stream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.Stream.ReadAsync(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.Stream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.Stream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.Stream.WriteAsync(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.Stream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.IO.Stream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.Stream.ReadAsync(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.Stream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.IO.Stream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.Stream.WriteAsync(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.Stream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.IO.StringReader.Read() | qualifier -> return | false |
-| System.IO.StringReader.Read(Span<char>) | qualifier -> return | false |
-| System.IO.StringReader.Read(char[], int, int) | qualifier -> return | false |
-| System.IO.StringReader.ReadAsync(Memory<char>, CancellationToken) | qualifier -> return | false |
-| System.IO.StringReader.ReadAsync(char[], int, int) | qualifier -> return | false |
-| System.IO.StringReader.ReadBlock(Span<char>) | qualifier -> return | false |
-| System.IO.StringReader.ReadBlockAsync(Memory<char>, CancellationToken) | qualifier -> return | false |
-| System.IO.StringReader.ReadBlockAsync(char[], int, int) | qualifier -> return | false |
+| System.IO.StringReader.Read(Char[], int, int) | qualifier -> return | false |
+| System.IO.StringReader.Read(Span<Char>) | qualifier -> return | false |
+| System.IO.StringReader.ReadAsync(Char[], int, int) | qualifier -> return | false |
+| System.IO.StringReader.ReadAsync(Memory<Char>, CancellationToken) | qualifier -> return | false |
+| System.IO.StringReader.ReadBlock(Span<Char>) | qualifier -> return | false |
+| System.IO.StringReader.ReadBlockAsync(Char[], int, int) | qualifier -> return | false |
+| System.IO.StringReader.ReadBlockAsync(Memory<Char>, CancellationToken) | qualifier -> return | false |
 | System.IO.StringReader.ReadLine() | qualifier -> return | false |
 | System.IO.StringReader.ReadLineAsync() | qualifier -> return | false |
 | System.IO.StringReader.ReadToEnd() | qualifier -> return | false |
 | System.IO.StringReader.ReadToEndAsync() | qualifier -> return | false |
 | System.IO.StringReader.StringReader(string) | argument 0 -> return | false |
 | System.IO.TextReader.Read() | qualifier -> return | false |
-| System.IO.TextReader.Read(Span<char>) | qualifier -> return | false |
-| System.IO.TextReader.Read(char[], int, int) | qualifier -> return | false |
-| System.IO.TextReader.ReadAsync(Memory<char>, CancellationToken) | qualifier -> return | false |
-| System.IO.TextReader.ReadAsync(char[], int, int) | qualifier -> return | false |
-| System.IO.TextReader.ReadBlock(Span<char>) | qualifier -> return | false |
-| System.IO.TextReader.ReadBlock(char[], int, int) | qualifier -> return | false |
-| System.IO.TextReader.ReadBlockAsync(Memory<char>, CancellationToken) | qualifier -> return | false |
-| System.IO.TextReader.ReadBlockAsync(char[], int, int) | qualifier -> return | false |
+| System.IO.TextReader.Read(Char[], int, int) | qualifier -> return | false |
+| System.IO.TextReader.Read(Span<Char>) | qualifier -> return | false |
+| System.IO.TextReader.ReadAsync(Char[], int, int) | qualifier -> return | false |
+| System.IO.TextReader.ReadAsync(Memory<Char>, CancellationToken) | qualifier -> return | false |
+| System.IO.TextReader.ReadBlock(Char[], int, int) | qualifier -> return | false |
+| System.IO.TextReader.ReadBlock(Span<Char>) | qualifier -> return | false |
+| System.IO.TextReader.ReadBlockAsync(Char[], int, int) | qualifier -> return | false |
+| System.IO.TextReader.ReadBlockAsync(Memory<Char>, CancellationToken) | qualifier -> return | false |
 | System.IO.TextReader.ReadLine() | qualifier -> return | false |
 | System.IO.TextReader.ReadLineAsync() | qualifier -> return | false |
 | System.IO.TextReader.ReadToEnd() | qualifier -> return | false |
 | System.IO.TextReader.ReadToEndAsync() | qualifier -> return | false |
-| System.IO.UnmanagedMemoryStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.IO.UnmanagedMemoryStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.IO.UnmanagedMemoryStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.IO.UnmanagedMemoryStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.IO.UnmanagedMemoryStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.IO.UnmanagedMemoryStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.IO.UnmanagedMemoryStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.IO.UnmanagedMemoryStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.Int32.Parse(string) | argument 0 -> return | false |
 | System.Int32.Parse(string, IFormatProvider) | argument 0 -> return | false |
 | System.Int32.Parse(string, NumberStyles) | argument 0 -> return | false |
@@ -673,23 +674,23 @@
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>) | output from argument 2 -> return | false |
 | System.Linq.Enumerable.Aggregate<TSource>(IEnumerable<TSource>, Func<TSource, TSource, TSource>) | argument 0 -> parameter 1 of argument 1 | false |
 | System.Linq.Enumerable.Aggregate<TSource>(IEnumerable<TSource>, Func<TSource, TSource, TSource>) | output from argument 1 -> return | false |
-| System.Linq.Enumerable.All<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Any<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.All<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Any<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.AsEnumerable<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, decimal>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, decimal?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, double>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, double?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, float>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, float?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, int>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, int?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, long>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, long?>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Decimal>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Double>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Int32>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Int64>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Single>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Average<TSource>(IEnumerable<TSource>, Func<TSource, Single>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.Cast<TResult>(IEnumerable) | argument 0 -> return | false |
 | System.Linq.Enumerable.Concat<TSource>(IEnumerable<TSource>, IEnumerable<TSource>) | argument 0 -> return | false |
 | System.Linq.Enumerable.Concat<TSource>(IEnumerable<TSource>, IEnumerable<TSource>) | argument 1 -> return | false |
-| System.Linq.Enumerable.Count<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Count<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.DefaultIfEmpty<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
 | System.Linq.Enumerable.DefaultIfEmpty<TSource>(IEnumerable<TSource>, TSource) | argument 0 -> return | false |
 | System.Linq.Enumerable.DefaultIfEmpty<TSource>(IEnumerable<TSource>, TSource) | argument 1 -> return | false |
@@ -700,11 +701,11 @@
 | System.Linq.Enumerable.Except<TSource>(IEnumerable<TSource>, IEnumerable<TSource>) | argument 0 -> return | false |
 | System.Linq.Enumerable.Except<TSource>(IEnumerable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>) | argument 0 -> return | false |
 | System.Linq.Enumerable.First<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
-| System.Linq.Enumerable.First<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.First<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.Enumerable.First<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.First<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.Enumerable.FirstOrDefault<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
-| System.Linq.Enumerable.FirstOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.FirstOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.Enumerable.FirstOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.FirstOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.Enumerable.GroupBy<TSource, TKey, TElement, TResult>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, Func<TKey, IEnumerable<TElement>, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.GroupBy<TSource, TKey, TElement, TResult>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, Func<TKey, IEnumerable<TElement>, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
 | System.Linq.Enumerable.GroupBy<TSource, TKey, TElement, TResult>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, Func<TKey, IEnumerable<TElement>, TResult>) | output from argument 1 -> parameter 0 of argument 3 | false |
@@ -753,34 +754,34 @@
 | System.Linq.Enumerable.Join<TOuter, TInner, TKey, TResult>(IEnumerable<TOuter>, IEnumerable<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, TInner, TResult>, IEqualityComparer<TKey>) | argument 1 -> parameter 1 of argument 4 | false |
 | System.Linq.Enumerable.Join<TOuter, TInner, TKey, TResult>(IEnumerable<TOuter>, IEnumerable<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, TInner, TResult>, IEqualityComparer<TKey>) | output from argument 4 -> return | false |
 | System.Linq.Enumerable.Last<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
-| System.Linq.Enumerable.Last<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Last<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.Enumerable.Last<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Last<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.Enumerable.LastOrDefault<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
-| System.Linq.Enumerable.LastOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.LastOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
-| System.Linq.Enumerable.LongCount<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.LastOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.LastOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
+| System.Linq.Enumerable.LongCount<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.Max<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, decimal>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, decimal?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, double>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, double?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, float>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, float?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, int>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, int?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, long>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, long?>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Decimal>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Double>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Int32>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Int64>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Single>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Max<TSource>(IEnumerable<TSource>, Func<TSource, Single>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.Min<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, decimal>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, decimal?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, double>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, double?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, float>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, float?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, int>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, int?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, long>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, long?>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Decimal>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Double>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Int32>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Int64>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Single>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Min<TSource>(IEnumerable<TSource>, Func<TSource, Single>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.OfType<TResult>(IEnumerable) | argument 0 -> return | false |
 | System.Linq.Enumerable.OrderBy<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.OrderBy<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>) | argument 0 -> return | false |
@@ -791,48 +792,48 @@
 | System.Linq.Enumerable.OrderByDescending<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.OrderByDescending<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>, IComparer<TKey>) | argument 0 -> return | false |
 | System.Linq.Enumerable.Reverse<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
+| System.Linq.Enumerable.Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, Int32, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, Int32, TResult>) | output from argument 1 -> return | false |
 | System.Linq.Enumerable.Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) | output from argument 1 -> return | false |
-| System.Linq.Enumerable.Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, int, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, int, TResult>) | output from argument 1 -> return | false |
 | System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
 | System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 1 -> parameter 1 of argument 2 | false |
 | System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 2 -> return | false |
-| System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, int, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, int, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, int, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 1 -> parameter 1 of argument 2 | false |
-| System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, int, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 2 -> return | false |
+| System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, Int32, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, Int32, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, Int32, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 1 -> parameter 1 of argument 2 | false |
+| System.Linq.Enumerable.SelectMany<TSource, TCollection, TResult>(IEnumerable<TSource>, Func<TSource, Int32, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 2 -> return | false |
 | System.Linq.Enumerable.SelectMany<TSource, TResult>(IEnumerable<TSource>, Func<TSource, IEnumerable<TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.SelectMany<TSource, TResult>(IEnumerable<TSource>, Func<TSource, IEnumerable<TResult>>) | output from argument 1 -> return | false |
-| System.Linq.Enumerable.SelectMany<TSource, TResult>(IEnumerable<TSource>, Func<TSource, int, IEnumerable<TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.SelectMany<TSource, TResult>(IEnumerable<TSource>, Func<TSource, int, IEnumerable<TResult>>) | output from argument 1 -> return | false |
+| System.Linq.Enumerable.SelectMany<TSource, TResult>(IEnumerable<TSource>, Func<TSource, Int32, IEnumerable<TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.SelectMany<TSource, TResult>(IEnumerable<TSource>, Func<TSource, Int32, IEnumerable<TResult>>) | output from argument 1 -> return | false |
 | System.Linq.Enumerable.Single<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
-| System.Linq.Enumerable.Single<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Single<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.Enumerable.Single<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Single<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.Enumerable.SingleOrDefault<TSource>(IEnumerable<TSource>) | argument 0 -> return | false |
-| System.Linq.Enumerable.SingleOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.SingleOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.Enumerable.SingleOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.SingleOrDefault<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.Enumerable.Skip<TSource>(IEnumerable<TSource>, int) | argument 0 -> return | false |
-| System.Linq.Enumerable.SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
-| System.Linq.Enumerable.SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, int, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, int, bool>) | argument 0 -> return | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, decimal>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, decimal?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, double>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, double?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, float>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, float?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, int>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, int?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, long>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, long?>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
+| System.Linq.Enumerable.SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> return | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Decimal>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Double>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Int32>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Int64>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Nullable<Single>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, Single>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.Take<TSource>(IEnumerable<TSource>, int) | argument 0 -> return | false |
-| System.Linq.Enumerable.TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
-| System.Linq.Enumerable.TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, int, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, int, bool>) | argument 0 -> return | false |
+| System.Linq.Enumerable.TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
+| System.Linq.Enumerable.TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> return | false |
 | System.Linq.Enumerable.ThenBy<TSource, TKey>(IOrderedEnumerable<TSource>, Func<TSource, TKey>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Enumerable.ThenBy<TSource, TKey>(IOrderedEnumerable<TSource>, Func<TSource, TKey>) | argument 0 -> return | false |
 | System.Linq.Enumerable.ThenBy<TSource, TKey>(IOrderedEnumerable<TSource>, Func<TSource, TKey>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
@@ -867,10 +868,10 @@
 | System.Linq.Enumerable.Union<TSource>(IEnumerable<TSource>, IEnumerable<TSource>) | argument 1 -> return | false |
 | System.Linq.Enumerable.Union<TSource>(IEnumerable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>) | argument 0 -> return | false |
 | System.Linq.Enumerable.Union<TSource>(IEnumerable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>) | argument 1 -> return | false |
-| System.Linq.Enumerable.Where<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Where<TSource>(IEnumerable<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
-| System.Linq.Enumerable.Where<TSource>(IEnumerable<TSource>, Func<TSource, int, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Enumerable.Where<TSource>(IEnumerable<TSource>, Func<TSource, int, bool>) | argument 0 -> return | false |
+| System.Linq.Enumerable.Where<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Where<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
+| System.Linq.Enumerable.Where<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Enumerable.Where<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> return | false |
 | System.Linq.Enumerable.Zip<TFirst, TSecond, TResult>(IEnumerable<TFirst>, IEnumerable<TSecond>, Func<TFirst, TSecond, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
 | System.Linq.Enumerable.Zip<TFirst, TSecond, TResult>(IEnumerable<TFirst>, IEnumerable<TSecond>, Func<TFirst, TSecond, TResult>) | argument 1 -> parameter 1 of argument 2 | false |
 | System.Linq.Enumerable.Zip<TFirst, TSecond, TResult>(IEnumerable<TFirst>, IEnumerable<TSecond>, Func<TFirst, TSecond, TResult>) | output from argument 2 -> return | false |
@@ -889,25 +890,25 @@
 | System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>) | output from argument 2 -> return | false |
 | System.Linq.ParallelEnumerable.Aggregate<TSource>(ParallelQuery<TSource>, Func<TSource, TSource, TSource>) | argument 0 -> parameter 1 of argument 1 | false |
 | System.Linq.ParallelEnumerable.Aggregate<TSource>(ParallelQuery<TSource>, Func<TSource, TSource, TSource>) | output from argument 1 -> return | false |
-| System.Linq.ParallelEnumerable.All<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Any<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.All<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Any<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.AsEnumerable<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, decimal>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, decimal?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, double>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, double?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, float>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, float?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, int>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, int?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, long>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, long?>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Decimal>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Double>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Int32>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Int64>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Single>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Average<TSource>(ParallelQuery<TSource>, Func<TSource, Single>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.Cast<TResult>(ParallelQuery) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.Concat<TSource>(ParallelQuery<TSource>, IEnumerable<TSource>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.Concat<TSource>(ParallelQuery<TSource>, IEnumerable<TSource>) | argument 1 -> return | false |
 | System.Linq.ParallelEnumerable.Concat<TSource>(ParallelQuery<TSource>, ParallelQuery<TSource>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.Concat<TSource>(ParallelQuery<TSource>, ParallelQuery<TSource>) | argument 1 -> return | false |
-| System.Linq.ParallelEnumerable.Count<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Count<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.DefaultIfEmpty<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.DefaultIfEmpty<TSource>(ParallelQuery<TSource>, TSource) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.DefaultIfEmpty<TSource>(ParallelQuery<TSource>, TSource) | argument 1 -> return | false |
@@ -920,11 +921,11 @@
 | System.Linq.ParallelEnumerable.Except<TSource>(ParallelQuery<TSource>, ParallelQuery<TSource>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.Except<TSource>(ParallelQuery<TSource>, ParallelQuery<TSource>, IEqualityComparer<TSource>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.First<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.First<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.First<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.First<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.First<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.FirstOrDefault<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.FirstOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.FirstOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.FirstOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.FirstOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.GroupBy<TSource, TKey, TElement, TResult>(ParallelQuery<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, Func<TKey, IEnumerable<TElement>, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.GroupBy<TSource, TKey, TElement, TResult>(ParallelQuery<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, Func<TKey, IEnumerable<TElement>, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
 | System.Linq.ParallelEnumerable.GroupBy<TSource, TKey, TElement, TResult>(ParallelQuery<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, Func<TKey, IEnumerable<TElement>, TResult>) | output from argument 1 -> parameter 0 of argument 3 | false |
@@ -997,34 +998,34 @@
 | System.Linq.ParallelEnumerable.Join<TOuter, TInner, TKey, TResult>(ParallelQuery<TOuter>, ParallelQuery<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, TInner, TResult>, IEqualityComparer<TKey>) | argument 1 -> parameter 1 of argument 4 | false |
 | System.Linq.ParallelEnumerable.Join<TOuter, TInner, TKey, TResult>(ParallelQuery<TOuter>, ParallelQuery<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, TInner, TResult>, IEqualityComparer<TKey>) | output from argument 4 -> return | false |
 | System.Linq.ParallelEnumerable.Last<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.Last<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Last<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.Last<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Last<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.LastOrDefault<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.LastOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.LastOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.LongCount<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.LastOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.LastOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.LongCount<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.Max<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, decimal>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, decimal?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, double>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, double?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, float>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, float?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, int>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, int?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, long>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, long?>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Decimal>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Double>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Int32>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Int64>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Single>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Max<TSource>(ParallelQuery<TSource>, Func<TSource, Single>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.Min<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, decimal>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, decimal?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, double>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, double?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, float>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, float?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, int>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, int?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, long>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, long?>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Decimal>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Double>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Int32>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Int64>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Single>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Min<TSource>(ParallelQuery<TSource>, Func<TSource, Single>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.OfType<TResult>(ParallelQuery) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.OrderBy<TSource, TKey>(ParallelQuery<TSource>, Func<TSource, TKey>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.OrderBy<TSource, TKey>(ParallelQuery<TSource>, Func<TSource, TKey>) | argument 0 -> return | false |
@@ -1035,48 +1036,48 @@
 | System.Linq.ParallelEnumerable.OrderByDescending<TSource, TKey>(ParallelQuery<TSource>, Func<TSource, TKey>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.OrderByDescending<TSource, TKey>(ParallelQuery<TSource>, Func<TSource, TKey>, IComparer<TKey>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.Reverse<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.Select<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, Int32, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Select<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, Int32, TResult>) | output from argument 1 -> return | false |
 | System.Linq.ParallelEnumerable.Select<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.Select<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, TResult>) | output from argument 1 -> return | false |
-| System.Linq.ParallelEnumerable.Select<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, int, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Select<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, int, TResult>) | output from argument 1 -> return | false |
 | System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
 | System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 1 -> parameter 1 of argument 2 | false |
 | System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 2 -> return | false |
-| System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, int, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, int, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, int, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 1 -> parameter 1 of argument 2 | false |
-| System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, int, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 2 -> return | false |
+| System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, Int32, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, Int32, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, Int32, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 1 -> parameter 1 of argument 2 | false |
+| System.Linq.ParallelEnumerable.SelectMany<TSource, TCollection, TResult>(ParallelQuery<TSource>, Func<TSource, Int32, IEnumerable<TCollection>>, Func<TSource, TCollection, TResult>) | output from argument 2 -> return | false |
 | System.Linq.ParallelEnumerable.SelectMany<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, IEnumerable<TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.SelectMany<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, IEnumerable<TResult>>) | output from argument 1 -> return | false |
-| System.Linq.ParallelEnumerable.SelectMany<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, int, IEnumerable<TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.SelectMany<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, int, IEnumerable<TResult>>) | output from argument 1 -> return | false |
+| System.Linq.ParallelEnumerable.SelectMany<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, Int32, IEnumerable<TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.SelectMany<TSource, TResult>(ParallelQuery<TSource>, Func<TSource, Int32, IEnumerable<TResult>>) | output from argument 1 -> return | false |
 | System.Linq.ParallelEnumerable.Single<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.Single<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Single<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.Single<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Single<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.SingleOrDefault<TSource>(ParallelQuery<TSource>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.SingleOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.SingleOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.SingleOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.SingleOrDefault<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.Skip<TSource>(ParallelQuery<TSource>, int) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.SkipWhile<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.SkipWhile<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.SkipWhile<TSource>(ParallelQuery<TSource>, Func<TSource, int, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.SkipWhile<TSource>(ParallelQuery<TSource>, Func<TSource, int, bool>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, decimal>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, decimal?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, double>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, double?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, float>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, float?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, int>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, int?>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, long>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, long?>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.SkipWhile<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.SkipWhile<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.SkipWhile<TSource>(ParallelQuery<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.SkipWhile<TSource>(ParallelQuery<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Decimal>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Double>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Int32>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Int64>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Nullable<Single>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Sum<TSource>(ParallelQuery<TSource>, Func<TSource, Single>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.Take<TSource>(ParallelQuery<TSource>, int) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.TakeWhile<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.TakeWhile<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.TakeWhile<TSource>(ParallelQuery<TSource>, Func<TSource, int, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.TakeWhile<TSource>(ParallelQuery<TSource>, Func<TSource, int, bool>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.TakeWhile<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.TakeWhile<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.TakeWhile<TSource>(ParallelQuery<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.TakeWhile<TSource>(ParallelQuery<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.ThenBy<TSource, TKey>(OrderedParallelQuery<TSource>, Func<TSource, TKey>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.ParallelEnumerable.ThenBy<TSource, TKey>(OrderedParallelQuery<TSource>, Func<TSource, TKey>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.ThenBy<TSource, TKey>(OrderedParallelQuery<TSource>, Func<TSource, TKey>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
@@ -1115,10 +1116,10 @@
 | System.Linq.ParallelEnumerable.Union<TSource>(ParallelQuery<TSource>, ParallelQuery<TSource>) | argument 1 -> return | false |
 | System.Linq.ParallelEnumerable.Union<TSource>(ParallelQuery<TSource>, ParallelQuery<TSource>, IEqualityComparer<TSource>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.Union<TSource>(ParallelQuery<TSource>, ParallelQuery<TSource>, IEqualityComparer<TSource>) | argument 1 -> return | false |
-| System.Linq.ParallelEnumerable.Where<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Where<TSource>(ParallelQuery<TSource>, Func<TSource, bool>) | argument 0 -> return | false |
-| System.Linq.ParallelEnumerable.Where<TSource>(ParallelQuery<TSource>, Func<TSource, int, bool>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.ParallelEnumerable.Where<TSource>(ParallelQuery<TSource>, Func<TSource, int, bool>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.Where<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Where<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | argument 0 -> return | false |
+| System.Linq.ParallelEnumerable.Where<TSource>(ParallelQuery<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.ParallelEnumerable.Where<TSource>(ParallelQuery<TSource>, Func<TSource, Int32, Boolean>) | argument 0 -> return | false |
 | System.Linq.ParallelEnumerable.Zip<TFirst, TSecond, TResult>(ParallelQuery<TFirst>, IEnumerable<TSecond>, Func<TFirst, TSecond, TResult>) | argument 0 -> parameter 0 of argument 2 | false |
 | System.Linq.ParallelEnumerable.Zip<TFirst, TSecond, TResult>(ParallelQuery<TFirst>, IEnumerable<TSecond>, Func<TFirst, TSecond, TResult>) | argument 1 -> parameter 1 of argument 2 | false |
 | System.Linq.ParallelEnumerable.Zip<TFirst, TSecond, TResult>(ParallelQuery<TFirst>, IEnumerable<TSecond>, Func<TFirst, TSecond, TResult>) | output from argument 2 -> return | false |
@@ -1127,31 +1128,31 @@
 | System.Linq.ParallelEnumerable.Zip<TFirst, TSecond, TResult>(ParallelQuery<TFirst>, ParallelQuery<TSecond>, Func<TFirst, TSecond, TResult>) | output from argument 2 -> return | false |
 | System.Linq.ParallelQuery.GetEnumerator() | qualifier -> return | false |
 | System.Linq.ParallelQuery<>.GetEnumerator() | qualifier -> return | false |
-| System.Linq.Queryable.Aggregate<TSource, TAccumulate, TResult>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate, TSource, TAccumulate>>, Expression<Func<TAccumulate, TResult>>) | argument 0 -> parameter 1 of argument 2 | false |
-| System.Linq.Queryable.Aggregate<TSource, TAccumulate, TResult>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate, TSource, TAccumulate>>, Expression<Func<TAccumulate, TResult>>) | argument 1 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.Aggregate<TSource, TAccumulate, TResult>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate, TSource, TAccumulate>>, Expression<Func<TAccumulate, TResult>>) | output from argument 2 -> parameter 0 of argument 3 | false |
-| System.Linq.Queryable.Aggregate<TSource, TAccumulate, TResult>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate, TSource, TAccumulate>>, Expression<Func<TAccumulate, TResult>>) | output from argument 3 -> return | false |
-| System.Linq.Queryable.Aggregate<TSource, TAccumulate>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate, TSource, TAccumulate>>) | argument 0 -> parameter 1 of argument 2 | false |
-| System.Linq.Queryable.Aggregate<TSource, TAccumulate>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate, TSource, TAccumulate>>) | argument 1 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.Aggregate<TSource, TAccumulate>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate, TSource, TAccumulate>>) | output from argument 2 -> return | false |
-| System.Linq.Queryable.Aggregate<TSource>(IQueryable<TSource>, Expression<Func<TSource, TSource, TSource>>) | argument 0 -> parameter 1 of argument 1 | false |
-| System.Linq.Queryable.Aggregate<TSource>(IQueryable<TSource>, Expression<Func<TSource, TSource, TSource>>) | output from argument 1 -> return | false |
-| System.Linq.Queryable.All<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Any<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, decimal?>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, double>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, double?>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, float>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, float?>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, int>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, int?>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, long>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource, long?>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Aggregate<TSource, TAccumulate, TResult>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate,TSource,TAccumulate>>, Expression<Func<TAccumulate,TResult>>) | argument 0 -> parameter 1 of argument 2 | false |
+| System.Linq.Queryable.Aggregate<TSource, TAccumulate, TResult>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate,TSource,TAccumulate>>, Expression<Func<TAccumulate,TResult>>) | argument 1 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.Aggregate<TSource, TAccumulate, TResult>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate,TSource,TAccumulate>>, Expression<Func<TAccumulate,TResult>>) | output from argument 2 -> parameter 0 of argument 3 | false |
+| System.Linq.Queryable.Aggregate<TSource, TAccumulate, TResult>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate,TSource,TAccumulate>>, Expression<Func<TAccumulate,TResult>>) | output from argument 3 -> return | false |
+| System.Linq.Queryable.Aggregate<TSource, TAccumulate>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate,TSource,TAccumulate>>) | argument 0 -> parameter 1 of argument 2 | false |
+| System.Linq.Queryable.Aggregate<TSource, TAccumulate>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate,TSource,TAccumulate>>) | argument 1 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.Aggregate<TSource, TAccumulate>(IQueryable<TSource>, TAccumulate, Expression<Func<TAccumulate,TSource,TAccumulate>>) | output from argument 2 -> return | false |
+| System.Linq.Queryable.Aggregate<TSource>(IQueryable<TSource>, Expression<Func<TSource,TSource,TSource>>) | argument 0 -> parameter 1 of argument 1 | false |
+| System.Linq.Queryable.Aggregate<TSource>(IQueryable<TSource>, Expression<Func<TSource,TSource,TSource>>) | output from argument 1 -> return | false |
+| System.Linq.Queryable.All<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Any<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Decimal>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Double>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Int32>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Int64>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Single>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Single>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.Cast<TResult>(IQueryable) | argument 0 -> return | false |
 | System.Linq.Queryable.Concat<TSource>(IQueryable<TSource>, IEnumerable<TSource>) | argument 0 -> return | false |
 | System.Linq.Queryable.Concat<TSource>(IQueryable<TSource>, IEnumerable<TSource>) | argument 1 -> return | false |
-| System.Linq.Queryable.Count<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Count<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.DefaultIfEmpty<TSource>(IQueryable<TSource>) | argument 0 -> return | false |
 | System.Linq.Queryable.DefaultIfEmpty<TSource>(IQueryable<TSource>, TSource) | argument 0 -> return | false |
 | System.Linq.Queryable.DefaultIfEmpty<TSource>(IQueryable<TSource>, TSource) | argument 1 -> return | false |
@@ -1162,135 +1163,135 @@
 | System.Linq.Queryable.Except<TSource>(IQueryable<TSource>, IEnumerable<TSource>) | argument 0 -> return | false |
 | System.Linq.Queryable.Except<TSource>(IQueryable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>) | argument 0 -> return | false |
 | System.Linq.Queryable.First<TSource>(IQueryable<TSource>) | argument 0 -> return | false |
-| System.Linq.Queryable.First<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.First<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
+| System.Linq.Queryable.First<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.First<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
 | System.Linq.Queryable.FirstOrDefault<TSource>(IQueryable<TSource>) | argument 0 -> return | false |
-| System.Linq.Queryable.FirstOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.FirstOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>) | output from argument 1 -> parameter 0 of argument 3 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>) | output from argument 2 -> parameter 1 of argument 3 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>) | output from argument 3 -> return | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>, IEqualityComparer<TKey>) | output from argument 1 -> parameter 0 of argument 3 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>, IEqualityComparer<TKey>) | output from argument 2 -> parameter 1 of argument 3 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, Expression<Func<TKey, IEnumerable<TElement>, TResult>>, IEqualityComparer<TKey>) | output from argument 3 -> return | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>) | output from argument 2 -> return | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TElement>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TSource, TElement>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TKey, IEnumerable<TSource>, TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TKey, IEnumerable<TSource>, TResult>>) | output from argument 2 -> return | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TKey, IEnumerable<TSource>, TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey, TResult>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, Expression<Func<TKey, IEnumerable<TSource>, TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.GroupBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, IEqualityComparer<TKey>) | argument 0 -> return | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>) | argument 0 -> parameter 0 of argument 4 | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>) | argument 1 -> parameter 0 of argument 3 | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>) | argument 1 -> parameter 1 of argument 4 | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>) | output from argument 4 -> return | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 4 | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>, IEqualityComparer<TKey>) | argument 1 -> parameter 0 of argument 3 | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>, IEqualityComparer<TKey>) | argument 1 -> parameter 1 of argument 4 | false |
-| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, IEnumerable<TInner>, TResult>>, IEqualityComparer<TKey>) | output from argument 4 -> return | false |
+| System.Linq.Queryable.FirstOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.FirstOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>) | output from argument 1 -> parameter 0 of argument 3 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>) | output from argument 2 -> parameter 1 of argument 3 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>) | output from argument 3 -> return | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>, IEqualityComparer<TKey>) | output from argument 1 -> parameter 0 of argument 3 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>, IEqualityComparer<TKey>) | output from argument 2 -> parameter 1 of argument 3 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, Expression<Func<TKey,IEnumerable<TElement>,TResult>>, IEqualityComparer<TKey>) | output from argument 3 -> return | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>) | output from argument 2 -> return | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TElement>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TSource,TElement>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TKey,IEnumerable<TSource>,TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TKey,IEnumerable<TSource>,TResult>>) | output from argument 2 -> return | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TKey,IEnumerable<TSource>,TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey, TResult>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, Expression<Func<TKey,IEnumerable<TSource>,TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.GroupBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, IEqualityComparer<TKey>) | argument 0 -> return | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>) | argument 0 -> parameter 0 of argument 4 | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>) | argument 1 -> parameter 0 of argument 3 | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>) | argument 1 -> parameter 1 of argument 4 | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>) | output from argument 4 -> return | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 4 | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>, IEqualityComparer<TKey>) | argument 1 -> parameter 0 of argument 3 | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>, IEqualityComparer<TKey>) | argument 1 -> parameter 1 of argument 4 | false |
+| System.Linq.Queryable.GroupJoin<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,IEnumerable<TInner>,TResult>>, IEqualityComparer<TKey>) | output from argument 4 -> return | false |
 | System.Linq.Queryable.Intersect<TSource>(IQueryable<TSource>, IEnumerable<TSource>) | argument 0 -> return | false |
 | System.Linq.Queryable.Intersect<TSource>(IQueryable<TSource>, IEnumerable<TSource>) | argument 1 -> return | false |
 | System.Linq.Queryable.Intersect<TSource>(IQueryable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>) | argument 0 -> return | false |
 | System.Linq.Queryable.Intersect<TSource>(IQueryable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>) | argument 1 -> return | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>) | argument 0 -> parameter 0 of argument 4 | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>) | argument 1 -> parameter 0 of argument 3 | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>) | argument 1 -> parameter 1 of argument 4 | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>) | output from argument 4 -> return | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 4 | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>, IEqualityComparer<TKey>) | argument 1 -> parameter 0 of argument 3 | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>, IEqualityComparer<TKey>) | argument 1 -> parameter 1 of argument 4 | false |
-| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter, TKey>>, Expression<Func<TInner, TKey>>, Expression<Func<TOuter, TInner, TResult>>, IEqualityComparer<TKey>) | output from argument 4 -> return | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>) | argument 0 -> parameter 0 of argument 4 | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>) | argument 1 -> parameter 0 of argument 3 | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>) | argument 1 -> parameter 1 of argument 4 | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>) | output from argument 4 -> return | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>, IEqualityComparer<TKey>) | argument 0 -> parameter 0 of argument 4 | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>, IEqualityComparer<TKey>) | argument 1 -> parameter 0 of argument 3 | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>, IEqualityComparer<TKey>) | argument 1 -> parameter 1 of argument 4 | false |
+| System.Linq.Queryable.Join<TOuter, TInner, TKey, TResult>(IQueryable<TOuter>, IEnumerable<TInner>, Expression<Func<TOuter,TKey>>, Expression<Func<TInner,TKey>>, Expression<Func<TOuter,TInner,TResult>>, IEqualityComparer<TKey>) | output from argument 4 -> return | false |
 | System.Linq.Queryable.Last<TSource>(IQueryable<TSource>) | argument 0 -> return | false |
-| System.Linq.Queryable.Last<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Last<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
+| System.Linq.Queryable.Last<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Last<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
 | System.Linq.Queryable.LastOrDefault<TSource>(IQueryable<TSource>) | argument 0 -> return | false |
-| System.Linq.Queryable.LastOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.LastOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
-| System.Linq.Queryable.LongCount<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Max<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Min<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.LastOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.LastOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
+| System.Linq.Queryable.LongCount<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Max<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Min<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.OfType<TResult>(IQueryable) | argument 0 -> return | false |
-| System.Linq.Queryable.OrderBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.OrderBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>) | argument 0 -> return | false |
-| System.Linq.Queryable.OrderBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.OrderBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, IComparer<TKey>) | argument 0 -> return | false |
-| System.Linq.Queryable.OrderByDescending<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.OrderByDescending<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>) | argument 0 -> return | false |
-| System.Linq.Queryable.OrderByDescending<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.OrderByDescending<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource, TKey>>, IComparer<TKey>) | argument 0 -> return | false |
+| System.Linq.Queryable.OrderBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.OrderBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>) | argument 0 -> return | false |
+| System.Linq.Queryable.OrderBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.OrderBy<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, IComparer<TKey>) | argument 0 -> return | false |
+| System.Linq.Queryable.OrderByDescending<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.OrderByDescending<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>) | argument 0 -> return | false |
+| System.Linq.Queryable.OrderByDescending<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.OrderByDescending<TSource, TKey>(IQueryable<TSource>, Expression<Func<TSource,TKey>>, IComparer<TKey>) | argument 0 -> return | false |
 | System.Linq.Queryable.Reverse<TSource>(IQueryable<TSource>) | argument 0 -> return | false |
-| System.Linq.Queryable.Select<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Select<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, TResult>>) | output from argument 1 -> return | false |
-| System.Linq.Queryable.Select<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, int, TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Select<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, int, TResult>>) | output from argument 1 -> return | false |
-| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource, IEnumerable<TCollection>>>, Expression<Func<TSource, TCollection, TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource, IEnumerable<TCollection>>>, Expression<Func<TSource, TCollection, TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource, IEnumerable<TCollection>>>, Expression<Func<TSource, TCollection, TResult>>) | output from argument 1 -> parameter 1 of argument 2 | false |
-| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource, IEnumerable<TCollection>>>, Expression<Func<TSource, TCollection, TResult>>) | output from argument 2 -> return | false |
-| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource, int, IEnumerable<TCollection>>>, Expression<Func<TSource, TCollection, TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource, int, IEnumerable<TCollection>>>, Expression<Func<TSource, TCollection, TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource, int, IEnumerable<TCollection>>>, Expression<Func<TSource, TCollection, TResult>>) | output from argument 1 -> parameter 1 of argument 2 | false |
-| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource, int, IEnumerable<TCollection>>>, Expression<Func<TSource, TCollection, TResult>>) | output from argument 2 -> return | false |
-| System.Linq.Queryable.SelectMany<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, IEnumerable<TResult>>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.SelectMany<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, IEnumerable<TResult>>>) | output from argument 1 -> return | false |
-| System.Linq.Queryable.SelectMany<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, int, IEnumerable<TResult>>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.SelectMany<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource, int, IEnumerable<TResult>>>) | output from argument 1 -> return | false |
+| System.Linq.Queryable.Select<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,Int32,TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Select<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,Int32,TResult>>) | output from argument 1 -> return | false |
+| System.Linq.Queryable.Select<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Select<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,TResult>>) | output from argument 1 -> return | false |
+| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource,IEnumerable<TCollection>>>, Expression<Func<TSource,TCollection,TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource,IEnumerable<TCollection>>>, Expression<Func<TSource,TCollection,TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource,IEnumerable<TCollection>>>, Expression<Func<TSource,TCollection,TResult>>) | output from argument 1 -> parameter 1 of argument 2 | false |
+| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource,IEnumerable<TCollection>>>, Expression<Func<TSource,TCollection,TResult>>) | output from argument 2 -> return | false |
+| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource,Int32,IEnumerable<TCollection>>>, Expression<Func<TSource,TCollection,TResult>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource,Int32,IEnumerable<TCollection>>>, Expression<Func<TSource,TCollection,TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource,Int32,IEnumerable<TCollection>>>, Expression<Func<TSource,TCollection,TResult>>) | output from argument 1 -> parameter 1 of argument 2 | false |
+| System.Linq.Queryable.SelectMany<TSource, TCollection, TResult>(IQueryable<TSource>, Expression<Func<TSource,Int32,IEnumerable<TCollection>>>, Expression<Func<TSource,TCollection,TResult>>) | output from argument 2 -> return | false |
+| System.Linq.Queryable.SelectMany<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,IEnumerable<TResult>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.SelectMany<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,IEnumerable<TResult>>>) | output from argument 1 -> return | false |
+| System.Linq.Queryable.SelectMany<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,Int32,IEnumerable<TResult>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.SelectMany<TSource, TResult>(IQueryable<TSource>, Expression<Func<TSource,Int32,IEnumerable<TResult>>>) | output from argument 1 -> return | false |
 | System.Linq.Queryable.Single<TSource>(IQueryable<TSource>) | argument 0 -> return | false |
-| System.Linq.Queryable.Single<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Single<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
+| System.Linq.Queryable.Single<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Single<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
 | System.Linq.Queryable.SingleOrDefault<TSource>(IQueryable<TSource>) | argument 0 -> return | false |
-| System.Linq.Queryable.SingleOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.SingleOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
+| System.Linq.Queryable.SingleOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.SingleOrDefault<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
 | System.Linq.Queryable.Skip<TSource>(IQueryable<TSource>, int) | argument 0 -> return | false |
-| System.Linq.Queryable.SkipWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.SkipWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
-| System.Linq.Queryable.SkipWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource, int, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.SkipWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource, int, bool>>) | argument 0 -> return | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, decimal?>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, double>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, double?>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, float>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, float?>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, int>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, int?>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, long>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource, long?>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.SkipWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.SkipWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
+| System.Linq.Queryable.SkipWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.SkipWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32,Boolean>>) | argument 0 -> return | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Double>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int64>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Decimal>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Double>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Int32>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Int64>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Nullable<Single>>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Sum<TSource>(IQueryable<TSource>, Expression<Func<TSource,Single>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.Take<TSource>(IQueryable<TSource>, int) | argument 0 -> return | false |
-| System.Linq.Queryable.TakeWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.TakeWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
-| System.Linq.Queryable.TakeWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource, int, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.TakeWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource, int, bool>>) | argument 0 -> return | false |
-| System.Linq.Queryable.ThenBy<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource, TKey>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.ThenBy<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource, TKey>>) | argument 0 -> return | false |
-| System.Linq.Queryable.ThenBy<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource, TKey>>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.ThenBy<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource, TKey>>, IComparer<TKey>) | argument 0 -> return | false |
-| System.Linq.Queryable.ThenByDescending<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource, TKey>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.ThenByDescending<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource, TKey>>) | argument 0 -> return | false |
-| System.Linq.Queryable.ThenByDescending<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource, TKey>>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.ThenByDescending<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource, TKey>>, IComparer<TKey>) | argument 0 -> return | false |
+| System.Linq.Queryable.TakeWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.TakeWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
+| System.Linq.Queryable.TakeWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.TakeWhile<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32,Boolean>>) | argument 0 -> return | false |
+| System.Linq.Queryable.ThenBy<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource,TKey>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.ThenBy<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource,TKey>>) | argument 0 -> return | false |
+| System.Linq.Queryable.ThenBy<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource,TKey>>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.ThenBy<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource,TKey>>, IComparer<TKey>) | argument 0 -> return | false |
+| System.Linq.Queryable.ThenByDescending<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource,TKey>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.ThenByDescending<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource,TKey>>) | argument 0 -> return | false |
+| System.Linq.Queryable.ThenByDescending<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource,TKey>>, IComparer<TKey>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.ThenByDescending<TSource, TKey>(IOrderedQueryable<TSource>, Expression<Func<TSource,TKey>>, IComparer<TKey>) | argument 0 -> return | false |
 | System.Linq.Queryable.Union<TSource>(IQueryable<TSource>, IEnumerable<TSource>) | argument 0 -> return | false |
 | System.Linq.Queryable.Union<TSource>(IQueryable<TSource>, IEnumerable<TSource>) | argument 1 -> return | false |
 | System.Linq.Queryable.Union<TSource>(IQueryable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>) | argument 0 -> return | false |
 | System.Linq.Queryable.Union<TSource>(IQueryable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>) | argument 1 -> return | false |
-| System.Linq.Queryable.Where<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Where<TSource>(IQueryable<TSource>, Expression<Func<TSource, bool>>) | argument 0 -> return | false |
-| System.Linq.Queryable.Where<TSource>(IQueryable<TSource>, Expression<Func<TSource, int, bool>>) | argument 0 -> parameter 0 of argument 1 | false |
-| System.Linq.Queryable.Where<TSource>(IQueryable<TSource>, Expression<Func<TSource, int, bool>>) | argument 0 -> return | false |
-| System.Linq.Queryable.Zip<TFirst, TSecond, TResult>(IQueryable<TFirst>, IEnumerable<TSecond>, Expression<Func<TFirst, TSecond, TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
-| System.Linq.Queryable.Zip<TFirst, TSecond, TResult>(IQueryable<TFirst>, IEnumerable<TSecond>, Expression<Func<TFirst, TSecond, TResult>>) | argument 1 -> parameter 1 of argument 2 | false |
-| System.Linq.Queryable.Zip<TFirst, TSecond, TResult>(IQueryable<TFirst>, IEnumerable<TSecond>, Expression<Func<TFirst, TSecond, TResult>>) | output from argument 2 -> return | false |
+| System.Linq.Queryable.Where<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Where<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> return | false |
+| System.Linq.Queryable.Where<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.Where<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32,Boolean>>) | argument 0 -> return | false |
+| System.Linq.Queryable.Zip<TFirst, TSecond, TResult>(IQueryable<TFirst>, IEnumerable<TSecond>, Expression<Func<TFirst,TSecond,TResult>>) | argument 0 -> parameter 0 of argument 2 | false |
+| System.Linq.Queryable.Zip<TFirst, TSecond, TResult>(IQueryable<TFirst>, IEnumerable<TSecond>, Expression<Func<TFirst,TSecond,TResult>>) | argument 1 -> parameter 1 of argument 2 | false |
+| System.Linq.Queryable.Zip<TFirst, TSecond, TResult>(IQueryable<TFirst>, IEnumerable<TSecond>, Expression<Func<TFirst,TSecond,TResult>>) | output from argument 2 -> return | false |
 | System.Net.Cookie.get_Value() | qualifier -> return | false |
 | System.Net.CookieCollection.Add(Cookie) | argument 0 -> qualifier | false |
 | System.Net.CookieCollection.Add(CookieCollection) | argument 0 -> qualifier | false |
@@ -1300,16 +1301,16 @@
 | System.Net.HttpListenerPrefixCollection.GetEnumerator() | qualifier -> return | false |
 | System.Net.NetworkInformation.IPAddressCollection.Add(IPAddress) | argument 0 -> qualifier | false |
 | System.Net.NetworkInformation.IPAddressCollection.GetEnumerator() | qualifier -> return | false |
-| System.Net.Security.NegotiateStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.Net.Security.NegotiateStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
-| System.Net.Security.NegotiateStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.Net.Security.NegotiateStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.Net.Security.SslStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.Net.Security.SslStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
-| System.Net.Security.SslStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.Net.Security.SslStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.Net.Security.SslStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.Net.Security.SslStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.Net.Security.NegotiateStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.Net.Security.NegotiateStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.Net.Security.NegotiateStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.Net.Security.NegotiateStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.Net.Security.SslStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.Net.Security.SslStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.Net.Security.SslStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.Net.Security.SslStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.Net.Security.SslStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.Net.Security.SslStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.Net.WebUtility.HtmlEncode(string) | argument 0 -> return | false |
 | System.Net.WebUtility.HtmlEncode(string, TextWriter) | argument 0 -> return | false |
 | System.Net.WebUtility.UrlEncode(string) | argument 0 -> return | false |
@@ -1326,15 +1327,25 @@
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Insert(int, object) | argument 1 -> qualifier | false |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Reverse() | qualifier -> return | false |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Reverse(int, int) | qualifier -> return | false |
-| System.Security.Cryptography.CryptoStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
-| System.Security.Cryptography.CryptoStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
-| System.Security.Cryptography.CryptoStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
-| System.Security.Cryptography.CryptoStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
-| System.Security.Cryptography.CryptoStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
-| System.Security.Cryptography.CryptoStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.Security.Cryptography.CryptoStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
+| System.Security.Cryptography.CryptoStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.Security.Cryptography.CryptoStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
+| System.Security.Cryptography.CryptoStream.ReadAsync(Byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
+| System.Security.Cryptography.CryptoStream.Write(Byte[], int, int) | argument 0 -> qualifier | false |
+| System.Security.Cryptography.CryptoStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
+| System.Security.PermissionSet.GetEnumerator() | qualifier -> return | false |
 | System.String.Clone() | qualifier -> return | false |
 | System.String.Clone() | qualifier -> return | true |
-| System.String.Concat(IEnumerable<string>) | argument 0 -> return | false |
+| System.String.Concat(IEnumerable<String>) | argument 0 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 0 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 1 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 0 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 1 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 2 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 0 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 1 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 2 -> return | false |
+| System.String.Concat(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>) | argument 3 -> return | false |
 | System.String.Concat(object) | argument 0 -> return | false |
 | System.String.Concat(object, object) | argument 0 -> return | false |
 | System.String.Concat(object, object) | argument 1 -> return | false |
@@ -1373,16 +1384,16 @@
 | System.String.GetEnumerator() | qualifier -> return | false |
 | System.String.Insert(int, string) | argument 1 -> return | false |
 | System.String.Insert(int, string) | qualifier -> return | false |
-| System.String.Join(string, IEnumerable<string>) | argument 0 -> return | false |
-| System.String.Join(string, IEnumerable<string>) | argument 1 -> return | false |
-| System.String.Join(string, params string[]) | argument 0 -> return | false |
-| System.String.Join(string, params string[]) | argument 1 -> return | false |
-| System.String.Join(string, params string[]) | argument 2 -> return | false |
-| System.String.Join(string, params string[]) | argument 3 -> return | false |
-| System.String.Join(string, string[], int, int) | argument 0 -> return | false |
-| System.String.Join(string, string[], int, int) | argument 1 -> return | false |
-| System.String.Join(string, string[], int, int) | argument 2 -> return | false |
-| System.String.Join(string, string[], int, int) | argument 3 -> return | false |
+| System.String.Join(string, IEnumerable<String>) | argument 0 -> return | false |
+| System.String.Join(string, IEnumerable<String>) | argument 1 -> return | false |
+| System.String.Join(string, String[], int, int) | argument 0 -> return | false |
+| System.String.Join(string, String[], int, int) | argument 1 -> return | false |
+| System.String.Join(string, String[], int, int) | argument 2 -> return | false |
+| System.String.Join(string, String[], int, int) | argument 3 -> return | false |
+| System.String.Join(string, params String[]) | argument 0 -> return | false |
+| System.String.Join(string, params String[]) | argument 1 -> return | false |
+| System.String.Join(string, params String[]) | argument 2 -> return | false |
+| System.String.Join(string, params String[]) | argument 3 -> return | false |
 | System.String.Join<T>(string, IEnumerable<T>) | argument 0 -> return | false |
 | System.String.Join<T>(string, IEnumerable<T>) | argument 1 -> return | false |
 | System.String.Normalize() | qualifier -> return | false |
@@ -1397,18 +1408,18 @@
 | System.String.Replace(char, char) | qualifier -> return | false |
 | System.String.Replace(string, string) | argument 1 -> return | false |
 | System.String.Replace(string, string) | qualifier -> return | false |
+| System.String.Split(Char[], StringSplitOptions) | qualifier -> return | false |
+| System.String.Split(Char[], int) | qualifier -> return | false |
+| System.String.Split(Char[], int, StringSplitOptions) | qualifier -> return | false |
+| System.String.Split(String[], StringSplitOptions) | qualifier -> return | false |
+| System.String.Split(String[], int, StringSplitOptions) | qualifier -> return | false |
 | System.String.Split(char, StringSplitOptions) | qualifier -> return | false |
 | System.String.Split(char, int, StringSplitOptions) | qualifier -> return | false |
-| System.String.Split(char[], StringSplitOptions) | qualifier -> return | false |
-| System.String.Split(char[], int) | qualifier -> return | false |
-| System.String.Split(char[], int, StringSplitOptions) | qualifier -> return | false |
-| System.String.Split(params char[]) | qualifier -> return | false |
+| System.String.Split(params Char[]) | qualifier -> return | false |
 | System.String.Split(string, StringSplitOptions) | qualifier -> return | false |
 | System.String.Split(string, int, StringSplitOptions) | qualifier -> return | false |
-| System.String.Split(string[], StringSplitOptions) | qualifier -> return | false |
-| System.String.Split(string[], int, StringSplitOptions) | qualifier -> return | false |
-| System.String.String(char[]) | argument 0 -> return | false |
-| System.String.String(char[], int, int) | argument 0 -> return | false |
+| System.String.String(Char[]) | argument 0 -> return | false |
+| System.String.String(Char[], int, int) | argument 0 -> return | false |
 | System.String.Substring(int) | qualifier -> return | false |
 | System.String.Substring(int, int) | qualifier -> return | false |
 | System.String.ToLower() | qualifier -> return | false |
@@ -1420,30 +1431,30 @@
 | System.String.ToUpperInvariant() | qualifier -> return | false |
 | System.String.Trim() | qualifier -> return | false |
 | System.String.Trim(char) | qualifier -> return | false |
-| System.String.Trim(params char[]) | qualifier -> return | false |
+| System.String.Trim(params Char[]) | qualifier -> return | false |
 | System.String.TrimEnd() | qualifier -> return | false |
 | System.String.TrimEnd(char) | qualifier -> return | false |
-| System.String.TrimEnd(params char[]) | qualifier -> return | false |
+| System.String.TrimEnd(params Char[]) | qualifier -> return | false |
 | System.String.TrimStart() | qualifier -> return | false |
 | System.String.TrimStart(char) | qualifier -> return | false |
-| System.String.TrimStart(params char[]) | qualifier -> return | false |
-| System.Text.Encoding.GetBytes(ReadOnlySpan<char>, Span<byte>) | argument 0 -> return | false |
+| System.String.TrimStart(params Char[]) | qualifier -> return | false |
+| System.Text.Encoding.GetBytes(Char[]) | argument 0 -> return | false |
+| System.Text.Encoding.GetBytes(Char[], int, int) | argument 0 -> return | false |
+| System.Text.Encoding.GetBytes(Char[], int, int, Byte[], int) | argument 0 -> return | false |
+| System.Text.Encoding.GetBytes(ReadOnlySpan<Char>, Span<Byte>) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(char*, int, byte*, int) | argument 0 -> return | false |
-| System.Text.Encoding.GetBytes(char[]) | argument 0 -> return | false |
-| System.Text.Encoding.GetBytes(char[], int, int) | argument 0 -> return | false |
-| System.Text.Encoding.GetBytes(char[], int, int, byte[], int) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(string) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(string, int, int) | argument 0 -> return | false |
-| System.Text.Encoding.GetBytes(string, int, int, byte[], int) | argument 0 -> return | false |
-| System.Text.Encoding.GetChars(ReadOnlySpan<byte>, Span<char>) | argument 0 -> return | false |
+| System.Text.Encoding.GetBytes(string, int, int, Byte[], int) | argument 0 -> return | false |
+| System.Text.Encoding.GetChars(Byte[]) | argument 0 -> return | false |
+| System.Text.Encoding.GetChars(Byte[], int, int) | argument 0 -> return | false |
+| System.Text.Encoding.GetChars(Byte[], int, int, Char[], int) | argument 0 -> return | false |
+| System.Text.Encoding.GetChars(ReadOnlySpan<Byte>, Span<Char>) | argument 0 -> return | false |
 | System.Text.Encoding.GetChars(byte*, int, char*, int) | argument 0 -> return | false |
-| System.Text.Encoding.GetChars(byte[]) | argument 0 -> return | false |
-| System.Text.Encoding.GetChars(byte[], int, int) | argument 0 -> return | false |
-| System.Text.Encoding.GetChars(byte[], int, int, char[], int) | argument 0 -> return | false |
-| System.Text.Encoding.GetString(ReadOnlySpan<byte>) | argument 0 -> return | false |
+| System.Text.Encoding.GetString(Byte[]) | argument 0 -> return | false |
+| System.Text.Encoding.GetString(Byte[], int, int) | argument 0 -> return | false |
+| System.Text.Encoding.GetString(ReadOnlySpan<Byte>) | argument 0 -> return | false |
 | System.Text.Encoding.GetString(byte*, int) | argument 0 -> return | false |
-| System.Text.Encoding.GetString(byte[]) | argument 0 -> return | false |
-| System.Text.Encoding.GetString(byte[], int, int) | argument 0 -> return | false |
 | System.Text.RegularExpressions.CaptureCollection.Add(Capture) | argument 0 -> qualifier | false |
 | System.Text.RegularExpressions.CaptureCollection.Add(object) | argument 0 -> qualifier | false |
 | System.Text.RegularExpressions.CaptureCollection.GetEnumerator() | qualifier -> return | false |
@@ -1454,6 +1465,7 @@
 | System.Text.RegularExpressions.GroupCollection.GetEnumerator() | qualifier -> return | false |
 | System.Text.RegularExpressions.GroupCollection.Insert(int, Group) | argument 1 -> qualifier | false |
 | System.Text.RegularExpressions.GroupCollection.Insert(int, object) | argument 1 -> qualifier | false |
+| System.Text.RegularExpressions.GroupCollection.get_Values() | qualifier -> return | false |
 | System.Text.RegularExpressions.MatchCollection.Add(Match) | argument 0 -> qualifier | false |
 | System.Text.RegularExpressions.MatchCollection.Add(object) | argument 0 -> qualifier | false |
 | System.Text.RegularExpressions.MatchCollection.GetEnumerator() | qualifier -> return | false |
@@ -1485,106 +1497,86 @@
 | System.Text.StringBuilder.StringBuilder(string, int) | argument 0 -> return | false |
 | System.Text.StringBuilder.StringBuilder(string, int, int, int) | argument 0 -> return | false |
 | System.Text.StringBuilder.ToString() | qualifier -> return | false |
-| System.Threading.Tasks.Task.ContinueWith(Action<Task, object>, object) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith(Action<Task, object>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith(Action<Task, object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith(Action<Task, object>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith(Action<Task, object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskContinuationOptions) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskContinuationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object, TaskContinuationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, object, TResult>, object, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.FromResult<TResult>(TResult) | argument 0 -> return | true |
 | System.Threading.Tasks.Task.Run<TResult>(Func<TResult>) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.Run<TResult>(Func<TResult>, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.Run<TResult>(Func<Task<TResult>>) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.Run<TResult>(Func<Task<TResult>>, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.Task(Action<object>, object) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task.Task(Action<object>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task.Task(Action<object>, object, CancellationToken, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task.Task(Action<object>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task.Task(Action<Object>, object) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task.Task(Action<Object>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task.Task(Action<Object>, object, CancellationToken, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task.Task(Action<Object>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task.WhenAll<TResult>(IEnumerable<Task<TResult>>) | argument 0 -> return | true |
 | System.Threading.Tasks.Task.WhenAll<TResult>(params Task<TResult>[]) | argument 0 -> return | true |
 | System.Threading.Tasks.Task.WhenAll<TResult>(params Task<TResult>[]) | argument 1 -> return | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(IEnumerable<Task<TResult>>) | argument 0 -> return | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(params Task<TResult>[]) | argument 0 -> return | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(params Task<TResult>[]) | argument 1 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, object>, object, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>>) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>>, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>>, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>>, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>>, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, CancellationToken) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, TaskContinuationOptions) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, TaskContinuationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, TaskContinuationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, object, TNewResult>, object, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.Task(Func<TResult>) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.Task(Func<TResult>, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.Task(Func<TResult>, CancellationToken, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.Task(Func<TResult>, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.Task(Func<object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.Task(Func<object, TResult>, object) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.Task(Func<object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.Task(Func<object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.Task(Func<object, TResult>, object, CancellationToken, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.Task(Func<object, TResult>, object, CancellationToken, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.Task(Func<object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.Task(Func<object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.get_Result() | qualifier -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, CancellationToken) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task<TAntecedentResult>[]>) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task<TAntecedentResult>[]>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task<TAntecedentResult>[]>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task<TAntecedentResult>[]>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task>) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>, CancellationToken) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
@@ -1605,34 +1597,34 @@
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, CancellationToken) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew(Action<object>, object) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew(Action<object>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew(Action<object>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew(Action<object>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew(Action<Object>, object) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew(Action<Object>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew(Action<Object>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew(Action<Object>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object) | output from argument 0 -> return | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<object, TResult>, object) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, CancellationToken) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, CancellationToken) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>[], TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>, CancellationToken) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
@@ -1645,18 +1637,18 @@
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object) | output from argument 0 -> return | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<object, TResult>, object) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Uri.ToString() | qualifier -> return | false |
 | System.Uri.Uri(string) | argument 0 -> return | false |
 | System.Uri.Uri(string, UriKind) | argument 0 -> return | false |

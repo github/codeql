@@ -14,47 +14,51 @@ import javascript
  * Holds if the receiver of `method` is bound.
  */
 private predicate isBoundInMethod(MethodDeclaration method) {
-  exists(DataFlow::ThisNode thiz, MethodDeclaration bindingMethod |
+  exists(DataFlow::ThisNode thiz, MethodDeclaration bindingMethod, string name |
     bindingMethod.getDeclaringClass() = method.getDeclaringClass() and
     not bindingMethod.isStatic() and
-    thiz.getBinder().getAstNode() = bindingMethod.getBody()
+    thiz.getBinder().getAstNode() = bindingMethod.getBody() and
+    name = method.getName()
   |
+    // binding assignments: `this[x] = <expr>.bind(...)`
     exists(DataFlow::MethodCallNode bind, DataFlow::PropWrite w |
-      // this[x] = <expr>.bind(...)
+      not exists(w.getPropertyName()) or // unknown name, assume everything is bound
+      w.getPropertyName() = name
+    |
       w = thiz.getAPropertyWrite() and
-      not exists(w.getPropertyName()) and
       bind.getMethodName() = "bind" and
       bind.flowsTo(w.getRhs())
     )
     or
-    // require("auto-bind")(this)
+    // library binders
     exists(string mod |
       mod = "auto-bind" or
       mod = "react-autobind"
     |
       thiz.flowsTo(DataFlow::moduleImport(mod).getACall().getArgument(0))
-    )
-    or
-    exists(string name | name = method.getName() |
-      exists(DataFlow::MethodCallNode bind |
-        // this.<methodName> = <expr>.bind(...)
-        bind = thiz.getAPropertySource(name) and
-        bind.getMethodName() = "bind"
+    ) or
+    // heuristic reflective binders
+    exists(DataFlow::CallNode binder, string calleeName |
+      (
+        binder.(DataFlow::MethodCallNode).getMethodName() = calleeName or
+        binder.getCalleeNode().asExpr().(VarAccess).getVariable().getName() = calleeName
+      ) and
+      calleeName.regexpMatch("(?i).*bind.*") and
+      thiz.flowsTo(binder.getAnArgument()) and
+      // exclude the binding assignments
+      not thiz.getAPropertySource() = binder
+    |
+      // `myBindAll(this)`
+      binder.getNumArgument() = 1
+      or
+      // `myBindSome(this, [<name1>, <name2>])`
+      exists(DataFlow::ArrayCreationNode names |
+        names.flowsTo(binder.getAnArgument()) and
+        names.getAnElement().mayHaveStringValue(name)
       )
       or
-      exists(DataFlow::MethodCallNode bindAll |
-        bindAll.getMethodName() = "bindAll" and
-        thiz.flowsTo(bindAll.getArgument(0))
-      |
-        // _.bindAll(this, <name1>)
-        bindAll.getArgument(1).mayHaveStringValue(name)
-        or
-        // _.bindAll(this, [<name1>, <name2>])
-        exists(DataFlow::ArrayCreationNode names |
-          names.flowsTo(bindAll.getArgument(1)) and
-          names.getAnElement().mayHaveStringValue(name)
-        )
-      )
+      // `myBindSome(this, <name1>, <name2>)`
+      binder.getAnArgument().mayHaveStringValue(name)
     )
   )
   or
@@ -66,10 +70,10 @@ private predicate isBoundInMethod(MethodDeclaration method) {
     ) and
     name.regexpMatch("(?i).*(bind|bound).*")
   |
-    // @autobind
+    // `@autobind`
     decoration.(Identifier).getName() = name
     or
-    // @action.bound
+    // `@action.bound`
     decoration.(PropAccess).getPropertyName() = name
   )
 }

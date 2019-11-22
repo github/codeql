@@ -245,7 +245,7 @@ Compiler pragmas
 
 **Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
-The following compiler pragmas affect the compilation and optimization of QL queries. You
+The following compiler pragmas affect the compilation and optimization of queries. You
 should avoid using these annotations unless you experience significant performance issues.
 
 Before adding pragmas to your code, contact Semmle to describe the performance problems.

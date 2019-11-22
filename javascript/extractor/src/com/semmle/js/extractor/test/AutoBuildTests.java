@@ -160,7 +160,7 @@ public class AutoBuildTests {
     addFile(false, LGTM_SRC, "tst.json");
     addFile(true, LGTM_SRC, "package.json");
     addFile(true, LGTM_SRC, ".eslintrc.yml");
-    addFile(true, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(true, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
@@ -184,72 +184,72 @@ public class AutoBuildTests {
   public void includeFile() throws IOException {
     envVars.put("LGTM_INDEX_INCLUDE", "tst.js");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
   @Test
   public void excludeFile() throws IOException {
-    envVars.put("LGTM_INDEX_EXCLUDE", "node_modules/leftpad/index.js");
+    envVars.put("LGTM_INDEX_EXCLUDE", "vendor/leftpad/index.js");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
   @Test
   public void excludeFolderByPattern() throws IOException {
-    envVars.put("LGTM_INDEX_FILTERS", "exclude:**/node_modules");
+    envVars.put("LGTM_INDEX_FILTERS", "exclude:**/vendor");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
   @Test
   public void excludeFolderByPattern2() throws IOException {
-    envVars.put("LGTM_INDEX_FILTERS", "exclude:*/**/node_modules");
+    envVars.put("LGTM_INDEX_FILTERS", "exclude:*/**/vendor");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(true, LGTM_SRC, "node_modules", "dep", "index.js");
-    addFile(false, LGTM_SRC, "node_modules", "dep", "node_modules", "depdep", "index.js");
+    addFile(true, LGTM_SRC, "vendor", "dep", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "dep", "vendor", "depdep", "index.js");
     runTest();
   }
 
   @Test
   public void excludeFolderByPattern3() throws IOException {
-    envVars.put("LGTM_INDEX_FILTERS", "exclude:**/node_modules\n");
+    envVars.put("LGTM_INDEX_FILTERS", "exclude:**/vendor\n");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
   @Test
   public void excludeFolderByPatterns() throws IOException {
-    envVars.put("LGTM_INDEX_FILTERS", "exclude:foo\nexclude:**/node_modules");
+    envVars.put("LGTM_INDEX_FILTERS", "exclude:foo\nexclude:**/vendor");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
   @Test
   public void excludeFolderByName() throws IOException {
-    envVars.put("LGTM_INDEX_EXCLUDE", "node_modules");
+    envVars.put("LGTM_INDEX_EXCLUDE", "vendor");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
   @Test
   public void excludeFolderByName2() throws IOException {
-    envVars.put("LGTM_INDEX_EXCLUDE", "node_modules\n");
+    envVars.put("LGTM_INDEX_EXCLUDE", "vendor\n");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
   @Test
   public void excludeFolderByName3() throws IOException {
-    envVars.put("LGTM_INDEX_EXCLUDE", "./node_modules\n");
+    envVars.put("LGTM_INDEX_EXCLUDE", "./vendor\n");
     addFile(true, LGTM_SRC, "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
@@ -258,8 +258,8 @@ public class AutoBuildTests {
     envVars.put("LGTM_INDEX_FILTERS", "exclude:**/*.js");
     addFile(false, LGTM_SRC, "tst.js");
     addFile(true, LGTM_SRC, "tst.html");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
-    addFile(true, LGTM_SRC, "node_modules", "leftpad", "index.html");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
+    addFile(true, LGTM_SRC, "vendor", "leftpad", "index.html");
     runTest();
   }
 
@@ -268,7 +268,7 @@ public class AutoBuildTests {
     envVars.put("LGTM_INDEX_FILTERS", "include:**/*.json");
     addFile(true, LGTM_SRC, "tst.js");
     addFile(true, LGTM_SRC, "tst.json");
-    addFile(true, LGTM_SRC, "node_modules", "leftpad", "tst.json");
+    addFile(true, LGTM_SRC, "vendor", "leftpad", "tst.json");
     runTest();
   }
 
@@ -277,16 +277,16 @@ public class AutoBuildTests {
     envVars.put("LGTM_INDEX_FILTERS", "include:*.json");
     addFile(true, LGTM_SRC, "tst.js");
     addFile(true, LGTM_SRC, "tst.json");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "tst.json");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "tst.json");
     runTest();
   }
 
   @Test
   public void includeAndExclude() throws IOException {
-    envVars.put("LGTM_INDEX_FILTERS", "include:**/*.json\n" + "exclude:**/node_modules");
+    envVars.put("LGTM_INDEX_FILTERS", "include:**/*.json\n" + "exclude:**/vendor");
     addFile(true, LGTM_SRC, "tst.js");
     addFile(true, LGTM_SRC, "tst.json");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "tst.json");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "tst.json");
     runTest();
   }
 
@@ -295,7 +295,7 @@ public class AutoBuildTests {
     Path repositoryFolders = Files.createFile(SEMMLE_DIST.resolve("repositoryFolders.csv"));
     List<String> csvLines = new ArrayList<>();
     csvLines.add("classification,path");
-    csvLines.add("thirdparty," + LGTM_SRC.resolve("node_modules"));
+    csvLines.add("thirdparty," + LGTM_SRC.resolve("vendor"));
     csvLines.add("external," + LGTM_SRC.resolve("foo").resolve("bar").toUri());
     csvLines.add("metadata," + LGTM_SRC.resolve(".git"));
     Files.write(repositoryFolders, csvLines, StandardCharsets.UTF_8);
@@ -303,7 +303,7 @@ public class AutoBuildTests {
     addFile(true, LGTM_SRC, "tst.js");
     addFile(false, LGTM_SRC, "foo", "bar", "tst.js");
     addFile(false, LGTM_SRC, ".git", "tst.js");
-    addFile(true, LGTM_SRC, "node_modules", "leftpad", "tst.js");
+    addFile(true, LGTM_SRC, "vendor", "leftpad", "tst.js");
     runTest();
   }
 
@@ -324,7 +324,7 @@ public class AutoBuildTests {
     Path repositoryFolders = Files.createFile(SEMMLE_DIST.resolve("repositoryFolders.csv"));
     List<String> csvLines = new ArrayList<>();
     csvLines.add("classification,path");
-    csvLines.add("thirdparty," + LGTM_SRC.resolve("node_modules"));
+    csvLines.add("thirdparty," + LGTM_SRC.resolve("vendor"));
     csvLines.add("external," + LGTM_SRC.resolve("foo").resolve("bar"));
     csvLines.add("metadata," + LGTM_SRC.resolve(".git"));
     Files.write(repositoryFolders, csvLines, StandardCharsets.UTF_8);
@@ -333,7 +333,7 @@ public class AutoBuildTests {
     addFile(true, LGTM_SRC, "tst.js");
     addFile(true, LGTM_SRC, "foo", "bar", "tst.js");
     addFile(false, LGTM_SRC, ".git", "tst.js");
-    addFile(true, LGTM_SRC, "node_modules", "leftpad", "tst.js");
+    addFile(true, LGTM_SRC, "vendor", "leftpad", "tst.js");
     runTest();
   }
 
@@ -453,13 +453,13 @@ public class AutoBuildTests {
   @Test
   public void includeNonExistentFile() throws IOException {
     envVars.put("LGTM_INDEX_INCLUDE", "tst.js");
-    addFile(false, LGTM_SRC, "node_modules", "leftpad", "index.js");
+    addFile(false, LGTM_SRC, "vendor", "leftpad", "index.js");
     runTest();
   }
 
   @Test
   public void excludeNonExistentFile() throws IOException {
-    envVars.put("LGTM_INDEX_EXCLUDE", "node_modules/leftpad/index.js");
+    envVars.put("LGTM_INDEX_EXCLUDE", "vendor/leftpad/index.js");
     addFile(true, LGTM_SRC, "tst.js");
     runTest();
   }
@@ -480,6 +480,40 @@ public class AutoBuildTests {
     addFile(true, LGTM_SRC, "jquery.min.js");
     addFile(true, LGTM_SRC, "lib", "lodash-min.js");
     addFile(true, LGTM_SRC, "compute_min.js");
+    runTest();
+  }
+
+  @Test
+  public void nodeModulesAreExcluded() throws IOException {
+    addFile(true, LGTM_SRC, "index.js");
+    addFile(false, LGTM_SRC, "node_modules", "dep", "main.js");
+    addFile(false, LGTM_SRC, "node_modules", "dep", "node_modules", "leftpad", "index.js");
+    runTest();
+  }
+
+  @Test
+  public void nodeModulesCanBeReincluded() throws IOException {
+    envVars.put("LGTM_INDEX_FILTERS", "include:**/node_modules");
+    addFile(true, LGTM_SRC, "index.js");
+    addFile(true, LGTM_SRC, "node_modules", "dep", "main.js");
+    addFile(true, LGTM_SRC, "node_modules", "dep", "node_modules", "leftpad", "index.js");
+    runTest();
+  }
+
+  @Test
+  public void bowerComponentsAreExcluded() throws IOException {
+    addFile(true, LGTM_SRC, "index.js");
+    addFile(false, LGTM_SRC, "bower_components", "dep", "main.js");
+    addFile(false, LGTM_SRC, "bower_components", "dep", "bower_components", "leftpad", "index.js");
+    runTest();
+  }
+
+  @Test
+  public void bowerComponentsCanBeReincluded() throws IOException {
+    envVars.put("LGTM_INDEX_FILTERS", "include:**/bower_components");
+    addFile(true, LGTM_SRC, "index.js");
+    addFile(true, LGTM_SRC, "bower_components", "dep", "main.js");
+    addFile(true, LGTM_SRC, "bower_components", "dep", "bower_components", "leftpad", "index.js");
     runTest();
   }
 
@@ -549,6 +583,14 @@ public class AutoBuildTests {
     envVars.put("LGTM_INDEX_FILETYPES", ".qhelp:xml");
     addFile(true, LGTM_SRC, "tst.xml");
     addFile(true, LGTM_SRC, "tst.qhelp");
+    runTest();
+  }
+
+  @Test
+  public void skipCodeQLDatabases() throws IOException {
+    addFile(true, LGTM_SRC, "tst.js");
+    addFile(false, LGTM_SRC, "db/codeql-database.yml");
+    addFile(false, LGTM_SRC, "db/foo.js");
     runTest();
   }
 }

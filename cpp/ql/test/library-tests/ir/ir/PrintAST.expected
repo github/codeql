@@ -67,31 +67,7 @@ bad_asts.cpp:
 #    5|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] S &&
-#    9| [MemberFunction] int Bad::S::MemberFunction(int)
-#    9|   params: 
-#    9|     0: [Parameter] y
-#    9|         Type = [IntType] int
-#    9|   body: [Block] { ... }
-#   10|     0: [ReturnStmt] return ...
-#   10|       0: [AddExpr] ... + ...
-#   10|           Type = [IntType] int
-#   10|           ValueCategory = prvalue
-#   10|         0: [AddExpr] ... + ...
-#   10|             Type = [IntType] int
-#   10|             ValueCategory = prvalue
-#   10|           0: [Literal] Unknown literal
-#   10|               Type = [IntType] int
-#   10|               ValueCategory = prvalue
-#   10|           1: [PointerFieldAccess] x
-#   10|               Type = [IntType] int
-#   10|               ValueCategory = prvalue(load)
-#-----|             -1: [ThisExpr] this
-#-----|                 Type = [PointerType] S *
-#-----|                 ValueCategory = prvalue(load)
-#   10|         1: [VariableAccess] y
-#   10|             Type = [IntType] int
-#   10|             ValueCategory = prvalue(load)
-#    9| [TopLevelFunction] int MemberFunction(int)
+#    9| [FunctionTemplateInstantiation,MemberFunction] int Bad::S::MemberFunction<int 6>(int)
 #    9|   params: 
 #    9|     0: [Parameter] y
 #    9|         Type = [IntType] int
@@ -106,6 +82,31 @@ bad_asts.cpp:
 #   10|           0: [Literal] 6
 #   10|               Type = [IntType] int
 #   10|               Value = [Literal] 6
+#   10|               ValueCategory = prvalue
+#   10|           1: [PointerFieldAccess] x
+#   10|               Type = [IntType] int
+#   10|               ValueCategory = prvalue(load)
+#-----|             -1: [ThisExpr] this
+#-----|                 Type = [PointerType] S *
+#-----|                 ValueCategory = prvalue(load)
+#   10|         1: [VariableAccess] y
+#   10|             Type = [IntType] int
+#   10|             ValueCategory = prvalue(load)
+#    9| [MemberFunction,TemplateFunction] int Bad::S::MemberFunction<int t>(int)
+#    9|   params: 
+#    9|     0: [Parameter] y
+#    9|         Type = [IntType] int
+#    9|   body: [Block] { ... }
+#   10|     0: [ReturnStmt] return ...
+#   10|       0: [AddExpr] ... + ...
+#   10|           Type = [IntType] int
+#   10|           ValueCategory = prvalue
+#   10|         0: [AddExpr] ... + ...
+#   10|             Type = [IntType] int
+#   10|             ValueCategory = prvalue
+#   10|           0: [Literal] t
+#   10|               Type = [IntType] int
+#   10|               Value = [Literal] t
 #   10|               ValueCategory = prvalue
 #   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
@@ -3731,7 +3732,7 @@ ir.cpp:
 #  572|           Type = [ArrayType] char[32]
 #  572|         init: [Initializer] initializer for a_pad
 #  572|           expr: 
-#  572|               Type = [ArrayType] const char[1]
+#  572|               Type = [ArrayType] const char[32]
 #  572|               Value = [StringLiteral] ""
 #  572|               ValueCategory = lvalue
 #  573|     1: [DeclStmt] declaration
@@ -6893,9 +6894,6 @@ ir.cpp:
 # 1029|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1029, col. 12 &&
-# 1029|   initializations: 
-# 1029|   body: [Block] { ... }
-# 1029|     0: [ReturnStmt] return ...
 # 1029| [Constructor] void (lambda [] type at line 1029, col. 12)::(constructor)()
 # 1029|   params: 
 # 1029| [MemberFunction] void (lambda [] type at line 1029, col. 12)::_FUN()
@@ -6995,24 +6993,18 @@ ir.cpp:
 # 1036|       0: [VariableDeclarationEntry] definition of lambda_val
 # 1036|           Type = [Closure,LocalClass] decltype([...](...){...})
 # 1036|         init: [Initializer] initializer for lambda_val
-# 1036|           expr: [ConstructorCall] call to (constructor)
-# 1036|               Type = [VoidType] void
+# 1036|           expr: [LambdaExpression] [...](...){...}
+# 1036|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1036|               ValueCategory = prvalue
-# 1036|             0: [ReferenceToExpr] (reference to)
-# 1036|                 Type = [LValueReferenceType] lambda [] type at line 1036, col. 21 &
+# 1036|             0: [ClassAggregateLiteral] {...}
+# 1036|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1036|                 ValueCategory = prvalue
-# 1036|               expr: [LambdaExpression] [...](...){...}
-# 1036|                   Type = [Closure,LocalClass] decltype([...](...){...})
-# 1036|                   ValueCategory = xvalue
-# 1036|                 0: [ClassAggregateLiteral] {...}
-# 1036|                     Type = [Closure,LocalClass] decltype([...](...){...})
-# 1036|                     ValueCategory = prvalue
-#-----|                   .s: [ConstructorCall] call to String
-#-----|                       Type = [VoidType] void
-#-----|                       ValueCategory = prvalue
-#-----|                   .x: [VariableAccess] x
-#-----|                       Type = [IntType] int
-#-----|                       ValueCategory = prvalue(load)
+#-----|               .s: [ConstructorCall] call to String
+#-----|                   Type = [VoidType] void
+#-----|                   ValueCategory = prvalue
+#-----|               .x: [VariableAccess] x
+#-----|                   Type = [IntType] int
+#-----|                   ValueCategory = prvalue(load)
 # 1037|     5: [ExprStmt] ExprStmt
 # 1037|       0: [FunctionCall] call to operator()
 # 1037|           Type = [PlainCharType] char
@@ -7076,21 +7068,15 @@ ir.cpp:
 # 1040|       0: [VariableDeclarationEntry] definition of lambda_val_explicit
 # 1040|           Type = [Closure,LocalClass] decltype([...](...){...})
 # 1040|         init: [Initializer] initializer for lambda_val_explicit
-# 1040|           expr: [ConstructorCall] call to (constructor)
-# 1040|               Type = [VoidType] void
+# 1040|           expr: [LambdaExpression] [...](...){...}
+# 1040|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1040|               ValueCategory = prvalue
-# 1040|             0: [ReferenceToExpr] (reference to)
-# 1040|                 Type = [LValueReferenceType] lambda [] type at line 1040, col. 30 &
+# 1040|             0: [ClassAggregateLiteral] {...}
+# 1040|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1040|                 ValueCategory = prvalue
-# 1040|               expr: [LambdaExpression] [...](...){...}
-# 1040|                   Type = [Closure,LocalClass] decltype([...](...){...})
-# 1040|                   ValueCategory = xvalue
-# 1040|                 0: [ClassAggregateLiteral] {...}
-# 1040|                     Type = [Closure,LocalClass] decltype([...](...){...})
-# 1040|                     ValueCategory = prvalue
-#-----|                   .s: [ConstructorCall] call to String
-#-----|                       Type = [VoidType] void
-#-----|                       ValueCategory = prvalue
+#-----|               .s: [ConstructorCall] call to String
+#-----|                   Type = [VoidType] void
+#-----|                   ValueCategory = prvalue
 # 1041|     9: [ExprStmt] ExprStmt
 # 1041|       0: [FunctionCall] call to operator()
 # 1041|           Type = [PlainCharType] char
@@ -7238,9 +7224,6 @@ ir.cpp:
 # 1032|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1032, col. 23 &&
-# 1032|   initializations: 
-# 1032|   body: [Block] { ... }
-# 1032|     0: [ReturnStmt] return ...
 # 1032| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)::(constructor)()
 # 1032|   params: 
 # 1032| [MemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)::_FUN(float)
@@ -7276,21 +7259,6 @@ ir.cpp:
 # 1034|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1034, col. 21 &&
-# 1034|   initializations: 
-# 1034|     0: [ConstructorFieldInit] constructor init of field s
-# 1034|         Type = [LValueReferenceType] const String &
-# 1034|         ValueCategory = prvalue
-# 1034|       0: [Literal] Unknown literal
-# 1034|           Type = [LValueReferenceType] const String &
-# 1034|           ValueCategory = prvalue
-# 1034|     1: [ConstructorFieldInit] constructor init of field x
-# 1034|         Type = [LValueReferenceType] int &
-# 1034|         ValueCategory = prvalue
-# 1034|       0: [Literal] Unknown literal
-# 1034|           Type = [LValueReferenceType] int &
-# 1034|           ValueCategory = prvalue
-# 1034|   body: [Block] { ... }
-# 1034|     0: [ReturnStmt] return ...
 # 1034| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::(constructor)()
 # 1034|   params: 
 # 1034| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::operator()(float) const
@@ -7335,21 +7303,6 @@ ir.cpp:
 # 1036|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1036, col. 21 &&
-# 1036|   initializations: 
-# 1036|     0: [ConstructorFieldInit] constructor init of field s
-# 1036|         Type = [SpecifiedType] const String
-# 1036|         ValueCategory = prvalue
-# 1036|       0: [ConstructorCall] call to String
-# 1036|           Type = [VoidType] void
-# 1036|           ValueCategory = prvalue
-# 1036|     1: [ConstructorFieldInit] constructor init of field x
-# 1036|         Type = [IntType] int
-# 1036|         ValueCategory = prvalue
-# 1036|       0: [Literal] Unknown literal
-# 1036|           Type = [IntType] int
-# 1036|           ValueCategory = prvalue
-# 1036|   body: [Block] { ... }
-# 1036|     0: [ReturnStmt] return ...
 # 1036| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::(constructor)()
 # 1036|   params: 
 # 1036| [Destructor] void (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::~<unnamed>()
@@ -7402,15 +7355,6 @@ ir.cpp:
 # 1038|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1038, col. 30 &&
-# 1038|   initializations: 
-# 1038|     0: [ConstructorFieldInit] constructor init of field s
-# 1038|         Type = [LValueReferenceType] const String &
-# 1038|         ValueCategory = prvalue
-# 1038|       0: [Literal] Unknown literal
-# 1038|           Type = [LValueReferenceType] const String &
-# 1038|           ValueCategory = prvalue
-# 1038|   body: [Block] { ... }
-# 1038|     0: [ReturnStmt] return ...
 # 1038| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::(constructor)()
 # 1038|   params: 
 # 1038| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::operator()(float) const
@@ -7450,15 +7394,6 @@ ir.cpp:
 # 1040|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1040, col. 30 &&
-# 1040|   initializations: 
-# 1040|     0: [ConstructorFieldInit] constructor init of field s
-# 1040|         Type = [SpecifiedType] const String
-# 1040|         ValueCategory = prvalue
-# 1040|       0: [ConstructorCall] call to String
-# 1040|           Type = [VoidType] void
-# 1040|           ValueCategory = prvalue
-# 1040|   body: [Block] { ... }
-# 1040|     0: [ReturnStmt] return ...
 # 1040| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::(constructor)()
 # 1040|   params: 
 # 1040| [Destructor] void (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::~<unnamed>()
@@ -7509,21 +7444,6 @@ ir.cpp:
 # 1042|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1042, col. 32 &&
-# 1042|   initializations: 
-# 1042|     0: [ConstructorFieldInit] constructor init of field s
-# 1042|         Type = [LValueReferenceType] const String &
-# 1042|         ValueCategory = prvalue
-# 1042|       0: [Literal] Unknown literal
-# 1042|           Type = [LValueReferenceType] const String &
-# 1042|           ValueCategory = prvalue
-# 1042|     1: [ConstructorFieldInit] constructor init of field x
-# 1042|         Type = [IntType] int
-# 1042|         ValueCategory = prvalue
-# 1042|       0: [Literal] Unknown literal
-# 1042|           Type = [IntType] int
-# 1042|           ValueCategory = prvalue
-# 1042|   body: [Block] { ... }
-# 1042|     0: [ReturnStmt] return ...
 # 1042| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::(constructor)()
 # 1042|   params: 
 # 1042| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::operator()(float) const
@@ -7565,33 +7485,6 @@ ir.cpp:
 # 1045|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1045, col. 23 &&
-# 1045|   initializations: 
-# 1045|     0: [ConstructorFieldInit] constructor init of field s
-# 1045|         Type = [LValueReferenceType] const String &
-# 1045|         ValueCategory = prvalue
-# 1045|       0: [Literal] Unknown literal
-# 1045|           Type = [LValueReferenceType] const String &
-# 1045|           ValueCategory = prvalue
-# 1045|     1: [ConstructorFieldInit] constructor init of field x
-# 1045|         Type = [IntType] int
-# 1045|         ValueCategory = prvalue
-# 1045|       0: [Literal] Unknown literal
-# 1045|           Type = [IntType] int
-# 1045|           ValueCategory = prvalue
-# 1045|     2: [ConstructorFieldInit] constructor init of field i
-# 1045|         Type = [IntType] int
-# 1045|         ValueCategory = prvalue
-# 1045|       0: [Literal] Unknown literal
-# 1045|           Type = [IntType] int
-# 1045|           ValueCategory = prvalue
-# 1045|     3: [ConstructorFieldInit] constructor init of field j
-# 1045|         Type = [LValueReferenceType] int &
-# 1045|         ValueCategory = prvalue
-# 1045|       0: [Literal] Unknown literal
-# 1045|           Type = [LValueReferenceType] int &
-# 1045|           ValueCategory = prvalue
-# 1045|   body: [Block] { ... }
-# 1045|     0: [ReturnStmt] return ...
 # 1045| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::(constructor)()
 # 1045|   params: 
 # 1045| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::operator()(float) const

@@ -4,13 +4,13 @@ Analyzing data flow in JavaScript and TypeScript
 Overview
 --------
 
-This topic describes how data flow analysis is implemented in the QL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the QL libraries for local data flow, global data flow, and taint tracking.
+This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
+The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
 
 As our running example, we will develop a query that identifies command-line arguments that are passed as a file path to the standard Node.js ``readFile`` function.
 While this is not a problematic pattern as such, it is typical of the kind of reasoning that is frequently used in security queries.
 
-For a more general introduction to modeling data flow in QL, see :doc:`Introduction to data flow analysis in QL <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
 
 Data flow nodes
 ---------------
@@ -174,7 +174,7 @@ There are two points worth making about the source node API:
   2. Strings are not source nodes and cannot be tracked using this API. You can, however, use the ``mayHaveStringValue`` predicate on class ``DataFlow::Node``
      to reason about the possible string values flowing into a data flow node.
 
-For a full description of the ``DataFlow::SourceNode`` API, see the `QL JavaScript standard library <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/type.Sources$SourceNode.html>`__.
+For a full description of the ``DataFlow::SourceNode`` API, see the `JavaScript standard library <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/type.Sources$SourceNode.html>`__.
 
 Exercises
 ~~~~~~~~~

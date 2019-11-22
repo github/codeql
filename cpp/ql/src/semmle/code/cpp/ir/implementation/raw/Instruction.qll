@@ -50,7 +50,8 @@ module InstructionSanity {
         (
           opcode instanceof ReadSideEffectOpcode or
           opcode instanceof Opcode::InlineAsm or
-          opcode instanceof Opcode::CallSideEffect
+          opcode instanceof Opcode::CallSideEffect or
+          opcode instanceof Opcode::AliasedUse
         ) and
         tag instanceof SideEffectOperandTag
       )
@@ -121,6 +122,16 @@ module InstructionSanity {
       message = "Operand '" + operand.toString() + "' of instruction '" + use.getOpcode().toString()
           + "' missing type in function '" + Language::getIdentityString(func) + "'."
     )
+  }
+
+  query predicate duplicateChiOperand(
+    ChiInstruction chi, string message, IRFunction func, string funcText
+  ) {
+    chi.getTotal() = chi.getPartial() and
+    message = "Chi instruction for " + chi.getPartial().toString() +
+        " has duplicate operands in function $@" and
+    func = chi.getEnclosingIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction())
   }
 
   query predicate sideEffectWithoutPrimary(
@@ -263,6 +274,7 @@ module InstructionSanity {
   ) {
     exists(IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
       not useOperand.getUse() instanceof UnmodeledUseInstruction and
+      not defInstr instanceof UnmodeledDefinitionInstruction and
       pointOfEvaluation(useOperand, useBlock, useIndex) and
       defInstr = useOperand.getAnyDef() and
       (
@@ -806,14 +818,12 @@ class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() { getResultType() instanceof Language::FloatingPointType }
 }
 
-class StringConstantInstruction extends Instruction {
-  Language::StringLiteral value;
+class StringConstantInstruction extends VariableInstruction {
+  override IRStringLiteral var;
 
-  StringConstantInstruction() { value = Construction::getInstructionStringLiteral(this) }
+  final override string getImmediateString() { result = Language::getStringLiteralText(getValue()) }
 
-  final override string getImmediateString() { result = Language::getStringLiteralText(value) }
-
-  final Language::StringLiteral getValue() { result = value }
+  final Language::StringLiteral getValue() { result = var.getLiteral() }
 }
 
 class BinaryInstruction extends Instruction {
@@ -981,14 +991,22 @@ class InheritanceConversionInstruction extends UnaryInstruction {
  * to the address of a direct non-virtual base class.
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
-  ConvertToBaseInstruction() { getOpcode() instanceof Opcode::ConvertToBase }
+  ConvertToBaseInstruction() { getOpcode() instanceof ConvertToBaseOpcode }
+}
+
+/**
+ * Represents an instruction that converts from the address of a derived class
+ * to the address of a direct non-virtual base class.
+ */
+class ConvertToNonVirtualBaseInstruction extends ConvertToBaseInstruction {
+  ConvertToNonVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToNonVirtualBase }
 }
 
 /**
  * Represents an instruction that converts from the address of a derived class
  * to the address of a virtual base class.
  */
-class ConvertToVirtualBaseInstruction extends InheritanceConversionInstruction {
+class ConvertToVirtualBaseInstruction extends ConvertToBaseInstruction {
   ConvertToVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToVirtualBase }
 }
 
@@ -1419,6 +1437,13 @@ class AliasedDefinitionInstruction extends Instruction {
   AliasedDefinitionInstruction() { getOpcode() instanceof Opcode::AliasedDefinition }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
+}
+
+/**
+ * An instruction that consumes all escaped memory on exit from the function.
+ */
+class AliasedUseInstruction extends Instruction {
+  AliasedUseInstruction() { getOpcode() instanceof Opcode::AliasedUse }
 }
 
 class UnmodeledUseInstruction extends Instruction {

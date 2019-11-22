@@ -99,6 +99,12 @@ class Value extends TObject {
         this.(ObjectInternal).hasAttribute(name)
     }
 
+    /** Whether this value is absent from the database, but has been inferred to likely exist */
+    predicate isAbsent() {
+        this instanceof AbsentModuleObjectInternal
+        or
+        this instanceof AbsentModuleAttributeObjectInternal
+    }
 }
 
 /** Class representing modules in the Python program
@@ -389,12 +395,12 @@ class ClassValue extends Value {
         Types::failedInference(this, reason)
     }
 
-    /** Gets the nth base class of this class */
+    /** Gets the nth immediate base type of this class. */
     ClassValue getBaseType(int n) {
         result = Types::getBase(this, n)
     }
 
-    /** Gets a base class of this class */
+    /** Gets an immediate base type of this class. */
     ClassValue getABaseType() {
         result = Types::getBase(this, _)
     }
@@ -652,6 +658,11 @@ module ClassValue {
     /** Get the `ClassValue` for the class of modules. */
     ClassValue module_() {
         result = TBuiltinClassObject(Builtin::special("ModuleType"))
+    }
+
+    /** Get the `ClassValue` for the `NoneType` class. */
+    ClassValue nonetype() {
+        result = TBuiltinClassObject(Builtin::special("NoneType"))
     }
 
 }

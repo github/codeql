@@ -54,6 +54,14 @@ private predicate localInstructionTaintStep(Instruction nodeFrom, Instruction no
 predicate localTaint(DataFlow::Node source, DataFlow::Node sink) { localTaintStep*(source, sink) }
 
 /**
+ * Holds if taint can flow from `i1` to `i2` in zero or more
+ * local (intra-procedural) steps.
+ */
+predicate localInstructionTaint(Instruction i1, Instruction i2) {
+  localTaint(DataFlow::instructionNode(i1), DataFlow::instructionNode(i2))
+}
+
+/**
  * Holds if taint can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */

@@ -3,43 +3,68 @@ nodes
 | tst2.js:2:7:2:33 | href |
 | tst2.js:2:14:2:28 | window.location |
 | tst2.js:2:14:2:28 | window.location |
+| tst2.js:2:14:2:28 | window.location |
 | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:4:21:4:24 | href |
 | tst2.js:4:21:4:24 | href |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) |
+| tst2.js:4:21:4:55 | href.su ... '?')+1) |
 | tst6.js:2:7:2:45 | redirect |
 | tst6.js:2:18:2:45 | $locati ... irect') |
+| tst6.js:2:18:2:45 | $locati ... irect') |
+| tst6.js:4:21:4:28 | redirect |
 | tst6.js:4:21:4:28 | redirect |
 | tst6.js:6:17:6:24 | redirect |
+| tst6.js:6:17:6:24 | redirect |
+| tst6.js:8:21:8:48 | $locati ... irect') |
 | tst6.js:8:21:8:48 | $locati ... irect') |
 | tst6.js:8:21:8:56 | $locati ... + "foo" |
+| tst6.js:8:21:8:56 | $locati ... + "foo" |
+| tst7.js:2:12:2:28 | document.location |
 | tst7.js:2:12:2:28 | document.location |
 | tst7.js:2:12:2:35 | documen ... .search |
+| tst7.js:2:12:2:35 | documen ... .search |
+| tst7.js:5:27:5:43 | document.location |
 | tst7.js:5:27:5:43 | document.location |
 | tst7.js:5:27:5:50 | documen ... .search |
+| tst7.js:5:27:5:50 | documen ... .search |
+| tst9.js:2:21:2:37 | document.location |
 | tst9.js:2:21:2:37 | document.location |
 | tst9.js:2:21:2:37 | document.location |
 | tst9.js:2:21:2:42 | documen ... on.hash |
 | tst9.js:2:21:2:55 | documen ... ring(1) |
+| tst9.js:2:21:2:55 | documen ... ring(1) |
 | tst10.js:5:17:5:46 | '/' + d ... .search |
+| tst10.js:5:17:5:46 | '/' + d ... .search |
+| tst10.js:5:23:5:39 | document.location |
 | tst10.js:5:23:5:39 | document.location |
 | tst10.js:5:23:5:46 | documen ... .search |
 | tst10.js:8:17:8:47 | '//' +  ... .search |
+| tst10.js:8:17:8:47 | '//' +  ... .search |
+| tst10.js:8:24:8:40 | document.location |
 | tst10.js:8:24:8:40 | document.location |
 | tst10.js:8:24:8:47 | documen ... .search |
 | tst10.js:11:17:11:50 | '//foo' ... .search |
+| tst10.js:11:17:11:50 | '//foo' ... .search |
+| tst10.js:11:27:11:43 | document.location |
 | tst10.js:11:27:11:43 | document.location |
 | tst10.js:11:27:11:50 | documen ... .search |
 | tst10.js:14:17:14:56 | 'https: ... .search |
+| tst10.js:14:17:14:56 | 'https: ... .search |
+| tst10.js:14:33:14:49 | document.location |
 | tst10.js:14:33:14:49 | document.location |
 | tst10.js:14:33:14:56 | documen ... .search |
 | tst.js:2:19:2:69 | /.*redi ... n.href) |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
+| tst.js:2:19:2:72 | /.*redi ... ref)[1] |
+| tst.js:2:47:2:63 | document.location |
 | tst.js:2:47:2:63 | document.location |
 | tst.js:2:47:2:68 | documen ... on.href |
 | tst.js:6:20:6:56 | indirec ... n.href) |
 | tst.js:6:20:6:59 | indirec ... ref)[1] |
+| tst.js:6:20:6:59 | indirec ... ref)[1] |
+| tst.js:6:34:6:50 | document.location |
 | tst.js:6:34:6:50 | document.location |
 | tst.js:6:34:6:55 | documen ... on.href |
 edges
@@ -47,33 +72,62 @@ edges
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
+| tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href |
 | tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href |
+| tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
+| tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
 | tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
 | tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:28 | window.location |
 | tst6.js:2:7:2:45 | redirect | tst6.js:4:21:4:28 | redirect |
+| tst6.js:2:7:2:45 | redirect | tst6.js:4:21:4:28 | redirect |
+| tst6.js:2:7:2:45 | redirect | tst6.js:6:17:6:24 | redirect |
 | tst6.js:2:7:2:45 | redirect | tst6.js:6:17:6:24 | redirect |
 | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:45 | redirect |
+| tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:45 | redirect |
+| tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
+| tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
+| tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
 | tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
 | tst7.js:2:12:2:28 | document.location | tst7.js:2:12:2:35 | documen ... .search |
+| tst7.js:2:12:2:28 | document.location | tst7.js:2:12:2:35 | documen ... .search |
+| tst7.js:2:12:2:28 | document.location | tst7.js:2:12:2:35 | documen ... .search |
+| tst7.js:2:12:2:28 | document.location | tst7.js:2:12:2:35 | documen ... .search |
+| tst7.js:5:27:5:43 | document.location | tst7.js:5:27:5:50 | documen ... .search |
+| tst7.js:5:27:5:43 | document.location | tst7.js:5:27:5:50 | documen ... .search |
+| tst7.js:5:27:5:43 | document.location | tst7.js:5:27:5:50 | documen ... .search |
 | tst7.js:5:27:5:43 | document.location | tst7.js:5:27:5:50 | documen ... .search |
 | tst9.js:2:21:2:37 | document.location | tst9.js:2:21:2:42 | documen ... on.hash |
 | tst9.js:2:21:2:37 | document.location | tst9.js:2:21:2:42 | documen ... on.hash |
+| tst9.js:2:21:2:37 | document.location | tst9.js:2:21:2:42 | documen ... on.hash |
+| tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) |
 | tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) |
 | tst9.js:2:21:2:55 | documen ... ring(1) | tst9.js:2:21:2:37 | document.location |
 | tst10.js:5:23:5:39 | document.location | tst10.js:5:23:5:46 | documen ... .search |
+| tst10.js:5:23:5:39 | document.location | tst10.js:5:23:5:46 | documen ... .search |
+| tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:46 | '/' + d ... .search |
 | tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:46 | '/' + d ... .search |
 | tst10.js:8:24:8:40 | document.location | tst10.js:8:24:8:47 | documen ... .search |
+| tst10.js:8:24:8:40 | document.location | tst10.js:8:24:8:47 | documen ... .search |
+| tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:47 | '//' +  ... .search |
 | tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:47 | '//' +  ... .search |
 | tst10.js:11:27:11:43 | document.location | tst10.js:11:27:11:50 | documen ... .search |
+| tst10.js:11:27:11:43 | document.location | tst10.js:11:27:11:50 | documen ... .search |
+| tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:50 | '//foo' ... .search |
 | tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:50 | '//foo' ... .search |
 | tst10.js:14:33:14:49 | document.location | tst10.js:14:33:14:56 | documen ... .search |
+| tst10.js:14:33:14:49 | document.location | tst10.js:14:33:14:56 | documen ... .search |
+| tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:56 | 'https: ... .search |
 | tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:56 | 'https: ... .search |
 | tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
+| tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
+| tst.js:2:47:2:63 | document.location | tst.js:2:47:2:68 | documen ... on.href |
 | tst.js:2:47:2:63 | document.location | tst.js:2:47:2:68 | documen ... on.href |
 | tst.js:2:47:2:68 | documen ... on.href | tst.js:2:19:2:69 | /.*redi ... n.href) |
 | tst.js:6:20:6:56 | indirec ... n.href) | tst.js:6:20:6:59 | indirec ... ref)[1] |
+| tst.js:6:20:6:56 | indirec ... n.href) | tst.js:6:20:6:59 | indirec ... ref)[1] |
+| tst.js:6:34:6:50 | document.location | tst.js:6:34:6:55 | documen ... on.href |
 | tst.js:6:34:6:50 | document.location | tst.js:6:34:6:55 | documen ... on.href |
 | tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:56 | indirec ... n.href) |
 #select

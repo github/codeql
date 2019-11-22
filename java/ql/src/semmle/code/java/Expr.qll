@@ -1084,7 +1084,7 @@ class ConditionalExpr extends Expr, @conditionalexpr {
 }
 
 /**
- * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+ * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
  *
  * A `switch` expression.
  */
@@ -1117,7 +1117,7 @@ class SwitchExpr extends Expr, @switchexpr {
   Expr getAResult() {
     result = getACase().getRuleExpression()
     or
-    exists(BreakStmt break | break.(JumpStmt).getTarget() = this and result = break.getValue())
+    exists(YieldStmt yield | yield.(JumpStmt).getTarget() = this and result = yield.getValue())
   }
 
   /** Gets a printable representation of this expression. */

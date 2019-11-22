@@ -4,7 +4,7 @@ Tutorial: Navigating the call graph
 Call graph API
 --------------
 
-The QL Java library provides two abstract classes for representing a program's call graph: ``Callable`` and ``Call``. The former is simply the common superclass of ``Method`` and ``Constructor``, the latter is a common superclass of ``MethodAccess``, ``ClassInstanceExpression``, ``ThisConstructorInvocationStmt`` and ``SuperConstructorInvocationStmt``. Simply put, a ``Callable`` is something that can be invoked, and a ``Call`` is something that invokes a ``Callable``.
+The CodeQL library for Java provides two abstract classes for representing a program's call graph: ``Callable`` and ``Call``. The former is simply the common superclass of ``Method`` and ``Constructor``, the latter is a common superclass of ``MethodAccess``, ``ClassInstanceExpression``, ``ThisConstructorInvocationStmt`` and ``SuperConstructorInvocationStmt``. Simply put, a ``Callable`` is something that can be invoked, and a ``Call`` is something that invokes a ``Callable``.
 
 For example, in the following program all callables and calls have been annotated with comments:
 
@@ -77,6 +77,8 @@ Given this API, we can easily write a query that finds methods that are not call
    select callee
 
 ➤ `See this in the query console <https://lgtm.com/query/665280012/>`__. This simple query typically returns a large number of results.
+
+.. pull-quote::
 
    Note
 
@@ -160,6 +162,6 @@ Finally, on many Java projects there are methods that are invoked indirectly by 
 What next?
 ----------
 
--  Find out how to query metadata and white space: :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the QL standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Find out how to query metadata and white space: :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

@@ -79,4 +79,21 @@ module Stages {
       forceCachingInSameStageRev()
     }
   }
+
+  cached
+  module UnificationStage {
+    private import semmle.code.csharp.Unification
+
+    cached
+    predicate forceCachingInSameStage() { any() }
+
+    cached
+    private predicate forceCachingInSameStageRev() {
+      exists(CompoundTypeKind k)
+      or
+      exists(Unification::UnconstrainedTypeParameter utp)
+      or
+      forceCachingInSameStageRev()
+    }
+  }
 }

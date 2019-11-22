@@ -1,8 +1,35 @@
 missingOperand
-| condition_decls.cpp:16:6:16:20 | ConditionalBranch: (condition decl) | Instruction 'ConditionalBranch' is missing an expected operand with tag 'Condition' in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
-| condition_decls.cpp:26:3:36:3 | Switch: switch (...) ...  | Instruction 'Switch' is missing an expected operand with tag 'Condition' in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:41:9:41:23 | ConditionalBranch: (condition decl) | Instruction 'ConditionalBranch' is missing an expected operand with tag 'Condition' in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
-| condition_decls.cpp:48:39:48:53 | ConditionalBranch: (condition decl) | Instruction 'ConditionalBranch' is missing an expected operand with tag 'Condition' in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
+| condition_decls.cpp:16:6:16:20 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
+| condition_decls.cpp:26:10:26:24 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
+| condition_decls.cpp:41:9:41:23 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
+| condition_decls.cpp:48:39:48:53 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
+| conditional_destructors.cpp:30:9:30:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:30:9:30:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:30:18:30:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:30:18:30:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:33:9:33:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:33:9:33:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:33:18:33:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:33:18:33:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:39:9:39:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:39:9:39:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:39:18:39:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:39:18:39:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:42:9:42:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:42:9:42:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:42:18:42:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:42:18:42:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
+| cpp11.cpp:77:19:77:21 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:76:8:76:8 | IR: apply | void lambda::apply<(void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)>(lambda::Val, (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)) |
+| cpp11.cpp:82:11:82:14 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:81:8:81:8 | IR: apply2 | void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val) |
+| cpp11.cpp:82:45:82:48 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | IR: operator() | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
+| cpp11.cpp:82:51:82:51 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | IR: operator() | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
+| cpp11.cpp:88:25:88:30 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | IR: main | void lambda::main() |
+| cpp11.cpp:88:33:88:38 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | IR: main | void lambda::main() |
+| destructors.cpp:51:36:51:38 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | destructors.cpp:49:7:49:7 | IR: f | int cond_destruct::f(int) |
+| ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | IR: misc3 | void misc3() |
 | misc.c:220:3:223:3 | Store: ... = ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
 | misc.c:220:9:223:3 | FieldAddress: {...} | Instruction 'FieldAddress' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
@@ -21,16 +48,17 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y |
-| condition_decls.cpp:16:19:16:20 | CallSideEffect: call to BoxedInt |
+| condition_decls.cpp:16:19:16:20 | IndirectMayWriteSideEffect: call to BoxedInt |
 | condition_decls.cpp:26:19:26:20 | IndirectMayWriteSideEffect: bi |
-| condition_decls.cpp:26:23:26:24 | CallSideEffect: call to BoxedInt |
-| condition_decls.cpp:41:22:41:23 | CallSideEffect: call to BoxedInt |
-| condition_decls.cpp:48:52:48:53 | CallSideEffect: call to BoxedInt |
+| condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt |
+| condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt |
+| condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt |
 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
@@ -53,16 +81,16 @@ instructionWithoutSuccessor
 | ms_try_except.cpp:17:13:17:17 | Store: ... = ... |
 | ms_try_except.cpp:19:17:19:21 | Sub: ... - ... |
 | ms_try_except.cpp:20:9:20:13 | Store: ... = ... |
-| ms_try_mix.cpp:11:12:11:15 | CallSideEffect: call to C |
+| ms_try_mix.cpp:11:12:11:15 | IndirectMayWriteSideEffect: call to C |
 | ms_try_mix.cpp:16:13:16:19 | ThrowValue: throw ... |
-| ms_try_mix.cpp:18:16:18:19 | CallSideEffect: call to C |
+| ms_try_mix.cpp:18:16:18:19 | IndirectMayWriteSideEffect: call to C |
 | ms_try_mix.cpp:20:15:20:39 | Constant: 1 |
-| ms_try_mix.cpp:21:16:21:19 | CallSideEffect: call to C |
-| ms_try_mix.cpp:28:12:28:15 | CallSideEffect: call to C |
+| ms_try_mix.cpp:21:16:21:19 | IndirectMayWriteSideEffect: call to C |
+| ms_try_mix.cpp:28:12:28:15 | IndirectMayWriteSideEffect: call to C |
 | ms_try_mix.cpp:33:13:33:19 | ThrowValue: throw ... |
-| ms_try_mix.cpp:35:16:35:19 | CallSideEffect: call to C |
-| ms_try_mix.cpp:38:16:38:19 | CallSideEffect: call to C |
-| ms_try_mix.cpp:48:10:48:13 | CallSideEffect: call to C |
+| ms_try_mix.cpp:35:16:35:19 | IndirectMayWriteSideEffect: call to C |
+| ms_try_mix.cpp:38:16:38:19 | IndirectMayWriteSideEffect: call to C |
+| ms_try_mix.cpp:48:10:48:13 | IndirectMayWriteSideEffect: call to C |
 | ms_try_mix.cpp:51:5:51:11 | ThrowValue: throw ... |
 | ms_try_mix.cpp:53:13:54:3 | NoOp: { ... } |
 | pointer_to_member.cpp:36:11:36:30 | FieldAddress: {...} |
@@ -610,89 +638,10 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
-| VacuousDestructorCall.cpp:4:3:4:3 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | IR: CallDestructor | void CallDestructor<int>(int, int*) |
-| condition_decls.cpp:16:15:16:15 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
-| condition_decls.cpp:16:15:16:16 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
-| condition_decls.cpp:16:15:16:16 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
-| condition_decls.cpp:17:5:17:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
-| condition_decls.cpp:17:11:17:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
-| condition_decls.cpp:20:5:20:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
-| condition_decls.cpp:20:11:20:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
-| condition_decls.cpp:26:19:26:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:26:19:26:20 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:26:19:26:20 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:28:5:28:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:28:11:28:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:31:5:31:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:31:11:31:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:34:5:34:18 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:34:9:34:13 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
-| condition_decls.cpp:41:18:41:18 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
-| condition_decls.cpp:41:18:41:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
-| condition_decls.cpp:41:18:41:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
-| condition_decls.cpp:42:5:42:7 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
-| condition_decls.cpp:44:3:44:5 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
-| condition_decls.cpp:48:48:48:48 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
-| condition_decls.cpp:48:48:48:49 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
-| condition_decls.cpp:48:48:48:49 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
-| condition_decls.cpp:48:56:48:61 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
-| condition_decls.cpp:49:5:49:7 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
-| condition_decls.cpp:51:3:51:5 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:47:6:47:18 | IR: for_decl_bind | void for_decl_bind(int) |
-| cpp11.cpp:28:21:28:21 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | cpp11.cpp:27:7:27:14 | IR: getFirst | int range_based_for_11::getFirst() |
-| file://:0:0:0:0 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | cpp11.cpp:27:7:27:14 | IR: getFirst | int range_based_for_11::getFirst() |
-| misc.c:68:16:68:16 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:70:13:70:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:72:11:72:11 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:82:5:82:12 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:83:5:83:12 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:83:14:83:14 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:83:17:83:17 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:84:6:84:13 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:84:6:84:13 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:84:16:84:16 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:84:19:84:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:85:9:85:13 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:86:9:86:9 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:87:10:87:10 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:88:9:88:9 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:88:9:88:17 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:16:6:16:10 | IR: misc1 | void misc1(int, int) |
-| misc.c:171:15:171:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:168:6:168:8 | IR: vla | void vla() |
-| misc.c:173:19:173:24 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:168:6:168:8 | IR: vla | void vla() |
-| misc.c:174:17:174:22 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:168:6:168:8 | IR: vla | void vla() |
-| misc.c:174:30:174:35 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | misc.c:168:6:168:8 | IR: vla | void vla() |
-| misc.c:219:5:219:26 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
-| misc.c:220:4:220:5 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
-| ms_try_except.cpp:9:19:9:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | IR: ms_try_except | void ms_try_except(int) |
-| ms_try_except.cpp:19:17:19:17 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | IR: ms_try_except | void ms_try_except(int) |
-| ms_try_mix.cpp:14:16:14:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:10:6:10:18 | IR: ms_except_mix | void ms_except_mix(int) |
-| ms_try_mix.cpp:15:13:15:14 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:10:6:10:18 | IR: ms_except_mix | void ms_except_mix(int) |
-| ms_try_mix.cpp:16:13:16:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:10:6:10:18 | IR: ms_except_mix | void ms_except_mix(int) |
-| ms_try_mix.cpp:18:16:18:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:10:6:10:18 | IR: ms_except_mix | void ms_except_mix(int) |
-| ms_try_mix.cpp:21:16:21:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:10:6:10:18 | IR: ms_except_mix | void ms_except_mix(int) |
-| ms_try_mix.cpp:24:12:24:15 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:10:6:10:18 | IR: ms_except_mix | void ms_except_mix(int) |
-| ms_try_mix.cpp:31:16:31:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:27:6:27:19 | IR: ms_finally_mix | void ms_finally_mix(int) |
-| ms_try_mix.cpp:32:13:32:14 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:27:6:27:19 | IR: ms_finally_mix | void ms_finally_mix(int) |
-| ms_try_mix.cpp:33:13:33:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:27:6:27:19 | IR: ms_finally_mix | void ms_finally_mix(int) |
-| ms_try_mix.cpp:35:16:35:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:27:6:27:19 | IR: ms_finally_mix | void ms_finally_mix(int) |
-| ms_try_mix.cpp:38:16:38:19 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:27:6:27:19 | IR: ms_finally_mix | void ms_finally_mix(int) |
-| ms_try_mix.cpp:41:12:41:15 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:27:6:27:19 | IR: ms_finally_mix | void ms_finally_mix(int) |
-| ms_try_mix.cpp:51:5:51:11 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | ms_try_mix.cpp:47:6:47:28 | IR: ms_empty_finally_at_end | void ms_empty_finally_at_end() |
 | pointer_to_member.cpp:36:11:36:30 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
 | pointer_to_member.cpp:36:13:36:19 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
 | pointer_to_member.cpp:36:22:36:28 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
-| stmt_expr.cpp:30:20:30:21 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | stmt_expr.cpp:21:6:21:6 | IR: g | void stmtexpr::g(int) |
-| stmt_expr.cpp:31:16:31:18 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | stmt_expr.cpp:21:6:21:6 | IR: g | void stmtexpr::g(int) |
 | try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | IR: throw_from_nonstmt | void throw_from_nonstmt(int) |
-| vla.c:3:5:3:8 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
-| vla.c:5:16:5:19 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
-| vla.c:5:22:5:25 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
-| vla.c:5:27:5:30 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
-| vla.c:5:27:5:33 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
-| vla.c:12:37:12:42 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
-| vla.c:12:55:12:60 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
-| vla.c:14:40:14:45 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
-| vla.c:14:58:14:63 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
-| vla.c:14:74:14:79 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | vla.c:11:6:11:16 | IR: vla_typedef | void vla_typedef() |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

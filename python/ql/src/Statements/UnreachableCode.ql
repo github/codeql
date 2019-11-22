@@ -16,9 +16,7 @@ import python
 predicate typing_import(ImportingStmt is) {
     exists(Module m |
         is.getScope() = m and
-        exists(TypeHintComment tc |
-            tc.getLocation().getFile() = m.getFile()
-        )
+        exists(TypeHintComment tc | tc.getLocation().getFile() = m.getFile())
     )
 }
 
@@ -39,6 +37,15 @@ predicate suppression_in_scope(Stmt s) {
     )
 }
 
+/** Holds if `s` is a statement that raises an exception at the end of an if-elif-else chain. */
+predicate marks_an_impossible_else_branch(Stmt s) {
+    exists(If i | i.getOrelse().getItem(0) = s |
+        s.(Assert).getTest() instanceof False
+        or
+        s instanceof Raise
+    )
+}
+
 predicate reportable_unreachable(Stmt s) {
     s.isUnreachable() and
     not typing_import(s) and
@@ -46,11 +53,10 @@ predicate reportable_unreachable(Stmt s) {
     not exists(Stmt other | other.isUnreachable() |
         other.contains(s)
         or
-        exists(StmtList l, int i, int j | 
-            l.getItem(i) = other and l.getItem(j) = s and i < j
-        )
+        exists(StmtList l, int i, int j | l.getItem(i) = other and l.getItem(j) = s and i < j)
     ) and
-    not unique_yield(s)
+    not unique_yield(s) and
+    not marks_an_impossible_else_branch(s)
 }
 
 from Stmt s

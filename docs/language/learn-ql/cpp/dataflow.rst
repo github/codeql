@@ -4,10 +4,10 @@ Analyzing data flow in C/C++
 Overview
 --------
 
-This topic describes how data flow analysis is implemented in the QL for C/C++ library and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the QL libraries for local data flow, global data flow and taint tracking.
+This topic describes how data flow analysis is implemented in the CodeQL libraries for C/C++ and includes examples to help you write your own data flow queries.
+The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
 
-For a more general introduction to modeling data flow in QL, see :doc:`Introduction to data flow analysis in QL <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
@@ -166,6 +166,7 @@ The following predicates are defined in the configuration:
 -  ``isSource``—defines where data may flow from
 -  ``isSink``—defines where data may flow to
 -  ``isBarrier``—optional, restricts the data flow
+-  ``isBarrierGuard``—optional, restricts the data flow
 -  ``isAdditionalFlowStep``—optional, adds additional flow steps
 
 The characteristic predicate ``MyDataFlowConfiguration()`` defines the name of the configuration, so ``"MyDataFlowConfiguration"`` should be replaced by the name of your class.
@@ -204,6 +205,7 @@ The following predicates are defined in the configuration:
 -  ``isSource``—defines where taint may flow from
 -  ``isSink``—defines where taint may flow to
 -  ``isSanitizer``—optional, restricts the taint flow
+-  ``isSanitizerGuard``—optional, restricts the taint flow
 -  ``isAdditionalTaintStep``—optional, adds additional taint steps
 
 Similar to global data flow, the characteristic predicate ``MyTaintTrackingConfiguration()`` defines the unique name of the configuration, so ``"MyTaintTrackingConfiguration"`` should be replaced by the name of your class.

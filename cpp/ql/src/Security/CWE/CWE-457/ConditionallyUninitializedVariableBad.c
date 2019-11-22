@@ -19,7 +19,7 @@ int notify(int deviceNumber) {
   DeviceConfig config;
   initDeviceConfig(&config, deviceNumber);
   // BAD: Using config without checking the status code that is returned
-  if (config->isEnabled) {
-    notifyChannel(config->channel);
+  if (config.isEnabled) {
+    notifyChannel(config.channel);
   }
 }

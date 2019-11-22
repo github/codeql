@@ -19,10 +19,7 @@ import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.models.implementations.Memcpy
 
 class MallocCall extends FunctionCall {
-  MallocCall() {
-    this.getTarget().hasGlobalName("malloc") or
-    this.getTarget().hasQualifiedName("std", "malloc")
-  }
+  MallocCall() { this.getTarget().hasGlobalOrStdName("malloc") }
 
   Expr getAllocatedSize() {
     if this.getArgument(0) instanceof VariableAccess

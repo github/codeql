@@ -86,6 +86,10 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
+        e1 = e2.(NullCoalescingExpr).getAnOperand() and
+        scope = e2 and
+        isSuccessor = false
+        or
         e1 = e2.(SuppressNullableWarningExpr).getExpr() and
         scope = e2 and
         isSuccessor = true
@@ -107,7 +111,7 @@ module LocalFlow {
         or
         // An `=` expression, where the result of the expression is used
         e2 = any(AssignExpr ae |
-            ae.getParent() instanceof Expr and
+            ae.getParent() = any(ControlFlowElement cfe | not cfe instanceof ExprStmt) and
             e1 = ae.getRValue()
           ) and
         scope = e2 and

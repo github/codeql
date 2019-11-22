@@ -417,7 +417,7 @@ class SwitchCase extends Stmt, @case {
   SwitchStmt getSwitch() { result.getACase() = this }
 
   /**
-   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
    *
    * Gets the switch expression to which this case belongs, if any.
    */
@@ -432,7 +432,7 @@ class SwitchCase extends Stmt, @case {
   }
 
   /**
-   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
    *
    * Holds if this `case` is a switch labeled rule of the form `... -> ...`.
    */
@@ -443,14 +443,14 @@ class SwitchCase extends Stmt, @case {
   }
 
   /**
-   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
    *
    * Gets the expression on the right-hand side of the arrow, if any.
    */
   Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
 
   /**
-   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
    *
    * Gets the statement on the right-hand side of the arrow, if any.
    */
@@ -465,7 +465,7 @@ class ConstCase extends SwitchCase {
   Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
 
   /**
-   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
    *
    * Gets the `case` constant at the specified index.
    */
@@ -558,10 +558,11 @@ class ThrowStmt extends Stmt, @throwstmt {
   }
 }
 
-/** A `break` or `continue` statement. */
+/** A `break`, `yield` or `continue` statement. */
 class JumpStmt extends Stmt {
   JumpStmt() {
     this instanceof BreakStmt or
+    this instanceof YieldStmt or
     this instanceof ContinueStmt
   }
 
@@ -585,9 +586,7 @@ class JumpStmt extends Stmt {
     )
   }
 
-  private SwitchExpr getSwitchExprTarget() {
-    this.(BreakStmt).hasValue() and result = this.getParent+()
-  }
+  private SwitchExpr getSwitchExprTarget() { result = this.(YieldStmt).getParent+() }
 
   private StmtParent getEnclosingTarget() {
     result = getSwitchExprTarget()
@@ -598,7 +597,7 @@ class JumpStmt extends Stmt {
   }
 
   /**
-   * Gets the statement or `switch` expression that this `break` or `continue` jumps to.
+   * Gets the statement or `switch` expression that this `break`, `yield` or `continue` jumps to.
    */
   StmtParent getTarget() {
     result = getLabelTarget()
@@ -615,32 +614,29 @@ class BreakStmt extends Stmt, @breakstmt {
   /** Holds if this `break` statement has an explicit label. */
   predicate hasLabel() { exists(string s | s = this.getLabel()) }
 
-  /**
-   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
-   *
-   * Gets the value of this `break` statement, if any.
-   */
-  Expr getValue() { result.getParent() = this }
-
-  /**
-   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
-   *
-   * Holds if this `break` statement has a value.
-   */
-  predicate hasValue() { exists(Expr e | e.getParent() = this) }
-
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() {
-    if this.hasLabel()
-    then result = "break " + this.getLabel()
-    else
-      if this.hasValue()
-      then result = "break ..."
-      else result = "break"
+    if this.hasLabel() then result = "break " + this.getLabel() else result = "break"
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "BreakStmt" }
+}
+
+/**
+ * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
+ *
+ * A `yield` statement.
+ */
+class YieldStmt extends Stmt, @yieldstmt {
+  /**
+   * Gets the value of this `yield` statement.
+   */
+  Expr getValue() { result.getParent() = this }
+
+  override string pp() { result = "yield ..." }
+
+  override string getHalsteadID() { result = "YieldStmt" }
 }
 
 /** A `continue` statement. */

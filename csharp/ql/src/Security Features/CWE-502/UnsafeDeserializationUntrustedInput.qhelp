@@ -5,7 +5,7 @@
 <overview>
 
 <p>Deserializing an object from untrusted input may result in security problems, such
-as denial-of-service or remote code execution.</p>
+as denial of service or remote code execution.</p>
 
 </overview>
 <recommendation>

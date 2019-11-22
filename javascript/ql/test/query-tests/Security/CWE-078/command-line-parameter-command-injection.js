@@ -26,3 +26,8 @@ var cp = require("child_process");
 	cp.execSync(`node ${script} ${args[0]} --option"`); // NOT OK
 	cp.execSync(`node ${script} ${args.join(' ')} --option"`); // NOT OK
 });
+
+cp.exec("cmd.sh " + require("get-them-args")().foo); // NOT OK
+cp.exec("cmd.sh " + require("minimist")().foo); // NOT OK
+cp.exec("cmd.sh " + require("yargs").argv.foo); // NOT OK
+cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK

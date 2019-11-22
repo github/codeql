@@ -2,11 +2,7 @@
 Program representation 
 ======================
 
-QL for C/C++
-
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
+CodeQL for C/C++
 
 .. rst-class:: agenda
 
@@ -25,16 +21,16 @@ Agenda
 
 .. resume slides
 
-AST QL classes
-==============
+AST CodeQL classes
+==================
 
-Important AST classes include:
+Important AST CodeQL classes include:
 
 - ``Expr``: expressions such as assignments, variable references, function calls, ...
 - ``Stmt``: statements such as conditionals, loops, try statements, ... 
 - ``DeclarationEntry``: places where functions, variables or types are declared and/or defined
 
-These three (and all other AST classes) are subclasses of ``Element``.
+These three (and all other AST CodeQL classes) are subclasses of ``Element``.
 
 Symbol table
 ============
@@ -66,9 +62,9 @@ Working with variables
 Working with functions
 ======================
 
-Functions are represented by the Function QL class. Each declaration or definition of a function is represented by a ``FunctionDeclarationEntry``.
+Functions are represented by the Function class. Each declaration or definition of a function is represented by a ``FunctionDeclarationEntry``.
 
-Calls to functions are modeled by QL class Call and its subclasses:
+Calls to functions are modeled by the CodeQL class ``Call`` and its subclasses:
 
 - ``Call.getTarget()`` gets the declared target of the call; undefined for calls through function pointers
 - ``Function.getACallToThisFunction()`` gets a call to this function
@@ -107,7 +103,7 @@ Working with macros
     #define square(x) x*x
     y = square(y0), z = square(z0)
 
-is represented in the snapshot database as:
+is represented in the CodeQL database as:
 
 - A Macro entity representing the text of the *head* and *body* of the macro
 - Assignment nodes, representing the two assignments after preprocessing
@@ -121,4 +117,4 @@ Useful predicates on ``Element``: ``isInMacroExpansion()``, ``isAffectedByMacro(
 
 .. note::
 
-  The snapshot also contains information about macro definitions, which are represented by class ``Macro``. These macro definitions are related to the AST nodes resulting from their uses by the class ``MacroAccess``.
+  The CodeQL database also contains information about macro definitions, which are represented by class ``Macro``. These macro definitions are related to the AST nodes resulting from their uses by the class ``MacroAccess``.

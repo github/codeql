@@ -7,9 +7,9 @@ class Printf extends FormattingFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalName("printf") or
+      hasGlobalOrStdName("printf") or
       hasGlobalName("printf_s") or
-      hasGlobalName("wprintf") or
+      hasGlobalOrStdName("wprintf") or
       hasGlobalName("wprintf_s") or
       hasGlobalName("g_printf")
     ) and
@@ -19,7 +19,7 @@ class Printf extends FormattingFunction {
   override int getFormatParameterIndex() { result = 0 }
 
   override predicate isWideCharDefault() {
-    hasGlobalName("wprintf") or
+    hasGlobalOrStdName("wprintf") or
     hasGlobalName("wprintf_s")
   }
 }
@@ -31,8 +31,8 @@ class Fprintf extends FormattingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalName("fprintf") or
-      hasGlobalName("fwprintf") or
+      hasGlobalOrStdName("fprintf") or
+      hasGlobalOrStdName("fwprintf") or
       hasGlobalName("g_fprintf")
     ) and
     not exists(getDefinition().getFile().getRelativePath())
@@ -40,7 +40,7 @@ class Fprintf extends FormattingFunction {
 
   override int getFormatParameterIndex() { result = 1 }
 
-  override predicate isWideCharDefault() { hasGlobalName("fwprintf") }
+  override predicate isWideCharDefault() { hasGlobalOrStdName("fwprintf") }
 
   override int getOutputParameterIndex() { result = 0 }
 }
@@ -52,10 +52,10 @@ class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalName("sprintf") or
+      hasGlobalOrStdName("sprintf") or
       hasGlobalName("_sprintf_l") or
       hasGlobalName("__swprintf_l") or
-      hasGlobalName("wsprintf") or
+      hasGlobalOrStdName("wsprintf") or
       hasGlobalName("g_strdup_printf") or
       hasGlobalName("g_sprintf") or
       hasGlobalName("__builtin___sprintf_chk")
@@ -99,8 +99,8 @@ class Snprintf extends FormattingFunction {
   Snprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalName("snprintf") or // C99 defines snprintf
-      hasGlobalName("swprintf") or // The s version of wide-char printf is also always the n version
+      hasGlobalOrStdName("snprintf") or // C99 defines snprintf
+      hasGlobalOrStdName("swprintf") or // The s version of wide-char printf is also always the n version
       // Microsoft has _snprintf as well as several other variations
       hasGlobalName("sprintf_s") or
       hasGlobalName("snprintf_s") or
@@ -160,7 +160,7 @@ class Snprintf extends FormattingFunction {
    */
   predicate returnsFullFormatLength() {
     (
-      hasGlobalName("snprintf") or
+      hasGlobalOrStdName("snprintf") or
       hasGlobalName("g_snprintf") or
       hasGlobalName("__builtin___snprintf_chk") or
       hasGlobalName("snprintf_s")

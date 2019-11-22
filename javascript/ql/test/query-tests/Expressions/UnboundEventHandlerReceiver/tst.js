@@ -173,4 +173,20 @@ class Component4 extends React.Component {
     }
 }
 
-// semmle-extractor-options: --experimental
+class Component5 extends React.Component {
+
+    render() {
+        return <div>
+            <div onClick={this.bound_throughSomeBinder}/> // OK
+            </div>
+    }
+
+    constructor(props) {
+        super(props);
+	    someBind(this, "bound_throughSomeBinder");
+    }
+
+    bound_throughSomeBinder() {
+        this.setState({ });
+    }
+}

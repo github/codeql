@@ -126,7 +126,7 @@ function checkCycle(root: any) {
 function isBlacklistedProperty(k: string) {
     return k === "parent" || k === "pos" || k === "end"
         || k === "symbol" || k === "localSymbol"
-        || k === "flowNode" || k === "returnFlowNode"
+        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode"
         || k === "nextContainer" || k === "locals"
         || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics";
 }
@@ -253,7 +253,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         fileExists: (path: string) => fs.existsSync(path),
         readFile: ts.sys.readFile,
     };
-    let config = ts.parseJsonConfigFileContent(tsConfig, parseConfigHost, basePath);
+    let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
     let project = new Project(tsConfigFilename, config, state.typeTable);
     project.load();
 
@@ -272,7 +272,9 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     });
 
     for (let typeRoot of typeRoots || []) {
-        traverseTypeRoot(typeRoot, "");
+        if (fs.existsSync(typeRoot) && fs.statSync(typeRoot).isDirectory()) {
+            traverseTypeRoot(typeRoot, "");
+        }
     }
 
     for (let sourceFile of program.getSourceFiles()) {

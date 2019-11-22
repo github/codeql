@@ -352,6 +352,11 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
     none()
   }
 
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getTranslatedExpr(expr).getInstruction(CallTag())
+  }
+
   /**
    * Gets the `TranslatedFunction` containing this expression.
    */
@@ -363,6 +368,39 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
    * Gets the `Function` containing this expression.
    */
   override Function getFunction() { result = expr.getEnclosingFunction() }
+}
+
+class TranslatedStructorCallSideEffects extends TranslatedSideEffects {
+  TranslatedStructorCallSideEffects() { getParent().(TranslatedStructorCall).hasQualifier() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType t) {
+    opcode instanceof Opcode::IndirectMayWriteSideEffect and
+    tag instanceof OnlyInstructionTag and
+    t = getTypeForPRValue(expr.getTarget().getDeclaringType())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    (
+      if exists(getChild(0))
+      then result = getChild(0).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    ) and
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof AddressOperandTag and
+    result = getParent().(TranslatedStructorCall).getQualifierResult()
+  }
+
+  final override int getInstructionIndex(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = -1
+  }
 }
 
 class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEffect {
@@ -447,20 +485,26 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
   }
 
   override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    exists(Type operandType |
+    if hasSpecificReadSideEffect(any(Opcode::BufferReadSideEffect op))
+    then
+      result = getUnknownType() and
       tag instanceof OnlyInstructionTag and
-      operandType = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
       operandTag instanceof SideEffectOperandTag
-      or
-      tag instanceof OnlyInstructionTag and
-      operandType = arg.getType().getUnspecifiedType() and
-      not operandType instanceof DerivedType and
-      operandTag instanceof SideEffectOperandTag
-    |
-      // If the type we select is an incomplete type (e.g. a forward-declared `struct`), there will
-      // not be a `CppType` that represents that type. In that case, fall back to `UnknownCppType`.
-      result = getTypeForPRValueOrUnknown(operandType)
-    )
+    else
+      exists(Type operandType |
+        tag instanceof OnlyInstructionTag and
+        operandType = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
+        operandTag instanceof SideEffectOperandTag
+        or
+        tag instanceof OnlyInstructionTag and
+        operandType = arg.getType().getUnspecifiedType() and
+        not operandType instanceof DerivedType and
+        operandTag instanceof SideEffectOperandTag
+      |
+        // If the type we select is an incomplete type (e.g. a forward-declared `struct`), there will
+        // not be a `CppType` that represents that type. In that case, fall back to `UnknownCppType`.
+        result = getTypeForPRValueOrUnknown(operandType)
+      )
   }
 
   predicate hasSpecificWriteSideEffect(Opcode op) {
@@ -510,7 +554,7 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     )
     or
     not call.getTarget() instanceof SideEffectFunction and
-    op instanceof Opcode::IndirectReadSideEffect
+    op instanceof Opcode::BufferReadSideEffect
   }
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {

@@ -10,7 +10,8 @@ private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * An element containing a regular expression term, that is, either
- * a regular expression literal or another regular expression term.
+ * a regular expression literal, a string literal (parsed as a regular expression),
+ * or another regular expression term.
  *
  * Examples:
  *
@@ -22,8 +23,14 @@ private import semmle.javascript.dataflow.InferredTypes
 class RegExpParent extends Locatable, @regexpparent { }
 
 /**
- * A regular expression term, that is, a syntactic part of a regular
- * expression literal.
+ * A regular expression term, that is, a syntactic part of a regular expression.
+ *
+ * Regular expression terms may occur as part of a regular expression literal,
+ * such as `/[a-z]+/`, or as part of a string literal, such as `"[a-z]+"`.
+ *
+ * Note that some terms will occur as part of a string literal that isn't actually
+ * interpreted as regular expression at runtime. Use `isPartOfRegExpLiteral`
+ * or `isUsedAsRegExp` to check if a term is really used as a regular expression.
  *
  * Examples:
  *
@@ -34,7 +41,7 @@ class RegExpParent extends Locatable, @regexpparent { }
  * $
  * ```
  */
-abstract class RegExpTerm extends Locatable, @regexpterm {
+class RegExpTerm extends Locatable, @regexpterm {
   override Location getLocation() { hasLocation(this, result) }
 
   /** Gets the `i`th child term of this term. */
@@ -46,14 +53,17 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
   /** Gets the number of child terms of this term. */
   int getNumChild() { result = count(getAChild()) }
 
+  /** Gets the last child term of this term. */
+  RegExpTerm getLastChild() { result = getChild(getNumChild() - 1) }
+
   /**
    * Gets the parent term of this regular expression term, or the
    * regular expression literal if this is the root term.
    */
   RegExpParent getParent() { regexpterm(this, _, result, _, _) }
 
-  /** Gets the regular expression literal this term belongs to. */
-  RegExpLiteral getLiteral() { result = getParent+() }
+  /** Gets the regular expression literal this term belongs to, if any. */
+  RegExpLiteral getLiteral() { result = getRootTerm().getParent() }
 
   override string toString() { regexpterm(this, _, _, _, result) }
 
@@ -61,7 +71,7 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
   string getRawValue() { regexpterm(this, _, _, _, result) }
 
   /** Holds if this regular expression term can match the empty string. */
-  abstract predicate isNullable();
+  predicate isNullable() { none() } // Overridden in subclasses.
 
   /** Gets the regular expression term that is matched before this one, if any. */
   RegExpTerm getPredecessor() {
@@ -105,6 +115,81 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
    * it has an enclosing lookbehind assertions.
    */
   predicate isInBackwardMatchingContext() { this = any(RegExpLookbehind lbh).getAChild+() }
+
+  /**
+   * Holds if this is the root term of a regular expression.
+   */
+  predicate isRootTerm() {
+    not getParent() instanceof RegExpTerm
+  }
+
+  /**
+   * Gets the outermost term of this regular expression.
+   */
+  RegExpTerm getRootTerm() {
+    isRootTerm() and
+    result = this
+    or
+    result = getParent().(RegExpTerm).getRootTerm()
+  }
+
+  /**
+   * Holds if this term occurs as part of a regular expression literal.
+   */
+  predicate isPartOfRegExpLiteral() {
+    exists(getLiteral())
+  }
+
+  /**
+   * Holds if this term occurs as part of a string literal.
+   *
+   * This predicate holds regardless of whether the string literal is actually
+   * used as a regular expression. See `isUsedAsRegExp`.
+   */
+  predicate isPartOfStringLiteral() {
+    getRootTerm().getParent() instanceof StringLiteral
+  }
+
+  /**
+   * Holds if this term is part of a regular expression literal, or a string literal
+   * that is interpreted as a regular expression.
+   *
+   * Unlike `isPartOfRegExpLiteral` and `isPartOfStringLiteral`, this predicate takes
+   * data flow into account, to exclude string literals that aren't used as regular expressions.
+   *
+   * For example:
+   * ```js
+   * location.href.match("^https://example\\.com/") // YES - String is used as regexpp
+   *
+   * console.log("Hello world"); // NO - string is not used as regexp
+   *
+   * /[a-z]+/g; // YES - Regexp literals are always used as regexp
+   * ```
+   */
+  predicate isUsedAsRegExp() {
+    exists(RegExpParent parent | parent = getRootTerm().getParent() |
+      parent instanceof RegExpLiteral
+      or
+      parent.(StringLiteral).flow() instanceof RegExpPatternSource
+    )
+  }
+
+  /**
+   * Gets the single string this regular-expression term matches.
+   *
+   * This predicate is only defined for (sequences/groups of) constant regular expressions.
+   * In particular, terms involving zero-width assertions like `^` or `\b` are not considered
+   * to have a constant value.
+   *
+   * Note that this predicate does not take flags of the enclosing regular-expression literal
+   * into account.
+   */
+  string getConstantValue() { none() }
+
+  /**
+   * Gets a string that is matched by this regular-expression term.
+   */
+  string getAMatchedString() { result = getConstantValue() }
 }
 
 /**
@@ -116,7 +201,7 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
  * ((ECMA|Java)[sS]cript)*
  * ```
  */
-abstract class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
+class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
   /** Holds if the quantifier of this term is a greedy quantifier. */
   predicate isGreedy() { isGreedy(this) }
 }
@@ -132,7 +217,7 @@ abstract class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
  * \w
  * ```
  */
-abstract class RegExpEscape extends RegExpTerm, @regexp_escape { }
+class RegExpEscape extends RegExpTerm, @regexp_escape { }
 
 /**
  * A constant regular expression term, that is, a regular expression
@@ -141,7 +226,7 @@ abstract class RegExpEscape extends RegExpTerm, @regexp_escape { }
  * Example:
  *
  * ```
- * a
+ * abc
  * ```
  */
 class RegExpConstant extends RegExpTerm, @regexp_constant {
@@ -155,6 +240,8 @@ class RegExpConstant extends RegExpTerm, @regexp_constant {
   predicate isCharacter() { any() }
 
   override predicate isNullable() { none() }
+
+  override string getConstantValue() { result = getValue() }
 }
 
 /**
@@ -198,6 +285,8 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
   int getNumAlternative() { result = getNumChild() }
 
   override predicate isNullable() { getAlternative().isNullable() }
+
+  override string getAMatchedString() { result = getAlternative().getAMatchedString() }
 }
 
 /**
@@ -209,7 +298,7 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
  * (ECMA|Java)Script
  * ```
  *
- * This is a sequence with elements `(ECMA|Java)`, `S`, `c`, `r`, `i`, `p` and `t`.
+ * This is a sequence with the elements `(ECMA|Java)` and `Script`.
  */
 class RegExpSequence extends RegExpTerm, @regexp_seq {
   /** Gets an element of this sequence. */
@@ -221,6 +310,35 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
   override predicate isNullable() {
     forall(RegExpTerm child | child = getAChild() | child.isNullable())
   }
+
+  override string getConstantValue() {
+    result = getConstantValue(0)
+  }
+
+  /**
+   * Gets the single string matched by the `i`th child and all following children of
+   * this sequence, if any.
+   */
+  private string getConstantValue(int i) {
+    i = getNumChild() and
+    result = ""
+    or
+    result = getChild(i).getConstantValue() + getConstantValue(i+1)
+  }
+}
+
+/**
+ * A dollar `$` or caret assertion `^` matching the beginning or end of a line.
+ *
+ * Example:
+ *
+ * ```
+ * ^
+ * $
+ * ```
+ */
+class RegExpAnchor extends RegExpTerm, @regexp_anchor {
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -232,8 +350,7 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
  * ^
  * ```
  */
-class RegExpCaret extends RegExpTerm, @regexp_caret {
-  override predicate isNullable() { any() }
+class RegExpCaret extends RegExpAnchor, @regexp_caret {
 }
 
 /**
@@ -245,8 +362,7 @@ class RegExpCaret extends RegExpTerm, @regexp_caret {
  * $
  * ```
  */
-class RegExpDollar extends RegExpTerm, @regexp_dollar {
-  override predicate isNullable() { any() }
+class RegExpDollar extends RegExpAnchor, @regexp_dollar {
 }
 
 /**
@@ -469,18 +585,32 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
   string getName() { isNamedCapture(this, result) }
 
   override predicate isNullable() { getAChild().isNullable() }
+
+  override string getConstantValue() { result = getAChild().getConstantValue() }
+
+  override string getAMatchedString() { result = getAChild().getAMatchedString() }
 }
 
 /**
- * A normal character without special meaning in a regular expression.
+ * A sequence of normal characters without special meaning in a regular expression.
  *
  * Example:
  *
  * ```
+ * abc
  * ;
  * ```
  */
-class RegExpNormalChar extends RegExpConstant, @regexp_normal_char { }
+class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant { }
+
+/**
+ * DEPRECATED. Use `RegExpNormalConstant` instead.
+ *
+ * This class used to represent an individual normal character but has been superseded by
+ * `RegExpNormalConstant`, which represents a sequence of normal characters.
+ * There is no longer a separate node for each individual character in a constant.
+ */
+deprecated class RegExpNormalChar = RegExpNormalConstant;
 
 /**
  * A hexadecimal character escape in a regular expression.
@@ -644,6 +774,10 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   predicate isInverted() { isInverted(this) }
 
   override predicate isNullable() { none() }
+
+  override string getAMatchedString() {
+    not isInverted() and result = getAChild().getAMatchedString()
+  }
 }
 
 /**
@@ -682,22 +816,25 @@ class RegExpParseError extends Error, @regexp_parse_error {
  * Holds if `source` may be interpreted as a regular expression.
  */
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
-  // The first argument to an invocation of `RegExp` (with or without `new`).
-  source = DataFlow::globalVarRef("RegExp").getAnInvocation().getArgument(0)
-  or
-  // The argument of a call that coerces the argument to a regular expression.
-  exists(MethodCallExpr mce, string methodName |
-    mce.getReceiver().analyze().getAType() = TTString() and
-    mce.getMethodName() = methodName
-  |
-    methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1
+  source.analyze().getAType() = TTString() and
+  (
+    // The first argument to an invocation of `RegExp` (with or without `new`).
+    source = DataFlow::globalVarRef("RegExp").getAnInvocation().getArgument(0)
     or
-    methodName = "search" and
-    source.asExpr() = mce.getArgument(0) and
-    mce.getNumArgument() = 1 and
-    // "search" is a common method name, and so we exclude chained accesses
-    // because `String.prototype.search` returns a number
-    not exists(PropAccess p | p.getBase() = mce)
+    // The argument of a call that coerces the argument to a regular expression.
+    exists(MethodCallExpr mce, string methodName |
+      mce.getReceiver().analyze().getAType() = TTString() and
+      mce.getMethodName() = methodName
+    |
+      methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1
+      or
+      methodName = "search" and
+      source.asExpr() = mce.getArgument(0) and
+      mce.getNumArgument() = 1 and
+      // "search" is a common method name, and so we exclude chained accesses
+      // because `String.prototype.search` returns a number
+      not exists(PropAccess p | p.getBase() = mce)
+    )
   )
 }
 
@@ -761,26 +898,29 @@ abstract class RegExpPatternSource extends DataFlow::Node {
    * of this node.
    */
   abstract DataFlow::SourceNode getARegExpObject();
+
+  /**
+   * Gets the root term of the regular expression parsed from this pattern.
+   */
+  abstract RegExpTerm getRegExpTerm();
 }
 
 /**
  * A regular expression literal, viewed as the pattern source for itself.
  */
-private class RegExpLiteralPatternSource extends RegExpPatternSource {
-  string pattern;
-
-  RegExpLiteralPatternSource() {
-    exists(string raw | raw = asExpr().(RegExpLiteral).getRoot().getRawValue() |
-      // hide the fact that `/` is escaped in the literal
-      pattern = raw.regexpReplaceAll("\\\\/", "/")
-    )
-  }
+private class RegExpLiteralPatternSource extends RegExpPatternSource, DataFlow::ValueNode {
+  override RegExpLiteral astNode;
 
   override DataFlow::Node getAParse() { result = this }
 
-  override string getPattern() { result = pattern }
+  override string getPattern() {
+    // hide the fact that `/` is escaped in the literal
+    result = astNode.getRoot().getRawValue().regexpReplaceAll("\\\\/", "/")
+  }
 
   override DataFlow::SourceNode getARegExpObject() { result = this }
+
+  override RegExpTerm getRegExpTerm() { result = astNode.getRoot() }
 }
 
 /**
@@ -803,4 +943,6 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
   }
 
   override string getPattern() { result = getStringValue() }
+
+  override RegExpTerm getRegExpTerm() { result = asExpr().(StringLiteral).asRegExp() }
 }

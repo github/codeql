@@ -230,7 +230,7 @@ module Closure {
    * Gets the closure namespace path addressed by the given data flow node, if any.
    */
   string getClosureNamespaceFromSourceNode(DataFlow::SourceNode node) {
-    result = GlobalAccessPath::getAccessPath(node) and
+    node = AccessPath::getAReferenceOrAssignmentTo(result) and
     hasClosureNamespacePrefix(result)
   }
 
@@ -238,7 +238,7 @@ module Closure {
    * Gets the closure namespace path written to by the given property write, if any.
    */
   string getWrittenClosureNamespace(DataFlow::PropWrite node) {
-    result = GlobalAccessPath::fromRhs(node.getRhs()) and
+    node.getRhs() = AccessPath::getAnAssignmentTo(result) and
     hasClosureNamespacePrefix(result)
   }
 
@@ -247,5 +247,26 @@ module Closure {
    */
   DataFlow::SourceNode moduleImport(string moduleName) {
     getClosureNamespaceFromSourceNode(result) = moduleName
+  }
+
+  /**
+   * A call to `goog.bind`, as a partial function invocation.
+   */
+  private class BindCall extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
+    BindCall() { this = moduleImport("goog.bind").getACall() }
+
+    override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      index >= 0 and
+      callback = getArgument(0) and
+      argument = getArgument(index + 2)
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      boundArgs = getNumArgument() - 2 and
+      callback = getArgument(0) and
+      result = this
+    }
+
+    override DataFlow::Node getBoundReceiver() { result = getArgument(1) }
   }
 }

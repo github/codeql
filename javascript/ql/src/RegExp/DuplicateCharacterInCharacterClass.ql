@@ -29,6 +29,7 @@ from RegExpCharacterClass recc, RegExpConstant first, RegExpConstant repeat, int
 where
   constantInCharacterClass(recc, 1, first, val) and
   constantInCharacterClass(recc, rnk, repeat, val) and
-  rnk > 1
+  rnk > 1 and
+  recc.isPartOfRegExpLiteral()
 select first, "Character '" + first + "' is repeated $@ in the same character class.", repeat,
   "here"

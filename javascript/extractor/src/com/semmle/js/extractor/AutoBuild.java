@@ -387,6 +387,10 @@ public class AutoBuild {
     patterns.add("-**/*.min.js");
     patterns.add("-**/*-min.js");
 
+    // exclude `node_modules` and `bower_components`
+    patterns.add("-**/node_modules");
+    patterns.add("-**/bower_components");
+
     String base = LGTM_SRC.toString().replace('\\', '/');
     // process `$LGTM_INDEX_FILTERS`
     for (String pattern : Main.NEWLINE.split(getEnvVar("LGTM_INDEX_FILTERS", ""))) {
@@ -574,6 +578,11 @@ public class AutoBuild {
         for (File sourceFile : project.getSourceFiles()) {
           Path sourcePath = sourceFile.toPath();
           if (!files.contains(normalizePath(sourcePath))) continue;
+          if (!FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourcePath))) {
+            // For the time being, skip non-TypeScript files, even if the TypeScript
+            // compiler can parse them for us.
+            continue;
+          }
           if (!extractedFiles.contains(sourcePath)) {
             typeScriptFiles.add(sourcePath.toFile());
           }
@@ -662,6 +671,9 @@ public class AutoBuild {
               throws IOException {
             if (!dir.equals(currentRoot[0]) && (excludes.contains(dir) || dir.toFile().isHidden()))
               return FileVisitResult.SKIP_SUBTREE;
+            if (Files.exists(dir.resolve("codeql-database.yml"))) {
+              return FileVisitResult.SKIP_SUBTREE;
+            }
             return super.preVisitDirectory(dir, attrs);
           }
         };

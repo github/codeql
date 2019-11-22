@@ -1,0 +1,11 @@
+| test.py:7 | request | pyramid.request |
+| test.py:15 | request | pyramid.request |
+| test.py:16 | Attribute | {externally controlled string} |
+| test.py:16 | Subscript | externally controlled string |
+| test.py:16 | request | pyramid.request |
+| test.py:17 | BinaryExpr | externally controlled string |
+| test.py:17 | name | externally controlled string |
+| test.py:24 | request | pyramid.request |
+| test.py:25 | Attribute | externally controlled string |
+| test.py:25 | Dict | {externally controlled string} |
+| test.py:25 | request | pyramid.request |

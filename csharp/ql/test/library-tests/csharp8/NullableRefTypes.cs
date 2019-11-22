@@ -55,6 +55,12 @@ class MyClass
     {
     }
 
+    class Generic2<T1, T2>
+        where T1: MyClass
+        where T2: Generic<string?, T1?, IEnumerable<string?>, MyClass>
+    {
+    }
+
     // Nullable type arguments
     Generic<MyClass?, MyClass, IDisposable, MyClass> items2;
     

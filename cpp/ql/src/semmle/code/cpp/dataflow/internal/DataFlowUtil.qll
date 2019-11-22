@@ -5,6 +5,8 @@
 private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import semmle.code.cpp.controlflow.Guards
+private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 cached
 private newtype TNode =
@@ -180,7 +182,7 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
 
   override Type getType() { result = f.getDeclaringType() }
 
-  override string toString() { result = "`this` parameter in " + f.getName() }
+  override string toString() { result = "this" }
 
   override Location getLocation() { result = f.getLocation() }
 
@@ -680,12 +682,16 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Expr {
-  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `branch`. */
-  abstract deprecated predicate checks(Expr e, boolean branch);
+class BarrierGuard extends GuardCondition {
+  /** Override this predicate to hold if this guard validates `e` upon evaluating to `b`. */
+  abstract predicate checks(Expr e, boolean b);
 
   /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
-    none() // stub
+  final ExprNode getAGuardedNode() {
+    exists(GVN value, boolean branch |
+      result.getExpr() = value.getAnExpr() and
+      this.checks(value.getAnExpr(), branch) and
+      this.controls(result.getExpr().getBasicBlock(), branch)
+    )
   }
 }

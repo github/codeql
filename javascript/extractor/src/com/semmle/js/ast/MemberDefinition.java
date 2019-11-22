@@ -75,6 +75,11 @@ public abstract class MemberDefinition<V extends Expression> extends Node {
     return DeclarationFlags.isReadonly(flags);
   }
 
+  /** Returns true if this has the <tt>declare</tt> modifier. */
+  public boolean hasDeclareKeyword() {
+    return DeclarationFlags.hasDeclareKeyword(flags);
+  }
+
   /**
    * Returns the expression denoting the name of the member, or {@code null} if this is a
    * call/construct signature.

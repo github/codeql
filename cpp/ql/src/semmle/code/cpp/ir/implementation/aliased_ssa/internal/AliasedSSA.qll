@@ -45,6 +45,7 @@ private newtype TMemoryLocation =
     languageType = type.getCanonicalLanguageType()
   } or
   TUnknownMemoryLocation(IRFunction irFunc) or
+  TUnknownNonLocalMemoryLocation(IRFunction irFunc) or
   TUnknownVirtualVariable(IRFunction irFunc)
 
 /**
@@ -163,6 +164,26 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
 }
 
 /**
+ * An access to memory that is not known to be confined to a specific `IRVariable`, but is known to
+ * not access memory on the current function's stack frame.
+ */
+class UnknownNonLocalMemoryLocation extends TUnknownNonLocalMemoryLocation, MemoryLocation {
+  IRFunction irFunc;
+
+  UnknownNonLocalMemoryLocation() { this = TUnknownNonLocalMemoryLocation(irFunc) }
+
+  final override string toString() { result = "{UnknownNonLocal}" }
+
+  final override VirtualVariable getVirtualVariable() { result = TUnknownVirtualVariable(irFunc) }
+
+  final override Language::LanguageType getType() {
+    result = any(IRUnknownType type).getCanonicalLanguageType()
+  }
+
+  final override string getUniqueId() { result = "{UnknownNonLocal}" }
+}
+
+/**
  * An access to all aliased memory.
  */
 class UnknownVirtualVariable extends TUnknownVirtualVariable, VirtualVariable {
@@ -189,10 +210,21 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
     def instanceof UnknownVirtualVariable and
     result instanceof MustTotallyOverlap
     or
-    // An UnknownMemoryLocation may partially overlap any Location within the same virtual variable.
+    // An UnknownMemoryLocation may partially overlap any Location within the same virtual variable,
+    // unless the location is read-only.
     def.getVirtualVariable() = use.getVirtualVariable() and
     def instanceof UnknownMemoryLocation and
-    result instanceof MayPartiallyOverlap
+    result instanceof MayPartiallyOverlap and
+    not use.(VariableMemoryLocation).getVariable().isReadOnly()
+    or
+    // An UnknownNonLocalMemoryLocation may partially overlap any location within the same virtual
+    // variable, except a local variable or read-only variable.
+    def.getVirtualVariable() = use.getVirtualVariable() and
+    def instanceof UnknownNonLocalMemoryLocation and
+    result instanceof MayPartiallyOverlap and
+    not exists(IRVariable var | var = use.(VariableMemoryLocation).getVariable() |
+      var instanceof IRAutomaticVariable or var.isReadOnly()
+    )
     or
     exists(VariableMemoryLocation defVariableLocation |
       defVariableLocation = def and
@@ -201,6 +233,13 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
         def.getVirtualVariable() = use.getVirtualVariable() and
         (use instanceof UnknownMemoryLocation or use instanceof UnknownVirtualVariable) and
         result instanceof MayPartiallyOverlap
+        or
+        // A VariableMemoryLocation that is not a local variable may partially overlap an unknown
+        // non-local location within the same virtual variable.
+        def.getVirtualVariable() = use.getVirtualVariable() and
+        use instanceof UnknownNonLocalMemoryLocation and
+        result instanceof MayPartiallyOverlap and
+        not defVariableLocation.getVariable() instanceof IRAutomaticVariable
         or
         // A VariableMemoryLocation overlaps another location within the same variable based on the relationship
         // of the two offset intervals.
@@ -327,6 +366,9 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
       or
       kind instanceof EscapedMayMemoryAccess and
       result = TUnknownMemoryLocation(instr.getEnclosingIRFunction())
+      or
+      kind instanceof NonLocalMayMemoryAccess and
+      result = TUnknownNonLocalMemoryLocation(instr.getEnclosingIRFunction())
     )
   )
 }
@@ -351,6 +393,9 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
       or
       kind instanceof EscapedMayMemoryAccess and
       result = TUnknownMemoryLocation(operand.getEnclosingIRFunction())
+      or
+      kind instanceof NonLocalMayMemoryAccess and
+      result = TUnknownNonLocalMemoryLocation(operand.getEnclosingIRFunction())
     )
   )
 }
