@@ -1,5 +1,7 @@
 | main.go:10:22:10:22 | x | main.go:10:22:10:27 | ...+... |
 | main.go:10:24:10:27 | call to fn | main.go:10:22:10:27 | ...+... |
+| main.go:17:3:17:5 | acc | main.go:17:3:17:7 | rhs of increment statement |
+| main.go:17:3:17:7 | 1 | main.go:17:3:17:7 | rhs of increment statement |
 | main.go:26:11:26:17 | type assertion | main.go:26:2:26:17 | ... := ...[0] |
 | main.go:26:11:26:17 | type assertion | main.go:26:2:26:17 | ... := ...[1] |
 | strings.go:9:24:9:24 | s | strings.go:9:8:9:38 | call to Replace |
