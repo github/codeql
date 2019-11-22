@@ -111,7 +111,9 @@ module TaintTracking {
 
   /** Holds if taint flows from `pred` to `succ` via string concatenation. */
   predicate stringConcatStep(DataFlow::Node pred, DataFlow::Node succ) {
-    succ.asExpr().(AddExpr).getAnOperand() = pred.asExpr()
+    exists(DataFlow::BinaryOperationNode conc | conc.getOperator() = "+" |
+      succ = conc and conc.getAnOperand() = pred
+    )
   }
 
   /** Holds if taint flows from `pred` to `succ` via a slice operation. */
