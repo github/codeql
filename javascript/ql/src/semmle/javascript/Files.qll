@@ -199,6 +199,11 @@ class Folder extends Container, @folder {
 
 /** A file. */
 class File extends Container, @file {
+  /**
+   * Gets the location of this file.
+   *
+   * Note that files have special locations starting and ending at line zero, column zero.
+   */
   Location getLocation() { hasLocation(this, result) }
 
   override string getAbsolutePath() { files(this, result, _, _, _) }
