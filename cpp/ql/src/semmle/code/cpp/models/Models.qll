@@ -1,4 +1,5 @@
 private import implementations.Allocation
+private import implementations.Deallocation
 private import implementations.IdentityFunction
 private import implementations.Inet
 private import implementations.Memcpy
