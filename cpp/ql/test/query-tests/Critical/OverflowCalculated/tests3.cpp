@@ -50,7 +50,7 @@ void tests3(int case_num)
 
 void test3b()
 {
-	char *buffer = new char[strlen(str3global)]; // BAD [NOT DETECTED]
+	char *buffer = new char[strlen(str3global)]; // BAD
 
 	strcpy(buffer, str3global);
 
