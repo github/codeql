@@ -12,7 +12,7 @@
 </recommendation>
 
 <example>
-<p>In the following example, the <code>sslv2</code> protocol is specified.  This protocol is out-of-date and its use is not recommended.</p>
+<p>In the following example, the <code>sslv2</code> protocol is specified.  This protocol is out of date and its use is not recommended.</p>
 <sample src="UseOfDeprecatedHardcodedProtocolBad.cpp"/>
 <p>In the corrected example, the <code>tlsv13</code> protocol is used instead.</p>
 <sample src="UseOfDeprecatedHardcodedProtocolGood.cpp"/>
