@@ -120,3 +120,13 @@ app.get('/user/:id', function(req, res) {
   }
 });
 
+
+(function () {
+    sessionStorage.setItem('exceptionSession', document.location.search);
+
+	try {
+		unknown(sessionStorage.getItem('exceptionSession'));
+	} catch(e) {
+		$('myId').html(e); // NOT OK
+	}
+})();

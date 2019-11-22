@@ -9,10 +9,7 @@ import javascript
 module ExceptionXss {
   import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
   import ReflectedXssCustomizations::ReflectedXss as ReflectedXssCustom
-  import Xss::DomBasedXss as DomBasedXss
-  import Xss::ReflectedXss as ReflectedXSS
-  import Xss::StoredXss as StoredXss
-  import Xss as XSS
+  import Xss as Xss
   
   /**
    * Holds if `node` cannot cause an exception containing sensitive information to be thrown.
@@ -59,14 +56,14 @@ module ExceptionXss {
     Configuration() { this = "ExceptionXss" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-      source instanceof XSS::Shared::Source and label instanceof NotYetThrown
+      source instanceof Xss::Shared::Source and label instanceof NotYetThrown
     }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-      sink instanceof XSS::Shared::Sink and not label instanceof NotYetThrown
+      sink instanceof Xss::Shared::Sink and not label instanceof NotYetThrown
     }
 
-    override predicate isSanitizer(DataFlow::Node node) { node instanceof XSS::Shared::Sanitizer }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Xss::Shared::Sanitizer }
 
     override predicate isAdditionalFlowStep(
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl,

@@ -52,6 +52,23 @@ nodes
 | exception-xss.js:119:14:119:30 | "Exception: " + e |
 | exception-xss.js:119:14:119:30 | "Exception: " + e |
 | exception-xss.js:119:30:119:30 | e |
+| exception-xss.js:125:48:125:64 | document.location |
+| exception-xss.js:125:48:125:64 | document.location |
+| exception-xss.js:125:48:125:71 | documen ... .search |
+| exception-xss.js:128:11:128:52 | session ... ssion') |
+| exception-xss.js:129:10:129:10 | e |
+| exception-xss.js:130:18:130:18 | e |
+| exception-xss.js:130:18:130:18 | e |
+| tst.js:298:9:298:16 | location |
+| tst.js:298:9:298:16 | location |
+| tst.js:299:10:299:10 | e |
+| tst.js:300:20:300:20 | e |
+| tst.js:300:20:300:20 | e |
+| tst.js:305:10:305:17 | location |
+| tst.js:305:10:305:17 | location |
+| tst.js:307:10:307:10 | e |
+| tst.js:308:20:308:20 | e |
+| tst.js:308:20:308:20 | e |
 edges
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:9:11:9:13 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:15:9:15:11 | foo |
@@ -104,6 +121,20 @@ edges
 | exception-xss.js:118:11:118:11 | e | exception-xss.js:119:30:119:30 | e |
 | exception-xss.js:119:30:119:30 | e | exception-xss.js:119:14:119:30 | "Exception: " + e |
 | exception-xss.js:119:30:119:30 | e | exception-xss.js:119:14:119:30 | "Exception: " + e |
+| exception-xss.js:125:48:125:64 | document.location | exception-xss.js:125:48:125:71 | documen ... .search |
+| exception-xss.js:125:48:125:64 | document.location | exception-xss.js:125:48:125:71 | documen ... .search |
+| exception-xss.js:125:48:125:71 | documen ... .search | exception-xss.js:128:11:128:52 | session ... ssion') |
+| exception-xss.js:128:11:128:52 | session ... ssion') | exception-xss.js:129:10:129:10 | e |
+| exception-xss.js:129:10:129:10 | e | exception-xss.js:130:18:130:18 | e |
+| exception-xss.js:129:10:129:10 | e | exception-xss.js:130:18:130:18 | e |
+| tst.js:298:9:298:16 | location | tst.js:299:10:299:10 | e |
+| tst.js:298:9:298:16 | location | tst.js:299:10:299:10 | e |
+| tst.js:299:10:299:10 | e | tst.js:300:20:300:20 | e |
+| tst.js:299:10:299:10 | e | tst.js:300:20:300:20 | e |
+| tst.js:305:10:305:17 | location | tst.js:307:10:307:10 | e |
+| tst.js:305:10:305:17 | location | tst.js:307:10:307:10 | e |
+| tst.js:307:10:307:10 | e | tst.js:308:20:308:20 | e |
+| tst.js:307:10:307:10 | e | tst.js:308:20:308:20 | e |
 #select
 | exception-xss.js:11:18:11:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:11:18:11:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:17:18:17:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:17:18:17:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
@@ -115,3 +146,6 @@ edges
 | exception-xss.js:97:18:97:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:97:18:97:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:107:18:107:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:107:18:107:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:119:14:119:30 | "Exception: " + e | exception-xss.js:117:13:117:25 | req.params.id | exception-xss.js:119:14:119:30 | "Exception: " + e | Cross-site scripting vulnerability due to $@. | exception-xss.js:117:13:117:25 | req.params.id | user-provided value |
+| exception-xss.js:130:18:130:18 | e | exception-xss.js:125:48:125:64 | document.location | exception-xss.js:130:18:130:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:125:48:125:64 | document.location | user-provided value |
+| tst.js:300:20:300:20 | e | tst.js:298:9:298:16 | location | tst.js:300:20:300:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:298:9:298:16 | location | user-provided value |
+| tst.js:308:20:308:20 | e | tst.js:305:10:305:17 | location | tst.js:308:20:308:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:305:10:305:17 | location | user-provided value |
