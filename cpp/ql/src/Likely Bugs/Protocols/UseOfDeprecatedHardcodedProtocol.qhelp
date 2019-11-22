@@ -4,7 +4,6 @@
 <qhelp>
 <overview>
   <p>Using boost::asio library but specifying a deprecated hardcoded protocol.</p>
-  <p>Using a deprecated hard-coded protocol instead of negotiating will lock your application to a protocol that has known vulnerabilities or weaknesses.</p>
 </overview>
 
 <recommendation>
