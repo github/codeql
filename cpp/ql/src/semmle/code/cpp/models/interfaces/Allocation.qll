@@ -30,7 +30,7 @@ abstract class AllocationFunction extends Function {
 
   /**
    * Gets the index of the input pointer argument to be reallocated, if this
-   * is a `realloc` function. 
+   * is a `realloc` function.
    */
   int getReallocPtrArg() { none() }
 }
@@ -60,7 +60,7 @@ abstract class AllocationExpr extends Expr {
 
   /**
    * Gets the expression for the input pointer argument to be reallocated, if
-   * this is a `realloc` function. 
+   * this is a `realloc` function.
    */
   Expr getReallocPtr() { none() }
 }

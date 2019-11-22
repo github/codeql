@@ -15,7 +15,9 @@ import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.models.interfaces.Allocation
 
 predicate spaceProblem(FunctionCall append, string msg) {
-  exists(AllocationExpr malloc, StrlenCall strlen, AddExpr add, FunctionCall insert, Variable buffer |
+  exists(
+    AllocationExpr malloc, StrlenCall strlen, AddExpr add, FunctionCall insert, Variable buffer
+  |
     add.getAChild() = strlen and
     exists(add.getAChild().getValue()) and
     DataFlow::localExprFlow(add, malloc.getSizeExpr()) and

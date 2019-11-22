@@ -4,35 +4,27 @@ import semmle.code.cpp.models.interfaces.Deallocation
 
 /**
  * A library routine that allocates memory.
- * 
+ *
  * DEPRECATED: Use the `MallocFunction` class instead of this predicate.
  */
-deprecated predicate allocationFunction(Function f) {
-  f instanceof AllocationFunction
-}
+deprecated predicate allocationFunction(Function f) { f instanceof AllocationFunction }
 
 /**
  * A call to a library routine that allocates memory.
  *
  * DEPRECATED: Use `AllocationExpr` instead (this also includes `new` expressions).
  */
-deprecated predicate allocationCall(FunctionCall fc) {
-  fc instanceof AllocationExpr
-}
+deprecated predicate allocationCall(FunctionCall fc) { fc instanceof AllocationExpr }
 
 /**
  * A library routine that frees memory.
  */
-predicate freeFunction(Function f, int argNum) {
-  argNum = f.(DeallocationFunction).getFreedArg()
-}
+predicate freeFunction(Function f, int argNum) { argNum = f.(DeallocationFunction).getFreedArg() }
 
 /**
  * A call to a library routine that frees memory.
  */
-predicate freeCall(FunctionCall fc, Expr arg) {
-  arg = fc.(DeallocationExpr).getFreedExpr()
-}
+predicate freeCall(FunctionCall fc, Expr arg) { arg = fc.(DeallocationExpr).getFreedExpr() }
 
 /**
  * Is e some kind of allocation or deallocation (`new`, `alloc`, `realloc`, `delete`, `free` etc)?
@@ -69,6 +61,4 @@ deprecated predicate isFixedSizeAllocationExpr(Expr allocExpr, int size) {
  *
  * DEPRECATED: Use `DeallocationExpr` instead.
  */
-deprecated predicate isDeallocationExpr(Expr e) {
-  e instanceof DeallocationExpr
-}
+deprecated predicate isDeallocationExpr(Expr e) { e instanceof DeallocationExpr }

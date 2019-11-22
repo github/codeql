@@ -10,62 +10,78 @@ class MallocAllocationFunction extends AllocationFunction {
   MallocAllocationFunction() {
     exists(string name |
       hasGlobalOrStdName(name) and
-      (
-        // malloc(size)
-        (name = "malloc" and sizeArg = 0)
-      )
+      // malloc(size)
+      (name = "malloc" and sizeArg = 0)
       or
       hasGlobalName(name) and
       (
         // ExAllocatePool(type, size)
-        (name = "ExAllocatePool" and sizeArg = 1) or
+        name = "ExAllocatePool" and sizeArg = 1
+        or
         // ExAllocatePool(type, size, tag)
-        (name = "ExAllocatePoolWithTag" and sizeArg = 1) or
+        name = "ExAllocatePoolWithTag" and sizeArg = 1
+        or
         // ExAllocatePoolWithTagPriority(type, size, tag, priority)
-        (name = "ExAllocatePoolWithTagPriority" and sizeArg = 1) or
+        name = "ExAllocatePoolWithTagPriority" and sizeArg = 1
+        or
         // ExAllocatePoolWithQuota(type, size)
-        (name = "ExAllocatePoolWithQuota" and sizeArg = 1) or
+        name = "ExAllocatePoolWithQuota" and sizeArg = 1
+        or
         // ExAllocatePoolWithQuotaTag(type, size, tag)
-        (name = "ExAllocatePoolWithQuotaTag" and sizeArg = 1) or
+        name = "ExAllocatePoolWithQuotaTag" and sizeArg = 1
+        or
         // IoAllocateMdl(address, size, flag, flag, irp)
-        (name = "IoAllocateMdl" and sizeArg = 1) or
+        name = "IoAllocateMdl" and sizeArg = 1
+        or
         // IoAllocateErrorLogEntry(object, size)
-        (name = "IoAllocateErrorLogEntry" and sizeArg = 1) or
+        name = "IoAllocateErrorLogEntry" and sizeArg = 1
+        or
         // MmAllocateContiguousMemory(size, maxaddress)
-        (name = "MmAllocateContiguousMemory" and sizeArg = 0) or
+        name = "MmAllocateContiguousMemory" and sizeArg = 0
+        or
         // MmAllocateContiguousNodeMemory(size, minaddress, maxaddress, bound, flag, prefer)
-        (name = "MmAllocateContiguousNodeMemory" and sizeArg = 0) or
+        name = "MmAllocateContiguousNodeMemory" and sizeArg = 0
+        or
         // MmAllocateContiguousMemorySpecifyCache(size, minaddress, maxaddress, bound, type)
-        (name = "MmAllocateContiguousMemorySpecifyCache" and sizeArg = 0) or
+        name = "MmAllocateContiguousMemorySpecifyCache" and sizeArg = 0
+        or
         // MmAllocateContiguousMemorySpecifyCacheNode(size, minaddress, maxaddress, bound, type, prefer)
-        (name = "MmAllocateContiguousMemorySpecifyCacheNode" and sizeArg = 0) or
+        name = "MmAllocateContiguousMemorySpecifyCacheNode" and sizeArg = 0
+        or
         // MmAllocateNonCachedMemory(size)
-        (name = "MmAllocateNonCachedMemory" and sizeArg = 0) or
+        name = "MmAllocateNonCachedMemory" and sizeArg = 0
+        or
         // MmAllocateMappingAddress(size, tag)
-        (name = "MmAllocateMappingAddress" and sizeArg = 0) or
+        name = "MmAllocateMappingAddress" and sizeArg = 0
+        or
         // MmAllocatePagesForMdl(minaddress, maxaddress, skip, size)
-        (name = "MmAllocatePagesForMdl" and sizeArg = 3) or
+        name = "MmAllocatePagesForMdl" and sizeArg = 3
+        or
         // MmAllocatePagesForMdlEx(minaddress, maxaddress, skip, size, type, flags)
-        (name = "MmAllocatePagesForMdlEx" and sizeArg = 3) or
+        name = "MmAllocatePagesForMdlEx" and sizeArg = 3
+        or
         // MmAllocateNodePagesForMdlEx(minaddress, maxaddress, skip, size, type, prefer, flags)
-        (name = "MmAllocateNodePagesForMdlEx" and sizeArg = 3) or
+        name = "MmAllocateNodePagesForMdlEx" and sizeArg = 3
+        or
         // LocalAlloc(flags, size)
-        (name = "LocalAlloc" and sizeArg = 1) or
+        name = "LocalAlloc" and sizeArg = 1
+        or
         // GlobalAlloc(flags, size)
-        (name = "GlobalAlloc" and sizeArg = 1) or
+        name = "GlobalAlloc" and sizeArg = 1
+        or
         // HeapAlloc(heap, flags, size)
-        (name = "HeapAlloc" and sizeArg = 2) or
+        name = "HeapAlloc" and sizeArg = 2
+        or
         // VirtualAlloc(address, size, type, flag)
-        (name = "VirtualAlloc" and sizeArg = 1) or
+        name = "VirtualAlloc" and sizeArg = 1
+        or
         // CoTaskMemAlloc(size)
-        (name = "CoTaskMemAlloc" and sizeArg = 0)
+        name = "CoTaskMemAlloc" and sizeArg = 0
       )
     )
   }
 
-  override int getSizeArg() {
-  	result = sizeArg
-  }
+  override int getSizeArg() { result = sizeArg }
 }
 
 /**
@@ -84,13 +100,9 @@ class CallocAllocationFunction extends AllocationFunction {
     )
   }
 
-  override int getSizeArg() {
-  	result = sizeArg
-  }
+  override int getSizeArg() { result = sizeArg }
 
-  override int getSizeMult() {
-  	result = multArg
-  }
+  override int getSizeMult() { result = multArg }
 }
 
 /**
@@ -101,34 +113,32 @@ class ReallocAllocationFunction extends AllocationFunction {
   int sizeArg;
   int reallocArg;
 
-  ReallocAllocationFunction() {  exists(string name |
-    hasGlobalOrStdName(name) and
-    (
+  ReallocAllocationFunction() {
+    exists(string name |
+      hasGlobalOrStdName(name) and
       // realloc(ptr, size)
       (name = "realloc" and sizeArg = 1 and reallocArg = 0)
+      or
+      hasGlobalName(name) and
+      (
+        // LocalReAlloc(ptr, size, flags)
+        name = "LocalReAlloc" and sizeArg = 1 and reallocArg = 0
+        or
+        // GlobalReAlloc(ptr, size, flags)
+        name = "GlobalReAlloc" and sizeArg = 1 and reallocArg = 0
+        or
+        // HeapReAlloc(heap, flags, ptr, size)
+        name = "HeapReAlloc" and sizeArg = 3 and reallocArg = 2
+        or
+        // CoTaskMemRealloc(ptr, size)
+        name = "CoTaskMemRealloc" and sizeArg = 1 and reallocArg = 0
+      )
     )
-    or
-    hasGlobalName(name) and
-    (
-      // LocalReAlloc(ptr, size, flags)
-      (name = "LocalReAlloc" and sizeArg = 1 and reallocArg = 0) or
-      // GlobalReAlloc(ptr, size, flags)
-      (name = "GlobalReAlloc" and sizeArg = 1 and reallocArg = 0) or
-      // HeapReAlloc(heap, flags, ptr, size)
-      (name = "HeapReAlloc" and sizeArg = 3 and reallocArg = 2) or
-      // CoTaskMemRealloc(ptr, size)
-      (name = "CoTaskMemRealloc" and sizeArg = 1 and reallocArg = 0)
-    )
-  )
   }
 
-  override int getSizeArg() {
-  	result = sizeArg
-  }
+  override int getSizeArg() { result = sizeArg }
 
-  override int getReallocPtrArg() {
-    result = reallocArg
-  }
+  override int getReallocPtrArg() { result = reallocArg }
 }
 
 /**
@@ -141,7 +151,8 @@ class StrdupAllocationFunction extends AllocationFunction {
       hasGlobalOrStdName(name) and
       (
         // strdup(str)
-        name = "strdup" or
+        name = "strdup"
+        or
         // wcsdup(str)
         name = "wcsdup"
       )
@@ -149,25 +160,35 @@ class StrdupAllocationFunction extends AllocationFunction {
       hasGlobalName(name) and
       (
         // _strdup(str)
-        name = "_strdup" or
+        name = "_strdup"
+        or
         // _wcsdup(str)
-        name = "_wcsdup" or
+        name = "_wcsdup"
+        or
         // _mbsdup(str)
-        name = "_mbsdup" or
+        name = "_mbsdup"
+        or
         // ExAllocateFromLookasideListEx(list)
-        name = "ExAllocateFromLookasideListEx" or
+        name = "ExAllocateFromLookasideListEx"
+        or
         // ExAllocateFromPagedLookasideList(list)
-        name = "ExAllocateFromPagedLookasideList" or
+        name = "ExAllocateFromPagedLookasideList"
+        or
         // ExAllocateFromNPagedLookasideList(list)
-        name = "ExAllocateFromNPagedLookasideList" or
+        name = "ExAllocateFromNPagedLookasideList"
+        or
         // ExAllocateTimer(callback, context, attributes)
-        name = "ExAllocateTimer" or
+        name = "ExAllocateTimer"
+        or
         // IoAllocateWorkItem(object)
-        name = "IoAllocateWorkItem" or
+        name = "IoAllocateWorkItem"
+        or
         // MmMapLockedPagesWithReservedMapping(address, tag, list, type)
-        name = "MmMapLockedPagesWithReservedMapping" or
+        name = "MmMapLockedPagesWithReservedMapping"
+        or
         // MmMapLockedPages(list, mode)
-        name = "MmMapLockedPages" or
+        name = "MmMapLockedPages"
+        or
         // MmMapLockedPagesSpecifyCache(list, mode, type, address, flag, flag)
         name = "MmMapLockedPagesSpecifyCache"
       )
@@ -183,70 +204,54 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
 
   CallAllocationExpr() {
     target = getTarget() and
-  	// realloc(ptr, 0) only frees the pointer
-  	not (
-  	  exists(target.getReallocPtrArg()) and
-  	  getArgument(target.getSizeArg()).getValue().toInt() = 0
-  	)
+    // realloc(ptr, 0) only frees the pointer
+    not (
+      exists(target.getReallocPtrArg()) and
+      getArgument(target.getSizeArg()).getValue().toInt() = 0
+    )
   }
 
-  override Expr getSizeExpr() {
-  	result = getArgument(target.getSizeArg())
-  }
+  override Expr getSizeExpr() { result = getArgument(target.getSizeArg()) }
 
   override int getSizeMult() {
-  	// malloc with multiplier argument that is a constant
+    // malloc with multiplier argument that is a constant
     result = getArgument(target.getSizeMult()).getValue().toInt()
     or
     // malloc with no multiplier argument
-    (
-  	  not exists(target.getSizeMult()) and
-  	  result = 1
-  	)
+    not exists(target.getSizeMult()) and
+    result = 1
   }
 
-  override int getSizeBytes() {
-  	result = getSizeExpr().getValue().toInt() * getSizeMult()
-  }
+  override int getSizeBytes() { result = getSizeExpr().getValue().toInt() * getSizeMult() }
 
-  override Expr getReallocPtr() {
-  	result = getArgument(target.getReallocPtrArg())
-  }
+  override Expr getReallocPtr() { result = getArgument(target.getReallocPtrArg()) }
 }
 
 /**
  * An allocation expression that is a `new` expression.
  */
 class NewAllocationExpr extends AllocationExpr, NewExpr {
-  NewAllocationExpr() {
-  	this instanceof NewExpr
-  }
+  NewAllocationExpr() { this instanceof NewExpr }
 
-  override int getSizeBytes() {
-    result = getAllocatedType().getSize()
-  }
+  override int getSizeBytes() { result = getAllocatedType().getSize() }
 }
 
 /**
  * An allocation expression that is a `new []` expression.
  */
 class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
-  NewArrayAllocationExpr() {
-  	this instanceof NewArrayExpr
-  }
+  NewArrayAllocationExpr() { this instanceof NewArrayExpr }
 
   override Expr getSizeExpr() {
-  	// new array expr with variable size
-  	result = getExtent()
+    // new array expr with variable size
+    result = getExtent()
   }
 
   override int getSizeMult() {
-   // new array expr with variable size
-   exists(getExtent()) and
-   result = getAllocatedElementType().getSize()
+    // new array expr with variable size
+    exists(getExtent()) and
+    result = getAllocatedElementType().getSize()
   }
 
-  override int getSizeBytes() {
-    result = getAllocatedType().getSize()
-  }
+  override int getSizeBytes() { result = getAllocatedType().getSize() }
 }

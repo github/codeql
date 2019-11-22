@@ -70,9 +70,7 @@ class StandardDeallocationFunction extends DeallocationFunction {
     )
   }
 
-  override int getFreedArg() {
-  	result = freedArg
-  }
+  override int getFreedArg() { result = freedArg }
 }
 
 /**
@@ -81,37 +79,25 @@ class StandardDeallocationFunction extends DeallocationFunction {
 class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
   DeallocationFunction target;
 
-  CallDeallocationExpr() {
-  	target = getTarget()
-  }
+  CallDeallocationExpr() { target = getTarget() }
 
-  override Expr getFreedExpr() {
-    result = getArgument(target.getFreedArg())
-  }
+  override Expr getFreedExpr() { result = getArgument(target.getFreedArg()) }
 }
 
 /**
  * An deallocation expression that is a `delete` expression.
  */
 class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
-  DeleteDeallocationExpr() {
-    this instanceof DeleteExpr
-  }
+  DeleteDeallocationExpr() { this instanceof DeleteExpr }
 
-  override Expr getFreedExpr() {
-    result = getExpr()
-  }
+  override Expr getFreedExpr() { result = getExpr() }
 }
 
 /**
  * An deallocation expression that is a `delete []` expression.
  */
 class DeleteArrayDeallocationExpr extends DeallocationExpr, DeleteArrayExpr {
-  DeleteArrayDeallocationExpr() {
-    this instanceof DeleteArrayExpr
-  }
+  DeleteArrayDeallocationExpr() { this instanceof DeleteArrayExpr }
 
-  override Expr getFreedExpr() {
-    result = getExpr()
-  }
+  override Expr getFreedExpr() { result = getExpr() }
 }
