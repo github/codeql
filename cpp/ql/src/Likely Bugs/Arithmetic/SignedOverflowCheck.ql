@@ -23,7 +23,7 @@ where
   ro.getAnOperand() = expr2 and
   globalValueNumber(expr1) = globalValueNumber(expr2) and
   add.getUnspecifiedType().(IntegralType).isSigned() and
-  not isFromMacroDefinition(add) and
+  not isFromMacroDefinition(ro) and
   exprMightOverflowPositively(add) and
   exists(Compilation c | c.getAFileCompiled() = ro.getFile() |
     not c.getAnArgument() = "-fwrapv" and
