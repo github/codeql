@@ -2,6 +2,8 @@
 // library
 typedef unsigned int size_t;
 void *malloc(size_t size);
+void *calloc(size_t nmemb, size_t size); 
+void *realloc(void *ptr, size_t size);
 void free(void* ptr);
 
 struct FILE;
@@ -51,6 +53,13 @@ public:
 
 		myFile1 = fopen("file1.txt", "rt"); // GOOD
 		myFile2 = fopen("file2.txt", "rt"); // BAD: not closed in destructor
+
+
+
+
+
+
+
 	}
 	
 	~MyClass()
@@ -58,6 +67,7 @@ public:
 		delete myPtr1;
 		free(myPtr3);
 		fclose(myFile1);
+
 	}
 
 	void close()
