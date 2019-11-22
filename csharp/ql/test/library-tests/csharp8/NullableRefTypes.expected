@@ -59,7 +59,7 @@ assignableTypes
 | NullableRefTypes.cs:26:38:26:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass![]?[]! | <<!>?>! |
 | NullableRefTypes.cs:27:38:27:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass?[][]! | <<?>!>! |
 | NullableRefTypes.cs:32:20:32:20 | a | NullableRefTypes.cs:6:7:6:13 | MyClass! | ! |
-| NullableRefTypes.cs:32:31:32:31 | b | NullableRefTypes.cs:6:7:6:13 | MyClass? | ? |
+| NullableRefTypes.cs:32:32:32:32 | b | NullableRefTypes.cs:6:7:6:13 | MyClass? | ? |
 | NullableRefTypes.cs:37:17:37:17 | a | NullableRefTypes.cs:6:7:6:13 | MyClass! | ! |
 | NullableRefTypes.cs:38:18:38:18 | b | NullableRefTypes.cs:6:7:6:13 | MyClass? | ? |
 | NullableRefTypes.cs:39:21:39:21 | c | NullableRefTypes.cs:6:7:6:13 | ref MyClass! | ! |

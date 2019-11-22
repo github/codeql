@@ -8,7 +8,7 @@ class MyClass
     // Nullable fields
     MyClass? A;
     MyClass B;
-    
+
     // Nullable properties
     MyClass? C => null;
     MyClass D => this;
@@ -25,12 +25,12 @@ class MyClass
     MyClass?[][] H;
     MyClass[]? ArrayFn1(MyClass[]?[] x) => throw null;
     MyClass?[] ArrayFn2(MyClass?[][] x) => throw null;
-    
+
     // Methods
     MyClass? M() => null;
     MyClass N() => this;
-    void O(MyClass a, MyClass?b) { }
-    
+    void O(MyClass a, MyClass? b) { }
+
     // Local variables
     void Locals()
     {
@@ -46,24 +46,24 @@ class MyClass
     // Events
     delegate MyClass? Del(MyClass x);
     event Del? P;
-        
+
     // Nullable method type parameters
-    object Q<T>(T t) where T: MyClass? => null;
+    object Q<T>(T t) where T : MyClass? => null;
 
     // Nullable type parameters
-    class Generic<T1, T2, T3, T4> where T1: class? where T2: MyClass? where T3: class where T4: MyClass
+    class Generic<T1, T2, T3, T4> where T1 : class? where T2 : MyClass? where T3 : class where T4 : MyClass
     {
     }
 
     class Generic2<T1, T2>
-        where T1: MyClass
-        where T2: Generic<string?, T1?, IEnumerable<string?>, MyClass>
+        where T1 : MyClass
+        where T2 : Generic<string?, T1?, IEnumerable<string?>, MyClass>
     {
     }
 
     // Nullable type arguments
     Generic<MyClass?, MyClass, IDisposable, MyClass> items2;
-    
+
     void GenericFn<T>(T x)
     {
     }
