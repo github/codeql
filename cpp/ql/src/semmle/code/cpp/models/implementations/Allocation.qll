@@ -11,32 +11,54 @@ class MallocAllocationFunction extends AllocationFunction {
     exists(string name |
       hasGlobalOrStdName(name) and
       (
-        (name = "malloc" and sizeArg = 0) // malloc(size)
+        // malloc(size)
+        (name = "malloc" and sizeArg = 0)
       )
       or
       hasGlobalName(name) and
       (
-        (name = "ExAllocatePool" and sizeArg = 1) or // ExAllocatePool(type, size)
-        (name = "ExAllocatePoolWithTag" and sizeArg = 1) or // ExAllocatePool(type, size, tag)
-        (name = "ExAllocatePoolWithTagPriority" and sizeArg = 1) or // ExAllocatePoolWithTagPriority(type, size, tag, priority)
-        (name = "ExAllocatePoolWithQuota" and sizeArg = 1) or // ExAllocatePoolWithQuota(type, size)
-        (name = "ExAllocatePoolWithQuotaTag" and sizeArg = 1) or // ExAllocatePoolWithQuotaTag(type, size, tag)
-        (name = "IoAllocateMdl" and sizeArg = 1) or // IoAllocateMdl(address, size, flag, flag, irp)
-        (name = "IoAllocateErrorLogEntry" and sizeArg = 1) or // IoAllocateErrorLogEntry(object, size)
-        (name = "MmAllocateContiguousMemory" and sizeArg = 0) or // MmAllocateContiguousMemory(size, maxaddress)
-        (name = "MmAllocateContiguousNodeMemory" and sizeArg = 0) or // MmAllocateContiguousNodeMemory(size, minaddress, maxaddress, bound, flag, prefer)
-        (name = "MmAllocateContiguousMemorySpecifyCache" and sizeArg = 0) or // MmAllocateContiguousMemorySpecifyCache(size, minaddress, maxaddress, bound, type)
-        (name = "MmAllocateContiguousMemorySpecifyCacheNode" and sizeArg = 0) or // MmAllocateContiguousMemorySpecifyCacheNode(size, minaddress, maxaddress, bound, type, prefer)
-        (name = "MmAllocateNonCachedMemory" and sizeArg = 0) or // MmAllocateNonCachedMemory(size)
-        (name = "MmAllocateMappingAddress" and sizeArg = 0) or // MmAllocateMappingAddress(size, tag)
-        (name = "MmAllocatePagesForMdl" and sizeArg = 3) or // MmAllocatePagesForMdl(minaddress, maxaddress, skip, size)
-        (name = "MmAllocatePagesForMdlEx" and sizeArg = 3) or // MmAllocatePagesForMdlEx(minaddress, maxaddress, skip, size, type, flags)
-        (name = "MmAllocateNodePagesForMdlEx" and sizeArg = 3) or // MmAllocateNodePagesForMdlEx(minaddress, maxaddress, skip, size, type, prefer, flags)
-        (name = "LocalAlloc" and sizeArg = 1) or // LocalAlloc(flags, size)
-        (name = "GlobalAlloc" and sizeArg = 1) or // GlobalAlloc(flags, size)
-        (name = "HeapAlloc" and sizeArg = 2) or // HeapAlloc(heap, flags, size)
-        (name = "VirtualAlloc" and sizeArg = 1) or // VirtualAlloc(address, size, type, flag)
-        (name = "CoTaskMemAlloc" and sizeArg = 0) // CoTaskMemAlloc(size)
+        // ExAllocatePool(type, size)
+        (name = "ExAllocatePool" and sizeArg = 1) or
+        // ExAllocatePool(type, size, tag)
+        (name = "ExAllocatePoolWithTag" and sizeArg = 1) or
+        // ExAllocatePoolWithTagPriority(type, size, tag, priority)
+        (name = "ExAllocatePoolWithTagPriority" and sizeArg = 1) or
+        // ExAllocatePoolWithQuota(type, size)
+        (name = "ExAllocatePoolWithQuota" and sizeArg = 1) or
+        // ExAllocatePoolWithQuotaTag(type, size, tag)
+        (name = "ExAllocatePoolWithQuotaTag" and sizeArg = 1) or
+        // IoAllocateMdl(address, size, flag, flag, irp)
+        (name = "IoAllocateMdl" and sizeArg = 1) or
+        // IoAllocateErrorLogEntry(object, size)
+        (name = "IoAllocateErrorLogEntry" and sizeArg = 1) or
+        // MmAllocateContiguousMemory(size, maxaddress)
+        (name = "MmAllocateContiguousMemory" and sizeArg = 0) or
+        // MmAllocateContiguousNodeMemory(size, minaddress, maxaddress, bound, flag, prefer)
+        (name = "MmAllocateContiguousNodeMemory" and sizeArg = 0) or
+        // MmAllocateContiguousMemorySpecifyCache(size, minaddress, maxaddress, bound, type)
+        (name = "MmAllocateContiguousMemorySpecifyCache" and sizeArg = 0) or
+        // MmAllocateContiguousMemorySpecifyCacheNode(size, minaddress, maxaddress, bound, type, prefer)
+        (name = "MmAllocateContiguousMemorySpecifyCacheNode" and sizeArg = 0) or
+        // MmAllocateNonCachedMemory(size)
+        (name = "MmAllocateNonCachedMemory" and sizeArg = 0) or
+        // MmAllocateMappingAddress(size, tag)
+        (name = "MmAllocateMappingAddress" and sizeArg = 0) or
+        // MmAllocatePagesForMdl(minaddress, maxaddress, skip, size)
+        (name = "MmAllocatePagesForMdl" and sizeArg = 3) or
+        // MmAllocatePagesForMdlEx(minaddress, maxaddress, skip, size, type, flags)
+        (name = "MmAllocatePagesForMdlEx" and sizeArg = 3) or
+        // MmAllocateNodePagesForMdlEx(minaddress, maxaddress, skip, size, type, prefer, flags)
+        (name = "MmAllocateNodePagesForMdlEx" and sizeArg = 3) or
+        // LocalAlloc(flags, size)
+        (name = "LocalAlloc" and sizeArg = 1) or
+        // GlobalAlloc(flags, size)
+        (name = "GlobalAlloc" and sizeArg = 1) or
+        // HeapAlloc(heap, flags, size)
+        (name = "HeapAlloc" and sizeArg = 2) or
+        // VirtualAlloc(address, size, type, flag)
+        (name = "VirtualAlloc" and sizeArg = 1) or
+        // CoTaskMemAlloc(size)
+        (name = "CoTaskMemAlloc" and sizeArg = 0)
       )
     )
   }
@@ -57,7 +79,8 @@ class CallocAllocationFunction extends AllocationFunction {
   CallocAllocationFunction() {
     exists(string name |
       hasGlobalOrStdName(name) and
-      (name = "calloc" and sizeArg = 1 and multArg = 0) // calloc(num, size)
+      // calloc(num, size)
+      (name = "calloc" and sizeArg = 1 and multArg = 0)
     )
   }
 
@@ -81,15 +104,20 @@ class ReallocAllocationFunction extends AllocationFunction {
   ReallocAllocationFunction() {  exists(string name |
     hasGlobalOrStdName(name) and
     (
-      (name = "realloc" and sizeArg = 1 and reallocArg = 0) // realloc(ptr, size)
+      // realloc(ptr, size)
+      (name = "realloc" and sizeArg = 1 and reallocArg = 0)
     )
     or
     hasGlobalName(name) and
     (
-      (name = "LocalReAlloc" and sizeArg = 1 and reallocArg = 0) or // LocalReAlloc(ptr, size, flags)
-      (name = "GlobalReAlloc" and sizeArg = 1 and reallocArg = 0) or // GlobalReAlloc(ptr, size, flags)
-      (name = "HeapReAlloc" and sizeArg = 3 and reallocArg = 2) or // HeapReAlloc(heap, flags, ptr, size)
-      (name = "CoTaskMemRealloc" and sizeArg = 1 and reallocArg = 0) // CoTaskMemRealloc(ptr, size)
+      // LocalReAlloc(ptr, size, flags)
+      (name = "LocalReAlloc" and sizeArg = 1 and reallocArg = 0) or
+      // GlobalReAlloc(ptr, size, flags)
+      (name = "GlobalReAlloc" and sizeArg = 1 and reallocArg = 0) or
+      // HeapReAlloc(heap, flags, ptr, size)
+      (name = "HeapReAlloc" and sizeArg = 3 and reallocArg = 2) or
+      // CoTaskMemRealloc(ptr, size)
+      (name = "CoTaskMemRealloc" and sizeArg = 1 and reallocArg = 0)
     )
   )
   }
@@ -112,23 +140,36 @@ class StrdupAllocationFunction extends AllocationFunction {
     exists(string name |
       hasGlobalOrStdName(name) and
       (
-        name = "strdup" or // strdup(str)
-        name = "wcsdup" // wcsdup(str)
+        // strdup(str)
+        name = "strdup" or
+        // wcsdup(str)
+        name = "wcsdup"
       )
       or
       hasGlobalName(name) and
       (
-        name = "_strdup" or // _strdup(str)
-        name = "_wcsdup" or // _wcsdup(str)
-        name = "_mbsdup" or // _mbsdup(str)
-        name = "ExAllocateFromLookasideListEx" or // ExAllocateFromLookasideListEx(list)
-        name = "ExAllocateFromPagedLookasideList" or // ExAllocateFromPagedLookasideList(list)
-        name = "ExAllocateFromNPagedLookasideList" or // ExAllocateFromNPagedLookasideList(list)
-        name = "ExAllocateTimer" or // ExAllocateTimer(callback, context, attributes)
-        name = "IoAllocateWorkItem" or // IoAllocateWorkItem(object)
-        name = "MmMapLockedPagesWithReservedMapping" or // MmMapLockedPagesWithReservedMapping(address, tag, list, type)
-        name = "MmMapLockedPages" or // MmMapLockedPages(list, mode)
-        name = "MmMapLockedPagesSpecifyCache" // MmMapLockedPagesSpecifyCache(list, mode, type, address, flag, flag)
+        // _strdup(str)
+        name = "_strdup" or
+        // _wcsdup(str)
+        name = "_wcsdup" or
+        // _mbsdup(str)
+        name = "_mbsdup" or
+        // ExAllocateFromLookasideListEx(list)
+        name = "ExAllocateFromLookasideListEx" or
+        // ExAllocateFromPagedLookasideList(list)
+        name = "ExAllocateFromPagedLookasideList" or
+        // ExAllocateFromNPagedLookasideList(list)
+        name = "ExAllocateFromNPagedLookasideList" or
+        // ExAllocateTimer(callback, context, attributes)
+        name = "ExAllocateTimer" or
+        // IoAllocateWorkItem(object)
+        name = "IoAllocateWorkItem" or
+        // MmMapLockedPagesWithReservedMapping(address, tag, list, type)
+        name = "MmMapLockedPagesWithReservedMapping" or
+        // MmMapLockedPages(list, mode)
+        name = "MmMapLockedPages" or
+        // MmMapLockedPagesSpecifyCache(list, mode, type, address, flag, flag)
+        name = "MmMapLockedPagesSpecifyCache"
       )
     )
   }
