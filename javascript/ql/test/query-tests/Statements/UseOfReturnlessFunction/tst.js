@@ -93,3 +93,15 @@
 +function() {
     console.log("FOO");
 }.call(this);
+
+class Foo {
+	constructor() {
+		console.log("FOO");
+	}
+}
+
+class Bar extends Foo {
+	constructor() {
+		console.log(super()); // OK.
+	}
+}
