@@ -16,6 +16,7 @@ extraction:
         - include: "**/bower_components"
 ```
 
+* Additional [Flow](https://flow.org/) syntax is now supported.
 * Recognition of CommonJS modules has improved. As a result, some files that were previously extracted as
   global scripts are now extracted as modules.
 * Top-level `await` is now supported.
