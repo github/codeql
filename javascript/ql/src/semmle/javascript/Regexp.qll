@@ -937,7 +937,7 @@ module RegExp {
   /** Gets the string `"?"` used to represent a regular expression whose flags are unknown. */
   string unknownFlag() { result = "?" }
 
-  /** Holds `flags` includes the `m` flag. */
+  /** Holds if `flags` includes the `m` flag. */
   bindingset[flags]
   predicate isMultiline(string flags) { flags.matches("%m%") }
 
