@@ -53,6 +53,36 @@ predicate escapes(DataFlow::Node nd) {
   escapes(nd.getASuccessor())
 }
 
+/**
+ * Gets an embedded type `T` of `t`, with `isPtr` indicating whether
+ * the embedded field has the pointer type `*T` or just type `T`.
+ */
+Type getEmbeddedType(Type t, boolean isPtr) {
+  exists(Type embedded |
+    t.getUnderlyingType().(StructType).hasOwnField(_, _, embedded, true) |
+    if embedded instanceof PointerType then (
+      result = embedded.(PointerType).getBaseType() and
+      isPtr = true
+    ) else (
+      result = embedded and
+      isPtr = false
+    )
+  )
+}
+
+/** Gets an embedded type of `t`. */
+Type getEmbeddedType(Type t) {
+  result = getEmbeddedType(t, _)
+}
+
+/**
+ * Gets a transitive embedded type of `t`, where at least one of the embeddings goes through a
+ * pointer type.
+ */
+Type getTypeEmbeddedViaPointer(Type t) {
+  result = getEmbeddedType*(getEmbeddedType(getEmbeddedType*(t), true))
+}
+
 from Write w, LocalVariable v, Field f
 where
   // `w` writes `f` on `v`
@@ -62,5 +92,7 @@ where
   // exclude pointer-typed `v`; there may be reads through an alias
   not v.getType().getUnderlyingType() instanceof PointerType and
   // exclude escaping `v`; there may be reads in other functions
-  not exists(Read r | r.reads(v) | escapes(r))
+  not exists(Read r | r.reads(v) | escapes(r)) and
+  // exclude fields promoted through an embedded pointer type
+  not f = getTypeEmbeddedViaPointer(v.getType()).getField(_)
 select w, "This assignment to " + f + " is useless since its value is never read."

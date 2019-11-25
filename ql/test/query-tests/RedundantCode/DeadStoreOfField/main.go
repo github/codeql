@@ -70,3 +70,21 @@ func test5(w wrapper) int {
 	w.hash = -1
 	return w.hash
 }
+
+type S struct {
+	x int
+}
+
+type T struct {
+	*S
+}
+
+func (t T) reset() {
+	t.x = 0 // OK: field is promoted through pointer type
+}
+
+func test6() int {
+	t := T{&S{1}}
+	t.reset()
+	return t.x
+}
