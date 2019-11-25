@@ -401,12 +401,12 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestLinuxCSharpAutoBuilder()
         {
-            Actions.RunProcess["dotnet --info"] = 0;
-            Actions.RunProcess["dotnet clean test.csproj"] = 0;
-            Actions.RunProcess["dotnet restore test.csproj"] = 0;
             Actions.RunProcess["dotnet --list-runtimes"] = 0;
             Actions.RunProcessOut["dotnet --list-runtimes"] = @"Microsoft.AspNetCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
 Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]";
+            Actions.RunProcess["dotnet --info"] = 0;
+            Actions.RunProcess["dotnet clean test.csproj"] = 0;
+            Actions.RunProcess["dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
@@ -601,6 +601,8 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestLinuxBuildCommand()
         {
+            Actions.RunProcess["dotnet --list-runtimes"] = 1;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = "";
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto ""./build.sh --skip-tests"""] = 0;
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
@@ -613,7 +615,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             SkipVsWhere();
 
             var autobuilder = CreateAutoBuilder("csharp", false, buildCommand: "./build.sh --skip-tests");
-            TestAutobuilderScript(autobuilder, 0, 3);
+            TestAutobuilderScript(autobuilder, 0, 4);
         }
 
         [Fact]
@@ -624,6 +626,8 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.RunProcess["/bin/chmod u+x build/build.sh"] = 0;
+            Actions.RunProcess["dotnet --list-runtimes"] = 1;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = "";
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build/build.sh"] = 0;
             Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build/build.sh"] = "build";
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
@@ -631,7 +635,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
-            TestAutobuilderScript(autobuilder, 0, 4);
+            TestAutobuilderScript(autobuilder, 0, 5);
         }
 
         [Fact]
@@ -643,12 +647,14 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
 
             Actions.RunProcess["/bin/chmod u+x build.sh"] = 0;
+            Actions.RunProcess["dotnet --list-runtimes"] = 1;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = "";
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build.sh"] = 0;
             Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build.sh"] = "";
             Actions.FileExists["csharp.log"] = false;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
-            TestAutobuilderScript(autobuilder, 1, 2);
+            TestAutobuilderScript(autobuilder, 1, 3);
         }
 
         [Fact]
@@ -660,12 +666,14 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
 
             Actions.RunProcess["/bin/chmod u+x build.sh"] = 0;
+            Actions.RunProcess["dotnet --list-runtimes"] = 1;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = "";
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build.sh"] = 5;
             Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build.sh"] = "";
             Actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
-            TestAutobuilderScript(autobuilder, 1, 2);
+            TestAutobuilderScript(autobuilder, 1, 3);
         }
 
         [Fact]
@@ -874,12 +882,12 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestSkipNugetDotnet()
         {
-            Actions.RunProcess["dotnet --info"] = 0;
-            Actions.RunProcess["dotnet clean test.csproj"] = 0;
-            Actions.RunProcess["dotnet restore test.csproj"] = 0;
             Actions.RunProcess["dotnet --list-runtimes"] = 0;
             Actions.RunProcessOut["dotnet --list-runtimes"] = @"Microsoft.AspNetCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
 Microsoft.NETCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]";
+            Actions.RunProcess["dotnet --info"] = 0;
+            Actions.RunProcess["dotnet clean test.csproj"] = 0;
+            Actions.RunProcess["dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false --no-restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
@@ -912,12 +920,12 @@ Microsoft.NETCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
             Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
             Actions.RunProcess[@"rm dotnet-install.sh"] = 0;
-            Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
-            Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
-            Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet --list-runtimes"] = 0;
             Actions.RunProcessOut[@"C:\Project/.dotnet/dotnet --list-runtimes"] = @"Microsoft.AspNetCore.App 3.0.0 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
 Microsoft.NETCore.App 3.0.0 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]";
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental test.csproj"] = 0;
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
@@ -952,14 +960,14 @@ Microsoft.NETCore.App 3.0.0 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
             Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
             Actions.RunProcess[@"rm dotnet-install.sh"] = 0;
-            Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
-            Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
-            Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet --list-runtimes"] = 0;
             Actions.RunProcessOut[@"C:\Project/.dotnet/dotnet --list-runtimes"] = @"Microsoft.AspNetCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
 Microsoft.AspNetCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
 Microsoft.NETCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
 Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]";
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
