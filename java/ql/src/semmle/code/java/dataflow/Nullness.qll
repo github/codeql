@@ -522,7 +522,7 @@ private predicate correlatedConditions(
       inverted = false
     )
     or
-    exists(SsaVariable v1, SsaVariable v2, boolean branch1, boolean branch2  |
+    exists(SsaVariable v1, SsaVariable v2, boolean branch1, boolean branch2 |
       cond1.getCondition() = varEqualityTestExpr(v1, v2, branch1) and
       cond2.getCondition() = varEqualityTestExpr(v1, v2, branch2) and
       inverted = branch1.booleanXor(branch2)
