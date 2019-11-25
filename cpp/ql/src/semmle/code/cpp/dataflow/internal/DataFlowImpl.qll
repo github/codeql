@@ -460,7 +460,7 @@ private predicate throughFlowNodeCand(Node node, Configuration config) {
  */
 pragma[nomagic]
 private predicate simpleParameterFlow(
-  ParameterNode p, Node node, DataFlowErasedType t, Configuration config
+  ParameterNode p, Node node, DataFlowType t, Configuration config
 ) {
   throughFlowNodeCand(node, config) and
   p = node and
@@ -510,7 +510,7 @@ private predicate simpleParameterFlow(
 
 pragma[noinline]
 private predicate simpleArgumentFlowsThrough0(
-  DataFlowCall call, ArgumentNode arg, ReturnKind kind, DataFlowErasedType t, Configuration config
+  DataFlowCall call, ArgumentNode arg, ReturnKind kind, DataFlowType t, Configuration config
 ) {
   nodeCand1(arg, unbind(config)) and
   not outBarrier(arg, config) and
@@ -529,7 +529,7 @@ private predicate simpleArgumentFlowsThrough0(
  * additional step from the configuration.
  */
 private predicate simpleArgumentFlowsThrough(
-  ArgumentNode arg, Node out, DataFlowErasedType t, Configuration config
+  ArgumentNode arg, Node out, DataFlowType t, Configuration config
 ) {
   exists(DataFlowCall call, ReturnKind kind |
     nodeCand1(out, unbind(config)) and
@@ -948,7 +948,7 @@ private predicate localFlowBigStep(
 }
 
 private newtype TAccessPathFront =
-  TFrontNil(DataFlowErasedType t) or
+  TFrontNil(DataFlowType t) or
   TFrontHead(Content f)
 
 /**
@@ -956,12 +956,12 @@ private newtype TAccessPathFront =
  */
 private class AccessPathFront extends TAccessPathFront {
   string toString() {
-    exists(DataFlowErasedType t | this = TFrontNil(t) | result = ppReprType(t))
+    exists(DataFlowType t | this = TFrontNil(t) | result = ppReprType(t))
     or
     exists(Content f | this = TFrontHead(f) | result = f.toString())
   }
 
-  DataFlowErasedType getType() {
+  DataFlowType getType() {
     this = TFrontNil(result)
     or
     exists(Content head | this = TFrontHead(head) | result = head.getContainerType())
@@ -1012,7 +1012,7 @@ private class AccessPathFrontNilNode extends Node {
   }
 
   pragma[noinline]
-  private DataFlowErasedType getErasedReprType() { result = getErasedNodeType(this) }
+  private DataFlowType getErasedReprType() { result = getErasedNodeType(this) }
 
   /** Gets the `nil` path front for this node. */
   AccessPathFrontNil getApf() { result = TFrontNil(this.getErasedReprType()) }
@@ -1069,7 +1069,7 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
       argumentValueFlowsThrough(mid, node, _)
     )
     or
-    exists(Node mid, AccessPathFrontNil nil, DataFlowErasedType t |
+    exists(Node mid, AccessPathFrontNil nil, DataFlowType t |
       flowCandFwd(mid, fromArg, nil, config) and
       simpleArgumentFlowsThrough(mid, node, t, config) and
       apf = TFrontNil(t)
@@ -1222,8 +1222,8 @@ private predicate consCand(Content f, AccessPathFront apf, Configuration config)
 }
 
 private newtype TAccessPath =
-  TNil(DataFlowErasedType t) or
-  TConsNil(Content f, DataFlowErasedType t) { consCand(f, TFrontNil(t), _) } or
+  TNil(DataFlowType t) or
+  TConsNil(Content f, DataFlowType t) { consCand(f, TFrontNil(t), _) } or
   TConsCons(Content f1, Content f2, int len) { consCand(f1, TFrontHead(f2), _) and len in [2 .. 5] }
 
 /**
@@ -1250,7 +1250,7 @@ abstract private class AccessPath extends TAccessPath {
     this = TConsCons(_, _, result)
   }
 
-  DataFlowErasedType getType() {
+  DataFlowType getType() {
     this = TNil(result)
     or
     result = this.getHead().getContainerType()
@@ -1266,11 +1266,11 @@ abstract private class AccessPath extends TAccessPath {
 
 private class AccessPathNil extends AccessPath, TNil {
   override string toString() {
-    exists(DataFlowErasedType t | this = TNil(t) | result = concat(": " + ppReprType(t)))
+    exists(DataFlowType t | this = TNil(t) | result = concat(": " + ppReprType(t)))
   }
 
   override AccessPathFront getFront() {
-    exists(DataFlowErasedType t | this = TNil(t) | result = TFrontNil(t))
+    exists(DataFlowType t | this = TNil(t) | result = TFrontNil(t))
   }
 
   override predicate pop(Content head, AccessPath tail) { none() }
@@ -1280,7 +1280,7 @@ abstract private class AccessPathCons extends AccessPath { }
 
 private class AccessPathConsNil extends AccessPathCons, TConsNil {
   override string toString() {
-    exists(Content f, DataFlowErasedType t | this = TConsNil(f, t) |
+    exists(Content f, DataFlowType t | this = TConsNil(f, t) |
       // The `concat` becomes "" if `ppReprType` has no result.
       result = "[" + f.toString() + "]" + concat(" : " + ppReprType(t))
     )
@@ -1291,7 +1291,7 @@ private class AccessPathConsNil extends AccessPathCons, TConsNil {
   }
 
   override predicate pop(Content head, AccessPath tail) {
-    exists(DataFlowErasedType t | this = TConsNil(head, t) and tail = TNil(t))
+    exists(DataFlowType t | this = TConsNil(head, t) and tail = TNil(t))
   }
 }
 
@@ -1339,7 +1339,7 @@ private class AccessPathNilNode extends Node {
   AccessPathNilNode() { flowCand(this.(AccessPathFrontNilNode), _, _, _) }
 
   pragma[noinline]
-  private DataFlowErasedType getErasedReprType() { result = getErasedNodeType(this) }
+  private DataFlowType getErasedReprType() { result = getErasedNodeType(this) }
 
   /** Gets the `nil` path for this node. */
   AccessPathNil getAp() { result = TNil(this.getErasedReprType()) }
@@ -1411,7 +1411,7 @@ private predicate flowFwd0(
       argumentValueFlowsThrough(mid, node, _)
     )
     or
-    exists(Node mid, AccessPathNil nil, DataFlowErasedType t |
+    exists(Node mid, AccessPathNil nil, DataFlowType t |
       flowFwd(mid, fromArg, _, nil, config) and
       simpleArgumentFlowsThrough(mid, node, t, config) and
       ap = TNil(t) and
@@ -2020,7 +2020,7 @@ private module FlowExploration {
   }
 
   private newtype TPartialAccessPath =
-    TPartialNil(DataFlowErasedType t) or
+    TPartialNil(DataFlowType t) or
     TPartialCons(Content f, int len) { len in [1 .. 5] }
 
   /**
@@ -2041,7 +2041,7 @@ private module FlowExploration {
       this = TPartialCons(_, result)
     }
 
-    DataFlowErasedType getType() {
+    DataFlowType getType() {
       this = TPartialNil(result)
       or
       exists(Content head | this = TPartialCons(head, _) | result = head.getContainerType())
@@ -2052,11 +2052,11 @@ private module FlowExploration {
 
   private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
     override string toString() {
-      exists(DataFlowErasedType t | this = TPartialNil(t) | result = concat(": " + ppReprType(t)))
+      exists(DataFlowType t | this = TPartialNil(t) | result = concat(": " + ppReprType(t)))
     }
 
     override AccessPathFront getFront() {
-      exists(DataFlowErasedType t | this = TPartialNil(t) | result = TFrontNil(t))
+      exists(DataFlowType t | this = TPartialNil(t) | result = TFrontNil(t))
     }
   }
 

@@ -862,8 +862,8 @@ private module ImplCommon {
   }
 
   pragma[noinline]
-  DataFlowErasedType getErasedNodeType(Node n) { result = getErasedRepr(n.getType()) }
+  DataFlowType getErasedNodeType(Node n) { result = getErasedRepr(n.getType()) }
 
   pragma[noinline]
-  DataFlowErasedType getErasedNodeTypeBound(Node n) { result = getErasedRepr(n.getTypeBound()) }
+  DataFlowType getErasedNodeTypeBound(Node n) { result = getErasedRepr(n.getTypeBound()) }
 }

@@ -1307,7 +1307,7 @@ private predicate suppressUnusedType(DotNet::Type t) { any() }
  * Type-based pruning is disabled for now, so this is a stub implementation.
  */
 bindingset[t]
-DataFlowErasedType getErasedRepr(DataFlowType t) {
+DataFlowType getErasedRepr(DotNet::Type t) {
   // stub implementation
   suppressUnusedType(t) and result instanceof ObjectType
 }
@@ -1377,8 +1377,6 @@ class CastNode extends ExprNode {
 class DataFlowExpr = DotNet::Expr;
 
 class DataFlowType = DotNet::Type;
-
-class DataFlowErasedType = DotNet::Type;
 
 class DataFlowLocation = Location;
 

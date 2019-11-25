@@ -191,8 +191,6 @@ class DataFlowExpr = Expr;
 
 class DataFlowType = Type;
 
-class DataFlowErasedType = Type;
-
 class DataFlowLocation = Location;
 
 /** A function call relevant for data flow. */
