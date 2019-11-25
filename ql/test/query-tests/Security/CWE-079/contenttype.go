@@ -26,6 +26,8 @@ func serve3() {
 		w.Header().Set("Content-Type", "text/plain")
 
 		w.Write([]byte(data)) // OK; no script can be executed from a `text/plain` context.
+
+		w.Header().Set("X-My-Custom-Header", data) // OK; injecting headers is not usually dangerous
 	})
 	http.ListenAndServe(":80", nil)
 }
