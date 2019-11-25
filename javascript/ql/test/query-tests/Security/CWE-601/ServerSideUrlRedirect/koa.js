@@ -14,6 +14,12 @@ app.use(async ctx => {
 		ctx.redirect(url); // NOT OK
 	}
 
+	if(!url || isCrossDomainRedirect || url.match(VALID)) {
+		ctx.redirect('/'); // OK
+	} else {
+		ctx.redirect(url); // possibly OK - flagged anyway
+	}
+
 	if(!url || isCrossDomainRedirect || url.match(/[^\w/-]/)) {
 		ctx.redirect('/'); // OK
 	} else {

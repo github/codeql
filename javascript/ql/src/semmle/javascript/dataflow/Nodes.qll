@@ -546,6 +546,11 @@ class RegExpLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 
   /** Gets the root term of this regular expression. */
   RegExpTerm getRoot() { result = astNode.getRoot() }
+
+  /** Gets the flags of this regular expression literal. */
+  string getFlags() {
+    result = astNode.getFlags()
+  }
 }
 
 /**
@@ -1331,9 +1336,10 @@ class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
   }
 
   /**
-   * Gets the AST of the regular expression created here, if it is constant.
+   * Gets the AST of the regular expression created here, provided that the
+   * first argument is a string literal.
    */
-  RegExpTerm getRegExpTerm() {
+  RegExpTerm getRoot() {
     result = getArgument(0).asExpr().(StringLiteral).asRegExp()
   }
 
@@ -1363,28 +1369,6 @@ class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
 }
 
 /**
- * A data flow node corresponding to a regular expression literal.
- *
- * Example:
- * ```js
- * /[a-z]+/i
- * ```
- */
-class RegExpLiteralNode extends DataFlow::SourceNode, DataFlow::ValueNode {
-  override RegExpLiteral astNode;
-
-  /** Gets the root term of this regular expression literal. */
-  RegExpTerm getRegExpTerm() {
-    result = astNode.getRoot()
-  }
-
-  /** Gets the flags of this regular expression literal. */
-  string getFlags() {
-    result = astNode.getFlags()
-  }
-}
-
-/**
  * A data flow node corresponding to a regular expression literal or
  * an invocation of the `RegExp` constructor.
  *
@@ -1406,9 +1390,9 @@ class RegExpCreationNode extends DataFlow::SourceNode {
    *
    * Has no result for calls to `RegExp` with a non-constant argument.
    */
-  RegExpTerm getRegExpTerm() {
-    result = this.(RegExpConstructorInvokeNode).getRegExpTerm() or
-    result = this.(RegExpLiteralNode).getRegExpTerm()
+  RegExpTerm getRoot() {
+    result = this.(RegExpConstructorInvokeNode).getRoot() or
+    result = this.(RegExpLiteralNode).getRoot()
   }
 
   /**

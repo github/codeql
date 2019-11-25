@@ -990,7 +990,7 @@ module RegExp {
   }
 
   /**
-   * Holds if `term` is matches any character except for explicitly listed exceptions.
+   * Holds if `term` matches any character except for explicitly listed exceptions.
    *
    * For example, holds for `.`, `[^<>]`, or `\W`, but not for `[a-z]`, `\w`, or `[^\W\S]`.
    */
@@ -999,11 +999,13 @@ module RegExp {
     or
     term.(RegExpCharacterClassEscape).getValue().isUppercase()
     or
+    // [^a-z]
     exists(RegExpCharacterClass cls | term = cls |
       cls.isInverted() and
       not cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
     )
     or
+    // [\W]
     exists(RegExpCharacterClass cls | term = cls |
       not cls.isInverted() and
       cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
@@ -1024,6 +1026,7 @@ module RegExp {
       isFullyAnchoredTerm(term) and
       not isWildcardLike(term.getAChild*())
       or
+      // Character set restrictions like `/[^a-z]/.test(x)` sanitize in the false case
       outcome = false and
       exists(RegExpTerm root |
         root = term
@@ -1043,7 +1046,7 @@ module RegExp {
   RegExpTerm getRegExpObjectFromNode(DataFlow::Node node) {
     exists(DataFlow::RegExpCreationNode regexp |
       regexp.getAReference().flowsTo(node) and
-      result = regexp.getRegExpTerm()
+      result = regexp.getRoot()
     )
   }
 

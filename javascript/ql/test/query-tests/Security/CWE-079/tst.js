@@ -132,6 +132,12 @@ function tst() {
       document.write(v);
   }
 
+  if (!(/\d+/.test(v))) // not effective - matches "123<script>...</script>"
+    return;
+
+  // NOT OK
+  document.write(v);
+
   if (!(/^\d+$/.test(v)))
     return;
 
