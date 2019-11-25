@@ -29,6 +29,6 @@ where
   ) and
   cond.dominates(idx.getBasicBlock()) and
   // and that check happens inside the loop body
-  cond.getCondition().getParent+() = fs.getBody()
+  cond.getCondition().getParent+() = fs
 select cond.getCondition(),
   "This checks the length against a constant, but it is indexed using a variable $@.", idx, "here"
