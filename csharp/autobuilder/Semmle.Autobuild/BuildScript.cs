@@ -25,7 +25,7 @@ namespace Semmle.Autobuild
         /// an exit message.
         /// </param>
         /// <returns>The exit code from this build script.</returns>
-        public abstract int Run(IBuildActions actions, Action<string> startCallback, Action<int, string> exitCallBack);
+        public abstract int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack);
 
         /// <summary>
         /// Run this build command.
@@ -44,33 +44,36 @@ namespace Semmle.Autobuild
         /// </param>
         /// <param name="stdout">Contents of standard out.</param>
         /// <returns>The exit code from this build script.</returns>
-        public abstract int Run(IBuildActions actions, Action<string> startCallback, Action<int, string> exitCallBack, out IList<string> stdout);
+        public abstract int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout);
 
         class BuildCommand : BuildScript
         {
             readonly string exe, arguments, workingDirectory;
             readonly IDictionary<string, string> environment;
+            readonly bool silent;
 
             /// <summary>
             /// Create a simple build command.
             /// </summary>
             /// <param name="exe">The executable to run.</param>
             /// <param name="argumentsOpt">The arguments to the executable, or null.</param>
+            /// <param name="silent">Whether this command should run silently.</param>
             /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
             /// <param name="environment">Additional environment variables.</param>
-            public BuildCommand(string exe, string argumentsOpt, string workingDirectory = null, IDictionary<string, string> environment = null)
+            public BuildCommand(string exe, string argumentsOpt, bool silent, string workingDirectory = null, IDictionary<string, string> environment = null)
             {
                 this.exe = exe;
                 this.arguments = argumentsOpt ?? "";
+                this.silent = silent;
                 this.workingDirectory = workingDirectory;
                 this.environment = environment;
             }
 
             public override string ToString() => exe + " " + arguments;
 
-            public override int Run(IBuildActions actions, Action<string> startCallback, Action<int, string> exitCallBack)
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack)
             {
-                startCallback(this.ToString());
+                startCallback(this.ToString(), silent);
                 var ret = 1;
                 var retMessage = "";
                 try
@@ -83,13 +86,13 @@ namespace Semmle.Autobuild
                     retMessage = ex.Message;
                 }
 
-                exitCallBack(ret, retMessage);
+                exitCallBack(ret, retMessage, silent);
                 return ret;
             }
 
-            public override int Run(IBuildActions actions, Action<string> startCallback, Action<int, string> exitCallBack, out IList<string> stdout)
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout)
             {
-                startCallback(this.ToString());
+                startCallback(this.ToString(), silent);
                 var ret = 1;
                 var retMessage = "";
                 try
@@ -102,7 +105,7 @@ namespace Semmle.Autobuild
                     retMessage = ex.Message;
                     stdout = new string[0];
                 }
-                exitCallBack(ret, retMessage);
+                exitCallBack(ret, retMessage, silent);
                 return ret;
             }
 
@@ -116,9 +119,9 @@ namespace Semmle.Autobuild
                 this.func = func;
             }
 
-            public override int Run(IBuildActions actions, Action<string> startCallback, Action<int, string> exitCallBack) => func(actions);
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack) => func(actions);
 
-            public override int Run(IBuildActions actions, Action<string> startCallback, Action<int, string> exitCallBack, out IList<string> stdout)
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout)
             {
                 stdout = new string[0];
                 return func(actions);
@@ -142,7 +145,7 @@ namespace Semmle.Autobuild
                 this.s2b = s2;
             }
 
-            public override int Run(IBuildActions actions, Action<string> startCallback, Action<int, string> exitCallBack)
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack)
             {
                 int ret1;
                 if (s2a != null)
@@ -155,7 +158,7 @@ namespace Semmle.Autobuild
                 return s2b(ret1).Run(actions, startCallback, exitCallBack);
             }
 
-            public override int Run(IBuildActions actions, Action<string> startCallback, Action<int, string> exitCallBack, out IList<string> stdout)
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout)
             {
                 var ret1 = s1.Run(actions, startCallback, exitCallBack, out var stdout1);
                 var ret2 = (s2a != null ? s2a(stdout1, ret1) : s2b(ret1)).Run(actions, startCallback, exitCallBack, out var stdout2);
@@ -171,10 +174,11 @@ namespace Semmle.Autobuild
         /// Creates a simple build script that runs the specified exe.
         /// </summary>
         /// <param name="argumentsOpt">The arguments to the executable, or null.</param>
+        /// <param name="silent">Whether the executable should run silently.</param>
         /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
         /// <param name="environment">Additional environment variables.</param>
-        public static BuildScript Create(string exe, string argumentsOpt, string workingDirectory, IDictionary<string, string> environment) =>
-            new BuildCommand(exe, argumentsOpt, workingDirectory, environment);
+        public static BuildScript Create(string exe, string argumentsOpt, bool silent, string workingDirectory, IDictionary<string, string> environment) =>
+            new BuildCommand(exe, argumentsOpt, silent, workingDirectory, environment);
 
         /// <summary>
         /// Creates a simple build script that runs the specified function.
