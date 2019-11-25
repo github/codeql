@@ -9,6 +9,7 @@ import Imports::IRType
 import Imports::MemoryAccessKind
 import Imports::Opcode
 private import Imports::OperandTag
+import semmle.code.cpp.ir.implementation.internal.PrintSupport
 
 module InstructionSanity {
   /**
@@ -368,6 +369,12 @@ class Instruction extends Construction::TInstruction {
     )
   }
 
+  int getLineRank() {
+    this = rank[result](Instruction instr | instr.getAST().getFile() = getAST().getFile() and instr.getAST().getLocation().getStartLine() = getAST().getLocation().getStartLine() | instr
+     order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+    )
+  }
+
   /**
    * Gets a human-readable string that uniquely identifies this instruction
    * within the function. This string is used to refer to this instruction when
@@ -376,8 +383,7 @@ class Instruction extends Construction::TInstruction {
    * Example: `r1_1`
    */
   string getResultId() {
-    result = getResultPrefix() + getBlock().getDisplayIndex().toString() + "_" +
-        getDisplayIndexInBlock().toString()
+    result = getResultPrefix() + getAST().getLocation().getStartLine() + "_" + getLineRank()
   }
 
   /**
