@@ -66,7 +66,7 @@ predicate elementRead(
 ) {
   ea.reads(array.getAUse(), getAUse(index)) and
   not array.getType().getUnderlyingType() instanceof MapType and
-  bb = ea.asInstruction().getBasicBlock()
+  bb = ea.getBasicBlock()
 }
 
 predicate isRegexpMethodCall(DataFlow::MethodCallNode c) {
