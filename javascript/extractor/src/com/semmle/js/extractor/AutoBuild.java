@@ -21,8 +21,10 @@ import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.Env;
 import com.semmle.util.projectstructure.ProjectLayout;
 import com.semmle.util.trap.TrapWriter;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
@@ -562,7 +564,32 @@ public class AutoBuild {
     }
   }
 
+  /** Returns true if yarn is installed, otherwise prints a warning and returns false. */
+  private boolean verifyYarnInstallation() {
+    ProcessBuilder pb = new ProcessBuilder(Arrays.asList("yarn", "-v"));
+    try {
+      Process process = pb.start();
+      boolean completed = process.waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
+      if (!completed) {
+        System.err.println("Yarn could not be launched. Timeout during 'yarn -v'.");
+        return false;
+      }
+      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      String version = reader.readLine();
+      System.out.println("Found yarn version: " + version);
+      return true;
+    } catch (IOException | InterruptedException ex) {
+      System.err.println(
+          "Yarn not found. Please put 'yarn' on the PATH for automatic dependency installation.");
+      Exceptions.ignore(ex, "Continue without dependency installation");
+      return false;
+    }
+  }
+
   protected void installDependencies(Set<Path> filesToExtract) {
+    if (!verifyYarnInstallation()) {
+      return;
+    }
     for (Path file : filesToExtract) {
       if (file.getFileName().toString().equals("package.json")) {
         System.out.println("Installing dependencies from " + file);
