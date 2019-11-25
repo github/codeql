@@ -10,3 +10,4 @@
 
 | **Query**                                           | **Expected impact**          | **Change**                                                |
 |-----------------------------------------------------|------------------------------|-----------------------------------------------------------|
+| Reflected cross-site scripting (`go/reflected-xss`) | Fewer results | Untrusted input flowing into an HTTP header definition is no longer flagged, since this is often harmless. |

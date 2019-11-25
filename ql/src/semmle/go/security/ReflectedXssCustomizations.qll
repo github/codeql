@@ -52,11 +52,6 @@ module ReflectedXss {
   }
 
   /**
-   * An expression that is sent as part of an HTTP header, considered as an XSS sink.
-   */
-  class HttpResponseHeaderSink extends Sink, HTTP::Header { }
-
-  /**
    * A third-party controllable input, considered as a flow source for reflected XSS.
    */
   class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
