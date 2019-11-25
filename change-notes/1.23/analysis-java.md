@@ -6,25 +6,23 @@ The following changes in version 1.23 affect Java analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Continue statement that does not continue (`java/continue-in-false-loop`) | correctness | Finds `continue` statements in `do { ... } while (false)` loops. |
+| Continue statement that does not continue (`java/continue-in-false-loop`) | correctness | Finds `continue` statements in `do { ... } while (false)` loops. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
-| Dereferenced variable may be null (`java/dereferenced-value-may-be-null`) | Fewer false positives | Certain indirect null guards involving two auxiliary variables known to be equal can now be detected. |
-| Non-synchronized override of synchronized method (`java/non-sync-override`) | Fewer false positives | Results are now only reported if the immediately overridden method is synchronized. |
-| Query built from user-controlled sources (`java/sql-injection`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as SQL expressions sinks. |
-| Query built from local-user-controlled sources (`java/sql-injection-local`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as SQL expressions sinks. |
-| Query built without neutralizing special characters (`java/concatenated-sql-query`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as SQL expressions sinks. |
-| Useless comparison test (`java/constant-comparison`) | Fewer false positives | Additional overflow check patterns are now recognized and no longer reported. Also, a few bug fixes in the range analysis for floating-point variables means a further reduction in false positives. |
+| Dereferenced variable may be null (`java/dereferenced-value-may-be-null`) | Fewer false positive results | Additional indirect null guards are detected, where two auxiliary variables are known to be equal. |
+| Non-synchronized override of synchronized method (`java/non-sync-override`) | Fewer false positive results | Results are now only reported if the immediately overridden method is synchronized. |
+| Query built from local-user-controlled sources (`java/sql-injection-local`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as sinks for SQL expressions. |
+| Query built from user-controlled sources (`java/sql-injection`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as sinks for SQL expressions. |
+| Query built without neutralizing special characters (`java/concatenated-sql-query`) | More results | The query now identifies arguments to `Statement.executeLargeUpdate` and `Connection.prepareCall` as sinks for SQL expressions. |
+| Useless comparison test (`java/constant-comparison`) | Fewer false positive results | Additional overflow check patterns are now recognized and no longer reported. Also, a few bug fixes in the range analysis for floating-point variables gives a further reduction in false positive results. |
 
 ## Changes to libraries
 
-* The data-flow library has been extended with a new feature to aid debugging.
-  Instead of specifying `isSink(Node n) { any() }` on a configuration to
-  explore the possible flow from a source, it is recommended to use the new
-  `Configuration::hasPartialFlow` predicate, as this gives a more complete
-  picture of the partial flow paths from a given source. The feature is
-  disabled by default and can be enabled for individual configurations by
-  overriding `int explorationLimit()`.
+The data-flow library has been extended with a new feature to aid debugging. 
+If you want to explore the possible flow from a source, replace
+`isSink(Node n) { any() }` with the new `Configuration::hasPartialFlow` predicate. 
+This gives a more complete picture of the partial flow paths from a given source. 
+The feature is disabled by default and can be enabled for individual configurations by overriding `int explorationLimit()`.
