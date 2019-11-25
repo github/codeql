@@ -941,7 +941,7 @@ module RegExp {
   bindingset[flags]
   predicate isMultiline(string flags) { flags.matches("%m%") }
 
-  /** Holds `flags` includes the `g` flag. */
+  /** Holds if `flags` includes the `g` flag. */
   bindingset[flags]
   predicate isGlobal(string flags) { flags.matches("%g%") }
 
