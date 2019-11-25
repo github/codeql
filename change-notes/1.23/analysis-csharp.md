@@ -10,7 +10,7 @@ The following changes in version 1.23 affect C# analysis in all applications.
 | Deserialization of untrusted data (`cs/unsafe-deserialization-untrusted-input`) | security, external/cwe/cwe-502 | Finds flow of untrusted input to calls to unsafe deserializers. Results are shown on LGTM by default. |
 | Mishandling the Japanese era start date (`cs/mishandling-japanese-era`) | reliability, date-time | Finds hard-coded Japanese era start dates that could be invalid. Results are not shown on LGTM by default. |
 | Unsafe year argument for 'DateTime' constructor (`cs/unsafe-year-construction`) | reliability, date-time | Finds incorrect manipulation of `DateTime` values, which could lead to invalid dates. Results are not shown on LGTM by default. |
-| Unsafe deserializer (`cs/unsafe-deserialization`) | security, external/cwe/cwe-502 | Finds calls to unsafe deserializers. |
+| Unsafe deserializer (`cs/unsafe-deserialization`) | security, external/cwe/cwe-502 | Finds calls to unsafe deserializers. By default, the query is not run on LGTM. |
 
 ## Changes to existing queries
 
