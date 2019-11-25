@@ -27,7 +27,7 @@ where
     cond.ensuresNeq(lenA, const) or
     cond.ensuresLeq(const, lenA, _)
   ) and
-  cond.dominates(idx.asInstruction().getBasicBlock()) and
+  cond.dominates(idx.getBasicBlock()) and
   // and that check happens inside the loop body
   cond.getCondition().getParent+() = fs.getBody()
 select cond.getCondition(),

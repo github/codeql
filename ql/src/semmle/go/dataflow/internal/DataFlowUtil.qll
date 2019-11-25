@@ -40,6 +40,9 @@ class Node extends TNode {
   /** Gets a textual representation of the kind of this data-flow node. */
   string getNodeKind() { none() } // overridden in subclasses
 
+  /** Gets the basic block to which this data-flow node belongs, if any. */
+  BasicBlock getBasicBlock() { result = asInstruction().getBasicBlock() }
+
   /** Gets a textual representation of this element. */
   string toString() { result = "data-flow node" } // overridden in subclasses
 
@@ -752,7 +755,7 @@ abstract class BarrierGuard extends Node {
       result = var.getAUse()
     |
       guards(guard, nd, var) and
-      guard.dominates(result.asInstruction().getBasicBlock())
+      guard.dominates(result.getBasicBlock())
     )
   }
 
@@ -807,7 +810,7 @@ abstract class BarrierGuard extends Node {
       guards(guard, arg) and
       localFlow(inp.getExitNode(fd), arg) and
       ret = outp.getEntryNode(fd) and
-      guard.dominates(ret.asInstruction().getBasicBlock())
+      guard.dominates(ret.getBasicBlock())
     |
       exists(boolean b |
         onlyPossibleReturnOfBool(fd, outp, ret, b) and
