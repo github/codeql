@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Indexing operations on arrays, slices or strings should use an index at most one less than the
+Indexing operations on arrays, slices, or strings should use an index at most one less than the
 length. If the operation uses a variable index but checks the length against a constant, this may
 indicate a logic error which could lead to an out-of-bounds access.
 </p>
