@@ -945,27 +945,27 @@ module RegExp {
   bindingset[flags]
   predicate isGlobal(string flags) { flags.matches("%g%") }
 
-  /** Holds `flags` includes the `i` flag. */
+  /** Holds if `flags` includes the `i` flag. */
   bindingset[flags]
   predicate isIgnoreCase(string flags) { flags.matches("%i%") }
 
-  /** Holds `flags` includes the `s` flag. */
+  /** Holds if `flags` includes the `s` flag. */
   bindingset[flags]
   predicate isDotAll(string flags) { flags.matches("%s%") }
 
-  /** Holds `flags` includes the `m` flag or is the unknown flag `?`. */
+  /** Holds if `flags` includes the `m` flag or is the unknown flag `?`. */
   bindingset[flags]
   predicate maybeMultiline(string flags) { flags = unknownFlag() or isMultiline(flags) }
 
-  /** Holds `flags` includes the `g` flag or is the unknown flag `?`. */
+  /** Holds if `flags` includes the `g` flag or is the unknown flag `?`. */
   bindingset[flags]
   predicate maybeGlobal(string flags) { flags = unknownFlag() or isGlobal(flags) }
 
-  /** Holds `flags` includes the `i` flag or is the unknown flag `?`. */
+  /** Holds if `flags` includes the `i` flag or is the unknown flag `?`. */
   bindingset[flags]
   predicate maybeIgnoreCase(string flags) { flags = unknownFlag() or isIgnoreCase(flags) }
 
-  /** Holds `flags` includes the `s` flag or is the unknown flag `?`. */
+  /** Holds if `flags` includes the `s` flag or is the unknown flag `?`. */
   bindingset[flags]
   predicate maybeDotAll(string flags) { flags = unknownFlag() or isDotAll(flags) }
 
