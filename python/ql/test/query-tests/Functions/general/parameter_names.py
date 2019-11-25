@@ -117,3 +117,18 @@ class Z(zope.interface.Interface):
         pass
 
 Z().meth(0)
+
+
+
+# The `__init_subclass__` method is a new method introduced into Python 3.6
+# which does not follow the normal conventions, and is in fact a class method
+# despite not being marked as such with other means. The name alone is what
+# makes it such. As a consequence, the query `py/not-named-self` and other
+# relevant queries need to account for this.
+#
+# This has come up in the wild via LGTM as a false positive. For example,
+# https://docs.python.org/3/reference/datamodel.html#customizing-class-creation
+
+class InitSubclass(object):
+    def __init_subclass__(cls):
+        pass

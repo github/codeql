@@ -4,8 +4,6 @@ The following changes in version 1.23 affect C# analysis in all applications.
 
 ## New queries
 
-## New queries
-
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Deserialized delegate (`cs/deserialized-delegate`) | security, external/cwe/cwe-502 | Finds unsafe deserialization of delegate types. |

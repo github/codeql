@@ -173,6 +173,23 @@ class RegExpTerm extends Locatable, @regexpterm {
       parent.(StringLiteral).flow() instanceof RegExpPatternSource
     )
   }
+
+  /**
+   * Gets the single string this regular-expression term matches.
+   *
+   * This predicate is only defined for (sequences/groups of) constant regular expressions.
+   * In particular, terms involving zero-width assertions like `^` or `\b` are not considered
+   * to have a constant value.
+   *
+   * Note that this predicate does not take flags of the enclosing regular-expression literal
+   * into account.
+   */
+  string getConstantValue() { none() }
+
+  /**
+   * Gets a string that is matched by this regular-expression term.
+   */
+  string getAMatchedString() { result = getConstantValue() }
 }
 
 /**
@@ -223,6 +240,8 @@ class RegExpConstant extends RegExpTerm, @regexp_constant {
   predicate isCharacter() { any() }
 
   override predicate isNullable() { none() }
+
+  override string getConstantValue() { result = getValue() }
 }
 
 /**
@@ -266,6 +285,8 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
   int getNumAlternative() { result = getNumChild() }
 
   override predicate isNullable() { getAlternative().isNullable() }
+
+  override string getAMatchedString() { result = getAlternative().getAMatchedString() }
 }
 
 /**
@@ -288,6 +309,21 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
 
   override predicate isNullable() {
     forall(RegExpTerm child | child = getAChild() | child.isNullable())
+  }
+
+  override string getConstantValue() {
+    result = getConstantValue(0)
+  }
+
+  /**
+   * Gets the single string matched by the `i`th child and all following children of
+   * this sequence, if any.
+   */
+  private string getConstantValue(int i) {
+    i = getNumChild() and
+    result = ""
+    or
+    result = getChild(i).getConstantValue() + getConstantValue(i+1)
   }
 }
 
@@ -549,6 +585,10 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
   string getName() { isNamedCapture(this, result) }
 
   override predicate isNullable() { getAChild().isNullable() }
+
+  override string getConstantValue() { result = getAChild().getConstantValue() }
+
+  override string getAMatchedString() { result = getAChild().getAMatchedString() }
 }
 
 /**
@@ -734,6 +774,10 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   predicate isInverted() { isInverted(this) }
 
   override predicate isNullable() { none() }
+
+  override string getAMatchedString() {
+    not isInverted() and result = getAChild().getAMatchedString()
+  }
 }
 
 /**

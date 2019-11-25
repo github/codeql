@@ -91,3 +91,7 @@
 	
 	Promise.all([onlySideEffects(), onlySideEffects()])
 })();
+
++function() {
+    console.log("FOO");
+}.call(this);

@@ -33,7 +33,9 @@ predicate benignContext(Expr e) {
   inVoidContext(e) or 
   
   // A return statement is often used to just end the function.
-  e = any(Function f).getAReturnedExpr()
+  e = any(Function f).getBody()
+  or
+  e = any(ReturnStmt r).getExpr()
   or 
   exists(ConditionalExpr cond | cond.getABranch() = e and benignContext(cond)) 
   or 
@@ -42,7 +44,6 @@ predicate benignContext(Expr e) {
   exists(Expr parent | parent.getUnderlyingValue() = e and benignContext(parent))
   or 
   any(VoidExpr voidExpr).getOperand() = e
-
   or
   // weeds out calls inside HTML-attributes.
   e.getParent().(ExprStmt).getParent() instanceof CodeInAttribute or
@@ -70,8 +71,8 @@ predicate benignContext(Expr e) {
   e = any(PromiseCreationCall promise).getValue().asExpr()
 }
 
-predicate oneshotClosure(InvokeExpr call) {
-  call.getCallee().getUnderlyingValue() instanceof ImmediatelyInvokedFunctionExpr
+predicate oneshotClosure(DataFlow::CallNode call) {
+  call.getCalleeNode().asExpr().getUnderlyingValue() instanceof ImmediatelyInvokedFunctionExpr
 }
 
 predicate alwaysThrows(Function f) {
@@ -149,6 +150,12 @@ predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
   )
 }
 
+predicate hasNonVoidReturnType(Function f) {
+  exists(TypeAnnotation type | type = f.getReturnTypeAnnotation() | 
+    not type.isVoid()
+  )
+}
+
 
 /**
  * Provides classes for working with various Deferred implementations. 
@@ -214,6 +221,7 @@ where
   not benignContext(call.getEnclosingExpr()) and
   not lastStatementHasNoEffect(func) and
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
-  not oneshotClosure(call.getEnclosingExpr())
+  not oneshotClosure(call) and
+  not hasNonVoidReturnType(func)
 select
   call, msg, func, name
