@@ -36,7 +36,6 @@ InstanceOfExpr instanceofExpr(SsaVariable v, Type type) {
  */
 EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
   result.hasOperands(v1.getAUse(), v2.getAUse()) and
-  result instanceof EqualityTest and
   isEqualExpr = result.polarity()
 }
 
