@@ -195,6 +195,11 @@ public class AutoBuild {
   private final String defaultEncoding;
   private ExecutorService threadPool;
   private volatile boolean seenCode = false;
+  private boolean installDependencies = false;
+  private int installDependenciesTimeout;
+
+  /** The default timeout when running <code>yarn</code>, in milliseconds. */
+  public static final int INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT = 10 * 60 * 1000; // 10 minutes
 
   public AutoBuild() {
     this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
@@ -204,6 +209,10 @@ public class AutoBuild {
     this.typeScriptMode =
         getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
+    this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_TYPESCRIPT_INSTALL_DEPS"));
+    this.installDependenciesTimeout =
+        Env.systemEnv()
+            .getInt("LGTM_TYPESCRIPT_INSTALL_DEPS_TIMEOUT", INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT);
     setupFileTypes();
     setupXmlMode();
     setupMatchers();
@@ -533,6 +542,10 @@ public class AutoBuild {
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
 
+    if (!tsconfigFiles.isEmpty() && this.installDependencies) {
+      this.installDependencies(filesToExtract);
+    }
+
     // extract TypeScript projects and files
     Set<Path> extractedFiles = extractTypeScript(defaultExtractor, filesToExtract, tsconfigFiles);
 
@@ -545,6 +558,34 @@ public class AutoBuild {
           if (customExtractors.containsKey(extension)) extractor = customExtractors.get(extension);
         }
         extract(extractor, f, null);
+      }
+    }
+  }
+
+  protected void installDependencies(Set<Path> filesToExtract) {
+    for (Path file : filesToExtract) {
+      if (file.getFileName().toString().equals("package.json")) {
+        System.out.println("Installing dependencies from " + file);
+        ProcessBuilder pb =
+            new ProcessBuilder(
+                Arrays.asList(
+                    "yarn",
+                    "install",
+                    "--verbose",
+                    "--ignore-scripts",
+                    "--ignore-platform",
+                    "--ignore-engines",
+                    "--ignore-optional",
+                    "--no-bin-links",
+                    "--pure-lockfile"));
+        pb.directory(file.getParent().toFile());
+        pb.redirectOutput(Redirect.INHERIT);
+        pb.redirectError(Redirect.INHERIT);
+        try {
+          pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
+        } catch (IOException | InterruptedException ex) {
+          throw new ResourceError("Could not install dependencies from " + file, ex);
+        }
       }
     }
   }

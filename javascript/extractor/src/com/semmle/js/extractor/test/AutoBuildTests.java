@@ -129,6 +129,11 @@ public class AutoBuildTests {
         }
 
         @Override
+        protected void installDependencies(Set<Path> filesToExtract) {
+          // never install dependencies during testing
+        }
+
+        @Override
         protected void extractXml() throws IOException {
           Files.walkFileTree(
               LGTM_SRC,
