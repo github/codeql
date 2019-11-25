@@ -5,6 +5,8 @@
 * Support for the following frameworks and libraries has been improved:
   - [react](https://www.npmjs.com/package/react)
 
+- Imports with the `.js` extension can now be resolved to a TypeScript file.
+
 ## New queries
 
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
