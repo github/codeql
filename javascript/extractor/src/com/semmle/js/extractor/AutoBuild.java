@@ -211,10 +211,11 @@ public class AutoBuild {
     this.typeScriptMode =
         getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
-    this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_TYPESCRIPT_INSTALL_DEPS"));
+    this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS"));
     this.installDependenciesTimeout =
         Env.systemEnv()
-            .getInt("LGTM_TYPESCRIPT_INSTALL_DEPS_TIMEOUT", INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT);
+            .getInt(
+                "LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS_TIMEOUT", INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT);
     setupFileTypes();
     setupXmlMode();
     setupMatchers();
