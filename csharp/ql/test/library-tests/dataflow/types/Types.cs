@@ -97,7 +97,7 @@ class Types
         {
             void M3()
             {
-                this.M2(new E1()); // no flow
+                this.M2(new E1()); // no flow (FALSE POSITIVE)
             }
 
             public override void M() { }
@@ -107,7 +107,7 @@ class Types
         {
             void M3()
             {
-                this.M2(new E2()); // flow (FALSE NEGATIVE)
+                this.M2(new E2()); // flow
             }
 
             public override void M()

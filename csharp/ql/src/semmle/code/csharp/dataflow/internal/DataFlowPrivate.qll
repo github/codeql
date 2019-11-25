@@ -298,7 +298,7 @@ private class Argument extends Expr {
 private predicate instanceFieldLikeAssign(Expr e, FieldLike f, Expr src, Expr q) {
   exists(FieldLikeAccess fa, AssignableDefinition def |
     def.getTargetAccess() = fa and
-    f = fa.getTarget() and
+    f = fa.getTarget().getSourceDeclaration() and
     not f.isStatic() and
     src = def.getSource() and
     q = fa.getQualifier() and
@@ -313,7 +313,7 @@ private predicate instanceFieldLikeAssign(Expr e, FieldLike f, Expr src, Expr q)
 private predicate instanceFieldLikeInit(ObjectCreation oc, FieldLike f, Expr src) {
   exists(MemberInitializer mi |
     mi = oc.getInitializer().(ObjectInitializer).getAMemberInitializer() and
-    f = mi.getInitializedMember() and
+    f = mi.getInitializedMember().getSourceDeclaration() and
     not f.isStatic() and
     src = mi.getRValue()
   )
@@ -421,7 +421,8 @@ private module Cached {
   }
 
   cached
-  newtype TContent = TFieldLikeContent(FieldLike f) { not f.isStatic() }
+  newtype TContent =
+    TFieldLikeContent(FieldLike f) { not f.isStatic() and f.getSourceDeclaration() = f }
 
   /**
    * Holds if data can flow from `node1` to `node2` via an assignment to
@@ -449,7 +450,11 @@ private module Cached {
   predicate readStepImpl(Node node1, Content c, Node node2) {
     exists(ReadStepConfiguration x |
       x.hasNodePath(node1, node2) and
-      c.(FieldLikeContent).getField() = node2.asExpr().(FieldLikeRead).getTarget()
+      c.(FieldLikeContent).getField() = node2
+            .asExpr()
+            .(FieldLikeRead)
+            .getTarget()
+            .getSourceDeclaration()
     )
   }
 
