@@ -5,6 +5,8 @@
 * Support for the following frameworks and libraries has been improved:
   - [react](https://www.npmjs.com/package/react)
   - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
+  - [Handlebars](https://www.npmjs.com/package/handlebars)
+
 
 ## New queries
 

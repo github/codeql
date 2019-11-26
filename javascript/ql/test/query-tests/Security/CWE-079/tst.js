@@ -292,3 +292,7 @@ function flowThroughPropertyNames() {
     for (var p in obj)
       $(p); // OK
 }
+
+function handlebarsSafeString() {
+	return new Handlebars.SafeString(location); // NOT OK!	
+}

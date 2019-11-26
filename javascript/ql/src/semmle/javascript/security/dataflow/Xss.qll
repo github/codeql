@@ -97,6 +97,8 @@ module DomBasedXss {
       )
       or
       this = any(Typeahead::TypeaheadSuggestionFunction f).getAReturn()
+      or
+      this = any(Handlebars::SafeString s).getAnArgument()
     }
   }
 
