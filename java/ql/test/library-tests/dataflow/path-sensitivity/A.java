@@ -148,7 +148,7 @@ public class A {
 	// control flow,
 	// but we only use b outside of loops, and after all control flow paths joined,
 	// so it is constant
-	// 
+	//
 	public void f10(int c, boolean a) {
 		Object x = null;
 		boolean b = false;
@@ -199,7 +199,8 @@ public class A {
 	}
 
 	// false positive, where we would need to look at the actual CFG (not just the
-	// dataflow graph) to learn about the property - however, already doesn't exhibit flow
+	// dataflow graph) to learn about the property - however, already doesn't
+	// exhibit flow
 	public void f13(boolean b) {
 		Object x = new Integer(1);
 		while (true) {
@@ -281,6 +282,38 @@ public class A {
 			}
 			j++;
 			b = j % 2 == 0;
+		} while (j < 100);
+	}
+
+	// problematic case, needs to exhibit flow but might not (false negative!)
+	public void f18() {
+		int j = 0;
+		Object x = null;
+		do {
+			boolean b = j % 2 == 0;
+			if (!b) {
+				sink(x);
+			}
+			if (b) {
+				x = new Integer(6);
+			}
+			j++;
+		} while (j < 100);
+	}
+
+	// problematic case, needs to exhibit flow but might not (false negative!)
+	public void f19() {
+		int j = 0;
+		Object x = null;
+		do {
+			boolean b = j % 2 == 0;
+			if (b) {
+				x = new Integer(6);
+			}
+			if (!b) {
+				sink(x);
+			}
+			j++;
 		} while (j < 100);
 	}
 
