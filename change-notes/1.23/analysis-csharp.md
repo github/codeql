@@ -31,10 +31,10 @@ The following changes in version 1.23 affect C# analysis in all applications.
   `isBarrierGuard`/`isSanitizerGuard` on data-flow and taint-tracking
   configurations respectively.
 * The data-flow library has been extended with a new feature to aid debugging.
-  If you want to explore the possible flow from a source, replace `isSink(Node n) { any() }` 
-  with the new `Configuration::hasPartialFlow` predicate. This gives a more complete
-  picture of the partial flow paths from a given source. The feature is
-  disabled by default and can be enabled for individual configurations by
+  Previously, to explore the possible flow from all sources you could specify `isSink(Node n) { any() }` on a configuration. 
+  Now you can use the new `Configuration::hasPartialFlow` predicate, 
+  which gives a more complete picture of the partial flow paths from a given source, including flow that doesn't reach any sink.
+  The feature is disabled by default and can be enabled for individual configurations by
   overriding `int explorationLimit()`.
 * `foreach` statements where the body is guaranteed to be executed at least once, such as `foreach (var x in new string[]{ "a", "b", "c" }) { ... }`, are now recognized by all analyses based on the control-flow graph (such as SSA, data flow and taint tracking).
 * Fixed the control-flow graph for `switch` statements where the `default` case was not the last case. This had caused the remaining cases to be unreachable. `SwitchStmt.getCase(int i)` now puts the `default` case last.
