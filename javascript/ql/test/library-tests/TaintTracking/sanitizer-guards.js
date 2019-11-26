@@ -63,3 +63,14 @@ function phi() {
   }
   sink(x); // OK
 }
+
+function phi2() {
+  let x = source();
+
+  if (something(x) || isSafe(x)) {
+    // this input to the phi node for 'x' is not fully sanitized
+  } else {
+    x = null;
+  }
+  sink(x); // OK
+}
