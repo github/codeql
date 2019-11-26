@@ -11,11 +11,12 @@ private class IntValue = Ints::IntValue;
 
 private predicate hasResultMemoryAccess(
   Instruction instr, IRVariable var, IRType type, Language::LanguageType languageType,
-  IntValue startBitOffset, IntValue endBitOffset
+  IntValue startBitOffset, IntValue endBitOffset, boolean isMayAccess
 ) {
   resultPointsTo(instr.getResultAddress(), var, startBitOffset) and
   languageType = instr.getResultLanguageType() and
   type = languageType.getIRType() and
+  (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
   if exists(type.getByteSize())
   then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
   else endBitOffset = Ints::unknown()
@@ -23,11 +24,12 @@ private predicate hasResultMemoryAccess(
 
 private predicate hasOperandMemoryAccess(
   MemoryOperand operand, IRVariable var, IRType type, Language::LanguageType languageType,
-  IntValue startBitOffset, IntValue endBitOffset
+  IntValue startBitOffset, IntValue endBitOffset, boolean isMayAccess
 ) {
   resultPointsTo(operand.getAddressOperand().getAnyDef(), var, startBitOffset) and
   languageType = operand.getLanguageType() and
   type = languageType.getIRType() and
+  (if operand.hasMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
   if exists(type.getByteSize())
   then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
   else endBitOffset = Ints::unknown()
@@ -36,17 +38,23 @@ private predicate hasOperandMemoryAccess(
 private newtype TMemoryLocation =
   TVariableMemoryLocation(
     IRVariable var, IRType type, Language::LanguageType languageType, IntValue startBitOffset,
-    IntValue endBitOffset
+    IntValue endBitOffset, boolean isMayAccess
   ) {
     (
-      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset) or
-      hasOperandMemoryAccess(_, var, type, _, startBitOffset, endBitOffset)
+      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess) or
+      hasOperandMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
     ) and
     languageType = type.getCanonicalLanguageType()
   } or
-  TUnknownMemoryLocation(IRFunction irFunc) or
-  TUnknownNonLocalMemoryLocation(IRFunction irFunc) or
-  TUnknownVirtualVariable(IRFunction irFunc)
+  TUnknownMemoryLocation(IRFunction irFunc, boolean isMayAccess) {
+    isMayAccess = false or isMayAccess = true
+  } or
+  TAllNonLocalMemory(IRFunction irFunc, boolean isMayAccess) {
+    isMayAccess = false or isMayAccess = true
+  } or
+  TAllAliasedMemory(IRFunction irFunc, boolean isMayAccess) {
+    isMayAccess = false or isMayAccess = true
+  }
 
 /**
  * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
@@ -56,7 +64,11 @@ private newtype TMemoryLocation =
  * - `UnknownMemoryLocation` - A location not known to be within a specific `IRVariable`.
  */
 abstract class MemoryLocation extends TMemoryLocation {
-  abstract string toString();
+  final string toString() {
+    if isMayAccess() then result = "?" + toStringInternal() else result = toStringInternal()
+  }
+
+  abstract string toStringInternal();
 
   abstract VirtualVariable getVirtualVariable();
 
@@ -64,7 +76,28 @@ abstract class MemoryLocation extends TMemoryLocation {
 
   abstract string getUniqueId();
 
+  abstract IRFunction getIRFunction();
+
   final IRType getIRType() { result = getType().getIRType() }
+
+  abstract predicate isMayAccess();
+
+  /**
+   * Holds if the location cannot be overwritten except by definition of a `MemoryLocation` for
+   * which `def.canDefineReadOnly()` holds.
+   */
+  predicate isReadOnly() { none() }
+
+  /**
+   * Holds if a definition of this location can be the definition of a read-only use location.
+   */
+  predicate canDefineReadOnly() { none() }
+
+  /**
+   * Holds if the location always represents memory allocated on the stack (for example, a variable
+   * with automatic storage duration).
+   */
+  predicate isAlwaysAllocatedOnStack() { none() }
 }
 
 abstract class VirtualVariable extends MemoryLocation { }
@@ -79,12 +112,14 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
   Language::LanguageType languageType;
   IntValue startBitOffset;
   IntValue endBitOffset;
+  boolean isMayAccess;
 
   VariableMemoryLocation() {
-    this = TVariableMemoryLocation(var, type, languageType, startBitOffset, endBitOffset)
+    this = TVariableMemoryLocation(var, type, languageType, startBitOffset, endBitOffset,
+        isMayAccess)
   }
 
-  final override string toString() {
+  final override string toStringInternal() {
     result = var.toString() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
         type.toString() + ", " + languageType.toString() + ">"
   }
@@ -92,17 +127,19 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
   final override Language::LanguageType getType() {
     if
       strictcount(Language::LanguageType accessType |
-        hasResultMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset) or
-        hasOperandMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset)
+        hasResultMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset, _) or
+        hasOperandMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset, _)
       ) = 1
     then
       // All of the accesses have the same `LanguageType`, so just use that.
-      hasResultMemoryAccess(_, var, type, result, startBitOffset, endBitOffset) or
-      hasOperandMemoryAccess(_, var, type, result, startBitOffset, endBitOffset)
+      hasResultMemoryAccess(_, var, type, result, startBitOffset, endBitOffset, _) or
+      hasOperandMemoryAccess(_, var, type, result, startBitOffset, endBitOffset, _)
     else
       // There is no single type for all accesses, so just use the canonical one for this `IRType`.
       result = type.getCanonicalLanguageType()
   }
+
+  final override IRFunction getIRFunction() { result = var.getEnclosingIRFunction() }
 
   final IntValue getStartBitOffset() { result = startBitOffset }
 
@@ -117,10 +154,17 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
 
   final override VirtualVariable getVirtualVariable() {
     if variableAddressEscapes(var)
-    then result = TUnknownVirtualVariable(var.getEnclosingIRFunction())
+    then result = TAllAliasedMemory(var.getEnclosingIRFunction(), false)
     else
-      result = TVariableMemoryLocation(var, var.getIRType(), _, 0, var.getIRType().getByteSize() * 8)
+      result = TVariableMemoryLocation(var, var.getIRType(), _, 0,
+          var.getIRType().getByteSize() * 8, false)
   }
+
+  final override predicate isMayAccess() { isMayAccess = true }
+
+  final override predicate isReadOnly() { var.isReadOnly() }
+
+  final override predicate isAlwaysAllocatedOnStack() { var instanceof IRAutomaticVariable }
 
   /**
    * Holds if this memory location covers the entire variable.
@@ -140,7 +184,8 @@ class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
   VariableVirtualVariable() {
     not variableAddressEscapes(var) and
     type = var.getIRType() and
-    coversEntireVariable()
+    coversEntireVariable() and
+    not isMayAccess()
   }
 }
 
@@ -149,111 +194,168 @@ class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
  */
 class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
   IRFunction irFunc;
+  boolean isMayAccess;
 
-  UnknownMemoryLocation() { this = TUnknownMemoryLocation(irFunc) }
+  UnknownMemoryLocation() { this = TUnknownMemoryLocation(irFunc, isMayAccess) }
 
-  final override string toString() { result = "{Unknown}" }
+  final override string toStringInternal() { result = "{Unknown}" }
 
-  final override VirtualVariable getVirtualVariable() { result = TUnknownVirtualVariable(irFunc) }
+  final override VirtualVariable getVirtualVariable() { result = TAllAliasedMemory(irFunc, false) }
 
   final override Language::LanguageType getType() {
     result = any(IRUnknownType type).getCanonicalLanguageType()
   }
 
+  final override IRFunction getIRFunction() { result = irFunc }
+
   final override string getUniqueId() { result = "{Unknown}" }
+
+  final override predicate isMayAccess() { isMayAccess = true }
 }
 
 /**
  * An access to memory that is not known to be confined to a specific `IRVariable`, but is known to
  * not access memory on the current function's stack frame.
  */
-class UnknownNonLocalMemoryLocation extends TUnknownNonLocalMemoryLocation, MemoryLocation {
+class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
   IRFunction irFunc;
+  boolean isMayAccess;
 
-  UnknownNonLocalMemoryLocation() { this = TUnknownNonLocalMemoryLocation(irFunc) }
+  AllNonLocalMemory() { this = TAllNonLocalMemory(irFunc, isMayAccess) }
 
-  final override string toString() { result = "{UnknownNonLocal}" }
+  final override string toStringInternal() { result = "{AllNonLocal}" }
 
-  final override VirtualVariable getVirtualVariable() { result = TUnknownVirtualVariable(irFunc) }
+  final override VirtualVariable getVirtualVariable() { result = TAllAliasedMemory(irFunc, false) }
 
   final override Language::LanguageType getType() {
     result = any(IRUnknownType type).getCanonicalLanguageType()
   }
 
-  final override string getUniqueId() { result = "{UnknownNonLocal}" }
+  final override IRFunction getIRFunction() { result = irFunc }
+
+  final override string getUniqueId() { result = "{AllNonLocal}" }
+
+  final override predicate isMayAccess() { isMayAccess = true }
 }
 
 /**
  * An access to all aliased memory.
  */
-class UnknownVirtualVariable extends TUnknownVirtualVariable, VirtualVariable {
+class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
   IRFunction irFunc;
+  boolean isMayAccess;
 
-  UnknownVirtualVariable() { this = TUnknownVirtualVariable(irFunc) }
+  AllAliasedMemory() { this = TAllAliasedMemory(irFunc, isMayAccess) }
 
-  final override string toString() { result = "{AllAliased}" }
+  final override string toStringInternal() { result = "{AllAliased}" }
 
   final override Language::LanguageType getType() {
     result = any(IRUnknownType type).getCanonicalLanguageType()
   }
 
+  final override IRFunction getIRFunction() { result = irFunc }
+
   final override string getUniqueId() { result = " " + toString() }
 
-  final override VirtualVariable getVirtualVariable() { result = this }
+  final override VirtualVariable getVirtualVariable() { result = TAllAliasedMemory(irFunc, false) }
+
+  final override predicate isMayAccess() { isMayAccess = true }
 }
 
+class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
+  AliasedVirtualVariable() { not isMayAccess() }
+
+  override predicate canDefineReadOnly() {
+    // A must-def of all aliased memory is only used in two places:
+    // 1. In the prologue of the function, to provide a definition for all memory defined before the
+    //    function was called. In this case, it needs to provide a definition even for read-only
+    //    non-local variables.
+    // 2. As the result of a `Chi` instruction. These don't participate in overlap analysis, so it's
+    //    OK if we let this predicate hold in that case.
+    any()
+  }
+}
+
+/**
+ * Gets the overlap relationship between the definition location `def` and the use location `use`.
+ */
 Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
+  exists(Overlap overlap |
+    // Compute the overlap based only on the extent.
+    overlap = getExtentOverlap(def, use) and
+    // Filter out attempts to write to read-only memory.
+    (def.canDefineReadOnly() or not use.isReadOnly()) and
+    if def.isMayAccess()
+    then
+      // No matter what kind of extent overlap we have, the final overlap is still
+      // `MayPartiallyOverlap`, because the def might not have written all of the bits of the use
+      // location.
+      result instanceof MayPartiallyOverlap
+    else
+      if
+        overlap instanceof MustExactlyOverlap and
+        (use.isMayAccess() or not def.getIRType() = use.getIRType())
+      then
+        // Can't exactly overlap with a "may" use or a use of a different type.
+        result instanceof MustTotallyOverlap
+      else result = overlap
+  )
+}
+
+/**
+ * Gets the overlap relationship between the definition location `def` and the use location `use`,
+ * based only on the set of memory locations accessed. Handling of "may" accesses and read-only
+ * locations occurs in `getOverlap()`.
+ */
+private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
   // The def and the use must have the same virtual variable, or no overlap is possible.
   (
-    // An UnknownVirtualVariable must totally overlap any location within the same virtual variable.
+    // AllAliasedMemory must totally overlap any location within the same virtual variable.
     def.getVirtualVariable() = use.getVirtualVariable() and
-    def instanceof UnknownVirtualVariable and
+    def instanceof AllAliasedMemory and
     result instanceof MustTotallyOverlap
     or
     // An UnknownMemoryLocation may partially overlap any Location within the same virtual variable,
-    // unless the location is read-only.
+    // even itself.
     def.getVirtualVariable() = use.getVirtualVariable() and
     def instanceof UnknownMemoryLocation and
-    result instanceof MayPartiallyOverlap and
-    not use.(VariableMemoryLocation).getVariable().isReadOnly()
+    result instanceof MayPartiallyOverlap
     or
-    // An UnknownNonLocalMemoryLocation may partially overlap any location within the same virtual
-    // variable, except a local variable or read-only variable.
     def.getVirtualVariable() = use.getVirtualVariable() and
-    def instanceof UnknownNonLocalMemoryLocation and
-    result instanceof MayPartiallyOverlap and
-    not exists(IRVariable var | var = use.(VariableMemoryLocation).getVariable() |
-      var instanceof IRAutomaticVariable or var.isReadOnly()
+    def instanceof AllNonLocalMemory and
+    (
+      // AllNonLocalMemory exactly overlaps itself.
+      use instanceof AllNonLocalMemory and
+      result instanceof MustExactlyOverlap
+      or
+      // AllNonLocalMemory may partially overlap any location within the same virtual variable,
+      // except a local variable.
+      result instanceof MayPartiallyOverlap and
+      not use.isAlwaysAllocatedOnStack()
     )
     or
     exists(VariableMemoryLocation defVariableLocation |
       defVariableLocation = def and
       (
-        // A VariableMemoryLocation may partially overlap an unknown location within the same virtual variable.
+        // A VariableMemoryLocation may partially overlap an unknown location within the same
+        // virtual variable.
         def.getVirtualVariable() = use.getVirtualVariable() and
-        (use instanceof UnknownMemoryLocation or use instanceof UnknownVirtualVariable) and
+        (use instanceof UnknownMemoryLocation or use instanceof AllAliasedMemory) and
         result instanceof MayPartiallyOverlap
         or
-        // A VariableMemoryLocation that is not a local variable may partially overlap an unknown
-        // non-local location within the same virtual variable.
+        // A VariableMemoryLocation that is not a local variable may partially overlap an
+        // AllNonLocalMemory within the same virtual variable.
         def.getVirtualVariable() = use.getVirtualVariable() and
-        use instanceof UnknownNonLocalMemoryLocation and
+        use instanceof AllNonLocalMemory and
         result instanceof MayPartiallyOverlap and
-        not defVariableLocation.getVariable() instanceof IRAutomaticVariable
+        not defVariableLocation.isAlwaysAllocatedOnStack()
         or
-        // A VariableMemoryLocation overlaps another location within the same variable based on the relationship
-        // of the two offset intervals.
+        // A VariableMemoryLocation overlaps another location within the same variable based on the
+        // relationship of the two offset intervals.
         exists(Overlap intervalOverlap |
           intervalOverlap = getVariableMemoryLocationOverlap(def, use) and
           if intervalOverlap instanceof MustExactlyOverlap
-          then
-            if def.getIRType() = use.getIRType()
-            then
-              // The def and use types match, so it's an exact overlap.
-              result instanceof MustExactlyOverlap
-            else
-              // The def and use types are not the same, so it's just a total overlap.
-              result instanceof MustTotallyOverlap
+          then result instanceof MustExactlyOverlap
           else
             if defVariableLocation.coversEntireVariable()
             then
@@ -347,55 +449,51 @@ private Overlap getVariableMemoryLocationOverlap(
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
-  exists(MemoryAccessKind kind |
+  exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
+    (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
     (
       (
         kind.usesAddressOperand() and
-        if hasResultMemoryAccess(instr, _, _, _, _, _)
+        if hasResultMemoryAccess(instr, _, _, _, _, _, _)
         then
           exists(IRVariable var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
-            hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset) and
-            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset)
+            hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
+            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
           )
-        else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction())
+        else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
       or
       kind instanceof EscapedMemoryAccess and
-      result = TUnknownVirtualVariable(instr.getEnclosingIRFunction())
+      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
       or
-      kind instanceof EscapedMayMemoryAccess and
-      result = TUnknownMemoryLocation(instr.getEnclosingIRFunction())
-      or
-      kind instanceof NonLocalMayMemoryAccess and
-      result = TUnknownNonLocalMemoryLocation(instr.getEnclosingIRFunction())
+      kind instanceof NonLocalMemoryAccess and
+      result = TAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
     )
   )
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
-  exists(MemoryAccessKind kind |
+  exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
+    (if operand.hasMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
     (
       (
         kind.usesAddressOperand() and
-        if hasOperandMemoryAccess(operand, _, _, _, _, _)
+        if hasOperandMemoryAccess(operand, _, _, _, _, _, _)
         then
           exists(IRVariable var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
-            hasOperandMemoryAccess(operand, var, type, _, startBitOffset, endBitOffset) and
-            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset)
+            hasOperandMemoryAccess(operand, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
+            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
           )
-        else result = TUnknownMemoryLocation(operand.getEnclosingIRFunction())
+        else result = TUnknownMemoryLocation(operand.getEnclosingIRFunction(), isMayAccess)
       )
       or
       kind instanceof EscapedMemoryAccess and
-      result = TUnknownVirtualVariable(operand.getEnclosingIRFunction())
+      result = TAllAliasedMemory(operand.getEnclosingIRFunction(), isMayAccess)
       or
-      kind instanceof EscapedMayMemoryAccess and
-      result = TUnknownMemoryLocation(operand.getEnclosingIRFunction())
-      or
-      kind instanceof NonLocalMayMemoryAccess and
-      result = TUnknownNonLocalMemoryLocation(operand.getEnclosingIRFunction())
+      kind instanceof NonLocalMemoryAccess and
+      result = TAllNonLocalMemory(operand.getEnclosingIRFunction(), isMayAccess)
     )
   )
 }

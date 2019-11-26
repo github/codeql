@@ -96,7 +96,7 @@ private module Cached {
               hasUseAtRank(useLocation, useBlock, useRank, oldInstruction) and
               definitionReachesUse(useLocation, defBlock, defRank, useBlock, useRank) and
               overlap = Alias::getOverlap(defLocation, useLocation) and
-              result = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation)
+              result = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, _)
             )
           else (
             result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction() and
@@ -149,13 +149,13 @@ private module Cached {
   ) {
     exists(
       Alias::MemoryLocation defLocation, Alias::MemoryLocation useLocation, OldBlock phiBlock,
-      OldBlock predBlock, OldBlock defBlock, int defOffset
+      OldBlock predBlock, OldBlock defBlock, int defOffset, Alias::MemoryLocation actualDefLocation
     |
-      hasPhiOperandDefinition(defLocation, useLocation, phiBlock, predBlock, defBlock, defOffset,
-        overlap) and
+      hasPhiOperandDefinition(defLocation, useLocation, phiBlock, predBlock, defBlock, defOffset) and
       instr = Phi(phiBlock, useLocation) and
       newPredecessorBlock = getNewBlock(predBlock) and
-      result = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation)
+      result = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, actualDefLocation) and
+      overlap = Alias::getOverlap(actualDefLocation, useLocation)
     )
   }
 
@@ -170,7 +170,7 @@ private module Cached {
       hasDefinitionAtRank(vvar, defLocation, defBlock, defRank, defOffset) and
       hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
       definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
-      result = getDefinitionOrChiInstruction(defBlock, defOffset, vvar)
+      result = getDefinitionOrChiInstruction(defBlock, defOffset, vvar, _)
     )
   }
 
@@ -396,11 +396,7 @@ private predicate hasChiNode(Alias::VirtualVariable vvar, OldInstruction def) {
     defLocation.getVirtualVariable() = vvar and
     // If the definition totally (or exactly) overlaps the virtual variable, then there's no need for a `Chi`
     // instruction.
-    (
-      Alias::getOverlap(defLocation, vvar) instanceof MayPartiallyOverlap or
-      def.getResultMemoryAccess() instanceof IndirectMayMemoryAccess or
-      def.getResultMemoryAccess() instanceof BufferMayMemoryAccess
-    )
+    Alias::getOverlap(defLocation, vvar) instanceof MayPartiallyOverlap
   )
 }
 
@@ -560,22 +556,27 @@ module DefUse {
   bindingset[defOffset, defLocation]
   pragma[inline]
   Instruction getDefinitionOrChiInstruction(
-    OldBlock defBlock, int defOffset, Alias::MemoryLocation defLocation
+    OldBlock defBlock, int defOffset, Alias::MemoryLocation defLocation,
+    Alias::MemoryLocation actualDefLocation
   ) {
     defOffset >= 0 and
     exists(OldInstruction oldInstr |
       oldInstr = defBlock.getInstruction(defOffset / 2) and
       if (defOffset % 2) > 0
-      then
+      then (
         // An odd offset corresponds to the `Chi` instruction.
-        result = Chi(oldInstr)
-      else
+        result = Chi(oldInstr) and
+        actualDefLocation = defLocation.getVirtualVariable()
+      ) else (
         // An even offset corresponds to the original instruction.
-        result = getNewInstruction(oldInstr)
+        result = getNewInstruction(oldInstr) and
+        actualDefLocation = defLocation
+      )
     )
     or
     defOffset < 0 and
-    result = Phi(defBlock, defLocation)
+    result = Phi(defBlock, defLocation) and
+    actualDefLocation = defLocation
   }
 
   /**
@@ -713,10 +714,7 @@ module DefUse {
       defLocation = Alias::getResultMemoryLocation(def) and
       block.getInstruction(index) = def and
       overlap = Alias::getOverlap(defLocation, useLocation) and
-      if
-        overlap instanceof MayPartiallyOverlap or
-        def.getResultMemoryAccess() instanceof IndirectMayMemoryAccess or
-        def.getResultMemoryAccess() instanceof BufferMayMemoryAccess
+      if overlap instanceof MayPartiallyOverlap
       then offset = (index * 2) + 1 // The use will be connected to the definition on the `Chi` instruction.
       else offset = index * 2 // The use will be connected to the definition on the original instruction.
     )
@@ -801,20 +799,19 @@ module DefUse {
 
   /**
    * Holds if the `Phi` instruction for location `useLocation` at the beginning of block `phiBlock` has an operand along
-   * the incoming edge from `predBlock`, where that operand's definition is at offset `defOffset` in block `defBlock`,
-   * and overlaps the use operand with overlap relationship `overlap`.
+   * the incoming edge from `predBlock`, where that operand's definition is at offset `defOffset` in block `defBlock`.
    */
   pragma[inline]
   predicate hasPhiOperandDefinition(
     Alias::MemoryLocation defLocation, Alias::MemoryLocation useLocation, OldBlock phiBlock,
-    OldBlock predBlock, OldBlock defBlock, int defOffset, Overlap overlap
+    OldBlock predBlock, OldBlock defBlock, int defOffset
   ) {
     exists(int defRank |
       definitionHasPhiNode(useLocation, phiBlock) and
       predBlock = phiBlock.getAFeasiblePredecessor() and
       hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
       definitionReachesEndOfBlock(useLocation, defBlock, defRank, predBlock) and
-      overlap = Alias::getOverlap(defLocation, useLocation)
+      exists(Alias::getOverlap(defLocation, useLocation))
     )
   }
 }

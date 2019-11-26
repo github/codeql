@@ -1,11 +1,8 @@
 private newtype TMemoryAccessKind =
   TIndirectMemoryAccess() or
-  TIndirectMayMemoryAccess() or
   TBufferMemoryAccess() or
-  TBufferMayMemoryAccess() or
   TEscapedMemoryAccess() or
-  TEscapedMayMemoryAccess() or
-  TNonLocalMayMemoryAccess() or
+  TNonLocalMemoryAccess() or
   TPhiMemoryAccess() or
   TUnmodeledMemoryAccess() or
   TChiTotalMemoryAccess() or
@@ -36,33 +33,12 @@ class IndirectMemoryAccess extends MemoryAccessKind, TIndirectMemoryAccess {
 }
 
 /**
- * The operand or result may access some, all, or none of the memory at the address specified by the
- * `AddressOperand` on the same instruction.
- */
-class IndirectMayMemoryAccess extends MemoryAccessKind, TIndirectMayMemoryAccess {
-  override string toString() { result = "indirect(may)" }
-
-  final override predicate usesAddressOperand() { any() }
-}
-
-/**
  * The operand or result accesses memory starting at the address specified by the `AddressOperand`
  * on the same instruction, accessing a number of consecutive elements given by the
  * `BufferSizeOperand`.
  */
 class BufferMemoryAccess extends MemoryAccessKind, TBufferMemoryAccess {
   override string toString() { result = "buffer" }
-
-  final override predicate usesAddressOperand() { any() }
-}
-
-/**
- * The operand or result may access some, all, or none of the memory starting at the address
- * specified by the `AddressOperand` on the same instruction, accessing a number of consecutive
- * elements given by the `BufferSizeOperand`.
- */
-class BufferMayMemoryAccess extends MemoryAccessKind, TBufferMayMemoryAccess {
-  override string toString() { result = "buffer(may)" }
 
   final override predicate usesAddressOperand() { any() }
 }
@@ -75,18 +51,11 @@ class EscapedMemoryAccess extends MemoryAccessKind, TEscapedMemoryAccess {
 }
 
 /**
- * The operand or result may access all memory whose address has escaped.
+ * The operand or result access all memory whose address has escaped, other than data on the stack
+ * frame of the current function.
  */
-class EscapedMayMemoryAccess extends MemoryAccessKind, TEscapedMayMemoryAccess {
-  override string toString() { result = "escaped(may)" }
-}
-
-/**
- * The operand or result may access all memory whose address has escaped, other than data on the
- * stack frame of the current function.
- */
-class NonLocalMayMemoryAccess extends MemoryAccessKind, TNonLocalMayMemoryAccess {
-  override string toString() { result = "nonlocal(may)" }
+class NonLocalMemoryAccess extends MemoryAccessKind, TNonLocalMemoryAccess {
+  override string toString() { result = "nonlocal" }
 }
 
 /**
