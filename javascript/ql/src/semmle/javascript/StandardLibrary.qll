@@ -152,7 +152,7 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
 }
 
 /**
- * A promise that is resolved with the given value.
+ * A promise that is created and resolved with one or more value.
  */
 abstract class PromiseCreationCall extends DataFlow::CallNode {
   /**
@@ -162,9 +162,14 @@ abstract class PromiseCreationCall extends DataFlow::CallNode {
 }
 
 /**
+ * A promise that is created using a `.resolve()` call. 
+ */
+abstract class ResolvedPromiseDefinition extends PromiseCreationCall {}
+
+/**
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
  */
-class ResolvedES2015PromiseDefinition extends PromiseCreationCall {
+class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
   ResolvedES2015PromiseDefinition() {
     this = DataFlow::globalVarRef("Promise").getAMemberCall("resolve")
   }

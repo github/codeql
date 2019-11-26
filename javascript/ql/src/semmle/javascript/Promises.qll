@@ -25,7 +25,7 @@ module Bluebird {
   /**
    * A resolved promise created by the bluebird `Promise.resolve` function.
    */
-  class ResolvedBluebidPromiseDefinition extends PromiseCreationCall {
+  class ResolvedBluebidPromiseDefinition extends ResolvedPromiseDefinition {
     ResolvedBluebidPromiseDefinition() { this = bluebird().getAMemberCall("resolve") }
 
     override DataFlow::Node getValue() { result = getArgument(0) }
@@ -75,7 +75,7 @@ private module ClosurePromise {
   /**
    * A promise created by a call `goog.Promise.resolve(value)`.
    */
-  private class ResolvedClosurePromiseDefinition extends PromiseCreationCall {
+  private class ResolvedClosurePromiseDefinition extends ResolvedPromiseDefinition {
     ResolvedClosurePromiseDefinition() {
       this = Closure::moduleImport("goog.Promise.resolve").getACall()
     }
