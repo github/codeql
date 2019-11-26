@@ -64,6 +64,8 @@
 | LocalDataFlow.cs:430:23:430:28 | access to local variable sink72 |
 | LocalDataFlow.cs:445:15:445:20 | access to local variable sink73 |
 | LocalDataFlow.cs:446:15:446:20 | access to local variable sink74 |
+| LocalDataFlow.cs:449:15:449:20 | access to local variable sink75 |
+| LocalDataFlow.cs:452:15:452:20 | access to local variable sink76 |
 | LocalDataFlow.cs:478:15:478:21 | access to parameter tainted |
 | SSA.cs:9:15:9:22 | access to local variable ssaSink0 |
 | SSA.cs:25:15:25:22 | access to local variable ssaSink1 |
