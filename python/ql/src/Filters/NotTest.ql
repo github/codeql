@@ -4,6 +4,7 @@
  * @kind file-classifier
  * @id py/not-test-file-filter
  */
+import python
 import external.DefectFilter
 import semmle.python.filters.Tests
 

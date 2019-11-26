@@ -11,6 +11,7 @@
  *       external/cwe/cwe-798
  */
 
+import python
 import semmle.python.security.TaintTracking
 import semmle.python.filters.Tests
 
