@@ -211,26 +211,26 @@ ssa.cpp:
 #   70|   Block 1
 #   70|     r70_1(char)          = Constant[0]        : 
 #   70|     r70_2(glval<char *>) = VariableAddress[p] : 
-#   70|     r70_3(char *)        = Load               : &:r70_2, m69_3
+#   70|     r70_3(char *)        = Load               : &:r70_2, m69_1
 #   70|     r70_4(int)           = Constant[1]        : 
 #   70|     r70_5(char *)        = PointerAdd[1]      : r70_3, r70_4
 #   70|     m70_6(char *)        = Store              : &:r70_2, r70_5
 #   70|     r70_7(glval<char>)   = CopyValue          : r70_3
 #   70|     m70_8(char)          = Store              : &:r70_7, r70_1
-#   70|     m70_9(unknown)       = Chi                : total:m69_1, partial:m70_8
+#   70|     m70_9(unknown)       = Chi                : total:m69_3, partial:m70_8
 #-----|   Goto (back edge) -> Block 3
 
 #   71|   Block 2
 #   71|     v71_1(void)  = NoOp         : 
 #   68|     v68_8(void)  = ReturnVoid   : 
 #   68|     v68_9(void)  = UnmodeledUse : mu*
-#   68|     v68_10(void) = AliasedUse   : ~m69_1
+#   68|     v68_10(void) = AliasedUse   : ~m69_3
 #   68|     v68_11(void) = ExitFunction : 
 
 #   69|   Block 3
-#   69|     m69_1(unknown)    = Phi                : from 0:~m68_2, from 1:~m70_9
+#   69|     m69_1(char *)     = Phi                : from 0:m68_7, from 1:m70_6
 #   69|     m69_2(int)        = Phi                : from 0:m68_5, from 1:m69_8
-#   69|     m69_3(char *)     = Phi                : from 0:m68_7, from 1:m70_6
+#   69|     m69_3(unknown)    = Phi                : from 0:~m68_2, from 1:~m70_9
 #   69|     r69_4(glval<int>) = VariableAddress[n] : 
 #   69|     r69_5(int)        = Load               : &:r69_4, m69_2
 #   69|     r69_6(int)        = Constant[1]        : 
@@ -280,15 +280,15 @@ ssa.cpp:
 #-----|   Goto -> Block 3
 
 #   86|   Block 3
-#   86|     m86_1(int)        = Phi                      : from 1:m80_3, from 2:m84_3
-#   86|     m86_2(int)        = Phi                      : from 1:m81_3, from 2:m77_3
+#   86|     m86_1(int)        = Phi                      : from 1:m81_3, from 2:m77_3
+#   86|     m86_2(int)        = Phi                      : from 1:m80_3, from 2:m84_3
 #   86|     r86_3(glval<int>) = VariableAddress[x_merge] : 
 #   86|     r86_4(glval<int>) = VariableAddress[x]       : 
-#   86|     r86_5(int)        = Load                     : &:r86_4, m86_1
+#   86|     r86_5(int)        = Load                     : &:r86_4, m86_2
 #   86|     m86_6(int)        = Store                    : &:r86_3, r86_5
 #   87|     r87_1(glval<int>) = VariableAddress[y_merge] : 
 #   87|     r87_2(glval<int>) = VariableAddress[y]       : 
-#   87|     r87_3(int)        = Load                     : &:r87_2, m86_2
+#   87|     r87_3(int)        = Load                     : &:r87_2, m86_1
 #   87|     m87_4(int)        = Store                    : &:r87_1, r87_3
 #   88|     r88_1(glval<int>) = VariableAddress[z_merge] : 
 #   88|     r88_2(glval<int>) = VariableAddress[z]       : 
@@ -521,16 +521,16 @@ ssa.cpp:
 #-----|   Goto -> Block 3
 
 #  130|   Block 3
-#  130|     m130_1(Point)        = Phi                : from 1:~m125_6, from 2:~m128_6
-#  130|     m130_2(int)          = Phi                : from 1:m125_5, from 2:m128_5
+#  130|     m130_1(int)          = Phi                : from 1:m125_5, from 2:m128_5
+#  130|     m130_2(Point)        = Phi                : from 1:~m125_6, from 2:~m128_6
 #  130|     r130_3(glval<int>)   = VariableAddress[x] : 
 #  130|     r130_4(glval<Point>) = VariableAddress[a] : 
 #  130|     r130_5(glval<int>)   = FieldAddress[x]    : r130_4
-#  130|     r130_6(int)          = Load               : &:r130_5, m130_2
+#  130|     r130_6(int)          = Load               : &:r130_5, m130_1
 #  130|     m130_7(int)          = Store              : &:r130_3, r130_6
 #  131|     r131_1(glval<Point>) = VariableAddress[b] : 
 #  131|     r131_2(glval<Point>) = VariableAddress[a] : 
-#  131|     r131_3(Point)        = Load               : &:r131_2, m130_1
+#  131|     r131_3(Point)        = Load               : &:r131_2, m130_2
 #  131|     m131_4(Point)        = Store              : &:r131_1, r131_3
 #  132|     v132_1(void)         = NoOp               : 
 #  122|     v122_10(void)        = ReturnVoid         : 
@@ -582,12 +582,12 @@ ssa.cpp:
 #-----|   Goto -> Block 3
 
 #  142|   Block 3
-#  142|     m142_1(Point)        = Phi                : from 1:~m137_6, from 2:m140_4
-#  142|     m142_2(int)          = Phi                : from 1:m137_5, from 2:~m140_4
+#  142|     m142_1(int)          = Phi                : from 1:m137_5, from 2:~m140_4
+#  142|     m142_2(Point)        = Phi                : from 1:~m137_6, from 2:m140_4
 #  142|     r142_3(glval<int>)   = VariableAddress[x] : 
 #  142|     r142_4(glval<Point>) = VariableAddress[a] : 
 #  142|     r142_5(glval<int>)   = FieldAddress[x]    : r142_4
-#  142|     r142_6(int)          = Load               : &:r142_5, m142_2
+#  142|     r142_6(int)          = Load               : &:r142_5, m142_1
 #  142|     m142_7(int)          = Store              : &:r142_3, r142_6
 #  143|     v143_1(void)         = NoOp               : 
 #  134|     v134_10(void)        = ReturnVoid         : 

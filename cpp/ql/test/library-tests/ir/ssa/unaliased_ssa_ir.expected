@@ -214,7 +214,7 @@ ssa.cpp:
 #   70|   Block 1
 #   70|     r70_1(char)          = Constant[0]        : 
 #   70|     r70_2(glval<char *>) = VariableAddress[p] : 
-#   70|     r70_3(char *)        = Load               : &:r70_2, m69_2
+#   70|     r70_3(char *)        = Load               : &:r70_2, m69_1
 #   70|     r70_4(int)           = Constant[1]        : 
 #   70|     r70_5(char *)        = PointerAdd[1]      : r70_3, r70_4
 #   70|     m70_6(char *)        = Store              : &:r70_2, r70_5
@@ -230,10 +230,10 @@ ssa.cpp:
 #   68|     v68_11(void) = ExitFunction : 
 
 #   69|   Block 3
-#   69|     m69_1(int)        = Phi                : from 0:m68_5, from 1:m69_7
-#   69|     m69_2(char *)     = Phi                : from 0:m68_7, from 1:m70_6
+#   69|     m69_1(char *)     = Phi                : from 0:m68_7, from 1:m70_6
+#   69|     m69_2(int)        = Phi                : from 0:m68_5, from 1:m69_7
 #   69|     r69_3(glval<int>) = VariableAddress[n] : 
-#   69|     r69_4(int)        = Load               : &:r69_3, m69_1
+#   69|     r69_4(int)        = Load               : &:r69_3, m69_2
 #   69|     r69_5(int)        = Constant[1]        : 
 #   69|     r69_6(int)        = Sub                : r69_4, r69_5
 #   69|     m69_7(int)        = Store              : &:r69_3, r69_6
@@ -281,15 +281,15 @@ ssa.cpp:
 #-----|   Goto -> Block 3
 
 #   86|   Block 3
-#   86|     m86_1(int)        = Phi                      : from 1:m80_3, from 2:m84_3
-#   86|     m86_2(int)        = Phi                      : from 1:m81_3, from 2:m77_3
+#   86|     m86_1(int)        = Phi                      : from 1:m81_3, from 2:m77_3
+#   86|     m86_2(int)        = Phi                      : from 1:m80_3, from 2:m84_3
 #   86|     r86_3(glval<int>) = VariableAddress[x_merge] : 
 #   86|     r86_4(glval<int>) = VariableAddress[x]       : 
-#   86|     r86_5(int)        = Load                     : &:r86_4, m86_1
+#   86|     r86_5(int)        = Load                     : &:r86_4, m86_2
 #   86|     m86_6(int)        = Store                    : &:r86_3, r86_5
 #   87|     r87_1(glval<int>) = VariableAddress[y_merge] : 
 #   87|     r87_2(glval<int>) = VariableAddress[y]       : 
-#   87|     r87_3(int)        = Load                     : &:r87_2, m86_2
+#   87|     r87_3(int)        = Load                     : &:r87_2, m86_1
 #   87|     m87_4(int)        = Store                    : &:r87_1, r87_3
 #   88|     r88_1(glval<int>) = VariableAddress[z_merge] : 
 #   88|     r88_2(glval<int>) = VariableAddress[z]       : 

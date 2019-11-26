@@ -9,7 +9,6 @@ import Imports::IRType
 import Imports::MemoryAccessKind
 import Imports::Opcode
 private import Imports::OperandTag
-import semmle.code.cpp.ir.implementation.internal.PrintSupport
 
 module InstructionSanity {
   /**
@@ -351,28 +350,23 @@ class Instruction extends Construction::TInstruction {
    */
   int getDisplayIndexInBlock() {
     exists(IRBlock block |
-      block = getBlock() and
-      (
-        exists(int index, int phiCount |
-          phiCount = count(block.getAPhiInstruction()) and
-          this = block.getInstruction(index) and
-          result = index + phiCount
+      this = block.getInstruction(result)
+      or
+      this = rank[-result - 1](PhiInstruction phiInstr |
+          phiInstr = block.getAPhiInstruction()
+        |
+          phiInstr order by phiInstr.getUniqueId()
         )
-        or
-        this instanceof PhiInstruction and
-        this = rank[result + 1](PhiInstruction phiInstr |
-            phiInstr = block.getAPhiInstruction()
-          |
-            phiInstr order by phiInstr.getUniqueId()
-          )
-      )
     )
   }
 
   int getLineRank() {
-    this = rank[result](Instruction instr | instr.getAST().getFile() = getAST().getFile() and instr.getAST().getLocation().getStartLine() = getAST().getLocation().getStartLine() | instr
-     order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
-    )
+    this = rank[result](Instruction instr |
+        instr.getAST().getFile() = getAST().getFile() and
+        instr.getAST().getLocation().getStartLine() = getAST().getLocation().getStartLine()
+      |
+        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+      )
   }
 
   /**
