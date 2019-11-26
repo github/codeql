@@ -444,6 +444,12 @@ public class LocalDataFlow
         var sink74 = sink0 ?? nonSink0;
         Check(sink73);
         Check(sink74);
+
+        LocalDataFlow sink75 = sink74;
+        Check(sink75);
+
+        LocalDataFlow sink76 = (LocalDataFlow)sink66;
+        Check(sink76);
     }
 
     static void Check<T>(T x) { }
@@ -485,4 +491,8 @@ public class LocalDataFlow
         IEnumerable<object> os2;
         foreach(var o in os2 = os) { }
     }
+
+    public static implicit operator LocalDataFlow(string s) => null;
+
+    public static explicit operator LocalDataFlow(int x) => null;
 }
