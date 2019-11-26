@@ -281,3 +281,19 @@ function copyUsingReflect(dst, src) {
         }
     });
 }
+
+function copyWithPath(dst, src, path) {
+    for (let key in src) {
+        if (src.hasOwnProperty(key)) {
+            if (dst[key]) {
+                copyWithPath(dst[key], src[key], path ? path + '.' + key : key);
+            } else {
+                let target = {};
+                target[path] = {};
+                target[path][key] = src[key]; // OK
+                doSomething(target);
+            }
+        }
+    }
+    return dst;
+}

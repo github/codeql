@@ -144,6 +144,26 @@ class DynamicPropRead extends DataFlow::SourceNode, DataFlow::ValueNode {
 
   /** Gets the base of the dynamic read. */
   DataFlow::Node getBase() { result = astNode.getBase().flow() }
+
+  /**
+   * Holds if the value of this read was assigned to earlier in the same basic block.
+   *
+   * For example, this is true for `dst[x]` on line 2 below:
+   * ```js
+   * dst[x] = {};
+   * dst[x][y] = src[y];
+   * ```
+   */
+  predicate hasDominatingAssignment() {
+    exists(DataFlow::PropWrite write, BasicBlock bb, int i, int j, SsaVariable ssaVar |
+      write = getBase().getALocalSource().getAPropertyWrite() and
+      bb.getNode(i) = write.getWriteNode() and
+      bb.getNode(j) = astNode and
+      i < j and
+      write.getPropertyNameExpr() = ssaVar.getAUse() and
+      astNode.getIndex() = ssaVar.getAUse()
+    )
+  }
 }
 
 /**
@@ -238,11 +258,13 @@ class PropNameTracking extends DataFlow::Configuration {
       // Step through `p -> x[p]`
       exists(PropRead read |
         pred = read.getPropertyNameExpr().flow() and
+        not read.(DynamicPropRead).hasDominatingAssignment() and
         succ = read
       )
       or
       // Step through `x -> x[p]`
       exists(DynamicPropRead read |
+        not read.hasDominatingAssignment() and
         pred = read.getBase() and
         succ = read
       )
