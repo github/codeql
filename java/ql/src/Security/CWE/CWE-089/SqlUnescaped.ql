@@ -10,6 +10,7 @@
  *       external/cwe/cwe-089
  */
 
+import java
 import semmle.code.java.security.SqlUnescapedLib
 import SqlInjectionLib
 
