@@ -248,3 +248,62 @@ private class IteratorExceptionStep extends DataFlow::MethodCallNode, DataFlow::
     succ = this.getExceptionalReturn()
   }
 }
+
+/**
+ * A call to `String.prototype.replace`.
+ *
+ * We heuristically include any call to a method called `replace`, provided it either
+ * has exactly two arguments, or local data flow suggests that the receiver may be a string.
+ */
+class StringReplaceCall extends DataFlow::MethodCallNode {
+  StringReplaceCall() {
+    getMethodName() = "replace" and
+    (getNumArgument() = 2 or getReceiver().mayHaveStringValue(_))
+  }
+
+  /** Gets the regular expression passed as the first argument to `replace`, if any. */
+  DataFlow::RegExpLiteralNode getRegExp() {
+    result.flowsTo(getArgument(0))
+  }
+
+  /** Gets a string that is being replaced by this call. */
+  string getAReplacedString() {
+    result = getRegExp().getRoot().getAMatchedString() or
+    getArgument(0).mayHaveStringValue(result)
+  }
+
+  /**
+   * Gets the second argument of this call to `replace`, which is either a string
+   * or a callback.
+   */
+  DataFlow::Node getRawReplacement() {
+    result = getArgument(1)
+  }
+
+  /**
+   * Holds if this is a global replacement, that is, the first argument is a regular expression
+   * with the `g` flag.
+   */
+  predicate isGlobal() {
+    getRegExp().isGlobal()
+  }
+
+  /**
+   * Holds if this call to `replace` replaces `old` with `new`.
+   */
+  predicate replaces(string old, string new) {
+    exists(string rawNew |
+      old = getAReplacedString() and
+      getRawReplacement().mayHaveStringValue(rawNew) and
+      new = rawNew.replaceAll("$&", old)
+    )
+    or
+    exists(DataFlow::FunctionNode replacer, DataFlow::PropRead pr, DataFlow::ObjectLiteralNode map |
+      replacer = getCallback(1) and
+      replacer.getParameter(0).flowsToExpr(pr.getPropertyNameExpr()) and
+      pr = map.getAPropertyRead() and
+      pr.flowsTo(replacer.getAReturn()) and
+      map.hasPropertyWrite(old, any(DataFlow::Node repl | repl.getStringValue() = new))
+    )
+  }
+}

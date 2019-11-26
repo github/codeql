@@ -1816,7 +1816,7 @@ class Type extends @type {
    *
    * For example, for a type `(S & T) | U` this gets the types `S`, `T`, and `U`.
    */
-  Type unfold() {
+  Type unfoldUnionAndIntersection() {
     not result instanceof UnionOrIntersectionType and
     (
       result = this
@@ -1827,6 +1827,27 @@ class Type extends @type {
       // We can use this to avoid recursion.
       result = this.(UnionType).getAnElementType().(IntersectionType).getAnElementType()
     )
+  }
+
+  /**
+   * Repeatedly unfolds unions, intersections, and type aliases and gets any of the underlying types,
+   * or this type itself if it is not a union or intersection.
+   *
+   * For example, the type `(S & T) | U` unfolds to `S`, `T`, and `U`.
+   *
+   * If this is a type alias, the alias is itself included in the result, but this is not the case for intermediate type aliases.
+   * For example:
+   * ```js
+   * type One = number | string;
+   * type Two = One | Function & {x: string};
+   * One; // unfolds to number, string, and One
+   * Two; // unfolds to number, string, One, Function, {x: string}, and Two
+   * ```
+   */
+  Type unfold() {
+    result = unfoldUnionAndIntersection()
+    or
+    result = this.(TypeAliasReference).getAliasedType().unfoldUnionAndIntersection()
   }
 
   /**
@@ -2288,6 +2309,24 @@ class EnumLiteralType extends TypeReference {
 }
 
 /**
+ * A type that refers to a type alias.
+ */
+class TypeAliasReference extends TypeReference {
+  TypeAliasReference() {
+    type_alias(this, _)
+  }
+
+  /**
+   * Gets the type behind the type alias.
+   *
+   * For example, for `type B<T> = T[][]`, this maps the type `B<number>` to `number[][]`.
+   */
+  Type getAliasedType() {
+    type_alias(this, result)
+  }
+}
+
+/**
  * An anonymous interface type, such as `{ x: number }`.
  */
 class AnonymousInterfaceType extends Type, @objecttype { }
@@ -2516,17 +2555,19 @@ class CallSignatureType extends @signature_type {
   predicate hasTypeParameters() { getNumTypeParameter() > 0 }
 
   /**
-   * Gets the type of the `n`th parameter of this signature.
+   * Gets the type of the `n`th parameter declared in this signature.
+   *
+   * If the `n`th parameter is a rest parameter `...T[]`, gets type `T`.
    */
   Type getParameter(int n) { n >= 0 and result = getChild(n + getNumTypeParameter()) }
 
   /**
-   * Gets the type of a parameter of this signature.
+   * Gets the type of a parameter of this signature, including the rest parameter, if any.
    */
   Type getAParameter() { result = getParameter(_) }
 
   /**
-   * Gets the number of parameters.
+   * Gets the number of parameters, including the rest parameter, if any.
    */
   int getNumParameter() { result = count(int i | exists(getParameter(i))) }
 
@@ -2538,7 +2579,7 @@ class CallSignatureType extends @signature_type {
 
   /**
    * Gets the number of optional parameters, that is,
-   * parameters that are marked as optional with the `?` suffix.
+   * parameters that are marked as optional with the `?` suffix or is a rest parameter.
    */
   int getNumOptionalParameter() { result = getNumParameter() - getNumRequiredParameter() }
 
@@ -2552,7 +2593,9 @@ class CallSignatureType extends @signature_type {
   }
 
   /**
-   * Holds if the `n`th parameter is declared optional with the `?` suffix.
+   * Holds if the `n`th parameter is declared optional with the `?` suffix or is the rest parameter.
+   *
+   * Note that rest parameters are not considered optional in this sense.
    */
   predicate isOptionalParameter(int n) {
     exists(getParameter(n)) and
@@ -2571,6 +2614,30 @@ class CallSignatureType extends @signature_type {
    * Gets the name of a parameter of this signature.
    */
   string getAParameterName() { result = getParameterName(_) }
+
+  /**
+   * Holds if this signature declares a rest parameter, such as `(x: number, ...y: string[])`.
+   */
+  predicate hasRestParameter() { signature_rest_parameter(this, _) }
+
+  /**
+   * Gets the type of the rest parameter, if any.
+   *
+   * For example, for the signature `(...y: string[])`, this gets the type `string`.
+   */
+  Type getRestParameterType() {
+    hasRestParameter() and
+    result = getParameter(getNumParameter() - 1)
+  }
+
+  /**
+   * Gets the type of the rest parameter as an array, if it exists.
+   *
+   * For example, for the signature `(...y: string[])`, this gets the type `string[]`.
+   */
+  PlainArrayType getRestParameterArrayType() {
+    signature_rest_parameter(this, result)
+  }
 }
 
 /**

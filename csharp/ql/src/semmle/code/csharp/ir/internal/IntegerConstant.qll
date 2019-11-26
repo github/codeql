@@ -204,11 +204,9 @@ string bitsToBytesAndBits(IntValue bits) {
     hasValue(bits) and
     bytes = bits / 8 and
     leftoverBits = bits % 8 and
-    if leftoverBits = 0 then
-      result = bytes.toString()
-    else
-      result = bytes + ":" + leftoverBits
-  ) or
+    if leftoverBits = 0 then result = bytes.toString() else result = bytes + ":" + leftoverBits
+  )
+  or
   not hasValue(bits) and result = "?"
 }
 
@@ -217,11 +215,10 @@ string bitsToBytesAndBits(IntValue bits) {
  */
 bindingset[bitOffset]
 string getBitOffsetString(IntValue bitOffset) {
-  if hasValue(bitOffset) then
-    if bitOffset >= 0 then
-      result = "+" + bitsToBytesAndBits(bitOffset)
-    else
-      result = "-" + bitsToBytesAndBits(neg(bitOffset))
-  else
-    result = "+?"
+  if hasValue(bitOffset)
+  then
+    if bitOffset >= 0
+    then result = "+" + bitsToBytesAndBits(bitOffset)
+    else result = "-" + bitsToBytesAndBits(neg(bitOffset))
+  else result = "+?"
 }
