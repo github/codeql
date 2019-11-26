@@ -286,6 +286,7 @@ class PropNameTracking extends DataFlow::Configuration {
     node instanceof BlacklistEqualityGuard or
     node instanceof WhitelistEqualityGuard or
     node instanceof HasOwnPropertyGuard or
+    node instanceof InExprGuard or
     node instanceof InstanceOfGuard or
     node instanceof TypeofGuard or
     node instanceof BlacklistInclusionGuard or
@@ -350,6 +351,25 @@ class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode, CallNode {
 
   override predicate blocks(boolean outcome, Expr e) {
     e = getArgument(0).asExpr() and outcome = true
+  }
+}
+
+/**
+ * Sanitizer guard for `key in dst`.
+ *
+ * Since `"__proto__" in obj` and `"constructor" in obj` is true for most objects,
+ * this is seen as a sanitizer for `key` in the false outcome.
+ */
+class InExprGuard extends DataFlow::BarrierGuardNode, DataFlow::ValueNode {
+  override InExpr astNode;
+
+  InExprGuard() {
+    // Exclude tests of form `key in src` for the same reason as in HasOwnPropertyGuard
+    not arePropertiesEnumerated(astNode.getRightOperand().flow().getALocalSource())
+  }
+
+  override predicate blocks(boolean outcome, Expr e) {
+    e = astNode.getLeftOperand() and outcome = false
   }
 }
 
