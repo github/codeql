@@ -552,42 +552,64 @@ module IR {
 
     ExtractTupleElementInstruction() { this = MkExtractNode(s, i) }
 
-    /** Holds if this extracts the `idx`th value of the result of `base`. */
-    predicate extractsElement(Instruction base, int idx) {
+    Instruction getBase() {
       exists(Expr baseExpr |
         baseExpr = s.(Assignment).getRhs() or
         baseExpr = s.(ValueSpec).getInit()
       |
-        base = evalExprInstruction(baseExpr) and
-        idx = i
+        result = evalExprInstruction(baseExpr)
       )
       or
-      base = MkNextNode(s) and
-      idx = i
+      result = MkNextNode(s)
       or
-      base = evalExprInstruction(s.(ReturnStmt).getExpr()) and
-      idx = i
+      result = evalExprInstruction(s.(ReturnStmt).getExpr())
       or
-      base = evalExprInstruction(s.(CallExpr).getArgument(0)) and
-      idx = i
+      result = evalExprInstruction(s.(CallExpr).getArgument(0).stripParens())
+    }
+
+    /** Holds if this extracts the `idx`th value of the result of `base`. */
+    predicate extractsElement(Instruction base, int idx) {
+      base = getBase() and idx = i
     }
 
     override Type getResultType() {
-      result = s.(Assignment).getLhs(i).getType()
+      exists(CallExpr c | getBase() = evalExprInstruction(c) |
+        result = c.getTarget().getResultType(i)
+      )
       or
-      result = s.(ValueSpec).getNameExpr(i).getType()
-      or
-      i = 0 and
-      result = s.(RangeStmt).getKey().getType()
-      or
-      i = 1 and
-      result = s.(RangeStmt).getValue().getType()
-      or
-      result = s.(ReturnStmt).getEnclosingFunction().getType().getResultType(i)
-      or
-      exists(CallExpr inner |
-        inner = s.(CallExpr).getArgument(0).stripParens() and
-        result = inner.getTarget().getResultType(i)
+      exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
+        exists(Type baseType |
+          baseType = rangeType.(ArrayType).getElementType() or
+          baseType = rangeType.(PointerType).getBaseType().getUnderlyingType().(ArrayType).getElementType() or
+          baseType = rangeType.(SliceType).getElementType() |
+          i = 0 and
+          result instanceof IntType
+          or
+          i = 1 and
+          result = baseType
+        )
+        or
+        rangeType instanceof StringType and
+        (
+          i = 0 and
+          result instanceof IntType
+          or
+          result = Builtin::rune().getType()
+        )
+        or
+        exists(MapType map | map = rangeType |
+          i = 0 and
+          result = map.getKeyType()
+          or
+          i = 1 and
+          result = map.getValueType()
+        )
+        or
+        i = 0 and
+        result = rangeType.(RecvChanType).getElementType()
+        or
+        i = 0 and
+        result = rangeType.(SendRecvChanType).getElementType()
       )
     }
 
