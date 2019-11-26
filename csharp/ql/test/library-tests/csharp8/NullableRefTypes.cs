@@ -165,3 +165,44 @@ class DisabledNullability
 struct MyStruct
 {
 }
+
+#nullable enable
+
+abstract class TestNullableFlowStates
+{
+    public abstract string? MaybeNull();
+
+    public abstract void Check(string? isNull);
+
+    public abstract int Count();
+
+    void LoopUnrolling()
+    {
+        string? x = MaybeNull();
+
+        Check(x);  // x is maybe null
+
+        for (int i = 0; i < 10; ++i)
+        {
+            x = "not null any more";
+        }
+
+        Check(x);  // x maybe null - loop unrolling not detected
+    }
+
+    void ExceptionFlow()
+    {
+        string? y = MaybeNull();
+
+        try
+        {
+            throw new ArgumentException();
+        }
+        finally
+        {
+            y = "not null";
+        }
+
+        Check(y);  // y not null - finally flow is detected
+    }
+}

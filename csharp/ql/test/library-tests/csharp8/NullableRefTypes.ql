@@ -68,12 +68,11 @@ query predicate expressionTypes(Expr expr, string type) {
   expr.getFile().getBaseName() = "NullableRefTypes.cs"
 }
 
-query predicate exprMaybeNull(Expr expr) {
+query predicate exprFlowState(Expr expr, string state) {
   expr.getFile().getBaseName() = "NullableRefTypes.cs" and
-  expr.hasMaybeNullFlowState()
-}
-
-query predicate exprNotNull(Expr expr) {
-  expr.getFile().getBaseName() = "NullableRefTypes.cs" and
-  expr.hasNotNullFlowState()
+  (
+    expr.hasMaybeNullFlowState() and state = "Maybe null"
+    or
+    expr.hasNotNullFlowState() and state = "Not null"
+  )
 }
