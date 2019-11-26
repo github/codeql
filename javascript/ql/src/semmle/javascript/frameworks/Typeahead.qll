@@ -113,7 +113,7 @@ module Typeahead {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = this
             .getAFunctionValue()
-            .getParameter(any(int i | i = 1 or i = 2))
+            .getParameter([1..2])
             .getACall()
             .getAnArgument() and
       succ = successor
