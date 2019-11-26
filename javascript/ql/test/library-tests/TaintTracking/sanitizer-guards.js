@@ -72,5 +72,5 @@ function phi2() {
   } else {
     x = null;
   }
-  sink(x); // OK
+  sink(x); // NOT OK
 }
