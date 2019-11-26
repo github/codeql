@@ -18,7 +18,7 @@ import semmle.javascript.heuristics.AdditionalSources
 
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink,
   sink.getNode().(Sink).getVulnerabilityKind() + " vulnerability due to $@.", source.getNode(),
   "user-provided value"

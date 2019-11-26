@@ -7,11 +7,12 @@ import javascript
 module Typeahead {
   /**
    * A reference to the Bloodhound class, which is a utility-class for generating auto-complete suggestions.
-   * Sometimes these suggestions can originate from remote sources.
    */
   class Bloodhound extends DataFlow::SourceNode {
     Bloodhound() {
       this = DataFlow::moduleImport("typeahead.js/dist/bloodhound.js")
+      or
+      this = DataFlow::moduleImport("bloodhound-js")
       or
       this.accessesGlobal("Bloodhound")
     }
@@ -42,9 +43,9 @@ module Typeahead {
      * or an object containing an "url" property.
      */
     override DataFlow::Node getUrl() {
-      if exists(option.getALocalSource().getAPropertyWrite("url"))
-      then result = option.getALocalSource().getAPropertyWrite("url").getRhs()
-      else result = option
+      result = option.getALocalSource().getAPropertyWrite("url").getRhs()
+      or
+      result = option
     }
 
     override DataFlow::Node getHost() { none() }
@@ -74,7 +75,8 @@ module Typeahead {
   }
 
   /**
-   * A function that generates suggestions to typeahead.
+   * A function that generates suggestions to typeahead. 
+   * Matches `$(...).typeahead(..., { templates: { suggestion: <this> } })`. 
    */
   class TypeaheadSuggestionFunction extends DataFlow::FunctionNode {
     DataFlow::CallNode typeaheadCall;
@@ -84,7 +86,7 @@ module Typeahead {
       this = typeaheadCall
             .getOptionArgument(1, "templates")
             .getALocalSource()
-            .getAPropertySource("suggestion")
+            .getAPropertyWrite("suggestion").getRhs()
             .getAFunctionValue()
     }
 
@@ -99,11 +101,12 @@ module Typeahead {
    */
   class TypeAheadSuggestionTaintStep extends TaintTracking::AdditionalTaintStep {
     DataFlow::Node successor;
-    TypeaheadSuggestionFunction suggestionFunction;
 
     TypeAheadSuggestionTaintStep() {
-      this = suggestionFunction.getTypeaheadCall().getOptionArgument(1, "source") and
-      successor = suggestionFunction.getParameter(0)
+      exists(TypeaheadSuggestionFunction suggestionFunction | 
+        this = suggestionFunction.getTypeaheadCall().getOptionArgument(1, "source") and
+        successor = suggestionFunction.getParameter(0)
+      )
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
@@ -120,9 +123,8 @@ module Typeahead {
    * A taint step that models a call to `.ttAdapter()` on an instance of Bloodhound.
    */
   class BloodHoundAdapterStep extends TaintTracking::AdditionalTaintStep, BloodhoundInstance {
-    DataFlow::Node successor;
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+	override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       this.flowsTo(pred) and
       exists(DataFlow::MethodCallNode call |
         succ = call and
