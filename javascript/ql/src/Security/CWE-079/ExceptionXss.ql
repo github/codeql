@@ -1,5 +1,5 @@
 /**
- * @name Client-side cross-site scripting through exception
+ * @name Cross-site scripting through exception
  * @description User input being part of an exception allows for 
  *              cross-site scripting if that exception is written
  *              to the DOM.  

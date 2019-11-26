@@ -12,9 +12,9 @@ module ExceptionXss {
   import Xss as Xss
   
   /**
-   * Holds if `node` cannot cause an exception containing sensitive information to be thrown.
+   * Holds if `node` is unlikely to cause an exception containing sensitive information to be thrown.
    */
-  predicate canDefinitelyNotThrowSensitiveInformation(DataFlow::Node node) {
+  private predicate isUnlikelyToThrowSensitiveInformation(DataFlow::Node node) {
     node = any(DataFlow::CallNode call | call.getCalleeName() = "getElementById").getAnArgument()
     or
     node = any(DataFlow::CallNode call | call.getCalleeName() = "indexOf").getAnArgument()
@@ -28,7 +28,7 @@ module ExceptionXss {
    * Holds if `node` can possibly cause an exception containing sensitive information to be thrown.
    */
   predicate canThrowSensitiveInformation(DataFlow::Node node) {
-    not canDefinitelyNotThrowSensitiveInformation(node) and 
+    not isUnlikelyToThrowSensitiveInformation(node) and 
     (
       // in the case of reflective calls the below ensures that both InvokeNodes have no known callee.
       forex(DataFlow::InvokeNode call | node = call.getAnArgument() | not exists(call.getACallee()))
