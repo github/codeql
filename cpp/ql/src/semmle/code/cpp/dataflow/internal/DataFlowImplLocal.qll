@@ -464,7 +464,7 @@ private predicate simpleParameterFlow(
 ) {
   throughFlowNodeCand(node, config) and
   p = node and
-  t = getErasedRepr(node.getType()) and
+  t = getErasedNodeType(node) and
   exists(ReturnNode ret, ReturnKind kind |
     returnNodeGetEnclosingCallable(ret) = p.getEnclosingCallable() and
     kind = ret.getKind() and
@@ -475,21 +475,21 @@ private predicate simpleParameterFlow(
   exists(Node mid |
     simpleParameterFlow(p, mid, t, config) and
     localFlowStep(mid, node, config) and
-    compatibleTypes(t, node.getType())
+    compatibleTypes(t, getErasedNodeType(node))
   )
   or
   throughFlowNodeCand(node, unbind(config)) and
   exists(Node mid |
     simpleParameterFlow(p, mid, _, config) and
     additionalLocalFlowStep(mid, node, config) and
-    t = getErasedRepr(node.getType())
+    t = getErasedNodeType(node)
   )
   or
   throughFlowNodeCand(node, unbind(config)) and
   exists(Node mid |
     simpleParameterFlow(p, mid, t, config) and
     localStoreReadStep(mid, node) and
-    compatibleTypes(t, node.getType())
+    compatibleTypes(t, getErasedNodeType(node))
   )
   or
   // value flow through a callable
@@ -497,7 +497,7 @@ private predicate simpleParameterFlow(
   exists(Node arg |
     simpleParameterFlow(p, arg, t, config) and
     argumentValueFlowsThrough(arg, node, _) and
-    compatibleTypes(t, node.getType())
+    compatibleTypes(t, getErasedNodeType(node))
   )
   or
   // flow through a callable
@@ -989,7 +989,9 @@ private class CastingNode extends Node {
  */
 private predicate flowCandFwd(Node node, boolean fromArg, AccessPathFront apf, Configuration config) {
   flowCandFwd0(node, fromArg, apf, config) and
-  if node instanceof CastingNode then compatibleTypes(node.getType(), apf.getType()) else any()
+  if node instanceof CastingNode
+  then compatibleTypes(getErasedNodeType(node), apf.getType())
+  else any()
 }
 
 /**
@@ -1010,7 +1012,7 @@ private class AccessPathFrontNilNode extends Node {
   }
 
   pragma[noinline]
-  private DataFlowType getErasedReprType() { result = getErasedRepr(this.getType()) }
+  private DataFlowType getErasedReprType() { result = getErasedNodeType(this) }
 
   /** Gets the `nil` path front for this node. */
   AccessPathFrontNil getApf() { result = TFrontNil(this.getErasedReprType()) }
@@ -1337,7 +1339,7 @@ private class AccessPathNilNode extends Node {
   AccessPathNilNode() { flowCand(this.(AccessPathFrontNilNode), _, _, _) }
 
   pragma[noinline]
-  private DataFlowType getErasedReprType() { result = getErasedRepr(this.getType()) }
+  private DataFlowType getErasedReprType() { result = getErasedNodeType(this) }
 
   /** Gets the `nil` path for this node. */
   AccessPathNil getAp() { result = TNil(this.getErasedReprType()) }
@@ -2076,7 +2078,7 @@ private module FlowExploration {
     TPartialPathNodeMk(Node node, CallContext cc, PartialAccessPath ap, Configuration config) {
       config.isSource(node) and
       cc instanceof CallContextAny and
-      ap = TPartialNil(getErasedRepr(node.getType())) and
+      ap = TPartialNil(getErasedNodeType(node)) and
       not fullBarrier(node, config) and
       exists(config.explorationLimit())
       or
@@ -2091,7 +2093,9 @@ private module FlowExploration {
     exists(PartialPathNode mid |
       partialPathStep(mid, node, cc, ap, config) and
       not fullBarrier(node, config) and
-      if node instanceof CastingNode then compatibleTypes(node.getType(), ap.getType()) else any()
+      if node instanceof CastingNode
+      then compatibleTypes(getErasedNodeType(node), ap.getType())
+      else any()
     )
   }
 
@@ -2194,7 +2198,7 @@ private module FlowExploration {
       additionalLocalFlowStep(mid.getNode(), node, config) and
       cc = mid.getCallContext() and
       mid.getAp() instanceof PartialAccessPathNil and
-      ap = TPartialNil(getErasedRepr(node.getType())) and
+      ap = TPartialNil(getErasedNodeType(node)) and
       config = mid.getConfiguration()
     )
     or
@@ -2206,7 +2210,7 @@ private module FlowExploration {
     additionalJumpStep(mid.getNode(), node, config) and
     cc instanceof CallContextAny and
     mid.getAp() instanceof PartialAccessPathNil and
-    ap = TPartialNil(getErasedRepr(node.getType())) and
+    ap = TPartialNil(getErasedNodeType(node)) and
     config = mid.getConfiguration()
     or
     partialPathStoreStep(mid, _, _, node, ap) and

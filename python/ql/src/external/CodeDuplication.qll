@@ -93,7 +93,7 @@ class Copy extends @duplication_or_similarity
     }
 
     /** Gets a textual representation of this element. */
-    string toString() { none() }
+    string toString() { result = "Copy" }
 
     /**
      * Gets a block that extends this one, that is, its first token is also

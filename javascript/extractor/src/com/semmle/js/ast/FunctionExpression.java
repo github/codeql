@@ -3,6 +3,7 @@ package com.semmle.js.ast;
 import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.ITypeExpression;
 import com.semmle.ts.ast.TypeParameter;
+import com.semmle.util.data.IntList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,7 +28,8 @@ public class FunctionExpression extends AFunctionExpression {
         Collections.emptyList(),
         Collections.emptyList(),
         null,
-        null);
+        null,
+        AFunction.noOptionalParams);
   }
 
   public FunctionExpression(
@@ -41,7 +43,8 @@ public class FunctionExpression extends AFunctionExpression {
       List<ITypeExpression> parameterTypes,
       List<DecoratorList> parameterDecorators,
       ITypeExpression returnType,
-      ITypeExpression thisParameterType) {
+      ITypeExpression thisParameterType,
+      IntList optionalParameterIndices) {
     super(
         "FunctionExpression",
         loc,
@@ -54,7 +57,8 @@ public class FunctionExpression extends AFunctionExpression {
         parameterTypes,
         parameterDecorators,
         returnType,
-        thisParameterType);
+        thisParameterType,
+        optionalParameterIndices);
   }
 
   public FunctionExpression(SourceLocation loc, AFunction<? extends Node> fn) {

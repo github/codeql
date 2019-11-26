@@ -1,6 +1,6 @@
 /**
  * @name Boost_asio TLS Settings Misconfiguration
- * @description Using TLS or SSLv23 protool from the boost::asio library, but not disabling deprecated protocols or disabling minimum-recommended protocols
+ * @description Using the TLS or SSLv23 protocol from the boost::asio library, but not disabling deprecated protocols, or disabling minimum-recommended protocols.
  * @kind problem
  * @problem.severity error
  * @id cpp/boost/tls_settings_misconfiguration

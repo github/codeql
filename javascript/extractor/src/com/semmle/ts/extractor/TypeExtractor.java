@@ -81,6 +81,7 @@ public class TypeExtractor {
       extractType(i);
     }
     extractPropertyLookups(table.getPropertyLookups());
+    extractTypeAliases(table.getTypeAliases());
     for (int i = 0; i < table.getNumberOfSymbols(); ++i) {
       extractSymbol(i);
     }
@@ -161,6 +162,19 @@ public class TypeExtractor {
     }
   }
 
+  private void extractTypeAliases(JsonObject aliases) {
+    JsonArray aliasTypes = aliases.get("aliasTypes").getAsJsonArray();
+    JsonArray underlyingTypes = aliases.get("underlyingTypes").getAsJsonArray();
+    for (int i = 0; i < aliasTypes.size(); ++i) {
+      int aliasType = aliasTypes.get(i).getAsInt();
+      int underlyingType = underlyingTypes.get(i).getAsInt();
+      trapWriter.addTuple(
+          "type_alias",
+          trapWriter.globalID("type;" + aliasType),
+          trapWriter.globalID("type;" + underlyingType));
+    }
+  }
+
   private void extractSymbol(int index) {
     // Format is: kind;decl;parent;name
     String[] parts = split(table.getSymbolString(index), 4);
@@ -187,13 +201,18 @@ public class TypeExtractor {
 
   private void extractSignature(int index) {
     // Format is:
-    // kind;numTypeParams;requiredParams;returnType(;paramName;paramType)*
+    // kind;numTypeParams;requiredParams;restParamType;returnType(;paramName;paramType)*
     String[] parts = split(table.getSignatureString(index));
     Label label = trapWriter.globalID("signature;" + index);
     int kind = Integer.parseInt(parts[0]);
     int numberOfTypeParameters = Integer.parseInt(parts[1]);
     int requiredParameters = Integer.parseInt(parts[2]);
-    Label returnType = trapWriter.globalID("type;" + parts[3]);
+    String restParamTypeTag = parts[3];
+    if (!restParamTypeTag.isEmpty()) {
+      trapWriter.addTuple(
+          "signature_rest_parameter", label, trapWriter.globalID("type;" + restParamTypeTag));
+    }
+    Label returnType = trapWriter.globalID("type;" + parts[4]);
     trapWriter.addTuple(
         "signature_types",
         label,
@@ -202,9 +221,9 @@ public class TypeExtractor {
         numberOfTypeParameters,
         requiredParameters);
     trapWriter.addTuple("signature_contains_type", returnType, label, -1);
-    int numberOfParameters = (parts.length - 4) / 2; // includes type parameters
+    int numberOfParameters = (parts.length - 5) / 2; // includes type parameters
     for (int i = 0; i < numberOfParameters; ++i) {
-      int partIndex = 4 + (2 * i);
+      int partIndex = 5 + (2 * i);
       String paramName = parts[partIndex];
       String paramTypeId = parts[partIndex + 1];
       if (paramTypeId.length() > 0) { // Unconstrained type parameters have an empty type ID.

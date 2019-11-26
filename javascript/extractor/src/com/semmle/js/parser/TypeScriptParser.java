@@ -291,10 +291,10 @@ public class TypeScriptParser {
     LogbackUtils.getLogger(AbstractProcessBuilder.class).setLevel(Level.INFO);
     String explicitPath = Env.systemEnv().get(PARSER_WRAPPER_PATH_ENV_VAR);
     String semmleDistVar = Env.systemEnv().get(Env.Var.SEMMLE_DIST.name());
-    if (semmleDistVar != null && !semmleDistVar.isEmpty()) {
-      parserWrapper = new File(semmleDistVar, "tools/typescript-parser-wrapper/main.js");
-    } else if (explicitPath != null) {
+    if (explicitPath != null) {
       parserWrapper = new File(explicitPath);
+    } else if (semmleDistVar != null && !semmleDistVar.isEmpty()) {
+      parserWrapper = new File(semmleDistVar, "tools/typescript-parser-wrapper/main.js");
     } else {
       throw new CatastrophicError(
           "Could not find TypeScript parser: " + Env.Var.SEMMLE_DIST.name() + " is not set.");

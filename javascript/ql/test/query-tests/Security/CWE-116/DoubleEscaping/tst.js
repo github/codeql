@@ -69,3 +69,28 @@ function badEncode(s) {
           .replace(indirect2, "&apos;")
           .replace(indirect3, "&amp;");
 }
+
+function badEncodeWithReplacer(s) {
+  var repl = {
+    '"': "&quot;",
+    "'": "&apos;",
+    "&": "&amp;"
+  };
+  return s.replace(/["']/g, (c) => repl[c]).replace(/&/g, "&amp;");
+}
+
+// dubious, but out of scope for this query
+function badRoundtrip(s) {
+  return s.replace(/\\\\/g, "\\").replace(/\\/g, "\\\\");
+}
+
+function testWithCapturedVar(x) {
+  var captured = x;
+  (function() {
+    captured = captured.replace(/\\/g, "\\\\");
+  })();
+}
+
+function encodeDecodeEncode(s) {
+ return goodEncode(goodDecode(goodEncode(s)));
+}

@@ -143,6 +143,7 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
+import com.semmle.util.data.IntList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -804,7 +805,8 @@ public class TypeScriptASTConverter {
             hasModifier(node, "AsyncKeyword"),
             convertChildrenNotNull(node, "typeParameters"),
             convertParameterTypes(node),
-            convertChildAsType(node, "type"));
+            convertChildAsType(node, "type"),
+            getOptionalParameterIndices(node));
     attachDeclaredSignature(function, node);
     return function;
   }
@@ -1063,7 +1065,8 @@ public class TypeScriptASTConverter {
             paramTypes,
             paramDecorators,
             null,
-            null);
+            null,
+            getOptionalParameterIndices(node));
     attachSymbolInformation(value, node);
     attachStaticType(value, node);
     attachDeclaredSignature(value, node);
@@ -1262,7 +1265,8 @@ public class TypeScriptASTConverter {
             typeParameters,
             paramTypes,
             returnType,
-            thisParam);
+            thisParam,
+            getOptionalParameterIndices(node));
     attachSymbolInformation(function, node);
     attachStaticType(function, node);
     attachDeclaredSignature(function, node);
@@ -1291,7 +1295,8 @@ public class TypeScriptASTConverter {
             paramTypes,
             paramDecorators,
             returnType,
-            thisParam);
+            thisParam,
+            getOptionalParameterIndices(node));
     attachStaticType(function, node);
     attachDeclaredSignature(function, node);
     return function;
@@ -1645,7 +1650,8 @@ public class TypeScriptASTConverter {
             paramTypes,
             paramDecorators,
             returnType,
-            thisType);
+            thisType,
+            getOptionalParameterIndices(node));
     attachSymbolInformation(function, node);
     attachStaticType(function, node);
     attachDeclaredSignature(function, node);
@@ -1888,6 +1894,18 @@ public class TypeScriptASTConverter {
       result.add(convertChildAsType(param.getAsJsonObject(), "type"));
     }
     return result;
+  }
+
+  private IntList getOptionalParameterIndices(JsonObject function) throws ParseError {
+    IntList list = IntList.create(0);
+    int index = -1;
+    for (JsonElement param : getProperParameters(function)) {
+      ++index;
+      if (param.getAsJsonObject().has("questionToken")) {
+        list.add(index);
+      }
+    }
+    return list;
   }
 
   private List<FieldDefinition> convertParameterFields(JsonObject function) throws ParseError {

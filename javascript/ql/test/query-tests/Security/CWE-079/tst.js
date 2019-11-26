@@ -307,5 +307,8 @@ function basicExceptions() {
 	} catch(e) {
 		$("body").append(e); // NOT OK
 	}
+}
 
+function handlebarsSafeString() {
+	return new Handlebars.SafeString(location); // NOT OK!	
 }

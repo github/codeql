@@ -677,6 +677,20 @@ module TaintTracking {
   }
 
   /**
+   * A taint step through the Node.JS function `util.inspect(..)`.
+   */
+  class UtilInspectTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
+    UtilInspectTaintStep() {
+      this = DataFlow::moduleImport("util").getAMemberCall("inspect")
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      succ = this and
+      this.getAnArgument() = pred
+    }
+  }
+
+  /**
    * A conditional checking a tainted string against a regular expression, which is
    * considered to be a sanitizer for all configurations.
    */
