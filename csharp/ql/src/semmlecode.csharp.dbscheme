@@ -483,7 +483,15 @@ case @nullability.kind of
 #keyset[parent, index]
 nullability_parent(int nullability: @nullability ref, int index: int ref, int parent: @nullability ref)
 
-type_nullability(int id: @has_type_annotation ref, int nullability: @nullability ref)
+type_nullability(int id: @has_type_annotation ref, int nullability: @nullability ref);
+
+/**
+ * Thw nullable flow state of an expression, as determined by Roslyn.
+ *   0 = none (default, not populated)
+ *   1 = not null
+ *   2 = maybe null
+ */
+expr_flowstate(unique int id: @expr ref, int state: int ref);
 
 /** GENERICS **/
 

@@ -62,3 +62,18 @@ query predicate annotatedTypeConstraints(TypeParameter p, AnnotatedType t) {
 }
 
 query predicate typeNotAnnotated(Type type) { not exists(AnnotatedType at | at.getType() = type) }
+
+query predicate expressionTypes(Expr expr, string type) {
+  type = expr.getAnnotatedType().toString() and
+  expr.getFile().getBaseName() = "NullableRefTypes.cs"
+}
+
+query predicate exprMaybeNull(Expr expr) {
+  expr.getFile().getBaseName() = "NullableRefTypes.cs" and
+  expr.hasMaybeNullFlowState()
+}
+
+query predicate exprNotNull(Expr expr) {
+  expr.getFile().getBaseName() = "NullableRefTypes.cs" and
+  expr.hasNotNullFlowState()
+}

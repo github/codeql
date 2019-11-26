@@ -1,8 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
 using Semmle.Util;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,14 +12,23 @@ namespace Semmle.Extraction.CSharp.Entities
     /// </summary>
     public struct AnnotatedType
     {
-        public AnnotatedType(Type t, Kinds.TypeAnnotation a)
+        public AnnotatedType(Type t, NullableAnnotation n)
         {
             Type = t;
-            Annotation = a;
+            annotation = n;
         }
 
+        /// <summary>
+        /// The underlying type.
+        /// </summary>
         public Type Type;
-        public Kinds.TypeAnnotation Annotation;
+
+        private NullableAnnotation annotation;
+
+        /// <summary>
+        /// Gets the annotated type symbol of this annotated type.
+        /// </summary>
+        public AnnotatedTypeSymbol Symbol => new AnnotatedTypeSymbol(Type.symbol, annotation);
     }
 
     public abstract class Type : CachedSymbol<ITypeSymbol>
@@ -274,7 +281,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public static AnnotatedType Create(Context cx, AnnotatedTypeSymbol type) =>
-            new AnnotatedType(Create(cx, type.Symbol), type.Nullability.GetTypeAnnotation());
+            new AnnotatedType(Create(cx, type.Symbol), type.Nullability);
 
         public virtual int Dimension => 0;
 

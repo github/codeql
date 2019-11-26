@@ -46,6 +46,18 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.expr_parent(this, Info.Child, Info.Parent);
             trapFile.expr_location(this, Location);
 
+            var annotatedType = Type.Symbol;
+            if (!annotatedType.HasObliviousNullability())
+            {
+                var n = NullabilityEntity.Create(cx, Nullability.Create(annotatedType));
+                trapFile.type_nullability(this, n);
+            }
+
+            if(Info.FlowState != NullableFlowState.None)
+            {
+                trapFile.expr_flowstate(this, (int)Info.FlowState);
+            }
+
             if (Info.IsCompilerGenerated)
                 trapFile.expr_compiler_generated(this);
 
@@ -344,6 +356,8 @@ namespace Semmle.Extraction.CSharp.Entities
         /// is null.
         /// </summary>
         string ExprValue { get; }
+
+        NullableFlowState FlowState { get; }
     }
 
     /// <summary>
@@ -371,6 +385,9 @@ namespace Semmle.Extraction.CSharp.Entities
             ExprValue = value;
             IsCompilerGenerated = isCompilerGenerated;
         }
+
+        // Synthetic expressions don't have a flow state.
+        public NullableFlowState FlowState => NullableFlowState.None;
     }
 
     /// <summary>
@@ -533,5 +550,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return cachedSymbolInfo;
             }
         }
+
+        public NullableFlowState FlowState => TypeInfo.Nullability.FlowState;
     }
 }

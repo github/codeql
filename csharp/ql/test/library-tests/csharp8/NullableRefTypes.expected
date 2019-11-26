@@ -222,3 +222,155 @@ annotatedTypeConstraints
 | NullableRefTypes.cs:58:20:58:21 | T1 | NullableRefTypes.cs:6:7:6:13 | MyClass! |
 | NullableRefTypes.cs:58:24:58:25 | T2 | NullableRefTypes.cs:54:11:54:33 | Generic<string?, T1?, IEnumerable<string?>!, MyClass!>! |
 typeNotAnnotated
+expressionTypes
+| NullableRefTypes.cs:13:19:13:22 | null | null |
+| NullableRefTypes.cs:14:18:14:21 | this access | MyClass! |
+| NullableRefTypes.cs:17:29:17:32 | null | null |
+| NullableRefTypes.cs:18:31:18:34 | this access | MyClass! |
+| NullableRefTypes.cs:19:33:19:36 | this access | MyClass! |
+| NullableRefTypes.cs:26:44:26:53 | throw ... | MyClass![]! |
+| NullableRefTypes.cs:26:50:26:53 | null | null |
+| NullableRefTypes.cs:27:44:27:53 | throw ... | MyClass![]! |
+| NullableRefTypes.cs:27:50:27:53 | null | null |
+| NullableRefTypes.cs:30:21:30:24 | null | null |
+| NullableRefTypes.cs:31:20:31:23 | this access | MyClass! |
+| NullableRefTypes.cs:37:17:37:17 | access to local variable a | MyClass! |
+| NullableRefTypes.cs:37:17:37:33 | MyClass a = ... | MyClass! |
+| NullableRefTypes.cs:37:21:37:33 | object creation of type MyClass | MyClass! |
+| NullableRefTypes.cs:38:18:38:18 | access to local variable b | MyClass! |
+| NullableRefTypes.cs:38:18:38:25 | MyClass b = ... | MyClass! |
+| NullableRefTypes.cs:38:22:38:25 | null | null |
+| NullableRefTypes.cs:39:21:39:21 | access to local variable c | null |
+| NullableRefTypes.cs:39:21:39:29 | MyClass c = ... | null |
+| NullableRefTypes.cs:39:25:39:29 | ref ... | MyClass |
+| NullableRefTypes.cs:39:29:39:29 | access to local variable b | MyClass? |
+| NullableRefTypes.cs:40:22:40:22 | access to local variable d | null |
+| NullableRefTypes.cs:40:22:40:30 | MyClass d = ... | null |
+| NullableRefTypes.cs:40:26:40:30 | ref ... | MyClass |
+| NullableRefTypes.cs:40:30:40:30 | access to local variable b | MyClass? |
+| NullableRefTypes.cs:51:44:51:47 | null | null |
+| NullableRefTypes.cs:73:18:73:18 | access to local variable x | MyClass! |
+| NullableRefTypes.cs:73:18:73:25 | MyClass x = ... | MyClass! |
+| NullableRefTypes.cs:73:22:73:25 | null | null |
+| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn | Void! |
+| NullableRefTypes.cs:74:9:74:20 | this access | MyClass |
+| NullableRefTypes.cs:74:19:74:19 | access to local variable x | MyClass? |
+| NullableRefTypes.cs:75:9:75:12 | call to method Q | object! |
+| NullableRefTypes.cs:75:9:75:12 | this access | MyClass |
+| NullableRefTypes.cs:75:11:75:11 | access to local variable x | MyClass? |
+| NullableRefTypes.cs:76:16:76:32 | default(...) | MyStruct! |
+| NullableRefTypes.cs:76:24:76:31 | access to type MyStruct | MyStruct |
+| NullableRefTypes.cs:84:17:84:17 | access to local variable x | string! |
+| NullableRefTypes.cs:84:17:84:28 | String x = ... | string! |
+| NullableRefTypes.cs:84:21:84:28 | "source" | string! |
+| NullableRefTypes.cs:85:16:85:16 | access to local variable y | string! |
+| NullableRefTypes.cs:85:16:85:21 | String y = ... | string! |
+| NullableRefTypes.cs:85:20:85:20 | access to local variable x | string! |
+| NullableRefTypes.cs:85:20:85:21 | ...! | string! |
+| NullableRefTypes.cs:86:9:86:9 | access to local variable y | string! |
+| NullableRefTypes.cs:86:9:86:14 | ... = ... | string! |
+| NullableRefTypes.cs:86:13:86:13 | access to local variable x | string! |
+| NullableRefTypes.cs:86:13:86:14 | ...! | string! |
+| NullableRefTypes.cs:87:9:87:9 | access to local variable x | string? |
+| NullableRefTypes.cs:87:9:87:16 | ... = ... | string? |
+| NullableRefTypes.cs:87:13:87:16 | null | null |
+| NullableRefTypes.cs:88:9:88:9 | access to local variable y | string! |
+| NullableRefTypes.cs:88:9:88:14 | ... = ... | string! |
+| NullableRefTypes.cs:88:13:88:13 | access to local variable x | string! |
+| NullableRefTypes.cs:88:13:88:14 | ...! | string! |
+| NullableRefTypes.cs:93:17:93:17 | access to local variable x | string! |
+| NullableRefTypes.cs:93:17:93:28 | String x = ... | string! |
+| NullableRefTypes.cs:93:21:93:28 | "source" | string! |
+| NullableRefTypes.cs:94:13:94:13 | access to local variable y | string? |
+| NullableRefTypes.cs:94:13:94:25 | String y = ... | string? |
+| NullableRefTypes.cs:94:17:94:17 | access to local variable x | string! |
+| NullableRefTypes.cs:94:17:94:25 | ... ?? ... | string? |
+| NullableRefTypes.cs:94:22:94:25 | null | null |
+| NullableRefTypes.cs:95:16:95:16 | access to local variable z | string! |
+| NullableRefTypes.cs:95:16:95:20 | String z = ... | string! |
+| NullableRefTypes.cs:95:20:95:20 | access to local variable x | string? |
+| NullableRefTypes.cs:96:9:96:15 | access to type Console | Console! |
+| NullableRefTypes.cs:96:9:96:28 | call to method WriteLine | Void! |
+| NullableRefTypes.cs:96:27:96:27 | access to local variable x | string? |
+| NullableRefTypes.cs:103:48:103:52 | ref ... | MyClass |
+| NullableRefTypes.cs:103:52:103:52 | access to parameter r | MyClass! |
+| NullableRefTypes.cs:104:48:104:52 | ref ... | MyClass |
+| NullableRefTypes.cs:104:52:104:52 | access to parameter r | MyClass? |
+| NullableRefTypes.cs:105:57:105:61 | ref ... | MyClass |
+| NullableRefTypes.cs:105:61:105:61 | access to parameter r | MyClass? |
+| NullableRefTypes.cs:106:56:106:60 | ref ... | MyClass |
+| NullableRefTypes.cs:106:60:106:60 | access to parameter r | MyClass! |
+| NullableRefTypes.cs:107:55:107:59 | ref ... | MyClass |
+| NullableRefTypes.cs:107:59:107:59 | access to parameter r | MyClass! |
+| NullableRefTypes.cs:108:56:108:60 | ref ... | MyClass |
+| NullableRefTypes.cs:108:60:108:60 | access to parameter r | MyClass? |
+| NullableRefTypes.cs:110:58:110:67 | throw ... | null! |
+| NullableRefTypes.cs:110:64:110:67 | null | null |
+| NullableRefTypes.cs:113:32:113:44 | ref ... | MyClass |
+| NullableRefTypes.cs:113:36:113:43 | access to field Property | MyClass? |
+| NullableRefTypes.cs:113:36:113:43 | this access | RefTypes |
+| NullableRefTypes.cs:113:36:113:44 | ...! | MyClass? |
+| NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass | MyClass! |
+| NullableRefTypes.cs:160:17:160:17 | access to local variable a | MyClass! |
+| NullableRefTypes.cs:160:17:160:21 | MyClass a = ... | MyClass! |
+| NullableRefTypes.cs:160:21:160:21 | access to parameter p | MyClass! |
+| NullableRefTypes.cs:161:16:161:16 | access to local variable a | MyClass! |
+exprMaybeNull
+| NullableRefTypes.cs:13:19:13:22 | null |
+| NullableRefTypes.cs:17:29:17:32 | null |
+| NullableRefTypes.cs:26:50:26:53 | null |
+| NullableRefTypes.cs:27:50:27:53 | null |
+| NullableRefTypes.cs:30:21:30:24 | null |
+| NullableRefTypes.cs:38:22:38:25 | null |
+| NullableRefTypes.cs:39:29:39:29 | access to local variable b |
+| NullableRefTypes.cs:40:30:40:30 | access to local variable b |
+| NullableRefTypes.cs:51:44:51:47 | null |
+| NullableRefTypes.cs:73:22:73:25 | null |
+| NullableRefTypes.cs:74:19:74:19 | access to local variable x |
+| NullableRefTypes.cs:75:11:75:11 | access to local variable x |
+| NullableRefTypes.cs:87:9:87:16 | ... = ... |
+| NullableRefTypes.cs:87:13:87:16 | null |
+| NullableRefTypes.cs:94:17:94:25 | ... ?? ... |
+| NullableRefTypes.cs:94:22:94:25 | null |
+| NullableRefTypes.cs:95:20:95:20 | access to local variable x |
+| NullableRefTypes.cs:96:27:96:27 | access to local variable x |
+| NullableRefTypes.cs:104:52:104:52 | access to parameter r |
+| NullableRefTypes.cs:105:61:105:61 | access to parameter r |
+| NullableRefTypes.cs:108:60:108:60 | access to parameter r |
+| NullableRefTypes.cs:110:64:110:67 | null |
+exprNotNull
+| NullableRefTypes.cs:14:18:14:21 | this access |
+| NullableRefTypes.cs:18:31:18:34 | this access |
+| NullableRefTypes.cs:19:33:19:36 | this access |
+| NullableRefTypes.cs:26:44:26:53 | throw ... |
+| NullableRefTypes.cs:27:44:27:53 | throw ... |
+| NullableRefTypes.cs:31:20:31:23 | this access |
+| NullableRefTypes.cs:37:21:37:33 | object creation of type MyClass |
+| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn |
+| NullableRefTypes.cs:75:9:75:12 | call to method Q |
+| NullableRefTypes.cs:76:16:76:32 | default(...) |
+| NullableRefTypes.cs:84:21:84:28 | "source" |
+| NullableRefTypes.cs:85:20:85:20 | access to local variable x |
+| NullableRefTypes.cs:85:20:85:21 | ...! |
+| NullableRefTypes.cs:86:9:86:9 | access to local variable y |
+| NullableRefTypes.cs:86:9:86:14 | ... = ... |
+| NullableRefTypes.cs:86:13:86:13 | access to local variable x |
+| NullableRefTypes.cs:86:13:86:14 | ...! |
+| NullableRefTypes.cs:87:9:87:9 | access to local variable x |
+| NullableRefTypes.cs:88:9:88:9 | access to local variable y |
+| NullableRefTypes.cs:88:9:88:14 | ... = ... |
+| NullableRefTypes.cs:88:13:88:13 | access to local variable x |
+| NullableRefTypes.cs:88:13:88:14 | ...! |
+| NullableRefTypes.cs:93:21:93:28 | "source" |
+| NullableRefTypes.cs:94:17:94:17 | access to local variable x |
+| NullableRefTypes.cs:96:9:96:15 | access to type Console |
+| NullableRefTypes.cs:96:9:96:28 | call to method WriteLine |
+| NullableRefTypes.cs:103:52:103:52 | access to parameter r |
+| NullableRefTypes.cs:106:60:106:60 | access to parameter r |
+| NullableRefTypes.cs:107:59:107:59 | access to parameter r |
+| NullableRefTypes.cs:110:58:110:67 | throw ... |
+| NullableRefTypes.cs:113:36:113:43 | access to field Property |
+| NullableRefTypes.cs:113:36:113:44 | ...! |
+| NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass |
+| NullableRefTypes.cs:160:21:160:21 | access to parameter p |
+| NullableRefTypes.cs:161:16:161:16 | access to local variable a |
