@@ -32,9 +32,9 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   `semmle.code.cpp.dataflow.TaintTracking` have had extensive changes:
   * Data flow through fields is now more complete and reliable.
   * The data-flow library has been extended with a new feature to aid debugging. 
-    If you want to explore the possible flow from a source, replace
-    `isSink(Node n) { any() }` with the new `Configuration::hasPartialFlow` predicate. 
-    This gives a more complete picture of the partial flow paths from a given source. 
+    Previously, to explore the possible flow from all sources you could specify `isSink(Node n) { any() }` on a configuration. 
+    Now you can use the new `Configuration::hasPartialFlow` predicate, 
+    which gives a more complete picture of the partial flow paths from a given source, including flow that doesn't reach any sink.
     The feature is disabled by default and can be enabled for individual configurations by overriding `int explorationLimit()`.
   * There is now flow out of C++ reference parameters.
   * There is now flow through the address-of operator (`&`).
