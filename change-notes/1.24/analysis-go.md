@@ -5,6 +5,7 @@
 | **Query**                                                                 | **Tags**                                                                   | **Purpose**                                                                                                                                            |
 |---------------------------------------------------------------------------|----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Constant length comparison (`go/constant-length-comparison`)     | correctness | Highlights code that checks the length of an array or slice against a constant before indexing it using a variable, suggesting a logic error. Results are shown on LGTM by default. |
+| Impossible interface nil check (`go/impossible-interface-nil-check`) | correctness | Highlights code that compares an interface value that cannot be `nil` to `nil`, suggesting a logic error. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
