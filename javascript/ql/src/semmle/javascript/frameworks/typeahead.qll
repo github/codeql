@@ -110,7 +110,7 @@ module Typeahead {
       (
         pred = this
         or
-        pred = this.getAFunctionValue().getParameter(1).getACall().getAnArgument()
+        pred = this.getAFunctionValue().getParameter(any(int i | i = 1 or i = 2)).getACall().getAnArgument()
       ) and
       succ = successor
     }
