@@ -340,3 +340,23 @@ function mergeSelective(dst, src) {
         }
     }
 }
+
+function isNonArrayObject(item) {
+    return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+function mergePlainObjectsOnly(target, source) {
+    if (isNonArrayObject(target) && isNonArrayObject(source)) {
+        Object.keys(source).forEach(key => {
+            if (key === '__proto__') {
+                return;
+            }
+            if (isNonArrayObject(source[key]) && key in target) {
+                target[key] = mergePlainObjectsOnly(target[key], source[key], options);
+            } else {
+                target[key] = source[key]; // OK
+            }
+        });
+    }
+    return target;
+}
