@@ -52,31 +52,29 @@ module Typeahead {
 
     override DataFlow::Node getADataNode() { none() }
 
+    DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof RemoteBloodhoundClientRequest
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+    }
+
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       responseType = "json" and
       promise = false and
-      /*
-       * exists(TypeAheadSuggestionTaintStep step |
-       *          (
-       *            this.flowsTo(step)
-       *            or
-       *            this.getAMethodCall("ttAdapter").flowsTo(step)
-       *          ) and
-       *          step.step(_, result)
-       *        )
-       *        or
-       */
-
-      // the first occurrence of the responseDataNode can be very disconnected from the instantiation of Bloodhound
-      // So I do this trick to get a taint-path that is readable to a developer.
-      // The above (possibly with added type-tracking) would be the correct way, but which gives unhelpful feedback to developers.
-      result = this
+      exists(TypeaheadSuggestionTaintStep step |
+        ref() = step.getALocalSource() or ref().getAMethodCall("ttAdapter") = step
+      |
+        result = step.getSuccessor()
+      )
     }
   }
 
   /**
-   * A function that generates suggestions to typeahead. 
-   * Matches `$(...).typeahead(..., { templates: { suggestion: <this> } })`. 
+   * A function that generates suggestions to typeahead.js.
+   * Matches `$(...).typeahead({..}, { templates: { suggestion: <this> } })`.
    */
   class TypeaheadSuggestionFunction extends DataFlow::FunctionNode {
     DataFlow::CallNode typeaheadCall;
@@ -86,7 +84,8 @@ module Typeahead {
       this = typeaheadCall
             .getOptionArgument(1, "templates")
             .getALocalSource()
-            .getAPropertyWrite("suggestion").getRhs()
+            .getAPropertyWrite("suggestion")
+            .getRhs()
             .getAFunctionValue()
     }
 
@@ -97,40 +96,27 @@ module Typeahead {
   }
 
   /**
-   * A taint step that models that the `source` in typeahead is used to determine the input to the suggestion function.
+   * A taint step that models that the `source` in typeahead.js is used to determine the input to the suggestion function.
    */
-  class TypeAheadSuggestionTaintStep extends TaintTracking::AdditionalTaintStep {
+  class TypeaheadSuggestionTaintStep extends TaintTracking::AdditionalTaintStep {
     DataFlow::Node successor;
 
-    TypeAheadSuggestionTaintStep() {
-      exists(TypeaheadSuggestionFunction suggestionFunction | 
+    TypeaheadSuggestionTaintStep() {
+      exists(TypeaheadSuggestionFunction suggestionFunction |
         this = suggestionFunction.getTypeaheadCall().getOptionArgument(1, "source") and
         successor = suggestionFunction.getParameter(0)
       )
     }
 
+    DataFlow::Node getSuccessor() { result = successor }
+
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      (
-        pred = this
-        or
-        pred = this.getAFunctionValue().getParameter(any(int i | i = 1 or i = 2)).getACall().getAnArgument()
-      ) and
+      pred = this
+            .getAFunctionValue()
+            .getParameter(any(int i | i = 1 or i = 2))
+            .getACall()
+            .getAnArgument() and
       succ = successor
-    }
-  }
-
-  /**
-   * A taint step that models a call to `.ttAdapter()` on an instance of Bloodhound.
-   */
-  class BloodHoundAdapterStep extends TaintTracking::AdditionalTaintStep, BloodhoundInstance {
-
-	override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      this.flowsTo(pred) and
-      exists(DataFlow::MethodCallNode call |
-        succ = call and
-        call.getReceiver() = pred and
-        call.getMethodName() = "ttAdapter"
-      )
     }
   }
 }
