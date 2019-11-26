@@ -297,3 +297,16 @@ function copyWithPath(dst, src, path) {
     }
     return dst;
 }
+
+function typeofObjectTest(dst, src) {
+    for (let key in src) {
+        if (src.hasOwnProperty(key)) {
+            let value = src[key];
+            if (dst[key] && typeof value === 'object') {
+                typeofObjectTest(dst[key], value);
+            } else {
+                dst[key] = value; // NOT OK
+            }
+        }
+    }
+}
