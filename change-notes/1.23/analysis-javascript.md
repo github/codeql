@@ -39,11 +39,11 @@
 
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
-| Incomplete string escaping or encoding (`js/incomplete-sanitization`) | Fewer false positive results | This rule now recognizes additional ways delimiters can be stripped away. |
 | Client-side cross-site scripting (`js/xss`) | More results, fewer false positive results | More potential vulnerabilities involving functions that manipulate DOM attributes are now recognized, and more sanitizers are detected. |
 | Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving functions that manipulate DOM event handler attributes are now recognized. |
 | Hard-coded credentials (`js/hardcoded-credentials`) | Fewer false positive results | This rule now flags fewer password examples. |
 | Illegal invocation (`js/illegal-invocation`) | Fewer false positive results | This rule now correctly handles methods named `call` and `apply`. |
+| Incomplete string escaping or encoding (`js/incomplete-sanitization`) | Fewer false positive results | This rule now recognizes additional ways delimiters can be stripped away. |
 | Incorrect suffix check (`js/incorrect-suffix-check`) | Fewer false positive results | The query recognizes valid checks in more cases. |
 | Network data written to file (`js/http-to-file-access`) | Fewer false positive results | This query has been renamed to better match its intended purpose, and now only considers network data untrusted. | 
 | Password in configuration file (`js/password-in-configuration-file`) | Fewer false positive results | This rule now flags fewer password examples. |
@@ -67,16 +67,16 @@
 
 The following queries (deprecated since 1.17) are no longer available in the distribution:
 
-* Builtin redefined (js/builtin-redefinition)
-* Inefficient method definition (js/method-definition-in-constructor)
 * Bad parity check (js/incomplete-parity-check)
-* Potentially misspelled property or variable name (js/wrong-capitalization)
-* Unknown JSDoc tag (js/jsdoc/unknown-tag-type)
+* Builtin redefined (js/builtin-redefinition)
+* Call to parseInt without radix (js/parseint-without-radix)
+* Inefficient method definition (js/method-definition-in-constructor)
 * Invalid JSLint directive (js/jslint/invalid-directive)
 * Malformed JSLint directive (js/jslint/malformed-directive)
-* Use of HTML comments (js/html-comment)
 * Multi-line string literal (js/multi-line-string)
 * Octal literal (js/octal-literal)
+* Potentially misspelled property or variable name (js/wrong-capitalization)
 * Reserved word used as variable name (js/use-of-reserved-word)
 * Trailing comma in array or object expressions (js/trailing-comma-in-array-or-object)
-* Call to parseInt without radix (js/parseint-without-radix)
+* Unknown JSDoc tag (js/jsdoc/unknown-tag-type)
+* Use of HTML comments (js/html-comment)
