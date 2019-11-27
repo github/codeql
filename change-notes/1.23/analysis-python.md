@@ -30,14 +30,14 @@ to use the `Value` API. This should result in more precise results.
 
 | **Query**                  | **Expected impact**    | **Change** |
 |----------------------------|------------------------|------------|
-| Unreachable code | Fewer false positives | Analysis now accounts for uses of `contextlib.suppress` to suppress exceptions. |
-| `__iter__` method returns a non-iterator | Better alert message | Alert now highlights which class is expected to be an iterator. |
-| Explicit return in __init__ method | Fewer false positives | Instances where the `__init__` method returns the value of a call to a procedure are no longer flagged. |
-| Non-iterable used in for loop | Fewer false positives | `__aiter__` is now recognized as an iterator method. |
-| Unused import | Fewer false positives | Instances where a module is used in a forward-referenced type annotation, or only during type checking are no longer flagged. |
-| Module-level cyclic import | Fewer false positives | Instances where one of the links in an import cycle is never actually executed are no longer flagged. |
-| Undefined export | Fewer false positives | Instances where an exported value may be defined in a module that lacks points-to information are no longer flagged. |
-| Unreachable code | Fewer false positives | Unreachable `else` branches that do nothing but `assert` their non-reachability are no longer flagged. |
+| Explicit export is undefined (`py/undefined-export`) | Fewer false positive results | Instances where an exported value may be defined in a module that lacks points-to information are no longer flagged. |
+| Module-level cyclic import (`py/unsafe-cyclic-import`) | Fewer false positive results | Instances where one of the links in an import cycle is never actually executed are no longer flagged. |
+| Non-iterable used in for loop (`py/non-iterable-in-for-loop`) | Fewer false positive results | `__aiter__` is now recognized as an iterator method. |
+| Unreachable code (`py/unreachable-statement`) | Fewer false positive results | Analysis now accounts for uses of `contextlib.suppress` to suppress exceptions. |
+| Unreachable code (`py/unreachable-statement`) | Fewer false positive results | Unreachable `else` branches that do nothing but `assert` their non-reachability are no longer flagged. |
+| Unused import (`py/unused-import`) | Fewer false positive results | Instances where a module is used in a forward-referenced type annotation, or only during type checking are no longer flagged. |
+| `__iter__` method returns a non-iterator (`py/iter-returns-non-iterator`) | Better alert message | Alert now highlights which class is expected to be an iterator. |
+| `__init__` method returns a value (`py/explicit-return-in-init`) | Fewer false positive results | Instances where the `__init__` method returns the value of a call to a procedure are no longer flagged. |
 
 ## Changes to QL libraries
 
