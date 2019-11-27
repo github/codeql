@@ -1,6 +1,7 @@
 import python
 import semmle.python.objects.Callables
 import semmle.python.web.RateLimiters
+import semmle.python.web.django.General
 
 class DjangoModel extends ClassValue {
 
@@ -96,6 +97,7 @@ class DjangoDBExpensiveRouteHandler extends ExpensiveRouteHandler {
     ExpensiveDjangoMethodCall expensiveCall;
     
     DjangoDBExpensiveRouteHandler() {
+        exists(DjangoRoute r | r.getViewFunction().getScope() = this ) and
         callsNodePlus(this, expensiveCall.getNode())
     }
     
@@ -105,14 +107,5 @@ class DjangoDBExpensiveRouteHandler extends ExpensiveRouteHandler {
 }
 
 
-from DjangoDBExpensiveRouteHandler h
-where h.getLocation().getFile().getBaseName() = "expensive_handlers.py"
-select h, h.getExplanation()
-
-/*
-
-from ClassValue cv
-where cv.getName() = "MyModel"
-select cv, cv.getABaseType()
-
-*/
+from ExpensiveRouteHandler h
+select h

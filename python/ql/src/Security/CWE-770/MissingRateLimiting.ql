@@ -15,6 +15,7 @@
 
 import python
 import semmle.python.web.RateLimiters
+import semmle.python.web.django.ExpensiveHandlers
 
 from ExpensiveRouteHandler handler
 where not handler instanceof RateLimitedRouteHandler
