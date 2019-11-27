@@ -314,22 +314,22 @@ class LocalVariable extends LocalScopeVariable, @local_variable {
    * }
    * ```
    */
-  predicate isImplicitlyTyped() { localvars(this, _, _, 1, _, _) }
+  predicate isImplicitlyTyped() { localvar_info(this, 1, _, _) }
 
   /** Gets the enclosing callable of this local variable. */
   Callable getEnclosingCallable() { result = this.getVariableDeclExpr().getEnclosingCallable() }
 
   override Callable getCallable() { result = getEnclosingCallable() }
 
-  override predicate isRef() { localvars(this, 3, _, _, _, _) }
+  override predicate isRef() { localvars(this, 3, _) }
 
   override ValueOrRefType getDeclaringType() {
     result = this.getVariableDeclExpr().getEnclosingCallable().getDeclaringType()
   }
 
-  override string getName() { localvars(this, _, result, _, _, _) }
+  override string getName() { localvars(this, _, result) }
 
-  override Type getType() { localvars(this, _, _, _, getTypeRef(result), _) }
+  override Type getType() { localvar_info(this, _, getTypeRef(result), _) }
 
   override Location getALocation() { localvar_location(this, result) }
 }

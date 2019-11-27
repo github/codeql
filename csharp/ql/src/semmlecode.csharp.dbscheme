@@ -727,10 +727,7 @@ field_location(
 localvars(
   unique int id: @local_variable,
   int kind: int ref,
-  string name: string ref,
-  int implicitly_typed: int ref /* 0 = no, 1 = yes */,
-  int type_id: @type_or_ref ref,
-  int parent_id: @local_var_decl_expr ref);
+  string name: string ref);
 
 case @local_variable.kind of
   1 = @addressable_local_variable
@@ -741,6 +738,12 @@ case @local_variable.kind of
 localvar_location(
   unique int id: @local_variable ref,
   int loc: @location ref);
+
+localvar_info(
+  unique int id: @local_variable ref,
+  int implicitly_typed: int ref /* 0 = no, 1 = yes */,
+  int type_id: @type_or_ref ref,
+  int parent_id: @local_var_decl_expr ref);
 
 @parameterizable = @callable | @delegate_type | @indexer;
 

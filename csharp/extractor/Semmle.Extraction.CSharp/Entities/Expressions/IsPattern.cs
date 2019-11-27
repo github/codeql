@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             if (cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                             {
                                 var type = Type.Create(cx, symbol.GetAnnotatedType());
-                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), false, parent, child);
                             }
                             if (designation is DiscardDesignationSyntax)
                             {
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             {
                                 var type = Type.Create(cx, symbol.GetAnnotatedType());
 
-                                return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), cx.Create(varDesignation.GetLocation()), false, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), false, parent, child);
                             }
                             else
                             {
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
 
-                VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, this, 0);
+                VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), false, this, 0);
             }
 
             if (syntax.PositionalPatternClause is PositionalPatternClauseSyntax posPc)
@@ -144,7 +144,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (!(designation is null) && cx.GetModel(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
             {
                 var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
-                VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 1);
+                VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), isVar, this, 1);
             }
             else if (!isVar)
                 Expressions.TypeAccess.Create(cx, optionalType, this, 1);
