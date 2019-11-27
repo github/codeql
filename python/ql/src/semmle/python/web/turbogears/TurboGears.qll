@@ -1,19 +1,11 @@
 import python
-
 import semmle.python.security.TaintTracking
 
-private ClassValue theTurboGearsControllerClass() {
-    result = Value::named("tg.TGController")
-}
+private ClassValue theTurboGearsControllerClass() { result = Value::named("tg.TGController") }
 
-
-ClassValue aTurboGearsControllerClass() {
-    result.getABaseType+() = theTurboGearsControllerClass()
-}
-
+ClassValue aTurboGearsControllerClass() { result.getABaseType+() = theTurboGearsControllerClass() }
 
 class TurboGearsControllerMethod extends Function {
-
     ControlFlowNode decorator;
 
     TurboGearsControllerMethod() {
@@ -27,13 +19,9 @@ class TurboGearsControllerMethod extends Function {
         )
     }
 
-    private ControlFlowNode templateName() {
-        result = decorator.(CallNode).getArg(0)
-    }
+    private ControlFlowNode templateName() { result = decorator.(CallNode).getArg(0) }
 
-    predicate isTemplated() {
-        exists(templateName())
-    }
+    predicate isTemplated() { exists(templateName()) }
 
     Dict getValidationDict() {
         exists(Call call, Value dict |
@@ -42,5 +30,4 @@ class TurboGearsControllerMethod extends Function {
             call.getArg(0).pointsTo(dict, result)
         )
     }
-
 }
