@@ -23,15 +23,15 @@
 			The following example shows the <code>requestValidationMode</code>
 			attribute set to the value 4.0 which disables some protections and
 			ignores individual <code>Page</code> directives:
-
-			<sample src="ConfigurationBad.config" />
 		</p>
+
+		<sample src="ASPNetRequestValidationModeBad.config" />
 
 		<p>
 			Setting the value to 4.5 enables request validation for all requests:
 		</p>
 
-		<sample src="ConfigurationGood.config" />
+		<sample src="ASPNetRequestValidationModeGood.config" />
 
 	</example>
 	<references>
