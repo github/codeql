@@ -309,10 +309,8 @@ nodes
 | tst.js:277:22:277:29 | location |
 | tst.js:277:22:277:29 | location |
 | tst.js:282:9:282:29 | tainted |
-| tst.js:282:9:282:29 | tainted |
 | tst.js:282:19:282:29 | window.name |
 | tst.js:282:19:282:29 | window.name |
-| tst.js:285:59:285:65 | tainted |
 | tst.js:285:59:285:65 | tainted |
 | tst.js:285:59:285:65 | tainted |
 | tst.js:297:35:297:42 | location |
@@ -614,11 +612,8 @@ edges
 | tst.js:277:22:277:29 | location | tst.js:277:22:277:29 | location |
 | tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
 | tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
-| tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
-| tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
 | tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
 | tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
-| tst.js:285:59:285:65 | tainted | tst.js:285:59:285:65 | tainted |
 | tst.js:297:35:297:42 | location | tst.js:297:35:297:42 | location |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
