@@ -42,3 +42,8 @@ var arr1 = ["a", "b", "c"],
 
 for (var p in obj)
   console.log(obj[p]);
+
+  function test(array) {
+    let [x, y, z] = array;
+  }
+  
