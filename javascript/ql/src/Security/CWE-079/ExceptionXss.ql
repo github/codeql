@@ -1,8 +1,7 @@
 /**
  * @name Cross-site scripting through exception
- * @description User input being part of an exception allows for 
- *              cross-site scripting if that exception is written
- *              to the DOM.  
+ * @description Inserting data from an exception containing user
+ *              input into the DOM may enable cross-site scripting.
  * @kind path-problem
  * @problem.severity error
  * @precision medium
