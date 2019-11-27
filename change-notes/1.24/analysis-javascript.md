@@ -7,7 +7,6 @@
   - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
   - [Handlebars](https://www.npmjs.com/package/handlebars)
 
-
 ## New queries
 
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
@@ -23,4 +22,3 @@
 | Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | This query now recognizes additional ways event handler receivers can be bound. | 
 
 ## Changes to libraries
-
