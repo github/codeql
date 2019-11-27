@@ -13,8 +13,8 @@ Python 3.8 syntax is now supported. In particular, the following constructs are 
 
 ### General query improvements
 
-In an effort to deprecate the `Object` API (e.g. `ClassObject`) in favour of the
-`Value` API (e.g. `ClassValue`), many of the standard queries have been updated
+Following the replacement of the `Object` API (for example, `ClassObject`) in favor of the
+`Value` API (for example, `ClassValue`) in the 1.21 release, many of the standard queries have been updated
 to use the `Value` API. This should result in more precise results.
 
 ## New queries
@@ -43,8 +43,8 @@ to use the `Value` API. This should result in more precise results.
 
 * Django library now recognizes positional arguments from a `django.conf.urls.url` regex (Django version 1.x)
 * Instances of the `Value` class now support the `isAbsent` method, indicating
-  whether the `Value` in question is missing points-to information, but has been
-  inferred to likely exist anyway. For instance, if a file contains `import
+  whether that `Value` lacks points-to information, but inference
+  suggests that it exists. For instance, if a file contains `import
   django`, but `django` was not extracted properly, there will be a
   `ModuleValue` corresponding to this "unknown" module, and the `isAbsent`
   method will hold for this `ModuleValue`.
