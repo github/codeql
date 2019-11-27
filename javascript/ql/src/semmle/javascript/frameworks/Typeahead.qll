@@ -68,8 +68,18 @@ module Typeahead {
       exists(TypeaheadSource source |
         ref() = source.getALocalSource() or ref().getAMethodCall("ttAdapter") = source
       |
-        result = source.getSuccessor()
+        result = source.getASuggestion()
       )
+    }
+  }
+
+  /**
+   * An invocation of the `typeahead.js` library.
+   */
+  private class TypeaheadCall extends DataFlow::CallNode {
+    TypeaheadCall() {
+      // Matches `$(...).typeahead(..)`
+      this = JQuery::objectRef().getAMethodCall("typeahead")
     }
   }
 
@@ -77,10 +87,9 @@ module Typeahead {
    * A function that generates suggestions to typeahead.js.
    */
   class TypeaheadSuggestionFunction extends DataFlow::FunctionNode {
-    DataFlow::CallNode typeaheadCall;
+    TypeaheadCall typeaheadCall;
 
     TypeaheadSuggestionFunction() {
-      typeaheadCall = JQuery::objectRef().getAMethodCall("typeahead") and
       // Matches `$(...).typeahead({..}, { templates: { suggestion: <this> } })`.
       this = typeaheadCall
             .getOptionArgument(1, "templates")
@@ -93,25 +102,24 @@ module Typeahead {
     /**
      * Gets the call to typeahead.js where this suggestion function is used.
      */
-    DataFlow::CallNode getTypeaheadCall() { result = typeaheadCall }
+    TypeaheadCall getTypeaheadCall() { result = typeaheadCall }
   }
 
   /**
-   * A `source` field in the typeahead.js library where there exists a successor that consumes the values from the `source`.
+   * A `source` option for a typeahead.js plugin instance.
    */
   private class TypeaheadSource extends DataFlow::ValueNode {
-    DataFlow::Node successor;
+    TypeaheadCall typeaheadCall;
 
-    TypeaheadSource() {
-      // Matches `$(...).typeahead({..}, {source: <this>, templates: { suggestion: function(<successor>) {} } })`.
-      exists(TypeaheadSuggestionFunction suggestionFunction |
-        this = suggestionFunction.getTypeaheadCall().getOptionArgument(1, "source") and
-        successor = suggestionFunction.getParameter(0)
+    TypeaheadSource() { this = typeaheadCall.getOptionArgument(1, "source") }
+
+    /** Gets a node for a suggestion that this source motivates. */
+    DataFlow::Node getASuggestion() {
+      exists(TypeaheadSuggestionFunction suggestionCallback |
+        suggestionCallback.getTypeaheadCall() = typeaheadCall and
+        result = suggestionCallback.getParameter(0)
       )
     }
-
-    /** Gets the successor where values from the `source` field flow to. */
-    DataFlow::Node getSuccessor() { result = successor }
   }
 
   /**
@@ -121,7 +129,7 @@ module Typeahead {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // Matches `$(...).typeahead({..}, {source: function(q, cb) {..;cb(<pred>);..}, templates: { suggestion: function(<succ>) {} } })`.
       pred = this.getAFunctionValue().getParameter([1 .. 2]).getACall().getAnArgument() and
-      succ = this.getSuccessor()
+      succ = this.getASuggestion()
     }
   }
 }
