@@ -68,7 +68,7 @@ predicate benignContext(Expr e) {
   any(InvokeExpr invoke).getCallee() = e
   or
   // arguments to Promise.resolve (and promise library variants) are benign. 
-  e = any(ResolvedPromiseDefinition promise).getValue().asExpr()
+  e = any(PromiseCreationCall promise).getValue().asExpr()
 }
 
 predicate oneshotClosure(DataFlow::CallNode call) {
@@ -198,7 +198,7 @@ module Deferred {
   /**
    * A resolved promise created by a `new Deferred().resolve()` call.
    */
-  class ResolvedDeferredPromiseDefinition extends ResolvedPromiseDefinition {
+  class ResolvedDeferredPromiseDefinition extends PromiseCreationCall {
     ResolvedDeferredPromiseDefinition() {
       this = any(DeferredPromiseDefinition def).ref().getAMethodCall("resolve")
     }
