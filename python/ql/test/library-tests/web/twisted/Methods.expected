@@ -1,0 +1,13 @@
+| __init__ | Function __init__ | resources/lib/python/lib/twisted/web/resource.py:316 |
+| __init__ | Function __init__ | resources/lib/python/lib/twisted/web/resource.py:343 |
+| __init__ | Function __init__ | resources/lib/python/lib/twisted/web/resource.py:353 |
+| getChild | Function getChild | resources/lib/python/lib/twisted/web/resource.py:333 |
+| myrender | Function myrender | test.py:24 |
+| render | Function render | resources/lib/python/lib/twisted/web/resource.py:323 |
+| render | Function render | test.py:4 |
+| render | Function render | test.py:28 |
+| render | Function render | test.py:39 |
+| render | Function render | test.py:43 |
+| render_GET | Function render_GET | test.py:9 |
+| render_POST | Function render_POST | test.py:16 |
+| render_POST | Function render_POST | test.py:31 |

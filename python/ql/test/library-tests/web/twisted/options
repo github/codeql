@@ -1,0 +1,2 @@
+semmle-extractor-options: --max-import-depth=3 -p ../../../../resources/lib/python/lib/ --respect-init=False
+optimize: true

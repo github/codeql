@@ -1,0 +1,8 @@
+| class ErrorPage | resources/lib/python/lib/twisted/web/resource.py:280 |
+| class ForbiddenResource | resources/lib/python/lib/twisted/web/resource.py:348 |
+| class MyRequestHandler1 | test.py:3 |
+| class MyRequestHandler2 | test.py:23 |
+| class MyRequestHandler3 | test.py:27 |
+| class MyRequestHandler4 | test.py:38 |
+| class MyRequestHandler5 | test.py:42 |
+| class NoResource | resources/lib/python/lib/twisted/web/resource.py:338 |
