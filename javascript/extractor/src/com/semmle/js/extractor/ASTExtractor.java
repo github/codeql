@@ -900,7 +900,12 @@ public class ASTExtractor {
       for (IPattern param : nd.getAllParams()) {
         scopeManager.addNames(
             scopeManager.collectDeclaredNames(param, isStrict, false, DeclKind.var));
-        visit(param, key, i, IdContext.varDecl);
+        Label paramKey = visit(param, key, i, IdContext.varDecl);
+
+        // Extract optional parameters
+        if (nd.getOptionalParameterIndices().contains(i)) {
+          trapwriter.addTuple("isOptionalParameterDeclaration", paramKey);
+        }
         ++i;
       }
 
@@ -1393,7 +1398,8 @@ public class ASTExtractor {
               Collections.emptyList(),
               Collections.emptyList(),
               null,
-              null);
+              null,
+              AFunction.noOptionalParams);
       String fnSrc = hasSuperClass ? "(...args) { super(...args); }" : "() {}";
       SourceLocation fnloc = fakeLoc(fnSrc, loc);
       FunctionExpression fn = new FunctionExpression(fnloc, fndef);

@@ -16,37 +16,16 @@
 import javascript
 
 /**
- * Holds if `rl` is a simple constant, which is bound to the result of the predicate.
- *
- * For example, `/a/g` has string value `"a"` and `/abc/` has string value `"abc"`,
- * while `/ab?/` and `/a(?=b)/` do not have a string value.
- *
- * Flags are ignored, so `/a/i` is still considered to have string value `"a"`,
- * even though it also matches `"A"`.
- *
- * Note the somewhat subtle use of monotonic aggregate semantics, which makes the
- * `strictconcat` fail if one of the children of the root is not a constant (legacy
- * semantics would simply skip such children).
- */
-language[monotonicAggregates]
-string getStringValue(RegExpLiteral rl) {
-  exists(RegExpTerm root | root = rl.getRoot() |
-    result = root.(RegExpConstant).getValue()
-    or
-    result = strictconcat(RegExpTerm ch, int i |
-        ch = root.(RegExpSequence).getChild(i)
-      |
-        ch.(RegExpConstant).getValue() order by i
-      )
-  )
-}
-
-/**
  * Gets a predecessor of `nd` that is not an SSA phi node.
  */
 DataFlow::Node getASimplePredecessor(DataFlow::Node nd) {
   result = nd.getAPredecessor() and
-  not nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof SsaPhiNode
+  not exists(SsaDefinition ssa |
+    ssa = nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition()
+  |
+    ssa instanceof SsaPhiNode or
+    ssa instanceof SsaVariableCapture
+  )
 }
 
 /**
@@ -54,37 +33,33 @@ DataFlow::Node getASimplePredecessor(DataFlow::Node nd) {
  * into a form described by regular expression `regex`.
  */
 predicate escapingScheme(string metachar, string regex) {
-  metachar = "&" and regex = "&.*;"
+  metachar = "&" and regex = "&.+;"
   or
-  metachar = "%" and regex = "%.*"
+  metachar = "%" and regex = "%.+"
   or
-  metachar = "\\" and regex = "\\\\.*"
+  metachar = "\\" and regex = "\\\\.+"
 }
 
 /**
  * A call to `String.prototype.replace` that replaces all instances of a pattern.
  */
-class Replacement extends DataFlow::Node {
-  RegExpLiteral pattern;
-
+class Replacement extends StringReplaceCall {
   Replacement() {
-    exists(DataFlow::MethodCallNode mcn | this = mcn |
-      mcn.getMethodName() = "replace" and
-      pattern.flow().(DataFlow::SourceNode).flowsTo(mcn.getArgument(0)) and
-      mcn.getNumArgument() = 2 and
-      pattern.isGlobal()
-    )
+    isGlobal()
   }
 
   /**
-   * Holds if this replacement replaces the string `input` with `output`.
+   * Gets the input of this replacement.
    */
-  predicate replaces(string input, string output) {
-    exists(DataFlow::MethodCallNode mcn |
-      mcn = this and
-      input = getStringValue(pattern) and
-      output = mcn.getArgument(1).getStringValue()
-    )
+  DataFlow::Node getInput() {
+    result = this.getReceiver()
+  }
+
+  /**
+   * Gets the output of this replacement.
+   */
+  DataFlow::SourceNode getOutput() {
+    result = this
   }
 
   /**
@@ -119,7 +94,7 @@ class Replacement extends DataFlow::Node {
    * Gets the previous replacement in this chain of replacements.
    */
   Replacement getPreviousReplacement() {
-    result = getASimplePredecessor*(this.(DataFlow::MethodCallNode).getReceiver())
+    result.getOutput() = getASimplePredecessor*(getInput())
   }
 
   /**
@@ -130,7 +105,9 @@ class Replacement extends DataFlow::Node {
     exists(Replacement pred | pred = this.getPreviousReplacement() |
       if pred.escapes(_, metachar)
       then result = pred
-      else result = pred.getAnEarlierEscaping(metachar)
+      else (
+        not pred.unescapes(metachar, _) and result = pred.getAnEarlierEscaping(metachar)
+      )
     )
   }
 
@@ -142,7 +119,9 @@ class Replacement extends DataFlow::Node {
     exists(Replacement succ | this = succ.getPreviousReplacement() |
       if succ.unescapes(metachar, _)
       then result = succ
-      else result = succ.getALaterUnescaping(metachar)
+      else (
+        not succ.escapes(_, metachar) and result = succ.getALaterUnescaping(metachar)
+      )
     )
   }
 }

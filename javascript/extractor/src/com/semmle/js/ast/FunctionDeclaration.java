@@ -3,6 +3,7 @@ package com.semmle.js.ast;
 import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.ITypeExpression;
 import com.semmle.ts.ast.TypeParameter;
+import com.semmle.util.data.IntList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +42,8 @@ public class FunctionDeclaration extends Statement implements IFunction {
             Collections.emptyList(),
             Collections.emptyList(),
             null,
-            null),
+            null,
+            AFunction.noOptionalParams),
         false);
   }
 
@@ -56,7 +58,8 @@ public class FunctionDeclaration extends Statement implements IFunction {
       List<TypeParameter> typeParameters,
       List<ITypeExpression> parameterTypes,
       ITypeExpression returnType,
-      ITypeExpression thisParameterType) {
+      ITypeExpression thisParameterType,
+      IntList optionalParameterIndices) {
     this(
         loc,
         new AFunction<>(
@@ -69,7 +72,8 @@ public class FunctionDeclaration extends Statement implements IFunction {
             parameterTypes,
             Collections.emptyList(),
             returnType,
-            thisParameterType),
+            thisParameterType,
+            optionalParameterIndices),
         hasDeclareKeyword);
   }
 
@@ -206,5 +210,9 @@ public class FunctionDeclaration extends Statement implements IFunction {
   @Override
   public void setDeclaredSignatureId(int id) {
     declaredSignature = id;
+  }
+
+  public IntList getOptionalParameterIndices() {
+    return fn.getOptionalParmaeterIndices();
   }
 }
