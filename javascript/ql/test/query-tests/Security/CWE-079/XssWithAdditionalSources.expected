@@ -315,11 +315,10 @@ nodes
 | tst.js:285:59:285:65 | tainted |
 | tst.js:285:59:285:65 | tainted |
 | tst.js:285:59:285:65 | tainted |
-| typeahead.js:2:7:4:4 | autocompleter |
-| typeahead.js:2:23:4:4 | new Blo ... rl\\n  }) |
-| typeahead.js:2:23:4:4 | new Blo ... rl\\n  }) |
-| typeahead.js:7:13:7:25 | autocompleter |
-| typeahead.js:7:13:7:37 | autocom ... apter() |
+| tst.js:297:35:297:42 | location |
+| tst.js:297:35:297:42 | location |
+| tst.js:297:35:297:42 | location |
+| typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -620,11 +619,9 @@ edges
 | tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
 | tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
 | tst.js:285:59:285:65 | tainted | tst.js:285:59:285:65 | tainted |
-| typeahead.js:2:7:4:4 | autocompleter | typeahead.js:7:13:7:25 | autocompleter |
-| typeahead.js:2:23:4:4 | new Blo ... rl\\n  }) | typeahead.js:2:7:4:4 | autocompleter |
-| typeahead.js:2:23:4:4 | new Blo ... rl\\n  }) | typeahead.js:2:7:4:4 | autocompleter |
-| typeahead.js:7:13:7:25 | autocompleter | typeahead.js:7:13:7:37 | autocom ... apter() |
-| typeahead.js:7:13:7:37 | autocom ... apter() | typeahead.js:9:28:9:30 | loc |
+| tst.js:297:35:297:42 | location | tst.js:297:35:297:42 | location |
+| typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
+| typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target |
@@ -647,4 +644,4 @@ edges
 | winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) |
 | winjs.js:2:17:2:53 | documen ... ring(1) | winjs.js:2:7:2:53 | tainted |
 #select
-| typeahead.js:10:16:10:18 | loc | typeahead.js:2:23:4:4 | new Blo ... rl\\n  }) | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:2:23:4:4 | new Blo ... rl\\n  }) | user-provided value |
+| typeahead.js:10:16:10:18 | loc | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:9:28:9:30 | loc | user-provided value |
