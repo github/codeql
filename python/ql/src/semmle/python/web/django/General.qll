@@ -3,10 +3,14 @@ import semmle.python.regex
 import semmle.python.web.Http
 
 predicate django_route(CallNode call, ControlFlowNode regex, FunctionValue view) {
-    exists(FunctionValue url |
-        Value::named("django.conf.urls.url") = url and
-        url.getArgumentForCall(call, 0) = regex and
-        url.getArgumentForCall(call, 1).pointsTo(view)
+    exists(Value f |
+      f = Value::named("django.conf.urls.url")
+      or
+      f = Value::named("django.urls.conf.path")
+    |
+      call.getFunction().pointsTo(f) and
+      call.getArg(0) = regex and
+      call.getArg(1).pointsTo(view)
     )
 }
 
