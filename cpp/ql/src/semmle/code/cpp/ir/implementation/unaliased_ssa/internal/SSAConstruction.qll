@@ -865,3 +865,17 @@ private module CachedForDebugging {
     result.getTag() = var.getTag()
   }
 }
+
+module SSASanity {
+  query predicate multipleOperandMemoryLocations(
+    OldIR::MemoryOperand operand, string message, OldIR::IRFunction func, string funcText
+  ) {
+    exists(int locationCount |
+      locationCount = strictcount(Alias::getOperandMemoryLocation(operand)) and
+      locationCount > 1 and
+      func = operand.getEnclosingIRFunction() and
+      funcText = Language::getIdentityString(func.getFunction()) and
+      message = "Operand has " + locationCount.toString() + " memory accesses in function '$@'."
+    )
+  }
+}

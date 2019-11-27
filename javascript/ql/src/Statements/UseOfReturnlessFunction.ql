@@ -222,6 +222,7 @@ where
   not lastStatementHasNoEffect(func) and
   // anonymous one-shot closure. Those are used in weird ways and we ignore them.
   not oneshotClosure(call) and
-  not hasNonVoidReturnType(func)
+  not hasNonVoidReturnType(func) and
+  not call.getEnclosingExpr() instanceof SuperCall
 select
   call, msg, func, name

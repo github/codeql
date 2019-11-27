@@ -4,6 +4,7 @@
 
 * Support for the following frameworks and libraries has been improved:
   - [react](https://www.npmjs.com/package/react)
+  - [Handlebars](https://www.npmjs.com/package/handlebars)
 
 ## New queries
 

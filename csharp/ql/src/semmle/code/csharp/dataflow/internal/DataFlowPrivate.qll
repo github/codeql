@@ -1307,7 +1307,7 @@ private predicate suppressUnusedType(DotNet::Type t) { any() }
  * Type-based pruning is disabled for now, so this is a stub implementation.
  */
 bindingset[t]
-DotNet::Type getErasedRepr(DotNet::Type t) {
+DataFlowType getErasedRepr(DotNet::Type t) {
   // stub implementation
   suppressUnusedType(t) and result instanceof ObjectType
 }

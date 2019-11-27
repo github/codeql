@@ -143,6 +143,11 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/Opcode.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/Opcode.qll"
   ],
+  "IR SSASanity": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSASanity.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSASanity.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SSASanity.qll"
+  ],
   "C++ IR InstructionImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/InstructionImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/InstructionImports.qll",
