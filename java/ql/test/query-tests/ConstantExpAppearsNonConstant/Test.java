@@ -15,11 +15,11 @@ class Test{
 	int mul_constant_left = 0 * 60 * 60 * 24; //OK
 	int mul_constant_right = 60 * 60 * 24 * 0; //OK
 	int mul_is_not_constant = rnd.nextInt() * 1; //OK
-	int mul_is_constant_int_left = 0 * rnd.nextInt(); //NOT OK
-	int mul_is_constant_int_right = rnd.nextInt() * 0; //NOT OK
-	long mul_is_constant_hex = rnd.nextLong() * 0x0; //NOT OK
-	long mul_is_constant_binary = rnd.nextLong() * 00; //NOT OK
-
+	int mul_is_constant_int_left = (0+0) * rnd.nextInt(); //NOT OK
+	int mul_is_constant_int_right = rnd.nextInt() * (1-1); //NOT OK
+	long mul_is_constant_hex = rnd.nextLong() * (0x0F & 0xF0); //NOT OK
+	long mul_is_constant_binary = rnd.nextLong() * (0b010101 & 0b101010); //NOT OK
+	int mul_explicit_zero = rnd.nextInt() * 0; //OK (deliberate zero multiplication)
 	//Remainder by 1
 	int rem_not_constant = 42 % 6; //OK
 	int rem_constant = 60 % 1; //OK
