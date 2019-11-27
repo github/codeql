@@ -1,0 +1,65 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In JavaScript, <code>async</code> functions always return a Promise object.
+</p>
+
+<p>
+PLACEHOLDER
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+PLACEHOLDER
+</p>
+
+</recommendation>
+<example>
+
+<p>
+PLACEHOLDER
+</p>
+
+<sample src="examples/ImplicitOperandConversion.js" />
+
+<p>
+PLACEHOLDER
+</p>
+
+<p>
+PLACEHOLDER
+</p>
+
+<sample src="examples/ImplicitOperandConversionGood.js" />
+
+<p>
+PLACEHOLDER
+</p>
+
+<sample src="examples/ImplicitOperandConversion2.js" />
+
+<p>
+PLACEHOLDER
+</p>
+
+<sample src="examples/ImplicitOperandConversion2Good.js" />
+
+<p>
+PLACEHOLDER
+</p>
+
+<sample src="examples/ImplicitOperandConversion2Good2.js" />
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 9. ECMA, 2011.</li>
+
+</references>
+</qhelp>
