@@ -1,5 +1,3 @@
-| resources/lib/python/lib/twisted/web/resource.py:323 | request | twisted.request.http.Request |
-| resources/lib/python/lib/twisted/web/resource.py:333 | request | twisted.request.http.Request |
 | test.py:4 | request | twisted.request.http.Request |
 | test.py:9 | request | twisted.request.http.Request |
 | test.py:16 | request | twisted.request.http.Request |

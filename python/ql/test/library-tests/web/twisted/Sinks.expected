@@ -1,6 +1,3 @@
-| resources/lib/python/lib/twisted/web/resource.py:325 | Str | externally controlled string |
-| resources/lib/python/lib/twisted/web/resource.py:329 | Attribute() | externally controlled string |
-| resources/lib/python/lib/twisted/web/resource.py:330 | interpolated | externally controlled string |
 | test.py:7 | response | externally controlled string |
 | test.py:14 | response | externally controlled string |
 | test.py:21 | response | externally controlled string |

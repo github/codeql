@@ -1,7 +1,3 @@
-| resources/lib/python/lib/twisted/web/resource.py:323 | request | twisted.request.http.Request |
-| resources/lib/python/lib/twisted/web/resource.py:324 | request | twisted.request.http.Request |
-| resources/lib/python/lib/twisted/web/resource.py:325 | request | twisted.request.http.Request |
-| resources/lib/python/lib/twisted/web/resource.py:333 | request | twisted.request.http.Request |
 | test.py:4 | request | twisted.request.http.Request |
 | test.py:5 | Attribute | externally controlled string |
 | test.py:5 | request | twisted.request.http.Request |
