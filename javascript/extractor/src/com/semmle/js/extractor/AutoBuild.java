@@ -600,10 +600,12 @@ public class AutoBuild {
                     "yarn",
                     "install",
                     "--verbose",
+                    "--non-interactive",
                     "--ignore-scripts",
                     "--ignore-platform",
                     "--ignore-engines",
                     "--ignore-optional",
+                    "--no-default-rc",
                     "--no-bin-links",
                     "--pure-lockfile"));
         pb.directory(file.getParent().toFile());
