@@ -45,4 +45,9 @@ expected.
 </p>
 <sample src="ImpossibleInterfaceNilCheckGood.go" />
 </example>
+
+<references>
+<li>Jordan Orelli: <a href="https://jordanorelli.com/post/32665860244/how-to-use-interfaces-in-go">How to use interfaces in Go</a>.</li>
+<li>Go Frequently Asked Questions: <a href="https://golang.org/doc/faq#nil_error">Why is my nil error value not equal to nil?</a>.</li>
+</references>
 </qhelp>
