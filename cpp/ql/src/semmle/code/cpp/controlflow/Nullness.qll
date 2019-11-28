@@ -18,7 +18,7 @@ class Zero extends NullValue {
  */
 cached
 predicate nullCheckExpr(Expr checkExpr, Variable var) {
-  exists(StackVariable v, AnalysedExpr expr |
+  exists(LocalScopeVariable v, AnalysedExpr expr |
     var = v and
     checkExpr = expr
   |
@@ -67,7 +67,7 @@ predicate nullCheckExpr(Expr checkExpr, Variable var) {
  */
 cached
 predicate validCheckExpr(Expr checkExpr, Variable var) {
-  exists(AnalysedExpr expr, StackVariable v |
+  exists(AnalysedExpr expr, LocalScopeVariable v |
     v = var and
     expr = checkExpr
   |
@@ -123,19 +123,19 @@ class AnalysedExpr extends Expr {
   /**
    * Holds if `v` is null when this expression evaluates to a true value.
    */
-  predicate isNullCheck(StackVariable v) { nullCheckExpr(this, v) }
+  predicate isNullCheck(LocalScopeVariable v) { nullCheckExpr(this, v) }
 
   /**
    * Holds if `v` is non-null when this expression evaluates to a true value.
    */
-  predicate isValidCheck(StackVariable v) { validCheckExpr(this, v) }
+  predicate isValidCheck(LocalScopeVariable v) { validCheckExpr(this, v) }
 
   /**
    * Gets a successor of `this` in the control flow graph, where that successor
    * is among the nodes to which control may flow when `this` tests `v` to be
    * _null_.
    */
-  ControlFlowNode getNullSuccessor(StackVariable v) {
+  ControlFlowNode getNullSuccessor(LocalScopeVariable v) {
     this.isNullCheck(v) and result = this.getATrueSuccessor()
     or
     this.isValidCheck(v) and result = this.getAFalseSuccessor()
@@ -146,7 +146,7 @@ class AnalysedExpr extends Expr {
    * is among the nodes to which control may flow when `this` tests `v` to be
    * _not null_.
    */
-  ControlFlowNode getNonNullSuccessor(StackVariable v) {
+  ControlFlowNode getNonNullSuccessor(LocalScopeVariable v) {
     this.isNullCheck(v) and result = this.getAFalseSuccessor()
     or
     this.isValidCheck(v) and result = this.getATrueSuccessor()
@@ -155,7 +155,7 @@ class AnalysedExpr extends Expr {
   /**
    * DEPRECATED: Use `getNonNullSuccessor` instead, which does the same.
    */
-  deprecated ControlFlowNode getValidSuccessor(StackVariable v) {
+  deprecated ControlFlowNode getValidSuccessor(LocalScopeVariable v) {
     this.isValidCheck(v) and result = this.getATrueSuccessor()
     or
     this.isNullCheck(v) and result = this.getAFalseSuccessor()
@@ -164,7 +164,7 @@ class AnalysedExpr extends Expr {
   /**
    * Holds if this is a `VariableAccess` of `v` nested inside a condition.
    */
-  predicate isUse(StackVariable v) {
+  predicate isUse(LocalScopeVariable v) {
     this.inCondition() and
     this = v.getAnAccess()
   }
@@ -172,7 +172,7 @@ class AnalysedExpr extends Expr {
   /**
    * Holds if this is an `Assignment` to `v` nested inside a condition.
    */
-  predicate isDef(StackVariable v) {
+  predicate isDef(LocalScopeVariable v) {
     this.inCondition() and
     this.(Assignment).getLValue() = v.getAnAccess()
   }
@@ -192,7 +192,7 @@ class AnalysedExpr extends Expr {
  */
 cached
 predicate checkedNull(Variable var, ControlFlowNode node) {
-  exists(StackVariable v | v = var |
+  exists(LocalScopeVariable v | v = var |
     exists(AnalysedExpr e | e.getNullSuccessor(v) = node)
     or
     exists(ControlFlowNode pred |
@@ -208,7 +208,7 @@ predicate checkedNull(Variable var, ControlFlowNode node) {
  */
 cached
 predicate checkedValid(Variable var, ControlFlowNode node) {
-  exists(StackVariable v | v = var |
+  exists(LocalScopeVariable v | v = var |
     exists(AnalysedExpr e | e.getNonNullSuccessor(v) = node)
     or
     exists(ControlFlowNode pred |
@@ -277,7 +277,7 @@ predicate mayReturnNull(Function f) {
     ret.getEnclosingFunction() = f
   )
   or
-  exists(ReturnStmt ret, Expr returned, ControlFlowNode init, StackVariable v |
+  exists(ReturnStmt ret, Expr returned, ControlFlowNode init, LocalScopeVariable v |
     ret.getExpr() = returned and
     nullInit(v, init) and
     definitionUsePair(v, init, returned) and
