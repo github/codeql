@@ -2,19 +2,19 @@ import python
 
 import semmle.python.security.TaintTracking
 
-private ClassObject theTwistedHttpRequestClass() {
-    result = ModuleObject::named("twisted.web.http").attr("Request")
+private ClassValue theTwistedHttpRequestClass() {
+    result = Value::named("twisted.web.http.Request")
 }
 
-private ClassObject theTwistedHttpResourceClass() {
-    result = ModuleObject::named("twisted.web.resource").attr("Resource")
+private ClassValue theTwistedHttpResourceClass() {
+    result = Value::named("twisted.web.resource.Resource")
 }
 
-ClassObject aTwistedRequestHandlerClass() {
-    result.getASuperType() = theTwistedHttpResourceClass()
+ClassValue aTwistedRequestHandlerClass() {
+    result.getABaseType+() = theTwistedHttpResourceClass()
 }
 
-FunctionObject getTwistedRequestHandlerMethod(string name) {
+FunctionValue getTwistedRequestHandlerMethod(string name) {
     result = aTwistedRequestHandlerClass().declaredAttribute(name)
 }
 
@@ -28,7 +28,7 @@ predicate isKnownRequestHandlerMethodName(string name) {
  * `Request` class.
  */
 predicate isTwistedRequestInstance(NameNode node) {
-    node.refersTo(_, theTwistedHttpRequestClass(), _)
+    node.pointsTo().getClass() = theTwistedHttpRequestClass()
     or
     /* In points-to analysis cannot infer that a given object is an instance of
      * the `twisted.web.http.Request` class, we also include any parameter
@@ -36,7 +36,7 @@ predicate isTwistedRequestInstance(NameNode node) {
      * class, and the appropriate arguments of known request handler methods.
      */
     exists(Function func | func = node.getScope() |
-        func.getEnclosingScope().(Class).getClassObject() = aTwistedRequestHandlerClass()
+        func.getEnclosingScope() = aTwistedRequestHandlerClass().getScope()
     ) and
     (
     /* Any parameter called `request` */
@@ -44,9 +44,9 @@ predicate isTwistedRequestInstance(NameNode node) {
     node.isParameter()
     or
     /* Any request parameter of a known request handler method */
-    exists(FunctionObject func | node.getScope() = func.getFunction() | 
+    exists(Function func | node.getScope() = func |
         isKnownRequestHandlerMethodName(func.getName()) and
-        node.getNode() = func.getFunction().getArg(1)
+        node.getNode() = func.getArg(1)
         )
     )
 }

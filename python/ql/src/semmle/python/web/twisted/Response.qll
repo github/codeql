@@ -8,11 +8,12 @@ import Request
 
 class TwistedResponse extends TaintSink {
     TwistedResponse() {
-        exists(PyFunctionObject func, string name |
+        exists(PythonFunctionValue func, string name, Return ret |
             isKnownRequestHandlerMethodName(name) and
             name = func.getName() and
             func = getTwistedRequestHandlerMethod(name) and
-            this = func.getAReturnedNode()
+            func.getScope() = ret.getScope() and
+            ret.getValue().getAFlowNode() = this
         )
     }
 
