@@ -132,3 +132,15 @@ class Locatable extends @locatable {
     none()
   }
 }
+
+/**
+ * A `File`, considered as a `Locatable`.
+ *
+ * For reasons of backwards compatibility, @file is a subtype of @locatable. This class exists to
+ * provide an override of `Locatable.getLocation()` for @files, since it would otherwise default
+ * to `none()`, which is unhelpful.
+ */
+private class FileLocatable extends File, Locatable {
+  override Location getLocation() { result = File.super.getLocation() }
+  override string toString() { result = File.super.toString() }
+}
