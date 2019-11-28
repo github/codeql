@@ -14,6 +14,7 @@
  * @precision medium
  * @id py/duplicate-block
  */
+import python
 import CodeDuplication
 
 predicate sorted_by_location(DuplicateBlock x, DuplicateBlock y) {

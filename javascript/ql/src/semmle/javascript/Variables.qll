@@ -749,6 +749,21 @@ class Parameter extends BindingPattern {
   JSDocTag getJSDocTag() {
     none() // overridden in SimpleParameter
   }
+
+  /**
+   * Holds if this is a parameter declared optional with the `?` token.
+   *
+   * Note that this does not hold for rest parameters, and does not in general
+   * hold for parameters with defaults.
+   *
+   * For example, `x`, is declared optional below:
+   * ```
+   * function f(x?: number) {}
+   * ```
+   */
+  predicate isDeclaredOptional() {
+    isOptionalParameterDeclaration(this)
+  }
 }
 
 /**

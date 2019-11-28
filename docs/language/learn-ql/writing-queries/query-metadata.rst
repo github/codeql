@@ -2,9 +2,9 @@ Query metadata
 ==============
 
 Any query that is run as part of an analysis includes a number of properties, known as query metadata. Metadata is included at the top of each query file as the content of a `QLDoc <https://help.semmle.com/QL/ql-spec/qldoc.html>`__ comment. 
-For alerts and path queries, this metadata tells LGTM and QL for Eclipse how to handle the query and display its results correctly. 
+For alerts and path queries, this metadata tells LGTM and the CodeQL `extension for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__ how to handle the query and display its results correctly. 
 It also gives other users information about what the query results mean. For further information on query metadata, see the `query metadata style guide <https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md#metadata-area>`__ in our `open source repository <https://github.com/semmle/ql>`__ on GitHub.
-You can also add metric queries to LGTM, but the results are not shown. To see the results of metric queries, you can run them in the query console or in QL for Eclipse.
+You can also add metric queries to LGTM, but the results are not shown. To see the results of metric queries, you can run them in the query console or in `Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__.
 
 .. pull-quote::
 
@@ -93,7 +93,7 @@ Here is the metadata for one of the standard Java queries:
 
 .. |image0| image:: ../../images/query-metadata.png
 
-For more examples of query metadata, see the `built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__.
+For more examples of query metadata, see the standard CodeQL queries in our `GitHub repository <https://github.com/semmle/ql>`__.
 
 
 

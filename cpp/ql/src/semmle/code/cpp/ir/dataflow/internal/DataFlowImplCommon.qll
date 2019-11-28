@@ -57,14 +57,14 @@ private module ImplCommon {
         exists(Node mid |
           parameterValueFlowCand(p, mid) and
           step(mid, node) and
-          compatibleTypes(p.getType(), node.getType())
+          compatibleTypes(getErasedNodeType(p), getErasedNodeType(node))
         )
         or
         // flow through a callable
         exists(Node arg |
           parameterValueFlowCand(p, arg) and
           argumentValueFlowsThroughCand(arg, node) and
-          compatibleTypes(p.getType(), node.getType())
+          compatibleTypes(getErasedNodeType(p), getErasedNodeType(node))
         )
       }
 
@@ -95,7 +95,7 @@ private module ImplCommon {
           argumentValueFlowsThroughCand0(call, arg, kind)
         |
           out = getAnOutNode(call, kind) and
-          compatibleTypes(arg.getType(), out.getType())
+          compatibleTypes(getErasedNodeType(arg), getErasedNodeType(out))
         )
       }
 
@@ -183,7 +183,7 @@ private module ImplCommon {
         exists(Node mid |
           parameterValueFlow(p, mid, cc) and
           step(mid, node) and
-          compatibleTypes(p.getType(), node.getType()) and
+          compatibleTypes(getErasedNodeType(p), getErasedNodeType(node)) and
           not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall())
         )
         or
@@ -191,7 +191,7 @@ private module ImplCommon {
         exists(Node arg |
           parameterValueFlow(p, arg, cc) and
           argumentValueFlowsThrough(arg, node, cc) and
-          compatibleTypes(p.getType(), node.getType()) and
+          compatibleTypes(getErasedNodeType(p), getErasedNodeType(node)) and
           not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall())
         )
       }
@@ -226,7 +226,7 @@ private module ImplCommon {
         |
           out = getAnOutNode(call, kind) and
           not isUnreachableInCall(out, cc.(CallContextSpecificCall).getCall()) and
-          compatibleTypes(arg.getType(), out.getType())
+          compatibleTypes(getErasedNodeType(arg), getErasedNodeType(out))
         )
       }
     }
@@ -260,7 +260,7 @@ private module ImplCommon {
       exists(Node mid |
         parameterValueFlowNoCtx(p, mid) and
         localValueStep(mid, node) and
-        compatibleTypes(p.getType(), node.getType())
+        compatibleTypes(getErasedNodeType(p), getErasedNodeType(node))
       )
     }
 
@@ -296,8 +296,8 @@ private module ImplCommon {
         setterCall(call, i1, i2, f) and
         node1.(ArgumentNode).argumentOf(call, i1) and
         node2.getPreUpdateNode().(ArgumentNode).argumentOf(call, i2) and
-        compatibleTypes(node1.getTypeBound(), f.getType()) and
-        compatibleTypes(node2.getTypeBound(), f.getContainerType())
+        compatibleTypes(getErasedNodeTypeBound(node1), f.getType()) and
+        compatibleTypes(getErasedNodeTypeBound(node2), f.getContainerType())
       )
     }
 
@@ -333,8 +333,8 @@ private module ImplCommon {
       exists(DataFlowCall call, ReturnKind kind |
         storeReturn0(call, kind, node1, f) and
         node2 = getAnOutNode(call, kind) and
-        compatibleTypes(node1.getTypeBound(), f.getType()) and
-        compatibleTypes(node2.getTypeBound(), f.getContainerType())
+        compatibleTypes(getErasedNodeTypeBound(node1), f.getType()) and
+        compatibleTypes(getErasedNodeTypeBound(node2), f.getContainerType())
       )
     }
 
@@ -365,8 +365,8 @@ private module ImplCommon {
       exists(DataFlowCall call, ReturnKind kind |
         read0(call, kind, node1, f) and
         node2 = getAnOutNode(call, kind) and
-        compatibleTypes(node1.getTypeBound(), f.getContainerType()) and
-        compatibleTypes(node2.getTypeBound(), f.getType())
+        compatibleTypes(getErasedNodeTypeBound(node1), f.getContainerType()) and
+        compatibleTypes(getErasedNodeTypeBound(node2), f.getType())
       )
     }
 
@@ -384,7 +384,7 @@ private module ImplCommon {
         store(node1, f, mid1) and
         localValueStep*(mid1, mid2) and
         read(mid2, f, node2) and
-        compatibleTypes(node1.getTypeBound(), node2.getTypeBound())
+        compatibleTypes(getErasedNodeTypeBound(node1), getErasedNodeTypeBound(node2))
       )
     }
 
@@ -405,14 +405,14 @@ private module ImplCommon {
         exists(Node mid |
           parameterValueFlowCand(p, mid) and
           step(mid, node) and
-          compatibleTypes(p.getType(), node.getType())
+          compatibleTypes(getErasedNodeType(p), getErasedNodeType(node))
         )
         or
         // flow through a callable
         exists(Node arg |
           parameterValueFlowCand(p, arg) and
           argumentValueFlowsThroughCand(arg, node) and
-          compatibleTypes(p.getType(), node.getType())
+          compatibleTypes(getErasedNodeType(p), getErasedNodeType(node))
         )
       }
 
@@ -443,7 +443,7 @@ private module ImplCommon {
           argumentValueFlowsThroughCand0(call, arg, kind)
         |
           out = getAnOutNode(call, kind) and
-          compatibleTypes(arg.getType(), out.getType())
+          compatibleTypes(getErasedNodeType(arg), getErasedNodeType(out))
         )
       }
 
@@ -531,7 +531,7 @@ private module ImplCommon {
         exists(Node mid |
           parameterValueFlow(p, mid, cc) and
           step(mid, node) and
-          compatibleTypes(p.getType(), node.getType()) and
+          compatibleTypes(getErasedNodeType(p), getErasedNodeType(node)) and
           not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall())
         )
         or
@@ -539,7 +539,7 @@ private module ImplCommon {
         exists(Node arg |
           parameterValueFlow(p, arg, cc) and
           argumentValueFlowsThrough(arg, node, cc) and
-          compatibleTypes(p.getType(), node.getType()) and
+          compatibleTypes(getErasedNodeType(p), getErasedNodeType(node)) and
           not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall())
         )
       }
@@ -574,7 +574,7 @@ private module ImplCommon {
         |
           out = getAnOutNode(call, kind) and
           not isUnreachableInCall(out, cc.(CallContextSpecificCall).getCall()) and
-          compatibleTypes(arg.getType(), out.getType())
+          compatibleTypes(getErasedNodeType(arg), getErasedNodeType(out))
         )
       }
     }
@@ -860,4 +860,10 @@ private module ImplCommon {
     or
     result = viableCallable(call) and cc instanceof CallContextReturn
   }
+
+  pragma[noinline]
+  DataFlowType getErasedNodeType(Node n) { result = getErasedRepr(n.getType()) }
+
+  pragma[noinline]
+  DataFlowType getErasedNodeTypeBound(Node n) { result = getErasedRepr(n.getTypeBound()) }
 }

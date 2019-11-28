@@ -4,29 +4,27 @@
 <qhelp>
 <overview>
 <p>
-The expression <code>ptr + a &lt; ptr</code> is equivalent to <code>a &lt;
-0</code>, and an optimizing compiler is likely to make that replacement,
-thereby removing a range check that might have been necessary for security.
-If <code>a</code> is known to be non-negative, the compiler can even replace <code>ptr +
-a &lt; ptr</code> with <code>false</code>.
+When checking for integer overflow, you may often write tests like
+<code>p + i &lt; p</code>.  This works fine if <code>p</code> and
+<code>i</code> are unsigned integers, since any overflow in the addition
+will cause the value to simply "wrap around."  However, using this pattern when
+<code>p</code> is a pointer is problematic because pointer overflow has
+undefined behavior according to the C and C++ standards.  If the addition
+overflows and has an undefined result, the comparison will likewise be
+undefined; it may produce an unintended result, or may be deleted entirely by an
+optimizing compiler.
 </p>
 
-<p>
-The reason is that pointer arithmetic overflow in C/C++ is undefined
-behavior. The optimizing compiler can assume that the program has no
-undefined behavior, which means that adding a positive number to <code>ptr</code> cannot
-produce a pointer less than  <code>ptr</code>.
-</p>
 </overview>
 <recommendation>
 <p>
-To check whether an index <code>a</code> is less than the length of an array, 
-simply compare these two numbers as unsigned integers: <code>a &lt; ARRAY_LENGTH</code>. 
+To check whether an index <code>i</code> is less than the length of an array, 
+simply compare these two numbers as unsigned integers: <code>i &lt; ARRAY_LENGTH</code>. 
 If the length of the array is defined as the difference between two pointers 
-<code>ptr</code> and <code>p_end</code>, write <code>a &lt; p_end - ptr</code>.
-If a is <code>signed</code>, cast it to <code>unsigned</code> 
-in order to guard against negative <code>a</code>. For example, write 
-<code>(size_t)a &lt; p_end - ptr</code>.
+<code>ptr</code> and <code>p_end</code>, write <code>i &lt; p_end - ptr</code>.
+If <code>i</code> is signed, cast it to unsigned
+in order to guard against negative <code>i</code>. For example, write 
+<code>(size_t)i &lt; p_end - ptr</code>.
 </p>
 </recommendation>
 <example>
@@ -43,14 +41,14 @@ overflows and wraps around.
 <p>
 In both of these checks, the operations are performed in the wrong order.
 First, an expression that may cause undefined behavior is evaluated
-(<code>ptr + a</code>), and then the result is checked for being in range.
+(<code>ptr + i</code>), and then the result is checked for being in range.
 But once undefined behavior has happened in the pointer addition, it cannot
 be recovered from: it's too late to perform the range check after a possible
 pointer overflow.
 </p>
 
 <p>
-While it's not the subject of this query, the expression <code>ptr + a &lt;
+While it's not the subject of this query, the expression <code>ptr + i &lt;
 ptr_end</code> is also an invalid range check. It's undefined behavor in
 C/C++ to create a pointer that points more than one past the end of an
 allocation.

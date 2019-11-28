@@ -211,7 +211,7 @@ private class WindowNameAccess extends RemoteFlowSource {
     this = DataFlow::globalObjectRef().getAPropertyRead("name")
     or
     // Reference to `name` on a container that does not assign to it.
-    this.accessesGlobal("name") and
+    this.asExpr().(GlobalVarAccess).getName() = "name" and
     not exists(VarDef def |
       def.getAVariable().(GlobalVariable).getName() = "name" and
       def.getContainer() = this.asExpr().getContainer()

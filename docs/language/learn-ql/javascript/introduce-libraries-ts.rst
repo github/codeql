@@ -175,11 +175,13 @@ Ambient nodes are mostly ignored by control flow and data flow analysis. The out
 Static type information
 -----------------------
 
-.. TODO: Remove link to QL command-line tools below?
+Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default for projects on LGTM.com and when you create databases with the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__.
 
-Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default for projects on LGTM.com. If you are using the `QL command-line tools <https://help.semmle.com/wiki/display/SD/QL+command-line+tools>`__, you must enable it by passing ``--typescript-full`` to the JavaScript extractor. For further information on customizing calls to the extractor, see `Customizing JavaScript extraction <https://help.semmle.com/wiki/display/SD/Customizing+JavaScript+extraction>`__.
+.. pull-quote:: Note
 
-**Note:** Without full extraction, the classes and predicates described in this section are empty.
+   If you are using the `legacy QL command-line tools <https://help.semmle.com/wiki/display/SD/QL+command-line+tools>`__, you must enable full TypeScript extraction by passing ``--typescript-full`` to the JavaScript extractor. For further information on customizing calls to the extractor, see `Customizing JavaScript extraction <https://help.semmle.com/wiki/display/SD/Customizing+JavaScript+extraction>`__.
+
+   Without full extraction, the classes and predicates described in this section are empty.
 
 Basic usage
 ~~~~~~~~~~~

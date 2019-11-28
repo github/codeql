@@ -367,9 +367,10 @@ predicate receiver(AttrNode instantiation, PointsToContext context, ObjectIntern
 pragma [noinline]
 private predicate self_parameter(ParameterDefinition def, PointsToContext context, PythonClassObjectInternal cls) {
     def.isSelf() and
+    /* Exclude the special parameter name `.0` which is used for unfolded comprehensions. */
+    def.getName() != ".0" and
     exists(Function scope |
         def.getScope() = scope and
-        def.isSelf() and
         context.isRuntime() and context.appliesToScope(scope) and
         scope.getScope() = cls.getScope() and
         concrete_class(cls) and

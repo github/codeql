@@ -5,6 +5,7 @@ import com.semmle.ts.ast.INodeWithSymbol;
 import com.semmle.ts.ast.ITypeExpression;
 import com.semmle.ts.ast.ITypedAstNode;
 import com.semmle.ts.ast.TypeParameter;
+import com.semmle.util.data.IntList;
 import java.util.List;
 
 /** A function declaration or expression. */
@@ -75,4 +76,6 @@ public interface IFunction extends IStatementContainer, INodeWithSymbol, ITypedA
   public int getDeclaredSignatureId();
 
   public void setDeclaredSignatureId(int id);
+
+  public IntList getOptionalParameterIndices();
 }

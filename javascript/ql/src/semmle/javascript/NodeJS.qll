@@ -166,7 +166,7 @@ class Require extends CallExpr, Import {
     exists(RequireVariable req |
       this.getCallee() = req.getAnAccess() and
       // `mjs` files explicitly disallow `require`
-      getFile().getExtension() != "mjs"
+      not getFile().getExtension() = "mjs"
     )
   }
 

@@ -520,7 +520,7 @@ public class ASTExtractor {
         OffsetTranslation offsets = new OffsetTranslation();
         offsets.set(0, 1); // skip the initial '/'
         regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), offsets, nd, false);
-      } else if (nd.isStringLiteral() && !c.isInsideType()) {
+      } else if (nd.isStringLiteral() && !c.isInsideType() && nd.getRaw().length() < 1000) {
         regexpExtractor.extract(valueString, makeStringLiteralOffsets(nd.getRaw()), nd, true);
       }
       return key;
@@ -900,7 +900,12 @@ public class ASTExtractor {
       for (IPattern param : nd.getAllParams()) {
         scopeManager.addNames(
             scopeManager.collectDeclaredNames(param, isStrict, false, DeclKind.var));
-        visit(param, key, i, IdContext.varDecl);
+        Label paramKey = visit(param, key, i, IdContext.varDecl);
+
+        // Extract optional parameters
+        if (nd.getOptionalParameterIndices().contains(i)) {
+          trapwriter.addTuple("isOptionalParameterDeclaration", paramKey);
+        }
         ++i;
       }
 
@@ -1393,7 +1398,8 @@ public class ASTExtractor {
               Collections.emptyList(),
               Collections.emptyList(),
               null,
-              null);
+              null,
+              AFunction.noOptionalParams);
       String fnSrc = hasSuperClass ? "(...args) { super(...args); }" : "() {}";
       SourceLocation fnloc = fakeLoc(fnSrc, loc);
       FunctionExpression fn = new FunctionExpression(fnloc, fndef);

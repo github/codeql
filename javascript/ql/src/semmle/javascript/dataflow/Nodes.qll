@@ -531,6 +531,24 @@ class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 }
 
 /**
+ * A data-flow node corresponding to a regular-expression literal.
+ *
+ * Examples:
+ * ```js
+ * /https?/i
+ * ```
+ */
+class RegExpLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
+  override RegExpLiteral astNode;
+
+  /** Holds if this regular expression has a `g` flag. */
+  predicate isGlobal() { astNode.isGlobal() }
+
+  /** Gets the root term of this regular expression. */
+  RegExpTerm getRoot() { result = astNode.getRoot() }
+}
+
+/**
  * A data flow node corresponding to a `new Array()` or `Array()` invocation.
  *
  * Examples:

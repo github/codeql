@@ -419,7 +419,7 @@ abstract class Num extends Num_, ImmutableLiteral {
 
     /* We want to declare this abstract, but currently we cannot. */
     override string toString() {
-        none() 
+        result = "Num with missing toString"
     }
 
 }

@@ -136,7 +136,12 @@ abstract class ReactComponent extends ASTNode {
         result = arg0
     )
     or
-    result.flowsToExpr(getStaticMethod("getDerivedStateFromProps").getAReturnedExpr())
+    exists(string staticMember |
+      staticMember = "getDerivedStateFromProps" or
+      staticMember = "getDerivedStateFromError"
+    |
+      result.flowsToExpr(getStaticMethod(staticMember).getAReturnedExpr())
+    )
     or
     // shouldComponentUpdate: (nextProps, nextState)
     result = DataFlow::parameterNode(getInstanceMethod("shouldComponentUpdate").getParameter(1))

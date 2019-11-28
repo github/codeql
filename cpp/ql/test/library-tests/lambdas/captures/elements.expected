@@ -108,7 +108,9 @@
 | captures.cpp:22:3:24:4 | declaration |
 | captures.cpp:22:8:22:15 | definition of myLambda |
 | captures.cpp:22:8:22:15 | myLambda |
+| captures.cpp:22:18:24:3 | [...](...){...} |
 | captures.cpp:22:18:24:3 | initializer for myLambda |
+| captures.cpp:22:18:24:3 | {...} |
 | captures.cpp:22:19:22:19 | (constructor) |
 | captures.cpp:22:19:22:19 | (constructor) |
 | captures.cpp:22:19:22:19 | (constructor) |
@@ -123,8 +125,6 @@
 | captures.cpp:22:19:22:19 | operator= |
 | captures.cpp:22:19:22:19 | return ... |
 | captures.cpp:22:19:22:19 | { ... } |
-| captures.cpp:22:19:24:3 | [...](...){...} |
-| captures.cpp:22:19:24:3 | {...} |
 | captures.cpp:22:23:22:23 | definition of x |
 | captures.cpp:22:23:22:23 | x |
 | captures.cpp:22:23:22:23 | x |
@@ -164,7 +164,9 @@
 | end_pos.cpp:9:5:11:6 | declaration |
 | end_pos.cpp:9:10:9:11 | definition of fp |
 | end_pos.cpp:9:10:9:11 | fp |
+| end_pos.cpp:9:14:11:5 | [...](...){...} |
 | end_pos.cpp:9:14:11:5 | initializer for fp |
+| end_pos.cpp:9:14:11:5 | {...} |
 | end_pos.cpp:9:15:9:15 | (constructor) |
 | end_pos.cpp:9:15:9:15 | (constructor) |
 | end_pos.cpp:9:15:9:15 | (constructor) |
@@ -177,8 +179,6 @@
 | end_pos.cpp:9:15:9:15 | operator= |
 | end_pos.cpp:9:15:9:15 | return ... |
 | end_pos.cpp:9:15:9:15 | { ... } |
-| end_pos.cpp:9:15:11:5 | [...](...){...} |
-| end_pos.cpp:9:15:11:5 | {...} |
 | end_pos.cpp:9:17:9:17 | definition of ii |
 | end_pos.cpp:9:17:9:17 | ii |
 | end_pos.cpp:9:17:9:18 | (reference to) |
