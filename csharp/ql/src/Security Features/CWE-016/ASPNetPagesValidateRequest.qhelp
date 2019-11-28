@@ -1,14 +1,10 @@
-<!DOCTYPE qhelp PUBLIC
-  "-//Semmle//qhelp//EN"
-  "qhelp.dtd">
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
 <qhelp>
 
 	<overview>
 		<p>
-			<code>Request validation</code>
-			is a feature in ASP.NET that protects web applications against
-			potentially malicious content
-			in requests, specifically against
+			Request validation is a feature in ASP.NET that protects web applications against
+			potentially malicious content in requests, specifically against
 			cross-site scripting attacks (XSS).
 		</p>
 
@@ -16,9 +12,10 @@
 	<recommendation>
 
 		<p>
-			Enable the directive validateRequest in your web.config file:
+			Enable the directive <code>validateRequest</code> in your <code>web.config</code> file:
+
 			<code>
-				<pages validateRequest="true" />
+				&lt;pages validateRequest="true" /&gt;
 			</code>
 		</p>
 
@@ -26,22 +23,18 @@
 	<example>
 
 		<p>
-			The following example shows the 'validateRequest' flag set to true in
-			a
-			<code>Web.config</code>
-			file for ASP.NET. This will protect the web application against
-			common XSS attacks:
+			The following example shows the <code>validateRequest</code> flag set to <code>false</code>
+			in a <code>Web.config</code> file for ASP.NET. This will disable validation, and leave
+			the the web application vulnerable against common XSS attacks:
 		</p>
 
-		<sample src="Web.config.ASPNetPagesValidateRequest.good" />
+		<sample src="ASPNetPagesValidateRequestBad.config" />
 
 		<p>
-			If validateRequest is set to
-			<code>false</code>
-			, validation is disabled:
+			If validateRequest is set to <code>true</code>, validation is enabled:
 		</p>
 
-		<sample src="Web.config.ASPNetPagesValidateRequest.bad" />
+		<sample src="ASPNetPagesValidateRequestGood.config" />
 
 	</example>
 	<references>
@@ -49,17 +42,10 @@
 		<li>
 			MSDN:
 			<a
-				href=https://docs.microsoft.com/en-us/previous-versions/aspnet/hh882339(v=vs.110)?redirectedfrom=MSDN ">Request
-				Validation in ASP.NET</a>
-			.
+				href="https://docs.microsoft.com/en-us/previous-versions/aspnet/hh882339(v=vs.110)?redirectedfrom=MSDN">
+				Request Validation in ASP.NET
+			</a>.
 		</li>
-		<li>
-			MSDN:
-			<a
-				href="https://docs.microsoft.com/en-us/previous-versions/aspnet/debza5t0(v=vs.100)?redirectedfrom=MSDN">Validation ASP.NET Controls</a>
-			.
-		</li>
-
 
 	</references>
 </qhelp>
