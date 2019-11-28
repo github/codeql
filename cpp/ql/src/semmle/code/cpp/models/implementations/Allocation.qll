@@ -77,6 +77,9 @@ class MallocAllocationFunction extends AllocationFunction {
         or
         // CoTaskMemAlloc(size)
         name = "CoTaskMemAlloc" and sizeArg = 0
+        or
+        // alloca(size)
+        name = "alloca" and sizeArg = 0
       )
     )
   }
