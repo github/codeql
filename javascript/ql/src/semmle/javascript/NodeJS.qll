@@ -162,6 +162,7 @@ private predicate moduleInFile(Module m, File f) { m.getFile() = f }
  * ```
  */
 class Require extends CallExpr, Import {
+  cached
   Require() {
     any(RequireVariable req).getAnAccess() = getCallee() and
     // `mjs` files explicitly disallow `require`
