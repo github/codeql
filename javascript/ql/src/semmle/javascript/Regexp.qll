@@ -73,21 +73,21 @@ class RegExpTerm extends Locatable, @regexpterm {
   /** Holds if this regular expression term can match the empty string. */
   predicate isNullable() { none() } // Overridden in subclasses.
 
-  /** Gets the regular expression term that is matched before this one, if any. */
+  /** Gets the regular expression term that is matched (textually) before this one, if any. */
   RegExpTerm getPredecessor() {
     exists(RegExpSequence seq, int i |
       seq.getChild(i) = this and
-      seq.getChild(i - getDirection()) = result
+      seq.getChild(i - 1) = result
     )
     or
     result = getParent().(RegExpTerm).getPredecessor()
   }
 
-  /** Gets the regular expression term that is matched after this one, if any. */
+  /** Gets the regular expression term that is matched (textually) after this one, if any. */
   RegExpTerm getSuccessor() {
     exists(RegExpSequence seq, int i |
       seq.getChild(i) = this and
-      seq.getChild(i + getDirection()) = result
+      seq.getChild(i + 1) = result
     )
     or
     exists(RegExpTerm parent |
@@ -97,12 +97,6 @@ class RegExpTerm extends Locatable, @regexpterm {
       result = parent.getSuccessor()
     )
   }
-
-  /**
-   * Gets the matching direction of this term: `1` if it is in a forward-matching
-   * context, `-1` if it is in a backward-matching context.
-   */
-  private int getDirection() { if isInBackwardMatchingContext() then result = -1 else result = 1 }
 
   /**
    * Holds if this regular term is in a forward-matching context, that is,
