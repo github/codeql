@@ -35,18 +35,16 @@ predicate isTwistedRequestInstance(NameNode node) {
      * class, and the appropriate arguments of known request handler methods.
      */
 
-    exists(Function func | func = node.getScope() |
+    exists(Function func |
+        func = node.getScope() and
         func.getEnclosingScope() = aTwistedRequestHandlerClass().getScope()
-    ) and
-    (
+    |
         /* Any parameter called `request` */
         node.getId() = "request" and
         node.isParameter()
         or
         /* Any request parameter of a known request handler method */
-        exists(Function func | node.getScope() = func |
-            isKnownRequestHandlerMethodName(func.getName()) and
-            node.getNode() = func.getArg(1)
-        )
+        isKnownRequestHandlerMethodName(func.getName()) and
+        node.getNode() = func.getArg(1)
     )
 }
