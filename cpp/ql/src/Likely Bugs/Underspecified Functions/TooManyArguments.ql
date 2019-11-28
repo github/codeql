@@ -25,10 +25,10 @@ predicate hasZeroParamDecl(Function f) {
 }
 
 // True if this file (or header) was compiled as a C file
-predicate isCompiledAsC(Function f) {
-  exists(File file | file.compiledAsC() |
-    file = f.getFile() or file.getAnIncludedFile+() = f.getFile()
-  )
+predicate isCompiledAsC(File f) {
+  f.compiledAsC()
+  or
+  exists(File src | isCompiledAsC(src) | src.getAnIncludedFile() = f)
 }
 
 from FunctionCall fc, Function f
@@ -36,7 +36,7 @@ where
   f = fc.getTarget() and
   not f.isVarargs() and
   hasZeroParamDecl(f) and
-  isCompiledAsC(f) and
+  isCompiledAsC(f.getFile()) and
   exists(f.getBlock()) and
   // There must not exist a declaration with the number of parameters
   // at least as large as the number of call arguments
