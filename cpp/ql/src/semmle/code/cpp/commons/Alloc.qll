@@ -5,7 +5,7 @@ import semmle.code.cpp.models.interfaces.Deallocation
 /**
  * A library routine that allocates memory.
  *
- * DEPRECATED: Use the `MallocFunction` class instead of this predicate.
+ * DEPRECATED: Use the `AllocationFunction` class instead of this predicate.
  */
 deprecated predicate allocationFunction(Function f) { f instanceof AllocationFunction }
 
