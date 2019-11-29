@@ -360,7 +360,7 @@ private module ImplCommon {
      */
     cached
     predicate read(Node node1, Content f, Node node2) {
-      readStep(node1, f, node2) and storeStep(_, f, _)
+      readStep(node1, f, node2)
       or
       exists(DataFlowCall call, ReturnKind kind |
         read0(call, kind, node1, f) and
