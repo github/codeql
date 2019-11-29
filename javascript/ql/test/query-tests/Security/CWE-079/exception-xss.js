@@ -26,7 +26,7 @@
 	try {
 		unknown({prop: foo});
 	} catch(e) {
-		$('myId').html(e); // We don't flag this for now.
+		$('myId').html(e); // NOT OK!
 	}
 	
 	try {
@@ -129,4 +129,49 @@ app.get('/user/:id', function(req, res) {
 	} catch(e) {
 		$('myId').html(e); // NOT OK
 	}
+})();
+
+
+app.get('/user/:id', function(req, res) {
+  unknown(req.params.id, (error, res) => {
+    if (error) {
+	  $('myId').html(error); // NOT OK
+      return;
+	}
+	$('myId').html(res); // OK (for now?)
+  });
+});
+
+(function () {
+    var foo = document.location.search;
+
+	new Promise(resolve => unknown(foo, resolve)).catch((e) => {
+      $('myId').html(e); // NOT OK
+    });
+
+    try {
+	  null[foo];  
+    } catch(e) {
+	  $('myId').html(e); // NOT OK
+	}
+	
+	try {
+	  unknown()[foo];  
+    } catch(e) {
+	  $('myId').html(e); // NOT OK
+	}
+	
+	try {
+	  "foo"[foo]
+	} catch(e) {
+	  $('myId').html(e); // OK
+	}
+	
+	function inner(tainted, resolve) {
+		unknown(tainted, resolve);
+	}
+	
+	new Promise(resolve => inner(foo, resolve)).catch((e) => {
+      $('myId').html(e); // NOT OK
+    });
 })();
