@@ -191,9 +191,15 @@ private module Internal {
   }
 
   pragma[noinline]
+  private predicate hasOverrider(OverridableCallable oc, ValueOrRefType t) {
+    exists(oc.getAnOverrider(t))
+  }
+
+  pragma[noinline]
   private predicate hasCallable(OverridableCallable source, ValueOrRefType t, OverridableCallable c) {
     c.getSourceDeclaration() = source and
     t.hasCallable(c) and
+    hasOverrider(c, t) and
     hasQualifierTypeOverridden0(t, _) and
     hasQualifierTypeOverridden1(source, _)
   }
@@ -215,15 +221,19 @@ private module Internal {
 
   pragma[noinline]
   private predicate hasQualifierTypeOverridden0(ValueOrRefType t, DispatchMethodOrAccessorCall call) {
-    exists(Type t0 | t0 = getAPossibleType(call.getQualifier(), false) |
-      t = t0
+    hasOverrider(_, t) and
+    (
+      exists(Type t0 | t0 = getAPossibleType(call.getQualifier(), false) |
+        t = t0
+        or
+        Unification::subsumes(t0, t)
+        or
+        t = t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+      )
       or
-      Unification::subsumes(t0, t)
-      or
-      t = t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+      constrainedTypeParameterQualifierTypeSubsumes(t,
+        getAConstrainedTypeParameterQualifierType(call))
     )
-    or
-    constrainedTypeParameterQualifierTypeSubsumes(t, getAConstrainedTypeParameterQualifierType(call))
   }
 
   pragma[noinline]
