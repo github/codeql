@@ -510,13 +510,20 @@ private predicate simpleParameterFlow(
 
 pragma[noinline]
 private predicate simpleArgumentFlowsThrough0(
+  ParameterNode p, ReturnNode ret, ReturnKind kind, DataFlowType t, Configuration config
+) {
+  simpleParameterFlow(p, ret, t, config) and
+  kind = ret.getKind()
+}
+
+pragma[noinline]
+private predicate simpleArgumentFlowsThrough1(
   DataFlowCall call, ArgumentNode arg, ReturnKind kind, DataFlowType t, Configuration config
 ) {
   nodeCand1(arg, unbind(config)) and
   not outBarrier(arg, config) and
   exists(ParameterNode p, ReturnNode ret |
-    simpleParameterFlow(p, ret, t, config) and
-    kind = ret.getKind() and
+    simpleArgumentFlowsThrough0(p, ret, kind, t, config) and
     viableParamArg(call, p, arg)
   )
 }
@@ -534,7 +541,7 @@ private predicate simpleArgumentFlowsThrough(
   exists(DataFlowCall call, ReturnKind kind |
     nodeCand1(out, unbind(config)) and
     not inBarrier(out, config) and
-    simpleArgumentFlowsThrough0(call, arg, kind, t, config) and
+    simpleArgumentFlowsThrough1(call, arg, kind, t, config) and
     out = getAnOutNode(call, kind)
   )
 }
@@ -1529,19 +1536,19 @@ private predicate flow0(Node node, boolean toReturn, AccessPath ap, Configuratio
   )
   or
   exists(Content f, AccessPath ap0 |
-    flowStore(node, f, toReturn, ap0, config) and
+    flowStore(ap0, f, node, toReturn, config) and
     pop(ap0, f, ap)
   )
   or
   exists(Content f, AccessPath ap0 |
-    flowRead(node, f, toReturn, ap0, config) and
+    flowRead(f, ap0, node, toReturn, config) and
     push(ap0, f, ap)
   )
 }
 
 pragma[nomagic]
 private predicate flowStore(
-  Node node, Content f, boolean toReturn, AccessPath ap0, Configuration config
+  AccessPath ap0, Content f, Node node, boolean toReturn, Configuration config
 ) {
   exists(Node mid |
     store(node, f, mid) and
@@ -1551,7 +1558,7 @@ private predicate flowStore(
 
 pragma[nomagic]
 private predicate flowRead(
-  Node node, Content f, boolean toReturn, AccessPath ap0, Configuration config
+  Content f, AccessPath ap0, Node node, boolean toReturn, Configuration config
 ) {
   exists(Node mid |
     read(node, f, mid) and
