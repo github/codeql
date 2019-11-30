@@ -1,6 +1,6 @@
 /**
  * @name Insecure configuration for ASP.NET requestValidationMode
- * @description Setting requestValidationMode to less than 4.5 disables built-in validations
+ * @description Setting 'requestValidationMode' to less than 4.5 disables built-in validations
  *              included by default in ASP.NET. Disabling or downgrading this protection is not
  *              recommended.
  * @kind problem
