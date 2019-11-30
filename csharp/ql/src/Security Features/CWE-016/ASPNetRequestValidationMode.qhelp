@@ -6,7 +6,7 @@
 			The <code>requestValidationMode</code> attribute in ASP.NET is used to configure built-in validation to
 			protect applications against code injections. Downgrading or disabling
 			this configuration is not recommended. The default value of 4.5
-			is the only recommended value as previous versions only test a subset of requests.
+			is the only recommended value, as previous versions only test a subset of requests.
 		</p>
 
 	</overview>
