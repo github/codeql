@@ -21,7 +21,7 @@
 
 		<p>
 			The following example shows the <code>requestValidationMode</code>
-			attribute set to the value 4.0 which disables some protections and
+			attribute set to a value of 4.0, which disables some protections and
 			ignores individual <code>Page</code> directives:
 		</p>
 
