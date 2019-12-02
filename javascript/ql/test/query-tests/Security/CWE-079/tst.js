@@ -293,6 +293,22 @@ function flowThroughPropertyNames() {
       $(p); // OK
 }
 
+function basicExceptions() {
+	try {
+		throw location;
+	} catch(e) {
+		$("body").append(e); // NOT OK
+	}
+
+	try {
+		try {
+			throw location
+		} finally {}
+	} catch(e) {
+		$("body").append(e); // NOT OK
+	}
+}
+
 function handlebarsSafeString() {
 	return new Handlebars.SafeString(location); // NOT OK!	
 }

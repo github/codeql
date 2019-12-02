@@ -558,6 +558,23 @@ module TaintTracking {
       succ = this
     }
   }
+  
+
+  /**
+   * A taint propagating data flow edge arising from calling `String.prototype.match()`.
+   */
+  private class StringMatchTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
+    StringMatchTaintStep() {
+      this.getMethodName() = "match" and
+      this.getNumArgument() = 1 and
+      this.getArgument(0) .analyze().getAType() = TTRegExp()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = this.getReceiver() and
+      succ = this
+    }
+  }
 
   /**
    * A taint propagating data flow edge arising from JSON unparsing.
@@ -884,5 +901,13 @@ module TaintTracking {
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
+  }
+
+  /**
+   * Holds if taint propagates from `pred` to `succ` in one local (intra-procedural) step.
+   */
+  predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    DataFlow::localFlowStep(pred, succ) or
+    any(AdditionalTaintStep s).step(pred, succ)
   }
 }

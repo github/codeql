@@ -15,6 +15,11 @@ nodes
 | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:33 | event.data |
+| exception-xss.js:2:9:2:31 | foo |
+| exception-xss.js:2:15:2:31 | document.location |
+| exception-xss.js:2:15:2:31 | document.location |
+| exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:86:17:86:19 | foo |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
 | jquery.js:2:17:2:33 | document.location |
@@ -313,9 +318,19 @@ nodes
 | tst.js:282:19:282:29 | window.name |
 | tst.js:285:59:285:65 | tainted |
 | tst.js:285:59:285:65 | tainted |
-| tst.js:297:35:297:42 | location |
-| tst.js:297:35:297:42 | location |
-| tst.js:297:35:297:42 | location |
+| tst.js:298:9:298:16 | location |
+| tst.js:298:9:298:16 | location |
+| tst.js:299:10:299:10 | e |
+| tst.js:300:20:300:20 | e |
+| tst.js:300:20:300:20 | e |
+| tst.js:305:10:305:17 | location |
+| tst.js:305:10:305:17 | location |
+| tst.js:307:10:307:10 | e |
+| tst.js:308:20:308:20 | e |
+| tst.js:308:20:308:20 | e |
+| tst.js:313:35:313:42 | location |
+| tst.js:313:35:313:42 | location |
+| tst.js:313:35:313:42 | location |
 | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location |
@@ -343,6 +358,10 @@ edges
 | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
+| exception-xss.js:2:9:2:31 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:9:2:31 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
+| exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
@@ -602,7 +621,15 @@ edges
 | tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
 | tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
 | tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
-| tst.js:297:35:297:42 | location | tst.js:297:35:297:42 | location |
+| tst.js:298:9:298:16 | location | tst.js:299:10:299:10 | e |
+| tst.js:298:9:298:16 | location | tst.js:299:10:299:10 | e |
+| tst.js:299:10:299:10 | e | tst.js:300:20:300:20 | e |
+| tst.js:299:10:299:10 | e | tst.js:300:20:300:20 | e |
+| tst.js:305:10:305:17 | location | tst.js:307:10:307:10 | e |
+| tst.js:305:10:305:17 | location | tst.js:307:10:307:10 | e |
+| tst.js:307:10:307:10 | e | tst.js:308:20:308:20 | e |
+| tst.js:307:10:307:10 | e | tst.js:308:20:308:20 | e |
+| tst.js:313:35:313:42 | location | tst.js:313:35:313:42 | location |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
@@ -619,6 +646,7 @@ edges
 | addEventListener.js:2:20:2:29 | event.data | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:29 | event.data | Cross-site scripting vulnerability due to $@. | addEventListener.js:1:43:1:47 | event | user-provided value |
 | addEventListener.js:6:20:6:23 | data | addEventListener.js:5:43:5:48 | {data} | addEventListener.js:6:20:6:23 | data | Cross-site scripting vulnerability due to $@. | addEventListener.js:5:43:5:48 | {data} | user-provided value |
 | addEventListener.js:12:24:12:33 | event.data | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:33 | event.data | Cross-site scripting vulnerability due to $@. | addEventListener.js:10:21:10:25 | event | user-provided value |
+| exception-xss.js:86:17:86:19 | foo | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:86:17:86:19 | foo | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | jquery.js:4:5:4:11 | tainted | jquery.js:2:17:2:33 | document.location | jquery.js:4:5:4:11 | tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:33 | document.location | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:33 | document.location | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
@@ -690,7 +718,9 @@ edges
 | tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:261:11:261:21 | window.name | user-provided value |
 | tst.js:277:22:277:29 | location | tst.js:277:22:277:29 | location | tst.js:277:22:277:29 | location | Cross-site scripting vulnerability due to $@. | tst.js:277:22:277:29 | location | user-provided value |
 | tst.js:285:59:285:65 | tainted | tst.js:282:19:282:29 | window.name | tst.js:285:59:285:65 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:282:19:282:29 | window.name | user-provided value |
-| tst.js:297:35:297:42 | location | tst.js:297:35:297:42 | location | tst.js:297:35:297:42 | location | Cross-site scripting vulnerability due to $@. | tst.js:297:35:297:42 | location | user-provided value |
+| tst.js:300:20:300:20 | e | tst.js:298:9:298:16 | location | tst.js:300:20:300:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:298:9:298:16 | location | user-provided value |
+| tst.js:308:20:308:20 | e | tst.js:305:10:305:17 | location | tst.js:308:20:308:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:305:10:305:17 | location | user-provided value |
+| tst.js:313:35:313:42 | location | tst.js:313:35:313:42 | location | tst.js:313:35:313:42 | location | Cross-site scripting vulnerability due to $@. | tst.js:313:35:313:42 | location | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | winjs.js:3:43:3:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:3:43:3:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |
 | winjs.js:4:43:4:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:4:43:4:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |
