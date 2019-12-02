@@ -15,6 +15,11 @@ nodes
 | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:33 | event.data |
+| exception-xss.js:2:9:2:31 | foo |
+| exception-xss.js:2:15:2:31 | document.location |
+| exception-xss.js:2:15:2:31 | document.location |
+| exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:86:17:86:19 | foo |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
 | jquery.js:2:17:2:33 | document.location |
@@ -313,9 +318,19 @@ nodes
 | tst.js:282:19:282:29 | window.name |
 | tst.js:285:59:285:65 | tainted |
 | tst.js:285:59:285:65 | tainted |
-| tst.js:297:35:297:42 | location |
-| tst.js:297:35:297:42 | location |
-| tst.js:297:35:297:42 | location |
+| tst.js:298:9:298:16 | location |
+| tst.js:298:9:298:16 | location |
+| tst.js:299:10:299:10 | e |
+| tst.js:300:20:300:20 | e |
+| tst.js:300:20:300:20 | e |
+| tst.js:305:10:305:17 | location |
+| tst.js:305:10:305:17 | location |
+| tst.js:307:10:307:10 | e |
+| tst.js:308:20:308:20 | e |
+| tst.js:308:20:308:20 | e |
+| tst.js:313:35:313:42 | location |
+| tst.js:313:35:313:42 | location |
+| tst.js:313:35:313:42 | location |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -355,6 +370,10 @@ edges
 | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
+| exception-xss.js:2:9:2:31 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:9:2:31 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
+| exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
@@ -614,7 +633,15 @@ edges
 | tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
 | tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
 | tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
-| tst.js:297:35:297:42 | location | tst.js:297:35:297:42 | location |
+| tst.js:298:9:298:16 | location | tst.js:299:10:299:10 | e |
+| tst.js:298:9:298:16 | location | tst.js:299:10:299:10 | e |
+| tst.js:299:10:299:10 | e | tst.js:300:20:300:20 | e |
+| tst.js:299:10:299:10 | e | tst.js:300:20:300:20 | e |
+| tst.js:305:10:305:17 | location | tst.js:307:10:307:10 | e |
+| tst.js:305:10:305:17 | location | tst.js:307:10:307:10 | e |
+| tst.js:307:10:307:10 | e | tst.js:308:20:308:20 | e |
+| tst.js:307:10:307:10 | e | tst.js:308:20:308:20 | e |
+| tst.js:313:35:313:42 | location | tst.js:313:35:313:42 | location |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
