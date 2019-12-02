@@ -31,7 +31,7 @@
 		<sample src="ASPNetPagesValidateRequestBad.config" />
 
 		<p>
-			If validateRequest is set to <code>true</code>, validation is enabled:
+			If <code>validateRequest</code> is set to <code>true</code>, validation is enabled:
 		</p>
 
 		<sample src="ASPNetPagesValidateRequestGood.config" />
