@@ -885,4 +885,12 @@ module TaintTracking {
 
     override predicate appliesTo(Configuration cfg) { any() }
   }
+
+  /**
+   * Holds if taint propagates from `pred` to `succ` in one local (intra-procedural) step.
+   */
+  predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    DataFlow::localFlowStep(pred, succ) or
+    any(AdditionalTaintStep s).step(pred, succ)
+  }
 }
