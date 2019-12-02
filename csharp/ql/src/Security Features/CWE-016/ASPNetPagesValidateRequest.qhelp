@@ -25,7 +25,7 @@
 		<p>
 			The following example shows the <code>validateRequest</code> flag set to <code>false</code>
 			in a <code>Web.config</code> file for ASP.NET. This will disable validation, and leave
-			the the web application vulnerable against common XSS attacks:
+			the web application vulnerable against common XSS attacks:
 		</p>
 
 		<sample src="ASPNetPagesValidateRequestBad.config" />
