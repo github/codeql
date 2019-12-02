@@ -205,7 +205,7 @@ public class AutoBuild {
 
   public AutoBuild() {
     this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
-    this.SEMMLE_DIST = getPathFromEnvVar(Env.Var.SEMMLE_DIST.toString());
+    this.SEMMLE_DIST = Paths.get(EnvironmentVariables.getExtractorRoot());
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
     this.trapCache = mkTrapCache();
     this.typeScriptMode =
