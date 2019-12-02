@@ -1536,19 +1536,19 @@ private predicate flow0(Node node, boolean toReturn, AccessPath ap, Configuratio
   )
   or
   exists(Content f, AccessPath ap0 |
-    flowStore(ap0, f, node, toReturn, config) and
+    flowStore(node, f, toReturn, ap0, config) and
     pop(ap0, f, ap)
   )
   or
   exists(Content f, AccessPath ap0 |
-    flowRead(f, ap0, node, toReturn, config) and
+    flowRead(node, f, toReturn, ap0, config) and
     push(ap0, f, ap)
   )
 }
 
 pragma[nomagic]
 private predicate flowStore(
-  AccessPath ap0, Content f, Node node, boolean toReturn, Configuration config
+  Node node, Content f, boolean toReturn, AccessPath ap0, Configuration config
 ) {
   exists(Node mid |
     store(node, f, mid) and
@@ -1558,7 +1558,7 @@ private predicate flowStore(
 
 pragma[nomagic]
 private predicate flowRead(
-  Content f, AccessPath ap0, Node node, boolean toReturn, Configuration config
+  Node node, Content f, boolean toReturn, AccessPath ap0, Configuration config
 ) {
   exists(Node mid |
     read(node, f, mid) and
