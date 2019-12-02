@@ -6,7 +6,7 @@ The following changes in version 1.24 affect C# analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Page request validation is disabled (`cs/web/request-validation-disabled`) | security, external/cwe/cwe-016 | Finds where ASP.NET page request validation has been disabled, which could makes the application less secure. |
+| Page request validation is disabled (`cs/web/request-validation-disabled`) | security, frameworks/asp.net, external/cwe/cwe-016 | Finds where ASP.NET page request validation has been disabled, which could makes the application less secure. |
 
 ## Changes to existing queries
 
