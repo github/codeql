@@ -113,6 +113,12 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
           scope = e2 and
           isSuccessor = true
         )
+      or
+      e2 = any(OperatorCall oc |
+          oc.getTarget().(ConversionOperator).fromLibrary() and
+          e1 = oc.getAnArgument() and
+          isSuccessor = true
+        )
     )
   }
 
