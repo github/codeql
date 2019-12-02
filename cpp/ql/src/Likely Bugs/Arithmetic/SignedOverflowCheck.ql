@@ -14,6 +14,7 @@
 import cpp
 private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+private import semmle.code.cpp.commons.Exclusions
 
 from RelationalOperation ro, AddExpr add, Expr expr1, Expr expr2
 where
@@ -22,7 +23,7 @@ where
   ro.getAnOperand() = expr2 and
   globalValueNumber(expr1) = globalValueNumber(expr2) and
   add.getUnspecifiedType().(IntegralType).isSigned() and
-  not exists(MacroInvocation mi | mi.getAnAffectedElement() = add) and
+  not isFromMacroDefinition(ro) and
   exprMightOverflowPositively(add) and
   exists(Compilation c | c.getAFileCompiled() = ro.getFile() |
     not c.getAnArgument() = "-fwrapv" and
