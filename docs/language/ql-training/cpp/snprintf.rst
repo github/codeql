@@ -65,7 +65,7 @@ RCE in rsyslog
     }
 
 - Disclosed as `CVE-2018-1000140 <https://nvd.nist.gov/vuln/detail/CVE-2018-1000140>`__.
-- Blog post: `https://blog.semmle.com/librelp-buffer-overflow-cve-2018-1000140/ <https://blog.semmle.com/librelp-buffer-overflow-cve-2018-1000140/>`__.
+- Blog post: https://securitylab.github.com/research/librelp-buffer-overflow-cve-2018-1000140
 
 Finding the RCE yourself
 ========================
