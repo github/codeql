@@ -13,7 +13,8 @@ query predicate newExprs(NewExpr expr, string type, string sig, int size, int al
 }
 
 query predicate newArrayExprs(
-  NewArrayExpr expr, string t1, string t2, string sig, int size, int alignment, string form, string extents
+  NewArrayExpr expr, string t1, string t2, string sig, int size, int alignment, string form,
+  string extents
 ) {
   exists(Function allocator, Type arrayType, Type elementType |
     expr.getAllocator() = allocator and
@@ -24,7 +25,7 @@ query predicate newArrayExprs(
     t2 = elementType.toString() and
     size = elementType.getSize() and
     alignment = elementType.getAlignment() and
-    if expr.hasAlignedAllocation() then form = "aligned" else form = "" and
+    (if expr.hasAlignedAllocation() then form = "aligned" else form = "") and
     extents = concat(Expr e | e = expr.getExtent() | e.toString(), ", ")
   )
 }
