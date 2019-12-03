@@ -19,18 +19,12 @@ abstract class SensitiveExpr extends Expr { }
 
 class SensitiveVarAccess extends SensitiveExpr {
   SensitiveVarAccess() {
-    this instanceof VariableAccess and
-    exists(string s | this.toString().toLowerCase() = s |
-      suspicious(s)
-    )
+    suspicious(this.(VariableAccess).getTarget().getName().toLowerCase())
   }
 }
 
 class SensitiveCall extends SensitiveExpr {
   SensitiveCall() {
-    this instanceof FunctionCall and
-    exists(string s | this.toString().toLowerCase() = s |
-      suspicious(s)
-    )
+    suspicious(this.(FunctionCall).getTarget().getName().toLowerCase())
   }
 }
