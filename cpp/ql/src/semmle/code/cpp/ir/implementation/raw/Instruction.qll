@@ -360,7 +360,7 @@ class Instruction extends Construction::TInstruction {
     )
   }
 
-  int getLineRank() {
+  private int getLineRank() {
     this = rank[result](Instruction instr |
         instr.getAST().getFile() = getAST().getFile() and
         instr.getAST().getLocation().getStartLine() = getAST().getLocation().getStartLine()
