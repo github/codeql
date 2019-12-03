@@ -24,6 +24,8 @@ C# built-in support
 COBOL built-in support
 ===================================
 
+.. include:: cobol-note.rst
+
 * Embedded SQL
 * Embedded CICS
 
