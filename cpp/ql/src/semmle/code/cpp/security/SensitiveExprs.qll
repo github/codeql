@@ -8,7 +8,8 @@ private predicate suspicious(string s) {
     s.matches("%account%") or
     s.matches("%accnt%") or
     s.matches("%trusted%")
-  ) and not (
+  ) and
+  not (
     s.matches("%hashed%") or
     s.matches("%encrypted%") or
     s.matches("%crypt%")
@@ -16,23 +17,16 @@ private predicate suspicious(string s) {
 }
 
 class SensitiveVariable extends Variable {
-  SensitiveVariable()
-  {
-    suspicious(getName().toLowerCase())
-  }
+  SensitiveVariable() { suspicious(getName().toLowerCase()) }
 }
 
 class SensitiveFunction extends Function {
-  SensitiveFunction()
-  {
-    suspicious(getName().toLowerCase())
-  }
+  SensitiveFunction() { suspicious(getName().toLowerCase()) }
 }
 
 class SensitiveExpr extends Expr {
-  SensitiveExpr()
-  {
-  	this.(VariableAccess).getTarget() instanceof SensitiveVariable or
-  	this.(FunctionCall).getTarget() instanceof SensitiveFunction
+  SensitiveExpr() {
+    this.(VariableAccess).getTarget() instanceof SensitiveVariable or
+    this.(FunctionCall).getTarget() instanceof SensitiveFunction
   }
 }
