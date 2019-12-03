@@ -15,16 +15,24 @@ private predicate suspicious(string s) {
   )
 }
 
-abstract class SensitiveExpr extends Expr { }
-
-class SensitiveVarAccess extends SensitiveExpr {
-  SensitiveVarAccess() {
-    suspicious(this.(VariableAccess).getTarget().getName().toLowerCase())
+class SensitiveVariable extends Variable {
+  SensitiveVariable()
+  {
+    suspicious(getName().toLowerCase())
   }
 }
 
-class SensitiveCall extends SensitiveExpr {
-  SensitiveCall() {
-    suspicious(this.(FunctionCall).getTarget().getName().toLowerCase())
+class SensitiveFunction extends Function {
+  SensitiveFunction()
+  {
+    suspicious(getName().toLowerCase())
+  }
+}
+
+class SensitiveExpr extends Expr {
+  SensitiveExpr()
+  {
+  	this.(VariableAccess).getTarget() instanceof SensitiveVariable or
+  	this.(FunctionCall).getTarget() instanceof SensitiveFunction
   }
 }
