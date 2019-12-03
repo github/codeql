@@ -7,9 +7,7 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.RangeSSA
 
-from
-  RangeSsaDefinition phi, LocalScopeVariable var, RangeSsaDefinition input, int philine,
-  int inputline
+from RangeSsaDefinition phi, StackVariable var, RangeSsaDefinition input, int philine, int inputline
 where
   phi.getAPhiInput(var) = input and
   philine = phi.getLocation().getStartLine() and

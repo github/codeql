@@ -12,7 +12,7 @@ import semmle.code.cpp.controlflow.SSA
  *  Should always be zero *regardless* of the input
  */
 
-select count(SsaDefinition d, LocalScopeVariable v, Expr u |
+select count(SsaDefinition d, StackVariable v, Expr u |
     d.getAUse(v) = u and
     not exists(BasicBlock bd, BasicBlock bu |
       bd.contains(mkElement(d).(ControlFlowNode)) and bu.contains(u)
