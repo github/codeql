@@ -510,13 +510,20 @@ private predicate simpleParameterFlow(
 
 pragma[noinline]
 private predicate simpleArgumentFlowsThrough0(
+  ParameterNode p, ReturnNode ret, ReturnKind kind, DataFlowType t, Configuration config
+) {
+  simpleParameterFlow(p, ret, t, config) and
+  kind = ret.getKind()
+}
+
+pragma[noinline]
+private predicate simpleArgumentFlowsThrough1(
   DataFlowCall call, ArgumentNode arg, ReturnKind kind, DataFlowType t, Configuration config
 ) {
   nodeCand1(arg, unbind(config)) and
   not outBarrier(arg, config) and
   exists(ParameterNode p, ReturnNode ret |
-    simpleParameterFlow(p, ret, t, config) and
-    kind = ret.getKind() and
+    simpleArgumentFlowsThrough0(p, ret, kind, t, config) and
     viableParamArg(call, p, arg)
   )
 }
@@ -534,7 +541,7 @@ private predicate simpleArgumentFlowsThrough(
   exists(DataFlowCall call, ReturnKind kind |
     nodeCand1(out, unbind(config)) and
     not inBarrier(out, config) and
-    simpleArgumentFlowsThrough0(call, arg, kind, t, config) and
+    simpleArgumentFlowsThrough1(call, arg, kind, t, config) and
     out = getAnOutNode(call, kind)
   )
 }
