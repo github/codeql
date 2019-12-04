@@ -12,7 +12,7 @@ import semmle.code.cpp.rangeanalysis.RangeSSA
  *  Should always be zero *regardless* of the input
  */
 
-select count(RangeSsaDefinition d, LocalScopeVariable v, Expr u |
+select count(RangeSsaDefinition d, StackVariable v, Expr u |
     d.getAUse(v) = u and
     not exists(BasicBlock bd, BasicBlock bu |
       bd.contains(mkElement(d).(ControlFlowNode)) and bu.contains(u)

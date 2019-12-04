@@ -12,24 +12,24 @@
  */
 
 import cpp
-import semmle.code.cpp.controlflow.LocalScopeVariableReachability
+import semmle.code.cpp.controlflow.StackVariableReachability
 
-class UndefReachability extends LocalScopeVariableReachability {
+class UndefReachability extends StackVariableReachability {
   UndefReachability() { this = "UndefReachability" }
 
-  override predicate isSource(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isSource(ControlFlowNode node, StackVariable v) {
     candidateVariable(v) and
     node = v.getParentScope() and
     not v instanceof Parameter and
     not v.hasInitializer()
   }
 
-  override predicate isSink(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isSink(ControlFlowNode node, StackVariable v) {
     candidateVariable(v) and
     node = v.getAnAccess()
   }
 
-  override predicate isBarrier(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
     node.(AssignExpr).getLValue() = v.getAnAccess()
   }
 }

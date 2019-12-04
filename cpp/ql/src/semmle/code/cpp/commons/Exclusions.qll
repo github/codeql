@@ -94,11 +94,18 @@ predicate functionContainsPreprocCode(Function f) {
  * ```
  */
 predicate isFromMacroDefinition(Element e) {
-  exists(MacroInvocation mi |
-    // e is in mi
+  exists(MacroInvocation mi, Location eLocation, Location miLocation |
     mi.getAnExpandedElement() = e and
-    // and e was apparently not passed in as a macro parameter
-    e.getLocation().getStartLine() = mi.getLocation().getStartLine() and
-    e.getLocation().getStartColumn() = mi.getLocation().getStartColumn()
+    eLocation = e.getLocation() and
+    miLocation = mi.getLocation() and
+    // If the location of `e` coincides with the macro invocation, then `e` did
+    // not come from a macro argument. The inequalities here could also be
+    // equalities, but that confuses the join orderer into joining on the source
+    // locations too early.
+    // There are cases where the start location of a non-argument element comes
+    // right after the invocation's open parenthesis, so it appears to be more
+    // robust to match on the end location instead.
+    eLocation.getEndLine() >= miLocation.getEndLine() and
+    eLocation.getEndColumn() >= miLocation.getEndColumn()
   )
 }

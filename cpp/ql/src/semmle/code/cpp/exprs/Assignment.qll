@@ -21,11 +21,10 @@ abstract class Assignment extends Operation {
   override predicate mayBeGloballyImpure() {
     this.getRValue().mayBeGloballyImpure()
     or
-    not exists(VariableAccess va, LocalScopeVariable v |
+    not exists(VariableAccess va, StackVariable v |
       va = this.getLValue() and
       v = va.getTarget() and
-      not va.getConversion+() instanceof ReferenceDereferenceExpr and
-      not v.isStatic()
+      not va.getConversion+() instanceof ReferenceDereferenceExpr
     )
   }
 }

@@ -7,6 +7,6 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.RangeSSA
 
-from RangeSsaDefinition def, LocalScopeVariable var, Expr use
+from RangeSsaDefinition def, StackVariable var, Expr use
 where def.getAUse(var) = use
 select def, def.toString(var), use
