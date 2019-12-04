@@ -359,22 +359,23 @@ class Instruction extends Construction::TInstruction {
    */
   int getDisplayIndexInBlock() {
     exists(IRBlock block |
-      block = getBlock() and
-      (
-        exists(int index, int phiCount |
-          phiCount = count(block.getAPhiInstruction()) and
-          this = block.getInstruction(index) and
-          result = index + phiCount
+      this = block.getInstruction(result)
+      or
+      this = rank[-result - 1](PhiInstruction phiInstr |
+          phiInstr = block.getAPhiInstruction()
+        |
+          phiInstr order by phiInstr.getUniqueId()
         )
-        or
-        this instanceof PhiInstruction and
-        this = rank[result + 1](PhiInstruction phiInstr |
-            phiInstr = block.getAPhiInstruction()
-          |
-            phiInstr order by phiInstr.getUniqueId()
-          )
-      )
     )
+  }
+
+  private int getLineRank() {
+    this = rank[result](Instruction instr |
+        instr.getAST().getFile() = getAST().getFile() and
+        instr.getAST().getLocation().getStartLine() = getAST().getLocation().getStartLine()
+      |
+        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+      )
   }
 
   /**
@@ -385,8 +386,7 @@ class Instruction extends Construction::TInstruction {
    * Example: `r1_1`
    */
   string getResultId() {
-    result = getResultPrefix() + getBlock().getDisplayIndex().toString() + "_" +
-        getDisplayIndexInBlock().toString()
+    result = getResultPrefix() + getAST().getLocation().getStartLine() + "_" + getLineRank()
   }
 
   /**
