@@ -1,0 +1,1 @@
+| ASPNetRequestValidationModeBad.config:3:5:3:47 | requestValidationMode=4.0 | Insecure value for requestValidationMode (4.0). |
