@@ -206,7 +206,7 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
     accessesVariable(load.asInstruction(), global) and
     fromCfg.hasFlow(load, sink) and
     tainted = adjustedSink(sink) and
-    globalVar = global.toString()
+    global = globalVarFromId(globalVar)
   )
 }
 
