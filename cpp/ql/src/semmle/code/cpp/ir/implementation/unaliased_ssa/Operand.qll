@@ -195,6 +195,16 @@ class MemoryOperand extends Operand {
   MemoryAccessKind getMemoryAccess() { none() }
 
   /**
+   * Holds if the memory access performed by this operand will not always read from every bit in the
+   * memory location. This is most commonly used for memory accesses that may or may not actually
+   * occur depending on runtime state (for example, the write side effect of an output parameter
+   * that is not written to on all paths), or for accesses where the memory location is a
+   * conservative estimate of the memory that might actually be accessed at runtime (for example,
+   * the global side effects of a function call).
+   */
+  predicate hasMayMemoryAccess() { none() }
+
+  /**
    * Returns the operand that holds the memory address from which the current operand loads its
    * value, if any. For example, in `r3 = Load r1, m2`, the result of `getAddressOperand()` for `m2`
    * is `r1`.
@@ -397,13 +407,13 @@ class SideEffectOperand extends TypedOperand {
 
   override MemoryAccessKind getMemoryAccess() {
     useInstr instanceof AliasedUseInstruction and
-    result instanceof NonLocalMayMemoryAccess
+    result instanceof NonLocalMemoryAccess
     or
     useInstr instanceof CallSideEffectInstruction and
-    result instanceof EscapedMayMemoryAccess
+    result instanceof EscapedMemoryAccess
     or
     useInstr instanceof CallReadSideEffectInstruction and
-    result instanceof EscapedMayMemoryAccess
+    result instanceof EscapedMemoryAccess
     or
     useInstr instanceof IndirectReadSideEffectInstruction and
     result instanceof IndirectMemoryAccess
@@ -418,10 +428,22 @@ class SideEffectOperand extends TypedOperand {
     result instanceof BufferMemoryAccess
     or
     useInstr instanceof IndirectMayWriteSideEffectInstruction and
-    result instanceof IndirectMayMemoryAccess
+    result instanceof IndirectMemoryAccess
     or
     useInstr instanceof BufferMayWriteSideEffectInstruction and
-    result instanceof BufferMayMemoryAccess
+    result instanceof BufferMemoryAccess
+  }
+
+  final override predicate hasMayMemoryAccess() {
+    useInstr instanceof AliasedUseInstruction
+    or
+    useInstr instanceof CallSideEffectInstruction
+    or
+    useInstr instanceof CallReadSideEffectInstruction
+    or
+    useInstr instanceof IndirectMayWriteSideEffectInstruction
+    or
+    useInstr instanceof BufferMayWriteSideEffectInstruction
   }
 }
 

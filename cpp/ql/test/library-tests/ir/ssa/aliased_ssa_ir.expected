@@ -522,7 +522,7 @@ ssa.cpp:
 
 #  130|   Block 3
 #  130|     m130_1(int)          = Phi                : from 1:m125_5, from 2:m128_5
-#  130|     m130_2(Point)        = Phi                : from 1:~m125_6, from 2:~m128_6
+#  130|     m130_2(Point)        = Phi                : from 1:m125_6, from 2:m128_6
 #  130|     r130_3(glval<int>)   = VariableAddress[x] : 
 #  130|     r130_4(glval<Point>) = VariableAddress[a] : 
 #  130|     r130_5(glval<int>)   = FieldAddress[x]    : r130_4
@@ -583,7 +583,7 @@ ssa.cpp:
 
 #  142|   Block 3
 #  142|     m142_1(int)          = Phi                : from 1:m137_5, from 2:~m140_4
-#  142|     m142_2(Point)        = Phi                : from 1:~m137_6, from 2:m140_4
+#  142|     m142_2(Point)        = Phi                : from 1:m137_6, from 2:m140_4
 #  142|     r142_3(glval<int>)   = VariableAddress[x] : 
 #  142|     r142_4(glval<Point>) = VariableAddress[a] : 
 #  142|     r142_5(glval<int>)   = FieldAddress[x]    : r142_4
@@ -639,7 +639,7 @@ ssa.cpp:
 #-----|   Goto -> Block 3
 
 #  153|   Block 3
-#  153|     m153_1(Point)        = Phi                : from 1:~m148_6, from 2:m151_4
+#  153|     m153_1(Point)        = Phi                : from 1:m148_6, from 2:m151_4
 #  153|     r153_2(glval<Point>) = VariableAddress[b] : 
 #  153|     r153_3(glval<Point>) = VariableAddress[a] : 
 #  153|     r153_4(Point)        = Load               : &:r153_3, m153_1
@@ -695,7 +695,7 @@ ssa.cpp:
 #-----|   Goto -> Block 3
 
 #  164|   Block 3
-#  164|     m164_1(Rect)         = Phi                   : from 1:~m159_7, from 2:m162_4
+#  164|     m164_1(Rect)         = Phi                   : from 1:m159_7, from 2:m162_4
 #  164|     r164_2(glval<Point>) = VariableAddress[b]    : 
 #  164|     r164_3(glval<Rect>)  = VariableAddress[a]    : 
 #  164|     r164_4(glval<Point>) = FieldAddress[topLeft] : r164_3
