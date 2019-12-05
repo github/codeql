@@ -1,7 +1,0 @@
-class LocalVariable extends @local_variable {
-  string toString() { none() }
-}
-
-from LocalVariable l, int kind, string name
-where localvars(l, kind, name, _, _, _)
-select l, kind, name

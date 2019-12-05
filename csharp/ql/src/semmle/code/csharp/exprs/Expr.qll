@@ -117,7 +117,7 @@ private predicate isDynamicElementAccess(@dynamic_element_access_expr e) { any()
  */
 class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
   /** Gets the local variable being declared. */
-  LocalVariable getVariable() { localvar_info(result, _, _, this) }
+  LocalVariable getVariable() { localvars(result, _, _, _, _, this) }
 
   /** Gets the name of the variable being declared. */
   string getName() { result = this.getVariable().getName() }
@@ -157,7 +157,7 @@ class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
 class LocalConstantDeclExpr extends LocalVariableDeclExpr {
   LocalConstantDeclExpr() { super.getVariable() instanceof LocalConstant }
 
-  override LocalConstant getVariable() { localvar_info(result, _, _, this) }
+  override LocalConstant getVariable() { localvars(result, _, _, _, _, this) }
 }
 
 /**

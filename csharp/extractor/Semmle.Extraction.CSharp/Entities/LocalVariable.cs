@@ -15,8 +15,17 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";localvar");
         }
 
-        public override void Populate(TextWriter trapFile)
+        public override void Populate(TextWriter trapFile) { }
+
+        public void PopulateManual(Expression parent, bool isVar)
         {
+            var trapFile = Context.TrapWriter.Writer;
+            var (kind, type) =
+                symbol is ILocalSymbol l ?
+                    (l.IsRef ? 3 : l.IsConst ? 2 : 1, Type.Create(Context, l.GetAnnotatedType())) :
+                    (1, parent.Type);
+            trapFile.localvars(this, kind, symbol.Name, isVar ? 1 : 0, type.Type.TypeRef, parent);
+
             if (symbol is ILocalSymbol local)
             {
                 PopulateNullability(trapFile, local.GetAnnotatedType());
@@ -24,18 +33,9 @@ namespace Semmle.Extraction.CSharp.Entities
                     trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
             }
 
-            var kind = symbol is ILocalSymbol l ? (l.IsRef ? 3 : l.IsConst ? 2 : 1) : 1;
-            trapFile.localvars(this, kind, symbol.Name);
-
             trapFile.localvar_location(this, Location);
 
             DefineConstantValue(trapFile);
-        }
-
-        public void PopulateInfo(Expression parent, bool isVar)
-        {
-            var type = symbol is ILocalSymbol l ? Type.Create(Context, l.GetAnnotatedType()) : parent.Type;
-            Context.TrapWriter.Writer.localvar_info(this, isVar ? 1 : 0, type.Type.TypeRef, parent);
         }
 
         public static LocalVariable Create(Context cx, ISymbol local)

@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             cx.Try(null, null, () =>
             {
                 var l = LocalVariable.Create(cx, symbol);
-                l.PopulateInfo(ret, isVar);
+                l.PopulateManual(ret, isVar);
                 if (optionalSyntax != null)
                     TypeMention.Create(cx, optionalSyntax, parent, type);
             });
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             cx.Try(null, null, () =>
             {
                 var l = LocalVariable.Create(cx, variableSymbol);
-                l.PopulateInfo(ret, node.Type.IsVar);
+                l.PopulateManual(ret, node.Type.IsVar);
             });
             return ret;
         }
@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             {
                                 var decl = Create(cx, variable, Entities.Type.Create(cx, local.GetAnnotatedType()), tuple, child0++);
                                 var l = LocalVariable.Create(cx, local);
-                                l.PopulateInfo(decl, true);
+                                l.PopulateManual(decl, true);
                             }
                             else
                             {
@@ -133,7 +133,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var declSymbol = cx.GetModel(d).GetDeclaredSymbol(d);
                 var l = LocalVariable.Create(cx, declSymbol);
-                l.PopulateInfo(ret, isVar);
+                l.PopulateManual(ret, isVar);
                 TypeMention.Create(cx, d.Type, ret, type);
             });
             return ret;
@@ -146,7 +146,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var declSymbol = cx.GetModel(d).GetDeclaredSymbol(d);
                 var localVar = LocalVariable.Create(cx, declSymbol);
-                localVar.PopulateInfo(ret, isVar);
+                localVar.PopulateManual(ret, isVar);
 
                 if (d.Initializer != null)
                 {

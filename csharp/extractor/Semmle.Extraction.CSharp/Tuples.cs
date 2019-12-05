@@ -326,14 +326,9 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("localvar_location", var, location);
         }
 
-        internal static void localvars(this TextWriter trapFile, LocalVariable key, int @const, string name)
+        internal static void localvars(this TextWriter trapFile, LocalVariable key, int @const, string name, int @var, Type type, Expression expr)
         {
-            trapFile.WriteTuple("localvars", key, @const, name);
-        }
-
-        internal static void localvar_info(this TextWriter trapFile, LocalVariable key, int @var, Type type, Expression expr)
-        {
-            trapFile.WriteTuple("localvar_info", key, @var, type, expr);
+            trapFile.WriteTuple("localvars", key, @const, name, @var, type, expr);
         }
 
         public static void metadata_handle(this TextWriter trapFile, IEntity entity, Location assembly, int handleValue)
