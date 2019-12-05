@@ -4,6 +4,7 @@
 
 * Support for the following frameworks and libraries has been improved:
   - [react](https://www.npmjs.com/package/react)
+  - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
   - [Handlebars](https://www.npmjs.com/package/handlebars)
 
 - Imports with the `.js` extension can now be resolved to a TypeScript file,
@@ -11,9 +12,9 @@
 
 ## New queries
 
-| **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
-|---------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-
+| **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
+|---------------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Cross-site scripting through exception (`js/xss-through-exception`) | security, external/cwe/cwe-079, external/cwe/cwe-116              | Highlights potential XSS vulnerabilities where an exception is written to the DOM. Results are not shown on LGTM by default. |
 
 ## Changes to existing queries
 
@@ -24,4 +25,6 @@
 | Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | This query now recognizes additional ways event handler receivers can be bound. | 
 
 ## Changes to libraries
+
+* The predicates `RegExpTerm.getSuccessor` and `RegExpTerm.getPredecessor` have been changed to reflect textual, not operational, matching order. This only makes a difference in lookbehind assertions, which are operationally matched backwards. Previously, `getSuccessor` would mimick this, so in an assertion `(?<=ab)` the term `b` would be considered the predecessor, not the successor, of `a`. Textually, however, `a` is still matched before `b`, and this is the order we now follow.
 

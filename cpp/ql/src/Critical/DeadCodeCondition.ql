@@ -22,7 +22,7 @@ predicate testAndBranch(Expr e, Stmt branch) {
   )
 }
 
-predicate choice(LocalScopeVariable v, Stmt branch, string value) {
+predicate choice(StackVariable v, Stmt branch, string value) {
   exists(AnalysedExpr e |
     testAndBranch(e, branch) and
     (
@@ -33,7 +33,7 @@ predicate choice(LocalScopeVariable v, Stmt branch, string value) {
   )
 }
 
-predicate guarded(LocalScopeVariable v, Stmt loopstart, AnalysedExpr child) {
+predicate guarded(StackVariable v, Stmt loopstart, AnalysedExpr child) {
   choice(v, loopstart, _) and
   loopstart.getChildStmt*() = child.getEnclosingStmt() and
   (definition(v, child) or exists(child.getNullSuccessor(v)))
@@ -47,9 +47,7 @@ predicate addressLeak(Variable v, Stmt leak) {
   )
 }
 
-from
-  LocalScopeVariable v, Stmt branch, AnalysedExpr cond, string context, string test,
-  string testresult
+from StackVariable v, Stmt branch, AnalysedExpr cond, string context, string test, string testresult
 where
   choice(v, branch, context) and
   forall(ControlFlowNode def | definition(v, def) and definitionReaches(def, cond) |

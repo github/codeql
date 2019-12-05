@@ -359,22 +359,23 @@ class Instruction extends Construction::TInstruction {
    */
   int getDisplayIndexInBlock() {
     exists(IRBlock block |
-      block = getBlock() and
-      (
-        exists(int index, int phiCount |
-          phiCount = count(block.getAPhiInstruction()) and
-          this = block.getInstruction(index) and
-          result = index + phiCount
+      this = block.getInstruction(result)
+      or
+      this = rank[-result - 1](PhiInstruction phiInstr |
+          phiInstr = block.getAPhiInstruction()
+        |
+          phiInstr order by phiInstr.getUniqueId()
         )
-        or
-        this instanceof PhiInstruction and
-        this = rank[result + 1](PhiInstruction phiInstr |
-            phiInstr = block.getAPhiInstruction()
-          |
-            phiInstr order by phiInstr.getUniqueId()
-          )
-      )
     )
+  }
+
+  private int getLineRank() {
+    this = rank[result](Instruction instr |
+        instr.getAST().getFile() = getAST().getFile() and
+        instr.getAST().getLocation().getStartLine() = getAST().getLocation().getStartLine()
+      |
+        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+      )
   }
 
   /**
@@ -385,8 +386,7 @@ class Instruction extends Construction::TInstruction {
    * Example: `r1_1`
    */
   string getResultId() {
-    result = getResultPrefix() + getBlock().getDisplayIndex().toString() + "_" +
-        getDisplayIndexInBlock().toString()
+    result = getResultPrefix() + getAST().getLocation().getStartLine() + "_" + getLineRank()
   }
 
   /**
@@ -549,6 +549,16 @@ class Instruction extends Construction::TInstruction {
    * Holds only for instructions with a memory result.
    */
   MemoryAccessKind getResultMemoryAccess() { none() }
+
+  /**
+   * Holds if the memory access performed by this instruction's result will not always write to
+   * every bit in the memory location. This is most commonly used for memory accesses that may or
+   * may not actually occur depending on runtime state (for example, the write side effect of an
+   * output parameter that is not written to on all paths), or for accesses where the memory
+   * location is a conservative estimate of the memory that might actually be accessed at runtime
+   * (for example, the global side effects of a function call).
+   */
+  predicate hasResultMayMemoryAccess() { none() }
 
   /**
    * Gets the operand that holds the memory address to which this instruction stores its
@@ -1206,9 +1216,9 @@ class SideEffectInstruction extends Instruction {
 class CallSideEffectInstruction extends SideEffectInstruction {
   CallSideEffectInstruction() { getOpcode() instanceof Opcode::CallSideEffect }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof EscapedMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1306,9 +1316,9 @@ class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
     getOpcode() instanceof Opcode::IndirectMayWriteSideEffect
   }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof IndirectMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1318,9 +1328,9 @@ class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
 class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
   BufferMayWriteSideEffectInstruction() { getOpcode() instanceof Opcode::BufferMayWriteSideEffect }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof BufferMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1332,9 +1342,9 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
     getOpcode() instanceof Opcode::SizedBufferMayWriteSideEffect
   }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof BufferMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 
   Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
@@ -1345,9 +1355,9 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
 class InlineAsmInstruction extends Instruction {
   InlineAsmInstruction() { getOpcode() instanceof Opcode::InlineAsm }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof EscapedMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**

@@ -96,6 +96,8 @@ module DomBasedXss {
         this = mcn.getArgument(1)
       )
       or
+      this = any(Typeahead::TypeaheadSuggestionFunction f).getAReturn()
+      or
       this = any(Handlebars::SafeString s).getAnArgument()
     }
   }

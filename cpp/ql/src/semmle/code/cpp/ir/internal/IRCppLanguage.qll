@@ -32,7 +32,7 @@ class StringLiteral = Cpp::StringLiteral;
 
 class Variable = Cpp::Variable;
 
-class AutomaticVariable = Cpp::LocalScopeVariable;
+class AutomaticVariable = Cpp::StackVariable;
 
 class StaticVariable = Cpp::Variable;
 
@@ -66,10 +66,7 @@ int getTypeSize(Type type) { result = type.getSize() }
 
 int getPointerSize() { exists(Cpp::NullPointerType nullptr | result = nullptr.getSize()) }
 
-predicate isVariableAutomatic(Variable var) {
-  var instanceof Cpp::LocalScopeVariable and
-  not var.(Cpp::LocalScopeVariable).isStatic()
-}
+predicate isVariableAutomatic(Cpp::StackVariable var) { any() }
 
 string getStringLiteralText(StringLiteral s) {
   result = s.getValueText().replaceAll("\n", " ").replaceAll("\r", "").replaceAll("\t", " ")
