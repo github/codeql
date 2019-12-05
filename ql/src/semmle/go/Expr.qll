@@ -102,7 +102,12 @@ class Expr extends @expr, ExprParent {
   predicate isPlatformIndependentConstant() { none() }
 
   /** Gets the type of this expression. */
-  Type getType() { type_of(this, result) }
+  Type getType() {
+    type_of(this, result)
+    or
+    not type_of(this, _) and
+    result instanceof InvalidType
+  }
 
   /**
    * Gets the global value number of this expression.
