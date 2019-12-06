@@ -245,7 +245,7 @@ module PasswordHeuristics {
     exists(string normalized | normalized = password.toLowerCase() |
       count(normalized.charAt(_)) = 1 or
       normalized
-          .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|redacted).*")
+          .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|redacted|0123456789).*")
     )
   }
 }
