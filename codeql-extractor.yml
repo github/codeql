@@ -14,3 +14,4 @@ file_types:
     display_name: Go
     extensions:
       - .go
+legacy_qltest_extraction: true
