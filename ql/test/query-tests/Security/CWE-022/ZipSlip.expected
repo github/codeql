@@ -1,6 +1,11 @@
 edges
-| ZipSlip.go:12:24:12:29 | selection of Name [string] | ZipSlip.go:14:20:14:20 | p |
-| tst.go:15:11:15:16 | selection of Name [string] | tst.go:20:20:20:23 | path |
+| ZipSlip.go:12:24:12:29 | selection of Name : string | ZipSlip.go:14:20:14:20 | p |
+| tst.go:15:11:15:16 | selection of Name : string | tst.go:20:20:20:23 | path |
+nodes
+| ZipSlip.go:12:24:12:29 | selection of Name : string | semmle.label | selection of Name : string |
+| ZipSlip.go:14:20:14:20 | p | semmle.label | p |
+| tst.go:15:11:15:16 | selection of Name : string | semmle.label | selection of Name : string |
+| tst.go:20:20:20:23 | path | semmle.label | path |
 #select
-| ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:24:12:29 | selection of Name [string] | ZipSlip.go:14:20:14:20 | p | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.go:14:20:14:20 | p | file system operation |
-| tst.go:15:11:15:16 | selection of Name | tst.go:15:11:15:16 | selection of Name [string] | tst.go:20:20:20:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:20:20:20:23 | path | file system operation |
+| ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:24:12:29 | selection of Name : string | ZipSlip.go:14:20:14:20 | p | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.go:14:20:14:20 | p | file system operation |
+| tst.go:15:11:15:16 | selection of Name | tst.go:15:11:15:16 | selection of Name : string | tst.go:20:20:20:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:20:20:20:23 | path | file system operation |
