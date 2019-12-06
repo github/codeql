@@ -7,5 +7,5 @@ where
   s = c
         .getArgument(i)
         .replaceAll("\\", "/")
-        .regexpReplaceAll(".*(tools/qltest/predefined_macros)", "<root>/$1")
+        .regexpReplaceAll(".*(/qltest/predefined_macros)", "<tools>$1")
 select c.getAFileCompiled().toString(), i, s

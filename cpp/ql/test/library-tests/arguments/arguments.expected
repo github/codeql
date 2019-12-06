@@ -12,7 +12,7 @@
 | arguments.c | 12 | linux_x86_64 |
 | arguments.c | 13 | --gcc |
 | arguments.c | 14 | --predefined_macros |
-| arguments.c | 15 | <root>/tools/qltest/predefined_macros |
+| arguments.c | 15 | <tools>/qltest/predefined_macros |
 | arguments.c | 16 | -w |
 | arguments.c | 17 | -Werror |
 | arguments.c | 18 | arguments.c |
