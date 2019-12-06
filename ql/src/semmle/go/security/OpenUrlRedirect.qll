@@ -36,7 +36,7 @@ module OpenUrlRedirect {
       )
       or
       // taint steps that do not include flow through fields
-      TaintTracking::taintStep(pred, succ) and not TaintTracking::fieldReadStep(pred, succ)
+      TaintTracking::localTaintStep(pred, succ) and not TaintTracking::fieldReadStep(pred, succ)
     }
 
     override predicate isBarrierOut(DataFlow::Node node) { hostnameSanitizingPrefixEdge(node, _) }

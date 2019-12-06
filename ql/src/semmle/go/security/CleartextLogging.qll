@@ -35,7 +35,7 @@ module CleartextLogging {
       exists(Write write | write.writesField(trg.getASuccessor*(), _, src))
       or
       // taint steps that do not include flow through fields
-      TaintTracking::taintStep(src, trg) and not TaintTracking::fieldReadStep(src, trg)
+      TaintTracking::localTaintStep(src, trg) and not TaintTracking::fieldReadStep(src, trg)
     }
   }
 }
