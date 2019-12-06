@@ -83,7 +83,7 @@ class NullableRefTypes
     {
         string? x = "source";
         string y = x!;
-        y = x!!;
+        y = x!;
         x = null;
         y = x!;
     }
