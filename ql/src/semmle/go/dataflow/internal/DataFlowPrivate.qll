@@ -1,9 +1,9 @@
 private import go
 private import DataFlowUtil
+private import DataFlowImplCommon::Public
 
 private newtype TReturnKind =
-  TSingleReturn()
-  or
+  TSingleReturn() or
   TMultiReturn(int i) { exists(SignatureType st | exists(st.getResultType(i))) }
 
 /**
@@ -17,9 +17,7 @@ class ReturnKind extends TReturnKind {
     this = TSingleReturn() and
     result = "return"
     or
-    exists(int i | this = TMultiReturn(i) |
-      result = "return[" + i + "]"
-    )
+    exists(int i | this = TMultiReturn(i) | result = "return[" + i + "]")
   }
 }
 
@@ -29,10 +27,7 @@ class ReturnNode extends ResultNode {
 
   ReturnNode() {
     exists(int nr | nr = fd.getType().getNumResult() |
-      if nr = 1 then
-        kind = TSingleReturn()
-      else
-        kind = TMultiReturn(i)
+      if nr = 1 then kind = TSingleReturn() else kind = TMultiReturn(i)
     )
   }
 
@@ -43,7 +38,6 @@ class ReturnNode extends ResultNode {
 /** A data flow node that represents the output of a call. */
 class OutNode extends DataFlow::Node {
   DataFlow::CallNode call;
-
   int i;
 
   OutNode() {
@@ -66,9 +60,7 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
     kind = TSingleReturn() and
     result = c.getResult()
     or
-    exists(int i | kind = TMultiReturn(i) |
-      result = c.getResult(i)
-    )
+    exists(int i | kind = TMultiReturn(i) | result = c.getResult(i))
   )
 }
 
@@ -240,4 +232,39 @@ class DataFlowCall extends Expr {
 
   /** Gets the enclosing callable of this call. */
   DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
+}
+
+/** Holds if `e` is an expression that always has the same Boolean value `val`. */
+private predicate constantBooleanExpr(Expr e, boolean val) {
+  e.getBoolValue() = val
+  or
+  exists(SsaExplicitDefinition v, Expr src |
+    IR::evalExprInstruction(e) = v.getVariable().getAUse() and
+    IR::evalExprInstruction(src) = v.getRhs() and
+    constantBooleanExpr(src, val)
+  )
+}
+
+/** An argument that always has the same Boolean value. */
+private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
+  ConstantBooleanArgumentNode() { constantBooleanExpr(this.getExpr(), _) }
+
+  /** Gets the Boolean value of this expression. */
+  boolean getBooleanValue() { constantBooleanExpr(this.getExpr(), result) }
+}
+
+/**
+ * Holds if the node `n` is unreachable when the call context is `call`.
+ */
+cached
+predicate isUnreachableInCall(Node n, DataFlowCall call) {
+  exists(
+    ParameterNode param, ConstantBooleanArgumentNode arg, ControlFlow::ConditionGuardNode guard
+  |
+    // get constant bool argument and parameter for this call
+    viableParamArg(call, param, arg) and
+    // which is used in a guard controlling `n` with the opposite value of `arg`
+    guard.ensures(param.getAUse(), arg.getBooleanValue().booleanNot()) and
+    guard.dominates(n.getBasicBlock())
+  )
 }
