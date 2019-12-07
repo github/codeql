@@ -13,3 +13,4 @@
 |-----------------------------------------------------|------------------------------|-----------------------------------------------------------|
 | Reflected cross-site scripting (`go/reflected-xss`) | Fewer results | Untrusted input flowing into an HTTP header definition is no longer flagged, since this is often harmless. |
 | Useless assignment to field (`go/useless-assignment-to-field`) | Fewer false positives | The query now conservatively handles fields promoted through embedded pointer types. |
+| Incomplete regular expression for hostnames (`go/incomplete-hostname-regexp`) | More results | The query now flags unescaped dots before the TLD in a hostname regex. |
