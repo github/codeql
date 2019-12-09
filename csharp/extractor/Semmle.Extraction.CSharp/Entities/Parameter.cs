@@ -272,7 +272,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (other == null || other.GetType() != typeof(ConstructedExtensionParameter))
                 return false;
 
-            return Equals(symbol, other.symbol) && Equals(ConstructedType, other.ConstructedType);
+            return SymbolEqualityComparer.Default.Equals(symbol, other.symbol) && SymbolEqualityComparer.Default.Equals(ConstructedType, other.ConstructedType);
         }
 
         public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>
