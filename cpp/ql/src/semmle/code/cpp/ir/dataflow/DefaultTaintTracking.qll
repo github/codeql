@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.DataFlow2
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
 
@@ -30,10 +31,7 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) {
-    exists(Variable checkedVar |
-      accessesVariable(node.asInstruction(), checkedVar) and
-      hasUpperBoundsCheck(checkedVar)
-    )
+    nodeIsBarrier(node)
   }
 }
 
@@ -44,8 +42,7 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(GlobalOrNamespaceVariable gv |
-      accessesVariable(sink.asInstruction(), gv) and
-      sink.asInstruction() instanceof StoreInstruction
+      writesVariable(sink.asInstruction(), gv)
     )
   }
 
@@ -53,28 +50,26 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
     or
     exists(StoreInstruction i1, LoadInstruction i2, GlobalOrNamespaceVariable gv |
-      accessesVariable(i1, gv) and
-      accessesVariable(i2, gv) and
+      writesVariable(i1, gv) and
+      readsVariable(i2, gv) and
       i1 = n1.asInstruction() and
       i2 = n2.asInstruction()
     )
   }
 
   override predicate isBarrier(DataFlow::Node node) {
-    exists(Variable checkedVar |
-      accessesVariable(node.asInstruction(), checkedVar) and
-      hasUpperBoundsCheck(checkedVar)
-    )
+    nodeIsBarrier(node)
   }
 }
 
-private class FromGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
+private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
   FromGlobalVarTaintTrackingCfg() { this = "FromGlobalVarTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(GlobalOrNamespaceVariable gv |
-      accessesVariable(source.asInstruction(), gv) and
-      source.asInstruction() instanceof LoadInstruction
+    exists(ToGlobalVarTaintTrackingCfg other, DataFlow::Node prevSink, GlobalOrNamespaceVariable gv |
+      other.hasFlowTo(prevSink) and
+      writesVariable(prevSink.asInstruction(), gv) and
+      readsVariable(source.asInstruction(), gv)
     )
   }
 
@@ -85,19 +80,16 @@ private class FromGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) {
-    exists(Variable checkedVar |
-      accessesVariable(node.asInstruction(), checkedVar) and
-      hasUpperBoundsCheck(checkedVar)
-    )
+    nodeIsBarrier(node)
   }
 }
 
-private predicate accessesVariable(CopyInstruction copy, Variable var) {
-  exists(VariableAddressInstruction va | va.getASTVariable() = var |
-    copy.(StoreInstruction).getDestinationAddress() = va
-    or
-    copy.(LoadInstruction).getSourceAddress() = va
-  )
+private predicate readsVariable(LoadInstruction load, Variable var) {
+  load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+}
+
+private predicate writesVariable(StoreInstruction store, Variable var) {
+  store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
 }
 
 /**
@@ -115,6 +107,13 @@ private predicate hasUpperBoundsCheck(Variable var) {
     // Comparing to 0 is not an upper bound check
     not oper.getRightOperand().getValue() = "0"
   )
+}
+
+private predicate nodeIsBarrier(DataFlow::Node node) {
+    exists(Variable checkedVar |
+      readsVariable(node.asInstruction(), checkedVar) and
+      hasUpperBoundsCheck(checkedVar)
+    )
 }
 
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
@@ -173,7 +172,10 @@ private Element adjustedSink(DataFlow::Node sink) {
   // Load or Store of that variable.
   exists(CopyInstruction copy |
     copy.getSourceValue() = sink.asInstruction() and
-    accessesVariable(copy, result) and
+    (
+      readsVariable(copy, result) or
+      writesVariable(copy, result)
+    ) and
     not hasUpperBoundsCheck(result)
   )
   or
@@ -192,9 +194,6 @@ predicate tainted(Expr source, Element tainted) {
 
 predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
   tainted(source, tainted) and
-  // TODO: Find a way to emulate how `security.TaintTracking` reports the last
-  // global variable that taint has passed through. Also make sure we emulate
-  // its behavior for interprocedural flow through globals.
   globalVar = ""
   or
   exists(
@@ -202,8 +201,8 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
     GlobalOrNamespaceVariable global, DataFlow::Node load, DataFlow::Node sink
   |
     toCfg.hasFlow(DataFlow::exprNode(source), store) and
-    accessesVariable(store.asInstruction(), global) and
-    accessesVariable(load.asInstruction(), global) and
+    store.asInstruction().(StoreInstruction).getDestinationAddress().(VariableAddressInstruction).getASTVariable() = global and
+    load.asInstruction().(LoadInstruction).getSourceAddress().(VariableAddressInstruction).getASTVariable() = global and
     fromCfg.hasFlow(load, sink) and
     tainted = adjustedSink(sink) and
     global = globalVarFromId(globalVar)
@@ -211,9 +210,7 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
 }
 
 GlobalOrNamespaceVariable globalVarFromId(string id) {
-  if result instanceof NamespaceVariable
-  then id = result.getNamespace() + "::" + result.getName()
-  else id = result.getName()
+  id = result.getQualifiedName()
 }
 
 Function resolveCall(Call call) {
