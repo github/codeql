@@ -30,9 +30,7 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
-    nodeIsBarrier(node)
-  }
+  override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
 }
 
 private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
@@ -41,9 +39,7 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node source) { isUserInput(source.asExpr(), _) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(GlobalOrNamespaceVariable gv |
-      writesVariable(sink.asInstruction(), gv)
-    )
+    exists(GlobalOrNamespaceVariable gv | writesVariable(sink.asInstruction(), gv))
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
@@ -57,16 +53,16 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
     )
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
-    nodeIsBarrier(node)
-  }
+  override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
 }
 
 private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
   FromGlobalVarTaintTrackingCfg() { this = "FromGlobalVarTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(ToGlobalVarTaintTrackingCfg other, DataFlow::Node prevSink, GlobalOrNamespaceVariable gv |
+    exists(
+      ToGlobalVarTaintTrackingCfg other, DataFlow::Node prevSink, GlobalOrNamespaceVariable gv
+    |
       other.hasFlowTo(prevSink) and
       writesVariable(prevSink.asInstruction(), gv) and
       readsVariable(source.asInstruction(), gv)
@@ -79,9 +75,7 @@ private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
-    nodeIsBarrier(node)
-  }
+  override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
@@ -110,10 +104,10 @@ private predicate hasUpperBoundsCheck(Variable var) {
 }
 
 private predicate nodeIsBarrier(DataFlow::Node node) {
-    exists(Variable checkedVar |
-      readsVariable(node.asInstruction(), checkedVar) and
-      hasUpperBoundsCheck(checkedVar)
-    )
+  exists(Variable checkedVar |
+    readsVariable(node.asInstruction(), checkedVar) and
+    hasUpperBoundsCheck(checkedVar)
+  )
 }
 
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
@@ -201,17 +195,25 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
     GlobalOrNamespaceVariable global, DataFlow::Node load, DataFlow::Node sink
   |
     toCfg.hasFlow(DataFlow::exprNode(source), store) and
-    store.asInstruction().(StoreInstruction).getDestinationAddress().(VariableAddressInstruction).getASTVariable() = global and
-    load.asInstruction().(LoadInstruction).getSourceAddress().(VariableAddressInstruction).getASTVariable() = global and
+    store
+        .asInstruction()
+        .(StoreInstruction)
+        .getDestinationAddress()
+        .(VariableAddressInstruction)
+        .getASTVariable() = global and
+    load
+        .asInstruction()
+        .(LoadInstruction)
+        .getSourceAddress()
+        .(VariableAddressInstruction)
+        .getASTVariable() = global and
     fromCfg.hasFlow(load, sink) and
     tainted = adjustedSink(sink) and
     global = globalVarFromId(globalVar)
   )
 }
 
-GlobalOrNamespaceVariable globalVarFromId(string id) {
-  id = result.getQualifiedName()
-}
+GlobalOrNamespaceVariable globalVarFromId(string id) { id = result.getQualifiedName() }
 
 Function resolveCall(Call call) {
   exists(CallInstruction callInstruction |
