@@ -1765,7 +1765,7 @@ module Ssa {
      *
      * The write is live because of the implicit entry definition `def`, which can be
      * reached using one or more calls (as indicated by `additionalCalls`), starting
-     * from call `c`. That is, data can flow from the write at index `i` into the the
+     * from call `c`. That is, data can flow from the write at index `i` into the
      * callable containing `def`.
      *
      * Example:
@@ -2329,7 +2329,7 @@ module Ssa {
      * ```
      *
      * If this definition is the update of `i` on line 5, then the value may be read inside
-     * `M2` via the the call on line 6.
+     * `M2` via the call on line 6.
      */
     predicate isCapturedVariableDefinitionFlowIn(
       ImplicitEntryDefinition def, ControlFlow::Nodes::ElementNode c, boolean additionalCalls
@@ -2356,7 +2356,7 @@ module Ssa {
      * ```
      *
      * If this definition is the update of `i` on line 4, then the value may be read outside
-     * of `M2` via the the call on line 5.
+     * of `M2` via the call on line 5.
      */
     predicate isCapturedVariableDefinitionFlowOut(
       ImplicitCallDefinition cdef, boolean additionalCalls
