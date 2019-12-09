@@ -641,9 +641,7 @@ private module ImplCommon {
 
   class CallContextSpecificCall extends CallContextCall, TSpecificCall {
     override string toString() {
-      exists(DataFlowCall call | this = TSpecificCall(call) |
-        result = "CcCall(" + call + ")"
-      )
+      exists(DataFlowCall call | this = TSpecificCall(call) | result = "CcCall(" + call + ")")
     }
 
     override predicate relevantFor(DataFlowCallable callable) {
