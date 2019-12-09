@@ -24,7 +24,7 @@ module EventEmitter {
    * Extend this class to mark something as being instanceof the EventEmitter class. 
    */
   abstract class EventEmitter extends DataFlow::Node {
-  	/**
+    /**
      * Get a method name that returns `this` on this type of emitter.
      */
     string getAChainableMethod() { result = EventEmitter::chainableMethod() }
@@ -45,7 +45,7 @@ module EventEmitter {
         )
       )
     }
-	
+
     /**
      * Get a reference through type-tracking to this EventEmitter. 
      * The type-tracking tracks through chainable methods.
@@ -57,13 +57,13 @@ module EventEmitter {
    * A registration of an event handler on a particular EventEmitter.
    */
   abstract class EventRegistration extends DataFlow::Node {
-  	EventEmitter emitter;
-  	
-  	/** Gets the EventEmitter that the event handler is registered on. */
-  	final EventEmitter getEmitter() {
-  	  result = emitter	
-  	}
-  	
+    EventEmitter emitter;
+
+    /** Gets the EventEmitter that the event handler is registered on. */
+    final EventEmitter getEmitter() {
+      result = emitter
+    }
+
     /** Gets the name of the channel if possible. */
     abstract string getChannel();
 
@@ -82,15 +82,15 @@ module EventEmitter {
    */
   abstract class EventDispatch extends DataFlow::Node {
     EventEmitter emitter;
-  	
-  	/** Gets the emitter that the event dispatch happens on. */    
-  	final EventEmitter getEmitter() {
-  	  result = emitter	
-  	}
-  	
+
+    /** Gets the emitter that the event dispatch happens on. */    
+    final EventEmitter getEmitter() {
+      result = emitter
+    }
+    
     /** Gets the name of the channel if possible. */
     abstract string getChannel();
-	
+
     /** Gets the `i`th argument that is send to the event handler. */
     abstract DataFlow::Node getDispatchedArgument(int i);
     
@@ -148,7 +148,7 @@ module EventEmitter {
       override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
 
       override DataFlow::Node getCallbackParameter(int i) {
-      	result = this.(DataFlow::MethodCallNode).getABoundCallbackParameter(1, i)
+        result = this.(DataFlow::MethodCallNode).getABoundCallbackParameter(1, i)
       }    
     }
 
@@ -156,9 +156,9 @@ module EventEmitter {
       override EventEmitter emitter;
       
       EventEmitterDispatch() {
-      	this = emitter.ref().getAMethodCall("emit")
+        this = emitter.ref().getAMethodCall("emit")
       }
-    	      
+
       override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
 
       override DataFlow::Node getDispatchedArgument(int i) { result = this.getArgument(i + 1) }

@@ -112,9 +112,9 @@ module Electron {
      */
     class ProcessSender extends Process {
       ProcessSender() {
-      	exists(IPCSendRegistration reg | reg.getEmitter() instanceof MainProcess | 
-      	  this = reg.getABoundCallbackParameter(1, 0).getAPropertyRead("sender")	
-      	)
+        exists(IPCSendRegistration reg | reg.getEmitter() instanceof MainProcess | 
+         this = reg.getABoundCallbackParameter(1, 0).getAPropertyRead("sender")
+        )
       }
     }
     
@@ -127,15 +127,15 @@ module Electron {
       override Process emitter;
       
       IPCSendRegistration() {
-      	this = emitter.ref().getAMethodCall("on")
+        this = emitter.ref().getAMethodCall("on")
       }
       
       override string getChannel() {
-      	this.getArgument(0).mayHaveStringValue(result)
+        this.getArgument(0).mayHaveStringValue(result)
       }
       
       override DataFlow::Node getCallbackParameter(int i) {
-      	 result = this.getABoundCallbackParameter(1, i + 1) 
+        result = this.getABoundCallbackParameter(1, i + 1) 
       }
       
       override DataFlow::Node getAReturnedValue(EventEmitter::EventDispatch dispatch) {
@@ -150,16 +150,16 @@ module Electron {
      * And a value can be returned through the `returnValue` property of the event (first parameter in the callback). 
      */
     class IPCDispatch extends EventEmitter::EventDispatch, DataFlow::InvokeNode {
-	  override Process emitter;
-	  
+      override Process emitter;
+      
       IPCDispatch() {
-      	exists(string methodName | methodName = "sendSync" or methodName = "send" | 
-      	  this = emitter.ref().getAMemberCall(methodName)
-      	)
+        exists(string methodName | methodName = "sendSync" or methodName = "send" | 
+          this = emitter.ref().getAMemberCall(methodName)
+        )
       }
       
       override string getChannel() {
-      	this.getArgument(0).mayHaveStringValue(result)
+        this.getArgument(0).mayHaveStringValue(result)
       }
       
       /**
@@ -168,19 +168,19 @@ module Electron {
        * therefore these arguments start at 1. 
        */
       override DataFlow::Node getDispatchedArgument(int i) {
-      	i >= 1 and 
-      	result = getArgument(i)
+        i >= 1 and 
+        result = getArgument(i)
       }
       
       /**
        * Holds if this dispatch can send an event to the given EventRegistration destination. 
        */
       override predicate canSendTo(EventEmitter::EventRegistration destination) {
-      	this.getEmitter() instanceof RendererProcess and
-      	destination.getEmitter() instanceof MainProcess
-      	or
-      	this.getEmitter() instanceof ProcessSender and
-      	destination.getEmitter() instanceof RendererProcess
+        this.getEmitter() instanceof RendererProcess and
+        destination.getEmitter() instanceof MainProcess
+        or
+        this.getEmitter() instanceof ProcessSender and
+        destination.getEmitter() instanceof RendererProcess
       }
     }
   }
