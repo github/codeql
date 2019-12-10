@@ -12,7 +12,7 @@ against your project's users.
 </p>
 
 <p>This vulnerability has a
-<a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H&version=3.1">
+<a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H&amp;version=3.1">
     CVSS v3.1 base score of 8.1/10
 </a>.</p>
 
@@ -37,7 +37,7 @@ The first shows the use of HTTP, the second shows the use of HTTPS.
 <references>
 <li>
   Research:
-  <a href="https://medium.com/bugbountywriteup/want-to-take-over-the-java-ecosystem-all-you-need-is-a-mitm-1fc329d898fb?source=friends_link&sk=3c99970c55a899ad9ef41f126efcde0e">
+  <a href="https://medium.com/bugbountywriteup/want-to-take-over-the-java-ecosystem-all-you-need-is-a-mitm-1fc329d898fb?source=friends_link&amp;sk=3c99970c55a899ad9ef41f126efcde0e">
     Want to take over the Java ecosystem? All you need is a MITM!
   </a>
 </li>

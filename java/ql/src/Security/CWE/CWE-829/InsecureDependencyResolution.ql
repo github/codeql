@@ -1,9 +1,9 @@
 /**
  * @name Failure to use HTTPS or SFTP URL in Maven artifact upload/download
  * @description Non-HTTPS connections can be intercepted by third parties.
- * @kind path-problem
+ * @kind problem
  * @problem.severity error
- * @precision very high
+ * @precision very-high
  * @id java/maven/non-https-url
  * @tags security
  *       external/cwe/cwe-319
@@ -35,4 +35,4 @@ from DeclaredRepository repository
 where repository.isInsecureRepositoryUsage()
 select
     repository,
-    "Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to repository " + repository.getUrl()
+    "Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository " + repository.getUrl()
