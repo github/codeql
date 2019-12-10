@@ -6,6 +6,7 @@
  * @precision very-high
  * @id java/maven/non-https-url
  * @tags security
+ *       external/cwe/cwe-300
  *       external/cwe/cwe-319
  *       external/cwe/cwe-494
  *       external/cwe/cwe-829
@@ -15,24 +16,22 @@ import java
 import semmle.code.xml.MavenPom
 
 private class DeclaredRepository extends PomElement {
-    DeclaredRepository() {
-        this.getName() = "repository" or
-        this.getName() = "snapshotRepository" or
-        this.getName() = "pluginRepository"
-    }
+  DeclaredRepository() {
+    this.getName() = "repository" or
+    this.getName() = "snapshotRepository" or
+    this.getName() = "pluginRepository"
+  }
 
-    string getUrl() {
-        result = getAChild("url").(PomElement).getValue()
-    }
+  string getUrl() { result = getAChild("url").(PomElement).getValue() }
 
-    predicate isInsecureRepositoryUsage() {
-        getUrl().matches("http://%") or
-        getUrl().matches("ftp://%")
-    }
+  predicate isInsecureRepositoryUsage() {
+    getUrl().matches("http://%") or
+    getUrl().matches("ftp://%")
+  }
 }
 
 from DeclaredRepository repository
 where repository.isInsecureRepositoryUsage()
-select
-    repository,
-    "Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository " + repository.getUrl()
+select repository,
+  "Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to repository " +
+    repository.getUrl()
