@@ -26,7 +26,7 @@ predicate isIncompleteHostNameRegexpPattern(string pattern, string hostPart) {
             "(?<!\\\\)[.]" +
             // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in,
             // followed by a known TLD
-            "([():|?a-z0-9-]+(\\\\)?[.]" + commonTLD() + ")" + ".*", 1)
+            "(([():|?a-z0-9-]+(\\\\)?[.])?" + commonTLD() + ")" + ".*", 1)
 }
 
 class Config extends DataFlow::Configuration {
