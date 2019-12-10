@@ -20,8 +20,8 @@ module EventEmitter {
   }
   
   /**
-   * An instanceof of the NodeJS EventEmitter class. 
-   * Extend this class to mark something as being instanceof the EventEmitter class. 
+   * An instance of the NodeJS EventEmitter class. 
+   * Extend this class to mark something as being an instance of the EventEmitter class. 
    */
   abstract class EventEmitter extends DataFlow::Node {
     /**
@@ -96,7 +96,7 @@ module EventEmitter {
     
     /**
      * Holds if this event dispatch can send an event to the given even registration. 
-     * The default implementation is that the emitters of the dispatch and registration has to be equal.
+     * The default implementation is that the emitters of the dispatch and registration have to be equal.
      */
     predicate canSendTo(EventRegistration destination) { this.getEmitter() = destination.getEmitter() }
   }
