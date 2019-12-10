@@ -67,14 +67,20 @@ module EventEmitter {
     /** Gets the name of the channel if possible. */
     abstract string getChannel();
 
-    /** Gets the `i`th parameter in the callback registered as the event handler. */
-    abstract DataFlow::Node getCallbackParameter(int i);
+    /** Gets the `i`th parameter in the event handler. */
+    abstract DataFlow::Node getEventHandlerParameter(int i);
     
     /**
-     * Gets a value that is returned by the event handler to the `dispatch` where the event was dispatched. 
+     * Gets a value that is returned by the event handler. 
      * The default implementation is that no value can be returned.
      */
-    DataFlow::Node getAReturnedValue(EventDispatch dispatch) { none() }
+    DataFlow::Node getAReturnedValue() { none() }
+    
+    /**
+     * Holds if this event handler can return a value to the given `dispatch`. 
+     * The default implementation is that there exists no such dispatch. 
+     */
+    predicate canReturnTo(EventDispatch dispatch) { none() }
   }
 
   /**
@@ -117,16 +123,17 @@ module EventEmitter {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(int i | i >= 0 | 
         pred = dispatch.getDispatchedArgument(i) and
-        succ = reg.getCallbackParameter(i)
+        succ = reg.getEventHandlerParameter(i)
       )
       or
-      pred = reg.getAReturnedValue(dispatch) and
+      reg.canReturnTo(dispatch) and
+      pred = reg.getAReturnedValue() and
       succ = dispatch
     }
   }
 
   /**
-   * Concrete classes for modelling EventEmitter in NodeJS.
+   * Concrete classes for modeling EventEmitter in NodeJS.
    */
   private module NodeJSEventEmitter {
     private class NodeJSEventEmitter extends EventEmitter {
@@ -141,20 +148,16 @@ module EventEmitter {
     }
 
     private class EventEmitterRegistration extends EventRegistration, DataFlow::MethodCallNode {
-      override EventEmitter emitter;
-
       EventEmitterRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
 
       override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
 
-      override DataFlow::Node getCallbackParameter(int i) {
+      override DataFlow::Node getEventHandlerParameter(int i) {
         result = this.(DataFlow::MethodCallNode).getABoundCallbackParameter(1, i)
       }    
     }
 
     private class EventEmitterDispatch extends EventDispatch, DataFlow::MethodCallNode {
-      override EventEmitter emitter;
-      
       EventEmitterDispatch() {
         this = emitter.ref().getAMethodCall("emit")
       }

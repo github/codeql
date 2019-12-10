@@ -134,13 +134,16 @@ module Electron {
         this.getArgument(0).mayHaveStringValue(result)
       }
       
-      override DataFlow::Node getCallbackParameter(int i) {
+      override DataFlow::Node getEventHandlerParameter(int i) {
         result = this.getABoundCallbackParameter(1, i + 1) 
       }
       
-      override DataFlow::Node getAReturnedValue(EventEmitter::EventDispatch dispatch) {
-        dispatch.(DataFlow::InvokeNode).getCalleeName() = "sendSync" and
+      override DataFlow::Node getAReturnedValue() {
         result = this.getABoundCallbackParameter(1, 0).getAPropertyWrite("returnValue").getRhs()
+      }
+      
+      override predicate canReturnTo(EventEmitter::EventDispatch dispatch) {
+        dispatch.(DataFlow::InvokeNode).getCalleeName() = "sendSync"
       }
     }
     
