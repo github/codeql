@@ -4,7 +4,7 @@
  *              to gain unauthorized access.
  * @kind problem
  * @problem.severity warning
- * @precision high
+ * @precision medium
  * @id go/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259
