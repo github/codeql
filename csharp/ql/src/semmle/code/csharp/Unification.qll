@@ -2,28 +2,24 @@ import csharp
 private import Conversion
 private import Caching
 
-pragma[noinline]
-private Type getAProperSubType(Type t) {
-  not result instanceof DynamicType and
-  not result instanceof NullType and
-  result.isImplicitlyConvertibleTo(t)
-}
-
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides an implementation of Global Value Numbering for types (see
  * https://en.wikipedia.org/wiki/Global_value_numbering), where types are considered
  * equal modulo identity conversions and type parameters.
  */
-private module Gvn {
+module Gvn {
   private class LeafType extends Type {
     LeafType() {
       not exists(this.getAChild()) and
-      not this instanceof TypeParameter
+      not this instanceof TypeParameter and
+      not this instanceof DynamicType
     }
   }
 
   /** A type kind for a compound type. */
-  class CompoundTypeKindImpl extends TCompoundTypeKind {
+  class CompoundTypeKind extends TCompoundTypeKind {
     /** Gets the number of type parameters for this kind. */
     int getNumberOfTypeParameters() {
       this = TPointerTypeKind() and result = 1
@@ -44,8 +40,8 @@ private module Gvn {
       or
       this = TNullableTypeKind() and result = args + "?"
       or
-      exists(int dim, int rnk | this = TArrayTypeKind(dim, rnk) |
-        result = args + "[" + dim + ", " + rnk + "]"
+      exists(int rnk | this = TArrayTypeKind(_, rnk) |
+        result = args + "[" + concat(int i | i in [0 .. rnk - 2] | ",") + "]"
       )
       or
       exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
@@ -61,7 +57,7 @@ private module Gvn {
   }
 
   /** Gets the type kind for type `t`, if any. */
-  CompoundTypeKind getTypeKindImpl(Type t) {
+  CompoundTypeKind getTypeKind(Type t) {
     result = TPointerTypeKind() and t instanceof PointerType
     or
     result = TNullableTypeKind() and t instanceof NullableType
@@ -86,11 +82,13 @@ private module Gvn {
     CompoundTypeKind getKind() { none() }
 
     /** Gets a textual representation of this GVN. */
+    cached
     string toString() {
-      exists(int i | this = TLeafGvnType(i) | result = i.toString())
+      Stages::UnificationStage::forceCachingInSameStage() and
+      exists(LeafType t | this = TLeafGvnType(t) | result = t.toString())
       or
       this instanceof TTypeParameterGvnType and
-      result = "<type parameter>"
+      result = "T"
       or
       exists(ConstructedGvnTypeList l | this = TConstructedGvnType(l) | result = l.toString())
     }
@@ -98,6 +96,8 @@ private module Gvn {
     /** Gets the location of this GVN. */
     Location getLocation() { result instanceof EmptyLocation }
   }
+
+  class TypeParameterGvnType extends GvnType, TTypeParameterGvnType { }
 
   class ConstructedGvnType extends GvnType, TConstructedGvnType {
     private ConstructedGvnTypeList l;
@@ -157,7 +157,7 @@ private module Gvn {
         args = concat(int i |
             i in [0 .. k.getNumberOfTypeParameters() - 1]
           |
-            this.getArg(i).toString(), ", " order by i
+            this.getArg(i).toString(), "," order by i
           ) and
         result = k.toString(args)
       )
@@ -356,8 +356,6 @@ private module Gvn {
     not result instanceof ConstructedGvnType
   }
 
-  private predicate id(LeafType t, int i) = equivalenceRelation(convIdentity/2)(t, i)
-
   cached
   private module Cached {
     cached
@@ -367,11 +365,11 @@ private module Gvn {
       TArrayTypeKind(int dim, int rnk) {
         exists(ArrayType at | dim = at.getDimension() and rnk = at.getRank())
       } or
-      TConstructedType(UnboundGenericType ugt)
+      TConstructedType(UnboundGenericType ugt) { exists(ugt.getATypeParameter()) }
 
     cached
     newtype TGvnType =
-      TLeafGvnType(int i) { id(_, i) } or
+      TLeafGvnType(LeafType t) or
       TTypeParameterGvnType() or
       TConstructedGvnType(ConstructedGvnTypeList l)
 
@@ -385,7 +383,10 @@ private module Gvn {
     /** Gets the GVN for type `t`. */
     cached
     GvnType getGlobalValueNumber(Type t) {
-      result = TLeafGvnType(any(int i | id(t, i)))
+      result = TLeafGvnType(t)
+      or
+      t instanceof DynamicType and
+      result = TLeafGvnType(any(ObjectType ot))
       or
       t instanceof TypeParameter and
       result = TTypeParameterGvnType()
@@ -429,10 +430,6 @@ private module Gvn {
 
   import Cached
 }
-
-class CompoundTypeKind = Gvn::CompoundTypeKindImpl;
-
-predicate getTypeKind = Gvn::getTypeKindImpl/1;
 
 /** Provides definitions related to type unification. */
 module Unification {
@@ -557,19 +554,19 @@ module Unification {
 
     cached
     predicate typeConstraintUnifiable(TTypeConstraint ttc, Type t) {
-      exists(Type t0 | ttc = TTypeConstraint(t0) | t = getAProperSubType(t0))
+      exists(Type t0 | ttc = TTypeConstraint(t0) | implicitConversionRestricted(t, t0))
       or
       exists(Type t0, Type t1 | ttc = TTypeConstraint(t0) and unifiable(t0, t1) |
-        t = getAProperSubType(t1)
+        implicitConversionRestricted(t, t1)
       )
     }
 
     cached
     predicate typeConstraintSubsumes(TTypeConstraint ttc, Type t) {
-      exists(Type t0 | ttc = TTypeConstraint(t0) | t = getAProperSubType(t0))
+      exists(Type t0 | ttc = TTypeConstraint(t0) | implicitConversionRestricted(t, t0))
       or
       exists(Type t0, Type t1 | ttc = TTypeConstraint(t0) and subsumes(t0, t1) |
-        t = getAProperSubType(t1)
+        implicitConversionRestricted(t, t1)
       )
     }
   }
