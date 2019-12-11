@@ -13,7 +13,9 @@ class SystemDiagnosticsContractsNamespace extends Namespace {
 
 /** A class in the `System.Diagnostics.Contracts` namespace. */
 class SystemDiagnosticsContractsClass extends Class {
-  SystemDiagnosticsContractsClass() { this.getNamespace() instanceof SystemDiagnosticsContractsNamespace }
+  SystemDiagnosticsContractsClass() {
+    this.getNamespace() instanceof SystemDiagnosticsContractsNamespace
+  }
 }
 
 /** The `System.Diagnostics.Contracts.Contract` class. */
