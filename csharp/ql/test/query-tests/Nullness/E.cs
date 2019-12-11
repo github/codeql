@@ -411,6 +411,26 @@ public class E
         i ??= null;
         return i.Value; // GOOD
     }
+
+    static bool Ex42(int? i, IEnumerable<int> @is)
+    {
+        return @is.Any(j => j == i.Value); // BAD (maybe)
+    }
+
+    static bool Ex43(int? i, IEnumerable<int> @is)
+    {
+        if (i.HasValue)
+            return @is.Any(j => j == i.Value); // GOOD (FALSE POSITIVE)
+        return false;
+    }
+
+    static bool Ex44(int? i, IEnumerable<int> @is)
+    {
+        if (i.HasValue)
+            @is = @is.Where(j => j == i.Value); // BAD (always)
+        i = null;
+        return @is.Any();
+    }
 }
 
 public static class Extensions
