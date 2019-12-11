@@ -15,6 +15,7 @@ Information for query writers
    ../intro-to-data-flow
    select-statement
    ../locations
+   debugging-queries
    
 
 Visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__ to find basic information about CodeQL. This includes information about the underlying query language QL, as well as help and advice on writing queries for specific programming languages. 
