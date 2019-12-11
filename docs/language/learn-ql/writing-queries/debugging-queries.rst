@@ -4,9 +4,9 @@ Query writing: common performance issues
 This topic offers some simple tips on how to avoid commons problems that can affect the performance of your queries.
 Before reading the tips below, it is worth reiterating a few important points about CodeQL and the QL language:
 
-- In CodeQL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ are all just database `relations <https://en.wikipedia.org/wiki/Relation_(database)>`__---that is, sets of tuples in a table. Large predicates generate tables with large numbers of rows, and are therefore expensive to compute.
+- CodeQL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ are evaluated to database `tables <https://en.wikipedia.org/wiki/Table_(database)>`__. Large predicates generate large tables with many rows, and are therefore expensive to compute.
 - The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, union, etc.). For further information about query languages and databases, see :doc:`About QL <../about-ql>`.
-- Queries is evaluated *bottom-up*, which means that a predicate is not evaluated until **all** of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__ in the QL handbook. 
+- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until **all** of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__ in the QL handbook. 
 
 Performance tips
 ----------------
@@ -35,12 +35,12 @@ This example shows a similar mistake in a member predicate::
        ...
        // BAD! Does not use ‘this’ 
        Method getToString() {
-         result.getName().matches("ToString")
+         result.getName() = "ToString"
        }
        ...
      }
 
-Here, the class ``Method getToString()`` is equivalent to ``predicate getToString(Class this, Method result)``, in which the parameters are unrestricted.
+Note that while `getToString()` does not declare any parameters, it has two implicit parameters `result` and `this`, which it fails to relate. Hence the table computed by `getToString()` contains a row for every combination of values of `result` and `this`, that is, for every combination of a method named `"ToString"` and an instance of `Foo`.
 To avoid making this mistake, ``this`` should be restricted in the member predicate ``getToString()`` on the class ``Foo``.
 
 Finally, consider a predicate of the following form::
