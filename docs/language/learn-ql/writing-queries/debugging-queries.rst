@@ -5,13 +5,13 @@ This topic offers some simple tips on how to avoid common problems that can affe
 Before reading the tips below, it is worth reiterating a few important points about CodeQL and the QL language:
 
 - CodeQL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ are evaluated to database `tables <https://en.wikipedia.org/wiki/Table_(database)>`__. Large predicates generate large tables with many rows, and are therefore expensive to compute.
-- The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, union, etc.). For further information about query languages and databases, see :doc:`About QL <../about-ql>`.
-- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until **all** of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__ in the QL handbook. 
+- The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For further information about query languages and databases, see :doc:`About QL <../about-ql>`.
+- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__ in the QL handbook. 
 
 Performance tips
 ----------------
 
-Follow the guidelines below to ensure that you don't get get tripped up by the most common CodeQL performance pitfalls.
+Follow the guidelines below to ensure that you don't get tripped up by the most common CodeQL performance pitfalls.
 
 Eliminate cartesian products
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,7 +20,7 @@ The performance of a predicate can often be judged by considering roughly how ma
 One way of creating badly performing predicates is by using two variables without relating them in any way, or only relating them using a negation.
 This leads to computing the `Cartesian product <https://en.wikipedia.org/wiki/Cartesian_product>`__ between the sets of possible values for each variable, potentially generating a huge table of results.
 
-This can occur whenever you inadvertently fail to specify restrictions on your variables. 
+This can occur if you don't specify restrictions on your variables. 
 
 For instance, consider the following predicate that checks whether a Java method ``m`` may access a field ``f``::
 
@@ -60,7 +60,7 @@ is preferred over::
 
   predicate foo(Expr e)
 
-From the type context, the query optimizer deduces that some parts of the program are redundant and removes them, or **specializes** them.
+From the type context, the query optimizer deduces that some parts of the program are redundant and removes them, or *specializes* them.
 
 Avoid complex recursion
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,7 +68,7 @@ Avoid complex recursion
 `Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__ is about self-referencing definitions.
 It can be extremely powerful as long as it is used appropriately.
 On the whole, you should try to make recursive predicates as simple as possible.
-That is, you should define a **base case** that allows the predicate to *bottom out*, along with a single **recursive call**::
+That is, you should define a *base case* that allows the predicate to *bottom out*, along with a single *recursive call*::
 
   int depth(Stmt s) {
     exists(Callable c | c.getBody() = s | result = 0) // base case
