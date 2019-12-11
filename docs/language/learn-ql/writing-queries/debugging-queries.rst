@@ -32,7 +32,7 @@ For instance, consider the following predicate that checks whether a Java method
 
 The predicate holds if ``m`` contains an access to ``f``, but also conservatively assumes that methods without bodies (for example, native methods) may access *any* field.
 
-However, if ``m`` is a native method, the table computed by ``mayAccess`` will contain a row ``m, f`` for *all* fields ``f`` in the codebase, which could potentially be very large.
+However, if ``m`` is a native method, the table computed by ``mayAccess`` will contain a row ``m, f`` for *all* fields ``f`` in the codebase, making it potentially very large.
 
 This example shows a similar mistake in a member predicate::
 
@@ -45,7 +45,7 @@ This example shows a similar mistake in a member predicate::
        ...
      }
 
-Note that while ``getToString()`` does not declare any parameters, it has two implicit parameters, ``result`` and ``this``, which it fails to relate. Therefore, the table computed by ``getToString()`` contains a row for every combination of ``result`` and ``this``. That is, a row for every combination of a method named ``"ToString"`` that is an instance of ``Foo``.
+Note that while ``getToString()`` does not declare any parameters, it has two implicit parameters, ``result`` and ``this``, which it fails to relate. Therefore, the table computed by ``getToString()`` contains a row for every combination of ``result`` and ``this``. That is, a row for every combination of a method named ``"ToString"`` and an instance of ``Foo``.
 To avoid making this mistake, ``this`` should be restricted in the member predicate ``getToString()`` on the class ``Foo``.
 
 Use specific types
