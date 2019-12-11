@@ -125,7 +125,6 @@ module ExceptionXss {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Xss::Shared::Sanitizer }
 
-    cached
     override predicate isAdditionalFlowStep(
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl,
       DataFlow::FlowLabel outlbl
