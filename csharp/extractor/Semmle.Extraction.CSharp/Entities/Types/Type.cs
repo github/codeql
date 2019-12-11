@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public Type Type;
 
-        private NullableAnnotation annotation;
+        readonly private NullableAnnotation annotation;
 
         /// <summary>
         /// Gets the annotated type symbol of this annotated type.
@@ -115,7 +115,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (!(base.symbol is IArrayTypeSymbol))
             {
-                foreach (var t in base.symbol.Interfaces.Select(i=>Create(Context, i)))
+                foreach (var t in base.symbol.Interfaces.Select(i => Create(Context, i)))
                 {
                     trapFile.implement(this, t.TypeRef);
                     baseTypes.Add(t);
