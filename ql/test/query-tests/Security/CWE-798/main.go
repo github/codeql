@@ -54,4 +54,8 @@ func main() {
 	i.password = testPassword       // OK
 	secretKey = "secret"            // OK
 	i.password = "--- redacted ---" // OK
+	certsDir := "/certs"            // OK
+	fmt.Println(certsDir)
+	accountParameter := "ACCOUNT"	// OK
+	fmt.Println(accountParameter)
 }
