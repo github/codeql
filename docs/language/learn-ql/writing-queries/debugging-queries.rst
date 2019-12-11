@@ -73,7 +73,7 @@ That is, you should define a *base case* that allows the predicate to *bottom ou
   int depth(Stmt s) {
     exists(Callable c | c.getBody() = s | result = 0) // base case
     or
-    result = depth(s.getParent()) + 1 // recursive case
+    result = depth(s.getParent()) + 1 // recursive call
   }
 
 .. pull-quote:: Note
