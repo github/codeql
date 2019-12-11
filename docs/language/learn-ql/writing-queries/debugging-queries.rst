@@ -1,7 +1,7 @@
 Query writing: common performance issues
 ========================================
 
-This topic offers some simple tips on how to avoid commons problems that can affect the performance of your queries.
+This topic offers some simple tips on how to avoid common problems that can affect the performance of your queries.
 Before reading the tips below, it is worth reiterating a few important points about CodeQL and the QL language:
 
 - CodeQL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ are evaluated to database `tables <https://en.wikipedia.org/wiki/Table_(database)>`__. Large predicates generate large tables with many rows, and are therefore expensive to compute.
@@ -22,12 +22,17 @@ This leads to computing the `Cartesian product <https://en.wikipedia.org/wiki/Ca
 
 This can occur whenever you inadvertently fail to specify restrictions on your variables. 
 
-For instance, in the following case none of the parameters are related in the example predicate ``methodAndAClass``, and therefore the results are unrestricted::
+For instance, consider the following predicate that checks whether a Java method ``m`` may access a field ``f``::
 
-   // BAD! Cross-product
-   predicate methodAndAClass(Method m, Class c) {
-   	  any()
+   predicate mayAccess(Method m, Field f) {
+     f.getAnAccess().getEnclosingCallable() = m
+     or
+     not exists(m.getBody())
    }
+
+The predicate holds if ``m`` contains an access to ``f``, but also conservatively assumes that methods without bodies (for example, native methods) may access *any* field.
+
+However, if ``m`` is a native method, the table computed by ``mayAccess`` will contain a row ``m, f`` for *all* fields ``f`` in the codebase, which could potentially be very large.
 
 This example shows a similar mistake in a member predicate::
 
@@ -40,18 +45,8 @@ This example shows a similar mistake in a member predicate::
        ...
      }
 
-Note that while `getToString()` does not declare any parameters, it has two implicit parameters `result` and `this`, which it fails to relate. Hence the table computed by `getToString()` contains a row for every combination of values of `result` and `this`, that is, for every combination of a method named `"ToString"` and an instance of `Foo`.
+Note that while ``getToString()`` does not declare any parameters, it has two implicit parameters, ``result`` and ``this``, which it fails to relate. Therefore, the table computed by ``getToString()`` contains a row for every combination of ``result`` and ``this``. That is, a row for every combination of a method named ``"ToString"`` that is an instance of ``Foo``.
 To avoid making this mistake, ``this`` should be restricted in the member predicate ``getToString()`` on the class ``Foo``.
-
-Finally, consider a predicate of the following form::
-
-  predicate p(T1 x1, T2 x2) { 
-      <disjunction 1> or 
-      <disjunction 2> or 
-      ... 
-      }
-
-In this situation, if ``x1`` and ``x2`` are not mentioned in all ``<disjunction i>`` terms, the compiler will produce the Cartesian product between what you wanted and all possible values of the unused parameter.
 
 Use specific types
 ~~~~~~~~~~~~~~~~~~
