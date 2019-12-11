@@ -64,8 +64,10 @@ module EventEmitter {
       DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
     }
 
-    private class NodeJSEventEmitter extends Range {
-      NodeJSEventEmitter() {
+    abstract class NodeJSEventEmitter extends Range {}
+
+    private class ImportedNodeJSEventEmitter extends NodeJSEventEmitter {
+      ImportedNodeJSEventEmitter() {
         exists(DataFlow::SourceNode clazz |
           clazz = DataFlow::moduleImport("events") or
           clazz = DataFlow::moduleMember("events", "EventEmitter")
@@ -107,14 +109,18 @@ module EventEmitter {
   }
 
   module EventRegistration {
-    abstract class Range extends DataFlow::Node {
+    abstract class Range extends DataFlow::CallNode {
       EventEmitterRange::Range emitter;
 
       final EventEmitter getEmitter() { result = emitter }
 
-      abstract string getChannel();
+      string getChannel() {
+        this.getArgument(0).mayHaveStringValue(result)
+      }
 
-      abstract DataFlow::Node getEventHandlerParameter(int i);
+      DataFlow::Node getEventHandlerParameter(int i) {
+        result = this.getABoundCallbackParameter(1, i)
+      }
 
       DataFlow::Node getAReturnedValue() { none() }
 
@@ -122,20 +128,16 @@ module EventEmitter {
     }
 
     private class NodeJSEventRegistration extends Range, DataFlow::MethodCallNode {
+      override EventEmitterRange::NodeJSEventEmitter emitter;
+
       NodeJSEventRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
-
-      override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
-
-      override DataFlow::Node getEventHandlerParameter(int i) {
-        result = this.(DataFlow::MethodCallNode).getABoundCallbackParameter(1, i)
-      }
     }
   }
 
   /**
    * A dispatch of an event on an EventEmitter.
    */
-  final class EventDispatch extends DataFlow::Node {
+  final class EventDispatch extends DataFlow::CallNode {
     EventDispatch::Range range;
 
     EventDispatch() { this = range }
@@ -157,14 +159,18 @@ module EventEmitter {
   }
 
   module EventDispatch {
-    abstract class Range extends DataFlow::Node {
+    abstract class Range extends DataFlow::CallNode {
       EventEmitterRange::Range emitter;
 
       final EventEmitter getEmitter() { result = emitter }
 
-      abstract string getChannel();
+      string getChannel() {
+        this.getArgument(0).mayHaveStringValue(result)
+      }
 
-      abstract DataFlow::Node getDispatchedArgument(int i);
+      DataFlow::Node getDispatchedArgument(int i) {
+        result = this.getArgument(i + 1)
+      }
 
       predicate canSendTo(EventRegistration destination) {
         this.getEmitter() = destination.getEmitter()
@@ -172,11 +178,9 @@ module EventEmitter {
     }
 
     private class NodeJSEventDispatch extends Range, DataFlow::MethodCallNode {
+      override EventEmitterRange::NodeJSEventEmitter emitter;
+
       NodeJSEventDispatch() { this = emitter.ref().getAMethodCall("emit") }
-
-      override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
-
-      override DataFlow::Node getDispatchedArgument(int i) { result = this.getArgument(i + 1) }
     }
   }
 

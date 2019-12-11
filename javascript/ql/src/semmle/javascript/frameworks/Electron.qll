@@ -73,7 +73,7 @@ module Electron {
   /**
    * A reference to the `webContents` property of a browser object.
    */
-  class WebContents extends DataFlow::SourceNode {
+  class WebContents extends DataFlow::SourceNode, EventEmitter::EventEmitterRange::NodeJSEventEmitter {
     WebContents() { this.(DataFlow::PropRead).accesses(any(BrowserObject bo), "webContents") }
   }
 
@@ -96,7 +96,7 @@ module Electron {
      * Communication in an electron app generally happens from the renderer process to the main process.
      */
     class MainProcess extends Process {
-      MainProcess() { this = main() or this instanceof WebContents }
+      MainProcess() { this = main() }
     }
 
     /**
@@ -127,20 +127,14 @@ module Electron {
       DataFlow::MethodCallNode {
       override Process emitter;
 
-      IPCSendRegistration() { this = emitter.ref().getAMethodCall("on") }
-
-      override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
-
-      override DataFlow::Node getEventHandlerParameter(int i) {
-        result = this.getABoundCallbackParameter(1, i + 1)
-      }
+      IPCSendRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
 
       override DataFlow::Node getAReturnedValue() {
         result = this.getABoundCallbackParameter(1, 0).getAPropertyWrite("returnValue").getRhs()
       }
 
       override predicate canReturnTo(EventEmitter::EventDispatch dispatch) {
-        dispatch.(DataFlow::InvokeNode).getCalleeName() = "sendSync"
+        dispatch.getCalleeName() = "sendSync"
       }
     }
 
@@ -157,8 +151,6 @@ module Electron {
           this = emitter.ref().getAMemberCall(methodName)
         )
       }
-
-      override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
 
       /**
        * Gets the `i`th dispatched argument to the event handler.
