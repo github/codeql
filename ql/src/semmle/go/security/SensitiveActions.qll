@@ -28,7 +28,6 @@ module HeuristicNames {
    * user names or other account information.
    */
   string maybeAccountInfo() {
-    result = "(?is).*acc(ou)?nt.*" or
     result = "(?is).*(puid|username|userid).*"
   }
 
@@ -42,12 +41,6 @@ module HeuristicNames {
   }
 
   /**
-   * Gets a regular expression that identifies strings that may indicate the presence of
-   * a certificate.
-   */
-  string maybeCertificate() { result = "(?is).*(cert)(?!.*(format|name)).*" }
-
-  /**
    * Gets a regular expression that identifies strings that may indicate the presence
    * of sensitive data, with `classification` describing the kind of sensitive data involved.
    */
@@ -57,8 +50,6 @@ module HeuristicNames {
     result = maybeAccountInfo() and classification = SensitiveExpr::id()
     or
     result = maybePassword() and classification = SensitiveExpr::password()
-    or
-    result = maybeCertificate() and classification = SensitiveExpr::certificate()
   }
 
   /**
