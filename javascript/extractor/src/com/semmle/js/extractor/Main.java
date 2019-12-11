@@ -195,7 +195,13 @@ public class Main {
   }
 
   private void extractTypeTable(File fileHandle, TypeTable table) {
-    TrapWriter trapWriter = extractorOutputConfig.getTrapWriterFactory().mkTrapWriter(fileHandle);
+    TrapWriter trapWriter =
+        extractorOutputConfig
+            .getTrapWriterFactory()
+            .mkTrapWriter(
+                new File(
+                    fileHandle.getParentFile(),
+                    fileHandle.getName() + ".codeql-typescript-typetable"));
     try {
       new TypeExtractor(trapWriter, table).extract();
     } finally {
