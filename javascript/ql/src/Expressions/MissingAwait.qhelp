@@ -4,62 +4,45 @@
 <qhelp>
 <overview>
 <p>
-In JavaScript, <code>async</code> functions always return a Promise object.
-</p>
-
-<p>
-PLACEHOLDER
+In JavaScript, <code>async</code> functions always return a promise object.
+To obtain the underlying value of the promise, the `await` operator or a call to `then` should be used.
+Attempting to use a Promise object instead of its underlying value can lead to expected behavior.
 </p>
 
 </overview>
 <recommendation>
 
 <p>
-PLACEHOLDER
+Use the `await` operator to get the value contained in the promise.
+Alternatively, call `then` on the promise and use the value passed to the callback.
 </p>
 
 </recommendation>
 <example>
 
 <p>
-PLACEHOLDER
+In the following example, the <code>getData</code> function returns a promise,
+and the caller checks if the returned promise is <code>null</code>:
 </p>
 
-<sample src="examples/ImplicitOperandConversion.js" />
+<sample src="examples/MissingAwait.js" />
 
 <p>
-PLACEHOLDER
+However, the null check does not work as expected. The <code>return null</code> statement
+on line 2 actually returns a <em>promise</em> containing the <code>null</code> value.
+Since the promise object itself is not equal to <code>null</code>, the error check is bypassed.
 </p>
 
 <p>
-PLACEHOLDER
+The issue can be corrected by inserting <code>await</code> before the promise:
 </p>
 
-<sample src="examples/ImplicitOperandConversionGood.js" />
-
-<p>
-PLACEHOLDER
-</p>
-
-<sample src="examples/ImplicitOperandConversion2.js" />
-
-<p>
-PLACEHOLDER
-</p>
-
-<sample src="examples/ImplicitOperandConversion2Good.js" />
-
-<p>
-PLACEHOLDER
-</p>
-
-<sample src="examples/ImplicitOperandConversion2Good2.js" />
+<sample src="examples/MissingAwaitGood.js" />
 
 </example>
 <references>
-
-
-<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 9. ECMA, 2011.</li>
-
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises">Using promises</a></li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">Async functions</a></li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await">Await operator</a></li>
 </references>
 </qhelp>

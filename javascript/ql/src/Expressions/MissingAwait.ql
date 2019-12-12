@@ -1,6 +1,6 @@
 /**
  * @name Missing await
- * @description Using a promise without awaiting its result can cause unexpected behavior.
+ * @description Using a promise without awaiting its result can lead to unexpected behavior.
  * @kind problem
  * @problem.severity warning
  * @id js/missing-await
@@ -10,7 +10,12 @@
 
 import javascript
 
+/**
+ * Holds if `call` is a call to an `async` function.
+ */
 predicate isAsyncCall(DataFlow::CallNode call) {
+  // If a callee is known, and all known callees are async, assume all
+  // possible callees are async.
   forex(Function callee | call.getACallee() = callee | callee.isAsync())
 }
 
