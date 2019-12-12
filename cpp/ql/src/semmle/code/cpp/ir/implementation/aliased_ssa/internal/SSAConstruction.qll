@@ -133,6 +133,16 @@ private module Cached {
     overlap instanceof MustExactlyOverlap
   }
 
+  /**
+   * Holds if `instr` is part of a cycle in the operand graph that doesn't go
+   * through a phi instruction and therefore should be impossible.
+   *
+   * For performance reasons, this predicate is not implemented (never holds)
+   * for the SSA stages of the IR.
+   */
+  cached
+  predicate isInCycle(Instruction instr) { none() }
+
   cached
   Language::LanguageType getInstructionOperandType(Instruction instr, TypedOperandTag tag) {
     exists(OldInstruction oldInstruction, OldIR::TypedOperand oldOperand |
