@@ -846,6 +846,8 @@ module Internal {
     or
     e instanceof ArrayCreation
     or
+    e.hasNotNullFlowState()
+    or
     e.hasValue() and
     exists(Expr stripped | stripped = e.stripCasts() |
       not stripped instanceof NullLiteral and
