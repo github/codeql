@@ -19,6 +19,6 @@ Python:
   - change-notes/**/*python*
 
 documentation:
-  - **/*.qhelp
-  - **/*.md
+  - "**/*.qhelp"
+  - "**/*.md"
   - docs/**/*
