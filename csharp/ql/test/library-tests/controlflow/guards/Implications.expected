@@ -334,22 +334,22 @@
 | Guards.cs:168:13:168:41 | !... | false | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | true |
 | Guards.cs:168:13:168:41 | !... | true | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | false |
 | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | false | Guards.cs:168:40:168:40 | access to parameter x | non-null |
-| Guards.cs:172:33:172:41 | ... == ... | false | Guards.cs:172:33:172:33 | access to parameter o | non-null |
-| Guards.cs:172:33:172:41 | ... == ... | true | Guards.cs:172:33:172:33 | access to parameter o | null |
+| Guards.cs:172:34:172:42 | ... == ... | false | Guards.cs:172:34:172:34 | access to parameter o | non-null |
+| Guards.cs:172:34:172:42 | ... == ... | true | Guards.cs:172:34:172:34 | access to parameter o | null |
 | Guards.cs:176:13:176:21 | ... is ... | false | Guards.cs:176:13:176:13 | access to parameter o | non-null |
 | Guards.cs:176:13:176:21 | ... is ... | true | Guards.cs:176:13:176:13 | access to parameter o | null |
-| Guards.cs:181:33:181:41 | ... == ... | false | Guards.cs:181:33:181:33 | access to parameter o | non-null |
-| Guards.cs:181:33:181:41 | ... == ... | true | Guards.cs:181:33:181:33 | access to parameter o | null |
-| Guards.cs:181:33:181:56 | ... ? ... : ... | false | Guards.cs:181:33:181:41 | ... == ... | false |
-| Guards.cs:181:33:181:56 | ... ? ... : ... | true | Guards.cs:181:33:181:41 | ... == ... | true |
-| Guards.cs:183:36:183:48 | !... | false | Guards.cs:183:37:183:48 | call to method NullTest3 | true |
-| Guards.cs:183:36:183:48 | !... | true | Guards.cs:183:37:183:48 | call to method NullTest3 | false |
-| Guards.cs:183:37:183:48 | call to method NullTest3 | false | Guards.cs:183:47:183:47 | access to parameter o | non-null |
-| Guards.cs:183:37:183:48 | call to method NullTest3 | true | Guards.cs:183:47:183:47 | access to parameter o | null |
-| Guards.cs:185:37:185:45 | ... == ... | false | Guards.cs:185:37:185:37 | access to parameter o | non-null |
-| Guards.cs:185:37:185:45 | ... == ... | true | Guards.cs:185:37:185:37 | access to parameter o | null |
-| Guards.cs:185:37:185:59 | ... ? ... : ... | false | Guards.cs:185:37:185:45 | ... == ... | false |
-| Guards.cs:185:37:185:59 | ... ? ... : ... | false | Guards.cs:185:37:185:45 | ... == ... | true |
+| Guards.cs:181:34:181:42 | ... == ... | false | Guards.cs:181:34:181:34 | access to parameter o | non-null |
+| Guards.cs:181:34:181:42 | ... == ... | true | Guards.cs:181:34:181:34 | access to parameter o | null |
+| Guards.cs:181:34:181:57 | ... ? ... : ... | false | Guards.cs:181:34:181:42 | ... == ... | false |
+| Guards.cs:181:34:181:57 | ... ? ... : ... | true | Guards.cs:181:34:181:42 | ... == ... | true |
+| Guards.cs:183:37:183:49 | !... | false | Guards.cs:183:38:183:49 | call to method NullTest3 | true |
+| Guards.cs:183:37:183:49 | !... | true | Guards.cs:183:38:183:49 | call to method NullTest3 | false |
+| Guards.cs:183:38:183:49 | call to method NullTest3 | false | Guards.cs:183:48:183:48 | access to parameter o | non-null |
+| Guards.cs:183:38:183:49 | call to method NullTest3 | true | Guards.cs:183:48:183:48 | access to parameter o | null |
+| Guards.cs:185:38:185:46 | ... == ... | false | Guards.cs:185:38:185:38 | access to parameter o | non-null |
+| Guards.cs:185:38:185:46 | ... == ... | true | Guards.cs:185:38:185:38 | access to parameter o | null |
+| Guards.cs:185:38:185:60 | ... ? ... : ... | false | Guards.cs:185:38:185:46 | ... == ... | false |
+| Guards.cs:185:38:185:60 | ... ? ... : ... | false | Guards.cs:185:38:185:46 | ... == ... | true |
 | Guards.cs:189:13:189:25 | !... | false | Guards.cs:189:14:189:25 | call to method NullTest1 | true |
 | Guards.cs:189:13:189:25 | !... | true | Guards.cs:189:14:189:25 | call to method NullTest1 | false |
 | Guards.cs:189:14:189:25 | call to method NullTest1 | false | Guards.cs:189:24:189:24 | access to parameter s | non-null |
