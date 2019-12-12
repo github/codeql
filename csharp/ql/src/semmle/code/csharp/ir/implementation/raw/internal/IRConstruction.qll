@@ -95,6 +95,29 @@ private module Cached {
           .getInstructionOperand(getInstructionTag(instruction), tag)
   }
 
+  /** Gets a non-phi instruction that defines an operand of `instr`. */
+  private Instruction getNonPhiOperandDef(Instruction instr) {
+    result = getRegisterOperandDefinition(instr, _)
+    or
+    result = getMemoryOperandDefinition(instr, _, _)
+  }
+
+  /**
+   * Holds if `instr` is part of a cycle in the operand graph that doesn't go
+   * through a phi instruction and therefore should be impossible.
+   *
+   * If such cycles are present, either due to a programming error in the IR
+   * generation or due to a malformed database, it can cause infinite loops in
+   * analyses that assume a cycle-free graph of non-phi operands. Therefore it's
+   * better to remove these operands than to leave cycles in the operand graph.
+   */
+  pragma[noopt]
+  cached
+  predicate isInCycle(Instruction instr) {
+    instr instanceof Instruction and
+    getNonPhiOperandDef+(instr) = instr
+  }
+
   cached
   CSharpType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
     // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
