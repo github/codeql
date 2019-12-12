@@ -11,10 +11,11 @@
  * @precision medium
  * @id py/local-shadows-builtin
  */
- 
+
 import python
 import Shadowing
- 
+import semmle.python.types.Builtins
+
 predicate white_list(string name) {
     /* These are rarely used and thus unlikely to be confusing */
     name = "iter" or
@@ -43,10 +44,11 @@ predicate white_list(string name) {
 }
 
 predicate shadows(Name d, string name, Scope scope, int line) {
-    exists(LocalVariable l | d.defines(l) and scope instanceof Function and
+    exists(LocalVariable l | d.defines(l) and
            l.getId() = name and
-           exists(Object::builtin(l.getId()))
+           exists(Builtin::builtin(l.getId()))
     ) and
+    scope instanceof Function and
     d.getScope() = scope and
     d.getLocation().getStartLine() = line and
     not white_list(name) and
