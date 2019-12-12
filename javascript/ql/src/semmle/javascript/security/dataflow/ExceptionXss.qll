@@ -40,7 +40,7 @@ module ExceptionXss {
     not isUnlikelyToThrowSensitiveInformation(node) and
     (
       // in the case of reflective calls the below ensures that both InvokeNodes have no known callee.
-      forex(DataFlow::InvokeNode call | call = getEnclosingCallNode(node) |
+      forex(DataFlow::InvokeNode call | call.getAnArgument() = node |
         not exists(call.getACallee())
       )
       or
@@ -74,23 +74,10 @@ module ExceptionXss {
     DataFlow::Node getErrorParam() { result = this.getParameter(0) }
   }
 
-  DataFlow::CallNode getEnclosingCallNode(DataFlow::Node node) {
-    result.getEnclosingExpr() = getEnclosingCall(node.getEnclosingExpr())
-  }
-
-  InvokeExpr getEnclosingCall(Expr e) {
-    exists(Expr arg | arg = result.getAnArgument() |
-      e.getParentExpr*() = arg and
-      not exists(Expr mid | mid = any(InvokeExpr i) or mid = any(Function f) |
-        e.getParentExpr+() = mid and mid.getParentExpr+() = result
-      )
-    )
-  }
-
   // `someFunction(.. <pred> .., (<result>, value) => {...}).
   DataFlow::Node getCallbackErrorParam(DataFlow::Node pred) {
     exists(DataFlow::CallNode call, Callback callback |
-      getEnclosingCallNode(pred) = call and
+      pred = call.getAnArgument() and
       call.getLastArgument() = callback and
       result = callback.getErrorParam() and
       not pred = callback

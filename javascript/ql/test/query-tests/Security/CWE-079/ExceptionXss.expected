@@ -16,10 +16,6 @@ nodes
 | exception-xss.js:22:10:22:10 | e |
 | exception-xss.js:23:18:23:18 | e |
 | exception-xss.js:23:18:23:18 | e |
-| exception-xss.js:27:18:27:20 | foo |
-| exception-xss.js:28:10:28:10 | e |
-| exception-xss.js:29:18:29:18 | e |
-| exception-xss.js:29:18:29:18 | e |
 | exception-xss.js:33:11:33:22 | ["bar", foo] |
 | exception-xss.js:33:19:33:21 | foo |
 | exception-xss.js:34:10:34:10 | e |
@@ -103,7 +99,6 @@ edges
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:9:11:9:13 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:15:9:15:11 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:21:11:21:13 | foo |
-| exception-xss.js:2:9:2:31 | foo | exception-xss.js:27:18:27:20 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:33:19:33:21 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:46:16:46:18 | foo |
 | exception-xss.js:2:9:2:31 | foo | exception-xss.js:81:16:81:18 | foo |
@@ -120,16 +115,11 @@ edges
 | exception-xss.js:16:10:16:10 | e | exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:16:10:16:10 | e | exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:21:11:21:13 | foo | exception-xss.js:21:11:21:21 | foo + "bar" |
-| exception-xss.js:21:11:21:13 | foo | exception-xss.js:22:10:22:10 | e |
 | exception-xss.js:21:11:21:21 | foo + "bar" | exception-xss.js:22:10:22:10 | e |
 | exception-xss.js:22:10:22:10 | e | exception-xss.js:23:18:23:18 | e |
 | exception-xss.js:22:10:22:10 | e | exception-xss.js:23:18:23:18 | e |
-| exception-xss.js:27:18:27:20 | foo | exception-xss.js:28:10:28:10 | e |
-| exception-xss.js:28:10:28:10 | e | exception-xss.js:29:18:29:18 | e |
-| exception-xss.js:28:10:28:10 | e | exception-xss.js:29:18:29:18 | e |
 | exception-xss.js:33:11:33:22 | ["bar", foo] | exception-xss.js:34:10:34:10 | e |
 | exception-xss.js:33:19:33:21 | foo | exception-xss.js:33:11:33:22 | ["bar", foo] |
-| exception-xss.js:33:19:33:21 | foo | exception-xss.js:34:10:34:10 | e |
 | exception-xss.js:34:10:34:10 | e | exception-xss.js:35:18:35:18 | e |
 | exception-xss.js:34:10:34:10 | e | exception-xss.js:35:18:35:18 | e |
 | exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) | exception-xss.js:47:10:47:10 | e |
@@ -147,7 +137,6 @@ edges
 | exception-xss.js:90:10:90:10 | e | exception-xss.js:91:18:91:18 | e |
 | exception-xss.js:95:11:95:22 | [foo, "bar"] | exception-xss.js:96:10:96:10 | e |
 | exception-xss.js:95:12:95:14 | foo | exception-xss.js:95:11:95:22 | [foo, "bar"] |
-| exception-xss.js:95:12:95:14 | foo | exception-xss.js:96:10:96:10 | e |
 | exception-xss.js:96:10:96:10 | e | exception-xss.js:97:18:97:18 | e |
 | exception-xss.js:96:10:96:10 | e | exception-xss.js:97:18:97:18 | e |
 | exception-xss.js:102:12:102:14 | foo | exception-xss.js:106:10:106:10 | e |
@@ -200,7 +189,6 @@ edges
 | exception-xss.js:11:18:11:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:11:18:11:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:17:18:17:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:17:18:17:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:23:18:23:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:23:18:23:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
-| exception-xss.js:29:18:29:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:29:18:29:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:35:18:35:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:35:18:35:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:48:18:48:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:48:18:48:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
 | exception-xss.js:83:18:83:18 | e | exception-xss.js:2:15:2:31 | document.location | exception-xss.js:83:18:83:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:15:2:31 | document.location | user-provided value |
