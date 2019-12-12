@@ -1,8 +1,8 @@
-C++:
+"C++":
   - cpp/**/*
   - change-notes/**/*cpp*
 
-C#:
+"C#":
   - csharp/**/*
   - change-notes/**/*csharp*
 
