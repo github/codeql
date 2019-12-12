@@ -5,6 +5,7 @@
  */
 
 import javascript
+import Statements.UselessConditional
 
 module ExceptionXss {
   import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
@@ -63,15 +64,24 @@ module ExceptionXss {
     NotYetThrown() { this = "NotYetThrown" }
   }
 
-  // Consider using "if (err) {.. [do something with err] .. }" as an extra condition if there are too many FP's.
+  /**
+   * A callback that is the last argument to some call, and the callback has the form:
+   * function (err, value) {if (err) {...} .. }
+   */
   class Callback extends DataFlow::FunctionNode {
+    DataFlow::ParameterNode errorParameter;
+
     Callback() {
       exists(DataFlow::CallNode call | call.getLastArgument().getAFunctionValue() = this) and
       this.getNumParameter() = 2 and
-      this.getParameter(0).getName().regexpMatch("err.*") // Using "e" was considered. But that matches too many jQuery methods where "element" is shortened as "e".
+      errorParameter = this.getParameter(0) and
+      exists(Expr errorCheck |
+        isExplicitConditional(this.getFunction().getBodyStmt(0), errorCheck) and
+        errorParameter.flowsTo(DataFlow::valueNode(errorCheck))
+      )
     }
 
-    DataFlow::Node getErrorParam() { result = this.getParameter(0) }
+    DataFlow::Node getErrorParam() { result = errorParameter }
   }
 
   // `someFunction(.. <pred> .., (<result>, value) => {...}).
