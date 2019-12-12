@@ -21,3 +21,4 @@ Python:
 documentation:
   - **/*.qhelp
   - **/*.md
+  - docs/**/*
