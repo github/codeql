@@ -33,5 +33,5 @@ private class DeclaredRepository extends PomElement {
 from DeclaredRepository repository
 where repository.isInsecureRepositoryUsage()
 select repository,
-  "Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to repository " +
+  "Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository " +
     repository.getUrl()
