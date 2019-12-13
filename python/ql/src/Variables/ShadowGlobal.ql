@@ -14,6 +14,7 @@
 
 import python
 import Shadowing
+import semmle.python.types.Builtins
 
 predicate shadows(Name d, GlobalVariable g, Scope scope, int line) {
     exists(LocalVariable l | d.defines(l) and l.getId() = g.getId() and
@@ -21,11 +22,11 @@ predicate shadows(Name d, GlobalVariable g, Scope scope, int line) {
         not exists(Import il, Import ig, Name gd | il.contains(d) and gd.defines(g) and ig.contains(gd)) and
         not exists(Assign a | a.getATarget() = d and a.getValue() = g.getAnAccess())
     ) and
-    not exists(Object::builtin(g.getId())) and
+    not exists(Builtin::builtin(g.getId())) and
     d.getScope() = scope and
     d.getLocation().getStartLine() = line and
     exists(Name defn | defn.defines(g) |
-        not exists(If i | i.isNameEqMain() | 
+        not exists(If i | i.isNameEqMain() |
             i.contains(defn)
         )
     ) and
@@ -34,24 +35,24 @@ predicate shadows(Name d, GlobalVariable g, Scope scope, int line) {
 
 /* pytest dynamically populates its namespace so, we cannot look directly for the pytest.fixture function */
 AttrNode pytest_fixture_attr() {
-    exists(ModuleObject pytest |
-        result.getObject("fixture").refersTo(pytest)
+    exists(ModuleValue pytest |
+        result.getObject("fixture").pointsTo(pytest)
     )
 }
 
-Object pytest_fixture() {
+Value pytest_fixture() {
     exists(CallNode call |
         call.getFunction() = pytest_fixture_attr()
         or
         call.getFunction().(CallNode).getFunction() = pytest_fixture_attr()
         |
-        call.refersTo(result)
+        call.pointsTo(result)
     )
 }
 
 /* pytest fixtures require that the parameter name is also a global */
 predicate assigned_pytest_fixture(GlobalVariable v) {
-    exists(NameNode def | def.defines(v) and def.(DefinitionNode).getValue().refersTo(pytest_fixture()))
+    exists(NameNode def | def.defines(v) and def.(DefinitionNode).getValue().pointsTo(pytest_fixture()))
 }
 
 predicate first_shadowing_definition(Name d, GlobalVariable g) {
@@ -61,6 +62,6 @@ predicate first_shadowing_definition(Name d, GlobalVariable g) {
 }
 
 from Name d, GlobalVariable g, Name def
-where first_shadowing_definition(d, g) and not exists(Name n | n.deletes(g)) and 
+where first_shadowing_definition(d, g) and not exists(Name n | n.deletes(g)) and
       def.defines(g) and not assigned_pytest_fixture(g) and not g.getId() = "_"
 select d, "Local variable '" + g.getId() + "' shadows a global variable defined $@.", def, "here"
