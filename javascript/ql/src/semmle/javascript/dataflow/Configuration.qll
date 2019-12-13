@@ -303,7 +303,6 @@ abstract class BarrierGuardNode extends DataFlow::Node {
    *
    * INTERNAL: this predicate should only be used from within `blocks(boolean, Expr)`.
    */
-  pragma[noinline,nomagic]
   predicate internalBlocks(DataFlow::Node nd, string label) {
     // 1) `nd` is a use of a refinement node that blocks its input variable
     exists(SsaRefinementNode ref, boolean outcome |

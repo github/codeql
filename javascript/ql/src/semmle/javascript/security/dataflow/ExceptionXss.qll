@@ -5,7 +5,6 @@
  */
 
 import javascript
-import Statements.UselessConditional
 
 module ExceptionXss {
   import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
@@ -48,7 +47,7 @@ module ExceptionXss {
       node.asExpr().getEnclosingStmt() instanceof ThrowStmt
       or
       exists(DataFlow::PropRef prop |
-        node.getEnclosingExpr() = prop.getPropertyNameExpr() and
+        node = DataFlow::valueNode(prop.getPropertyNameExpr()) and
         isNullOrUndefined(prop.getBase().analyze().getAType())
       )
     )
@@ -70,15 +69,15 @@ module ExceptionXss {
    */
   class Callback extends DataFlow::FunctionNode {
     DataFlow::ParameterNode errorParameter;
+    IfStmt ifStmt;
 
     Callback() {
       exists(DataFlow::CallNode call | call.getLastArgument().getAFunctionValue() = this) and
       this.getNumParameter() = 2 and
       errorParameter = this.getParameter(0) and
-      exists(Expr errorCheck |
-        isExplicitConditional(this.getFunction().getBodyStmt(0), errorCheck) and
-        errorParameter.flowsTo(DataFlow::valueNode(errorCheck))
-      )
+      ifStmt = this.getFunction().getBodyStmt(0) and 
+      errorParameter.flowsToExpr(ifStmt.getCondition()) and
+      not ifStmt.getThen().getBasicBlock().getASuccessor*() = this.getFunction().getBodyStmt(1).getBasicBlock()
     }
 
     DataFlow::Node getErrorParam() { result = errorParameter }

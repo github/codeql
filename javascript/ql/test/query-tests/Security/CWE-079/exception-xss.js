@@ -175,3 +175,12 @@ app.get('/user/:id', function(req, res) {
       $('myId').html(e); // NOT OK
     });
 })();
+
+app.get('/user/:id', function(req, res) {
+  unknown(req.params.id, (error, res) => {
+    if (error) {
+	  $('myId').html(error); // OK (falls through to the next statement) 
+	}
+	$('myId').html(res); // OK (for now?)
+  });
+});
