@@ -67,18 +67,15 @@ module ExceptionXss {
    */
   class Callback extends DataFlow::FunctionNode {
     DataFlow::ParameterNode errorParameter;
-    IfStmt ifStmt;
 
     Callback() {
       exists(DataFlow::CallNode call | call.getLastArgument().getAFunctionValue() = this) and
       this.getNumParameter() = 2 and
       errorParameter = this.getParameter(0) and
-      ifStmt = this.getFunction().getBodyStmt(0) and
-      errorParameter.flowsToExpr(ifStmt.getCondition()) and
-      not ifStmt.getThen().getBasicBlock().getASuccessor*() = this
-            .getFunction()
-            .getBodyStmt(1)
-            .getBasicBlock()
+      exists(IfStmt ifStmt | 
+        ifStmt = this.getFunction().getBodyStmt(0) and
+        errorParameter.flowsToExpr(ifStmt.getCondition())
+      )
     }
 
     DataFlow::Node getErrorParam() { result = errorParameter }
