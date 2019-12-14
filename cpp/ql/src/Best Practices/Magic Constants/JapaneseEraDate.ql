@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id cpp/japanese-era/exact-era-date
- * @precision medium
+ * @precision low
  * @tags reliability
  *       japanese-era
  */
