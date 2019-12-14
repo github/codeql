@@ -32,6 +32,7 @@
 | file://:0:0:0:0 | __ptr32 |
 | file://:0:0:0:0 | __ptr64 |
 | file://:0:0:0:0 | __sptr |
+| file://:0:0:0:0 | __super |
 | file://:0:0:0:0 | __uptr |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |
