@@ -63,7 +63,7 @@ module ExceptionXss {
 
   /**
    * A callback that is the last argument to some call, and the callback has the form:
-   * function (err, value) {if (err) {...} .. }
+   * `function (err, value) {if (err) {...} ... }`
    */
   class Callback extends DataFlow::FunctionNode {
     DataFlow::ParameterNode errorParameter;
