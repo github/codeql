@@ -17,7 +17,7 @@ import semmle.python.pointsto.PointsTo
 
 predicate guarded_against_name_error(Name u) {
     exists(Try t | t.getBody().getAnItem().contains(u) |
-                   ((Name)((ExceptStmt)t.getAHandler()).getType()).getId() = "NameError"
+                   t.getAHandler().getType().(Name).getId() = "NameError"
           )
     or
     exists(ConditionBlock guard, BasicBlock controlled, Call globals |
@@ -33,7 +33,7 @@ predicate contains_unknown_import_star(Module m) {
      exists(ImportStar imp | imp.getScope() = m |
         not exists(ModuleObject imported | imported.importedAs(imp.getImportedModuleName()))
         or
-        exists(ModuleObject imported | 
+        exists(ModuleObject imported |
             imported.importedAs(imp.getImportedModuleName()) |
             not imported.exportsComplete()
         )
@@ -42,15 +42,15 @@ predicate contains_unknown_import_star(Module m) {
 
 predicate undefined_use_in_function(Name u) {
     exists(Function f | u.getScope().getScope*() = f and
-        /* Either function is a method or inner function or it is live at the end of the module scope */
-        (not f.getScope() = u.getEnclosingModule() or ((ImportTimeScope)u.getEnclosingModule()).definesName(f.getName()))
+        // Either function is a method or inner function or it is live at the end of the module scope
+        (not f.getScope() = u.getEnclosingModule() or u.getEnclosingModule().(ImportTimeScope).definesName(f.getName()))
         and
-        /* There is a use, but not a definition of this global variable in the function or enclosing scope */
+        // There is a use, but not a definition of this global variable in the function or enclosing scope
         exists(GlobalVariable v | u.uses(v) |
-            not exists(Assign a, Scope defnScope | 
+            not exists(Assign a, Scope defnScope |
                 a.getATarget() = v.getAnAccess() and a.getScope() = defnScope |
-                defnScope = f or 
-                /* Exclude modules as that case is handled more precisely below. */
+                defnScope = f or
+                // Exclude modules as that case is handled more precisely below.
                 (defnScope = f.getScope().getScope*() and not defnScope instanceof Module)
             )
         )
@@ -120,7 +120,7 @@ predicate first_undefined_use(Name use) {
     exists(GlobalVariable v |
         v.getALoad() = use |
         first_use_in_a_block(use) and
-        not exists(ControlFlowNode other | 
+        not exists(ControlFlowNode other |
             other.getNode() = v.getALoad() and
             other.getBasicBlock().strictlyDominates(use.getAFlowNode().getBasicBlock())
         )
