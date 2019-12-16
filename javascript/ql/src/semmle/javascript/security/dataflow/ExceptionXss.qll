@@ -78,10 +78,17 @@ module ExceptionXss {
       )
     }
 
+    /**
+     * Get the parameter in the callback that contains an error. 
+     * In the current implementation this is always the first parameter.
+     */
     DataFlow::Node getErrorParam() { result = errorParameter }
   }
 
-  // `someFunction(.. <pred> .., (<result>, value) => {...}).
+  /**
+   * Gets the error parameter for a callback that is supplied to the same call as `pred` is an argument to. 
+   * E.g: `outerCall(foo, <pred>, bar, (<result>, val) => { ... })`. 
+   */
   DataFlow::Node getCallbackErrorParam(DataFlow::Node pred) {
     exists(DataFlow::CallNode call, Callback callback |
       pred = call.getAnArgument() and
@@ -92,10 +99,12 @@ module ExceptionXss {
   }
 
   /**
-   * Gets the DataFlow::Node where an exception would flow to if `pred` is used in some context
-   * where an exception could potentially be thrown.
+   * Gets the data-flow node where exceptions thrown by this expression will
+   * propagate if this expression causes an exception to be thrown. 
+   * This predicate adds, on top of `Expr::getExceptionTarget`, exceptions 
+   * propagated by callbacks. 
    */
-  DataFlow::Node getWhereExceptionWouldFlow(DataFlow::Node pred) {
+  private DataFlow::Node getExceptionTarget(DataFlow::Node pred) {
     result = pred.asExpr().getExceptionTarget()
     or
     result = getCallbackErrorParam(pred)
@@ -126,7 +135,7 @@ module ExceptionXss {
       inlbl instanceof NotYetThrown and
       (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
       canThrowSensitiveInformation(pred) and
-      succ = getWhereExceptionWouldFlow(pred)
+      succ = getExceptionTarget(pred)
       or
       // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
       this.isAdditionalFlowStep(pred, succ) and
