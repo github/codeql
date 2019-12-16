@@ -6,6 +6,9 @@ string describe(File f) {
   or
   f.compiledAsCpp() and
   result = "C++"
+  or
+  f instanceof XMLParent and
+  result = "XMLParent" // regression tests a bug in the constructor of XMLParent
 }
 
 from File f
