@@ -8,7 +8,7 @@ string describe(File f) {
   result = "C++"
   or
   f instanceof XMLParent and
-  result = "XMLParent" // regression tests a bug in the constructor of XMLParent
+  result = "XMLParent" // regression tests a bug in the characteristic predicate of XMLParent
 }
 
 from File f
