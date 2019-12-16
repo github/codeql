@@ -37,10 +37,14 @@ nonNullExpressions
 | NullableRefTypes.cs:84:21:84:28 | "source" |
 | NullableRefTypes.cs:85:20:85:20 | access to local variable x |
 | NullableRefTypes.cs:85:20:85:21 | ...! |
+| NullableRefTypes.cs:86:9:86:9 | access to local variable y |
 | NullableRefTypes.cs:86:9:86:14 | ... = ... |
 | NullableRefTypes.cs:86:13:86:13 | access to local variable x |
 | NullableRefTypes.cs:86:13:86:14 | ...! |
+| NullableRefTypes.cs:87:9:87:9 | access to local variable x |
+| NullableRefTypes.cs:88:9:88:9 | access to local variable y |
 | NullableRefTypes.cs:88:9:88:14 | ... = ... |
+| NullableRefTypes.cs:88:13:88:13 | access to local variable x |
 | NullableRefTypes.cs:88:13:88:14 | ...! |
 assignableTypes
 | NullableRefTypes.cs:9:14:9:14 | A | NullableRefTypes.cs:6:7:6:13 | MyClass? | ? |
