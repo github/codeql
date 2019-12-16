@@ -810,7 +810,8 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
     // The argument of a call that coerces the argument to a regular expression.
     exists(MethodCallExpr mce, string methodName |
       mce.getReceiver().analyze().getAType() = TTString() and
-      mce.getMethodName() = methodName
+      mce.getMethodName() = methodName and
+      not exists(DataFlow::FunctionNode func | func = DataFlow::valueNode(mce.getCallee()).getAFunctionValue() | not func.getFunction().inExternsFile())
     |
       methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1
       or
