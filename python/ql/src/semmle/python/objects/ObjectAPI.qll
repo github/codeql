@@ -150,6 +150,11 @@ class ModuleValue extends Value {
         this instanceof PackageObjectInternal
     }
 
+    /** Whether the complete set of names "exported" by this module can be accurately determined */
+    predicate hasCompleteExportInfo() {
+        this.(ModuleObjectInternal).hasCompleteExportInfo()
+    }
+
 }
 
 module Module {
