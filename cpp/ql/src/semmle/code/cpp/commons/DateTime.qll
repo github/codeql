@@ -10,22 +10,23 @@ import cpp
 class PackedTimeType extends Type {
   PackedTimeType() {
     this.getName() = "_FILETIME" or
-    this.getName().matches("_FILETIME %")
+    this.(DerivedType).getBaseType*().getName() = "_FILETIME"
   }
 }
 
+private predicate timeType(string typeName) {
+  typeName = "_SYSTEMTIME" or
+  typeName = "SYSTEMTIME" or
+  typeName = "tm"
+}
 /**
  * A type that is used to represent times and dates in an 'unpacked' form, that is,
  * with separate fields for day, month, year etc.
  */
 class UnpackedTimeType extends Type {
   UnpackedTimeType() {
-    this.getName() = "_SYSTEMTIME" or
-    this.getName() = "SYSTEMTIME" or
-    this.getName() = "tm" or
-    this.getName().matches("_SYSTEMTIME %") or
-    this.getName().matches("SYSTEMTIME %") or
-    this.getName().matches("tm %")
+    timeType(this.getName()) or
+    timeType(this.(DerivedType).getBaseType*().getName())
   }
 }
 
