@@ -24,9 +24,7 @@ class Printf extends FormattingFunction, AliasFunction {
     hasGlobalName("wprintf_s")
   }
 
-  override predicate parameterNeverEscapes(int n) {
-    n = 0
-  }
+  override predicate parameterNeverEscapes(int n) { n = 0 }
 
   override predicate parameterEscapesOnlyViaReturn(int n) { none() }
 
