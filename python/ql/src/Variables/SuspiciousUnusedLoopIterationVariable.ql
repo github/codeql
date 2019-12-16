@@ -15,7 +15,7 @@ import Definition
 
 predicate is_increment(Stmt s) {
     /* x += n */
-    s.(AugAssign).getValue() instanceof IntegerLiteral  
+    s.(AugAssign).getValue() instanceof IntegerLiteral
     or
     /* x = x + n */
     exists(Name t, BinaryExpr add |
@@ -36,7 +36,7 @@ predicate empty_loop(For f) {
 
 predicate one_item_only(For f) {
     not exists(Continue c | f.contains(c)) and
-    exists(Stmt s | 
+    exists(Stmt s |
         s = f.getBody().getLastItem() |
         s instanceof Return
         or
@@ -45,13 +45,13 @@ predicate one_item_only(For f) {
 }
 
 predicate points_to_call_to_range(ControlFlowNode f) {
-    /* (x)range is a function in Py2 and a class in Py3, so we must treat it as a plain object */ 
-    exists(Object range, Object call |
-        range = Object::builtin("range") or
-        range = Object::builtin("xrange")
+    /* (x)range is a function in Py2 and a class in Py3, so we must treat it as a plain object */
+    exists(Value range, Value call |
+        range = Value::named("range") or
+        range = Value::named("xrange")
     |
-        f.refersTo(call) and
-        call.(CallNode).getFunction().refersTo(range)
+        f.pointsTo(call) and
+        call.getACall().getFunction().pointsTo(range)
     )
     or
     /* In case points-to fails due to 'from six.moves import range' or similar. */
@@ -60,11 +60,10 @@ predicate points_to_call_to_range(ControlFlowNode f) {
         range = "range" or range = "xrange"
     )
     or
-    /* If range is wrapped in a list it is still a range */
-    exists(CallNode call |
-        f.refersTo(call) and
-        call = theListType().getACall() and
-        points_to_call_to_range(call.getArg(0))
+    /* Handle list(range(...)) and list(list(range(...))) */
+    (
+        f.(CallNode).pointsTo().getClass() = ClassValue::list() and
+        points_to_call_to_range(f.(CallNode).getArg(0))
     )
 }
 
@@ -100,7 +99,7 @@ predicate implicit_repeat(For f) {
  * E.g. gets `x` from `{ y for y in x }`.
  */
 ControlFlowNode get_comp_iterable(For f) {
-    exists(Comp c | 
+    exists(Comp c |
         c.getFunction().getStmt(0) = f |
         c.getAFlowNode().getAPredecessor() = result
     )

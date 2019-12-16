@@ -211,7 +211,7 @@ module Value {
     }
 
     /** Gets the `Value` for the integer constant `i`, if it exists.
-     * There will be no `Value` for most integers, but the following are 
+     * There will be no `Value` for most integers, but the following are
      * guaranteed to exist:
      * * From zero to 511 inclusive.
      * * All powers of 2 (up to 2**30)
@@ -632,6 +632,11 @@ module ClassValue {
     /** Get the `ClassValue` for the `float` class. */
     ClassValue float_() {
         result = TBuiltinClassObject(Builtin::special("float"))
+    }
+
+    /** Get the `ClassValue` for the `list` class. */
+    ClassValue list() {
+        result = TBuiltinClassObject(Builtin::special("list"))
     }
 
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */
