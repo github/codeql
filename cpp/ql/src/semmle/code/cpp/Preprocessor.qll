@@ -215,9 +215,7 @@ class PreprocessorUndef extends PreprocessorDirective, @ppd_undef {
  */
 class PreprocessorPragma extends PreprocessorDirective, @ppd_pragma {
   override string toString() {
-    if exists(this.getHead())
-    then result = "#pragma " + this.getHead()
-    else result = "#pragma"
+    if exists(this.getHead()) then result = "#pragma " + this.getHead() else result = "#pragma"
   }
 }
 
