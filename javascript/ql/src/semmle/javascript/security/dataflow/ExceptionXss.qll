@@ -72,7 +72,7 @@ module ExceptionXss {
       exists(DataFlow::CallNode call | call.getLastArgument().getAFunctionValue() = this) and
       this.getNumParameter() = 2 and
       errorParameter = this.getParameter(0) and
-      exists(IfStmt ifStmt | 
+      exists(IfStmt ifStmt |
         ifStmt = this.getFunction().getBodyStmt(0) and
         errorParameter.flowsToExpr(ifStmt.getCondition())
       )
