@@ -60,7 +60,7 @@ abstract class DictUnpackingOrKeyword extends DictItem {
     abstract Expr getValue();
 
     override string toString() {
-        none() 
+        result = "DictUnpackingOrKeyword with missing toString"
     }
 
 }
@@ -70,7 +70,7 @@ abstract class DictDisplayItem extends DictItem {
     abstract Expr getValue();
 
     override string toString() {
-        none() 
+        result = "DictDisplayItem with missing toString"
     }
 
 }

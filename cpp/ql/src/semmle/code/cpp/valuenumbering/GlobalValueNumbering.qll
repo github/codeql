@@ -170,8 +170,8 @@ private newtype GVNBase =
   GVN_FloatConst(float val, Type t) { mk_FloatConst(val, t, _) } or
   // If the local variable does not have a defining value, then
   // we use the SsaDefinition as its global value number.
-  GVN_UndefinedLocalScopeVariable(LocalScopeVariable x, SsaDefinition def) {
-    mk_UndefinedLocalScopeVariable(x, def, _)
+  GVN_UndefinedStackVariable(StackVariable x, SsaDefinition def) {
+    mk_UndefinedStackVariable(x, def, _)
   } or
   // Variables with no SSA information. As a crude (but safe)
   // approximation, we use `mostRecentSideEffect` to compute a definition
@@ -235,8 +235,8 @@ class GVN extends GVNBase {
       if this instanceof GVN_FloatConst
       then result = "FloatConst"
       else
-        if this instanceof GVN_UndefinedLocalScopeVariable
-        then result = "UndefinedLocalScopeVariable"
+        if this instanceof GVN_UndefinedStackVariable
+        then result = "UndefinedStackVariable"
         else
           if this instanceof GVN_OtherVariable
           then result = "OtherVariable"
@@ -307,7 +307,7 @@ private predicate mk_FloatConst(float val, Type t, Expr e) {
   t = e.getUnspecifiedType()
 }
 
-private predicate analyzableLocalScopeVariable(VariableAccess access) {
+private predicate analyzableStackVariable(VariableAccess access) {
   strictcount(SsaDefinition def | def.getAUse(_) = access | def) = 1 and
   strictcount(SsaDefinition def, Variable v | def.getAUse(v) = access | v) = 1 and
   count(SsaDefinition def, Variable v |
@@ -322,10 +322,10 @@ private predicate analyzableLocalScopeVariable(VariableAccess access) {
 // defining value. If there is a defining value, then there is no
 // need to generate a fresh `GVN` for the access because `globalValueNumber`
 // will follow the chain and use the GVN of the defining value.
-private predicate mk_UndefinedLocalScopeVariable(
-  LocalScopeVariable x, SsaDefinition def, VariableAccess access
+private predicate mk_UndefinedStackVariable(
+  StackVariable x, SsaDefinition def, VariableAccess access
 ) {
-  analyzableLocalScopeVariable(access) and
+  analyzableStackVariable(access) and
   access = def.getAUse(x) and
   not exists(def.getDefiningValue(x))
 }
@@ -515,16 +515,16 @@ GVN globalValueNumber(Expr e) {
   )
   or
   // Local variable with a defining value.
-  exists(LocalScopeVariable x, SsaDefinition def |
-    analyzableLocalScopeVariable(e) and
+  exists(StackVariable x, SsaDefinition def |
+    analyzableStackVariable(e) and
     e = def.getAUse(x) and
     result = globalValueNumber(def.getDefiningValue(x).getFullyConverted())
   )
   or
   // Local variable without a defining value.
-  exists(LocalScopeVariable x, SsaDefinition def |
-    mk_UndefinedLocalScopeVariable(x, def, e) and
-    result = GVN_UndefinedLocalScopeVariable(x, def)
+  exists(StackVariable x, SsaDefinition def |
+    mk_UndefinedStackVariable(x, def, e) and
+    result = GVN_UndefinedStackVariable(x, def)
   )
   or
   // Variable with no SSA information.
@@ -594,7 +594,7 @@ private predicate analyzableConst(Expr e) {
  */
 private predicate analyzableExpr(Expr e) {
   analyzableConst(e) or
-  analyzableLocalScopeVariable(e) or
+  analyzableStackVariable(e) or
   analyzableDotFieldAccess(e) or
   analyzablePointerFieldAccess(e) or
   analyzableImplicitThisFieldAccess(e) or

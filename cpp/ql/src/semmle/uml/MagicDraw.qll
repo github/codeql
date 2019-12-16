@@ -112,7 +112,7 @@ class UMLType extends UMLElement {
     else result = this.getUMLName()
   }
 
-  string toString() { result = this.getUMLName() }
+  override string toString() { result = this.getUMLName() }
 }
 
 /**
@@ -163,7 +163,7 @@ class UMLProperty extends UMLElement {
     result.getDeclaringType() = this.getUMLType().getCType()
   }
 
-  string toString() {
+  override string toString() {
     if this.isEnumConstant()
     then result = "- <<enum constant>> " + this.getUMLName()
     else result = "- " + this.getUMLName()
@@ -196,7 +196,7 @@ class UMLOperation extends UMLElement {
     result.getDeclaringType() = this.getUMLType().getCType()
   }
 
-  string toString() { result = "+ " + this.getUMLName() }
+  override string toString() { result = "+ " + this.getUMLName() }
 }
 
 /**
@@ -221,7 +221,7 @@ class UMLAssociation extends UMLProperty {
   /**
    * Gets the C field corresponding to this property, if any.
    */
-  Field getCField() {
+  override Field getCField() {
     result.hasName(this.getLabel()) and
     result.getDeclaringType() = this.getSource().getCType()
   }
@@ -271,7 +271,7 @@ class UMLInheritance extends UMLElement {
     )
   }
 
-  string toString() {
+  override string toString() {
     result = this.getUMLClient().getUMLName() + " implements " + this.getUMLSupplier().getUMLName()
   }
 }
@@ -303,5 +303,5 @@ class UMLPackage extends UMLElement {
     else result = this.getUMLName()
   }
 
-  string toString() { result = this.getUMLQualifiedName() }
+  override string toString() { result = this.getUMLQualifiedName() }
 }

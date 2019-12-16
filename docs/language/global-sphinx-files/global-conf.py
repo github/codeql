@@ -56,9 +56,9 @@ def setup(sphinx):
 # built documents.
 #
 # The short X.Y version.
-version = u'1.22.1'
+version = u'1.24'
 # The full version, including alpha/beta/rc tags.
-release = u'1.22.1'
+release = u'1.24'
 copyright = u'2019 Semmle Ltd'
 author = u'Semmle Ltd'
 

@@ -24,6 +24,21 @@ Expr enumConstEquality(Expr e, boolean polarity, EnumConstant c) {
   )
 }
 
+/** Gets an instanceof expression of `v` with type `type` */
+InstanceOfExpr instanceofExpr(SsaVariable v, Type type) {
+  result.getTypeName().getType() = type and
+  result.getExpr() = v.getAUse()
+}
+
+/**
+ * Gets an expression of the form `v1 == v2` or `v1 != v2`.
+ * The predicate is symmetric in `v1` and `v2`.
+ */
+EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
+  result.hasOperands(v1.getAUse(), v2.getAUse()) and
+  isEqualExpr = result.polarity()
+}
+
 /** Gets an expression that is provably not `null`. */
 Expr clearlyNotNullExpr(Expr reason) {
   result instanceof ClassInstanceExpr and reason = result

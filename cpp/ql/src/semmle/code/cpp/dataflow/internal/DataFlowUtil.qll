@@ -182,7 +182,7 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
 
   override Type getType() { result = f.getDeclaringType() }
 
-  override string toString() { result = "`this` parameter in " + f.getName() }
+  override string toString() { result = "this" }
 
   override Location getLocation() { result = f.getLocation() }
 

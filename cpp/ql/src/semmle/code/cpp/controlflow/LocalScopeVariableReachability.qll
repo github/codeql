@@ -1,6 +1,12 @@
+/**
+ * DEPRECATED: Use `StackVariableReachability` instead.
+ */
+
 import cpp
 
 /**
+ * DEPRECATED: Use `StackVariableReachability` instead.
+ *
  * A reachability analysis for control-flow nodes involving stack variables.
  * This defines sources, sinks, and any other configurable aspect of the
  * analysis. Multiple analyses can coexist. To create an analysis, extend this
@@ -18,7 +24,7 @@ import cpp
  * Then, to query whether there is flow between some source and sink, call the
  * `reaches` predicate on an instance of `MyAnalysisConfiguration`.
  */
-abstract class LocalScopeVariableReachability extends string {
+abstract deprecated class LocalScopeVariableReachability extends string {
   bindingset[this]
   LocalScopeVariableReachability() { length() >= 0 }
 
@@ -207,6 +213,8 @@ predicate bbSuccessorEntryReachesLoopInvariant(
 }
 
 /**
+ * DEPRECATED: Use `StackVariableReachabilityWithReassignment` instead.
+ *
  * Reachability analysis for control-flow nodes involving stack variables.
  * Unlike `LocalScopeVariableReachability`, this analysis takes variable
  * reassignments into account.
@@ -216,7 +224,7 @@ predicate bbSuccessorEntryReachesLoopInvariant(
  * `isSource` and `isSink`, and that there is a `reachesTo` predicate in
  * addition to `reaches`.
  */
-abstract class LocalScopeVariableReachabilityWithReassignment extends LocalScopeVariableReachability {
+abstract deprecated class LocalScopeVariableReachabilityWithReassignment extends LocalScopeVariableReachability {
   bindingset[this]
   LocalScopeVariableReachabilityWithReassignment() { length() >= 0 }
 
@@ -314,12 +322,14 @@ abstract class LocalScopeVariableReachabilityWithReassignment extends LocalScope
 }
 
 /**
+ * DEPRECATED: Use `StackVariableReachabilityExt` instead.
+ *
  * Same as `LocalScopeVariableReachability`, but `isBarrier` works on control-flow
  * edges rather than nodes and is therefore parameterized by the original
  * source node as well. Otherwise, this class is used like
  * `LocalScopeVariableReachability`.
  */
-abstract class LocalScopeVariableReachabilityExt extends string {
+abstract deprecated class LocalScopeVariableReachabilityExt extends string {
   bindingset[this]
   LocalScopeVariableReachabilityExt() { length() >= 0 }
 

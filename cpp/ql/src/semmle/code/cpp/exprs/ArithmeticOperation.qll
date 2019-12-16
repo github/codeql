@@ -62,11 +62,10 @@ abstract class CrementOperation extends UnaryArithmeticOperation {
   override predicate mayBeImpure() { any() }
 
   override predicate mayBeGloballyImpure() {
-    not exists(VariableAccess va, LocalScopeVariable v |
+    not exists(VariableAccess va, StackVariable v |
       va = this.getOperand() and
       v = va.getTarget() and
-      not va.getConversion+() instanceof ReferenceDereferenceExpr and
-      not v.isStatic()
+      not va.getConversion+() instanceof ReferenceDereferenceExpr
     )
   }
 }

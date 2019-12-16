@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      The <code>maxRequestLength</code> attribute sets the limit for the input
+      stream buffering threshold in KB. Attackers can use large requests to cause
+      denial-of-service attacks.
+    </p>
+  </overview>
+  <recommendation>
+
+    <p>
+      The recommended value is 4096 KB but you should try setting it as
+      small as possible according to business requirements.
+    </p>
+
+  </recommendation>
+  <example>
+
+    <p>
+      The following example shows the <code>maxRequestLength</code>
+      attribute set to a high value (255 MB) in a <code>Web.config</code>
+      file for ASP.NET:
+    </p>
+
+    <sample src="Web.config.ASPNetMaxRequestLength.bad" />
+
+    <p>
+      Unless such a high value is strictly needed, it is better to set
+      the recommended value (4096 KB):
+    </p>
+
+    <sample src="Web.config.ASPNetMaxRequestLength.good" />
+
+  </example>
+
+  <references>
+
+    <li>
+      MSDN:
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.web.configuration.httpruntimesection.maxrequestlength?view=netframework-4.8">HttpRuntimeSection.MaxRequestLength Property</a>.
+    </li>
+  </references>
+</qhelp>

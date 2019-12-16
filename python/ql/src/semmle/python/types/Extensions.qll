@@ -20,7 +20,7 @@ import semmle.python.objects.ObjectInternal
 
 abstract class PointsToExtension extends @py_flow_node {
 
-    string toString() { none() }
+    string toString() { result = "PointsToExtension with missing toString" }
 
     abstract predicate pointsTo(Context context, ObjectInternal value, ControlFlowNode origin);
 
@@ -36,7 +36,7 @@ abstract class PointsToExtension extends @py_flow_node {
 /** DEPRECATED -- Use PointsToExtension instead */
 deprecated abstract class CustomPointsToFact extends @py_flow_node {
 
-    string toString() { none() }
+    string toString() { result = "CustomPointsToFact with missing toString" }
 
     abstract predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin);
 
