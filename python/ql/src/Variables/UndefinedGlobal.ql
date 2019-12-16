@@ -31,11 +31,11 @@ predicate guarded_against_name_error(Name u) {
 
 predicate contains_unknown_import_star(Module m) {
      exists(ImportStar imp | imp.getScope() = m |
-        not exists(ModuleObject imported | imported.importedAs(imp.getImportedModuleName()))
+        exists(ModuleValue imported | imported.importedAs(imp.getImportedModuleName()) and imported.isAbsent())
         or
-        exists(ModuleObject imported |
+        exists(ModuleValue imported |
             imported.importedAs(imp.getImportedModuleName()) |
-            not imported.exportsComplete()
+            not imported.hasCompleteExportInfo()
         )
     )
 }
@@ -58,7 +58,7 @@ predicate undefined_use_in_function(Name u) {
     and
     not ((ImportTimeScope)u.getEnclosingModule()).definesName(u.getId())
     and
-    not exists(ModuleObject m | m.getModule() = u.getEnclosingModule() | m.hasAttribute(u.getId()))
+    not exists(ModuleValue m | m.getScope() = u.getEnclosingModule() | m.hasAttribute(u.getId()))
     and
     not globallyDefinedName(u.getId())
     and
@@ -78,7 +78,7 @@ predicate undefined_use_in_class_or_module(Name u) {
     and
     not guarded_against_name_error(u)
     and
-    not exists(ModuleObject m | m.getModule() = u.getEnclosingModule() | m.hasAttribute(u.getId()))
+    not exists(ModuleValue m | m.getScope() = u.getEnclosingModule() | m.hasAttribute(u.getId()))
     and
     not (u.getEnclosingModule().isPackageInit() and u.getId() = "__path__")
     and
@@ -88,10 +88,10 @@ predicate undefined_use_in_class_or_module(Name u) {
 predicate use_of_exec(Module m) {
     exists(Exec exec | exec.getScope() = m)
     or
-    exists(CallNode call, FunctionObject exec |
+    exists(CallNode call, FunctionValue exec |
         exec.getACall() = call and call.getScope() = m |
-        exec = Object::builtin("exec") or
-        exec = Object::builtin("execfile")
+        exec = Value::named("exec") or
+        exec = Value::named("execfile")
     )
 }
 
@@ -105,7 +105,7 @@ predicate undefined_use(Name u) {
     not contains_unknown_import_star(u.getEnclosingModule()) and
     not use_of_exec(u.getEnclosingModule()) and
     not exists(u.getVariable().getAStore()) and
-    not u.refersTo(_) and
+    not u.pointsTo(_) and
     not  probably_defined_in_loop(u)
 }
 
