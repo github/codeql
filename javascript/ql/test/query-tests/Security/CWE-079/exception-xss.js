@@ -181,6 +181,6 @@ app.get('/user/:id', function(req, res) {
     if (error) {
 	  $('myId').html(error); // OK (falls through to the next statement) 
 	}
-	$('myId').html(res); // OK (for now?)
+	$('myId').html(res); // NOT OK!
   });
 });

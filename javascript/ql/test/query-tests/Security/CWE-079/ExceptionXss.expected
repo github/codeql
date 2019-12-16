@@ -85,6 +85,11 @@ nodes
 | exception-xss.js:174:53:174:53 | e |
 | exception-xss.js:175:22:175:22 | e |
 | exception-xss.js:175:22:175:22 | e |
+| exception-xss.js:180:11:180:23 | req.params.id |
+| exception-xss.js:180:11:180:23 | req.params.id |
+| exception-xss.js:180:27:180:31 | error |
+| exception-xss.js:182:19:182:23 | error |
+| exception-xss.js:182:19:182:23 | error |
 | tst.js:304:9:304:16 | location |
 | tst.js:304:9:304:16 | location |
 | tst.js:305:10:305:10 | e |
@@ -177,6 +182,10 @@ edges
 | exception-xss.js:174:31:174:33 | foo | exception-xss.js:174:25:174:43 | exceptional return of inner(foo, resolve) |
 | exception-xss.js:174:53:174:53 | e | exception-xss.js:175:22:175:22 | e |
 | exception-xss.js:174:53:174:53 | e | exception-xss.js:175:22:175:22 | e |
+| exception-xss.js:180:11:180:23 | req.params.id | exception-xss.js:180:27:180:31 | error |
+| exception-xss.js:180:11:180:23 | req.params.id | exception-xss.js:180:27:180:31 | error |
+| exception-xss.js:180:27:180:31 | error | exception-xss.js:182:19:182:23 | error |
+| exception-xss.js:180:27:180:31 | error | exception-xss.js:182:19:182:23 | error |
 | tst.js:304:9:304:16 | location | tst.js:305:10:305:10 | e |
 | tst.js:304:9:304:16 | location | tst.js:305:10:305:10 | e |
 | tst.js:305:10:305:10 | e | tst.js:306:20:306:20 | e |
@@ -202,5 +211,6 @@ edges
 | exception-xss.js:155:19:155:19 | e | exception-xss.js:146:15:146:31 | document.location | exception-xss.js:155:19:155:19 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:146:15:146:31 | document.location | user-provided value |
 | exception-xss.js:161:19:161:19 | e | exception-xss.js:146:15:146:31 | document.location | exception-xss.js:161:19:161:19 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:146:15:146:31 | document.location | user-provided value |
 | exception-xss.js:175:22:175:22 | e | exception-xss.js:146:15:146:31 | document.location | exception-xss.js:175:22:175:22 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:146:15:146:31 | document.location | user-provided value |
+| exception-xss.js:182:19:182:23 | error | exception-xss.js:180:11:180:23 | req.params.id | exception-xss.js:182:19:182:23 | error | Cross-site scripting vulnerability due to $@. | exception-xss.js:180:11:180:23 | req.params.id | user-provided value |
 | tst.js:306:20:306:20 | e | tst.js:304:9:304:16 | location | tst.js:306:20:306:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:304:9:304:16 | location | user-provided value |
 | tst.js:314:20:314:20 | e | tst.js:311:10:311:17 | location | tst.js:314:20:314:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:311:10:311:17 | location | user-provided value |
