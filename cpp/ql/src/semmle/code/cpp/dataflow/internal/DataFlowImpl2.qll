@@ -460,76 +460,6 @@ private predicate throughFlowNodeCand(Node node, Configuration config) {
   not outBarrier(node, config)
 }
 
-private newtype TSummary =
-  TSummaryVal() or
-  TSummaryTaint() or
-  TSummaryReadVal(Content f) or
-  TSummaryReadTaint(Content f) or
-  TSummaryTaintStore(Content f)
-
-/**
- * A summary of flow through a callable. This can either be value-preserving
- * if no additional steps are used, taint-flow if at least on additional step
- * is used, or any one of those combined with a store or a read. Summaries
- * recorded at a return node are restricted to include at least one additional
- * step, as the value-based summaries are calculated independent of the
- * configuration.
- */
-private class Summary extends TSummary {
-  string toString() {
-    result = "Val" and this = TSummaryVal()
-    or
-    result = "Taint" and this = TSummaryTaint()
-    or
-    exists(Content f |
-      result = "ReadVal " + f.toString() and this = TSummaryReadVal(f)
-      or
-      result = "ReadTaint " + f.toString() and this = TSummaryReadTaint(f)
-      or
-      result = "TaintStore " + f.toString() and this = TSummaryTaintStore(f)
-    )
-  }
-
-  /** Gets the summary that results from extending this with an additional step. */
-  Summary additionalStep() {
-    this = TSummaryVal() and result = TSummaryTaint()
-    or
-    this = TSummaryTaint() and result = TSummaryTaint()
-    or
-    exists(Content f | this = TSummaryReadVal(f) and result = TSummaryReadTaint(f))
-    or
-    exists(Content f | this = TSummaryReadTaint(f) and result = TSummaryReadTaint(f))
-  }
-
-  /** Gets the summary that results from extending this with a read. */
-  Summary readStep(Content f) { this = TSummaryVal() and result = TSummaryReadVal(f) }
-
-  /** Gets the summary that results from extending this with a store. */
-  Summary storeStep(Content f) { this = TSummaryTaint() and result = TSummaryTaintStore(f) }
-
-  /** Gets the summary that results from extending this with `step`. */
-  bindingset[this, step]
-  Summary compose(Summary step) {
-    this = TSummaryVal() and result = step
-    or
-    this = TSummaryTaint() and
-    (step = TSummaryTaint() or step = TSummaryTaintStore(_)) and
-    result = step
-    or
-    exists(Content f |
-      this = TSummaryReadVal(f) and step = TSummaryTaint() and result = TSummaryReadTaint(f)
-    )
-    or
-    this = TSummaryReadTaint(_) and step = TSummaryTaint() and result = this
-  }
-
-  /** Holds if this summary does not include any taint steps. */
-  predicate isPartial() {
-    this = TSummaryVal() or
-    this = TSummaryReadVal(_)
-  }
-}
-
 /** Holds if flow may return from `callable`. */
 private predicate returnFlowCallableCand(
   DataFlowCallable callable, ReturnKindExt kind, Configuration config
@@ -1873,10 +1803,8 @@ private newtype TSummaryCtx =
   TSummaryCtxNil(ParameterNode p) {
     exists(Configuration conf, ReturnNodeExt ret |
       flow(p, true, TNil(_), conf) and
-      (
-        parameterFlowReturn(p, ret, _, _, _, TSummaryTaint(), conf) or
-        parameterFlowReturn(p, ret, _, _, _, TSummaryTaintStore(_), conf)
-      ) and
+      parameterFlowReturn(p, ret, _, _, _,
+        any(Summary s | s = TSummaryTaint() or s = TSummaryTaintStore(_)), conf) and
       flow(ret, conf)
     )
   } or
