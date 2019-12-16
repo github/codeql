@@ -81,6 +81,9 @@ class MallocAllocationFunction extends AllocationFunction {
         // alloca(size)
         name = "alloca" and sizeArg = 0
         or
+        // __builtin_alloca(size)
+        name = "__builtin_alloca" and sizeArg = 0
+        or
         // kmem_alloc(size, flags)
         name = "kmem_alloc" and sizeArg = 0
         or
