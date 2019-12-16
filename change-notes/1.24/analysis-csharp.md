@@ -21,6 +21,7 @@ The following changes in version 1.24 affect C# analysis in all applications.
 ## Changes to libraries
 
 * The taint tracking library now tracks flow through (implicit or explicit) conversion operator calls.
+* [Code contracts](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/code-contracts) are now recognized, and are treated like any other assertion methods.
 
 ## Changes to autobuilder
 
