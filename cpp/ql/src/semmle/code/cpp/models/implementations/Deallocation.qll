@@ -66,6 +66,12 @@ class StandardDeallocationFunction extends DeallocationFunction {
         name = "HeapReAlloc" and freedArg = 2
         or
         name = "CoTaskMemRealloc" and freedArg = 0
+        or
+        name = "kmem_free" and freedArg = 0
+        or
+        name = "pool_put" and freedArg = 1
+        or
+        name = "pool_cache_put" and freedArg = 1
       )
     )
   }

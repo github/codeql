@@ -80,6 +80,12 @@ class MallocAllocationFunction extends AllocationFunction {
         or
         // alloca(size)
         name = "alloca" and sizeArg = 0
+        or
+        // kmem_alloc(size, flags)
+        name = "kmem_alloc" and sizeArg = 0
+        or
+        // kmem_zalloc(size, flags)
+        name = "kmem_zalloc" and sizeArg = 0
       )
     )
   }
@@ -194,6 +200,12 @@ class StrdupAllocationFunction extends AllocationFunction {
         or
         // MmMapLockedPagesSpecifyCache(list, mode, type, address, flag, flag)
         name = "MmMapLockedPagesSpecifyCache"
+        or
+        // pool_get(pool, flags)
+        name = "pool_get"
+        or
+        // pool_cache_get(pool, flags)
+        name = "pool_cache_get"
       )
     )
   }
