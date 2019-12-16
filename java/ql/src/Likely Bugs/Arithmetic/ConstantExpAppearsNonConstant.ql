@@ -74,6 +74,8 @@ where
     not child instanceof Annotation
   ) and
   not e instanceof CompileTimeConstantExpr and
+  // Exclude explicit zero multiplication.
+  not e.(MulExpr).getAnOperand().(IntegerLiteral).getIntValue() = 0 and
   // Exclude expressions that appear to be disabled deliberately (e.g. `false && ...`).
   not e.(AndLogicalExpr).getAnOperand().(BooleanLiteral).getBooleanValue() = false
 select e, "Expression always evaluates to the same value."

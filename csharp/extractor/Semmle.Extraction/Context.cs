@@ -282,7 +282,9 @@ namespace Semmle.Extraction
         ///     of the symbol is a constructed generic.
         /// </summary>
         /// <param name="symbol">The symbol to populate.</param>
-        public bool Defines(ISymbol symbol) => !Equals(symbol, symbol.OriginalDefinition) || Scope.InScope(symbol);
+        public bool Defines(ISymbol symbol) =>
+            !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
+            Scope.InScope(symbol);
 
         /// <summary>
         /// Whether the current extraction context defines a given file.

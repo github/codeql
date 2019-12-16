@@ -51,7 +51,11 @@ predicate allocationFunction(Function f) {
       name = "HeapReAlloc" or
       name = "VirtualAlloc" or
       name = "CoTaskMemAlloc" or
-      name = "CoTaskMemRealloc"
+      name = "CoTaskMemRealloc" or
+      name = "kmem_alloc" or
+      name = "kmem_zalloc" or
+      name = "pool_get" or
+      name = "pool_cache_get"
     )
   )
 }
@@ -77,6 +81,12 @@ predicate freeFunction(Function f, int argNum) {
       name = "free" and argNum = 0
       or
       name = "realloc" and argNum = 0
+      or
+      name = "kmem_free" and argNum = 0
+      or
+      name = "pool_put" and argNum = 1
+      or
+      name = "pool_cache_put" and argNum = 1
     )
     or
     f.hasGlobalOrStdName(name) and

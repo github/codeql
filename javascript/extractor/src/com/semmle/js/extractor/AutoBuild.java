@@ -777,7 +777,10 @@ public class AutoBuild {
   }
 
   private void extractTypeTable(Path fileHandle, TypeTable table) {
-    TrapWriter trapWriter = outputConfig.getTrapWriterFactory().mkTrapWriter(fileHandle.toFile());
+    TrapWriter trapWriter =
+        outputConfig
+            .getTrapWriterFactory()
+            .mkTrapWriter(new File(fileHandle.toString() + ".codeql-typescript-typetable"));
     try {
       new TypeExtractor(trapWriter, table).extract();
     } finally {
