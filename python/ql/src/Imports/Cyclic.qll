@@ -60,7 +60,8 @@ predicate import_time_module_use(ModuleValue m, ModuleValue enclosing, Expr use,
     exists(Expr mod |
         use.getEnclosingModule() = enclosing.getScope() and
         not use.getScope+() instanceof Function and
-        mod.pointsTo(m)
+        mod.pointsTo(m) and
+        not is_annotation_with_from_future_import_annotations(use)
     |
         // either 'M.foo'
         use.(Attribute).getObject() = mod and use.(Attribute).getName() = attr
@@ -68,6 +69,30 @@ predicate import_time_module_use(ModuleValue m, ModuleValue enclosing, Expr use,
         // or 'from M import foo'
         use.(ImportMember).getModule() = mod and use.(ImportMember).getName() = attr
     )
+}
+
+/**
+ * Holds if `use` appears inside an annotation.
+ */
+predicate is_used_in_annotation(Expr use) {
+    exists(FunctionExpr f |
+        f.getReturns().getASubExpression*() = use or
+        f.getArgs().getAnAnnotation().getASubExpression*() = use
+    )
+    or
+    exists(AnnAssign a | a.getAnnotation().getASubExpression*() = use)
+}
+
+/**
+ * Holds if `use` appears as a subexpression of an annotation, _and_ if the
+ * postponed evaluation of annotations presented in PEP 563 is in effect.
+ * See https://www.python.org/dev/peps/pep-0563/
+ */
+predicate is_annotation_with_from_future_import_annotations(Expr use) {
+    exists(ImportMember i | i.getScope() = use.getEnclosingModule() |
+        i.getModule().pointsTo().getName() = "__future__" and i.getName() = "annotations"
+    ) and
+    is_used_in_annotation(use)
 }
 
 /**

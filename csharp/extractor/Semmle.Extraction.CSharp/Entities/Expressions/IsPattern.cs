@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             if (cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                             {
                                 var type = Type.Create(cx, symbol.GetAnnotatedType());
-                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), false, parent, child);
                             }
                             if (designation is DiscardDesignationSyntax)
                             {
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             {
                                 var type = Type.Create(cx, symbol.GetAnnotatedType());
 
-                                return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), cx.Create(varDesignation.GetLocation()), false, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), true, parent, child);
                             }
                             else
                             {
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
 
-                VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, this, 0);
+                VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), false, this, 0);
             }
 
             if (syntax.PositionalPatternClause is PositionalPatternClauseSyntax posPc)
@@ -138,38 +138,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
         }
 
-        private void PopulatePattern(PatternSyntax pattern, TypeSyntax optionalType, SyntaxToken varKeyword, VariableDesignationSyntax designation)
-        {
-            var isVar = optionalType is null;
-            if (!(designation is null) && cx.GetModel(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
-            {
-                var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
-                VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 1);
-            }
-            else if (!isVar)
-                Expressions.TypeAccess.Create(cx, optionalType, this, 1);
-        }
-
         protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(cx, Syntax.Expression, this, 0);
-            switch (Syntax.Pattern)
-            {
-                case ConstantPatternSyntax constantPattern:
-                    Create(cx, constantPattern.Expression, this, 1);
-                    return;
-                case VarPatternSyntax varPattern:
-                    PopulatePattern(varPattern, null, varPattern.VarKeyword, varPattern.Designation);
-                    return;
-                case DeclarationPatternSyntax declPattern:
-                    PopulatePattern(declPattern, declPattern.Type, default(SyntaxToken), declPattern.Designation);
-                    return;
-                case RecursivePatternSyntax recPattern:
-                    new RecursivePattern(cx, recPattern, this, 1);
-                    return;
-                default:
-                    throw new InternalError(Syntax, "Is pattern not handled");
-            }
+            cx.CreatePattern(Syntax.Pattern, this, 1);
         }
 
         public static Expression Create(ExpressionNodeInfo info) => new IsPattern(info).TryPopulate();

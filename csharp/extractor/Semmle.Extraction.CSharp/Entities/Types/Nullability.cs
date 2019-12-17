@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsOblivious => Annotation == 0 && NullableParameters.Length == 0;
 
-        static readonly Nullability oblivious = new Nullability(NullableAnnotation.Disabled);
+        static readonly Nullability oblivious = new Nullability(NullableAnnotation.None);
         static readonly Nullability annotated = new Nullability(NullableAnnotation.Annotated);
         static readonly Nullability notannotated = new Nullability(NullableAnnotation.NotAnnotated);
 
@@ -244,14 +244,14 @@ namespace Semmle.Extraction.CSharp.Entities
         /// This has not yet been exposed on the public API.
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
-            symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+            symbol.TypeArguments.Zip(symbol.TypeArgumentNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
 
         /// <summary>
         /// Gets the annotated type arguments of an IMethodSymbol.
         /// This has not yet been exposed on the public API.
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this IMethodSymbol symbol) =>
-            symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+            symbol.TypeArguments.Zip(symbol.TypeArgumentNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
 
         /// <summary>
         /// Gets the annotated type constraints of an ITypeParameterSymbol.

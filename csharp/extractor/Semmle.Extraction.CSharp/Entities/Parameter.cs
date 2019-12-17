@@ -1,4 +1,3 @@
-using System;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Populators;
 using System.Linq;
@@ -69,11 +68,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
             ParameterFactory.Instance.CreateEntity(cx, param, parent, original);
 
-        /// <summary>
-        /// Gets the parameter entity for <paramref name="param"/> which must
-        /// already have been created.
-        /// </summary>
-        public static Parameter GetAlreadyCreated(Context cx, IParameterSymbol param) =>
+        public static Parameter Create(Context cx, IParameterSymbol param) =>
             ParameterFactory.Instance.CreateEntity(cx, param, null, null);
 
         public override void WriteId(TextWriter trapFile)
@@ -277,7 +272,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (other == null || other.GetType() != typeof(ConstructedExtensionParameter))
                 return false;
 
-            return Equals(symbol, other.symbol) && Equals(ConstructedType, other.ConstructedType);
+            return SymbolEqualityComparer.Default.Equals(symbol, other.symbol) && SymbolEqualityComparer.Default.Equals(ConstructedType, other.ConstructedType);
         }
 
         public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>

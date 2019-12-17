@@ -20,11 +20,10 @@ class ReturnPointsToExpr extends PointsToExpr {
   ReturnStmt getReturnStmt() { result.getExpr().getFullyConverted() = this }
 }
 
-from ReturnPointsToExpr ret, LocalVariable local, float confidence
+from ReturnPointsToExpr ret, StackVariable local, float confidence
 where
   ret.pointsTo() = local and
   ret.getReturnStmt().getEnclosingFunction() = local.getFunction() and
-  not local.isStatic() and
   confidence = ret.confidence() and
   confidence > 0.01
 select ret,

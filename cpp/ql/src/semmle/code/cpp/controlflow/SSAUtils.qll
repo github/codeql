@@ -21,11 +21,9 @@ private predicate dominanceFrontier(BasicBlock x, BasicBlock w) {
 }
 
 /**
- * Extended version of `definition` that also includes parameters but excludes
- * static variables.
+ * Extended version of `definition` that also includes parameters.
  */
-predicate var_definition(LocalScopeVariable v, ControlFlowNode node) {
-  not v.isStatic() and
+predicate var_definition(StackVariable v, ControlFlowNode node) {
   not addressTakenVariable(v) and
   not unreachable(node) and
   (
@@ -51,7 +49,7 @@ predicate var_definition(LocalScopeVariable v, ControlFlowNode node) {
  * analysis because the pointer could be used to change the value at
  * any moment.
  */
-private predicate addressTakenVariable(LocalScopeVariable var) {
+private predicate addressTakenVariable(StackVariable var) {
   // If the type of the variable is a reference type, then it is safe (as
   // far as SSA is concerned) to take its address, because this does not
   // enable the variable to be modified indirectly. Obviously the
@@ -71,7 +69,7 @@ private predicate addressTakenVariable(LocalScopeVariable var) {
   )
 }
 
-private predicate isReferenceVar(LocalScopeVariable v) {
+private predicate isReferenceVar(StackVariable v) {
   v.getUnspecifiedType() instanceof ReferenceType
 }
 
@@ -79,22 +77,22 @@ private predicate isReferenceVar(LocalScopeVariable v) {
  * This predicate is the same as `var_definition`, but annotated with
  * the basic block and index of the control flow node.
  */
-private predicate variableUpdate(LocalScopeVariable v, ControlFlowNode n, BasicBlock b, int i) {
+private predicate variableUpdate(StackVariable v, ControlFlowNode n, BasicBlock b, int i) {
   var_definition(v, n) and n = b.getNode(i)
 }
 
-private predicate ssa_use(LocalScopeVariable v, VariableAccess node, BasicBlock b, int index) {
+private predicate ssa_use(StackVariable v, VariableAccess node, BasicBlock b, int index) {
   useOfVar(v, node) and b.getNode(index) = node
 }
 
-private predicate live_at_start_of_bb(LocalScopeVariable v, BasicBlock b) {
+private predicate live_at_start_of_bb(StackVariable v, BasicBlock b) {
   exists(int i | ssa_use(v, _, b, i) | not exists(int j | variableUpdate(v, _, b, j) | j < i))
   or
   live_at_exit_of_bb(v, b) and not variableUpdate(v, _, b, _)
 }
 
 pragma[noinline]
-private predicate live_at_exit_of_bb(LocalScopeVariable v, BasicBlock b) {
+private predicate live_at_exit_of_bb(StackVariable v, BasicBlock b) {
   live_at_start_of_bb(v, b.getASuccessor())
 }
 
@@ -110,12 +108,12 @@ library class SSAHelper extends int {
    * basic block `b`.
    */
   cached
-  predicate custom_phi_node(LocalScopeVariable v, BasicBlock b) { none() }
+  predicate custom_phi_node(StackVariable v, BasicBlock b) { none() }
 
   /**
    * Remove any custom phi nodes that are invalid.
    */
-  private predicate sanitized_custom_phi_node(LocalScopeVariable v, BasicBlock b) {
+  private predicate sanitized_custom_phi_node(StackVariable v, BasicBlock b) {
     custom_phi_node(v, b) and
     not addressTakenVariable(v) and
     not isReferenceVar(v) and
@@ -127,7 +125,7 @@ library class SSAHelper extends int {
    * `b`.
    */
   cached
-  predicate phi_node(LocalScopeVariable v, BasicBlock b) {
+  predicate phi_node(StackVariable v, BasicBlock b) {
     frontier_phi_node(v, b) or sanitized_custom_phi_node(v, b)
   }
 
@@ -138,13 +136,13 @@ library class SSAHelper extends int {
    * definitions).  This is known as the iterated dominance frontier.  See
    * Modern Compiler Implementation by Andrew Appel.
    */
-  private predicate frontier_phi_node(LocalScopeVariable v, BasicBlock b) {
+  private predicate frontier_phi_node(StackVariable v, BasicBlock b) {
     exists(BasicBlock x | dominanceFrontier(x, b) and ssa_defn_rec(v, x)) and
     /* We can also eliminate those nodes where the variable is not live on any incoming edge */
     live_at_start_of_bb(v, b)
   }
 
-  private predicate ssa_defn_rec(LocalScopeVariable v, BasicBlock b) {
+  private predicate ssa_defn_rec(StackVariable v, BasicBlock b) {
     phi_node(v, b)
     or
     variableUpdate(v, _, b, _)
@@ -155,7 +153,7 @@ library class SSAHelper extends int {
    * position `index` in block `b`. This includes definitions from phi nodes.
    */
   cached
-  predicate ssa_defn(LocalScopeVariable v, ControlFlowNode node, BasicBlock b, int index) {
+  predicate ssa_defn(StackVariable v, ControlFlowNode node, BasicBlock b, int index) {
     phi_node(v, b) and b.getStart() = node and index = -1
     or
     variableUpdate(v, node, b, index)
@@ -179,7 +177,7 @@ library class SSAHelper extends int {
    * irrelevant indices at which there is no definition or use when traversing
    * basic blocks.
    */
-  private predicate defUseRank(LocalScopeVariable v, BasicBlock b, int rankix, int i) {
+  private predicate defUseRank(StackVariable v, BasicBlock b, int rankix, int i) {
     i = rank[rankix](int j | ssa_defn(v, _, b, j) or ssa_use(v, _, b, j))
   }
 
@@ -189,7 +187,7 @@ library class SSAHelper extends int {
    * the extra rank at the end represents a position past the last node in
    * the block.
    */
-  private int lastRank(LocalScopeVariable v, BasicBlock b) {
+  private int lastRank(StackVariable v, BasicBlock b) {
     result = max(int rankix | defUseRank(v, b, rankix, _)) + 1
   }
 
@@ -197,7 +195,7 @@ library class SSAHelper extends int {
    * Holds if SSA variable `(v, def)` is defined at rank index `rankix` in
    * basic block `b`.
    */
-  private predicate ssaDefRank(LocalScopeVariable v, ControlFlowNode def, BasicBlock b, int rankix) {
+  private predicate ssaDefRank(StackVariable v, ControlFlowNode def, BasicBlock b, int rankix) {
     exists(int i |
       ssa_defn(v, def, b, i) and
       defUseRank(v, b, rankix, i)
@@ -210,9 +208,7 @@ library class SSAHelper extends int {
    * `v` that comes _at or after_ the reached node. Reaching a node means
    * that the definition is visible to any _use_ at that node.
    */
-  private predicate ssaDefReachesRank(
-    LocalScopeVariable v, ControlFlowNode def, BasicBlock b, int rankix
-  ) {
+  private predicate ssaDefReachesRank(StackVariable v, ControlFlowNode def, BasicBlock b, int rankix) {
     // A definition should not reach its own node unless a loop allows it.
     // When nodes are both definitions and uses for the same variable, the
     // use is understood to happen _before_ the definition. Phi nodes are
@@ -227,7 +223,7 @@ library class SSAHelper extends int {
 
   /** Holds if SSA variable `(v, def)` reaches the end of block `b`. */
   cached
-  predicate ssaDefinitionReachesEndOfBB(LocalScopeVariable v, ControlFlowNode def, BasicBlock b) {
+  predicate ssaDefinitionReachesEndOfBB(StackVariable v, ControlFlowNode def, BasicBlock b) {
     live_at_exit_of_bb(v, b) and ssaDefReachesRank(v, def, b, lastRank(v, b))
     or
     exists(BasicBlock idom |
@@ -243,7 +239,7 @@ library class SSAHelper extends int {
    * reaches the end of `b`.
    */
   pragma[noinline]
-  private predicate noDefinitionsSinceIDominator(LocalScopeVariable v, BasicBlock idom, BasicBlock b) {
+  private predicate noDefinitionsSinceIDominator(StackVariable v, BasicBlock idom, BasicBlock b) {
     bbIDominates(idom, b) and // It is sufficient to traverse the dominator graph, cf. discussion above.
     live_at_exit_of_bb(v, b) and
     not ssa_defn(v, _, b, _)
@@ -253,9 +249,7 @@ library class SSAHelper extends int {
    * Holds if SSA variable `(v, def)` reaches `use` within the same basic
    * block, where `use` is a `VariableAccess` of `v`.
    */
-  private predicate ssaDefinitionReachesUseWithinBB(
-    LocalScopeVariable v, ControlFlowNode def, Expr use
-  ) {
+  private predicate ssaDefinitionReachesUseWithinBB(StackVariable v, ControlFlowNode def, Expr use) {
     exists(BasicBlock b, int rankix, int i |
       ssaDefReachesRank(v, def, b, rankix) and
       defUseRank(v, b, rankix, i) and
@@ -266,7 +260,7 @@ library class SSAHelper extends int {
   /**
    * Holds if SSA variable `(v, def)` reaches the control-flow node `use`.
    */
-  private predicate ssaDefinitionReaches(LocalScopeVariable v, ControlFlowNode def, Expr use) {
+  private predicate ssaDefinitionReaches(StackVariable v, ControlFlowNode def, Expr use) {
     ssaDefinitionReachesUseWithinBB(v, def, use)
     or
     exists(BasicBlock b |
@@ -281,7 +275,7 @@ library class SSAHelper extends int {
    * `(node, v)`.
    */
   cached
-  string toString(ControlFlowNode node, LocalScopeVariable v) {
+  string toString(ControlFlowNode node, StackVariable v) {
     if phi_node(v, node.(BasicBlock))
     then result = "SSA phi(" + v.getName() + ")"
     else (
@@ -294,7 +288,7 @@ library class SSAHelper extends int {
    * access of `v`.
    */
   cached
-  VariableAccess getAUse(ControlFlowNode def, LocalScopeVariable v) {
+  VariableAccess getAUse(ControlFlowNode def, StackVariable v) {
     ssaDefinitionReaches(v, def, result) and
     ssa_use(v, result, _, _)
   }

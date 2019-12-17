@@ -15,7 +15,7 @@ Setup
 
 For this example you should download:
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
 - `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
 
 .. note::
@@ -58,7 +58,7 @@ RCE in Apache Struts
 
 - Disclosed as `CVE-2017-9805 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-9805>`__
 
-- Blog post: https://blog.semmle.com/apache-struts-vulnerability-cve-2017-9805/
+- Blog post: https://securitylab.github.com/research/apache-struts-vulnerability-cve-2017-9805
 
 Finding the RCE yourself
 ========================
@@ -134,4 +134,4 @@ Model answer, step 4
      and sink.getNode() instanceof UnsafeDeserializationSink
    select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink, "Unsafe    deserialization of $@.", source, "user input"
 
-More full-featured version: https://github.com/Semmle/demos/tree/master/ql_demos/java/Apache_Struts_CVE-2017-9805
+More full-featured version: https://github.com/github/security-lab/tree/master/CodeQL_Queries/java/Apache_Struts_CVE-2017-9805

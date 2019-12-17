@@ -31,6 +31,7 @@ where
         cls.isNewStyle() and
         not name = "__new__" and
         not name = "__metaclass__" and
+        not name = "__init_subclass__" and
         /* declared in scope */
         f.getScope() = cls.getScope()
     ) and

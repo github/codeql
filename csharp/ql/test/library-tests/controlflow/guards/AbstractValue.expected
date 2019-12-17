@@ -119,6 +119,14 @@ abstractValue
 | non-null | Collections.cs:67:19:67:21 | "a" |
 | non-null | Collections.cs:68:19:68:21 | "b" |
 | non-null | Collections.cs:74:40:74:41 | "" |
+| non-null | Collections.cs:75:26:75:32 | this access |
+| non-null | Collections.cs:76:24:76:30 | this access |
+| non-null | Collections.cs:77:24:77:30 | this access |
+| non-null | Collections.cs:78:24:78:30 | this access |
+| non-null | Collections.cs:79:24:79:30 | this access |
+| non-null | Collections.cs:80:24:80:30 | this access |
+| non-null | Collections.cs:81:24:81:30 | this access |
+| non-null | Collections.cs:82:24:82:30 | this access |
 | non-null | Collections.cs:87:17:87:31 | array creation of type String[] |
 | non-null | Collections.cs:88:22:88:23 | array creation of type String[] |
 | non-null | Collections.cs:89:9:89:32 | ... = ... |

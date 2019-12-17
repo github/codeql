@@ -1,5 +1,6 @@
 import AliasAnalysis
 private import SimpleSSAImports
+import SimpleSSAPublicImports
 
 private class IntValue = Ints::IntValue;
 
@@ -27,20 +28,19 @@ private predicate isVariableModeled(IRVariable var) {
   // There's no need to check for the right size. An `IRVariable` never has an `UnknownType`, so the test for
   // `type = var.getType()` is sufficient.
   forall(Instruction instr, Language::LanguageType type, IntValue bitOffset |
-    hasResultMemoryAccess(instr, var, type, bitOffset)
+    hasResultMemoryAccess(instr, var, type, bitOffset) and
+    not instr.hasResultMayMemoryAccess()
   |
     bitOffset = 0 and
     type.getIRType() = var.getIRType() and
-    not (
-      instr.getResultMemoryAccess() instanceof IndirectMayMemoryAccess or
-      instr.getResultMemoryAccess() instanceof BufferMayMemoryAccess
-    )
+    not instr.hasResultMayMemoryAccess()
   ) and
   forall(MemoryOperand operand, Language::LanguageType type, IntValue bitOffset |
     hasOperandMemoryAccess(operand, var, type, bitOffset)
   |
     bitOffset = 0 and
-    type.getIRType() = var.getIRType()
+    type.getIRType() = var.getIRType() and
+    not operand.hasMayMemoryAccess()
   )
 }
 

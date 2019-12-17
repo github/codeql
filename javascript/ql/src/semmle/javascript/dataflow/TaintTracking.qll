@@ -558,6 +558,23 @@ module TaintTracking {
       succ = this
     }
   }
+  
+
+  /**
+   * A taint propagating data flow edge arising from calling `String.prototype.match()`.
+   */
+  private class StringMatchTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
+    StringMatchTaintStep() {
+      this.getMethodName() = "match" and
+      this.getNumArgument() = 1 and
+      this.getArgument(0) .analyze().getAType() = TTRegExp()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = this.getReceiver() and
+      succ = this
+    }
+  }
 
   /**
    * A taint propagating data flow edge arising from JSON unparsing.
@@ -679,33 +696,37 @@ module TaintTracking {
    */
   class SanitizingRegExpTest extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr expr;
+    boolean sanitizedOutcome;
 
     SanitizingRegExpTest() {
       exists(MethodCallExpr mce, Expr base, string m, Expr firstArg |
         mce = astNode and mce.calls(base, m) and firstArg = mce.getArgument(0)
       |
         // /re/.test(u) or /re/.exec(u)
-        base.analyze().getAType() = TTRegExp() and
+        RegExp::isGenericRegExpSanitizer(RegExp::getRegExpObjectFromNode(base.flow()), sanitizedOutcome) and
         (m = "test" or m = "exec") and
         firstArg = expr
         or
         // u.match(/re/) or u.match("re")
         base = expr and
         m = "match" and
-        exists(InferredType firstArgType | firstArgType = firstArg.analyze().getAType() |
-          firstArgType = TTRegExp() or firstArgType = TTString()
-        )
+        RegExp::isGenericRegExpSanitizer(RegExp::getRegExpFromNode(firstArg.flow()), sanitizedOutcome)
       )
       or
       // m = /re/.exec(u) and similar
-      DataFlow::valueNode(astNode.(AssignExpr).getRhs()).(SanitizingRegExpTest).getSanitizedExpr() =
-        expr
+      exists(SanitizingRegExpTest other |
+        other = DataFlow::valueNode(astNode.(AssignExpr).getRhs()) and
+        expr = other.getSanitizedExpr() and
+        sanitizedOutcome = other.getSanitizedOutcome()
+      )
     }
 
     private Expr getSanitizedExpr() { result = expr }
 
+    private boolean getSanitizedOutcome() { result = sanitizedOutcome }
+
     override predicate sanitizes(boolean outcome, Expr e) {
-      (outcome = true or outcome = false) and
+      outcome = sanitizedOutcome and
       e = expr
     }
 
@@ -884,5 +905,13 @@ module TaintTracking {
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
+  }
+
+  /**
+   * Holds if taint propagates from `pred` to `succ` in one local (intra-procedural) step.
+   */
+  predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    DataFlow::localFlowStep(pred, succ) or
+    any(AdditionalTaintStep s).step(pred, succ)
   }
 }

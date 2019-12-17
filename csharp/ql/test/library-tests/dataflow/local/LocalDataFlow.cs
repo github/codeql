@@ -485,4 +485,12 @@ public class LocalDataFlow
         IEnumerable<object> os2;
         foreach(var o in os2 = os) { }
     }
+
+    public static implicit operator LocalDataFlow(string[] args) => null;
+
+    public void ConversionFlow(string[] args)
+    {
+        Span<object> span = args; // flow (library operator)
+        LocalDataFlow x = args; // no flow (source code operator)
+    }
 }

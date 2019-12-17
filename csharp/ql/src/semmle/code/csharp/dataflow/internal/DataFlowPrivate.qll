@@ -7,7 +7,9 @@ private import DataFlowImplCommon::Public
 private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
+private import semmle.code.csharp.Conversion
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.Unification
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
@@ -297,7 +299,7 @@ private class Argument extends Expr {
 private predicate instanceFieldLikeAssign(Expr e, FieldLike f, Expr src, Expr q) {
   exists(FieldLikeAccess fa, AssignableDefinition def |
     def.getTargetAccess() = fa and
-    f = fa.getTarget() and
+    f = fa.getTarget().getSourceDeclaration() and
     not f.isStatic() and
     src = def.getSource() and
     q = fa.getQualifier() and
@@ -312,9 +314,32 @@ private predicate instanceFieldLikeAssign(Expr e, FieldLike f, Expr src, Expr q)
 private predicate instanceFieldLikeInit(ObjectCreation oc, FieldLike f, Expr src) {
   exists(MemberInitializer mi |
     mi = oc.getInitializer().(ObjectInitializer).getAMemberInitializer() and
-    f = mi.getInitializedMember() and
+    f = mi.getInitializedMember().getSourceDeclaration() and
     not f.isStatic() and
     src = mi.getRValue()
+  )
+}
+
+private Type getCSharpType(DotNet::Type t) {
+  result = t
+  or
+  result.matchesHandle(t)
+}
+
+pragma[noinline]
+private TypeParameter getATypeParameterSubType(DataFlowType t) {
+  not t instanceof Gvn::TypeParameterGvnType and
+  exists(Type t0 | t = Gvn::getGlobalValueNumber(t0) | implicitConversionRestricted(result, t0))
+}
+
+pragma[noinline]
+private DataFlowType getANonTypeParameterSubType(DataFlowType t) {
+  not t instanceof Gvn::TypeParameterGvnType and
+  not result instanceof Gvn::TypeParameterGvnType and
+  exists(Type t1, Type t2 |
+    implicitConversionRestricted(t1, t2) and
+    result = Gvn::getGlobalValueNumber(t1) and
+    t = Gvn::getGlobalValueNumber(t2)
   )
 }
 
@@ -414,7 +439,8 @@ private module Cached {
   }
 
   cached
-  newtype TContent = TFieldLikeContent(FieldLike f) { not f.isStatic() }
+  newtype TContent =
+    TFieldLikeContent(FieldLike f) { not f.isStatic() and f.getSourceDeclaration() = f }
 
   /**
    * Holds if data can flow from `node1` to `node2` via an assignment to
@@ -442,7 +468,11 @@ private module Cached {
   predicate readStepImpl(Node node1, Content c, Node node2) {
     exists(ReadStepConfiguration x |
       x.hasNodePath(node1, node2) and
-      c.(FieldLikeContent).getField() = node2.asExpr().(FieldLikeRead).getTarget()
+      c.(FieldLikeContent).getField() = node2
+            .asExpr()
+            .(FieldLikeRead)
+            .getTarget()
+            .getSourceDeclaration()
     )
   }
 
@@ -459,6 +489,41 @@ private module Cached {
       paramNode.getDefinition() = param and
       param.getARead() = guard and
       guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs)
+    )
+  }
+
+  /**
+   * Gets a representative type for `t` for the purpose of pruning possible flow.
+   */
+  cached
+  DataFlowType getErasedRepr(DotNet::Type t) {
+    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
+      t0 = getCSharpType(t)
+      or
+      not exists(getCSharpType(t)) and
+      t0 instanceof ObjectType
+    )
+  }
+
+  /**
+   * Holds if GVNs `t1` and `t2` may have a common sub type. Neither `t1` nor
+   * `t2` are allowed to be type parameters.
+   */
+  cached
+  predicate commonSubType(DataFlowType t1, DataFlowType t2) {
+    not t1 instanceof Gvn::TypeParameterGvnType and
+    t1 = t2
+    or
+    getATypeParameterSubType(t1) = getATypeParameterSubType(t2)
+    or
+    getANonTypeParameterSubType(t1) = getANonTypeParameterSubType(t2)
+  }
+
+  cached
+  predicate commonSubTypeUnifiableLeft(DataFlowType t1, DataFlowType t2) {
+    exists(DataFlowType t |
+      Gvn::unifiable(t1, t) and
+      commonSubType(t, t2)
     )
   }
 }
@@ -571,7 +636,11 @@ private module ParameterNodes {
       result = this.getUnderlyingNode().getEnclosingCallable()
     }
 
-    override Type getType() { result = this.getUnderlyingNode().getType() }
+    override Type getType() {
+      // Taint tracking steps are allowed to change the type of the tracked object,
+      // so `result = this.getUnderlyingNode().getType()` is too restrictive
+      result instanceof ObjectType
+    }
 
     override Location getLocation() { result = this.getUnderlyingNode().getLocation() }
 
@@ -914,7 +983,9 @@ private module ReturnNodes {
       result = this.getUnderlyingNode().getEnclosingCallable()
     }
 
-    override Type getType() { result = this.getUnderlyingNode().getType() }
+    override Type getType() {
+      result = this.getUnderlyingNode().getEnclosingCallable().getReturnType()
+    }
 
     override Location getLocation() { result = this.getUnderlyingNode().getLocation() }
 
@@ -1105,7 +1176,11 @@ private module OutNodes {
 
     override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = cfn.getElement().(Expr).getType() }
+    override Type getType() {
+      exists(ImplicitDelegateDataFlowCall c | c.getNode() = this |
+        result = c.getDelegateReturnType()
+      )
+    }
 
     override Location getLocation() { result = cfn.getLocation() }
 
@@ -1243,10 +1318,10 @@ class Content extends TContent {
   abstract Location getLocation();
 
   /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
+  abstract DataFlowType getContainerType();
 
   /** Gets the type of this content. */
-  abstract Type getType();
+  abstract DataFlowType getType();
 }
 
 private class FieldLikeContent extends Content, TFieldLikeContent {
@@ -1260,9 +1335,11 @@ private class FieldLikeContent extends Content, TFieldLikeContent {
 
   override Location getLocation() { result = f.getLocation() }
 
-  override Type getContainerType() { result = f.getDeclaringType() }
+  override DataFlowType getContainerType() {
+    result = Gvn::getGlobalValueNumber(f.getDeclaringType())
+  }
 
-  override Type getType() { result = f.getType() }
+  override DataFlowType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
 private class StoreStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -1299,31 +1376,37 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
 
 predicate readStep = readStepImpl/3;
 
-private predicate suppressUnusedType(DotNet::Type t) { any() }
-
-/**
- * Gets a representative type for `t` for the purpose of pruning possible flow.
- *
- * Type-based pruning is disabled for now, so this is a stub implementation.
- */
-bindingset[t]
-DotNet::Type getErasedRepr(DotNet::Type t) {
-  // stub implementation
-  suppressUnusedType(t) and result instanceof ObjectType
-}
-
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DotNet::Type t) { none() } // stub implementation
+string ppReprType(DataFlowType t) { result = t.toString() }
+
+private class DataFlowNullType extends DataFlowType {
+  DataFlowNullType() { this = Gvn::getGlobalValueNumber(any(NullType nt)) }
+
+  pragma[noinline]
+  predicate isConvertibleTo(DataFlowType t) {
+    defaultNullConversion(_, any(Type t0 | t = Gvn::getGlobalValueNumber(t0)))
+  }
+}
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
- *
- * Type-based pruning is disabled for now, so this is a stub implementation.
  */
-bindingset[t1, t2]
-predicate compatibleTypes(DotNet::Type t1, DotNet::Type t2) {
-  any() // stub implementation
+pragma[inline]
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
+  commonSubType(t1, t2)
+  or
+  commonSubTypeUnifiableLeft(t1, t2)
+  or
+  commonSubTypeUnifiableLeft(t2, t1)
+  or
+  t1.(DataFlowNullType).isConvertibleTo(t2)
+  or
+  t2.(DataFlowNullType).isConvertibleTo(t1)
+  or
+  t1 instanceof Gvn::TypeParameterGvnType
+  or
+  t2 instanceof Gvn::TypeParameterGvnType
 }
 
 /**
@@ -1370,13 +1453,24 @@ private module PostUpdateNodes {
 private import PostUpdateNodes
 
 /** A node that performs a type cast. */
-class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastExpr }
+class CastNode extends Node {
+  CastNode() {
+    this.asExpr() instanceof Cast
+    or
+    exists(Ssa::ExplicitDefinition def |
+      def = this.(SsaDefinitionNode).getDefinition() and
+      def.getADefinition() instanceof AssignableDefinitions::PatternDefinition
+    )
+    or
+    readStep(_, _, this)
+    or
+    storeStep(this, _, _)
+  }
 }
 
 class DataFlowExpr = DotNet::Expr;
 
-class DataFlowType = DotNet::Type;
+class DataFlowType = Gvn::GvnType;
 
 class DataFlowLocation = Location;
 

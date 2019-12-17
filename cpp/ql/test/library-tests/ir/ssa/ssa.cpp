@@ -139,7 +139,7 @@ void MergeMustExactlyWithMustTotallyOverlap(bool c, Point p, int x1) {
   else {
     a = p;
   }
-  int x = a.x;  // Only one reaching def must exactly overlap, but we should still get a Phi for it.
+  int x = a.x;  // Only one (non-Chi) reaching def must exactly overlap, but we should still get a Phi for it.
 }
 
 void MergeMustExactlyWithMayPartiallyOverlap(bool c, Point p, int x1) {

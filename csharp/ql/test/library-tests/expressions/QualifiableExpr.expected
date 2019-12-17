@@ -1,3 +1,4 @@
+| MethodAccess.cs:8:20:8:21 | access to local function M1 | MethodAccess.cs:8:20:8:21 | this access |
 | MethodAccess.cs:9:13:9:14 | access to method M2 | MethodAccess.cs:9:13:9:14 | this access |
 | MethodAccess.cs:10:13:10:19 | access to method M2 | MethodAccess.cs:10:13:10:16 | this access |
 | MethodAccess.cs:12:13:12:27 | access to method M3 | MethodAccess.cs:12:13:12:24 | access to type MethodAccess |
@@ -29,6 +30,8 @@
 | expressions.cs:182:27:182:30 | access to method M3 | expressions.cs:182:27:182:27 | access to local variable c |
 | expressions.cs:189:52:189:54 | access to method F | expressions.cs:189:52:189:52 | access to type X |
 | expressions.cs:190:36:190:38 | access to method G | expressions.cs:190:36:190:36 | access to type X |
+| expressions.cs:197:25:197:37 | access to local function LocalFunction | expressions.cs:197:25:197:37 | this access |
+| expressions.cs:198:19:198:31 | access to local function LocalFunction | expressions.cs:198:19:198:31 | this access |
 | expressions.cs:233:17:233:21 | access to event Click | expressions.cs:233:17:233:21 | this access |
 | expressions.cs:234:17:234:21 | access to event Click | expressions.cs:234:17:234:21 | this access |
 | expressions.cs:239:13:239:17 | access to event Click | expressions.cs:239:13:239:17 | this access |

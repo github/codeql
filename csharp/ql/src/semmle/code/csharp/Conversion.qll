@@ -24,20 +24,25 @@ private module Cached {
    *
    * 6.1: Implicit type conversions.
    *
-   * The following conversions are classified as implicit conversions:
+   * The following conversions are included:
    *
    * - Identity conversions
    * - Implicit numeric conversions
    * - Implicit nullable conversions
    * - Implicit reference conversions
    * - Boxing conversions
-   * - User-defined implicit conversions
    */
   cached
-  predicate implicitConversion(Type fromType, Type toType) {
-    implicitConversionNonNull(fromType, toType)
+  predicate implicitConversionRestricted(Type fromType, Type toType) {
+    convIdentity(fromType, toType)
     or
-    defaultNullConversion(fromType, toType)
+    convNumeric(fromType, toType)
+    or
+    convNullableType(fromType, toType)
+    or
+    convRefTypeNonNull(fromType, toType)
+    or
+    convBoxing(fromType, toType)
   }
 
   /**
@@ -58,19 +63,34 @@ private module Cached {
 import Cached
 
 private predicate implicitConversionNonNull(Type fromType, Type toType) {
-  convIdentity(fromType, toType)
-  or
-  convNumeric(fromType, toType)
-  or
-  convNullableType(fromType, toType)
-  or
-  convRefTypeNonNull(fromType, toType)
-  or
-  convBoxing(fromType, toType)
+  implicitConversionRestricted(fromType, toType)
   or
   convConversionOperator(fromType, toType)
   or
   fromType instanceof DynamicType // 6.1.8
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Holds if there exists an implicit conversion from `fromType` to `toType`.
+ *
+ * 6.1: Implicit type conversions.
+ *
+ * The following conversions are classified as implicit conversions:
+ *
+ * - Identity conversions
+ * - Implicit numeric conversions
+ * - Implicit nullable conversions
+ * - Implicit reference conversions
+ * - Boxing conversions
+ * - User-defined implicit conversions
+ */
+pragma[nomagic]
+predicate implicitConversion(Type fromType, Type toType) {
+  implicitConversionNonNull(fromType, toType)
+  or
+  defaultNullConversion(fromType, toType)
 }
 
 /**

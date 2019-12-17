@@ -1,2 +1,2 @@
-semmle-extractor-options: --max-import-depth=3
+semmle-extractor-options: --lang=2 --max-import-depth=3
 optimize: true

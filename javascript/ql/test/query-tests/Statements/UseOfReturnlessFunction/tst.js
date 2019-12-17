@@ -88,4 +88,22 @@
 	}
 	
 	new Deferred().resolve(onlySideEffects()); // OK
+	
+	Promise.all([onlySideEffects(), onlySideEffects()])
 })();
+
++function() {
+    console.log("FOO");
+}.call(this);
+
+class Foo {
+	constructor() {
+		console.log("FOO");
+	}
+}
+
+class Bar extends Foo {
+	constructor() {
+		console.log(super()); // OK.
+	}
+}
