@@ -14,6 +14,11 @@ class Conf extends Configuration {
     src.asExpr() instanceof NewExpr
     or
     src.asExpr().(Call).getTarget().hasName("user_input")
+    or
+    exists(FunctionCall fc |
+      fc.getAnArgument() = src.asDefiningArgument() and
+      fc.getTarget().hasName("argument_source")
+    )
   }
 
   override predicate isSink(Node sink) {
