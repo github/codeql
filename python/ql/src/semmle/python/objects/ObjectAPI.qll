@@ -105,6 +105,18 @@ class Value extends TObject {
         or
         this instanceof AbsentModuleAttributeObjectInternal
     }
+
+    /** Whether this overrides v. In this context, "overrides" means that this object
+     *  is a named attribute of a some class C and `v` is a named attribute of another
+     *  class S, both attributes having the same name, and S is a super class of C.
+     */
+    predicate overrides(Value v) {
+        exists(ClassValue my_class, ClassValue other_class, string name |
+            my_class.declaredAttribute(name) = this and
+            other_class.declaredAttribute(name) = v and
+            my_class.getABaseType+() = other_class
+        )
+    }
 }
 
 /** Class representing modules in the Python program
@@ -461,6 +473,14 @@ abstract class FunctionValue extends CallableValue {
 
     /** Gets the maximum number of parameters that can be correctly passed to this function */
     abstract int maxParameters();
+
+    predicate isOverridingMethod() {
+        exists(Value f | this.overrides(f))
+    }
+
+    predicate isOverriddenMethod() {
+        exists(Value f | f.overrides(this))
+    }
 }
 
 /** Class representing Python functions */
