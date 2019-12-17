@@ -87,7 +87,7 @@ module ExceptionXss {
 
   /**
    * Gets the error parameter for a callback that is supplied to the same call as `pred` is an argument to. 
-   * E.g: `outerCall(foo, <pred>, bar, (<result>, val) => { ... })`. 
+   * For example: `outerCall(foo, <pred>, bar, (<result>, val) => { ... })`. 
    */
   DataFlow::Node getCallbackErrorParam(DataFlow::Node pred) {
     exists(DataFlow::CallNode call, Callback callback |

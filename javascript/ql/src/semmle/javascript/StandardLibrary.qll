@@ -211,7 +211,7 @@ private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
 
 /**
  * A data flow edge from the exceptional return of the promise executor to the promise catch handler.
- * This only adds an edge from the exceptional return of the promise Executor and to a `.catch()` handler.
+ * This only adds an edge from the exceptional return of the promise executor to a `.catch()` handler.
  * Missing are (at least): 
  *   Exceptional flow from promise executor (and handlers) to exceptional return of an `await` expression. 
  *   Flow from calls to `reject` to exceptional return of an `await` expression.
