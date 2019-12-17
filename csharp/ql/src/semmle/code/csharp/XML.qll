@@ -5,13 +5,6 @@
 import semmle.code.csharp.Element
 import semmle.code.csharp.Location
 
-/** Adapter so that XMLLocatables are elements */
-library class XMLLocatableElement extends @xmllocatable, Element {
-  override string toString() { result = this.(XMLLocatable).toString() }
-
-  override Location getALocation() { result = this.(XMLLocatable).getALocation() }
-}
-
 /** An XML element that has a location. */
 class XMLLocatable extends @xmllocatable {
   XMLLocatable() {

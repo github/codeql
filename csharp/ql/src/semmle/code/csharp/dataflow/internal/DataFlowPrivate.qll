@@ -355,7 +355,7 @@ private module Cached {
     TSsaDefinitionNode(Ssa::Definition def) or
     TInstanceParameterNode(Callable c) { c.hasBody() and not c.(Modifiable).isStatic() } or
     TCilParameterNode(CIL::Parameter p) { p.getMethod().hasBody() } or
-    TTaintedParameterNode(Parameter p) { p.getCallable().hasBody() } or
+    TTaintedParameterNode(Parameter p) { explicitParameterNode(_, p) } or
     TTaintedReturnNode(ControlFlow::Nodes::ElementNode cfn) {
       any(Callable c).canYieldReturn(cfn.getElement())
     } or
