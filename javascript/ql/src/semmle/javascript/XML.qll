@@ -88,7 +88,10 @@ class XMLParent extends @xmlparent {
     )
   }
 
-  /** Append all the character sequences of this XML parent from left to right, separated by a space. */
+  /**
+   * Gets the result of appending all the character sequences of this XML parent from
+   * left to right, separated by a space.
+   */
   string allCharactersString() {
     result = concat(string chars, int pos |
         xmlChars(_, chars, this, pos, _, _)
