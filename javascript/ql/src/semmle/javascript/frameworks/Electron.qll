@@ -98,7 +98,7 @@ module Electron {
 
     /**
      * An instance of the Main process of an Electron app.
-     * Communication in an electron app generally happens from the renderer process to the main process.
+     * Communication in an Electron app generally happens from the renderer process to the main process.
      */
     class MainProcess extends Process {
       MainProcess() { this = main() }
