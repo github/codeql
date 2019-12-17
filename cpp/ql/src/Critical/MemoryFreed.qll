@@ -15,6 +15,4 @@ class FreedExpr extends PointsToExpr {
   override predicate interesting() { freed(this) }
 }
 
-predicate allocMayBeFreed(AllocationExpr alloc) {
-  anythingPointsTo(alloc)
-}
+predicate allocMayBeFreed(AllocationExpr alloc) { anythingPointsTo(alloc) }
