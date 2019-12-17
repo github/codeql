@@ -19,6 +19,7 @@ private predicate timeType(string typeName) {
   typeName = "SYSTEMTIME" or
   typeName = "tm"
 }
+
 /**
  * A type that is used to represent times and dates in an 'unpacked' form, that is,
  * with separate fields for day, month, year etc.
