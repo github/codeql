@@ -2,7 +2,7 @@
  * A library for working with XML files and their content.
  */
 
-import semmle.python.Files
+import semmle.files.FileSystem
 
 /** An XML element that has a location. */
 abstract class XMLLocatable extends @xmllocatable {

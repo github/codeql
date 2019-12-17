@@ -2,7 +2,7 @@
  * Provides classes and predicates for working with XML files and their content.
  */
 
-import semmle.code.Location
+import semmle.files.FileSystem
 
 /** An XML element that has a location. */
 abstract class XMLLocatable extends @xmllocatable {
