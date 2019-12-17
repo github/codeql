@@ -578,6 +578,13 @@ cached module PointsToInternal {
         )
         or
         /* Undefined variable */
+        undefined_variable(def, context, value, origin)
+        or
+        /* Builtin not defined in outer scope */
+        builtin_not_in_outer_scope(def, context, value, origin)
+    }
+
+    private predicate undefined_variable(ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(Scope scope |
             not def.getVariable().getName() = "__name__" and
             not def.getVariable().isMetaVariable() and
@@ -587,8 +594,9 @@ cached module PointsToInternal {
             def.getSourceVariable() instanceof LocalVariable and (context.isImport() or context.isRuntime() or context.isMain())
         ) and
         value = ObjectInternal::undefined() and origin = def.getDefiningNode()
-        or
-        /* Builtin not defined in outer scope */
+    }
+
+    private predicate builtin_not_in_outer_scope(ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(Module mod, GlobalVariable var |
             var = def.getSourceVariable() and
             mod = def.getScope().getEnclosingModule() and
@@ -1113,8 +1121,17 @@ module InterProceduralPointsTo {
      * Transfer of values from the callsite to the callee, for enclosing variables, but not arguments/parameters. */
     pragma [noinline]
     private predicate callsite_entry_value_transfer(EssaVariable caller_var, PointsToContext caller, ScopeEntryDefinition entry_def, PointsToContext callee) {
-        entry_def.getSourceVariable() = caller_var.getSourceVariable() and
-        callsite_calls_function(caller_var.getAUse(), caller, entry_def.getScope(), callee, _)
+        exists(ControlFlowNode use, SsaSourceVariable var |
+            var_and_use(caller_var, use, var) and
+            entry_def.getSourceVariable() = var and
+            callsite_calls_function(use, caller, entry_def.getScope(), callee, _)
+        )
+    }
+
+    pragma[nomagic]
+    private predicate var_and_use(EssaVariable caller_var, ControlFlowNode use, SsaSourceVariable var) {
+        use = caller_var.getAUse() and
+        var = caller_var.getSourceVariable()
     }
 
     /** Helper for `scope_entry_value_transfer`. */
