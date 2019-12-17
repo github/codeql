@@ -675,4 +675,9 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
     }
 
+    /** Get the `ClassValue` for the `NameError` class. */
+    ClassValue nameError() {
+        result = TBuiltinClassObject(Builtin::builtin("NameError"))
+    }
+
 }

@@ -30,7 +30,7 @@ predicate uninitialized_local(NameNode use) {
 predicate explicitly_guarded(NameNode u) {
     exists(Try t |
         t.getBody().contains(u.getNode()) and
-        t.getAHandler().getType().refersTo(theNameErrorType())
+        t.getAHandler().getType().pointsTo(ClassValue::nameError())
     )
 }
 
@@ -38,5 +38,3 @@ predicate explicitly_guarded(NameNode u) {
 from NameNode u
 where uninitialized_local(u) and not explicitly_guarded(u)
 select u.getNode(), "Local variable '" + u.getId() + "' may be used before it is initialized."
-
-
