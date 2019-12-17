@@ -115,15 +115,13 @@ class XMLFile extends XMLParent, File {
   override string toString() { result = XMLParent.super.toString() }
 
   /** Gets the name of this XML file. */
-  override string getName() { files(this, result, _, _, _) }
+  override string getName() { result = File.super.getAbsolutePath() }
 
   /** Gets the path of this XML file. */
-  string getPath() { files(this, _, result, _, _) }
+  string getPath() { result = getAbsolutePath() }
 
   /** Gets the path of the folder that contains this XML file. */
-  string getFolder() {
-    result = this.getPath().substring(0, this.getPath().length() - this.getName().length())
-  }
+  string getFolder() { result = getParentContainer().getAbsolutePath() }
 
   /** Gets the encoding of this XML file. */
   string getEncoding() { xmlEncoding(this, result) }
