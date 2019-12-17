@@ -29,6 +29,13 @@ abstract class XMLLocatable extends @xmllocatable {
  * both of which can contain other elements.
  */
 class XMLParent extends @xmlparent {
+
+  XMLParent() {
+    // explicitly restrict `this` to be either an `XMLElement` or an `XMLFile`;
+    // the type `@xmlparent` currently also includes non-XML files
+    this instanceof @xmlelement or xmlEncoding(this, _)
+  }
+
   /**
    * A printable representation of this XML parent.
    * (Intended to be overridden in subclasses.)
