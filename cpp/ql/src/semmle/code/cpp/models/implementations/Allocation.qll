@@ -78,12 +78,6 @@ class MallocAllocationFunction extends AllocationFunction {
         // CoTaskMemAlloc(size)
         name = "CoTaskMemAlloc" and sizeArg = 0
         or
-        // alloca(size)
-        name = "alloca" and sizeArg = 0
-        or
-        // __builtin_alloca(size)
-        name = "__builtin_alloca" and sizeArg = 0
-        or
         // kmem_alloc(size, flags)
         name = "kmem_alloc" and sizeArg = 0
         or
@@ -94,6 +88,31 @@ class MallocAllocationFunction extends AllocationFunction {
   }
 
   override int getSizeArg() { result = sizeArg }
+}
+
+/**
+ * An allocation function (such as `alloca`) that does not require a
+ * corresponding free (and has an argument for the size in bytes).
+ */
+class AllocaAllocationFunction extends AllocationFunction {
+  int sizeArg;
+
+  AllocaAllocationFunction() {
+    exists(string name |
+      hasGlobalName(name) and
+      (
+        // alloca(size)
+        name = "alloca" and sizeArg = 0
+        or
+        // __builtin_alloca(size)
+        name = "__builtin_alloca" and sizeArg = 0
+      )
+    )
+  }
+
+  override int getSizeArg() { result = sizeArg }
+
+  predicate requiresDealloc() { none() }
 }
 
 /**
@@ -243,6 +262,8 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
   override int getSizeBytes() { result = getSizeExpr().getValue().toInt() * getSizeMult() }
 
   override Expr getReallocPtr() { result = getArgument(target.getReallocPtrArg()) }
+
+  override predicate requiresDealloc() { target.requiresDealloc() }
 }
 
 /**

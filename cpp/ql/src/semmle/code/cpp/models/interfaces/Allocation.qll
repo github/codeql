@@ -33,6 +33,12 @@ abstract class AllocationFunction extends Function {
    * is a `realloc` function.
    */
   int getReallocPtrArg() { none() }
+
+  /**
+   * Whether or not this allocation requires a corresponding deallocation of
+   * some sort (most do, but `alloca` for example does not).
+   */
+  predicate requiresDealloc() { any() }
 }
 
 /**
@@ -63,4 +69,10 @@ abstract class AllocationExpr extends Expr {
    * this is a `realloc` function.
    */
   Expr getReallocPtr() { none() }
+
+  /**
+   * Whether or not this allocation requires a corresponding deallocation of
+   * some sort (most do, but `alloca` for example does not).
+   */
+  predicate requiresDealloc() { any() }
 }
