@@ -157,10 +157,8 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // This is part of the translation of `a[i]`, where we want taint to flow
   // from `a`.
   i2.(PointerAddInstruction).getLeft() = i1
-  or
-  i2.(ChiInstruction).getPartial() = i1
-  or
-  i2.(ChiInstruction).getTotal() = i1
+  // TODO: robust Chi handling
+  //
   // TODO: Flow from argument to return of known functions: Port missing parts
   // of `returnArgument` to the `interfaces.Taint` and `interfaces.DataFlow`
   // libraries.
