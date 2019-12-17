@@ -158,7 +158,7 @@ app.get('/user/:id', function (req, res) {
 	try {
 		unknown()[foo];
 	} catch (e) {
-		$('myId').html(e); // NOT OK
+		$('myId').html(e); // OK. We are not sure that `unknown()` is null-ish. 
 	}
 
 	try {

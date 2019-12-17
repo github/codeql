@@ -15,9 +15,9 @@ nodes
 | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:33 | event.data |
-| exception-xss.js:2:9:2:31 | foo |
-| exception-xss.js:2:15:2:31 | document.location |
-| exception-xss.js:2:15:2:31 | document.location |
+| exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:2:12:2:28 | document.location |
+| exception-xss.js:2:12:2:28 | document.location |
 | exception-xss.js:86:17:86:19 | foo |
 | exception-xss.js:86:17:86:19 | foo |
 | jquery.js:2:7:2:40 | tainted |
@@ -372,10 +372,10 @@ edges
 | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
-| exception-xss.js:2:9:2:31 | foo | exception-xss.js:86:17:86:19 | foo |
-| exception-xss.js:2:9:2:31 | foo | exception-xss.js:86:17:86:19 | foo |
-| exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
-| exception-xss.js:2:15:2:31 | document.location | exception-xss.js:2:9:2:31 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
