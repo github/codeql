@@ -117,6 +117,20 @@ class XMLFile extends XMLParent, File {
   /** Gets the name of this XML file. */
   override string getName() { result = File.super.getAbsolutePath() }
 
+  /**
+   * DEPRECATED: Use `getAbsolutePath()` instead.
+   *
+   * Gets the path of this XML file.
+   */
+  deprecated string getPath() { result = getAbsolutePath() }
+
+  /**
+   * DEPRECATED: Use `getParentContainer().getAbsolutePath()` instead.
+   *
+   * Gets the path of the folder that contains this XML file.
+   */
+  deprecated string getFolder() { result = getParentContainer().getAbsolutePath() }
+
   /** Gets the encoding of this XML file. */
   string getEncoding() { xmlEncoding(this, result) }
 
