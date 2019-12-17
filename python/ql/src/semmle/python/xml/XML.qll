@@ -21,7 +21,7 @@ abstract class XMLLocatable extends @xmllocatable {
   ) {
     exists(File f, Location l | l = this.getLocation() |
       locations_default(l, f, startline, startcolumn, endline, endcolumn) and
-      filepath = f.getName()
+      filepath = f.getAbsolutePath()
     )
   }
 
