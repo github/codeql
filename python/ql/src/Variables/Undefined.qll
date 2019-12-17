@@ -37,11 +37,11 @@ private predicate first_use(NameNode u, EssaVariable v) {
     )
 }
 
-/* Holds if `call` is a call of the form obj.method_name(...) and 
+/* Holds if `call` is a call of the form obj.method_name(...) and
  * there is a function called `method_name` that can exit the program.
  */
 private predicate maybe_call_to_exiting_function(CallNode call) {
-    exists(FunctionObject exits, string name |
+    exists(FunctionValue exits, string name |
         exits.neverReturns() and exits.getName() = name
         |
         call.getFunction().(NameNode).getId() = name or
@@ -119,5 +119,3 @@ class UninitializedConfig extends TaintTracking::Configuration {
     }
 
 }
-
-
