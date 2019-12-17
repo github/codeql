@@ -1190,7 +1190,6 @@
 | GlobalDataFlow.cs:70:21:70:46 | call to method Return : T | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T |
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | GlobalDataFlow.cs:70:21:70:46 | call to method Return |
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | GlobalDataFlow.cs:70:21:70:46 | call to method Return : String |
-| GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | GlobalDataFlow.cs:70:21:70:46 | call to method Return : T |
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | GlobalDataFlow.cs:275:26:275:26 | x |
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | GlobalDataFlow.cs:275:26:275:26 | x : String |
 | GlobalDataFlow.cs:71:15:71:19 | access to local variable sink0 : String | GlobalDataFlow.cs:72:79:72:100 | array creation of type Object[] |
@@ -1274,16 +1273,12 @@
 | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : T | GlobalDataFlow.cs:72:21:72:101 | (...) ... |
 | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : T | GlobalDataFlow.cs:72:21:72:101 | (...) ... : T |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke |
-| GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : Object |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : String |
-| GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : T |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:72:79:72:100 | array creation of type Object[] |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:72:79:72:100 | array creation of type Object[] : Object[] |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:275:26:275:26 | x |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:275:26:275:26 | x : String |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke |
-| GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : Object |
-| GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : String |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : T |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | GlobalDataFlow.cs:72:79:72:100 | array creation of type Object[] |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | GlobalDataFlow.cs:72:79:72:100 | array creation of type Object[] : Object[] |
@@ -2257,7 +2252,6 @@
 | GlobalDataFlow.cs:100:24:100:33 | call to method Return : T | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : T |
 | GlobalDataFlow.cs:100:31:100:32 | "" : String | GlobalDataFlow.cs:100:24:100:33 | call to method Return |
 | GlobalDataFlow.cs:100:31:100:32 | "" : String | GlobalDataFlow.cs:100:24:100:33 | call to method Return : String |
-| GlobalDataFlow.cs:100:31:100:32 | "" : String | GlobalDataFlow.cs:100:24:100:33 | call to method Return : T |
 | GlobalDataFlow.cs:100:31:100:32 | "" : String | GlobalDataFlow.cs:275:26:275:26 | x |
 | GlobalDataFlow.cs:100:31:100:32 | "" : String | GlobalDataFlow.cs:275:26:275:26 | x : String |
 | GlobalDataFlow.cs:101:15:101:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:102:78:102:102 | array creation of type Object[] |
@@ -2293,16 +2287,12 @@
 | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : T | GlobalDataFlow.cs:102:20:102:103 | (...) ... |
 | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : T | GlobalDataFlow.cs:102:20:102:103 | (...) ... : T |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : String | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke |
-| GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : String | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : Object |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : String | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : String |
-| GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : String | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : T |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : String | GlobalDataFlow.cs:102:78:102:102 | array creation of type Object[] |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : String | GlobalDataFlow.cs:102:78:102:102 | array creation of type Object[] : Object[] |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : String | GlobalDataFlow.cs:275:26:275:26 | x |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : String | GlobalDataFlow.cs:275:26:275:26 | x : String |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : T | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke |
-| GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : T | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : Object |
-| GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : T | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : String |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : T | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : T |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : T | GlobalDataFlow.cs:102:78:102:102 | array creation of type Object[] |
 | GlobalDataFlow.cs:102:93:102:100 | access to local variable nonSink0 : T | GlobalDataFlow.cs:102:78:102:102 | array creation of type Object[] : Object[] |
@@ -3032,8 +3022,6 @@
 | GlobalDataFlow.cs:134:40:134:64 | (...) => ... : Func<String,String> | GlobalDataFlow.cs:135:21:135:27 | access to local variable return : Func<String,String> |
 | GlobalDataFlow.cs:134:40:134:64 | (...) => ... : Func<String,String> | GlobalDataFlow.cs:139:20:139:26 | access to local variable return |
 | GlobalDataFlow.cs:134:40:134:64 | (...) => ... : Func<String,String> | GlobalDataFlow.cs:139:20:139:26 | access to local variable return : Func<String,String> |
-| GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : Object | GlobalDataFlow.cs:135:21:135:34 | delegate call |
-| GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : Object | GlobalDataFlow.cs:135:21:135:34 | delegate call : Object |
 | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String | GlobalDataFlow.cs:135:21:135:34 | delegate call |
 | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String | GlobalDataFlow.cs:135:21:135:34 | delegate call : String |
 | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String | GlobalDataFlow.cs:139:20:139:36 | delegate call |
@@ -3046,25 +3034,17 @@
 | GlobalDataFlow.cs:134:55:134:60 | delegate creation of type Func<String,String> : Func<String,String> | GlobalDataFlow.cs:364:41:364:41 | f : Func<String,String> |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : Object | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : Object | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:134:63:134:63 | access to parameter x : Object | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:134:63:134:63 | access to parameter x : Object | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : Object | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : Object | GlobalDataFlow.cs:364:46:364:46 | x : Object |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
-| GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : Object |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : T |
-| GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:364:46:364:46 | x : String |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : String | GlobalDataFlow.cs:364:46:364:46 | x : String |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : T | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
-| GlobalDataFlow.cs:134:63:134:63 | access to parameter x : T | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:134:63:134:63 | access to parameter x : T | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : T | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : T | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:134:63:134:63 | access to parameter x : T | GlobalDataFlow.cs:364:46:364:46 | x : T |
@@ -3104,19 +3084,13 @@
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : Object | GlobalDataFlow.cs:134:40:134:40 | x : Object |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : Object | GlobalDataFlow.cs:135:21:135:34 | delegate call |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : Object | GlobalDataFlow.cs:135:21:135:34 | delegate call : Object |
-| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : Object | GlobalDataFlow.cs:135:21:135:34 | delegate call : String |
-| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : Object | GlobalDataFlow.cs:135:21:135:34 | delegate call : T |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | GlobalDataFlow.cs:134:40:134:40 | x |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | GlobalDataFlow.cs:134:40:134:40 | x : String |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | GlobalDataFlow.cs:135:21:135:34 | delegate call |
-| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | GlobalDataFlow.cs:135:21:135:34 | delegate call : Object |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | GlobalDataFlow.cs:135:21:135:34 | delegate call : String |
-| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | GlobalDataFlow.cs:135:21:135:34 | delegate call : T |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | GlobalDataFlow.cs:134:40:134:40 | x |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | GlobalDataFlow.cs:134:40:134:40 | x : T |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | GlobalDataFlow.cs:135:21:135:34 | delegate call |
-| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | GlobalDataFlow.cs:135:21:135:34 | delegate call : Object |
-| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | GlobalDataFlow.cs:135:21:135:34 | delegate call : String |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | GlobalDataFlow.cs:135:21:135:34 | delegate call : T |
 | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 : Object | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 |
 | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 : Object | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : Object |
@@ -3140,7 +3114,6 @@
 | GlobalDataFlow.cs:139:28:139:35 | access to local variable nonSink0 : String | GlobalDataFlow.cs:134:40:134:40 | x : String |
 | GlobalDataFlow.cs:139:28:139:35 | access to local variable nonSink0 : String | GlobalDataFlow.cs:139:20:139:36 | delegate call |
 | GlobalDataFlow.cs:139:28:139:35 | access to local variable nonSink0 : String | GlobalDataFlow.cs:139:20:139:36 | delegate call : String |
-| GlobalDataFlow.cs:139:28:139:35 | access to local variable nonSink0 : String | GlobalDataFlow.cs:139:20:139:36 | delegate call : T |
 | GlobalDataFlow.cs:143:13:143:44 | SSA def(sink5) : Object | GlobalDataFlow.cs:144:15:144:19 | access to local variable sink5 |
 | GlobalDataFlow.cs:143:13:143:44 | SSA def(sink5) : Object | GlobalDataFlow.cs:144:15:144:19 | access to local variable sink5 : Object |
 | GlobalDataFlow.cs:143:13:143:44 | SSA def(sink5) : Object | GlobalDataFlow.cs:149:39:149:43 | access to local variable sink5 |
@@ -3175,19 +3148,13 @@
 | GlobalDataFlow.cs:143:31:143:36 | delegate creation of type Func<String,String> : Func<String,String> | GlobalDataFlow.cs:364:41:364:41 | f : Func<String,String> |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : Object | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : Object | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : Object | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : Object | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : Object | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : Object | GlobalDataFlow.cs:364:46:364:46 | x : Object |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc |
-| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : Object |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | GlobalDataFlow.cs:364:46:364:46 | x : String |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc |
-| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | GlobalDataFlow.cs:364:46:364:46 | x : T |
@@ -3213,7 +3180,6 @@
 | GlobalDataFlow.cs:147:30:147:35 | delegate creation of type Func<String,String> : Func<String,String> | GlobalDataFlow.cs:364:41:364:41 | f : Func<String,String> |
 | GlobalDataFlow.cs:147:38:147:39 | "" : String | GlobalDataFlow.cs:147:20:147:40 | call to method ApplyFunc |
 | GlobalDataFlow.cs:147:38:147:39 | "" : String | GlobalDataFlow.cs:147:20:147:40 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:147:38:147:39 | "" : String | GlobalDataFlow.cs:147:20:147:40 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:147:38:147:39 | "" : String | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:147:38:147:39 | "" : String | GlobalDataFlow.cs:364:46:364:46 | x : String |
 | GlobalDataFlow.cs:149:9:149:44 | SSA def(nonSink0) : String | GlobalDataFlow.cs:150:15:150:22 | access to local variable nonSink0 |
@@ -4033,40 +3999,20 @@
 | GlobalDataFlow.cs:275:26:275:26 | x : T | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T |
 | GlobalDataFlow.cs:275:26:275:26 | x : T | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:16 | access to local variable y |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:16 | access to local variable y |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... : String |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... : String |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:16 | access to local variable y |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:16 | access to local variable y |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
-| GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : T | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : T | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
@@ -4085,48 +4031,24 @@
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : T | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : T |
 | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : T | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : T |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : Object |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:16 | access to local variable y |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:16 | access to local variable y |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) : String |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... : String |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... : String |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:16 | access to local variable y |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:16 | access to local variable y |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
-| GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : T | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) |
 | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : T | GlobalDataFlow.cs:277:13:277:38 | SSA def(y) |
@@ -4166,22 +4088,14 @@
 | GlobalDataFlow.cs:277:33:277:34 | access to parameter x0 : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : Object | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : Object | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:277:37:277:37 | access to parameter x : Object | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:277:37:277:37 | access to parameter x : Object | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : Object | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : Object | GlobalDataFlow.cs:364:46:364:46 | x : Object |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : String | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc |
-| GlobalDataFlow.cs:277:37:277:37 | access to parameter x : String | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : String | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:277:37:277:37 | access to parameter x : String | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : String | GlobalDataFlow.cs:364:46:364:46 | x |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : String | GlobalDataFlow.cs:364:46:364:46 | x : String |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc |
-| GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:277:37:277:37 | access to parameter x : T | GlobalDataFlow.cs:364:46:364:46 | x |
@@ -4192,53 +4106,23 @@
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object | GlobalDataFlow.cs:278:16:278:24 | ... == ... |
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object | GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean |
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object | GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : String | GlobalDataFlow.cs:278:16:278:24 | ... == ... |
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : String | GlobalDataFlow.cs:278:16:278:24 | ... == ... |
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : String | GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : String | GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : T | GlobalDataFlow.cs:278:16:278:24 | ... == ... |
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : T | GlobalDataFlow.cs:278:16:278:24 | ... == ... |
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : T | GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean |
 | GlobalDataFlow.cs:278:16:278:16 | (...) ... : T | GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:16 | (...) ... : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:16 | (...) ... : Object |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : Object | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... : String |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:16 | (...) ... : String |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
-| GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : String | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : T | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : T | GlobalDataFlow.cs:278:16:278:16 | (...) ... |
@@ -4252,26 +4136,6 @@
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : T | GlobalDataFlow.cs:278:41:278:41 | access to local variable y |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : T | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : T |
 | GlobalDataFlow.cs:278:16:278:16 | access to local variable y : T | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : T |
-| GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:24 | ... == ... : Boolean | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : Object |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : Object |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:70:21:70:46 | call to method Return |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:70:21:70:46 | call to method Return : String |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : String |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:100:24:100:33 | call to method Return |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:100:24:100:33 | call to method Return : String |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke : String |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:366:16:366:19 | delegate call |
-| GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
 | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T | GlobalDataFlow.cs:70:21:70:46 | call to method Return |
 | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T | GlobalDataFlow.cs:70:21:70:46 | call to method Return : T |
 | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke |
@@ -4285,17 +4149,9 @@
 | GlobalDataFlow.cs:278:28:278:37 | default(...) : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:28:278:37 | default(...) : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
 | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
-| GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object |
-| GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : Object |
-| GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:41:278:41 | access to local variable y : Object | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String |
-| GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : String |
-| GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
-| GlobalDataFlow.cs:278:41:278:41 | access to local variable y : String | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
 | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... |
 | GlobalDataFlow.cs:278:41:278:41 | access to local variable y : T | GlobalDataFlow.cs:278:16:278:41 | ... ? ... : ... : T |
@@ -4604,34 +4460,8 @@
 | GlobalDataFlow.cs:364:46:364:46 | x : T | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T |
 | GlobalDataFlow.cs:364:46:364:46 | x : T | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T |
 | GlobalDataFlow.cs:364:46:364:46 | x : T | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : Object | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : Object |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:147:20:147:40 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:147:20:147:40 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:147:20:147:40 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:147:20:147:40 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:149:20:149:44 | call to method ApplyFunc |
 | GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:149:20:149:44 | call to method ApplyFunc |
 | GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:149:20:149:44 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:149:20:149:44 | call to method ApplyFunc : String |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc |
-| GlobalDataFlow.cs:366:16:366:19 | delegate call : String | GlobalDataFlow.cs:277:17:277:38 | call to method ApplyFunc : String |
 | GlobalDataFlow.cs:366:16:366:19 | delegate call : T | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
 | GlobalDataFlow.cs:366:16:366:19 | delegate call : T | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc |
 | GlobalDataFlow.cs:366:16:366:19 | delegate call : T | GlobalDataFlow.cs:134:45:134:64 | call to method ApplyFunc : T |
@@ -4662,10 +4492,6 @@
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : Object | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:275:26:275:26 | x |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:275:26:275:26 | x |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:275:26:275:26 | x |
@@ -4678,16 +4504,10 @@
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : String | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:275:26:275:26 | x |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:275:26:275:26 | x |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:275:26:275:26 | x |
@@ -4702,12 +4522,6 @@
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : Object |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
-| GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : String |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
 | GlobalDataFlow.cs:366:18:366:18 | access to parameter x : T | GlobalDataFlow.cs:366:16:366:19 | delegate call : T |
