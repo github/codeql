@@ -531,7 +531,7 @@ private predicate parameterFlow(
       read(mid, f, node) and
       readStoreCand1(f, unbind(config)) and
       summary = midsum.readStep(f) and
-      t1 = getErasedRepr(f.getType()) and
+      t1 = f.getType() and
       t1 = t2
     )
     or
@@ -581,7 +581,7 @@ private predicate parameterFlowReturn(
   not exists(int pos | kind.(ParamUpdateReturnKind).getPosition() = pos and p.isParameterOf(_, pos))
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate argumentFlowsThrough0(
   DataFlowCall call, ArgumentNode arg, ReturnKindExt kind, DataFlowType t1, DataFlowType t2,
   Summary summary, Configuration config

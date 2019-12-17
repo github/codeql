@@ -127,18 +127,34 @@ edges
 | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 : String | GlobalDataFlow.cs:404:9:404:11 | value : String |
 | GlobalDataFlow.cs:70:21:70:46 | call to method Return : String | GlobalDataFlow.cs:71:15:71:19 | access to local variable sink0 |
 | GlobalDataFlow.cs:70:21:70:46 | call to method Return : String | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String |
+| GlobalDataFlow.cs:70:21:70:46 | call to method Return : T | GlobalDataFlow.cs:71:15:71:19 | access to local variable sink0 |
+| GlobalDataFlow.cs:70:21:70:46 | call to method Return : T | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T |
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | GlobalDataFlow.cs:70:21:70:46 | call to method Return : String |
+| GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | GlobalDataFlow.cs:70:21:70:46 | call to method Return : T |
 | GlobalDataFlow.cs:72:21:72:101 | (...) ... : String | GlobalDataFlow.cs:73:15:73:19 | access to local variable sink1 |
 | GlobalDataFlow.cs:72:21:72:101 | (...) ... : String | GlobalDataFlow.cs:75:19:75:23 | access to local variable sink1 : String |
+| GlobalDataFlow.cs:72:21:72:101 | (...) ... : T | GlobalDataFlow.cs:73:15:73:19 | access to local variable sink1 |
+| GlobalDataFlow.cs:72:21:72:101 | (...) ... : T | GlobalDataFlow.cs:75:19:75:23 | access to local variable sink1 : T |
 | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : String | GlobalDataFlow.cs:72:21:72:101 | (...) ... : String |
+| GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : T | GlobalDataFlow.cs:72:21:72:101 | (...) ... : T |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : String |
+| GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : T |
+| GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : String |
+| GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : T |
 | GlobalDataFlow.cs:75:19:75:23 | access to local variable sink1 : String | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : String |
+| GlobalDataFlow.cs:75:19:75:23 | access to local variable sink1 : T | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : T |
 | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : String | GlobalDataFlow.cs:76:15:76:19 | access to local variable sink2 |
 | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : String | GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : String |
+| GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : T | GlobalDataFlow.cs:76:15:76:19 | access to local variable sink2 |
+| GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : T | GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : T |
 | GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : String | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String |
+| GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : T | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String |
+| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
+| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
 | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> |
@@ -163,9 +179,18 @@ edges
 | GlobalDataFlow.cs:90:112:90:117 | [output] (...) => ... : String | GlobalDataFlow.cs:97:15:97:20 | access to local variable sink22 |
 | GlobalDataFlow.cs:135:21:135:34 | delegate call : String | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 |
 | GlobalDataFlow.cs:135:21:135:34 | delegate call : String | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String |
+| GlobalDataFlow.cs:135:21:135:34 | delegate call : T | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 |
+| GlobalDataFlow.cs:135:21:135:34 | delegate call : T | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | GlobalDataFlow.cs:135:21:135:34 | delegate call : String |
+| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | GlobalDataFlow.cs:135:21:135:34 | delegate call : T |
+| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | GlobalDataFlow.cs:135:21:135:34 | delegate call : String |
+| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | GlobalDataFlow.cs:135:21:135:34 | delegate call : T |
 | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String | GlobalDataFlow.cs:144:15:144:19 | access to local variable sink5 |
+| GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : T | GlobalDataFlow.cs:144:15:144:19 | access to local variable sink5 |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String |
+| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : T |
+| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String |
+| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:153:21:153:25 | call to method Out : String | GlobalDataFlow.cs:154:15:154:19 | access to local variable sink6 |
 | GlobalDataFlow.cs:156:20:156:24 | SSA def(sink7) : String | GlobalDataFlow.cs:157:15:157:19 | access to local variable sink7 |
 | GlobalDataFlow.cs:159:20:159:24 | SSA def(sink8) : String | GlobalDataFlow.cs:160:15:160:19 | access to local variable sink8 |
@@ -320,17 +345,25 @@ nodes
 | GlobalDataFlow.cs:61:61:61:73 | access to parameter nonSinkParam0 | semmle.label | access to parameter nonSinkParam0 |
 | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 : String | semmle.label | access to property SinkProperty0 : String |
 | GlobalDataFlow.cs:70:21:70:46 | call to method Return : String | semmle.label | call to method Return : String |
+| GlobalDataFlow.cs:70:21:70:46 | call to method Return : T | semmle.label | call to method Return : T |
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | semmle.label | access to property SinkProperty0 : String |
 | GlobalDataFlow.cs:71:15:71:19 | access to local variable sink0 | semmle.label | access to local variable sink0 |
 | GlobalDataFlow.cs:72:21:72:101 | (...) ... : String | semmle.label | (...) ... : String |
+| GlobalDataFlow.cs:72:21:72:101 | (...) ... : T | semmle.label | (...) ... : T |
 | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : String | semmle.label | call to method Invoke : String |
+| GlobalDataFlow.cs:72:29:72:101 | call to method Invoke : T | semmle.label | call to method Invoke : T |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : String | semmle.label | access to local variable sink0 : String |
+| GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 : T | semmle.label | access to local variable sink0 : T |
 | GlobalDataFlow.cs:73:15:73:19 | access to local variable sink1 | semmle.label | access to local variable sink1 |
 | GlobalDataFlow.cs:75:19:75:23 | access to local variable sink1 : String | semmle.label | access to local variable sink1 : String |
+| GlobalDataFlow.cs:75:19:75:23 | access to local variable sink1 : T | semmle.label | access to local variable sink1 : T |
 | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : String | semmle.label | SSA def(sink2) : String |
+| GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : T | semmle.label | SSA def(sink2) : T |
 | GlobalDataFlow.cs:76:15:76:19 | access to local variable sink2 | semmle.label | access to local variable sink2 |
 | GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : String | semmle.label | access to local variable sink2 : String |
+| GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : T | semmle.label | access to local variable sink2 : T |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | semmle.label | SSA def(sink3) : String |
+| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | semmle.label | SSA def(sink3) : T |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 | semmle.label | access to local variable sink3 |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | semmle.label | call to method SelectEven : IEnumerable<T> |
 | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> | semmle.label | (...) ... : IEnumerable<String> |
@@ -355,10 +388,14 @@ nodes
 | GlobalDataFlow.cs:94:15:94:20 | access to local variable sink21 | semmle.label | access to local variable sink21 |
 | GlobalDataFlow.cs:97:15:97:20 | access to local variable sink22 | semmle.label | access to local variable sink22 |
 | GlobalDataFlow.cs:135:21:135:34 | delegate call : String | semmle.label | delegate call : String |
+| GlobalDataFlow.cs:135:21:135:34 | delegate call : T | semmle.label | delegate call : T |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String | semmle.label | access to local variable sink3 : String |
+| GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : T | semmle.label | access to local variable sink3 : T |
 | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 | semmle.label | access to local variable sink4 |
 | GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : String | semmle.label | call to method ApplyFunc : String |
+| GlobalDataFlow.cs:143:21:143:44 | call to method ApplyFunc : T | semmle.label | call to method ApplyFunc : T |
 | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : String | semmle.label | access to local variable sink4 : String |
+| GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 : T | semmle.label | access to local variable sink4 : T |
 | GlobalDataFlow.cs:144:15:144:19 | access to local variable sink5 | semmle.label | access to local variable sink5 |
 | GlobalDataFlow.cs:150:15:150:22 | access to local variable nonSink0 | semmle.label | access to local variable nonSink0 |
 | GlobalDataFlow.cs:153:21:153:25 | call to method Out : String | semmle.label | call to method Out : String |
