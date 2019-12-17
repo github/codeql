@@ -1,9 +1,7 @@
 import semmle.code.cpp.models.interfaces.Alias
 
 class Fread extends AliasFunction {
-  Fread() {
-    this.hasGlobalName("fread")
-  }
+  Fread() { this.hasGlobalName("fread") }
 
   override predicate parameterNeverEscapes(int n) {
     n = 0 or
