@@ -39,6 +39,9 @@ predicate notDeliberatelyBoxed(LocalBoxedVar v) {
   )
 }
 
+pragma[nomagic]
+int callableGetNumberOfParameters(Callable c) { result = c.getNumberOfParameters() }
+
 /**
  * Replacing the type of a boxed variable with the corresponding primitive type may affect
  * overload resolution. If this is the case then the boxing is most likely intentional and
@@ -52,7 +55,7 @@ predicate affectsOverload(LocalBoxedVar v) {
     c1.getParameterType(i) instanceof RefType and
     c2.getParameterType(i) instanceof PrimitiveType and
     c1.getName() = c2.getName() and
-    c1.getNumberOfParameters() = c2.getNumberOfParameters()
+    callableGetNumberOfParameters(c1) = callableGetNumberOfParameters(c2)
   )
 }
 
