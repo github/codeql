@@ -45,9 +45,10 @@ module EventEmitter {
   }
 
   /**
-   * An EventEmitter instance that implements the NodeJS EventEmitter API.
+   * An EventEmitter instance that implements the NodeJS EventEmitter API. 
+   * Extend EventEmitter::Range to mark something as being an EventEmitter. 
    */
-  final class EventEmitter extends DataFlow::Node {
+  class EventEmitter extends DataFlow::Node {
     EventEmitterRange::Range range;
 
     EventEmitter() { this = range }
@@ -85,7 +86,7 @@ module EventEmitter {
   /**
    * A registration of an event handler on an EventEmitter.
    */
-  final class EventRegistration extends DataFlow::Node {
+  class EventRegistration extends DataFlow::Node {
     EventRegistration::Range range;
 
     EventRegistration() { this = range }
@@ -147,7 +148,7 @@ module EventEmitter {
   /**
    * A dispatch of an event on an EventEmitter.
    */
-  final class EventDispatch extends DataFlow::Node {
+  class EventDispatch extends DataFlow::Node {
     EventDispatch::Range range;
 
     EventDispatch() { this = range }
