@@ -6,6 +6,7 @@
  * @id cpp/leap-year/unchecked-after-arithmetic-year-modification
  * @precision medium
  * @tags leap-year
+ *       correctness
  */
 
 import cpp
