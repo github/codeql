@@ -44,7 +44,7 @@ class XMLParent extends @xmlparent {
    * Gets a printable representation of this XML parent.
    * (Intended to be overridden in subclasses.)
    */
-  /*abstract*/ string getName() { result = "parent" }
+  abstract string getName();
 
   /** Gets the file to which this XML parent belongs. */
   XMLFile getFile() { result = this or xmlElements(this, _, _, _, result) }
