@@ -198,6 +198,10 @@ module Module {
         )
     }
 
+    /** Get the `ModuleValue` for the `builtin` module. */
+    ModuleValue builtinModule() {
+        result = TBuiltinModuleObject(Builtin::builtinModule())
+    }
 }
 
 module Value {
