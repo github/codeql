@@ -46,7 +46,7 @@ module ExceptionXss {
       or
       exists(DataFlow::PropRef prop |
         node = DataFlow::valueNode(prop.getPropertyNameExpr()) and
-        isNullOrUndefined(prop.getBase().analyze().getAType())
+        forex(InferredType t | t = prop.getBase().analyze().getAType() | isNullOrUndefined(t))
       )
     )
   }
@@ -99,8 +99,8 @@ module ExceptionXss {
   }
 
   /**
-   * Gets the data-flow node where exceptions thrown by this expression will
-   * propagate if this expression causes an exception to be thrown. 
+   * Gets the data-flow node to which any exceptions thrown by
+   * this expression will propagate.
    * This predicate adds, on top of `Expr::getExceptionTarget`, exceptions 
    * propagated by callbacks. 
    */
