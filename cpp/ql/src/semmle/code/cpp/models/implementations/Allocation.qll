@@ -112,7 +112,7 @@ class AllocaAllocationFunction extends AllocationFunction {
 
   override int getSizeArg() { result = sizeArg }
 
-  predicate requiresDealloc() { none() }
+  override predicate requiresDealloc() { none() }
 }
 
 /**
