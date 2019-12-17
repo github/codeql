@@ -14,6 +14,5 @@ import MemoryFreed
 from AllocationExpr alloc
 where
   alloc.requiresDealloc() and
-  not exists(alloc.(NewOrNewArrayExpr).getPlacementPointer()) and
   not allocMayBeFreed(alloc)
 select alloc, "This memory is never freed"

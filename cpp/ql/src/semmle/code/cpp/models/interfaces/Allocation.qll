@@ -36,7 +36,9 @@ abstract class AllocationFunction extends Function {
 
   /**
    * Whether or not this allocation requires a corresponding deallocation of
-   * some sort (most do, but `alloca` for example does not).
+   * some sort (most do, but `alloca` for example does not).  If it is unclear,
+   * we default to no (for example a placement `new` allocation may or may not
+   * require a corresponding `delete`).
    */
   predicate requiresDealloc() { any() }
 }
@@ -72,7 +74,9 @@ abstract class AllocationExpr extends Expr {
 
   /**
    * Whether or not this allocation requires a corresponding deallocation of
-   * some sort (most do, but `alloca` for example does not).
+   * some sort (most do, but `alloca` for example does not).  If it is unclear,
+   * we default to no (for example a placement `new` allocation may or may not
+   * require a corresponding `delete`).
    */
   predicate requiresDealloc() { any() }
 }

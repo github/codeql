@@ -273,6 +273,8 @@ class NewAllocationExpr extends AllocationExpr, NewExpr {
   NewAllocationExpr() { this instanceof NewExpr }
 
   override int getSizeBytes() { result = getAllocatedType().getSize() }
+
+  override predicate requiresDealloc() { not exists(getPlacementPointer()) }
 }
 
 /**
@@ -293,4 +295,6 @@ class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
   }
 
   override int getSizeBytes() { result = getAllocatedType().getSize() }
+
+  override predicate requiresDealloc() { not exists(getPlacementPointer()) }
 }

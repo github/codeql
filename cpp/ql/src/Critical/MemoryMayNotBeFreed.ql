@@ -25,7 +25,6 @@ predicate mayCallFunction(Expr call, Function f) {
 predicate allocCallOrIndirect(Expr e) {
   // direct alloc call
   e.(AllocationExpr).requiresDealloc() and
-  not exists(e.(NewOrNewArrayExpr).getPlacementPointer()) and
   // We are only interested in alloc calls that are
   // actually freed somehow, as MemoryNeverFreed
   // will catch those that aren't.
