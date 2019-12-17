@@ -73,7 +73,7 @@ module Electron {
   /**
    * A reference to the `webContents` property of a browser object.
    */
-  class WebContents extends DataFlow::SourceNode, EventEmitter::EventEmitterRange::NodeJSEventEmitter {
+  class WebContents extends DataFlow::SourceNode, EventEmitter::NodeJSEventEmitter {
     WebContents() { this.(DataFlow::PropRead).accesses(any(BrowserObject bo), "webContents") }
   }
 
@@ -89,9 +89,9 @@ module Electron {
     /**
      * A model for the Main and Renderer process in an Electron app.
      */
-    abstract class Process extends EventEmitter::EventEmitterRange::Range {
+    abstract class Process extends EventEmitter::Range {
       /**
-       * Type tracking on a process. The type tracking tracks through chainable methods.
+       * Gets a node that refers to a Process object.
        */
       DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
     }
@@ -128,7 +128,7 @@ module Electron {
      * Does mostly the same as an EventEmitter event handler,
      * except that values can be returned through the `event.returnValue` property.
      */
-    class IPCSendRegistration extends EventEmitter::EventRegistration::Range,
+    class IPCSendRegistration extends EventRegistration::Range,
       DataFlow::MethodCallNode {
       override Process emitter;
 
@@ -138,17 +138,17 @@ module Electron {
         result = this.getABoundCallbackParameter(1, 0).getAPropertyWrite("returnValue").getRhs()
       }
 
-      override predicate canReturnTo(EventEmitter::EventDispatch dispatch) {
-        dispatch.(IPCDispatch).getCalleeName() = "sendSync"
+      override IPCDispatch getAReturnDispatch() {
+        result.getCalleeName() = "sendSync"
       }
     }
 
     /**
      * A dispatch of an IPC event.
-     * An IPC event is sent from the Renderer to the Main process.
+     * An IPC event is sent from the renderer to the main process.
      * And a value can be returned through the `returnValue` property of the event (first parameter in the callback).
      */
-    class IPCDispatch extends EventEmitter::EventDispatch::Range, DataFlow::InvokeNode {
+    class IPCDispatch extends EventDispatch::Range, DataFlow::InvokeNode {
       override Process emitter;
 
       IPCDispatch() {
