@@ -420,13 +420,13 @@ public class ESNextParser extends JSXParser {
    * Parses an import.meta expression, assuming that the initial "import" and "." has been consumed.
    */
   private MetaProperty parseImportMeta(Position loc) {
-    Identifier importIdentifier = new Identifier(new SourceLocation(loc), "import");
     Position propertyLoc = this.startLoc;
     Identifier property = this.parseIdent(true);
     if (!property.getName().equals("meta")) {
       this.unexpected(propertyLoc);
     }
-    return this.finishNode(new MetaProperty(new SourceLocation(loc), importIdentifier, property));
+    return this.finishNode(
+      new MetaProperty(new SourceLocation(loc), new Identifier(new SourceLocation(loc), "import"), property));
   }
 
   /**
