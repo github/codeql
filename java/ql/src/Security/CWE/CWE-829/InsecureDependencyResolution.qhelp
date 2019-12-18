@@ -54,7 +54,7 @@ The first shows the use of HTTP, the second shows the use of HTTPS.
   </a>
 </li>
 <li>
-  Additional Gradle & Maven plugin:
+  Additional Gradle &amp; Maven plugin:
   <a href="https://spring.io/blog/2019/06/10/announcing-nohttp">
     Announcing nohttp
   </a>
