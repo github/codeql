@@ -27,4 +27,4 @@
 ## Changes to libraries
 
 * The predicates `RegExpTerm.getSuccessor` and `RegExpTerm.getPredecessor` have been changed to reflect textual, not operational, matching order. This only makes a difference in lookbehind assertions, which are operationally matched backwards. Previously, `getSuccessor` would mimick this, so in an assertion `(?<=ab)` the term `b` would be considered the predecessor, not the successor, of `a`. Textually, however, `a` is still matched before `b`, and this is the order we now follow.
-
+* `import.meta` expressions no longer result in a syntax error in JavaScript files.
