@@ -11,8 +11,7 @@ class TwistedResponse extends TaintSink {
             isKnownRequestHandlerMethodName(name) and
             name = func.getName() and
             func = getTwistedRequestHandlerMethod(name) and
-            func.getScope() = ret.getScope() and
-            ret.getValue().getAFlowNode() = this
+            this = func.getAReturnedNode()
         )
     }
 
