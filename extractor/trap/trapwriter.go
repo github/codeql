@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"unicode/utf8"
 
 	"github.com/Semmle/go/extractor/srcarchive"
 	"golang.org/x/tools/go/packages"
@@ -83,6 +84,22 @@ func (tw *Writer) ForEachObject(cb func(*Writer, types.Object, Label)) {
 	}
 }
 
+const max_strlen = 1024 * 1024
+
+func capStringLength(s string) string {
+	// if the UTF8-encoded string is longer than 1MiB, we truncate it
+	if len(s) > max_strlen {
+		// to ensure that the truncated string is valid UTF-8, we find the last byte at or
+		// before index max_strlen that starts a UTF-8 encoded character, and then cut off
+		// right before that byte
+		end := max_strlen
+		for ; !utf8.RuneStart(s[end]); end-- {
+		}
+		return s[0:end]
+	}
+	return s
+}
+
 // Emit writes out a tuple of values for the given `table`
 func (tw *Writer) Emit(table string, values []interface{}) error {
 	fmt.Fprintf(tw.w, "%s(", table)
@@ -94,7 +111,7 @@ func (tw *Writer) Emit(table string, values []interface{}) error {
 		case Label:
 			fmt.Fprint(tw.w, value.id)
 		case string:
-			fmt.Fprintf(tw.w, "\"%s\"", escapeString(value))
+			fmt.Fprintf(tw.w, "\"%s\"", escapeString(capStringLength(value)))
 		case int:
 			fmt.Fprintf(tw.w, "%d", value)
 		default:
