@@ -26,6 +26,8 @@ test_getExportedName
 | m/c.js:5:10:5:15 | g as h | g |
 test_OtherImports
 | es2015_require.js:1:11:1:24 | require('./d') | d.js:1:1:5:0 | <toplevel> |
+test_ImportMetaExpr
+| importmeta.js:1:33:1:43 | import.meta |
 test_ReExportDeclarations
 | b.js:7:1:7:21 | export  ...  './a'; | b.js:7:16:7:20 | './a' |
 | d.js:4:1:4:20 | export * from 'm/c'; | d.js:4:15:4:19 | 'm/c' |
@@ -102,6 +104,7 @@ test_NamedImportSpecifier
 test_GlobalVariableRef
 | a.js:5:31:5:31 | o |
 | exports.js:3:9:3:15 | exports |
+| importmeta.js:1:15:1:17 | URL |
 | tst.html:6:3:6:7 | alert |
 test_BulkReExportDeclarations
 | d.js:4:1:4:20 | export * from 'm/c'; |

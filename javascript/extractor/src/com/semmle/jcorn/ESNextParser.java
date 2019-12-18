@@ -240,6 +240,9 @@ public class ESNextParser extends JSXParser {
     if (this.type == TokenType._import) {
       Position startLoc = this.startLoc;
       this.next();
+      if (this.eat(TokenType.dot)) {
+        return parseImportMeta(startLoc);
+      }
       this.expect(TokenType.parenL);
       return parseDynamicImport(startLoc);
     }
@@ -411,6 +414,19 @@ public class ESNextParser extends JSXParser {
     } else {
       return super.parseImportRest(loc);
     }
+  }
+
+  /**
+   * Parses an import.meta expression, assuming that the initial "import" and "." has been consumed.
+   */
+  private MetaProperty parseImportMeta(Position loc) {
+    Position propertyLoc = this.startLoc;
+    Identifier property = this.parseIdent(true);
+    if (!property.getName().equals("meta")) {
+      this.unexpected(propertyLoc);
+    }
+    return this.finishNode(
+      new MetaProperty(new SourceLocation(loc), new Identifier(new SourceLocation(loc), "import"), property));
   }
 
   /**
