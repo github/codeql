@@ -169,5 +169,3 @@ function throwThoughLibrary(xs) {
     sink(e); // OK - doesn't catch exception from event listener
   }
 }
-
-// semmle-extractor-options: --experimental

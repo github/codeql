@@ -87,8 +87,7 @@ module InsecureXML {
     or
     // values set on var that create is assigned to
     exists(Assignment propAssign |
-      DataFlow::localFlow(DataFlow::exprNode(create),
-        DataFlow::exprNode(propAssign.getLValue().(PropertyAccess).getQualifier())) and
+      DataFlow::localExprFlow(create, propAssign.getLValue().(PropertyAccess).getQualifier()) and
       propAssign.getLValue().(PropertyAccess).getTarget().hasName(prop) and
       result = propAssign.getRValue()
     )
@@ -253,9 +252,7 @@ module InsecureXML {
       }
 
       override predicate isUnsafe(string reason) {
-        exists(ObjectCreation creation |
-          DataFlow::localFlow(DataFlow::exprNode(creation), DataFlow::exprNode(this.getQualifier()))
-        |
+        exists(ObjectCreation creation | DataFlow::localExprFlow(creation, this.getQualifier()) |
           not exists(Expr xmlResolverVal |
             isSafeXmlResolver(xmlResolverVal) and
             xmlResolverVal = getAValueForProp(creation, "XmlResolver")

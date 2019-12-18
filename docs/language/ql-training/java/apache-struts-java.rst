@@ -8,10 +8,6 @@ Exercise: Apache Struts
 
    CVE-2017-9805
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. rst-class:: setup
 
 Setup
@@ -19,8 +15,8 @@ Setup
 
 For this example you should download:
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- `Apache Struts snapshot <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
+- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
 
 .. note::
 
@@ -28,9 +24,9 @@ For this example you should download:
 
    You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
 
-   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
 
-   .. include:: ../slide-snippets/snapshot-note.rst
+   .. include:: ../slide-snippets/database-note.rst
 
    .. resume slides
 
@@ -62,12 +58,12 @@ RCE in Apache Struts
 
 - Disclosed as `CVE-2017-9805 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-9805>`__
 
-- Blog post: https://blog.semmle.com/apache-struts-vulnerability-cve-2017-9805/
+- Blog post: https://securitylab.github.com/research/apache-struts-vulnerability-cve-2017-9805
 
 Finding the RCE yourself
 ========================
 
-#. Create a QL class to find the interface ``org.apache.struts2.rest.handler.ContentTypeHandler``
+#. Create a class to find the interface ``org.apache.struts2.rest.handler.ContentTypeHandler``
 
    **Hint**: Use predicate ``hasQualifiedName(...)``
 
@@ -138,4 +134,4 @@ Model answer, step 4
      and sink.getNode() instanceof UnsafeDeserializationSink
    select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink, "Unsafe    deserialization of $@.", source, "user input"
 
-More full-featured version: https://github.com/Semmle/demos/tree/master/ql_demos/java/Apache_Struts_CVE-2017-9805
+More full-featured version: https://github.com/github/security-lab/tree/master/CodeQL_Queries/java/Apache_Struts_CVE-2017-9805

@@ -1,50 +1,29 @@
 private import internal.IRInternal
-import Instruction
-import IRBlock
+private import Instruction
+private import IRBlock
 private import internal.OperandImports as Imports
-import Imports::MemoryAccessKind
-import Imports::Overlap
+private import Imports::MemoryAccessKind
+private import Imports::IRType
+private import Imports::Overlap
 private import Imports::OperandTag
 
 cached
 private newtype TOperand =
   TRegisterOperand(Instruction useInstr, RegisterOperandTag tag, Instruction defInstr) {
     defInstr = Construction::getRegisterOperandDefinition(useInstr, tag) and
-    not isInCycle(useInstr)
+    not Construction::isInCycle(useInstr)
   } or
   TNonPhiMemoryOperand(
     Instruction useInstr, MemoryOperandTag tag, Instruction defInstr, Overlap overlap
   ) {
     defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
-    not isInCycle(useInstr)
+    not Construction::isInCycle(useInstr)
   } or
   TPhiOperand(
     PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
   ) {
     defInstr = Construction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
   }
-
-/** Gets a non-phi instruction that defines an operand of `instr`. */
-private Instruction getNonPhiOperandDef(Instruction instr) {
-  result = Construction::getRegisterOperandDefinition(instr, _)
-  or
-  result = Construction::getMemoryOperandDefinition(instr, _, _)
-}
-
-/**
- * Holds if `instr` is part of a cycle in the operand graph that doesn't go
- * through a phi instruction and therefore should be impossible.
- *
- * If such cycles are present, either due to a programming error in the IR
- * generation or due to a malformed database, it can cause infinite loops in
- * analyses that assume a cycle-free graph of non-phi operands. Therefore it's
- * better to remove these operands than to leave cycles in the operand graph.
- */
-pragma[noopt]
-private predicate isInCycle(Instruction instr) {
-  instr instanceof Instruction and
-  getNonPhiOperandDef+(instr) = instr
-}
 
 /**
  * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
@@ -143,22 +122,40 @@ class Operand extends TOperand {
    * the definition type, such as in the case of a partial read or a read from a pointer that
    * has been cast to a different type.
    */
-  Language::Type getType() { result = getAnyDef().getResultType() }
+  Language::LanguageType getLanguageType() { result = getAnyDef().getResultLanguageType() }
+
+  /**
+   * Gets the language-neutral type of the value consumed by this operand. This is usually the same
+   * as the result type of the definition instruction consumed by this operand. For register
+   * operands, this is always the case. For some memory operands, the operand type may be different
+   * from the definition type, such as in the case of a partial read or a read from a pointer that
+   * has been cast to a different type.
+   */
+  final IRType getIRType() { result = getLanguageType().getIRType() }
+
+  /**
+   * Gets the type of the value consumed by this operand. This is usually the same as the
+   * result type of the definition instruction consumed by this operand. For register operands,
+   * this is always the case. For some memory operands, the operand type may be different from
+   * the definition type, such as in the case of a partial read or a read from a pointer that
+   * has been cast to a different type.
+   */
+  final Language::Type getType() { getLanguageType().hasType(result, _) }
 
   /**
    * Holds if the value consumed by this operand is a glvalue. If this
    * holds, the value of the operand represents the address of a location,
    * and the type of the location is given by `getType()`. If this does
    * not hold, the value of the operand represents a value whose type is
-   * given by `getResultType()`.
+   * given by `getType()`.
    */
-  predicate isGLValue() { getAnyDef().isGLValue() }
+  final predicate isGLValue() { getLanguageType().hasType(_, true) }
 
   /**
    * Gets the size of the value consumed by this operand, in bytes. If the operand does not have
    * a known constant size, this predicate does not hold.
    */
-  int getSize() { result = Language::getTypeSize(getType()) }
+  final int getSize() { result = getLanguageType().getByteSize() }
 }
 
 /**
@@ -170,15 +167,20 @@ class MemoryOperand extends Operand {
     this = TPhiOperand(_, _, _, _)
   }
 
-  override predicate isGLValue() {
-    // A `MemoryOperand` can never be a glvalue
-    none()
-  }
-
   /**
    * Gets the kind of memory access performed by the operand.
    */
   MemoryAccessKind getMemoryAccess() { none() }
+
+  /**
+   * Holds if the memory access performed by this operand will not always read from every bit in the
+   * memory location. This is most commonly used for memory accesses that may or may not actually
+   * occur depending on runtime state (for example, the write side effect of an output parameter
+   * that is not written to on all paths), or for accesses where the memory location is a
+   * conservative estimate of the memory that might actually be accessed at runtime (for example,
+   * the global side effects of a function call).
+   */
+  predicate hasMayMemoryAccess() { none() }
 
   /**
    * Returns the operand that holds the memory address from which the current operand loads its
@@ -239,7 +241,7 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOpe
 class TypedOperand extends NonPhiMemoryOperand {
   override TypedOperandTag tag;
 
-  final override Language::Type getType() {
+  final override Language::LanguageType getLanguageType() {
     result = Construction::getInstructionOperandType(useInstr, tag)
   }
 }
@@ -381,18 +383,15 @@ class PositionalArgumentOperand extends ArgumentOperand {
 class SideEffectOperand extends TypedOperand {
   override SideEffectOperandTag tag;
 
-  final override int getSize() {
-    if getType() instanceof Language::UnknownType
-    then result = Construction::getInstructionOperandSize(useInstr, tag)
-    else result = Language::getTypeSize(getType())
-  }
-
   override MemoryAccessKind getMemoryAccess() {
+    useInstr instanceof AliasedUseInstruction and
+    result instanceof NonLocalMemoryAccess
+    or
     useInstr instanceof CallSideEffectInstruction and
-    result instanceof EscapedMayMemoryAccess
+    result instanceof EscapedMemoryAccess
     or
     useInstr instanceof CallReadSideEffectInstruction and
-    result instanceof EscapedMayMemoryAccess
+    result instanceof EscapedMemoryAccess
     or
     useInstr instanceof IndirectReadSideEffectInstruction and
     result instanceof IndirectMemoryAccess
@@ -407,10 +406,22 @@ class SideEffectOperand extends TypedOperand {
     result instanceof BufferMemoryAccess
     or
     useInstr instanceof IndirectMayWriteSideEffectInstruction and
-    result instanceof IndirectMayMemoryAccess
+    result instanceof IndirectMemoryAccess
     or
     useInstr instanceof BufferMayWriteSideEffectInstruction and
-    result instanceof BufferMayMemoryAccess
+    result instanceof BufferMemoryAccess
+  }
+
+  final override predicate hasMayMemoryAccess() {
+    useInstr instanceof AliasedUseInstruction
+    or
+    useInstr instanceof CallSideEffectInstruction
+    or
+    useInstr instanceof CallReadSideEffectInstruction
+    or
+    useInstr instanceof IndirectMayWriteSideEffectInstruction
+    or
+    useInstr instanceof BufferMayWriteSideEffectInstruction
   }
 }
 

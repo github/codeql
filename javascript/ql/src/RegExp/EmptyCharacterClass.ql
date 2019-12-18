@@ -15,5 +15,6 @@ import javascript
 from RegExpCharacterClass recc
 where
   not exists(recc.getAChild()) and
-  not recc.isInverted()
+  not recc.isInverted() and
+  recc.isPartOfRegExpLiteral()
 select recc, "Empty character class."

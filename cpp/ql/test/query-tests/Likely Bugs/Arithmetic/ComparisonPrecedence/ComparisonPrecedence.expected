@@ -1,0 +1,9 @@
+| template.cpp:4:7:4:15 | ... < ... | Comparison as an operand to another comparison. |
+| test.cpp:42:6:42:14 | ... < ... | Comparison as an operand to another comparison. |
+| test.cpp:43:6:43:14 | ... > ... | Comparison as an operand to another comparison. |
+| test.cpp:44:6:44:16 | ... <= ... | Comparison as an operand to another comparison. |
+| test.cpp:45:6:45:16 | ... <= ... | Comparison as an operand to another comparison. |
+| test.cpp:46:6:46:14 | ... > ... | Comparison as an operand to another comparison. |
+| test.cpp:50:6:50:32 | ... < ... | Comparison as an operand to another comparison. |
+| test.cpp:51:6:51:18 | ... < ... | Comparison as an operand to another comparison. |
+| test.cpp:54:8:54:16 | ... < ... | Comparison as an operand to another comparison. |

@@ -59,6 +59,11 @@ public class Literal extends Expression implements ITypeExpression {
     return tokenType == TokenType.regexp;
   }
 
+  /** Is this a string literal? */
+  public boolean isStringLiteral() {
+    return tokenType == TokenType.string;
+  }
+
   /** The value of this literal expressed as a string. */
   public String getStringValue() {
     // regular expressions may have a null value; use the raw value instead

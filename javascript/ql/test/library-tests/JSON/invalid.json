@@ -1,4 +1,3 @@
 "hi"
 
 // JSON doesn't have comments
-// semmle-extractor-options: --tolerate-parse-errors

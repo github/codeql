@@ -1,0 +1,4 @@
+- description: Standard LGTM queries for Python
+- apply: codeql-suites/python-lgtm-full.qls
+- apply: lgtm-displayed-only.yml
+  from: codeql-suite-helpers

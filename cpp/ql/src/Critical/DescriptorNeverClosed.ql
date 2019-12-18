@@ -13,7 +13,7 @@ import semmle.code.cpp.pointsto.PointsTo
 
 predicate closed(Expr e) {
   exists(FunctionCall fc |
-    fc.getTarget().hasGlobalName("close") and
+    fc.getTarget().hasGlobalOrStdName("close") and
     fc.getArgument(0) = e
   )
 }

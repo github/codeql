@@ -17,15 +17,15 @@ Global data flow and taint tracking
 
 - Recap:
 
-  - Local (“intra-procedural”) data flow models flow within one function; feasible to compute for all functions in a snapshot
-  - Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a snapshot
+  - Local (“intra-procedural”) data flow models flow within one function; feasible to compute for all functions in a CodeQL database
+  - Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a CodeQL database
 
 - For global data flow (and taint tracking), we must therefore provide restrictions to ensure the problem is tractable.
 - Typically, this involves specifying the *source* and *sink*.
 
 .. note::
 
-  As we mentioned in the previous slide deck, while local data flow is feasible to compute for all functions in a snapshot, global data flow is not. This is because the number of paths becomes exponentially larger for global data flow.
+  As we mentioned in the previous slide deck, while local data flow is feasible to compute for all functions in a CodeQL database, global data flow is not. This is because the number of paths becomes exponentially larger for global data flow.
 
   The global data flow (and taint tracking) avoids this problem by requiring that the query author specifies which ``sources`` and ``sinks`` are applicable. This allows the implementation to compute paths between the restricted set of nodes, rather than the full graph.
 

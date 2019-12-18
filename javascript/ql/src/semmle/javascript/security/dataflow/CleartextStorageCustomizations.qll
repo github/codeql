@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks and sanitizers for reasoning about
  * cleartext storage of sensitive information, as well as extension
  * points for adding your own.
  */

@@ -158,6 +158,8 @@ module ShellJS {
     ShellJSExec() { name = "exec" }
 
     override DataFlow::Node getACommandArgument() { result = getArgument(0) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument() }
   }
 
   /**

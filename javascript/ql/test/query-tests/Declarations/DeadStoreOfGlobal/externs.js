@@ -38,4 +38,4 @@ function Worker(opt_arg0) {}
  */
 Worker.prototype.onmessage = function() {};
 
-//semmle-extractor-options: --externs
+/** @externs */

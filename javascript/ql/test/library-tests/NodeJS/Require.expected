@@ -9,6 +9,7 @@
 | b.js:1:1:1:18 | require('./sub/c') |
 | d.js:1:1:1:38 | require ... s/ini') |
 | d.js:7:1:7:14 | require('foo') |
+| e.js:5:1:5:18 | require("process") |
 | f.js:2:1:2:7 | r("fs") |
 | index.js:1:12:1:26 | require('path') |
 | index.js:2:1:2:41 | require ... b.js")) |

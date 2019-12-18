@@ -32,7 +32,7 @@ It also shows how to remedy the problem by validating the user input against a k
 
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet">XSS
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS
 Unvalidated Redirects and Forwards Cheat Sheet</a>.
 </li>
 <li>

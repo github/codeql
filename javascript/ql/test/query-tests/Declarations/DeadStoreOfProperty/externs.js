@@ -40,4 +40,4 @@ function Element() {}
  */
 Element.prototype.clientTop;
 
-//semmle-extractor-options: --externs
+/** @externs */

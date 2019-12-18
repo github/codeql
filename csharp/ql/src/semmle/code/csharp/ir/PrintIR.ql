@@ -1,7 +1,7 @@
 /**
  * @name Print IR
  * @description Outputs a representation of the IR graph
- * @id charp/print-ir
+ * @id csharp/print-ir
  * @kind graph
  */
 

@@ -5,6 +5,7 @@ import IRVariable
 import Operand
 private import internal.InstructionImports as Imports
 import Imports::EdgeKind
+import Imports::IRType
 import Imports::MemoryAccessKind
 import Imports::Opcode
 private import Imports::OperandTag
@@ -49,7 +50,8 @@ module InstructionSanity {
         (
           opcode instanceof ReadSideEffectOpcode or
           opcode instanceof Opcode::InlineAsm or
-          opcode instanceof Opcode::CallSideEffect
+          opcode instanceof Opcode::CallSideEffect or
+          opcode instanceof Opcode::AliasedUse
         ) and
         tag instanceof SideEffectOperandTag
       )
@@ -92,12 +94,21 @@ module InstructionSanity {
   /**
    * Holds if instruction `instr` has multiple operands with tag `tag`.
    */
-  query predicate duplicateOperand(Instruction instr, OperandTag tag) {
-    strictcount(NonPhiOperand operand |
-      operand = instr.getAnOperand() and
-      operand.getOperandTag() = tag
-    ) > 1 and
-    not tag instanceof UnmodeledUseOperandTag
+  query predicate duplicateOperand(
+    Instruction instr, string message, IRFunction func, string funcText
+  ) {
+    exists(OperandTag tag, int operandCount |
+      operandCount = strictcount(NonPhiOperand operand |
+          operand = instr.getAnOperand() and
+          operand.getOperandTag() = tag
+        ) and
+      operandCount > 1 and
+      not tag instanceof UnmodeledUseOperandTag and
+      message = "Instruction has " + operandCount + " operands with tag '" + tag.toString() + "'" +
+          " in function '$@'." and
+      func = instr.getEnclosingIRFunction() and
+      funcText = Language::getIdentityString(func.getFunction())
+    )
   }
 
   /**
@@ -113,11 +124,32 @@ module InstructionSanity {
   }
 
   query predicate missingOperandType(Operand operand, string message) {
-    exists(Language::Function func |
+    exists(Language::Function func, Instruction use |
       not exists(operand.getType()) and
-      func = operand.getUse().getEnclosingFunction() and
-      message = "Operand missing type in function '" + Language::getIdentityString(func) + "'."
+      use = operand.getUse() and
+      func = use.getEnclosingFunction() and
+      message = "Operand '" + operand.toString() + "' of instruction '" + use.getOpcode().toString()
+          + "' missing type in function '" + Language::getIdentityString(func) + "'."
     )
+  }
+
+  query predicate duplicateChiOperand(
+    ChiInstruction chi, string message, IRFunction func, string funcText
+  ) {
+    chi.getTotal() = chi.getPartial() and
+    message = "Chi instruction for " + chi.getPartial().toString() +
+        " has duplicate operands in function $@" and
+    func = chi.getEnclosingIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction())
+  }
+
+  query predicate sideEffectWithoutPrimary(
+    SideEffectInstruction instr, string message, IRFunction func, string funcText
+  ) {
+    not exists(instr.getPrimaryInstruction()) and
+    message = "Side effect instruction missing primary instruction in function $@" and
+    func = instr.getEnclosingIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction())
   }
 
   /**
@@ -251,6 +283,7 @@ module InstructionSanity {
   ) {
     exists(IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
       not useOperand.getUse() instanceof UnmodeledUseInstruction and
+      not defInstr instanceof UnmodeledDefinitionInstruction and
       pointOfEvaluation(useOperand, useBlock, useIndex) and
       defInstr = useOperand.getAnyDef() and
       (
@@ -312,7 +345,7 @@ class Instruction extends Construction::TInstruction {
   }
 
   private string getResultPrefix() {
-    if getResultType() instanceof Language::VoidType
+    if getResultIRType() instanceof IRVoidType
     then result = "v"
     else
       if hasMemoryResult()
@@ -326,39 +359,23 @@ class Instruction extends Construction::TInstruction {
    */
   int getDisplayIndexInBlock() {
     exists(IRBlock block |
-      block = getBlock() and
-      (
-        exists(int index, int phiCount |
-          phiCount = count(block.getAPhiInstruction()) and
-          this = block.getInstruction(index) and
-          result = index + phiCount
+      this = block.getInstruction(result)
+      or
+      this = rank[-result - 1](PhiInstruction phiInstr |
+          phiInstr = block.getAPhiInstruction()
+        |
+          phiInstr order by phiInstr.getUniqueId()
         )
-        or
-        this instanceof PhiInstruction and
-        this = rank[result + 1](PhiInstruction phiInstr |
-            phiInstr = block.getAPhiInstruction()
-          |
-            phiInstr order by phiInstr.getUniqueId()
-          )
+    )
+  }
+
+  private int getLineRank() {
+    this = rank[result](Instruction instr |
+        instr.getAST().getFile() = getAST().getFile() and
+        instr.getAST().getLocation().getStartLine() = getAST().getLocation().getStartLine()
+      |
+        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
       )
-    )
-  }
-
-  bindingset[type]
-  private string getValueCategoryString(string type) {
-    if isGLValue() then result = "glval<" + type + ">" else result = type
-  }
-
-  string getResultTypeString() {
-    exists(string valcat |
-      valcat = getValueCategoryString(getResultType().toString()) and
-      if
-        getResultType() instanceof Language::UnknownType and
-        not isGLValue() and
-        exists(getResultSize())
-      then result = valcat + "[" + getResultSize().toString() + "]"
-      else result = valcat
-    )
   }
 
   /**
@@ -369,8 +386,7 @@ class Instruction extends Construction::TInstruction {
    * Example: `r1_1`
    */
   string getResultId() {
-    result = getResultPrefix() + getBlock().getDisplayIndex().toString() + "_" +
-        getDisplayIndexInBlock().toString()
+    result = getResultPrefix() + getAST().getLocation().getStartLine() + "_" + getLineRank()
   }
 
   /**
@@ -380,7 +396,9 @@ class Instruction extends Construction::TInstruction {
    *
    * Example: `r1_1(int*)`
    */
-  final string getResultString() { result = getResultId() + "(" + getResultTypeString() + ")" }
+  final string getResultString() {
+    result = getResultId() + "(" + getResultLanguageType().getDumpString() + ")"
+  }
 
   /**
    * Gets a string describing the operands of this instruction, suitable for
@@ -448,6 +466,16 @@ class Instruction extends Construction::TInstruction {
     result = Construction::getInstructionUnconvertedResultExpression(this)
   }
 
+  final Language::LanguageType getResultLanguageType() {
+    result = Construction::getInstructionResultType(this)
+  }
+
+  /**
+   * Gets the type of the result produced by this instruction. If the instruction does not produce
+   * a result, its result type will be `IRVoidType`.
+   */
+  final IRType getResultIRType() { result = getResultLanguageType().getIRType() }
+
   /**
    * Gets the type of the result produced by this instruction. If the
    * instruction does not produce a result, its result type will be `VoidType`.
@@ -455,7 +483,16 @@ class Instruction extends Construction::TInstruction {
    * If `isGLValue()` holds, then the result type of this instruction should be
    * thought of as "pointer to `getResultType()`".
    */
-  final Language::Type getResultType() { Construction::instructionHasType(this, result, _) }
+  final Language::Type getResultType() {
+    exists(Language::LanguageType resultType |
+      resultType = getResultLanguageType() and
+      (
+        resultType.hasUnspecifiedType(result, _)
+        or
+        not resultType.hasUnspecifiedType(_, _) and result instanceof Language::UnknownType
+      )
+    )
+  }
 
   /**
    * Holds if the result produced by this instruction is a glvalue. If this
@@ -475,7 +512,7 @@ class Instruction extends Construction::TInstruction {
    * result of the `Load` instruction is a prvalue of type `int`, representing
    * the integer value loaded from variable `x`.
    */
-  final predicate isGLValue() { Construction::instructionHasType(this, _, true) }
+  final predicate isGLValue() { Construction::getInstructionResultType(this).hasType(_, true) }
 
   /**
    * Gets the size of the result produced by this instruction, in bytes. If the
@@ -484,16 +521,7 @@ class Instruction extends Construction::TInstruction {
    * If `this.isGLValue()` holds for this instruction, the value of
    * `getResultSize()` will always be the size of a pointer.
    */
-  final int getResultSize() {
-    if isGLValue()
-    then
-      // a glvalue is always pointer-sized.
-      result = Language::getPointerSize()
-    else
-      if getResultType() instanceof Language::UnknownType
-      then result = Construction::getInstructionResultSize(this)
-      else result = Language::getTypeSize(getResultType())
-  }
+  final int getResultSize() { result = Construction::getInstructionResultType(this).getByteSize() }
 
   /**
    * Gets the opcode that specifies the operation performed by this instruction.
@@ -521,6 +549,16 @@ class Instruction extends Construction::TInstruction {
    * Holds only for instructions with a memory result.
    */
   MemoryAccessKind getResultMemoryAccess() { none() }
+
+  /**
+   * Holds if the memory access performed by this instruction's result will not always write to
+   * every bit in the memory location. This is most commonly used for memory accesses that may or
+   * may not actually occur depending on runtime state (for example, the write side effect of an
+   * output parameter that is not written to on all paths), or for accesses where the memory
+   * location is a conservative estimate of the memory that might actually be accessed at runtime
+   * (for example, the global side effects of a function call).
+   */
+  predicate hasResultMayMemoryAccess() { none() }
 
   /**
    * Gets the operand that holds the memory address to which this instruction stores its
@@ -799,14 +837,12 @@ class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() { getResultType() instanceof Language::FloatingPointType }
 }
 
-class StringConstantInstruction extends Instruction {
-  Language::StringLiteral value;
+class StringConstantInstruction extends VariableInstruction {
+  override IRStringLiteral var;
 
-  StringConstantInstruction() { value = Construction::getInstructionStringLiteral(this) }
+  final override string getImmediateString() { result = Language::getStringLiteralText(getValue()) }
 
-  final override string getImmediateString() { result = Language::getStringLiteralText(value) }
-
-  final Language::StringLiteral getValue() { result = value }
+  final Language::StringLiteral getValue() { result = var.getLiteral() }
 }
 
 class BinaryInstruction extends Instruction {
@@ -974,14 +1010,22 @@ class InheritanceConversionInstruction extends UnaryInstruction {
  * to the address of a direct non-virtual base class.
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
-  ConvertToBaseInstruction() { getOpcode() instanceof Opcode::ConvertToBase }
+  ConvertToBaseInstruction() { getOpcode() instanceof ConvertToBaseOpcode }
+}
+
+/**
+ * Represents an instruction that converts from the address of a derived class
+ * to the address of a direct non-virtual base class.
+ */
+class ConvertToNonVirtualBaseInstruction extends ConvertToBaseInstruction {
+  ConvertToNonVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToNonVirtualBase }
 }
 
 /**
  * Represents an instruction that converts from the address of a derived class
  * to the address of a virtual base class.
  */
-class ConvertToVirtualBaseInstruction extends InheritanceConversionInstruction {
+class ConvertToVirtualBaseInstruction extends ConvertToBaseInstruction {
   ConvertToVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToVirtualBase }
 }
 
@@ -1172,9 +1216,9 @@ class SideEffectInstruction extends Instruction {
 class CallSideEffectInstruction extends SideEffectInstruction {
   CallSideEffectInstruction() { getOpcode() instanceof Opcode::CallSideEffect }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof EscapedMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1272,9 +1316,9 @@ class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
     getOpcode() instanceof Opcode::IndirectMayWriteSideEffect
   }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof IndirectMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1284,9 +1328,9 @@ class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
 class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
   BufferMayWriteSideEffectInstruction() { getOpcode() instanceof Opcode::BufferMayWriteSideEffect }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof BufferMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1298,9 +1342,9 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
     getOpcode() instanceof Opcode::SizedBufferMayWriteSideEffect
   }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof BufferMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 
   Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
@@ -1311,9 +1355,9 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
 class InlineAsmInstruction extends Instruction {
   InlineAsmInstruction() { getOpcode() instanceof Opcode::InlineAsm }
 
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof EscapedMayMemoryAccess
-  }
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
+
+  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1375,7 +1419,7 @@ class CatchInstruction extends Instruction {
  * An instruction that catches an exception of a specific type.
  */
 class CatchByTypeInstruction extends CatchInstruction {
-  Language::Type exceptionType;
+  Language::LanguageType exceptionType;
 
   CatchByTypeInstruction() {
     getOpcode() instanceof Opcode::CatchByType and
@@ -1387,7 +1431,7 @@ class CatchByTypeInstruction extends CatchInstruction {
   /**
    * Gets the type of exception to be caught.
    */
-  final Language::Type getExceptionType() { result = exceptionType }
+  final Language::LanguageType getExceptionType() { result = exceptionType }
 }
 
 /**
@@ -1412,6 +1456,13 @@ class AliasedDefinitionInstruction extends Instruction {
   AliasedDefinitionInstruction() { getOpcode() instanceof Opcode::AliasedDefinition }
 
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
+}
+
+/**
+ * An instruction that consumes all escaped memory on exit from the function.
+ */
+class AliasedUseInstruction extends Instruction {
+  AliasedUseInstruction() { getOpcode() instanceof Opcode::AliasedUse }
 }
 
 class UnmodeledUseInstruction extends Instruction {

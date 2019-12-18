@@ -139,7 +139,7 @@ void MergeMustExactlyWithMustTotallyOverlap(bool c, Point p, int x1) {
   else {
     a = p;
   }
-  int x = a.x;  // Only one reaching def must exactly overlap, but we should still get a Phi for it.
+  int x = a.x;  // Only one (non-Chi) reaching def must exactly overlap, but we should still get a Phi for it.
 }
 
 void MergeMustExactlyWithMayPartiallyOverlap(bool c, Point p, int x1) {
@@ -210,3 +210,36 @@ int ModeledCallTarget(int x) {
   return y;
 }
 
+void InitArray() {
+    char a_pad[32] = ""; 
+    char a_nopad[4] = "foo";
+    char a_infer[] = "blah";
+    char b[2];
+    char c[2] = {};
+    char d[2] = { 0 };
+    char e[2] = { 0, 1 };
+    char f[3] = { 0 };
+}
+
+extern void ExternalFunc();
+
+char StringLiteralAliasing() {
+  ExternalFunc();
+
+  const char* s = "Literal";
+  return s[2];  // Should be defined by `AliasedDefinition`, not `Chi` or `CallSideEffect`.
+}
+
+class Constructible {
+  public:
+    Constructible(int x) {};
+    void g() {}
+};
+
+void ExplicitConstructorCalls() {
+  Constructible c(1);
+  c.g();
+  c.g();
+  Constructible c2 = Constructible(2);
+  c2.g();
+}

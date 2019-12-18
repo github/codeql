@@ -7,6 +7,7 @@ import com.semmle.js.ast.AssignmentExpression;
 import com.semmle.js.ast.BlockStatement;
 import com.semmle.js.ast.CallExpression;
 import com.semmle.js.ast.CatchClause;
+import com.semmle.js.ast.Chainable;
 import com.semmle.js.ast.ClassExpression;
 import com.semmle.js.ast.ComprehensionBlock;
 import com.semmle.js.ast.ComprehensionExpression;
@@ -470,7 +471,8 @@ public class CustomParser extends FlowParser {
 
       Expression property = this.parsePropertyIdentifierOrIdentifier();
       MemberExpression node =
-          new MemberExpression(start, base, property, false, false, isOnOptionalChain(false, base));
+          new MemberExpression(
+              start, base, property, false, false, Chainable.isOnOptionalChain(false, base));
       return Pair.make(this.finishNode(node), true);
     } else if (this.eat(doubleDot)) {
       SourceLocation start = new SourceLocation(startLoc);

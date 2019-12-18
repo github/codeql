@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Deserializing an object from untrusted input may result in security problems, such
+as denial of service or remote code execution.</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid deserializing objects from an untrusted source, and if not possible, make sure
+to use a safe deserialization framework.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, text from an HTML text box is deserialized using a
+<code>JavaScriptSerializer</code> with a simple type resolver. Using a type resolver
+means that arbitrary code may be executed.</p>
+
+<sample src="UnsafeDeserializationUntrustedInputBad.cs" />
+
+<p>To fix this specific vulnerability, we avoid using a type resolver. In other cases,
+it may be necessary to use a different deserialization framework.</p>
+
+<sample src="UnsafeDeserializationUntrustedInputGood.cs" />
+
+</example>
+<references>
+
+<li>
+Mu&ntilde;oz, Alvaro and Mirosh, Oleksandr:
+<a href="https://www.blackhat.com/docs/us-17/thursday/us-17-Munoz-Friday-The-13th-Json-Attacks.pdf">JSON Attacks</a>.
+</li>
+
+</references>
+</qhelp>

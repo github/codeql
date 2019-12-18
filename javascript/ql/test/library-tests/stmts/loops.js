@@ -1,4 +1,4 @@
-while(true) // semmle-extractor-options: --extract-program-text
+while(true)
     ;
 outer: for(a; b; c) {
     for(;;)

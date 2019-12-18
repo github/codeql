@@ -5,6 +5,6 @@ import cil
 from DotNet::Callable c, DotNet::Parameter param, int p
 where
   not mayBeDisposed(param) and
-  param.getType().hasName("TextWriter") and
-  param = c.getParameter(p)
+  param = c.getParameter(p) and
+  c.getDeclaringType().getQualifiedName() = "DisposalTests.Class1"
 select c.toStringWithTypes(), p

@@ -23,6 +23,7 @@ namespace Semmle.Extraction.CIL.Entities
         public Attribute(Context cx, IEntity @object, CustomAttributeHandle handle) : base(cx)
         {
             attrib = cx.mdReader.GetCustomAttribute(handle);
+            this.handle = handle;
             this.@object = @object;
         }
 

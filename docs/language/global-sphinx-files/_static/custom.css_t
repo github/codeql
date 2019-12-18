@@ -427,27 +427,6 @@ blockquote.pull-quote > :last-child {
     margin-bottom: -10px;
 }
 
-/* -- EMBEDDED SLIDE DECKS AND DOWNLOADS LINKS ------------------------------------------------------------- */
-
-    div.embed iframe {
-        max-width:100%;
-    }
-    
-    code.xref, a codecode.xref, a code {
-        font-family: lato, san-serif; 
-        font-size: 14px;
-        font-weight: normal;
-        color: #2F1695;
-        text-decoration: none;
-        border-bottom: 1px dotted #2F1695;
-    }
-
-    @media screen and (max-width: 875px){
-        div.embed iframe {
-        height:100%;
-        }
-    }
-
 /* -- COLLAPSIBLE SECTIONS --------------------------------------------------------------------------------- */
 
 .toggle .name {

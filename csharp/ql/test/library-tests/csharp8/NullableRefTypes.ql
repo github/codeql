@@ -21,17 +21,18 @@ query predicate nonNullExpressions(NonNullExpr e) {
   e.getEnclosingCallable().getName() = "TestSuppressNullableWarningExpr"
 }
 
-query predicate assignableTypes(Assignable a, AnnotatedType t) {
+query predicate assignableTypes(Assignable a, AnnotatedType t, string n) {
   a.getFile().getBaseName() = "NullableRefTypes.cs" and
   t.getLocation() instanceof SourceLocation and
   a.getLocation() instanceof SourceLocation and
-  t = a.getAnnotatedType()
+  t = a.getAnnotatedType() and
+  n = t.getAnnotations().getNullability().toString()
 }
 
-query predicate arrayElements(Variable v, ArrayType array, AnnotatedType elementType) {
+query predicate arrayElements(Variable v, AnnotatedArrayType array, AnnotatedType elementType) {
   v.getFile().getBaseName() = "NullableRefTypes.cs" and
-  array = v.getType() and
-  elementType = array.getAnnotatedElementType()
+  array = v.getAnnotatedType() and
+  elementType = array.getElementType()
 }
 
 query predicate returnTypes(Callable c, string t) {
@@ -39,20 +40,25 @@ query predicate returnTypes(Callable c, string t) {
   t = c.getAnnotatedReturnType().toString()
 }
 
-query predicate typeArguments(ConstructedGeneric generic, int arg, string argument) {
-  (
-    generic = any(Variable v | v.fromSource()).getType()
-    or
-    generic = any(MethodCall mc).getTarget()
-  ) and
+query predicate methodTypeArguments(ConstructedGeneric generic, int arg, string argument) {
+  generic = any(MethodCall mc).getTarget() and
   argument = generic.getAnnotatedTypeArgument(arg).toString()
 }
 
+query predicate constructedTypes(AnnotatedConstructedType at, int i, string arg, string nullability) {
+  arg = at.getTypeArgument(i).toString() and
+  at.getLocation().getFile().getBaseName() = "NullableRefTypes.cs" and
+  nullability = at.getAnnotations().getNullability().toString()
+}
+
 query predicate nullableTypeParameters(TypeParameter p) {
-  p.getConstraints().hasNullableRefTypeConstraint()
+  p.getConstraints().hasNullableRefTypeConstraint() and
+  p.getLocation().getFile().getBaseName() = "NullableRefTypes.cs"
 }
 
 query predicate annotatedTypeConstraints(TypeParameter p, AnnotatedType t) {
   t = p.getConstraints().getAnAnnotatedTypeConstraint() and
   t.getLocation() instanceof SourceLocation
 }
+
+query predicate typeNotAnnotated(Type type) { not exists(AnnotatedType at | at.getType() = type) }

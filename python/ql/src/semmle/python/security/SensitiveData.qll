@@ -112,12 +112,6 @@ module SensitiveData {
 
     private SensitiveData fromFunction(Value func) {
         result = HeuristicNames::getSensitiveDataForName(func.getName())
-        or
-        // This is particularly to pick up methods with an argument like "password", which
-        // may indicate a lookup.
-        exists(string name | name = func.(PythonFunctionValue).getScope().getAnArg().asName().getId() |
-            result = HeuristicNames::getSensitiveDataForName(name)
-        )
     }
 
     abstract class Source extends TaintSource {

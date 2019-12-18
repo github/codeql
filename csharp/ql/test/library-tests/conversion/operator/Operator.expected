@@ -4,10 +4,12 @@
 | ArraySegment<T> | Span<> |
 | Byte | Decimal |
 | Char | Decimal |
+| Char | StandardFormat |
 | DateTime | DateTimeOffset |
 | Int16 | Decimal |
 | Int32 | C |
 | Int32 | Decimal |
+| Int32 | Index |
 | Int32 | MetadataToken |
 | Int64 | Decimal |
 | Memory<> | ReadOnlyMemory<T> |

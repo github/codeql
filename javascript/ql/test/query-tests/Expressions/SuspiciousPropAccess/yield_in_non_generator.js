@@ -4,5 +4,3 @@ function outer() {
   }
   inner().next()
 }
-
-// semmle-extractor-options: --experimental

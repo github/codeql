@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# QL and LGTM support info build configuration file, created 
+# CodeQL and LGTM support info build configuration file, created 
 # on Tuesday 19th February.
 #
 # This file is execfile()d with the current directory set to its
@@ -80,4 +80,4 @@ htmlhelp_basename = 'Supported languages and frameworks'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['read-me-project.rst']
+exclude_patterns = ['read-me-project.rst', 'cobol-note.rst']

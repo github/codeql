@@ -4,5 +4,3 @@ for (let fn in fns)
 function getSquares() {
   return [for (i of [0, 1, 2]) i*i];
 }
-
-//semmle-extractor-options: --experimental

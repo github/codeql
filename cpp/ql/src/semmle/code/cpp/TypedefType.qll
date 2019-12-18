@@ -2,12 +2,11 @@ import semmle.code.cpp.Type
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ typedef type. See 4.9.1.
- *
- * Represents either of the following typedef styles:
- *
- *   * CTypedefType: typedef <type> <name>;
- *   * UsingAliasTypedefType: using <name> = <type>;
+ * A C/C++ typedef type. See 4.9.1.  For example the types declared on each line of the following code:
+ * ```
+ * typedef int my_int;
+ * using my_int2 = int;
+ * ```
  */
 class TypedefType extends UserType {
   TypedefType() {
@@ -48,7 +47,10 @@ class TypedefType extends UserType {
 }
 
 /**
- * A traditional C/C++ typedef type. See 4.9.1.
+ * A traditional C/C++ typedef type. See 4.9.1.  For example the type declared in the following code:
+ * ```
+ * typedef int my_int;
+ * ```
  */
 class CTypedefType extends TypedefType {
   CTypedefType() { usertypes(underlyingElement(this), _, 5) }
@@ -61,7 +63,10 @@ class CTypedefType extends TypedefType {
 }
 
 /**
- * A using alias C++ typedef type.
+ * A using alias C++ typedef type.  For example the type declared in the following code:
+ * ```
+ * using my_int2 = int;
+ * ```
  */
 class UsingAliasTypedefType extends TypedefType {
   UsingAliasTypedefType() { usertypes(underlyingElement(this), _, 14) }
@@ -74,7 +79,11 @@ class UsingAliasTypedefType extends TypedefType {
 }
 
 /**
- * A C++ typedef type that is directly enclosed by a function.
+ * A C++ `typedef` type that is directly enclosed by a function.  For example the type declared inside the function `foo` in
+ * the following code:
+ * ```
+ * int foo(void) { typedef int local; }
+ * ```
  */
 class LocalTypedefType extends TypedefType {
   LocalTypedefType() { isLocal() }
@@ -83,7 +92,11 @@ class LocalTypedefType extends TypedefType {
 }
 
 /**
- * A C++ typedef type that is directly enclosed by a class, struct or union.
+ * A C++ `typedef` type that is directly enclosed by a `class`, `struct` or `union`.  For example the type declared inside
+ * the class `C` in the following code:
+ * ```
+ * class C { typedef int nested; };
+ * ```
  */
 class NestedTypedefType extends TypedefType {
   NestedTypedefType() { this.isMember() }

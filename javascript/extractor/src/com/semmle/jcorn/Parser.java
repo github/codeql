@@ -1520,10 +1520,6 @@ public class Parser {
     }
   }
 
-  protected boolean isOnOptionalChain(boolean optional, Expression base) {
-    return optional || base instanceof Chainable && ((Chainable) base).isOnOptionalChain();
-  }
-
   /**
    * Parse a single subscript {@code s}; if more subscripts could follow, return {@code Pair.make(s,
    * true}, otherwise return {@code Pair.make(s, false)}.
@@ -1544,7 +1540,7 @@ public class Parser {
               this.parseExpression(false, null),
               true,
               optional,
-              isOnOptionalChain(optional, base));
+              Chainable.isOnOptionalChain(optional, base));
       this.expect(TokenType.bracketR);
       return Pair.make(this.finishNode(node), true);
     } else if (!noCalls && this.eat(TokenType.parenL)) {
@@ -1572,10 +1568,10 @@ public class Parser {
               new ArrayList<>(),
               exprList,
               optional,
-              isOnOptionalChain(optional, base));
+              Chainable.isOnOptionalChain(optional, base));
       return Pair.make(this.finishNode(node), true);
     } else if (this.type == TokenType.backQuote) {
-      if (isOnOptionalChain(optional, base)) {
+      if (Chainable.isOnOptionalChain(optional, base)) {
         this.raise(base, "An optional chain may not be used in a tagged template expression.");
       }
       TaggedTemplateExpression node =
@@ -1590,7 +1586,7 @@ public class Parser {
               this.parseIdent(true),
               false,
               optional,
-              isOnOptionalChain(optional, base));
+              Chainable.isOnOptionalChain(optional, base));
       return Pair.make(this.finishNode(node), true);
     } else {
       return Pair.make(base, false);
@@ -1832,7 +1828,7 @@ public class Parser {
     Expression callee =
         this.parseSubscripts(this.parseExprAtom(null), innerStartPos, innerStartLoc, true);
 
-    if (isOnOptionalChain(false, callee))
+    if (Chainable.isOnOptionalChain(false, callee))
       this.raise(callee, "An optional chain may not be used in a `new` expression.");
 
     return parseNewArguments(startLoc, callee);
@@ -2314,7 +2310,7 @@ public class Parser {
       }
 
       if (node instanceof MemberExpression) {
-        if (isOnOptionalChain(false, (MemberExpression) node))
+        if (Chainable.isOnOptionalChain(false, (MemberExpression) node))
           this.raise(node, "Invalid left-hand side in assignment");
         if (!isBinding) return node;
       }

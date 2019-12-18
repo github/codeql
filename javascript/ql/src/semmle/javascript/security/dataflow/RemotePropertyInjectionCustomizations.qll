@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks and sanitisers for reasoning about
+ * Provides default sources, sinks and sanitizers for reasoning about
  * injections in property names, used either for writing into a
  * property, into a header or for calling an object's method, as well
  * as extension points for adding your own.

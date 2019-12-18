@@ -17,4 +17,4 @@ Point.prototype['final'];
 /** @type {!Point} */
 var aPoint;
 
-//semmle-extractor-options: --externs
+/** @externs */

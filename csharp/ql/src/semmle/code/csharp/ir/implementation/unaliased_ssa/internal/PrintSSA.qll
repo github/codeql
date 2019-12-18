@@ -4,34 +4,52 @@ private import Alias
 private import SSAConstruction
 private import DebugSSA
 
+bindingset[offset]
+private string getKeySuffixForOffset(int offset) {
+  if offset % 2 = 0 then result = "" else result = "_Chi"
+}
+
+bindingset[offset]
+private int getIndexForOffset(int offset) { result = offset / 2 }
+
 /**
  * Property provide that dumps the memory access of each result. Useful for debugging SSA
  * construction.
  */
 class PropertyProvider extends IRPropertyProvider {
   override string getInstructionProperty(Instruction instruction, string key) {
-    exists(MemoryLocation location |
-      location = getResultMemoryLocation(instruction) and
-      (
-        key = "ResultMemoryLocation" and result = location.toString()
-        or
-        key = "ResultVirtualVariable" and result = location.getVirtualVariable().toString()
+    key = "ResultMemoryLocation" and
+    result = strictconcat(MemoryLocation loc |
+        loc = getResultMemoryLocation(instruction)
+      |
+        loc.toString(), ","
       )
-    )
     or
-    exists(MemoryLocation location |
-      location = getOperandMemoryLocation(instruction.getAnOperand()) and
-      (
-        key = "OperandMemoryAccess" and result = location.toString()
-        or
-        key = "OperandVirtualVariable" and result = location.getVirtualVariable().toString()
+    key = "ResultVirtualVariable" and
+    result = strictconcat(MemoryLocation loc |
+        loc = getResultMemoryLocation(instruction)
+      |
+        loc.getVirtualVariable().toString(), ","
       )
-    )
     or
-    exists(MemoryLocation useLocation, IRBlock defBlock, int defRank, int defIndex |
-      hasDefinitionAtRank(useLocation, _, defBlock, defRank, defIndex) and
-      defBlock.getInstruction(defIndex) = instruction and
-      key = "DefinitionRank[" + useLocation.toString() + "]" and
+    key = "OperandMemoryLocation" and
+    result = strictconcat(MemoryLocation loc |
+        loc = getOperandMemoryLocation(instruction.getAnOperand())
+      |
+        loc.toString(), ","
+      )
+    or
+    key = "OperandVirtualVariable" and
+    result = strictconcat(MemoryLocation loc |
+        loc = getOperandMemoryLocation(instruction.getAnOperand())
+      |
+        loc.getVirtualVariable().toString(), ","
+      )
+    or
+    exists(MemoryLocation useLocation, IRBlock defBlock, int defRank, int defOffset |
+      hasDefinitionAtRank(useLocation, _, defBlock, defRank, defOffset) and
+      defBlock.getInstruction(getIndexForOffset(defOffset)) = instruction and
+      key = "DefinitionRank" + getKeySuffixForOffset(defOffset) + "[" + useLocation.toString() + "]" and
       result = defRank.toString()
     )
     or
@@ -41,10 +59,11 @@ class PropertyProvider extends IRPropertyProvider {
       result = useRank.toString()
     )
     or
-    exists(MemoryLocation useLocation, IRBlock defBlock, int defRank, int defIndex |
-      hasDefinitionAtRank(useLocation, _, defBlock, defRank, defIndex) and
-      defBlock.getInstruction(defIndex) = instruction and
-      key = "DefinitionReachesUse[" + useLocation.toString() + "]" and
+    exists(MemoryLocation useLocation, IRBlock defBlock, int defRank, int defOffset |
+      hasDefinitionAtRank(useLocation, _, defBlock, defRank, defOffset) and
+      defBlock.getInstruction(getIndexForOffset(defOffset)) = instruction and
+      key = "DefinitionReachesUse" + getKeySuffixForOffset(defOffset) + "[" + useLocation.toString()
+          + "]" and
       result = strictconcat(IRBlock useBlock, int useRank, int useIndex |
           exists(Instruction useInstruction |
             hasUseAtRank(useLocation, useBlock, useRank, useInstruction) and

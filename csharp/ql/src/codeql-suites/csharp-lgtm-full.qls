@@ -1,0 +1,4 @@
+- description: Standard LGTM queries for C#, including ones not displayed by default
+- qlpack: codeql-csharp
+- apply: lgtm-selectors.yml
+  from: codeql-suite-helpers

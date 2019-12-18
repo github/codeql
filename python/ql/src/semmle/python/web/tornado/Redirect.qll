@@ -1,23 +1,20 @@
-/** Provides class representing the `tornado.redirect` function.
+/**
+ * Provides class representing the `tornado.redirect` function.
  * This module is intended to be imported into a taint-tracking query
  * to extend `TaintSink`.
  */
-import python
 
+import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.Http
 import Tornado
 
-
 /**
  * Represents an argument to the `tornado.redirect` function.
  */
 class TornadoRedirect extends HttpRedirectTaintSink {
-
-    override string toString() {
-        result = "tornado.redirect"
-    }
+    override string toString() { result = "tornado.redirect" }
 
     TornadoRedirect() {
         exists(CallNode call, ControlFlowNode node |
@@ -26,5 +23,4 @@ class TornadoRedirect extends HttpRedirectTaintSink {
             this = call.getAnArg()
         )
     }
-
 }

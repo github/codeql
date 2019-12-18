@@ -4,7 +4,55 @@
 
 import javascript
 
+deprecated
 module GlobalAccessPath {
+  /**
+   * DEPRECATED. Instead use `AccessPath::getAReferenceTo` with the result and parameter reversed.
+   */
+  pragma[inline]
+  string fromReference(DataFlow::Node node) {
+    node = AccessPath::getAReferenceTo(result)
+  }
+
+  /**
+   * DEPRECATED. Instead use `AccessPath::getAnAssignmentTo` with the result and parameter reversed.
+   */
+  pragma[inline]
+  string fromRhs(DataFlow::Node node) {
+    node = AccessPath::getAnAssignmentTo(result)
+  }
+
+  /**
+   * DEPRECATED. Use `AccessPath::getAReferenceOrAssignmentTo`.
+   */
+  pragma[inline]
+  string getAccessPath(DataFlow::Node node) {
+    result = fromReference(node)
+    or
+    not exists(fromReference(node)) and
+    result = fromRhs(node)
+  }
+}
+
+module AccessPath {
+  /**
+   * A source node that can be the root of an access path.
+   */
+  class Root extends DataFlow::SourceNode {
+    Root() {
+      not this.accessesGlobal(_) and
+      not this instanceof DataFlow::PropRead and
+      not this instanceof PropertyProjection and
+      not this instanceof Closure::ClosureNamespaceAccess and
+      not this = DataFlow::parameterNode(any(ImmediatelyInvokedFunctionExpr iife).getAParameter())
+    }
+
+    /** Holds if this represents the root of the global access path. */
+    predicate isGlobal() {
+      this = DataFlow::globalAccessPathRootPseudoNode()
+    }
+  }
+
   /**
    * A local variable with exactly one definition, not counting implicit initialization.
    */
@@ -21,52 +69,68 @@ module GlobalAccessPath {
   }
 
   /**
-   * Gets the global access path referred to by `node`.
+   * Appends a single property name onto the access path `base`, where
+   * the empty string represents the empty access path.
+   */
+  bindingset[base, prop]
+  private string join(string base, string prop) {
+    base = "" and result = prop
+    or
+    base != "" and
+    result = base + "." + prop
+  }
+
+  /**
+   * Gets the access path relative to `root` referred to by `node`.
    *
    * This holds for direct references as well as for aliases
    * established through local data flow.
    *
    * Examples:
    * ```
-   * function f() {
-   *   let v = foo.bar; // reference to 'foo.bar'
-   *   v.baz;           // reference to 'foo.bar.baz'
+   * function f(x) {
+   *   let a = x.f.g; // access path relative to 'x' is 'f.g'
+   *   let b = a.h;   // access path relative to 'x' is 'f.g.h'
    * }
-   *
-   * (function(ns) {
-   *   ns.x;            // reference to 'NS.x'
-   * })(NS = NS || {});
    * ```
    */
   cached
-  string fromReference(DataFlow::Node node) {
-    result = fromReference(node.getImmediatePredecessor())
+  private string fromReference(DataFlow::Node node, Root root) {
+    root = node and
+    not root.isGlobal() and
+    result = ""
+    or
+    result = fromReference(node.getImmediatePredecessor(), root)
     or
     exists(EffectivelyConstantVariable var |
       var.isCaptured() and
       node.asExpr() = var.getAnAccess() and
-      result = fromReference(var.getValue())
+      result = fromReference(var.getValue(), root)
     )
     or
     node.accessesGlobal(result) and
-    result != "undefined"
+    result != "undefined" and
+    root.isGlobal()
     or
     not node.accessesGlobal(_) and
     exists(DataFlow::PropRead prop | node = prop |
-      result = fromReference(prop.getBase()) + "." + prop.getPropertyName()
+      result = join(fromReference(prop.getBase(), root), prop.getPropertyName())
     )
     or
-    exists(Closure::ClosureNamespaceAccess acc | node = acc | result = acc.getClosureNamespace())
+    exists(Closure::ClosureNamespaceAccess acc | node = acc |
+      result = acc.getClosureNamespace() and
+      root.isGlobal()
+    )
     or
     exists(PropertyProjection proj | node = proj |
       proj.isSingletonProjection() and
-      result = fromReference(proj.getObject()) + "." + proj.getASelector()
+      result = join(fromReference(proj.getObject(), root), proj.getASelector().getStringValue())
     )
     or
     // Treat 'e || {}' as having the same name as 'e'
     exists(LogOrExpr e | node.asExpr() = e |
       e.getRightOperand().(ObjectExpr).getNumProperty() = 0 and
-      result = fromReference(e.getLeftOperand().flow())
+      result = fromReference(e.getLeftOperand().flow(), root)
     )
     or
     // Treat 'e && e.f' as having the same name as 'e.f'
@@ -84,7 +148,7 @@ module GlobalAccessPath {
           rhs.getBase().(PropAccess).getQualifiedName() = name
         )
       ) and
-      result = fromReference(rhs.flow())
+      result = fromReference(rhs.flow(), root)
     )
   }
 
@@ -96,15 +160,17 @@ module GlobalAccessPath {
    * foo = foo || {};
    * ```
    */
-  private predicate isSelfAssignment(DataFlow::Node rhs) { fromRhs(rhs) = fromReference(rhs) }
+  private predicate isSelfAssignment(DataFlow::Node rhs) {
+    fromRhs(rhs, DataFlow::globalAccessPathRootPseudoNode()) = fromReference(rhs, DataFlow::globalAccessPathRootPseudoNode())
+  }
 
   /**
-   * Holds if there is an assignment to `accessPath` in `file`, not counting
+   * Holds if there is an assignment to the global `accessPath` in `file`, not counting
    * self-assignments.
    */
   private predicate isAssignedInFile(string accessPath, File file) {
     exists(DataFlow::Node rhs |
-      fromRhs(rhs) = accessPath and
+      fromRhs(rhs, DataFlow::globalAccessPathRootPseudoNode()) = accessPath and
       not isSelfAssignment(rhs) and
       // Note: Avoid unneeded materialization of DataFlow::Node.getFile()
       rhs.getAstNode().getFile() = file
@@ -112,7 +178,7 @@ module GlobalAccessPath {
   }
 
   /**
-   * Holds if `accessPath` is only assigned to from one file, not counting
+   * Holds if the global `accessPath` is only assigned to from one file, not counting
    * self-assignments.
    */
   predicate isAssignedInUniqueFile(string accessPath) {
@@ -120,66 +186,179 @@ module GlobalAccessPath {
   }
 
   /**
-   * Gets the global access path `node` is being assigned to, if any.
+   * Gets the access path relative to `root`, which `node` is being assigned to, if any.
    *
    * Only holds for the immediate right-hand side of an assignment or property, not
    * for nodes that transitively flow there.
    *
-   * For example, the class nodes below all map to `foo.bar`:
+   * For example, the class nodes below all map to `foo.bar` relative to `x`:
+   * ```
+   * function f(x) {
+   *   x.foo.bar = class {};
+   *   x.foo = { bar: class() };
+   *   let alias = x;
+   *   alias.foo.bar = class {};
+   * }
+   * ```
+   */
+  cached
+  private string fromRhs(DataFlow::Node node, Root root) {
+    exists(DataFlow::PropWrite write, string baseName |
+      node = write.getRhs() and
+      result = join(baseName, write.getPropertyName())
+    |
+      baseName = fromReference(write.getBase(), root)
+      or
+      baseName = fromRhs(write.getBase(), root)
+    )
+    or
+    exists(GlobalVariable var |
+      node = var.getAnAssignedExpr().flow() and
+      result = var.getName() and
+      root.isGlobal()
+    )
+    or
+    exists(FunctionDeclStmt fun |
+      node = DataFlow::valueNode(fun) and
+      result = fun.getId().(GlobalVarDecl).getName() and
+      root.isGlobal()
+    )
+    or
+    exists(ClassDeclStmt cls |
+      node = DataFlow::valueNode(cls) and
+      result = cls.getIdentifier().(GlobalVarDecl).getName() and
+      root.isGlobal()
+    )
+    or
+    exists(EnumDeclaration decl |
+      node = DataFlow::valueNode(decl) and
+      result = decl.getIdentifier().(GlobalVarDecl).getName() and
+      root.isGlobal()
+    )
+    or
+    exists(NamespaceDeclaration decl |
+      node = DataFlow::valueNode(decl) and
+      result = decl.getId().(GlobalVarDecl).getName() and
+      root.isGlobal()
+    )
+  }
+
+  /**
+   * Gets a node that refers to the given access path relative to the given `root` node,
+   * or `root` itself if the access path is empty.
+   *
+   * This works for direct references as well as for aliases established through local data flow.
+   *
+   * For example:
+   * ```
+   * function f(x) {
+   *   let a = x.f.g; // reference to (x, "f.g")
+   *   let b = a.h;   // reference to (x, "f.g.h")
+   * }
+   * ```
+   */
+  DataFlow::Node getAReferenceTo(Root root, string path) {
+    path = fromReference(result, root) and
+    not root.isGlobal()
+  }
+
+  /**
+   * Gets a node that refers to the given global access path.
+   *
+   * This works for direct references as well as for aliases established through local data flow.
+   *
+   * Examples:
+   * ```
+   * function f() {
+   *   let v = foo.bar; // reference to 'foo.bar'
+   *   v.baz;           // reference to 'foo.bar.baz'
+   * }
+   *
+   * (function(ns) {
+   *   ns.x;            // reference to 'NS.x'
+   * })(NS = NS || {});
+   * ```
+   */
+  DataFlow::Node getAReferenceTo(string path) {
+    path = fromReference(result, DataFlow::globalAccessPathRootPseudoNode())
+  }
+
+  /**
+   * Gets a node that is assigned to the given access path relative to the given `root` node.
+   *
+   * Only gets the immediate right-hand side of an assignment or property, not
+   * nodes that transitively flow there.
+   *
+   * For example, the class nodes below are all assignments to `(x, "foo.bar")`.
+   * ```
+   * function f(x) {
+   *   x.foo.bar = class {};
+   *   x.foo = { bar: class() };
+   *   let alias = x;
+   *   alias.foo.bar = class {};
+   * }
+   * ```
+   */
+  DataFlow::Node getAnAssignmentTo(Root root, string path) {
+    path = fromRhs(result, root) and
+    not root.isGlobal()
+  }
+
+  /**
+   * Gets a node that is assigned to the given global access path.
+   *
+   * Only gets the immediate right-hand side of an assignment or property or a global declaration,
+   * not nodes that transitively flow there.
+   *
+   * For example, the class nodes below are all assignmetns to `foo.bar`:
    * ```
    * foo.bar = class {};
-   *
    * foo = { bar: class {} };
-   *
    * (function(f) {
    *   f.bar = class {}
    *  })(foo = foo || {});
    * ```
    */
-  cached
-  string fromRhs(DataFlow::Node node) {
-    exists(DataFlow::SourceNode base, string baseName, string name |
-      node = base.getAPropertyWrite(name).getRhs() and
-      result = baseName + "." + name
-    |
-      baseName = fromReference(base)
-      or
-      baseName = fromRhs(base)
-    )
-    or
-    exists(GlobalVariable var |
-      node = var.getAnAssignedExpr().flow() and
-      result = var.getName()
-    )
-    or
-    exists(FunctionDeclStmt fun |
-      node = DataFlow::valueNode(fun) and
-      result = fun.getId().(GlobalVarDecl).getName()
-    )
-    or
-    exists(ClassDeclStmt cls |
-      node = DataFlow::valueNode(cls) and
-      result = cls.getIdentifier().(GlobalVarDecl).getName()
-    )
-    or
-    exists(EnumDeclaration decl |
-      node = DataFlow::valueNode(decl) and
-      result = decl.getIdentifier().(GlobalVarDecl).getName()
-    )
-    or
-    exists(NamespaceDeclaration decl |
-      node = DataFlow::valueNode(decl) and
-      result = decl.getId().(GlobalVarDecl).getName()
-    )
+  DataFlow::Node getAnAssignmentTo(string path) {
+    path = fromRhs(result, DataFlow::globalAccessPathRootPseudoNode())
   }
 
   /**
-   * Gets the global access path referenced by or assigned to `node`.
+   * Gets a node that refers to or is assigned to the given global access path.
+   *
+   * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
-  string getAccessPath(DataFlow::Node node) {
-    result = fromReference(node)
+  DataFlow::Node getAReferenceOrAssignmentTo(string path) {
+    result = getAReferenceTo(path)
     or
-    not exists(fromReference(node)) and
-    result = fromRhs(node)
+    result = getAnAssignmentTo(path)
+  }
+
+  /**
+   * Gets a node that refers to or is assigned to the given access path.
+   *
+   * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
+   */
+  DataFlow::Node getAReferenceOrAssignmentTo(Root root, string path) {
+    result = getAReferenceTo(root, path)
+    or
+    result = getAnAssignmentTo(root, path)
+  }
+
+  /**
+   * Holds if there is a step from `pred` to `succ` through an assignment to an access path.
+   */
+  pragma[inline]
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(string name, Root root |
+      pred = getAnAssignmentTo(root, name) and
+      succ = getAReferenceTo(root, name)
+    )
+    or
+    exists(string name |
+      pred = getAnAssignmentTo(name) and
+      succ = getAReferenceTo(name) and
+      isAssignedInUniqueFile(name)
+    )
   }
 }

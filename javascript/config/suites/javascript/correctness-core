@@ -37,5 +37,6 @@
 + semmlecode-javascript-queries/RegExp/UnboundBackref.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/UnmatchableCaret.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/UnmatchableDollar.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/Statements/IgnoreArrayResult.ql: /Correctness/Statements
 + semmlecode-javascript-queries/Statements/InconsistentLoopOrientation.ql: /Correctness/Statements
 + semmlecode-javascript-queries/Statements/UnreachableStatement.ql: /Correctness/Statements

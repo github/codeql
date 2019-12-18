@@ -36,7 +36,7 @@ can be used:
 <references>
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Denial_of_Service_Cheat_Sheet">Denial of Service Cheat Sheet</a>.
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html">Denial of Service Cheat Sheet</a>.
 </li>
 <li>
 Wikipedia: <a href="https://en.wikipedia.org/wiki/Denial-of-service_attack">Denial-of-service attack</a>.

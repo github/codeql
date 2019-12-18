@@ -50,17 +50,17 @@ abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
 }
 
 /**
- * Flow analysis for (non-numeric) property read accesses.
+ * Flow analysis for non-numeric property read accesses.
  */
-private class AnalyzedPropertyAccess extends AnalyzedPropertyRead, DataFlow::ValueNode {
-  override PropAccess astNode;
+private class AnalyzedNonNumericPropertyRead extends AnalyzedPropertyRead {
+  DataFlow::PropRead self;
   DataFlow::AnalyzedNode baseNode;
   string propName;
 
-  AnalyzedPropertyAccess() {
-    astNode.accesses(baseNode.asExpr(), propName) and
-    isNonNumericPropertyName(propName) and
-    astNode instanceof RValue
+  AnalyzedNonNumericPropertyRead() {
+    this = self and
+    self.accesses(baseNode, propName) and
+    isNonNumericPropertyName(propName)
   }
 
   override predicate reads(AbstractValue base, string prop) {
@@ -148,7 +148,7 @@ private predicate explicitPropertyWrite(
  * Flow analysis for `arguments.callee`. We assume it is never redefined,
  * which is unsound in practice, but pragmatically useful.
  */
-private class AnalyzedArgumentsCallee extends AnalyzedPropertyAccess {
+private class AnalyzedArgumentsCallee extends AnalyzedNonNumericPropertyRead {
   AnalyzedArgumentsCallee() { propName = "callee" }
 
   override AbstractValue getALocalValue() {
@@ -156,18 +156,18 @@ private class AnalyzedArgumentsCallee extends AnalyzedPropertyAccess {
       result = TAbstractFunction(baseVal.getFunction())
     )
     or
-    hasNonArgumentsBase(astNode) and result = super.getALocalValue()
+    hasNonArgumentsBase(self) and result = super.getALocalValue()
   }
 }
 
 /**
- * Holds if `pacc` is of the form `e.callee` where `e` could evaluate to some
+ * Holds if `pr` is of the form `e.callee` where `e` could evaluate to some
  * value that is not an arguments object.
  */
-private predicate hasNonArgumentsBase(PropAccess pacc) {
-  pacc.getPropertyName() = "callee" and
+private predicate hasNonArgumentsBase(DataFlow::PropRead pr) {
+  pr.getPropertyName() = "callee" and
   exists(AbstractValue baseVal |
-    baseVal = pacc.getBase().analyze().getALocalValue() and
+    baseVal = pr.getBase().analyze().getALocalValue() and
     not baseVal instanceof AbstractArguments
   )
 }

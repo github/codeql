@@ -1,6 +1,7 @@
 /** Provides classes for assertions. */
 
 private import semmle.code.csharp.frameworks.system.Diagnostics
+private import semmle.code.csharp.frameworks.system.diagnostics.Contracts
 private import semmle.code.csharp.frameworks.test.VisualStudio
 private import semmle.code.csharp.frameworks.System
 private import ControlFlow
@@ -169,6 +170,29 @@ class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
   }
 }
 
+/**
+ * A `System.Diagnostics.Contracts.Contract` assertion method.
+ */
+class SystemDiagnosticsContractAssertTrueMethod extends AssertTrueMethod {
+  SystemDiagnosticsContractAssertTrueMethod() {
+    exists(SystemDiagnosticsContractsContractClass c |
+      this = c.getAnAssertMethod()
+      or
+      this = c.getAnAssumeMethod()
+      or
+      this = c.getARequiresMethod()
+    )
+  }
+
+  override int getAssertionIndex() { result = 0 }
+
+  override Class getExceptionClass() {
+    // A failing assertion generates a message box, see
+    // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.contracts.contract.assert
+    none()
+  }
+}
+
 /** A Visual Studio assertion method. */
 class VSTestAssertTrueMethod extends AssertTrueMethod {
   VSTestAssertTrueMethod() { this = any(VSTestAssertClass c).getIsTrueMethod() }
@@ -203,6 +227,57 @@ class VSTestAssertNonNullMethod extends AssertNonNullMethod {
   override int getAssertionIndex() { result = 0 }
 
   override AssertFailedExceptionClass getExceptionClass() { any() }
+}
+
+/** An NUnit assertion method. */
+abstract class NUnitAssertMethod extends AssertMethod {
+  override int getAssertionIndex() { result = 0 }
+
+  override AssertionExceptionClass getExceptionClass() { any() }
+}
+
+/** An NUnit assertion method. */
+class NUnitAssertTrueMethod extends AssertTrueMethod, NUnitAssertMethod {
+  NUnitAssertTrueMethod() {
+    exists(NUnitAssertClass c |
+      this = c.getATrueMethod()
+      or
+      this = c.getAnIsTrueMethod()
+      or
+      this = c.getAThatMethod() and
+      this.getParameter(0).getType() instanceof BoolType
+    )
+  }
+}
+
+/** An NUnit negated assertion method. */
+class NUnitAssertFalseMethod extends AssertFalseMethod, NUnitAssertMethod {
+  NUnitAssertFalseMethod() {
+    exists(NUnitAssertClass c |
+      this = c.getAFalseMethod() or
+      this = c.getAnIsFalseMethod()
+    )
+  }
+}
+
+/** An NUnit `null` assertion method. */
+class NUnitAssertNullMethod extends AssertNullMethod, NUnitAssertMethod {
+  NUnitAssertNullMethod() {
+    exists(NUnitAssertClass c |
+      this = c.getANullMethod() or
+      this = c.getAnIsNullMethod()
+    )
+  }
+}
+
+/** An NUnit non-`null` assertion method. */
+class NUnitAssertNonNullMethod extends AssertNonNullMethod, NUnitAssertMethod {
+  NUnitAssertNonNullMethod() {
+    exists(NUnitAssertClass c |
+      this = c.getANotNullMethod() or
+      this = c.getAnIsNotNullMethod()
+    )
+  }
 }
 
 /** A method that forwards to another assertion method. */

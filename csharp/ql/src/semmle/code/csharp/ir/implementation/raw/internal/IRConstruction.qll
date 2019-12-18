@@ -1,6 +1,8 @@
 import csharp
 import semmle.code.csharp.ir.implementation.raw.IR
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import semmle.code.csharp.ir.internal.CSharpType
+private import semmle.code.csharp.ir.internal.Overlap
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -31,21 +33,32 @@ private module Cached {
   cached
   newtype TInstruction =
     MkInstruction(TranslatedElement element, InstructionTag tag) {
-      element.hasInstruction(_, tag, _, _)
+      element.hasInstruction(_, tag, _)
     }
 
   cached
-  predicate hasUserVariable(Callable callable, Variable var, Type type) {
+  predicate hasUserVariable(Callable callable, Variable var, CSharpType type) {
     getTranslatedFunction(callable).hasUserVariable(var, type)
   }
 
   cached
-  predicate hasTempVariable(Callable callable, Language::AST ast, TempVariableTag tag, Type type) {
+  predicate hasTempVariable(
+    Callable callable, Language::AST ast, TempVariableTag tag, CSharpType type
+  ) {
     exists(TranslatedElement element |
       element.getAST() = ast and
       callable = element.getFunction() and
       element.hasTempVariable(tag, type)
     )
+  }
+
+  cached
+  predicate hasStringLiteral(
+    Callable callable, Language::AST ast, CSharpType type, StringLiteral literal
+  ) {
+    literal = ast and
+    literal.getEnclosingCallable() = callable and
+    getTypeForPRValue(literal.getType()) = type
   }
 
   cached
@@ -82,21 +95,38 @@ private module Cached {
           .getInstructionOperand(getInstructionTag(instruction), tag)
   }
 
+  /** Gets a non-phi instruction that defines an operand of `instr`. */
+  private Instruction getNonPhiOperandDef(Instruction instr) {
+    result = getRegisterOperandDefinition(instr, _)
+    or
+    result = getMemoryOperandDefinition(instr, _, _)
+  }
+
+  /**
+   * Holds if `instr` is part of a cycle in the operand graph that doesn't go
+   * through a phi instruction and therefore should be impossible.
+   *
+   * If such cycles are present, either due to a programming error in the IR
+   * generation or due to a malformed database, it can cause infinite loops in
+   * analyses that assume a cycle-free graph of non-phi operands. Therefore it's
+   * better to remove these operands than to leave cycles in the operand graph.
+   */
+  pragma[noopt]
   cached
-  Type getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
-    // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
-    // the result type of the load.
-    if instruction instanceof LoadInstruction
-    then result = instruction.(LoadInstruction).getResultType()
-    else
-      result = getInstructionTranslatedElement(instruction)
-            .getInstructionOperandType(getInstructionTag(instruction), tag)
+  predicate isInCycle(Instruction instr) {
+    instr instanceof Instruction and
+    getNonPhiOperandDef+(instr) = instr
   }
 
   cached
-  int getInstructionOperandSize(Instruction instruction, SideEffectOperandTag tag) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionOperandSize(getInstructionTag(instruction), tag)
+  CSharpType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
+    // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
+    // the result type of the load.
+    if instruction instanceof LoadInstruction
+    then result = instruction.(LoadInstruction).getResultLanguageType()
+    else
+      result = getInstructionTranslatedElement(instruction)
+            .getInstructionOperandType(getInstructionTag(instruction), tag)
   }
 
   cached
@@ -216,15 +246,15 @@ private module Cached {
   }
 
   cached
-  predicate instructionHasType(Instruction instruction, Type type, boolean isLValue) {
+  CSharpType getInstructionResultType(Instruction instruction) {
     getInstructionTranslatedElement(instruction)
-        .hasInstruction(_, getInstructionTag(instruction), type, isLValue)
+        .hasInstruction(_, getInstructionTag(instruction), result)
   }
 
   cached
   Opcode getInstructionOpcode(Instruction instruction) {
     getInstructionTranslatedElement(instruction)
-        .hasInstruction(result, getInstructionTag(instruction), _, _)
+        .hasInstruction(result, getInstructionTag(instruction), _)
   }
 
   cached
@@ -234,8 +264,14 @@ private module Cached {
 
   cached
   IRVariable getInstructionVariable(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionVariable(getInstructionTag(instruction))
+    exists(TranslatedElement element, InstructionTag tag |
+      element = getInstructionTranslatedElement(instruction) and
+      tag = getInstructionTag(instruction) and
+      (
+        result = element.getInstructionVariable(tag) or
+        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+      )
+    )
   }
 
   cached
@@ -268,13 +304,7 @@ private module Cached {
   }
 
   cached
-  StringLiteral getInstructionStringLiteral(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionStringLiteral(getInstructionTag(instruction))
-  }
-
-  cached
-  Type getInstructionExceptionType(Instruction instruction) {
+  CSharpType getInstructionExceptionType(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction)
           .getInstructionExceptionType(getInstructionTag(instruction))
   }

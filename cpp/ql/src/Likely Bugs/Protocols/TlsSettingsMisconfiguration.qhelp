@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <p>Using the TLS or SSLv23 protocol from the boost::asio library, but not disabling deprecated protocols may expose the software to known vulnerabilities or permit weak encryption algorithms to be used.  Disabling the minimum-recommended protocols is also flagged.</p>
+</overview>
+
+<recommendation>
+<p>When using the TLS or SSLv23 protocol, set the <code>no_tlsv1</code> and <code>no_tlsv1_1</code> options, but do not set <code>no_tlsv1_2</code>. When using the SSLv23 protocol, also set the <code>no_sslv3</code> option.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the <code>no_tlsv1_1</code> option has not been set.  Use of TLS 1.1 is not recommended.</p>
+<sample src="TlsSettingsMisconfigurationBad.cpp"/>
+<p>In the corrected example, the <code>no_tlsv1</code> and <code>no_tlsv1_1</code> options have both been set, ensuring the use of TLS 1.2 or later.</p>
+<sample src="TlsSettingsMisconfigurationGood.cpp"/>
+</example>
+
+<references>
+  <li>
+    <a href="https://www.boost.org/doc/libs/1_71_0/doc/html/boost_asio.html">Boost.Asio documentation</a>.
+  </li>
+</references>
+</qhelp>
+

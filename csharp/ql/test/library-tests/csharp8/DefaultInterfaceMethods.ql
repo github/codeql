@@ -1,6 +1,6 @@
 import csharp
 
-class DefaultInterfaceMethod extends Method {
+class DefaultInterfaceMethod extends Callable {
   DefaultInterfaceMethod() {
     this.hasBody() and
     this.getDeclaringType() instanceof Interface

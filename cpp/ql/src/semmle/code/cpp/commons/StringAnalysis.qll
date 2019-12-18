@@ -53,8 +53,8 @@ class AnalysedString extends Expr {
  */
 class StrlenCall extends FunctionCall {
   StrlenCall() {
-    this.getTarget().hasGlobalName("strlen") or
-    this.getTarget().hasGlobalName("wcslen") or
+    this.getTarget().hasGlobalOrStdName("strlen") or
+    this.getTarget().hasGlobalOrStdName("wcslen") or
     this.getTarget().hasGlobalName("_mbslen") or
     this.getTarget().hasGlobalName("_mbslen_l") or
     this.getTarget().hasGlobalName("_mbstrlen") or

@@ -298,10 +298,11 @@ private predicate boundFlowStepSsa(
   )
 }
 
-/** Holds if `v != e + delta` at `pos`. */
-private predicate unequalFlowStepSsa(
+/** Holds if `v != e + delta` at `pos` and `v` is of integral type. */
+private predicate unequalFlowStepIntegralSsa(
   SsaVariable v, SsaReadPosition pos, Expr e, int delta, Reason reason
 ) {
+  v.getSourceVariable().getType() instanceof IntegralType and
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = eqFlowCond(v, e, delta, false, testIsTrue) and
@@ -374,6 +375,16 @@ private class NarrowingCastExpr extends CastExpr {
   int getUpperBound() { typeBound(getType(), _, result) }
 }
 
+/** Holds if `e >= 1` as determined by sign analysis. */
+private predicate strictlyPositiveIntegralExpr(Expr e) {
+  strictlyPositive(e) and e.getType() instanceof IntegralType
+}
+
+/** Holds if `e <= -1` as determined by sign analysis. */
+private predicate strictlyNegativeIntegralExpr(Expr e) {
+  strictlyNegative(e) and e.getType() instanceof IntegralType
+}
+
 /**
  * Holds if `e1 + delta` is a valid bound for `e2`.
  * - `upper = true`  : `e2 <= e1 + delta`
@@ -399,13 +410,13 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
     // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
     not e1 instanceof ConstantIntegerExpr and
-    if strictlyPositive(x)
+    if strictlyPositiveIntegralExpr(x)
     then upper = false and delta = 1
     else
       if positive(x)
       then upper = false and delta = 0
       else
-        if strictlyNegative(x)
+        if strictlyNegativeIntegralExpr(x)
         then upper = true and delta = -1
         else
           if negative(x)
@@ -428,13 +439,13 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   |
     // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
-    if strictlyPositive(x)
+    if strictlyPositiveIntegralExpr(x)
     then upper = true and delta = -1
     else
       if positive(x)
       then upper = true and delta = 0
       else
-        if strictlyNegative(x)
+        if strictlyNegativeIntegralExpr(x)
         then upper = false and delta = 1
         else
           if negative(x)
@@ -555,7 +566,7 @@ private predicate boundedSsa(
     boundedSsa(v, pos, b, d, upper, fromBackEdge, origdelta, r2) or
     boundedPhi(v, b, d, upper, fromBackEdge, origdelta, r2)
   |
-    unequalSsa(v, pos, b, d, r1) and
+    unequalIntegralSsa(v, pos, b, d, r1) and
     (
       upper = true and delta = d - 1
       or
@@ -570,11 +581,13 @@ private predicate boundedSsa(
 }
 
 /**
- * Holds if `v != b + delta` at `pos`.
+ * Holds if `v != b + delta` at `pos` and `v` is of integral type.
  */
-private predicate unequalSsa(SsaVariable v, SsaReadPosition pos, Bound b, int delta, Reason reason) {
+private predicate unequalIntegralSsa(
+  SsaVariable v, SsaReadPosition pos, Bound b, int delta, Reason reason
+) {
   exists(Expr e, int d1, int d2 |
-    unequalFlowStepSsa(v, pos, e, d1, reason) and
+    unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
     bounded(e, b, d2, true, _, _, _) and
     bounded(e, b, d2, false, _, _, _) and
     delta = d2 + d1

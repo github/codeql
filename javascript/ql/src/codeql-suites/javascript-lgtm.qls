@@ -1,0 +1,4 @@
+- description: Standard LGTM queries for JavaScript
+- apply: codeql-suites/javascript-lgtm-full.qls
+- apply: lgtm-displayed-only.yml
+  from: codeql-suite-helpers

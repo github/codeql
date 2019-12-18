@@ -128,36 +128,42 @@ enclosingStmt(#20040,#20038)
 exprContainers(#20040,#20029)
 literals("use strict","'use strict'",#20040)
 #20041=*
-entry_cfg_node(#20041,#20001)
-#20042=@"loc,{#10000},1,1,1,0"
-locations_default(#20042,#10000,1,1,1,0)
+regexpterm(#20041,14,#20040,0,"use strict")
+#20042=@"loc,{#10000},1,20,1,29"
+locations_default(#20042,#10000,1,20,1,29)
 hasLocation(#20041,#20042)
+regexpConstValue(#20041,"use strict")
 #20043=*
-exit_cfg_node(#20043,#20001)
-hasLocation(#20043,#20027)
-successor(#20029,#20043)
-#20044=*
-entry_cfg_node(#20044,#20029)
-hasLocation(#20044,#20042)
+entry_cfg_node(#20043,#20001)
+#20044=@"loc,{#10000},1,1,1,0"
+locations_default(#20044,#10000,1,1,1,0)
+hasLocation(#20043,#20044)
 #20045=*
-exit_cfg_node(#20045,#20029)
+exit_cfg_node(#20045,#20001)
 hasLocation(#20045,#20027)
+successor(#20029,#20045)
+#20046=*
+entry_cfg_node(#20046,#20029)
+hasLocation(#20046,#20044)
+#20047=*
+exit_cfg_node(#20047,#20029)
+hasLocation(#20047,#20027)
 successor(#20036,#20038)
 successor(#20038,#20040)
-successor(#20040,#20045)
+successor(#20040,#20047)
 successor(#20033,#20036)
 successor(#20035,#20033)
-successor(#20044,#20035)
+successor(#20046,#20035)
 successor(#20030,#20029)
-successor(#20041,#20030)
-#20046=*
-jsParseErrors(#20046,#20001,"Error: Illegal 'use strict' directive in function with non-simple parameter list","function f(a=2) { 'use strict'; }")
-#20047=@"loc,{#10000},1,19,1,19"
-locations_default(#20047,#10000,1,19,1,19)
-hasLocation(#20046,#20047)
+successor(#20043,#20030)
 #20048=*
-lines(#20048,#20001,"function f(a=2) { 'use strict'; }","")
-hasLocation(#20048,#20003)
+jsParseErrors(#20048,#20001,"Error: Illegal 'use strict' directive in function with non-simple parameter list","function f(a=2) { 'use strict'; }")
+#20049=@"loc,{#10000},1,19,1,19"
+locations_default(#20049,#10000,1,19,1,19)
+hasLocation(#20048,#20049)
+#20050=*
+lines(#20050,#20001,"function f(a=2) { 'use strict'; }","")
+hasLocation(#20050,#20003)
 numlines(#20001,1,0,0)
 numlines(#10000,1,1,0)
 filetype(#10000,"javascript")

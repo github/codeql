@@ -67,7 +67,7 @@ in the environment variable or user-supplied value are not given any special tre
 
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet">SQL
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL
 Injection Prevention Cheat Sheet</a>.
 </li>
 <li>The CERT Oracle Secure Coding Standard for Java:

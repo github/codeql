@@ -74,7 +74,7 @@ public class A
         }
         if (cc is C1)
         {
-            Sink(((C1)cc).a); // no flow, stopped by cast to C2 (FALSE POSITIVE, no type pruning yet)
+            Sink(((C1)cc).a); // no flow, stopped by cast to C2
         }
     }
 

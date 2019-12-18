@@ -28,6 +28,7 @@ import semmle.javascript.Functions
 import semmle.javascript.GlobalAccessPaths
 import semmle.javascript.HTML
 import semmle.javascript.HtmlSanitizers
+import semmle.javascript.InclusionTests
 import semmle.javascript.JSDoc
 import semmle.javascript.JSON
 import semmle.javascript.JsonParsers
@@ -75,6 +76,7 @@ import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.jQuery
+import semmle.javascript.frameworks.Handlebars
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
@@ -89,6 +91,8 @@ import semmle.javascript.frameworks.SystemCommandExecutors
 import semmle.javascript.frameworks.SQL
 import semmle.javascript.frameworks.SocketIO
 import semmle.javascript.frameworks.StringFormatters
+import semmle.javascript.frameworks.TorrentLibraries
+import semmle.javascript.frameworks.Typeahead
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
 import semmle.javascript.frameworks.XmlParsers

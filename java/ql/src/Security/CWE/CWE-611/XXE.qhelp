@@ -52,7 +52,7 @@ OWASP vulnerability description:
 </li>
 <li>
 OWASP guidance on parsing xml files:
-<a href="https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#Java">XXE Prevention Cheat Sheet</a>.
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#java">XXE Prevention Cheat Sheet</a>.
 </li>
 <li>
 Paper by Timothy Morgen:

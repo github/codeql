@@ -18,6 +18,12 @@ class OverrideAnnotation extends Annotation {
 class SuppressWarningsAnnotation extends Annotation {
   SuppressWarningsAnnotation() { this.getType().hasQualifiedName("java.lang", "SuppressWarnings") }
 
+  /** Gets the `StringLiteral` of a warning suppressed by this annotation. */
+  StringLiteral getASuppressedWarningLiteral() {
+    result = this.getAValue() or
+    result = this.getAValue().(ArrayInit).getAnInit()
+  }
+
   /** Gets the name of a warning suppressed by this annotation. */
   string getASuppressedWarning() {
     result = this.getAValue().(StringLiteral).getLiteral() or

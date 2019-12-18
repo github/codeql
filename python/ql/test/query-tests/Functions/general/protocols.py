@@ -17,6 +17,38 @@ class X(object):
         return object()
 
 
+class IteratorMissingNext:
+
+    def __iter__(self):
+        return self
+
+class IterableMissingNext:
+
+    def __iter__(self):
+        return IteratorMissingNext()
+
+class IteratorMissingIter:
+
+    def next(self):
+        pass
+
+    def __next__(self):
+        pass
+
+class IterableMissingIter:
+
+    def __iter__(self):
+        return IteratorMissingIter()
+
+class IterableWithGenerator:
+    # returning a generator from __iter__ in an iterable is ok
+
+    def __iter__(self):
+        i = 0
+        while True:
+            yield i
+            i += 1
+
 #Iterator not returning self
 
 class AlmostIterator(object):
@@ -57,34 +89,30 @@ class MiniDel(object):
 
     def __del__(self):
         self.close()
-        
+
 class IncorrectSpecialMethods(object):
-    
+
     def __add__(self, other):
         raise NotImplementedError()
-    
+
     def __getitem__(self, index):
         raise ZeroDivisionError()
-        
+
     def __getattr__(self):
         raise ZeroDivisionError()
-    
+
 def f(self):
     pass
-    
+
 class MissingMethods(object):
-    
+
     __repr__ = f # This should be OK
     __add__ = f # But not this
     __set__ = f # or this
-    
+
 #OK Special method
 class OK(object):
-    
+
     def __call__(self):
         yield 0
         raise StopIteration
-
-        
-        
-        

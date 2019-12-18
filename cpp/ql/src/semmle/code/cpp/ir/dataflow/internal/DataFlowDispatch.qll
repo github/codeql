@@ -1,5 +1,6 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
+private import semmle.code.cpp.ir.dataflow.DataFlow
 
 Function viableImpl(CallInstruction call) { result = viableCallable(call) }
 
@@ -19,6 +20,58 @@ Function viableCallable(CallInstruction call) {
     callSignatureWithoutBody(qualifiedName, nparams, call) and
     functionSignatureWithBody(qualifiedName, nparams, result) and
     strictcount(Function other | functionSignatureWithBody(qualifiedName, nparams, other)) = 1
+  )
+  or
+  // Rudimentary virtual dispatch support. It's essentially local data flow
+  // where the source is a derived-to-base conversion and the target is the
+  // qualifier of a call.
+  exists(Class derived, DataFlow::Node thisArgument |
+    nodeMayHaveClass(derived, thisArgument) and
+    overrideMayAffectCall(derived, thisArgument, _, result, call)
+  )
+}
+
+/**
+ * Holds if `call` is a virtual function call with qualifier `thisArgument` in
+ * `enclosingFunction`, whose static target is overridden by
+ * `overridingFunction` in `overridingClass`.
+ */
+pragma[noinline]
+private predicate overrideMayAffectCall(
+  Class overridingClass, DataFlow::Node thisArgument, Function enclosingFunction,
+  MemberFunction overridingFunction, CallInstruction call
+) {
+  call.getEnclosingFunction() = enclosingFunction and
+  overridingFunction.getAnOverriddenFunction+() = call.getStaticCallTarget() and
+  overridingFunction.getDeclaringType() = overridingClass and
+  thisArgument = DataFlow::instructionNode(call.getThisArgument())
+}
+
+/**
+ * Holds if `node` may have dynamic class `derived`, where `derived` is a class
+ * that may affect virtual dispatch within the enclosing function.
+ *
+ * For the sake of performance, this recursion is written out manually to make
+ * it a relation on `Class x Node` rather than `Node x Node` or `MemberFunction
+ * x Node`, both of which would be larger. It's a forward search since there
+ * should usually be fewer classes than calls.
+ *
+ * If a value is cast several classes up in the hierarchy, that will be modeled
+ * as a chain of `ConvertToBaseInstruction`s and will cause the search to start
+ * from each of them and pass through subsequent ones. There might be
+ * performance to gain by stopping before a second upcast and reconstructing
+ * the full chain in a "big-step" recursion after this one.
+ */
+private predicate nodeMayHaveClass(Class derived, DataFlow::Node node) {
+  exists(ConvertToBaseInstruction toBase |
+    derived = toBase.getDerivedClass() and
+    overrideMayAffectCall(derived, _, toBase.getEnclosingFunction(), _, _) and
+    node.asInstruction() = toBase
+  )
+  or
+  exists(DataFlow::Node prev |
+    nodeMayHaveClass(derived, prev) and
+    DataFlow::localFlowStep(prev, node)
   )
 }
 

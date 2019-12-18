@@ -258,7 +258,7 @@ void test_lambdas()
 		c = source();
 	};
 	e(t, u, w);
-	sink(w); // tainted [NOT DETECTED]
+	sink(w); // tainted
 }
 
 // --- taint through return value ---
@@ -348,8 +348,8 @@ void test_outparams()
 	myNotAssign(e, t);
 
 	sink(t); // tainted
-	sink(a); // tainted [NOT DETECTED]
-	sink(b); // tainted [NOT DETECTED]
+	sink(a); // tainted
+	sink(b); // tainted
 	sink(c); // tainted [NOT DETECTED]
 	sink(d); // tainted [NOT DETECTED]
 	sink(e);

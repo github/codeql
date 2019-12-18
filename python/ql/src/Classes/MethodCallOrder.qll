@@ -3,11 +3,16 @@ import python
 // Helper predicates for multiple call to __init__/__del__ queries.
 
 pragma [noinline]
-private predicate multiple_invocation_paths(FunctionInvocation top, FunctionInvocation i1, FunctionInvocation i2, FunctionObject multi) {
+private predicate multiple_invocation_paths_helper(FunctionInvocation top, FunctionInvocation i1, FunctionInvocation i2, FunctionObject multi) {
     i1 != i2 and
     i1 = top.getACallee+() and
     i2 = top.getACallee+() and
-    i1.getFunction() = multi and
+    i1.getFunction() = multi
+}
+
+pragma [noinline]
+private predicate multiple_invocation_paths(FunctionInvocation top, FunctionInvocation i1, FunctionInvocation i2, FunctionObject multi) {
+    multiple_invocation_paths_helper(top, i1, i2, multi) and
     i2.getFunction() = multi
 }
 

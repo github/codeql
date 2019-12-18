@@ -1,1 +1,0 @@
-| tst.js:6:5:6:28 | this.di ... \\n    }; | dist should be added to the prototype object rather than to each instance. |

@@ -1,0 +1,4 @@
+| DeserializedDelegate.cs:14:28:14:52 | call to method Deserialize | Deserialization of delegate type. |
+| DeserializedDelegate.cs:16:40:16:64 | call to method Deserialize | Deserialization of delegate type. |
+| DeserializedDelegate.cs:18:20:18:44 | call to method Deserialize | Deserialization of delegate type. |
+| DeserializedDelegateBad.cs:11:28:11:52 | call to method Deserialize | Deserialization of delegate type. |

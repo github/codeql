@@ -56,6 +56,7 @@ where
   sup.isSynchronized() and
   not sub.isSynchronized() and
   not delegatingOverride(sub, sup) and
+  not exists(Method mid | sub.overrides(mid) and mid.overrides(sup)) and
   supSrc = sup.getDeclaringType().getSourceDeclaration()
 select sub,
   "Method '" + sub.getName() + "' overrides a synchronized method in $@ but is not synchronized.",

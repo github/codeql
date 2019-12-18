@@ -11,6 +11,5 @@ where
   s.getAVariableDeclExpr() = e and
   e.getVariable().getName() = "pi" and
   e.getVariable().getType() instanceof FloatType and
-  e.getInitializer() instanceof FloatLiteral and
-  e.getVariable().getValue() = "3.141593"
-select m, s, e
+  e.getInitializer() instanceof FloatLiteral
+select m, s, e, e.getVariable().getValue()

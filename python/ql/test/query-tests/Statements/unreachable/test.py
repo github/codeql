@@ -120,3 +120,20 @@ def foo(x):
             print(x, "== 0")
 
 
+# Unreachable catch-all case
+
+def unreachable_catch_all_assert_false(x):
+    if x < 0:
+        return "negative"
+    elif x >= 0:
+        return "positive"
+    else:
+        assert False, x
+
+def unreachable_catch_all_raise(x):
+    if x < 0:
+        pass
+    elif x >= 0:
+        pass
+    else:
+        raise ValueError(x)

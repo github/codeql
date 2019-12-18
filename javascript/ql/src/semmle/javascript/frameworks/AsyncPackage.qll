@@ -70,7 +70,7 @@ module AsyncPackage {
    * to the first parameter of the final callback, while `result1, result2, ...` are propagated to
    * the parameters of the following task.
    */
-  private class WaterfallNextTaskCall extends DataFlow::AdditionalPartialInvokeNode {
+  private class WaterfallNextTaskCall extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
     Waterfall waterfall;
     int n;
 

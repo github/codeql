@@ -123,26 +123,32 @@ enclosingStmt(#20038,#20031)
 exprContainers(#20038,#20001)
 literals("Hello, world!","""Hello, world!""",#20038)
 #20039=*
-entry_cfg_node(#20039,#20001)
-#20040=@"loc,{#10000},2,1,2,0"
-locations_default(#20040,#10000,2,1,2,0)
+regexpterm(#20039,14,#20038,0,"Hello, world!")
+#20040=@"loc,{#10000},2,14,2,26"
+locations_default(#20040,#10000,2,14,2,26)
 hasLocation(#20039,#20040)
+regexpConstValue(#20039,"Hello, world!")
 #20041=*
-exit_cfg_node(#20041,#20001)
-hasLocation(#20041,#20019)
+entry_cfg_node(#20041,#20001)
+#20042=@"loc,{#10000},2,1,2,0"
+locations_default(#20042,#10000,2,1,2,0)
+hasLocation(#20041,#20042)
+#20043=*
+exit_cfg_node(#20043,#20001)
+hasLocation(#20043,#20019)
 successor(#20031,#20036)
 successor(#20038,#20032)
 successor(#20037,#20034)
 successor(#20036,#20037)
 successor(#20034,#20038)
-successor(#20032,#20041)
-successor(#20039,#20031)
+successor(#20032,#20043)
+successor(#20041,#20031)
 isNodejs(#20001)
-#20042=*
-lines(#20042,#20001,"#!/usr/bin/env node","
+#20044=*
+lines(#20044,#20001,"#!/usr/bin/env node","
 ")
-#20043=@"loc,{#10000},1,1,1,19"
-locations_default(#20043,#10000,1,1,1,19)
-hasLocation(#20042,#20043)
+#20045=@"loc,{#10000},1,1,1,19"
+locations_default(#20045,#10000,1,1,1,19)
+hasLocation(#20044,#20045)
 numlines(#10000,2,1,0)
 filetype(#10000,"javascript")

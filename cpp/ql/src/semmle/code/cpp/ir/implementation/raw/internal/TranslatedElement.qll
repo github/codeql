@@ -3,18 +3,15 @@ import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.IRConfiguration
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedFunction
 private import TranslatedStmt
+private import TranslatedExpr
 private import IRConstruction
 private import semmle.code.cpp.models.interfaces.SideEffect
-
-/**
- * Gets the built-in `int` type.
- */
-Type getIntType() { result.(IntType).isImplicitlySigned() }
 
 /**
  * Gets the "real" parent of `expr`. This predicate treats conversions as if
@@ -53,6 +50,9 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
+  // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
+  getRealParent(expr) instanceof AssumeExpr
+  or
   // The `DestructorCall` node for a `DestructorFieldDestruction` has a `FieldAccess`
   // node as its qualifier, but that `FieldAccess` does not have a child of its own.
   // We'll ignore that `FieldAccess`, and supply the receiver as part of the calling
@@ -66,8 +66,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   )
   or
   // Do not translate input/output variables in GNU asm statements
-  getRealParent(expr) instanceof AsmStmt
-  or
+  //  getRealParent(expr) instanceof AsmStmt
+  //  or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
   or
   // We do not yet translate destructors properly, so for now we ignore any
@@ -236,6 +236,15 @@ newtype TTranslatedElement =
     expr.hasLValueToRValueConversion() and
     not ignoreLoad(expr)
   } or
+  TTranslatedResultCopy(Expr expr) {
+    not ignoreExpr(expr) and
+    exprNeedsCopyIfNotLoaded(expr) and
+    // Doesn't have a TTranslatedLoad
+    not (
+      expr.hasLValueToRValueConversion() and
+      not ignoreLoad(expr)
+    )
+  } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
     not ignoreExpr(expr) and
@@ -371,8 +380,10 @@ newtype TTranslatedElement =
   TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
-  // The side effects of a `Call` {
-  TTranslatedSideEffects(Call expr) { exists(TTranslatedArgumentSideEffect(expr, _, _, _)) } or // A precise side effect of an argument to a `Call` {
+  // The side effects of a `Call`
+  TTranslatedSideEffects(Call expr) {
+    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or expr instanceof ConstructorCall
+  } or // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
       expr = call.getArgument(n).getFullyConverted()
@@ -532,9 +543,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction does not return a result, `resultType` should be
    * `VoidType`.
    */
-  abstract predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
-  );
+  abstract predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType);
 
   /**
    * Gets the `Function` that contains this element.
@@ -574,7 +583,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * `tag` must be unique for each variable generated from the same AST node
    * (not just from the same `TranslatedElement`).
    */
-  predicate hasTempVariable(TempVariableTag tag, Type type) { none() }
+  predicate hasTempVariable(TempVariableTag tag, CppType type) { none() }
 
   /**
    * If the instruction specified by `tag` is a `FunctionInstruction`, gets the
@@ -619,6 +628,8 @@ abstract class TranslatedElement extends TTranslatedElement {
    */
   int getInstructionResultSize(InstructionTag tag) { none() }
 
+  predicate needsUnknownOpaqueType(int byteSize) { none() }
+
   /**
    * If the instruction specified by `tag` is a `StringConstantInstruction`,
    * gets the `StringLiteral` for that instruction.
@@ -634,7 +645,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction specified by `tag` is a `CatchByTypeInstruction`,
    * gets the type of the exception to be caught.
    */
-  Type getInstructionExceptionType(InstructionTag tag) { none() }
+  CppType getInstructionExceptionType(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is an `InheritanceConversionInstruction`,
@@ -653,7 +664,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Gets the type of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
    */
-  Type getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
+  CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
 
   /**
    * Gets the size of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
@@ -673,9 +684,17 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the temporary variable generated by this element with tag `tag`.
    */
   final IRTempVariable getTempVariable(TempVariableTag tag) {
-    result.getAST() = getAST() and
-    result.getTag() = tag and
-    hasTempVariable(tag, _)
+    exists(Locatable ast |
+      result.getAST() = ast and
+      result.getTag() = tag and
+      hasTempVariableAndAST(tag, ast)
+    )
+  }
+
+  pragma[noinline]
+  private predicate hasTempVariableAndAST(TempVariableTag tag, Locatable ast) {
+    hasTempVariable(tag, _) and
+    ast = getAST()
   }
 
   /**

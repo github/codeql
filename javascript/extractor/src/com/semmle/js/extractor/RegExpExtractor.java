@@ -51,6 +51,7 @@ public class RegExpExtractor {
   private final LocationManager locationManager;
   private final RegExpParser parser = new RegExpParser();
   private Position literalStart;
+  private OffsetTranslation offsets;
 
   public RegExpExtractor(TrapWriter trapwriter, LocationManager locationManager) {
     this.trapwriter = trapwriter;
@@ -119,10 +120,14 @@ public class RegExpExtractor {
   }
 
   public void emitLocation(SourceElement term, Label lbl) {
+    int col = literalStart.getColumn();
     int sl, sc, el, ec;
     sl = el = literalStart.getLine();
-    sc = literalStart.getColumn() + 2 + term.getLoc().getStart().getColumn();
-    ec = literalStart.getColumn() + 1 + term.getLoc().getEnd().getColumn();
+    sc = col + offsets.get(term.getLoc().getStart().getColumn());
+    ec = col + offsets.get(term.getLoc().getEnd().getColumn());
+    sc += 1; // convert to 1-based
+    ec += 1; // convert to 1-based
+    ec -= 1; // convert to inclusive
     locationManager.emitSnippetLocation(lbl, sl, sc, el, ec);
   }
 
@@ -341,9 +346,16 @@ public class RegExpExtractor {
     }
   }
 
-  public void extract(String src, Node parent) {
-    this.literalStart = parent.getLoc().getStart();
+  public void extract(
+      String src, OffsetTranslation offsets, Node parent, boolean isSpeculativeParsing) {
     Result res = parser.parse(src);
+
+    if (isSpeculativeParsing && res.getErrors().size() > 0) {
+      return;
+    }
+
+    this.literalStart = parent.getLoc().getStart();
+    this.offsets = offsets;
     RegExpTerm ast = res.getAST();
     new V().visit(ast, trapwriter.localID(parent), 0);
 

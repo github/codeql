@@ -1,0 +1,7 @@
+edges
+| UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox : TextBox | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text |
+nodes
+| UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox : TextBox | semmle.label | access to parameter textBox : TextBox |
+| UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text | semmle.label | access to property Text |
+#select
+| UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox : TextBox | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text | $@ flows to unsafe deserializer. | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox | User-provided data |

@@ -33,26 +33,18 @@ private class LegacyConfiguration extends TaintTracking::Configuration {
     }
 
     override predicate isSource(TaintSource src) {
-        isValid() and
         src = src
     }
 
     override predicate isSink(TaintSink sink) {
-        isValid() and
         sink = sink
     }
 
     override predicate isSanitizer(Sanitizer sanitizer) {
-        isValid() and
         sanitizer = sanitizer
     }
 
-    private predicate isValid() {
-        not exists(TaintTracking::Configuration config | config != this)
-    }
-
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest) {
-        isValid() and
         exists(DataFlowExtension::DataFlowNode legacyExtension |
             src.asCfgNode() = legacyExtension
             |
@@ -67,7 +59,6 @@ private class LegacyConfiguration extends TaintTracking::Configuration {
     }
 
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind) {
-        isValid() and
         exists(DataFlowExtension::DataFlowNode legacyExtension |
             src.asCfgNode() = legacyExtension
             |
@@ -76,7 +67,6 @@ private class LegacyConfiguration extends TaintTracking::Configuration {
     }
 
     override predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node dest) {
-        isValid() and
         (
             exists(DataFlowExtension::DataFlowVariable legacyExtension |
                 src.asVariable() = legacyExtension and
@@ -91,4 +81,3 @@ private class LegacyConfiguration extends TaintTracking::Configuration {
     }
 
 }
-

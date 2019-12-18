@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -154,6 +155,8 @@ public class FileExtractor {
           byte[] bytes = new byte[fileHeaderSize];
           int length = fis.read(bytes);
 
+          if (length == -1) return false;
+
           // Avoid invalid or unprintable UTF-8 files.
           if (config.getDefaultEncoding().equals("UTF-8") && hasUnprintableUtf8(bytes, length)) {
             return true;
@@ -166,6 +169,9 @@ public class FileExtractor {
           if (hasUnrecognizedShebang(bytes, length)) {
             return true;
           }
+
+          // Avoid Touchstone files
+          if (isTouchstone(bytes, length)) return true;
 
           return false;
         } catch (IOException e) {
@@ -196,6 +202,11 @@ public class FileExtractor {
           return true;
         }
         return false;
+      }
+
+      private boolean isTouchstone(byte[] bytes, int length) {
+        String s = new String(bytes, 0, length, StandardCharsets.US_ASCII);
+        return s.startsWith("! TOUCHSTONE file ") || s.startsWith("[Version] 2.0");
       }
 
       /**

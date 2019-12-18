@@ -6,7 +6,7 @@ The two expressions:
 #. ``a() != b()``
 #. ``not(a() = b())``
 
-look equivalent - so much so that inexperienced (and even experienced) QL programmers have been known to rewrite one as the other. However, they are not equivalent due to the quantifiers involved.
+look equivalent - so much so that inexperienced (and even experienced) programmers have been known to rewrite one as the other. However, they are not equivalent due to the quantifiers involved.
 
 Thinking of ``a()`` and ``b()`` as sets of values, the first expression says that there is a pair of values (one from each side of the inequality) which are different.
 

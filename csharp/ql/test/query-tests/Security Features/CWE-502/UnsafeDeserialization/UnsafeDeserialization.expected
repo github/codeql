@@ -1,0 +1,1 @@
+| UnsafeDeserializationBad.cs:9:16:9:38 | call to method DeserializeObject | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |

@@ -52,6 +52,13 @@ class Module extends Module_, Scope, AstNode {
         result = moduleNameFromFile(this.getPath())
     }
 
+    /** Gets the short name of the module. For example the short name of module x.y.z is 'z' */
+    string getShortName() {
+        result = this.getName().suffix(this.getPackage().getName().length()+1)
+        or
+        result = this.getName() and not exists(this.getPackage())
+    }
+
     /** Gets this module */
     override Module getEnclosingModule() {
         result = this

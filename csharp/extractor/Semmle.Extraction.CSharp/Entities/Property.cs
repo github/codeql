@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateAttributes();
             PopulateModifiers(trapFile);
             BindComments();
-            PopulateNullability(trapFile, symbol.NullableAnnotation);
+            PopulateNullability(trapFile, symbol.GetAnnotatedType());
             PopulateRefKind(trapFile, symbol.RefKind);
 
             var type = Type.Create(Context, symbol.Type);
@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Property Create(Context cx, IPropertySymbol prop)
         {
-            bool isIndexer = prop.IsIndexer || prop.ExplicitInterfaceImplementations.Any(e => e.IsIndexer);
+            bool isIndexer = prop.IsIndexer || prop.Parameters.Any();
 
             return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntity(cx, prop);
         }

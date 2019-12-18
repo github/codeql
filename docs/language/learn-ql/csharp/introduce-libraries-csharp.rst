@@ -1,25 +1,23 @@
-Introducing the C# libraries
-============================
+Introducing the CodeQL libraries for C#
+=======================================
 
 Overview
 --------
 
-The C# QL libraries are a data model for analysis of C# code. QL is an object-oriented language, so the data model is represented as *QL classes*, which are organized into *QL libraries*. The QL classes are a layer of logic built on top of an underlying database.
-
-The core library is imported at the top of each query using:
+There is an extensive library for analyzing CodeQL databases extracted from C# projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks. The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``csharp.qll`` imports all the core C# library modules, so you can include the complete library by beginning your query with:
 
 .. code-block:: ql
 
    import csharp
 
-Since this is required for all C# queries, it is omitted from QL snippets below.
+Since this is required for all C# queries, it is omitted from code snippets below.
 
-The core library contains all the program elements, including `files <#files>`__, `types <#types>`__, methods, `variables <#variables>`__, `statements <#statements>`__, and `expressions <#expressions>`__. This is sufficient for most queries, however additional libraries can be imported for bespoke functionality such as control flow and data flow. See :doc:`QL for C# <ql-for-csharp>` for information about these additional libraries.
+The core library contains all the program elements, including `files <#files>`__, `types <#types>`__, methods, `variables <#variables>`__, `statements <#statements>`__, and `expressions <#expressions>`__. This is sufficient for most queries, however additional libraries can be imported for bespoke functionality such as control flow and data flow. See :doc:`CodeQL for C# <ql-for-csharp>` for information about these additional libraries.
 
 Class hierarchies
 ~~~~~~~~~~~~~~~~~
 
-Each section contains a QL class hierarchy, showing the inheritance structure between QL classes. For example:
+Each section contains a class hierarchy, showing the inheritance structure between CodeQL classes. For example:
 
 -  ``Expr``
 
@@ -46,13 +44,13 @@ Each section contains a QL class hierarchy, showing the inheritance structure be
 
 This means that the class ``AddExpr`` extends class ``BinaryArithmeticOperation``, which in turn extends class ``ArithmeticOperation`` and so on. If you want to query any arithmetic operation, then use the class ``ArithmeticOperation``, but if you specifically want to limit the query to addition operations, then use the class ``AddExpr``.
 
-QL classes can also be considered to be *sets*, and the ``extends`` relation between classes defines a subset. Every member of class ``AddExpr`` is also in the class ``BinaryArithmeticOperation``. In general, QL classes overlap and an entity can be a member of several classes.
+Classes can also be considered to be *sets*, and the ``extends`` relation between classes defines a subset. Every member of class ``AddExpr`` is also in the class ``BinaryArithmeticOperation``. In general, classes overlap and an entity can be a member of several classes.
 
 This overview omits some of the less important or intermediate classes from the class hierarchy.
 
 Each class has predicates, which are logical propositions about that class. They also define navigable relationships between classes. Predicates are inherited, so for example the ``AddExpr`` class inherits the predicates ``getLeftOperand()`` and ``getRightOperand()`` from ``BinaryArithmeticOperation``, and ``getType()`` from class ``Expr``. This is similar to how methods are inherited in object-oriented programming languages.
 
-In this overview, we present the most common and useful predicates. Consult the reference, QL source code, and autocomplete in the editor for the complete list of predicates available on each class.
+In this overview, we present the most common and useful predicates. Consult the `reference <https://help.semmle.com/qldoc/csharp>`__, the CodeQL source code, and autocomplete in the editor for the complete list of predicates available on each class.
 
 Exercises
 ~~~~~~~~~
@@ -72,7 +70,7 @@ Exercise 1: Simplify the following query:
 Files
 -----
 
-Files are represented by the QL class `File <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/File.qll/type.File$File.html>`__, and directories by the QL class `Folder <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/File.qll/type.File$Folder.html>`__. The database contains all of the source files and assemblies used during the compilation.
+Files are represented by the class `File <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/File.qll/type.File$File.html>`__, and directories by the class `Folder <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/File.qll/type.File$Folder.html>`__. The database contains all of the source files and assemblies used during the compilation.
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -143,7 +141,7 @@ To list all elements in ``Main.cs``, their QL class and location:
    where e.getFile().getShortName() = "Main"
    select e, e.getAQlClass(), e.getLocation()
 
-Note that ``getAQlClass()`` is available on all QL classes and is a useful way to figure out the QL class of something. Often the same element will have several QL classes which are all returned by ``getAQlClass()``.
+Note that ``getAQlClass()`` is available on all entities and is a useful way to figure out the QL class of something. Often the same element will have several classes which are all returned by ``getAQlClass()``.
 
 Locations
 ---------
@@ -234,7 +232,7 @@ Find declarations containing a username:
 Variables
 ---------
 
-The QL class `Variable <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Variable.qll/type.Variable$Variable.html>`__ represents C# variables, such as fields, parameters and local variables. The database contains all variables from the source code, as well as all fields and parameters from assemblies referenced by the program.
+The class `Variable <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Variable.qll/type.Variable$Variable.html>`__ represents C# variables, such as fields, parameters and local variables. The database contains all variables from the source code, as well as all fields and parameters from assemblies referenced by the program.
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -283,7 +281,7 @@ Find all unused local variables:
 Types
 -----
 
-Types are represented by the QL class `Type <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Type.qll/type.Type$Type.html>`__ and consist of builtin types, interfaces, classes, structs, enums, and type parameters. The database contains types from the program and all referenced assemblies including mscorlib and the .NET framework.
+Types are represented by the CodeQL class `Type <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Type.qll/type.Type$Type.html>`__ and consist of builtin types, interfaces, classes, structs, enums, and type parameters. The database contains types from the program and all referenced assemblies including mscorlib and the .NET framework.
 
 The builtin types (``object``, ``int``, ``double`` etc.) have corresponding types (``System.Object``, ``System.Int32`` etc.) in mscorlib.
 
@@ -438,7 +436,7 @@ Exercise 5: Write a query to find all classes starting with the letter ``A``. (`
 Callables
 ---------
 
-Callables are represented by the QL class `Callable <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Callable.qll/type.Callable$Callable.html>`__ and are anything that can be called independently, such as methods, constructors, destructors, operators, anonymous functions, indexers, and property accessors.
+Callables are represented by the class `Callable <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Callable.qll/type.Callable$Callable.html>`__ and are anything that can be called independently, such as methods, constructors, destructors, operators, anonymous functions, indexers, and property accessors.
 
 The database contains all of the callables in your program and in all referenced assemblies.
 
@@ -564,7 +562,7 @@ Find ``Main`` methods which are not ``private``:
 Statements
 ----------
 
-Statements are represented by the QL class `Stmt <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Stmt.qll/type.Stmt$Stmt.html>`__ and make up the body of methods (and other callables). The database contains all statements in the source code, but does not contain any statements from referenced assemblies where the source code is not available.
+Statements are represented by the class `Stmt <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Stmt.qll/type.Stmt$Stmt.html>`__ and make up the body of methods (and other callables). The database contains all statements in the source code, but does not contain any statements from referenced assemblies where the source code is not available.
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -922,7 +920,7 @@ Exercise 9: Limit the previous query to string types. Exclude empty passwords or
 Attributes
 ----------
 
-C# attributes are represented by the QL class `Attribute <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Attribute.qll/type.Attribute$Attribute.html>`__. They can be present on many C# elements, such as classes, methods, fields, and parameters. The database contains attributes from the source code and all assembly references.
+C# attributes are represented by the class `Attribute <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Attribute.qll/type.Attribute$Attribute.html>`__. They can be present on many C# elements, such as classes, methods, fields, and parameters. The database contains attributes from the source code and all assembly references.
 
 The attribute of any ``Element`` can be obtained via ``getAnAttribute()``, whereas if you have an attribute, you can find its element via ``getTarget()``. The following two query fragments are identical:
 
@@ -1122,6 +1120,6 @@ Here is the fixed version:
 What next?
 ----------
 
--  Visit :doc:`Tutorial: Analyzing data flow in C# <dataflow>` to learn more about writing queries using the standard QL for C# data flow and taint tracking libraries.
+-  Visit :doc:`Tutorial: Analyzing data flow in C# <dataflow>` to learn more about writing queries using the standard data flow and taint tracking libraries.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

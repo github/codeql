@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+C# supports runtime loading of assemblies by path through the use of the
+<code>System.Reflection.Assembly</code> API. If an external user can influence the path used to
+load an assembly, then the application can potentially be tricked into loading an assembly which
+was not intended to be loaded, and executing arbitrary code.
+</p>
+</overview>
+<recommendation>
+<p>
+Avoid loading assemblies based on user provided input. If this is not possible, ensure that the path
+is validated before being used with <code>Assembly</code>. For example, compare the provided input
+against a whitelist of known safe assemblies, or confirm that the path is restricted to a single
+directory which only contains safe assemblies.
+</p>
+</recommendation>
+<example>
+<p>In this example, user input is provided describing the path to an assembly, which is loaded
+without validation. This is problematic because it allows the user to load any assembly installed
+on the system, and is particularly problematic if an attacker can upload a custom DLL elsewhere on
+the system.</p>
+<sample src="AssemblyPathInjectionBad.cs" />
+<p>In the corrected version, user input is validated against one of two options, and the assembly
+is only loaded if the user input matches one of those options.</p>
+<sample src="AssemblyPathInjectionGood.cs" />
+</example>
+
+<references>
+  <li>Microsoft: 
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.reflection.assembly?view=netframework-4.8">System.Reflection.Assembly</a>.
+  </li>
+</references>
+</qhelp>

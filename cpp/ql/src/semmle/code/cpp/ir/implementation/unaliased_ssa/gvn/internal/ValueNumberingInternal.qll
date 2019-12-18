@@ -1,6 +1,4 @@
 private import ValueNumberingImports
-private import cpp
-private import IR
 
 newtype TValueNumber =
   TVariableAddressValueNumber(IRFunction irFunc, IRVariable var) {
@@ -10,31 +8,32 @@ newtype TValueNumber =
     initializeParameterValueNumber(_, irFunc, var)
   } or
   TInitializeThisValueNumber(IRFunction irFunc) { initializeThisValueNumber(_, irFunc) } or
-  TConstantValueNumber(IRFunction irFunc, Type type, string value) {
+  TConstantValueNumber(IRFunction irFunc, IRType type, string value) {
     constantValueNumber(_, irFunc, type, value)
   } or
-  TStringConstantValueNumber(IRFunction irFunc, Type type, string value) {
+  TStringConstantValueNumber(IRFunction irFunc, IRType type, string value) {
     stringConstantValueNumber(_, irFunc, type, value)
   } or
-  TFieldAddressValueNumber(IRFunction irFunc, Field field, TValueNumber objectAddress) {
+  TFieldAddressValueNumber(IRFunction irFunc, Language::Field field, TValueNumber objectAddress) {
     fieldAddressValueNumber(_, irFunc, field, objectAddress)
   } or
   TBinaryValueNumber(
-    IRFunction irFunc, Opcode opcode, Type type, TValueNumber leftOperand, TValueNumber rightOperand
+    IRFunction irFunc, Opcode opcode, IRType type, TValueNumber leftOperand, TValueNumber rightOperand
   ) {
     binaryValueNumber(_, irFunc, opcode, type, leftOperand, rightOperand)
   } or
   TPointerArithmeticValueNumber(
-    IRFunction irFunc, Opcode opcode, Type type, int elementSize, TValueNumber leftOperand,
+    IRFunction irFunc, Opcode opcode, IRType type, int elementSize, TValueNumber leftOperand,
     TValueNumber rightOperand
   ) {
     pointerArithmeticValueNumber(_, irFunc, opcode, type, elementSize, leftOperand, rightOperand)
   } or
-  TUnaryValueNumber(IRFunction irFunc, Opcode opcode, Type type, TValueNumber operand) {
+  TUnaryValueNumber(IRFunction irFunc, Opcode opcode, IRType type, TValueNumber operand) {
     unaryValueNumber(_, irFunc, opcode, type, operand)
   } or
   TInheritanceConversionValueNumber(
-    IRFunction irFunc, Opcode opcode, Class baseClass, Class derivedClass, TValueNumber operand
+    IRFunction irFunc, Opcode opcode, Language::Class baseClass, Language::Class derivedClass,
+    TValueNumber operand
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
@@ -105,23 +104,23 @@ private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRF
 }
 
 private predicate constantValueNumber(
-  ConstantInstruction instr, IRFunction irFunc, Type type, string value
+  ConstantInstruction instr, IRFunction irFunc, IRType type, string value
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getResultType() = type and
+  instr.getResultIRType() = type and
   instr.getValue() = value
 }
 
 private predicate stringConstantValueNumber(
-  StringConstantInstruction instr, IRFunction irFunc, Type type, string value
+  StringConstantInstruction instr, IRFunction irFunc, IRType type, string value
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getResultType() = type and
+  instr.getResultIRType() = type and
   instr.getValue().getValue() = value
 }
 
 private predicate fieldAddressValueNumber(
-  FieldAddressInstruction instr, IRFunction irFunc, Field field, TValueNumber objectAddress
+  FieldAddressInstruction instr, IRFunction irFunc, Language::Field field, TValueNumber objectAddress
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getField() = field and
@@ -129,43 +128,43 @@ private predicate fieldAddressValueNumber(
 }
 
 private predicate binaryValueNumber(
-  BinaryInstruction instr, IRFunction irFunc, Opcode opcode, Type type, TValueNumber leftOperand,
+  BinaryInstruction instr, IRFunction irFunc, Opcode opcode, IRType type, TValueNumber leftOperand,
   TValueNumber rightOperand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   not instr instanceof PointerArithmeticInstruction and
   instr.getOpcode() = opcode and
-  instr.getResultType() = type and
+  instr.getResultIRType() = type and
   tvalueNumber(instr.getLeft()) = leftOperand and
   tvalueNumber(instr.getRight()) = rightOperand
 }
 
 private predicate pointerArithmeticValueNumber(
-  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, Type type, int elementSize,
+  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, IRType type, int elementSize,
   TValueNumber leftOperand, TValueNumber rightOperand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
-  instr.getResultType() = type and
+  instr.getResultIRType() = type and
   instr.getElementSize() = elementSize and
   tvalueNumber(instr.getLeft()) = leftOperand and
   tvalueNumber(instr.getRight()) = rightOperand
 }
 
 private predicate unaryValueNumber(
-  UnaryInstruction instr, IRFunction irFunc, Opcode opcode, Type type, TValueNumber operand
+  UnaryInstruction instr, IRFunction irFunc, Opcode opcode, IRType type, TValueNumber operand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
   instr.getOpcode() = opcode and
-  instr.getResultType() = type and
+  instr.getResultIRType() = type and
   tvalueNumber(instr.getUnary()) = operand
 }
 
 private predicate inheritanceConversionValueNumber(
-  InheritanceConversionInstruction instr, IRFunction irFunc, Opcode opcode, Class baseClass,
-  Class derivedClass, TValueNumber operand
+  InheritanceConversionInstruction instr, IRFunction irFunc, Opcode opcode, Language::Class baseClass,
+  Language::Class derivedClass, TValueNumber operand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
@@ -180,7 +179,7 @@ private predicate inheritanceConversionValueNumber(
  */
 private predicate uniqueValueNumber(Instruction instr, IRFunction irFunc) {
   instr.getEnclosingIRFunction() = irFunc and
-  not instr.getResultType() instanceof VoidType and
+  not instr.getResultIRType() instanceof IRVoidType and
   not numberableInstruction(instr)
 }
 
@@ -218,38 +217,38 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       initializeThisValueNumber(instr, irFunc) and
       result = TInitializeThisValueNumber(irFunc)
       or
-      exists(Type type, string value |
+      exists(IRType type, string value |
         constantValueNumber(instr, irFunc, type, value) and
         result = TConstantValueNumber(irFunc, type, value)
       )
       or
-      exists(Type type, string value |
+      exists(IRType type, string value |
         stringConstantValueNumber(instr, irFunc, type, value) and
         result = TStringConstantValueNumber(irFunc, type, value)
       )
       or
-      exists(Field field, TValueNumber objectAddress |
+      exists(Language::Field field, TValueNumber objectAddress |
         fieldAddressValueNumber(instr, irFunc, field, objectAddress) and
         result = TFieldAddressValueNumber(irFunc, field, objectAddress)
       )
       or
-      exists(Opcode opcode, Type type, TValueNumber leftOperand, TValueNumber rightOperand |
+      exists(Opcode opcode, IRType type, TValueNumber leftOperand, TValueNumber rightOperand |
         binaryValueNumber(instr, irFunc, opcode, type, leftOperand, rightOperand) and
         result = TBinaryValueNumber(irFunc, opcode, type, leftOperand, rightOperand)
       )
       or
-      exists(Opcode opcode, Type type, TValueNumber operand |
+      exists(Opcode opcode, IRType type, TValueNumber operand |
         unaryValueNumber(instr, irFunc, opcode, type, operand) and
         result = TUnaryValueNumber(irFunc, opcode, type, operand)
       )
       or
-      exists(Opcode opcode, Class baseClass, Class derivedClass, TValueNumber operand |
+      exists(Opcode opcode, Language::Class baseClass, Language::Class derivedClass, TValueNumber operand |
         inheritanceConversionValueNumber(instr, irFunc, opcode, baseClass, derivedClass, operand) and
         result = TInheritanceConversionValueNumber(irFunc, opcode, baseClass, derivedClass, operand)
       )
       or
       exists(
-        Opcode opcode, Type type, int elementSize, TValueNumber leftOperand,
+        Opcode opcode, IRType type, int elementSize, TValueNumber leftOperand,
         TValueNumber rightOperand
       |
         pointerArithmeticValueNumber(instr, irFunc, opcode, type, elementSize, leftOperand,

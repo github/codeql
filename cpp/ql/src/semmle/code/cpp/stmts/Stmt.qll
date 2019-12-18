@@ -294,6 +294,8 @@ class IfStmt extends ConditionalStmt, @stmt_if {
  * ```
  */
 class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
+  override string getCanonicalQLClass() { result = "ConstexprIfStmt" }
+
   /**
    * Gets the condition expression of this 'constexpr if' statement.
    *
@@ -1645,6 +1647,7 @@ class EnumSwitch extends SwitchStmt {
  * } catch (std::exception &e) {
  *   g();
  * }
+ * ```
  * there is a handler that's associated with the `catch` block and controls
  * entry to it.
  */

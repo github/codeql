@@ -198,7 +198,9 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
                     : null;
                 let type = contextualType || typeChecker.getTypeAtLocation(node);
                 if (type != null) {
-                    let id = typeTable.buildType(type);
+                    let parent = node.parent;
+                    let unfoldAlias = ts.isTypeAliasDeclaration(parent) && node === parent.type;
+                    let id = typeTable.buildType(type, unfoldAlias);
                     if (id != null) {
                         node.$type = id;
                     }

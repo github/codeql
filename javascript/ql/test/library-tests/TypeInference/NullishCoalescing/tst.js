@@ -21,4 +21,3 @@
 
     v7 = x ?? {};
 });
-// semmle-extractor-options: --experimental

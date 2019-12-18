@@ -185,7 +185,7 @@ namespace Semmle.Extraction.Tests
         // Records the arguments passed to StartCallback.
         IList<string> StartCallbackIn = new List<string>();
 
-        void StartCallback(string s)
+        void StartCallback(string s, bool silent)
         {
             StartCallbackIn.Add(s);
         }
@@ -194,7 +194,7 @@ namespace Semmle.Extraction.Tests
         IList<string> EndCallbackIn = new List<string>();
         IList<int> EndCallbackReturn = new List<int>();
 
-        void EndCallback(int ret, string s)
+        void EndCallback(int ret, string s, bool silent)
         {
             EndCallbackReturn.Add(ret);
             EndCallbackIn.Add(s);
@@ -203,7 +203,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestBuildCommand()
         {
-            var cmd = BuildScript.Create("abc", "def ghi", null, null);
+            var cmd = BuildScript.Create("abc", "def ghi", false, null, null);
 
             Actions.RunProcess["abc def ghi"] = 1;
             cmd.Run(Actions, StartCallback, EndCallback);
@@ -216,7 +216,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestAnd1()
         {
-            var cmd = BuildScript.Create("abc", "def ghi", null, null) & BuildScript.Create("odasa", null, null, null);
+            var cmd = BuildScript.Create("abc", "def ghi", false, null, null) & BuildScript.Create("odasa", null, false, null, null);
 
             Actions.RunProcess["abc def ghi"] = 1;
             cmd.Run(Actions, StartCallback, EndCallback);
@@ -230,7 +230,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestAnd2()
         {
-            var cmd = BuildScript.Create("odasa", null, null, null) & BuildScript.Create("abc", "def ghi", null, null);
+            var cmd = BuildScript.Create("odasa", null, false, null, null) & BuildScript.Create("abc", "def ghi", false, null, null);
 
             Actions.RunProcess["abc def ghi"] = 1;
             Actions.RunProcess["odasa "] = 0;
@@ -250,7 +250,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestOr1()
         {
-            var cmd = BuildScript.Create("odasa", null, null, null) | BuildScript.Create("abc", "def ghi", null, null);
+            var cmd = BuildScript.Create("odasa", null, false, null, null) | BuildScript.Create("abc", "def ghi", false, null, null);
 
             Actions.RunProcess["abc def ghi"] = 1;
             Actions.RunProcess["odasa "] = 0;
@@ -266,7 +266,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestOr2()
         {
-            var cmd = BuildScript.Create("abc", "def ghi", null, null) | BuildScript.Create("odasa", null, null, null);
+            var cmd = BuildScript.Create("abc", "def ghi", false, null, null) | BuildScript.Create("odasa", null, false, null, null);
 
             Actions.RunProcess["abc def ghi"] = 1;
             Actions.RunProcess["odasa "] = 0;
@@ -340,6 +340,9 @@ namespace Semmle.Extraction.Tests
             string nugetRestore = null, string allSolutions = null,
             string cwd = @"C:\Project")
         {
+            Actions.GetEnvironmentVariable["CODEQL_AUTOBUILDER_CSHARP_NO_INDEXING"] = "false";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_ROOT"] = @"C:\codeql\csharp";
+            Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";
             Actions.GetEnvironmentVariable["SEMMLE_JAVA_HOME"] = @"C:\odasa\tools\java";
             Actions.GetEnvironmentVariable["LGTM_PROJECT_LANGUAGE"] = lgtmLanguage;
@@ -372,13 +375,13 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcess["cmd.exe /C dotnet --info"] = 0;
             Actions.RunProcess["cmd.exe /C dotnet clean test.csproj"] = 0;
             Actions.RunProcess["cmd.exe /C dotnet restore test.csproj"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto dotnet build --no-incremental test.csproj"] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbar.cs\ntest.csproj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
             var xml = new XmlDocument();
@@ -398,16 +401,19 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestLinuxCSharpAutoBuilder()
         {
+            Actions.RunProcess["dotnet --list-runtimes"] = 0;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = @"Microsoft.AspNetCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]";
             Actions.RunProcess["dotnet --info"] = 0;
             Actions.RunProcess["dotnet clean test.csproj"] = 0;
             Actions.RunProcess["dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
             var xml = new XmlDocument();
@@ -421,15 +427,15 @@ namespace Semmle.Extraction.Tests
             Actions.LoadXml["test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
-            TestAutobuilderScript(autobuilder, 0, 6);
+            TestAutobuilderScript(autobuilder, 0, 7);
         }
 
         [Fact]
         public void TestLinuxCSharpAutoBuilderExtractorFailed()
         {
             Actions.FileExists["csharp.log"] = false;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -522,11 +528,11 @@ namespace Semmle.Extraction.Tests
         public void TestLinuxBuildlessExtractionSuccess()
         {
             Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone --references:."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -539,8 +545,8 @@ namespace Semmle.Extraction.Tests
         {
             Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone --references:."] = 10;
             Actions.FileExists["csharp.log"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -552,11 +558,11 @@ namespace Semmle.Extraction.Tests
         public void TestLinuxBuildlessExtractionSolution()
         {
             Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone foo.sln --references:."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -595,19 +601,21 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestLinuxBuildCommand()
         {
+            Actions.RunProcess["dotnet --list-runtimes"] = 1;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = "";
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto ""./build.sh --skip-tests"""] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
             SkipVsWhere();
 
             var autobuilder = CreateAutoBuilder("csharp", false, buildCommand: "./build.sh --skip-tests");
-            TestAutobuilderScript(autobuilder, 0, 3);
+            TestAutobuilderScript(autobuilder, 0, 4);
         }
 
         [Fact]
@@ -615,17 +623,19 @@ namespace Semmle.Extraction.Tests
         {
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbuild/build.sh";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.RunProcess["/bin/chmod u+x build/build.sh"] = 0;
+            Actions.RunProcess["dotnet --list-runtimes"] = 1;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = "";
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build/build.sh"] = 0;
             Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build/build.sh"] = "build";
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
-            TestAutobuilderScript(autobuilder, 0, 4);
+            TestAutobuilderScript(autobuilder, 0, 5);
         }
 
         [Fact]
@@ -633,16 +643,18 @@ namespace Semmle.Extraction.Tests
         {
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbuild.sh";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
 
             Actions.RunProcess["/bin/chmod u+x build.sh"] = 0;
+            Actions.RunProcess["dotnet --list-runtimes"] = 1;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = "";
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build.sh"] = 0;
             Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build.sh"] = "";
             Actions.FileExists["csharp.log"] = false;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
-            TestAutobuilderScript(autobuilder, 1, 2);
+            TestAutobuilderScript(autobuilder, 1, 3);
         }
 
         [Fact]
@@ -650,16 +662,18 @@ namespace Semmle.Extraction.Tests
         {
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbuild.sh";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
 
             Actions.RunProcess["/bin/chmod u+x build.sh"] = 0;
+            Actions.RunProcess["dotnet --list-runtimes"] = 1;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = "";
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build.sh"] = 5;
             Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build.sh"] = "";
             Actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
-            TestAutobuilderScript(autobuilder, 1, 2);
+            TestAutobuilderScript(autobuilder, 1, 3);
         }
 
         [Fact]
@@ -667,11 +681,11 @@ namespace Semmle.Extraction.Tests
         {
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbuild.bat";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto build.bat"] = 0;
             Actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\odasa\tools\odasa index --auto build.bat"] = "";
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
 
@@ -684,11 +698,11 @@ namespace Semmle.Extraction.Tests
         {
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbuild.bat";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto build.bat"] = 1;
             Actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\odasa\tools\odasa index --auto build.bat"] = "";
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config"] = 0;
             Actions.FileExists["csharp.log"] = true;
 
@@ -700,13 +714,13 @@ namespace Semmle.Extraction.Tests
         public void TestWindowsCmdIgnoreErrors()
         {
             Actions.RunProcess["cmd.exe /C C:\\odasa\\tools\\odasa index --auto ^\"build.cmd --skip-tests^\""] = 3;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config"] = 0;
             Actions.FileExists["csharp.log"] = true;
             SkipVsWhere();
 
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -721,7 +735,7 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\csharp\nuget\nuget.exe restore C:\Project\test2.sln"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test2.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
@@ -730,8 +744,8 @@ namespace Semmle.Extraction.Tests
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
 
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest1.cs\ntest2.cs";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -745,14 +759,14 @@ namespace Semmle.Extraction.Tests
             TestAutobuilderScript(autobuilder, 0, 6);
         }
 
-    [Fact]
+        [Fact]
         public void TestWindowCSharpMsBuildMultipleSolutions()
         {
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\csharp\nuget\nuget.exe restore test1.csproj"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild test1.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\csharp\nuget\nuget.exe restore test2.csproj"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild test2.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"test1.csproj"] = true;
@@ -763,8 +777,8 @@ namespace Semmle.Extraction.Tests
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
 
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "test1.csproj\ntest2.csproj\ntest1.cs\ntest2.cs";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -803,8 +817,8 @@ namespace Semmle.Extraction.Tests
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest1.cs\ntest2.cs";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -824,7 +838,7 @@ namespace Semmle.Extraction.Tests
         {
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test2.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
@@ -832,8 +846,8 @@ namespace Semmle.Extraction.Tests
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest1.cs\ntest2.cs";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -852,11 +866,11 @@ namespace Semmle.Extraction.Tests
         public void TestSkipNugetBuildless()
         {
             Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone foo.sln --references:. --skip-nuget"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -868,16 +882,19 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestSkipNugetDotnet()
         {
+            Actions.RunProcess["dotnet --list-runtimes"] = 0;
+            Actions.RunProcessOut["dotnet --list-runtimes"] = @"Microsoft.AspNetCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+Microsoft.NETCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]";
             Actions.RunProcess["dotnet --info"] = 0;
             Actions.RunProcess["dotnet clean test.csproj"] = 0;
             Actions.RunProcess["dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false --no-restore test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
             var xml = new XmlDocument();
@@ -891,7 +908,7 @@ namespace Semmle.Extraction.Tests
             Actions.LoadXml["test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder("csharp", false, dotnetArguments: "--no-restore");  // nugetRestore=false does not work for now.
-            TestAutobuilderScript(autobuilder, 0, 6);
+            TestAutobuilderScript(autobuilder, 0, 7);
         }
 
         [Fact]
@@ -899,20 +916,23 @@ namespace Semmle.Extraction.Tests
         {
             Actions.RunProcess["dotnet --list-sdks"] = 0;
             Actions.RunProcessOut["dotnet --list-sdks"] = "2.1.2 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
-            Actions.RunProcess[@"curl -sO https://dot.net/v1/dotnet-install.sh"] = 0;
+            Actions.RunProcess[@"curl -L -sO https://dot.net/v1/dotnet-install.sh"] = 0;
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
             Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
             Actions.RunProcess[@"rm dotnet-install.sh"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet --list-runtimes"] = 0;
+            Actions.RunProcessOut[@"C:\Project/.dotnet/dotnet --list-runtimes"] = @"Microsoft.AspNetCore.App 3.0.0 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+Microsoft.NETCore.App 3.0.0 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]";
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental test.csproj"] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
@@ -927,28 +947,34 @@ namespace Semmle.Extraction.Tests
             Actions.LoadXml["test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder("csharp", false, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 11);
+            TestAutobuilderScript(autobuilder, 0, 12);
         }
 
         [Fact]
         public void TestDotnetVersionAlreadyInstalled()
         {
             Actions.RunProcess["dotnet --list-sdks"] = 0;
-            Actions.RunProcessOut["dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
-            Actions.RunProcess[@"curl -sO https://dot.net/v1/dotnet-install.sh"] = 0;
+            Actions.RunProcessOut["dotnet --list-sdks"] = @"2.1.3 [C:\Program Files\dotnet\sdks]
+2.1.4 [C:\Program Files\dotnet\sdks]";
+            Actions.RunProcess[@"curl -L -sO https://dot.net/v1/dotnet-install.sh"] = 0;
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
             Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
             Actions.RunProcess[@"rm dotnet-install.sh"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet --list-runtimes"] = 0;
+            Actions.RunProcessOut[@"C:\Project/.dotnet/dotnet --list-runtimes"] = @"Microsoft.AspNetCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+Microsoft.AspNetCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+Microsoft.NETCore.App 2.1.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
+Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]";
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbar.cs\ntest.csproj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
@@ -963,7 +989,7 @@ namespace Semmle.Extraction.Tests
             Actions.LoadXml["test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder("csharp", false, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 11);
+            TestAutobuilderScript(autobuilder, 0, 12);
         }
 
         [Fact]
@@ -976,13 +1002,13 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet --info"] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet clean test.csproj"] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet restore test.csproj"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\.dotnet\dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\.dotnet\dotnet build --no-incremental test.csproj"] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
@@ -1005,7 +1031,7 @@ namespace Semmle.Extraction.Tests
         {
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\csharp\nuget\nuget.exe restore dirs.proj"] = 1;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && C:\\odasa\\tools\\odasa index --auto msbuild dirs.proj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"a\test.csproj"] = true;
@@ -1016,8 +1042,8 @@ namespace Semmle.Extraction.Tests
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
 
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "a\\test.cs\na\\test.csproj\ndirs.proj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -1048,13 +1074,13 @@ namespace Semmle.Extraction.Tests
         {
             Actions.RunProcess[@"mono C:\odasa\tools/csharp/nuget/nuget.exe restore dirs.proj"] = 1;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto msbuild dirs.proj /p:UseSharedCompilation=false /t:rebuild /p:MvcBuildViews=true"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["a/test.csproj"] = true;
             Actions.FileExists["dirs.proj"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.EnumerateFiles[@"C:\Project"] = "a/test.cs\na/test.csproj\ndirs.proj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -1083,8 +1109,8 @@ namespace Semmle.Extraction.Tests
         public void TestCyclicDirsProj()
         {
             Actions.FileExists["dirs.proj"] = true;
-            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
-            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.FileExists["csharp.log"] = false;
             Actions.EnumerateFiles[@"C:\Project"] = "dirs.proj";
             Actions.EnumerateDirectories[@"C:\Project"] = "";

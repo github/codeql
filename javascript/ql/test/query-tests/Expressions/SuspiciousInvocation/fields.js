@@ -3,5 +3,3 @@ class A {
 }
 
 class B {}
-
-// semmle-extractor-options: --experimental --source-type module

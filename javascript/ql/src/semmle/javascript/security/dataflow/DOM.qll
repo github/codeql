@@ -174,18 +174,20 @@ private module PersistentWebStorage {
  * An event handler that handles `postMessage` events.
  */
 class PostMessageEventHandler extends Function {
+  int paramIndex;
+
   PostMessageEventHandler() {
-    exists(CallExpr addEventListener |
-      addEventListener.getCallee().accessesGlobal("addEventListener") and
+    exists(DataFlow::CallNode addEventListener |
+      addEventListener = DataFlow::globalVarRef("addEventListener").getACall() and
       addEventListener.getArgument(0).mayHaveStringValue("message") and
-      addEventListener.getArgument(1).analyze().getAValue().(AbstractFunction).getFunction() = this
+      addEventListener.getArgument(1).getABoundFunctionValue(paramIndex).getFunction() = this
     )
   }
 
   /**
    * Gets the parameter that contains the event.
    */
-  SimpleParameter getEventParameter() { result = getParameter(0) }
+  Parameter getEventParameter() { result = getParameter(paramIndex) }
 }
 
 /**
@@ -209,7 +211,7 @@ private class WindowNameAccess extends RemoteFlowSource {
     this = DataFlow::globalObjectRef().getAPropertyRead("name")
     or
     // Reference to `name` on a container that does not assign to it.
-    this.accessesGlobal("name") and
+    this.asExpr().(GlobalVarAccess).getName() = "name" and
     not exists(VarDef def |
       def.getAVariable().(GlobalVariable).getName() = "name" and
       def.getContainer() = this.asExpr().getContainer()

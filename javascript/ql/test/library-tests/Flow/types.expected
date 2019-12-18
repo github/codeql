@@ -113,6 +113,7 @@
 | nodeJsClient.js:2:5:2:6 | es | nodeJsClient.js:2:10:2:27 | require('./esLib') | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | nodeJsClient.js:4:5:4:6 | x1 | nodeJsClient.js:4:10:4:15 | nj.foo | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | nodeJsClient.js:5:5:5:6 | x2 | nodeJsClient.js:5:10:5:15 | es.foo | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| nullish-coalescing-op.ts:2:7:2:7 | y | nullish-coalescing-op.ts:2:11:2:18 | x ?? 0.5 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | objlit.js:1:5:1:5 | A | objlit.js:1:9:1:15 | A \|\| {} | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | objlit.js:7:5:7:5 | B | objlit.js:7:9:7:10 | {} | object |
 | objlit.js:14:5:14:6 | x1 | objlit.js:14:10:14:10 | A | boolean, class, date, function, null, number, object, regular expression,string or undefined |

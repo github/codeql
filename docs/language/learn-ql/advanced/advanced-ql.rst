@@ -8,7 +8,7 @@ Advanced QL
    ./*
 
 
-Topics on advanced uses of QL. These topics assume that you are familiar with the QL language and the basics of query writing.
+Topics on advanced uses of QL. These topics assume that you are familiar with QL and the basics of query writing.
 
 -  :doc:`Semantics of abstract classes <abstract-classes>`
 -  :doc:`Choosing appropriate ways to constrain types <constraining-types>`

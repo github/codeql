@@ -70,11 +70,9 @@ class SecurityOptions extends string {
    */
   predicate userInputArgument(FunctionCall functionCall, int arg) {
     exists(string fname |
-      functionCall.getTarget().hasGlobalName(fname) and
+      functionCall.getTarget().hasGlobalOrStdName(fname) and
       exists(functionCall.getArgument(arg)) and
       (
-        fname = "read" and arg = 1
-        or
         fname = "fread" and arg = 0
         or
         fname = "fgets" and arg = 0
@@ -82,6 +80,16 @@ class SecurityOptions extends string {
         fname = "fgetws" and arg = 0
         or
         fname = "gets" and arg = 0
+        or
+        fname = "scanf" and arg >= 1
+        or
+        fname = "fscanf" and arg >= 2
+      )
+      or
+      functionCall.getTarget().hasGlobalName(fname) and
+      exists(functionCall.getArgument(arg)) and
+      (
+        fname = "read" and arg = 1
         or
         fname = "getaddrinfo" and arg = 3
         or
@@ -91,10 +99,6 @@ class SecurityOptions extends string {
         (arg = 1 or arg = 4 or arg = 5)
         or
         fname = "recvmsg" and arg = 1
-        or
-        fname = "scanf" and arg >= 1
-        or
-        fname = "fscanf" and arg >= 2
       )
     )
   }

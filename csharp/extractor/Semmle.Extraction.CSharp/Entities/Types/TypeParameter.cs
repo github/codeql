@@ -51,11 +51,11 @@ namespace Semmle.Extraction.CSharp.Entities
                     baseType = abase.Symbol;
                 var t = Create(Context, abase.Symbol);
                 trapFile.specific_type_parameter_constraints(constraints, t.TypeRef);
-                if (abase.Nullability.GetTypeAnnotation() != Kinds.TypeAnnotation.None)
-                    trapFile.specific_type_parameter_annotation(constraints, t.TypeRef, abase.Nullability.GetTypeAnnotation());
+                if (!abase.HasObliviousNullability())
+                    trapFile.specific_type_parameter_nullability(constraints, t.TypeRef, NullabilityEntity.Create(Context, Nullability.Create(abase)));
             }
 
-            trapFile.types(this, Semmle.Extraction.Kinds.TypeKind.TYPE_PARAMETER, symbol.Name);
+            trapFile.types(this, Kinds.TypeKind.TYPE_PARAMETER, symbol.Name);
             trapFile.extend(this, Create(Context, baseType).TypeRef);
 
             Namespace parentNs = Namespace.Create(Context, symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : symbol.ContainingNamespace);
@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.type_location(this, Context.Create(l));
             }
 
-            if (this.IsSourceDeclaration)
+            if (IsSourceDeclaration)
             {
                 var declSyntaxReferences = symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).
                     Select(s => s.Parent).Where(p => p != null).Select(p => p.Parent).ToArray();

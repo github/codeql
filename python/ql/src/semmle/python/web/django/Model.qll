@@ -54,33 +54,6 @@ class DjangoModelObjects extends TaintSource {
     override string toString() { result = "django.db.models.Model.objects" }
 }
 
-/** A write to a field of a django model, which is a vulnerable to external data. */
-class DjangoModelFieldWrite extends SqlInjectionSink {
-    DjangoModelFieldWrite() {
-        exists(AttrNode attr, DjangoModel model |
-            this = attr and attr.isStore() and attr.getObject(_).pointsTo(model)
-        )
-    }
-
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
-
-    override string toString() { result = "django model field write" }
-}
-
-/** A direct reference to a django model object, which is vulnerable to external data. */
-class DjangoModelDirectObjectReference extends TaintSink {
-    DjangoModelDirectObjectReference() {
-        exists(CallNode objects_get_call, ControlFlowNode objects | this = objects_get_call.getAnArg() |
-            objects_get_call.getFunction().(AttrNode).getObject("get") = objects and
-            any(DjangoDbTableObjects objs).taints(objects)
-        )
-    }
-
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
-
-    override string toString() { result = "django model object reference" }
-}
-
 /**
  * A call to the `raw` method on a django model. This allows a raw SQL query
  * to be sent to the database, which is a security risk.

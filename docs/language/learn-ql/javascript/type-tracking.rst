@@ -1,8 +1,8 @@
 Tutorial: API modelling using type tracking
 ===========================================
 
-This tutorial demonstrates how to build a simple model of the Firebase API in QL
-using the JavaScript type-tracking library.
+This tutorial demonstrates how to build a simple model of the Firebase API
+using the CodeQL type-tracking library for JavaScript.
 
 The type-tracking library makes it possible to track values through properties and function calls,
 usually to recognize method calls and properties accessed on a specific type of object.
@@ -89,7 +89,7 @@ For instance, ``firebaseSetterCall()`` fails to find anything in this example:
   var ref = getDatabase().ref("forecast");
   ref.set("Rain");
 
-Notice that the QL predicate ``firebaseDatabase()`` still finds the call to ``firebase.database()``,
+Notice that the predicate ``firebaseDatabase()`` still finds the call to ``firebase.database()``,
 but not the ``getDatabase()`` call.
 This means ``firebaseRef()`` has no result, which in turn means ``firebaseSetterCall()`` has no result.
 

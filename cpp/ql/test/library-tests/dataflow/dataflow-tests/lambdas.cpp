@@ -43,5 +43,5 @@ void test_lambdas()
 		c = source();
 	};
 	e(t, u, w);
-	sink(w); // flow from source() [NOT DETECTED]
+	sink(w); // flow from source()
 }

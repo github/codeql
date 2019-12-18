@@ -8,5 +8,3 @@ year;
 year;
 (for (i of numbers) for (j of letters) i+j);
 (for (i of numbers) for (j of letters) if (i<j) i+j);
-
-//semmle-extractor-options: --experimental

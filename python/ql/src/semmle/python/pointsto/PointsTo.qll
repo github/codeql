@@ -13,7 +13,7 @@ library class CfgOrigin extends @py_object {
 
     string toString() {
         /* Not to be displayed */
-        none()
+        result = "CfgOrigin"
     }
 
     /** Get a `ControlFlowNode` from `this` or `here`.
@@ -68,7 +68,7 @@ module CfgOrigin {
 //
 //    string toString() {
 //        /* Not to be displayed */
-//        none()
+//        result = "CfgOrigin"
 //    }
 //
 //    /** Get a `ControlFlowNode` from `this` or `here`.

@@ -9,6 +9,7 @@ private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedCondition
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 /**
@@ -38,13 +39,10 @@ abstract class ValueConditionBase extends ConditionBase {
 
   override Instruction getFirstInstruction() { result = getValueExpr().getFirstInstruction() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
-    resultType instanceof VoidType and
-    isLValue = false
+    resultType = getVoidType()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {

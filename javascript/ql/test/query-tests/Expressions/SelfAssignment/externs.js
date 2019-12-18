@@ -36,4 +36,4 @@ function Element() {}
 
 Element.prototype.innerHTML;
 
-// semmle-extractor-options: --externs
+/** @externs */

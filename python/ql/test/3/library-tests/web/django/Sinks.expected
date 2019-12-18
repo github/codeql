@@ -1,6 +1,0 @@
-| models.py:9 | key | externally controlled string |
-| rawsql.py:4 | BinaryExpr | externally controlled string |
-| rawsql.py:13 | BinaryExpr | externally controlled string |
-| rawsql.py:18 | BinaryExpr | externally controlled string |
-| rawsql.py:22 | BinaryExpr | externally controlled string |
-| views.py:8 | Attribute() | externally controlled string |

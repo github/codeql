@@ -176,5 +176,3 @@ async function awaitFlow(){
 	if (v) { // OK
 	}
 });
-
-// semmle-extractor-options: --experimental

@@ -162,12 +162,11 @@ private predicate moduleInFile(Module m, File f) { m.getFile() = f }
  * ```
  */
 class Require extends CallExpr, Import {
+  cached
   Require() {
-    exists(RequireVariable req |
-      this.getCallee() = req.getAnAccess() and
-      // `mjs` files explicitly disallow `require`
-      getFile().getExtension() != "mjs"
-    )
+    any(RequireVariable req).getAnAccess() = getCallee() and
+    // `mjs` files explicitly disallow `require`
+    not getFile().getExtension() = "mjs"
   }
 
   override PathExpr getImportedPath() { result = getArgument(0) }

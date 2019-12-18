@@ -40,7 +40,7 @@
 | template_static_instantiated.cpp:23:28:23:34 | initializer for static_int_one | myTemplateFunction |
 | template_static_instantiated.cpp:23:28:23:34 | initializer for static_int_one | myTemplateFunction |
 | template_static_instantiated.cpp:24:24:24:24 | initializer for static_t_1 |  |
-| template_static_instantiated.cpp:24:24:24:24 | initializer for static_t_1 |  |
+| template_static_instantiated.cpp:24:24:24:24 | initializer for static_t_1 | myTemplateFunction |
 | template_static_instantiated.cpp:25:22:25:24 | initializer for static_t_c | myTemplateFunction |
 | template_static_instantiated.cpp:25:24:25:24 | initializer for static_t_c |  |
 | template_static_instantiated.cpp:26:22:26:24 | initializer for static_t_v | myTemplateFunction |
@@ -72,7 +72,7 @@
 | template_static_instantiated.cpp:47:29:47:35 | initializer for static_int_one | myMethod |
 | template_static_instantiated.cpp:47:29:47:35 | initializer for static_int_one | myMethod |
 | template_static_instantiated.cpp:48:25:48:25 | initializer for static_t_1 |  |
-| template_static_instantiated.cpp:48:25:48:25 | initializer for static_t_1 |  |
+| template_static_instantiated.cpp:48:25:48:25 | initializer for static_t_1 | myMethod |
 | template_static_instantiated.cpp:49:23:49:25 | initializer for static_t_c | myMethod |
 | template_static_instantiated.cpp:49:25:49:25 | initializer for static_t_c |  |
 | template_static_instantiated.cpp:50:23:50:25 | initializer for static_t_v | myMethod |

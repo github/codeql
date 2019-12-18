@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var p in parameters.Zip(originalParameters, (paramSymbol, originalParam) => new { paramSymbol, originalParam }))
             {
-                var original = Equals(p.paramSymbol, p.originalParam) ? null : Parameter.Create(Context, p.originalParam, originalMethod);
+                var original = SymbolEqualityComparer.Default.Equals(p.paramSymbol, p.originalParam) ? null : Parameter.Create(Context, p.originalParam, originalMethod);
                 Parameter.Create(Context, p.paramSymbol, this, original);
             }
 
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (m.symbol.IsGenericMethod)
             {
-                if (Equals(m.symbol, m.symbol.OriginalDefinition))
+                if (SymbolEqualityComparer.Default.Equals(m.symbol, m.symbol.OriginalDefinition))
                 {
                     trapFile.Write('`');
                     trapFile.Write(m.symbol.TypeParameters.Length);
@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var methodKind = methodDecl.MethodKind;
 
-            if(methodKind == MethodKind.ExplicitInterfaceImplementation)
+            if (methodKind == MethodKind.ExplicitInterfaceImplementation)
             {
                 // Retrieve the original method kind
                 methodKind = methodDecl.ExplicitInterfaceImplementations.Select(m => m.MethodKind).FirstOrDefault();
@@ -318,7 +318,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Whether this method has unbound type parameters.
         /// </summary>
-        public bool IsUnboundGeneric => IsGeneric && Equals(symbol.ConstructedFrom, symbol);
+        public bool IsUnboundGeneric => IsGeneric && SymbolEqualityComparer.Default.Equals(symbol.ConstructedFrom, symbol);
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 
@@ -345,11 +345,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     foreach (var tp in symbol.GetAnnotatedTypeArguments())
                     {
                         trapFile.type_arguments(Type.Create(Context, tp.Symbol), child, this);
-                        var ta = tp.Nullability.GetTypeAnnotation();
-                        if (ta != Kinds.TypeAnnotation.None)
-                            trapFile.type_argument_annotation(this, child, ta);
                         child++;
                     }
+
+                    var nullability = new Nullability(symbol);
+                    if (!nullability.IsOblivious)
+                        trapFile.type_nullability(this, NullabilityEntity.Create(Context, nullability));
                 }
                 else
                 {
@@ -380,7 +381,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateMethodBody(trapFile);
             PopulateGenerics(trapFile);
             PopulateMetadataHandle(trapFile);
-            PopulateNullability(trapFile, symbol.ReturnNullableAnnotation);
+            PopulateNullability(trapFile, symbol.GetAnnotatedReturnType());
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

@@ -35,6 +35,14 @@ private string getParameterTypeString(Type parameterType) {
   else result = parameterType.(DumpType).getTypeIdentityString()
 }
 
+private string getTemplateArgumentString(Declaration d, int i) {
+  if exists(d.getTemplateArgumentKind(i))
+  then
+    result = d.getTemplateArgumentKind(i).(DumpType).getTypeIdentityString() + " " +
+        d.getTemplateArgument(i)
+  else result = d.getTemplateArgument(i).(DumpType).getTypeIdentityString()
+}
+
 /**
  * A `Declaration` extended to add methods for generating strings useful only for dumps and debugging.
  */
@@ -56,7 +64,7 @@ abstract private class DumpDeclaration extends Declaration {
           strictconcat(int i |
             exists(this.getTemplateArgument(i))
           |
-            this.getTemplateArgument(i).(DumpType).getTypeIdentityString(), ", " order by i
+            getTemplateArgumentString(this, i), ", " order by i
           ) + ">"
     else result = ""
   }

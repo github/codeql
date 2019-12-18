@@ -71,7 +71,7 @@ class RegexOperation extends Call {
       |
         // e.g. `new Regex(...).Match(...)`
         // or   `var r = new Regex(...); r.Match(...)`
-        DataFlow::localFlow(DataFlow::exprNode(this), DataFlow::exprNode(call.getQualifier()))
+        DataFlow::localExprFlow(this, call.getQualifier())
         or
         // e.g. `private string r = new Regex(...); public void foo() { r.Match(...); }`
         call.getQualifier().(FieldAccess).getTarget().getInitializer() = this

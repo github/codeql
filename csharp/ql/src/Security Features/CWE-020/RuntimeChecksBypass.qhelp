@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+ A write that looks like it may be bypassing runtime checks.
+</p>
+
+</overview>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Data_Validation">Data Validation</a>.
+</li>
+
+</references>
+</qhelp>

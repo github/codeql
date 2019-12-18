@@ -7,26 +7,6 @@ private import semmle.code.cpp.models.interfaces.Alias
 private class IntValue = Ints::IntValue;
 
 /**
- * Converts the bit count in `bits` to a byte count and a bit count in the form
- * bytes:bits.
- */
-bindingset[bits]
-string bitsToBytesAndBits(int bits) { result = (bits / 8).toString() + ":" + (bits % 8).toString() }
-
-/**
- * Gets a printable string for a bit offset with possibly unknown value.
- */
-bindingset[bitOffset]
-string getBitOffsetString(IntValue bitOffset) {
-  if Ints::hasValue(bitOffset)
-  then
-    if bitOffset >= 0
-    then result = "+" + bitsToBytesAndBits(bitOffset)
-    else result = "-" + bitsToBytesAndBits(Ints::neg(bitOffset))
-  else result = "+?"
-}
-
-/**
  * Gets the offset of field `field` in bits.
  */
 private IntValue getFieldBitOffset(Field field) {
@@ -109,7 +89,7 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
     instr = operand.getUse() and
     (
       // Converting to a non-virtual base class adds the offset of the base class.
-      exists(ConvertToBaseInstruction convert |
+      exists(ConvertToNonVirtualBaseInstruction convert |
         convert = instr and
         bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
       )
@@ -137,7 +117,11 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       or
       // Adding an integer to or subtracting an integer from a pointer propagates
       // the address with an offset.
-      bitOffset = getPointerBitOffset(instr.(PointerOffsetInstruction))
+      exists(PointerOffsetInstruction ptrOffset |
+        ptrOffset = instr and
+        operand = ptrOffset.getLeftOperand() and
+        bitOffset = getPointerBitOffset(ptrOffset)
+      )
       or
       // Computing a field address from a pointer propagates the address plus the
       // offset of the field.
@@ -306,6 +290,10 @@ predicate variableAddressEscapes(IRVariable var) {
 predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) {
   // The address of a variable points to that variable, at offset 0.
   instr.(VariableAddressInstruction).getIRVariable() = var and
+  bitOffset = 0
+  or
+  // A string literal is just a special read-only global variable.
+  instr.(StringConstantInstruction).getIRVariable() = var and
   bitOffset = 0
   or
   exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |

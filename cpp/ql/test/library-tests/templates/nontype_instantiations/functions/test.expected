@@ -1,0 +1,2 @@
+| test.cpp:3:5:3:5 | addToSelf | file://:0:0:0:0 | int | test.cpp:5:30:5:31 | 10 |
+| test.cpp:3:5:3:13 | addToSelf | file://:0:0:0:0 | int | file://:0:0:0:0 | i |

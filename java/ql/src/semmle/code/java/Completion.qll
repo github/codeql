@@ -52,13 +52,13 @@ newtype Completion =
     (innerValue = true or innerValue = false)
   } or
   /**
-   * The expression or statement completes via a `break` statement without a value.
+   * The expression or statement completes via a `break` statement.
    */
   BreakCompletion(MaybeLabel l) or
   /**
-   * The expression or statement completes via a value `break` statement.
+   * The expression or statement completes via a `yield` statement.
    */
-  ValueBreakCompletion(NormalOrBooleanCompletion c) or
+  YieldCompletion(NormalOrBooleanCompletion c) or
   /**
    * The expression or statement completes via a `continue` statement.
    */

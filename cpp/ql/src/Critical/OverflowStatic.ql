@@ -60,19 +60,19 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
 predicate bufferAndSizeFunction(Function f, int buf, int size) {
   f.hasGlobalName("read") and buf = 1 and size = 2
   or
-  f.hasGlobalName("fgets") and buf = 0 and size = 1
+  f.hasGlobalOrStdName("fgets") and buf = 0 and size = 1
   or
-  f.hasGlobalName("strncpy") and buf = 0 and size = 2
+  f.hasGlobalOrStdName("strncpy") and buf = 0 and size = 2
   or
-  f.hasGlobalName("strncat") and buf = 0 and size = 2
+  f.hasGlobalOrStdName("strncat") and buf = 0 and size = 2
   or
-  f.hasGlobalName("memcpy") and buf = 0 and size = 2
+  f.hasGlobalOrStdName("memcpy") and buf = 0 and size = 2
   or
-  f.hasGlobalName("memmove") and buf = 0 and size = 2
+  f.hasGlobalOrStdName("memmove") and buf = 0 and size = 2
   or
-  f.hasGlobalName("snprintf") and buf = 0 and size = 1
+  f.hasGlobalOrStdName("snprintf") and buf = 0 and size = 1
   or
-  f.hasGlobalName("vsnprintf") and buf = 0 and size = 1
+  f.hasGlobalOrStdName("vsnprintf") and buf = 0 and size = 1
 }
 
 class CallWithBufferSize extends FunctionCall {

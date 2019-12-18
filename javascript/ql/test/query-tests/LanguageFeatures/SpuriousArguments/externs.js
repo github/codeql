@@ -39,4 +39,4 @@ function Number() {}
 
 Number.parseFloat = function(num) {};
 
-//semmle-extractor-options: --externs
+/** @externs */

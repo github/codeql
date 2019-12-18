@@ -1,6 +1,8 @@
 private import java
 private import DataFlowUtil
+private import DataFlowImplCommon::Public
 private import DataFlowDispatch
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
 
@@ -282,4 +284,43 @@ class DataFlowLocation = Location;
 class DataFlowCall extends Call {
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
+}
+
+/** Holds if `e` is an expression that always has the same Boolean value `val`. */
+private predicate constantBooleanExpr(Expr e, boolean val) {
+  e.(CompileTimeConstantExpr).getBooleanValue() = val
+  or
+  exists(SsaExplicitUpdate v, Expr src |
+    e = v.getAUse() and
+    src = v.getDefiningExpr().(VariableAssign).getSource() and
+    constantBooleanExpr(src, val)
+  )
+}
+
+/** An argument that always has the same Boolean value. */
+private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
+  ConstantBooleanArgumentNode() { constantBooleanExpr(this.getExpr(), _) }
+
+  /** Gets the Boolean value of this expression. */
+  boolean getBooleanValue() { constantBooleanExpr(this.getExpr(), result) }
+}
+
+/**
+ * Holds if the node `n` is unreachable when the call context is `call`.
+ */
+cached
+predicate isUnreachableInCall(Node n, DataFlowCall call) {
+  exists(
+    ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,
+    Guard guard
+  |
+    // get constant bool argument and parameter for this call
+    viableParamArg(call, paramNode, arg) and
+    // get the ssa variable definition for this parameter
+    param.isParameterDefinition(paramNode.getParameter()) and
+    // which is used in a guard
+    param.getAUse() = guard and
+    // which controls `n` with the opposite value of `arg`
+    guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
+  )
 }

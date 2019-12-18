@@ -1,7 +1,7 @@
 Monotonic aggregates in QL
 ==========================
 
-In addition to standard QL aggregates, QL also supports *monotonic* aggregates. These are a slightly different way of computing aggregates which have some advantages, notably the ability to be used recursively, which normal aggregates do not have. You can enable them in a scope by adding the \ ``language[monotonicAggregates]`` pragma on a predicate, class, or module.
+In addition to standard aggregates, QL also supports *monotonic* aggregates. These are a slightly different way of computing aggregates which have some advantages, notably the ability to be used recursively, which normal aggregates do not have. You can enable them in a scope by adding the \ ``language[monotonicAggregates]`` pragma on a predicate, class, or module.
 
 Syntax
 ------

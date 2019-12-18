@@ -6,5 +6,3 @@
 
 // OK
 [1, 2, 3].map((x) => x * x);
-
-//semmle-extractor-options: --experimental

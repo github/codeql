@@ -438,6 +438,12 @@ public class LocalDataFlow
                 Check(nonSink17);
                 break;
         }
+
+        // Null-coalescing expressions
+        var sink73 = nonSink0 ?? sink0;
+        var sink74 = sink0 ?? nonSink0;
+        Check(sink73);
+        Check(sink74);
     }
 
     static void Check<T>(T x) { }
@@ -469,5 +475,22 @@ public class LocalDataFlow
     public void NonTaintedParameter(string nonTainted)
     {
         Check(nonTainted);
+    }
+
+    public void AssignmentFlow(IDisposable x, IEnumerable<object> os)
+    {
+        IDisposable x1;
+        using (x1 = x) { }
+
+        IEnumerable<object> os2;
+        foreach(var o in os2 = os) { }
+    }
+
+    public static implicit operator LocalDataFlow(string[] args) => null;
+
+    public void ConversionFlow(string[] args)
+    {
+        Span<object> span = args; // flow (library operator)
+        LocalDataFlow x = args; // no flow (source code operator)
     }
 }

@@ -232,5 +232,3 @@ function l() {
 function f(...x) {
     x === 42
 };
-
-// semmle-extractor-options: --experimental

@@ -166,5 +166,3 @@ class C11 extends React.Component {
         this.state.writeIn_getDerivedStateFromProps; // OK
     }
 }
-
-//semmle-extractor-options: --experimental

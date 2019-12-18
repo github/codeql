@@ -4,7 +4,7 @@ Semantics of abstract classes
 Concrete classes
 ----------------
 
-Concrete QL classes, as described in the QL language handbook topic on `Classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, lend themselves well to top-down modeling. We start from general superclasses representing large sets of values, and carve out individual subclasses representing more restricted sets of values.
+Concrete classes, as described in the QL language handbook topic on `Classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, lend themselves well to top-down modeling. We start from general superclasses representing large sets of values, and carve out individual subclasses representing more restricted sets of values.
 
 A classic example where this approach is useful is when modeling ASTs (Abstract Syntax Trees): the node types of an AST form a natural inheritance hierarchy, where, for example, there is a class ``Expr`` representing all expression nodes, with many different subclasses for different categories of expressions. There might be a class ``ArithmeticExpr`` representing arithmetic expressions, which in turn could have subclasses ``AddExpr`` and ``SubExpr``.
 
@@ -57,7 +57,7 @@ Like a concrete class, an abstract class has one or more superclasses and a char
 Example
 ~~~~~~~
 
-The following example is taken from the standard QL library for Java:
+The following example is taken from the CodeQL library for Java:
 
 .. code-block:: ql
 

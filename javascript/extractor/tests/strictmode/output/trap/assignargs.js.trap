@@ -140,79 +140,85 @@ enclosingStmt(#20045,#20043)
 exprContainers(#20045,#20037)
 literals("use strict","'use strict'",#20045)
 #20046=*
-stmts(#20046,2,#20041,1,"arguments = 42;")
-#20047=@"loc,{#10000},3,3,3,17"
-locations_default(#20047,#10000,3,3,3,17)
+regexpterm(#20046,14,#20045,0,"use strict")
+#20047=@"loc,{#10000},2,4,2,13"
+locations_default(#20047,#10000,2,4,2,13)
 hasLocation(#20046,#20047)
-stmtContainers(#20046,#20037)
+regexpConstValue(#20046,"use strict")
 #20048=*
-exprs(#20048,47,#20046,0,"arguments = 42")
-#20049=@"loc,{#10000},3,3,3,16"
-locations_default(#20049,#10000,3,3,3,16)
+stmts(#20048,2,#20041,1,"arguments = 42;")
+#20049=@"loc,{#10000},3,3,3,17"
+locations_default(#20049,#10000,3,3,3,17)
 hasLocation(#20048,#20049)
-enclosingStmt(#20048,#20046)
-exprContainers(#20048,#20037)
+stmtContainers(#20048,#20037)
 #20050=*
-exprs(#20050,79,#20048,0,"arguments")
-hasLocation(#20050,#20025)
-enclosingStmt(#20050,#20046)
+exprs(#20050,47,#20048,0,"arguments = 42")
+#20051=@"loc,{#10000},3,3,3,16"
+locations_default(#20051,#10000,3,3,3,16)
+hasLocation(#20050,#20051)
+enclosingStmt(#20050,#20048)
 exprContainers(#20050,#20037)
-literals("arguments","arguments",#20050)
-bind(#20050,#20040)
-#20051=*
-exprs(#20051,3,#20048,1,"42")
-hasLocation(#20051,#20029)
-enclosingStmt(#20051,#20046)
-exprContainers(#20051,#20037)
-literals("42","42",#20051)
 #20052=*
-entry_cfg_node(#20052,#20001)
-#20053=@"loc,{#10000},1,1,1,0"
-locations_default(#20053,#10000,1,1,1,0)
-hasLocation(#20052,#20053)
+exprs(#20052,79,#20050,0,"arguments")
+hasLocation(#20052,#20025)
+enclosingStmt(#20052,#20048)
+exprContainers(#20052,#20037)
+literals("arguments","arguments",#20052)
+bind(#20052,#20040)
+#20053=*
+exprs(#20053,3,#20050,1,"42")
+hasLocation(#20053,#20029)
+enclosingStmt(#20053,#20048)
+exprContainers(#20053,#20037)
+literals("42","42",#20053)
 #20054=*
-exit_cfg_node(#20054,#20001)
-hasLocation(#20054,#20034)
-successor(#20037,#20054)
-#20055=*
-entry_cfg_node(#20055,#20037)
-hasLocation(#20055,#20053)
+entry_cfg_node(#20054,#20001)
+#20055=@"loc,{#10000},1,1,1,0"
+locations_default(#20055,#10000,1,1,1,0)
+hasLocation(#20054,#20055)
 #20056=*
-exit_cfg_node(#20056,#20037)
+exit_cfg_node(#20056,#20001)
 hasLocation(#20056,#20034)
-successor(#20041,#20043)
-successor(#20046,#20050)
-successor(#20051,#20048)
-successor(#20050,#20051)
-successor(#20048,#20056)
-successor(#20043,#20045)
-successor(#20045,#20046)
-successor(#20055,#20041)
-successor(#20038,#20037)
-successor(#20052,#20038)
+successor(#20037,#20056)
 #20057=*
-jsParseErrors(#20057,#20001,"Error: Assigning to arguments in strict mode","  arguments = 42;
-")
-#20058=@"loc,{#10000},3,3,3,3"
-locations_default(#20058,#10000,3,3,3,3)
-hasLocation(#20057,#20058)
+entry_cfg_node(#20057,#20037)
+hasLocation(#20057,#20055)
+#20058=*
+exit_cfg_node(#20058,#20037)
+hasLocation(#20058,#20034)
+successor(#20041,#20043)
+successor(#20048,#20052)
+successor(#20053,#20050)
+successor(#20052,#20053)
+successor(#20050,#20058)
+successor(#20043,#20045)
+successor(#20045,#20048)
+successor(#20057,#20041)
+successor(#20038,#20037)
+successor(#20054,#20038)
 #20059=*
-lines(#20059,#20001,"function f() {","
+jsParseErrors(#20059,#20001,"Error: Assigning to arguments in strict mode","  arguments = 42;
 ")
-hasLocation(#20059,#20003)
-#20060=*
-lines(#20060,#20001,"  'use strict';","
-")
-hasLocation(#20060,#20005)
-indentation(#10000,2," ",2)
+#20060=@"loc,{#10000},3,3,3,3"
+locations_default(#20060,#10000,3,3,3,3)
+hasLocation(#20059,#20060)
 #20061=*
-lines(#20061,#20001,"  arguments = 42;","
+lines(#20061,#20001,"function f() {","
 ")
-hasLocation(#20061,#20007)
-indentation(#10000,3," ",2)
+hasLocation(#20061,#20003)
 #20062=*
-lines(#20062,#20001,"}","")
-hasLocation(#20062,#20009)
+lines(#20062,#20001,"  'use strict';","
+")
+hasLocation(#20062,#20005)
+indentation(#10000,2," ",2)
+#20063=*
+lines(#20063,#20001,"  arguments = 42;","
+")
+hasLocation(#20063,#20007)
+indentation(#10000,3," ",2)
+#20064=*
+lines(#20064,#20001,"}","")
+hasLocation(#20064,#20009)
 numlines(#20001,4,0,0)
 numlines(#10000,4,4,0)
 filetype(#10000,"javascript")

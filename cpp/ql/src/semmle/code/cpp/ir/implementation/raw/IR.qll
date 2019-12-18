@@ -5,6 +5,7 @@ import IRVariable
 import Operand
 private import internal.IRImports as Imports
 import Imports::EdgeKind
+import Imports::IRType
 import Imports::MemoryAccessKind
 
 private newtype TIRPropertyProvider = MkIRPropertyProvider()

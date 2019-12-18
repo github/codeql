@@ -4,9 +4,9 @@ Tutorial: Annotations
 Overview
 --------
 
-Snapshots of Java projects contain information about all annotations attached to program elements.
+CodeQL databases of Java projects contain information about all annotations attached to program elements.
 
-In QL, annotations are represented as follows:
+Annotations are represented by the following CodeQL classes:
 
 -  The class ``Annotatable`` represents all entities that may have an annotation attached to them (that is, packages, reference types, fields, methods, and local variables).
 -  The class ``AnnotationType`` represents a Java annotation type, such as ``java.lang.Override``; annotation types are interfaces.
@@ -23,7 +23,7 @@ As an example, recall that the Java standard library defines an annotation ``Sup
        String[] value;
    }
 
-In QL, ``SuppressWarnings`` is represented as an ``AnnotationType``, with ``value`` as its only ``AnnotationElement``.
+``SuppressWarnings`` is represented as an ``AnnotationType``, with ``value`` as its only ``AnnotationElement``.
 
 A typical usage of ``SuppressWarnings`` would be the following annotation to prevent a warning about using raw types:
 
@@ -35,7 +35,7 @@ A typical usage of ``SuppressWarnings`` would be the following annotation to pre
        }
    }
 
-In QL, the expression ``@SuppressWarnings("rawtypes")`` is represented as an ``Annotation``. The string literal ``"rawtypes"`` is used to initialize the annotation element ``value``, and its value can be extracted from the annotation by means of the ``getValue`` predicate.
+The expression ``@SuppressWarnings("rawtypes")`` is represented as an ``Annotation``. The string literal ``"rawtypes"`` is used to initialize the annotation element ``value``, and its value can be extracted from the annotation by means of the ``getValue`` predicate.
 
 We could then write the following query to find all ``@SuppressWarnings`` annotations attached to constructors, and return both the annotation itself and the value of its ``value`` element:
 
@@ -101,7 +101,7 @@ As a first step, let us write a query that finds all ``@Override`` annotations. 
    where ann.getType().hasQualifiedName("java.lang", "Override")
    select ann
 
-As always, it is a good idea to try this query on a Java snapshot to make sure it actually produces some results. On the earlier example, it should find the annotation on ``Sub1.m``. Next, we encapsulate the concept of an ``@Override`` annotation as a QL class:
+As always, it is a good idea to try this query on a CodeQL database for a Java project to make sure it actually produces some results. On the earlier example, it should find the annotation on ``Sub1.m``. Next, we encapsulate the concept of an ``@Override`` annotation as a CodeQL class:
 
 ::
 
@@ -147,7 +147,7 @@ For example, consider the following example program:
 
 Here, both ``A.m`` and ``A.n`` are marked as deprecated. Methods ``n`` and ``r`` both call ``m``, but note that ``n`` itself is deprecated, so we probably should not warn about this call.
 
-Like in the previous example, we start by defining a QL class for representing ``@Deprecated`` annotations:
+Like in the previous example, we start by defining a class for representing ``@Deprecated`` annotations:
 
 .. code-block:: ql
 
@@ -204,7 +204,7 @@ For instance, consider this slightly updated example:
 
 Here, the programmer has explicitly suppressed warnings about deprecated calls in ``A.r``, so our query should not flag the call to ``A.m`` any more.
 
-To do so, we first introduce a QL class for representing all ``@SuppressWarnings`` annotations where the string ``deprecated`` occurs among the list of warnings to suppress:
+To do so, we first introduce a class for representing all ``@SuppressWarnings`` annotations where the string ``deprecated`` occurs among the list of warnings to suppress:
 
 .. code-block:: ql
 
@@ -238,6 +238,6 @@ Now we can extend our query to filter out calls in methods carrying a ``Suppress
 What next?
 ----------
 
--  Take a look at some of the other tutorials: :doc:`Tutorial: Javadoc <javadoc>`, :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the QL standard library for Java: :doc:`AST class reference <ast-class-reference>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Take a look at some of the other tutorials: :doc:`Tutorial: Javadoc <javadoc>` and :doc:`Tutorial: Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

@@ -1,3 +1,0 @@
-| tst.js:2:1:2:13 | /* global x*/ | JSLint directives must not have whitespace characters before the directive name. |
-| tst.js:3:1:3:18 | /* global x,y: z*/ | JSLint directives must not have whitespace characters before the directive name. |
-| tst.js:16:1:98:2 | /* glob ... rue,\\n*/ | JSLint directives must not have whitespace characters before the directive name. |

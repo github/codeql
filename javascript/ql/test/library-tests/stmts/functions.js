@@ -1,4 +1,4 @@
-function g(x, y) { // semmle-extractor-options: --extract-program-text
+function g(x, y) {
     return x+y;
 }
 

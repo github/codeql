@@ -1,6 +1,5 @@
 private import internal.ValueNumberingInternal
 private import internal.ValueNumberingImports
-private import IR
 
 /**
  * Provides additional information about value numbering in IR dumps.

@@ -152,14 +152,19 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
 }
 
 /**
- * A promise that is resolved with the given value.
+ * A promise that is created and resolved with one or more value.
  */
-abstract class ResolvedPromiseDefinition extends DataFlow::CallNode {
+abstract class PromiseCreationCall extends DataFlow::CallNode {
   /**
    * Gets the value this promise is resolved with.
    */
   abstract DataFlow::Node getValue();
 }
+
+/**
+ * A promise that is created using a `.resolve()` call. 
+ */
+abstract class ResolvedPromiseDefinition extends PromiseCreationCall {}
 
 /**
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
@@ -170,6 +175,21 @@ class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
   }
 
   override DataFlow::Node getValue() { result = getArgument(0) }
+}
+
+/**
+ * An aggregated promise produced either by `Promise.all` or `Promise.race`. 
+ */
+class AggregateES2015PromiseDefinition extends PromiseCreationCall {
+  AggregateES2015PromiseDefinition() {
+    exists(string m | m = "all" or m = "race" | 
+      this = DataFlow::globalVarRef("Promise").getAMemberCall(m)
+    )
+  }
+
+  override DataFlow::Node getValue() {
+    result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
+  }
 }
 
 /**
@@ -197,7 +217,7 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
   or
   // from `x` to `Promise.resolve(x)`
-  pred = succ.(ResolvedPromiseDefinition).getValue()
+  pred = succ.(PromiseCreationCall).getValue()
   or
   exists(DataFlow::MethodCallNode thn, DataFlow::FunctionNode cb |
     thn.getMethodName() = "then" and cb = thn.getCallback(0)
@@ -246,5 +266,64 @@ private class IteratorExceptionStep extends DataFlow::MethodCallNode, DataFlow::
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
     succ = this.getExceptionalReturn()
+  }
+}
+
+/**
+ * A call to `String.prototype.replace`.
+ *
+ * We heuristically include any call to a method called `replace`, provided it either
+ * has exactly two arguments, or local data flow suggests that the receiver may be a string.
+ */
+class StringReplaceCall extends DataFlow::MethodCallNode {
+  StringReplaceCall() {
+    getMethodName() = "replace" and
+    (getNumArgument() = 2 or getReceiver().mayHaveStringValue(_))
+  }
+
+  /** Gets the regular expression passed as the first argument to `replace`, if any. */
+  DataFlow::RegExpLiteralNode getRegExp() {
+    result.flowsTo(getArgument(0))
+  }
+
+  /** Gets a string that is being replaced by this call. */
+  string getAReplacedString() {
+    result = getRegExp().getRoot().getAMatchedString() or
+    getArgument(0).mayHaveStringValue(result)
+  }
+
+  /**
+   * Gets the second argument of this call to `replace`, which is either a string
+   * or a callback.
+   */
+  DataFlow::Node getRawReplacement() {
+    result = getArgument(1)
+  }
+
+  /**
+   * Holds if this is a global replacement, that is, the first argument is a regular expression
+   * with the `g` flag.
+   */
+  predicate isGlobal() {
+    getRegExp().isGlobal()
+  }
+
+  /**
+   * Holds if this call to `replace` replaces `old` with `new`.
+   */
+  predicate replaces(string old, string new) {
+    exists(string rawNew |
+      old = getAReplacedString() and
+      getRawReplacement().mayHaveStringValue(rawNew) and
+      new = rawNew.replaceAll("$&", old)
+    )
+    or
+    exists(DataFlow::FunctionNode replacer, DataFlow::PropRead pr, DataFlow::ObjectLiteralNode map |
+      replacer = getCallback(1) and
+      replacer.getParameter(0).flowsToExpr(pr.getPropertyNameExpr()) and
+      pr = map.getAPropertyRead() and
+      pr.flowsTo(replacer.getAReturn()) and
+      map.hasPropertyWrite(old, any(DataFlow::Node repl | repl.getStringValue() = new))
+    )
   }
 }

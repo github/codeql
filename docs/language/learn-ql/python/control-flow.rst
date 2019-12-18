@@ -1,12 +1,12 @@
 Tutorial: Control flow analysis
 ===============================
 
-In order to analyze the `Control-flow graph <http://en.wikipedia.org/wiki/Control_flow_graph>`__ of a ``Scope`` we can use the two QL classes ``ControlFlowNode`` and ``BasicBlock``. These classes allow you to ask such questions as "can you reach point A from point B?" or "Is it possible to reach point B *without* going through point A?". To report results we use the class ``AstNode``, which represents a syntactic element and corresponds to the source code - allowing the results of the query to be more easily understood.
+To analyze the `Control-flow graph <http://en.wikipedia.org/wiki/Control_flow_graph>`__ of a ``Scope`` we can use the two CodeQL classes ``ControlFlowNode`` and ``BasicBlock``. These classes allow you to ask such questions as "can you reach point A from point B?" or "Is it possible to reach point B *without* going through point A?". To report results we use the class ``AstNode``, which represents a syntactic element and corresponds to the source code - allowing the results of the query to be more easily understood.
 
 The ``ControlFlowNode`` class
 -----------------------------
 
-The ``ControlFlowNode`` class represents nodes in the control flow graph. There is a one-to-many relation between AST nodes and control flow nodes. Each syntactic element, the ``AstNode,`` maps to zero, one or many ``ControlFlowNode`` classes, but each ControlFlowNode maps to exactly one ``AstNode``.
+The ``ControlFlowNode`` class represents nodes in the control flow graph. There is a one-to-many relation between AST nodes and control flow nodes. Each syntactic element, the ``AstNode,`` maps to zero, one, or many ``ControlFlowNode`` classes, but each ``ControlFlowNode`` maps to exactly one ``AstNode``.
 
 To show why this complex relation is required consider the following Python code:
 
@@ -21,7 +21,7 @@ To show why this complex relation is required consider the following Python code
 
 There are many paths through the above code. There are three different paths through the call to ``close_resource();`` one normal path, one path that breaks out of the loop, and one path where an exception is raised by ``might_raise()``. (An annotated flow graph can be seen :doc:`here <control-flow-graph>`.)
 
-The simplest use of the ``ControlFlowNode`` and ``AstNode`` classes is to find unreachable code. There is one ``ControlFlowNode`` per path through any ``AstNode`` and any ``AstNode`` that is unreachable has no paths flowing through it; therefore any ``AstNode`` without a corresponding ``ControlFlowNode`` is unreachable.
+The simplest use of the ``ControlFlowNode`` and ``AstNode`` classes is to find unreachable code. There is one ``ControlFlowNode`` per path through any ``AstNode`` and any ``AstNode`` that is unreachable has no paths flowing through it. Therefore, any ``AstNode`` without a corresponding ``ControlFlowNode`` is unreachable.
 
 **Unreachable AST nodes**
 
@@ -103,5 +103,5 @@ Combining these conditions we get:
 What next?
 ----------
 
--  Experiment with the worked examples in the QL for Python tutorial topic: :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html>`__.
+-  Experiment with the worked examples in the tutorial topic :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

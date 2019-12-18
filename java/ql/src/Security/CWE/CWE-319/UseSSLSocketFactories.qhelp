@@ -33,7 +33,7 @@ uses explicit SSL factories, which are preferable.</p>
 Class SSLSocketFactory</a>.</li>
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet">Transport Layer Protection Cheat Sheet</a>.
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html">Transport Layer Protection Cheat Sheet</a>.
 </li>
 
 

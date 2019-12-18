@@ -1,0 +1,4 @@
+- description: Standard LGTM queries for C/C++
+- apply: codeql-suites/cpp-lgtm-full.qls
+- apply: lgtm-displayed-only.yml
+  from: codeql-suite-helpers

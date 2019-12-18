@@ -4,10 +4,10 @@ Analyzing data flow in C/C++
 Overview
 --------
 
-This topic describes how data flow analysis is implemented in the QL for C/C++ library and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the QL libraries for local data flow, global data flow and taint tracking.
+This topic describes how data flow analysis is implemented in the CodeQL libraries for C/C++ and includes examples to help you write your own data flow queries.
+The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
 
-For a more general introduction to modeling data flow in QL, see :doc:`Introduction to data flow analysis in QL <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
@@ -166,6 +166,7 @@ The following predicates are defined in the configuration:
 -  ``isSource``—defines where data may flow from
 -  ``isSink``—defines where data may flow to
 -  ``isBarrier``—optional, restricts the data flow
+-  ``isBarrierGuard``—optional, restricts the data flow
 -  ``isAdditionalFlowStep``—optional, adds additional flow steps
 
 The characteristic predicate ``MyDataFlowConfiguration()`` defines the name of the configuration, so ``"MyDataFlowConfiguration"`` should be replaced by the name of your class.
@@ -204,6 +205,7 @@ The following predicates are defined in the configuration:
 -  ``isSource``—defines where taint may flow from
 -  ``isSink``—defines where taint may flow to
 -  ``isSanitizer``—optional, restricts the taint flow
+-  ``isSanitizerGuard``—optional, restricts the taint flow
 -  ``isAdditionalTaintStep``—optional, adds additional taint steps
 
 Similar to global data flow, the characteristic predicate ``MyTaintTrackingConfiguration()`` defines the unique name of the configuration, so ``"MyTaintTrackingConfiguration"`` should be replaced by the name of your class.
@@ -241,6 +243,49 @@ The following data flow configuration tracks data flow from environment variable
    where config.hasFlow(DataFlow::exprNode(getenv), DataFlow::exprNode(fopen))
    select fopen, "This 'fopen' uses data from $@.",
      getenv, "call to 'getenv'"
+
+The following taint-tracking configuration tracks data from a call to ``ntohl`` to an array index operation. It uses the ``Guards`` library to recognize expressions that have been bounds-checked, and defines ``isSanitizer`` to prevent taint from propagating through them. It also uses ``isAdditionalTaintStep`` to add flow from loop bounds to loop indexes.
+
+.. code-block:: ql
+
+  import cpp
+  import semmle.code.cpp.controlflow.Guards
+  import semmle.code.cpp.dataflow.TaintTracking
+
+  class NetworkToBufferSizeConfiguration extends TaintTracking::Configuration {
+    NetworkToBufferSizeConfiguration() { this = "NetworkToBufferSizeConfiguration" }
+
+    override predicate isSource(DataFlow::Node node) {
+      node.asExpr().(FunctionCall).getTarget().hasGlobalName("ntohl")
+    }
+
+    override predicate isSink(DataFlow::Node node) {
+      exists(ArrayExpr ae | node.asExpr() = ae.getArrayOffset())
+    }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Loop loop, LoopCounter lc |
+        loop = lc.getALoop() and
+        loop.getControllingExpr().(RelationalOperation).getGreaterOperand() = pred.asExpr() |
+        succ.asExpr() = lc.getVariableAccessInLoop(loop)
+      )
+    }
+
+    override predicate isSanitizer(DataFlow::Node node) {
+      exists(GuardCondition gc, Variable v |
+        gc.getAChild*() = v.getAnAccess() and
+        node.asExpr() = v.getAnAccess() and
+        gc.controls(node.asExpr().getBasicBlock(), _)
+      )
+    }
+  }
+
+  from DataFlow::Node ntohl, DataFlow::Node offset, NetworkToBufferSizeConfiguration conf
+  where conf.hasFlow(ntohl, offset)
+  select offset, "This array offset may be influenced by $@.", ntohl,
+    "converted data from the network"
+
+
 
 Exercises
 ~~~~~~~~~

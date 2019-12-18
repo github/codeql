@@ -62,8 +62,19 @@ class FlowVar extends TFlowVar {
   cached
   abstract predicate definedByReference(Expr arg);
 
+  /**
+   * Holds if this `FlowVar` is a `PartialDefinition` whose defined expression
+   * is `e`.
+   */
   cached
   abstract predicate definedPartiallyAt(Expr e);
+
+  /**
+   * Holds if this `FlowVar` is a definition of a reference parameter `p` that
+   * persists until the function returns.
+   */
+  cached
+  abstract predicate reachesRefParameter(Parameter p);
 
   /**
    * Holds if this `FlowVar` corresponds to the initial value of `v`. The following
@@ -77,7 +88,7 @@ class FlowVar extends TFlowVar {
    *   `FlowVar` instance for the uninitialized value of that variable.
    */
   cached
-  abstract predicate definedByInitialValue(LocalScopeVariable v);
+  abstract predicate definedByInitialValue(StackVariable v);
 
   /** Gets a textual representation of this element. */
   cached
@@ -122,8 +133,7 @@ private module PartialDefinitions {
     TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(va, arg) }
 
   private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
-    not fa.getTarget().isStatic() and
-    assignmentLikeOperation(node, fa.getTarget(), fa, _)
+    assignmentLikeOperation(node, _, fa, _)
   }
 
   class PartialDefinition extends TPartialDefinition {
@@ -258,7 +268,7 @@ module FlowVar_internal {
    * Holds if `sbb` is the `SubBasicBlock` where `v` receives its initial value.
    * See the documentation for `FlowVar.definedByInitialValue`.
    */
-  predicate blockVarDefinedByVariable(SubBasicBlock sbb, LocalScopeVariable v) {
+  predicate blockVarDefinedByVariable(SubBasicBlock sbb, StackVariable v) {
     sbb = v.(Parameter).getFunction().getEntryPoint()
     or
     exists(DeclStmt declStmt |
@@ -269,7 +279,7 @@ module FlowVar_internal {
   }
 
   newtype TFlowVar =
-    TSsaVar(SsaDefinition def, LocalScopeVariable v) {
+    TSsaVar(SsaDefinition def, StackVariable v) {
       fullySupportedSsaVariable(v) and
       v = def.getAVariable()
     } or
@@ -293,7 +303,7 @@ module FlowVar_internal {
    */
   class SsaVar extends TSsaVar, FlowVar {
     SsaDefinition def;
-    LocalScopeVariable v;
+    StackVariable v;
 
     SsaVar() { this = TSsaVar(def, v) }
 
@@ -333,10 +343,13 @@ module FlowVar_internal {
 
     override predicate definedPartiallyAt(Expr e) { none() }
 
-    override predicate definedByInitialValue(LocalScopeVariable param) {
+    override predicate definedByInitialValue(StackVariable param) {
       def.definedByParameter(param) and
       param = v
     }
+
+    // `fullySupportedSsaVariable` excludes reference types
+    override predicate reachesRefParameter(Parameter p) { none() }
 
     /**
      * Holds if this `SsaVar` corresponds to a non-phi definition. Users of this
@@ -387,7 +400,14 @@ module FlowVar_internal {
       sbb = v.(Parameter).getFunction().getEntryPoint()
     }
 
-    override predicate definedByInitialValue(LocalScopeVariable lsv) {
+    override predicate reachesRefParameter(Parameter p) {
+      parameterIsNonConstReference(p) and
+      p = v and
+      // This definition reaches the exit node of the function CFG
+      getAReachedBlockVarSBB(this).getANode() = p.getFunction()
+    }
+
+    override predicate definedByInitialValue(StackVariable lsv) {
       blockVarDefinedByVariable(sbb, lsv) and
       lsv = v
     }
@@ -588,9 +608,20 @@ module FlowVar_internal {
   private predicate variableLiveInSBB(SubBasicBlock sbb, Variable v) {
     variableAccessInSBB(v, sbb, _)
     or
+    // Non-const reference parameters are live at the end of the function
+    parameterIsNonConstReference(v) and
+    sbb.contains(v.(Parameter).getFunction())
+    or
     exists(SubBasicBlock succ | succ = sbb.getASuccessor() |
       variableLiveInSBB(succ, v) and
       not variableNotLiveBefore(succ, v)
+    )
+  }
+
+  predicate parameterIsNonConstReference(Parameter p) {
+    exists(ReferenceType refType |
+      refType = p.getUnderlyingType() and
+      not refType.getBaseType().isConst()
     )
   }
 
@@ -616,11 +647,8 @@ module FlowVar_internal {
   /**
    * A local variable that is uninitialized immediately after its declaration.
    */
-  class UninitializedLocalVariable extends LocalVariable {
-    UninitializedLocalVariable() {
-      not this.hasInitializer() and
-      not this.isStatic()
-    }
+  class UninitializedLocalVariable extends LocalVariable, StackVariable {
+    UninitializedLocalVariable() { not this.hasInitializer() }
   }
 
   /** Holds if `va` may be an uninitialized access to `v`. */

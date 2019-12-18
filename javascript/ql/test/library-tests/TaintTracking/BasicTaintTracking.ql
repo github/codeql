@@ -1,7 +1,11 @@
 import javascript
 import semmle.javascript.dataflow.InferredTypes
 
-DataFlow::CallNode getACall(string name) { result.getCalleeName() = name }
+DataFlow::CallNode getACall(string name) {
+  result.getCalleeName() = name
+  or
+  result.getCalleeNode().getALocalSource() = DataFlow::globalVarRef(name)
+}
 
 class Sink extends DataFlow::Node {
   Sink() { this = getACall("sink").getAnArgument() }

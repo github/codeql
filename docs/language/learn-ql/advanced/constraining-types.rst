@@ -8,7 +8,7 @@ Type constraint methods
 
    Note
 
-   The examples below use the Java QL library. All QL libraries support using these methods to constrain variables, the only difference is in the names of the classes used.
+   The examples below use the CodeQL library for Java. All libraries support using these methods to constrain variables, the only difference is in the names of the classes used.
 
 There are several ways of imposing type constraints on variables:
 

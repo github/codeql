@@ -1,21 +1,17 @@
 import python
 import semmle.python.security.strings.Untrusted
-
 import TurboGears
 
 private class ValidatedMethodParameter extends Parameter {
-
     ValidatedMethodParameter() {
         exists(string name, TurboGearsControllerMethod method |
             method.getArgByName(name) = this and
             method.getValidationDict().getItem(_).(KeyValuePair).getKey().(StrConst).getText() = name
         )
     }
-
 }
 
 class UnvalidatedControllerMethodParameter extends TaintSource {
-
     UnvalidatedControllerMethodParameter() {
         exists(Parameter p |
             any(TurboGearsControllerMethod m | not m.getName() = "onerror").getAnArg() = p and
@@ -25,9 +21,5 @@ class UnvalidatedControllerMethodParameter extends TaintSource {
         )
     }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof UntrustedStringKind
-    }
-
+    override predicate isSourceOf(TaintKind kind) { kind instanceof UntrustedStringKind }
 }
-

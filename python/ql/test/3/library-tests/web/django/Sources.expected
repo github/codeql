@@ -1,8 +1,0 @@
-| models.py:9 | Attribute | django.db.models.Model.objects |
-| rawsql.py:13 | Attribute | django.db.models.Model.objects |
-| rawsql.py:16 | Attribute | django.db.models.Model.objects |
-| rawsql.py:21 | Attribute | django.db.models.Model.objects |
-| views.py:6 | request | django.request.HttpRequest |
-| views.py:8 | HttpResponse() | django.response.HttpResponse |
-| views.py:11 | path | externally controlled string |
-| views.py:11 | request | django.request.HttpRequest |

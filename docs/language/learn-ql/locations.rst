@@ -1,6 +1,8 @@
 Locations and strings for QL entities
 =====================================
 
+.. Not sure how much of this topic needs to change, and what the title should be
+
 Providing locations
 -------------------
 
@@ -55,18 +57,18 @@ By convention, the location of an entire file may also be denoted by a ``file://
 Other types of URL
 ^^^^^^^^^^^^^^^^^^
 
-The following, less-common types of URL are valid QL but are not supported by LGTM and will be omitted from any results:
+The following, less-common types of URL are valid but are not supported by LGTM and will be omitted from any results:
 
 -  **HTTP URLs** are supported in some client applications. For an example, see the code snippet above.
 -  **Folder URLs** can be useful, for example to provide folder-level metrics. They may use a file URL, for example ``file:///opt/src:0:0:0:0``, but they may also start with a scheme of ``folder://``, and no trailing numbers, for example ``folder:///opt/src``.
--  **Relative file URLs** are like normal file URLs, but start with the scheme ``relative://``. They are typically only meaningful in the context of a particular snapshot, and are taken to be implicitly prefixed by the snapshot's source location. Note that, in particular, the relative URL of a file will stay constant regardless of where the snapshot is analyzed. It is often most convenient to produce these URLs as input when importing external information; selecting one from a QL class would be unusual, and client applications may not handle it appropriately.
+-  **Relative file URLs** are like normal file URLs, but start with the scheme ``relative://``. They are typically only meaningful in the context of a particular database, and are taken to be implicitly prefixed by the database's source location. Note that, in particular, the relative URL of a file will stay constant regardless of where the database is analyzed. It is often most convenient to produce these URLs as input when importing external information; selecting one from a QL class would be unusual, and client applications may not handle it appropriately.
 
 Providing location information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If no ``getURL()`` member predicate is defined, a QL class is checked for the presence of a member predicate called ``hasLocationInfo(..)``. This can be understood as a convenient way of providing file URLs (see above) without constructing the long URL string in QL. ``hasLocationInfo(..)`` should be a predicate, its first column must be ``string``-typed (it corresponds to the "path" portion of a file URL), and it must have an additional 3 or 4 ``int``-typed columns, which are interpreted like a trailing group of three or four numbers on a file URL.
 
-For example, let us imagine that the locations for methods provided by the extractor extend from the first character of the method name to the closing curly brace of the method body, and we want to "fix" them in QL to ensure that only the method name is selected. The following code shows two ways of achieving this:
+For example, let us imagine that the locations for methods provided by the extractor extend from the first character of the method name to the closing curly brace of the method body, and we want to "fix" them to ensure that only the method name is selected. The following code shows two ways of achieving this:
 
 .. code-block:: ql
 
@@ -104,7 +106,7 @@ Using extracted location information
 
 Finally, if the above two predicates fail, client applications will attempt to call a predicate called ``getLocation()`` with no parameters, and try to apply one of the above two predicates to the result. This allows certain locations to be put into the database, assigned identifiers, and picked up.
 
-By convention, the return value of the ``getLocation()`` predicate should be a QL class called ``Location``, and it should define a version of ``hasLocationInfo(..)`` (or ``getURL()``, though the former is preferable). If the ``Location`` class does not provide either of these member predicates, then no location information will be available.
+By convention, the return value of the ``getLocation()`` predicate should be a class called ``Location``, and it should define a version of ``hasLocationInfo(..)`` (or ``getURL()``, though the former is preferable). If the ``Location`` class does not provide either of these member predicates, then no location information will be available.
 
 The ``toString()`` predicate
 ----------------------------

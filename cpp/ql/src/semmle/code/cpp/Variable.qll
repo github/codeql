@@ -156,15 +156,6 @@ class Variable extends Declaration, @variable {
   }
 
   /**
-   * Gets the `i`th template argument used to instantiate this variable from a
-   * variable template. When called on a variable template, this will return the
-   * `i`th template parameter.
-   */
-  override Type getTemplateArgument(int index) {
-    variable_template_argument(underlyingElement(this), index, unresolveElement(result))
-  }
-
-  /**
    * Holds if this is a compiler-generated variable. For example, a
    * [range-based for loop](http://en.cppreference.com/w/cpp/language/range-for)
    * typically has three compiler-generated variables, named `__range`,
@@ -316,8 +307,8 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
  * }
  * ```
  *
- * Local variables can be static; use the `isStatic` member predicate to
- * detect those.
+ * See also `StackVariable`, which is the class of local-scope variables
+ * without statics and thread-locals.
  */
 class LocalScopeVariable extends Variable, @localscopevariable {
   /** Gets the function to which this variable belongs. */
@@ -325,12 +316,21 @@ class LocalScopeVariable extends Variable, @localscopevariable {
 }
 
 /**
- * DEPRECATED: use `LocalScopeVariable` instead.
+ * A C/C++ variable with _automatic storage duration_. In other words, a
+ * function parameter or a local variable that is not static or thread-local.
+ * For example, the variables `a` and `b` in the following code.
+ * ```
+ * void myFunction(int a) {
+ *   int b;
+ *   static int c;
+ * }
+ * ```
  */
-deprecated class StackVariable extends Variable {
-  StackVariable() { this instanceof LocalScopeVariable }
-
-  Function getFunction() { result = this.(LocalScopeVariable).getFunction() }
+class StackVariable extends LocalScopeVariable {
+  StackVariable() {
+    not this.isStatic() and
+    not this.isThreadLocal()
+  }
 }
 
 /**
@@ -505,7 +505,7 @@ class TemplateVariable extends Variable {
  * `myTemplateFunction<T>`:
  * ```
  * void myFunction() {
- *   T a;
+ *   float a;
  * }
  *
  * template<type T>
@@ -518,9 +518,6 @@ class TemplateVariable extends Variable {
  * myTemplateFunction<int>();
  * ```
  */
-class SemanticStackVariable extends LocalScopeVariable {
-  SemanticStackVariable() {
-    not this.isStatic() and
-    not this.isFromUninstantiatedTemplate(_)
-  }
+class SemanticStackVariable extends StackVariable {
+  SemanticStackVariable() { not this.isFromUninstantiatedTemplate(_) }
 }

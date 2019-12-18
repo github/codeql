@@ -21,6 +21,7 @@ from Variable v
 where
   v.isStatic() and
   v.hasDefinition() and
+  not v.isConstexpr() and
   not exists(VariableAccess a | a.getTarget() = v) and
   not v instanceof MemberVariable and
   not declarationHasSideEffects(v) and

@@ -74,17 +74,23 @@ enclosingStmt(#20021,#20016)
 exprContainers(#20021,#20001)
 literals("Hello, world!","""Hello, world!""",#20021)
 #20022=*
-entry_cfg_node(#20022,#20001)
-#20023=@"loc,{#10000},1,1,1,0"
-locations_default(#20023,#10000,1,1,1,0)
+regexpterm(#20022,14,#20021,0,"Hello, world!")
+#20023=@"loc,{#10000},1,8,1,20"
+locations_default(#20023,#10000,1,8,1,20)
 hasLocation(#20022,#20023)
+regexpConstValue(#20022,"Hello, world!")
 #20024=*
-exit_cfg_node(#20024,#20001)
-hasLocation(#20024,#20015)
+entry_cfg_node(#20024,#20001)
+#20025=@"loc,{#10000},1,1,1,0"
+locations_default(#20025,#10000,1,1,1,0)
+hasLocation(#20024,#20025)
+#20026=*
+exit_cfg_node(#20026,#20001)
+hasLocation(#20026,#20015)
 successor(#20016,#20019)
 successor(#20021,#20017)
 successor(#20019,#20021)
-successor(#20017,#20024)
-successor(#20022,#20016)
+successor(#20017,#20026)
+successor(#20024,#20016)
 numlines(#10000,1,1,0)
 filetype(#10000,"javascript")

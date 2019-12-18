@@ -804,23 +804,23 @@ private module ControlFlowGraphImpl {
     or
     // handle `switch` expression
     exists(SwitchExpr switch | switch = n |
-      // value `break` terminates the `switch`
-      last(switch.getAStmt(), last, ValueBreakCompletion(completion))
+      // `yield` terminates the `switch`
+      last(switch.getAStmt(), last, YieldCompletion(completion))
       or
       // any other abnormal completion is propagated
       last(switch.getAStmt(), last, completion) and
-      not completion instanceof ValueBreakCompletion and
+      not completion instanceof YieldCompletion and
       completion != NormalCompletion()
     )
     or
     // the last node in a case rule is the last node in the right-hand side
     last(n.(SwitchCase).getRuleStatement(), last, completion)
     or
-    // ...and if the rhs is an expression we wrap the completion as a value break
+    // ...and if the rhs is an expression we wrap the completion as a yield
     exists(Completion caseCompletion |
       last(n.(SwitchCase).getRuleExpression(), last, caseCompletion) and
       if caseCompletion instanceof NormalOrBooleanCompletion
-      then completion = ValueBreakCompletion(caseCompletion)
+      then completion = YieldCompletion(caseCompletion)
       else completion = caseCompletion
     )
     or
@@ -833,18 +833,18 @@ private module ControlFlowGraphImpl {
     // `throw` statements or throwing calls give rise to ` Throw` completion
     exists(ThrowableType tt | mayThrow(n, tt) | last = n and completion = ThrowCompletion(tt))
     or
-    // `break` statements without value give rise to a `Break` completion
-    exists(BreakStmt break | break = n and last = n and not break.hasValue() |
+    // `break` statements give rise to a `Break` completion
+    exists(BreakStmt break | break = n and last = n |
       completion = labelledBreakCompletion(MkLabel(break.getLabel()))
       or
       not exists(break.getLabel()) and completion = anonymousBreakCompletion()
     )
     or
-    // value break statements get their completion wrapped as a value break
+    // yield statements get their completion wrapped as a yield
     exists(Completion caseCompletion |
-      last(n.(BreakStmt).getValue(), last, caseCompletion) and
+      last(n.(YieldStmt).getValue(), last, caseCompletion) and
       if caseCompletion instanceof NormalOrBooleanCompletion
-      then completion = ValueBreakCompletion(caseCompletion)
+      then completion = YieldCompletion(caseCompletion)
       else completion = caseCompletion
     )
     or
@@ -1112,9 +1112,9 @@ private module ControlFlowGraphImpl {
       n = case and result = first(case.getRuleStatement())
     )
     or
-    // Value break
-    exists(BreakStmt break | completion = NormalCompletion() |
-      n = break and result = first(break.getValue())
+    // Yield
+    exists(YieldStmt yield | completion = NormalCompletion() |
+      n = yield and result = first(yield.getValue())
     )
     or
     // Synchronized statements execute their expression _before_ synchronization, so the CFG reflects that.

@@ -12,9 +12,25 @@ private import semmle.javascript.dataflow.TypeTracking
 /**
  * A source node for local data flow, that is, a node from which local data flow is tracked.
  *
- * Examples include function parameters, imports and property accesses; see
- * `DataFlow::SourceNode::DefaultRange` for details. You can introduce new kinds of
- * source nodes by defining new subclasses of `DataFlow::SourceNode::Range`.
+ * This includes function invocations, parameters, object creation, and references to a property or global variable.
+ *
+ * You can introduce new kinds of source nodes by defining new subclasses of `DataFlow::SourceNode::Range`.
+ *
+ * Examples:
+ * ```js
+ * obj.f             // property access
+ * Math.abs(x)       // function calls
+ * { f: 12, g: 45 }; // object expressions
+ * function fn(x) {} // functions and parameters
+ * class C {}        // classes
+ * document          // global variable access
+ * <View/>           // JSX literals
+ * /[a-z]+/g;        // regular expression literal
+ * await x           // await expression
+ * import * as fs from 'fs';
+ * import { readDir } from 'fs';
+ * import("fs")
+ * ```
  */
 class SourceNode extends DataFlow::Node {
   SourceNode() { this instanceof SourceNode::Range }
@@ -235,7 +251,8 @@ module SourceNode {
         astNode instanceof FunctionSentExpr or
         astNode instanceof FunctionBindExpr or
         astNode instanceof DynamicImportExpr or
-        astNode instanceof ImportSpecifier
+        astNode instanceof ImportSpecifier or
+        astNode instanceof ImportMetaExpr
       )
       or
       DataFlow::parameterNode(this, _)

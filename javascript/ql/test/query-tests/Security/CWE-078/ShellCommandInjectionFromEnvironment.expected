@@ -1,0 +1,13 @@
+nodes
+| tst_shell-command-injection-from-environment.js:5:14:5:53 | 'rm -rf ... "temp") |
+| tst_shell-command-injection-from-environment.js:5:14:5:53 | 'rm -rf ... "temp") |
+| tst_shell-command-injection-from-environment.js:5:26:5:53 | path.jo ... "temp") |
+| tst_shell-command-injection-from-environment.js:5:36:5:44 | __dirname |
+| tst_shell-command-injection-from-environment.js:5:36:5:44 | __dirname |
+edges
+| tst_shell-command-injection-from-environment.js:5:26:5:53 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:5:14:5:53 | 'rm -rf ... "temp") |
+| tst_shell-command-injection-from-environment.js:5:26:5:53 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:5:14:5:53 | 'rm -rf ... "temp") |
+| tst_shell-command-injection-from-environment.js:5:36:5:44 | __dirname | tst_shell-command-injection-from-environment.js:5:26:5:53 | path.jo ... "temp") |
+| tst_shell-command-injection-from-environment.js:5:36:5:44 | __dirname | tst_shell-command-injection-from-environment.js:5:26:5:53 | path.jo ... "temp") |
+#select
+| tst_shell-command-injection-from-environment.js:5:14:5:53 | 'rm -rf ... "temp") | tst_shell-command-injection-from-environment.js:5:36:5:44 | __dirname | tst_shell-command-injection-from-environment.js:5:14:5:53 | 'rm -rf ... "temp") | This shell command depends on an uncontrolled $@. | tst_shell-command-injection-from-environment.js:5:36:5:44 | __dirname | absolute path |

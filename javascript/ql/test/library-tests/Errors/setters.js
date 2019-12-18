@@ -8,5 +8,3 @@ var o = {
   set y(...ys) {},
   set z(z, ...zs) {}
 };
-
-// semmle-extractor-options: --tolerate-parse-errors

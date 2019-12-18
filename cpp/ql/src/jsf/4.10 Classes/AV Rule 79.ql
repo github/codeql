@@ -22,7 +22,7 @@ predicate acquireExpr(Expr acquire, string kind) {
   exists(FunctionCall fc, Function f, string name |
     fc = acquire and
     f = fc.getTarget() and
-    f.hasGlobalName(name) and
+    f.hasGlobalOrStdName(name) and
     (
       name = "fopen" and
       kind = "file"
@@ -46,7 +46,7 @@ predicate releaseExpr(Expr release, Expr resource, string kind) {
   exists(FunctionCall fc, Function f, string name |
     fc = release and
     f = fc.getTarget() and
-    f.hasGlobalName(name) and
+    f.hasGlobalOrStdName(name) and
     (
       name = "fclose" and
       resource = fc.getArgument(0) and

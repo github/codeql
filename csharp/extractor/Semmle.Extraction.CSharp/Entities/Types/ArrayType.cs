@@ -27,13 +27,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.array_element_type(this, Dimension, Rank, element.Type.TypeRef);
             PopulateType(trapFile);
-            PopulateNullability(trapFile, symbol.ElementNullableAnnotation);
         }
 
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.WriteSubId(element.Type);
-            trapFile.Write((int)symbol.ElementNullableAnnotation);
             symbol.BuildArraySuffix(trapFile);
             trapFile.Write(";type");
         }

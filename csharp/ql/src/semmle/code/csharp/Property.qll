@@ -520,7 +520,7 @@ class IndexerProperty extends Property {
   pragma[nomagic]
   private IndexerCall getAnIndexerCall0() {
     exists(Expr qualifier | qualifier = result.getQualifier() |
-      DataFlow::localFlow(DataFlow::exprNode(this.getAnAccess()), DataFlow::exprNode(qualifier))
+      DataFlow::localExprFlow(this.getAnAccess(), qualifier)
     )
   }
 

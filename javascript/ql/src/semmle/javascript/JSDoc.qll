@@ -74,6 +74,7 @@ abstract class Documentable extends ASTNode {
 class JSDocTypeExprParent extends @jsdoc_type_expr_parent, Locatable {
   override Location getLocation() { hasLocation(this, result) }
 
+  /** Gets the JSDoc comment to which this element belongs. */
   JSDoc getJSDocComment() { none() }
 }
 
@@ -582,7 +583,7 @@ module JSDoc {
      * within this container.
      */
     string resolveAlias(string alias) {
-      result = GlobalAccessPath::getAccessPath(getNodeFromAlias(alias))
+      getNodeFromAlias(alias) = AccessPath::getAReferenceOrAssignmentTo(result)
     }
 
     /**

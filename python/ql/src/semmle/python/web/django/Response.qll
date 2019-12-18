@@ -70,7 +70,7 @@ class DjangoCookieSet extends CookieSet, CallNode {
         any(DjangoResponse r).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
     }
 
-    override string toString() { result = this.(CallNode).toString() }
+    override string toString() { result = CallNode.super.toString() }
 
     override ControlFlowNode getKey() { result = this.getArg(0) }
 

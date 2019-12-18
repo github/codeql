@@ -65,7 +65,8 @@ public class LocationManager {
 
   /**
    * Emit location information for an AST node. The node's location is translated from the parser's
-   * 0-based column numbering scheme into our 1-based scheme and then emitted as a snippet location.
+   * 0-based column numbering scheme with exclusive offsets into our 1-based scheme with inclusive
+   * end-offsets and then emitted as a snippet location.
    */
   public void emitNodeLocation(SourceElement nd, Label lbl) {
     int sl = nd.getLoc().getStart().getLine(),
@@ -86,7 +87,15 @@ public class LocationManager {
     emitSnippetLocation(lbl, sl, sc, el, ec);
   }
 
-  /** Emit a relative location in the current snippet. */
+  /**
+   * Emit a relative location in the current snippet.
+   *
+   * @param lbl label to associate with the location
+   * @param sl start line (1-based)
+   * @param sc start column (1-based, inclusive)
+   * @param el end line (1-based)
+   * @param ec end column (1-based, inclusive)
+   */
   public void emitSnippetLocation(Label lbl, int sl, int sc, int el, int ec) {
     Position start = translatePosition(new Position(sl, sc, -1));
     Position end = translatePosition(new Position(el, ec, -1));

@@ -40,4 +40,4 @@ What next?
 
 -  Find out who will be the new ruler of the village in the :doc:`next tutorial <heir>`.
 -  Learn more about predicates and classes in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Explore the libraries that help you get data about code in :doc:`Learning QL <../../index>`.
+-  Explore the libraries that help you get data about code in :doc:`Learning CodeQL <../../index>`.

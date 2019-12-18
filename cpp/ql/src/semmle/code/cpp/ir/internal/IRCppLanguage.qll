@@ -1,6 +1,13 @@
 private import cpp as Cpp
 private import semmle.code.cpp.Print as Print
 private import IRUtilities
+private import semmle.code.cpp.ir.implementation.IRType
+private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as IRConstruction
+import CppType
+
+class LanguageType = CppType;
+
+class OpaqueTypeTag = Cpp::Type;
 
 class Function = Cpp::Function;
 
@@ -25,7 +32,7 @@ class StringLiteral = Cpp::StringLiteral;
 
 class Variable = Cpp::Variable;
 
-class AutomaticVariable = Cpp::LocalScopeVariable;
+class AutomaticVariable = Cpp::StackVariable;
 
 class StaticVariable = Cpp::Variable;
 
@@ -59,10 +66,7 @@ int getTypeSize(Type type) { result = type.getSize() }
 
 int getPointerSize() { exists(Cpp::NullPointerType nullptr | result = nullptr.getSize()) }
 
-predicate isVariableAutomatic(Variable var) {
-  var instanceof Cpp::LocalScopeVariable and
-  not var.(Cpp::LocalScopeVariable).isStatic()
-}
+predicate isVariableAutomatic(Cpp::StackVariable var) { any() }
 
 string getStringLiteralText(StringLiteral s) {
   result = s.getValueText().replaceAll("\n", " ").replaceAll("\r", "").replaceAll("\t", " ")

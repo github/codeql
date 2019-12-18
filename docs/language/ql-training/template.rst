@@ -27,10 +27,6 @@ Template slide deck
    
    Second subheading
 
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
-
 .. Set up slide. Include link to QL4E snapshots required for examples 
 
 .. rst-class:: setup

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Learn QL documentation build configuration file, created by
+# Learn CodeQL documentation build configuration file, created by
 # on Tuesday Nov 13 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -41,16 +41,16 @@ highlight_language = 'ql'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Learning QL'
+project = u'Learning CodeQL'
 
 # -- Project-specifc options for HTML output ----------------------------------------------
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = 'Learn QL'
+html_title = 'Learn CodeQL'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Learn QL'
+htmlhelp_basename = 'Learn CodeQL'
 
 # The version info for this project, if different from version and release in main conf.py file.
 # The short X.Y version.

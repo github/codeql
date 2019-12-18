@@ -11,13 +11,7 @@ query predicate instructionBounds(
     or
     exists(ReturnValueInstruction retInstr | retInstr.getReturnValueOperand() = i.getAUse())
   ) and
-  (
-    upper = true and
-    delta = min(int d | boundedInstruction(i, b, d, upper, reason))
-    or
-    upper = false and
-    delta = max(int d | boundedInstruction(i, b, d, upper, reason))
-  ) and
+  boundedInstruction(i, b, delta, upper, reason) and
   not valueNumber(b.getInstruction()) = valueNumber(i) and
   if reason instanceof CondReason
   then reasonLoc = reason.(CondReason).getCond().getLocation()

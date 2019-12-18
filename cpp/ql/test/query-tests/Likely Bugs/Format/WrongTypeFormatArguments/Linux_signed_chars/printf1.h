@@ -151,3 +151,86 @@ void fun4()
   printf("%qi\n", ll); // GOOD
   printf("%qu\n", ull); // GOOD
 }
+
+void complexFormatSymbols(int i, const char *s)
+{
+  // positional arguments
+  printf("%1$i", i, s); // GOOD
+  printf("%2$s", i, s); // GOOD
+  printf("%1$s", i, s); // BAD
+  printf("%2$i", i, s); // BAD
+
+  // width / precision
+  printf("%4i", i); // GOOD
+  printf("%.4i", i); // GOOD
+  printf("%4.4i", i); // GOOD
+  printf("%4s", i); // BAD
+  printf("%.4s", i); // BAD
+  printf("%4.4s", i); // BAD
+
+  printf("%4s", s); // GOOD
+  printf("%.4s", s); // GOOD
+  printf("%4.4s", s); // GOOD
+  printf("%4i", s); // BAD
+  printf("%.4i", s); // BAD
+  printf("%4.4i", s); // BAD
+
+  // variable width / precision
+  printf("%*s", i, s); // GOOD
+  printf("%*s", s, s); // BAD
+  printf("%*s", i, i); // BAD
+  printf("%.*s", i, s); // GOOD
+  printf("%.*s", s, s); // BAD
+  printf("%.*s", i, i); // BAD
+  printf("%*.4s", i, s); // GOOD
+  printf("%*.4s", s, s); // BAD
+  printf("%*.4s", i, i); // BAD
+  printf("%4.*s", i, s); // GOOD
+  printf("%4.*s", s, s); // BAD
+  printf("%4.*s", i, i); // BAD
+  printf("%*.*s", i, i, s); // GOOD
+  printf("%*.*s", s, i, s); // BAD
+  printf("%*.*s", i, s, s); // BAD
+  printf("%*.*s", i, i, i); // BAD
+
+  // positional arguments mixed with variable width / precision
+  printf("%2$*1$s", i, s); // GOOD
+  printf("%2$*2$s", i, s); // BAD
+  printf("%1$*1$s", i, s); // BAD
+
+  printf("%2$*1$.4s", i, s); // GOOD
+  printf("%2$*2$.4s", i, s); // BAD
+  printf("%1$*1$.4s", i, s); // BAD
+
+  printf("%2$.*1$s", i, s); // GOOD
+  printf("%2$.*2$s", i, s); // BAD
+  printf("%1$.*1$s", i, s); // BAD
+
+  printf("%2$4.*1$s", i, s); // GOOD
+  printf("%2$4.*2$s", i, s); // BAD
+  printf("%1$4.*1$s", i, s); // BAD
+
+  printf("%2$*1$.*1$s", i, s); // GOOD
+  printf("%2$*2$.*1$s", i, s); // BAD
+  printf("%2$*1$.*2$s", i, s); // BAD
+  printf("%1$*1$.*1$s", i, s); // BAD
+
+  // left justify flag
+  printf("%-4s", s); // GOOD
+  printf("%1$-4s", s); // GOOD
+  printf("%-4i", s); // BAD
+  printf("%1$-4i", s); // BAD
+
+  printf("%1$-4s", s, i); // GOOD
+  printf("%2$-4s", s, i); // BAD
+
+  printf("%1$-.4s", s, i); // GOOD
+  printf("%2$-.4s", s, i); // BAD
+
+  printf("%1$-4.4s", s, i); // GOOD
+  printf("%2$-4.4s", s, i); // BAD
+
+  printf("%1$-*2$s", s, i); // GOOD
+  printf("%2$-*2$s", s, i); // BAD
+  printf("%1$-*1$s", s, i); // BAD
+}

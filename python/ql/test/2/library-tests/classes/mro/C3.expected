@@ -3,7 +3,6 @@
 | class C | [C, BaseException, object] |
 | class D | [D, X, object] |
 | class Meta | [Meta, type, object] |
-| class N | [N, object, O] |
 | class NewStyle | [NewStyle, object] |
 | class NewStyleDerived | [NewStyleDerived, NewStyle, object] |
 | class O | [O] |

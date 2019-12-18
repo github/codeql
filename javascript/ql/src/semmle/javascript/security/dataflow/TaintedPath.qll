@@ -19,13 +19,11 @@ module TaintedPath {
     Configuration() { this = "TaintedPath" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-      source instanceof Source and
-      label instanceof Label::PosixPath
+      label = source.(Source).getAFlowLabel()
     }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-      sink instanceof Sink and
-      label instanceof Label::PosixPath
+      label = sink.(Sink).getAFlowLabel()
     }
 
     override predicate isBarrier(DataFlow::Node node) {

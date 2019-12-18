@@ -31,7 +31,7 @@ website of their choosing, which facilitates phishing attacks:
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet">
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
   XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
 </references>
 

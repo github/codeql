@@ -4,6 +4,6 @@ Technical information
 .. toctree::
    :hidden:
 
-   snapshot
+   database
 
-- :doc:`What's in a snapshot database <snapshot>`
+- :doc:`What's in a CodeQL database? <database>`

@@ -4,5 +4,4 @@
 	module.exports = me;
 }(module));
 
-// semmle-extractor-options: --platform
-// semmle-extractor-options: node
+require("process"); // ensure this is treated as Node.js code

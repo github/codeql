@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.semmle.js.extractor.EnvironmentVariables;
 import com.semmle.js.extractor.ExtractionMetrics;
 import com.semmle.js.parser.JSParser.Result;
 import com.semmle.ts.extractor.TypeTable;
@@ -290,14 +291,12 @@ public class TypeScriptParser {
     File parserWrapper;
     LogbackUtils.getLogger(AbstractProcessBuilder.class).setLevel(Level.INFO);
     String explicitPath = Env.systemEnv().get(PARSER_WRAPPER_PATH_ENV_VAR);
-    String semmleDistVar = Env.systemEnv().get(Env.Var.SEMMLE_DIST.name());
-    if (semmleDistVar != null && !semmleDistVar.isEmpty()) {
-      parserWrapper = new File(semmleDistVar, "tools/typescript-parser-wrapper/main.js");
-    } else if (explicitPath != null) {
+    if (explicitPath != null) {
       parserWrapper = new File(explicitPath);
     } else {
-      throw new CatastrophicError(
-          "Could not find TypeScript parser: " + Env.Var.SEMMLE_DIST.name() + " is not set.");
+      parserWrapper =
+          new File(
+              EnvironmentVariables.getExtractorRoot(), "tools/typescript-parser-wrapper/main.js");
     }
     if (!parserWrapper.isFile())
       throw new ResourceError(

@@ -1,7 +1,0 @@
-| tst.js:1:5:1:14 | implements | Identifier name is a reserved word. |
-| tst.js:1:17:1:25 | interface | Identifier name is a reserved word. |
-| tst.js:1:28:1:34 | package | Identifier name is a reserved word. |
-| tst.js:1:37:1:43 | private | Identifier name is a reserved word. |
-| tst.js:1:46:1:54 | protected | Identifier name is a reserved word. |
-| tst.js:1:57:1:62 | public | Identifier name is a reserved word. |
-| tst.js:1:65:1:70 | static | Identifier name is a reserved word. |

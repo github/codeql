@@ -12,5 +12,3 @@ this.addPropertyListener(prop.name, function(_, _, _, a) {
 function f(x, y, x) {
   'use strict';
 }
-
-// semmle-extractor-options: --tolerate-parse-errors

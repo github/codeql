@@ -1,5 +1,5 @@
 import cpp
 
-from LocalScopeVariable v, VariableAccess use
+from StackVariable v, VariableAccess use
 where useOfVar(v, use)
 select v, use

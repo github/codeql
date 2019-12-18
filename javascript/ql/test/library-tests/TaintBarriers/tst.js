@@ -2,16 +2,16 @@ function SanitizingRegExpTest () {
     var v = SOURCE();
     SINK(v);
 
-    if (/x/.test(v)) {
-        SINK(v);
+    if (/^x$/.test(v)) {
+        SINK(v); // sanitized
     } else {
         SINK(v);
     }
 
-    if (v.match(/x/)) {
+    if (v.match(/[^a-z]/)) {
         SINK(v);
     } else {
-        SINK(v);
+        SINK(v); // sanitized
     }
 
 }
@@ -347,7 +347,7 @@ function IndirectSanitizer () {
         return unknown() && whitelist.contains(x9) && unknown();
     }
     if (f9(v)) {
-        SINK(v); // SANITIZATION OF THIS IS NOT YET SUPPORTED
+        SINK(v);
     } else {
         SINK(v);
     }

@@ -1,2 +1,0 @@
-| tst.js:1:9:1:9 | , | Trailing comma in object expression. |
-| tst.js:2:6:2:6 | , | Trailing comma in array expression. |

@@ -8,6 +8,7 @@
 import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import semmle.code.csharp.ir.internal.CSharpType
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedFunction
@@ -30,9 +31,7 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 abstract class TranslatedCompilerGeneratedTry extends TranslatedCompilerGeneratedStmt {
   override Stmt generatedBy;
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -72,13 +71,10 @@ abstract class TranslatedCompilerGeneratedTry extends TranslatedCompilerGenerate
  * The concrete implementation needs to specify the immediate operand that represents the constant.
  */
 abstract class TranslatedCompilerGeneratedConstant extends TranslatedCompilerGeneratedExpr {
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     opcode instanceof Opcode::Constant and
     tag = OnlyInstructionTag() and
-    resultType = getResultType() and
-    isLValue = false
+    resultType = getTypeForPRValue(getResultType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -117,9 +113,7 @@ abstract class TranslatedCompilerGeneratedBlock extends TranslatedCompilerGenera
     )
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 
@@ -170,9 +164,7 @@ abstract class TranslatedCompilerGeneratedIfStmt extends TranslatedCompilerGener
     result = getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     none()
   }
 }
@@ -190,19 +182,15 @@ abstract class TranslatedCompilerGeneratedVariableAccess extends TranslatedCompi
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-  ) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = AddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getResultType() and
-    isLValue = true
+    resultType = getTypeForGLValue(getResultType())
     or
     needsLoad() and
     tag = LoadTag() and
     opcode instanceof Opcode::Load and
-    resultType = getResultType() and
-    isLValue = false
+    resultType = getTypeForPRValue(getResultType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {

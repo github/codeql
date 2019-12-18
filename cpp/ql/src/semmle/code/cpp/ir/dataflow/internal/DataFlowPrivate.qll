@@ -204,3 +204,5 @@ class DataFlowCall extends CallInstruction {
 
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
+
+predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation

@@ -16,11 +16,11 @@ import com.semmle.ts.ast.IndexedAccessTypeExpr;
 import com.semmle.ts.ast.InferTypeExpr;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
-import com.semmle.ts.ast.IsTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
+import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeParameter;
@@ -159,7 +159,7 @@ public class TypeExprKinds {
               }
 
               @Override
-              public Integer visit(IsTypeExpr nd, Void c) {
+              public Integer visit(PredicateTypeExpr nd, Void c) {
                 return isTypeExpr;
               }
 

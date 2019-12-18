@@ -40,7 +40,7 @@ Overview of annotations
 
 This section describes what the different annotations do, and when you can use them.
 You can also find a summary table in the Annotations section of the 
-`QL language specification <https://help.semmle.com/QL/QLLanguageSpecification.html#annotations>`_.
+`QL language specification <https://help.semmle.com/QL/ql-spec/language.html#annotations>`_.
 
 .. index:: abstract
 .. _abstract:
@@ -245,7 +245,7 @@ Compiler pragmas
 
 **Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
-The following compiler pragmas affect the compilation and optimization of QL queries. You
+The following compiler pragmas affect the compilation and optimization of queries. You
 should avoid using these annotations unless you experience significant performance issues.
 
 Before adding pragmas to your code, contact Semmle to describe the performance problems.

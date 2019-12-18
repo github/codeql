@@ -1,3 +1,5 @@
+| class A | [A, ??, object] |
+| class J | [J, ??, object] |
 | class MyDict | [MyDict, dict, object] |
 | class MyList | [MyList, list, object] |
 | class O1 | [O1] |

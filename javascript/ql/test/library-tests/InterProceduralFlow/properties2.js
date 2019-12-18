@@ -42,4 +42,4 @@ var o5 = {};
 setP(o5, "not a source");
 var sink10 = getP(o5);
 
-// semmle-extractor-options: --source-type module
+export default 0;

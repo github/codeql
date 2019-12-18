@@ -30,6 +30,22 @@ module Bluebird {
 
     override DataFlow::Node getValue() { result = getArgument(0) }
   }
+  
+  /**
+   * An aggregated promise produced either by `Promise.all`, `Promise.race` or `Promise.map`. 
+   */
+  class AggregateBluebirdPromiseDefinition extends PromiseCreationCall {
+    AggregateBluebirdPromiseDefinition() {
+      exists(string m | m = "all" or m = "race" or m = "map" | 
+        this = bluebird().getAMemberCall(m)
+      )
+    }
+
+    override DataFlow::Node getValue() {
+      result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
+    }
+  }
+  
 }
 
 /**

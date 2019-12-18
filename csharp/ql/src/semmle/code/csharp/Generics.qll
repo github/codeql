@@ -370,21 +370,21 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 
-  language[monotonicAggregates]
-  private string annotatedTypeArgumentsToString() {
-    result = concat(int i |
-        exists(this.getAnnotatedTypeArgument(i))
-      |
-        this.getAnnotatedTypeArgument(i).toString(), ", " order by i
-      )
-  }
-
   override string toStringWithTypes() {
-    result = getUnboundGeneric().getNameWithoutBrackets() + "<" +
-        this.annotatedTypeArgumentsToString() + ">"
+    result = getUnboundGeneric().getNameWithoutBrackets() + "<" + this.getTypeArgumentsString() +
+        ">"
   }
 
   final override Type getChild(int n) { result = getTypeArgument(n) }
+
+  language[monotonicAggregates]
+  private string getTypeArgumentsString() {
+    result = concat(int i |
+        exists(this.getTypeArgument(i))
+      |
+        this.getTypeArgument(i).toString(), ", " order by i
+      )
+  }
 }
 
 /**

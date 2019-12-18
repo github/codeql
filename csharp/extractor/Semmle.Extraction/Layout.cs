@@ -100,8 +100,8 @@ namespace Semmle.Extraction
         /// Default constructor reads parameters from the environment.
         /// </summary>
         public Layout() : this(
-            Environment.GetEnvironmentVariable("TRAP_FOLDER"),
-            Environment.GetEnvironmentVariable("SOURCE_ARCHIVE"),
+            Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR") ?? Environment.GetEnvironmentVariable("TRAP_FOLDER"),
+            Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR") ?? Environment.GetEnvironmentVariable("SOURCE_ARCHIVE"),
             Environment.GetEnvironmentVariable("ODASA_CSHARP_LAYOUT"))
         {
         }

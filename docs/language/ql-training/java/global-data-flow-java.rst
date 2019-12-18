@@ -2,11 +2,7 @@
 Introduction to global data flow
 ================================
 
-QL for Java
-
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
+CodeQL for Java
 
 .. rst-class:: setup
 
@@ -15,8 +11,8 @@ Setup
 
 For this example you should download:
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- `Apache Struts snapshot <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
+- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
 
 .. note::
 
@@ -24,9 +20,9 @@ For this example you should download:
 
    You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
 
-   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
 
-   .. include:: ../slide-snippets/snapshot-note.rst
+   .. include:: ../slide-snippets/database-note.rst
 
    .. resume slides
 
@@ -57,8 +53,8 @@ Code injection in Apache struts
 
 .. note::
 
-   More details on the CVE can be found here: https://blog.semmle.com/apache-struts-CVE-2018-11776/ and 
-   https://github.com/Semmle/demos/tree/master/ql_demos/java/Apache_Struts_CVE-2018-11776
+   More details on the CVE can be found here: https://securitylab.github.com/research/apache-struts-CVE-2018-11776 and 
+   https://github.com/github/security-lab/tree/master/CodeQL_Queries/java/Apache_Struts_CVE-2018-11776
 
    More details on OGNL can be found here: https://commons.apache.org/proper/commons-ognl/
 

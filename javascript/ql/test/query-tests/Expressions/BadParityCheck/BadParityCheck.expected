@@ -1,9 +1,0 @@
-| tst.js:1:1:1:11 | x % 2 === 1 | Test for oddness does not take negative numbers into account. |
-| tst.js:2:1:2:11 | x % 2 !== 1 | Test for evenness does not take negative numbers into account. |
-| tst.js:3:1:3:10 | x % 2 == 1 | Test for oddness does not take negative numbers into account. |
-| tst.js:4:1:4:10 | x % 2 != 1 | Test for evenness does not take negative numbers into account. |
-| tst.js:25:1:25:9 | x % 2 > 0 | Test for oddness does not take negative numbers into account. |
-| tst.js:29:1:29:17 | x % (2) === ((1)) | Test for oddness does not take negative numbers into account. |
-| tst.js:31:1:31:11 | 1 === x % 2 | Test for oddness does not take negative numbers into account. |
-| tst.js:43:1:43:11 | y % 2 === 1 | Test for oddness does not take negative numbers into account. |
-| tst.js:47:9:47:17 | i % 2 > 0 | Test for oddness does not take negative numbers into account. |

@@ -5,13 +5,17 @@ import cpp
  */
 predicate allocationFunction(Function f) {
   exists(string name |
-    f.hasGlobalName(name) and
+    f.hasGlobalOrStdName(name) and
     (
       name = "malloc" or
       name = "calloc" or
       name = "realloc" or
       name = "strdup" or
-      name = "wcsdup" or
+      name = "wcsdup"
+    )
+    or
+    f.hasGlobalName(name) and
+    (
       name = "_strdup" or
       name = "_wcsdup" or
       name = "_mbsdup" or
@@ -47,7 +51,11 @@ predicate allocationFunction(Function f) {
       name = "HeapReAlloc" or
       name = "VirtualAlloc" or
       name = "CoTaskMemAlloc" or
-      name = "CoTaskMemRealloc"
+      name = "CoTaskMemRealloc" or
+      name = "kmem_alloc" or
+      name = "kmem_zalloc" or
+      name = "pool_get" or
+      name = "pool_cache_get"
     )
   )
 }
@@ -59,7 +67,7 @@ predicate allocationCall(FunctionCall fc) {
   allocationFunction(fc.getTarget()) and
   (
     // realloc(ptr, 0) only frees the pointer
-    fc.getTarget().hasGlobalName("realloc") implies not fc.getArgument(1).getValue() = "0"
+    fc.getTarget().hasGlobalOrStdName("realloc") implies not fc.getArgument(1).getValue() = "0"
   )
 }
 
@@ -74,6 +82,15 @@ predicate freeFunction(Function f, int argNum) {
       or
       name = "realloc" and argNum = 0
       or
+      name = "kmem_free" and argNum = 0
+      or
+      name = "pool_put" and argNum = 1
+      or
+      name = "pool_cache_put" and argNum = 1
+    )
+    or
+    f.hasGlobalOrStdName(name) and
+    (
       name = "ExFreePoolWithTag" and argNum = 0
       or
       name = "ExFreeToLookasideListEx" and argNum = 1

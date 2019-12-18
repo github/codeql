@@ -7,5 +7,3 @@ var o = {
   get bar() { return 42 },
   set bar(v) { }
 };
-
-// semmle-extractor-options: --experimental

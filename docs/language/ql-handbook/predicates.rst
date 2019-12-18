@@ -34,7 +34,7 @@ In general, all tuples in a predicate have the same number of elements. The **ar
 a predicate is that number of elements, not including a possible ``result`` variable (see 
 :ref:`predicates-with-result`).
 
-There are a number of `built-in predicates <https://help.semmle.com/QL/QLLanguageSpecification.html#built-ins>`_ 
+There are a number of `built-in predicates <https://help.semmle.com/QL/ql-spec/language.html#built-ins>`_ 
 in QL. You can use these in any queries without needing to :ref:`import <importing-modules>`
 any additional modules. In addition to these built-in predicates, you can also define your
 own:
@@ -46,7 +46,7 @@ When defining a predicate, you should specify:
 
 #. The keyword ``predicate`` (for a :ref:`predicate without result <predicates-without-result>`), 
    or the type of the result (for a :ref:`predicate with result <predicates-with-result>`).
-#. The name of the predicate. This is an `identifier <https://help.semmle.com/QL/QLLanguageSpecification.html#identifiers>`_ 
+#. The name of the predicate. This is an `identifier <https://help.semmle.com/QL/ql-spec/language.html#identifiers>`_ 
    starting with a lowercase letter.
 #. The arguments to the predicate, if any, separated by commas. For each argument, specify the
    argument type and an identifier for the argument variable.

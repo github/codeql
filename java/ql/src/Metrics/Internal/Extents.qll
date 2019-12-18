@@ -1,14 +1,18 @@
-import java
-
-/*
+/**
+ * Provides classes that modify the default location information
+ * of `RefType`s and `Callable`s to cover their full extent.
+ *
  * When this library is imported, the `hasLocationInfo` predicate of
  * `Callable` and `RefTypes` is overridden to specify their entire range
  * instead of just the range of their name. The latter can still be
  * obtained by invoking the `getLocation()` predicate.
  *
- * The full ranges are required for the purpose of associating a violation
- * with an individual `Callable` or `RefType` as opposed to a whole `File`.
+ * The full ranges may be used to determine whether a given location
+ * (for example, the location of an alert) is contained within the extent
+ * of a `Callable` or `RefType`.
  */
+
+import java
 
 /**
  * A Callable whose `hasLocationInfo` is overridden to specify its entire range
@@ -48,20 +52,9 @@ class RangeRefType extends RefType {
   }
 
   private Member lastMember() {
-    exists(Member m, int i |
-      result = m and
-      m = getAMember() and
-      i = rankOfMember(m) and
-      not exists(Member other | other = getAMember() and rankOfMember(other) > i)
-    )
-  }
-
-  private int rankOfMember(Member m) {
-    this.getAMember() = m and
-    exists(Location mLoc, File f, int maxCol | mLoc = m.getLocation() |
-      f = mLoc.getFile() and
-      maxCol = max(Location loc | loc.getFile() = f | loc.getStartColumn()) and
-      result = mLoc.getStartLine() * maxCol + mLoc.getStartColumn()
-    )
+    result = max(this.getAMember() as m
+        order by
+          m.getLocation().getStartLine(), m.getLocation().getStartColumn()
+      )
   }
 }

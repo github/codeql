@@ -7,6 +7,10 @@
  * @id cpp/ignore-return-value-sal
  * @problem.severity warning
  * @tags reliability
+ *       external/cwe/cwe-573
+ *       external/cwe/cwe-252
+ * @opaque-id SM02344
+ * @microsoft.severity Important
  */
 
 import SAL

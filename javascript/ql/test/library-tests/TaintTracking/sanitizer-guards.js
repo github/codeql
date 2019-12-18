@@ -38,3 +38,17 @@ class C {
 	});
   }
 }
+
+function reflective() {
+  let x = source();
+
+  sink(x); // NOT OK
+
+  if (isSafe.call(x)) {
+    sink(x); // NOT OK - `isSafe` does not sanitize the receiver
+  }
+
+  if (isSafe.call(null, x)) {
+    sink(x); // OK
+  }
+}
