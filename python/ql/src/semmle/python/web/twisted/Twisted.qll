@@ -1,20 +1,17 @@
 import python
-
 import semmle.python.security.TaintTracking
 
-private ClassObject theTwistedHttpRequestClass() {
-    result = ModuleObject::named("twisted.web.http").attr("Request")
+private ClassValue theTwistedHttpRequestClass() {
+    result = Value::named("twisted.web.http.Request")
 }
 
-private ClassObject theTwistedHttpResourceClass() {
-    result = ModuleObject::named("twisted.web.resource").attr("Resource")
+private ClassValue theTwistedHttpResourceClass() {
+    result = Value::named("twisted.web.resource.Resource")
 }
 
-ClassObject aTwistedRequestHandlerClass() {
-    result.getASuperType() = theTwistedHttpResourceClass()
-}
+ClassValue aTwistedRequestHandlerClass() { result.getABaseType+() = theTwistedHttpResourceClass() }
 
-FunctionObject getTwistedRequestHandlerMethod(string name) {
+FunctionValue getTwistedRequestHandlerMethod(string name) {
     result = aTwistedRequestHandlerClass().declaredAttribute(name)
 }
 
@@ -24,29 +21,30 @@ predicate isKnownRequestHandlerMethodName(string name) {
     name.matches("render_%")
 }
 
-/** Holds if `node` is likely to refer to an instance of the twisted
+/**
+ * Holds if `node` is likely to refer to an instance of the twisted
  * `Request` class.
  */
 predicate isTwistedRequestInstance(NameNode node) {
-    node.refersTo(_, theTwistedHttpRequestClass(), _)
+    node.pointsTo().getClass() = theTwistedHttpRequestClass()
     or
-    /* In points-to analysis cannot infer that a given object is an instance of
+    /*
+     * In points-to analysis cannot infer that a given object is an instance of
      * the `twisted.web.http.Request` class, we also include any parameter
      * called `request` that appears inside a subclass of a request handler
      * class, and the appropriate arguments of known request handler methods.
      */
-    exists(Function func | func = node.getScope() |
-        func.getEnclosingScope().(Class).getClassObject() = aTwistedRequestHandlerClass()
-    ) and
-    (
-    /* Any parameter called `request` */
-    node.getId() = "request" and
-    node.isParameter()
-    or
-    /* Any request parameter of a known request handler method */
-    exists(FunctionObject func | node.getScope() = func.getFunction() | 
+
+    exists(Function func |
+        func = node.getScope() and
+        func.getEnclosingScope() = aTwistedRequestHandlerClass().getScope()
+    |
+        /* Any parameter called `request` */
+        node.getId() = "request" and
+        node.isParameter()
+        or
+        /* Any request parameter of a known request handler method */
         isKnownRequestHandlerMethodName(func.getName()) and
-        node.getNode() = func.getFunction().getArg(1)
-        )
+        node.getNode() = func.getArg(1)
     )
 }
