@@ -137,3 +137,9 @@ int overloadedNew() {
 
   return five;
 }
+
+void multidimensionalNew(int x, int y) {
+  auto p1 = new char[x][10];
+  auto p2 = new char[20][20];
+  auto p3 = new char[x][30][30];
+}

@@ -17,16 +17,11 @@
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.models.interfaces.ArrayFunction
+import semmle.code.cpp.models.interfaces.Allocation
 
-class MallocCall extends FunctionCall {
-  MallocCall() { this.getTarget().hasGlobalOrStdName("malloc") }
-
-  Expr getAllocatedSize() { result = this.getArgument(0) }
-}
-
-predicate terminationProblem(MallocCall malloc, string msg) {
+predicate terminationProblem(AllocationExpr malloc, string msg) {
   // malloc(strlen(...))
-  exists(StrlenCall strlen | DataFlow::localExprFlow(strlen, malloc.getAllocatedSize())) and
+  exists(StrlenCall strlen | DataFlow::localExprFlow(strlen, malloc.getSizeExpr())) and
   // flows into a null-terminated string function
   exists(ArrayFunction af, FunctionCall fc, int arg |
     DataFlow::localExprFlow(malloc, fc.getArgument(arg)) and

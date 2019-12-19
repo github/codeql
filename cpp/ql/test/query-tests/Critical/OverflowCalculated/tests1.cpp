@@ -53,7 +53,7 @@ void tests1(int case_num)
 			break;
 
 		case 7:
-			buffer = (char *)realloc(buffer, strlen(str)); // BAD [NOT DETECTED]
+			buffer = (char *)realloc(buffer, strlen(str)); // BAD
 			strcpy(buffer, str);
 			break;
 

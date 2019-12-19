@@ -1,3 +1,5 @@
+private import implementations.Allocation
+private import implementations.Deallocation
 private import implementations.Fread
 private import implementations.IdentityFunction
 private import implementations.Inet

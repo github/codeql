@@ -24,7 +24,7 @@ predicate mayCallFunction(Expr call, Function f) {
 
 predicate allocCallOrIndirect(Expr e) {
   // direct alloc call
-  isAllocationExpr(e) and
+  e.(AllocationExpr).requiresDealloc() and
   // We are only interested in alloc calls that are
   // actually freed somehow, as MemoryNeverFreed
   // will catch those that aren't.
@@ -53,8 +53,7 @@ predicate allocCallOrIndirect(Expr e) {
  * can cause memory leaks.
  */
 predicate verifiedRealloc(FunctionCall reallocCall, Variable v, ControlFlowNode verified) {
-  reallocCall.getTarget().hasGlobalOrStdName("realloc") and
-  reallocCall.getArgument(0) = v.getAnAccess() and
+  reallocCall.(AllocationExpr).getReallocPtr() = v.getAnAccess() and
   (
     exists(Variable newV, ControlFlowNode node |
       // a realloc followed by a null check at 'node' (return the non-null
@@ -71,22 +70,18 @@ predicate verifiedRealloc(FunctionCall reallocCall, Variable v, ControlFlowNode 
     or
     // a realloc(ptr, 0), which always succeeds and frees
     // (return the realloc itself)
-    reallocCall.getArgument(1).getValue() = "0" and
+    reallocCall.(AllocationExpr).getReallocPtr().getValue() = "0" and
     verified = reallocCall
   )
 }
 
 predicate freeCallOrIndirect(ControlFlowNode n, Variable v) {
   // direct free call
-  freeCall(n, v.getAnAccess()) and
-  not n.(FunctionCall).getTarget().hasGlobalOrStdName("realloc")
+  n.(DeallocationExpr).getFreedExpr() = v.getAnAccess() and
+  not exists(n.(AllocationExpr).getReallocPtr())
   or
   // verified realloc call
   verifiedRealloc(_, v, n)
-  or
-  n.(DeleteExpr).getExpr() = v.getAnAccess()
-  or
-  n.(DeleteArrayExpr).getExpr() = v.getAnAccess()
   or
   exists(FunctionCall midcall, Function mid, int arg |
     // indirect free call
