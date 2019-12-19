@@ -23,6 +23,8 @@
 | clang_ms.cpp:11:5:11:13 | asm statement |
 | clang_ms.cpp:12:1:12:1 | return ... |
 | clang_ms.cpp:16:1:16:19 | // Test for CPP-184 |
+| clang_ms.cpp:17:1:17:32 | #pragma |
+| clang_ms.cpp:18:1:18:31 | #pragma |
 | file://:0:0:0:0 |  |
 | file://:0:0:0:0 | (global namespace) |
 | file://:0:0:0:0 | _Complex __float128 |
@@ -48,6 +50,7 @@
 | file://:0:0:0:0 | __ptr32 |
 | file://:0:0:0:0 | __ptr64 |
 | file://:0:0:0:0 | __sptr |
+| file://:0:0:0:0 | __super |
 | file://:0:0:0:0 | __uptr |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |

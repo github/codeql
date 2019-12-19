@@ -1236,6 +1236,8 @@ class IndirectReadSideEffectInstruction extends SideEffectInstruction {
   IndirectReadSideEffectInstruction() { getOpcode() instanceof Opcode::IndirectReadSideEffect }
 
   Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
+
+  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
@@ -1245,6 +1247,8 @@ class BufferReadSideEffectInstruction extends SideEffectInstruction {
   BufferReadSideEffectInstruction() { getOpcode() instanceof Opcode::BufferReadSideEffect }
 
   Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
+
+  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
@@ -1258,12 +1262,14 @@ class SizedBufferReadSideEffectInstruction extends SideEffectInstruction {
   Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
 
   Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
+
+  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
  * An instruction representing a side effect of a function call.
  */
-class WriteSideEffectInstruction extends SideEffectInstruction {
+class WriteSideEffectInstruction extends SideEffectInstruction, IndexedInstruction {
   WriteSideEffectInstruction() { getOpcode() instanceof WriteSideEffectOpcode }
 
   Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }

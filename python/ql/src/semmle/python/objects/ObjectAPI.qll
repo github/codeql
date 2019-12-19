@@ -211,7 +211,7 @@ module Value {
     }
 
     /** Gets the `Value` for the integer constant `i`, if it exists.
-     * There will be no `Value` for most integers, but the following are 
+     * There will be no `Value` for most integers, but the following are
      * guaranteed to exist:
      * * From zero to 511 inclusive.
      * * All powers of 2 (up to 2**30)
@@ -484,6 +484,11 @@ class PythonFunctionValue extends FunctionValue {
             else
                 result = count(f.getAnArg())
         )
+    }
+
+    /** Gets a control flow node corresponding to a return statement in this function */
+    ControlFlowNode getAReturnedNode() {
+        result = this.getScope().getAReturnValueFlowNode()
     }
 
 }

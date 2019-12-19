@@ -9,8 +9,8 @@ import semmle.python.web.flask.General
  */
 class FlaskRoutedResponse extends HttpResponseTaintSink {
     FlaskRoutedResponse() {
-        exists(PyFunctionObject response |
-            flask_routing(_, response.getFunction()) and
+        exists(PythonFunctionValue response |
+            flask_routing(_, response.getScope()) and
             this = response.getAReturnedNode()
         )
     }

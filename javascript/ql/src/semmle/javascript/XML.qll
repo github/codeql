@@ -2,7 +2,7 @@
  * Provides classes and predicates for working with XML files and their content.
  */
 
-import javascript
+import semmle.files.FileSystem
 
 /** An XML element that has a location. */
 abstract class XMLLocatable extends @xmllocatable {
@@ -88,7 +88,10 @@ class XMLParent extends @xmlparent {
     )
   }
 
-  /** Append all the character sequences of this XML parent from left to right, separated by a space. */
+  /**
+   * Gets the result of appending all the character sequences of this XML parent from
+   * left to right, separated by a space.
+   */
   string allCharactersString() {
     result = concat(string chars, int pos |
         xmlChars(_, chars, this, pos, _, _)
@@ -113,6 +116,20 @@ class XMLFile extends XMLParent, File {
 
   /** Gets the name of this XML file. */
   override string getName() { result = File.super.getAbsolutePath() }
+
+  /**
+   * DEPRECATED: Use `getAbsolutePath()` instead.
+   *
+   * Gets the path of this XML file.
+   */
+  deprecated string getPath() { result = getAbsolutePath() }
+
+  /**
+   * DEPRECATED: Use `getParentContainer().getAbsolutePath()` instead.
+   *
+   * Gets the path of the folder that contains this XML file.
+   */
+  deprecated string getFolder() { result = getParentContainer().getAbsolutePath() }
 
   /** Gets the encoding of this XML file. */
   string getEncoding() { xmlEncoding(this, result) }

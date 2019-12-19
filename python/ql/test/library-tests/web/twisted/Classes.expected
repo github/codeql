@@ -1,0 +1,5 @@
+| class MyRequestHandler1 | test.py:3 |
+| class MyRequestHandler2 | test.py:23 |
+| class MyRequestHandler3 | test.py:27 |
+| class MyRequestHandler4 | test.py:38 |
+| class MyRequestHandler5 | test.py:42 |

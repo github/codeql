@@ -24,6 +24,7 @@
 | file://:0:0:0:0 | __ptr32 | Other |
 | file://:0:0:0:0 | __ptr64 | Other |
 | file://:0:0:0:0 | __sptr | Other |
+| file://:0:0:0:0 | __super | Other |
 | file://:0:0:0:0 | __uptr | Other |
 | file://:0:0:0:0 | __va_list_tag | Other |
 | file://:0:0:0:0 | abstract | Other |

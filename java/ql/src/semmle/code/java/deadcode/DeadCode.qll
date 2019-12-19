@@ -301,7 +301,7 @@ class RootdefCallable extends Callable {
   }
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate overrideAccess(Callable c, int i) {
   exists(Method m | m.overridesOrInstantiates+(c) | exists(m.getParameter(i).getAnAccess()))
 }
