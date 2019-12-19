@@ -205,4 +205,22 @@ abstract class TestNullableFlowStates
 
         Check(y);  // y not null - finally flow is detected
     }
+
+    string InvocationTest(object? o)
+    {
+        var t = o?.GetType();  // Not null (incorrect - should be null maybe)
+        return t.ToString();   // Not null
+    }
+
+    void ElementTest(List<string>? list)
+    {
+        string? a = GetSelf()?.Field;  // Not null (incorrect - should be null maybe)
+        string? b = list?[0];          // Not null (incorrect - should be null maybe)
+        string c = list[0];            // Not null
+        string d = GetSelf().Field;    // Not null
+    }
+
+    protected abstract TestNullableFlowStates? GetSelf();
+
+    string Field;
 }

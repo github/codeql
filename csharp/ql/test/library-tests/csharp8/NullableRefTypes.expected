@@ -201,6 +201,9 @@ returnTypes
 | NullableRefTypes.cs:177:25:177:29 | Count | int! |
 | NullableRefTypes.cs:179:10:179:22 | LoopUnrolling | Void! |
 | NullableRefTypes.cs:193:10:193:22 | ExceptionFlow | Void! |
+| NullableRefTypes.cs:209:12:209:25 | InvocationTest | string! |
+| NullableRefTypes.cs:215:10:215:20 | ElementTest | Void! |
+| NullableRefTypes.cs:223:48:223:54 | GetSelf | TestNullableFlowStates? |
 methodTypeArguments
 | NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass! |
 | NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass? |
@@ -357,6 +360,32 @@ expressionTypes
 | NullableRefTypes.cs:206:9:206:16 | call to method Check | Void! |
 | NullableRefTypes.cs:206:9:206:16 | this access | TestNullableFlowStates |
 | NullableRefTypes.cs:206:15:206:15 | access to local variable y | string! |
+| NullableRefTypes.cs:211:13:211:13 | access to local variable t | Type? |
+| NullableRefTypes.cs:211:13:211:28 | Type t = ... | Type? |
+| NullableRefTypes.cs:211:17:211:17 | access to parameter o | object? |
+| NullableRefTypes.cs:211:19:211:28 | call to method GetType | Type! |
+| NullableRefTypes.cs:212:16:212:16 | access to local variable t | Type? |
+| NullableRefTypes.cs:212:16:212:27 | call to method ToString | string! |
+| NullableRefTypes.cs:217:17:217:17 | access to local variable a | string! |
+| NullableRefTypes.cs:217:17:217:36 | String a = ... | string! |
+| NullableRefTypes.cs:217:21:217:29 | call to method GetSelf | TestNullableFlowStates? |
+| NullableRefTypes.cs:217:21:217:29 | this access | TestNullableFlowStates |
+| NullableRefTypes.cs:217:31:217:36 | access to field Field | string! |
+| NullableRefTypes.cs:218:17:218:17 | access to local variable b | string! |
+| NullableRefTypes.cs:218:17:218:28 | String b = ... | string! |
+| NullableRefTypes.cs:218:21:218:24 | access to parameter list | List<string!>? |
+| NullableRefTypes.cs:218:26:218:28 | access to indexer | string |
+| NullableRefTypes.cs:218:27:218:27 | 0 | int! |
+| NullableRefTypes.cs:219:16:219:16 | access to local variable c | string! |
+| NullableRefTypes.cs:219:16:219:26 | String c = ... | string! |
+| NullableRefTypes.cs:219:20:219:23 | access to parameter list | List<string!>? |
+| NullableRefTypes.cs:219:20:219:26 | access to indexer | string! |
+| NullableRefTypes.cs:219:25:219:25 | 0 | int! |
+| NullableRefTypes.cs:220:16:220:16 | access to local variable d | string! |
+| NullableRefTypes.cs:220:16:220:34 | String d = ... | string! |
+| NullableRefTypes.cs:220:20:220:28 | call to method GetSelf | TestNullableFlowStates? |
+| NullableRefTypes.cs:220:20:220:28 | this access | TestNullableFlowStates |
+| NullableRefTypes.cs:220:20:220:34 | access to field Field | string! |
 exprFlowState
 | NullableRefTypes.cs:13:19:13:22 | null | Maybe null |
 | NullableRefTypes.cs:14:18:14:21 | this access | Not null |
@@ -436,3 +465,17 @@ exprFlowState
 | NullableRefTypes.cs:203:17:203:26 | "not null" | Not null |
 | NullableRefTypes.cs:206:9:206:16 | call to method Check | Not null |
 | NullableRefTypes.cs:206:15:206:15 | access to local variable y | Not null |
+| NullableRefTypes.cs:211:17:211:17 | access to parameter o | Maybe null |
+| NullableRefTypes.cs:211:19:211:28 | call to method GetType | Not null |
+| NullableRefTypes.cs:212:16:212:16 | access to local variable t | Maybe null |
+| NullableRefTypes.cs:212:16:212:27 | call to method ToString | Not null |
+| NullableRefTypes.cs:217:21:217:29 | call to method GetSelf | Maybe null |
+| NullableRefTypes.cs:217:31:217:36 | access to field Field | Not null |
+| NullableRefTypes.cs:218:21:218:24 | access to parameter list | Maybe null |
+| NullableRefTypes.cs:218:26:218:28 | access to indexer | Not null |
+| NullableRefTypes.cs:218:27:218:27 | 0 | Not null |
+| NullableRefTypes.cs:219:20:219:23 | access to parameter list | Maybe null |
+| NullableRefTypes.cs:219:20:219:26 | access to indexer | Not null |
+| NullableRefTypes.cs:219:25:219:25 | 0 | Not null |
+| NullableRefTypes.cs:220:20:220:28 | call to method GetSelf | Maybe null |
+| NullableRefTypes.cs:220:20:220:34 | access to field Field | Not null |
