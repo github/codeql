@@ -10,6 +10,13 @@ abstract class XMLLocatable extends @xmllocatable {
   Location getLocation() { xmllocations(this, result) }
 
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
+   * Gets the source location for this element.
+   */
+  deprecated Location getALocation() { result = this.getLocation() }
+
+  /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
@@ -155,7 +162,7 @@ class XMLFile extends XMLParent, File {
  * <!ELEMENT lastName (#PCDATA)>
  * ```
  */
-class XMLDTD extends @xmldtd {
+class XMLDTD extends XMLLocatable, @xmldtd {
   /** Gets the name of the root element of this DTD. */
   string getRoot() { xmlDTDs(this, result, _, _, _) }
 
@@ -171,8 +178,7 @@ class XMLDTD extends @xmldtd {
   /** Gets the parent of this DTD. */
   XMLParent getParent() { xmlDTDs(this, _, _, _, result) }
 
-  /** Gets a printable representation of this DTD. */
-  string toString() {
+  override string toString() {
     this.isPublic() and
     result = this.getRoot() + " PUBLIC '" + this.getPublicId() + "' '" + this.getSystemId() + "'"
     or
@@ -275,7 +281,7 @@ class XMLAttribute extends @xmlattribute, XMLLocatable {
  * xmlns:android="http://schemas.android.com/apk/res/android"
  * ```
  */
-class XMLNamespace extends @xmlnamespace {
+class XMLNamespace extends XMLLocatable, @xmlnamespace {
   /** Gets the prefix of this namespace. */
   string getPrefix() { xmlNs(this, result, _, _) }
 
@@ -285,8 +291,7 @@ class XMLNamespace extends @xmlnamespace {
   /** Holds if this namespace has no prefix. */
   predicate isDefault() { this.getPrefix() = "" }
 
-  /** Gets a printable representation of this XML namespace. */
-  string toString() {
+  override string toString() {
     this.isDefault() and result = this.getURI()
     or
     not this.isDefault() and result = this.getPrefix() + ":" + this.getURI()
