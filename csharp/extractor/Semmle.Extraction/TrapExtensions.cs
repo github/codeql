@@ -19,6 +19,12 @@ namespace Semmle.Extraction
 
         public static void WriteSubId(this TextWriter trapFile, IEntity entity)
         {
+            if (entity is null)
+            {
+                trapFile.Write("<null>");
+                return;
+            }
+
             trapFile.Write('{');
             trapFile.WriteLabel(entity);
             trapFile.Write('}');
