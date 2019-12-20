@@ -51,6 +51,7 @@ module InstructionSanity {
           opcode instanceof ReadSideEffectOpcode or
           opcode instanceof Opcode::InlineAsm or
           opcode instanceof Opcode::CallSideEffect or
+          opcode instanceof Opcode::ReturnIndirection or
           opcode instanceof Opcode::AliasedUse
         ) and
         tag instanceof SideEffectOperandTag
@@ -713,6 +714,14 @@ class InitializeParameterInstruction extends VariableInstruction {
   final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
 }
 
+class InitializeIndirectionInstruction extends VariableInstruction {
+  InitializeIndirectionInstruction() { getOpcode() instanceof Opcode::InitializeIndirection }
+
+  final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+
+  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
+}
+
 /**
  * An instruction that initializes the `this` pointer parameter of the enclosing function.
  */
@@ -771,6 +780,18 @@ class ReturnValueInstruction extends ReturnInstruction {
   final LoadOperand getReturnValueOperand() { result = getAnOperand() }
 
   final Instruction getReturnValue() { result = getReturnValueOperand().getDef() }
+}
+
+class ReturnIndirectionInstruction extends Instruction {
+  ReturnIndirectionInstruction() { getOpcode() instanceof Opcode::ReturnIndirection }
+
+  final SideEffectOperand getSideEffectOperand() { result = getAnOperand() }
+
+  final Instruction getSideEffect() { result = getSideEffectOperand().getDef() }
+
+  final AddressOperand getSourceAddressOperand() { result = getAnOperand() }
+
+  final Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
 }
 
 class CopyInstruction extends Instruction {

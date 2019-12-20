@@ -3,11 +3,13 @@ private newtype TOpcode =
   TUninitialized() or
   TError() or
   TInitializeParameter() or
+  TInitializeIndirection() or
   TInitializeThis() or
   TEnterFunction() or
   TExitFunction() or
   TReturnValue() or
   TReturnVoid() or
+  TReturnIndirection() or
   TCopyValue() or
   TLoad() or
   TStore() or
@@ -180,6 +182,10 @@ module Opcode {
     final override string toString() { result = "InitializeParameter" }
   }
 
+  class InitializeIndirection extends MemoryAccessOpcode, TInitializeIndirection {
+    final override string toString() { result = "InitializeIndirection" }
+  }
+
   class InitializeThis extends Opcode, TInitializeThis {
     final override string toString() { result = "InitializeThis" }
   }
@@ -198,6 +204,10 @@ module Opcode {
 
   class ReturnVoid extends ReturnOpcode, TReturnVoid {
     final override string toString() { result = "ReturnVoid" }
+  }
+
+  class ReturnIndirection extends MemoryAccessOpcode, TReturnIndirection {
+    final override string toString() { result = "ReturnIndirection" }
   }
 
   class CopyValue extends UnaryOpcode, CopyOpcode, TCopyValue {
