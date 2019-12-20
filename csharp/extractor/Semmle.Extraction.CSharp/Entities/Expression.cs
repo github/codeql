@@ -292,7 +292,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Expression(ExpressionNodeInfo info)
             : base(info)
         {
-            Syntax = (SyntaxNode)info.Node;
+           Syntax = (SyntaxNode)info.Node;
         }
 
         /// <summary>
@@ -374,7 +374,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public bool IsCompilerGenerated { get; }
         public string ExprValue { get; }
 
-        public ExpressionInfo(Context cx, AnnotatedType type, Extraction.Entities.Location location, ExprKind kind, IExpressionParentEntity parent, int child, bool isCompilerGenerated, string value)
+        public ExpressionInfo(Context cx, AnnotatedType type, Extraction.Entities.Location location, ExprKind kind,
+            IExpressionParentEntity parent, int child, bool isCompilerGenerated, string value)
         {
             Context = cx;
             Type = type;
