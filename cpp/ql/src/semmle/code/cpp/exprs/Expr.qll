@@ -465,7 +465,7 @@ class Expr extends StmtParent, @expr {
  */
 abstract class Operation extends Expr {
   /** Gets the operator of this operation. */
-  abstract string getOperator();
+  string getOperator() { none() }
 
   /** Gets an operand of this operation. */
   Expr getAnOperand() { result = this.getAChild() }

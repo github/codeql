@@ -3,7 +3,7 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ unary logical operation.
  */
-abstract class UnaryLogicalOperation extends UnaryOperation { }
+  class UnaryLogicalOperation extends UnaryOperation, @un_log_op_expr { }
 
 /**
  * A C/C++ logical not expression.

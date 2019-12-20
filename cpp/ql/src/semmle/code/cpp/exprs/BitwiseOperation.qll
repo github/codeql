@@ -3,7 +3,7 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ unary bitwise operation.
  */
-abstract class UnaryBitwiseOperation extends UnaryOperation { }
+  class UnaryBitwiseOperation extends UnaryOperation, @un_bitwise_op_expr { }
 
 /**
  * A C/C++ complement expression.

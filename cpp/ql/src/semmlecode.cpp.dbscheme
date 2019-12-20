@@ -1190,6 +1190,25 @@ funbind(
                     | @delete_expr
                     | @delete_array_expr;
 
+
+@prefix_crement_oper_expr = @preincrexpr | @predecrexpr
+
+@postfix_crement_oper_expr = @postincrexpr | @postdecrexpr
+
+@incr_oper_expr = @preincrexpr | @postincrexpr
+
+@decr_oper_expr = @predecrexpr | @postdecrexpr
+
+@crement_op_expr = @incr_oper_expr | @decr_oper_expr | @prefix_crement_oper_expr | @postfix_crement_oper_expr
+
+@un_arith_op_expr = @arithnegexpr | @unaryplusexpr | @conjugation | @realpartexpr | @imagpartexpr | @crement_op_expr
+
+@un_bitwise_op_expr = @complementexpr
+
+@un_log_op_expr = @notexpr
+
+@un_op_expr = @address_of | @indirect | @un_arith_op_expr | @un_bitwise_op_expr | @builtinaddressof | @vec_fill | @un_log_op_expr
+
 /*
   case @allocator.form of
     0 = plain

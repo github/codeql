@@ -3,9 +3,9 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ unary arithmetic operation.
  *
- * This is an abstract base QL class.
+ * This is an base QL class.
  */
-abstract class UnaryArithmeticOperation extends UnaryOperation { }
+  class UnaryArithmeticOperation extends UnaryOperation, @un_arith_op_expr { }
 
 /**
  * A C/C++ unary minus expression.
@@ -53,12 +53,12 @@ class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
 /**
  * A C/C++ `++` or `--` expression (either prefix or postfix).
  *
- * This is the abstract base QL class for increment and decrement operations.
+ * This is the base QL class for increment and decrement operations.
  *
  * Note that this does not include calls to user-defined `operator++`
  * or `operator--`.
  */
-abstract class CrementOperation extends UnaryArithmeticOperation {
+ class CrementOperation extends UnaryArithmeticOperation, @crement_op_expr {
   override predicate mayBeImpure() { any() }
 
   override predicate mayBeGloballyImpure() {
@@ -75,28 +75,28 @@ abstract class CrementOperation extends UnaryArithmeticOperation {
  *
  * Note that this does not include calls to user-defined `operator++`.
  */
-abstract class IncrementOperation extends CrementOperation { }
+ class IncrementOperation extends CrementOperation, @incr_oper_expr { }
 
 /**
  * A C/C++ `--` expression (either prefix or postfix).
  *
  * Note that this does not include calls to user-defined `operator--`.
  */
-abstract class DecrementOperation extends CrementOperation { }
+ class DecrementOperation extends CrementOperation, @decr_oper_expr { }
 
 /**
  * A C/C++ `++` or `--` prefix expression.
  *
  * Note that this does not include calls to user-defined operators.
  */
-abstract class PrefixCrementOperation extends CrementOperation { }
+class PrefixCrementOperation extends CrementOperation, @prefix_crement_oper_expr { }
 
 /**
  * A C/C++ `++` or `--` postfix expression.
  *
  * Note that this does not include calls to user-defined operators.
  */
-abstract class PostfixCrementOperation extends CrementOperation { }
+class PostfixCrementOperation extends CrementOperation, @postfix_crement_oper_expr { }
 
 /**
  * A C/C++ prefix increment expression, as in `++x`.
