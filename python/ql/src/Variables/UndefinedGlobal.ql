@@ -32,10 +32,6 @@ predicate guarded_against_name_error(Name u) {
 
 predicate contains_unknown_import_star(Module m) {
     exists(ImportStar imp | imp.getScope() = m |
-        exists(ModuleValue imported |
-            imported.importedAs(imp.getImportedModuleName()) and imported.isAbsent()
-        )
-        or
         exists(ModuleValue imported | imported.importedAs(imp.getImportedModuleName()) |
             not imported.hasCompleteExportInfo()
         )

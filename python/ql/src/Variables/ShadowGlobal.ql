@@ -16,17 +16,16 @@ import python
 import Shadowing
 import semmle.python.types.Builtins
 
-predicate shadows(Name d, GlobalVariable g, Scope scope, int line) {
+predicate shadows(Name d, GlobalVariable g, Function scope, int line) {
+    g.getScope() = scope.getScope() and
+    d.getScope() = scope and
     exists(LocalVariable l |
         d.defines(l) and
-        l.getId() = g.getId() and
-        scope instanceof Function and
-        g.getScope() = scope.getScope() and
-        not exists(Import il, Import ig, Name gd | il.contains(d) and gd.defines(g) and ig.contains(gd)) and
-        not exists(Assign a | a.getATarget() = d and a.getValue() = g.getAnAccess())
+        l.getId() = g.getId()
     ) and
+    not exists(Import il, Import ig, Name gd | il.contains(d) and gd.defines(g) and ig.contains(gd)) and
+    not exists(Assign a | a.getATarget() = d and a.getValue() = g.getAnAccess()) and
     not exists(Builtin::builtin(g.getId())) and
-    d.getScope() = scope and
     d.getLocation().getStartLine() = line and
     exists(Name defn | defn.defines(g) | not exists(If i | i.isNameEqMain() | i.contains(defn))) and
     not optimizing_parameter(d)

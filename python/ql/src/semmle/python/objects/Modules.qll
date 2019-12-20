@@ -314,13 +314,11 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
     }
 
     override predicate hasCompleteExportInfo() {
-        exists(Module m |
-            m = this.getSourceModule() |
-            not exists(Call modify, Attribute attr, GlobalVariable all |
-                modify.getScope() = m and modify.getFunc() = attr and
-                all.getId() = "__all__" |
-                attr.getObject().(Name).uses(all)
-            )
+        not exists(Call modify, Attribute attr, GlobalVariable all |
+            modify.getScope() = this.getSourceModule() and
+            modify.getFunc() = attr and
+            all.getId() = "__all__" |
+            attr.getObject().(Name).uses(all)
         )
     }
 

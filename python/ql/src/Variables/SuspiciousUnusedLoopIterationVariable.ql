@@ -41,12 +41,11 @@ predicate one_item_only(For f) {
 
 predicate points_to_call_to_range(ControlFlowNode f) {
     /* (x)range is a function in Py2 and a class in Py3, so we must treat it as a plain object */
-    exists(Value range, Value call |
+    exists(Value range |
         range = Value::named("range") or
         range = Value::named("xrange")
     |
-        f.pointsTo(call) and
-        call.getACall().getFunction().pointsTo(range)
+        f = range.getACall()
     )
     or
     /* In case points-to fails due to 'from six.moves import range' or similar. */

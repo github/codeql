@@ -43,13 +43,12 @@ predicate white_list(string name) {
     name = "_"
 }
 
-predicate shadows(Name d, string name, Scope scope, int line) {
+predicate shadows(Name d, string name, Function scope, int line) {
     exists(LocalVariable l |
         d.defines(l) and
         l.getId() = name and
         exists(Builtin::builtin(l.getId()))
     ) and
-    scope instanceof Function and
     d.getScope() = scope and
     d.getLocation().getStartLine() = line and
     not white_list(name) and
