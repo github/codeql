@@ -44,9 +44,10 @@ predicate white_list(string name) {
 }
 
 predicate shadows(Name d, string name, Scope scope, int line) {
-    exists(LocalVariable l | d.defines(l) and
-           l.getId() = name and
-           exists(Builtin::builtin(l.getId()))
+    exists(LocalVariable l |
+        d.defines(l) and
+        l.getId() = name and
+        exists(Builtin::builtin(l.getId()))
     ) and
     scope instanceof Function and
     d.getScope() = scope and
@@ -58,7 +59,8 @@ predicate shadows(Name d, string name, Scope scope, int line) {
 predicate first_shadowing_definition(Name d, string name) {
     exists(int first, Scope scope |
         shadows(d, name, scope, first) and
-        first = min(int line | shadows(_, name, scope, line)))
+        first = min(int line | shadows(_, name, scope, line))
+    )
 }
 
 from Name d, string name

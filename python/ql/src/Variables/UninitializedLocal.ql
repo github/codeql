@@ -15,13 +15,10 @@ import Undefined
 import semmle.python.pointsto.PointsTo
 
 predicate uninitialized_local(NameNode use) {
-    exists(FastLocalVariable local |
-        use.uses(local) or use.deletes(local) |
-        not local.escapes()
-    )
-    and
+    exists(FastLocalVariable local | use.uses(local) or use.deletes(local) | not local.escapes()) and
     (
-        any(Uninitialized uninit).taints(use) and PointsToInternal::reachableBlock(use.getBasicBlock(), _)
+        any(Uninitialized uninit).taints(use) and
+        PointsToInternal::reachableBlock(use.getBasicBlock(), _)
         or
         not exists(EssaVariable var | var.getASourceUse() = use)
     )
@@ -33,7 +30,6 @@ predicate explicitly_guarded(NameNode u) {
         t.getAHandler().getType().pointsTo(ClassValue::nameError())
     )
 }
-
 
 from NameNode u
 where uninitialized_local(u) and not explicitly_guarded(u)

@@ -30,11 +30,12 @@ predicate capturing_looping_construct(CallableExpr capturing, AstNode loop, Vari
 }
 
 predicate escaping_capturing_looping_construct(CallableExpr capturing, AstNode loop, Variable var) {
-    capturing_looping_construct(capturing, loop, var) 
-    and
+    capturing_looping_construct(capturing, loop, var) and
     // Escapes if used out side of for loop or is a lambda in a comprehension
     (
-        exists(Expr e, For forloop | forloop = loop and e.pointsTo(_, _, capturing) | not forloop.contains(e))
+        exists(Expr e, For forloop | forloop = loop and e.pointsTo(_, _, capturing) |
+            not forloop.contains(e)
+        )
         or
         loop.(Comp).getElt() = capturing
         or
