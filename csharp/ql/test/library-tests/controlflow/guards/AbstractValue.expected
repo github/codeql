@@ -269,31 +269,24 @@ abstractValue
 | non-null | Guards.cs:70:31:70:31 | access to parameter s |
 | non-null | Guards.cs:71:13:71:13 | access to parameter s |
 | non-null | Guards.cs:72:13:72:19 | access to type Console |
-| non-null | Guards.cs:78:15:78:21 | access to property Length |
 | non-null | Guards.cs:78:26:78:26 | (...) ... |
 | non-null | Guards.cs:79:13:79:19 | access to type Console |
 | non-null | Guards.cs:79:31:79:31 | access to parameter s |
-| non-null | Guards.cs:80:15:80:21 | access to property Length |
 | non-null | Guards.cs:80:25:80:25 | (...) ... |
 | non-null | Guards.cs:81:13:81:19 | access to type Console |
 | non-null | Guards.cs:81:31:81:31 | access to parameter s |
-| non-null | Guards.cs:82:15:82:21 | access to property Length |
 | non-null | Guards.cs:82:26:82:26 | (...) ... |
 | non-null | Guards.cs:83:13:83:19 | access to type Console |
 | non-null | Guards.cs:83:31:83:31 | access to parameter s |
-| non-null | Guards.cs:84:15:84:21 | access to property Length |
 | non-null | Guards.cs:84:25:84:26 | (...) ... |
 | non-null | Guards.cs:85:13:85:19 | access to type Console |
 | non-null | Guards.cs:85:31:85:31 | access to parameter s |
-| non-null | Guards.cs:86:15:86:21 | access to property Length |
 | non-null | Guards.cs:86:26:86:27 | (...) ... |
 | non-null | Guards.cs:87:13:87:19 | access to type Console |
 | non-null | Guards.cs:87:31:87:31 | access to parameter s |
-| non-null | Guards.cs:88:15:88:21 | access to property Length |
 | non-null | Guards.cs:89:13:89:19 | access to type Console |
 | non-null | Guards.cs:89:31:89:31 | access to parameter s |
 | non-null | Guards.cs:91:13:91:19 | access to type Console |
-| non-null | Guards.cs:92:15:92:21 | access to property Length |
 | non-null | Guards.cs:92:25:92:25 | (...) ... |
 | non-null | Guards.cs:92:30:92:30 | (...) ... |
 | non-null | Guards.cs:93:13:93:19 | access to type Console |
@@ -334,7 +327,6 @@ abstractValue
 | non-null | Guards.cs:119:27:119:27 | access to parameter g |
 | non-null | Guards.cs:119:27:119:36 | access to property Property |
 | non-null | Guards.cs:125:18:125:19 | access to parameter s1 |
-| non-null | Guards.cs:125:21:125:31 | call to method Equals |
 | non-null | Guards.cs:125:29:125:30 | access to parameter s1 |
 | non-null | Guards.cs:132:16:132:16 | access to parameter s |
 | non-null | Guards.cs:138:20:138:20 | access to parameter s |
@@ -360,12 +352,9 @@ abstractValue
 | non-null | Guards.cs:205:13:205:13 | access to parameter o |
 | non-null | Guards.cs:206:33:206:36 | access to parameter args |
 | non-null | Guards.cs:208:17:208:17 | access to parameter o |
-| non-null | Guards.cs:268:16:268:25 | call to method GetType |
 | non-null | Guards.cs:268:30:268:41 | call to method GetType |
 | non-null | Guards.cs:269:13:269:14 | access to parameter o1 |
-| non-null | Guards.cs:270:16:270:25 | call to method GetType |
 | non-null | Guards.cs:270:30:270:31 | access to parameter o2 |
-| non-null | Guards.cs:270:33:270:42 | call to method GetType |
 | non-null | Guards.cs:279:17:279:17 | access to parameter o |
 | non-null | Guards.cs:281:17:281:17 | access to local variable a |
 | non-null | Guards.cs:283:17:283:17 | access to parameter o |
