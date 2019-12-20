@@ -13,14 +13,38 @@ module ExceptionXss {
   private import semmle.javascript.dataflow.InferredTypes
 
   /**
+   * Gets the name of a method that does not leak taint from its arguments if an exception is thrown by the method.
+   */
+  private string getAnUnlikelyToThrowMethodName() {
+    result = "getElementById" or
+    result = "indexOf" or
+    result = "stringify" or
+    result = "assign" or
+    // fs methods. (The callback argument to the async functions are vulnerable, but its unlikely that the callback is the user-controlled part).
+    result = "existsSync" or
+    result = "exists" or
+    result = "writeFileSync" or
+    result = "writeFile" or
+    result = "appendFile" or
+    result = "appendFileSync" or
+    result = "pick" or
+    // log.info etc.
+    result = "info" or
+    result = "warn" or
+    result = "error" or
+    result = "join" or
+    result = "val" or // $.val
+    result = "parse" or // JSON.parse
+    result = "push" or // Array.prototype.push
+    result = "test" // RegExp.prototype.test
+  }
+
+  /**
    * Holds if `node` is unlikely to cause an exception containing sensitive information to be thrown.
    */
   private predicate isUnlikelyToThrowSensitiveInformation(DataFlow::Node node) {
-    node = any(DataFlow::CallNode call | call.getCalleeName() = "getElementById").getAnArgument()
-    or
-    node = any(DataFlow::CallNode call | call.getCalleeName() = "indexOf").getAnArgument()
-    or
-    node = any(DataFlow::CallNode call | call.getCalleeName() = "stringify").getAnArgument()
+    node = any(DataFlow::CallNode call | call.getCalleeName() = getAnUnlikelyToThrowMethodName())
+          .getAnArgument()
     or
     node = DataFlow::globalVarRef("console").getAMemberCall(_).getAnArgument()
   }
@@ -38,6 +62,7 @@ module ExceptionXss {
    */
   predicate canThrowSensitiveInformation(DataFlow::Node node) {
     not isUnlikelyToThrowSensitiveInformation(node) and
+    not node instanceof Xss::Shared::Sink and // removes duplicates from js/xss.
     (
       // in the case of reflective calls the below ensures that both InvokeNodes have no known callee.
       forex(DataFlow::InvokeNode call | call.getAnArgument() = node | not exists(call.getACallee()))
@@ -79,15 +104,15 @@ module ExceptionXss {
     }
 
     /**
-     * Get the parameter in the callback that contains an error. 
+     * Get the parameter in the callback that contains an error.
      * In the current implementation this is always the first parameter.
      */
     DataFlow::Node getErrorParam() { result = errorParameter }
   }
 
   /**
-   * Gets the error parameter for a callback that is supplied to the same call as `pred` is an argument to. 
-   * For example: `outerCall(foo, <pred>, bar, (<result>, val) => { ... })`. 
+   * Gets the error parameter for a callback that is supplied to the same call as `pred` is an argument to.
+   * For example: `outerCall(foo, <pred>, bar, (<result>, val) => { ... })`.
    */
   DataFlow::Node getCallbackErrorParam(DataFlow::Node pred) {
     exists(DataFlow::CallNode call, Callback callback |
@@ -101,8 +126,8 @@ module ExceptionXss {
   /**
    * Gets the data-flow node to which any exceptions thrown by
    * this expression will propagate.
-   * This predicate adds, on top of `Expr::getExceptionTarget`, exceptions 
-   * propagated by callbacks. 
+   * This predicate adds, on top of `Expr::getExceptionTarget`, exceptions
+   * propagated by callbacks.
    */
   private DataFlow::Node getExceptionTarget(DataFlow::Node pred) {
     result = pred.asExpr().getExceptionTarget()
