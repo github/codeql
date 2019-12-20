@@ -10,7 +10,8 @@ module ExceptionXss {
   import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
   import ReflectedXssCustomizations::ReflectedXss as ReflectedXssCustom
   import Xss as Xss
-  
+  private import semmle.javascript.dataflow.InferredTypes
+
   /**
    * Holds if `node` is unlikely to cause an exception containing sensitive information to be thrown.
    */
@@ -25,15 +26,28 @@ module ExceptionXss {
   }
 
   /**
+   * Holds if `t` is `null` or `undefined`.
+   */
+  private predicate isNullOrUndefined(InferredType t) {
+    t = TTNull() or
+    t = TTUndefined()
+  }
+
+  /**
    * Holds if `node` can possibly cause an exception containing sensitive information to be thrown.
    */
   predicate canThrowSensitiveInformation(DataFlow::Node node) {
-    not isUnlikelyToThrowSensitiveInformation(node) and 
+    not isUnlikelyToThrowSensitiveInformation(node) and
     (
       // in the case of reflective calls the below ensures that both InvokeNodes have no known callee.
-      forex(DataFlow::InvokeNode call | node = call.getAnArgument() | not exists(call.getACallee()))
+      forex(DataFlow::InvokeNode call | call.getAnArgument() = node | not exists(call.getACallee()))
       or
       node.asExpr().getEnclosingStmt() instanceof ThrowStmt
+      or
+      exists(DataFlow::PropRef prop |
+        node = DataFlow::valueNode(prop.getPropertyNameExpr()) and
+        forex(InferredType t | t = prop.getBase().analyze().getAType() | isNullOrUndefined(t))
+      )
     )
   }
 
@@ -45,6 +59,55 @@ module ExceptionXss {
    */
   class NotYetThrown extends DataFlow::FlowLabel {
     NotYetThrown() { this = "NotYetThrown" }
+  }
+
+  /**
+   * A callback that is the last argument to some call, and the callback has the form:
+   * `function (err, value) {if (err) {...} ... }`
+   */
+  class Callback extends DataFlow::FunctionNode {
+    DataFlow::ParameterNode errorParameter;
+
+    Callback() {
+      exists(DataFlow::CallNode call | call.getLastArgument().getAFunctionValue() = this) and
+      this.getNumParameter() = 2 and
+      errorParameter = this.getParameter(0) and
+      exists(IfStmt ifStmt |
+        ifStmt = this.getFunction().getBodyStmt(0) and
+        errorParameter.flowsToExpr(ifStmt.getCondition())
+      )
+    }
+
+    /**
+     * Get the parameter in the callback that contains an error. 
+     * In the current implementation this is always the first parameter.
+     */
+    DataFlow::Node getErrorParam() { result = errorParameter }
+  }
+
+  /**
+   * Gets the error parameter for a callback that is supplied to the same call as `pred` is an argument to. 
+   * For example: `outerCall(foo, <pred>, bar, (<result>, val) => { ... })`. 
+   */
+  DataFlow::Node getCallbackErrorParam(DataFlow::Node pred) {
+    exists(DataFlow::CallNode call, Callback callback |
+      pred = call.getAnArgument() and
+      call.getLastArgument() = callback and
+      result = callback.getErrorParam() and
+      not pred = callback
+    )
+  }
+
+  /**
+   * Gets the data-flow node to which any exceptions thrown by
+   * this expression will propagate.
+   * This predicate adds, on top of `Expr::getExceptionTarget`, exceptions 
+   * propagated by callbacks. 
+   */
+  private DataFlow::Node getExceptionTarget(DataFlow::Node pred) {
+    result = pred.asExpr().getExceptionTarget()
+    or
+    result = getCallbackErrorParam(pred)
   }
 
   /**
@@ -69,12 +132,15 @@ module ExceptionXss {
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl,
       DataFlow::FlowLabel outlbl
     ) {
-      inlbl instanceof NotYetThrown and (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
-      succ = pred.asExpr().getExceptionTarget() and
-      canThrowSensitiveInformation(pred)
+      inlbl instanceof NotYetThrown and
+      (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
+      canThrowSensitiveInformation(pred) and
+      succ = getExceptionTarget(pred)
       or
       // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
-      this.isAdditionalFlowStep(pred, succ) and inlbl instanceof NotYetThrown and outlbl instanceof NotYetThrown
+      this.isAdditionalFlowStep(pred, succ) and
+      inlbl instanceof NotYetThrown and
+      outlbl instanceof NotYetThrown
     }
   }
 }
