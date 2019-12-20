@@ -799,6 +799,16 @@ class RegExpParseError extends Error, @regexp_parse_error {
 }
 
 /**
+ * Holds if `func` is a method defined on `String.prototype` with name `name`. 
+ */
+private predicate isNativeStringMethod(Function func, string name) {
+  exists(ExternalInstanceMemberDecl decl |
+    decl.hasQualifiedName("String", name) and
+    func = decl.getInit()
+  )
+}
+
+/**
  * Holds if `source` may be interpreted as a regular expression.
  */
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
@@ -811,7 +821,11 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
     exists(MethodCallExpr mce, string methodName |
       mce.getReceiver().analyze().getAType() = TTString() and
       mce.getMethodName() = methodName and
-      not exists(DataFlow::FunctionNode func | func = DataFlow::valueNode(mce.getCallee()).getAFunctionValue() | not func.getFunction().inExternsFile())
+      not exists(Function func |
+        func = any(DataFlow::MethodCallNode call | call.getEnclosingExpr() = mce).getACallee()
+      |
+        not isNativeStringMethod(func, methodName)
+      )
     |
       methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1
       or
