@@ -5,7 +5,7 @@ import semmle.code.cpp.exprs.Expr
  *
  * This is an base QL class.
  */
-  class UnaryArithmeticOperation extends UnaryOperation, @un_arith_op_expr { }
+class UnaryArithmeticOperation extends UnaryOperation, @un_arith_op_expr { }
 
 /**
  * A C/C++ unary minus expression.
@@ -58,7 +58,7 @@ class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
  * Note that this does not include calls to user-defined `operator++`
  * or `operator--`.
  */
- class CrementOperation extends UnaryArithmeticOperation, @crement_expr {
+class CrementOperation extends UnaryArithmeticOperation, @crement_expr {
   override predicate mayBeImpure() { any() }
 
   override predicate mayBeGloballyImpure() {
@@ -75,14 +75,14 @@ class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
  *
  * Note that this does not include calls to user-defined `operator++`.
  */
- class IncrementOperation extends CrementOperation, @increment_expr { }
+class IncrementOperation extends CrementOperation, @increment_expr { }
 
 /**
  * A C/C++ `--` expression (either prefix or postfix).
  *
  * Note that this does not include calls to user-defined `operator--`.
  */
- class DecrementOperation extends CrementOperation, @decrement_expr { }
+class DecrementOperation extends CrementOperation, @decrement_expr { }
 
 /**
  * A C/C++ `++` or `--` prefix expression.
@@ -199,7 +199,7 @@ class ImaginaryPartExpr extends UnaryArithmeticOperation, @imagpartexpr {
  *
  * This is an abstract base QL class for all binary arithmetic operations.
  */
-abstract class BinaryArithmeticOperation extends BinaryOperation { }
+class BinaryArithmeticOperation extends BinaryOperation, @bin_arith_op_expr { }
 
 /**
  * A C/C++ add expression.
@@ -404,7 +404,7 @@ class MaxExpr extends BinaryArithmeticOperation, @maxexpr {
 /**
  * A C/C++ pointer arithmetic operation.
  */
-abstract class PointerArithmeticOperation extends BinaryArithmeticOperation { }
+class PointerArithmeticOperation extends BinaryArithmeticOperation, @p_arith_op_expr { }
 
 /**
  * A C/C++ pointer add expression.

@@ -1221,6 +1221,78 @@ funbind(
             | @un_log_op_expr
             ;
 
+@bin_log_op_expr = @andlogicalexpr | @orlogicalexpr;
+
+@cmp_op_expr = @eq_op_expr | @rel_op_expr;
+
+@eq_op_expr = @eqexpr | @neexpr;
+
+@rel_op_expr = @gtexpr
+             | @ltexpr
+             | @geexpr
+             | @leexpr
+             ;
+
+@bin_bitwise_op_expr = @lshiftexpr
+                     | @rshiftexpr
+                     | @andexpr
+                     | @orexpr
+                     | @xorexpr
+                     ;
+
+@p_arith_op_expr = @paddexpr
+                 | @psubexpr
+                 | @pdiffexpr
+                 ;
+
+@bin_arith_op_expr = @addexpr
+                   | @subexpr
+                   | @mulexpr
+                   | @divexpr
+                   | @remexpr
+                   | @jmulexpr
+                   | @jdivexpr
+                   | @fjaddexpr
+                   | @jfaddexpr
+                   | @fjsubexpr
+                   | @jfsubexpr
+                   | @minexpr
+                   | @maxexpr
+                   | @p_arith_op_expr
+                   ;
+
+@bin_op_expr = @bin_arith_op_expr
+             | @bin_bitwise_op_expr
+             | @cmp_op_expr
+             | @bin_log_op_expr
+             ;
+
+@op_expr = @un_op_expr
+         | @bin_op_expr
+         | @assign_expr
+         | @conditionalexpr
+         ;
+
+@assign_arith_expr = @assignaddexpr
+                   | @assignsubexpr
+                   | @assignmulexpr
+                   | @assigndivexpr
+                   | @assignremexpr
+                   ;
+
+@assign_bitwise_expr = @assignandexpr
+                     | @assignorexpr
+                     | @assignxorexpr
+                     | @assignlshiftexpr
+                     | @assignrshiftexpr
+                     | @assignpaddexpr
+                     | @assignpsubexpr
+                     ;
+
+@assign_op_expr = @assign_arith_expr | @assign_bitwise_expr
+
+@assign_expr = @assignexpr | @assign_op_expr
+
 /*
   case @allocator.form of
     0 = plain
