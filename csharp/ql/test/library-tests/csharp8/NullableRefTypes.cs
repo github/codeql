@@ -208,14 +208,14 @@ abstract class TestNullableFlowStates
 
     string InvocationTest(object? o)
     {
-        var t = o?.GetType();  // Not null (incorrect - should be null maybe)
+        var t = o?.GetType();  // Maybe null
         return t.ToString();   // Not null
     }
 
     void ElementTest(List<string>? list)
     {
-        string? a = GetSelf()?.Field;  // Not null (incorrect - should be null maybe)
-        string? b = list?[0];          // Not null (incorrect - should be null maybe)
+        string? a = GetSelf()?.Field;  // Maybe null
+        string? b = list?[0];          // Maybe null
         string c = list[0];            // Not null
         string d = GetSelf().Field;    // Not null
     }
