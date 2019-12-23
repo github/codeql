@@ -1199,7 +1199,7 @@ funbind(
 
 @decr_oper_expr = @predecrexpr | @postdecrexpr
 
-@crement_op_expr = @incr_oper_expr | @decr_oper_expr | @prefix_crement_oper_expr | @postfix_crement_oper_expr
+@crement_op_expr = @incr_oper_expr | @decr_oper_expr
 
 @un_arith_op_expr = @arithnegexpr | @unaryplusexpr | @conjugation | @realpartexpr | @imagpartexpr | @crement_op_expr
 
