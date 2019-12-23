@@ -1190,24 +1190,36 @@ funbind(
                     | @delete_expr
                     | @delete_array_expr;
 
+@prefix_crement_expr = @preincrexpr | @predecrexpr;
 
-@prefix_crement_expr = @preincrexpr | @predecrexpr
+@postfix_crement_expr = @postincrexpr | @postdecrexpr;
 
-@postfix_crement_expr = @postincrexpr | @postdecrexpr
+@increment_expr = @preincrexpr | @postincrexpr;
 
-@increment_expr = @preincrexpr | @postincrexpr
+@decrement_expr = @predecrexpr | @postdecrexpr;
 
-@decrement_expr = @predecrexpr | @postdecrexpr
+@crement_expr = @increment_expr | @decrement_expr;
 
-@crement_expr = @increment_expr | @decrement_expr
+@un_arith_op_expr = @arithnegexpr
+                  | @unaryplusexpr
+                  | @conjugation
+                  | @realpartexpr
+                  | @imagpartexpr
+                  | @crement_expr
+                  ;
 
-@un_arith_op_expr = @arithnegexpr | @unaryplusexpr | @conjugation | @realpartexpr | @imagpartexpr | @crement_expr
+@un_bitwise_op_expr = @complementexpr;
 
-@un_bitwise_op_expr = @complementexpr
+@un_log_op_expr = @notexpr;
 
-@un_log_op_expr = @notexpr
-
-@un_op_expr = @address_of | @indirect | @un_arith_op_expr | @un_bitwise_op_expr | @builtinaddressof | @vec_fill | @un_log_op_expr
+@un_op_expr = @address_of
+            | @indirect
+            | @un_arith_op_expr
+            | @un_bitwise_op_expr
+            | @builtinaddressof
+            | @vec_fill
+            | @un_log_op_expr
+            ;
 
 /*
   case @allocator.form of
