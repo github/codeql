@@ -7,7 +7,7 @@ import semmle.code.cpp.exprs.BitwiseOperation
  * etc. A C++ overloaded assignment operation looks syntactically identical but is instead
  * a `FunctionCall`.
  *
- * This is an root QL class for all (non-overloaded) assignments.
+ * This is a QL base class for all (non-overloaded) assignments.
  */
 class Assignment extends Operation, @assign_expr {
   /** Gets the _lvalue_ of this assignment. */
