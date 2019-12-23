@@ -58,7 +58,7 @@ class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
  * Note that this does not include calls to user-defined `operator++`
  * or `operator--`.
  */
- class CrementOperation extends UnaryArithmeticOperation, @crement_op_expr {
+ class CrementOperation extends UnaryArithmeticOperation, @crement_expr {
   override predicate mayBeImpure() { any() }
 
   override predicate mayBeGloballyImpure() {
@@ -75,28 +75,28 @@ class ConjugationExpr extends UnaryArithmeticOperation, @conjugation {
  *
  * Note that this does not include calls to user-defined `operator++`.
  */
- class IncrementOperation extends CrementOperation, @incr_oper_expr { }
+ class IncrementOperation extends CrementOperation, @increment_expr { }
 
 /**
  * A C/C++ `--` expression (either prefix or postfix).
  *
  * Note that this does not include calls to user-defined `operator--`.
  */
- class DecrementOperation extends CrementOperation, @decr_oper_expr { }
+ class DecrementOperation extends CrementOperation, @decrement_expr { }
 
 /**
  * A C/C++ `++` or `--` prefix expression.
  *
  * Note that this does not include calls to user-defined operators.
  */
-class PrefixCrementOperation extends CrementOperation, @prefix_crement_oper_expr { }
+class PrefixCrementOperation extends CrementOperation, @prefix_crement_expr { }
 
 /**
  * A C/C++ `++` or `--` postfix expression.
  *
  * Note that this does not include calls to user-defined operators.
  */
-class PostfixCrementOperation extends CrementOperation, @postfix_crement_oper_expr { }
+class PostfixCrementOperation extends CrementOperation, @postfix_crement_expr { }
 
 /**
  * A C/C++ prefix increment expression, as in `++x`.

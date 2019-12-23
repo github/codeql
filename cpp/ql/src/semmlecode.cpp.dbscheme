@@ -1191,17 +1191,17 @@ funbind(
                     | @delete_array_expr;
 
 
-@prefix_crement_oper_expr = @preincrexpr | @predecrexpr
+@prefix_crement_expr = @preincrexpr | @predecrexpr
 
-@postfix_crement_oper_expr = @postincrexpr | @postdecrexpr
+@postfix_crement_expr = @postincrexpr | @postdecrexpr
 
-@incr_oper_expr = @preincrexpr | @postincrexpr
+@increment_expr = @preincrexpr | @postincrexpr
 
-@decr_oper_expr = @predecrexpr | @postdecrexpr
+@decrement_expr = @predecrexpr | @postdecrexpr
 
-@crement_op_expr = @incr_oper_expr | @decr_oper_expr
+@crement_expr = @increment_expr | @decrement_expr
 
-@un_arith_op_expr = @arithnegexpr | @unaryplusexpr | @conjugation | @realpartexpr | @imagpartexpr | @crement_op_expr
+@un_arith_op_expr = @arithnegexpr | @unaryplusexpr | @conjugation | @realpartexpr | @imagpartexpr | @crement_expr
 
 @un_bitwise_op_expr = @complementexpr
 
