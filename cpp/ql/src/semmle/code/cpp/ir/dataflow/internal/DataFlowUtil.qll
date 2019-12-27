@@ -59,10 +59,12 @@ class Node extends TIRDataFlowNode {
   Parameter asParameter() { result = instr.(InitializeParameterInstruction).getParameter() }
 
   /**
+   * DEPRECATED: See UninitializedNode.
+   *
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
-  LocalVariable asUninitialized() { result = instr.(UninitializedInstruction).getLocalVariable() }
+  LocalVariable asUninitialized() { none() }
 
   /**
    * Gets an upper bound on the type of this node.
@@ -140,15 +142,19 @@ private class ThisParameterNode extends Node {
 }
 
 /**
+ * DEPRECATED: Data flow was never an accurate way to determine what
+ * expressions might be uninitialized. It errs on the side of saying that
+ * everything is uninitialized, and this is even worse in the IR because the IR
+ * doesn't use syntactic hints to rule out variables that are definitely
+ * initialized.
+ *
  * The value of an uninitialized local variable, viewed as a node in a data
  * flow graph.
  */
-class UninitializedNode extends Node {
-  override UninitializedInstruction instr;
+deprecated class UninitializedNode extends Node {
+  UninitializedNode() { none() }
 
-  LocalVariable getLocalVariable() { result = instr.getLocalVariable() }
-
-  override string toString() { result = this.getLocalVariable().toString() }
+  LocalVariable getLocalVariable() { none() }
 }
 
 /**
