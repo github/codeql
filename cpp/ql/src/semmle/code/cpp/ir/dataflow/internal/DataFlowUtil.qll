@@ -265,7 +265,21 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnary() = iFrom or
-  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  iTo.(InheritanceConversionInstruction).getUnary() = iFrom or
+  // A chi instruction represents a point where a new value (the _partial_
+  // operand) may overwrite an old value (the _total_ operand), but the alias
+  // analysis couldn't determine that it surely will overwrite every bit of it or
+  // that it surely will overwrite no bit of it.
+  //
+  // By allowing flow through the total operand, we ensure that flow is not lost
+  // due to shortcomings of the alias analysis. We may get false flow in cases
+  // where the data is indeed overwritten.
+  //
+  // Allowing flow through the partial operand would be more noisy, especially
+  // for variables that have escaped: for soundness, the IR has to assume that
+  // every write to an unknown address can affect every escaped variable, and
+  // this assumption shows up as data flowing through partial chi operands.
+  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
 }
 
 /**
