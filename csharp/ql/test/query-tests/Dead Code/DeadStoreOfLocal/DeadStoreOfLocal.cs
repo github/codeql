@@ -431,7 +431,7 @@ public static class AnonymousVariable
     public static int Count<T>(this IEnumerable<T> items)
     {
         int count = 0;
-        foreach (var _ in items)
+        foreach (var _ in items) // GOOD
             count++;
         return count;
     }

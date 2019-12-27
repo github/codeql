@@ -83,8 +83,10 @@ class RelevantDefinition extends AssignableDefinition {
     //or
     //this.(AssignableDefinitions::OutRefDefinition).getTargetAccess().isOutArgument()
     this.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() = any(LocalVariableDeclExpr lvde |
-        lvde = any(SpecificCatchClause scc).getVariableDeclExpr() or
-        lvde = any(ForeachStmt fs).getVariableDeclExpr()
+        lvde = any(SpecificCatchClause scc).getVariableDeclExpr()
+        or
+        lvde = any(ForeachStmt fs).getVariableDeclExpr() and
+        not lvde.getName() = "_"
       )
     or
     this instanceof AssignableDefinitions::PatternDefinition
