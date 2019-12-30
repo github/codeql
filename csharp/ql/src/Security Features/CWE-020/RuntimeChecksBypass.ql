@@ -25,11 +25,19 @@ Expr checkedWrite(Field f, Variable v, IfStmt check) {
   result.getAControlFlowNode() = check.getAControlFlowNode().getASuccessor*()
 }
 
+/**
+ * The result is an unsafe write to the field `f`, where
+ * there is no check performed within the (calling) scope of the method.
+ */
+Expr uncheckedWrite(Callable callable, Field f) {
+  result = f.getAnAssignedValue() and
+  result.getEnclosingCallable() = callable and
+  not callable.calls*(checkedWrite(f, _, _).getEnclosingCallable())
+}
+
 from BinarySerializableType t, Field f, IfStmt check, Expr write, Expr unsafeWrite
 where
   f = t.getASerializedField() and
   write = checkedWrite(f, t.getAConstructor().getAParameter(), check) and
-  unsafeWrite = f.getAnAssignedValue() and
-  t.getADeserializationCallback() = unsafeWrite.getEnclosingCallable() and
-  not t.getADeserializationCallback().calls*(checkedWrite(f, _, _).getEnclosingCallable())
+  unsafeWrite = uncheckedWrite(t.getADeserializationCallback(), f)
 select unsafeWrite, "This write to $@ may be circumventing a $@.", f, f.toString(), check, "check"
