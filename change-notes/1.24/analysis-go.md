@@ -1,5 +1,9 @@
 # Improvements to Go analysis
 
+## General improvements
+
+* Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
+
 ## New queries
 
 | **Query**                                                                 | **Tags**                                                                   | **Purpose**                                                                                                                                            |
