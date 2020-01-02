@@ -81,6 +81,48 @@ That is, you should define a *base case* that allows the predicate to *bottom ou
    The query optimizer has special data structures for dealing with `transitive closures <https://help.semmle.com/QL/ql-handbook/recursion.html#transitive-closures>`__.
    If possible, use a transitive closure over a simple recursive predicate, as it is likely to be computed faster.
 
+Folding predicates
+~~~~~~~~~~~~~~~~~~
+
+Sometimes you can assist the query optimizer by "folding" parts of large predicates out into smaller predicates.
+
+The general principle is to split off chunks of work that are:
+
+- **linear**, so that there is not too much branching.
+- **tightly bound**, so that the chunks join with each other on as many variables as possible.
+
+
+In the following example, we explore some lookups on two ``Element``\ s:
+
+.. code-block:: ql
+
+   predicate similar(Element e1, Element e2) {
+       e1.getName() = e2.getName() and
+       e1.getFile() = e2.getFile() and
+       e1.getLocation().getStartLine() = e2.getLocation().getStartLine()
+   }
+
+Going from ``Element -> File`` and ``Element -> Location -> StartLine`` is linear--that is, there is only one ``File``, ``Location``, etc. for each ``Element``. 
+
+However, as written it is difficult for the optimizer to pick out the best ordering. Generally, we want to do the quick, linear parts first, and then join on the resultant larger tables. Joining first and then doing the linear lookups later would likely result in poor performance. We can initiate this kind of ordering by splitting the above predicate as follows:
+
+.. code-block:: ql
+
+   predicate locInfo(Element e, string name, File f, int startLine) {
+       name = e.getName() and
+       f = e.getFile() and
+       startLine = e.getLocation().getStartLine()
+   }
+
+   predicate sameLoc(Element e1, Element e2) {
+       exists(string name, File f, int startLine |
+           locInfo(e1, name, f, startLine) and
+           locInfo(e2, name, f, startLine)
+       )
+   }
+
+Now the structure we want is clearer. We've separated out the easy part into its own predicate ``locInfo``, and the main predicate ``sameLoc`` is just a larger join.
+
 Further information
 -------------------
 
