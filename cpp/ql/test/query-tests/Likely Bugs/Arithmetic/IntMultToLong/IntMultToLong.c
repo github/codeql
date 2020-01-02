@@ -95,10 +95,10 @@ size_t three_chars(unsigned char a, unsigned char b, unsigned char c) {
 
 void g(unsigned char a, unsigned char b, unsigned char b2, int c) {
     unsigned long d, e, f, g, h;
-    d = (a + 1) * (b + 1); // GOOD [FALSE POSITIVE]
+    d = (a + 1) * (b + 1); // GOOD
     e = (c + 1) * (b + 1); // BAD
-    h = (a + 1) * (b + 1) * (b2 + 1); // GOOD [FALSE POSITIVE]
+    h = (a + 1) * (b + 1) * (b2 + 1); // GOOD
 
-    f = (a + (a + 1)) * (b + 1); // GOOD [FALSE POSITIVE]
+    f = (a + (a + 1)) * (b + 1); // GOOD
     g = (c + (a + 1)) * (b + 1); // BAD
 }

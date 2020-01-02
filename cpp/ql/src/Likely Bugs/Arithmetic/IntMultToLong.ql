@@ -64,6 +64,32 @@ int getEffectiveMulOperands(MulExpr me) {
     )
 }
 
+class LeafExpr extends Expr {
+  LeafExpr() { not this instanceof BinaryOperation }
+}
+
+/**
+ * Gets the size of the largest type (in bytes) of an non-literal
+ * operand to a binary operation. For example, for
+ * ```
+ * unsigned char a; short b;
+ * (a + 1) * b;
+ * ```
+ * the result is 2 (i.e., the size of a `short`)
+ */
+int widenedFromLiteralFromSize(Expr e) {
+  exists(Literal lit |
+    lit = e.(BinaryOperation).getAnOperand+() and
+    result = max(LeafExpr other |
+        other = e.(BinaryOperation).getAnOperand+() and
+        not other instanceof Literal
+      |
+        other.getType().getSize()
+      ) and
+    result < lit.getType().getSize()
+  )
+}
+
 from MulExpr me, Type t1, Type t2
 where
   t1 = me.getType().getUnderlyingType() and
@@ -101,6 +127,20 @@ where
       e = other.(BinaryOperation).getAnOperand*()
     ) and
     e.(Literal).getType().getSize() = t2.getSize()
+  ) and
+  // exclude cases where the operands to the multiplication were
+  // small, but widened due to a literal in a subexpression.
+  // For instance, if the multiplication is
+  // ```
+  // int c = (a + 1) * (b + 1)
+  // ```
+  // where a and b are both unsigned chars. In this case the maximum
+  // value of c will be 256 * 256, even though the arguments to the
+  // multiplication are both typed as int.
+  not exists(Expr e1, Expr e2 |
+    e1 = me.getLeftOperand() and
+    e2 = me.getRightOperand() and
+    widenedFromLiteralFromSize(e1) + widenedFromLiteralFromSize(e2) < t1.getSize()
   )
 select me,
   "Multiplication result may overflow '" + me.getType().toString() + "' before it is converted to '"
