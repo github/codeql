@@ -31,4 +31,13 @@ func main() {
 	x = x // LGTM[go/redundant-assignment]
 	x = x // lgtm[go/redundant-assignment] and lgtm[go/redundant-operation]
 	x = x // lgtm[go/redundant-assignment]; lgtm
+	x = x /* lgtm[] */
+	x = x /* lgtm[go/redundant-assignment] */
+	x = x /* lgtm
+               */
+	x = x /* lgtm
+
+               */
+	x = x /* lgtm[@tag:nullness,go/redundant-assignment] */
+	x = x /* lgtm[@tag:nullness] */
 }
