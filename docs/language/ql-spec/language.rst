@@ -1075,10 +1075,16 @@ Apart from the presence or absence of the rank variable, all other reduced forms
 
 -  If the formula is omitted, then it is taken to be ``any()``.
 -  If there are no aggregation expressions, then either: 
-   + The aggregation id is ``count`` or ``strictcount`` and the expression is taken to be ``1``. 
-   + There must be precisely one variable declaration, and the aggregation expression is taken to be a reference to that variable.
+
+   - The aggregation id is ``count`` or ``strictcount`` and the expression is taken to be ``1``. 
+   - There must be precisely one variable declaration, and the aggregation expression is taken to be a reference to that variable.
+
 -  If the aggregation id is ``concat`` or ``strictconcat`` and it has a single expression then the second expression is taken to be ``""``.
--  If the ``monotonicAggregates`` language pragma is not enabled, or the original formula and variable declarations are both omitted, then the aggregate is transformed as follows: - For each aggregation expression ``expr_i``, a fresh variable ``v_i`` is declared with the same type as the expression in addition to the original variable declarations. - The new range is the conjunction of the original range and a term ``v_i = expr_i`` for each aggregation expression ``expr_i``. - Each original aggregation expression ``expr_i`` is replaced by a new aggregation expression ``v_i``.
+-  If the ``monotonicAggregates`` language pragma is not enabled, or the original formula and variable declarations are both omitted, then the aggregate is transformed as follows: 
+
+   - For each aggregation expression ``expr_i``, a fresh variable ``v_i`` is declared with the same type as the expression in addition to the original variable declarations. 
+   - The new range is the conjunction of the original range and a term ``v_i = expr_i`` for each aggregation expression ``expr_i``.
+   - Each original aggregation expression ``expr_i`` is replaced by a new aggregation expression ``v_i``.
 
 The variables in the variable declarations list must not occur in the typing environment.
 
