@@ -274,16 +274,19 @@ That is, ``bindingset[x] bindingset[y]``, which states that at least one of ``x`
 be bound, is different from ``bindingset[x, y]``, which states that both ``x`` and ``y`` must be 
 bound.
 
-The latter can be useful when you want to declare a :ref:`predicate with result <predicates-with-result>` that takes multiple input arguments::
+The latter can be useful when you want to declare a :ref:`predicate with result <predicates-with-result>` that takes multiple input arguments.
+For example, the following predicate gets ``str``, truncated to a maximum length of ``len`` characters::
 
-    bindingset[a, b]  
-    int getSum(int a, int b) {
-      result = a + b
+    bindingset[str, len]
+    string truncate(string str, int len) {
+      if str.length() > len
+      then result = str.prefix(len)
+      else result = str
     }
 
 You can then use this in a :ref:`select clause <select-clauses>`, for example::
 
-    select getSum(3, 5)
+    select truncate("hello world", 5)
 
 .. _database-predicates:
 
