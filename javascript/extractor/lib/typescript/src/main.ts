@@ -243,6 +243,7 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
 }
 
 function handleOpenProjectCommand(command: OpenProjectCommand) {
+    Error.stackTraceLimit = Infinity;
     let tsConfigFilename = String(command.tsConfig);
     let tsConfig = ts.readConfigFile(tsConfigFilename, ts.sys.readFile);
     let basePath = pathlib.dirname(tsConfigFilename);

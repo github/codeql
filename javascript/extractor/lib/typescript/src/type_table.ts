@@ -766,6 +766,15 @@ export class TypeTable {
     return hash;
   }
 
+  /** Returns the type of `symbol` or `null` if it could not be computed. */
+  private tryGetTypeOfSymbol(symbol: ts.Symbol) {
+    try {
+      return this.typeChecker.getTypeOfSymbolAtLocation(symbol, this.arbitraryAstNode)
+    } catch (e) {
+      return null;
+    }
+  }
+
   /**
    * Returns a type string consisting of all the members of the given type.
    *
@@ -775,7 +784,7 @@ export class TypeTable {
   private makeStructuralTypeVector(tag: string, type: ts.ObjectType): string | null {
     let hash = tag;
     for (let property of type.getProperties()) {
-      let propertyType = this.typeChecker.getTypeOfSymbolAtLocation(property, this.arbitraryAstNode);
+      let propertyType = this.tryGetTypeOfSymbol(property);
       if (propertyType == null) return null;
       let propertyTypeId = this.getId(propertyType, false);
       if (propertyTypeId == null) return null;
@@ -882,7 +891,7 @@ export class TypeTable {
     let props = this.tryGetProperties(type);
     if (props == null) return;
     for (let symbol of props) {
-      let propertyType = this.typeChecker.getTypeOfSymbolAtLocation(symbol, this.arbitraryAstNode);
+      let propertyType = this.tryGetTypeOfSymbol(symbol);
       if (propertyType == null) continue;
       let propertyTypeId = this.getId(propertyType, false);
       if (propertyTypeId == null) continue;
@@ -938,7 +947,7 @@ export class TypeTable {
       }
       if (parameters.length === 0) return null;
       let restParameter = parameters[parameters.length - 1];
-      let restParameterType = this.typeChecker.getTypeOfSymbolAtLocation(restParameter, this.arbitraryAstNode);
+      let restParameterType = this.tryGetTypeOfSymbol(restParameter);
       if (restParameterType == null) return null;
       let restParameterTypeId = this.getId(restParameterType, false);
       if (restParameterTypeId == null) return null;
@@ -961,7 +970,7 @@ export class TypeTable {
     }
     for (let paramIndex = 0; paramIndex < parameters.length; ++paramIndex) {
       let parameter = parameters[paramIndex];
-      let parameterType = this.typeChecker.getTypeOfSymbolAtLocation(parameter, this.arbitraryAstNode);
+      let parameterType = this.tryGetTypeOfSymbol(parameter);
       if (parameterType == null) {
         return null;
       }
@@ -1178,7 +1187,7 @@ export class TypeTable {
       stack.push(id);
 
       for (let symbol of type.getProperties()) {
-        let propertyType: ts.Type = typeTable.typeChecker.getTypeOfSymbolAtLocation(symbol, typeTable.arbitraryAstNode);
+        let propertyType = this.tryGetTypeOfSymbol(symbol);
         if (propertyType == null) continue;
         traverseType(propertyType);
       }
@@ -1255,7 +1264,7 @@ export class TypeTable {
       if (objectFlags & ts.ObjectFlags.Anonymous) {
         // Anonymous interface type like `{ x: number }`.
         for (let symbol of type.getProperties()) {
-          let propertyType = this.typeChecker.getTypeOfSymbolAtLocation(symbol, this.arbitraryAstNode);
+          let propertyType = this.tryGetTypeOfSymbol(symbol);
           if (propertyType == null) continue;
           callback(propertyType);
         }
@@ -1280,7 +1289,7 @@ export class TypeTable {
   private forEachChildTypeOfSignature(signature: ts.Signature, callback: (type: ts.Type) => void): void {
     callback(signature.getReturnType());
     for (let parameter of signature.getParameters()) {
-      let paramType = this.typeChecker.getTypeOfSymbolAtLocation(parameter, this.arbitraryAstNode);
+      let paramType = this.tryGetTypeOfSymbol(parameter);
       if (paramType == null) continue;
       callback(paramType);
     }
