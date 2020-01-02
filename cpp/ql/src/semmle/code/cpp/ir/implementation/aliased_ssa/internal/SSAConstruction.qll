@@ -811,7 +811,7 @@ module DefUse {
    * Holds if the `Phi` instruction for location `useLocation` at the beginning of block `phiBlock` has an operand along
    * the incoming edge from `predBlock`, where that operand's definition is at offset `defOffset` in block `defBlock`.
    */
-  pragma[inline]
+  pragma[noopt]
   predicate hasPhiOperandDefinition(
     Alias::MemoryLocation defLocation, Alias::MemoryLocation useLocation, OldBlock phiBlock,
     OldBlock predBlock, OldBlock defBlock, int defOffset
@@ -819,8 +819,8 @@ module DefUse {
     exists(int defRank |
       definitionHasPhiNode(useLocation, phiBlock) and
       predBlock = phiBlock.getAFeasiblePredecessor() and
-      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
       definitionReachesEndOfBlock(useLocation, defBlock, defRank, predBlock) and
+      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
       exists(Alias::getOverlap(defLocation, useLocation))
     )
   }
