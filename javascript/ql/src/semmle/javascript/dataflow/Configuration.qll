@@ -938,8 +938,8 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
   or
   exists(DataFlow::Node mid, PathSummary stepSummary |
     reachableFromSource(nd, cfg, summary) and
-    flowStep(nd, cfg, mid, stepSummary) and
-    onPath(mid, cfg, summary.append(stepSummary))
+    flowStep(nd, id(cfg), mid, stepSummary) and
+    onPath(mid, id(cfg), summary.append(stepSummary))
   )
 }
 
