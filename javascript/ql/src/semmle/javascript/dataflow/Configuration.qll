@@ -1071,6 +1071,18 @@ private MidPathNode finalMidNode(SinkPathNode snk) {
 }
 
 /**
+ * Holds if `nd` is a mid node wrapping `(predNd, cfg, summary)`, and there is a flow step
+ * from `predNd` to `succNd` under `cfg` with summary `newSummary`.
+ *
+ * This helper predicate exists to clarify the intended join order in `getASuccessor` below.
+ */
+pragma[noinline]
+private predicate midNodeStep(PathNode nd, DataFlow::Node predNd, Configuration cfg, PathSummary summary, DataFlow::Node succNd, PathSummary newSummary) {
+  nd = MkMidNode(predNd, cfg, summary) and
+  flowStep(predNd, id(cfg), succNd, newSummary)
+}
+
+/**
  * Gets a node to which data from `nd` may flow in one step.
  */
 private PathNode getASuccessor(PathNode nd) {
@@ -1079,8 +1091,7 @@ private PathNode getASuccessor(PathNode nd) {
   or
   // mid node to mid node
   exists(Configuration cfg, DataFlow::Node predNd, PathSummary summary, DataFlow::Node succNd, PathSummary newSummary |
-    nd = MkMidNode(predNd, cfg, summary) and
-    flowStep(predNd, id(cfg), succNd, newSummary) and
+    midNodeStep(nd, predNd, cfg, summary, succNd, newSummary) and
     result = MkMidNode(succNd, id(cfg), summary.append(newSummary))
   )
   or
