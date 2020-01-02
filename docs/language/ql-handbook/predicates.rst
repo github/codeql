@@ -275,7 +275,7 @@ be bound, is different from ``bindingset[x, y]``, which states that both ``x`` a
 bound.
 
 The latter can be useful when you want to declare a :ref:`predicate with result <predicates-with-result>` that takes multiple input arguments.
-For example, the following predicate gets ``str``, truncated to a maximum length of ``len`` characters::
+For example, the following predicate takes a string ``str`` and truncates it to a maximum length of ``len`` characters::
 
     bindingset[str, len]
     string truncate(string str, int len) {
