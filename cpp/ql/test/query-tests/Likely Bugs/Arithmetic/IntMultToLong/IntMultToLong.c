@@ -93,12 +93,12 @@ size_t three_chars(unsigned char a, unsigned char b, unsigned char c) {
     return a * b * c; // at most 16581375
 }
 
-void g(unsigned char a, unsigned char b, unsigned char b2, int c) {
-    unsigned long d, e, f, g, h;
-    d = (a + 1) * (b + 1); // GOOD
-    e = (c + 1) * (b + 1); // BAD
-    h = (a + 1) * (b + 1) * (b2 + 1); // GOOD
+void g(unsigned char uchar1, unsigned char uchar2, unsigned char uchar3, int i) {
+    unsigned long ulong1, ulong2, ulong3, ulong4, ulong5;
+    ulong1 = (uchar1 + 1) * (uchar2 + 1); // GOOD
+    ulong2 = (i + 1) * (uchar2 + 1); // BAD
+    ulong3 = (uchar1 + 1) * (uchar2 + 1) * (uchar3 + 1); // GOOD
 
-    f = (a + (a + 1)) * (b + 1); // GOOD
-    g = (c + (a + 1)) * (b + 1); // BAD
+    ulong4 = (uchar1 + (uchar1 + 1)) * (uchar2 + 1); // GOOD
+    ulong5 = (i + (uchar1 + 1)) * (uchar2 + 1); // BAD
 }
