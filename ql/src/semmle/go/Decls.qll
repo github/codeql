@@ -130,6 +130,13 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
   Parameter getAParameter() {
     result.getDeclaration() = getTypeExpr().getAParameterDecl().getNameExpr(_)
   }
+
+  /**
+   * Gets a call to this function.
+   */
+  DataFlow::CallNode getACall() {
+    result.getACallee() = this
+  }
 }
 
 /**
@@ -150,9 +157,6 @@ class FuncDecl extends @funcdecl, Decl, Documentable, FuncDef {
 
   /** Gets the function declared by this function declaration. */
   DeclaredFunction getFunction() { this = result.getDecl() }
-
-  /** Gets a (possibly virtual) call to this function. */
-  CallExpr getACall() { this = result.getACallee() }
 
   override string toString() { result = "function declaration" }
 }
