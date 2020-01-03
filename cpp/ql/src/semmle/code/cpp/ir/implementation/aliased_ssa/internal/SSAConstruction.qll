@@ -563,28 +563,28 @@ module DefUse {
   /**
    * Gets the `Instruction` for the definition at offset `defOffset` in block `defBlock`.
    */
-  bindingset[defOffset, defLocation]
-  pragma[inline]
   Instruction getDefinitionOrChiInstruction(
     OldBlock defBlock, int defOffset, Alias::MemoryLocation defLocation,
     Alias::MemoryLocation actualDefLocation
   ) {
-    defOffset >= 0 and
-    exists(OldInstruction oldInstr |
-      oldInstr = defBlock.getInstruction(defOffset / 2) and
-      if (defOffset % 2) > 0
-      then (
-        // An odd offset corresponds to the `Chi` instruction.
-        result = Chi(oldInstr) and
-        actualDefLocation = defLocation.getVirtualVariable()
-      ) else (
-        // An even offset corresponds to the original instruction.
-        result = getNewInstruction(oldInstr) and
-        actualDefLocation = defLocation
-      )
+    exists(OldInstruction oldInstr, int oldOffset |
+      oldInstr = defBlock.getInstruction(oldOffset) and
+      hasNonPhiDefinition(_, defLocation, defBlock, defOffset) and
+      oldOffset >= 0
+    |
+      // An odd offset corresponds to the `Chi` instruction.
+      defOffset = oldOffset * 2 + 1 and
+      result = Chi(oldInstr) and
+      actualDefLocation = defLocation.getVirtualVariable()
+      or
+      // An even offset corresponds to the original instruction.
+      defOffset = oldOffset * 2 and
+      result = getNewInstruction(oldInstr) and
+      actualDefLocation = defLocation
     )
     or
-    defOffset < 0 and
+    defOffset = -1 and
+    hasDefinition(_, defLocation, defBlock, defOffset) and
     result = Phi(defBlock, defLocation) and
     actualDefLocation = defLocation
   }
