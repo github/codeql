@@ -18,14 +18,14 @@ abstract private class InsecureNettyObjectCreation extends ClassInstanceExpr { }
 private class InsecureDefaultHttpHeadersClassInstantiation extends InsecureNettyObjectCreation {
   InsecureDefaultHttpHeadersClassInstantiation() {
     getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpHeaders") and
-    getArgument(0).getProperExpr().(BooleanLiteral).getBooleanValue() = false
+    getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false
   }
 }
 
 private class InsecureDefaultHttpResponseClassInstantiation extends InsecureNettyObjectCreation {
   InsecureDefaultHttpResponseClassInstantiation() {
     getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpResponse") and
-    getArgument(2).getProperExpr().(BooleanLiteral).getBooleanValue() = false
+    getArgument(2).(CompileTimeConstantExpr).getBooleanValue() = false
   }
 }
 
