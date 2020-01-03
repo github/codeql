@@ -764,6 +764,23 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   override string getAMatchedString() {
     not isInverted() and result = getAChild().getAMatchedString()
   }
+
+  /**
+   * Holds if this character class matches any character.
+   */
+  predicate isUniversalClass() {
+    // [^]
+    isInverted() and not exists(getAChild())
+    or
+    // [\w\W] and similar
+    not isInverted() and
+    exists(string cce1, string cce2 |
+      cce1 = getAChild().(RegExpCharacterClassEscape).getValue() and
+      cce2 = getAChild().(RegExpCharacterClassEscape).getValue()
+    |
+      cce1 != cce2 and cce1.toLowerCase() = cce2.toLowerCase()
+    )
+  }
 }
 
 /**

@@ -17,6 +17,7 @@
 | **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
 |---------------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Cross-site scripting through exception (`js/xss-through-exception`) | security, external/cwe/cwe-079, external/cwe/cwe-116              | Highlights potential XSS vulnerabilities where an exception is written to the DOM. Results are not shown on LGTM by default. |
+| Regular expression always matches (`js/regex/always-matches`) | correctness, regular-expressions | Highlights regular expression checks that trivially succeed by matching an empty substring. |
 
 ## Changes to existing queries
 
