@@ -81,7 +81,7 @@ That is, you should define a *base case* that allows the predicate to *bottom ou
    The query optimizer has special data structures for dealing with `transitive closures <https://help.semmle.com/QL/ql-handbook/recursion.html#transitive-closures>`__.
    If possible, use a transitive closure over a simple recursive predicate, as it is likely to be computed faster.
 
-Folding predicates
+Fold predicates
 ~~~~~~~~~~~~~~~~~~
 
 Sometimes you can assist the query optimizer by "folding" parts of large predicates out into smaller predicates.
