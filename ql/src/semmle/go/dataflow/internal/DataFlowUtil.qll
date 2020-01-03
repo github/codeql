@@ -320,6 +320,13 @@ class CallNode extends ExprNode {
    * variant `getResult(i)` for such calls.
    */
   Node getResult() { not getType() instanceof TupleType and result = this }
+
+  /** Gets the data flow node corresponding to the receiver of this call, if any. */
+  Node getReceiver() {
+    exists(SelectorExpr s | exprNode(s).getASuccessor*() = this.getCalleeNode() |
+      result = exprNode(s.getBase())
+    )
+  }
 }
 
 /** A data flow node that represents a call to a method. */
@@ -329,13 +336,6 @@ class MethodCallNode extends CallNode {
   override Method getTarget() { result = expr.getTarget() }
 
   override MethodDecl getACallee() { result = expr.getACallee() }
-
-  /** Gets the data flow node corresponding to the receiver of this call. */
-  Node getReceiver() {
-    exists(SelectorExpr s | exprNode(s).getASuccessor*() = this.getCalleeNode() |
-      result = exprNode(s.getBase())
-    )
-  }
 }
 
 /** A representation of a receiver initialization. */
