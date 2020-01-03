@@ -272,8 +272,8 @@ class CallNode extends ExprNode {
   /** Gets the declared target of this call */
   Function getTarget() { result = expr.getTarget() }
 
-  /** Get the declaration of a possible target of this call. See `CallExpr.getACallee`. */
-  FuncDecl getACallee() { result = expr.getACallee() }
+  /** Get the definition of a possible target of this call. See `CallExpr.getACallee`. */
+  FuncDef getACallee() { result = expr.getACallee() }
 
   /** Gets the name of the function or method being called, if it can be determined. */
   string getCalleeName() { result = expr.getTarget().getName() }

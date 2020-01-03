@@ -473,15 +473,15 @@ class CallExpr extends CallOrConversionExpr {
   Function getTarget() { this = result.getACallExpr() }
 
   /**
-   * Gets the declaration of a possible target of this call.
+   * Gets the definition of a possible target of this call.
    *
    * For non-virtual calls, there is at most one possible call target (but there may be none if the
    * target has no declaration).
    *
-   * For virtual calls, we look up possible targets in all types that implement the receiver interface
-   * type.
+   * For virtual calls, we look up possible targets in all types that implement the receiver
+   * interface type.
    */
-  FuncDecl getACallee() {
+  FuncDef getACallee() {
     result = getTarget().(DeclaredFunction).getDecl()
     or
     exists(SelectorExpr sel, InterfaceType declaredRecv, Type actualRecv |
