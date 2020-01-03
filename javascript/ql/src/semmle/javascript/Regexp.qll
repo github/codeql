@@ -799,6 +799,16 @@ class RegExpParseError extends Error, @regexp_parse_error {
 }
 
 /**
+ * Holds if `func` is a method defined on `String.prototype` with name `name`. 
+ */
+private predicate isNativeStringMethod(Function func, string name) {
+  exists(ExternalInstanceMemberDecl decl |
+    decl.hasQualifiedName("String", name) and
+    func = decl.getInit()
+  )
+}
+
+/**
  * Holds if `source` may be interpreted as a regular expression.
  */
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
@@ -808,18 +818,23 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
     source = DataFlow::globalVarRef("RegExp").getAnInvocation().getArgument(0)
     or
     // The argument of a call that coerces the argument to a regular expression.
-    exists(MethodCallExpr mce, string methodName |
+    exists(DataFlow::MethodCallNode mce, string methodName |
       mce.getReceiver().analyze().getAType() = TTString() and
-      mce.getMethodName() = methodName
+      mce.getMethodName() = methodName and
+      not exists(Function func |
+        func = mce.getACallee()
+      |
+        not isNativeStringMethod(func, methodName)
+      )
     |
-      methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1
+      methodName = "match" and source = mce.getArgument(0) and mce.getNumArgument() = 1
       or
       methodName = "search" and
-      source.asExpr() = mce.getArgument(0) and
+      source = mce.getArgument(0) and
       mce.getNumArgument() = 1 and
       // "search" is a common method name, and so we exclude chained accesses
       // because `String.prototype.search` returns a number
-      not exists(PropAccess p | p.getBase() = mce)
+      not exists(PropAccess p | p.getBase() = mce.getEnclosingExpr())
     )
   )
 }
