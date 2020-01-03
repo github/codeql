@@ -46,6 +46,14 @@ predicate isBadPromiseContext(Expr expr) {
   expr = any(UnaryExpr e).getOperand()
   or
   expr = any(UpdateExpr e).getOperand()
+  or
+  expr = any(ConditionalExpr e).getCondition()
+  or
+  expr = any(IfStmt stmt).getCondition()
+  or
+  expr = any(ForInStmt stmt).getIterationDomain()
+  or
+  expr = any(IndexExpr e).getIndex()
 }
 
 string tryGetPromiseExplanation(Expr e) {

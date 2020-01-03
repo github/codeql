@@ -9,7 +9,23 @@ function useThing() {
 
     if (thing == null) {} // NOT OK
 
-    return thing + "bar"; // NOT OK
+    something(thing ? 1 : 2); // NOT OK
+
+    for (let x in thing) { // NOT OK
+        something(x);
+    }
+
+    let obj = something();
+    something(obj[thing]); // NOT OK
+    obj[thing] = 5; // NOT OK
+
+    something(thing + "bar"); // NOT OK
+
+    if (something()) {
+        if (thing) { // NOT OK
+            something(3);
+        }
+    }
 }
 
 async function useThingCorrectly() {
