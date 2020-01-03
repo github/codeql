@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a web server is designed to receive a request from a client without any mechanism 
+for verifying that it was intentionally sent, then it might be possible for an attacker 
+to trick a client into making an unintentional request to the web server which will be treated 
+as an authentic request. This can be done via a URL, image load, XMLHttpRequest, etc. and can 
+result in exposure of data or unintended code execution.</p>
+</overview>
+
+<recommendation>
+<p>Cross-Site Request Forgery (CSRF) protection is enabled by default in Spring with Java 
+configuration. It's recommended to not disable this.</p>
+</recommendation>
+
+<example>
+<p>The following example shows the Spring Java configuration with CSRF protection disabled.</p>
+
+<sample src="SpringCSRFProtection.java" />
+</example>
+
+<references>
+<li>
+CWE:
+<a href="https://cwe.mitre.org/data/definitions/352.html">CWE-352: Cross-Site Request Forgery (CSRF)</a>.
+</li>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross-Site Request Forgery (CSRF)</a>.
+</li>
+<li>
+Spring Security Reference:
+<a href="https://docs.spring.io/spring-security/site/docs/current/reference/html5/#servlet-csrf">
+  Cross Site Request Forgery (CSRF) for Servlet Environments
+</a>.
+</li>
+</references>
+</qhelp>
