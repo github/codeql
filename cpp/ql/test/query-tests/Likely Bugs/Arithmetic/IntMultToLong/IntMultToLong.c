@@ -101,4 +101,9 @@ void g(unsigned char uchar1, unsigned char uchar2, unsigned char uchar3, int i) 
 
     ulong4 = (uchar1 + (uchar1 + 1)) * (uchar2 + 1); // GOOD
     ulong5 = (i + (uchar1 + 1)) * (uchar2 + 1); // BAD
+
+    ulong5 = (uchar1 + 1073741824) * uchar2; // BAD [NOT DETECTED]
+    ulong5 = (uchar1 + (1 << 30)) * uchar2; // BAD [NOT DETECTED]
+    ulong5 = uchar1 * uchar1 * uchar1 * uchar2 * uchar2 * uchar2; // BAD [NOT DETECTED]
+    ulong5 = (uchar1 + (unsigned short)(-1)) * (uchar2 + (unsigned short)(-1)); // BAD
 }
