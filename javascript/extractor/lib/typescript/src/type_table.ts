@@ -771,6 +771,7 @@ export class TypeTable {
     try {
       return this.typeChecker.getTypeOfSymbolAtLocation(symbol, this.arbitraryAstNode)
     } catch (e) {
+      console.warn(`Could not compute type of '${this.typeChecker.symbolToString(symbol)}'`);
       return null;
     }
   }
