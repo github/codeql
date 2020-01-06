@@ -1413,4 +1413,25 @@ module IR {
   ExtractTupleElementInstruction extractTupleElement(Instruction base, int idx) {
     result.extractsElement(base, idx)
   }
+
+  /**
+   * Gets the instruction corresponding to the implicit lower bound of slice `e`, if any.
+   */
+  EvalImplicitLowerSliceBoundInstruction implicitLowerSliceBoundInstruction(SliceExpr e) {
+    result = MkImplicitLowerSliceBound(e)
+  }
+
+  /**
+   * Gets the instruction corresponding to the implicit upper bound of slice `e`, if any.
+   */
+  EvalImplicitUpperSliceBoundInstruction implicitUpperSliceBoundInstruction(SliceExpr e) {
+    result = MkImplicitUpperSliceBound(e)
+  }
+
+  /**
+   * Gets the instruction corresponding to the implicit maximum bound of slice `e`, if any.
+   */
+  EvalImplicitMaxSliceBoundInstruction implicitMaxSliceBoundInstruction(SliceExpr e) {
+    result = MkImplicitMaxSliceBound(e)
+  }
 }
