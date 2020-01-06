@@ -23,6 +23,7 @@
 | Clear-text logging of sensitive information (`js/clear-text-logging`) | More results | More results involving `process.env` and indirect calls to logging methods are recognized. |
 | Incomplete string escaping or encoding (`js/incomplete-sanitization`) | Fewer false positive results | This query now recognizes additional cases where a single replacement is likely to be intentional. |
 | Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | This query now recognizes additional ways event handler receivers can be bound. | 
+| Expression has no effect (`js/useless-expression`) | Fewer false positive results | The query now recognizes block-level flow type annotations. |
 
 ## Changes to libraries
 
