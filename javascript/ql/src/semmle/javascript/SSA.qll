@@ -639,8 +639,16 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
  * would be visible.
  */
 class SsaPhiNode extends SsaPseudoDefinition, TPhi {
+  /**
+   * Gets the input to this phi node coming from the given predecessor block.
+   */
+  SsaVariable getInputFromBlock(BasicBlock bb) {
+    bb = getBasicBlock().getAPredecessor() and
+    result = getDefReachingEndOf(bb, getSourceVariable())
+  }
+
   override SsaVariable getAnInput() {
-    result = getDefReachingEndOf(getBasicBlock().getAPredecessor(), getSourceVariable())
+    result = getInputFromBlock(_)
   }
 
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
