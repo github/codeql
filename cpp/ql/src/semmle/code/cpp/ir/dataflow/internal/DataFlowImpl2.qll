@@ -1805,14 +1805,14 @@ private newtype TSummaryCtx =
       flow(p, true, TNil(_), conf) and
       parameterFlowReturn(p, ret, _, _, _,
         any(Summary s | s = TSummaryTaint() or s = TSummaryTaintStore(_)), conf) and
-      flow(ret, conf)
+      flow(ret, unbind(conf))
     )
   } or
   TSummaryCtxConsNil(ParameterNode p, Content f) {
     exists(Configuration conf, ReturnNodeExt ret |
       flow(p, true, TConsNil(f, _), conf) and
       parameterFlowReturn(p, ret, _, _, _, TSummaryReadTaint(f), conf) and
-      flow(ret, conf)
+      flow(ret, unbind(conf))
     )
   }
 
