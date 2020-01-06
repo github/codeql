@@ -17,3 +17,5 @@ function f(
 x,
 x // OK: empty function
 ) { }
+
+(a, a) => a + a; // OK: for strict mode functions, duplicate parameter names are a syntax error
