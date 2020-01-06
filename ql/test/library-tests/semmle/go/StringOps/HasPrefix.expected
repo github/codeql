@@ -1,0 +1,6 @@
+| main.go:7:9:7:33 | call to HasPrefix | main.go:7:27:7:28 | s1 | main.go:7:31:7:32 | s2 | true |
+| main.go:8:3:8:10 | ...==... | main.go:6:23:6:24 | s1 | main.go:6:27:6:28 | s2 | true |
+| main.go:9:3:9:14 | ...!=... | main.go:9:3:9:4 | s1 | main.go:9:12:9:14 | 'x' | false |
+| main.go:10:3:10:21 | ...==... | main.go:10:3:10:4 | s1 | main.go:10:20:10:21 | s2 | true |
+| main.go:11:3:11:20 | ...==... | main.go:11:3:11:4 | s1 | main.go:11:19:11:20 | s2 | true |
+| main.go:12:3:12:18 | ...==... | main.go:12:3:12:4 | s1 | main.go:12:14:12:18 | "hi!" | true |
