@@ -32,7 +32,7 @@ regular expression accordingly, such as by changing a <code>*</code> to a <code>
 </recommendation>
 <example>
 <p>
-In the following example, a regular expression is used to check the format of an string <code>id</code>.
+In the following example, a regular expression is used to check the format of a string <code>id</code>.
 However, the check always passes because the regular expression can match the empty substring.
 For example, it will allow the ID string "<code>%%</code>" by matching an empty string at index 0.
 </p>

@@ -1,6 +1,6 @@
 /**
  * @name Regular expression always matches
- * @description Regular expression tests checks always find a match indicate dead code or a logic error
+ * @description Regular expression tests that always find a match indicate dead code or a logic error
  * @kind problem
  * @problem.severity warning
  * @id js/regex/always-matches
