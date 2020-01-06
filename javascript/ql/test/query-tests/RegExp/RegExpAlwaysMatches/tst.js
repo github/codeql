@@ -3,7 +3,7 @@ function optionalPrefix(x) {
 }
 
 function mandatoryPrefix(x) {
-  return /^https:/.test(x); // NOT OK
+  return /^https:/.test(x); // OK
 }
 
 function httpOrHttps(x) {
@@ -64,4 +64,12 @@ function search2(x) {
 
 function lookahead(x) {
   return /(?!x)/.search(x); // OK
+}
+
+function searchPrefix(x) {
+  return /^foo?/.search(x); // NOT OK - `foo?` does not affect the returned index
+}
+
+function searchSuffix(x) {
+  return /foo?$/.search(x); // OK - `foo?` affects the returned index
 }
