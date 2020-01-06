@@ -402,49 +402,37 @@ private predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
 }
 
 private predicate isCoveredOffset(
-  VirtualVariable vv, IRVariable var, int offsetRank, VariableMemoryLocation vml
+  IRVariable var, int offsetRank, VariableMemoryLocation vml
 ) {
-  exists(int startRank, int endRank |
-    vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
-    vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
-    hasVariableAndVirtualVariable(vv, var, vml) and
+  exists(int startRank, int endRank, VirtualVariable vvar |
+    vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
+    vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
+    var = vml.getVariable() and
+    vvar = vml.getVirtualVariable() and
     isRelatableMemoryLocation(vml) and
     offsetRank in [startRank .. endRank]
   )
 }
 
-private predicate hasUnknownOffset(VirtualVariable vv, IRVariable var, VariableMemoryLocation vml) {
-  hasVariableAndVirtualVariable(vv, var, vml) and
+private predicate hasUnknownOffset(IRVariable var, VariableMemoryLocation vml) {
+  vml.getVariable() = var and
   (
     vml.getStartBitOffset() = Ints::unknown() or
     vml.getEndBitOffset() = Ints::unknown()
   )
 }
 
-private predicate hasVariableAndVirtualVariable(
-  VirtualVariable vv, IRVariable var, VariableMemoryLocation vml
-) {
-  var = vml.getVariable() and
-  vv = vml.getVirtualVariable()
-}
-
 private predicate overlappingIRVariableMemoryLocations(
   VariableMemoryLocation def, VariableMemoryLocation use
 ) {
-  exists(VirtualVariable vv, IRVariable var, int offsetRank |
-    isCoveredOffset(vv, var, offsetRank, def) and
-    isCoveredOffset(vv, var, offsetRank, use)
+  exists(IRVariable var, int offsetRank |
+    isCoveredOffset(var, offsetRank, def) and
+    isCoveredOffset(var, offsetRank, use)
   )
   or
-  exists(VirtualVariable vv, IRVariable var |
-    hasUnknownOffset(vv, var, def) and
-    hasVariableAndVirtualVariable(vv, var, use)
-  )
+  hasUnknownOffset(use.getVariable(), def)
   or
-  exists(VirtualVariable vv, IRVariable var |
-    hasUnknownOffset(vv, var, use) and
-    hasVariableAndVirtualVariable(vv, var, def)
-  )
+  hasUnknownOffset(def.getVariable(), use)
 }
 
 private Overlap getVariableMemoryLocationOverlap(
