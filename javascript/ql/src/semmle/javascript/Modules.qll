@@ -88,6 +88,7 @@ abstract class Module extends TopLevel {
         result = f.getJavaScriptFile(path.getBaseName())
         or
         // If a js file was not found look for a file that compiles to js
+        path.getExtension() = ".js" and
         not exists(f.getJavaScriptFile(path.getBaseName())) and
         result = f.getJavaScriptFile(path.getStem())
       )
