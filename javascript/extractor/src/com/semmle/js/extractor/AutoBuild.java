@@ -599,7 +599,6 @@ public class AutoBuild {
                 Arrays.asList(
                     "yarn",
                     "install",
-                    "--verbose",
                     "--non-interactive",
                     "--ignore-scripts",
                     "--ignore-platform",
