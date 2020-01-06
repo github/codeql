@@ -1,9 +1,9 @@
-| test.py:3:5:3:20 | Function Wat.upper | overriding | not overridden |
-| test.py:6:1:6:26 | Function outside_func | not overriding | overridden |
-| test.py:11:11:11:29 | Function Base.lambda | not overriding | overridden |
-| test.py:13:24:13:36 | Function Base.lambda | not overriding | not overridden |
-| test.py:17:5:17:21 | Function Base.normal | not overriding | overridden |
-| test.py:28:5:28:21 | Function Sub2.foo | overriding | overridden |
-| test.py:31:5:31:24 | Function Sub2.tricky | overriding | not overridden |
-| test.py:36:5:36:21 | Function Sub2Sub.foo | overriding | not overridden |
-| test.py:39:5:39:18 | Function Sub2Sub.baz | overriding | not overridden |
+| test.py:3:5:3:20 | Function MyStr.upper | overriding | not overridden |
+| test.py:11:1:11:26 | Function outside_func | not overriding | overridden |
+| test.py:16:11:16:29 | Function Base.lambda | not overriding | overridden |
+| test.py:18:24:18:36 | Function Base.lambda | not overriding | not overridden |
+| test.py:22:5:22:21 | Function Base.normal | not overriding | overridden |
+| test.py:33:5:33:21 | Function Bar.foo | overriding | overridden |
+| test.py:36:5:36:24 | Function Bar.tricky | overriding | not overridden |
+| test.py:41:5:41:21 | Function SpecialBar.foo | overriding | not overridden |
+| test.py:44:5:44:18 | Function SpecialBar.baz | overriding | not overridden |

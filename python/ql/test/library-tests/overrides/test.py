@@ -1,7 +1,12 @@
-class Wat(str):
+class MyStr(str):
 
     def upper(self):
         return self.lower()
+
+
+s = MyStr('asdf')
+print(s.upper(), len(s))
+
 
 def outside_func(self, x):
     print(x)
@@ -19,35 +24,31 @@ class Base(object):
 
     tricky = outside_func
 
-class Sub(Base):
+class Foo(Base):
 
     normal = False
 
-class Sub2(Base):
+class Bar(Base):
 
     def foo(self, y):
         return y * 100
 
     def tricky(self, x):
-        print('nice!', x)
+        print('tricky!', x)
 
-class Sub2Sub(Sub2):
+class SpecialBar(Bar):
 
     def foo(self, z):
         return z / 123
 
     def baz(self):
-        print('python is a bit crazy sometimes')
+        print('baz')
 
-
-ws = Wat('asdf')
-print(ws.upper(), len(ws))
 
 b = Base()
 print(b.foo(1))
 print(b.bar(10))
 
-
-ss = SubSub()
-print(ss.foo(1))
-ss.baz()
+sb = SpecialBar()
+print(sb.foo(1))
+sb.baz()
