@@ -25,7 +25,7 @@ class CherryPyRequest extends TaintKind {
     }
 }
 
-class CherryPyExposedFunctionParameter extends TaintSource {
+class CherryPyExposedFunctionParameter extends HttpRequestTaintSource {
     CherryPyExposedFunctionParameter() {
         exists(Parameter p |
             p = any(CherryPyExposedFunction f).getAnArg() and
@@ -39,7 +39,7 @@ class CherryPyExposedFunctionParameter extends TaintSource {
     override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalStringKind }
 }
 
-class CherryPyRequestSource extends TaintSource {
+class CherryPyRequestSource extends HttpRequestTaintSource {
     CherryPyRequestSource() { this.(ControlFlowNode).pointsTo(Value::named("cherrypy.request")) }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof CherryPyRequest }

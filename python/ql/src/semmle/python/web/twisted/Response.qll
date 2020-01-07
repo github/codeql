@@ -5,7 +5,7 @@ import semmle.python.security.strings.Basic
 import Twisted
 import Request
 
-class TwistedResponse extends TaintSink {
+class TwistedResponse extends HttpResponseTaintSink {
     TwistedResponse() {
         exists(PythonFunctionValue func, string name |
             isKnownRequestHandlerMethodName(name) and

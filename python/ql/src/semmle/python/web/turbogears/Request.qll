@@ -1,5 +1,6 @@
 import python
 import semmle.python.security.strings.Untrusted
+import semmle.python.web.Http
 import TurboGears
 
 private class ValidatedMethodParameter extends Parameter {
@@ -11,7 +12,7 @@ private class ValidatedMethodParameter extends Parameter {
     }
 }
 
-class UnvalidatedControllerMethodParameter extends TaintSource {
+class UnvalidatedControllerMethodParameter extends HttpRequestTaintSource {
     UnvalidatedControllerMethodParameter() {
         exists(Parameter p |
             any(TurboGearsControllerMethod m | not m.getName() = "onerror").getAnArg() = p and

@@ -47,7 +47,7 @@ class FlaskRequestArgs extends HttpRequestTaintSource {
 }
 
 /** Source of dictionary whose values are externally controlled */
-class FlaskRequestJson extends TaintSource {
+class FlaskRequestJson extends HttpRequestTaintSource {
     FlaskRequestJson() { flask_request_attr(this, "json") }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalJsonKind }
