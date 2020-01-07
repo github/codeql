@@ -170,9 +170,7 @@ class MemoryOperand extends Operand {
   /**
    * Gets the kind of memory access performed by the operand.
    */
-  MemoryAccessKind getMemoryAccess() {
-    result = getUse().getOpcode().getReadMemoryAccess()
-  }
+  MemoryAccessKind getMemoryAccess() { result = getUse().getOpcode().getReadMemoryAccess() }
 
   /**
    * Holds if the memory access performed by this operand will not always read from every bit in the
@@ -182,9 +180,7 @@ class MemoryOperand extends Operand {
    * conservative estimate of the memory that might actually be accessed at runtime (for example,
    * the global side effects of a function call).
    */
-  predicate hasMayReadMemoryAccess() {
-    getUse().getOpcode().hasMayReadMemoryAccess()
-  }
+  predicate hasMayReadMemoryAccess() { getUse().getOpcode().hasMayReadMemoryAccess() }
 
   /**
    * Returns the operand that holds the memory address from which the current operand loads its

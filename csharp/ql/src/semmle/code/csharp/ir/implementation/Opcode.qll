@@ -140,9 +140,7 @@ class Opcode extends TOpcode {
 }
 
 abstract class UnaryOpcode extends Opcode {
-  final override predicate hasOperandInternal(OperandTag tag) {
-    tag instanceof UnaryOperandTag
-  }
+  final override predicate hasOperandInternal(OperandTag tag) { tag instanceof UnaryOperandTag }
 }
 
 abstract class BinaryOpcode extends Opcode {
@@ -185,9 +183,7 @@ abstract class ThrowOpcode extends Opcode { }
 abstract class CatchOpcode extends Opcode { }
 
 abstract class OpcodeWithCondition extends Opcode {
-  final override predicate hasOperandInternal(OperandTag tag) {
-    tag instanceof ConditionOperandTag
-  }
+  final override predicate hasOperandInternal(OperandTag tag) { tag instanceof ConditionOperandTag }
 }
 
 abstract class BuiltInOperationOpcode extends Opcode { }
@@ -241,6 +237,7 @@ abstract class BufferReadOpcode extends BufferAccessOpcode {
  */
 abstract class SizedBufferAccessOpcode extends Opcode {
   final override predicate hasAddressOperand() { any() }
+
   final override predicate hasBufferSizeOperand() { any() }
 }
 
@@ -249,7 +246,7 @@ abstract class SizedBufferAccessOpcode extends Opcode {
  */
 abstract class SizedBufferWriteOpcode extends SizedBufferAccessOpcode {
   final override MemoryAccessKind getWriteMemoryAccess() {
-    result instanceof BufferMemoryAccess  //TODO: SizedBufferMemoryAccess
+    result instanceof BufferMemoryAccess //TODO: SizedBufferMemoryAccess
   }
 }
 
@@ -258,7 +255,7 @@ abstract class SizedBufferWriteOpcode extends SizedBufferAccessOpcode {
  */
 abstract class SizedBufferReadOpcode extends SizedBufferAccessOpcode {
   final override MemoryAccessKind getReadMemoryAccess() {
-    result instanceof BufferMemoryAccess  //TODO: SizedBufferMemoryAccess
+    result instanceof BufferMemoryAccess //TODO: SizedBufferMemoryAccess
   }
 }
 
@@ -294,9 +291,7 @@ abstract class MayReadOpcode extends Opcode {
  * An opcode that reads a value from memory.
  */
 abstract class OpcodeWithLoad extends IndirectReadOpcode {
-  final override predicate hasOperandInternal(OperandTag tag) {
-    tag instanceof LoadOperandTag
-  }
+  final override predicate hasOperandInternal(OperandTag tag) { tag instanceof LoadOperandTag }
 }
 
 /**
@@ -573,17 +568,13 @@ module Opcode {
   class AliasedDefinition extends Opcode, TAliasedDefinition {
     final override string toString() { result = "AliasedDefinition" }
 
-    final override MemoryAccessKind getWriteMemoryAccess() {
-      result instanceof EscapedMemoryAccess
-    }
+    final override MemoryAccessKind getWriteMemoryAccess() { result instanceof EscapedMemoryAccess }
   }
 
   class AliasedUse extends Opcode, TAliasedUse {
     final override string toString() { result = "AliasedUse" }
-  
-    final override MemoryAccessKind getReadMemoryAccess() {
-      result instanceof NonLocalMemoryAccess
-    }
+
+    final override MemoryAccessKind getReadMemoryAccess() { result instanceof NonLocalMemoryAccess }
 
     final override predicate hasOperandInternal(OperandTag tag) {
       tag instanceof SideEffectOperandTag
@@ -593,9 +584,7 @@ module Opcode {
   class Phi extends Opcode, TPhi {
     final override string toString() { result = "Phi" }
 
-    final override MemoryAccessKind getWriteMemoryAccess() {
-      result instanceof PhiMemoryAccess
-    }
+    final override MemoryAccessKind getWriteMemoryAccess() { result instanceof PhiMemoryAccess }
   }
 
   class BuiltIn extends BuiltInOperationOpcode, TBuiltIn {
