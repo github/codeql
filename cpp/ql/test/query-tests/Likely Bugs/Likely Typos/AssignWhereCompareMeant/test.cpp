@@ -124,3 +124,32 @@ void f2() {
   if(sz = "def") { // GOOD: a == comparison with a string literal is probably not the intent here
   }
 }
+
+void f3(int x, int y) {
+  if(x == 1 && (y = 2)) { // GOOD [FALSE POSITIVE]: the programmer seems to be okay with unparenthesized
+                          // comparison operands, so the parenthesis was used to mark this
+                          // as an assignment
+  }
+
+  if((x == 1) && (y = 2)) { // BAD
+  }
+
+  long z = x;
+  if(((z == 42) || (y = 2)) && (x == 1)) { // BAD
+  }
+
+  if((y = 2) && (x == z || x == 1)) { // GOOD [FALSE POSITIVE]
+  }
+
+  if(((x == 42) || x == 1) && (y = 2)) { // BAD
+  }
+
+  if(x == 10 || (x == 42 && x == 1) && (y = 2)) { // GOOD [FALSE POSITIVE]
+  }
+
+  if(x == 10 || ((x == 42) && (y = 2)) && (z == 1)) { // BAD
+  }
+
+  if((x == 10) || ((z == z) && (x == 1)) && (y = 2)) { // BAD
+  }
+}
