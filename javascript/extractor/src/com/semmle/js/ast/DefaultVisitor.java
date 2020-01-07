@@ -97,8 +97,11 @@ public class DefaultVisitor<C, R> implements Visitor<C, R> {
   }
 
   @Override
-  public R visit(AssignmentPattern nd, C q) {
-    throw new CatastrophicError("Assignment patterns should not appear in the AST.");
+  public R visit(AssignmentPattern nd, C c) {
+    // assignment patterns should not appear in the AST, but can do for malformed
+    // programs; the ASTExtractor raises a ParseError in this case, other visitors
+    // should just ignore them
+    return visit(nd.getLeft(), c);
   }
 
   @Override
