@@ -81,3 +81,7 @@ function wordBoundary(x) {
 function nonWordBoundary(x) {
   return /\B/.test(x); // OK - some strings don't have non-word boundaries
 }
+
+function emptyRegex(x) {
+  return new RegExp("").test(x); // NOT OK
+}
