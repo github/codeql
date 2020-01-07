@@ -19,6 +19,8 @@ The following changes in version 1.24 affect C# analysis in all applications.
 
 ## Changes to code extraction
 
+* Tuple expressions, for example `(int,bool)` in `default((int,bool))` are now extracted correctly.
+
 ## Changes to libraries
 
 * The taint tracking library now tracks flow through (implicit or explicit) conversion operator calls.
