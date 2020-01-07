@@ -121,6 +121,6 @@ void f() {
 void f2() {
   const char* sz = "abc";
 
-  if(sz = "def") { // GOOD [FALSE POSITIVE]: a == comparison with a string literal is probably not the intent here
+  if(sz = "def") { // GOOD: a == comparison with a string literal is probably not the intent here
   }
 }

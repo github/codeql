@@ -65,7 +65,8 @@ class BooleanControllingAssignmentInStmt extends BooleanControllingAssignment {
  */
 predicate candidateResult(BooleanControllingAssignment ae) {
   ae.getRValue().isConstant() and
-  not ae.isWhitelisted()
+  not ae.isWhitelisted() and
+  not ae.getRValue() instanceof StringLiteral
 }
 
 /**

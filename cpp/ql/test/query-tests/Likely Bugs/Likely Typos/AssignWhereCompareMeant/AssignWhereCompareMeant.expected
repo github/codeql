@@ -14,4 +14,3 @@
 | test.cpp:84:7:84:11 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:92:17:92:22 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:113:6:113:10 | ... = ... | Use of '=' where '==' may have been intended. |
-| test.cpp:124:6:124:15 | ... = ... | Use of '=' where '==' may have been intended. |
