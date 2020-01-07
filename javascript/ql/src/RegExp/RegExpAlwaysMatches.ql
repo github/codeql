@@ -98,10 +98,19 @@ class RegExpSearchCall extends DataFlow::MethodCallNode, RegExpQuery {
   }
 }
 
+/**
+ * Holds if `t` is a zero-width assertion other than an anchor.
+ */
+predicate isAssertion(RegExpTerm t) {
+  t instanceof RegExpSubPattern or
+  t instanceof RegExpWordBoundary or
+  t instanceof RegExpNonWordBoundary
+}
+
 from RegExpTerm term, RegExpQuery call, string message
 where
   term.isNullable() and
-  not term.getAChild() instanceof RegExpSubPattern and
+  not isAssertion(term.getAChild*()) and
   not isUniversalRegExp(term) and
   term = getEffectiveRoot(call.getRegExp()) and
   (
@@ -111,7 +120,6 @@ where
     or
     call instanceof RegExpSearchCall and
     not term.getAChild*() instanceof RegExpDollar and
-    not term.getAChild*() instanceof RegExpSubPattern and
     message = "This regular expression always the matches at index 0 when used $@, as it matches the empty substring."
   )
 select term, message, call, "here"

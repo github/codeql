@@ -73,3 +73,11 @@ function searchPrefix(x) {
 function searchSuffix(x) {
   return /foo?$/.search(x); // OK - `foo?` affects the returned index
 }
+
+function wordBoundary(x) {
+  return /\b/.test(x); // OK - some strings don't have word boundaries
+}
+
+function nonWordBoundary(x) {
+  return /\B/.test(x); // OK - some strings don't have non-word boundaries
+}
