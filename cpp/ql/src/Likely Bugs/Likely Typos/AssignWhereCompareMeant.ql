@@ -81,5 +81,6 @@ predicate candidateVariable(Variable v) {
 from BooleanControllingAssignment ae, UndefReachability undef
 where
   candidateResult(ae) and
+  not ae.isFromUninstantiatedTemplate(_) and
   not undef.reaches(_, ae.getLValue().(VariableAccess).getTarget(), ae.getLValue())
 select ae, "Use of '=' where '==' may have been intended."
