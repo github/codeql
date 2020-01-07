@@ -98,3 +98,22 @@ void g(int *i_p, int cond) {
   if (y = 1) { // GOOD: y might not be initialized so it is probably intentional.
   }
 }
+
+template<typename>
+void h() {
+  int x;
+  if(x = 0) { // GOOD [FALSE POSITIVE]: x is not initialized so this is probably intensional
+  }
+
+  int y = 0;
+  if((y = 1)) { // GOOD
+  }
+
+  int z = 0;
+  if(z = 1) { // BAD
+  }
+}
+
+void f() {
+  h<int>();
+}
