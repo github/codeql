@@ -29,7 +29,7 @@ private predicate hasOperandMemoryAccess(
   resultPointsTo(operand.getAddressOperand().getAnyDef(), var, startBitOffset) and
   languageType = operand.getLanguageType() and
   type = languageType.getIRType() and
-  (if operand.hasMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+  (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
   if exists(type.getByteSize())
   then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
   else endBitOffset = Ints::unknown()
@@ -476,7 +476,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
-    (if operand.hasMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+    (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
     (
       (
         kind.usesAddressOperand() and

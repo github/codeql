@@ -40,7 +40,7 @@ private predicate isVariableModeled(IRVariable var) {
   |
     bitOffset = 0 and
     type.getIRType() = var.getIRType() and
-    not operand.hasMayMemoryAccess()
+    not operand.hasMayReadMemoryAccess()
   )
 }
 
