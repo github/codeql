@@ -132,7 +132,7 @@ class SubAnalyzableExpr extends AnalyzableExpr, SubExpr {
 }
 
 class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
-  VarAnalyzableExpr() { not exists(this.getQualifier()) }
+  VarAnalyzableExpr() { this.getTarget() instanceof StackVariable }
 
   override float maxValue() {
     exists(SsaDefinition def, Variable v |

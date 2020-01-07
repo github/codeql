@@ -118,3 +118,11 @@ void g2(struct A* a, short n) {
     ulong1 = (a->s - 1) * ((*a).s + 1); // GOOD
     ulong2 = a->i * (*a).i; // BAD
 }
+
+int global_i;
+unsigned char global_uchar;
+void g3() {
+    unsigned long ulong1, ulong2;
+    ulong1 = global_i * global_i; // BAD
+    ulong2 = (global_uchar + 1) * 2; // GOOD
+}
