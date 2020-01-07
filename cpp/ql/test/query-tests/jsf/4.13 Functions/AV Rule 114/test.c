@@ -97,5 +97,5 @@ void f13_func(int x)
 
 int f14()
 {
-	__asm__("rdtsc"); // GOOD [FALSE POSITIVE]
+	__asm__("rdtsc"); // GOOD
 }
