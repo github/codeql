@@ -60,7 +60,7 @@ module StringConcatenation {
 
 module StringOps {
   /**
-   * A expression that is equivalent to `strings.HasPrefix(A, B)` or `!strings.HasPrefix(A, B)`.
+   * An expression that is equivalent to `strings.HasPrefix(A, B)` or `!strings.HasPrefix(A, B)`.
    *
    * Extends this class to refine existing API models. If you want to model new APIs,
    * extend `StringOps::HasPrefix::Range` instead.
@@ -93,7 +93,7 @@ module StringOps {
 
   module HasPrefix {
     /**
-     * A expression that is equivalent to `strings.HasPrefix(A, B)` or `!strings.HasPrefix(A, B)`.
+     * An expression that is equivalent to `strings.HasPrefix(A, B)` or `!strings.HasPrefix(A, B)`.
      *
      * Extends this class to model new APIs. If you want to refine existing API models, extend
      * `StringOps::HasPrefix` instead.
