@@ -1,5 +1,11 @@
 package com.semmle.js.extractor;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.FileExtractor.FileType;
 import com.semmle.js.extractor.trapcache.DefaultTrapCache;
@@ -16,6 +22,7 @@ import com.semmle.util.exception.ResourceError;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.extraction.ExtractorOutputConfig;
 import com.semmle.util.files.FileUtil;
+import com.semmle.util.io.WholeIO;
 import com.semmle.util.io.csv.CSVReader;
 import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.Env;
@@ -26,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Writer;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,9 +45,11 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -48,6 +58,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -391,6 +402,7 @@ public class AutoBuild {
     // include .eslintrc files and package.json files
     patterns.add("**/.eslintrc*");
     patterns.add("**/package.json");
+    patterns.add("**/tsconfig.json");
 
     // include any explicitly specified extensions
     for (String extension : fileTypes.keySet()) patterns.add("**/*" + extension);
@@ -545,12 +557,18 @@ public class AutoBuild {
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
 
+    Map<Path, Path> originalFiles = Collections.emptyMap();
     if (!tsconfigFiles.isEmpty() && this.installDependencies) {
-      this.installDependencies(filesToExtract);
+      originalFiles = this.installDependencies(filesToExtract);
     }
 
     // extract TypeScript projects and files
-    Set<Path> extractedFiles = extractTypeScript(defaultExtractor, filesToExtract, tsconfigFiles);
+    Set<Path> extractedFiles;
+    try {
+      extractedFiles = extractTypeScript(defaultExtractor, filesToExtract, tsconfigFiles);
+    } finally {
+      restoreOriginalFiles(originalFiles);
+    }
 
     // extract remaining files
     for (Path f : filesToExtract) {
@@ -587,36 +605,143 @@ public class AutoBuild {
     }
   }
 
-  protected void installDependencies(Set<Path> filesToExtract) {
+  protected void restoreOriginalFiles(Map<Path, Path> originalFiles) {
+    originalFiles.forEach(
+        (file, original) -> {
+          try {
+            Files.move(original, file, StandardCopyOption.REPLACE_EXISTING);
+          } catch (IOException e) {
+            throw new ResourceError("Could not restore original file: " + file, e);
+          }
+        });
+  }
+
+  private static final Pattern validPackageName = Pattern.compile("(@[\\w.-]+/)?\\w[\\w.-]*");
+
+  protected Map<Path, Path> installDependencies(Set<Path> filesToExtract) {
     if (!verifyYarnInstallation()) {
-      return;
+      return Collections.emptyMap();
     }
+
+    Path rootNodeModules = Paths.get("node_modules");
+
+    // Read all package.json files, and install symlinks to them.
+    Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
+    Set<String> packagesInRepo = new LinkedHashSet<>();
     for (Path file : filesToExtract) {
       if (file.getFileName().toString().equals("package.json")) {
-        System.out.println("Installing dependencies from " + file);
-        ProcessBuilder pb =
-            new ProcessBuilder(
-                Arrays.asList(
-                    "yarn",
-                    "install",
-                    "--non-interactive",
-                    "--ignore-scripts",
-                    "--ignore-platform",
-                    "--ignore-engines",
-                    "--ignore-optional",
-                    "--no-default-rc",
-                    "--no-bin-links",
-                    "--pure-lockfile"));
-        pb.directory(file.getParent().toFile());
-        pb.redirectOutput(Redirect.INHERIT);
-        pb.redirectError(Redirect.INHERIT);
         try {
-          pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
-        } catch (IOException | InterruptedException ex) {
-          throw new ResourceError("Could not install dependencies from " + file, ex);
+          String text = new WholeIO().read(file);
+          JsonElement json = new JsonParser().parse(text);
+          if (!(json instanceof JsonObject)) continue;
+          JsonObject jsonObject = (JsonObject) json;
+          file = file.toAbsolutePath();
+          packageJsonFiles.put(file, jsonObject);
+
+          JsonElement nameElm = jsonObject.get("name");
+          if (nameElm instanceof JsonPrimitive && ((JsonPrimitive) nameElm).isString()) {
+            String name = nameElm.getAsString();
+            packagesInRepo.add(name);
+
+            if (validPackageName.matcher(name).matches()) {
+              // Create a symlink to the package: <checkout>/node_modules/foo -> /path/to/foo
+              try {
+                Path symlinkPath = rootNodeModules.resolve(name);
+                if (!Files.exists(symlinkPath)) {
+                  Files.createDirectories(symlinkPath.getParent());
+                  Files.createSymbolicLink(symlinkPath, file.getParent());
+                } else {
+                  // If node_modules/foo already exists, presumably it contains the right thing,
+                  // so just continue extraction with that in place.
+                }
+              } catch (IOException e) {
+                throw new ResourceError("Could not install symlink to package " + file, e);
+              }
+            }
+          }
+        } catch (JsonParseException e) {
+          System.err.println("Could not parse JSON file: " + file);
+          System.err.println(e);
+          // Continue without the malformed package.json file
         }
       }
     }
+
+    // Remove all dependencies on local packages from package.json files so yarn doesn't
+    // try to download them. Yarn would fail otherwise if these packages were never published.
+    // These packages will instead be found through the symlink we installed in node_modules above.
+    // Note that we ignore optional dependencies during installation, so "optionalDependencies"
+    // is ignored here as well.
+    final List<String> dependencyFields =
+        Arrays.asList("dependencies", "devDependencies", "peerDependencies");
+    final Set<Path> filesToChange = new LinkedHashSet<>();
+    packageJsonFiles.forEach(
+        (path, packageJson) -> {
+          for (String dependencyField : dependencyFields) {
+            JsonElement dependencyElm = packageJson.get(dependencyField);
+            if (!(dependencyElm instanceof JsonObject)) continue;
+            JsonObject dependencyObj = (JsonObject) dependencyElm;
+            for (String packageName : packagesInRepo) {
+              if (!dependencyObj.has(packageName)) continue;
+              dependencyObj.remove(packageName);
+              filesToChange.add(path);
+            }
+          }
+          // Override "main" to point at the source folder instead of the output directory.
+          // TypeScript uses this field to locate the contents of a package.
+          // We simply guess that "./src" contains the source code, if it exists.
+          if (Files.exists(path.getParent().resolve("src"))) {
+            packageJson.addProperty("main", "./src");
+            filesToChange.add(path);
+          }
+        });
+
+    // Write the new package.json files to disk
+    Map<Path, Path> originalFiles = new LinkedHashMap<>();
+    final String backupFilename = "package.json.lgtm.backup";
+    for (Path file : filesToChange) {
+      Path backup = file.resolveSibling(backupFilename);
+      try {
+        originalFiles.put(file, backup);
+        Files.move(file, backup, StandardCopyOption.REPLACE_EXISTING);
+      } catch (IOException e) {
+        throw new ResourceError("Could not backup package.json file: " + file, e);
+      }
+      try (Writer writer = Files.newBufferedWriter(file)) {
+        new Gson().toJson(packageJsonFiles.get(file), writer);
+      } catch (IOException e) {
+        throw new ResourceError("Could not rewrite package.json file: " + file, e);
+      }
+    }
+
+    // Install dependencies
+    for (Path file : packageJsonFiles.keySet()) {
+      System.out.println("Installing dependencies from " + file);
+      ProcessBuilder pb =
+          new ProcessBuilder(
+              Arrays.asList(
+                  "yarn",
+                  "install",
+                  "--non-interactive",
+                  "--ignore-scripts",
+                  "--ignore-platform",
+                  "--ignore-engines",
+                  "--ignore-optional",
+                  "--no-default-rc",
+                  "--no-bin-links",
+                  "--pure-lockfile"));
+      pb.directory(file.getParent().toFile());
+      pb.redirectOutput(Redirect.INHERIT);
+      pb.redirectError(Redirect.INHERIT);
+      try {
+        pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
+      } catch (IOException | InterruptedException ex) {
+        restoreOriginalFiles(originalFiles); // Try to clean up before giving up.
+        throw new ResourceError("Could not install dependencies from " + file, ex);
+      }
+    }
+
+    return originalFiles;
   }
 
   private ExtractorConfig mkExtractorConfig() {
@@ -729,7 +854,8 @@ public class AutoBuild {
             // extract TypeScript projects from 'tsconfig.json'
             if (typeScriptMode == TypeScriptMode.FULL
                 && file.getFileName().endsWith("tsconfig.json")
-                && !excludes.contains(file)) {
+                && !excludes.contains(file)
+                && isFileIncluded(file)) {
               tsconfigFiles.add(file);
             }
 

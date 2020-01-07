@@ -20,6 +20,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.DosFileAttributeView;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -129,8 +130,14 @@ public class AutoBuildTests {
         }
 
         @Override
-        protected void installDependencies(Set<Path> filesToExtract) {
+        protected void restoreOriginalFiles(java.util.Map<Path, Path> originalFiles) {
+          // Do nothing
+        }
+
+        @Override
+        protected Map<Path, Path> installDependencies(Set<Path> filesToExtract) {
           // never install dependencies during testing
+          return Collections.emptyMap();
         }
 
         @Override
