@@ -38,6 +38,12 @@ abstract class BooleanControllingAssignment extends AssignExpr {
   abstract predicate isWhitelisted();
 }
 
+/**
+ * Gets an operand of a logical operation expression (we need the restriction
+ * to BinaryLogicalOperation expressions to get the correct transitive closure).
+ */
+Expr getComparisonOperand(BinaryLogicalOperation op) { result = op.getAnOperand() }
+
 class BooleanControllingAssignmentInExpr extends BooleanControllingAssignment {
   BooleanControllingAssignmentInExpr() {
     this.getParent() instanceof UnaryLogicalOperation or
@@ -45,7 +51,18 @@ class BooleanControllingAssignmentInExpr extends BooleanControllingAssignment {
     exists(ConditionalExpr c | c.getCondition() = this)
   }
 
-  override predicate isWhitelisted() { this.getConversion().(ParenthesisExpr).isParenthesised() }
+  override predicate isWhitelisted() {
+    this.getConversion().(ParenthesisExpr).isParenthesised()
+    or
+    // whitelist this assignment if all comparison operations in the expression that this
+    // assignment is part of, are ot parenthesized. In that case it seems like programmer
+    // is fine with unparenthesized comparison operands to binary logical operators, and
+    // the parenthesis around this assignment was used to call it out as an assignment.
+    this.isParenthesised() and
+    forex(ComparisonOperation op | op = getComparisonOperand*(this.getParent+()) |
+      not op.isParenthesised()
+    )
+  }
 }
 
 class BooleanControllingAssignmentInStmt extends BooleanControllingAssignment {
