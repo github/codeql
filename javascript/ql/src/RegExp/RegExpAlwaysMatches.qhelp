@@ -7,8 +7,8 @@
 <p>
 There are several built-in JavaScript functions that search for a regular expression match within a string,
 such as <code>RegExp.prototype.test</code> and <code>String.prototype.search</code>.
-If the regular expression is not anchored, the regular expression does not need to match the whole string;
-it only needs to match a substring.
+If the regular expression is not anchored, it only needs to match a substring of the input
+and won't necessarily match the whole string.
 </p>
 
 <p>
