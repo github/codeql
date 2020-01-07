@@ -55,23 +55,23 @@ function emptyAlt3(x) {
 }
 
 function search(x) {
-  return /[a-z]*/.search(x); // NOT OK
+  return x.search(/[a-z]*/); // NOT OK
 }
 
 function search2(x) {
-  return /[a-z]/.search(x); // OK
+  return x.search(/[a-z]/); // OK
 }
 
 function lookahead(x) {
-  return /(?!x)/.search(x); // OK
+  return x.search(/(?!x)/); // OK
 }
 
 function searchPrefix(x) {
-  return /^foo?/.search(x); // NOT OK - `foo?` does not affect the returned index
+  return x.search(/^(foo)?/); // NOT OK - `foo?` does not affect the returned index
 }
 
 function searchSuffix(x) {
-  return /foo?$/.search(x); // OK - `foo?` affects the returned index
+  return x.search(/(foo)?$/); // OK - `foo?` affects the returned index
 }
 
 function wordBoundary(x) {
