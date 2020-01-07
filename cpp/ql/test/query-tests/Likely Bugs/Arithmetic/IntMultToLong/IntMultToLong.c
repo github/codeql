@@ -107,3 +107,14 @@ void g(unsigned char uchar1, unsigned char uchar2, unsigned char uchar3, int i) 
     ulong5 = uchar1 * uchar1 * uchar1 * uchar2 * uchar2 * uchar2; // BAD [NOT DETECTED]
     ulong5 = (uchar1 + (unsigned short)(-1)) * (uchar2 + (unsigned short)(-1)); // BAD
 }
+
+struct A {
+    short s;
+    int i;
+};
+
+void g2(struct A* a, short n) {
+    unsigned long ulong1, ulong2;
+    ulong1 = (a->s - 1) * ((*a).s + 1); // GOOD
+    ulong2 = a->i * (*a).i; // BAD
+}
