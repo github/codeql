@@ -24,11 +24,8 @@ class TornadoConnectionWrite extends HttpResponseTaintSink {
     TornadoConnectionWrite() {
         exists(CallNode call, ControlFlowNode conn |
             conn = call.getFunction().(AttrNode).getObject("write") and
-            this = call.getAnArg()
-        |
+            this = call.getAnArg() and
             exists(TornadoConnection tc | tc.taints(conn))
-            or
-            isTornadoRequestHandlerInstance(conn)
         )
     }
 
@@ -41,8 +38,8 @@ class TornadoHttpRequestHandlerWrite extends HttpResponseTaintSink {
     TornadoHttpRequestHandlerWrite() {
         exists(CallNode call, ControlFlowNode node |
             node = call.getFunction().(AttrNode).getObject("write") and
-            isTornadoRequestHandlerInstance(node) and
-            this = call.getAnArg()
+            this = call.getAnArg() and
+            isTornadoRequestHandlerInstance(node)
         )
     }
 
