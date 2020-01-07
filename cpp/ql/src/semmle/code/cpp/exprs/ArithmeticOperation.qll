@@ -2,8 +2,6 @@ import semmle.code.cpp.exprs.Expr
 
 /**
  * A C/C++ unary arithmetic operation.
- *
- * This is an base QL class.
  */
 class UnaryArithmeticOperation extends UnaryOperation, @un_arith_op_expr { }
 
