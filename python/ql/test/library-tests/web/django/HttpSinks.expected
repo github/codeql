@@ -1,0 +1,7 @@
+| views.py:7:25:7:63 | django.Response(...) | externally controlled string |
+| views.py:11:25:11:52 | django.Response(...) | externally controlled string |
+| views.py:15:25:15:53 | django.Response(...) | externally controlled string |
+| views.py:23:29:23:60 | django.Response(...) | externally controlled string |
+| views.py:29:29:29:65 | django.Response(...) | externally controlled string |
+| views.py:34:25:34:63 | django.Response(...) | externally controlled string |
+| views.py:38:25:38:70 | django.Response(...) | externally controlled string |

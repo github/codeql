@@ -1,0 +1,6 @@
+| test.py:8:16:8:69 | Taint sink | externally controlled string |
+| test.py:14:16:14:50 | Taint sink | externally controlled string |
+| test.py:19:16:19:50 | Taint sink | externally controlled string |
+| test.py:23:16:23:50 | Taint sink | externally controlled string |
+| test.py:27:16:27:38 | Taint sink | {externally controlled string} |
+FIXME
