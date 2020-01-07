@@ -10,3 +10,4 @@
 | IntMultToLong.c:99:14:99:35 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
 | IntMultToLong.c:103:14:103:46 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
 | IntMultToLong.c:108:14:108:78 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
+| IntMultToLong.c:119:14:119:26 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |

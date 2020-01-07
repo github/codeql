@@ -132,6 +132,8 @@ class SubAnalyzableExpr extends AnalyzableExpr, SubExpr {
 }
 
 class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
+  VarAnalyzableExpr() { not exists(this.getQualifier()) }
+
   override float maxValue() {
     exists(SsaDefinition def, Variable v |
       def.getAUse(v) = this and
@@ -140,7 +142,7 @@ class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
       // variable the largest possible value it can hold
       if exists(def.getDefiningValue(v))
       then result = def.getDefiningValue(v).(AnalyzableExpr).maxValue()
-      else result = exprMaxVal(this)
+      else result = upperBound(this)
     )
   }
 
@@ -149,7 +151,7 @@ class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
       def.getAUse(v) = this and
       if exists(def.getDefiningValue(v))
       then result = def.getDefiningValue(v).(AnalyzableExpr).minValue()
-      else result = exprMinVal(this)
+      else result = lowerBound(this)
     )
   }
 }
@@ -206,9 +208,9 @@ where
     ) and
     e.(Literal).getType().getSize() = t2.getSize()
   ) and
-  // only report if cannot prove that the result of the
+  // only report if we cannot prove that the result of the
   // multiplication will be less (resp. greater) than the
-  // maximum (resp. minimum) number we can store.
+  // maximum (resp. minimum) number we can compute.
   overflows(me, t1)
 select me,
   "Multiplication result may overflow '" + me.getType().toString() + "' before it is converted to '"
