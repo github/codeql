@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Semmle.Util;
 using Semmle.Extraction.CSharp.Standalone;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace Semmle.BuildAnalyser
 {
@@ -56,6 +58,7 @@ namespace Semmle.BuildAnalyser
         int failedProjects, succeededProjects;
         readonly string[] allSources;
         int conflictedReferences = 0;
+        object mutex = new object();
 
         /// <summary>
         /// Performs a C# build analysis.
@@ -64,6 +67,8 @@ namespace Semmle.BuildAnalyser
         /// <param name="progress">Display of analysis progress.</param>
         public BuildAnalysis(Options options, IProgressMonitor progress)
         {
+            var startTime = DateTime.Now;
+
             progressMonitor = progress;
             sourceDir = new DirectoryInfo(options.SrcDir);
 
@@ -74,37 +79,50 @@ namespace Semmle.BuildAnalyser
                 Where(d => !options.ExcludesFile(d)).
                 ToArray();
 
-            var dllDirNames = options.DllDirs.Select(Path.GetFullPath);
+            var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
+            PackageDirectory = TemporaryDirectory.CreateTempDirectory(sourceDir.FullName, progressMonitor);
 
             if (options.UseNuGet)
             {
-                nuget = new NugetPackages(sourceDir.FullName);
-                ReadNugetFiles();
-                dllDirNames = dllDirNames.Concat(Enumerators.Singleton(nuget.PackageDirectory));
+                try
+                {
+                    nuget = new NugetPackages(sourceDir.FullName, PackageDirectory);
+                    ReadNugetFiles();
+                }
+                catch(FileNotFoundException)
+                {
+                    progressMonitor.MissingNuGet();
+                }
             }
 
             // Find DLLs in the .Net Framework
             if (options.ScanNetFrameworkDlls)
             {
-                dllDirNames = dllDirNames.Concat(Runtime.Runtimes.Take(1));
+                dllDirNames.Add(Runtime.Runtimes.First());
             }
-
-            assemblyCache = new BuildAnalyser.AssemblyCache(dllDirNames, progress);
-
-            // Analyse all .csproj files in the source tree.
-            if (options.SolutionFile != null)
+            
             {
-                AnalyseSolution(options.SolutionFile);
-            }
-            else if (options.AnalyseCsProjFiles)
-            {
-                AnalyseProjectFiles();
+                using var renamer1 = new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories));
+                using var renamer2 = new FileRenamer(sourceDir.GetFiles("Directory.Build.props", SearchOption.AllDirectories));
+
+                var solutions = options.SolutionFile != null ? 
+                        new[] { options.SolutionFile } : 
+                        sourceDir.GetFiles("*.sln", SearchOption.AllDirectories).Select(d => d.FullName);
+
+
+                RestoreSolutions(solutions);
+                dllDirNames.Add(PackageDirectory.DirInfo.FullName);
+                assemblyCache = new BuildAnalyser.AssemblyCache(dllDirNames, progress);
+                AnalyseSolutions(solutions);
+
+                usedReferences = new HashSet<string>(assemblyCache.AllAssemblies.Select(a => a.Filename));
             }
 
             if (!options.AnalyseCsProjFiles)
             {
                 usedReferences = new HashSet<string>(assemblyCache.AllAssemblies.Select(a => a.Filename));
             }
+
 
             ResolveConflicts();
 
@@ -133,6 +151,8 @@ namespace Semmle.BuildAnalyser
                 conflictedReferences,
                 succeededProjects + failedProjects,
                 failedProjects);
+
+            Console.WriteLine($"Build analysis completed in {DateTime.Now - startTime}");
         }
 
         /// <summary>
@@ -183,7 +203,8 @@ namespace Semmle.BuildAnalyser
         /// <param name="reference">The filename of the reference.</param>
         void UseReference(string reference)
         {
-            usedReferences.Add(reference);
+            lock (mutex)
+                usedReferences.Add(reference);
         }
 
         /// <summary>
@@ -194,11 +215,13 @@ namespace Semmle.BuildAnalyser
         {
             if (sourceFile.Exists)
             {
-                usedSources.Add(sourceFile.FullName);
+                lock(mutex)
+                    usedSources.Add(sourceFile.FullName);
             }
             else
             {
-                missingSources.Add(sourceFile.FullName);
+                lock(mutex)
+                    missingSources.Add(sourceFile.FullName);
             }
         }
 
@@ -236,59 +259,63 @@ namespace Semmle.BuildAnalyser
         /// <param name="projectFile">The project file making the reference.</param>
         void UnresolvedReference(string id, string projectFile)
         {
-            unresolvedReferences[id] = projectFile;
+            lock(mutex)
+                unresolvedReferences[id] = projectFile;
         }
 
-        /// <summary>
-        /// Performs an analysis of all .csproj files.
-        /// </summary>
-        void AnalyseProjectFiles()
-        {
-            AnalyseProjectFiles(sourceDir.GetFiles("*.csproj", SearchOption.AllDirectories));
-        }
+        TemporaryDirectory PackageDirectory;
 
         /// <summary>
         /// Reads all the source files and references from the given list of projects.
         /// </summary>
         /// <param name="projectFiles">The list of projects to analyse.</param>
-        void AnalyseProjectFiles(FileInfo[] projectFiles)
+        void AnalyseProjectFiles(IEnumerable<FileInfo> projectFiles)
         {
-            progressMonitor.AnalysingProjectFiles(projectFiles.Count());
-
             foreach (var proj in projectFiles)
+                AnalyseProject(proj);
+        }
+
+        void AnalyseProject(FileInfo project)
+        {
+            if(!project.Exists)
             {
-                try
-                {
-                    var csProj = new CsProjFile(proj);
-
-                    foreach (var @ref in csProj.References)
-                    {
-                        AssemblyInfo resolved = assemblyCache.ResolveReference(@ref);
-                        if (!resolved.Valid)
-                        {
-                            UnresolvedReference(@ref, proj.FullName);
-                        }
-                        else
-                        {
-                            UseReference(resolved.Filename);
-                        }
-                    }
-
-                    foreach (var src in csProj.Sources)
-                    {
-                        // Make a note of which source files the projects use.
-                        // This information doesn't affect the build but is dumped
-                        // as diagnostic output.
-                        UseSource(new FileInfo(src));
-                    }
-                    ++succeededProjects;
-                }
-                catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
-                {
-                    ++failedProjects;
-                    progressMonitor.FailedProjectFile(proj.FullName, ex.Message);
-                }
+                progressMonitor.MissingProject(project.FullName);
+                return;
             }
+
+            try
+            {
+                var csProj = new CsProjFile(project);
+
+                foreach (var @ref in csProj.References)
+                {
+                    AssemblyInfo resolved = assemblyCache.ResolveReference(@ref);
+                    if (!resolved.Valid)
+                    {
+                        UnresolvedReference(@ref, project.FullName);
+                    }
+                    else
+                    {
+                        UseReference(resolved.Filename);
+                    }
+                }
+
+                foreach (var src in csProj.Sources)
+                {
+                    // Make a note of which source files the projects use.
+                    // This information doesn't affect the build but is dumped
+                    // as diagnostic output.
+                    UseSource(new FileInfo(src));
+                }
+
+                ++succeededProjects;
+            }
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            {
+                ++failedProjects;
+                progressMonitor.FailedProjectFile(project.FullName, ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -296,17 +323,36 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         public void Cleanup()
         {
-            if (nuget != null) nuget.Cleanup(progressMonitor);
+            PackageDirectory?.Cleanup();
         }
 
-        /// <summary>
-        /// Analyse all project files in a given solution only.
-        /// </summary>
-        /// <param name="solutionFile">The filename of the solution.</param>
-        public void AnalyseSolution(string solutionFile)
+        void Restore(string projectOrSolution)
         {
-            var sln = new SolutionFile(solutionFile);
-            AnalyseProjectFiles(sln.Projects.Select(p => new FileInfo(p)).ToArray());
+            int exit = DotNet.RestoreToDirectory(projectOrSolution, PackageDirectory.DirInfo.FullName);
+            if (exit != 0)
+                progressMonitor.CommandFailed("dotnet", $"restore \"{projectOrSolution}\"", exit);
+        }
+
+        public void RestoreSolutions(IEnumerable<string> solutions)
+        {
+            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 }, Restore);
+        }
+
+        public void AnalyseSolutions(IEnumerable<string> solutions)
+        {
+            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 } , solutionFile =>
+            {
+                try
+                {
+                    var sln = new SolutionFile(solutionFile);
+                    progressMonitor.AnalysingSolution(solutionFile);
+                    AnalyseProjectFiles(sln.Projects.Select(p => new FileInfo(p)).Where(p => p.Exists).ToArray());
+                }
+                catch (Microsoft.Build.Exceptions.InvalidProjectFileException ex)
+                {
+                    progressMonitor.FailedProjectFile(solutionFile, ex.BaseMessage);
+                }
+            });
         }
     }
 }

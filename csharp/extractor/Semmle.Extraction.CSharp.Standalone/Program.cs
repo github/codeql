@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Semmle.BuildAnalyser;
 using Semmle.Util.Logging;
+using System.IO;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+
+// using Microsoft.Build.Locator;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {
@@ -82,9 +87,15 @@ namespace Semmle.Extraction.CSharp.Standalone
 
     public class Program
     {
+        void LoadSolutionFile(string file)
+        {
+
+        }
+
         static int Main(string[] args)
         {
             var options = Options.Create(args);
+            options.CIL = true;
             var output = new ConsoleLogger(options.Verbosity);
             var a = new Analysis(output);
 
@@ -96,6 +107,8 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             if (options.Errors)
                 return 1;
+
+            var start = DateTime.Now;
 
             output.Log(Severity.Info, "Running C# standalone extractor");
             a.AnalyseProjects(options);
@@ -117,7 +130,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                     new ExtractionProgress(output),
                     new FileLogger(options.Verbosity, Extractor.GetCSharpLogPath()),
                     options);
-                output.Log(Severity.Info, "Extraction complete");
+                output.Log(Severity.Info, $"Extraction completed in {DateTime.Now-start}");
             }
 
             a.Cleanup();
@@ -151,7 +164,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             public void MissingSummary(int missingTypes, int missingNamespaces)
             {
-                logger.Log(Severity.Info, "Failed to resolve {0} types and {1} namespaces", missingTypes, missingNamespaces);
+                logger.Log(Severity.Info, "Failed to resolve {0} types in {1} namespaces", missingTypes, missingNamespaces);
             }
         }
     }

@@ -19,10 +19,10 @@ namespace Semmle.BuildAnalyser
         /// Create the package manager for a specified source tree.
         /// </summary>
         /// <param name="sourceDir">The source directory.</param>
-        public NugetPackages(string sourceDir)
+        public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory)
         {
             SourceDirectory = sourceDir;
-            PackageDirectory = computeTempDirectory(sourceDir);
+            PackageDirectory = packageDirectory;
 
             // Expect nuget.exe to be in a `nuget` directory under the directory containing this exe.
             var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -50,45 +50,12 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         public IEnumerable<FileInfo> PackageFiles => packages;
 
-        // Whether to delete the packages directory prior to each run.
-        // Makes each build more reproducible.
-        const bool cleanupPackages = true;
-
-        public void Cleanup(IProgressMonitor pm)
-        {
-            var packagesDirectory = new DirectoryInfo(PackageDirectory);
-
-            if (packagesDirectory.Exists)
-            {
-                try
-                {
-                    packagesDirectory.Delete(true);
-                }
-                catch (System.IO.IOException ex)
-                {
-                    pm.Warning(string.Format("Couldn't delete package directory - it's probably held open by something else: {0}", ex.Message));
-                }
-            }
-        }
-
         /// <summary>
         /// Download the packages to the temp folder.
         /// </summary>
         /// <param name="pm">The progress monitor used for reporting errors etc.</param>
         public void InstallPackages(IProgressMonitor pm)
         {
-            if (cleanupPackages)
-            {
-                Cleanup(pm);
-            }
-
-            var packagesDirectory = new DirectoryInfo(PackageDirectory);
-
-            if (!Directory.Exists(PackageDirectory))
-            {
-                packagesDirectory.Create();
-            }
-
             foreach (var package in packages)
             {
                 RestoreNugetPackage(package.FullName, pm);
@@ -109,31 +76,7 @@ namespace Semmle.BuildAnalyser
         /// This will be in the Temp location
         /// so as to not trample the source tree.
         /// </summary>
-        public string PackageDirectory
-        {
-            get;
-            private set;
-        }
-
-        readonly SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
-
-        /// <summary>
-        /// Computes a unique temp directory for the packages associated
-        /// with this source tree. Use a SHA1 of the directory name.
-        /// </summary>
-        /// <param name="srcDir"></param>
-        /// <returns>The full path of the temp directory.</returns>
-        string computeTempDirectory(string srcDir)
-        {
-            var bytes = Encoding.Unicode.GetBytes(srcDir);
-
-            var sha = sha1.ComputeHash(bytes);
-            var sb = new StringBuilder();
-            foreach (var b in sha.Take(8))
-                sb.AppendFormat("{0:x2}", b);
-
-            return Path.Combine(Path.GetTempPath(), "Semmle", "packages", sb.ToString());
-        }
+        public TemporaryDirectory PackageDirectory { get; }
 
         /// <summary>
         /// Restore all files in a specified package.

@@ -6,16 +6,96 @@ using System.Xml;
 namespace Semmle.BuildAnalyser
 {
     /// <summary>
+    /// A reference to a particular version of a particular package.
+    /// </summary>
+    class PackageReference
+    {
+        public PackageReference(string include, string version) { 
+            Include = include;
+            Version = version;
+        }
+        public string Include, Version;
+
+        public override string ToString() => $"Include={Include}, Version={Version}";
+    }
+
+    enum ProjectFileType
+    {
+        MsBuildProject,
+        DotNetProject,
+        OtherProject
+    }
+
+    interface IProjectFile
+    {
+        IEnumerable<IProjectFile> ProjectReferences { get; }
+
+        IEnumerable<PackageReference> Packages { get; }
+
+        IEnumerable<string> References { get; }
+
+        IEnumerable<FileInfo> Sources { get; }
+
+        IEnumerable<string> TargetFrameworks { get; }
+    }
+
+    class NetCoreProjectFile : IProjectFile
+    {
+        FileInfo path;
+        XmlDocument doc;
+        XmlElement root;
+
+        public NetCoreProjectFile(FileInfo path)
+        {
+            this.path = path;
+            doc = new XmlDocument();
+            doc.Load(path.FullName);
+            root = doc.DocumentElement;
+        }
+
+        public IEnumerable<IProjectFile> ProjectReferences => throw new System.NotImplementedException();
+
+        public IEnumerable<PackageReference> Packages
+        {
+            get
+            {
+                var packages = root.SelectNodes("/Project/ItemGroup/PackageReference");
+                return packages.NodeList().
+                    Select(r =>
+                    new PackageReference(r.Attributes.GetNamedItem("Include").Value, r.Attributes.GetNamedItem("Version").Value));
+            }
+        }
+
+        public IEnumerable<string> References => throw new System.NotImplementedException();
+
+        public IEnumerable<FileInfo> Sources
+        {
+            get
+            {
+                return path.Directory.GetFiles("*.cs", SearchOption.AllDirectories);
+            }
+        }
+
+        public IEnumerable<string> TargetFrameworks => throw new System.NotImplementedException();
+    }
+
+    /// <summary>
     /// Represents a .csproj file and reads information from it.
     /// </summary>
     class CsProjFile
     {
+        public string Filename { get; }
+
+        public string Directory => Path.GetDirectoryName(Filename);
+
         /// <summary>
         /// Reads the .csproj file.
         /// </summary>
         /// <param name="filename">The .csproj file.</param>
         public CsProjFile(FileInfo filename)
         {
+            Filename = filename.FullName;
+
             try
             {
                 // This can fail if the .csproj is invalid or has
@@ -56,6 +136,8 @@ namespace Semmle.BuildAnalyser
                 .ToArray();
         }
 
+        string[] targetFrameworks = new string[0];
+
         /// <summary>
         /// Reads the .csproj file directly as XML.
         /// This doesn't handle variables etc, and should only used as a
@@ -70,6 +152,35 @@ namespace Semmle.BuildAnalyser
             projFile.Load(filename.FullName);
             var projDir = filename.Directory;
             var root = projFile.DocumentElement;
+
+            // Figure out if it's dotnet core
+
+            bool netCoreProjectFile = root.GetAttribute("Sdk") == "Microsoft.NET.Sdk";
+
+            if(netCoreProjectFile)
+            {
+                var frameworksNode = root.SelectNodes("/Project/PropertyGroup/TargetFrameworks").NodeList().Concat(
+                    root.SelectNodes("/Project/PropertyGroup/TargetFramework").NodeList()).Select(node => node.InnerText);
+
+                targetFrameworks = frameworksNode.SelectMany(node => node.Split(";")).ToArray();
+
+                var relativeCsIncludes2 =
+                    root.SelectNodes("/Project/ItemGroup/Compile/@Include", mgr).
+                    NodeList().
+                    Select(node => node.Value).
+                    ToArray();
+
+                var explicitCsFiles = relativeCsIncludes2.
+                    Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs).
+                    Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f)));
+
+                var additionalCsFiles = System.IO.Directory.GetFiles(Directory, "*.cs", SearchOption.AllDirectories);
+
+                csFiles = explicitCsFiles.Concat(additionalCsFiles).ToArray();
+
+                references = new string[0];
+                return;
+            }
 
             references =
                 root.SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Reference/@Include", mgr).
@@ -96,6 +207,8 @@ namespace Semmle.BuildAnalyser
         /// The list of references as a list of assembly IDs.
         /// </summary>
         public IEnumerable<string> References => references;
+
+        public IEnumerable<string> TargetFrameworks => targetFrameworks;
 
         /// <summary>
         /// The list of C# source files in full path format.
