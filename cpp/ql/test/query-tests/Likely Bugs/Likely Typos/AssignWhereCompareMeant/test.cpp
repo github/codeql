@@ -117,3 +117,10 @@ void h() {
 void f() {
   h<int>();
 }
+
+void f2() {
+  const char* sz = "abc";
+
+  if(sz = "def") { // GOOD [FALSE POSITIVE]: a == comparison with a string literal is probably not the intent here
+  }
+}
