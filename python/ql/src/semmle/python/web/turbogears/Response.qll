@@ -5,6 +5,8 @@ import semmle.python.web.Http
 import TurboGears
 
 class ControllerMethodReturnValue extends HttpResponseTaintSink {
+    override string toString() { result = "TurboGears ControllerMethodReturnValue" }
+
     ControllerMethodReturnValue() {
         exists(TurboGearsControllerMethod m |
             m.getAReturnValueFlowNode() = this and
@@ -16,6 +18,8 @@ class ControllerMethodReturnValue extends HttpResponseTaintSink {
 }
 
 class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
+    override string toString() { result = "TurboGears ControllerMethodTemplatedReturnValue" }
+
     ControllerMethodTemplatedReturnValue() {
         exists(TurboGearsControllerMethod m |
             m.getAReturnValueFlowNode() = this and
