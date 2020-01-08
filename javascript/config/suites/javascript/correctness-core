@@ -16,6 +16,7 @@
 + semmlecode-javascript-queries/Expressions/DuplicateSwitchCase.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/HeterogeneousComparison.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/MisspelledVariableName.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/MissingAwait.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/MissingDotLengthInComparison.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/ShiftOutOfRange.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/RedundantExpression.ql: /Correctness/Expressions
