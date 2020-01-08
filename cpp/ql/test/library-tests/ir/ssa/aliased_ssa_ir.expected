@@ -760,7 +760,7 @@ ssa.cpp:
 #  179|     r179_6(int *)        = Load                     : &:r179_4, m179_5
 #  179|     m179_7(unknown)      = InitializeIndirection[p] : &:r179_6
 #  179|     m179_8(unknown)      = Chi                      : total:m179_2, partial:m179_7
-#  180|     m180_1(unknown)      = InlineAsm                : ~mu179_3
+#  180|     m180_1(unknown)      = InlineAsm                : ~m179_8
 #  180|     m180_2(unknown)      = Chi                      : total:m179_8, partial:m180_1
 #  181|     r181_1(glval<int>)   = VariableAddress[#return] : 
 #  181|     r181_2(glval<int *>) = VariableAddress[p]       : 
@@ -811,7 +811,7 @@ ssa.cpp:
 #  190|     r190_4(glval<unsigned int &>)  = VariableAddress[d]       : 
 #  190|     r190_5(unsigned int &)         = Load                     : &:r190_4, m184_20
 #  190|     r190_6(unsigned int)           = Load                     : &:r190_5, ~m184_23
-#  186|     m186_1(unknown)                = InlineAsm                : ~mu184_3, 0:r189_3, 1:r189_6, 2:r190_3, 3:r190_6
+#  186|     m186_1(unknown)                = InlineAsm                : ~m184_23, 0:r189_3, 1:r189_6, 2:r190_3, 3:r190_6
 #  186|     m186_2(unknown)                = Chi                      : total:m184_23, partial:m186_1
 #  192|     v192_1(void)                   = NoOp                     : 
 #  184|     v184_24(void)                  = ReturnIndirection        : &:r184_6, ~m186_2
@@ -901,7 +901,7 @@ ssa.cpp:
 #  209|     r209_7(void *)         = Convert                            : r209_6
 #  209|     r209_8(int)            = Constant[4]                        : 
 #  209|     r209_9(void *)         = Call                               : func:r209_1, 0:r209_4, 1:r209_7, 2:r209_8
-#  209|     v209_10(void)          = ^SizedBufferReadSideEffect[1]      : &:r209_7, r209_8, ~mu207_3
+#  209|     v209_10(void)          = ^SizedBufferReadSideEffect[1]      : &:r209_7, r209_8, ~m207_5
 #  209|     m209_11(unknown)       = ^SizedBufferMustWriteSideEffect[0] : &:r209_4, r209_8
 #  209|     m209_12(unknown)       = Chi                                : total:m208_3, partial:m209_11
 #  210|     r210_1(glval<int>)     = VariableAddress[#return]           : 
