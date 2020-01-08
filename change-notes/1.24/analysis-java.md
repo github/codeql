@@ -2,6 +2,10 @@
 
 The following changes in version 1.24 affect Java analysis in all applications.
 
+## General improvements
+
+* Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
+
 ## New queries
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
