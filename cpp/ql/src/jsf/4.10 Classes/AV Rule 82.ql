@@ -97,6 +97,6 @@ where
     assignOperatorWithWrongType(op, msg) or
     assignOperatorWithWrongResult(op, msg)
   ) and
-  // exclude template classes which may have incomplete function bodies
-  not op.getDeclaringType() instanceof TemplateClass
+  // exclude code in templates which may be incomplete
+  not op.isFromUninstantiatedTemplate(_)
 select op, msg
