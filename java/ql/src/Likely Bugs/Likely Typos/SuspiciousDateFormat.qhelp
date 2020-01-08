@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Some <code>SimpleDateFormat</code> patterns might not work correctly at the end of the calendar
+year, due to use of the <code>Y</code> placeholder (representing the ISO 8601 week year), rather
+than <code>y</code> representing the actual year.
+</p>
+</overview>
+
+<recommendation>
+<p>
+  Ensure the format pattern's use of <code>Y</code> is correct, and if not replace it with <code>y</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+  The following example uses the date format <code>YYYY-MM-dd</code>.
+  On the 30th of December 2019, this code will output "2020-12-30", rather than the intended "2019-12-30".
+</p>
+<sample src="SuspiciousDateFormat.java" />
+</example>
+
+<references>
+<li>
+  Java Platform, Standard Edition 7, API Specification:
+  <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>.
+</li>
+</references>
+
+</qhelp>
