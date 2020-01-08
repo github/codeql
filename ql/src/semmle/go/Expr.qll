@@ -318,7 +318,9 @@ class ParenExpr extends @parenexpr, Expr {
 
   override Expr stripParens() { result = getExpression().stripParens() }
 
-  override predicate isPlatformIndependentConstant() { getExpression().isPlatformIndependentConstant() }
+  override predicate isPlatformIndependentConstant() {
+    getExpression().isPlatformIndependentConstant()
+  }
 
   override string toString() { result = "(...)" }
 }
@@ -393,7 +395,9 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
 
   override predicate mayHaveOwnSideEffects() { any() }
 
-  override predicate isPlatformIndependentConstant() { getExpression().isPlatformIndependentConstant() }
+  override predicate isPlatformIndependentConstant() {
+    getExpression().isPlatformIndependentConstant()
+  }
 
   override string toString() { result = "type assertion" }
 }
@@ -419,7 +423,9 @@ class ConversionExpr extends CallOrConversionExpr {
   /** Gets the operand of the type conversion. */
   Expr getOperand() { result = getChildExpr(1) }
 
-  override predicate isPlatformIndependentConstant() { getOperand().isPlatformIndependentConstant() }
+  override predicate isPlatformIndependentConstant() {
+    getOperand().isPlatformIndependentConstant()
+  }
 
   override string toString() { result = "type conversion" }
 }
@@ -638,6 +644,9 @@ class MapTypeExpr extends @maptypeexpr, Expr {
 class OperatorExpr extends @operatorexpr, Expr {
   /** Gets the operator of this expression. */
   string getOperator() { none() }
+
+  /** Gets an operand of this expression. */
+  Expr getAnOperand() { none() }
 }
 
 /**
@@ -662,7 +671,11 @@ class UnaryExpr extends @unaryexpr, OperatorExpr {
   /** Gets the operand of this unary expression. */
   Expr getOperand() { result = getChildExpr(0) }
 
-  override predicate isPlatformIndependentConstant() { getOperand().isPlatformIndependentConstant() }
+  override Expr getAnOperand() { result = this.getOperand() }
+
+  override predicate isPlatformIndependentConstant() {
+    getOperand().isPlatformIndependentConstant()
+  }
 
   override string toString() { result = getOperator() + "..." }
 }
@@ -747,8 +760,7 @@ class BinaryExpr extends @binaryexpr, OperatorExpr {
   /** Gets the right operand of this binary expression. */
   Expr getRightOperand() { result = getChildExpr(1) }
 
-  /** Gets an operand of this binary expression. */
-  Expr getAnOperand() { result = getChildExpr([0 .. 1]) }
+  override Expr getAnOperand() { result = getChildExpr([0 .. 1]) }
 
   /** Holds if `e` and `f` (in either order) are the two operands of this binary expression. */
   predicate hasOperands(Expr e, Expr f) {
