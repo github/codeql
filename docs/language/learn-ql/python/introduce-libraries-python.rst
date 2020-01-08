@@ -323,8 +323,8 @@ The CodeQL library for Python also supplies classes to specify taint-tracking an
 Summary
 ~~~~~~~
 
-- `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/security/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
-- `Configuration <https://help.semmle.com/qldoc/python/semmle/python/security/TaintTracking.qll/type.TaintTracking$TaintTracking$Configuration.html>`__
+- `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
+- `Configuration <https://help.semmle.com/qldoc/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__
 
 These classes are explained in more detail in :doc:`Tutorial: Taint tracking and data flow analysis in Python <taint-tracking>`.
 
