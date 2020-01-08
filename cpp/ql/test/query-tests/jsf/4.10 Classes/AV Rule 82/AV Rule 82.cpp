@@ -209,7 +209,7 @@ public:
   }
 
   Obj3<T> &operator=(const Obj3<T> &other) {
-    return subFunc(other); // GOOD (returns *this) [FALSE POSITIVE]
+    return subFunc(other); // GOOD (returns *this)
   }
 };
 
