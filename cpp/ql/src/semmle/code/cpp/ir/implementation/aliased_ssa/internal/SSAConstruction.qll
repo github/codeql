@@ -153,11 +153,9 @@ private module Cached {
     )
   }
 
-pragma[noopt]
+  pragma[noopt]
   cached
-  Instruction getPhiOperandDefinition(
-    Phi instr, IRBlock newPredecessorBlock, Overlap overlap
-  ) {
+  Instruction getPhiOperandDefinition(Phi instr, IRBlock newPredecessorBlock, Overlap overlap) {
     exists(
       Alias::MemoryLocation defLocation, Alias::MemoryLocation useLocation, OldBlock phiBlock,
       OldBlock predBlock, OldBlock defBlock, int defOffset, Alias::MemoryLocation actualDefLocation
