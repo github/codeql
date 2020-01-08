@@ -22,12 +22,13 @@ In this case, testing if a match exists is redundant and indicates dead code.
 
 <p>
 Examine the regular expression and determine how it was intended to match:
+</p>
+
 <ul>
 <li>To match the whole input string, add anchors at the beginning and end of the regular expression.</li>
 <li>To search for an occurrence within the input string, consider what the shortest meaningful match is and restrict the
 regular expression accordingly, such as by changing a <code>*</code> to a <code>+</code>.</li>
 </ul>
-</p>
 
 </recommendation>
 <example>
