@@ -13,7 +13,7 @@ import semmle.go.Locations
 import semmle.go.Packages
 import semmle.go.Scopes
 import semmle.go.Stmt
-import semmle.go.StringConcatenation
+import semmle.go.StringOps
 import semmle.go.Types
 import semmle.go.controlflow.BasicBlocks
 import semmle.go.controlflow.ControlFlowGraph

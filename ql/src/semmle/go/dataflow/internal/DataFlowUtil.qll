@@ -112,9 +112,7 @@ class Node extends TNode {
    * Holds if the result of this instruction is known at compile time, and is guaranteed not to
    * depend on the platform where it is evaluated.
    */
-  predicate isPlatformIndependentConstant() {
-    this.asInstruction().isPlatformIndependentConstant()
-  }
+  predicate isPlatformIndependentConstant() { this.asInstruction().isPlatformIndependentConstant() }
 
   /**
    * Gets a data-flow node to which data may flow from this node in one (intra-procedural) step.
@@ -449,7 +447,7 @@ class ReadNode extends InstructionNode {
 
   /**
    * Holds if this data-flow node evaluates to value of `v`, which is a value entity, that is, a
-    * constant, variable, field, function, or method.
+   * constant, variable, field, function, or method.
    */
   predicate reads(ValueEntity v) { insn.reads(v) }
 
@@ -493,6 +491,35 @@ class ElementReadNode extends ReadNode {
 }
 
 /**
+ * A data-flow node that extracts a substring or slice from a string, array, pointer to array,
+ * or slice.
+ */
+class SliceNode extends ExprNode {
+  override SliceExpr expr;
+
+  /** Gets the base of this slice node. */
+  Node getBase() { result = exprNode(expr.getBase()) }
+
+  /** Gets the lower bound of this slice node. */
+  Node getLow() {
+    result = exprNode(expr.getLow()) or
+    result = instructionNode(IR::implicitLowerSliceBoundInstruction(expr))
+  }
+
+  /** Gets the upper bound of this slice node. */
+  Node getHigh() {
+    result = exprNode(expr.getHigh()) or
+    result = instructionNode(IR::implicitUpperSliceBoundInstruction(expr))
+  }
+
+  /** Gets the maximum of this slice node. */
+  Node getMax() {
+    result = exprNode(expr.getMax()) or
+    result = instructionNode(IR::implicitMaxSliceBoundInstruction(expr))
+  }
+}
+
+/**
  * A data-flow node corresponding to an expression with a binary operator.
  */
 class BinaryOperationNode extends Node {
@@ -512,7 +539,7 @@ class BinaryOperationNode extends Node {
     |
       left = exprNode(assgn.getLhs()) and
       right = exprNode(assgn.getRhs()) and
-      op = o.substring(0, o.length()-1)
+      op = o.substring(0, o.length() - 1)
     )
     or
     exists(IR::EvalIncDecRhsInstruction rhs, IncDecStmt ids |
@@ -683,9 +710,7 @@ Node extractTupleElement(Node t, int i) {
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
-}
+predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
 /**
  * INTERNAL: do not use.
