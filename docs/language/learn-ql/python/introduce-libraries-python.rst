@@ -158,7 +158,7 @@ Summary
 
 The most commonly used standard classes in the syntactic part of the library are organized as follows:
 
-``Module``, ``Class``, ``Function``, ``Stmt``, and ``Expr`` - they are all subclasses of `AstNode <https://help.semmle.com/qldoc/python/semmle/python/AST.qll/type.AST$AstNode.html>`__.
+``Module``, ``Class``, ``Function``, ``Stmt``, and ``Expr`` - they are all subclasses of `AstNode <https://help.semmle.com/qldoc/python/semmle/python/AstExtended.qll/type.AstExtended$AstNode.html>`__.
 
 Abstract syntax tree
 ''''''''''''''''''''
