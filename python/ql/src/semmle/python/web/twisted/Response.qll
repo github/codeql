@@ -7,7 +7,7 @@ import Request
 
 class TwistedResponse extends TaintSink {
     TwistedResponse() {
-        exists(PythonFunctionValue func, string name, Return ret |
+        exists(PythonFunctionValue func, string name |
             isKnownRequestHandlerMethodName(name) and
             name = func.getName() and
             func = getTwistedRequestHandlerMethod(name) and
