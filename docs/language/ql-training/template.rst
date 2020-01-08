@@ -27,7 +27,7 @@ Template slide deck
    
    Second subheading
 
-.. Set up slide. Include link to QL4E snapshots required for examples 
+.. Set up slide. Include link to CodeQL databases required for examples 
 
 .. rst-class:: setup
 
@@ -36,8 +36,8 @@ Setup
 
 For this example you should download:
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- A snapshot
+- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- A CodeQL database
 
 .. note::
 
