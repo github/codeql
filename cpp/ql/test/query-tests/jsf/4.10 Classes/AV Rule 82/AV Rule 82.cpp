@@ -201,6 +201,18 @@ struct TemplatedAssignmentBad {
   }
 };
 
+template<class T>
+class Obj3 {
+public:
+  Obj3<T> &subFunc(const Obj3<T> &other) {
+    return *this;
+  }
+
+  Obj3<T> &operator=(const Obj3<T> &other) {
+    return subFunc(other); // GOOD (returns *this)
+  }
+};
+
 int main() {
   Container c;
   c = c;
@@ -211,5 +223,7 @@ int main() {
   taGood = 3;
   TemplatedAssignmentBad taBad;
   taBad = 4;
+  Obj3<int> obj3_a, obj3_b;
+  obj3_a = obj3_b;
   return 0;
 }
