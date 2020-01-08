@@ -5,7 +5,7 @@
 <overview>
 <p>
 In JavaScript, <code>async</code> functions always return a promise object.
-To obtain the underlying value of the promise, the <code>await</code> operator or a call to <code>then</code> should be used.
+To obtain the underlying value of the promise, use the <code>await</code> operator or call the <code>then</code> method.
 Attempting to use a promise object instead of its underlying value can lead to unexpected behavior.
 </p>
 
