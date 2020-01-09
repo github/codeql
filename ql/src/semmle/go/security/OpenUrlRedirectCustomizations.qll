@@ -42,16 +42,16 @@ module OpenUrlRedirect {
   /**
    * An access to a user-controlled URL field, considered as a flow source for URL redirects.
    */
-  class UntrustedUrlField extends Source, DataFlow::ExprNode {
-    override SelectorExpr expr;
-
+  class UntrustedUrlField extends Source, DataFlow::FieldReadNode {
     UntrustedUrlField() {
-      exists(Type req, Type baseType, string fieldName |
+      exists(Type req, Type baseType, string fieldName, DataFlow::FieldReadNode url |
         req.hasQualifiedName("net/http", "Request") and
-        baseType = expr.getBase().(SelectorExpr).getBase().getType() and
-        expr.getBase().(SelectorExpr).getSelector().getName() = "URL" and
+        baseType = url.getBase().getType() and
         (baseType = req or baseType = req.getPointerType()) and
-        fieldName = expr.getSelector().getName() and
+        url.getFieldName() = "URL"
+      |
+        this.getBase() = url.getASuccessor*() and
+        this.getFieldName() = fieldName and
         (
           fieldName = "User" or
           fieldName = "Path" or
@@ -59,6 +59,28 @@ module OpenUrlRedirect {
           fieldName = "ForceQuery" or
           fieldName = "RawQuery" or
           fieldName = "Fragment"
+        )
+      )
+    }
+  }
+
+  /**
+   * An call to a user-controlled URL method, considered as a flow source for URL redirects.
+   */
+  class UntrustedUrlMethod extends Source, DataFlow::MethodCallNode {
+    UntrustedUrlMethod() {
+      exists(Type req, Type baseType, string methodName, DataFlow::FieldReadNode url |
+        req.hasQualifiedName("net/http", "Request") and
+        baseType = url.getBase().getType() and
+        (baseType = req or baseType = req.getPointerType()) and
+        url.getFieldName() = "URL"
+      |
+        this.getReceiver() = url.getASuccessor*() and
+        this.getCalleeName() = methodName and
+        (
+          methodName = "EscapedPath" or
+          methodName = "Query" or
+          methodName = "RequestURI"
         )
       )
     }
