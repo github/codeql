@@ -210,6 +210,22 @@ private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
 }
 
 /**
+ * A data flow edge from the exceptional return of the promise executor to the promise catch handler.
+ * This only adds an edge from the exceptional return of the promise executor to a `.catch()` handler.
+ */
+private class PromiseExceptionalStep extends DataFlow::AdditionalFlowStep {
+  PromiseDefinition promise;
+  PromiseExceptionalStep() {
+    promise = this	
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    pred = promise.getExecutor().getExceptionalReturn() and
+    succ = promise.getACatchHandler().getParameter(0)
+  }
+}
+
+/**
  * Holds if taint propagates from `pred` to `succ` through promises.
  */
 predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {

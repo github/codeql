@@ -2,39 +2,37 @@
  * Provides classes and predicates for working with XML files and their content.
  */
 
-import semmle.code.csharp.Element
-import semmle.code.csharp.Location
-
-/** Adapter so that XMLLocatables are elements */
-library class XMLLocatableElement extends @xmllocatable, Element {
-  override string toString() { result = this.(XMLLocatable).toString() }
-
-  override Location getALocation() { result = this.(XMLLocatable).getALocation() }
-}
+import semmle.files.FileSystem
 
 /** An XML element that has a location. */
-class XMLLocatable extends @xmllocatable {
-  XMLLocatable() {
-    not this instanceof File // in the dbscheme
-  }
-
+abstract class XMLLocatable extends @xmllocatable {
   /** Gets the source location for this element. */
-  Location getALocation() { xmllocations(this, result) }
+  Location getLocation() { xmllocations(this, result) }
 
   /**
-   * Whether this element has the specified location information,
-   * including file path, start line, start column, end line and end column.
+   * DEPRECATED: Use `getLocation()` instead.
+   *
+   * Gets the source location for this element.
+   */
+  deprecated Location getALocation() { result = this.getLocation() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(File f, Location l | l = this.getALocation() |
+    exists(File f, Location l | l = this.getLocation() |
       locations_default(l, f, startline, startcolumn, endline, endcolumn) and
       filepath = f.getAbsolutePath()
     )
   }
 
-  /** Gets a printable representation of this element. */
+  /** Gets a textual representation of this element. */
   abstract string toString();
 }
 
@@ -43,6 +41,12 @@ class XMLLocatable extends @xmllocatable {
  * both of which can contain other elements.
  */
 class XMLParent extends @xmlparent {
+  XMLParent() {
+    // explicitly restrict `this` to be either an `XMLElement` or an `XMLFile`;
+    // the type `@xmlparent` currently also includes non-XML files
+    this instanceof @xmlelement or xmlEncoding(this, _)
+  }
+
   /**
    * Gets a printable representation of this XML parent.
    * (Intended to be overridden in subclasses.)
@@ -76,7 +80,25 @@ class XMLParent extends @xmlparent {
   /** Gets the number of places in the body of this XML parent where text occurs. */
   int getNumberOfCharacterSets() { result = count(int pos | xmlChars(_, _, this, pos, _, _)) }
 
-  /** Append all the character sequences of this XML parent from left to right, separated by a space. */
+  /**
+   * DEPRECATED: Internal.
+   *
+   * Append the character sequences of this XML parent from left to right, separated by a space,
+   * up to a specified (zero-based) index.
+   */
+  deprecated string charsSetUpTo(int n) {
+    n = 0 and xmlChars(_, result, this, 0, _, _)
+    or
+    n > 0 and
+    exists(string chars | xmlChars(_, chars, this, n, _, _) |
+      result = this.charsSetUpTo(n - 1) + " " + chars
+    )
+  }
+
+  /**
+   * Gets the result of appending all the character sequences of this XML parent from
+   * left to right, separated by a space.
+   */
   string allCharactersString() {
     result = concat(string chars, int pos |
         xmlChars(_, chars, this, pos, _, _)
@@ -100,15 +122,21 @@ class XMLFile extends XMLParent, File {
   override string toString() { result = XMLParent.super.toString() }
 
   /** Gets the name of this XML file. */
-  override string getName() { files(this, result, _, _, _) }
+  override string getName() { result = File.super.getAbsolutePath() }
 
-  /** Gets the path of this XML file. */
-  string getPath() { files(this, _, result, _, _) }
+  /**
+   * DEPRECATED: Use `getAbsolutePath()` instead.
+   *
+   * Gets the path of this XML file.
+   */
+  deprecated string getPath() { result = getAbsolutePath() }
 
-  /** Gets the path of the folder that contains this XML file. */
-  string getFolder() {
-    result = this.getPath().substring(0, this.getPath().length() - this.getName().length())
-  }
+  /**
+   * DEPRECATED: Use `getParentContainer().getAbsolutePath()` instead.
+   *
+   * Gets the path of the folder that contains this XML file.
+   */
+  deprecated string getFolder() { result = getParentContainer().getAbsolutePath() }
 
   /** Gets the encoding of this XML file. */
   string getEncoding() { xmlEncoding(this, result) }
@@ -123,7 +151,17 @@ class XMLFile extends XMLParent, File {
   XMLDTD getADTD() { xmlDTDs(result, _, _, _, this) }
 }
 
-/** A "Document Type Definition" of an XML file. */
+/**
+ * An XML document type definition (DTD).
+ *
+ * Example:
+ *
+ * ```
+ * <!ELEMENT person (firstName, lastName?)>
+ * <!ELEMENT firstName (#PCDATA)>
+ * <!ELEMENT lastName (#PCDATA)>
+ * ```
+ */
 class XMLDTD extends XMLLocatable, @xmldtd {
   /** Gets the name of the root element of this DTD. */
   string getRoot() { xmlDTDs(this, result, _, _, _) }
@@ -140,7 +178,6 @@ class XMLDTD extends XMLLocatable, @xmldtd {
   /** Gets the parent of this DTD. */
   XMLParent getParent() { xmlDTDs(this, _, _, _, result) }
 
-  /** Gets a printable representation of this DTD. */
   override string toString() {
     this.isPublic() and
     result = this.getRoot() + " PUBLIC '" + this.getPublicId() + "' '" + this.getSystemId() + "'"
@@ -150,7 +187,17 @@ class XMLDTD extends XMLLocatable, @xmldtd {
   }
 }
 
-/** An XML tag in an XML file. */
+/**
+ * An XML element in an XML file.
+ *
+ * Example:
+ *
+ * ```
+ * <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+ *           package="com.example.exampleapp" android:versionCode="1">
+ * </manifest>
+ * ```
+ */
 class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   /** Holds if this XML element has the given `name`. */
   predicate hasName(string name) { name = getName() }
@@ -195,7 +242,16 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   override string toString() { result = XMLParent.super.toString() }
 }
 
-/** An attribute that occurs inside an XML element. */
+/**
+ * An attribute that occurs inside an XML element.
+ *
+ * Examples:
+ *
+ * ```
+ * package="com.example.exampleapp"
+ * android:versionCode="1"
+ * ```
+ */
 class XMLAttribute extends @xmlattribute, XMLLocatable {
   /** Gets the name of this attribute. */
   string getName() { xmlAttrs(this, _, result, _, _, _) }
@@ -216,7 +272,15 @@ class XMLAttribute extends @xmlattribute, XMLLocatable {
   override string toString() { result = this.getName() + "=" + this.getValue() }
 }
 
-/** A namespace used in an XML file */
+/**
+ * A namespace used in an XML file.
+ *
+ * Example:
+ *
+ * ```
+ * xmlns:android="http://schemas.android.com/apk/res/android"
+ * ```
+ */
 class XMLNamespace extends XMLLocatable, @xmlnamespace {
   /** Gets the prefix of this namespace. */
   string getPrefix() { xmlNs(this, result, _, _) }
@@ -234,7 +298,15 @@ class XMLNamespace extends XMLLocatable, @xmlnamespace {
   }
 }
 
-/** A comment of the form `<!-- ... -->` is an XML comment. */
+/**
+ * A comment in an XML file.
+ *
+ * Example:
+ *
+ * ```
+ * <!-- This is a comment. -->
+ * ```
+ */
 class XMLComment extends @xmlcomment, XMLLocatable {
   /** Gets the text content of this XML comment. */
   string getText() { xmlComments(this, result, _, _) }
@@ -249,6 +321,12 @@ class XMLComment extends @xmlcomment, XMLLocatable {
 /**
  * A sequence of characters that occurs between opening and
  * closing tags of an XML element, excluding other elements.
+ *
+ * Example:
+ *
+ * ```
+ * <content>This is a sequence of characters.</content>
+ * ```
  */
 class XMLCharacters extends @xmlcharacters, XMLLocatable {
   /** Gets the content of this character sequence. */

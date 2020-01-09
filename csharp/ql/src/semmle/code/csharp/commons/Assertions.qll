@@ -1,6 +1,7 @@
 /** Provides classes for assertions. */
 
 private import semmle.code.csharp.frameworks.system.Diagnostics
+private import semmle.code.csharp.frameworks.system.diagnostics.Contracts
 private import semmle.code.csharp.frameworks.test.VisualStudio
 private import semmle.code.csharp.frameworks.System
 private import ControlFlow
@@ -165,6 +166,29 @@ class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
   override Class getExceptionClass() {
     // A failing assertion generates a message box, see
     // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debug.assert
+    none()
+  }
+}
+
+/**
+ * A `System.Diagnostics.Contracts.Contract` assertion method.
+ */
+class SystemDiagnosticsContractAssertTrueMethod extends AssertTrueMethod {
+  SystemDiagnosticsContractAssertTrueMethod() {
+    exists(SystemDiagnosticsContractsContractClass c |
+      this = c.getAnAssertMethod()
+      or
+      this = c.getAnAssumeMethod()
+      or
+      this = c.getARequiresMethod()
+    )
+  }
+
+  override int getAssertionIndex() { result = 0 }
+
+  override Class getExceptionClass() {
+    // A failing assertion generates a message box, see
+    // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.contracts.contract.assert
     none()
   }
 }

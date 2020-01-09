@@ -793,7 +793,10 @@ module Internal {
     TBooleanValue(boolean b) { b = true or b = false } or
     TIntegerValue(int i) { i = any(Expr e).getValue().toInt() } or
     TNullValue(boolean b) { b = true or b = false } or
-    TMatchValue(Case c, boolean b) { b = true or b = false } or
+    TMatchValue(Case c, boolean b) {
+      exists(c.getPattern()) and
+      (b = true or b = false)
+    } or
     TEmptyCollectionValue(boolean b) { b = true or b = false }
 
   /** A callable that always returns a `null` value. */
@@ -842,6 +845,8 @@ module Internal {
     e instanceof ObjectCreation
     or
     e instanceof ArrayCreation
+    or
+    e.hasNotNullFlowState()
     or
     e.hasValue() and
     exists(Expr stripped | stripped = e.stripCasts() |

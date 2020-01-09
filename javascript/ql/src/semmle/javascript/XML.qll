@@ -2,12 +2,19 @@
  * Provides classes and predicates for working with XML files and their content.
  */
 
-import javascript
+import semmle.files.FileSystem
 
 /** An XML element that has a location. */
 abstract class XMLLocatable extends @xmllocatable {
   /** Gets the source location for this element. */
   Location getLocation() { xmllocations(this, result) }
+
+  /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
+   * Gets the source location for this element.
+   */
+  deprecated Location getALocation() { result = this.getLocation() }
 
   /**
    * Holds if this element is at the specified location.
@@ -34,6 +41,12 @@ abstract class XMLLocatable extends @xmllocatable {
  * both of which can contain other elements.
  */
 class XMLParent extends @xmlparent {
+  XMLParent() {
+    // explicitly restrict `this` to be either an `XMLElement` or an `XMLFile`;
+    // the type `@xmlparent` currently also includes non-XML files
+    this instanceof @xmlelement or xmlEncoding(this, _)
+  }
+
   /**
    * Gets a printable representation of this XML parent.
    * (Intended to be overridden in subclasses.)
@@ -82,7 +95,10 @@ class XMLParent extends @xmlparent {
     )
   }
 
-  /** Append all the character sequences of this XML parent from left to right, separated by a space. */
+  /**
+   * Gets the result of appending all the character sequences of this XML parent from
+   * left to right, separated by a space.
+   */
   string allCharactersString() {
     result = concat(string chars, int pos |
         xmlChars(_, chars, this, pos, _, _)
@@ -108,6 +124,20 @@ class XMLFile extends XMLParent, File {
   /** Gets the name of this XML file. */
   override string getName() { result = File.super.getAbsolutePath() }
 
+  /**
+   * DEPRECATED: Use `getAbsolutePath()` instead.
+   *
+   * Gets the path of this XML file.
+   */
+  deprecated string getPath() { result = getAbsolutePath() }
+
+  /**
+   * DEPRECATED: Use `getParentContainer().getAbsolutePath()` instead.
+   *
+   * Gets the path of the folder that contains this XML file.
+   */
+  deprecated string getFolder() { result = getParentContainer().getAbsolutePath() }
+
   /** Gets the encoding of this XML file. */
   string getEncoding() { xmlEncoding(this, result) }
 
@@ -132,7 +162,7 @@ class XMLFile extends XMLParent, File {
  * <!ELEMENT lastName (#PCDATA)>
  * ```
  */
-class XMLDTD extends @xmldtd {
+class XMLDTD extends XMLLocatable, @xmldtd {
   /** Gets the name of the root element of this DTD. */
   string getRoot() { xmlDTDs(this, result, _, _, _) }
 
@@ -148,8 +178,7 @@ class XMLDTD extends @xmldtd {
   /** Gets the parent of this DTD. */
   XMLParent getParent() { xmlDTDs(this, _, _, _, result) }
 
-  /** Gets a printable representation of this DTD. */
-  string toString() {
+  override string toString() {
     this.isPublic() and
     result = this.getRoot() + " PUBLIC '" + this.getPublicId() + "' '" + this.getSystemId() + "'"
     or
@@ -252,7 +281,7 @@ class XMLAttribute extends @xmlattribute, XMLLocatable {
  * xmlns:android="http://schemas.android.com/apk/res/android"
  * ```
  */
-class XMLNamespace extends @xmlnamespace {
+class XMLNamespace extends XMLLocatable, @xmlnamespace {
   /** Gets the prefix of this namespace. */
   string getPrefix() { xmlNs(this, result, _, _) }
 
@@ -262,8 +291,7 @@ class XMLNamespace extends @xmlnamespace {
   /** Holds if this namespace has no prefix. */
   predicate isDefault() { this.getPrefix() = "" }
 
-  /** Gets a printable representation of this XML namespace. */
-  string toString() {
+  override string toString() {
     this.isDefault() and result = this.getURI()
     or
     not this.isDefault() and result = this.getPrefix() + ":" + this.getURI()

@@ -29,7 +29,7 @@ private predicate hasOperandMemoryAccess(
   resultPointsTo(operand.getAddressOperand().getAnyDef(), var, startBitOffset) and
   languageType = operand.getLanguageType() and
   type = languageType.getIRType() and
-  (if operand.hasMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+  (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
   if exists(type.getByteSize())
   then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
   else endBitOffset = Ints::unknown()
@@ -401,43 +401,50 @@ private predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
   vml.getStartBitOffset() != Ints::unknown()
 }
 
-private predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, int offsetRank) {
+private predicate isCoveredOffset(
+  VirtualVariable vv, IRVariable var, int offsetRank, VariableMemoryLocation vml
+) {
   exists(int startRank, int endRank |
     vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
     vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
-    vv = vml.getVirtualVariable() and
+    hasVariableAndVirtualVariable(vv, var, vml) and
     isRelatableMemoryLocation(vml) and
     offsetRank in [startRank .. endRank]
   )
 }
 
-private predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
-  vml.getVirtualVariable() = vv and
+private predicate hasUnknownOffset(VirtualVariable vv, IRVariable var, VariableMemoryLocation vml) {
+  hasVariableAndVirtualVariable(vv, var, vml) and
   (
     vml.getStartBitOffset() = Ints::unknown() or
     vml.getEndBitOffset() = Ints::unknown()
   )
 }
 
-private predicate overlappingVariableMemoryLocations(
-  VariableMemoryLocation def, VariableMemoryLocation use
+private predicate hasVariableAndVirtualVariable(
+  VirtualVariable vv, IRVariable var, VariableMemoryLocation vml
 ) {
-  exists(VirtualVariable vv, int offsetRank |
-    isCoveredOffset(def, vv, offsetRank) and isCoveredOffset(use, vv, offsetRank)
-  )
-  or
-  hasUnknownOffset(def, use.getVirtualVariable())
-  or
-  hasUnknownOffset(use, def.getVirtualVariable())
+  var = vml.getVariable() and
+  vv = vml.getVirtualVariable()
 }
 
-// Internal ticket: QL-937
-pragma[noopt]
 private predicate overlappingIRVariableMemoryLocations(
   VariableMemoryLocation def, VariableMemoryLocation use
 ) {
-  overlappingVariableMemoryLocations(def, use) and
-  def.getVariable() = use.getVariable()
+  exists(VirtualVariable vv, IRVariable var, int offsetRank |
+    isCoveredOffset(vv, var, offsetRank, def) and
+    isCoveredOffset(vv, var, offsetRank, use)
+  )
+  or
+  exists(VirtualVariable vv, IRVariable var |
+    hasUnknownOffset(vv, var, def) and
+    hasVariableAndVirtualVariable(vv, var, use)
+  )
+  or
+  exists(VirtualVariable vv, IRVariable var |
+    hasUnknownOffset(vv, var, use) and
+    hasVariableAndVirtualVariable(vv, var, def)
+  )
 }
 
 private Overlap getVariableMemoryLocationOverlap(
@@ -476,7 +483,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
-    (if operand.hasMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+    (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
     (
       (
         kind.usesAddressOperand() and

@@ -144,7 +144,7 @@ newtype TInputSymbol =
   CharClass(RegExpCharacterClass recc) {
     getRoot(recc).isRelevant() and
     not recc.isInverted() and
-    not isUniversalClass(recc)
+    not recc.isUniversalClass()
   } or
   /** An input symbol representing all characters matched by `.`. */
   Dot() or
@@ -152,23 +152,6 @@ newtype TInputSymbol =
   Any() or
   /** An epsilon transition in the automaton. */
   Epsilon()
-
-/**
- * Holds if character class `cc` matches all characters.
- */
-predicate isUniversalClass(RegExpCharacterClass cc) {
-  // [^]
-  cc.isInverted() and not exists(cc.getAChild())
-  or
-  // [\w\W] and similar
-  not cc.isInverted() and
-  exists(string cce1, string cce2 |
-    cce1 = cc.getAChild().(RegExpCharacterClassEscape).getValue() and
-    cce2 = cc.getAChild().(RegExpCharacterClassEscape).getValue()
-  |
-    cce1 != cce2 and cce1.toLowerCase() = cce2.toLowerCase()
-  )
-}
 
 /**
  * An abstract input symbol, representing a set of concrete characters.
@@ -361,7 +344,7 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
   )
   or
   exists(RegExpCharacterClass cc |
-    isUniversalClass(cc) and q1 = before(cc) and lbl = Any() and q2 = after(cc)
+    cc.isUniversalClass() and q1 = before(cc) and lbl = Any() and q2 = after(cc)
     or
     q1 = before(cc) and lbl = CharClass(cc) and q2 = after(cc)
   )

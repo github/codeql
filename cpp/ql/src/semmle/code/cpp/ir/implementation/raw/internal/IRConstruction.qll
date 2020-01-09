@@ -93,6 +93,29 @@ private module Cached {
     overlap instanceof MustTotallyOverlap
   }
 
+  /** Gets a non-phi instruction that defines an operand of `instr`. */
+  private Instruction getNonPhiOperandDef(Instruction instr) {
+    result = getRegisterOperandDefinition(instr, _)
+    or
+    result = getMemoryOperandDefinition(instr, _, _)
+  }
+
+  /**
+   * Holds if `instr` is part of a cycle in the operand graph that doesn't go
+   * through a phi instruction and therefore should be impossible.
+   *
+   * If such cycles are present, either due to a programming error in the IR
+   * generation or due to a malformed database, it can cause infinite loops in
+   * analyses that assume a cycle-free graph of non-phi operands. Therefore it's
+   * better to remove these operands than to leave cycles in the operand graph.
+   */
+  pragma[noopt]
+  cached
+  predicate isInCycle(Instruction instr) {
+    instr instanceof Instruction and
+    getNonPhiOperandDef+(instr) = instr
+  }
+
   cached
   CppType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
     // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
@@ -120,26 +143,23 @@ private module Cached {
           .getInstructionSuccessor(getInstructionTag(instruction), kind)
   }
 
-  // This predicate has pragma[noopt] because otherwise the `getAChild*` calls
-  // get joined too early. The join order for the loop cases goes like this:
-  // - Find all loops of that type (tens of thousands).
-  // - Find all edges into the start of the loop (x 2).
-  // - Restrict to edges that originate within the loop (/ 2).
-  pragma[noopt]
-  cached
-  Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind kind) {
+  /**
+   * Holds if the CFG edge (`sourceElement`, `sourceTag`) ---`kind`-->
+   * `targetInstruction` is a back edge under the condition that
+   * `requiredAncestor` is an ancestor of `sourceElement`.
+   */
+  private predicate backEdgeCandidate(
+    TranslatedElement sourceElement, InstructionTag sourceTag, TranslatedElement requiredAncestor,
+    Instruction targetInstruction, EdgeKind kind
+  ) {
     // While loop:
     // Any edge from within the body of the loop to the condition of the loop
     // is a back edge. This includes edges from `continue` and the fall-through
     // edge(s) after the last instruction(s) in the body.
     exists(TranslatedWhileStmt s |
-      s instanceof TranslatedWhileStmt and
-      result = s.getFirstConditionInstruction() and
-      exists(TranslatedElement inBody, InstructionTag tag |
-        result = inBody.getInstructionSuccessor(tag, kind) and
-        exists(TranslatedElement body | body = s.getBody() | inBody = body.getAChild*()) and
-        instruction = inBody.getInstruction(tag)
-      )
+      targetInstruction = s.getFirstConditionInstruction() and
+      targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
+      requiredAncestor = s.getBody()
     )
     or
     // Do-while loop:
@@ -148,15 +168,9 @@ private module Cached {
     // { ... } while (0)` statement. Note that all `continue` statements in a
     // do-while loop produce forward edges.
     exists(TranslatedDoStmt s |
-      s instanceof TranslatedDoStmt and
-      exists(TranslatedStmt body | body = s.getBody() | result = body.getFirstInstruction()) and
-      exists(TranslatedElement inCondition, InstructionTag tag |
-        result = inCondition.getInstructionSuccessor(tag, kind) and
-        exists(TranslatedElement condition | condition = s.getCondition() |
-          inCondition = condition.getAChild*()
-        ) and
-        instruction = inCondition.getInstruction(tag)
-      )
+      targetInstruction = s.getBody().getFirstInstruction() and
+      targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
+      requiredAncestor = s.getCondition()
     )
     or
     // For loop:
@@ -166,33 +180,42 @@ private module Cached {
     // last instruction(s) in the body. A for loop may not have a condition, in
     // which case `getFirstConditionInstruction` returns the body instead.
     exists(TranslatedForStmt s |
-      s instanceof TranslatedForStmt and
-      result = s.getFirstConditionInstruction() and
-      exists(TranslatedElement inLoop, InstructionTag tag |
-        result = inLoop.getInstructionSuccessor(tag, kind) and
-        exists(TranslatedElement bodyOrUpdate |
-          bodyOrUpdate = s.getBody()
-          or
-          bodyOrUpdate = s.getUpdate()
-        |
-          inLoop = bodyOrUpdate.getAChild*()
-        ) and
-        instruction = inLoop.getInstruction(tag)
+      targetInstruction = s.getFirstConditionInstruction() and
+      targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
+      (
+        requiredAncestor = s.getUpdate()
+        or
+        not exists(s.getUpdate()) and
+        requiredAncestor = s.getBody()
       )
     )
     or
     // Range-based for loop:
     // Any edge from within the update of the loop to the condition of
     // the loop is a back edge.
-    exists(TranslatedRangeBasedForStmt s, TranslatedCondition condition |
-      s instanceof TranslatedRangeBasedForStmt and
-      condition = s.getCondition() and
-      result = condition.getFirstInstruction() and
-      exists(TranslatedElement inUpdate, InstructionTag tag |
-        result = inUpdate.getInstructionSuccessor(tag, kind) and
-        exists(TranslatedElement update | update = s.getUpdate() | inUpdate = update.getAChild*()) and
-        instruction = inUpdate.getInstruction(tag)
-      )
+    exists(TranslatedRangeBasedForStmt s |
+      targetInstruction = s.getCondition().getFirstInstruction() and
+      targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
+      requiredAncestor = s.getUpdate()
+    )
+  }
+
+  private predicate jumpSourceHasAncestor(TranslatedElement jumpSource, TranslatedElement ancestor) {
+    backEdgeCandidate(jumpSource, _, _, _, _) and
+    ancestor = jumpSource
+    or
+    // For performance, we don't want a fastTC here
+    jumpSourceHasAncestor(jumpSource, ancestor.getAChild())
+  }
+
+  cached
+  Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind kind) {
+    exists(
+      TranslatedElement sourceElement, InstructionTag sourceTag, TranslatedElement requiredAncestor
+    |
+      backEdgeCandidate(sourceElement, sourceTag, requiredAncestor, result, kind) and
+      jumpSourceHasAncestor(sourceElement, requiredAncestor) and
+      instruction = sourceElement.getInstruction(sourceTag)
     )
     or
     // Goto statement:
@@ -202,7 +225,6 @@ private module Cached {
     // same location for source and target, so we conservatively assume that
     // such a `goto` creates a back edge.
     exists(TranslatedElement s, GotoStmt goto |
-      goto instanceof GotoStmt and
       not isStrictlyForwardGoto(goto) and
       goto = s.getAST() and
       exists(InstructionTag tag |

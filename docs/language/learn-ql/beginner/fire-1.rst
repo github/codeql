@@ -12,50 +12,50 @@ Read the examples below to learn how to define predicates and classes in QL. The
 Select the southerners
 ----------------------
 
-This time you only need to consider a specific group of villagers, namely those living in the south of the village. Instead of writing ``getLocation() = "south"`` in all your queries, you could define a new `predicate <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ ``southern``:
+This time you only need to consider a specific group of villagers, namely those living in the south of the village. Instead of writing ``getLocation() = "south"`` in all your queries, you could define a new `predicate <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ ``isSouthern``:
 
 .. code-block:: ql
 
-   predicate southern(Person p) {
-       p.getLocation() = "south"
+   predicate isSouthern(Person p) {
+     p.getLocation() = "south"
    }
 
-The predicate ``southern(p)`` takes a single parameter ``p`` and checks if ``p`` satisfies the property ``p.getLocation() = "south"``.
+The predicate ``isSouthern(p)`` takes a single parameter ``p`` and checks if ``p`` satisfies the property ``p.getLocation() = "south"``.
 
 .. pull-quote::
 
    Note
 
    -  The name of a predicate always starts with a lowercase letter.
-   -  You can also define predicates with a result. In that case, the keyword ``predicate`` is replaced with the type of the result. This is like introducing a new argument, the special variable ``result``. For example, ``int getAge() {result = ...}`` returns an ``int``.
+   -  You can also define predicates with a result. In that case, the keyword ``predicate`` is replaced with the type of the result. This is like introducing a new argument, the special variable ``result``. For example, ``int getAge() { result = ... }`` returns an ``int``.
 
 You can now list all southerners using:
 
 .. code-block:: ql
 
-   /* define predicate `southern` as above */
+   /* define predicate `isSouthern` as above */
 
    from Person p
-   where southern(p)
+   where isSouthern(p)
    select p
 
-This is already a nice way to simplify the logic, but we could be more efficient. Currently, the query looks at every ``Person p``, and then restricts to those who satisfy ``southern(p)``. Instead, we could define a new `class <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ ``Southerner`` containing precisely the people we want to consider.
+This is already a nice way to simplify the logic, but we could be more efficient. Currently, the query looks at every ``Person p``, and then restricts to those who satisfy ``isSouthern(p)``. Instead, we could define a new `class <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ ``Southerner`` containing precisely the people we want to consider.
 
 .. code-block:: ql
 
    class Southerner extends Person {
-       Southerner() { southern(this) }
+     Southerner() { isSouthern(this) }
    }
 
-A class in QL represents a logical property: when a value satisfies that property, it is a member of the class. This means that a value can be in many classes - being in a particular class doesn't stop it from being in other classes too.
+A class in QL represents a logical property: when a value satisfies that property, it is a member of the class. This means that a value can be in many classes—being in a particular class doesn't stop it from being in other classes too.
 
-The expression ``southern(this)`` defines the logical property represented by the class, called its *characteristic predicate*. It uses a special variable ``this`` and indicates that a ``Person`` "``this``" is a ``Southerner`` if the property ``southern(this)`` holds.
+The expression ``isSouthern(this)`` defines the logical property represented by the class, called its *characteristic predicate*. It uses a special variable ``this`` and indicates that a ``Person`` "``this``" is a ``Southerner`` if the property ``isSouthern(this)`` holds.
 
 .. pull-quote::
 
    Note
 
-   If you are familiar with object-oriented programming languages, you might be tempted to think of the characteristic predicate as a *constructor*. However, this is **not** the case - it is a logical property which does not create any objects.
+   If you are familiar with object-oriented programming languages, you might be tempted to think of the characteristic predicate as a *constructor*. However, this is **not** the case—it is a logical property which does not create any objects.
 
 You always need to define a class in QL in terms of an existing (larger) class. In our example, a ``Southerner`` is a special kind of ``Person``, so we say that ``Southerner`` *extends* ("is a subset of") ``Person``.
 
@@ -66,7 +66,7 @@ Using this class you can now list all people living in the south simply as:
    from Southerner s
    select s
 
-You may have noticed that some predicates are appended, for example ``p.getAge()``, while others are not, for example ``southern(p)``. This is because ``getAge()`` is a member predicate, that is, a predicate that only applies to members of a class. You define such a member predicate inside a class. In this case, ``getAge()`` is defined inside the class ``Person``. In contrast, ``southern`` is defined separately and is not inside any classes. Member predicates are especially useful because you can chain them together easily. For example, ``p.getAge().sqrt()`` first gets the age of ``p`` and then calculates the square root of that number.
+You may have noticed that some predicates are appended, for example ``p.getAge()``, while others are not, for example ``isSouthern(p)``. This is because ``getAge()`` is a member predicate, that is, a predicate that only applies to members of a class. You define such a member predicate inside a class. In this case, ``getAge()`` is defined inside the class ``Person``. In contrast, ``isSouthern`` is defined separately and is not inside any classes. Member predicates are especially useful because you can chain them together easily. For example, ``p.getAge().sqrt()`` first gets the age of ``p`` and then calculates the square root of that number.
 
 Travel restrictions
 -------------------
@@ -88,20 +88,19 @@ Start by defining a class ``Child`` containing all villagers under 10 years old.
 .. code-block:: ql
 
    class Child extends Person {
+     /* the characteristic predicate */
+     Child() { this.getAge() < 10 }
 
-       /* the characteristic predicate */
-       Child() { this.getAge() < 10 }
-
-       /* a member predicate */
-       override predicate isAllowedIn(string region) {
-           region = this.getLocation()
-       }
+     /* a member predicate */
+     override predicate isAllowedIn(string region) {
+       region = this.getLocation()
+     }
    }
 
 Now try applying ``isAllowedIn(string region)`` to a person ``p``. If ``p`` is not a child, the original definition is used, but if ``p`` is a child, the new predicate definition overrides the original.
 
 You know that the fire starters live in the south *and* that they must have been able to travel to the north. Write a query to find the possible suspects. You could also extend the ``select`` clause to list the age of the suspects. That way you can clearly see that all the children have been excluded from the list.
 
-➤ `See the answer in the query console <https://lgtm.com/query/2164870087/>`__
+➤ `See the answer in the query console <https://lgtm.com/query/2551838470440192723/>`__
 
 Continue to the :doc:`next page <fire-2>` to gather more clues and find out which of your suspects started the fire...

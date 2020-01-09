@@ -696,33 +696,37 @@ module TaintTracking {
    */
   class SanitizingRegExpTest extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr expr;
+    boolean sanitizedOutcome;
 
     SanitizingRegExpTest() {
       exists(MethodCallExpr mce, Expr base, string m, Expr firstArg |
         mce = astNode and mce.calls(base, m) and firstArg = mce.getArgument(0)
       |
         // /re/.test(u) or /re/.exec(u)
-        base.analyze().getAType() = TTRegExp() and
+        RegExp::isGenericRegExpSanitizer(RegExp::getRegExpObjectFromNode(base.flow()), sanitizedOutcome) and
         (m = "test" or m = "exec") and
         firstArg = expr
         or
         // u.match(/re/) or u.match("re")
         base = expr and
         m = "match" and
-        exists(InferredType firstArgType | firstArgType = firstArg.analyze().getAType() |
-          firstArgType = TTRegExp() or firstArgType = TTString()
-        )
+        RegExp::isGenericRegExpSanitizer(RegExp::getRegExpFromNode(firstArg.flow()), sanitizedOutcome)
       )
       or
       // m = /re/.exec(u) and similar
-      DataFlow::valueNode(astNode.(AssignExpr).getRhs()).(SanitizingRegExpTest).getSanitizedExpr() =
-        expr
+      exists(SanitizingRegExpTest other |
+        other = DataFlow::valueNode(astNode.(AssignExpr).getRhs()) and
+        expr = other.getSanitizedExpr() and
+        sanitizedOutcome = other.getSanitizedOutcome()
+      )
     }
 
     private Expr getSanitizedExpr() { result = expr }
 
+    private boolean getSanitizedOutcome() { result = sanitizedOutcome }
+
     override predicate sanitizes(boolean outcome, Expr e) {
-      (outcome = true or outcome = false) and
+      outcome = sanitizedOutcome and
       e = expr
     }
 

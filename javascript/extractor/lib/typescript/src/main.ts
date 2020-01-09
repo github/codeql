@@ -126,7 +126,7 @@ function checkCycle(root: any) {
 function isBlacklistedProperty(k: string) {
     return k === "parent" || k === "pos" || k === "end"
         || k === "symbol" || k === "localSymbol"
-        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode"
+        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode" || k === "fallthroughFlowNode"
         || k === "nextContainer" || k === "locals"
         || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics";
 }
@@ -243,6 +243,7 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
 }
 
 function handleOpenProjectCommand(command: OpenProjectCommand) {
+    Error.stackTraceLimit = Infinity;
     let tsConfigFilename = String(command.tsConfig);
     let tsConfig = ts.readConfigFile(tsConfigFilename, ts.sys.readFile);
     let basePath = pathlib.dirname(tsConfigFilename);

@@ -35,6 +35,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   final override Function getFunction() { result = func }
 
   final override TranslatedElement getChild(int id) {
+    id = -4 and result = getReadEffects()
+    or
     id = -3 and result = getConstructorInitList()
     or
     id = -2 and result = getBody()
@@ -53,6 +55,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   }
 
   final private TranslatedStmt getBody() { result = getTranslatedStmt(func.getEntryPoint()) }
+
+  final private TranslatedReadEffects getReadEffects() { result = getTranslatedReadEffects(func) }
 
   final private TranslatedParameter getParameter(int index) {
     result = getTranslatedParameter(func.getParameter(index))
@@ -117,12 +121,13 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     child = getBody() and
     result = getReturnSuccessorInstruction()
     or
-    (
-      child = getDestructorDestructionList() and
-      if hasReturnValue()
-      then result = getInstruction(ReturnValueAddressTag())
-      else result = getInstruction(ReturnTag())
-    )
+    child = getDestructorDestructionList() and
+    result = getReadEffects().getFirstInstruction()
+    or
+    child = getReadEffects() and
+    if hasReturnValue()
+    then result = getInstruction(ReturnValueAddressTag())
+    else result = getInstruction(ReturnTag())
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -339,6 +344,14 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
       result = getInstruction(InitializerStoreTag())
       or
       tag = InitializerStoreTag() and
+      if hasIndirection()
+      then result = getInstruction(InitializerIndirectAddressTag())
+      else result = getParent().getChildSuccessor(this)
+      or
+      tag = InitializerIndirectAddressTag() and
+      result = getInstruction(InitializerIndirectStoreTag())
+      or
+      tag = InitializerIndirectStoreTag() and
       result = getParent().getChildSuccessor(this)
     )
   }
@@ -353,12 +366,23 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::InitializeParameter and
     resultType = getTypeForPRValue(getVariableType(param))
+    or
+    hasIndirection() and
+    tag = InitializerIndirectAddressTag() and
+    opcode instanceof Opcode::Load and
+    resultType = getTypeForPRValue(getVariableType(param))
+    or
+    hasIndirection() and
+    tag = InitializerIndirectStoreTag() and
+    opcode instanceof Opcode::InitializeIndirection and
+    resultType = getUnknownType()
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
     (
       tag = InitializerStoreTag() or
-      tag = InitializerVariableAddressTag()
+      tag = InitializerVariableAddressTag() or
+      tag = InitializerIndirectStoreTag()
     ) and
     result = getIRUserVariable(getFunction(), param)
   }
@@ -368,6 +392,28 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     (
       operandTag instanceof AddressOperandTag and
       result = getInstruction(InitializerVariableAddressTag())
+    )
+    or
+    // this feels a little strange, but I think it's the best we can do
+    tag = InitializerIndirectAddressTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = getInstruction(InitializerVariableAddressTag())
+      or
+      operandTag instanceof LoadOperandTag and
+      result = getInstruction(InitializerStoreTag())
+    )
+    or
+    tag = InitializerIndirectStoreTag() and
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(InitializerIndirectAddressTag())
+  }
+
+  predicate hasIndirection() {
+    exists(Type t | t = param.getUnspecifiedType() |
+      t instanceof ArrayType or
+      t instanceof PointerType or
+      t instanceof ReferenceType
     )
   }
 }
@@ -488,5 +534,98 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
       then result = getChild(id + 1).getFirstInstruction()
       else result = getParent().getChildSuccessor(this)
     )
+  }
+}
+
+TranslatedReadEffects getTranslatedReadEffects(Function func) { result.getAST() = func }
+
+class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
+  Function func;
+
+  TranslatedReadEffects() { this = TTranslatedReadEffects(func) }
+
+  override Locatable getAST() { result = func }
+
+  override Function getFunction() { result = func }
+
+  override string toString() { result = "read effects: " + func.toString() }
+
+  override TranslatedElement getChild(int id) {
+    result = getTranslatedReadEffect(func.getParameter(id))
+  }
+
+  override Instruction getFirstInstruction() {
+    if exists(getAChild())
+    then
+      result = min(TranslatedReadEffect child, int id | child = getChild(id) | child order by id)
+            .getFirstInstruction()
+    else result = getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    exists(int id | child = getChild(id) |
+      if exists(TranslatedReadEffect child2, int id2 | id2 > id and child2 = getChild(id2))
+      then
+        result = min(TranslatedReadEffect child2, int id2 |
+            child2 = getChild(id2) and id2 > id
+          |
+            child2 order by id2
+          ).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    )
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+}
+
+private TranslatedReadEffect getTranslatedReadEffect(Parameter param) { result.getAST() = param }
+
+class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
+  Parameter param;
+
+  TranslatedReadEffect() { this = TTranslatedReadEffect(param) }
+
+  override Locatable getAST() { result = param }
+
+  override string toString() { result = "read effect: " + param.toString() }
+
+  override TranslatedElement getChild(int id) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind edge) {
+    tag = OnlyInstructionTag() and
+    edge = gotoEdge() and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override Function getFunction() { result = param.getFunction() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    opcode instanceof Opcode::ReturnIndirection and
+    tag = OnlyInstructionTag() and
+    resultType = getVoidType()
+  }
+
+  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = sideEffectOperand() and
+    result = getTranslatedFunction(getFunction()).getUnmodeledDefinitionInstruction()
+    or
+    tag = OnlyInstructionTag() and
+    operandTag = addressOperand() and
+    result = getTranslatedParameter(param).getInstruction(InitializerIndirectAddressTag())
+  }
+
+  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = sideEffectOperand() and
+    result = getUnknownType()
   }
 }

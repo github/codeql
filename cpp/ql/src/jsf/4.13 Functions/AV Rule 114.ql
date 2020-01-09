@@ -46,6 +46,10 @@ predicate functionImperfectlyExtracted(Function f) {
   exists(ErrorExpr ee | ee.getEnclosingFunction() = f)
   or
   count(f.getType()) > 1
+  or
+  // an `AsmStmt` isn't strictly 'imperfectly extracted', but it's beyond the scope
+  // of this analysis.
+  exists(AsmStmt asm | asm.getEnclosingFunction() = f)
 }
 
 from Stmt stmt, string msg, Function f, ControlFlowNode blame

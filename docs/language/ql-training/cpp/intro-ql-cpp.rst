@@ -11,7 +11,7 @@ Setup
 
 For this example you should download:
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
 - `exiv2 database <http://downloads.lgtm.com/snapshots/cpp/exiv2/Exiv2_exiv2_b090f4d.zip>`__
 
 .. note::
@@ -106,7 +106,7 @@ Each query library also implicitly defines a module.
 
 .. note::
 
-  Queries are always contained in query files with the file extension ``.ql``. `Quick queries <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/quick-query.html>`__, run in `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/home-page.html>`__, are no exception: the quick query window maintains a temporary query file in the background.
+  Queries are always contained in query files with the file extension ``.ql``.
 
   Parts of queries can be lifted into `library files <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ with the extension ``.qll``. Definitions within such libraries can be brought into scope using ``import`` statements, and similarly QLL files can import each other’s definitions using “import” statements.
 

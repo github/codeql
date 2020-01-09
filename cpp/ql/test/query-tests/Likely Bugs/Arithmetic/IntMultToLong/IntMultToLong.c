@@ -92,3 +92,37 @@ void use_printf(float f, double d)
 size_t three_chars(unsigned char a, unsigned char b, unsigned char c) {
     return a * b * c; // at most 16581375
 }
+
+void g(unsigned char uchar1, unsigned char uchar2, unsigned char uchar3, int i) {
+    unsigned long ulong1, ulong2, ulong3, ulong4, ulong5;
+    ulong1 = (uchar1 + 1) * (uchar2 + 1); // GOOD
+    ulong2 = (i + 1) * (uchar2 + 1); // BAD
+    ulong3 = (uchar1 + 1) * (uchar2 + 1) * (uchar3 + 1); // GOOD
+
+    ulong4 = (uchar1 + (uchar1 + 1)) * (uchar2 + 1); // GOOD
+    ulong5 = (i + (uchar1 + 1)) * (uchar2 + 1); // BAD
+
+    ulong5 = (uchar1 + 1073741824) * uchar2; // BAD [NOT DETECTED]
+    ulong5 = (uchar1 + (1 << 30)) * uchar2; // BAD [NOT DETECTED]
+    ulong5 = uchar1 * uchar1 * uchar1 * uchar2 * uchar2 * uchar2; // BAD [NOT DETECTED]
+    ulong5 = (uchar1 + (unsigned short)(-1)) * (uchar2 + (unsigned short)(-1)); // BAD
+}
+
+struct A {
+    short s;
+    int i;
+};
+
+void g2(struct A* a, short n) {
+    unsigned long ulong1, ulong2;
+    ulong1 = (a->s - 1) * ((*a).s + 1); // GOOD
+    ulong2 = a->i * (*a).i; // BAD
+}
+
+int global_i;
+unsigned char global_uchar;
+void g3() {
+    unsigned long ulong1, ulong2;
+    ulong1 = global_i * global_i; // BAD
+    ulong2 = (global_uchar + 1) * 2; // GOOD
+}

@@ -11,26 +11,16 @@
  */
 
 import cpp
-
-class MallocCall extends FunctionCall {
-  MallocCall() { this.getTarget().hasGlobalOrStdName("malloc") }
-
-  Expr getAllocatedSize() {
-    if this.getArgument(0) instanceof VariableAccess
-    then
-      exists(StackVariable v, ControlFlowNode def |
-        definitionUsePair(v, def, this.getArgument(0)) and
-        exprDefinition(v, def, result)
-      )
-    else result = this.getArgument(0)
-  }
-}
+import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.models.interfaces.Allocation
 
 predicate spaceProblem(FunctionCall append, string msg) {
-  exists(MallocCall malloc, StrlenCall strlen, AddExpr add, FunctionCall insert, Variable buffer |
+  exists(
+    AllocationExpr malloc, StrlenCall strlen, AddExpr add, FunctionCall insert, Variable buffer
+  |
     add.getAChild() = strlen and
     exists(add.getAChild().getValue()) and
-    malloc.getAllocatedSize() = add and
+    DataFlow::localExprFlow(add, malloc.getSizeExpr()) and
     buffer.getAnAccess() = strlen.getStringExpr() and
     (
       insert.getTarget().hasGlobalOrStdName("strcpy") or

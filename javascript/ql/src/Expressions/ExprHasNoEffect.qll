@@ -40,7 +40,6 @@ predicate inVoidContext(Expr e) {
   exists(LogicalBinaryExpr logical | e = logical.getRightOperand() and inVoidContext(logical))
 }
 
-
 /**
  * Holds if `e` is of the form `x;` or `e.p;` and has a JSDoc comment containing a tag.
  * In that case, it is probably meant as a declaration and shouldn't be flagged by this query.
@@ -155,5 +154,7 @@ predicate hasNoEffect(Expr e) {
   not exists(FunctionExpr fe, ExprStmt es | fe = e |
     fe = es.getExpr() and
     not exists(fe.getName())
-  )	
+  ) and
+  // exclude block-level flow type annotations. For example: `(name: empty)`.
+  not e.(ParExpr).getExpression().getLastToken().getNextToken().getValue() = ":"
 }
