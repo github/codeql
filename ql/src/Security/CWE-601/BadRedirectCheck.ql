@@ -16,18 +16,19 @@ import go
 predicate checksForLeadingSlash(Expr e, ValueEntity v) {
   exists(LogicalExpr le | le = e | checksForLeadingSlash(le.getAnOperand(), v))
   or
-  exists(StringOps::HasPrefix hp |
-    hp.getBaseString().(Read).reads(v) and
-    // ASCII value for '/'
-    (hp.getSubstring().getStringValue() = "/" or hp.getSubstring().getIntValue() = 47)
+  exists(StringOps::HasPrefix hp, DataFlow::Node substr |
+    e = hp.asExpr() and hp.getBaseString() = v.getARead() and hp.getSubstring() = substr
+  |
+    substr.getStringValue() = "/"
+    or
+    substr.getIntValue() = 47 // ASCII value for '/'
   )
 }
 
 predicate checksForSecondSlash(Expr e, ValueEntity v) {
   exists(LogicalExpr le | le = e | checksForSecondSlash(le.getAnOperand(), v))
   or
-  exists(StringOps::HasPrefix hp |
-    hp.getBaseString().(Read).reads(v) and
+  exists(StringOps::HasPrefix hp | e = hp.asExpr() and hp.getBaseString() = v.getARead() |
     hp.getSubstring().getStringValue() = "//"
   )
   or
@@ -42,8 +43,7 @@ predicate checksForSecondSlash(Expr e, ValueEntity v) {
 predicate checksForSecondBackslash(Expr e, ValueEntity v) {
   exists(LogicalExpr le | le = e | checksForSecondBackslash(le.getAnOperand(), v))
   or
-  exists(StringOps::HasPrefix hp |
-    hp.getBaseString().(Read).reads(v) and
+  exists(StringOps::HasPrefix hp | e = hp.asExpr() and hp.getBaseString() = v.getARead() |
     hp.getSubstring().getStringValue() = "/\\"
   )
   or

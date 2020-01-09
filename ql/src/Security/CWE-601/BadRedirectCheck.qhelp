@@ -3,7 +3,7 @@
 
 <overview>
 <p>
-Redirect URLs should be checked in order to ensure that user input cannot cause a site to redirect
+Redirect URLs should be checked to ensure that user input cannot cause a site to redirect
 to arbitrary domains. This is often done with a check that the redirect URL begins with a slash,
 which most of the time is an absolute redirect on the same host. However, browsers interpret URLs
 beginning with <code>//</code> or <code>/\</code> as absolute URLs. For example, a redirect to
