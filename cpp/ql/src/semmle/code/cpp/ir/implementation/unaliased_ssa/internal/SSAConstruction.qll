@@ -573,13 +573,13 @@ module DefUse {
       // An odd offset corresponds to the `Chi` instruction.
       defOffset = oldOffset * 2 + 1 and
       result = Chi(oldInstr) and
-      defLocation = Alias::getResultMemoryLocation(oldInstr) and
+      hasNonPhiDefinition(_, defLocation, defBlock, defOffset) and
       actualDefLocation = defLocation.getVirtualVariable()
       or
       // An even offset corresponds to the original instruction.
       defOffset = oldOffset * 2 and
       result = getNewInstruction(oldInstr) and
-      defLocation = Alias::getResultMemoryLocation(oldInstr) and
+      hasNonPhiDefinition(_, defLocation, defBlock, defOffset) and
       actualDefLocation = defLocation
     )
     or
