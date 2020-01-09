@@ -244,6 +244,20 @@ func main() {
 		log.Printf("GOPATH set to %s.\n", newGopath)
 	}
 
+	// if there is a Makefile, run make in case it does some setup, e.g. code generation
+	if fileExists("Makefile") {
+		log.Println("Makefile found, running make.")
+		var makerun *exec.Cmd
+		makerun = exec.Command("make")
+
+		makerun.Stdout = os.Stdout
+		makerun.Stderr = os.Stderr
+		err := makerun.Run()
+		if err != nil {
+			log.Printf("Running make failed, continuing anyway: %s\n", err.Error())
+		}
+	}
+
 	// install dependencies
 	inst := os.Getenv("LGTM_INDEX_BUILD_COMMAND")
 	var install *exec.Cmd
