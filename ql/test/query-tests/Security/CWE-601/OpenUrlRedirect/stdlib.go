@@ -115,5 +115,29 @@ func serveStdlib() {
 		}
 	})
 
+	http.HandleFunc("/ex8", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		target := r.Form.Get("target")
+		// GOOD: a check is done on the URL
+		if isValidRedirect(target) {
+			http.Redirect(w, r, target, 302)
+		} else {
+			// ...
+		}
+	})
+
+	http.HandleFunc("/ex9", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		target := r.Form.Get("target")
+		// GOOD, but we catch this anyway: a check is done on the URL
+		if !isValidRedirect(target) {
+			target = "/"
+		}
+
+		http.Redirect(w, r, target, 302)
+	})
+
 	http.ListenAndServe(":80", nil)
 }

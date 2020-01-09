@@ -101,11 +101,13 @@ module OpenUrlRedirect {
   }
 
   /**
-   * A call to a function called `isLocalUrl` or similar, which is
+   * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier for purposes of URL redirection.
    */
-  class LocalUrlBarrierGuard extends BarrierGuard, DataFlow::CallNode {
-    LocalUrlBarrierGuard() { this.getCalleeName().regexpMatch("(?i)(is_?)?local_?url") }
+  class RedirectCheckBarrierGuard extends BarrierGuard, DataFlow::CallNode {
+    RedirectCheckBarrierGuard() {
+      this.getCalleeName().regexpMatch("(?i)(is_?)?(local_?url|valid_?redir(ect)?)")
+    }
 
     override predicate checks(Expr e, boolean outcome) {
       // `isLocalUrl(e)` is a barrier for `e` if it evaluates to `true`
