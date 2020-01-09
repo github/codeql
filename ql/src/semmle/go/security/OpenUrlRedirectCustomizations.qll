@@ -30,8 +30,39 @@ module OpenUrlRedirect {
 
   /**
    * A source of third-party user input, considered as a flow source for URL redirects.
+   *
+   * Excludes the URL field, as it is handled more precisely in `UntrustedUrlField`.
    */
-  class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
+  class UntrustedFlowAsSource extends Source, UntrustedFlowSource {
+    UntrustedFlowAsSource() {
+      forex(SelectorExpr sel | this.asExpr() = sel | sel.getSelector().getName() != "URL")
+    }
+  }
+
+  /**
+   * An access to a user-controlled URL field, considered as a flow source for URL redirects.
+   */
+  class UntrustedUrlField extends Source, DataFlow::ExprNode {
+    override SelectorExpr expr;
+
+    UntrustedUrlField() {
+      exists(Type req, Type baseType, string fieldName |
+        req.hasQualifiedName("net/http", "Request") and
+        baseType = expr.getBase().(SelectorExpr).getBase().getType() and
+        expr.getBase().(SelectorExpr).getSelector().getName() = "URL" and
+        (baseType = req or baseType = req.getPointerType()) and
+        fieldName = expr.getSelector().getName() and
+        (
+          fieldName = "User" or
+          fieldName = "Path" or
+          fieldName = "RawPath" or
+          fieldName = "ForceQuery" or
+          fieldName = "RawQuery" or
+          fieldName = "Fragment"
+        )
+      )
+    }
+  }
 
   /**
    * An HTTP redirect, considered as a sink for `Configuration`.

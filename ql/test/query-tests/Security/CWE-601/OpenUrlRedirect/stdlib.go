@@ -103,5 +103,17 @@ func serveStdlib() {
 		}
 	})
 
+	http.HandleFunc("/ex8", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		// GOOD: this only rewrites	the scheme, which is not dangerous as the host cannot change.
+		if r.URL.Scheme == "http" {
+			r.URL.Scheme = "https"
+			http.Redirect(w, r, r.URL.String(), 302)
+		} else {
+			// ...
+		}
+	})
+
 	http.ListenAndServe(":80", nil)
 }
