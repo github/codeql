@@ -22,13 +22,11 @@ module EventEmitter {
   /**
    * Gets a node that refers to an EventEmitter object.
    */
-  DataFlow::SourceNode trackEventEmitter(EventEmitter::Range emitter) {
+  DataFlow::SourceNode trackEventEmitter(EventEmitter emitter) {
     result = trackEventEmitter(DataFlow::TypeTracker::end(), emitter)
   }
 
-  private DataFlow::SourceNode trackEventEmitter(
-    DataFlow::TypeTracker t, EventEmitter::Range emitter
-  ) {
+  private DataFlow::SourceNode trackEventEmitter(DataFlow::TypeTracker t, EventEmitter emitter) {
     t.start() and result = emitter
     or
     exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred |
@@ -38,7 +36,7 @@ module EventEmitter {
       or
       // invocation of a chainable method
       exists(DataFlow::MethodCallNode mcn |
-        mcn = pred.getAMethodCall(EventEmitter::chainableMethod()) and
+        mcn = pred.getAMethodCall(chainableMethod()) and
         // exclude getter versions
         exists(mcn.getAnArgument()) and
         result = mcn and
@@ -50,36 +48,24 @@ module EventEmitter {
   /**
    * An object that implements the EventEmitter API.
    * Extending this class does nothing, its mostly to indicate intent.
-   * The magic only happens when extending EventRegistration::Range and EventDispatch::Range.
+   *
+   * The classes EventRegistration::Range and EventDispatch::Range must be extended to get a working EventEmitter model.
+   * An EventRegistration models a method call that registers some event handler on an EventEmitter.
+   * And EventDispatch models that some event is dispatched on an EventEmitter.
+   *
+   * Both the EventRegistration and EventDispatch have a field `emitter`,
+   * which is the EventEmitter that events are registered on / dispatched to respectively.
+   *
+   * Here is a simple JavaScript example with the NodeJS EventEmitter:
+   *    var e = new EventEmitter(); // <- EventEmitter
+   *    e.on("name", (data) => {...}); // <- EventRegistration
+   *    e.emit("name", "foo"); // <- EventDispatch
    */
   abstract class Range extends DataFlow::Node { }
-
-  /**
-   * An NodeJS EventEmitter instance.
-   * Events dispatched on this EventEmitter will be handled by event handlers registered on this EventEmitter.
-   * (That is opposed to e.g. SocketIO, which implements the same interface, but where events cross object boundaries).
-   */
-  abstract class NodeJSEventEmitter extends Range {
-    /**
-     * Get a Node that refers to a NodeJS EventEmitter instance.
-     */
-    DataFlow::SourceNode ref() { result = trackEventEmitter(this) }
-  }
-
-  private class ImportedNodeJSEventEmitter extends NodeJSEventEmitter {
-    ImportedNodeJSEventEmitter() {
-      exists(DataFlow::SourceNode clazz |
-        clazz = DataFlow::moduleImport("events") or
-        clazz = DataFlow::moduleMember("events", "EventEmitter")
-      |
-        this = clazz.getAnInstantiation()
-      )
-    }
-  }
 }
 
 /**
- * An EventEmitter instance that implements the NodeJS EventEmitter API.
+ * An EventEmitter instance that implements the EventEmitter API.
  * Extend EventEmitter::Range to mark something as being an EventEmitter.
  */
 class EventEmitter extends DataFlow::Node {
@@ -112,7 +98,7 @@ class EventRegistration extends DataFlow::Node {
   DataFlow::Node getAReturnedValue() { result = range.getAReturnedValue() }
 
   /**
-   * Get a dispatch that this event handler can return a value to. 
+   * Get a dispatch that this event handler can return a value to.
    * The default implementation is that there exists no such dispatch.
    */
   EventDispatch getAReturnDispatch() { result = range.getAReturnDispatch() }
@@ -121,30 +107,39 @@ class EventRegistration extends DataFlow::Node {
 module EventRegistration {
   /**
    * A registration of an event handler on an EventEmitter.
-   * The default implementation assumes that `this` is a DataFlow::InvokeNode where the
-   * first argument is a string describing which channel is registered, and the second
-   * argument is the event handler callback.
    */
   abstract class Range extends DataFlow::Node {
     EventEmitter::Range emitter;
 
     final EventEmitter getEmitter() { result = emitter }
 
-    string getChannel() { this.(DataFlow::InvokeNode).getArgument(0).mayHaveStringValue(result) }
+    abstract string getChannel();
 
-    DataFlow::Node getReceivedItem(int i) {
+    abstract DataFlow::Node getReceivedItem(int i);
+
+    abstract DataFlow::Node getAReturnedValue();
+
+    abstract EventDispatch::Range getAReturnDispatch();
+  }
+
+  /**
+   * A default implementation of an EventRegistration.
+   * The default implementation assumes that `this` is a DataFlow::InvokeNode where the
+   * first argument is a string describing which channel is registered, and the second
+   * argument is the event handler callback.
+   */
+  abstract class DefaultEventRegistration extends Range {
+    override string getChannel() {
+      this.(DataFlow::InvokeNode).getArgument(0).mayHaveStringValue(result)
+    }
+
+    override DataFlow::Node getReceivedItem(int i) {
       result = this.(DataFlow::InvokeNode).getABoundCallbackParameter(1, i)
     }
 
-    DataFlow::Node getAReturnedValue() { none() }
+    override DataFlow::Node getAReturnedValue() { none() }
 
-    EventDispatch::Range getAReturnDispatch() { none() }
-  }
-
-  private class NodeJSEventRegistration extends Range, DataFlow::MethodCallNode {
-    override EventEmitter::NodeJSEventEmitter emitter;
-
-    NodeJSEventRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
+    override EventDispatch::Range getAReturnDispatch() { none() }
   }
 }
 
@@ -176,26 +171,35 @@ class EventDispatch extends DataFlow::Node {
 module EventDispatch {
   /**
    * A dispatch of an event on an EventEmitter.
-   * The default implementation assumes that the dispatch is a DataFlow::InvokeNode,
-   * where the first argument is a string describing the channel, and the `i`+1 argument
-   * is the `i`th item sent to the event handler.
    */
   abstract class Range extends DataFlow::Node {
     EventEmitter::Range emitter;
 
     final EventEmitter getEmitter() { result = emitter }
 
-    string getChannel() { this.(DataFlow::InvokeNode).getArgument(0).mayHaveStringValue(result) }
+    abstract string getChannel();
 
-    DataFlow::Node getSentItem(int i) { result = this.(DataFlow::InvokeNode).getArgument(i + 1) }
+    abstract DataFlow::Node getSentItem(int i);
 
-    EventRegistration::Range getAReceiver() { this.getEmitter() = result.getEmitter() }
+    abstract EventRegistration::Range getAReceiver();
   }
 
-  private class NodeJSEventDispatch extends Range, DataFlow::MethodCallNode {
-    override EventEmitter::NodeJSEventEmitter emitter;
+  /**
+   * A default implementation of an EventDispatch.
+   * The default implementation assumes that the dispatch is a DataFlow::InvokeNode,
+   * where the first argument is a string describing the channel, and the `i`+1 argument
+   * is the `i`th item sent to the event handler.
+   */
+  abstract class DefaultEventDispatch extends Range {
+    override string getChannel() {
+      this.(DataFlow::InvokeNode).getArgument(0).mayHaveStringValue(result)
+    }
 
-    NodeJSEventDispatch() { this = emitter.ref().getAMethodCall("emit") }
+    override DataFlow::Node getSentItem(int i) {
+      result = this.(DataFlow::InvokeNode).getArgument(i + 1)
+    }
+
+    override EventRegistration::Range getAReceiver() { this.getEmitter() = result.getEmitter() }
   }
 }
 

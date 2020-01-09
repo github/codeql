@@ -73,7 +73,7 @@ module Electron {
   /**
    * A reference to the `webContents` property of a browser object.
    */
-  class WebContents extends DataFlow::SourceNode, EventEmitter::NodeJSEventEmitter {
+  class WebContents extends DataFlow::SourceNode, NodeJSLib::NodeJSEventEmitter {
     WebContents() { this.(DataFlow::PropRead).accesses(any(BrowserObject bo), "webContents") }
   }
 
@@ -128,7 +128,7 @@ module Electron {
      * Does mostly the same as an EventEmitter event handler,
      * except that values can be returned through the `event.returnValue` property.
      */
-    class IPCSendRegistration extends EventRegistration::Range,
+    class IPCSendRegistration extends EventRegistration::DefaultEventRegistration,
       DataFlow::MethodCallNode {
       override Process emitter;
 
@@ -148,7 +148,7 @@ module Electron {
      * An IPC event is sent from the renderer to the main process.
      * And a value can be returned through the `returnValue` property of the event (first parameter in the callback).
      */
-    class IPCDispatch extends EventDispatch::Range, DataFlow::InvokeNode {
+    class IPCDispatch extends EventDispatch::DefaultEventDispatch, DataFlow::InvokeNode {
       override Process emitter;
 
       IPCDispatch() {
