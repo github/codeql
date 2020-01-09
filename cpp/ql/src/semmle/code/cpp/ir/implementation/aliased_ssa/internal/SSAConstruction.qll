@@ -75,19 +75,23 @@ private module Cached {
     )
   }
 
-  private predicate hasMemoryOperandDefinition (OldInstruction oldInstruction, OldIR::NonPhiMemoryOperand oldOperand,
-    Overlap overlap, Instruction instr) {
-      oldOperand = oldInstruction.getAnOperand() and
+  pragma[noopt]
+  private predicate hasMemoryOperandDefinition(
+    OldInstruction oldInstruction, OldIR::NonPhiMemoryOperand oldOperand, Overlap overlap,
+    Instruction instr
+  ) {
+    oldOperand = oldInstruction.getAnOperand() and
+    oldOperand instanceof OldIR::NonPhiMemoryOperand and
     exists(
       OldBlock useBlock, int useRank, Alias::MemoryLocation useLocation,
       Alias::MemoryLocation defLocation, OldBlock defBlock, int defRank, int defOffset
     |
       useLocation = Alias::getOperandMemoryLocation(oldOperand) and
-      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
       hasUseAtRank(useLocation, useBlock, useRank, oldInstruction) and
       definitionReachesUse(useLocation, defBlock, defRank, useBlock, useRank) and
-      overlap = Alias::getOverlap(defLocation, useLocation) and
-      instr = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, _)
+      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
+      instr = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, _) and
+      overlap = Alias::getOverlap(defLocation, useLocation)
     )
   }
 
@@ -102,8 +106,7 @@ private module Cached {
       (
         (
           if exists(Alias::getOperandMemoryLocation(oldOperand))
-          then
-          hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
+          then hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
           else (
             result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction() and
             overlap instanceof MustTotallyOverlap
