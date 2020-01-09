@@ -31,7 +31,9 @@ class InterestingExpr extends Expr {
 
 predicate nullCheckAssert(InterestingExpr e, Variable v, Declaration qualifier) {
   exists(File f, int i |
-    e.getLocation().getStartLine() = i and e.getFile() = f and assertInvocation(f, i) and
+    e.getLocation().getStartLine() = i and
+    e.getFile() = f and
+    assertInvocation(f, i) and
     nullCheckInCondition(e, v, qualifier)
   )
 }
