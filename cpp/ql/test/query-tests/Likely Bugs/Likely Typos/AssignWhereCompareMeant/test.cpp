@@ -102,7 +102,7 @@ void g(int *i_p, int cond) {
 template<typename>
 void h() {
   int x;
-  if(x = 0) { // GOOD: x is not initialized so this is probably intensional
+  if(x = 0) { // GOOD: x is not initialized so this is probably intentional
   }
 
   int y = 0;

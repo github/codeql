@@ -55,7 +55,7 @@ class BooleanControllingAssignmentInExpr extends BooleanControllingAssignment {
     this.getConversion().(ParenthesisExpr).isParenthesised()
     or
     // whitelist this assignment if all comparison operations in the expression that this
-    // assignment is part of, are ot parenthesized. In that case it seems like programmer
+    // assignment is part of, are not parenthesized. In that case it seems like programmer
     // is fine with unparenthesized comparison operands to binary logical operators, and
     // the parenthesis around this assignment was used to call it out as an assignment.
     this.isParenthesised() and
