@@ -128,13 +128,13 @@ module EventRegistration {
    * first argument is a string describing which channel is registered, and the second
    * argument is the event handler callback.
    */
-  abstract class DefaultEventRegistration extends Range {
+  abstract class DefaultEventRegistration extends Range, DataFlow::InvokeNode {
     override string getChannel() {
-      this.(DataFlow::InvokeNode).getArgument(0).mayHaveStringValue(result)
+      this.getArgument(0).mayHaveStringValue(result)
     }
 
     override DataFlow::Node getReceivedItem(int i) {
-      result = this.(DataFlow::InvokeNode).getABoundCallbackParameter(1, i)
+      result = this.getABoundCallbackParameter(1, i)
     }
 
     override DataFlow::Node getAReturnedValue() { none() }
@@ -190,13 +190,13 @@ module EventDispatch {
    * where the first argument is a string describing the channel, and the `i`+1 argument
    * is the `i`th item sent to the event handler.
    */
-  abstract class DefaultEventDispatch extends Range {
+  abstract class DefaultEventDispatch extends Range, DataFlow::InvokeNode {
     override string getChannel() {
-      this.(DataFlow::InvokeNode).getArgument(0).mayHaveStringValue(result)
+      this.getArgument(0).mayHaveStringValue(result)
     }
 
     override DataFlow::Node getSentItem(int i) {
-      result = this.(DataFlow::InvokeNode).getArgument(i + 1)
+      result = this.getArgument(i + 1)
     }
 
     override EventRegistration::Range getAReceiver() { this.getEmitter() = result.getEmitter() }
