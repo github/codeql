@@ -1,4 +1,19 @@
 | additional-promises.js:2:13:2:57 | new Pin ... ct) {}) |
+| flowsteps.js:5:3:5:21 | new Promise(throws) |
+| flowsteps.js:8:3:8:21 | new Promise(throws) |
+| flowsteps.js:12:11:12:29 | new Promise(throws) |
+| flowsteps.js:17:3:17:45 | new Pro ... ect(3)) |
+| flowsteps.js:21:11:21:53 | new Pro ... ect(4)) |
+| flowsteps.js:26:3:26:21 | new Promise(throws) |
+| flowsteps.js:26:3:27:19 | new Pro ...  => {}) |
+| flowsteps.js:31:3:31:21 | new Promise(throws) |
+| flowsteps.js:31:3:32:19 | new Pro ...  => {}) |
+| flowsteps.js:31:3:33:35 | new Pro ... og(e6)) |
+| flowsteps.js:36:19:36:62 | new Pro ... lve(8)) |
+| flowsteps.js:38:19:38:62 | new Pro ... lve(9)) |
+| flowsteps.js:40:11:40:28 | Promise.resolve(3) |
+| flowsteps.js:43:12:49:4 | new Pro ...  }\\n  }) |
+| flowsteps.js:50:19:50:41 | p2.then ... al * 4) |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) |
