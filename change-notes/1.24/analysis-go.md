@@ -3,6 +3,7 @@
 ## General improvements
 
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
+* More sources of untrusted input are modelled, which may lead to more results from the security queries.
 
 ## New queries
 
