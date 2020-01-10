@@ -310,3 +310,17 @@ function typeofObjectTest(dst, src) {
         }
     }
 }
+
+function mergeRephinementNode(dst, src) {
+    for (let key in src) {
+        if (src.hasOwnProperty(key)) {
+            if (key === key && key === key) continue; // Create a phi-node of refinement nodes
+            let value = src[key];
+            if (dst[key] && typeof value === 'object') {
+                mergeRephinementNode(dst[key], value);
+            } else {
+                dst[key] = value; // NOT OK
+            }
+        }
+    }
+}
