@@ -126,7 +126,7 @@ void f2() {
 }
 
 void f3(int x, int y) {
-  if(x == 1 && (y = 2)) { // GOOD [FALSE POSITIVE]: the programmer seems to be okay with unparenthesized
+  if(x == 1 && (y = 2)) { // GOOD: the programmer seems to be okay with unparenthesized
                           // comparison operands, so the parenthesis was used to mark this
                           // as an assignment
   }
@@ -138,13 +138,13 @@ void f3(int x, int y) {
   if(((z == 42) || (y = 2)) && (x == 1)) { // BAD
   }
 
-  if((y = 2) && (x == z || x == 1)) { // GOOD [FALSE POSITIVE]
+  if((y = 2) && (x == z || x == 1)) { // GOOD
   }
 
   if(((x == 42) || x == 1) && (y = 2)) { // BAD
   }
 
-  if(x == 10 || (x == 42 && x == 1) && (y = 2)) { // GOOD [FALSE POSITIVE]
+  if(x == 10 || (x == 42 && x == 1) && (y = 2)) { // GOOD
   }
 
   if(x == 10 || ((x == 42) && (y = 2)) && (z == 1)) { // BAD
