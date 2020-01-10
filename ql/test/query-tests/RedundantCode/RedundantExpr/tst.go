@@ -17,7 +17,7 @@ const c = 1
 func baz(b bool) int {
 	var d = 1
 	if b {
-		return d - 1 // NOT OK
+		return d - 1 // OK
 	} else {
 		return c - 1 // OK
 	}
