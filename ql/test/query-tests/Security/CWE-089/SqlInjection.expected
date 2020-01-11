@@ -1,11 +1,19 @@
 edges
 | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | SqlInjection.go:12:11:12:11 | q |
-| main.go:9:11:9:16 | selection of Form : Values | main.go:9:11:9:28 | index expression |
+| main.go:10:11:10:16 | selection of Form : Values | main.go:10:11:10:28 | index expression |
+| main.go:14:63:14:67 | selection of URL : pointer type | main.go:14:11:14:84 | call to Sprintf |
+| main.go:15:63:15:84 | call to Get : string | main.go:15:11:15:85 | call to Sprintf |
 nodes
 | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | SqlInjection.go:12:11:12:11 | q | semmle.label | q |
-| main.go:9:11:9:16 | selection of Form : Values | semmle.label | selection of Form : Values |
-| main.go:9:11:9:28 | index expression | semmle.label | index expression |
+| main.go:10:11:10:16 | selection of Form : Values | semmle.label | selection of Form : Values |
+| main.go:10:11:10:28 | index expression | semmle.label | index expression |
+| main.go:14:11:14:84 | call to Sprintf | semmle.label | call to Sprintf |
+| main.go:14:63:14:67 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| main.go:15:11:15:85 | call to Sprintf | semmle.label | call to Sprintf |
+| main.go:15:63:15:84 | call to Get : string | semmle.label | call to Get : string |
 #select
 | SqlInjection.go:12:11:12:11 | q | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | SqlInjection.go:12:11:12:11 | q | This query depends on $@. | SqlInjection.go:11:3:11:9 | selection of URL | a user-provided value |
-| main.go:9:11:9:28 | index expression | main.go:9:11:9:16 | selection of Form : Values | main.go:9:11:9:28 | index expression | This query depends on $@. | main.go:9:11:9:16 | selection of Form | a user-provided value |
+| main.go:10:11:10:28 | index expression | main.go:10:11:10:16 | selection of Form : Values | main.go:10:11:10:28 | index expression | This query depends on $@. | main.go:10:11:10:16 | selection of Form | a user-provided value |
+| main.go:14:11:14:84 | call to Sprintf | main.go:14:63:14:67 | selection of URL : pointer type | main.go:14:11:14:84 | call to Sprintf | This query depends on $@. | main.go:14:63:14:67 | selection of URL | a user-provided value |
+| main.go:15:11:15:85 | call to Sprintf | main.go:15:63:15:84 | call to Get : string | main.go:15:11:15:85 | call to Sprintf | This query depends on $@. | main.go:15:63:15:84 | call to Get | a user-provided value |
