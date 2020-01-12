@@ -2,9 +2,19 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import DataFlow
 
+/** The interface `javax.naming.directory.DirContext`. */
+class TypeDirContext extends Interface {
+  TypeDirContext() { this.hasQualifiedName("javax.naming.directory", "DirContext") }
+}
+
+/** The interface `javax.naming.ldap.LdapContext`. */
+class TypeLdapContext extends Interface {
+  TypeLdapContext() { this.hasQualifiedName("javax.naming.ldap", "LdapContext") }
+}
+
 /** The class `com.unboundid.ldap.sdk.SearchRequest`. */
-class TypeSearchRequest extends Class {
-  TypeSearchRequest() { this.hasQualifiedName("com.unboundid.ldap.sdk", "SearchRequest") }
+class TypeUnboundIdSearchRequest extends Class {
+  TypeUnboundIdSearchRequest() { this.hasQualifiedName("com.unboundid.ldap.sdk", "SearchRequest") }
 }
 
 /** The interface `com.unboundid.ldap.sdk.ReadOnlySearchRequest`. */
@@ -53,6 +63,20 @@ class TypeSpringLdapFilter extends Interface {
   TypeSpringLdapFilter() { this.hasQualifiedName("org.springframework.ldap.filter", "Filter") }
 }
 
+/** The interface `org.apache.directory.ldap.client.api.LdapConnection`. */
+class TypeLdapConnection extends Interface {
+  TypeLdapConnection() {
+    this.hasQualifiedName("org.apache.directory.ldap.client.api", "LdapConnection")
+  }
+}
+
+/** The interface `org.apache.directory.api.ldap.model.message.SearchRequest`. */
+class TypeApacheSearchRequest extends Interface {
+  TypeApacheSearchRequest() {
+    this.hasQualifiedName("org.apache.directory.api.ldap.model.message", "SearchRequest")
+  }
+}
+
 /** The class `org.springframework.ldap.support.LdapEncoder`. */
 class TypeLdapEncoder extends Class {
   TypeLdapEncoder() { this.hasQualifiedName("org.springframework.ldap.support", "LdapEncoder") }
@@ -87,9 +111,10 @@ class LdapInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     filterStep(node1, node2) or
-    searchRequestStep(node1, node2) or
+    unboundIdSearchRequestStep(node1, node2) or
     ldapQueryStep(node1, node2) or
-    hardcodedFilterStep(node1, node2)
+    hardcodedFilterStep(node1, node2) or
+    apacheSearchRequestStep(node1, node2)
   }
 }
 
@@ -103,30 +128,6 @@ class LocalSource extends LdapInjectionSource {
   LocalSource() { this instanceof LocalUserInput }
 }
 
-abstract class Context extends RefType { }
-
-/**
- * The interface `javax.naming.directory.DirContext` or
- * the class `javax.naming.directory.InitialDirContext`.
- */
-class DirContext extends Context {
-  DirContext() {
-    this.hasQualifiedName("javax.naming.directory", "DirContext") or
-    this.hasQualifiedName("javax.naming.directory", "InitialDirContext")
-  }
-}
-
-/**
- * The interface `javax.naming.ldap.LdapContext` or
- * the class `javax.naming.ldap.InitialLdapContext`.
- */
-class LdapContext extends Context {
-  LdapContext() {
-    this.hasQualifiedName("javax.naming.ldap", "LdapContext") or
-    this.hasQualifiedName("javax.naming.ldap", "InitialLdapContext")
-  }
-}
-
 /**
  * JNDI sink for LDAP injection vulnerabilities, i.e. 2nd argument to search method from
  * DirContext, InitialDirContext, LdapContext or InitialLdapContext.
@@ -137,7 +138,12 @@ class JndiLdapInjectionSink extends LdapInjectionSink {
       ma.getMethod() = m and
       ma.getArgument(index) = this.getExpr()
     |
-      m.getDeclaringType() instanceof Context and m.hasName("search") and index = 1
+      (
+        m.getDeclaringType().getAnAncestor() instanceof TypeDirContext or
+        m.getDeclaringType().getAnAncestor() instanceof TypeLdapContext
+      ) and
+      m.hasName("search") and
+      index = 1
     )
   }
 }
@@ -161,7 +167,7 @@ class UnboundIdLdapInjectionSink extends LdapInjectionSink {
       (
         // Parameter type is SearchRequest or ReadOnlySearchRequest
         param.getType() instanceof TypeReadOnlySearchRequest or
-        param.getType() instanceof TypeSearchRequest or
+        param.getType() instanceof TypeUnboundIdSearchRequest or
         // Or parameter index is 2, 3, 5, 6 or 7 (this is where filter parameter is)
         index = any(int i | i = [2..3] or i = [5..7])
       )
@@ -194,6 +200,27 @@ class SpringLdapInjectionSink extends LdapInjectionSink {
         // Parameter type is LdapQuery or Filter
         paramType instanceof TypeLdapQuery or
         paramType instanceof TypeSpringLdapFilter or
+        // Or parameter index is 1 (this is where filter parameter is)
+        index = 1
+      )
+    )
+  }
+}
+
+/** Apache LDAP API sink for LDAP injection vulnerabilities, i.e. LdapConnection.search method. */
+class ApacheLdapInjectionSink extends LdapInjectionSink {
+  ApacheLdapInjectionSink() {
+    exists(MethodAccess ma, Method m, int index, RefType paramType |
+      ma.getMethod() = m and
+      ma.getArgument(index) = this.getExpr() and
+      m.getParameterType(index) = paramType
+    |
+      // LdapConnection.search method
+      m.getDeclaringType().getAnAncestor() instanceof TypeLdapConnection and
+      m.hasName("search") and
+      (
+        // Parameter type is SearchRequest
+        paramType instanceof TypeApacheSearchRequest or
         // Or parameter index is 1 (this is where filter parameter is)
         index = 1
       )
@@ -240,7 +267,6 @@ class UnboundIdSanitizer extends LdapInjectionSanitizer {
  */
 predicate filterStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getQualifier() or
     n1.asExpr() = ma.getAnArgument()
   |
     n2.asExpr() = ma and
@@ -255,9 +281,9 @@ predicate filterStep(ExprNode n1, ExprNode n2) {
  * `SearchRequest`, i.e. `new SearchRequest([...], tainted, [...])`, where `tainted` is
  * parameter number 3, 4, 7, 8 or 9, but is not varargs.
  */
-predicate searchRequestStep(ExprNode n1, ExprNode n2) {
+predicate unboundIdSearchRequestStep(ExprNode n1, ExprNode n2) {
   exists(ConstructorCall cc, Constructor c, int index |
-    cc.getConstructedType() instanceof TypeSearchRequest
+    cc.getConstructedType() instanceof TypeUnboundIdSearchRequest
   |
     n1.asExpr() = cc.getArgument(index) and
     n2.asExpr() = cc and
@@ -274,7 +300,6 @@ predicate searchRequestStep(ExprNode n1, ExprNode n2) {
  */
 predicate ldapQueryStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m, int index |
-    n1.asExpr() = ma.getQualifier() or
     n1.asExpr() = ma.getArgument(index)
   |
     n2.asExpr() = ma and
@@ -293,5 +318,20 @@ predicate hardcodedFilterStep(ExprNode n1, ExprNode n2) {
   exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeHardcodedFilter |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and Apache LDAP API
+ * `SearchRequest`, i.e. `SearchRequest s = new SearchRequestImpl(); s.setFilter(tainted");`.
+ */
+predicate apacheSearchRequestStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getAnArgument()
+  |
+    n2.asExpr() = ma.getQualifier() and
+    ma.getMethod() = m and
+    m.getDeclaringType().getAnAncestor() instanceof TypeApacheSearchRequest and
+    m.hasName("setFilter")
   )
 }
