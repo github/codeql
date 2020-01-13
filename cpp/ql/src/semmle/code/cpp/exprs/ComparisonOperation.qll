@@ -3,14 +3,14 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ comparison operation, that is, either an equality operation or a relational operation.
  *
- * This is a QL abstract base class for all comparisons.
+ * This is a QL base class for all comparisons.
  */
-abstract class ComparisonOperation extends BinaryOperation { }
+class ComparisonOperation extends BinaryOperation, @cmp_op_expr { }
 
 /**
  * A C/C++ equality operation, that is, either "==" or "!=".
  */
-abstract class EqualityOperation extends ComparisonOperation {
+class EqualityOperation extends ComparisonOperation, @eq_op_expr {
   override int getPrecedence() { result = 9 }
 }
 
@@ -41,7 +41,7 @@ class NEExpr extends EqualityOperation, @neexpr {
 /**
  * A C/C++ relational operation, that is, one of `<=`, `<`, `>`, or `>=`.
  */
-abstract class RelationalOperation extends ComparisonOperation {
+class RelationalOperation extends ComparisonOperation, @rel_op_expr {
   override int getPrecedence() { result = 10 }
 
   /**
