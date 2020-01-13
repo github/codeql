@@ -219,6 +219,8 @@ def may_fail(cond, c):
         c.fail()
     return x
 
+from unknown import x
+may_fail(x, C())
 
 def deliberate_name_error(cond):
     if cond:
@@ -230,8 +232,6 @@ def deliberate_name_error(cond):
     return x # x is initialised here, but we would need splitting to know that.
 
 
-from unknown import x
-may_fail(x, C())
 
 
 def with_definition(x):
