@@ -222,16 +222,34 @@ def may_fail(cond, c):
 from unknown import x
 may_fail(x, C())
 
+# In the following cases, x is uninitialised, but guarded. So don't report it.
+
 def deliberate_name_error(cond):
     if cond:
         x = 0
     try:
-        x # x is uninitialised, but guarded. So don't report it.
+        x
     except NameError:
-        x = 1
+        x = -1
     return x # x is initialised here, but we would need splitting to know that.
 
+def deliberate_name_error2(cond):
+    if cond:
+        x = 0
+    try:
+        x
+    except Exception:
+        x = -1
+    return x
 
+def deliberate_name_error3(cond, my_list):
+    if cond:
+        x = 0
+    try:
+        x = my_list[x + 42]
+    except (NameError, IndexError):
+        x = -1
+    return x
 
 
 def with_definition(x):

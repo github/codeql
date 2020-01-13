@@ -25,9 +25,15 @@ predicate uninitialized_local(NameNode use) {
 }
 
 predicate explicitly_guarded(NameNode u) {
-    exists(Try t |
+    exists(Try t, Expr type |
         t.getBody().contains(u.getNode()) and
-        t.getAHandler().getType().pointsTo(ClassValue::nameError())
+        t.getAHandler().getType() = type and
+        exists (ClassValue c |
+            c = ClassValue::nameError().getASuperType() |
+            type.pointsTo(c)
+            or
+            type.(Tuple).getAnElt().pointsTo(c)
+        )
     )
 }
 
