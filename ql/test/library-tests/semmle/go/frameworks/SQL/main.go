@@ -23,4 +23,15 @@ func squirrelTest(querypart string) {
 	squirrel.Select("*").From("users").Suffix(querypart)
 }
 
+func test2(tx *sql.Tx, query string, ctx context.Context) {
+	tx.Exec(query)
+	tx.ExecContext(ctx, query)
+	tx.Prepare(query)
+	tx.PrepareContext(ctx, query)
+	tx.Query(query)
+	tx.QueryContext(ctx, query)
+	tx.QueryRow(query)
+	tx.QueryRowContext(ctx, query)
+}
+
 func main() {}

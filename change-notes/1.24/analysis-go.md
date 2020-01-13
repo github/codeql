@@ -17,6 +17,7 @@
 
 | **Query**                                           | **Expected impact**          | **Change**                                                |
 |-----------------------------------------------------|------------------------------|-----------------------------------------------------------|
+| Database query built from user-controlled sources (`go/sql-injection`) | More results | The library models used by the query have been improved, allowing it to flag more potentially problematic cases. |
 | Reflected cross-site scripting (`go/reflected-xss`) | Fewer results | Untrusted input flowing into an HTTP header definition is no longer flagged, since this is often harmless. |
 | Useless assignment to field (`go/useless-assignment-to-field`) | Fewer false positives | The query now conservatively handles fields promoted through embedded pointer types. |
 | Incomplete regular expression for hostnames (`go/incomplete-hostname-regexp`) | More results | The query now flags unescaped dots before the TLD in a hostname regex. |
