@@ -30,7 +30,10 @@ module SQL {
     private class StandardQueryString extends Range {
       StandardQueryString() {
         exists(Method meth, string base, string m, int n |
-          meth.hasQualifiedName("database/sql", "DB", m) and
+          (
+           meth.hasQualifiedName("database/sql", "DB", m) or
+           meth.hasQualifiedName("database/sql", "Tx", m)
+          ) and
           this = meth.getACall().getArgument(n)
         |
           (base = "Exec" or base = "Prepare" or base = "Query" or base = "QueryRow") and
