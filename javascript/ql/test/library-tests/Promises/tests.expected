@@ -1,27 +1,34 @@
 test_ResolvedPromiseDefinition
-| flowsteps.js:40:11:40:28 | Promise.resolve(3) | flowsteps.js:40:27:40:27 | 3 |
-| flowsteps.js:53:12:53:29 | Promise.resolve(3) | flowsteps.js:53:28:53:28 | 3 |
+| flow.js:4:11:4:33 | Promise ... source) | flow.js:4:27:4:32 | source |
+| flow.js:20:2:20:24 | Promise ... source) | flow.js:20:18:20:23 | source |
+| flow.js:22:2:22:24 | Promise ... source) | flow.js:22:18:22:23 | source |
+| flow.js:28:2:28:23 | Promise ... ("foo") | flow.js:28:18:28:22 | "foo" |
+| flow.js:30:2:30:24 | Promise ... source) | flow.js:30:18:30:23 | source |
+| flow.js:34:2:34:24 | Promise ... source) | flow.js:34:18:34:23 | source |
+| flow.js:36:11:36:33 | Promise ... source) | flow.js:36:27:36:32 | source |
+| flow.js:44:2:44:24 | Promise ... source) | flow.js:44:18:44:23 | source |
+| flow.js:46:2:46:24 | Promise ... source) | flow.js:46:18:46:23 | source |
 | promises.js:53:19:53:41 | Promise ... source) | promises.js:53:35:53:40 | source |
 | promises.js:62:19:62:41 | Promise ... source) | promises.js:62:35:62:40 | source |
 | promises.js:71:5:71:27 | Promise ... source) | promises.js:71:21:71:26 | source |
 test_PromiseDefinition_getARejectHandler
-| flowsteps.js:5:3:5:21 | new Promise(throws) | flowsteps.js:6:12:6:32 | (e) =>  ... .log(e) |
-| flowsteps.js:8:3:8:21 | new Promise(throws) | flowsteps.js:9:38:9:66 | (error) ... (error) |
-| flowsteps.js:17:3:17:45 | new Pro ... ect(3)) | flowsteps.js:18:12:18:34 | (e3) => ... log(e3) |
+| flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:69:26:80 | y => sink(y) |
+| flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
+| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:66:42:73 | () => {} |
+| flow.js:48:2:48:34 | new Pro ... ource}) | flow.js:48:42:48:53 | x => sink(x) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:20:6:22:3 | (v) =>  ...  v;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:23:18:25:3 | (v) =>  ...  v;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
 test_PromiseDefinition_getExecutor
-| flowsteps.js:5:3:5:21 | new Promise(throws) | flowsteps.js:2:3:4:3 | functio ... r()\\n  } |
-| flowsteps.js:8:3:8:21 | new Promise(throws) | flowsteps.js:2:3:4:3 | functio ... r()\\n  } |
-| flowsteps.js:12:11:12:29 | new Promise(throws) | flowsteps.js:2:3:4:3 | functio ... r()\\n  } |
-| flowsteps.js:17:3:17:45 | new Pro ... ect(3)) | flowsteps.js:17:15:17:44 | (resolv ... ject(3) |
-| flowsteps.js:21:11:21:53 | new Pro ... ect(4)) | flowsteps.js:21:23:21:52 | (resolv ... ject(4) |
-| flowsteps.js:26:3:26:21 | new Promise(throws) | flowsteps.js:2:3:4:3 | functio ... r()\\n  } |
-| flowsteps.js:31:3:31:21 | new Promise(throws) | flowsteps.js:2:3:4:3 | functio ... r()\\n  } |
-| flowsteps.js:36:19:36:62 | new Pro ... lve(8)) | flowsteps.js:36:31:36:61 | (resolv ... olve(8) |
-| flowsteps.js:38:19:38:62 | new Pro ... lve(9)) | flowsteps.js:38:31:38:61 | (resolv ... olve(9) |
-| flowsteps.js:43:12:49:4 | new Pro ...  }\\n  }) | flowsteps.js:43:24:49:3 | (resolv ...   }\\n  } |
+| flow.js:7:11:7:59 | new Pro ... ource)) | flow.js:7:23:7:58 | (resolv ... source) |
+| flow.js:10:11:10:58 | new Pro ... ource)) | flow.js:10:23:10:57 | (resolv ... source) |
+| flow.js:13:11:13:58 | new Pro ... ource)) | flow.js:13:23:13:57 | (resolv ... source) |
+| flow.js:24:2:24:49 | new Pro ... ource)) | flow.js:24:14:24:48 | (resolv ... source) |
+| flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:14:26:48 | (resolv ... source) |
+| flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:14:32:48 | (resolv ... source) |
+| flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:14:40:48 | (resolv ... source) |
+| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:14:42:48 | (resolv ... source) |
+| flow.js:48:2:48:34 | new Pro ... ource}) | flow.js:48:14:48:33 | () => {throw source} |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:29:5:3 | functio ... e);\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:30:17:3 | (res, r ... e);\\n  } |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:31:35:5 | functio ... ;\\n    } |
@@ -29,103 +36,70 @@ test_PromiseDefinition_getExecutor
 test_PromiseDefinition_getAFinallyHandler
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
 test_PromiseDefinition
-| flowsteps.js:5:3:5:21 | new Promise(throws) |
-| flowsteps.js:8:3:8:21 | new Promise(throws) |
-| flowsteps.js:12:11:12:29 | new Promise(throws) |
-| flowsteps.js:17:3:17:45 | new Pro ... ect(3)) |
-| flowsteps.js:21:11:21:53 | new Pro ... ect(4)) |
-| flowsteps.js:26:3:26:21 | new Promise(throws) |
-| flowsteps.js:31:3:31:21 | new Promise(throws) |
-| flowsteps.js:36:19:36:62 | new Pro ... lve(8)) |
-| flowsteps.js:38:19:38:62 | new Pro ... lve(9)) |
-| flowsteps.js:43:12:49:4 | new Pro ...  }\\n  }) |
+| flow.js:7:11:7:59 | new Pro ... ource)) |
+| flow.js:10:11:10:58 | new Pro ... ource)) |
+| flow.js:13:11:13:58 | new Pro ... ource)) |
+| flow.js:24:2:24:49 | new Pro ... ource)) |
+| flow.js:26:2:26:49 | new Pro ... ource)) |
+| flow.js:32:2:32:49 | new Pro ... ource)) |
+| flow.js:40:2:40:49 | new Pro ... ource)) |
+| flow.js:42:2:42:49 | new Pro ... ource)) |
+| flow.js:48:2:48:34 | new Pro ... ource}) |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) |
 test_PromiseDefinition_getAResolveHandler
-| flowsteps.js:8:3:8:21 | new Promise(throws) | flowsteps.js:9:11:9:35 | (val) = ... og(val) |
-| flowsteps.js:26:3:26:21 | new Promise(throws) | flowsteps.js:27:11:27:18 | () => {} |
-| flowsteps.js:31:3:31:21 | new Promise(throws) | flowsteps.js:32:11:32:18 | () => {} |
-| flowsteps.js:38:19:38:62 | new Pro ... lve(9)) | flowsteps.js:38:69:38:80 | (x) => x + 2 |
-| flowsteps.js:43:12:49:4 | new Pro ...  }\\n  }) | flowsteps.js:50:27:50:40 | val => val * 4 |
+| flow.js:24:2:24:49 | new Pro ... ource)) | flow.js:24:56:24:67 | x => sink(x) |
+| flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:56:26:66 | x => foo(x) |
+| flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:56:40:63 | () => {} |
+| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:56:42:63 | () => {} |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:6:16:8:3 | functio ... al;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:18:17:20:3 | (v) =>  ...  v;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:36:18:38:5 | functio ... ;\\n    } |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:46:18:48:5 | functio ... ;\\n    } |
 test_PromiseDefinition_getRejectParameter
-| flowsteps.js:5:3:5:21 | new Promise(throws) | flowsteps.js:2:28:2:33 | reject |
-| flowsteps.js:8:3:8:21 | new Promise(throws) | flowsteps.js:2:28:2:33 | reject |
-| flowsteps.js:12:11:12:29 | new Promise(throws) | flowsteps.js:2:28:2:33 | reject |
-| flowsteps.js:17:3:17:45 | new Pro ... ect(3)) | flowsteps.js:17:25:17:30 | reject |
-| flowsteps.js:21:11:21:53 | new Pro ... ect(4)) | flowsteps.js:21:33:21:38 | reject |
-| flowsteps.js:26:3:26:21 | new Promise(throws) | flowsteps.js:2:28:2:33 | reject |
-| flowsteps.js:31:3:31:21 | new Promise(throws) | flowsteps.js:2:28:2:33 | reject |
-| flowsteps.js:36:19:36:62 | new Pro ... lve(8)) | flowsteps.js:36:41:36:46 | reject |
-| flowsteps.js:38:19:38:62 | new Pro ... lve(9)) | flowsteps.js:38:41:38:46 | reject |
-| flowsteps.js:43:12:49:4 | new Pro ...  }\\n  }) | flowsteps.js:43:34:43:39 | reject |
+| flow.js:7:11:7:59 | new Pro ... ource)) | flow.js:7:33:7:38 | reject |
+| flow.js:10:11:10:58 | new Pro ... ource)) | flow.js:10:33:10:38 | reject |
+| flow.js:13:11:13:58 | new Pro ... ource)) | flow.js:13:33:13:38 | reject |
+| flow.js:24:2:24:49 | new Pro ... ource)) | flow.js:24:24:24:29 | reject |
+| flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:24:26:29 | reject |
+| flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:24:32:29 | reject |
+| flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:24:40:29 | reject |
+| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:24:42:29 | reject |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:48:3:53 | reject |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:36:10:38 | rej |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:50:33:55 | reject |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:48:43:53 | reject |
 test_PromiseDefinition_getResolveParameter
-| flowsteps.js:5:3:5:21 | new Promise(throws) | flowsteps.js:2:19:2:25 | resolve |
-| flowsteps.js:8:3:8:21 | new Promise(throws) | flowsteps.js:2:19:2:25 | resolve |
-| flowsteps.js:12:11:12:29 | new Promise(throws) | flowsteps.js:2:19:2:25 | resolve |
-| flowsteps.js:17:3:17:45 | new Pro ... ect(3)) | flowsteps.js:17:16:17:22 | resolve |
-| flowsteps.js:21:11:21:53 | new Pro ... ect(4)) | flowsteps.js:21:24:21:30 | resolve |
-| flowsteps.js:26:3:26:21 | new Promise(throws) | flowsteps.js:2:19:2:25 | resolve |
-| flowsteps.js:31:3:31:21 | new Promise(throws) | flowsteps.js:2:19:2:25 | resolve |
-| flowsteps.js:36:19:36:62 | new Pro ... lve(8)) | flowsteps.js:36:32:36:38 | resolve |
-| flowsteps.js:38:19:38:62 | new Pro ... lve(9)) | flowsteps.js:38:32:38:38 | resolve |
-| flowsteps.js:43:12:49:4 | new Pro ...  }\\n  }) | flowsteps.js:43:25:43:31 | resolve |
+| flow.js:7:11:7:59 | new Pro ... ource)) | flow.js:7:24:7:30 | resolve |
+| flow.js:10:11:10:58 | new Pro ... ource)) | flow.js:10:24:10:30 | resolve |
+| flow.js:13:11:13:58 | new Pro ... ource)) | flow.js:13:24:13:30 | resolve |
+| flow.js:24:2:24:49 | new Pro ... ource)) | flow.js:24:15:24:21 | resolve |
+| flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:15:26:21 | resolve |
+| flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:15:32:21 | resolve |
+| flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:15:40:21 | resolve |
+| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:15:42:21 | resolve |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:39:3:45 | resolve |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:31:10:33 | res |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:41:33:47 | resolve |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:39:43:45 | resolve |
 test_PromiseDefinition_getACatchHandler
-| flowsteps.js:5:3:5:21 | new Promise(throws) | flowsteps.js:6:12:6:32 | (e) =>  ... .log(e) |
-| flowsteps.js:17:3:17:45 | new Pro ... ect(3)) | flowsteps.js:18:12:18:34 | (e3) => ... log(e3) |
+| flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
+| flow.js:48:2:48:34 | new Pro ... ource}) | flow.js:48:42:48:53 | x => sink(x) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:23:18:25:3 | (v) =>  ...  v;\\n  } |
-flowSteps
-| flowsteps.js:2:3:4:3 | exceptional return of function throws | flowsteps.js:6:13:6:13 | e |
-| flowsteps.js:2:3:4:3 | exceptional return of function throws | flowsteps.js:9:39:9:43 | error |
-| flowsteps.js:2:3:4:3 | exceptional return of function throws | flowsteps.js:13:12:13:13 | e2 |
-| flowsteps.js:2:3:4:3 | exceptional return of function throws | flowsteps.js:28:13:28:14 | e5 |
-| flowsteps.js:2:3:4:3 | exceptional return of function throws | flowsteps.js:33:13:33:14 | e6 |
-| flowsteps.js:17:15:17:44 | exceptional return of anonymous function | flowsteps.js:18:13:18:14 | e3 |
-| flowsteps.js:17:43:17:43 | 3 | flowsteps.js:18:13:18:14 | e3 |
-| flowsteps.js:21:23:21:52 | exceptional return of anonymous function | flowsteps.js:22:11:22:12 | e4 |
-| flowsteps.js:21:51:21:51 | 4 | flowsteps.js:22:11:22:12 | e4 |
-| flowsteps.js:27:11:27:18 | exceptional return of anonymous function | flowsteps.js:28:13:28:14 | e5 |
-| flowsteps.js:32:11:32:18 | exceptional return of anonymous function | flowsteps.js:33:13:33:14 | e6 |
-| flowsteps.js:33:12:33:34 | exceptional return of anonymous function | flowsteps.js:34:13:34:14 | e7 |
-| flowsteps.js:36:31:36:61 | exceptional return of anonymous function | flowsteps.js:1:2:56:1 | exceptional return of anonymous function |
-| flowsteps.js:36:60:36:60 | 8 | flowsteps.js:36:13:36:62 | await n ... lve(8)) |
-| flowsteps.js:38:31:38:61 | exceptional return of anonymous function | flowsteps.js:1:2:56:1 | exceptional return of anonymous function |
-| flowsteps.js:38:60:38:60 | 9 | flowsteps.js:38:70:38:70 | x |
-| flowsteps.js:38:69:38:80 | exceptional return of anonymous function | flowsteps.js:1:2:56:1 | exceptional return of anonymous function |
-| flowsteps.js:38:76:38:80 | x + 2 | flowsteps.js:38:13:38:81 | await n ...  x + 2) |
-| flowsteps.js:40:27:40:27 | 3 | flowsteps.js:41:27:41:29 | val |
-| flowsteps.js:41:26:41:41 | exceptional return of anonymous function | flowsteps.js:1:2:56:1 | exceptional return of anonymous function |
-| flowsteps.js:41:35:41:41 | val * 2 | flowsteps.js:41:13:41:42 | await p ... al * 2) |
-| flowsteps.js:43:24:49:3 | exceptional return of anonymous function | flowsteps.js:50:49:50:49 | e |
-| flowsteps.js:45:12:45:13 | 13 | flowsteps.js:50:27:50:29 | val |
-| flowsteps.js:47:11:47:12 | 14 | flowsteps.js:50:49:50:49 | e |
-| flowsteps.js:50:27:50:40 | exceptional return of anonymous function | flowsteps.js:50:49:50:49 | e |
-| flowsteps.js:50:34:50:40 | val * 4 | flowsteps.js:50:13:50:59 | await p ...  e * 3) |
-| flowsteps.js:50:49:50:58 | exceptional return of anonymous function | flowsteps.js:1:2:56:1 | exceptional return of anonymous function |
-| flowsteps.js:50:54:50:58 | e * 3 | flowsteps.js:50:13:50:59 | await p ...  e * 3) |
-| flowsteps.js:53:28:53:28 | 3 | flowsteps.js:55:11:55:32 | await r ... omise() |
-| promises.js:4:13:4:18 | source | promises.js:6:26:6:28 | val |
-| promises.js:10:30:17:3 | exceptional return of anonymous function | promises.js:20:7:20:7 | v |
-| promises.js:10:30:17:3 | exceptional return of anonymous function | promises.js:23:19:23:19 | v |
-| promises.js:14:11:14:20 | res_source | promises.js:18:18:18:18 | v |
-| promises.js:16:11:16:20 | rej_source | promises.js:20:7:20:7 | v |
-| promises.js:16:11:16:20 | rej_source | promises.js:23:19:23:19 | v |
-| promises.js:34:17:34:22 | source | promises.js:36:28:36:30 | val |
-| promises.js:44:17:44:22 | source | promises.js:46:28:46:30 | val |
-| promises.js:53:35:53:40 | source | promises.js:54:28:54:30 | val |
-| promises.js:62:35:62:40 | source | promises.js:63:28:63:30 | val |
-| promises.js:71:21:71:26 | source | promises.js:71:34:71:36 | val |
+flow
+| flow.js:2:15:2:22 | "source" | flow.js:5:7:5:14 | await p1 |
+| flow.js:2:15:2:22 | "source" | flow.js:8:7:8:14 | await p2 |
+| flow.js:2:15:2:22 | "source" | flow.js:17:8:17:8 | e |
+| flow.js:2:15:2:22 | "source" | flow.js:20:41:20:41 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:26:79:26:79 | y |
+| flow.js:2:15:2:22 | "source" | flow.js:28:58:28:58 | z |
+| flow.js:2:15:2:22 | "source" | flow.js:32:67:32:67 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:34:57:34:57 | a |
+| flow.js:2:15:2:22 | "source" | flow.js:38:29:38:29 | a |
+| flow.js:2:15:2:22 | "source" | flow.js:40:82:40:82 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:44:89:44:89 | a |
+| flow.js:2:15:2:22 | "source" | flow.js:46:59:46:59 | a |
+| flow.js:2:15:2:22 | "source" | flow.js:48:52:48:52 | x |

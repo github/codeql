@@ -125,216 +125,159 @@ class AggregateES2015PromiseDefinition extends PromiseCreationCall {
  */
 private module PromiseFlow {
   /**
-   * A promise from which data-flow can flow into or out of. 
-   * 
-   * This promise can both be a promise created by e.g. `new Promise(..)` or `Promise.resolve(..)`, 
-   * or the result from calling a method on a promise e.g. `promise.then(..)`. 
-   * 
-   * The 4 methods in this class describe that ordinary and exceptional flow can flow into and out of this promise.
+   * Gets the pseudo-field used to describe resolved values in a promise.
    */
-  private abstract class PromiseNode extends DataFlow::SourceNode {
-
-    /**
-     * Get a DataFlow::Node for a value that this promise is resolved with. 
-     * The value is sent either to a chained promise, or to an `await` expression. 
-     * 
-     * The value is e.g. an argument to `resolve(..)`, or a return value from a `.then(..)` handler. 
-     */
-    DataFlow::Node getASentResolveValue() { none() }
-    
-    /**
-     * Get the DataFlow::Node that receives the value that this promise has been resolved with. 
-     * 
-     * E.g. the `x` in `promise.then((x) => ..)`. 
-     */
-    DataFlow::Node getReceivedResolveValue() { none() }
-    
-    /**
-     * Get a DataFlow::Node for a value that this promise is rejected with. 
-     * The value is sent either to a chained promise, or thrown by an `await` expression. 
-     * 
-     * The value is e.g. an argument to `reject(..)`, or an exception thrown by the promise executor. 
-     */
-    DataFlow::Node getASentRejectValue() { none() }
-    
-    /**
-     * Get the DataFlow::Node that receives the value that this promise has been rejected with. 
-     * 
-     * E.g. the `x` in `promise.catch((x) => ..)`. 
-     */
-    DataFlow::Node getReceivedRejectValue() { none() }
+  string resolveField() {
+    result = "$PromiseResolveField$"
   }
-
+  
   /**
-   * A PromiseNode for a PromiseDefinition. 
-   * E.g. `new Promise(..)`. 
+   * Gets the pseudo-field used to describe rejected values in a promise.
    */
-  private class PromiseDefinitionNode extends PromiseNode {
+  string rejectField() {
+    result = "$PromiseRejectField$"
+  }
+  
+  /**
+   * A flow step describing a promise definition.
+   *
+   * The resolved/rejected value is written to a pseudo-field on the promise.
+   */
+  class PromiseDefitionStep extends DataFlow::AdditionalFlowStep {
     PromiseDefinition promise;
-
-    PromiseDefinitionNode() { this = promise }
-
-    override DataFlow::Node getASentResolveValue() {
-      result = promise.getResolveParameter().getACall().getArgument(0)
+    PromiseDefitionStep() {
+      this = promise
     }
 
-    override DataFlow::Node getASentRejectValue() {
-      result = promise.getRejectParameter().getACall().getArgument(0)
+    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = resolveField() and
+      pred = promise.getResolveParameter().getACall().getArgument(0) and
+      succ = this
       or
-      result = promise.getExecutor().getExceptionalReturn()
+      prop = rejectField() and
+      (
+        pred = promise.getRejectParameter().getACall().getArgument(0) or
+        pred = promise.getExecutor().getExceptionalReturn()
+      ) and
+      succ = this
     }
   }
   
   /**
-   * A PromiseNode for a call that creates a promise. 
-   * E.g. `Promise.resolve(..)` or `Promise.all(..)`. 
+   * A flow step describing the a Promise.resolve (and similar) call.
    */
-  private class PromiseCreationNode extends PromiseNode {
+  class CreationStep extends DataFlow::AdditionalFlowStep {
     PromiseCreationCall promise;
-
-    PromiseCreationNode() { this = promise }
-
-    override DataFlow::Node getASentResolveValue() {
-      exists(DataFlow::Node value | value = promise.getValue() | 
-        not value instanceof PromiseNode and
-        result = value
-        or
-        result = value.(PromiseNode).getASentResolveValue()
-      )
+    CreationStep() {
+      this = promise
     }
 
-    override DataFlow::Node getASentRejectValue() {
-      result = promise.getValue().(PromiseNode).getASentRejectValue()
+    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = resolveField() and
+      pred = promise.getValue() and
+      succ = this
     }
   }
   
   /**
-   * A node referring to a PromiseNode through type-tracking.  
+   * A load step loading the pseudo-field describing that the promise is either resolved or rejected.
+   * A resolved value is forwarding as the resulting value of the `await` expression,
+   * and a rejected value is thrown as a exception.
    */
-  private class TrackedPromiseNode extends PromiseNode {
-    PromiseNode base;
-    TrackedPromiseNode() {
-      this = trackPromise(DataFlow::TypeTracker::end(), base) and 
-      not this instanceof PromiseDefinitionNode and
-      not this instanceof PromiseCreationNode
+  class AwaitStep extends DataFlow::AdditionalFlowStep {
+    DataFlow::Node operand;
+    AwaitExpr await;
+    AwaitStep() {
+      this.getEnclosingExpr() = await and
+      operand.getEnclosingExpr() = await.getOperand()
     }
 
-    override DataFlow::Node getASentResolveValue() { result = base.getASentResolveValue() }
-    override DataFlow::Node getReceivedResolveValue() { result = base.getReceivedResolveValue() }
-    override DataFlow::Node getASentRejectValue() { result = base.getASentRejectValue() }
-    override DataFlow::Node getReceivedRejectValue() { result = base.getReceivedRejectValue() }
+    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = resolveField() and
+      succ = this and
+      pred = operand.getALocalSource()
+      or
+      prop = rejectField() and
+      succ = await.getExceptionTarget() and
+      pred = operand.getALocalSource()
+    }
+  }
+
+  /**
+   * A flow step describing the data-flow related to the `.then` method of a promise.
+   */
+  class ThenStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    ThenStep() {
+      this.getMethodName() = "then"
+    }
+
+    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = resolveField() and
+      pred = getReceiver().getALocalSource() and
+      succ = getCallback(0).getParameter(0)
+      or
+      prop = rejectField() and
+      pred = getReceiver().getALocalSource() and
+      succ = getCallback(1).getParameter(0)
+    }
+    
+    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      not exists(this.getArgument(1)) and
+      prop = rejectField() and
+      pred = getReceiver().getALocalSource() and
+      succ = this
+    }
+    
+    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = resolveField() and
+      pred = getCallback([0..1]).getAReturn() and
+      succ = this
+      or
+      prop = rejectField() and
+      pred = getCallback([0..1]).getExceptionalReturn() and
+      succ = this
+    }
   }
   
-  private DataFlow::SourceNode trackPromise(DataFlow::TypeTracker t, PromiseNode promise) {
-    t.start() and result = promise
-    or
-    exists(DataFlow::TypeTracker t2 | result = trackPromise(t2, promise).track(t2, t))
-  }
-
   /**
-   * A PromiseNode that is a method call on an existing PromiseNode. 
-   * E.g. `promise.then(..)`. 
+   * A flow step describing the data-flow related to the `.catch` method of a promise.
    */
-  private abstract class ChainedPromiseNode extends PromiseNode, DataFlow::MethodCallNode {
-    PromiseNode base;
-
-    ChainedPromiseNode() { this = base.getAMethodCall(_) }
-
-    PromiseNode getBase() { result = base }
-  }
-
-  /**
-   * A PromiseNode for the `.then(..)` method on an existing promise.
-   */
-  private class PromiseThenNode extends ChainedPromiseNode {
-    PromiseThenNode() { this = base.getAMethodCall("then") }
-
-    override DataFlow::Node getASentResolveValue() {
-      exists(DataFlow::Node ret | ret = this.getCallback(0).getAReturn() |
-        if ret instanceof PromiseNode
-        then result = ret.(PromiseNode).getReceivedResolveValue()
-        else result = ret
-      )
+  class CatchStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    CatchStep() {
+      this.getMethodName() = "catch"
     }
 
-    override DataFlow::Node getASentRejectValue() {
-      not exists(this.getCallback(1)) and result = base.getASentRejectValue()
-      or
-      result = this.getCallback([0..1]).getExceptionalReturn()
+    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = rejectField() and
+      pred = getReceiver().getALocalSource() and
+      succ = getCallback(0).getParameter(0)
     }
 
-    override DataFlow::Node getReceivedResolveValue() { result = this.getCallback(0).getParameter(0) }
+    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = resolveField() and
+      pred = getReceiver().getALocalSource() and
+      succ = this
+    }
 
-    override DataFlow::Node getReceivedRejectValue() { result = this.getCallback(1).getParameter(0) }
-  }
-
-  /**
-   * A PromiseNode for the `.finally(..)` method on an existing promise.
-   */
-  private class PromiseFinallyNode extends ChainedPromiseNode {
-    PromiseFinallyNode() { this = base.getAMethodCall("finally") }
-
-    override DataFlow::Node getASentResolveValue() { result = base.getASentResolveValue() }
-
-    override DataFlow::Node getASentRejectValue() {
-      result = base.getASentRejectValue()
-      or
-      result = this.getCallback(0).getExceptionalReturn()
+    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = rejectField() and
+      pred = getCallback([0..1]).getExceptionalReturn() and
+      succ = this
     }
   }
 
   /**
-   * A PromiseNode for the `.catch(..)` method on an existing promise.
+   * A flow step describing the data-flow related to the `.finally` method of a promise.
    */
-  private class PromiseCatchNode extends ChainedPromiseNode {
-    PromiseCatchNode() { this = base.getAMethodCall("catch") }
-
-    override DataFlow::Node getASentResolveValue() {
-      exists(DataFlow::Node ret | ret = this.getCallback(0).getAReturn() |
-        if ret instanceof PromiseNode
-        then result = ret.(PromiseNode).getReceivedResolveValue()
-        else result = ret
-      )
-      or
-      result = base.getASentResolveValue()
+  class FinallyStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    FinallyStep() {
+      this.getMethodName() = "finally"
     }
 
-    override DataFlow::Node getASentRejectValue() { result = this.getCallback(0).getExceptionalReturn() }
-
-    override DataFlow::Node getReceivedResolveValue() { none() }
-
-    override DataFlow::Node getReceivedRejectValue() { result = this.getCallback(0).getParameter(0) }
-  }
-
-  
-  private ChainedPromiseNode getAChainedPromise(PromiseNode p) { result.getBase() = p}
-  
-  /**
-   * A data flow edge from a promise resolve/reject to the corresponding handler (or `await` expression).
-   */
-  private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
-    PromiseNode promise;
-
-    PromiseFlowStep() { this = promise }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = promise.getASentResolveValue() and
-      succ = getAChainedPromise(promise).getReceivedResolveValue()
-      or
-      pred = promise.getASentRejectValue() and
-      succ = getAChainedPromise(promise).getReceivedRejectValue()
-      or
-      pred = promise.getASentResolveValue() and
-      exists(DataFlow::SourceNode awaitNode |
-        awaitNode.asExpr().(AwaitExpr).getOperand() = promise.asExpr() and
-        succ = awaitNode
-      )
-      or
-      pred = promise.getASentRejectValue() and
-      exists(DataFlow::SourceNode awaitNode |
-        awaitNode.asExpr().(AwaitExpr).getOperand() = promise.asExpr() and
-        succ = awaitNode.asExpr().getExceptionTarget()
-      )
+    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      (prop = resolveField() or prop = rejectField()) and
+      pred = getReceiver().getALocalSource() and
+      succ = this
     }
   }
 }
