@@ -818,14 +818,6 @@ private predicate storeCandFwd2(Content f, Configuration config) {
     store(mid, f, node) and
     readStoreCand1(f, unbind(config))
   )
-  or
-  exists(Node mid, Node node |
-    useFieldFlow(config) and
-    nodeCand1(node, unbind(config)) and
-    nodeCandFwd2(mid, _, false, config) and
-    argumentFlowsThrough(mid, node, _, _, TSummaryTaintStore(f), config) and
-    readStoreCand1(f, unbind(config))
-  )
 }
 
 pragma[nomagic]
@@ -844,6 +836,35 @@ private predicate nodeCandFwd2ReadTaint(Content f, Node node, boolean fromArg, C
     argumentFlowsThrough(mid, node, _, _, TSummaryReadTaint(f), config) and
     readStoreCand1(f, unbind(config))
   )
+}
+
+private predicate readCandFwd2(Content f, Configuration config) {
+  exists(Node node |
+    nodeCandFwd2Read(f, node, _, config) or
+    nodeCandFwd2ReadTaint(f, node, _, config)
+  |
+    nodeCandFwd2(node, _, _, config)
+  )
+}
+
+private predicate readStoreCandFwd2(Content f, Configuration config) {
+  readCandFwd2(f, config) and
+  storeCandFwd2(f, config)
+}
+
+private predicate summaryFwd2(Summary s, Configuration config) {
+  s = TSummaryTaint()
+  or
+  exists(Content f | s = TSummaryReadTaint(f) | readStoreCandFwd2(f, config))
+  or
+  exists(Content f | s = TSummaryTaintStore(f) | readStoreCandFwd2(f, config))
+}
+
+private predicate argumentFlowsThroughFwd2(Node n1, Node n2, Summary s, Configuration config) {
+  argumentFlowsThrough(n1, n2, _, _, s, config) and
+  nodeCandFwd2(n1, _, _, config) and
+  nodeCandFwd2(n2, _, _, unbind(config)) and
+  summaryFwd2(s, unbind(config))
 }
 
 /**
@@ -906,7 +927,7 @@ private predicate nodeCand2(Node node, boolean toReturn, boolean stored, Configu
     or
     // read taint
     exists(Node mid, Content f |
-      argumentFlowsThrough(node, mid, _, _, TSummaryReadTaint(f), config) and
+      argumentFlowsThroughFwd2(node, mid, TSummaryReadTaint(f), config) and
       storeCandFwd2(f, unbind(config)) and
       nodeCand2(mid, toReturn, false, config) and
       stored = true
@@ -940,17 +961,9 @@ private predicate readCand2(Content f, Configuration config) {
     storeCandFwd2(f, unbind(config)) and
     nodeCand2(mid, _, _, config)
   )
-  or
-  exists(Node mid, Node node |
-    useFieldFlow(config) and
-    nodeCandFwd2(node, _, true, unbind(config)) and
-    argumentFlowsThrough(node, mid, _, _, TSummaryReadTaint(f), config) and
-    storeCandFwd2(f, unbind(config)) and
-    nodeCand2(mid, _, false, config)
-  )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate nodeCand2Store(Content f, Node node, boolean toReturn, Configuration config) {
   exists(Node mid |
     store(node, f, mid) and
@@ -958,10 +971,10 @@ private predicate nodeCand2Store(Content f, Node node, boolean toReturn, Configu
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate nodeCand2TaintStore(Content f, Node node, boolean toReturn, Configuration config) {
   exists(Node mid |
-    argumentFlowsThrough(node, mid, _, _, TSummaryTaintStore(f), config) and
+    argumentFlowsThroughFwd2(node, mid, TSummaryTaintStore(f), config) and
     nodeCand2(mid, toReturn, true, config)
   )
 }
@@ -987,6 +1000,23 @@ private predicate readStoreCand(Content f, Configuration conf) {
 }
 
 private predicate nodeCand(Node node, Configuration config) { nodeCand2(node, _, _, config) }
+
+private predicate summary2(Summary s, Configuration config) {
+  s = TSummaryTaint()
+  or
+  exists(Content f | s = TSummaryReadTaint(f) | readStoreCand(f, config))
+  or
+  exists(Content f | s = TSummaryTaintStore(f) | readStoreCand(f, config))
+}
+
+private predicate argumentFlowsThrough2(
+  Node n1, Node n2, DataFlowType t1, DataFlowType t2, Summary s, Configuration config
+) {
+  argumentFlowsThrough(n1, n2, t1, t2, s, config) and
+  nodeCand(n1, config) and
+  nodeCand(n2, unbind(config)) and
+  summary2(s, unbind(config))
+}
 
 /**
  * Holds if `node` can be the first node in a maximal subsequence of local
@@ -1016,7 +1046,7 @@ private predicate localFlowExit(Node node, Configuration config) {
     additionalJumpStep(node, next, config) or
     flowIntoCallable(node, next, config) or
     flowOutOfCallable(node, next, config) or
-    argumentFlowsThrough(node, next, _, _, _, config) or
+    argumentFlowsThrough2(node, next, _, _, _, config) or
     argumentValueFlowsThrough(node, next, _) or
     store(node, _, next) or
     read(node, _, next)
@@ -1204,7 +1234,7 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
     or
     exists(Node mid, AccessPathFrontNil nil, DataFlowType t |
       flowCandFwd(mid, fromArg, nil, config) and
-      argumentFlowsThrough(mid, node, _, t, TSummaryTaint(), config) and
+      argumentFlowsThrough2(mid, node, _, t, TSummaryTaint(), config) and
       apf = TFrontNil(t)
     )
   )
@@ -1219,9 +1249,7 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
   or
   exists(Node mid, AccessPathFrontNil nil, Content f |
     flowCandFwd(mid, fromArg, nil, config) and
-    argumentFlowsThrough(mid, node, _, _, TSummaryTaintStore(f), config) and
-    nodeCand(node, unbind(config)) and
-    readStoreCand(f, unbind(config)) and
+    argumentFlowsThrough2(mid, node, _, _, TSummaryTaintStore(f), config) and
     apf.headUsesContent(f)
   )
   or
@@ -1246,14 +1274,6 @@ private predicate consCandFwd(Content f, AccessPathFront apf, Configuration conf
     readStoreCand(f, unbind(config)) and
     compatibleTypes(apf.getType(), f.getType())
   )
-  or
-  exists(Node mid, Node n, AccessPathFrontNil nil, DataFlowType t |
-    flowCandFwd(mid, _, nil, config) and
-    argumentFlowsThrough(mid, n, t, _, TSummaryTaintStore(f), config) and
-    apf = TFrontNil(t) and
-    nodeCand(n, unbind(config)) and
-    readStoreCand(f, unbind(config))
-  )
 }
 
 pragma[nomagic]
@@ -1272,9 +1292,45 @@ private predicate flowCandFwdReadTaint(
 ) {
   exists(Node mid, AccessPathFront apf |
     flowCandFwd(mid, fromArg, apf, config) and
-    argumentFlowsThrough(mid, node, _, t, TSummaryReadTaint(f), config) and
-    apf.headUsesContent(f) and
-    nodeCand(node, unbind(config))
+    argumentFlowsThrough2(mid, node, _, t, TSummaryReadTaint(f), config) and
+    apf.headUsesContent(f)
+  )
+}
+
+pragma[noinline]
+private predicate flowCandFwdEmptyAp(Node node, Configuration config) {
+  flowCandFwd(node, _, any(AccessPathFrontNil nil), config)
+}
+
+pragma[noinline]
+private predicate consCandFwdEmptyAp(Content f, Configuration config) {
+  consCandFwd(f, any(AccessPathFrontNil nil), config)
+}
+
+private predicate argumentFlowsThrough3(
+  Node n1, Node n2, DataFlowType t1, DataFlowType t2, Summary s, Configuration config
+) {
+  argumentFlowsThrough2(n1, n2, t1, t2, s, config) and
+  flowCandFwdEmptyAp(n1, config) and
+  flowCandFwdEmptyAp(n2, unbind(config)) and
+  s = TSummaryTaint()
+  or
+  exists(Content f, AccessPathFront apf |
+    argumentFlowsThrough2(n1, n2, t1, t2, s, config) and
+    flowCandFwdEmptyAp(n1, config) and
+    flowCandFwd(n2, _, apf, unbind(config)) and
+    s = TSummaryTaintStore(f) and
+    consCandFwdEmptyAp(f, unbind(config)) and
+    apf.headUsesContent(f)
+  )
+  or
+  exists(Content f, AccessPathFront apf |
+    argumentFlowsThrough2(n1, n2, t1, t2, s, config) and
+    flowCandFwd(n1, _, apf, config) and
+    flowCandFwdEmptyAp(n2, unbind(config)) and
+    s = TSummaryReadTaint(f) and
+    consCandFwdEmptyAp(f, unbind(config)) and
+    apf.headUsesContent(f)
   )
 }
 
@@ -1339,7 +1395,7 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
   )
   or
   exists(Node mid, AccessPathFrontNil nil |
-    argumentFlowsThrough(node, mid, _, _, TSummaryTaint(), config) and
+    argumentFlowsThrough3(node, mid, _, _, TSummaryTaint(), config) and
     flowCand(mid, toReturn, nil, config) and
     apf instanceof AccessPathFrontNil and
     flowCandFwd(node, _, apf, config)
@@ -1354,7 +1410,7 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
   exists(Node mid, Content f, AccessPathFront apf0, AccessPathFrontNil nil |
     flowCandFwd(node, _, apf, config) and
     apf instanceof AccessPathFrontNil and
-    argumentFlowsThrough(node, mid, _, _, TSummaryTaintStore(f), config) and
+    argumentFlowsThrough3(node, mid, _, _, TSummaryTaintStore(f), config) and
     flowCand(mid, toReturn, apf0, config) and
     apf0.headUsesContent(f) and
     consCand(f, nil, unbind(config))
@@ -1367,7 +1423,7 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
   )
   or
   exists(Node mid, AccessPathFrontNil nil1, AccessPathFrontNil nil2, Content f |
-    argumentFlowsThrough(node, mid, _, _, TSummaryReadTaint(f), config) and
+    argumentFlowsThrough3(node, mid, _, _, TSummaryReadTaint(f), config) and
     flowCand(mid, toReturn, nil1, config) and
     consCandFwd(f, nil2, unbind(config)) and
     apf.headUsesContent(f)
@@ -1401,15 +1457,6 @@ private predicate consCand(Content f, AccessPathFront apf, Configuration config)
     flowCandFwd(n, _, apf0, config) and
     apf0.headUsesContent(f) and
     flowCandRead(n, f, _, apf, config)
-  )
-  or
-  consCandFwd(f, apf, unbind(config)) and
-  exists(Node node, Node mid, AccessPathFront apf0 |
-    argumentFlowsThrough(node, mid, _, _, TSummaryReadTaint(f), config) and
-    flowCand(mid, _, any(AccessPathFrontNil nil1), config) and
-    apf instanceof AccessPathFrontNil and
-    flowCandFwd(node, _, apf0, config) and
-    apf0.headUsesContent(f)
   )
 }
 
@@ -1605,7 +1652,7 @@ private predicate flowFwd0(
     or
     exists(Node mid, AccessPathNil nil, DataFlowType t |
       flowFwd(mid, fromArg, _, nil, config) and
-      argumentFlowsThrough(mid, node, _, t, TSummaryTaint(), config) and
+      argumentFlowsThrough3(mid, node, _, t, TSummaryTaint(), config) and
       ap = TNil(t) and
       apf = ap.(AccessPathNil).getFront()
     )
@@ -1623,7 +1670,7 @@ private predicate flowFwd0(
   or
   exists(Content f, Node mid, AccessPathFront apf0, DataFlowType t |
     flowFwd(mid, fromArg, apf0, any(AccessPathConsNil consnil), config) and
-    argumentFlowsThrough(mid, node, _, t, TSummaryReadTaint(f), config) and
+    argumentFlowsThrough3(mid, node, _, t, TSummaryReadTaint(f), config) and
     apf0.headUsesContent(f) and
     flowCand(node, _, _, unbind(config)) and
     ap = TNil(t) and
@@ -1642,7 +1689,7 @@ private predicate flowFwdStore(
   or
   exists(Node mid, DataFlowType t |
     flowFwd(mid, fromArg, _, any(AccessPathNil nil), config) and
-    argumentFlowsThrough(mid, node, t, _, TSummaryTaintStore(f), config) and
+    argumentFlowsThrough3(mid, node, t, _, TSummaryTaintStore(f), config) and
     consCand(f, TFrontNil(t), unbind(config)) and
     ap0 = TNil(t) and
     apf.headUsesContent(f) and
@@ -1732,7 +1779,7 @@ private predicate flow0(Node node, boolean toReturn, AccessPath ap, Configuratio
   )
   or
   exists(Node mid, AccessPathNil ap0 |
-    argumentFlowsThrough(node, mid, _, _, TSummaryTaint(), config) and
+    argumentFlowsThrough3(node, mid, _, _, TSummaryTaint(), config) and
     flow(mid, toReturn, ap0, config) and
     ap instanceof AccessPathNil and
     flowFwd(node, _, _, ap, config)
@@ -1756,7 +1803,7 @@ private predicate flow0(Node node, boolean toReturn, AccessPath ap, Configuratio
   )
   or
   exists(Node mid, Content f |
-    argumentFlowsThrough(node, mid, _, _, TSummaryReadTaint(f), config) and
+    argumentFlowsThrough3(node, mid, _, _, TSummaryReadTaint(f), config) and
     flow(mid, toReturn, any(AccessPathNil nil1), config) and
     push(any(AccessPathNil nil2), f, ap) and
     flowFwd(node, _, _, ap, config)
@@ -1778,7 +1825,7 @@ private predicate flowTaintStore(
   Node node, Content f, boolean toReturn, AccessPath ap0, Configuration config
 ) {
   exists(Node mid |
-    argumentFlowsThrough(node, mid, _, _, TSummaryTaintStore(f), config) and
+    argumentFlowsThrough3(node, mid, _, _, TSummaryTaintStore(f), config) and
     flow(mid, toReturn, ap0, config)
   )
 }
