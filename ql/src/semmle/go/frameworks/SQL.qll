@@ -31,8 +31,8 @@ module SQL {
       StandardQueryString() {
         exists(Method meth, string base, string m, int n |
           (
-           meth.hasQualifiedName("database/sql", "DB", m) or
-           meth.hasQualifiedName("database/sql", "Tx", m)
+            meth.hasQualifiedName("database/sql", "DB", m) or
+            meth.hasQualifiedName("database/sql", "Tx", m)
           ) and
           this = meth.getACall().getArgument(n)
         |
@@ -55,7 +55,8 @@ module SQL {
         exists(Function fn |
           exists(string sq |
             sq = "github.com/Masterminds/squirrel" or
-            sq = "github.com/lann/squirrel" |
+            sq = "github.com/lann/squirrel"
+          |
             // first argument to `squirrel.Expr`
             fn.hasQualifiedName(sq, "Expr")
             or
