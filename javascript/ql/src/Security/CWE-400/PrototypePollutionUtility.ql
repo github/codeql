@@ -226,7 +226,13 @@ class UnsafePropLabel extends FlowLabel {
  *
  * Note that in the above example, the flow from `key` to the base of the write (`dst`)
  * requires stepping through the recursive call.
- * Such a path would be absent for a shallow copying operation.
+ * Such a path would be absent for a shallow copying operation, where the `dst` object
+ * isn't derived from a property of the source object.
+ *
+ * This configuration can't enforce that all three paths must end at the same
+ * dynamic property write, so we treat the paths independently here and check
+ * for coinciding paths afterwards.  This means this configuration can't be used as
+ * a standalone configuration like in most path queries.
  */
 class PropNameTracking extends DataFlow::Configuration {
   PropNameTracking() { this = "PropNameTracking" }

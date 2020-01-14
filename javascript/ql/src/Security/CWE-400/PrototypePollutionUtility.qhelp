@@ -41,8 +41,8 @@
   <sample src="examples/PrototypePollutionUtility.js"/>
 
   <p>
-    However, if <code>src</code> is the object <code>{"__proto__": {"xxx": true}}</code>,
-    it will inject the property <code>xxx: true</code> in in <code>Object.prototype</code>.
+    However, if <code>src</code> is the object <code>{"__proto__": {"isAdmin": true}}</code>,
+    it will inject the property <code>isAdmin: true</code> in in <code>Object.prototype</code>.
   </p>
 
   <p>

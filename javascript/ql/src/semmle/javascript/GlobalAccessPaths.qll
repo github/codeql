@@ -35,6 +35,24 @@ module GlobalAccessPath {
   }
 }
 
+/**
+ * Provides predicates for associating access paths with data flow nodes.
+ *
+ * For example, `AccessPath.getAReferenceTo(x)` can be used to obtain the global access path
+ * that `x` refers to, as in the following sample:
+ * ```
+ * function f() {
+ *   let v = foo.bar; // reference to 'foo.bar'
+ *   v.baz;           // reference to 'foo.bar.baz'
+ * }
+ *
+ * (function(ns) {
+ *   ns.x;            // reference to 'NS.x'
+ * })(NS = NS || {});
+ * ```
+ *
+ * A pseudo-property named `[number]` is sometimes used to represent array indices within an access path.
+ */
 module AccessPath {
   /**
    * A source node that can be the root of an access path.
