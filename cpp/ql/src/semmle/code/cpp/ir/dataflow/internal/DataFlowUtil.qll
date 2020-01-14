@@ -59,10 +59,12 @@ class Node extends TIRDataFlowNode {
   Parameter asParameter() { result = instr.(InitializeParameterInstruction).getParameter() }
 
   /**
+   * DEPRECATED: See UninitializedNode.
+   *
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
-  LocalVariable asUninitialized() { result = instr.(UninitializedInstruction).getLocalVariable() }
+  LocalVariable asUninitialized() { none() }
 
   /**
    * Gets an upper bound on the type of this node.
@@ -140,15 +142,19 @@ private class ThisParameterNode extends Node {
 }
 
 /**
+ * DEPRECATED: Data flow was never an accurate way to determine what
+ * expressions might be uninitialized. It errs on the side of saying that
+ * everything is uninitialized, and this is even worse in the IR because the IR
+ * doesn't use syntactic hints to rule out variables that are definitely
+ * initialized.
+ *
  * The value of an uninitialized local variable, viewed as a node in a data
  * flow graph.
  */
-class UninitializedNode extends Node {
-  override UninitializedInstruction instr;
+deprecated class UninitializedNode extends Node {
+  UninitializedNode() { none() }
 
-  LocalVariable getLocalVariable() { result = instr.getLocalVariable() }
-
-  override string toString() { result = this.getLocalVariable().toString() }
+  LocalVariable getLocalVariable() { none() }
 }
 
 /**
@@ -259,7 +265,21 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnary() = iFrom or
-  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  iTo.(InheritanceConversionInstruction).getUnary() = iFrom or
+  // A chi instruction represents a point where a new value (the _partial_
+  // operand) may overwrite an old value (the _total_ operand), but the alias
+  // analysis couldn't determine that it surely will overwrite every bit of it or
+  // that it surely will overwrite no bit of it.
+  //
+  // By allowing flow through the total operand, we ensure that flow is not lost
+  // due to shortcomings of the alias analysis. We may get false flow in cases
+  // where the data is indeed overwritten.
+  //
+  // Allowing flow through the partial operand would be more noisy, especially
+  // for variables that have escaped: for soundness, the IR has to assume that
+  // every write to an unknown address can affect every escaped variable, and
+  // this assumption shows up as data flowing through partial chi operands.
+  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
 }
 
 /**
