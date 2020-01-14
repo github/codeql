@@ -338,7 +338,10 @@ private predicate mkBoolConst(DataFlow::Node nd, boolean val) {
   nd.isPlatformIndependentConstant()
 }
 
-private predicate mkFunc(DataFlow::Node nd, Function f) { nd = f.getARead() }
+private predicate mkFunc(DataFlow::Node nd, Function f) {
+  nd = f.getARead() and
+  not f instanceof Method
+}
 
 private predicate analyzableConst(DataFlow::Node e) {
   mkNumericConst(e, _) or mkStringConst(e, _) or mkBoolConst(e, _) or mkFunc(e, _)
@@ -349,7 +352,7 @@ private predicate analyzableMethodAccess(Read access, DataFlow::Node receiver, M
   not access.isConst()
 }
 
-private predicate mkMethodAccess(DataFlow::Node access, GVN qualifier, Function m) {
+private predicate mkMethodAccess(DataFlow::Node access, GVN qualifier, Method m) {
   exists(DataFlow::Node base |
     analyzableMethodAccess(access, base, m) and
     qualifier = globalValueNumber(base)
