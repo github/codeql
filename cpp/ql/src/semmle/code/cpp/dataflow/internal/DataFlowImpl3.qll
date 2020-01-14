@@ -853,8 +853,7 @@ private predicate readStoreCandFwd2(Content f, Configuration config) {
 }
 
 private predicate summaryFwd2(Summary s, Configuration config) {
-  s = TSummaryTaint()
-  or
+  // No need for the `s = TSummaryTaint()` case as it is not used with `argumentFlowsThroughFwd2`.
   exists(Content f | s = TSummaryReadTaint(f) | readStoreCandFwd2(f, config))
   or
   exists(Content f | s = TSummaryTaintStore(f) | readStoreCandFwd2(f, config))
