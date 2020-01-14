@@ -1,0 +1,6 @@
+| a | types.go:24:22:24:22 | initialization of a |
+| recv | main.go:13:7:13:10 | initialization of recv |
+| recv | main.go:23:7:23:10 | initialization of recv |
+| x | main.go:17:10:17:10 | initialization of x |
+| x | main.go:24:2:24:9 | increment statement |
+| y | main.go:17:26:17:26 | initialization of y |
