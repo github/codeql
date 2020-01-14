@@ -124,6 +124,24 @@ class Entity extends @object {
 
   /** Gets a textual representation of this entity. */
   string toString() { result = getName() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    // take the location of the declaration if there is one
+    getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    // otherwise fall back on dummy location
+    not exists(getDeclaration()) and
+    filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+  }
 }
 
 /** A declared entity (that is, type, constant, variable or function). */

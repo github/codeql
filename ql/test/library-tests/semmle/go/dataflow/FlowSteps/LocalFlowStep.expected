@@ -34,9 +34,9 @@
 | main.go:26:2:26:17 | ... := ...[1] | main.go:26:5:26:6 | definition of ok |
 | main.go:26:5:26:6 | definition of ok | main.go:27:5:27:6 | ok |
 | main.go:26:11:26:11 | x | main.go:26:11:26:17 | type assertion |
-| main.go:34:2:34:6 | test1 | main.go:3:1:12:1 | function test1 |
-| main.go:34:8:34:12 | test2 | main.go:14:1:20:1 | function test2 |
-| main.go:34:19:34:23 | test2 | main.go:14:1:20:1 | function test2 |
+| main.go:34:2:34:6 | test1 | main.go:3:6:3:10 | function test1 |
+| main.go:34:8:34:12 | test2 | main.go:14:6:14:10 | function test2 |
+| main.go:34:19:34:23 | test2 | main.go:14:6:14:10 | function test2 |
 | strings.go:8:12:8:12 | argument corresponding to s | strings.go:8:12:8:12 | definition of s |
 | strings.go:8:12:8:12 | definition of s | strings.go:9:24:9:24 | s |
 | strings.go:8:12:8:12 | definition of s | strings.go:10:27:10:27 | s |

@@ -1,22 +1,22 @@
-| a | int |
-| bump | func()  |
-| foo | func(iHaveAMethod, * t)  |
-| iHaveAMethod | iHaveAMethod |
-| main | func()  |
-| meth | func() int |
-| meth | func() int |
-| meth1 | func() bool |
-| meth1 | func() bool |
-| meth1 | func(int) bool |
-| meth2 | func() int |
-| meth2 | func() int |
-| meth2 | func() int |
-| notImpl | notImpl |
-| recv | * t |
-| recv | * t |
-| starImpl | starImpl |
-| t | t |
-| twoMethods | twoMethods |
-| x | iHaveAMethod |
-| x | int |
-| y | * t |
+| main.go:5:6:5:6 | t | t |
+| main.go:6:2:6:2 | x | int |
+| main.go:9:6:9:9 | main | func()  |
+| main.go:13:7:13:10 | recv | * t |
+| main.go:13:16:13:19 | meth | func() int |
+| main.go:17:6:17:8 | foo | func(iHaveAMethod, * t)  |
+| main.go:17:10:17:10 | x | iHaveAMethod |
+| main.go:17:26:17:26 | y | * t |
+| main.go:23:7:23:10 | recv | * t |
+| main.go:23:16:23:19 | bump | func()  |
+| types.go:3:6:3:17 | iHaveAMethod | iHaveAMethod |
+| types.go:4:2:4:5 | meth | func() int |
+| types.go:7:6:7:15 | twoMethods | twoMethods |
+| types.go:8:2:8:6 | meth1 | func() bool |
+| types.go:9:2:9:6 | meth2 | func() int |
+| types.go:12:6:12:13 | starImpl | starImpl |
+| types.go:14:18:14:22 | meth1 | func() bool |
+| types.go:18:17:18:21 | meth2 | func() int |
+| types.go:22:6:22:12 | notImpl | notImpl |
+| types.go:24:16:24:20 | meth1 | func(int) bool |
+| types.go:24:22:24:22 | a | int |
+| types.go:28:16:28:20 | meth2 | func() int |
