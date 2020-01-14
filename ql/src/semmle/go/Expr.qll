@@ -482,7 +482,7 @@ class CallExpr extends CallOrConversionExpr {
    * interface type.
    */
   FuncDef getACallee() {
-    result = getTarget().(DeclaredFunction).getDecl()
+    result = getTarget().(DeclaredFunction).getFuncDecl()
     or
     exists(SelectorExpr sel, InterfaceType declaredRecv, Type actualRecv |
       sel = getCalleeExpr().stripParens() and

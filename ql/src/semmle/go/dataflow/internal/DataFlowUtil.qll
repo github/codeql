@@ -223,7 +223,7 @@ class GlobalFunctionNode extends FunctionNode, MkGlobalFunctionNode {
   GlobalFunctionNode() { this = MkGlobalFunctionNode(func) }
 
   override ParameterNode getParameter(int i) {
-    result = parameterNode(func.(DeclaredFunction).getDecl().getParameter(i))
+    result = parameterNode(func.getParameter(i))
   }
 
   override string getName() { result = func.getName() }

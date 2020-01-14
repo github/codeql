@@ -156,7 +156,7 @@ class FuncDecl extends @funcdecl, Decl, Documentable, FuncDef {
   override BlockStmt getBody() { result = getChildStmt(2) }
 
   /** Gets the function declared by this function declaration. */
-  DeclaredFunction getFunction() { this = result.getDecl() }
+  DeclaredFunction getFunction() { this = result.getFuncDecl() }
 
   override string toString() { result = "function declaration" }
 }
