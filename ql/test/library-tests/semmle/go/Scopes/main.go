@@ -19,3 +19,7 @@ func foo(x iHaveAMethod, y *t) {
 	y.meth()
 	(*t).meth(y)
 }
+
+func (recv *t) bump() {
+	recv.x++
+}

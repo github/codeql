@@ -1,4 +1,5 @@
 | a | types.go:24:22:24:22 | a |
+| bump | main.go:23:16:23:19 | bump |
 | foo | main.go:17:6:17:8 | foo |
 | iHaveAMethod | types.go:3:6:3:17 | iHaveAMethod |
 | main | main.go:9:6:9:9 | main |
@@ -12,6 +13,7 @@
 | meth2 | types.go:28:16:28:20 | meth2 |
 | notImpl | types.go:22:6:22:12 | notImpl |
 | recv | main.go:13:7:13:10 | recv |
+| recv | main.go:23:7:23:10 | recv |
 | starImpl | types.go:12:6:12:13 | starImpl |
 | t | main.go:5:6:5:6 | t |
 | twoMethods | types.go:7:6:7:15 | twoMethods |

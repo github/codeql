@@ -1,4 +1,5 @@
 | a | int |
+| bump | func()  |
 | foo | func(iHaveAMethod, * t)  |
 | iHaveAMethod | iHaveAMethod |
 | main | func()  |
@@ -11,6 +12,7 @@
 | meth2 | func() int |
 | meth2 | func() int |
 | notImpl | notImpl |
+| recv | * t |
 | recv | * t |
 | starImpl | starImpl |
 | t | t |

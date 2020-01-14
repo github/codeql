@@ -22,7 +22,7 @@ class SsaSourceVariable extends LocalVariable {
    */
   predicate mayHaveIndirectReferences() {
     // variables that have their address taken
-    exists(AddressExpr addr | addr.getOperand().stripParens() = getAUse())
+    exists(AddressExpr addr | addr.getOperand().stripParens() = getAReference())
     or
     exists(DataFlow::MethodReadNode mrn |
       mrn.getReceiver() = getARead() and

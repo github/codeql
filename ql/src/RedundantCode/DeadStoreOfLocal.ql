@@ -36,7 +36,7 @@ where
   // exclude assignments with default values or simple expressions
   not isSimple(rhs) and
   // exclude variables that are not used at all
-  exists(target.getAUse()) and
+  exists(target.getAReference()) and
   // exclude variables with indirect references
   not target.mayHaveIndirectReferences()
 select def, "This definition of " + target + " is never used."

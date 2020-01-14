@@ -27,4 +27,5 @@
 | main.go:84:9:84:9 | x | x |
 | main.go:84:15:84:15 | x | x |
 | main.go:94:2:94:8 | wrapper | wrapper |
+| main.go:94:2:94:10 | selection of s | s |
 | main.go:97:9:97:9 | x | x |
