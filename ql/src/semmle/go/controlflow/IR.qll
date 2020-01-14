@@ -1144,7 +1144,7 @@ module IR {
     }
   }
 
-  /** A representation of the target of of a write instruction. */
+  /** A representation of the target of a write instruction. */
   class WriteTarget extends TWriteTarget {
     ControlFlow::Node w;
 
