@@ -203,9 +203,7 @@ private newtype GVNBase =
   // guaranteed to have the same value.
   MkOtherVariable(ValueEntity x, ControlFlow::Node dominator) { mkOtherVariable(_, x, dominator) } or
   MkMethodAccess(GVN base, Function m) { mkMethodAccess(_, base, m) } or
-  MkFieldRead(GVN base, Variable f, ControlFlow::Node dominator) {
-    mkFieldRead(_, base, f, dominator)
-  } or
+  MkFieldRead(GVN base, Field f, ControlFlow::Node dominator) { mkFieldRead(_, base, f, dominator) } or
   MkPureCall(Function f, GVN callee, GVNList args) { mkPureCall(_, f, callee, args) } or
   MkIndex(GVN base, GVN index, ControlFlow::Node dominator) { mkIndex(_, base, index, dominator) } or
   // Dereference a pointer. The value might have changed since the last
@@ -365,7 +363,7 @@ private predicate analyzableFieldRead(Read fread, DataFlow::Node base, Field f) 
 }
 
 private predicate mkFieldRead(
-  DataFlow::Node fread, GVN qualifier, Variable v, ControlFlow::Node dominator
+  DataFlow::Node fread, GVN qualifier, Field v, ControlFlow::Node dominator
 ) {
   exists(DataFlow::Node base |
     analyzableFieldRead(fread, base, v) and
@@ -393,12 +391,15 @@ private predicate mkPureCall(DataFlow::CallNode ce, Function f, GVN callee, GVNL
  * variables of non-primitive type (for which deep mutations are not captured by SSA).
  */
 private predicate incompleteSsa(ValueEntity v) {
-  not v instanceof SsaSourceVariable
-  or
-  v.(SsaSourceVariable).mayHaveIndirectReferences()
-  or
-  exists(Type tp | tp = v.(DeclaredVariable).getType().getUnderlyingType() |
-    not tp instanceof BasicType
+  not v instanceof Field and
+  (
+    not v instanceof SsaSourceVariable
+    or
+    v.(SsaSourceVariable).mayHaveIndirectReferences()
+    or
+    exists(Type tp | tp = v.(DeclaredVariable).getType().getUnderlyingType() |
+      not tp instanceof BasicType
+    )
   )
 }
 

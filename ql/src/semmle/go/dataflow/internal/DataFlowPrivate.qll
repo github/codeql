@@ -72,6 +72,7 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 predicate jumpStep(Node n1, Node n2) {
   exists(ValueEntity v, Write w |
     not v instanceof SsaSourceVariable and
+    not v instanceof Field and
     w.writes(v, n1) and
     n2 = v.getARead()
   )
