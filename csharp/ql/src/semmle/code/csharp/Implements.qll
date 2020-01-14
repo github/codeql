@@ -130,7 +130,7 @@ private DeclarationWithAccessors getACompatibleInterfaceAccessorCandidate(Declar
   d.isPublic()
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate getACompatibleInterfaceAccessorAux(
   DeclarationWithAccessors d, ValueOrRefType t, string name
 ) {
@@ -242,7 +242,7 @@ private Type getArgumentOrReturnType(Method m, int i) {
  * type parameters (at the same index).
  */
 private module Gvn {
-  private import semmle.code.csharp.Unification
+  private import semmle.code.csharp.Unification::Gvn as Unification
 
   private class MethodTypeParameter extends TypeParameter {
     MethodTypeParameter() { this = any(UnboundGenericMethod ugm).getATypeParameter() }
@@ -251,27 +251,26 @@ private module Gvn {
   private class LeafType extends Type {
     LeafType() {
       not exists(this.getAChild()) and
-      not this instanceof MethodTypeParameter
+      not this instanceof MethodTypeParameter and
+      not this instanceof DynamicType
     }
   }
 
-  private predicate id(LeafType t, int i) = equivalenceRelation(convIdentity/2)(t, i)
-
   private newtype TGvnType =
-    TLeafGvnType(int i) { id(_, i) } or
+    TLeafGvnType(LeafType t) or
     TMethodTypeParameterGvnType(int i) { i = any(MethodTypeParameter p).getIndex() } or
     TConstructedGvnType(ConstructedGvnTypeList l)
 
   private newtype TConstructedGvnTypeList =
-    TConstructedGvnTypeNil(CompoundTypeKind k) or
+    TConstructedGvnTypeNil(Unification::CompoundTypeKind k) or
     TConstructedGvnTypeCons(GvnType head, ConstructedGvnTypeList tail) {
       gvnConstructedCons(_, _, _, head, tail)
     }
 
-  private ConstructedGvnTypeList gvnConstructed(Type t, CompoundTypeKind k, int i) {
+  private ConstructedGvnTypeList gvnConstructed(Type t, Unification::CompoundTypeKind k, int i) {
     result = TConstructedGvnTypeNil(k) and
     i = -1 and
-    k = getTypeKind(t)
+    k = Unification::getTypeKind(t)
     or
     exists(GvnType head, ConstructedGvnTypeList tail | gvnConstructedCons(t, k, i, head, tail) |
       result = TConstructedGvnTypeCons(head, tail)
@@ -283,7 +282,7 @@ private module Gvn {
 
   pragma[noinline]
   private predicate gvnConstructedCons(
-    Type t, CompoundTypeKind k, int i, GvnType head, ConstructedGvnTypeList tail
+    Type t, Unification::CompoundTypeKind k, int i, GvnType head, ConstructedGvnTypeList tail
   ) {
     tail = gvnConstructed(t, k, i - 1) and
     head = gvnTypeChild(t, i)
@@ -292,11 +291,14 @@ private module Gvn {
   /** Gets the global value number for a given type. */
   pragma[nomagic]
   GvnType getGlobalValueNumber(Type t) {
-    result = TLeafGvnType(any(int i | id(t, i)))
+    result = TLeafGvnType(t)
+    or
+    t instanceof DynamicType and
+    result = TLeafGvnType(any(ObjectType ot))
     or
     result = TMethodTypeParameterGvnType(t.(MethodTypeParameter).getIndex())
     or
-    exists(ConstructedGvnTypeList l, CompoundTypeKind k, int i |
+    exists(ConstructedGvnTypeList l, Unification::CompoundTypeKind k, int i |
       l = gvnConstructed(t, k, i) and
       i = k.getNumberOfTypeParameters() - 1 and
       result = TConstructedGvnType(l)
@@ -306,7 +308,7 @@ private module Gvn {
   /** A global value number for a type. */
   class GvnType extends TGvnType {
     string toString() {
-      exists(int i | this = TLeafGvnType(i) | result = i.toString())
+      exists(LeafType t | this = TLeafGvnType(t) | result = t.toString())
       or
       exists(int i | this = TMethodTypeParameterGvnType(i) | result = "M!" + i)
       or
@@ -338,12 +340,12 @@ private module Gvn {
 
     language[monotonicAggregates]
     string toString() {
-      exists(CompoundTypeKind k, string args |
+      exists(Unification::CompoundTypeKind k, string args |
         this = gvnConstructed(_, k, _) and
         args = concat(int i |
             i in [0 .. k.getNumberOfTypeParameters() - 1]
           |
-            this.getArg(i).toString(), ", " order by i
+            this.getArg(i).toString(), "," order by i
           ) and
         result = k.toString(args)
       )

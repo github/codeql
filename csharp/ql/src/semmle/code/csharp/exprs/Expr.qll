@@ -116,10 +116,17 @@ private predicate isDynamicElementAccess(@dynamic_element_access_expr e) { any()
  * A local variable declaration, for example `var i = 0`.
  */
 class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
-  /** Gets the local variable being declared. */
+  /**
+   * Gets the local variable being declared, if any. The only case where
+   * no variable is declared is when a discard symbol is used, for example
+   * ```
+   * if (int.TryParse(s, out var _))
+   *     ...
+   * ```
+   */
   LocalVariable getVariable() { localvars(result, _, _, _, _, this) }
 
-  /** Gets the name of the variable being declared. */
+  /** Gets the name of the variable being declared, if any. */
   string getName() { result = this.getVariable().getName() }
 
   /** Gets the initializer expression of this local variable declaration, if any. */
@@ -136,6 +143,9 @@ class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
 
   override string toString() {
     result = this.getVariable().getType().getName() + " " + this.getName()
+    or
+    not exists(this.getVariable()) and
+    result = "_"
   }
 
   /** Gets the variable access used in this declaration, if any. */

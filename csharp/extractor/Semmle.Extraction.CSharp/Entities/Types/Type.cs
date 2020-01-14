@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static bool ConstructedOrParentIsConstructed(INamedTypeSymbol symbol)
         {
-            return !Equals(symbol, symbol.OriginalDefinition) ||
+            return !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
                 symbol.ContainingType != null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
@@ -155,7 +155,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     var param = invokeMethod.Parameters[i];
                     var originalParam = invokeMethod.OriginalDefinition.Parameters[i];
-                    var originalParamEntity = Equals(param, originalParam) ? null :
+                    var originalParamEntity = SymbolEqualityComparer.Default.Equals(param, originalParam) ? null :
                         DelegateTypeParameter.Create(Context, originalParam, Create(Context, ((INamedTypeSymbol)symbol).OriginalDefinition));
                     DelegateTypeParameter.Create(Context, param, this, originalParamEntity);
                 }

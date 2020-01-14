@@ -28,12 +28,12 @@ namespace Semmle.Extraction.CSharp.Entities
             var parent = Event.Create(Context, @event);
             int kind;
             EventAccessor unboundAccessor;
-            if (symbol.Equals(@event.AddMethod))
+            if (SymbolEqualityComparer.Default.Equals(symbol, @event.AddMethod))
             {
                 kind = 1;
                 unboundAccessor = Create(Context, @event.OriginalDefinition.AddMethod);
             }
-            else if (symbol.Equals(@event.RemoveMethod))
+            else if (SymbolEqualityComparer.Default.Equals(symbol, @event.RemoveMethod))
             {
                 kind = 2;
                 unboundAccessor = Create(Context, @event.OriginalDefinition.RemoveMethod);
