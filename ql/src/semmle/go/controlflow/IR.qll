@@ -50,16 +50,16 @@ module IR {
     }
 
     /** Holds if this instruction reads the value of variable or constant `v`. */
-    predicate reads(ValueEntity v) { none() }
+    predicate reads(ValueEntity v) { readsField(_, v) or readsMethod(_, v) }
 
     /** Holds if this instruction updates variable or constant `v` to the value of `rhs`. */
-    predicate writes(ValueEntity v, Instruction rhs) { none() }
+    predicate writes(ValueEntity v, Instruction rhs) { writesField(_, v, rhs) }
 
     /** Holds if this instruction reads the value of field `f` on the value of `base`. */
     predicate readsField(Instruction base, Field f) { none() }
 
     /** Holds if this instruction updates the value of field `f` on the value of `base`. */
-    predicate writesField(Instruction base, Field f) { none() }
+    predicate writesField(Instruction base, Field f, Instruction rhs) { none() }
 
     /** Holds if this instruction looks up method `m` on the value of `receiver`. */
     predicate readsMethod(Instruction receiver, Method m) { none() }
@@ -286,7 +286,7 @@ module IR {
     Instruction getRhs() { none() }
 
     override predicate writes(ValueEntity v, Instruction rhs) {
-      getLhs().(VarOrConstTarget).refersTo(v) and
+      getLhs().refersTo(v) and
       rhs = getRhs()
     }
   }
@@ -398,9 +398,10 @@ module IR {
     /** Gets the field being written. */
     Field getField() { result = lhs.getField() }
 
-    override predicate writesField(Instruction base, Field f) {
+    override predicate writesField(Instruction base, Field f, Instruction rhs) {
       getBase() = base and
-      getField() = f
+      getField() = f and
+      getRhs() = rhs
     }
   }
 
@@ -1160,6 +1161,9 @@ module IR {
       getWrite() = result.getDefinition().(SsaExplicitDefinition).getInstruction()
     }
 
+    /** Holds if `e` is the variable or field being written to. */
+    predicate refersTo(ValueEntity e) { none() }
+
     /** Gets a textual representation of this target. */
     string toString() { result = "write target" }
 
@@ -1196,8 +1200,7 @@ module IR {
       )
     }
 
-    /** Holds if this is a reference to variable or constant `e`. */
-    predicate refersTo(ValueEntity e) {
+    override predicate refersTo(ValueEntity e) {
       this instanceof MkLhs and
       loc = e.getAReference()
       or
@@ -1254,11 +1257,10 @@ module IR {
     /** Get the type of the base of this field access, that is, the type that contains the field. */
     Type getBaseType() { result = this.getBase().(EvalInstruction).getExpr().getType() }
 
-    /** Holds if this is a reference to variable or constant `e`. */
-    predicate refersTo(Field f) {
-      exists(SelectorExpr sel | this = MkLhs(_, sel) | sel.getSelector() = f.getAReference())
+    override predicate refersTo(ValueEntity e) {
+      exists(SelectorExpr sel | this = MkLhs(_, sel) | sel.uses(e))
       or
-      f = w.(InitLiteralStructFieldInstruction).getField()
+      e = w.(InitLiteralStructFieldInstruction).getField()
     }
 
     override string getName() { exists(Field f | this.refersTo(f) | result = f.getName()) }
