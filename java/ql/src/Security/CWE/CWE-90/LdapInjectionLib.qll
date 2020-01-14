@@ -12,9 +12,9 @@ class TypeLdapContext extends Interface {
   TypeLdapContext() { this.hasQualifiedName("javax.naming.ldap", "LdapContext") }
 }
 
-/** The class `com.unboundid.ldap.sdk.SearchRequest`. */
-class TypeUnboundIdSearchRequest extends Class {
-  TypeUnboundIdSearchRequest() { this.hasQualifiedName("com.unboundid.ldap.sdk", "SearchRequest") }
+/** The class `javax.naming.ldap.LdapName`. */
+class TypeLdapName extends Class {
+  TypeLdapName() { this.hasQualifiedName("javax.naming.ldap", "LdapName") }
 }
 
 /** The interface `com.unboundid.ldap.sdk.ReadOnlySearchRequest`. */
@@ -22,6 +22,11 @@ class TypeReadOnlySearchRequest extends Interface {
   TypeReadOnlySearchRequest() {
     this.hasQualifiedName("com.unboundid.ldap.sdk", "ReadOnlySearchRequest")
   }
+}
+
+/** The class `com.unboundid.ldap.sdk.SearchRequest`. */
+class TypeUnboundIdSearchRequest extends Class {
+  TypeUnboundIdSearchRequest() { this.hasQualifiedName("com.unboundid.ldap.sdk", "SearchRequest") }
 }
 
 /** The class `com.unboundid.ldap.sdk.Filter`. */
@@ -44,14 +49,28 @@ class TypeLdapQuery extends Interface {
   TypeLdapQuery() { this.hasQualifiedName("org.springframework.ldap.query", "LdapQuery") }
 }
 
-/** The interface `org.springframework.ldap.query.LdapQueryBuilder`. */
+/** The class `org.springframework.ldap.query.LdapQueryBuilder`. */
 class TypeLdapQueryBuilder extends Class {
   TypeLdapQueryBuilder() {
     this.hasQualifiedName("org.springframework.ldap.query", "LdapQueryBuilder")
   }
 }
 
-/** The interface `org.springframework.ldap.filter.HardcodedFilter`. */
+/** The interface `org.springframework.ldap.query.ConditionCriteria`. */
+class TypeConditionCriteria extends Interface {
+  TypeConditionCriteria() {
+    this.hasQualifiedName("org.springframework.ldap.query", "ConditionCriteria")
+  }
+}
+
+/** The interface `org.springframework.ldap.query.ContainerCriteria`. */
+class TypeContainerCriteria extends Interface {
+  TypeContainerCriteria() {
+    this.hasQualifiedName("org.springframework.ldap.query", "ContainerCriteria")
+  }
+}
+
+/** The class `org.springframework.ldap.filter.HardcodedFilter`. */
 class TypeHardcodedFilter extends Class {
   TypeHardcodedFilter() {
     this.hasQualifiedName("org.springframework.ldap.filter", "HardcodedFilter")
@@ -61,6 +80,18 @@ class TypeHardcodedFilter extends Class {
 /** The interface `org.springframework.ldap.filter.Filter`. */
 class TypeSpringLdapFilter extends Interface {
   TypeSpringLdapFilter() { this.hasQualifiedName("org.springframework.ldap.filter", "Filter") }
+}
+
+/** The class `org.springframework.ldap.support.LdapNameBuilder`. */
+class TypeLdapNameBuilder extends Class {
+  TypeLdapNameBuilder() {
+    this.hasQualifiedName("org.springframework.ldap.support", "LdapNameBuilder")
+  }
+}
+
+/** The class `org.springframework.ldap.support.LdapUtils`. */
+class TypeLdapUtils extends Class {
+  TypeLdapUtils() { this.hasQualifiedName("org.springframework.ldap.support", "LdapUtils") }
 }
 
 /** The interface `org.apache.directory.ldap.client.api.LdapConnection`. */
@@ -74,6 +105,13 @@ class TypeLdapConnection extends Interface {
 class TypeApacheSearchRequest extends Interface {
   TypeApacheSearchRequest() {
     this.hasQualifiedName("org.apache.directory.api.ldap.model.message", "SearchRequest")
+  }
+}
+
+/** The class `org.apache.directory.api.ldap.model.name.Dn`. */
+class TypeApacheDn extends Class {
+  TypeApacheDn() {
+    this.hasQualifiedName("org.apache.directory.api.ldap.model.name", "Dn")
   }
 }
 
@@ -110,11 +148,26 @@ class LdapInjectionFlowConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof LdapInjectionSanitizer }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    ldapNameStep(node1, node2) or
+    ldapNameAddAllStep(node1, node2) or
+    ldapNameGetCloneStep(node1, node2) or
     filterStep(node1, node2) or
+    filterToStringStep(node1, node2) or
     unboundIdSearchRequestStep(node1, node2) or
+    unboundIdSearchRequestDuplicateStep(node1, node2) or
+    unboundIdSearchRequestSetStep(node1, node2) or
     ldapQueryStep(node1, node2) or
+    ldapQueryBaseStep(node1, node2) or
+    ldapQueryBuilderStep(node1, node2) or
     hardcodedFilterStep(node1, node2) or
-    apacheSearchRequestStep(node1, node2)
+    springLdapFilterToStringStep(node1, node2) or
+    ldapNameBuilderStep(node1, node2) or
+    ldapNameBuilderBuildStep(node1, node2) or
+    ldapUtilsStep(node1, node2) or
+    apacheSearchRequestStep(node1, node2) or
+    apacheSearchRequestGetStep(node1, node2) or
+    apacheLdapDnStep(node1, node2) or
+    apacheLdapDnGetStep(node1, node2)
   }
 }
 
@@ -129,8 +182,8 @@ class LocalSource extends LdapInjectionSource {
 }
 
 /**
- * JNDI sink for LDAP injection vulnerabilities, i.e. 2nd argument to search method from
- * DirContext, InitialDirContext, LdapContext or InitialLdapContext.
+ * JNDI sink for LDAP injection vulnerabilities, i.e. 1st (DN) or 2nd (filter) argument to
+ * `search` method from `DirContext` or `LdapContext`.
  */
 class JndiLdapInjectionSink extends LdapInjectionSink {
   JndiLdapInjectionSink() {
@@ -143,14 +196,14 @@ class JndiLdapInjectionSink extends LdapInjectionSink {
         m.getDeclaringType().getAnAncestor() instanceof TypeLdapContext
       ) and
       m.hasName("search") and
-      index = 1
+      index in [0..1]
     )
   }
 }
 
 /**
  * UnboundID sink for LDAP injection vulnerabilities,
- * i.e. LDAPConnection.search or LDAPConnection.searchForEntry method.
+ * i.e. LDAPConnection.search, LDAPConnection.asyncSearch or LDAPConnection.searchForEntry method.
  */
 class UnboundIdLdapInjectionSink extends LdapInjectionSink {
   UnboundIdLdapInjectionSink() {
@@ -159,18 +212,11 @@ class UnboundIdLdapInjectionSink extends LdapInjectionSink {
       ma.getArgument(index) = this.getExpr() and
       m.getParameter(index) = param
     |
-      // LDAPConnection.search or LDAPConnection.searchForEntry method
+      // LDAPConnection.search, LDAPConnection.asyncSearch or LDAPConnection.searchForEntry method
       m.getDeclaringType() instanceof TypeLDAPConnection and
-      (m.hasName("search") or m.hasName("searchForEntry")) and
+      (m.hasName("search") or m.hasName("asyncSearch") or m.hasName("searchForEntry")) and
       // Parameter is not varargs
-      not isVarargs(m, index) and
-      (
-        // Parameter type is SearchRequest or ReadOnlySearchRequest
-        param.getType() instanceof TypeReadOnlySearchRequest or
-        param.getType() instanceof TypeUnboundIdSearchRequest or
-        // Or parameter index is 2, 3, 5, 6 or 7 (this is where filter parameter is)
-        index = any(int i | i = [2..3] or i = [5..7])
-      )
+      not isVarargs(m, index)
     )
   }
 }
@@ -197,11 +243,10 @@ class SpringLdapInjectionSink extends LdapInjectionSink {
         m.hasName("searchForObject")
       ) and
       (
-        // Parameter type is LdapQuery or Filter
-        paramType instanceof TypeLdapQuery or
-        paramType instanceof TypeSpringLdapFilter or
-        // Or parameter index is 1 (this is where filter parameter is)
-        index = 1
+        // Parameter index is 1 (DN or query) or 2 (filter) if method is not authenticate
+        (index in [0..1] and not m.hasName("authenticate")) or
+        // But it's not the last parameter in case of authenticate method (last param is password)
+        (index in [0..1] and index < m.getNumberOfParameters() - 1 and m.hasName("authenticate"))
       )
     )
   }
@@ -215,15 +260,9 @@ class ApacheLdapInjectionSink extends LdapInjectionSink {
       ma.getArgument(index) = this.getExpr() and
       m.getParameterType(index) = paramType
     |
-      // LdapConnection.search method
       m.getDeclaringType().getAnAncestor() instanceof TypeLdapConnection and
       m.hasName("search") and
-      (
-        // Parameter type is SearchRequest
-        paramType instanceof TypeApacheSearchRequest or
-        // Or parameter index is 1 (this is where filter parameter is)
-        index = 1
-      )
+      not isVarargs(m, index)
     )
   }
 }
@@ -262,8 +301,50 @@ class UnboundIdSanitizer extends LdapInjectionSanitizer {
 }
 
 /**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `LdapName`,
+ * i.e. `new LdapName(tainted)`.
+ */
+predicate ldapNameStep(ExprNode n1, ExprNode n2) {
+  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeLdapName |
+    n1.asExpr() = cc.getAnArgument() and
+    n2.asExpr() = cc
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `List<Rdn>` and `LdapName`,
+ * i.e. `new LdapName().addAll(tainted)`.
+ */
+predicate ldapNameAddAllStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getAnArgument() and
+    (n2.asExpr() = ma or n2.asExpr() = ma.getQualifier())
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeLdapName and
+    m.hasName("addAll")
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `LdapName` and `LdapName` or
+ * `String`, i.e. `taintedLdapName.clone()`, `taintedLdapName.getAll()`,
+ * `taintedLdapName.getRdns()` or `taintedLdapName.toString()`.
+ */
+predicate ldapNameGetCloneStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeLdapName and
+    (m.hasName("clone") or m.hasName("getAll") or m.hasName("getRdns") or m.hasName("toString"))
+  )
+}
+
+/**
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and UnboundID `Filter`,
- * i.e. `Filter.create(tainted)`.
+ * i.e. `Filter.create*(tainted)`.
  */
 predicate filterStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
@@ -272,14 +353,34 @@ predicate filterStep(ExprNode n1, ExprNode n2) {
     n2.asExpr() = ma and
     ma.getMethod() = m and
     m.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
-    m.hasName("create")
+    (
+      m.hasName("create") or
+      m.hasName("createANDFilter") or
+      m.hasName("createNOTFilter") or
+      m.hasName("createORFilter") or
+      m.hasName("simplifyFilter")
+    )
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between UnboundID `Filter` and `String`,
+ * i.e. `taintedFilter.toString()` or `taintedFilter.toString(buffer)`.
+ */
+predicate filterToStringStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    (n2.asExpr() = ma or n2.asExpr() = ma.getAnArgument())
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
+    (m.hasName("toString") or m.hasName("toNormalizedString"))
   )
 }
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and UnboundID
- * `SearchRequest`, i.e. `new SearchRequest([...], tainted, [...])`, where `tainted` is
- * parameter number 3, 4, 7, 8 or 9, but is not varargs.
+ * `SearchRequest`, i.e. `new SearchRequest(tainted)`.
  */
 predicate unboundIdSearchRequestStep(ExprNode n1, ExprNode n2) {
   exists(ConstructorCall cc, Constructor c, int index |
@@ -288,15 +389,43 @@ predicate unboundIdSearchRequestStep(ExprNode n1, ExprNode n2) {
     n1.asExpr() = cc.getArgument(index) and
     n2.asExpr() = cc and
     c = cc.getConstructor() and
-    // not c.getParameter(min(int i | i = index or i = c.getNumberOfParameters() - 1 | i)).isVarargs() and
-    not isVarargs(c, index) and
-    index = any(int i |i = [2..3] or i = [6..8])
+    not isVarargs(c, index)
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between UnboundID `SearchRequest`
+ * and UnboundID `SearchRequest`, i.e. `taintedSearchRequest.duplicate()`.
+ */
+predicate unboundIdSearchRequestDuplicateStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType().getAnAncestor() instanceof TypeReadOnlySearchRequest and
+    m.hasName("duplicate")
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between DN or filter and UnboundID
+ * `SearchRequest`, i.e. `searchRequest.setBaseDN(tainted)` or `searchRequest.setFilter(tainted)`.
+ */
+predicate unboundIdSearchRequestSetStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getAnArgument() and
+    n2.asExpr() = ma.getQualifier()
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeUnboundIdSearchRequest and
+    (m.hasName("setBaseDN") or m.hasName("setFilter"))
   )
 }
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and Spring `LdapQuery`,
- * i.e. `LdapQueryBuilder.query().filter(tainted)`.
+ * i.e. `LdapQueryBuilder.query().filter(tainted)` or `LdapQueryBuilder.query().base(tainted)`.
  */
 predicate ldapQueryStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m, int index |
@@ -305,8 +434,48 @@ predicate ldapQueryStep(ExprNode n1, ExprNode n2) {
     n2.asExpr() = ma and
     ma.getMethod() = m and
     m.getDeclaringType() instanceof TypeLdapQueryBuilder and
-    m.hasName("filter") and
+    (m.hasName("filter") or m.hasName("base")) and
     index = 0
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between Spring `LdapQueryBuilder` and
+ * `Name`, i.e. `taintedLdapQueryBuilder.base()`.
+ */
+predicate ldapQueryBaseStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeLdapQueryBuilder and
+    m.hasName("base") and
+    m.getNumberOfParameters() = 0
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between Spring `LdapQueryBuilder`,
+ * `ConditionCriteria` or `ContainerCriteria`, i.e. when the query is built, for example
+ * `query().base(tainted).where("objectclass").is("person")`.
+ */
+predicate ldapQueryBuilderStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
+  |
+    ma.getMethod() = m and
+    (
+      m.getDeclaringType() instanceof TypeLdapQueryBuilder or
+      m.getDeclaringType() instanceof TypeConditionCriteria or
+      m.getDeclaringType() instanceof TypeContainerCriteria
+    ) and
+    (
+      m.getReturnType() instanceof TypeLdapQueryBuilder or
+      m.getReturnType() instanceof TypeConditionCriteria or
+      m.getReturnType() instanceof TypeContainerCriteria
+    )
   )
 }
 
@@ -322,16 +491,114 @@ predicate hardcodedFilterStep(ExprNode n1, ExprNode n2) {
 }
 
 /**
+ * Holds if `n1` to `n2` is a dataflow step that converts between Spring `Filter` and
+ * `String`, i.e. `taintedFilter.toString()`, `taintedFilter.encode()` or
+ * `taintedFilter.encode(buffer)`.
+ */
+predicate springLdapFilterToStringStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    (n2.asExpr() = ma or n2.asExpr() = ma.getAnArgument())
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType().getAnAncestor() instanceof TypeSpringLdapFilter and
+    (m.hasName("encode") or m.hasName("toString"))
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and Spring
+ * `LdapNameBuilder`, i.e. `LdapNameBuilder.newInstance(tainted)` or
+ * `LdapNameBuilder.newInstance().add(tainted)`.
+ */
+predicate ldapNameBuilderStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getAnArgument() |
+    (n2.asExpr() = ma or n2.asExpr() = ma.getQualifier()) and
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeLdapNameBuilder and
+    (m.hasName("newInstance") or m.hasName("add")) and
+    m.getNumberOfParameters() = 1
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between tainted Spring `LdapNameBuilder`
+ * and `LdapName`, `LdapNameBuilder.build()`.
+ */
+predicate ldapNameBuilderBuildStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getQualifier() |
+    n2.asExpr() = ma and
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeLdapNameBuilder and
+    m.hasName("build")
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `LdapName` via
+ * Spring `LdapUtils.newLdapName`, i.e. `LdapUtils.newLdapName(tainted)`.
+ */
+predicate ldapUtilsStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getAnArgument() |
+    n2.asExpr() = ma and
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeLdapUtils and
+    m.hasName("newLdapName")
+  )
+}
+
+/**
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and Apache LDAP API
- * `SearchRequest`, i.e. `SearchRequest s = new SearchRequestImpl(); s.setFilter(tainted");`.
+ * `SearchRequest`, i.e. `searchRequest.setFilter(tainted)` or `searchRequest.setBase(tainted)`.
  */
 predicate apacheSearchRequestStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getAnArgument()
+    n1.asExpr() = ma.getAnArgument() and
+    n2.asExpr() = ma.getQualifier()
   |
-    n2.asExpr() = ma.getQualifier() and
     ma.getMethod() = m and
     m.getDeclaringType().getAnAncestor() instanceof TypeApacheSearchRequest and
-    m.hasName("setFilter")
+    (m.hasName("setFilter") or m.hasName("setBase"))
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between Apache LDAP API `SearchRequest`
+ * and filter or DN i.e. `tainterSearchRequest.getFilter()` or `taintedSearchRequest.getBase()`.
+ */
+predicate apacheSearchRequestGetStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType().getAnAncestor() instanceof TypeApacheSearchRequest and
+    (m.hasName("getFilter") or m.hasName("getBase"))
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and Apache LDAP API
+ * `Dn`, i.e. `new Dn(tainted)`.
+ */
+predicate apacheLdapDnStep(ExprNode n1, ExprNode n2) {
+  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeApacheDn |
+    n1.asExpr() = cc.getAnArgument() and
+    n2.asExpr() = cc
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between Apache LDAP API `Dn`
+ * and `String` i.e. `taintedDn.getName()`, `taintedDn.getNormName()` or `taintedDn.toString()`.
+ */
+predicate apacheLdapDnGetStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType().getAnAncestor() instanceof TypeApacheDn and
+    (m.hasName("getName") or m.hasName("getNormName") or m.hasName("toString"))
   )
 }
