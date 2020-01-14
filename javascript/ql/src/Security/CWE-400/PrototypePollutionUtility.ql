@@ -7,8 +7,8 @@
  * @precision high
  * @id js/prototype-pollution-utility
  * @tags security
- *       external/cwe/cwe-079
- *       external/cwe/cwe-116
+ *       external/cwe/cwe-400
+ *       external/cwe/cwe-471
  */
 
 import javascript
