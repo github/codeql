@@ -121,16 +121,9 @@ class AggregateES2015PromiseDefinition extends PromiseCreationCall {
 }
 
 /**
- * This module defines how data-flow propagates into and out a Promise.
+ * This module defines how exceptional data-flow propagates into and out a Promise.
  */
-private module PromiseFlow {
-  /**
-   * Gets the pseudo-field used to describe resolved values in a promise.
-   */
-  string resolveField() {
-    result = "$PromiseResolveField$"
-  }
-  
+private module ExceptionalPromiseFlow {
   /**
    * Gets the pseudo-field used to describe rejected values in a promise.
    */
@@ -141,7 +134,7 @@ private module PromiseFlow {
   /**
    * A flow step describing a promise definition.
    *
-   * The resolved/rejected value is written to a pseudo-field on the promise.
+   * The rejected value is written to a pseudo-field on the promise.
    */
   class PromiseDefitionStep extends DataFlow::AdditionalFlowStep {
     PromiseDefinition promise;
@@ -150,10 +143,6 @@ private module PromiseFlow {
     }
 
     override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = resolveField() and
-      pred = promise.getResolveParameter().getACall().getArgument(0) and
-      succ = this
-      or
       prop = rejectField() and
       (
         pred = promise.getRejectParameter().getACall().getArgument(0) or
@@ -164,25 +153,8 @@ private module PromiseFlow {
   }
   
   /**
-   * A flow step describing the a Promise.resolve (and similar) call.
-   */
-  class CreationStep extends DataFlow::AdditionalFlowStep {
-    PromiseCreationCall promise;
-    CreationStep() {
-      this = promise
-    }
-
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = resolveField() and
-      pred = promise.getValue() and
-      succ = this
-    }
-  }
-  
-  /**
-   * A load step loading the pseudo-field describing that the promise is either resolved or rejected.
-   * A resolved value is forwarding as the resulting value of the `await` expression,
-   * and a rejected value is thrown as a exception.
+   * A load step loading the pseudo-field describing that the promise is rejected.
+   * The rejected value is thrown as a exception.
    */
   class AwaitStep extends DataFlow::AdditionalFlowStep {
     DataFlow::Node operand;
@@ -193,10 +165,6 @@ private module PromiseFlow {
     }
 
     override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = resolveField() and
-      succ = this and
-      pred = operand.getALocalSource()
-      or
       prop = rejectField() and
       succ = await.getExceptionTarget() and
       pred = operand.getALocalSource()
@@ -212,10 +180,6 @@ private module PromiseFlow {
     }
 
     override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = resolveField() and
-      pred = getReceiver().getALocalSource() and
-      succ = getCallback(0).getParameter(0)
-      or
       prop = rejectField() and
       pred = getReceiver().getALocalSource() and
       succ = getCallback(1).getParameter(0)
@@ -229,10 +193,6 @@ private module PromiseFlow {
     }
     
     override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = resolveField() and
-      pred = getCallback([0..1]).getAReturn() and
-      succ = this
-      or
       prop = rejectField() and
       pred = getCallback([0..1]).getExceptionalReturn() and
       succ = this
@@ -253,12 +213,6 @@ private module PromiseFlow {
       succ = getCallback(0).getParameter(0)
     }
 
-    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = resolveField() and
-      pred = getReceiver().getALocalSource() and
-      succ = this
-    }
-
     override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
       pred = getCallback([0..1]).getExceptionalReturn() and
@@ -275,7 +229,7 @@ private module PromiseFlow {
     }
 
     override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      (prop = resolveField() or prop = rejectField()) and
+      prop = rejectField() and
       pred = getReceiver().getALocalSource() and
       succ = this
     }
@@ -292,16 +246,34 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   // from `x` to `Promise.resolve(x)`
   pred = succ.(PromiseCreationCall).getValue()
   or
-  exists(DataFlow::MethodCallNode thn, DataFlow::FunctionNode cb |
-    thn.getMethodName() = "then" and cb = thn.getCallback(0)
+  exists(DataFlow::MethodCallNode thn |
+    thn.getMethodName() = "then"
   |
     // from `p` to `x` in `p.then(x => ...)`
     pred = thn.getReceiver() and
-    succ = cb.getParameter(0)
+    succ = thn.getCallback(0).getParameter(0)
     or
     // from `v` to `p.then(x => return v)`
-    pred = cb.getAReturn() and
+    pred = thn.getCallback([0..1]).getAReturn() and
     succ = thn
+  )
+  or
+  // from `p` to `p.catch(..)`
+  exists(DataFlow::MethodCallNode catch | catch.getMethodName() = "catch" |
+    pred = catch.getReceiver() and
+    succ = catch
+  )
+  or
+  // from `p` to `p.finally(..)`
+  exists(DataFlow::MethodCallNode finally | finally.getMethodName() = "finally" |
+    pred = finally.getReceiver() and
+    succ = finally
+  )
+  or
+  // from `x` to `await x`
+  exists(AwaitExpr await |
+    pred.getEnclosingExpr() = await.getOperand() and
+    succ.getEnclosingExpr() = await
   )
 }
 
