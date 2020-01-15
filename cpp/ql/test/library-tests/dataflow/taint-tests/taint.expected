@@ -37,3 +37,5 @@
 | taint.cpp:350:7:350:7 | t | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:351:7:351:7 | a | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:352:7:352:7 | b | taint.cpp:330:6:330:11 | call to source |
+| taint.cpp:372:7:372:7 | a | taint.cpp:365:24:365:29 | source |
+| taint.cpp:391:7:391:7 | a | taint.cpp:385:27:385:32 | source |
