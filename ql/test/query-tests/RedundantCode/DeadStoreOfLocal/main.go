@@ -31,3 +31,7 @@ func test2(x int) (int, int) {
 	z := x % (1)
 	return z, y % 13
 }
+
+func test3() (x int, y int) {
+	return unknownFunction()
+}
