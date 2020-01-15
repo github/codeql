@@ -10,6 +10,8 @@ class Function = CSharp::Callable;
 
 class Location = CSharp::Location;
 
+class File = CSharp::File;
+
 class AST = CSharp::Element;
 
 class Type = CSharp::Type;

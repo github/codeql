@@ -13,6 +13,8 @@ class Function = Cpp::Function;
 
 class Location = Cpp::Location;
 
+class File = Cpp::File;
+
 class AST = Cpp::Locatable;
 
 class Type = Cpp::Type;

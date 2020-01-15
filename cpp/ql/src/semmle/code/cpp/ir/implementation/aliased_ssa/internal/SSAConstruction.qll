@@ -885,4 +885,13 @@ module SSASanity {
       message = "Operand has " + locationCount.toString() + " memory accesses in function '$@'."
     )
   }
+
+  query predicate missingVirtualVariableForMemoryLocation(
+    Alias::MemoryLocation location, string message, OldIR::IRFunction func, string funcText
+  ) {
+    not exists(location.getVirtualVariable()) and
+    func = location.getIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction()) and
+    message = "Memory location has no virtual variable in function '$@'."
+  }
 }

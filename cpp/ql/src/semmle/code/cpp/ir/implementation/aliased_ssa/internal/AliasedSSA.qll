@@ -41,8 +41,18 @@ private newtype TMemoryLocation =
     IntValue endBitOffset, boolean isMayAccess
   ) {
     (
-      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess) or
+      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
+      or
       hasOperandMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
+      or
+      exists(IRAutomaticVariable autoVar |
+        // Always create a memory location for the entire variable.
+        autoVar = var and
+        type = autoVar.getIRType() and
+        startBitOffset = 0 and
+        endBitOffset = type.getByteSize() * 8 and
+        isMayAccess = false
+      )
     ) and
     languageType = type.getCanonicalLanguageType()
   } or
@@ -77,6 +87,8 @@ abstract class MemoryLocation extends TMemoryLocation {
   abstract string getUniqueId();
 
   abstract IRFunction getIRFunction();
+
+  abstract Location getLocation();
 
   final IRType getIRType() { result = getType().getIRType() }
 
@@ -140,6 +152,8 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
   }
 
   final override IRFunction getIRFunction() { result = var.getEnclosingIRFunction() }
+
+  final override Location getLocation() { result = var.getLocation() }
 
   final IntValue getStartBitOffset() { result = startBitOffset }
 
@@ -208,6 +222,8 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
 
   final override IRFunction getIRFunction() { result = irFunc }
 
+  final override Location getLocation() { result = irFunc.getLocation() }
+
   final override string getUniqueId() { result = "{Unknown}" }
 
   final override predicate isMayAccess() { isMayAccess = true }
@@ -233,6 +249,8 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
 
   final override IRFunction getIRFunction() { result = irFunc }
 
+  final override Location getLocation() { result = irFunc.getLocation() }
+
   final override string getUniqueId() { result = "{AllNonLocal}" }
 
   final override predicate isMayAccess() { isMayAccess = true }
@@ -254,6 +272,8 @@ class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
   }
 
   final override IRFunction getIRFunction() { result = irFunc }
+
+  final override Location getLocation() { result = irFunc.getLocation() }
 
   final override string getUniqueId() { result = " " + toString() }
 
