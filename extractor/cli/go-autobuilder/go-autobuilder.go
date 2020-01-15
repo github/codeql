@@ -56,7 +56,14 @@ func fileExists(filename string) bool {
 func run(cmd *exec.Cmd) bool {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	err := cmd.Run()
+	in, _ := cmd.StdinPipe()
+	err := cmd.Start()
+	if err != nil {
+		log.Printf("Running %s failed, continuing anyway: %s\n", cmd.Path, err.Error())
+		return false
+	}
+	in.Close()
+	err = cmd.Wait()
 	if err != nil {
 		log.Printf("Running %s failed, continuing anyway: %s\n", cmd.Path, err.Error())
 		return false
