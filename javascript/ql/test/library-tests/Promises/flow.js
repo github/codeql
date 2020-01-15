@@ -51,4 +51,9 @@
 		return Promise.resolve(src);
 	}
 	createPromise(source).then(v => sink(v)); // NOT OK!
+	
+	var p8 = new Promise((resolve, reject) => reject(source));
+	var p9 = p8.then(() => {});
+	var p10 = p9.finally(() => {});
+	p10.catch((x) => sink(x)); // NOT OK!
 })();

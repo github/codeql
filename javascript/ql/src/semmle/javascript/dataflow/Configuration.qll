@@ -585,12 +585,9 @@ private predicate exploratoryFlowStep(
   basicStoreStep(pred, succ, _) or
   basicLoadStep(pred, succ, _) or
 
-  any(AdditionalFlowStep s).store(pred, succ, _) or
-  cfg.isAdditionalStoreStep(pred, succ, _) or
-  any(AdditionalFlowStep s).load(pred, succ, _) or
-  cfg.isAdditionalLoadStep(pred, succ, _) or
-  any(AdditionalFlowStep s).copyProperty(pred, succ, _) or
-  cfg.isAdditionalCopyPropertyStep(pred, succ, _) or
+  isAdditionalStoreStep(pred, succ, _, cfg) or
+  isAdditionalLoadStep(pred, succ, _, cfg) or
+  isAdditionalCopyPropertyStep(pred, succ, _ ,cfg) or
   // the following two disjuncts taken together over-approximate flow through
   // higher-order calls
   callback(pred, succ) or
@@ -752,10 +749,7 @@ private predicate storeStep(
   basicStoreStep(pred, succ, prop) and
   summary = PathSummary::level()
   or
-  any(AdditionalFlowStep s).store(pred, succ, prop) and
-  summary = PathSummary::level()
-  or
-  cfg.isAdditionalStoreStep(pred, succ, prop) and
+  isAdditionalStoreStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
   exists(Function f, DataFlow::Node mid |
@@ -766,11 +760,7 @@ private predicate storeStep(
       returnedPropWrite(f, _, prop, mid)
       or
       exists(DataFlow::SourceNode base | 
-        (
-          any(AdditionalFlowStep step).store(mid, _, prop)
-          or
-          cfg.isAdditionalStoreStep(mid, _, prop)
-        ) 
+        isAdditionalStoreStep(mid, _, prop, cfg)
         and
         base.flowsToExpr(f.getAReturnedExpr())
       )
@@ -793,9 +783,7 @@ private predicate parameterPropRead(
     (
       read = parm.(DataFlow::SourceNode).getAPropertyRead(prop)
       or
-      any(AdditionalFlowStep step).load(parm, read, prop)
-      or
-      cfg.isAdditionalLoadStep(parm, read, prop)
+      isAdditionalLoadStep(parm, read, prop, cfg)
     )
   )
 }
@@ -818,6 +806,30 @@ private predicate reachesReturn(
   )
 }
 
+private predicate isAdditionalLoadStep(DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg) { 
+  exists(DataFlow::Node obj | pred = obj.getALocalSource() or pred = obj | 
+    any(AdditionalFlowStep s).load(obj, succ, prop)
+    or
+    cfg.isAdditionalLoadStep(obj, succ, prop)
+  )
+}
+
+private predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg) { 
+  exists(DataFlow::Node obj | pred = obj.getALocalSource() or pred = obj | 
+    any(AdditionalFlowStep s).store(obj, succ, prop)
+    or
+    cfg.isAdditionalStoreStep(obj, succ, prop)
+  )
+}
+
+private predicate isAdditionalCopyPropertyStep(DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg) {
+  exists(DataFlow::Node obj | pred = obj.getALocalSource() or pred = obj | 
+    any(AdditionalFlowStep s).copyProperty(obj, succ, prop)
+    or
+    cfg.isAdditionalCopyPropertyStep(obj, succ, prop)
+  )
+}
+
 /**
  * Holds if property `prop` of `pred` may flow into `succ` along a path summarized by
  * `summary`.
@@ -829,10 +841,7 @@ private predicate loadStep(
   basicLoadStep(pred, succ, prop) and
   summary = PathSummary::level()
   or
-  any(AdditionalFlowStep s).load(pred, succ, prop) and
-  summary = PathSummary::level()
-  or
-  cfg.isAdditionalLoadStep(pred, succ, prop) and
+  isAdditionalLoadStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
   exists(Function f, DataFlow::Node read |
@@ -874,7 +883,7 @@ private predicate flowThroughProperty(
 ) {
   exists(string prop, DataFlow::Node storeBase, DataFlow::Node loadBase, PathSummary oldSummary, PathSummary newSummary |
     reachableFromStoreBase(prop, pred, storeBase, cfg, oldSummary) and
-    (storeBase = loadBase or existsCopyProperty(storeBase, loadBase, prop)) and
+    (storeBase = loadBase or existsCopyProperty(storeBase, loadBase, prop, cfg)) and
     loadStep(loadBase, succ, prop, cfg, newSummary) and
     summary = oldSummary.append(newSummary)
   )
@@ -886,11 +895,11 @@ private predicate flowThroughProperty(
  * The recursion of this predicate has been unfolded once compared to a naive implementation in order to avoid having no constraint on `prop`.
  * Therefore a caller of this predicate should also test whether the `toNode` and `fromNode` are equal.
  */
-private predicate existsCopyProperty(DataFlow::Node fromNode, DataFlow::Node toNode, string prop) {
-  exists(DataFlow::AdditionalFlowStep step, DataFlow::Node mid |
-    step.copyProperty(fromNode, mid, prop) and
+private predicate existsCopyProperty(DataFlow::Node fromNode, DataFlow::Node toNode, string prop, DataFlow::Configuration cfg) {
+  exists(DataFlow::Node mid |
+    isAdditionalCopyPropertyStep(fromNode, mid, prop, cfg) and
     (
-      existsCopyProperty(mid, toNode, prop)
+      existsCopyProperty(mid, toNode, prop, cfg)
       or
       mid = toNode
     )

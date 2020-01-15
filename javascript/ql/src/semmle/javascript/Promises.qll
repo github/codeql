@@ -167,7 +167,7 @@ private module ExceptionalPromiseFlow {
     override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
       succ = await.getExceptionTarget() and
-      pred = operand.getALocalSource()
+      pred = operand
     }
   }
 
@@ -181,14 +181,14 @@ private module ExceptionalPromiseFlow {
 
     override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
-      pred = getReceiver().getALocalSource() and
+      pred = getReceiver() and
       succ = getCallback(1).getParameter(0)
     }
     
     override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       not exists(this.getArgument(1)) and
       prop = rejectField() and
-      pred = getReceiver().getALocalSource() and
+      pred = getReceiver() and
       succ = this
     }
     
@@ -209,7 +209,7 @@ private module ExceptionalPromiseFlow {
 
     override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
-      pred = getReceiver().getALocalSource() and
+      pred = getReceiver() and
       succ = getCallback(0).getParameter(0)
     }
 
@@ -230,7 +230,7 @@ private module ExceptionalPromiseFlow {
 
     override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
-      pred = getReceiver().getALocalSource() and
+      pred = getReceiver() and
       succ = this
     }
   }
