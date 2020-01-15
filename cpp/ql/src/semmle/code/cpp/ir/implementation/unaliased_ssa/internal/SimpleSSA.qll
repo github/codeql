@@ -55,6 +55,10 @@ class MemoryLocation extends TMemoryLocation {
 
   final string toString() { result = var.toString() }
 
+  final Language::Location getLocation() { result = var.getLocation() }
+
+  final IRFunction getIRFunction() { result = var.getEnclosingIRFunction() }
+
   final IRVariable getIRVariable() { result = var }
 
   final VirtualVariable getVirtualVariable() { result = this }
