@@ -95,7 +95,7 @@ ql/src/go.dbscheme.stats: ql/src/go.dbscheme
 	odasa collectStats --dbscheme $^ --db build/stats-project/revision/working/db-go --outputFile $@
 
 test: all extractor build/testdb/check-upgrade-path
-	codeql test run ql/test --search-path . --additional-packs .
+	codeql test run ql/test --search-path . --additional-packs ql
 	cd extractor; go test -mod=vendor ./... | grep -vF "[no test files]"
 
 .PHONY: build/testdb/check-upgrade-path
