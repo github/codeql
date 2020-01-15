@@ -51,9 +51,12 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 }
 
 func trapFolder() (string, error) {
-	trapFolder := os.Getenv("TRAP_FOLDER")
+	trapFolder := os.Getenv("CODEQL_EXTRACTOR_GO_TRAP_DIR")
 	if trapFolder == "" {
-		return "", errors.New("environment variable TRAP_FOLDER not set")
+		trapFolder = os.Getenv("TRAP_FOLDER")
+	}
+	if trapFolder == "" {
+		return "", errors.New("environment variable CODEQL_EXTRACTOR_GO_TRAP_DIR not set")
 	}
 	err := os.MkdirAll(trapFolder, 0755)
 	if err != nil {
