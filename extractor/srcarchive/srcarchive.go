@@ -55,9 +55,12 @@ func Add(path string) error {
 }
 
 func srcArchive() (string, error) {
-	srcArchive := os.Getenv("SOURCE_ARCHIVE")
+	srcArchive := os.Getenv("CODEQL_EXTRACTOR_GO_SOURCE_ARCHIVE_DIR")
 	if srcArchive == "" {
-		return "", errors.New("environment variable SOURCE_ARCHIVE not set")
+		srcArchive = os.Getenv("SOURCE_ARCHIVE")
+	}
+	if srcArchive == "" {
+		return "", errors.New("environment variable CODEQL_EXTRACTOR_GO_SOURCE_ARCHIVE_DIR not set")
 	}
 	err := os.MkdirAll(srcArchive, 0755)
 	if err != nil {
