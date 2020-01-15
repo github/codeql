@@ -466,22 +466,22 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
   }
 
   /**
-   * Holds if the `pred` should be stored in the object `succ` under the property `prop`. 
+   * Holds if the `pred` should be stored in the object `succ` under the property `prop`.
    */
   cached
   predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 
   /**
-   * Holds if the property `prop` of the object `pred` should be loaded into `succ`. 
+   * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
    */
   cached
   predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 
   /**
-   * Holds if the property `prop` should be copied from the object `pred` to the object `succ`. 
+   * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
    */
   cached
-  predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() } 
+  predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 }
 
 /**
@@ -584,7 +584,7 @@ private predicate exploratoryFlowStep(
   basicFlowStep(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
   basicLoadStep(pred, succ, _) or
-  
+
   any(AdditionalFlowStep s).store(pred, succ, _) or
   cfg.isAdditionalStoreStep(pred, succ, _) or
   any(AdditionalFlowStep s).load(pred, succ, _) or
@@ -765,6 +765,16 @@ private predicate storeStep(
     (
       returnedPropWrite(f, _, prop, mid)
       or
+      exists(DataFlow::SourceNode base | 
+        (
+          any(AdditionalFlowStep step).store(mid, _, prop)
+          or
+          cfg.isAdditionalStoreStep(mid, _, prop)
+        ) 
+        and
+        base.flowsToExpr(f.getAReturnedExpr())
+      )
+      or
       succ instanceof DataFlow::NewNode and
       receiverPropWrite(f, prop, mid)
     )
@@ -775,12 +785,18 @@ private predicate storeStep(
  * Holds if `f` may `read` property `prop` of parameter `parm`.
  */
 private predicate parameterPropRead(
-  Function f, DataFlow::Node invk, DataFlow::Node arg, string prop, DataFlow::PropRead read,
+  Function f, DataFlow::Node invk, DataFlow::Node arg, string prop, DataFlow::Node read,
   DataFlow::Configuration cfg
 ) {
-  exists(DataFlow::SourceNode parm |
+  exists(DataFlow::Node parm |
     callInputStep(f, invk, arg, parm, cfg) and
-    read = parm.getAPropertyRead(prop)
+    (
+      read = parm.(DataFlow::SourceNode).getAPropertyRead(prop)
+      or
+      any(AdditionalFlowStep step).load(parm, read, prop)
+      or
+      cfg.isAdditionalLoadStep(parm, read, prop)
+    )
   )
 }
 
@@ -819,7 +835,7 @@ private predicate loadStep(
   cfg.isAdditionalLoadStep(pred, succ, prop) and
   summary = PathSummary::level()
   or
-  exists(Function f, DataFlow::PropRead read |
+  exists(Function f, DataFlow::Node read |
     parameterPropRead(f, succ, pred, prop, read, cfg) and
     reachesReturn(f, read, cfg, summary)
   )
@@ -866,17 +882,17 @@ private predicate flowThroughProperty(
 
 /**
  * Holds if the property `prop` is copied from `fromNode` to `toNode` using at least 1 step.
- * 
- * The recursion of this predicate has been unfolded once compared to a naive implementation in order to avoid having no constraint on `prop`. 
- * Therefore a caller of this predicate should also test whether the `toNode` and `fromNode` are equal. 
+ *
+ * The recursion of this predicate has been unfolded once compared to a naive implementation in order to avoid having no constraint on `prop`.
+ * Therefore a caller of this predicate should also test whether the `toNode` and `fromNode` are equal.
  */
 private predicate existsCopyProperty(DataFlow::Node fromNode, DataFlow::Node toNode, string prop) {
-  exists(DataFlow::AdditionalFlowStep step, DataFlow::Node mid | 
+  exists(DataFlow::AdditionalFlowStep step, DataFlow::Node mid |
     step.copyProperty(fromNode, mid, prop) and
     (
       existsCopyProperty(mid, toNode, prop)
       or
-      mid = toNode  
+      mid = toNode
     )
   )
 }

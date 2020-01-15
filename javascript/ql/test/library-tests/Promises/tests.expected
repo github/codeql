@@ -8,14 +8,15 @@ test_ResolvedPromiseDefinition
 | flow.js:36:11:36:33 | Promise ... source) | flow.js:36:27:36:32 | source |
 | flow.js:44:2:44:24 | Promise ... source) | flow.js:44:18:44:23 | source |
 | flow.js:46:2:46:24 | Promise ... source) | flow.js:46:18:46:23 | source |
+| flow.js:51:10:51:29 | Promise.resolve(src) | flow.js:51:26:51:28 | src |
 | promises.js:53:19:53:41 | Promise ... source) | promises.js:53:35:53:40 | source |
 | promises.js:62:19:62:41 | Promise ... source) | promises.js:62:35:62:40 | source |
 | promises.js:71:5:71:27 | Promise ... source) | promises.js:71:21:71:26 | source |
 test_PromiseDefinition_getARejectHandler
 | flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:69:26:80 | y => sink(y) |
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
-| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:66:42:73 | () => {} |
-| flow.js:48:2:48:34 | new Pro ... ource}) | flow.js:48:42:48:53 | x => sink(x) |
+| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:67:42:75 | () => { } |
+| flow.js:48:2:48:36 | new Pro ... urce }) | flow.js:48:44:48:55 | x => sink(x) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:20:6:22:3 | (v) =>  ...  v;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:23:18:25:3 | (v) =>  ...  v;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
@@ -28,7 +29,8 @@ test_PromiseDefinition_getExecutor
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:14:32:48 | (resolv ... source) |
 | flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:14:40:48 | (resolv ... source) |
 | flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:14:42:48 | (resolv ... source) |
-| flow.js:48:2:48:34 | new Pro ... ource}) | flow.js:48:14:48:33 | () => {throw source} |
+| flow.js:48:2:48:36 | new Pro ... urce }) | flow.js:48:14:48:35 | () => { ... ource } |
+| interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:24:15:5 | functio ... ;\\n    } |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:29:5:3 | functio ... e);\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:30:17:3 | (res, r ... e);\\n  } |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:31:35:5 | functio ... ;\\n    } |
@@ -44,7 +46,8 @@ test_PromiseDefinition
 | flow.js:32:2:32:49 | new Pro ... ource)) |
 | flow.js:40:2:40:49 | new Pro ... ource)) |
 | flow.js:42:2:42:49 | new Pro ... ource)) |
-| flow.js:48:2:48:34 | new Pro ... ource}) |
+| flow.js:48:2:48:36 | new Pro ... urce }) |
+| interflow.js:11:12:15:6 | new Pro ... \\n    }) |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) |
@@ -52,8 +55,8 @@ test_PromiseDefinition
 test_PromiseDefinition_getAResolveHandler
 | flow.js:24:2:24:49 | new Pro ... ource)) | flow.js:24:56:24:67 | x => sink(x) |
 | flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:56:26:66 | x => foo(x) |
-| flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:56:40:63 | () => {} |
-| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:56:42:63 | () => {} |
+| flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:56:40:64 | () => { } |
+| flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:56:42:64 | () => { } |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:6:16:8:3 | functio ... al;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:18:17:20:3 | (v) =>  ...  v;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
@@ -68,6 +71,7 @@ test_PromiseDefinition_getRejectParameter
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:24:32:29 | reject |
 | flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:24:40:29 | reject |
 | flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:24:42:29 | reject |
+| interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:43:11:48 | reject |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:48:3:53 | reject |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:36:10:38 | rej |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:50:33:55 | reject |
@@ -81,13 +85,14 @@ test_PromiseDefinition_getResolveParameter
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:15:32:21 | resolve |
 | flow.js:40:2:40:49 | new Pro ... ource)) | flow.js:40:15:40:21 | resolve |
 | flow.js:42:2:42:49 | new Pro ... ource)) | flow.js:42:15:42:21 | resolve |
+| interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:34:11:40 | resolve |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:39:3:45 | resolve |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:31:10:33 | res |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:41:33:47 | resolve |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:39:43:45 | resolve |
 test_PromiseDefinition_getACatchHandler
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
-| flow.js:48:2:48:34 | new Pro ... ource}) | flow.js:48:42:48:53 | x => sink(x) |
+| flow.js:48:2:48:36 | new Pro ... urce }) | flow.js:48:44:48:55 | x => sink(x) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:23:18:25:3 | (v) =>  ...  v;\\n  } |
 flow
 | flow.js:2:15:2:22 | "source" | flow.js:5:7:5:14 | await p1 |
@@ -97,9 +102,11 @@ flow
 | flow.js:2:15:2:22 | "source" | flow.js:26:79:26:79 | y |
 | flow.js:2:15:2:22 | "source" | flow.js:28:58:28:58 | z |
 | flow.js:2:15:2:22 | "source" | flow.js:32:67:32:67 | x |
-| flow.js:2:15:2:22 | "source" | flow.js:34:57:34:57 | a |
+| flow.js:2:15:2:22 | "source" | flow.js:34:58:34:58 | a |
 | flow.js:2:15:2:22 | "source" | flow.js:38:29:38:29 | a |
-| flow.js:2:15:2:22 | "source" | flow.js:40:82:40:82 | x |
-| flow.js:2:15:2:22 | "source" | flow.js:44:89:44:89 | a |
-| flow.js:2:15:2:22 | "source" | flow.js:46:59:46:59 | a |
-| flow.js:2:15:2:22 | "source" | flow.js:48:52:48:52 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:40:83:40:83 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:44:92:44:92 | a |
+| flow.js:2:15:2:22 | "source" | flow.js:46:60:46:60 | a |
+| flow.js:2:15:2:22 | "source" | flow.js:48:54:48:54 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:53:39:53:39 | v |
+| interflow.js:3:18:3:25 | "source" | interflow.js:18:10:18:14 | error |

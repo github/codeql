@@ -13,7 +13,7 @@
 	var p4 = new Promise((resolve, reject) => reject(source));
 	try {
 		var foo = await p4;
-	} catch(e) {
+	} catch (e) {
 		sink(e); // NOT OK!
 	}
 
@@ -31,19 +31,24 @@
 
 	new Promise((resolve, reject) => reject(source)).catch(x => sink(x)); // NOT OK!
 
-	Promise.resolve(source).catch(() => {}).then(a => sink(a)); // NOT OK!
+	Promise.resolve(source).catch(() => { }).then(a => sink(a)); // NOT OK!
 
 	var p5 = Promise.resolve(source);
-	var p6 = p5.catch(() => {});
+	var p6 = p5.catch(() => { });
 	var p7 = p6.then(a => sink(a)); // NOT OK!
 
-	new Promise((resolve, reject) => reject(source)).then(() => {}).catch(x => sink(x)); // NOT OK!
+	new Promise((resolve, reject) => reject(source)).then(() => { }).catch(x => sink(x)); // NOT OK!
 
-	new Promise((resolve, reject) => reject(source)).then(() => {}, () => {}).catch(x => sink(x)); // OK!
+	new Promise((resolve, reject) => reject(source)).then(() => { }, () => { }).catch(x => sink(x)); // OK!
 
-	Promise.resolve(source).catch(() => {}).catch(() => {}).catch(() => {}).then(a => sink(a)); // NOT OK!
+	Promise.resolve(source).catch(() => { }).catch(() => { }).catch(() => { }).then(a => sink(a)); // NOT OK!
 
-	Promise.resolve(source).finally(() => {}).then(a => sink(a)); // NOT OK!
+	Promise.resolve(source).finally(() => { }).then(a => sink(a)); // NOT OK!
 
-	new Promise(() => {throw source}).catch(x => sink(x)); // NOT OK!
+	new Promise(() => { throw source }).catch(x => sink(x)); // NOT OK!
+
+	function createPromise(src) {
+		return Promise.resolve(src);
+	}
+	createPromise(source).then(v => sink(v)); // NOT OK!
 })();
