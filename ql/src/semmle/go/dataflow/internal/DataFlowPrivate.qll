@@ -103,10 +103,10 @@ class Content extends TContent {
   }
 
   /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
+  abstract DataFlowType getContainerType();
 
   /** Gets the type of this content. */
-  abstract Type getType();
+  abstract DataFlowType getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -120,33 +120,33 @@ private class FieldContent extends Content, TFieldContent {
     f.getDeclaration().hasLocationInfo(path, sl, sc, el, ec)
   }
 
-  override Type getContainerType() { result = f.getDeclaringType() }
+  override DataFlowType getContainerType() { result = f.getDeclaringType() }
 
-  override Type getType() { result = f.getType() }
+  override DataFlowType getType() { result = f.getType() }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
 
-  override Type getContainerType() { none() }
+  override DataFlowType getContainerType() { none() }
 
-  override Type getType() { none() }
+  override DataFlowType getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
 
-  override Type getContainerType() { none() }
+  override DataFlowType getContainerType() { none() }
 
-  override Type getType() { none() }
+  override DataFlowType getType() { none() }
 }
 
 private class PointerContent extends Content, TPointerContent {
   override string toString() { result = "pointer" }
 
-  override Type getContainerType() { this = TPointerContent(result) }
+  override DataFlowType getContainerType() { this = TPointerContent(result) }
 
-  override Type getType() { result = getContainerType().(PointerType).getBaseType() }
+  override DataFlowType getType() { result = getContainerType().(PointerType).getBaseType() }
 }
 
 /**
@@ -185,7 +185,7 @@ predicate readStep(Node node1, Content f, Node node2) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-Type getErasedRepr(Type t) {
+DataFlowType getErasedRepr(Type t) {
   result = t // stub implementation
 }
 
