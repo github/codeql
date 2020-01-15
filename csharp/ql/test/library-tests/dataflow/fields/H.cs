@@ -22,7 +22,7 @@ public class H
         var a = new A();
         a.FieldA = new object();
         var clone = Clone(a);
-        Sink(clone.FieldA); // flow [MISSING]
+        Sink(clone.FieldA); // flow
         
         a = new A();
         a.FieldA = o;
@@ -42,7 +42,7 @@ public class H
         var a = new A();
         a.FieldA = new object();
         var b = Transform(a);
-        Sink(b.FieldB); // flow [MISSING]
+        Sink(b.FieldB); // flow
 
         a = new A();
         a.FieldA = o;
@@ -62,7 +62,7 @@ public class H
         var b2 = new B();
         a.FieldA = new object();
         TransformArg(a, b1, b2);
-        Sink(b1.FieldB); // flow [MISSING]
+        Sink(b1.FieldB); // flow
         Sink(b2.FieldB); // no flow
 
         a = new A();
@@ -87,7 +87,7 @@ public class H
         var b2 = new B();
         SetArgs(a, new object(), b1, b2);
         Sink(a.FieldA); // flow
-        Sink(b1.FieldB); // flow [MISSING]
+        Sink(b1.FieldB); // flow
         Sink(b2.FieldB); // no flow
 
         a = new A();
@@ -111,7 +111,7 @@ public class H
         var a = new A();
         a.FieldA = new object();
         var b = TransformWrap(a);
-        Sink(b.FieldB); // flow [MISSING]
+        Sink(b.FieldB); // flow
 
         a = new A();
         a.FieldA = o;
@@ -128,7 +128,7 @@ public class H
     {
         var a = new A();
         a.FieldA = new object();
-        Sink(Get(a)); // flow [MISSING]
+        Sink(Get(a)); // flow
 
         a = new A();
         a.FieldA = o;
@@ -145,7 +145,7 @@ public class H
     void M7()
     {
         var o = Through(new object());
-        Sink(o); // flow [MISSING]
+        Sink(o); // flow
     }
 
     public static void Sink(object o) { }

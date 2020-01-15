@@ -380,7 +380,9 @@ private module Cached {
         a = cfn.getElement() and
         t = a.stripCasts().getType()
       |
-        t instanceof RefType or
+        t instanceof RefType and
+        not t instanceof NullType
+        or
         t = any(TypeParameter tp | not tp.isValueType())
       )
       or
@@ -1501,3 +1503,5 @@ private predicate viableConstantBooleanParamArg(
     b = arg.getBooleanValue()
   )
 }
+
+int flowThroughAccessPathLimit() { result = 3 }
