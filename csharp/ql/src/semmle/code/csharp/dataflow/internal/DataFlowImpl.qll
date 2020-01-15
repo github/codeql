@@ -7,7 +7,7 @@
  * on each other without introducing mutual recursion among those configurations.
  */
 
-private import DataFlowImplCommon::Public
+private import DataFlowImplCommon
 private import DataFlowImplSpecific::Private
 import DataFlowImplSpecific::Public
 

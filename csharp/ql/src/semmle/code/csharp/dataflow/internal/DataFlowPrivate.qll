@@ -3,7 +3,7 @@ private import cil
 private import dotnet
 private import DataFlowPublic
 private import DataFlowDispatch
-private import DataFlowImplCommon::Public
+private import DataFlowImplCommon
 private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
