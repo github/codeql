@@ -13,16 +13,16 @@
  */
 
 import semmle.code.csharp.serialization.Serialization
+import semmle.code.csharp.controlflow.Guards
 
 /**
  * The result is a write to the field `f`, assigning it the value
  * of variable `v` which was checked by the condition `check`.
  */
-Expr checkedWrite(Field f, Variable v, IfStmt check) {
+GuardedExpr checkedWrite(Field f, Variable v, IfStmt check) {
   result = v.getAnAccess() and
   result = f.getAnAssignedValue() and
-  check.getCondition() = v.getAnAccess().getParent*() and
-  result.getAControlFlowNode() = check.getAControlFlowNode().getASuccessor*()
+  check.getCondition().getAChildExpr*() = result.getAGuard(_, _)
 }
 
 /**
