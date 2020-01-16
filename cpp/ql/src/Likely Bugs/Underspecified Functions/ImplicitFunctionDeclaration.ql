@@ -17,10 +17,17 @@ import TooFewArguments
 import TooManyArguments
 import semmle.code.cpp.commons.Exclusions
 
-predicate sameLocation(Location loc1, Location loc2) {
-  loc1.getFile() = loc2.getFile() and
-  loc1.getStartLine() = loc2.getStartLine() and
-  loc1.getStartColumn() = loc2.getStartColumn()
+predicate locInfo(Locatable e, File file, int line, int col) {
+  e.getFile() = file and
+  e.getLocation().getStartLine() = line and
+  e.getLocation().getStartColumn() = col
+}
+
+predicate sameLocation(FunctionDeclarationEntry fde, FunctionCall fc) {
+  exists(File file, int line, int col |
+    locInfo(fde, file, line, col) and
+    locInfo(fc, file, line, col)
+  )
 }
 
 predicate isCompiledAsC(File f) {
@@ -34,7 +41,7 @@ where
   isCompiledAsC(fdeIm.getFile()) and
   not isFromMacroDefinition(fc) and
   fdeIm.isImplicit() and
-  sameLocation(fdeIm.getLocation(), fc.getLocation()) and
+  sameLocation(fdeIm, fc) and
   not mistypedFunctionArguments(fc, _, _) and
   not tooFewArguments(fc, _) and
   not tooManyArguments(fc, _)
