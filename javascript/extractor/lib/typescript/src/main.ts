@@ -47,6 +47,7 @@ interface ParseCommand {
 interface OpenProjectCommand {
     command: "open-project";
     tsConfig: string;
+    packageLocations: [string, string][];
 }
 interface CloseProjectCommand {
     command: "close-project";
@@ -255,7 +256,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         readFile: ts.sys.readFile,
     };
     let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
-    let project = new Project(tsConfigFilename, config, state.typeTable);
+    let project = new Project(tsConfigFilename, config, state.typeTable, new Map(command.packageLocations));
     project.load();
 
     state.project = project;
@@ -529,6 +530,7 @@ if (process.argv.length > 2) {
         handleOpenProjectCommand({
             command: "open-project",
             tsConfig: argument,
+            packageLocations: [],
         });
         for (let sf of state.project.program.getSourceFiles()) {
             if (pathlib.basename(sf.fileName) === "lib.d.ts") continue;

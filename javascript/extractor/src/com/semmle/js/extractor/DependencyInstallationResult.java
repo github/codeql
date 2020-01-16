@@ -4,23 +4,22 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * Contains the results of installing dependencies.
- */
+/** Contains the results of installing dependencies. */
 public class DependencyInstallationResult {
-  private Map<Path, Path> originalFiles;
-  
-  public static final DependencyInstallationResult empty = new DependencyInstallationResult(Collections.emptyMap());
+  private Map<String, Path> packageLocations;
 
-  public DependencyInstallationResult(Map<Path, Path> originalFiles) {
-    this.originalFiles = originalFiles;
+  public static final DependencyInstallationResult empty =
+      new DependencyInstallationResult(Collections.emptyMap());
+
+  public DependencyInstallationResult(Map<String, Path> localPackages) {
+    this.packageLocations = localPackages;
   }
 
   /**
-   * Returns the mapping from files left behind by dependency installation to
-   * the backups of those files, to be restored after extraction.
+   * Returns the mapping from package names to the TypeScript file that should
+   * act as its main entry point.
    */
-  public Map<Path, Path> getOriginalFiles() {
-    return originalFiles;
+  public Map<String, Path> getPackageLocations() {
+    return packageLocations;
   }
 }

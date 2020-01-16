@@ -7,6 +7,9 @@ import com.semmle.util.process.Env.Var;
 public class EnvironmentVariables {
   public static final String CODEQL_EXTRACTOR_JAVASCRIPT_ROOT_ENV_VAR =
       "CODEQL_EXTRACTOR_JAVASCRIPT_ROOT";
+ 
+  public static final String CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR_ENV_VAR =
+      "CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR";
 
   /**
    * Gets the extractor root based on the <code>CODEQL_EXTRACTOR_JAVASCRIPT_ROOT</code> or <code>
@@ -28,6 +31,14 @@ public class EnvironmentVariables {
     String env = tryGetExtractorRoot();
     if (env == null) {
       throw new UserError("SEMMLE_DIST or CODEQL_EXTRACTOR_JAVASCRIPT_ROOT must be set");
+    }
+    return env;
+  }
+
+  public static String getScratchDir() {
+    String env = Env.systemEnv().get(CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR_ENV_VAR);
+    if (env == null) {
+      throw new UserError(CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR_ENV_VAR + " must be set");
     }
     return env;
   }

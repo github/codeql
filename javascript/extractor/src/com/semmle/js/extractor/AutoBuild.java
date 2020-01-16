@@ -17,7 +17,6 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +28,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import com.google.gson.Gson;
@@ -204,6 +202,7 @@ public class AutoBuild {
   private final Set<String> xmlExtensions = new LinkedHashSet<>();
   private ProjectLayout filters;
   private final Path LGTM_SRC, SEMMLE_DIST;
+  private final Path scratchDir;
   private final TypeScriptMode typeScriptMode;
   private final String defaultEncoding;
   private ExecutorService threadPool;
@@ -217,6 +216,7 @@ public class AutoBuild {
   public AutoBuild() {
     this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
     this.SEMMLE_DIST = Paths.get(EnvironmentVariables.getExtractorRoot());
+    this.scratchDir = Paths.get(EnvironmentVariables.getScratchDir());
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
     this.trapCache = mkTrapCache();
     this.typeScriptMode =
@@ -563,12 +563,9 @@ public class AutoBuild {
     }
 
     // extract TypeScript projects and files
-    Set<Path> extractedFiles;
-    try {
-      extractedFiles = extractTypeScript(defaultExtractor, filesToExtract, tsconfigFiles);
-    } finally {
-      restoreOriginalFiles(dependencyInstallationResult.getOriginalFiles());
-    }
+    Set<Path> extractedFiles =
+          extractTypeScript(
+              defaultExtractor, filesToExtract, tsconfigFiles, dependencyInstallationResult);
 
     // extract remaining files
     for (Path f : filesToExtract) {
@@ -605,19 +602,6 @@ public class AutoBuild {
     }
   }
 
-  protected void restoreOriginalFiles(Map<Path, Path> originalFiles) {
-    originalFiles.forEach(
-        (file, original) -> {
-          try {
-            Files.move(original, file, StandardCopyOption.REPLACE_EXISTING);
-          } catch (IOException e) {
-            throw new ResourceError("Could not restore original file: " + file, e);
-          }
-        });
-  }
-
-  private static final Pattern validPackageName = Pattern.compile("(@[\\w.-]+/)?\\w[\\w.-]*");
-  
   private static Path tryResolveWithExtensions(Path dir, String stem, Iterable<String> extensions) {
     for (String ext : extensions) {
       Path path = dir.resolve(stem + ext);
@@ -633,18 +617,27 @@ public class AutoBuild {
     if (resolved != null) return resolved;
     return tryResolveWithExtensions(dir, stem, FileType.JS.getExtensions());
   }
-
+  
+  private String getChildAsString(JsonObject obj, String name) {
+     JsonElement child = obj.get(name);
+     if (child instanceof JsonPrimitive && ((JsonPrimitive)child).isString()) {
+       return child.getAsString();
+     }
+     return null;
+  }
 
   protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
     if (!verifyYarnInstallation()) {
       return DependencyInstallationResult.empty;
     }
+    
+    final Path sourceRoot = Paths.get(".").toAbsolutePath();
+    final Path virtualSourceRoot = this.scratchDir.toAbsolutePath(); 
 
-    Path rootNodeModules = Paths.get("node_modules");
-
-    // Read all package.json files, and install symlinks to them.
+    // Read all package.json files and index them by name.
     Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
-    Set<String> packagesInRepo = new LinkedHashSet<>();
+    Map<String, Path> packagesInRepo = new LinkedHashMap<>();
+    Map<String, Path> packageMainFile = new LinkedHashMap<>();
     for (Path file : filesToExtract) {
       if (file.getFileName().toString().equals("package.json")) {
         try {
@@ -655,26 +648,9 @@ public class AutoBuild {
           file = file.toAbsolutePath();
           packageJsonFiles.put(file, jsonObject);
 
-          JsonElement nameElm = jsonObject.get("name");
-          if (nameElm instanceof JsonPrimitive && ((JsonPrimitive) nameElm).isString()) {
-            String name = nameElm.getAsString();
-            packagesInRepo.add(name);
-
-            if (validPackageName.matcher(name).matches()) {
-              // Create a symlink to the package: <checkout>/node_modules/foo -> /path/to/foo
-              try {
-                Path symlinkPath = rootNodeModules.resolve(name);
-                if (!Files.exists(symlinkPath)) {
-                  Files.createDirectories(symlinkPath.getParent());
-                  Files.createSymbolicLink(symlinkPath, file.getParent());
-                } else {
-                  // If node_modules/foo already exists, presumably it contains the right thing,
-                  // so just continue extraction with that in place.
-                }
-              } catch (IOException e) {
-                throw new ResourceError("Could not install symlink to package " + file, e);
-              }
-            }
+          String name = getChildAsString(jsonObject, "name");
+          if (name != null) {
+            packagesInRepo.put(name, file);
           }
         } catch (JsonParseException e) {
           System.err.println("Could not parse JSON file: " + file);
@@ -684,59 +660,75 @@ public class AutoBuild {
       }
     }
 
-    // Remove all dependencies on local packages from package.json files so yarn doesn't
-    // try to download them. Yarn would fail otherwise if these packages were never published.
-    // These packages will instead be found through the symlink we installed in node_modules above.
+    // Process all package.json files now that we know the names of all local packages.
+    // - remove dependencies on local packages
+    // - guess the main file for each package
     // Note that we ignore optional dependencies during installation, so "optionalDependencies"
     // is ignored here as well.
     final List<String> dependencyFields =
         Arrays.asList("dependencies", "devDependencies", "peerDependencies");
-    final Set<Path> filesToChange = new LinkedHashSet<>();
     packageJsonFiles.forEach(
         (path, packageJson) -> {
+          Path relativePath = sourceRoot.relativize(path);
           for (String dependencyField : dependencyFields) {
             JsonElement dependencyElm = packageJson.get(dependencyField);
             if (!(dependencyElm instanceof JsonObject)) continue;
             JsonObject dependencyObj = (JsonObject) dependencyElm;
-            for (String packageName : packagesInRepo) {
-              if (!dependencyObj.has(packageName)) continue;
-              dependencyObj.remove(packageName);
-              filesToChange.add(path);
+            List<String> propsToRemove = new ArrayList<>();
+            for (String packageName : dependencyObj.keySet()) {
+              if (packagesInRepo.containsKey(packageName)) {
+                // Remove dependency on local package
+                propsToRemove.add(packageName);
+              } else {
+                // Remove file dependency on a package that don't exist in the checkout.
+                String dependecy = getChildAsString(dependencyObj, packageName);
+                if (dependecy != null && (dependecy.startsWith("file:") || dependecy.startsWith("./") || dependecy.startsWith("../"))) {
+                    if (dependecy.startsWith("file:")) {
+                      dependecy = dependecy.substring("file:".length());
+                    }
+                    Path resolvedPackage = path.getParent().resolve(dependecy + "/package.json");
+                    if (!Files.exists(resolvedPackage)) {
+                      propsToRemove.add(packageName);
+                    }
+                }
+              }
+            }
+            for (String prop : propsToRemove) {
+              dependencyObj.remove(prop);
             }
           }
-          // Override "main" to point at the source folder instead of the output directory.
-          Path entryPoint = guessPackageMainFile(path, packageJson);
-          if (entryPoint != null) {
-            System.out.println("Main file for " + path + " set to " + entryPoint);
-            packageJson.addProperty("main", entryPoint.toString());
-            packageJson.remove("typings");
-            filesToChange.add(path);
-          } else {
-            System.out.println("No main file found for " + path);
+          // For named packages, find the main file.
+          String name = getChildAsString(packageJson, "name");
+          if (name != null) {
+            Path entryPoint = guessPackageMainFile(path, packageJson);
+            if (entryPoint != null) {
+              System.out.println(relativePath + ": Main file set to " + sourceRoot.relativize(entryPoint));
+              packageMainFile.put(name, entryPoint);
+            } else {
+              System.out.println(relativePath + ": Main file not found");
+            }
           }
         });
 
     // Write the new package.json files to disk
-    Map<Path, Path> originalFiles = new LinkedHashMap<>();
-    final String backupFilename = "package.json.lgtm.backup";
-    for (Path file : filesToChange) {
-      Path backup = file.resolveSibling(backupFilename);
+    for (Path file : packageJsonFiles.keySet()) {
+      Path relativePath = sourceRoot.relativize(file);
+      Path virtualFile = virtualSourceRoot.resolve(relativePath);
+      
       try {
-        originalFiles.put(file, backup);
-        Files.move(file, backup, StandardCopyOption.REPLACE_EXISTING);
+        Files.createDirectories(virtualFile.getParent());
+        try (Writer writer = Files.newBufferedWriter(virtualFile)) {
+          new Gson().toJson(packageJsonFiles.get(file), writer);
+        }
       } catch (IOException e) {
-        throw new ResourceError("Could not backup package.json file: " + file, e);
-      }
-      try (Writer writer = Files.newBufferedWriter(file)) {
-        new Gson().toJson(packageJsonFiles.get(file), writer);
-      } catch (IOException e) {
-        throw new ResourceError("Could not rewrite package.json file: " + file, e);
+        throw new ResourceError("Could not rewrite package.json file: " + virtualFile, e);
       }
     }
 
     // Install dependencies
     for (Path file : packageJsonFiles.keySet()) {
-      System.out.println("Installing dependencies from " + file);
+      Path virtualFile = virtualSourceRoot.resolve(sourceRoot.relativize(file));
+      System.out.println("Installing dependencies from " + virtualFile);
       ProcessBuilder pb =
           new ProcessBuilder(
               Arrays.asList(
@@ -750,18 +742,17 @@ public class AutoBuild {
                   "--no-default-rc",
                   "--no-bin-links",
                   "--pure-lockfile"));
-      pb.directory(file.getParent().toFile());
+      pb.directory(virtualFile.getParent().toFile());
       pb.redirectOutput(Redirect.INHERIT);
       pb.redirectError(Redirect.INHERIT);
       try {
         pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
       } catch (IOException | InterruptedException ex) {
-        restoreOriginalFiles(originalFiles); // Try to clean up before giving up.
         throw new ResourceError("Could not install dependencies from " + file, ex);
       }
     }
 
-    return new DependencyInstallationResult(originalFiles);
+    return new DependencyInstallationResult(packageMainFile);
   }
 
   /**
@@ -838,7 +829,10 @@ public class AutoBuild {
   }
 
   private Set<Path> extractTypeScript(
-      FileExtractor extractor, Set<Path> files, List<Path> tsconfig) {
+      FileExtractor extractor,
+      Set<Path> files,
+      List<Path> tsconfig,
+      DependencyInstallationResult deps) {
     Set<Path> extractedFiles = new LinkedHashSet<>();
 
     if (hasTypeScriptFiles(files) || !tsconfig.isEmpty()) {
@@ -850,7 +844,7 @@ public class AutoBuild {
       for (Path projectPath : tsconfig) {
         File projectFile = projectPath.toFile();
         long start = logBeginProcess("Opening project " + projectFile);
-        ParsedProject project = tsParser.openProject(projectFile);
+        ParsedProject project = tsParser.openProject(projectFile, deps);
         logEndProcess(start, "Done opening project " + projectFile);
         // Extract all files belonging to this project which are also matched
         // by our include/exclude filters.

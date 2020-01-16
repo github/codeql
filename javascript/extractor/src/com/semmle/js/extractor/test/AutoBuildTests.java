@@ -132,11 +132,6 @@ public class AutoBuildTests {
         }
 
         @Override
-        protected void restoreOriginalFiles(java.util.Map<Path, Path> originalFiles) {
-          // Do nothing
-        }
-
-        @Override
         protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
           // never install dependencies during testing
           return DependencyInstallationResult.empty;
