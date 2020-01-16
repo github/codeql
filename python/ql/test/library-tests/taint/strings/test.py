@@ -20,6 +20,11 @@ def test_dict(x):
     a = tainted_dict["name"]
     b = tainted_dict[x]
     c = tainted_dict.copy()
+    for d in tainted_dict.values():
+        d
+    # TODO: currently not recognizing tainted_dict.items()
+    for _, e in tainted_dict.items():
+        e
 
 def test_str():
     tainted_string = TAINTED
