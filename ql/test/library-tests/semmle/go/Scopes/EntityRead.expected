@@ -1,0 +1,13 @@
+| Println | main.go:10:2:10:12 | selection of Println |
+| a | types.go:25:9:25:9 | a |
+| false | types.go:15:9:15:13 | false |
+| meth | main.go:18:2:18:7 | selection of meth |
+| meth | main.go:19:2:19:7 | selection of meth |
+| meth | main.go:20:2:20:10 | selection of meth |
+| recv | main.go:14:9:14:12 | recv |
+| recv | main.go:24:2:24:5 | recv |
+| x | main.go:14:9:14:14 | selection of x |
+| x | main.go:18:2:18:2 | x |
+| x | main.go:24:2:24:7 | selection of x |
+| y | main.go:19:2:19:2 | y |
+| y | main.go:20:12:20:12 | y |

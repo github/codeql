@@ -116,9 +116,6 @@ class Entity extends @object {
   /** Gets the declaring identifier for this entity. */
   Ident getDeclaration() { result.declares(this) }
 
-  /** Gets an identifier in rvalue position that refers to this entity. */
-  Ident getAUse() { result.uses(this) }
-
   /** Gets a reference to this entity. */
   Name getAReference() { result.getTarget() = this }
 

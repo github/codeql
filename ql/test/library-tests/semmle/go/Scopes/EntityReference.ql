@@ -6,4 +6,4 @@ where
   or
   not exists(e.getDeclaration()) and
   declloc = "<library>"
-select e, declloc, e.getAUse()
+select e, declloc, e.getAReference()

@@ -1,3 +1,4 @@
+| bump | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes.t.bump | recv | * t |
 | meth | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes.iHaveAMethod.meth |  | iHaveAMethod |
 | meth | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes.t.meth | recv | * t |
 | meth1 | github.com/Semmle/go/ql/test/library-tests/semmle/go/Scopes.notImpl.meth1 |  | notImpl |

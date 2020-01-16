@@ -23,9 +23,9 @@ import go
  * downward.
  */
 predicate bounds(RelationalComparisonExpr test, Variable v, string direction) {
-  test.getLesserOperand() = v.getAUse() and direction = "upward"
+  test.getLesserOperand() = v.getAReference() and direction = "upward"
   or
-  test.getGreaterOperand() = v.getAUse() and direction = "downward"
+  test.getGreaterOperand() = v.getAReference() and direction = "downward"
 }
 
 /**
@@ -36,7 +36,7 @@ predicate bounds(RelationalComparisonExpr test, Variable v, string direction) {
  * downward.
  */
 predicate updates(IncDecStmt upd, Variable v, string direction) {
-  upd.getExpr() = v.getAUse() and
+  upd.getExpr() = v.getAReference() and
   (
     upd instanceof IncStmt and direction = "upward"
     or

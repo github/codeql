@@ -114,9 +114,14 @@ newtype TControlFlowNode =
     )
     or
     // in a return statement `return f()` where `f` has multiple return values
-    exists(ReturnStmt ret, CallExpr call | s = ret |
-      call = ret.getExpr().stripParens() and
-      exists(call.getType().(TupleType).getComponentType(i))
+    exists(ReturnStmt ret, SignatureType rettp |
+      s = ret and
+      // the return statement has a single expression
+      exists(ret.getExpr()) and
+      // but the enclosing function has multiple results
+      rettp = ret.getEnclosingFunction().getType() and
+      rettp.getNumResult() > 1 and
+      exists(rettp.getResultType(i))
     )
     or
     // in a call `f(g())` where `g` has multiple return values
