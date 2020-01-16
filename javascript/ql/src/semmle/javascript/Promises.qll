@@ -142,7 +142,7 @@ private module ExceptionalPromiseFlow {
       this = promise
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = rejectField() and
       (
         pred = promise.getRejectParameter().getACall().getArgument(0) or
@@ -185,14 +185,14 @@ private module ExceptionalPromiseFlow {
       succ = getCallback(1).getParameter(0)
     }
     
-    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate copyProperty(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       not exists(this.getArgument(1)) and
       prop = rejectField() and
       pred = getReceiver() and
       succ = this
     }
     
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = rejectField() and
       pred = getCallback([0..1]).getExceptionalReturn() and
       succ = this
@@ -213,7 +213,7 @@ private module ExceptionalPromiseFlow {
       succ = getCallback(0).getParameter(0)
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = rejectField() and
       pred = getCallback([0..1]).getExceptionalReturn() and
       succ = this
@@ -228,7 +228,7 @@ private module ExceptionalPromiseFlow {
       this.getMethodName() = "finally"
     }
 
-    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate copyProperty(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = rejectField() and
       pred = getReceiver() and
       succ = this

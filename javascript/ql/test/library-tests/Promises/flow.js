@@ -56,4 +56,17 @@
 	var p9 = p8.then(() => {});
 	var p10 = p9.finally(() => {});
 	p10.catch((x) => sink(x)); // NOT OK!
+
+	var p11 = new Promise((resolve, reject) => reject(source));
+	var p12 = p11.then(() => {});
+	p12.catch(x => sink(x)); // NOT OK!
+
+	async function throws() {
+		await new Promise((resolve, reject) => reject(source));
+	}
+	try {
+		throws();
+	} catch(e) {
+		sink(e); // NOT OK!
+	}
 })();

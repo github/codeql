@@ -225,9 +225,11 @@ abstract class Configuration extends string {
   }
 
   /**
-   * Holds if the `pred` should be stored in the object `succ` under the property `prop`. 
+   * Holds if the `pred` should be stored in the object `succ` under the property `prop`.
+   *
+   * `succ` is a DataFlow::SourceNode, as this is assumed by the `isAdditionalCopyPropertyStep` predicate.
    */
-  predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 
   /**
    * Holds if the property `prop` of the object `pred` should be loaded into `succ`. 
@@ -237,7 +239,7 @@ abstract class Configuration extends string {
   /**
    * Holds if the property `prop` should be copied from the object `pred` to the object `succ`. 
    */
-  predicate isAdditionalCopyPropertyStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate isAdditionalCopyPropertyStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 }
 
 /**
@@ -468,9 +470,11 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
 
   /**
    * Holds if the `pred` should be stored in the object `succ` under the property `prop`.
+   *
+   * `succ` is a DataFlow::SourceNode, as this is assumed by the `copyProperty` predicate.
    */
   cached
-  predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 
   /**
    * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
@@ -482,7 +486,7 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
    */
   cached
-  predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate copyProperty(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 }
 
 /**
@@ -808,26 +812,25 @@ private predicate reachesReturn(
 }
 
 private predicate isAdditionalLoadStep(DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg) { 
-  exists(DataFlow::Node obj | pred = obj.getALocalSource() or pred = obj | 
-    any(AdditionalFlowStep s).load(obj, succ, prop)
-    or
-    cfg.isAdditionalLoadStep(obj, succ, prop)
-  )
+  any(AdditionalFlowStep s).load(pred, succ, prop)
+  or
+  cfg.isAdditionalLoadStep(pred, succ, prop)
 }
 
-private predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg) { 
-  exists(DataFlow::Node obj | pred = obj.getALocalSource() or pred = obj | 
-    any(AdditionalFlowStep s).store(obj, succ, prop)
-    or
-    cfg.isAdditionalStoreStep(obj, succ, prop)
-  )
+private predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop, DataFlow::Configuration cfg) {
+  any(AdditionalFlowStep s).store(pred, succ, prop)
+  or
+  cfg.isAdditionalStoreStep(pred, succ, prop)
 }
 
-private predicate isAdditionalCopyPropertyStep(DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg) {
-  exists(DataFlow::Node obj | pred = obj.getALocalSource() or pred = obj | 
-    any(AdditionalFlowStep s).copyProperty(obj, succ, prop)
+private predicate isAdditionalCopyPropertyStep(DataFlow::SourceNode pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg) {
+  exists(DataFlow::Node predNode, DataFlow::SourceNode succNode |
+    pred = predNode.getALocalSource() and
+    succ.getALocalSource() = succNode
+  |
+    any(AdditionalFlowStep s).copyProperty(predNode, succNode, prop)
     or
-    cfg.isAdditionalCopyPropertyStep(obj, succ, prop)
+    cfg.isAdditionalCopyPropertyStep(predNode, succNode, prop)
   )
 }
 
