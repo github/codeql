@@ -263,6 +263,24 @@ newtype TControlFlowNode =
    */
   MkImplicitMaxSliceBound(SliceExpr sl) { not exists(sl.getMax()) } or
   /**
+   * A control-flow node that represents the implicit dereference of the base in a field/method
+   * access.
+   */
+  MkImplicitDeref(Expr e) {
+    e.getType().getUnderlyingType() instanceof PointerType and
+    exists(SelectorExpr sel | e = sel.getBase() |
+      // field accesses through a pointer always implicitly dereference
+      sel = any(Field f).getAReference()
+      or
+      // method accesses only dereference if the receiver is _not_ a pointer
+      exists(Method m, Type tp |
+        sel = m.getAReference() and
+        tp = m.getReceiver().getType().getUnderlyingType() and
+        not tp instanceof PointerType
+      )
+    )
+  } or
+  /**
    * A control-flow node that represents the start of the execution of a function or file.
    */
   MkEntryNode(ControlFlow::Root root) or
@@ -1614,21 +1632,36 @@ module CFG {
     }
   }
 
-  private class SelectorExprTree extends PostOrderTree, SelectorExpr {
+  private class SelectorExprTree extends ControlFlowTree, SelectorExpr {
     SelectorExprTree() { getBase() instanceof ValueExpr }
 
-    override ControlFlow::Node getNode() { result = mkExprOrSkipNode(this) }
-
-    override Completion getCompletion() {
-      result = Done()
-      or
-      // panic due to `nil` dereference
-      getBase() instanceof ValueExpr and
-      this.(ReferenceExpr).isRvalue() and
-      result = Panic()
+    override predicate firstNode(ControlFlow::Node first) {
+      firstNode(getBase(), first)
     }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getBase() }
+    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
+      ControlFlowTree.super.lastNode(last, cmpl)
+      or
+      // panic due to `nil` dereference
+      last = MkImplicitDeref(this.getBase()) and
+      cmpl = Panic()
+      or
+      last = mkExprOrSkipNode(this) and
+      cmpl = Done()
+    }
+
+    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+      lastNode(getBase(), pred, normalCompletion()) and
+      (
+        succ = MkImplicitDeref(this.getBase())
+        or
+        not exists(MkImplicitDeref(this.getBase())) and
+        succ = mkExprOrSkipNode(this)
+      )
+      or
+      pred = MkImplicitDeref(this.getBase()) and
+      succ = mkExprOrSkipNode(this)
+    }
   }
 
   private class SendStmtTree extends ControlFlowTree, SendStmt {

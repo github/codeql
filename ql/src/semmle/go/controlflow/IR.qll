@@ -46,7 +46,8 @@ module IR {
       this instanceof MkCaseCheckNode or
       this instanceof MkImplicitLowerSliceBound or
       this instanceof MkImplicitUpperSliceBound or
-      this instanceof MkImplicitMaxSliceBound
+      this instanceof MkImplicitMaxSliceBound or
+      this instanceof MkImplicitDeref
     }
 
     /** Holds if this instruction reads the value of variable or constant `v`. */
@@ -169,6 +170,8 @@ module IR {
       this instanceof MkImplicitUpperSliceBound and result = "implicit upper bound"
       or
       this instanceof MkImplicitMaxSliceBound and result = "implicit maximum"
+      or
+      this instanceof MkImplicitDeref and result = "implicit dereference"
     }
   }
 
@@ -230,6 +233,21 @@ module IR {
   }
 
   /**
+   * Gets the effective base of a selector expression, taking implicit dereferences into account.
+   *
+   * For a selector expression `b.f`, this will either be the implicit dereference `*b`, or just
+   * `b` if there is no implicit dereferencing.
+   */
+  private Instruction selectorBase(SelectorExpr e) {
+    exists(Expr base | base = e.getBase() |
+      result = MkImplicitDeref(base)
+      or
+      not exists(MkImplicitDeref(base)) and
+      result = evalExprInstruction(base)
+    )
+  }
+
+  /**
    * An IR instruction that reads the value of a field.
    *
    * On snapshots with incomplete type information, method expressions may sometimes be
@@ -244,7 +262,7 @@ module IR {
     }
 
     /** Gets the instruction computing the base value on which the field is read. */
-    Instruction getBase() { result = evalExprInstruction(e.getBase()) }
+    Instruction getBase() { result = selectorBase(e) }
 
     /** Gets the field being read. */
     Field getField() { e.getSelector() = result.getAReference() }
@@ -262,7 +280,7 @@ module IR {
     MethodReadInstruction() { e.getSelector() = method.getAReference() }
 
     /** Gets the instruction computing the receiver value on which the method is looked up. */
-    Instruction getReceiver() { result = evalExprInstruction(e.getBase()) }
+    Instruction getReceiver() { result = selectorBase(e) }
 
     /** Gets the method being looked up. */
     Method getMethod() { result = method }
@@ -1189,6 +1207,33 @@ module IR {
     }
   }
 
+  /**
+   * An instruction implicitly dereferencing the base in a field or method reference through a
+   * pointer.
+   */
+  class EvalImplicitDerefInstruction extends Instruction, MkImplicitDeref {
+    Expr e;
+
+    EvalImplicitDerefInstruction() { this = MkImplicitDeref(e) }
+
+    /** Gets the operand that is being dereferenced. */
+    Expr getOperand() { result = e }
+
+    override Type getResultType() {
+      result = e.getType().getUnderlyingType().(PointerType).getBaseType()
+    }
+
+    override ControlFlow::Root getRoot() { result.isRootOf(e) }
+
+    override string toString() { result = "implicit dereference" }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
   /** A representation of the target of a write instruction. */
   class WriteTarget extends TWriteTarget {
     ControlFlow::Node w;
@@ -1294,7 +1339,7 @@ module IR {
 
     /** Gets the instruction computing the base value on which this field is accessed. */
     Instruction getBase() {
-      exists(SelectorExpr sel | this = MkLhs(_, sel) | result = evalExprInstruction(sel.getBase()))
+      exists(SelectorExpr sel | this = MkLhs(_, sel) | result = selectorBase(sel))
       or
       result = w.(InitLiteralStructFieldInstruction).getBase()
     }
