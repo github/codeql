@@ -378,8 +378,13 @@ class PostUpdateNode extends Node {
 
   PostUpdateNode() {
     (
-      preupd instanceof AddressOperationNode or
-      any(Write w).writesField(preupd, _, _)
+      preupd instanceof AddressOperationNode
+      or
+      exists(Write w, DataFlow::Node base | w.writesField(base, _, _) |
+        preupd = base
+        or
+        preupd = base.(PointerDereferenceNode).getOperand()
+      )
     ) and
     (
       preupd = this.(SsaNode).getAUse()
@@ -571,26 +576,40 @@ class BinaryOperationNode extends Node {
 /**
  * An IR instruction corresponding to an expression with a unary operator.
  */
-class UnaryOperationNode extends ExprNode {
+class UnaryOperationNode extends InstructionNode {
   UnaryOperationNode() {
-    expr instanceof UnaryExpr or
-    expr instanceof StarExpr
+    asExpr() instanceof UnaryExpr
+    or
+    asExpr() instanceof StarExpr
+    or
+    insn instanceof IR::EvalImplicitDerefInstruction
   }
 
   /** Holds if this operation may have observable side effects. */
-  predicate mayHaveSideEffects() { expr.mayHaveOwnSideEffects() }
+  predicate mayHaveSideEffects() {
+    asExpr().mayHaveOwnSideEffects()
+    or
+    insn instanceof IR::EvalImplicitDerefInstruction
+  }
 
   /** Gets the operand of this operation. */
   Node getOperand() {
-    result = exprNode(expr.(UnaryExpr).getOperand()) or
-    result = exprNode(expr.(StarExpr).getBase())
+    result = exprNode(asExpr().(UnaryExpr).getOperand())
+    or
+    result = exprNode(asExpr().(StarExpr).getBase())
+    or
+    result = exprNode(insn.(IR::EvalImplicitDerefInstruction).getOperand())
   }
 
   /** Gets the operator of this operation. */
   string getOperator() {
-    result = expr.(UnaryExpr).getOperator()
+    result = asExpr().(UnaryExpr).getOperator()
     or
-    expr instanceof StarExpr and result = "*"
+    asExpr() instanceof StarExpr and
+    result = "*"
+    or
+    insn instanceof IR::EvalImplicitDerefInstruction and
+    result = "*"
   }
 }
 
@@ -598,13 +617,19 @@ class UnaryOperationNode extends ExprNode {
  * A pointer-dereference instruction.
  */
 class PointerDereferenceNode extends UnaryOperationNode {
-  PointerDereferenceNode() { expr instanceof StarExpr or expr instanceof DerefExpr }
+  PointerDereferenceNode() {
+    asExpr() instanceof StarExpr
+    or
+    asExpr() instanceof DerefExpr
+    or
+    insn instanceof IR::EvalImplicitDerefInstruction
+  }
 }
 
 /**
  * An address-of instruction.
  */
-class AddressOperationNode extends UnaryOperationNode {
+class AddressOperationNode extends UnaryOperationNode, ExprNode {
   override AddressExpr expr;
 }
 

@@ -6,6 +6,8 @@ nodes
 | ZipSlip.go:14:20:14:20 | p | semmle.label | p |
 | tst.go:15:11:15:16 | selection of Name : string | semmle.label | selection of Name : string |
 | tst.go:20:20:20:23 | path | semmle.label | path |
+| tst.go:32:21:32:26 | selection of Name | semmle.label | selection of Name |
 #select
 | ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:24:12:29 | selection of Name : string | ZipSlip.go:14:20:14:20 | p | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.go:14:20:14:20 | p | file system operation |
 | tst.go:15:11:15:16 | selection of Name | tst.go:15:11:15:16 | selection of Name : string | tst.go:20:20:20:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:20:20:20:23 | path | file system operation |
+| tst.go:32:21:32:26 | selection of Name | tst.go:32:21:32:26 | selection of Name | tst.go:32:21:32:26 | selection of Name | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:32:21:32:26 | selection of Name | file system operation |

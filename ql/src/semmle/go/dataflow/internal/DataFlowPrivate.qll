@@ -149,9 +149,14 @@ private class PointerContent extends Content, TPointerContent {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content c, PostUpdateNode node2) {
-  exists(Write w, Field f |
-    w.writesField(node2.getPreUpdateNode(), f, node1) and
+  exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
+    node1 = rhs and
+    node2.getPreUpdateNode() = base and
     c = TFieldContent(f)
+    or
+    node1 = base and
+    node2.getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+    c = TPointerContent(node2.getType())
   )
   or
   node1 = node2.(AddressOperationNode).getOperand() and
