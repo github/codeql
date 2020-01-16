@@ -6,16 +6,12 @@ import go
 
 private module StdlibHttp {
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends UntrustedFlowSource::Range, DataFlow::ExprNode {
-    override SelectorExpr expr;
-
+  private class UserControlledRequestField extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {
     UserControlledRequestField() {
-      exists(Type req, Type baseType, string fieldName |
+      exists(Type req, string fieldName |
         req.hasQualifiedName("net/http", "Request") and
-        baseType = expr.getBase().getType() and
-        fieldName = expr.getSelector().getName() and
-        (baseType = req or baseType = req.getPointerType()) and
-        (fieldName = "Body" or fieldName = "Form" or fieldName = "Header" or fieldName = "URL")
+        this.getField() = req.getField(fieldName) |
+        fieldName = "Body" or fieldName = "Form" or fieldName = "Header" or fieldName = "URL"
       )
     }
   }
