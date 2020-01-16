@@ -45,4 +45,4 @@ where
   not mistypedFunctionArguments(fc, _, _) and
   not tooFewArguments(fc, _) and
   not tooManyArguments(fc, _)
-select fc, "Function call implicitly declares $@", fc, fc.toString()
+select fc, "Function call implicitly declares '" + fdeIm.getName() + "'."
