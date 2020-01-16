@@ -1,0 +1,6 @@
+| tst.js:9:23:9:33 | 'FirstData' | tst.js:6:40:6:44 | first |
+| tst.js:10:24:10:35 | 'SecondData' | tst.js:7:32:7:37 | second |
+| tst.js:15:24:15:39 | 'OtherFirstData' | tst.js:14:41:14:50 | otherFirst |
+| tst.js:20:17:20:21 | "foo" | tst.js:19:16:19:18 | foo |
+| tst.js:21:17:21:21 | "bar" | tst.js:19:39:19:41 | bar |
+| tst.js:28:17:28:22 | "blab" | tst.js:25:16:25:20 | event |

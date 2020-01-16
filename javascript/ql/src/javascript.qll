@@ -73,6 +73,7 @@ import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
+import semmle.javascript.frameworks.EventEmitter
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.jQuery
