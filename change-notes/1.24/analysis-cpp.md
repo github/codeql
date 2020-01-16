@@ -35,3 +35,8 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
     about the _name or scope_ of variables should remain unchanged.
   * The `LocalScopeVariableReachability` library is deprecated in favor of
     `StackVariableReachability`. The functionality is the same.
+* The data flow library (`semmle.code.cpp.dataflow.DataFlow`) has had the
+  following improvements, all of which benefit the taint tracking library
+  (`semmle.code.cpp.dataflow.TaintTracking`) as well.
+  * The library now models data flow through `strdup` and similar functions.
+  
