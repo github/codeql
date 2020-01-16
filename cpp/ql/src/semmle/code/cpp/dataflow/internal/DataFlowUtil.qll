@@ -602,14 +602,9 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
       exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
         call.getTarget() = f and
         f.hasDataFlow(inModel, outModel) and
-        fromExpr = call.getArgument(iIn) and
-        (
-          inModel.isParameter(iIn) and
-          outModel.isReturnValue()
-          or
-          inModel.isParameterDeref(iIn) and
-          outModel.isReturnValueDeref()
-        )
+        outModel.isReturnValue() and
+        inModel.isParameter(iIn) and
+        fromExpr = call.getArgument(iIn)
       )
     )
 }
