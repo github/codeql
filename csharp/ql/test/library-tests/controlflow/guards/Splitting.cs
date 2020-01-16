@@ -6,7 +6,7 @@ using System.Diagnostics;
 /// </summary>
 public class Splitting
 {
-    void M1(bool b, object o)
+    void M1(bool b, object? o)
     {
         if (b)
             if (o != null)
@@ -16,7 +16,7 @@ public class Splitting
         o.ToString(); // not null guarded
     }
 
-    string M2(bool b, object o)
+    string M2(bool b, object? o)
     {
         if (b)
             if (o != null)
@@ -26,7 +26,7 @@ public class Splitting
         return o.ToString(); // not null guarded
     }
 
-    string M3(bool b, object o)
+    string M3(bool b, object? o)
     {
         if (b)
             if (o == null)
@@ -36,7 +36,7 @@ public class Splitting
         return o.ToString(); // not null guarded
     }
 
-    void M4(bool b, object o)
+    void M4(bool b, object? o)
     {
         if (o != null)
         {
@@ -47,7 +47,7 @@ public class Splitting
         }
     }
 
-    string M5(bool b, object o)
+    string M5(bool b, object? o)
     {
         if (b)
             o.ToString(); // not null guarded
@@ -58,7 +58,7 @@ public class Splitting
         return o.ToString(); // not null guarded
     }
 
-    string M6(bool b, object o)
+    string M6(bool b, object? o)
     {
         if (b)
             o.ToString(); // not null guarded
@@ -69,7 +69,7 @@ public class Splitting
         return o.ToString(); // anti-null guarded
     }
 
-    string M7(bool b, object o, bool b2)
+    string M7(bool b, object? o, bool b2)
     {
         if (b)
             o.ToString(); // not null guarded
@@ -81,7 +81,7 @@ public class Splitting
         return o.ToString(); // not null guarded
     }
 
-    void M8(bool b, object o)
+    void M8(bool b, object? o)
     {
         if (b)
             Debug.Assert(o != null);
@@ -91,7 +91,7 @@ public class Splitting
         o.ToString(); // not null guarded
     }
 
-    string M9(bool b, object o)
+    string M9(bool b, object? o)
     {
         if (b)
             Debug.Assert(o == null);
@@ -100,7 +100,7 @@ public class Splitting
         return o.ToString(); // not null guarded
     }
 
-    void M10(bool b, object o)
+    void M10(bool b, object? o)
     {
         Debug.Assert(o != null);
         if (b)
@@ -109,7 +109,7 @@ public class Splitting
             o.ToString(); // null guarded
     }
 
-    string M11(bool b, object o)
+    string M11(bool b, object? o)
     {
         if (b)
             o.ToString(); // not null guarded
@@ -122,7 +122,7 @@ public class Splitting
 
     public void M12(int i, bool b)
     {
-        object o = null;
+        object? o = null;
         do
         {
             if (o != null)

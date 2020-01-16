@@ -12,58 +12,11 @@ private import Imports::OperandTag
 
 module InstructionSanity {
   /**
-   * Holds if the instruction `instr` should be expected to have an operand
-   * with operand tag `tag`. Only holds for singleton operand tags. Tags with
-   * parameters, such as `PhiInputOperand` and `PositionalArgumentOperand` are handled
-   * separately in `unexpectedOperand`.
-   */
-  private predicate expectsOperand(Instruction instr, OperandTag tag) {
-    exists(Opcode opcode |
-      opcode = instr.getOpcode() and
-      (
-        opcode instanceof UnaryOpcode and tag instanceof UnaryOperandTag
-        or
-        opcode instanceof BinaryOpcode and
-        (
-          tag instanceof LeftOperandTag or
-          tag instanceof RightOperandTag
-        )
-        or
-        opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag
-        or
-        opcode instanceof SizedBufferAccessOpcode and tag instanceof BufferSizeOperandTag
-        or
-        opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag
-        or
-        opcode instanceof OpcodeWithLoad and tag instanceof LoadOperandTag
-        or
-        opcode instanceof Opcode::Store and tag instanceof StoreValueOperandTag
-        or
-        opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperandTag
-        or
-        opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag
-        or
-        opcode instanceof Opcode::Chi and tag instanceof ChiTotalOperandTag
-        or
-        opcode instanceof Opcode::Chi and tag instanceof ChiPartialOperandTag
-        or
-        (
-          opcode instanceof ReadSideEffectOpcode or
-          opcode instanceof Opcode::InlineAsm or
-          opcode instanceof Opcode::CallSideEffect or
-          opcode instanceof Opcode::AliasedUse
-        ) and
-        tag instanceof SideEffectOperandTag
-      )
-    )
-  }
-
-  /**
    * Holds if instruction `instr` is missing an expected operand with tag `tag`.
    */
   query predicate missingOperand(Instruction instr, string message, IRFunction func, string funcText) {
     exists(OperandTag tag |
-      expectsOperand(instr, tag) and
+      instr.getOpcode().hasOperand(tag) and
       not exists(NonPhiOperand operand |
         operand = instr.getAnOperand() and
         operand.getOperandTag() = tag
@@ -83,7 +36,7 @@ module InstructionSanity {
       operand = instr.getAnOperand() and
       operand.getOperandTag() = tag
     ) and
-    not expectsOperand(instr, tag) and
+    not instr.getOpcode().hasOperand(tag) and
     not (instr instanceof CallInstruction and tag instanceof ArgumentOperandTag) and
     not (
       instr instanceof BuiltInOperationInstruction and tag instanceof PositionalArgumentOperandTag
@@ -548,7 +501,8 @@ class Instruction extends Construction::TInstruction {
    * Gets the kind of memory access performed by this instruction's result.
    * Holds only for instructions with a memory result.
    */
-  MemoryAccessKind getResultMemoryAccess() { none() }
+  pragma[inline]
+  final MemoryAccessKind getResultMemoryAccess() { result = getOpcode().getWriteMemoryAccess() }
 
   /**
    * Holds if the memory access performed by this instruction's result will not always write to
@@ -558,7 +512,8 @@ class Instruction extends Construction::TInstruction {
    * location is a conservative estimate of the memory that might actually be accessed at runtime
    * (for example, the global side effects of a function call).
    */
-  predicate hasResultMayMemoryAccess() { none() }
+  pragma[inline]
+  final predicate hasResultMayMemoryAccess() { getOpcode().hasMayWriteMemoryAccess() }
 
   /**
    * Gets the operand that holds the memory address to which this instruction stores its
@@ -709,8 +664,12 @@ class InitializeParameterInstruction extends VariableInstruction {
   InitializeParameterInstruction() { getOpcode() instanceof Opcode::InitializeParameter }
 
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+}
 
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
+class InitializeIndirectionInstruction extends VariableInstruction {
+  InitializeIndirectionInstruction() { getOpcode() instanceof Opcode::InitializeIndirection }
+
+  final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
 }
 
 /**
@@ -745,8 +704,6 @@ class ErrorInstruction extends Instruction {
 class UninitializedInstruction extends VariableInstruction {
   UninitializedInstruction() { getOpcode() instanceof Opcode::Uninitialized }
 
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
-
   /**
    * Gets the variable that is uninitialized.
    */
@@ -771,6 +728,18 @@ class ReturnValueInstruction extends ReturnInstruction {
   final LoadOperand getReturnValueOperand() { result = getAnOperand() }
 
   final Instruction getReturnValue() { result = getReturnValueOperand().getDef() }
+}
+
+class ReturnIndirectionInstruction extends Instruction {
+  ReturnIndirectionInstruction() { getOpcode() instanceof Opcode::ReturnIndirection }
+
+  final SideEffectOperand getSideEffectOperand() { result = getAnOperand() }
+
+  final Instruction getSideEffect() { result = getSideEffectOperand().getDef() }
+
+  final AddressOperand getSourceAddressOperand() { result = getAnOperand() }
+
+  final Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
 }
 
 class CopyInstruction extends Instruction {
@@ -799,8 +768,6 @@ class LoadInstruction extends CopyInstruction {
 
 class StoreInstruction extends CopyInstruction {
   StoreInstruction() { getOpcode() instanceof Opcode::Store }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
 
   final AddressOperand getDestinationAddressOperand() { result = getAnOperand() }
 
@@ -1215,10 +1182,6 @@ class SideEffectInstruction extends Instruction {
  */
 class CallSideEffectInstruction extends SideEffectInstruction {
   CallSideEffectInstruction() { getOpcode() instanceof Opcode::CallSideEffect }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
-
-  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1282,8 +1245,6 @@ class IndirectMustWriteSideEffectInstruction extends WriteSideEffectInstruction 
   IndirectMustWriteSideEffectInstruction() {
     getOpcode() instanceof Opcode::IndirectMustWriteSideEffect
   }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
 }
 
 /**
@@ -1294,8 +1255,6 @@ class BufferMustWriteSideEffectInstruction extends WriteSideEffectInstruction {
   BufferMustWriteSideEffectInstruction() {
     getOpcode() instanceof Opcode::BufferMustWriteSideEffect
   }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
 }
 
 /**
@@ -1306,8 +1265,6 @@ class SizedBufferMustWriteSideEffectInstruction extends WriteSideEffectInstructi
   SizedBufferMustWriteSideEffectInstruction() {
     getOpcode() instanceof Opcode::SizedBufferMustWriteSideEffect
   }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
 
   Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
@@ -1321,10 +1278,6 @@ class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
   IndirectMayWriteSideEffectInstruction() {
     getOpcode() instanceof Opcode::IndirectMayWriteSideEffect
   }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof IndirectMemoryAccess }
-
-  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1333,10 +1286,6 @@ class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
  */
 class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
   BufferMayWriteSideEffectInstruction() { getOpcode() instanceof Opcode::BufferMayWriteSideEffect }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
-
-  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1348,10 +1297,6 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
     getOpcode() instanceof Opcode::SizedBufferMayWriteSideEffect
   }
 
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof BufferMemoryAccess }
-
-  final override predicate hasResultMayMemoryAccess() { any() }
-
   Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
 }
 
@@ -1360,10 +1305,6 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
  */
 class InlineAsmInstruction extends Instruction {
   InlineAsmInstruction() { getOpcode() instanceof Opcode::InlineAsm }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
-
-  final override predicate hasResultMayMemoryAccess() { any() }
 }
 
 /**
@@ -1449,10 +1390,6 @@ class CatchAnyInstruction extends CatchInstruction {
 
 class UnmodeledDefinitionInstruction extends Instruction {
   UnmodeledDefinitionInstruction() { getOpcode() instanceof Opcode::UnmodeledDefinition }
-
-  final override MemoryAccessKind getResultMemoryAccess() {
-    result instanceof UnmodeledMemoryAccess
-  }
 }
 
 /**
@@ -1460,8 +1397,6 @@ class UnmodeledDefinitionInstruction extends Instruction {
  */
 class AliasedDefinitionInstruction extends Instruction {
   AliasedDefinitionInstruction() { getOpcode() instanceof Opcode::AliasedDefinition }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof EscapedMemoryAccess }
 }
 
 /**
@@ -1489,8 +1424,6 @@ class UnmodeledUseInstruction extends Instruction {
  */
 class PhiInstruction extends Instruction {
   PhiInstruction() { getOpcode() instanceof Opcode::Phi }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof PhiMemoryAccess }
 
   /**
    * Gets all of the instruction's `PhiInputOperand`s, representing the values that flow from each predecessor block.
@@ -1551,8 +1484,6 @@ class PhiInstruction extends Instruction {
  */
 class ChiInstruction extends Instruction {
   ChiInstruction() { getOpcode() instanceof Opcode::Chi }
-
-  final override MemoryAccessKind getResultMemoryAccess() { result instanceof ChiTotalMemoryAccess }
 
   /**
    * Gets the operand that represents the previous state of all memory that might be aliased by the

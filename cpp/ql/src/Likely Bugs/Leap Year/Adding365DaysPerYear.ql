@@ -8,6 +8,7 @@
  * @id cpp/leap-year/adding-365-days-per-year
  * @precision medium
  * @tags leap-year
+ *       correctness
  */
 
 import cpp

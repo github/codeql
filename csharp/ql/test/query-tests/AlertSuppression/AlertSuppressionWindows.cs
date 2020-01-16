@@ -26,3 +26,11 @@ class Dead2 { } // lgtm
 // LGTM[cs/unused-reftype]
 // lgtm[cs/unused-reftype] and lgtm[cs/unused-field]
 // lgtm[cs/unused-reftype]; lgtm
+/* lgtm[] */
+/* lgtm[cs/unused-reftype] */
+/* lgtm
+*/
+/* lgtm
+*/
+/* lgtm[@tag:nullness,cs/unused-reftype] */
+/* lgtm[@tag:nullness] */

@@ -1,0 +1,4 @@
+| insecure-pom.xml:19:9:24:22 | repository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://insecure-repository.example |
+| insecure-pom.xml:25:9:30:30 | snapshotRepository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://insecure-repository.example |
+| insecure-pom.xml:33:9:38:22 | repository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://insecure-repository.example |
+| insecure-pom.xml:41:9:46:28 | pluginRepository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://insecure-repository.example |

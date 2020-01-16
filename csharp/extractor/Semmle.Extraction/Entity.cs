@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System;
 using System.IO;
 
 namespace Semmle.Extraction
@@ -141,11 +142,19 @@ namespace Semmle.Extraction
         public static Entity CreateEntity2<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
             where Entity : ICachedEntity => cx.CreateEntity2(factory, init);
 
-        public static void DefineLabel(this IEntity entity, TextWriter trapFile)
+        public static void DefineLabel(this IEntity entity, TextWriter trapFile, IExtractor extractor)
         {
             trapFile.WriteLabel(entity);
             trapFile.Write("=");
-            entity.WriteQuotedId(trapFile);
+            try
+            {
+                entity.WriteQuotedId(trapFile);
+            }
+            catch(Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            {
+                trapFile.WriteLine("\"");
+                extractor.Message(new Message("Unhandled exception generating id", entity.ToString(), null, ex.StackTrace.ToString()));
+            }
             trapFile.WriteLine();
         }
 

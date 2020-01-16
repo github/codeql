@@ -13,3 +13,9 @@
 | test.cpp:82:7:82:11 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:84:7:84:11 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:92:17:92:22 | ... = ... | Use of '=' where '==' may have been intended. |
+| test.cpp:113:6:113:10 | ... = ... | Use of '=' where '==' may have been intended. |
+| test.cpp:134:19:134:23 | ... = ... | Use of '=' where '==' may have been intended. |
+| test.cpp:138:21:138:25 | ... = ... | Use of '=' where '==' may have been intended. |
+| test.cpp:144:32:144:36 | ... = ... | Use of '=' where '==' may have been intended. |
+| test.cpp:150:32:150:36 | ... = ... | Use of '=' where '==' may have been intended. |
+| test.cpp:153:46:153:50 | ... = ... | Use of '=' where '==' may have been intended. |

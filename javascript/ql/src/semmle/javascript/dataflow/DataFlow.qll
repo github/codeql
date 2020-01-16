@@ -208,6 +208,11 @@ module DataFlow {
         result = TSsaDefNode(refinement.getAnInput())
       )
       or
+      exists(SsaPhiNode phi |
+        this = TSsaDefNode(phi) and
+        result = TSsaDefNode(phi.getRephinedVariable())
+      )
+      or
       // IIFE call -> return value of IIFE
       exists(Function fun |
         localCall(this.asExpr(), fun) and

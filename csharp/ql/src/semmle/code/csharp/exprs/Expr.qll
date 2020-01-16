@@ -87,6 +87,12 @@ class Expr extends DotNet::Expr, ControlFlowElement, @expr {
   string getExplicitArgumentName() { expr_argument_name(this, result) }
 
   override Element getParent() { result = ControlFlowElement.super.getParent() }
+
+  /** Holds if the nullable flow state of this expression is not null. */
+  predicate hasNotNullFlowState() { expr_flowstate(this, 1) }
+
+  /** Holds if the nullable flow state of this expression may be null. */
+  predicate hasMaybeNullFlowState() { expr_flowstate(this, 2) }
 }
 
 /**

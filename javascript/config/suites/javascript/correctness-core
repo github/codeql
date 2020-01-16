@@ -16,6 +16,7 @@
 + semmlecode-javascript-queries/Expressions/DuplicateSwitchCase.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/HeterogeneousComparison.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/MisspelledVariableName.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/MissingAwait.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/MissingDotLengthInComparison.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/ShiftOutOfRange.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/RedundantExpression.ql: /Correctness/Expressions
@@ -34,6 +35,7 @@
 + semmlecode-javascript-queries/RegExp/DuplicateCharacterInCharacterClass.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/EmptyCharacterClass.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/IdentityReplacement.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/RegExpAlwaysMatches.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/UnboundBackref.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/UnmatchableCaret.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/UnmatchableDollar.ql: /Correctness/Regular Expressions

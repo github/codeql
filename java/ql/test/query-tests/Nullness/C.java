@@ -159,4 +159,13 @@ public class C {
       obj.hashCode(); // OK
     }
   }
+
+  private final Object finalObj = new Object();
+
+  public void ex12() {
+    finalObj.hashCode(); // OK
+    if (finalObj != null) {
+      finalObj.hashCode(); // OK
+    }
+  }
 }

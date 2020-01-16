@@ -101,6 +101,12 @@ predicate clearlyNotNull(SsaVariable v, Expr reason) {
     v.(SsaImplicitInit).captures(captured) and
     clearlyNotNull(captured, reason)
   )
+  or
+  exists(Field f |
+    v.getSourceVariable().getVariable() = f and
+    f.isFinal() and
+    f.getInitializer() = clearlyNotNullExpr(reason)
+  )
 }
 
 /** Gets an expression that is provably not `null`. */
