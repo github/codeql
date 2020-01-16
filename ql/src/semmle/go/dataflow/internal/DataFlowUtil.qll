@@ -321,8 +321,9 @@ class CallNode extends ExprNode {
 
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
   Node getReceiver() {
-    exists(SelectorExpr s | exprNode(s).getASuccessor*() = this.getCalleeNode() |
-      result = exprNode(s.getBase())
+    exists(MethodReadNode mrn |
+      mrn.getASuccessor*() = this.getCalleeNode() and
+      result = mrn.getReceiver()
     )
   }
 }
