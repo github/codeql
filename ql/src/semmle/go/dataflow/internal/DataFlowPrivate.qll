@@ -78,12 +78,6 @@ predicate jumpStep(Node n1, Node n2) {
   )
 }
 
-/**
- * Holds if `call` passes an implicit or explicit qualifier, i.e., a
- * `this` parameter.
- */
-predicate callHasQualifier(CallExpr call) { exists(call.getQualifier()) }
-
 private newtype TContent =
   TFieldContent(Field f) or
   TCollectionContent() or

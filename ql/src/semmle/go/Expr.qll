@@ -444,13 +444,6 @@ class CallExpr extends CallOrConversionExpr {
     )
   }
 
-  /**
-   * Gets the qualifier of this call if it can be determined syntactically.
-   *
-   * For example, in the call `fmt.Println("hello")`, the qualifier is `fmt`.
-   */
-  Expr getQualifier() { calls(result, _) }
-
   /** Gets the `i`th argument expression of this call (0-based). */
   Expr getArgument(int i) {
     i >= 0 and
