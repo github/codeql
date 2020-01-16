@@ -114,33 +114,60 @@ module IR {
 
     /** Gets a textual representation of the kind of this instruction. */
     string getInsnKind() {
-      this instanceof MkExprNode and result = "expression" or
-      this instanceof MkLiteralElementInitNode and result = "element init" or
-      this instanceof MkImplicitLiteralElementIndex and result = "element index" or
-      this instanceof MkAssignNode and result = "assignment" or
-      this instanceof MkCompoundAssignRhsNode and result = "right-hand side of compound assignment" or
-      this instanceof MkExtractNode and result = "tuple element extraction" or
-      this instanceof MkZeroInitNode and result = "zero value" or
-      this instanceof MkFuncDeclNode and result = "function declaration" or
-      this instanceof MkDeferNode and result = "defer" or
-      this instanceof MkGoNode and result = "go" or
-      this instanceof MkConditionGuardNode and result = "condition guard" or
-      this instanceof MkIncDecNode and result = "increment/decrement" or
-      this instanceof MkIncDecRhs and result = "right-hand side of increment/decrement" or
-      this instanceof MkImplicitOne and result = "implicit 1" or
-      this instanceof MkReturnNode and result = "return" or
-      this instanceof MkResultWriteNode and result = "result write" or
-      this instanceof MkResultReadNode and result = "result read" or
-      this instanceof MkSelectNode and result = "select" or
-      this instanceof MkSendNode and result = "send" or
-      this instanceof MkParameterInit and result = "parameter initialization" or
-      this instanceof MkArgumentNode and result = "argument" or
-      this instanceof MkResultInit and result = "result initialization" or
-      this instanceof MkNextNode and result = "next key-value pair" or
-      this instanceof MkImplicitTrue and result = "implicit true" or
-      this instanceof MkCaseCheckNode and result = "case" or
-      this instanceof MkImplicitLowerSliceBound and result = "implicit lower bound" or
-      this instanceof MkImplicitUpperSliceBound and result = "implicit upper bound" or
+      this instanceof MkExprNode and result = "expression"
+      or
+      this instanceof MkLiteralElementInitNode and result = "element init"
+      or
+      this instanceof MkImplicitLiteralElementIndex and result = "element index"
+      or
+      this instanceof MkAssignNode and result = "assignment"
+      or
+      this instanceof MkCompoundAssignRhsNode and result = "right-hand side of compound assignment"
+      or
+      this instanceof MkExtractNode and result = "tuple element extraction"
+      or
+      this instanceof MkZeroInitNode and result = "zero value"
+      or
+      this instanceof MkFuncDeclNode and result = "function declaration"
+      or
+      this instanceof MkDeferNode and result = "defer"
+      or
+      this instanceof MkGoNode and result = "go"
+      or
+      this instanceof MkConditionGuardNode and result = "condition guard"
+      or
+      this instanceof MkIncDecNode and result = "increment/decrement"
+      or
+      this instanceof MkIncDecRhs and result = "right-hand side of increment/decrement"
+      or
+      this instanceof MkImplicitOne and result = "implicit 1"
+      or
+      this instanceof MkReturnNode and result = "return"
+      or
+      this instanceof MkResultWriteNode and result = "result write"
+      or
+      this instanceof MkResultReadNode and result = "result read"
+      or
+      this instanceof MkSelectNode and result = "select"
+      or
+      this instanceof MkSendNode and result = "send"
+      or
+      this instanceof MkParameterInit and result = "parameter initialization"
+      or
+      this instanceof MkArgumentNode and result = "argument"
+      or
+      this instanceof MkResultInit and result = "result initialization"
+      or
+      this instanceof MkNextNode and result = "next key-value pair"
+      or
+      this instanceof MkImplicitTrue and result = "implicit true"
+      or
+      this instanceof MkCaseCheckNode and result = "case"
+      or
+      this instanceof MkImplicitLowerSliceBound and result = "implicit lower bound"
+      or
+      this instanceof MkImplicitUpperSliceBound and result = "implicit upper bound"
+      or
       this instanceof MkImplicitMaxSliceBound and result = "implicit maximum"
     }
   }
@@ -222,9 +249,7 @@ module IR {
     /** Gets the field being read. */
     Field getField() { e.getSelector() = result.getAReference() }
 
-    override predicate readsField(Instruction base, Field f) {
-      base = getBase() and f = getField()
-    }
+    override predicate readsField(Instruction base, Field f) { base = getBase() and f = getField() }
   }
 
   /**
@@ -232,7 +257,6 @@ module IR {
    */
   class MethodReadInstruction extends ReadInstruction, EvalInstruction {
     Method method;
-
     override SelectorExpr e;
 
     MethodReadInstruction() { e.getSelector() = method.getAReference() }
@@ -296,12 +320,12 @@ module IR {
    */
   class InitLiteralComponentInstruction extends WriteInstruction, MkLiteralElementInitNode {
     CompositeLit lit;
-
     int i;
-
     Expr elt;
 
-    InitLiteralComponentInstruction() { this = MkLiteralElementInitNode(elt) and elt = lit.getElement(i) }
+    InitLiteralComponentInstruction() {
+      this = MkLiteralElementInitNode(elt) and elt = lit.getElement(i)
+    }
 
     /** Gets the instruction allocating the composite literal. */
     Instruction getBase() { result = evalExprInstruction(lit) }
@@ -430,7 +454,10 @@ module IR {
 
   /** Gets the index of the `i`th element in (array or slice) literal `lit`. */
   private int getElementIndex(CompositeLit lit, int i) {
-    (lit.getType().getUnderlyingType() instanceof ArrayType or lit.getType().getUnderlyingType() instanceof SliceType) and
+    (
+      lit.getType().getUnderlyingType() instanceof ArrayType or
+      lit.getType().getUnderlyingType() instanceof SliceType
+    ) and
     exists(Expr elt | elt = lit.getElement(i) |
       // short-circuit computation for literals without any explicit keys
       noExplicitKeys(lit) and result = i
@@ -486,7 +513,6 @@ module IR {
    */
   class AssignInstruction extends WriteInstruction, MkAssignNode {
     AstNode assgn;
-
     int i;
 
     AssignInstruction() { this = MkAssignNode(assgn, i) }
@@ -548,7 +574,6 @@ module IR {
    */
   class ExtractTupleElementInstruction extends Instruction, MkExtractNode {
     AstNode s;
-
     int i;
 
     ExtractTupleElementInstruction() { this = MkExtractNode(s, i) }
@@ -569,9 +594,7 @@ module IR {
     }
 
     /** Holds if this extracts the `idx`th value of the result of `base`. */
-    predicate extractsElement(Instruction base, int idx) {
-      base = getBase() and idx = i
-    }
+    predicate extractsElement(Instruction base, int idx) { base = getBase() and idx = i }
 
     override Type getResultType() {
       exists(CallExpr c | getBase() = evalExprInstruction(c) |
@@ -581,8 +604,14 @@ module IR {
       exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
         exists(Type baseType |
           baseType = rangeType.(ArrayType).getElementType() or
-          baseType = rangeType.(PointerType).getBaseType().getUnderlyingType().(ArrayType).getElementType() or
-          baseType = rangeType.(SliceType).getElementType() |
+          baseType = rangeType
+                .(PointerType)
+                .getBaseType()
+                .getUnderlyingType()
+                .(ArrayType)
+                .getElementType() or
+          baseType = rangeType.(SliceType).getElementType()
+        |
           i = 0 and
           result instanceof IntType
           or
@@ -637,13 +666,21 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(v.getDeclaration()) }
 
-    override int getIntValue() { v.getType().getUnderlyingType() instanceof IntegerType and result = 0 }
+    override int getIntValue() {
+      v.getType().getUnderlyingType() instanceof IntegerType and result = 0
+    }
 
-    override float getFloatValue() { v.getType().getUnderlyingType() instanceof FloatType and result = 0.0 }
+    override float getFloatValue() {
+      v.getType().getUnderlyingType() instanceof FloatType and result = 0.0
+    }
 
-    override string getStringValue() { v.getType().getUnderlyingType() instanceof StringType and result = "" }
+    override string getStringValue() {
+      v.getType().getUnderlyingType() instanceof StringType and result = ""
+    }
 
-    override boolean getBoolValue() { v.getType().getUnderlyingType() instanceof BoolType and result = false }
+    override boolean getBoolValue() {
+      v.getType().getUnderlyingType() instanceof BoolType and result = false
+    }
 
     override string getExactValue() {
       result = getIntValue().toString() or
@@ -809,9 +846,7 @@ module IR {
     ReturnInstruction() { this = MkReturnNode(ret) }
 
     /** Holds if this statement returns multiple results. */
-    predicate returnsMultipleResults() {
-      exists(MkExtractNode(ret, _)) or ret.getNumExpr() > 1
-    }
+    predicate returnsMultipleResults() { exists(MkExtractNode(ret, _)) or ret.getNumExpr() > 1 }
 
     /** Gets the instruction whose result is the (unique) result returned by this statement. */
     Instruction getResult() {
@@ -844,9 +879,7 @@ module IR {
    */
   class WriteResultInstruction extends WriteInstruction, MkResultWriteNode {
     ResultVariable var;
-
     int i;
-
     ReturnInstruction ret;
 
     WriteResultInstruction() {
@@ -1067,7 +1100,6 @@ module IR {
    */
   class CaseInstruction extends Instruction, MkCaseCheckNode {
     CaseClause cc;
-
     int i;
 
     CaseInstruction() { this = MkCaseCheckNode(cc, i) }
@@ -1161,7 +1193,9 @@ module IR {
   class WriteTarget extends TWriteTarget {
     ControlFlow::Node w;
 
-    WriteTarget() { this = MkLhs(w, _) or this = MkLiteralElementTarget(w) or this = MkResultWriteTarget(w) }
+    WriteTarget() {
+      this = MkLhs(w, _) or this = MkLiteralElementTarget(w) or this = MkResultWriteTarget(w)
+    }
 
     /** Gets the write instruction of which this is the target. */
     WriteInstruction getWrite() { result = w }
@@ -1260,9 +1294,7 @@ module IR {
 
     /** Gets the instruction computing the base value on which this field is accessed. */
     Instruction getBase() {
-      exists(SelectorExpr sel | this = MkLhs(_, sel) |
-        result = evalExprInstruction(sel.getBase())
-      )
+      exists(SelectorExpr sel | this = MkLhs(_, sel) | result = evalExprInstruction(sel.getBase()))
       or
       result = w.(InitLiteralStructFieldInstruction).getBase()
     }
@@ -1319,9 +1351,7 @@ module IR {
 
     /** Gets the instruction computing the index of this element reference. */
     Instruction getIndex() {
-      exists(IndexExpr idx | this = MkLhs(_, idx) |
-        result = evalExprInstruction(idx.getIndex())
-      )
+      exists(IndexExpr idx | this = MkLhs(_, idx) | result = evalExprInstruction(idx.getIndex()))
       or
       result = w.(InitLiteralElementInstruction).getIndex()
     }
