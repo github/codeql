@@ -134,7 +134,5 @@ void test_implicit_function_declaration(int x, double d) {
 
   implicit_declaration(1, 2); // GOOD (no longer an implicit declaration)
 
-  implicit_declaration_good(1, x, 2.0f); // BAD
-
   y = extern_definition(3.0f, &d); // GOOD
 }
