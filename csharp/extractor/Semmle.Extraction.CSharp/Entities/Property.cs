@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.PopulateLater(() =>
                     {
                         var loc = Context.Create(initializer.GetLocation());
-                        var annotatedType = new AnnotatedType(type, TypeAnnotation.None);
+                        var annotatedType = new AnnotatedType(type, NullableAnnotation.None);
                         var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
                         Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));
                         var access = new Expression(new ExpressionInfo(Context, annotatedType, Location, ExprKind.PROPERTY_ACCESS, simpleAssignExpr, 1, false, null));

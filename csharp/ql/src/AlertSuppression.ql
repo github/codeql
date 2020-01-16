@@ -10,10 +10,12 @@ import csharp
 /**
  * An alert suppression comment.
  */
-class SuppressionComment extends SinglelineComment {
+class SuppressionComment extends CommentLine {
   string annotation;
 
   SuppressionComment() {
+    // Must be either `// ...` or `/* ... */` on a single line.
+    this.getRawText().regexpMatch("//.*|/\\*.*\\*/") and
     exists(string text | text = this.getText() |
       // match `lgtm[...]` anywhere in the comment
       annotation = text.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)

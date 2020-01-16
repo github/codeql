@@ -18,6 +18,8 @@
 
 import cpp
 import semmle.code.cpp.controlflow.SSA
+import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**
  * Holds if `e` is either:
@@ -64,6 +66,110 @@ int getEffectiveMulOperands(MulExpr me) {
     )
 }
 
+/**
+ * As SimpleRangeAnalysis does not support reasoning about multiplication
+ * we create a tiny abstract interpreter for handling multiplication, which
+ * we invoke only after weeding out of all of trivial cases that we do
+ * not care about. By default, the maximum and minimum values are computed
+ * using SimpleRangeAnalysis.
+ */
+class AnalyzableExpr extends Expr {
+  float maxValue() { result = upperBound(this.getFullyConverted()) }
+
+  float minValue() { result = lowerBound(this.getFullyConverted()) }
+}
+
+class ParenAnalyzableExpr extends AnalyzableExpr, ParenthesisExpr {
+  override float maxValue() { result = this.getExpr().(AnalyzableExpr).maxValue() }
+
+  override float minValue() { result = this.getExpr().(AnalyzableExpr).minValue() }
+}
+
+class MulAnalyzableExpr extends AnalyzableExpr, MulExpr {
+  override float maxValue() {
+    exists(float x1, float y1, float x2, float y2 |
+      x1 = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() and
+      x2 = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() and
+      y1 = this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue() and
+      y2 = this.getRightOperand().getFullyConverted().(AnalyzableExpr).maxValue() and
+      result = (x1 * y1).maximum(x1 * y2).maximum(x2 * y1).maximum(x2 * y2)
+    )
+  }
+
+  override float minValue() {
+    exists(float x1, float x2, float y1, float y2 |
+      x1 = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() and
+      x2 = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() and
+      y1 = this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue() and
+      y2 = this.getRightOperand().getFullyConverted().(AnalyzableExpr).maxValue() and
+      result = (x1 * y1).minimum(x1 * y2).minimum(x2 * y1).minimum(x2 * y2)
+    )
+  }
+}
+
+class AddAnalyzableExpr extends AnalyzableExpr, AddExpr {
+  override float maxValue() {
+    result = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() +
+        this.getRightOperand().getFullyConverted().(AnalyzableExpr).maxValue()
+  }
+
+  override float minValue() {
+    result = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() +
+        this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue()
+  }
+}
+
+class SubAnalyzableExpr extends AnalyzableExpr, SubExpr {
+  override float maxValue() {
+    result = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() -
+        this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue()
+  }
+
+  override float minValue() {
+    result = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() -
+        this.getRightOperand().getFullyConverted().(AnalyzableExpr).maxValue()
+  }
+}
+
+class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
+  VarAnalyzableExpr() { this.getTarget() instanceof StackVariable }
+
+  override float maxValue() {
+    exists(SsaDefinition def, Variable v |
+      def.getAUse(v) = this and
+      // if there is a defining expression, use that for
+      // computing the maximum value. Otherwise, assign the
+      // variable the largest possible value it can hold
+      if exists(def.getDefiningValue(v))
+      then result = def.getDefiningValue(v).(AnalyzableExpr).maxValue()
+      else result = upperBound(this)
+    )
+  }
+
+  override float minValue() {
+    exists(SsaDefinition def, Variable v |
+      def.getAUse(v) = this and
+      if exists(def.getDefiningValue(v))
+      then result = def.getDefiningValue(v).(AnalyzableExpr).minValue()
+      else result = lowerBound(this)
+    )
+  }
+}
+
+/**
+ * Holds if `t` is not an instance of `IntegralType`,
+ * or if `me` cannot be proven to not overflow
+ */
+predicate overflows(MulExpr me, Type t) {
+  t instanceof IntegralType
+  implies
+  (
+    me.(MulAnalyzableExpr).maxValue() > exprMaxVal(me)
+    or
+    me.(MulAnalyzableExpr).minValue() < exprMinVal(me)
+  )
+}
+
 from MulExpr me, Type t1, Type t2
 where
   t1 = me.getType().getUnderlyingType() and
@@ -101,7 +207,11 @@ where
       e = other.(BinaryOperation).getAnOperand*()
     ) and
     e.(Literal).getType().getSize() = t2.getSize()
-  )
+  ) and
+  // only report if we cannot prove that the result of the
+  // multiplication will be less (resp. greater) than the
+  // maximum (resp. minimum) number we can compute.
+  overflows(me, t1)
 select me,
   "Multiplication result may overflow '" + me.getType().toString() + "' before it is converted to '"
     + me.getFullyConverted().getType().toString() + "'."

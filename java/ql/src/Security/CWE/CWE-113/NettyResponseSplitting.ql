@@ -13,8 +13,21 @@
 
 import java
 
-from ClassInstanceExpr new
-where
-  new.getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpHeaders") and
-  new.getArgument(0).getProperExpr().(BooleanLiteral).getBooleanValue() = false
-select new, "Response-splitting vulnerability due to verification being disabled."
+abstract private class InsecureNettyObjectCreation extends ClassInstanceExpr { }
+
+private class InsecureDefaultHttpHeadersClassInstantiation extends InsecureNettyObjectCreation {
+  InsecureDefaultHttpHeadersClassInstantiation() {
+    getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpHeaders") and
+    getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false
+  }
+}
+
+private class InsecureDefaultHttpResponseClassInstantiation extends InsecureNettyObjectCreation {
+  InsecureDefaultHttpResponseClassInstantiation() {
+    getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpResponse") and
+    getArgument(2).(CompileTimeConstantExpr).getBooleanValue() = false
+  }
+}
+
+from InsecureNettyObjectCreation new
+select new, "Response-splitting vulnerability due to header value verification being disabled."

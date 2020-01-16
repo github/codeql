@@ -93,6 +93,10 @@ predicate assignOperatorWithWrongResult(Operator op, string msg) {
 
 from Operator op, string msg
 where
-  assignOperatorWithWrongType(op, msg) or
-  assignOperatorWithWrongResult(op, msg)
+  (
+    assignOperatorWithWrongType(op, msg) or
+    assignOperatorWithWrongResult(op, msg)
+  ) and
+  // exclude code in templates which may be incomplete
+  not op.isFromUninstantiatedTemplate(_)
 select op, msg

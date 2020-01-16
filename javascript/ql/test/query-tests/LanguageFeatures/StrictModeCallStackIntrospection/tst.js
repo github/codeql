@@ -8,14 +8,14 @@ var o = {
        // BAD
        console.log(f.caller);
        // BAD
-       f.arguments;
+       this.y = f.arguments;
        this.x = x;
      }
 };
 
 var D = class extends function() {
   // BAD
-  arguments.callee;
+  return arguments.callee;
 } {};
 
 function g() {
@@ -28,6 +28,11 @@ function g() {
   function h() {
     var foo = Math.random() > 0.5 ? h : arguments;
     // BAD
-    foo.caller;
+    return foo.caller;
   }
+})();
+
+(function() {
+  'use strict';
+  arguments.caller; // OK - avoid duplicate alert from useless-expression
 })();

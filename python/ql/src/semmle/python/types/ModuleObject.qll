@@ -83,9 +83,13 @@ abstract class ModuleObject extends Object {
     predicate exports(string name) {
         theModule().exports(name)
     }
- 
-    /** Whether the complete set of names "exported" by this module can be accurately determined */
-    abstract predicate exportsComplete();
+
+    /**
+      * Whether the complete set of names "exported" by this module can be accurately determined
+      *
+      * DEPRECATED: Use ModuleValue::hasCompleteExportInfo instead
+      */
+    deprecated abstract predicate exportsComplete();
 
     /** Gets the short name of the module. For example the short name of module x.y.z is 'z' */
     string getShortName() {

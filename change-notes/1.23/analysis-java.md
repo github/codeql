@@ -7,6 +7,7 @@ The following changes in version 1.23 affect Java analysis in all applications.
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Continue statement that does not continue (`java/continue-in-false-loop`) | correctness | Finds `continue` statements in `do { ... } while (false)` loops. Results are shown on LGTM by default. |
+| Disabled Netty HTTP header validation (`java/netty-http-response-splitting`) | security, external/cwe/cwe-113 | Finds response-splitting vulnerabilities due to Netty HTTP header validation being disabled. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 

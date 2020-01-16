@@ -154,11 +154,11 @@ class Content extends TContent {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
 
-  /** Gets the type of the object containing this content. */
-  abstract RefType getContainerType();
+  /** Gets the erased type of the object containing this content. */
+  abstract DataFlowType getContainerType();
 
-  /** Gets the type of this content. */
-  abstract Type getType();
+  /** Gets the erased type of this content. */
+  abstract DataFlowType getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -174,25 +174,25 @@ private class FieldContent extends Content, TFieldContent {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
 
-  override RefType getContainerType() { result = f.getDeclaringType() }
+  override DataFlowType getContainerType() { result = getErasedRepr(f.getDeclaringType()) }
 
-  override Type getType() { result = getFieldTypeBound(f) }
+  override DataFlowType getType() { result = getErasedRepr(getFieldTypeBound(f)) }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
 
-  override RefType getContainerType() { none() }
+  override DataFlowType getContainerType() { none() }
 
-  override Type getType() { none() }
+  override DataFlowType getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
 
-  override RefType getContainerType() { none() }
+  override DataFlowType getContainerType() { none() }
 
-  override Type getType() { none() }
+  override DataFlowType getType() { none() }
 }
 
 /**
@@ -226,7 +226,7 @@ predicate readStep(Node node1, Content f, Node node2) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-RefType getErasedRepr(Type t) {
+DataFlowType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
     then result.(BoxedType).getPrimitiveType().getName() = "double"

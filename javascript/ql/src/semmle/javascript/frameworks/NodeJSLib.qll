@@ -880,4 +880,49 @@ module NodeJSLib {
 
     override string getSourceType() { result = "NodeJSClientRequest error event" }
   }
+
+
+  /**
+   * An NodeJS EventEmitter instance.
+   * Events dispatched on this EventEmitter will be handled by event handlers registered on this EventEmitter.
+   * (That is opposed to e.g. SocketIO, which implements the same interface, but where events cross object boundaries).
+   */
+  abstract class NodeJSEventEmitter extends EventEmitter::Range {
+    /**
+     * Get a Node that refers to a NodeJS EventEmitter instance.
+     */
+    DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
+  }
+
+  /**
+   * An instance of an EventEmitter that is imported through the 'events' module.
+   */
+  private class ImportedNodeJSEventEmitter extends NodeJSEventEmitter {
+    ImportedNodeJSEventEmitter() {
+      exists(DataFlow::SourceNode clazz |
+        clazz = DataFlow::moduleImport("events") or
+        clazz = DataFlow::moduleMember("events", "EventEmitter")
+      |
+        this = clazz.getAnInstantiation()
+      )
+    }
+  }
+
+  /**
+   * A registration of an event handler on a NodeJS EventEmitter instance.
+   */
+  private class NodeJSEventRegistration extends EventRegistration::DefaultEventRegistration, DataFlow::MethodCallNode {
+    override NodeJSEventEmitter emitter;
+
+    NodeJSEventRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
+  }
+
+  /**
+   * A dispatch of an event on a NodeJS EventEmitter instance.
+   */
+  private class NodeJSEventDispatch extends EventDispatch::DefaultEventDispatch, DataFlow::MethodCallNode {
+    override NodeJSEventEmitter emitter;
+
+    NodeJSEventDispatch() { this = emitter.ref().getAMethodCall("emit") }
+  }
 }
