@@ -97,17 +97,15 @@ private module StdlibHttp {
 
   private class RequestBody extends HTTP::RequestBody::Range, DataFlow::ExprNode {
     RequestBody() {
-      exists(DataFlow::CallNode newRequestCall |
-        newRequestCall.getTarget().hasQualifiedName("net/http", "NewRequest")
-      |
-        this = newRequestCall.getArgument(2)
+      exists(Function newRequest |
+        newRequest.hasQualifiedName("net/http", "NewRequest") and
+        this = newRequest.getACall().getArgument(2)
       )
       or
-      exists(Write w, DataFlow::Node base, Field body, Type request |
-        w.writesField(base, body, this) and
+      exists(Field body, Type request |
         request.hasQualifiedName("net/http", "Request") and
-        request.getPointerType() = base.getType().getUnderlyingType() and
-        body.getName() = "Body"
+        body = request.getField("Body") and
+        this = body.getAWrite().getRhs()
       )
     }
   }
