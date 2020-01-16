@@ -43,3 +43,32 @@ class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction
     output.isReturnValueDeref()
   }
 }
+
+/**
+ * A `strndup` style allocation function.
+ */
+class StrndupFunction extends AllocationFunction, ArrayFunction, TaintFunction {
+  StrndupFunction() {
+    exists(string name |
+      hasGlobalOrStdName(name) and
+      (
+        // strndup(str, maxlen)
+        name = "strndup"
+      )
+    )
+  }
+
+  override predicate hasArrayInput(int bufParam) { bufParam = 0 }
+
+  override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // This function may do only a partial copy of the input buffer to the output
+    // buffer, so it's a taint flow.
+    (
+      input.isParameterDeref(0) or
+      input.isParameter(1)
+    ) and
+    output.isReturnValueDeref()
+  }
+}
