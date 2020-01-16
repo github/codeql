@@ -1,5 +1,37 @@
 package com.semmle.js.extractor;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
+import java.lang.ProcessBuilder.Redirect;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -28,38 +60,6 @@ import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.Env;
 import com.semmle.util.projectstructure.ProjectLayout;
 import com.semmle.util.trap.TrapWriter;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Writer;
-import java.lang.ProcessBuilder.Redirect;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 /**
  * An alternative entry point to the JavaScript extractor.
@@ -557,9 +557,9 @@ public class AutoBuild {
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
 
-    Map<Path, Path> originalFiles = Collections.emptyMap();
+    DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
     if (!tsconfigFiles.isEmpty() && this.installDependencies) {
-      originalFiles = this.installDependencies(filesToExtract);
+      dependencyInstallationResult = this.installDependencies(filesToExtract);
     }
 
     // extract TypeScript projects and files
@@ -567,7 +567,7 @@ public class AutoBuild {
     try {
       extractedFiles = extractTypeScript(defaultExtractor, filesToExtract, tsconfigFiles);
     } finally {
-      restoreOriginalFiles(originalFiles);
+      restoreOriginalFiles(dependencyInstallationResult.getOriginalFiles());
     }
 
     // extract remaining files
@@ -618,9 +618,9 @@ public class AutoBuild {
 
   private static final Pattern validPackageName = Pattern.compile("(@[\\w.-]+/)?\\w[\\w.-]*");
 
-  protected Map<Path, Path> installDependencies(Set<Path> filesToExtract) {
+  protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
     if (!verifyYarnInstallation()) {
-      return Collections.emptyMap();
+      return DependencyInstallationResult.empty;
     }
 
     Path rootNodeModules = Paths.get("node_modules");
@@ -741,7 +741,7 @@ public class AutoBuild {
       }
     }
 
-    return originalFiles;
+    return new DependencyInstallationResult(originalFiles);
   }
 
   private ExtractorConfig mkExtractorConfig() {
