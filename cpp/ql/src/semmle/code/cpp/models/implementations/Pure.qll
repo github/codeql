@@ -30,7 +30,12 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
         name = "strtol" or
         name = "strtoll" or
         name = "strtoq" or
-        name = "strtoul"
+        name = "strtoul" or
+        name = "wcslen" or
+        name = "_mbslen" or
+        name = "_mbslen_l" or
+        name = "_mbstrlen" or
+        name = "_mbstrlen_l"
       )
     )
   }
