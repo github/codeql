@@ -25,8 +25,7 @@ BINARIES = go-extractor go-tokenizer go-autobuilder go-bootstrap
 
 clean:
 	rm -rf tools/bin tools/linux64 tools/osx64 tools/win64 tools/net tools/opencsv
-	rm -rf $(EXTRACTOR_PACK_OUT) build/stats-project build/testdb/check-upgrade-path \
-		build/testdb/go.dbscheme
+	rm -rf $(EXTRACTOR_PACK_OUT) build/stats-project build/testdb
 
 tools: $(addprefix tools/bin/,$(BINARIES)) tools/tokenizer.jar
 
