@@ -14,14 +14,14 @@ also check the second character of redirect URLs.
 
 <recommendation>
 <p>
-Also disallow the patterns <code>//*</code> and <code>/\*</code> when checking redirect URLs.
+Also disallow redirect URLs starting with <code>//</code> or <code>/\</code>.
 </p>
 </recommendation>
 
 <example>
 <p>
 The following function validates a (presumably untrusted) redirect URL <code>redir</code>. If it
-does not begin with <code>/</code>, the harmless placeholder redirect URL, <code>/</code> is
+does not begin with <code>/</code>, the harmless placeholder redirect URL <code>/</code> is
 returned to prevent an open redirect; otherwise <code>redir</code> itself is returned.
 </p>
 <sample src="BadRedirectCheck.go"/>

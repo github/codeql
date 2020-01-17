@@ -1,7 +1,7 @@
 /**
  * @name Bad redirect check
  * @description A redirect check that checks for a leading slash but not two
- *              leading slashes or a leading slash then backslash is
+ *              leading slashes or a leading slash followed by a backslash is
  *              incomplete.
  * @kind problem
  * @problem.severity warning
