@@ -7,7 +7,7 @@
 <overview>
 <p>A function is called without a prior function declaration or definition.
 When this happens, the compiler generates an implicit declaration of the function,
-specifying an integer return type and no parameters.</p>
+specifying an integer return type and no parameters.
 </p>
 
 <p>This may indicate a misspelled function name, or that the required header containing
