@@ -254,7 +254,7 @@ class ResultVariable extends DeclaredVariable {
 }
 
 /** A struct field. */
-class Field extends ValueEntity {
+class Field extends Variable {
   StructType declaringType;
 
   Field() { fieldstructs(this, declaringType) }
