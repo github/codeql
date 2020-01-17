@@ -69,4 +69,9 @@
 	} catch(e) {
 		sink(e); // NOT OK!
 	}
+	
+	function chainedPromise() {
+		return new Promise((resolve, reject) => reject(source)).then(() => {});
+	}
+	chainedPromise().then(() => {}).catch(e => sink(e)); // NOT OK!
 })();
