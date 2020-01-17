@@ -354,3 +354,40 @@ void test_outparams()
 	sink(d); // tainted [NOT DETECTED]
 	sink(e);
 }
+
+// --- strdup ---
+
+typedef unsigned long size_t;
+char *strdup(const char *s1);
+char *strndup(const char *s1, size_t n);
+wchar_t* wcsdup(const wchar_t* s1);
+
+void test_strdup(char *source)
+{
+	char *a, *b, *c;
+
+	a = strdup(source);
+	b = strdup("hello, world");
+	c = strndup(source, 100);
+	sink(a); // tainted
+	sink(b);
+	sink(c); // tainted [NOT DETECTED]
+}
+
+void test_strndup(int source)
+{
+	char *a;
+
+	a = strndup("hello, world", source);
+	sink(a);
+}
+
+void test_wcsdup(wchar_t *source)
+{
+	wchar_t *a, *b;
+
+	a = wcsdup(source);
+	b = wcsdup(L"hello, world");
+	sink(a); // tainted
+	sink(b);
+}
