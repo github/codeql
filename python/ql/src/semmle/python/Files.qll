@@ -9,12 +9,12 @@ class File extends Container {
     }
 
     /** DEPRECATED: Use `getAbsolutePath` instead. */
-    override string getName() {
+    deprecated override string getName() {
         files(this, result, _, _, _)
     }
 
     /** DEPRECATED: Use `getAbsolutePath` instead. */
-    string getFullName() {
+    deprecated string getFullName() {
         result = getName()
     }
 
@@ -97,12 +97,12 @@ class Folder extends Container {
     }
 
     /** DEPRECATED: Use `getAbsolutePath` instead. */
-    override string getName() {
+    deprecated override string getName() {
         folders(this, result, _)
     }
 
     /** DEPRECATED: Use `getBaseName` instead. */
-    string getSimple() {
+    deprecated string getSimple() {
         folders(this, _, result)
     }
 
