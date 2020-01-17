@@ -23,6 +23,6 @@ the function declaration has not been included.</p>
 </example>
 
 <references>
-<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL31-C.+Declare+identifiers+before+using+them"> DCL20-C. Explicitly specify void when a function accepts no arguments </a></li>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL31-C.+Declare+identifiers+before+using+them">DCL31-C. Declare identifiers before using them</a></li>
 </references>
 </qhelp>
