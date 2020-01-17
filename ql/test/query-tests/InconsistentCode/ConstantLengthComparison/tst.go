@@ -1,7 +1,7 @@
 package main
 
 func isPrefixOfGood2(xs, ys []int) bool {
-	if len(ys) == 0 {  // OK: not inside the loop
+	if len(ys) == 0 { // OK: not inside the loop
 		return len(xs) == 0
 	}
 

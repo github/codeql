@@ -22,6 +22,8 @@ private predicate isCondRoot(Expr e) {
   e = any(ForStmt fs).getCond()
   or
   e = any(IfStmt is).getCond()
+  or
+  e = any(ExpressionSwitchStmt ess | not exists(ess.getExpr())).getACase().getAnExpr()
 }
 
 private predicate isCond(Expr e) {
@@ -245,9 +247,9 @@ newtype TControlFlowNode =
   MkImplicitTrue(ExpressionSwitchStmt stmt) { not exists(stmt.getExpr()) } or
   /**
    * A control-flow node that represents the implicit comparison or type check performed by
-   * the the `i`th expression of a case clause `cc`.
+   * the `i`th expression of a case clause `cc`.
    */
-  MkCaseNode(CaseClause cc, int i) { exists(cc.getExpr(i)) } or
+  MkCaseCheckNode(CaseClause cc, int i) { exists(cc.getExpr(i)) } or
   /**
    * A control-flow node that represents the implicit lower bound of a slice expression.
    */
@@ -943,7 +945,16 @@ module CFG {
       firstNode(getExpr(i), result)
       or
       getExpr(i) instanceof TypeExpr and
-      result = MkCaseNode(this, i)
+      result = MkCaseCheckNode(this, i)
+    }
+
+    ControlFlow::Node getExprEnd(int i, Boolean outcome) {
+      exists(Expr e | e = getExpr(i) |
+        result = MkConditionGuardNode(e, outcome)
+        or
+        not exists(MkConditionGuardNode(e, _)) and
+        result = MkCaseCheckNode(this, i)
+      )
     }
 
     private ControlFlow::Node getBodyStart() {
@@ -961,7 +972,7 @@ module CFG {
       ControlFlowTree.super.lastNode(last, cmpl)
       or
       // TODO: shouldn't be here
-      last = MkCaseNode(this, getNumExpr() - 1) and
+      last = getExprEnd(getNumExpr() - 1, false) and
       cmpl = Bool(false)
       or
       last = MkSkipNode(this) and
@@ -975,14 +986,18 @@ module CFG {
       or
       exists(int i |
         lastNode(getExpr(i), pred, normalCompletion()) and
-        succ = MkCaseNode(this, i)
+        succ = MkCaseCheckNode(this, i)
         or
-        pred = MkCaseNode(this, i) and
-        (
-          succ = getExprStart(i + 1)
-          or
-          succ = getBodyStart()
-        )
+        // visit guard node if there is one
+        pred = MkCaseCheckNode(this, i) and
+        succ = getExprEnd(i, _) and
+        succ != pred // this avoids self-loops if there isn't a guard node
+        or
+        pred = getExprEnd(i, false) and
+        succ = getExprStart(i + 1)
+        or
+        pred = getExprEnd(i, true) and
+        succ = getBodyStart()
       )
     }
 
@@ -1713,11 +1728,11 @@ module CFG {
       |
         not exists(this.getDefault()) and
         i = this.getNumCase() - 1 and
-        last = MkCaseNode(cc, cc.getNumExpr() - 1) and
+        last = cc.(CaseClauseTree).getExprEnd(cc.getNumExpr() - 1, false) and
         inner.isNormal() and
         cmpl = inner
         or
-        not last instanceof MkCaseNode and
+        not last = cc.(CaseClauseTree).getExprEnd(_, _) and
         inner.isNormal() and
         cmpl = inner
         or
@@ -1754,7 +1769,7 @@ module CFG {
       exists(CaseClause cc, int i |
         cc = getNonDefaultCase(i) and
         lastNode(cc, pred, normalCompletion()) and
-        pred instanceof MkCaseNode
+        pred = cc.(CaseClauseTree).getExprEnd(_, false)
       |
         firstNode(getNonDefaultCase(i + 1), succ)
         or

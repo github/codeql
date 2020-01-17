@@ -56,6 +56,6 @@ func main() {
 	i.password = "--- redacted ---" // OK
 	certsDir := "/certs"            // OK
 	fmt.Println(certsDir)
-	accountParameter := "ACCOUNT"	// OK
+	accountParameter := "ACCOUNT" // OK
 	fmt.Println(accountParameter)
 }

@@ -1,3 +1,41 @@
+| DuplicateSwitchCase.go:0:0:0:0 | entry | DuplicateSwitchCase.go:3:6:3:15 | skip |
+| DuplicateSwitchCase.go:3:1:3:1 | entry | DuplicateSwitchCase.go:3:17:3:19 | argument corresponding to msg |
+| DuplicateSwitchCase.go:3:1:12:1 | function declaration | DuplicateSwitchCase.go:14:6:14:10 | skip |
+| DuplicateSwitchCase.go:3:6:3:15 | skip | DuplicateSwitchCase.go:3:1:12:1 | function declaration |
+| DuplicateSwitchCase.go:3:17:3:19 | argument corresponding to msg | DuplicateSwitchCase.go:3:17:3:19 | initialization of msg |
+| DuplicateSwitchCase.go:3:17:3:19 | initialization of msg | DuplicateSwitchCase.go:4:2:4:2 | true |
+| DuplicateSwitchCase.go:4:2:4:2 | true | DuplicateSwitchCase.go:5:7:5:9 | msg |
+| DuplicateSwitchCase.go:5:7:5:9 | msg | DuplicateSwitchCase.go:5:14:5:20 | "start" |
+| DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:5:7:5:20 | case ...==... |
+| DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:12:1:12:1 | exit |
+| DuplicateSwitchCase.go:5:7:5:20 | case ...==... | DuplicateSwitchCase.go:5:20:5:20 | ...==... is false |
+| DuplicateSwitchCase.go:5:7:5:20 | case ...==... | DuplicateSwitchCase.go:5:20:5:20 | ...==... is true |
+| DuplicateSwitchCase.go:5:14:5:20 | "start" | DuplicateSwitchCase.go:5:7:5:20 | ...==... |
+| DuplicateSwitchCase.go:5:20:5:20 | ...==... is false | DuplicateSwitchCase.go:7:7:7:9 | msg |
+| DuplicateSwitchCase.go:5:20:5:20 | ...==... is true | DuplicateSwitchCase.go:6:3:6:7 | start |
+| DuplicateSwitchCase.go:6:3:6:7 | start | DuplicateSwitchCase.go:6:3:6:9 | call to start |
+| DuplicateSwitchCase.go:6:3:6:9 | call to start | DuplicateSwitchCase.go:12:1:12:1 | exit |
+| DuplicateSwitchCase.go:7:7:7:9 | msg | DuplicateSwitchCase.go:7:14:7:20 | "start" |
+| DuplicateSwitchCase.go:7:7:7:20 | ...==... | DuplicateSwitchCase.go:7:7:7:20 | case ...==... |
+| DuplicateSwitchCase.go:7:7:7:20 | ...==... | DuplicateSwitchCase.go:12:1:12:1 | exit |
+| DuplicateSwitchCase.go:7:7:7:20 | case ...==... | DuplicateSwitchCase.go:7:20:7:20 | ...==... is false |
+| DuplicateSwitchCase.go:7:7:7:20 | case ...==... | DuplicateSwitchCase.go:7:20:7:20 | ...==... is true |
+| DuplicateSwitchCase.go:7:14:7:20 | "start" | DuplicateSwitchCase.go:7:7:7:20 | ...==... |
+| DuplicateSwitchCase.go:7:20:7:20 | ...==... is false | DuplicateSwitchCase.go:10:3:10:7 | panic |
+| DuplicateSwitchCase.go:7:20:7:20 | ...==... is true | DuplicateSwitchCase.go:8:3:8:6 | stop |
+| DuplicateSwitchCase.go:8:3:8:6 | stop | DuplicateSwitchCase.go:8:3:8:8 | call to stop |
+| DuplicateSwitchCase.go:8:3:8:8 | call to stop | DuplicateSwitchCase.go:12:1:12:1 | exit |
+| DuplicateSwitchCase.go:10:3:10:7 | panic | DuplicateSwitchCase.go:10:9:10:33 | "Message not understood." |
+| DuplicateSwitchCase.go:10:3:10:34 | call to panic | DuplicateSwitchCase.go:12:1:12:1 | exit |
+| DuplicateSwitchCase.go:10:9:10:33 | "Message not understood." | DuplicateSwitchCase.go:10:3:10:34 | call to panic |
+| DuplicateSwitchCase.go:14:1:14:1 | entry | DuplicateSwitchCase.go:14:14:14:15 | skip |
+| DuplicateSwitchCase.go:14:1:14:15 | function declaration | DuplicateSwitchCase.go:16:6:16:9 | skip |
+| DuplicateSwitchCase.go:14:6:14:10 | skip | DuplicateSwitchCase.go:14:1:14:15 | function declaration |
+| DuplicateSwitchCase.go:14:14:14:15 | skip | DuplicateSwitchCase.go:14:15:14:15 | exit |
+| DuplicateSwitchCase.go:16:1:16:1 | entry | DuplicateSwitchCase.go:16:13:16:14 | skip |
+| DuplicateSwitchCase.go:16:1:16:14 | function declaration | DuplicateSwitchCase.go:0:0:0:0 | exit |
+| DuplicateSwitchCase.go:16:6:16:9 | skip | DuplicateSwitchCase.go:16:1:16:14 | function declaration |
+| DuplicateSwitchCase.go:16:13:16:14 | skip | DuplicateSwitchCase.go:16:14:16:14 | exit |
 | exprs.go:0:0:0:0 | entry | exprs.go:3:1:3:29 | skip |
 | exprs.go:3:1:3:29 | skip | exprs.go:5:6:5:9 | skip |
 | exprs.go:5:1:5:1 | entry | exprs.go:6:6:6:6 | skip |
@@ -1079,9 +1117,11 @@
 | stmts.go:102:2:102:2 | true | stmts.go:105:7:105:10 | true |
 | stmts.go:104:3:104:7 | skip | stmts.go:107:1:107:1 | exit |
 | stmts.go:105:2:105:11 | skip | stmts.go:107:1:107:1 | exit |
-| stmts.go:105:7:105:10 | case true | stmts.go:104:3:104:7 | skip |
-| stmts.go:105:7:105:10 | case true | stmts.go:105:2:105:11 | skip |
+| stmts.go:105:7:105:10 | case true | stmts.go:105:10:105:10 | true is false |
+| stmts.go:105:7:105:10 | case true | stmts.go:105:10:105:10 | true is true |
 | stmts.go:105:7:105:10 | true | stmts.go:105:7:105:10 | case true |
+| stmts.go:105:10:105:10 | true is false | stmts.go:104:3:104:7 | skip |
+| stmts.go:105:10:105:10 | true is true | stmts.go:105:2:105:11 | skip |
 | stmts.go:110:1:110:1 | entry | stmts.go:110:12:110:12 | argument corresponding to x |
 | stmts.go:110:1:123:1 | function declaration | stmts.go:126:6:126:11 | skip |
 | stmts.go:110:6:110:10 | skip | stmts.go:110:1:123:1 | function declaration |
@@ -1165,3 +1205,58 @@
 | stmts.go:143:12:143:13 | next key-value pair in range | stmts.go:145:1:145:1 | exit |
 | stmts.go:143:12:143:13 | xs | stmts.go:143:12:143:13 | next key-value pair in range |
 | stmts.go:143:15:144:2 | skip | stmts.go:143:12:143:13 | next key-value pair in range |
+| tst.go:0:0:0:0 | entry | tst.go:3:6:3:10 | skip |
+| tst.go:3:1:3:1 | entry | tst.go:3:12:3:12 | argument corresponding to x |
+| tst.go:3:1:12:1 | function declaration | tst.go:14:6:14:11 | skip |
+| tst.go:3:6:3:10 | skip | tst.go:3:1:12:1 | function declaration |
+| tst.go:3:12:3:12 | argument corresponding to x | tst.go:3:12:3:12 | initialization of x |
+| tst.go:3:12:3:12 | initialization of x | tst.go:4:2:4:2 | true |
+| tst.go:4:2:4:2 | true | tst.go:5:7:5:7 | x |
+| tst.go:4:2:4:2 | true | tst.go:12:1:12:1 | exit |
+| tst.go:5:2:5:13 | skip | tst.go:12:1:12:1 | exit |
+| tst.go:5:7:5:7 | x | tst.go:5:11:5:12 | 23 |
+| tst.go:5:7:5:12 | ...<... | tst.go:5:7:5:12 | case ...<... |
+| tst.go:5:7:5:12 | case ...<... | tst.go:5:12:5:12 | ...<... is false |
+| tst.go:5:7:5:12 | case ...<... | tst.go:5:12:5:12 | ...<... is true |
+| tst.go:5:11:5:12 | 23 | tst.go:5:7:5:12 | ...<... |
+| tst.go:5:12:5:12 | ...<... is false | tst.go:7:7:7:7 | x |
+| tst.go:5:12:5:12 | ...<... is true | tst.go:5:2:5:13 | skip |
+| tst.go:7:2:7:13 | skip | tst.go:12:1:12:1 | exit |
+| tst.go:7:7:7:7 | x | tst.go:7:11:7:12 | 42 |
+| tst.go:7:7:7:12 | ...<... | tst.go:7:7:7:12 | case ...<... |
+| tst.go:7:7:7:12 | case ...<... | tst.go:7:12:7:12 | ...<... is false |
+| tst.go:7:7:7:12 | case ...<... | tst.go:7:12:7:12 | ...<... is true |
+| tst.go:7:11:7:12 | 42 | tst.go:7:7:7:12 | ...<... |
+| tst.go:7:12:7:12 | ...<... is false | tst.go:9:7:9:7 | x |
+| tst.go:7:12:7:12 | ...<... is true | tst.go:7:2:7:13 | skip |
+| tst.go:9:2:9:13 | skip | tst.go:12:1:12:1 | exit |
+| tst.go:9:7:9:7 | x | tst.go:9:11:9:12 | 23 |
+| tst.go:9:7:9:12 | ...<... | tst.go:9:7:9:12 | case ...<... |
+| tst.go:9:7:9:12 | case ...<... | tst.go:9:12:9:12 | ...<... is false |
+| tst.go:9:7:9:12 | case ...<... | tst.go:9:12:9:12 | ...<... is true |
+| tst.go:9:11:9:12 | 23 | tst.go:9:7:9:12 | ...<... |
+| tst.go:9:12:9:12 | ...<... is false | tst.go:12:1:12:1 | exit |
+| tst.go:9:12:9:12 | ...<... is true | tst.go:9:2:9:13 | skip |
+| tst.go:14:1:14:1 | entry | tst.go:14:13:14:17 | argument corresponding to value |
+| tst.go:14:1:21:1 | function declaration | tst.go:0:0:0:0 | exit |
+| tst.go:14:6:14:11 | skip | tst.go:14:1:21:1 | function declaration |
+| tst.go:14:13:14:17 | argument corresponding to value | tst.go:14:13:14:17 | initialization of value |
+| tst.go:14:13:14:17 | initialization of value | tst.go:15:2:15:2 | true |
+| tst.go:15:2:15:2 | true | tst.go:16:7:16:11 | value |
+| tst.go:15:2:15:2 | true | tst.go:21:1:21:1 | exit |
+| tst.go:16:2:16:34 | skip | tst.go:21:1:21:1 | exit |
+| tst.go:16:7:16:11 | value | tst.go:16:15:16:33 | ...*... |
+| tst.go:16:7:16:33 | ...<... | tst.go:16:7:16:33 | case ...<... |
+| tst.go:16:7:16:33 | case ...<... | tst.go:16:33:16:33 | ...<... is false |
+| tst.go:16:7:16:33 | case ...<... | tst.go:16:33:16:33 | ...<... is true |
+| tst.go:16:15:16:33 | ...*... | tst.go:16:7:16:33 | ...<... |
+| tst.go:16:33:16:33 | ...<... is false | tst.go:18:7:18:11 | value |
+| tst.go:16:33:16:33 | ...<... is true | tst.go:16:2:16:34 | skip |
+| tst.go:18:2:18:39 | skip | tst.go:21:1:21:1 | exit |
+| tst.go:18:7:18:11 | value | tst.go:18:15:18:38 | ...*... |
+| tst.go:18:7:18:38 | ...<... | tst.go:18:7:18:38 | case ...<... |
+| tst.go:18:7:18:38 | case ...<... | tst.go:18:38:18:38 | ...<... is false |
+| tst.go:18:7:18:38 | case ...<... | tst.go:18:38:18:38 | ...<... is true |
+| tst.go:18:15:18:38 | ...*... | tst.go:18:7:18:38 | ...<... |
+| tst.go:18:38:18:38 | ...<... is false | tst.go:21:1:21:1 | exit |
+| tst.go:18:38:18:38 | ...<... is true | tst.go:18:2:18:39 | skip |
