@@ -27,10 +27,10 @@ clean:
 	rm -rf tools/bin tools/linux64 tools/osx64 tools/win64 tools/net tools/opencsv
 	rm -rf $(EXTRACTOR_PACK_OUT) build/stats-project build/testdb
 
-tools: $(addprefix tools/bin/,$(BINARIES)) tools/tokenizer.jar
+tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
 
-$(addprefix tools/bin/,$(BINARIES)):
-	go build -mod=vendor -o $@ ./extractor/cli/$(notdir $@)
+$(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))):
+	go build -mod=vendor -o $@ ./extractor/cli/$(basename $(notdir $@))
 
 tools-codeql: tools-$(CODEQL_PLATFORM)
 
