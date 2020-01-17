@@ -47,7 +47,7 @@ class InetNetwork extends TaintFunction, ArrayFunction {
   InetNetwork() { hasGlobalName("inet_network") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(1) and
+    input.isParameterDeref(0) and
     output.isReturnValue()
   }
 
