@@ -974,7 +974,7 @@ class InheritanceConversionInstruction extends UnaryInstruction {
 
 /**
  * Represents an instruction that converts from the address of a derived class
- * to the address of a direct base class.
+ * to the address of a base class.
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
   ConvertToBaseInstruction() { getOpcode() instanceof ConvertToBaseOpcode }
