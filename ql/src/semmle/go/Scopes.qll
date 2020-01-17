@@ -260,6 +260,18 @@ class Field extends Variable {
   Field() { fieldstructs(this, declaringType) }
 
   StructType getDeclaringType() { result = declaringType }
+
+  /**
+   * Holds if this field has name `f` and it belongs to a type  `tp` declared in package `pkg`.
+   *
+   * Note that due to field embedding the same field may belong to multiple types.
+   */
+  predicate hasQualifiedName(string pkg, string tp, string f) {
+    exists(Type base |
+      base.hasQualifiedName(pkg, tp) and
+      this = base.getField(f)
+    )
+  }
 }
 
 /** A built-in or declared function. */
