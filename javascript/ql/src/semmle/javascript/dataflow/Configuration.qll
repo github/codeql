@@ -318,16 +318,12 @@ abstract class BarrierGuardNode extends DataFlow::Node {
    *
    * INTERNAL: this predicate should only be used from within `blocks(boolean, Expr)`.
    */
-  pragma[noinline,nomagic]
   predicate internalBlocks(DataFlow::Node nd, string label) {
     // 1) `nd` is a use of a refinement node that blocks its input variable
     exists(SsaRefinementNode ref, boolean outcome |
       nd = DataFlow::ssaDefinitionNode(ref) and
-      forex(SsaVariable input | input = ref.getAnInput() |
-        getEnclosingExpr() = ref.getGuard().getTest() and
-        outcome = ref.getGuard().(ConditionGuardNode).getOutcome() and
-        barrierGuardBlocksExpr(this, outcome, input.getAUse(), label)
-      )
+      outcome = ref.getGuard().(ConditionGuardNode).getOutcome() and
+      ssaRefinementBlocks(outcome, ref, label)
     )
     or
     // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
@@ -337,8 +333,21 @@ abstract class BarrierGuardNode extends DataFlow::Node {
       outcome = cond.getOutcome() and
       barrierGuardBlocksAccessPath(this, outcome, p, label) and
       cond.dominates(bb)
+    )   
+  }
+  
+  /**
+   * Holds if there exists an input variable of `ref` that blocks the label `label`. 
+   * 
+   * This predicate is outlined to give the optimizer a hint about the join ordering. 
+   */
+  private predicate ssaRefinementBlocks(boolean outcome, SsaRefinementNode ref, string label) {
+  	getEnclosingExpr() = ref.getGuard().getTest() and
+    forex(SsaVariable input | input = ref.getAnInput() |
+      barrierGuardBlocksExpr(this, outcome, input.getAUse(), label)
     )
   }
+  
 
   /**
    * Holds if this node blocks expression `e` provided it evaluates to `outcome`.
