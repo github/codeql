@@ -106,7 +106,7 @@ module DomBasedXss {
    * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
    * HTML by a jQuery method.
    */
-  private predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
+  predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
     any(JQuery::MethodCall call).interpretsArgumentAsHtml(htmlString) and
     prefix = htmlString
     or
