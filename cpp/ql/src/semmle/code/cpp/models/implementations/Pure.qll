@@ -44,6 +44,10 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
     getParameter(bufParam).getUnspecifiedType() instanceof PointerType
   }
 
+  override predicate hasArrayWithNullTerminator(int bufParam) {
+    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
+  }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(ParameterIndex i |
       input.isParameter(i) and
