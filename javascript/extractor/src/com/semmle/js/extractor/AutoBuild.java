@@ -617,6 +617,23 @@ public class AutoBuild {
   }
 
   private static final Pattern validPackageName = Pattern.compile("(@[\\w.-]+/)?\\w[\\w.-]*");
+  
+  private static Path tryResolveWithExtensions(Path dir, String stem, Iterable<String> extensions) {
+    for (String ext : extensions) {
+      Path path = dir.resolve(stem + ext);
+      if (Files.exists(dir.resolve(path))) {
+        return path;
+      }
+    }
+    return null;
+  }
+  
+  private static Path tryResolveTypeScriptOrJavaScriptFile(Path dir, String stem) {
+    Path resolved = tryResolveWithExtensions(dir, stem, FileType.TYPESCRIPT.getExtensions());
+    if (resolved != null) return resolved;
+    return tryResolveWithExtensions(dir, stem, FileType.JS.getExtensions());
+  }
+
 
   protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
     if (!verifyYarnInstallation()) {
@@ -688,11 +705,14 @@ public class AutoBuild {
             }
           }
           // Override "main" to point at the source folder instead of the output directory.
-          // TypeScript uses this field to locate the contents of a package.
-          // We simply guess that "./src" contains the source code, if it exists.
-          if (Files.exists(path.getParent().resolve("src"))) {
-            packageJson.addProperty("main", "./src");
+          Path entryPoint = guessPackageMainFile(path, packageJson);
+          if (entryPoint != null) {
+            System.out.println("Main file for " + path + " set to " + entryPoint);
+            packageJson.addProperty("main", entryPoint.toString());
+            packageJson.remove("typings");
             filesToChange.add(path);
+          } else {
+            System.out.println("No main file found for " + path);
           }
         });
 
@@ -742,6 +762,71 @@ public class AutoBuild {
     }
 
     return new DependencyInstallationResult(originalFiles);
+  }
+
+  /**
+   * Attempts to find a TypeScript file that acts as the main entry point to the
+   * given package - that is, the file you get when importing the package by name
+   * without any path suffix.
+   */
+  private Path guessPackageMainFile(Path packageJsonFile, JsonObject packageJson) {
+    Path packageDir = packageJsonFile.getParent();
+    
+    // Try <package_dir>/index.ts.
+    // Do not allow JavaScript extensions at this point as it might be compiled output (will be attempted later). 
+    Path resolved = tryResolveWithExtensions(packageDir, "index", FileType.TYPESCRIPT.getExtensions());
+    if (resolved != null) {
+      return resolved;
+    }
+
+    // Get the "main" property from the package.json
+    // This usually refers to the compiled output, such as `./out/foo.js` but may hint as to
+    // the name of main file ("foo" in this case).
+    String mainStr = null;
+    JsonElement mainElm = packageJson.get("main");
+    if (mainElm instanceof JsonPrimitive && ((JsonPrimitive)mainElm).isString()) {
+      mainStr = mainElm.getAsString();
+    }
+
+    // Look for source files `./src` if it exists
+    Path sourceDir = packageDir.resolve("src");
+    if (Files.isDirectory(sourceDir)) {
+      // Try `src/index.ts`
+      resolved = tryResolveTypeScriptOrJavaScriptFile(sourceDir, "index");
+      if (resolved != null) {
+        return resolved;
+      }
+
+      // If "main" was defined, try to map it to a file in `src`.
+      // For example `out/dist/foo.bundle.js` might be mapped back to `src/foo.ts`.
+      if (mainStr != null) {
+        Path candidatePath = Paths.get(mainStr);
+
+        // Strip off prefix directories that don't exist under `src/`, such as `out` and `dist`.
+        while (candidatePath.getNameCount() > 1 && !Files.isDirectory(sourceDir.resolve(candidatePath.getParent()))) {
+          candidatePath = candidatePath.subpath(1, candidatePath.getNameCount());
+        }
+
+        // Strip off extensions until a file can be found
+        while (true) {
+          resolved = tryResolveTypeScriptOrJavaScriptFile(sourceDir, candidatePath.toString());
+          if (resolved != null) {
+            return resolved;
+          }
+          Path withoutExt = candidatePath.resolveSibling(FileUtil.stripExtension(candidatePath.getFileName().toString()));
+          if (withoutExt.equals(candidatePath)) break; // No more extensions to strip
+          candidatePath = withoutExt;
+        }
+      }
+    }
+    
+    // Try <package_dir>/index.js - this time allowing JS extension.
+    resolved = tryResolveWithExtensions(packageDir, "index", FileType.JS.getExtensions());
+    if (resolved != null) {
+      return resolved;
+    }
+
+    return resolved;
   }
 
   private ExtractorConfig mkExtractorConfig() {
