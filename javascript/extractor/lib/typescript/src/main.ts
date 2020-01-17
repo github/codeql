@@ -262,6 +262,23 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     let program = project.program;
     let typeChecker = program.getTypeChecker();
 
+    let diagnostics = program.getSemanticDiagnostics()
+        .filter(d => d.category === ts.DiagnosticCategory.Error);
+    console.warn('TypeScript: reported ' + diagnostics.length + ' semantic errors.');
+    for (let diagnostic of diagnostics) {
+        let text = diagnostic.messageText;
+        if (typeof text !== 'string') {
+            text = text.messageText;
+        }
+        let locationStr = '';
+        let { file } = diagnostic;
+        if (file != null) {
+            let { line, character } = file.getLineAndCharacterOfPosition(diagnostic.start);
+            locationStr = `${file.fileName}:${line}:${character}`;
+        }
+        console.warn(`TypeScript: ${locationStr} ${text}`);
+    }
+
     // Associate external module names with the corresponding file symbols.
     // We need these mappings to identify which module a given external type comes from.
     // The TypeScript API lets us resolve a module name to a source file, but there is no
