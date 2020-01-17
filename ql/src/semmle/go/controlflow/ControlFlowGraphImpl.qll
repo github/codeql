@@ -983,9 +983,10 @@ module CFG {
         lastNode(getExpr(i), pred, normalCompletion()) and
         succ = MkCaseNode(this, i)
         or
+        // visit guard node if there is one
         pred = MkCaseNode(this, i) and
         succ = getExprEnd(i, _) and
-        succ != pred
+        succ != pred // this avoids self-loops if there isn't a guard node
         or
         pred = getExprEnd(i, false) and
         succ = getExprStart(i + 1)
