@@ -43,7 +43,7 @@ module IR {
       this instanceof MkResultInit or
       this instanceof MkNextNode or
       this instanceof MkImplicitTrue or
-      this instanceof MkCaseNode or
+      this instanceof MkCaseCheckNode or
       this instanceof MkImplicitLowerSliceBound or
       this instanceof MkImplicitUpperSliceBound or
       this instanceof MkImplicitMaxSliceBound
@@ -138,7 +138,7 @@ module IR {
       this instanceof MkResultInit and result = "result initialization" or
       this instanceof MkNextNode and result = "next key-value pair" or
       this instanceof MkImplicitTrue and result = "implicit true" or
-      this instanceof MkCaseNode and result = "case" or
+      this instanceof MkCaseCheckNode and result = "case" or
       this instanceof MkImplicitLowerSliceBound and result = "implicit lower bound" or
       this instanceof MkImplicitUpperSliceBound and result = "implicit upper bound" or
       this instanceof MkImplicitMaxSliceBound and result = "implicit maximum"
@@ -1049,14 +1049,27 @@ module IR {
   }
 
   /**
-   * An instruction corresponding to a `case` clause.
+   * An instruction corresponding to the implicit comparison or type check performed by an
+   * expression in a `case` clause.
+   *
+   * For example, consider this `switch` statement:
+   *
+   * ```go
+   * switch x {
+   * case 2, y+1:
+   *   ...
+   * }
+   * ```
+   *
+   * The expressions `2` and `y+1` are implicitly compared to `x`. These comparisons are
+   * represented by case instructions.
    */
-  class CaseInstruction extends Instruction, MkCaseNode {
+  class CaseInstruction extends Instruction, MkCaseCheckNode {
     CaseClause cc;
 
     int i;
 
-    CaseInstruction() { this = MkCaseNode(cc, i) }
+    CaseInstruction() { this = MkCaseCheckNode(cc, i) }
 
     override ControlFlow::Root getRoot() { result.isRootOf(cc) }
 
