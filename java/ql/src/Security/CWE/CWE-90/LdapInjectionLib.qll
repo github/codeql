@@ -1,129 +1,16 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import DataFlow
+import semmle.code.java.frameworks.Jndi
+import semmle.code.java.frameworks.UnboundId
+import semmle.code.java.frameworks.SpringLdap
+import semmle.code.java.frameworks.ApacheLdap
 
-/** The interface `javax.naming.directory.DirContext`. */
-class TypeDirContext extends Interface {
-  TypeDirContext() { this.hasQualifiedName("javax.naming.directory", "DirContext") }
-}
-
-/** The interface `javax.naming.ldap.LdapContext`. */
-class TypeLdapContext extends Interface {
-  TypeLdapContext() { this.hasQualifiedName("javax.naming.ldap", "LdapContext") }
-}
-
-/** The class `javax.naming.ldap.LdapName`. */
-class TypeLdapName extends Class {
-  TypeLdapName() { this.hasQualifiedName("javax.naming.ldap", "LdapName") }
-}
-
-/** The interface `com.unboundid.ldap.sdk.ReadOnlySearchRequest`. */
-class TypeReadOnlySearchRequest extends Interface {
-  TypeReadOnlySearchRequest() {
-    this.hasQualifiedName("com.unboundid.ldap.sdk", "ReadOnlySearchRequest")
-  }
-}
-
-/** The class `com.unboundid.ldap.sdk.SearchRequest`. */
-class TypeUnboundIdSearchRequest extends Class {
-  TypeUnboundIdSearchRequest() { this.hasQualifiedName("com.unboundid.ldap.sdk", "SearchRequest") }
-}
-
-/** The class `com.unboundid.ldap.sdk.Filter`. */
-class TypeUnboundIdLdapFilter extends Class {
-  TypeUnboundIdLdapFilter() { this.hasQualifiedName("com.unboundid.ldap.sdk", "Filter") }
-}
-
-/** The class `com.unboundid.ldap.sdk.LDAPConnection`. */
-class TypeLDAPConnection extends Class {
-  TypeLDAPConnection() { this.hasQualifiedName("com.unboundid.ldap.sdk", "LDAPConnection") }
-}
-
-/** The class `org.springframework.ldap.core.LdapTemplate`. */
-class TypeLdapTemplate extends Class {
-  TypeLdapTemplate() { this.hasQualifiedName("org.springframework.ldap.core", "LdapTemplate") }
-}
-
-/** The interface `org.springframework.ldap.query.LdapQuery`. */
-class TypeLdapQuery extends Interface {
-  TypeLdapQuery() { this.hasQualifiedName("org.springframework.ldap.query", "LdapQuery") }
-}
-
-/** The class `org.springframework.ldap.query.LdapQueryBuilder`. */
-class TypeLdapQueryBuilder extends Class {
-  TypeLdapQueryBuilder() {
-    this.hasQualifiedName("org.springframework.ldap.query", "LdapQueryBuilder")
-  }
-}
-
-/** The interface `org.springframework.ldap.query.ConditionCriteria`. */
-class TypeConditionCriteria extends Interface {
-  TypeConditionCriteria() {
-    this.hasQualifiedName("org.springframework.ldap.query", "ConditionCriteria")
-  }
-}
-
-/** The interface `org.springframework.ldap.query.ContainerCriteria`. */
-class TypeContainerCriteria extends Interface {
-  TypeContainerCriteria() {
-    this.hasQualifiedName("org.springframework.ldap.query", "ContainerCriteria")
-  }
-}
-
-/** The class `org.springframework.ldap.filter.HardcodedFilter`. */
-class TypeHardcodedFilter extends Class {
-  TypeHardcodedFilter() {
-    this.hasQualifiedName("org.springframework.ldap.filter", "HardcodedFilter")
-  }
-}
-
-/** The interface `org.springframework.ldap.filter.Filter`. */
-class TypeSpringLdapFilter extends Interface {
-  TypeSpringLdapFilter() { this.hasQualifiedName("org.springframework.ldap.filter", "Filter") }
-}
-
-/** The class `org.springframework.ldap.support.LdapNameBuilder`. */
-class TypeLdapNameBuilder extends Class {
-  TypeLdapNameBuilder() {
-    this.hasQualifiedName("org.springframework.ldap.support", "LdapNameBuilder")
-  }
-}
-
-/** The class `org.springframework.ldap.support.LdapUtils`. */
-class TypeLdapUtils extends Class {
-  TypeLdapUtils() { this.hasQualifiedName("org.springframework.ldap.support", "LdapUtils") }
-}
-
-/** The interface `org.apache.directory.ldap.client.api.LdapConnection`. */
-class TypeLdapConnection extends Interface {
-  TypeLdapConnection() {
-    this.hasQualifiedName("org.apache.directory.ldap.client.api", "LdapConnection")
-  }
-}
-
-/** The interface `org.apache.directory.api.ldap.model.message.SearchRequest`. */
-class TypeApacheSearchRequest extends Interface {
-  TypeApacheSearchRequest() {
-    this.hasQualifiedName("org.apache.directory.api.ldap.model.message", "SearchRequest")
-  }
-}
-
-/** The class `org.apache.directory.api.ldap.model.name.Dn`. */
-class TypeApacheDn extends Class {
-  TypeApacheDn() {
-    this.hasQualifiedName("org.apache.directory.api.ldap.model.name", "Dn")
-  }
-}
-
-/** The class `org.springframework.ldap.support.LdapEncoder`. */
-class TypeLdapEncoder extends Class {
-  TypeLdapEncoder() { this.hasQualifiedName("org.springframework.ldap.support", "LdapEncoder") }
-}
 
 /** Holds if the parameter of `c` at index `paramIndex` is varargs. */
 bindingset[paramIndex]
 predicate isVarargs(Callable c, int paramIndex) {
-  c.getParameter(min(int i | i = paramIndex or i = c.getNumberOfParameters() - 1 | i)).isVarargs()
+  c.isVarargs() and paramIndex >= c.getNumberOfParameters() - 1
 }
 
 /** A data flow source for unvalidated user input that is used to construct LDAP queries. */
@@ -131,9 +18,6 @@ abstract class LdapInjectionSource extends DataFlow::Node { }
 
 /** A data flow sink for unvalidated user input that is used to construct LDAP queries. */
 abstract class LdapInjectionSink extends DataFlow::ExprNode { }
-
-/** A sanitizer for unvalidated user input that is used to construct LDAP queries. */
-abstract class LdapInjectionSanitizer extends DataFlow::ExprNode { }
 
 /**
 * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
@@ -145,7 +29,9 @@ class LdapInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof LdapInjectionSink }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof LdapInjectionSanitizer }
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+  }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     ldapNameStep(node1, node2) or
@@ -183,7 +69,7 @@ class LocalSource extends LdapInjectionSource {
 
 /**
  * JNDI sink for LDAP injection vulnerabilities, i.e. 1st (DN) or 2nd (filter) argument to
- * `search` method from `DirContext` or `LdapContext`.
+ * `search` method from `DirContext`.
  */
 class JndiLdapInjectionSink extends LdapInjectionSink {
   JndiLdapInjectionSink() {
@@ -191,10 +77,7 @@ class JndiLdapInjectionSink extends LdapInjectionSink {
       ma.getMethod() = m and
       ma.getArgument(index) = this.getExpr()
     |
-      (
-        m.getDeclaringType().getAnAncestor() instanceof TypeDirContext or
-        m.getDeclaringType().getAnAncestor() instanceof TypeLdapContext
-      ) and
+      m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
       m.hasName("search") and
       index in [0..1]
     )
@@ -213,8 +96,11 @@ class UnboundIdLdapInjectionSink extends LdapInjectionSink {
       m.getParameter(index) = param
     |
       // LDAPConnection.search, LDAPConnection.asyncSearch or LDAPConnection.searchForEntry method
-      m.getDeclaringType() instanceof TypeLDAPConnection and
-      (m.hasName("search") or m.hasName("asyncSearch") or m.hasName("searchForEntry")) and
+      (
+        m instanceof MethodUnboundIdLDAPConnectionSearch or
+        m instanceof MethodUnboundIdLDAPConnectionAsyncSearch or
+        m instanceof MethodUnboundIdLDAPConnectionSearchForEntry
+      ) and
       // Parameter is not varargs
       not isVarargs(m, index)
     )
@@ -233,20 +119,26 @@ class SpringLdapInjectionSink extends LdapInjectionSink {
       m.getParameterType(index) = paramType
     |
       // LdapTemplate.authenticate, LdapTemplate.find* or LdapTemplate.search* method
-      m.getDeclaringType() instanceof TypeLdapTemplate and
       (
-        m.hasName("authenticate") or
-        m.hasName("find") or
-        m.hasName("findOne") or
-        m.hasName("search") or
-        m.hasName("searchForContext") or
-        m.hasName("searchForObject")
+        m instanceof MethodSpringLdapTemplateAuthenticate or
+        m instanceof MethodSpringLdapTemplateFind or
+        m instanceof MethodSpringLdapTemplateFindOne or
+        m instanceof MethodSpringLdapTemplateSearch or
+        m instanceof MethodSpringLdapTemplateSearchForContext or
+        m instanceof MethodSpringLdapTemplateSearchForObject
       ) and
       (
         // Parameter index is 1 (DN or query) or 2 (filter) if method is not authenticate
-        (index in [0..1] and not m.hasName("authenticate")) or
+        (
+          index in [0..1] and
+          not m instanceof MethodSpringLdapTemplateAuthenticate
+        ) or
         // But it's not the last parameter in case of authenticate method (last param is password)
-        (index in [0..1] and index < m.getNumberOfParameters() - 1 and m.hasName("authenticate"))
+        (
+          index in [0..1] and
+          index < m.getNumberOfParameters() - 1 and
+          m instanceof MethodSpringLdapTemplateAuthenticate
+        )
       )
     )
   }
@@ -260,44 +152,11 @@ class ApacheLdapInjectionSink extends LdapInjectionSink {
       ma.getArgument(index) = this.getExpr() and
       m.getParameterType(index) = paramType
     |
-      m.getDeclaringType().getAnAncestor() instanceof TypeLdapConnection and
+      m.getDeclaringType().getAnAncestor() instanceof TypeApacheLdapConnection and
       m.hasName("search") and
       not isVarargs(m, index)
     )
   }
-}
-
-/** An expression node with a primitive type. */
-class PrimitiveTypeSanitizer extends LdapInjectionSanitizer {
-  PrimitiveTypeSanitizer() { this.getType() instanceof PrimitiveType }
-}
-
-/** An expression node with a boxed type. */
-class BoxedTypeSanitizer extends LdapInjectionSanitizer {
-  BoxedTypeSanitizer() { this.getType() instanceof BoxedType }
-}
-
-/** encodeForLDAP and encodeForDN from OWASP ESAPI. */
-class EsapiSanitizer extends LdapInjectionSanitizer {
-  EsapiSanitizer() {
-    this.getExpr().(MethodAccess).getMethod().hasName("encodeForLDAP")
-   }
-}
-
-/** LdapEncoder.filterEncode and LdapEncoder.nameEncode from Spring LDAP. */
-class SpringLdapSanitizer extends LdapInjectionSanitizer {
-  SpringLdapSanitizer() {
-    this.getType() instanceof TypeLdapEncoder and
-    this.getExpr().(MethodAccess).getMethod().hasName("filterEncode")
-   }
-}
-
-/** Filter.encodeValue from UnboundID. */
-class UnboundIdSanitizer extends LdapInjectionSanitizer {
-  UnboundIdSanitizer() {
-    this.getType() instanceof TypeUnboundIdLdapFilter and
-    this.getExpr().(MethodAccess).getMethod().hasName("encodeValue")
-   }
 }
 
 /**
@@ -316,13 +175,11 @@ predicate ldapNameStep(ExprNode n1, ExprNode n2) {
  * i.e. `new LdapName().addAll(tainted)`.
  */
 predicate ldapNameAddAllStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodAccess ma |
     n1.asExpr() = ma.getAnArgument() and
     (n2.asExpr() = ma or n2.asExpr() = ma.getQualifier())
   |
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeLdapName and
-    m.hasName("addAll")
+    ma.getMethod() instanceof MethodLdapNameAddAll
   )
 }
 
@@ -334,11 +191,13 @@ predicate ldapNameAddAllStep(ExprNode n1, ExprNode n2) {
 predicate ldapNameGetCloneStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
     n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma
+    n2.asExpr() = ma and
+    ma.getMethod() = m
   |
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeLdapName and
-    (m.hasName("clone") or m.hasName("getAll") or m.hasName("getRdns") or m.hasName("toString"))
+    m instanceof MethodLdapNameClone or
+    m instanceof MethodLdapNameGetAll or
+    m instanceof MethodLdapNameGetRdns or
+    m instanceof MethodLdapNameToString
   )
 }
 
@@ -348,18 +207,15 @@ predicate ldapNameGetCloneStep(ExprNode n1, ExprNode n2) {
  */
 predicate filterStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getAnArgument()
-  |
+    n1.asExpr() = ma.getAnArgument() and
     n2.asExpr() = ma and
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
-    (
-      m.hasName("create") or
-      m.hasName("createANDFilter") or
-      m.hasName("createNOTFilter") or
-      m.hasName("createORFilter") or
-      m.hasName("simplifyFilter")
-    )
+    ma.getMethod() = m
+  |
+    m instanceof MethodUnboundIdFilterCreate or
+    m instanceof MethodUnboundIdFilterCreateANDFilter or
+    m instanceof MethodUnboundIdFilterCreateNOTFilter or
+    m instanceof MethodUnboundIdFilterCreateORFilter or
+    m instanceof MethodUnboundIdFilterSimplifyFilter
   )
 }
 
@@ -383,13 +239,12 @@ predicate filterToStringStep(ExprNode n1, ExprNode n2) {
  * `SearchRequest`, i.e. `new SearchRequest(tainted)`.
  */
 predicate unboundIdSearchRequestStep(ExprNode n1, ExprNode n2) {
-  exists(ConstructorCall cc, Constructor c, int index |
+  exists(ConstructorCall cc, int index |
     cc.getConstructedType() instanceof TypeUnboundIdSearchRequest
   |
     n1.asExpr() = cc.getArgument(index) and
     n2.asExpr() = cc and
-    c = cc.getConstructor() and
-    not isVarargs(c, index)
+    not isVarargs(cc.getConstructor(), index)
   )
 }
 
@@ -398,12 +253,9 @@ predicate unboundIdSearchRequestStep(ExprNode n1, ExprNode n2) {
  * and UnboundID `SearchRequest`, i.e. `taintedSearchRequest.duplicate()`.
  */
 predicate unboundIdSearchRequestDuplicateStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma
-  |
+  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
     ma.getMethod() = m and
-    m.getDeclaringType().getAnAncestor() instanceof TypeReadOnlySearchRequest and
+    m.getDeclaringType().getAnAncestor() instanceof TypeUnboundIdReadOnlySearchRequest and
     m.hasName("duplicate")
   )
 }
@@ -415,11 +267,11 @@ predicate unboundIdSearchRequestDuplicateStep(ExprNode n1, ExprNode n2) {
 predicate unboundIdSearchRequestSetStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
     n1.asExpr() = ma.getAnArgument() and
-    n2.asExpr() = ma.getQualifier()
+    n2.asExpr() = ma.getQualifier() and
+    ma.getMethod() = m
   |
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeUnboundIdSearchRequest and
-    (m.hasName("setBaseDN") or m.hasName("setFilter"))
+    m instanceof MethodUnboundIdSearchRequestSetBaseDN or
+    m instanceof MethodUnboundIdSearchRequestSetFilter
   )
 }
 
@@ -429,13 +281,13 @@ predicate unboundIdSearchRequestSetStep(ExprNode n1, ExprNode n2) {
  */
 predicate ldapQueryStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m, int index |
-    n1.asExpr() = ma.getArgument(index)
-  |
+    n1.asExpr() = ma.getArgument(index) and
     n2.asExpr() = ma and
     ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeLdapQueryBuilder and
-    (m.hasName("filter") or m.hasName("base")) and
     index = 0
+  |
+    m instanceof MethodSpringLdapQueryBuilderFilter or
+    m instanceof MethodSpringLdapQueryBuilderBase
   )
 }
 
@@ -446,11 +298,10 @@ predicate ldapQueryStep(ExprNode n1, ExprNode n2) {
 predicate ldapQueryBaseStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
     n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma
+    n2.asExpr() = ma and
+    ma.getMethod() = m
   |
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeLdapQueryBuilder and
-    m.hasName("base") and
+    m instanceof MethodSpringLdapQueryBuilderBase and
     m.getNumberOfParameters() = 0
   )
 }
@@ -463,18 +314,18 @@ predicate ldapQueryBaseStep(ExprNode n1, ExprNode n2) {
 predicate ldapQueryBuilderStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
     n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma
+    n2.asExpr() = ma and
+    ma.getMethod() = m
   |
-    ma.getMethod() = m and
     (
-      m.getDeclaringType() instanceof TypeLdapQueryBuilder or
-      m.getDeclaringType() instanceof TypeConditionCriteria or
-      m.getDeclaringType() instanceof TypeContainerCriteria
+      m.getDeclaringType() instanceof TypeSpringLdapQueryBuilder or
+      m.getDeclaringType() instanceof TypeSpringConditionCriteria or
+      m.getDeclaringType() instanceof TypeSpringContainerCriteria
     ) and
     (
-      m.getReturnType() instanceof TypeLdapQueryBuilder or
-      m.getReturnType() instanceof TypeConditionCriteria or
-      m.getReturnType() instanceof TypeContainerCriteria
+      m.getReturnType() instanceof TypeSpringLdapQueryBuilder or
+      m.getReturnType() instanceof TypeSpringConditionCriteria or
+      m.getReturnType() instanceof TypeSpringContainerCriteria
     )
   )
 }
@@ -484,7 +335,7 @@ predicate ldapQueryBuilderStep(ExprNode n1, ExprNode n2) {
  * `HardcodedFilter`, i.e. `new HardcodedFilter(tainted)`.
  */
 predicate hardcodedFilterStep(ExprNode n1, ExprNode n2) {
-  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeHardcodedFilter |
+  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeSpringHardcodedFilter |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
   )
@@ -498,9 +349,9 @@ predicate hardcodedFilterStep(ExprNode n1, ExprNode n2) {
 predicate springLdapFilterToStringStep(ExprNode n1, ExprNode n2) {
   exists(MethodAccess ma, Method m |
     n1.asExpr() = ma.getQualifier() and
-    (n2.asExpr() = ma or n2.asExpr() = ma.getAnArgument())
+    (n2.asExpr() = ma or n2.asExpr() = ma.getAnArgument()) and
+    ma.getMethod() = m
   |
-    ma.getMethod() = m and
     m.getDeclaringType().getAnAncestor() instanceof TypeSpringLdapFilter and
     (m.hasName("encode") or m.hasName("toString"))
   )
@@ -512,12 +363,14 @@ predicate springLdapFilterToStringStep(ExprNode n1, ExprNode n2) {
  * `LdapNameBuilder.newInstance().add(tainted)`.
  */
 predicate ldapNameBuilderStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getAnArgument() |
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getAnArgument() and
     (n2.asExpr() = ma or n2.asExpr() = ma.getQualifier()) and
     ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeLdapNameBuilder and
-    (m.hasName("newInstance") or m.hasName("add")) and
     m.getNumberOfParameters() = 1
+  |
+    m instanceof MethodSpringLdapNameBuilderNewInstance or
+    m instanceof MethodSpringLdapNameBuilderAdd
   )
 }
 
@@ -526,11 +379,8 @@ predicate ldapNameBuilderStep(ExprNode n1, ExprNode n2) {
  * and `LdapName`, `LdapNameBuilder.build()`.
  */
 predicate ldapNameBuilderBuildStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getQualifier() |
-    n2.asExpr() = ma and
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeLdapNameBuilder and
-    m.hasName("build")
+  exists(MethodAccess ma | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
+    ma.getMethod() instanceof MethodSpringLdapNameBuilderBuild
   )
 }
 
@@ -539,11 +389,8 @@ predicate ldapNameBuilderBuildStep(ExprNode n1, ExprNode n2) {
  * Spring `LdapUtils.newLdapName`, i.e. `LdapUtils.newLdapName(tainted)`.
  */
 predicate ldapUtilsStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getAnArgument() |
-    n2.asExpr() = ma and
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeLdapUtils and
-    m.hasName("newLdapName")
+  exists(MethodAccess ma | n1.asExpr() = ma.getAnArgument() and n2.asExpr() = ma |
+    ma.getMethod() instanceof MethodSpringLdapUtilsNewLdapName
   )
 }
 
@@ -567,10 +414,7 @@ predicate apacheSearchRequestStep(ExprNode n1, ExprNode n2) {
  * and filter or DN i.e. `tainterSearchRequest.getFilter()` or `taintedSearchRequest.getBase()`.
  */
 predicate apacheSearchRequestGetStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma
-  |
+  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
     ma.getMethod() = m and
     m.getDeclaringType().getAnAncestor() instanceof TypeApacheSearchRequest and
     (m.hasName("getFilter") or m.hasName("getBase"))
@@ -593,10 +437,7 @@ predicate apacheLdapDnStep(ExprNode n1, ExprNode n2) {
  * and `String` i.e. `taintedDn.getName()`, `taintedDn.getNormName()` or `taintedDn.toString()`.
  */
 predicate apacheLdapDnGetStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma
-  |
+  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
     ma.getMethod() = m and
     m.getDeclaringType().getAnAncestor() instanceof TypeApacheDn and
     (m.hasName("getName") or m.hasName("getNormName") or m.hasName("toString"))
