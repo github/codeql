@@ -13,11 +13,9 @@
 
 import go
 
-predicate checksForLeadingSlash(Expr e, ValueEntity v) {
-  exists(LogicalExpr le | le = e | checksForLeadingSlash(le.getAnOperand(), v))
-  or
+DataFlow::Node checkForLeadingSlash(ValueEntity v) {
   exists(StringOps::HasPrefix hp, DataFlow::Node substr |
-    e = hp.asExpr() and hp.getBaseString() = v.getARead() and hp.getSubstring() = substr
+    result = hp and hp.getBaseString() = v.getARead() and hp.getSubstring() = substr
   |
     substr.getStringValue() = "/"
     or
@@ -25,60 +23,45 @@ predicate checksForLeadingSlash(Expr e, ValueEntity v) {
   )
 }
 
-predicate checksForSecondSlash(Expr e, ValueEntity v) {
-  exists(LogicalExpr le | le = e | checksForSecondSlash(le.getAnOperand(), v))
-  or
-  exists(StringOps::HasPrefix hp | e = hp.asExpr() and hp.getBaseString() = v.getARead() |
+DataFlow::Node checkForSecondSlash(ValueEntity v) {
+  exists(StringOps::HasPrefix hp | result = hp and hp.getBaseString() = v.getARead() |
     hp.getSubstring().getStringValue() = "//"
   )
   or
-  exists(EqualityTestExpr eq, Expr slash, IndexExpr ie | e = eq |
+  exists(DataFlow::EqualityTestNode eq, DataFlow::Node slash, DataFlow::ElementReadNode er |
+    result = eq
+  |
     slash.getIntValue() = 47 and // ASCII value for '/'
-    ie.getBase() = v.getAUse() and
-    ie.getIndex().getIntValue() = 1 and
-    eq.hasOperands(ie, slash)
+    er.getBase() = v.getARead() and
+    er.getIndex().getIntValue() = 1 and
+    eq.eq(_, er, slash)
   )
 }
 
-predicate checksForSecondBackslash(Expr e, ValueEntity v) {
-  exists(LogicalExpr le | le = e | checksForSecondBackslash(le.getAnOperand(), v))
-  or
-  exists(StringOps::HasPrefix hp | e = hp.asExpr() and hp.getBaseString() = v.getARead() |
+DataFlow::Node checkForSecondBackslash(ValueEntity v) {
+  exists(StringOps::HasPrefix hp | result = hp and hp.getBaseString() = v.getARead() |
     hp.getSubstring().getStringValue() = "/\\"
   )
   or
-  exists(EqualityTestExpr eq, Expr slash, IndexExpr ie | e = eq |
+  exists(DataFlow::EqualityTestNode eq, DataFlow::Node slash, DataFlow::ElementReadNode er |
+    result = eq
+  |
     slash.getIntValue() = 92 and // ASCII value for '\'
-    ie.getBase() = v.getAUse() and
-    ie.getIndex().getIntValue() = 1 and
-    eq.hasOperands(ie, slash)
+    er.getBase() = v.getARead() and
+    er.getIndex().getIntValue() = 1 and
+    eq.eq(_, er, slash)
   )
 }
 
-predicate isBadRedirectCheck(Expr e, ValueEntity v) {
-  checksForLeadingSlash(e, v) and
-  not (checksForSecondSlash(e, v) and checksForSecondBackslash(e, v))
+predicate isBadRedirectCheck(DataFlow::Node node, ValueEntity v) {
+  node = checkForLeadingSlash(v) and
+  not (exists(checkForSecondSlash(v)) and exists(checkForSecondBackslash(v)))
 }
 
-predicate isCond(Expr e) {
-  e = any(ForStmt fs).getCond()
-  or
-  e = any(IfStmt is).getCond()
-  or
-  e = any(ExpressionSwitchStmt ess | not exists(ess.getExpr())).getACase().getAnExpr()
-}
-
-from Expr e, ValueEntity v
+from DataFlow::Node node, ValueEntity v
 where
-  isBadRedirectCheck(e, v) and
-  (
-    // this expression is a condition
-    isCond(e)
-    or
-    // or is returned from a function
-    DataFlow::exprNode(e).getASuccessor*() instanceof DataFlow::ResultNode
-  ) and
-  v.getName().regexpMatch("(?i).*url.*|.*redir.*")
-select e,
-  "This condition checks '$@' for a leading slash but not for both a '/' and '\\' in the second position.",
+  isBadRedirectCheck(node, v) and
+  v.getName().regexpMatch("(?i).*url.*|.*redir.*|.*target.*")
+select node,
+  "This expression checks '$@' for a leading slash but checks do not exist for both '/' and '\\' in the second position.",
   v, v.getName()

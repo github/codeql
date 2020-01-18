@@ -1,5 +1,5 @@
-| BadRedirectCheck.go:4:5:4:37 | ...&&... | This condition checks '$@' for a leading slash but not for both a '/' and '\\' in the second position. | redir | redir |
-| cves.go:11:9:11:55 | ...&&... | This condition checks '$@' for a leading slash but not for both a '/' and '\\' in the second position. | url | url |
-| cves.go:22:5:22:37 | !... | This condition checks '$@' for a leading slash but not for both a '/' and '\\' in the second position. | redirect | redirect |
-| cves.go:29:5:29:74 | ...\|\|... | This condition checks '$@' for a leading slash but not for both a '/' and '\\' in the second position. | redirect | redirect |
-| main.go:8:7:8:76 | ...&&... | This condition checks '$@' for a leading slash but not for both a '/' and '\\' in the second position. | redirect | redirect |
+| BadRedirectCheck.go:4:23:4:37 | ...==... | This expression checks '$@' for a leading slash but checks do not exist for both '/' and '\\' in the second position. | redir | redir |
+| cves.go:11:26:11:38 | ...==... | This expression checks '$@' for a leading slash but checks do not exist for both '/' and '\\' in the second position. | url | url |
+| cves.go:22:6:22:37 | call to HasPrefix | This expression checks '$@' for a leading slash but checks do not exist for both '/' and '\\' in the second position. | redirect | redirect |
+| cves.go:29:6:29:37 | call to HasPrefix | This expression checks '$@' for a leading slash but checks do not exist for both '/' and '\\' in the second position. | redirect | redirect |
+| main.go:8:7:8:38 | call to HasPrefix | This expression checks '$@' for a leading slash but checks do not exist for both '/' and '\\' in the second position. | redirect | redirect |
