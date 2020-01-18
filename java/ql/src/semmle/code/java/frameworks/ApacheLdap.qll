@@ -23,7 +23,5 @@ class TypeApacheSearchRequest extends Interface {
 
 /** The class `org.apache.directory.api.ldap.model.name.Dn`. */
 class TypeApacheDn extends Class {
-  TypeApacheDn() {
-    this.hasQualifiedName("org.apache.directory.api.ldap.model.name", "Dn")
-  }
+  TypeApacheDn() { this.hasQualifiedName("org.apache.directory.api.ldap.model.name", "Dn") }
 }

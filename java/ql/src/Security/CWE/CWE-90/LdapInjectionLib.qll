@@ -6,7 +6,6 @@ import semmle.code.java.frameworks.UnboundId
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.frameworks.ApacheLdap
 
-
 /** Holds if the parameter of `c` at index `paramIndex` is varargs. */
 bindingset[paramIndex]
 predicate isVarargs(Callable c, int paramIndex) {
@@ -20,8 +19,8 @@ abstract class LdapInjectionSource extends DataFlow::Node { }
 abstract class LdapInjectionSink extends DataFlow::ExprNode { }
 
 /**
-* A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
-*/
+ * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
+ */
 class LdapInjectionFlowConfig extends TaintTracking::Configuration {
   LdapInjectionFlowConfig() { this = "LdapInjectionFlowConfig" }
 
@@ -79,7 +78,7 @@ class JndiLdapInjectionSink extends LdapInjectionSink {
     |
       m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
       m.hasName("search") and
-      index in [0..1]
+      index in [0 .. 1]
     )
   }
 }
@@ -129,16 +128,13 @@ class SpringLdapInjectionSink extends LdapInjectionSink {
       ) and
       (
         // Parameter index is 1 (DN or query) or 2 (filter) if method is not authenticate
-        (
-          index in [0..1] and
-          not m instanceof MethodSpringLdapTemplateAuthenticate
-        ) or
+        index in [0 .. 1] and
+        not m instanceof MethodSpringLdapTemplateAuthenticate
+        or
         // But it's not the last parameter in case of authenticate method (last param is password)
-        (
-          index in [0..1] and
-          index < m.getNumberOfParameters() - 1 and
-          m instanceof MethodSpringLdapTemplateAuthenticate
-        )
+        index in [0 .. 1] and
+        index < m.getNumberOfParameters() - 1 and
+        m instanceof MethodSpringLdapTemplateAuthenticate
       )
     )
   }

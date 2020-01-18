@@ -9,7 +9,9 @@ import semmle.code.java.Member
 /*--- Types ---*/
 /** The class `org.springframework.ldap.core.LdapTemplate`. */
 class TypeSpringLdapTemplate extends Class {
-  TypeSpringLdapTemplate() { this.hasQualifiedName("org.springframework.ldap.core", "LdapTemplate") }
+  TypeSpringLdapTemplate() {
+    this.hasQualifiedName("org.springframework.ldap.core", "LdapTemplate")
+  }
 }
 
 /** The class `org.springframework.ldap.query.LdapQueryBuilder`. */
