@@ -3,6 +3,7 @@
 #define va_arg(x, y) ((y)x)
 #define va_end(x)
 #define NULL 0
+
 char* strcat(char* destination, const char* source);
 char* strcpy(char* destination, const char* source);
 int strlen(const char* str);
@@ -10,7 +11,9 @@ char* strcpy(char* destination, const char* source);
 char* strstr(char* s1, const char* s2);
 const char* strchr(const char* s, int c);
 int strcmp(const char *s1, const char *s2);
+
 char* global = "         ";
+
 void addNull(char* buffer) {
   buffer[0] = '\0';
 }
