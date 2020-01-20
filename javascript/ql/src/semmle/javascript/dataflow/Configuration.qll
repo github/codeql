@@ -364,6 +364,51 @@ private predicate barrierGuardBlocksAccessPath(BarrierGuardNode guard, boolean o
 }
 
 /**
+  * Holds if `guard` should block flow along the edge `pred -> succ`.
+  *
+  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
+  */
+private predicate barrierGuardBlocksEdge(BarrierGuardNode guard, DataFlow::Node pred, DataFlow::Node succ, string label) {
+  exists(SsaVariable input, SsaPhiNode phi, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
+    pred = DataFlow::ssaDefinitionNode(input) and
+    succ = DataFlow::ssaDefinitionNode(phi) and
+    input = phi.getInputFromBlock(bb) and
+    guard.getEnclosingExpr() = cond.getTest() and
+    outcome = cond.getOutcome() and
+    barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label) and
+    cond.dominates(bb)
+  )
+}
+
+/**
+ * Holds if there is a barrier edge `pred -> succ` in `cfg` either through an explicit barrier edge
+ * or one implied by a barrier guard.
+ *
+ * Only holds for barriers that should apply to all flow labels.
+ */
+private predicate isBarrierEdge(Configuration cfg, DataFlow::Node pred, DataFlow::Node succ) {
+  cfg.isBarrierEdge(pred, succ)
+  or
+  exists(DataFlow::BarrierGuardNode guard |
+    cfg.isBarrierGuard(guard) and
+    barrierGuardBlocksEdge(guard, pred, succ, "")
+  )
+}
+
+/**
+ * Holds if there is a labeled barrier edge `pred -> succ` in `cfg` either through an explicit barrier edge
+ * or one implied by a barrier guard.
+ */
+private predicate isLabeledBarrierEdge(Configuration cfg, DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel label) {
+  cfg.isBarrierEdge(pred, succ, label)
+  or
+  exists(DataFlow::BarrierGuardNode guard |
+    cfg.isBarrierGuard(guard) and
+    barrierGuardBlocksEdge(guard, pred, succ, label)
+  )
+}
+
+/**
  * A guard node that only blocks specific labels.
  */
 abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
@@ -470,7 +515,8 @@ private predicate basicFlowStep(
     // Local flow
     exists(FlowLabel predlbl, FlowLabel succlbl |
       localFlowStep(pred, succ, cfg, predlbl, succlbl) and
-      not cfg.isBarrierEdge(pred, succ, predlbl) and
+      not isLabeledBarrierEdge(cfg, pred, succ, predlbl) and
+      not isBarrierEdge(cfg, pred, succ) and
       summary = MkPathSummary(false, false, predlbl, succlbl)
     )
     or
@@ -584,7 +630,7 @@ private predicate callInputStep(
     )
   ) and
   not cfg.isBarrier(succ) and
-  not cfg.isBarrierEdge(pred, succ)
+  not isBarrierEdge(cfg, pred, succ)
 }
 
 /**
@@ -638,7 +684,8 @@ private predicate flowThroughCall(
     ret.asExpr() = f.getAReturnedExpr() and
     calls(output, f) and // Do not consider partial calls
     reachableFromInput(f, output, input, ret, cfg, summary) and
-    not cfg.isBarrierEdge(ret, output) and
+    not isBarrierEdge(cfg, ret, output) and
+    not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
   or
@@ -647,7 +694,8 @@ private predicate flowThroughCall(
     DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
     calls(invk, f) and
     reachableFromInput(f, invk, input, ret, cfg, summary) and
-    not cfg.isBarrierEdge(ret, output) and
+    not isBarrierEdge(cfg, ret, output) and
+    not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
 }
@@ -886,7 +934,8 @@ private predicate flowStep(
     flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
   not cfg.isBarrier(succ) and
-  not cfg.isBarrierEdge(pred, succ) and
+  not isBarrierEdge(cfg, pred, succ) and
+  not isLabeledBarrierEdge(cfg, pred, succ, summary.getEndLabel()) and
   not cfg.isLabeledBarrier(succ, summary.getEndLabel())
 }
 
@@ -938,8 +987,8 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
   or
   exists(DataFlow::Node mid, PathSummary stepSummary |
     reachableFromSource(nd, cfg, summary) and
-    flowStep(nd, cfg, mid, stepSummary) and
-    onPath(mid, cfg, summary.append(stepSummary))
+    flowStep(nd, id(cfg), mid, stepSummary) and
+    onPath(mid, id(cfg), summary.append(stepSummary))
   )
 }
 
@@ -1071,6 +1120,18 @@ private MidPathNode finalMidNode(SinkPathNode snk) {
 }
 
 /**
+ * Holds if `nd` is a mid node wrapping `(predNd, cfg, summary)`, and there is a flow step
+ * from `predNd` to `succNd` under `cfg` with summary `newSummary`.
+ *
+ * This helper predicate exists to clarify the intended join order in `getASuccessor` below.
+ */
+pragma[noinline]
+private predicate midNodeStep(PathNode nd, DataFlow::Node predNd, Configuration cfg, PathSummary summary, DataFlow::Node succNd, PathSummary newSummary) {
+  nd = MkMidNode(predNd, cfg, summary) and
+  flowStep(predNd, id(cfg), succNd, newSummary)
+}
+
+/**
  * Gets a node to which data from `nd` may flow in one step.
  */
 private PathNode getASuccessor(PathNode nd) {
@@ -1079,8 +1140,7 @@ private PathNode getASuccessor(PathNode nd) {
   or
   // mid node to mid node
   exists(Configuration cfg, DataFlow::Node predNd, PathSummary summary, DataFlow::Node succNd, PathSummary newSummary |
-    nd = MkMidNode(predNd, cfg, summary) and
-    flowStep(predNd, id(cfg), succNd, newSummary) and
+    midNodeStep(nd, predNd, cfg, summary, succNd, newSummary) and
     result = MkMidNode(succNd, id(cfg), summary.append(newSummary))
   )
   or

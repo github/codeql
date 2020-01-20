@@ -1,0 +1,9 @@
+| test.py:3:5:3:20 | Function MyStr.upper | overriding | not overridden |
+| test.py:11:1:11:26 | Function outside_func | not overriding | overridden |
+| test.py:16:11:16:29 | Function Base.lambda | not overriding | overridden |
+| test.py:18:24:18:36 | Function Base.lambda | not overriding | not overridden |
+| test.py:22:5:22:21 | Function Base.normal | not overriding | overridden |
+| test.py:33:5:33:21 | Function Bar.foo | overriding | overridden |
+| test.py:36:5:36:24 | Function Bar.tricky | overriding | not overridden |
+| test.py:41:5:41:21 | Function SpecialBar.foo | overriding | not overridden |
+| test.py:44:5:44:18 | Function SpecialBar.baz | overriding | not overridden |

@@ -15,7 +15,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 2. **Format your code correctly**
 
-   All of Semmle's standard queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use QL for Eclipse, you can auto-format your query in the [QL editor](https://help.semmle.com/ql-for-eclipse/Content/WebHelp/ql-editor.html). For more information, see the [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
+   All of Semmle's standard queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use CodeQL for VS Code, you can autoformat your query in the [Editor](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting). For more information, see the [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
 
 3. **Make sure your query has the correct metadata**
 
@@ -26,7 +26,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 4. **Make sure the `select` statement is compatible with the query type**
 
-   The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and QL for Eclipse.
+   The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and CodeQL for VS Code.
    For more information on `select` statement format, see [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
 
 5. **Save your query in a `.ql` file in the correct language directory in this repository**

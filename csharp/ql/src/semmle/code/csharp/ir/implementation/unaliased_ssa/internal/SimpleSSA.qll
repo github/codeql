@@ -40,7 +40,7 @@ private predicate isVariableModeled(IRVariable var) {
   |
     bitOffset = 0 and
     type.getIRType() = var.getIRType() and
-    not operand.hasMayMemoryAccess()
+    not operand.hasMayReadMemoryAccess()
   )
 }
 
@@ -54,6 +54,10 @@ class MemoryLocation extends TMemoryLocation {
   MemoryLocation() { this = MkMemoryLocation(var) }
 
   final string toString() { result = var.toString() }
+
+  final Language::Location getLocation() { result = var.getLocation() }
+
+  final IRFunction getIRFunction() { result = var.getEnclosingIRFunction() }
 
   final IRVariable getIRVariable() { result = var }
 

@@ -170,7 +170,7 @@ class MemoryOperand extends Operand {
   /**
    * Gets the kind of memory access performed by the operand.
    */
-  MemoryAccessKind getMemoryAccess() { none() }
+  MemoryAccessKind getMemoryAccess() { result = getUse().getOpcode().getReadMemoryAccess() }
 
   /**
    * Holds if the memory access performed by this operand will not always read from every bit in the
@@ -180,7 +180,7 @@ class MemoryOperand extends Operand {
    * conservative estimate of the memory that might actually be accessed at runtime (for example,
    * the global side effects of a function call).
    */
-  predicate hasMayMemoryAccess() { none() }
+  predicate hasMayReadMemoryAccess() { getUse().getOpcode().hasMayReadMemoryAccess() }
 
   /**
    * Returns the operand that holds the memory address from which the current operand loads its
@@ -274,8 +274,6 @@ class LoadOperand extends TypedOperand {
   override LoadOperandTag tag;
 
   override string toString() { result = "Load" }
-
-  final override MemoryAccessKind getMemoryAccess() { result instanceof IndirectMemoryAccess }
 }
 
 /**
@@ -331,8 +329,6 @@ class UnmodeledUseOperand extends NonPhiMemoryOperand {
   override UnmodeledUseOperandTag tag;
 
   override string toString() { result = "UnmodeledUse" }
-
-  final override MemoryAccessKind getMemoryAccess() { result instanceof UnmodeledMemoryAccess }
 }
 
 /**
@@ -382,50 +378,6 @@ class PositionalArgumentOperand extends ArgumentOperand {
 
 class SideEffectOperand extends TypedOperand {
   override SideEffectOperandTag tag;
-
-  override MemoryAccessKind getMemoryAccess() {
-    useInstr instanceof AliasedUseInstruction and
-    result instanceof NonLocalMemoryAccess
-    or
-    useInstr instanceof CallSideEffectInstruction and
-    result instanceof EscapedMemoryAccess
-    or
-    useInstr instanceof CallReadSideEffectInstruction and
-    result instanceof EscapedMemoryAccess
-    or
-    useInstr instanceof IndirectReadSideEffectInstruction and
-    result instanceof IndirectMemoryAccess
-    or
-    useInstr instanceof BufferReadSideEffectInstruction and
-    result instanceof BufferMemoryAccess
-    or
-    useInstr instanceof IndirectMustWriteSideEffectInstruction and
-    result instanceof IndirectMemoryAccess
-    or
-    useInstr instanceof BufferMustWriteSideEffectInstruction and
-    result instanceof BufferMemoryAccess
-    or
-    useInstr instanceof IndirectMayWriteSideEffectInstruction and
-    result instanceof IndirectMemoryAccess
-    or
-    useInstr instanceof BufferMayWriteSideEffectInstruction and
-    result instanceof BufferMemoryAccess
-    or
-    useInstr instanceof ReturnIndirectionInstruction and
-    result instanceof BufferMemoryAccess
-  }
-
-  final override predicate hasMayMemoryAccess() {
-    useInstr instanceof AliasedUseInstruction
-    or
-    useInstr instanceof CallSideEffectInstruction
-    or
-    useInstr instanceof CallReadSideEffectInstruction
-    or
-    useInstr instanceof IndirectMayWriteSideEffectInstruction
-    or
-    useInstr instanceof BufferMayWriteSideEffectInstruction
-  }
 }
 
 /**

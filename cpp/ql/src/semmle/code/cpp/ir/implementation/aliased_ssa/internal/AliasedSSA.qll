@@ -29,7 +29,7 @@ private predicate hasOperandMemoryAccess(
   resultPointsTo(operand.getAddressOperand().getAnyDef(), var, startBitOffset) and
   languageType = operand.getLanguageType() and
   type = languageType.getIRType() and
-  (if operand.hasMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+  (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
   if exists(type.getByteSize())
   then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
   else endBitOffset = Ints::unknown()
@@ -41,8 +41,18 @@ private newtype TMemoryLocation =
     IntValue endBitOffset, boolean isMayAccess
   ) {
     (
-      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess) or
+      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
+      or
       hasOperandMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
+      or
+      exists(IRAutomaticVariable autoVar |
+        // Always create a memory location for the entire variable.
+        autoVar = var and
+        type = autoVar.getIRType() and
+        startBitOffset = 0 and
+        endBitOffset = type.getByteSize() * 8 and
+        isMayAccess = false
+      )
     ) and
     languageType = type.getCanonicalLanguageType()
   } or
@@ -77,6 +87,8 @@ abstract class MemoryLocation extends TMemoryLocation {
   abstract string getUniqueId();
 
   abstract IRFunction getIRFunction();
+
+  abstract Location getLocation();
 
   final IRType getIRType() { result = getType().getIRType() }
 
@@ -140,6 +152,8 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
   }
 
   final override IRFunction getIRFunction() { result = var.getEnclosingIRFunction() }
+
+  final override Location getLocation() { result = var.getLocation() }
 
   final IntValue getStartBitOffset() { result = startBitOffset }
 
@@ -208,6 +222,8 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
 
   final override IRFunction getIRFunction() { result = irFunc }
 
+  final override Location getLocation() { result = irFunc.getLocation() }
+
   final override string getUniqueId() { result = "{Unknown}" }
 
   final override predicate isMayAccess() { isMayAccess = true }
@@ -233,6 +249,8 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
 
   final override IRFunction getIRFunction() { result = irFunc }
 
+  final override Location getLocation() { result = irFunc.getLocation() }
+
   final override string getUniqueId() { result = "{AllNonLocal}" }
 
   final override predicate isMayAccess() { isMayAccess = true }
@@ -254,6 +272,8 @@ class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
   }
 
   final override IRFunction getIRFunction() { result = irFunc }
+
+  final override Location getLocation() { result = irFunc.getLocation() }
 
   final override string getUniqueId() { result = " " + toString() }
 
@@ -401,43 +421,36 @@ private predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
   vml.getStartBitOffset() != Ints::unknown()
 }
 
-private predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, int offsetRank) {
-  exists(int startRank, int endRank |
-    vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
-    vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
-    vv = vml.getVirtualVariable() and
+private predicate isCoveredOffset(IRVariable var, int offsetRank, VariableMemoryLocation vml) {
+  exists(int startRank, int endRank, VirtualVariable vvar |
+    vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
+    vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
+    var = vml.getVariable() and
+    vvar = vml.getVirtualVariable() and
     isRelatableMemoryLocation(vml) and
     offsetRank in [startRank .. endRank]
   )
 }
 
-private predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
-  vml.getVirtualVariable() = vv and
+private predicate hasUnknownOffset(IRVariable var, VariableMemoryLocation vml) {
+  vml.getVariable() = var and
   (
     vml.getStartBitOffset() = Ints::unknown() or
     vml.getEndBitOffset() = Ints::unknown()
   )
 }
 
-private predicate overlappingVariableMemoryLocations(
-  VariableMemoryLocation def, VariableMemoryLocation use
-) {
-  exists(VirtualVariable vv, int offsetRank |
-    isCoveredOffset(def, vv, offsetRank) and isCoveredOffset(use, vv, offsetRank)
-  )
-  or
-  hasUnknownOffset(def, use.getVirtualVariable())
-  or
-  hasUnknownOffset(use, def.getVirtualVariable())
-}
-
-// Internal ticket: QL-937
-pragma[noopt]
 private predicate overlappingIRVariableMemoryLocations(
   VariableMemoryLocation def, VariableMemoryLocation use
 ) {
-  overlappingVariableMemoryLocations(def, use) and
-  def.getVariable() = use.getVariable()
+  exists(IRVariable var, int offsetRank |
+    isCoveredOffset(var, offsetRank, def) and
+    isCoveredOffset(var, offsetRank, use)
+  )
+  or
+  hasUnknownOffset(use.getVariable(), def)
+  or
+  hasUnknownOffset(def.getVariable(), use)
 }
 
 private Overlap getVariableMemoryLocationOverlap(
@@ -476,7 +489,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
-    (if operand.hasMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+    (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
     (
       (
         kind.usesAddressOperand() and

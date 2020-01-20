@@ -15,7 +15,6 @@
 | CSharp7.cs:31:19:31:19 | i | CSharp7.cs:33:16:33:16 | access to parameter i |
 | CSharp7.cs:33:16:33:16 | access to parameter i | CSharp7.cs:33:16:33:20 | ... > ... |
 | CSharp7.cs:33:16:33:16 | access to parameter i | CSharp7.cs:33:24:33:24 | access to parameter i |
-| CSharp7.cs:33:16:33:20 | ... > ... | CSharp7.cs:33:16:33:59 | ... ? ... : ... |
 | CSharp7.cs:33:24:33:24 | access to parameter i | CSharp7.cs:33:16:33:59 | ... ? ... : ... |
 | CSharp7.cs:33:28:33:59 | throw ... | CSharp7.cs:33:16:33:59 | ... ? ... : ... |
 | CSharp7.cs:41:13:41:21 | "tainted" | CSharp7.cs:41:9:41:21 | SSA def(x) |
@@ -133,7 +132,6 @@
 | CSharp7.cs:141:20:141:20 | x | CSharp7.cs:141:26:141:26 | access to parameter x |
 | CSharp7.cs:141:26:141:26 | access to parameter x | CSharp7.cs:141:26:141:30 | ... > ... |
 | CSharp7.cs:141:26:141:26 | access to parameter x | CSharp7.cs:141:41:141:41 | access to parameter x |
-| CSharp7.cs:141:26:141:30 | ... > ... | CSharp7.cs:141:26:141:50 | ... ? ... : ... |
 | CSharp7.cs:141:34:141:34 | 1 | CSharp7.cs:141:34:141:46 | ... + ... |
 | CSharp7.cs:141:34:141:46 | ... + ... | CSharp7.cs:141:26:141:50 | ... ? ... : ... |
 | CSharp7.cs:141:38:141:46 | call to local function f7 | CSharp7.cs:141:34:141:46 | ... + ... |

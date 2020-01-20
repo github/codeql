@@ -12,7 +12,9 @@ export class Project {
   }
 
   public load(): void {
-    this.program = ts.createProgram(this.config.fileNames, this.config.options);
+    let host = ts.createCompilerHost(this.config.options, true);
+    host.trace = undefined; // Disable tracing which would otherwise go to standard out
+    this.program = ts.createProgram(this.config.fileNames, this.config.options, host);
     this.typeTable.setProgram(this.program);
   }
 

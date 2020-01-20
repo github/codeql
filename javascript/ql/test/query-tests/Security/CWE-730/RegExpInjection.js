@@ -50,4 +50,13 @@ app.get('/findKey', function(req, res) {
   URI(`${protocol}://${host}${path}`).search(input); // OK, but still flagged
   URI(`${protocol}://${host}${path}`).search(input).href(); // OK
   unknown.search(input).unknown; // OK
+
+});
+
+import * as Search from './search';
+
+app.get('/findKey', function(req, res) {
+  var key = req.param("key"), input = req.param("input");
+
+  Search.search(input); // OK!
 });

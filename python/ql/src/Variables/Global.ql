@@ -14,5 +14,3 @@ import python
 from Global g
 where not g.getScope() instanceof Module
 select g, "Updating global variables except at module initialization is discouraged"
-
-
