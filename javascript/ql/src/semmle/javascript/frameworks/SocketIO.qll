@@ -23,8 +23,18 @@ module SocketIO {
     result = DataFlow::moduleImport("socket.io").getAMemberCall("listen")
   }
 
+  /**
+   * A common superclass for all socket-like objects on the serverside of SocketIO. 
+   * All of the subclasses can be used to send data to SocketIO clients (see the `SendNode` class). 
+   */
   abstract private class SocketIOObject extends DataFlow::SourceNode, EventEmitter::Range {
+    /**
+     * Gets a node that refers to a SocketIOObject object.
+     */
     abstract DataFlow::SourceNode ref();
+    
+    /** Gets namespace belonging to this object. */
+    abstract NamespaceObject getNamespace();
   }
 
   /** A socket.io server. */
@@ -35,6 +45,9 @@ module SocketIO {
 
     /** Gets the default namespace of this server. */
     NamespaceObject getDefaultNamespace() { result = MkNamespace(this, "/") }
+    
+    /** Gets the default namespace of this server. */
+    override NamespaceObject getNamespace() { result = getDefaultNamespace() }
 
     /** Gets the namespace with the given path of this server. */
     NamespaceObject getNamespace(string path) { result = MkNamespace(this, path) }
@@ -126,7 +139,7 @@ module SocketIO {
     }
 
     /** Gets the namespace to which this object refers. */
-    NamespaceObject getNamespace() { result = ns }
+    override NamespaceObject getNamespace() { result = ns }
 
     /**
      * Gets a data flow node that may refer to the socket.io namespace created at `ns`.
@@ -185,7 +198,7 @@ module SocketIO {
     }
 
     /** Gets the namespace to which this socket belongs. */
-    NamespaceObject getNamespace() { result = ns }
+    override NamespaceObject getNamespace() { result = ns }
 
     private DataFlow::SourceNode socket(DataFlow::TypeTracker t) {
       result = this and t.start()
@@ -314,8 +327,6 @@ module SocketIO {
 
     /**
      * Gets the socket through which data is sent to the client.
-     *
-     * This predicate is not defined for broadcasting sends.
      */
     SocketObject getSocket() { result = emitter }
 
@@ -323,9 +334,7 @@ module SocketIO {
      * Gets the namespace to which data is sent.
      */
     NamespaceObject getNamespace() {
-      result = emitter.(ServerObject).getDefaultNamespace() or
-      result = emitter.(NamespaceBase).getNamespace() or
-      result = emitter.(SocketObject).getNamespace()
+      result = emitter.getNamespace()
     }
 
     /** Gets the event name associated with the data, if it can be determined. */
@@ -357,7 +366,10 @@ module SocketIO {
       srv.ref().getAMethodCall("of").getArgument(0).mayHaveStringValue(path)
     }
 
-  /** An acknowledgment callback from sending message. */
+  /**
+   * An acknowledgment callback registered when sending a message to a client.
+   * Responses from clients are received using this callback. 
+   */
   class SendCallback extends EventRegistration::Range, DataFlow::FunctionNode {
     SendNode send;
 
@@ -373,7 +385,7 @@ module SocketIO {
     override DataFlow::Node getReceivedItem(int i) { result = this.getParameter(i) }
 
     /**
-     * Get the send node where this callback was registered.
+     * Gets the send node where this callback was registered.
      */
     SendNode getSendNode() { result = send }
   }
@@ -552,7 +564,7 @@ module SocketIOClient {
     override SocketIO::SendCallback getAReceiver() { result.getSendNode().getAReceiver() = rcv }
 
     /**
-     * Get the receive node where this callback was registered.
+     * Gets the receive node where this callback was registered.
      */
     ReceiveNode getReceiveNode() { result = rcv }
   }
@@ -607,7 +619,10 @@ module SocketIOClient {
     }
   }
 
-  /** An acknowledgment callback from sending message. */
+  /** 
+   * An acknowledgment callback registered when sending a message to a server.
+   * Responses from servers are received using this callback.
+   */
   class SendCallback extends EventRegistration::Range, DataFlow::FunctionNode {
     SendNode send;
 
@@ -621,7 +636,7 @@ module SocketIOClient {
     override DataFlow::Node getReceivedItem(int i) { result = this.getParameter(i) }
 
     /**
-     * Get the SendNode where this callback was registered.
+     * Gets the SendNode where this callback was registered.
      */
     SendNode getSendNode() { result = send }
   }
