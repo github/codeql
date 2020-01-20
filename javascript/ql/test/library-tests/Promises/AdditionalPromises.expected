@@ -1,19 +1,46 @@
 | additional-promises.js:2:13:2:57 | new Pin ... ct) {}) |
-| flowsteps.js:5:3:5:21 | new Promise(throws) |
-| flowsteps.js:8:3:8:21 | new Promise(throws) |
-| flowsteps.js:12:11:12:29 | new Promise(throws) |
-| flowsteps.js:17:3:17:45 | new Pro ... ect(3)) |
-| flowsteps.js:21:11:21:53 | new Pro ... ect(4)) |
-| flowsteps.js:26:3:26:21 | new Promise(throws) |
-| flowsteps.js:26:3:27:19 | new Pro ...  => {}) |
-| flowsteps.js:31:3:31:21 | new Promise(throws) |
-| flowsteps.js:31:3:32:19 | new Pro ...  => {}) |
-| flowsteps.js:31:3:33:35 | new Pro ... og(e6)) |
-| flowsteps.js:36:19:36:62 | new Pro ... lve(8)) |
-| flowsteps.js:38:19:38:62 | new Pro ... lve(9)) |
-| flowsteps.js:40:11:40:28 | Promise.resolve(3) |
-| flowsteps.js:43:12:49:4 | new Pro ...  }\\n  }) |
-| flowsteps.js:50:19:50:41 | p2.then ... al * 4) |
+| flow.js:7:11:7:59 | new Pro ... ource)) |
+| flow.js:10:11:10:58 | new Pro ... ource)) |
+| flow.js:13:11:13:58 | new Pro ... ource)) |
+| flow.js:20:2:20:24 | Promise ... source) |
+| flow.js:22:2:22:24 | Promise ... source) |
+| flow.js:24:2:24:49 | new Pro ... ource)) |
+| flow.js:26:2:26:49 | new Pro ... ource)) |
+| flow.js:28:2:28:23 | Promise ... ("foo") |
+| flow.js:28:2:28:41 | Promise ... source) |
+| flow.js:30:2:30:24 | Promise ... source) |
+| flow.js:30:2:30:41 | Promise ...  "foo") |
+| flow.js:32:2:32:49 | new Pro ... ource)) |
+| flow.js:34:2:34:24 | Promise ... source) |
+| flow.js:34:2:34:41 | Promise ... => { }) |
+| flow.js:36:11:36:33 | Promise ... source) |
+| flow.js:37:11:37:29 | p5.catch(() => { }) |
+| flow.js:40:2:40:49 | new Pro ... ource)) |
+| flow.js:40:2:40:65 | new Pro ... => { }) |
+| flow.js:42:2:42:49 | new Pro ... ource)) |
+| flow.js:42:2:42:76 | new Pro ... => { }) |
+| flow.js:44:2:44:24 | Promise ... source) |
+| flow.js:44:2:44:41 | Promise ... => { }) |
+| flow.js:44:2:44:58 | Promise ... => { }) |
+| flow.js:44:2:44:75 | Promise ... => { }) |
+| flow.js:46:2:46:24 | Promise ... source) |
+| flow.js:46:2:46:43 | Promise ... => { }) |
+| flow.js:48:2:48:36 | new Pro ... urce }) |
+| flow.js:53:2:53:22 | createP ... source) |
+| flow.js:55:11:55:58 | new Pro ... ource)) |
+| flow.js:56:11:56:27 | p8.then(() => {}) |
+| flow.js:57:12:57:31 | p9.finally(() => {}) |
+| flow.js:60:12:60:59 | new Pro ... ource)) |
+| flow.js:61:12:61:29 | p11.then(() => {}) |
+| flow.js:65:9:65:56 | new Pro ... ource)) |
+| flow.js:74:10:74:57 | new Pro ... ource)) |
+| flow.js:76:2:76:17 | chainedPromise() |
+| flow.js:76:2:76:32 | chained ...  => {}) |
+| flow.js:86:23:86:70 | new Pro ... ource)) |
+| interflow.js:6:3:6:25 | loadScr ... urce()) |
+| interflow.js:6:3:7:26 | loadScr ... () { }) |
+| interflow.js:6:3:8:26 | loadScr ... () { }) |
+| interflow.js:11:12:15:6 | new Pro ... \\n    }) |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) |

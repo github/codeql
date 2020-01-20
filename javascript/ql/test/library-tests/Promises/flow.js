@@ -74,4 +74,14 @@
 		return new Promise((resolve, reject) => reject(source)).then(() => {});
 	}
 	chainedPromise().then(() => {}).catch(e => sink(e)); // NOT OK!
+	
+	function leaksResolvedPromise(p) {
+		p.then(x => sink(x)); // NOT OK!
+	}
+	leaksResolvedPromise(Promise.resolve(source));
+	
+	function leaksRejectedPromise(p) {
+		p.catch(e => sink(e)); // NOT OK!
+	}
+	leaksRejectedPromise(new Promise((resolve, reject) => reject(source)));
 })();

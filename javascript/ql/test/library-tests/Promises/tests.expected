@@ -9,6 +9,7 @@ test_ResolvedPromiseDefinition
 | flow.js:44:2:44:24 | Promise ... source) | flow.js:44:18:44:23 | source |
 | flow.js:46:2:46:24 | Promise ... source) | flow.js:46:18:46:23 | source |
 | flow.js:51:10:51:29 | Promise.resolve(src) | flow.js:51:26:51:28 | src |
+| flow.js:81:23:81:45 | Promise ... source) | flow.js:81:39:81:44 | source |
 | promises.js:53:19:53:41 | Promise ... source) | promises.js:53:35:53:40 | source |
 | promises.js:62:19:62:41 | Promise ... source) | promises.js:62:35:62:40 | source |
 | promises.js:71:5:71:27 | Promise ... source) | promises.js:71:21:71:26 | source |
@@ -34,6 +35,7 @@ test_PromiseDefinition_getExecutor
 | flow.js:60:12:60:59 | new Pro ... ource)) | flow.js:60:24:60:58 | (resolv ... source) |
 | flow.js:65:9:65:56 | new Pro ... ource)) | flow.js:65:21:65:55 | (resolv ... source) |
 | flow.js:74:10:74:57 | new Pro ... ource)) | flow.js:74:22:74:56 | (resolv ... source) |
+| flow.js:86:23:86:70 | new Pro ... ource)) | flow.js:86:35:86:69 | (resolv ... source) |
 | interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:24:15:5 | functio ... ;\\n    } |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:29:5:3 | functio ... e);\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:30:17:3 | (res, r ... e);\\n  } |
@@ -55,6 +57,7 @@ test_PromiseDefinition
 | flow.js:60:12:60:59 | new Pro ... ource)) |
 | flow.js:65:9:65:56 | new Pro ... ource)) |
 | flow.js:74:10:74:57 | new Pro ... ource)) |
+| flow.js:86:23:86:70 | new Pro ... ource)) |
 | interflow.js:11:12:15:6 | new Pro ... \\n    }) |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) |
@@ -86,6 +89,7 @@ test_PromiseDefinition_getRejectParameter
 | flow.js:60:12:60:59 | new Pro ... ource)) | flow.js:60:34:60:39 | reject |
 | flow.js:65:9:65:56 | new Pro ... ource)) | flow.js:65:31:65:36 | reject |
 | flow.js:74:10:74:57 | new Pro ... ource)) | flow.js:74:32:74:37 | reject |
+| flow.js:86:23:86:70 | new Pro ... ource)) | flow.js:86:45:86:50 | reject |
 | interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:43:11:48 | reject |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:48:3:53 | reject |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:36:10:38 | rej |
@@ -104,6 +108,7 @@ test_PromiseDefinition_getResolveParameter
 | flow.js:60:12:60:59 | new Pro ... ource)) | flow.js:60:25:60:31 | resolve |
 | flow.js:65:9:65:56 | new Pro ... ource)) | flow.js:65:22:65:28 | resolve |
 | flow.js:74:10:74:57 | new Pro ... ource)) | flow.js:74:23:74:29 | resolve |
+| flow.js:86:23:86:70 | new Pro ... ource)) | flow.js:86:36:86:42 | resolve |
 | interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:34:11:40 | resolve |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:39:3:45 | resolve |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:31:10:33 | res |
@@ -132,4 +137,6 @@ flow
 | flow.js:2:15:2:22 | "source" | flow.js:62:22:62:22 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:70:8:70:8 | e |
 | flow.js:2:15:2:22 | "source" | flow.js:76:50:76:50 | e |
+| flow.js:2:15:2:22 | "source" | flow.js:79:20:79:20 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:84:21:84:21 | e |
 | interflow.js:3:18:3:25 | "source" | interflow.js:18:10:18:14 | error |
