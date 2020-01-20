@@ -36,6 +36,9 @@ def test_str():
     e = reversed(tainted_string)
     f = copy(tainted_string)
     h = tainted_string.strip()
+    tainted_list = [tainted_string]
+    tainted_tuple = (tainted_string,)
+    tainted_dict = {'key': tainted_string}
 
 def test_const_sanitizer1():
     tainted_string = TAINTED
