@@ -14,6 +14,7 @@ def test_list(x, y, z):
     b = tainted_list[x]
     c = tainted_list[y:z]
     d = tainted_list.copy()
+    e, f, g = tainted_list # TODO: currently not handled
 
 def test_dict(x):
     tainted_dict = TAINTED_DICT
