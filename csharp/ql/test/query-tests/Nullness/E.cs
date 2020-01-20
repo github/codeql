@@ -198,15 +198,15 @@ public class E
         var o = b ? null : "";
         o.M1(); // GOOD
         if (b)
-          o.M2(); // BAD (maybe)
+            o.M2(); // BAD (maybe)
         else
-          o.Select(x => x); // BAD (maybe)
+            o.Select(x => x); // BAD (maybe)
     }
 
     public int Ex14(string s)
     {
         if (s is string)
-          return s.Length;
+            return s.Length;
         return s.GetHashCode(); // BAD (always)
     }
 
@@ -362,6 +362,8 @@ public class E
         if (x != (string)null)
             x.ToString(); // GOOD
     }
+
+    static int Ex34(string s = null) => s.Length; // BAD (maybe) False negative
 }
 
 public static class Extensions
