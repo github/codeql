@@ -34,7 +34,15 @@ Function viableCallable(CallInstruction call) {
 private module VirtualDispatch {
   /** A call that may dispatch differently depending on the qualifier value. */
   abstract class DataSensitiveCall extends DataFlowCall {
-    abstract DataFlow::Node getSrc();
+    /**
+     * Gets the node whose value determines the target of this call. This node
+     * could be the qualifier of a virtual dispatch or the function-pointer
+     * expression in a call to a function pointer. What they have in common is
+     * that we need to find out which data flows there, and then it's up to the
+     * `resolve` predicate to stitch that information together and resolve the
+     * call.
+     */
+    abstract DataFlow::Node getDispatchValue();
 
     /** Gets a candidate target for this call. */
     cached
@@ -43,12 +51,12 @@ private module VirtualDispatch {
     /**
      * Whether `src` can flow to this call.
      *
-     * Searches backwards from `getSrc()` to `src`. The `allowFromArg`
+     * Searches backwards from `getDispatchValue()` to `src`. The `allowFromArg`
      * parameter is true when the search is allowed to continue backwards into
      * a parameter; non-recursive callers should pass `_` for `allowFromArg`.
      */
     predicate flowsFrom(DataFlow::Node src, boolean allowFromArg) {
-      src = this.getSrc() and allowFromArg = true
+      src = this.getDispatchValue() and allowFromArg = true
       or
       exists(DataFlow::Node other, boolean allowOtherFromArg |
         this.flowsFrom(other, allowOtherFromArg)
@@ -95,7 +103,7 @@ private module VirtualDispatch {
   private class DataSensitiveExprCall extends DataSensitiveCall {
     DataSensitiveExprCall() { not exists(this.getStaticCallTarget()) }
 
-    override DataFlow::Node getSrc() { result.asInstruction() = this.getCallTarget() }
+    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getCallTarget() }
 
     override Function resolve() {
       exists(FunctionInstruction fi |
@@ -111,7 +119,7 @@ private module VirtualDispatch {
       exists(this.getStaticCallTarget().(VirtualFunction).getAnOverridingFunction())
     }
 
-    override DataFlow::Node getSrc() { result.asInstruction() = this.getThisArgument() }
+    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getThisArgument() }
 
     override MemberFunction resolve() {
       exists(Class overridingClass |
