@@ -391,3 +391,58 @@ void test_wcsdup(wchar_t *source)
 	sink(a); // tainted
 	sink(b);
 }
+
+// --- qualifiers ---
+
+class MyClass2 {
+public:
+	MyClass2(int value);
+	void setMember(int value);
+	int getMember();
+
+	int member;
+};
+
+class MyClass3 {
+public:
+	MyClass3(const char *string);
+	void setString(const char *string);
+	const char *getString();
+
+	const char *buffer;
+};
+
+void test_qualifiers()
+{
+	MyClass2 a(0), b(0), *c;
+	MyClass3 d("");
+
+	sink(a);
+	sink(a.getMember());
+	a.setMember(source());
+	sink(a); // tainted [NOT DETECTED]
+	sink(a.getMember()); // tainted [NOT DETECTED]
+
+	sink(b);
+	sink(b.getMember());
+	b.member = source();
+	sink(b); // tainted
+	sink(b.member); // tainted
+	sink(b.getMember());
+
+	c = new MyClass2(0);
+
+	sink(c);
+	sink(c->getMember());
+	c->setMember(source());
+	sink(c); // tainted (deref) [NOT DETECTED]
+	sink(c->getMember()); // tainted [NOT DETECTED]
+
+	delete c;
+
+	sink(d);
+	sink(d.getString());
+	d.setString(strings::source());
+	sink(d); // tainted [NOT DETECTED]
+	sink(d.getString()); // tainted [NOT DETECTED]
+}
