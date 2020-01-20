@@ -75,6 +75,26 @@ private module Cached {
     )
   }
 
+  pragma[noopt]
+  private predicate hasMemoryOperandDefinition(
+    OldInstruction oldInstruction, OldIR::NonPhiMemoryOperand oldOperand, Overlap overlap,
+    Instruction instr
+  ) {
+    oldOperand = oldInstruction.getAnOperand() and
+    oldOperand instanceof OldIR::NonPhiMemoryOperand and
+    exists(
+      OldBlock useBlock, int useRank, Alias::MemoryLocation useLocation,
+      Alias::MemoryLocation defLocation, OldBlock defBlock, int defRank, int defOffset
+    |
+      useLocation = Alias::getOperandMemoryLocation(oldOperand) and
+      hasUseAtRank(useLocation, useBlock, useRank, oldInstruction) and
+      definitionReachesUse(useLocation, defBlock, defRank, useBlock, useRank) and
+      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
+      instr = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, _) and
+      overlap = Alias::getOverlap(defLocation, useLocation)
+    )
+  }
+
   cached
   Instruction getMemoryOperandDefinition(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
@@ -86,18 +106,7 @@ private module Cached {
       (
         (
           if exists(Alias::getOperandMemoryLocation(oldOperand))
-          then
-            exists(
-              OldBlock useBlock, int useRank, Alias::MemoryLocation useLocation,
-              Alias::MemoryLocation defLocation, OldBlock defBlock, int defRank, int defOffset
-            |
-              useLocation = Alias::getOperandMemoryLocation(oldOperand) and
-              hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
-              hasUseAtRank(useLocation, useBlock, useRank, oldInstruction) and
-              definitionReachesUse(useLocation, defBlock, defRank, useBlock, useRank) and
-              overlap = Alias::getOverlap(defLocation, useLocation) and
-              result = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, _)
-            )
+          then hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
           else (
             result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction() and
             overlap instanceof MustTotallyOverlap
