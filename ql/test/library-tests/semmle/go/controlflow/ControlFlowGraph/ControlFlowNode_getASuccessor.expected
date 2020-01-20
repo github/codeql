@@ -997,6 +997,7 @@
 | stmts.go:51:7:51:7 | a | stmts.go:51:9:51:9 | 0 |
 | stmts.go:51:7:51:10 | assignment to element | stmts.go:51:7:51:21 | ... = ...[1] |
 | stmts.go:51:7:51:10 | skip | stmts.go:51:13:51:13 | skip |
+| stmts.go:51:7:51:10 | skip | stmts.go:60:1:60:1 | exit |
 | stmts.go:51:7:51:21 | ... = ...[0] | stmts.go:51:7:51:10 | assignment to element |
 | stmts.go:51:7:51:21 | ... = ...[1] | stmts.go:51:13:51:13 | assignment to w |
 | stmts.go:51:9:51:9 | 0 | stmts.go:51:7:51:10 | skip |

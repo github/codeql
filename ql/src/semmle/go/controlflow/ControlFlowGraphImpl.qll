@@ -1156,7 +1156,7 @@ module CFG {
       cmpl = Panic()
       or
       last = mkExprOrSkipNode(this) and
-      cmpl = Done()
+      (cmpl = Done() or cmpl = Panic())
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
