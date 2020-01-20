@@ -20,6 +20,8 @@
 |---------------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Cross-site scripting through exception (`js/xss-through-exception`) | security, external/cwe/cwe-079, external/cwe/cwe-116              | Highlights potential XSS vulnerabilities where an exception is written to the DOM. Results are not shown on LGTM by default. |
 | Regular expression always matches (`js/regex/always-matches`) | correctness, regular-expressions | Highlights regular expression checks that trivially succeed by matching an empty substring. Results are shown on LGTM by default. |
+| Missing await (`js/missing-await`) | correctness | Highlights expressions that operate directly on a promise object in a nonsensical way, instead of awaiting its result. Results are shown on LGTM by default. |
+| Prototype pollution in utility function (`js/prototype-pollution-utility`) | security, external/cwe/cwe-400, external/cwe/cwe-471 | Highlights recursive copying operations that are susceptible to prototype pollution. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
@@ -29,7 +31,8 @@
 | Duplicate parameter names (`js/duplicate-parameter-name`) | Fewer results | This query now recognizes additional parameters that reasonably can have duplicated names. |
 | Incomplete string escaping or encoding (`js/incomplete-sanitization`) | Fewer false positive results | This query now recognizes additional cases where a single replacement is likely to be intentional. |
 | Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | This query now recognizes additional ways event handler receivers can be bound. | 
-| Expression has no effect (`js/useless-expression`) | Fewer false positive results | The query now recognizes block-level flow type annotations. |
+| Expression has no effect (`js/useless-expression`) | Fewer false positive results | The query now recognizes block-level flow type annotations and ignores the first statement of a try block. |
+| Use of call stack introspection in strict mode (`js/strict-mode-call-stack-introspection`) | Fewer false positive results | The query no longer flags expression statements. |
 
 ## Changes to libraries
 

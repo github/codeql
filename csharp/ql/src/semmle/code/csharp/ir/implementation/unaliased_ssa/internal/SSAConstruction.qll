@@ -75,6 +75,26 @@ private module Cached {
     )
   }
 
+  pragma[noopt]
+  private predicate hasMemoryOperandDefinition(
+    OldInstruction oldInstruction, OldIR::NonPhiMemoryOperand oldOperand, Overlap overlap,
+    Instruction instr
+  ) {
+    oldOperand = oldInstruction.getAnOperand() and
+    oldOperand instanceof OldIR::NonPhiMemoryOperand and
+    exists(
+      OldBlock useBlock, int useRank, Alias::MemoryLocation useLocation,
+      Alias::MemoryLocation defLocation, OldBlock defBlock, int defRank, int defOffset
+    |
+      useLocation = Alias::getOperandMemoryLocation(oldOperand) and
+      hasUseAtRank(useLocation, useBlock, useRank, oldInstruction) and
+      definitionReachesUse(useLocation, defBlock, defRank, useBlock, useRank) and
+      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
+      instr = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, _) and
+      overlap = Alias::getOverlap(defLocation, useLocation)
+    )
+  }
+
   cached
   Instruction getMemoryOperandDefinition(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
@@ -86,18 +106,7 @@ private module Cached {
       (
         (
           if exists(Alias::getOperandMemoryLocation(oldOperand))
-          then
-            exists(
-              OldBlock useBlock, int useRank, Alias::MemoryLocation useLocation,
-              Alias::MemoryLocation defLocation, OldBlock defBlock, int defRank, int defOffset
-            |
-              useLocation = Alias::getOperandMemoryLocation(oldOperand) and
-              hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
-              hasUseAtRank(useLocation, useBlock, useRank, oldInstruction) and
-              definitionReachesUse(useLocation, defBlock, defRank, useBlock, useRank) and
-              overlap = Alias::getOverlap(defLocation, useLocation) and
-              result = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, _)
-            )
+          then hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
           else (
             result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction() and
             overlap instanceof MustTotallyOverlap
@@ -153,10 +162,9 @@ private module Cached {
     )
   }
 
+  pragma[noopt]
   cached
-  Instruction getPhiOperandDefinition(
-    PhiInstruction instr, IRBlock newPredecessorBlock, Overlap overlap
-  ) {
+  Instruction getPhiOperandDefinition(Phi instr, IRBlock newPredecessorBlock, Overlap overlap) {
     exists(
       Alias::MemoryLocation defLocation, Alias::MemoryLocation useLocation, OldBlock phiBlock,
       OldBlock predBlock, OldBlock defBlock, int defOffset, Alias::MemoryLocation actualDefLocation
@@ -563,28 +571,35 @@ module DefUse {
   /**
    * Gets the `Instruction` for the definition at offset `defOffset` in block `defBlock`.
    */
-  bindingset[defOffset, defLocation]
-  pragma[inline]
   Instruction getDefinitionOrChiInstruction(
     OldBlock defBlock, int defOffset, Alias::MemoryLocation defLocation,
     Alias::MemoryLocation actualDefLocation
   ) {
-    defOffset >= 0 and
-    exists(OldInstruction oldInstr |
-      oldInstr = defBlock.getInstruction(defOffset / 2) and
-      if (defOffset % 2) > 0
-      then (
-        // An odd offset corresponds to the `Chi` instruction.
-        result = Chi(oldInstr) and
-        actualDefLocation = defLocation.getVirtualVariable()
-      ) else (
-        // An even offset corresponds to the original instruction.
-        result = getNewInstruction(oldInstr) and
-        actualDefLocation = defLocation
-      )
+    exists(OldInstruction oldInstr, int oldOffset |
+      oldInstr = defBlock.getInstruction(oldOffset) and
+      oldOffset >= 0
+    |
+      // An odd offset corresponds to the `Chi` instruction.
+      defOffset = oldOffset * 2 + 1 and
+      result = Chi(oldInstr) and
+      (
+        defLocation = Alias::getResultMemoryLocation(oldInstr) or
+        defLocation = Alias::getResultMemoryLocation(oldInstr).getVirtualVariable()
+      ) and
+      actualDefLocation = defLocation.getVirtualVariable()
+      or
+      // An even offset corresponds to the original instruction.
+      defOffset = oldOffset * 2 and
+      result = getNewInstruction(oldInstr) and
+      (
+        defLocation = Alias::getResultMemoryLocation(oldInstr) or
+        defLocation = Alias::getResultMemoryLocation(oldInstr).getVirtualVariable()
+      ) and
+      actualDefLocation = defLocation
     )
     or
-    defOffset < 0 and
+    defOffset = -1 and
+    hasDefinition(_, defLocation, defBlock, defOffset) and
     result = Phi(defBlock, defLocation) and
     actualDefLocation = defLocation
   }
@@ -811,7 +826,7 @@ module DefUse {
    * Holds if the `Phi` instruction for location `useLocation` at the beginning of block `phiBlock` has an operand along
    * the incoming edge from `predBlock`, where that operand's definition is at offset `defOffset` in block `defBlock`.
    */
-  pragma[inline]
+  pragma[noopt]
   predicate hasPhiOperandDefinition(
     Alias::MemoryLocation defLocation, Alias::MemoryLocation useLocation, OldBlock phiBlock,
     OldBlock predBlock, OldBlock defBlock, int defOffset
@@ -819,8 +834,8 @@ module DefUse {
     exists(int defRank |
       definitionHasPhiNode(useLocation, phiBlock) and
       predBlock = phiBlock.getAFeasiblePredecessor() and
-      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
       definitionReachesEndOfBlock(useLocation, defBlock, defRank, predBlock) and
+      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
       exists(Alias::getOverlap(defLocation, useLocation))
     )
   }
@@ -884,5 +899,14 @@ module SSASanity {
       funcText = Language::getIdentityString(func.getFunction()) and
       message = "Operand has " + locationCount.toString() + " memory accesses in function '$@'."
     )
+  }
+
+  query predicate missingVirtualVariableForMemoryLocation(
+    Alias::MemoryLocation location, string message, OldIR::IRFunction func, string funcText
+  ) {
+    not exists(location.getVirtualVariable()) and
+    func = location.getIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction()) and
+    message = "Memory location has no virtual variable in function '$@'."
   }
 }

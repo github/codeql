@@ -261,6 +261,19 @@ module InstructionSanity {
 }
 
 /**
+ * Gets an `Instruction` that is contained in `IRFunction`, and has a location with the specified
+ * `File` and line number. Used for assigning register names when printing IR.
+ */
+private Instruction getAnInstructionAtLine(IRFunction irFunc, Language::File file, int line) {
+  exists(Language::Location location |
+    irFunc = result.getEnclosingIRFunction() and
+    location = result.getLocation() and
+    file = location.getFile() and
+    line = location.getStartLine()
+  )
+}
+
+/**
  * Represents a single operation in the IR.
  */
 class Instruction extends Construction::TInstruction {
@@ -324,8 +337,8 @@ class Instruction extends Construction::TInstruction {
 
   private int getLineRank() {
     this = rank[result](Instruction instr |
-        instr.getAST().getFile() = getAST().getFile() and
-        instr.getAST().getLocation().getStartLine() = getAST().getLocation().getStartLine()
+        instr = getAnInstructionAtLine(getEnclosingIRFunction(), getLocation().getFile(),
+            getLocation().getStartLine())
       |
         instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
       )

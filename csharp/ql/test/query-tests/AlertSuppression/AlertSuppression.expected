@@ -8,6 +8,7 @@
 | AlertSuppression.cs:8:1:8:18 | // ... | lgtm: blah blah | lgtm | AlertSuppression.cs:8:1:8:18 | suppression range |
 | AlertSuppression.cs:9:1:9:32 | // ... | lgtm blah blah #falsepositive | lgtm | AlertSuppression.cs:9:1:9:32 | suppression range |
 | AlertSuppression.cs:10:1:10:27 | // ... | lgtm  [cs/unused-reftype] | lgtm  [cs/unused-reftype] | AlertSuppression.cs:10:1:10:27 | suppression range |
+| AlertSuppression.cs:11:1:11:10 | /* ... */ | lgtm | lgtm | AlertSuppression.cs:11:1:11:10 | suppression range |
 | AlertSuppression.cs:12:1:12:9 | // ... | lgtm[] | lgtm[] | AlertSuppression.cs:12:1:12:9 | suppression range |
 | AlertSuppression.cs:14:1:14:6 | // ... | lgtm | lgtm | AlertSuppression.cs:14:1:14:6 | suppression range |
 | AlertSuppression.cs:15:1:15:8 | // ... | lgtm | lgtm | AlertSuppression.cs:15:1:15:8 | suppression range |
@@ -32,6 +33,7 @@
 | AlertSuppressionWindows.cs:8:1:8:18 | // ... | lgtm: blah blah | lgtm | AlertSuppressionWindows.cs:8:1:8:18 | suppression range |
 | AlertSuppressionWindows.cs:9:1:9:32 | // ... | lgtm blah blah #falsepositive | lgtm | AlertSuppressionWindows.cs:9:1:9:32 | suppression range |
 | AlertSuppressionWindows.cs:10:1:10:27 | // ... | lgtm  [cs/unused-reftype] | lgtm  [cs/unused-reftype] | AlertSuppressionWindows.cs:10:1:10:27 | suppression range |
+| AlertSuppressionWindows.cs:11:1:11:10 | /* ... */ | lgtm | lgtm | AlertSuppressionWindows.cs:11:1:11:10 | suppression range |
 | AlertSuppressionWindows.cs:12:1:12:9 | // ... | lgtm[] | lgtm[] | AlertSuppressionWindows.cs:12:1:12:9 | suppression range |
 | AlertSuppressionWindows.cs:14:1:14:6 | // ... | lgtm | lgtm | AlertSuppressionWindows.cs:14:1:14:6 | suppression range |
 | AlertSuppressionWindows.cs:15:1:15:8 | // ... | lgtm | lgtm | AlertSuppressionWindows.cs:15:1:15:8 | suppression range |
@@ -46,3 +48,7 @@
 | AlertSuppressionWindows.cs:27:1:27:52 | // ... | lgtm[cs/unused-reftype] and lgtm[cs/unused-field] | lgtm[cs/unused-reftype] | AlertSuppressionWindows.cs:27:1:27:52 | suppression range |
 | AlertSuppressionWindows.cs:28:1:28:32 | // ... | lgtm[cs/unused-reftype]; lgtm | lgtm | AlertSuppressionWindows.cs:28:1:28:32 | suppression range |
 | AlertSuppressionWindows.cs:28:1:28:32 | // ... | lgtm[cs/unused-reftype]; lgtm | lgtm[cs/unused-reftype] | AlertSuppressionWindows.cs:28:1:28:32 | suppression range |
+| AlertSuppressionWindows.cs:29:1:29:12 | /* ... */ | lgtm[] | lgtm[] | AlertSuppressionWindows.cs:29:1:29:12 | suppression range |
+| AlertSuppressionWindows.cs:30:1:30:29 | /* ... */ | lgtm[cs/unused-reftype] | lgtm[cs/unused-reftype] | AlertSuppressionWindows.cs:30:1:30:29 | suppression range |
+| AlertSuppressionWindows.cs:35:1:35:43 | /* ... */ | lgtm[@tag:nullness,cs/unused-reftype] | lgtm[@tag:nullness,cs/unused-reftype] | AlertSuppressionWindows.cs:35:1:35:43 | suppression range |
+| AlertSuppressionWindows.cs:36:1:36:25 | /* ... */ | lgtm[@tag:nullness] | lgtm[@tag:nullness] | AlertSuppressionWindows.cs:36:1:36:25 | suppression range |

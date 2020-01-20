@@ -28,6 +28,8 @@ private predicate userInputInstruction(Instruction instr) {
   or
   userInputReturned(instr.getConvertedResultExpression())
   or
+  isUserInput(instr.getConvertedResultExpression(), _)
+  or
   instr.getConvertedResultExpression() instanceof EnvironmentRead
   or
   instr

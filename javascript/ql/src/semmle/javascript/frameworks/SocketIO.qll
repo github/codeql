@@ -574,27 +574,6 @@ module SocketIOClient {
   }
 }
 
-/** Provides predicates for working with Node.js `EventEmitter`s. */
-private module EventEmitter {
-  /** Gets the name of a method on `EventEmitter` that returns `this`. */
-  string chainableMethod() {
-    result = "off" or
-    result = "removeAllListeners" or
-    result = "removeListener" or
-    result = "setMaxListeners" or
-    result = on()
-  }
-
-  /** Gets the name of a method on `EventEmitter` that registers an event handler. */
-  string on() {
-    result = "addListener" or
-    result = "on" or
-    result = "once" or
-    result = "prependListener" or
-    result = "prependOnceListener"
-  }
-}
-
 /** A data flow step through socket.io sockets. */
 private class SocketIoStep extends DataFlow::AdditionalFlowStep {
   DataFlow::Node pred;

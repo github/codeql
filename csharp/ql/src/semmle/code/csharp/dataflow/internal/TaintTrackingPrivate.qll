@@ -90,7 +90,11 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
         isSuccessor = true
       )
       or
-      e1 = e2.(LogicalOperation).getAnOperand() and
+      e1 = e2.(UnaryLogicalOperation).getAnOperand() and
+      scope = e2 and
+      isSuccessor = false
+      or
+      e1 = e2.(BinaryLogicalOperation).getAnOperand() and
       scope = e2 and
       isSuccessor = false
       or

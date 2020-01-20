@@ -69,6 +69,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   or
   // Taint can flow through modeled functions
   exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
+  or
+  exprToExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
 }
 
 /**
@@ -116,6 +118,36 @@ private predicate noFlowFromChildExpr(Expr e) {
   e instanceof ClassAggregateLiteral
   or
   e instanceof FieldAccess
+}
+
+private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
+  exists(DataFlowFunction f, Call call, FunctionOutput outModel |
+    call.getTarget() = f and
+    exprOut = call and
+    outModel.isReturnValueDeref() and
+    exists(int argInIndex, FunctionInput inModel | f.hasDataFlow(inModel, outModel) |
+      // Taint flows from a pointer to a dereference, which DataFlow does not handle
+      // dest_ptr = strdup(tainted_ptr)
+      inModel.isParameterDeref(argInIndex) and
+      exprIn = call.getArgument(argInIndex)
+    )
+  )
+  or
+  exists(TaintFunction f, Call call, FunctionOutput outModel |
+    call.getTarget() = f and
+    exprOut = call and
+    outModel.isReturnValueDeref() and
+    exists(int argInIndex, FunctionInput inModel | f.hasTaintFlow(inModel, outModel) |
+      inModel.isParameterDeref(argInIndex) and
+      exprIn = call.getArgument(argInIndex)
+      or
+      inModel.isParameterDeref(argInIndex) and
+      call.passesByReference(argInIndex, exprIn)
+      or
+      inModel.isParameter(argInIndex) and
+      exprIn = call.getArgument(argInIndex)
+    )
+  )
 }
 
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {

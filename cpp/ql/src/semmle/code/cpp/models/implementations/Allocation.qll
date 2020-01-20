@@ -173,32 +173,14 @@ class ReallocAllocationFunction extends AllocationFunction {
 }
 
 /**
- * An allocation function (such as `strdup`) that has no explicit argument for
+ * A miscellaneous allocation function that has no explicit argument for
  * the size of the allocation.
  */
-class StrdupAllocationFunction extends AllocationFunction {
-  StrdupAllocationFunction() {
+class SizelessAllocationFunction extends AllocationFunction {
+  SizelessAllocationFunction() {
     exists(string name |
-      hasGlobalOrStdName(name) and
-      (
-        // strdup(str)
-        name = "strdup"
-        or
-        // wcsdup(str)
-        name = "wcsdup"
-      )
-      or
       hasGlobalName(name) and
       (
-        // _strdup(str)
-        name = "_strdup"
-        or
-        // _wcsdup(str)
-        name = "_wcsdup"
-        or
-        // _mbsdup(str)
-        name = "_mbsdup"
-        or
         // ExAllocateFromLookasideListEx(list)
         name = "ExAllocateFromLookasideListEx"
         or
