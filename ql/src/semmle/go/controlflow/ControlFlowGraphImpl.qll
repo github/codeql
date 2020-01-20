@@ -177,16 +177,14 @@ newtype TControlFlowNode =
   /**
    * A control-flow node that represents a return from a function.
    */
-  MkReturnNode(ReturnStmt ret)
-  or
+  MkReturnNode(ReturnStmt ret) or
   /**
    * A control-flow node that represents the implicit write to a named result variable in a return statement.
    */
   MkResultWriteNode(ResultVariable var, int i, ReturnStmt ret) {
     ret.getEnclosingFunction().getResultVar(i) = var and
     exists(ret.getAnExpr())
-  }
-  or
+  } or
   /**
    * A control-flow node that represents the implicit read of a named result variable upon returning from
    * a function (after any deferred calls have been executed).
@@ -310,11 +308,9 @@ newtype TWriteTarget =
     exists(ParameterOrReceiver parm | write = MkParameterInit(parm) | lhs = parm.getDeclaration())
     or
     exists(ResultVariable res | write = MkResultInit(res) | lhs = res.getDeclaration())
-  }
-  or
+  } or
   /** A write target for an element in a compound literal, viewed as a field write. */
-  MkLiteralElementTarget(MkLiteralElementInitNode elt)
-  or
+  MkLiteralElementTarget(MkLiteralElementInitNode elt) or
   /** A write target for a returned expression, viewed as a write to the corresponding result variable. */
   MkResultWriteTarget(MkResultWriteNode w)
 
@@ -516,10 +512,7 @@ module CFG {
    * Strips off any structural components from `e`.
    */
   private Expr stripStructural(Expr e) {
-    if isStructural(e) then
-      result = stripStructural(e.getAChildExpr())
-    else
-      result = e
+    if isStructural(e) then result = stripStructural(e.getAChildExpr()) else result = e
   }
 
   private class ControlFlowTree extends AstNode {
@@ -556,7 +549,6 @@ module CFG {
 
   private class AtomicTree extends ControlFlowTree {
     ControlFlow::Node nd;
-
     Completion cmpl;
 
     AtomicTree() {
@@ -565,10 +557,9 @@ module CFG {
         e.isConst() and
         nd = mkExprOrSkipNode(this)
       |
-        if e.isPlatformIndependentConstant() and exists(e.getBoolValue()) then
-          cmpl = Bool(e.getBoolValue())
-        else
-          cmpl = Done()
+        if e.isPlatformIndependentConstant() and exists(e.getBoolValue())
+        then cmpl = Bool(e.getBoolValue())
+        else cmpl = Done()
       )
       or
       this instanceof Ident and
@@ -927,22 +918,19 @@ module CFG {
       // and call itself; this is for cases like `f(g())` where `g` has multiple
       // results
       exists(ControlFlow::Node mid | PostOrderTree.super.succ(pred, mid) |
-        if mid = getNode() then
-          succ = getEpilogueNode(0)
-        else
-          succ = mid
+        if mid = getNode() then succ = getEpilogueNode(0) else succ = mid
       )
       or
       exists(int i |
         pred = getEpilogueNode(i) and
-        succ = getEpilogueNode(i+1)
+        succ = getEpilogueNode(i + 1)
       )
     }
 
     private ControlFlow::Node getEpilogueNode(int i) {
       result = MkExtractNode(this, i)
       or
-      i = max(int j | exists(MkExtractNode(this, j)))+1 and
+      i = max(int j | exists(MkExtractNode(this, j))) + 1 and
       result = getNode()
       or
       not exists(MkExtractNode(this, _)) and
@@ -1262,9 +1250,7 @@ module CFG {
     FuncDefTree() { exists(getBody()) }
 
     pragma[noinline]
-    private MkEntryNode getEntry() {
-      result = MkEntryNode(this)
-    }
+    private MkEntryNode getEntry() { result = MkEntryNode(this) }
 
     private ParameterOrReceiver getReceiverOrParameter(int i) {
       i = 0 and result.getDeclaration() = this.(MethodDecl).getReceiverDecl().getNameExpr()
@@ -1338,10 +1324,7 @@ module CFG {
         pred = notDeferSucc*(getEntry())
       |
         // panic goes directly to exit, non-panic reads result variables first
-        if cmpl = Panic() then
-          succ = MkExitNode(this)
-        else
-          succ = getEpilogueNode(0)
+        if cmpl = Panic() then succ = MkExitNode(this) else succ = getEpilogueNode(0)
       )
       or
       lastNode(this.getBody(), pred, _) and
@@ -1372,7 +1355,7 @@ module CFG {
       or
       exists(int i |
         pred = getEpilogueNode(i) and
-        succ = getEpilogueNode(i+1)
+        succ = getEpilogueNode(i + 1)
       )
     }
   }
@@ -1487,7 +1470,9 @@ module CFG {
   }
 
   private class RecvStmtTree extends ControlFlowTree, RecvStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getExpr().getOperand(), first) }
+    override predicate firstNode(ControlFlow::Node first) {
+      firstNode(getExpr().getOperand(), first)
+    }
   }
 
   private class ReturnStmtTree extends PostOrderTree, ReturnStmt {
@@ -1523,12 +1508,12 @@ module CFG {
     }
 
     private ControlFlow::Node next(int i) {
-      firstNode(getExpr(i+1), result)
+      firstNode(getExpr(i + 1), result)
       or
       exists(MkExtractNode(this, _)) and
-      result = complete(i+1)
+      result = complete(i + 1)
       or
-      i+1 = getEnclosingFunction().getType().getNumResult() and
+      i + 1 = getEnclosingFunction().getType().getNumResult() and
       result = getNode()
     }
 
@@ -1635,9 +1620,7 @@ module CFG {
   private class SelectorExprTree extends ControlFlowTree, SelectorExpr {
     SelectorExprTree() { getBase() instanceof ValueExpr }
 
-    override predicate firstNode(ControlFlow::Node first) {
-      firstNode(getBase(), first)
-    }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(getBase(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
