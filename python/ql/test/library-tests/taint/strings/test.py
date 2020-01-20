@@ -8,25 +8,6 @@ def test_json():
     b = a.get("y")
     c = b["z"]
 
-def test_list(x, y, z):
-    tainted_list = TAINTED_LIST
-    a = tainted_list[0]
-    b = tainted_list[x]
-    c = tainted_list[y:z]
-    d = tainted_list.copy()
-    e, f, g = tainted_list # TODO: currently not handled
-
-def test_dict(x):
-    tainted_dict = TAINTED_DICT
-    a = tainted_dict["name"]
-    b = tainted_dict[x]
-    c = tainted_dict.copy()
-    for d in tainted_dict.values():
-        d
-    # TODO: currently not recognizing tainted_dict.items()
-    for _, e in tainted_dict.items():
-        e
-
 def test_str():
     tainted_string = TAINTED
     a = tainted_string.ljust(8)
@@ -36,9 +17,6 @@ def test_str():
     e = reversed(tainted_string)
     f = copy(tainted_string)
     h = tainted_string.strip()
-    tainted_list = [tainted_string]
-    tainted_tuple = (tainted_string,)
-    tainted_dict = {'key': tainted_string}
 
 def test_const_sanitizer1():
     tainted_string = TAINTED
