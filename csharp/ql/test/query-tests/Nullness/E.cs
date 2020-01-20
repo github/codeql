@@ -363,7 +363,7 @@ public class E
             x.ToString(); // GOOD
     }
 
-    static int Ex34(string s = null) => s.Length; // BAD (maybe) False negative
+    static int Ex34(string s = null) => s.Length; // BAD (maybe)
 }
 
 public static class Extensions
