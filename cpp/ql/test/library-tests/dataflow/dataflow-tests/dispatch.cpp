@@ -107,3 +107,26 @@ void testFunctionPointer(SinkFunctionType maybeCallSink, SinkFunctionType dontCa
   maybeCallSink(source()); // flow [NOT DETECTED by AST]
   dontCallSink(source()); // no flow
 }
+
+namespace virtual_inheritance {
+  struct Top {
+    virtual int isSource() { return 0; }
+  };
+
+  struct Middle : virtual Top {
+    int isSource() override { return source(); }
+  };
+
+  struct Bottom : Middle {
+  };
+
+  void VirtualDispatch(Bottom *bottomPtr, Bottom &bottomRef) {
+    // Because the inheritance from `Top` is virtual, the following casts go
+    // directly from `Bottom` to `Top`, skipping `Middle`. That means we don't
+    // get flow from a `Middle` value to the call qualifier.
+    Top *topPtr = bottomPtr, &topRef = bottomRef;
+
+    sink(topPtr->isSource()); // flow [NOT DETECTED]
+    sink(topRef.isSource()); // flow [NOT DETECTED]
+  }
+}
