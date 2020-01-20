@@ -215,7 +215,7 @@ private module ExceptionalPromiseFlow {
 
     override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
-      pred = getCallback([0..1]).getExceptionalReturn() and
+      pred = getCallback(0).getExceptionalReturn() and
       succ = this
     }
   }
