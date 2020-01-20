@@ -14,6 +14,9 @@
 | dispatch.cpp:11:38:11:38 | x | dispatch.cpp:45:18:45:23 | call to source |
 | dispatch.cpp:23:38:23:38 | x | dispatch.cpp:33:18:33:23 | call to source |
 | dispatch.cpp:23:38:23:38 | x | dispatch.cpp:41:17:41:22 | call to source |
+| dispatch.cpp:23:38:23:38 | x | dispatch.cpp:69:15:69:20 | call to source |
+| dispatch.cpp:23:38:23:38 | x | dispatch.cpp:73:14:73:19 | call to source |
+| dispatch.cpp:23:38:23:38 | x | dispatch.cpp:81:13:81:18 | call to source |
 | dispatch.cpp:31:16:31:24 | call to isSource1 | dispatch.cpp:22:37:22:42 | call to source |
 | dispatch.cpp:32:16:32:24 | call to isSource2 | dispatch.cpp:16:37:16:42 | call to source |
 | dispatch.cpp:35:16:35:25 | call to notSource1 | dispatch.cpp:9:37:9:42 | call to source |
@@ -22,6 +25,9 @@
 | dispatch.cpp:40:15:40:23 | call to isSource2 | dispatch.cpp:16:37:16:42 | call to source |
 | dispatch.cpp:43:15:43:24 | call to notSource1 | dispatch.cpp:9:37:9:42 | call to source |
 | dispatch.cpp:44:15:44:24 | call to notSource2 | dispatch.cpp:10:37:10:42 | call to source |
+| dispatch.cpp:55:22:55:30 | call to isSource1 | dispatch.cpp:22:37:22:42 | call to source |
+| dispatch.cpp:58:28:58:36 | call to isSource1 | dispatch.cpp:22:37:22:42 | call to source |
+| dispatch.cpp:96:8:96:8 | x | dispatch.cpp:107:17:107:22 | call to source |
 | test.cpp:7:8:7:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:9:8:9:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:10:8:10:9 | t2 | test.cpp:6:12:6:17 | call to source |
