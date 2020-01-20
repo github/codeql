@@ -788,12 +788,14 @@ private predicate parameterPropRead(
   Function f, DataFlow::Node invk, DataFlow::Node arg, string prop, DataFlow::Node read,
   DataFlow::Configuration cfg
 ) {
-  exists(DataFlow::Node parm |
+  exists(DataFlow::SourceNode parm |
     callInputStep(f, invk, arg, parm, cfg) and
     (
-      read = parm.(DataFlow::SourceNode).getAPropertyRead(prop)
+      read = parm.getAPropertyRead(prop)
       or
-      isAdditionalLoadStep(parm, read, prop, cfg)
+      exists(DataFlow::Node use | parm.flowsTo(use) |
+        isAdditionalLoadStep(use, read, prop, cfg)
+      )
     )
   )
 }
@@ -881,7 +883,7 @@ private predicate reachableFromStoreBase(
     (
       flowStep(mid, cfg, nd, newSummary) 
       or
-      existsCopyProperty(mid, nd, prop, cfg) and
+      isAdditionalCopyPropertyStep(mid, nd, prop, cfg) and
       newSummary = PathSummary::level()
     ) and
     summary = oldSummary.appendValuePreserving(newSummary)
@@ -903,29 +905,6 @@ private predicate flowThroughProperty(
     reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
     loadStep(base, succ, prop, cfg, newSummary) and
     summary = oldSummary.append(newSummary)
-  )
-}
-
-/**
- * Holds if the property `prop` is copied from `fromNode` to `toNode`.
- */
-bindingset[prop, cfg]
-private predicate existsCopyProperty(DataFlow::Node fromNode, DataFlow::Node toNode, string prop, DataFlow::Configuration cfg) {
-  fromNode = toNode
-  or
-  existsCopyPropertyRecursive(fromNode, toNode, prop, cfg)
-}
-
-/**
- * Holds if the property `prop` is copied from `fromNode` to `toNode` using at least 1 step.
- *
- * The recursion of this predicate has been unfolded once compared to a naive implementation in order to avoid having no constraint on `prop`.
- * Therefore a caller of this predicate should also test whether the `toNode` and `fromNode` are equal.
- */
-private predicate existsCopyPropertyRecursive(DataFlow::Node fromNode, DataFlow::Node toNode, string prop, DataFlow::Configuration cfg) {
-  exists(DataFlow::Node mid |
-    isAdditionalCopyPropertyStep(fromNode, mid, prop, cfg) and
-    existsCopyProperty(mid, toNode, prop, cfg)
   )
 }
 

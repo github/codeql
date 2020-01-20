@@ -84,4 +84,19 @@
 		p.catch(e => sink(e)); // NOT OK!
 	}
 	leaksRejectedPromise(new Promise((resolve, reject) => reject(source)));
+	
+	function leaksRejectedAgain(p) {
+		("foo", p).then(() => {}).catch(e => sink(e)); // NOT OK!
+	}
+	leaksRejectedAgain(new Promise((resolve, reject) => reject(source)).then(() => {}));
+	
+	async function returnsRejected(p) {
+		try {
+			await p;
+		} catch(e) {
+			return e;
+		}
+	}
+	var foo = returnsRejected(new Promise((resolve, reject) => reject(source)));
+	sink(foo); // NOT OK!
 })();
