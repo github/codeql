@@ -1,0 +1,22 @@
+| test.cpp:18:8:18:10 | Load: ptr | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:24:10:24:10 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:30:8:30:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:32:8:32:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 2 |
+| test.cpp:37:8:37:16 | Convert: (char *)... | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:42:8:42:8 | Convert: array to pointer conversion | ZeroLength | 100 | ZeroOffset | 0 |
+| test.cpp:47:8:47:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:57:8:57:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:59:8:59:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 3 |
+| test.cpp:72:8:72:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:79:10:79:10 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:88:8:88:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:91:10:91:10 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 2 |
+| test.cpp:94:10:94:10 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 3 |
+| test.cpp:113:8:113:8 | Load: a | InitializeParameter: c | 0 | ZeroOffset | 0 |
+| test.cpp:114:10:114:10 | Load: a | InitializeParameter: c | 0 | ZeroOffset | 0 |
+| test.cpp:115:8:115:8 | Load: a | InitializeParameter: c | 0 | ZeroOffset | 0 |
+| test.cpp:134:8:134:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:136:8:136:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 3 |
+| test.cpp:138:8:138:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 2 |
+| test.cpp:140:8:140:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | 0 |
+| test.cpp:142:8:142:8 | Load: a | InitializeParameter: count | 0 | ZeroOffset | -10 |

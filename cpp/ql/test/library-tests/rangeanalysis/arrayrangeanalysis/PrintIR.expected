@@ -1,0 +1,1163 @@
+test.cpp:
+#   12| void test1(unsigned int)
+#   12|   Block 0
+#   12|     v12_1(void)                = EnterFunction              : 
+#   12|     m12_2(unknown)             = AliasedDefinition          : 
+#   12|     m12_3(unknown)             = InitializeNonLocal         : 
+#   12|     m12_4(unknown)             = Chi                        : total:m12_2, partial:m12_3
+#   12|     mu12_5(unknown)            = UnmodeledDefinition        : 
+#   12|     r12_6(glval<unsigned int>) = VariableAddress[count]     : 
+#   12|     m12_7(unsigned int)        = InitializeParameter[count] : &:r12_6
+#   13|     r13_1(glval<unsigned int>) = VariableAddress[count]     : 
+#   13|     r13_2(unsigned int)        = Load                       : &:r13_1, m12_7
+#   13|     r13_3(unsigned int)        = Constant[1]                : 
+#   13|     r13_4(bool)                = CompareLT                  : r13_2, r13_3
+#   13|     v13_5(void)                = ConditionalBranch          : r13_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   12|   Block 1
+#   12|     m12_8(unknown) = Phi          : from 2:~m12_4, from 3:~m16_10
+#   12|     v12_9(void)    = ReturnVoid   : 
+#   12|     v12_10(void)   = UnmodeledUse : mu*
+#   12|     v12_11(void)   = AliasedUse   : ~m12_8
+#   12|     v12_12(void)   = ExitFunction : 
+
+#   14|   Block 2
+#   14|     v14_1(void) = NoOp : 
+#-----|   Goto -> Block 1
+
+#   16|   Block 3
+#   16|     r16_1(glval<A *>)          = VariableAddress[ptr]         : 
+#   16|     r16_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#   16|     r16_3(unsigned long)       = Constant[16]                 : 
+#   16|     r16_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   16|     r16_5(unsigned int)        = Load                         : &:r16_4, m12_7
+#   16|     r16_6(unsigned long)       = Convert                      : r16_5
+#   16|     r16_7(unsigned long)       = Mul                          : r16_3, r16_6
+#   16|     r16_8(void *)              = Call                         : func:r16_2, 0:r16_7
+#   16|     m16_9(unknown)             = ^CallSideEffect              : ~m12_4
+#   16|     m16_10(unknown)            = Chi                          : total:m12_4, partial:m16_9
+#   16|     m16_11(unknown)            = ^InitializeDynamicAllocation : &:r16_8
+#   16|     r16_12(A *)                = Convert                      : r16_8
+#   16|     m16_13(A *)                = Store                        : &:r16_1, r16_12
+#   17|     r17_1(int)                 = Constant[1000]               : 
+#   17|     r17_2(glval<A *>)          = VariableAddress[ptr]         : 
+#   17|     r17_3(A *)                 = Load                         : &:r17_2, m16_13
+#   17|     r17_4(int)                 = Constant[0]                  : 
+#   17|     r17_5(glval<A>)            = PointerAdd[16]               : r17_3, r17_4
+#   17|     r17_6(glval<int>)          = FieldAddress[a]              : r17_5
+#   17|     m17_7(int)                 = Store                        : &:r17_6, r17_1
+#   17|     m17_8(unknown)             = Chi                          : total:m16_11, partial:m17_7
+#   18|     r18_1(int)                 = Constant[1001]               : 
+#   18|     r18_2(glval<A *>)          = VariableAddress[ptr]         : 
+#   18|     r18_3(A *)                 = Load                         : &:r18_2, m16_13
+#   18|     r18_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   18|     r18_5(unsigned int)        = Load                         : &:r18_4, m12_7
+#   18|     r18_6(unsigned int)        = Constant[1]                  : 
+#   18|     r18_7(unsigned int)        = Sub                          : r18_5, r18_6
+#   18|     r18_8(glval<A>)            = PointerAdd[16]               : r18_3, r18_7
+#   18|     r18_9(glval<int>)          = FieldAddress[a]              : r18_8
+#   18|     m18_10(int)                = Store                        : &:r18_9, r18_1
+#   18|     m18_11(unknown)            = Chi                          : total:m17_8, partial:m18_10
+#   19|     r19_1(int)                 = Constant[1002]               : 
+#   19|     r19_2(glval<A *>)          = VariableAddress[ptr]         : 
+#   19|     r19_3(A *)                 = Load                         : &:r19_2, m16_13
+#   19|     r19_4(int)                 = Constant[1]                  : 
+#   19|     r19_5(glval<A>)            = PointerAdd[16]               : r19_3, r19_4
+#   19|     r19_6(glval<int>)          = FieldAddress[a]              : r19_5
+#   19|     m19_7(int)                 = Store                        : &:r19_6, r19_1
+#   19|     m19_8(unknown)             = Chi                          : total:m18_11, partial:m19_7
+#   20|     r20_1(int)                 = Constant[1002]               : 
+#   20|     r20_2(glval<A *>)          = VariableAddress[ptr]         : 
+#   20|     r20_3(A *)                 = Load                         : &:r20_2, m16_13
+#   20|     r20_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   20|     r20_5(unsigned int)        = Load                         : &:r20_4, m12_7
+#   20|     r20_6(unsigned int)        = Constant[2]                  : 
+#   20|     r20_7(unsigned int)        = Sub                          : r20_5, r20_6
+#   20|     r20_8(glval<A>)            = PointerAdd[16]               : r20_3, r20_7
+#   20|     r20_9(glval<int>)          = FieldAddress[a]              : r20_8
+#   20|     m20_10(int)                = Store                        : &:r20_9, r20_1
+#   20|     m20_11(unknown)            = Chi                          : total:m19_8, partial:m20_10
+#   21|     r21_1(int)                 = Constant[1003]               : 
+#   21|     r21_2(glval<A *>)          = VariableAddress[ptr]         : 
+#   21|     r21_3(A *)                 = Load                         : &:r21_2, m16_13
+#   21|     r21_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   21|     r21_5(unsigned int)        = Load                         : &:r21_4, m12_7
+#   21|     r21_6(glval<A>)            = PointerAdd[16]               : r21_3, r21_5
+#   21|     r21_7(glval<int>)          = FieldAddress[a]              : r21_6
+#   21|     m21_8(int)                 = Store                        : &:r21_7, r21_1
+#   21|     m21_9(unknown)             = Chi                          : total:m20_11, partial:m21_8
+#   22|     r22_1(int)                 = Constant[1004]               : 
+#   22|     r22_2(glval<A *>)          = VariableAddress[ptr]         : 
+#   22|     r22_3(A *)                 = Load                         : &:r22_2, m16_13
+#   22|     r22_4(int)                 = Constant[-1]                 : 
+#   22|     r22_5(glval<A>)            = PointerAdd[16]               : r22_3, r22_4
+#   22|     r22_6(glval<int>)          = FieldAddress[a]              : r22_5
+#   22|     m22_7(int)                 = Store                        : &:r22_6, r22_1
+#   22|     m22_8(unknown)             = Chi                          : total:m21_9, partial:m22_7
+#   23|     v23_1(void)                = NoOp                         : 
+#-----|   Goto -> Block 1
+
+#   25| void test2(unsigned int)
+#   25|   Block 0
+#   25|     v25_1(void)                = EnterFunction                : 
+#   25|     m25_2(unknown)             = AliasedDefinition            : 
+#   25|     m25_3(unknown)             = InitializeNonLocal           : 
+#   25|     m25_4(unknown)             = Chi                          : total:m25_2, partial:m25_3
+#   25|     mu25_5(unknown)            = UnmodeledDefinition          : 
+#   25|     r25_6(glval<unsigned int>) = VariableAddress[count]       : 
+#   25|     m25_7(unsigned int)        = InitializeParameter[count]   : &:r25_6
+#   26|     r26_1(glval<int *>)        = VariableAddress[a]           : 
+#   26|     r26_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#   26|     r26_3(unsigned long)       = Constant[4]                  : 
+#   26|     r26_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   26|     r26_5(unsigned int)        = Load                         : &:r26_4, m25_7
+#   26|     r26_6(unsigned long)       = Convert                      : r26_5
+#   26|     r26_7(unsigned long)       = Mul                          : r26_3, r26_6
+#   26|     r26_8(void *)              = Call                         : func:r26_2, 0:r26_7
+#   26|     m26_9(unknown)             = ^CallSideEffect              : ~m25_4
+#   26|     m26_10(unknown)            = Chi                          : total:m25_4, partial:m26_9
+#   26|     m26_11(unknown)            = ^InitializeDynamicAllocation : &:r26_8
+#   26|     r26_12(int *)              = Convert                      : r26_8
+#   26|     m26_13(int *)              = Store                        : &:r26_1, r26_12
+#   27|     r27_1(glval<unsigned int>) = VariableAddress[i]           : 
+#   27|     r27_2(unsigned int)        = Constant[0]                  : 
+#   27|     m27_3(unsigned int)        = Store                        : &:r27_1, r27_2
+#-----|   Goto -> Block 1
+
+#   27|   Block 1
+#   27|     m27_4(unsigned int)        = Phi                    : from 0:m27_3, from 2:m27_16
+#   27|     m27_5(unknown)             = Phi                    : from 0:m26_11, from 2:m28_8
+#   27|     r27_6(glval<unsigned int>) = VariableAddress[i]     : 
+#   27|     r27_7(unsigned int)        = Load                   : &:r27_6, m27_4
+#   27|     r27_8(glval<unsigned int>) = VariableAddress[count] : 
+#   27|     r27_9(unsigned int)        = Load                   : &:r27_8, m25_7
+#   27|     r27_10(bool)               = CompareLT              : r27_7, r27_9
+#   27|     v27_11(void)               = ConditionalBranch      : r27_10
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   28|   Block 2
+#   28|     r28_1(int)                  = Constant[0]        : 
+#   28|     r28_2(glval<int *>)         = VariableAddress[a] : 
+#   28|     r28_3(int *)                = Load               : &:r28_2, m26_13
+#   28|     r28_4(glval<unsigned int>)  = VariableAddress[i] : 
+#   28|     r28_5(unsigned int)         = Load               : &:r28_4, m27_4
+#   28|     r28_6(glval<int>)           = PointerAdd[4]      : r28_3, r28_5
+#   28|     m28_7(int)                  = Store              : &:r28_6, r28_1
+#   28|     m28_8(unknown)              = Chi                : total:m27_5, partial:m28_7
+#   27|     r27_12(glval<unsigned int>) = VariableAddress[i] : 
+#   27|     r27_13(unsigned int)        = Load               : &:r27_12, m27_4
+#   27|     r27_14(unsigned int)        = Constant[1]        : 
+#   27|     r27_15(unsigned int)        = Add                : r27_13, r27_14
+#   27|     m27_16(unsigned int)        = Store              : &:r27_12, r27_15
+#-----|   Goto (back edge) -> Block 1
+
+#   30|   Block 3
+#   30|     v30_1(void)  = NoOp         : 
+#   25|     v25_8(void)  = ReturnVoid   : 
+#   25|     v25_9(void)  = UnmodeledUse : mu*
+#   25|     v25_10(void) = AliasedUse   : ~m26_10
+#   25|     v25_11(void) = ExitFunction : 
+
+#   32| void test3(unsigned int)
+#   32|   Block 0
+#   32|     v32_1(void)                = EnterFunction                : 
+#   32|     m32_2(unknown)             = AliasedDefinition            : 
+#   32|     m32_3(unknown)             = InitializeNonLocal           : 
+#   32|     m32_4(unknown)             = Chi                          : total:m32_2, partial:m32_3
+#   32|     mu32_5(unknown)            = UnmodeledDefinition          : 
+#   32|     r32_6(glval<unsigned int>) = VariableAddress[count]       : 
+#   32|     m32_7(unsigned int)        = InitializeParameter[count]   : &:r32_6
+#   33|     r33_1(glval<int *>)        = VariableAddress[a]           : 
+#   33|     r33_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#   33|     r33_3(unsigned long)       = Constant[4]                  : 
+#   33|     r33_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   33|     r33_5(unsigned int)        = Load                         : &:r33_4, m32_7
+#   33|     r33_6(unsigned long)       = Convert                      : r33_5
+#   33|     r33_7(unsigned long)       = Mul                          : r33_3, r33_6
+#   33|     r33_8(void *)              = Call                         : func:r33_2, 0:r33_7
+#   33|     m33_9(unknown)             = ^CallSideEffect              : ~m32_4
+#   33|     m33_10(unknown)            = Chi                          : total:m32_4, partial:m33_9
+#   33|     m33_11(unknown)            = ^InitializeDynamicAllocation : &:r33_8
+#   33|     r33_12(int *)              = Convert                      : r33_8
+#   33|     m33_13(int *)              = Store                        : &:r33_1, r33_12
+#   34|     r34_1(glval<int *>)        = VariableAddress[a]           : 
+#   34|     r34_2(int *)               = Load                         : &:r34_1, m33_13
+#   34|     r34_3(int)                 = Constant[2]                  : 
+#   34|     r34_4(int *)               = PointerAdd[4]                : r34_2, r34_3
+#   34|     r34_5(glval<int *>)        = VariableAddress[a]           : 
+#   34|     m34_6(int *)               = Store                        : &:r34_5, r34_4
+#   35|     r35_1(glval<unsigned int>) = VariableAddress[i]           : 
+#   35|     r35_2(unsigned int)        = Constant[0]                  : 
+#   35|     m35_3(unsigned int)        = Store                        : &:r35_1, r35_2
+#-----|   Goto -> Block 1
+
+#   35|   Block 1
+#   35|     m35_4(unsigned int)        = Phi                    : from 0:m35_3, from 2:m35_18
+#   35|     m35_5(unknown)             = Phi                    : from 0:m33_11, from 2:m36_8
+#   35|     r35_6(glval<unsigned int>) = VariableAddress[i]     : 
+#   35|     r35_7(unsigned int)        = Load                   : &:r35_6, m35_4
+#   35|     r35_8(glval<unsigned int>) = VariableAddress[count] : 
+#   35|     r35_9(unsigned int)        = Load                   : &:r35_8, m32_7
+#   35|     r35_10(unsigned int)       = Constant[2]            : 
+#   35|     r35_11(unsigned int)       = Sub                    : r35_9, r35_10
+#   35|     r35_12(bool)               = CompareLT              : r35_7, r35_11
+#   35|     v35_13(void)               = ConditionalBranch      : r35_12
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   36|   Block 2
+#   36|     r36_1(int)                  = Constant[0]        : 
+#   36|     r36_2(glval<int *>)         = VariableAddress[a] : 
+#   36|     r36_3(int *)                = Load               : &:r36_2, m34_6
+#   36|     r36_4(glval<unsigned int>)  = VariableAddress[i] : 
+#   36|     r36_5(unsigned int)         = Load               : &:r36_4, m35_4
+#   36|     r36_6(glval<int>)           = PointerAdd[4]      : r36_3, r36_5
+#   36|     m36_7(int)                  = Store              : &:r36_6, r36_1
+#   36|     m36_8(unknown)              = Chi                : total:m35_5, partial:m36_7
+#   35|     r35_14(glval<unsigned int>) = VariableAddress[i] : 
+#   35|     r35_15(unsigned int)        = Load               : &:r35_14, m35_4
+#   35|     r35_16(unsigned int)        = Constant[1]        : 
+#   35|     r35_17(unsigned int)        = Add                : r35_15, r35_16
+#   35|     m35_18(unsigned int)        = Store              : &:r35_14, r35_17
+#-----|   Goto (back edge) -> Block 1
+
+#   38|   Block 3
+#   38|     v38_1(void)  = NoOp         : 
+#   32|     v32_8(void)  = ReturnVoid   : 
+#   32|     v32_9(void)  = UnmodeledUse : mu*
+#   32|     v32_10(void) = AliasedUse   : ~m33_10
+#   32|     v32_11(void) = ExitFunction : 
+
+#   40| void test4(unsigned int)
+#   40|   Block 0
+#   40|     v40_1(void)                = EnterFunction                : 
+#   40|     m40_2(unknown)             = AliasedDefinition            : 
+#   40|     m40_3(unknown)             = InitializeNonLocal           : 
+#   40|     m40_4(unknown)             = Chi                          : total:m40_2, partial:m40_3
+#   40|     mu40_5(unknown)            = UnmodeledDefinition          : 
+#   40|     r40_6(glval<unsigned int>) = VariableAddress[count]       : 
+#   40|     m40_7(unsigned int)        = InitializeParameter[count]   : &:r40_6
+#   41|     r41_1(glval<void *>)       = VariableAddress[a]           : 
+#   41|     r41_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#   41|     r41_3(glval<unsigned int>) = VariableAddress[count]       : 
+#   41|     r41_4(unsigned int)        = Load                         : &:r41_3, m40_7
+#   41|     r41_5(unsigned long)       = Convert                      : r41_4
+#   41|     r41_6(void *)              = Call                         : func:r41_2, 0:r41_5
+#   41|     m41_7(unknown)             = ^CallSideEffect              : ~m40_4
+#   41|     m41_8(unknown)             = Chi                          : total:m40_4, partial:m41_7
+#   41|     m41_9(unknown)             = ^InitializeDynamicAllocation : &:r41_6
+#   41|     m41_10(void *)             = Store                        : &:r41_1, r41_6
+#   42|     r42_1(glval<unsigned int>) = VariableAddress[i]           : 
+#   42|     r42_2(unsigned int)        = Constant[0]                  : 
+#   42|     m42_3(unsigned int)        = Store                        : &:r42_1, r42_2
+#-----|   Goto -> Block 1
+
+#   42|   Block 1
+#   42|     m42_4(unsigned int)        = Phi                    : from 0:m42_3, from 2:m42_16
+#   42|     m42_5(unknown)             = Phi                    : from 0:m41_9, from 2:m43_9
+#   42|     r42_6(glval<unsigned int>) = VariableAddress[i]     : 
+#   42|     r42_7(unsigned int)        = Load                   : &:r42_6, m42_4
+#   42|     r42_8(glval<unsigned int>) = VariableAddress[count] : 
+#   42|     r42_9(unsigned int)        = Load                   : &:r42_8, m40_7
+#   42|     r42_10(bool)               = CompareLT              : r42_7, r42_9
+#   42|     v42_11(void)               = ConditionalBranch      : r42_10
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   43|   Block 2
+#   43|     r43_1(char)                 = Constant[0]        : 
+#   43|     r43_2(glval<void *>)        = VariableAddress[a] : 
+#   43|     r43_3(void *)               = Load               : &:r43_2, m41_10
+#   43|     r43_4(char *)               = Convert            : r43_3
+#   43|     r43_5(glval<unsigned int>)  = VariableAddress[i] : 
+#   43|     r43_6(unsigned int)         = Load               : &:r43_5, m42_4
+#   43|     r43_7(glval<char>)          = PointerAdd[1]      : r43_4, r43_6
+#   43|     m43_8(char)                 = Store              : &:r43_7, r43_1
+#   43|     m43_9(unknown)              = Chi                : total:m42_5, partial:m43_8
+#   42|     r42_12(glval<unsigned int>) = VariableAddress[i] : 
+#   42|     r42_13(unsigned int)        = Load               : &:r42_12, m42_4
+#   42|     r42_14(unsigned int)        = Constant[1]        : 
+#   42|     r42_15(unsigned int)        = Add                : r42_13, r42_14
+#   42|     m42_16(unsigned int)        = Store              : &:r42_12, r42_15
+#-----|   Goto (back edge) -> Block 1
+
+#   45|   Block 3
+#   45|     v45_1(void)  = NoOp         : 
+#   40|     v40_8(void)  = ReturnVoid   : 
+#   40|     v40_9(void)  = UnmodeledUse : mu*
+#   40|     v40_10(void) = AliasedUse   : ~m41_8
+#   40|     v40_11(void) = ExitFunction : 
+
+#   47| void test5()
+#   47|   Block 0
+#   47|     v47_1(void)                = EnterFunction       : 
+#   47|     m47_2(unknown)             = AliasedDefinition   : 
+#   47|     m47_3(unknown)             = InitializeNonLocal  : 
+#   47|     m47_4(unknown)             = Chi                 : total:m47_2, partial:m47_3
+#   47|     mu47_5(unknown)            = UnmodeledDefinition : 
+#   48|     r48_1(glval<int[100]>)     = VariableAddress[a]  : 
+#   48|     m48_2(int[100])            = Uninitialized[a]    : &:r48_1
+#   49|     r49_1(glval<unsigned int>) = VariableAddress[i]  : 
+#   49|     r49_2(unsigned int)        = Constant[0]         : 
+#   49|     m49_3(unsigned int)        = Store               : &:r49_1, r49_2
+#-----|   Goto -> Block 1
+
+#   49|   Block 1
+#   49|     m49_4(unsigned int)        = Phi                : from 0:m49_3, from 2:m49_15
+#   49|     m49_5(int[100])            = Phi                : from 0:m48_2, from 2:m50_8
+#   49|     r49_6(glval<unsigned int>) = VariableAddress[i] : 
+#   49|     r49_7(unsigned int)        = Load               : &:r49_6, m49_4
+#   49|     r49_8(unsigned int)        = Constant[100]      : 
+#   49|     r49_9(bool)                = CompareLT          : r49_7, r49_8
+#   49|     v49_10(void)               = ConditionalBranch  : r49_9
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   50|   Block 2
+#   50|     r50_1(int)                  = Constant[0]        : 
+#   50|     r50_2(glval<int[100]>)      = VariableAddress[a] : 
+#   50|     r50_3(int *)                = Convert            : r50_2
+#   50|     r50_4(glval<unsigned int>)  = VariableAddress[i] : 
+#   50|     r50_5(unsigned int)         = Load               : &:r50_4, m49_4
+#   50|     r50_6(glval<int>)           = PointerAdd[4]      : r50_3, r50_5
+#   50|     m50_7(int)                  = Store              : &:r50_6, r50_1
+#   50|     m50_8(int[100])             = Chi                : total:m49_5, partial:m50_7
+#   49|     r49_11(glval<unsigned int>) = VariableAddress[i] : 
+#   49|     r49_12(unsigned int)        = Load               : &:r49_11, m49_4
+#   49|     r49_13(unsigned int)        = Constant[1]        : 
+#   49|     r49_14(unsigned int)        = Add                : r49_12, r49_13
+#   49|     m49_15(unsigned int)        = Store              : &:r49_11, r49_14
+#-----|   Goto (back edge) -> Block 1
+
+#   52|   Block 3
+#   52|     v52_1(void) = NoOp         : 
+#   47|     v47_6(void) = ReturnVoid   : 
+#   47|     v47_7(void) = UnmodeledUse : mu*
+#   47|     v47_8(void) = AliasedUse   : m47_3
+#   47|     v47_9(void) = ExitFunction : 
+
+#   54| void test6(unsigned int)
+#   54|   Block 0
+#   54|     v54_1(void)                = EnterFunction                : 
+#   54|     m54_2(unknown)             = AliasedDefinition            : 
+#   54|     m54_3(unknown)             = InitializeNonLocal           : 
+#   54|     m54_4(unknown)             = Chi                          : total:m54_2, partial:m54_3
+#   54|     mu54_5(unknown)            = UnmodeledDefinition          : 
+#   54|     r54_6(glval<unsigned int>) = VariableAddress[count]       : 
+#   54|     m54_7(unsigned int)        = InitializeParameter[count]   : &:r54_6
+#   55|     r55_1(glval<int *>)        = VariableAddress[a]           : 
+#   55|     r55_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#   55|     r55_3(unsigned long)       = Constant[4]                  : 
+#   55|     r55_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   55|     r55_5(unsigned int)        = Load                         : &:r55_4, m54_7
+#   55|     r55_6(unsigned long)       = Convert                      : r55_5
+#   55|     r55_7(unsigned long)       = Mul                          : r55_3, r55_6
+#   55|     r55_8(void *)              = Call                         : func:r55_2, 0:r55_7
+#   55|     m55_9(unknown)             = ^CallSideEffect              : ~m54_4
+#   55|     m55_10(unknown)            = Chi                          : total:m54_4, partial:m55_9
+#   55|     m55_11(unknown)            = ^InitializeDynamicAllocation : &:r55_8
+#   55|     r55_12(int *)              = Convert                      : r55_8
+#   55|     m55_13(int *)              = Store                        : &:r55_1, r55_12
+#   56|     r56_1(glval<unsigned int>) = VariableAddress[i]           : 
+#   56|     r56_2(unsigned int)        = Constant[0]                  : 
+#   56|     m56_3(unsigned int)        = Store                        : &:r56_1, r56_2
+#-----|   Goto -> Block 1
+
+#   56|   Block 1
+#   56|     m56_4(unsigned int)        = Phi                    : from 0:m56_3, from 2:m56_17
+#   56|     m56_5(int *)               = Phi                    : from 0:m55_13, from 2:m58_5
+#   56|     m56_6(unknown)             = Phi                    : from 0:~m55_10, from 2:~m57_6
+#   56|     r56_7(glval<unsigned int>) = VariableAddress[i]     : 
+#   56|     r56_8(unsigned int)        = Load                   : &:r56_7, m56_4
+#   56|     r56_9(glval<unsigned int>) = VariableAddress[count] : 
+#   56|     r56_10(unsigned int)       = Load                   : &:r56_9, m54_7
+#   56|     r56_11(bool)               = CompareLT              : r56_8, r56_10
+#   56|     v56_12(void)               = ConditionalBranch      : r56_11
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   57|   Block 2
+#   57|     r57_1(int)                  = Constant[1]        : 
+#   57|     r57_2(glval<int *>)         = VariableAddress[a] : 
+#   57|     r57_3(int *)                = Load               : &:r57_2, m56_5
+#   57|     r57_4(glval<int>)           = CopyValue          : r57_3
+#   57|     m57_5(int)                  = Store              : &:r57_4, r57_1
+#   57|     m57_6(unknown)              = Chi                : total:m56_6, partial:m57_5
+#   58|     r58_1(glval<int *>)         = VariableAddress[a] : 
+#   58|     r58_2(int *)                = Load               : &:r58_1, m56_5
+#   58|     r58_3(int)                  = Constant[1]        : 
+#   58|     r58_4(int *)                = PointerAdd[4]      : r58_2, r58_3
+#   58|     m58_5(int *)                = Store              : &:r58_1, r58_4
+#   56|     r56_13(glval<unsigned int>) = VariableAddress[i] : 
+#   56|     r56_14(unsigned int)        = Load               : &:r56_13, m56_4
+#   56|     r56_15(unsigned int)        = Constant[1]        : 
+#   56|     r56_16(unsigned int)        = Add                : r56_14, r56_15
+#   56|     m56_17(unsigned int)        = Store              : &:r56_13, r56_16
+#-----|   Goto (back edge) -> Block 1
+
+#   60|   Block 3
+#   60|     v60_1(void)  = NoOp         : 
+#   54|     v54_8(void)  = ReturnVoid   : 
+#   54|     v54_9(void)  = UnmodeledUse : mu*
+#   54|     v54_10(void) = AliasedUse   : ~m56_6
+#   54|     v54_11(void) = ExitFunction : 
+
+#   62| void test7(unsigned int)
+#   62|   Block 0
+#   62|     v62_1(void)                = EnterFunction                : 
+#   62|     m62_2(unknown)             = AliasedDefinition            : 
+#   62|     m62_3(unknown)             = InitializeNonLocal           : 
+#   62|     m62_4(unknown)             = Chi                          : total:m62_2, partial:m62_3
+#   62|     mu62_5(unknown)            = UnmodeledDefinition          : 
+#   62|     r62_6(glval<unsigned int>) = VariableAddress[count]       : 
+#   62|     m62_7(unsigned int)        = InitializeParameter[count]   : &:r62_6
+#   63|     r63_1(glval<int *>)        = VariableAddress[a]           : 
+#   63|     r63_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#   63|     r63_3(unsigned long)       = Constant[4]                  : 
+#   63|     r63_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   63|     r63_5(unsigned int)        = Load                         : &:r63_4, m62_7
+#   63|     r63_6(unsigned long)       = Convert                      : r63_5
+#   63|     r63_7(unsigned long)       = Mul                          : r63_3, r63_6
+#   63|     r63_8(void *)              = Call                         : func:r63_2, 0:r63_7
+#   63|     m63_9(unknown)             = ^CallSideEffect              : ~m62_4
+#   63|     m63_10(unknown)            = Chi                          : total:m62_4, partial:m63_9
+#   63|     m63_11(unknown)            = ^InitializeDynamicAllocation : &:r63_8
+#   63|     r63_12(int *)              = Convert                      : r63_8
+#   63|     m63_13(int *)              = Store                        : &:r63_1, r63_12
+#   64|     r64_1(int)                 = Constant[2]                  : 
+#   64|     r64_2(glval<int *>)        = VariableAddress[a]           : 
+#   64|     r64_3(int *)               = Load                         : &:r64_2, m63_13
+#   64|     r64_4(int *)               = PointerAdd[4]                : r64_3, r64_1
+#   64|     m64_5(int *)               = Store                        : &:r64_2, r64_4
+#   65|     r65_1(glval<unsigned int>) = VariableAddress[i]           : 
+#   65|     r65_2(unsigned int)        = Constant[0]                  : 
+#   65|     m65_3(unsigned int)        = Store                        : &:r65_1, r65_2
+#-----|   Goto -> Block 1
+
+#   65|   Block 1
+#   65|     m65_4(unsigned int)        = Phi                    : from 0:m65_3, from 2:m65_19
+#   65|     m65_5(int *)               = Phi                    : from 0:m64_5, from 2:m67_5
+#   65|     m65_6(unknown)             = Phi                    : from 0:~m63_10, from 2:~m66_6
+#   65|     r65_7(glval<unsigned int>) = VariableAddress[i]     : 
+#   65|     r65_8(unsigned int)        = Load                   : &:r65_7, m65_4
+#   65|     r65_9(glval<unsigned int>) = VariableAddress[count] : 
+#   65|     r65_10(unsigned int)       = Load                   : &:r65_9, m62_7
+#   65|     r65_11(unsigned int)       = Constant[2]            : 
+#   65|     r65_12(unsigned int)       = Sub                    : r65_10, r65_11
+#   65|     r65_13(bool)               = CompareLT              : r65_8, r65_12
+#   65|     v65_14(void)               = ConditionalBranch      : r65_13
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   66|   Block 2
+#   66|     r66_1(int)                  = Constant[1]        : 
+#   66|     r66_2(glval<int *>)         = VariableAddress[a] : 
+#   66|     r66_3(int *)                = Load               : &:r66_2, m65_5
+#   66|     r66_4(glval<int>)           = CopyValue          : r66_3
+#   66|     m66_5(int)                  = Store              : &:r66_4, r66_1
+#   66|     m66_6(unknown)              = Chi                : total:m65_6, partial:m66_5
+#   67|     r67_1(glval<int *>)         = VariableAddress[a] : 
+#   67|     r67_2(int *)                = Load               : &:r67_1, m65_5
+#   67|     r67_3(int)                  = Constant[1]        : 
+#   67|     r67_4(int *)                = PointerAdd[4]      : r67_2, r67_3
+#   67|     m67_5(int *)                = Store              : &:r67_1, r67_4
+#   65|     r65_15(glval<unsigned int>) = VariableAddress[i] : 
+#   65|     r65_16(unsigned int)        = Load               : &:r65_15, m65_4
+#   65|     r65_17(unsigned int)        = Constant[1]        : 
+#   65|     r65_18(unsigned int)        = Add                : r65_16, r65_17
+#   65|     m65_19(unsigned int)        = Store              : &:r65_15, r65_18
+#-----|   Goto (back edge) -> Block 1
+
+#   69|   Block 3
+#   69|     v69_1(void)  = NoOp         : 
+#   62|     v62_8(void)  = ReturnVoid   : 
+#   62|     v62_9(void)  = UnmodeledUse : mu*
+#   62|     v62_10(void) = AliasedUse   : ~m65_6
+#   62|     v62_11(void) = ExitFunction : 
+
+#   71| void test8(unsigned long)
+#   71|   Block 0
+#   71|     v71_1(void)                 = EnterFunction              : 
+#   71|     m71_2(unknown)              = AliasedDefinition          : 
+#   71|     m71_3(unknown)              = InitializeNonLocal         : 
+#   71|     m71_4(unknown)              = Chi                        : total:m71_2, partial:m71_3
+#   71|     mu71_5(unknown)             = UnmodeledDefinition        : 
+#   71|     r71_6(glval<unsigned long>) = VariableAddress[count]     : 
+#   71|     m71_7(unsigned long)        = InitializeParameter[count] : &:r71_6
+#   72|     r72_1(glval<unsigned long>) = VariableAddress[count]     : 
+#   72|     r72_2(unsigned long)        = Load                       : &:r72_1, m71_7
+#   72|     r72_3(unsigned long)        = Constant[1]                : 
+#   72|     r72_4(bool)                 = CompareLT                  : r72_2, r72_3
+#   72|     v72_5(void)                 = ConditionalBranch          : r72_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   71|   Block 1
+#   71|     m71_8(unknown) = Phi          : from 2:~m71_4, from 6:~m75_9
+#   71|     v71_9(void)    = ReturnVoid   : 
+#   71|     v71_10(void)   = UnmodeledUse : mu*
+#   71|     v71_11(void)   = AliasedUse   : ~m71_8
+#   71|     v71_12(void)   = ExitFunction : 
+
+#   73|   Block 2
+#   73|     v73_1(void) = NoOp : 
+#-----|   Goto -> Block 1
+
+#   75|   Block 3
+#   75|     r75_1(glval<int *>)         = VariableAddress[a]           : 
+#   75|     r75_2(glval<unknown>)       = FunctionAddress[malloc]      : 
+#   75|     r75_3(unsigned long)        = Constant[4]                  : 
+#   75|     r75_4(glval<unsigned long>) = VariableAddress[count]       : 
+#   75|     r75_5(unsigned long)        = Load                         : &:r75_4, m71_7
+#   75|     r75_6(unsigned long)        = Mul                          : r75_3, r75_5
+#   75|     r75_7(void *)               = Call                         : func:r75_2, 0:r75_6
+#   75|     m75_8(unknown)              = ^CallSideEffect              : ~m71_4
+#   75|     m75_9(unknown)              = Chi                          : total:m71_4, partial:m75_8
+#   75|     m75_10(unknown)             = ^InitializeDynamicAllocation : &:r75_7
+#   75|     r75_11(int *)               = Convert                      : r75_7
+#   75|     m75_12(int *)               = Store                        : &:r75_1, r75_11
+#   76|     r76_1(glval<int *>)         = VariableAddress[a]           : 
+#   76|     r76_2(int *)                = Load                         : &:r76_1, m75_12
+#   76|     r76_3(int)                  = Constant[2]                  : 
+#   76|     r76_4(int *)                = PointerAdd[4]                : r76_2, r76_3
+#   76|     r76_5(glval<int *>)         = VariableAddress[a]           : 
+#   76|     m76_6(int *)                = Store                        : &:r76_5, r76_4
+#   77|     r77_1(glval<unsigned int>)  = VariableAddress[i]           : 
+#   77|     r77_2(unsigned int)         = Constant[0]                  : 
+#   77|     m77_3(unsigned int)         = Store                        : &:r77_1, r77_2
+#-----|   Goto -> Block 4
+
+#   78|   Block 4
+#   78|     m78_1(unsigned int)         = Phi                    : from 3:m77_3, from 5:m78_16
+#   78|     m78_2(unknown)              = Phi                    : from 3:m75_10, from 5:m79_8
+#   78|     r78_3(glval<unsigned int>)  = VariableAddress[i]     : 
+#   78|     r78_4(unsigned int)         = Load                   : &:r78_3, m78_1
+#   78|     r78_5(unsigned long)        = Convert                : r78_4
+#   78|     r78_6(glval<unsigned long>) = VariableAddress[count] : 
+#   78|     r78_7(unsigned long)        = Load                   : &:r78_6, m71_7
+#   78|     r78_8(unsigned long)        = Constant[2]            : 
+#   78|     r78_9(unsigned long)        = Sub                    : r78_7, r78_8
+#   78|     r78_10(bool)                = CompareLT              : r78_5, r78_9
+#   78|     v78_11(void)                = ConditionalBranch      : r78_10
+#-----|   False -> Block 6
+#-----|   True -> Block 5
+
+#   79|   Block 5
+#   79|     r79_1(int)                  = Constant[0]        : 
+#   79|     r79_2(glval<int *>)         = VariableAddress[a] : 
+#   79|     r79_3(int *)                = Load               : &:r79_2, m76_6
+#   79|     r79_4(glval<unsigned int>)  = VariableAddress[i] : 
+#   79|     r79_5(unsigned int)         = Load               : &:r79_4, m78_1
+#   79|     r79_6(glval<int>)           = PointerAdd[4]      : r79_3, r79_5
+#   79|     m79_7(int)                  = Store              : &:r79_6, r79_1
+#   79|     m79_8(unknown)              = Chi                : total:m78_2, partial:m79_7
+#   78|     r78_12(glval<unsigned int>) = VariableAddress[i] : 
+#   78|     r78_13(unsigned int)        = Load               : &:r78_12, m78_1
+#   78|     r78_14(unsigned int)        = Constant[1]        : 
+#   78|     r78_15(unsigned int)        = Add                : r78_13, r78_14
+#   78|     m78_16(unsigned int)        = Store              : &:r78_12, r78_15
+#-----|   Goto (back edge) -> Block 4
+
+#   81|   Block 6
+#   81|     r81_1(int)                 = Constant[0]        : 
+#   81|     r81_2(glval<int *>)        = VariableAddress[a] : 
+#   81|     r81_3(int *)               = Load               : &:r81_2, m76_6
+#   81|     r81_4(int)                 = Constant[-2]       : 
+#   81|     r81_5(glval<int>)          = PointerAdd[4]      : r81_3, r81_4
+#   81|     m81_6(int)                 = Store              : &:r81_5, r81_1
+#   81|     m81_7(unknown)             = Chi                : total:m78_2, partial:m81_6
+#   82|     r82_1(int)                 = Constant[0]        : 
+#   82|     r82_2(glval<int *>)        = VariableAddress[a] : 
+#   82|     r82_3(int *)               = Load               : &:r82_2, m76_6
+#   82|     r82_4(int)                 = Constant[-3]       : 
+#   82|     r82_5(glval<int>)          = PointerAdd[4]      : r82_3, r82_4
+#   82|     m82_6(int)                 = Store              : &:r82_5, r82_1
+#   82|     m82_7(unknown)             = Chi                : total:m81_7, partial:m82_6
+#   83|     r83_1(int)                 = Constant[0]        : 
+#   83|     r83_2(glval<int *>)        = VariableAddress[a] : 
+#   83|     r83_3(int *)               = Load               : &:r83_2, m76_6
+#   83|     r83_4(glval<unsigned int>) = VariableAddress[i] : 
+#   83|     r83_5(unsigned int)        = Load               : &:r83_4, m78_1
+#   83|     r83_6(glval<int>)          = PointerAdd[4]      : r83_3, r83_5
+#   83|     m83_7(int)                 = Store              : &:r83_6, r83_1
+#   83|     m83_8(unknown)             = Chi                : total:m82_7, partial:m83_7
+#   84|     v84_1(void)                = NoOp               : 
+#-----|   Goto -> Block 1
+
+#   86| void test9(unsigned int)
+#   86|   Block 0
+#   86|     v86_1(void)                = EnterFunction              : 
+#   86|     m86_2(unknown)             = AliasedDefinition          : 
+#   86|     m86_3(unknown)             = InitializeNonLocal         : 
+#   86|     m86_4(unknown)             = Chi                        : total:m86_2, partial:m86_3
+#   86|     mu86_5(unknown)            = UnmodeledDefinition        : 
+#   86|     r86_6(glval<unsigned int>) = VariableAddress[count]     : 
+#   86|     m86_7(unsigned int)        = InitializeParameter[count] : &:r86_6
+#   87|     r87_1(glval<unsigned int>) = VariableAddress[count]     : 
+#   87|     r87_2(unsigned int)        = Load                       : &:r87_1, m86_7
+#   87|     r87_3(unsigned int)        = Constant[1]                : 
+#   87|     r87_4(bool)                = CompareLT                  : r87_2, r87_3
+#   87|     v87_5(void)                = ConditionalBranch          : r87_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   86|   Block 1
+#   86|     m86_8(unknown) = Phi          : from 2:~m86_4, from 3:~m90_10
+#   86|     v86_9(void)    = ReturnVoid   : 
+#   86|     v86_10(void)   = UnmodeledUse : mu*
+#   86|     v86_11(void)   = AliasedUse   : ~m86_8
+#   86|     v86_12(void)   = ExitFunction : 
+
+#   88|   Block 2
+#   88|     v88_1(void) = NoOp : 
+#-----|   Goto -> Block 1
+
+#   90|   Block 3
+#   90|     r90_1(glval<int *>)        = VariableAddress[a]           : 
+#   90|     r90_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#   90|     r90_3(unsigned long)       = Constant[4]                  : 
+#   90|     r90_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   90|     r90_5(unsigned int)        = Load                         : &:r90_4, m86_7
+#   90|     r90_6(unsigned long)       = Convert                      : r90_5
+#   90|     r90_7(unsigned long)       = Mul                          : r90_3, r90_6
+#   90|     r90_8(void *)              = Call                         : func:r90_2, 0:r90_7
+#   90|     m90_9(unknown)             = ^CallSideEffect              : ~m86_4
+#   90|     m90_10(unknown)            = Chi                          : total:m86_4, partial:m90_9
+#   90|     m90_11(unknown)            = ^InitializeDynamicAllocation : &:r90_8
+#   90|     r90_12(int *)              = Convert                      : r90_8
+#   90|     m90_13(int *)              = Store                        : &:r90_1, r90_12
+#   91|     r91_1(int)                 = Constant[0]                  : 
+#   91|     r91_2(glval<int *>)        = VariableAddress[a]           : 
+#   91|     r91_3(int *)               = Load                         : &:r91_2, m90_13
+#   91|     r91_4(int)                 = Constant[0]                  : 
+#   91|     r91_5(glval<int>)          = PointerAdd[4]                : r91_3, r91_4
+#   91|     m91_6(int)                 = Store                        : &:r91_5, r91_1
+#   91|     m91_7(unknown)             = Chi                          : total:m90_11, partial:m91_6
+#   92|     r92_1(int)                 = Constant[1]                  : 
+#   92|     r92_2(glval<int *>)        = VariableAddress[a]           : 
+#   92|     r92_3(int *)               = Load                         : &:r92_2, m90_13
+#   92|     r92_4(int)                 = Constant[1]                  : 
+#   92|     r92_5(glval<int>)          = PointerAdd[4]                : r92_3, r92_4
+#   92|     m92_6(int)                 = Store                        : &:r92_5, r92_1
+#   92|     m92_7(unknown)             = Chi                          : total:m91_7, partial:m92_6
+#   93|     r93_1(int)                 = Constant[0]                  : 
+#   93|     r93_2(glval<int *>)        = VariableAddress[a]           : 
+#   93|     r93_3(int *)               = Load                         : &:r93_2, m90_13
+#   93|     r93_4(int)                 = Constant[-1]                 : 
+#   93|     r93_5(glval<int>)          = PointerAdd[4]                : r93_3, r93_4
+#   93|     m93_6(int)                 = Store                        : &:r93_5, r93_1
+#   93|     m93_7(unknown)             = Chi                          : total:m92_7, partial:m93_6
+#   94|     r94_1(int)                 = Constant[0]                  : 
+#   94|     r94_2(glval<int *>)        = VariableAddress[a]           : 
+#   94|     r94_3(int *)               = Load                         : &:r94_2, m90_13
+#   94|     r94_4(glval<unsigned int>) = VariableAddress[count]       : 
+#   94|     r94_5(unsigned int)        = Load                         : &:r94_4, m86_7
+#   94|     r94_6(glval<int>)          = PointerAdd[4]                : r94_3, r94_5
+#   94|     m94_7(int)                 = Store                        : &:r94_6, r94_1
+#   94|     m94_8(unknown)             = Chi                          : total:m93_7, partial:m94_7
+#   95|     v95_1(void)                = NoOp                         : 
+#-----|   Goto -> Block 1
+
+#   97| void test10(unsigned int)
+#   97|   Block 0
+#   97|     v97_1(void)                = EnterFunction              : 
+#   97|     m97_2(unknown)             = AliasedDefinition          : 
+#   97|     m97_3(unknown)             = InitializeNonLocal         : 
+#   97|     m97_4(unknown)             = Chi                        : total:m97_2, partial:m97_3
+#   97|     mu97_5(unknown)            = UnmodeledDefinition        : 
+#   97|     r97_6(glval<unsigned int>) = VariableAddress[count]     : 
+#   97|     m97_7(unsigned int)        = InitializeParameter[count] : &:r97_6
+#   98|     r98_1(glval<unsigned int>) = VariableAddress[count]     : 
+#   98|     r98_2(unsigned int)        = Load                       : &:r98_1, m97_7
+#   98|     r98_3(unsigned int)        = Constant[1]                : 
+#   98|     r98_4(bool)                = CompareLT                  : r98_2, r98_3
+#   98|     v98_5(void)                = ConditionalBranch          : r98_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   97|   Block 1
+#   97|     m97_8(unknown) = Phi          : from 2:~m97_4, from 3:~m101_10
+#   97|     v97_9(void)    = ReturnVoid   : 
+#   97|     v97_10(void)   = UnmodeledUse : mu*
+#   97|     v97_11(void)   = AliasedUse   : ~m97_8
+#   97|     v97_12(void)   = ExitFunction : 
+
+#   99|   Block 2
+#   99|     v99_1(void) = NoOp : 
+#-----|   Goto -> Block 1
+
+#  101|   Block 3
+#  101|     r101_1(glval<int *>)        = VariableAddress[a]           : 
+#  101|     r101_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#  101|     r101_3(unsigned long)       = Constant[4]                  : 
+#  101|     r101_4(glval<unsigned int>) = VariableAddress[count]       : 
+#  101|     r101_5(unsigned int)        = Load                         : &:r101_4, m97_7
+#  101|     r101_6(unsigned long)       = Convert                      : r101_5
+#  101|     r101_7(unsigned long)       = Mul                          : r101_3, r101_6
+#  101|     r101_8(void *)              = Call                         : func:r101_2, 0:r101_7
+#  101|     m101_9(unknown)             = ^CallSideEffect              : ~m97_4
+#  101|     m101_10(unknown)            = Chi                          : total:m97_4, partial:m101_9
+#  101|     m101_11(unknown)            = ^InitializeDynamicAllocation : &:r101_8
+#  101|     r101_12(int *)              = Convert                      : r101_8
+#  101|     m101_13(int *)              = Store                        : &:r101_1, r101_12
+#  102|     r102_1(glval<int>)          = VariableAddress[b]           : 
+#  102|     r102_2(glval<int *>)        = VariableAddress[a]           : 
+#  102|     r102_3(int *)               = Load                         : &:r102_2, m101_13
+#  102|     r102_4(int)                 = Constant[0]                  : 
+#  102|     r102_5(glval<int>)          = PointerAdd[4]                : r102_3, r102_4
+#  102|     r102_6(int)                 = Load                         : &:r102_5, ~m101_11
+#  102|     r102_7(int)                 = Constant[3]                  : 
+#  102|     r102_8(int)                 = Add                          : r102_6, r102_7
+#  102|     m102_9(int)                 = Store                        : &:r102_1, r102_8
+#  103|     v103_1(void)                = NoOp                         : 
+#-----|   Goto -> Block 1
+
+#  105| void test11(unsigned int)
+#  105|   Block 0
+#  105|     v105_1(void)                = EnterFunction              : 
+#  105|     m105_2(unknown)             = AliasedDefinition          : 
+#  105|     m105_3(unknown)             = InitializeNonLocal         : 
+#  105|     m105_4(unknown)             = Chi                        : total:m105_2, partial:m105_3
+#  105|     mu105_5(unknown)            = UnmodeledDefinition        : 
+#  105|     r105_6(glval<unsigned int>) = VariableAddress[count]     : 
+#  105|     m105_7(unsigned int)        = InitializeParameter[count] : &:r105_6
+#  106|     r106_1(glval<unsigned int>) = VariableAddress[count]     : 
+#  106|     r106_2(unsigned int)        = Load                       : &:r106_1, m105_7
+#  106|     r106_3(unsigned int)        = Constant[1]                : 
+#  106|     r106_4(bool)                = CompareLT                  : r106_2, r106_3
+#  106|     v106_5(void)                = ConditionalBranch          : r106_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#  105|   Block 1
+#  105|     m105_8(unknown) = Phi          : from 2:~m105_4, from 3:~m109_10
+#  105|     v105_9(void)    = ReturnVoid   : 
+#  105|     v105_10(void)   = UnmodeledUse : mu*
+#  105|     v105_11(void)   = AliasedUse   : ~m105_8
+#  105|     v105_12(void)   = ExitFunction : 
+
+#  107|   Block 2
+#  107|     v107_1(void) = NoOp : 
+#-----|   Goto -> Block 1
+
+#  109|   Block 3
+#  109|     r109_1(glval<int *>)        = VariableAddress[a]           : 
+#  109|     r109_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#  109|     r109_3(unsigned long)       = Constant[4]                  : 
+#  109|     r109_4(glval<unsigned int>) = VariableAddress[count]       : 
+#  109|     r109_5(unsigned int)        = Load                         : &:r109_4, m105_7
+#  109|     r109_6(unsigned long)       = Convert                      : r109_5
+#  109|     r109_7(unsigned long)       = Mul                          : r109_3, r109_6
+#  109|     r109_8(void *)              = Call                         : func:r109_2, 0:r109_7
+#  109|     m109_9(unknown)             = ^CallSideEffect              : ~m105_4
+#  109|     m109_10(unknown)            = Chi                          : total:m105_4, partial:m109_9
+#  109|     m109_11(unknown)            = ^InitializeDynamicAllocation : &:r109_8
+#  109|     r109_12(int *)              = Convert                      : r109_8
+#  109|     m109_13(int *)              = Store                        : &:r109_1, r109_12
+#  110|     r110_1(glval<int>)          = VariableAddress[b]           : 
+#  110|     r110_2(glval<int *>)        = VariableAddress[a]           : 
+#  110|     r110_3(int *)               = Load                         : &:r110_2, m109_13
+#  110|     r110_4(int)                 = Load                         : &:r110_3, ~m109_11
+#  110|     r110_5(int)                 = Constant[3]                  : 
+#  110|     r110_6(int)                 = Add                          : r110_4, r110_5
+#  110|     m110_7(int)                 = Store                        : &:r110_1, r110_6
+#  111|     v111_1(void)                = NoOp                         : 
+#-----|   Goto -> Block 1
+
+#  113| void test12(unsigned int)
+#  113|   Block 0
+#  113|     v113_1(void)                = EnterFunction              : 
+#  113|     m113_2(unknown)             = AliasedDefinition          : 
+#  113|     m113_3(unknown)             = InitializeNonLocal         : 
+#  113|     m113_4(unknown)             = Chi                        : total:m113_2, partial:m113_3
+#  113|     mu113_5(unknown)            = UnmodeledDefinition        : 
+#  113|     r113_6(glval<unsigned int>) = VariableAddress[count]     : 
+#  113|     m113_7(unsigned int)        = InitializeParameter[count] : &:r113_6
+#  114|     r114_1(glval<unsigned int>) = VariableAddress[i]         : 
+#  114|     r114_2(unsigned int)        = Constant[0]                : 
+#  114|     m114_3(unsigned int)        = Store                      : &:r114_1, r114_2
+#-----|   Goto -> Block 1
+
+#  114|   Block 1
+#  114|     m114_4(unsigned int)        = Phi                    : from 0:m114_3, from 2:m114_16
+#  114|     m114_5(unknown)             = Phi                    : from 0:~m113_4, from 2:~m115_10
+#  114|     r114_6(glval<unsigned int>) = VariableAddress[i]     : 
+#  114|     r114_7(unsigned int)        = Load                   : &:r114_6, m114_4
+#  114|     r114_8(glval<unsigned int>) = VariableAddress[count] : 
+#  114|     r114_9(unsigned int)        = Load                   : &:r114_8, m113_7
+#  114|     r114_10(bool)               = CompareLT              : r114_7, r114_9
+#  114|     v114_11(void)               = ConditionalBranch      : r114_10
+#-----|   False -> Block 6
+#-----|   True -> Block 3
+
+#  114|   Block 2
+#  114|     r114_12(glval<unsigned int>) = VariableAddress[i] : 
+#  114|     r114_13(unsigned int)        = Load               : &:r114_12, m114_4
+#  114|     r114_14(unsigned int)        = Constant[1]        : 
+#  114|     r114_15(unsigned int)        = Add                : r114_13, r114_14
+#  114|     m114_16(unsigned int)        = Store              : &:r114_12, r114_15
+#-----|   Goto (back edge) -> Block 1
+
+#  115|   Block 3
+#  115|     r115_1(glval<int *>)        = VariableAddress[a]           : 
+#  115|     r115_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#  115|     r115_3(unsigned long)       = Constant[4]                  : 
+#  115|     r115_4(glval<unsigned int>) = VariableAddress[count]       : 
+#  115|     r115_5(unsigned int)        = Load                         : &:r115_4, m113_7
+#  115|     r115_6(unsigned long)       = Convert                      : r115_5
+#  115|     r115_7(unsigned long)       = Mul                          : r115_3, r115_6
+#  115|     r115_8(void *)              = Call                         : func:r115_2, 0:r115_7
+#  115|     m115_9(unknown)             = ^CallSideEffect              : ~m114_5
+#  115|     m115_10(unknown)            = Chi                          : total:m114_5, partial:m115_9
+#  115|     m115_11(unknown)            = ^InitializeDynamicAllocation : &:r115_8
+#  115|     r115_12(int *)              = Convert                      : r115_8
+#  115|     m115_13(int *)              = Store                        : &:r115_1, r115_12
+#  116|     r116_1(glval<int>)          = VariableAddress[j]           : 
+#  116|     r116_2(int)                 = Constant[0]                  : 
+#  116|     m116_3(int)                 = Store                        : &:r116_1, r116_2
+#-----|   Goto -> Block 4
+
+#  116|   Block 4
+#  116|     m116_4(int)                 = Phi                    : from 3:m116_3, from 5:m116_17
+#  116|     m116_5(unknown)             = Phi                    : from 3:m115_11, from 5:m117_8
+#  116|     r116_6(glval<int>)          = VariableAddress[j]     : 
+#  116|     r116_7(int)                 = Load                   : &:r116_6, m116_4
+#  116|     r116_8(unsigned int)        = Convert                : r116_7
+#  116|     r116_9(glval<unsigned int>) = VariableAddress[count] : 
+#  116|     r116_10(unsigned int)       = Load                   : &:r116_9, m113_7
+#  116|     r116_11(bool)               = CompareLT              : r116_8, r116_10
+#  116|     v116_12(void)               = ConditionalBranch      : r116_11
+#-----|   False -> Block 2
+#-----|   True -> Block 5
+
+#  117|   Block 5
+#  117|     r117_1(int)          = Constant[0]        : 
+#  117|     r117_2(glval<int *>) = VariableAddress[a] : 
+#  117|     r117_3(int *)        = Load               : &:r117_2, m115_13
+#  117|     r117_4(glval<int>)   = VariableAddress[j] : 
+#  117|     r117_5(int)          = Load               : &:r117_4, m116_4
+#  117|     r117_6(glval<int>)   = PointerAdd[4]      : r117_3, r117_5
+#  117|     m117_7(int)          = Store              : &:r117_6, r117_1
+#  117|     m117_8(unknown)      = Chi                : total:m116_5, partial:m117_7
+#  116|     r116_13(glval<int>)  = VariableAddress[j] : 
+#  116|     r116_14(int)         = Load               : &:r116_13, m116_4
+#  116|     r116_15(int)         = Constant[1]        : 
+#  116|     r116_16(int)         = Add                : r116_14, r116_15
+#  116|     m116_17(int)         = Store              : &:r116_13, r116_16
+#-----|   Goto (back edge) -> Block 4
+
+#  120|   Block 6
+#  120|     v120_1(void)  = NoOp         : 
+#  113|     v113_8(void)  = ReturnVoid   : 
+#  113|     v113_9(void)  = UnmodeledUse : mu*
+#  113|     v113_10(void) = AliasedUse   : ~m114_5
+#  113|     v113_11(void) = ExitFunction : 
+
+#  122| void test13(unsigned int, bool)
+#  122|   Block 0
+#  122|     v122_1(void)                = EnterFunction              : 
+#  122|     m122_2(unknown)             = AliasedDefinition          : 
+#  122|     m122_3(unknown)             = InitializeNonLocal         : 
+#  122|     m122_4(unknown)             = Chi                        : total:m122_2, partial:m122_3
+#  122|     mu122_5(unknown)            = UnmodeledDefinition        : 
+#  122|     r122_6(glval<unsigned int>) = VariableAddress[count]     : 
+#  122|     m122_7(unsigned int)        = InitializeParameter[count] : &:r122_6
+#  122|     r122_8(glval<bool>)         = VariableAddress[b]         : 
+#  122|     m122_9(bool)                = InitializeParameter[b]     : &:r122_8
+#  123|     r123_1(glval<unsigned int>) = VariableAddress[count]     : 
+#  123|     r123_2(unsigned int)        = Load                       : &:r123_1, m122_7
+#  123|     r123_3(unsigned int)        = Constant[4]                : 
+#  123|     r123_4(bool)                = CompareLT                  : r123_2, r123_3
+#  123|     v123_5(void)                = ConditionalBranch          : r123_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#  122|   Block 1
+#  122|     m122_10(unknown) = Phi          : from 2:~m122_4, from 6:~m135_7
+#  122|     v122_11(void)    = ReturnVoid   : 
+#  122|     v122_12(void)    = UnmodeledUse : mu*
+#  122|     v122_13(void)    = AliasedUse   : ~m122_10
+#  122|     v122_14(void)    = ExitFunction : 
+
+#  124|   Block 2
+#  124|     v124_1(void) = NoOp : 
+#-----|   Goto -> Block 1
+
+#  126|   Block 3
+#  126|     r126_1(glval<int *>)        = VariableAddress[a]           : 
+#  126|     r126_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#  126|     r126_3(unsigned long)       = Constant[4]                  : 
+#  126|     r126_4(glval<unsigned int>) = VariableAddress[count]       : 
+#  126|     r126_5(unsigned int)        = Load                         : &:r126_4, m122_7
+#  126|     r126_6(unsigned long)       = Convert                      : r126_5
+#  126|     r126_7(unsigned long)       = Mul                          : r126_3, r126_6
+#  126|     r126_8(void *)              = Call                         : func:r126_2, 0:r126_7
+#  126|     m126_9(unknown)             = ^CallSideEffect              : ~m122_4
+#  126|     m126_10(unknown)            = Chi                          : total:m122_4, partial:m126_9
+#  126|     m126_11(unknown)            = ^InitializeDynamicAllocation : &:r126_8
+#  126|     r126_12(int *)              = Convert                      : r126_8
+#  126|     m126_13(int *)              = Store                        : &:r126_1, r126_12
+#  127|     r127_1(glval<bool>)         = VariableAddress[b]           : 
+#  127|     r127_2(bool)                = Load                         : &:r127_1, m122_9
+#  127|     v127_3(void)                = ConditionalBranch            : r127_2
+#-----|   False -> Block 5
+#-----|   True -> Block 4
+
+#  128|   Block 4
+#  128|     r128_1(int)          = Constant[2]        : 
+#  128|     r128_2(glval<int *>) = VariableAddress[a] : 
+#  128|     r128_3(int *)        = Load               : &:r128_2, m126_13
+#  128|     r128_4(int *)        = PointerAdd[4]      : r128_3, r128_1
+#  128|     m128_5(int *)        = Store              : &:r128_2, r128_4
+#-----|   Goto -> Block 6
+
+#  130|   Block 5
+#  130|     r130_1(int)          = Constant[3]        : 
+#  130|     r130_2(glval<int *>) = VariableAddress[a] : 
+#  130|     r130_3(int *)        = Load               : &:r130_2, m126_13
+#  130|     r130_4(int *)        = PointerAdd[4]      : r130_3, r130_1
+#  130|     m130_5(int *)        = Store              : &:r130_2, r130_4
+#-----|   Goto -> Block 6
+
+#  132|   Block 6
+#  132|     m132_1(int *)        = Phi                : from 4:m128_5, from 5:m130_5
+#  132|     r132_2(int)          = Constant[0]        : 
+#  132|     r132_3(glval<int *>) = VariableAddress[a] : 
+#  132|     r132_4(int *)        = Load               : &:r132_3, m132_1
+#  132|     r132_5(int)          = Constant[-2]       : 
+#  132|     r132_6(glval<int>)   = PointerAdd[4]      : r132_4, r132_5
+#  132|     m132_7(int)          = Store              : &:r132_6, r132_2
+#  132|     m132_8(unknown)      = Chi                : total:m126_10, partial:m132_7
+#  133|     r133_1(int)          = Constant[0]        : 
+#  133|     r133_2(glval<int *>) = VariableAddress[a] : 
+#  133|     r133_3(int *)        = Load               : &:r133_2, m132_1
+#  133|     r133_4(int)          = Constant[-3]       : 
+#  133|     r133_5(glval<int>)   = PointerAdd[4]      : r133_3, r133_4
+#  133|     m133_6(int)          = Store              : &:r133_5, r133_1
+#  133|     m133_7(unknown)      = Chi                : total:m132_8, partial:m133_6
+#  134|     r134_1(int)          = Constant[0]        : 
+#  134|     r134_2(glval<int *>) = VariableAddress[a] : 
+#  134|     r134_3(int *)        = Load               : &:r134_2, m132_1
+#  134|     r134_4(int)          = Constant[-4]       : 
+#  134|     r134_5(glval<int>)   = PointerAdd[4]      : r134_3, r134_4
+#  134|     m134_6(int)          = Store              : &:r134_5, r134_1
+#  134|     m134_7(unknown)      = Chi                : total:m133_7, partial:m134_6
+#  135|     r135_1(int)          = Constant[0]        : 
+#  135|     r135_2(glval<int *>) = VariableAddress[a] : 
+#  135|     r135_3(int *)        = Load               : &:r135_2, m132_1
+#  135|     r135_4(int)          = Constant[0]        : 
+#  135|     r135_5(glval<int>)   = PointerAdd[4]      : r135_3, r135_4
+#  135|     m135_6(int)          = Store              : &:r135_5, r135_1
+#  135|     m135_7(unknown)      = Chi                : total:m134_7, partial:m135_6
+#  136|     v136_1(void)         = NoOp               : 
+#-----|   Goto -> Block 1
+
+#  138| void test14(int*, unsigned int)
+#  138|   Block 0
+#  138|     v138_1(void)                 = EnterFunction                : 
+#  138|     m138_2(unknown)              = AliasedDefinition            : 
+#  138|     m138_3(unknown)              = InitializeNonLocal           : 
+#  138|     m138_4(unknown)              = Chi                          : total:m138_2, partial:m138_3
+#  138|     mu138_5(unknown)             = UnmodeledDefinition          : 
+#  138|     r138_6(glval<int *>)         = VariableAddress[array]       : 
+#  138|     m138_7(int *)                = InitializeParameter[array]   : &:r138_6
+#  138|     r138_8(int *)                = Load                         : &:r138_6, m138_7
+#  138|     m138_9(unknown)              = InitializeIndirection[array] : &:r138_8
+#  138|     r138_10(glval<unsigned int>) = VariableAddress[count]       : 
+#  138|     m138_11(unsigned int)        = InitializeParameter[count]   : &:r138_10
+#  139|     r139_1(glval<unsigned int>)  = VariableAddress[i]           : 
+#  139|     r139_2(unsigned int)         = Constant[0]                  : 
+#  139|     m139_3(unsigned int)         = Store                        : &:r139_1, r139_2
+#-----|   Goto -> Block 1
+
+#  139|   Block 1
+#  139|     m139_4(unsigned int)        = Phi                    : from 0:m139_3, from 2:m139_16
+#  139|     m139_5(unknown)             = Phi                    : from 0:m138_9, from 2:m140_8
+#  139|     r139_6(glval<unsigned int>) = VariableAddress[i]     : 
+#  139|     r139_7(unsigned int)        = Load                   : &:r139_6, m139_4
+#  139|     r139_8(glval<unsigned int>) = VariableAddress[count] : 
+#  139|     r139_9(unsigned int)        = Load                   : &:r139_8, m138_11
+#  139|     r139_10(bool)               = CompareLT              : r139_7, r139_9
+#  139|     v139_11(void)               = ConditionalBranch      : r139_10
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#  140|   Block 2
+#  140|     r140_1(int)                  = Constant[0]            : 
+#  140|     r140_2(glval<int *>)         = VariableAddress[array] : 
+#  140|     r140_3(int *)                = Load                   : &:r140_2, m138_7
+#  140|     r140_4(glval<unsigned int>)  = VariableAddress[i]     : 
+#  140|     r140_5(unsigned int)         = Load                   : &:r140_4, m139_4
+#  140|     r140_6(glval<int>)           = PointerAdd[4]          : r140_3, r140_5
+#  140|     m140_7(int)                  = Store                  : &:r140_6, r140_1
+#  140|     m140_8(unknown)              = Chi                    : total:m139_5, partial:m140_7
+#  139|     r139_12(glval<unsigned int>) = VariableAddress[i]     : 
+#  139|     r139_13(unsigned int)        = Load                   : &:r139_12, m139_4
+#  139|     r139_14(unsigned int)        = Constant[1]            : 
+#  139|     r139_15(unsigned int)        = Add                    : r139_13, r139_14
+#  139|     m139_16(unsigned int)        = Store                  : &:r139_12, r139_15
+#-----|   Goto (back edge) -> Block 1
+
+#  142|   Block 3
+#  142|     v142_1(void)  = NoOp              : 
+#  138|     v138_12(void) = ReturnIndirection : &:r138_8, m139_5
+#  138|     v138_13(void) = ReturnVoid        : 
+#  138|     v138_14(void) = UnmodeledUse      : mu*
+#  138|     v138_15(void) = AliasedUse        : m138_3
+#  138|     v138_16(void) = ExitFunction      : 
+
+#  144| void test15(unsigned int)
+#  144|   Block 0
+#  144|     v144_1(void)                = EnterFunction          : 
+#  144|     m144_2(unknown)             = AliasedDefinition      : 
+#  144|     m144_3(unknown)             = InitializeNonLocal     : 
+#  144|     m144_4(unknown)             = Chi                    : total:m144_2, partial:m144_3
+#  144|     mu144_5(unknown)            = UnmodeledDefinition    : 
+#  144|     r144_6(glval<unsigned int>) = VariableAddress[c]     : 
+#  144|     m144_7(unsigned int)        = InitializeParameter[c] : &:r144_6
+#  145|     r145_1(glval<unsigned int>) = VariableAddress[c]     : 
+#  145|     r145_2(unsigned int)        = Load                   : &:r145_1, m144_7
+#  145|     r145_3(unsigned int)        = Constant[4]            : 
+#  145|     r145_4(bool)                = CompareLT              : r145_2, r145_3
+#  145|     v145_5(void)                = ConditionalBranch      : r145_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#  144|   Block 1
+#  144|     m144_8(unknown) = Phi          : from 2:~m144_4, from 3:~m150_8
+#  144|     v144_9(void)    = ReturnVoid   : 
+#  144|     v144_10(void)   = UnmodeledUse : mu*
+#  144|     v144_11(void)   = AliasedUse   : ~m144_8
+#  144|     v144_12(void)   = ExitFunction : 
+
+#  146|   Block 2
+#  146|     v146_1(void) = NoOp : 
+#-----|   Goto -> Block 1
+
+#  148|   Block 3
+#  148|     r148_1(glval<int *>)        = VariableAddress[a]           : 
+#  148|     r148_2(glval<unknown>)      = FunctionAddress[malloc]      : 
+#  148|     r148_3(unsigned long)       = Constant[4]                  : 
+#  148|     r148_4(glval<unsigned int>) = VariableAddress[c]           : 
+#  148|     r148_5(unsigned int)        = Load                         : &:r148_4, m144_7
+#  148|     r148_6(unsigned long)       = Convert                      : r148_5
+#  148|     r148_7(unsigned long)       = Mul                          : r148_3, r148_6
+#  148|     r148_8(void *)              = Call                         : func:r148_2, 0:r148_7
+#  148|     m148_9(unknown)             = ^CallSideEffect              : ~m144_4
+#  148|     m148_10(unknown)            = Chi                          : total:m144_4, partial:m148_9
+#  148|     m148_11(unknown)            = ^InitializeDynamicAllocation : &:r148_8
+#  148|     r148_12(int *)              = Convert                      : r148_8
+#  148|     m148_13(int *)              = Store                        : &:r148_1, r148_12
+#  149|     r149_1(int)                 = Constant[0]                  : 
+#  149|     r149_2(glval<int *>)        = VariableAddress[a]           : 
+#  149|     r149_3(int *)               = Load                         : &:r149_2, m148_13
+#  149|     r149_4(int)                 = Constant[3]                  : 
+#  149|     r149_5(glval<int>)          = PointerAdd[4]                : r149_3, r149_4
+#  149|     m149_6(int)                 = Store                        : &:r149_5, r149_1
+#  149|     m149_7(unknown)             = Chi                          : total:m148_11, partial:m149_6
+#  150|     r150_1(glval<unknown>)      = FunctionAddress[test14]      : 
+#  150|     r150_2(glval<int *>)        = VariableAddress[a]           : 
+#  150|     r150_3(int *)               = Load                         : &:r150_2, m148_13
+#  150|     r150_4(glval<unsigned int>) = VariableAddress[c]           : 
+#  150|     r150_5(unsigned int)        = Load                         : &:r150_4, m144_7
+#  150|     v150_6(void)                = Call                         : func:r150_1, 0:r150_3, 1:r150_5
+#  150|     m150_7(unknown)             = ^CallSideEffect              : ~m148_10
+#  150|     m150_8(unknown)             = Chi                          : total:m148_10, partial:m150_7
+#  150|     v150_9(void)                = ^BufferReadSideEffect[0]     : &:r150_3, ~m149_7
+#  150|     m150_10(unknown)            = ^BufferMayWriteSideEffect[0] : &:r150_3
+#  150|     m150_11(unknown)            = Chi                          : total:m149_7, partial:m150_10
+#  151|     v151_1(void)                = NoOp                         : 
+#-----|   Goto -> Block 1
+
+#  153| void test16(unsigned int)
+#  153|   Block 0
+#  153|     v153_1(void)                  = EnterFunction               : 
+#  153|     m153_2(unknown)               = AliasedDefinition           : 
+#  153|     m153_3(unknown)               = InitializeNonLocal          : 
+#  153|     m153_4(unknown)               = Chi                         : total:m153_2, partial:m153_3
+#  153|     mu153_5(unknown)              = UnmodeledDefinition         : 
+#  153|     r153_6(glval<unsigned int>)   = VariableAddress[object]     : 
+#  153|     m153_7(unsigned int)          = InitializeParameter[object] : &:r153_6
+#  154|     r154_1(glval<unsigned int *>) = VariableAddress[ptr]        : 
+#  154|     r154_2(glval<unsigned int>)   = VariableAddress[object]     : 
+#  154|     r154_3(unsigned int *)        = CopyValue                   : r154_2
+#  154|     m154_4(unsigned int *)        = Store                       : &:r154_1, r154_3
+#  155|     r155_1(unsigned int)          = Constant[0]                 : 
+#  155|     r155_2(glval<unsigned int *>) = VariableAddress[ptr]        : 
+#  155|     r155_3(unsigned int *)        = Load                        : &:r155_2, m154_4
+#  155|     r155_4(glval<unsigned int>)   = CopyValue                   : r155_3
+#  155|     m155_5(unsigned int)          = Store                       : &:r155_4, r155_1
+#  156|     v156_1(void)                  = NoOp                        : 
+#  153|     v153_8(void)                  = ReturnVoid                  : 
+#  153|     v153_9(void)                  = UnmodeledUse                : mu*
+#  153|     v153_10(void)                 = AliasedUse                  : m153_3
+#  153|     v153_11(void)                 = ExitFunction                : 
+
+#  158| void test17()
+#  158|   Block 0
+#  158|     v158_1(void)             = EnterFunction           : 
+#  158|     m158_2(unknown)          = AliasedDefinition       : 
+#  158|     m158_3(unknown)          = InitializeNonLocal      : 
+#  158|     m158_4(unknown)          = Chi                     : total:m158_2, partial:m158_3
+#  158|     mu158_5(unknown)         = UnmodeledDefinition     : 
+#  159|     r159_1(glval<..(*)(..)>) = VariableAddress[foo]    : 
+#  159|     m159_2(..(*)(..))        = Uninitialized[foo]      : &:r159_1
+#  160|     r160_1(glval<..()(..)>)  = FunctionAddress[test16] : 
+#  160|     r160_2(..(*)(..))        = CopyValue               : r160_1
+#  160|     r160_3(glval<..(*)(..)>) = VariableAddress[foo]    : 
+#  160|     m160_4(..(*)(..))        = Store                   : &:r160_3, r160_2
+#  161|     r161_1(glval<..(*)(..)>) = VariableAddress[foo]    : 
+#  161|     r161_2(..(*)(..))        = Load                    : &:r161_1, m160_4
+#  161|     r161_3(unsigned int)     = Constant[4]             : 
+#  161|     v161_4(void)             = Call                    : func:r161_2, 0:r161_3
+#  161|     m161_5(unknown)          = ^CallSideEffect         : ~m158_4
+#  161|     m161_6(unknown)          = Chi                     : total:m158_4, partial:m161_5
+#  162|     r162_1(glval<..(*)(..)>) = VariableAddress[foo]    : 
+#  162|     r162_2(..(*)(..))        = Load                    : &:r162_1, m160_4
+#  162|     r162_3(..(*)(..))        = CopyValue               : r162_2
+#  162|     r162_4(unsigned int)     = Constant[4]             : 
+#  162|     v162_5(void)             = Call                    : func:r162_3, 0:r162_4
+#  162|     m162_6(unknown)          = ^CallSideEffect         : ~m161_6
+#  162|     m162_7(unknown)          = Chi                     : total:m161_6, partial:m162_6
+#  163|     v163_1(void)             = NoOp                    : 
+#  158|     v158_6(void)             = ReturnVoid              : 
+#  158|     v158_7(void)             = UnmodeledUse            : mu*
+#  158|     v158_8(void)             = AliasedUse              : ~m162_7
+#  158|     v158_9(void)             = ExitFunction            : 
+
+#  165| void test19(unsigned long)
+#  165|   Block 0
+#  165|     v165_1(void)                 = EnterFunction                : 
+#  165|     m165_2(unknown)              = AliasedDefinition            : 
+#  165|     m165_3(unknown)              = InitializeNonLocal           : 
+#  165|     m165_4(unknown)              = Chi                          : total:m165_2, partial:m165_3
+#  165|     mu165_5(unknown)             = UnmodeledDefinition          : 
+#  165|     r165_6(glval<unsigned long>) = VariableAddress[count]       : 
+#  165|     m165_7(unsigned long)        = InitializeParameter[count]   : &:r165_6
+#  166|     r166_1(glval<int *>)         = VariableAddress[a]           : 
+#  166|     r166_2(glval<unknown>)       = FunctionAddress[malloc]      : 
+#  166|     r166_3(unsigned long)        = Constant[4]                  : 
+#  166|     r166_4(glval<unsigned long>) = VariableAddress[count]       : 
+#  166|     r166_5(unsigned long)        = Load                         : &:r166_4, m165_7
+#  166|     r166_6(unsigned long)        = Mul                          : r166_3, r166_5
+#  166|     r166_7(void *)               = Call                         : func:r166_2, 0:r166_6
+#  166|     m166_8(unknown)              = ^CallSideEffect              : ~m165_4
+#  166|     m166_9(unknown)              = Chi                          : total:m165_4, partial:m166_8
+#  166|     m166_10(unknown)             = ^InitializeDynamicAllocation : &:r166_7
+#  166|     r166_11(int *)               = Convert                      : r166_7
+#  166|     m166_12(int *)               = Store                        : &:r166_1, r166_11
+#  167|     r167_1(int)                  = Constant[1]                  : 
+#  167|     r167_2(glval<int *>)         = VariableAddress[a]           : 
+#  167|     r167_3(int *)                = Load                         : &:r167_2, m166_12
+#  167|     r167_4(int)                  = Constant[0]                  : 
+#  167|     r167_5(glval<int>)           = PointerAdd[4]                : r167_3, r167_4
+#  167|     m167_6(int)                  = Store                        : &:r167_5, r167_1
+#  167|     m167_7(unknown)              = Chi                          : total:m166_10, partial:m167_6
+#  168|     v168_1(void)                 = NoOp                         : 
+#  165|     v165_8(void)                 = ReturnVoid                   : 
+#  165|     v165_9(void)                 = UnmodeledUse                 : mu*
+#  165|     v165_10(void)                = AliasedUse                   : ~m166_9
+#  165|     v165_11(void)                = ExitFunction                 : 
