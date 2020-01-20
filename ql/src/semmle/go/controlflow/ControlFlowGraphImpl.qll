@@ -262,20 +262,26 @@ newtype TControlFlowNode =
   MkImplicitMaxSliceBound(SliceExpr sl) { not exists(sl.getMax()) } or
   /**
    * A control-flow node that represents the implicit dereference of the base in a field/method
-   * access.
+   * access, element access, or slice expression.
    */
   MkImplicitDeref(Expr e) {
     e.getType().getUnderlyingType() instanceof PointerType and
-    exists(SelectorExpr sel | e = sel.getBase() |
-      // field accesses through a pointer always implicitly dereference
-      sel = any(Field f).getAReference()
-      or
-      // method accesses only dereference if the receiver is _not_ a pointer
-      exists(Method m, Type tp |
-        sel = m.getAReference() and
-        tp = m.getReceiver().getType().getUnderlyingType() and
-        not tp instanceof PointerType
+    (
+      exists(SelectorExpr sel | e = sel.getBase() |
+        // field accesses through a pointer always implicitly dereference
+        sel = any(Field f).getAReference()
+        or
+        // method accesses only dereference if the receiver is _not_ a pointer
+        exists(Method m, Type tp |
+          sel = m.getAReference() and
+          tp = m.getReceiver().getType().getUnderlyingType() and
+          not tp instanceof PointerType
+        )
       )
+      or
+      e = any(IndexExpr ie).getBase()
+      or
+      e = any(SliceExpr se).getBase()
     )
   } or
   /**
@@ -1139,20 +1145,34 @@ module CFG {
     }
   }
 
-  private class IndexExprTree extends PostOrderTree, IndexExpr {
-    override ControlFlow::Node getNode() { result = mkExprOrSkipNode(this) }
+  private class IndexExprTree extends ControlFlowTree, IndexExpr {
+    override predicate firstNode(ControlFlow::Node first) { firstNode(getBase(), first) }
 
-    override Completion getCompletion() {
-      result = Done()
+    override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
+      ControlFlowTree.super.lastNode(last, cmpl)
       or
-      this.(ReferenceExpr).isRvalue() and
-      result = Panic()
+      // panic due to `nil` dereference
+      last = MkImplicitDeref(this.getBase()) and
+      cmpl = Panic()
+      or
+      last = mkExprOrSkipNode(this) and
+      cmpl = Done()
     }
 
-    override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = getBase()
+    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+      lastNode(getBase(), pred, normalCompletion()) and
+      (
+        succ = MkImplicitDeref(this.getBase())
+        or
+        not exists(MkImplicitDeref(this.getBase())) and
+        firstNode(this.getIndex(), succ)
+      )
       or
-      i = 1 and result = getIndex()
+      pred = MkImplicitDeref(this.getBase()) and
+      firstNode(this.getIndex(), succ)
+      or
+      lastNode(getIndex(), pred, normalCompletion()) and
+      succ = mkExprOrSkipNode(this)
     }
   }
 
@@ -1678,6 +1698,10 @@ module CFG {
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
       or
+      // panic due to `nil` dereference
+      last = MkImplicitDeref(getBase()) and
+      cmpl = Panic()
+      or
       last = MkExprNode(this) and
       (cmpl = Done() or cmpl = Panic())
     }
@@ -1686,6 +1710,14 @@ module CFG {
       ControlFlowTree.super.succ(pred, succ)
       or
       lastNode(getBase(), pred, normalCompletion()) and
+      (
+        succ = MkImplicitDeref(getBase())
+        or
+        not exists(MkImplicitDeref(getBase())) and
+        (firstNode(getLow(), succ) or succ = MkImplicitLowerSliceBound(this))
+      )
+      or
+      pred = MkImplicitDeref(getBase()) and
       (firstNode(getLow(), succ) or succ = MkImplicitLowerSliceBound(this))
       or
       (lastNode(getLow(), pred, normalCompletion()) or pred = MkImplicitLowerSliceBound(this)) and

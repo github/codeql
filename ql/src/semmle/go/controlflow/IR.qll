@@ -233,13 +233,18 @@ module IR {
   }
 
   /**
-   * Gets the effective base of a selector expression, taking implicit dereferences into account.
+   * Gets the effective base of a selector, index or slice expression, taking implicit dereferences
+   * into account.
    *
    * For a selector expression `b.f`, this will either be the implicit dereference `*b`, or just
    * `b` if there is no implicit dereferencing.
    */
-  private Instruction selectorBase(SelectorExpr e) {
-    exists(Expr base | base = e.getBase() |
+  private Instruction selectorBase(Expr e) {
+    exists(Expr base |
+      base = e.(SelectorExpr).getBase() or
+      base = e.(IndexExpr).getBase() or
+      base = e.(SliceExpr).getBase()
+    |
       result = MkImplicitDeref(base)
       or
       not exists(MkImplicitDeref(base)) and
@@ -297,7 +302,7 @@ module IR {
     override IndexExpr e;
 
     /** Gets the instruction computing the base value on which the element is looked up. */
-    Instruction getBase() { result = evalExprInstruction(e.getBase()) }
+    Instruction getBase() { result = selectorBase(e) }
 
     /** Gets the instruction computing the index of the element being looked up. */
     Instruction getIndex() { result = evalExprInstruction(e.getIndex()) }
@@ -1237,7 +1242,7 @@ module IR {
 
   /**
    * An instruction implicitly dereferencing the base in a field or method reference through a
-   * pointer.
+   * pointer, or the base in an element or slice reference through a pointer.
    */
   class EvalImplicitDerefInstruction extends Instruction, MkImplicitDeref {
     Expr e;
@@ -1417,7 +1422,7 @@ module IR {
 
     /** Gets the instruction computing the base value of this element reference. */
     Instruction getBase() {
-      exists(IndexExpr idx | this = MkLhs(_, idx) | result = evalExprInstruction(idx.getBase()))
+      exists(IndexExpr idx | this = MkLhs(_, idx) | result = selectorBase(idx))
       or
       result = w.(InitLiteralComponentInstruction).getBase()
     }
