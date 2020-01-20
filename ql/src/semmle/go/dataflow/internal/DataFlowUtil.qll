@@ -500,29 +500,20 @@ class ElementReadNode extends ReadNode {
  * A data-flow node that extracts a substring or slice from a string, array, pointer to array,
  * or slice.
  */
-class SliceNode extends ExprNode {
-  override SliceExpr expr;
+class SliceNode extends InstructionNode {
+  override IR::SliceInstruction insn;
 
   /** Gets the base of this slice node. */
-  Node getBase() { result = exprNode(expr.getBase()) }
+  Node getBase() { result = instructionNode(insn.getBase()) }
 
   /** Gets the lower bound of this slice node. */
-  Node getLow() {
-    result = exprNode(expr.getLow()) or
-    result = instructionNode(IR::implicitLowerSliceBoundInstruction(expr))
-  }
+  Node getLow() { result = instructionNode(insn.getLow()) }
 
   /** Gets the upper bound of this slice node. */
-  Node getHigh() {
-    result = exprNode(expr.getHigh()) or
-    result = instructionNode(IR::implicitUpperSliceBoundInstruction(expr))
-  }
+  Node getHigh() { result = instructionNode(insn.getHigh()) }
 
   /** Gets the maximum of this slice node. */
-  Node getMax() {
-    result = exprNode(expr.getMax()) or
-    result = instructionNode(IR::implicitMaxSliceBoundInstruction(expr))
-  }
+  Node getMax() { result = instructionNode(insn.getMax()) }
 }
 
 /**

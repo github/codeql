@@ -308,6 +308,34 @@ module IR {
   }
 
   /**
+   * An IR instruction that constructs a slice.
+   */
+  class SliceInstruction extends EvalInstruction {
+    override SliceExpr e;
+
+    /** Gets the instruction computing the base value from which the slice is cosntructed. */
+    Instruction getBase() { result = selectorBase(e) }
+
+    /** Gets the instruction computing the lower bound of the slice. */
+    Instruction getLow() {
+      result = evalExprInstruction(e.getLow()) or
+      result = implicitLowerSliceBoundInstruction(e)
+    }
+
+    /** Gets the instruction computing the upper bound of the slice. */
+    Instruction getHigh() {
+      result = evalExprInstruction(e.getHigh()) or
+      result = implicitUpperSliceBoundInstruction(e)
+    }
+
+    /** Gets the instruction computing the capacity of the slice. */
+    Instruction getMax() {
+      result = evalExprInstruction(e.getMax()) or
+      result = implicitMaxSliceBoundInstruction(e)
+    }
+  }
+
+  /**
    * An IR instruction that writes a memory location.
    */
   class WriteInstruction extends Instruction {
