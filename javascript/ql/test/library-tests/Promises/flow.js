@@ -103,4 +103,26 @@
 	new Promise((resolve, reject) => reject("BLA")).catch(x => {return source}).then(x => sink(x)); // NOT OK
 	
 	new Promise((resolve, reject) => reject("BLA")).finally(x => {throw source}).catch(x => sink(x)); // NOT OK
+	
+	var rejected = new Promise((resolve, reject) => reject(source));
+	
+	new Promise((resolve, reject) => reject("BLA")).finally(x => rejected).catch(x => sink(x)); // NOT OK
+	
+	new Promise((resolve, reject) => reject("BLA")).catch(x => rejected).then(x => sink(x)) // OK
+	
+	new Promise((resolve, reject) => reject("BLA")).catch(x => rejected).catch(x => sink(x)) // NOT OK
+	
+	var resolved = Promise.resolve(source);
+	
+	new Promise((resolve, reject) => reject("BLA")).catch(x => resolved).catch(x => sink(x)) // OK
+	
+	new Promise((resolve, reject) => reject("BLA")).catch(x => resolved).then(x => sink(x)) // NOT OK
+	
+	Promise.resolve(123).then(x => resolved).catch(x => sink(x)) // OK
+	
+	Promise.resolve(123).then(x => resolved).then(x => sink(x)) // NOT OK
+	
+	Promise.resolve(123).then(x => rejected).catch(x => sink(x)) // NOT OK
+	
+	Promise.resolve(123).then(x => rejected).then(x => sink(x)) // OK
 })();

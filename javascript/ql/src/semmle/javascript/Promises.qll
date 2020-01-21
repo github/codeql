@@ -227,6 +227,11 @@ private module PromiseFlow {
       prop = rejectField() and
       pred = getReceiver() and
       succ = this
+      or
+      // read the value of a resolved/rejected promise that is returned
+      (prop = rejectField() or prop = resolveField()) and
+      pred = getCallback(0).getAReturn() and
+      succ = this
     }
     
     override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
@@ -258,6 +263,11 @@ private module PromiseFlow {
       prop = resolveField() and
       pred = getReceiver().getALocalSource() and
       succ = this
+      or
+      // read the value of a resolved/rejected promise that is returned
+      (prop = rejectField() or prop = resolveField()) and
+      pred = getCallback(0).getAReturn() and
+      succ = this
     }
 
     override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
@@ -283,9 +293,13 @@ private module PromiseFlow {
       (prop = resolveField() or prop = rejectField()) and
       pred = getReceiver() and
       succ = this
+      or
+      // read the value of a rejected promise that is returned
+      prop = rejectField() and
+      pred = getCallback(0).getAReturn() and
+      succ = this
     }
 
-    // a similar thing can also happen if a rejected promise is returned.
     override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
       pred = getCallback(0).getExceptionalReturn() and
