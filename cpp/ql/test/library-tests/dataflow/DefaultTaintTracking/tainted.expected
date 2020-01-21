@@ -5,6 +5,9 @@
 | defaulttainttracking.cpp:13:25:13:30 | call to getenv | defaulttainttracking.cpp:13:25:13:37 | (const char *)... |
 | defaulttainttracking.cpp:13:25:13:30 | call to getenv | defaulttainttracking.cpp:14:3:14:14 | ... ++ |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:6:15:6:24 | p#0 |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:14 | call to _strdup |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:29 | (const char *)... |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:16:16:21 | call to getenv |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:16:16:28 | (const char *)... |
 | defaulttainttracking.cpp:17:15:17:20 | call to getenv | defaulttainttracking.cpp:5:14:5:23 | p#0 |
@@ -17,5 +20,8 @@
 | defaulttainttracking.cpp:18:27:18:32 | call to getenv | defaulttainttracking.cpp:18:27:18:32 | call to getenv |
 | defaulttainttracking.cpp:18:27:18:32 | call to getenv | defaulttainttracking.cpp:18:27:18:39 | (const char *)... |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:3:38:3:39 | s2 |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:8:22:13 | call to strcat |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:8:22:33 | (const char *)... |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:20:22:25 | call to getenv |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:20:22:32 | (const char *)... |
