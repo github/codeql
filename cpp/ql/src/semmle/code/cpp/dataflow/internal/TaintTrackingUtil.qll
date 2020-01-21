@@ -133,19 +133,24 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
     )
   )
   or
-  exists(TaintFunction f, Call call, FunctionOutput outModel |
+  exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
     call.getTarget() = f and
-    exprOut = call and
-    outModel.isReturnValueDeref() and
-    exists(int argInIndex, FunctionInput inModel | f.hasTaintFlow(inModel, outModel) |
-      inModel.isParameterDeref(argInIndex) and
-      exprIn = call.getArgument(argInIndex)
-      or
-      inModel.isParameterDeref(argInIndex) and
-      call.passesByReference(argInIndex, exprIn)
-      or
-      inModel.isParameter(argInIndex) and
-      exprIn = call.getArgument(argInIndex)
+    (
+      exprOut = call and
+      outModel.isReturnValueDeref()
+    ) and
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      exists(int argInIndex |
+        inModel.isParameterDeref(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+        or
+        inModel.isParameterDeref(argInIndex) and
+        call.passesByReference(argInIndex, exprIn)
+        or
+        inModel.isParameter(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      )
     )
   )
 }
@@ -163,19 +168,22 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
     )
   )
   or
-  exists(TaintFunction f, Call call, FunctionOutput outModel, int argOutIndex |
+  exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel, int argOutIndex |
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
     outModel.isParameterDeref(argOutIndex) and
-    exists(int argInIndex, FunctionInput inModel | f.hasTaintFlow(inModel, outModel) |
-      inModel.isParameterDeref(argInIndex) and
-      exprIn = call.getArgument(argInIndex)
-      or
-      inModel.isParameterDeref(argInIndex) and
-      call.passesByReference(argInIndex, exprIn)
-      or
-      inModel.isParameter(argInIndex) and
-      exprIn = call.getArgument(argInIndex)
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      exists(int argInIndex |
+        inModel.isParameterDeref(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+        or
+        inModel.isParameterDeref(argInIndex) and
+        call.passesByReference(argInIndex, exprIn)
+        or
+        inModel.isParameter(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      )
     )
   )
 }
