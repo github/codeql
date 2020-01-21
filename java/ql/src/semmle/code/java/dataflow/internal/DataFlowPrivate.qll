@@ -279,8 +279,6 @@ class DataFlowExpr = Expr;
 
 class DataFlowType = RefType;
 
-class DataFlowLocation = Location;
-
 class DataFlowCall extends Call {
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
