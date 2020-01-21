@@ -38,3 +38,4 @@
 | simple.test | test.py:195 | 197 | t | simple.test |
 | simple.test | test.py:195 | 199 | t | simple.test |
 | simple.test | test.py:208 | 214 | x | simple.test |
+| simple.test | test.py:217 | 220 | tainted | simple.test |
