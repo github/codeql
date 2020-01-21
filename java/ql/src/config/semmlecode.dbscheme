@@ -516,6 +516,11 @@ statementEnclosingExpr(
   int statement_id: @stmt ref
 );
 
+isParenthesized(
+  unique int id: @expr ref,
+  int parentheses: int ref
+);
+
 case @expr.kind of
    1  = @arrayaccess
 |  2  = @arraycreationexpr
@@ -570,7 +575,7 @@ case @expr.kind of
 | 51  = @castexpr
 | 52  = @newexpr
 | 53  = @conditionalexpr
-| 54  = @parexpr
+| 54  = @parexpr         // deprecated
 | 55  = @instanceofexpr
 | 56  = @localvariabledeclexpr
 | 57  = @typeliteral
