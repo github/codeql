@@ -1,7 +1,7 @@
 /**
  * @name Disabled Spring CSRF protection
  * @description Disabling CSRF protection makes the application vulnerable to
- *              Cross-Site Request Forgery (CSRF) attack.
+ *              a Cross-Site Request Forgery (CSRF) attack.
  * @kind problem
  * @problem.severity error
  * @precision high
