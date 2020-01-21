@@ -122,7 +122,7 @@ class MallocSizeExpr extends BufferAccess, FunctionCall {
 
   override Expr getPointer() { none() }
 
-  override Expr getAccessedLength() { result = getArgument(1) }
+  override Expr getAccessedLength() { result = getArgument(0) }
 }
 
 class NetworkFunctionCall extends FunctionCall {
