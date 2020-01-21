@@ -125,4 +125,8 @@
 	Promise.resolve(123).then(x => rejected).catch(x => sink(x)) // NOT OK
 	
 	Promise.resolve(123).then(x => rejected).then(x => sink(x)) // OK
+	
+	new Promise((resolve, reject) => resolve(resolved)).then(x => sink(x)); // NOT OK
+	
+	Promise.resolve(resolved).then(x => sink(x)); // NOT OK
 })();

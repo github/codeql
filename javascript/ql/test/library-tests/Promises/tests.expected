@@ -15,6 +15,7 @@ test_ResolvedPromiseDefinition
 | flow.js:123:2:123:21 | Promise.resolve(123) | flow.js:123:18:123:20 | 123 |
 | flow.js:125:2:125:21 | Promise.resolve(123) | flow.js:125:18:125:20 | 123 |
 | flow.js:127:2:127:21 | Promise.resolve(123) | flow.js:127:18:127:20 | 123 |
+| flow.js:131:2:131:26 | Promise ... solved) | flow.js:131:18:131:25 | resolved |
 | promises.js:53:19:53:41 | Promise ... source) | promises.js:53:35:53:40 | source |
 | promises.js:62:19:62:41 | Promise ... source) | promises.js:62:35:62:40 | source |
 | promises.js:71:5:71:27 | Promise ... source) | promises.js:71:21:71:26 | source |
@@ -58,6 +59,7 @@ test_PromiseDefinition_getExecutor
 | flow.js:113:2:113:48 | new Pro ... "BLA")) | flow.js:113:14:113:47 | (resolv ... ("BLA") |
 | flow.js:117:2:117:48 | new Pro ... "BLA")) | flow.js:117:14:117:47 | (resolv ... ("BLA") |
 | flow.js:119:2:119:48 | new Pro ... "BLA")) | flow.js:119:14:119:47 | (resolv ... ("BLA") |
+| flow.js:129:2:129:52 | new Pro ... olved)) | flow.js:129:14:129:51 | (resolv ... solved) |
 | interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:24:15:5 | functio ... ;\\n    } |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:29:5:3 | functio ... e);\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:30:17:3 | (res, r ... e);\\n  } |
@@ -92,6 +94,7 @@ test_PromiseDefinition
 | flow.js:113:2:113:48 | new Pro ... "BLA")) |
 | flow.js:117:2:117:48 | new Pro ... "BLA")) |
 | flow.js:119:2:119:48 | new Pro ... "BLA")) |
+| flow.js:129:2:129:52 | new Pro ... olved)) |
 | interflow.js:11:12:15:6 | new Pro ... \\n    }) |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) |
@@ -108,6 +111,7 @@ test_PromiseDefinition_getAResolveHandler
 | flow.js:91:21:91:68 | new Pro ... ource)) | flow.js:91:75:91:82 | () => {} |
 | flow.js:105:2:105:48 | new Pro ... "BLA")) | flow.js:105:58:105:76 | x => {throw source} |
 | flow.js:109:2:109:48 | new Pro ... "BLA")) | flow.js:109:58:109:70 | x => rejected |
+| flow.js:129:2:129:52 | new Pro ... olved)) | flow.js:129:59:129:70 | x => sink(x) |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:6:16:8:3 | functio ... al;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:18:17:20:3 | (v) =>  ...  v;\\n  } |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
@@ -137,6 +141,7 @@ test_PromiseDefinition_getRejectParameter
 | flow.js:113:2:113:48 | new Pro ... "BLA")) | flow.js:113:24:113:29 | reject |
 | flow.js:117:2:117:48 | new Pro ... "BLA")) | flow.js:117:24:117:29 | reject |
 | flow.js:119:2:119:48 | new Pro ... "BLA")) | flow.js:119:24:119:29 | reject |
+| flow.js:129:2:129:52 | new Pro ... olved)) | flow.js:129:24:129:29 | reject |
 | interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:43:11:48 | reject |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:48:3:53 | reject |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:36:10:38 | rej |
@@ -166,6 +171,7 @@ test_PromiseDefinition_getResolveParameter
 | flow.js:113:2:113:48 | new Pro ... "BLA")) | flow.js:113:15:113:21 | resolve |
 | flow.js:117:2:117:48 | new Pro ... "BLA")) | flow.js:117:15:117:21 | resolve |
 | flow.js:119:2:119:48 | new Pro ... "BLA")) | flow.js:119:15:119:21 | resolve |
+| flow.js:129:2:129:52 | new Pro ... olved)) | flow.js:129:15:129:21 | resolve |
 | interflow.js:11:12:15:6 | new Pro ... \\n    }) | interflow.js:11:34:11:40 | resolve |
 | promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:39:3:45 | resolve |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:31:10:33 | res |
@@ -210,4 +216,7 @@ flow
 | flow.js:2:15:2:22 | "source" | flow.js:119:86:119:86 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:123:58:123:58 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:125:59:125:59 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:129:69:129:69 | x |
+| flow.js:2:15:2:22 | "source" | flow.js:131:43:131:43 | x |
+exclusiveTaintFlow
 | interflow.js:3:18:3:25 | "source" | interflow.js:18:10:18:14 | error |

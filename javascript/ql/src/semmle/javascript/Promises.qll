@@ -162,6 +162,13 @@ private module PromiseFlow {
       ) and
       succ = this
     }
+
+    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      // Copy the value of a resolved promise to the value of this promise.
+      prop = resolveField() and
+      pred = promise.getResolveParameter().getACall().getArgument(0) and
+      succ = this
+    }
   }
   
   /**
@@ -174,6 +181,13 @@ private module PromiseFlow {
     }
 
     override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = resolveField() and
+      pred = promise.getValue() and
+      succ = this
+    }
+
+    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      // Copy the value of a resolved promise to the value of this promise.
       prop = resolveField() and
       pred = promise.getValue() and
       succ = this
