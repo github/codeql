@@ -230,7 +230,7 @@ private module PromiseFlow {
       or
       // read the value of a resolved/rejected promise that is returned
       (prop = rejectField() or prop = resolveField()) and
-      pred = getCallback(0).getAReturn() and
+      pred = getCallback([0..1]).getAReturn() and
       succ = this
     }
     
