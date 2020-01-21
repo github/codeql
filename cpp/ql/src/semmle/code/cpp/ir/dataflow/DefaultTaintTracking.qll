@@ -186,7 +186,7 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
 }
 
 private predicate modelTaintToParameter(Function f, int parameterIn, int parameterOut) {
-  exists( FunctionInput modelIn, FunctionOutput modelOut |
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
     f.(TaintFunction).hasTaintFlow(modelIn, modelOut) and
     (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
     modelOut.isParameterDeref(parameterOut)
