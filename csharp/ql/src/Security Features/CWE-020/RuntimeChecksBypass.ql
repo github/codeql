@@ -14,6 +14,7 @@
 
 import semmle.code.csharp.serialization.Serialization
 import semmle.code.csharp.controlflow.Guards
+import semmle.code.csharp.dataflow.DataFlow
 
 /**
  * The result is a write to the field `f`, assigning it the value
@@ -32,7 +33,9 @@ GuardedExpr checkedWrite(Field f, Variable v, IfStmt check) {
 Expr uncheckedWrite(Callable callable, Field f) {
   result = f.getAnAssignedValue() and
   result.getEnclosingCallable() = callable and
-  not callable.calls*(checkedWrite(f, _, _).getEnclosingCallable())
+  not callable.calls*(checkedWrite(f, _, _).getEnclosingCallable()) and
+  // Exclude object creations because they were not deserialized
+  not exists(ObjectCreation src | DataFlow::localExprFlow(src, result))
 }
 
 from BinarySerializableType t, Field f, IfStmt check, Expr write, Expr unsafeWrite
