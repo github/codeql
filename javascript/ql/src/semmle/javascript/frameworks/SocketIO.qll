@@ -29,11 +29,11 @@ module SocketIO {
    */
   abstract private class SocketIOObject extends DataFlow::SourceNode, EventEmitter::Range {
     /**
-     * Gets a node that refers to a SocketIOObject object.
+     * Gets a node that refers to this SocketIOObject object.
      */
     abstract DataFlow::SourceNode ref();
     
-    /** Gets namespace belonging to this object. */
+    /** Gets the namespace belonging to this object. */
     abstract NamespaceObject getNamespace();
   }
 
@@ -138,7 +138,6 @@ module SocketIO {
       )
     }
 
-    /** Gets the namespace to which this object refers. */
     override NamespaceObject getNamespace() { result = ns }
 
     /**
@@ -197,7 +196,6 @@ module SocketIO {
       )
     }
 
-    /** Gets the namespace to which this socket belongs. */
     override NamespaceObject getNamespace() { result = ns }
 
     private DataFlow::SourceNode socket(DataFlow::TypeTracker t) {
