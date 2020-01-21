@@ -35,7 +35,8 @@ predicate nonNilWrapper(DataFlow::Node nd) {
   forex(DataFlow::Node pred | pred = nd.getAPredecessor() |
     exists(Type predtp | predtp = pred.getType().getUnderlyingType() |
       not predtp instanceof InterfaceType and
-      not predtp instanceof NilLiteralType
+      not predtp instanceof NilLiteralType and
+      not predtp instanceof InvalidType
     )
     or
     nonNilWrapper(pred)
