@@ -203,3 +203,6 @@
 | simple.test | test.py:217 | SOURCE |  | --> | simple.test | test.py:220 | tainted |  |
 | simple.test | test.py:223 | SOURCE |  | --> | simple.test | test.py:224 | tainted |  |
 | simple.test | test.py:229 | SOURCE |  | --> | simple.test | test.py:230 | tainted |  |
+| simple.test | test.py:229 | SOURCE |  | --> | simple.test | test.py:231 | tainted |  |
+| simple.test | test.py:229 | SOURCE |  | --> | simple.test | test.py:232 | tainted |  |
+| simple.test | test.py:229 | SOURCE |  | --> | simple.test | test.py:233 | tainted |  |
