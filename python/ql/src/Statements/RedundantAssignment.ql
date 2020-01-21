@@ -65,7 +65,7 @@ predicate same_attribute(Attribute a1, Attribute a2) {
 
 int pyflakes_commented_line(File file) {
     exists(Comment c | c.getText().toLowerCase().matches("%pyflakes%") |
-        c.getLocation().hasLocationInfo(file.getName(), result, _, _, _)
+        c.getLocation().hasLocationInfo(file.getAbsolutePath(), result, _, _, _)
     )
 }
 
