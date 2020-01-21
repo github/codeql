@@ -1,7 +1,7 @@
 /**
  * @name Hard-coded credentials
  * @description Credentials are hard coded in the source code of the application.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision medium
  * @id py/hardcoded-credentials
@@ -12,6 +12,7 @@
  */
 
 import python
+import semmle.python.security.Paths
 import semmle.python.security.TaintTracking
 import semmle.python.filters.Tests
 
@@ -155,9 +156,9 @@ class HardcodedCredentialsConfiguration extends TaintTracking::Configuration {
 
 
 
-from HardcodedCredentialsConfiguration config, TaintSource src, TaintSink sink
+from HardcodedCredentialsConfiguration config, TaintedPathSource src, TaintedPathSink sink
 
-where config.hasFlow(src, sink) and
-not any(TestScope test).contains(src.(ControlFlowNode).getNode())
+where config.hasFlowPath(src, sink) and
+not any(TestScope test).contains(src.getAstNode())
 
-select sink, "Use of hardcoded credentials from $@.", src, src.toString()
+select sink.getSink(), src, sink, "Use of $@.", src.getSource(), "hardcoded credentials"
