@@ -107,7 +107,7 @@ class PropertyProvider extends IRPropertyProvider {
     exists(
       MemoryLocation useLocation, IRBlock predBlock, IRBlock defBlock, int defIndex, Overlap overlap
     |
-      hasPhiOperandDefinition(_, useLocation, block, predBlock, defBlock, defIndex, overlap) and
+      hasPhiOperandDefinition(_, useLocation, block, predBlock, defBlock, defIndex) and
       key = "PhiUse[" + useLocation.toString() + " from " + predBlock.getDisplayIndex().toString() +
           "]" and
       result = defBlock.getDisplayIndex().toString() + "_" + defIndex + " (" + overlap.toString() +
