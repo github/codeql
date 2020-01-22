@@ -1947,9 +1947,7 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr, TranslatedVariableIn
     result = TranslatedVariableInitialization.super.getInstructionSuccessor(tag, kind)
   }
 
-  final override Instruction getInitializationSuccessor() {
-    result = getInstruction(ThrowTag())
-  }
+  final override Instruction getInitializationSuccessor() { result = getInstruction(ThrowTag()) }
 
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
     tag = ThrowTempVar() and
@@ -1981,9 +1979,7 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr, TranslatedVariableIn
     result = getTranslatedInitialization(expr.getExpr().getFullyConverted())
   }
 
-  final override IRVariable getIRVariable() {
-    result = getIRTempVariable(expr, ThrowTempVar())
-  }
+  final override IRVariable getIRVariable() { result = getIRTempVariable(expr, ThrowTempVar()) }
 
   final override Opcode getThrowOpcode() { result instanceof Opcode::ThrowValue }
 

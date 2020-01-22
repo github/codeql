@@ -280,9 +280,7 @@ private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
 predicate variableAddressEscapes(IRVariable var) {
   exists(IREscapeAnalysisConfiguration config |
     config.useSoundEscapeAnalysis() and
-    (
-      automaticVariableAddressEscapes(var.(IRAutomaticVariable))
-    )
+    automaticVariableAddressEscapes(var.(IRAutomaticVariable))
   )
   or
   // All variables with static storage duration have their address escape, even when escape analysis

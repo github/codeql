@@ -143,9 +143,7 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariable
     result = getTranslatedInitialization(stmt.getExpr().getFullyConverted())
   }
 
-  final override IRVariable getIRVariable() {
-    result = getEnclosingFunction().getReturnVariable()
-  }
+  final override IRVariable getIRVariable() { result = getEnclosingFunction().getReturnVariable() }
 }
 
 class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
