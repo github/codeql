@@ -1472,8 +1472,6 @@ class DataFlowExpr = DotNet::Expr;
 
 class DataFlowType = Gvn::GvnType;
 
-class DataFlowLocation = Location;
-
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e = any(AbstractValues::BooleanValue bv | val = bv.getValue()).getAnExpr()
