@@ -420,7 +420,7 @@ void test_qualifiers()
 	sink(a);
 	sink(a.getMember());
 	a.setMember(source());
-	sink(a); // tainted [NOT DETECTED]
+	sink(a); // tainted
 	sink(a.getMember()); // tainted [NOT DETECTED]
 
 	sink(b);
@@ -435,7 +435,7 @@ void test_qualifiers()
 	sink(c);
 	sink(c->getMember());
 	c->setMember(source());
-	sink(c); // tainted (deref) [NOT DETECTED]
+	sink(c); // tainted (deref)
 	sink(c->getMember()); // tainted [NOT DETECTED]
 
 	delete c;
@@ -443,6 +443,6 @@ void test_qualifiers()
 	sink(d);
 	sink(d.getString());
 	d.setString(strings::source());
-	sink(d); // tainted [NOT DETECTED]
+	sink(d); // tainted
 	sink(d.getString()); // tainted [NOT DETECTED]
 }

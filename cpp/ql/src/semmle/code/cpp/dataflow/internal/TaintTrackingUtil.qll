@@ -68,9 +68,11 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   )
   or
   // Taint can flow through modeled functions
+  exprToExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
+  or
   exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
   or
-  exprToExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
+  exprToPartialDefinitionStep(nodeFrom.asExpr(), nodeTo.asPartialDefinition())
 }
 
 /**
@@ -184,6 +186,27 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
         inModel.isParameter(argInIndex) and
         exprIn = call.getArgument(argInIndex)
       )
+    )
+  )
+}
+
+private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
+  exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
+    call.getTarget() = f and
+    (
+      exprOut = call.getQualifier() and
+      outModel.isQualifierObject()
+    ) and
+    f.hasTaintFlow(inModel, outModel) and
+    exists(int argInIndex |
+      inModel.isParameterDeref(argInIndex) and
+      exprIn = call.getArgument(argInIndex)
+      or
+      inModel.isParameterDeref(argInIndex) and
+      call.passesByReference(argInIndex, exprIn)
+      or
+      inModel.isParameter(argInIndex) and
+      exprIn = call.getArgument(argInIndex)
     )
   )
 }
