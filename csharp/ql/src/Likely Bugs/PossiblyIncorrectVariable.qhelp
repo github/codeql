@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Comparisons or assignments where one of the terms is duplicated suggests an error.
+</p>
+
+<p>
+This query find anomalous variable uses where the variable names match up in the first
+expression, but do not match up in the second expression. This suggests that the second expression
+could have been copied and pasted from the first expression, but then incorrectly changed such that
+only one side of the expression was renamed.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the expression to check whether the code is correct.
+</p>
+</recommendation>
+
+<example>
+<p>The following example shows a class <code>Point1</code> where the constructor does not initialize the
+field <code>Y</code>:</p>
+
+<sample src="PossiblyIncorrectVariableBad.cs" />
+
+<p>
+The fix is to edit the assignment to initialize the field <code>Y</code> instead:
+</p>
+
+<sample src="PossiblyIncorrectVariableGood.cs" />
+
+</example>
+<references>
+
+  <li>Mitre: <a href="https://cwe.mitre.org/data/definitions/697.html">CWE-697: Incorrect Comparison</a></li>
+
+</references>
+</qhelp>

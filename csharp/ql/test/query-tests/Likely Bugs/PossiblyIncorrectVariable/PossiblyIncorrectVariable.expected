@@ -1,0 +1,16 @@
+| PossiblyIncorrectVariable.cs:12:13:12:18 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:30:18:30:18 | access to parameter x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:27:40:27:40 | y | y |
+| PossiblyIncorrectVariable.cs:45:17:45:20 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:55:20:55:23 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:58:13:58:16 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:61:13:61:17 | access to property mX | Duplicated variable 'mX' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:25:23:25:24 | mY | mY |
+| PossiblyIncorrectVariable.cs:64:13:64:16 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:67:13:67:15 | access to local variable m_x | Duplicated variable 'm_x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:42:25:42:27 | m_y | m_y |
+| PossiblyIncorrectVariable.cs:73:21:73:25 | access to property mX | Duplicated variable 'mX' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:25:23:25:24 | mY | mY |
+| PossiblyIncorrectVariable.cs:75:36:75:39 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:82:17:82:20 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:95:17:95:20 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:98:24:98:25 | access to local variable Lx | Duplicated variable 'Lx' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:93:32:93:33 | Ly | Ly |
+| PossiblyIncorrectVariable.cs:104:17:104:20 | access to field x | Duplicated variable 'x' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:7:26:7:26 | y | y |
+| PossiblyIncorrectVariable.cs:107:24:107:25 | access to local variable Lx | Duplicated variable 'Lx' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariable.cs:102:32:102:33 | Ly | Ly |
+| PossiblyIncorrectVariableBad.cs:10:9:10:9 | access to property X | Duplicated variable 'X' may be an error, because '$@' might have been intended. | PossiblyIncorrectVariableBad.cs:5:19:5:19 | Y | Y |
