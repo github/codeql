@@ -73,7 +73,8 @@ class ValueNumber extends TValueNumber {
    * deterministic but arbitrary. Intended for use only in debugging.
    */
   final Instruction getExampleInstruction() {
-    result = min(Instruction instr |
+    result =
+      min(Instruction instr |
         instr = getAnInstruction()
       |
         instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
@@ -308,8 +309,8 @@ private ValueNumber nonUniqueValueNumber(Instruction instr) {
       |
         pointerArithmeticValueNumber(instr, irFunc, opcode, type, elementSize, leftOperand,
           rightOperand) and
-        result = TPointerArithmeticValueNumber(irFunc, opcode, type, elementSize, leftOperand,
-            rightOperand)
+        result =
+          TPointerArithmeticValueNumber(irFunc, opcode, type, elementSize, leftOperand, rightOperand)
       )
       or
       // The value number of a copy is just the value number of its source value.

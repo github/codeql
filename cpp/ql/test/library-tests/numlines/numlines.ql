@@ -7,7 +7,8 @@ string functionName(Function f) {
     (
       if exists(f.getATemplateArgument())
       then
-        templateArgs = "<" +
+        templateArgs =
+          "<" +
             concat(int i |
               exists(f.getTemplateArgument(i))
             |
@@ -15,7 +16,8 @@ string functionName(Function f) {
             ) + ">"
       else templateArgs = ""
     ) and
-    args = "(" +
+    args =
+      "(" +
         concat(int i |
           exists(f.getParameter(i))
         |

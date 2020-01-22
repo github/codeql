@@ -64,7 +64,8 @@ class MemcpyBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(2).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(2).getValue().toInt() *
         getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
   }
 }
@@ -89,7 +90,8 @@ class BCopyBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(2).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(2).getValue().toInt() *
         getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
   }
 }
@@ -114,7 +116,8 @@ class StrncpyBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(2).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(2).getValue().toInt() *
         getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
   }
 }
@@ -139,7 +142,8 @@ class MemccpyBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(3).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(3).getValue().toInt() *
         getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
   }
 }
@@ -172,7 +176,8 @@ class MemcmpBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(2).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(2).getValue().toInt() *
         getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
   }
 }
@@ -201,7 +206,8 @@ class SwabBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(2).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(2).getValue().toInt() *
         getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
   }
 }
@@ -226,7 +232,8 @@ class MemsetBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(2).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(2).getValue().toInt() *
         getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
   }
 }
@@ -269,7 +276,8 @@ class MemchrBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(2).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(2).getValue().toInt() *
         getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
   }
 }
@@ -290,7 +298,8 @@ class FreadBA extends BufferAccess {
   }
 
   override int getSize() {
-    result = this.(FunctionCall).getArgument(1).getValue().toInt() *
+    result =
+      this.(FunctionCall).getArgument(1).getValue().toInt() *
         this.(FunctionCall).getArgument(2).getValue().toInt()
   }
 }
@@ -324,7 +333,8 @@ class ArrayExprBA extends BufferAccess {
   override int getSize() {
     // byte size of the buffer that would be required to support this
     // access
-    result = (1 + this.(ArrayExpr).getArrayOffset().getValue().toInt()) *
+    result =
+      (1 + this.(ArrayExpr).getArrayOffset().getValue().toInt()) *
         this.(ArrayExpr).getType().getSize()
   }
 }

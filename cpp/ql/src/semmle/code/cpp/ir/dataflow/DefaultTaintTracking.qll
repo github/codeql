@@ -135,7 +135,8 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
 
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Expressions computed from tainted data are also tainted
-  i2 = any(CallInstruction call |
+  i2 =
+    any(CallInstruction call |
       isPureFunction(call.getStaticCallTarget().getName()) and
       call.getAnArgument() = i1 and
       forall(Instruction arg | arg = call.getAnArgument() | arg = i1 or predictableInstruction(arg)) and

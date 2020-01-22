@@ -26,7 +26,8 @@ class MetricFunction extends Function {
   /** Gets the number of function calls in this function. */
   int getNumberOfCalls() {
     // Checking that the name of the target exists is a workaround for a DB inconsistency
-    result = count(FunctionCall c |
+    result =
+      count(FunctionCall c |
         c.getEnclosingFunction() = this and
         not c.getTarget() instanceof Operator and
         exists(c.getTarget().getName())
@@ -51,9 +52,8 @@ class MetricFunction extends Function {
    * attempts to evaluate how difficult the code is to test).
    */
   int getBranchingComplexity() {
-    result = count(IfStmt stmt |
-          stmt.getEnclosingFunction() = this and not stmt.isInMacroExpansion()
-        ) +
+    result =
+      count(IfStmt stmt | stmt.getEnclosingFunction() = this and not stmt.isInMacroExpansion()) +
         count(WhileStmt stmt | stmt.getEnclosingFunction() = this and not stmt.isInMacroExpansion())
         + count(DoStmt stmt | stmt.getEnclosingFunction() = this and not stmt.isInMacroExpansion()) +
         count(ForStmt stmt | stmt.getEnclosingFunction() = this and not stmt.isInMacroExpansion()) +
@@ -67,7 +67,8 @@ class MetricFunction extends Function {
    * this function.
    */
   int getAfferentCoupling() {
-    result = count(Function f |
+    result =
+      count(Function f |
         exists(Locatable l |
           f.calls(this, l) or
           f.accesses(this, l)
@@ -80,7 +81,8 @@ class MetricFunction extends Function {
    * accessed by this function.
    */
   int getEfferentCoupling() {
-    result = count(Function f |
+    result =
+      count(Function f |
         exists(Locatable l |
           this.calls(f, l) or
           this.accesses(f, l)
@@ -99,7 +101,8 @@ class MetricFunction extends Function {
    */
   int getHalsteadN1() {
     // The `1 +` is to account for the function itself
-    result = 1 + count(Operation op | op.getEnclosingFunction() = this) +
+    result =
+      1 + count(Operation op | op.getEnclosingFunction() = this) +
         count(CommaExpr e | e.getEnclosingFunction() = this) +
         count(ReferenceToExpr e | e.getEnclosingFunction() = this) +
         count(PointerDereferenceExpr e | e.getEnclosingFunction() = this) +
@@ -120,7 +123,8 @@ class MetricFunction extends Function {
    */
   int getHalsteadN2() {
     // The `1 +` is to account for the function itself
-    result = 1 + count(Access a | a.getEnclosingFunction() = this) +
+    result =
+      1 + count(Access a | a.getEnclosingFunction() = this) +
         count(FunctionCall fc | fc.getEnclosingFunction() = this) +
         // Approximate: count declarations twice to account for the type name
         // and the identifier
@@ -205,7 +209,8 @@ class MetricFunction extends Function {
         else elseVal = 0
       ) and
       // The `1 +` is to account for the function itself
-      result = 1 +
+      result =
+        1 +
           count(string s |
             exists(Operation op | op.getEnclosingFunction() = this and s = op.getOperator())
           ) + comma + refTo + dereference + cCast + staticCast + constCast + reinterpretCast +
@@ -220,7 +225,8 @@ class MetricFunction extends Function {
    */
   int getHalsteadN2Distinct() {
     // The `1 +` is to account for the function itself
-    result = 1 +
+    result =
+      1 +
         count(string s |
           exists(Access a | a.getEnclosingFunction() = this and s = a.getTarget().getName())
         ) +
@@ -256,7 +262,8 @@ class MetricFunction extends Function {
    * operators, and further proportional to the ratio of total operands to unique operands.
    */
   float getHalsteadDifficulty() {
-    result = (this.getHalsteadN1Distinct() * this.getHalsteadN2()).(float) /
+    result =
+      (this.getHalsteadN1Distinct() * this.getHalsteadN2()).(float) /
         (2 * this.getHalsteadN2Distinct()).(float)
   }
 
@@ -286,11 +293,8 @@ class MetricFunction extends Function {
    * 2 would mean that there is, for example, an if statement nested in another if statement.
    */
   int getNestingDepth() {
-    result = max(Stmt s, int aDepth |
-        s.getEnclosingFunction() = this and nestingDepth(s, aDepth)
-      |
-        aDepth
-      ) and
+    result =
+      max(Stmt s, int aDepth | s.getEnclosingFunction() = this and nestingDepth(s, aDepth) | aDepth) and
     not isMultiplyDefined()
   }
 }
@@ -331,7 +335,8 @@ private predicate branchingExpr(Expr expr) {
  * for computing cyclomatic complexity.
  */
 int cyclomaticComplexityBranches(Block b) {
-  result = count(Stmt stmt |
+  result =
+    count(Stmt stmt |
         branchingStmt(stmt) and
         b.getAChild+() = stmt and
         not stmt.isInMacroExpansion()

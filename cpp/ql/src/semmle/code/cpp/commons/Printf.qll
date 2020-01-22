@@ -311,7 +311,8 @@ class FormatLiteral extends Literal {
     //                 6 - length
     //                 7 - conversion character
     // NB: this matches "%%" with conversion character "%"
-    result = "(?s)(\\%(" + this.getParameterFieldRegexp() + ")(" + this.getFlagRegexp() + ")(" +
+    result =
+      "(?s)(\\%(" + this.getParameterFieldRegexp() + ")(" + this.getFlagRegexp() + ")(" +
         this.getFieldWidthRegexp() + ")(" + this.getPrecRegexp() + ")(" + this.getLengthRegexp() +
         ")(" + this.getConvCharRegexp() + ")" + "|\\%\\%).*"
   }
@@ -844,11 +845,8 @@ class FormatLiteral extends Literal {
    */
   int getFormatArgumentIndexFor(int n, int mode) {
     hasFormatArgumentIndexFor(n, mode) and
-    (3 * n) + mode = rank[result + 1](int n2, int mode2 |
-        hasFormatArgumentIndexFor(n2, mode2)
-      |
-        (3 * n2) + mode2
-      )
+    (3 * n) + mode =
+      rank[result + 1](int n2, int mode2 | hasFormatArgumentIndexFor(n2, mode2) | (3 * n2) + mode2)
   }
 
   /**
@@ -960,7 +958,8 @@ class FormatLiteral extends Literal {
         ) and
         // e.g. -2^31 = "-2147483648"
         exists(int sizeBits |
-          sizeBits = min(int bits |
+          sizeBits =
+            min(int bits |
               bits = getIntegralDisplayType(n).getSize() * 8
               or
               exists(IntegralType t |
@@ -977,7 +976,8 @@ class FormatLiteral extends Literal {
         this.getConversionChar(n).toLowerCase() = "u" and
         // e.g. 2^32 - 1 = "4294967295"
         exists(int sizeBits |
-          sizeBits = min(int bits |
+          sizeBits =
+            min(int bits |
               bits = getIntegralDisplayType(n).getSize() * 8
               or
               exists(IntegralType t |
@@ -994,7 +994,8 @@ class FormatLiteral extends Literal {
         this.getConversionChar(n).toLowerCase() = "x" and
         // e.g. "12345678"
         exists(int sizeBytes, int baseLen |
-          sizeBytes = min(int bytes |
+          sizeBytes =
+            min(int bytes |
               bytes = getIntegralDisplayType(n).getSize()
               or
               exists(IntegralType t |
@@ -1021,7 +1022,8 @@ class FormatLiteral extends Literal {
         this.getConversionChar(n).toLowerCase() = "o" and
         // e.g. 2^32 - 1 = "37777777777"
         exists(int sizeBits, int baseLen |
-          sizeBits = min(int bits |
+          sizeBits =
+            min(int bits |
               bits = getIntegralDisplayType(n).getSize() * 8
               or
               exists(IntegralType t |
@@ -1037,7 +1039,8 @@ class FormatLiteral extends Literal {
         )
         or
         this.getConversionChar(n).toLowerCase() = "s" and
-        len = min(int v |
+        len =
+          min(int v |
             v = this.getPrecision(n) or
             v = this.getUse().getFormatArgument(n).(AnalysedString).getMaxLength() - 1 // (don't count null terminator)
           )
@@ -1070,7 +1073,8 @@ class FormatLiteral extends Literal {
     if n = 0
     then result = this.getFormat().substring(0, this.getConvSpecOffset(0))
     else
-      result = this
+      result =
+        this
             .getFormat()
             .substring(this.getConvSpecOffset(n - 1) + this.getConvSpec(n - 1).length(),
               this.getConvSpecOffset(n))
@@ -1086,7 +1090,8 @@ class FormatLiteral extends Literal {
       (
         if n > 0
         then
-          result = this
+          result =
+            this
                 .getFormat()
                 .substring(this.getConvSpecOffset(n - 1) + this.getConvSpec(n - 1).length(),
                   this.getFormat().length())
@@ -1099,7 +1104,8 @@ class FormatLiteral extends Literal {
     if n = this.getNumConvSpec()
     then result = this.getConstantSuffix().length() + 1
     else
-      result = this.getConstantPart(n).length() + this.getMaxConvertedLength(n) +
+      result =
+        this.getConstantPart(n).length() + this.getMaxConvertedLength(n) +
           this.getMaxConvertedLengthAfter(n + 1)
   }
 
@@ -1107,7 +1113,8 @@ class FormatLiteral extends Literal {
     if n = this.getNumConvSpec()
     then result = this.getConstantSuffix().length() + 1
     else
-      result = this.getConstantPart(n).length() + this.getMaxConvertedLengthLimited(n) +
+      result =
+        this.getConstantPart(n).length() + this.getMaxConvertedLengthLimited(n) +
           this.getMaxConvertedLengthAfterLimited(n + 1)
   }
 

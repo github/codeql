@@ -64,7 +64,8 @@ query predicate irGuardsCompare(int startLine, string msg) {
       guard.comparesEq(left, right, k, false, sense) and op = " != "
     ) and
     startLine = guard.getLocation().getStartLine() and
-    msg = left.getAnyDef().getUnconvertedResultExpression() + op +
+    msg =
+      left.getAnyDef().getUnconvertedResultExpression() + op +
         right.getAnyDef().getUnconvertedResultExpression() + "+" + k + " when " + guard + " is " +
         which
   )

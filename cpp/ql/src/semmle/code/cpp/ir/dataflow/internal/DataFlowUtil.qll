@@ -197,13 +197,15 @@ class DefinitionByReferenceNode extends Node {
 
   /** Gets the argument corresponding to this node. */
   Expr getArgument() {
-    result = instr
+    result =
+      instr
           .getPrimaryInstruction()
           .(CallInstruction)
           .getPositionalArgument(instr.getIndex())
           .getUnconvertedResultExpression()
     or
-    result = instr
+    result =
+      instr
           .getPrimaryInstruction()
           .(CallInstruction)
           .getThisArgument()

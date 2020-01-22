@@ -994,7 +994,8 @@ private float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
       // The new lower bound is from a recursive source, so we round
       // down to one of a limited set of values to prevent the
       // recursion from exploding.
-      result = max(float widenLB |
+      result =
+        max(float widenLB |
           widenLB = wideningLowerBounds(v.getUnspecifiedType()) and
           not widenLB > truncatedLB
         |
@@ -1023,7 +1024,8 @@ private float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
       // The new upper bound is from a recursive source, so we round
       // up to one of a fixed set of values to prevent the recursion
       // from exploding.
-      result = min(float widenUB |
+      result =
+        min(float widenUB |
           widenUB = wideningUpperBounds(v.getUnspecifiedType()) and
           not widenUB < truncatedUB
         |
