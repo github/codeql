@@ -35,5 +35,6 @@ predicate nestingDepth(Stmt s, int depth) {
 
 from Method m, int depth
 where
-  depth = max(Stmt s, int aDepth | s.getEnclosingCallable() = m and nestingDepth(s, aDepth) | aDepth)
+  depth =
+    max(Stmt s, int aDepth | s.getEnclosingCallable() = m and nestingDepth(s, aDepth) | aDepth)
 select m, depth order by depth

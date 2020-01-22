@@ -5,8 +5,8 @@ predicate useReaches(LocalScopeVariableRead read, LocalScopeVariable v, ControlF
   read.getTarget() = v and cfn = read.getAControlFlowNode().getASuccessor()
   or
   exists(ControlFlow::Node mid | useReaches(read, v, mid) |
-    not mid = any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
-          .getAControlFlowNode() and
+    not mid =
+      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain()).getAControlFlowNode() and
     cfn = mid.getASuccessor()
   )
 }

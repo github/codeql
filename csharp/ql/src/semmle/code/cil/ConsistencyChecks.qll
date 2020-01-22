@@ -48,7 +48,8 @@ abstract class InstructionViolation extends CfgViolation, CfgCheck {
   InstructionViolation() { this = CfgCheck(instruction) }
 
   private string getInstructionsUpTo() {
-    result = concat(Instruction i |
+    result =
+      concat(Instruction i |
         i.getIndex() <= instruction.getIndex() and
         i.getImplementation() = instruction.getImplementation()
       |
@@ -59,7 +60,8 @@ abstract class InstructionViolation extends CfgViolation, CfgCheck {
   }
 
   override string toString() {
-    result = instruction.getImplementation().getMethod().toStringWithTypes() + ": " +
+    result =
+      instruction.getImplementation().getMethod().toStringWithTypes() + ": " +
         instruction.toString() + ", " + getInstructionsUpTo()
   }
 }
@@ -276,7 +278,8 @@ class InvalidStackSize extends CfgViolation, DisabledCheck {
   }
 
   override string getMessage() {
-    result = "Inconsistent stack sizes " + count(node.getStackSizeBefore()) + " before and " +
+    result =
+      "Inconsistent stack sizes " + count(node.getStackSizeBefore()) + " before and " +
         count(node.getStackSizeAfter()) + " after"
   }
 }
@@ -388,14 +391,13 @@ class InconsistentTypeLocation extends TypeViolation {
  */
 class TypeParameterMismatch extends TypeViolation {
   TypeParameterMismatch() {
-    getType().(ConstructedGeneric).getNumberOfTypeArguments() != getType()
-          .getUnboundType()
-          .(UnboundGeneric)
-          .getNumberOfTypeParameters()
+    getType().(ConstructedGeneric).getNumberOfTypeArguments() !=
+      getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters()
   }
 
   override string getMessage() {
-    result = "Constructed type (" + getType().toStringWithTypes() + ") has " +
+    result =
+      "Constructed type (" + getType().toStringWithTypes() + ") has " +
         getType().(ConstructedGeneric).getNumberOfTypeArguments() +
         " type arguments and unbound type (" + getType().getUnboundType().toStringWithTypes() +
         ") has " + getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters() +
@@ -432,14 +434,13 @@ class InconsistentMethodLocation extends MethodViolation {
  */
 class ConstructedMethodTypeParams extends MethodViolation {
   ConstructedMethodTypeParams() {
-    getMethod().(ConstructedGeneric).getNumberOfTypeArguments() != getMethod()
-          .getSourceDeclaration()
-          .(UnboundGeneric)
-          .getNumberOfTypeParameters()
+    getMethod().(ConstructedGeneric).getNumberOfTypeArguments() !=
+      getMethod().getSourceDeclaration().(UnboundGeneric).getNumberOfTypeParameters()
   }
 
   override string getMessage() {
-    result = "The constructed method " + getMethod().toStringWithTypes() +
+    result =
+      "The constructed method " + getMethod().toStringWithTypes() +
         " does not match unbound method " + getMethod().getSourceDeclaration().toStringWithTypes()
   }
 }
@@ -634,7 +635,8 @@ class TypeMultiplyDefined extends TypeViolation, DisabledCheck {
   }
 
   override string getMessage() {
-    result = "This type (" + getType().toStringWithTypes() + ") has " +
+    result =
+      "This type (" + getType().toStringWithTypes() + ") has " +
         count(Type t |
           not t instanceof ConstructedGeneric and
           t.toStringWithTypes() = this.getType().toStringWithTypes()
@@ -656,7 +658,8 @@ class MissingCilDeclaration extends ConsistencyViolation, MissingCSharpCheck {
   CS::Declaration getDeclaration() { this = MissingCSharpCheck(result) }
 
   override string getMessage() {
-    result = "Cannot locate CIL for " + getDeclaration().toStringWithTypes() + " of class " +
+    result =
+      "Cannot locate CIL for " + getDeclaration().toStringWithTypes() + " of class " +
         getDeclaration().getAQlClass()
   }
 

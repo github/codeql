@@ -33,5 +33,6 @@ class NotThreadSafeCryptoUsageIntoParallelInvokeConfig extends TaintTracking::Co
 from Expr e, string m, LambdaExpr l, NotThreadSafeCryptoUsageIntoParallelInvokeConfig config
 where
   config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e)) and
-  m = "A $@ seems to be used to start a new thread is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
+  m =
+    "A $@ seems to be used to start a new thread is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
 select e, m, l, "lambda expression"

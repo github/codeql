@@ -211,7 +211,8 @@ private class TranslatedForeachGetEnumerator extends TranslatedCompilerGenerated
       result = generatedBy.getIterableExpr().getType().(ValueOrRefType).getAMember("GetEnumerator")
     else
       exists(Interface inter |
-        inter = generatedBy
+        inter =
+          generatedBy
               .getIterableExpr()
               .getType()
               .(ValueOrRefType)

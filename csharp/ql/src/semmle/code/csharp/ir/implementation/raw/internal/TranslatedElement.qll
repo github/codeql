@@ -226,7 +226,8 @@ private predicate ignoreLoad(Expr expr) {
   // ignore the load since the address of a variable that is a value type is
   // given by a single `VariableAddress` instruction.
   expr = any(FieldAccess fa).getQualifier() and
-  expr = any(VariableAccess va |
+  expr =
+    any(VariableAccess va |
       va.getType().isValueType() and
       not va.getTarget() = any(Parameter p | p.isOutOrRef() or p.isIn())
     )
@@ -378,7 +379,8 @@ abstract class TranslatedElement extends TTranslatedElement {
   final string getId() { result = this.getUniqueId().toString() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
-    result = rank[rankIndex + 1](TranslatedElement child, int id |
+    result =
+      rank[rankIndex + 1](TranslatedElement child, int id |
         child = this.getChild(id)
       |
         child order by id
@@ -387,8 +389,8 @@ abstract class TranslatedElement extends TTranslatedElement {
 
   language[monotonicAggregates]
   private int getDescendantCount() {
-    result = 1 +
-        sum(TranslatedElement child | child = this.getChildByRank(_) | child.getDescendantCount())
+    result =
+      1 + sum(TranslatedElement child | child = this.getChildByRank(_) | child.getDescendantCount())
   }
 
   private int getUniqueId() {
