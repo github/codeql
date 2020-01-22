@@ -4,7 +4,7 @@ import semmle.python.pointsto.Filters
 
 /** Holds if `open` is a call that returns a newly opened file */
 predicate call_to_open(ControlFlowNode open) {
-    exists(FunctionObject f |
+    exists(FunctionValue f |
         function_opens_file(f) and
         f.getACall() = open
     ) and
@@ -28,7 +28,7 @@ predicate expr_is_open(ControlFlowNode n, ControlFlowNode open) {
 
 /** Holds if `call` wraps the object referred to by `v` and returns it */
 private predicate wraps_file(CallNode call, EssaVariable v) {
-    exists(ClassObject cls |
+    exists(ClassValue cls |
         call = cls.getACall() and
         call.getAnArg() = v.getAUse()
     )
@@ -99,7 +99,7 @@ predicate closes_file(EssaNodeRefinement call) {
 predicate closes_arg(CallNode call, Variable v) {
     call.getAnArg() = v.getAUse() and
     (
-        exists(FunctionObject close | call = close.getACall() and function_closes_file(close))
+        exists(FunctionValue close | call = close.getACall() and function_closes_file(close))
         or
         call.getFunction().(NameNode).getId() = "close"
     )
@@ -108,15 +108,15 @@ predicate closes_arg(CallNode call, Variable v) {
 /** Holds if `call` closes its 'self' argument, which is an open file referred to by `v` */
 predicate close_method_call(CallNode call, ControlFlowNode self) {
     call.getFunction().(AttrNode).getObject() = self and
-    exists(FunctionObject close | call = close.getACall() and function_closes_file(close))
+    exists(FunctionValue close | call = close.getACall() and function_closes_file(close))
     or
     call.getFunction().(AttrNode).getObject("close") = self
 }
 
-predicate function_closes_file(FunctionObject close) {
-    close.hasLongName("os.close")
+predicate function_closes_file(FunctionValue close) {
+    close = Value::named("os.close")
     or
-    function_should_close_parameter(close.getFunction())
+    function_should_close_parameter(close.getScope())
 }
 
 predicate function_should_close_parameter(Function func) {
@@ -126,15 +126,15 @@ predicate function_should_close_parameter(Function func) {
     )
 }
 
-predicate function_opens_file(FunctionObject f) {
-    f = Object::builtin("open")
+predicate function_opens_file(FunctionValue f) {
+    f = Value::named("open")
     or
-    exists(EssaVariable v, Return ret | ret.getScope() = f.getFunction() |
+    exists(EssaVariable v, Return ret | ret.getScope() = f.getScope() |
         ret.getValue().getAFlowNode() = v.getAUse() and
         var_is_open(v, _)
     )
     or
-    exists(Return ret, FunctionObject callee | ret.getScope() = f.getFunction() |
+    exists(Return ret, FunctionValue callee | ret.getScope() = f.getScope() |
         ret.getValue().getAFlowNode() = callee.getACall() and
         function_opens_file(callee)
     )

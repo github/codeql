@@ -17,20 +17,20 @@ import FileOpen
 
 /**
  * Whether resource is opened and closed in  in a matched pair of methods,
- * either __enter__ and __exit__ or __init__ and __del__
+ * either `__enter__` and `__exit__` or `__init__` and `__del__`
  */
 predicate opened_in_enter_closed_in_exit(ControlFlowNode open) {
     file_not_closed_at_scope_exit(open) and
-    exists(FunctionObject entry, FunctionObject exit |
-        open.getScope() = entry.getFunction() and
-        exists(ClassObject cls |
+    exists(FunctionValue entry, FunctionValue exit |
+        open.getScope() = entry.getScope() and
+        exists(ClassValue cls |
             cls.declaredAttribute("__enter__") = entry and cls.declaredAttribute("__exit__") = exit
             or
             cls.declaredAttribute("__init__") = entry and cls.declaredAttribute("__del__") = exit
         ) and
         exists(AttrNode attr_open, AttrNode attrclose |
-            attr_open.getScope() = entry.getFunction() and
-            attrclose.getScope() = exit.getFunction() and
+            attr_open.getScope() = entry.getScope() and
+            attrclose.getScope() = exit.getScope() and
             expr_is_open(attr_open.(DefinitionNode).getValue(), open) and
             attr_open.getName() = attrclose.getName() and
             close_method_call(_, attrclose)
