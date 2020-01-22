@@ -26,3 +26,16 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
+
+typedef unsigned int inet_addr_retval;
+inet_addr_retval inet_addr(const char *dotted_address);
+void sink(inet_addr_retval);
+
+void test_indirect_arg_to_model() {
+    // This test is non-sensical but carefully arranged so we get data flow into
+    // inet_addr not through the function argument but through its associated
+    // read side effect.
+    void *env_pointer = getenv("VAR"); // env_pointer is tainted, not its data.
+    inet_addr_retval a = inet_addr((const char *)&env_pointer);
+    sink(a);
+}

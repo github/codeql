@@ -25,3 +25,7 @@
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:8:22:33 | (const char *)... |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:20:22:25 | call to getenv |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:20:22:32 | (const char *)... |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:38:11:38:21 | env_pointer |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:38:25:38:30 | call to getenv |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:38:25:38:37 | (void *)... |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:39:50:39:61 | & ... |
