@@ -1,61 +1,61 @@
-| Println | <library> | main.go:10:2:10:12 | selection of Println |
-| Println | <library> | main.go:10:6:10:12 | Println |
-| a | types.go@24:22-24:22 | types.go:24:22:24:22 | a |
-| a | types.go@24:22-24:22 | types.go:25:9:25:9 | a |
-| bool | <library> | types.go:8:10:8:13 | bool |
-| bool | <library> | types.go:14:26:14:29 | bool |
-| bool | <library> | types.go:24:29:24:32 | bool |
-| bump | main.go@23:16-23:19 | main.go:23:16:23:19 | bump |
-| false | <library> | types.go:15:9:15:13 | false |
-| fmt | <library> | main.go:10:2:10:4 | fmt |
-| foo | main.go@17:6-17:8 | main.go:17:6:17:8 | foo |
-| iHaveAMethod | types.go@3:6-3:17 | main.go:17:12:17:23 | iHaveAMethod |
-| iHaveAMethod | types.go@3:6-3:17 | types.go:3:6:3:17 | iHaveAMethod |
-| int | <library> | main.go:6:4:6:6 | int |
-| int | <library> | main.go:13:23:13:25 | int |
-| int | <library> | types.go:4:9:4:11 | int |
-| int | <library> | types.go:9:10:9:12 | int |
-| int | <library> | types.go:18:25:18:27 | int |
-| int | <library> | types.go:24:24:24:26 | int |
-| int | <library> | types.go:28:24:28:26 | int |
-| main | main.go@9:6-9:9 | main.go:9:6:9:9 | main |
-| meth | main.go@13:16-13:19 | main.go:13:16:13:19 | meth |
-| meth | main.go@13:16-13:19 | main.go:19:2:19:7 | selection of meth |
-| meth | main.go@13:16-13:19 | main.go:19:4:19:7 | meth |
-| meth | main.go@13:16-13:19 | main.go:20:2:20:10 | selection of meth |
-| meth | main.go@13:16-13:19 | main.go:20:7:20:10 | meth |
-| meth | types.go@4:2-4:5 | main.go:18:2:18:7 | selection of meth |
-| meth | types.go@4:2-4:5 | main.go:18:4:18:7 | meth |
-| meth | types.go@4:2-4:5 | types.go:4:2:4:5 | meth |
-| meth1 | types.go@8:2-8:6 | types.go:8:2:8:6 | meth1 |
-| meth1 | types.go@14:18-14:22 | types.go:14:18:14:22 | meth1 |
-| meth1 | types.go@24:16-24:20 | types.go:24:16:24:20 | meth1 |
-| meth2 | types.go@9:2-9:6 | types.go:9:2:9:6 | meth2 |
-| meth2 | types.go@18:17-18:21 | types.go:18:17:18:21 | meth2 |
-| meth2 | types.go@28:16-28:20 | types.go:28:16:28:20 | meth2 |
-| notImpl | types.go@22:6-22:12 | types.go:22:6:22:12 | notImpl |
-| notImpl | types.go@22:6-22:12 | types.go:24:7:24:13 | notImpl |
-| notImpl | types.go@22:6-22:12 | types.go:28:7:28:13 | notImpl |
-| recv | main.go@13:7-13:10 | main.go:13:7:13:10 | recv |
-| recv | main.go@13:7-13:10 | main.go:14:9:14:12 | recv |
-| recv | main.go@23:7-23:10 | main.go:23:7:23:10 | recv |
-| recv | main.go@23:7-23:10 | main.go:24:2:24:5 | recv |
-| starImpl | types.go@12:6-12:13 | types.go:12:6:12:13 | starImpl |
-| starImpl | types.go@12:6-12:13 | types.go:14:8:14:15 | starImpl |
-| starImpl | types.go@12:6-12:13 | types.go:18:7:18:14 | starImpl |
-| t | main.go@5:6-5:6 | main.go:5:6:5:6 | t |
-| t | main.go@5:6-5:6 | main.go:13:13:13:13 | t |
-| t | main.go@5:6-5:6 | main.go:17:29:17:29 | t |
-| t | main.go@5:6-5:6 | main.go:20:4:20:4 | t |
-| t | main.go@5:6-5:6 | main.go:23:13:23:13 | t |
-| twoMethods | types.go@7:6-7:15 | types.go:7:6:7:15 | twoMethods |
-| x | main.go@6:2-6:2 | main.go:6:2:6:2 | x |
-| x | main.go@6:2-6:2 | main.go:14:9:14:14 | selection of x |
-| x | main.go@6:2-6:2 | main.go:14:14:14:14 | x |
-| x | main.go@6:2-6:2 | main.go:24:2:24:7 | selection of x |
-| x | main.go@6:2-6:2 | main.go:24:7:24:7 | x |
-| x | main.go@17:10-17:10 | main.go:17:10:17:10 | x |
-| x | main.go@17:10-17:10 | main.go:18:2:18:2 | x |
-| y | main.go@17:26-17:26 | main.go:17:26:17:26 | y |
-| y | main.go@17:26-17:26 | main.go:19:2:19:2 | y |
-| y | main.go@17:26-17:26 | main.go:20:12:20:12 | y |
+| file://:0:0:0:0 | Println | <library> | main.go:10:2:10:12 | selection of Println |
+| file://:0:0:0:0 | Println | <library> | main.go:10:6:10:12 | Println |
+| file://:0:0:0:0 | bool | <library> | types.go:8:10:8:13 | bool |
+| file://:0:0:0:0 | bool | <library> | types.go:14:26:14:29 | bool |
+| file://:0:0:0:0 | bool | <library> | types.go:24:29:24:32 | bool |
+| file://:0:0:0:0 | false | <library> | types.go:15:9:15:13 | false |
+| file://:0:0:0:0 | fmt | <library> | main.go:10:2:10:4 | fmt |
+| file://:0:0:0:0 | int | <library> | main.go:6:4:6:6 | int |
+| file://:0:0:0:0 | int | <library> | main.go:13:23:13:25 | int |
+| file://:0:0:0:0 | int | <library> | types.go:4:9:4:11 | int |
+| file://:0:0:0:0 | int | <library> | types.go:9:10:9:12 | int |
+| file://:0:0:0:0 | int | <library> | types.go:18:25:18:27 | int |
+| file://:0:0:0:0 | int | <library> | types.go:24:24:24:26 | int |
+| file://:0:0:0:0 | int | <library> | types.go:28:24:28:26 | int |
+| main.go:5:6:5:6 | t | main.go@5:6:5:6 | main.go:5:6:5:6 | t |
+| main.go:5:6:5:6 | t | main.go@5:6:5:6 | main.go:13:13:13:13 | t |
+| main.go:5:6:5:6 | t | main.go@5:6:5:6 | main.go:17:29:17:29 | t |
+| main.go:5:6:5:6 | t | main.go@5:6:5:6 | main.go:20:4:20:4 | t |
+| main.go:5:6:5:6 | t | main.go@5:6:5:6 | main.go:23:13:23:13 | t |
+| main.go:6:2:6:2 | x | main.go@6:2:6:2 | main.go:6:2:6:2 | x |
+| main.go:6:2:6:2 | x | main.go@6:2:6:2 | main.go:14:9:14:14 | selection of x |
+| main.go:6:2:6:2 | x | main.go@6:2:6:2 | main.go:14:14:14:14 | x |
+| main.go:6:2:6:2 | x | main.go@6:2:6:2 | main.go:24:2:24:7 | selection of x |
+| main.go:6:2:6:2 | x | main.go@6:2:6:2 | main.go:24:7:24:7 | x |
+| main.go:9:6:9:9 | main | main.go@9:6:9:9 | main.go:9:6:9:9 | main |
+| main.go:13:7:13:10 | recv | main.go@13:7:13:10 | main.go:13:7:13:10 | recv |
+| main.go:13:7:13:10 | recv | main.go@13:7:13:10 | main.go:14:9:14:12 | recv |
+| main.go:13:16:13:19 | meth | main.go@13:16:13:19 | main.go:13:16:13:19 | meth |
+| main.go:13:16:13:19 | meth | main.go@13:16:13:19 | main.go:19:2:19:7 | selection of meth |
+| main.go:13:16:13:19 | meth | main.go@13:16:13:19 | main.go:19:4:19:7 | meth |
+| main.go:13:16:13:19 | meth | main.go@13:16:13:19 | main.go:20:2:20:10 | selection of meth |
+| main.go:13:16:13:19 | meth | main.go@13:16:13:19 | main.go:20:7:20:10 | meth |
+| main.go:17:6:17:8 | foo | main.go@17:6:17:8 | main.go:17:6:17:8 | foo |
+| main.go:17:10:17:10 | x | main.go@17:10:17:10 | main.go:17:10:17:10 | x |
+| main.go:17:10:17:10 | x | main.go@17:10:17:10 | main.go:18:2:18:2 | x |
+| main.go:17:26:17:26 | y | main.go@17:26:17:26 | main.go:17:26:17:26 | y |
+| main.go:17:26:17:26 | y | main.go@17:26:17:26 | main.go:19:2:19:2 | y |
+| main.go:17:26:17:26 | y | main.go@17:26:17:26 | main.go:20:12:20:12 | y |
+| main.go:23:7:23:10 | recv | main.go@23:7:23:10 | main.go:23:7:23:10 | recv |
+| main.go:23:7:23:10 | recv | main.go@23:7:23:10 | main.go:24:2:24:5 | recv |
+| main.go:23:16:23:19 | bump | main.go@23:16:23:19 | main.go:23:16:23:19 | bump |
+| types.go:3:6:3:17 | iHaveAMethod | types.go@3:6:3:17 | main.go:17:12:17:23 | iHaveAMethod |
+| types.go:3:6:3:17 | iHaveAMethod | types.go@3:6:3:17 | types.go:3:6:3:17 | iHaveAMethod |
+| types.go:4:2:4:5 | meth | types.go@4:2:4:5 | main.go:18:2:18:7 | selection of meth |
+| types.go:4:2:4:5 | meth | types.go@4:2:4:5 | main.go:18:4:18:7 | meth |
+| types.go:4:2:4:5 | meth | types.go@4:2:4:5 | types.go:4:2:4:5 | meth |
+| types.go:7:6:7:15 | twoMethods | types.go@7:6:7:15 | types.go:7:6:7:15 | twoMethods |
+| types.go:8:2:8:6 | meth1 | types.go@8:2:8:6 | types.go:8:2:8:6 | meth1 |
+| types.go:9:2:9:6 | meth2 | types.go@9:2:9:6 | types.go:9:2:9:6 | meth2 |
+| types.go:12:6:12:13 | starImpl | types.go@12:6:12:13 | types.go:12:6:12:13 | starImpl |
+| types.go:12:6:12:13 | starImpl | types.go@12:6:12:13 | types.go:14:8:14:15 | starImpl |
+| types.go:12:6:12:13 | starImpl | types.go@12:6:12:13 | types.go:18:7:18:14 | starImpl |
+| types.go:14:18:14:22 | meth1 | types.go@14:18:14:22 | types.go:14:18:14:22 | meth1 |
+| types.go:18:17:18:21 | meth2 | types.go@18:17:18:21 | types.go:18:17:18:21 | meth2 |
+| types.go:22:6:22:12 | notImpl | types.go@22:6:22:12 | types.go:22:6:22:12 | notImpl |
+| types.go:22:6:22:12 | notImpl | types.go@22:6:22:12 | types.go:24:7:24:13 | notImpl |
+| types.go:22:6:22:12 | notImpl | types.go@22:6:22:12 | types.go:28:7:28:13 | notImpl |
+| types.go:24:16:24:20 | meth1 | types.go@24:16:24:20 | types.go:24:16:24:20 | meth1 |
+| types.go:24:22:24:22 | a | types.go@24:22:24:22 | types.go:24:22:24:22 | a |
+| types.go:24:22:24:22 | a | types.go@24:22:24:22 | types.go:25:9:25:9 | a |
+| types.go:28:16:28:20 | meth2 | types.go@28:16:28:20 | types.go:28:16:28:20 | meth2 |

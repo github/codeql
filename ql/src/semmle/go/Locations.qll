@@ -31,7 +31,7 @@ class Location extends @location {
   string toString() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      result = filepath + "@" + startline + ":" + startcolumn + "-" + endline + ":" + endcolumn
+      result = filepath + "@" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
 

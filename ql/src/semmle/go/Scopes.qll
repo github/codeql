@@ -124,13 +124,28 @@ class Entity extends @object {
 
   /** Gets a textual representation of this entity. */
   string toString() { result = getName() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    // take the location of the declaration if there is one
+    getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    // otherwise fall back on dummy location
+    not exists(getDeclaration()) and
+    filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+  }
 }
 
 /** A declared entity (that is, type, constant, variable or function). */
 class DeclaredEntity extends Entity, @declobject {
-  /** Gets the declaration of this entity. */
-  Decl getDecl() { none() }
-
   /** Gets the expression to which this entity is initialized, if any. */
   Expr getInit() {
     exists(ValueSpec spec, int i |
@@ -151,9 +166,6 @@ class TypeEntity extends Entity, @typeobject { }
 
 /** A declared named type. */
 class DeclaredType extends TypeEntity, DeclaredEntity, @decltypeobject {
-  /** Gets the declaration of this type. */
-  override TypeDecl getDecl() { result.getASpec() = this.getSpec() }
-
   /** Gets the declaration specifier declaring this type. */
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
@@ -175,9 +187,6 @@ class Constant extends ValueEntity, @constobject { }
 
 /** A declared constant. */
 class DeclaredConstant extends Constant, DeclaredEntity, @declconstobject {
-  /** Gets the declaration of this constant. */
-  override ConstDecl getDecl() { result.getASpec() = this.getSpec() }
-
   /** Gets the declaration specifier declaring this constant. */
   ValueSpec getSpec() { result.getANameExpr() = this.getDeclaration() }
 }
@@ -195,9 +204,6 @@ class Variable extends ValueEntity, @varobject { }
 
 /** A declared variable. */
 class DeclaredVariable extends Variable, DeclaredEntity, @declvarobject {
-  /** Gets the declaration of this variable. */
-  override VarDecl getDecl() { result.getASpec() = this.getSpec() }
-
   /** Gets the declaration specifier declaring this variable. */
   ValueSpec getSpec() { result.getANameExpr() = this.getDeclaration() }
 }
@@ -248,12 +254,24 @@ class ResultVariable extends DeclaredVariable {
 }
 
 /** A struct field. */
-class Field extends ValueEntity {
+class Field extends Variable {
   StructType declaringType;
 
   Field() { fieldstructs(this, declaringType) }
 
   StructType getDeclaringType() { result = declaringType }
+
+  /**
+   * Holds if this field has name `f` and it belongs to a type  `tp` declared in package `pkg`.
+   *
+   * Note that due to field embedding the same field may belong to multiple types.
+   */
+  predicate hasQualifiedName(string pkg, string tp, string f) {
+    exists(Type base |
+      base.hasQualifiedName(pkg, tp) and
+      this = base.getField(f)
+    )
+  }
 }
 
 /** A built-in or declared function. */
@@ -297,6 +315,12 @@ class Function extends ValueEntity, @functionobject {
 
   /** Gets the body of this function, if any. */
   BlockStmt getBody() { none() }
+
+  /** Gets the `i`th parameter of this function. */
+  Parameter getParameter(int i) { none() }
+
+  /** Gets a parameter of this function. */
+  Parameter getAParameter() { result = getParameter(_) }
 }
 
 /** A method, that is, a function with a receiver variable. */
@@ -371,9 +395,11 @@ class Method extends Function {
 /** A declared function. */
 class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
   /** Gets the declaration of this function. */
-  override FuncDecl getDecl() { result.getNameExpr() = this.getDeclaration() }
+  FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
 
-  override BlockStmt getBody() { result = getDecl().getBody() }
+  override BlockStmt getBody() { result = getFuncDecl().getBody() }
+
+  override Parameter getParameter(int i) { result = getFuncDecl().getParameter(i) }
 
   override predicate mayHaveSideEffects() {
     not exists(getBody())

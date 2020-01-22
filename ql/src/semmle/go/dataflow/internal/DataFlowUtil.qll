@@ -223,7 +223,7 @@ class GlobalFunctionNode extends FunctionNode, MkGlobalFunctionNode {
   GlobalFunctionNode() { this = MkGlobalFunctionNode(func) }
 
   override ParameterNode getParameter(int i) {
-    result = parameterNode(func.(DeclaredFunction).getDecl().getParameter(i))
+    result = parameterNode(func.getParameter(i))
   }
 
   override string getName() { result = func.getName() }
@@ -240,13 +240,7 @@ class GlobalFunctionNode extends FunctionNode, MkGlobalFunctionNode {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    func
-        .(DeclaredFunction)
-        .getDecl()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    or
-    not func instanceof DeclaredFunction and
-    FunctionNode.super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    func.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

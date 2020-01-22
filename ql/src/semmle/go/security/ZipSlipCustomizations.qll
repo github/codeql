@@ -31,12 +31,8 @@ module ZipSlip {
   /** A file name from a zip or tar entry, as a source for zip slip. */
   class FileNameSource extends Source, DataFlow::FieldReadNode {
     FileNameSource() {
-      exists(Type t |
-        t.hasQualifiedName("archive/zip", "File") or
-        t.hasQualifiedName("archive/tar", "Header")
-      |
-        getField() = t.getField("Name")
-      )
+      getField().hasQualifiedName("archive/zip", "File", "Name") or
+      getField().hasQualifiedName("archive/tar", "Header", "Name")
     }
   }
 
