@@ -321,8 +321,8 @@ nodes
 | E.cs:192:17:192:17 | access to parameter o |
 | E.cs:198:13:198:29 | [b (line 196): false] SSA def(o) |
 | E.cs:198:13:198:29 | [b (line 196): true] SSA def(o) |
-| E.cs:201:11:201:11 | access to local variable o |
-| E.cs:203:11:203:11 | access to local variable o |
+| E.cs:201:13:201:13 | access to local variable o |
+| E.cs:203:13:203:13 | access to local variable o |
 | E.cs:206:28:206:28 | SSA param(s) |
 | E.cs:210:16:210:16 | access to parameter s |
 | E.cs:217:13:217:20 | [b (line 213): true] SSA def(x) |
@@ -351,6 +351,8 @@ nodes
 | E.cs:343:9:343:9 | access to local variable x |
 | E.cs:348:17:348:36 | SSA def(x) |
 | E.cs:349:9:349:9 | access to local variable x |
+| E.cs:366:28:366:28 | SSA param(s) |
+| E.cs:366:41:366:41 | access to parameter s |
 | Forwarding.cs:7:16:7:23 | SSA def(s) |
 | Forwarding.cs:14:9:17:9 | if (...) ... |
 | Forwarding.cs:19:9:22:9 | if (...) ... |
@@ -664,8 +666,8 @@ edges
 | E.cs:181:9:183:9 | {...} | E.cs:184:9:187:9 | if (...) ... |
 | E.cs:184:9:187:9 | if (...) ... | E.cs:186:13:186:15 | access to parameter obj |
 | E.cs:190:29:190:29 | SSA param(o) | E.cs:192:17:192:17 | access to parameter o |
-| E.cs:198:13:198:29 | [b (line 196): false] SSA def(o) | E.cs:203:11:203:11 | access to local variable o |
-| E.cs:198:13:198:29 | [b (line 196): true] SSA def(o) | E.cs:201:11:201:11 | access to local variable o |
+| E.cs:198:13:198:29 | [b (line 196): false] SSA def(o) | E.cs:203:13:203:13 | access to local variable o |
+| E.cs:198:13:198:29 | [b (line 196): true] SSA def(o) | E.cs:201:13:201:13 | access to local variable o |
 | E.cs:206:28:206:28 | SSA param(s) | E.cs:210:16:210:16 | access to parameter s |
 | E.cs:217:13:217:20 | [b (line 213): true] SSA def(x) | E.cs:218:9:218:9 | access to local variable x |
 | E.cs:217:13:217:20 | [b (line 213): true] SSA def(x) | E.cs:220:13:220:13 | access to local variable x |
@@ -682,6 +684,7 @@ edges
 | E.cs:330:13:330:36 | SSA def(x) | E.cs:331:9:331:9 | access to local variable x |
 | E.cs:342:13:342:32 | SSA def(x) | E.cs:343:9:343:9 | access to local variable x |
 | E.cs:348:17:348:36 | SSA def(x) | E.cs:349:9:349:9 | access to local variable x |
+| E.cs:366:28:366:28 | SSA param(s) | E.cs:366:41:366:41 | access to parameter s |
 | Forwarding.cs:7:16:7:23 | SSA def(s) | Forwarding.cs:14:9:17:9 | if (...) ... |
 | Forwarding.cs:14:9:17:9 | if (...) ... | Forwarding.cs:19:9:22:9 | if (...) ... |
 | Forwarding.cs:19:9:22:9 | if (...) ... | Forwarding.cs:24:9:27:9 | if (...) ... |
@@ -771,8 +774,8 @@ edges
 | E.cs:186:13:186:15 | access to parameter obj | E.cs:173:29:173:31 | SSA param(obj) | E.cs:186:13:186:15 | access to parameter obj | Variable $@ may be null here as suggested by $@ null check. | E.cs:173:29:173:31 | obj | obj | E.cs:175:19:175:29 | ... == ... | this |
 | E.cs:186:13:186:15 | access to parameter obj | E.cs:173:29:173:31 | SSA param(obj) | E.cs:186:13:186:15 | access to parameter obj | Variable $@ may be null here as suggested by $@ null check. | E.cs:173:29:173:31 | obj | obj | E.cs:180:13:180:23 | ... == ... | this |
 | E.cs:192:17:192:17 | access to parameter o | E.cs:190:29:190:29 | SSA param(o) | E.cs:192:17:192:17 | access to parameter o | Variable $@ may be null here as suggested by $@ null check. | E.cs:190:29:190:29 | o | o | E.cs:193:17:193:17 | access to parameter o | this |
-| E.cs:201:11:201:11 | access to local variable o | E.cs:198:13:198:29 | [b (line 196): true] SSA def(o) | E.cs:201:11:201:11 | access to local variable o | Variable $@ may be null here because of $@ assignment. | E.cs:198:13:198:13 | o | o | E.cs:198:13:198:29 | String o = ... | this |
-| E.cs:203:11:203:11 | access to local variable o | E.cs:198:13:198:29 | [b (line 196): false] SSA def(o) | E.cs:203:11:203:11 | access to local variable o | Variable $@ may be null here because of $@ assignment. | E.cs:198:13:198:13 | o | o | E.cs:198:13:198:29 | String o = ... | this |
+| E.cs:201:13:201:13 | access to local variable o | E.cs:198:13:198:29 | [b (line 196): true] SSA def(o) | E.cs:201:13:201:13 | access to local variable o | Variable $@ may be null here because of $@ assignment. | E.cs:198:13:198:13 | o | o | E.cs:198:13:198:29 | String o = ... | this |
+| E.cs:203:13:203:13 | access to local variable o | E.cs:198:13:198:29 | [b (line 196): false] SSA def(o) | E.cs:203:13:203:13 | access to local variable o | Variable $@ may be null here because of $@ assignment. | E.cs:198:13:198:13 | o | o | E.cs:198:13:198:29 | String o = ... | this |
 | E.cs:218:9:218:9 | access to local variable x | E.cs:217:13:217:20 | [b (line 213): true] SSA def(x) | E.cs:218:9:218:9 | access to local variable x | Variable $@ may be null here because of $@ assignment. | E.cs:215:13:215:13 | x | x | E.cs:217:13:217:20 | ... = ... | this |
 | E.cs:230:9:230:9 | access to local variable x | E.cs:227:13:227:20 | [b (line 223): true] SSA def(x) | E.cs:230:9:230:9 | access to local variable x | Variable $@ may be null here because of $@ assignment. | E.cs:225:13:225:13 | x | x | E.cs:227:13:227:20 | ... = ... | this |
 | E.cs:235:16:235:16 | access to parameter i | E.cs:233:26:233:26 | SSA param(i) | E.cs:235:16:235:16 | access to parameter i | Variable $@ may be null here because it has a nullable type. | E.cs:233:26:233:26 | i | i | E.cs:233:26:233:26 | i | this |
@@ -782,6 +785,7 @@ edges
 | E.cs:302:9:302:9 | access to local variable s | E.cs:301:13:301:27 | SSA def(s) | E.cs:302:9:302:9 | access to local variable s | Variable $@ may be null here because of $@ assignment. | E.cs:301:13:301:13 | s | s | E.cs:301:13:301:27 | String s = ... | this |
 | E.cs:343:9:343:9 | access to local variable x | E.cs:342:13:342:32 | SSA def(x) | E.cs:343:9:343:9 | access to local variable x | Variable $@ may be null here because of $@ assignment. | E.cs:342:13:342:13 | x | x | E.cs:342:13:342:32 | String x = ... | this |
 | E.cs:349:9:349:9 | access to local variable x | E.cs:348:17:348:36 | SSA def(x) | E.cs:349:9:349:9 | access to local variable x | Variable $@ may be null here because of $@ assignment. | E.cs:348:17:348:17 | x | x | E.cs:348:17:348:36 | dynamic x = ... | this |
+| E.cs:366:41:366:41 | access to parameter s | E.cs:366:28:366:28 | SSA param(s) | E.cs:366:41:366:41 | access to parameter s | Variable $@ may be null here because the parameter has a null default value. | E.cs:366:28:366:28 | s | s | E.cs:366:32:366:35 | null | this |
 | GuardedString.cs:35:31:35:31 | access to local variable s | GuardedString.cs:7:16:7:32 | SSA def(s) | GuardedString.cs:35:31:35:31 | access to local variable s | Variable $@ may be null here because of $@ assignment. | GuardedString.cs:7:16:7:16 | s | s | GuardedString.cs:7:16:7:32 | String s = ... | this |
 | NullMaybeBad.cs:7:27:7:27 | access to parameter o | NullMaybeBad.cs:13:17:13:20 | null | NullMaybeBad.cs:7:27:7:27 | access to parameter o | Variable $@ may be null here because of $@ null argument. | NullMaybeBad.cs:5:25:5:25 | o | o | NullMaybeBad.cs:13:17:13:20 | null | this |
 | StringConcatenation.cs:16:17:16:17 | access to local variable s | StringConcatenation.cs:14:16:14:23 | SSA def(s) | StringConcatenation.cs:16:17:16:17 | access to local variable s | Variable $@ may be null here because of $@ assignment. | StringConcatenation.cs:14:16:14:16 | s | s | StringConcatenation.cs:14:16:14:23 | String s = ... | this |
