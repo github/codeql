@@ -10,7 +10,7 @@ result in exposure of data or unintended code execution.</p>
 </overview>
 
 <recommendation>
-<p>Cross-Site Request Forgery (CSRF) protection is enabled by default. Spring's recommendation
+<p>When you use Spring, Cross-Site Request Forgery (CSRF) protection is enabled by default. Spring's recommendation
 is to use CSRF protection for any request that could be processed by a browser client by normal
 users.</p>
 </recommendation>
