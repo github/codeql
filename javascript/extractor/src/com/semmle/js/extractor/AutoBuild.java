@@ -602,6 +602,10 @@ public class AutoBuild {
     }
   }
 
+  /**
+   * Returns an existing file named <code>dir/stem.ext</code> where <code>ext</code> is any
+   * of the given extensions, or <code>null</code> if no such file exists.
+   */
   private static Path tryResolveWithExtensions(Path dir, String stem, Iterable<String> extensions) {
     for (String ext : extensions) {
       Path path = dir.resolve(stem + ext);
@@ -612,12 +616,19 @@ public class AutoBuild {
     return null;
   }
   
+  /**
+   * Returns an existing file named <code>dir/stem.ext</code> where <code>ext</code> is any TypeScript or JavaScript extension,
+   * or <code>null</code> if no such file exists.
+   */
   private static Path tryResolveTypeScriptOrJavaScriptFile(Path dir, String stem) {
     Path resolved = tryResolveWithExtensions(dir, stem, FileType.TYPESCRIPT.getExtensions());
     if (resolved != null) return resolved;
     return tryResolveWithExtensions(dir, stem, FileType.JS.getExtensions());
   }
   
+  /**
+   * Gets a child of a JSON object as a string, or <code>null</code>.
+   */
   private String getChildAsString(JsonObject obj, String name) {
      JsonElement child = obj.get(name);
      if (child instanceof JsonPrimitive && ((JsonPrimitive)child).isString()) {
@@ -626,6 +637,25 @@ public class AutoBuild {
      return null;
   }
 
+  /**
+   * Installs dependencies for use by the TypeScript type checker.
+   * <p>
+   * Some packages must be downloaded while others exist within the same repo ("monorepos")
+   * but are not in a location where TypeScript would look for it.
+   * <p>
+   * Downloaded packages are intalled under {@link #scratchDir}, in a mirrored directory hierarchy
+   * we call the "virtual source root".
+   * Each <tt>package.json</tt> file is rewritten and copied to the virtual source root,
+   * where <tt>yarn install</tt> is invoked.
+   * <p>
+   * Packages that exists within the repo are stripped from the dependencies
+   * before installation, so they are not downloaded. Since they are part of the main source tree,
+   * these packages are not mirrored under the virtual source root.
+   * Instead, an explicit package location mapping is passed to the TypeScript parser wrapper.
+   * <p>
+   * The TypeScript parser wrapper then overrides module resolution so packages can be found
+   * under the virtual source root and via that package location mapping.
+   */
   protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
     if (!verifyYarnInstallation()) {
       return DependencyInstallationResult.empty;
