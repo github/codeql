@@ -152,7 +152,9 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
         or
         inModel.isParameter(argInIndex) and
         exprIn = call.getArgument(argInIndex)
-      )
+      ) or
+      inModel.isQualifierObject() and
+      exprIn = call.getQualifier()
     )
   )
 }
@@ -185,7 +187,9 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
         or
         inModel.isParameter(argInIndex) and
         exprIn = call.getArgument(argInIndex)
-      )
+      ) or
+      inModel.isQualifierObject() and
+      exprIn = call.getQualifier()
     )
   )
 }

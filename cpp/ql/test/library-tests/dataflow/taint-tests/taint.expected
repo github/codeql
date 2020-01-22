@@ -43,3 +43,4 @@
 | taint.cpp:430:9:430:14 | member | taint.cpp:428:13:428:18 | call to source |
 | taint.cpp:438:7:438:7 | c | taint.cpp:437:15:437:20 | call to source |
 | taint.cpp:446:7:446:7 | d | taint.cpp:445:14:445:28 | call to source |
+| taint.cpp:447:9:447:17 | call to getString | taint.cpp:445:14:445:28 | call to source |

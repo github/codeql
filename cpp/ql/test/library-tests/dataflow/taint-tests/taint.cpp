@@ -444,5 +444,5 @@ void test_qualifiers()
 	sink(d.getString());
 	d.setString(strings::source());
 	sink(d); // tainted
-	sink(d.getString()); // tainted [NOT DETECTED]
+	sink(d.getString()); // tainted
 }
