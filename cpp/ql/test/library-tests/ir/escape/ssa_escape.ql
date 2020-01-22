@@ -1,6 +1,7 @@
 import default
 import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasAnalysis
 import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
+import semmle.code.cpp.ir.implementation.UseSoundEscapeAnalysis
 
 predicate shouldEscape(IRAutomaticUserVariable var) {
   exists(string name |
