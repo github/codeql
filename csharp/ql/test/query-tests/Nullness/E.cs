@@ -364,6 +364,8 @@ public class E
     }
 
     static int Ex34(string s = null) => s.Length; // BAD (maybe)
+
+    static int Ex35(string s = "null") => s.Length; // GOOD
 }
 
 public static class Extensions

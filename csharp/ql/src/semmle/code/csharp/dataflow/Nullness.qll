@@ -181,7 +181,7 @@ private predicate isMaybeNullArgument(Ssa::ExplicitDefinition def, MaybeNullExpr
   )
 }
 
-private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, MaybeNullExpr arg) {
+private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, AlwaysNullExpr arg) {
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
     pdef = def.getADefinition()
   |
