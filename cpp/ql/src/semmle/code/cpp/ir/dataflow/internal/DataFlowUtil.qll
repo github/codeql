@@ -261,11 +261,15 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 }
 
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
-  iTo.(CopyInstruction).getSourceValue() = iFrom or
-  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
+  iTo.(CopyInstruction).getSourceValue() = iFrom
+  or
+  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
+  or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnary() = iFrom or
-  iTo.(InheritanceConversionInstruction).getUnary() = iFrom or
+  iTo.(ConvertInstruction).getUnary() = iFrom
+  or
+  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  or
   // A chi instruction represents a point where a new value (the _partial_
   // operand) may overwrite an old value (the _total_ operand), but the alias
   // analysis couldn't determine that it surely will overwrite every bit of it or
