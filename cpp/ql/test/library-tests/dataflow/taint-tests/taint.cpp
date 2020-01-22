@@ -421,7 +421,7 @@ void test_qualifiers()
 	sink(a.getMember());
 	a.setMember(source());
 	sink(a); // tainted
-	sink(a.getMember()); // tainted [NOT DETECTED]
+	sink(a.getMember()); // tainted
 
 	sink(b);
 	sink(b.getMember());
@@ -436,7 +436,7 @@ void test_qualifiers()
 	sink(c->getMember());
 	c->setMember(source());
 	sink(c); // tainted (deref)
-	sink(c->getMember()); // tainted [NOT DETECTED]
+	sink(c->getMember()); // tainted
 
 	delete c;
 

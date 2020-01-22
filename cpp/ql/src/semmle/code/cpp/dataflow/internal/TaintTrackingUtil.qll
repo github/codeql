@@ -140,6 +140,9 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
     (
       exprOut = call and
       outModel.isReturnValueDeref()
+      or
+      exprOut = call and
+      outModel.isReturnValue()
     ) and
     f.hasTaintFlow(inModel, outModel) and
     (
