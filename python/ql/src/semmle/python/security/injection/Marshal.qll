@@ -12,8 +12,8 @@ import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
 
-private FunctionObject marshalLoads() {
-    result = ModuleObject::named("marshal").attr("loads")
+private FunctionValue marshalLoads() {
+    result = Value::named("marshal.loads")
 }
 
 

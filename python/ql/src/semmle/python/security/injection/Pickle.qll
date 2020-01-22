@@ -12,7 +12,7 @@ import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
 
-private ModuleObject pickleModule() {
+private ModuleValue pickleModule() {
     result.getName() = "pickle"
     or
     result.getName() = "cPickle"
@@ -20,7 +20,7 @@ private ModuleObject pickleModule() {
     result.getName() = "dill"
 }
 
-private FunctionObject pickleLoads() {
+private FunctionValue pickleLoads() {
     result = pickleModule().attr("loads")
 }
 

@@ -12,19 +12,19 @@ import semmle.python.security.strings.Untrusted
 import semmle.python.security.SQL
 
 
-private StringObject first_part(ControlFlowNode command) {
+private StringValue first_part(ControlFlowNode command) {
     command.(BinaryExprNode).getOp() instanceof Add and
-    command.(BinaryExprNode).getLeft().refersTo(result)
+    command.(BinaryExprNode).getLeft().pointsTo(result)
     or
-    exists(CallNode call, SequenceObject seq |
+    exists(CallNode call, SequenceValue seq |
         call = command |
-        call = theStrType().lookupAttribute("join") and
-        call.getArg(0).refersTo(seq) and
-        seq.getInferredElement(0) = result
+        call.getFunction().pointsTo(ClassValue::str().attr("join")) and
+        call.getArg(0).pointsTo(seq) and
+        seq.getItem(0) = result
     )
     or
     command.(BinaryExprNode).getOp() instanceof Mod and 
-    command.getNode().(StrConst).getLiteralObject() = result
+    command.(BinaryExprNode).getLeft().pointsTo(result)
 }
 
 /** Holds if `command` appears to be a SQL command string of which `inject` is a part. */

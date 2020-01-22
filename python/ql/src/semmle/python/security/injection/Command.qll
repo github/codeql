@@ -11,14 +11,14 @@ import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
 
 
-private ModuleObject osOrPopenModule() {
+private ModuleValue osOrPopenModule() {
     result.getName() = "os" or
     result.getName() = "popen2"
 }
 
-private Object makeOsCall() {
+private Value makeOsCall() {
     exists(string name |
-        result = ModuleObject::named("subprocess").attr(name) |
+        result = Module::named("subprocess").attr(name) |
         name = "Popen" or
         name = "call" or 
         name = "check_call" or
@@ -66,16 +66,16 @@ class ShellCommand extends TaintSink {
     override string toString() { result = "shell command" }
 
     ShellCommand() {
-        exists(CallNode call, Object istrue |
-            call.getFunction().refersTo(makeOsCall()) and
+        exists(CallNode call, Value istrue |
+            call.getFunction().pointsTo(makeOsCall()) and
             call.getAnArg() = this and
-            call.getArgByName("shell").refersTo(istrue) and
+            call.getArgByName("shell").pointsTo(istrue) and
             istrue.booleanValue() = true
         )
         or
         exists(CallNode call, string name |
             call.getAnArg() = this and
-            call.getFunction().refersTo(osOrPopenModule().attr(name)) |
+            call.getFunction().pointsTo(osOrPopenModule().attr(name)) |
             name = "system" or
             name = "popen" or
             name.matches("popen_")
@@ -83,7 +83,7 @@ class ShellCommand extends TaintSink {
         or
         exists(CallNode call |
             call.getAnArg() = this and
-            call.getFunction().refersTo(ModuleObject::named("commands"))
+            call.getFunction().pointsTo(Module::named("commands"))
         )
     }
 
@@ -107,7 +107,7 @@ class OsCommandFirstArgument extends TaintSink {
     OsCommandFirstArgument() {
         not this instanceof ShellCommand and
         exists(CallNode call|
-            call.getFunction().refersTo(makeOsCall()) and
+            call.getFunction().pointsTo(makeOsCall()) and
             call.getArg(0) = this
         )
     }

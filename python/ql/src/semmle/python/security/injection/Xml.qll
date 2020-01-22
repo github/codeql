@@ -11,19 +11,19 @@ import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
 
-private ModuleObject xmlElementTreeModule() {
+private ModuleValue xmlElementTreeModule() {
     result.getName() = "xml.etree.ElementTree"
 }
 
-private ModuleObject xmlMiniDomModule() {
+private ModuleValue xmlMiniDomModule() {
     result.getName() = "xml.dom.minidom"
 }
 
-private ModuleObject xmlPullDomModule() {
+private ModuleValue xmlPullDomModule() {
     result.getName() = "xml.dom.pulldom"
 }
 
-private ModuleObject xmlSaxModule() {
+private ModuleValue xmlSaxModule() {
     result.getName() = "xml.sax"
 }
 
@@ -33,8 +33,8 @@ private class ExpatParser extends TaintKind {
 
 }
 
-private FunctionObject expatCreateParseFunction() {
-    result = ModuleObject::named("xml.parsers.expat").attr("ParserCreate")
+private FunctionValue expatCreateParseFunction() {
+    result = Value::named("xml.parsers.expat.ParserCreate")
 }
 
 private class ExpatCreateParser extends TaintSource {
@@ -47,12 +47,12 @@ private class ExpatCreateParser extends TaintSource {
         kind instanceof ExpatParser
     }
 
-    string toString() {
+    override string toString() {
         result = "expat.create.parser"
     }
 }
 
-private FunctionObject xmlFromString() {
+private FunctionValue xmlFromString() {
     result = xmlElementTreeModule().attr("fromstring")
     or
     result = xmlMiniDomModule().attr("parseString")

@@ -19,9 +19,9 @@ class PathSanitizer extends Sanitizer {
 
 }
 
-private FunctionObject abspath() {
-    exists(ModuleObject os_path |
-        ModuleObject::named("os").attr("path") = os_path
+private FunctionValue abspath() {
+    exists(ModuleValue os_path |
+        Value::named("os.path") = os_path
         |
         os_path.attr("abspath") = result
         or
@@ -43,7 +43,7 @@ class NormalizedPath extends TaintKind {
 }
 
 private predicate abspath_call(CallNode call, ControlFlowNode arg) {
-    call.getFunction().refersTo(abspath()) and
+    call.getFunction().pointsTo(abspath()) and
     arg = call.getArg(0)
 }
 
@@ -84,7 +84,7 @@ class OpenNode extends TaintSink {
 
     OpenNode() {
         exists(CallNode call |
-            call.getFunction().refersTo(Object::builtin("open")) and
+            call.getFunction().pointsTo(Value::named("open")) and
             call.getAnArg() = this
         )
     }

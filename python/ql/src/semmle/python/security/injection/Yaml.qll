@@ -13,8 +13,8 @@ import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
 
-private FunctionObject yamlLoad() {
-    result = ModuleObject::named("yaml").attr("load")
+private FunctionValue yamlLoad() {
+    result = Value::named("yaml.load")
 }
 
 /** `yaml.load(untrusted)` vulnerability. */

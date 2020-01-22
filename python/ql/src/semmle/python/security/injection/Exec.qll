@@ -11,10 +11,10 @@ import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
 
 
-private FunctionObject exec_or_eval() {
-    result = Object::builtin("exec")
+private FunctionValue exec_or_eval() {
+    result = Value::named("exec")
     or
-    result = Object::builtin("eval")
+    result = Value::named("eval")
 }
 
 /** A taint sink that represents an argument to exec or eval that is vulnerable to malicious input.
