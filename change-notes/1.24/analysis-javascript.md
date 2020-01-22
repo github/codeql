@@ -13,6 +13,9 @@
   - [react](https://www.npmjs.com/package/react)
   - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
   - [Handlebars](https://www.npmjs.com/package/handlebars)
+  - [Electron](https://electronjs.org/)
+  - [Node.js](https://nodejs.org/)
+  - [Socket.IO](https://socket.io/)
 
 ## New queries
 
@@ -36,4 +39,4 @@
 ## Changes to libraries
 
 * The predicates `RegExpTerm.getSuccessor` and `RegExpTerm.getPredecessor` have been changed to reflect textual, not operational, matching order. This only makes a difference in lookbehind assertions, which are operationally matched backwards. Previously, `getSuccessor` would mimick this, so in an assertion `(?<=ab)` the term `b` would be considered the predecessor, not the successor, of `a`. Textually, however, `a` is still matched before `b`, and this is the order we now follow.
-* A model has been added for the NodeJS `EventEmitter`. The `SocketIO` model has been refactored to use this model.
+* An extensible model of the `EventEmitter` pattern has been implemented.
