@@ -782,7 +782,7 @@ public class AutoBuild {
       }
     }
 
-    return new DependencyInstallationResult(packageMainFile);
+    return new DependencyInstallationResult(packageMainFile, packagesInRepo);
   }
 
   /**

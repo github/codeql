@@ -11,10 +11,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.ProcessBuilder.Redirect;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -405,6 +407,21 @@ public class TypeScriptParser {
   }
 
   /**
+   * Converts a map to an array of [key, value] pairs.
+   */
+  private JsonArray mapToArray(Map<String, Path> map) {
+    JsonArray result = new JsonArray();
+    map.forEach(
+        (key, path) -> {
+          JsonArray entry = new JsonArray();
+          entry.add(key);
+          entry.add(path.toString());
+          result.add(entry);
+        });
+    return result;
+  }
+
+  /**
    * Opens a new project based on a tsconfig.json file. The compiler will analyze all files in the
    * project.
    *
@@ -416,16 +433,8 @@ public class TypeScriptParser {
     JsonObject request = new JsonObject();
     request.add("command", new JsonPrimitive("open-project"));
     request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
-    JsonArray packageLocations = new JsonArray();
-    deps.getPackageLocations()
-        .forEach(
-            (packageName, packageDir) -> {
-              JsonArray entry = new JsonArray();
-              entry.add(packageName);
-              entry.add(packageDir.toString());
-              packageLocations.add(entry);
-            });
-    request.add("packageLocations", packageLocations);
+    request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
+    request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
     JsonObject response = talkToParserWrapper(request);
     try {
       checkResponseType(response, "project-opened");

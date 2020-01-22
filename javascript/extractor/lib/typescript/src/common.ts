@@ -1,6 +1,7 @@
 import * as ts from "./typescript";
 import { TypeTable } from "./type_table";
 import * as pathlib from "path";
+import { VirtualSourceRoot } from "./virtual_source_root";
 
 /**
  * Extracts the package name from the prefix of an import string.
@@ -12,11 +13,9 @@ export class Project {
   public program: ts.Program = null;
   private host: ts.CompilerHost;
   private resolutionCache: ts.ModuleResolutionCache;
-  private sourceRoot: string;
-  /** Directory whose folder structure mirrors the real source root, but with `node_modules` installed. */
-  private virtualSourceRoot: string;
 
-  constructor(public tsConfig: string, public config: ts.ParsedCommandLine, public typeTable: TypeTable, public packageLocations: PackageLocationMap) {
+  constructor(public tsConfig: string, public config: ts.ParsedCommandLine, public typeTable: TypeTable, public packageLocations: PackageLocationMap,
+        public virtualSourceRoot: VirtualSourceRoot) {
     this.resolveModuleNames = this.resolveModuleNames.bind(this);
 
     this.resolutionCache = ts.createModuleResolutionCache(pathlib.dirname(tsConfig), ts.sys.realpath, config.options);
@@ -24,9 +23,6 @@ export class Project {
     host.resolveModuleNames = this.resolveModuleNames;
     host.trace = undefined; // Disable tracing which would otherwise go to standard out
     this.host = host;
-
-    this.sourceRoot = process.cwd();
-    this.virtualSourceRoot = process.env["CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR"];
   }
 
   public unload(): void {
@@ -83,7 +79,7 @@ export class Project {
     if (packageEntryPoint == null) {
       // The package is not overridden, but we have established that it begins with a valid package name.
       // Do a lookup in the virtual source root (where dependencies are installed) by changing the 'containing file'.
-      let virtualContainingFile = this.toVirtualPath(containingFile);
+      let virtualContainingFile = this.virtualSourceRoot.toVirtualPath(containingFile);
       if (virtualContainingFile != null) {
         return ts.resolveModuleName(moduleName, virtualContainingFile, options, this.host, this.resolutionCache).resolvedModule;
       }
@@ -118,15 +114,6 @@ export class Project {
     }
 
     return null;
-  }
-
-  /**
-   * Maps a path under the real source root to the corresonding path in the virtual source root.
-   */
-  private toVirtualPath(path: string) {
-    let relative = pathlib.relative(this.sourceRoot, path);
-    if (relative.startsWith('..') || pathlib.isAbsolute(relative)) return null;
-    return pathlib.join(this.virtualSourceRoot, relative);
   }
 }
 
