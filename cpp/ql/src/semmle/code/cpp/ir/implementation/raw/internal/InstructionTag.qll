@@ -17,7 +17,6 @@ newtype TInstructionTag =
   AssignOperationOpTag() or
   AssignOperationConvertResultTag() or
   AssignmentStoreTag() or
-  CrementLoadTag() or
   CrementConstantTag() or
   CrementOpTag() or
   CrementStoreTag() or
@@ -103,8 +102,6 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = AssignOperationConvertResultTag() and result = "AssignOpConvRes"
   or
   tag = AssignmentStoreTag() and result = "AssignStore"
-  or
-  tag = CrementLoadTag() and result = "CrementLoad"
   or
   tag = CrementConstantTag() and result = "CrementConst"
   or

@@ -1,9 +1,9 @@
 void test_crement() {
   int x1 = 0;
-  ++x1; // flow [NOT DETECTED]
+  ++x1;
 
   int x2 = 0;
-  x2++; // flow [NOT DETECTED]
+  x2++;
 
   int x3 = 0;
   x3 -= 1; // flow [NOT DETECTED]
