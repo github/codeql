@@ -98,7 +98,7 @@ private module VirtualDispatch {
                   .getObjectAddress()
                   .(VariableAddressInstruction)
                   .getASTVariable() and
-            this.flowsFromGlobalUnionField(var, _, a)
+            this.flowsFromGlobalUnionField(var, a)
           )
         ) and
         allowFromArg = true
@@ -112,11 +112,10 @@ private module VirtualDispatch {
       )
     }
 
-    private predicate flowsFromGlobalUnionField(Variable var, Field f, FieldAccess a) {
-      f.getDeclaringType() instanceof Union and
+    private predicate flowsFromGlobalUnionField(Variable var, FieldAccess a) {
+      a.getTarget().getDeclaringType() instanceof Union and
       exists(LoadInstruction load |
         this.flowsFrom(DataFlow::instructionNode(load), _) and
-        a.getTarget() = f and
         load
             .getSourceAddress()
             .(FieldAddressInstruction)
