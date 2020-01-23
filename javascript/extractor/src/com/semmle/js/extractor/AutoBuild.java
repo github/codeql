@@ -728,7 +728,11 @@ public class AutoBuild {
           // For named packages, find the main file.
           String name = getChildAsString(packageJson, "name");
           if (name != null) {
-            Path entryPoint = guessPackageMainFile(path, packageJson);
+            Path entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
+            if (entryPoint == null) {
+              // Try a TypeScript-recognized JS extension instead
+              entryPoint = guessPackageMainFile(path, packageJson, Arrays.asList(".js", ".jsx"));
+            }
             if (entryPoint != null) {
               System.out.println(relativePath + ": Main file set to " + sourceRoot.relativize(entryPoint));
               packageMainFile.put(name, entryPoint);
@@ -788,12 +792,11 @@ public class AutoBuild {
    * given package - that is, the file you get when importing the package by name
    * without any path suffix.
    */
-  private Path guessPackageMainFile(Path packageJsonFile, JsonObject packageJson) {
+  private Path guessPackageMainFile(Path packageJsonFile, JsonObject packageJson, Iterable<String> extensions) {
     Path packageDir = packageJsonFile.getParent();
     
     // Try <package_dir>/index.ts.
-    // Do not allow JavaScript extensions at this point as it might be compiled output (will be attempted later). 
-    Path resolved = tryResolveWithExtensions(packageDir, "index", FileType.TYPESCRIPT.getExtensions());
+    Path resolved = tryResolveWithExtensions(packageDir, "index", extensions);
     if (resolved != null) {
       return resolved;
     }
@@ -828,7 +831,7 @@ public class AutoBuild {
 
         // Strip off extensions until a file can be found
         while (true) {
-          resolved = tryResolveTypeScriptOrJavaScriptFile(sourceDir, candidatePath.toString());
+          resolved = tryResolveWithExtensions(sourceDir, candidatePath.toString(), extensions);
           if (resolved != null) {
             return resolved;
           }
@@ -837,12 +840,6 @@ public class AutoBuild {
           candidatePath = withoutExt;
         }
       }
-    }
-    
-    // Try <package_dir>/index.js - this time allowing JS extension.
-    resolved = tryResolveWithExtensions(packageDir, "index", FileType.JS.getExtensions());
-    if (resolved != null) {
-      return resolved;
     }
 
     return resolved;

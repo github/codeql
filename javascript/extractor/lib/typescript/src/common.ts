@@ -7,7 +7,7 @@ import { VirtualSourceRoot } from "./virtual_source_root";
  * Extracts the package name from the prefix of an import string.
  */
 const packageNameRex = /^(?:@[\w.-]+[/\\])?\w[\w.-]*(?=[/\\]|$)/;
-const extensions = ['.ts', '.tsx', '.d.ts'];
+const extensions = ['.ts', '.tsx', '.d.ts', '.js', '.jsx'];
 
 export class Project {
   public program: ts.Program = null;
