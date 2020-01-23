@@ -1224,8 +1224,8 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   }
 }
 
-abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
-  override Assignment expr;
+class TranslatedAssignExpr extends TranslatedNonConstantExpr {
+  override AssignExpr expr;
 
   final override TranslatedElement getChild(int id) {
     id = 0 and result = getLeftOperand()
@@ -1245,7 +1245,7 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
       // value assigned to the left operand. If this is C++, then the result is
       // an lvalue, but that lvalue is being loaded as part of this expression.
       // EDG doesn't mark this as a load.
-      result = getStoredValue()
+      result = getRightOperand().getResult()
     else
       // This is C++, where the result is an lvalue for the left operand,
       // and that lvalue is not being loaded as part of this expression.
@@ -1261,10 +1261,6 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
   final TranslatedExpr getRightOperand() {
     result = getTranslatedExpr(expr.getRValue().getFullyConverted())
   }
-}
-
-class TranslatedAssignExpr extends TranslatedAssignment {
-  TranslatedAssignExpr() { expr instanceof AssignExpr }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = AssignmentStoreTag() and
@@ -1297,12 +1293,43 @@ class TranslatedAssignExpr extends TranslatedAssignment {
       result = getRightOperand().getResult()
     )
   }
-
-  override Instruction getStoredValue() { result = getRightOperand().getResult() }
 }
 
-class TranslatedAssignOperation extends TranslatedAssignment {
+class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   override AssignOperation expr;
+
+  final override TranslatedElement getChild(int id) {
+    id = 0 and result = getLeftOperand()
+    or
+    id = 1 and result = getRightOperand()
+  }
+
+  final override Instruction getFirstInstruction() {
+    // Evaluation is right-to-left
+    result = getRightOperand().getFirstInstruction()
+  }
+
+  final override Instruction getResult() {
+    if expr.isPRValueCategory()
+    then
+      // If this is C, then the result of an assignment is a prvalue for the new
+      // value assigned to the left operand. If this is C++, then the result is
+      // an lvalue, but that lvalue is being loaded as part of this expression.
+      // EDG doesn't mark this as a load.
+      result = getStoredValue()
+    else
+      // This is C++, where the result is an lvalue for the left operand,
+      // and that lvalue is not being loaded as part of this expression.
+      result = getLeftOperand().getResult()
+  }
+
+  final TranslatedExpr getLeftOperand() {
+    result = getTranslatedExpr(expr.getLValue().getFullyConverted())
+  }
+
+  final TranslatedExpr getRightOperand() {
+    result = getTranslatedExpr(expr.getRValue().getFullyConverted())
+  }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
@@ -1341,7 +1368,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     result = getInstruction(AssignOperationLoadTag())
   }
 
-  override Instruction getStoredValue() {
+  private Instruction getStoredValue() {
     if leftOperandNeedsConversion()
     then result = getInstruction(AssignOperationConvertResultTag())
     else result = getInstruction(AssignOperationOpTag())
