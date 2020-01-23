@@ -202,7 +202,6 @@ public class AutoBuild {
   private final Set<String> xmlExtensions = new LinkedHashSet<>();
   private ProjectLayout filters;
   private final Path LGTM_SRC, SEMMLE_DIST;
-  private final Path scratchDir;
   private final TypeScriptMode typeScriptMode;
   private final String defaultEncoding;
   private ExecutorService threadPool;
@@ -216,7 +215,6 @@ public class AutoBuild {
   public AutoBuild() {
     this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
     this.SEMMLE_DIST = Paths.get(EnvironmentVariables.getExtractorRoot());
-    this.scratchDir = Paths.get(EnvironmentVariables.getScratchDir());
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
     this.trapCache = mkTrapCache();
     this.typeScriptMode =
@@ -643,7 +641,7 @@ public class AutoBuild {
    * Some packages must be downloaded while others exist within the same repo ("monorepos")
    * but are not in a location where TypeScript would look for it.
    * <p>
-   * Downloaded packages are intalled under {@link #scratchDir}, in a mirrored directory hierarchy
+   * Downloaded packages are intalled under <tt>SCRATCH_DIR</tt>, in a mirrored directory hierarchy
    * we call the "virtual source root".
    * Each <tt>package.json</tt> file is rewritten and copied to the virtual source root,
    * where <tt>yarn install</tt> is invoked.
@@ -662,7 +660,7 @@ public class AutoBuild {
     }
     
     final Path sourceRoot = Paths.get(".").toAbsolutePath();
-    final Path virtualSourceRoot = this.scratchDir.toAbsolutePath(); 
+    final Path virtualSourceRoot = Paths.get(EnvironmentVariables.getScratchDir()).toAbsolutePath();
 
     // Read all package.json files and index them by name.
     Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
