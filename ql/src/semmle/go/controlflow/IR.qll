@@ -318,7 +318,7 @@ module IR {
   class SliceInstruction extends EvalInstruction {
     override SliceExpr e;
 
-    /** Gets the instruction computing the base value from which the slice is cosntructed. */
+    /** Gets the instruction computing the base value from which the slice is constructed. */
     Instruction getBase() { result = selectorBase(e) }
 
     /** Gets the instruction computing the lower bound of the slice. */
