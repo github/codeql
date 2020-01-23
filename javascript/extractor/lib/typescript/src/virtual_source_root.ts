@@ -8,7 +8,10 @@ export class VirtualSourceRoot {
   constructor(
     private sourceRoot: string,
 
-    /** Directory whose folder structure mirrors the real source root, but with `node_modules` installed. */
+    /**
+     * Directory whose folder structure mirrors the real source root, but with `node_modules` installed,
+     * or undefined if no virtual source root exists.
+     */
     private virtualSourceRoot: string,
   ) {}
 
@@ -16,6 +19,7 @@ export class VirtualSourceRoot {
    * Maps a path under the real source root to the corresonding path in the virtual source root.
    */
   public toVirtualPath(path: string) {
+    if (!this.virtualSourceRoot) return null;
     let relative = pathlib.relative(this.sourceRoot, path);
     if (relative.startsWith('..') || pathlib.isAbsolute(relative)) return null;
     return pathlib.join(this.virtualSourceRoot, relative);
