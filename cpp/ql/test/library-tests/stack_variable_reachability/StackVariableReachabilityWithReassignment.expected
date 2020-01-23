@@ -10,4 +10,4 @@
 | stackVariableReachability.c:21:3:21:3 | b | 60 |
 | stackVariableReachability.c:23:2:23:2 | c | b |
 | stackVariableReachability.c:23:6:23:6 | b | 50, 60 |
-| stackVariableReachability.c:24:2:24:2 | c | b |
+| stackVariableReachability.c:24:2:24:2 | c | 50, 60, b |

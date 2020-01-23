@@ -1,14 +1,14 @@
 import cpp
 import semmle.code.cpp.controlflow.StackVariableReachability
 
-class MyStackVariableReachability extends StackVariableReachability {
+class MyStackVariableReachability extends StackVariableReachabilityWithReassignment {
   MyStackVariableReachability() { this = "MyStackVariableReachability" }
  
-  override predicate isSource(ControlFlowNode node, StackVariable v) {
+  override predicate isSourceActual(ControlFlowNode node, StackVariable v) {
     exprDefinition(v, _, node)
   }
 
-  override predicate isSink(ControlFlowNode node, StackVariable v) {
+  override predicate isSinkActual(ControlFlowNode node, StackVariable v) {
     node.(VariableAccess).getTarget() = v
   }
 
