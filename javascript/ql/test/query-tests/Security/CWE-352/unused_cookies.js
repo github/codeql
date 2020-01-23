@@ -17,4 +17,13 @@ app.post('/doSomethingElse', (req, res) => { // OK - doesn't actually use cookie
     res.end('Ok');
 });
 
+app.post('/doWithCaptcha', (req, res) => { // OK - attacker can't guess the captcha value either
+    if (req.session['captcha'] !== req.query['captcha']) {
+        res.end("You guessed wrong, that 'u' was actually a 'U'. Try again.");
+        return;
+    }
+    somethingElse(req.query['data']);
+    res.end('Ok');
+});
+
 app.listen();
