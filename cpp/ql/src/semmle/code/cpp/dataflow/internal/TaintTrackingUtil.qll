@@ -155,7 +155,8 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
         or
         inModel.isParameter(argInIndex) and
         exprIn = call.getArgument(argInIndex)
-      ) or
+      )
+      or
       inModel.isQualifierObject() and
       exprIn = call.getQualifier()
     )
@@ -175,7 +176,9 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
     )
   )
   or
-  exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel, int argOutIndex |
+  exists(
+    TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel, int argOutIndex
+  |
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
     outModel.isParameterDeref(argOutIndex) and
@@ -190,7 +193,8 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
         or
         inModel.isParameter(argInIndex) and
         exprIn = call.getArgument(argInIndex)
-      ) or
+      )
+      or
       inModel.isQualifierObject() and
       exprIn = call.getQualifier()
     )
