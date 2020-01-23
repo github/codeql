@@ -109,7 +109,7 @@ where
   // the handler wouldn't work. However, if we can't find the cookie middleware, it
   // indicates that our middleware model is too incomplete, so in that case we
   // don't trust it to detect the presence of CSRF middleware either.
-  getARouteUsingCookies().flowsToExpr(handler.getPreviousMiddleware*()) and
+  getARouteUsingCookies().flowsToExpr(handler) and
   hasCookieMiddleware(handler, cookie) and
 
   // Only flag the first cookie parser registered first.
