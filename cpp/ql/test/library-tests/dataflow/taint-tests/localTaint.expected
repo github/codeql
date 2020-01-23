@@ -347,3 +347,62 @@
 | taint.cpp:390:6:390:11 | call to wcsdup | taint.cpp:390:2:390:28 | ... = ... |  |
 | taint.cpp:390:6:390:11 | call to wcsdup | taint.cpp:392:7:392:7 | b |  |
 | taint.cpp:390:13:390:27 | hello, world | taint.cpp:390:6:390:11 | call to wcsdup | TAINT |
+| taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:420:7:420:7 | a |  |
+| taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:421:7:421:7 | a |  |
+| taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:422:2:422:2 | a |  |
+| taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:423:7:423:7 | a |  |
+| taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:424:7:424:7 | a |  |
+| taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:426:7:426:7 | b |  |
+| taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:427:7:427:7 | b |  |
+| taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:428:2:428:2 | b |  |
+| taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:429:7:429:7 | b |  |
+| taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:430:7:430:7 | b |  |
+| taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:431:7:431:7 | b |  |
+| taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:443:7:443:7 | d |  |
+| taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:444:7:444:7 | d |  |
+| taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:445:2:445:2 | d |  |
+| taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:446:7:446:7 | d |  |
+| taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:447:7:447:7 | d |  |
+| taint.cpp:421:7:421:7 | a [post update] | taint.cpp:422:2:422:2 | a |  |
+| taint.cpp:421:7:421:7 | a [post update] | taint.cpp:423:7:423:7 | a |  |
+| taint.cpp:421:7:421:7 | a [post update] | taint.cpp:424:7:424:7 | a |  |
+| taint.cpp:422:2:422:2 | a [post update] | taint.cpp:423:7:423:7 | a |  |
+| taint.cpp:422:2:422:2 | a [post update] | taint.cpp:424:7:424:7 | a |  |
+| taint.cpp:427:7:427:7 | b [post update] | taint.cpp:428:2:428:2 | b |  |
+| taint.cpp:427:7:427:7 | b [post update] | taint.cpp:429:7:429:7 | b |  |
+| taint.cpp:427:7:427:7 | b [post update] | taint.cpp:430:7:430:7 | b |  |
+| taint.cpp:427:7:427:7 | b [post update] | taint.cpp:431:7:431:7 | b |  |
+| taint.cpp:428:2:428:2 | b [post update] | taint.cpp:429:7:429:7 | b |  |
+| taint.cpp:428:2:428:2 | b [post update] | taint.cpp:430:7:430:7 | b |  |
+| taint.cpp:428:2:428:2 | b [post update] | taint.cpp:431:7:431:7 | b |  |
+| taint.cpp:428:2:428:20 | ... = ... | taint.cpp:430:9:430:14 | member |  |
+| taint.cpp:428:13:428:18 | call to source | taint.cpp:428:2:428:20 | ... = ... |  |
+| taint.cpp:433:6:433:20 | call to MyClass2 | taint.cpp:433:6:433:20 | new |  |
+| taint.cpp:433:6:433:20 | new | taint.cpp:433:2:433:20 | ... = ... |  |
+| taint.cpp:433:6:433:20 | new | taint.cpp:435:7:435:7 | c |  |
+| taint.cpp:433:6:433:20 | new | taint.cpp:436:7:436:7 | c |  |
+| taint.cpp:433:6:433:20 | new | taint.cpp:437:2:437:2 | c |  |
+| taint.cpp:433:6:433:20 | new | taint.cpp:438:7:438:7 | c |  |
+| taint.cpp:433:6:433:20 | new | taint.cpp:439:7:439:7 | c |  |
+| taint.cpp:433:6:433:20 | new | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:435:7:435:7 | ref arg c | taint.cpp:436:7:436:7 | c |  |
+| taint.cpp:435:7:435:7 | ref arg c | taint.cpp:437:2:437:2 | c |  |
+| taint.cpp:435:7:435:7 | ref arg c | taint.cpp:438:7:438:7 | c |  |
+| taint.cpp:435:7:435:7 | ref arg c | taint.cpp:439:7:439:7 | c |  |
+| taint.cpp:435:7:435:7 | ref arg c | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:436:7:436:7 | c [post update] | taint.cpp:437:2:437:2 | c |  |
+| taint.cpp:436:7:436:7 | c [post update] | taint.cpp:438:7:438:7 | c |  |
+| taint.cpp:436:7:436:7 | c [post update] | taint.cpp:439:7:439:7 | c |  |
+| taint.cpp:436:7:436:7 | c [post update] | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:437:2:437:2 | c [post update] | taint.cpp:438:7:438:7 | c |  |
+| taint.cpp:437:2:437:2 | c [post update] | taint.cpp:439:7:439:7 | c |  |
+| taint.cpp:437:2:437:2 | c [post update] | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:438:7:438:7 | ref arg c | taint.cpp:439:7:439:7 | c |  |
+| taint.cpp:438:7:438:7 | ref arg c | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:439:7:439:7 | c [post update] | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:441:9:441:9 | c | taint.cpp:441:2:441:9 | delete | TAINT |
+| taint.cpp:444:7:444:7 | d [post update] | taint.cpp:445:2:445:2 | d |  |
+| taint.cpp:444:7:444:7 | d [post update] | taint.cpp:446:7:446:7 | d |  |
+| taint.cpp:444:7:444:7 | d [post update] | taint.cpp:447:7:447:7 | d |  |
+| taint.cpp:445:2:445:2 | d [post update] | taint.cpp:446:7:446:7 | d |  |
+| taint.cpp:445:2:445:2 | d [post update] | taint.cpp:447:7:447:7 | d |  |
