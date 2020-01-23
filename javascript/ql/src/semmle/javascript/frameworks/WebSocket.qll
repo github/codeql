@@ -1,12 +1,12 @@
 /**
- * Provides classes for working with [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket).
+ * Provides classes for working with [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) and [ws](https://github.com/websockets/ws).
  *
- * The model is based on the EventEmitter model, and there a therefore a
+ * The model is based on the EventEmitter model, and there is therefore a
  * data-flow step from where a WebSocket event is send to where the message
  * is received.
  *
- * WebSockets include no concept of channels, therefore every client can send
- * to every server (and vice versa).
+ * Data flow is modeled both from clients to servers, and from servers to clients.
+ * The model models that clients can send messages to all servers, and servers can send messages to all clients.
  */
 
 import javascript
@@ -18,6 +18,9 @@ import javascript
  */
 private string channelName() { result = "message" }
 
+/**
+ * Provides classes that model WebSockets clients.
+ */
 module ClientWebSocket {
   /**
    * A class that can be used to instantiate a WebSocket instance.
@@ -69,55 +72,59 @@ module ClientWebSocket {
   }
 
   /**
-   * Gets a methodName that can be used to register a listener for WebSocket messages on a given socket.
+   * A handler that is registered to receive messages from a WebSocket.
    */
-  string getARegisterMethodName(ClientSocket socket) {
-    result = "addEventListener"
-    or
-    socket.isNode() and
-    result = EventEmitter::on()
+  abstract class ReceiveNode extends EventRegistration::Range, DataFlow::FunctionNode {
+    override ClientSocket emitter;
+
+    override string getChannel() { result = channelName() }
   }
 
   /**
-   * A handler that is registered to receive messages from a WebSocket.
-   *
-   * If the registration happens with the "addEventListener" method or the "onmessage" setter property, then the handler receives an event with a "data" property.
-   * Otherwise the handler receives the data directly.
-   *
-   * This confusing API is caused by the "ws" library only mostly using their own API, where event objects are not used.
-   * But the "ws" library additionally supports the WebSocket API from browsers, which exclusively use event objects with a "data" property.
+   * Gets a handler, that is registered using method `methodName` and receives messages send to `emitter`.
    */
-  class ReceiveNode extends EventRegistration::Range, DataFlow::FunctionNode {
-    override ClientSocket emitter;
-    boolean receivesEvent;
+  private DataFlow::FunctionNode getAMessageHandler(ClientWebSocket::ClientSocket emitter, string methodName) {
+    exists(DataFlow::CallNode call |
+      call = emitter.getAMemberCall(methodName) and
+      call.getArgument(0).mayHaveStringValue("message") and
+      result = call.getCallback(1)
+    )
+  }
 
-    ReceiveNode() {
-      exists(DataFlow::CallNode call, string methodName |
-        methodName = getARegisterMethodName(emitter) and
-        call = emitter.getAMemberCall(methodName) and
-        call.getArgument(0).mayHaveStringValue("message") and
-        this = call.getCallback(1) and
-        if methodName = "addEventListener" then receivesEvent = true else receivesEvent = false
-      )
+  /**
+   * A handler that receives a message using the WebSocket API.
+   * The "ws" library implements a superset of the WebSocket API, and this class therefore models both WebSocket and "ws".
+   */
+  private class WebSocketReceiveNode extends ClientWebSocket::ReceiveNode {
+    WebSocketReceiveNode() {
+      this = getAMessageHandler(emitter, "addEventListener")
       or
-      this = emitter.getAPropertyWrite("onmessage").getRhs() and
-      receivesEvent = true
+      this = emitter.getAPropertyWrite("onmessage").getRhs()
     }
 
-    override string getChannel() { result = channelName() }
+    override DataFlow::Node getReceivedItem(int i) {
+      i = 0 and result = this.getParameter(0).getAPropertyRead("data")
+    }
+  }
+
+  /**
+   * A handler that receives a message using the API from the "ws" library.
+   */
+  private class WSReceiveNode extends ClientWebSocket::ReceiveNode {
+    WSReceiveNode () {
+      emitter.isNode() and
+      this = getAMessageHandler(emitter, EventEmitter::on())
+    }
 
     override DataFlow::Node getReceivedItem(int i) {
-      i = 0 and
-      result = this.getParameter(0).getAPropertyRead("data") and
-      receivesEvent = true
-      or
-      i = 0 and
-      result = this.getParameter(0) and
-      receivesEvent = false
+      i = 0 and result = this.getParameter(0)
     }
   }
 }
 
+/**
+ * Provides classes that model WebSocket servers.
+ */
 module ServerWebSocket {
   /**
    * A server WebSocket instance.
