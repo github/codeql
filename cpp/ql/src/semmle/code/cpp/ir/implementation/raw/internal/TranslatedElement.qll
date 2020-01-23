@@ -229,6 +229,8 @@ private predicate ignoreLoad(Expr expr) {
  */
 private predicate needsLoadForParentExpr(Expr expr) {
   exists(CrementOperation crement | expr = crement.getOperand().getFullyConverted())
+  or
+  exists(AssignOperation ao | expr = ao.getLValue().getFullyConverted())
 }
 
 /**

@@ -1299,7 +1299,7 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   override AssignOperation expr;
 
   final override TranslatedElement getChild(int id) {
-    id = 0 and result = getLeftOperand()
+    id = 0 and result = getLoadedLeftOperand()
     or
     id = 1 and result = getRightOperand()
   }
@@ -1320,13 +1320,23 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
     else
       // This is C++, where the result is an lvalue for the left operand,
       // and that lvalue is not being loaded as part of this expression.
-      result = getLeftOperand().getResult()
+      result = getUnloadedLeftOperand().getResult()
   }
 
-  final TranslatedExpr getLeftOperand() {
+  final TranslatedExpr getUnloadedLeftOperand() { result = getLoadedLeftOperand().getOperand() }
+
+  /**
+   * Gets the `TranslatedLoad` on the `e` in this `e += ...` which is the
+   * element that holds the value to be cremented. It's guaranteed that there's
+   * a load on `e` because of the `needsLoadForParentExpr` predicate.
+   */
+  final TranslatedLoad getLoadedLeftOperand() {
     result = getTranslatedExpr(expr.getLValue().getFullyConverted())
   }
 
+  /**
+   * Gets the address to which the result of this operation will be stored.
+   */
   final TranslatedExpr getRightOperand() {
     result = getTranslatedExpr(expr.getRValue().getFullyConverted())
   }
@@ -1334,13 +1344,6 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
-      (
-        tag = AssignOperationLoadTag() and
-        if leftOperandNeedsConversion()
-        then result = getInstruction(AssignOperationConvertLeftTag())
-        else result = getInstruction(AssignOperationOpTag())
-      )
-      or
       tag = AssignOperationConvertLeftTag() and
       result = getInstruction(AssignOperationOpTag())
       or
@@ -1362,10 +1365,12 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   override Instruction getChildSuccessor(TranslatedElement child) {
     // Operands are evaluated right-to-left.
     child = getRightOperand() and
-    result = getLeftOperand().getFirstInstruction()
+    result = getLoadedLeftOperand().getFirstInstruction()
     or
-    child = getLeftOperand() and
-    result = getInstruction(AssignOperationLoadTag())
+    child = getLoadedLeftOperand() and
+    if leftOperandNeedsConversion()
+    then result = getInstruction(AssignOperationConvertLeftTag())
+    else result = getInstruction(AssignOperationOpTag())
   }
 
   private Instruction getStoredValue() {
@@ -1388,14 +1393,14 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
       // anyway. If we really want to model this case perfectly, we'll need the
       // extractor to tell us what the promoted type of the left operand would
       // be.
-      result = getLeftOperand().getExpr().getType()
+      result = getLoadedLeftOperand().getExpr().getType()
     else
       // The right operand has already been converted to the type of the op.
       result = getRightOperand().getExpr().getType()
   }
 
   private predicate leftOperandNeedsConversion() {
-    getConvertedLeftOperandType().getUnspecifiedType() != getLeftOperand()
+    getConvertedLeftOperandType().getUnspecifiedType() != getLoadedLeftOperand()
           .getExpr()
           .getUnspecifiedType()
   }
@@ -1427,10 +1432,6 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    tag = AssignOperationLoadTag() and
-    opcode instanceof Opcode::Load and
-    resultType = getTypeForPRValue(getLeftOperand().getExpr().getType())
-    or
     tag = AssignOperationOpTag() and
     opcode = getOpcode() and
     resultType = getTypeForPRValue(getConvertedLeftOperandType())
@@ -1446,7 +1447,7 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
       resultType = getTypeForPRValue(getConvertedLeftOperandType())
       or
       tag = AssignOperationConvertResultTag() and
-      resultType = getTypeForPRValue(getLeftOperand().getExpr().getType())
+      resultType = getTypeForPRValue(getLoadedLeftOperand().getExpr().getType())
     )
   }
 
@@ -1460,19 +1461,10 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = AssignOperationLoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = getLeftOperand().getResult()
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
-    or
     leftOperandNeedsConversion() and
     tag = AssignOperationConvertLeftTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getInstruction(AssignOperationLoadTag())
+    result = getLoadedLeftOperand().getResult()
     or
     tag = AssignOperationOpTag() and
     (
@@ -1480,7 +1472,7 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
         operandTag instanceof LeftOperandTag and
         if leftOperandNeedsConversion()
         then result = getInstruction(AssignOperationConvertLeftTag())
-        else result = getInstruction(AssignOperationLoadTag())
+        else result = getLoadedLeftOperand().getResult()
       )
       or
       operandTag instanceof RightOperandTag and
@@ -1495,7 +1487,7 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
     tag = AssignmentStoreTag() and
     (
       operandTag instanceof AddressOperandTag and
-      result = getLeftOperand().getResult()
+      result = getUnloadedLeftOperand().getResult()
       or
       operandTag instanceof StoreValueOperandTag and
       result = getStoredValue()

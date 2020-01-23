@@ -12,7 +12,6 @@ newtype TInstructionTag =
   ZeroPadStringElementIndexTag() or
   ZeroPadStringElementAddressTag() or
   ZeroPadStringStoreTag() or
-  AssignOperationLoadTag() or
   AssignOperationConvertLeftTag() or
   AssignOperationOpTag() or
   AssignOperationConvertResultTag() or
@@ -92,8 +91,6 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = ZeroPadStringElementAddressTag() and result = "ZeroPadElemAddr"
   or
   tag = ZeroPadStringStoreTag() and result = "ZeroPadStore"
-  or
-  tag = AssignOperationLoadTag() and result = "AssignOpLoad"
   or
   tag = AssignOperationConvertLeftTag() and result = "AssignOpConvLeft"
   or
