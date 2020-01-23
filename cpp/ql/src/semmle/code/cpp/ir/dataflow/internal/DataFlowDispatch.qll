@@ -83,10 +83,24 @@ private module VirtualDispatch {
       )
       or
       // Flow through global variable
-      exists(StoreInstruction store, Variable var |
+      exists(StoreInstruction store |
         store = src.asInstruction() and
-        var = store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() and
-        this.flowsFromGlobal(var) and
+        (
+          exists(Variable var |
+            var = store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() and
+            this.flowsFromGlobal(var)
+          )
+          or
+          exists(Variable var, FieldAccess a |
+            var = store
+                  .getDestinationAddress()
+                  .(FieldAddressInstruction)
+                  .getObjectAddress()
+                  .(VariableAddressInstruction)
+                  .getASTVariable() and
+            this.flowsFromGlobalUnionField(var, _, a)
+          )
+        ) and
         allowFromArg = true
       )
     }
@@ -95,6 +109,20 @@ private module VirtualDispatch {
       exists(LoadInstruction load |
         this.flowsFrom(DataFlow::instructionNode(load), _) and
         load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+      )
+    }
+
+    private predicate flowsFromGlobalUnionField(Variable var, Field f, FieldAccess a) {
+      f.getDeclaringType() instanceof Union and
+      exists(LoadInstruction load |
+        this.flowsFrom(DataFlow::instructionNode(load), _) and
+        a.getTarget() = f and
+        load
+            .getSourceAddress()
+            .(FieldAddressInstruction)
+            .getObjectAddress()
+            .(VariableAddressInstruction)
+            .getASTVariable() = var
       )
     }
   }
