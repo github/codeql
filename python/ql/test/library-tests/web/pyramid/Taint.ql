@@ -6,7 +6,6 @@ import semmle.python.web.HttpResponse
 import semmle.python.security.strings.Untrusted
 
 from TaintedNode node
-where node.getLocation().getFile().getName().matches("%test.py")
+where node.getLocation().getFile().getShortName() = "test.py"
 
 select node.getLocation().toString(), node.getAstNode().toString(), node.getTaintKind()
-
