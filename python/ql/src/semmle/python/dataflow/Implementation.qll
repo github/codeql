@@ -806,7 +806,10 @@ private predicate testEvaluatesMaybe(ControlFlowNode test, ControlFlowNode use) 
     any(PyEdgeRefinement ref).getTest().getAChild*() = test and
     test.getAChild*() = use and
     not test.(UnaryExprNode).getNode().getOp() instanceof Not and
-    not Filters::equality_test(test, use, _, _) and
+    not exists(ControlFlowNode const |
+        Filters::equality_test(test, use, _, const) and
+        const.getNode() instanceof ImmutableLiteral
+    ) and
     not Filters::isinstance(test, _, use) and
     not test = use
     or
