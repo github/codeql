@@ -6,25 +6,13 @@ import semmle.code.java.frameworks.UnboundId
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.frameworks.ApacheLdap
 
-/** Holds if the parameter of `c` at index `paramIndex` is varargs. */
-bindingset[paramIndex]
-predicate isVarargs(Callable c, int paramIndex) {
-  c.isVarargs() and paramIndex >= c.getNumberOfParameters() - 1
-}
-
-/** A data flow source for unvalidated user input that is used to construct LDAP queries. */
-abstract class LdapInjectionSource extends DataFlow::Node { }
-
-/** A data flow sink for unvalidated user input that is used to construct LDAP queries. */
-abstract class LdapInjectionSink extends DataFlow::ExprNode { }
-
 /**
  * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
  */
 class LdapInjectionFlowConfig extends TaintTracking::Configuration {
   LdapInjectionFlowConfig() { this = "LdapInjectionFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LdapInjectionSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof LdapInjectionSink }
 
@@ -56,101 +44,77 @@ class LdapInjectionFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends LdapInjectionSource {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
-
-/** A source of local user input. */
-class LocalSource extends LdapInjectionSource {
-  LocalSource() { this instanceof LocalUserInput }
-}
-
 /**
  * JNDI sink for LDAP injection vulnerabilities, i.e. 1st (DN) or 2nd (filter) argument to
  * `search` method from `DirContext`.
  */
-class JndiLdapInjectionSink extends LdapInjectionSink {
-  JndiLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index |
-      ma.getMethod() = m and
-      ma.getArgument(index) = this.getExpr()
-    |
-      m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
-      m.hasName("search") and
-      index in [0 .. 1]
-    )
-  }
+predicate jndiLdapInjectionSinkMethod(Method m, int index) {
+  m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
+  m.hasName("search") and
+  index in [0 .. 1]
 }
 
 /**
  * UnboundID sink for LDAP injection vulnerabilities,
  * i.e. LDAPConnection.search, LDAPConnection.asyncSearch or LDAPConnection.searchForEntry method.
  */
-class UnboundIdLdapInjectionSink extends LdapInjectionSink {
-  UnboundIdLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index, Parameter param |
-      ma.getMethod() = m and
-      ma.getArgument(index) = this.getExpr() and
-      m.getParameter(index) = param
-    |
-      // LDAPConnection.search, LDAPConnection.asyncSearch or LDAPConnection.searchForEntry method
-      (
-        m instanceof MethodUnboundIdLDAPConnectionSearch or
-        m instanceof MethodUnboundIdLDAPConnectionAsyncSearch or
-        m instanceof MethodUnboundIdLDAPConnectionSearchForEntry
-      ) and
-      // Parameter is not varargs
-      not isVarargs(m, index)
-    )
-  }
+predicate unboundIdLdapInjectionSinkMethod(Method m, int index) {
+  exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
+    m instanceof MethodUnboundIdLDAPConnectionSearch or
+    m instanceof MethodUnboundIdLDAPConnectionAsyncSearch or
+    m instanceof MethodUnboundIdLDAPConnectionSearchForEntry
+  )
 }
 
 /**
  * Spring LDAP sink for LDAP injection vulnerabilities,
  * i.e. LdapTemplate.authenticate, LdapTemplate.find* or LdapTemplate.search* method.
  */
-class SpringLdapInjectionSink extends LdapInjectionSink {
-  SpringLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index, RefType paramType |
-      ma.getMethod() = m and
-      ma.getArgument(index) = this.getExpr() and
-      m.getParameterType(index) = paramType
-    |
-      // LdapTemplate.authenticate, LdapTemplate.find* or LdapTemplate.search* method
-      (
-        m instanceof MethodSpringLdapTemplateAuthenticate or
-        m instanceof MethodSpringLdapTemplateFind or
-        m instanceof MethodSpringLdapTemplateFindOne or
-        m instanceof MethodSpringLdapTemplateSearch or
-        m instanceof MethodSpringLdapTemplateSearchForContext or
-        m instanceof MethodSpringLdapTemplateSearchForObject
-      ) and
-      (
-        // Parameter index is 1 (DN or query) or 2 (filter) if method is not authenticate
-        index in [0 .. 1] and
-        not m instanceof MethodSpringLdapTemplateAuthenticate
-        or
-        // But it's not the last parameter in case of authenticate method (last param is password)
-        index in [0 .. 1] and
-        index < m.getNumberOfParameters() - 1 and
-        m instanceof MethodSpringLdapTemplateAuthenticate
-      )
-    )
-  }
+predicate springLdapInjectionSinkMethod(Method m, int index) {
+  // LdapTemplate.authenticate, LdapTemplate.find* or LdapTemplate.search* method
+  (
+    m instanceof MethodSpringLdapTemplateAuthenticate or
+    m instanceof MethodSpringLdapTemplateFind or
+    m instanceof MethodSpringLdapTemplateFindOne or
+    m instanceof MethodSpringLdapTemplateSearch or
+    m instanceof MethodSpringLdapTemplateSearchForContext or
+    m instanceof MethodSpringLdapTemplateSearchForObject
+  ) and
+  (
+    // Parameter index is 1 (DN or query) or 2 (filter) if method is not authenticate
+    index in [0 .. 1] and
+    not m instanceof MethodSpringLdapTemplateAuthenticate
+    or
+    // But it's not the last parameter in case of authenticate method (last param is password)
+    index in [0 .. 1] and
+    index < m.getNumberOfParameters() - 1 and
+    m instanceof MethodSpringLdapTemplateAuthenticate
+  )
 }
 
 /** Apache LDAP API sink for LDAP injection vulnerabilities, i.e. LdapConnection.search method. */
-class ApacheLdapInjectionSink extends LdapInjectionSink {
-  ApacheLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index, RefType paramType |
+predicate apacheLdapInjectionSinkMethod(Method m, int index) {
+  exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
+    m.getDeclaringType().getAnAncestor() instanceof TypeApacheLdapConnection and
+    m.hasName("search")
+  )
+}
+
+/** Holds if parameter at index `index` in method `m` is LDAP injection sink. */
+predicate ldapInjectionSinkMethod(Method m, int index) {
+  jndiLdapInjectionSinkMethod(m, index) or
+  unboundIdLdapInjectionSinkMethod(m, index) or
+  springLdapInjectionSinkMethod(m, index) or
+  apacheLdapInjectionSinkMethod(m, index)
+}
+
+/** A data flow sink for unvalidated user input that is used to construct LDAP queries. */
+class LdapInjectionSink extends DataFlow::ExprNode {
+  LdapInjectionSink() {
+    exists(MethodAccess ma, Method m, int index |
       ma.getMethod() = m and
       ma.getArgument(index) = this.getExpr() and
-      m.getParameterType(index) = paramType
-    |
-      m.getDeclaringType().getAnAncestor() instanceof TypeApacheLdapConnection and
-      m.hasName("search") and
-      not isVarargs(m, index)
+      ldapInjectionSinkMethod(m, index)
     )
   }
 }
@@ -235,12 +199,13 @@ predicate filterToStringStep(ExprNode n1, ExprNode n2) {
  * `SearchRequest`, i.e. `new SearchRequest(tainted)`.
  */
 predicate unboundIdSearchRequestStep(ExprNode n1, ExprNode n2) {
-  exists(ConstructorCall cc, int index |
+  exists(ConstructorCall cc, int index, Parameter param |
     cc.getConstructedType() instanceof TypeUnboundIdSearchRequest
   |
     n1.asExpr() = cc.getArgument(index) and
     n2.asExpr() = cc and
-    not isVarargs(cc.getConstructor(), index)
+    cc.getConstructor().getParameter(index) = param and
+    not param.isVarargs()
   )
 }
 

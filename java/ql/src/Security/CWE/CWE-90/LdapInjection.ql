@@ -10,7 +10,7 @@
  *       external/cwe/cwe-090
  */
 
-import semmle.code.java.Expr
+import java
 import semmle.code.java.dataflow.FlowSources
 import LdapInjectionLib
 import DataFlow::PathGraph
