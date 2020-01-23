@@ -149,6 +149,8 @@ private class PointerContent extends Content, TPointerContent {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content c, PostUpdateNode node2) {
+  // a write `(*p).f = rhs` is modelled as two store steps: `rhs` is flows into field `f` of `(*p)`,
+  // which in turn flows into the pointer content of `p`
   exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
     node1 = rhs and
     node2.getPreUpdateNode() = base and
