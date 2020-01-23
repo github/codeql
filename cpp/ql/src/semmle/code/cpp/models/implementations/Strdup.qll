@@ -51,10 +51,8 @@ class StrndupFunction extends AllocationFunction, ArrayFunction, TaintFunction {
   StrndupFunction() {
     exists(string name |
       hasGlobalOrStdName(name) and
-      (
-        // strndup(str, maxlen)
-        name = "strndup"
-      )
+      // strndup(str, maxlen)
+      name = "strndup"
     )
   }
 
