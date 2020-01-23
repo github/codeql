@@ -59,9 +59,9 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
 
 /** Holds if taint flows from `pred` to `succ` via a reference or dereference. */
 predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
-  succ.asExpr().(AddressExpr).getOperand() = pred.asExpr()
+  succ.(DataFlow::AddressOperationNode).getOperand() = pred
   or
-  succ.asExpr().(StarExpr).getBase() = pred.asExpr()
+  succ.(DataFlow::PointerDereferenceNode).getOperand() = pred
 }
 
 /** Holds if taint flows from `pred` to `succ` via a field read. */
@@ -71,7 +71,7 @@ predicate fieldReadStep(DataFlow::Node pred, DataFlow::Node succ) {
 
 /** Holds if taint flows from `pred` to `succ` via an array index operation. */
 predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
-  succ.asExpr().(IndexExpr).getBase() = pred.asExpr()
+  succ.(DataFlow::ElementReadNode).getBase() = pred
 }
 
 /** Holds if taint flows from `pred` to `succ` via an extract tuple operation. */
@@ -88,7 +88,7 @@ predicate stringConcatStep(DataFlow::Node pred, DataFlow::Node succ) {
 
 /** Holds if taint flows from `pred` to `succ` via a slice operation. */
 predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
-  succ.asExpr().(SliceExpr).getBase() = pred.asExpr()
+  succ.(DataFlow::SliceNode).getBase() = pred
 }
 
 /** Holds if taint flows from `pred` to `succ` via a function model. */

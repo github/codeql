@@ -6,16 +6,12 @@ import go
 
 private module StdlibHttp {
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends UntrustedFlowSource::Range, DataFlow::ExprNode {
-    override SelectorExpr expr;
-
+  private class UserControlledRequestField extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {
     UserControlledRequestField() {
-      exists(Type req, Type baseType, string fieldName |
+      exists(Type req, string fieldName |
         req.hasQualifiedName("net/http", "Request") and
-        baseType = expr.getBase().getType() and
-        fieldName = expr.getSelector().getName() and
-        (baseType = req or baseType = req.getPointerType()) and
-        (fieldName = "Body" or fieldName = "Form" or fieldName = "Header" or fieldName = "URL")
+        this.getField() = req.getField(fieldName) |
+        fieldName = "Body" or fieldName = "Form" or fieldName = "Header" or fieldName = "URL"
       )
     }
   }
@@ -101,17 +97,15 @@ private module StdlibHttp {
 
   private class RequestBody extends HTTP::RequestBody::Range, DataFlow::ExprNode {
     RequestBody() {
-      exists(DataFlow::CallNode newRequestCall |
-        newRequestCall.getTarget().hasQualifiedName("net/http", "NewRequest")
-      |
-        this = newRequestCall.getArgument(2)
+      exists(Function newRequest |
+        newRequest.hasQualifiedName("net/http", "NewRequest") and
+        this = newRequest.getACall().getArgument(2)
       )
       or
-      exists(Write w, DataFlow::Node base, Field body, Type request |
-        w.writesField(base, body, this) and
+      exists(Field body, Type request |
         request.hasQualifiedName("net/http", "Request") and
-        request.getPointerType() = base.getType().getUnderlyingType() and
-        body.getName() = "Body"
+        body = request.getField("Body") and
+        this = body.getAWrite().getRhs()
       )
     }
   }
