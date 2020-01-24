@@ -3,7 +3,7 @@ import semmle.code.cpp.controlflow.StackVariableReachability
 
 class MyStackVariableReachability extends StackVariableReachabilityWithReassignment {
   MyStackVariableReachability() { this = "MyStackVariableReachability" }
- 
+
   override predicate isSourceActual(ControlFlowNode node, StackVariable v) {
     exprDefinition(v, _, node)
   }
@@ -12,9 +12,7 @@ class MyStackVariableReachability extends StackVariableReachabilityWithReassignm
     node.(VariableAccess).getTarget() = v
   }
 
-  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
-    exprDefinition(v, _, node)
-  }
+  override predicate isBarrier(ControlFlowNode node, StackVariable v) { exprDefinition(v, _, node) }
 }
 
 from MyStackVariableReachability svr, ControlFlowNode sink
