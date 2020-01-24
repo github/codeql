@@ -88,7 +88,7 @@ export class Project {
 
     // If the requested module name is exactly the overridden package name,
     // return the entry point file (it is not necessarily called `index.ts`).
-    if (moduleName.length === packageName.length) {
+    if (moduleName === packageName) {
       return { resolvedFileName: packageEntryPoint, isExternalLibraryImport: true };
     }
 
