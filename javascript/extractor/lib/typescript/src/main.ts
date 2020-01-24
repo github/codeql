@@ -245,6 +245,12 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
     return {ast, code};
 }
 
+/**
+ * Matches a path segment referencing a package in a node_modules folder, and extracts
+ * two capture groups: the package name, and the relative path in the package.
+ *
+ * For example `lib/node_modules/@foo/bar/src/index.js` extracts the capture groups [`@foo/bar`, `src/index.js`].
+ */
 const nodeModulesRex = /[/\\]node_modules[/\\]((?:@[\w.-]+[/\\])?\w[\w.-]*)[/\\](.*)/;
 
 function handleOpenProjectCommand(command: OpenProjectCommand) {
