@@ -40,4 +40,4 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 * The taint tracking library (`semmle.code.cpp.dataflow.TaintTracking`) has had
   the following improvements:
   * The library now models data flow through `strdup` and similar functions.
-  
+  * The library now models data flow through formatting functions such as `sprintf`.  Only fixed parameters (not varargs) are included in the model.
