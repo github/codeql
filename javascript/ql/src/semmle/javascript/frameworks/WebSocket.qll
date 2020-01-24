@@ -2,7 +2,7 @@
  * Provides classes for working with [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) and [ws](https://github.com/websockets/ws).
  *
  * The model is based on the EventEmitter model, and there is therefore a
- * data-flow step from where a WebSocket event is send to where the message
+ * data-flow step from where a WebSocket event is sent to where the message
  * is received.
  *
  * Data flow is modeled both from clients to servers, and from servers to clients.
@@ -35,7 +35,7 @@ module ClientWebSocket {
     }
 
     /**
-     * Holds if this class an import of the "ws" module.
+     * Holds if this class is an import of the "ws" module.
      */
     predicate isNode() { isNode = true }
   }
@@ -81,7 +81,7 @@ module ClientWebSocket {
   }
 
   /**
-   * Gets a handler, that is registered using method `methodName` and receives messages send to `emitter`.
+   * Gets a handler, that is registered using method `methodName` and receives messages sent to `emitter`.
    */
   private DataFlow::FunctionNode getAMessageHandler(ClientWebSocket::ClientSocket emitter, string methodName) {
     exists(DataFlow::CallNode call |
