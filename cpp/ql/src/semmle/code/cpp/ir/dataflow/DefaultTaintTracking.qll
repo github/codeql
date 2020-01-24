@@ -19,33 +19,30 @@ private predicate predictableInstruction(Instruction instr) {
   predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
-private predicate userInputInstruction(Instruction instr) {
-  exists(CallInstruction ci, WriteSideEffectInstruction wsei |
-    userInputArgument(ci.getConvertedResultExpression(), wsei.getIndex()) and
-    instr = wsei and
-    wsei.getPrimaryInstruction() = ci
-  )
-  or
-  userInputReturned(instr.getConvertedResultExpression())
-  or
-  isUserInput(instr.getConvertedResultExpression(), _)
-  or
-  instr.getConvertedResultExpression() instanceof EnvironmentRead
-  or
-  instr
-      .(LoadInstruction)
-      .getSourceAddress()
-      .(VariableAddressInstruction)
-      .getASTVariable()
-      .hasName("argv") and
-  instr.getEnclosingFunction().hasGlobalName("main")
-}
-
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) {
-    userInputInstruction(source.asInstruction())
+    exists(CallInstruction ci, WriteSideEffectInstruction wsei |
+      userInputArgument(ci.getConvertedResultExpression(), wsei.getIndex()) and
+      source.asInstruction() = wsei and
+      wsei.getPrimaryInstruction() = ci
+    )
+    or
+    userInputReturned(source.asExpr())
+    or
+    isUserInput(source.asExpr(), _)
+    or
+    source.asExpr() instanceof EnvironmentRead
+    or
+    source
+        .asInstruction()
+        .(LoadInstruction)
+        .getSourceAddress()
+        .(VariableAddressInstruction)
+        .getASTVariable()
+        .hasName("argv") and
+    source.asInstruction().getEnclosingFunction().hasGlobalName("main")
   }
 
   override predicate isSink(DataFlow::Node sink) { any() }
