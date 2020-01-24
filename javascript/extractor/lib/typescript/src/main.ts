@@ -37,7 +37,7 @@ import * as readline from "readline";
 import * as ts from "./typescript";
 import * as ast_extractor from "./ast_extractor";
 
-import { Project, PackageLocationMap } from "./common";
+import { Project } from "./common";
 import { TypeTable } from "./type_table";
 import { VirtualSourceRoot } from "./virtual_source_root";
 

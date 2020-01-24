@@ -14,8 +14,13 @@ export class Project {
   private host: ts.CompilerHost;
   private resolutionCache: ts.ModuleResolutionCache;
 
-  constructor(public tsConfig: string, public config: ts.ParsedCommandLine, public typeTable: TypeTable, public packageLocations: PackageLocationMap,
+  constructor(
+        public tsConfig: string,
+        public config: ts.ParsedCommandLine,
+        public typeTable: TypeTable,
+        public packageEntryPoints: Map<string, string>,
         public virtualSourceRoot: VirtualSourceRoot) {
+
     this.resolveModuleNames = this.resolveModuleNames.bind(this);
 
     this.resolutionCache = ts.createModuleResolutionCache(pathlib.dirname(tsConfig), ts.sys.realpath, config.options);
@@ -75,7 +80,7 @@ export class Project {
     let packageName = packageNameMatch[0];
 
     // Get the overridden location of this package, if one exists.
-    let packageEntryPoint = this.packageLocations.get(packageName);
+    let packageEntryPoint = this.packageEntryPoints.get(packageName);
     if (packageEntryPoint == null) {
       // The package is not overridden, but we have established that it begins with a valid package name.
       // Do a lookup in the virtual source root (where dependencies are installed) by changing the 'containing file'.
@@ -116,5 +121,3 @@ export class Project {
     return null;
   }
 }
-
-export type PackageLocationMap = Map<string, string>;
