@@ -7,12 +7,17 @@
 import go
 
 /**
- * Holds if the given data flow node refers to a string that ends with a slash.
+ * Holds if the string value of `cat` prevents anything appended after it
+ * from affecting the hostname or path of a URL.
+ *
+ * Specifically, this holds if the string contains `?` or `#`.
  */
-private predicate endsWithSlash(DataFlow::Node nd) {
-  nd.getStringValue().matches("%/")
-  or
-  endsWithSlash(StringConcatenation::getLastOperand(nd))
+private predicate concatenationHasSanitizingSubstring(StringOps::ConcatenationElement cat) {
+  exists(StringOps::ConcatenationLeaf lf | lf = cat.getALeaf() |
+    lf.getStringValue().regexpMatch(".*[?#].*")
+    or
+    hasSanitizingSubstring(lf.asNode().getAPredecessor())
+  )
 }
 
 /**
@@ -22,9 +27,9 @@ private predicate endsWithSlash(DataFlow::Node nd) {
  * Specifically, this holds if the string contains `?` or `#`.
  */
 private predicate hasSanitizingSubstring(DataFlow::Node nd) {
-  nd.getStringValue().regexpMatch(".*[?#].*")
-  or
-  hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
+  exists(StringOps::ConcatenationElement cat | nd = cat.asNode() |
+    concatenationHasSanitizingSubstring(cat)
+  )
   or
   hasSanitizingSubstring(nd.getAPredecessor())
 }
@@ -36,9 +41,21 @@ private predicate hasSanitizingSubstring(DataFlow::Node nd) {
  * This is considered as a sanitizing edge for the URL redirection queries.
  */
 predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
-  exists(DataFlow::Node operator, int n |
-    StringConcatenation::taintStep(source, sink, operator, n) and
-    hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+  exists(StringOps::ConcatenationElement cat, int n |
+    StringOps::Concatenation::taintStep(source, sink, cat.asNode(), n) and
+    concatenationHasSanitizingSubstring(cat.getOperand([0 .. n - 1]))
+  )
+}
+
+/**
+ * Holds if the string value of `cat` prevents anything appended after it
+ * from affecting the hostname of a URL.
+ */
+private predicate concatenationHasHostnameSanitizingSubstring(StringOps::ConcatenationElement cat) {
+  exists(StringOps::ConcatenationLeaf lf | lf = cat.getALeaf() |
+    lf.getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*")
+    or
+    hasHostnameSanitizingSubstring(lf.asNode())
   )
 }
 
@@ -56,9 +73,9 @@ predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
  * the `//` separating the (optional) scheme from the hostname.
  */
 predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
-  nd.getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*")
-  or
-  hasHostnameSanitizingSubstring(StringConcatenation::getAnOperand(nd))
+  exists(StringOps::ConcatenationElement cat | cat.asNode() = nd |
+    concatenationHasHostnameSanitizingSubstring(cat)
+  )
   or
   hasHostnameSanitizingSubstring(nd.getAPredecessor())
 }
@@ -70,8 +87,8 @@ predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
  * This is considered as a sanitizing edge for the URL redirection queries.
  */
 predicate hostnameSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
-  exists(DataFlow::Node operator, int n |
-    StringConcatenation::taintStep(source, sink, operator, n) and
-    hasHostnameSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+  exists(StringOps::ConcatenationElement cat, int n |
+    StringOps::Concatenation::taintStep(source, sink, cat.asNode(), n) and
+    concatenationHasHostnameSanitizingSubstring(cat.getOperand([0 .. n - 1]))
   )
 }
