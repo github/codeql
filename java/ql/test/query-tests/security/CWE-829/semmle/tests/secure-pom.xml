@@ -49,9 +49,9 @@
             <url>https://insecure-repository.example</url>
         </repository>
         <repository>
-	        <id>test</id>
-	        <!-- GOOD! Use HTTP, but for localhost -->
-	        <url>http://localhost:${deploy.webserver.port}/repo</url>
+            <id>test</id>
+            <!-- GOOD! Use HTTP, but for localhost -->
+            <url>http://localhost:${deploy.webserver.port}/repo</url>
         </repository>
     </repositories>
     <pluginRepositories>
