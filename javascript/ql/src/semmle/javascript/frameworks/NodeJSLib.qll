@@ -919,17 +919,6 @@ module NodeJSLib {
       this.getASuperClassNode().getALocalSource() = getAnEventEmitterImport() or
       this.getADirectSuperClass() instanceof EventEmitterSubClass
     }
-
-    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
-      t.start() and result = this
-      or
-      exists (DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
-    }
-
-    /**
-     * Gets a reference to this class.
-     */
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
   }
 
   /**
@@ -939,7 +928,7 @@ module NodeJSLib {
    */
   private class CustomEventEmitter extends NodeJSEventEmitter {
     CustomEventEmitter() {
-      this = any(EventEmitterSubClass clazz).ref().getAnInstantiation()
+      this = any(EventEmitterSubClass clazz).getAClassReference().getAnInstantiation()
     }
   }
 
