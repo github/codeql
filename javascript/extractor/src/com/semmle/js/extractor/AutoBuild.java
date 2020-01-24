@@ -801,15 +801,6 @@ public class AutoBuild {
       return resolved;
     }
 
-    // Get the "main" property from the package.json
-    // This usually refers to the compiled output, such as `./out/foo.js` but may hint as to
-    // the name of main file ("foo" in this case).
-    String mainStr = null;
-    JsonElement mainElm = packageJson.get("main");
-    if (mainElm instanceof JsonPrimitive && ((JsonPrimitive)mainElm).isString()) {
-      mainStr = mainElm.getAsString();
-    }
-
     // Look for source files `./src` if it exists
     Path sourceDir = packageDir.resolve("src");
     if (Files.isDirectory(sourceDir)) {
@@ -818,6 +809,11 @@ public class AutoBuild {
       if (resolved != null) {
         return resolved;
       }
+
+      // Get the "main" property from the package.json
+      // This usually refers to the compiled output, such as `./out/foo.js` but may hint as to
+      // the name of main file ("foo" in this case).
+      String mainStr = getChildAsString(packageJson, "main");
 
       // If "main" was defined, try to map it to a file in `src`.
       // For example `out/dist/foo.bundle.js` might be mapped back to `src/foo.ts`.
