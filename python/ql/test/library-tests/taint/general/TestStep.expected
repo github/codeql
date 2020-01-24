@@ -119,6 +119,7 @@
 | simple.test | assignment.py:7 | a |  | --> | sequence of simple.test | assignment.py:7 | Tuple |  |
 | simple.test | assignment.py:7 | a |  | --> | simple.test | assignment.py:8 | b |  |
 | simple.test | assignment.py:13 | SOURCE |  | --> | sequence of simple.test | assignment.py:13 | Tuple |  |
+| simple.test | assignment.py:13 | SOURCE |  | --> | simple.test | assignment.py:14 | t1 |  |
 | simple.test | assignment.py:13 | SOURCE |  | --> | simple.test | assignment.py:14 | t2 |  |
 | simple.test | carrier.py:4 | arg | p1 = simple.test | --> | simple.test | carrier.py:5 | arg | p1 = simple.test |
 | simple.test | carrier.py:17 | SOURCE |  | --> | .attr = simple.test | carrier.py:17 | ImplicitCarrier() |  |

@@ -4,5 +4,5 @@
 | assignment.py:8 | swap_taint | b | simple.test |
 | assignment.py:14 | nested_assignment | s1 | NO TAINT |
 | assignment.py:14 | nested_assignment | s2 | NO TAINT |
-| assignment.py:14 | nested_assignment | t1 | NO TAINT |
+| assignment.py:14 | nested_assignment | t1 | simple.test |
 | assignment.py:14 | nested_assignment | t2 | simple.test |
