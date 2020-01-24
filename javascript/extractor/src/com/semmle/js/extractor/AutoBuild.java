@@ -801,6 +801,11 @@ public class AutoBuild {
       return resolved;
     }
 
+    // Get the "main" property from the package.json
+    // This usually refers to the compiled output, such as `./out/foo.js` but may hint as to
+    // the name of main file ("foo" in this case).
+    String mainStr = getChildAsString(packageJson, "main");
+
     // Look for source files `./src` if it exists
     Path sourceDir = packageDir.resolve("src");
     if (Files.isDirectory(sourceDir)) {
@@ -809,11 +814,6 @@ public class AutoBuild {
       if (resolved != null) {
         return resolved;
       }
-
-      // Get the "main" property from the package.json
-      // This usually refers to the compiled output, such as `./out/foo.js` but may hint as to
-      // the name of main file ("foo" in this case).
-      String mainStr = getChildAsString(packageJson, "main");
 
       // If "main" was defined, try to map it to a file in `src`.
       // For example `out/dist/foo.bundle.js` might be mapped back to `src/foo.ts`.
@@ -838,7 +838,17 @@ public class AutoBuild {
       }
     }
 
-    return resolved;
+    // Try to resolve main as a sibling of the package.json file, such as "./main.js" -> "./main.ts".
+    if (mainStr != null) {
+      Path mainPath = Paths.get(mainStr);
+      String withoutExt = FileUtil.stripExtension(mainPath.getFileName().toString());
+      resolved = tryResolveWithExtensions(packageDir, withoutExt, extensions);
+      if (resolved != null) {
+        return resolved;
+      }
+    }
+
+    return null;
   }
 
   private ExtractorConfig mkExtractorConfig() {
