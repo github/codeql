@@ -93,7 +93,8 @@ module ClientWebSocket {
 
   /**
    * A handler that receives a message using the WebSocket API.
-   * The "ws" library implements a superset of the WebSocket API, and this class therefore models both WebSocket and "ws".
+   * The WebSocket API is used both by the WebSocket library in browsers, and the same API is also implemented as part of the "ws" library. 
+   * This class therefore models both the WebSocket library, and a subset of the "ws" library. 
    */
   private class WebSocketReceiveNode extends ClientWebSocket::ReceiveNode {
     WebSocketReceiveNode() {
@@ -108,7 +109,8 @@ module ClientWebSocket {
   }
 
   /**
-   * A handler that receives a message using the API from the "ws" library.
+   * A handler that receives a message using the API from the "ws" library. 
+   * The "ws" library additionally implements the WebSocket API, which is modeled in the `WebSocketReceiveNode` class. 
    */
   private class WSReceiveNode extends ClientWebSocket::ReceiveNode {
     WSReceiveNode () {
