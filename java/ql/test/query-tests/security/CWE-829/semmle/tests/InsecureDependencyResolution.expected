@@ -3,6 +3,3 @@
 | insecure-pom.xml:31:9:36:30 | snapshotRepository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://localhost.example |
 | insecure-pom.xml:39:9:44:22 | repository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://insecure-repository.example |
 | insecure-pom.xml:47:9:52:28 | pluginRepository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://insecure-repository.example |
-| secure-pom.xml:31:9:36:30 | snapshotRepository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://localhost/snaphots |
-| secure-pom.xml:37:9:42:30 | snapshotRepository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://localhost:82 |
-| secure-pom.xml:51:9:55:22 | repository | Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository http://localhost:${deploy.webserver.port}/repo |
