@@ -296,7 +296,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
                 || redirectNodeModulesPath(path) != null;
         },
         readFile: (path: string) => {
-            if (!fs.existsSync(path)) {
+            if (!ts.sys.fileExists(path)) {
                 let virtualPath = virtualSourceRoot.toVirtualPathIfFileExists(path);
                 if (virtualPath != null) return ts.sys.readFile(virtualPath);
                 virtualPath = redirectNodeModulesPath(path);
