@@ -35,7 +35,8 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
     or
     source.asExpr() instanceof EnvironmentRead
     or
-    source.asInstruction()
+    source
+        .asInstruction()
         .(LoadInstruction)
         .getSourceAddress()
         .(VariableAddressInstruction)
