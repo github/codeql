@@ -55,7 +55,7 @@ void test1()
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, string::source(), "Hello."));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};

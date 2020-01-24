@@ -7,6 +7,7 @@
  */
 
 import semmle.code.cpp.models.interfaces.ArrayFunction
+import semmle.code.cpp.models.interfaces.Taint
 
 private Type stripTopLevelSpecifiersOnly(Type t) {
   result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
@@ -39,7 +40,7 @@ private Type getAFormatterWideTypeOrDefault() {
 /**
  * A standard library function that uses a `printf`-like formatting string.
  */
-abstract class FormattingFunction extends ArrayFunction {
+abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
@@ -154,5 +155,10 @@ abstract class FormattingFunction extends ArrayFunction {
 
   predicate hasArrayOutput(int bufParam) {
   	bufParam = getOutputParameterIndex()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(getFormatParameterIndex()) and
+    output.isParameterDeref(getOutputParameterIndex())
   }
 }
