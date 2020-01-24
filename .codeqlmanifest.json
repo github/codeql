@@ -1,5 +1,6 @@
 { "provide": [ "ql/src/qlpack.yml",
                "ql/test/qlpack.yml",
                "upgrades/qlpack.yml",
-               "ql/config/legacy-support/qlpack.yml" ],
+               "ql/config/legacy-support/qlpack.yml",
+               "build/codeql-extractor-go/codeql-extractor.yml" ],
   "ignore": [ "the-extractor-which-needs-to-be-built" ] }
