@@ -120,12 +120,24 @@ predicate endOfBinaryLhs(BinaryExpr expr, int line, int col) {
   )
 }
 
+/** Compute the number of parenthesis characters next to the operator. */
+int getParensNextToOp(BinaryExpr expr) {
+  exists(Expr left, Expr right, int pleft, int pright |
+    left = expr.getLeftOperand() and
+    right = expr.getRightOperand() and
+    (if left.isParenthesized() then isParenthesized(left, pleft) else pleft = 0) and
+    (if right.isParenthesized() then isParenthesized(right, pright) else pright = 0) and
+    result = pleft + pright
+  )
+}
+
 /** Compute whitespace around the operator. */
 int operatorWS(BinaryExpr expr) {
-  exists(int line, int lcol, int rcol |
+  exists(int line, int lcol, int rcol, int parens |
     endOfBinaryLhs(expr, line, lcol) and
     startOfBinaryRhs(expr, line, rcol) and
-    result = rcol - lcol + 1 - expr.getOp().length()
+    parens = getParensNextToOp(expr) and
+    result = rcol - lcol + 1 - expr.getOp().length() - parens
   )
 }
 
