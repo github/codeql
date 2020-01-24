@@ -28,6 +28,12 @@
             <!-- BAD! Use HTTPS -->
             <url>http://insecure-repository.example</url>
         </snapshotRepository>
+        <snapshotRepository>
+            <id>insecure-snapshots</id>
+            <name>Insecure Repository Snapshots</name>
+            <!-- BAD! Use HTTPS -->
+            <url>http://localhost.example</url>
+        </snapshotRepository>
     </distributionManagement>
     <repositories>
         <repository>
