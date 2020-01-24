@@ -26,4 +26,14 @@ app.post('/doWithCaptcha', (req, res) => { // OK - attacker can't guess the capt
     res.end('Ok');
 });
 
+app.post('/user', (req, res) => { // NOT OK - access to req.user is unprotected
+    somethingElse(req.user.name);
+    res.end('Ok');
+});
+
+app.post('/session', (req, res) => { // NOT OK - access to req.session is unprotected
+    somethingElse(req.session.name);
+    res.end('Ok');
+});
+
 app.listen();

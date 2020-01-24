@@ -12,16 +12,16 @@
 
 import javascript
 
-/** Gets the string `session` or `cookies`, the parts of `req` containing cookie data. */
-string sessionOrCookies() {
-  result = "session" or result = "cookies"
+/** Gets a property name of `req` which refers to data usually derived from cookie data. */
+string cookieProperty() {
+  result = "session" or result = "cookies" or result = "user"
 }
 
 /** Gets a data flow node that flows to the base of an access to `cookies` or `session`. */
 private DataFlow::SourceNode nodeLeadingToCookieAccess(DataFlow::TypeBackTracker t) {
   t.start() and
   exists(DataFlow::PropRead value |
-    value = result.getAPropertyRead(sessionOrCookies()).getAPropertyRead() and
+    value = result.getAPropertyRead(cookieProperty()).getAPropertyRead() and
 
     // Ignore accesses to values that are part of a CSRF or captcha check
     not value.getPropertyName().regexpMatch("(?i).*(csrf|xsrf|captcha).*") and
