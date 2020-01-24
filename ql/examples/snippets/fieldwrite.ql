@@ -8,9 +8,8 @@
 
 import go
 
-from Type response, Field status, DataFlow::Write write
+from Field status, Write write
 where
-  response.hasQualifiedName("net/http", "Response") and
-  status = response.getField("Status") and
+  status.hasQualifiedName("net/http", "Response", "Status") and
   write = status.getAWrite()
 select write, write.getRhs()

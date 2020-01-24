@@ -7,7 +7,7 @@
 
 import go
 
-from Variable err, DataFlow::Write write
+from Variable err, Write write
 where
   err.getName() = "err" and
   write = err.getAWrite()

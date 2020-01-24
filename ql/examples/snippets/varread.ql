@@ -7,7 +7,7 @@
 
 import go
 
-from Variable err, DataFlow::Read read
+from Variable err, Read read
 where
   err.getName() = "err" and
   read = err.getARead()

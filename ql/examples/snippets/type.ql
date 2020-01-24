@@ -8,6 +8,6 @@
 
 import go
 
-from Type response
-where response.hasQualifiedName("net/http", "Request")
-select response
+from Type request
+where request.hasQualifiedName("net/http", "Request")
+select request

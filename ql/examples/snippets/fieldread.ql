@@ -8,9 +8,8 @@
 
 import go
 
-from Type reqtp, Field reqm, DataFlow::Read read
+from Field reqm, Read read
 where
-  reqtp.hasQualifiedName("net/http", "Request") and
-  reqm = reqtp.getField("Method") and
+  reqm.hasQualifiedName("net/http", "Request", "Method") and
   read = reqm.getARead()
 select read
