@@ -63,6 +63,7 @@ io.on('connect', (socket) => {
   socket.volatile;
   socket.broadcast;
   socket.local;
+  socket.broadcast.emit('broadcast');
 });
 io.on('connection', (socket) => {});
 ns.on('connect', (socket) => {});

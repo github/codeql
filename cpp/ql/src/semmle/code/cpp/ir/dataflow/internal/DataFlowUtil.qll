@@ -55,6 +55,9 @@ class Node extends TIRDataFlowNode {
    */
   Expr asConvertedExpr() { result = instr.getConvertedResultExpression() }
 
+  /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
+  Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
+
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = instr.(InitializeParameterInstruction).getParameter() }
 

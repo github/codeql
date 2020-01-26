@@ -25,7 +25,7 @@ Object aFunctionLocalsObject() {
 
 
 predicate modification_of_locals(ControlFlowNode f) {
-    f.(SubscriptNode).getValue().refersTo(aFunctionLocalsObject()) and (f.isStore() or f.isDelete())
+    f.(SubscriptNode).getObject().refersTo(aFunctionLocalsObject()) and (f.isStore() or f.isDelete())
     or
     exists(string mname, AttrNode attr |
         attr = f.(CallNode).getFunction() and

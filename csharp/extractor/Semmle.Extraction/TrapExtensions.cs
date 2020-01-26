@@ -162,7 +162,7 @@ namespace Semmle.Extraction
 
         public static void WriteTrapFloat(this TextWriter trapFile, float f)
         {
-            trapFile.Write(f.ToString("0.#####e0"));  // Trap importer won't accept ints
+            trapFile.Write(f.ToString("F5", System.Globalization.CultureInfo.InvariantCulture));  // Trap importer won't accept ints
         }
 
         public static void WriteTuple(this TextWriter trapFile, string name, params object[] @params)

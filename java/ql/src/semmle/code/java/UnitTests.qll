@@ -36,14 +36,32 @@ class TearDownMethod extends Method {
   }
 }
 
+private class TestRelatedAnnotation extends Annotation {
+  TestRelatedAnnotation() {
+    this.getType().getPackage().hasName("org.testng.annotations") or
+    this.getType().getPackage().hasName("org.junit") or
+    this.getType().getPackage().hasName("org.junit.runner") or
+    this.getType().getPackage().hasName("org.junit.jupiter.api") or
+    this.getType().getPackage().hasName("org.junit.jupiter.params")
+  }
+}
+
+private class TestRelatedMethod extends Method {
+  TestRelatedMethod() { this.getAnAnnotation() instanceof TestRelatedAnnotation }
+}
+
 /**
- * A class detected to be a test class, either because it is a JUnit test class
- * or because its name or the name of one of its super-types contains the substring "Test".
+ * A class detected to be a test class, either because it or one of its super-types
+ * and/or enclosing types contains a test method or method with a unit-test-related
+ * annotation.
  */
 class TestClass extends Class {
   TestClass() {
     this instanceof JUnit38TestClass or
-    this.getASupertype*().getSourceDeclaration().getName().matches("%Test%")
+    exists(TestMethod m | m.getDeclaringType() = this) or
+    exists(TestRelatedMethod m | m.getDeclaringType() = this) or
+    this.getASourceSupertype() instanceof TestClass or
+    this.getEnclosingType() instanceof TestClass
   }
 }
 

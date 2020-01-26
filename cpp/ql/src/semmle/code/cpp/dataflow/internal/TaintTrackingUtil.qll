@@ -68,9 +68,11 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   )
   or
   // Taint can flow through modeled functions
+  exprToExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
+  or
   exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
   or
-  exprToExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
+  exprToPartialDefinitionStep(nodeFrom.asExpr(), nodeTo.asPartialDefinition())
 }
 
 /**
@@ -133,19 +135,30 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
     )
   )
   or
-  exists(TaintFunction f, Call call, FunctionOutput outModel |
+  exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
     call.getTarget() = f and
-    exprOut = call and
-    outModel.isReturnValueDeref() and
-    exists(int argInIndex, FunctionInput inModel | f.hasTaintFlow(inModel, outModel) |
-      inModel.isParameterDeref(argInIndex) and
-      exprIn = call.getArgument(argInIndex)
+    (
+      exprOut = call and
+      outModel.isReturnValueDeref()
       or
-      inModel.isParameterDeref(argInIndex) and
-      call.passesByReference(argInIndex, exprIn)
+      exprOut = call and
+      outModel.isReturnValue()
+    ) and
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      exists(int argInIndex |
+        inModel.isParameterDeref(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+        or
+        inModel.isParameterDeref(argInIndex) and
+        call.passesByReference(argInIndex, exprIn)
+        or
+        inModel.isParameter(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      )
       or
-      inModel.isParameter(argInIndex) and
-      exprIn = call.getArgument(argInIndex)
+      inModel.isQualifierObject() and
+      exprIn = call.getQualifier()
     )
   )
 }
@@ -163,11 +176,40 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
     )
   )
   or
-  exists(TaintFunction f, Call call, FunctionOutput outModel, int argOutIndex |
+  exists(
+    TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel, int argOutIndex
+  |
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
     outModel.isParameterDeref(argOutIndex) and
-    exists(int argInIndex, FunctionInput inModel | f.hasTaintFlow(inModel, outModel) |
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      exists(int argInIndex |
+        inModel.isParameterDeref(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+        or
+        inModel.isParameterDeref(argInIndex) and
+        call.passesByReference(argInIndex, exprIn)
+        or
+        inModel.isParameter(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      )
+      or
+      inModel.isQualifierObject() and
+      exprIn = call.getQualifier()
+    )
+  )
+}
+
+private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
+  exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
+    call.getTarget() = f and
+    (
+      exprOut = call.getQualifier() and
+      outModel.isQualifierObject()
+    ) and
+    f.hasTaintFlow(inModel, outModel) and
+    exists(int argInIndex |
       inModel.isParameterDeref(argInIndex) and
       exprIn = call.getArgument(argInIndex)
       or

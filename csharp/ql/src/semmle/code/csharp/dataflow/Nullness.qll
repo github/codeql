@@ -176,7 +176,17 @@ private predicate isMaybeNullArgument(Ssa::ExplicitDefinition def, MaybeNullExpr
     pdef = def.getADefinition()
   |
     p = pdef.getParameter().getSourceDeclaration() and
-    p.getAnAssignedArgument() = arg and
+    arg = p.getAnAssignedArgument() and
+    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
+  )
+}
+
+private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, AlwaysNullExpr arg) {
+  exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
+    pdef = def.getADefinition()
+  |
+    p = pdef.getParameter().getSourceDeclaration() and
+    arg = p.getDefaultValue() and
     not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
   )
 }
@@ -203,6 +213,8 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     then msg = "because of $@ null argument"
     else msg = "because of $@ potential null argument"
   )
+  or
+  isNullDefaultArgument(def, reason) and msg = "because the parameter has a null default value"
   or
   // If the source of a variable is `null` then the variable may be `null`
   exists(AssignableDefinition adef | adef = def.(Ssa::ExplicitDefinition).getADefinition() |

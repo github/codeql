@@ -1,7 +1,7 @@
 import python
 
 from string l, NameNode n
-where n.getLocation().getFile().getName().matches("%test.py") and
+where n.getLocation().getFile().getShortName() = "test.py" and
 (
   n.isGlobal() and l = "global"
   or

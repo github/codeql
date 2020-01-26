@@ -895,16 +895,40 @@ module NodeJSLib {
   }
 
   /**
+   * Gets an import of the NodeJS EventEmitter.
+   */
+  private DataFlow::SourceNode getAnEventEmitterImport() {
+    result = DataFlow::moduleImport("events") or
+    result = DataFlow::moduleMember("events", "EventEmitter")
+  }
+
+  /**
    * An instance of an EventEmitter that is imported through the 'events' module.
    */
   private class ImportedNodeJSEventEmitter extends NodeJSEventEmitter {
     ImportedNodeJSEventEmitter() {
-      exists(DataFlow::SourceNode clazz |
-        clazz = DataFlow::moduleImport("events") or
-        clazz = DataFlow::moduleMember("events", "EventEmitter")
-      |
-        this = clazz.getAnInstantiation()
-      )
+      this = getAnEventEmitterImport().getAnInstantiation()
+    }
+  }
+
+  /**
+   * A class that extends EventEmitter.
+   */
+  private class EventEmitterSubClass extends DataFlow::ClassNode {
+    EventEmitterSubClass() {
+      this.getASuperClassNode().getALocalSource() = getAnEventEmitterImport() or
+      this.getADirectSuperClass() instanceof EventEmitterSubClass
+    }
+  }
+
+  /**
+   * An instantiation of a class that extends EventEmitter. 
+   * 
+   * By extending `NodeJSEventEmitter' we get data-flow on the events passing through this EventEmitter.
+   */
+  private class CustomEventEmitter extends NodeJSEventEmitter {
+    CustomEventEmitter() {
+      this = any(EventEmitterSubClass clazz).getAClassReference().getAnInstantiation()
     }
   }
 
