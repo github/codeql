@@ -50,10 +50,16 @@ class HashableNode extends AstNode {
    * Gets the value of this AST node, or the empty string if it does not have one.
    */
   string getValue() {
-    literals(this, result, _)
-    or
-    not literals(this, _, _) and
-    result = ""
+    // for literals, get the exact value if available
+    if exists(this.(BasicLit).getExactValue())
+    then result = this.(BasicLit).getExactValue()
+    else
+      // for identifiers, get the name
+      if this instanceof Ident
+      then result = this.(Ident).getName()
+      else
+        // for everything else, give up
+        result = ""
   }
 
   /**
