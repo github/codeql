@@ -39,6 +39,7 @@
 | taint.cpp:352:7:352:7 | b | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:372:7:372:7 | a | taint.cpp:365:24:365:29 | source |
 | taint.cpp:374:7:374:7 | c | taint.cpp:365:24:365:29 | source |
+| taint.cpp:382:7:382:7 | a | taint.cpp:377:23:377:28 | source |
 | taint.cpp:391:7:391:7 | a | taint.cpp:385:27:385:32 | source |
 | taint.cpp:423:7:423:7 | a | taint.cpp:422:14:422:19 | call to source |
 | taint.cpp:424:9:424:17 | call to getMember | taint.cpp:422:14:422:19 | call to source |
