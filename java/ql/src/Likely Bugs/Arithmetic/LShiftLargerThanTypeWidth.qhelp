@@ -6,9 +6,10 @@
 
 <overview>
 <p>
-The left shift operator only uses the lowest 5 bits of its right-hand side
-when the promoted type of its left-hand side is <code>int</code> and the
-lowest 6 bits when the type is <code>long</code>.
+The maximum shift distance used for left-shift operations is determined by the promoted type of
+its left-hand side. When the promoted type is <code>int</code> only the lowest 5 bits of the
+right-hand side are used as the shift distance. When the promoted type is <code>long</code>
+the lowest 6 bits of the right-hand side are used.
 </p>
 </overview>
 <recommendation>
