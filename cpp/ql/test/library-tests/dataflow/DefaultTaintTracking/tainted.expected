@@ -1,9 +1,3 @@
-| defaulttainttracking.cpp:13:25:13:30 | call to getenv | defaulttainttracking.cpp:1:22:1:25 | nptr |
-| defaulttainttracking.cpp:13:25:13:30 | call to getenv | defaulttainttracking.cpp:13:7:13:16 | taintedInt |
-| defaulttainttracking.cpp:13:25:13:30 | call to getenv | defaulttainttracking.cpp:13:20:13:23 | call to atoi |
-| defaulttainttracking.cpp:13:25:13:30 | call to getenv | defaulttainttracking.cpp:13:25:13:30 | call to getenv |
-| defaulttainttracking.cpp:13:25:13:30 | call to getenv | defaulttainttracking.cpp:13:25:13:37 | (const char *)... |
-| defaulttainttracking.cpp:13:25:13:30 | call to getenv | defaulttainttracking.cpp:14:3:14:14 | ... ++ |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:6:15:6:24 | p#0 |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:14 | call to _strdup |
