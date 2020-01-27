@@ -16,6 +16,8 @@
   - [Electron](https://electronjs.org/)
   - [Node.js](https://nodejs.org/)
   - [Socket.IO](https://socket.io/)
+  - [ws](https://github.com/websockets/ws)
+  - [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
 ## New queries
 
