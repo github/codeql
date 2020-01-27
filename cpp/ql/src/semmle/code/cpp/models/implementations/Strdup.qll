@@ -9,17 +9,14 @@ import semmle.code.cpp.models.interfaces.Taint
 class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrdupFunction() {
     exists(string name |
-      hasGlobalOrStdName(name) and
+      hasGlobalName(name) and
       (
         // strdup(str)
         name = "strdup"
         or
         // wcsdup(str)
         name = "wcsdup"
-      )
-      or
-      hasGlobalName(name) and
-      (
+        or
         // _strdup(str)
         name = "_strdup"
         or
@@ -50,7 +47,7 @@ class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction
 class StrndupFunction extends AllocationFunction, ArrayFunction, TaintFunction {
   StrndupFunction() {
     exists(string name |
-      hasGlobalOrStdName(name) and
+      hasGlobalName(name) and
       // strndup(str, maxlen)
       name = "strndup"
     )
