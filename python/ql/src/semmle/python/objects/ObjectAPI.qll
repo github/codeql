@@ -167,6 +167,11 @@ class ModuleValue extends Value {
         this.(ModuleObjectInternal).hasCompleteExportInfo()
     }
 
+    /** Get a module that this module imports */
+    ModuleValue getAnImportedModule() {
+        result.importedAs(this.getScope().getAnImportedModuleName())
+    }
+
 }
 
 module Module {

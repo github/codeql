@@ -14,16 +14,16 @@
 import python
 import semmle.python.filters.Tests
 
-from ImportMember im, ModuleObject m, AttrNode store_attr, string name
+from ImportMember im, ModuleValue m, AttrNode store_attr, string name
 where
-    im.getModule().(ImportExpr).getImportedModuleName() = m.getName() and
+    m.importedAs(im.getModule().(ImportExpr).getImportedModuleName()) and
     im.getName() = name and
     /* Modification must be in a function, so it can occur during lifetime of the import value */
     store_attr.getScope() instanceof Function and
     /* variable resulting from import must have a long lifetime */
     not im.getScope() instanceof Function and
     store_attr.isStore() and
-    store_attr.getObject(name).refersTo(m) and
+    store_attr.getObject(name).pointsTo(m) and
     /* Import not in same module as modification. */
     not im.getEnclosingModule() = store_attr.getScope().getEnclosingModule() and
     /* Modification is not in a test */
