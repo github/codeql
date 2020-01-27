@@ -337,9 +337,13 @@
 | taint.cpp:370:13:370:26 | hello, world | taint.cpp:370:6:370:11 | call to strdup | TAINT |
 | taint.cpp:371:6:371:12 | call to strndup | taint.cpp:371:2:371:25 | ... = ... |  |
 | taint.cpp:371:6:371:12 | call to strndup | taint.cpp:374:7:374:7 | c |  |
+| taint.cpp:371:14:371:19 | source | taint.cpp:371:6:371:12 | call to strndup | TAINT |
+| taint.cpp:371:22:371:24 | 100 | taint.cpp:371:6:371:12 | call to strndup | TAINT |
 | taint.cpp:377:23:377:28 | source | taint.cpp:381:30:381:35 | source |  |
 | taint.cpp:381:6:381:12 | call to strndup | taint.cpp:381:2:381:36 | ... = ... |  |
 | taint.cpp:381:6:381:12 | call to strndup | taint.cpp:382:7:382:7 | a |  |
+| taint.cpp:381:14:381:27 | hello, world | taint.cpp:381:6:381:12 | call to strndup | TAINT |
+| taint.cpp:381:30:381:35 | source | taint.cpp:381:6:381:12 | call to strndup | TAINT |
 | taint.cpp:385:27:385:32 | source | taint.cpp:389:13:389:18 | source |  |
 | taint.cpp:389:6:389:11 | call to wcsdup | taint.cpp:389:2:389:19 | ... = ... |  |
 | taint.cpp:389:6:389:11 | call to wcsdup | taint.cpp:391:7:391:7 | a |  |
