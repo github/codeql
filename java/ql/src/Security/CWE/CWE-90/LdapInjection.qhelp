@@ -53,7 +53,6 @@ base DN.</p>
 
 <references>
 <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html">LDAP Injection Prevention Cheat Sheet</a>.</li>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Preventing_LDAP_Injection_in_Java">Preventing LDAP Injection in Java</a>.</li>
 <li>OWASP ESAPI: <a href="https://owasp.org/www-project-enterprise-security-api/">OWASP ESAPI</a>.</li>
 <li>Spring LdapQueryBuilder doc: <a href="https://docs.spring.io/spring-ldap/docs/current/apidocs/org/springframework/ldap/query/LdapQueryBuilder.html">LdapQueryBuilder</a>.</li>
 <li>Spring LdapNameBuilder doc: <a href="https://docs.spring.io/spring-ldap/docs/current/apidocs/org/springframework/ldap/support/LdapNameBuilder.html">LdapNameBuilder</a>.</li>
