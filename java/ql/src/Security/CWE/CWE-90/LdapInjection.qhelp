@@ -34,19 +34,19 @@ the query cannot be changed by a malicious user.</p>
 
 <sample src="LdapInjectionJndi.java" />
 
-<p>The third example uses Spring LdapQueryBuilder to build LDAP query. In addition to
-simplifying building of complex search parameters, it also provides proper escaping of any
-unsafe characters in search filters. DN is built using LdapNameBuilder, which also provides
+<p>The third example uses Spring <code>LdapQueryBuilder</code> to build an LDAP query. In addition to
+simplifying the building of complex search parameters, it also provides proper escaping of any
+unsafe characters in search filters. The DN is built using <code>LdapNameBuilder</code>, which also provides
 proper escaping.</p>
 
 <sample src="LdapInjectionSpring.java" />
 
-<p>The fourth example uses UnboundID Filter and DN classes to construct safe filter and
+<p>The fourth example uses <code>UnboundID</code> classes, <code>Filter</code> and <code>DN</code>, to construct a safe filter and
 base DN.</p>
 
 <sample src="LdapInjectionUnboundId.java" />
 
-<p>The fifth example shows how to build safe filter and DN using Apache LDAP API.</p>
+<p>The fifth example shows how to build a safe filter and DN using the Apache LDAP API.</p>
 
 <sample src="LdapInjectionApache.java" />
 </example>
