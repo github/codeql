@@ -14,21 +14,21 @@ lowest 6 bits when the type is <code>long</code>.
 <recommendation>
 
 <p>
-Restrict the shift amount of <code>int</code>s to the range 0-31, or cast to <code>long</code> before left-shifting.
+Restrict the amount that you shift any <code>int</code> to the range 0-31, or cast it to <code>long</code> before applying the left shift.
 </p>
 
 </recommendation>
 <example>
 <p>
-The following line tries to left-shift an <code>int</code> 32 bits.
+The following line tries to left-shift an <code>int</code> by 32 bits.
 </p>
 
 <sample src="LShiftLargerThanTypeWidth.java" />
 
 <p>
-However, left-shifting an <code>int</code> 32 bits is equivalent to
-left-shifting 0 bits, that is, not shifting at all. Instead the value should
-be cast to <code>long</code> before shifting to actually left-shift 32 bits.
+However, left-shifting an <code>int</code> by 32 bits is equivalent to
+left-shifting it by 0 bits, that is, no shift is applied. Instead the value should
+be cast to <code>long</code> before the shift is applied. Then the left-shift of 32 bits will work.
 </p>
 
 <sample src="LShiftLargerThanTypeWidthGood.java" />
