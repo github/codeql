@@ -156,4 +156,19 @@
 		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target); // OK - but still flagged
 		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // OK - but still flagged
 	}
+
+	$.fn.my_plugin = function my_plugin(options) {
+		$(anyPrefix + options.target); // OK (unlikely to be a html/css prefix confusion)
+
+		$(something.replace("%PLACEHOLDER%", options.target)); // OK (unlikely to be a html/css prefix confusion);
+
+		let target = options.target;
+		if (target.foo) {
+			$(target); // OK (unlikely to be a string)
+		}
+		if (target.length) {
+			$(target); // NOT OK (can still be a string)
+		}
+
+	}
 });
