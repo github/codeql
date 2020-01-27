@@ -1,3 +1,5 @@
+| assignment.py:5 | SOURCE | simple.test |
+| assignment.py:13 | SOURCE | simple.test |
 | carrier.py:17 | SOURCE | simple.test |
 | carrier.py:21 | TAINT_CARRIER_SOURCE | explicit.carrier |
 | carrier.py:25 | SOURCE | simple.test |
