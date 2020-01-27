@@ -11,6 +11,7 @@ The following changes in version 1.24 affect Java analysis in all applications.
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Failure to use HTTPS or SFTP URL in Maven artifact upload/download (`java/maven/non-https-url`) | security, external/cwe/cwe-300, external/cwe/cwe-319, external/cwe/cwe-494, external/cwe/cwe-829 | Finds use of insecure protocols during Maven dependency resolution. Results are shown on LGTM by default. |
+| Suspicious date format (`java/suspicious-date-format`) | correctness | Finds date format patterns that use placeholders that are likely to be incorrect. |
 
 ## Changes to existing queries
 
