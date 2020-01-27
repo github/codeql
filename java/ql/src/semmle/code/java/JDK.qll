@@ -160,6 +160,11 @@ class TypeFile extends Class {
   TypeFile() { this.hasQualifiedName("java.io", "File") }
 }
 
+/** The class `java.util.regex.Pattern`. */
+class TypePattern extends Class {
+  TypePattern() { this.hasQualifiedName("java.util.regex", "Pattern") }
+}
+
 // --- Standard methods ---
 /**
  * Any of the methods named `command` on class `java.lang.ProcessBuilder`.
@@ -278,6 +283,46 @@ class MethodMathMax extends Method {
   MethodMathMax() {
     this.getDeclaringType() instanceof TypeMath and
     this.getName() = "max"
+  }
+}
+
+/**
+ * Any method named `compile` on class `java.util.regex.Pattern`.
+ */
+class MethodPatternCompile extends Method {
+  MethodPatternCompile() {
+    this.hasName("compile") and
+    this.getDeclaringType() instanceof TypePattern
+  }
+}
+
+/**
+ * Any method named `matches` on class `java.util.regex.Pattern`.
+ */
+class MethodPatternMatches extends Method {
+  MethodPatternMatches() {
+    this.hasName("matches") and
+    this.getDeclaringType() instanceof TypePattern
+  }
+}
+
+/**
+ * Any method named `matcher` on class `java.util.regex.Pattern`.
+ */
+class MethodPatternMatcher extends Method {
+  MethodPatternMatcher() {
+    this.hasName("matcher") and
+    this.getDeclaringType() instanceof TypePattern
+  }
+}
+
+/**
+ * Any method named `matches` on class `java.lang.String`.
+ */
+class MethodStringMatches extends Method {
+  MethodStringMatches() {
+    this.hasName("matches") and
+    this.getDeclaringType() instanceof TypeString
   }
 }
 
