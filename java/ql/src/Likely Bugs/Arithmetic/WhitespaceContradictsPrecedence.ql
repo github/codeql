@@ -145,7 +145,8 @@ int operatorWS(BinaryExpr expr) {
 predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   inner = outer.getAChildExpr() and
   not inner instanceof AssocNestedExpr and
-  not inner instanceof HarmlessNestedExpr
+  not inner instanceof HarmlessNestedExpr and
+  not inner.isParenthesized()
 }
 
 from BinaryExpr inner, BinaryExpr outer, int wsouter, int wsinner
