@@ -34,8 +34,6 @@ class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction
   override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    // These always copy the full value of the input buffer to the result
-    // buffer
     input.isParameterDeref(0) and
     output.isReturnValueDeref()
   }
@@ -44,7 +42,7 @@ class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction
 /**
  * A `strndup` style allocation function.
  */
-class StrndupFunction extends AllocationFunction, ArrayFunction, TaintFunction {
+class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrndupFunction() {
     exists(string name |
       hasGlobalName(name) and
@@ -57,9 +55,7 @@ class StrndupFunction extends AllocationFunction, ArrayFunction, TaintFunction {
 
   override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 }
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // This function may do only a partial copy of the input buffer to the output
-    // buffer, so it's a taint flow.
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     (
       input.isParameterDeref(0) or
       input.isParameter(1)
