@@ -4,6 +4,8 @@ private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.DataFlow2
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
+private import semmle.code.cpp.models.interfaces.Taint
+private import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * A predictable instruction is one where an external user can predict
@@ -156,18 +158,79 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // This is part of the translation of `a[i]`, where we want taint to flow
   // from `a`.
   i2.(PointerAddInstruction).getLeft() = i1
-  // TODO: robust Chi handling
-  //
-  // TODO: Flow from argument to return of known functions: Port missing parts
-  // of `returnArgument` to the `interfaces.Taint` and `interfaces.DataFlow`
-  // libraries.
-  //
-  // TODO: Flow from input argument to output argument of known functions: Port
-  // missing parts of `copyValueBetweenArguments` to the `interfaces.Taint` and
-  // `interfaces.DataFlow` libraries and implement call side-effect nodes. This
-  // will help with the test for `ExecTainted.ql`. The test for
-  // `TaintedPath.ql` is more tricky because the output arg is a pointer
-  // addition expression.
+  or
+  // Flow from argument to return value
+  i2 = any(CallInstruction call |
+      exists(int indexIn |
+        modelTaintToReturnValue(call.getStaticCallTarget(), indexIn) and
+        i1 = getACallArgumentOrIndirection(call, indexIn)
+      )
+    )
+  or
+  // Flow from input argument to output argument
+  // TODO: This won't work in practice as long as all aliased memory is tracked
+  // together in a single virtual variable.
+  // TODO: Will this work on the test for `TaintedPath.ql`, where the output arg
+  // is a pointer addition expression?
+  i2 = any(WriteSideEffectInstruction outNode |
+      exists(CallInstruction call, int indexIn, int indexOut |
+        modelTaintToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
+        i1 = getACallArgumentOrIndirection(call, indexIn) and
+        outNode.getIndex() = indexOut and
+        outNode.getPrimaryInstruction() = call
+      )
+    )
+}
+
+/**
+ * Get an instruction that goes into argument `argumentIndex` of `call`. This
+ * can be either directly or through one pointer indirection.
+ */
+private Instruction getACallArgumentOrIndirection(CallInstruction call, int argumentIndex) {
+  result = call.getPositionalArgument(argumentIndex)
+  or
+  exists(ReadSideEffectInstruction readSE |
+    // TODO: why are read side effect operands imprecise?
+    result = readSE.getSideEffectOperand().getAnyDef() and
+    readSE.getPrimaryInstruction() = call and
+    readSE.getIndex() = argumentIndex
+  )
+}
+
+private predicate modelTaintToParameter(Function f, int parameterIn, int parameterOut) {
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
+    f.(TaintFunction).hasTaintFlow(modelIn, modelOut) and
+    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
+    modelOut.isParameterDeref(parameterOut)
+  )
+}
+
+private predicate modelTaintToReturnValue(Function f, int parameterIn) {
+  // Taint flow from parameter to return value
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
+    f.(TaintFunction).hasTaintFlow(modelIn, modelOut) and
+    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
+    (modelOut.isReturnValue() or modelOut.isReturnValueDeref())
+  )
+  or
+  // Data flow (not taint flow) to where the return value points. For the time
+  // being we will conflate pointers and objects in taint tracking.
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
+    f.(DataFlowFunction).hasDataFlow(modelIn, modelOut) and
+    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
+    modelOut.isReturnValueDeref()
+  )
+  or
+  // Taint flow from one argument to another and data flow from an argument to a
+  // return value. This happens in functions like `strcat` and `memcpy`. We
+  // could model this flow in two separate steps, but that would add reverse
+  // flow from the write side-effect to the call instruction, which may not be
+  // desirable.
+  exists(int parameterMid, InParameter modelMid, OutReturnValue returnOut |
+    modelTaintToParameter(f, parameterIn, parameterMid) and
+    modelMid.isParameter(parameterMid) and
+    f.(DataFlowFunction).hasDataFlow(modelMid, returnOut)
+  )
 }
 
 private Element adjustedSink(DataFlow::Node sink) {
