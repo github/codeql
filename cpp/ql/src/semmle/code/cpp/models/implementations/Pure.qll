@@ -83,6 +83,11 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
   override predicate hasOnlySpecificReadSideEffects() { none() }
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    getParameter(i).getUnspecifiedType() instanceof PointerType and
+    buffer = true
+  }
 }
 
 class PureFunction extends TaintFunction, SideEffectFunction {
