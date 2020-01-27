@@ -171,14 +171,16 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Expression of form `typeof x.jquery !== "undefined"` or `x.jquery`, which sanitizes `x`.
+   * Expression of like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
    */
-  class IsJQueryObjectSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+  class PropertyPrecenseSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
     DataFlow::Node input;
     boolean polarity;
 
-    IsJQueryObjectSanitizer() {
-      exists(DataFlow::PropRead read | read.accesses(input, "jquery") |
+    PropertyPrecenseSanitizer() {
+      exists(DataFlow::PropRead read, string name |
+        not name = "length" and read.accesses(input, name)
+      |
         exists(EqualityTest test |
           polarity = test.getPolarity().booleanNot() and
           this = test.flow()

@@ -35,7 +35,7 @@ module UnsafeJQueryPlugin {
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
       super.isSanitizerGuard(node) or
       node instanceof IsElementSanitizer or
-      node instanceof IsJQueryObjectSanitizer
+      node instanceof PropertyPrecenseSanitizer
     }
   }
 }
