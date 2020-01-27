@@ -32,6 +32,20 @@ module UnsafeJQueryPlugin {
       DataFlow::localFieldStep(src, sink)
     }
 
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+      // prefixing prevents forced html/css confusion:
+
+      // prefixing through concatenation:
+      succ.asExpr().(AddExpr).getRightOperand().flow() = pred
+      or
+      // prefixing through a poor-mans templating system:
+      exists(DataFlow::MethodCallNode replace |
+        replace = succ and
+        pred = replace.getArgument(1) and
+        replace.getMethodName() = "replace"
+      )
+    }
+
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
       super.isSanitizerGuard(node) or
       node instanceof IsElementSanitizer or
