@@ -32,7 +32,10 @@
 | main.go:82:25:82:25 | definition of b |
 | main.go:83:2:83:2 | definition of x |
 | main.go:84:5:84:5 | definition of a |
-| main.go:92:22:92:28 | definition of wrapper |
-| main.go:93:2:93:2 | definition of x |
-| main.go:94:2:96:3 | capture variable x |
-| main.go:95:3:95:3 | definition of x |
+| main.go:95:22:95:28 | definition of wrapper |
+| main.go:96:2:96:2 | definition of x |
+| main.go:97:2:99:3 | capture variable x |
+| main.go:98:3:98:3 | definition of x |
+| main.go:112:3:112:3 | definition of p |
+| main.go:114:3:114:3 | definition of p |
+| main.go:117:2:117:2 | p = phi(def@112:3, def@114:3) |

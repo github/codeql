@@ -10,9 +10,7 @@ private import SsaImpl
  * declared in file scope.
  */
 class SsaSourceVariable extends LocalVariable {
-  SsaSourceVariable() {
-    not getScope() instanceof FileScope
-  }
+  SsaSourceVariable() { not getScope() instanceof FileScope }
 
   /**
    * Holds if there may be indirect references of this variable that are not covered by `getAReference()`.
@@ -337,6 +335,20 @@ class SsaWithFields extends TSsaWithFields {
     exists(SsaVariable var | this = TRoot(var) | result = "(" + var + ")")
     or
     exists(SsaWithFields base, Field f | this = TStep(base, f) | result = base + "." + f.getName())
+  }
+
+  /**
+   * Gets the qualified name of the source variable or variable and fields that this represents.
+   *
+   * For example, for an SSA variable that represents the field `a.b`, this would get the string
+   * `"a.b"`.
+   */
+  string getQualifiedName() {
+    exists(SsaVariable v | this = TRoot(v) and result = v.getSourceVariable().getName())
+    or
+    exists(SsaWithFields base, Field f | this = TStep(base, f) |
+      result = base.getQualifiedName() + "." + f.getName()
+    )
   }
 
   /**
