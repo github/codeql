@@ -8,12 +8,12 @@ def test(*args):
 
 def extended_unpacking():
     first, *rest, last = TAINTED_LIST
-    test(first, rest, last) # TODO: mark `rest` as [taint]
+    test(first, rest, last)
 
 
 def also_allowed():
     *a, = TAINTED_LIST
-    test(a) # TODO: mark `a` as [taint]
+    test(a)
 
     # for b, *c in [(1, 2, 3), (4, 5, 6, 7)]:
         # print(c)
@@ -22,3 +22,10 @@ def also_allowed():
 
     for b, *c in [TAINTED_LIST, TAINTED_LIST]:
         test(b, c) # TODO: mark `c` as [taint]
+
+def nested():
+    l = TAINTED_LIST
+    ll = [l,l]
+
+    [[x, *xs], ys] = ll
+    test(x, xs, ys)

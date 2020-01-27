@@ -1068,6 +1068,17 @@ class NameConstantNode extends NameNode {
     */
 }
 
+/** A control flow node correspoinding to a starred expression, `*a`. */
+class StarredNode extends ControlFlowNode {
+    StarredNode() {
+        toAst(this) instanceof Starred
+    }
+
+    ControlFlowNode getValue() {
+        toAst(result) = toAst(this).(Starred).getValue()
+    }
+}
+
 private module Scopes {
 
     private predicate fast_local(NameNode n) {

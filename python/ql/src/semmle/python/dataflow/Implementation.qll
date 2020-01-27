@@ -727,7 +727,10 @@ private class EssaTaintTracking extends string {
         SequenceNode left_parent, ControlFlowNode left_defn, CollectionKind parent_kind
     ) {
         left_parent.getAnElement() = left_defn and
-        result = parent_kind.getMember()
+        // Handle `a, *b = some_iterable`
+        if left_defn instanceof StarredNode
+        then result = parent_kind
+        else result = parent_kind.getMember()
         or
         result = iterable_unpacking_decent(left_parent.getAnElement(), left_defn,
                 parent_kind.getMember())
