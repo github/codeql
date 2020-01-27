@@ -24,5 +24,7 @@ func baz(b bool) int {
 }
 
 func main() {
-	foo(42)
+	if c == '\xA8' || c == '\xA9' {
+		foo(42)
+	}
 }
