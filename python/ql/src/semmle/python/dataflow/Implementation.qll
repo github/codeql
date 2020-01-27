@@ -658,6 +658,8 @@ private class EssaTaintTracking extends string {
         or
         this.taintedAssignment(src, defn, context, path, kind)
         or
+        this.taintedMultiAssignment(src, defn, context, path, kind)
+        or
         this.taintedAttributeAssignment(src, defn, context, path, kind)
         or
         this.taintedParameterDefinition(src, defn, context, path, kind)
@@ -703,6 +705,32 @@ private class EssaTaintTracking extends string {
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             defn.getValue() = srcnode.asCfgNode()
         )
+    }
+
+    pragma[noinline]
+    private predicate taintedMultiAssignment(
+        TaintTrackingNode src, MultiAssignmentDefinition defn, TaintTrackingContext context,
+        AttributePath path, TaintKind kind
+    ) {
+        exists(DataFlow::Node srcnode, TaintKind srckind, Assign assign |
+            src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
+            path.noAttribute()
+        |
+            assign.getValue().getAFlowNode() = srcnode.asCfgNode() and
+            kind = iterable_unpacking_decent(assign.getATarget().getAFlowNode(), defn.getDefiningNode(),
+                    srckind)
+        )
+    }
+
+    /** `((x,y), ...) = value` with any nesting on LHS */
+    private TaintKind iterable_unpacking_decent(
+        SequenceNode left_parent, ControlFlowNode left_defn, CollectionKind parent_kind
+    ) {
+        left_parent.getAnElement() = left_defn and
+        result = parent_kind.getMember()
+        or
+        result = iterable_unpacking_decent(left_parent.getAnElement(), left_defn,
+                parent_kind.getMember())
     }
 
     pragma[noinline]

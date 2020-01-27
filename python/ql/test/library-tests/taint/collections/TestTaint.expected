@@ -10,9 +10,9 @@
 | test.py:32 | test_access | b | externally controlled string |
 | test.py:32 | test_access | c | [externally controlled string] |
 | test.py:32 | test_access | d | [externally controlled string] |
-| test.py:32 | test_access | e | NO TAINT |
-| test.py:32 | test_access | f | NO TAINT |
-| test.py:32 | test_access | g | NO TAINT |
+| test.py:32 | test_access | e | externally controlled string |
+| test.py:32 | test_access | f | externally controlled string |
+| test.py:32 | test_access | g | externally controlled string |
 | test.py:34 | test_access | h | externally controlled string |
 | test.py:36 | test_access | i | externally controlled string |
 | test.py:43 | test_dict_access | a | externally controlled string |
