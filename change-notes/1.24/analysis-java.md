@@ -10,6 +10,7 @@ The following changes in version 1.24 affect Java analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Disabled Spring CSRF protection (`java/spring-disabled-csrf-protection`) | security, external/cwe/cwe-352 | Finds disabled Cross-Site Request Forgery (CSRF) protection in Spring. |
 | Failure to use HTTPS or SFTP URL in Maven artifact upload/download (`java/maven/non-https-url`) | security, external/cwe/cwe-300, external/cwe/cwe-319, external/cwe/cwe-494, external/cwe/cwe-829 | Finds use of insecure protocols during Maven dependency resolution. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
