@@ -1,6 +1,6 @@
 /**
  * @name Suspicious date format
- * @description Some date format patterns don't work as they might seem.
+ * @description Using a data format that includes both 'M' and 'Y' is likely to give unexpected results.
  * @kind problem
  * @problem.severity warning
  * @precision high
