@@ -33,7 +33,7 @@ class TornadoConnectionWrite extends HttpResponseTaintSink {
 }
 
 class TornadoHttpRequestHandlerWrite extends HttpResponseTaintSink {
-    override string toString() { result = "tornado.HttpRequesHandler.write" }
+    override string toString() { result = "tornado.HttpRequestHandler.write" }
 
     TornadoHttpRequestHandlerWrite() {
         exists(CallNode call, ControlFlowNode node |
@@ -47,7 +47,7 @@ class TornadoHttpRequestHandlerWrite extends HttpResponseTaintSink {
 }
 
 class TornadoHttpRequestHandlerRedirect extends HttpResponseTaintSink {
-    override string toString() { result = "tornado.HttpRequesHandler.redirect" }
+    override string toString() { result = "tornado.HttpRequestHandler.redirect" }
 
     TornadoHttpRequestHandlerRedirect() {
         exists(CallNode call, ControlFlowNode node |

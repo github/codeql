@@ -1,4 +1,4 @@
-| test.py:6:20:6:43 | tornado.HttpRequesHandler.write | externally controlled string |
-| test.py:12:20:12:23 | tornado.HttpRequesHandler.write | externally controlled string |
-| test.py:20:23:20:25 | tornado.HttpRequesHandler.redirect | externally controlled string |
-| test.py:26:20:26:48 | tornado.HttpRequesHandler.write | externally controlled string |
+| test.py:6:20:6:43 | tornado.HttpRequestHandler.write | externally controlled string |
+| test.py:12:20:12:23 | tornado.HttpRequestHandler.write | externally controlled string |
+| test.py:20:23:20:25 | tornado.HttpRequestHandler.redirect | externally controlled string |
+| test.py:26:20:26:48 | tornado.HttpRequestHandler.write | externally controlled string |
