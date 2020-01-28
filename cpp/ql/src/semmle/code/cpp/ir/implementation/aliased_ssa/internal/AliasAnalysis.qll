@@ -246,61 +246,86 @@ private predicate resultEscapesNonReturn(Instruction instr) {
 }
 
 /**
- * Holds if the address of the specified local variable or parameter escapes the
- * domain of the analysis.
+ * Holds if the address of `allocation` escapes outside the domain of the analysis. This can occur
+ * either because the allocation's address is taken within the function and escapes, or because the
+ * allocation is marked as always escaping via `alwaysEscapes()`.
  */
-private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
-  // The variable's address escapes if the result of any
-  // VariableAddressInstruction that computes the variable's address escapes.
-  exists(VariableAddressInstruction instr |
-    instr.getIRVariable() = var and
-    resultEscapesNonReturn(instr)
-  )
-}
-
-/**
- * Holds if the address of the specified variable escapes the domain of the
- * analysis.
- */
-predicate variableAddressEscapes(IRVariable var) {
+predicate allocationEscapes(Configuration::Allocation allocation) {
+  allocation.alwaysEscapes()
+  or
   exists(IREscapeAnalysisConfiguration config |
-    config.useSoundEscapeAnalysis() and
-    automaticVariableAddressEscapes(var.(IRAutomaticVariable))
+    config.useSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
   )
-  or
-  // All variables with static storage duration have their address escape, even when escape analysis
-  // is allowed to be unsound. Otherwise, we won't have a definition for any non-escaped global
-  // variable. Normally, we rely on `AliasedDefinition` to handle that.
-  not var instanceof IRAutomaticVariable
 }
 
 /**
- * Holds if the result of instruction `instr` points within variable `var`, at
- * bit offset `bitOffset` within the variable. If the result points within
- * `var`, but at an unknown or non-constant offset, then `bitOffset` is unknown.
+ * Equivalent to `operandIsPropagated()`, but includes interprocedural propagation.
  */
-predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) {
-  // The address of a variable points to that variable, at offset 0.
-  instr.(VariableAddressInstruction).getIRVariable() = var and
-  bitOffset = 0
+private predicate operandIsPropagatedIncludingByCall(Operand operand, IntValue bitOffset) {
+  operandIsPropagated(operand, bitOffset)
   or
-  // A string literal is just a special read-only global variable.
-  instr.(StringConstantInstruction).getIRVariable() = var and
-  bitOffset = 0
+  exists(CallInstruction call, Instruction init |
+    isArgumentForParameter(call, operand, init) and
+    resultReturned(init, bitOffset)
+  )
+}
+
+/**
+ * Holds if `addrOperand` is at offset `bitOffset` from the value of instruction `base`. The offset
+ * may be `unknown()`.
+ */
+private predicate hasBaseAndOffset(AddressOperand addrOperand, Instruction base, IntValue bitOffset) {
+  base = addrOperand.getDef() and bitOffset = 0 // Base case
   or
-  exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |
-    operand = instr.getAnOperand() and
-    // If an operand is propagated, then the result points to the same variable,
-    // offset by the bit offset from the propagation.
-    resultPointsTo(operand.getAnyDef(), var, originalBitOffset) and
-    (
-      operandIsPropagated(operand, propagatedBitOffset)
-      or
-      exists(CallInstruction ci, Instruction init |
-        isArgumentForParameter(ci, operand, init) and
-        resultReturned(init, propagatedBitOffset)
-      )
-    ) and
-    bitOffset = Ints::add(originalBitOffset, propagatedBitOffset)
+  exists(
+    Instruction middle, int previousBitOffset, Operand middleOperand, IntValue additionalBitOffset
+  |
+    // We already have an offset from `middle`.
+    hasBaseAndOffset(addrOperand, middle, previousBitOffset) and
+    // `middle` is propagated from `base`.
+    middleOperand = middle.getAnOperand() and
+    operandIsPropagatedIncludingByCall(middleOperand, additionalBitOffset) and
+    base = middleOperand.getDef() and
+    bitOffset = Ints::add(previousBitOffset, additionalBitOffset)
+  )
+}
+
+/**
+ * Holds if `addrOperand` is at constant offset `bitOffset` from the value of instruction `base`.
+ * Only holds for the `base` with the longest chain of propagation to `addrOperand`.
+ */
+predicate addressOperandBaseAndConstantOffset(
+  AddressOperand addrOperand, Instruction base, int bitOffset
+) {
+  hasBaseAndOffset(addrOperand, base, bitOffset) and
+  Ints::hasValue(bitOffset) and
+  not exists(Instruction previousBase, int previousBitOffset |
+    hasBaseAndOffset(addrOperand, previousBase, previousBitOffset) and
+    previousBase = base.getAnOperand().getDef() and
+    Ints::hasValue(previousBitOffset)
+  )
+}
+
+/**
+ * Gets the allocation into which `addrOperand` points, if known.
+ */
+Configuration::Allocation getAddressOperandAllocation(AddressOperand addrOperand) {
+  addressOperandAllocationAndOffset(addrOperand, result, _)
+}
+
+/**
+ * Holds if `addrOperand` is at offset `bitOffset` from a base instruction of `allocation`. The
+ * offset may be `unknown()`.
+ */
+predicate addressOperandAllocationAndOffset(
+  AddressOperand addrOperand, Configuration::Allocation allocation, IntValue bitOffset
+) {
+  exists(Instruction base |
+    allocation.getABaseInstruction() = base and
+    hasBaseAndOffset(addrOperand, base, bitOffset) and
+    not exists(Instruction previousBase |
+      hasBaseAndOffset(addrOperand, previousBase, _) and
+      previousBase = base.getAnOperand().getDef()
+    )
   )
 }
