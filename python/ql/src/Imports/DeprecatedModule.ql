@@ -73,8 +73,13 @@ string replacement_message(string mod) {
     )
 }
 
-from ImportExpr imp, string name
+from ImportExpr imp, string name, string instead
 where
     name = imp.getName() and
-    deprecated_module(name, _, _, _)
+    deprecated_module(name, instead, _, _) and
+    not exists(Try try, ExceptStmt except | except = try.getAHandler()
+    |
+        except.getType().pointsTo(ClassValue::importError()) and
+        except.containsInScope(imp)
+    )
 select imp, deprecation_message(name) + replacement_message(name)

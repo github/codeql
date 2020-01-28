@@ -7,7 +7,7 @@ class Foo(object):
     def foo(self):
         import md5
 
-# TODO: Backwards compatible code, should not report
+# Backwards compatible code, should not report
 try:
     from hashlib import md5
 except ImportError:
