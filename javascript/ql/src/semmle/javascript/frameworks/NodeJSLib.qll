@@ -892,6 +892,11 @@ module NodeJSLib {
      * Get a Node that refers to a NodeJS EventEmitter instance.
      */
     DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
+    
+    /**
+      * Gets the node that will used for comparison when determining whether one EventEmitter can send an event to another EventEmitter.
+      */
+    DataFlow::SourceNode getBaseEmitter() {result = this}
   }
 
   /**
@@ -906,9 +911,7 @@ module NodeJSLib {
    * An instance of an EventEmitter that is imported through the 'events' module.
    */
   private class ImportedNodeJSEventEmitter extends NodeJSEventEmitter {
-    ImportedNodeJSEventEmitter() {
-      this = getAnEventEmitterImport().getAnInstantiation()
-    }
+    ImportedNodeJSEventEmitter() { this = getAnEventEmitterImport().getAnInstantiation() }
   }
 
   /**
@@ -922,20 +925,27 @@ module NodeJSLib {
   }
 
   /**
-   * An instantiation of a class that extends EventEmitter. 
-   * 
+   * An instantiation of a class that extends EventEmitter.
+   *
    * By extending `NodeJSEventEmitter' we get data-flow on the events passing through this EventEmitter.
    */
-  private class CustomEventEmitter extends NodeJSEventEmitter {
+  class CustomEventEmitter extends NodeJSEventEmitter {
+  	EventEmitterSubClass clazz;
     CustomEventEmitter() {
-      this = any(EventEmitterSubClass clazz).getAClassReference().getAnInstantiation()
+      this = clazz.getAnInstanceReference()
+    }
+    
+    // we define that events can flow between all instances of the same class, as we thereby support the `this` references in the class itself.
+    override DataFlow::SourceNode getBaseEmitter() {
+      result = clazz
     }
   }
 
   /**
    * A registration of an event handler on a NodeJS EventEmitter instance.
    */
-  private class NodeJSEventRegistration extends EventRegistration::DefaultEventRegistration, DataFlow::MethodCallNode {
+  private class NodeJSEventRegistration extends EventRegistration::DefaultEventRegistration,
+    DataFlow::MethodCallNode {
     override NodeJSEventEmitter emitter;
 
     NodeJSEventRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
@@ -944,9 +954,12 @@ module NodeJSLib {
   /**
    * A dispatch of an event on a NodeJS EventEmitter instance.
    */
-  private class NodeJSEventDispatch extends EventDispatch::DefaultEventDispatch, DataFlow::MethodCallNode {
+  private class NodeJSEventDispatch extends EventDispatch::DefaultEventDispatch,
+    DataFlow::MethodCallNode {
     override NodeJSEventEmitter emitter;
 
     NodeJSEventDispatch() { this = emitter.ref().getAMethodCall("emit") }
+    
+    override EventRegistration::Range getAReceiver() { emitter.getBaseEmitter() = result.getEmitter().(NodeJSEventEmitter).getBaseEmitter() }
   }
 }
