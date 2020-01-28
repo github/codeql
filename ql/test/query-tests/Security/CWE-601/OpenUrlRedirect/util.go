@@ -5,6 +5,6 @@ const HASH = "#"
 func someUrl() string { return "semmle.com" }
 
 // placeholder
-func isValidRedirect(s string) {
+func isValidRedirect(s string) bool {
 	return true
 }
