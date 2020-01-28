@@ -233,6 +233,31 @@ abstract class BufferReadOpcode extends BufferAccessOpcode {
 }
 
 /**
+ * An opcode that access an entire memory allocation.
+ */
+abstract class EntireAllocationAccessOpcode extends Opcode {
+  final override predicate hasAddressOperand() { any() }
+}
+
+/**
+ * An opcode that write to an entire memory allocation.
+ */
+abstract class EntireAllocationWriteOpcode extends EntireAllocationAccessOpcode {
+  final override MemoryAccessKind getWriteMemoryAccess() {
+    result instanceof EntireAllocationMemoryAccess
+  }
+}
+
+/**
+ * An opcode that reads from an entire memory allocation.
+ */
+abstract class EntireAllocationReadOpcode extends EntireAllocationAccessOpcode {
+  final override MemoryAccessKind getReadMemoryAccess() {
+    result instanceof EntireAllocationMemoryAccess
+  }
+}
+
+/**
  * An opcode that accesses a memory buffer whose size is determined by a `BufferSizeOperand`.
  */
 abstract class SizedBufferAccessOpcode extends Opcode {
@@ -325,7 +350,7 @@ module Opcode {
     final override string toString() { result = "InitializeParameter" }
   }
 
-  class InitializeIndirection extends IndirectWriteOpcode, TInitializeIndirection {
+  class InitializeIndirection extends EntireAllocationWriteOpcode, TInitializeIndirection {
     final override string toString() { result = "InitializeIndirection" }
   }
 
@@ -349,7 +374,7 @@ module Opcode {
     final override string toString() { result = "ReturnVoid" }
   }
 
-  class ReturnIndirection extends IndirectReadOpcode, TReturnIndirection {
+  class ReturnIndirection extends EntireAllocationReadOpcode, TReturnIndirection {
     final override string toString() { result = "ReturnIndirection" }
 
     final override predicate hasOperandInternal(OperandTag tag) {
