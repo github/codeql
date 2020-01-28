@@ -39,3 +39,42 @@ void test_indirect_arg_to_model() {
     inet_addr_retval a = inet_addr((const char *)&env_pointer);
     sink(a);
 }
+
+class B {
+    public:
+    virtual void f(const char*) = 0;
+};
+
+class D1 : public B {};
+
+class D2 : public D1 {
+    public:
+    void f(const char* p) override {}
+};
+
+class D3 : public D2 {
+    public:
+    void f(const char* p) override {
+        sink(p);
+    }
+};
+
+void test_dynamic_cast() {
+    B* b = new D3();
+    b->f(getenv("VAR")); // tainted
+
+    ((D2*)b)->f(getenv("VAR")); // tainted
+    static_cast<D2*>(b)->f(getenv("VAR")); // tainted
+    dynamic_cast<D2*>(b)->f(getenv("VAR")); // tainted [NOT DETECTED]
+    reinterpret_cast<D2*>(b)->f(getenv("VAR")); // tainted
+
+    B* b2 = new D2();
+    b2->f(getenv("VAR"));
+
+    ((D2*)b2)->f(getenv("VAR"));
+    static_cast<D2*>(b2)->f(getenv("VAR"));
+    dynamic_cast<D2*>(b2)->f(getenv("VAR"));
+    reinterpret_cast<D2*>(b2)->f(getenv("VAR"));
+
+    dynamic_cast<D3*>(b2)->f(getenv("VAR"));
+}
