@@ -136,26 +136,22 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   int getSizeParameterIndex() { none() }
 
   override predicate hasArrayWithNullTerminator(int bufParam) {
-  	bufParam = getFormatParameterIndex()
-  } 	
+    bufParam = getFormatParameterIndex()
+  }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-  	bufParam = getOutputParameterIndex() and
-  	countParam = getSizeParameterIndex()
+    bufParam = getOutputParameterIndex() and
+    countParam = getSizeParameterIndex()
   }
 
   override predicate hasArrayWithUnknownSize(int bufParam) {
-  	bufParam = getOutputParameterIndex() and
-  	not exists(getSizeParameterIndex())
+    bufParam = getOutputParameterIndex() and
+    not exists(getSizeParameterIndex())
   }
 
-  predicate hasArrayInput(int bufParam) {
-  	bufParam = getFormatParameterIndex()
-  }
+  predicate hasArrayInput(int bufParam) { bufParam = getFormatParameterIndex() }
 
-  predicate hasArrayOutput(int bufParam) {
-  	bufParam = getOutputParameterIndex()
-  }
+  predicate hasArrayOutput(int bufParam) { bufParam = getOutputParameterIndex() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isParameterDeref(getFormatParameterIndex()) and
