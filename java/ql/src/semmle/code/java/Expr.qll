@@ -95,6 +95,9 @@ class Expr extends ExprParent, @expr {
     or
     exists(LambdaExpr lam | lam.asMethod() = getEnclosingCallable() and lam.isInStaticContext())
   }
+
+  /** Holds if this expression is parenthesized. */
+  predicate isParenthesized() { isParenthesized(this, _) }
 }
 
 /**
@@ -1330,7 +1333,11 @@ class VarAccess extends Expr, @varaccess {
 
   /** Gets a printable representation of this expression. */
   override string toString() {
-    result = this.getQualifier().toString() + "." + this.getVariable().getName()
+    exists(Expr q | q = this.getQualifier() |
+      if q.isParenthesized()
+      then result = "(...)." + this.getVariable().getName()
+      else result = q.toString() + "." + this.getVariable().getName()
+    )
     or
     not this.hasQualifier() and result = this.getVariable().getName()
   }
