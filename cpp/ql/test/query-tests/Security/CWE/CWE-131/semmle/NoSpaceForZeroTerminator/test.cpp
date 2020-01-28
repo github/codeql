@@ -51,7 +51,7 @@ void decode(char *dest, char *src);
 void wdecode(wchar_t *dest, wchar_t *src);
 
 void bad4(char *str) {
-    // BAD -- zero-termination proved by wprintf (as parameter) [NOT DETECTED]
+    // BAD -- zero-termination proved by wprintf (as parameter)
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
     wprintf(L"%s", buffer);

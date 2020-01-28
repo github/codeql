@@ -32,6 +32,15 @@ predicate terminationProblem(AllocationExpr malloc, string msg) {
       or
       // flows into likely null terminated string argument (such as `strcpy`, `strcat`)
       af.hasArrayWithUnknownSize(arg)
+      or
+      // flows into string argument to a formatting function (such as `printf`)
+      exists(int n, FormatLiteral fl |
+        fc.getArgument(arg) = fc.(FormattingFunctionCall).getConversionArgument(n) and
+        fl = fc.(FormattingFunctionCall).getFormat() and
+        fl.getConversionType(n) instanceof PointerType and // `%s`, `%ws` etc
+        not fl.getConversionType(n) instanceof VoidPointerType and // exclude: `%p`
+        not fl.hasPrecision(n) // exclude: `%.*s`
+      )
     )
   ) and
   msg = "This allocation does not include space to null-terminate the string."
