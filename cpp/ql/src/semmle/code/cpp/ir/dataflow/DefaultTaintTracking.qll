@@ -163,7 +163,7 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   i2 = any(CallInstruction call |
       exists(int indexIn |
         modelTaintToReturnValue(call.getStaticCallTarget(), indexIn) and
-        i1 = getACallArgumentOrIndirection(call, indexIn)
+        i1 = DataFlow::getACallArgumentOrIndirection(call, indexIn)
       )
     )
   or
@@ -175,26 +175,11 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   i2 = any(WriteSideEffectInstruction outNode |
       exists(CallInstruction call, int indexIn, int indexOut |
         modelTaintToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
-        i1 = getACallArgumentOrIndirection(call, indexIn) and
+        i1 = DataFlow::getACallArgumentOrIndirection(call, indexIn) and
         outNode.getIndex() = indexOut and
         outNode.getPrimaryInstruction() = call
       )
     )
-}
-
-/**
- * Get an instruction that goes into argument `argumentIndex` of `call`. This
- * can be either directly or through one pointer indirection.
- */
-private Instruction getACallArgumentOrIndirection(CallInstruction call, int argumentIndex) {
-  result = call.getPositionalArgument(argumentIndex)
-  or
-  exists(ReadSideEffectInstruction readSE |
-    // TODO: why are read side effect operands imprecise?
-    result = readSE.getSideEffectOperand().getAnyDef() and
-    readSE.getPrimaryInstruction() = call and
-    readSE.getIndex() = argumentIndex
-  )
 }
 
 private predicate modelTaintToParameter(Function f, int parameterIn, int parameterOut) {

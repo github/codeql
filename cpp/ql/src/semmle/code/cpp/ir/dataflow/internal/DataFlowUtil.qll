@@ -265,11 +265,15 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 }
 
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
-  iTo.(CopyInstruction).getSourceValue() = iFrom or
-  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
+  iTo.(CopyInstruction).getSourceValue() = iFrom
+  or
+  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
+  or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnary() = iFrom or
-  iTo.(InheritanceConversionInstruction).getUnary() = iFrom or
+  iTo.(ConvertInstruction).getUnary() = iFrom
+  or
+  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  or
   // A chi instruction represents a point where a new value (the _partial_
   // operand) may overwrite an old value (the _total_ operand), but the alias
   // analysis couldn't determine that it surely will overwrite every bit of it or
@@ -283,7 +287,8 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // for variables that have escaped: for soundness, the IR has to assume that
   // every write to an unknown address can affect every escaped variable, and
   // this assumption shows up as data flowing through partial chi operands.
-  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom or
+  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  or
   // Flow from argument to return value
   iTo = any(CallInstruction call |
       exists(int indexIn |
@@ -309,7 +314,7 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
  * Get an instruction that goes into argument `argumentIndex` of `call`. This
  * can be either directly or through one pointer indirection.
  */
-private Instruction getACallArgumentOrIndirection(CallInstruction call, int argumentIndex) {
+Instruction getACallArgumentOrIndirection(CallInstruction call, int argumentIndex) {
   result = call.getPositionalArgument(argumentIndex)
   or
   exists(ReadSideEffectInstruction readSE |
