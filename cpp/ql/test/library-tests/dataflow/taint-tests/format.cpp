@@ -50,7 +50,7 @@ void test1()
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, "%s", string::source()));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
@@ -76,34 +76,34 @@ void test1()
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, "%i", source()));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, "%.*s", source(), "Hello."));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, "%p", string::source()));
-		sink(buffer);
+		sink(buffer); // tainted (debatable)
 	}
 
 	{
 		char buffer[256] = {0};
 		sink(sprintf(buffer, "%s", string::source()));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
 		sink(sprintf(buffer, "%ls", wstring::source()));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 	{
 		wchar_t wbuffer[256] = {0};
 		sink(swprintf(wbuffer, 256, L"%s", wstring::source()));
-		sink(wbuffer); // tainted [NOT DETECTED]
+		sink(wbuffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
