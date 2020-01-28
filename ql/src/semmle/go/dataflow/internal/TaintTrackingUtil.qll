@@ -53,7 +53,7 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   tupleStep(pred, succ) or
   stringConcatStep(pred, succ) or
   sliceStep(pred, succ) or
-  functionModelStep(any(FunctionModel fn), pred, succ) or
+  functionModelStep(_, pred, succ) or
   any(AdditionalTaintStep a).step(pred, succ)
 }
 
