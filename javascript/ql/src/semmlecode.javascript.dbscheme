@@ -688,7 +688,7 @@ case @symbol.kind of
 ;
 
 @type_with_symbol = @typereference | @typevariabletype | @typeoftype | @uniquesymboltype;
-@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespaceaccess | @vardecl | @function | @invokeexpr;
+@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespaceaccess | @vardecl | @function | @invokeexpr | @importdeclaration | @externalmodulereference;
 
 ast_node_symbol(
   unique int node: @ast_node_with_symbol ref,
