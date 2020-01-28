@@ -268,6 +268,7 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnary() = iFrom or
+  iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom or
   iTo.(InheritanceConversionInstruction).getUnary() = iFrom or
   // A chi instruction represents a point where a new value (the _partial_
   // operand) may overwrite an old value (the _total_ operand), but the alias
