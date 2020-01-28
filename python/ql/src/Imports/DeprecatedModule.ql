@@ -17,7 +17,7 @@ import python
  * and module `instead` should be used instead (or `instead = "no replacement"`)
  */
 predicate deprecated_module(string name, string instead, int major, int minor) {
-    name = "posixfile" and instead = "email" and major = 1 and minor = 5
+    name = "posixfile" and instead = "fcntl" and major = 1 and minor = 5
     or
     name = "gopherlib" and instead = "no replacement" and major = 2 and minor = 5
     or
