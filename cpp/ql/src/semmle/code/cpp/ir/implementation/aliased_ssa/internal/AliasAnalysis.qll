@@ -2,6 +2,7 @@ private import AliasAnalysisInternal
 private import cpp
 private import InputIR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
+private import semmle.code.cpp.ir.implementation.IRConfiguration
 private import semmle.code.cpp.models.interfaces.Alias
 
 private class IntValue = Ints::IntValue;
@@ -277,9 +278,14 @@ private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
  * analysis.
  */
 predicate variableAddressEscapes(IRVariable var) {
-  automaticVariableAddressEscapes(var.(IRAutomaticVariable))
+  exists(IREscapeAnalysisConfiguration config |
+    config.useSoundEscapeAnalysis() and
+    automaticVariableAddressEscapes(var.(IRAutomaticVariable))
+  )
   or
-  // All variables with static storage duration have their address escape.
+  // All variables with static storage duration have their address escape, even when escape analysis
+  // is allowed to be unsound. Otherwise, we won't have a definition for any non-escaped global
+  // variable. Normally, we rely on `AliasedDefinition` to handle that.
   not var instanceof IRAutomaticVariable
 }
 
