@@ -17,7 +17,7 @@ string cookieProperty() {
   result = "session" or result = "cookies" or result = "user"
 }
 
-/** Gets a data flow node that flows to the base of an access to `cookies` or `session`. */
+/** Gets a data flow node that flows to the base of an access to `cookies`, `session`, or `user`. */
 private DataFlow::SourceNode nodeLeadingToCookieAccess(DataFlow::TypeBackTracker t) {
   t.start() and
   exists(DataFlow::PropRead value |
