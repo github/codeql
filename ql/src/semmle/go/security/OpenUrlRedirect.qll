@@ -21,7 +21,10 @@ module OpenUrlRedirect {
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    override predicate isSink(DataFlow::Node sink) {
+      sink instanceof Sink and
+      not sink instanceof NotSink
+    }
 
     override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
