@@ -3,23 +3,15 @@ import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking as ASTTaintTracking
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IRDefaultTaintTracking
 
-predicate astFlow(Location sourceLocation, Location sinkLocation) {
-  exists(Expr source, Element sink |
-    ASTTaintTracking::tainted(source, sink) and
-    sourceLocation = source.getLocation() and
-    sinkLocation = sink.getLocation()
-  )
+predicate astFlow(Expr source, Element sink) {
+  ASTTaintTracking::tainted(source, sink)
 }
 
-predicate irFlow(Location sourceLocation, Location sinkLocation) {
-  exists(Expr source, Element sink |
-    IRDefaultTaintTracking::tainted(source, sink) and
-    sourceLocation = source.getLocation() and
-    sinkLocation = sink.getLocation()
-  )
+predicate irFlow(Expr source, Element sink) {
+  IRDefaultTaintTracking::tainted(source, sink)
 }
 
-from Location source, Location sink, string note
+from Expr source, Element sink, string note
 where
   astFlow(source, sink) and
   not irFlow(source, sink) and
@@ -28,4 +20,4 @@ where
   irFlow(source, sink) and
   not astFlow(source, sink) and
   note = "IR only"
-select source.toString(), sink.toString(), note
+select source, sink, note

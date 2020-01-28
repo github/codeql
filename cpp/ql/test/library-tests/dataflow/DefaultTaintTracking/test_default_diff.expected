@@ -1,9 +1,22 @@
-| default_taint.cpp:104:12:104:15 | default_taint.cpp:104:11:104:20 | IR only |
-| default_taint.cpp:108:10:108:13 | default_taint.cpp:36:24:36:24 | AST only |
-| default_taint.cpp:111:10:111:13 | default_taint.cpp:1:11:1:20 | AST only |
-| default_taint.cpp:111:10:111:13 | default_taint.cpp:29:24:29:24 | AST only |
-| default_taint.cpp:111:10:111:13 | default_taint.cpp:30:14:30:14 | AST only |
-| default_taint.cpp:124:19:124:22 | default_taint.cpp:76:24:76:24 | IR only |
-| default_taint.cpp:128:44:128:47 | default_taint.cpp:1:11:1:20 | AST only |
-| default_taint.cpp:128:44:128:47 | default_taint.cpp:81:24:81:24 | AST only |
-| default_taint.cpp:128:44:128:47 | default_taint.cpp:82:14:82:14 | AST only |
+| default_taint.cpp:104:12:104:15 | argv | default_taint.cpp:104:11:104:20 | (...) | IR only |
+| default_taint.cpp:108:10:108:13 | argv | default_taint.cpp:36:24:36:24 | p | AST only |
+| default_taint.cpp:111:10:111:13 | argv | default_taint.cpp:1:11:1:20 | p#0 | AST only |
+| default_taint.cpp:111:10:111:13 | argv | default_taint.cpp:29:24:29:24 | p | AST only |
+| default_taint.cpp:111:10:111:13 | argv | default_taint.cpp:30:14:30:14 | p | AST only |
+| default_taint.cpp:111:10:111:13 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 | AST only |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:76:24:76:24 | p | IR only |
+| default_taint.cpp:128:44:128:47 | argv | default_taint.cpp:1:11:1:20 | p#0 | AST only |
+| default_taint.cpp:128:44:128:47 | argv | default_taint.cpp:81:24:81:24 | p | AST only |
+| default_taint.cpp:128:44:128:47 | argv | default_taint.cpp:82:14:82:14 | p | AST only |
+| default_taint.cpp:128:44:128:47 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 | AST only |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | default_taint.cpp:1:11:1:20 | p#0 | IR only |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 | IR only |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:14 | call to _strdup | IR only |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:29 | (const char *)... | IR only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:3:21:3:22 | s1 | AST only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:21:8:21:10 | buf | AST only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:15:22:17 | buf | AST only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:24:8:24:10 | buf | AST only |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:31:40:31:53 | dotted_address | AST only |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:39:36:39:61 | (const char *)... | AST only |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:39:51:39:61 | env_pointer | AST only |

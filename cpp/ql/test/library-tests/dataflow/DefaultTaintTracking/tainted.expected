@@ -1,9 +1,108 @@
+| default_taint.cpp:92:10:92:13 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:92:10:92:13 | argv | default_taint.cpp:92:10:92:13 | argv |
+| default_taint.cpp:92:10:92:13 | argv | default_taint.cpp:92:10:92:16 | (const char *)... |
+| default_taint.cpp:92:10:92:13 | argv | default_taint.cpp:92:10:92:16 | access to array |
+| default_taint.cpp:92:10:92:13 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:94:32:94:35 | argv | default_taint.cpp:2:11:2:13 | p#0 |
+| default_taint.cpp:94:32:94:35 | argv | default_taint.cpp:94:10:94:36 | reinterpret_cast<int>... |
+| default_taint.cpp:94:32:94:35 | argv | default_taint.cpp:94:32:94:35 | argv |
+| default_taint.cpp:94:32:94:35 | argv | defaulttainttracking.cpp:10:11:10:13 | p#0 |
+| default_taint.cpp:96:26:96:29 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:96:26:96:29 | argv | default_taint.cpp:16:39:16:39 | a |
+| default_taint.cpp:96:26:96:29 | argv | default_taint.cpp:17:10:17:10 | a |
+| default_taint.cpp:96:26:96:29 | argv | default_taint.cpp:96:26:96:29 | argv |
+| default_taint.cpp:96:26:96:29 | argv | default_taint.cpp:96:26:96:32 | (const char *)... |
+| default_taint.cpp:96:26:96:29 | argv | default_taint.cpp:96:26:96:32 | access to array |
+| default_taint.cpp:96:26:96:29 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:16:39:16:39 | a |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:17:10:17:10 | a |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:98:13:98:13 | p |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:98:17:98:21 | & ... |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:98:18:98:21 | argv |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:100:10:100:14 | (const char *)... |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:100:10:100:14 | * ... |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:100:11:100:11 | p |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:100:11:100:14 | access to array |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:102:26:102:30 | (const char *)... |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:102:26:102:30 | * ... |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:102:27:102:27 | p |
+| default_taint.cpp:98:18:98:21 | argv | default_taint.cpp:102:27:102:30 | access to array |
+| default_taint.cpp:98:18:98:21 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:104:12:104:15 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:104:12:104:15 | argv | default_taint.cpp:104:10:104:20 | (const char *)... |
+| default_taint.cpp:104:12:104:15 | argv | default_taint.cpp:104:10:104:20 | * ... |
+| default_taint.cpp:104:12:104:15 | argv | default_taint.cpp:104:11:104:20 | (...) |
+| default_taint.cpp:104:12:104:15 | argv | default_taint.cpp:104:12:104:15 | argv |
+| default_taint.cpp:104:12:104:15 | argv | default_taint.cpp:104:12:104:19 | ... + ... |
+| default_taint.cpp:104:12:104:15 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:108:10:108:13 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:108:10:108:13 | argv | default_taint.cpp:24:20:24:29 | p#0 |
+| default_taint.cpp:108:10:108:13 | argv | default_taint.cpp:29:24:29:24 | p |
+| default_taint.cpp:108:10:108:13 | argv | default_taint.cpp:30:14:30:14 | p |
+| default_taint.cpp:108:10:108:13 | argv | default_taint.cpp:108:10:108:13 | argv |
+| default_taint.cpp:108:10:108:13 | argv | default_taint.cpp:108:10:108:16 | (const char *)... |
+| default_taint.cpp:108:10:108:13 | argv | default_taint.cpp:108:10:108:16 | access to array |
+| default_taint.cpp:108:10:108:13 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:111:10:111:13 | argv | default_taint.cpp:24:20:24:29 | p#0 |
+| default_taint.cpp:111:10:111:13 | argv | default_taint.cpp:36:24:36:24 | p |
+| default_taint.cpp:111:10:111:13 | argv | default_taint.cpp:111:10:111:13 | argv |
+| default_taint.cpp:111:10:111:13 | argv | default_taint.cpp:111:10:111:16 | (const char *)... |
+| default_taint.cpp:111:10:111:13 | argv | default_taint.cpp:111:10:111:16 | access to array |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:24:20:24:29 | p#0 |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:41:24:41:24 | p |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:42:14:42:14 | p |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:52:24:52:24 | p |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:53:37:53:37 | p |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:115:11:115:14 | argv |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:115:11:115:17 | (const char *)... |
+| default_taint.cpp:115:11:115:14 | argv | default_taint.cpp:115:11:115:17 | access to array |
+| default_taint.cpp:115:11:115:14 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:118:26:118:29 | argv | default_taint.cpp:60:24:60:24 | p |
+| default_taint.cpp:118:26:118:29 | argv | default_taint.cpp:61:34:61:34 | p |
+| default_taint.cpp:118:26:118:29 | argv | default_taint.cpp:88:24:88:24 | p |
+| default_taint.cpp:118:26:118:29 | argv | default_taint.cpp:118:26:118:29 | argv |
+| default_taint.cpp:118:26:118:29 | argv | default_taint.cpp:118:26:118:32 | (const char *)... |
+| default_taint.cpp:118:26:118:29 | argv | default_taint.cpp:118:26:118:32 | access to array |
+| default_taint.cpp:121:23:121:26 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:121:23:121:26 | argv | default_taint.cpp:60:24:60:24 | p |
+| default_taint.cpp:121:23:121:26 | argv | default_taint.cpp:61:34:61:34 | p |
+| default_taint.cpp:121:23:121:26 | argv | default_taint.cpp:67:24:67:24 | p |
+| default_taint.cpp:121:23:121:26 | argv | default_taint.cpp:68:14:68:14 | p |
+| default_taint.cpp:121:23:121:26 | argv | default_taint.cpp:121:23:121:26 | argv |
+| default_taint.cpp:121:23:121:26 | argv | default_taint.cpp:121:23:121:29 | (const char *)... |
+| default_taint.cpp:121:23:121:26 | argv | default_taint.cpp:121:23:121:29 | access to array |
+| default_taint.cpp:121:23:121:26 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:24:20:24:29 | p#0 |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:76:24:76:24 | p |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:81:24:81:24 | p |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:82:14:82:14 | p |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:124:19:124:22 | argv |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:124:19:124:25 | (const char *)... |
+| default_taint.cpp:124:19:124:22 | argv | default_taint.cpp:124:19:124:25 | access to array |
+| default_taint.cpp:124:19:124:22 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:126:43:126:46 | argv | default_taint.cpp:1:11:1:20 | p#0 |
+| default_taint.cpp:126:43:126:46 | argv | default_taint.cpp:76:24:76:24 | p |
+| default_taint.cpp:126:43:126:46 | argv | default_taint.cpp:81:24:81:24 | p |
+| default_taint.cpp:126:43:126:46 | argv | default_taint.cpp:82:14:82:14 | p |
+| default_taint.cpp:126:43:126:46 | argv | default_taint.cpp:126:43:126:46 | argv |
+| default_taint.cpp:126:43:126:46 | argv | default_taint.cpp:126:43:126:49 | (const char *)... |
+| default_taint.cpp:126:43:126:46 | argv | default_taint.cpp:126:43:126:49 | access to array |
+| default_taint.cpp:126:43:126:46 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| default_taint.cpp:128:44:128:47 | argv | default_taint.cpp:76:24:76:24 | p |
+| default_taint.cpp:128:44:128:47 | argv | default_taint.cpp:128:44:128:47 | argv |
+| default_taint.cpp:128:44:128:47 | argv | default_taint.cpp:128:44:128:50 | (const char *)... |
+| default_taint.cpp:128:44:128:47 | argv | default_taint.cpp:128:44:128:50 | access to array |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | default_taint.cpp:1:11:1:20 | p#0 |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:6:15:6:24 | p#0 |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:14 | call to _strdup |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:29 | (const char *)... |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:16:16:21 | call to getenv |
 | defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:16:16:28 | (const char *)... |
+| defaulttainttracking.cpp:17:15:17:20 | call to getenv | default_taint.cpp:1:11:1:20 | p#0 |
 | defaulttainttracking.cpp:17:15:17:20 | call to getenv | defaulttainttracking.cpp:5:14:5:23 | p#0 |
 | defaulttainttracking.cpp:17:15:17:20 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
 | defaulttainttracking.cpp:17:15:17:20 | call to getenv | defaulttainttracking.cpp:17:8:17:13 | call to strdup |
@@ -13,6 +112,7 @@
 | defaulttainttracking.cpp:18:27:18:32 | call to getenv | defaulttainttracking.cpp:7:26:7:35 | p#0 |
 | defaulttainttracking.cpp:18:27:18:32 | call to getenv | defaulttainttracking.cpp:18:27:18:32 | call to getenv |
 | defaulttainttracking.cpp:18:27:18:32 | call to getenv | defaulttainttracking.cpp:18:27:18:39 | (const char *)... |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | default_taint.cpp:1:11:1:20 | p#0 |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:3:38:3:39 | s2 |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:8:22:13 | call to strcat |
