@@ -35,7 +35,7 @@ private DataFlow::SourceNode nodeLeadingToCookieAccess(DataFlow::TypeBackTracker
   )
 }
 
-/** Gets a data flow node that flows to the base of an access to `cookies` or `session`. */
+/** Gets a data flow node that flows to the base of an access to `cookies`, `session`, or `user`. */
 DataFlow::SourceNode nodeLeadingToCookieAccess() {
   result = nodeLeadingToCookieAccess(DataFlow::TypeBackTracker::end())
 }
@@ -123,7 +123,7 @@ where
   getARouteUsingCookies().flowsToExpr(handler) and
   hasCookieMiddleware(handler, cookie) and
 
-  // Only flag the first cookie parser registered first.
+  // Only flag the cookie parser registered first.
   not hasCookieMiddleware(cookie, _) and
 
   not hasCsrfMiddleware(handler) and
