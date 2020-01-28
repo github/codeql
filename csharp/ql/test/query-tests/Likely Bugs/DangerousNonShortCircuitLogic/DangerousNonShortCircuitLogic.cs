@@ -20,6 +20,8 @@ class Test
         var b = true;
         b &= c.Method(); // GOOD
         b |= c[0]; // GOOD
+
+        if (c == null | c.Method(out _)) ; // GOOD (false positive)
     }
 
     class C
@@ -28,6 +30,7 @@ class Test
         public string Property { get; set; }
         public bool this[int i] { get { return false; } set { } }
         public bool Method() { return false; }
+        public bool Method(out int x) { x = 0; return false; }
     }
 }
 
