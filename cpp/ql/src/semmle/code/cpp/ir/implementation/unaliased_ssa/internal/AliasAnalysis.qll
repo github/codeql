@@ -1,20 +1,8 @@
 private import AliasAnalysisInternal
-private import cpp
 private import InputIR
-private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
-private import semmle.code.cpp.ir.implementation.IRConfiguration
-private import semmle.code.cpp.models.interfaces.Alias
+private import AliasAnalysisImports
 
 private class IntValue = Ints::IntValue;
-
-/**
- * Gets the offset of field `field` in bits.
- */
-private IntValue getFieldBitOffset(Field field) {
-  if field instanceof BitField
-  then result = Ints::add(Ints::mul(field.getByteOffset(), 8), field.(BitField).getBitOffset())
-  else result = Ints::mul(field.getByteOffset(), 8)
-}
 
 /**
  * Holds if the operand `tag` of instruction `instr` is used in a way that does
@@ -36,7 +24,7 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       instr instanceof PointerDiffInstruction
       or
       // Converting an address to a `bool` does not escape the address.
-      instr.(ConvertInstruction).getResultType() instanceof BoolType
+      instr.(ConvertInstruction).getResultIRType() instanceof IRBooleanType
     )
   )
   or
@@ -107,13 +95,10 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       bitOffset = Ints::unknown()
       or
       // Conversion to another pointer type propagates the source address.
-      exists(ConvertInstruction convert, Type resultType |
+      exists(ConvertInstruction convert, IRType resultType |
         convert = instr and
-        resultType = convert.getResultType() and
-        (
-          resultType instanceof PointerType or
-          resultType instanceof Class //REVIEW: Remove when all glvalues are pointers
-        ) and
+        resultType = convert.getResultIRType() and
+        resultType instanceof IRAddressType and
         bitOffset = 0
       )
       or
@@ -127,7 +112,7 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       or
       // Computing a field address from a pointer propagates the address plus the
       // offset of the field.
-      bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField())
+      bitOffset = Language::getFieldBitOffset(instr.(FieldAddressInstruction).getField())
       or
       // A copy propagates the source value.
       operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
@@ -208,7 +193,7 @@ private predicate operandReturned(Operand operand, IntValue bitOffset) {
 }
 
 private predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
-  exists(Function f |
+  exists(Language::Function f |
     ci = operand.getUse() and
     f = ci.getStaticCallTarget() and
     (
@@ -219,27 +204,27 @@ private predicate isArgumentForParameter(CallInstruction ci, Operand operand, In
       init.getEnclosingFunction() = f and
       operand instanceof ThisArgumentOperand
     ) and
-    not f.isVirtual() and
-    not f instanceof AliasFunction
+    not Language::isFunctionVirtual(f) and
+    not f instanceof AliasModels::AliasFunction
   )
 }
 
 private predicate isAlwaysReturnedArgument(Operand operand) {
-  exists(AliasFunction f |
+  exists(AliasModels::AliasFunction f |
     f = operand.getUse().(CallInstruction).getStaticCallTarget() and
     f.parameterIsAlwaysReturned(operand.(PositionalArgumentOperand).getIndex())
   )
 }
 
 private predicate isOnlyEscapesViaReturnArgument(Operand operand) {
-  exists(AliasFunction f |
+  exists(AliasModels::AliasFunction f |
     f = operand.getUse().(CallInstruction).getStaticCallTarget() and
     f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
   )
 }
 
 private predicate isNeverEscapesArgument(Operand operand) {
-  exists(AliasFunction f |
+  exists(AliasModels::AliasFunction f |
     f = operand.getUse().(CallInstruction).getStaticCallTarget() and
     f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
   )

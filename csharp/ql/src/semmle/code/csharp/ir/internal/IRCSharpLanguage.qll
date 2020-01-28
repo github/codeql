@@ -101,3 +101,16 @@ predicate hasPotentialLoop(Function f) {
 }
 
 predicate hasGoto(Function f) { exists(CSharp::GotoStmt s | s.getEnclosingCallable() = f) }
+
+/**
+ * Gets the offset of field `field` in bits.
+ */
+int getFieldBitOffset(Field f) {
+  //REVIEW: Implement this once layout has been synthesized.
+  none()
+}
+
+/**
+ * Holds if the specified `Function` can be overridden in a derived class.
+ */
+predicate isFunctionVirtual(Function f) { f.(CSharp::Virtualizable).isOverridableOrImplementable() }

@@ -1,40 +1,11 @@
 private import AliasAnalysisInternal
-private import csharp
 private import InputIR
-private import semmle.code.csharp.ir.internal.IntegerConstant as Ints
+private import AliasAnalysisImports
 
 private class IntValue = Ints::IntValue;
 
 /**
- * Converts the bit count in `bits` to a byte count and a bit count in the form
- * bytes:bits.
- */
-bindingset[bits]
-string bitsToBytesAndBits(int bits) { result = (bits / 8).toString() + ":" + (bits % 8).toString() }
-
-/**
- * Gets a printable string for a bit offset with possibly unknown value.
- */
-bindingset[bitOffset]
-string getBitOffsetString(IntValue bitOffset) {
-  if Ints::hasValue(bitOffset)
-  then
-    if bitOffset >= 0
-    then result = "+" + bitsToBytesAndBits(bitOffset)
-    else result = "-" + bitsToBytesAndBits(Ints::neg(bitOffset))
-  else result = "+?"
-}
-
-///**
-// * Gets the offset of field `field` in bits.
-// */
-//private IntValue getFieldBitOffset(Field field) {
-//  if field instanceof BitField
-//  then result = Ints::add(Ints::mul(field.getByteOffset(), 8), field.(BitField).getBitOffset())
-//  else result = Ints::mul(field.getByteOffset(), 8)
-//}
-/**
- * Holds if the operand `operand` of instruction `instr` is used in a way that does
+ * Holds if the operand `tag` of instruction `instr` is used in a way that does
  * not result in any address held in that operand from escaping beyond the
  * instruction.
  */
@@ -51,6 +22,9 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       or
       // Neither operand of a PointerDiff escapes.
       instr instanceof PointerDiffInstruction
+      or
+      // Converting an address to a `bool` does not escape the address.
+      instr.(ConvertInstruction).getResultIRType() instanceof IRBooleanType
     )
   )
   or
@@ -64,6 +38,7 @@ private predicate operandEscapesDomain(Operand operand) {
   not isArgumentForParameter(_, operand, _) and
   not isOnlyEscapesViaReturnArgument(operand) and
   not operand.getUse() instanceof ReturnValueInstruction and
+  not operand.getUse() instanceof ReturnIndirectionInstruction and
   not operand instanceof PhiInputOperand
 }
 
@@ -94,7 +69,7 @@ IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
 }
 
 /**
- * Holds if any address held in operand `operand` of instruction `instr` is
+ * Holds if any address held in operand `tag` of instruction `instr` is
  * propagated to the result of `instr`, offset by the number of bits in
  * `bitOffset`. If the address is propagated, but the offset is not known to be
  * a constant, then `bitOffset` is unknown.
@@ -103,48 +78,42 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
   exists(Instruction instr |
     instr = operand.getUse() and
     (
-      // REVIEW: See the REVIEW comment bellow
-      //      // Converting to a non-virtual base class adds the offset of the base class.
-      //      exists(ConvertToNonVirtualBaseInstruction convert |
-      //        convert = instr and
-      //        bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
-      //      )
-      //      or
-      //      // Converting to a derived class subtracts the offset of the base class.
-      //      exists(ConvertToDerivedInstruction convert |
-      //        convert = instr and
-      //        bitOffset = Ints::neg(Ints::mul(convert.getDerivation().getByteOffset(), 8))
-      //      )
-      //      or
-      //      // Converting to a virtual base class adds an unknown offset.
-      //      instr instanceof ConvertToVirtualBaseInstruction and
-      //      bitOffset = Ints::unknown()
-      //      or
-      // REVIEW: In the C# IR, we should ignore the above types of conversion all together,
-      //         since first of all they do not provide correct information (nothing is known
-      //         for sure about heap allocated objects) and second of all even if we create a
-      //         virtual memory model for the IR I don't think such conversions provide any meaningful
-      //         information;
-      // Conversion to another pointer type propagates the source address.
-      exists(ConvertInstruction convert, Type resultType |
+      // Converting to a non-virtual base class adds the offset of the base class.
+      exists(ConvertToNonVirtualBaseInstruction convert |
         convert = instr and
-        resultType = convert.getResultType() and
-        (
-          resultType instanceof PointerType or
-          resultType instanceof RefType
-        ) and
+        bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
+      )
+      or
+      // Converting to a derived class subtracts the offset of the base class.
+      exists(ConvertToDerivedInstruction convert |
+        convert = instr and
+        bitOffset = Ints::neg(Ints::mul(convert.getDerivation().getByteOffset(), 8))
+      )
+      or
+      // Converting to a virtual base class adds an unknown offset.
+      instr instanceof ConvertToVirtualBaseInstruction and
+      bitOffset = Ints::unknown()
+      or
+      // Conversion to another pointer type propagates the source address.
+      exists(ConvertInstruction convert, IRType resultType |
+        convert = instr and
+        resultType = convert.getResultIRType() and
+        resultType instanceof IRAddressType and
         bitOffset = 0
       )
       or
       // Adding an integer to or subtracting an integer from a pointer propagates
       // the address with an offset.
-      bitOffset = getPointerBitOffset(instr.(PointerOffsetInstruction))
+      exists(PointerOffsetInstruction ptrOffset |
+        ptrOffset = instr and
+        operand = ptrOffset.getLeftOperand() and
+        bitOffset = getPointerBitOffset(ptrOffset)
+      )
       or
       // Computing a field address from a pointer propagates the address plus the
       // offset of the field.
-      // TODO: Fix once class layout is synthesized
-      // bitOffset = Ints::unknown()
-      //or
+      bitOffset = Language::getFieldBitOffset(instr.(FieldAddressInstruction).getField())
+      or
       // A copy propagates the source value.
       operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
       or
@@ -224,27 +193,42 @@ private predicate operandReturned(Operand operand, IntValue bitOffset) {
 }
 
 private predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
-  exists(Callable c |
+  exists(Language::Function f |
     ci = operand.getUse() and
-    c = ci.getStaticCallTarget() and
+    f = ci.getStaticCallTarget() and
     (
-      init.(InitializeParameterInstruction).getParameter() = c
+      init.(InitializeParameterInstruction).getParameter() = f
             .getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
       init instanceof InitializeThisInstruction and
-      init.getEnclosingFunction() = c and
+      init.getEnclosingFunction() = f and
       operand instanceof ThisArgumentOperand
-    ) // and
-    //    not f.isVirtual() and
-    //    not f instanceof AliasFunction
+    ) and
+    not Language::isFunctionVirtual(f) and
+    not f instanceof AliasModels::AliasFunction
   )
 }
 
-private predicate isAlwaysReturnedArgument(Operand operand) { none() }
+private predicate isAlwaysReturnedArgument(Operand operand) {
+  exists(AliasModels::AliasFunction f |
+    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
+    f.parameterIsAlwaysReturned(operand.(PositionalArgumentOperand).getIndex())
+  )
+}
 
-private predicate isOnlyEscapesViaReturnArgument(Operand operand) { none() }
+private predicate isOnlyEscapesViaReturnArgument(Operand operand) {
+  exists(AliasModels::AliasFunction f |
+    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
+    f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
+  )
+}
 
-private predicate isNeverEscapesArgument(Operand operand) { none() }
+private predicate isNeverEscapesArgument(Operand operand) {
+  exists(AliasModels::AliasFunction f |
+    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
+    f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
+  )
+}
 
 private predicate resultReturned(Instruction instr, IntValue bitOffset) {
   operandReturned(instr.getAUse(), bitOffset)
@@ -279,9 +263,14 @@ private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
  * analysis.
  */
 predicate variableAddressEscapes(IRVariable var) {
-  automaticVariableAddressEscapes(var.(IRAutomaticVariable))
+  exists(IREscapeAnalysisConfiguration config |
+    config.useSoundEscapeAnalysis() and
+    automaticVariableAddressEscapes(var.(IRAutomaticVariable))
+  )
   or
-  // All variables with static storage duration have their address escape.
+  // All variables with static storage duration have their address escape, even when escape analysis
+  // is allowed to be unsound. Otherwise, we won't have a definition for any non-escaped global
+  // variable. Normally, we rely on `AliasedDefinition` to handle that.
   not var instanceof IRAutomaticVariable
 }
 
@@ -293,6 +282,10 @@ predicate variableAddressEscapes(IRVariable var) {
 predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) {
   // The address of a variable points to that variable, at offset 0.
   instr.(VariableAddressInstruction).getIRVariable() = var and
+  bitOffset = 0
+  or
+  // A string literal is just a special read-only global variable.
+  instr.(StringConstantInstruction).getIRVariable() = var and
   bitOffset = 0
   or
   exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |
