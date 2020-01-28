@@ -150,7 +150,7 @@ private module PromiseFlow {
       this = promise
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
       pred = promise.getResolveParameter().getACall().getArgument(0) and
       succ = this
@@ -163,7 +163,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       // Copy the value of a resolved promise to the value of this promise.
       prop = resolveField() and
       pred = promise.getResolveParameter().getACall().getArgument(0) and
@@ -180,13 +180,13 @@ private module PromiseFlow {
       this = promise
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
       pred = promise.getValue() and
       succ = this
     }
 
-    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       // Copy the value of a resolved promise to the value of this promise.
       prop = resolveField() and
       pred = promise.getValue() and
@@ -207,7 +207,7 @@ private module PromiseFlow {
       operand.getEnclosingExpr() = await.getOperand()
     }
 
-    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
       succ = this and
       pred = operand
@@ -226,7 +226,7 @@ private module PromiseFlow {
       this.getMethodName() = "then"
     }
 
-    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
       pred = getReceiver() and
       succ = getCallback(0).getParameter(0)
@@ -236,7 +236,7 @@ private module PromiseFlow {
       succ = getCallback(1).getParameter(0)
     }
     
-    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       not exists(this.getArgument(1)) and
       prop = rejectField() and
       pred = getReceiver() and
@@ -248,7 +248,7 @@ private module PromiseFlow {
       succ = this
     }
     
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
       pred = getCallback([0..1]).getAReturn() and
       succ = this
@@ -267,13 +267,13 @@ private module PromiseFlow {
       this.getMethodName() = "catch"
     }
 
-    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
       pred = getReceiver() and
       succ = getCallback(0).getParameter(0)
     }
 
-    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
       pred = getReceiver().getALocalSource() and
       succ = this
@@ -284,7 +284,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
       pred = getCallback(0).getExceptionalReturn() and
       succ = this
@@ -303,7 +303,7 @@ private module PromiseFlow {
       this.getMethodName() = "finally"
     }
 
-    override predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       (prop = resolveField() or prop = rejectField()) and
       pred = getReceiver() and
       succ = this
@@ -314,7 +314,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
       pred = getCallback(0).getExceptionalReturn() and
       succ = this

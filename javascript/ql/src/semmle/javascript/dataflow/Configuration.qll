@@ -225,19 +225,25 @@ abstract class Configuration extends string {
   }
 
   /**
+   * EXPERIMENTAL. This API may change in the future.
+   *
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
    */
   predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 
   /**
+   * EXPERIMENTAL. This API may change in the future.
+   *
    * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
    */
   predicate isAdditionalLoadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 
   /**
+   * EXPERIMENTAL. This API may change in the future.
+   *
    * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
    */
-  predicate isAdditionalCopyPropertyStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+  predicate isAdditionalLoadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     none()
   }
 }
@@ -487,22 +493,28 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
   }
 
   /**
+   * EXPERIMENTAL. This API may change in the future.
+   *
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
    */
   cached
-  predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 
   /**
+   * EXPERIMENTAL. This API may change in the future.
+   *
    * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
    */
   cached
-  predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 
   /**
+   * EXPERIMENTAL. This API may change in the future.
+   *
    * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
    */
   cached
-  predicate copyProperty(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 }
 
 /**
@@ -607,7 +619,7 @@ private predicate exploratoryFlowStep(
   basicLoadStep(pred, succ, _) or
   isAdditionalStoreStep(pred, succ, _, cfg) or
   isAdditionalLoadStep(pred, succ, _, cfg) or
-  isAdditionalCopyPropertyStep(pred, succ, _, cfg) or
+  isAdditionalLoadStoreStep(pred, succ, _, cfg) or
   // the following two disjuncts taken together over-approximate flow through
   // higher-order calls
   callback(pred, succ) or
@@ -830,7 +842,7 @@ private predicate reachesReturn(
 private predicate isAdditionalLoadStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  any(AdditionalFlowStep s).load(pred, succ, prop)
+  any(AdditionalFlowStep s).loadStep(pred, succ, prop)
   or
   cfg.isAdditionalLoadStep(pred, succ, prop)
 }
@@ -841,7 +853,7 @@ private predicate isAdditionalLoadStep(
 private predicate isAdditionalStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  any(AdditionalFlowStep s).store(pred, succ, prop)
+  any(AdditionalFlowStep s).storeStep(pred, succ, prop)
   or
   cfg.isAdditionalStoreStep(pred, succ, prop)
 }
@@ -849,12 +861,12 @@ private predicate isAdditionalStoreStep(
 /**
  * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
  */
-private predicate isAdditionalCopyPropertyStep(
+private predicate isAdditionalLoadStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  any(AdditionalFlowStep s).copyProperty(pred, succ, prop)
+  any(AdditionalFlowStep s).loadStoreStep(pred, succ, prop)
   or
-  cfg.isAdditionalCopyPropertyStep(pred, succ, prop)
+  cfg.isAdditionalLoadStoreStep(pred, succ, prop)
 }
 
 /**
@@ -895,7 +907,7 @@ private predicate reachableFromStoreBase(
     (
       flowStep(mid, cfg, nd, newSummary)
       or
-      isAdditionalCopyPropertyStep(mid, nd, prop, cfg) and
+      isAdditionalLoadStoreStep(mid, nd, prop, cfg) and
       newSummary = PathSummary::level()
     ) and
     summary = oldSummary.appendValuePreserving(newSummary)
