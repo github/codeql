@@ -3,13 +3,9 @@ import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking as ASTTaintTracking
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IRDefaultTaintTracking
 
-predicate astFlow(Expr source, Element sink) {
-  ASTTaintTracking::tainted(source, sink)
-}
+predicate astFlow(Expr source, Element sink) { ASTTaintTracking::tainted(source, sink) }
 
-predicate irFlow(Expr source, Element sink) {
-  IRDefaultTaintTracking::tainted(source, sink)
-}
+predicate irFlow(Expr source, Element sink) { IRDefaultTaintTracking::tainted(source, sink) }
 
 from Expr source, Element sink, string note
 where
