@@ -45,17 +45,3 @@ class TornadoHttpRequestHandlerWrite extends HttpResponseTaintSink {
 
     override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 }
-
-class TornadoHttpRequestHandlerRedirect extends HttpResponseTaintSink {
-    override string toString() { result = "tornado.HttpRequestHandler.redirect" }
-
-    TornadoHttpRequestHandlerRedirect() {
-        exists(CallNode call, ControlFlowNode node |
-            node = call.getFunction().(AttrNode).getObject("redirect") and
-            isTornadoRequestHandlerInstance(node) and
-            this = call.getArg(0)
-        )
-    }
-
-    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
-}
