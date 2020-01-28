@@ -60,12 +60,12 @@ void test1()
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, "%s %s %s", "a", "b", string::source()));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, "%.*s", 10, string::source()));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 
 	{
@@ -108,7 +108,7 @@ void test1()
 	{
 		char buffer[256] = {0};
 		sink(mysprintf(buffer, 256, "%s", string::source()));
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted [NOT DETECTED - implement UserDefinedFormattingFunction.getOutputParameterIndex()]
 	}
 
 	{

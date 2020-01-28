@@ -31,12 +31,15 @@
 | format.cpp:62:17:62:22 | ref arg buffer | format.cpp:63:8:63:13 | buffer |  |
 | format.cpp:62:30:62:39 | %s %s %s | format.cpp:62:17:62:22 | ref arg buffer | TAINT |
 | format.cpp:62:42:62:44 | a | format.cpp:62:17:62:22 | ref arg buffer | TAINT |
+| format.cpp:62:47:62:49 | b | format.cpp:62:17:62:22 | ref arg buffer | TAINT |
+| format.cpp:62:52:62:65 | call to source | format.cpp:62:17:62:22 | ref arg buffer | TAINT |
 | format.cpp:66:21:66:24 | {...} | format.cpp:67:17:67:22 | buffer |  |
 | format.cpp:66:21:66:24 | {...} | format.cpp:68:8:68:13 | buffer |  |
 | format.cpp:66:23:66:23 | 0 | format.cpp:66:21:66:24 | {...} | TAINT |
 | format.cpp:67:17:67:22 | ref arg buffer | format.cpp:68:8:68:13 | buffer |  |
 | format.cpp:67:30:67:35 | %.*s | format.cpp:67:17:67:22 | ref arg buffer | TAINT |
 | format.cpp:67:38:67:39 | 10 | format.cpp:67:17:67:22 | ref arg buffer | TAINT |
+| format.cpp:67:42:67:55 | call to source | format.cpp:67:17:67:22 | ref arg buffer | TAINT |
 | format.cpp:72:21:72:24 | {...} | format.cpp:73:17:73:22 | buffer |  |
 | format.cpp:72:21:72:24 | {...} | format.cpp:74:8:74:13 | buffer |  |
 | format.cpp:72:23:72:23 | 0 | format.cpp:72:21:72:24 | {...} | TAINT |
@@ -55,6 +58,7 @@
 | format.cpp:83:17:83:22 | ref arg buffer | format.cpp:84:8:84:13 | buffer |  |
 | format.cpp:83:30:83:35 | %.*s | format.cpp:83:17:83:22 | ref arg buffer | TAINT |
 | format.cpp:83:38:83:43 | call to source | format.cpp:83:17:83:22 | ref arg buffer | TAINT |
+| format.cpp:83:48:83:55 | Hello. | format.cpp:83:17:83:22 | ref arg buffer | TAINT |
 | format.cpp:88:21:88:24 | {...} | format.cpp:89:17:89:22 | buffer |  |
 | format.cpp:88:21:88:24 | {...} | format.cpp:90:8:90:13 | buffer |  |
 | format.cpp:88:23:88:23 | 0 | format.cpp:88:21:88:24 | {...} | TAINT |
