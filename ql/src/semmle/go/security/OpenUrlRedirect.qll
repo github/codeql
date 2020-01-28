@@ -14,17 +14,14 @@ module OpenUrlRedirect {
   import OpenUrlRedirectCustomizations::OpenUrlRedirect
 
   /**
-   * A taint-tracking configuration for reasoning about unvalidated URL redirections.
+   * A data-flow configuration for reasoning about unvalidated URL redirections.
    */
   class Configuration extends DataFlow::Configuration {
     Configuration() { this = "OpenUrlRedirect" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink and
-      not sink instanceof NotSink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
@@ -46,6 +43,27 @@ module OpenUrlRedirect {
 
     override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
       guard instanceof BarrierGuard
+    }
+  }
+
+  /**
+   * A data-flow configuration for reasoning about safe URLs for unvalidated URL redirections.
+   */
+  class SafeUrlConfiguration extends DataFlow::Configuration {
+    SafeUrlConfiguration() { this = "SafeUrlFlow" }
+
+    override predicate isSource(DataFlow::Node source) {
+      source.(DataFlow::FieldReadNode).getField().hasQualifiedName("net/http", "Request", "URL")
+    }
+
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+      TaintTracking::functionModelStep(any(SafeUrlMethod m), pred, succ)
+      or
+      exists(DataFlow::FieldReadNode frn | succ = frn |
+        frn.getBase() = pred and frn.getFieldName() = "Host"
+      )
     }
   }
 }

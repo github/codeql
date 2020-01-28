@@ -6,6 +6,8 @@ edges
 | stdlib.go:43:13:43:18 | selection of Form : Values | stdlib.go:45:23:45:28 | target |
 | stdlib.go:63:13:63:18 | selection of Form : Values | stdlib.go:66:23:66:40 | ...+... |
 | stdlib.go:88:13:88:18 | selection of Form : Values | stdlib.go:91:23:91:28 | target |
+| stdlib.go:112:24:112:28 | selection of URL : pointer type | stdlib.go:112:24:112:37 | call to String |
+| stdlib.go:112:24:112:28 | selection of URL : pointer type | stdlib.go:112:24:112:37 | call to String |
 | stdlib.go:133:13:133:18 | selection of Form : Values | stdlib.go:139:23:139:28 | target |
 nodes
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form : Values | semmle.label | selection of Form : Values |
@@ -22,6 +24,10 @@ nodes
 | stdlib.go:66:23:66:40 | ...+... | semmle.label | ...+... |
 | stdlib.go:88:13:88:18 | selection of Form : Values | semmle.label | selection of Form : Values |
 | stdlib.go:91:23:91:28 | target | semmle.label | target |
+| stdlib.go:112:24:112:28 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| stdlib.go:112:24:112:28 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| stdlib.go:112:24:112:37 | call to String | semmle.label | call to String |
+| stdlib.go:112:24:112:37 | call to String | semmle.label | call to String |
 | stdlib.go:133:13:133:18 | selection of Form : Values | semmle.label | selection of Form : Values |
 | stdlib.go:139:23:139:28 | target | semmle.label | target |
 #select

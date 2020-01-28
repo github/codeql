@@ -19,14 +19,6 @@ module OpenUrlRedirect {
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A data flow node that should not be considered a sink for unvalidated URL redirect
-   * vulnerabilities.
-   *
-   * This takes precedence over `Sink`, and so can be used to remove sinks that are safe.
-   */
-  abstract class NotSink extends DataFlow::Node { }
-
-  /**
    * A barrier for unvalidated URL redirect vulnerabilities.
    */
   abstract class Barrier extends DataFlow::Node { }
@@ -37,17 +29,12 @@ module OpenUrlRedirect {
   abstract class BarrierGuard extends DataFlow::BarrierGuard { }
 
   /**
-   * A source of third-party user input, considered as a flow source for URL redirects.
-   *
-   * Excludes the URL field, as it is handled more precisely in `UntrustedUrlField`.
+   * A method on a `net/url.URL` that is considered safe to redirect to.
    */
-  class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
-
   class SafeUrlMethod extends TaintTracking::FunctionModel, Method {
     SafeUrlMethod() {
       this instanceof StringMethod
       or
-      this instanceof URL::UrlGetter and
       exists(string m | this.hasQualifiedName("net/url", "URL", m) | m = "Hostname" or m = "Port")
     }
 
@@ -56,33 +43,10 @@ module OpenUrlRedirect {
     }
   }
 
-  private class SafeUrlConfiguration extends DataFlow2::Configuration {
-    SafeUrlConfiguration() { this = "FullUrlFlow" }
-
-    override predicate isSource(DataFlow::Node source) {
-      exists(Type req | req.hasQualifiedName("net/http", "Request") |
-        source.(DataFlow::FieldReadNode).getField() = req.getField("URL")
-      )
-    }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-      TaintTracking::functionModelStep(any(SafeUrlMethod m), pred, succ)
-      or
-      exists(DataFlow::FieldReadNode frn | succ = frn |
-        frn.getBase() = pred and frn.getFieldName() = "Host"
-      )
-    }
-  }
-
   /**
-   * A safe part of a request URL to redirect to. This includes values such as the hostname and port
-   * which should not be considered as unsafe when redirected to.
+   * A source of third-party user input, considered as a flow source for URL redirects.
    */
-  class SafeUrl extends NotSink, DataFlow::Node {
-    SafeUrl() { exists(SafeUrlConfiguration conf | conf.hasFlow(_, this)) }
-  }
+  class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
 
   /**
    * An HTTP redirect, considered as a sink for `Configuration`.
