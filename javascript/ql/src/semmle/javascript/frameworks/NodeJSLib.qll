@@ -892,11 +892,6 @@ module NodeJSLib {
      * Get a Node that refers to a NodeJS EventEmitter instance.
      */
     DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
-    
-    /**
-      * Gets the node that will used for comparison when determining whether one EventEmitter can send an event to another EventEmitter.
-      */
-    DataFlow::SourceNode getBaseEmitter() {result = this}
   }
 
   /**
@@ -932,12 +927,18 @@ module NodeJSLib {
   class CustomEventEmitter extends NodeJSEventEmitter {
   	EventEmitterSubClass clazz;
     CustomEventEmitter() {
-      this = clazz.getAnInstanceReference()
+      if exists(clazz.getAClassReference().getAnInstantiation()) then
+        this = clazz.getAClassReference().getAnInstantiation()
+      else
+        // In case there are no explicit instantiations of the clazz, then we still want to track data flow between `this` nodes. 
+        // This cannot produce false flow as the `.ref()` method below is always used when creating event-registrations/event-dispatches. 
+        this = clazz
     }
     
-    // we define that events can flow between all instances of the same class, as we thereby support the `this` references in the class itself.
-    override DataFlow::SourceNode getBaseEmitter() {
-      result = clazz
+    override DataFlow::SourceNode ref() {
+      result = NodeJSEventEmitter.super.ref() and not this = clazz
+      or
+      result = clazz.getAReceiverNode()
     }
   }
 
@@ -959,8 +960,6 @@ module NodeJSLib {
     override NodeJSEventEmitter emitter;
 
     NodeJSEventDispatch() { this = emitter.ref().getAMethodCall("emit") }
-    
-    override EventRegistration::Range getAReceiver() { emitter.getBaseEmitter() = result.getEmitter().(NodeJSEventEmitter).getBaseEmitter() }
   }
 
   /**
