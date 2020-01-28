@@ -962,4 +962,88 @@ module NodeJSLib {
     
     override EventRegistration::Range getAReceiver() { emitter.getBaseEmitter() = result.getEmitter().(NodeJSEventEmitter).getBaseEmitter() }
   }
+
+  /**
+   * An instance of net.createServer(), which creates a new TCP/IPC server.
+   */
+  private class NodeJSNetServer extends DataFlow::SourceNode {
+    NodeJSNetServer() { this = DataFlow::moduleMember("net", "createServer").getAnInvocation() }
+
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      t.start() and result = this
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to this server.
+     */ 
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+  }
+  
+  /**
+   * A connection opened on a NodeJS net server.
+   */ 
+  private class NodeJSNetServerConnection extends EventEmitter::Range {
+  	NodeJSNetServer server;
+  	
+  	NodeJSNetServerConnection() {
+  	  exists(DataFlow::MethodCallNode call | 
+  	    call = server.ref().getAMethodCall("on") and 
+  	    call.getArgument(0).mayHaveStringValue("connection") 
+  	  | 
+  	    this = call.getCallback(1).getParameter(0)
+  	  )  	  	
+  	}
+  	
+    DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
+  }
+
+  /**
+   * A registration of an event handler on a NodeJS net server instance.
+   */
+  private class NodeJSNetServerRegistration extends EventRegistration::DefaultEventRegistration,
+    DataFlow::MethodCallNode {
+    override NodeJSNetServerConnection emitter;
+
+    NodeJSNetServerRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
+  }
+
+  /**
+   * A data flow node representing data received from a client to a NodeJS net server, viewed as remote user input.
+   */
+  private class NodeJSNetServerItemAsRemoteFlow extends RemoteFlowSource {
+    NodeJSNetServerRegistration reg;
+
+    NodeJSNetServerItemAsRemoteFlow() { this = reg.getReceivedItem(_) }
+
+    override string getSourceType() { result = "NodeJS server" }
+  }
+  
+  /**
+   * An instantiation of the `respjs` library, which is an EventEmitter.
+   */
+  private class RespJS extends NodeJSEventEmitter {
+  	RespJS() {
+  	  this = DataFlow::moduleImport("respjs").getAnInstantiation()	
+  	}
+  }
+  
+  /**
+   * A event dispatch that serializes the input data and emits the result on the "data" channel. 
+   */
+  private class RespWrite extends EventDispatch::DefaultEventDispatch,
+    DataFlow::MethodCallNode {
+    override RespJS emitter;
+
+    RespWrite() { this = emitter.ref().getAMethodCall("write") }
+    
+    override string getChannel() {
+      result = "data"
+    }
+
+    override DataFlow::Node getSentItem(int i) {
+      i = 0 and result = this.getArgument(i)
+    }
+  }
 }
