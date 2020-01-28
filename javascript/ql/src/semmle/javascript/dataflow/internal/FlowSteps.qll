@@ -297,6 +297,7 @@ private module CachedSteps {
    * }
    *
    * f(arg, cb);
+   * ```
    *
    * This is an over-approximation of a possible data flow step through a callback
    * invocation.
