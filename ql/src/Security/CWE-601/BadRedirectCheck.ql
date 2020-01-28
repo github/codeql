@@ -13,9 +13,9 @@
 
 import go
 
-DataFlow::Node checkForLeadingSlash(SsaWithFields v) {
-  exists(StringOps::HasPrefix hp, DataFlow::Node substr |
-    result = hp and hp.getBaseString() = v.getAUse() and hp.getSubstring() = substr
+StringOps::HasPrefix checkForLeadingSlash(SsaWithFields v) {
+  exists(DataFlow::Node substr |
+    result.getBaseString() = v.getAUse() and result.getSubstring() = substr
   |
     substr.getStringValue() = "/"
     or
@@ -53,14 +53,12 @@ DataFlow::Node checkForSecondBackslash(SsaWithFields v) {
   )
 }
 
-predicate isBadRedirectCheck(DataFlow::Node node, SsaWithFields v) {
-  node = checkForLeadingSlash(v) and
-  not (exists(checkForSecondSlash(v)) and exists(checkForSecondBackslash(v)))
-}
-
 from DataFlow::Node node, SsaWithFields v
 where
-  isBadRedirectCheck(node, v) and
+  // there is a check for a leading slash
+  node = checkForLeadingSlash(v) and
+  // but not a check for both a second slash and a second backslash
+  not (exists(checkForSecondSlash(v)) and exists(checkForSecondBackslash(v))) and
   v.getQualifiedName().regexpMatch("(?i).*url.*|.*redir.*|.*target.*")
 select node,
   "This expression checks '$@' for a leading slash but checks do not exist for both '/' and '\\' in the second position.",
