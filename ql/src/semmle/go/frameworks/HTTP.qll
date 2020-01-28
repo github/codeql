@@ -6,22 +6,18 @@ import go
 
 private module StdlibHttp {
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {
+  private class UserControlledRequestField extends UntrustedFlowSource::Range,
+    DataFlow::FieldReadNode {
     UserControlledRequestField() {
-      exists(Type req, string fieldName |
-        req.hasQualifiedName("net/http", "Request") and
-        this.getField() = req.getField(fieldName) |
+      exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
         fieldName = "Body" or fieldName = "Form" or fieldName = "Header" or fieldName = "URL"
       )
     }
   }
 
   private class HeaderGetCall extends UntrustedFlowSource::Range, DataFlow::MethodCallNode {
-    HeaderGetCall() {
-      this.getTarget().hasQualifiedName("net/http", "Header", "Get")
-    }
+    HeaderGetCall() { this.getTarget().hasQualifiedName("net/http", "Header", "Get") }
   }
-
 
   private class StdlibResponseWriter extends HTTP::ResponseWriter::Range {
     StdlibResponseWriter() { this.getType().implements("net/http", "ResponseWriter") }
