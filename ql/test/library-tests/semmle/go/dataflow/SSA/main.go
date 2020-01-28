@@ -85,7 +85,10 @@ func multiRes() (a int, b float32) {
 	return
 }
 
-type s struct{}
+type s struct {
+	a int
+	b int
+}
 
 func (*s) foo(cb func()) {}
 
@@ -95,4 +98,23 @@ func updateInClosure(wrapper struct{ s }) int {
 		x = 1
 	})
 	return x
+}
+
+type t struct {
+	a int
+	b s
+	c rune
+}
+
+func ssaPhi() {
+	var p t
+	if cond() {
+		p = t{2, s{1, 5}, 'n'}
+	} else {
+		p = t{3, s{4, 5}, '2'}
+	}
+
+	p.b.foo(func() {})
+
+	fmt.Print(p.a, p.b.a, p.c)
 }

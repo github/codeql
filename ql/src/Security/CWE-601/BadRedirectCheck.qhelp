@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Redirect URLs should be checked to ensure that user input cannot cause a site to redirect
+to arbitrary domains. This is often done with a check that the redirect URL begins with a slash,
+which most of the time is an absolute redirect on the same host. However, browsers interpret URLs
+beginning with <code>//</code> or <code>/\</code> as absolute URLs. For example, a redirect to
+<code>//lgtm.com</code> will redirect to <code>https://lgtm.com</code>. Thus, redirect checks must
+also check the second character of redirect URLs.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Also disallow redirect URLs starting with <code>//</code> or <code>/\</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following function validates a (presumably untrusted) redirect URL <code>redir</code>. If it
+does not begin with <code>/</code>, the harmless placeholder redirect URL <code>/</code> is
+returned to prevent an open redirect; otherwise <code>redir</code> itself is returned.
+</p>
+<sample src="BadRedirectCheck.go"/>
+<p>
+While this check provides partial protection, it should be extended to cover <code>//</code> and
+<code>/\</code> as well:
+</p>
+<sample src="BadRedirectCheckGood.go"/>
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html#validating-urls">
+  XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+</references>
+
+</qhelp>

@@ -26,5 +26,9 @@
 | main.go:82:25:82:25 | implicit read of b | main.go:82:25:82:25 | definition of b | main.go:82:25:82:25 | b |
 | main.go:84:9:84:9 | x | main.go:83:2:83:2 | definition of x | main.go:83:2:83:2 | x |
 | main.go:84:15:84:15 | x | main.go:83:2:83:2 | definition of x | main.go:83:2:83:2 | x |
-| main.go:94:2:94:8 | wrapper | main.go:92:22:92:28 | definition of wrapper | main.go:92:22:92:28 | wrapper |
-| main.go:97:9:97:9 | x | main.go:94:2:96:3 | capture variable x | main.go:93:2:93:2 | x |
+| main.go:97:2:97:8 | wrapper | main.go:95:22:95:28 | definition of wrapper | main.go:95:22:95:28 | wrapper |
+| main.go:100:9:100:9 | x | main.go:97:2:99:3 | capture variable x | main.go:96:2:96:2 | x |
+| main.go:117:2:117:2 | p | main.go:117:2:117:2 | p = phi(def@112:3, def@114:3) | main.go:110:6:110:6 | p |
+| main.go:119:12:119:12 | p | main.go:117:2:117:2 | p = phi(def@112:3, def@114:3) | main.go:110:6:110:6 | p |
+| main.go:119:17:119:17 | p | main.go:117:2:117:2 | p = phi(def@112:3, def@114:3) | main.go:110:6:110:6 | p |
+| main.go:119:24:119:24 | p | main.go:117:2:117:2 | p = phi(def@112:3, def@114:3) | main.go:110:6:110:6 | p |
