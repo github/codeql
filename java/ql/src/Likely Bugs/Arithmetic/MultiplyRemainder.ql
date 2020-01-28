@@ -12,8 +12,9 @@
 
 import java
 
-from MulExpr e
+from MulExpr e, RemExpr lhs
 where
-  e.getLeftOperand() instanceof RemExpr and
+  e.getLeftOperand() = lhs and
+  not lhs.isParenthesized() and
   e.getRightOperand().getType().hasName("int")
 select e, "Result of a remainder operation multiplied by an integer."
