@@ -22,15 +22,15 @@ import semmle.code.cpp.models.interfaces.Allocation
 predicate terminationProblem(AllocationExpr malloc, string msg) {
   // malloc(strlen(...))
   exists(StrlenCall strlen | DataFlow::localExprFlow(strlen, malloc.getSizeExpr())) and
-  // flows into a null-terminated string function
+  // flows to a call that implies this is a null-terminated string
   exists(ArrayFunction af, FunctionCall fc, int arg |
     DataFlow::localExprFlow(malloc, fc.getArgument(arg)) and
     fc.getTarget() = af and
     (
-      // null terminated string
+      // flows into null terminated string argument
       af.hasArrayWithNullTerminator(arg)
       or
-      // likely a null terminated string (such as `strcpy`, `strcat`)
+      // flows into likely null terminated string argument (such as `strcpy`, `strcat`)
       af.hasArrayWithUnknownSize(arg)
     )
   ) and
