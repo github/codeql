@@ -52,9 +52,13 @@
 | defaulttainttracking.cpp:67:28:67:33 | call to getenv | defaulttainttracking.cpp:67:28:67:33 | call to getenv |
 | defaulttainttracking.cpp:67:28:67:33 | call to getenv | defaulttainttracking.cpp:67:28:67:40 | (const char *)... |
 | defaulttainttracking.cpp:67:28:67:33 | call to getenv | test_diff.cpp:1:11:1:20 | p#0 |
+| defaulttainttracking.cpp:68:29:68:34 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
 | defaulttainttracking.cpp:68:29:68:34 | call to getenv | defaulttainttracking.cpp:52:24:52:24 | p |
+| defaulttainttracking.cpp:68:29:68:34 | call to getenv | defaulttainttracking.cpp:57:24:57:24 | p |
+| defaulttainttracking.cpp:68:29:68:34 | call to getenv | defaulttainttracking.cpp:58:14:58:14 | p |
 | defaulttainttracking.cpp:68:29:68:34 | call to getenv | defaulttainttracking.cpp:68:29:68:34 | call to getenv |
 | defaulttainttracking.cpp:68:29:68:34 | call to getenv | defaulttainttracking.cpp:68:29:68:41 | (const char *)... |
+| defaulttainttracking.cpp:68:29:68:34 | call to getenv | test_diff.cpp:1:11:1:20 | p#0 |
 | defaulttainttracking.cpp:69:33:69:38 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
 | defaulttainttracking.cpp:69:33:69:38 | call to getenv | defaulttainttracking.cpp:52:24:52:24 | p |
 | defaulttainttracking.cpp:69:33:69:38 | call to getenv | defaulttainttracking.cpp:57:24:57:24 | p |
@@ -177,7 +181,11 @@
 | test_diff.cpp:126:43:126:46 | argv | test_diff.cpp:126:43:126:46 | argv |
 | test_diff.cpp:126:43:126:46 | argv | test_diff.cpp:126:43:126:49 | (const char *)... |
 | test_diff.cpp:126:43:126:46 | argv | test_diff.cpp:126:43:126:49 | access to array |
+| test_diff.cpp:128:44:128:47 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| test_diff.cpp:128:44:128:47 | argv | test_diff.cpp:1:11:1:20 | p#0 |
 | test_diff.cpp:128:44:128:47 | argv | test_diff.cpp:76:24:76:24 | p |
+| test_diff.cpp:128:44:128:47 | argv | test_diff.cpp:81:24:81:24 | p |
+| test_diff.cpp:128:44:128:47 | argv | test_diff.cpp:82:14:82:14 | p |
 | test_diff.cpp:128:44:128:47 | argv | test_diff.cpp:128:44:128:47 | argv |
 | test_diff.cpp:128:44:128:47 | argv | test_diff.cpp:128:44:128:50 | (const char *)... |
 | test_diff.cpp:128:44:128:47 | argv | test_diff.cpp:128:44:128:50 | access to array |

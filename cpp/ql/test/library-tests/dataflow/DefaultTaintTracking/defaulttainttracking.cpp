@@ -65,7 +65,7 @@ void test_dynamic_cast() {
 
     ((D2*)b)->f(getenv("VAR")); // tainted
     static_cast<D2*>(b)->f(getenv("VAR")); // tainted
-    dynamic_cast<D2*>(b)->f(getenv("VAR")); // tainted [NOT DETECTED]
+    dynamic_cast<D2*>(b)->f(getenv("VAR")); // tainted
     reinterpret_cast<D2*>(b)->f(getenv("VAR")); // tainted
 
     B* b2 = new D2();
@@ -76,5 +76,5 @@ void test_dynamic_cast() {
     dynamic_cast<D2*>(b2)->f(getenv("VAR"));
     reinterpret_cast<D2*>(b2)->f(getenv("VAR"));
 
-    dynamic_cast<D3*>(b2)->f(getenv("VAR"));
+    dynamic_cast<D3*>(b2)->f(getenv("VAR")); // tainted [FALSE POSITIVE]
 }
