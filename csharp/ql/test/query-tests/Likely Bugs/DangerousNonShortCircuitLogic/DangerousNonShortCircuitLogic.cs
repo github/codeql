@@ -21,7 +21,8 @@ class Test
         b &= c.Method(); // GOOD
         b |= c[0]; // GOOD
 
-        if (c == null | c.Method(out _)) ; // GOOD (false positive)
+        if (c == null | c.Method(out _)) ; // GOOD
+        if (c == null | (c.Method() | c.Method(out _))) ; // GOOD
     }
 
     class C
