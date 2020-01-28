@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
+private import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * A newtype wrapper to prevent accidental casts between `Node` and
@@ -282,7 +283,58 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // for variables that have escaped: for soundness, the IR has to assume that
   // every write to an unknown address can affect every escaped variable, and
   // this assumption shows up as data flowing through partial chi operands.
-  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom or
+  // Flow from argument to return value
+  iTo = any(CallInstruction call |
+      exists(int indexIn |
+        modelFlowToReturnValue(call.getStaticCallTarget(), indexIn) and
+        iFrom = getACallArgumentOrIndirection(call, indexIn)
+      )
+    )
+  or
+  // Flow from input argument to output argument
+  // TODO: This won't work in practice as long as all aliased memory is tracked
+  // together in a single virtual variable.
+  iTo = any(WriteSideEffectInstruction outNode |
+      exists(CallInstruction call, int indexIn, int indexOut |
+        modelFlowToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
+        iFrom = getACallArgumentOrIndirection(call, indexIn) and
+        outNode.getIndex() = indexOut and
+        outNode.getPrimaryInstruction() = call
+      )
+    )
+}
+
+/**
+ * Get an instruction that goes into argument `argumentIndex` of `call`. This
+ * can be either directly or through one pointer indirection.
+ */
+private Instruction getACallArgumentOrIndirection(CallInstruction call, int argumentIndex) {
+  result = call.getPositionalArgument(argumentIndex)
+  or
+  exists(ReadSideEffectInstruction readSE |
+    // TODO: why are read side effect operands imprecise?
+    result = readSE.getSideEffectOperand().getAnyDef() and
+    readSE.getPrimaryInstruction() = call and
+    readSE.getIndex() = argumentIndex
+  )
+}
+
+private predicate modelFlowToParameter(Function f, int parameterIn, int parameterOut) {
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
+    f.(DataFlowFunction).hasDataFlow(modelIn, modelOut) and
+    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
+    modelOut.isParameterDeref(parameterOut)
+  )
+}
+
+private predicate modelFlowToReturnValue(Function f, int parameterIn) {
+  // Data flow from parameter to return value
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
+    f.(DataFlowFunction).hasDataFlow(modelIn, modelOut) and
+    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
+    (modelOut.isReturnValue() or modelOut.isReturnValueDeref())
+  )
 }
 
 /**
