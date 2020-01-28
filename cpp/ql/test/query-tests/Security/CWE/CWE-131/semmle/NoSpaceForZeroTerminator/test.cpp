@@ -107,3 +107,19 @@ void bad9(wchar_t *wstr) {
     wcscpy(wbuffer, wstr);
     delete wbuffer;
 }
+
+void good3(char *str) {
+    // GOOD -- zero-termination not required for this printf
+    char *buffer = (char *)malloc(strlen(str));
+    decode(buffer, str);
+    wprintf(L"%p", buffer);
+    free(buffer);
+}
+
+void good4(char *str) {
+    // GOOD -- zero-termination not required for this printf
+    char *buffer = (char *)malloc(strlen(str));
+    decode(buffer, str);
+    wprintf(L"%.*s", strlen(str), buffer);
+    free(buffer);
+}
