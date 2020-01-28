@@ -101,29 +101,29 @@ int main(int argc, char *argv[]) {
 
     calls_sink_with_argv(*p[i]);
 
-    sink(*(argv + 1)); // flow [NOT DECTED by AST]
+    sink(*(argv + 1));
 
     BaseWithPureVirtual* b = new DerivedCallsSink;
 
-    b->f(argv[1]); // flow [NOT DETECTED by IR]
+    b->f(argv[1]);
 
     b = new DerivedDoesNotCallSink;
     b->f(argv[0]); // no flow [FALSE POSITIVE by AST]
 
     BaseWithPureVirtual* b2 = new DerivesMultiple;
 
-    b2->f(argv[i]); // flow [NOT DETECTED]
+    b2->f(argv[i]);
 
     CRTP<CRTPDoesNotCallSink> crtp_not_call_sink;
     crtp_not_call_sink.f(argv[0]);
 
     CRTP<CRTPCallsSink> crtp_calls_sink;
-    crtp_calls_sink.f(argv[0]); // flow [NOT DETECTED]
+    crtp_calls_sink.f(argv[0]);
 
     Derived1* calls_sink = new Derived3;
-    calls_sink->f(argv[1]); // flow [NOT DETECTED by AST]
+    calls_sink->f(argv[1]);
 
-    static_cast<Derived2*>(calls_sink)->f(argv[1]); // flow [NOT DETECTED]
+    static_cast<Derived2*>(calls_sink)->f(argv[1]);
 
     dynamic_cast<Derived2*>(calls_sink)->f(argv[1]); // flow [NOT DETECTED by IR]
 }
