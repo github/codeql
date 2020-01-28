@@ -76,12 +76,12 @@ void test1()
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, "%i", source()));
-		sink(buffer); // tainted
+		sink(buffer); // tainted [NOT DETECTED]
 	}
 	{
 		char buffer[256] = {0};
 		sink(snprintf(buffer, 256, "%.*s", source(), "Hello."));
-		sink(buffer); // tainted
+		sink(buffer); // tainted [NOT DETECTED]
 	}
 
 	{
