@@ -12,6 +12,10 @@
 
 import python
 
+/**
+ * The module `name` was deprecated in Python version `major`.`minor`,
+ * and module `instead` should be used instead (or `instead = "no replacement"`)
+ */
 predicate deprecated_module(string name, string instead, int major, int minor) {
     name = "posixfile" and instead = "email" and major = 1 and minor = 5
     or
@@ -69,8 +73,8 @@ string replacement_message(string mod) {
     )
 }
 
-from ImportExpr imp, Stmt s, Expr e
+from ImportExpr imp, string name
 where
-    s.getASubExpression() = e and
-    (e = imp or e.contains(imp))
-select s, deprecation_message(imp.getName()) + replacement_message(imp.getName())
+    name = imp.getName() and
+    deprecated_module(name, _, _, _)
+select imp, deprecation_message(name) + replacement_message(name)

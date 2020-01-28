@@ -2,7 +2,7 @@
 import rfc822
 import posixfile
 
-# TODO: We should only report a bad import once
+# We should only report a bad import once
 class Foo(object):
     def foo(self):
         import md5
