@@ -14,7 +14,7 @@ avoid a malicious user providing special characters that change the meaning
 of the query. If possible build the LDAP query using framework helper methods, for example
 from Spring's <code>LdapQueryBuilder</code> and <code>LdapNameBuilder</code>,
 instead of string concatenation. Alternatively, escape user input using an appropriate
-LDAP encoding method, for example: <code>encodeForLDAP</code> or </code>encodeForDN</code>
+LDAP encoding method, for example: <code>encodeForLDAP</code> or <code>encodeForDN</code>
 from OWASP ESAPI, <code>LdapEncoder.filterEncode</code> or <code>LdapEncoder.nameEncode</code>
 from Spring LDAP, or <code>Filter.encodeValue</code> from UnboundID library.</p>
 </recommendation>
