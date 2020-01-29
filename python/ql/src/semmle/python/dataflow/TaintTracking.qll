@@ -132,7 +132,7 @@ abstract class TaintKind extends string {
      * This predicate is present for completeness. It is unlikely that any `TaintKind`
      * implementation will ever need to override it.
      */
-    predicate additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar) { none() }
+    deprecated predicate additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar) { none() }
 
     /** Holds if this kind of taint "taints" `expr`.
      */
@@ -143,7 +143,7 @@ abstract class TaintKind extends string {
     }
 
     /** DEPRECATED -- Use getType() instead */
-    ClassObject getClass() {
+    deprecated ClassObject getClass() {
         none()
     }
 
@@ -380,7 +380,7 @@ abstract class Sanitizer extends string {
  * Examples include flow from a request to untrusted part of that request or
  * from a socket to data from that socket.
  */
-abstract class TaintFlow extends string {
+deprecated abstract class TaintFlow extends string {
 
     bindingset[this]
     TaintFlow() { any() }

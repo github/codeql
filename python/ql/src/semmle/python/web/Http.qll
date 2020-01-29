@@ -19,17 +19,17 @@ class WsgiEnvironment extends TaintKind {
         result = this and Implementation::copyCall(fromnode, tonode)
         or
         result = this and
-        tonode.(CallNode).getFunction().refersTo(theDictType()) and
+        tonode.(CallNode).getFunction().pointsTo(ClassValue::dict()) and
         tonode.(CallNode).getArg(0) = fromnode
         or
-        exists(StringObject key, string text |
+        exists(Value key, string text |
             tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode and
-            tonode.(CallNode).getArg(0).refersTo(key)
+            tonode.(CallNode).getArg(0).pointsTo(key)
             or
             tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad() and
-            tonode.(SubscriptNode).getIndex().refersTo(key)
+            tonode.(SubscriptNode).getIndex().pointsTo(key)
             |
-            text = key.getText() and result instanceof ExternalStringKind and
+            key = Value::forString(text) and result instanceof ExternalStringKind and
             (
                 text = "QUERY_STRING" or
                 text = "PATH_INFO" or

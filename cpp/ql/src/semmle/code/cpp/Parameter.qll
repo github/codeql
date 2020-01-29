@@ -163,5 +163,8 @@ class Parameter extends LocalScopeVariable, @parameter {
  * An `int` that is a parameter index for some function.  This is needed for binding in certain cases.
  */
 class ParameterIndex extends int {
-  ParameterIndex() { exists(Parameter p | this = p.getIndex()) }
+  ParameterIndex() {
+    exists(Parameter p | this = p.getIndex()) or
+    exists(Call c | exists(c.getArgument(this))) // permit indexing varargs
+  }
 }

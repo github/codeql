@@ -139,12 +139,6 @@ abstract class Configuration extends string {
     partialFlow(source, node, this) and
     dist = node.getSourceDistance()
   }
-
-  /** DEPRECATED: use `hasFlow` instead. */
-  deprecated predicate hasFlowForward(Node source, Node sink) { hasFlow(source, sink) }
-
-  /** DEPRECATED: use `hasFlow` instead. */
-  deprecated predicate hasFlowBackward(Node source, Node sink) { hasFlow(source, sink) }
 }
 
 /**

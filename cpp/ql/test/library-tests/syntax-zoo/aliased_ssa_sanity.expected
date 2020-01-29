@@ -27,7 +27,6 @@ missingOperand
 | ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | IR: misc3 | void misc3() |
-| try_catch.cpp:13:5:13:16 | Chi: call to exn1 | Instruction 'Chi' is missing an expected operand with tag 'ChiTotal' in function '$@'. | try_catch.cpp:11:6:11:17 | IR: bypass_catch | void bypass_catch() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand

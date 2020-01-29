@@ -947,6 +947,10 @@ class ConvertInstruction extends UnaryInstruction {
   ConvertInstruction() { getOpcode() instanceof Opcode::Convert }
 }
 
+class CheckedConvertOrNullInstruction extends UnaryInstruction {
+  CheckedConvertOrNullInstruction() { getOpcode() instanceof Opcode::CheckedConvertOrNull }
+}
+
 /**
  * Represents an instruction that converts between two addresses
  * related by inheritance.
@@ -987,7 +991,7 @@ class InheritanceConversionInstruction extends UnaryInstruction {
 
 /**
  * Represents an instruction that converts from the address of a derived class
- * to the address of a direct non-virtual base class.
+ * to the address of a base class.
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
   ConvertToBaseInstruction() { getOpcode() instanceof ConvertToBaseOpcode }
@@ -1198,52 +1202,63 @@ class CallSideEffectInstruction extends SideEffectInstruction {
 }
 
 /**
- * An instruction representing the side effect of a function call on any memory that might be read
- * by that call.
+ * An instruction representing the side effect of a function call on any memory
+ * that might be read by that call. This instruction is emitted instead of
+ * `CallSideEffectInstruction` when it's certain that the call target cannot
+ * write to escaped memory.
  */
 class CallReadSideEffectInstruction extends SideEffectInstruction {
   CallReadSideEffectInstruction() { getOpcode() instanceof Opcode::CallReadSideEffect }
 }
 
 /**
+ * An instruction representing a read side effect of a function call on a
+ * specific parameter.
+ */
+class ReadSideEffectInstruction extends SideEffectInstruction, IndexedInstruction {
+  ReadSideEffectInstruction() { getOpcode() instanceof ReadSideEffectOpcode }
+
+  /** Gets the operand for the value that will be read from this instruction, if known. */
+  final SideEffectOperand getSideEffectOperand() { result = getAnOperand() }
+
+  /** Gets the value that will be read from this instruction, if known. */
+  final Instruction getSideEffect() { result = getSideEffectOperand().getDef() }
+
+  /** Gets the operand for the address from which this instruction may read. */
+  final AddressOperand getArgumentOperand() { result = getAnOperand() }
+
+  /** Gets the address from which this instruction may read. */
+  final Instruction getArgumentDef() { result = getArgumentOperand().getDef() }
+}
+
+/**
  * An instruction representing the read of an indirect parameter within a function call.
  */
-class IndirectReadSideEffectInstruction extends SideEffectInstruction {
+class IndirectReadSideEffectInstruction extends ReadSideEffectInstruction {
   IndirectReadSideEffectInstruction() { getOpcode() instanceof Opcode::IndirectReadSideEffect }
-
-  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
-
-  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
-class BufferReadSideEffectInstruction extends SideEffectInstruction {
+class BufferReadSideEffectInstruction extends ReadSideEffectInstruction {
   BufferReadSideEffectInstruction() { getOpcode() instanceof Opcode::BufferReadSideEffect }
-
-  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
-
-  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
-class SizedBufferReadSideEffectInstruction extends SideEffectInstruction {
+class SizedBufferReadSideEffectInstruction extends ReadSideEffectInstruction {
   SizedBufferReadSideEffectInstruction() {
     getOpcode() instanceof Opcode::SizedBufferReadSideEffect
   }
 
-  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
-
   Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
-
-  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
- * An instruction representing a side effect of a function call.
+ * An instruction representing a write side effect of a function call on a
+ * specific parameter.
  */
 class WriteSideEffectInstruction extends SideEffectInstruction, IndexedInstruction {
   WriteSideEffectInstruction() { getOpcode() instanceof WriteSideEffectOpcode }

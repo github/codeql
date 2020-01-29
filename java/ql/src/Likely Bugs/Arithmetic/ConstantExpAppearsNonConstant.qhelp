@@ -14,10 +14,6 @@ Some expressions always evaluate to the same result, no matter what their subexp
 </li>
 <li><code>x % 1</code> always evaluates to <code>0</code>.
 </li>
-<li><code>x &lt;&lt; 64</code> (when <code>x</code> is of type <code>long</code>) always evaluates to <code>0</code>.
-</li>
-<li><code>x &lt;&lt; 32</code> (when <code>x</code> is not of type <code>long</code>) always evaluates to <code>0</code>.
-</li>
 <li><code>x &amp; 0</code> always evaluates to <code>0</code>.
 </li>
 <li><code>x || true</code> always evaluates to <code>true</code>.
@@ -58,7 +54,7 @@ an integer. The correct check is <code>x % 2 == 0</code>.
 
 <li>
   The Java Language Specification:
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.17.1">Multiplication operator *</a>, <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.17.3">Remainder operator %</a>, <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.19">Left shift operator &lt;&lt;</a>, <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.22.1">Bitwise AND operator &amp;</a>, <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.23">Conditional-and operator &amp;&amp;</a> and <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.24">Conditional-or operator ||</a>.
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.17.1">Multiplication operator *</a>, <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.17.3">Remainder operator %</a>, <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.22.1">Bitwise AND operator &amp;</a>, <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.23">Conditional-and operator &amp;&amp;</a> and <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.24">Conditional-or operator ||</a>.
 </li>
 
 

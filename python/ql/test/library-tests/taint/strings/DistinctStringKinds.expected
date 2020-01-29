@@ -1,16 +1,16 @@
-| Taint exception.info | test.py:54 | test.py:54:22:54:26 | taint | p1 = exception.info |
-| Taint exception.info | test.py:55 | test.py:55:12:55:22 | func() | p1 = exception.info |
-| Taint exception.info | test.py:55 | test.py:55:17:55:21 | taint | p1 = exception.info |
-| Taint exception.info | test.py:58 | test.py:58:12:58:33 | TAINTED_EXCEPTION_INFO |  |
-| Taint exception.info | test.py:59 | test.py:59:11:59:41 | cross_over() |  |
-| Taint exception.info | test.py:59 | test.py:59:37:59:40 | info |  |
-| Taint exception.info | test.py:61 | test.py:61:19:61:21 | arg | p0 = exception.info |
-| Taint exception.info | test.py:62 | test.py:62:12:62:14 | arg | p0 = exception.info |
-| Taint externally controlled string | test.py:54 | test.py:54:22:54:26 | taint | p1 = externally controlled string |
-| Taint externally controlled string | test.py:55 | test.py:55:12:55:22 | func() | p1 = externally controlled string |
-| Taint externally controlled string | test.py:55 | test.py:55:17:55:21 | taint | p1 = externally controlled string |
-| Taint externally controlled string | test.py:61 | test.py:61:19:61:21 | arg | p0 = externally controlled string |
-| Taint externally controlled string | test.py:62 | test.py:62:12:62:14 | arg | p0 = externally controlled string |
-| Taint externally controlled string | test.py:65 | test.py:65:11:65:33 | TAINTED_EXTERNAL_STRING |  |
-| Taint externally controlled string | test.py:66 | test.py:66:11:66:41 | cross_over() |  |
-| Taint externally controlled string | test.py:66 | test.py:66:38:66:40 | ext |  |
+| Taint exception.info | test.py:41 | test.py:41:22:41:26 | taint | p1 = exception.info |
+| Taint exception.info | test.py:42 | test.py:42:12:42:22 | func() | p1 = exception.info |
+| Taint exception.info | test.py:42 | test.py:42:17:42:21 | taint | p1 = exception.info |
+| Taint exception.info | test.py:45 | test.py:45:12:45:33 | TAINTED_EXCEPTION_INFO |  |
+| Taint exception.info | test.py:46 | test.py:46:11:46:41 | cross_over() |  |
+| Taint exception.info | test.py:46 | test.py:46:37:46:40 | info |  |
+| Taint exception.info | test.py:48 | test.py:48:19:48:21 | arg | p0 = exception.info |
+| Taint exception.info | test.py:49 | test.py:49:12:49:14 | arg | p0 = exception.info |
+| Taint externally controlled string | test.py:41 | test.py:41:22:41:26 | taint | p1 = externally controlled string |
+| Taint externally controlled string | test.py:42 | test.py:42:12:42:22 | func() | p1 = externally controlled string |
+| Taint externally controlled string | test.py:42 | test.py:42:17:42:21 | taint | p1 = externally controlled string |
+| Taint externally controlled string | test.py:48 | test.py:48:19:48:21 | arg | p0 = externally controlled string |
+| Taint externally controlled string | test.py:49 | test.py:49:12:49:14 | arg | p0 = externally controlled string |
+| Taint externally controlled string | test.py:52 | test.py:52:11:52:33 | TAINTED_EXTERNAL_STRING |  |
+| Taint externally controlled string | test.py:53 | test.py:53:11:53:41 | cross_over() |  |
+| Taint externally controlled string | test.py:53 | test.py:53:38:53:40 | ext |  |
