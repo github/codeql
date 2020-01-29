@@ -11,7 +11,7 @@ module Koa {
    */
   class AppDefinition extends HTTP::Servers::StandardServerDefinition, InvokeExpr {
     AppDefinition() {
-      // `app = new Koa()`
+       // `app = new Koa()` / `app = Koa()`
       this = DataFlow::moduleImport("koa").getAnInvocation().asExpr()
     }
   }
