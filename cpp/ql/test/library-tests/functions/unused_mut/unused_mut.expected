@@ -1,2 +1,0 @@
-| unused_mut.c:5:13:5:31 | mut_unused_function | Static function mut_unused_function is unreachable ($@ must be removed at the same time) | unused_mut.c:9:13:9:32 | mut_unused_function2 | mut_unused_function2 |
-| unused_mut.c:9:13:9:32 | mut_unused_function2 | Static function mut_unused_function2 is unreachable ($@ must be removed at the same time) | unused_mut.c:5:13:5:31 | mut_unused_function | mut_unused_function |

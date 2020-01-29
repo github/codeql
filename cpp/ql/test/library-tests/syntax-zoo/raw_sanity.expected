@@ -108,7 +108,7 @@ instructionWithoutSuccessor
 | stmt_in_type.cpp:5:53:5:53 | Constant: 1 |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix |
 | vla.c:5:16:5:19 | Load: argc |
-| vla.c:5:22:5:25 | CallReadSideEffect: call to atoi |
+| vla.c:5:27:5:33 | BufferReadSideEffect: (const char *)... |
 | vla.c:11:6:11:16 | UnmodeledDefinition: vla_typedef |
 | vla.c:12:33:12:44 | Add: ... + ... |
 | vla.c:12:50:12:62 | Mul: ... * ... |

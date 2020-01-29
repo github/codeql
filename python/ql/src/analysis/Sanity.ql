@@ -206,8 +206,8 @@ predicate file_sanity(string clsname, string problem, string what) {
     exists(File file, Folder folder |
         clsname = file.getAQlClass() and
         problem = "has same name as a folder" and
-        what = file.getName() and
-        what = folder.getName()
+        what = file.getAbsolutePath() and
+        what = folder.getAbsolutePath()
     ) or
     exists(Container f |
         clsname = f.getAQlClass() and

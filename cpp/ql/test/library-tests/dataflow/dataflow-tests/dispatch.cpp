@@ -130,3 +130,46 @@ namespace virtual_inheritance {
     sink(topRef.isSource()); // flow [NOT DETECTED]
   }
 }
+
+union union_with_sink_fun_ptrs {
+  SinkFunctionType f;
+  SinkFunctionType g;
+} u;
+
+void call_sink_through_union_field_f(SinkFunctionType func) {
+  func(source());
+}
+
+void call_sink_through_union_field_g(SinkFunctionType func) {
+  func(source());
+}
+
+void set_global_union_field_f() {
+  u.f = callSink;
+}
+
+void test_call_sink_through_union() {
+  set_global_union_field_f();
+  call_sink_through_union_field_f(u.f);
+  call_sink_through_union_field_g(u.g);
+}
+
+union { union_with_sink_fun_ptrs u; } u2;
+
+void call_sink_through_union_field_u_g(SinkFunctionType func) {
+  func(source());
+}
+
+void call_sink_through_union_field_u_f(SinkFunctionType func) {
+  func(source());
+}
+
+void set_global_union_field_u_f() {
+  u2.u.f = callSink;
+}
+
+void test_call_sink_through_union_2() {
+  set_global_union_field_u_f();
+  call_sink_through_union_field_u_f(u2.u.f); // flow [NOT DETECTED]
+  call_sink_through_union_field_u_g(u2.u.g); // flow [NOT DETECTED]
+}

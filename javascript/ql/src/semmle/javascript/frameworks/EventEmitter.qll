@@ -117,9 +117,9 @@ module EventRegistration {
 
     abstract DataFlow::Node getReceivedItem(int i);
 
-    abstract DataFlow::Node getAReturnedValue();
+    DataFlow::Node getAReturnedValue() { none() }
 
-    abstract EventDispatch::Range getAReturnDispatch();
+    EventDispatch::Range getAReturnDispatch() { none() }
   }
 
   /**
@@ -136,10 +136,6 @@ module EventRegistration {
     override DataFlow::Node getReceivedItem(int i) {
       result = this.getABoundCallbackParameter(1, i)
     }
-
-    override DataFlow::Node getAReturnedValue() { none() }
-
-    override EventDispatch::Range getAReturnDispatch() { none() }
   }
 }
 
@@ -227,3 +223,4 @@ private class EventEmitterTaintStep extends DataFlow::AdditionalFlowStep {
     succ = dispatch
   }
 }
+

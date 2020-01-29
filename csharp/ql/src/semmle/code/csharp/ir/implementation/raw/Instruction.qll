@@ -947,6 +947,10 @@ class ConvertInstruction extends UnaryInstruction {
   ConvertInstruction() { getOpcode() instanceof Opcode::Convert }
 }
 
+class CheckedConvertOrNullInstruction extends UnaryInstruction {
+  CheckedConvertOrNullInstruction() { getOpcode() instanceof Opcode::CheckedConvertOrNull }
+}
+
 /**
  * Represents an instruction that converts between two addresses
  * related by inheritance.

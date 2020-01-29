@@ -643,6 +643,11 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("bool"))
     }
 
+    /** Get the `ClassValue` for the `dict` class. */
+    ClassValue dict() {
+        result = TBuiltinClassObject(Builtin::special("dict"))
+    }
+
     /** Get the `ClassValue` for the class of Python functions. */
     ClassValue function() {
         result = TBuiltinClassObject(Builtin::special("FunctionType"))

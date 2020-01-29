@@ -381,52 +381,52 @@ class BuiltinFunctionObject extends BuiltinCallable {
 }
 
 /** DEPRECATED -- Use `Object::builtin("apply")` instead. */
-Object theApplyFunction() {
+deprecated Object theApplyFunction() {
     result = Object::builtin("apply")
 }
 
 /** DEPRECATED -- Use `Object::builtin("hasattr")` instead. */
-Object theHasattrFunction() {
+deprecated Object theHasattrFunction() {
     result = Object::builtin("hasattr")
 }
 
 /** DEPRECATED -- Use `Object::builtin("len")` instead. */
-Object theLenFunction() {
+deprecated Object theLenFunction() {
     result = Object::builtin("len")
 }
 
 /** DEPRECATED -- Use `Object::builtin("format")` instead. */
-Object theFormatFunction() {
+deprecated Object theFormatFunction() {
     result = Object::builtin("format")
 }
 
 /** DEPRECATED -- Use `Object::builtin("open")` instead. */
-Object theOpenFunction() {
+deprecated Object theOpenFunction() {
     result = Object::builtin("open")
 }
 
 /** DEPRECATED -- Use `Object::builtin("print")` instead. */
-Object thePrintFunction() {
+deprecated Object thePrintFunction() {
     result = Object::builtin("print")
 }
 
 /** DEPRECATED -- Use `Object::builtin("input")` instead. */
-Object theInputFunction() {
+deprecated Object theInputFunction() {
     result = Object::builtin("input")
 }
 
 /** DEPRECATED -- Use `Object::builtin("locals")` instead. */
-Object theLocalsFunction() {
+deprecated Object theLocalsFunction() {
     result = Object::builtin("locals")
 }
 
 /** DEPRECATED -- Use `Object::builtin("globals")()` instead. */
-Object theGlobalsFunction() {
+deprecated Object theGlobalsFunction() {
     result = Object::builtin("globals")
 }
 
 /** DEPRECATED -- Use `Object::builtin("sysExit()` instead. */
-Object theExitFunctionObject() {
+deprecated Object theExitFunctionObject() {
     result = ModuleObject::named("sys").attr("exit")
 }
 

@@ -9,17 +9,14 @@ import semmle.code.cpp.models.interfaces.Taint
 class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrdupFunction() {
     exists(string name |
-      hasGlobalOrStdName(name) and
+      hasGlobalName(name) and
       (
         // strdup(str)
         name = "strdup"
         or
         // wcsdup(str)
         name = "wcsdup"
-      )
-      or
-      hasGlobalName(name) and
-      (
+        or
         // _strdup(str)
         name = "_strdup"
         or
@@ -37,9 +34,32 @@ class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction
   override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    // These always copy the full value of the input buffer to the result
-    // buffer
     input.isParameterDeref(0) and
+    output.isReturnValueDeref()
+  }
+}
+
+/**
+ * A `strndup` style allocation function.
+ */
+class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
+  StrndupFunction() {
+    exists(string name |
+      hasGlobalName(name) and
+      // strndup(str, maxlen)
+      name = "strndup"
+    )
+  }
+
+  override predicate hasArrayInput(int bufParam) { bufParam = 0 }
+
+  override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    (
+      input.isParameterDeref(0) or
+      input.isParameter(1)
+    ) and
     output.isReturnValueDeref()
   }
 }

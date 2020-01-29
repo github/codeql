@@ -9,17 +9,17 @@ class File extends Container {
     }
 
     /** DEPRECATED: Use `getAbsolutePath` instead. */
-    override string getName() {
-        files(this, result, _, _, _)
+    deprecated override string getName() {
+        result = this.getAbsolutePath()
     }
 
     /** DEPRECATED: Use `getAbsolutePath` instead. */
-    string getFullName() {
-        result = getName()
+    deprecated string getFullName() {
+        result = this.getAbsolutePath()
     }
 
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        this.getName() = filepath and bl = 0 and bc = 0 and el = 0 and ec = 0
+        this.getAbsolutePath() = filepath and bl = 0 and bc = 0 and el = 0 and ec = 0
     }
 
     /** Whether this file is a source code file. */
@@ -97,17 +97,17 @@ class Folder extends Container {
     }
 
     /** DEPRECATED: Use `getAbsolutePath` instead. */
-    override string getName() {
-        folders(this, result, _)
+    deprecated override string getName() {
+        result = this.getAbsolutePath()
     }
 
     /** DEPRECATED: Use `getBaseName` instead. */
-    string getSimple() {
+    deprecated string getSimple() {
         folders(this, _, result)
     }
 
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        this.getName() = filepath and bl = 0 and bc = 0 and el = 0 and ec = 0
+        this.getAbsolutePath() = filepath and bl = 0 and bc = 0 and el = 0 and ec = 0
     }
 
     override string getAbsolutePath() {
@@ -427,11 +427,11 @@ class Location extends @location {
     }
 
     string toString() {
-        result = this.getPath().getName() + ":" + this.getStartLine().toString()
+        result = this.getPath().getAbsolutePath() + ":" + this.getStartLine().toString()
     }
 
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        exists(File f | f.getName() = filepath |
+        exists(File f | f.getAbsolutePath() = filepath |
             locations_default(this, f, bl, bc, el, ec)
             or
             exists(Module m | m.getFile() = f |
@@ -445,7 +445,7 @@ class Location extends @location {
 class Line extends @py_line {
 
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        exists(Module m | m.getFile().getName() = filepath and
+        exists(Module m | m.getFile().getAbsolutePath() = filepath and
             el = bl and bc = 1 and
             py_line_lengths(this, m, bl, ec))
     }

@@ -14,6 +14,7 @@ The following changes in version 1.24 affect C# analysis in all applications.
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
 | Useless assignment to local variable (`cs/useless-assignment-to-local`) | Fewer false positive results | Results have been removed when the variable is named `_` in a `foreach` statement. | 
+| Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | More results | Results are reported from parameters with a default value of `null`. |
 
 ## Removal of old queries
 

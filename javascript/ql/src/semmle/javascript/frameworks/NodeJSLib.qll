@@ -530,7 +530,7 @@ module NodeJSLib {
     FileStreamRead() {
       stream.getMethodName() = "createReadStream" and
       this = stream.getAMemberCall(method) and
-      (method = "read" or method = "pipe" or method = "on")
+      (method = "read" or method = "pipe" or method = EventEmitter::on())
     }
 
     override DataFlow::Node getADataNode() {
@@ -540,7 +540,7 @@ module NodeJSLib {
       method = "pipe" and
       result = getArgument(0)
       or
-      method = "on" and
+      method = EventEmitter::on() and
       getArgument(0).mayHaveStringValue("data") and
       result = getCallback(1).getParameter(0)
     }
@@ -751,7 +751,7 @@ module NodeJSLib {
       promise = false and
       exists(DataFlow::ParameterNode res, DataFlow::CallNode onData |
         res = getCallback(1).getParameter(0) and
-        onData = res.getAMethodCall("on") and
+        onData = res.getAMethodCall(EventEmitter::on()) and
         onData.getArgument(0).mayHaveStringValue("data") and
         result = onData.getCallback(1).getParameter(0) and
         responseType = "arraybuffer"
@@ -768,7 +768,7 @@ module NodeJSLib {
 
     ClientRequestHandler() {
       exists(DataFlow::MethodCallNode mcn |
-        clientRequest.getAMethodCall("on") = mcn and
+        clientRequest.getAMethodCall(EventEmitter::on()) = mcn and
         mcn.getArgument(0).mayHaveStringValue(handledEvent) and
         flowsTo(mcn.getArgument(1))
       )
@@ -805,7 +805,7 @@ module NodeJSLib {
   private class ClientRequestDataEvent extends RemoteFlowSource {
     ClientRequestDataEvent() {
       exists(DataFlow::MethodCallNode mcn, ClientRequestResponseEvent cr |
-        cr.getAMethodCall("on") = mcn and
+        cr.getAMethodCall(EventEmitter::on()) = mcn and
         mcn.getArgument(0).mayHaveStringValue("data") and
         this = mcn.getCallback(1).getParameter(0)
       )
@@ -895,16 +895,40 @@ module NodeJSLib {
   }
 
   /**
+   * Gets an import of the NodeJS EventEmitter.
+   */
+  private DataFlow::SourceNode getAnEventEmitterImport() {
+    result = DataFlow::moduleImport("events") or
+    result = DataFlow::moduleMember("events", "EventEmitter")
+  }
+
+  /**
    * An instance of an EventEmitter that is imported through the 'events' module.
    */
   private class ImportedNodeJSEventEmitter extends NodeJSEventEmitter {
     ImportedNodeJSEventEmitter() {
-      exists(DataFlow::SourceNode clazz |
-        clazz = DataFlow::moduleImport("events") or
-        clazz = DataFlow::moduleMember("events", "EventEmitter")
-      |
-        this = clazz.getAnInstantiation()
-      )
+      this = getAnEventEmitterImport().getAnInstantiation()
+    }
+  }
+
+  /**
+   * A class that extends EventEmitter.
+   */
+  private class EventEmitterSubClass extends DataFlow::ClassNode {
+    EventEmitterSubClass() {
+      this.getASuperClassNode().getALocalSource() = getAnEventEmitterImport() or
+      this.getADirectSuperClass() instanceof EventEmitterSubClass
+    }
+  }
+
+  /**
+   * An instantiation of a class that extends EventEmitter. 
+   * 
+   * By extending `NodeJSEventEmitter' we get data-flow on the events passing through this EventEmitter.
+   */
+  private class CustomEventEmitter extends NodeJSEventEmitter {
+    CustomEventEmitter() {
+      this = any(EventEmitterSubClass clazz).getAClassReference().getAnInstantiation()
     }
   }
 

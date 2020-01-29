@@ -17,6 +17,8 @@
 | dispatch.cpp:73:14:73:19 | dispatch.cpp:23:38:23:38 | IR only |
 | dispatch.cpp:81:13:81:18 | dispatch.cpp:23:38:23:38 | IR only |
 | dispatch.cpp:107:17:107:22 | dispatch.cpp:96:8:96:8 | IR only |
+| dispatch.cpp:140:8:140:13 | dispatch.cpp:96:8:96:8 | IR only |
+| dispatch.cpp:144:8:144:13 | dispatch.cpp:96:8:96:8 | IR only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:14:3:14:6 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:18:8:18:8 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:21:3:21:6 | AST only |

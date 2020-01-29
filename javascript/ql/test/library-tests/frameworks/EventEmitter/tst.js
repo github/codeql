@@ -26,3 +26,15 @@ em3.on("bla", (event) => {
 	event.returnValue = "foo"
 });
 em3.emit("bla", "blab");
+
+class MyEventEmitter extends emitter {};
+
+var em4 = new MyEventEmitter();
+em4.on("blab", (x) => {});
+em4.emit("blab", "BOH");
+
+class ExtendsMyCustomEmitter extends MyEventEmitter{}
+
+var em5 = new ExtendsMyCustomEmitter();
+em5.on("yibity", (x) => {});
+em5.emit("yibity", "yabity");

@@ -55,6 +55,9 @@ class Node extends TIRDataFlowNode {
    */
   Expr asConvertedExpr() { result = instr.getConvertedResultExpression() }
 
+  /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
+  Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
+
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = instr.(InitializeParameterInstruction).getParameter() }
 
@@ -267,6 +270,8 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnary() = iFrom
+  or
+  iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
   or
   iTo.(InheritanceConversionInstruction).getUnary() = iFrom
   or

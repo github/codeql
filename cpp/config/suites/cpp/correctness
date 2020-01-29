@@ -19,6 +19,7 @@
 + semmlecode-cpp-queries/Likely Bugs/Likely Typos/ExprHasNoEffect.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Underspecified Functions/TooFewArguments.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Underspecified Functions/TooManyArguments.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Underspecified Functions/ImplicitFunctionDeclaration.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Likely Typos/ShortCircuitBitMask.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Likely Typos/MissingEnumCaseInSwitch.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Arithmetic/FloatComparison.ql: /Correctness/Common Errors

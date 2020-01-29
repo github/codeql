@@ -8,6 +8,7 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Implicit function declarations (`cpp/Likely Bugs/Underspecified Functions/ImplicitFunctionDeclaration.ql`) | correctness, maintainability | This query finds calls to undeclared functions that are compiled by a C compiler. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
@@ -39,4 +40,4 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 * The taint tracking library (`semmle.code.cpp.dataflow.TaintTracking`) has had
   the following improvements:
   * The library now models data flow through `strdup` and similar functions.
-  
+  * The library now models data flow through formatting functions such as `sprintf`.

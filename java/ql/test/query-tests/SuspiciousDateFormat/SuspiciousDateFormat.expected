@@ -1,0 +1,1 @@
+| A.java:8:22:8:55 | new SimpleDateFormat(...) | Date formatter is passed a suspicious pattern "YYYY-MM-dd". |
