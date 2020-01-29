@@ -4,12 +4,9 @@
  * @kind problem
  * @id cs/serialization-check-bypass
  * @problem.severity warning
+ * @precision medium
  * @tags security
  *       external/cwe/cwe-20
- */
-
-/*
- * consider: @precision medium
  */
 
 import semmle.code.csharp.serialization.Serialization
