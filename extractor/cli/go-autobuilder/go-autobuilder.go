@@ -53,6 +53,33 @@ func fileExists(filename string) bool {
 	return err == nil
 }
 
+func run(cmd *exec.Cmd) bool {
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	in, _ := cmd.StdinPipe()
+	err := cmd.Start()
+	if err != nil {
+		log.Printf("Running %s failed, continuing anyway: %s\n", cmd.Path, err.Error())
+		return false
+	}
+	in.Close()
+	err = cmd.Wait()
+	if err != nil {
+		log.Printf("Running %s failed, continuing anyway: %s\n", cmd.Path, err.Error())
+		return false
+	}
+
+	return true
+}
+
+func tryBuild(buildFile, cmd string, args ...string) bool {
+	if fileExists(buildFile) {
+		log.Printf("%s found, running %s\n", buildFile, cmd)
+		return run(exec.Command(cmd, args...))
+	}
+	return false
+}
+
 func getImportPath() (importpath string) {
 	importpath = os.Getenv("LGTM_INDEX_IMPORT_PATH")
 	if importpath == "" {
@@ -244,94 +271,100 @@ func main() {
 		log.Printf("GOPATH set to %s.\n", newGopath)
 	}
 
-	// install dependencies
-	inst := os.Getenv("LGTM_INDEX_BUILD_COMMAND")
-	var install *exec.Cmd
-	if inst == "" {
-		// automatically determine command to install dependencies
+	// if there is a build file, run the build tool in case it gets dependencies or generates code
 
-		if depMode == Dep {
-			// set up the dep cache if SEMMLE_CACHE is set
-			cacheDir := os.Getenv("SEMMLE_CACHE")
-			if cacheDir != "" {
-				depCacheDir := filepath.Join(cacheDir, "go", "dep")
-				log.Printf("Attempting to create dep cache dir %s\n", depCacheDir)
-				err := os.MkdirAll(depCacheDir, 0755)
-				if err != nil {
-					log.Printf("Failed to create dep cache directory: %s\n", err.Error())
-				} else {
-					log.Printf("Setting dep cache directory to %s\n", depCacheDir)
-					err = os.Setenv("DEPCACHEDIR", depCacheDir)
+	buildSucceeded := tryBuild("Makefile", "make") ||
+		tryBuild("makefile", "make") ||
+		tryBuild("GNUmakefile", "make") ||
+		tryBuild("build.ninja", "ninja") ||
+		tryBuild("build", "./build") ||
+		tryBuild("build.sh", "./build.sh")
+
+	if !buildSucceeded {
+		// no builds succeeded, install dependencies
+		inst := os.Getenv("LGTM_INDEX_BUILD_COMMAND")
+		var install *exec.Cmd
+		if inst == "" {
+			// automatically determine command to install dependencies
+
+			if depMode == Dep {
+				// set up the dep cache if SEMMLE_CACHE is set
+				cacheDir := os.Getenv("SEMMLE_CACHE")
+				if cacheDir != "" {
+					depCacheDir := filepath.Join(cacheDir, "go", "dep")
+					log.Printf("Attempting to create dep cache dir %s\n", depCacheDir)
+					err := os.MkdirAll(depCacheDir, 0755)
 					if err != nil {
-						log.Println("Failed to set dep cache directory")
+						log.Printf("Failed to create dep cache directory: %s\n", err.Error())
 					} else {
-						err = os.Setenv("DEPCACHEAGE", "720h") // 30 days
+						log.Printf("Setting dep cache directory to %s\n", depCacheDir)
+						err = os.Setenv("DEPCACHEDIR", depCacheDir)
 						if err != nil {
-							log.Println("Failed to set dep cache age")
+							log.Println("Failed to set dep cache directory")
+						} else {
+							err = os.Setenv("DEPCACHEAGE", "720h") // 30 days
+							if err != nil {
+								log.Println("Failed to set dep cache age")
+							}
 						}
 					}
 				}
-			}
 
-			if fileExists("Gopkg.lock") {
-				// if Gopkg.lock exists, don't update it and only vendor dependencies
-				install = exec.Command("dep", "ensure", "-v", "-vendor-only")
+				if fileExists("Gopkg.lock") {
+					// if Gopkg.lock exists, don't update it and only vendor dependencies
+					install = exec.Command("dep", "ensure", "-v", "-vendor-only")
+				} else {
+					install = exec.Command("dep", "ensure", "-v")
+				}
+				log.Println("Installing dependencies using `dep ensure`.")
+			} else if depMode == Glide {
+				install = exec.Command("glide", "install")
+				log.Println("Installing dependencies using `glide install`")
 			} else {
-				install = exec.Command("dep", "ensure", "-v")
-			}
-			log.Println("Installing dependencies using `dep ensure`.")
-		} else if depMode == Glide {
-			install = exec.Command("glide", "install")
-			log.Println("Installing dependencies using `glide install`")
-		} else {
-			if depMode == GoGetWithModules {
-				// enable go modules if used
-				os.Setenv("GO111MODULE", "on")
-			}
+				if depMode == GoGetWithModules {
+					// enable go modules if used
+					os.Setenv("GO111MODULE", "on")
+				}
 
-			// get dependencies
-			install = exec.Command("go", "get", "-v", "./...")
-			log.Println("Installing dependencies using `go get -v ./...`.")
-		}
-	} else {
-		// write custom build commands into a script, then run it
-		var (
-			ext    = ""
-			header = ""
-			footer = ""
-		)
-		if runtime.GOOS == "windows" {
-			ext = ".cmd"
-			header = "@echo on\n@prompt +$S\n"
-			footer = "\nIF %ERRORLEVEL% NEQ 0 EXIT"
+				// get dependencies
+				install = exec.Command("go", "get", "-v", "./...")
+				log.Println("Installing dependencies using `go get -v ./...`.")
+			}
 		} else {
-			ext = ".sh"
-			header = "#! /bin/bash\nset -xe +u\n"
+			// write custom build commands into a script, then run it
+			var (
+				ext    = ""
+				header = ""
+				footer = ""
+			)
+			if runtime.GOOS == "windows" {
+				ext = ".cmd"
+				header = "@echo on\n@prompt +$S\n"
+				footer = "\nIF %ERRORLEVEL% NEQ 0 EXIT"
+			} else {
+				ext = ".sh"
+				header = "#! /bin/bash\nset -xe +u\n"
+			}
+			script, err := ioutil.TempFile("", "go-build-command-*"+ext)
+			if err != nil {
+				log.Fatalf("Unable to create temporary script holding custom build commands: %s\n", err.Error())
+			}
+			defer os.Remove(script.Name())
+			_, err = script.WriteString(header + inst + footer)
+			if err != nil {
+				log.Fatalf("Unable to write to temporary script holding custom build commands: %s\n", err.Error())
+			}
+			err = script.Close()
+			if err != nil {
+				log.Fatalf("Unable to close temporary script holding custom build commands: %s\n", err.Error())
+			}
+			os.Chmod(script.Name(), 0700)
+			install = exec.Command(script.Name())
+			log.Println("Installing dependencies using custom build command.")
 		}
-		script, err := ioutil.TempFile("", "go-build-command-*"+ext)
-		if err != nil {
-			log.Fatalf("Unable to create temporary script holding custom build commands: %s\n", err.Error())
-		}
-		defer os.Remove(script.Name())
-		_, err = script.WriteString(header + inst + footer)
-		if err != nil {
-			log.Fatalf("Unable to write to temporary script holding custom build commands: %s\n", err.Error())
-		}
-		err = script.Close()
-		if err != nil {
-			log.Fatalf("Unable to close temporary script holding custom build commands: %s\n", err.Error())
-		}
-		os.Chmod(script.Name(), 0700)
-		install = exec.Command(script.Name())
-		log.Println("Installing dependencies using custom build command.")
-	}
 
-	if install != nil {
-		install.Stdout = os.Stdout
-		install.Stderr = os.Stderr
-		err := install.Run()
-		if err != nil {
-			log.Printf("Installation of dependencies failed, continuing anyway: %s\n", err.Error())
+		if install != nil {
+			run(install)
 		}
 	}
 
