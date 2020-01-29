@@ -44,11 +44,12 @@
  * `// $tag=expected-value`
  *
  * Where `tag` is the value of the `tag` parameter from `hasActualResult()`, and `expected-value` is
- * the value of the `value` parameter from `hasActualResult()`. Multiple expectations may be placed
- * in the same comment, as long as each is prefixed by a `$`. Any actual result that appears on a
- * line that does not contain a matching expected result comment will be reported with a message of
- * the form "Unexpected result: tag=value". Any expected result comment for which there is no
- * matching actual result will be reported with a message of the form
+ * the value of the `value` parameter from `hasActualResult()`. The `=expected-value` portion may be
+ * omitted, in which case `expected-value` is treated as the empty string. Multiple expectations may
+ * be placed in the same comment, as long as each is prefixed by a `$`. Any actual result that
+ * appears on a line that does not contain a matching expected result comment will be reported with
+ * a message of the form "Unexpected result: tag=value". Any expected result comment for which there
+ * is no matching actual result will be reported with a message of the form
  * "Missing result: tag=expected-value".
  *
  * Example:
@@ -148,8 +149,19 @@ abstract class InlineExpectationsTest extends string {
   }
 }
 
+/**
+ * RegEx pattern to match a comment containing one or more expected results. The comment must be a
+ * C++-style (`//`) comment with `$` as its first non-whitespace character. Any subsequent character
+ * is treated as part of the expected results, except that the comment may contain a `//` sequence
+ * to treat the remainder of the line as a regular (non-interpreted) comment.
+ */
 private string expectationCommentPattern() { result = "//\\s*(\\$(?:[^/]|/[^/])*)(?://.*)?" }
 
+/**
+ * RegEx pattern to match a single expected result, not including the leading `$`. It starts with an
+ * optional `f+:` or `f-:`, followed by one or more comma-separated tags containing only letters,
+ * `-`, and `_`, optionally followed by `=` and the expected value.
+ */
 private string expectationPattern() {
   result = "(?:(f(?:\\+|-)):)?((?:[A-Za-z-_]+)(?:\\s*,\\s*[A-Za-z-_]+)*)(?:=(.*))?"
 }
