@@ -29,6 +29,21 @@ module OpenUrlRedirect {
   abstract class BarrierGuard extends DataFlow::BarrierGuard { }
 
   /**
+   * A method on a `net/url.URL` that is considered safe to redirect to.
+   */
+  class SafeUrlMethod extends TaintTracking::FunctionModel, Method {
+    SafeUrlMethod() {
+      this instanceof StringMethod
+      or
+      exists(string m | this.hasQualifiedName("net/url", "URL", m) | m = "Hostname" or m = "Port")
+    }
+
+    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+      inp.isReceiver() and outp.isResult()
+    }
+  }
+
+  /**
    * A source of third-party user input, considered as a flow source for URL redirects.
    */
   class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
@@ -70,11 +85,13 @@ module OpenUrlRedirect {
   }
 
   /**
-   * A call to a function called `isLocalUrl` or similar, which is
+   * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier for purposes of URL redirection.
    */
-  class LocalUrlBarrierGuard extends BarrierGuard, DataFlow::CallNode {
-    LocalUrlBarrierGuard() { this.getCalleeName().regexpMatch("(?i)(is_?)?local_?url") }
+  class RedirectCheckBarrierGuard extends BarrierGuard, DataFlow::CallNode {
+    RedirectCheckBarrierGuard() {
+      this.getCalleeName().regexpMatch("(?i)(is_?)?(local_?url|valid_?redir(ect)?)")
+    }
 
     override predicate checks(Expr e, boolean outcome) {
       // `isLocalUrl(e)` is a barrier for `e` if it evaluates to `true`

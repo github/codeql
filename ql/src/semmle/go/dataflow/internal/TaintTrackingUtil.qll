@@ -53,7 +53,7 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   tupleStep(pred, succ) or
   stringConcatStep(pred, succ) or
   sliceStep(pred, succ) or
-  functionModelStep(pred, succ) or
+  functionModelStep(_, pred, succ) or
   any(AdditionalTaintStep a).step(pred, succ)
 }
 
@@ -92,10 +92,10 @@ predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
 }
 
 /** Holds if taint flows from `pred` to `succ` via a function model. */
-predicate functionModelStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(FunctionModel m, DataFlow::CallNode c, FunctionInput inp, FunctionOutput outp |
-    c = m.getACall() and
-    m.hasTaintFlow(inp, outp) and
+predicate functionModelStep(FunctionModel fn, DataFlow::Node pred, DataFlow::Node succ) {
+  exists(DataFlow::CallNode c, FunctionInput inp, FunctionOutput outp |
+    c = fn.getACall() and
+    fn.hasTaintFlow(inp, outp) and
     pred = inp.getNode(c) and
     succ = outp.getNode(c)
   )
