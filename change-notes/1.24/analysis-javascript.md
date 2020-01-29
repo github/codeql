@@ -18,6 +18,7 @@
   - [Socket.IO](https://socket.io/)
   - [ws](https://github.com/websockets/ws)
   - [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+  - [Koa](https://www.npmjs.com/package/koa)
 
 ## New queries
 
