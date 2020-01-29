@@ -161,7 +161,8 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   i2.(PointerAddInstruction).getLeft() = i1
   or
   // Flow from argument to return value
-  i2 = any(CallInstruction call |
+  i2 =
+    any(CallInstruction call |
       exists(int indexIn |
         modelTaintToReturnValue(call.getStaticCallTarget(), indexIn) and
         i1 = getACallArgumentOrIndirection(call, indexIn)
@@ -173,7 +174,8 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // together in a single virtual variable.
   // TODO: Will this work on the test for `TaintedPath.ql`, where the output arg
   // is a pointer addition expression?
-  i2 = any(WriteSideEffectInstruction outNode |
+  i2 =
+    any(WriteSideEffectInstruction outNode |
       exists(CallInstruction call, int indexIn, int indexOut |
         modelTaintToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
         i1 = getACallArgumentOrIndirection(call, indexIn) and
