@@ -15,10 +15,14 @@ int vsnprintf(char *s, size_t n, const char *format, va_list arg);
 
 int mysprintf(char *s, size_t n, const char *format, ...)
 {
+
+
 	va_list args;
 	va_start(args, format);
 		vsnprintf(s, n, format, args);
 	va_end(args);
+
+
 }
 
 int sscanf(const char *s, const char *format, ...);
