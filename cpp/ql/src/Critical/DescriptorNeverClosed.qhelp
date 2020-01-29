@@ -6,7 +6,7 @@
 
 <overview>
 <p>
-This rule finds calls to <code>open</code> or <code>socket</code> where there is no corresponding <code>close</code> call in the program analyzed.
+This rule finds calls to <code>socket</code> where there is no corresponding <code>close</code> call in the program analyzed.
 Leaving descriptors open will cause a resource leak that will persist even after the program terminates.
 </p>
 
@@ -14,7 +14,7 @@ Leaving descriptors open will cause a resource leak that will persist even after
 </overview>
 
 <recommendation>
-<p>Ensure that all file or socket descriptors allocated by the program are freed before it terminates.</p>
+<p>Ensure that all socket descriptors allocated by the program are freed before it terminates.</p>
 </recommendation>
 
 <example>

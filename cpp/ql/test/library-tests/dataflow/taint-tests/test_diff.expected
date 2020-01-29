@@ -1,3 +1,13 @@
+| format.cpp:53:8:53:13 | format.cpp:52:36:52:49 | AST only |
+| format.cpp:58:8:58:13 | format.cpp:57:30:57:43 | AST only |
+| format.cpp:63:8:63:13 | format.cpp:62:52:62:65 | AST only |
+| format.cpp:68:8:68:13 | format.cpp:67:42:67:55 | AST only |
+| format.cpp:79:8:79:13 | format.cpp:78:36:78:41 | AST only |
+| format.cpp:84:8:84:13 | format.cpp:83:38:83:43 | AST only |
+| format.cpp:90:8:90:13 | format.cpp:89:36:89:49 | AST only |
+| format.cpp:96:8:96:13 | format.cpp:95:30:95:43 | AST only |
+| format.cpp:101:8:101:13 | format.cpp:100:31:100:45 | AST only |
+| format.cpp:106:8:106:14 | format.cpp:105:38:105:52 | AST only |
 | taint.cpp:41:7:41:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:42:7:42:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:43:7:43:13 | taint.cpp:37:22:37:27 | AST only |

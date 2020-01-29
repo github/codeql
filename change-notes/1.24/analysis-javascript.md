@@ -38,6 +38,7 @@
 | Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | This query now recognizes additional ways event handler receivers can be bound. | 
 | Expression has no effect (`js/useless-expression`) | Fewer false positive results | The query now recognizes block-level flow type annotations and ignores the first statement of a try block. |
 | Use of call stack introspection in strict mode (`js/strict-mode-call-stack-introspection`) | Fewer false positive results | The query no longer flags expression statements. |
+| Missing CSRF middleware (`js/missing-token-validation`) | Fewer false positive results | The query reports fewer duplicates and only flags handlers that explicitly access cookie data. |
 
 ## Changes to libraries
 
