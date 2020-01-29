@@ -15,6 +15,7 @@ import javascript
 import DataFlow
 import PathGraph
 import semmle.javascript.dataflow.InferredTypes
+import semmle.javascript.dataflow.internal.FlowSteps
 
 /**
  * Gets a node that refers to an element of `array`, likely obtained
@@ -52,9 +53,12 @@ abstract class EnumeratedPropName extends DataFlow::Node {
    *
    * For example, gets `src[key]` in `for (var key in src) { src[key]; }`.
    */
-  PropRead getASourceProp() {
-    result = AccessPath::getAnAliasedSourceNode(getSourceObject()).getAPropertyRead() and
-    result.getPropertyNameExpr().flow().getImmediatePredecessor*() = this
+  SourceNode getASourceProp() {
+    exists(Node base, Node key |
+      dynamicPropReadStep(base, key, result) and
+      AccessPath::getAnAliasedSourceNode(getSourceObject()).flowsTo(base) and
+      key.getImmediatePredecessor*() = this
+    )
   }
 }
 
@@ -102,7 +106,7 @@ class EntriesEnumeratedPropName extends EnumeratedPropName {
     result = entries.getArgument(0)
   }
 
-  override PropRead getASourceProp() {
+  override SourceNode getASourceProp() {
     result = super.getASourceProp()
     or
     result = entry.getAPropertyRead("1")
@@ -133,6 +137,9 @@ class DynamicPropRead extends DataFlow::SourceNode, DataFlow::ValueNode {
   /** Gets the base of the dynamic read. */
   DataFlow::Node getBase() { result = astNode.getBase().flow() }
 
+  /** Gets the node holding the name of the property. */
+  DataFlow::Node getPropertyNameNode() { result = astNode.getIndex().flow() }
+
   /**
    * Holds if the value of this read was assigned to earlier in the same basic block.
    *
@@ -155,6 +162,72 @@ class DynamicPropRead extends DataFlow::SourceNode, DataFlow::ValueNode {
 }
 
 /**
+ * Holds if `output` is the result of `base[key]`, either directly or through
+ * one or more function calls.
+ */
+predicate dynamicPropReadStep(Node base, Node key, SourceNode output) {
+  exists(DynamicPropRead read |
+    not read.hasDominatingAssignment() and
+    base = read.getBase() and
+    key = read.getPropertyNameNode() and
+    output = read
+  )
+  or
+  // Summarize functions returning a dynamic property read of two parameters.
+  exists(CallNode call, Function callee, ParameterNode baseParam, ParameterNode keyParam, Node innerBase, Node innerKey, SourceNode innerOutput |
+    dynamicPropReadStep(innerBase, innerKey, innerOutput) and
+    baseParam.flowsTo(innerBase) and
+    keyParam.flowsTo(innerKey) and
+    innerOutput.flowsTo(callee.getAReturnedExpr().flow()) and
+    call.getACallee() = callee and
+    argumentPassing(call, base, callee, baseParam) and
+    argumentPassing(call, key, callee, keyParam) and
+    output = call
+  )
+}
+
+/**
+ * Holds if `node` may flow from an enumerated prop name, possibly
+ * into function calls (but not returns).
+ */
+predicate isEnumeratedPropName(Node node) {
+  node instanceof EnumeratedPropName
+  or
+  exists(Node pred |
+    isEnumeratedPropName(pred)
+  |
+    node = pred.getASuccessor()
+    or
+    argumentPassing(_, pred, _, node)
+    or
+    // Handle one level of callbacks
+    exists(FunctionNode function, ParameterNode callback, int i |
+      pred = callback.getAnInvocation().getArgument(i) and
+      argumentPassing(_, function, _, callback) and
+      node = function.getParameter(i)
+    )
+  )
+}
+
+/**
+ * Holds if `node` may refer to `Object.prototype` obtained through dynamic property
+ * read of a property obtained through property enumeration.
+ */
+predicate isPotentiallyObjectPrototype(SourceNode node) {
+  exists(Node base, Node key |
+    dynamicPropReadStep(base, key, node) and
+    isEnumeratedPropName(key) and
+    not arePropertiesEnumerated(base.getALocalSource()) // ignore `for (let key in src) { ... src[key] ... }`
+  )
+  or
+  exists(Node use |
+    isPotentiallyObjectPrototype(use.getALocalSource())
+  |
+    argumentPassing(_, use, _, node)
+  )
+}
+
+/**
  * Holds if there is a dynamic property assignment of form `base[prop] = rhs`
  * which might act as the writing operation in a recursive merge function.
  *
@@ -168,6 +241,7 @@ predicate dynamicPropWrite(DataFlow::Node base, DataFlow::Node prop, DataFlow::N
   exists(AssignExpr write, IndexExpr index |
     index = write.getLhs() and
     base = index.getBase().flow() and
+    isPotentiallyObjectPrototype(base.getALocalSource()) and
     prop = index.getPropertyNameExpr().flow() and
     rhs = write.getRhs().flow() and
     not exists(prop.getStringValue()) and
