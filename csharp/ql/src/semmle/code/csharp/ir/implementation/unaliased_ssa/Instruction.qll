@@ -1239,6 +1239,11 @@ class IndirectReadSideEffectInstruction extends ReadSideEffectInstruction {
 /**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
+class BufferReadSideEffectInstruction extends ReadSideEffectInstruction {
+  BufferReadSideEffectInstruction() { getOpcode() instanceof Opcode::BufferReadSideEffect }
+}
+
+/**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
 class SizedBufferReadSideEffectInstruction extends ReadSideEffectInstruction {
