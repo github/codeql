@@ -2,7 +2,7 @@
  * @name Unsafe jQuery plugin
  * @description A jQuery plugin that unintentionally constructs HTML from some of its options may be unsafe to use for clients.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id js/unsafe-jquery-plugin
  * @tags security
