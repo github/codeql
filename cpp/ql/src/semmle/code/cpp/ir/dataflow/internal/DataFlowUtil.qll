@@ -283,18 +283,10 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // By allowing flow through the total operand, we ensure that flow is not lost
   // due to shortcomings of the alias analysis. We may get false flow in cases
   // where the data is indeed overwritten.
+  //
+  // Flow through the partial operand belongs in the taint-tracking libraries
+  // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
-  or
-  // Flow through the partial operand must be restricted a bit more. For
-  // soundness, the IR has to assume that every write to an unknown address can
-  // affect every escaped variable, and this assumption shows up as data flowing
-  // through partial chi operands. The chi instructions for all escaped data can
-  // be recognized by having unknown types. For all other chi instructions, flow
-  // through partial operands is more likely to be real.
-  exists(ChiInstruction chi | iTo = chi |
-    iFrom = chi.getPartial() and
-    not chi.getResultIRType() instanceof IRUnknownType
-  )
 }
 
 /**
