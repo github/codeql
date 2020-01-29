@@ -149,6 +149,9 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   or
   i2.(UnaryInstruction).getUnary() = i1
   or
+  i2.(ChiInstruction).getPartial() = i1 and
+  not isChiForAllAliasedMemory(i2)
+  or
   exists(BinaryInstruction bin |
     bin = i2 and
     predictableInstruction(i2.getAnOperand().getDef()) and
@@ -207,6 +210,19 @@ private predicate modelTaintToParameter(Function f, int parameterIn, int paramet
     (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
     modelOut.isParameterDeref(parameterOut)
   )
+}
+
+/**
+ * Holds if `chi` is on the chain of chi-instructions for all aliased memory.
+ * Taint shoud not pass through these instructions since they tend to mix up
+ * unrelated objects.
+ */
+private predicate isChiForAllAliasedMemory(Instruction instr) {
+  instr.(ChiInstruction).getTotal() instanceof AliasedDefinitionInstruction
+  or
+  isChiForAllAliasedMemory(instr.(ChiInstruction).getTotal())
+  or
+  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInput())
 }
 
 private predicate modelTaintToReturnValue(Function f, int parameterIn) {
