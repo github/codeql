@@ -51,24 +51,20 @@ tools-win64: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))) tools/token
 $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
 	GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(notdir $@))
 
-.PHONY: extractor extractor-full
-extractor: codeql-extractor.yml COPYRIGHT LICENSE ql/src/go.dbscheme \
-	tools/tokenizer.jar tools-codeql $(CODEQL_TOOLS)
+.PHONY: extractor-common extractor extractor-full
+extractor-common: codeql-extractor.yml COPYRIGHT LICENSE ql/src/go.dbscheme \
+	tools/tokenizer.jar $(CODEQL_TOOLS)
 	rm -rf $(EXTRACTOR_PACK_OUT)
 	mkdir -p $(EXTRACTOR_PACK_OUT)
 	cp codeql-extractor.yml COPYRIGHT LICENSE ql/src/go.dbscheme ql/src/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
 	mkdir $(EXTRACTOR_PACK_OUT)/tools
-	cp -r $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
-	cp -r tools/tokenizer.jar tools/$(CODEQL_PLATFORM) $(EXTRACTOR_PACK_OUT)/tools
+	cp -r tools/tokenizer.jar $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
 
-extractor-full: codeql-extractor.yml COPYRIGHT LICENSE ql/src/go.dbscheme \
-	tools/tokenizer.jar tools-codeql-full $(CODEQL_TOOLS)
-	rm -rf $(EXTRACTOR_PACK_OUT)
-	mkdir -p $(EXTRACTOR_PACK_OUT)
-	cp codeql-extractor.yml COPYRIGHT LICENSE ql/src/go.dbscheme ql/src/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
-	mkdir $(EXTRACTOR_PACK_OUT)/tools
-	cp -r $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
-	cp -r tools/tokenizer.jar $(addprefix tools/,linux64 osx64 win64) $(EXTRACTOR_PACK_OUT)/tools
+extractor: extractor-common tools-codeql
+	cp -r tools/$(CODEQL_PLATFORM) $(EXTRACTOR_PACK_OUT)/tools
+
+extractor-full: extractor-common tools-codeql-full
+	cp -r $(addprefix tools/,linux64 osx64 win64) $(EXTRACTOR_PACK_OUT)/tools
 
 tools/tokenizer.jar: tools/net/sourceforge/pmd/cpd/GoLanguage.class
 	jar cf $@ -C tools net
