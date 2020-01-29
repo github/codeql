@@ -199,7 +199,11 @@ private Instruction getACallArgumentOrIndirection(CallInstruction call, int argu
 
 private predicate modelTaintToParameter(Function f, int parameterIn, int parameterOut) {
   exists(FunctionInput modelIn, FunctionOutput modelOut |
-    f.(TaintFunction).hasTaintFlow(modelIn, modelOut) and
+    (
+      f.(DataFlowFunction).hasDataFlow(modelIn, modelOut)
+      or
+      f.(TaintFunction).hasTaintFlow(modelIn, modelOut)
+    ) and
     (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
     modelOut.isParameterDeref(parameterOut)
   )
