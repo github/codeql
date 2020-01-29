@@ -78,7 +78,7 @@ predicate relevantMethodCall(MethodAccess ma, Method m) {
   ma.getMethod() = m and
   not m.getReturnType().hasName("void") and
   (not isMockingMethod(m) or isMustBeQualifierMockingMethod(m)) and
-  not isMockingMethod(ma.getQualifier().getProperExpr().(MethodAccess).getMethod())
+  not isMockingMethod(ma.getQualifier().(MethodAccess).getMethod())
 }
 
 predicate methodStats(Method m, int used, int total, int percentage) {

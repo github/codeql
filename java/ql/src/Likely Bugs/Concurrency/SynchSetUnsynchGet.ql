@@ -23,7 +23,7 @@ import java
  */
 predicate isSynchronizedByBlock(Method m) {
   exists(SynchronizedStmt sync, Expr on |
-    sync = m.getBody().getAChild*() and on = sync.getExpr().getProperExpr()
+    sync = m.getBody().getAChild*() and on = sync.getExpr()
   |
     if m.isStatic()
     then on.(TypeLiteral).getTypeName().getType() = m.getDeclaringType()
