@@ -535,6 +535,10 @@ module DataFlow {
      */
     pragma[noinline]
     predicate accesses(Node base, string p) { getBase() = base and getPropertyName() = p }
+    
+    predicate isPrivateField() {
+      getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
+    }
   }
 
   /**
