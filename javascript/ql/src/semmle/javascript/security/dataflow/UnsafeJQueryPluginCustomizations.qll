@@ -115,7 +115,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Holds if `plugin` has a default option defined a `def`.
+   * Holds if `plugin` has a default option defined at `def`.
    */
   private predicate hasDefaultOption(JQueryPluginMethod plugin, DataFlow::PropWrite def) {
     exists(ExtendCall extend, JQueryPluginOptions options, DataFlow::SourceNode default |
@@ -161,7 +161,7 @@ module UnsafeJQueryPlugin {
     IsElementSanitizer() {
       // common ad hoc sanitizing calls
       exists(string name | getCalleeName() = name |
-        name = "isElement" or name = "isWindow" or name = "isWindow"
+        name = "isElement" or name = "isDocument" or name = "isWindow"
       )
     }
 
@@ -171,7 +171,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Expression of like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
+   * Expression like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
    */
   class PropertyPrecenseSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
     DataFlow::Node input;
