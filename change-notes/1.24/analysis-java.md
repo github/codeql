@@ -27,7 +27,7 @@ The following changes in version 1.24 affect Java analysis in all applications.
 
 * The data-flow library has been improved when flow through methods needs to be
   combined with both taint tracking and flow through fields allowing more flow
-  to be tracked. This affects and improves all security queries, which may
+  to be tracked. This affects and improves most security queries, which may
   report additional results.
 * Identification of test classes has been improved. Previously, one of the
   match conditions would classify any class with a name containing the string
