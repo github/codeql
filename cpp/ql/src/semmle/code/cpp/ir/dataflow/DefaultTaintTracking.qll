@@ -21,31 +21,19 @@ private predicate predictableInstruction(Instruction instr) {
   predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
+private DataFlow::Node getNodeForSource(Expr source) {
+  isUserInput(source, _) and
+  (
+    result = DataFlow::exprNode(source)
+    or
+    result = DataFlow::definitionByReferenceNode(source)
+  )
+}
+
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(CallInstruction ci, WriteSideEffectInstruction wsei |
-      userInputArgument(ci.getConvertedResultExpression(), wsei.getIndex()) and
-      source.asInstruction() = wsei and
-      wsei.getPrimaryInstruction() = ci
-    )
-    or
-    userInputReturned(source.asExpr())
-    or
-    isUserInput(source.asExpr(), _)
-    or
-    source.asExpr() instanceof EnvironmentRead
-    or
-    source
-        .asInstruction()
-        .(LoadInstruction)
-        .getSourceAddress()
-        .(VariableAddressInstruction)
-        .getASTVariable()
-        .hasName("argv") and
-    source.asInstruction().getEnclosingFunction().hasGlobalName("main")
-  }
+  override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
   override predicate isSink(DataFlow::Node sink) { any() }
 
@@ -59,7 +47,7 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
 private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   ToGlobalVarTaintTrackingCfg() { this = "GlobalVarTaintTrackingCfg" }
 
-  override predicate isSource(DataFlow::Node source) { isUserInput(source.asExpr(), _) }
+  override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(GlobalOrNamespaceVariable gv | writesVariable(sink.asInstruction(), gv))
@@ -306,10 +294,7 @@ private Element adjustedSink(DataFlow::Node sink) {
 
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
-    cfg.hasFlow(DataFlow::exprNode(source), sink)
-    or
-    cfg.hasFlow(DataFlow::definitionByReferenceNode(source), sink)
-  |
+    cfg.hasFlow(getNodeForSource(source), sink) and
     tainted = adjustedSink(sink)
   )
 }
@@ -322,7 +307,7 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
     ToGlobalVarTaintTrackingCfg toCfg, FromGlobalVarTaintTrackingCfg fromCfg, DataFlow::Node store,
     GlobalOrNamespaceVariable global, DataFlow::Node load, DataFlow::Node sink
   |
-    toCfg.hasFlow(DataFlow::exprNode(source), store) and
+    toCfg.hasFlow(getNodeForSource(source), store) and
     store
         .asInstruction()
         .(StoreInstruction)
