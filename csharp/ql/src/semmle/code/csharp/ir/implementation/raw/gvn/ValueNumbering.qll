@@ -45,8 +45,7 @@ class ValueNumber extends TValueNumber {
    * deterministic but arbitrary. Intended for use only in debugging.
    */
   final Instruction getExampleInstruction() {
-    result =
-      min(Instruction instr |
+    result = min(Instruction instr |
         instr = getAnInstruction()
       |
         instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
@@ -80,9 +79,7 @@ class ValueNumber extends TValueNumber {
     this instanceof TUniqueValueNumber and result = "Unique"
   }
 
-  Language::Expr getAnExpr() {
-    result = getAnInstruction().getUnconvertedResultExpression()
-  }
+  Language::Expr getAnExpr() { result = getAnInstruction().getUnconvertedResultExpression() }
 }
 
 /**
