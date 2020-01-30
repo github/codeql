@@ -35,7 +35,8 @@ predicate booleanLiteral(Literal l) {
 string boolLiteralInLogicalOp(Literal literal) {
   booleanLiteral(literal) and
   literal.getParent() instanceof BinaryLogicalOperation and
-  result = "Literal value " + literal.getValueText() +
+  result =
+    "Literal value " + literal.getValueText() +
       " is used in a logical expression; simplify or use a constant."
 }
 

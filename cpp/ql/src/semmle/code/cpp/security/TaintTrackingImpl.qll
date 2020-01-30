@@ -417,7 +417,8 @@ private predicate predictable(Expr expr) {
 }
 
 private int maxArgIndex(Function f) {
-  result = max(FunctionCall fc, int toMax |
+  result =
+    max(FunctionCall fc, int toMax |
       fc.getTarget() = f and toMax = fc.getNumberOfArguments() - 1
     |
       toMax

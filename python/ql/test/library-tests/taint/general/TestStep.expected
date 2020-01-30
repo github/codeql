@@ -199,3 +199,10 @@
 | simple.test | test.py:210 | i |  | --> | iterable.simple | test.py:213 | flow_in_generator() |  |
 | simple.test | test.py:210 | i |  | --> | sequence of simple.test | test.py:213 | flow_in_generator() |  |
 | simple.test | test.py:213 | For |  | --> | simple.test | test.py:214 | x |  |
+| simple.test | test.py:217 | SOURCE |  | --> | simple.test | test.py:218 | tainted |  |
+| simple.test | test.py:217 | SOURCE |  | --> | simple.test | test.py:220 | tainted |  |
+| simple.test | test.py:223 | SOURCE |  | --> | simple.test | test.py:224 | tainted |  |
+| simple.test | test.py:229 | SOURCE |  | --> | simple.test | test.py:230 | tainted |  |
+| simple.test | test.py:229 | SOURCE |  | --> | simple.test | test.py:231 | tainted |  |
+| simple.test | test.py:229 | SOURCE |  | --> | simple.test | test.py:232 | tainted |  |
+| simple.test | test.py:229 | SOURCE |  | --> | simple.test | test.py:233 | tainted |  |

@@ -612,7 +612,7 @@ cached module PointsToInternal {
         exists(ControlFlowNode sys_modules_flow, ControlFlowNode n, ControlFlowNode mod |
           /* Use previous points-to here to avoid slowing down the recursion too much */
           exists(SubscriptNode sub |
-              sub.getValue() = sys_modules_flow and
+              sub.getObject() = sys_modules_flow and
               pointsTo(sys_modules_flow, _, ObjectInternal::sysModules(), _) and
               sub.getIndex() = n and
               n.getNode().(StrConst).getText() = name and

@@ -30,9 +30,9 @@ class SprintfCall extends FunctionCall {
   predicate isDangerous() { this.getMaxConvertedLength() > this.getBufferSize() }
 
   string getDescription() {
-    result = "This conversion may yield a string of length " +
-        this.getMaxConvertedLength().toString() + ", which exceeds the allocated buffer size of " +
-        this.getBufferSize().toString()
+    result =
+      "This conversion may yield a string of length " + this.getMaxConvertedLength().toString() +
+        ", which exceeds the allocated buffer size of " + this.getBufferSize().toString()
   }
 }
 

@@ -5,4 +5,4 @@ where
 encoding = f.getSpecifiedEncoding()
 or
 not exists(f.getSpecifiedEncoding()) and encoding = "none"
-select f.getName(), encoding
+select f.getAbsolutePath(), encoding

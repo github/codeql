@@ -13,7 +13,8 @@ import csharp
 
 predicate incorrectUseOfDES(ObjectCreation e, string msg) {
   e.getType().(Class).hasQualifiedName("System.Security.Cryptography", "DESCryptoServiceProvider") and
-  msg = "DES encryption uses keys of 56 bits only. Switch to AesCryptoServiceProvider or RijndaelManaged instead."
+  msg =
+    "DES encryption uses keys of 56 bits only. Switch to AesCryptoServiceProvider or RijndaelManaged instead."
 }
 
 predicate incorrectUseOfTripleDES(ObjectCreation e, string msg) {
@@ -21,7 +22,8 @@ predicate incorrectUseOfTripleDES(ObjectCreation e, string msg) {
       .getType()
       .(Class)
       .hasQualifiedName("System.Security.Cryptography", "TripleDESCryptoServiceProvider") and
-  msg = "TripleDES encryption provides at most 112 bits of security. Switch to AesCryptoServiceProvider or RijndaelManaged instead."
+  msg =
+    "TripleDES encryption provides at most 112 bits of security. Switch to AesCryptoServiceProvider or RijndaelManaged instead."
 }
 
 from Expr e, string msg

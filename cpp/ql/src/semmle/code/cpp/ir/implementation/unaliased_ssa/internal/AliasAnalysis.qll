@@ -2,6 +2,7 @@ private import AliasAnalysisInternal
 private import cpp
 private import InputIR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
+private import semmle.code.cpp.ir.implementation.IRConfiguration
 private import semmle.code.cpp.models.interfaces.Alias
 
 private class IntValue = Ints::IntValue;
@@ -94,6 +95,10 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
         convert = instr and
         bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
       )
+      or
+      // Conversion using dynamic_cast results in an unknown offset
+      instr instanceof CheckedConvertOrNullInstruction and
+      bitOffset = Ints::unknown()
       or
       // Converting to a derived class subtracts the offset of the base class.
       exists(ConvertToDerivedInstruction convert |
@@ -211,8 +216,8 @@ private predicate isArgumentForParameter(CallInstruction ci, Operand operand, In
     ci = operand.getUse() and
     f = ci.getStaticCallTarget() and
     (
-      init.(InitializeParameterInstruction).getParameter() = f
-            .getParameter(operand.(PositionalArgumentOperand).getIndex())
+      init.(InitializeParameterInstruction).getParameter() =
+        f.getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
       init instanceof InitializeThisInstruction and
       init.getEnclosingFunction() = f and
@@ -277,9 +282,14 @@ private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
  * analysis.
  */
 predicate variableAddressEscapes(IRVariable var) {
-  automaticVariableAddressEscapes(var.(IRAutomaticVariable))
+  exists(IREscapeAnalysisConfiguration config |
+    config.useSoundEscapeAnalysis() and
+    automaticVariableAddressEscapes(var.(IRAutomaticVariable))
+  )
   or
-  // All variables with static storage duration have their address escape.
+  // All variables with static storage duration have their address escape, even when escape analysis
+  // is allowed to be unsound. Otherwise, we won't have a definition for any non-escaped global
+  // variable. Normally, we rely on `AliasedDefinition` to handle that.
   not var instanceof IRAutomaticVariable
 }
 

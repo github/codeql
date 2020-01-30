@@ -5,8 +5,8 @@ predicate parameterReaches(Parameter p, ControlFlow::Node cfn) {
   cfn = p.getCallable().getEntryPoint().getASuccessor()
   or
   exists(ControlFlow::Node mid | parameterReaches(p, mid) |
-    not mid = any(AssignableDefinition ad | ad.getTarget() = p and ad.isCertain())
-          .getAControlFlowNode() and
+    not mid =
+      any(AssignableDefinition ad | ad.getTarget() = p and ad.isCertain()).getAControlFlowNode() and
     cfn = mid.getASuccessor()
   )
 }

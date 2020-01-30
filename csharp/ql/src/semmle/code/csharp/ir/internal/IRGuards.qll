@@ -265,7 +265,8 @@ private class GuardConditionFromIR extends GuardCondition {
   private predicate controlsBlock1(BasicBlock controlled, boolean testIsTrue) {
     exists(IRBlock irb |
       forex(IRGuardCondition inst | inst = ir | inst.controls(irb, testIsTrue)) and
-      irb.getAnInstruction().getAST().(ControlFlowElement).getAControlFlowNode().getBasicBlock() = controlled and
+      irb.getAnInstruction().getAST().(ControlFlowElement).getAControlFlowNode().getBasicBlock() =
+        controlled and
       not isUnreachedBlock(irb)
     )
   }

@@ -21,7 +21,8 @@ module InstructionSanity {
         operand = instr.getAnOperand() and
         operand.getOperandTag() = tag
       ) and
-      message = "Instruction '" + instr.getOpcode().toString() +
+      message =
+        "Instruction '" + instr.getOpcode().toString() +
           "' is missing an expected operand with tag '" + tag.toString() + "' in function '$@'." and
       func = instr.getEnclosingIRFunction() and
       funcText = Language::getIdentityString(func.getFunction())
@@ -51,13 +52,15 @@ module InstructionSanity {
     Instruction instr, string message, IRFunction func, string funcText
   ) {
     exists(OperandTag tag, int operandCount |
-      operandCount = strictcount(NonPhiOperand operand |
+      operandCount =
+        strictcount(NonPhiOperand operand |
           operand = instr.getAnOperand() and
           operand.getOperandTag() = tag
         ) and
       operandCount > 1 and
       not tag instanceof UnmodeledUseOperandTag and
-      message = "Instruction has " + operandCount + " operands with tag '" + tag.toString() + "'" +
+      message =
+        "Instruction has " + operandCount + " operands with tag '" + tag.toString() + "'" +
           " in function '$@'." and
       func = instr.getEnclosingIRFunction() and
       funcText = Language::getIdentityString(func.getFunction())
@@ -81,8 +84,9 @@ module InstructionSanity {
       not exists(operand.getType()) and
       use = operand.getUse() and
       func = use.getEnclosingFunction() and
-      message = "Operand '" + operand.toString() + "' of instruction '" + use.getOpcode().toString()
-          + "' missing type in function '" + Language::getIdentityString(func) + "'."
+      message =
+        "Operand '" + operand.toString() + "' of instruction '" + use.getOpcode().toString() +
+          "' missing type in function '" + Language::getIdentityString(func) + "'."
     )
   }
 
@@ -90,7 +94,8 @@ module InstructionSanity {
     ChiInstruction chi, string message, IRFunction func, string funcText
   ) {
     chi.getTotal() = chi.getPartial() and
-    message = "Chi instruction for " + chi.getPartial().toString() +
+    message =
+      "Chi instruction for " + chi.getPartial().toString() +
         " has duplicate operands in function $@" and
     func = chi.getEnclosingIRFunction() and
     funcText = Language::getIdentityString(func.getFunction())
@@ -204,10 +209,12 @@ module InstructionSanity {
    * and the `IRBlock` graph.
    */
   query predicate backEdgeCountMismatch(Language::Function f, int fromInstr, int fromBlock) {
-    fromInstr = count(Instruction i1, Instruction i2 |
+    fromInstr =
+      count(Instruction i1, Instruction i2 |
         i1.getEnclosingFunction() = f and i1.getBackEdgeSuccessor(_) = i2
       ) and
-    fromBlock = count(IRBlock b1, IRBlock b2 |
+    fromBlock =
+      count(IRBlock b1, IRBlock b2 |
         b1.getEnclosingFunction() = f and b1.getBackEdgeSuccessor(_) = b2
       ) and
     fromInstr != fromBlock
@@ -252,7 +259,8 @@ module InstructionSanity {
         defBlock = useBlock and
         defIndex < useIndex
       ) and
-      message = "Operand '" + useOperand.toString() +
+      message =
+        "Operand '" + useOperand.toString() +
           "' is not dominated by its definition in function '$@'." and
       func = useOperand.getEnclosingIRFunction() and
       funcText = Language::getIdentityString(func.getFunction())
@@ -327,7 +335,8 @@ class Instruction extends Construction::TInstruction {
     exists(IRBlock block |
       this = block.getInstruction(result)
       or
-      this = rank[-result - 1](PhiInstruction phiInstr |
+      this =
+        rank[-result - 1](PhiInstruction phiInstr |
           phiInstr = block.getAPhiInstruction()
         |
           phiInstr order by phiInstr.getUniqueId()
@@ -336,8 +345,10 @@ class Instruction extends Construction::TInstruction {
   }
 
   private int getLineRank() {
-    this = rank[result](Instruction instr |
-        instr = getAnInstructionAtLine(getEnclosingIRFunction(), getLocation().getFile(),
+    this =
+      rank[result](Instruction instr |
+        instr =
+          getAnInstructionAtLine(getEnclosingIRFunction(), getLocation().getFile(),
             getLocation().getStartLine())
       |
         instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
@@ -373,7 +384,8 @@ class Instruction extends Construction::TInstruction {
    * Example: `func:r3_4, this:r3_5`
    */
   string getOperandsString() {
-    result = concat(Operand operand |
+    result =
+      concat(Operand operand |
         operand = getAnOperand()
       |
         operand.getDumpString(), ", " order by operand.getDumpSortOrder()
@@ -947,6 +959,10 @@ class ConvertInstruction extends UnaryInstruction {
   ConvertInstruction() { getOpcode() instanceof Opcode::Convert }
 }
 
+class CheckedConvertOrNullInstruction extends UnaryInstruction {
+  CheckedConvertOrNullInstruction() { getOpcode() instanceof Opcode::CheckedConvertOrNull }
+}
+
 /**
  * Represents an instruction that converts between two addresses
  * related by inheritance.
@@ -987,7 +1003,7 @@ class InheritanceConversionInstruction extends UnaryInstruction {
 
 /**
  * Represents an instruction that converts from the address of a derived class
- * to the address of a direct non-virtual base class.
+ * to the address of a base class.
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
   ConvertToBaseInstruction() { getOpcode() instanceof ConvertToBaseOpcode }
@@ -1198,52 +1214,63 @@ class CallSideEffectInstruction extends SideEffectInstruction {
 }
 
 /**
- * An instruction representing the side effect of a function call on any memory that might be read
- * by that call.
+ * An instruction representing the side effect of a function call on any memory
+ * that might be read by that call. This instruction is emitted instead of
+ * `CallSideEffectInstruction` when it's certain that the call target cannot
+ * write to escaped memory.
  */
 class CallReadSideEffectInstruction extends SideEffectInstruction {
   CallReadSideEffectInstruction() { getOpcode() instanceof Opcode::CallReadSideEffect }
 }
 
 /**
+ * An instruction representing a read side effect of a function call on a
+ * specific parameter.
+ */
+class ReadSideEffectInstruction extends SideEffectInstruction, IndexedInstruction {
+  ReadSideEffectInstruction() { getOpcode() instanceof ReadSideEffectOpcode }
+
+  /** Gets the operand for the value that will be read from this instruction, if known. */
+  final SideEffectOperand getSideEffectOperand() { result = getAnOperand() }
+
+  /** Gets the value that will be read from this instruction, if known. */
+  final Instruction getSideEffect() { result = getSideEffectOperand().getDef() }
+
+  /** Gets the operand for the address from which this instruction may read. */
+  final AddressOperand getArgumentOperand() { result = getAnOperand() }
+
+  /** Gets the address from which this instruction may read. */
+  final Instruction getArgumentDef() { result = getArgumentOperand().getDef() }
+}
+
+/**
  * An instruction representing the read of an indirect parameter within a function call.
  */
-class IndirectReadSideEffectInstruction extends SideEffectInstruction {
+class IndirectReadSideEffectInstruction extends ReadSideEffectInstruction {
   IndirectReadSideEffectInstruction() { getOpcode() instanceof Opcode::IndirectReadSideEffect }
-
-  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
-
-  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
-class BufferReadSideEffectInstruction extends SideEffectInstruction {
+class BufferReadSideEffectInstruction extends ReadSideEffectInstruction {
   BufferReadSideEffectInstruction() { getOpcode() instanceof Opcode::BufferReadSideEffect }
-
-  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
-
-  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
  * An instruction representing the read of an indirect buffer parameter within a function call.
  */
-class SizedBufferReadSideEffectInstruction extends SideEffectInstruction {
+class SizedBufferReadSideEffectInstruction extends ReadSideEffectInstruction {
   SizedBufferReadSideEffectInstruction() {
     getOpcode() instanceof Opcode::SizedBufferReadSideEffect
   }
 
-  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
-
   Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
-
-  Instruction getSideEffect() { result = getAnOperand().(SideEffectOperand).getDef() }
 }
 
 /**
- * An instruction representing a side effect of a function call.
+ * An instruction representing a write side effect of a function call on a
+ * specific parameter.
  */
 class WriteSideEffectInstruction extends SideEffectInstruction, IndexedInstruction {
   WriteSideEffectInstruction() { getOpcode() instanceof WriteSideEffectOpcode }

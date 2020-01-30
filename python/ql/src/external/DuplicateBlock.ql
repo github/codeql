@@ -21,14 +21,14 @@ predicate sorted_by_location(DuplicateBlock x, DuplicateBlock y) {
     if x.sourceFile() = y.sourceFile() then
         x.sourceStartLine() < y.sourceStartLine()
     else
-        x.sourceFile().getName() < y.sourceFile().getName()
+        x.sourceFile().getAbsolutePath() < y.sourceFile().getAbsolutePath()
 }
 
 from DuplicateBlock d, DuplicateBlock other
 where d.sourceLines() > 10 and
       other.getEquivalenceClass() = d.getEquivalenceClass() and
       sorted_by_location(other, d)
-select 
-   d, 
+select
+   d,
    "Duplicate code: " + d.sourceLines() + " lines are duplicated at " +
    other.sourceFile().getShortName() + ":" + other.sourceStartLine().toString()

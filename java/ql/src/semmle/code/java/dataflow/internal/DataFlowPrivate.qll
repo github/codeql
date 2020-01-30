@@ -100,8 +100,8 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
     not exists(captured.getAUse()) and
     exists(SsaVariable capturedDef | capturedDef = captured.getAnUltimateDefinition() |
       capturedDef.(SsaImplicitInit).isParameterDefinition(node1.asParameter()) or
-      capturedDef.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = node1
-            .asExpr() or
+      capturedDef.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
+        node1.asExpr() or
       capturedDef.(SsaExplicitUpdate).getDefiningExpr().(AssignOp) = node1.asExpr()
     )
   )
@@ -278,8 +278,6 @@ class DataFlowCallable = Callable;
 class DataFlowExpr = Expr;
 
 class DataFlowType = RefType;
-
-class DataFlowLocation = Location;
 
 class DataFlowCall extends Call {
   /** Gets the data flow node corresponding to this call. */

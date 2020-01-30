@@ -8,6 +8,7 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Implicit function declarations (`cpp/Likely Bugs/Underspecified Functions/ImplicitFunctionDeclaration.ql`) | correctness, maintainability | This query finds calls to undeclared functions that are compiled by a C compiler. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
@@ -35,7 +36,8 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
     about the _name or scope_ of variables should remain unchanged.
   * The `LocalScopeVariableReachability` library is deprecated in favor of
     `StackVariableReachability`. The functionality is the same.
+* The models library models `strlen` in more detail, and includes common variations such as `wcslen`.
 * The taint tracking library (`semmle.code.cpp.dataflow.TaintTracking`) has had
   the following improvements:
   * The library now models data flow through `strdup` and similar functions.
-  
+  * The library now models data flow through formatting functions such as `sprintf`.

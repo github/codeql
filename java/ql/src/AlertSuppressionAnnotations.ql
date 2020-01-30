@@ -38,7 +38,8 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   }
 
   private Annotation firstAnnotation() {
-    result = min(this.getASiblingAnnotation() as m
+    result =
+      min(this.getASiblingAnnotation() as m
         order by
           m.getLocation().getStartLine(), m.getLocation().getStartColumn()
       )

@@ -51,11 +51,8 @@ class CookieStorageSink extends ExternalLocationSink {
       e = any(SystemWebHttpCookie cookie).getAConstructor().getACall().getArgumentForName("value")
       or
       // Anything set on the Value property
-      e = any(SystemWebHttpCookie cookie)
-            .getProperty("Value")
-            .getSetter()
-            .getACall()
-            .getAnArgument()
+      e =
+        any(SystemWebHttpCookie cookie).getProperty("Value").getSetter().getACall().getAnArgument()
       or
       // Anything set on any index of the `Values` property
       e = any(SystemWebHttpCookie cookie).getValuesProperty().getAnIndexerCall().getArgument(1)

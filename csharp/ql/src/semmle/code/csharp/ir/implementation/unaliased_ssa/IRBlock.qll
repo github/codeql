@@ -27,7 +27,8 @@ class IRBlockBase extends TIRBlock {
    * by debugging and printing code only.
    */
   int getDisplayIndex() {
-    this = rank[result + 1](IRBlock funcBlock |
+    this =
+      rank[result + 1](IRBlock funcBlock |
         funcBlock.getEnclosingFunction() = getEnclosingFunction()
       |
         funcBlock order by funcBlock.getUniqueId()

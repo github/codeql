@@ -515,17 +515,14 @@ abstract class TranslatedElement extends TTranslatedElement {
   final string getId() { result = getUniqueId().toString() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
-    result = rank[rankIndex + 1](TranslatedElement child, int id |
-        child = getChild(id)
-      |
-        child order by id
-      )
+    result =
+      rank[rankIndex + 1](TranslatedElement child, int id | child = getChild(id) | child order by id)
   }
 
   language[monotonicAggregates]
   private int getDescendantCount() {
-    result = 1 +
-        sum(TranslatedElement child | child = getChildByRank(_) | child.getDescendantCount())
+    result =
+      1 + sum(TranslatedElement child | child = getChildByRank(_) | child.getDescendantCount())
   }
 
   private int getUniqueId() {
