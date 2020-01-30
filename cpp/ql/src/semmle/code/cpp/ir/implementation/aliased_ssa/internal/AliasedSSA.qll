@@ -554,8 +554,9 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
       )
       or
       kind instanceof EntireAllocationMemoryAccess and
-      result = TEntireAllocationMemoryLocation(getAddressOperandAllocation(instr
-                .getResultAddressOperand()), isMayAccess)
+      result =
+        TEntireAllocationMemoryLocation(getAddressOperandAllocation(instr.getResultAddressOperand()),
+          isMayAccess)
       or
       kind instanceof EscapedMemoryAccess and
       result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
@@ -584,8 +585,9 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
       )
       or
       kind instanceof EntireAllocationMemoryAccess and
-      result = TEntireAllocationMemoryLocation(getAddressOperandAllocation(operand
-                .getAddressOperand()), isMayAccess)
+      result =
+        TEntireAllocationMemoryLocation(getAddressOperandAllocation(operand.getAddressOperand()),
+          isMayAccess)
       or
       kind instanceof EscapedMemoryAccess and
       result = TAllAliasedMemory(operand.getEnclosingIRFunction(), isMayAccess)
