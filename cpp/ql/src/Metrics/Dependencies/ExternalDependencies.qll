@@ -76,7 +76,8 @@ class Library extends LibraryT {
  * `sourceFile` is not in `destLib`).
  */
 predicate libDependencies(File sourceFile, Library destLib, int num) {
-  num = strictcount(Element source, Element dest, File destFile |
+  num =
+    strictcount(Element source, Element dest, File destFile |
       // dependency from source -> dest.
       dependsOnSimple(source, dest) and
       sourceFile = source.getFile() and
@@ -101,7 +102,7 @@ predicate libDependencies(File sourceFile, Library destLib, int num) {
 predicate encodedDependencies(File source, string encodedDependency, int num) {
   exists(Library destLib |
     libDependencies(source, destLib, num) and
-    encodedDependency = "/" + source.getRelativePath() + "<|>" + destLib.getName() + "<|>" +
-        destLib.getVersion()
+    encodedDependency =
+      "/" + source.getRelativePath() + "<|>" + destLib.getName() + "<|>" + destLib.getVersion()
   )
 }

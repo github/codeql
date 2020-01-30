@@ -125,11 +125,8 @@ class MetricRefType extends RefType, MetricElement {
       // m = number of methods that access some field
       m = count(this.getAccessingMethod()) and
       // r = average (over f) of number of methods that access field f
-      r = avg(Field f |
-          f = this.getAccessedField()
-        |
-          count(Method x | this.accessesLocalField(x, f))
-        ) and
+      r =
+        avg(Field f | f = this.getAccessedField() | count(Method x | this.accessesLocalField(x, f))) and
       // avoid division by zero
       m != 1 and
       // compute LCOM
@@ -184,7 +181,8 @@ class MetricRefType extends RefType, MetricElement {
   float getLackOfCohesionCK() {
     exists(int callables, int linked, float n |
       callables = count(Callable m | includeInLackOfCohesionCK(m)) and
-      linked = count(Callable m1, Callable m2 |
+      linked =
+        count(Callable m1, Callable m2 |
           exists(Field f |
             relevantCallableAndFieldCK(m1, f) and
             relevantCallableAndFieldCK(m2, f) and
@@ -296,13 +294,15 @@ class MetricRefType extends RefType, MetricElement {
    */
   float getSpecialisationIndex() {
     this.getNumberOfCallables() != 0 and
-    result = (this.getNumberOverridden() * this.getInheritanceDepth()) /
+    result =
+      (this.getNumberOverridden() * this.getInheritanceDepth()) /
         this.getNumberOfCallables().(float)
   }
 
   /** Gets the Halstead length of a type, estimated as the sum of the Halstead lengths of its callables. */
   override int getHalsteadLength() {
-    result = sum(Callable c, int toSum |
+    result =
+      sum(Callable c, int toSum |
         c = this.getACallable() and
         toSum = c.getMetrics().getHalsteadLength()
       |
@@ -312,7 +312,8 @@ class MetricRefType extends RefType, MetricElement {
 
   /** Gets the Halstead vocabulary of a type, estimated as the sum of the Halstead vocabularies of its callables. */
   override int getHalsteadVocabulary() {
-    result = sum(Callable c, int toSum |
+    result =
+      sum(Callable c, int toSum |
         c = this.getACallable() and
         toSum = c.getMetrics().getHalsteadVocabulary()
       |
@@ -322,7 +323,8 @@ class MetricRefType extends RefType, MetricElement {
 
   /** Gets the cyclomatic complexity of a type, estimated as the sum of the cyclomatic complexities of its callables. */
   override int getCyclomaticComplexity() {
-    result = sum(Callable c, int toSum |
+    result =
+      sum(Callable c, int toSum |
         c = this.getACallable() and
         toSum = c.getMetrics().getCyclomaticComplexity()
       |

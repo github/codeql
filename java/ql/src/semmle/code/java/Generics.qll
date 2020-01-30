@@ -332,7 +332,8 @@ class ParameterizedType extends RefType {
 
   /** Gets the number of type arguments of this parameterized type. */
   int getNumberOfTypeArguments() {
-    result = count(int pos |
+    result =
+      count(int pos |
         typeArgs(_, pos, this) or
         typeVars(_, _, pos, _, this)
       )

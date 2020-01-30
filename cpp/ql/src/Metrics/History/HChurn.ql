@@ -16,7 +16,8 @@ import external.VCS
 
 from File f, int n
 where
-  n = sum(Commit entry, int churn |
+  n =
+    sum(Commit entry, int churn |
       churn = entry.getRecentChurnForFile(f) and
       not artificialChange(entry)
     |

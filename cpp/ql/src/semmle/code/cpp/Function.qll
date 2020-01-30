@@ -45,7 +45,8 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       (
         if exists(getATemplateArgument())
         then
-          templateArgs = "<" +
+          templateArgs =
+            "<" +
               concat(int i |
                 exists(getTemplateArgument(i))
               |
@@ -53,7 +54,8 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
               ) + ">"
         else templateArgs = ""
       ) and
-      args = "(" +
+      args =
+        "(" +
           concat(int i |
             exists(getParameter(i))
           |
@@ -600,8 +602,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
     result = getParameterDeclarationEntry(index).getTypedName()
     or
     index < getNumberOfParameters() - 1 and
-    result = getParameterDeclarationEntry(index).getTypedName() + ", " +
-        getParameterStringFrom(index + 1)
+    result =
+      getParameterDeclarationEntry(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
   }
 
   /**

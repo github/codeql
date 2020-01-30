@@ -1166,8 +1166,8 @@ class ArrayType extends DerivedType {
   override string explain() {
     if exists(this.getArraySize())
     then
-      result = "array of " + this.getArraySize().toString() + " {" + this.getBaseType().explain() +
-          "}"
+      result =
+        "array of " + this.getArraySize().toString() + " {" + this.getBaseType().explain() + "}"
     else result = "array of {" + this.getBaseType().explain() + "}"
   }
 
@@ -1364,7 +1364,8 @@ class PointerToMemberType extends Type, @ptrtomember {
   }
 
   override string explain() {
-    result = "pointer to member of " + this.getClass().toString() + " with type {" +
+    result =
+      "pointer to member of " + this.getClass().toString() + " with type {" +
         this.getBaseType().explain() + "}"
   }
 
@@ -1400,7 +1401,8 @@ class RoutineType extends Type, @routinetype {
   Type getReturnType() { routinetypes(underlyingElement(this), unresolveElement(result)) }
 
   override string explain() {
-    result = "function returning {" + this.getReturnType().explain() + "} with arguments (" +
+    result =
+      "function returning {" + this.getReturnType().explain() + "} with arguments (" +
         this.explainParameters(0) + ")"
   }
 

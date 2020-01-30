@@ -5,8 +5,8 @@ predicate defReaches(AssignableDefinition def, LocalScopeVariable v, ControlFlow
   def.getTarget() = v and cfn = def.getAControlFlowNode().getASuccessor()
   or
   exists(ControlFlow::Node mid | defReaches(def, v, mid) |
-    not mid = any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
-          .getAControlFlowNode() and
+    not mid =
+      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain()).getAControlFlowNode() and
     cfn = mid.getASuccessor()
   )
 }

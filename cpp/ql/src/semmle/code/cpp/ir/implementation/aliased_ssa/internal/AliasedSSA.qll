@@ -127,12 +127,13 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
   boolean isMayAccess;
 
   VariableMemoryLocation() {
-    this = TVariableMemoryLocation(var, type, languageType, startBitOffset, endBitOffset,
-        isMayAccess)
+    this =
+      TVariableMemoryLocation(var, type, languageType, startBitOffset, endBitOffset, isMayAccess)
   }
 
   final override string toStringInternal() {
-    result = var.toString() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
+    result =
+      var.toString() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
         type.toString() + ", " + languageType.toString() + ">"
   }
 
@@ -162,7 +163,8 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
   final IRVariable getVariable() { result = var }
 
   final override string getUniqueId() {
-    result = var.getUniqueId() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
+    result =
+      var.getUniqueId() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
         type.getIdentityString() + ">"
   }
 
@@ -170,8 +172,8 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
     if variableAddressEscapes(var)
     then result = TAllAliasedMemory(var.getEnclosingIRFunction(), false)
     else
-      result = TVariableMemoryLocation(var, var.getIRType(), _, 0,
-          var.getIRType().getByteSize() * 8, false)
+      result =
+        TVariableMemoryLocation(var, var.getIRType(), _, 0, var.getIRType().getByteSize() * 8, false)
   }
 
   final override predicate isMayAccess() { isMayAccess = true }
@@ -457,8 +459,9 @@ private Overlap getVariableMemoryLocationOverlap(
   VariableMemoryLocation def, VariableMemoryLocation use
 ) {
   overlappingIRVariableMemoryLocations(def, use) and
-  result = Interval::getOverlap(def.getStartBitOffset(), def.getEndBitOffset(),
-      use.getStartBitOffset(), use.getEndBitOffset())
+  result =
+    Interval::getOverlap(def.getStartBitOffset(), def.getEndBitOffset(), use.getStartBitOffset(),
+      use.getEndBitOffset())
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
@@ -472,7 +475,8 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
         then
           exists(IRVariable var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
             hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
-            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+            result =
+              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
           )
         else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
@@ -497,7 +501,8 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
         then
           exists(IRVariable var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
             hasOperandMemoryAccess(operand, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
-            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+            result =
+              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
           )
         else result = TUnknownMemoryLocation(operand.getEnclosingIRFunction(), isMayAccess)
       )

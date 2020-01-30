@@ -63,7 +63,8 @@ predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr 
         func = ce.getCondition()
       )
     ) and
-    msg = "Return value of " + func.getTarget().getName() +
+    msg =
+      "Return value of " + func.getTarget().getName() +
         " used directly in a conditional expression."
   )
 }
