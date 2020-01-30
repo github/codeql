@@ -147,6 +147,8 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Flow through pointer dereference
   i2.(LoadInstruction).getSourceAddress() = i1
   or
+  i2.(LoadInstruction).getSourceValueOperand().getAnyDef() = i1
+  or
   i2.(UnaryInstruction).getUnary() = i1
   or
   i2.(ChiInstruction).getPartial() = i1 and
@@ -308,6 +310,14 @@ predicate tainted(Expr source, Element tainted) {
     cfg.hasFlow(DataFlow::definitionByReferenceNode(source), sink)
   |
     tainted = adjustedSink(sink)
+  )
+}
+
+predicate tainted_instruction(Function sourceFunc,Instruction source, Function sinkFunc, Instruction sink) {
+  sourceFunc = source.getEnclosingFunction() and
+  sinkFunc = sink.getEnclosingFunction() and
+  exists(DefaultTaintTrackingCfg cfg |
+    cfg.hasFlow(DataFlow::instructionNode(source), DataFlow::instructionNode(sink))
   )
 }
 

@@ -78,3 +78,13 @@ void test_dynamic_cast() {
 
     dynamic_cast<D3*>(b2)->f(getenv("VAR")); // tainted [FALSE POSITIVE]
 }
+
+void flow_to_outparam(char ** ret, char *arg) {
+    *ret = arg; 
+}
+
+void test_outparams() {
+    char *p2 = nullptr;
+    flow_to_outparam(&p2, getenv("VAR"));
+    sink(p2); // tainted
+}
