@@ -26,6 +26,10 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
+* The data-flow library has been improved when flow through functions needs to be
+  combined with both taint tracking and flow through fields allowing more flow
+  to be tracked. This affects and improves some security queries, which may
+  report additional results.
 * Created the `semmle.code.cpp.models.interfaces.Allocation` library to model allocation such as `new` expressions and calls to `malloc`. This in intended to replace the functionality in `semmle.code.cpp.commons.Alloc` with a more consistent and useful interface.
 * Created the `semmle.code.cpp.models.interfaces.Deallocation` library to model deallocation such as `delete` expressions and calls to `free`. This in intended to replace the functionality in `semmle.code.cpp.commons.Alloc` with a more consistent and useful interface.
 * The new class `StackVariable` should be used in place of `LocalScopeVariable`
