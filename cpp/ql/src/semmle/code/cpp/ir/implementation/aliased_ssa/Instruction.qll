@@ -947,6 +947,10 @@ class ConvertInstruction extends UnaryInstruction {
   ConvertInstruction() { getOpcode() instanceof Opcode::Convert }
 }
 
+class CheckedConvertOrNullInstruction extends UnaryInstruction {
+  CheckedConvertOrNullInstruction() { getOpcode() instanceof Opcode::CheckedConvertOrNull }
+}
+
 /**
  * Represents an instruction that converts between two addresses
  * related by inheritance.
@@ -987,7 +991,7 @@ class InheritanceConversionInstruction extends UnaryInstruction {
 
 /**
  * Represents an instruction that converts from the address of a derived class
- * to the address of a direct non-virtual base class.
+ * to the address of a base class.
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
   ConvertToBaseInstruction() { getOpcode() instanceof ConvertToBaseOpcode }

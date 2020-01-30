@@ -84,6 +84,10 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
         bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
       )
       or
+      // Conversion using dynamic_cast results in an unknown offset
+      instr instanceof CheckedConvertOrNullInstruction and
+      bitOffset = Ints::unknown()
+      or
       // Converting to a derived class subtracts the offset of the base class.
       exists(ConvertToDerivedInstruction convert |
         convert = instr and

@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
   char buf[100] = "VAR = ";
   sink(strcat(buf, getenv("VAR")));
 
-  sink(buf); // BUG: no taint
-  sink(untainted_buf); // the two buffers would be conflated if we added flow through partial chi inputs
+  sink(buf);
+  sink(untainted_buf); // the two buffers would be conflated if we added flow through all partial chi inputs
 
   return 0;
 }
@@ -38,4 +38,43 @@ void test_indirect_arg_to_model() {
     void *env_pointer = getenv("VAR"); // env_pointer is tainted, not its data.
     inet_addr_retval a = inet_addr((const char *)&env_pointer);
     sink(a);
+}
+
+class B {
+    public:
+    virtual void f(const char*) = 0;
+};
+
+class D1 : public B {};
+
+class D2 : public D1 {
+    public:
+    void f(const char* p) override {}
+};
+
+class D3 : public D2 {
+    public:
+    void f(const char* p) override {
+        sink(p);
+    }
+};
+
+void test_dynamic_cast() {
+    B* b = new D3();
+    b->f(getenv("VAR")); // tainted
+
+    ((D2*)b)->f(getenv("VAR")); // tainted
+    static_cast<D2*>(b)->f(getenv("VAR")); // tainted
+    dynamic_cast<D2*>(b)->f(getenv("VAR")); // tainted
+    reinterpret_cast<D2*>(b)->f(getenv("VAR")); // tainted
+
+    B* b2 = new D2();
+    b2->f(getenv("VAR"));
+
+    ((D2*)b2)->f(getenv("VAR"));
+    static_cast<D2*>(b2)->f(getenv("VAR"));
+    dynamic_cast<D2*>(b2)->f(getenv("VAR"));
+    reinterpret_cast<D2*>(b2)->f(getenv("VAR"));
+
+    dynamic_cast<D3*>(b2)->f(getenv("VAR")); // tainted [FALSE POSITIVE]
 }
