@@ -318,7 +318,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     console.warn('TypeScript: reported ' + diagnostics.length + ' semantic errors.');
     for (let diagnostic of diagnostics) {
         let text = diagnostic.messageText;
-        if (typeof text !== 'string') {
+        if (text && typeof text !== 'string') {
             text = text.messageText;
         }
         let locationStr = '';

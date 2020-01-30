@@ -709,12 +709,12 @@ public class AutoBuild {
                 propsToRemove.add(packageName);
               } else {
                 // Remove file dependency on a package that don't exist in the checkout.
-                String dependecy = getChildAsString(dependencyObj, packageName);
-                if (dependecy != null && (dependecy.startsWith("file:") || dependecy.startsWith("./") || dependecy.startsWith("../"))) {
-                    if (dependecy.startsWith("file:")) {
-                      dependecy = dependecy.substring("file:".length());
+                String dependency = getChildAsString(dependencyObj, packageName);
+                if (dependency != null && (dependency.startsWith("file:") || dependency.startsWith("./") || dependency.startsWith("../"))) {
+                    if (dependency.startsWith("file:")) {
+                      dependency = dependency.substring("file:".length());
                     }
-                    Path resolvedPackage = path.getParent().resolve(dependecy + "/package.json");
+                    Path resolvedPackage = path.getParent().resolve(dependency + "/package.json");
                     if (!Files.exists(resolvedPackage)) {
                       propsToRemove.add(packageName);
                     }

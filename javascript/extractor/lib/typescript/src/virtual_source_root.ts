@@ -2,7 +2,8 @@ import * as pathlib from "path";
 import * as ts from "./typescript";
 
 /**
- * Mapping from the source root to the virtual source root.
+ * Mapping from the real source root to the virtual source root,
+ * a directory whose folder structure mirrors the real source root, but with `node_modules` installed.
  */
 export class VirtualSourceRoot {
   constructor(
