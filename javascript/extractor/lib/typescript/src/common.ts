@@ -6,8 +6,18 @@ import { VirtualSourceRoot } from "./virtual_source_root";
 /**
  * Extracts the package name from the prefix of an import string.
  */
-const packageNameRex = /^(?:@[\w.-]+[/\\])?\w[\w.-]*(?=[/\\]|$)/;
+const packageNameRex = /^(?:@[\w.-]+[/\\]+)?\w[\w.-]*(?=[/\\]|$)/;
 const extensions = ['.ts', '.tsx', '.d.ts', '.js', '.jsx'];
+
+function getPackageName(importString: string) {
+  let packageNameMatch = packageNameRex.exec(importString);
+  if (packageNameMatch == null) return null;
+  let packageName = packageNameMatch[0];
+  if (packageName.charAt(0) === '@') {
+    packageName = packageName.replace(/[/\\]+/g, '/'); // Normalize slash after the scope.
+  }
+  return packageName;
+}
 
 export class Project {
   public program: ts.Program = null;
@@ -75,9 +85,8 @@ export class Project {
    */
   private redirectModuleName(moduleName: string, containingFile: string, options: ts.CompilerOptions): ts.ResolvedModule {
     // Get a package name from the leading part of the module name, e.g. '@scope/foo' from '@scope/foo/bar'.
-    let packageNameMatch = packageNameRex.exec(moduleName);
-    if (packageNameMatch == null) return null;
-    let packageName = packageNameMatch[0];
+    let packageName = getPackageName(moduleName);
+    if (packageName == null) return null;
 
     // Get the overridden location of this package, if one exists.
     let packageEntryPoint = this.packageEntryPoints.get(packageName);
