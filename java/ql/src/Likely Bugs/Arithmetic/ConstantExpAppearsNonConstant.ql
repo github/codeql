@@ -43,13 +43,9 @@ predicate isConstantExp(Expr e) {
   or
   exists(AndBitwiseExpr a | a = e | eval(a.getAnOperand()) = 0)
   or
-  exists(AndLogicalExpr a | a = e |
-    a.getAnOperand().(BooleanLiteral).getBooleanValue() = false
-  )
+  exists(AndLogicalExpr a | a = e | a.getAnOperand().(BooleanLiteral).getBooleanValue() = false)
   or
-  exists(OrLogicalExpr o | o = e |
-    o.getAnOperand().(BooleanLiteral).getBooleanValue() = true
-  )
+  exists(OrLogicalExpr o | o = e | o.getAnOperand().(BooleanLiteral).getBooleanValue() = true)
 }
 
 from Expr e
