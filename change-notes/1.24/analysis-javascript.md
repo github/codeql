@@ -28,7 +28,7 @@
 | Regular expression always matches (`js/regex/always-matches`) | correctness, regular-expressions | Highlights regular expression checks that trivially succeed by matching an empty substring. Results are shown on LGTM by default. |
 | Missing await (`js/missing-await`) | correctness | Highlights expressions that operate directly on a promise object in a nonsensical way, instead of awaiting its result. Results are shown on LGTM by default. |
 | Prototype pollution in utility function (`js/prototype-pollution-utility`) | security, external/cwe/cwe-400, external/cwe/cwe-471 | Highlights recursive copying operations that are susceptible to prototype pollution. Results are shown on LGTM by default. |
-| Unsafe jQuery plugin (`js/unsafe-jquery-plugin`) | Highlights potential XSS vulnerabilities in unsafely designed jQuery plugins. |
+| Unsafe jQuery plugin (`js/unsafe-jquery-plugin`) | Highlights potential XSS vulnerabilities in unsafely designed jQuery plugins. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
