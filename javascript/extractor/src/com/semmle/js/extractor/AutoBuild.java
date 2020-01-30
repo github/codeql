@@ -397,7 +397,7 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files and package.json files
+    // include .eslintrc files, package.json files, and tsconfig.json files
     patterns.add("**/.eslintrc*");
     patterns.add("**/package.json");
     patterns.add("**/tsconfig.json");
@@ -601,7 +601,7 @@ public class AutoBuild {
   }
 
   /**
-   * Returns an existing file named <code>dir/stem.ext</code> where <code>ext</code> is any
+   * Returns an existing file named <code>dir/stem.ext</code> where <code>.ext</code> is any
    * of the given extensions, or <code>null</code> if no such file exists.
    */
   private static Path tryResolveWithExtensions(Path dir, String stem, Iterable<String> extensions) {
@@ -708,7 +708,7 @@ public class AutoBuild {
                 // Remove dependency on local package
                 propsToRemove.add(packageName);
               } else {
-                // Remove file dependency on a package that don't exist in the checkout.
+                // Remove file dependency on a package that doesn't exist in the checkout.
                 String dependency = getChildAsString(dependencyObj, packageName);
                 if (dependency != null && (dependency.startsWith("file:") || dependency.startsWith("./") || dependency.startsWith("../"))) {
                     if (dependency.startsWith("file:")) {

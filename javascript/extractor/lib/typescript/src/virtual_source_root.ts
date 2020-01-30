@@ -17,7 +17,7 @@ export class VirtualSourceRoot {
   ) {}
 
   /**
-   * Maps a path under the real source root to the corresonding path in the virtual source root.
+   * Maps a path under the real source root to the corresponding path in the virtual source root.
    */
   public toVirtualPath(path: string) {
     if (!this.virtualSourceRoot) return null;
@@ -27,7 +27,7 @@ export class VirtualSourceRoot {
   }
 
   /**
-   * Maps a path under the real source root to the corresonding path in the virtual source root.
+   * Maps a path under the real source root to the corresponding path in the virtual source root.
    */
   public toVirtualPathIfFileExists(path: string) {
     let virtualPath = this.toVirtualPath(path);
