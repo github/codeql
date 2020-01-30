@@ -53,7 +53,8 @@ predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstm
 private predicate expr_parent_adjusted(Expr child, int i, ControlFlowElement parent) {
   if parent instanceof AssignOperation
   then
-    parent = any(AssignOperation ao |
+    parent =
+      any(AssignOperation ao |
         exists(AssignExpr ae | ae = ao.getExpandedAssignment() |
           i = 0 and
           exists(Expr right |
@@ -223,7 +224,8 @@ class MultiImplementationsParent extends ExprOrStmtParent {
    */
   File getBestFile() {
     exists(ValueOrRefType t |
-      result = max(this.getAnImplementationFileInTopLevelType(_, t) as file
+      result =
+        max(this.getAnImplementationFileInTopLevelType(_, t) as file
           order by
             getImplementationSize(t, file), file.toString()
         )
@@ -277,7 +279,8 @@ private ControlFlowElement getAChild(ControlFlowElement cfe) {
 }
 
 private int getImplementationSize0(ValueOrRefType t, File f) {
-  result = strictcount(ControlFlowElement cfe |
+  result =
+    strictcount(ControlFlowElement cfe |
       exists(MultiImplementationsParent p, ControlFlowElement child |
         cfe = getAChild*(child) and
         not cfe = getAChild*(any(ThrowElement te))
@@ -297,7 +300,8 @@ private int getImplementationSize0(ValueOrRefType t, File f) {
 }
 
 private int getImplementationSize1(ValueOrRefType t, File f) {
-  result = strictsum(MultiImplementationsParent p, int c |
+  result =
+    strictsum(MultiImplementationsParent p, int c |
       // Count each auto-implemented accessor as size 4 (getter) or 5 (setter)
       f = p.getAnAutoImplementationFileInTopLevelType(t) and
       if p instanceof Getter then c = 4 else c = 5

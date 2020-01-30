@@ -5,7 +5,8 @@ class DestructorCallEnhanced extends DestructorCall {
   override string toString() {
     if exists(this.getQualifier().(VariableAccess).getTarget().getName())
     then
-      result = "call to " + this.getQualifier().(VariableAccess).getTarget().getName() + "." +
+      result =
+        "call to " + this.getQualifier().(VariableAccess).getTarget().getName() + "." +
           this.getTarget().getName()
     else result = super.toString()
   }
@@ -66,7 +67,8 @@ Element getScopeElement(ControlFlowNode x) {
 string getScopeName(ControlFlowNode x) {
   exists(Function scope | scope = getScopeElement(x) |
     differentScope(scope) and
-    result = scope.getFile().getBaseName().splitAt(".", 0) + "__" +
+    result =
+      scope.getFile().getBaseName().splitAt(".", 0) + "__" +
         scope.getQualifiedName().replaceAll("::", "_")
   )
   or

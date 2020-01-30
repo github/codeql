@@ -105,7 +105,8 @@ class SsaSourceVariable extends TSsaSourceVariable {
    * not have a specific source code location.
    */
   private VarAccess getFirstAccess() {
-    result = min(this.getAnAccess() as a
+    result =
+      min(this.getAnAccess() as a
         order by
           a.getLocation().getStartLine(), a.getLocation().getStartColumn()
       )
@@ -450,7 +451,8 @@ private module SsaImpl {
    */
   private predicate callDefUseRank(TrackedField f, BasicBlock b, int rankix, int i) {
     updateCandidate(f, _, b, _) and
-    i = rank[rankix](int j |
+    i =
+      rank[rankix](int j |
         certainVariableUpdate(f, _, b, j) or
         variableUseOrCapture(f, b, j) or
         updateCandidate(f, _, b, j)
@@ -612,7 +614,8 @@ private module SsaImpl {
      * basic blocks.
      */
     private predicate defUseRank(TrackedVar v, BasicBlock b, int rankix, int i) {
-      i = rank[rankix](int j |
+      i =
+        rank[rankix](int j |
           any(TrackedSsaDef def).definesAt(v, b, j) or variableUseOrCapture(v, b, j)
         )
     }

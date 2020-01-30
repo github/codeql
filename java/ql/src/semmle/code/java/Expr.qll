@@ -171,7 +171,8 @@ class CompileTimeConstantExpr extends Expr {
     or
     result = this.(ParExpr).getExpr().(CompileTimeConstantExpr).getStringValue()
     or
-    result = this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
+    result =
+      this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
         this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringValue()
     or
     // Ternary conditional, with compile-time constant condition.

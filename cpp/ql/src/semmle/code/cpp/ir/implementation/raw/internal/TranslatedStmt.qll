@@ -80,7 +80,8 @@ class TranslatedDeclStmt extends TranslatedStmt {
    * `TranslatedDeclarationEntry`.
    */
   private TranslatedDeclarationEntry getDeclarationEntry(int index) {
-    result = rank[index + 1](TranslatedDeclarationEntry entry, int originalIndex |
+    result =
+      rank[index + 1](TranslatedDeclarationEntry entry, int originalIndex |
         entry = getTranslatedDeclarationEntry(stmt.getDeclarationEntry(originalIndex))
       |
         entry order by originalIndex

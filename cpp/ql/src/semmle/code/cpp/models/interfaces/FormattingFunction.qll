@@ -64,7 +64,8 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * Gets the character type used in the format string for this function.
    */
   Type getFormatCharType() {
-    result = stripTopLevelSpecifiersOnly(stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex())
+    result =
+      stripTopLevelSpecifiersOnly(stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex())
               .getType()
               .getUnderlyingType()).(PointerType).getBaseType())
   }

@@ -368,7 +368,8 @@ predicate useOfVarActual(SemanticStackVariable v, VariableAccess use) {
  */
 private predicate excludeReachesFunction(Function f) {
   exists(int defOrUses |
-    defOrUses = count(Def def | def.(ControlFlowNode).getControlFlowScope() = f) +
+    defOrUses =
+      count(Def def | def.(ControlFlowNode).getControlFlowScope() = f) +
         count(Use use | use.(ControlFlowNode).getControlFlowScope() = f) and
     defOrUses >= 13000
   )

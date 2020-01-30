@@ -92,7 +92,8 @@ private module VirtualDispatch {
           )
           or
           exists(Variable var, FieldAccess a |
-            var = store
+            var =
+              store
                   .getDestinationAddress()
                   .(FieldAddressInstruction)
                   .getObjectAddress()

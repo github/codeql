@@ -51,9 +51,8 @@ class LockObjectField extends Field {
 class ValidSynchStmt extends Stmt {
   ValidSynchStmt() {
     // It's OK to lock the enclosing class.
-    this.(SynchronizedStmt).getExpr().(TypeLiteral).getTypeName().getType() = this
-          .getEnclosingCallable()
-          .getDeclaringType()
+    this.(SynchronizedStmt).getExpr().(TypeLiteral).getTypeName().getType() =
+      this.getEnclosingCallable().getDeclaringType()
     or
     // It's OK to lock on a "lock object field".
     this.(SynchronizedStmt).getExpr().(FieldRead).getField() instanceof LockObjectField

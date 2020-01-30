@@ -17,11 +17,8 @@ module InsecureXML {
     // will not be present. In this case, we can revert back to the assembly version, which may not
     // contain full minor version information.
     exists(string assemblyVersion |
-      assemblyVersion = t
-            .getALocation()
-            .(Assembly)
-            .getVersion()
-            .regexpCapture("([0-9]+\\.[0-9]+).*", 1)
+      assemblyVersion =
+        t.getALocation().(Assembly).getVersion().regexpCapture("([0-9]+\\.[0-9]+).*", 1)
     |
       assemblyVersion.toFloat() < version.toFloat() and
       // This method is only accurate when we're looking at versions before 4.0.

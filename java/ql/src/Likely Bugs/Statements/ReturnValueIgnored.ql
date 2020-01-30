@@ -88,7 +88,8 @@ predicate methodStats(Method m, int used, int total, int percentage) {
 }
 
 int chainedUses(Method m) {
-  result = count(MethodAccess ma, MethodAccess qual |
+  result =
+    count(MethodAccess ma, MethodAccess qual |
       ma.getMethod() = m and
       ma.getQualifier() = qual and
       qual.getMethod() = m

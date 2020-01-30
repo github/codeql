@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
   char buf[100] = "VAR = ";
   sink(strcat(buf, getenv("VAR")));
 
-  sink(buf); // BUG: no taint
-  sink(untainted_buf); // the two buffers would be conflated if we added flow through partial chi inputs
+  sink(buf);
+  sink(untainted_buf); // the two buffers would be conflated if we added flow through all partial chi inputs
 
   return 0;
 }

@@ -30,7 +30,8 @@ predicate hasWebConfigXFrameOptions() {
   // </system.webServer>
   // ```
   exists(XMLElement element |
-    element = any(WebConfigXML webConfig)
+    element =
+      any(WebConfigXML webConfig)
           .getARootElement()
           .getAChild("system.webServer")
           .getAChild("httpProtocol")

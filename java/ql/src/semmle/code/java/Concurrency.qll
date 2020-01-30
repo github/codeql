@@ -14,7 +14,8 @@ predicate locallySynchronizedOn(Expr e, SynchronizedStmt sync, Variable v) {
  */
 predicate locallySynchronizedOnThis(Expr e, RefType thisType) {
   exists(SynchronizedStmt sync | e.getEnclosingStmt().getEnclosingStmt+() = sync |
-    sync.getExpr().getProperExpr().(ThisAccess).getType().(RefType).getSourceDeclaration() = thisType
+    sync.getExpr().getProperExpr().(ThisAccess).getType().(RefType).getSourceDeclaration() =
+      thisType
   )
   or
   exists(SynchronizedCallable c | c = e.getEnclosingCallable() |

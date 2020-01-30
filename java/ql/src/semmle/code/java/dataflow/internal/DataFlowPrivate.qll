@@ -100,8 +100,8 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
     not exists(captured.getAUse()) and
     exists(SsaVariable capturedDef | capturedDef = captured.getAnUltimateDefinition() |
       capturedDef.(SsaImplicitInit).isParameterDefinition(node1.asParameter()) or
-      capturedDef.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = node1
-            .asExpr() or
+      capturedDef.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
+        node1.asExpr() or
       capturedDef.(SsaExplicitUpdate).getDefiningExpr().(AssignOp) = node1.asExpr()
     )
   )

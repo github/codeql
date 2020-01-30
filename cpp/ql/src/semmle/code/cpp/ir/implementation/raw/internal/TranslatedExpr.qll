@@ -1400,9 +1400,8 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   }
 
   private predicate leftOperandNeedsConversion() {
-    getConvertedLeftOperandType().getUnspecifiedType() != getLoadedLeftOperand()
-          .getExpr()
-          .getUnspecifiedType()
+    getConvertedLeftOperandType().getUnspecifiedType() !=
+      getLoadedLeftOperand().getExpr().getUnspecifiedType()
   }
 
   private Opcode getOpcode() {
